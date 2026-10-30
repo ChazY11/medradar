@@ -15,19 +15,20 @@ portfolio, what appeared for the first time, and where China still has a gap.
 
 | | |
 |---|---|
-| Events ingested | **312,566** (510(k) 176,466 · PMA 57,372 · recalls 16,764 · trials 55,592 · drug approvals 5,326 · EDGAR catalysts 1,046) |
-| Coverage | 89 companies, 60 tracks, **204 device product families**, 7,097 product codes |
+| Events ingested | **363,177** (510(k) 176,466 · PMA 57,372 · recalls 59,646 · trials 55,592 · drug approvals 5,326 · EDGAR catalysts 8,775) |
+| Coverage | 89 companies, 60 tracks, **204 device product families**, 7,097 product codes, **1.2 GiB SQLite** |
 | Strongest track right now | 心脏节律 THI 1.94 (P=98.2%) · 可穿戴监测 1.80 · 结构性心脏病 1.57 · 手术机器人 1.54 |
 | Signals emitted | 281 (→ tradable subset) |
-| Case library | **208 traceable cases** (verbatim evidence + 1/5/20/60-day reactions), 81 approvals · 23 CRLs · 104 trial readouts |
+| Case library | **758 traceable cases** (verbatim evidence + 1/5/20/60-day reactions): 309 approvals · 90 CRLs · 359 trial readouts |
 | Replay | **400-step, 7-year timeline** (2019–2026) with 10/25/50 bps cost tiers |
-| Event study (20d, direction-aligned) | approval +4.7% · trial result +2.9% · CRL −1.9% — **none survives Holm correction** (n=208) |
+| Event study (20d, direction-aligned, winsorised) | approval +0.8% · trial +0.1% · CRL −0.8% — **all CIs straddle zero; Holm rejects nothing** |
 | Simulated book | in-sample, long-only, not investment advice |
-| Tests | **378 offline tests**, no network, no API key |
+| Tests | **402 offline tests**, no network, no API key |
 | Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |
-| Products | 204 families, **2,000 Chinese product names** (98.6% of device events) |
-| Research | event-time model, point-in-time signals, Holm correction, 10/25/50 bps replay |
-| Database | 878 MiB SQLite, 1999–2026 trial coverage, 1966–2026 drug approvals |
+| Products | 204 families, **2,740 Chinese product names** |
+| Research | event-time model, point-in-time signals, block bootstrap, Holm correction |
+| Database | 1.2 GiB SQLite, 1966–2026 drug approvals, 1999–2026 trials |
+| Calibration | 25 hand-labelled real 8‑Ks: type accuracy **1.00 vs 0.60**, direction **0.92 vs 0.72** for the LLM judge |
 | Calibration | 25 hand-labelled real 8‑Ks: type accuracy **1.00 vs 0.60**, direction **0.92 vs 0.72** for the LLM judge |
 
 > Numbers move every week; every one of them is reproducible from `medradar run`.
