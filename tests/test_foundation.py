@@ -87,6 +87,15 @@ class RegistryTests(unittest.TestCase):
         self.assertIsNone(key)
         self.assertLess(confidence, 0.8)
 
+    def test_contiguous_alias_prevents_johnson_controls_false_positive(self) -> None:
+        registry = load_companies("device")
+        key, _confidence, _alias = registry.resolve("JOHNSON CONTROLS INC")
+        self.assertNotEqual(key, "johnson_johnson_medtech")
+        # the real thing still resolves
+        key, confidence, _ = registry.resolve("JOHNSON & JOHNSON")
+        self.assertEqual(key, "johnson_johnson_medtech")
+        self.assertGreater(confidence, 0.9)
+
     def test_track_matching_prefers_longest_keyword(self) -> None:
         tracks = load_tracks("device")
         self.assertEqual(tracks.match_text("SPINAL CORD STIMULATOR"), "neurostimulation")

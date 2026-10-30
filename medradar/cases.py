@@ -171,6 +171,12 @@ CORPUS_FIELDS = ("company", "company_zh", "company_key", "cik", "ticker", "acces
                  "filed", "category", "headline", "headline_zh", "url", "text", "bucket")
 
 
+def corpus_tickers(path: str | Path | None = None) -> list[str]:
+    """Unique tickers mentioned by the corpus (for targeted price fetching)."""
+    tickers = {str(item.get("ticker") or "").upper() for item in load_corpus(path)}
+    return sorted(ticker for ticker in tickers if ticker)
+
+
 def load_corpus(path: str | Path | None = None) -> list[dict[str, Any]]:
     """Read ``corpus.jsonl`` (produced by ``scripts/build_corpus.py``)."""
     if path:

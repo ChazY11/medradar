@@ -185,11 +185,22 @@ def token_similarity(left: Any, right: Any) -> float:
 
 
 def contains_alias(applicant: Any, alias: Any) -> bool:
-    """True when every token of ``alias`` appears in ``applicant``."""
+    """True when the alias tokens appear **contiguously** in the applicant tokens.
+
+    A plain subset test would let ``JOHNSON CONTROLS INC`` match the alias
+    ``JOHNSON & JOHNSON`` (both reduce to the token ``JOHNSON``), silently
+    assigning unrelated companies to a parent. Requiring a contiguous run keeps
+    "DEPUY SYNTHES" working while rejecting that class of false positive.
+    """
+    applicant_tokens = tokens(applicant)
     alias_tokens = tokens(alias)
-    if not alias_tokens:
+    if not alias_tokens or len(alias_tokens) > len(applicant_tokens):
         return False
-    return set(alias_tokens).issubset(set(tokens(applicant)))
+    width = len(alias_tokens)
+    return any(
+        applicant_tokens[index : index + width] == alias_tokens
+        for index in range(len(applicant_tokens) - width + 1)
+    )
 
 
 # --------------------------------------------------------------------------- stats

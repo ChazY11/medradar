@@ -486,8 +486,22 @@ def cmd_products(args: argparse.Namespace) -> int:
 
 # -------------------------------------------------------------------------- cases
 def cmd_cases(args: argparse.Namespace) -> int:
-    from .cases import build_cases, write_cases
+    from .cases import build_cases, corpus_tickers, write_cases
     from .db import DB
+
+    tickers = corpus_tickers(args.corpus) if args.fetch_prices else []
+    if tickers:
+        from .config import CACHE_DIR
+        from .http import Fetcher
+        from .prices import fetch_prices
+
+        with DB(args.db) as db:
+            result = fetch_prices(
+                db,
+                Fetcher(cache_dir=CACHE_DIR, min_interval=0.5, max_requests=args.price_budget),
+                tickers[: args.max_tickers],
+            )
+        print(json.dumps({"prices": {"ok": len(result.get("ok") or []), "failed": len(result.get("failed") or [])}}))
 
     with DB(args.db) as db:
         result = build_cases(
@@ -507,6 +521,20 @@ def cmd_cases(args: argparse.Namespace) -> int:
         }
     )
     return 0 if result.get("status") == "ok" else 1
+
+
+# -------------------------------------------------------------------------- audit
+def cmd_audit(args: argparse.Namespace) -> int:
+    from .audit import render_audit_markdown, run_audit
+    from .db import DB
+    from .util import write_text
+
+    with DB(args.db) as db:
+        audit = run_audit(db, stale_days=args.stale_days)
+    if args.markdown:
+        write_text(args.markdown, render_audit_markdown(audit))
+    _emit(audit)
+    return 0 if audit.get("status") != "fail" else 1
 
 
 # ------------------------------------------------------------------------ status
@@ -693,7 +721,16 @@ def build_parser() -> argparse.ArgumentParser:
     cases.add_argument("--limit", type=int, default=120)
     cases.add_argument("--benchmark", default="SPY")
     cases.add_argument("--out-dir", default=None)
+    cases.add_argument("--fetch-prices", action="store_true", help="download daily bars for corpus tickers")
+    cases.add_argument("--max-tickers", type=int, default=150)
+    cases.add_argument("--price-budget", type=int, default=200)
     cases.set_defaults(func=cmd_cases)
+
+    audit = sub.add_parser("audit", help="data-quality audit (dates, matches, prices, freshness)")
+    audit.add_argument("--db", default=str(DEFAULT_DB))
+    audit.add_argument("--stale-days", type=int, default=30)
+    audit.add_argument("--markdown", default=None, help="also write a Markdown report")
+    audit.set_defaults(func=cmd_audit)
 
     selftest = sub.add_parser("selftest", help="run the offline test suite")
     selftest.set_defaults(func=cmd_selftest)
