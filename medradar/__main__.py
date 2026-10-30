@@ -252,6 +252,18 @@ def cmd_run(args: argparse.Namespace) -> int:
         except Exception as exc:  # replay must never block the report
             print(f"[warn] replay failed: {type(exc).__name__}: {exc}", file=sys.stderr)
 
+    if args.with_cases:
+        try:
+            from .cases import build_cases, write_cases
+            from .db import DB
+
+            with DB(args.db) as db:
+                result = build_cases(db, max_cases=args.cases_limit)
+            files = write_cases(result, Path(args.out_dir) / "cases")
+            print(json.dumps({"cases": result.get("status"), "files": files}, ensure_ascii=False))
+        except Exception as exc:
+            print(f"[warn] cases failed: {type(exc).__name__}: {exc}", file=sys.stderr)
+
     if not args.skip_analyze:
         cmd_analyze(args)
 
@@ -472,6 +484,31 @@ def cmd_products(args: argparse.Namespace) -> int:
     return 0
 
 
+# -------------------------------------------------------------------------- cases
+def cmd_cases(args: argparse.Namespace) -> int:
+    from .cases import build_cases, write_cases
+    from .db import DB
+
+    with DB(args.db) as db:
+        result = build_cases(
+            db,
+            corpus_path=args.corpus,
+            max_cases=args.limit,
+            benchmark=args.benchmark,
+        )
+    files = write_cases(result, args.out_dir or "out/cases")
+    _emit(
+        {
+            "status": result.get("status"),
+            "files": files,
+            "stats": result.get("stats"),
+            "selected": len(result.get("selected") or []),
+            "negative_examples": len(result.get("negative_examples") or []),
+        }
+    )
+    return 0 if result.get("status") == "ok" else 1
+
+
 # ------------------------------------------------------------------------ status
 def cmd_status(args: argparse.Namespace) -> int:
     from .db import DB
@@ -563,6 +600,8 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--skip-report", action="store_true")
     run.add_argument("--with-trade", action="store_true", help="also run the paper-trading study")
     run.add_argument("--with-replay", action="store_true", help="also build the replay timeline")
+    run.add_argument("--with-cases", action="store_true", help="also build the case library")
+    run.add_argument("--cases-limit", type=int, default=120)
     run.add_argument("--replay-days", type=int, default=180)
     run.add_argument("--replay-costs", default="10,25,50")
     run.add_argument("--refresh-prices", action="store_true", help="re-download price bars even if cached")
@@ -647,6 +686,14 @@ def build_parser() -> argparse.ArgumentParser:
     products.add_argument("--news-limit", type=int, default=100)
     products.add_argument("--csv", default=None, help="export the full family table to this CSV")
     products.set_defaults(func=cmd_products)
+
+    cases = sub.add_parser("cases", help="build the traceable case library from the EDGAR corpus")
+    cases.add_argument("--db", default=str(DEFAULT_DB))
+    cases.add_argument("--corpus", default=None, help="path to corpus.jsonl")
+    cases.add_argument("--limit", type=int, default=120)
+    cases.add_argument("--benchmark", default="SPY")
+    cases.add_argument("--out-dir", default=None)
+    cases.set_defaults(func=cmd_cases)
 
     selftest = sub.add_parser("selftest", help="run the offline test suite")
     selftest.set_defaults(func=cmd_selftest)

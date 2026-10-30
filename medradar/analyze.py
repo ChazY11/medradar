@@ -879,6 +879,18 @@ def _research_block(db, events, device, win, signals) -> dict[str, Any]:
 
 
 # ------------------------------------------------------------------- optional blocks
+def _compact_cases(payload: Mapping[str, Any]) -> dict[str, Any]:
+    """Trim the case library for the report (keeps metrics.json readable)."""
+    return {
+        "status": payload.get("status"),
+        "benchmark": payload.get("benchmark"),
+        "window": payload.get("window"),
+        "stats": payload.get("stats") or {},
+        "selected": list(payload.get("selected") or [])[:30],
+        "negative_examples": list(payload.get("negative_examples") or [])[:6],
+    }
+
+
 def _compact_replay(payload: Mapping[str, Any]) -> dict[str, Any]:
     """Trim the replay payload to what the report needs (keeps metrics.json small)."""
     steps = list(payload.get("steps") or [])[:60]
@@ -1068,6 +1080,11 @@ def build_metrics(
     products_payload = _products_block(db, win)
     if products_payload:
         metrics["products"] = products_payload
+
+    # Traceable case library (optional): built by `medradar cases`.
+    cases_payload = read_json(OUT_DIR / "cases" / "cases.json")
+    if cases_payload:
+        metrics["cases"] = _compact_cases(cases_payload)
 
     trading_path = OUT_DIR / "trading.json"
     trading = read_json(trading_path)
