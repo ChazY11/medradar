@@ -8,11 +8,14 @@ Both artefacts are machine-generated but knowledge-curated:
 * **product families** come from ``medradar.families`` (keyword taxonomy);
 * **Chinese catalog** is the hand-written translation table below, keyed by
   openFDA product code. ``REVIEWED_CATALOG`` holds the 600 codes reviewed in
-  task-5 and always wins; ``EXTENDED_CATALOG`` adds the next ~1,400 codes by
-  event volume. Every entry is ``code -> (中文名, 一句话中文用途)``. Codes
-  missing from both tables are written with their English ``device_name`` so
-  downstream code always has *something* to show, and the missing codes are
-  reported loudly at the end of the run.
+  task-5 and always wins; ``EXTENDED_CATALOG`` adds the remaining codes. Every
+  entry is ``code -> (中文名, 一句话中文用途)``.
+* **ranking 口径** (since task-20) follows the analysis layer: product codes are
+  ranked by 510(k) + material PMA volume (``analyze._is_material_pma`` rule), so
+  routine PMA administrative supplements cannot move the top-N after a PMA
+  backfill. Codes that drop out of the top-N stay in the file (never deleted).
+  Codes missing from both tables are written with their English
+  ``device_name`` and reported loudly at the end of the run.
 
 The script is deterministic: no timestamps are written, families and codes are
 sorted, so re-running it on the same database is a no-op.

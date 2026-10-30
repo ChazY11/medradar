@@ -1,6 +1,6 @@
 # MedRadar: FDA Device & Drug Industry Radar
 
-_Generated 2026-10-30T19:43:07Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
+_Generated 2026-10-30T20:08:55Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
 
 ## Key takeaways
 
@@ -15,7 +15,7 @@ _Generated 2026-10-30T19:43:07Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 - Device / drug / trials: `ok`, `ok`, `ok`
 - NMPA (China registrations): `unavailable` - **unavailable (NMPA data not loaded)**; China-gap numbers are not inferred.
 - Prices: `ok`
-- Events in window: 312,566
+- Events in window: 363,177
 
 ## Hottest device tracks
 
@@ -68,15 +68,15 @@ _Generated 2026-10-30T19:43:07Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 
 | Company | Recalls in window | Baseline / quarter | Top reason |
 |---|---|---|---|
-| Medline | 101 | 3.70 | Medline Industries, LP is issuing a recall for specific item |
-| Philips | 87 | 6.15 | To provide clarification and labelling to define the useful |
-| Bd | 64 | 3.50 | Infusion pump module used with compatible  pump infusion set |
-| Medtronic | 63 | 6.50 | The device cap label may not adhere to the sensor, compromis |
-| Ge Healthcare | 45 | 3.35 | GE HealthCare has become aware that certain Nuclear Medicine |
+| Medline | 101 | 5.55 | Medline Industries, LP is issuing a recall for specific item |
+| Philips | 87 | 9.10 | To provide clarification and labelling to define the useful |
+| Bd | 64 | 5.60 | Infusion pump module used with compatible  pump infusion set |
+| Medtronic | 63 | 11.00 | The device cap label may not adhere to the sensor, compromis |
+| Ge Healthcare | 45 | 4.25 | GE HealthCare has become aware that certain Nuclear Medicine |
 
 ## Drug side
 
-Top NDA/BLA momentum: Daiichi Sankyo (THI 3.91), Ionis Pharmaceuticals (THI 3.91), Otsuka (THI 3.91), Sanofi (THI 2.09), Boehringer Ingelheim (THI 2.09).
+Top NDA/BLA momentum: Otsuka (THI 3.91), Ionis Pharmaceuticals (THI 3.91), Daiichi Sankyo (THI 3.91), Sanofi (THI 2.09), Bayer (THI 2.09).
 Hottest therapeutic areas: t_dermatology (P 98.0%), t_cardiometabolic (P 100.0%), t_vaccines (P 48.8%), t_ophthalmology (P 26.6%).
 Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无数据), Neurocrine Biosciences (暂无数据), Exelixis (暂无数据).
 
@@ -93,7 +93,7 @@ Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无�
 ## Replay and research hygiene
 
 - Replay: 60 steps from 2019-01-01 to 2026-10-31; multi-cost summary for 3 cost buckets.
-- Timestamp quality: date 312,566; excluded from trading: 0.
+- Timestamp quality: date 363,177; excluded from trading: 0.
 - Multiple testing: holm correction over 24 tests.
 - Survivorship flags: 3.
 - Assumption register: `docs/ASSUMPTIONS.md`.
@@ -101,10 +101,10 @@ Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无�
 
 ## Case library (in-sample evidence)
 
-- 样本总数: 208; 20 日命中率: 49.0%; 60 日命中率: 47.6%; 语料总数: 1,046
-- 2021-09-14 · CTSO: 临床数据读出： — outcome 未命中; price 1/5/20/60d: 1 日 +6.4% ▲、5 日 +6.9% ▲、20 日 -18.0% ▼、60 日 -35.5% ▼.
-- 2021-09-13 · CRVO: 收到 CRL： — outcome 部分命中; price 1/5/20/60d: 1 日 +8.7% ▲、5 日 +3.9% ▲、20 日 -1.6% ▼、60 日 -23.9% ▼.
-- 2021-09-10 · CYDY: 临床数据读出： — outcome 未命中; price 1/5/20/60d: 1 日 +27.7% ▲、5 日 +76.9% ▲、20 日 +30.1% ▲、60 日 -20.6% ▼.
+- 样本总数: 758; 20 日命中率: 43.4%; 60 日命中率: 40.9%; 语料总数: 8,775
+- 2026-10-01 · EVMN: 临床数据读出：Evommune, Inc. · met the primary endpoint — outcome 未命中; price 1/5/20/60d: 1 日 -8.8% ▼、5 日 -14.8% ▼、20 日 -5.2% ▼.
+- 2026-10-01 · ALLR: FDA 批准：Allarity Therapeutics, Inc. · fda approval — outcome 未命中; price 1/5/20/60d: 1 日 -5.8% ▼、5 日 -7.2% ▼、20 日 -15.5% ▼.
+- 2026-10-01 · BCDA: FDA 批准：BioCardia, Inc. · fda approval / clinical hold — outcome 未命中; price 1/5/20/60d: 1 日 +4.3% ▲、5 日 -1.0% ▼、20 日 -15.2% ▼.
 - Negative examples: 6 (missed / reversed cases).
 - Retrospective in-sample evidence only; not strategy performance.
 

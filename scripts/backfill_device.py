@@ -195,6 +195,7 @@ def run_targeted(args: argparse.Namespace) -> int:
         "db": str(db_path),
         "months": args.months,
         "chunk_months": args.chunk_months,
+        "date_field": args.date_field,
         "budget": args.budget,
         "kinds": kinds,
         "started_at": started,
@@ -227,14 +228,16 @@ def run_targeted(args: argparse.Namespace) -> int:
         )
         print(
             f"[targeted] kinds={kinds} months={args.months} chunk={args.chunk_months}mo"
-            f" budget={args.budget} code_map={len(code_map)} window={iso(start)}..{iso(end)}"
+            f" date_field={args.date_field or 'default'} budget={args.budget}"
+            f" code_map={len(code_map)} window={iso(start)}..{iso(end)}"
         )
         persist()
 
         exit_code = 0
         try:
             for kind in kinds:
-                endpoint, date_field = DEVICE_ENDPOINTS[kind]
+                endpoint, default_date_field = DEVICE_ENDPOINTS[kind]
+                date_field = args.date_field or default_date_field
                 kind_stats: dict[str, Any] = {"events": 0, "matched": 0, "tracked": 0, "chunks": []}
                 per_kind[kind] = kind_stats
                 if budget_hit:
@@ -438,6 +441,12 @@ def main(argv: list[str] | None = None) -> int:
         help="targeted chunked mode: comma list of 510k,pma,device_recall (kill-safe, bounded memory)",
     )
     parser.add_argument("--chunk-months", type=int, default=48, help="date-window size for --kinds mode")
+    parser.add_argument(
+        "--date-field",
+        default=None,
+        help="targeted mode: override the search date field (e.g. event_date_created to add the "
+        "recall records that have no event_date_posted)",
+    )
     args = parser.parse_args(argv)
     if args.report_only:
         return report(args)

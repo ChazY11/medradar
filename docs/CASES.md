@@ -1,171 +1,175 @@
 # MedRadar 案例库
 
-- 语料总量：1046
-- 入选案例：208
-- 20 日命中率：0.4904
-- 逐字证据条数：344
+- 语料总量：8775
+- 入选案例：758
+- 20 日命中率：0.434
+- 逐字证据条数：1206
 
 > 样本内研究演示，非策略业绩；价格反应为相对 SPY 的超额收益。
 
-## 2021-09-14 · Cytosorbents Corp（CTSO）· 临床数据读出：
+## 2026-10-01 · Evommune, Inc.（EVMN）· 临床数据读出：Evommune, Inc. · met the primary endpoint
 
 - 类别：trial_result｜方向：+1｜结果：miss
-- 超额收益：1日 +6.35%｜5日 +6.93%｜20日 -18.04%｜60日 -35.51%
-- 来源：https://www.sec.gov/Archives/edgar/data/1175151/000110465921115541/tm2127624d1_ex99-1.htm
-> The webinar will highlight a growing body of data from seven recently published journal articles or presentations on the use of CytoSorb in more than 215 critically ill COVID-19 patients worldwide, including the recently announced topline results from the U.S.
-> Tae Song, Chicago/USA Topline results from the U.S.
-> Highlighted data to be presented are expected to include: · Topline results from the U.S.
+- 超额收益：1日 -8.83%｜5日 -14.83%｜20日 -5.18%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/2044725/000119312526409865/evmn-ex99_1.htm
+> The 70-patient trial was designed to evaluate the safety and efficacy of intravenous dosing of 5mg/kg at Baseline and Week 4 (n=48 active, n=22 placebo) with a primary endpoint at Week 12, 8 weeks after the last dose.
+> “With strong clinical proof‑of‑concept now established, we are moving quickly to initiate a global Phase 2b trial that is dose-optimized with our subcutaneous formulation which is on track to begin in mid‑2027.” Data Presentation Highlights: • EVO301 met primary endpoint: EVO301…
 
-## 2021-09-13 · Diffusion Pharmaceuticals Inc.（CRVO）· 收到 CRL：
-
-- 类别：crl｜方向：-1｜结果：mixed
-- 超额收益：1日 +8.67%｜5日 +3.94%｜20日 -1.61%｜60日 -23.92%
-- 来源：https://www.sec.gov/Archives/edgar/data/1053691/000143774921022018/ex_283424.htm
-> 
-
-## 2021-09-10 · CytoDyn Inc.（CYDY）· 临床数据读出：
-
-- 类别：trial_result｜方向：-1｜结果：miss
-- 超额收益：1日 +27.70%｜5日 +76.92%｜20日 +30.12%｜60日 -20.59%
-- 来源：https://www.sec.gov/Archives/edgar/data/1175680/000119312521269952/d217751dex991.htm
-> Leronlimab has been studied in 16 clinical trials involving more than 1,200 people and met its primary endpoints in a pivotal Phase 3 trial (leronlimab combined with HIV standard care in patients with multi-drug resistance to current available classes of HIV drugs).
-> CytoDyn has already completed a Phase 2 and Phase 3 trial for mild-to-moderate and severe-to-critical COVID-19 patients, respectively, for which CytoDyn did not meet its primary or secondary endpoints except for the secondary endpoint in the critically ill subpopulation.
-
-## 2021-09-09 · Avalo Therapeutics, Inc.（AVTX）· 临床数据读出：
-
-- 类别：trial_result｜方向：+1｜结果：miss
-- 超额收益：1日 +3.05%｜5日 -0.82%｜20日 -12.94%｜60日 -31.21%
-- 来源：https://www.sec.gov/Archives/edgar/data/1534120/000110465921114196/tm2127237d1_ex99-1.htm
-> • Avalo has a pipeline of six novel, first - in - class assets in eight clinical development programs across Immunology, Immuno - oncology, and Rare Genetic Diseases • All assets have demonstrated mechanistic rationale, biomarkers, or established proof - of - concept (POC) to in…
-> Screening (Visit 1) Open - Label Treatment Period (Visits 2 - 10) (8 weeks) Safety Follow - Up (Visit 11) AVTX - 002, SQ injections every 14 days (N=8, 4 subjects in each cohort; Cohort 1: 1mg/kg; Cohort 2: 3mg/kg) Telephone Visit Eligibility & Washout Week: - 10 0 1 2 3 4 5 6 -…
-> Key Takeaways from KOL interviews - Placebo Response and Remission in CD • Gastroenterology KOLs (N=6) noted that they expect low PBO rates in heavily pre - treated patient populations (as low as single - digits in 4L+ patients) • Patients with more severe disease are less likel…
-
-## 2021-08-27 · AVENUE THERAPEUTICS, INC.（ATXI）· 收到 CRL：
-
-- 类别：crl｜方向：-1｜结果：miss
-- 超额收益：1日 +15.03%｜5日 +6.07%｜20日 +2.86%｜60日 -31.23%
-- 来源：https://www.sec.gov/Archives/edgar/data/1644963/000110465921110140/tm2126364d1_8k.htm
-> (“Avenue”), received an Appeal Denied Letter from the Office of Neuroscience of the FDA in Response to its Formal Dispute Resolution Request submitted in July 2021 with respect to the Complete Response Letters previously issued by the FDA to Avenue related to its intravenous (“I…
-
-## 2021-08-16 · CytoDyn Inc.（CYDY）· 临床数据读出：
-
-- 类别：trial_result｜方向：-1｜结果：miss
-- 超额收益：1日 +1.99%｜5日 +1.61%｜20日 +17.68%｜60日 -15.86%
-- 来源：https://www.sec.gov/Archives/edgar/data/1175680/000119312521248005/d218908dex991.htm
-> CytoDyn has already completed a Phase 2 and Phase 3 trial for mild-to-moderate and severe-to-critical COVID-19 patients, respectively, for which CytoDyn did not meet its primary or secondary endpoints except for the secondary endpoint in the critically ill subpopulation.
-
-## 2021-08-11 · FIBROGEN INC（KYNB）· 收到 CRL：
-
-- 类别：crl｜方向：-1｜结果：mixed
-- 超额收益：1日 +6.69%｜5日 +0.43%｜20日 -1.79%｜60日 +7.70%
-- 来源：https://www.sec.gov/Archives/edgar/data/921299/000156459021043233/fgen-8k_20210811.htm
-> Food and Drug Administration (the “FDA”) has issued a complete response letter regarding the New Drug Application (“NDA”) for roxadustat for the treatment of anemia of chronic kidney disease.
-> Description 99.1 Press Release titled “FibroGen Receives Complete Response Letter from the FDA for Roxadustat for Anemia of Chronic Kidney Disease” dated August 11, 2021 104 Cover Page Interactive Data File (embedded within the Inline XBRL document) SIGNATURES Pursuant to the re…
-
-## 2021-07-28 · ACURA PHARMACEUTICALS, INC（ACUR）· FDA 批准：
+## 2026-10-01 · Allarity Therapeutics, Inc.（ALLR）· FDA 批准：Allarity Therapeutics, Inc. · fda approval
 
 - 类别：approval｜方向：+1｜结果：miss
-- 超额收益：1日 -6.00%｜5日 -16.82%｜20日 -16.34%｜60日 -21.00%
-- 来源：https://www.sec.gov/Archives/edgar/data/786947/000110465921096842/tm2123494d1_ex99-1.htm
-> LTX-03 may offer safety advantages over existing opioid therapies consistent with the Food and Drug Administration’s (FDA) recently proposed new guidelines for the approval of opioid products.
-> AVERSION, used in the FDA approved drug OXAYDO® (oxycodone HCl) marketed by Assertio Holdings, Inc., utilizes polymers designed to limit the abuse of the product by nasal snorting and injection.
-> Forward-looking statements may include, but are not limited to: · our ability to fund or obtain funding for our continuing operations, including the development of our products utilizing our LIMITx and IMPEDE technologies; · whether we will receive FDA acceptance for an NDA for …
+- 超额收益：1日 -5.76%｜5日 -7.20%｜20日 -15.50%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1860657/000121390026105457/ea030729801ex99-1.htm
+> Allarity Therapeutics, Inc. · fda approval
 
-## 2021-07-26 · Cerecor Inc.（AVTX）· 临床数据读出：
-
-- 类别：trial_result｜方向：+1｜结果：hit
-- 超额收益：1日 +1.18%｜5日 -1.37%｜20日 +7.12%｜60日 -22.22%
-- 来源：https://www.sec.gov/Archives/edgar/data/1534120/000162828021014453/july_irxdeckxcercxfinal.htm
-> 
-
-## 2021-07-22 · REGENERX BIOPHARMACEUTICALS INC（RGRX）· FDA 批准：
+## 2026-10-01 · BioCardia, Inc.（BCDA）· FDA 批准：BioCardia, Inc. · fda approval / clinical hold
 
 - 类别：approval｜方向：+1｜结果：miss
-- 超额收益：1日 +6.02%｜5日 +2.09%｜20日 -11.44%｜60日 -31.60%
-- 来源：https://www.sec.gov/Archives/edgar/data/707511/000110465921094954/tm2123052d1_ex99-1.htm
-> 
+- 超额收益：1日 +4.26%｜5日 -1.04%｜20日 -15.21%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/925741/000143774926031665/ex_1021267.htm
+> EX-99.1 2 ex_1021267.htm EXHIBIT 99.1 ex_1021267.htm Exhibit 99.1 BioCardia Files Revised De Novo Pre-Submission for FDA Approval of Helix ™ Catheter SUNNYVALE, Calif.
+> [Nasdaq: BCDA], a global leader in cellular and cell-derived therapeutics for the treatment of cardiovascular and pulmonary diseases, today reported it has completed its revised Pre-Submission to FDA Center for Devices and Radiological Health (CDRH) under its Q-Submission progra…
 
-## 2021-07-22 · CytoDyn Inc.（CYDY）· 临床数据读出：
-
-- 类别：trial_result｜方向：-1｜结果：hit
-- 超额收益：1日 -0.87%｜5日 +3.68%｜20日 -17.46%｜60日 -15.71%
-- 来源：https://www.sec.gov/Archives/edgar/data/1175680/000119312521221967/d160647dex991.htm
-> Leronlimab has been studied in 16 clinical trials involving more than 1,200 people and met its primary endpoints in a pivotal Phase 3 trial (leronlimab combined with HIV standard care in patients with multi-drug resistance to current available classes of HIV drugs).
-> CytoDyn has already completed a Phase 2 and Phase 3 trial for mild-to-moderate and severe-to-critical COVID-19 patients, respectively, for which CytoDyn did not meet its primary or secondary endpoints except for the secondary endpoint in the critically ill subpopulation.
-
-## 2021-07-21 · Aquestive Therapeutics, Inc.（AQST）· FDA 批准：
-
-- 类别：approval｜方向：+1｜结果：mixed
-- 超额收益：1日 +0.61%｜5日 -2.99%｜20日 +1.69%｜60日 +6.73%
-- 来源：https://www.sec.gov/Archives/edgar/data/1398733/000162828021014157/ex991_acceptanceoflibervan.htm
-> The Company continues to believe that no additional clinical studies will be required for FDA approval of Libervant for U.S.
-> Such risks and uncertainties include, but are not limited to, risks associated with the Company's development work, including any delays or changes to the timing, cost and success of our product development activities and clinical trials; risk of delays in FDA approval of Liberv…
-
-## 2021-07-19 · Aridis Pharmaceuticals, Inc.（ARDS）· 临床数据读出：
+## 2026-10-01 · NovoCure Ltd（NVCR）· 临床数据读出：NovoCure Ltd · met the primary endpoint
 
 - 类别：trial_result｜方向：+1｜结果：miss
-- 超额收益：1日 +2.33%｜5日 -1.92%｜20日 -23.60%｜60日 -26.19%
-- 来源：https://www.sec.gov/Archives/edgar/data/1614067/000110465921093274/tm2122496d1_ex10-1.htm
-> The strong data from the Phase 2 trial gives us an advantage to define the patient population, primary endpoint, and the Phase 3 clinical study design to support a clear path to the Phase 3 confirmatory trial,” said Vu Truong, Ph.D., Aridis’ Chief Executive Officer.
+- 超额收益：1日 -6.96%｜5日 -11.26%｜20日 -18.45%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1645113/000164511326000071/paxjapandecisionpr.htm
+> NovoCure Ltd · met the primary endpoint
 
-## 2021-07-15 · AVENUE THERAPEUTICS, INC.（ATXI）· 收到 CRL：
-
-- 类别：crl｜方向：-1｜结果：hit
-- 超额收益：1日 +1.44%｜5日 +0.64%｜20日 -13.14%｜60日 -30.27%
-- 来源：https://www.sec.gov/Archives/edgar/data/1644963/000110465921092205/tm2122245d1_8k.htm
-> (“Avenue”) announced that it had received a Complete Response Letter (the “First CRL”) from the U.S.
-> On June 14, 2021, Avenue announced that it had received a second Complete Response Letter (the “Second CRL”) from the FDA regarding Avenue’s NDA for IV tramadol.
-
-## 2021-07-13 · Hepion Pharmaceuticals, Inc. (HEPA, CTRVP)（CTRVP）· 临床数据读出：
-
-- 类别：trial_result｜方向：+1｜结果：hit
-- 超额收益：1日 +7.33%｜5日 +7.38%｜20日 +5.41%｜60日 +6.20%
-- 来源：https://www.sec.gov/Archives/edgar/data/1583771/000110465921091511/tm2122083d1_ex99-1.htm
-> EX-99.1 2 tm2122083d1_ex99-1.htm EXHIBIT 99.1 Exhibit 99.1 Hepion Pharmaceuticals Announces Positive Topline Data from Phase 2a ‘AMBITION’ NASH Trial; All Primary Endpoints Achieved · Safety, Tolerability and Pharmacokinetics (“PK”) Primary Endpoints Met · Reductions in Liver Tr…
-> (NASDAQ: HEPA ), a clinical stage biopharmaceutical company focused on the development of therapeutic drugs for the treatment of liver disease arising from non-alcoholic steatohepatitis ("NASH"), today announced positive topline results from its Phase 2a ‘AMBITION’ NASH clinical…
-> All primary endpoints of the trial were met.
-
-## 2021-06-30 · CYTOKINETICS INC（CYTK）· 临床数据读出：
-
-- 类别：trial_result｜方向：+1｜结果：hit
-- 超额收益：1日 +9.49%｜5日 +3.96%｜20日 +54.12%｜60日 +79.25%
-- 来源：https://www.sec.gov/Archives/edgar/data/1061983/000117184321004610/f8k_063021.htm
-> 
-
-## 2021-06-22 · NanoVibronix, Inc.（FEED）· 临床数据读出：
-
-- 类别：trial_result｜方向：-1｜结果：hit
-- 超额收益：1日 +8.23%｜5日 +5.81%｜20日 -7.70%｜60日 +155.39%
-- 来源：https://www.sec.gov/Archives/edgar/data/1326706/000149315221014950/form8-k.htm
-> (the “Company”) received a letter from the Listing Qualifications Department of the Nasdaq Stock Market (“Nasdaq”) indicating that, based upon the closing bid price of the Company’s common stock for the 30 consecutive business day period between May 5, 2021, through June 16, 202…
-
-## 2021-06-17 · MANNKIND CORP（MNKD）· FDA 批准：
+## 2026-09-30 · 再生元（REGN）· FDA 批准：REGENERON PHARMACEUTICALS, INC. · fda approval / receives fda approval
 
 - 类别：approval｜方向：+1｜结果：hit
-- 超额收益：1日 +8.89%｜5日 +12.61%｜20日 +4.32%｜60日 +9.14%
-- 来源：https://www.sec.gov/Archives/edgar/data/899460/000119312521192308/d60583d8k.htm
-> In its communications with United Therapeutics, the FDA indicated that approval of the NDA will be subject to an inspection of the Tyvaso DPI manufacturing facility operated by MannKind; the FDA and MannKind have jointly targeted the third quarter of 2021 to complete the inspect…
+- 超额收益：1日 -4.78%｜5日 -4.77%｜20日 +6.16%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/872589/000110465926112340/tm2626090d1_ex99-1.htm
+> Food and Drug Administration (“ FDA ”) approval of New Product Filings and Eligible Supplemental Filings (as defined below) (“ New Product Approvals ”): a.
+> 12,500 PSUs per FDA approval of a supplemental BLA (“ sBLA ”) or supplemental NDA (“ sNDA ”) obtained during the Performance Period, excluding (i) sBLAs/sNDAs for products marketed as of the Grant Date or (ii) sBLAs/sNDAs that do not expand the eligible patient population (“ Eli…
+> The full 10-year performance period from January 1, 2026 through December 31, 2035 is referred to as the “ Performance Period .” Notwithstanding the start of the Performance Period on January 1, 2026, the 2026 BLA filing for Otarmeni ™ (lunsotogene parvec) and the 2026 FDA appro…
 
-## 2021-06-15 · Eton Pharmaceuticals, Inc.（ETON）· FDA 批准：
-
-- 类别：approval｜方向：+1｜结果：miss
-- 超额收益：1日 +2.65%｜5日 -3.24%｜20日 -12.42%｜60日 -21.89%
-- 来源：https://www.sec.gov/Archives/edgar/data/1710340/000149315221014410/ex99-1.htm
-> EX-99.1 2 ex99-1.htm Exhibit 99.1 Eton Pharmaceuticals Announces FDA Approval of Rezipres® (Ephedrine Hydrochloride Injection) DEER PARK, Ill., June 15, 2021 (GLOBE NEWSWIRE) — Eton Pharmaceuticals, Inc (Nasdaq: ETON) today announced that the U.S.
-> “We are excited to see the approval of Rezipres, which is now our second FDA-approved ready-to-use hospital injectable product.
-
-## 2021-06-14 · 9 METERS BIOPHARMA, INC.（NMTRQ）· 临床数据读出：
+## 2026-09-30 · Connect Biopharma Holdings Ltd（CNTB）· 临床数据读出：Connect Biopharma Holdings Ltd · announces positive topline / topline data
 
 - 类别：trial_result｜方向：+1｜结果：miss
-- 超额收益：1日 +7.12%｜5日 -0.11%｜20日 -23.12%｜60日 -9.80%
-- 来源：https://www.sec.gov/Archives/edgar/data/1551986/000155198621000071/ex-991pressrelease61421.htm
-> EX-99.1 2 ex-991pressrelease61421.htm EX-99.1 Document PRESS RELEASE 9 Meters Announces Initiation of Phase 2 VIBRANT Study of Vurolenatide for Short Bowel Syndrome – Initiating the largest Phase 2 placebo-controlled trial in short bowel syndrome - – Topline results of the multi…
-> Total stool output will serve as the primary endpoint in the study.
+- 超额收益：1日 -17.55%｜5日 -22.24%｜20日 -25.77%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1835268/000183526826000038/a991.htm
+> On September 30, 2026, Connect Biopharma Holdings Limited (the “Company”) issued a press release announcing topline results from its global phase 2 study evaluating rademikibart, the Company’s next-generation, potentially best-in-class anti-interleukin-4-receptor alpha antibody …
+> On September 30, 2026, the Company announced topline results for the COPD Study.
+> The primary endpoint was treatment failure, defined as death due to any cause, (re)admission to a hospital for COPD, emergency department (re)visit or unscheduled medical visit for worsening of COPD symptoms, or the necessity to intensify pharmacologic treatment within 28 days a…
+
+## 2026-09-29 · Aldeyra Therapeutics, Inc.（ALDX）· 收到 CRL：Aldeyra Therapeutics, Inc. · complete response letter / met the primary endpoint
+
+- 类别：crl｜方向：-1｜结果：hit
+- 超额收益：1日 -3.41%｜5日 -29.84%｜20日 -49.72%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1341235/000119312526405954/aldx-ex99_2.htm
+> The FDRR, which is expected to be reviewed by the FDA’s Office of New Drugs (OND), is designed to appeal the March 16, 2026 Complete Response Letter that denied approval of a New Drug Application (NDA) for reproxalap for the treatment of dry eye disease.
+> Following an NDA submission and two NDA resubmissions of reproxalap for the treatment of dry eye disease, Aldeyra has received three Complete Response Letters, the first two of which recommended an additional clinical trial to “demonstrate a positive effect on the treatment of o…
+> Important factors that could cause actual results to differ materially from those reflected in Aldeyra's forward-looking statements include, among others, the timing of enrollment, commencement and completion of Aldeyra's clinical trials, the timing and success of preclinical st…
+
+## 2026-09-28 · Mirum Pharmaceuticals, Inc.（MIRM）· 临床数据读出：Mirum Pharmaceuticals, Inc. · met the primary endpoint / phase 3 results
+
+- 类别：trial_result｜方向：+1｜结果：miss
+- 超额收益：1日 -3.45%｜5日 -12.59%｜20日 -4.28%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1759425/000175942526000049/mirm-20260925.htm
+> Announcement of Data from the Phase 3 AZURE-1 Study of Brelovitug in Chronic Hepatitis Delta On September 28, 2026, the Company announced the primary endpoint was met in the Phase 3 portion of the AZURE-1 study evaluating brelovitug, an investigational fully human monoclonal ant…
+> Phase 3 AZURE-1 Results: Brelovitug Met the Primary Endpoint at Week 24 The Phase 3 portion of the AZURE-1 study enrolled 153 treatment-naive patients randomized in a 2:2:1 ratio to receive brelovitug 300 mg self-administered once weekly (“QW”) by subcutaneous (“SC”) injection ,…
+> At Week 24, treatment with brelovitug met the primary endpoint, with 56% of patients in the 300 mg QW arm and 45% in the 900 mg Q4W arm achieving the combined endpoint of virologic response (≥2 log10 reduction in HDV RNA from baseline or undetectable HDV RNA [<LLOQ, TND]) and AL…
+
+## 2026-09-28 · NEONC TECHNOLOGIES HOLDINGS, INC.（NTHI）· FDA 批准：NEONC TECHNOLOGIES HOLDINGS, INC. · fda approval / accelerated approval
+
+- 类别：approval｜方向：+1｜结果：miss
+- 超额收益：1日 +2.19%｜5日 -12.35%｜20日 -10.82%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1979414/000182912626010493/neonctechnologies_ex99-1.htm
+> The meeting provides an opportunity for discussion; its scheduling does not establish FDA agreement on a trial design, an accelerated approval pathway or eventual approval of NEO212.
+
+## 2026-09-24 · ACADIA PHARMACEUTICALS INC（ACAD）· 临床数据读出：ACADIA PHARMACEUTICALS INC · announces positive topline / phase 3 results
+
+- 类别：trial_result｜方向：+1｜结果：miss
+- 超额收益：1日 -7.15%｜5日 -10.29%｜20日 -10.02%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1070494/000119312526401157/d168737dex991.htm
+> EX-99.1 2 d168737dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 Acadia Pharmaceuticals Announces Phase 3 Enabling Topline Results from Phase 2 RADIANT Study of Remlifanserin for the Treatment of Alzheimer’s Disease Psychosis (ADP) — Meaningful and consistent efficacy trends across endp…
+> (Nasdaq: ACAD) today announced Phase 3 enabling topline results from the Phase 2 portion of the ongoing RADIANT clinical trial program evaluating remlifanserin for the treatment of hallucinations and delusions associated with Alzheimer’s disease psychosis (ADP).
+> For the primary endpoint of change from baseline in the Scale for the Assessment of Positive Symptoms-Hallucinations and Delusions subscales (SAPS-H+D), once daily 60 mg remlifanserin demonstrated a change of -12.6 versus a -10.4 change for placebo at week 6, yielding a standard…
+
+## 2026-09-23 · 伊奥尼斯（IONS）· 临床数据读出：IONIS PHARMACEUTICALS INC · met the primary endpoint
+
+- 类别：trial_result｜方向：+1｜结果：mixed
+- 超额收益：1日 +0.71%｜5日 +0.54%｜20日 +0.33%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/874015/000114036126037371/ef20082626_ex99-1.htm
+> The study met its primary endpoint with sefaxersen achieving statistically significant and clinically meaningful improvements in proteinuria reduction, compared to placebo at 37 weeks, as measured by 24-hour urine protein-to-creatinine ratio (UPCR).
+> The primary endpoint of the study is the change from baseline in the urine protein-to-creatinine ratio at 37 weeks.
+
+## 2026-09-23 · Evommune, Inc.（EVMN）· 临床数据读出：Evommune, Inc. · announces positive topline
+
+- 类别：trial_result｜方向：+1｜结果：miss
+- 超额收益：1日 -3.70%｜5日 -17.40%｜20日 -40.31%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/2044725/000119312526399378/evmn-ex99_1.htm
+> “We look forward to sharing the Phase 2a data at EADV, building on the topline results we reported earlier this year.
+
+## 2026-08-31 · Karyopharm Therapeutics Inc.（KPTI）· FDA 批准：Karyopharm Therapeutics Inc. · fda approval / priority review
+
+- 类别：approval｜方向：+1｜结果：miss
+- 超额收益：1日 -11.55%｜5日 -16.14%｜20日 -39.69%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1503802/000119312526375495/d423030d8k.htm
+> Management’s expectations and, therefore, any forward-looking statements in this Current Report on Form 8-K could also be affected by risks and uncertainties relating to a number of other factors, including the following: the adoption of XPOVIO in the commercial marketplace, the…
+> Food and Drug Administration and other regulatory authorities, investigational review boards at clinical trial sites and publication review bodies, including with respect to the need for additional clinical trials; the ability of the Company or its third party collaborators or s…
+
+## 2026-08-24 · Erasca, Inc.（ERAS）· FDA 批准：Erasca, Inc. · fda approval
+
+- 类别：approval｜方向：+1｜结果：miss
+- 超额收益：1日 +7.84%｜5日 -5.02%｜20日 -21.87%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1761918/000119312526361895/eras-20260824.htm
+> Erasca, Inc. · fda approval
+
+## 2026-08-24 · EBR Systems, Inc. (EBRCZ, NONE.)（EBRCZ）· 收到 CRL：EBR Systems, Inc. (EBRCZ, NONE.) · clinical hold
+
+- 类别：crl｜方向：-1｜结果：miss
+- 超额收益：1日 +0.26%｜5日 +5.58%｜20日 +7.02%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1347123/000121465926010775/ex99_1.htm
+> EBR Systems, Inc. (EBRCZ, NONE.) · clinical hold
+
+## 2026-08-18 · ONCOLYTICS BIOTECH INC（ONCY）· FDA 批准：ONCOLYTICS BIOTECH INC · fda approval / clinical hold
+
+- 类别：approval｜方向：+1｜结果：miss
+- 超额收益：1日 -3.51%｜5日 +3.18%｜20日 -7.08%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1129928/000112992826000053/oncolyticscrcfdafeedback.htm
+> ONCOLYTICS BIOTECH INC · fda approval / clinical hold
+
+## 2026-08-18 · Amylyx Pharmaceuticals, Inc.（AMLX）· 临床数据读出：Amylyx Pharmaceuticals, Inc. · met the primary endpoint / announces positive to…
+
+- 类别：trial_result｜方向：+1｜结果：miss
+- 超额收益：1日 +11.02%｜5日 +3.43%｜20日 -4.81%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1658551/000119312526354716/d180533dex991.htm
+> EX-99.1 2 d180533dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 Amylyx Pharmaceuticals Announces Positive Topline Results from Phase 3 LUCIDITY Clinical Trial of Avexitide in Post-Bariatric Hypoglycemia • LUCIDITY met FDA-agreed-upon primary endpoint; avexitide demonstrated a 55% reduc…
+> (Nasdaq: AMLX) (“Amylyx” or the “Company”) today announced positive topline results from LUCIDITY, a 78-participant, multicenter, randomized, double-blind, placebo-controlled Phase 3 clinical trial evaluating the efficacy and safety of avexitide, an investigational, first-in-cla…
+> LUCIDITY met the FDA-agreed-upon primary endpoint demonstrating a 55% reduction in the composite rate of Level 2 and Level 3 hypoglycemic events compared to placebo (p=0.000003).
+
+## 2026-08-18 · Amylyx Pharmaceuticals, Inc.（AMLX）· 临床数据读出：Amylyx Pharmaceuticals, Inc. · met the primary endpoint
+
+- 类别：trial_result｜方向：+1｜结果：miss
+- 超额收益：1日 +11.02%｜5日 +3.43%｜20日 -4.81%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1658551/000119312526354793/d184004dex991.htm
+> placebo An investigational, first-in-class GLP-1 receptor antagonist designed to reduce the exaggerated GLP-1 Avexitide response in post-bariatric hypoglycemia (PBH) and restore activity to more physiological levels • FDA-Agreed Upon Primary Endpoint Met 55% reduction in the com…
+> Phase 3 LUCIDITY Trial Design PHASE 3 LUCIDITY TRIAL DESIGN - Multicenter, randomized, double-blind, placebo-controlled trial (N=78) 16-week Double-blind Treatment Period 32-week Open-label Extension Period 3:2 Randomization Avexitide 90 mg Once Daily N=78 21-day Eligibility Ave…
+> LUCIDITY Met Primary Endpoint Statistically significant 55% reduction in composite rate of Level 2 and Level 3 hypoglycemic events compared to placebo Composite Level 2/3 Hypoglycemic Event Rate Reduction vs.
+
+## 2026-08-13 · Adagio Medical Holdings, Inc.（ADGM）· FDA 批准：Adagio Medical Holdings, Inc. · fda approval / receives fda approval
+
+- 类别：approval｜方向：+1｜结果：miss
+- 超额收益：1日 -5.19%｜5日 -4.73%｜20日 -32.60%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/2006986/000110465926095987/tm2623192d1_ex99-1.htm
+> ✓ Accomplished ◎ Upcoming — Next Twelve Months Building Value through Real, Achievable Near-Term Milestones Adagio Medical: Multiple Value Creating Milestones Executing on Every Front – Significant Near Term Catalysts Still Ahead ✓ ✓ ✓ ✓ ✓ PMA submission to FDA for vCLAS approva…
+
+## 2026-08-13 · NEONC TECHNOLOGIES HOLDINGS, INC.（NTHI）· 临床数据读出：NEONC TECHNOLOGIES HOLDINGS, INC. · met the primary endpoint / accelerated appr…
+
+- 类别：trial_result｜方向：+1｜结果：hit
+- 超额收益：1日 +53.48%｜5日 +47.08%｜20日 +19.90%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1979414/000182912626008773/neonctechnologies_ex99-1.htm
+> NEO100-01, Phase 2 met its primary endpoint.
+> We met all of our primary endpoints, as you heard.
 
 ## 反例（系统判定与事后走势不一致）
 
-- 2021-09-14 Cytosorbents Corp（CTSO） 临床数据读出：：20日超额 -18.04%
-- 2021-09-10 CytoDyn Inc.（CYDY） 临床数据读出：：20日超额 +30.12%
-- 2021-09-09 Avalo Therapeutics, Inc.（AVTX） 临床数据读出：：20日超额 -12.94%
-- 2021-08-27 AVENUE THERAPEUTICS, INC.（ATXI） 收到 CRL：：20日超额 +2.86%
-- 2021-08-16 CytoDyn Inc.（CYDY） 临床数据读出：：20日超额 +17.68%
+- 2026-10-01 Evommune, Inc.（EVMN） 临床数据读出：Evommune, Inc. · met the primary endpoint：20日超额 -5.18%
+- 2026-10-01 Allarity Therapeutics, Inc.（ALLR） FDA 批准：Allarity Therapeutics, Inc. · fda approval：20日超额 -15.50%
+- 2026-10-01 BioCardia, Inc.（BCDA） FDA 批准：BioCardia, Inc. · fda approval / clinical hold：20日超额 -15.21%
+- 2026-10-01 NovoCure Ltd（NVCR） 临床数据读出：NovoCure Ltd · met the primary endpoint：20日超额 -18.45%
+- 2026-09-30 Connect Biopharma Holdings Ltd（CNTB） 临床数据读出：Connect Biopharma Holdings Ltd · announces positive topline / topline data：20日超额 -25.77%

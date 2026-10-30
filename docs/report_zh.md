@@ -1,6 +1,6 @@
 # MedRadar 器械与药品产业方向雷达 · 中文研究报告
 
-> 生成时间：2026-10-30T19:43:07Z（UTC） ｜ 统计窗口：2025-01-01 至 2026-10-30（8 个季度） ｜ 数据状态：4 路可用 ｜ 中国空白度：不可用（NMPA 数据未加载）
+> 生成时间：2026-10-30T20:08:55Z（UTC） ｜ 统计窗口：2025-01-01 至 2026-10-30（8 个季度） ｜ 数据状态：4 路可用 ｜ 中国空白度：不可用（NMPA 数据未加载）
 
 本报告由 `python -m medradar report` 自动生成，全部数字来自当次运行的 `out/metrics.json`；字段缺失时显示「暂无数据」，不以 0 代替。
 
@@ -14,10 +14,10 @@
 
 ## 二、数据状态
 
-- **生成时间**：2026-10-30T19:43:07Z（UTC）
+- **生成时间**：2026-10-30T20:08:55Z（UTC）
 - **统计窗口**：2025-01-01 至 2026-10-30（8 个季度）
 - **基线窗口**：2020-01-01 至 2024-12-31（20 个季度）
-- **事件总数**：312,566 件
+- **事件总数**：363,177 件
 - **数据源**：4 路可用（共 5 路登记）
 
 | 数据源 | 状态 |
@@ -28,7 +28,7 @@
 | 中国 NMPA 注册证 | 不可用（NMPA 数据未加载） |
 | 美股价格（Yahoo） | 可用 |
 
-**事件构成**：510(k) 清关 176,466、8k_catalyst 1,046、器械召回 16,764、药品批准 5,326、PMA 批准 57,372、临床试验启动 55,592
+**事件构成**：510(k) 清关 176,466、8k_catalyst 8,775、器械召回 59,646、药品批准 5,326、PMA 批准 57,372、临床试验启动 55,592
 
 **事实库**：`data\medradar.sqlite`
 
@@ -159,7 +159,7 @@
 | 强生医疗科技 | 关节与骨科植入 | 20% | 33% | -12.9 个百分点 | 0.113 |
 | 泰尔茂 | 冠脉介入 | 8% | 20% | -12.3 个百分点 | 0.155 |
 | 麦朗 | 创伤骨科 | 0% | 12% | -11.9 个百分点 | 0.179 |
-| 麦朗 | 血管通路 | 11% | 0% | +11.1 个百分点 | 0.179 |
+| 麦朗 | 监护与生命体征 | 11% | 0% | +11.1 个百分点 | 0.179 |
 | 强生医疗科技 | 伤口与敷料 | 13% | 4% | +9.4 个百分点 | 0.113 |
 | 贝朗 | 脊柱 | 0% | 9% | -9.1 个百分点 | 0.154 |
 | 波士顿科学 | 神经调控 | 0% | 9% | -8.6 个百分点 | 0.139 |
@@ -239,16 +239,16 @@
 
 | 公司 | 窗口内召回 | 基线/季 | 主要原因 |
 |---|---|---|---|
-| 麦朗 | 101 | 3.70 | Medline Industries, LP is issuing a recall for specific item |
-| 飞利浦 | 87 | 6.15 | To provide clarification and labelling to define the useful |
-| 碧迪 | 64 | 3.50 | Infusion pump module used with compatible  pump infusion set |
-| 美敦力 | 63 | 6.50 | The device cap label may not adhere to the sensor, compromis |
-| GE医疗 | 45 | 3.35 | GE HealthCare has become aware that certain Nuclear Medicine |
-| 波士顿科学 | 42 | 2.15 | Software to enhance Safety Architecture is available and des |
-| 奥林巴斯 | 40 | 3.30 | Additional IFU updates to provide further clarification on s |
-| 西门子医疗 | 38 | 5.05 | There is a potential for an ice blockage to form or currentl |
-| 史赛克 | 35 | 3.45 | There is potential the device inside the package may not mat |
-| 百特 | 34 | 3.20 | Baxter Healthcare Corporation is issuing an Urgent Medical D |
+| 麦朗 | 101 | 5.55 | Medline Industries, LP is issuing a recall for specific item |
+| 飞利浦 | 87 | 9.10 | To provide clarification and labelling to define the useful |
+| 碧迪 | 64 | 5.60 | Infusion pump module used with compatible  pump infusion set |
+| 美敦力 | 63 | 11.00 | The device cap label may not adhere to the sensor, compromis |
+| GE医疗 | 45 | 4.25 | GE HealthCare has become aware that certain Nuclear Medicine |
+| 波士顿科学 | 42 | 3.70 | Software to enhance Safety Architecture is available and des |
+| 奥林巴斯 | 40 | 4.60 | Additional IFU updates to provide further clarification on s |
+| 西门子医疗 | 38 | 9.75 | There is a potential for an ice blockage to form or currentl |
+| 史赛克 | 35 | 5.50 | There is potential the device inside the package may not mat |
+| 百特 | 34 | 4.80 | Baxter Healthcare Corporation is issuing an Urgent Medical D |
 
 **赛道维度召回**：心脏节律（起搏/ICD）（14 次）、可穿戴与远程监测（17 次）、结构性心脏病（5 次）、医疗AI/软件(SaMD)（142 次）、手术机器人（16 次）、康复与外骨骼（13 次）、医美与皮肤（2 次）、女性健康（6 次）。召回密集的赛道通常对应更成熟、装机量更大的产品线，不等同于安全性恶化。
 
@@ -258,15 +258,15 @@
 
 | 公司 | 代码 | 批准数 | 近期/季 | 基线/季 | THI | P(高于基线) | 新分子实体 |
 |---|---|---|---|---|---|---|---|
-| 第一三共 | DSNKY | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
-| 伊奥尼斯 | IONS | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
 | 大冢 | OTSKY | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
+| 伊奥尼斯 | IONS | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
+| 第一三共 | DSNKY | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
 | 赛诺菲 | SNY | 4 | 0.50 | 0.20 | 2.09 | 89.4% | 2 |
-| 勃林格殷格翰 | — | 3 | 0.38 | 0.15 | 2.09 | 84.9% | 2 |
 | 拜耳 | BAYRY | 3 | 0.38 | 0.15 | 2.09 | 84.9% | 3 |
+| 勃林格殷格翰 | — | 3 | 0.38 | 0.15 | 2.09 | 84.9% | 2 |
 | 卫材 | ESALY | 1 | 0.12 | 0.05 | 2.09 | 63.6% | 0 |
-| 吉利德 | GILD | 5 | 0.62 | 0.30 | 1.79 | 87.3% | 3 |
 | 葛兰素史克 | GSK | 5 | 0.62 | 0.30 | 1.79 | 87.3% | 4 |
+| 吉利德 | GILD | 5 | 0.62 | 0.30 | 1.79 | 87.3% | 3 |
 | 默沙东 | MRK | 6 | 0.75 | 0.40 | 1.64 | 86.4% | 4 |
 | 诺和诺德 | NVO | 2 | 0.25 | 0.15 | 1.48 | 63.2% | 1 |
 | 强生创新制药 | JNJ | 6 | 0.75 | 0.55 | 1.26 | 68.4% | 2 |
@@ -277,7 +277,7 @@
 | 梯瓦 | TEVA | 3 | 0.38 | 0.45 | 0.88 | 33.3% | 0 |
 | 武田 | TAK | 2 | 0.25 | 0.30 | 0.88 | 33.4% | 2 |
 | 礼来 | LLY | 3 | 0.38 | 0.50 | 0.82 | 27.4% | 3 |
-| 因塞特 | INCY | 1 | 0.12 | 0.20 | 0.73 | 23.6% | 0 |
+| 晖致 | VTRS | 1 | 0.12 | 0.20 | 0.73 | 23.6% | 0 |
 
 **治疗领域**：
 
@@ -385,8 +385,8 @@
 | 2026-10-23 | roche | — | 试验启动 | 做多 | 0.50 | 心血管代谢（含GLP-1） | III 期试验启动（心血管代谢（含GLP-1）） |
 | 2026-10-23 | sanofi | — | 试验启动 | 做多 | 0.50 | 疫苗 | III 期试验启动（疫苗） |
 | 2026-10-23 | vertex | — | 试验启动 | 做多 | 0.50 | 暂无数据 | III 期试验启动（未分类（产品码未映射）） |
-| 2026-10-23 | 麦朗 | — | 召回聚集 | 做空 | 0.70 | 暂无数据 | 90 天内 18 起召回 |
 | 2026-10-23 | 波士顿科学 | BSX | 召回聚集 | 做空 | 0.70 | 暂无数据 | 90 天内 9 起召回 |
+| 2026-10-23 | 麦朗 | — | 召回聚集 | 做空 | 0.70 | 暂无数据 | 90 天内 18 起召回 |
 | 2026-10-23 | 库珀集团 | COO | 召回聚集 | 做空 | 0.70 | 眼科 | 90 天内 2 起召回 |
 
 **模拟盘摘要**：
@@ -464,111 +464,107 @@
 
 | 指标 | 数值 |
 |---|---|
-| 样本总数 | 208 |
-| 20 日命中率 | 49.0% |
-| 60 日命中率 | 47.6% |
-| 语料总数 | 1,046 |
-| 逐字证据总数 | 344 |
+| 样本总数 | 758 |
+| 20 日命中率 | 43.4% |
+| 60 日命中率 | 40.9% |
+| 语料总数 | 8,775 |
+| 逐字证据总数 | 1,206 |
 
 | 案例分类 | 样本数 | 20 日命中率 |
 |---|---|---|
-| 批准 | 81 | 42.0% |
-| CRL（完整回复函） | 23 | 43.5% |
-| 试验结果 | 104 | 55.8% |
+| 批准 | 309 | 43.0% |
+| CRL（完整回复函） | 90 | 46.7% |
+| 试验结果 | 359 | 42.9% |
 
 ### 精选案例（共 30 个，展示前 5 个）
 
-#### 案例 case-55c4a3d847 · 2021-09-14 · Cytosorbents Corp（CTSO）
+#### 案例 case-ae32aaa595 · 2026-10-01 · Evommune, Inc.（EVMN）
 
-- **事件**：临床数据读出：
+- **事件**：临床数据读出：Evommune, Inc. · met the primary endpoint
 - **分类 / 方向 / 事后结果**：试验结果 ｜ 做多 ▲ ｜ **未命中**
 - **逐字证据**：
-  > The webinar will highlight a growing body of data from seven recently published journal articles or presentations on the use of CytoSorb in more than 215 critically ill COVID-19 patients worldwide, including the recently announced topline results from the U.S.
-  > Tae Song, Chicago/USA Topline results from the U.S.
-  > Highlighted data to be presented are expected to include: · Topline results from the U.S.
-- **价格反应（1/5/20/60 日）**：1 日 +6.4% ▲、5 日 +6.9% ▲、20 日 -18.0% ▼、60 日 -35.5% ▼
+  > The 70-patient trial was designed to evaluate the safety and efficacy of intravenous dosing of 5mg/kg at Baseline and Week 4 (n=48 active, n=22 placebo) with a primary endpoint at Week 12, 8 weeks after the last dose.
+  > “With strong clinical proof‑of‑concept now established, we are moving quickly to initiate a global Phase 2b trial that is dose-optimized with our subcutaneous formulation which is on track to begin in mid‑2027.” Data Presentation Highlights: • EVO301 met primary endpoint: EVO301…
+- **价格反应（1/5/20/60 日）**：1 日 -8.8% ▼、5 日 -14.8% ▼、20 日 -5.2% ▼
 - **系统判定与事后**：系统判定：利好（trial_result）；20 日跑输基准
-- **原文链接**：[www.sec.gov/Archives/edgar/data/1175151/000110465921115541/tm2127624d1_ex99-1.htm](https://www.sec.gov/Archives/edgar/data/1175151/000110465921115541/tm2127624d1_ex99-1.htm) ｜ **案例 ID**：`case-55c4a3d847`
+- **原文链接**：[www.sec.gov/Archives/edgar/data/2044725/000119312526409865/evmn-ex99_1.htm](https://www.sec.gov/Archives/edgar/data/2044725/000119312526409865/evmn-ex99_1.htm) ｜ **案例 ID**：`case-ae32aaa595`
 
-#### 案例 case-1a6e4700b3 · 2021-09-13 · Diffusion Pharmaceuticals Inc.（CRVO）
+#### 案例 case-9c3c6c96e3 · 2026-10-01 · Allarity Therapeutics, Inc.（ALLR）
 
-- **事件**：收到 CRL：
-- **分类 / 方向 / 事后结果**：CRL（完整回复函） ｜ 做空 ▼ ｜ **部分命中**
+- **事件**：FDA 批准：Allarity Therapeutics, Inc. · fda approval
+- **分类 / 方向 / 事后结果**：批准 ｜ 做多 ▲ ｜ **未命中**
 - **逐字证据**：
-  > 暂无数据
-- **价格反应（1/5/20/60 日）**：1 日 +8.7% ▲、5 日 +3.9% ▲、20 日 -1.6% ▼、60 日 -23.9% ▼
-- **系统判定与事后**：系统判定：利空（crl）；20 日跑输基准
-- **原文链接**：[www.sec.gov/Archives/edgar/data/1053691/000143774921022018/ex_283424.htm](https://www.sec.gov/Archives/edgar/data/1053691/000143774921022018/ex_283424.htm) ｜ **案例 ID**：`case-1a6e4700b3`
+  > Allarity Therapeutics, Inc. · fda approval
+- **价格反应（1/5/20/60 日）**：1 日 -5.8% ▼、5 日 -7.2% ▼、20 日 -15.5% ▼
+- **系统判定与事后**：系统判定：利好（approval）；20 日跑输基准
+- **原文链接**：[www.sec.gov/Archives/edgar/data/1860657/000121390026105457/ea030729801ex99-1.htm](https://www.sec.gov/Archives/edgar/data/1860657/000121390026105457/ea030729801ex99-1.htm) ｜ **案例 ID**：`case-9c3c6c96e3`
 
-#### 案例 case-84546dbfdf · 2021-09-10 · CytoDyn Inc.（CYDY）
+#### 案例 case-32a59b7c3d · 2026-10-01 · BioCardia, Inc.（BCDA）
 
-- **事件**：临床数据读出：
-- **分类 / 方向 / 事后结果**：试验结果 ｜ 做空 ▼ ｜ **未命中**
+- **事件**：FDA 批准：BioCardia, Inc. · fda approval / clinical hold
+- **分类 / 方向 / 事后结果**：批准 ｜ 做多 ▲ ｜ **未命中**
 - **逐字证据**：
-  > Leronlimab has been studied in 16 clinical trials involving more than 1,200 people and met its primary endpoints in a pivotal Phase 3 trial (leronlimab combined with HIV standard care in patients with multi-drug resistance to current available classes of HIV drugs).
-  > CytoDyn has already completed a Phase 2 and Phase 3 trial for mild-to-moderate and severe-to-critical COVID-19 patients, respectively, for which CytoDyn did not meet its primary or secondary endpoints except for the secondary endpoint in the critically ill subpopulation.
-- **价格反应（1/5/20/60 日）**：1 日 +27.7% ▲、5 日 +76.9% ▲、20 日 +30.1% ▲、60 日 -20.6% ▼
-- **系统判定与事后**：系统判定：利空（trial_result）；20 日跑赢基准
-- **原文链接**：[www.sec.gov/Archives/edgar/data/1175680/000119312521269952/d217751dex991.htm](https://www.sec.gov/Archives/edgar/data/1175680/000119312521269952/d217751dex991.htm) ｜ **案例 ID**：`case-84546dbfdf`
+  > EX-99.1 2 ex_1021267.htm EXHIBIT 99.1 ex_1021267.htm Exhibit 99.1 BioCardia Files Revised De Novo Pre-Submission for FDA Approval of Helix ™ Catheter SUNNYVALE, Calif.
+  > [Nasdaq: BCDA], a global leader in cellular and cell-derived therapeutics for the treatment of cardiovascular and pulmonary diseases, today reported it has completed its revised Pre-Submission to FDA Center for Devices and Radiological Health (CDRH) under its Q-Submission progra…
+- **价格反应（1/5/20/60 日）**：1 日 +4.3% ▲、5 日 -1.0% ▼、20 日 -15.2% ▼
+- **系统判定与事后**：系统判定：利好（approval）；20 日跑输基准
+- **原文链接**：[www.sec.gov/Archives/edgar/data/925741/000143774926031665/ex_1021267.htm](https://www.sec.gov/Archives/edgar/data/925741/000143774926031665/ex_1021267.htm) ｜ **案例 ID**：`case-32a59b7c3d`
 
-#### 案例 case-4f35057ab2 · 2021-09-09 · Avalo Therapeutics, Inc.（AVTX）
+#### 案例 case-d499cde7c3 · 2026-10-01 · NovoCure Ltd（NVCR）
 
-- **事件**：临床数据读出：
+- **事件**：临床数据读出：NovoCure Ltd · met the primary endpoint
 - **分类 / 方向 / 事后结果**：试验结果 ｜ 做多 ▲ ｜ **未命中**
 - **逐字证据**：
-  > • Avalo has a pipeline of six novel, first - in - class assets in eight clinical development programs across Immunology, Immuno - oncology, and Rare Genetic Diseases • All assets have demonstrated mechanistic rationale, biomarkers, or established proof - of - concept (POC) to in…
-  > Screening (Visit 1) Open - Label Treatment Period (Visits 2 - 10) (8 weeks) Safety Follow - Up (Visit 11) AVTX - 002, SQ injections every 14 days (N=8, 4 subjects in each cohort; Cohort 1: 1mg/kg; Cohort 2: 3mg/kg) Telephone Visit Eligibility & Washout Week: - 10 0 1 2 3 4 5 6 -…
-  > Key Takeaways from KOL interviews - Placebo Response and Remission in CD • Gastroenterology KOLs (N=6) noted that they expect low PBO rates in heavily pre - treated patient populations (as low as single - digits in 4L+ patients) • Patients with more severe disease are less likel…
-- **价格反应（1/5/20/60 日）**：1 日 +3.0% ▲、5 日 -0.8% ▼、20 日 -12.9% ▼、60 日 -31.2% ▼
+  > NovoCure Ltd · met the primary endpoint
+- **价格反应（1/5/20/60 日）**：1 日 -7.0% ▼、5 日 -11.3% ▼、20 日 -18.4% ▼
 - **系统判定与事后**：系统判定：利好（trial_result）；20 日跑输基准
-- **原文链接**：[www.sec.gov/Archives/edgar/data/1534120/000110465921114196/tm2127237d1_ex99-1.htm](https://www.sec.gov/Archives/edgar/data/1534120/000110465921114196/tm2127237d1_ex99-1.htm) ｜ **案例 ID**：`case-4f35057ab2`
+- **原文链接**：[www.sec.gov/Archives/edgar/data/1645113/000164511326000071/paxjapandecisionpr.htm](https://www.sec.gov/Archives/edgar/data/1645113/000164511326000071/paxjapandecisionpr.htm) ｜ **案例 ID**：`case-d499cde7c3`
 
-#### 案例 case-dfa3a51889 · 2021-08-27 · AVENUE THERAPEUTICS, INC.（ATXI）
+#### 案例 case-e47f284531 · 2026-09-30 · 再生元（REGN）
 
-- **事件**：收到 CRL：
-- **分类 / 方向 / 事后结果**：CRL（完整回复函） ｜ 做空 ▼ ｜ **未命中**
+- **事件**：FDA 批准：REGENERON PHARMACEUTICALS, INC. · fda approval / receives fda approval
+- **分类 / 方向 / 事后结果**：批准 ｜ 做多 ▲ ｜ **命中**
 - **逐字证据**：
-  > (“Avenue”), received an Appeal Denied Letter from the Office of Neuroscience of the FDA in Response to its Formal Dispute Resolution Request submitted in July 2021 with respect to the Complete Response Letters previously issued by the FDA to Avenue related to its intravenous (“I…
-- **价格反应（1/5/20/60 日）**：1 日 +15.0% ▲、5 日 +6.1% ▲、20 日 +2.9% ▲、60 日 -31.2% ▼
-- **系统判定与事后**：系统判定：利空（crl）；20 日跑赢基准
-- **原文链接**：[www.sec.gov/Archives/edgar/data/1644963/000110465921110140/tm2126364d1_8k.htm](https://www.sec.gov/Archives/edgar/data/1644963/000110465921110140/tm2126364d1_8k.htm) ｜ **案例 ID**：`case-dfa3a51889`
+  > Food and Drug Administration (“ FDA ”) approval of New Product Filings and Eligible Supplemental Filings (as defined below) (“ New Product Approvals ”): a.
+  > 12,500 PSUs per FDA approval of a supplemental BLA (“ sBLA ”) or supplemental NDA (“ sNDA ”) obtained during the Performance Period, excluding (i) sBLAs/sNDAs for products marketed as of the Grant Date or (ii) sBLAs/sNDAs that do not expand the eligible patient population (“ Eli…
+  > The full 10-year performance period from January 1, 2026 through December 31, 2035 is referred to as the “ Performance Period .” Notwithstanding the start of the Performance Period on January 1, 2026, the 2026 BLA filing for Otarmeni ™ (lunsotogene parvec) and the 2026 FDA appro…
+- **价格反应（1/5/20/60 日）**：1 日 -4.8% ▼、5 日 -4.8% ▼、20 日 +6.2% ▲
+- **系统判定与事后**：系统判定：利好（approval）；20 日跑赢基准
+- **原文链接**：[www.sec.gov/Archives/edgar/data/872589/000110465926112340/tm2626090d1_ex99-1.htm](https://www.sec.gov/Archives/edgar/data/872589/000110465926112340/tm2626090d1_ex99-1.htm) ｜ **案例 ID**：`case-e47f284531`
 
 ### 反例（6 个，未命中 / 反向）
 
-#### 案例 case-55c4a3d847 · 2021-09-14 · Cytosorbents Corp（CTSO）
+#### 案例 case-ae32aaa595 · 2026-10-01 · Evommune, Inc.（EVMN）
 
-- **事件**：临床数据读出：
+- **事件**：临床数据读出：Evommune, Inc. · met the primary endpoint
 - **分类 / 方向 / 事后结果**：试验结果 ｜ 做多 ▲ ｜ **未命中**
 - **逐字证据**：
-  > The webinar will highlight a growing body of data from seven recently published journal articles or presentations on the use of CytoSorb in more than 215 critically ill COVID-19 patients worldwide, including the recently announced topline results from the U.S.
-  > Tae Song, Chicago/USA Topline results from the U.S.
-  > Highlighted data to be presented are expected to include: · Topline results from the U.S.
-- **价格反应（1/5/20/60 日）**：1 日 +6.4% ▲、5 日 +6.9% ▲、20 日 -18.0% ▼、60 日 -35.5% ▼
+  > The 70-patient trial was designed to evaluate the safety and efficacy of intravenous dosing of 5mg/kg at Baseline and Week 4 (n=48 active, n=22 placebo) with a primary endpoint at Week 12, 8 weeks after the last dose.
+  > “With strong clinical proof‑of‑concept now established, we are moving quickly to initiate a global Phase 2b trial that is dose-optimized with our subcutaneous formulation which is on track to begin in mid‑2027.” Data Presentation Highlights: • EVO301 met primary endpoint: EVO301…
+- **价格反应（1/5/20/60 日）**：1 日 -8.8% ▼、5 日 -14.8% ▼、20 日 -5.2% ▼
 - **系统判定与事后**：系统判定：利好（trial_result）；20 日跑输基准
-- **原文链接**：[www.sec.gov/Archives/edgar/data/1175151/000110465921115541/tm2127624d1_ex99-1.htm](https://www.sec.gov/Archives/edgar/data/1175151/000110465921115541/tm2127624d1_ex99-1.htm) ｜ **案例 ID**：`case-55c4a3d847`
+- **原文链接**：[www.sec.gov/Archives/edgar/data/2044725/000119312526409865/evmn-ex99_1.htm](https://www.sec.gov/Archives/edgar/data/2044725/000119312526409865/evmn-ex99_1.htm) ｜ **案例 ID**：`case-ae32aaa595`
 
-#### 案例 case-84546dbfdf · 2021-09-10 · CytoDyn Inc.（CYDY）
+#### 案例 case-9c3c6c96e3 · 2026-10-01 · Allarity Therapeutics, Inc.（ALLR）
 
-- **事件**：临床数据读出：
-- **分类 / 方向 / 事后结果**：试验结果 ｜ 做空 ▼ ｜ **未命中**
+- **事件**：FDA 批准：Allarity Therapeutics, Inc. · fda approval
+- **分类 / 方向 / 事后结果**：批准 ｜ 做多 ▲ ｜ **未命中**
 - **逐字证据**：
-  > Leronlimab has been studied in 16 clinical trials involving more than 1,200 people and met its primary endpoints in a pivotal Phase 3 trial (leronlimab combined with HIV standard care in patients with multi-drug resistance to current available classes of HIV drugs).
-  > CytoDyn has already completed a Phase 2 and Phase 3 trial for mild-to-moderate and severe-to-critical COVID-19 patients, respectively, for which CytoDyn did not meet its primary or secondary endpoints except for the secondary endpoint in the critically ill subpopulation.
-- **价格反应（1/5/20/60 日）**：1 日 +27.7% ▲、5 日 +76.9% ▲、20 日 +30.1% ▲、60 日 -20.6% ▼
-- **系统判定与事后**：系统判定：利空（trial_result）；20 日跑赢基准
-- **原文链接**：[www.sec.gov/Archives/edgar/data/1175680/000119312521269952/d217751dex991.htm](https://www.sec.gov/Archives/edgar/data/1175680/000119312521269952/d217751dex991.htm) ｜ **案例 ID**：`case-84546dbfdf`
+  > Allarity Therapeutics, Inc. · fda approval
+- **价格反应（1/5/20/60 日）**：1 日 -5.8% ▼、5 日 -7.2% ▼、20 日 -15.5% ▼
+- **系统判定与事后**：系统判定：利好（approval）；20 日跑输基准
+- **原文链接**：[www.sec.gov/Archives/edgar/data/1860657/000121390026105457/ea030729801ex99-1.htm](https://www.sec.gov/Archives/edgar/data/1860657/000121390026105457/ea030729801ex99-1.htm) ｜ **案例 ID**：`case-9c3c6c96e3`
 
-#### 案例 case-4f35057ab2 · 2021-09-09 · Avalo Therapeutics, Inc.（AVTX）
+#### 案例 case-32a59b7c3d · 2026-10-01 · BioCardia, Inc.（BCDA）
 
-- **事件**：临床数据读出：
-- **分类 / 方向 / 事后结果**：试验结果 ｜ 做多 ▲ ｜ **未命中**
+- **事件**：FDA 批准：BioCardia, Inc. · fda approval / clinical hold
+- **分类 / 方向 / 事后结果**：批准 ｜ 做多 ▲ ｜ **未命中**
 - **逐字证据**：
-  > • Avalo has a pipeline of six novel, first - in - class assets in eight clinical development programs across Immunology, Immuno - oncology, and Rare Genetic Diseases • All assets have demonstrated mechanistic rationale, biomarkers, or established proof - of - concept (POC) to in…
-  > Screening (Visit 1) Open - Label Treatment Period (Visits 2 - 10) (8 weeks) Safety Follow - Up (Visit 11) AVTX - 002, SQ injections every 14 days (N=8, 4 subjects in each cohort; Cohort 1: 1mg/kg; Cohort 2: 3mg/kg) Telephone Visit Eligibility & Washout Week: - 10 0 1 2 3 4 5 6 -…
-  > Key Takeaways from KOL interviews - Placebo Response and Remission in CD • Gastroenterology KOLs (N=6) noted that they expect low PBO rates in heavily pre - treated patient populations (as low as single - digits in 4L+ patients) • Patients with more severe disease are less likel…
-- **价格反应（1/5/20/60 日）**：1 日 +3.0% ▲、5 日 -0.8% ▼、20 日 -12.9% ▼、60 日 -31.2% ▼
-- **系统判定与事后**：系统判定：利好（trial_result）；20 日跑输基准
-- **原文链接**：[www.sec.gov/Archives/edgar/data/1534120/000110465921114196/tm2127237d1_ex99-1.htm](https://www.sec.gov/Archives/edgar/data/1534120/000110465921114196/tm2127237d1_ex99-1.htm) ｜ **案例 ID**：`case-4f35057ab2`
+  > EX-99.1 2 ex_1021267.htm EXHIBIT 99.1 ex_1021267.htm Exhibit 99.1 BioCardia Files Revised De Novo Pre-Submission for FDA Approval of Helix ™ Catheter SUNNYVALE, Calif.
+  > [Nasdaq: BCDA], a global leader in cellular and cell-derived therapeutics for the treatment of cardiovascular and pulmonary diseases, today reported it has completed its revised Pre-Submission to FDA Center for Devices and Radiological Health (CDRH) under its Q-Submission progra…
+- **价格反应（1/5/20/60 日）**：1 日 +4.3% ▲、5 日 -1.0% ▼、20 日 -15.2% ▼
+- **系统判定与事后**：系统判定：利好（approval）；20 日跑输基准
+- **原文链接**：[www.sec.gov/Archives/edgar/data/925741/000143774926031665/ex_1021267.htm](https://www.sec.gov/Archives/edgar/data/925741/000143774926031665/ex_1021267.htm) ｜ **案例 ID**：`case-32a59b7c3d`
 
 > 口径说明：案例来自历史事件与行情的样本内回看，价格反应为事后统计；命中率与分类统计仅描述这批案例，不代表策略业绩，也不构成投资建议。
 
@@ -578,7 +574,7 @@
 
 | 时间质量档 | 事件数 | 占比 |
 |---|---|---|
-| 仅日期（date） | 312,566 | 100% |
+| 仅日期（date） | 363,177 | 100% |
 
 **不进入交易研究的事件**：0 条（时间质量未知，回测直接剔除）。
 
@@ -590,9 +586,9 @@
 
 | 划分 | 说明 |
 |---|---|
-| dev | 1966-12-14 至 2024-10-29 · 291,757 件 · 12,761 天 · 占比 93.3% |
-| validation | 2024-10-30 至 2025-10-29 · 10,339 件 · 309 天 · 占比 3.3% |
-| holdout | 2025-10-30 至 2026-10-30 · 10,470 件 · 297 天 · 占比 3.3% |
+| dev | 1966-12-14 至 2024-10-29 · 340,461 件 · 13,035 天 · 占比 93.7% |
+| validation | 2024-10-30 至 2025-10-29 · 11,273 件 · 309 天 · 占比 3.1% |
+| holdout | 2025-10-30 至 2026-10-30 · 11,443 件 · 297 天 · 占比 3.2% |
 | 划分口径 | key=event_date；no_overlap=是；status=ok |
 
 > 回放与时间质量的完整假设见 [假设登记表](docs/ASSUMPTIONS.md)。
@@ -601,26 +597,26 @@
 
 ### 事件研究（方向对齐）
 
-事件研究把 208 个历史案例按类别统计到 1/5/20/60 日：均值为**方向对齐后**的超额收益（做空/回避类信号已按 -1 取反），p 值为单类别 t 检验，Holm 校正在同一时间窗口的类别之间进行。
+事件研究把 758 个历史案例按类别统计到 1/5/20/60 日：均值为**方向对齐后**的超额收益（做空/回避类信号已按 -1 取反），p 值为单类别 t 检验，Holm 校正在同一时间窗口的类别之间进行。
 
 **20 日方向对齐表**：
 
 | 类别 | n | 平均超额 | 95% CI | p | Holm 校正 p | 命中率 | Holm 判定 |
 |---|---|---|---|---|---|---|---|
-| 批准 | 81 | +4.7% | [-1.6%, +11.4%] | 0.179 | 0.537 | 45.7% | 不显著 |
-| CRL（完整回复函） | 23 | -1.9% | [-9.4%, +5.4%] | 0.584 | 0.584 | 56.5% | 不显著 |
-| 试验结果 | 104 | +2.9% | [-2.8%, +8.9%] | 0.286 | 0.572 | 61.5% | 不显著 |
+| 批准 | 309 | +0.8% | [-1.9%, +3.7%] | 0.571 | 1.000 | 46.0% | 不显著 |
+| CRL（完整回复函） | 90 | -0.8% | [-7.5%, +4.9%] | 0.788 | 1.000 | 55.6% | 不显著 |
+| 试验结果 | 359 | +0.1% | [-2.8%, +3.1%] | 0.957 | 1.000 | 48.2% | 不显著 |
 
 **结论**：Holm 校正后无显著类别（α=0.05）。20 日方向对齐的超额收益只能作为方向性参考，不构成策略证据。
 
 **1/5/20/60 日均值（方向对齐，▲/▼ 表示正/负）**：
 
-| 窗口 | 样本 | 批准（n=81） | CRL（完整回复函）（n=23） | 试验结果（n=104） |
+| 窗口 | 样本 | 批准（n=309） | CRL（完整回复函）（n=90） | 试验结果（n=359） |
 |---|---|---|---|---|
-| 1 日 | 208 | +3.9% ▲ | -9.7% ▼ | +4.2% ▲ |
-| 5 日 | 208 | +4.3% ▲ | -5.4% ▼ | +2.3% ▲ |
-| 20 日 | 208 | +4.7% ▲ | -1.9% ▼ | +2.9% ▲ |
-| 60 日 | 208 | +2.4% ▲ | -14.2% ▼ | +6.0% ▲ |
+| 1 日 | 758 | +1.7% ▲ | -2.5% ▼ | +1.6% ▲ |
+| 5 日 | 758 | +1.4% ▲ | -3.6% ▼ | +1.2% ▲ |
+| 20 日 | 758 | +0.8% ▲ | -0.8% ▼ | +0.1% ▲ |
+| 60 日 | 738 | -5.1% ▼ | -4.7% ▼ | +1.8% ▲ |
 
 > 口径：Holm 校正的 α 由数据给定（20 日档 α=0.05）；方向对齐只改变符号，不改变样本量；结论由校正后的 p 值自动生成，不预设显著性。
 

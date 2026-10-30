@@ -511,19 +511,29 @@ def event_study_summary(cases: Mapping[str, Any], horizons: Sequence[int] = HORI
             raw_values = [float(case[key]) for case in rows]
             values = [float(case[key]) * (int(case.get("direction") or 0) or 1) for case in rows]
             blocks = [str(case.get("date") or "")[:7] for case in rows]
-            ci = block_bootstrap_ci(values, blocks=blocks, seed=7)
-            stat = t_stat(values)
-            p_value = t_p_value(stat, len(values) - 1) if stat is not None else None
+            # Small-cap biotech returns are wildly fat-tailed (a single approval can
+            # be +200%). The raw mean is then meaningless, so inference runs on a
+            # 2.5/97.5-percentile winsorised series while raw stats stay visible.
+            ordered = sorted(values)
+            low = ordered[max(0, int(0.025 * (len(ordered) - 1)))]
+            high = ordered[min(len(ordered) - 1, int(0.975 * (len(ordered) - 1)))]
+            winsorised = [min(high, max(low, value)) for value in values]
+            ci = block_bootstrap_ci(winsorised, blocks=blocks, seed=7)
+            stat = t_stat(winsorised)
+            p_value = t_p_value(stat, len(winsorised) - 1) if stat is not None else None
             per_category[category] = {
                 "n": len(values),
-                "mean": round(mean(values), 6),
+                "mean": round(mean(winsorised), 6),
                 "raw_mean": round(mean(raw_values), 6),
                 "median": round(median(values), 6),
-                "std": round(stdev(values), 6),
+                "p10": round(ordered[max(0, int(0.10 * (len(ordered) - 1)))], 6),
+                "p90": round(ordered[min(len(ordered) - 1, int(0.90 * (len(ordered) - 1)))], 6),
+                "std": round(stdev(winsorised), 6),
                 "t": round(stat, 4) if stat is not None else None,
                 "p": round(p_value, 6) if p_value is not None else None,
                 "ci95": [round(ci["lo"], 6), round(ci["hi"], 6)] if ci else None,
                 "hit_rate": round(sum(1 for value in values if value > 0) / len(values), 4),
+                "winsor_bounds": [round(low, 6), round(high, 6)],
             }
             if p_value is not None:
                 p_values.append(p_value)

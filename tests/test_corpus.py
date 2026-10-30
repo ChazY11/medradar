@@ -472,6 +472,8 @@ class IoAndSummaryTests(unittest.TestCase):
         self.assertEqual(summary["with_text"], 3)
         self.assertGreater(summary["avg_text_chars"], 0)
         self.assertEqual(summary["by_bucket"]["fda approval"], 1)
+        self.assertEqual(summary["by_source"], {"sec_edgar_8k": 3})
+        self.assertEqual(summary["by_fetch_status"], {"ok": 3})
 
     def test_summarize_empty(self) -> None:
         summary = corpus.summarize([])

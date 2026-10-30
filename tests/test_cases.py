@@ -162,7 +162,10 @@ class EventStudySummaryTests(unittest.TestCase):
         summary = event_study_summary(cases, horizons=(20,))
         block = summary["by_horizon"]["20"]["categories"]["approval"]
         self.assertEqual(block["n"], 6)
-        self.assertAlmostEqual(block["mean"], 0.035, places=6)
+        # winsorised at the 2.5/97.5 percentile; median is the robust centre
+        self.assertAlmostEqual(block["median"], 0.035, places=6)
+        self.assertGreater(block["mean"], 0.02)
+        self.assertLess(block["median"], block["p90"])
         self.assertLess(block["ci95"][0], block["ci95"][1])
         self.assertIn("multiple_testing", summary["by_horizon"]["20"])
 

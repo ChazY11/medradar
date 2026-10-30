@@ -997,6 +997,9 @@ def build_manifest(
             "by_category": summary["by_category"],
             "by_year": summary["by_year"],
             "by_bucket": summary["by_bucket"],
+            "by_direction": summary["by_direction"],
+            "by_source": summary["by_source"],
+            "by_fetch_status": summary["by_fetch_status"],
             "date_range": summary["date_range"],
             "avg_text_chars": summary["avg_text_chars"],
             "with_text": summary["with_text"],
@@ -1073,6 +1076,10 @@ def summarize(
             str(direction): sum(1 for record in rows if int(record.get("direction") or 0) == direction)
             for direction in (-1, 0, 1)
         },
+        "by_source": dict(Counter(str(record.get("source") or "unknown") for record in rows)),
+        "by_fetch_status": dict(
+            Counter(str(record.get("fetch_status") or "unknown") for record in rows)
+        ),
         "companies_top": Counter(
             str(record.get("company") or "") for record in rows if record.get("company")
         ).most_common(10),

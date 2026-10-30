@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generated_at": "2026-10-30T19:43:07Z",
+  "generated_at": "2026-10-30T20:08:55Z",
   "db": "data\\medradar.sqlite",
   "window": {
    "start": "2025-01-01",
@@ -18,8 +18,8 @@
   },
   "counts": {
    "510k": 176466,
-   "8k_catalyst": 1046,
-   "device_recall": 16764,
+   "8k_catalyst": 8775,
+   "device_recall": 59646,
    "drug_approval": 5326,
    "pma": 57372,
    "trial": 55592
@@ -31,7 +31,7 @@
    "nmpa": "unavailable",
    "prices": "ok"
   },
-  "event_total": 312566,
+  "event_total": 363177,
   "definitions": {
    "thi": "Gamma-Poisson 收缩后的近期速率 / 基线速率（先验强度 3 个季度）",
    "prob_up": "真实速率高于基线速率的后验概率",
@@ -1398,8 +1398,8 @@
    {
     "key": "medline",
     "name_zh": "麦朗",
-    "track_id": "vascular_access",
-    "track_zh": "血管通路",
+    "track_id": "patient_monitoring",
+    "track_zh": "监护与生命体征",
     "share_recent": 0.111,
     "share_base": 0.0,
     "delta": 0.111,
@@ -1612,70 +1612,70 @@
     "key": "medline",
     "name_zh": "麦朗",
     "recent": 101,
-    "baseline_per_q": 3.7,
+    "baseline_per_q": 5.55,
     "reason_top": "Medline Industries, LP is issuing a recall for specific item"
    },
    {
     "key": "philips",
     "name_zh": "飞利浦",
     "recent": 87,
-    "baseline_per_q": 6.15,
+    "baseline_per_q": 9.1,
     "reason_top": "To provide clarification and labelling to define the useful "
    },
    {
     "key": "bd",
     "name_zh": "碧迪",
     "recent": 64,
-    "baseline_per_q": 3.5,
+    "baseline_per_q": 5.6,
     "reason_top": "Infusion pump module used with compatible  pump infusion set"
    },
    {
     "key": "medtronic",
     "name_zh": "美敦力",
     "recent": 63,
-    "baseline_per_q": 6.5,
+    "baseline_per_q": 11.0,
     "reason_top": "The device cap label may not adhere to the sensor, compromis"
    },
    {
     "key": "ge_healthcare",
     "name_zh": "GE医疗",
     "recent": 45,
-    "baseline_per_q": 3.35,
+    "baseline_per_q": 4.25,
     "reason_top": "GE HealthCare has become aware that certain Nuclear Medicine"
    },
    {
     "key": "boston_scientific",
     "name_zh": "波士顿科学",
     "recent": 42,
-    "baseline_per_q": 2.15,
+    "baseline_per_q": 3.7,
     "reason_top": "Software to enhance Safety Architecture is available and des"
    },
    {
     "key": "olympus",
     "name_zh": "奥林巴斯",
     "recent": 40,
-    "baseline_per_q": 3.3,
+    "baseline_per_q": 4.6,
     "reason_top": "Additional IFU updates to provide further clarification on s"
    },
    {
     "key": "siemens_healthineers",
     "name_zh": "西门子医疗",
     "recent": 38,
-    "baseline_per_q": 5.05,
+    "baseline_per_q": 9.75,
     "reason_top": "There is a potential for an ice blockage to form or currentl"
    },
    {
     "key": "stryker",
     "name_zh": "史赛克",
     "recent": 35,
-    "baseline_per_q": 3.45,
+    "baseline_per_q": 5.5,
     "reason_top": "There is potential the device inside the package may not mat"
    },
    {
     "key": "baxter",
     "name_zh": "百特",
     "recent": 34,
-    "baseline_per_q": 3.2,
+    "baseline_per_q": 4.8,
     "reason_top": "Baxter Healthcare Corporation is issuing an Urgent Medical D"
    }
   ],
@@ -1688,10 +1688,10 @@
  "drug": {
   "approvals": [
    {
-    "key": "daiichi_sankyo",
-    "name_en": "Daiichi Sankyo",
-    "name_zh": "第一三共",
-    "ticker": "DSNKY",
+    "key": "otsuka",
+    "name_en": "Otsuka",
+    "name_zh": "大冢",
+    "ticker": "OTSKY",
     "is_major": false,
     "recent": 2,
     "recent_per_q": 0.25,
@@ -1724,10 +1724,10 @@
     "nme_recent": 2
    },
    {
-    "key": "otsuka",
-    "name_en": "Otsuka",
-    "name_zh": "大冢",
-    "ticker": "OTSKY",
+    "key": "daiichi_sankyo",
+    "name_en": "Daiichi Sankyo",
+    "name_zh": "第一三共",
+    "ticker": "DSNKY",
     "is_major": false,
     "recent": 2,
     "recent_per_q": 0.25,
@@ -1760,24 +1760,6 @@
     "nme_recent": 2
    },
    {
-    "key": "boehringer",
-    "name_en": "Boehringer Ingelheim",
-    "name_zh": "勃林格殷格翰",
-    "ticker": "",
-    "is_major": true,
-    "recent": 3,
-    "recent_per_q": 0.375,
-    "baseline_per_q": 0.15,
-    "thi": 2.09,
-    "prob_up": 0.849,
-    "ci": [
-     0.48,
-     4.8
-    ],
-    "emerging": false,
-    "nme_recent": 2
-   },
-   {
     "key": "bayer",
     "name_en": "Bayer",
     "name_zh": "拜耳",
@@ -1794,6 +1776,24 @@
     ],
     "emerging": false,
     "nme_recent": 3
+   },
+   {
+    "key": "boehringer",
+    "name_en": "Boehringer Ingelheim",
+    "name_zh": "勃林格殷格翰",
+    "ticker": "",
+    "is_major": true,
+    "recent": 3,
+    "recent_per_q": 0.375,
+    "baseline_per_q": 0.15,
+    "thi": 2.09,
+    "prob_up": 0.849,
+    "ci": [
+     0.48,
+     4.8
+    ],
+    "emerging": false,
+    "nme_recent": 2
    },
    {
     "key": "eisai",
@@ -1814,24 +1814,6 @@
     "nme_recent": 0
    },
    {
-    "key": "gilead",
-    "name_en": "Gilead Sciences",
-    "name_zh": "吉利德",
-    "ticker": "GILD",
-    "is_major": true,
-    "recent": 5,
-    "recent_per_q": 0.625,
-    "baseline_per_q": 0.3,
-    "thi": 1.79,
-    "prob_up": 0.873,
-    "ci": [
-     0.64,
-     3.52
-    ],
-    "emerging": false,
-    "nme_recent": 3
-   },
-   {
     "key": "gsk",
     "name_en": "GSK",
     "name_zh": "葛兰素史克",
@@ -1848,6 +1830,24 @@
     ],
     "emerging": false,
     "nme_recent": 4
+   },
+   {
+    "key": "gilead",
+    "name_en": "Gilead Sciences",
+    "name_zh": "吉利德",
+    "ticker": "GILD",
+    "is_major": true,
+    "recent": 5,
+    "recent_per_q": 0.625,
+    "baseline_per_q": 0.3,
+    "thi": 1.79,
+    "prob_up": 0.873,
+    "ci": [
+     0.64,
+     3.52
+    ],
+    "emerging": false,
+    "nme_recent": 3
    },
    {
     "key": "merck",
@@ -2030,6 +2030,24 @@
     "nme_recent": 3
    },
    {
+    "key": "viatris",
+    "name_en": "Viatris",
+    "name_zh": "晖致",
+    "ticker": "VTRS",
+    "is_major": false,
+    "recent": 1,
+    "recent_per_q": 0.125,
+    "baseline_per_q": 0.2,
+    "thi": 0.73,
+    "prob_up": 0.236,
+    "ci": [
+     0.05,
+     2.19
+    ],
+    "emerging": false,
+    "nme_recent": 0
+   },
+   {
     "key": "incyte",
     "name_en": "Incyte",
     "name_zh": "因塞特",
@@ -2064,24 +2082,6 @@
     ],
     "emerging": false,
     "nme_recent": 1
-   },
-   {
-    "key": "viatris",
-    "name_en": "Viatris",
-    "name_zh": "晖致",
-    "ticker": "VTRS",
-    "is_major": false,
-    "recent": 1,
-    "recent_per_q": 0.125,
-    "baseline_per_q": 0.2,
-    "thi": 0.73,
-    "prob_up": 0.236,
-    "ci": [
-     0.05,
-     2.19
-    ],
-    "emerging": false,
-    "nme_recent": 0
    },
    {
     "key": "bms",
@@ -3325,7 +3325,7 @@
    "reason_zh": "III 期试验启动（皮肤）"
   },
   {
-   "signal_id": "sig-0263",
+   "signal_id": "sig-0268",
    "event_id": "bf8fc32089b9f3723636572287ce8bdf",
    "signal_date": "2026-10-28",
    "available_at": "2026-10-27",
@@ -3341,7 +3341,7 @@
    "reason_zh": "90 天内 17 起召回"
   },
   {
-   "signal_id": "sig-0266",
+   "signal_id": "sig-0270",
    "event_id": "8fca64aa8d464ab5bdb871ba6f684c0b",
    "signal_date": "2026-10-28",
    "available_at": "2026-10-27",
@@ -3357,7 +3357,7 @@
    "reason_zh": "90 天内 11 起召回"
   },
   {
-   "signal_id": "sig-0267",
+   "signal_id": "sig-0272",
    "event_id": "1b60aefd209e5c8b3b3dbd0c4323e7e8",
    "signal_date": "2026-10-28",
    "available_at": "2026-10-27",
@@ -3389,7 +3389,7 @@
    "reason_zh": "III 期试验启动（心血管代谢（含GLP-1））"
   },
   {
-   "signal_id": "sig-0271",
+   "signal_id": "sig-0275",
    "event_id": "39e710889194c39d03d88176c5ce0f72",
    "signal_date": "2026-10-24",
    "available_at": "2026-10-23",
@@ -3485,23 +3485,7 @@
    "reason_zh": "III 期试验启动（未分类（产品码未映射））"
   },
   {
-   "signal_id": "sig-0265",
-   "event_id": "dbdb84fde56aae4f23d752f7dc8f36bb",
-   "signal_date": "2026-10-23",
-   "available_at": "2026-10-22",
-   "timestamp_quality": "date",
-   "company_key": "medline",
-   "name_zh": "麦朗",
-   "ticker": "",
-   "kind": "recall_cluster",
-   "direction": -1,
-   "score": 0.7,
-   "track_id": null,
-   "track_zh": "未分类（产品码未映射）",
-   "reason_zh": "90 天内 18 起召回"
-  },
-  {
-   "signal_id": "sig-0269",
+   "signal_id": "sig-0266",
    "event_id": "a612bee95dc631529c04c695b266da41",
    "signal_date": "2026-10-23",
    "available_at": "2026-10-22",
@@ -3517,7 +3501,23 @@
    "reason_zh": "90 天内 9 起召回"
   },
   {
-   "signal_id": "sig-0276",
+   "signal_id": "sig-0271",
+   "event_id": "dbdb84fde56aae4f23d752f7dc8f36bb",
+   "signal_date": "2026-10-23",
+   "available_at": "2026-10-22",
+   "timestamp_quality": "date",
+   "company_key": "medline",
+   "name_zh": "麦朗",
+   "ticker": "",
+   "kind": "recall_cluster",
+   "direction": -1,
+   "score": 0.7,
+   "track_id": null,
+   "track_zh": "未分类（产品码未映射）",
+   "reason_zh": "90 天内 18 起召回"
+  },
+  {
+   "signal_id": "sig-0279",
    "event_id": "7039868bea8a634541d7db224a115759",
    "signal_date": "2026-10-23",
    "available_at": "2026-10-22",
@@ -3645,7 +3645,7 @@
    "reason_zh": "III 期试验启动（未分类（产品码未映射））"
   },
   {
-   "signal_id": "sig-0275",
+   "signal_id": "sig-0276",
    "event_id": "5ba0d3a21cba1e7fcf67e8fa7e835637",
    "signal_date": "2026-10-17",
    "available_at": "2026-10-16",
@@ -3709,7 +3709,7 @@
    "reason_zh": "III 期试验启动（未分类（产品码未映射））"
   },
   {
-   "signal_id": "sig-0264",
+   "signal_id": "sig-0263",
    "event_id": "bd6bda2e52f7207cd7c95fba83f0add1",
    "signal_date": "2026-10-16",
    "available_at": "2026-10-15",
@@ -3725,7 +3725,7 @@
    "reason_zh": "90 天内 6 起召回"
   },
   {
-   "signal_id": "sig-0273",
+   "signal_id": "sig-0278",
    "event_id": "00151ec03de157b22041abcb0d99020c",
    "signal_date": "2026-10-16",
    "available_at": "2026-10-15",
@@ -3741,7 +3741,7 @@
    "reason_zh": "90 天内 2 起召回"
   },
   {
-   "signal_id": "sig-0274",
+   "signal_id": "sig-0280",
    "event_id": "2158457cbd42cc04db2600fe8d9b4910",
    "signal_date": "2026-10-16",
    "available_at": "2026-10-15",
@@ -3757,23 +3757,7 @@
    "reason_zh": "90 天内 2 起召回"
   },
   {
-   "signal_id": "sig-0262",
-   "event_id": "8e16a63401c722247cd2a0b96da0e1cb",
-   "signal_date": "2026-10-15",
-   "available_at": "2026-10-14",
-   "timestamp_quality": "date",
-   "company_key": "steris",
-   "name_zh": "思泰瑞",
-   "ticker": "STE",
-   "kind": "recall_cluster",
-   "direction": -1,
-   "score": 0.7,
-   "track_id": "endoscopy",
-   "track_zh": "内窥镜",
-   "reason_zh": "90 天内 3 起召回"
-  },
-  {
-   "signal_id": "sig-0272",
+   "signal_id": "sig-0269",
    "event_id": "6ab1b8b44902a58f9fa5af9bb2d0cf03",
    "signal_date": "2026-10-15",
    "available_at": "2026-10-14",
@@ -3787,6 +3771,22 @@
    "track_id": null,
    "track_zh": "未分类（产品码未映射）",
    "reason_zh": "90 天内 2 起召回"
+  },
+  {
+   "signal_id": "sig-0281",
+   "event_id": "8e16a63401c722247cd2a0b96da0e1cb",
+   "signal_date": "2026-10-15",
+   "available_at": "2026-10-14",
+   "timestamp_quality": "date",
+   "company_key": "steris",
+   "name_zh": "思泰瑞",
+   "ticker": "STE",
+   "kind": "recall_cluster",
+   "direction": -1,
+   "score": 0.7,
+   "track_id": "endoscopy",
+   "track_zh": "内窥镜",
+   "reason_zh": "90 天内 3 起召回"
   },
   {
    "signal_id": "sig-0085",
@@ -3837,7 +3837,7 @@
    "reason_zh": "III 期试验启动（未分类（产品码未映射））"
   },
   {
-   "signal_id": "sig-0270",
+   "signal_id": "sig-0262",
    "event_id": "130665c8b3c1e5102b7c1e284034ba31",
    "signal_date": "2026-10-14",
    "available_at": "2026-10-13",
@@ -3869,7 +3869,7 @@
    "reason_zh": "III 期试验启动（免疫与炎症）"
   },
   {
-   "signal_id": "sig-0268",
+   "signal_id": "sig-0264",
    "event_id": "71fd24440467403de6cb353d192b69c3",
    "signal_date": "2026-10-10",
    "available_at": "2026-10-09",
@@ -4093,7 +4093,7 @@
    "reason_zh": "III 期试验启动（感染性疾病）"
   },
   {
-   "signal_id": "sig-0278",
+   "signal_id": "sig-0267",
    "event_id": "77ca4c9d1f8c60d27076682bec4bd28c",
    "signal_date": "2026-10-02",
    "available_at": "2026-10-01",
@@ -4173,7 +4173,7 @@
    "reason_zh": "III 期试验启动（心血管代谢（含GLP-1））"
   },
   {
-   "signal_id": "sig-0280",
+   "signal_id": "sig-0274",
    "event_id": "7a4ae9a786dcd3bb4e67db126c84cd6a",
    "signal_date": "2026-09-30",
    "available_at": "2026-09-29",
@@ -4413,7 +4413,7 @@
    "reason_zh": "III 期试验启动（感染性疾病）"
   },
   {
-   "signal_id": "sig-0279",
+   "signal_id": "sig-0273",
    "event_id": "fc99a8ca750be6d0929435df232145aa",
    "signal_date": "2026-09-19",
    "available_at": "2026-09-18",
@@ -4429,7 +4429,7 @@
    "reason_zh": "90 天内 4 起召回"
   },
   {
-   "signal_id": "sig-0281",
+   "signal_id": "sig-0277",
    "event_id": "deda8351e46f69671e4498f23078f38c",
    "signal_date": "2026-09-18",
    "available_at": "2026-09-17",
@@ -4525,7 +4525,7 @@
    "reason_zh": "III 期试验启动（心血管代谢（含GLP-1））"
   },
   {
-   "signal_id": "sig-0277",
+   "signal_id": "sig-0265",
    "event_id": "f5fc9eeacee98976a0a251617e937f6a",
    "signal_date": "2026-09-16",
    "available_at": "2026-09-15",
@@ -7919,7 +7919,7 @@
  },
  "timestamps": {
   "by_quality": {
-   "date": 312566
+   "date": 363177
   },
   "excluded_from_trading": 0,
   "policy": "回测只使用 available_at；quality=unknown 的事件不进入交易研究"
@@ -7927,7 +7927,7 @@
  "research": {
   "sample_split": {
    "status": "ok",
-   "n": 312566,
+   "n": 363177,
    "labels": [
     "dev",
     "validation",
@@ -7943,27 +7943,27 @@
     "dev": {
      "start": "1966-12-14",
      "end": "2024-10-29",
-     "n": 291757,
-     "n_days": 12761
+     "n": 340461,
+     "n_days": 13035
     },
     "validation": {
      "start": "2024-10-30",
      "end": "2025-10-29",
-     "n": 10339,
+     "n": 11273,
      "n_days": 309
     },
     "holdout": {
      "start": "2025-10-30",
      "end": "2026-10-30",
-     "n": 10470,
+     "n": 11443,
      "n_days": 297
     }
    },
    "no_overlap": true,
    "sample_fractions": {
-    "dev": 0.9334252605849644,
-    "validation": 0.03307781396569045,
-    "holdout": 0.0334969254493451
+    "dev": 0.9374519862215944,
+    "validation": 0.031039961231025093,
+    "holdout": 0.031508052547380476
    }
   },
   "multiple_testing": {
@@ -8502,51 +8502,69 @@
    }
   },
   "event_study": {
-   "n_cases": 208,
+   "n_cases": 758,
    "by_horizon": {
     "1": {
      "categories": {
       "approval": {
-       "n": 81,
-       "mean": 0.039405,
-       "raw_mean": 0.039405,
-       "median": 0.060226,
-       "std": 0.11689,
-       "t": 3.034,
-       "p": 0.003254,
+       "n": 309,
+       "mean": 0.017386,
+       "raw_mean": 0.02047,
+       "median": 0.025907,
+       "p10": -0.09721,
+       "p90": 0.132573,
+       "std": 0.099015,
+       "t": 3.0866,
+       "p": 0.002208,
        "ci95": [
-        0.010802,
-        0.065751
+        0.005296,
+        0.02932
        ],
-       "hit_rate": 0.7284
+       "hit_rate": 0.6149,
+       "winsor_bounds": [
+        -0.300251,
+        0.215215
+       ]
       },
       "crl": {
-       "n": 23,
-       "mean": -0.096983,
-       "raw_mean": 0.096983,
-       "median": -0.086702,
-       "std": 0.1574,
-       "t": -2.955,
-       "p": 0.007318,
+       "n": 90,
+       "mean": -0.025065,
+       "raw_mean": 0.030233,
+       "median": -0.04132,
+       "p10": -0.162414,
+       "p90": 0.167961,
+       "std": 0.122246,
+       "t": -1.9452,
+       "p": 0.05491,
        "ci95": [
-        -0.165169,
-        -0.028326
+        -0.051743,
+        0.001045
        ],
-       "hit_rate": 0.1739
+       "hit_rate": 0.3,
+       "winsor_bounds": [
+        -0.298421,
+        0.256614
+       ]
       },
       "trial_result": {
-       "n": 104,
-       "mean": 0.042275,
-       "raw_mean": 0.052896,
-       "median": 0.048143,
-       "std": 0.106674,
-       "t": 4.0415,
-       "p": 0.000103,
+       "n": 359,
+       "mean": 0.015781,
+       "raw_mean": 0.015531,
+       "median": 0.026646,
+       "p10": -0.122909,
+       "p90": 0.147693,
+       "std": 0.125311,
+       "t": 2.3861,
+       "p": 0.017546,
        "ci95": [
-        0.022513,
-        0.061179
+        0.003301,
+        0.028415
        ],
-       "hit_rate": 0.7212
+       "hit_rate": 0.6323,
+       "winsor_bounds": [
+        -0.400023,
+        0.310574
+       ]
       }
      },
      "multiple_testing": {
@@ -8557,81 +8575,80 @@
        {
         "label": "approval:1d",
         "index": 0,
-        "p": 0.0032541596279450995,
-        "adjusted_p": 0.006508319255890199,
+        "p": 0.0022083029081655793,
+        "adjusted_p": 0.0066249087244967374,
         "reject": true
        },
        {
         "label": "crl:1d",
         "index": 1,
-        "p": 0.007318382436946339,
-        "adjusted_p": 0.007318382436946339,
-        "reject": true
+        "p": 0.054909940203012465,
+        "adjusted_p": 0.054909940203012465,
+        "reject": false
        },
        {
         "label": "trial_result:1d",
         "index": 2,
-        "p": 0.00010257739973357173,
-        "adjusted_p": 0.0003077321992007152,
+        "p": 0.017546337023281754,
+        "adjusted_p": 0.03509267404656351,
         "reject": true
        }
       ],
       "ordered": [
        {
-        "label": "trial_result:1d",
-        "index": 2,
-        "p": 0.00010257739973357173,
-        "adjusted_p": 0.0003077321992007152,
+        "label": "approval:1d",
+        "index": 0,
+        "p": 0.0022083029081655793,
+        "adjusted_p": 0.0066249087244967374,
         "reject": true
        },
        {
-        "label": "approval:1d",
-        "index": 0,
-        "p": 0.0032541596279450995,
-        "adjusted_p": 0.006508319255890199,
+        "label": "trial_result:1d",
+        "index": 2,
+        "p": 0.017546337023281754,
+        "adjusted_p": 0.03509267404656351,
         "reject": true
        },
        {
         "label": "crl:1d",
         "index": 1,
-        "p": 0.007318382436946339,
-        "adjusted_p": 0.007318382436946339,
-        "reject": true
+        "p": 0.054909940203012465,
+        "adjusted_p": 0.054909940203012465,
+        "reject": false
        }
       ],
-      "rejected": 3,
-      "n_rejected": 3,
-      "n_significant": 3,
-      "significant": 3,
+      "rejected": 2,
+      "n_rejected": 2,
+      "n_significant": 2,
+      "significant": 2,
       "rejected_labels": [
-       "trial_result:1d",
        "approval:1d",
-       "crl:1d"
+       "trial_result:1d"
       ],
       "adjusted": [
        {
-        "key": "trial_result:1d",
-        "raw_p": 0.00010257739973357173,
-        "adjusted_p": 0.0003077321992007152,
+        "key": "approval:1d",
+        "raw_p": 0.0022083029081655793,
+        "adjusted_p": 0.0066249087244967374,
         "significant": true
        },
        {
-        "key": "approval:1d",
-        "raw_p": 0.0032541596279450995,
-        "adjusted_p": 0.006508319255890199,
+        "key": "trial_result:1d",
+        "raw_p": 0.017546337023281754,
+        "adjusted_p": 0.03509267404656351,
         "significant": true
        },
        {
         "key": "crl:1d",
-        "raw_p": 0.007318382436946339,
-        "adjusted_p": 0.007318382436946339,
-        "significant": true
+        "raw_p": 0.054909940203012465,
+        "adjusted_p": 0.054909940203012465,
+        "significant": false
        }
       ],
       "adjusted_p_values": [
-       0.006508319255890199,
-       0.007318382436946339,
-       0.0003077321992007152
+       0.0066249087244967374,
+       0.054909940203012465,
+       0.03509267404656351
       ],
       "note_zh": "family-wise error rate 控制在 alpha 之下；adjusted_p 是可直接与 alpha 比较的校正后 p 值。adjusted_p_values 与输入 p 值一一对应。"
      }
@@ -8639,46 +8656,64 @@
     "5": {
      "categories": {
       "approval": {
-       "n": 81,
-       "mean": 0.043417,
-       "raw_mean": 0.043417,
-       "median": 0.046936,
-       "std": 0.176174,
-       "t": 2.218,
-       "p": 0.029391,
+       "n": 309,
+       "mean": 0.013777,
+       "raw_mean": 0.016354,
+       "median": 0.020932,
+       "p10": -0.15608,
+       "p90": 0.166357,
+       "std": 0.133429,
+       "t": 1.815,
+       "p": 0.070494,
        "ci95": [
-        0.010383,
-        0.076808
+        -0.001319,
+        0.02892
        ],
-       "hit_rate": 0.642
+       "hit_rate": 0.5631,
+       "winsor_bounds": [
+        -0.326546,
+        0.30564
+       ]
       },
       "crl": {
-       "n": 23,
-       "mean": -0.054146,
-       "raw_mean": 0.054146,
-       "median": -0.052855,
-       "std": 0.134032,
-       "t": -1.9374,
-       "p": 0.065639,
+       "n": 90,
+       "mean": -0.036493,
+       "raw_mean": 0.052776,
+       "median": -0.02621,
+       "p10": -0.268448,
+       "p90": 0.190487,
+       "std": 0.19402,
+       "t": -1.7844,
+       "p": 0.077773,
        "ci95": [
-        -0.100644,
-        -0.010119
+        -0.080781,
+        0.00249
        ],
-       "hit_rate": 0.2174
+       "hit_rate": 0.3778,
+       "winsor_bounds": [
+        -0.697013,
+        0.29838
+       ]
       },
       "trial_result": {
-       "n": 104,
-       "mean": 0.022547,
-       "raw_mean": 0.039497,
-       "median": 0.040695,
-       "std": 0.160098,
-       "t": 1.4362,
-       "p": 0.153972,
+       "n": 359,
+       "mean": 0.012033,
+       "raw_mean": 0.008013,
+       "median": 0.017816,
+       "p10": -0.182882,
+       "p90": 0.188322,
+       "std": 0.179102,
+       "t": 1.273,
+       "p": 0.203853,
        "ci95": [
-        -0.008431,
-        0.052541
+        -0.008366,
+        0.031107
        ],
-       "hit_rate": 0.5577
+       "hit_rate": 0.5515,
+       "winsor_bounds": [
+        -0.534598,
+        0.456378
+       ]
       }
      },
      "multiple_testing": {
@@ -8689,22 +8724,22 @@
        {
         "label": "approval:5d",
         "index": 0,
-        "p": 0.02939138979543406,
-        "adjusted_p": 0.08817416938630218,
+        "p": 0.07049410802410519,
+        "adjusted_p": 0.21148232407231557,
         "reject": false
        },
        {
         "label": "crl:5d",
         "index": 1,
-        "p": 0.06563903644567655,
-        "adjusted_p": 0.1312780728913531,
+        "p": 0.07777330533664521,
+        "adjusted_p": 0.21148232407231557,
         "reject": false
        },
        {
         "label": "trial_result:5d",
         "index": 2,
-        "p": 0.1539720078208241,
-        "adjusted_p": 0.1539720078208241,
+        "p": 0.2038527095913114,
+        "adjusted_p": 0.21148232407231557,
         "reject": false
        }
       ],
@@ -8712,22 +8747,22 @@
        {
         "label": "approval:5d",
         "index": 0,
-        "p": 0.02939138979543406,
-        "adjusted_p": 0.08817416938630218,
+        "p": 0.07049410802410519,
+        "adjusted_p": 0.21148232407231557,
         "reject": false
        },
        {
         "label": "crl:5d",
         "index": 1,
-        "p": 0.06563903644567655,
-        "adjusted_p": 0.1312780728913531,
+        "p": 0.07777330533664521,
+        "adjusted_p": 0.21148232407231557,
         "reject": false
        },
        {
         "label": "trial_result:5d",
         "index": 2,
-        "p": 0.1539720078208241,
-        "adjusted_p": 0.1539720078208241,
+        "p": 0.2038527095913114,
+        "adjusted_p": 0.21148232407231557,
         "reject": false
        }
       ],
@@ -8739,27 +8774,27 @@
       "adjusted": [
        {
         "key": "approval:5d",
-        "raw_p": 0.02939138979543406,
-        "adjusted_p": 0.08817416938630218,
+        "raw_p": 0.07049410802410519,
+        "adjusted_p": 0.21148232407231557,
         "significant": false
        },
        {
         "key": "crl:5d",
-        "raw_p": 0.06563903644567655,
-        "adjusted_p": 0.1312780728913531,
+        "raw_p": 0.07777330533664521,
+        "adjusted_p": 0.21148232407231557,
         "significant": false
        },
        {
         "key": "trial_result:5d",
-        "raw_p": 0.1539720078208241,
-        "adjusted_p": 0.1539720078208241,
+        "raw_p": 0.2038527095913114,
+        "adjusted_p": 0.21148232407231557,
         "significant": false
        }
       ],
       "adjusted_p_values": [
-       0.08817416938630218,
-       0.1312780728913531,
-       0.1539720078208241
+       0.21148232407231557,
+       0.21148232407231557,
+       0.21148232407231557
       ],
       "note_zh": "family-wise error rate 控制在 alpha 之下；adjusted_p 是可直接与 alpha 比较的校正后 p 值。adjusted_p_values 与输入 p 值一一对应。"
      }
@@ -8767,46 +8802,64 @@
     "20": {
      "categories": {
       "approval": {
-       "n": 81,
-       "mean": 0.046947,
-       "raw_mean": 0.046947,
-       "median": -0.019643,
-       "std": 0.311719,
-       "t": 1.3555,
-       "p": 0.179085,
+       "n": 309,
+       "mean": 0.008333,
+       "raw_mean": 0.829776,
+       "median": -0.026454,
+       "p10": -0.266521,
+       "p90": 0.27111,
+       "std": 0.258197,
+       "t": 0.5673,
+       "p": 0.570908,
        "ci95": [
-        -0.01626,
-        0.113532
+        -0.019412,
+        0.036989
        ],
-       "hit_rate": 0.4568
+       "hit_rate": 0.4595,
+       "winsor_bounds": [
+        -0.506029,
+        0.882078
+       ]
       },
       "crl": {
-       "n": 23,
-       "mean": -0.018635,
-       "raw_mean": 0.018635,
-       "median": 0.016149,
-       "std": 0.160709,
-       "t": -0.5561,
-       "p": 0.583752,
+       "n": 90,
+       "mean": -0.007694,
+       "raw_mean": 0.027677,
+       "median": 0.016967,
+       "p10": -0.321686,
+       "p90": 0.256739,
+       "std": 0.270721,
+       "t": -0.2696,
+       "p": 0.788087,
        "ci95": [
-        -0.093513,
-        0.054083
+        -0.075281,
+        0.048893
        ],
-       "hit_rate": 0.5652
+       "hit_rate": 0.5556,
+       "winsor_bounds": [
+        -0.891363,
+        0.478563
+       ]
       },
       "trial_result": {
-       "n": 104,
-       "mean": 0.028725,
-       "raw_mean": 0.051558,
-       "median": 0.042387,
-       "std": 0.273247,
-       "t": 1.072,
-       "p": 0.286203,
+       "n": 359,
+       "mean": 0.000818,
+       "raw_mean": -0.013098,
+       "median": -0.003917,
+       "p10": -0.343448,
+       "p90": 0.34165,
+       "std": 0.28461,
+       "t": 0.0545,
+       "p": 0.956583,
        "ci95": [
-        -0.028479,
-        0.089358
+        -0.027634,
+        0.031392
        ],
-       "hit_rate": 0.6154
+       "hit_rate": 0.4819,
+       "winsor_bounds": [
+        -0.69112,
+        0.74449
+       ]
       }
      },
      "multiple_testing": {
@@ -8817,22 +8870,22 @@
        {
         "label": "approval:20d",
         "index": 0,
-        "p": 0.17908545865113612,
-        "adjusted_p": 0.5372563759534084,
+        "p": 0.5709075544098534,
+        "adjusted_p": 1.0,
         "reject": false
        },
        {
         "label": "crl:20d",
         "index": 1,
-        "p": 0.5837515251300593,
-        "adjusted_p": 0.5837515251300593,
+        "p": 0.7880871350911461,
+        "adjusted_p": 1.0,
         "reject": false
        },
        {
         "label": "trial_result:20d",
         "index": 2,
-        "p": 0.2862031231742588,
-        "adjusted_p": 0.5724062463485176,
+        "p": 0.9565832482479318,
+        "adjusted_p": 1.0,
         "reject": false
        }
       ],
@@ -8840,22 +8893,22 @@
        {
         "label": "approval:20d",
         "index": 0,
-        "p": 0.17908545865113612,
-        "adjusted_p": 0.5372563759534084,
-        "reject": false
-       },
-       {
-        "label": "trial_result:20d",
-        "index": 2,
-        "p": 0.2862031231742588,
-        "adjusted_p": 0.5724062463485176,
+        "p": 0.5709075544098534,
+        "adjusted_p": 1.0,
         "reject": false
        },
        {
         "label": "crl:20d",
         "index": 1,
-        "p": 0.5837515251300593,
-        "adjusted_p": 0.5837515251300593,
+        "p": 0.7880871350911461,
+        "adjusted_p": 1.0,
+        "reject": false
+       },
+       {
+        "label": "trial_result:20d",
+        "index": 2,
+        "p": 0.9565832482479318,
+        "adjusted_p": 1.0,
         "reject": false
        }
       ],
@@ -8867,27 +8920,27 @@
       "adjusted": [
        {
         "key": "approval:20d",
-        "raw_p": 0.17908545865113612,
-        "adjusted_p": 0.5372563759534084,
-        "significant": false
-       },
-       {
-        "key": "trial_result:20d",
-        "raw_p": 0.2862031231742588,
-        "adjusted_p": 0.5724062463485176,
+        "raw_p": 0.5709075544098534,
+        "adjusted_p": 1.0,
         "significant": false
        },
        {
         "key": "crl:20d",
-        "raw_p": 0.5837515251300593,
-        "adjusted_p": 0.5837515251300593,
+        "raw_p": 0.7880871350911461,
+        "adjusted_p": 1.0,
+        "significant": false
+       },
+       {
+        "key": "trial_result:20d",
+        "raw_p": 0.9565832482479318,
+        "adjusted_p": 1.0,
         "significant": false
        }
       ],
       "adjusted_p_values": [
-       0.5372563759534084,
-       0.5837515251300593,
-       0.5724062463485176
+       1.0,
+       1.0,
+       1.0
       ],
       "note_zh": "family-wise error rate 控制在 alpha 之下；adjusted_p 是可直接与 alpha 比较的校正后 p 值。adjusted_p_values 与输入 p 值一一对应。"
      }
@@ -8895,46 +8948,64 @@
     "60": {
      "categories": {
       "approval": {
-       "n": 81,
-       "mean": 0.024407,
-       "raw_mean": 0.024407,
-       "median": -0.02739,
-       "std": 0.345494,
-       "t": 0.6358,
-       "p": 0.52673,
+       "n": 301,
+       "mean": -0.051462,
+       "raw_mean": 1.652111,
+       "median": -0.071156,
+       "p10": -0.458291,
+       "p90": 0.363249,
+       "std": 0.334126,
+       "t": -2.6721,
+       "p": 0.007949,
        "ci95": [
-        -0.051904,
-        0.110905
+        -0.091023,
+        -0.012251
        ],
-       "hit_rate": 0.4691
+       "hit_rate": 0.4053,
+       "winsor_bounds": [
+        -0.738537,
+        0.811327
+       ]
       },
       "crl": {
-       "n": 23,
-       "mean": -0.141638,
-       "raw_mean": 0.141638,
-       "median": -0.024888,
-       "std": 0.625499,
-       "t": -1.086,
-       "p": 0.289248,
+       "n": 88,
+       "mean": -0.047489,
+       "raw_mean": 0.052847,
+       "median": 0.055535,
+       "p10": -0.67626,
+       "p90": 0.36832,
+       "std": 0.513336,
+       "t": -0.8678,
+       "p": 0.387873,
        "ci95": [
-        -0.464561,
-        0.093259
+        -0.158841,
+        0.054852
        ],
-       "hit_rate": 0.4783
+       "hit_rate": 0.5682,
+       "winsor_bounds": [
+        -1.95063,
+        0.7337
+       ]
       },
       "trial_result": {
-       "n": 104,
-       "mean": 0.059851,
-       "raw_mean": 0.087394,
-       "median": -0.037877,
-       "std": 0.495593,
-       "t": 1.2316,
-       "p": 0.220911,
+       "n": 349,
+       "mean": 0.017794,
+       "raw_mean": 126.773791,
+       "median": -0.013237,
+       "p10": -0.529223,
+       "p90": 0.601614,
+       "std": 0.463576,
+       "t": 0.7171,
+       "p": 0.473818,
        "ci95": [
-        -0.022626,
-        0.154755
+        -0.023735,
+        0.063407
        ],
-       "hit_rate": 0.4712
+       "hit_rate": 0.4728,
+       "winsor_bounds": [
+        -0.911936,
+        1.325225
+       ]
       }
      },
      "multiple_testing": {
@@ -8945,22 +9016,22 @@
        {
         "label": "approval:60d",
         "index": 0,
-        "p": 0.5267302670225282,
-        "adjusted_p": 0.6627334523348865,
-        "reject": false
+        "p": 0.007948997132702095,
+        "adjusted_p": 0.023846991398106285,
+        "reject": true
        },
        {
         "label": "crl:60d",
         "index": 1,
-        "p": 0.28924830116526734,
-        "adjusted_p": 0.6627334523348865,
+        "p": 0.3878733950071511,
+        "adjusted_p": 0.7757467900143022,
         "reject": false
        },
        {
         "label": "trial_result:60d",
         "index": 2,
-        "p": 0.22091115077829548,
-        "adjusted_p": 0.6627334523348865,
+        "p": 0.47381802751885516,
+        "adjusted_p": 0.7757467900143022,
         "reject": false
        }
       ],
@@ -8968,54 +9039,56 @@
        {
         "label": "approval:60d",
         "index": 0,
-        "p": 0.5267302670225282,
-        "adjusted_p": 0.6627334523348865,
-        "reject": false
+        "p": 0.007948997132702095,
+        "adjusted_p": 0.023846991398106285,
+        "reject": true
        },
        {
         "label": "crl:60d",
         "index": 1,
-        "p": 0.28924830116526734,
-        "adjusted_p": 0.6627334523348865,
+        "p": 0.3878733950071511,
+        "adjusted_p": 0.7757467900143022,
         "reject": false
        },
        {
         "label": "trial_result:60d",
         "index": 2,
-        "p": 0.22091115077829548,
-        "adjusted_p": 0.6627334523348865,
+        "p": 0.47381802751885516,
+        "adjusted_p": 0.7757467900143022,
         "reject": false
        }
       ],
-      "rejected": 0,
-      "n_rejected": 0,
-      "n_significant": 0,
-      "significant": 0,
-      "rejected_labels": [],
+      "rejected": 1,
+      "n_rejected": 1,
+      "n_significant": 1,
+      "significant": 1,
+      "rejected_labels": [
+       "approval:60d"
+      ],
       "adjusted": [
        {
         "key": "approval:60d",
-        "raw_p": 0.5267302670225282,
-        "adjusted_p": 0.6627334523348865,
-        "significant": false
+        "raw_p": 0.007948997132702095,
+        "adjusted_p": 0.023846991398106285,
+        "significant": true
        },
        {
         "key": "crl:60d",
-        "raw_p": 0.28924830116526734,
-        "adjusted_p": 0.6627334523348865,
+        "raw_p": 0.3878733950071511,
+        "adjusted_p": 0.7757467900143022,
         "significant": false
        },
        {
         "key": "trial_result:60d",
-        "raw_p": 0.22091115077829548,
-        "adjusted_p": 0.6627334523348865,
+        "raw_p": 0.47381802751885516,
+        "adjusted_p": 0.7757467900143022,
         "significant": false
        }
       ],
       "adjusted_p_values": [
-       0.6627334523348865,
-       0.6627334523348865,
-       0.6627334523348865
+       0.023846991398106285,
+       0.7757467900143022,
+       0.7757467900143022
       ],
       "note_zh": "family-wise error rate 控制在 alpha 之下；adjusted_p 是可直接与 alpha 比较的校正后 p 值。adjusted_p_values 与输入 p 值一一对应。"
      }
@@ -16247,795 +16320,797 @@
   "status": "ok",
   "benchmark": "SPY",
   "window": {
-   "start": "2019-01-04",
-   "end": "2021-09-14"
+   "start": "2015-01-26",
+   "end": "2026-10-01"
   },
   "stats": {
-   "total": 208,
-   "hit_rate_20d": 0.4904,
-   "hit_rate_60d": 0.476,
+   "total": 758,
+   "hit_rate_20d": 0.434,
+   "hit_rate_60d": 0.4092,
    "by_category": [
     [
      "approval",
-     81,
-     0.42
+     309,
+     0.43
     ],
     [
      "crl",
-     23,
-     0.435
+     90,
+     0.467
     ],
     [
      "trial_result",
-     104,
-     0.558
+     359,
+     0.429
     ]
    ],
    "skipped": {
-    "no_ticker_or_date": 286,
-    "neutral": 236,
-    "no_prices": 259
+    "no_ticker_or_date": 1479,
+    "no_prices": 2606,
+    "neutral": 2612,
+    "no_forward_window": 32
    },
-   "corpus_total": 1046,
-   "evidence_quotes_total": 344
+   "corpus_total": 8775,
+   "evidence_quotes_total": 1206
   },
   "selected": [
    {
-    "case_id": "case-55c4a3d847",
-    "date": "2021-09-14",
-    "ticker": "CTSO",
-    "company_zh": "Cytosorbents Corp",
-    "event_zh": "临床数据读出：",
+    "case_id": "case-ae32aaa595",
+    "date": "2026-10-01",
+    "ticker": "EVMN",
+    "company_zh": "Evommune, Inc.",
+    "event_zh": "临床数据读出：Evommune, Inc. · met the primary endpoint",
     "category": "trial_result",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1175151/000110465921115541/tm2127624d1_ex99-1.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/2044725/000119312526409865/evmn-ex99_1.htm",
     "evidence_quotes": [
-     "The webinar will highlight a growing body of data from seven recently published journal articles or presentations on the use of CytoSorb in more than 215 critically ill COVID-19 patients worldwide, including the recently announced topline results from the U.S.",
-     "Tae Song, Chicago/USA Topline results from the U.S.",
-     "Highlighted data to be presented are expected to include: · Topline results from the U.S."
+     "The 70-patient trial was designed to evaluate the safety and efficacy of intravenous dosing of 5mg/kg at Baseline and Week 4 (n=48 active, n=22 placebo) with a primary endpoint at Week 12, 8 weeks after the last dose.",
+     "“With strong clinical proof‑of‑concept now established, we are moving quickly to initiate a global Phase 2b trial that is dose-optimized with our subcutaneous formulation which is on track to begin in mid‑2027.” Data Presentation Highlights: • EVO301 met primary endpoint: EVO301…"
     ],
-    "price_1d": 0.063536,
-    "price_5d": 0.069326,
-    "price_20d": -0.180432,
-    "price_60d": -0.355114,
-    "raw_20d": -0.264988,
+    "price_1d": -0.088274,
+    "price_5d": -0.1483,
+    "price_20d": -0.051752,
+    "price_60d": null,
+    "raw_20d": -0.071724,
     "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
     "outcome": "miss"
    },
    {
-    "case_id": "case-1a6e4700b3",
-    "date": "2021-09-13",
-    "ticker": "CRVO",
-    "company_zh": "Diffusion Pharmaceuticals Inc.",
-    "event_zh": "收到 CRL：",
+    "case_id": "case-9c3c6c96e3",
+    "date": "2026-10-01",
+    "ticker": "ALLR",
+    "company_zh": "Allarity Therapeutics, Inc.",
+    "event_zh": "FDA 批准：Allarity Therapeutics, Inc. · fda approval",
+    "category": "approval",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1860657/000121390026105457/ea030729801ex99-1.htm",
+    "evidence_quotes": [
+     "Allarity Therapeutics, Inc. · fda approval"
+    ],
+    "price_1d": -0.057648,
+    "price_5d": -0.07198,
+    "price_20d": -0.155004,
+    "price_60d": null,
+    "raw_20d": -0.174976,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-32a59b7c3d",
+    "date": "2026-10-01",
+    "ticker": "BCDA",
+    "company_zh": "BioCardia, Inc.",
+    "event_zh": "FDA 批准：BioCardia, Inc. · fda approval / clinical hold",
+    "category": "approval",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/925741/000143774926031665/ex_1021267.htm",
+    "evidence_quotes": [
+     "EX-99.1 2 ex_1021267.htm EXHIBIT 99.1 ex_1021267.htm Exhibit 99.1 BioCardia Files Revised De Novo Pre-Submission for FDA Approval of Helix ™ Catheter SUNNYVALE, Calif.",
+     "[Nasdaq: BCDA], a global leader in cellular and cell-derived therapeutics for the treatment of cardiovascular and pulmonary diseases, today reported it has completed its revised Pre-Submission to FDA Center for Devices and Radiological Health (CDRH) under its Q-Submission progra…"
+    ],
+    "price_1d": 0.042562,
+    "price_5d": -0.010369,
+    "price_20d": -0.152143,
+    "price_60d": null,
+    "raw_20d": -0.172115,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-d499cde7c3",
+    "date": "2026-10-01",
+    "ticker": "NVCR",
+    "company_zh": "NovoCure Ltd",
+    "event_zh": "临床数据读出：NovoCure Ltd · met the primary endpoint",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1645113/000164511326000071/paxjapandecisionpr.htm",
+    "evidence_quotes": [
+     "NovoCure Ltd · met the primary endpoint"
+    ],
+    "price_1d": -0.069555,
+    "price_5d": -0.112586,
+    "price_20d": -0.184461,
+    "price_60d": null,
+    "raw_20d": -0.204433,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-e47f284531",
+    "date": "2026-09-30",
+    "ticker": "REGN",
+    "company_zh": "再生元",
+    "event_zh": "FDA 批准：REGENERON PHARMACEUTICALS, INC. · fda approval / receives fda approval",
+    "category": "approval",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/872589/000110465926112340/tm2626090d1_ex99-1.htm",
+    "evidence_quotes": [
+     "Food and Drug Administration (“ FDA ”) approval of New Product Filings and Eligible Supplemental Filings (as defined below) (“ New Product Approvals ”): a.",
+     "12,500 PSUs per FDA approval of a supplemental BLA (“ sBLA ”) or supplemental NDA (“ sNDA ”) obtained during the Performance Period, excluding (i) sBLAs/sNDAs for products marketed as of the Grant Date or (ii) sBLAs/sNDAs that do not expand the eligible patient population (“ Eli…",
+     "The full 10-year performance period from January 1, 2026 through December 31, 2035 is referred to as the “ Performance Period .” Notwithstanding the start of the Performance Period on January 1, 2026, the 2026 BLA filing for Otarmeni ™ (lunsotogene parvec) and the 2026 FDA appro…"
+    ],
+    "price_1d": -0.04778,
+    "price_5d": -0.047692,
+    "price_20d": 0.06161,
+    "price_60d": null,
+    "raw_20d": 0.068151,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
+    "outcome": "hit"
+   },
+   {
+    "case_id": "case-c1fcea3bc2",
+    "date": "2026-09-30",
+    "ticker": "CNTB",
+    "company_zh": "Connect Biopharma Holdings Ltd",
+    "event_zh": "临床数据读出：Connect Biopharma Holdings Ltd · announces positive topline / topline data",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1835268/000183526826000038/a991.htm",
+    "evidence_quotes": [
+     "On September 30, 2026, Connect Biopharma Holdings Limited (the “Company”) issued a press release announcing topline results from its global phase 2 study evaluating rademikibart, the Company’s next-generation, potentially best-in-class anti-interleukin-4-receptor alpha antibody …",
+     "On September 30, 2026, the Company announced topline results for the COPD Study.",
+     "The primary endpoint was treatment failure, defined as death due to any cause, (re)admission to a hospital for COPD, emergency department (re)visit or unscheduled medical visit for worsening of COPD symptoms, or the necessity to intensify pharmacologic treatment within 28 days a…"
+    ],
+    "price_1d": -0.175518,
+    "price_5d": -0.222386,
+    "price_20d": -0.257663,
+    "price_60d": null,
+    "raw_20d": -0.251121,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-9efb13df0e",
+    "date": "2026-09-29",
+    "ticker": "ALDX",
+    "company_zh": "Aldeyra Therapeutics, Inc.",
+    "event_zh": "收到 CRL：Aldeyra Therapeutics, Inc. · complete response letter / met the primary endpoint",
     "category": "crl",
     "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1053691/000143774921022018/ex_283424.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1341235/000119312526405954/aldx-ex99_2.htm",
     "evidence_quotes": [
-     ""
+     "The FDRR, which is expected to be reviewed by the FDA’s Office of New Drugs (OND), is designed to appeal the March 16, 2026 Complete Response Letter that denied approval of a New Drug Application (NDA) for reproxalap for the treatment of dry eye disease.",
+     "Following an NDA submission and two NDA resubmissions of reproxalap for the treatment of dry eye disease, Aldeyra has received three Complete Response Letters, the first two of which recommended an additional clinical trial to “demonstrate a positive effect on the treatment of o…",
+     "Important factors that could cause actual results to differ materially from those reflected in Aldeyra's forward-looking statements include, among others, the timing of enrollment, commencement and completion of Aldeyra's clinical trials, the timing and success of preclinical st…"
     ],
-    "price_1d": 0.086702,
-    "price_5d": 0.039385,
-    "price_20d": -0.016149,
-    "price_60d": -0.239227,
-    "raw_20d": -0.111111,
+    "price_1d": -0.034104,
+    "price_5d": -0.29838,
+    "price_20d": -0.497198,
+    "price_60d": null,
+    "raw_20d": -0.489552,
     "verdict_zh": "系统判定：利空（crl）；20 日跑输基准",
+    "outcome": "hit"
+   },
+   {
+    "case_id": "case-cad5a1c4a3",
+    "date": "2026-09-28",
+    "ticker": "MIRM",
+    "company_zh": "Mirum Pharmaceuticals, Inc.",
+    "event_zh": "临床数据读出：Mirum Pharmaceuticals, Inc. · met the primary endpoint / phase 3 results",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1759425/000175942526000049/mirm-20260925.htm",
+    "evidence_quotes": [
+     "Announcement of Data from the Phase 3 AZURE-1 Study of Brelovitug in Chronic Hepatitis Delta On September 28, 2026, the Company announced the primary endpoint was met in the Phase 3 portion of the AZURE-1 study evaluating brelovitug, an investigational fully human monoclonal ant…",
+     "Phase 3 AZURE-1 Results: Brelovitug Met the Primary Endpoint at Week 24 The Phase 3 portion of the AZURE-1 study enrolled 153 treatment-naive patients randomized in a 2:2:1 ratio to receive brelovitug 300 mg self-administered once weekly (“QW”) by subcutaneous (“SC”) injection ,…",
+     "At Week 24, treatment with brelovitug met the primary endpoint, with 56% of patients in the 300 mg QW arm and 45% in the 900 mg Q4W arm achieving the combined endpoint of virologic response (≥2 log10 reduction in HDV RNA from baseline or undetectable HDV RNA [<LLOQ, TND]) and AL…"
+    ],
+    "price_1d": -0.034505,
+    "price_5d": -0.125939,
+    "price_20d": -0.042774,
+    "price_60d": null,
+    "raw_20d": -0.039084,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-8126947193",
+    "date": "2026-09-28",
+    "ticker": "NTHI",
+    "company_zh": "NEONC TECHNOLOGIES HOLDINGS, INC.",
+    "event_zh": "FDA 批准：NEONC TECHNOLOGIES HOLDINGS, INC. · fda approval / accelerated approval",
+    "category": "approval",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1979414/000182912626010493/neonctechnologies_ex99-1.htm",
+    "evidence_quotes": [
+     "The meeting provides an opportunity for discussion; its scheduling does not establish FDA agreement on a trial design, an accelerated approval pathway or eventual approval of NEO212."
+    ],
+    "price_1d": 0.021895,
+    "price_5d": -0.123451,
+    "price_20d": -0.108168,
+    "price_60d": null,
+    "raw_20d": -0.104478,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-4fcf71709e",
+    "date": "2026-09-24",
+    "ticker": "ACAD",
+    "company_zh": "ACADIA PHARMACEUTICALS INC",
+    "event_zh": "临床数据读出：ACADIA PHARMACEUTICALS INC · announces positive topline / phase 3 results",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1070494/000119312526401157/d168737dex991.htm",
+    "evidence_quotes": [
+     "EX-99.1 2 d168737dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 Acadia Pharmaceuticals Announces Phase 3 Enabling Topline Results from Phase 2 RADIANT Study of Remlifanserin for the Treatment of Alzheimer’s Disease Psychosis (ADP) — Meaningful and consistent efficacy trends across endp…",
+     "(Nasdaq: ACAD) today announced Phase 3 enabling topline results from the Phase 2 portion of the ongoing RADIANT clinical trial program evaluating remlifanserin for the treatment of hallucinations and delusions associated with Alzheimer’s disease psychosis (ADP).",
+     "For the primary endpoint of change from baseline in the Scale for the Assessment of Positive Symptoms-Hallucinations and Delusions subscales (SAPS-H+D), once daily 60 mg remlifanserin demonstrated a change of -12.6 versus a -10.4 change for placebo at week 6, yielding a standard…"
+    ],
+    "price_1d": -0.071518,
+    "price_5d": -0.102875,
+    "price_20d": -0.100202,
+    "price_60d": null,
+    "raw_20d": -0.111661,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-7cbba2ee64",
+    "date": "2026-09-23",
+    "ticker": "IONS",
+    "company_zh": "伊奥尼斯",
+    "event_zh": "临床数据读出：IONIS PHARMACEUTICALS INC · met the primary endpoint",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/874015/000114036126037371/ef20082626_ex99-1.htm",
+    "evidence_quotes": [
+     "The study met its primary endpoint with sefaxersen achieving statistically significant and clinically meaningful improvements in proteinuria reduction, compared to placebo at 37 weeks, as measured by 24-hour urine protein-to-creatinine ratio (UPCR).",
+     "The primary endpoint of the study is the change from baseline in the urine protein-to-creatinine ratio at 37 weeks."
+    ],
+    "price_1d": 0.00715,
+    "price_5d": 0.005359,
+    "price_20d": 0.003342,
+    "price_60d": null,
+    "raw_20d": 0.003199,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
     "outcome": "mixed"
    },
    {
-    "case_id": "case-84546dbfdf",
-    "date": "2021-09-10",
-    "ticker": "CYDY",
-    "company_zh": "CytoDyn Inc.",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1175680/000119312521269952/d217751dex991.htm",
-    "evidence_quotes": [
-     "Leronlimab has been studied in 16 clinical trials involving more than 1,200 people and met its primary endpoints in a pivotal Phase 3 trial (leronlimab combined with HIV standard care in patients with multi-drug resistance to current available classes of HIV drugs).",
-     "CytoDyn has already completed a Phase 2 and Phase 3 trial for mild-to-moderate and severe-to-critical COVID-19 patients, respectively, for which CytoDyn did not meet its primary or secondary endpoints except for the secondary endpoint in the critically ill subpopulation."
-    ],
-    "price_1d": 0.276973,
-    "price_5d": 0.769209,
-    "price_20d": 0.301187,
-    "price_60d": -0.205877,
-    "raw_20d": 0.207407,
-    "verdict_zh": "系统判定：利空（trial_result）；20 日跑赢基准",
-    "outcome": "miss"
-   },
-   {
-    "case_id": "case-4f35057ab2",
-    "date": "2021-09-09",
-    "ticker": "AVTX",
-    "company_zh": "Avalo Therapeutics, Inc.",
-    "event_zh": "临床数据读出：",
+    "case_id": "case-3a5bf5bb94",
+    "date": "2026-09-23",
+    "ticker": "EVMN",
+    "company_zh": "Evommune, Inc.",
+    "event_zh": "临床数据读出：Evommune, Inc. · announces positive topline",
     "category": "trial_result",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1534120/000110465921114196/tm2127237d1_ex99-1.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/2044725/000119312526399378/evmn-ex99_1.htm",
     "evidence_quotes": [
-     "• Avalo has a pipeline of six novel, first - in - class assets in eight clinical development programs across Immunology, Immuno - oncology, and Rare Genetic Diseases • All assets have demonstrated mechanistic rationale, biomarkers, or established proof - of - concept (POC) to in…",
-     "Screening (Visit 1) Open - Label Treatment Period (Visits 2 - 10) (8 weeks) Safety Follow - Up (Visit 11) AVTX - 002, SQ injections every 14 days (N=8, 4 subjects in each cohort; Cohort 1: 1mg/kg; Cohort 2: 3mg/kg) Telephone Visit Eligibility & Washout Week: - 10 0 1 2 3 4 5 6 -…",
-     "Key Takeaways from KOL interviews - Placebo Response and Remission in CD • Gastroenterology KOLs (N=6) noted that they expect low PBO rates in heavily pre - treated patient populations (as low as single - digits in 4L+ patients) • Patients with more severe disease are less likel…"
+     "“We look forward to sharing the Phase 2a data at EADV, building on the topline results we reported earlier this year."
     ],
-    "price_1d": 0.030475,
-    "price_5d": -0.008169,
-    "price_20d": -0.1294,
-    "price_60d": -0.312087,
-    "raw_20d": -0.221429,
+    "price_1d": -0.037019,
+    "price_5d": -0.174007,
+    "price_20d": -0.403063,
+    "price_60d": null,
+    "raw_20d": -0.403207,
     "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
     "outcome": "miss"
    },
    {
-    "case_id": "case-dfa3a51889",
-    "date": "2021-08-27",
-    "ticker": "ATXI",
-    "company_zh": "AVENUE THERAPEUTICS, INC.",
-    "event_zh": "收到 CRL：",
+    "case_id": "case-b2add8dca3",
+    "date": "2026-08-31",
+    "ticker": "KPTI",
+    "company_zh": "Karyopharm Therapeutics Inc.",
+    "event_zh": "FDA 批准：Karyopharm Therapeutics Inc. · fda approval / priority review",
+    "category": "approval",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1503802/000119312526375495/d423030d8k.htm",
+    "evidence_quotes": [
+     "Management’s expectations and, therefore, any forward-looking statements in this Current Report on Form 8-K could also be affected by risks and uncertainties relating to a number of other factors, including the following: the adoption of XPOVIO in the commercial marketplace, the…",
+     "Food and Drug Administration and other regulatory authorities, investigational review boards at clinical trial sites and publication review bodies, including with respect to the need for additional clinical trials; the ability of the Company or its third party collaborators or s…"
+    ],
+    "price_1d": -0.115508,
+    "price_5d": -0.1614,
+    "price_20d": -0.396853,
+    "price_60d": null,
+    "raw_20d": -0.39604,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-4f55522b00",
+    "date": "2026-08-24",
+    "ticker": "ERAS",
+    "company_zh": "Erasca, Inc.",
+    "event_zh": "FDA 批准：Erasca, Inc. · fda approval",
+    "category": "approval",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1761918/000119312526361895/eras-20260824.htm",
+    "evidence_quotes": [
+     "Erasca, Inc. · fda approval"
+    ],
+    "price_1d": 0.078424,
+    "price_5d": -0.050247,
+    "price_20d": -0.218727,
+    "price_60d": null,
+    "raw_20d": -0.216573,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-d157c130dd",
+    "date": "2026-08-24",
+    "ticker": "EBRCZ",
+    "company_zh": "EBR Systems, Inc. (EBRCZ, NONE.)",
+    "event_zh": "收到 CRL：EBR Systems, Inc. (EBRCZ, NONE.) · clinical hold",
     "category": "crl",
     "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1644963/000110465921110140/tm2126364d1_8k.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1347123/000121465926010775/ex99_1.htm",
     "evidence_quotes": [
-     "(“Avenue”), received an Appeal Denied Letter from the Office of Neuroscience of the FDA in Response to its Formal Dispute Resolution Request submitted in July 2021 with respect to the Complete Response Letters previously issued by the FDA to Avenue related to its intravenous (“I…"
+     "EBR Systems, Inc. (EBRCZ, NONE.) · clinical hold"
     ],
-    "price_1d": 0.150297,
-    "price_5d": 0.060683,
-    "price_20d": 0.028618,
-    "price_60d": -0.312334,
-    "raw_20d": -0.071856,
+    "price_1d": 0.002581,
+    "price_5d": 0.055799,
+    "price_20d": 0.070227,
+    "price_60d": null,
+    "raw_20d": 0.072381,
     "verdict_zh": "系统判定：利空（crl）；20 日跑赢基准",
     "outcome": "miss"
    },
    {
-    "case_id": "case-b6a72046d2",
-    "date": "2021-08-16",
-    "ticker": "CYDY",
-    "company_zh": "CytoDyn Inc.",
-    "event_zh": "临床数据读出：",
+    "case_id": "case-e7e1253260",
+    "date": "2026-08-18",
+    "ticker": "ONCY",
+    "company_zh": "ONCOLYTICS BIOTECH INC",
+    "event_zh": "FDA 批准：ONCOLYTICS BIOTECH INC · fda approval / clinical hold",
+    "category": "approval",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1129928/000112992826000053/oncolyticscrcfdafeedback.htm",
+    "evidence_quotes": [
+     "ONCOLYTICS BIOTECH INC · fda approval / clinical hold"
+    ],
+    "price_1d": -0.035094,
+    "price_5d": 0.031829,
+    "price_20d": -0.070808,
+    "price_60d": null,
+    "raw_20d": -0.083333,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-74e45a5250",
+    "date": "2026-08-18",
+    "ticker": "AMLX",
+    "company_zh": "Amylyx Pharmaceuticals, Inc.",
+    "event_zh": "临床数据读出：Amylyx Pharmaceuticals, Inc. · met the primary endpoint / announces positive to…",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1658551/000119312526354716/d180533dex991.htm",
+    "evidence_quotes": [
+     "EX-99.1 2 d180533dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 Amylyx Pharmaceuticals Announces Positive Topline Results from Phase 3 LUCIDITY Clinical Trial of Avexitide in Post-Bariatric Hypoglycemia • LUCIDITY met FDA-agreed-upon primary endpoint; avexitide demonstrated a 55% reduc…",
+     "(Nasdaq: AMLX) (“Amylyx” or the “Company”) today announced positive topline results from LUCIDITY, a 78-participant, multicenter, randomized, double-blind, placebo-controlled Phase 3 clinical trial evaluating the efficacy and safety of avexitide, an investigational, first-in-cla…",
+     "LUCIDITY met the FDA-agreed-upon primary endpoint demonstrating a 55% reduction in the composite rate of Level 2 and Level 3 hypoglycemic events compared to placebo (p=0.000003)."
+    ],
+    "price_1d": 0.110228,
+    "price_5d": 0.034313,
+    "price_20d": -0.048089,
+    "price_60d": null,
+    "raw_20d": -0.060615,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-ef49df60d5",
+    "date": "2026-08-18",
+    "ticker": "AMLX",
+    "company_zh": "Amylyx Pharmaceuticals, Inc.",
+    "event_zh": "临床数据读出：Amylyx Pharmaceuticals, Inc. · met the primary endpoint",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1658551/000119312526354793/d184004dex991.htm",
+    "evidence_quotes": [
+     "placebo An investigational, first-in-class GLP-1 receptor antagonist designed to reduce the exaggerated GLP-1 Avexitide response in post-bariatric hypoglycemia (PBH) and restore activity to more physiological levels • FDA-Agreed Upon Primary Endpoint Met 55% reduction in the com…",
+     "Phase 3 LUCIDITY Trial Design PHASE 3 LUCIDITY TRIAL DESIGN - Multicenter, randomized, double-blind, placebo-controlled trial (N=78) 16-week Double-blind Treatment Period 32-week Open-label Extension Period 3:2 Randomization Avexitide 90 mg Once Daily N=78 21-day Eligibility Ave…",
+     "LUCIDITY Met Primary Endpoint Statistically significant 55% reduction in composite rate of Level 2 and Level 3 hypoglycemic events compared to placebo Composite Level 2/3 Hypoglycemic Event Rate Reduction vs."
+    ],
+    "price_1d": 0.110228,
+    "price_5d": 0.034313,
+    "price_20d": -0.048089,
+    "price_60d": null,
+    "raw_20d": -0.060615,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-0d6d684e86",
+    "date": "2026-08-13",
+    "ticker": "ADGM",
+    "company_zh": "Adagio Medical Holdings, Inc.",
+    "event_zh": "FDA 批准：Adagio Medical Holdings, Inc. · fda approval / receives fda approval",
+    "category": "approval",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/2006986/000110465926095987/tm2623192d1_ex99-1.htm",
+    "evidence_quotes": [
+     "✓ Accomplished ◎ Upcoming — Next Twelve Months Building Value through Real, Achievable Near-Term Milestones Adagio Medical: Multiple Value Creating Milestones Executing on Every Front – Significant Near Term Catalysts Still Ahead ✓ ✓ ✓ ✓ ✓ PMA submission to FDA for vCLAS approva…"
+    ],
+    "price_1d": -0.051872,
+    "price_5d": -0.047284,
+    "price_20d": -0.325975,
+    "price_60d": null,
+    "raw_20d": -0.351079,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-c838d052b1",
+    "date": "2026-08-13",
+    "ticker": "NTHI",
+    "company_zh": "NEONC TECHNOLOGIES HOLDINGS, INC.",
+    "event_zh": "临床数据读出：NEONC TECHNOLOGIES HOLDINGS, INC. · met the primary endpoint / accelerated appr…",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1979414/000182912626008773/neonctechnologies_ex99-1.htm",
+    "evidence_quotes": [
+     "NEO100-01, Phase 2 met its primary endpoint.",
+     "We met all of our primary endpoints, as you heard."
+    ],
+    "price_1d": 0.534843,
+    "price_5d": 0.470766,
+    "price_20d": 0.199017,
+    "price_60d": null,
+    "raw_20d": 0.173913,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
+    "outcome": "hit"
+   },
+   {
+    "case_id": "case-5cc93c3ed4",
+    "date": "2026-07-31",
+    "ticker": "KPTI",
+    "company_zh": "Karyopharm Therapeutics Inc.",
+    "event_zh": "临床数据读出：Karyopharm Therapeutics Inc. · fda approval / priority review",
     "category": "trial_result",
     "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1175680/000119312521248005/d218908dex991.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1503802/000119312526326995/d71318d8k.htm",
     "evidence_quotes": [
-     "CytoDyn has already completed a Phase 2 and Phase 3 trial for mild-to-moderate and severe-to-critical COVID-19 patients, respectively, for which CytoDyn did not meet its primary or secondary endpoints except for the secondary endpoint in the critically ill subpopulation."
+     "(the “Company”) announced topline results from its Phase 3 XPORT-EC-042 trial evaluating selinexor as a maintenance-only therapy compared to placebo in adult patients with TP53 wild-type advanced or recurrent endometrial cancer.",
+     "The trial did not meet its primary endpoint of progression free survival (“PFS”).",
+     "The trial included two patient populations, for which the primary endpoint of PFS was designed to be tested sequentially: (1) a modified intent to treat population (“mITT”) that included patients with either (a) TP53 wild-type tumors with proficient mismatch repair status (“pMMR…"
     ],
-    "price_1d": 0.01991,
-    "price_5d": 0.016061,
-    "price_20d": 0.176833,
-    "price_60d": -0.158587,
-    "raw_20d": 0.116788,
+    "price_1d": -0.01635,
+    "price_5d": -0.018613,
+    "price_20d": 0.040893,
+    "price_60d": -0.779557,
+    "raw_20d": 0.061856,
     "verdict_zh": "系统判定：利空（trial_result）；20 日跑赢基准",
     "outcome": "miss"
    },
    {
-    "case_id": "case-e09a92684c",
-    "date": "2021-08-11",
-    "ticker": "KYNB",
-    "company_zh": "FIBROGEN INC",
-    "event_zh": "收到 CRL：",
-    "category": "crl",
-    "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/921299/000156459021043233/fgen-8k_20210811.htm",
-    "evidence_quotes": [
-     "Food and Drug Administration (the “FDA”) has issued a complete response letter regarding the New Drug Application (“NDA”) for roxadustat for the treatment of anemia of chronic kidney disease.",
-     "Description 99.1 Press Release titled “FibroGen Receives Complete Response Letter from the FDA for Roxadustat for Anemia of Chronic Kidney Disease” dated August 11, 2021 104 Cover Page Interactive Data File (embedded within the Inline XBRL document) SIGNATURES Pursuant to the re…"
-    ],
-    "price_1d": 0.066899,
-    "price_5d": 0.004331,
-    "price_20d": -0.017922,
-    "price_60d": 0.076956,
-    "raw_20d": -0.081781,
-    "verdict_zh": "系统判定：利空（crl）；20 日跑输基准",
-    "outcome": "mixed"
-   },
-   {
-    "case_id": "case-914662301f",
-    "date": "2021-07-28",
-    "ticker": "ACUR",
-    "company_zh": "ACURA PHARMACEUTICALS, INC",
-    "event_zh": "FDA 批准：",
+    "case_id": "case-cefe2036c9",
+    "date": "2026-07-30",
+    "ticker": "REPL",
+    "company_zh": "Replimune Group, Inc.",
+    "event_zh": "FDA 批准：Replimune Group, Inc. · fda approval / accelerated approval",
     "category": "approval",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/786947/000110465921096842/tm2123494d1_ex99-1.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1737953/000110465926088481/tm2621663d1_ex99-1.htm",
     "evidence_quotes": [
-     "LTX-03 may offer safety advantages over existing opioid therapies consistent with the Food and Drug Administration’s (FDA) recently proposed new guidelines for the approval of opioid products.",
-     "AVERSION, used in the FDA approved drug OXAYDO® (oxycodone HCl) marketed by Assertio Holdings, Inc., utilizes polymers designed to limit the abuse of the product by nasal snorting and injection.",
-     "Forward-looking statements may include, but are not limited to: · our ability to fund or obtain funding for our continuing operations, including the development of our products utilizing our LIMITx and IMPEDE technologies; · whether we will receive FDA acceptance for an NDA for …"
+     "Therefore, the reviewers recommend for accelerated approval of VO, used in combinations with nivolumab, for adult patients with confirmed disease progression on anti-PD-1 based therapy…” CC-16 Regulatory Topics CC-17 Relevance of MOA to Response Assessment LOCAL IMMUNE EFFECT SY…",
+     "Robert 2015 CC-32 Limited Options Post Immune Checkpoint Inhibitor (ICI) Progression in Advanced Melanoma Neoadjuvant/ Adjuvant/ First line • Pembrolizumab (Keytruda) • Nivolumab (Opdivo) • Ipilimumab (Yervoy) • Ipilimumab + Nivolumab • Relatlimab/Nivolumab (Opdualag) Monotherap…",
+     "Other combination treatments per NCCN Combinations On progression CC-34 Lifileucel (AMTAGVI) is the Only FDA Approved Agent for Anti-PD-1 Failed Melanoma AMTAGVI (lifileucel) [package insert]; initial approval 2024 Lifileucel (AMTAGVI) Efficacy (ORR) • 31.5% (4.1% CR) • (n=73, p…"
     ],
-    "price_1d": -0.059973,
-    "price_5d": -0.168167,
-    "price_20d": -0.163358,
-    "price_60d": -0.209962,
-    "raw_20d": -0.217391,
+    "price_1d": 0.031741,
+    "price_5d": 0.02404,
+    "price_20d": 0.331589,
+    "price_60d": 0.068095,
+    "raw_20d": 0.362158,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
+    "outcome": "hit"
+   },
+   {
+    "case_id": "case-a8f8f619d4",
+    "date": "2026-07-28",
+    "ticker": "NPCE",
+    "company_zh": "NeuroPace Inc",
+    "event_zh": "FDA 批准：NeuroPace Inc · fda approval / receives fda approval",
+    "category": "approval",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1528287/000119312526321083/d138221dex991.htm",
+    "evidence_quotes": [
+     "EX-99.1 2 d138221dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 NeuroPace Receives FDA Guidance on PMA Supplement for Indication Expansion into Idiopathic Generalized Epilepsy — Company received communication from FDA indicating that the PMA Supplement for idiopathic generalized epilep…",
+     "Having reviewed FDA’s written communications and having had subsequent discussions with the Agency, we believe there is a path for approval of the submission.",
+     "We remain encouraged by the data gathered through 24 months and are working collaboratively with FDA to provide the information needed to support approval of this indication expansion”."
+    ],
+    "price_1d": -0.058061,
+    "price_5d": -0.099366,
+    "price_20d": -0.027241,
+    "price_60d": -0.13242,
+    "raw_20d": 0.005479,
     "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
     "outcome": "miss"
    },
    {
-    "case_id": "case-453ea26d60",
-    "date": "2021-07-26",
-    "ticker": "AVTX",
-    "company_zh": "Cerecor Inc.",
-    "event_zh": "临床数据读出：",
+    "case_id": "case-e9f9cdd508",
+    "date": "2026-07-28",
+    "ticker": "ALT",
+    "company_zh": "Altimmune, Inc.",
+    "event_zh": "临床数据读出：Altimmune, Inc. · met the primary endpoint / announces positive topline",
     "category": "trial_result",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1534120/000162828021014453/july_irxdeckxcercxfinal.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1326190/000132619026000044/alt-20260728xex99d1.htm",
     "evidence_quotes": [
-     ""
+     "EX-99.1 2 alt-20260728xex99d1.htm EX-99.1 ​ Exhibit 99.1 Altimmune Announces Positive Topline Results from RECLAIM Phase 2 Trial of Pemvidutide in Alcohol Use Disorder Pemvidutide 2.4 mg delivered a statistically significant and clinically meaningful reduction in heavy drinking …",
+     "(Nasdaq: ALT), a late clinical-stage biopharmaceutical company focused on serious liver diseases, today announced positive topline results from the RECLAIM Phase 2 trial evaluating pemvidutide, an investigational balanced glucagon/GLP-1 dual receptor agonist, in patients with mo…",
+     "The trial met its primary endpoint with a highly statistically significant reduction in heavy drinking days (HDD) versus placebo, with consistent positive results across important secondary endpoints, including the World Health Organization (WHO) Risk Drinking Levels (RDL), zero…"
     ],
-    "price_1d": 0.011754,
-    "price_5d": -0.013711,
-    "price_20d": 0.071151,
-    "price_60d": -0.222153,
-    "raw_20d": 0.020548,
+    "price_1d": -0.006508,
+    "price_5d": -0.027722,
+    "price_20d": 0.017279,
+    "price_60d": -0.309087,
+    "raw_20d": 0.05,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
+    "outcome": "mixed"
+   },
+   {
+    "case_id": "case-0f5102ab45",
+    "date": "2026-07-27",
+    "ticker": "MPLT",
+    "company_zh": "MapLight Therapeutics, Inc.",
+    "event_zh": "临床数据读出：MapLight Therapeutics, Inc. · met the primary endpoint / announces positive top…",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1770069/000119312526316820/d139086dex991.htm",
+    "evidence_quotes": [
+     "Co-Founder and Chief Executive Officer Q&A Session All 3 ZEPHYR Met Its Primary Endpoint, Supporting Advancement into an Additional, Confirmatory Pivotal Study • ZEPHYR met its primary endpoint and demonstrated a substantial treatment effect, supported by concordant improvements…",
+     "Developing a Differentiated Treatment, Designed to Translate into Real-World Use 210/3 mg BID delivered statistically significant improvement across complementary measures of schizophrenia symptoms • PANSS Total Score (mITT, primary endpoint): Effect Size of 0.37 (-4.5 pts versu…",
+     "| Chief Medical Officer ZEPHYR Study Outline Designed and Sized to Serve as a Registrational Study Blinded Treatment Period Screening Follow-up (Day 1 to 35) Period Period (Day -7 to -1) (Day 36 to 42) Week 1 Week 2 Week 3 Week 4 Week 5 Primary Endpoint Placebo Ÿ (N=104) • N = 3…"
+    ],
+    "price_1d": 0.586737,
+    "price_5d": 0.312661,
+    "price_20d": 0.278134,
+    "price_60d": -0.192305,
+    "raw_20d": 0.311715,
     "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
     "outcome": "hit"
    },
    {
-    "case_id": "case-77a9df3dab",
-    "date": "2021-07-22",
-    "ticker": "RGRX",
-    "company_zh": "REGENERX BIOPHARMACEUTICALS INC",
-    "event_zh": "FDA 批准：",
+    "case_id": "case-42ef9b5679",
+    "date": "2026-07-24",
+    "ticker": "OTLK",
+    "company_zh": "Outlook Therapeutics, Inc.",
+    "event_zh": "FDA 批准：Outlook Therapeutics, Inc. · fda approval",
     "category": "approval",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/707511/000110465921094954/tm2123052d1_ex99-1.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1649989/000110465926086685/tm2621316d1_ex99-1.htm",
     "evidence_quotes": [
-     ""
+     "With the approval of LYTENAVA™, physicians now have access to the first FDA-approved ophthalmic bevacizumab developed specifically for the eye."
     ],
-    "price_1d": 0.060226,
-    "price_5d": 0.020932,
-    "price_20d": -0.114403,
-    "price_60d": -0.315974,
-    "raw_20d": -0.169643,
+    "price_1d": -0.35548,
+    "price_5d": -0.371652,
+    "price_20d": -0.593504,
+    "price_60d": -0.666209,
+    "raw_20d": -0.571127,
     "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
     "outcome": "miss"
    },
    {
-    "case_id": "case-a5e92cf4fd",
-    "date": "2021-07-22",
-    "ticker": "CYDY",
-    "company_zh": "CytoDyn Inc.",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1175680/000119312521221967/d160647dex991.htm",
-    "evidence_quotes": [
-     "Leronlimab has been studied in 16 clinical trials involving more than 1,200 people and met its primary endpoints in a pivotal Phase 3 trial (leronlimab combined with HIV standard care in patients with multi-drug resistance to current available classes of HIV drugs).",
-     "CytoDyn has already completed a Phase 2 and Phase 3 trial for mild-to-moderate and severe-to-critical COVID-19 patients, respectively, for which CytoDyn did not meet its primary or secondary endpoints except for the secondary endpoint in the critically ill subpopulation."
-    ],
-    "price_1d": -0.008739,
-    "price_5d": 0.036839,
-    "price_20d": -0.174645,
-    "price_60d": -0.157124,
-    "raw_20d": -0.229885,
-    "verdict_zh": "系统判定：利空（trial_result）；20 日跑输基准",
-    "outcome": "hit"
-   },
-   {
-    "case_id": "case-2e2bae0f77",
-    "date": "2021-07-21",
-    "ticker": "AQST",
-    "company_zh": "Aquestive Therapeutics, Inc.",
-    "event_zh": "FDA 批准：",
-    "category": "approval",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1398733/000162828021014157/ex991_acceptanceoflibervan.htm",
-    "evidence_quotes": [
-     "The Company continues to believe that no additional clinical studies will be required for FDA approval of Libervant for U.S.",
-     "Such risks and uncertainties include, but are not limited to, risks associated with the Company's development work, including any delays or changes to the timing, cost and success of our product development activities and clinical trials; risk of delays in FDA approval of Liberv…"
-    ],
-    "price_1d": 0.006135,
-    "price_5d": -0.02987,
-    "price_20d": 0.016917,
-    "price_60d": 0.067278,
-    "raw_20d": -0.039788,
-    "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
-    "outcome": "mixed"
-   },
-   {
-    "case_id": "case-9e47a29ccc",
-    "date": "2021-07-19",
-    "ticker": "ARDS",
-    "company_zh": "Aridis Pharmaceuticals, Inc.",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1614067/000110465921093274/tm2122496d1_ex10-1.htm",
-    "evidence_quotes": [
-     "The strong data from the Phase 2 trial gives us an advantage to define the patient population, primary endpoint, and the Phase 3 clinical study design to support a clear path to the Phase 3 confirmatory trial,” said Vu Truong, Ph.D., Aridis’ Chief Executive Officer."
-    ],
-    "price_1d": 0.023258,
-    "price_5d": -0.019203,
-    "price_20d": -0.235989,
-    "price_60d": -0.261945,
-    "raw_20d": -0.263462,
-    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
-    "outcome": "miss"
-   },
-   {
-    "case_id": "case-92ba196b1b",
-    "date": "2021-07-15",
-    "ticker": "ATXI",
-    "company_zh": "AVENUE THERAPEUTICS, INC.",
-    "event_zh": "收到 CRL：",
+    "case_id": "case-a20c79ee87",
+    "date": "2026-07-22",
+    "ticker": "BBIO",
+    "company_zh": "BridgeBio Pharma, Inc.",
+    "event_zh": "收到 CRL：BridgeBio Pharma, Inc. · announces positive topline / clinical hold",
     "category": "crl",
     "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1644963/000110465921092205/tm2122245d1_8k.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1743881/000114036126029291/ef20078442_ex99-1.htm",
     "evidence_quotes": [
-     "(“Avenue”) announced that it had received a Complete Response Letter (the “First CRL”) from the U.S.",
-     "On June 14, 2021, Avenue announced that it had received a second Complete Response Letter (the “Second CRL”) from the FDA regarding Avenue’s NDA for IV tramadol."
+     "BridgeBio Pharma, Inc. · announces positive topline / clinical hold"
     ],
-    "price_1d": 0.014368,
-    "price_5d": 0.006396,
-    "price_20d": -0.131391,
-    "price_60d": -0.302663,
-    "raw_20d": -0.177885,
+    "price_1d": 0.022731,
+    "price_5d": -0.003808,
+    "price_20d": -0.02231,
+    "price_60d": -0.226594,
+    "raw_20d": 0.006553,
     "verdict_zh": "系统判定：利空（crl）；20 日跑输基准",
     "outcome": "hit"
    },
    {
-    "case_id": "case-8b0f71f178",
-    "date": "2021-07-13",
-    "ticker": "CTRVP",
-    "company_zh": "Hepion Pharmaceuticals, Inc. (HEPA, CTRVP)",
-    "event_zh": "临床数据读出：",
+    "case_id": "case-d369234dbe",
+    "date": "2026-07-22",
+    "ticker": "LBRX",
+    "company_zh": "LB PHARMACEUTICALS INC",
+    "event_zh": "临床数据读出：LB PHARMACEUTICALS INC · announces positive topline / topline data",
     "category": "trial_result",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1583771/000110465921091511/tm2122083d1_ex99-1.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1691082/000119312526311357/d173035dex991.htm",
     "evidence_quotes": [
-     "EX-99.1 2 tm2122083d1_ex99-1.htm EXHIBIT 99.1 Exhibit 99.1 Hepion Pharmaceuticals Announces Positive Topline Data from Phase 2a ‘AMBITION’ NASH Trial; All Primary Endpoints Achieved · Safety, Tolerability and Pharmacokinetics (“PK”) Primary Endpoints Met · Reductions in Liver Tr…",
-     "(NASDAQ: HEPA ), a clinical stage biopharmaceutical company focused on the development of therapeutic drugs for the treatment of liver disease arising from non-alcoholic steatohepatitis (\"NASH\"), today announced positive topline results from its Phase 2a ‘AMBITION’ NASH clinical…",
-     "All primary endpoints of the trial were met."
+     "EX-99.1 2 d173035dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 LB Pharmaceuticals Announces Accelerated Timing of Topline Results from the Phase 3 NOVA-2 Trial of LB-102 in Schizophrenia NEW YORK, July 22, 2026 (GLOBE NEWSWIRE) – LB Pharmaceuticals Inc (“LB Pharmaceuticals” or the “Co…",
+     "Based on the pace of enrollment since initiating NOVA-2, we now expect to report topline results in the first half of 2027, ahead of our prior guidance of the second half of 2027, and to schedule a pre-NDA meeting soon thereafter in the second half of 2027,” said Heather Turner,…"
     ],
-    "price_1d": 0.073333,
-    "price_5d": 0.073759,
-    "price_20d": 0.054086,
-    "price_60d": 0.062003,
-    "raw_20d": 0.0,
+    "price_1d": -0.02036,
+    "price_5d": 0.140212,
+    "price_20d": 0.28857,
+    "price_60d": -0.007472,
+    "raw_20d": 0.317434,
     "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
     "outcome": "hit"
    },
    {
-    "case_id": "case-c6dba8beeb",
-    "date": "2021-06-30",
-    "ticker": "CYTK",
-    "company_zh": "CYTOKINETICS INC",
-    "event_zh": "临床数据读出：",
+    "case_id": "case-7da52ca7ed",
+    "date": "2026-06-30",
+    "ticker": "AKBA",
+    "company_zh": "Akebia Therapeutics, Inc.",
+    "event_zh": "临床数据读出：Akebia Therapeutics, Inc. · met the primary endpoint",
     "category": "trial_result",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1061983/000117184321004610/f8k_063021.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1517022/000151702226000047/akba-20260630.htm",
     "evidence_quotes": [
-     ""
+     "patients with anemia due to CKD on dialysis utilizing TIW dosing regimen Primary Investigator to stop trial on recommendation from Independent Data Monitoring Committee and Trial Steering Committee Interim analysis on primary endpoint replicated safety outcomes reported in the r…",
+     "The primary endpoint is a composite hierarchical endpoint of all-cause mortality and all-cause hospitalization, analyzed by the win odds method."
     ],
-    "price_1d": 0.094905,
-    "price_5d": 0.039633,
-    "price_20d": 0.541189,
-    "price_60d": 0.792472,
-    "raw_20d": 0.494461,
+    "price_1d": 0.081032,
+    "price_5d": 0.236971,
+    "price_20d": 0.180822,
+    "price_60d": -0.256239,
+    "raw_20d": 0.173913,
     "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
     "outcome": "hit"
    },
    {
-    "case_id": "case-f9945ac9f2",
-    "date": "2021-06-22",
-    "ticker": "FEED",
-    "company_zh": "NanoVibronix, Inc.",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1326706/000149315221014950/form8-k.htm",
-    "evidence_quotes": [
-     "(the “Company”) received a letter from the Listing Qualifications Department of the Nasdaq Stock Market (“Nasdaq”) indicating that, based upon the closing bid price of the Company’s common stock for the 30 consecutive business day period between May 5, 2021, through June 16, 202…"
-    ],
-    "price_1d": 0.0823,
-    "price_5d": 0.058132,
-    "price_20d": -0.076994,
-    "price_60d": 1.553863,
-    "raw_20d": -0.117647,
-    "verdict_zh": "系统判定：利空（trial_result）；20 日跑输基准",
-    "outcome": "hit"
-   },
-   {
-    "case_id": "case-b413c2e0f8",
-    "date": "2021-06-17",
-    "ticker": "MNKD",
-    "company_zh": "MANNKIND CORP",
-    "event_zh": "FDA 批准：",
-    "category": "approval",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/899460/000119312521192308/d60583d8k.htm",
-    "evidence_quotes": [
-     "In its communications with United Therapeutics, the FDA indicated that approval of the NDA will be subject to an inspection of the Tyvaso DPI manufacturing facility operated by MannKind; the FDA and MannKind have jointly targeted the third quarter of 2021 to complete the inspect…"
-    ],
-    "price_1d": 0.08887,
-    "price_5d": 0.126131,
-    "price_20d": 0.043237,
-    "price_60d": 0.091435,
-    "raw_20d": -0.006834,
-    "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
-    "outcome": "hit"
-   },
-   {
-    "case_id": "case-b6279496b2",
-    "date": "2021-06-15",
-    "ticker": "ETON",
-    "company_zh": "Eton Pharmaceuticals, Inc.",
-    "event_zh": "FDA 批准：",
-    "category": "approval",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1710340/000149315221014410/ex99-1.htm",
-    "evidence_quotes": [
-     "EX-99.1 2 ex99-1.htm Exhibit 99.1 Eton Pharmaceuticals Announces FDA Approval of Rezipres® (Ephedrine Hydrochloride Injection) DEER PARK, Ill., June 15, 2021 (GLOBE NEWSWIRE) — Eton Pharmaceuticals, Inc (Nasdaq: ETON) today announced that the U.S.",
-     "“We are excited to see the approval of Rezipres, which is now our second FDA-approved ready-to-use hospital injectable product."
-    ],
-    "price_1d": 0.026546,
-    "price_5d": -0.032404,
-    "price_20d": -0.124232,
-    "price_60d": -0.218915,
-    "raw_20d": -0.169697,
-    "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
-    "outcome": "miss"
-   },
-   {
-    "case_id": "case-e9accac267",
-    "date": "2021-06-14",
-    "ticker": "NMTRQ",
-    "company_zh": "9 METERS BIOPHARMA, INC.",
-    "event_zh": "临床数据读出：",
+    "case_id": "case-c0f3295df4",
+    "date": "2026-06-30",
+    "ticker": "NVCR",
+    "company_zh": "NovoCure Ltd",
+    "event_zh": "临床数据读出：NovoCure Ltd · met the primary endpoint",
     "category": "trial_result",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1551986/000155198621000071/ex-991pressrelease61421.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1645113/000164511326000056/paxtuvdecisionpr.htm",
     "evidence_quotes": [
-     "EX-99.1 2 ex-991pressrelease61421.htm EX-99.1 Document PRESS RELEASE 9 Meters Announces Initiation of Phase 2 VIBRANT Study of Vurolenatide for Short Bowel Syndrome – Initiating the largest Phase 2 placebo-controlled trial in short bowel syndrome - – Topline results of the multi…",
-     "Total stool output will serve as the primary endpoint in the study."
+     "NovoCure Ltd · met the primary endpoint"
     ],
-    "price_1d": 0.071244,
-    "price_5d": -0.001079,
-    "price_20d": -0.231196,
-    "price_60d": -0.098042,
-    "raw_20d": -0.275168,
+    "price_1d": 0.121107,
+    "price_5d": 0.11768,
+    "price_20d": -0.002844,
+    "price_60d": -0.00546,
+    "raw_20d": -0.009753,
     "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
-    "outcome": "miss"
-   },
-   {
-    "case_id": "case-5d96ad00be",
-    "date": "2021-06-11",
-    "ticker": "AGIO",
-    "company_zh": "AGIOS PHARMACEUTICALS, INC.",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1439222/000119312521188265/d843751dex991.htm",
-    "evidence_quotes": [
-     "EX-99.1 2 d843751dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 Agios Presents Positive Results from Phase 2 Study of Mitapivat in Non-transfusion-dependent α - and ß-Thalassemia at the European Hematology Association Virtual Congress – Study Met Primary Endpoint; Treatment with Mitapi…",
-     "Consistent with previously announced proof-of-concept data , the study met its primary endpoint, with 16 of the 20 patients (80%) achieving a hemoglobin increase of ³ 1.0 g/dL from baseline at one or more assessments during Weeks 4-12.",
-     "Efficacy Data • The primary endpoint, defined as a ³ 1.0 g/dL increase in hemoglobin concentration from baseline at one or more assessments between Week 4 and Week 12, was met by 16 of 20 (80%) patients (1-sided p<0.0001), including all 5 (100%) α-thalassemia patients and 11 of …"
-    ],
-    "price_1d": 0.083146,
-    "price_5d": 0.141833,
-    "price_20d": 0.019327,
-    "price_60d": -0.207851,
-    "raw_20d": -0.023843,
-    "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
-    "outcome": "mixed"
-   },
-   {
-    "case_id": "case-d9e633a5af",
-    "date": "2021-06-08",
-    "ticker": "ACRS",
-    "company_zh": "Aclaris Therapeutics, Inc.",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1557746/000155837021008085/acrs-20210608xex99d2.htm",
-    "evidence_quotes": [
-     "(NASDAQ: ACRS), a clinical-stage biopharmaceutical company focused on developing novel drug candidates for immuno-inflammatory diseases, today announced positive preliminary topline results from its first in human Phase 2a, multicenter, randomized, double-blind, vehicle-controll…",
-     "​ The Full Analysis Set (FAS), which was comprised of subjects randomized and documented to have received at least one dose of trial medication, was used for the primary endpoint.",
-     "The trial achieved its primary endpoint with a high degree of statistical significance (p<0.001) (one-sided p-value), which corresponded to a 74.4% reduction in mEASI score from baseline at week 4 in subjects applying ATI-1777 compared to a 41.4% reduction in subjects applying v…"
-    ],
-    "price_1d": 0.154816,
-    "price_5d": 0.066448,
-    "price_20d": 0.025784,
-    "price_60d": -0.026593,
-    "raw_20d": -0.024848,
-    "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
-    "outcome": "hit"
-   },
-   {
-    "case_id": "case-3eb3c9d6ec",
-    "date": "2021-06-07",
-    "ticker": "ACUR",
-    "company_zh": "ACURA PHARMACEUTICALS, INC",
-    "event_zh": "FDA 批准：",
-    "category": "approval",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/786947/000110465921077442/tm2118827d1_ex99-1.htm",
-    "evidence_quotes": [
-     "LTX-03 may offer safety advantages over existing opioid therapies consistent with the Food and Drug Administration’s (FDA) recently proposed new guidelines for the approval of opioid products.",
-     "AVERSION® Technology, used in the FDA approved drug OXAYDO® (oxycodone HCl) marketed by Assertio Holdings Inc., utilizes polymers designed to limit the abuse of the product by nasal snorting and injection.",
-     "Forward-looking statements may include, but are not limited to: · our ability to obtain funding for our continuing operations, including the development of our products utilizing our LIMITx™ and Impede® technologies; · whether we can renegotiate the date by which we are required…"
-    ],
-    "price_1d": 0.20032,
-    "price_5d": 0.595493,
-    "price_20d": 0.862119,
-    "price_60d": 0.492244,
-    "raw_20d": 0.819444,
-    "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
-    "outcome": "hit"
-   },
-   {
-    "case_id": "case-375f814a4b",
-    "date": "2021-05-28",
-    "ticker": "ETON",
-    "company_zh": "Eton Pharmaceuticals, Inc.",
-    "event_zh": "收到 CRL：",
-    "category": "crl",
-    "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1710340/000149315221013152/ex99-1.htm",
-    "evidence_quotes": [
-     "EX-99.1 2 ex99-1.htm Exhibit 99.1 Eton Pharmaceuticals Receives Complete Response Letter from U.S.",
-     "FDA for Dehydrated Alcohol Injection DEER PARK, Ill., May 28, 2021 (GLOBE NEWSWIRE) — Eton Pharmaceuticals, Inc (Nasdaq: ETON), today announced that the company has received a Complete Response Letter (CRL) from the U.S."
-    ],
-    "price_1d": -0.028265,
-    "price_5d": 0.021663,
-    "price_20d": -0.002369,
-    "price_60d": -0.229887,
-    "raw_20d": -0.058735,
-    "verdict_zh": "系统判定：利空（crl）；20 日跑输基准",
-    "outcome": "mixed"
-   },
-   {
-    "case_id": "case-c4896da667",
-    "date": "2021-05-27",
-    "ticker": "LNTH",
-    "company_zh": "Lantheus Holdings, Inc.",
-    "event_zh": "FDA 批准：",
-    "category": "approval",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1521036/000119312521174280/d187816dex991.htm",
-    "evidence_quotes": [
-     "FDA Approval of PYLARIFY ® (piflufolastat F 18) Injection, the First and Only Commercially Available PSMA PET Imaging Agent for Prostate Cancer PYLARIFY will be available immediately to imaging centers in parts of the mid-Atlantic and southern regions and is expected to be broad…",
-     "“The FDA approval of PYLARIFY is a significant milestone for Lantheus and the prostate cancer community in the United States.",
-     "“Having a diagnostic tool that allows doctors to see suspected metastatic or recurrent prostate cancer earlier, anywhere in the body, is a significant step forward and will have a tremendous impact on patients’ lives.” The approval of PYLARIFY is based on data from two Company-s…"
-    ],
-    "price_1d": 0.15305,
-    "price_5d": 0.173387,
-    "price_20d": 0.246002,
-    "price_60d": 0.113243,
-    "raw_20d": 0.192713,
-    "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
-    "outcome": "hit"
-   },
-   {
-    "case_id": "case-da5ab68e1f",
-    "date": "2021-05-25",
-    "ticker": "HYPD",
-    "company_zh": "EYENOVIA, INC.",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1682639/000110465921071574/tm2117268d1_ex99-1.htm",
-    "evidence_quotes": [
-     "EX-99.1 2 tm2117268d1_ex99-1.htm EXHIBIT 99.1 Exhibit 99.1 Eyenovia Announces Positive Topline Results from VISION-1 Phase 3 Clinical Study of MicroLine for the Treatment of Presbyopia Primary endpoint was achieved with well-tolerated micro-array print (MAP™) safety profile Upco…",
-     "The study achieved its primary endpoint and preparations are underway for a second Phase 3 registration study, VISION-2.",
-     "Key highlights from the study include: • VISION-1 met its primary endpoint with a statistically significant proportion of subjects treated with a therapeutic dose of MicroLine showing a three-line or more improvement in distance corrected near visual acuity (DCNVA) versus placeb…"
-    ],
-    "price_1d": 0.057293,
-    "price_5d": 0.112613,
-    "price_20d": 0.191318,
-    "price_60d": -0.128492,
-    "raw_20d": 0.1375,
-    "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
-    "outcome": "hit"
-   },
-   {
-    "case_id": "case-12e950d432",
-    "date": "2021-05-21",
-    "ticker": "BEIGF",
-    "company_zh": "BeiGene, Ltd. (BGNE, BEIGF)",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1651308/000165130821000097/a8-kxex992x21x5x2021.htm",
-    "evidence_quotes": [
-     "EX-99.2 3 a8-kxex992x21x5x2021.htm EX-99.2 Document Exhibit 99.2 BeiGene Announces Positive Topline Results from Phase 3 Trial of Tislelizumab in Combination with Chemotherapy as First-Line Treatment for Recurrent or Metastatic Nasopharyngeal Cancer Tislelizumab combined with ch…",
-     "(NASDAQ: BGNE; HKEX: 06160), a global biotechnology company focused on developing and commercializing innovative medicines worldwide, today announced that the Phase 3 RATIONALE 309 trial of its anti-PD-1 antibody tislelizumab combined with chemotherapy versus placebo combined wi…",
-     "The trial’s primary endpoint is PFS as assessed by IRC in the ITT population."
-    ],
-    "price_1d": 0.068721,
-    "price_5d": 0.001174,
-    "price_20d": 0.042875,
-    "price_60d": -0.129496,
-    "raw_20d": -0.011919,
-    "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
-    "outcome": "hit"
-   },
-   {
-    "case_id": "case-f5f69ee02f",
-    "date": "2021-05-19",
-    "ticker": "ADAPY",
-    "company_zh": "Adaptimmune Therapeutics PLC",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1621227/000155837021007554/adap-20210519xex99d1.htm",
-    "evidence_quotes": [
-     "​ The primary endpoint is overall response rate per RECIST v1.1 by independent review.",
-     "The primary endpoint will be evaluated using a one-sided exact-based Clopper-Pearson 97.5% confidence interval (CI)."
-    ],
-    "price_1d": 0.009735,
-    "price_5d": -0.007516,
-    "price_20d": -0.205179,
-    "price_60d": -0.27774,
-    "raw_20d": -0.265799,
-    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
-    "outcome": "miss"
-   },
-   {
-    "case_id": "case-606670f4e5",
-    "date": "2021-05-12",
-    "ticker": "MDXG",
-    "company_zh": "MIMEDX GROUP, INC.",
-    "event_zh": "FDA 批准：",
-    "category": "approval",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1376339/000119312521158413/d143041dex991.htm",
-    "evidence_quotes": [
-     ""
-    ],
-    "price_1d": 0.078427,
-    "price_5d": 0.07268,
-    "price_20d": 0.232894,
-    "price_60d": 0.291308,
-    "raw_20d": 0.201525,
-    "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
-    "outcome": "hit"
-   },
-   {
-    "case_id": "case-e781a487b8",
-    "date": "2021-05-04",
-    "ticker": "BFLY",
-    "company_zh": "Butterfly Network, Inc. (BFLY, BFLY-WT)",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1804176/000110465921061007/tm2115173d1_8k.htm",
-    "evidence_quotes": [
-     ""
-    ],
-    "price_1d": -0.033784,
-    "price_5d": -0.064565,
-    "price_20d": 0.013152,
-    "price_60d": -0.178022,
-    "raw_20d": -0.054478,
-    "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
     "outcome": "mixed"
    }
   ],
   "negative_examples": [
    {
-    "case_id": "case-55c4a3d847",
-    "date": "2021-09-14",
-    "ticker": "CTSO",
-    "company_zh": "Cytosorbents Corp",
-    "event_zh": "临床数据读出：",
+    "case_id": "case-ae32aaa595",
+    "date": "2026-10-01",
+    "ticker": "EVMN",
+    "company_zh": "Evommune, Inc.",
+    "event_zh": "临床数据读出：Evommune, Inc. · met the primary endpoint",
     "category": "trial_result",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1175151/000110465921115541/tm2127624d1_ex99-1.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/2044725/000119312526409865/evmn-ex99_1.htm",
     "evidence_quotes": [
-     "The webinar will highlight a growing body of data from seven recently published journal articles or presentations on the use of CytoSorb in more than 215 critically ill COVID-19 patients worldwide, including the recently announced topline results from the U.S.",
-     "Tae Song, Chicago/USA Topline results from the U.S.",
-     "Highlighted data to be presented are expected to include: · Topline results from the U.S."
+     "The 70-patient trial was designed to evaluate the safety and efficacy of intravenous dosing of 5mg/kg at Baseline and Week 4 (n=48 active, n=22 placebo) with a primary endpoint at Week 12, 8 weeks after the last dose.",
+     "“With strong clinical proof‑of‑concept now established, we are moving quickly to initiate a global Phase 2b trial that is dose-optimized with our subcutaneous formulation which is on track to begin in mid‑2027.” Data Presentation Highlights: • EVO301 met primary endpoint: EVO301…"
     ],
-    "price_1d": 0.063536,
-    "price_5d": 0.069326,
-    "price_20d": -0.180432,
-    "price_60d": -0.355114,
-    "raw_20d": -0.264988,
+    "price_1d": -0.088274,
+    "price_5d": -0.1483,
+    "price_20d": -0.051752,
+    "price_60d": null,
+    "raw_20d": -0.071724,
     "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
     "outcome": "miss"
    },
    {
-    "case_id": "case-84546dbfdf",
-    "date": "2021-09-10",
-    "ticker": "CYDY",
-    "company_zh": "CytoDyn Inc.",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1175680/000119312521269952/d217751dex991.htm",
-    "evidence_quotes": [
-     "Leronlimab has been studied in 16 clinical trials involving more than 1,200 people and met its primary endpoints in a pivotal Phase 3 trial (leronlimab combined with HIV standard care in patients with multi-drug resistance to current available classes of HIV drugs).",
-     "CytoDyn has already completed a Phase 2 and Phase 3 trial for mild-to-moderate and severe-to-critical COVID-19 patients, respectively, for which CytoDyn did not meet its primary or secondary endpoints except for the secondary endpoint in the critically ill subpopulation."
-    ],
-    "price_1d": 0.276973,
-    "price_5d": 0.769209,
-    "price_20d": 0.301187,
-    "price_60d": -0.205877,
-    "raw_20d": 0.207407,
-    "verdict_zh": "系统判定：利空（trial_result）；20 日跑赢基准",
-    "outcome": "miss"
-   },
-   {
-    "case_id": "case-4f35057ab2",
-    "date": "2021-09-09",
-    "ticker": "AVTX",
-    "company_zh": "Avalo Therapeutics, Inc.",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1534120/000110465921114196/tm2127237d1_ex99-1.htm",
-    "evidence_quotes": [
-     "• Avalo has a pipeline of six novel, first - in - class assets in eight clinical development programs across Immunology, Immuno - oncology, and Rare Genetic Diseases • All assets have demonstrated mechanistic rationale, biomarkers, or established proof - of - concept (POC) to in…",
-     "Screening (Visit 1) Open - Label Treatment Period (Visits 2 - 10) (8 weeks) Safety Follow - Up (Visit 11) AVTX - 002, SQ injections every 14 days (N=8, 4 subjects in each cohort; Cohort 1: 1mg/kg; Cohort 2: 3mg/kg) Telephone Visit Eligibility & Washout Week: - 10 0 1 2 3 4 5 6 -…",
-     "Key Takeaways from KOL interviews - Placebo Response and Remission in CD • Gastroenterology KOLs (N=6) noted that they expect low PBO rates in heavily pre - treated patient populations (as low as single - digits in 4L+ patients) • Patients with more severe disease are less likel…"
-    ],
-    "price_1d": 0.030475,
-    "price_5d": -0.008169,
-    "price_20d": -0.1294,
-    "price_60d": -0.312087,
-    "raw_20d": -0.221429,
-    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
-    "outcome": "miss"
-   },
-   {
-    "case_id": "case-dfa3a51889",
-    "date": "2021-08-27",
-    "ticker": "ATXI",
-    "company_zh": "AVENUE THERAPEUTICS, INC.",
-    "event_zh": "收到 CRL：",
-    "category": "crl",
-    "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1644963/000110465921110140/tm2126364d1_8k.htm",
-    "evidence_quotes": [
-     "(“Avenue”), received an Appeal Denied Letter from the Office of Neuroscience of the FDA in Response to its Formal Dispute Resolution Request submitted in July 2021 with respect to the Complete Response Letters previously issued by the FDA to Avenue related to its intravenous (“I…"
-    ],
-    "price_1d": 0.150297,
-    "price_5d": 0.060683,
-    "price_20d": 0.028618,
-    "price_60d": -0.312334,
-    "raw_20d": -0.071856,
-    "verdict_zh": "系统判定：利空（crl）；20 日跑赢基准",
-    "outcome": "miss"
-   },
-   {
-    "case_id": "case-b6a72046d2",
-    "date": "2021-08-16",
-    "ticker": "CYDY",
-    "company_zh": "CytoDyn Inc.",
-    "event_zh": "临床数据读出：",
-    "category": "trial_result",
-    "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1175680/000119312521248005/d218908dex991.htm",
-    "evidence_quotes": [
-     "CytoDyn has already completed a Phase 2 and Phase 3 trial for mild-to-moderate and severe-to-critical COVID-19 patients, respectively, for which CytoDyn did not meet its primary or secondary endpoints except for the secondary endpoint in the critically ill subpopulation."
-    ],
-    "price_1d": 0.01991,
-    "price_5d": 0.016061,
-    "price_20d": 0.176833,
-    "price_60d": -0.158587,
-    "raw_20d": 0.116788,
-    "verdict_zh": "系统判定：利空（trial_result）；20 日跑赢基准",
-    "outcome": "miss"
-   },
-   {
-    "case_id": "case-914662301f",
-    "date": "2021-07-28",
-    "ticker": "ACUR",
-    "company_zh": "ACURA PHARMACEUTICALS, INC",
-    "event_zh": "FDA 批准：",
+    "case_id": "case-9c3c6c96e3",
+    "date": "2026-10-01",
+    "ticker": "ALLR",
+    "company_zh": "Allarity Therapeutics, Inc.",
+    "event_zh": "FDA 批准：Allarity Therapeutics, Inc. · fda approval",
     "category": "approval",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/786947/000110465921096842/tm2123494d1_ex99-1.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1860657/000121390026105457/ea030729801ex99-1.htm",
     "evidence_quotes": [
-     "LTX-03 may offer safety advantages over existing opioid therapies consistent with the Food and Drug Administration’s (FDA) recently proposed new guidelines for the approval of opioid products.",
-     "AVERSION, used in the FDA approved drug OXAYDO® (oxycodone HCl) marketed by Assertio Holdings, Inc., utilizes polymers designed to limit the abuse of the product by nasal snorting and injection.",
-     "Forward-looking statements may include, but are not limited to: · our ability to fund or obtain funding for our continuing operations, including the development of our products utilizing our LIMITx and IMPEDE technologies; · whether we will receive FDA acceptance for an NDA for …"
+     "Allarity Therapeutics, Inc. · fda approval"
     ],
-    "price_1d": -0.059973,
-    "price_5d": -0.168167,
-    "price_20d": -0.163358,
-    "price_60d": -0.209962,
-    "raw_20d": -0.217391,
+    "price_1d": -0.057648,
+    "price_5d": -0.07198,
+    "price_20d": -0.155004,
+    "price_60d": null,
+    "raw_20d": -0.174976,
     "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-32a59b7c3d",
+    "date": "2026-10-01",
+    "ticker": "BCDA",
+    "company_zh": "BioCardia, Inc.",
+    "event_zh": "FDA 批准：BioCardia, Inc. · fda approval / clinical hold",
+    "category": "approval",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/925741/000143774926031665/ex_1021267.htm",
+    "evidence_quotes": [
+     "EX-99.1 2 ex_1021267.htm EXHIBIT 99.1 ex_1021267.htm Exhibit 99.1 BioCardia Files Revised De Novo Pre-Submission for FDA Approval of Helix ™ Catheter SUNNYVALE, Calif.",
+     "[Nasdaq: BCDA], a global leader in cellular and cell-derived therapeutics for the treatment of cardiovascular and pulmonary diseases, today reported it has completed its revised Pre-Submission to FDA Center for Devices and Radiological Health (CDRH) under its Q-Submission progra…"
+    ],
+    "price_1d": 0.042562,
+    "price_5d": -0.010369,
+    "price_20d": -0.152143,
+    "price_60d": null,
+    "raw_20d": -0.172115,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-d499cde7c3",
+    "date": "2026-10-01",
+    "ticker": "NVCR",
+    "company_zh": "NovoCure Ltd",
+    "event_zh": "临床数据读出：NovoCure Ltd · met the primary endpoint",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1645113/000164511326000071/paxjapandecisionpr.htm",
+    "evidence_quotes": [
+     "NovoCure Ltd · met the primary endpoint"
+    ],
+    "price_1d": -0.069555,
+    "price_5d": -0.112586,
+    "price_20d": -0.184461,
+    "price_60d": null,
+    "raw_20d": -0.204433,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-c1fcea3bc2",
+    "date": "2026-09-30",
+    "ticker": "CNTB",
+    "company_zh": "Connect Biopharma Holdings Ltd",
+    "event_zh": "临床数据读出：Connect Biopharma Holdings Ltd · announces positive topline / topline data",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1835268/000183526826000038/a991.htm",
+    "evidence_quotes": [
+     "On September 30, 2026, Connect Biopharma Holdings Limited (the “Company”) issued a press release announcing topline results from its global phase 2 study evaluating rademikibart, the Company’s next-generation, potentially best-in-class anti-interleukin-4-receptor alpha antibody …",
+     "On September 30, 2026, the Company announced topline results for the COPD Study.",
+     "The primary endpoint was treatment failure, defined as death due to any cause, (re)admission to a hospital for COPD, emergency department (re)visit or unscheduled medical visit for worsening of COPD symptoms, or the necessity to intensify pharmacologic treatment within 28 days a…"
+    ],
+    "price_1d": -0.175518,
+    "price_5d": -0.222386,
+    "price_20d": -0.257663,
+    "price_60d": null,
+    "raw_20d": -0.251121,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-cad5a1c4a3",
+    "date": "2026-09-28",
+    "ticker": "MIRM",
+    "company_zh": "Mirum Pharmaceuticals, Inc.",
+    "event_zh": "临床数据读出：Mirum Pharmaceuticals, Inc. · met the primary endpoint / phase 3 results",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1759425/000175942526000049/mirm-20260925.htm",
+    "evidence_quotes": [
+     "Announcement of Data from the Phase 3 AZURE-1 Study of Brelovitug in Chronic Hepatitis Delta On September 28, 2026, the Company announced the primary endpoint was met in the Phase 3 portion of the AZURE-1 study evaluating brelovitug, an investigational fully human monoclonal ant…",
+     "Phase 3 AZURE-1 Results: Brelovitug Met the Primary Endpoint at Week 24 The Phase 3 portion of the AZURE-1 study enrolled 153 treatment-naive patients randomized in a 2:2:1 ratio to receive brelovitug 300 mg self-administered once weekly (“QW”) by subcutaneous (“SC”) injection ,…",
+     "At Week 24, treatment with brelovitug met the primary endpoint, with 56% of patients in the 300 mg QW arm and 45% in the 900 mg Q4W arm achieving the combined endpoint of virologic response (≥2 log10 reduction in HDV RNA from baseline or undetectable HDV RNA [<LLOQ, TND]) and AL…"
+    ],
+    "price_1d": -0.034505,
+    "price_5d": -0.125939,
+    "price_20d": -0.042774,
+    "price_60d": null,
+    "raw_20d": -0.039084,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
     "outcome": "miss"
    }
   ]
