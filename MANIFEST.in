@@ -1,0 +1,18 @@
+# sdist contents: the wheel ships config/ and docs/metrics.json as data-files,
+# and `pip install .` from an sdist must be able to find those sources too.
+include README.md
+include README.zh-CN.md
+include LICENSE
+include CHANGELOG.md
+include pyproject.toml
+
+include config/*.json
+include config/*.csv
+
+include docs/metrics.json
+include docs/SCHEMA.md
+
+recursive-include medradar *.py
+recursive-include tests *.py
+recursive-include tests/fixtures *
+recursive-include scripts *.py

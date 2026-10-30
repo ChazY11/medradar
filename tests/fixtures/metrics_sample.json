@@ -638,5 +638,184 @@
     ],
     "benchmark": {"ticker": "SPY", "total_return": 0.061},
     "disclaimer_zh": "研究口径，不构成交易建议"
+  },
+  "products": {
+    "families": [
+      {
+        "family_id": "fam_ep_pfa_generator",
+        "name_zh": "脉冲场消融发生器",
+        "name_en": "PFA Generator",
+        "recent": 21,
+        "thi": 3.4,
+        "prob_up": 0.981,
+        "companies": 6,
+        "new_entrants_12m": 4,
+        "first_seen": "2025-02-11"
+      },
+      {
+        "family_id": "fam_surgical_robot_arm",
+        "name_zh": "手术机器人机械臂",
+        "name_en": "Surgical Robot Arm",
+        "recent": 17,
+        "thi": 2.6,
+        "prob_up": 0.955,
+        "companies": 5,
+        "new_entrants_12m": 2,
+        "first_seen": "2024-12-03"
+      },
+      {
+        "family_id": "fam_cgm_sensor",
+        "name_zh": "连续血糖传感器",
+        "name_en": "CGM Sensor",
+        "recent": 15,
+        "thi": 1.9,
+        "prob_up": 0.902,
+        "companies": 4,
+        "new_entrants_12m": 3,
+        "first_seen": "2024-11-19"
+      },
+      {
+        "family_id": "fam_tavr_delivery",
+        "name_zh": "经导管瓣膜输送系统",
+        "name_en": "TAVR Delivery System",
+        "recent": 12,
+        "thi": 1.24,
+        "prob_up": 0.71,
+        "companies": 3,
+        "new_entrants_12m": 0,
+        "first_seen": "2025-06-27"
+      }
+    ],
+    "new_products": [
+      {
+        "date": "2026-10-20",
+        "company_zh": "美敦力",
+        "family_zh": "脉冲场消融发生器",
+        "code": "OAD",
+        "device_name_zh": "脉冲场消融发生器（带接触力感应）",
+        "definition_zh": "用于房颤消融的脉冲电场消融系统，含接触力反馈与三维标测接口",
+        "k_number": "K242001",
+        "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K242001"
+      },
+      {
+        "date": "2026-10-14",
+        "company_zh": "直觉外科",
+        "family_zh": "手术机器人机械臂",
+        "code": "N/A",
+        "device_name_zh": "da Vinci 6 单孔机械臂",
+        "definition_zh": "单孔机器人手术系统的可转腕器械臂",
+        "k_number": "P230012",
+        "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P230012"
+      },
+      {
+        "date": "2026-09-28",
+        "company_zh": "雅培",
+        "family_zh": "连续血糖传感器",
+        "code": "QPA",
+        "device_name_zh": "14 天连续血糖监测传感器",
+        "definition_zh": "皮下植入式葡萄糖传感器，佩戴 14 天，蓝牙直连手机",
+        "k_number": "K241887",
+        "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K241887"
+      }
+    ],
+    "company_portfolio": [
+      {
+        "company_zh": "美敦力",
+        "top_families": [["脉冲场消融发生器", 0.38], ["经导管瓣膜输送系统", 0.22]],
+        "js_shift": 0.19
+      },
+      {
+        "company_zh": "直觉外科",
+        "top_families": [["手术机器人机械臂", 0.71]],
+        "js_shift": 0.06
+      },
+      {
+        "company_zh": "雅培",
+        "top_families": [["连续血糖传感器", 0.44], ["脉冲场消融发生器", 0.11]],
+        "js_shift": 0.12
+      }
+    ]
+  },
+  "replay": {
+    "status": "ok",
+    "window": {"start": "2026-01-05", "end": "2026-10-30"},
+    "steps": [
+      {
+        "t": "2026-01-06",
+        "ticker": "MDT",
+        "event_zh": "美敦力首次进入脉冲场消融赛道（K242001）",
+        "decision": "long",
+        "fill_price": 92.4,
+        "shares": 54,
+        "outcome_1d": 0.012,
+        "outcome_5d": 0.023,
+        "outcome_20d": 0.041,
+        "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K242001"
+      },
+      {
+        "t": "2026-01-06",
+        "ticker": "ISRG",
+        "event_zh": "直觉外科单孔机械臂产品码首次出现（P230012）",
+        "decision": "long",
+        "fill_price": 410.2,
+        "shares": 12,
+        "outcome_1d": -0.004,
+        "outcome_5d": -0.011,
+        "outcome_20d": 0.018,
+        "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P230012"
+      },
+      {
+        "t": "2026-10-06",
+        "ticker": "ABT",
+        "event_zh": "雅培 14 天 CGM 传感器清关（K241887）",
+        "decision": "long",
+        "fill_price": 118.7,
+        "shares": 42,
+        "outcome_1d": 0.006,
+        "outcome_5d": 0.014,
+        "outcome_20d": 0.022,
+        "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K241887"
+      },
+      {
+        "t": "2026-10-21",
+        "ticker": "PHG",
+        "event_zh": "飞利浦软件相关召回聚集（召回编号 Z-1234-2026）",
+        "decision": "skip",
+        "fill_price": null,
+        "shares": 0,
+        "outcome_1d": -0.003,
+        "outcome_5d": -0.008,
+        "outcome_20d": -0.015,
+        "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfres/res.cfm?id=Z-1234-2026"
+      }
+    ],
+    "summary_by_cost": {
+      "10": {"total_return": 0.092, "max_drawdown": -0.051, "win_rate": 0.75, "n_trades": 3, "sharpe": 1.4},
+      "25": {"total_return": 0.078, "max_drawdown": -0.058, "win_rate": 0.75, "n_trades": 3, "sharpe": 1.1},
+      "50": {"total_return": 0.061, "max_drawdown": -0.066, "win_rate": 0.5, "n_trades": 3, "sharpe": 0.8}
+    },
+    "assumptions_url": "docs/ASSUMPTIONS.md"
+  },
+  "timestamps": {
+    "by_quality": {"datetime": 74, "date": 1180, "estimated": 32, "unknown": 16},
+    "excluded_from_trading": 16,
+    "policy": "回测只使用 available_at；时间质量 unknown 的事件不进入交易研究"
+  },
+  "research": {
+    "sample_split": {
+      "train": {"start": "2024-11-01", "end": "2025-12-31", "events": 842},
+      "test": {"start": "2026-01-01", "end": "2026-10-30", "events": 460}
+    },
+    "multiple_testing": {
+      "method": "holm",
+      "adjusted": [
+        {"track_id": "ep_pfa", "raw_p": 0.0004, "adjusted_p": 0.0022, "significant": true},
+        {"track_id": "surgical_robotics", "raw_p": 0.0011, "adjusted_p": 0.0033, "significant": true},
+        {"track_id": "cgm", "raw_p": 0.014, "adjusted_p": 0.028, "significant": true},
+        {"track_id": "imaging", "raw_p": 0.21, "adjusted_p": 0.21, "significant": false}
+      ],
+      "n_significant": 3
+    },
+    "survivorship": {"flagged": 2, "method": "current-listing-only", "note": "退市/撤回产品未纳入"}
   }
 }

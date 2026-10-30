@@ -19,6 +19,32 @@ from medradar.report import CHAPTERS_ZH, build_report
 
 FIXTURE = Path(__file__).resolve().parent / "fixtures" / "metrics_sample.json"
 
+#: The original twelve chapters (semantic names, numbering stripped) must keep
+#: their relative order after the W5 chapters are inserted between them.
+ORIGINAL_CHAPTERS = (
+    "本期结论",
+    "数据状态",
+    "赛道热度榜",
+    "大厂动量",
+    "结构迁移",
+    "本周/本期首次出现",
+    "召回与风险",
+    "药品侧",
+    "中国空白度",
+    "信号与模拟盘",
+    "方法与局限",
+    "免责声明",
+)
+
+
+def _chapter_body(title: str) -> str:
+    """``六、结构迁移`` -> ``结构迁移`` (numbering-independent comparison)."""
+    return re.sub(r"^[一二三四五六七八九十百]+、", "", title)
+
+
+def _headings(markdown_text: str) -> list[str]:
+    return re.findall(r"^## (.+)$", markdown_text, flags=re.MULTILINE)
+
 #: HTML void elements, plus SVG children our generator self-closes.
 VOID_TAGS = {
     "area",
@@ -105,7 +131,8 @@ class ReportBuildTest(unittest.TestCase):
             self.assertTrue((self.out / name).is_file(), f"missing {name}")
         self.assertTrue((self.out / "index.html").stat().st_size > 5000)
         self.assertGreater(self.result["html_lines"], 100)
-        self.assertEqual(self.result["chapters_zh"], 12)
+        self.assertEqual(self.result["chapters_zh"], len(CHAPTERS_ZH))
+        self.assertEqual(len(CHAPTERS_ZH), 18, "twelve original chapters + six W5 chapters")
 
     def test_docs_entry_point_is_copied_verbatim(self) -> None:
         docs_html = (self.docs / "index.html").read_text(encoding="utf-8")
@@ -113,12 +140,15 @@ class ReportBuildTest(unittest.TestCase):
         self.assertTrue((self.docs / ".nojekyll").exists())
         self.assertEqual((self.docs / ".nojekyll").read_text(encoding="utf-8"), "")
 
-    def test_report_zh_has_exactly_twelve_chapters(self) -> None:
-        headings = re.findall(r"^## (.+)$", self.zh, flags=re.MULTILINE)
-        self.assertEqual(len(headings), 12, f"got {headings}")
+    def test_report_zh_has_eighteen_chapters_and_keeps_original_order(self) -> None:
+        headings = _headings(self.zh)
+        self.assertEqual(len(headings), 18, f"got {headings}")
         for index, title in enumerate(CHAPTERS_ZH):
             self.assertEqual(headings[index], title)
             self.assertIn(f"## {title}", self.zh)
+        bodies = [_chapter_body(title) for title in headings]
+        positions = [bodies.index(name) for name in ORIGINAL_CHAPTERS]
+        self.assertEqual(positions, sorted(positions), "original 12 chapters must keep their order")
         self.assertTrue(self.zh.startswith("# "), "Chinese report needs a level-1 title")
         self.assertGreater(len(self.zh.splitlines()), 100)
 
@@ -155,20 +185,28 @@ class ReportBuildTest(unittest.TestCase):
             "本期结论",
             "赛道热度榜",
             "大厂动量",
+            "产品族热度与新势力",
             "结构迁移",
+            "公司产品组合迁移",
+            "本周新品雷达",
             "首次出现",
             "召回与风险",
             "药品侧",
             "中国空白度",
             "信号与模拟盘",
+            "回放研究",
+            "时间质量与样本划分",
+            "多重检验与生存偏差",
             "方法与局限",
             "免责声明",
         ):
             self.assertIn(marker, self.html)
-        # status bar, KPI cards, generated SVG bar chart and equity polyline
+        # status bar, KPI cards, generated SVG charts, timeline and equity polyline
         self.assertRegex(self.html, r'class="statusbar (green|amber|red)"')
         self.assertIn('class="kpi"', self.html)
         self.assertIn('<svg class="chart"', self.html)
+        self.assertIn('aria-label="产品族热度条"', self.html)
+        self.assertIn('<ol class="timeline">', self.html)
         self.assertIn("<polyline", self.html)
         self.assertIn("@media (max-width:760px)", self.html)
 
@@ -192,6 +230,89 @@ class ReportBuildTest(unittest.TestCase):
     def test_no_data_fallbacks(self) -> None:
         self.assertIn("暂无数据", self.zh)
         self.assertIn("暂无数据", self.html)
+
+    # --------------------------------------------------- W5 research blocks
+    def test_w5_blocks_degrade_gracefully(self) -> None:
+        payload = {
+            key: value
+            for key, value in self.metrics.items()
+            if key not in ("products", "replay", "timestamps", "research")
+        }
+        metrics_path = self.tmp / "metrics_no_w5.json"
+        metrics_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        target = self.tmp / "out_no_w5"
+        result = build_report(metrics_path, target, docs_dir=self.tmp / "docs_no_w5")
+        zh = (target / "report_zh.md").read_text(encoding="utf-8")
+        page = (target / "index.html").read_text(encoding="utf-8")
+        self.assertEqual(len(_headings(zh)), 18)
+        for marker in (
+            "产品族热度与新势力",
+            "本周新品雷达",
+            "回放研究",
+            "时间质量与样本划分",
+            "多重检验与生存偏差",
+        ):
+            self.assertIn(marker, zh)
+        self.assertIn("暂无数据", zh)
+        self.assertIn("暂无数据", page)
+        self.assertGreaterEqual(page.count("暂无数据"), 5)
+        self.assertEqual(_parse(page).errors, [])
+        self.assertEqual(result["product_families"], 0)
+        self.assertEqual(result["replay_steps"], 0)
+
+    def test_product_families_and_new_products_rendered(self) -> None:
+        self.assertIn("脉冲场消融发生器", self.zh)
+        self.assertIn("手术机器人机械臂", self.zh)
+        self.assertIn('aria-label="产品族热度条"', self.html)
+        self.assertIn('class="radar"', self.html)
+        self.assertIn("脉冲场消融发生器（带接触力感应）", self.html)
+        self.assertIn("K242001", self.html)
+        self.assertEqual(self.result["product_families"], 4)
+        self.assertEqual(self.result["new_products"], 3)
+        self.assertEqual(self.result["company_portfolio"], 3)
+
+    def test_new_products_show_chinese_name_use_and_source(self) -> None:
+        for text in ("中文产品名", "用途 / 定义", "510(k)/PMA", "来源："):
+            self.assertIn(text, self.html)
+        # source URLs are displayed scheme-stripped so the page stays self-contained
+        self.assertIn("www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K242001", self.html)
+        self.assertNotIn("https://", self.html.lower())
+        self.assertNotIn("http://", self.html.lower())
+        self.assertIn("皮下植入式葡萄糖传感器", self.html)
+
+    def test_replay_timeline_and_cost_buckets(self) -> None:
+        self.assertIn('<ol class="timeline">', self.html)
+        self.assertIn("成交价", self.html)
+        self.assertIn("多档交易成本", self.html)
+        for bucket in ("10 bps", "25 bps", "50 bps"):
+            self.assertIn(bucket, self.html)
+        # direction must not rely on colour alone: glyphs + signed text
+        self.assertIn("▲", self.html)
+        self.assertIn("▼", self.html)
+        self.assertIn("+4.1%", self.html)
+        self.assertIn("-1.1%", self.html)
+        self.assertIn("回放研究", self.zh)
+        self.assertEqual(self.result["replay_steps"], 4)
+        self.assertIn("docs/ASSUMPTIONS.md", self.zh)
+
+    def test_timestamps_quality_and_sample_split(self) -> None:
+        for text in ("时间质量", "精确时间戳", "样本划分", "回测只使用 available_at"):
+            self.assertIn(text, self.zh)
+        self.assertIn("时间质量分布", self.html)
+        self.assertIn("不进入交易研究的事件", self.html)
+        self.assertIn("train", self.html)
+        self.assertIn("test", self.html)
+        self.assertEqual(self.result["timestamp_quality"], 4)
+
+    def test_assumptions_link_and_research_quality(self) -> None:
+        self.assertIn('href="docs/ASSUMPTIONS.md"', self.html)
+        self.assertIn("假设登记表", self.html)
+        self.assertIn("holm", self.html)
+        self.assertIn("生存偏差", self.html)
+        self.assertIn("多重检验", self.zh)
+        self.assertIn("生存偏差", self.zh)
+        self.assertNotIn("http://", self.html.lower())
+        self.assertNotIn("https://", self.html.lower())
 
     # ------------------------------------------------------------------------ CSV
     def test_summary_csv_is_excel_friendly(self) -> None:
@@ -236,11 +357,11 @@ class ReportBuildTest(unittest.TestCase):
                 result = build_report(metrics_path, target, docs_dir=self.tmp / f"docs_{label}")
                 zh = (target / "report_zh.md").read_text(encoding="utf-8")
                 page = (target / "index.html").read_text(encoding="utf-8")
-                self.assertEqual(len(re.findall(r"^## ", zh, flags=re.MULTILINE)), 12)
+                self.assertEqual(len(re.findall(r"^## ", zh, flags=re.MULTILINE)), 18)
                 self.assertIn("暂无数据", zh)
                 self.assertIn("暂无数据", page)
                 self.assertEqual(_parse(page).errors, [])
-                self.assertEqual(result["chapters_zh"], 12)
+                self.assertEqual(result["chapters_zh"], 18)
 
     def test_trading_insufficient_data_gets_explicit_message(self) -> None:
         payload = {
@@ -260,7 +381,7 @@ class ReportBuildTest(unittest.TestCase):
         bad = self.tmp / "metrics_broken.json"
         bad.write_text("{not valid json", encoding="utf-8")
         result = build_report(bad, self.tmp / "out_broken", docs_dir=self.tmp / "docs_broken")
-        self.assertEqual(result["chapters_zh"], 12)
+        self.assertEqual(result["chapters_zh"], 18)
         self.assertTrue((self.tmp / "out_broken" / "index.html").is_file())
         self.assertTrue((self.tmp / "docs_broken" / "index.html").is_file())
 

@@ -10,15 +10,58 @@ permissions:
 
 jobs:
   test:
+    name: py${{ matrix.python-version }} offline suite + wheel smoke
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python-version }}
+      - name: Install the package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install .
       - name: Offline test suite (no network)
         run: python -m medradar selftest
       - name: CLI smoke test
         run: |
           python -m medradar --help
           python -m medradar status --db data/none.sqlite
+      - name: Config loads from the installed wheel (temp cwd)
+        working-directory: ${{ runner.temp }}
+        run: |
+          python -c "import json, medradar.config as c; from medradar.config import load_companies; assert c.CONFIG_DIR.is_dir(), c.CONFIG_DIR; assert c.CONFIG_ORIGIN == 'installed', c.CONFIG_ORIGIN; n = len(load_companies('device').all()); assert n > 0, n; print(json.dumps({'config_dir': str(c.CONFIG_DIR), 'origin': c.CONFIG_ORIGIN, 'home': str(c.ROOT), 'companies': n, 'share': [str(p) for p in c.share_candidates('config')]}))"
+      - name: Installed wheel resolves config from a non-repo cwd
+        # Builds + installs the wheel into a throwaway --target, then imports
+        # medradar from outside the checkout and asserts config/companies/tracks
+        # came from share/medradar/config, not the source tree.
+        run: python scripts/check_install.py
+      - name: Offline demo smoke test (must not touch the network)
+        run: medradar demo
+
+  windows-install:
+    name: windows data-files + demo
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install the package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install .
+      - name: Offline test suite (no network)
+        run: python -m medradar selftest
+      - name: Config loads from the installed wheel (temp cwd)
+        working-directory: ${{ runner.temp }}
+        run: |
+          python -c "import json, medradar.config as c; from medradar.config import load_companies; assert c.CONFIG_DIR.is_dir(), c.CONFIG_DIR; assert c.CONFIG_ORIGIN == 'installed', c.CONFIG_ORIGIN; n = len(load_companies('device').all()); assert n > 0, n; print(json.dumps({'config_dir': str(c.CONFIG_DIR), 'origin': c.CONFIG_ORIGIN, 'home': str(c.ROOT), 'companies': n, 'share': [str(p) for p in c.share_candidates('config')]}))"
+      - name: Wheel data-files on Windows (--target install from a temp cwd)
+        run: python scripts/check_install.py
+      - name: Offline demo smoke test
+        run: medradar demo

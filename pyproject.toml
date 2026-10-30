@@ -24,6 +24,14 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools]
 packages = ["medradar"]
 
+# JSON config is knowledge, not code: install it next to the wheel so a pip
+# install is usable without the git checkout. `medradar.config` resolves this
+# `share/medradar/config` location; the demo snapshot rides along so
+# `medradar demo` also works from an installed copy (fully offline).
+[tool.setuptools.data-files]
+"share/medradar/config" = ["config/*.json", "config/*.csv"]
+"share/medradar/docs" = ["docs/metrics.json"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"

@@ -1,0 +1,50 @@
+{
+ "schema": "calibration-fixtures-v1",
+ "exported_at": "2026-10-30T18:31:34Z",
+ "note_zh": "回放 fixture：原始响应未留档，raw 字段由已解析的判定重建，只用于复现打分流程；不构成对端点的独立验证。",
+ "note_en": "Replay fixture. The original model string was not archived; `raw` is rebuilt from the parsed verdict. It reproduces the scoring pipeline, not the endpoint.",
+ "labels_csv": {
+  "path": "docs\\calibration\\ground_truth.csv",
+  "sha1": "54956317ff9f2f4d52a6a9abec26185395253d19"
+ },
+ "verdicts_sources": {
+  "llm": {
+   "path": "docs\\calibration\\llm_verdicts.json",
+   "sha1": "e0f1fced633b6c84e78b21d51c3e29a2615b9a4c"
+  },
+  "heuristic": {
+   "path": "docs\\calibration\\heuristic_verdicts.json",
+   "sha1": "5eca8e68b0fc59506041d896c4920bfbd800a4ac"
+  }
+ },
+ "suites": {
+  "llm": {
+   "model": "deepseek-chat",
+   "prompt_version": "8k-v1",
+   "recorded_at": "2026-10-31",
+   "recorded_at_note": "日期取自判定归档文件的写入时间；原始 LLM 调用日期未归档。",
+   "source": "docs/calibration/llm_verdicts.json - parsed verdicts archived from the 2026-10 DSH sub-agent calibration run; original chat-completions string NOT archived (CALIBRATION.md 6.7), raw reconstructed from the parsed verdict",
+   "verdicts_source": {
+    "path": "docs\\calibration\\llm_verdicts.json",
+    "sha1": "e0f1fced633b6c84e78b21d51c3e29a2615b9a4c"
+   },
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "n": 25,
+   "path": "llm/responses.json"
+  },
+  "heuristic": {
+   "model": "heuristic-keyword-baseline",
+   "prompt_version": "8k-v1",
+   "recorded_at": "2026-10-31",
+   "recorded_at_note": "日期取自判定归档文件的写入时间；原始 LLM 调用日期未归档。",
+   "source": "docs/calibration/heuristic_verdicts.json - HeuristicJudge output recorded in the same 2026-10 run",
+   "verdicts_source": {
+    "path": "docs\\calibration\\heuristic_verdicts.json",
+    "sha1": "5eca8e68b0fc59506041d896c4920bfbd800a4ac"
+   },
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "n": 25,
+   "path": "heuristic/responses.json"
+  }
+ }
+}

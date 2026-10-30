@@ -134,10 +134,12 @@ LLM 能把"批准/CRL/试验"和"财报"拉开 4 个百分点的仓位差；基�
    25 个点不足以拟合更复杂的校准曲线，先不做 isotonic。
 6. **模型部署差异**：本次用 DSH 子代理（DeepSeek）跑，生产默认是 `deepseek-chat` HTTP 端点；
    同提示词、温度 0，但部署差异会带来方差。
-7. **当前不可独立复现**：`docs/calibration/score.py` 内联了本次判定结果（原始响应未留档），
-   所以这只是一次**试点校准**，不是对生产端点的独立验证。配置 `MEDRADAR_LLM_API_KEY` 后用
-   `medradar judge` 重跑同一批文件、并与本报告的 llm_verdicts.json 对比，才构成可复现评估。
-   在此之前，README 里只能写"试点校准"，不能写"模型准确率 100%"。
+7. **可复现性（2026‑10‑31 更新）**：打分流程现在**可以离线复现** —— `python docs/calibration/score.py`
+   调用 `medradar.calibration` 的 `ReplayJudge`，按指纹回放 `tests/fixtures/calibration/` 里录制的
+   判定并重算指标，漂移时会拒绝写入并 `exit 1`。但**端点独立验证仍待 API key 重跑**
+   （`python -m medradar.calibration run --judge http ...`）；录制文件里的 `raw` 是由已解析判定
+   重建的（`manifest.json` 已标注 `raw_source`），只复现打分流程，不构成对生产模型的独立验证。
+   在此之前，对外只能说"试点校准"，不能说"模型准确率 100%"。参 `docs/RESEARCH.md` 校准协议。
 8. **方向上的两个错误都在财报**（Madrigal、Heron 判 +1，真值 0），财报不交易，因此对 P&L 无害。
 
 ## 7. 结论与下一步

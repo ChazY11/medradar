@@ -1,0 +1,438 @@
+{
+ "schema": "replay-fixture-v1",
+ "suite": "heuristic",
+ "model": "heuristic-keyword-baseline",
+ "prompt_version": "8k-v1",
+ "headline_template": "{company} 8-K",
+ "recorded_at": "2026-10-31",
+ "exported_at": "2026-10-30T18:31:34Z",
+ "source": "docs/calibration/heuristic_verdicts.json - HeuristicJudge output recorded in the same 2026-10 run",
+ "raw_source": "reconstructed_from_parsed_verdict",
+ "responses": [
+  {
+   "id": "cal-02",
+   "company": "Verona Pharma",
+   "filed": "2024-06-27",
+   "headline": "Verona Pharma 8-K",
+   "fingerprint": "37471b0a73deba4edc4a2c03738b8b133a184e12",
+   "filing_sha1": "03e0fa3c7418143886c150c3f9988e2074327ec7",
+   "raw": "{\"direction\": 1, \"materiality\": 0.5, \"catalyst_type\": \"approval\", \"confidence\": 0.6, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"These statements are neither promises nor guarantees, but involve known and unknown risks, uncertainties and other important factors that may cause our actual results, performance or achievements to be materially different from our expectations expressed or implied by the forward-looking statements…\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：serious adverse、fda approval、met the primary endpoint、statistically significant\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 1,
+    "materiality": 0.5,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-06",
+   "company": "Madrigal Pharmaceuticals",
+   "filed": "2025-02-26",
+   "headline": "Madrigal Pharmaceuticals 8-K",
+   "fingerprint": "2f2db592aca00585b9ea9a8ffcfe0a02e6c27dbb",
+   "filing_sha1": "db193dcd39877cccef10571efa02f1538c256189",
+   "raw": "{\"direction\": 0, \"materiality\": 0.2, \"catalyst_type\": \"approval\", \"confidence\": 0.6, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"We secured FDA approval for Rezdiffra, the first medicine approved for MASH, in March; executed a first-in-disease launch with remarkable results; and are well positioned for strong performance again in 2025 and beyond.&#148; Sibold continued, &#147;The U.S.\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：fda approval、approved by the fda、statistically significant\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 0,
+    "materiality": 0.2,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-07",
+   "company": "Aquestive Therapeutics",
+   "filed": "2025-04-01",
+   "headline": "Aquestive Therapeutics 8-K",
+   "fingerprint": "40e4d43fd7005cc4e3c21b266c20d2d4a9b9aa11",
+   "filing_sha1": "3729b6d3b08c38a3b990877d8ec7a1b8bc93b281",
+   "raw": "{\"direction\": 1, \"materiality\": 0.35, \"catalyst_type\": \"approval\", \"confidence\": 0.6, \"is_pivotal\": true, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"Importantly, Anaphylm was shown to be safe and well-tolerated with no serious adverse events (SAEs) reported.\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：serious adverse、fda approval、approved by the fda、positive topline\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 1,
+    "materiality": 0.35,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-09",
+   "company": "Autolus Therapeutics",
+   "filed": "2024-11-12",
+   "headline": "Autolus Therapeutics 8-K",
+   "fingerprint": "86ab7e573319328290f01bcaf204cce2166832ae",
+   "filing_sha1": "1eb9122c40b2a98c367fa82229d7aa5f7bd460d7",
+   "raw": "{\"direction\": 1, \"materiality\": 0.25, \"catalyst_type\": \"approval\", \"confidence\": 0.6, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"The most common serious adverse reactions of any Grade (incidence &#8805; 2%) included infections- pathogen unspecified, febrile neutropenia, ICANS, CRS, fever, bacterial infectious disorders, encephalopathy, fungal infections, hemorrhage, respiratory failure, hypotension, ascites, HLH/MAS, thrombo…\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：serious adverse、fda approval、approved by the fda\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 1,
+    "materiality": 0.25,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-13",
+   "company": "Zevra Therapeutics",
+   "filed": "2024-09-20",
+   "headline": "Zevra Therapeutics 8-K",
+   "fingerprint": "f2283f31ad0ab90797a930493fb4dab161e63e34",
+   "filing_sha1": "85fa850bb6f60127ea987c712289f1f5f6373772",
+   "raw": "{\"direction\": 1, \"materiality\": 0.25, \"catalyst_type\": \"approval\", \"confidence\": 0.6, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"Serious adverse reactions reported in MIPLYFFA-treated patients were hypersensitivity reactions including urticaria and angioedema.\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：serious adverse、fda approval、approved by the fda、breakthrough therapy designation、priority review\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 1,
+    "materiality": 0.25,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-14",
+   "company": "Day One Biopharma",
+   "filed": "2024-04-24",
+   "headline": "Day One Biopharma 8-K",
+   "fingerprint": "f1a8406771b37ea374c9cad1c348e430362e8cb2",
+   "filing_sha1": "0f2c508e2dcf9a1148eb6eafccb98472fcaede18",
+   "raw": "{\"direction\": 1, \"materiality\": 0.6, \"catalyst_type\": \"crl\", \"confidence\": 0.45, \"is_pivotal\": true, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.1 2 d812370dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 Day One's OJEMDA &#153; (tovorafenib) Receives US FDA Accelerated Approval for Relapsed or Refractory BRAF -altered Pediatric Low-Grade Glioma (pLGG), the Most Common Form of Childhood Brain Tumor First and only FDA-approved type II RAF inhib…\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：priority review\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 1,
+    "materiality": 0.6,
+    "catalyst_type": "crl"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-15",
+   "company": "Abeona Therapeutics",
+   "filed": "2024-04-22",
+   "headline": "Abeona Therapeutics 8-K",
+   "fingerprint": "3d8c619ee96cf0cb482e9c6dd157d46a604cebef",
+   "filing_sha1": "982c2e4fcb6ec3846154dc8b95901309b5ec488c",
+   "raw": "{\"direction\": 1, \"materiality\": 0.5, \"catalyst_type\": \"crl\", \"confidence\": 0.6, \"is_pivotal\": true, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.1 2 ex99-1.htm Exhibit 99.1 Abeona Therapeutics Provides Regulatory Update on Pz-cel Receives FDA Complete Response Letter (CRL) based on need for additional CMC information CRL did not identify deficiencies related to clinical efficacy or clinical safety data in BLA, and no new clinical stud…\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：complete response letter、fda approval、priority review\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 1,
+    "materiality": 0.5,
+    "catalyst_type": "crl"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-16",
+   "company": "Disc Medicine",
+   "filed": "2026-02-13",
+   "headline": "Disc Medicine 8-K",
+   "fingerprint": "d77fa2b923e69fe0ea04430472729f89eac7f474",
+   "filing_sha1": "38846c2da2859f9fb9aae093aaf9910488172b48",
+   "raw": "{\"direction\": 0, \"materiality\": 0.25, \"catalyst_type\": \"crl\", \"confidence\": 0.55, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.1 2 iron-ex99_1.htm EX-99.1 EX-99.1 Exhibit 99.1 Disc Medicine Receives Complete Response Letter from FDA for Bitopertin for the Treatment of EPP &#x2022; FDA acknowledged that AURORA and BEACON provided sufficient evidence that bitopertin significantly lowers PPIX and that there is a strong …\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：complete response letter、fda approval\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 0,
+    "materiality": 0.25,
+    "catalyst_type": "crl"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-17",
+   "company": "Ocular Therapeutix",
+   "filed": "2025-05-05",
+   "headline": "Ocular Therapeutix 8-K",
+   "fingerprint": "8ee18beb4d5c90032dd514fd4e5300f8d3ea0af3",
+   "filing_sha1": "537792304470cc8d32f3d5ac77bec6dc0f4e6a24",
+   "raw": "{\"direction\": 0, \"materiality\": 0.2, \"catalyst_type\": \"approval\", \"confidence\": 0.35, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：无匹配信号\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 0,
+    "materiality": 0.2,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-18",
+   "company": "Citius Pharmaceuticals",
+   "filed": "2023-07-31",
+   "headline": "Citius Pharmaceuticals 8-K",
+   "fingerprint": "f0051d7ed27feb0317aae28dc6964fc88a94a2e5",
+   "filing_sha1": "d8d61c1ceb345213d820939a0297b0f1cb78cd29",
+   "raw": "{\"direction\": 0, \"materiality\": 0.35, \"catalyst_type\": \"crl\", \"confidence\": 0.55, \"is_pivotal\": true, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"Receives a Complete Response Letter from the U.S.\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：complete response letter、approved by the fda\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 0,
+    "materiality": 0.35,
+    "catalyst_type": "crl"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-19",
+   "company": "Galera Therapeutics",
+   "filed": "2023-08-10",
+   "headline": "Galera Therapeutics 8-K",
+   "fingerprint": "7074ceaddb711849b0a070963b4328a482cb9f8b",
+   "filing_sha1": "21e7806702546fff24fb8c9740f50c0fb67d150d",
+   "raw": "{\"direction\": 1, \"materiality\": 0.4, \"catalyst_type\": \"crl\", \"confidence\": 0.6, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.1 2 d538959dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 Galera Receives Complete Response Letter from U.S.\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：complete response letter、breakthrough therapy designation、priority review\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 1,
+    "materiality": 0.4,
+    "catalyst_type": "crl"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-20",
+   "company": "Dare Bioscience",
+   "filed": "2024-11-14",
+   "headline": "Dare Bioscience 8-K",
+   "fingerprint": "daf3e9a44c39fb170e19200e7b83a64973802913",
+   "filing_sha1": "f391bb4f635ef55009a61c38c151c1873c89c4d9",
+   "raw": "{\"direction\": 0, \"materiality\": 0.2, \"catalyst_type\": \"approval\", \"confidence\": 0.6, \"is_pivotal\": true, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"difficile may need to be discontinued.\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：discontinued、fda approval、statistically significant\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 0,
+    "materiality": 0.2,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-21",
+   "company": "Elite Pharmaceuticals",
+   "filed": "2024-05-20",
+   "headline": "Elite Pharmaceuticals 8-K",
+   "fingerprint": "05cc58c43e53f60cf2f20ffca37adad451131d02",
+   "filing_sha1": "78b0aa345b4cd0b97f917755680e4f2d99a704c6",
+   "raw": "{\"direction\": 1, \"materiality\": 0.25, \"catalyst_type\": \"approval\", \"confidence\": 0.45, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.1 2 ex99-1.htm Exhibit 99.1 Elite Pharmaceuticals Receives FDA Approval for Generic Methotrexate NORTHVALE, N.J.\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：fda approval\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 1,
+    "materiality": 0.25,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-22",
+   "company": "Aldeyra Therapeutics",
+   "filed": "2025-04-03",
+   "headline": "Aldeyra Therapeutics 8-K",
+   "fingerprint": "2f282c13ee4f4545e03a543788c0277c7c9d7003",
+   "filing_sha1": "5bcbac461bd4bc94e48021f12bc5b3f073940e8a",
+   "raw": "{\"direction\": 0, \"materiality\": 0.2, \"catalyst_type\": \"crl\", \"confidence\": 0.55, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.2 3 d946200dex992.htm EX-99.2 EX-99.2 Exhibit 99.2 News Release Aldeyra Therapeutics Receives Complete Response Letter from the U.S.\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：complete response letter、statistically significant\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 0,
+    "materiality": 0.2,
+    "catalyst_type": "crl"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-24",
+   "company": "Iovance Biotherapeutics",
+   "filed": "2024-02-20",
+   "headline": "Iovance Biotherapeutics 8-K",
+   "fingerprint": "45f7242ea7e343d80abd30d71b4d294069843c0c",
+   "filing_sha1": "589ffb52ced3eea299efde143bd46b34b81ca580",
+   "raw": "{\"direction\": 1, \"materiality\": 0.5, \"catalyst_type\": \"approval\", \"confidence\": 0.45, \"is_pivotal\": true, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"AMTAGVI is the first and the only one-time, individualized T cell therapy to receive FDA approval for a solid tumor cancer.\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：fda approval\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 1,
+    "materiality": 0.5,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-26",
+   "company": "Capricor Therapeutics",
+   "filed": "2024-05-13",
+   "headline": "Capricor Therapeutics 8-K",
+   "fingerprint": "4e06e72c680d63d27d83cfe5f2122bbf924445f8",
+   "filing_sha1": "9dc56c862b8db67c5dffc6144f1dd7bda38bdb2d",
+   "raw": "{\"direction\": 0, \"materiality\": 0.2, \"catalyst_type\": \"approval\", \"confidence\": 0.45, \"is_pivotal\": true, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"In addition, if Capricor receives FDA marketing approval for CAP-1002 for the treatment of DMD, Capricor would be eligible to receive a Priority Review Voucher (PRV) based on our previous receipt of a rare pediatric disease designation.\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：priority review\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 0,
+    "materiality": 0.2,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-28",
+   "company": "Heron Therapeutics",
+   "filed": "2023-11-14",
+   "headline": "Heron Therapeutics 8-K",
+   "fingerprint": "c45734fac25f13d977dd72d2783a5f94dfaafeef",
+   "filing_sha1": "f4f1a1026963703f65ce8ac95ff49e2b8223aeee",
+   "raw": "{\"direction\": 0, \"materiality\": 0.2, \"catalyst_type\": \"approval\", \"confidence\": 0.45, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"APONVIE was approved by the FDA in September 2022 and became commercially available in the U.S.\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：approved by the fda\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 0,
+    "materiality": 0.2,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-29",
+   "company": "Reviva Pharmaceuticals",
+   "filed": "2023-10-30",
+   "headline": "Reviva Pharmaceuticals 8-K",
+   "fingerprint": "37aca9aa61c8e315e16276ef867ffc62d16b2a58",
+   "filing_sha1": "d4689e3cea91921a42a0fe4edf797c512bc991f7",
+   "raw": "{\"direction\": 1, \"materiality\": 0.6, \"catalyst_type\": \"trial_result\", \"confidence\": 0.6, \"is_pivotal\": true, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"This broad efficacy profile coupled with low discontinuation rates and favorable tolerability supports the potential of brilaroxazine to address limitations of standards of care and potentially be a long-term treatment option for this chronic and complex disease.\\\" Key clinical safety and tolerabili…\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：serious adverse、positive topline、statistically significant\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 1,
+    "materiality": 0.6,
+    "catalyst_type": "trial_result"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-30",
+   "company": "Viridian Therapeutics",
+   "filed": "2024-12-16",
+   "headline": "Viridian Therapeutics 8-K",
+   "fingerprint": "f785768211ab1a7994a3c07417f1d240cfb954f2",
+   "filing_sha1": "3bc54d8c20d791bbe86f7c634cb932940c94b660",
+   "raw": "{\"direction\": 1, \"materiality\": 0.5, \"catalyst_type\": \"approval\", \"confidence\": 0.55, \"is_pivotal\": true, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.1 2 d648282dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 Viridian Therapeutics Announces Positive Topline Results from Veligrotug Phase 3 THRIVE-2 Clinical Trial in Patients with Chronic Thyroid Eye Disease - Veligrotug met all primary and secondary endpoints with high statistical significance in T…\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：positive topline、statistically significant\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 1,
+    "materiality": 0.5,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-31",
+   "company": "Armata Pharmaceuticals",
+   "filed": "2023-03-06",
+   "headline": "Armata Pharmaceuticals 8-K",
+   "fingerprint": "fcc6b329c3f274a6572cfb355e31660b55a99b2b",
+   "filing_sha1": "f9add66085dc7fc8d1ac05825a875438caeb2b7f",
+   "raw": "{\"direction\": 1, \"materiality\": 0.25, \"catalyst_type\": \"trial_result\", \"confidence\": 0.45, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.1 2 tm238594d1_ex99-1.htm EXHIBIT 99.1 Exhibit 99.1 Armata Pharmaceuticals Announces Positive Topline Data from Phase 1b/2a SWARM- P.a.\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：positive topline\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 1,
+    "materiality": 0.25,
+    "catalyst_type": "trial_result"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-37",
+   "company": "Spero Therapeutics",
+   "filed": "2024-10-29",
+   "headline": "Spero Therapeutics 8-K",
+   "fingerprint": "cd6327222b505ad2c0c0685cfd3be6ae62207496",
+   "filing_sha1": "a2124b45c5be1111f2b764f83f32986c82299be4",
+   "raw": "{\"direction\": -1, \"materiality\": 0.5, \"catalyst_type\": \"approval\", \"confidence\": 0.45, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.1 2 d889032dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 Spero Therapeutics Announces SPR720 Phase 2a Interim Results and Provides a Business Update Phase 2a proof-of-concept study of SPR720 for the treatment of Nontuberculous Mycobacterial Pulmonary Disease (NTM-PD) did not meet its primary endpoi…\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：did not meet\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": -1,
+    "materiality": 0.5,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-38",
+   "company": "Avalo Therapeutics",
+   "filed": "2023-06-26",
+   "headline": "Avalo Therapeutics 8-K",
+   "fingerprint": "9ae934f106b22037a444849572d005bae1baa15a",
+   "filing_sha1": "6ab65c2a91f4ed72b4411117c0d15d469f9619d2",
+   "raw": "{\"direction\": -1, \"materiality\": 0.35, \"catalyst_type\": \"trial_result\", \"confidence\": 0.45, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.1 2 ex-991peaktoplinedata.htm EX-99.1 Document Exhibit 99.1 Avalo Announces Topline Data from Phase 2 PEAK Trial for AVTX-002 (quisovalimab) in Patients with Non-Eosinophilic Asthma AVTX-002 did not meet the primary endpoint measured by reduction in asthma related events compared to placebo, …\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：did not meet\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": -1,
+    "materiality": 0.35,
+    "catalyst_type": "trial_result"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-39",
+   "company": "VYNE Therapeutics",
+   "filed": "2025-07-30",
+   "headline": "VYNE Therapeutics 8-K",
+   "fingerprint": "748d589501fd55a48d9585e16d6da2613a4ddcaa",
+   "filing_sha1": "24c9b59a3c9e82713543a988d84877b3fb3be701",
+   "raw": "{\"direction\": 0, \"materiality\": 0.2, \"catalyst_type\": \"trial_result\", \"confidence\": 0.6, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.1 2 tm2522042d1_ex99-1.htm EXHIBIT 99.1 Exhibit 99.1 VYNE Therapeutics Announces Topline Results from Phase 2b Trial with Repibresib Gel in Nonsegmental Vitiligo Trial Did Not Meet Primary Endpoint or Key Secondary Endpoint of F-VASI50 and F-VASI75 Nominally Statistically Significant Effects …\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：did not meet、discontinued、serious adverse、statistically significant\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 0,
+    "materiality": 0.2,
+    "catalyst_type": "trial_result"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-40",
+   "company": "Theravance Biopharma",
+   "filed": "2026-03-03",
+   "headline": "Theravance Biopharma 8-K",
+   "fingerprint": "1955f4fe38779f573a955a44fac34fbb9e505d45",
+   "filing_sha1": "38934220ce94e8866a19c29b2dc8d96068aab566",
+   "raw": "{\"direction\": 0, \"materiality\": 0.2, \"catalyst_type\": \"approval\", \"confidence\": 0.55, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.1 2 tm267846d1_ex99-1.htm EXHIBIT 99.1 E xhibit 99.1 Theravance Biopharma Reports Phase 3 CYPRESS Study Did Not Meet Primary Endpoint; Board Accelerates Strategic Review and Announces Cost Reduction Actions &middot; Phase 3 CYPRESS study did not meet the primary endpoint, the OHSA Composite S…\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：did not meet、statistically significant\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": 0,
+    "materiality": 0.2,
+    "catalyst_type": "approval"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  },
+  {
+   "id": "cal-41",
+   "company": "Aerovate Therapeutics",
+   "filed": "2024-06-17",
+   "headline": "Aerovate Therapeutics 8-K",
+   "fingerprint": "25c59efa11603a84754940092f8ff8b19a536874",
+   "filing_sha1": "e2fbcbf73f76924e1a525192e06879b22c010d6a",
+   "raw": "{\"direction\": -1, \"materiality\": 0.5, \"catalyst_type\": \"trial_result\", \"confidence\": 0.45, \"is_pivotal\": false, \"asset\": \"\", \"indication\": \"\", \"revenue_relevance\": \"unknown\", \"evidence_quotes\": [\"EX-99.1 2 tm2417394d1_ex99-1.htm EXHIBIT 99-1 Exhibit 99.1 Aerovate Therapeutics Announces 24-Week Topline Results from the Phase 2b Portion of IMPAHCT Evaluating AV-101 for the Treatment of Pulmonary Arterial Hypertension AV-101 did not meet the primary endpoint of change in pulmonary vascular res…\"], \"rationale_zh\": \"关键词回退判定（未配置 LLM）：did not meet\"}",
+   "raw_source": "reconstructed_from_parsed_verdict",
+   "recorded_verdict": {
+    "direction": -1,
+    "materiality": 0.5,
+    "catalyst_type": "trial_result"
+   },
+   "recorded_at": "2026-10-31",
+   "judge": "heuristic"
+  }
+ ]
+}

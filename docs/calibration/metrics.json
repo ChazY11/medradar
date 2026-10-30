@@ -5,19 +5,37 @@
   "dir_acc": 0.92,
   "dir_acc_sign": 0.92,
   "spearman": 0.7997714534915624,
+  "pearson": 0.8855828049165407,
   "mae": 0.1464,
+  "rmse": 0.18624714762916503,
+  "bias": 0.1232,
   "hi_p": 0.9375,
   "hi_r": 0.9375,
-  "hi_f1": 0.9375
+  "hi_f1": 0.9375,
+  "n": 25
  },
  "heuristic": {
   "type_acc": 0.6,
   "dir_acc": 0.72,
   "dir_acc_sign": 0.72,
   "spearman": 0.5822613129549279,
+  "pearson": 0.6163156344279368,
   "mae": 0.184,
+  "rmse": 0.24,
+  "bias": -0.16,
   "hi_p": 1.0,
   "hi_r": 0.5,
-  "hi_f1": 0.6666666666666666
+  "hi_f1": 0.6666666666666666,
+  "n": 25
+ },
+ "repro": {
+  "how": "python docs/calibration/score.py (offline replay, no API key)",
+  "fixtures": "tests/fixtures/calibration",
+  "raw_source": "reconstructed_from_parsed_verdict",
+  "labels_sha1": "54956317ff9f2f4d52a6a9abec26185395253d19",
+  "llm_metrics_sha1": "267641bd2da2ffb20bf5c9dbdde5aa350c2fe9fa",
+  "heuristic_metrics_sha1": "199155d7d45838ccb02fedebd5b11dee74972a92",
+  "n": 25,
+  "match_published": true
  }
 }

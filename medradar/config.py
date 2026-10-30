@@ -11,12 +11,23 @@ The whole product hinges on two normalisation problems:
    curated Chinese track dictionary (手术机器人 / 结构性心脏 / CGM ...). The
    mapping lives in ``config/tracks_device.json`` and can be extended without
    touching code.
+
+Paths are resolved, not hard-coded: ``MEDRADAR_CONFIG_DIR`` overrides the
+config lookup (``config/`` in a checkout -> installed ``share/medradar/config``
+-> in-package ``_config``) and ``MEDRADAR_HOME`` relocates every write
+(``data/``, ``out/``, ``cache/``). A wheel install therefore never touches
+``site-packages``. The public constants below keep their historical names so
+``analyze``, ``report`` and ``live`` continue to work unchanged.
 """
 
 from __future__ import annotations
 
 import json
+import os
 import re
+import site
+import sys
+import sysconfig
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
@@ -28,8 +39,110 @@ from .util import (
     tokens,
 )
 
-ROOT = Path(__file__).resolve().parents[1]
-CONFIG_DIR = ROOT / "config"
+# -------------------------------------------------------------------- path layout
+# The package must run from three places: the git checkout (tests, `python -m
+# medradar`), a normal/venv wheel install (`<prefix>/share/medradar/config`) and
+# `pip install --target DIR` (data-files land beside the package). Resolution is
+# therefore a chain, not a single constant.
+
+#: This module's directory: ``<repo>/medradar`` or ``<site-packages>/medradar``.
+PACKAGE_DIR = Path(__file__).resolve().parent
+#: Repository root for a source checkout, otherwise the directory around the package.
+SOURCE_ROOT = PACKAGE_DIR.parent
+#: Optional last-resort config shipped *inside* the package (wheel fallback).
+BUNDLED_CONFIG_DIR = PACKAGE_DIR / "_config"
+
+_ENV_CONFIG_DIR = "MEDRADAR_CONFIG_DIR"
+_ENV_HOME = "MEDRADAR_HOME"
+
+
+def _data_prefixes() -> list[Path]:
+    """Prefixes a wheel's ``data-files`` may have been installed under.
+
+    * ``sysconfig.get_path("data")`` -- where ``pip install`` / virtualenvs put
+      data-files (``<prefix>/share/medradar/...``).
+    * ``sys.prefix`` -- belt and braces for exotic interpreters.
+    * ``PACKAGE_DIR.parent`` -- ``pip install --no-deps --target DIR`` puts the
+      data-files next to the package (``DIR/share/medradar/...``) rather than
+      into an interpreter prefix, so a ``--target`` install stays importable
+      and readable without any environment variable.
+    * ``site.getuserbase()`` -- ``pip install --user`` puts them in the user base
+      instead of the interpreter prefix.
+    """
+    raw: list[str | None] = []
+    try:
+        raw.append(sysconfig.get_path("data"))
+    except (KeyError, OSError, TypeError):  # pragma: no cover - broken interpreter
+        pass
+    raw.extend([getattr(sys, "prefix", None), str(PACKAGE_DIR.parent)])
+    try:
+        raw.append(site.getuserbase() or None)
+    except (AttributeError, OSError):  # pragma: no cover - exotic platform
+        pass
+    prefixes: list[Path] = []
+    seen: set[str] = set()
+    for item in raw:
+        if not item:
+            continue
+        path = Path(item)
+        key = os.path.normcase(str(path))
+        if key not in seen:
+            seen.add(key)
+            prefixes.append(path)
+    return prefixes
+
+
+def share_candidates(name: str) -> list[Path]:
+    """Candidate ``<prefix>/share/medradar/<name>`` directories (installed layouts)."""
+    return [prefix / "share" / "medradar" / name for prefix in _data_prefixes()]
+
+
+def _resolve_config(environ: Mapping[str, str] | None = None) -> tuple[Path, str]:
+    """Resolve the config directory and report where it came from."""
+    env = os.environ if environ is None else environ
+    override = str(env.get(_ENV_CONFIG_DIR) or "").strip()
+    if override:
+        return Path(override).expanduser(), "env"
+    source = SOURCE_ROOT / "config"
+    if source.is_dir():
+        return source, "source"
+    for candidate in share_candidates("config"):
+        if candidate.is_dir():
+            return candidate, "installed"
+    return BUNDLED_CONFIG_DIR, "package"
+
+
+def resolve_config_dir(environ: Mapping[str, str] | None = None) -> Path:
+    """Config directory for this interpreter.
+
+    Chain: ``MEDRADAR_CONFIG_DIR`` -> source tree ``config/`` -> installed
+    ``share/medradar/config`` -> in-package ``_config``.
+    """
+    return _resolve_config(environ)[0]
+
+
+def resolve_home(environ: Mapping[str, str] | None = None) -> Path:
+    """Writable data home.
+
+    ``MEDRADAR_HOME`` wins; otherwise the repository root when running from a
+    source checkout (so existing ``data/`` and ``out/`` keep working), else
+    ``~/.medradar`` for an installed wheel. Nothing is ever written inside
+    ``site-packages``.
+    """
+    env = os.environ if environ is None else environ
+    override = str(env.get(_ENV_HOME) or "").strip()
+    if override:
+        return Path(override).expanduser()
+    if (SOURCE_ROOT / "config").is_dir():
+        return SOURCE_ROOT
+    return Path(os.path.expanduser("~")) / ".medradar"
+
+
+#: Data home: data/out/cache all live below it (``MEDRADAR_HOME``).
+ROOT = resolve_home()
+#: Resolved config directory and the rule that produced it
+#: (``"env" | "source" | "installed" | "package"``).
+CONFIG_DIR, CONFIG_ORIGIN = _resolve_config()
 DATA_DIR = ROOT / "data"
 OUT_DIR = ROOT / "out"
 DOCS_DIR = ROOT / "docs"
@@ -37,12 +150,20 @@ CACHE_DIR = DATA_DIR / "cache"
 
 DEFAULT_DB = DATA_DIR / "medradar.sqlite"
 DEFAULT_METRICS = OUT_DIR / "metrics.json"
+#: True when ``config/`` lives in the checkout (tests, developer CLI runs).
+IS_SOURCE_TREE = (SOURCE_ROOT / "config").is_dir()
 
 
 def load_config(name: str, default: Any = None) -> Any:
-    """Load ``config/<name>.json`` (name may include a sub-directory)."""
-    path = CONFIG_DIR / (name if name.endswith(".json") else f"{name}.json")
-    payload = read_json(path)
+    """Load ``config/<name>.json`` (name may include a sub-directory).
+
+    When the resolved config directory lacks a file (e.g. a stripped installed
+    tree) the in-package ``_config`` copy is tried before falling back.
+    """
+    filename = name if name.endswith(".json") else f"{name}.json"
+    payload = read_json(CONFIG_DIR / filename)
+    if payload is None and BUNDLED_CONFIG_DIR != CONFIG_DIR:
+        payload = read_json(BUNDLED_CONFIG_DIR / filename)
     if payload is None:
         return default if default is not None else {}
     return payload

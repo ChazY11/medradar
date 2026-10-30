@@ -1,6 +1,6 @@
 # MedRadar 器械与药品产业方向雷达 · 中文研究报告
 
-> 生成时间：2026-10-30T17:40:50Z（UTC） ｜ 统计窗口：2025-01-01 至 2026-10-30（8 个季度） ｜ 数据状态：4 路可用 ｜ 中国空白度：不可用（NMPA 数据未加载）
+> 生成时间：2026-10-30T18:39:23Z（UTC） ｜ 统计窗口：2025-01-01 至 2026-10-30（8 个季度） ｜ 数据状态：4 路可用 ｜ 中国空白度：不可用（NMPA 数据未加载）
 
 本报告由 `python -m medradar report` 自动生成，全部数字来自当次运行的 `out/metrics.json`；字段缺失时显示「暂无数据」，不以 0 代替。
 
@@ -14,7 +14,7 @@
 
 ## 二、数据状态
 
-- **生成时间**：2026-10-30T17:40:50Z（UTC）
+- **生成时间**：2026-10-30T18:39:23Z（UTC）
 - **统计窗口**：2025-01-01 至 2026-10-30（8 个季度）
 - **基线窗口**：2020-01-01 至 2024-12-31（20 个季度）
 - **事件总数**：83,578 件
@@ -30,7 +30,7 @@
 
 **事件构成**：510(k) 清关 31,456、器械召回 16,764、药品批准 1,387、PMA 批准 24,073、临床试验启动 9,898
 
-**事实库**：`D:\DEPPSKK\medradar\data\medradar.sqlite`
+**事实库**：`data\medradar.sqlite`
 
 > **中国侧数据警告**：NMPA 注册证数据不可用（NMPA 数据未加载）。因此中国空白度仅为美国侧参考，报告不以 0 代替缺失值，也不做中美对比推断。
 
@@ -96,7 +96,11 @@
 
 > 仅展示前 20 家，共 24 家。
 
-## 五、结构迁移
+## 五、产品族热度与新势力
+
+暂无数据（products.families 为空，或产品级分析尚未运行）。
+
+## 六、结构迁移
 
 结构迁移衡量的是「谁在换方向」：公司窗口内赛道占比相对基线占比的变化（Δ，单位为个百分点），并用 Jensen-Shannon 距离（JS）过滤掉只是总量波动、组合结构没变的噪声。
 
@@ -134,7 +138,15 @@
 | 贝朗 | 脊柱 | 0% | 9% | -9.1 个百分点 | 0.154 |
 | 波士顿科学 | 神经调控 | 0% | 9% | -8.6 个百分点 | 0.139 |
 
-## 六、本周/本期首次出现
+## 七、公司产品组合迁移
+
+暂无数据（products.company_portfolio 为空，或公司产品组合分析尚未运行）。
+
+## 八、本周新品雷达
+
+暂无数据（products.new_products 为空，或本周没有抓取到新品记录）。
+
+## 九、本周/本期首次出现
 
 近 90 天共 19 条首次出现记录（按日期倒序，展示前 19 条）。
 
@@ -160,7 +172,7 @@
 | 2026-08-10 | 西门子医疗 | 未分类（产品码未映射） | NIG | Siemens Healthcare Diagnostics,… | Siemens Healthcare Diagnostics, Inc. 51… |
 | 2026-08-07 | 直觉外科 | 未分类（产品码未映射） | FDS | Intuitive Surgical, Inc. 510(k)… | Intuitive Surgical, Inc. 510(k)：Intuiti… |
 
-## 七、召回与风险
+## 十、召回与风险
 
 本期召回聚集榜共 10 家公司（按窗口内召回次数排序）。
 
@@ -179,7 +191,7 @@
 
 **赛道维度召回**：心脏节律（起搏/ICD）（14 次）、可穿戴与远程监测（17 次）、结构性心脏病（5 次）、医疗AI/软件(SaMD)（142 次）、手术机器人（16 次）、康复与外骨骼（13 次）、医美与皮肤（2 次）、女性健康（6 次）。召回密集的赛道通常对应更成熟、装机量更大的产品线，不等同于安全性恶化。
 
-## 八、药品侧
+## 十一、药品侧
 
 **NDA/BLA 批准**（24 家公司，按 THI 排序）：
 
@@ -256,7 +268,7 @@
 | 埃克塞里克斯 | 暂无数据 | 1.12 | 0.60 | 1.64 | 1 期 40%、2 期 30%、3 期 30% |
 | dentsply_sirona | 暂无数据 | 0.38 | 0.20 | 1.64 | NA 100% |
 
-## 九、中国空白度
+## 十二、中国空白度
 
 > **中国空白度：不可用（NMPA 数据未加载）。** NMPA 注册证数据缺失时 `cn_count` / `cn_share` 为 null，本报告**不以 0 代替**，因此不计算、也不解读 `gap_index`；下表仅保留美国侧事件作为方向参考。
 
@@ -287,7 +299,7 @@
 | 普外与手术耗材 | 40 | 1.0% | 不可用 | 不可用 | 不可用 | 不可用（NMPA 数据未加载） |
 | 免疫诊断 | 40 | 1.0% | 不可用 | 不可用 | 不可用 | 不可用（NMPA 数据未加载） |
 
-## 十、信号与模拟盘
+## 十三、信号与模拟盘
 
 本期共 303 条信号（做多候选 283 条 / 做空候选 20 条）；类型分布：试验启动 198、新产品码 47、药品批准 37、召回聚集 20、新赛道进入 1。
 
@@ -341,7 +353,106 @@
 
 > 模拟盘规则：只做多、信号次一交易日开盘入场、单票上限 5%、单赛道上限 25%、持有 60 个交易日或 -20% 止损、成本 20bps + 每笔 1 美元；未建模做空借券费与并购逼平，结果为研究口径，不构成真实交易建议。
 
-## 十一、方法与局限
+## 十四、回放研究
+
+回放研究把每条信号按「决策时点 → 成交价 → 1/5/20 日结果」逐笔展开，共 60 步，窗口 2025-11-01 至 2026-10-31。回放只使用决策时点可见的信息，避免前视偏差。
+
+| 时间 | 代码 | 事件 | 决策 | 成交价 | 股数 | 1 日 | 5 日 | 20 日 | 来源 |
+|---|---|---|---|---|---|---|---|---|---|
+| 2025-11-20T09:30:00-05:00 | BAYRY | 药品获批：HYRNUO (SEVABERTINIB) | 做多 | 7.78 | 1,852 | +1.8% ▲ | +12.9% ▲ | +34.0% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2025-11-26T09:30:00-05:00 | OTSKY | 药品获批：VOYXACT (SIBEPRENLIMAB-SZSI) | 做多 | 28.80 | 500 | -1.6% ▼ | +3.8% ▲ | +2.1% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2025-12-17T09:30:00-05:00 | GSK | 药品获批：EXDENSUR (DEPEMOKIMAB-ULAA) | 做多 | 48.08 | 300 | -2.1% ▼ | -0.8% ▼ | -2.3% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2025-12-18T09:30:00-05:00 | JNJ | 药品获批：RYBREVANT FASPRO (AMIVANTAMAB AND HY… | 做多 | 206.48 | 58 | -1.6% ▼ | -1.0% ▼ | +4.0% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-02-17T09:30:00-05:00 | JNJ | 药品获批：RYBREVANT FASPRO (AMIVANTAMAB AND HY… | 做多 | 240.27 | 50 | +0.4% ▲ | +1.4% ▲ | -1.9% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-03-02T09:30:00-05:00 | JNJ | 药品获批：PREZCOBIX (DARUNAVIR AND COBICISTAT) | 观望 | 246.55 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-03-18T09:30:00-04:00 | JNJ | 药品获批：ICOTYDE (ICOTROKINRA HYDROCHLORIDE) | 做多 | 235.35 | 61 | -0.1% ▼ | +0.9% ▲ | -1.4% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-03-27T09:30:00-04:00 | NVO | 药品获批：AWIQLI FLEXTOUCH (INSULIN ICODEC) | 做多 | 34.58 | 416 | +0.8% ▲ | +4.7% ▲ | +17.6% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-03-30T09:30:00-04:00 | TEVA | 药品获批：PONLIMSI (DENOSUMAB-ADET) | 做多 | 28.86 | 416 | +4.4% ▲ | +1.6% ▲ | +9.6% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-04-02T09:30:00-04:00 | LLY | 药品获批：FOUNDAYO (ORFORGLIPRON CALCIUM) | 做多 | 942.03 | 15 | -1.9% ▼ | -0.6% ▼ | +1.9% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-04-21T09:30:00-04:00 | MRK | 药品获批：IDVYNSO (DORAVIRINE) | 做多 | 114.98 | 125 | -3.1% ▼ | -5.5% ▼ | -1.9% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-04-27T09:30:00-04:00 | AZN | 药品获批：SAPHNELO (ANIFROLUMAB-FNIA) | 做多 | 188.91 | 64 | -1.2% ▼ | -2.9% ▼ | -0.9% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-05-04T09:30:00-04:00 | INCY | 药品获批：JAKAFI XR (RUXOLITINIB PHOSPHATE) | 做多 | 96.54 | 124 | +1.0% ▲ | +3.9% ▲ | -4.5% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-05-12T09:30:00-04:00 | ALC | III 期试验启动：An Investigation of FID 123472 … | 做多 | 62.54 | 160 | +1.4% ▲ | +6.0% ▲ | +5.7% ▲ | clinicaltrials.gov/study/NCT07578363 |
+| 2026-05-12T09:30:00-04:00 | SHL.DE | 首次出现产品码：Siemens Healthcare Diagnostics, I… | 做多 | 33.14 | 342 | +2.4% ▲ | +2.2% ▲ | +5.9% ▲ | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-05-14T09:30:00-04:00 | MMSI | 首次出现产品码：Merit Medical Systems, Inc. 510(k… | 观望 | 62.94 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-05-18T09:30:00-04:00 | AZN | 药品获批：BAXFENDY (BAXDROSTAT) | 观望 | 183.43 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-05-18T09:30:00-04:00 | JNJ | 首次出现产品码：Depuy Ireland UC 510(k)：Prostalac… | 观望 | 224.31 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-05-18T09:30:00-04:00 | TFX | 首次出现产品码：Teleflex Medical Sdn. Bhd. 510(k)… | 观望 | 129.39 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-05-26T09:30:00-04:00 | GILD | 药品获批：HEPCLUDEX (BULEVIRTIDE-GMOD) | 做多 | 133.61 | 108 | -1.2% ▼ | -5.7% ▼ | -6.9% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-05-28T09:30:00-04:00 | ABBV | 药品获批：DECNUPAZ (PIVEKIMAB SUNIRINE-PVZY) | 做多 | 213.07 | 68 | +0.8% ▲ | +4.2% ▲ | +17.3% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-05-28T09:30:00-04:00 | BAX | 首次出现产品码：Videomed Srl ( a Baxter Healthcar… | 观望 | 18.74 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-05-28T09:30:00-04:00 | FUJIY | 首次出现产品码：Fujifilm Corporation 510(k)：Synap… | 观望 | 10.38 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-05-29T09:30:00-04:00 | MDT | 首次出现产品码：Medtronic 510(k)：Trexon Monofila… | 观望 | 74.56 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+
+**多档交易成本下的回放结果**（成本以单边 bps 计）：
+
+| 成本档 | 区间总收益 | 最大回撤 | 胜率 | 笔数 | 备注 |
+|---|---|---|---|---|---|
+| 10 bps | +17.4% | -5.6% | 57.5% | 40 | cost_bps=10；final_equity=117,440.99；total_pnl=17,440.99 |
+| 25 bps | +15.9% | -5.9% | 57.5% | 40 | cost_bps=25；final_equity=115,931.04；total_pnl=15,931.04 |
+| 50 bps | +13.4% | -6.3% | 57.5% | 40 | cost_bps=50；final_equity=113,414.43；total_pnl=13,414.43 |
+
+> 完整假设与数据口径见 [假设登记表](docs/ASSUMPTIONS.md)。
+
+> 回放为研究口径：只做多、未建模借券费/并购逼平/滑点冲击，结果不可直接交易。
+
+## 十五、时间质量与样本划分
+
+时间质量统计每条事件的时间戳精度：`datetime` 最可靠，`date` 只能按日对齐，`estimated` 是估算值，`unknown` 不进入交易研究。
+
+| 时间质量档 | 事件数 | 占比 |
+|---|---|---|
+| 仅日期（date） | 83,578 | 100% |
+
+**不进入交易研究的事件**：0 条（时间质量未知，回测直接剔除）。
+
+**口径说明**：回测只使用 available_at；quality=unknown 的事件不进入交易研究
+
+> 统计口径：逐条读取事件表的 `timestamp_quality` 字段并计数，可按事件 ID 回查；`unknown` 不进入交易研究。
+
+**样本划分**（时间切分，避免用未来数据训练）：
+
+| 划分 | 说明 |
+|---|---|
+| status | ok |
+| n | 83,578 |
+| labels | dev、validation、holdout |
+| key | event_date |
+| fractions | 0.60、0.20、0.20 |
+| bounds | dev=start=2016-10-01；end=2024-10-29；n=62,852；n_days=2,484；validation=start=2024-10-30；end=2025-10-29；n=10,256；n_days=309；holdout=start=2025-10-30；end=2026-10-30；n=10,470；n_days=297 |
+| no_overlap | 是 |
+| sample_fractions | dev=0.75；validation=0.12；holdout=0.13 |
+
+> 回放与时间质量的完整假设见 [假设登记表](docs/ASSUMPTIONS.md)。
+
+## 十六、多重检验与生存偏差
+
+多重检验校正方法：**holm**；参与校正的检验 24 个。校正后仍有显著结果的赛道/产品族才值得单独解读。
+
+| 项目 | 原始 p 值 | 校正后 p 值 | 是否显著 |
+|---|---|---|---|
+| aesthetics | 0.00000 | 0.00000 | 是 |
+| medical_ai | 0.00000 | 0.00000 | 是 |
+| rehab_exo | 0.00000 | 0.00000 | 是 |
+| wearable_remote | 0.00000 | 0.00000 | 是 |
+| urology | 0.0040 | 0.0800 | 否 |
+| surgical_robotics | 0.0090 | 0.171 | 否 |
+| cardiac_rhythm | 0.0180 | 0.324 | 否 |
+| respiratory | 0.0190 | 0.324 | 否 |
+| ivd_molecular | 0.0250 | 0.400 | 否 |
+| neurovascular | 0.0380 | 0.570 | 否 |
+| structural_heart | 0.0410 | 0.574 | 否 |
+| cmf | 0.329 | 1.000 | 否 |
+
+**校正后显著项**：4 个。
+
+**生存偏差标记**：4 个标的/事件被标记为可能受生存偏差影响（note=免费行情源不含完整退市收益；退市/并购标的单独标注，不静默剔除）。
+
+> 存在生存偏差风险：只用当前仍在市/仍在目录中的样本会高估历史收益，相关结论应视为上界而非点估计。
+
+> 校正对象为各赛道 / 产品族的 THI 显著性检验，逐项 `adjusted` 与标记数均来自 `metrics.research`，可回查。
+
+## 十七、方法与局限
 
 1. **数据延迟 2-12 天。** openFDA 与 ClinicalTrials.gov 都有上报与索引延迟，本期窗口为 2025-01-01 至 2026-10-30（8 个季度），基线为 2020-01-01 至 2024-12-31（20 个季度）；所有速率按 `event_date`（最早可公开获知日期）计算。
 2. **名称口径漏检。** 公司归属依赖别名模糊匹配，宁可漏检也不误配；未匹配事件保留在事实库中，但不计入公司动量，`top_unmatched` 需人工复核。
@@ -351,7 +462,7 @@
 6. **中国侧不做推断。** NMPA 不可用时，中国空白度标记为不可用（NMPA 数据未加载），缺失值保持 null，不以 0 冒充真实空白。
 7. **模拟盘是研究工具。** 只做多、未建模借券费、并购逼平与大额冲击成本，样本量小，不能外推为可交易策略。
 
-## 十二、免责声明
+## 十八、免责声明
 
 本报告由 MedRadar 自动生成，仅用于开源研究、技术演示与数据方法讨论，**不构成任何投资建议、荐股或交易邀约**。
 

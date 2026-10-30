@@ -37,21 +37,31 @@ MAX_TRACK_ROWS = 24
 MAX_COMPANY_ROWS = 20
 MAX_FIRSTSEEN_ROWS = 20
 MAX_SIGNAL_ROWS = 20
+MAX_FAMILY_ROWS = 20
+MAX_PRODUCT_ROWS = 20
+MAX_REPLAY_STEPS = 24
 
-#: Fixed chapter names of the Chinese report (asserted by tests).
+#: Fixed chapter names of the Chinese report (asserted by tests). The original
+#: twelve chapters keep their relative order; research-grade blocks are inserted.
 CHAPTERS_ZH: tuple[str, ...] = (
     "一、本期结论",
     "二、数据状态",
     "三、赛道热度榜",
     "四、大厂动量",
-    "五、结构迁移",
-    "六、本周/本期首次出现",
-    "七、召回与风险",
-    "八、药品侧",
-    "九、中国空白度",
-    "十、信号与模拟盘",
-    "十一、方法与局限",
-    "十二、免责声明",
+    "五、产品族热度与新势力",
+    "六、结构迁移",
+    "七、公司产品组合迁移",
+    "八、本周新品雷达",
+    "九、本周/本期首次出现",
+    "十、召回与风险",
+    "十一、药品侧",
+    "十二、中国空白度",
+    "十三、信号与模拟盘",
+    "十四、回放研究",
+    "十五、时间质量与样本划分",
+    "十六、多重检验与生存偏差",
+    "十七、方法与局限",
+    "十八、免责声明",
 )
 
 SOURCE_LABELS = {
@@ -241,6 +251,8 @@ def _describe(value: Any) -> str:
         return DASH
     number = _num(value)
     if number is not None:
+        if abs(number - round(number)) < 1e-9:
+            return f"{number:,.0f}"
         return _fmt(number, 2)
     return _s(value)
 
@@ -354,6 +366,14 @@ def _en_conclusions(ctx: Mapping[str, Any]) -> list[str]:
     return out
 
 
+def _cell_value(value: Any, limit: int = 24) -> str:
+    """Compact scalar-or-structured cell used by the research-grade tables."""
+    if isinstance(value, (dict, list, tuple)):
+        return _trim(_describe(value), limit)
+    text = _trim(value, limit)
+    return text or DASH
+
+
 def _md_cell(value: Any) -> str:
     text = "" if value is None else str(value)
     return text.replace("|", "\\|").replace("\n", " ").strip()
@@ -433,6 +453,100 @@ def _fmt_delta_en(value: Any) -> str:
     return f"{number * 100:+.1f}pp"
 
 
+def _signed_pct_text(value: Any, digits: int = 1) -> str:
+    """Signed percentage with a direction glyph - never colour-only."""
+    number = _num(value)
+    if number is None:
+        return DASH
+    if abs(number) <= 3.0:
+        number *= 100.0
+    glyph = "▲" if number > 0 else "▼" if number < 0 else "→"
+    return f"{number:+.{digits}f}% {glyph}"
+
+
+def _decision_label(value: Any) -> tuple[str, str]:
+    """Map a replay decision to ``(text, css)`` so colour is never the only cue."""
+    raw = _s(value).lower()
+    if raw in ("long", "buy", "1", "+1", "做多", "买入"):
+        return "做多", "badge badge-long"
+    if raw in ("short", "sell", "-1", "做空", "卖出", "回避"):
+        return "做空 / 回避", "badge badge-short"
+    if raw in ("hold", "skip", "flat", "0", "观望", "跳过"):
+        return "观望", "badge badge-flat"
+    return (_s(value) or DASH), "badge badge-flat"
+
+
+def _source_text(value: Any, limit: int = 72) -> str:
+    """Scheme-stripped source citation: keeps the dashboard free of remote URLs."""
+    text = _s(value)
+    if not text:
+        return DASH
+    lowered = text.lower()
+    for prefix in ("https://", "http://", "//"):
+        if lowered.startswith(prefix):
+            text = text[len(prefix):]
+            break
+    return _trim(text, limit)
+
+
+def _source_span(value: Any, label: str = "来源", limit: int = 72) -> str:
+    text = _source_text(value, limit)
+    if text == DASH:
+        return ""
+    return f'<span class="src">{_h(label)}：{_h(text)}</span>'
+
+
+def _assumptions_link(url: Any) -> str:
+    """Relative link to the assumptions register; external URLs degrade to text."""
+    raw = _s(url)
+    if not raw:
+        return ""
+    label = _source_text(raw, 80)
+    if raw.lower().startswith(("http://", "https://")):
+        return f'<span class="src">假设登记表：{_h(label)}</span>'
+    return f'<a class="src-link" href="{_h(raw)}">假设登记表：{_h(label)}</a>'
+
+
+def _family_name(entry: Mapping[str, Any] | None) -> str:
+    entry = entry or {}
+    return _s(entry.get("name_zh")) or _s(entry.get("name_en")) or _s(entry.get("family_id")) or DASH
+
+
+def _family_key(entry: Mapping[str, Any] | None) -> str:
+    entry = entry or {}
+    return _s(entry.get("family_id")) or _s(entry.get("name_en")) or DASH
+
+
+def _company_count(entry: Mapping[str, Any]) -> str:
+    value = entry.get("companies")
+    if isinstance(value, (list, tuple)):
+        return _fmt_int(len(value))
+    if isinstance(value, dict):
+        return _fmt_int(len(value))
+    return _fmt_int(value)
+
+
+def _top_families_text(value: Any, limit: int = 3) -> str:
+    parts: list[str] = []
+    for pair in _l(value)[:limit]:
+        if isinstance(pair, (list, tuple)) and len(pair) >= 2:
+            parts.append(f"{_s(pair[0]) or DASH} {_fmt_share(pair[1])}")
+    return "、".join(parts) if parts else DASH
+
+
+QUALITY_LABELS = {
+    "datetime": "精确时间戳（datetime）",
+    "date": "仅日期（date）",
+    "estimated": "估算时间（estimated）",
+    "unknown": "未知（unknown，不进回测）",
+}
+
+
+def _quality_label(value: Any) -> str:
+    key = _s(value).lower()
+    return QUALITY_LABELS.get(key, _s(value) or DASH)
+
+
 def _sort_desc(items: list[dict[str, Any]], key: str) -> list[dict[str, Any]]:
     def rank(item: Mapping[str, Any]) -> tuple[int, float]:
         value = _num(item.get(key))
@@ -451,7 +565,7 @@ def _sort_abs_desc(items: list[dict[str, Any]], key: str) -> list[dict[str, Any]
 
 def _sort_date_desc(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
     def rank(item: Mapping[str, Any]) -> tuple[int, str]:
-        value = _s(item.get("event_date")) or _s(item.get("signal_date"))
+        value = _s(item.get("event_date")) or _s(item.get("signal_date")) or _s(item.get("date"))
         return (0, "~" + value) if value else (1, "")
 
     # ISO dates sort lexicographically; ascending on "~"+date then reverse.
@@ -471,7 +585,14 @@ def _track_name(entry: Mapping[str, Any] | None, fallback: str = DASH) -> str:
 
 def _company_name(entry: Mapping[str, Any] | None) -> str:
     entry = entry or {}
-    return _s(entry.get("name_zh")) or _s(entry.get("key")) or _s(entry.get("name_en")) or DASH
+    return (
+        _s(entry.get("name_zh"))
+        or _s(entry.get("company_zh"))
+        or _s(entry.get("company_name"))
+        or _s(entry.get("key"))
+        or _s(entry.get("name_en"))
+        or DASH
+    )
 
 
 def _trend(entry: Mapping[str, Any]) -> str:
@@ -863,6 +984,41 @@ def build_context(metrics: Any, metrics_path: Path | str = DEFAULT_METRICS, out_
     for text, level in _alert_entries(leftover_alerts):
         alert_lines.append(_LEVEL_TAGS.get(level.lower(), "") + text)
 
+    products = _d(metrics.get("products"))
+    families = _sort_desc([entry for entry in _l(products.get("families")) if isinstance(entry, dict)], "thi")
+    new_products = _sort_date_desc([entry for entry in _l(products.get("new_products")) if isinstance(entry, dict)])
+    company_portfolio = _sort_abs_desc(
+        [entry for entry in _l(products.get("company_portfolio")) if isinstance(entry, dict)], "js_shift"
+    )
+    family_map = {_family_key(entry): _family_name(entry) for entry in families if _family_key(entry) != DASH}
+
+    replay = _d(metrics.get("replay"))
+    replay_steps = [entry for entry in _l(replay.get("steps")) if isinstance(entry, dict)]
+    replay_summary = replay.get("summary_by_cost")
+    if not isinstance(replay_summary, dict):
+        replay_summary = {}
+    replay_view = {
+        "status": _s(replay.get("status")) or ("ok" if replay_steps else ""),
+        "window": _d(replay.get("window")),
+        "steps": replay_steps,
+        "summary_by_cost": replay_summary,
+        "assumptions_url": _s(replay.get("assumptions_url")),
+        "present": bool(replay),
+    }
+
+    timestamps = _d(metrics.get("timestamps"))
+    by_quality = _d(timestamps.get("by_quality"))
+    quality_rows: list[tuple[str, float | None]] = [
+        (_s(key), _num(value)) for key, value in by_quality.items()
+    ]
+    quality_rows.sort(key=lambda pair: (pair[1] is None, -(pair[1] or 0)))
+    quality_total = sum(value for _, value in quality_rows if value is not None)
+
+    research = _d(metrics.get("research"))
+    sample_split = _d(research.get("sample_split"))
+    multiple_testing = _d(research.get("multiple_testing"))
+    survivorship = _d(research.get("survivorship"))
+
     counts = _flatten_counts(meta.get("counts"))
     available = [status for status in data_status.values() if _s(status).lower() in ("ok", "loaded", "partial")]
     return {
@@ -883,6 +1039,20 @@ def build_context(metrics: Any, metrics_path: Path | str = DEFAULT_METRICS, out_
         "cn_gap": cn_gap,
         "cn_unavailable": cn_unavailable,
         "signals": signals,
+        "families": families,
+        "new_products": new_products,
+        "company_portfolio": company_portfolio,
+        "family_map": family_map,
+        "replay": replay_view,
+        "timestamps": timestamps,
+        "quality_rows": quality_rows,
+        "quality_total": quality_total,
+        "excluded_from_trading": _num(timestamps.get("excluded_from_trading")),
+        "timestamps_policy": _s(timestamps.get("policy")),
+        "research": research,
+        "sample_split": sample_split,
+        "multiple_testing": multiple_testing,
+        "survivorship": survivorship,
         "alerts": alerts_raw,
         "alert_lines": alert_lines,
         "trading": trading_view,
@@ -1106,6 +1276,359 @@ def _zh_companies(ctx: Mapping[str, Any]) -> str:
     )
     more = f"\n\n> 仅展示前 {MAX_COMPANY_ROWS} 家，共 {len(companies)} 家。" if len(companies) > MAX_COMPANY_ROWS else ""
     return f"{intro}\n\n{table}{more}"
+
+
+def _zh_products_families(ctx: Mapping[str, Any]) -> str:
+    families = ctx["families"]
+    if not families:
+        return f"{DASH}（products.families 为空，或产品级分析尚未运行）。"
+    top = families[0]
+    intro = (
+        f"产品族是在赛道之下按 openFDA 产品码族细分的一层。本期共 {len(families)} 个产品族，"
+        f"热度最高的是 **{_family_name(top)}**（ID `{_family_key(top)}`）：THI = {_fmt_thi(top.get('thi'))}，"
+        f"P(高于基线) = {_fmt_prob(top.get('prob_up'))}，窗口内 {_fmt_int(top.get('recent'))} 件，"
+        f"覆盖 {_company_count(top)} 家公司，近 12 个月新进入 {_fmt_int(top.get('new_entrants_12m'))} 家。"
+    )
+    movers = sorted(families, key=lambda entry: -(_num(entry.get("new_entrants_12m")) or 0))[:3]
+    movers = [entry for entry in movers if (_num(entry.get("new_entrants_12m")) or 0) > 0]
+    lines = [intro]
+    if movers:
+        lines.append(
+            "**新势力**：近 12 个月新进入公司最多的产品族为 "
+            + "、".join(f"{_family_name(entry)}（{_fmt_int(entry.get('new_entrants_12m'))} 家）" for entry in movers)
+            + "。"
+        )
+    lines.append("")
+    rows = []
+    for index, entry in enumerate(families[:MAX_FAMILY_ROWS], start=1):
+        rows.append(
+            (
+                index,
+                _family_name(entry),
+                _fmt_thi(entry.get("thi")),
+                _fmt_prob(entry.get("prob_up")),
+                _fmt_int(entry.get("recent")),
+                _company_count(entry),
+                _fmt_int(entry.get("new_entrants_12m")),
+                _cell_value(entry.get("first_seen"), 12),
+                _family_key(entry),
+            )
+        )
+    table = _md_table(
+        ["#", "产品族", "THI", "P(高于基线)", "窗口事件", "公司数", "12月新进入", "首次出现", "产品族 ID"],
+        rows,
+    )
+    lines.append(table)
+    lines.append("")
+    lines.append("> 每个产品族都可用 `产品族 ID` + 产品码回查到 `config/product_code_tracks.json` 与 openFDA 原始记录。")
+    return "\n".join(lines)
+
+
+def _zh_company_portfolio(ctx: Mapping[str, Any]) -> str:
+    portfolio = ctx["company_portfolio"]
+    if not portfolio:
+        return f"{DASH}（products.company_portfolio 为空，或公司产品组合分析尚未运行）。"
+    top = portfolio[0]
+    lines = [
+        "公司产品组合迁移衡量公司「产品族结构」的变化：`js_shift` 是窗口内组合分布相对基线的 "
+        "Jensen-Shannon 距离，越接近 0 说明产品结构越稳定，越大说明公司正在换产品方向。",
+        "",
+    ]
+    for item in portfolio[:5]:
+        lines.append(
+            f"- **{_company_name(item)}**：主产品族 {_top_families_text(item.get('top_families'))}；"
+            f"组合迁移指数 JS = {_fmt(item.get('js_shift'), 3)}。"
+        )
+    lines.append("")
+    rows = []
+    for item in portfolio[:MAX_COMPANY_ROWS]:
+        shift = _num(item.get("js_shift"))
+        direction = "结构明显变化" if (shift or 0) >= 0.1 else "结构相对稳定"
+        rows.append(
+            (
+                _company_name(item),
+                _top_families_text(item.get("top_families")),
+                _fmt(item.get("js_shift"), 3),
+                direction,
+            )
+        )
+    lines.append(_md_table(["公司", "主产品族（窗口占比）", "JS 组合迁移", "解读"], rows))
+    lines.append("")
+    lines.append(f"> 组合迁移最大的是 **{_company_name(top)}**（JS = {_fmt(top.get('js_shift'), 3)}）；"
+                 "占比与指数均可由产品族归属逐条回查。")
+    return "\n".join(lines)
+
+
+def _zh_new_products(ctx: Mapping[str, Any]) -> str:
+    items = ctx["new_products"]
+    if not items:
+        return f"{DASH}（products.new_products 为空，或本周没有抓取到新品记录）。"
+    intro = (
+        f"本周新品雷达共 {len(items)} 条（按日期倒序），每条都保留中文产品名、用途、"
+        "510(k)/PMA 编号与来源，可直接回查原始记录。"
+    )
+    rows = []
+    for item in items[:MAX_PRODUCT_ROWS]:
+        product_name = _s(item.get("device_name_zh")) or _s(item.get("device_name")) or DASH
+        rows.append(
+            (
+                _s(item.get("date")) or DASH,
+                _s(item.get("company_zh")) or DASH,
+                _s(item.get("family_zh")) or DASH,
+                _s(item.get("code")) or "—",
+                product_name,
+                _trim(_s(item.get("definition_zh")) or _s(item.get("definition")), 56) or DASH,
+                _s(item.get("k_number")) or DASH,
+                _source_text(item.get("url"), 110),
+            )
+        )
+    table = _md_table(
+        ["日期", "公司", "产品族", "产品码", "中文产品名", "用途 / 定义", "510(k)/PMA 编号", "来源"],
+        rows,
+    )
+    return f"{intro}\n\n{table}\n\n> 来源列为去掉协议头的原文路径，可在 docs/ 与 openFDA 原始记录中逐条核对；未取得来源时显示暂无数据。"
+
+
+def _cost_row_values(stats: Mapping[str, Any]) -> tuple[str, str, str, str, str]:
+    known = {
+        "total_return",
+        "max_drawdown",
+        "win_rate",
+        "n_trades",
+        "trades",
+        "sharpe",
+        "avg_trade_return",
+    }
+    extras: list[str] = []
+    if _num(stats.get("sharpe")) is not None:
+        extras.append(f"夏普 {_fmt(stats.get('sharpe'), 2)}")
+    extras.extend(
+        f"{key}={_describe(value)}"
+        for key, value in stats.items()
+        if key not in known and not isinstance(value, (dict, list))
+    )
+    return (
+        _fmt_auto_pct(stats.get("total_return")),
+        _fmt_auto_pct(stats.get("max_drawdown")),
+        _fmt_prob(stats.get("win_rate")),
+        _fmt_int(_first_num(stats, ("n_trades", "trades"))),
+        "；".join(extras[:3]) if extras else DASH,
+    )
+
+
+def _replay_cost_rows(summary_by_cost: Mapping[str, Any]) -> list[tuple[str, str, str, str, str, str]]:
+    rows: list[tuple[str, str, str, str, str, str]] = []
+    for label, stats in summary_by_cost.items():
+        stats = _d(stats)
+        if not stats:
+            continue
+        total, drawdown, win, trades, extra = _cost_row_values(stats)
+        rows.append((f"{_s(label)} bps", total, drawdown, win, trades, extra))
+    return rows
+
+
+def _zh_replay(ctx: Mapping[str, Any]) -> str:
+    replay = ctx["replay"]
+    if not replay.get("present"):
+        return f"{DASH}（replay 块缺失，回放研究尚未运行）。"
+    status = _s(replay.get("status"))
+    steps = replay.get("steps") or []
+    if status == "insufficient_data" or not steps:
+        return f"{DASH}（回放样本不足：status = {status or 'insufficient_data'}）。"
+    window = _range_text(replay.get("window"))
+    lines = [
+        f"回放研究把每条信号按「决策时点 → 成交价 → 1/5/20 日结果」逐笔展开，共 {len(steps)} 步，"
+        f"窗口 {window}。回放只使用决策时点可见的信息，避免前视偏差。",
+        "",
+    ]
+    rows = []
+    for step in steps[:MAX_REPLAY_STEPS]:
+        decision, _ = _decision_label(step.get("decision"))
+        rows.append(
+            (
+                _s(step.get("t")) or DASH,
+                _s(step.get("ticker")) or DASH,
+                _trim(_s(step.get("event_zh")) or _s(step.get("event")) or DASH, 42),
+                decision,
+                _fmt(step.get("fill_price"), 2),
+                _fmt_int(step.get("shares")),
+                _signed_pct_text(step.get("outcome_1d")),
+                _signed_pct_text(step.get("outcome_5d")),
+                _signed_pct_text(step.get("outcome_20d")),
+                _source_text(step.get("url"), 44),
+            )
+        )
+    lines.append(
+        _md_table(
+            ["时间", "代码", "事件", "决策", "成交价", "股数", "1 日", "5 日", "20 日", "来源"],
+            rows,
+        )
+    )
+    cost_rows = _replay_cost_rows(_d(replay.get("summary_by_cost")))
+    if cost_rows:
+        lines.append("")
+        lines.append("**多档交易成本下的回放结果**（成本以单边 bps 计）：")
+        lines.append("")
+        lines.append(_md_table(["成本档", "区间总收益", "最大回撤", "胜率", "笔数", "备注"], cost_rows))
+    assumptions_url = replay.get("assumptions_url")
+    if assumptions_url:
+        lines.append("")
+        lines.append(f"> 完整假设与数据口径见 [假设登记表]({assumptions_url})。")
+    lines.append("")
+    lines.append("> 回放为研究口径：只做多、未建模借券费/并购逼平/滑点冲击，结果不可直接交易。")
+    return "\n".join(lines)
+
+
+def _assumptions_md_link(ctx: Mapping[str, Any]) -> str:
+    replay = ctx["replay"]
+    url = _s(replay.get("assumptions_url"))
+    if not url:
+        return ""
+    return f"[假设登记表]({url})"
+
+
+def _zh_timestamps(ctx: Mapping[str, Any]) -> str:
+    rows_data = ctx["quality_rows"]
+    total = ctx["quality_total"]
+    parts: list[str] = []
+    if rows_data:
+        lines = [
+            "时间质量统计每条事件的时间戳精度：`datetime` 最可靠，`date` 只能按日对齐，"
+            "`estimated` 是估算值，`unknown` 不进入交易研究。",
+            "",
+        ]
+        rows = []
+        for quality, count in rows_data[:12]:
+            rows.append(
+                (
+                    _quality_label(quality),
+                    _fmt_int(count),
+                    _fmt_share((count or 0) / total) if total else DASH,
+                )
+            )
+        lines.append(_md_table(["时间质量档", "事件数", "占比"], rows))
+        excluded = ctx["excluded_from_trading"]
+        lines.append("")
+        lines.append(
+            f"**不进入交易研究的事件**：{_fmt_int(excluded)} 条"
+            + ("（时间质量未知，回测直接剔除）。" if excluded is not None else "（未统计）。")
+        )
+        if ctx["timestamps_policy"]:
+            lines.append("")
+            lines.append(f"**口径说明**：{ctx['timestamps_policy']}")
+        lines.append("")
+        lines.append("> 统计口径：逐条读取事件表的 `timestamp_quality` 字段并计数，可按事件 ID 回查；`unknown` 不进入交易研究。")
+        parts.append("\n".join(lines))
+    else:
+        parts.append(f"{DASH}（timestamps.by_quality 为空，或时间质量统计尚未运行）。")
+
+    sample_split = ctx["sample_split"]
+    if sample_split:
+        rows = [(key, _describe(value)) for key, value in sample_split.items()]
+        parts.append("**样本划分**（时间切分，避免用未来数据训练）：\n\n" + _md_table(["划分", "说明"], rows))
+    else:
+        parts.append(f"**样本划分**：{DASH}（research.sample_split 为空）。")
+    assumptions = _assumptions_md_link(ctx)
+    if assumptions:
+        parts.append(f"> 回放与时间质量的完整假设见 {assumptions}。")
+    return "\n\n".join(parts)
+
+
+_ADJUSTED_LABELS = {
+    "track_id": "赛道 / 产品族",
+    "family_id": "产品族",
+    "key": "项目",
+    "raw_p": "原始 p 值",
+    "p_value": "原始 p 值",
+    "p": "原始 p 值",
+    "adjusted_p": "校正后 p 值",
+    "q_value": "校正后 p 值",
+    "significant": "是否显著",
+}
+
+
+def _fmt_pvalue(value: Any) -> str:
+    number = _num(value)
+    if number is None:
+        return DASH
+    if number < 0.001:
+        return f"{number:.5f}"
+    if number < 0.1:
+        return f"{number:.4f}"
+    return f"{number:.3f}"
+
+
+def _adjusted_table(multiple_testing: Mapping[str, Any]) -> tuple[list[str] | None, list[list[str]]]:
+    adjusted = [item for item in _l(multiple_testing.get("adjusted")) if isinstance(item, dict)]
+    if not adjusted:
+        return None, []
+    keys: list[str] = []
+    for item in adjusted:
+        for key in item:
+            if key not in keys and len(keys) < 6:
+                keys.append(str(key))
+    headers = [_ADJUSTED_LABELS.get(key, key) for key in keys]
+    rows: list[list[str]] = []
+    for item in adjusted[:12]:
+        row: list[str] = []
+        for key in keys:
+            if key in ("raw_p", "p_value", "p", "adjusted_p", "q_value"):
+                row.append(_fmt_pvalue(item.get(key)))
+            else:
+                row.append(_describe(item.get(key)))
+        rows.append(row)
+    return headers, rows
+
+
+def _zh_research_quality(ctx: Mapping[str, Any]) -> str:
+    multiple_testing = ctx["multiple_testing"]
+    survivorship = ctx["survivorship"]
+    lines: list[str] = []
+    if multiple_testing:
+        method = _s(multiple_testing.get("method")) or "未标注"
+        adjusted = _l(multiple_testing.get("adjusted"))
+        lines.append(
+            f"多重检验校正方法：**{method}**；参与校正的检验 {_fmt_int(len(adjusted)) if adjusted else DASH} 个。"
+            "校正后仍有显著结果的赛道/产品族才值得单独解读。"
+        )
+        keys, rows = _adjusted_table(multiple_testing)
+        if keys and rows:
+            lines.append("")
+            lines.append(_md_table([key for key in keys], rows))
+        elif adjusted:
+            preview = "、".join(_describe(value) for value in adjusted[:10])
+            lines.append("")
+            lines.append(f"**调整后 p 值（前 10）**：{preview}")
+        n_significant = _first_num(multiple_testing, ("n_significant", "significant", "n_rejected"))
+        if n_significant is not None:
+            lines.append("")
+            lines.append(f"**校正后显著项**：{_fmt_int(n_significant)} 个。")
+    else:
+        lines.append(f"{DASH}（research.multiple_testing 为空）。")
+
+    lines.append("")
+    if survivorship:
+        flagged = _num(survivorship.get("flagged"))
+        extra = [
+            f"{key}={_describe(value)}"
+            for key, value in survivorship.items()
+            if key != "flagged" and not isinstance(value, (dict, list))
+        ][:3]
+        lines.append(
+            f"**生存偏差标记**：{_fmt_int(flagged)} 个标的/事件被标记为可能受生存偏差影响"
+            + (f"（{'；'.join(extra)}）。" if extra else "。")
+        )
+        if flagged and flagged > 0:
+            lines.append("")
+            lines.append(
+                "> 存在生存偏差风险：只用当前仍在市/仍在目录中的样本会高估历史收益，"
+                "相关结论应视为上界而非点估计。"
+            )
+    else:
+        lines.append(f"**生存偏差标记**：{DASH}（research.survivorship 为空）。")
+    lines.append("")
+    lines.append("> 校正对象为各赛道 / 产品族的 THI 显著性检验，逐项 `adjusted` 与标记数均来自 `metrics.research`，可回查。")
+    return "\n".join(lines)
 
 
 def _zh_migration(ctx: Mapping[str, Any]) -> str:
@@ -1444,14 +1967,20 @@ def _zh_sections(ctx: Mapping[str, Any]) -> list[tuple[str, str]]:
         (CHAPTERS_ZH[1], _zh_data_status(ctx)),
         (CHAPTERS_ZH[2], _zh_tracks(ctx)),
         (CHAPTERS_ZH[3], _zh_companies(ctx)),
-        (CHAPTERS_ZH[4], _zh_migration(ctx)),
-        (CHAPTERS_ZH[5], _zh_firstseen(ctx)),
-        (CHAPTERS_ZH[6], _zh_recalls(ctx)),
-        (CHAPTERS_ZH[7], _zh_drug(ctx)),
-        (CHAPTERS_ZH[8], _zh_cn_gap(ctx)),
-        (CHAPTERS_ZH[9], _zh_signals(ctx)),
-        (CHAPTERS_ZH[10], _zh_methods(ctx)),
-        (CHAPTERS_ZH[11], _zh_disclaimer()),
+        (CHAPTERS_ZH[4], _zh_products_families(ctx)),
+        (CHAPTERS_ZH[5], _zh_migration(ctx)),
+        (CHAPTERS_ZH[6], _zh_company_portfolio(ctx)),
+        (CHAPTERS_ZH[7], _zh_new_products(ctx)),
+        (CHAPTERS_ZH[8], _zh_firstseen(ctx)),
+        (CHAPTERS_ZH[9], _zh_recalls(ctx)),
+        (CHAPTERS_ZH[10], _zh_drug(ctx)),
+        (CHAPTERS_ZH[11], _zh_cn_gap(ctx)),
+        (CHAPTERS_ZH[12], _zh_signals(ctx)),
+        (CHAPTERS_ZH[13], _zh_replay(ctx)),
+        (CHAPTERS_ZH[14], _zh_timestamps(ctx)),
+        (CHAPTERS_ZH[15], _zh_research_quality(ctx)),
+        (CHAPTERS_ZH[16], _zh_methods(ctx)),
+        (CHAPTERS_ZH[17], _zh_disclaimer()),
     ]
 
 
@@ -1518,6 +2047,17 @@ def render_report_en(ctx: Mapping[str, Any]) -> str:
                 f"| {_md_cell(_en_company(company))} | {_md_cell(_s(company.get('ticker')) or '-')} | "
                 f"{_fmt_thi(company.get('thi'))} | {_fmt_prob(company.get('prob_up'))} | {_fmt_int(company.get('recent'))} |"
             )
+        lines.append("")
+    if ctx["families"]:
+        lines.extend(["## Product families", ""])
+        for entry in ctx["families"][:5]:
+            lines.append(
+                f"- {_md_cell(_family_name(entry))} (`{_family_key(entry)}`): THI {_fmt_thi(entry.get('thi'))}, "
+                f"P(up) {_fmt_prob(entry.get('prob_up'))}, {_fmt_int(entry.get('recent'))} events, "
+                f"{_fmt_int(entry.get('new_entrants_12m'))} new entrants in 12 months."
+            )
+        if ctx["new_products"]:
+            lines.append(f"- New products in the weekly radar: {len(ctx['new_products'])} (Chinese names + 510(k)/PMA numbers).")
         lines.append("")
     if ctx["migration"]:
         lines.append("## Portfolio migration")
@@ -1604,6 +2144,33 @@ def render_report_en(ctx: Mapping[str, Any]) -> str:
         )
     else:
         lines.append("- Paper trading: not available (trade stage not run, or insufficient data)")
+    replay = ctx["replay"]
+    lines.extend(["", "## Replay and research hygiene", ""])
+    if replay.get("present") and replay.get("steps"):
+        lines.append(
+            f"- Replay: {len(replay['steps'])} steps from {_range_text_en(replay.get('window'))}; "
+            f"multi-cost summary for {len(_d(replay.get('summary_by_cost')))} cost buckets."
+        )
+    else:
+        lines.append("- Replay: not available (insufficient data or replay block missing).")
+    if ctx["quality_rows"]:
+        quality = ", ".join(f"{_s(key)} {_fmt_int(value)}" for key, value in ctx["quality_rows"][:4])
+        lines.append(
+            f"- Timestamp quality: {quality}; excluded from trading: {_fmt_int(ctx['excluded_from_trading'])}."
+        )
+    else:
+        lines.append("- Timestamp quality: not available.")
+    method = _s(ctx["multiple_testing"].get("method"))
+    if method:
+        lines.append(f"- Multiple testing: {method} correction over {_fmt_int(len(_l(ctx['multiple_testing'].get('adjusted'))))} tests.")
+    else:
+        lines.append("- Multiple testing: not available.")
+    flagged = ctx["survivorship"].get("flagged")
+    lines.append(f"- Survivorship flags: {_fmt_int(flagged) if flagged is not None else 'not available'}.")
+    assumptions_url = _s(replay.get("assumptions_url"))
+    if assumptions_url:
+        lines.append(f"- Assumption register: `{assumptions_url}`.")
+    lines.append("")
     lines.extend(
         [
             "",
@@ -1752,6 +2319,139 @@ def render_summary_csv(ctx: Mapping[str, Any]) -> str:
             f"cn_count={'null' if unavailable else _csv_num(item.get('cn_count'), 0)}; "
             f"gap_index={'null' if unavailable else _csv_num(item.get('gap_index'))}",
         )
+
+    # ---------------------------------------------------------------- W5 research blocks
+    def flat_row(
+        section: str,
+        key: Any = "",
+        name_zh: Any = "",
+        name_en: Any = "",
+        recent: Any = "",
+        recent_per_q: Any = "",
+        baseline_per_q: Any = "",
+        thi: Any = "",
+        prob_up: Any = "",
+        note: str = "",
+    ) -> None:
+        writer.writerow(
+            [
+                section,
+                _s(key),
+                _s(name_zh),
+                _s(name_en),
+                _s(recent),
+                _s(recent_per_q),
+                _s(baseline_per_q),
+                _s(thi),
+                _s(prob_up),
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                note,
+            ]
+        )
+
+    for entry in ctx["families"]:
+        flat_row(
+            "product_family",
+            _family_key(entry),
+            _family_name(entry),
+            entry.get("name_en"),
+            _csv_num(entry.get("recent"), 0),
+            "",
+            "",
+            _csv_num(entry.get("thi"), 3),
+            _csv_num(entry.get("prob_up"), 4),
+            f"companies={_company_count(entry)}; "
+            f"new_entrants_12m={_csv_num(entry.get('new_entrants_12m'), 0)}; "
+            f"first_seen={_s(entry.get('first_seen')) or 'null'}",
+        )
+    for item in ctx["new_products"]:
+        flat_row(
+            "product_new",
+            _s(item.get("code")) or _s(item.get("k_number")),
+            _s(item.get("device_name_zh")) or _s(item.get("device_name")),
+            _s(item.get("family_zh")),
+            _s(item.get("date")),
+            "",
+            "",
+            "",
+            "",
+            f"company={_s(item.get('company_zh'))}; k_number={_s(item.get('k_number')) or 'null'}; "
+            f"url={_s(item.get('url')) or 'null'}; definition={_trim(_s(item.get('definition_zh')), 120)}",
+        )
+    for item in ctx["company_portfolio"]:
+        flat_row(
+            "product_portfolio",
+            "",
+            _company_name(item),
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            f"top_families={_top_families_text(item.get('top_families'), 5)}; "
+            f"js_shift={_csv_num(item.get('js_shift'))}",
+        )
+    for step in (ctx["replay"].get("steps") or []):
+        flat_row(
+            "replay_step",
+            _s(step.get("ticker")),
+            _trim(_s(step.get("event_zh")) or _s(step.get("event")), 120),
+            "",
+            _s(step.get("t")),
+            "",
+            "",
+            "",
+            "",
+            f"decision={_s(step.get('decision'))}; fill_price={_csv_num(step.get('fill_price'), 2)}; "
+            f"shares={_csv_num(step.get('shares'), 0)}; outcome_1d={_csv_num(step.get('outcome_1d'), 4)}; "
+            f"outcome_5d={_csv_num(step.get('outcome_5d'), 4)}; outcome_20d={_csv_num(step.get('outcome_20d'), 4)}; "
+            f"url={_s(step.get('url')) or 'null'}",
+        )
+    for quality, count in ctx["quality_rows"]:
+        flat_row(
+            "timestamp_quality",
+            quality,
+            _quality_label(quality),
+            "",
+            _csv_num(count, 0),
+            "",
+            "",
+            "",
+            "",
+            f"excluded_from_trading={_csv_num(ctx['excluded_from_trading'], 0) if ctx['excluded_from_trading'] is not None else 'null'}",
+        )
+    if ctx["multiple_testing"]:
+        flat_row(
+            "multiple_testing",
+            _s(ctx["multiple_testing"].get("method")),
+            "多重检验校正",
+            "",
+            _csv_num(len(_l(ctx["multiple_testing"].get("adjusted"))), 0),
+            "",
+            "",
+            "",
+            "",
+            "adjusted=" + _trim(_describe(ctx["multiple_testing"].get("adjusted")), 200),
+        )
+    if ctx["survivorship"]:
+        flat_row(
+            "survivorship",
+            "flagged",
+            "生存偏差标记",
+            "",
+            _csv_num(ctx["survivorship"].get("flagged"), 0) if _num(ctx["survivorship"].get("flagged")) is not None else "",
+            "",
+            "",
+            "",
+            "",
+            _trim(_describe(ctx["survivorship"]), 200),
+        )
     return "\ufeff" + buffer.getvalue()
 
 
@@ -1790,6 +2490,42 @@ def _svg_track_bars(tracks: Sequence[Mapping[str, Any]], limit: int = 12) -> str
         value_text = f"THI {_fmt_thi(thi)}" if thi is not None else "THI 暂无数据"
         probability = f"P {_fmt_prob(track.get('prob_up'))}"
         parts.append(f'<text class="val" x="{bar_x + length + 8:.1f}" y="{y + 14}">{_h(value_text)}　{_h(probability)}</text>')
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def _svg_family_bars(families: Sequence[Mapping[str, Any]], limit: int = 12) -> str:
+    rows = list(families)[:limit]
+    if not rows:
+        return f'<p class="empty">{_h(DASH)}</p>'
+    width, bar_x = 920, 258
+    bar_width = 470
+    usable = bar_width - 190
+    row_height, top = 34, 28
+    height = top + row_height * len(rows) + 16
+    values = [_num(item.get("thi")) or 0.0 for item in rows]
+    maximum = max([1.0] + values)
+    parts = [
+        f'<svg class="chart" viewBox="0 0 {width} {height}" role="img" aria-label="产品族热度条">',
+        '<text class="axis-title" x="0" y="14">产品族 THI 相对热度（1.0 = 基线水平）</text>',
+        f'<text class="axis-note" x="{width}" y="14" text-anchor="end">条长 = THI；文字 = THI 与 P(高于基线)</text>',
+    ]
+    for index, entry in enumerate(rows):
+        y = top + index * row_height
+        thi = _num(entry.get("thi"))
+        length = max(2.0, (thi or 0.0) / maximum * usable)
+        trend = _trend(entry)
+        colour = {TREND_UP: "#0f766e", TREND_DOWN: "#b45309", TREND_FLAT: "#64748b"}.get(trend, "#94a3b8")
+        name = _trim(_family_name(entry), 16)
+        parts.append(f'<text class="tick" x="0" y="{y + 14}">{_h(name)}</text>')
+        parts.append(f'<rect class="bar" x="{bar_x}" y="{y + 3}" width="{length:.1f}" height="15" rx="2" fill="{colour}"/>')
+        baseline_x = bar_x + usable / maximum
+        parts.append(f'<line class="baseline" x1="{baseline_x:.1f}" y1="{y}" x2="{baseline_x:.1f}" y2="{y + 21}" />')
+        value_text = f"THI {_fmt_thi(thi)}" if thi is not None else "THI 暂无数据"
+        parts.append(
+            f'<text class="val" x="{bar_x + length + 8:.1f}" y="{y + 14}">{_h(value_text)}　'
+            f'{_h("P " + _fmt_prob(entry.get("prob_up")))}</text>'
+        )
     parts.append("</svg>")
     return "".join(parts)
 
@@ -1925,6 +2661,28 @@ td.name{font-weight:560}
 .stat{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fbfcfd}
 .stat .k{font-size:12px;color:var(--muted)}
 .stat .v{font-size:18px;font-weight:650;font-variant-numeric:tabular-nums}
+.radar{list-style:none;margin:0;padding:0}
+.radar li{border:1px solid var(--line);border-radius:8px;padding:10px 13px;margin:0 0 8px;background:#fbfcfd}
+.radar .name{font-weight:650;font-size:14.5px}
+.radar .line{font-size:13px;color:#3f4c59;margin-top:2px}
+.radar .line b{font-weight:560;color:var(--ink)}
+.src{color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+.src-link{color:var(--accent);font-size:12.5px;text-decoration:none;border-bottom:1px dotted currentColor}
+.timeline{list-style:none;margin:0;padding:2px 0 0 18px;border-left:2px solid var(--line-strong)}
+.timeline li{position:relative;padding:0 0 15px 14px}
+.timeline li:before{content:"";position:absolute;left:-25px;top:5px;width:9px;height:9px;border-radius:50%;
+background:var(--accent);border:2px solid #fff;box-shadow:0 0 0 1px var(--line-strong)}
+.timeline .when{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.timeline .what{font-weight:560;margin:1px 0 2px}
+.timeline .meta{font-size:13px;color:#3f4c59}
+.timeline .meta .sep{color:var(--muted);margin:0 5px}
+.badge{display:inline-block;padding:0 7px;border-radius:999px;font-size:12px;border:1px solid;white-space:nowrap}
+.badge-long{background:#eaf6f3;border-color:#b7dcd4;color:#0b5f57}
+.badge-short{background:#fdf1ea;border-color:#f0cbb6;color:#8f3f12}
+.badge-flat{background:#f1f3f6;border-color:#d7dde4;color:#4b5563}
+.up-text{color:#0b5f57;font-weight:600;font-variant-numeric:tabular-nums}
+.down-text{color:#8f3f12;font-weight:600;font-variant-numeric:tabular-nums}
+.flat-text{color:var(--muted);font-variant-numeric:tabular-nums}
 footer{border-top:1px solid var(--line);background:#fff;margin-top:10px;padding:22px 0 28px;color:var(--muted);font-size:12.5px}
 footer p{margin:0 0 6px}
 footer .disclaimer{color:#4b5563}
@@ -2346,6 +3104,264 @@ def _html_trading_panel(ctx: Mapping[str, Any]) -> str:
     )
 
 
+def _outcome_html(value: Any) -> str:
+    """Signed outcome with glyph + colour, so direction never relies on colour alone."""
+    text = _signed_pct_text(value)
+    number = _num(value)
+    if text == DASH or number is None:
+        return f'<span class="flat-text">{_h(DASH)}</span>'
+    if abs(number) <= 3.0:
+        number *= 100.0
+    css = "up-text" if number > 0 else "down-text" if number < 0 else "flat-text"
+    return f'<span class="{css}">{_h(text)}</span>'
+
+
+def _html_family_panel(ctx: Mapping[str, Any]) -> str:
+    families = ctx["families"]
+    if not families:
+        return f'<p class="empty">{_h(DASH)}（products.families 为空，或产品级分析尚未运行）</p>'
+    intro = (
+        f'<p class="lead">产品族在赛道之下按 openFDA 产品码族细分，共 {len(families)} 个。'
+        f'热度最高：<b>{_h(_family_name(families[0]))}</b>（ID '
+        f'<code>{_h(_family_key(families[0]))}</code>）。</p>'
+    )
+    rows = []
+    for index, entry in enumerate(families[:MAX_FAMILY_ROWS], start=1):
+        rows.append(
+            [
+                str(index),
+                (_family_name(entry), "name"),
+                _fmt_thi(entry.get("thi")),
+                _fmt_prob(entry.get("prob_up")),
+                _fmt_int(entry.get("recent")),
+                _company_count(entry),
+                _fmt_int(entry.get("new_entrants_12m")),
+                _cell_value(entry.get("first_seen"), 12),
+                _family_key(entry),
+            ]
+        )
+    table = _table(
+        [
+            ("#", "num"),
+            ("产品族", ""),
+            ("THI", "num"),
+            ("P(高于基线)", "num"),
+            ("窗口事件", "num"),
+            ("公司数", "num"),
+            ("12月新进入", "num"),
+            ("首次出现", ""),
+            ("产品族 ID", ""),
+        ],
+        rows,
+    )
+    legend = (
+        '<div class="chartlegend"><span><i style="background:#0f766e"></i>升温</span>'
+        '<span><i style="background:#64748b"></i>平稳</span>'
+        '<span><i style="background:#b45309"></i>降温</span>'
+        "<span>虚线 = THI 1.0 基线</span></div>"
+    )
+    return intro + _svg_family_bars(families) + legend + table
+
+
+def _html_portfolio_panel(ctx: Mapping[str, Any]) -> str:
+    portfolio = ctx["company_portfolio"]
+    if not portfolio:
+        return f'<p class="empty">{_h(DASH)}（products.company_portfolio 为空，或组合分析尚未运行）</p>'
+    rows = []
+    for item in portfolio[:MAX_COMPANY_ROWS]:
+        shift = _num(item.get("js_shift"))
+        direction = "结构明显变化 ▲" if (shift or 0) >= 0.1 else "结构相对稳定 →"
+        rows.append(
+            [
+                (_company_name(item), "name"),
+                _top_families_text(item.get("top_families")),
+                _fmt(item.get("js_shift"), 3),
+                direction,
+            ]
+        )
+    return (
+        '<p class="lead">组合迁移指数 <code>js_shift</code> 衡量公司产品族结构相对基线的 Jensen-Shannon 距离：'
+        "越接近 0 越稳定，越大说明正在换产品方向。</p>"
+        + _table(
+            [("公司", ""), ("主产品族（窗口占比）", ""), ("JS 组合迁移", "num"), ("解读", "")],
+            rows,
+        )
+    )
+
+
+def _html_new_products_panel(ctx: Mapping[str, Any]) -> str:
+    items = ctx["new_products"]
+    if not items:
+        return f'<p class="empty">{_h(DASH)}（products.new_products 为空，或本周没有新品记录）</p>'
+    blocks: list[str] = []
+    for item in items[:MAX_PRODUCT_ROWS]:
+        name = _s(item.get("device_name_zh")) or _s(item.get("device_name")) or DASH
+        company = _s(item.get("company_zh")) or DASH
+        family = _s(item.get("family_zh")) or DASH
+        code = _s(item.get("code")) or "—"
+        definition = _trim(_s(item.get("definition_zh")) or _s(item.get("definition")), 120) or DASH
+        number = _s(item.get("k_number")) or DASH
+        source = _source_span(item.get("url"), limit=110) or f'<span class="src">来源：{_h(DASH)}</span>'
+        blocks.append(
+            f'<li><div class="name">{_h(_s(item.get("date")) or DASH)} · {_h(name)}</div>'
+            f'<div class="line"><b>公司</b> {_h(company)} · <b>产品族</b> {_h(family)} · '
+            f'<b>产品码</b> {_h(code)}</div>'
+            f'<div class="line"><b>用途 / 定义</b> {_h(definition)}</div>'
+            f'<div class="line"><b>510(k)/PMA</b> {_h(number)} · {source}</div></li>'
+        )
+    return (
+        f'<p class="lead">本周新品 {len(items)} 条，每条保留中文产品名、用途、公司、编号与来源，可逐条回查。</p>'
+        + '<ul class="radar">' + "".join(blocks) + "</ul>"
+    )
+
+
+def _html_replay_panel(ctx: Mapping[str, Any]) -> str:
+    replay = ctx["replay"]
+    if not replay.get("present"):
+        return f'<p class="empty">{_h(DASH)}（replay 块缺失，回放研究尚未运行）</p>'
+    status = _s(replay.get("status"))
+    steps = replay.get("steps") or []
+    if status == "insufficient_data" or not steps:
+        return (
+            f'<p class="empty">{_h(DASH)}：样本不足，回放研究未运行'
+            f'（status = {_h(status or "insufficient_data")}）</p>'
+        )
+    items: list[str] = []
+    for step in steps[:MAX_REPLAY_STEPS]:
+        decision_text, decision_css = _decision_label(step.get("decision"))
+        url_source = _source_span(step.get("url"))
+        meta = (
+            f'成交价 {_h(_fmt(step.get("fill_price"), 2))} · 股数 {_h(_fmt_int(step.get("shares")))} · '
+            f'1 日 {_outcome_html(step.get("outcome_1d"))} · '
+            f'5 日 {_outcome_html(step.get("outcome_5d"))} · '
+            f'20 日 {_outcome_html(step.get("outcome_20d"))}'
+        )
+        items.append(
+            f'<li><div class="when">{_h(_s(step.get("t")) or DASH)} · '
+            f'{_h(_s(step.get("ticker")) or DASH)} '
+            f'<span class="{decision_css}">{_h(decision_text)}</span></div>'
+            f'<div class="what">{_h(_trim(_s(step.get("event_zh")) or _s(step.get("event")) or DASH, 90))}</div>'
+            f'<div class="meta">{meta}</div>'
+            f'<div class="meta">{url_source}</div></li>'
+        )
+    timeline = '<ol class="timeline">' + "".join(items) + "</ol>"
+    cost_rows = _replay_cost_rows(_d(replay.get("summary_by_cost")))
+    cost_table = ""
+    if cost_rows:
+        cost_table = "<h3>多档交易成本下的回放结果</h3>" + _table(
+            [
+                ("成本档", ""),
+                ("区间总收益", "num"),
+                ("最大回撤", "num"),
+                ("胜率", "num"),
+                ("笔数", "num"),
+                ("备注", ""),
+            ],
+            [list(row) for row in cost_rows],
+        )
+    assumptions = _assumptions_link(replay.get("assumptions_url"))
+    footer_note = '<p class="note">回放只使用决策时点可见的信息；只做多，未建模借券费、并购逼平与滑点冲击，结果不可直接交易。</p>'
+    if assumptions:
+        footer_note = f'<p class="note">{assumptions}</p>' + footer_note
+    return (
+        f'<p class="lead">回放窗口 {_h(_range_text(replay.get("window")))}，共 {len(steps)} 步；'
+        "每步记录决策时点、成交价与 1/5/20 日结果。</p>" + timeline + cost_table + footer_note
+    )
+
+
+def _sample_split_rows(sample_split: Mapping[str, Any]) -> list[list[str]]:
+    return [[str(key), _describe(value)] for key, value in _d(sample_split).items()]
+
+
+def _html_timestamps_panel(ctx: Mapping[str, Any]) -> str:
+    parts: list[str] = []
+    quality_rows = ctx["quality_rows"]
+    total = ctx["quality_total"]
+    if quality_rows:
+        rows = [
+            [
+                (_quality_label(quality), "name"),
+                _fmt_int(count),
+                _fmt_share((count or 0) / total) if total else DASH,
+            ]
+            for quality, count in quality_rows[:12]
+        ]
+        parts.append(
+            "<h3>时间质量分布</h3>"
+            + _table([("时间质量档", ""), ("事件数", "num"), ("占比", "num")], rows)
+        )
+        excluded = ctx["excluded_from_trading"]
+        parts.append(
+            f'<p class="note">不进入交易研究的事件：<b>{_h(_fmt_int(excluded))}</b> 条'
+            "（未知时间质量直接剔除）。</p>"
+        )
+        if ctx["timestamps_policy"]:
+            parts.append(f'<p class="note">口径：{_h(ctx["timestamps_policy"])}</p>')
+        parts.append(
+            '<p class="note">统计口径：逐条读取事件表的 <code>timestamp_quality</code> 字段并计数，'
+            "可按事件 ID 回查；unknown 不进入交易研究。</p>"
+        )
+    else:
+        parts.append(f'<p class="empty">{_h(DASH)}（timestamps.by_quality 为空）</p>')
+    if ctx["sample_split"]:
+        parts.append(
+            "<h3>样本划分</h3>"
+            + _table([("划分", ""), ("说明", "")], _sample_split_rows(ctx["sample_split"]))
+        )
+    else:
+        parts.append(f'<p class="empty">{_h(DASH)}（research.sample_split 为空）</p>')
+    assumptions = _assumptions_link(ctx["replay"].get("assumptions_url"))
+    if assumptions:
+        parts.append(f'<p class="note">{assumptions}</p>')
+    return "".join(parts)
+
+
+def _html_research_panel(ctx: Mapping[str, Any]) -> str:
+    parts: list[str] = []
+    multiple_testing = ctx["multiple_testing"]
+    if multiple_testing:
+        method = _s(multiple_testing.get("method")) or "未标注"
+        adjusted = _l(multiple_testing.get("adjusted"))
+        parts.append(
+            f'<p class="lead">多重检验校正：<b>{_h(method)}</b>；参与校正的检验 '
+            f'{_h(_fmt_int(len(adjusted)))} 个。校正后仍显著的赛道/产品族才值得单独解读。</p>'
+        )
+        keys, rows = _adjusted_table(multiple_testing)
+        if keys and rows:
+            parts.append(_table([(key, "") for key in keys], rows))
+        elif adjusted:
+            preview = "、".join(_describe(value) for value in adjusted[:10])
+            parts.append(f'<p class="note">调整后 p 值（前 10）：{_h(preview)}</p>')
+        n_significant = _first_num(multiple_testing, ("n_significant", "significant", "n_rejected"))
+        if n_significant is not None:
+            parts.append(f'<p class="note">校正后显著项：<b>{_h(_fmt_int(n_significant))}</b> 个。</p>')
+    else:
+        parts.append(f'<p class="empty">{_h(DASH)}（research.multiple_testing 为空）</p>')
+    survivorship = ctx["survivorship"]
+    if survivorship:
+        flagged = _num(survivorship.get("flagged"))
+        extra = [
+            f"{key}={_describe(value)}"
+            for key, value in survivorship.items()
+            if key != "flagged" and not isinstance(value, (dict, list))
+        ][:3]
+        text = (
+            f'生存偏差标记：<b>{_h(_fmt_int(flagged))}</b> 个标的/事件'
+            + (f"（{_h('；'.join(extra))}）" if extra else "")
+        )
+        if flagged and flagged > 0:
+            parts.append(f'<div class="callout danger">{text}。相关结论应视为上界而非点估计。</div>')
+        else:
+            parts.append(f'<p class="note">{text}。</p>')
+    else:
+        parts.append(f'<p class="empty">{_h(DASH)}（research.survivorship 为空）</p>')
+    parts.append(
+        '<p class="note">校正对象为各赛道 / 产品族的 THI 检验，逐项 adjusted 与标记数均来自 '
+        "<code>metrics.research</code>，可按赛道 ID 回查。</p>"
+    )
+    return "".join(parts)
+
+
 def _stat(label: str, value: str) -> str:
     return f'<div class="stat"><div class="k">{_h(label)}</div><div class="v">{_h(value)}</div></div>'
 
@@ -2355,10 +3371,18 @@ def _html_kpis(ctx: Mapping[str, Any]) -> str:
         _kpi("事件总数", f"{_fmt_int(ctx['event_total'])} 件", "统计窗口内全部事件"),
     ]
     tracks = ctx["tracks"]
+    families = ctx["families"]
+    family_hint = f"；另 {len(families)} 个产品族" if families else ""
     if tracks:
         top = tracks[0]
         cards.append(_kpi("热度最高赛道", _track_name(top), f"THI {_fmt_thi(top.get('thi'))} · {_trend(top)}", small=True))
-        cards.append(_kpi("赛道数量", f"{len(tracks)} 个", f"其中 {sum(1 for t in tracks if _trend(t) == TREND_UP)} 个升温"))
+        cards.append(
+            _kpi(
+                "赛道数量",
+                f"{len(tracks)} 个",
+                f"其中 {sum(1 for t in tracks if _trend(t) == TREND_UP)} 个升温{family_hint}",
+            )
+        )
     else:
         cards.append(_kpi("热度最高赛道", DASH, "device.tracks 为空", small=True))
         cards.append(_kpi("赛道数量", DASH, "暂无数据"))
@@ -2371,11 +3395,20 @@ def _html_kpis(ctx: Mapping[str, Any]) -> str:
         cards.append(_kpi("大厂动量中位数", DASH, "暂无数据"))
     cards.append(_kpi("近 90 天首次出现", f"{len(ctx['firstseen'])} 条", "首次见到的产品 / 公司"))
     cards.append(_kpi("信号数", f"{len(ctx['signals'])} 条", "喂给模拟盘的事件信号"))
+    if ctx["new_products"]:
+        cards.append(_kpi("本周新品雷达", f"{len(ctx['new_products'])} 条", "中文产品名 + 510(k)/PMA"))
+    else:
+        cards.append(_kpi("本周新品雷达", DASH, "暂无数据", small=True))
     trading = ctx["trading"]
     if trading and trading.get("total_return") is not None:
         cards.append(_kpi("模拟盘区间收益", _fmt_auto_pct(trading.get("total_return")), "研究口径，仅做多", small=True))
     else:
         cards.append(_kpi("模拟盘区间收益", DASH, "未运行 trade 或数据不足", small=True))
+    replay = ctx["replay"]
+    if replay.get("present") and replay.get("steps"):
+        cards.append(_kpi("回放研究", f"{len(replay['steps'])} 步", "含 1/5/20 日结果", small=True))
+    else:
+        cards.append(_kpi("回放研究", DASH, "样本不足或未运行", small=True))
     cards.append(
         _kpi(
             "中国空白度",
@@ -2449,6 +3482,12 @@ def render_html(ctx: Mapping[str, Any]) -> str:
     firstseen_rows = _html_firstseen_rows(ctx)
     recall_rows = _html_recall_rows(ctx)
     drug_panels = _html_drug_panels(ctx)
+    family_panel = _html_family_panel(ctx)
+    portfolio_panel = _html_portfolio_panel(ctx)
+    new_products_panel = _html_new_products_panel(ctx)
+    replay_panel = _html_replay_panel(ctx)
+    timestamps_panel = _html_timestamps_panel(ctx)
+    research_panel = _html_research_panel(ctx)
 
     company_columns = [
         ("公司", ""),
@@ -2495,6 +3534,12 @@ def render_html(ctx: Mapping[str, Any]) -> str:
         ),
         _panel("companies", "大厂动量", _table(company_columns, company_rows)),
         _panel(
+            "families",
+            "产品族热度与新势力",
+            family_panel,
+            note="产品族 ID + 产品码可回查 config/product_code_tracks.json 与 openFDA 原始记录。",
+        ),
+        _panel(
             "migration",
             "结构迁移",
             _table(
@@ -2511,6 +3556,8 @@ def render_html(ctx: Mapping[str, Any]) -> str:
             ),
             note="Δ 为赛道占比变化（百分点）；JS 为组合结构的 Jensen-Shannon 距离，用于区分「真正换方向」与「总量波动」。",
         ),
+        _panel("portfolio", "公司产品组合迁移", portfolio_panel),
+        _panel("new-products", "本周新品雷达", new_products_panel),
         _panel(
             "firstseen",
             "首次出现（近 90 天）",
@@ -2547,6 +3594,19 @@ def render_html(ctx: Mapping[str, Any]) -> str:
             "信号与模拟盘",
             _html_signals_panel(ctx) + '<h3>模拟盘净值</h3>' + _html_trading_panel(ctx),
         ),
+        _panel(
+            "replay",
+            "回放研究",
+            replay_panel,
+            note="回放为静态时间轴：决策时点 → 成交价 → 1/5/20 日结果，逐笔可回查来源。",
+        ),
+        _panel(
+            "timestamps",
+            "时间质量与样本划分",
+            timestamps_panel,
+            note="时间质量决定事件能否进入交易研究；样本划分按时间切分，避免用未来数据训练。",
+        ),
+        _panel("research", "多重检验与生存偏差", research_panel),
         _panel("method", "方法与局限", _html_methods(ctx)),
     ]
 
@@ -2650,4 +3710,15 @@ def build_report(
         "signals": len(ctx["signals"]),
         "cn_gap_status": _s(ctx["data_status"].get("nmpa")) or "unavailable",
         "trading": "ok" if ctx["trading"] else "missing",
+        "product_families": len(ctx["families"]),
+        "new_products": len(ctx["new_products"]),
+        "company_portfolio": len(ctx["company_portfolio"]),
+        "replay_steps": len(ctx["replay"].get("steps") or []),
+        "replay_status": ctx["replay"].get("status") or "missing",
+        "timestamp_quality": len(ctx["quality_rows"]),
+        "research_blocks": sum(
+            1
+            for block in (ctx["sample_split"], ctx["multiple_testing"], ctx["survivorship"])
+            if block
+        ),
     }

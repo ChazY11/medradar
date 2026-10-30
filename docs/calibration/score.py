@@ -1,101 +1,250 @@
-﻿import csv, json, math
+"""Score the 8-K judge calibration - thin wrapper over :mod:`medradar.calibration`.
+
+Historical note
+---------------
+The first version of this script **hardcoded** the parsed LLM verdicts as a Python
+literal (``LLM = {"<id>": (direction, materiality, "catalyst_type"), ...}``) and
+dumped them back to ``llm_verdicts.json``. That is not a measurement: it cannot be
+re-run, it cannot disagree with itself, and the original model strings were never
+archived. The line is gone - every number below is derived from recorded raw
+responses in ``tests/fixtures/calibration/`` through the same ``parse_verdict`` the
+production judge uses.
+
+What this script does
+---------------------
+1. replay the recorded LLM responses (``llm`` suite) on the 25 labelled filings;
+2. replay the recorded keyword-baseline responses (``heuristic`` suite);
+3. print the tables used in ``docs/CALIBRATION.md`` (overall metrics, per-filing
+   comparison, confusion matrices);
+4. rewrite ``docs/calibration/metrics.json`` after checking that the recomputed
+   numbers match the committed table (a drifted fixture fails loudly instead of
+   silently updating the published numbers).
+
+No network, no API key: ``python docs/calibration/score.py`` is enough.
+
+Usage::
+
+    python docs/calibration/score.py                # print + verify + write
+    python docs/calibration/score.py --no-write     # print + verify only
+    python docs/calibration/score.py --out-dir tmp  # keep raw artefacts elsewhere
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import sys
 from pathlib import Path
+from typing import Any, Mapping, Sequence
 
-base = Path("data/calibration")
-LLM = {
- "cal-02": (1, 0.90, "approval"), "cal-09": (1, 0.88, "approval"), "cal-13": (1, 0.85, "approval"),
- "cal-14": (1, 0.85, "approval"), "cal-21": (1, 0.42, "approval"), "cal-24": (1, 0.85, "approval"),
- "cal-15": (-1, 0.82, "crl"), "cal-16": (-1, 0.85, "crl"), "cal-18": (-1, 0.70, "crl"),
- "cal-19": (-1, 0.88, "crl"), "cal-22": (-1, 0.80, "crl"),
- "cal-07": (1, 0.42, "trial_result"), "cal-29": (1, 0.85, "trial_result"), "cal-30": (1, 0.85, "trial_result"),
- "cal-31": (1, 0.35, "trial_result"), "cal-37": (-1, 0.50, "trial_result"), "cal-38": (-1, 0.42, "trial_result"),
- "cal-39": (-1, 0.85, "trial_result"), "cal-40": (-1, 0.90, "trial_result"), "cal-41": (-1, 0.90, "trial_result"),
- "cal-06": (1, 0.17, "earnings"), "cal-17": (0, 0.15, "earnings"), "cal-20": (0, 0.12, "earnings"),
- "cal-26": (0, 0.15, "earnings"), "cal-28": (1, 0.15, "earnings"),
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:  # allow `python docs/calibration/score.py`
+    sys.path.insert(0, str(ROOT))
+
+from medradar.calibration import (  # noqa: E402  (path bootstrap must run first)
+    CATALYST_LABELS,
+    ReplayJudge,
+    legacy_summary,
+    metrics_sha1,
+    run_calibration,
+)
+from medradar.util import read_json, write_json  # noqa: E402
+
+FIXTURES = ROOT / "tests" / "fixtures" / "calibration"
+LABELS_CSV = ROOT / "docs" / "calibration" / "ground_truth.csv"
+FILINGS_DIR = FIXTURES / "filings"
+DEFAULT_OUT_DIR = ROOT / "data" / "calibration" / "runs"
+DEFAULT_METRICS = ROOT / "docs" / "calibration" / "metrics.json"
+LEGACY_KEYS = ("type_acc", "dir_acc", "dir_acc_sign", "spearman", "mae", "hi_p", "hi_r", "hi_f1")
+
+# published values from docs/CALIBRATION.md §2 - used as a drift check
+PUBLISHED = {
+    "llm": {
+        "type_acc": 1.0,
+        "dir_acc": 0.92,
+        "dir_acc_sign": 0.92,
+        "spearman": 0.7997714534915624,
+        "mae": 0.1464,
+        "hi_p": 0.9375,
+        "hi_r": 0.9375,
+        "hi_f1": 0.9375,
+    },
+    "heuristic": {
+        "type_acc": 0.6,
+        "dir_acc": 0.72,
+        "dir_acc_sign": 0.72,
+        "spearman": 0.5822613129549279,
+        "mae": 0.184,
+        "hi_p": 1.0,
+        "hi_r": 0.5,
+        "hi_f1": 0.6666666666666666,
+    },
 }
-llm = {k: {"direction": v[0], "materiality": v[1], "catalyst_type": v[2]} for k, v in LLM.items()}
-(base / "llm_verdicts.json").write_text(json.dumps(llm, ensure_ascii=False, indent=1), encoding="utf-8")
-heur = {r["id"]: r for r in json.loads((base / "heuristic_verdicts.json").read_text(encoding="utf-8"))}
-rows = list(csv.DictReader((base / "ground_truth.csv").open(encoding="utf-8")))
-
-llm_map = {k: (v["direction"], v["materiality"], v["catalyst_type"]) for k, v in llm.items()}
-heur_map = {r["id"]: (int(heur[r["id"]]["direction"]), float(heur[r["id"]]["materiality"]), heur[r["id"]]["catalyst_type"]) for r in rows}
+TOLERANCE = 1e-9
 
 
-def ranks(xs):
-    order = sorted(range(len(xs)), key=lambda i: xs[i])
-    r = [0.0] * len(xs)
-    i = 0
-    while i < len(order):
-        j = i
-        while j + 1 < len(order) and xs[order[j + 1]] == xs[order[i]]:
-            j += 1
-        avg = (i + j) / 2 + 1
-        for k in range(i, j + 1):
-            r[order[k]] = avg
-        i = j + 1
-    return r
+def _fmt(value: Any) -> str:
+    return "n/a" if value is None else f"{float(value):.3f}"
 
 
-def pearson(a, b):
-    n = len(a); ma = sum(a) / n; mb = sum(b) / n
-    num = sum((x - ma) * (y - mb) for x, y in zip(a, b))
-    da = math.sqrt(sum((x - ma) ** 2 for x in a)); db = math.sqrt(sum((y - mb) ** 2 for y in b))
-    return num / (da * db) if da and db else 0.0
+def _fmt_direction(value: int) -> str:
+    return f"{int(value):+d}"
 
 
-def spearman(a, b):
-    return pearson(ranks(a), ranks(b))
+def _provenance(suite: str) -> dict[str, Any]:
+    manifest = read_json(FIXTURES / "manifest.json", {}) or {}
+    return (manifest.get("suites") or {}).get(suite, {})
 
 
-def prf(y_true, y_pred):
-    tp = sum(1 for t, p in zip(y_true, y_pred) if t == 1 and p == 1)
-    fp = sum(1 for t, p in zip(y_true, y_pred) if t != 1 and p == 1)
-    fn = sum(1 for t, p in zip(y_true, y_pred) if t == 1 and p != 1)
-    p = tp / (tp + fp) if tp + fp else 0.0
-    r = tp / (tp + fn) if tp + fn else 0.0
-    return p, r, (2 * p * r / (p + r) if p + r else 0.0)
+def _run_suite(suite: str, out_dir: Path) -> dict[str, Any]:
+    judge = ReplayJudge.from_fixtures(FIXTURES, suite=suite)
+    return run_calibration(FILINGS_DIR, LABELS_CSV, judge, out_dir / suite)
 
 
-gt_type = [r["gt_type"] for r in rows]
-gt_dir = [int(r["gt_direction"]) for r in rows]
-gt_mat = [float(r["gt_materiality"]) for r in rows]
-
-summary = {}
-for name, src in (("llm", llm_map), ("heuristic", heur_map)):
-    typ = [src[r["id"]][2] for r in rows]
-    dirn = [src[r["id"]][0] for r in rows]
-    mat = [src[r["id"]][1] for r in rows]
-    acc_t = sum(1 for a, b in zip(gt_type, typ) if a == b) / len(rows)
-    acc_d = sum(1 for a, b in zip(gt_dir, dirn) if a == b) / len(rows)
-    sign = [(1 if x > 0 else -1 if x < 0 else 0) for x in dirn]
-    acc_sign = sum(1 for a, b in zip(gt_dir, sign) if a == b) / len(rows)
-    hi_t = [1 if m >= 0.5 else 0 for m in gt_mat]
-    hi_p = [1 if m >= 0.5 else 0 for m in mat]
-    p, r, f1 = prf(hi_t, hi_p)
-    mae = sum(abs(a - b) for a, b in zip(gt_mat, mat)) / len(rows)
-    rho = spearman(gt_mat, mat)
-    summary[name] = dict(type_acc=acc_t, dir_acc=acc_d, dir_acc_sign=acc_sign, spearman=rho,
-                         mae=mae, hi_p=p, hi_r=r, hi_f1=f1)
-    print(f"[{name}] type_acc={acc_t:.3f} dir_acc={acc_d:.3f} sign_acc={acc_sign:.3f} "
-          f"spearman={rho:.3f} mae={mae:.3f} hiP={p:.2f} hiR={r:.2f} hiF1={f1:.2f}")
-
-print("\n== per filing ==")
-for r in rows:
-    i = r["id"]; l = llm[i]; h = heur[i]
-    print(f"{i} {r['company'][:26]:26} gt={r['gt_type']:13}{int(r['gt_direction']):+d} {float(r['gt_materiality']):.2f} | "
-          f"llm={l['catalyst_type']:13}{l['direction']:+d} {l['materiality']:.2f} | "
-          f"heur={h['catalyst_type']:13}{int(h['direction']):+d} {float(h['materiality']):.2f}")
-
-labels = ["approval", "crl", "trial_result", "earnings"]
-for name, src in (("LLM", llm_map), ("heuristic", heur_map)):
-    print(f"\n== confusion: gt (rows) vs {name} (cols) ==")
-    print("gt\\pred " + " ".join(f"{x[:8]:>8}" for x in labels))
-    for g in labels:
-        row = [sum(1 for r in rows if r["gt_type"] == g and src[r["id"]][2] == p) for p in labels]
-        print(f"{g[:8]:8} " + " ".join(f"{n:>8}" for n in row))
-
-json.dump({"n": len(rows), **summary}, open(base / "metrics.json", "w", encoding="utf-8"),
-          ensure_ascii=False, indent=1)
+def _print_overall(runs: Mapping[str, Mapping[str, Any]]) -> None:
+    llm = legacy_summary(runs["llm"]["metrics"])
+    baseline = legacy_summary(runs["heuristic"]["metrics"])
+    print("== overall (replayed from tests/fixtures/calibration) ==")
+    header = (
+        f"{'metric':22}{'LLM':>9}{'heuristic':>11}{'delta':>9}"
+    )
+    print(header)
+    for key in LEGACY_KEYS:
+        delta = None
+        if llm.get(key) is not None and baseline.get(key) is not None:
+            delta = float(llm[key]) - float(baseline[key])
+        print(
+            f"{key:22}{_fmt(llm.get(key)):>9}{_fmt(baseline.get(key)):>11}"
+            f"{('' if delta is None else f'{delta:+.3f}'):>9}"
+        )
+    print(f"{'n':22}{llm['n']:>9}{baseline['n']:>11}")
 
 
+def _print_per_filing(runs: Mapping[str, Mapping[str, Any]]) -> None:
+    rows = runs["llm"]["metrics"].get("per_filing") or []
+    heuristic = {
+        row["id"]: row for row in runs["heuristic"]["metrics"].get("per_filing") or []
+    }
+    print("\n== per filing ==")
+    for row in rows:
+        other = heuristic.get(row["id"], {})
+        flags = []
+        if not row["type_ok"]:
+            flags.append("type")
+        if not row["direction_ok"]:
+            flags.append("dir")
+        flag_text = f"  [{'+'.join(flags)}]" if flags else ""
+        print(
+            f"{row['id']} {row['company'][:26]:26} "
+            f"gt={row['gt_type']:13}{_fmt_direction(row['gt_direction'])} "
+            f"{row['gt_materiality']:.2f} | "
+            f"llm={row['pred_type']:13}{_fmt_direction(row['pred_direction'])} "
+            f"{row['pred_materiality']:.2f} | "
+            f"heur={str(other.get('pred_type', '')):13}"
+            f"{_fmt_direction(other.get('pred_direction', 0))} "
+            f"{float(other.get('pred_materiality', 0.0)):.2f}{flag_text}"
+        )
+
+
+def _print_confusions(runs: Mapping[str, Mapping[str, Any]]) -> None:
+    for suite, name in (("llm", "LLM"), ("heuristic", "heuristic")):
+        block = runs[suite]["metrics"].get("type") or {}
+        labels = block.get("labels") or list(CATALYST_LABELS)
+        print(f"\n== confusion: gt (rows) vs {name} (cols), n={block.get('n')} ==")
+        print("gt\\pred " + " ".join(f"{str(label)[:8]:>8}" for label in labels))
+        for label, row in zip(labels, block.get("matrix") or []):
+            print(f"{str(label)[:8]:8} " + " ".join(f"{count:>8}" for count in row))
+        direction = runs[suite]["metrics"].get("direction") or {}
+        print(f"direction labels {direction.get('labels')} matrix {direction.get('matrix')}")
+
+
+def _verify(runs: Mapping[str, Mapping[str, Any]]) -> tuple[bool, list[str]]:
+    problems: list[str] = []
+    for suite in ("llm", "heuristic"):
+        summary = legacy_summary(runs[suite]["metrics"])
+        for key, expected in PUBLISHED[suite].items():
+            actual = summary.get(key)
+            if actual is None or abs(float(actual) - float(expected)) > TOLERANCE:
+                problems.append(
+                    f"{suite}.{key}: recomputed {actual!r} != published {expected!r}"
+                )
+        n = runs[suite]["n"]
+        if n != 25:
+            problems.append(f"{suite}.n: recomputed {n} != published 25")
+    return (not problems), problems
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Replay the committed calibration fixture and score it (offline)."
+    )
+    parser.add_argument("--out-dir", default=str(DEFAULT_OUT_DIR), help="where raw responses land")
+    parser.add_argument("--metrics-out", default=str(DEFAULT_METRICS), help="legacy metrics.json path")
+    parser.add_argument("--no-write", action="store_true", help="print and verify only")
+    args = parser.parse_args(argv)
+
+    out_dir = Path(args.out_dir)
+    runs = {
+        suite: _run_suite(suite, out_dir) for suite in ("llm", "heuristic")
+    }
+
+    print("== fixture provenance ==")
+    for suite in ("llm", "heuristic"):
+        info = _provenance(suite)
+        print(
+            f"[{suite}] model={info.get('model')!r} prompt={info.get('prompt_version')!r} "
+            f"recorded_at={info.get('recorded_at')!r} n={info.get('n')!r} "
+            f"raw_source={info.get('raw_source')!r}"
+        )
+        print(f"        source: {info.get('source')}")
+
+    _print_overall(runs)
+    _print_per_filing(runs)
+    _print_confusions(runs)
+
+    ok, problems = _verify(runs)
+    print("\n== reproducibility check vs docs/CALIBRATION.md §2 ==")
+    if ok:
+        print("PASS: recomputed metrics match the published table (tolerance 1e-9).")
+    else:
+        print("FAIL: fixture/score drift detected:")
+        for problem in problems:
+            print(f"  - {problem}")
+
+    metrics = {
+        "n": runs["llm"]["n"],
+        "llm": legacy_summary(runs["llm"]["metrics"]),
+        "heuristic": legacy_summary(runs["heuristic"]["metrics"]),
+        "repro": {
+            "how": "python docs/calibration/score.py (offline replay, no API key)",
+            "fixtures": "tests/fixtures/calibration",
+            "raw_source": "reconstructed_from_parsed_verdict",
+            "labels_sha1": runs["llm"]["manifest"]["labels_csv"]["sha1"],
+            "llm_metrics_sha1": runs["llm"]["metrics_sha1"],
+            "heuristic_metrics_sha1": runs["heuristic"]["metrics_sha1"],
+            "n": runs["llm"]["n"],
+            "match_published": ok,
+        },
+    }
+    metrics_path = Path(args.metrics_out)
+    if not args.no_write:
+        if not ok:
+            print(f"not writing {metrics_path}: drifted numbers must never be published silently")
+            return 1
+        write_json(metrics_path, metrics)
+        print(f"wrote {metrics_path}")
+    print(
+        json.dumps(
+            {
+                "metrics_sha1": metrics_sha1(runs["llm"]["metrics"]),
+                "match_published": ok,
+                "artefacts": {suite: runs[suite]["out_dir"] for suite in runs},
+            },
+            ensure_ascii=False,
+        )
+    )
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

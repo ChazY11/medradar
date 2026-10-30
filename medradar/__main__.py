@@ -224,17 +224,32 @@ def cmd_run(args: argparse.Namespace) -> int:
     if not args.skip_analyze:
         cmd_analyze(args)
 
-    # Trading needs three things in order: cached prices, signals in SQLite, and
-    # signals computed from the current facts. ``analyze`` above produced them,
-    # so ingest + trade now, then re-run analyze once so metrics.json carries the
-    # fresh trading block (report also falls back to out/trading.json).
+    # Trading and replay run before analyze so metrics.json can embed their output.
     if args.with_trade:
         prices = _ensure_prices(args)
         if prices.get("status") != "failed":
             _ingest_signals(args)
             cmd_trade(args)
-            if not args.skip_analyze:
-                cmd_analyze(args)
+
+    if args.with_replay:
+        from datetime import date, timedelta
+
+        end = date.today().isoformat()
+        start = (date.today() - timedelta(days=args.replay_days)).isoformat()
+        args.costs = args.replay_costs
+        try:
+            payload = _replay_payload(args, start, end)
+            print(
+                json.dumps(
+                    {"replay": payload.get("status"), "files": payload.get("files")},
+                    ensure_ascii=False,
+                )
+            )
+        except Exception as exc:  # replay must never block the report
+            print(f"[warn] replay failed: {type(exc).__name__}: {exc}", file=sys.stderr)
+
+    if not args.skip_analyze:
+        cmd_analyze(args)
 
     if not args.skip_report:
         cmd_report(args)
@@ -326,7 +341,11 @@ def cmd_demo(args: argparse.Namespace) -> int:
 def cmd_doctor(args: argparse.Namespace) -> int:
     from .onboarding import run_doctor
 
-    report = run_doctor(network=not args.no_network)
+    report = run_doctor(
+        config_dir=args.config_dir,
+        home=args.home,
+        network=not args.no_network,
+    )
     _emit(report)
     return 0 if report.get("ok", True) else 1
 
@@ -350,6 +369,46 @@ def cmd_watchlist(args: argparse.Namespace) -> int:
         return 0
     _emit({"companies": watchlist_list()})
     return 0
+
+
+# ------------------------------------------------------------------------- replay
+def _replay_payload(args: argparse.Namespace, start: str, end: str) -> dict:
+    from .db import DB
+    from .replay import build_replay
+
+    costs = tuple(float(part) for part in str(args.costs or "10,25,50").split(",") if part.strip())
+    with DB(args.db) as db:
+        return build_replay(
+            db,
+            start,
+            end,
+            capital=args.capital,
+            costs_bps=costs,
+            intraday_days=getattr(args, "intraday_days", 7),
+            out_dir=args.out_dir,
+            offline=getattr(args, "offline", False),
+            hold_days=getattr(args, "hold_days", 20),
+            allow_short=getattr(args, "allow_short", False),
+            max_requests=getattr(args, "budget", 60),
+        )
+
+
+def cmd_replay(args: argparse.Namespace) -> int:
+    from datetime import date, timedelta
+
+    end = args.end or date.today().isoformat()
+    start = args.start or (date.fromisoformat(end) - timedelta(days=args.days)).isoformat()
+    payload = _replay_payload(args, start, end)
+    _emit(
+        {
+            "status": payload.get("status"),
+            "window": payload.get("window"),
+            "files": payload.get("files"),
+            "summary_by_cost": payload.get("summary_by_cost"),
+            "skipped": payload.get("skipped"),
+        }
+    )
+    return 0 if payload.get("status") != "failed" else 1
 
 
 # ------------------------------------------------------------------------ status
@@ -442,6 +501,9 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--skip-analyze", action="store_true")
     run.add_argument("--skip-report", action="store_true")
     run.add_argument("--with-trade", action="store_true", help="also run the paper-trading study")
+    run.add_argument("--with-replay", action="store_true", help="also build the replay timeline")
+    run.add_argument("--replay-days", type=int, default=30)
+    run.add_argument("--replay-costs", default="10,25,50")
     run.add_argument("--refresh-prices", action="store_true", help="re-download price bars even if cached")
     add_db_options(run)
     run.set_defaults(func=cmd_run)
@@ -457,6 +519,9 @@ def build_parser() -> argparse.ArgumentParser:
 
     doctor = sub.add_parser("doctor", help="environment self-check (config, data dir, DB, network)")
     doctor.add_argument("--no-network", action="store_true")
+    doctor.add_argument("--offline", action="store_true", help="alias for --no-network")
+    doctor.add_argument("--config-dir", default=None)
+    doctor.add_argument("--home", default=None)
     doctor.set_defaults(func=cmd_doctor)
 
     watch = sub.add_parser("watchlist", help="manage the device watchlist without editing JSON")
@@ -499,6 +564,20 @@ def build_parser() -> argparse.ArgumentParser:
     judge.add_argument("--llm-budget", type=int, default=1)
     judge.set_defaults(func=cmd_judge)
 
+    replay = sub.add_parser("replay", help="build the event-to-fill replay timeline")
+    replay.add_argument("--start", default=None)
+    replay.add_argument("--end", default=None)
+    replay.add_argument("--days", type=int, default=30)
+    replay.add_argument("--capital", type=float, default=100_000.0)
+    replay.add_argument("--costs", default="10,25,50", help="comma separated bps tiers")
+    replay.add_argument("--hold-days", type=int, default=20)
+    replay.add_argument("--allow-short", action="store_true")
+    replay.add_argument("--offline", action="store_true", help="use cached bars only")
+    replay.add_argument("--out-dir", default=None)
+    replay.add_argument("--db", default=str(DEFAULT_DB))
+    replay.add_argument("--budget", type=int, default=60)
+    replay.set_defaults(func=cmd_replay)
+
     selftest = sub.add_parser("selftest", help="run the offline test suite")
     selftest.set_defaults(func=cmd_selftest)
     return parser
@@ -507,6 +586,8 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+    if getattr(args, "offline", False):
+        args.no_network = True
     try:
         return int(args.func(args) or 0)
     except KeyboardInterrupt:

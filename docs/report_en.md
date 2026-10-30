@@ -1,6 +1,6 @@
 # MedRadar: FDA Device & Drug Industry Radar
 
-_Generated 2026-10-30T17:40:50Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
+_Generated 2026-10-30T18:39:23Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
 
 ## Key takeaways
 
@@ -80,6 +80,15 @@ Trial starts: Novartis (暂无数据), Pfizer (暂无数据), AstraZeneca (暂�
 - Signals generated: 303
 - Paper portfolio: total return +20.6%, max drawdown -6.6%, win rate 74.4%, trades 39.
 - Equity curve: 48 trading days, 2025-11-21 to 2026-10-30.
+
+## Replay and research hygiene
+
+- Replay: 60 steps from 2025-11-01 to 2026-10-31; multi-cost summary for 3 cost buckets.
+- Timestamp quality: date 83,578; excluded from trading: 0.
+- Multiple testing: holm correction over 24 tests.
+- Survivorship flags: 4.
+- Assumption register: `docs/ASSUMPTIONS.md`.
+
 
 ## Method and limitations
 

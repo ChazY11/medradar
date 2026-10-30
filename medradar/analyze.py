@@ -802,14 +802,14 @@ def _alerts(device, drug, cn_gap) -> dict[str, Any]:
 
 
 # -------------------------------------------------------------------------- research
-def _research_block(events, device, win) -> dict[str, Any]:
-    """Sample split + multiple-testing correction for the research claims.
+def _research_block(db, events, device, win, signals) -> dict[str, Any]:
+    """Sample split + multiple-testing correction + survivorship flags.
 
     Kept best-effort: if ``medradar.stats`` is unavailable the block is omitted
     rather than breaking the whole analysis.
     """
     try:
-        from .stats import multiple_testing, time_split_by_dates
+        from .stats import multiple_testing, survivorship_flags, time_split_by_dates
     except Exception:  # pragma: no cover - stats is part of the package
         return {}
 
@@ -840,13 +840,83 @@ def _research_block(events, device, win) -> dict[str, Any]:
             testing = multiple_testing(p_values, method="holm", labels=labels)
         except Exception:
             testing = {}
+
+    # Survivorship is a number we can actually compute: a signal whose ticker has
+    # no price coverage in the local store cannot enter the return study. Reporting
+    # a hard-coded 0 would be a fake zero.
+    survivorship: dict[str, Any] = {
+        "flagged": 0,
+        "note": "免费行情源不含完整退市收益；退市/并购标的单独标注，不静默剔除",
+    }
+    try:
+        price_tickers = {
+            row["ticker"] for row in db.query("SELECT DISTINCT ticker FROM prices")
+        }
+        universe = [
+            {"ticker": signal.get("ticker"), "key": signal.get("company_key")}
+            for signal in signals
+            if signal.get("ticker")
+        ]
+        if universe and price_tickers:
+            flags = survivorship_flags(
+                universe, price_tickers=price_tickers, window_end=iso(win["end"])
+            )
+            survivorship.update(
+                {
+                    "flagged": int(flags.get("flagged") or 0),
+                    "reasons": flags.get("reasons") or flags.get("by_reason") or {},
+                    "note": flags.get("note") or survivorship["note"],
+                }
+            )
+    except Exception:
+        pass
+
     return {
         "sample_split": split,
         "multiple_testing": testing,
-        "survivorship": {
-            "flagged": 0,
-            "note": "免费行情源不含完整退市收益；退市/并购标的在回放与事件研究中单独标注，不静默剔除",
-        },
+        "survivorship": survivorship,
+    }
+
+
+# ------------------------------------------------------------------- optional blocks
+def _compact_replay(payload: Mapping[str, Any]) -> dict[str, Any]:
+    """Trim the replay payload to what the report needs (keeps metrics.json small)."""
+    steps = list(payload.get("steps") or [])[:60]
+    return {
+        "status": payload.get("status"),
+        "window": payload.get("window"),
+        "method": payload.get("method"),
+        "assumptions_url": payload.get("assumptions_url") or "docs/ASSUMPTIONS.md",
+        "summary_by_cost": payload.get("summary_by_cost") or {},
+        "event_study": payload.get("event_study") or {},
+        "skipped": payload.get("skipped") or {},
+        "steps": steps,
+        "disclaimer_zh": payload.get("disclaimer_zh"),
+    }
+
+
+def _products_block(db, win) -> dict[str, Any]:
+    """Product-family intelligence; best-effort so a missing module never breaks analyze."""
+    try:
+        from .products import company_portfolio, family_stats, new_products
+    except Exception:
+        return {}
+    try:
+        families = family_stats(db, window_quarters=win["window_quarters"])
+    except Exception:
+        return {}
+    try:
+        news = new_products(db, days=90)
+    except Exception:
+        news = []
+    try:
+        portfolio = company_portfolio(db, window_quarters=win["window_quarters"])
+    except Exception:
+        portfolio = []
+    return {
+        "families": families,
+        "new_products": news,
+        "company_portfolio": portfolio,
     }
 
 
@@ -936,8 +1006,19 @@ def build_metrics(
         "signals": signals,
         "alerts": alerts,
         "timestamps": timestamps,
-        "research": _research_block(all_events, device, win),
+        "research": _research_block(db, all_events, device, win, signals),
     }
+
+    # Replay study (optional): the CLI writes out/replay/replay.json first, then
+    # analyze embeds a compact view so the report can render the timeline.
+    replay_payload = read_json(OUT_DIR / "replay" / "replay.json")
+    if replay_payload:
+        metrics["replay"] = _compact_replay(replay_payload)
+
+    # Product-level intelligence (optional): requires medradar.products.
+    products_payload = _products_block(db, win)
+    if products_payload:
+        metrics["products"] = products_payload
 
     trading_path = OUT_DIR / "trading.json"
     trading = read_json(trading_path)
