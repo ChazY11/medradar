@@ -134,6 +134,59 @@ CREATE TABLE IF NOT EXISTS runs (
     stage TEXT,
     stats TEXT
 );
+
+-- Live event lane: near-real-time catalysts and the simulated orders they trigger.
+CREATE TABLE IF NOT EXISTS live_alerts (
+    alert_id TEXT PRIMARY KEY,
+    source TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    ticker TEXT,
+    company_key TEXT,
+    direction INTEGER DEFAULT 0,
+    score REAL DEFAULT 0,
+    headline TEXT,
+    url TEXT,
+    event_time TEXT,
+    detected_at TEXT,
+    payload TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_live_alerts_time ON live_alerts(event_time);
+
+CREATE TABLE IF NOT EXISTS paper_orders (
+    order_id TEXT PRIMARY KEY,
+    alert_id TEXT,
+    ticker TEXT,
+    side TEXT,
+    qty REAL,
+    fill_price REAL,
+    fill_time TEXT,
+    quote_time TEXT,
+    slippage_bps REAL,
+    status TEXT,
+    note TEXT
+);
+
+CREATE TABLE IF NOT EXISTS positions (
+    ticker TEXT PRIMARY KEY,
+    qty REAL,
+    avg_price REAL,
+    opened_at TEXT,
+    track_id TEXT,
+    last_price REAL,
+    last_quote_time TEXT,
+    market_value REAL,
+    unrealized_pnl REAL,
+    status TEXT DEFAULT 'open'
+);
+
+CREATE TABLE IF NOT EXISTS live_equity (
+    ts TEXT PRIMARY KEY,
+    cash REAL,
+    market_value REAL,
+    equity REAL,
+    n_positions INTEGER,
+    note TEXT
+);
 """
 
 EVENT_FIELDS = (
@@ -197,6 +250,10 @@ class DB:
             "signals",
             "paper_trades",
             "paper_equity",
+            "live_alerts",
+            "paper_orders",
+            "positions",
+            "live_equity",
         }:
             raise ValueError(f"unknown table {table!r}")
         return int(self.scalar(f"SELECT COUNT(*) FROM {table}", default=0) or 0)

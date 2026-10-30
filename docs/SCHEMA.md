@@ -200,3 +200,20 @@
 
 兼容别名：`summary.trades` = `summary.n_trades` 的数值别名（两者语义都是**笔数**，与顶层
 `trades` 成交列表无关）。报告渲染以 `summary` + `equity_curve` 为核心，其余为增强项。
+
+## 8. 实时层表（`medradar live`）
+
+实时层与批处理共用同一个 SQLite，但写入独立的事实表，互不干扰。
+
+| 表 | 关键字段 | 说明 |
+|---|---|---|
+| `live_alerts` | `alert_id`(PK) `source` `kind` `ticker` `direction` `score` `headline` `url` `event_time` `detected_at` | 秒级催化剂告警；`alert_id` 确定性去重 |
+| `paper_orders` | `order_id`(PK) `alert_id` `ticker` `side` `qty` `fill_price` `quote_time` `slippage_bps` `status` | 模拟成交；`fill_price` = 真实报价 ± 滑点 |
+| `positions` | `ticker`(PK) `qty` `avg_price` `opened_at` `track_id` `last_price` `market_value` `unrealized_pnl` `status` | 持仓，按最新真实报价重估 |
+| `live_equity` | `ts`(PK) `cash` `market_value` `equity` `n_positions` `note` | 每分钟净值点，`note` 记录回撤 |
+
+规则：仅做多；单票 ≤5% 权益、单赛道 ≤25%；`--stop-loss -0.20`；`--max-hold-days 84`（≈60 个
+交易日）。`payload.backfill = true` 的回填告警**永不成交**（用今天价格成交一周前的催化剂属于前视偏差）。
+
+延迟事实（实测 2026‑10‑31）：EDGAR 8-K 秒级；FDA 新闻 RSS 滞后数天；CT.gov 小时级；
+openFDA 器械 12 天；FDA 在审队列不存在公开数据。**实时层不承诺"提前知道审批中"。**

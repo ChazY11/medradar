@@ -241,6 +241,44 @@ def cmd_run(args: argparse.Namespace) -> int:
     return 0
 
 
+# -------------------------------------------------------------------------- live
+def cmd_live(args: argparse.Namespace) -> int:
+    import time as _time
+
+    from .live import LiveParams, reset, run_once
+
+    if args.reset:
+        _emit(reset(args.db))
+        return 0
+    params = LiveParams(
+        capital=args.capital,
+        max_position=args.max_position,
+        max_track=args.max_track,
+        slippage_bps=args.slippage_bps,
+        max_buys=args.max_buys,
+        max_hold_days=args.max_hold_days,
+        stop_loss=args.stop_loss,
+        since_hours=args.since_hours,
+        backfill_days=args.backfill_days,
+        no_trade=args.no_trade,
+        fetch_text=not args.no_text,
+        webhook=args.webhook,
+    )
+    if args.interval and not args.once:
+        print(f"[live] loop every {args.interval}s, Ctrl+C to stop")
+        while True:
+            try:
+                run_once(args.db, params)
+            except KeyboardInterrupt:
+                return 0
+            except Exception as exc:
+                print(f"[live] cycle failed: {type(exc).__name__}: {exc}")
+            _time.sleep(args.interval)
+    result = run_once(args.db, params)
+    _emit(result)
+    return 0
+
+
 # ------------------------------------------------------------------------ status
 def cmd_status(args: argparse.Namespace) -> int:
     from .db import DB
@@ -338,6 +376,25 @@ def build_parser() -> argparse.ArgumentParser:
     status = sub.add_parser("status", help="show what has been collected")
     status.add_argument("--db", default=str(DEFAULT_DB))
     status.set_defaults(func=cmd_status)
+
+    live = sub.add_parser("live", help="event alerts + simulated real-time US paper trading")
+    live.add_argument("--db", default=str(DEFAULT_DB))
+    live.add_argument("--once", action="store_true", help="run exactly one cycle (cron mode)")
+    live.add_argument("--interval", type=int, default=0, help="seconds between cycles (0 = one cycle)")
+    live.add_argument("--since-hours", type=float, default=24.0, help="first poll look-back window")
+    live.add_argument("--backfill-days", type=float, default=0.0, help="seed alerts from EDGAR full-text search (never traded)")
+    live.add_argument("--capital", type=float, default=100_000.0)
+    live.add_argument("--max-position", type=float, default=0.05, help="max fraction of equity per name")
+    live.add_argument("--max-track", type=float, default=0.25, help="max fraction of equity per track")
+    live.add_argument("--slippage-bps", type=float, default=10.0)
+    live.add_argument("--max-buys", type=int, default=5, help="new positions per cycle")
+    live.add_argument("--max-hold-days", type=int, default=84)
+    live.add_argument("--stop-loss", type=float, default=-0.20)
+    live.add_argument("--no-trade", action="store_true", help="alerts only, no simulated orders")
+    live.add_argument("--no-text", action="store_true", help="skip fetching 8-K full text")
+    live.add_argument("--webhook", default=None, help="POST each cycle summary to this URL")
+    live.add_argument("--reset", action="store_true", help="wipe the simulated book and exit")
+    live.set_defaults(func=cmd_live)
 
     selftest = sub.add_parser("selftest", help="run the offline test suite")
     selftest.set_defaults(func=cmd_selftest)

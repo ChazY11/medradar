@@ -34,6 +34,34 @@
 | 中国缺什么？ | 美国活动份额 vs 已加载的 NMPA 注册证 | 中国空白度（无数据时诚实标 `unavailable`） |
 | 这些信号对股价有信息含量吗？ | 事件研究：相对 SPY 的超额收益（+1/+5/+20/+60 交易日） | `out/trading.json`（**仅模拟**） |
 
+## 实时层：事件告警 + 模拟交易（5–15 分钟）
+
+批处理回答"行业在做什么"，实时层回答"刚刚发生了什么"。
+
+```bash
+python -m medradar live --once --since-hours 2              # 单轮（cron / DSH 自动化）
+python -m medradar live --interval 600                      # 每 10 分钟循环
+python -m medradar live --once --backfill-days 7 --no-trade # 回填近期催化剂（只告警不下单）
+python -m medradar live --reset                             # 清空模拟账户
+```
+
+每一轮：SEC EDGAR 8-K 实时流（秒级）→ EDGAR 全文检索回填 → FDA 新闻 RSS →
+ClinicalTrials.gov 状态变更 → 关键词分类 → **按 Yahoo 最新真实报价 + 10bps 滑点模拟成交** →
+按市值重估 → 告警（终端 + `out/live_alerts.jsonl` + 可选 `MEDRADAR_WEBHOOK_URL`）。
+
+实测延迟（2026‑10‑31）：
+
+| 数据源 | 延迟 | 能否交易 |
+|---|---|---|
+| SEC 8-K 申报 | 秒级 | ✅ |
+| FDA 新闻 RSS | 实测滞后约 8 天 | ❌ 仅参考 |
+| ClinicalTrials.gov 更新 | 小时级 | 仅终止/暂停 |
+| openFDA 510(k)/PMA | 12 天 | ❌ 只属于慢车道 |
+| FDA 在审提交 | **不公开** | 物理上不可能 |
+
+只做多、单票 ≤5%、单赛道 ≤25%、−20% 止损、60 个交易日离场。做空信号**只告警不下单**：
+借券费和并购逼平会让模拟收益变成假的。这是模拟盘，不接券商、不下真单、不构成投资建议。
+
 ## 快速开始
 
 ```bash

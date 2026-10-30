@@ -38,6 +38,36 @@ portfolio, what appeared for the first time, and where China still has a gap.
 | Where is the China gap? | US activity share vs loaded NMPA registrations | `cn_gap` table (honest `unavailable` when no CN data) |
 | Does any of it predict equity returns? | Event study: AR vs SPY at +1/+5/+20/+60 trading days | `out/trading.json` (simulation only) |
 
+## Live lane: event alerts + simulated trading (5–15 min)
+
+The batch radar answers *"what is the industry doing"*. The live lane answers *"what just happened"*.
+
+```bash
+python -m medradar live --once --since-hours 2              # one cycle (cron / DSH automation)
+python -m medradar live --interval 600                      # loop every 10 minutes
+python -m medradar live --once --backfill-days 7 --no-trade # seed recent catalysts (never traded)
+python -m medradar live --reset                             # wipe the simulated book
+```
+
+Each cycle: SEC EDGAR 8-K feed (seconds) → EDGAR full-text backfill → FDA press RSS →
+ClinicalTrials.gov status changes → keyword classifier → **simulated order at the latest real
+Yahoo quote plus 10 bps slippage** → mark-to-market → alert (console + `out/live_alerts.jsonl` +
+optional `MEDRADAR_WEBHOOK_URL`).
+
+Honest latency, measured 2026‑10‑31:
+
+| Source | Latency | Tradable? |
+|---|---|---|
+| SEC 8-K filings | seconds | ✅ |
+| FDA press RSS | ~8 days stale at the time of writing | ❌ informational |
+| ClinicalTrials.gov updates | hours | terminations only |
+| openFDA 510(k)/PMA | 12 days | ❌ slow lane only |
+| FDA submissions under review | **not public** | physically impossible |
+
+Long-only, ≤5% per name, ≤25% per track, −20% stop, 60‑trading‑day exit. Shorts are **alerted but
+not traded**: borrow fees and squeeze-outs would turn the P&L into fiction. This is a simulation —
+no broker, no orders, no money at risk.
+
 ## Quickstart
 
 ```bash

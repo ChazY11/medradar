@@ -1,0 +1,53 @@
+name: live-lane
+
+# Stateless CI cycle for the event lane: polls catalysts, places simulated orders
+# at real quotes, uploads the alert log. State is cached between runs; for a
+# stateful always-on book use the DSH automation or a small VPS instead.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-lane
+  cancel-in-progress: false
+
+jobs:
+  cycle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore paper-trading state
+        uses: actions/cache/restore@v4
+        with:
+          path: data/medradar.sqlite
+          key: medradar-live-${{ github.run_id }}
+          restore-keys: medradar-live-
+
+      - name: One live cycle
+        env:
+          MEDRADAR_SEC_UA: "MedRadar research (github actions; contact: medradar@users.noreply.github.com)"
+        run: python -m medradar live --once --since-hours 2
+
+      - name: Save paper-trading state
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data/medradar.sqlite
+          key: medradar-live-${{ github.run_id }}
+
+      - name: Upload alert log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-alerts
+          path: out/live_alerts.jsonl
+          if-no-files-found: ignore
