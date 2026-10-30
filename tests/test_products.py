@@ -292,7 +292,8 @@ class ArtifactTests(unittest.TestCase):
         self.assertLessEqual(len(family_list), 250)
         self.assertEqual(meta["family_count"], len(family_list))
         coverage = meta["coverage"]
-        self.assertGreaterEqual(coverage["classified_share"], 0.985)
+        # "总覆盖率" = product-code event coverage (analysis口径), must stay ≥98%
+        self.assertGreaterEqual(coverage["classified_share"], 0.98)
         self.assertGreaterEqual(coverage["top20_share"], 0.5)
         # the all-events denominator moves whenever a collector backfills
         # drug/trial events (which carry no product code), so only sanity-check it
@@ -321,7 +322,7 @@ class ArtifactTests(unittest.TestCase):
     def test_catalog_artifact(self) -> None:
         catalog = products.load_catalog()
         self.assertGreaterEqual(len(catalog), 2000)
-        self.assertLessEqual(len(catalog), 3000)
+        self.assertLessEqual(len(catalog), 5000)
         for code, entry in catalog.items():
             self.assertEqual(set(entry), CATALOG_KEYS, code)
             self.assertTrue(entry["name_zh"].strip(), code)
@@ -331,31 +332,33 @@ class ArtifactTests(unittest.TestCase):
         self.assertNotIn("N/A", catalog)
 
     def test_catalog_covers_real_top2000(self) -> None:
+        """top-2000 ranking uses the *analysis* 口径: 510(k) + material PMA.
+
+        The ranking helper is imported from the generator itself so the test can
+        never drift away from the script (this is the bug that broke the old
+        all-PMA ranking after the PMA backfill).
+        """
         if not Path(DEFAULT_DB).exists():
             self.skipTest("real database not available")
+        module = _load_catalog_script()
+        reader = _readonly_db(DEFAULT_DB)
+        self.addCleanup(reader.close)
+        ranked = module.rank_top_codes(reader, 2000)
+        counts = module.activity_counts(reader)
+        self.assertEqual(len(ranked), 2000)
         catalog = products.load_catalog()
-        uri = f"file:{Path(DEFAULT_DB).as_posix()}?mode=ro"
-        conn = sqlite3.connect(uri, uri=True)
-        try:
-            rows = conn.execute(
-                "SELECT product_code, COUNT(*) n FROM events"
-                " WHERE product_code IS NOT NULL AND product_code != ''"
-                " GROUP BY product_code ORDER BY n DESC, product_code ASC"
-            ).fetchall()
-        finally:
-            conn.close()
-        valid = [
-            (code, n)
-            for code, n in rows
-            if str(code).strip().upper() not in fam.INVALID_PRODUCT_CODES
-            and str(code).replace("-", "").isalnum()
-        ][:2000]
-        self.assertEqual(len(valid), 2000)
-        for code, _n in valid:
+        for code, _n in ranked:
             self.assertIn(code, catalog)
             self.assertTrue(catalog[code]["name_zh"].strip())
             self.assertTrue(_has_cjk(catalog[code]["name_zh"]), code)
             self.assertTrue(catalog[code]["definition_zh"].strip(), code)
+        # reported coverage on the same 口径 (report only; the hard ≥98% total
+        # coverage assertion lives in test_families_artifact)
+        total_activity = sum(counts.values())
+        top_activity = sum(n for _code, n in ranked)
+        self.assertGreaterEqual(top_activity / total_activity, 0.9)
+        covered = sum(n for code, n in counts.items() if code in catalog)
+        self.assertGreaterEqual(covered / total_activity, 0.9)
 
     def test_catalog_is_idempotent_and_preserves_reviewed_entries(self) -> None:
         """Re-running the generator reproduces the committed file byte-for-byte."""
@@ -364,13 +367,17 @@ class ArtifactTests(unittest.TestCase):
         module = _load_catalog_script()
         reader = _readonly_db(DEFAULT_DB)
         self.addCleanup(reader.close)
-        first, first_report = module.build_catalog(reader)
-        second, second_report = module.build_catalog(reader)
-        self.assertEqual(first, second)
-        self.assertEqual(first_report, second_report)
         committed = products.load_catalog()
         self.assertGreaterEqual(len(committed), 2000)
-        self.assertEqual(len(first), 2000)
+        first, first_report = module.build_catalog(reader, existing=committed)
+        second, second_report = module.build_catalog(reader, existing=first)
+        self.assertEqual(first, second)
+        self.assertEqual(first_report, second_report)
+        self.assertEqual(first_report["missing_translations"], [])
+        # every top-2000 code of the analysis口径 is present after a rebuild
+        for code, _n in module.rank_top_codes(reader, 2000):
+            self.assertIn(code, first)
+            self.assertTrue(_has_cjk(first[code]["name_zh"]), code)
         # the committed artefact must agree with a fresh build on every code it
         # covers (new top-2000 codes from a parallel collector are caught by
         # test_catalog_covers_real_top2000)
@@ -383,7 +390,13 @@ class ArtifactTests(unittest.TestCase):
                 self.assertEqual(first[code]["name_zh"], entry[0], code)
                 self.assertEqual(first[code]["definition_zh"], entry[1], code)
         self.assertFalse(module.REVIEWED_CATALOG.keys() & module.EXTENDED_CATALOG.keys())
-        self.assertGreaterEqual(len(module.EXTENDED_CATALOG), 1400)
+        self.assertGreaterEqual(len(module.EXTENDED_CATALOG), 2100)
+        # codes that dropped out of the top-2000 are retained, not deleted
+        ranked_ids = {code for code, _n in module.rank_top_codes(reader, 2000)}
+        retained = [code for code in committed if code not in ranked_ids]
+        self.assertTrue(retained)
+        for code in retained:
+            self.assertIn(code, first)
 
     def test_families_artifact_matches_rebuild(self) -> None:
         if not Path(DEFAULT_DB).exists():

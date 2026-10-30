@@ -680,5 +680,309 @@ class BuildApiTests(ReplayTestCase):
         self.assertEqual(payload["meta"]["request_stats"]["budget_used"], 0)
 
 
+# --------------------------------------------------------------------------- events mode (multi-year)
+class EventModeTests(ReplayTestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.db.upsert_companies([{"key": "acme", "name_en": "ACME Corp", "ticker": "AAA"}])
+
+    def add_raw_event(
+        self,
+        event_id: str,
+        day: str,
+        kind: str,
+        *,
+        company_key: str | None = "acme",
+        product_code: str | None = None,
+        track_id: str = "track_a",
+        title: str = "测试事件",
+        payload: dict | None = None,
+        quality: str = "date",
+        available_at: str | None = None,
+    ) -> None:
+        self.db.upsert_events(
+            [
+                {
+                    "event_id": event_id,
+                    "source": "openfda_device_510k" if kind in ("510k", "pma") else f"test_{kind}",
+                    "kind": kind,
+                    "event_date": day,
+                    "as_of": "2024-01-05",
+                    "available_at": available_at if available_at is not None else day,
+                    "timestamp_quality": quality,
+                    "company_key": company_key,
+                    "track_id": track_id,
+                    "product_code": product_code,
+                    "title": title,
+                    "url": "https://www.fda.gov/x",
+                    "first_seen_at": "2024-01-05",
+                    "payload": payload or {},
+                }
+            ]
+        )
+        if available_at and "T" in available_at:
+            self.set_available_timestamp(event_id, available_at)
+
+    # ------------------------------------------------------------------ tests
+    def test_events_mode_ignores_signals_table(self) -> None:
+        # a signals-table row that would be replayed by signals mode; its company
+        # is intentionally unmapped so the events rules cannot turn it into a step
+        self.add_event(event_id="sig-evt", kind="510k", title="signal-driven event", company_key="unmapped")
+        self.add_signal(signal_id="sig-1", event_id="sig-evt")
+        # a distinct event that only the events mode rules can find
+        self.add_raw_event("evt-approval", "2024-01-03", "drug_approval", title="FDA approves ACME drug")
+        payload = self.build(source="events")
+        self.assertEqual(payload["status"], "ok")
+        self.assertEqual(payload["meta"]["source_mode"], "events")
+        self.assertEqual(payload["meta"]["counts"]["signal_source"], "events")
+        self.assertEqual([step["kind"] for step in payload["steps"]], ["drug_approval"])
+        self.assertEqual(payload["steps"][0]["decision"], "BUY")
+        self.assertEqual(payload["method"]["long_only"], True)
+
+    def test_events_mode_dedupes_first_product_code(self) -> None:
+        self.add_raw_event("e1", "2024-01-02", "510k", product_code="P1")
+        self.add_raw_event("e2", "2024-01-04", "510k", product_code="P1")  # repeat: not a new signal
+        payload = self.build(source="events")
+        self.assertEqual(payload["meta"]["counts"]["candidate_counts"]["device_novel_code"], 1)
+        steps = payload["steps"]
+        self.assertEqual(len(steps), 1)
+        self.assertEqual(steps[0]["kind"], "device_novel_code")
+        self.assertEqual(steps[0]["event_id"], "e1")
+        # daily fill = next session open, never the event-day open
+        anchor = self.days.index("2024-01-03")
+        self.assertEqual(steps[0]["fill_date"], self.days[anchor])
+        self.assertAlmostEqual(steps[0]["fill_price"], self.aaa_opens[anchor], places=6)
+        self.assertGreater(steps[0]["fill_date"], "2024-01-02")
+
+    def test_events_mode_forces_daily_branch_even_in_intraday_window(self) -> None:
+        self.add_raw_event("e1", "2024-01-03", "510k", product_code="P1")
+        fetcher = FakeFetcher(intraday={"AAA": intraday_payload([("2024-01-03T15:30:00Z", 103.5)])})
+        payload = self.build(
+            source="events",
+            offline=False,
+            fetcher=fetcher,
+            now=datetime(2024, 1, 5, 23, 0, tzinfo=timezone.utc),
+        )
+        step = payload["steps"][0]
+        self.assertEqual(step["price_source"], "daily")
+        self.assertEqual(fetcher.calls_for("1m"), [])  # 1m feed must not be queried
+        self.assertEqual(payload["meta"]["intraday_days_effective"], 0.0)
+        self.assertIn("固定只用日线", payload["method"]["intraday_rule"])
+
+    def test_events_mode_unknown_quality_is_filtered(self) -> None:
+        self.add_raw_event("e1", "2024-01-03", "510k", product_code="P1", quality="unknown")
+        payload = self.build(source="events")
+        self.assertEqual(payload["steps"], [])
+        self.assertEqual(payload["status"], "insufficient_data")
+        self.assertEqual(payload["reason"], "no_event_candidates")
+
+    def test_events_mode_future_public_time_is_skipped(self) -> None:
+        self.add_raw_event("e1", "2024-04-01", "510k", product_code="P1")
+        payload = self.build(
+            source="events",
+            start="2024-01-01",
+            end="2024-06-30",
+            now=datetime(2024, 3, 1, tzinfo=timezone.utc),
+        )
+        self.assertEqual(len(payload["steps"]), 1)
+        self.assertEqual(payload["steps"][0]["decision"], "SKIP")
+        self.assertEqual(payload["steps"][0]["skip_reason"], "not_yet_public")
+        self.assertEqual(payload["audit"]["lookahead_rejected"], 0)
+
+    def test_events_mode_8k_catalyst_ticker_and_direction(self) -> None:
+        self.add_raw_event(
+            "k-pos",
+            "2024-01-03",
+            "8k_catalyst",
+            company_key=None,
+            title="(AAA) announces fda approval for lead program",
+            payload={"category": "approval", "buckets": ["fda approval"]},
+        )
+        self.add_raw_event(
+            "k-neg",
+            "2024-01-04",
+            "8k_catalyst",
+            company_key=None,
+            title="(AAA) announces did not meet primary endpoint",
+            payload={"category": "trial_result", "buckets": ["did not meet"]},
+        )
+        self.add_raw_event(
+            "k-amb",
+            "2024-01-05",
+            "8k_catalyst",
+            company_key=None,
+            title="(AAA) fda approval but did not meet endpoint",
+            payload={"category": "mixed", "buckets": ["fda approval", "did not meet"]},
+        )
+        payload = self.build(source="events")
+        steps = [step for step in payload["steps"] if step["kind"] == "8k_catalyst"]
+        self.assertEqual(len(steps), 2)  # ambiguous headline is dropped
+        by_event = {step["event_id"]: step for step in steps}
+        self.assertEqual(by_event["k-pos"]["decision"], "BUY")
+        self.assertEqual(by_event["k-pos"]["ticker"], "AAA")
+        self.assertEqual(by_event["k-neg"]["decision"], "SKIP")
+        self.assertEqual(by_event["k-neg"]["skip_reason"], "short_not_supported")
+        self.assertTrue(by_event["k-neg"]["reference_only"])
+
+    def test_events_mode_skips_backfilled_8k_alerts(self) -> None:
+        self.add_raw_event(
+            "k-backfill",
+            "2024-01-03",
+            "8k_catalyst",
+            company_key=None,
+            title="(AAA) announces fda approval",
+            payload={"buckets": ["fda approval"], "backfill": True},
+        )
+        self.add_raw_event(
+            "k-live",
+            "2024-01-04",
+            "8k_catalyst",
+            company_key=None,
+            title="(AAA) announces fda approval",
+            payload={"buckets": ["fda approval"]},
+        )
+        payload = self.build(source="events")
+        self.assertEqual([step["event_id"] for step in payload["steps"]], ["k-live"])
+
+    def test_events_mode_per_kind_cap_and_max_steps(self) -> None:
+        for index in range(20):
+            self.add_raw_event(f"a-{index}", self.days[index], "drug_approval", title=f"approval {index}")
+        for index in range(2, 10):
+            self.add_raw_event(f"r-{index}", self.days[index], "device_recall", title=f"recall {index}")
+        payload = self.build(source="events", per_kind_limit=8, max_steps=5)
+        self.assertEqual(len(payload["steps"]), 5)
+        counts = payload["meta"]["counts"]
+        self.assertEqual(counts["candidate_counts"]["drug_approval"], 20)
+        self.assertEqual(counts["sampled_counts"]["drug_approval"], 8)
+        self.assertLessEqual(counts["event_total_before_global_cap"], 2 * 8)
+        self.assertLessEqual(payload["meta"]["max_steps"], 5)
+
+    def test_source_argument_validation(self) -> None:
+        with self.assertRaises(ValueError):
+            self.build(source="bogus")
+        # explicit signals mode never falls back to events
+        self.add_raw_event("e1", "2024-01-03", "510k", product_code="P1")
+        payload = self.build(source="signals")
+        self.assertEqual(payload["steps"], [])
+        self.assertEqual(payload["reason"], "no_signals")
+        # auto still falls back when signals is empty
+        fallback = self.build(source="auto")
+        self.assertEqual(fallback["meta"]["counts"]["signal_source"], "events_fallback")
+        self.assertEqual(len(fallback["steps"]), 1)
+
+
+class EventModeMultiYearTests(ReplayTestCase):
+    """A 2019-2024 price history so year-stratified sampling can be observed."""
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.db.execute("DELETE FROM prices")
+        self.db.commit()
+        self.days = business_days(date(2019, 1, 1), 1565)
+        self.count = len(self.days)
+        add_prices(self.db, "SPY", self.days, [100.0] * self.count, [100.0] * self.count)
+        self.aaa_opens = [100.0 + index * 0.02 for index in range(self.count)]
+        self.aaa_closes = [price + 0.5 for price in self.aaa_opens]
+        add_prices(self.db, "AAA", self.days, self.aaa_opens, self.aaa_closes)
+        self.db.upsert_companies([{"key": "acme", "name_en": "ACME Corp", "ticker": "AAA"}])
+
+    def build(self, **kwargs):
+        kwargs.setdefault("now", datetime(2025, 1, 15, tzinfo=timezone.utc))
+        kwargs.setdefault("start", "2019-01-01")
+        kwargs.setdefault("end", "2024-12-31")
+        return super().build(**kwargs)
+
+    def add_raw_event(
+        self,
+        event_id: str,
+        day: str,
+        kind: str,
+        *,
+        company_key: str | None = "acme",
+        product_code: str | None = None,
+        track_id: str = "track_a",
+        title: str = "测试事件",
+        payload: dict | None = None,
+        quality: str = "date",
+    ) -> None:
+        self.db.upsert_events(
+            [
+                {
+                    "event_id": event_id,
+                    "source": "openfda_device_510k" if kind in ("510k", "pma") else f"test_{kind}",
+                    "kind": kind,
+                    "event_date": day,
+                    "as_of": "2024-12-31",
+                    "available_at": day,
+                    "timestamp_quality": quality,
+                    "company_key": company_key,
+                    "track_id": track_id,
+                    "product_code": product_code,
+                    "title": title,
+                    "url": "https://www.fda.gov/x",
+                    "first_seen_at": "2024-12-31",
+                    "payload": payload or {},
+                }
+            ]
+        )
+
+    def test_multi_year_sampling_keeps_year_diversity(self) -> None:
+        years = [2019, 2020, 2021, 2022, 2023, 2024]
+        for year in years:
+            for index in range(8):
+                self.add_raw_event(
+                    f"a-{year}-{index}",
+                    f"{year}-03-{index + 2:02d}",
+                    "drug_approval",
+                    title=f"approval {year} {index}",
+                )
+        payload = self.build(source="events", per_kind_limit=6, max_steps=12)
+        steps = payload["steps"]
+        self.assertLessEqual(len(steps), 12)
+        self.assertGreaterEqual(len({step["signal_date"][:4] for step in steps}), 4)
+        self.assertEqual(payload["meta"]["counts"]["candidate_counts"]["drug_approval"], 48)
+        self.assertEqual(payload["meta"]["counts"]["sampled_counts"]["drug_approval"], 6)
+
+    def test_multi_year_all_event_rules_fire(self) -> None:
+        # device: two tracks, so the second is a new track (code already seen)
+        self.add_raw_event("d1", "2019-02-04", "510k", product_code="P1", track_id="track_a")
+        self.add_raw_event("d2", "2019-03-04", "510k", product_code="P1", track_id="track_b")
+        # drug approval
+        self.add_raw_event("a1", "2020-02-03", "drug_approval", title="approval")
+        # phase-3 trial
+        self.add_raw_event(
+            "t1", "2021-02-02", "trial", title="phase 3", payload={"phase": ["PHASE3"]}
+        )
+        # recall cluster: second recall within 90 days
+        self.add_raw_event("r1", "2022-02-01", "device_recall", title="recall one")
+        self.add_raw_event("r2", "2022-02-20", "device_recall", title="recall two")
+        # 8-K catalyst with ticker in the headline
+        self.add_raw_event(
+            "k1",
+            "2023-02-01",
+            "8k_catalyst",
+            company_key=None,
+            title="(AAA) announces fda approval",
+            payload={"buckets": ["fda approval"]},
+        )
+        payload = self.build(source="events", max_steps=100)
+        kinds = {step["kind"] for step in payload["steps"]}
+        self.assertTrue(
+            {
+                "device_novel_code",
+                "device_new_track",
+                "drug_approval",
+                "trial_start",
+                "recall_cluster",
+                "8k_catalyst",
+            }.issubset(kinds),
+            kinds,
+        )
+        self.assertEqual(payload["status"], "ok")
+        # mixed multi-year window + daily fills only
+        self.assertTrue(all(step["price_source"] == "daily" for step in payload["steps"]))
+        self.assertGreaterEqual(len({step["signal_date"][:4] for step in payload["steps"]}), 4)
+
+
 if __name__ == "__main__":
     unittest.main()

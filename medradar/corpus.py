@@ -72,7 +72,30 @@ BUCKET_ORDER: tuple[str, ...] = (
     "financial results",
 )
 
+#: v2 buckets: the original seven plus nine regulatory/clinical phrases added to
+#: widen recall beyond the first pilot. Kept as a separate constant so `v1`
+#: corpora stay reproducible bit-for-bit while `v2` can grow.
+BUCKETS_V2: tuple[str, ...] = BUCKET_ORDER + (
+    "fda approves",
+    "phase 3 results",
+    "topline data",
+    "clinical hold",
+    "refuse to file",
+    "breakthrough therapy",
+    "priority review",
+    "label expansion",
+    "accelerated approval",
+)
+
 #: Bucket -> category prior (what a filing is *probably* about if that query hit).
+#:
+#: v2 mapping notes (categories stay the five the case engine knows):
+#: * ``clinical hold`` / ``refuse to file`` are regulatory negatives -> ``crl``
+#:   (the only negative regulatory bin; the reason string keeps the nuance);
+#: * ``breakthrough therapy`` / ``priority review`` are designations, not
+#:   commercial events -> ``other`` (direction 0: a designation is not a catalyst
+#:   by itself and must not inflate the approval bucket);
+#: * ``label expansion`` / ``accelerated approval`` are approvals -> ``approval``.
 BUCKET_CATEGORY: dict[str, str] = {
     "fda approval": "approval",
     "receives fda approval": "approval",
@@ -81,6 +104,15 @@ BUCKET_CATEGORY: dict[str, str] = {
     "met the primary endpoint": "trial_result",
     "announces positive topline": "trial_result",
     "financial results": "earnings",
+    "fda approves": "approval",
+    "phase 3 results": "trial_result",
+    "topline data": "trial_result",
+    "clinical hold": "crl",
+    "refuse to file": "crl",
+    "breakthrough therapy": "other",
+    "priority review": "other",
+    "label expansion": "approval",
+    "accelerated approval": "approval",
 }
 
 CATEGORIES: tuple[str, ...] = ("approval", "crl", "trial_result", "earnings", "other")
@@ -250,6 +282,7 @@ __all__ = [
     "ARCHIVES_BASE",
     "FTS_ENDPOINT",
     "BUCKET_ORDER",
+    "BUCKETS_V2",
     "BUCKET_CATEGORY",
     "CATEGORIES",
     "CATEGORY_PRIORITY",
@@ -271,6 +304,7 @@ __all__ = [
     "read_jsonl",
     "load_corpus",
     "write_corpus",
+    "merge_corpora",
     "corpus_sha1",
     "stratified_subset",
     "summarize",
@@ -445,7 +479,11 @@ def parse_fts_hit(
     }
 
 
-def merge_candidates(candidates: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+def merge_candidates(
+    candidates: Sequence[Mapping[str, Any]],
+    *,
+    bucket_order: Sequence[str] = BUCKET_ORDER,
+) -> list[dict[str, Any]]:
     """De-duplicate candidates by accession and union their bucket evidence.
 
     EDGAR FTS returns one hit **per matching document** inside a filing, so the
@@ -460,9 +498,16 @@ def merge_candidates(candidates: Sequence[Mapping[str, Any]]) -> list[dict[str, 
     * identifiers (cik/company/ticker/filed) come from the first hit and are not
       overwritten by later duplicates.
 
-    Output is sorted by ``(filed, accession)`` so the corpus file is stable across
-    crawls.
+    ``bucket_order`` selects the priority list: :data:`BUCKET_ORDER` for the
+    original corpus, :data:`BUCKETS_V2` for the widened one (buckets outside the
+    list still survive, they just rank last).
     """
+    order = list(bucket_order)
+    rank_of = {bucket: index for index, bucket in enumerate(order)}
+
+    def rank_of_bucket(bucket: str) -> int:
+        return rank_of.get(bucket, len(order))
+
     by_accession: dict[str, dict[str, Any]] = {}
     for candidate in candidates:
         if not isinstance(candidate, Mapping):
@@ -471,26 +516,23 @@ def merge_candidates(candidates: Sequence[Mapping[str, Any]]) -> list[dict[str, 
         if not accession:
             continue
         buckets = list(candidate.get("buckets") or [])
-        rank = min(
-            (BUCKET_ORDER.index(b) for b in buckets if b in BUCKET_ORDER),
-            default=len(BUCKET_ORDER),
-        )
+        rank = min((rank_of_bucket(b) for b in buckets), default=len(order))
         current = by_accession.get(accession)
         if current is None:
             merged = dict(candidate)
-            merged["buckets"] = [b for b in BUCKET_ORDER if b in buckets] or buckets
+            merged["buckets"] = [b for b in order if b in buckets] or buckets
             merged["windows"] = list(dict.fromkeys(candidate.get("windows") or []))
             by_accession[accession] = merged
             continue
         # rank of the document we already hold, captured *before* the buckets merge
         previous_rank = min(
-            (BUCKET_ORDER.index(b) for b in current.get("buckets") or [] if b in BUCKET_ORDER),
-            default=len(BUCKET_ORDER),
+            (rank_of_bucket(b) for b in current.get("buckets") or []),
+            default=len(order),
         )
         for bucket in buckets:
             if bucket not in current["buckets"]:
                 current["buckets"].append(bucket)
-        current["buckets"] = [b for b in BUCKET_ORDER if b in current["buckets"]]
+        current["buckets"] = [b for b in order if b in current["buckets"]] or current["buckets"]
         for window in candidate.get("windows") or []:
             if window not in current["windows"]:
                 current["windows"].append(window)
@@ -656,6 +698,7 @@ def build_record(
     fetch_status: str = "ok",
     company_key: str = "",
     items: Sequence[str] | None = None,
+    bucket_order: Sequence[str] = BUCKET_ORDER,
     extra: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Join a search candidate with its fetched text into one corpus record.
@@ -681,7 +724,7 @@ def build_record(
         "form": str(candidate.get("form") or "8-K"),
         "document": str(candidate.get("document") or ""),
         "url": str(candidate.get("url") or ""),
-        "buckets": [b for b in BUCKET_ORDER if b in buckets] or buckets,
+        "buckets": [b for b in bucket_order if b in buckets] or buckets,
         "windows": list(candidate.get("windows") or []),
         "items": item_list,
         "category": detail["category"],
@@ -816,19 +859,24 @@ def stratified_subset(
 
 
 def write_corpus(
-    records: Sequence[Mapping[str, Any]], out_dir: str | Path | None = None
+    records: Sequence[Mapping[str, Any]],
+    out_dir: str | Path | None = None,
+    *,
+    filename: str = "corpus.jsonl",
 ) -> dict[str, Any]:
     """Write ``corpus.jsonl`` (stable order) and return paths/counts metadata.
 
     Records are sorted by ``(filed, accession)`` so a diff between two crawls is
     readable. The JSON is written with ``ensure_ascii=False`` - Chinese notes in
-    payloads stay readable, and every record is one physical line.
+    payloads stay readable, and every record is one physical line. ``filename``
+    lets a widened corpus (``corpus_v2.jsonl``) live next to the original without
+    overwriting it.
     """
     target_dir = ensure_dir(Path(out_dir) if out_dir else DEFAULT_CORPUS_DIR)
     ordered = sorted(
         records, key=lambda item: (str(item.get("filed") or ""), str(item.get("accession") or ""))
     )
-    path = target_dir / "corpus.jsonl"
+    path = target_dir / filename
     with path.open("w", encoding="utf-8") as handle:
         for record in ordered:
             handle.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")
@@ -840,6 +888,74 @@ def write_corpus(
     }
 
 
+def merge_corpora(
+    corpora: Sequence[Sequence[Mapping[str, Any]]],
+    *,
+    bucket_order: Sequence[str] = BUCKET_ORDER,
+) -> list[dict[str, Any]]:
+    """Union several corpus record lists by accession (v1 + v2 -> full set).
+
+    Why merging is a pure, explicit step: the v1 corpus is a published snapshot
+    someone may already have loaded, so a widened crawl must be able to produce a
+    *superset* file without rewriting the old one. Rules:
+
+    * one record per ``accession``; the record with the **longest text** wins
+      (more of the announcement is available), so a later better fetch upgrades
+      an older thin record;
+    * ``buckets``/``windows`` are unioned across versions (a filing matched by
+      both v1 and v2 queries keeps all its evidence);
+    * ordering is ``(filed, accession)`` for a readable diff.
+
+    ``bucket_order`` controls bucket ordering (pass :data:`BUCKETS_V2` for a v2
+    merge); buckets outside the list are preserved at the end.
+    """
+    order = list(bucket_order)
+    merged: dict[str, dict[str, Any]] = {}
+    for corpus_rows in corpora:
+        for record in corpus_rows or []:
+            if not isinstance(record, Mapping):
+                continue
+            accession = str(record.get("accession") or "")
+            if not accession:
+                continue
+            candidate = dict(record)
+            current = merged.get(accession)
+            if current is None:
+                merged[accession] = candidate
+                continue
+            if int(candidate.get("text_chars") or 0) > int(current.get("text_chars") or 0):
+                candidate["buckets"] = _union_buckets(
+                    current.get("buckets"), candidate.get("buckets"), order
+                )
+                candidate["windows"] = _union_windows(
+                    current.get("windows"), candidate.get("windows")
+                )
+                merged[accession] = candidate
+            else:
+                current["buckets"] = _union_buckets(
+                    current.get("buckets"), candidate.get("buckets"), order
+                )
+                current["windows"] = _union_windows(
+                    current.get("windows"), candidate.get("windows")
+                )
+    return sorted(
+        merged.values(),
+        key=lambda item: (str(item.get("filed") or ""), str(item.get("accession") or "")),
+    )
+
+
+def _union_buckets(
+    left: Sequence[str] | None, right: Sequence[str] | None, order: Sequence[str]
+) -> list[str]:
+    combined = {str(bucket) for bucket in (left or [])} | {str(bucket) for bucket in (right or [])}
+    ordered = [bucket for bucket in order if bucket in combined]
+    return ordered + sorted(combined - set(ordered))
+
+
+def _union_windows(left: Sequence[str] | None, right: Sequence[str] | None) -> list[str]:
+    return list(dict.fromkeys([str(window) for window in (left or []) + (right or [])]))
+
+
 def build_manifest(
     records: Sequence[Mapping[str, Any]],
     *,
@@ -847,6 +963,7 @@ def build_manifest(
     fetch: Mapping[str, Any] | None = None,
     window: Mapping[str, str] | None = None,
     buckets: Sequence[str] = BUCKET_ORDER,
+    bucket_order: Sequence[str] | None = None,
     user_agent: str = "",
     extra: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
@@ -854,9 +971,10 @@ def build_manifest(
 
     Pure function (no I/O) so the same manifest can be regenerated from the
     corpus files and re-verified in tests. Every number the report quotes about
-    the corpus must be findable here.
+    the corpus must be findable here. ``bucket_order`` defaults to ``buckets``
+    and controls the ordering of the per-bucket distribution.
     """
-    summary = summarize(records)
+    summary = summarize(records, bucket_order=bucket_order or buckets)
     manifest: dict[str, Any] = {
         "schema": "edgar-corpus-manifest-v1",
         "corpus_version": CORPUS_VERSION,
@@ -906,14 +1024,18 @@ def _year_of(filed: Any) -> str:
 
 
 def summarize(
-    records: Sequence[Mapping[str, Any]], manifest: Mapping[str, Any] | None = None
+    records: Sequence[Mapping[str, Any]],
+    manifest: Mapping[str, Any] | None = None,
+    *,
+    bucket_order: Sequence[str] = BUCKET_ORDER,
 ) -> dict[str, Any]:
     """Distributions used by the report/manifest (n, categories, years, buckets...).
 
     Never raises on malformed records: unknown dates fall into ``"unknown"`` and
     missing text contributes 0 characters. ``failure_rate`` is copied from the
     manifest's ``fetch`` block when supplied because failures are counted at
-    crawl time, not in the corpus itself.
+    crawl time, not in the corpus itself. ``bucket_order`` widens the per-bucket
+    table for v2 corpora (defaults to the original seven).
     """
     rows = [record for record in records if isinstance(record, Mapping)]
     n = len(rows)
@@ -935,7 +1057,7 @@ def summarize(
         "unique_accessions": len({str(record.get("accession") or "") for record in rows} - {""}),
         "by_category": {category: by_category.get(category, 0) for category in CATEGORIES},
         "by_year": {year: by_year[year] for year in sorted(by_year)},
-        "by_bucket": {bucket: by_bucket.get(bucket, 0) for bucket in BUCKET_ORDER},
+        "by_bucket": {bucket: by_bucket.get(bucket, 0) for bucket in bucket_order},
         "item_202_filings": sum(
             1 for record in rows if ITEM_EARNINGS in {str(item) for item in (record.get("items") or [])}
         ),

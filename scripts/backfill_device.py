@@ -20,6 +20,8 @@ response is cached under ``data/cache``, so a second run only fetches what is st
 Usage
 -----
     python scripts/backfill_device.py --db data/medradar.sqlite --months 720 --budget 600
+    # targeted, chunked, kill-safe resume for a single endpoint family:
+    python scripts/backfill_device.py --kinds device_recall --months 720 --budget 300
     python scripts/backfill_device.py --report-only --db data/medradar.sqlite
 
 Exit codes: ``0`` = finished (possibly partially, with warnings recorded), ``2`` = hard error.
@@ -31,6 +33,7 @@ import argparse
 import json
 import sys
 import time
+from datetime import timedelta
 from pathlib import Path
 from typing import Any
 
@@ -38,11 +41,19 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from medradar.collect_device import DEVICE_ENDPOINTS, collect  # noqa: E402
-from medradar.config import CACHE_DIR, DATA_DIR  # noqa: E402
+from medradar.collect_device import (  # noqa: E402
+    DEVICE_ENDPOINTS,
+    _clean,
+    _event_track,
+    _fetch_window,
+    _keyword_index,
+    _NORMALIZERS,
+    collect,
+)
+from medradar.config import CACHE_DIR, DATA_DIR, load_companies, load_tracks  # noqa: E402
 from medradar.db import DB  # noqa: E402
 from medradar.http import BudgetExceeded, Fetcher, HttpError  # noqa: E402
-from medradar.util import utc_now_iso  # noqa: E402
+from medradar.util import add_months, iso, today_utc, utc_now_iso  # noqa: E402
 
 DEFAULT_DB = DATA_DIR / "medradar.sqlite"
 DEFAULT_PROGRESS = DATA_DIR / "backfill_device_progress.json"
@@ -131,6 +142,181 @@ def db_snapshot(db: DB) -> dict[str, Any]:
         "db_bytes": db_bytes,
         "db_mb": round(db_bytes / (1024 * 1024), 1),
     }
+
+
+def _load_code_map(db: DB) -> dict[str, str]:
+    """Existing product-code → track dictionary straight from the DB (7k rows)."""
+    rows = db.query("SELECT product_code, track_id FROM product_codes WHERE track_id IS NOT NULL")
+    return {str(row["product_code"]): str(row["track_id"]) for row in rows}
+
+
+def _iter_chunks(start, end, chunk_months: int):
+    cursor = start
+    while cursor <= end:
+        next_start = add_months(cursor, chunk_months)
+        chunk_end = min(end, next_start - timedelta(days=1))
+        yield cursor, chunk_end
+        cursor = next_start
+
+
+def run_targeted(args: argparse.Namespace) -> int:
+    """Chunked, kill-safe collection of selected kinds (used for the PMA/recall backfill).
+
+    Unlike ``collect()`` this upserts every date window as soon as it is fetched, so memory
+    stays bounded to one window (~3-5k records) and an interrupted run keeps every completed
+    window; ``data/backfill_device_progress.json`` is refreshed after each window. This is
+    what makes it safe to retry against openFDA 500/429 flakiness without re-normalising the
+    176k 510(k) / 57k PMA events that are already in the DB.
+    """
+    kinds = [part.strip() for part in str(args.kinds).split(",") if part.strip()]
+    unknown = [kind for kind in kinds if kind not in DEVICE_ENDPOINTS]
+    if unknown:
+        raise SystemExit(f"unknown kinds {unknown}; choose from {sorted(DEVICE_ENDPOINTS)}")
+
+    db_path = Path(args.db)
+    progress_path = Path(args.progress)
+    end = today_utc()
+    start = add_months(end, -max(1, int(args.months)))
+    as_of = iso(end)
+    fetcher = QuotaAwareFetcher(
+        cache_dir=CACHE_DIR,
+        min_interval=args.min_interval,
+        max_requests=args.budget,
+        timeout=args.timeout,
+    )
+    started = utc_now_iso()
+    t0 = time.monotonic()
+    warnings: list[str] = []
+    budget_hit = False
+    per_kind: dict[str, dict[str, Any]] = {}
+    state: dict[str, Any] = {
+        "task": "task-10",
+        "mode": "targeted",
+        "db": str(db_path),
+        "months": args.months,
+        "chunk_months": args.chunk_months,
+        "budget": args.budget,
+        "kinds": kinds,
+        "started_at": started,
+        "finished_at": None,
+        "elapsed_sec": None,
+        "request_stats": None,
+        "before": None,
+        "after": None,
+        "per_kind": per_kind,
+        "warnings": warnings,
+        "error": None,
+    }
+
+    def persist() -> None:
+        state["request_stats"] = dict(fetcher.stats)
+        state["elapsed_sec"] = round(time.monotonic() - t0, 1)
+        _write_progress(progress_path, state)
+
+    with DB(db_path) as db:
+        state["before"] = db_snapshot(db)
+        companies = load_companies("device")
+        tracks = load_tracks("device")
+        db.upsert_companies(companies.all())
+        db.upsert_tracks(tracks.all())
+        code_map = _load_code_map(db)
+        keyword_index = _keyword_index(tracks)
+        print(
+            "[targeted] before: events_total="
+            f"{state['before']['events_total']} per_kind={json.dumps(state['before']['per_kind'], ensure_ascii=False)}"
+        )
+        print(
+            f"[targeted] kinds={kinds} months={args.months} chunk={args.chunk_months}mo"
+            f" budget={args.budget} code_map={len(code_map)} window={iso(start)}..{iso(end)}"
+        )
+        persist()
+
+        exit_code = 0
+        try:
+            for kind in kinds:
+                endpoint, date_field = DEVICE_ENDPOINTS[kind]
+                kind_stats: dict[str, Any] = {"events": 0, "matched": 0, "tracked": 0, "chunks": []}
+                per_kind[kind] = kind_stats
+                if budget_hit:
+                    continue
+                for chunk_start, chunk_end in _iter_chunks(start, end, args.chunk_months):
+                    if budget_hit:
+                        break
+                    window_log: list[dict[str, Any]] = []
+                    chunk_info: dict[str, Any] = {
+                        "start": iso(chunk_start),
+                        "end": iso(chunk_end),
+                        "windows": window_log,
+                    }
+                    kind_stats["chunks"].append(chunk_info)
+                    try:
+                        records = _fetch_window(
+                            fetcher,
+                            endpoint,
+                            date_field,
+                            chunk_start,
+                            chunk_end,
+                            0,
+                            warnings,
+                            windows=window_log,
+                        )
+                    except BudgetExceeded as exc:
+                        budget_hit = True
+                        state["error"] = f"budget: {exc}"
+                        chunk_info["error"] = "budget exhausted"
+                        print(f"[targeted] budget exhausted at {kind} {chunk_info['start']}..{chunk_info['end']}")
+                        persist()
+                        break
+
+                    by_id: dict[str, dict[str, Any]] = {}
+                    for record in records:
+                        applicant = _clean(record.get("applicant")) or _clean(record.get("recalling_firm"))
+                        company_key = companies.resolve(applicant)[0]
+                        track_id, _ = _event_track(kind, record, code_map, tracks, keyword_index)
+                        event = _NORMALIZERS[kind](
+                            record,
+                            company_key=company_key,
+                            track_id=track_id,
+                            track_zh=tracks.name_zh(track_id),
+                            as_of=as_of,
+                        )
+                        if event is not None:
+                            by_id[event["event_id"]] = event
+                    events = list(by_id.values())
+                    if events:
+                        db.upsert_events(events)
+                    kind_stats["events"] += len(events)
+                    kind_stats["matched"] += sum(1 for event in events if event.get("company_key"))
+                    kind_stats["tracked"] += sum(1 for event in events if event.get("track_id"))
+                    chunk_info["records"] = len(records)
+                    chunk_info["events"] = len(events)
+                    print(
+                        f"[targeted] {kind} {chunk_info['start']}..{chunk_info['end']}: "
+                        f"records={len(records)} events={len(events)} requests={fetcher.stats['requests']}"
+                    )
+                    persist()
+        except KeyboardInterrupt:
+            state["error"] = "interrupted"
+            exit_code = 0
+        except Exception as exc:  # keep the progress record for the Lead
+            state["error"] = f"{type(exc).__name__}: {exc}"
+            exit_code = 2
+        finally:
+            state["finished_at"] = utc_now_iso()
+            state["after"] = db_snapshot(db)
+            persist()
+
+    print(
+        f"[targeted] done: per_kind={json.dumps({k: v['events'] for k, v in per_kind.items()}, ensure_ascii=False)} "
+        f"requests={fetcher.stats['requests']} cache_hits={fetcher.stats['cache_hits']} "
+        f"events_total={state['after']['events_total'] if state['after'] else '?'}"
+    )
+    if warnings:
+        print("[targeted] warnings:")
+        for warning in warnings[:20]:
+            print(f"  - {warning}")
+    print(f"[targeted] progress saved to {progress_path}")
+    return exit_code
 
 
 def _read_progress(path: Path) -> dict[str, Any]:
@@ -246,8 +432,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--timeout", type=float, default=45.0, help="HTTP timeout in seconds")
     parser.add_argument("--progress", default=str(DEFAULT_PROGRESS), help="progress/coverage JSON path")
     parser.add_argument("--report-only", action="store_true", help="print the post-backfill report and exit")
+    parser.add_argument(
+        "--kinds",
+        default=None,
+        help="targeted chunked mode: comma list of 510k,pma,device_recall (kill-safe, bounded memory)",
+    )
+    parser.add_argument("--chunk-months", type=int, default=48, help="date-window size for --kinds mode")
     args = parser.parse_args(argv)
-    return report(args) if args.report_only else run(args)
+    if args.report_only:
+        return report(args)
+    if args.kinds:
+        return run_targeted(args)
+    return run(args)
 
 
 if __name__ == "__main__":

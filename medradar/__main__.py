@@ -412,6 +412,9 @@ def _replay_payload(args: argparse.Namespace, start: str, end: str) -> dict:
             hold_days=getattr(args, "hold_days", 20),
             allow_short=getattr(args, "allow_short", False),
             max_requests=getattr(args, "budget", 60),
+            source=getattr(args, "source", "auto"),
+            max_steps=getattr(args, "max_steps", None),
+            per_kind_limit=getattr(args, "per_kind_limit", 150),
         )
 
 
@@ -783,6 +786,9 @@ def build_parser() -> argparse.ArgumentParser:
     replay.add_argument("--costs", default="10,25,50", help="comma separated bps tiers")
     replay.add_argument("--hold-days", type=int, default=20)
     replay.add_argument("--allow-short", action="store_true")
+    replay.add_argument("--source", choices=["auto", "signals", "events"], default="auto")
+    replay.add_argument("--max-steps", type=int, default=None)
+    replay.add_argument("--per-kind-limit", type=int, default=150)
     replay.add_argument("--offline", action="store_true", help="use cached bars only")
     replay.add_argument("--out-dir", default=None)
     replay.add_argument("--db", default=str(DEFAULT_DB))

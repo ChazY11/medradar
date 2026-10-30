@@ -122,6 +122,7 @@ KIND_ZH = {
     "trial": "临床试验",
     "drug_approval_raw": "药品批准",
     "nmpa_registration": "NMPA 注册",
+    "8k_catalyst": "8-K 催化剂",
 }
 
 INTRADAY_STATUS_ZH = {
@@ -591,27 +592,84 @@ def _load_signal_rows(db: Any) -> list[dict[str, Any]]:
 
 
 DEVICE_ACTIVITY_KINDS = ("510k", "pma")
+EVENT_MODE_KINDS: tuple[str, ...] = (
+    "device_novel_code",
+    "device_new_track",
+    "drug_approval",
+    "trial_start",
+    "recall_cluster",
+    "8k_catalyst",
+)
+DEFAULT_EVENT_MAX_STEPS = 400
+DEFAULT_PER_KIND_LIMIT = 150
+DEFAULT_COMPANY_CAP = 2
+DEFAULT_GLOBAL_COMPANY_CAP = 3
 
-
-def _auto_signal_rows(db: Any, start_day: date, end_day: date) -> list[dict[str, Any]]:
-    """Derive simple signals from ``events`` when the ``signals`` table is empty.
-
-    Kept intentionally minimal and **point-in-time**: events are processed in
-    ``available_at`` order and every "first ever" / "90-day cluster" test only
-    looks at what had already happened. Rules (mirroring ``analyze._signals``
-    qualitatively, not numerically):
-
-    * ``510k`` / ``pma`` first appearance of a ``(company, product_code)`` pair
-      → ``device_novel_code``, direction +1;
-    * each ``drug_approval`` → ``drug_approval``, direction +1;
-    * the second and later ``device_recall`` for a company inside 90 days →
-      ``recall_cluster``, direction -1 (at most one per 90-day window).
-
-    The result uses the same row shape as :func:`_load_signal_rows` so the rest
-    of the engine is unchanged.
+#: Words that look like tickers in an 8-K headline but are not symbols.
+_TICKER_STOPWORDS = frozenset(
     """
+    INC LLC LTD PLC CORP CO COMPANY THE AND FOR NEW CEO CFO FDA SEC USA US
+    GROUP HOLDINGS MEDICAL PHARMA PHARMACEUTICAL PHARMACEUTICALS THERAPEUTICS
+    BIOSCIENCES BIOTECH TECHNOLOGIES TECHNOLOGY SYSTEMS SOLUTIONS HEALTH CARE
+    LABS LABORATORIES TRUST FUND ETF AG SA NV AB SE KG LP CLASS COMMON STOCK
+    SHARE SHARES WARRANT WARRANTS MEMBERSHIP INTERESTS PARTNERS PARTNERSHIP
+    LTD HOLDING INTERNATIONAL INDUSTRIES PRODUCTS SERVICES RESEARCH CLINICAL
+    TRIAL TRIALS DATA UPDATE ANNOUNCES ANNOUNCED RECEIVES RECEIVED REPORTS
+    FDA APPROVAL APPROVED MEETING RESULTS RESULT STUDY PHASE PRIMARY ENDPOINT
+    COMPLETE RESPONSE LETTER REVIEW PRIORITY ORPHAN BREAKTHROUGH TRACK FAST
+    """.split()
+)
+_CATALYST_POSITIVE = (
+    "fda approval",
+    "approval",
+    "approved",
+    "clearance",
+    "cleared",
+    "met the primary",
+    "met primary",
+    "positive topline",
+    "positive results",
+    "positive data",
+    "breakthrough",
+    "fast track",
+    "priority review",
+    "orphan drug",
+    "orphan designation",
+    "granted",
+    "license agreement",
+    "licensing",
+    "partnership",
+    "collaboration",
+    "acquisition",
+    "agreement",
+)
+_CATALYST_NEGATIVE = (
+    "did not meet",
+    "did not achieve",
+    "failed to meet",
+    "failed",
+    "missed",
+    "complete response letter",
+    "crl",
+    "refus",
+    "reject",
+    "terminated",
+    "discontinued",
+    "clinical hold",
+    "halt",
+    "safety",
+    "adverse",
+    "warning letter",
+    "recall",
+    "withdraw",
+)
+_TICKER_TOKEN_RE = re.compile(r"\b([A-Z]{1,5}(?:\.[A-Z]{1,2})?)\b")
+
+
+def _event_select_columns(db: Any) -> str:
+    """Column list for an event row (gracefully handles pre-migration DBs)."""
     event_columns = _table_columns(db, "events")
-    select = [
+    columns = [
         "event_id",
         "source",
         "kind",
@@ -626,99 +684,612 @@ def _auto_signal_rows(db: Any, start_day: date, end_day: date) -> list[dict[str,
         "payload",
     ]
     for column in ("available_at", "published_at", "first_seen_at", "timestamp_quality"):
-        select.append(column if column in event_columns else f"NULL AS {column}")
-    events = db.query(
-        "SELECT " + ", ".join(select) + " FROM events"
-        " WHERE company_key IS NOT NULL AND company_key != ''"
-    )
-    tickers: dict[str, str] = {}
+        columns.append(column if column in event_columns else f"NULL AS {column}")
+    return ", ".join(columns)
+
+
+def _available_sql(db: Any) -> str:
+    """SQL expression for the first instant an event row can be acted on."""
+    event_columns = _table_columns(db, "events")
+    parts = [
+        f"NULLIF({column}, '')"
+        for column in ("available_at", "published_at")
+        if column in event_columns
+    ]
+    parts.append("NULLIF(event_date, '')")
+    return "COALESCE(" + ", ".join(parts) + ")"
+
+
+def _event_price_universe(db: Any) -> tuple[dict[str, str], set[str]]:
+    """``company_key → ticker`` mapping plus the tickers that have price bars.
+
+    Only tickers that already exist in ``prices`` are eligible: a long-history
+    replay must not queue 400 steps that will all be skipped for missing data.
+    """
+    company_tickers: dict[str, str] = {}
     try:
         for row in db.query("SELECT key, ticker FROM companies"):
             ticker = str(row.get("ticker") or "").strip().upper()
             if row.get("key") and ticker:
-                tickers[str(row["key"])] = ticker
+                company_tickers[str(row["key"])] = ticker
     except Exception:  # pragma: no cover - a DB without companies still works
-        tickers = {}
+        company_tickers = {}
+    try:
+        price_tickers = {
+            str(row.get("ticker") or "").strip().upper()
+            for row in db.query("SELECT DISTINCT ticker FROM prices WHERE ticker IS NOT NULL")
+        }
+    except Exception:  # pragma: no cover
+        price_tickers = set()
+    price_tickers.discard("")
+    return company_tickers, price_tickers
 
-    prepared: list[tuple[datetime, dict[str, Any]]] = []
-    for event in events:
-        moment, _ = _resolve_available_at(event)
-        if moment is None:
-            continue
-        prepared.append((moment, event))
-    prepared.sort(key=lambda pair: (pair[0], str(pair[1].get("event_id") or "")))
 
-    first_code: dict[tuple[str, str], str] = {}
-    recall_days: dict[str, list[date]] = {}
-    recall_emitted: dict[str, date] = {}
-    emit_start = start_day - timedelta(days=1)
-    rows: list[dict[str, Any]] = []
-    for moment, event in prepared:
-        day = moment.date()
-        signal_day = day + timedelta(days=1)
-        if day < emit_start or signal_day < start_day or signal_day > end_day:
+def _event_payload(row: Mapping[str, Any]) -> dict[str, Any]:
+    return _payload_dict(row.get("payload"))
+
+
+def _event_candidate(
+    event: Mapping[str, Any],
+    *,
+    ticker: str,
+    signal_kind: str,
+    direction: int,
+    score: float,
+    reason: str,
+    avail_day: date,
+) -> dict[str, Any]:
+    """Build a signal-shaped row exactly like ``_load_signal_rows`` output."""
+    event_id = str(event.get("event_id") or "")
+    signal_day = avail_day + timedelta(days=1)
+    return {
+        "signal_id": f"evt-{sha1(f'{event_id}|{signal_kind}')[:12]}",
+        "event_id": event_id,
+        "ticker": ticker,
+        "signal_date": signal_day.isoformat(),
+        "kind": signal_kind,
+        "direction": direction,
+        "score": score,
+        "track_id": event.get("track_id"),
+        "reason_zh": reason,
+        "created_at": utc_now_iso(),
+        "event_kind": event.get("kind"),
+        "event_source": event.get("source"),
+        "event_company": event.get("company_key"),
+        "event_date": event.get("event_date"),
+        "title": event.get("title"),
+        "summary": event.get("summary"),
+        "url": event.get("url"),
+        "payload": event.get("payload"),
+        "as_of": event.get("as_of"),
+        "available_at": event.get("available_at"),
+        "published_at": event.get("published_at"),
+        "first_seen_at": event.get("first_seen_at"),
+        "timestamp_quality": event.get("timestamp_quality"),
+        "_ticker": ticker,
+        "_signal_day": signal_day,
+        "_avail_day": avail_day,
+        "_company": str(event.get("company_key") or ""),
+    }
+
+
+def _event_candidate_from_row(
+    event: Mapping[str, Any],
+    *,
+    company_tickers: Mapping[str, str],
+    price_tickers: set[str],
+    start_day: date,
+    end_day: date,
+    signal_kind: str,
+    direction: int,
+    score: float,
+    reason: str,
+    ticker: str | None = None,
+) -> dict[str, Any] | None:
+    """Apply the shared point-in-time / tradeability gate to one event row."""
+    resolved = (ticker or company_tickers.get(str(event.get("company_key") or "")) or "").strip().upper()
+    if not resolved or resolved not in price_tickers:
+        return None
+    moment, quality = _resolve_available_at(event)
+    if moment is None or quality == "unknown":
+        return None
+    day = moment.date()
+    if day < start_day or day > end_day:
+        return None
+    return _event_candidate(
+        event,
+        ticker=resolved,
+        signal_kind=signal_kind,
+        direction=direction,
+        score=score,
+        reason=reason,
+        avail_day=day,
+    )
+
+
+def _title_ticker(title: Any, price_tickers: set[str]) -> str:
+    """Heuristic: first parenthesised / uppercase token that is a real ticker.
+
+    The 8-K corpus does not carry a resolved CIK→ticker map, so this is the only
+    free way to trade those catalysts. It is intentionally conservative: an
+    unknown headline simply produces no candidate (surfaced in ASSUMPTIONS).
+    """
+    for token in _TICKER_TOKEN_RE.findall(str(title or "").upper()):
+        if len(token) < 2 or token in _TICKER_STOPWORDS:
             continue
-        company = str(event.get("company_key") or "")
-        ticker = tickers.get(company)
-        if not ticker:
+        if token in price_tickers:
+            return token
+    return ""
+
+
+def _catalyst_direction(event: Mapping[str, Any]) -> tuple[int, str] | None:
+    """Keyword-based direction for an 8-K catalyst headline (no LLM, no network)."""
+    payload = _event_payload(event)
+    buckets = payload.get("buckets") or []
+    if isinstance(buckets, str):
+        buckets = [buckets]
+    haystack = " ".join(
+        [
+            str(payload.get("category") or ""),
+            " ".join(str(item) for item in buckets),
+            str(event.get("title") or ""),
+        ]
+    ).lower()
+    negative = [word for word in _CATALYST_NEGATIVE if word in haystack]
+    positive = [word for word in _CATALYST_POSITIVE if word in haystack]
+    if negative and positive:
+        return None  # ambiguous headline -> never trade a coin flip
+    if negative:
+        return -1, "负面"
+    if positive:
+        return 1, "正面"
+    return None
+
+
+def _first_occurrence_candidates(
+    db: Any,
+    *,
+    group_column: str,
+    signal_kind: str,
+    direction: int,
+    score: float,
+    company_tickers: Mapping[str, str],
+    price_tickers: set[str],
+    start_day: date,
+    end_day: date,
+    skip_event_ids: set[str] | None = None,
+) -> list[dict[str, Any]]:
+    """First-ever ``(company, group_column)`` pair inside the replay window.
+
+    ``MIN(avail)`` is computed over the company's whole history up to ``end``, so
+    an event only qualifies as "first" when nothing earlier existed. Only the
+    rows whose first occurrence falls inside the window become candidates.
+    """
+    select = _event_select_columns(db)
+    avail = _available_sql(db)
+    sql = f"""
+    WITH base AS (
+      SELECT {select}, {avail} AS avail
+      FROM events
+      WHERE kind IN ('510k', 'pma')
+        AND company_key IS NOT NULL AND company_key != ''
+        AND {group_column} IS NOT NULL AND {group_column} != ''
+        AND event_date <= ?
+    ), firsts AS (
+      SELECT company_key, {group_column} AS grp, MIN(avail) AS first_avail
+      FROM base GROUP BY company_key, grp
+    )
+    SELECT b.* FROM base b
+    JOIN firsts f ON b.company_key = f.company_key
+      AND b.{group_column} = f.grp AND b.avail = f.first_avail
+    """
+    rows = db.query(sql, (end_day.isoformat(),))
+    rows.sort(key=lambda row: (str(row.get("avail") or ""), str(row.get("event_id") or "")))
+    candidates: list[dict[str, Any]] = []
+    seen: set[tuple[str, str, str]] = set()
+    for row in rows:
+        event_id = str(row.get("event_id") or "")
+        if skip_event_ids and event_id in skip_event_ids:
             continue
-        kind = str(event.get("kind") or "")
-        signal_kind = ""
-        direction = 0
-        score = 0.0
-        reason = ""
-        if kind in DEVICE_ACTIVITY_KINDS and event.get("product_code"):
-            key = (company, str(event["product_code"]))
-            if key in first_code:
-                continue
-            first_code[key] = day.isoformat()
-            signal_kind, direction, score = "device_novel_code", 1, 0.6
-            reason = f"首次出现产品码 {event['product_code']}（events 自动生成）"
-        elif kind == "drug_approval":
-            signal_kind, direction, score = "drug_approval", 1, 0.7
-            reason = "药品获批（events 自动生成）"
-        elif kind == "device_recall":
-            days = recall_days.setdefault(company, [])
-            days.append(day)
-            recent = sum(1 for value in days if value >= day - timedelta(days=90))
-            last = recall_emitted.get(company)
-            if recent < 2 or (last is not None and (day - last).days < 90):
-                continue
-            recall_emitted[company] = day
-            signal_kind, direction, score = "recall_cluster", -1, 0.7
-            reason = f"90 天内 {recent} 起召回（events 自动生成）"
+        group_value = str(row.get(group_column) or "")
+        key = (str(row.get("company_key") or ""), group_value, str(row.get("avail") or "")[:10])
+        if key in seen:
+            continue  # tie on the first available date: keep one representative
+        seen.add(key)
+        if signal_kind == "device_novel_code":
+            reason = f"首次出现产品码 {group_value}（events 自动生成）"
         else:
-            continue
-        event_id = str(event.get("event_id") or "")
-        rows.append(
-            {
-                "signal_id": f"auto-{sha1(f'{event_id}|{signal_kind}')[:12]}",
-                "event_id": event_id,
-                "ticker": ticker,
-                "signal_date": signal_day.isoformat(),
-                "kind": signal_kind,
-                "direction": direction,
-                "score": score,
-                "track_id": event.get("track_id"),
-                "reason_zh": reason,
-                "created_at": utc_now_iso(),
-                "event_kind": kind,
-                "event_source": event.get("source"),
-                "event_company": company,
-                "event_date": event.get("event_date"),
-                "title": event.get("title"),
-                "summary": event.get("summary"),
-                "url": event.get("url"),
-                "payload": event.get("payload"),
-                "as_of": event.get("as_of"),
-                "available_at": event.get("available_at"),
-                "published_at": event.get("published_at"),
-                "first_seen_at": event.get("first_seen_at"),
-                "timestamp_quality": event.get("timestamp_quality"),
-                "_ticker": ticker,
-                "_signal_day": signal_day,
-            }
+            reason = f"首次进入赛道 {group_value}（events 自动生成）"
+        candidate = _event_candidate_from_row(
+            row,
+            company_tickers=company_tickers,
+            price_tickers=price_tickers,
+            start_day=start_day,
+            end_day=end_day,
+            signal_kind=signal_kind,
+            direction=direction,
+            score=score,
+            reason=reason,
         )
+        if candidate is not None:
+            candidates.append(candidate)
+    return candidates
+
+
+def _event_rule_drug_approvals(
+    db: Any,
+    *,
+    company_tickers: Mapping[str, str],
+    price_tickers: set[str],
+    start_day: date,
+    end_day: date,
+) -> list[dict[str, Any]]:
+    select = _event_select_columns(db)
+    avail = _available_sql(db)
+    rows = db.query(
+        f"SELECT {select}, {avail} AS avail FROM events"
+        " WHERE kind = 'drug_approval' AND company_key IS NOT NULL AND company_key != ''"
+        " AND event_date <= ? ORDER BY avail, event_id",
+        (end_day.isoformat(),),
+    )
+    candidates: list[dict[str, Any]] = []
+    for row in rows:
+        candidate = _event_candidate_from_row(
+            row,
+            company_tickers=company_tickers,
+            price_tickers=price_tickers,
+            start_day=start_day,
+            end_day=end_day,
+            signal_kind="drug_approval",
+            direction=1,
+            score=0.7,
+            reason="药品获批（events 自动生成）",
+        )
+        if candidate is not None:
+            candidates.append(candidate)
+    return candidates
+
+
+def _event_rule_trial_start(
+    db: Any,
+    *,
+    company_tickers: Mapping[str, str],
+    price_tickers: set[str],
+    start_day: date,
+    end_day: date,
+) -> list[dict[str, Any]]:
+    select = _event_select_columns(db)
+    avail = _available_sql(db)
+    rows = db.query(
+        f"SELECT {select}, {avail} AS avail FROM events"
+        " WHERE kind = 'trial' AND company_key IS NOT NULL AND company_key != ''"
+        " AND payload LIKE '%PHASE3%' AND event_date <= ? ORDER BY avail, event_id",
+        (end_day.isoformat(),),
+    )
+    candidates: list[dict[str, Any]] = []
+    for row in rows:
+        phases = _event_payload(row).get("phase") or []
+        if isinstance(phases, str):
+            phases = [phases]
+        if not any(str(phase).upper() == "PHASE3" for phase in phases):
+            continue
+        candidate = _event_candidate_from_row(
+            row,
+            company_tickers=company_tickers,
+            price_tickers=price_tickers,
+            start_day=start_day,
+            end_day=end_day,
+            signal_kind="trial_start",
+            direction=1,
+            score=0.5,
+            reason="III 期试验启动（events 自动生成）",
+        )
+        if candidate is not None:
+            candidates.append(candidate)
+    return candidates
+
+
+def _event_rule_recall_cluster(
+    db: Any,
+    *,
+    company_tickers: Mapping[str, str],
+    price_tickers: set[str],
+    start_day: date,
+    end_day: date,
+) -> list[dict[str, Any]]:
+    """Second (and later, once per 90-day window) recall per company.
+
+    The 90-day count only includes recalls that came *before* the current one, so
+    the cluster is knowable at the decision moment.
+    """
+    select = _event_select_columns(db)
+    avail = _available_sql(db)
+    rows = db.query(
+        f"SELECT {select}, {avail} AS avail FROM events"
+        " WHERE kind = 'device_recall' AND company_key IS NOT NULL AND company_key != ''"
+        " AND event_date <= ? ORDER BY company_key, avail, event_id",
+        (end_day.isoformat(),),
+    )
+    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        grouped[str(row.get("company_key") or "")].append(row)
+    candidates: list[dict[str, Any]] = []
+    for company, events in grouped.items():
+        ordered: list[tuple[date, dict[str, Any]]] = []
+        for event in events:
+            moment, quality = _resolve_available_at(event)
+            if moment is None or quality == "unknown":
+                continue
+            ordered.append((moment.date(), event))
+        ordered.sort(key=lambda pair: (pair[0], str(pair[1].get("event_id") or "")))
+        seen_days: list[date] = []
+        emitted: date | None = None
+        for day, event in ordered:
+            seen_days.append(day)
+            recent = sum(1 for value in seen_days if (day - value).days <= 90)
+            if recent < 2:
+                continue
+            if emitted is not None and (day - emitted).days < 90:
+                continue
+            emitted = day
+            candidate = _event_candidate_from_row(
+                event,
+                company_tickers=company_tickers,
+                price_tickers=price_tickers,
+                start_day=start_day,
+                end_day=end_day,
+                signal_kind="recall_cluster",
+                direction=-1,
+                score=0.7,
+                reason=f"90 天内 {recent} 起召回（events 自动生成）",
+            )
+            if candidate is not None:
+                candidates.append(candidate)
+    return candidates
+
+
+def _event_rule_8k_catalyst(
+    db: Any,
+    *,
+    company_tickers: Mapping[str, str],
+    price_tickers: set[str],
+    start_day: date,
+    end_day: date,
+) -> list[dict[str, Any]]:
+    select = _event_select_columns(db)
+    avail = _available_sql(db)
+    rows = db.query(
+        f"SELECT {select}, {avail} AS avail FROM events"
+        " WHERE kind = '8k_catalyst' AND event_date <= ? ORDER BY avail, event_id",
+        (end_day.isoformat(),),
+    )
+    candidates: list[dict[str, Any]] = []
+    for row in rows:
+        payload = _event_payload(row)
+        if payload.get("backfill"):
+            # A backfilled alert was only discovered later; trading it at the
+            # original event date is look-ahead, so it never enters the replay.
+            continue
+        direction_info = _catalyst_direction(row)
+        if direction_info is None:
+            continue
+        direction, label = direction_info
+        ticker = company_tickers.get(str(row.get("company_key") or ""), "")
+        if not ticker:
+            ticker = _title_ticker(row.get("title"), price_tickers)
+        candidate = _event_candidate_from_row(
+            row,
+            ticker=ticker,
+            company_tickers=company_tickers,
+            price_tickers=price_tickers,
+            start_day=start_day,
+            end_day=end_day,
+            signal_kind="8k_catalyst",
+            direction=direction,
+            score=0.6,
+            reason=f"8-K 催化剂：{label}（events 自动生成）",
+        )
+        if candidate is not None:
+            candidates.append(candidate)
+    return candidates
+
+
+def _diverse_sample(
+    candidates: Sequence[dict[str, Any]],
+    limit: int | None,
+    *,
+    company_cap: int = DEFAULT_COMPANY_CAP,
+) -> list[dict[str, Any]]:
+    """Deterministic stratified pick that keeps kind × year × company diversity.
+
+    Buckets are ``(kind, year)``; the sampler takes one item per bucket per round
+    and limits each ``(kind, company, year)`` cell to ``company_cap`` picks in a
+    first pass. A second chronological pass relaxes that cap only if the limit is
+    still not reached (e.g. one company dominates a tiny year).
+    """
+    ordered = sorted(
+        candidates,
+        key=lambda item: (
+            item.get("_avail_day") or date.min,
+            str(item.get("kind") or ""),
+            str(item.get("_company") or ""),
+            str(item.get("event_id") or ""),
+        ),
+    )
+    if not ordered:
+        return []
+    if limit is None or len(ordered) <= limit:
+        return ordered
+    if limit <= 0:
+        return []
+    buckets: dict[tuple[str, int], list[dict[str, Any]]] = defaultdict(list)
+    for item in ordered:
+        day = item.get("_avail_day")
+        year = day.year if isinstance(day, date) else 0
+        buckets[(str(item.get("kind") or ""), year)].append(item)
+    keys = sorted(buckets, key=lambda key: (key[1], key[0]))
+    pointers = {key: 0 for key in keys}
+    selected: list[dict[str, Any]] = []
+    cell_counts: Counter[tuple[str, str, int]] = Counter()
+
+    def take_round(cap: int | None) -> bool:
+        progressed = False
+        for key in keys:
+            if len(selected) >= limit:
+                return progressed
+            bucket = buckets[key]
+            index = pointers[key]
+            while index < len(bucket):
+                item = bucket[index]
+                day = item.get("_avail_day")
+                year = day.year if isinstance(day, date) else 0
+                cell = (str(item.get("kind") or ""), str(item.get("_company") or ""), year)
+                if cap is None or cell_counts[cell] < cap:
+                    selected.append(item)
+                    cell_counts[cell] += 1
+                    pointers[key] = index + 1
+                    progressed = True
+                    break
+                index += 1
+            else:
+                pointers[key] = len(bucket)
+        return progressed
+
+    while len(selected) < limit and take_round(company_cap):
+        pass
+    if len(selected) < limit:  # relax the company cap rather than underfilling
+        taken = {id(item) for item in selected}
+        for item in ordered:
+            if len(selected) >= limit:
+                break
+            if id(item) not in taken:
+                selected.append(item)
+    return sorted(
+        selected,
+        key=lambda item: (
+            item.get("_avail_day") or date.min,
+            str(item.get("kind") or ""),
+            str(item.get("_company") or ""),
+            str(item.get("event_id") or ""),
+        ),
+    )
+
+
+def _normalise_kind_limits(value: Any) -> dict[str, int]:
+    """Accept ``150`` or ``{kind: limit}`` and return a complete per-kind map."""
+    if isinstance(value, Mapping):
+        limits = {}
+        for kind in EVENT_MODE_KINDS:
+            limits[kind] = max(0, int(value.get(kind, DEFAULT_PER_KIND_LIMIT)))
+        return limits
+    default = max(0, int(value if value is not None else DEFAULT_PER_KIND_LIMIT))
+    return {kind: default for kind in EVENT_MODE_KINDS}
+
+
+def _event_mode_rows(
+    db: Any,
+    start_day: date,
+    end_day: date,
+    *,
+    per_kind_limit: Any = DEFAULT_PER_KIND_LIMIT,
+    max_steps: int | None = DEFAULT_EVENT_MAX_STEPS,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Build the multi-year replay candidate set directly from ``events``.
+
+    This is a *replay-local* re-implementation of the signal rules (no import of
+    ``analyze``): each rule is point-in-time by construction, and every candidate
+    is filtered by ``available_at``-based window, timestamp quality and tradeable
+    ticker before it can become a step. Per-kind limits plus a kind×year×company
+    stratified sample keep the output at a few hundred steps even on a 312k-event
+    corpus.
+    """
+    company_tickers, price_tickers = _event_price_universe(db)
+    limits = _normalise_kind_limits(per_kind_limit)
+    candidates_by_kind: dict[str, list[dict[str, Any]]] = {}
+    novel = _first_occurrence_candidates(
+        db,
+        group_column="product_code",
+        signal_kind="device_novel_code",
+        direction=1,
+        score=0.6,
+        company_tickers=company_tickers,
+        price_tickers=price_tickers,
+        start_day=start_day,
+        end_day=end_day,
+    )
+    candidates_by_kind["device_novel_code"] = novel
+    candidates_by_kind["device_new_track"] = _first_occurrence_candidates(
+        db,
+        group_column="track_id",
+        signal_kind="device_new_track",
+        direction=1,
+        score=0.55,
+        company_tickers=company_tickers,
+        price_tickers=price_tickers,
+        start_day=start_day,
+        end_day=end_day,
+        skip_event_ids={str(item["event_id"]) for item in novel},
+    )
+    candidates_by_kind["drug_approval"] = _event_rule_drug_approvals(
+        db,
+        company_tickers=company_tickers,
+        price_tickers=price_tickers,
+        start_day=start_day,
+        end_day=end_day,
+    )
+    candidates_by_kind["trial_start"] = _event_rule_trial_start(
+        db,
+        company_tickers=company_tickers,
+        price_tickers=price_tickers,
+        start_day=start_day,
+        end_day=end_day,
+    )
+    candidates_by_kind["recall_cluster"] = _event_rule_recall_cluster(
+        db,
+        company_tickers=company_tickers,
+        price_tickers=price_tickers,
+        start_day=start_day,
+        end_day=end_day,
+    )
+    candidates_by_kind["8k_catalyst"] = _event_rule_8k_catalyst(
+        db,
+        company_tickers=company_tickers,
+        price_tickers=price_tickers,
+        start_day=start_day,
+        end_day=end_day,
+    )
+
+    stats: dict[str, Any] = {
+        "candidate_counts": {},
+        "sampled_counts": {},
+        "per_kind_limit": limits,
+        "max_steps": max_steps,
+        "diversity": "kind×year 分层、每 (kind, company, year) 首轮至多 2 条；公司/类别/年份兼顾",
+    }
+    selected: list[dict[str, Any]] = []
+    for kind in EVENT_MODE_KINDS:
+        candidates = candidates_by_kind.get(kind, [])
+        stats["candidate_counts"][kind] = len(candidates)
+        sampled = _diverse_sample(candidates, limits.get(kind, DEFAULT_PER_KIND_LIMIT))
+        stats["sampled_counts"][kind] = len(sampled)
+        selected.extend(sampled)
+    before_global = len(selected)
+    selected = _diverse_sample(
+        selected,
+        max_steps,
+        company_cap=DEFAULT_GLOBAL_COMPANY_CAP,
+    )
+    stats["total_candidates"] = sum(stats["candidate_counts"].values())
+    stats["total_before_global_cap"] = before_global
+    stats["total_steps"] = len(selected)
+    stats["tradeable_tickers"] = len(price_tickers)
+    stats["company_tickers"] = len(company_tickers)
+    return selected, stats
+
+
+def _auto_signal_rows(db: Any, start_day: date, end_day: date) -> list[dict[str, Any]]:
+    """Backwards-compatible alias for the events-mode generator."""
+    rows, _stats = _event_mode_rows(db, start_day, end_day)
     return rows
 
 
@@ -1238,16 +1809,32 @@ def _simulate(
     position_pct: float,
     max_concurrent: int,
     min_score: float,
+    source_mode: str = "auto",
+    max_steps: int | None = None,
+    per_kind_limit: Any = DEFAULT_PER_KIND_LIMIT,
 ) -> dict[str, Any]:
     names = _company_names()
-    rows = _load_signal_rows(db)
-    signal_source = "signals_table"
-    if not rows:
-        # ``signals`` is empty (e.g. a fresh DB or a run before ``medradar trade``
-        # ingested signals): derive a minimal point-in-time signal set from
-        # events instead of returning an empty page.
-        rows = _auto_signal_rows(db, start_day, end_day)
-        signal_source = "events_fallback" if rows else "signals_table"
+    event_stats: dict[str, Any] = {}
+    signals_rows = _load_signal_rows(db) if source_mode != "events" else []
+    use_events = source_mode == "events" or (source_mode == "auto" and not signals_rows)
+    if use_events:
+        effective_max_steps = max_steps if max_steps is not None else DEFAULT_EVENT_MAX_STEPS
+        rows, event_stats = _event_mode_rows(
+            db,
+            start_day,
+            end_day,
+            per_kind_limit=per_kind_limit,
+            max_steps=effective_max_steps,
+        )
+        signal_source = "events" if source_mode == "events" else "events_fallback"
+    else:
+        rows = signals_rows
+        signal_source = "signals_table"
+        effective_max_steps = None
+    event_mode = use_events
+    # Multi-year events replay is a daily-bar exercise: the free 1-minute feed
+    # only covers ~7 days, so the 1-minute branch is disabled by construction.
+    resolution_intraday_days = 0.0 if event_mode else intraday_days
     unique_rows, duplicates = _dedupe_rows(rows)
     in_window = [
         row
@@ -1293,7 +1880,7 @@ def _simulate(
             calendar=calendar,
             now=now,
             names=names,
-            intraday_days=intraday_days,
+            intraday_days=resolution_intraday_days,
             allow_short=allow_short,
             capital=capital,
             position_pct=position_pct,
@@ -1374,7 +1961,9 @@ def _simulate(
     price_sources: Counter[str] = Counter(
         str(step.get("price_source")) for step in steps if step.get("price_source")
     )
-    intraday_eligible = any(_intraday_eligible(moment, now, intraday_days) for moment in _all_moments(usable))
+    intraday_eligible = any(
+        _intraday_eligible(moment, now, resolution_intraday_days) for moment in _all_moments(usable)
+    )
     intraday_status = _intraday_status(book, intraday_eligible)
 
     first_seen_lags = _first_seen_lags(usable)
@@ -1383,7 +1972,8 @@ def _simulate(
     status = "ok"
     reason: str | None = None
     if not rows:
-        status, reason = "insufficient_data", "no_signals"
+        status = "insufficient_data"
+        reason = "no_event_candidates" if (event_mode and source_mode == "events") else "no_signals"
     elif not in_window:
         status, reason = "insufficient_data", "no_signals_in_window"
     elif not usable:
@@ -1421,6 +2011,11 @@ def _simulate(
             "costs_bps": [float(bps) for bps in costs_bps],
             "cost_basis": "single_side_bps",
             "intraday_days": float(intraday_days),
+            "intraday_days_effective": float(resolution_intraday_days),
+            "source_mode": source_mode,
+            "event_mode": bool(event_mode),
+            "max_steps": effective_max_steps,
+            "per_kind_limit": (event_stats.get("per_kind_limit") if event_mode else None),
             "hold_days": int(hold_days),
             "position_pct": float(position_pct),
             "max_concurrent": int(max_concurrent),
@@ -1435,6 +2030,17 @@ def _simulate(
                 "skipped": len(steps) - entered,
                 "low_quality_excluded": len(filtered),
                 "signal_source": signal_source,
+                **(
+                    {
+                        "candidate_counts": event_stats.get("candidate_counts", {}),
+                        "sampled_counts": event_stats.get("sampled_counts", {}),
+                        "event_total_candidates": event_stats.get("total_candidates"),
+                        "event_total_before_global_cap": event_stats.get("total_before_global_cap"),
+                        "tradeable_tickers": event_stats.get("tradeable_tickers"),
+                    }
+                    if event_mode
+                    else {}
+                ),
             },
             "timestamp_quality": dict(quality_counts),
             "price_sources": dict(price_sources),
@@ -1443,7 +2049,7 @@ def _simulate(
             "data_status": {
                 "daily": "ok" if calendar else "missing",
                 "intraday": intraday_status,
-                "signals": "ok" if rows else "empty",
+                "signals": "events" if event_mode else ("ok" if rows else "empty"),
                 "prices": "ok" if calendar else "missing",
                 "fetcher": "offline" if fetcher is None else "online",
             },
@@ -1469,6 +2075,15 @@ def _simulate(
                 ]
                 if signal_source == "events_fallback"
                 else []
+            )
+            + (
+                [
+                    "events 多年回放模式：按 point-in-time 从 events 生成候选"
+                    "（首次产品码/新赛道/药品批准/III 期启动/召回聚集/8-K 催化剂），"
+                    "每类有上限并做 kind×year×company 抽样；成交只用日线次日开盘，不使用 1 分钟分支。"
+                ]
+                if event_mode
+                else []
             ),
         },
         "method": {
@@ -1479,6 +2094,7 @@ def _simulate(
             "intraday_rule": (
                 "公开时点落在最近 intraday_days 天内且 Yahoo 1 分钟数据可得时用 1 分钟分支，"
                 "否则回落日线；1 分钟请求失败按日线降级并记录原因"
+                + ("；events 多年回放固定只用日线" if event_mode else "")
             ),
             "exit": f"成交后第 {int(hold_days)} 个交易日收盘；数据不足时按最后一个可用收盘价，记 end_of_data",
             "cost": "costs_bps 为单边成本（bps），买入与卖出各收一次，往返扣减 2×bps",
@@ -1486,7 +2102,33 @@ def _simulate(
             "concurrency": f"单标的不叠加；同时最多 {int(max_concurrent)} 笔",
             "long_only": not allow_short,
             "short_reference": "做空信号也解析参考成交价（1m/日线规则相同）并标记 reference_only，但不计入组合与收益",
-            "signals_source": "signals 表；为空时按 point-in-time 规则从 events 生成简易信号",
+            "signals_source": (
+                "events 多年语料：point-in-time 规则在 replay 内独立实现"
+                if event_mode
+                else "signals 表（source=auto 且表为空时回退到 events 生成）"
+            ),
+            "events_rules": (
+                {
+                    "device_novel_code": "(company_key, product_code) 全历史首次出现，落在窗口内才入选",
+                    "device_new_track": "(company_key, track_id) 全历史首次出现；与首次产品码同事件时不重复",
+                    "drug_approval": "所有 drug_approval 事件（payload 原始批准）",
+                    "trial_start": "ctgov trial 且 payload.phase 含 PHASE3",
+                    "recall_cluster": "同一公司 90 天内第 2 起召回起、每 90 天窗口最多 1 条",
+                    "8k_catalyst": "8-K 标题/buckets 关键词定向；payload.backfill=true 跳过；ticker 由公司表或标题括号解析",
+                }
+                if event_mode
+                else None
+            ),
+            "events_sampling": (
+                {
+                    "target": "200-500 steps",
+                    "per_kind_limit": event_stats.get("per_kind_limit"),
+                    "max_steps": effective_max_steps,
+                    "method": event_stats.get("diversity"),
+                }
+                if event_mode
+                else None
+            ),
             "in_sample": True,
             "not_modelled": [
                 "bid/ask 价差与盘口冲击（只用一个 bps 档近似）",
@@ -1598,7 +2240,7 @@ header .sub{color:#cfe0f2;font-size:13px}
 .banner b{color:#7a3e00}
 h2{font-size:19px;margin:34px 0 10px;border-left:4px solid var(--accent);padding-left:10px}
 h3{font-size:15px;margin:18px 0 8px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;box-shadow:0 1px 2px rgba(20,24,31,.04)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;box-shadow:0 1px 2px rgba(20,24,31,.04);overflow-x:auto}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:12px}
 .kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
 .kpi .lab{font-size:12px;color:var(--muted)}
@@ -1626,7 +2268,7 @@ details.step summary:hover{background:#f7f9fc}
 .step-ticker{font-weight:700;min-width:58px}
 .step-event{flex:1 1 260px;min-width:200px}
 .step-outcomes{font-size:12px;font-variant-numeric:tabular-nums;color:#33404f}
-.step-body{padding:4px 14px 14px;border-top:1px dashed var(--line);font-size:13px}
+.step-body{padding:4px 14px 14px;border-top:1px dashed var(--line);font-size:13px;overflow-x:auto}
 .chain{color:var(--muted);font-size:12px;margin:10px 0 8px}
 .chips{margin:0 0 10px}
 .mini td,.mini th{padding:5px 8px;font-size:12.5px}
@@ -2004,6 +2646,20 @@ def render_html(payload: Mapping[str, Any], *, docs_rel: str = "../../docs/ASSUM
     intraday_errors = meta.get("intraday_errors") or {}
     method = payload.get("method") or {}
     not_modelled = method.get("not_modelled") or []
+    event_mode = bool(meta.get("event_mode"))
+    source_text = str(counts.get("signal_source") or "")
+    candidate_counts = counts.get("candidate_counts") or {}
+    sampled_counts = counts.get("sampled_counts") or {}
+    event_mix_text = "；".join(
+        f"{KIND_ZH.get(kind, kind)} 候选 {_h(candidate_counts.get(kind))} → 抽样 {_h(sampled_counts.get(kind))}"
+        for kind in EVENT_MODE_KINDS
+        if kind in candidate_counts
+    )
+    event_rules = method.get("events_rules") or {}
+    event_rules_text = "；".join(
+        f"{KIND_ZH.get(kind, kind)}：{text}" for kind, text in event_rules.items()
+    )
+    events_sampling = method.get("events_sampling") or {}
 
     banner = (
         '<div class="banner"><b>数据边界（务必先读）：</b>'
@@ -2090,7 +2746,14 @@ def render_html(payload: Mapping[str, Any], *, docs_rel: str = "../../docs/ASSUM
         f'<tr><th>请求数 / 预算</th><td>{_h(request_stats.get("requests"))} / {_h(request_stats.get("budget_max"))}'
         f'（本引擎实际发起 {_h(request_stats.get("budget_used"))} 次）</td></tr>'
         f'<tr><th>日线来自 Yahoo 回填的标的</th><td>{_h(", ".join(fetched_ticks) if fetched_ticks else "无")}</td></tr>'
-        f'<tr><th>1 分钟抓取失败</th><td>{_h(len(intraday_errors))} 个标的（自动降级日线）</td></tr>'
+        f'<tr><th>信号来源</th><td>{_h(source_text)}（模式 {_h(meta.get("source_mode"))}）</td></tr>'
+        + (
+            f'<tr><th>events 候选 / 抽样</th><td>{event_mix_text}<br/>'
+            f'<span class="muted">{_h(events_sampling.get("method"))}</span></td></tr>'
+            if event_mode
+            else ""
+        )
+        + f'<tr><th>1 分钟抓取失败</th><td>{_h(len(intraday_errors))} 个标的（自动降级日线）</td></tr>'
         "</tbody></table>"
         f'<p class="small muted">信号原始 {_h(counts.get("signals_raw"))} 条，去重后 '
         f'{_h(counts.get("signals_unique"))} 条（移除重复 {_h(counts.get("duplicates_removed"))} 条），'
@@ -2109,7 +2772,14 @@ def render_html(payload: Mapping[str, Any], *, docs_rel: str = "../../docs/ASSUM
         f'<li><b>平仓</b>：{_h(method.get("exit"))}</li>'
         f'<li><b>成本</b>：{_h(method.get("cost"))}</li>'
         f'<li><b>仓位</b>：{_h(method.get("sizing"))}；{_h(method.get("concurrency"))}</li>'
-        "</ul>"
+        + (
+            f'<li><b>events 信号规则</b>：{_h(event_rules_text)}</li>'
+            f'<li><b>抽样</b>：单类上限 {_h((events_sampling.get("per_kind_limit") or {}).get("device_novel_code"))} 条/类、'
+            f'总步数上限 {_h(events_sampling.get("max_steps"))}；{_h(events_sampling.get("method"))}</li>'
+            if event_mode
+            else ""
+        )
+        + "</ul>"
         f'<p class="small muted">未建模：</p><ul class="tight">{disclaimers}</ul></div>',
         f'<footer>{_h(payload.get("disclaimer_zh"))}<br/>'
         f'假设登记表：{_h(payload.get("assumptions_url"))} · 回放窗口 '
@@ -2139,6 +2809,7 @@ def build_replay(
     capital: float = 100000,
     costs_bps: Sequence[float] = DEFAULT_COSTS_BPS,
     intraday_days: int = DEFAULT_INTRADAY_DAYS,
+    source: str = "auto",
     *,
     out_dir: str | Path | None = None,
     fetcher: Any = None,
@@ -2150,6 +2821,8 @@ def build_replay(
     position_pct: float = DEFAULT_POSITION_PCT,
     max_concurrent: int = DEFAULT_MAX_CONCURRENT,
     min_score: float = 0.0,
+    max_steps: int | None = None,
+    per_kind_limit: Any = DEFAULT_PER_KIND_LIMIT,
 ) -> dict[str, Any]:
     """Build the replay payload and write ``replay.json`` + ``index.html``.
 
@@ -2157,6 +2830,17 @@ def build_replay(
     (opened and closed here). ``fetcher`` is injected in tests; by default a
     polite cached :class:`medradar.http.Fetcher` with a hard request budget of
     ``max_requests`` is created. ``offline=True`` disables every network call.
+
+    ``source`` selects the candidate universe:
+
+    * ``"auto"`` (default) — use the ``signals`` table when it has rows, else
+      build the same multi-year candidate set as ``"events"``;
+    * ``"signals"`` — force the ``signals`` table only (old behaviour);
+    * ``"events"`` — ignore ``signals`` and generate point-in-time candidates
+      directly from ``events`` (first product code / new track / drug approval /
+      phase-3 trial / recall cluster / 8-K catalyst). ``max_steps`` (default 400
+      in this mode) and ``per_kind_limit`` (default 150 per kind) keep a 300k+
+      event corpus bounded and diverse.
 
     ``now`` is injectable so the "最近 7 天" branch is deterministic in tests.
     The parameter list above is the public contract; the keyword-only parameters
@@ -2168,6 +2852,12 @@ def build_replay(
         raise ValueError(f"invalid replay window: start={start!r} end={end!r}")
     if end_day < start_day:
         start_day, end_day = end_day, start_day
+    source_mode = str(source or "auto").strip().lower()
+    if source_mode not in ("auto", "signals", "events"):
+        raise ValueError(f"invalid replay source: {source!r} (expected auto|signals|events)")
+    if max_steps is not None and int(max_steps) < 0:
+        raise ValueError("max_steps must be non-negative or None")
+    kind_limits = _normalise_kind_limits(per_kind_limit)
     capital = float(capital)
     if capital <= 0:
         raise ValueError("capital must be positive")
@@ -2199,6 +2889,9 @@ def build_replay(
             position_pct=_clamp(float(position_pct), 0.0, 1.0) or DEFAULT_POSITION_PCT,
             max_concurrent=max(1, int(max_concurrent)),
             min_score=float(min_score),
+            source_mode=source_mode,
+            max_steps=None if max_steps is None else int(max_steps),
+            per_kind_limit=kind_limits,
         )
     finally:
         if own_db is not None:
@@ -2223,7 +2916,10 @@ def build_replay(
 __all__ = [
     "ASSUMPTIONS_URL",
     "DEFAULT_COSTS_BPS",
+    "DEFAULT_EVENT_MAX_STEPS",
+    "DEFAULT_PER_KIND_LIMIT",
     "ENGINE",
+    "EVENT_MODE_KINDS",
     "SCHEMA_VERSION",
     "build_replay",
     "cost_key",

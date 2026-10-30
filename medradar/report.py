@@ -561,6 +561,8 @@ CASE_CATEGORY_LABELS = {
     "recall_cluster": "召回聚集",
     "trial": "临床试验",
     "trial_start": "试验启动",
+    "trial_result": "试验结果",
+    "crl": "CRL（完整回复函）",
     "device_novel_code": "新产品码",
     "device_new_track": "新赛道",
     "earnings": "财报",
@@ -664,6 +666,14 @@ def _case_link_html(case: Mapping[str, Any]) -> str:
     return f'<span class="src">来源：{_h(label)}</span>'
 
 
+_CASE_STAT_LABELS = {
+    "corpus_total": "语料总数",
+    "evidence_quotes_total": "逐字证据总数",
+    "n_cases": "案例数",
+    "total_cases": "案例数",
+}
+
+
 def _case_stats_rows(stats: Mapping[str, Any]) -> list[tuple[str, str]]:
     rows: list[tuple[str, str]] = []
     known = {
@@ -688,7 +698,7 @@ def _case_stats_rows(stats: Mapping[str, Any]) -> list[tuple[str, str]]:
     for key, value in stats.items():
         if key in known or isinstance(value, (dict, list, tuple)):
             continue
-        rows.append((str(key), _describe(value)))
+        rows.append((_CASE_STAT_LABELS.get(str(key), str(key)), _describe(value)))
     return rows
 
 
@@ -718,6 +728,147 @@ def _sort_cases_desc(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
         return (0, "~" + value) if value else (1, "")
 
     return sorted(items, key=rank, reverse=True)
+
+
+EVENT_STUDY_LABELS = {
+    "approval": "批准",
+    "crl": "CRL（完整回复函）",
+    "trial_result": "试验结果",
+    "trial": "临床试验",
+    "recall": "召回",
+    "device_clearance": "器械清关",
+}
+_EVENT_CATEGORY_ORDER = ("approval", "crl", "trial_result")
+_EVENT_HORIZONS = ("1", "5", "20", "60")
+
+
+def _event_study_view(research: Mapping[str, Any]) -> dict[str, Any] | None:
+    study = _d(_d(research).get("event_study"))
+    if not study:
+        return None
+    by_horizon = _d(study.get("by_horizon"))
+    horizons: list[tuple[str, dict[str, Any]]] = [
+        (str(key), _d(value)) for key, value in by_horizon.items()
+    ]
+    horizons.sort(key=lambda pair: _num(pair[0]) or 0.0)
+    if not horizons:
+        return None
+    return {"n_cases": _num(study.get("n_cases")), "horizons": horizons}
+
+
+def _event_category_label(key: Any) -> str:
+    raw = _s(key)
+    return EVENT_STUDY_LABELS.get(raw, raw or DASH)
+
+
+def _event_alpha(multiple_testing: Mapping[str, Any]) -> float:
+    alpha = _num(multiple_testing.get("alpha"))
+    return alpha if alpha is not None else 0.05
+
+
+def _event_test_map(multiple_testing: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
+    mapping: dict[str, dict[str, Any]] = {}
+    for test in _l(multiple_testing.get("tests")):
+        if not isinstance(test, dict):
+            continue
+        label = _s(test.get("label")) or _s(test.get("key"))
+        category = label.split(":")[0] if label else ""
+        if category:
+            mapping.setdefault(category, test)
+    for test in _l(multiple_testing.get("adjusted")):
+        if not isinstance(test, dict):
+            continue
+        label = _s(test.get("key")) or _s(test.get("label"))
+        category = label.split(":")[0] if label else ""
+        if category:
+            mapping.setdefault(category, test)
+    return mapping
+
+
+def _event_horizon_rows(horizon_block: Mapping[str, Any]) -> tuple[Mapping[str, Any], list[dict[str, Any]]]:
+    """Return ``(multiple_testing, rows)`` for one event-study horizon block."""
+    categories = _d(horizon_block.get("categories"))
+    multiple_testing = _d(horizon_block.get("multiple_testing"))
+    tests = _event_test_map(multiple_testing)
+    alpha = _event_alpha(multiple_testing)
+    rows: list[dict[str, Any]] = []
+    for category, stats in categories.items():
+        stats = _d(stats)
+        test = tests.get(str(category), {})
+        raw_p = _num(stats.get("p"))
+        if raw_p is None:
+            raw_p = _num(test.get("raw_p")) or _num(test.get("p"))
+        adjusted = _num(test.get("adjusted_p"))
+        if adjusted is None:
+            adjusted = _num(test.get("adjusted"))
+        reject = test.get("reject")
+        if reject is None:
+            reject = test.get("significant")
+        if reject is None:
+            reject = adjusted is not None and adjusted < alpha
+        rows.append(
+            {
+                "category": str(category),
+                "label": _event_category_label(category),
+                "n": _num(stats.get("n")),
+                "mean": _num(stats.get("mean")),
+                "raw_mean": _num(stats.get("raw_mean")),
+                "ci": stats.get("ci95"),
+                "p": raw_p,
+                "adjusted": adjusted,
+                "hit": _num(stats.get("hit_rate")),
+                "reject": bool(reject),
+            }
+        )
+    order = {name: index for index, name in enumerate(_EVENT_CATEGORY_ORDER)}
+    rows.sort(key=lambda row: (order.get(row["category"], 99), -abs(row["mean"] or 0.0)))
+    return multiple_testing, rows
+
+
+def _event_conclusion(multiple_testing: Mapping[str, Any], rows: list[dict[str, Any]]) -> str:
+    alpha = _event_alpha(multiple_testing)
+    rejected = [row for row in rows if row["reject"]]
+    if rejected:
+        details = "、".join(
+            f"{row['label']}（Holm p={_fmt_pvalue(row['adjusted'])}）" for row in rejected
+        )
+        return (
+            f"Holm 校正后仍有 {len(rejected)} 个类别显著（α={alpha:g}）：{details}。"
+            "20 日方向对齐的超额收益可视为统计显著，但仍需样本外验证。"
+        )
+    near = [
+        row
+        for row in rows
+        if _num(row["p"]) is not None and _num(row["p"]) < alpha and not row["reject"]
+    ]
+    text = f"Holm 校正后无显著类别（α={alpha:g}）"
+    if near:
+        text += (
+            "；未校正 p 值虽低于 α（"
+            + "、".join(row["label"] for row in near)
+            + "），但多重检验校正后不再显著"
+        )
+    text += "。20 日方向对齐的超额收益只能作为方向性参考，不构成策略证据。"
+    return text
+
+
+def _event_summary_columns(horizons: list[tuple[str, dict[str, Any]]]) -> tuple[list[str], dict[str, float | None]]:
+    """Category order + sample sizes shared by the compact horizon table."""
+    order = list(_EVENT_CATEGORY_ORDER)
+    seen: set[str] = set()
+    for _, block in horizons:
+        for category in _d(block.get("categories")):
+            if category not in order:
+                order.append(str(category))
+    sizes: dict[str, float | None] = {}
+    for _, block in horizons:
+        categories = _d(block.get("categories"))
+        for category in order:
+            stats = _d(categories.get(category))
+            size = _num(stats.get("n"))
+            if size is not None and sizes.get(category) is None:
+                sizes[category] = size
+    return order, sizes
 
 
 def _sort_desc(items: list[dict[str, Any]], key: str) -> list[dict[str, Any]]:
@@ -1791,10 +1942,88 @@ def _adjusted_table(multiple_testing: Mapping[str, Any]) -> tuple[list[str] | No
     return headers, rows
 
 
+def _zh_event_study(ctx: Mapping[str, Any]) -> str:
+    view = _event_study_view(ctx["research"])
+    if not view:
+        return f"{DASH}（research.event_study 为空，或事件研究尚未运行）。"
+    horizons = view["horizons"]
+    by_horizon = dict(horizons)
+    parts: list[str] = []
+    parts.append(
+        f"事件研究把 {_fmt_int(view.get('n_cases'))} 个历史案例按类别统计到 1/5/20/60 日："
+        "均值为**方向对齐后**的超额收益（做空/回避类信号已按 -1 取反），"
+        "p 值为单类别 t 检验，Holm 校正在同一时间窗口的类别之间进行。"
+    )
+    horizon_20 = by_horizon.get("20")
+    if horizon_20:
+        multiple_testing, rows = _event_horizon_rows(horizon_20)
+        if rows:
+            table_rows = [
+                (
+                    row["label"],
+                    _fmt_int(row["n"]),
+                    _fmt_auto_pct(row["mean"]),
+                    _ci_pct_text(row["ci"]),
+                    _fmt_pvalue(row["p"]),
+                    _fmt_pvalue(row["adjusted"]),
+                    _fmt_prob(row["hit"]),
+                    "显著" if row["reject"] else "不显著",
+                )
+                for row in rows
+            ]
+            parts.append(
+                "**20 日方向对齐表**：\n\n"
+                + _md_table(
+                    ["类别", "n", "平均超额", "95% CI", "p", "Holm 校正 p", "命中率", "Holm 判定"],
+                    table_rows,
+                )
+            )
+            parts.append("**结论**：" + _event_conclusion(multiple_testing, rows))
+        else:
+            parts.append(f"**20 日方向对齐表**：{DASH}（categories 为空）。")
+    else:
+        parts.append(f"**20 日方向对齐表**：{DASH}（by_horizon 缺少 20 日档）。")
+
+    if len(horizons) >= 2:
+        order, sizes = _event_summary_columns(horizons)
+        headers = ["窗口", "样本"] + [
+            f"{_event_category_label(category)}（n={_fmt_int(sizes.get(category))}）" for category in order
+        ]
+        summary_rows: list[list[str]] = []
+        for horizon, block in horizons:
+            categories = _d(block.get("categories"))
+            total = sum(
+                value
+                for value in (_num(_d(categories.get(category)).get("n")) for category in order)
+                if value is not None
+            )
+            row = [f"{horizon} 日", _fmt_int(total) if total else DASH]
+            for category in order:
+                row.append(_signed_pct_text(_d(categories.get(category)).get("mean")))
+            summary_rows.append(row)
+        parts.append(
+            "**1/5/20/60 日均值（方向对齐，▲/▼ 表示正/负）**：\n\n"
+            + _md_table(headers, summary_rows)
+        )
+    alpha_20 = _event_alpha(_event_horizon_rows(horizon_20)[0]) if horizon_20 else 0.05
+    parts.append(
+        f"> 口径：Holm 校正的 α 由数据给定（20 日档 α={alpha_20:g}）；"
+        "方向对齐只改变符号，不改变样本量；结论由校正后的 p 值自动生成，不预设显著性。"
+    )
+    return "\n\n".join(parts)
+
+
 def _zh_research_quality(ctx: Mapping[str, Any]) -> str:
     multiple_testing = ctx["multiple_testing"]
     survivorship = ctx["survivorship"]
-    lines: list[str] = []
+    lines: list[str] = [
+        "### 事件研究（方向对齐）",
+        "",
+        _zh_event_study(ctx),
+        "",
+        "### 多重检验（赛道 / 产品族）",
+        "",
+    ]
     if multiple_testing:
         method = _s(multiple_testing.get("method")) or "未标注"
         adjusted = _l(multiple_testing.get("adjusted"))
@@ -1881,7 +2110,8 @@ def _zh_cases(ctx: Mapping[str, Any]) -> str:
     if not selected and not negative and not stats:
         return f"{DASH}（cases 块为空，或本期没有可展示的案例）。"
     parts: list[str] = [
-        f"本期案例库精选 **{len(selected)}** 个案例、**{len(negative)}** 个反例。"
+        f"本期案例库共 **{len(selected)}** 个精选案例、**{len(negative)}** 个反例"
+        f"（本章展示前 {min(len(selected), MAX_CASE_CARDS)} 个精选与前 {min(len(negative), MAX_NEGATIVE_CASES)} 个反例）。"
         "所有案例都是**样本内**回看：用系统当时的判定对照事后价格反应，只用于说明证据链，"
         "**不是策略业绩，也不是样本外收益**。",
     ]
@@ -1895,7 +2125,7 @@ def _zh_cases(ctx: Mapping[str, Any]) -> str:
         parts.append(f"**分类统计**：{DASH}（cases.stats 为空）。")
 
     if selected:
-        parts.append(f"### 精选案例（{len(selected)} 个）")
+        parts.append(f"### 精选案例（共 {len(selected)} 个，展示前 {min(len(selected), MAX_CASE_CARDS)} 个）")
         parts.extend(_md_case_block(case) for case in selected[:MAX_CASE_CARDS])
     else:
         parts.append(f"### 精选案例\n\n{DASH}（cases.selected 为空）。")
@@ -3684,8 +3914,91 @@ def _html_timestamps_panel(ctx: Mapping[str, Any]) -> str:
     return "".join(parts)
 
 
+def _html_event_study(ctx: Mapping[str, Any]) -> str:
+    view = _event_study_view(ctx["research"])
+    heading = "<h3>事件研究（方向对齐）</h3>"
+    if not view:
+        return heading + f'<p class="empty">{_h(DASH)}（research.event_study 为空，或事件研究尚未运行）</p>'
+    horizons = view["horizons"]
+    by_horizon = dict(horizons)
+    parts: list[str] = [
+        heading,
+        '<p class="lead">历史案例按类别统计到 1/5/20/60 日；均值为<b>方向对齐后</b>的超额收益'
+        "（做空/回避类信号已按 -1 取反），p 值为单类别 t 检验，Holm 校正在同一时间窗口的类别之间进行。</p>",
+    ]
+    horizon_20 = by_horizon.get("20")
+    if horizon_20:
+        multiple_testing, rows = _event_horizon_rows(horizon_20)
+        if rows:
+            table_rows = [
+                [
+                    (row["label"], "name"),
+                    _fmt_int(row["n"]),
+                    _fmt_auto_pct(row["mean"]),
+                    _ci_pct_text(row["ci"]),
+                    _fmt_pvalue(row["p"]),
+                    _fmt_pvalue(row["adjusted"]),
+                    _fmt_prob(row["hit"]),
+                    "显著" if row["reject"] else "不显著",
+                ]
+                for row in rows
+            ]
+            parts.append(
+                "<h3>20 日方向对齐表</h3>"
+                + _table(
+                    [
+                        ("类别", ""),
+                        ("n", "num"),
+                        ("平均超额", "num"),
+                        ("95% CI", "num"),
+                        ("p", "num"),
+                        ("Holm 校正 p", "num"),
+                        ("命中率", "num"),
+                        ("Holm 判定", ""),
+                    ],
+                    table_rows,
+                )
+            )
+            rejected = [row for row in rows if row["reject"]]
+            callout_css = "callout" if rejected else "callout ok"
+            sentence = _event_conclusion(multiple_testing, rows)
+            parts.append(f'<div class="{callout_css}"><strong>结论：</strong>{_h(sentence)}</div>')
+        else:
+            parts.append(f'<p class="empty">{_h(DASH)}（20 日档 categories 为空）</p>')
+    else:
+        parts.append(f'<p class="empty">{_h(DASH)}（by_horizon 缺少 20 日档）</p>')
+
+    if len(horizons) >= 2:
+        order, sizes = _event_summary_columns(horizons)
+        headers: list[tuple[str, str]] = [("窗口", ""), ("样本", "num")]
+        headers.extend(
+            (f"{_event_category_label(category)}（n={_fmt_int(sizes.get(category))}）", "num")
+            for category in order
+        )
+        summary_rows: list[list[str]] = []
+        for horizon, block in horizons:
+            categories = _d(block.get("categories"))
+            total = sum(
+                value
+                for value in (_num(_d(categories.get(category)).get("n")) for category in order)
+                if value is not None
+            )
+            row = [f"{horizon} 日", _fmt_int(total) if total else DASH]
+            for category in order:
+                row.append(_signed_pct_text(_d(categories.get(category)).get("mean")))
+            summary_rows.append(row)
+        parts.append("<h3>1/5/20/60 日均值（方向对齐）</h3>")
+        parts.append(_table(headers, summary_rows))
+    alpha_20 = _event_alpha(_event_horizon_rows(horizon_20)[0]) if horizon_20 else 0.05
+    parts.append(
+        f'<p class="note">口径：Holm 校正的 α 由数据给定（20 日档 α={alpha_20:g}）；'
+        "方向对齐只改变符号，不改变样本量；结论由校正后的 p 值自动生成，不预设显著性。</p>"
+    )
+    return "".join(parts)
+
+
 def _html_research_panel(ctx: Mapping[str, Any]) -> str:
-    parts: list[str] = []
+    parts: list[str] = [_html_event_study(ctx), "<h3>多重检验（赛道 / 产品族）</h3>"]
     multiple_testing = ctx["multiple_testing"]
     if multiple_testing:
         method = _s(multiple_testing.get("method")) or "未标注"
@@ -3798,7 +4111,7 @@ def _html_cases_panel(ctx: Mapping[str, Any]) -> str:
     else:
         parts.append(f'<p class="empty">{_h(DASH)}（cases.stats 为空）</p>')
     if selected:
-        parts.append(f"<h3>精选案例（{len(selected)} 个）</h3>")
+        parts.append(f"<h3>精选案例（共 {len(selected)} 个，展示前 {min(len(selected), MAX_CASE_CARDS)} 个）</h3>")
         parts.append(
             '<div class="casegrid">'
             + "".join(_case_card_html(case) for case in selected[:MAX_CASE_CARDS])

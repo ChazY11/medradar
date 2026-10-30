@@ -383,6 +383,51 @@ class ReportBuildTest(unittest.TestCase):
         self.assertEqual(result["case_selected"], 0)
         self.assertEqual(result["cases_present"], False)
 
+    # ------------------------------------------------------------- event study
+    def test_event_study_section_rendered(self) -> None:
+        body = _chapter_text(self.zh, "十七、多重检验与生存偏差")
+        self.assertIn("事件研究（方向对齐）", body)
+        self.assertIn("20 日方向对齐表", body)
+        for label in ("批准", "CRL（完整回复函）", "试验结果"):
+            self.assertIn(label, body)
+        self.assertIn("Holm 校正 p", body)
+        self.assertIn("Holm 校正后无显著类别", body)
+        self.assertIn("1/5/20/60 日均值", body)
+        self.assertIn("事件研究（方向对齐）", self.html)
+        self.assertIn("20 日方向对齐表", self.html)
+        self.assertIn("1/5/20/60 日均值", self.html)
+        self.assertIn("Holm 校正后无显著类别", self.html)
+        # the conclusion must come from the data, not be hard-coded
+        payload = json.loads(FIXTURE.read_text(encoding="utf-8"))
+        horizon_20 = payload["research"]["event_study"]["by_horizon"]["20"]
+        horizon_20["multiple_testing"]["rejected"] = 1
+        horizon_20["multiple_testing"]["tests"][0]["significant"] = True
+        horizon_20["multiple_testing"]["tests"][0]["adjusted_p"] = 0.02
+        significant_path = self.tmp / "metrics_event_significant.json"
+        significant_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        target = self.tmp / "out_event_significant"
+        build_report(significant_path, target, docs_dir=self.tmp / "docs_event_significant")
+        significant_zh = (target / "report_zh.md").read_text(encoding="utf-8")
+        significant_body = _chapter_text(significant_zh, "十七、多重检验与生存偏差")
+        self.assertIn("Holm 校正后仍有 1 个类别显著", significant_body)
+        self.assertNotIn("无显著类别", significant_body)
+
+    def test_event_study_missing_degrades(self) -> None:
+        payload = json.loads(FIXTURE.read_text(encoding="utf-8"))
+        payload["research"].pop("event_study", None)
+        metrics_path = self.tmp / "metrics_no_event_study.json"
+        metrics_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        target = self.tmp / "out_no_event_study"
+        result = build_report(metrics_path, target, docs_dir=self.tmp / "docs_no_event_study")
+        zh = (target / "report_zh.md").read_text(encoding="utf-8")
+        page = (target / "index.html").read_text(encoding="utf-8")
+        self.assertEqual(len(_headings(zh)), 19)
+        body = _chapter_text(zh, "十七、多重检验与生存偏差")
+        self.assertIn("暂无数据", body)
+        self.assertIn("event_study 为空", page)
+        self.assertEqual(_parse(page).errors, [])
+        self.assertEqual(result["chapters_zh"], 19)
+
     # ------------------------------------------------------------------------ CSV
     def test_summary_csv_is_excel_friendly(self) -> None:
         self.assertTrue(self.csv_bytes.startswith(b"\xef\xbb\xbf"), "summary.csv needs a UTF-8 BOM")

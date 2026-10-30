@@ -15,12 +15,13 @@ portfolio, what appeared for the first time, and where China still has a gap.
 
 | | |
 |---|---|
-| Events ingested | **279,267** (510(k) 176,466 · PMA 24,073 · recalls 16,764 · trials 55,592 · drug approvals 5,326 · EDGAR catalysts 1,046) |
+| Events ingested | **312,566** (510(k) 176,466 · PMA 57,372 · recalls 16,764 · trials 55,592 · drug approvals 5,326 · EDGAR catalysts 1,046) |
 | Coverage | 89 companies, 60 tracks, **204 device product families**, 7,097 product codes |
 | Strongest track right now | 心脏节律 THI 1.94 (P=98.2%) · 可穿戴监测 1.80 · 结构性心脏病 1.57 · 手术机器人 1.54 |
-| Signals emitted | 283 (→ 127 tradable) |
+| Signals emitted | 281 (→ tradable subset) |
 | Case library | **208 traceable cases** (verbatim evidence + 1/5/20/60-day reactions), 81 approvals · 23 CRLs · 104 trial readouts |
-| Event study (20d, direction-aligned) | approval +4.7% · trial result +2.9% · CRL −1.9% — **none survives Holm correction** (n=208 total) |
+| Replay | **400-step, 7-year timeline** (2019–2026) with 10/25/50 bps cost tiers |
+| Event study (20d, direction-aligned) | approval +4.7% · trial result +2.9% · CRL −1.9% — **none survives Holm correction** (n=208) |
 | Simulated book | in-sample, long-only, not investment advice |
 | Tests | **378 offline tests**, no network, no API key |
 | Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |

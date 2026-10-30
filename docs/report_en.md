@@ -1,6 +1,6 @@
 # MedRadar: FDA Device & Drug Industry Radar
 
-_Generated 2026-10-30T19:24:32Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
+_Generated 2026-10-30T19:43:07Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
 
 ## Key takeaways
 
@@ -15,7 +15,7 @@ _Generated 2026-10-30T19:24:32Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 - Device / drug / trials: `ok`, `ok`, `ok`
 - NMPA (China registrations): `unavailable` - **unavailable (NMPA data not loaded)**; China-gap numbers are not inferred.
 - Prices: `ok`
-- Events in window: 279,267
+- Events in window: 312,566
 
 ## Hottest device tracks
 
@@ -76,7 +76,7 @@ _Generated 2026-10-30T19:24:32Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 
 ## Drug side
 
-Top NDA/BLA momentum: Daiichi Sankyo (THI 3.91), Otsuka (THI 3.91), Ionis Pharmaceuticals (THI 3.91), Sanofi (THI 2.09), Boehringer Ingelheim (THI 2.09).
+Top NDA/BLA momentum: Daiichi Sankyo (THI 3.91), Ionis Pharmaceuticals (THI 3.91), Otsuka (THI 3.91), Sanofi (THI 2.09), Boehringer Ingelheim (THI 2.09).
 Hottest therapeutic areas: t_dermatology (P 98.0%), t_cardiometabolic (P 100.0%), t_vaccines (P 48.8%), t_ophthalmology (P 26.6%).
 Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无数据), Neurocrine Biosciences (暂无数据), Exelixis (暂无数据).
 
@@ -86,14 +86,14 @@ Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无�
 
 ## Signals and paper trading
 
-- Signals generated: 283
+- Signals generated: 281
 - Paper portfolio: total return +19.2%, max drawdown -5.8%, win rate 73.7%, trades 38.
 - Equity curve: 48 trading days, 2025-11-21 to 2026-10-30.
 
 ## Replay and research hygiene
 
-- Replay: 60 steps from 2025-10-31 to 2026-10-31; multi-cost summary for 3 cost buckets.
-- Timestamp quality: date 279,267; excluded from trading: 0.
+- Replay: 60 steps from 2019-01-01 to 2026-10-31; multi-cost summary for 3 cost buckets.
+- Timestamp quality: date 312,566; excluded from trading: 0.
 - Multiple testing: holm correction over 24 tests.
 - Survivorship flags: 3.
 - Assumption register: `docs/ASSUMPTIONS.md`.
@@ -101,7 +101,7 @@ Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无�
 
 ## Case library (in-sample evidence)
 
-- 样本总数: 208; 20 日命中率: 49.0%; 60 日命中率: 47.6%; corpus_total: 1,046
+- 样本总数: 208; 20 日命中率: 49.0%; 60 日命中率: 47.6%; 语料总数: 1,046
 - 2021-09-14 · CTSO: 临床数据读出： — outcome 未命中; price 1/5/20/60d: 1 日 +6.4% ▲、5 日 +6.9% ▲、20 日 -18.0% ▼、60 日 -35.5% ▼.
 - 2021-09-13 · CRVO: 收到 CRL： — outcome 部分命中; price 1/5/20/60d: 1 日 +8.7% ▲、5 日 +3.9% ▲、20 日 -1.6% ▼、60 日 -23.9% ▼.
 - 2021-09-10 · CYDY: 临床数据读出： — outcome 未命中; price 1/5/20/60d: 1 日 +27.7% ▲、5 日 +76.9% ▲、20 日 +30.1% ▲、60 日 -20.6% ▼.

@@ -97,11 +97,15 @@
 ```text
 capital                 默认 100,000（仅用于名义额与收益率分母）
 costs_bps               单边成本档 (10, 25, 50)，往返 = 2 × bps
-intraday_days           7（Yahoo 1m 免费覆盖约 7 天）
+intraday_days           7（Yahoo 1m 免费覆盖约 7 天；events 模式强制为 0）
 hold_days               20 个交易日
 position_pct            0.20（× score 缩放，clamp 到 [0.2, 1.0]）
 max_concurrent          5
 max_requests            60（1m + 日线回填的硬预算）
+source                  auto | signals | events（默认 auto）
+max_steps               events 模式默认 400（目标 200–500），signals 模式不设上限
+per_kind_limit          events 模式默认 150 条/类（可传 int 或 {kind: limit}）
+event sampling          kind×year 分层；每 (kind, company, year) 首轮 ≤2 条
 timestamp_quality       允许 datetime/date/estimated；unknown 剔除
 dedupe key              (event_id, ticker, direction, kind, signal_date)
 date-quality available  = 当日 23:59:59 UTC
@@ -123,6 +127,16 @@ with DB("data/medradar.sqlite") as db:
     payload = build_replay(db, "2025-11-01", "2026-10-31")  # -> out/replay/{replay.json,index.html}
 ```
 
+多年历史（直接由 events 语料生成候选；CLI 透传 `--source/--max-steps` 由命令行层负责）：
+
+```python
+with DB("data/medradar.sqlite") as db:
+    payload = build_replay(
+        db, "2019-01-01", "2026-10-31",
+        source="events", max_steps=400, per_kind_limit=150,
+    )
+```
+
 访问 `out/replay/index.html` 即可逐步回放；`out/replay/replay.json` 是同一份机器可读数据（SCHEMA §11 契约）。
 
 ## 10. 已知偏差方向（读数字前先看）
@@ -135,3 +149,101 @@ with DB("data/medradar.sqlite") as db:
 6. **样本小、无多重检验校正** ⇒ 单条信号的回放只用于**个案审计**，不能据此宣称策略有效。
 
 > 结论口径：回放是**可审计的研究工具与演示**，不是可部署策略。任何对外材料引用收益数字时，必须同时出现"模拟研究、非投资建议"以及上述偏差方向。
+
+---
+
+## 11. 多年回放的信号生成规则（`source="events"`）
+
+`signals` 表只包含 `analyze` 最近窗口（约 8 个季度）的信号，无法回放多年历史。`source="events"`
+直接读 `events` 事实表（当前快照 **312,566 行**，`event_date` 1966–2026），在 `replay.py` 内
+**独立实现**一套 point-in-time 规则（不 import `analyze`），再把候选送进同一套"决策→成交→成本→HTML"
+流水线。
+
+### 11.1 规则与上限
+
+| 信号 `kind` | 数据来源 | 规则（point-in-time） | 方向 / 分数 | 默认上限 |
+|---|---|---|---|---|
+| `device_novel_code` | `510k` / `pma` | `(company_key, product_code)` 在**全历史**中首次出现的日期落在回放窗口内 | +1 / 0.60 | 150 |
+| `device_new_track` | `510k` / `pma` | `(company_key, track_id)` 全历史首次出现；若该事件已被 `device_novel_code` 选中则不重复 | +1 / 0.55 | 150 |
+| `drug_approval` | `drug_approval` | 每条原始批准事件；要求 `company_key` 可映射到 ticker | +1 / 0.70 | 150 |
+| `trial_start` | `trial` | `payload.phase` 含 `PHASE3`（先 SQL `LIKE '%PHASE3%'` 预筛，再逐条解析） | +1 / 0.50 | 150 |
+| `recall_cluster` | `device_recall` | 同一公司 **90 天内第 2 起**召回起，每个 90 天窗口最多 1 条；计数只含当前事件之前的历史 | −1 / 0.70 | 150 |
+| `8k_catalyst` | `8k_catalyst` | 标题 / `payload.buckets` 关键词定向（正/负词表见下）；`payload.backfill=true` 跳过；ticker 由公司表或标题括号解析 | ±1 / 0.60 | 150 |
+
+**为什么不是 analyze 的精确复刻**：这些规则只用于"枚举可回放的事件"，分数是启发式；不复刻
+`analyze` 的 THI/novelty boost，也不做组合信号合并。回放结果不能当作新的选股信号产品。
+
+**8-K 方向词表（未建模语义理解）**：
+
+* 负面：`did not meet` / `failed` / `missed` / `complete response letter` / `crl` / `refus` /
+  `reject` / `terminated` / `discontinued` / `clinical hold` / `halt` / `safety` / `adverse` /
+  `warning letter` / `recall` / `withdraw`；
+* 正面：`fda approval` / `approved` / `clearance` / `met the primary` / `positive topline` /
+  `positive results` / `positive data` / `breakthrough` / `fast track` / `priority review` /
+  `orphan` / `granted` / `agreement` / `acquisition`；
+* **同时命中正负词、或都不命中的标题直接丢弃**（不猜方向）。这是"未建模"的 NLP 判断，
+  不是数据缺陷。
+
+### 11.2 Point-in-time 与成交
+
+1. 候选窗口按 **`available_at` 的日期** 落在 `[start, end]` 内；事件按 `available_at` 升序处理。
+2. "首次出现"用 `MIN(avail)`（只统计 `event_date <= end` 的历史）⇒ 2019 年的"首次"不会被
+   2024 年的数据改写；90 天召回簇只数当前事件之前的召回。
+3. `timestamp_quality='unknown'` 的候选剔除；日精度 `available_at` 仍按当日 23:59:59 UTC 处理。
+4. **成交只用日线**：`source="events"` 时 `intraday_days` 被强制为 0，成交价 = 公开日之后
+   第一个交易日的开盘价，且开盘时刻必须 ≤ 回放 `now`；`fill_time > available_at` 硬校验不变。
+5. 去重键：`(event_id, ticker, direction, kind, signal_date)`；每条 step 仍带原文链接。
+
+### 11.3 上限与多样性抽样（避免 279k 级事件炸内存）
+
+* 先用 SQL 聚合 + 索引逐条规则生成候选（不把 31 万行事件读进 Python 内存；device 首次出现用
+  `GROUP BY company_key, product_code` 的 CTE，trial/recall 只取所需子集）。
+* **每类上限** `per_kind_limit`：默认 150（可传 `int` 或 `{kind: limit}`）。
+* **两阶段确定性抽样**（无随机数，可复现）：
+  1. 每个 kind 内按 `(kind, year)` 分桶，每 `(kind, company, year)` 首轮最多 2 条，轮转取；
+  2. 汇总后再按 `(kind, year)` 分桶、`(kind, company, year)` 首轮最多 3 条，轮转到 `max_steps`；
+  3. 若因公司上限取不满，则按时间顺序放宽补齐。
+* `max_steps`：`events` 模式默认 **400**（目标 200–500）；`signals` 模式默认不截断。
+* 只有 **`prices` 表里已有 ticker** 的候选才入选（否则会生成大量 `no_price` 步骤）；
+  8-K 标题解析出的 ticker 同样要求在 `prices` 中存在。
+
+### 11.4 多年回放的额外偏差（在 §10 之外的）
+
+| # | 项目 | 状态 | 说明 |
+|---|---|---|---|
+| 11.4.1 | 8-K ticker 映射 | 免费数据做不到 | 语料没有 CIK→ticker 映射（`companies.cik` 为空），只能用标题括号启发式；未匹配的 8-K 直接丢弃，不猜 |
+| 11.4.2 | 8-K 方向 | 未建模 | 关键词词表不理解否定嵌套、程度与语境；模糊标题丢弃，覆盖率偏低（当前约 135 条可交易候选） |
+| 11.4.3 | 事件宇宙完整性 | 免费数据做不到 | 多年窗口内的 trial/approval 数量是"当前快照中可解析"的数量，不是历史实时宇宙；退市/无价格公司不在样本（生存偏差同 §5） |
+| 11.4.4 | 回填时点 | 未建模 | 与 §3.2 相同：假设公开时点当时已采集，`first_seen_at` 滞后仍是已知乐观项 |
+| 11.4.5 | 1 分钟精度 | 免费数据做不到 | 多年回放固定日线开盘，无法还原历史分钟的成交时点与盘中滑点 |
+| 11.4.6 | 8-K 原文语义 | 未建模 | 未使用 LLM 判定（成本/可复现性考虑）；`payload.backfill=true` 的告警一律不成交 |
+
+### 11.5 实测（2026-10-31 快照，离线、只读 DB）
+
+```text
+调用：build_replay(db, "2019-01-01", "2026-10-31", source="events", max_steps=400)
+语料：312,566 events（窗口内 510k 24,444 / pma 17,921 / trial 15,543 / recall 14,592 /
+      drug_approval 1,068 / 8k_catalyst 1,046）
+候选：3,755（novel 373 / new_track 3 / approval 294 / trial 2,598 / recall 352 / 8k 135）
+每类上限后：738  →  全局 max_steps 后：400 steps（2019–2026 每年 44–61 步）
+成交：129 笔入账（其余为做空参考价/容量上限/无未来价格跳过）；全部日线
+耗时：约 7–9 秒（offline=True，含 SQL 候选生成 + 400 步价格解析 + HTML/JSON 写出）
+产物：验证时写入 out/replay_events/{replay.json,index.html}（避免覆盖 signals 模式的 out/replay；
+      `out_dir` 默认仍是 out/replay）；HTML 约 1.0 MB，自包含无外链
+```
+
+复现（引擎级；命令行参数由 `__main__.py` 负责透传）：
+
+```python
+from medradar.db import DB
+from medradar.replay import build_replay
+
+with DB("data/medradar.sqlite") as db:
+    payload = build_replay(
+        db, "2019-01-01", "2026-10-31",
+        source="events", max_steps=400, per_kind_limit=150,
+    )
+```
+
+> 多年回放的定位仍是**研究工具**：它把十年事件摊开成可审计的时间轴，用来检查"规则在历史上
+> 长什么样"，而不是证明规则能赚钱。样本内、未做多重检验校正、只做多、无借券费，结论口径同 §10。

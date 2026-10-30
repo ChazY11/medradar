@@ -550,6 +550,127 @@ class StratifiedSubsetTests(unittest.TestCase):
         self.assertTrue(all(row["filed"].startswith("2024") for row in subset))
 
 
+class V2BucketTests(unittest.TestCase):
+    NEW_BUCKETS = (
+        "fda approves",
+        "phase 3 results",
+        "topline data",
+        "clinical hold",
+        "refuse to file",
+        "breakthrough therapy",
+        "priority review",
+        "label expansion",
+        "accelerated approval",
+    )
+
+    def test_v2_bucket_set_is_the_v1_set_plus_nine(self) -> None:
+        self.assertEqual(len(corpus.BUCKETS_V2), 16)
+        self.assertEqual(corpus.BUCKETS_V2[:7], corpus.BUCKET_ORDER)
+        for bucket in self.NEW_BUCKETS:
+            self.assertIn(bucket, corpus.BUCKETS_V2)
+            self.assertNotIn(bucket, corpus.BUCKET_ORDER)
+            self.assertIn(bucket, corpus.BUCKET_CATEGORY)
+
+    def test_v2_buckets_map_to_the_five_known_categories(self) -> None:
+        for bucket in corpus.BUCKETS_V2:
+            self.assertIn(corpus.BUCKET_CATEGORY[bucket], corpus.CATEGORIES)
+        self.assertEqual(corpus.BUCKET_CATEGORY["fda approves"], "approval")
+        self.assertEqual(corpus.BUCKET_CATEGORY["phase 3 results"], "trial_result")
+        self.assertEqual(corpus.BUCKET_CATEGORY["topline data"], "trial_result")
+        self.assertEqual(corpus.BUCKET_CATEGORY["clinical hold"], "crl")
+        self.assertEqual(corpus.BUCKET_CATEGORY["refuse to file"], "crl")
+        self.assertEqual(corpus.BUCKET_CATEGORY["breakthrough therapy"], "other")
+        self.assertEqual(corpus.BUCKET_CATEGORY["priority review"], "other")
+        self.assertEqual(corpus.BUCKET_CATEGORY["label expansion"], "approval")
+        self.assertEqual(corpus.BUCKET_CATEGORY["accelerated approval"], "approval")
+
+    def test_classify_new_buckets(self) -> None:
+        self.assertEqual(corpus.classify("filed today", ["phase 3 results"]), "trial_result")
+        hold = corpus.classify_detail("The program is paused.", ["clinical hold"])
+        self.assertEqual(hold["category"], "crl")
+        self.assertEqual(hold["direction"], -1)
+        rtf = corpus.classify_detail("The application was rejected.", ["refuse to file"])
+        self.assertEqual(rtf["category"], "crl")
+        self.assertEqual(rtf["direction"], -1)
+        breakthrough = corpus.classify_detail("Designation granted.", ["breakthrough therapy"])
+        self.assertEqual(breakthrough["category"], "other")
+        self.assertEqual(breakthrough["direction"], 0)
+        label = corpus.classify_detail("New indication approved.", ["label expansion"])
+        self.assertEqual(label["category"], "approval")
+
+    def test_parse_carries_new_buckets(self) -> None:
+        candidate = corpus.parse_fts_hit(_hit(), "clinical hold", "2016H1")
+        assert candidate is not None
+        self.assertEqual(candidate["buckets"], ["clinical hold"])
+        self.assertEqual(candidate["windows"], ["2016H1"])
+
+    def test_merge_preserves_new_buckets_with_v2_order(self) -> None:
+        one = _candidate(accession="0001104659-24-000010")
+        one["buckets"] = ["priority review"]
+        two = _candidate(accession="0001104659-24-000010", document="crl.htm")
+        two["buckets"] = ["refuse to file"]
+        merged = corpus.merge_candidates([one, two], bucket_order=corpus.BUCKETS_V2)
+        self.assertEqual(merged[0]["buckets"], ["refuse to file", "priority review"])
+        self.assertEqual(merged[0]["document"], "crl.htm")
+
+    def test_build_record_uses_v2_bucket_order(self) -> None:
+        candidate = _candidate()
+        candidate["buckets"] = ["accelerated approval", "fda approval"]
+        record = corpus.build_record(candidate, "fda approval", bucket_order=corpus.BUCKETS_V2)
+        self.assertEqual(record["buckets"], ["fda approval", "accelerated approval"])
+
+    def test_summarize_reports_all_v2_buckets(self) -> None:
+        rows = [
+            _record(buckets=["clinical hold"], accession="a1", filed="2016-02-01"),
+            _record(buckets=["priority review"], accession="a2", filed="2024-02-01"),
+        ]
+        summary = corpus.summarize(rows, bucket_order=corpus.BUCKETS_V2)
+        self.assertEqual(len(summary["by_bucket"]), 16)
+        self.assertEqual(summary["by_bucket"]["clinical hold"], 1)
+        self.assertEqual(summary["by_bucket"]["priority review"], 1)
+        manifest = corpus.build_manifest(
+            rows, buckets=corpus.BUCKETS_V2, bucket_order=corpus.BUCKETS_V2
+        )
+        self.assertEqual(len(manifest["corpus"]["by_bucket"]), 16)
+        self.assertEqual(len(manifest["buckets"]), 16)
+
+
+class MergeCorporaTests(unittest.TestCase):
+    def test_union_by_accession_and_longest_text_wins(self) -> None:
+        v1 = [_record(accession="a1", text="short", text_chars=5, buckets=["fda approval"], windows=[]),
+              _record(accession="a2", text="v1 only", text_chars=7, windows=[])]
+        v2 = [_record(accession="a1", text="a much longer announcement text", text_chars=30,
+                      buckets=["clinical hold"], windows=["2016H1"]),
+              _record(accession="a3", text="new in v2", text_chars=11)]
+        merged = corpus.merge_corpora([v1, v2], bucket_order=corpus.BUCKETS_V2)
+        self.assertEqual({row["accession"] for row in merged}, {"a1", "a2", "a3"})
+        a1 = next(row for row in merged if row["accession"] == "a1")
+        self.assertEqual(a1["text_chars"], 30)
+        self.assertEqual(a1["buckets"], ["fda approval", "clinical hold"])
+        self.assertEqual(a1["windows"], ["2016H1"])
+
+    def test_keeps_current_record_when_text_is_not_longer(self) -> None:
+        first = [_record(accession="a1", text="longer text", text_chars=20,
+                         buckets=["fda approval"], windows=[])]
+        second = [_record(accession="a1", text="short", text_chars=5,
+                          buckets=["priority review"], windows=["2016H1"])]
+        merged = corpus.merge_corpora([first, second], bucket_order=corpus.BUCKETS_V2)
+        self.assertEqual(merged[0]["text_chars"], 20)
+        self.assertEqual(merged[0]["buckets"], ["fda approval", "priority review"])
+        self.assertEqual(merged[0]["windows"], ["2016H1"])
+
+    def test_sorted_and_empty(self) -> None:
+        rows = corpus.merge_corpora([[ _record(accession="b", filed="2024-01-02"),
+                                      _record(accession="a", filed="2023-01-02") ]])
+        self.assertEqual([row["accession"] for row in rows], ["a", "b"])
+        self.assertEqual(corpus.merge_corpora([]), [])
+        self.assertEqual(corpus.merge_corpora([[], []]), [])
+
+    def test_unknown_buckets_are_preserved(self) -> None:
+        rows = corpus.merge_corpora([[_record(buckets=["fda approval", "made up bucket"])]])
+        self.assertEqual(rows[0]["buckets"], ["fda approval", "made up bucket"])
+
+
 class EventMappingTests(unittest.TestCase):
     def test_to_events_shape_and_deterministic_ids(self) -> None:
         rows = [_record(company_key="acme")]

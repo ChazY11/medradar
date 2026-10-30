@@ -60,14 +60,17 @@ DEFAULT_OUT = DATA_DIR / "edgar_corpus"
 DEFAULT_CACHE = DATA_DIR / "cache"
 START = "2019-01-01"
 END = "2026-10-31"
+START_V2 = "2015-01-01"
 HITS_PER_QUERY = 100
 MIN_TEXT_CHARS = 200
 SHORT_TEXT_CHARS = 3_500
 FETCH_RETRIES = 2
 DEFAULT_LIMIT = 0
+MAX_FAILURE_RATE = 0.10
 
 #: The seven phrase buckets, in the task's order (see corpus.BUCKET_ORDER).
 BUCKETS: tuple[str, ...] = corpus.BUCKET_ORDER
+BUCKETS_V2: tuple[str, ...] = corpus.BUCKETS_V2
 
 ARCHIVES_BASE = corpus.ARCHIVES_BASE
 
@@ -125,7 +128,157 @@ def quarter_windows(start: str, end: str) -> list[dict[str, str]]:
     return windows
 
 
-# ---------------------------------------------------------------- reference
+def half_year_windows(start: str, end: str) -> list[dict[str, str]]:
+    """Inclusive half-year windows (H1 = Jan-Jun, H2 = Jul-Dec), clipped to range.
+
+    The v2 widening uses half-years instead of quarters: a wider window spends the
+    same ``hits=100`` budget on more filings per query, which increases recall for
+    rare phrases (``refuse to file``, ``clinical hold``) at the cost of a coarser
+    date filter - the corpus still records the exact ``file_date`` per filing, so
+    the observation date is unaffected.
+    """
+    start_day = date.fromisoformat(str(start))
+    end_day = date.fromisoformat(str(end))
+    if end_day < start_day:
+        raise ValueError("end must not precede start")
+    windows: list[dict[str, str]] = []
+    for year in range(start_day.year, end_day.year + 1):
+        for half in (1, 2):
+            h_start = date(year, 1 if half == 1 else 7, 1)
+            h_end = date(year, 6, 30) if half == 1 else date(year, 12, 31)
+            window_start = max(h_start, start_day)
+            window_end = min(h_end, end_day)
+            if window_start <= window_end:
+                windows.append(
+                    {
+                        "label": f"{year}H{half}",
+                        "start": window_start.isoformat(),
+                        "end": window_end.isoformat(),
+                    }
+                )
+    return windows
+
+
+def windows_for(window: str, start: str, end: str) -> list[dict[str, str]]:
+    """Pick the window generator by name (``quarter`` for v1, ``half`` for v2)."""
+    kind = str(window or "quarter").strip().lower()
+    if kind in ("half", "half-year", "halfyear", "semester"):
+        return half_year_windows(start, end)
+    if kind in ("quarter", "quarterly", "q"):
+        return quarter_windows(start, end)
+    raise ValueError(f"unknown window mode: {window!r}")
+
+
+# --------------------------------------------------------------------- paths
+def _paths(args: argparse.Namespace) -> dict[str, Path]:
+    """All intermediate/final paths for the selected variant (v1 / v2)."""
+    out = _out_dir(args)
+    suffix = str(getattr(args, "suffix", "") or "")
+    return {
+        "out": out,
+        "candidates": out / f"candidates{suffix}.jsonl",
+        "search_hits": out / f"search_hits{suffix}.jsonl",
+        "searches": out / f"searches{suffix}.jsonl",
+        "filings": out / f"filings{suffix}.jsonl",
+        "search_summary": out / f"search_summary{suffix}.json",
+        "fetch_summary": out / f"fetch_summary{suffix}.json",
+        "failures": out / f"failures{suffix}.json",
+        "corpus": out / str(getattr(args, "corpus_name", "corpus.jsonl")),
+        "manifest": out / str(getattr(args, "manifest_name", "manifest.json")),
+    }
+
+
+def _seed_filing_paths(args: argparse.Namespace) -> list[Path]:
+    raw = getattr(args, "seed_filings", None) or []
+    return [Path(item) for item in raw if str(item).strip()]
+
+
+def _seed_candidate_paths(args: argparse.Namespace) -> list[Path]:
+    raw = getattr(args, "seed_candidates", None) or []
+    return [Path(item) for item in raw if str(item).strip()]
+
+
+def load_candidate_rows(paths: list[Path], bucket_order: Sequence[str]) -> list[dict[str, Any]]:
+    """Load + union candidate JSONL files (v1 candidates + v2 candidates).
+
+    A wider half-year query window does not *guarantee* a superset of the
+    quarter-window hits (the ``hits=100`` relevance cap cuts differently), so v2
+    unions the v1 candidates in explicitly. That keeps the promise in the task:
+    ``corpus_v2`` is the de-duplicated **full set**, not just the new crawl.
+    """
+    rows: list[dict[str, Any]] = []
+    for path in paths:
+        rows.extend(corpus.read_jsonl(path))
+    return corpus.merge_candidates(rows, bucket_order=bucket_order)
+
+
+def load_filing_rows(paths: list[Path]) -> dict[str, dict[str, Any]]:
+    """Load filing rows from several JSONL files; later files win per accession."""
+    merged: dict[str, dict[str, Any]] = {}
+    for path in paths:
+        for row in corpus.read_jsonl(path):
+            accession = str(row.get("accession") or "")
+            if accession:
+                merged[accession] = row
+    return merged
+
+
+def _variant_defaults(args: argparse.Namespace) -> None:
+    """Resolve variant-dependent defaults (explicit CLI flags always win).
+
+    ``v1`` keeps the original corpus reproducible (7 buckets, quarterly,
+    2019-2026, ``corpus.jsonl``). ``v2`` widens to 16 buckets, half-year windows,
+    2015-2026, and writes ``corpus_v2.jsonl``; it seeds its fetches from the v1
+    ``filings.jsonl`` so no filing is downloaded twice.
+    """
+    variant = str(getattr(args, "variant", "v1") or "v1").strip().lower()
+    out_base = Path(getattr(args, "out", DEFAULT_OUT) or DEFAULT_OUT)
+    details = {
+        "v1": {
+            "suffix": "",
+            "corpus_name": "corpus.jsonl",
+            "manifest_name": "manifest.json",
+            "buckets": BUCKETS,
+            "window": "quarter",
+            "start": START,
+            "end": END,
+            "seed_filings": [],
+            "seed_candidates": [],
+        },
+        "v2": {
+            "suffix": "_v2",
+            "corpus_name": "corpus_v2.jsonl",
+            "manifest_name": "manifest_v2.json",
+            "buckets": BUCKETS_V2,
+            "window": "half",
+            "start": START_V2,
+            "end": END,
+            "seed_filings": [str(out_base / "filings.jsonl")],
+            "seed_candidates": [str(out_base / "candidates.jsonl")],
+        },
+    }
+    if variant not in details:
+        raise ValueError(f"unknown variant: {variant!r} (expected v1 or v2)")
+    chosen = details[variant]
+    for key in ("suffix", "corpus_name", "manifest_name", "window", "start", "end"):
+        if getattr(args, key, None) is None:
+            setattr(args, key, chosen[key])
+    if getattr(args, "buckets", None) is None:
+        setattr(args, "buckets", list(chosen["buckets"]))
+    if not getattr(args, "seed_filings", None):
+        setattr(args, "seed_filings", list(chosen["seed_filings"]))
+    if not getattr(args, "seed_candidates", None):
+        setattr(args, "seed_candidates", list(chosen["seed_candidates"]))
+    setattr(args, "variant", variant)
+
+
+def _check_failure_rate(summary: Mapping[str, Any], limit: float) -> bool:
+    """True when the crawl is within the failure-rate budget (task-16: stop at 10%)."""
+    rate = summary.get("failure_rate")
+    if rate is None:
+        return True
+    return float(rate) <= float(limit) + 1e-12
+
 def load_ticker_map(fetcher: Fetcher, args: argparse.Namespace) -> dict[int, str]:
     """SEC ``company_tickers.json`` -> ``{cik: ticker}`` (cached by the fetcher)."""
     mapping: dict[int, str] = {}
@@ -177,11 +330,14 @@ def _search_key(window: str, bucket: str) -> str:
 
 
 def cmd_search(args: argparse.Namespace) -> dict[str, Any]:
-    """Stage 1: query EDGAR FTS and write candidates.jsonl."""
-    out = _out_dir(args)
+    """Stage 1: query EDGAR FTS and write ``candidates*.jsonl``."""
+    paths = _paths(args)
+    out = paths["out"]
     fetcher = _make_fetcher(args)
-    raw_path = out / "search_hits.jsonl"
-    searches_path = out / "searches.jsonl"
+    raw_path = paths["search_hits"]
+    searches_path = paths["searches"]
+    window_mode = str(getattr(args, "window", "quarter") or "quarter")
+    buckets = list(getattr(args, "buckets", BUCKETS) or BUCKETS)
     done: set[str] = set()
     if args.refresh and not getattr(args, "offline", False):
         # a refresh re-queries everything: stale hit/progress files would otherwise
@@ -192,15 +348,15 @@ def cmd_search(args: argparse.Namespace) -> dict[str, Any]:
     if not args.refresh:
         for row in corpus.read_jsonl(searches_path):
             done.add(_search_key(str(row.get("window") or ""), str(row.get("bucket") or "")))
-    windows = quarter_windows(args.start, args.end)
+    windows = windows_for(window_mode, args.start, args.end)
     print(
-        f"[corpus] search: {len(windows)} quarter windows x {len(BUCKETS)} buckets"
-        f" ({len(done)} already done)",
+        f"[corpus] search ({args.variant}): {len(windows)} {window_mode} windows x "
+        f"{len(buckets)} buckets ({len(done)} already done)",
         file=sys.stderr,
     )
     started = time.perf_counter()
     for window in windows:
-        for bucket in BUCKETS:
+        for bucket in buckets:
             key = _search_key(window["label"], bucket)
             if key in done:
                 continue
@@ -255,17 +411,22 @@ def cmd_search(args: argparse.Namespace) -> dict[str, Any]:
                 file=sys.stderr,
             )
 
-    candidates = corpus.merge_candidates(corpus.read_jsonl(raw_path))
-    _write_candidates(out, candidates)
+    bucket_order = list(getattr(args, "buckets", BUCKETS) or BUCKETS)
+    candidates = corpus.merge_candidates(
+        corpus.read_jsonl(raw_path), bucket_order=bucket_order
+    )
+    _write_candidates(paths["candidates"], candidates)
     searches = corpus.read_jsonl(searches_path)
-    summary = _search_summary(searches, candidates, fetcher, time.perf_counter() - started)
-    write_json(out / "search_summary.json", summary)
+    summary = _search_summary(
+        searches, candidates, fetcher, time.perf_counter() - started,
+        buckets=bucket_order, window_mode=window_mode,
+    )
+    write_json(paths["search_summary"], summary)
     print(json.dumps(summary, ensure_ascii=False, indent=1))
     return summary
 
 
-def _write_candidates(out: Path, candidates: Sequence[Mapping[str, Any]]) -> None:
-    path = out / "candidates.jsonl"
+def _write_candidates(path: Path, candidates: Sequence[Mapping[str, Any]]) -> None:
     with path.open("w", encoding="utf-8") as handle:
         for candidate in candidates:
             handle.write(json.dumps(candidate, ensure_ascii=False, default=str) + "\n")
@@ -276,6 +437,9 @@ def _search_summary(
     candidates: Sequence[Mapping[str, Any]],
     fetcher: Fetcher,
     elapsed: float,
+    *,
+    buckets: Sequence[str] = BUCKETS,
+    window_mode: str = "quarter",
 ) -> dict[str, Any]:
     errors = [row for row in searches if row.get("status") == "error"]
     starts = [str(row["start"]) for row in searches if row.get("start")]
@@ -283,11 +447,12 @@ def _search_summary(
     return {
         "stage": "search",
         "generated_at": utc_now_iso(),
+        "window_mode": window_mode,
         "window": {
             "start": min(starts) if starts else None,
             "end": max(ends) if ends else None,
         },
-        "buckets": list(BUCKETS),
+        "buckets": list(buckets),
         "queries": len(searches),
         "queries_failed": len(errors),
         "total_hits_available": sum(int(row.get("total_hits") or 0) for row in searches),
@@ -296,7 +461,7 @@ def _search_summary(
         "candidates_unique": len(candidates),
         "by_bucket_candidates": {
             bucket: sum(1 for item in candidates if bucket in (item.get("buckets") or []))
-            for bucket in BUCKETS
+            for bucket in buckets
         },
         "per_window": {
             label: sum(
@@ -473,14 +638,25 @@ def fetch_filing_text(
 
 def cmd_fetch(args: argparse.Namespace) -> dict[str, Any]:
     """Stage 2: fetch filing texts, resumably, with a politeness rate limit."""
-    out = _out_dir(args)
+    paths = _paths(args)
+    out = paths["out"]
     fetcher = _make_fetcher(args)
-    candidates = corpus.read_jsonl(out / "candidates.jsonl")
+    bucket_order = list(getattr(args, "buckets", BUCKETS) or BUCKETS)
+    candidates = load_candidate_rows(
+        [paths["candidates"]] + _seed_candidate_paths(args), bucket_order
+    )
     if not candidates:
-        print("[corpus] fetch: no candidates.jsonl - run `search` first", file=sys.stderr)
+        print(f"[corpus] fetch: no {paths['candidates'].name} - run `search` first", file=sys.stderr)
         return {"stage": "fetch", "status": "no_candidates", "attempted": 0}
-    filings_path = out / "filings.jsonl"
-    existing = {str(row.get("accession")): row for row in corpus.read_jsonl(filings_path)}
+    filings_path = paths["filings"]
+    # seed rows (e.g. the v1 filings) are treated as already fetched: the same
+    # accession is never downloaded twice, and build() reads both files
+    seed_paths = _seed_filing_paths(args)
+    existing = load_filing_rows(seed_paths + [filings_path])
+    seed_count = len([
+        row for row in load_filing_rows(seed_paths).values()
+        if row.get("fetch_status") in ("ok", "fallback") and row.get("text")
+    ])
     ok_accessions = {
         accession
         for accession, row in existing.items()
@@ -535,24 +711,40 @@ def cmd_fetch(args: argparse.Namespace) -> dict[str, Any]:
                 f"({rate:.1f} req/s)",
                 file=sys.stderr,
             )
-    summary = _fetch_summary(out, counts, attempted, fetcher, time.perf_counter() - started)
-    write_json(out / "fetch_summary.json", summary)
+    summary = _fetch_summary(
+        paths, counts, attempted, fetcher, time.perf_counter() - started,
+        candidates_total=len(candidates),
+    )
+    summary["seed_texts"] = seed_count
+    summary["variant"] = getattr(args, "variant", "v1")
+    write_json(paths["fetch_summary"], summary)
+    max_rate = float(getattr(args, "max_failure_rate", MAX_FAILURE_RATE) or MAX_FAILURE_RATE)
+    if not _check_failure_rate(summary, max_rate):
+        summary["status"] = "failure_rate_exceeded"
+        summary["stopped"] = True
+        print(
+            f"[corpus] STOP: fetch failure rate {summary.get('failure_rate')} > {max_rate:.0%}; "
+            "do not build a corpus from this crawl without investigating",
+            file=sys.stderr,
+        )
     print(json.dumps(summary, ensure_ascii=False, indent=1))
     return summary
 
 
 def _fetch_summary(
-    out: Path,
+    paths: Mapping[str, Path],
     counts: Mapping[str, int],
     attempted: int,
     fetcher: Fetcher,
     elapsed: float,
+    *,
+    candidates_total: int | None = None,
 ) -> dict[str, Any]:
-    rows = corpus.read_jsonl(out / "filings.jsonl")
+    rows = corpus.read_jsonl(paths["filings"])
     ok_rows = [row for row in rows if row.get("fetch_status") in ("ok", "fallback") and row.get("text")]
     failed_rows = [row for row in rows if row.get("fetch_status") == "failed"]
-    candidates = corpus.read_jsonl(out / "candidates.jsonl")
-    total = len(candidates)
+    candidates = corpus.read_jsonl(paths["candidates"])
+    total = int(candidates_total if candidates_total is not None else len(candidates))
     return {
         "stage": "fetch",
         "generated_at": utc_now_iso(),
@@ -563,7 +755,12 @@ def _fetch_summary(
         "candidates": total,
         "texts_available": len(ok_rows),
         "failed_total": len(failed_rows),
-        "failure_rate": round(len(failed_rows) / total, 4) if total else None,
+        "attempted_total": len(ok_rows) + len(failed_rows),
+        "failure_rate": (
+            round(len(failed_rows) / (len(ok_rows) + len(failed_rows)), 4)
+            if (len(ok_rows) + len(failed_rows))
+            else None
+        ),
         "text_chars_total": sum(int(row.get("raw_chars") or 0) for row in ok_rows),
         "failed_sample": [
             {"accession": row.get("accession"), "error": row.get("error")}
@@ -576,12 +773,17 @@ def _fetch_summary(
 
 # -------------------------------------------------------------------- build
 def cmd_build(args: argparse.Namespace) -> dict[str, Any]:
-    """Stage 3: join candidates + texts into corpus.jsonl + manifest.json."""
-    out = _out_dir(args)
-    candidates = corpus.read_jsonl(out / "candidates.jsonl")
-    filings = {str(row.get("accession")): row for row in corpus.read_jsonl(out / "filings.jsonl")}
+    """Stage 3: join candidates + texts into ``corpus*.jsonl`` + ``manifest*.json``."""
+    paths = _paths(args)
+    out = paths["out"]
+    bucket_order = list(getattr(args, "buckets", BUCKETS) or BUCKETS)
+    candidates = load_candidate_rows(
+        [paths["candidates"]] + _seed_candidate_paths(args), bucket_order
+    )
+    seed_paths = _seed_filing_paths(args)
+    filings = load_filing_rows(seed_paths + [paths["filings"]])
     if not candidates:
-        print("[corpus] build: no candidates - run search first", file=sys.stderr)
+        print(f"[corpus] build: no {paths['candidates'].name} - run search first", file=sys.stderr)
         return {"stage": "build", "status": "no_candidates", "n": 0}
     resolver = CompanyResolver()
     tickers = load_ticker_map(_make_fetcher(args), args)
@@ -617,6 +819,7 @@ def cmd_build(args: argparse.Namespace) -> dict[str, Any]:
             raw_chars=filing.get("raw_chars"),
             fetch_status=str(filing.get("fetch_status")),
             company_key=company_key,
+            bucket_order=bucket_order,
             extra={
                 "ticker": ticker,
                 "fetch_url": filing.get("fetch_url", ""),
@@ -624,10 +827,34 @@ def cmd_build(args: argparse.Namespace) -> dict[str, Any]:
             },
         )
         records.append(record)
-    written = corpus.write_corpus(records, out)
-    search_summary = read_json(out / "search_summary.json", {}) or {}
-    fetch_summary = read_json(out / "fetch_summary.json", {}) or {}
     attempted = len(records) + failed
+    failure_rate = round(failed / attempted, 4) if attempted else None
+    max_rate = float(getattr(args, "max_failure_rate", MAX_FAILURE_RATE) or MAX_FAILURE_RATE)
+    if failure_rate is not None and failure_rate > max_rate:
+        write_json(paths["failures"], {"n": len(failures), "failures": failures})
+        print(
+            f"[corpus] STOP: fetch failure rate {failure_rate} > {max_rate:.0%}; "
+            "corpus not written (task rule: stop and report above 10%)",
+            file=sys.stderr,
+        )
+        return {
+            "stage": "build",
+            "status": "failure_rate_exceeded",
+            "n": 0,
+            "failed": failed,
+            "attempted": attempted,
+            "failure_rate": failure_rate,
+        }
+    written = corpus.write_corpus(records, out, filename=str(getattr(args, "corpus_name", "corpus.jsonl")))
+    search_summary = read_json(paths["search_summary"], {}) or {}
+    fetch_summary = read_json(paths["fetch_summary"], {}) or {}
+    v1_overlap = None
+    new_vs_v1 = None
+    v1_path = out / "corpus.jsonl"
+    if str(getattr(args, "variant", "v1")) == "v2" and v1_path.exists():
+        v1_accessions = {str(row.get("accession")) for row in corpus.read_jsonl(v1_path)}
+        v1_overlap = sum(1 for record in records if str(record.get("accession")) in v1_accessions)
+        new_vs_v1 = len(records) - v1_overlap
     manifest = corpus.build_manifest(
         records,
         search=search_summary,
@@ -638,13 +865,17 @@ def cmd_build(args: argparse.Namespace) -> dict[str, Any]:
             "texts_available": len(records),
             "failed": failed,
             "not_fetched": not_fetched,
-            "failure_rate": round(failed / attempted, 4) if attempted else None,
+            "failure_rate": failure_rate,
             "coverage": round(len(records) / len(candidates), 4) if candidates else None,
         },
         window={"start": args.start, "end": args.end},
-        buckets=BUCKETS,
+        buckets=bucket_order,
+        bucket_order=bucket_order,
         user_agent=SEC_UA,
         extra={
+            "variant": str(getattr(args, "variant", "v1")),
+            "seed_filings": [str(path) for path in seed_paths],
+            "seed_candidates": [str(path) for path in _seed_candidate_paths(args)],
             "rate_limit": {
                 "min_interval_s": float(args.min_interval),
                 "max_requests_per_s": round(1.0 / float(args.min_interval), 2)
@@ -652,21 +883,26 @@ def cmd_build(args: argparse.Namespace) -> dict[str, Any]:
                 else None,
                 "serial_requests": True,
             },
-            "failures_path": str(out / "failures.json"),
+            "failures_path": str(paths["failures"]),
             "corpus_path": written["path"],
             "records": len(records),
             "classified_company_keys": sum(1 for record in records if record.get("company_key")),
+            "v1_corpus_path": str(v1_path) if v1_path.exists() else None,
+            "overlap_with_v1": v1_overlap,
+            "new_vs_v1": new_vs_v1,
             "fetch_failure_rate_definition": (
                 "failed / attempted fetches (candidates not fetched yet are counted "
                 "separately as not_fetched, never as failures)"
             ),
         },
     )
-    write_json(out / "manifest.json", manifest)
-    write_json(out / "failures.json", {"n": len(failures), "failures": failures})
+    manifest["status"] = "ok"
+    write_json(paths["manifest"], manifest)
+    write_json(paths["failures"], {"n": len(failures), "failures": failures})
     summary = {
         "stage": "build",
         "status": "ok",
+        "variant": str(getattr(args, "variant", "v1")),
         "n": written["n"],
         "sha1": written["sha1"],
         "by_category": manifest["corpus"]["by_category"],
@@ -674,15 +910,18 @@ def cmd_build(args: argparse.Namespace) -> dict[str, Any]:
         "by_bucket": manifest["corpus"]["by_bucket"],
         "date_range": manifest["corpus"]["date_range"],
         "avg_text_chars": manifest["corpus"]["avg_text_chars"],
+        "short_text": manifest["corpus"]["short_text"],
         "candidates": len(candidates),
         "failed": failed,
         "not_fetched": not_fetched,
-        "failure_rate": manifest["fetch"]["failure_rate"],
+        "failure_rate": failure_rate,
         "coverage": manifest["fetch"]["coverage"],
+        "overlap_with_v1": v1_overlap,
+        "new_vs_v1": new_vs_v1,
         "paths": {
             "corpus": written["path"],
-            "manifest": str(out / "manifest.json"),
-            "failures": str(out / "failures.json"),
+            "manifest": str(paths["manifest"]),
+            "failures": str(paths["failures"]),
         },
     }
     print(json.dumps(summary, ensure_ascii=False, indent=1))
@@ -691,21 +930,31 @@ def cmd_build(args: argparse.Namespace) -> dict[str, Any]:
 
 # ------------------------------------------------------------------- status
 def cmd_status(args: argparse.Namespace) -> dict[str, Any]:
-    out = _out_dir(args)
-    candidates = corpus.read_jsonl(out / "candidates.jsonl")
-    filings = corpus.read_jsonl(out / "filings.jsonl")
-    records = corpus.load_corpus(out / "corpus.jsonl")
-    summary = corpus.summarize(records, read_json(out / "manifest.json", {}) or {})
+    paths = _paths(args)
+    out = paths["out"]
+    bucket_order = list(getattr(args, "buckets", BUCKETS) or BUCKETS)
+    candidates = load_candidate_rows(
+        [paths["candidates"]] + _seed_candidate_paths(args), bucket_order
+    )
+    filings = load_filing_rows(_seed_filing_paths(args) + [paths["filings"]])
+    records = corpus.read_jsonl(paths["corpus"])
+    summary = corpus.summarize(
+        records,
+        read_json(paths["manifest"], {}) or {},
+        bucket_order=bucket_order,
+    )
     payload = {
+        "variant": str(getattr(args, "variant", "v1")),
         "out": str(out),
         "candidates": len(candidates),
         "filings_rows": len(filings),
         "texts_available": sum(
-            1 for row in filings if row.get("fetch_status") in ("ok", "fallback") and row.get("text")
+            1 for row in filings.values()
+            if row.get("fetch_status") in ("ok", "fallback") and row.get("text")
         ),
-        "failed": sum(1 for row in filings if row.get("fetch_status") == "failed"),
+        "failed": sum(1 for row in filings.values() if row.get("fetch_status") == "failed"),
         "corpus": {key: summary[key] for key in ("n", "by_category", "by_year", "date_range")},
-        "manifest": str(out / "manifest.json") if (out / "manifest.json").exists() else None,
+        "manifest": str(paths["manifest"]) if paths["manifest"].exists() else None,
     }
     print(json.dumps(payload, ensure_ascii=False, indent=1))
     return payload
@@ -715,8 +964,24 @@ def cmd_status(args: argparse.Namespace) -> dict[str, Any]:
 def _add_common(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--out", default=str(DEFAULT_OUT), help="artefact directory")
     parser.add_argument("--cache", default=str(DEFAULT_CACHE), help="HTTP cache directory")
-    parser.add_argument("--start", default=START, help="corpus start date (inclusive)")
-    parser.add_argument("--end", default=END, help="corpus end date (inclusive)")
+    parser.add_argument(
+        "--variant", default="v1", choices=("v1", "v2"),
+        help="v1 = 7 buckets / quarterly / 2019-2026 / corpus.jsonl; "
+             "v2 = 16 buckets / half-year / 2015-2026 / corpus_v2.jsonl",
+    )
+    parser.add_argument("--start", default=None, help="corpus start date (variant default)")
+    parser.add_argument("--end", default=None, help="corpus end date (variant default)")
+    parser.add_argument("--window", default=None, choices=("quarter", "half"),
+                        help="date window granularity (variant default)")
+    parser.add_argument("--suffix", default=None, help="state-file suffix (variant default)")
+    parser.add_argument("--corpus-name", default=None, help="output corpus file name")
+    parser.add_argument("--manifest-name", default=None, help="output manifest file name")
+    parser.add_argument("--seed-filings", nargs="*", default=None,
+                        help="extra filings.jsonl files whose rows count as already fetched")
+    parser.add_argument("--seed-candidates", nargs="*", default=None,
+                        help="extra candidates.jsonl files to union in (v2 merges v1 candidates)")
+    parser.add_argument("--max-failure-rate", type=float, default=MAX_FAILURE_RATE,
+                        help="stop when the fetch failure rate exceeds this (default 0.10)")
     parser.add_argument("--min-interval", type=float, default=0.125,
                         help="seconds between requests (default 0.125 = 8 req/s)")
     parser.add_argument("--timeout", type=float, default=45.0)
@@ -728,15 +993,15 @@ def _add_common(parser: argparse.ArgumentParser) -> None:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="build_corpus.py",
-        description="Build the EDGAR 8-K catalyst corpus (2019-2026).",
+        description="Build the EDGAR 8-K catalyst corpus (v1: 2019-2026, v2: 2015-2026).",
     )
     sub = parser.add_subparsers(dest="command", required=True)
 
-    search = sub.add_parser("search", help="query EDGAR FTS -> candidates.jsonl")
+    search = sub.add_parser("search", help="query EDGAR FTS -> candidates*.jsonl")
     _add_common(search)
     search.add_argument("--hits", type=int, default=HITS_PER_QUERY)
 
-    fetch = sub.add_parser("fetch", help="download filing texts -> filings.jsonl")
+    fetch = sub.add_parser("fetch", help="download filing texts -> filings*.jsonl")
     _add_common(fetch)
     fetch.add_argument("--limit", type=int, default=DEFAULT_LIMIT,
                        help="fetch at most N new texts this run (0 = all)")
@@ -746,7 +1011,7 @@ def build_parser() -> argparse.ArgumentParser:
                        help="re-fetch accessions whose stored text is suspiciously short "
                             "(e.g. an 8-K cover page instead of the press release)")
 
-    build = sub.add_parser("build", help="join + classify -> corpus.jsonl + manifest.json")
+    build = sub.add_parser("build", help="join + classify -> corpus*.jsonl + manifest*.json")
     _add_common(build)
 
     status = sub.add_parser("status", help="show crawl/corpus state")
@@ -763,18 +1028,26 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    _variant_defaults(args)
     if args.command == "search":
         cmd_search(args)
-    elif args.command == "fetch":
-        cmd_fetch(args)
-    elif args.command == "build":
-        cmd_build(args)
-    elif args.command == "status":
+        return 0
+    if args.command == "fetch":
+        summary = cmd_fetch(args)
+        return 2 if summary.get("status") == "failure_rate_exceeded" else 0
+    if args.command == "build":
+        summary = cmd_build(args)
+        return 2 if summary.get("status") == "failure_rate_exceeded" else 0
+    if args.command == "status":
         cmd_status(args)
-    elif args.command == "all":
+        return 0
+    if args.command == "all":
         cmd_search(args)
-        cmd_fetch(args)
-        cmd_build(args)
+        fetch_summary = cmd_fetch(args)
+        if fetch_summary.get("status") == "failure_rate_exceeded":
+            return 2
+        build_summary = cmd_build(args)
+        return 2 if build_summary.get("status") == "failure_rate_exceeded" else 0
     return 0
 
 
