@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="MedRadar report.py">
+<meta name="description" content="MedRadar：FDA 器械与药品产业方向雷达，中文看板与研究报告。">
+<title>MedRadar · 器械与药品产业方向雷达</title>
+<style>
+:root{--bg:#f5f6f8;--panel:#fff;--ink:#17202a;--muted:#65707d;--line:#e2e6eb;--line-strong:#cbd3dc;
+--accent:#1f4e79;--accent-soft:#eaf1f8;--teal:#0f766e;--amber:#b45309;--red:#b91c1c;--green:#15803d}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+header.top{background:#fff;color:var(--ink);padding:22px 0 16px;border-bottom:3px solid var(--accent)}
+.brandline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.mark{font-size:24px;font-weight:700;letter-spacing:.5px;color:var(--accent)}
+.mark .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#0f766e;margin-left:6px;vertical-align:middle}
+.sub{font-size:14px;color:var(--muted)}
+.tagline{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.statusbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding:9px 14px;border-radius:8px;
+font-size:13.5px;border:1px solid var(--line);background:#f8fafc}
+.statusbar .dot{width:9px;height:9px;border-radius:50%;background:#94a3b8}
+.statusbar.green .dot{background:#15803d}
+.statusbar.amber .dot{background:#b45309}
+.statusbar.red .dot{background:#b91c1c}
+.statusbar .detail{color:var(--muted)}
+.statusbar .warnchip{display:inline-block;padding:1px 8px;border-radius:999px;background:#fdf1f1;color:#9f1239;
+border:1px solid #f3c6c6;font-size:12px}
+.num,.kpi .value,.stat .v{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+font-variant-numeric:tabular-nums}
+td.num,th.num,.kpi .value,.stat .v{letter-spacing:-.2px}
+main{padding:22px 0 8px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.kpi .label{font-size:12px;color:var(--muted);letter-spacing:.4px}
+.kpi .value{font-size:22px;font-weight:650;margin-top:4px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.kpi .value.small{font-size:16px;line-height:1.4}
+.kpi .hint{font-size:12px;color:var(--muted);margin-top:4px}
+.toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);
+border-radius:10px;padding:10px 14px;margin:0 0 18px;position:sticky;top:0;z-index:5}
+.toolbar label{font-size:12.5px;color:var(--muted)}
+.toolbar input[type=search]{flex:1 1 240px;min-width:180px;border:1px solid var(--line-strong);border-radius:6px;padding:7px 10px;
+font-size:13.5px;font-family:inherit;background:#fff;color:var(--ink)}
+.toolbar input[type=search]:focus{outline:2px solid #b9cfe4;outline-offset:1px}
+.toolbar .check{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink);white-space:nowrap}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin:0 0 18px}
+.panel>h2{margin:0 0 12px;font-size:17px;letter-spacing:.3px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.panel>h3{margin:16px 0 8px;font-size:14.5px}
+.note{color:var(--muted);font-size:13px;margin:0 0 10px}
+.lead{font-size:14px;margin:0 0 12px;color:#2b3947}
+code{background:#eef2f6;color:#1f3a52;padding:1px 4px;border-radius:3px;font-size:12.5px;
+font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+ol.conclusions{margin:0;padding-left:22px}
+ol.conclusions li{margin:0 0 7px}
+.callout{border-left:4px solid var(--amber);background:#fdf8ee;padding:10px 14px;border-radius:0 6px 6px 0;font-size:13.5px;margin:0 0 12px}
+.callout.danger{border-left-color:var(--red);background:#fdf1f1}
+.callout.ok{border-left-color:var(--green);background:#f0f8f2}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}
+th,td{padding:6px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;vertical-align:top}
+th{background:#eef2f6;color:#33424f;font-weight:600;position:sticky;top:0;z-index:1}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#fafbfc}
+th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+td.name{font-weight:560}
+.trend.up{color:var(--teal);font-weight:600}
+.trend.down{color:var(--amber);font-weight:600}
+.trend.flat{color:var(--muted)}
+.empty{color:var(--muted);font-size:13.5px;margin:6px 0}
+.chart{display:block;width:100%;height:auto;overflow:visible}
+.chart text{font-family:inherit;fill:#3f4c59;font-size:12px}
+.chart .axis-title{fill:var(--muted);font-size:12px}
+.chart .axis-note{fill:var(--muted);font-size:11px}
+.chart .tick{fill:#33424f;font-size:12.5px}
+.chart .val{fill:#17202a;font-size:12px;font-weight:600}
+.chart .baseline{stroke:#94a3b8;stroke-width:1;stroke-dasharray:3 3}
+.chart .grid{stroke:#e7ebef;stroke-width:1}
+.chart .equity-line{stroke:#1f4e79;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chart .dot{fill:#fff;stroke:#1f4e79;stroke-width:2}
+.chartlegend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:8px}
+.chartlegend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.statgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.stat{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fbfcfd}
+.stat .k{font-size:12px;color:var(--muted)}
+.stat .v{font-size:18px;font-weight:650;font-variant-numeric:tabular-nums}
+footer{border-top:1px solid var(--line);background:#fff;margin-top:10px;padding:22px 0 28px;color:var(--muted);font-size:12.5px}
+footer p{margin:0 0 6px}
+footer .disclaimer{color:#4b5563}
+@media (max-width:1020px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){
+.wrap{padding:0 12px}
+.kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.kpi{padding:11px 12px}
+.kpi .value{font-size:19px}
+.panel{padding:14px 13px}
+.statgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.mark{font-size:20px}
+.toolbar{position:static}
+table{min-width:680px}
+}
+@media print{header.top{background:#fff;color:#111}.toolbar{display:none}.panel{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header class="top">
+<div class="wrap">
+<div class="brandline"><span class="mark">MedRadar<span class="dot"></span></span><span class="sub">FDA 器械与药品产业方向雷达 · 中文看板</span></div>
+<div class="statusbar amber"><span class="dot"></span><strong>数据状态：部分可用</strong><span class="detail">NMPA 注册证或价格数据未加载，相关章节标注为不可用</span><span class="warnchip">中国空白度不可用（NMPA 数据未加载）</span></div>
+<p class="tagline">统计窗口 2024-11-01 至 2026-10-31（8 个季度） ｜ 生成时间 2026-10-31T02:10:00Z（UTC） ｜ 全部数字来自 metrics.json</p>
+</div>
+</header>
+<main class="wrap">
+<div class="kpis"><div class="kpi"><div class="label">事件总数</div><div class="value">1,302 件</div><div class="hint">统计窗口内全部事件</div></div><div class="kpi"><div class="label">热度最高赛道</div><div class="value small">电生理与脉冲场消融</div><div class="hint">THI 4.8 · 升温</div></div><div class="kpi"><div class="label">赛道数量</div><div class="value">6 个</div><div class="hint">其中 4 个升温</div></div><div class="kpi"><div class="label">大厂动量中位数</div><div class="value">1.25</div><div class="hint">5 家已匹配公司</div></div><div class="kpi"><div class="label">近 90 天首次出现</div><div class="value">4 条</div><div class="hint">首次见到的产品 / 公司</div></div><div class="kpi"><div class="label">信号数</div><div class="value">8 条</div><div class="hint">喂给模拟盘的事件信号</div></div><div class="kpi"><div class="label">模拟盘区间收益</div><div class="value small">+8.3%</div><div class="hint">研究口径，仅做多</div></div><div class="kpi"><div class="label">中国空白度</div><div class="value small">不可用</div><div class="hint">NMPA 数据未加载，不作推断</div></div></div>
+<div class="toolbar">
+<label for="q">表格筛选</label>
+<input id="q" type="search" placeholder="输入公司 / 赛道 / 产品码 / 关键词…" autocomplete="off">
+<label class="check"><input id="uponly" type="checkbox"> 仅看升温赛道</label>
+</div>
+<section class="panel" id="conclusions"><h2>本期结论</h2><ol class="conclusions"><li>热度加速：电生理与脉冲场消融 THI 4.8（P(高于基线) 99.7%），窗口内 42 件。</li><li>热度加速：手术机器人 THI 2.77（P(高于基线) 97.8%），窗口内 31 件。</li><li>热度加速：连续血糖监测 THI 1.78（P(高于基线) 91.0%），窗口内 27 件。</li><li>大厂异动：直觉外科 THI 1.88，窗口内 9 件，近 12 个月新增 1 个产品码。</li><li>大厂异动：波士顿科学 THI 1.53，窗口内 11 件，近 12 个月新增 2 个产品码。</li></ol></section><section class="panel" id="status"><h2>数据状态</h2><div class="callout danger"><strong>中国侧数据警告：</strong>NMPA 数据不可用（NMPA 数据未加载），中国空白度不计算、不推断。</div><h3>数据源状态</h3><div class="tablewrap"><table><thead><tr><th>数据源</th><th>状态</th></tr></thead><tbody><tr><td class="name">器械（openFDA 510(k)/PMA/召回）</td><td>可用</td></tr><tr><td class="name">药品（openFDA Drugs@FDA）</td><td>可用</td></tr><tr><td class="name">临床试验（ClinicalTrials.gov）</td><td>可用</td></tr><tr><td class="name">中国 NMPA 注册证</td><td>不可用（NMPA 数据未加载）</td></tr><tr><td class="name">美股价格（Yahoo）</td><td>部分可用（部分股票缺失）</td></tr></tbody></table></div><h3>运行元信息</h3><div class="tablewrap"><table><thead><tr><th>项目</th><th>值</th></tr></thead><tbody><tr><td>生成时间（UTC）</td><td>2026-10-31T02:10:00Z</td></tr><tr><td>统计窗口</td><td>2024-11-01 至 2026-10-31（8 个季度）</td></tr><tr><td>基线窗口</td><td>2021-11-01 至 2024-10-31（20 个季度）</td></tr><tr><td>事件总数</td><td>1,302 件</td></tr><tr><td>事件构成</td><td>510(k) 清关 812、PMA 批准 95、器械召回 41、药品批准 118、临床试验启动 236、NMPA 注册 0</td></tr><tr><td>事实库</td><td>data/medradar.sqlite</td></tr></tbody></table></div></section><section class="panel" id="tracks"><h2>赛道热度榜</h2><p class="note">SVG 热力条由 Python 在构建时生成；表格可横向滚动。</p><p class="lead">按 THI（Gamma-Poisson 收缩后的近期速率 / 基线速率）排序，共 6 个赛道。区间整体高于 1.0 才算真正的升温；区间跨过 1.0 时只视为「方向不明确」。</p><svg class="chart" viewBox="0 0 920 248" role="img" aria-label="赛道热度条"><text class="axis-title" x="0" y="14">THI 相对热度（1.0 = 基线水平）</text><text class="axis-note" x="920" y="14" text-anchor="end">条长 = THI；文字 = THI 与 P(高于基线)</text><text class="tick" x="0" y="42">电生理与脉冲场消融</text><rect class="bar" x="258" y="31" width="280.0" height="15" rx="2" fill="#0f766e"/><line class="baseline" x1="316.3" y1="28" x2="316.3" y2="49" /><text class="val" x="546.0" y="42">THI 4.8　P 99.7%</text><text class="tick" x="0" y="76">手术机器人</text><rect class="bar" x="258" y="65" width="161.6" height="15" rx="2" fill="#0f766e"/><line class="baseline" x1="316.3" y1="62" x2="316.3" y2="83" /><text class="val" x="427.6" y="76">THI 2.77　P 97.8%</text><text class="tick" x="0" y="110">连续血糖监测</text><rect class="bar" x="258" y="99" width="103.8" height="15" rx="2" fill="#0f766e"/><line class="baseline" x1="316.3" y1="96" x2="316.3" y2="117" /><text class="val" x="369.8" y="110">THI 1.78　P 91.0%</text><text class="tick" x="0" y="144">结构性心脏病</text><rect class="bar" x="258" y="133" width="72.9" height="15" rx="2" fill="#0f766e"/><line class="baseline" x1="316.3" y1="130" x2="316.3" y2="151" /><text class="val" x="338.9" y="144">THI 1.25　P 74.0%</text><text class="tick" x="0" y="178">脊柱与骨科</text><rect class="bar" x="258" y="167" width="60.7" height="15" rx="2" fill="#64748b"/><line class="baseline" x1="316.3" y1="164" x2="316.3" y2="185" /><text class="val" x="326.7" y="178">THI 1.04　P 55.0%</text><text class="tick" x="0" y="212">影像与诊断</text><rect class="bar" x="258" y="201" width="44.9" height="15" rx="2" fill="#b45309"/><line class="baseline" x1="316.3" y1="198" x2="316.3" y2="219" /><text class="val" x="310.9" y="212">THI 0.77　P 21.0%</text></svg><div class="chartlegend"><span><i style="background:#0f766e"></i>升温</span><span><i style="background:#64748b"></i>平稳</span><span><i style="background:#b45309"></i>降温</span><span>虚线 = THI 1.0 基线</span></div><div class="tablewrap"><table data-filterable="1"><thead><tr><th class="num">#</th><th>赛道</th><th class="num">THI</th><th class="num">95% 区间</th><th class="num">P(高于基线)</th><th class="num">窗口事件</th><th class="num">近期/季</th><th class="num">基线/季</th><th class="num">大厂占比</th><th class="num">新进入(12月)</th><th class="num">近12月召回</th><th>趋势</th></tr></thead><tbody><tr data-trend="升温"><td>1</td><td class="name">电生理与脉冲场消融</td><td>4.8</td><td>[3.1, 6.9]</td><td>99.7%</td><td>42</td><td>5.25</td><td>1.10</td><td>55%</td><td>7</td><td>1</td><td class="trend up">升温</td></tr><tr data-trend="升温"><td>2</td><td class="name">手术机器人</td><td>2.77</td><td>[1.9, 3.9]</td><td>97.8%</td><td>31</td><td>3.88</td><td>1.40</td><td>62%</td><td>4</td><td>2</td><td class="trend up">升温</td></tr><tr data-trend="升温"><td>3</td><td class="name">连续血糖监测</td><td>1.78</td><td>[1.2, 2.5]</td><td>91.0%</td><td>27</td><td>3.38</td><td>1.90</td><td>48%</td><td>3</td><td>1</td><td class="trend up">升温</td></tr><tr data-trend="升温"><td>4</td><td class="name">结构性心脏病</td><td>1.25</td><td>[0.95, 1.6]</td><td>74.0%</td><td>36</td><td>4.50</td><td>3.60</td><td>71%</td><td>2</td><td>3</td><td class="trend up">升温</td></tr><tr data-trend="平稳"><td>5</td><td class="name">脊柱与骨科</td><td>1.04</td><td>[0.85, 1.28]</td><td>55.0%</td><td>44</td><td>5.50</td><td>5.30</td><td>66%</td><td>1</td><td>4</td><td class="trend flat">平稳</td></tr><tr data-trend="降温"><td>6</td><td class="name">影像与诊断</td><td>0.77</td><td>[0.55, 0.98]</td><td>21.0%</td><td>19</td><td>2.38</td><td>3.10</td><td>58%</td><td>0</td><td>2</td><td class="trend down">降温</td></tr></tbody></table></div></section><section class="panel" id="companies"><h2>大厂动量</h2><div class="tablewrap"><table data-filterable="1"><thead><tr><th>公司</th><th>代码</th><th class="num">THI</th><th class="num">P(高于基线)</th><th class="num">窗口事件</th><th class="num">近期/季</th><th class="num">基线/季</th><th class="num">12月新产品码</th><th class="num">近12月召回</th><th>主赛道</th></tr></thead><tbody><tr><td class="name">直觉外科</td><td>ISRG</td><td>1.88</td><td>93.0%</td><td>9</td><td>1.13</td><td>0.60</td><td>1</td><td>0</td><td>手术机器人 71%</td></tr><tr><td class="name">波士顿科学</td><td>BSX</td><td>1.53</td><td>81.0%</td><td>11</td><td>1.38</td><td>0.90</td><td>2</td><td>0</td><td>电生理与脉冲场消融 46%、结构性心脏病 20%</td></tr><tr><td class="name">雅培</td><td>ABT</td><td>1.25</td><td>70.0%</td><td>14</td><td>1.75</td><td>1.40</td><td>2</td><td>1</td><td>连续血糖监测 41%、cardiac_rhythm 20%</td></tr><tr><td class="name">美敦力</td><td>MDT</td><td>1.1</td><td>58.0%</td><td>18</td><td>2.25</td><td>2.05</td><td>3</td><td>2</td><td>脊柱与骨科 22%、cardiac_rhythm 18%</td></tr><tr><td class="name">飞利浦</td><td>PHG</td><td>0.83</td><td>27.0%</td><td>12</td><td>1.50</td><td>1.80</td><td>1</td><td>3</td><td>影像与诊断 34%</td></tr></tbody></table></div></section><section class="panel" id="migration"><h2>结构迁移</h2><p class="note">Δ 为赛道占比变化（百分点）；JS 为组合结构的 Jensen-Shannon 距离，用于区分「真正换方向」与「总量波动」。</p><div class="tablewrap"><table data-filterable="1"><thead><tr><th>公司</th><th>赛道</th><th class="num">窗口占比</th><th class="num">基线占比</th><th class="num">Δ</th><th class="num">JS 距离</th><th>方向</th></tr></thead><tbody><tr><td class="name">直觉外科</td><td>手术机器人</td><td>35%</td><td>12%</td><td>+23.0 个百分点</td><td>0.110</td><td>向该赛道倾斜</td></tr><tr><td class="name">飞利浦</td><td>影像与诊断</td><td>31%</td><td>52%</td><td>-21.0 个百分点</td><td>暂无数据</td><td>撤出该赛道</td></tr><tr><td class="name">波士顿科学</td><td>电生理与脉冲场消融</td><td>46%</td><td>28%</td><td>+18.0 个百分点</td><td>0.080</td><td>向该赛道倾斜</td></tr></tbody></table></div></section><section class="panel" id="firstseen"><h2>首次出现（近 90 天）</h2><div class="tablewrap"><table data-filterable="1"><thead><tr><th>日期</th><th>公司</th><th>中文赛道</th><th>产品码</th><th>器械 / 产品名</th><th>标题</th></tr></thead><tbody><tr><td>2026-10-20</td><td class="name">美敦力</td><td>电生理与脉冲场消融</td><td>OAD</td><td>Pulsed Field Ablation System</td><td>Pulsed field ablation platform with contact force s…</td></tr><tr><td>2026-10-14</td><td class="name">直觉外科</td><td>手术机器人</td><td>N/A</td><td>da Vinci 6 Surgical System</td><td>Robotic surgical system, single-port instrument arm</td></tr><tr><td>2026-09-28</td><td class="name">雅培</td><td>连续血糖监测</td><td>QPA</td><td>Glucose Monitoring Sensor</td><td>14-day continuous glucose monitoring sensor</td></tr><tr><td>2026-08-30</td><td class="name">波士顿科学</td><td>结构性心脏病</td><td>NPT</td><td>Transcatheter Valve Delivery Set</td><td>Transcatheter heart valve delivery system update</td></tr></tbody></table></div></section><section class="panel" id="recalls"><h2>召回与风险</h2><div class="tablewrap"><table data-filterable="1"><thead><tr><th>公司</th><th class="num">窗口内召回</th><th class="num">基线/季</th><th>主要原因</th></tr></thead><tbody><tr><td class="name">飞利浦</td><td>3</td><td>0.50</td><td>Software</td></tr><tr><td class="name">脊柱前沿</td><td>2</td><td>0.30</td><td>Labeling</td></tr><tr><td class="name">美敦力</td><td>2</td><td>1.20</td><td>Battery / power</td></tr></tbody></table></div><p class="note">赛道维度召回：电生理与脉冲场消融（1 次）、手术机器人（2 次）、连续血糖监测（1 次）、结构性心脏病（3 次）、脊柱与骨科（4 次）、影像与诊断（2 次）</p></section><section class="panel" id="drug"><h2>药品侧</h2><h3>NDA/BLA 批准动量</h3><div class="tablewrap"><table data-filterable="1"><thead><tr><th>公司</th><th>代码</th><th class="num">批准数</th><th class="num">近期/季</th><th class="num">基线/季</th><th class="num">THI</th><th class="num">P(高于基线)</th><th class="num">新分子实体</th></tr></thead><tbody><tr><td class="name">礼来</td><td>LLY</td><td>5</td><td>0.63</td><td>0.40</td><td>1.6</td><td>84.0%</td><td>2</td></tr><tr><td class="name">诺和诺德</td><td>NVO</td><td>4</td><td>0.50</td><td>0.45</td><td>1.11</td><td>56.0%</td><td>1</td></tr><tr><td class="name">默沙东</td><td>MRK</td><td>6</td><td>0.75</td><td>0.80</td><td>0.94</td><td>46.0%</td><td>1</td></tr></tbody></table></div><h3>治疗领域</h3><div class="tablewrap"><table data-filterable="1"><thead><tr><th>领域</th><th class="num">窗口事件</th><th class="num">THI</th><th class="num">P(高于基线)</th><th>趋势</th></tr></thead><tbody><tr><td class="name">心血管代谢（含GLP-1）</td><td>31</td><td>1.9</td><td>95.0%</td><td class="trend up">升温</td></tr><tr><td class="name">肿瘤</td><td>48</td><td>1.18</td><td>70.0%</td><td class="trend up">升温</td></tr><tr><td class="name">神经科学</td><td>17</td><td>0.88</td><td>30.0%</td><td class="trend down">降温</td></tr></tbody></table></div><h3>临床试验启动</h3><div class="tablewrap"><table data-filterable="1"><thead><tr><th>公司</th><th class="num">启动数</th><th class="num">近期/季</th><th class="num">基线/季</th><th class="num">THI</th><th>阶段结构</th></tr></thead><tbody><tr><td class="name">诺和诺德</td><td>19</td><td>2.38</td><td>1.60</td><td>1.49</td><td>1 期 25%、2 期 35%、3 期 40%</td></tr><tr><td class="name">礼来</td><td>24</td><td>3.00</td><td>2.10</td><td>1.4</td><td>1 期 40%、2 期 30%、3 期 30%</td></tr><tr><td class="name">默沙东</td><td>21</td><td>2.63</td><td>2.70</td><td>0.97</td><td>1 期 30%、2 期 40%、3 期 30%</td></tr></tbody></table></div></section><section class="panel" id="cn-gap"><h2>中国空白度</h2><div class="callout danger"><strong>中国空白度：不可用（NMPA 数据未加载）。</strong> NMPA 注册证数据缺失时 cn_count / cn_share 为 null，本页<b>不以 0 代替</b>，不计算也不解读 gap_index；下表仅保留美国侧事件作为方向参考。</div><div class="tablewrap"><table data-filterable="1"><thead><tr><th>赛道</th><th class="num">美国近 24 月事件</th><th class="num">美国占比</th><th class="num">中国注册证</th><th class="num">中国占比</th><th class="num">空白指数</th><th>数据状态</th></tr></thead><tbody><tr><td class="name">电生理与脉冲场消融</td><td>42</td><td>19.8%</td><td>不可用</td><td>不可用</td><td>不可用</td><td>不可用（NMPA 数据未加载）</td></tr><tr><td class="name">结构性心脏病</td><td>36</td><td>17.0%</td><td>不可用</td><td>不可用</td><td>不可用</td><td>不可用（NMPA 数据未加载）</td></tr><tr><td class="name">手术机器人</td><td>31</td><td>14.6%</td><td>不可用</td><td>不可用</td><td>不可用</td><td>不可用（NMPA 数据未加载）</td></tr><tr><td class="name">连续血糖监测</td><td>27</td><td>12.7%</td><td>12</td><td>4.1%</td><td>+8.6 个百分点</td><td>已加载</td></tr><tr><td class="name">影像与诊断</td><td>19</td><td>9.0%</td><td>8</td><td>2.7%</td><td>+6.3 个百分点</td><td>示例数据（demo）</td></tr></tbody></table></div><p class="note">demo 行为示例数据，仅用于验证管线，不代表真实 NMPA 注册证。</p></section><section class="panel" id="signals"><h2>信号与模拟盘</h2><div class="tablewrap"><table data-filterable="1"><thead><tr><th>信号日期</th><th>公司</th><th>代码</th><th>类型</th><th>方向</th><th class="num">置信度</th><th>赛道</th><th>理由</th></tr></thead><tbody><tr><td>2026-10-21</td><td class="name">美敦力</td><td>MDT</td><td>新赛道进入</td><td>做多</td><td>0.72</td><td>电生理与脉冲场消融</td><td>首次进入脉冲场消融赛道</td></tr><tr><td>2026-10-15</td><td class="name">直觉外科</td><td>ISRG</td><td>新产品码</td><td>做多</td><td>0.64</td><td>手术机器人</td><td>新产品码首次出现</td></tr><tr><td>2026-10-18</td><td class="name">飞利浦</td><td>PHG</td><td>召回聚集</td><td>做空</td><td>0.58</td><td>影像与诊断</td><td>软件相关召回聚集</td></tr><tr><td>2026-10-02</td><td class="name">礼来</td><td>LLY</td><td>药品批准</td><td>做多</td><td>0.81</td><td>心血管代谢（含GLP-1）</td><td>新分子实体批准</td></tr><tr><td>2026-09-25</td><td class="name">诺和诺德</td><td>NVO</td><td>试验启动</td><td>做多</td><td>0.55</td><td>心血管代谢（含GLP-1）</td><td>3 期试验启动</td></tr><tr><td>2026-09-12</td><td class="name">雅培</td><td>ABT</td><td>新产品码</td><td>做多</td><td>0.60</td><td>连续血糖监测</td><td>传感器产品码扩容</td></tr><tr><td>2026-08-30</td><td class="name">波士顿科学</td><td>BSX</td><td>新赛道进入</td><td>做多</td><td>0.66</td><td>结构性心脏病</td><td>结构性心脏病赛道扩张</td></tr><tr><td>2026-08-20</td><td class="name">默沙东</td><td>MRK</td><td>试验启动</td><td>做多</td><td>0.50</td><td>肿瘤</td><td>肿瘤管线试验启动</td></tr></tbody></table></div><h3>模拟盘净值</h3><div class="statgrid"><div class="stat"><div class="k">区间总收益</div><div class="v">+8.3%</div></div><div class="stat"><div class="k">最大回撤</div><div class="v">-6.1%</div></div><div class="stat"><div class="k">胜率</div><div class="v">57.1%</div></div><div class="stat"><div class="k">交易笔数</div><div class="v">21</div></div><div class="stat"><div class="k">平均持有收益</div><div class="v">+1.7%</div></div><div class="stat"><div class="k">期末净值</div><div class="v">108,340</div></div></div><svg class="chart" viewBox="0 0 920 280" role="img" aria-label="模拟盘净值曲线"><defs><linearGradient id="equity-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1f4e79" stop-opacity="0.22"/><stop offset="100%" stop-color="#1f4e79" stop-opacity="0.02"/></linearGradient></defs><line class="grid" x1="76" y1="22.0" x2="896" y2="22.0"/><text class="axis-note" x="66" y="26.0" text-anchor="end">108,340</text><line class="grid" x1="76" y1="75.5" x2="896" y2="75.5"/><text class="axis-note" x="66" y="79.5" text-anchor="end">106,255</text><line class="grid" x1="76" y1="129.0" x2="896" y2="129.0"/><text class="axis-note" x="66" y="133.0" text-anchor="end">104,170</text><line class="grid" x1="76" y1="182.5" x2="896" y2="182.5"/><text class="axis-note" x="66" y="186.5" text-anchor="end">102,085</text><line class="grid" x1="76" y1="236.0" x2="896" y2="236.0"/><text class="axis-note" x="66" y="240.0" text-anchor="end">100,000</text><path d="M 76.0,236.0 L 76.0,236.0 L 115.0,214.4 L 154.1,205.0 L 193.1,225.2 L 232.2,183.4 L 271.2,149.3 L 310.3,161.3 L 349.3,126.7 L 388.4,144.4 L 427.4,104.6 L 466.5,123.6 L 505.5,75.9 L 544.6,106.2 L 583.6,133.9 L 622.7,165.2 L 661.7,147.7 L 700.8,112.3 L 739.8,78.2 L 778.9,99.2 L 817.9,55.9 L 857.0,31.2 L 896.0,22.0 L 896.0,236.0 Z" fill="url(#equity-fill)" stroke="none"/><polyline class="equity-line" points="76.0,236.0 115.0,214.4 154.1,205.0 193.1,225.2 232.2,183.4 271.2,149.3 310.3,161.3 349.3,126.7 388.4,144.4 427.4,104.6 466.5,123.6 505.5,75.9 544.6,106.2 583.6,133.9 622.7,165.2 661.7,147.7 700.8,112.3 739.8,78.2 778.9,99.2 817.9,55.9 857.0,31.2 896.0,22.0" fill="none"/><circle class="dot" cx="896.0" cy="22.0" r="3.6"/><text class="val" x="890.0" y="10.0" text-anchor="end">108,340</text><text class="axis-note" x="76" y="268" text-anchor="start">2026-01-05</text><text class="axis-note" x="896" y="268" text-anchor="end">2026-10-30</text></svg><div class="chartlegend"><span><i style="background:#1f4e79"></i>模拟盘净值（美元）</span><span>横轴为交易日，纵轴为组合净值；曲线为研究口径，未建模借券费与并购逼平。</span></div><h3>事件研究：平均超额收益（基准 SPY）</h3><div class="tablewrap"><table data-filterable="1"><thead><tr><th>窗口</th><th class="num">平均 AR</th><th class="num">中位数 AR</th><th class="num">样本</th><th class="num">命中率</th><th class="num">95% CI</th></tr></thead><tbody><tr><td>1 日</td><td>+0.4%</td><td>+0.3%</td><td>8</td><td>62.5%</td><td>[-0.8%, +1.6%]</td></tr><tr><td>5 日</td><td>+0.7%</td><td>+0.6%</td><td>8</td><td>62.5%</td><td>[-1.2%, +2.6%]</td></tr><tr><td>20 日</td><td>+1.4%</td><td>+1.1%</td><td>8</td><td>62.5%</td><td>[-2.6%, +5.4%]</td></tr><tr><td>60 日</td><td>+2.1%</td><td>+1.8%</td><td>6</td><td>66.7%</td><td>[-4.9%, +9.1%]</td></tr></tbody></table></div><h3>按信号类型归因</h3><div class="tablewrap"><table data-filterable="1"><thead><tr><th>类型</th><th>指标</th></tr></thead><tbody><tr><td>新产品码</td><td>笔数 7；胜率 57.1%；平均收益 +2.1%；累计盈亏 $4,410；平均持有 54 天</td></tr><tr><td>新赛道进入</td><td>笔数 5；胜率 60.0%；平均收益 +1.8%；累计盈亏 $2,740；平均持有 51 天</td></tr><tr><td>药品批准</td><td>笔数 4；胜率 50.0%；平均收益 +0.9%；累计盈亏 $960；平均持有 48 天</td></tr><tr><td>试验启动</td><td>笔数 3；胜率 66.7%；平均收益 +0.6%；累计盈亏 $230；平均持有 39 天</td></tr><tr><td>召回聚集</td><td>笔数 2；胜率 50.0%；平均收益 +0.0%；累计盈亏 $0；平均持有 60 天</td></tr></tbody></table></div></section><section class="panel" id="method"><h2>方法与局限</h2><ol class="conclusions"><li><strong>数据延迟 2-12 天。</strong> openFDA 与 ClinicalTrials.gov 都有上报与索引延迟，本期窗口为 2024-11-01 至 2026-10-31（8 个季度），基线为 2021-11-01 至 2024-10-31（20 个季度）；所有速率按 <code>event_date</code>（最早可公开获知日期）计算。</li><li><strong>名称口径漏检。</strong> 公司归属依赖别名模糊匹配，宁可漏检也不误配；未匹配事件保留在事实库中，但不计入公司动量，<code>top_unmatched</code> 需人工复核。</li><li><strong>批准 ≠ 研发投入。</strong> 510(k)/PMA/NDA 只是监管结果，不等于销售额、装机量或研发投入；本报告把它当作公开、可复核的活动代理变量。</li><li><strong>样本量与 Poisson 收缩。</strong> 小样本直接算速率会被单次事件放大，因此 THI 使用 Gamma-Poisson 经验贝叶斯收缩（先验强度取同侪水平），并给出 95% 后验区间与 P(真实速率高于基线)；请把 THI 与区间一起读，区间跨 1.0 时方向不明确。</li><li><strong>赛道映射是人工词典。</strong> 产品码 / 适应症关键词到中文赛道的映射由 <code>config/tracks_*.json</code> 维护，存在跨赛道误分的可能，新增产品码需要人工补充。</li><li><strong>中国侧不做推断。</strong> NMPA 不可用时，中国空白度标记为不可用（NMPA 数据未加载），缺失值保持 null，不以 0 冒充真实空白。</li><li><strong>模拟盘是研究工具。</strong> 只做多、未建模借券费、并购逼平与大额冲击成本，样本量小，不能外推为可交易策略。</li></ol></section>
+</main>
+<footer><div class="wrap"><p><strong>MedRadar</strong> · 开源 FDA 器械与药品产业方向雷达 · 为中国医疗器械从业者与量化学生而做</p><p>本页面完全自包含：内联 CSS、原生 JavaScript 与构建期生成的 SVG，不加载任何外部资源，可离线打开。</p><p>数据来源：美国 FDA openFDA（510(k) / PMA / 召回 / Drugs@FDA）、ClinicalTrials.gov 等公开数据；中国 NMPA 注册证数据可用性以页内标注为准。</p><p class="disclaimer">免责声明：本页面及随附报告仅用于开源研究与技术演示，不构成投资建议、荐股或交易邀约。数据可能存在延迟、遗漏与口径差异，读者应自行核验原始来源。作者不对使用本页内容造成的任何损失负责。</p></div></footer>
+<script>
+(function () {
+  var search = document.getElementById('q');
+  var onlyUp = document.getElementById('uponly');
+  function allRows() {
+    return document.querySelectorAll('table[data-filterable] tbody tr');
+  }
+  function apply() {
+    var needle = search ? search.value.toLowerCase().trim() : '';
+    var up = onlyUp ? onlyUp.checked : false;
+    var rows = allRows();
+    for (var i = 0; i < rows.length; i += 1) {
+      var row = rows[i];
+      var text = (row.textContent || '').toLowerCase();
+      var visible = needle === '' || text.indexOf(needle) !== -1;
+      if (up && row.getAttribute('data-trend') !== 'up') { visible = false; }
+      row.style.display = visible ? '' : 'none';
+    }
+  }
+  if (search) { search.addEventListener('input', apply); }
+  if (onlyUp) { onlyUp.addEventListener('change', apply); }
+})();
+</script>
+</body>
+</html>

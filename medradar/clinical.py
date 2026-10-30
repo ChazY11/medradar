@@ -47,7 +47,7 @@ from .config import (
     load_tracks,
 )
 from .db import DB, make_event_id
-from .util import norm_text, today_utc
+from .util import iso, norm_text, parse_date, today_utc
 
 SOURCE = "ctgov"
 KIND = "trial"
@@ -66,7 +66,6 @@ MAX_REQUESTS = 360
 BUDGET_FLOOR = 12
 
 _ALLOWED_PHASES = {"PHASE1", "PHASE2", "PHASE3", "PHASE4", "NA"}
-_PHASE_EARLY = re.compile(r"^EARLY[ _]?PHASE[ _]?1$")
 _SUFFIXES = {
     "INC",
     "INCORPORATED",
@@ -117,10 +116,10 @@ def normalize_phase(phases: Iterable[Any] | None) -> list[str]:
     """
     result: list[str] = []
     for raw in phases or []:
-        text = re.sub(r"[\s\-]+", "_", str(raw or "").strip().upper())
+        text = re.sub(r"[\s\-_]+", "", str(raw or "").strip().upper())
         if not text:
             continue
-        if _PHASE_EARLY.match(text):
+        if text in ("EARLYPHASE1", "EARLYPHASEI"):
             text = "PHASE1"
         if text not in _ALLOWED_PHASES:
             text = "NA"
@@ -163,15 +162,19 @@ def normalize_study(study: Mapping[str, Any]) -> dict[str, Any] | None:
         return None
 
     status_module = protocol.get("statusModule") or {}
-    first_posted = str(
+    first_posted_raw = str(
         (status_module.get("studyFirstPostDateStruct") or {}).get("date") or ""
     ).strip()
-    if not first_posted:
+    if not first_posted_raw:
         return None
+    # CT.gov sometimes only knows ``YYYY-MM``; normalise to the first of the
+    # month so ``event_date`` is a real ISO date (never a guess beyond that).
+    first_posted = iso(first_posted_raw) or first_posted_raw
 
-    start_date = str(
+    start_raw = str(
         (status_module.get("startDateStruct") or {}).get("date") or ""
     ).strip()
+    start_date = iso(start_raw) or start_raw
     sponsor_module = protocol.get("sponsorCollaboratorsModule") or {}
     lead_sponsor = str(
         (sponsor_module.get("leadSponsor") or {}).get("name") or ""
@@ -393,8 +396,8 @@ def collect_trials(
         if payload is None:
             continue
         interventional += 1
-        posted = payload["first_posted"]
-        if posted < start.isoformat() or posted > end.isoformat():
+        posted = parse_date(payload["first_posted"])
+        if posted is None or posted < start or posted > end:
             continue
         in_window += 1
         candidates += 1

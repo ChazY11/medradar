@@ -1,0 +1,29 @@
+﻿section,key,name_zh,name_en,recent,recent_per_q,baseline_per_q,thi,prob_up,ci_low,ci_high,major_share_recent,major_share_base,new_entrants_12m,recalls_recent,note
+device_track,ep_pfa,电生理与脉冲场消融,Electrophysiology / PFA,42,5.25,1.1,4.8,0.997,3.1,6.9,0.55,0.4,7,1,升温
+device_track,surgical_robotics,手术机器人,Surgical Robotics,31,3.88,1.4,2.77,0.978,1.9,3.9,0.62,0.44,4,2,升温
+device_track,cgm,连续血糖监测,CGM,27,3.38,1.9,1.78,0.91,1.2,2.5,0.48,0.46,3,1,升温
+device_track,structural_heart,结构性心脏病,Structural Heart,36,4.5,3.6,1.25,0.74,0.95,1.6,0.71,0.69,2,3,升温
+device_track,spine,脊柱与骨科,Spine & Orthopedics,44,5.5,5.3,1.04,0.55,0.85,1.28,0.66,0.67,1,4,平稳
+device_track,imaging,影像与诊断,Imaging & Diagnostics,19,2.38,3.1,0.77,0.21,0.55,0.98,0.58,0.6,0,2,降温
+device_company,intuitive_surgical,直觉外科,Intuitive Surgical,9,1.13,0.6,1.88,0.93,1.2,2.7,,,,0,ISRG
+device_company,boston_scientific,波士顿科学,Boston Scientific,11,1.38,0.9,1.53,0.81,0.95,2.2,,,,0,BSX
+device_company,abbott,雅培,Abbott,14,1.75,1.4,1.25,0.7,0.8,1.8,,,,1,ABT
+device_company,medtronic,美敦力,Medtronic,18,2.25,2.05,1.1,0.58,0.7,1.5,,,,2,MDT
+device_company,philips,飞利浦,Philips,12,1.5,1.8,0.83,0.27,0.5,1.2,,,,3,PHG
+device_migration,intuitive_surgical,直觉外科,intuitive_surgical,,,,,,,,,,,,track=手术机器人; delta=0.23; js=0.11
+device_migration,philips,飞利浦,philips,,,,,,,,,,,,track=影像与诊断; delta=-0.21; js=
+device_migration,boston_scientific,波士顿科学,boston_scientific,,,,,,,,,,,,track=电生理与脉冲场消融; delta=0.18; js=0.08
+drug_approval,lilly,礼来,lilly,5,0.63,0.4,1.6,0.84,,,,,,,nme_recent=2
+drug_approval,novo_nordisk,诺和诺德,novo_nordisk,4,0.5,0.45,1.11,0.56,,,,,,,nme_recent=1
+drug_approval,merck,默沙东,merck,6,0.75,0.8,0.94,0.46,,,,,,,nme_recent=1
+drug_area,t_cardiometabolic,心血管代谢（含GLP-1）,,31,,,1.9,0.95,,,,,,,升温
+drug_area,t_oncology,肿瘤,,48,,,1.18,0.7,,,,,,,升温
+drug_area,t_neuro,神经科学,,17,,,0.88,0.3,,,,,,,降温
+drug_trial,novo_nordisk,诺和诺德,novo_nordisk,,2.38,1.6,1.49,,,,,,,,starts_recent=19
+drug_trial,lilly,礼来,lilly,,3,2.1,1.4,,,,,,,,starts_recent=24
+drug_trial,merck,默沙东,merck,,2.63,2.7,0.97,,,,,,,,starts_recent=21
+cn_gap,ep_pfa,电生理与脉冲场消融,,42,,,,,,,,,,,cn_data_status=unavailable; us_share=0.198; cn_count=null; gap_index=null
+cn_gap,structural_heart,结构性心脏病,,36,,,,,,,,,,,cn_data_status=unavailable; us_share=0.17; cn_count=null; gap_index=null
+cn_gap,surgical_robotics,手术机器人,,31,,,,,,,,,,,cn_data_status=unavailable; us_share=0.146; cn_count=null; gap_index=null
+cn_gap,cgm,连续血糖监测,,27,,,,,,,,,,,cn_data_status=loaded; us_share=0.127; cn_count=12; gap_index=0.086
+cn_gap,imaging,影像与诊断,,19,,,,,,,,,,,cn_data_status=demo; us_share=0.09; cn_count=8; gap_index=0.063

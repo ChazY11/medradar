@@ -1,0 +1,642 @@
+{
+  "meta": {
+    "generated_at": "2026-10-31T02:10:00Z",
+    "db": "data/medradar.sqlite",
+    "window": {"start": "2024-11-01", "end": "2026-10-31", "quarters": 8},
+    "baseline": {"start": "2021-11-01", "end": "2024-10-31", "quarters": 20},
+    "counts": {
+      "510k": 812,
+      "pma": 95,
+      "device_recall": 41,
+      "drug_approval": 118,
+      "trial": 236,
+      "nmpa_registration": 0
+    },
+    "data_status": {
+      "device": "ok",
+      "drug": "ok",
+      "trials": "ok",
+      "nmpa": "unavailable",
+      "prices": "partial"
+    },
+    "request_stats": {"requests": 143, "cache_hits": 917}
+  },
+  "device": {
+    "tracks": [
+      {
+        "track_id": "ep_pfa",
+        "name_zh": "电生理与脉冲场消融",
+        "name_en": "Electrophysiology / PFA",
+        "recent": 42,
+        "recent_per_q": 5.25,
+        "baseline_per_q": 1.1,
+        "thi": 4.8,
+        "prob_up": 0.997,
+        "ci": [3.1, 6.9],
+        "major_share_recent": 0.55,
+        "major_share_base": 0.4,
+        "new_entrants_12m": 7,
+        "recalls_recent": 1
+      },
+      {
+        "track_id": "surgical_robotics",
+        "name_zh": "手术机器人",
+        "name_en": "Surgical Robotics",
+        "recent": 31,
+        "recent_per_q": 3.88,
+        "baseline_per_q": 1.4,
+        "thi": 2.77,
+        "prob_up": 0.978,
+        "ci": [1.9, 3.9],
+        "major_share_recent": 0.62,
+        "major_share_base": 0.44,
+        "new_entrants_12m": 4,
+        "recalls_recent": 2
+      },
+      {
+        "track_id": "cgm",
+        "name_zh": "连续血糖监测",
+        "name_en": "CGM",
+        "recent": 27,
+        "recent_per_q": 3.38,
+        "baseline_per_q": 1.9,
+        "thi": 1.78,
+        "prob_up": 0.91,
+        "ci": [1.2, 2.5],
+        "major_share_recent": 0.48,
+        "major_share_base": 0.46,
+        "new_entrants_12m": 3,
+        "recalls_recent": 1
+      },
+      {
+        "track_id": "structural_heart",
+        "name_zh": "结构性心脏病",
+        "name_en": "Structural Heart",
+        "recent": 36,
+        "recent_per_q": 4.5,
+        "baseline_per_q": 3.6,
+        "thi": 1.25,
+        "prob_up": 0.74,
+        "ci": [0.95, 1.6],
+        "major_share_recent": 0.71,
+        "major_share_base": 0.69,
+        "new_entrants_12m": 2,
+        "recalls_recent": 3
+      },
+      {
+        "track_id": "spine",
+        "name_zh": "脊柱与骨科",
+        "name_en": "Spine & Orthopedics",
+        "recent": 44,
+        "recent_per_q": 5.5,
+        "baseline_per_q": 5.3,
+        "thi": 1.04,
+        "prob_up": 0.55,
+        "ci": [0.85, 1.28],
+        "major_share_recent": 0.66,
+        "major_share_base": 0.67,
+        "new_entrants_12m": 1,
+        "recalls_recent": 4
+      },
+      {
+        "track_id": "imaging",
+        "name_zh": "影像与诊断",
+        "name_en": "Imaging & Diagnostics",
+        "recent": 19,
+        "recent_per_q": 2.38,
+        "baseline_per_q": 3.1,
+        "thi": 0.77,
+        "prob_up": 0.21,
+        "ci": [0.55, 0.98],
+        "major_share_recent": 0.58,
+        "major_share_base": 0.6,
+        "new_entrants_12m": 0,
+        "recalls_recent": 2
+      }
+    ],
+    "companies": [
+      {
+        "key": "medtronic",
+        "name_zh": "美敦力",
+        "name_en": "Medtronic",
+        "ticker": "MDT",
+        "recent": 18,
+        "recent_per_q": 2.25,
+        "baseline_per_q": 2.05,
+        "thi": 1.1,
+        "prob_up": 0.58,
+        "ci": [0.7, 1.5],
+        "top_tracks": [["spine", 0.22], ["cardiac_rhythm", 0.18]],
+        "novelty_12m": 3,
+        "recalls_recent": 2
+      },
+      {
+        "key": "intuitive_surgical",
+        "name_zh": "直觉外科",
+        "name_en": "Intuitive Surgical",
+        "ticker": "ISRG",
+        "recent": 9,
+        "recent_per_q": 1.13,
+        "baseline_per_q": 0.6,
+        "thi": 1.88,
+        "prob_up": 0.93,
+        "ci": [1.2, 2.7],
+        "top_tracks": [["surgical_robotics", 0.71]],
+        "novelty_12m": 1,
+        "recalls_recent": 0
+      },
+      {
+        "key": "philips",
+        "name_zh": "飞利浦",
+        "name_en": "Philips",
+        "ticker": "PHG",
+        "recent": 12,
+        "recent_per_q": 1.5,
+        "baseline_per_q": 1.8,
+        "thi": 0.83,
+        "prob_up": 0.27,
+        "ci": [0.5, 1.2],
+        "top_tracks": [["imaging", 0.34]],
+        "novelty_12m": 1,
+        "recalls_recent": 3
+      },
+      {
+        "key": "abbott",
+        "name_zh": "雅培",
+        "name_en": "Abbott",
+        "ticker": "ABT",
+        "recent": 14,
+        "recent_per_q": 1.75,
+        "baseline_per_q": 1.4,
+        "thi": 1.25,
+        "prob_up": 0.7,
+        "ci": [0.8, 1.8],
+        "top_tracks": [["cgm", 0.41], ["cardiac_rhythm", 0.2]],
+        "novelty_12m": 2,
+        "recalls_recent": 1
+      },
+      {
+        "key": "boston_scientific",
+        "name_zh": "波士顿科学",
+        "name_en": "Boston Scientific",
+        "ticker": "BSX",
+        "recent": 11,
+        "recent_per_q": 1.38,
+        "baseline_per_q": 0.9,
+        "thi": 1.53,
+        "prob_up": 0.81,
+        "ci": [0.95, 2.2],
+        "top_tracks": [["ep_pfa", 0.46], ["structural_heart", 0.2]],
+        "novelty_12m": 2,
+        "recalls_recent": 0
+      }
+    ],
+    "migration": [
+      {
+        "key": "intuitive_surgical",
+        "name_zh": "直觉外科",
+        "track_id": "surgical_robotics",
+        "track_zh": "手术机器人",
+        "share_recent": 0.35,
+        "share_base": 0.12,
+        "delta": 0.23,
+        "js": 0.11
+      },
+      {
+        "key": "boston_scientific",
+        "name_zh": "波士顿科学",
+        "track_id": "ep_pfa",
+        "track_zh": "电生理与脉冲场消融",
+        "share_recent": 0.46,
+        "share_base": 0.28,
+        "delta": 0.18,
+        "js": 0.08
+      },
+      {
+        "key": "philips",
+        "name_zh": "飞利浦",
+        "track_id": "imaging",
+        "track_zh": "影像与诊断",
+        "share_recent": 0.31,
+        "share_base": 0.52,
+        "delta": -0.21
+      }
+    ],
+    "firstseen": [
+      {
+        "event_date": "2026-10-20",
+        "key": "medtronic",
+        "name_zh": "美敦力",
+        "track_id": "ep_pfa",
+        "track_zh": "电生理与脉冲场消融",
+        "product_code": "OAD",
+        "device_name": "Pulsed Field Ablation System",
+        "title": "Pulsed field ablation platform with contact force sensing",
+        "event_id": "e1a2b3c4d5"
+      },
+      {
+        "event_date": "2026-10-14",
+        "key": "intuitive_surgical",
+        "name_zh": "直觉外科",
+        "track_id": "surgical_robotics",
+        "track_zh": "手术机器人",
+        "product_code": "N/A",
+        "device_name": "da Vinci 6 Surgical System",
+        "title": "Robotic surgical system, single-port instrument arm",
+        "event_id": "e2b3c4d5e6"
+      },
+      {
+        "event_date": "2026-09-28",
+        "key": "abbott",
+        "name_zh": "雅培",
+        "track_id": "cgm",
+        "track_zh": "连续血糖监测",
+        "product_code": "QPA",
+        "device_name": "Glucose Monitoring Sensor",
+        "title": "14-day continuous glucose monitoring sensor",
+        "event_id": "e3c4d5e6f7"
+      },
+      {
+        "event_date": "2026-08-30",
+        "key": "boston_scientific",
+        "name_zh": "波士顿科学",
+        "track_id": "structural_heart",
+        "track_zh": "结构性心脏病",
+        "product_code": "NPT",
+        "device_name": "Transcatheter Valve Delivery Set",
+        "title": "Transcatheter heart valve delivery system update",
+        "event_id": "e4d5e6f7a8"
+      }
+    ],
+    "recalls": [
+      {"key": "philips", "name_zh": "飞利浦", "recent": 3, "baseline_per_q": 0.5, "reason_top": "Software"},
+      {"key": "spine_frontier", "name_zh": "脊柱前沿", "recent": 2, "baseline_per_q": 0.3, "reason_top": "Labeling"},
+      {"key": "medtronic", "name_zh": "美敦力", "recent": 2, "baseline_per_q": 1.2, "reason_top": "Battery / power"}
+    ]
+  },
+  "drug": {
+    "approvals": [
+      {
+        "key": "lilly",
+        "name_zh": "礼来",
+        "name_en": "Eli Lilly",
+        "ticker": "LLY",
+        "recent": 5,
+        "recent_per_q": 0.63,
+        "baseline_per_q": 0.4,
+        "thi": 1.6,
+        "prob_up": 0.84,
+        "nme_recent": 2
+      },
+      {
+        "key": "novo_nordisk",
+        "name_zh": "诺和诺德",
+        "name_en": "Novo Nordisk",
+        "ticker": "NVO",
+        "recent": 4,
+        "recent_per_q": 0.5,
+        "baseline_per_q": 0.45,
+        "thi": 1.11,
+        "prob_up": 0.56,
+        "nme_recent": 1
+      },
+      {
+        "key": "merck",
+        "name_zh": "默沙东",
+        "name_en": "Merck",
+        "ticker": "MRK",
+        "recent": 6,
+        "recent_per_q": 0.75,
+        "baseline_per_q": 0.8,
+        "thi": 0.94,
+        "prob_up": 0.46,
+        "nme_recent": 1
+      }
+    ],
+    "areas": [
+      {"track_id": "t_cardiometabolic", "name_zh": "心血管代谢（含GLP-1）", "recent": 31, "thi": 1.9, "prob_up": 0.95},
+      {"track_id": "t_oncology", "name_zh": "肿瘤", "recent": 48, "thi": 1.18, "prob_up": 0.7},
+      {"track_id": "t_neuro", "name_zh": "神经科学", "recent": 17, "thi": 0.88, "prob_up": 0.3}
+    ],
+    "trials": [
+      {
+        "key": "lilly",
+        "name_zh": "礼来",
+        "starts_recent": 24,
+        "recent_per_q": 3.0,
+        "baseline_per_q": 2.1,
+        "phase_mix": {"PHASE1": 0.4, "PHASE2": 0.3, "PHASE3": 0.3},
+        "thi": 1.4
+      },
+      {
+        "key": "novo_nordisk",
+        "name_zh": "诺和诺德",
+        "starts_recent": 19,
+        "recent_per_q": 2.38,
+        "baseline_per_q": 1.6,
+        "phase_mix": {"PHASE1": 0.25, "PHASE2": 0.35, "PHASE3": 0.4},
+        "thi": 1.49
+      },
+      {
+        "key": "merck",
+        "name_zh": "默沙东",
+        "starts_recent": 21,
+        "recent_per_q": 2.63,
+        "baseline_per_q": 2.7,
+        "phase_mix": {"PHASE1": 0.3, "PHASE2": 0.4, "PHASE3": 0.3},
+        "thi": 0.97
+      }
+    ]
+  },
+  "cn_gap": [
+    {
+      "track_id": "ep_pfa",
+      "name_zh": "电生理与脉冲场消融",
+      "us_recent": 42,
+      "cn_count": null,
+      "us_share": 0.198,
+      "cn_share": null,
+      "gap_index": null,
+      "cn_data_status": "unavailable"
+    },
+    {
+      "track_id": "surgical_robotics",
+      "name_zh": "手术机器人",
+      "us_recent": 31,
+      "cn_count": null,
+      "us_share": 0.146,
+      "cn_share": null,
+      "gap_index": null,
+      "cn_data_status": "unavailable"
+    },
+    {
+      "track_id": "cgm",
+      "name_zh": "连续血糖监测",
+      "us_recent": 27,
+      "cn_count": 12,
+      "us_share": 0.127,
+      "cn_share": 0.041,
+      "gap_index": 0.086,
+      "cn_data_status": "loaded"
+    },
+    {
+      "track_id": "structural_heart",
+      "name_zh": "结构性心脏病",
+      "us_recent": 36,
+      "cn_count": null,
+      "us_share": 0.17,
+      "cn_share": null,
+      "gap_index": null,
+      "cn_data_status": "unavailable"
+    },
+    {
+      "track_id": "imaging",
+      "name_zh": "影像与诊断",
+      "us_recent": 19,
+      "cn_count": 8,
+      "us_share": 0.09,
+      "cn_share": 0.027,
+      "gap_index": 0.063,
+      "cn_data_status": "demo"
+    }
+  ],
+  "signals": [
+    {
+      "signal_id": "s001",
+      "event_id": "e1a2b3c4d5",
+      "signal_date": "2026-10-21",
+      "company_key": "medtronic",
+      "ticker": "MDT",
+      "name_zh": "美敦力",
+      "kind": "device_new_track",
+      "direction": 1,
+      "score": 0.72,
+      "track_id": "ep_pfa",
+      "reason_zh": "首次进入脉冲场消融赛道"
+    },
+    {
+      "signal_id": "s002",
+      "event_id": "e2b3c4d5e6",
+      "signal_date": "2026-10-15",
+      "company_key": "intuitive_surgical",
+      "ticker": "ISRG",
+      "name_zh": "直觉外科",
+      "kind": "device_novel_code",
+      "direction": 1,
+      "score": 0.64,
+      "track_id": "surgical_robotics",
+      "reason_zh": "新产品码首次出现"
+    },
+    {
+      "signal_id": "s003",
+      "event_id": "e9f8e7d6c5",
+      "signal_date": "2026-10-18",
+      "company_key": "philips",
+      "ticker": "PHG",
+      "name_zh": "飞利浦",
+      "kind": "recall_cluster",
+      "direction": -1,
+      "score": 0.58,
+      "track_id": "imaging",
+      "reason_zh": "软件相关召回聚集"
+    },
+    {
+      "signal_id": "s004",
+      "event_id": "e7a8b9c0d1",
+      "signal_date": "2026-10-02",
+      "company_key": "lilly",
+      "ticker": "LLY",
+      "name_zh": "礼来",
+      "kind": "drug_approval",
+      "direction": 1,
+      "score": 0.81,
+      "track_id": "t_cardiometabolic",
+      "reason_zh": "新分子实体批准"
+    },
+    {
+      "signal_id": "s005",
+      "event_id": "e6b7c8d9e0",
+      "signal_date": "2026-09-25",
+      "company_key": "novo_nordisk",
+      "ticker": "NVO",
+      "name_zh": "诺和诺德",
+      "kind": "trial_start",
+      "direction": 1,
+      "score": 0.55,
+      "track_id": "t_cardiometabolic",
+      "reason_zh": "3 期试验启动"
+    },
+    {
+      "signal_id": "s006",
+      "event_id": "e5c6d7e8f9",
+      "signal_date": "2026-09-12",
+      "company_key": "abbott",
+      "ticker": "ABT",
+      "name_zh": "雅培",
+      "kind": "device_novel_code",
+      "direction": 1,
+      "score": 0.6,
+      "track_id": "cgm",
+      "reason_zh": "传感器产品码扩容"
+    },
+    {
+      "signal_id": "s007",
+      "event_id": "e4d5e6f7a8",
+      "signal_date": "2026-08-30",
+      "company_key": "boston_scientific",
+      "ticker": "BSX",
+      "name_zh": "波士顿科学",
+      "kind": "device_new_track",
+      "direction": 1,
+      "score": 0.66,
+      "track_id": "structural_heart",
+      "reason_zh": "结构性心脏病赛道扩张"
+    },
+    {
+      "signal_id": "s008",
+      "event_id": "e3c4d5e6f7",
+      "signal_date": "2026-08-20",
+      "company_key": "merck",
+      "ticker": "MRK",
+      "name_zh": "默沙东",
+      "kind": "trial_start",
+      "direction": 1,
+      "score": 0.5,
+      "track_id": "t_oncology",
+      "reason_zh": "肿瘤管线试验启动"
+    }
+  ],
+  "alerts": {
+    "accelerating_tracks": [
+      {"track_id": "ep_pfa", "name_zh": "电生理与脉冲场消融", "thi": 4.8, "prob_up": 0.997, "recent": 42},
+      {"track_id": "surgical_robotics", "name_zh": "手术机器人", "thi": 2.77, "prob_up": 0.978, "recent": 31},
+      {"track_id": "cgm", "name_zh": "连续血糖监测", "thi": 1.78, "prob_up": 0.91, "recent": 27}
+    ],
+    "company_movers": [
+      {"key": "intuitive_surgical", "name_zh": "直觉外科", "thi": 1.88, "recent": 9, "novelty_12m": 1},
+      {"key": "boston_scientific", "name_zh": "波士顿科学", "thi": 1.53, "recent": 11, "novelty_12m": 2}
+    ],
+    "new_entries": [
+      {
+        "event_date": "2026-10-20",
+        "event_id": "e1a2b3c4d5",
+        "key": "medtronic",
+        "name_zh": "美敦力",
+        "track_id": "ep_pfa",
+        "track_zh": "电生理与脉冲场消融",
+        "product_code": "OAD",
+        "device_name": "Pulsed Field Ablation System",
+        "title": "Pulsed field ablation platform with contact force sensing"
+      }
+    ],
+    "recall_clusters": [
+      {"key": "philips", "name_zh": "飞利浦", "recent": 3}
+    ],
+    "cn_gap_top": [
+      {
+        "track_id": "ep_pfa",
+        "name_zh": "电生理与脉冲场消融",
+        "us_recent": 42,
+        "us_share": 0.198,
+        "cn_count": null,
+        "cn_share": null,
+        "gap_index": null,
+        "cn_data_status": "unavailable"
+      }
+    ]
+  },
+  "trading": {
+    "status": "ok",
+    "as_of": "2026-10-30",
+    "meta": {
+      "generated_at": "2026-10-31T02:10:00Z",
+      "capital": 100000.0,
+      "signal_kind": "all",
+      "engine": "long_only_v1",
+      "disclaimer_zh": "研究口径，不构成交易建议"
+    },
+    "method": {
+      "version": "long_only_v1",
+      "entry": "next_open",
+      "hold_days": 60,
+      "stop_loss": -0.2,
+      "max_position_pct": 0.05,
+      "max_track_pct": 0.25,
+      "cost_bps": 20,
+      "long_only": true
+    },
+    "summary": {
+      "total_return": 0.0834,
+      "final_equity": 108340.0,
+      "max_drawdown": -0.061,
+      "win_rate": 0.571,
+      "avg_trade_return": 0.0172,
+      "sharpe": 1.12,
+      "n_trades": 21,
+      "trades": 21,
+      "n_signals": 8,
+      "benchmark": "SPY",
+      "start": "2026-01-05",
+      "end": "2026-10-30"
+    },
+    "equity_curve": [
+      {"date": "2026-01-05", "equity": 100000.0, "cash": 100000.0, "exposure": 0.0, "drawdown": 0.0},
+      {"date": "2026-01-20", "equity": 100840.0, "cash": 95400.0, "exposure": 0.054, "drawdown": 0.0},
+      {"date": "2026-02-03", "equity": 101210.0, "cash": 90120.0, "exposure": 0.11, "drawdown": 0.0},
+      {"date": "2026-02-18", "equity": 100420.0, "cash": 89980.0, "exposure": 0.104, "drawdown": -0.0078},
+      {"date": "2026-03-04", "equity": 102050.0, "cash": 84700.0, "exposure": 0.17, "drawdown": 0.0},
+      {"date": "2026-03-19", "equity": 103380.0, "cash": 80100.0, "exposure": 0.225, "drawdown": 0.0},
+      {"date": "2026-04-02", "equity": 102910.0, "cash": 79800.0, "exposure": 0.226, "drawdown": -0.0045},
+      {"date": "2026-04-17", "equity": 104260.0, "cash": 75000.0, "exposure": 0.281, "drawdown": 0.0},
+      {"date": "2026-05-01", "equity": 103570.0, "cash": 74900.0, "exposure": 0.276, "drawdown": -0.0066},
+      {"date": "2026-05-15", "equity": 105120.0, "cash": 70200.0, "exposure": 0.332, "drawdown": 0.0},
+      {"date": "2026-05-29", "equity": 104380.0, "cash": 70100.0, "exposure": 0.327, "drawdown": -0.007},
+      {"date": "2026-06-12", "equity": 106240.0, "cash": 64800.0, "exposure": 0.39, "drawdown": 0.0},
+      {"date": "2026-06-26", "equity": 105060.0, "cash": 64700.0, "exposure": 0.383, "drawdown": -0.0111},
+      {"date": "2026-07-10", "equity": 103980.0, "cash": 64500.0, "exposure": 0.379, "drawdown": -0.0213},
+      {"date": "2026-07-24", "equity": 102760.0, "cash": 64200.0, "exposure": 0.375, "drawdown": -0.0328},
+      {"date": "2026-08-07", "equity": 103440.0, "cash": 59000.0, "exposure": 0.429, "drawdown": -0.0264},
+      {"date": "2026-08-21", "equity": 104820.0, "cash": 54300.0, "exposure": 0.482, "drawdown": -0.0134},
+      {"date": "2026-09-04", "equity": 106150.0, "cash": 49700.0, "exposure": 0.532, "drawdown": 0.0},
+      {"date": "2026-09-18", "equity": 105330.0, "cash": 49600.0, "exposure": 0.529, "drawdown": -0.0077},
+      {"date": "2026-10-02", "equity": 107020.0, "cash": 44900.0, "exposure": 0.58, "drawdown": 0.0},
+      {"date": "2026-10-16", "equity": 107980.0, "cash": 44800.0, "exposure": 0.585, "drawdown": 0.0},
+      {"date": "2026-10-30", "equity": 108340.0, "cash": 44700.0, "exposure": 0.587, "drawdown": 0.0}
+    ],
+    "by_kind": {
+      "device_novel_code": {"n_trades": 7, "win_rate": 0.571, "mean_return": 0.021, "total_pnl": 4410.0, "mean_holding_days": 54.1},
+      "device_new_track": {"n_trades": 5, "win_rate": 0.6, "mean_return": 0.018, "total_pnl": 2740.0, "mean_holding_days": 51.3},
+      "drug_approval": {"n_trades": 4, "win_rate": 0.5, "mean_return": 0.009, "total_pnl": 960.0, "mean_holding_days": 47.8},
+      "trial_start": {"n_trades": 3, "win_rate": 0.667, "mean_return": 0.006, "total_pnl": 230.0, "mean_holding_days": 39.0},
+      "recall_cluster": {"n_trades": 2, "win_rate": 0.5, "mean_return": 0.0, "total_pnl": 0.0, "mean_holding_days": 60.0}
+    },
+    "attribution": [
+      {"kind": "device_novel_code", "trades": 7, "avg_return": 0.021, "total_pnl": 4410.0},
+      {"kind": "device_new_track", "trades": 5, "avg_return": 0.018, "total_pnl": 2740.0},
+      {"kind": "drug_approval", "trades": 4, "avg_return": 0.009, "total_pnl": 960.0}
+    ],
+    "event_study": {
+      "benchmark": "SPY",
+      "horizons": {
+        "1": {"n": 8, "mean_ar": 0.004, "median_ar": 0.003, "std": 0.02, "t": 0.56, "ci95": [-0.008, 0.016], "hit_rate": 0.625},
+        "5": {"n": 8, "mean_ar": 0.007, "median_ar": 0.006, "std": 0.03, "t": 0.66, "ci95": [-0.012, 0.026], "hit_rate": 0.625},
+        "20": {"n": 8, "mean_ar": 0.014, "median_ar": 0.011, "std": 0.06, "t": 0.66, "ci95": [-0.026, 0.054], "hit_rate": 0.625},
+        "60": {"n": 6, "mean_ar": 0.021, "median_ar": 0.018, "std": 0.09, "t": 0.57, "ci95": [-0.049, 0.091], "hit_rate": 0.667}
+      },
+      "curve": [
+        {"t": -5, "ar": 0.0},
+        {"t": 0, "ar": 0.001},
+        {"t": 10, "ar": 0.006},
+        {"t": 20, "ar": 0.014},
+        {"t": 40, "ar": 0.019},
+        {"t": 60, "ar": 0.021}
+      ]
+    },
+    "trades": [
+      {"ticker": "MDT", "entry_date": "2026-01-06", "entry_price": 92.4, "exit_date": "2026-03-31", "exit_price": 96.1, "ret": 0.04, "pnl": 200.0, "reason": "hold_expired"},
+      {"ticker": "ISRG", "entry_date": "2026-01-06", "entry_price": 410.2, "exit_date": "2026-04-01", "exit_price": 428.6, "ret": 0.045, "pnl": 225.0, "reason": "hold_expired"}
+    ],
+    "benchmark": {"ticker": "SPY", "total_return": 0.061},
+    "disclaimer_zh": "研究口径，不构成交易建议"
+  }
+}

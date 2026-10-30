@@ -147,9 +147,32 @@ def cmd_report(args: argparse.Namespace) -> int:
 
 
 # ------------------------------------------------------------------------- trade
+def _ingest_signals(args: argparse.Namespace) -> dict:
+    """Persist ``metrics["signals"]`` into the ``signals`` table.
+
+    ``analyze`` produces signals inside metrics.json; the trading engine reads
+    them from SQLite so it stays a pure offline function of (signals, prices).
+    """
+    from .db import DB
+    from .eventstudy import ingest_signals
+    from .util import read_json
+
+    metrics = read_json(args.out)
+    if not metrics:
+        return {"status": "skipped", "reason": "no metrics.json - run analyze first"}
+    signals = metrics.get("signals") or []
+    with DB(args.db) as db:
+        written = ingest_signals(db, signals)
+    # helpers may return None or a count; normalise for the CLI summary
+    count = written if isinstance(written, int) else len(signals)
+    print(json.dumps({"signals_ingested": count}, ensure_ascii=False))
+    return {"status": "ok", "count": count}
+
+
 def cmd_trade(args: argparse.Namespace) -> int:
     from .paper import run_paper
 
+    _ingest_signals(args)
     result = run_paper(
         db_path=args.db,
         capital=args.capital,
@@ -195,14 +218,22 @@ def cmd_run(args: argparse.Namespace) -> int:
         code = cmd_collect(args)
         if code != 0:
             print("[warn] some collectors failed; continuing with whatever data exists", file=sys.stderr)
-    # Trading runs before analyze on purpose: analyze embeds out/trading.json
-    # into metrics["trading"] so the report can render the simulated portfolio.
-    if args.with_trade:
-        prices = _ensure_prices(args)
-        if prices.get("status") not in ("failed",):
-            cmd_trade(args)
+
     if not args.skip_analyze:
         cmd_analyze(args)
+
+    # Trading needs three things in order: cached prices, signals in SQLite, and
+    # signals computed from the current facts. ``analyze`` above produced them,
+    # so ingest + trade now, then re-run analyze once so metrics.json carries the
+    # fresh trading block (report also falls back to out/trading.json).
+    if args.with_trade:
+        prices = _ensure_prices(args)
+        if prices.get("status") != "failed":
+            _ingest_signals(args)
+            cmd_trade(args)
+            if not args.skip_analyze:
+                cmd_analyze(args)
+
     if not args.skip_report:
         cmd_report(args)
     return 0
@@ -281,6 +312,7 @@ def build_parser() -> argparse.ArgumentParser:
     trade.add_argument("--capital", type=float, default=100_000.0)
     trade.add_argument("--kinds", default="all", help="comma separated signal kinds, or 'all'")
     trade.add_argument("--out-dir", default=str(OUT_DIR))
+    trade.add_argument("--out", default=str(DEFAULT_METRICS), help="metrics.json used to seed signals")
     add_db_options(trade)
     trade.set_defaults(func=cmd_trade)
 

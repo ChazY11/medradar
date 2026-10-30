@@ -25,6 +25,7 @@ import csv
 import html
 import io
 import math
+import re
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
@@ -44,7 +45,7 @@ CHAPTERS_ZH: tuple[str, ...] = (
     "三、赛道热度榜",
     "四、大厂动量",
     "五、结构迁移",
-    "六、本期首次出现",
+    "六、本周/本期首次出现",
     "七、召回与风险",
     "八、药品侧",
     "九、中国空白度",
@@ -244,6 +245,115 @@ def _describe(value: Any) -> str:
     return _s(value)
 
 
+_KIND_STAT_LABELS = (
+    ("n_trades", "笔数"),
+    ("trades", "笔数"),
+    ("win_rate", "胜率"),
+    ("hit_rate", "命中率"),
+    ("mean_return", "平均收益"),
+    ("avg_return", "平均收益"),
+    ("mean_ar", "平均 AR"),
+    ("total_pnl", "累计盈亏"),
+    ("total_return", "累计收益"),
+    ("mean_holding_days", "平均持有"),
+)
+
+
+def _format_kind_stats(value: Any) -> str:
+    """Render one ``by_kind`` bucket (e.g. 7 trades, 57% win rate, +$4.4k)."""
+    if not isinstance(value, dict):
+        return _describe(value)
+    parts: list[str] = []
+    used: set[str] = set()
+    for key, label in _KIND_STAT_LABELS:
+        if key not in value or key in used:
+            continue
+        used.add(key)
+        raw = value.get(key)
+        number = _num(raw)
+        if number is None:
+            text = DASH
+        elif key in ("n_trades", "trades"):
+            text = _fmt_int(number)
+        elif key in ("win_rate", "hit_rate"):
+            text = _fmt_prob(number)
+        elif key in ("mean_return", "avg_return", "mean_ar", "total_return"):
+            text = _fmt_auto_pct(number)
+        elif key == "total_pnl":
+            text = f"${_fmt(number, 0)}"
+        elif key == "mean_holding_days":
+            text = f"{_fmt(number, 0)} 天"
+        else:
+            text = _describe(number)
+        parts.append(f"{label} {text}")
+    for key, raw in value.items():
+        if key not in used:
+            parts.append(f"{key} {_describe(raw)}")
+    return "；".join(parts) if parts else DASH
+
+
+def _ci_pct_text(value: Any) -> str:
+    if isinstance(value, (list, tuple)) and len(value) >= 2:
+        low, high = _num(value[0]), _num(value[1])
+        if low is not None and high is not None:
+            return f"[{low * 100:+.1f}%, {high * 100:+.1f}%]"
+    return DASH
+
+
+def _en_conclusions(ctx: Mapping[str, Any]) -> list[str]:
+    """English takeaways generated from the same normalised context."""
+    out: list[str] = []
+    tracks = ctx["tracks"]
+    if tracks:
+        top = tracks[0]
+        out.append(
+            f"Top device track: {_en_track(top)} (THI {_fmt_thi(top.get('thi'))}, "
+            f"P(up) {_fmt_prob(top.get('prob_up'))}), {_fmt_int(top.get('recent'))} events in window "
+            f"vs {_fmt(top.get('baseline_per_q'))}/quarter baseline."
+        )
+        rising = sum(1 for track in tracks if _trend(track) == TREND_UP)
+        out.append(f"{rising} of {len(tracks)} tracked device segments are in a heating-up regime (THI 95% CI above 1.0).")
+    companies = ctx["companies"]
+    if companies:
+        top = companies[:3]
+        out.append(
+            "Strongest big-pharma momentum: "
+            + ", ".join(f"{_en_company(item)} (THI {_fmt_thi(item.get('thi'))})" for item in top)
+            + ". Regulatory cadence is a proxy, not revenue."
+        )
+    firstseen = ctx["firstseen"]
+    if firstseen:
+        first = firstseen[0]
+        out.append(
+            f"{len(firstseen)} first-seen records in the last 90 days; latest: "
+            f"{_en_company(first)} into {_s(first.get('track_id')) or _s(first.get('track_zh')) or 'a new segment'}."
+        )
+    recalls = ctx["recalls"]
+    if recalls:
+        out.append(
+            "Recall clusters: "
+            + ", ".join(f"{_en_company(item)} ({_fmt_int(item.get('recent'))})" for item in recalls[:3])
+            + "; watch product-line ageing and software-related causes."
+        )
+    if ctx["cn_gap"]:
+        if ctx["cn_unavailable"]:
+            out.append("China gap: unavailable (NMPA data not loaded); no China-vs-US inference is made.")
+        else:
+            top_gap = max(
+                ctx["cn_gap"],
+                key=lambda item: _num(item.get("gap_index")) if _num(item.get("gap_index")) is not None else -9,
+            )
+            out.append(f"China gap: {_s(top_gap.get('track_id')) or _s(top_gap.get('name_zh'))} shows the widest US lead.")
+    trading = ctx["trading"]
+    if trading and trading["curve"]:
+        out.append(
+            f"Paper portfolio: {_fmt_auto_pct(trading.get('total_return'))} total return, "
+            f"{_fmt_auto_pct(trading.get('max_drawdown'))} max drawdown, "
+            f"{_fmt_int(trading.get('trades'))} trades; long-only research engine, not tradable advice."
+        )
+    return out
+
+
 def _md_cell(value: Any) -> str:
     text = "" if value is None else str(value)
     return text.replace("|", "\\|").replace("\n", " ").strip()
@@ -269,6 +379,58 @@ def _range_text(block: Mapping[str, Any]) -> str:
     if quarters is not None:
         text += f"（{quarters:.0f} 个季度）"
     return text
+
+
+def _range_text_en(block: Mapping[str, Any]) -> str:
+    start, end = _s(block.get("start")), _s(block.get("end"))
+    quarters = _num(block.get("quarters"))
+    if not start and not end:
+        return "n/a"
+    text = f"{start or 'n/a'} to {end or 'n/a'}"
+    if quarters is not None:
+        text += f" ({quarters:.0f} quarters)"
+    return text
+
+
+def _en_name(entry: Mapping[str, Any] | None) -> str:
+    entry = entry or {}
+    return (
+        _s(entry.get("name_en"))
+        or _s(entry.get("ticker"))
+        or _s(entry.get("key"))
+        or _s(entry.get("track_id"))
+        or _s(entry.get("name_zh"))
+        or DASH
+    )
+
+
+def _en_company(entry: Mapping[str, Any] | None) -> str:
+    entry = entry or {}
+    if _s(entry.get("name_en")):
+        return _s(entry.get("name_en"))
+    key = _s(entry.get("key"))
+    if key:
+        return " ".join(part.capitalize() for part in key.replace("-", "_").split("_") if part)
+    return _en_name(entry)
+
+
+def _en_track(entry: Mapping[str, Any] | None) -> str:
+    entry = entry or {}
+    return _s(entry.get("name_en")) or _s(entry.get("track_id")) or _s(entry.get("name_zh")) or DASH
+
+
+_TREND_EN = {TREND_UP: "heating", TREND_DOWN: "cooling", TREND_FLAT: "steady"}
+
+
+def _trend_en(trend: str) -> str:
+    return _TREND_EN.get(trend, "n/a")
+
+
+def _fmt_delta_en(value: Any) -> str:
+    number = _num(value)
+    if number is None:
+        return "n/a"
+    return f"{number * 100:+.1f}pp"
 
 
 def _sort_desc(items: list[dict[str, Any]], key: str) -> list[dict[str, Any]]:
@@ -463,6 +625,61 @@ def _alert_entries(alerts: Any) -> list[tuple[str, str]]:
     return unique
 
 
+_STRUCTURED_ALERT_KEYS = (
+    "accelerating_tracks",
+    "company_movers",
+    "new_entries",
+    "recall_clusters",
+    "cn_gap_top",
+)
+
+
+def _structured_alert_lines(alerts: Any) -> list[str]:
+    """Render ``metrics.alerts`` (fixed list-of-dict contract) into conclusions."""
+    if not isinstance(alerts, dict):
+        return []
+    lines: list[str] = []
+    for item in _l(alerts.get("accelerating_tracks"))[:3]:
+        if isinstance(item, dict):
+            lines.append(
+                f"热度加速：**{_track_name(item)}** THI {_fmt_thi(item.get('thi'))}"
+                f"（P(高于基线) {_fmt_prob(item.get('prob_up'))}），窗口内 {_fmt_int(item.get('recent'))} 件。"
+            )
+    for item in _l(alerts.get("company_movers"))[:2]:
+        if isinstance(item, dict):
+            lines.append(
+                f"大厂异动：**{_company_name(item)}** THI {_fmt_thi(item.get('thi'))}，"
+                f"窗口内 {_fmt_int(item.get('recent'))} 件，近 12 个月新增 {_fmt_int(item.get('novelty_12m'))} 个产品码。"
+            )
+    for item in _l(alerts.get("new_entries"))[:2]:
+        if isinstance(item, dict):
+            lines.append(
+                f"首次进入：{_s(item.get('event_date')) or DASH} **{_company_name(item)}** 进入 "
+                f"{_s(item.get('track_zh')) or _track_name(item)}"
+                f"（{_trim(item.get('device_name') or item.get('title'), 34)}）。"
+            )
+    for item in _l(alerts.get("recall_clusters"))[:2]:
+        if isinstance(item, dict):
+            lines.append(
+                f"召回聚集：**{_company_name(item)}** 窗口内 {_fmt_int(item.get('recent'))} 次召回，高于基线。"
+            )
+    for item in _l(alerts.get("cn_gap_top"))[:2]:
+        if not isinstance(item, dict):
+            continue
+        status = _s(item.get("cn_data_status")).lower()
+        if status in ("unavailable", "") or _num(item.get("cn_count")) is None:
+            lines.append(
+                f"中国空白度：不可用（NMPA 数据未加载）；{_track_name(item)} 美国近 24 个月 "
+                f"{_fmt_int(item.get('us_recent'))} 件事件，本期不做中美对比推断。"
+            )
+        else:
+            lines.append(
+                f"中国空白度：{_track_name(item)} 美国事件占比领先 "
+                f"{_fmt_signed_pp(item.get('gap_index'))}，为当前最明显的空白赛道。"
+            )
+    return lines
+
+
 def _track_name_map(device: Mapping[str, Any], drug: Mapping[str, Any], cn_gap: list[dict[str, Any]]) -> dict[str, str]:
     mapping: dict[str, str] = {}
     for entry in _l(device.get("tracks")) + _l(device.get("migration")) + cn_gap + _l(drug.get("areas")):
@@ -547,7 +764,9 @@ def _trading_view(trading: Mapping[str, Any] | None) -> dict[str, Any] | None:
     curve = _equity_points(trading)
     by_kind = _d(trading.get("by_kind")) or _d(trading.get("attribution")) or _d(summary.get("by_kind"))
     total_return = _first_num(summary, ("total_return", "total_return_pct", "return_pct", "cum_return", "net_return"))
-    capital = _first_num(summary, ("capital", "initial_capital", "start_capital"))
+    capital = _first_num(summary, ("capital", "initial_capital", "start_capital")) or _num(
+        _d(trading.get("meta")).get("capital")
+    )
     final_equity = _first_num(summary, ("final_equity", "equity_end", "ending_equity", "final_value", "equity_final"))
     if final_equity is None and curve:
         final_equity = curve[-1][1]
@@ -560,12 +779,30 @@ def _trading_view(trading: Mapping[str, Any] | None) -> dict[str, Any] | None:
         "total_return": total_return,
         "max_drawdown": _first_num(summary, ("max_drawdown", "max_dd", "mdd")),
         "win_rate": _first_num(summary, ("win_rate", "hit_rate", "winrate", "winning_rate")),
-        "trades": _first_num(summary, ("trades", "n_trades", "num_trades", "trade_count")),
-        "avg_hold_return": _first_num(summary, ("avg_hold_return", "avg_trade_return", "average_return", "avg_return")),
+        "trades": _first_num(summary, ("n_trades", "trades", "num_trades", "trade_count")),
+        "avg_hold_return": _first_num(summary, ("avg_trade_return", "avg_hold_return", "average_return", "avg_return")),
         "capital": capital,
         "final_equity": final_equity,
+        "event_study": _d(trading.get("event_study")),
         "raw": trading,
     }
+
+
+def _event_study_rows(trading: Mapping[str, Any] | None) -> tuple[str, list[tuple[str, Mapping[str, Any]]]]:
+    """Return ``(benchmark, [(horizon, stats), ...])`` from the event study block."""
+    if not trading:
+        return "", []
+    study = _d(trading.get("event_study"))
+    if not study:
+        return "", []
+    horizons = _d(study.get("horizons"))
+    rows: list[tuple[str, Mapping[str, Any]]] = [
+        (_s(key), value)
+        for key, value in horizons.items()
+        if isinstance(value, dict)
+    ]
+    rows.sort(key=lambda pair: _num(pair[0]) or 0.0)
+    return _s(study.get("benchmark")), rows
 
 
 def _first_num(mapping: Mapping[str, Any], keys: Sequence[str]) -> float | None:
@@ -608,6 +845,16 @@ def build_context(metrics: Any, metrics_path: Path | str = DEFAULT_METRICS, out_
     signals = [entry for entry in _l(metrics.get("signals")) if isinstance(entry, dict)]
     trading_view = _trading_view(_resolve_trading(metrics, metrics_path, out_dir))
 
+    alerts_raw = metrics.get("alerts")
+    alert_lines = _structured_alert_lines(alerts_raw)
+    leftover_alerts: Any = alerts_raw
+    if isinstance(alerts_raw, dict):
+        leftover_alerts = {
+            key: value for key, value in alerts_raw.items() if key not in _STRUCTURED_ALERT_KEYS
+        }
+    for text, level in _alert_entries(leftover_alerts):
+        alert_lines.append(_LEVEL_TAGS.get(level.lower(), "") + text)
+
     counts = _flatten_counts(meta.get("counts"))
     available = [status for status in data_status.values() if _s(status).lower() in ("ok", "loaded", "partial")]
     return {
@@ -628,7 +875,8 @@ def build_context(metrics: Any, metrics_path: Path | str = DEFAULT_METRICS, out_
         "cn_gap": cn_gap,
         "cn_unavailable": cn_unavailable,
         "signals": signals,
-        "alerts": _alert_entries(metrics.get("alerts")),
+        "alerts": alerts_raw,
+        "alert_lines": alert_lines,
         "trading": trading_view,
         "name_map": name_map,
         "has_core": bool(tracks or companies or approvals or areas or trials or signals or cn_gap),
@@ -713,15 +961,9 @@ def _auto_conclusions(ctx: Mapping[str, Any]) -> list[str]:
 
 
 def _conclusion_lines(ctx: Mapping[str, Any]) -> list[str]:
-    lines: list[str] = []
-    for text, level in ctx["alerts"]:
-        tag = _LEVEL_TAGS.get(level.lower(), "")
-        lines.append(f"{tag}{text}")
-        if len(lines) >= 5:
-            break
+    lines: list[str] = list(ctx["alert_lines"])[:5]
     if len(lines) < 3:
-        candidates = _auto_conclusions(ctx)
-        for text in candidates:
+        for text in _auto_conclusions(ctx):
             if len(lines) >= 5:
                 break
             if text not in lines:
@@ -867,10 +1109,17 @@ def _zh_migration(ctx: Mapping[str, Any]) -> str:
     for item in migration[:10]:
         delta = _num(item.get("delta"))
         direction = "明显向该赛道倾斜" if (delta or 0) > 0 else "明显撤出该赛道"
+        clauses = [
+            f"窗口占比 {_fmt_share(item.get('share_recent'))}",
+            f"基线 {_fmt_share(item.get('share_base'))}",
+            f"Δ {_fmt_signed_pp(item.get('delta'))}",
+        ]
+        if _num(item.get("js")) is not None:
+            clauses.append(f"JS = {_fmt(item.get('js'), 3)}")
         lines.append(
             f"- **{_company_name(item)}** → {_s(item.get('track_zh')) or _track_name(item)}："
-            f"窗口占比 {_fmt_share(item.get('share_recent'))}，基线 {_fmt_share(item.get('share_base'))}，"
-            f"Δ {_fmt_signed_pp(item.get('delta'))}，JS = {_fmt(item.get('js'), 3)}，{direction}。"
+            + "，".join(clauses)
+            + f"，{direction}。"
         )
     rows = []
     for item in migration[:MAX_COMPANY_ROWS]:
@@ -1099,7 +1348,7 @@ def _zh_signals(ctx: Mapping[str, Any]) -> str:
         status = _s(trading.get("status"))
         curve = trading.get("curve") or []
         if status == "insufficient_data" or (not curve and trading.get("total_return") is None):
-            parts.append(f"模拟盘：{DASH}（status = {status or 'insufficient_data'}，信号或价格不足）。")
+            parts.append(f"模拟盘：样本不足，未运行模拟盘（status = {status or 'insufficient_data'}）。")
         else:
             summary_rows = [
                 ("区间总收益", _fmt_auto_pct(trading.get("total_return"))),
@@ -1116,8 +1365,22 @@ def _zh_signals(ctx: Mapping[str, Any]) -> str:
                     "曲线与回撤明细见同目录 `index.html` 看板。"
                 )
             if trading.get("by_kind"):
-                rows = [(KIND_LABELS.get(kind, kind), _describe(value)) for kind, value in trading["by_kind"].items()]
+                rows = [
+                    (KIND_LABELS.get(kind, kind), _format_kind_stats(value))
+                    for kind, value in trading["by_kind"].items()
+                ]
                 parts.append("**按信号类型归因**：\n\n" + _md_table(["类型", "指标"], rows))
+            benchmark, horizons = _event_study_rows(trading)
+            if horizons:
+                parts.append(
+                    f"**事件研究（超额收益 AR，基准 {benchmark or 'SPY'}）**："
+                    + "、".join(
+                        f"{horizon} 日 {_fmt_auto_pct(stats.get('mean_ar'))}"
+                        f"（n={_fmt_int(stats.get('n'))}，命中率 {_fmt_prob(stats.get('hit_rate'))}）"
+                        for horizon, stats in horizons
+                    )
+                    + "；AR 已按信号方向调整，仅统计有价格覆盖的标的。"
+                )
             parts.append(
                 "> 模拟盘规则：只做多、信号次一交易日开盘入场、单票上限 5%、单赛道上限 25%、"
                 "持有 60 个交易日或 -20% 止损、成本 20bps + 每笔 1 美元；"
@@ -1208,14 +1471,14 @@ def render_report_en(ctx: Mapping[str, Any]) -> str:
     lines: list[str] = [
         "# MedRadar: FDA Device & Drug Industry Radar",
         "",
-        f"_Generated {ctx['generated_at'] or 'not available'} (UTC) · Window {_range_text(ctx['window'])} · "
-        f"Baseline {_range_text(ctx['baseline'])}_",
+        f"_Generated {ctx['generated_at'] or 'not available'} (UTC) · Window {_range_text_en(ctx['window'])} · "
+        f"Baseline {_range_text_en(ctx['baseline'])}_",
         "",
         "## Key takeaways",
         "",
     ]
-    for index, text in enumerate(_conclusion_lines(ctx)[:5], start=1):
-        lines.append(f"{index}. {_plain(text)}")
+    for index, text in enumerate(_en_conclusions(ctx)[:5], start=1):
+        lines.append(f"{index}. {text}")
     lines.extend(
         [
             "",
@@ -1235,8 +1498,8 @@ def render_report_en(ctx: Mapping[str, Any]) -> str:
         lines.extend(["## Hottest device tracks", "", "| # | Track | THI | 95% CI | P(up) | Recent | Trend |", "|---|---|---|---|---|---|---|"])
         for index, track in enumerate(tracks[:8], start=1):
             lines.append(
-                f"| {index} | {_md_cell(_track_name(track))} | {_fmt_thi(track.get('thi'))} | {_ci_text(track.get('ci'))} | "
-                f"{_fmt_prob(track.get('prob_up'))} | {_fmt_int(track.get('recent'))} | {_trend(track)} |"
+                f"| {index} | {_md_cell(_en_track(track))} | {_fmt_thi(track.get('thi'))} | {_ci_text(track.get('ci'))} | "
+                f"{_fmt_prob(track.get('prob_up'))} | {_fmt_int(track.get('recent'))} | {_trend_en(_trend(track))} |"
             )
         lines.append("")
     companies = ctx["companies"]
@@ -1244,7 +1507,7 @@ def render_report_en(ctx: Mapping[str, Any]) -> str:
         lines.extend(["## Big-pharma momentum (top 5)", "", "| Company | Ticker | THI | P(up) | Recent |", "|---|---|---|---|---|"])
         for company in companies[:5]:
             lines.append(
-                f"| {_md_cell(_company_name(company))} | {_md_cell(_s(company.get('ticker')) or '-')} | "
+                f"| {_md_cell(_en_company(company))} | {_md_cell(_s(company.get('ticker')) or '-')} | "
                 f"{_fmt_thi(company.get('thi'))} | {_fmt_prob(company.get('prob_up'))} | {_fmt_int(company.get('recent'))} |"
             )
         lines.append("")
@@ -1253,24 +1516,25 @@ def render_report_en(ctx: Mapping[str, Any]) -> str:
         lines.append("")
         for item in ctx["migration"][:4]:
             lines.append(
-                f"- {_md_cell(_company_name(item))} moved towards {_md_cell(_s(item.get('track_zh')) or _track_name(item))}: "
+                f"- {_md_cell(_en_company(item))} moved towards {_md_cell(_s(item.get('track_id')) or _s(item.get('track_zh')) or '-')}: "
                 f"share {_fmt_share(item.get('share_recent'))} vs baseline {_fmt_share(item.get('share_base'))} "
-                f"({_fmt_signed_pp(item.get('delta'))})."
+                f"({_fmt_delta_en(item.get('delta'))})."
             )
         lines.append("")
     if ctx["firstseen"]:
         lines.extend(["## First seen in the last 90 days", ""])
         for item in ctx["firstseen"][:5]:
             lines.append(
-                f"- {_s(item.get('event_date')) or 'n/a'} · {_md_cell(_company_name(item))} · "
-                f"{_md_cell(_s(item.get('track_zh')) or _track_name(item))} · {_md_cell(_trim(item.get('device_name') or item.get('title'), 60))}"
+                f"- {_s(item.get('event_date')) or 'n/a'} · {_md_cell(_en_company(item))} · "
+                f"{_md_cell(_s(item.get('track_id')) or _s(item.get('track_zh')) or '-')} · "
+                f"{_md_cell(_trim(item.get('device_name') or item.get('title'), 60))}"
             )
         lines.append("")
     if ctx["recalls"]:
         lines.extend(["## Recall clusters", "", "| Company | Recalls in window | Baseline / quarter | Top reason |", "|---|---|---|---|"])
         for item in ctx["recalls"][:5]:
             lines.append(
-                f"| {_md_cell(_company_name(item))} | {_fmt_int(item.get('recent'))} | "
+                f"| {_md_cell(_en_company(item))} | {_fmt_int(item.get('recent'))} | "
                 f"{_fmt(item.get('baseline_per_q'), 2)} | {_md_cell(_s(item.get('reason_top')) or '-')} |"
             )
         lines.append("")
@@ -1279,14 +1543,14 @@ def render_report_en(ctx: Mapping[str, Any]) -> str:
         if ctx["approvals"]:
             lines.append(
                 "Top NDA/BLA momentum: "
-                + ", ".join(f"{_md_cell(_company_name(item))} (THI {_fmt_thi(item.get('thi'))})" for item in ctx["approvals"][:5])
+                + ", ".join(f"{_md_cell(_en_company(item))} (THI {_fmt_thi(item.get('thi'))})" for item in ctx["approvals"][:5])
                 + "."
             )
         if ctx["areas"]:
             lines.append(
                 "Hottest therapeutic areas: "
                 + ", ".join(
-                    f"{_md_cell(ctx['name_map'].get(_s(item.get('track_id'))) or _track_name(item))} (P {_fmt_prob(item.get('prob_up'))})"
+                    f"{_md_cell(_s(item.get('track_id')) or _en_name(item))} (P {_fmt_prob(item.get('prob_up'))})"
                     for item in ctx["areas"][:4]
                 )
                 + "."
@@ -1294,7 +1558,7 @@ def render_report_en(ctx: Mapping[str, Any]) -> str:
         if ctx["trials"]:
             lines.append(
                 "Trial starts: "
-                + ", ".join(f"{_md_cell(_company_name(item))} ({_fmt_int(item.get('starts_recent'))})" for item in ctx["trials"][:5])
+                + ", ".join(f"{_md_cell(_en_company(item))} ({_fmt_int(item.get('starts_recent'))})" for item in ctx["trials"][:5])
                 + "."
             )
         lines.append("")
@@ -1308,8 +1572,9 @@ def render_report_en(ctx: Mapping[str, Any]) -> str:
         lines.extend(["| Track | US events (24m) | US share | CN registrations | Gap |", "|---|---|---|---|---|"])
         for item in ctx["cn_gap"][:8]:
             lines.append(
-                f"| {_md_cell(_track_name(item))} | {_fmt_int(item.get('us_recent'))} | {_fmt_share(item.get('us_share'), 1)} | "
-                f"{_fmt_int(item.get('cn_count'))} | {_fmt_signed_pp(item.get('gap_index'))} |"
+                f"| {_md_cell(_s(item.get('track_id')) or _en_name(item))} | {_fmt_int(item.get('us_recent'))} | "
+                f"{_fmt_share(item.get('us_share'), 1)} | {_fmt_int(item.get('cn_count'))} | "
+                f"{_fmt_signed_pp(item.get('gap_index'))} |"
             )
     else:
         lines.append("No China-gap rows in this run.")
@@ -1580,19 +1845,24 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
 font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
 a{color:var(--accent)}
 .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
-header.top{background:#101b2b;color:#e7edf4;padding:22px 0 18px;border-bottom:3px solid var(--accent)}
+header.top{background:#fff;color:var(--ink);padding:22px 0 16px;border-bottom:3px solid var(--accent)}
 .brandline{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.mark{font-size:24px;font-weight:700;letter-spacing:.5px}
-.mark .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#2dd4bf;margin-left:6px;vertical-align:middle}
-.sub{font-size:14px;color:#a9b8c9}
-.tagline{margin:6px 0 0;font-size:13px;color:#9fb0c2}
+.mark{font-size:24px;font-weight:700;letter-spacing:.5px;color:var(--accent)}
+.mark .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#0f766e;margin-left:6px;vertical-align:middle}
+.sub{font-size:14px;color:var(--muted)}
+.tagline{margin:6px 0 0;font-size:13px;color:var(--muted)}
 .statusbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding:9px 14px;border-radius:8px;
-font-size:13.5px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06)}
+font-size:13.5px;border:1px solid var(--line);background:#f8fafc}
 .statusbar .dot{width:9px;height:9px;border-radius:50%;background:#94a3b8}
-.statusbar.green .dot{background:#34d399}
-.statusbar.amber .dot{background:#fbbf24}
-.statusbar.red .dot{background:#f87171}
-.statusbar .detail{color:#b9c6d4}
+.statusbar.green .dot{background:#15803d}
+.statusbar.amber .dot{background:#b45309}
+.statusbar.red .dot{background:#b91c1c}
+.statusbar .detail{color:var(--muted)}
+.statusbar .warnchip{display:inline-block;padding:1px 8px;border-radius:999px;background:#fdf1f1;color:#9f1239;
+border:1px solid #f3c6c6;font-size:12px}
+.num,.kpi .value,.stat .v{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+font-variant-numeric:tabular-nums}
+td.num,th.num,.kpi .value,.stat .v{letter-spacing:-.2px}
 main{padding:22px 0 8px}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 18px}
 .kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
@@ -1612,14 +1882,16 @@ font-size:13.5px;font-family:inherit;background:#fff;color:var(--ink)}
 .panel>h3{margin:16px 0 8px;font-size:14.5px}
 .note{color:var(--muted);font-size:13px;margin:0 0 10px}
 .lead{font-size:14px;margin:0 0 12px;color:#2b3947}
+code{background:#eef2f6;color:#1f3a52;padding:1px 4px;border-radius:3px;font-size:12.5px;
+font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
 ol.conclusions{margin:0;padding-left:22px}
 ol.conclusions li{margin:0 0 7px}
 .callout{border-left:4px solid var(--amber);background:#fdf8ee;padding:10px 14px;border-radius:0 6px 6px 0;font-size:13.5px;margin:0 0 12px}
 .callout.danger{border-left-color:var(--red);background:#fdf1f1}
 .callout.ok{border-left-color:var(--green);background:#f0f8f2}
 .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:#fff}
-table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
-th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;vertical-align:top}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13px}
+th,td{padding:6px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;vertical-align:top}
 th{background:#eef2f6;color:#33424f;font-weight:600;position:sticky;top:0;z-index:1}
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:#fafbfc}
@@ -1735,7 +2007,9 @@ def _status_for_html(ctx: Mapping[str, Any]) -> tuple[str, str, str]:
     data_status = ctx["data_status"]
     nmpa = _s(data_status.get("nmpa")).lower()
     prices = _s(data_status.get("prices")).lower()
-    core_ok = any(_s(data_status.get(source)).lower() in ("ok", "loaded", "partial") for source in ("device", "drug", "trials"))
+    core_ok = any(
+        _s(data_status.get(source)).lower() in ("ok", "loaded", "partial") for source in ("device", "drug", "trials")
+    ) or (ctx["has_core"] and not data_status)
     if not ctx["has_core"] or not core_ok:
         return "red", "数据受限", "核心数据源未就绪，看板仅显示可用的美国侧公开数据"
     if nmpa != "loaded" or prices in ("", "missing", "unavailable"):
@@ -2008,7 +2282,7 @@ def _html_trading_panel(ctx: Mapping[str, Any]) -> str:
     status = _s(trading.get("status"))
     curve = trading.get("curve") or []
     if status == "insufficient_data" or (not curve and trading.get("total_return") is None):
-        return f'<p class="empty">{_h(DASH)}（status = {_h(status or "insufficient_data")}，信号或价格数据不足）</p>'
+        return f'<p class="empty">{_h(DASH)}：样本不足，未运行模拟盘（status = {_h(status or "insufficient_data")}）</p>'
     stats = "".join(
         [
             _stat("区间总收益", _fmt_auto_pct(trading.get("total_return"))),
@@ -2023,14 +2297,43 @@ def _html_trading_panel(ctx: Mapping[str, Any]) -> str:
     attribution = ""
     if trading.get("by_kind"):
         rows = [
-            [KIND_LABELS.get(_s(kind), _s(kind) or DASH), _describe(value)]
+            [KIND_LABELS.get(_s(kind), _s(kind) or DASH), _format_kind_stats(value)]
             for kind, value in trading["by_kind"].items()
         ]
         attribution = '<h3>按信号类型归因</h3>' + _table([("类型", ""), ("指标", "")], rows)
+    benchmark, horizons = _event_study_rows(trading)
+    study = ""
+    if horizons:
+        rows = [
+            [
+                f"{horizon} 日",
+                _fmt_auto_pct(stats.get("mean_ar")),
+                _fmt_auto_pct(stats.get("median_ar")),
+                _fmt_int(stats.get("n")),
+                _fmt_prob(stats.get("hit_rate")),
+                _ci_pct_text(stats.get("ci95")),
+            ]
+            for horizon, stats in horizons
+        ]
+        study = (
+            f'<h3>事件研究：平均超额收益（基准 {_h(benchmark or "SPY")}）</h3>'
+            + _table(
+                [
+                    ("窗口", ""),
+                    ("平均 AR", "num"),
+                    ("中位数 AR", "num"),
+                    ("样本", "num"),
+                    ("命中率", "num"),
+                    ("95% CI", "num"),
+                ],
+                rows,
+            )
+        )
     return (
         f'<div class="statgrid">{stats}</div>{chart}'
         '<div class="chartlegend"><span><i style="background:#1f4e79"></i>模拟盘净值（美元）</span>'
         "<span>横轴为交易日，纵轴为组合净值；曲线为研究口径，未建模借券费与并购逼平。</span></div>"
+        + study
         + attribution
     )
 
@@ -2111,14 +2414,24 @@ def _html_conclusions(ctx: Mapping[str, Any]) -> str:
 
 
 def _html_methods(ctx: Mapping[str, Any]) -> str:
-    body = "\n".join(_zh_methods(ctx).splitlines())
-    paragraphs = [line.strip() for line in body.splitlines() if line.strip()]
-    items = "".join(f"<li>{_h(line.lstrip('0123456789. '))}</li>" for line in paragraphs)
-    return f'<ol class="conclusions">{items}</ol>'
+    paragraphs = [line.strip() for line in _zh_methods(ctx).splitlines() if line.strip()]
+    items: list[str] = []
+    for line in paragraphs:
+        text = line.lstrip("0123456789. ")
+        safe = _h(text)
+        safe = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", safe)
+        safe = re.sub(r"`(.+?)`", r"<code>\1</code>", safe)
+        items.append(f"<li>{safe}</li>")
+    return f'<ol class="conclusions">{"".join(items)}</ol>'
 
 
 def render_html(ctx: Mapping[str, Any]) -> str:
     status_class, status_label, status_detail = _status_for_html(ctx)
+    nmpa_chip = (
+        '<span class="warnchip">中国空白度不可用（NMPA 数据未加载）</span>'
+        if ctx["cn_unavailable"]
+        else ""
+    )
     window = _range_text(ctx["window"])
     tracks = ctx["tracks"]
     track_rows, track_attrs = _html_track_rows(ctx)
@@ -2253,7 +2566,7 @@ def render_html(ctx: Mapping[str, Any]) -> str:
 <header class="top">
 <div class="wrap">
 <div class="brandline"><span class="mark">MedRadar<span class="dot"></span></span><span class="sub">FDA 器械与药品产业方向雷达 · 中文看板</span></div>
-<div class="statusbar {status_class}"><span class="dot"></span><strong>数据状态：{_h(status_label)}</strong><span class="detail">{_h(status_detail)}</span></div>
+<div class="statusbar {status_class}"><span class="dot"></span><strong>数据状态：{_h(status_label)}</strong><span class="detail">{_h(status_detail)}</span>{nmpa_chip}</div>
 <p class="tagline">统计窗口 {_h(window)} ｜ 生成时间 {_h(ctx["generated_at"] or DASH)}（UTC） ｜ 全部数字来自 metrics.json</p>
 </div>
 </header>

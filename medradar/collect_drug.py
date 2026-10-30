@@ -37,7 +37,7 @@ from typing import Any, Mapping
 from .config import CompanyRegistry, load_companies, load_tracks
 from .db import DB, make_event_id
 from .http import NotFound
-from .util import today_utc, utc_now_iso
+from .util import parse_date, today_utc
 
 SOURCE = "openfda_drug_drugsfda"
 KIND = "drug_approval"
@@ -215,17 +215,27 @@ def collect(
     documents = 0
     events: dict[str, dict[str, Any]] = {}
     truncated = False
+    page_errors: list[str] = []
     skip = 0
     while pages < MAX_PAGES:
         if int(fetcher.stats.get("requests", 0)) + 3 >= budget:
             truncated = True
             break
         try:
+            # openFDA load-sheds broad searches with HTTP 500
+            # ("rejected_execution_exception") when its cluster is busy, which is
+            # transient; retry patiently before giving up on the page.
             payload = fetcher.get_json(
                 API_URL,
                 {"search": search, "limit": PAGE_LIMIT, "skip": skip},
+                retries=5,
+                backoff=2.5,
             )
         except NotFound:
+            break
+        except Exception as exc:  # keep whatever we already have
+            page_errors.append(f"skip={skip}: {type(exc).__name__}: {exc}")
+            truncated = True
             break
         pages += 1
         results = (payload or {}).get("results") or []
@@ -255,6 +265,13 @@ def collect(
                     alias=alias,
                 )
                 if event is not None:
+                    # openFDA filters on *any* submission date, so a document can
+                    # match the window through a supplement while its ORIG
+                    # approval happened years earlier. Apply the window to the
+                    # event date itself, which is what the backtest consumes.
+                    decided = parse_date(event["event_date"])
+                    if decided is None or decided < start or decided > end:
+                        continue
                     events[event["event_id"]] = event
 
         if limit and len(events) >= limit:
@@ -284,7 +301,7 @@ def collect(
 
     stats = {
         "source": SOURCE,
-        "status": "ok",
+        "status": "partial" if page_errors and truncated else "ok",
         "window": {"start": start.isoformat(), "end": end.isoformat()},
         "pages": pages,
         "documents": documents,
@@ -295,6 +312,7 @@ def collect(
         "unmatched": inserted - matched,
         "top_unmatched": [[name, count] for name, count in top_unmatched],
         "truncated": truncated,
+        "page_errors": page_errors,
         "requests": int(fetcher.stats.get("requests", 0)) - requests_before,
     }
     print(

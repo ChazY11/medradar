@@ -172,6 +172,21 @@ def load_companies(kind: str = "device") -> CompanyRegistry:
 
 
 def load_tracks(kind: str = "device") -> TrackRegistry:
+    """Load the curated track list plus the generated product-code mapping.
+
+    ``config/product_code_tracks.json`` is produced by ``collect_device`` (about
+    7,000 openFDA product codes mapped to a track). Keeping it separate from the
+    hand-curated track list means the 7k-entry machine-generated file can be
+    regenerated freely without touching reviewed knowledge.
+    """
     payload = load_config(f"tracks_{kind}", {"tracks": []})
-    product_codes = payload.get("product_codes", [])
+    product_codes = list(payload.get("product_codes", []))
+    if kind == "device":
+        generated = load_config("product_code_tracks", {})
+        if isinstance(generated, dict):
+            product_codes.extend(
+                {"product_code": str(code), "track_id": track_id}
+                for code, track_id in generated.items()
+                if code and track_id
+            )
     return TrackRegistry(payload.get("tracks", []), product_codes)
