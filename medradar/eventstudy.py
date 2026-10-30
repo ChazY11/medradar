@@ -73,13 +73,19 @@ def _insufficient(reason: str, counts: Mapping[str, Any] | None = None, benchmar
 
 
 def load_signals(db, kinds: tuple[str, ...] | None) -> tuple[list[dict[str, Any]], dict[str, int]]:
-    """Read and normalise the ``signals`` table (shared with :mod:`medradar.paper`)."""
+    """Read and normalise the ``signals`` table (shared with :mod:`medradar.paper`).
+
+    Signals whose public timestamp quality is ``unknown`` are excluded from any
+    trading study: they may still appear in the industry analysis, but they
+    cannot support a claim about returns.
+    """
     rows = db.query(
-        "SELECT signal_id, ticker, signal_date, kind, direction, track_id, score"
+        "SELECT signal_id, ticker, signal_date, kind, direction, track_id, score,"
+        " available_at, timestamp_quality"
         " FROM signals"
     )
     signals: list[dict[str, Any]] = []
-    skipped = {"filtered_kind": 0, "no_ticker": 0, "no_date": 0}
+    skipped = {"filtered_kind": 0, "no_ticker": 0, "no_date": 0, "unknown_timestamp": 0}
     for row in rows:
         kind = str(row.get("kind") or "")
         if kinds is not None and kind not in kinds:
@@ -93,6 +99,9 @@ def load_signals(db, kinds: tuple[str, ...] | None) -> tuple[list[dict[str, Any]
         if not signal_date:
             skipped["no_date"] += 1
             continue
+        if str(row.get("timestamp_quality") or "date").lower() == "unknown":
+            skipped["unknown_timestamp"] += 1
+            continue
         signals.append(
             {
                 "signal_id": row.get("signal_id") or "",
@@ -102,6 +111,8 @@ def load_signals(db, kinds: tuple[str, ...] | None) -> tuple[list[dict[str, Any]
                 "direction": _direction(row.get("direction")),
                 "track_id": row.get("track_id") or "",
                 "score": float(row.get("score") or 0.0),
+                "available_at": iso(row.get("available_at")),
+                "timestamp_quality": str(row.get("timestamp_quality") or "date").lower(),
             }
         )
     return signals, skipped
@@ -125,6 +136,9 @@ def ingest_signals(db, signals: Iterable[Mapping[str, Any]]) -> int:
         signal_date = iso(signal.get("signal_date"))
         if not signal_id or not ticker or not signal_date:
             continue
+        quality = str(signal.get("timestamp_quality") or "date").lower()
+        if quality == "unknown":
+            continue  # cannot be traded or evaluated: no reliable public time
         rows.append(
             {
                 "signal_id": signal_id,
@@ -137,6 +151,8 @@ def ingest_signals(db, signals: Iterable[Mapping[str, Any]]) -> int:
                 "score": float(signal.get("score") or 0.0),
                 "track_id": signal.get("track_id"),
                 "reason_zh": signal.get("reason_zh", ""),
+                "available_at": iso(signal.get("available_at")) or signal_date,
+                "timestamp_quality": quality,
             }
         )
     return int(db.upsert_signals(rows)) if rows else 0

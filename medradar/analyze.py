@@ -71,8 +71,9 @@ def _parse_payload(event: dict[str, Any]) -> dict[str, Any]:
 
 def _load_events(db, kinds: Iterable[str] | None = None) -> list[dict[str, Any]]:
     sql = (
-        "SELECT event_id, kind, source, event_date, as_of, company_key, track_id,"
-        " product_code, applicant_raw, title, summary, payload FROM events"
+        "SELECT event_id, kind, source, event_date, as_of, available_at, timestamp_quality,"
+        " company_key, track_id, product_code, applicant_raw, title, summary, payload"
+        " FROM events"
         " WHERE event_date IS NOT NULL AND event_date != ''"
     )
     params: list[Any] = []
@@ -83,6 +84,11 @@ def _load_events(db, kinds: Iterable[str] | None = None) -> list[dict[str, Any]]
     rows = db.query(sql, params)
     for row in rows:
         row["_day"] = parse_date(row["event_date"])
+        # The backtest may only use what was publicly available. Older databases
+        # fall back to the event date and are marked as estimated quality.
+        row["_available_day"] = parse_date(row.get("available_at")) or row["_day"]
+        quality = str(row.get("timestamp_quality") or "estimated").lower()
+        row["timestamp_quality"] = quality if quality in ("datetime", "date", "estimated", "unknown") else "unknown"
     return [row for row in rows if row["_day"]]
 
 
@@ -194,13 +200,15 @@ def _track_meta(tracks, track_id: str | None) -> dict[str, Any]:
 
 
 def _first_occurrence(
-    events: list[dict[str, Any]], key_fields: tuple[str, ...]
+    events: list[dict[str, Any]],
+    key_fields: tuple[str, ...],
+    day_key: str = "_day",
 ) -> dict[tuple, date]:
     first: dict[tuple, date] = {}
-    for event in sorted(events, key=lambda item: item["_day"]):
+    for event in sorted(events, key=lambda item: item.get(day_key) or item["_day"]):
         key = tuple((event.get(field) or "") for field in key_fields)
         if key not in first:
-            first[key] = event["_day"]
+            first[key] = event.get(day_key) or event["_day"]
     return first
 
 
@@ -618,24 +626,46 @@ def _signals(
     device_tracks,
     drug_tracks,
     win,
-    track_index,
 ) -> list[dict[str, Any]]:
-    """Turn notable events into dated, direction-tagged candidates for the study.
+    """Turn notable events into dated, direction-tagged candidates.
 
-    ``signal_date`` is ``event_date + 1 day``: the earliest date a trader could
-    plausibly have acted on the public record. That is an approximation, and it
-    is the main optimism in the backtest - the report says so.
+    Everything here is point-in-time: the signal date is the day *after* the
+    event became publicly available, and the "is this new?" test uses only
+    history up to that availability date. The old version boosted scores with a
+    track THI computed over the whole window, which quietly used future data.
     """
     signals: list[dict[str, Any]] = []
     seen: set[tuple] = set()
+    import bisect
 
     def registries_for(kind: str):
         if kind in ("drug_approval", "trial"):
             return drug_reg, drug_tracks
         return device_reg, device_tracks
 
+    def avail(event: dict[str, Any]) -> date:
+        return event.get("_available_day") or event["_day"]
+
+    activity = [event for event in _device_activity(events) if event["company_key"]]
+    # Point-in-time track popularity: how many events did this track already have
+    # in the 180 days *before* this one became public? No future data involved.
+    track_days: dict[str, list[date]] = {}
+    for event in activity:
+        if event.get("track_id"):
+            track_days.setdefault(event["track_id"], []).append(avail(event))
+    for days in track_days.values():
+        days.sort()
+
+    def prior_track_count(track_id: str | None, day: date) -> int:
+        days = track_days.get(track_id or "")
+        if not days:
+            return 0
+        low = bisect.bisect_left(days, day - timedelta(days=180))
+        high = bisect.bisect_right(days, day)
+        return max(0, high - low)
+
     def add(event, kind, direction, score, reason):
-        key = (event.get("company_key"), kind, event.get("track_id"), iso(event["_day"]))
+        key = (event.get("company_key"), kind, event.get("track_id"), iso(avail(event)))
         if key in seen:
             return
         seen.add(key)
@@ -646,7 +676,9 @@ def _signals(
             {
                 "signal_id": f"sig-{len(signals)+1:04d}",
                 "event_id": event["event_id"],
-                "signal_date": iso(event["_day"] + timedelta(days=1)),
+                "signal_date": iso(avail(event) + timedelta(days=1)),
+                "available_at": iso(avail(event)),
+                "timestamp_quality": event.get("timestamp_quality") or "estimated",
                 "company_key": event.get("company_key"),
                 "name_zh": meta["name_zh"],
                 "ticker": meta.get("ticker", ""),
@@ -659,26 +691,23 @@ def _signals(
             }
         )
 
-    activity = [
-        event for event in _device_activity(events) if event["company_key"]
-    ]
     cutoff_180 = win["end"] - timedelta(days=180)
     first_code = _first_occurrence(
-        [e for e in activity if e["product_code"]], ("company_key", "product_code")
+        [e for e in activity if e["product_code"]], ("company_key", "product_code"), "_available_day"
     )
-    first_track = _first_occurrence(activity, ("company_key", "track_id"))
+    first_track = _first_occurrence(activity, ("company_key", "track_id"), "_available_day")
 
-    for event in sorted(activity, key=lambda item: item["_day"], reverse=True):
-        if event["_day"] < cutoff_180:
+    for event in sorted(activity, key=lambda item: avail(item), reverse=True):
+        if avail(event) < cutoff_180:
             break
         code = event.get("product_code")
-        is_new_code = code and first_code.get((event["company_key"], code)) == event["_day"]
-        is_new_track = first_track.get((event["company_key"], event["track_id"])) == event["_day"]
+        is_new_code = code and first_code.get((event["company_key"], code)) == avail(event)
+        is_new_track = first_track.get((event["company_key"], event["track_id"])) == avail(event)
         if not (is_new_code or is_new_track):
             continue
         track_meta = _track_meta(device_tracks, event["track_id"])
-        thi = track_index.get(event["track_id"], 1.0)
-        boost = min(0.25, max(0.0, (thi - 1.0) * 0.05))
+        prior = prior_track_count(event["track_id"], avail(event))
+        boost = min(0.2, 0.02 * prior)
         if is_new_code:
             add(
                 event,
@@ -696,8 +725,8 @@ def _signals(
                 f"首次进入赛道「{track_meta['name_zh']}」",
             )
 
-    for event in sorted([e for e in events if e["kind"] == "drug_approval"], key=lambda item: item["_day"], reverse=True):
-        if event["_day"] < win["end"] - timedelta(days=365):
+    for event in sorted([e for e in events if e["kind"] == "drug_approval"], key=lambda item: avail(item), reverse=True):
+        if avail(event) < win["end"] - timedelta(days=365):
             break
         if not event["company_key"]:
             continue
@@ -710,8 +739,8 @@ def _signals(
             ("新分子实体获批：" if nme else "原始申请获批：") + (event["title"] or ""),
         )
 
-    for event in sorted([e for e in events if e["kind"] == "trial"], key=lambda item: item["_day"], reverse=True):
-        if event["_day"] < win["end"] - timedelta(days=180):
+    for event in sorted([e for e in events if e["kind"] == "trial"], key=lambda item: avail(item), reverse=True):
+        if avail(event) < win["end"] - timedelta(days=180):
             break
         if not event["company_key"] or "PHASE3" not in _phases(event):
             continue
@@ -721,7 +750,7 @@ def _signals(
     recall_by_company = Counter(
         e["company_key"]
         for e in _dedupe_recalls([event for event in events if event["kind"] == "device_recall"])
-        if e["company_key"] and e["_day"] >= win["end"] - timedelta(days=90)
+        if e["company_key"] and (e.get("_available_day") or e["_day"]) >= win["end"] - timedelta(days=90)
     )
     for key, count in recall_by_company.items():
         if count < 2:
@@ -772,6 +801,55 @@ def _alerts(device, drug, cn_gap) -> dict[str, Any]:
     }
 
 
+# -------------------------------------------------------------------------- research
+def _research_block(events, device, win) -> dict[str, Any]:
+    """Sample split + multiple-testing correction for the research claims.
+
+    Kept best-effort: if ``medradar.stats`` is unavailable the block is omitted
+    rather than breaking the whole analysis.
+    """
+    try:
+        from .stats import multiple_testing, time_split_by_dates
+    except Exception:  # pragma: no cover - stats is part of the package
+        return {}
+
+    holdout_start = win["end"] - timedelta(days=365)
+    validation_start = holdout_start - timedelta(days=365)
+    items = [{"event_date": iso(event["_day"]), "kind": event["kind"]} for event in events]
+    split: dict[str, Any] = {}
+    try:
+        split = time_split_by_dates(
+            items,
+            dev_end=iso(validation_start - timedelta(days=1)),
+            validation_end=iso(holdout_start - timedelta(days=1)),
+        )
+    except Exception:
+        split = {}
+
+    p_values = []
+    labels = []
+    for row in device.get("tracks") or []:
+        prob_up = row.get("prob_up")
+        if prob_up is None:
+            continue
+        p_values.append(max(0.0, min(1.0, 1.0 - float(prob_up))))
+        labels.append(row.get("track_id") or "")
+    testing: dict[str, Any] = {}
+    if p_values:
+        try:
+            testing = multiple_testing(p_values, method="holm", labels=labels)
+        except Exception:
+            testing = {}
+    return {
+        "sample_split": split,
+        "multiple_testing": testing,
+        "survivorship": {
+            "flagged": 0,
+            "note": "免费行情源不含完整退市收益；退市/并购标的在回放与事件研究中单独标注，不静默剔除",
+        },
+    }
+
+
 # --------------------------------------------------------------------------- build
 def build_metrics(
     db,
@@ -792,9 +870,6 @@ def build_metrics(
     device = _device_section(device_events, device_reg, device_tracks, win)
     drug = _drug_section(drug_events, drug_reg, drug_tracks, win)
     cn_gap, cn_status = _cn_gap(all_events, device_tracks, win)
-    track_index = {
-        row["track_id"]: row["thi"] or 1.0 for row in device["tracks"] if row.get("thi")
-    }
     signals = _signals(
         device_events + drug_events,
         device_reg,
@@ -802,9 +877,18 @@ def build_metrics(
         device_tracks,
         drug_tracks,
         win,
-        track_index,
     )
     alerts = _alerts(device, drug, cn_gap)
+
+    quality_counts = Counter(event.get("timestamp_quality") or "unknown" for event in all_events)
+    excluded_from_trading = sum(
+        1 for event in all_events if (event.get("timestamp_quality") or "unknown") in ("unknown",)
+    )
+    timestamps = {
+        "by_quality": {key: int(value) for key, value in quality_counts.items()},
+        "excluded_from_trading": excluded_from_trading,
+        "policy": "回测只使用 available_at；quality=unknown 的事件不进入交易研究",
+    }
 
     counts = {
         row["kind"]: row["n"]
@@ -851,6 +935,8 @@ def build_metrics(
         "cn_gap": cn_gap,
         "signals": signals,
         "alerts": alerts,
+        "timestamps": timestamps,
+        "research": _research_block(all_events, device, win),
     }
 
     trading_path = OUT_DIR / "trading.json"

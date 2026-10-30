@@ -314,6 +314,44 @@ def cmd_live(args: argparse.Namespace) -> int:
     return 0
 
 
+# -------------------------------------------------------------------- onboarding
+def cmd_demo(args: argparse.Namespace) -> int:
+    from .onboarding import run_demo
+
+    result = run_demo(out_dir=args.out_dir, metrics_path=args.metrics)
+    _emit(result)
+    return 0 if result.get("status", "ok") in ("ok", "degraded") else 1
+
+
+def cmd_doctor(args: argparse.Namespace) -> int:
+    from .onboarding import run_doctor
+
+    report = run_doctor(network=not args.no_network)
+    _emit(report)
+    return 0 if report.get("ok", True) else 1
+
+
+def cmd_watchlist(args: argparse.Namespace) -> int:
+    from .onboarding import watchlist_add, watchlist_list, watchlist_remove
+
+    if args.remove:
+        _emit(watchlist_remove(args.remove))
+        return 0
+    if args.add:
+        _emit(
+            watchlist_add(
+                args.add,
+                name_en=args.name_en,
+                name_zh=args.name_zh,
+                ticker=args.ticker,
+                aliases=args.alias or None,
+            )
+        )
+        return 0
+    _emit({"companies": watchlist_list()})
+    return 0
+
+
 # ------------------------------------------------------------------------ status
 def cmd_status(args: argparse.Namespace) -> int:
     from .db import DB
@@ -411,6 +449,25 @@ def build_parser() -> argparse.ArgumentParser:
     status = sub.add_parser("status", help="show what has been collected")
     status.add_argument("--db", default=str(DEFAULT_DB))
     status.set_defaults(func=cmd_status)
+
+    demo = sub.add_parser("demo", help="offline demo report from the committed snapshot")
+    demo.add_argument("--out-dir", default=None)
+    demo.add_argument("--metrics", default=None, help="snapshot metrics.json (default: docs/metrics.json)")
+    demo.set_defaults(func=cmd_demo)
+
+    doctor = sub.add_parser("doctor", help="environment self-check (config, data dir, DB, network)")
+    doctor.add_argument("--no-network", action="store_true")
+    doctor.set_defaults(func=cmd_doctor)
+
+    watch = sub.add_parser("watchlist", help="manage the device watchlist without editing JSON")
+    group = watch.add_mutually_exclusive_group()
+    group.add_argument("--add", metavar="KEY", default=None)
+    group.add_argument("--remove", metavar="KEY", default=None)
+    watch.add_argument("--name-en", default=None)
+    watch.add_argument("--name-zh", default=None)
+    watch.add_argument("--ticker", default=None)
+    watch.add_argument("--alias", action="append", default=None)
+    watch.set_defaults(func=cmd_watchlist)
 
     live = sub.add_parser("live", help="event alerts + simulated real-time US paper trading")
     live.add_argument("--db", default=str(DEFAULT_DB))

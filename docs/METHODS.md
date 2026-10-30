@@ -13,8 +13,12 @@ Every public act becomes one row in the `events` table:
 | Column | Meaning |
 |---|---|
 | `kind` | `510k` / `pma` / `device_recall` / `drug_approval` / `trial` / `nmpa_registration` |
-| `event_date` | **earliest date the act was publicly knowable** (decision date, approval date, trial first-posted date). This is the anti-lookahead anchor. |
-| `as_of` | when MedRadar fetched it |
+| `event_date` | date the act happened (decision date, approval date, trial first-posted date) |
+| `published_at` | when the source made it public (openFDA gives dates only; EDGAR gives timestamps) |
+| `first_seen_at` | when MedRadar first ingested it |
+| `available_at` | **the only timestamp a backtest may use** (defaults to `published_at`) |
+| `timestamp_quality` | `datetime` / `date` / `estimated` / `unknown`; `unknown` never trades |
+| `as_of` | when MedRadar fetched it (point-in-time marker) |
 | `company_key` | resolved parent company (may be `NULL` — never guessed) |
 | `track_id` | resolved technology track (may be `NULL` for unmapped product codes) |
 
@@ -67,6 +71,11 @@ no change, the data insists on doubling".
 
 When a track has **zero** baseline events (new category), `THI` is computed against the mean baseline
 rate of all active tracks and the row is flagged `emerging: true` — never silently dropped.
+
+**Point-in-time rule for signals.** An earlier version boosted a signal's score with the track's THI
+computed over the current window, which quietly used data published *after* the event. Signals now
+use only "how many events did this track already have in the 180 days before this one became
+public" (`prior_track_count`), computed from `available_at` with a bisect over sorted history.
 
 ## 4. Direction = portfolio mix shift
 
@@ -123,7 +132,11 @@ seeing the backtest is how projects lie to themselves.
 
 **Event study** (`eventstudy.run_event_study`):
 
-* entry = open of the first trading day **after** `signal_date`;
+* signals are read from the `signals` table, which now stores `available_at` and
+  `timestamp_quality`; signals with `timestamp_quality = unknown` are excluded (counted in
+  `skipped.unknown_timestamp`, never silently dropped);
+* entry = open of the first trading day **after** `signal_date`, where
+  `signal_date = available_at + 1 day` — i.e. roughly two trading days after the event;
 * exit = close `h` trading days later, `h ∈ {1, 5, 20, 60}`;
 * `AR = stock return − benchmark (SPY) return`, negated for `direction = −1`;
 * per kind: n, mean, median, std, t, percentile-bootstrap 95% CI, hit rate.

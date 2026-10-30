@@ -26,7 +26,59 @@
   "cn_gap": [...],
   "signals": [...],
   "alerts": {...},
+  "timestamps": {...},                        // 时间质量与交易排除数（§9）
+  "products": {...},                          // 产品族与新品雷达（§10，可选）
+  "replay": {...},                            // 回放研究（§11，可选）
+  "research": {...},                          // 样本划分/多重检验/生存偏差（§12，可选）
   "trading": {...}                            // 可选，只有跑 trade 时才有
+}
+```
+
+## 9. `timestamps`（时间质量）
+
+```jsonc
+{
+  "by_quality": {"datetime": 0, "date": 83578, "estimated": 0, "unknown": 0},
+  "excluded_from_trading": 0,
+  "policy": "回测只使用 available_at；quality=unknown 的事件不进入交易研究"
+}
+```
+
+## 10. `products`（产品级情报，可选）
+
+```jsonc
+{
+  "families": [{"family_id","name_zh","name_en","recent","thi","prob_up","companies","new_entrants_12m","first_seen"}],
+  "new_products": [{"date","company_zh","family_zh","code","device_name_zh","definition_zh","k_number","url"}],
+  "company_portfolio": [{"company_zh","top_families":[["family_zh", 0.42]],"js_shift":0.11}],
+  "coverage": {"families": 180, "top20_event_share": 0.56, "classified_event_share": 0.84}
+}
+```
+
+## 11. `replay`（回放研究，可选）
+
+```jsonc
+{
+  "status": "ok",
+  "window": {"start": "2026-10-20", "end": "2026-10-30"},
+  "steps": [{"t":"2026-10-29T13:45:00-04:00","ticker":"MRK","event_zh":"FDA 批准",
+             "decision":"BUY","fill_price":88.4,"shares":56.0,
+             "outcome_1d":0.01,"outcome_5d":null,"outcome_20d":null,"url":"https://www.sec.gov/..."}],
+  "summary_by_cost": {"10": {"total_return":0.03,"max_drawdown":-0.02,"trades":4},
+                      "25": {...}, "50": {...}},
+  "assumptions_url": "docs/ASSUMPTIONS.md"
+}
+```
+
+## 12. `research`（研究元信息，可选）
+
+```jsonc
+{
+  "sample_split": {"dev":{"start":"2016-01-01","end":"2023-12-31"},
+                   "validation":{"start":"2024-01-01","end":"2025-06-30"},
+                   "holdout":{"start":"2025-07-01","end":"2026-10-30"}},
+  "multiple_testing": {"method":"holm","raw_p":[...],"adjusted_p":[...],"n_tests":20},
+  "survivorship": {"flagged": 37, "note": "退市/并购标的单独标注，未从样本中剔除"}
 }
 ```
 
@@ -137,7 +189,11 @@
 | `event_id` | 确定性哈希，重复采集幂等 |
 | `source` | `openfda_device_510k` / `openfda_device_pma` / `openfda_device_recall` / `openfda_drug_drugsfda` / `ctgov` / `nmpa` |
 | `kind` | `510k` / `pma` / `device_recall` / `drug_approval` / `trial` / `nmpa_registration` |
-| `event_date` | **最早公开可获知日期**（决策日/批准日/试验首次登记日），用于避免前视偏差 |
+| `event_date` | **事件发生日**（决策日/批准日/试验首次登记日），用于窗口统计 |
+| `published_at` | 来源公开发布时间（openFDA 只有日期，EDGAR 有精确时间） |
+| `first_seen_at` | MedRadar 首次采集到该记录的时间 |
+| `available_at` | **回测允许使用的时间**（默认等于 `published_at`）；交易/回放只读这一列 |
+| `timestamp_quality` | `datetime` / `date` / `estimated` / `unknown`；`unknown` 不进入交易研究 |
 | `as_of` | 该数据的采集日期（point-in-time 标记） |
 | `company_key` | 由 `CompanyRegistry.resolve()` 得出，未匹配为 `NULL` |
 | `applicant_raw` | 原始公司名（永远保留，方便人工复核漏检） |
@@ -147,6 +203,19 @@
 | `payload` | 原始 JSON（截断），用于复核 |
 
 `kind` 取值同时决定 `signals` 生成规则，新增 kind 必须同步更新 §5。
+
+### 6.1 时间语义（研究级）
+
+| 列 | 含义 | 谁可以读 |
+|---|---|---|
+| `event_date` | 事件发生的日期 | 统计分析窗口（行业趋势） |
+| `published_at` | 来源公开发布时间 | 展示、审计 |
+| `first_seen_at` | 系统首次采集时间 | 数据健康度 |
+| `available_at` | 回测可用时间 | **只有交易/回放** |
+| `timestamp_quality` | 精度等级 | 交易过滤器 |
+
+规则：**交易研究必须使用 `available_at`**；`timestamp_quality=unknown` 的事件只能进入行业分析，
+必须显式计入 `metrics.timestamps.excluded_from_trading`，不得静默丢弃。
 
 ## 7. `trading`（模拟研究，可选）
 

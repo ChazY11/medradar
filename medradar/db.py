@@ -68,7 +68,14 @@ CREATE TABLE IF NOT EXISTS events (
     summary TEXT,
     url TEXT,
     payload TEXT,
-    fetched_at TEXT
+    fetched_at TEXT,
+    -- Research-grade timing. ``event_date`` is kept for backwards compatibility
+    -- and is the date the event happened; these four columns state *when the
+    -- information became usable*, which is what a backtest must consume.
+    published_at TEXT,          -- when the source made the record public
+    first_seen_at TEXT,         -- when MedRadar first ingested it
+    available_at TEXT,          -- the timestamp the backtest is allowed to use
+    timestamp_quality TEXT DEFAULT 'date'  -- datetime | date | estimated | unknown
 );
 CREATE INDEX IF NOT EXISTS idx_events_kind_date ON events(kind, event_date);
 CREATE INDEX IF NOT EXISTS idx_events_company ON events(company_key, event_date);
@@ -98,6 +105,8 @@ CREATE TABLE IF NOT EXISTS signals (
     score REAL,
     track_id TEXT,
     reason_zh TEXT,
+    available_at TEXT,
+    timestamp_quality TEXT DEFAULT 'date',
     created_at TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_signals_date ON signals(signal_date);
@@ -213,7 +222,13 @@ EVENT_FIELDS = (
     "url",
     "payload",
     "fetched_at",
+    "published_at",
+    "first_seen_at",
+    "available_at",
+    "timestamp_quality",
 )
+
+TIMESTAMP_QUALITIES = ("datetime", "date", "estimated", "unknown")
 
 
 def make_event_id(source: str, kind: str, *parts: Any) -> str:
@@ -232,7 +247,39 @@ class DB:
         self.conn.execute("PRAGMA journal_mode=WAL")
         self.conn.execute("PRAGMA synchronous=NORMAL")
         self.conn.executescript(SCHEMA)
+        self._migrate()
         self.conn.commit()
+
+    def _migrate(self) -> None:
+        """Forward-migrate an existing database without losing data.
+
+        Older databases predate the research-grade timing columns; add them and
+        backfill from the best available proxy. ``timestamp_quality='estimated'``
+        marks rows whose availability was inferred rather than observed.
+        """
+        existing = {row["name"] for row in self.conn.execute("PRAGMA table_info(events)")}
+        additions = {
+            "published_at": "TEXT",
+            "first_seen_at": "TEXT",
+            "available_at": "TEXT",
+            "timestamp_quality": "TEXT DEFAULT 'date'",
+        }
+        for column, decl in additions.items():
+            if column not in existing:
+                self.conn.execute(f"ALTER TABLE events ADD COLUMN {column} {decl}")
+        if any(column not in existing for column in additions):
+            self.conn.execute(
+                "UPDATE events SET"
+                " published_at = COALESCE(NULLIF(published_at, ''), event_date),"
+                " first_seen_at = COALESCE(NULLIF(first_seen_at, ''), as_of, fetched_at),"
+                " available_at = COALESCE(NULLIF(available_at, ''), NULLIF(published_at, ''), event_date),"
+                " timestamp_quality = COALESCE(NULLIF(timestamp_quality, ''), 'estimated')"
+                " WHERE available_at IS NULL OR available_at = ''"
+            )
+        signal_columns = {row["name"] for row in self.conn.execute("PRAGMA table_info(signals)")}
+        for column, decl in {"available_at": "TEXT", "timestamp_quality": "TEXT DEFAULT 'date'"}.items():
+            if column not in signal_columns:
+                self.conn.execute(f"ALTER TABLE signals ADD COLUMN {column} {decl}")
 
     # ------------------------------------------------------------------ basics
     def execute(self, sql: str, params: Iterable[Any] = ()) -> sqlite3.Cursor:
@@ -389,13 +436,21 @@ class DB:
             payload = event.get("payload")
             if isinstance(payload, (dict, list)):
                 payload = json.dumps(payload, ensure_ascii=False)
+            event_date = iso(event.get("event_date"))
+            as_of = iso(event.get("as_of")) or stamp[:10]
+            published_at = iso(event.get("published_at")) or event_date
+            first_seen_at = event.get("first_seen_at") or as_of
+            available_at = iso(event.get("available_at")) or published_at or event_date
+            quality = str(event.get("timestamp_quality") or "date").lower()
+            if quality not in TIMESTAMP_QUALITIES:
+                quality = "unknown"
             rows.append(
                 (
                     event["event_id"],
                     event["source"],
                     event["kind"],
-                    iso(event.get("event_date")),
-                    iso(event.get("as_of")) or stamp[:10],
+                    event_date,
+                    as_of,
                     event.get("company_key"),
                     event.get("applicant_raw", ""),
                     event.get("country", "US"),
@@ -406,13 +461,18 @@ class DB:
                     event.get("url", ""),
                     payload or "",
                     event.get("fetched_at") or stamp,
+                    published_at,
+                    first_seen_at,
+                    available_at,
+                    quality,
                 )
             )
         self.conn.executemany(
             "INSERT OR REPLACE INTO events(event_id, source, kind, event_date, as_of,"
             " company_key, applicant_raw, country, track_id, product_code, title,"
-            " summary, url, payload, fetched_at)"
-            " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            " summary, url, payload, fetched_at, published_at, first_seen_at,"
+            " available_at, timestamp_quality)"
+            " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             rows,
         )
         self.conn.commit()
@@ -464,14 +524,17 @@ class DB:
                 float(signal.get("score") or 0.0),
                 signal.get("track_id"),
                 signal.get("reason_zh", ""),
+                iso(signal.get("available_at")),
+                str(signal.get("timestamp_quality") or "date").lower(),
                 stamp,
             )
             for signal in signals
         ]
         self.conn.executemany(
             "INSERT OR REPLACE INTO signals(signal_id, event_id, company_key, ticker,"
-            " signal_date, kind, direction, score, track_id, reason_zh, created_at)"
-            " VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+            " signal_date, kind, direction, score, track_id, reason_zh, available_at,"
+            " timestamp_quality, created_at)"
+            " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
             rows,
         )
         self.conn.commit()
