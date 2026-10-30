@@ -89,9 +89,19 @@ export MEDRADAR_LLM_API_KEY=sk-...
 python -m medradar judge --url https://www.sec.gov/Archives/... --headline "Company 8-K"
 ```
 
-真实文件校准（Merck 2026Q3 财报 8-K，481KB）：关键词回退把它标成 `approval`（错）、
-`is_pivotal=true`（误报）；LLM 判为 `earnings / materiality 0.20 / is_pivotal false` 并给出原文证据，
-对应 1% 仓位而不是 5%。
+在 **25 份人工标注的真实 8‑K**（批准 / CRL / 试验读出 / 财报）上校准，完整报告见
+[docs/CALIBRATION.md](docs/CALIBRATION.md)：
+
+| 指标 | LLM 判定 | 关键词基线 |
+|---|---|---|
+| catalyst_type 准确率 | **1.00** | 0.60 |
+| direction 准确率 | **0.92** | 0.72 |
+| 材料性 Spearman ρ | **0.80** | 0.58 |
+| 高材料性 F1（≥0.5） | **0.94** | 0.67 |
+| 把 CRL 判成"买入" | **0** | 5 份里 2 份 |
+
+基线把 4/9 试验读数和 5/5 财报都判成 `approval`——而 `earnings` 是"不交易"的开关，这个错误是
+实盘级别的。材料性相对人工标签系统性偏高约 +0.15：建议按排序使用，或乘 0.85 收缩后再算仓位。
 
 ## 快速开始
 

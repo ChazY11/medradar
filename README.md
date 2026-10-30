@@ -98,9 +98,20 @@ export MEDRADAR_LLM_API_KEY=sk-...
 python -m medradar judge --url https://www.sec.gov/Archives/... --headline "Company 8-K"
 ```
 
-Real‑filing calibration (Merck Q3‑2026 earnings 8‑K, 481 KB): the keyword fallback labelled it
-`catalyst_type=approval` (wrong) and `is_pivotal=true` (false positive); an LLM returned
-`earnings / materiality 0.20 / is_pivotal false` with verbatim evidence — a 1% position instead of 5%.
+Calibrated on **25 hand-labelled real 8‑Ks** (approvals / CRLs / trial readouts / earnings) —
+full report in [docs/CALIBRATION.md](docs/CALIBRATION.md):
+
+| metric | LLM judge | keyword baseline |
+|---|---|---|
+| catalyst_type accuracy | **1.00** | 0.60 |
+| direction accuracy | **0.92** | 0.72 |
+| materiality Spearman ρ | **0.80** | 0.58 |
+| high-materiality F1 (≥0.5) | **0.94** | 0.67 |
+| buys a CRL (should short) | **0** | 2 of 5 |
+
+The baseline labels 4/9 trial readouts and 5/5 earnings as "approval" — and `earnings` is the
+"do not trade" switch, so that error matters. Materiality runs ~+0.15 high versus human labels;
+use it for ranking, or shrink by 0.85 before sizing.
 
 ## Quickstart
 
