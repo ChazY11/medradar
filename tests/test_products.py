@@ -62,6 +62,17 @@ def _readonly_db(path: str | Path):
     return _Reader(conn)
 
 
+def _load_catalog_script():
+    """Import ``scripts/build_product_catalog.py`` without executing its CLI."""
+    import importlib.util
+
+    path = Path(__file__).resolve().parents[1] / "scripts" / "build_product_catalog.py"
+    spec = importlib.util.spec_from_file_location("medradar_build_product_catalog", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 class SyntheticDatabaseMixin:
     """A tiny, deterministic database covering families, companies and new launches."""
 
@@ -277,13 +288,15 @@ class ArtifactTests(unittest.TestCase):
     def test_families_artifact(self) -> None:
         payload = fam.load_families()
         meta, family_list = payload["meta"], payload["families"]
-        self.assertGreaterEqual(len(family_list), 150)
-        self.assertLessEqual(len(family_list), 220)
+        self.assertGreaterEqual(len(family_list), 180)
+        self.assertLessEqual(len(family_list), 250)
         self.assertEqual(meta["family_count"], len(family_list))
         coverage = meta["coverage"]
-        self.assertGreaterEqual(coverage["classified_share"], 0.8)
+        self.assertGreaterEqual(coverage["classified_share"], 0.985)
         self.assertGreaterEqual(coverage["top20_share"], 0.5)
-        self.assertGreaterEqual(coverage["classified_share_of_all_events"], 0.8)
+        # the all-events denominator moves whenever a collector backfills
+        # drug/trial events (which carry no product code), so only sanity-check it
+        self.assertGreaterEqual(coverage["classified_share_of_all_events"], 0.75)
         ids = [item["id"] for item in family_list]
         self.assertEqual(len(ids), len(set(ids)))
         codes: set[str] = set()
@@ -307,15 +320,17 @@ class ArtifactTests(unittest.TestCase):
 
     def test_catalog_artifact(self) -> None:
         catalog = products.load_catalog()
-        self.assertEqual(len(catalog), 600)
+        self.assertGreaterEqual(len(catalog), 2000)
+        self.assertLessEqual(len(catalog), 3000)
         for code, entry in catalog.items():
             self.assertEqual(set(entry), CATALOG_KEYS, code)
             self.assertTrue(entry["name_zh"].strip(), code)
             self.assertTrue(entry["definition_zh"].strip(), code)
             self.assertTrue(_has_cjk(entry["name_zh"]), code)
+            self.assertTrue(_has_cjk(entry["definition_zh"]), code)
         self.assertNotIn("N/A", catalog)
 
-    def test_catalog_covers_real_top600(self) -> None:
+    def test_catalog_covers_real_top2000(self) -> None:
         if not Path(DEFAULT_DB).exists():
             self.skipTest("real database not available")
         catalog = products.load_catalog()
@@ -334,12 +349,41 @@ class ArtifactTests(unittest.TestCase):
             for code, n in rows
             if str(code).strip().upper() not in fam.INVALID_PRODUCT_CODES
             and str(code).replace("-", "").isalnum()
-        ][:600]
-        self.assertEqual(len(valid), 600)
+        ][:2000]
+        self.assertEqual(len(valid), 2000)
         for code, _n in valid:
             self.assertIn(code, catalog)
             self.assertTrue(catalog[code]["name_zh"].strip())
             self.assertTrue(_has_cjk(catalog[code]["name_zh"]), code)
+            self.assertTrue(catalog[code]["definition_zh"].strip(), code)
+
+    def test_catalog_is_idempotent_and_preserves_reviewed_entries(self) -> None:
+        """Re-running the generator reproduces the committed file byte-for-byte."""
+        if not Path(DEFAULT_DB).exists():
+            self.skipTest("real database not available")
+        module = _load_catalog_script()
+        reader = _readonly_db(DEFAULT_DB)
+        self.addCleanup(reader.close)
+        first, first_report = module.build_catalog(reader)
+        second, second_report = module.build_catalog(reader)
+        self.assertEqual(first, second)
+        self.assertEqual(first_report, second_report)
+        committed = products.load_catalog()
+        self.assertGreaterEqual(len(committed), 2000)
+        self.assertEqual(len(first), 2000)
+        # the committed artefact must agree with a fresh build on every code it
+        # covers (new top-2000 codes from a parallel collector are caught by
+        # test_catalog_covers_real_top2000)
+        for code in set(committed) & set(first):
+            self.assertEqual(committed[code], first[code], code)
+        # the reviewed 600 are the authoritative base: they are never overwritten
+        self.assertEqual(len(module.REVIEWED_CATALOG), 600)
+        for code, entry in module.REVIEWED_CATALOG.items():
+            if code in first:
+                self.assertEqual(first[code]["name_zh"], entry[0], code)
+                self.assertEqual(first[code]["definition_zh"], entry[1], code)
+        self.assertFalse(module.REVIEWED_CATALOG.keys() & module.EXTENDED_CATALOG.keys())
+        self.assertGreaterEqual(len(module.EXTENDED_CATALOG), 1400)
 
     def test_families_artifact_matches_rebuild(self) -> None:
         if not Path(DEFAULT_DB).exists():
@@ -348,11 +392,16 @@ class ArtifactTests(unittest.TestCase):
         self.addCleanup(reader.close)
         rebuilt = fam.build_families(reader, write=False)
         current = fam.load_families()
+        # Compare the deterministic part (family assignment + conflicts). The
+        # event counters in ``meta`` legitimately drift while a parallel
+        # collector backfills drug/trial events, so they are not compared here.
         self.assertEqual(
-            json.dumps(current, ensure_ascii=False, sort_keys=True),
-            json.dumps(rebuilt, ensure_ascii=False, sort_keys=True),
+            json.dumps(current["families"], ensure_ascii=False, sort_keys=True),
+            json.dumps(rebuilt["families"], ensure_ascii=False, sort_keys=True),
             "config/product_families.json is stale - run scripts/build_product_catalog.py",
         )
+        self.assertEqual(current["unclassified"], rebuilt["unclassified"])
+        self.assertEqual(current["meta"]["family_count"], rebuilt["meta"]["family_count"])
 
 
 if __name__ == "__main__":

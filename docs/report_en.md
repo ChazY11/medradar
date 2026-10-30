@@ -1,6 +1,6 @@
 # MedRadar: FDA Device & Drug Industry Radar
 
-_Generated 2026-10-30T18:57:48Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
+_Generated 2026-10-30T19:14:52Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
 
 ## Key takeaways
 
@@ -15,7 +15,7 @@ _Generated 2026-10-30T18:57:48Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 - Device / drug / trials: `ok`, `ok`, `ok`
 - NMPA (China registrations): `unavailable` - **unavailable (NMPA data not loaded)**; China-gap numbers are not inferred.
 - Prices: `ok`
-- Events in window: 83,578
+- Events in window: 92,585
 
 ## Hottest device tracks
 
@@ -43,10 +43,10 @@ _Generated 2026-10-30T18:57:48Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 ## Product families
 
 - 轮椅与代步车 (`rehab_wheelchair`): THI 2.53, P(up) 100.0%, 36 events, 0 new entrants in 12 months.
+- 氧疗与制氧 (`resp_oxygen`): THI 1.83, P(up) 99.4%, 18 events, 0 new entrants in 12 months.
 - 栓塞材料与液体栓塞剂 (`nv_embolic`): THI 1.73, P(up) 99.2%, 20 events, 2 new entrants in 12 months.
-- 泌尿产品（结石/前列腺/尿失禁） (`uro`): THI 1.51, P(up) 100.0%, 97 events, 2 new entrants in 12 months.
+- 泌尿产品（结石/前列腺/尿失禁） (`uro`): THI 1.52, P(up) 100.0%, 96 events, 2 new entrants in 12 months.
 - 手术机器人与计算机辅助手术 (`surg_robot`): THI 1.5, P(up) 98.7%, 29 events, 0 new entrants in 12 months.
-- 经皮神经电刺激（TENS） (`neuro_tens`): THI 1.46, P(up) 97.9%, 28 events, 0 new entrants in 12 months.
 - New products in the weekly radar: 19 (Chinese names + 510(k)/PMA numbers).
 
 ## Portfolio migration
@@ -76,8 +76,8 @@ _Generated 2026-10-30T18:57:48Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 
 ## Drug side
 
-Top NDA/BLA momentum: Ionis Pharmaceuticals (THI 3.91), Otsuka (THI 3.91), Daiichi Sankyo (THI 3.91), Sanofi (THI 2.09), Boehringer Ingelheim (THI 2.09).
-Hottest therapeutic areas: t_vaccines (P 100.0%), t_dermatology (P 100.0%), t_cardiometabolic (P 100.0%), t_neuroscience (P 100.0%).
+Top NDA/BLA momentum: Otsuka (THI 3.91), Daiichi Sankyo (THI 3.91), Ionis Pharmaceuticals (THI 3.91), Sanofi (THI 2.09), Boehringer Ingelheim (THI 2.09).
+Hottest therapeutic areas: t_vaccines (P 100.0%), t_cardiometabolic (P 100.0%), t_dermatology (P 100.0%), t_neuroscience (P 100.0%).
 Trial starts: Novartis (暂无数据), Pfizer (暂无数据), AstraZeneca (暂无数据), Eli Lilly (暂无数据), Merck & Co. (暂无数据).
 
 ## China gap
@@ -93,10 +93,20 @@ Trial starts: Novartis (暂无数据), Pfizer (暂无数据), AstraZeneca (暂�
 ## Replay and research hygiene
 
 - Replay: 60 steps from 2026-05-04 to 2026-10-31; multi-cost summary for 3 cost buckets.
-- Timestamp quality: date 83,578; excluded from trading: 0.
+- Timestamp quality: date 91,830; excluded from trading: 0.
 - Multiple testing: holm correction over 24 tests.
 - Survivorship flags: 4.
 - Assumption register: `docs/ASSUMPTIONS.md`.
+
+
+## Case library (in-sample evidence)
+
+- 样本总数: 98; 20 日命中率: 51.0%; 60 日命中率: 45.9%; corpus_total: 465
+- 2020-08-04 · CTSO: FDA 批准：Cytosorbents Corp · fda approval — outcome 未命中; price 1/5/20/60d: 1 日 +7.9% ▲、5 日 -1.4% ▼、20 日 -9.3% ▼、60 日 -7.7% ▼.
+- 2020-08-04 · CERS: FDA 批准：CERUS CORP · fda approval — outcome 未命中; price 1/5/20/60d: 1 日 +2.0% ▲、5 日 -0.9% ▼、20 日 -15.8% ▼、60 日 -17.7% ▼.
+- 2020-07-31 · ABBV: 临床数据读出：AbbVie Inc. · met the primary endpoint — outcome 未命中; price 1/5/20/60d: 1 日 -14.3% ▼、5 日 -17.4% ▼、20 日 -18.4% ▼、60 日 -25.6% ▼.
+- Negative examples: 6 (missed / reversed cases).
+- Retrospective in-sample evidence only; not strategy performance.
 
 
 ## Method and limitations

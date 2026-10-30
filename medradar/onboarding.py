@@ -322,6 +322,7 @@ def run_doctor(
     except OSError:  # pragma: no cover - unresolvable path on exotic filesystems
         same_config = False
     payload: dict[str, Any] = {
+        "ok": not failures,
         "status": "fail" if failures else "ok",
         "python": platform.python_version(),
         "config_dir": str(resolved_config_dir),

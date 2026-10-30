@@ -486,10 +486,26 @@ def cmd_products(args: argparse.Namespace) -> int:
 
 # -------------------------------------------------------------------------- cases
 def cmd_cases(args: argparse.Namespace) -> int:
-    from .cases import build_cases, corpus_tickers, write_cases
+    from .cases import (
+        build_cases,
+        cik_ticker_map,
+        corpus_tickers,
+        enrich_items,
+        load_corpus,
+        write_cases,
+        write_corpus,
+    )
     from .db import DB
 
-    tickers = corpus_tickers(args.corpus) if args.fetch_prices else []
+    corpus_path = args.corpus
+    if args.enrich:
+        items = load_corpus(corpus_path)
+        if items:
+            enriched = enrich_items(items, cik_ticker_map())
+            corpus_path = str(write_corpus(enriched, Path(args.out_dir or "out/cases") / "corpus_enriched.jsonl"))
+            print(json.dumps({"enriched": len(enriched), "corpus": corpus_path}, ensure_ascii=False))
+
+    tickers = corpus_tickers(corpus_path) if args.fetch_prices else []
     if tickers:
         from .config import CACHE_DIR
         from .http import Fetcher
@@ -506,7 +522,7 @@ def cmd_cases(args: argparse.Namespace) -> int:
     with DB(args.db) as db:
         result = build_cases(
             db,
-            corpus_path=args.corpus,
+            corpus_path=corpus_path,
             max_cases=args.limit,
             benchmark=args.benchmark,
         )
@@ -731,6 +747,7 @@ def build_parser() -> argparse.ArgumentParser:
     cases = sub.add_parser("cases", help="build the traceable case library from the EDGAR corpus")
     cases.add_argument("--db", default=str(DEFAULT_DB))
     cases.add_argument("--corpus", default=None, help="path to corpus.jsonl")
+    cases.add_argument("--enrich", action="store_true", help="fill ticker/category from CIK and bucket")
     cases.add_argument("--limit", type=int, default=120)
     cases.add_argument("--benchmark", default="SPY")
     cases.add_argument("--out-dir", default=None)

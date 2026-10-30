@@ -817,5 +817,120 @@
       "n_significant": 3
     },
     "survivorship": {"flagged": 2, "method": "current-listing-only", "note": "退市/撤回产品未纳入"}
+  },
+  "cases": {
+    "stats": {
+      "total": 120,
+      "hit_rate_20d": 0.61,
+      "hit_rate_5d": 0.55,
+      "hit_rate_1d": 0.52,
+      "by_category": [
+        ["approval", 20, 0.7],
+        ["device_novel_code", 34, 0.62],
+        ["trial_start", 28, 0.54],
+        ["recall_cluster", 12, 0.33]
+      ]
+    },
+    "selected": [
+      {
+        "case_id": "c001",
+        "date": "2024-11-12",
+        "ticker": "AUTL",
+        "company_zh": "Autolus",
+        "event_zh": "FDA 批准 AUCATZYL（obecabtagene autoleucel）",
+        "category": "approval",
+        "direction": 1,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1737287/000119312524258251/d812020dex991.htm",
+        "evidence_quotes": [
+          "The U.S. Food and Drug Administration has approved AUCATZYL for the treatment of adult patients with relapsed or refractory B-cell precursor acute lymphoblastic leukemia.",
+          "AUCATZYL is the first and only CAR-T therapy approved with a companion diagnostic for this indication."
+        ],
+        "price_1d": 0.031,
+        "price_5d": 0.052,
+        "price_20d": -0.018,
+        "price_60d": 0.114,
+        "verdict_zh": "系统判定为高置信做多（score 0.81）；1/5 日命中，20 日回撤后 60 日重新走强，事后定性为 mixed。",
+        "outcome": "mixed"
+      },
+      {
+        "case_id": "c002",
+        "date": "2025-02-20",
+        "ticker": "MDT",
+        "company_zh": "美敦力",
+        "event_zh": "脉冲场消融系统获得 510(k) 清关（K243456）",
+        "category": "device_clearance",
+        "direction": 1,
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K243456",
+        "evidence_quotes": [
+          "510(k) Number: K243456. Device Name: Pulsed Field Ablation System. Decision Date: 2025-02-18.",
+          "The device is intended to ablate cardiac tissue using pulsed electric fields."
+        ],
+        "price_1d": 0.012,
+        "price_5d": 0.028,
+        "price_20d": 0.041,
+        "price_60d": 0.077,
+        "verdict_zh": "系统判定为赛道扩张型做多（score 0.76）；1/5/20/60 日全部为正，事后 hit。",
+        "outcome": "hit"
+      },
+      {
+        "case_id": "c003",
+        "date": "2025-06-05",
+        "ticker": "PHG",
+        "company_zh": "飞利浦",
+        "event_zh": "软件相关召回聚集被识别为风险信号",
+        "category": "recall",
+        "direction": -1,
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfres/res.cfm?id=Z-1234-2026",
+        "evidence_quotes": [
+          "Reason for Recall: Software. The device may display an incorrect measurement under specific configurations."
+        ],
+        "price_1d": -0.021,
+        "price_5d": -0.034,
+        "price_20d": 0.009,
+        "price_60d": 0.026,
+        "verdict_zh": "系统判定为做空候选（score 0.58）；短期命中但 20 日后反弹，事后 miss。",
+        "outcome": "miss"
+      }
+    ],
+    "negative_examples": [
+      {
+        "case_id": "c004",
+        "date": "2025-03-18",
+        "ticker": "ISRG",
+        "company_zh": "直觉外科",
+        "event_zh": "单孔机械臂产品码首次出现，系统判做多",
+        "category": "device_novel_code",
+        "direction": 1,
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P230012",
+        "evidence_quotes": [
+          "PMA Number: P230012. Device Name: da Vinci Single Port Instrument Arm."
+        ],
+        "price_1d": -0.011,
+        "price_5d": -0.02,
+        "price_20d": -0.032,
+        "price_60d": -0.015,
+        "verdict_zh": "系统判定做多，但 1/5/20/60 日均为负，事后未命中（miss）。",
+        "outcome": "miss"
+      },
+      {
+        "case_id": "c005",
+        "date": "2025-07-09",
+        "ticker": "HOLX",
+        "company_zh": "豪洛捷",
+        "event_zh": "手术能量器械新产品码，缺少价格覆盖未成交",
+        "category": "device_novel_code",
+        "direction": 1,
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253634",
+        "evidence_quotes": [
+          "510(k) Number: K253634. Device Name: CoolSeal Generator."
+        ],
+        "price_1d": null,
+        "price_5d": null,
+        "price_20d": null,
+        "price_60d": null,
+        "verdict_zh": "没有该标的日线价格，回放里标记为 SKIP，不计入命中率；列为反例以示口径。",
+        "outcome": "miss"
+      }
+    ]
   }
 }

@@ -67,15 +67,15 @@ device_migration,medline,麦朗,medline,,,,,,,,,,,,track=监护与生命体征; 
 device_migration,johnson_johnson_medtech,强生医疗科技,johnson_johnson_medtech,,,,,,,,,,,,track=伤口与敷料; delta=0.094; js=0.113
 device_migration,bbraun,贝朗,bbraun,,,,,,,,,,,,track=奥索菲克斯; delta=-0.091; js=0.154
 device_migration,boston_scientific,波士顿科学,boston_scientific,,,,,,,,,,,,track=波士顿科学; delta=-0.086; js=0.139
-drug_approval,ionis,伊奥尼斯,ionis,2,0.25,0.05,3.91,0.916,0.5,10.38,,,,,nme_recent=2
 drug_approval,otsuka,大冢,otsuka,2,0.25,0.05,3.91,0.916,0.5,10.38,,,,,nme_recent=2
 drug_approval,daiichi_sankyo,第一三共,daiichi_sankyo,2,0.25,0.05,3.91,0.916,0.5,10.38,,,,,nme_recent=2
+drug_approval,ionis,伊奥尼斯,ionis,2,0.25,0.05,3.91,0.916,0.5,10.38,,,,,nme_recent=2
 drug_approval,sanofi,赛诺菲,sanofi,4,0.5,0.2,2.09,0.894,0.62,4.4,,,,,nme_recent=2
 drug_approval,boehringer,勃林格殷格翰,boehringer,3,0.38,0.15,2.09,0.849,0.48,4.8,,,,,nme_recent=2
 drug_approval,bayer,拜耳,bayer,3,0.38,0.15,2.09,0.849,0.48,4.8,,,,,nme_recent=3
 drug_approval,eisai,卫材,eisai,1,0.12,0.05,2.09,0.636,0.07,7.39,,,,,nme_recent=0
-drug_approval,gsk,葛兰素史克,gsk,5,0.62,0.3,1.79,0.873,0.64,3.52,,,,,nme_recent=4
 drug_approval,gilead,吉利德,gilead,5,0.62,0.3,1.79,0.873,0.64,3.52,,,,,nme_recent=3
+drug_approval,gsk,葛兰素史克,gsk,5,0.62,0.3,1.79,0.873,0.64,3.52,,,,,nme_recent=4
 drug_approval,merck,默沙东,merck,6,0.75,0.4,1.64,0.864,0.67,3.05,,,,,nme_recent=4
 drug_approval,novo_nordisk,诺和诺德,novo_nordisk,2,0.25,0.15,1.48,0.632,0.23,3.83,,,,,nme_recent=1
 drug_approval,jnj_pharma,强生创新制药,jnj_pharma,6,0.75,0.55,1.26,0.684,0.54,2.31,,,,,nme_recent=2
@@ -92,36 +92,33 @@ drug_approval,incyte,因塞特,incyte,1,0.12,0.2,0.73,0.236,0.05,2.19,,,,,nme_re
 drug_approval,bms,百时美施贵宝,bms,1,0.12,0.25,0.64,0.186,0.06,1.84,,,,,nme_recent=1
 drug_approval,novartis,诺华,novartis,2,0.25,0.65,0.55,0.075,0.14,1.22,,,,,nme_recent=2
 drug_area,t_vaccines,疫苗,Vaccines,17,2.12,0.6,2.85,1,1.7,4.28,,,,,升温
-drug_area,t_dermatology,皮肤,Dermatology,40,5,1.7,2.41,1,1.76,3.17,,,,,升温
-drug_area,t_cardiometabolic,心血管代谢（含GLP-1）,Cardiometabolic,396,49.5,17.05,2.38,1,2.17,2.62,,,,,升温
-drug_area,t_neuroscience,神经与精神,Neuroscience,122,15.25,7.55,1.74,1,1.47,2.04,,,,,升温
-drug_area,t_nephrology,肾脏,Nephrology,32,4,2.2,1.6,0.997,1.14,2.14,,,,,升温
-drug_area,t_oncology,肿瘤,Oncology,763,95.38,54,1.56,1,1.46,1.66,,,,,升温
-drug_area,t_immunology,免疫与炎症,Immunology,145,18.12,10.35,1.55,1,1.33,1.79,,,,,升温
-drug_area,t_transplant,移植与免疫抑制,Transplant,23,2.88,1.7,1.5,0.976,1.01,2.11,,,,,升温
-drug_area,t_ophthalmology,眼科,Ophthalmology,40,5,3.05,1.46,0.994,1.09,1.9,,,,,升温
-drug_area,t_respiratory,呼吸,Respiratory,36,4.5,3.3,1.26,0.929,0.93,1.66,,,,,升温
-drug_area,t_infectious,感染性疾病,Infectious Disease,94,11.75,8.85,1.24,0.987,1.03,1.47,,,,,升温
-drug_area,t_hematology,血液,Hematology,29,3.62,2.9,1.18,0.827,0.84,1.59,,,,,升温
-drug_area,t_urology,泌尿,Urology,34,4.25,3.6,1.13,0.769,0.83,1.49,,,,,升温
-drug_area,t_hepatology,肝病,Hepatology,20,2.5,2.15,1.12,0.685,0.73,1.59,,,,,升温
+drug_area,t_cardiometabolic,心血管代谢（含GLP-1）,Cardiometabolic,399,49.88,17.5,2.35,1,2.14,2.57,,,,,升温
+drug_area,t_dermatology,皮肤,Dermatology,40,5,1.9,2.19,1,1.6,2.87,,,,,升温
+drug_area,t_neuroscience,神经与精神,Neuroscience,122,15.25,8,1.66,1,1.4,1.95,,,,,升温
+drug_area,t_nephrology,肾脏,Nephrology,33,4.12,2.25,1.61,0.997,1.15,2.14,,,,,升温
+drug_area,t_oncology,肿瘤,Oncology,781,97.62,56.15,1.54,1,1.44,1.64,,,,,升温
+drug_area,t_immunology,免疫与炎症,Immunology,149,18.62,11.2,1.48,1,1.28,1.71,,,,,升温
+drug_area,t_transplant,移植与免疫抑制,Transplant,23,2.88,1.75,1.47,0.97,0.98,2.06,,,,,升温
+drug_area,t_ophthalmology,眼科,Ophthalmology,40,5,3.2,1.41,0.988,1.05,1.83,,,,,升温
+drug_area,t_respiratory,呼吸,Respiratory,37,4.62,3.3,1.29,0.949,0.95,1.69,,,,,升温
+drug_area,t_infectious,感染性疾病,Infectious Disease,95,11.88,8.95,1.24,0.987,1.03,1.47,,,,,升温
+drug_area,t_urology,泌尿,Urology,36,4.5,3.7,1.16,0.822,0.85,1.51,,,,,升温
+drug_area,t_hematology,血液,Hematology,29,3.62,3,1.15,0.78,0.82,1.55,,,,,升温
 drug_area,t_womens_health,女性健康,Women's Health,8,1,0.9,1.08,0.547,0.53,1.81,,,,,升温
-drug_area,t_pain,疼痛,Pain,11,1.38,1.35,1.01,0.483,0.57,1.59,,,,,平稳
-drug_area,t_addiction,成瘾与CNS,Addiction / CNS,5,0.62,0.8,0.84,0.269,0.35,1.55,,,,,降温
-drug_area,t_musculoskeletal,肌肉骨骼,Musculoskeletal,14,1.75,2.8,0.73,0.047,0.46,1.06,,,,,降温
+drug_area,t_hepatology,肝病,Hepatology,20,2.5,2.3,1.06,0.588,0.7,1.5,,,,,升温
+drug_area,t_pain,疼痛,Pain,11,1.38,1.4,0.99,0.443,0.55,1.54,,,,,平稳
+drug_area,t_addiction,成瘾与CNS,Addiction / CNS,5,0.62,0.85,0.81,0.231,0.34,1.48,,,,,降温
+drug_area,t_musculoskeletal,肌肉骨骼,Musculoskeletal,14,1.75,2.95,0.7,0.032,0.44,1.02,,,,,降温
 drug_area,t_rare_disease,罕见病,Rare Disease,5,0.62,1.15,0.67,0.085,0.3,1.19,,,,,降温
-drug_area,t_gene_therapy,基因治疗,Gene Therapy,1,0.12,0,0.29,0,0.17,0.43,,,,,降温
+drug_area,t_radiopharma,放射性药物,Radiopharma,1,0.12,0,0.29,0,0.18,0.42,,,,,降温
 drug_trial,novartis,诺华,novartis,110,13.75,0.35,28.84,1,23.81,34.59,,,,,starts_recent=
 drug_trial,pfizer,辉瑞,pfizer,156,19.5,1.35,10.78,1,9.2,12.55,,,,,starts_recent=
-drug_trial,astrazeneca,阿斯利康,astrazeneca,150,18.75,1.7,8.29,1,7.06,9.68,,,,,starts_recent=
+drug_trial,astrazeneca,阿斯利康,astrazeneca,190,23.75,2.4,7.47,1,6.48,8.57,,,,,starts_recent=
 drug_trial,lilly,礼来,lilly,185,23.12,2.45,7.14,1,6.18,8.2,,,,,starts_recent=
 drug_trial,merck,默沙东,merck,193,24.12,3.7,5.01,1,4.36,5.74,,,,,starts_recent=
 drug_trial,teleflex,teleflex,teleflex,3,0.38,0.1,3,0.934,0.66,6.97,,,,,starts_recent=
 drug_trial,novo_nordisk,诺和诺德,novo_nordisk,96,12,3.8,2.57,1,2.11,3.09,,,,,starts_recent=
-drug_trial,abbvie,艾伯维,abbvie,114,14.25,4.95,2.37,1,1.98,2.8,,,,,starts_recent=
 drug_trial,gsk,葛兰素史克,gsk,120,15,5.35,2.31,1,1.95,2.73,,,,,starts_recent=
-drug_trial,cook_medical,cook_medical,cook_medical,1,0.12,0.05,2.09,0.636,0.07,7.39,,,,,starts_recent=
-drug_trial,johnson_johnson_medtech,johnson_johnson_medtech,johnson_johnson_medtech,1,0.12,0.05,2.09,0.636,0.07,7.39,,,,,starts_recent=
 drug_trial,roche,罗氏,roche,111,13.88,5.75,2.03,1,1.7,2.4,,,,,starts_recent=
 drug_trial,regeneron,再生元,regeneron,66,8.25,3.7,1.89,1,1.5,2.35,,,,,starts_recent=
 drug_trial,insulet,insulet,insulet,7,0.88,0.4,1.86,0.931,0.82,3.35,,,,,starts_recent=
@@ -131,10 +128,13 @@ drug_trial,alnylam,阿里拉姆,alnylam,13,1.62,0.8,1.75,0.975,0.99,2.73,,,,,sta
 drug_trial,neurocrine,神经分泌,neurocrine,17,2.12,1.05,1.74,0.986,1.07,2.59,,,,,starts_recent=
 drug_trial,exelixis,埃克塞里克斯,exelixis,9,1.12,0.6,1.64,0.916,0.81,2.73,,,,,starts_recent=
 drug_trial,dentsply_sirona,dentsply_sirona,dentsply_sirona,3,0.38,0.2,1.64,0.745,0.39,3.73,,,,,starts_recent=
+drug_trial,abbvie,艾伯维,abbvie,114,14.25,7.75,1.61,1,1.36,1.9,,,,,starts_recent=
 drug_trial,baxter,baxter,baxter,5,0.62,0.35,1.57,0.816,0.57,3.07,,,,,starts_recent=
 drug_trial,boehringer,勃林格殷格翰,boehringer,91,11.38,6.45,1.56,1,1.28,1.87,,,,,starts_recent=
 drug_trial,otsuka,大冢,otsuka,43,5.38,3.45,1.41,0.989,1.06,1.81,,,,,starts_recent=
-drug_trial,united_therapeutics,联合治疗,united_therapeutics,3,0.38,0.25,1.36,0.646,0.34,3.06,,,,,starts_recent=
+drug_trial,ge_healthcare,ge_healthcare,ge_healthcare,12,1.5,1.1,1.26,0.78,0.71,1.97,,,,,starts_recent=
+drug_trial,blueprint,蓝图医药,blueprint,5,0.62,0.5,1.18,0.601,0.45,2.27,,,,,starts_recent=
+drug_trial,nevro,nevro,nevro,1,0.12,0.1,1.18,0.441,0.06,3.84,,,,,starts_recent=
 cn_gap,medical_ai,医疗AI/软件(SaMD),Medical AI / SaMD,422,,,,,,,,,,,cn_data_status=unavailable; us_share=0.11; cn_count=null; gap_index=null
 cn_gap,imaging_mr_ct,影像（MR/CT/PET/X-ray）,Advanced Imaging,353,,,,,,,,,,,cn_data_status=unavailable; us_share=0.092; cn_count=null; gap_index=null
 cn_gap,dental,口腔,Dental,347,,,,,,,,,,,cn_data_status=unavailable; us_share=0.09; cn_count=null; gap_index=null
@@ -160,57 +160,57 @@ cn_gap,neurovascular,神经介入,Neurovascular,51,,,,,,,,,,,cn_data_status=unav
 cn_gap,general_surgery,普外与手术耗材,General Surgery,40,,,,,,,,,,,cn_data_status=unavailable; us_share=0.01; cn_count=null; gap_index=null
 cn_gap,ivd_immuno,免疫诊断,Immunoassay,40,,,,,,,,,,,cn_data_status=unavailable; us_share=0.01; cn_count=null; gap_index=null
 product_family,rehab_wheelchair,轮椅与代步车,Wheelchairs,36,,,2.53,1,,,,,,,companies=0; new_entrants_12m=0; first_seen=2016-10-04
+product_family,resp_oxygen,氧疗与制氧,Oxygen Therapy,18,,,1.83,0.994,,,,,,,companies=0; new_entrants_12m=0; first_seen=2017-05-24
 product_family,nv_embolic,栓塞材料与液体栓塞剂,Embolic Materials,2,,,1.73,0.992,,,,,,,companies=5; new_entrants_12m=2; first_seen=2016-12-16
-product_family,uro,泌尿产品（结石/前列腺/尿失禁）,Urology Products,97,,,1.51,1,,,,,,,companies=8; new_entrants_12m=2; first_seen=2016-11-22
+product_family,uro,泌尿产品（结石/前列腺/尿失禁）,Urology Products,96,,,1.52,1,,,,,,,companies=8; new_entrants_12m=2; first_seen=2016-11-22
 product_family,surg_robot,手术机器人与计算机辅助手术,Surgical Robotics,29,,,1.5,0.987,,,,,,,companies=1; new_entrants_12m=0; first_seen=2017-01-19
 product_family,neuro_tens,经皮神经电刺激（TENS）,TENS Devices,28,,,1.46,0.979,,,,,,,companies=0; new_entrants_12m=0; first_seen=2017-02-03
-product_family,digital,数字医疗与诊断决策软件,Digital Health and Clinical Software,77,,,1.38,0.999,,,,,,,companies=8; new_entrants_12m=0; first_seen=2016-10-07
-product_family,fb_general_surgery,其他普外/整形器械（按专科兜底）,Other General and Plastic Surgery Devices,51,,,1.34,0.985,,,,,,,companies=6; new_entrants_12m=1; first_seen=2016-10-07
+product_family,digital,数字医疗与诊断决策软件,Digital Health and Clinical Software,76,,,1.41,0.999,,,,,,,companies=8; new_entrants_12m=0; first_seen=2016-10-07
 product_family,rehab,康复与辅助器具,Rehabilitation and Assistive Devices,141,,,1.32,1,,,,,,,companies=0; new_entrants_12m=0; first_seen=2016-10-03
+product_family,resp_ventilator,呼吸机与无创通气,Ventilators,19,,,1.29,0.871,,,,,,,companies=1; new_entrants_12m=0; first_seen=2016-11-10
 product_family,aes,医美与整形,Aesthetics and Plastic Surgery,31,,,1.28,0.925,,,,,,,companies=1; new_entrants_12m=0; first_seen=2016-10-31
 product_family,nv_microcatheter,神经介入导管与微导管,Neurovascular Catheters,36,,,1.25,0.921,,,,,,,companies=2; new_entrants_12m=1; first_seen=2020-02-27
-product_family,pain_management,疼痛管理与神经阻滞,Pain Management and Nerve Block,2,,,1.23,0.827,,,,,,,companies=4; new_entrants_12m=1; first_seen=2016-10-31
-product_family,fb_neuro,其他神经科器械（按专科兜底）,Other Neurology Devices,31,,,1.21,0.871,,,,,,,companies=2; new_entrants_12m=0; first_seen=2016-12-01
 product_family,wound_care,伤口与止血,Wound Care and Hemostasis,118,,,1.19,0.979,,,,,,,companies=7; new_entrants_12m=2; first_seen=2016-10-03
 product_family,wh,女性健康（产科/避孕/妇科）,Women's Health,12,,,1.18,0.976,,,,,,,companies=5; new_entrants_12m=2; first_seen=2016-10-28
+product_family,surg_biopsy,活检与穿刺器械,Biopsy Devices,19,,,1.18,0.763,,,,,,,companies=1; new_entrants_12m=0; first_seen=2016-10-27
+product_family,neurosurgery_instrument,神经外科动力与颅骨修复,Neurosurgical Power and Cranioplasty,44,,,1.17,0.872,,,,,,,companies=1; new_entrants_12m=1; first_seen=2016-10-19
 product_family,ent,耳鼻喉产品,"Ear, Nose and Throat",36,,,1.17,0.841,,,,,,,companies=4; new_entrants_12m=0; first_seen=2016-10-21
-product_family,neurosurgery_instrument,神经外科动力与颅骨修复,Neurosurgical Power and Cranioplasty,45,,,1.15,0.849,,,,,,,companies=1; new_entrants_12m=1; first_seen=2016-10-19
 product_family,img_ai,影像后处理与影像AI,Imaging Software and AI,378,,,1.14,0.997,,,,,,,companies=14; new_entrants_12m=1; first_seen=2016-10-03
 product_family,ivd_poct,即时检验与自测,Point-of-Care Testing,186,,,1.13,0.968,,,,,,,companies=3; new_entrants_12m=0; first_seen=2016-10-05
-product_family,fb_anes,其他麻醉器械（按专科兜底）,Other Anesthesiology Devices,27,,,1.12,0.721,,,,,,,companies=3; new_entrants_12m=1; first_seen=2016-11-09
 product_family,surg_instruments,手术器械、器械包与耗材,"Surgical Instruments, Trays and Consumables",79,,,1.11,0.841,,,,,,,companies=7; new_entrants_12m=0; first_seen=2016-10-05
 product_family,obgyn_reproduction,生殖医学与避孕用品,Reproductive Medicine and Contraception,44,,,1.11,0.756,,,,,,,companies=3; new_entrants_12m=1; first_seen=2016-10-07
 product_family,neuro_neurostim,神经调控与神经外科,Neuromodulation and Neurosurgery,11,,,1.1,0.858,,,,,,,companies=5; new_entrants_12m=0; first_seen=2016-10-06
 product_family,orth_trauma_plate,骨科钢板与接骨板,Orthopedic Plates,104,,,1.1,0.858,,,,,,,companies=4; new_entrants_12m=0; first_seen=2016-10-12
-product_family,ivd,体外诊断（生化/免疫/分子/微生物/POCT）,In Vitro Diagnostics,36,,,1.09,0.968,,,,,,,companies=7; new_entrants_12m=1; first_seen=2016-10-01
+product_family,fb_dental,其他口腔器械（按专科兜底）,Other Dental Devices,2,,,1.1,0.652,,,,,,,companies=1; new_entrants_12m=0; first_seen=2017-01-19
+product_family,ivd,体外诊断（生化/免疫/分子/微生物/POCT）,In Vitro Diagnostics,341,,,1.09,0.955,,,,,,,companies=7; new_entrants_12m=1; first_seen=2016-10-01
 product_family,surg_laser,激光手术设备,Surgical Lasers,149,,,1.09,0.877,,,,,,,companies=4; new_entrants_12m=1; first_seen=2016-10-05
-product_family,resp,呼吸与麻醉,Respiratory and Anesthesia,118,,,1.09,0.858,,,,,,,companies=5; new_entrants_12m=0; first_seen=2016-10-04
+product_family,resp,呼吸与麻醉,Respiratory and Anesthesia,117,,,1.09,0.854,,,,,,,companies=5; new_entrants_12m=0; first_seen=2016-10-04
 product_family,dent_restorative,口腔修复材料,Dental Restorative Materials,32,,,1.08,0.664,,,,,,,companies=0; new_entrants_12m=0; first_seen=2016-10-24
 product_family,orth_instrument,骨科手术器械与导航,Orthopedic Instruments and Navigation,104,,,1.06,0.74,,,,,,,companies=7; new_entrants_12m=0; first_seen=2016-10-12
 product_family,orth_trauma,创伤固定与运动医学,Trauma Fixation and Sports Medicine,5,,,1.05,0.628,,,,,,,companies=5; new_entrants_12m=0; first_seen=2016-10-20
-product_family,mon_patient,患者监护（多参数/血压/血氧/胎心）,Patient Monitoring,18,,,1.03,0.661,,,,,,,companies=7; new_entrants_12m=1; first_seen=2016-10-05
+product_family,mon_patient,患者监护（多参数/血压/血氧/胎心）,Patient Monitoring,179,,,1.03,0.637,,,,,,,companies=7; new_entrants_12m=1; first_seen=2016-10-05
 product_family,dial,肾脏与透析,Renal and Dialysis,24,,,1.03,0.525,,,,,,,companies=1; new_entrants_12m=0; first_seen=2016-10-20
 product_family,oph_contact,隐形眼镜与护理产品,Contact Lenses,22,,,1.03,0.526,,,,,,,companies=1; new_entrants_12m=0; first_seen=2016-10-12
-product_family,vasc_endovascular,冠脉与外周血管介入,Coronary and Peripheral Vascular Intervention,272,,,1.02,0.636,,,,,,,companies=15; new_entrants_12m=0; first_seen=2016-10-03
+product_family,vasc_endovascular,冠脉与外周血管介入,Coronary and Peripheral Vascular Intervention,272,,,1.02,0.645,,,,,,,companies=15; new_entrants_12m=0; first_seen=2016-10-03
 product_family,rt,放射治疗设备与治疗计划,Radiation Therapy,68,,,1,0.467,,,,,,,companies=3; new_entrants_12m=0; first_seen=2016-10-02
-product_family,surg_energy_endoscopy,手术能量、内镜与机器人,"Surgical Energy, Endoscopy and Robotics",355,,,0.99,0.357,,,,,,,companies=14; new_entrants_12m=1; first_seen=2016-10-05
-product_family,fb_dental,其他口腔器械（按专科兜底）,Other Dental Devices,53,,,0.99,0.455,,,,,,,companies=1; new_entrants_12m=0; first_seen=2016-11-03
+product_family,surg_energy_endoscopy,手术能量、内镜与机器人,"Surgical Energy, Endoscopy and Robotics",355,,,0.99,0.373,,,,,,,companies=14; new_entrants_12m=1; first_seen=2016-10-05
 product_family,cvd_ecg,心电诊断与动态心电监护,ECG and Holter Monitors,23,,,0.99,0.46,,,,,,,companies=3; new_entrants_12m=0; first_seen=2016-11-02
-product_family,fb_ivd,其他体外诊断试剂（按专科兜底）,Other IVD Products,3,,,0.98,0.425,,,,,,,companies=3; new_entrants_12m=0; first_seen=2016-10-19
+product_family,dent_equipment,牙科设备与器械,Dental Equipment,2,,,0.95,0.357,,,,,,,companies=0; new_entrants_12m=0; first_seen=2016-12-08
 product_family,orth_softtissue,运动医学与软组织固定,Sports Medicine,68,,,0.94,0.273,,,,,,,companies=3; new_entrants_12m=0; first_seen=2016-10-25
-product_family,fb_cardio,其他心血管器械（按专科兜底）,Other Cardiovascular Devices,4,,,0.92,0.234,,,,,,,companies=5; new_entrants_12m=0; first_seen=2016-10-13
-product_family,img_equipment,医学影像设备（MRI/CT/X光/超声）,Medical Imaging Equipment,451,,,0.9,0.006,,,,,,,companies=11; new_entrants_12m=0; first_seen=2016-10-03
+product_family,dent_provisional,暂时冠桥与口腔修复材料,Provisional Crown/Bridge Materials,21,,,0.92,0.297,,,,,,,companies=0; new_entrants_12m=0; first_seen=2016-11-03
+product_family,cvd_structural_heart,结构性心脏病与心脏外科,Structural Heart and Cardiac Surgery,34,,,0.91,0.234,,,,,,,companies=3; new_entrants_12m=0; first_seen=2016-10-12
+product_family,cardiac_monitoring_accessory,心电监护与遥测配件,Cardiac Monitoring Accessories,23,,,0.91,0.262,,,,,,,companies=3; new_entrants_12m=0; first_seen=2016-10-13
+product_family,img_equipment,医学影像设备（MRI/CT/X光/超声）,Medical Imaging Equipment,45,,,0.9,0.005,,,,,,,companies=11; new_entrants_12m=0; first_seen=2016-10-03
 product_family,cvd_diagnostics,心脏诊断与遥测监测,Cardiac Diagnostics and Telemetry,49,,,0.9,0.181,,,,,,,companies=5; new_entrants_12m=1; first_seen=2016-10-14
-product_family,cvd_structural_heart,结构性心脏病与心脏外科,Structural Heart and Cardiac Surgery,34,,,0.9,0.199,,,,,,,companies=3; new_entrants_12m=0; first_seen=2016-10-12
 product_family,oph,眼科产品（IOL/隐形眼镜/屈光/眼底）,Ophthalmic Products,34,,,0.9,0.199,,,,,,,companies=0; new_entrants_12m=0; first_seen=2016-10-04
-product_family,fb_giuro,其他消化/泌尿器械（按专科兜底）,Other Gastroenterology/Urology Devices,33,,,0.9,0.222,,,,,,,companies=4; new_entrants_12m=1; first_seen=2016-11-03
 product_family,orth_joint,关节假体与骨修复材料,Joint Implants and Bone Graft,181,,,0.87,0.012,,,,,,,companies=5; new_entrants_12m=0; first_seen=2016-10-14
+product_family,gi_gastro_tubes,胃肠管路与造瘘,Gastrointestinal Tubes,26,,,0.87,0.171,,,,,,,companies=4; new_entrants_12m=1; first_seen=2016-10-12
 product_family,dent_implant,牙种植体与基台,Dental Implants,63,,,0.86,0.059,,,,,,,companies=2; new_entrants_12m=0; first_seen=2016-10-07
 product_family,ortho_tools,骨科工具、试模与内固定附件,Orthopedic Tools and Trials,21,,,0.86,0.175,,,,,,,companies=1; new_entrants_12m=0; first_seen=2017-01-10
 product_family,hosp_sterilization,灭菌设备与监测,Sterilization Equipment,32,,,0.85,0.12,,,,,,,companies=5; new_entrants_12m=0; first_seen=2016-10-07
-product_family,inf_diabetes,输注、注射与糖尿病管理,"Infusion, Injection and Diabetes",131,,,0.83,0.004,,,,,,,companies=12; new_entrants_12m=0; first_seen=2016-10-06
 product_family,orth_trauma_screw,骨钉、骨螺钉与髓内钉,Bone Screws and Nails,56,,,0.83,0.033,,,,,,,companies=2; new_entrants_12m=0; first_seen=2016-10-06
 product_family,dent,口腔产品（种植/正畸/修复/根管）,Dental Products,166,,,0.82,0.001,,,,,,,companies=3; new_entrants_12m=0; first_seen=2016-10-03
+product_family,inf_diabetes,输注、注射与糖尿病管理,"Infusion, Injection and Diabetes",129,,,0.82,0.003,,,,,,,companies=12; new_entrants_12m=0; first_seen=2016-10-06
 product_family,orth_spine,脊柱植入（融合/内固定/椎体成形）,Spinal Implants,95,,,0.8,0.003,,,,,,,companies=2; new_entrants_12m=0; first_seen=2016-10-04
 product_family,inj_syringe,注射器与针头,Syringes and Needles,26,,,0.8,0.062,,,,,,,companies=0; new_entrants_12m=0; first_seen=2016-10-06
 product_family,orth_spine_fusion,脊柱融合与椎间植入物,Spinal Fusion Devices,124,,,0.79,0,,,,,,,companies=3; new_entrants_12m=0; first_seen=2016-10-07
@@ -219,62 +219,62 @@ product_family,neuro_muscle,肌肉电刺激与神经肌肉康复,Muscle Stimulat
 product_family,orth_biologics,骨修复与骨移植材料,Bone Graft Materials,21,,,0.73,0.023,,,,,,,companies=2; new_entrants_12m=0; first_seen=2016-10-06
 product_family,hosp_infection,感染控制与医院通用耗材,Infection Control and Hospital Supplies,77,,,0.5,0,,,,,,,companies=4; new_entrants_12m=1; first_seen=2016-11-04
 product_family,hosp_glove,医用手套,Medical Gloves,46,,,0.43,0,,,,,,,companies=0; new_entrants_12m=0; first_seen=2016-10-13
-product_new,QJU,Image Acquisition And/Or Optimization Guided By Artificial Intelligence,影像后处理与影像AI,2026-10-02,,,,,,,,,,,company=GE医疗; k_number=K261042; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K261042; definition=A radiological acquisition and/or optimization guidance system is a device that is intended to aid in the acquisition a…
+product_new,QJU,AI引导的图像采集/优化软件,影像后处理与影像AI,2026-10-02,,,,,,,,,,,company=GE医疗; k_number=K261042; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K261042; definition=用于影像采集参数的智能优化。
 product_new,SJL,"Heart-Valve, Polymeric",结构性心脏病与心脏外科,2026-10-01,,,,,,,,,,,company=爱德华生命科学; k_number=P260007; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P260007; definition=This device is a permanent implant intended to replace a heart valve.
-product_new,KNF,"Coagulator-Cutter, Endoscopic, Unipolar (And Accessories)",手术能量、内镜与机器人,2026-09-24,,,,,,,,,,,company=卡尔史托斯; k_number=K254303; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254303; definition=
+product_new,KNF,内镜单极电凝切割器及附件,手术能量、内镜与机器人,2026-09-24,,,,,,,,,,,company=卡尔史托斯; k_number=K254303; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254303; definition=用于内镜下切割与止血。
 product_new,EZD,直型导管,泌尿产品（结石/前列腺/尿失禁）,2026-09-23,,,,,,,,,,,company=泰利福; k_number=K261418; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K261418; definition=用于导尿与引流。
 product_new,LGZ,输液加温器,输注、注射与糖尿病管理,2026-09-18,,,,,,,,,,,company=ICU医疗; k_number=K262532; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262532; definition=用于输液/输血加温。
 product_new,FGE,胆道支架/引流管/扩张器,胆道与胰管介入,2026-09-17,,,,,,,,,,,company=美敦力; k_number=K262913; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262913; definition=用于胆道狭窄的引流与扩张治疗。
-product_new,JTZ,"Culture Media, Antimicrobial Susceptibility Test, Mueller Hinton Agar/Broth",体外诊断（生化/免疫/分子/微生物/POCT）,2026-09-14,,,,,,,,,,,company=碧迪; k_number=K262163; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262163; definition=
-product_new,LJH,"System, Irrigation, Urological",手术器械、器械包与耗材,2026-09-10,,,,,,,,,,,company=贝朗; k_number=K254111; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254111; definition=
+product_new,JTZ,Mueller-Hinton药敏培养基,体外诊断（生化/免疫/分子/微生物/POCT）,2026-09-14,,,,,,,,,,,company=碧迪; k_number=K262163; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262163; definition=用于药敏试验。
+product_new,LJH,泌尿冲洗系统,手术器械、器械包与耗材,2026-09-10,,,,,,,,,,,company=贝朗; k_number=K254111; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254111; definition=用于泌尿腔道冲洗。
 product_new,DHB,放射过敏原吸附试验（RAST）系统,体外诊断（生化/免疫/分子/微生物/POCT）,2026-09-04,,,,,,,,,,,company=西门子医疗; k_number=K260331; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K260331; definition=用于过敏原特异性IgE检测。
 product_new,QEZ,抽吸式取栓导管,血栓清除与取栓,2026-09-03,,,,,,,,,,,company=泰尔茂; k_number=K254035; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254035; definition=用于血栓抽吸清除。
 product_new,MUE,全视野数字乳腺X射线摄影系统,医学影像设备（MRI/CT/X光/超声）,2026-09-02,,,,,,,,,,,company=豪洛捷; k_number=K254090; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254090; definition=用于乳腺X线筛查。
-product_new,MOD,Accessory To Continuous Ventilator (Respirator),呼吸与麻醉,2026-08-27,,,,,,,,,,,company=瑞思迈; k_number=K261360; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K261360; definition=
+product_new,MOD,连续呼吸机附件,呼吸与麻醉,2026-08-27,,,,,,,,,,,company=瑞思迈; k_number=K261360; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K261360; definition=用于呼吸机配套连接。
 product_new,HRX,关节镜,手术能量、内镜与机器人,2026-08-26,,,,,,,,,,,company=卡尔史托斯; k_number=K254103; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254103; definition=用于关节腔检查与关节镜手术。
 product_new,SJD,Integrated Continuous Glucose Ketone Monitoring System,输注、注射与糖尿病管理,2026-08-25,,,,,,,,,,,company=雅培; k_number=DEN250049; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=DEN250049; definition=An integrated continuous glucose ketone monitoring system (iCGK) is intended to automatically measure glucose and keton…
 product_new,HCG,神经血管栓塞装置,神经介入（取栓/动脉瘤/颅内支架）,2026-08-14,,,,,,,,,,,company=强生医疗科技; k_number=K262419; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262419; definition=用于颅内动脉瘤/动静脉畸形的栓塞治疗。
 product_new,FTM,外科补片,伤口与止血,2026-08-12,,,,,,,,,,,company=波士顿科学; k_number=K262406; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262406; definition=用于疝修补与组织缺损修复。
-product_new,DAP,"Fibrinogen And Fibrin Split Products, Antigen, Antiserum, Control",体外诊断（生化/免疫/分子/微生物/POCT）,2026-08-11,,,,,,,,,,,company=西门子医疗; k_number=K253985; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253985; definition=
-product_new,NIG,"System, Test, Carbohydrate Antigen (Ca19-9), For Monitoring And Management Of Pancreatic Cancer",体外诊断（生化/免疫/分子/微生物/POCT）,2026-08-10,,,,,,,,,,,company=西门子医疗; k_number=K253528; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253528; definition=An in vitro diagnostic test for the quantitative measurement of the CA 19-9 tumor associated antigen in human serum or …
+product_new,DAP,纤维蛋白原及降解产物检测试剂,凝血特殊检测,2026-08-11,,,,,,,,,,,company=西门子医疗; k_number=K253985; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253985; definition=用于凝血与纤溶评估。
+product_new,NIG,CA19-9检测系统,体外诊断（生化/免疫/分子/微生物/POCT）,2026-08-10,,,,,,,,,,,company=西门子医疗; k_number=K253528; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253528; definition=用于胰腺癌监测。
 product_new,FDS,胃镜及附件（软/硬镜）,手术能量、内镜与机器人,2026-08-07,,,,,,,,,,,company=直觉外科; k_number=K253702; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253702; definition=用于上消化道检查与治疗。
 product_portfolio,,奥索菲克斯,,,,,,,,,,,,,top_families=创伤固定与运动医学 75%、骨科手术器械与导航 25%; js_shift=0.539
 product_portfolio,,爱尔康,,,,,,,,,,,,,top_families=隐形眼镜与护理产品 40%、屈光手术设备与耗材 40%、激光手术设备 20%; js_shift=0.412
-product_portfolio,,百特,,,,,,,,,,,,,top_families=输注、注射与糖尿病管理 50%、患者监护（多参数/血压/血氧/胎心） 25%、其他普外/整形器械（按专科兜底） 12%、影像后处理与影像AI 12%; js_shift=0.4
+product_portfolio,,百特,,,,,,,,,,,,,top_families=输注、注射与糖尿病管理 50%、患者监护（多参数/血压/血氧/胎心） 25%、影像后处理与影像AI 12%、植入式夹与闭合 12%; js_shift=0.4
 product_portfolio,,麦朗,,,,,,,,,,,,,top_families=呼吸与麻醉 22%、开放手术基础器械 22%、感染控制与医院通用耗材 11%、输液器与输注管路 11%、患者监护（多参数/血压/血氧/胎心） 11%; js_shift=0.381
 product_portfolio,,泰尔茂,,,,,,,,,,,,,top_families=输注、注射与糖尿病管理 38%、冠脉与外周血管介入 23%、神经介入导管与微导管 15%、冠脉球囊与旋磨旋切 8%、外周动脉支架 8%; js_shift=0.324
-product_portfolio,,美瑞特,,,,,,,,,,,,,top_families=冠脉与外周血管介入 44%、输注、注射与糖尿病管理 12%、可调弯导管与血管扩张器 12%、其他普外/整形器械（按专科兜底） 6%、医学影像设备（MRI/CT/X光/超声） 6%; js_shift=0.263
+product_portfolio,,美瑞特,,,,,,,,,,,,,top_families=冠脉与外周血管介入 44%、输注、注射与糖尿病管理 12%、可调弯导管与血管扩张器 12%、医学影像设备（MRI/CT/X光/超声） 6%、腔道支架与假体 6%; js_shift=0.263
+product_portfolio,,泰利福,,,,,,,,,,,,,top_families=呼吸与麻醉 27%、冠脉与外周血管介入 27%、手术器械、器械包与耗材 18%、其他普外/整形器械（按专科兜底） 9%、植入式夹与闭合 9%; js_shift=0.249
 product_portfolio,,贝朗,,,,,,,,,,,,,top_families=灭菌设备与监测 20%、输注、注射与糖尿病管理 20%、神经调控与神经外科 20%、手术器械、器械包与耗材 20%、冠脉与外周血管介入 20%; js_shift=0.248
-product_portfolio,,泰利福,,,,,,,,,,,,,top_families=呼吸与麻醉 27%、冠脉与外周血管介入 27%、其他普外/整形器械（按专科兜底） 18%、手术器械、器械包与耗材 18%、泌尿产品（结石/前列腺/尿失禁） 9%; js_shift=0.215
 product_portfolio,,费森尤斯医疗,,,,,,,,,,,,,top_families=肾脏与透析 71%、其他消化/泌尿器械（按专科兜底） 18%、心脏诊断与遥测监测 6%、感染控制与医院通用耗材 6%; js_shift=0.207
 product_portfolio,,英特格拉,,,,,,,,,,,,,top_families=神经调控与神经外科 80%、手术器械、器械包与耗材 20%; js_shift=0.192
-product_portfolio,,波士顿科学,,,,,,,,,,,,,top_families=手术能量、内镜与机器人 16%、冠脉与外周血管介入 11%、影像后处理与影像AI 8%、激光手术设备 8%、泌尿产品（结石/前列腺/尿失禁） 8%; js_shift=0.181
-product_portfolio,,美敦力,,,,,,,,,,,,,top_families=神经调控与神经外科 9%、胰岛素泵与闭环输注 7%、脊柱植入（融合/内固定/椎体成形） 7%、输注、注射与糖尿病管理 6%、脊柱融合与椎间植入物 6%; js_shift=0.177
-product_portfolio,,爱德华生命科学,,,,,,,,,,,,,top_families=结构性心脏病与心脏外科 28%、数字医疗与诊断决策软件 22%、冠脉与外周血管介入 17%、其他麻醉器械（按专科兜底） 6%、其他心血管器械（按专科兜底） 6%; js_shift=0.166
+product_portfolio,,美敦力,,,,,,,,,,,,,top_families=神经调控与神经外科 9%、胰岛素泵与闭环输注 7%、脊柱植入（融合/内固定/椎体成形） 7%、输注、注射与糖尿病管理 6%、脊柱融合与椎间植入物 6%; js_shift=0.18
+product_portfolio,,波士顿科学,,,,,,,,,,,,,top_families=手术能量、内镜与机器人 16%、冠脉与外周血管介入 10%、影像后处理与影像AI 8%、激光手术设备 8%、泌尿产品（结石/前列腺/尿失禁） 8%; js_shift=0.174
+product_portfolio,,爱德华生命科学,,,,,,,,,,,,,top_families=结构性心脏病与心脏外科 28%、数字医疗与诊断决策软件 22%、冠脉与外周血管介入 17%、心血管功能辅助指标 6%、患者监护（多参数/血压/血氧/胎心） 6%; js_shift=0.166
 product_portfolio,,强生医疗科技,,,,,,,,,,,,,top_families=关节假体与骨修复材料 18%、手术器械、器械包与耗材 16%、冠脉与外周血管介入 14%、手术能量、内镜与机器人 9%、吻合器与切割闭合器 9%; js_shift=0.159
+product_portfolio,,豪洛捷,,,,,,,,,,,,,top_families=体外诊断（生化/免疫/分子/微生物/POCT） 38%、影像后处理与影像AI 12%、医学影像设备（MRI/CT/X光/超声） 12%、病原血清学与分子检测 12%、活检与穿刺器械 12%; js_shift=0.156
 product_portfolio,,施乐辉,,,,,,,,,,,,,top_families=关节假体与骨修复材料 40%、负压伤口治疗 27%、运动医学与软组织固定 13%、骨科手术器械与导航 7%、创伤固定与运动医学 7%; js_shift=0.154
-product_portfolio,,豪洛捷,,,,,,,,,,,,,top_families=体外诊断（生化/免疫/分子/微生物/POCT） 50%、影像后处理与影像AI 12%、医学影像设备（MRI/CT/X光/超声） 12%、活检与穿刺器械 12%、手术能量、内镜与机器人 12%; js_shift=0.139
-product_portfolio,,登士柏西诺德,,,,,,,,,,,,,top_families=口腔产品（种植/正畸/修复/根管） 25%、牙种植体与基台 25%、灭菌设备与监测 15%、影像后处理与影像AI 15%、其他口腔器械（按专科兜底） 10%; js_shift=0.138
-product_portfolio,,碧迪,,,,,,,,,,,,,top_families=体外诊断（生化/免疫/分子/微生物/POCT） 35%、冠脉与外周血管介入 21%、输注、注射与糖尿病管理 9%、其他医院通用器械（按专科兜底） 7%、伤口与止血 7%; js_shift=0.135
+product_portfolio,,登士柏西诺德,,,,,,,,,,,,,top_families=口腔产品（种植/正畸/修复/根管） 25%、牙种植体与基台 25%、灭菌设备与监测 15%、影像后处理与影像AI 15%、牙科动力设备与附件 5%; js_shift=0.146
+product_portfolio,,碧迪,,,,,,,,,,,,,top_families=体外诊断（生化/免疫/分子/微生物/POCT） 35%、冠脉与外周血管介入 21%、输注、注射与糖尿病管理 9%、伤口与止血 7%、心脏节律与电生理植入及消融 5%; js_shift=0.144
 product_portfolio,,盈纬达,,,,,,,,,,,,,top_families=口腔产品（种植/正畸/修复/根管） 38%、牙种植体与基台 25%、灭菌设备与监测 12%、体外诊断（生化/免疫/分子/微生物/POCT） 12%、伤口与止血 12%; js_shift=0.134
 product_portfolio,,半影,,,,,,,,,,,,,top_families=冠脉与外周血管介入 86%、栓塞材料与液体栓塞剂 14%; js_shift=0.125
 product_portfolio,,高博医疗,,,,,,,,,,,,,top_families=骨科手术器械与导航 23%、关节假体与骨修复材料 23%、脊柱融合与椎间植入物 15%、创伤固定与运动医学 15%、骨科钢板与接骨板 15%; js_shift=0.117
-product_portfolio,,捷迈邦美,,,,,,,,,,,,,top_families=关节假体与骨修复材料 62%、创伤固定与运动医学 9%、骨科钢板与接骨板 9%、其他骨科器械（按专科兜底） 6%、肌肉电刺激与神经肌肉康复 6%; js_shift=0.117
+product_portfolio,,捷迈邦美,,,,,,,,,,,,,top_families=关节假体与骨修复材料 62%、创伤固定与运动医学 9%、骨科钢板与接骨板 9%、关节置换植入系统 6%、肌肉电刺激与神经肌肉康复 6%; js_shift=0.117
 product_portfolio,,安布,,,,,,,,,,,,,top_families=手术能量、内镜与机器人 40%、神经外科动力与颅骨修复 20%、呼吸与麻醉 20%、泌尿产品（结石/前列腺/尿失禁） 20%; js_shift=0.111
 product_portfolio,,迈心诺,,,,,,,,,,,,,top_families=患者监护（多参数/血压/血氧/胎心） 86%、心电诊断与动态心电监护 14%; js_shift=0.106
-product_portfolio,,史赛克,,,,,,,,,,,,,top_families=关节假体与骨修复材料 20%、手术能量、内镜与机器人 12%、骨科手术器械与导航 11%、神经介入导管与微导管 8%、医学影像设备（MRI/CT/X光/超声） 6%; js_shift=0.089
+product_portfolio,,史赛克,,,,,,,,,,,,,top_families=关节假体与骨修复材料 20%、手术能量、内镜与机器人 12%、骨科手术器械与导航 11%、神经介入导管与微导管 8%、医学影像设备（MRI/CT/X光/超声） 6%; js_shift=0.092
 product_portfolio,,ICU医疗,,,,,,,,,,,,,top_families=输注、注射与糖尿病管理 67%、感染控制与医院通用耗材 22%、输液器与输注管路 11%; js_shift=0.089
 product_portfolio,,卡尔史托斯,,,,,,,,,,,,,top_families=手术能量、内镜与机器人 41%、泌尿产品（结石/前列腺/尿失禁） 14%、耳鼻喉产品 9%、医学影像设备（MRI/CT/X光/超声） 9%、女性健康（产科/避孕/妇科） 9%; js_shift=0.087
-product_portfolio,,雅培,,,,,,,,,,,,,top_families=体外诊断（生化/免疫/分子/微生物/POCT） 35%、冠脉与外周血管介入 24%、数字医疗与诊断决策软件 12%、心脏诊断与遥测监测 4%、其他体外诊断试剂（按专科兜底） 4%; js_shift=0.083
-product_portfolio,,奥林巴斯,,,,,,,,,,,,,top_families=手术能量、内镜与机器人 60%、消化内镜附件 8%、医学影像设备（MRI/CT/X光/超声） 8%、手术器械、器械包与耗材 6%、耳鼻喉产品 4%; js_shift=0.072
+product_portfolio,,雅培,,,,,,,,,,,,,top_families=体外诊断（生化/免疫/分子/微生物/POCT） 31%、冠脉与外周血管介入 24%、数字医疗与诊断决策软件 12%、心脏诊断与遥测监测 4%、临床生化显色法检测 4%; js_shift=0.086
+product_portfolio,,思泰瑞,,,,,,,,,,,,,top_families=感染控制与医院通用耗材 57%、手术能量、内镜与机器人 21%、其他医院通用器械（按专科兜底） 7%、胃肠管路与造瘘 7%、消毒与清洁 7%; js_shift=0.072
+product_portfolio,,奥林巴斯,,,,,,,,,,,,,top_families=手术能量、内镜与机器人 59%、消化内镜附件 8%、医学影像设备（MRI/CT/X光/超声） 8%、手术器械、器械包与耗材 6%、耳鼻喉产品 4%; js_shift=0.07
 product_portfolio,,丹纳糖尿病,,,,,,,,,,,,,top_families=输注、注射与糖尿病管理 67%、胰岛素泵与闭环输注 33%; js_shift=0.069
-product_portfolio,,思泰瑞,,,,,,,,,,,,,top_families=感染控制与医院通用耗材 62%、手术能量、内镜与机器人 23%、其他医院通用器械（按专科兜底） 8%、消毒与清洁 8%; js_shift=0.065
 product_portfolio,,德康,,,,,,,,,,,,,top_families=输注、注射与糖尿病管理 62%、即时检验与自测 38%; js_shift=0.06
-product_portfolio,,西门子医疗,,,,,,,,,,,,,top_families=医学影像设备（MRI/CT/X光/超声） 35%、影像后处理与影像AI 25%、放射治疗设备与治疗计划 20%、体外诊断（生化/免疫/分子/微生物/POCT） 9%、其他体外诊断试剂（按专科兜底） 5%; js_shift=0.048
+product_portfolio,,西门子医疗,,,,,,,,,,,,,top_families=医学影像设备（MRI/CT/X光/超声） 35%、影像后处理与影像AI 25%、放射治疗设备与治疗计划 20%、体外诊断（生化/免疫/分子/微生物/POCT） 8%、泌尿产品（结石/前列腺/尿失禁） 4%; js_shift=0.054
+product_portfolio,,飞利浦,,,,,,,,,,,,,top_families=医学影像设备（MRI/CT/X光/超声） 59%、患者监护（多参数/血压/血氧/胎心） 11%、影像后处理与影像AI 10%、冠脉与外周血管介入 5%、心电监护与遥测配件 3%; js_shift=0.048
 product_portfolio,,富士胶片,,,,,,,,,,,,,top_families=医学影像设备（MRI/CT/X光/超声） 43%、手术能量、内镜与机器人 33%、影像后处理与影像AI 17%、其他消化/泌尿器械（按专科兜底） 3%、生殖医学与避孕用品 3%; js_shift=0.045
 product_portfolio,,瑞思迈,,,,,,,,,,,,,top_families=呼吸机与无创通气 88%、呼吸与麻醉 12%; js_shift=0.045
-product_portfolio,,飞利浦,,,,,,,,,,,,,top_families=医学影像设备（MRI/CT/X光/超声） 59%、患者监护（多参数/血压/血氧/胎心） 11%、影像后处理与影像AI 10%、冠脉与外周血管介入 5%、心电诊断与动态心电监护 3%; js_shift=0.038
-product_portfolio,,GE医疗,,,,,,,,,,,,,top_families=医学影像设备（MRI/CT/X光/超声） 72%、影像后处理与影像AI 15%、患者监护（多参数/血压/血氧/胎心） 8%、心电诊断与动态心电监护 2%、数字医疗与诊断决策软件 2%; js_shift=0.017
+product_portfolio,,GE医疗,,,,,,,,,,,,,top_families=医学影像设备（MRI/CT/X光/超声） 72%、影像后处理与影像AI 15%、患者监护（多参数/血压/血氧/胎心） 8%、骨测量与骨密度 2%、心电诊断与动态心电监护 2%; js_shift=0.017
 product_portfolio,,直觉外科,,,,,,,,,,,,,top_families=手术机器人与计算机辅助手术 71%、手术能量、内镜与机器人 23%、影像后处理与影像AI 3%、吻合器与切割闭合器 3%; js_shift=0.014
 product_portfolio,,佳能医疗,,,,,,,,,,,,,top_families=医学影像设备（MRI/CT/X光/超声） 88%、影像后处理与影像AI 12%; js_shift=0.002
 product_portfolio,,PROCEPT 手术机器人,,,,,,,,,,,,,top_families=泌尿产品（结石/前列腺/尿失禁） 100%; js_shift=0
@@ -342,6 +342,42 @@ replay_step,ICUI,"召回聚集：ICU Medical, Inc. 召回：CADD Yellow Medicati
 
 US P…",,2026-09-18T09:30:00-04:00,,,,,,,,,,,decision=SKIP; fill_price=151.67; shares=; outcome_1d=-0.0234; outcome_5d=-0.0876; outcome_20d=-0.0746; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRES/res.cfm?id=99648
 replay_step,MDT,"首次出现产品码：Medtronic, Inc. 510(k)：Protégé EverFlex Self-expanding Peripheral Stent System",,2026-09-18T09:30:00-04:00,,,,,,,,,,,decision=BUY; fill_price=91.53; shares=142; outcome_1d=-0.0057; outcome_5d=-0.0316; outcome_20d=0.0352; url=https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262913
-timestamp_quality,date,仅日期（date）,,83578,,,,,,,,,,,excluded_from_trading=0
+timestamp_quality,date,仅日期（date）,,9183,,,,,,,,,,,excluded_from_trading=0
 multiple_testing,holm,多重检验校正,,24,,,,,,,,,,,adjusted=key=aesthetics；raw_p=0；adjusted_p=0；significant=是、key=medical_ai；raw_p=0；adjusted_p=0；significant=是、key=rehab_exo；raw_p=0；adjusted_p=0；significant=是、key=wearable_remote；raw_p=0；adjusted_p=0；significa…
 survivorship,flagged,生存偏差标记,,4,,,,,,,,,,,flagged=4；note=免费行情源不含完整退市收益；退市/并购标的单独标注，不静默剔除；reasons=no_prices=4
+case_selected,case-7255afc95d,Cytosorbents Corp,CTSO,2020-08-04,,,,,,,,,,,category=批准; outcome=未命中; direction=1; prices=1 日 +7.9% ▲、5 日 -1.4% ▼、20 日 -9.3% ▼、60 日 -7.7% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1175151/000110465920090345/tm2026593d1_ex99-1.htm; evidence_quotes=3
+case_selected,case-313b22745e,CERUS CORP,CERS,2020-08-04,,,,,,,,,,,category=批准; outcome=未命中; direction=1; prices=1 日 +2.0% ▲、5 日 -0.9% ▼、20 日 -15.8% ▼、60 日 -17.7% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1020214/000119312520209290/d65460dex991.htm; evidence_quotes=2
+case_selected,case-8650d98fff,艾伯维,ABBV,2020-07-31,,,,,,,,,,,category=trial_result; outcome=未命中; direction=1; prices=1 日 -14.3% ▼、5 日 -17.4% ▼、20 日 -18.4% ▼、60 日 -25.6% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1551152/000155115220000019/abbv-20200630xexhibit991.htm; evidence_quotes=3
+case_selected,case-321cfdd5ae,吉利德,GILD,2020-07-30,,,,,,,,,,,category=trial_result; outcome=未命中; direction=1; prices=1 日 -11.1% ▼、5 日 -15.4% ▼、20 日 -24.6% ▼、60 日 -27.1% ▼; source_url=https://www.sec.gov/Archives/edgar/data/882095/000088209520000016/exhibit991earningspres.htm; evidence_quotes=1
+case_selected,case-51b4b0dadd,联合治疗,UTHR,2020-07-29,,,,,,,,,,,category=trial_result; outcome=未命中; direction=1; prices=1 日 +7.0% ▲、5 日 +5.4% ▲、20 日 -4.5% ▼、60 日 +11.2% ▲; source_url=https://www.sec.gov/Archives/edgar/data/1082554/000108255420000012/uthrq22020-ex991.htm; evidence_quotes=3
+case_selected,case-2f4ff21236,安进,AMGN,2020-07-28,,,,,,,,,,,category=trial_result; outcome=未命中; direction=1; prices=1 日 -11.2% ▼、5 日 -15.1% ▼、20 日 -16.0% ▼、60 日 -23.0% ▼; source_url=https://www.sec.gov/Archives/edgar/data/318154/000031815420000046/amgn-2020630xq1ex991.htm; evidence_quotes=1
+case_selected,case-345075c6d1,"HERON THERAPEUTICS, INC. /DE/",HRTX,2020-07-24,,,,,,,,,,,category=trial_result; outcome=未命中; direction=1; prices=1 日 +9.7% ▲、5 日 +7.8% ▲、20 日 -10.2% ▼、60 日 -5.1% ▼; source_url=https://www.sec.gov/Archives/edgar/data/818033/000156459020033338/hrtx-ex991_16.htm; evidence_quotes=1
+case_selected,case-94741c741f,ACADIA PHARMACEUTICALS INC,ACAD,2020-07-20,,,,,,,,,,,category=trial_result; outcome=命中; direction=-1; prices=1 日 -1.6% ▼、5 日 +0.5% ▲、20 日 -11.8% ▼、60 日 -7.9% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1070494/000119312520195481/d120197d8k.htm; evidence_quotes=3
+case_selected,case-f35ef8cb53,"Aquestive Therapeutics, Inc.",AQST,2020-06-29,,,,,,,,,,,category=批准; outcome=命中; direction=1; prices=1 日 +1.5% ▲、5 日 -2.8% ▼、20 日 +5.1% ▲、60 日 +58.6% ▲; source_url=https://www.sec.gov/Archives/edgar/data/1398733/000114036120014990/ex99_1.htm; evidence_quotes=1
+case_selected,case-754a63cef0,"Compass Therapeutics, Inc.",CMPX,2020-06-23,,,,,,,,,,,category=crl; outcome=命中; direction=-1; prices=1 日 +8.9% ▲、5 日 +7.9% ▲、20 日 -13.4% ▼、60 日 -39.6% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1738021/000121390020015594/ea123278-8k_compasstherap.htm; evidence_quotes=1
+case_selected,case-85ddbcb84c,联合治疗,UTHR,2020-06-17,,,,,,,,,,,category=trial_result; outcome=命中; direction=1; prices=1 日 +9.8% ▲、5 日 +15.2% ▲、20 日 +4.9% ▲、60 日 -10.6% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1082554/000110465920073950/tm2022718d1_ex99-1.htm; evidence_quotes=1
+case_selected,case-98845b3964,AIM ImmunoTech Inc.,AIM,2020-06-15,,,,,,,,,,,category=批准; outcome=命中; direction=1; prices=1 日 +8.0% ▲、5 日 +5.1% ▲、20 日 +20.9% ▲、60 日 -22.7% ▼; source_url=https://www.sec.gov/Archives/edgar/data/946644/000149315220011151/ex99-1.htm; evidence_quotes=3
+case_selected,case-d5a61a67b2,"AGIOS PHARMACEUTICALS, INC.",AGIO,2020-06-12,,,,,,,,,,,category=trial_result; outcome=命中; direction=1; prices=1 日 +7.2% ▲、5 日 +7.0% ▲、20 日 +9.9% ▲、60 日 -20.4% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1439222/000119312520167148/d935991dex992.htm; evidence_quotes=3
+case_selected,case-3bc7d756a4,"Evofem Biosciences, Inc.",EVFM,2020-06-02,,,,,,,,,,,category=批准; outcome=未命中; direction=1; prices=1 日 +3.0% ▲、5 日 -3.4% ▼、20 日 -3.5% ▼、60 日 -15.5% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1618835/000161883520000169/exhibit992riskfactors.htm; evidence_quotes=3
+case_selected,case-28f17df097,BIOMERICA INC,BMRA,2020-05-11,,,,,,,,,,,category=批准; outcome=未命中; direction=1; prices=1 日 +8.3% ▲、5 日 +8.3% ▲、20 日 -21.1% ▼、60 日 +15.7% ▲; source_url=https://www.sec.gov/Archives/edgar/data/73290/000151316220000098/exhibit99_1.htm; evidence_quotes=1
+case_selected,case-dacaac496a,因塞特,INCY,2020-05-05,,,,,,,,,,,category=批准; outcome=未命中; direction=1; prices=1 日 +8.3% ▲、5 日 +10.2% ▲、20 日 -2.0% ▼、60 日 -2.2% ▼; source_url=https://www.sec.gov/Archives/edgar/data/879169/000110465920056506/tm2016119d2_ex99-1.htm; evidence_quotes=3
+case_selected,case-6d67f449a1,默沙东,MRK,2020-04-28,,,,,,,,,,,category=trial_result; outcome=命中; direction=-1; prices=1 日 -12.3% ▼、5 日 -12.5% ▼、20 日 -16.5% ▼、60 日 -23.9% ▼; source_url=https://www.sec.gov/Archives/edgar/data/310158/000110465920051922/tm2016917d1_ex99-1.htm; evidence_quotes=3
+case_selected,case-a73fdf8be5,ENCISION INC,ECIA,2020-04-23,,,,,,,,,,,category=批准; outcome=命中; direction=1; prices=1 日 -9.1% ▼、5 日 +36.8% ▲、20 日 +48.2% ▲、60 日 +38.1% ▲; source_url=https://www.sec.gov/Archives/edgar/data/930775/000107997320000307/ex991.htm; evidence_quotes=1
+case_selected,case-686798adf0,Cytosorbents Corp,CTSO,2020-04-20,,,,,,,,,,,category=批准; outcome=命中; direction=1; prices=1 日 +20.8% ▲、5 日 +23.2% ▲、20 日 +34.7% ▲、60 日 +30.2% ▲; source_url=https://www.sec.gov/Archives/edgar/data/1175151/000110465920048762/tm2016346d1_ex99-1.htm; evidence_quotes=2
+case_selected,case-cc070c9c62,"Axsome Therapeutics, Inc.",AXSM,2020-04-06,,,,,,,,,,,category=trial_result; outcome=命中; direction=1; prices=1 日 +15.8% ▲、5 日 +26.0% ▲、20 日 +71.6% ▲、60 日 +44.5% ▲; source_url=https://www.sec.gov/Archives/edgar/data/1579428/000155837020003618/ex-99d1.htm; evidence_quotes=3
+case_selected,case-0a7bfb4225,"Biostage, Inc.",HRGN,2020-03-20,,,,,,,,,,,category=批准; outcome=未命中; direction=1; prices=1 日 -15.0% ▼、5 日 -17.2% ▼、20 日 -47.6% ▼、60 日 -73.4% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1563665/000110465920036337/tm2013311d1_ex99-1.htm; evidence_quotes=2
+case_selected,case-9b57be6eb9,CorMedix Inc.,CRMD,2020-03-16,,,,,,,,,,,category=批准; outcome=命中; direction=1; prices=1 日 -5.1% ▼、5 日 +19.2% ▲、20 日 +32.4% ▲、60 日 +84.6% ▲; source_url=https://www.sec.gov/Archives/edgar/data/1410098/000121390020006527/ea119675ex99-1_cormedixinc.htm; evidence_quotes=3
+case_selected,case-01a416b314,"Evofem Biosciences, Inc.",EVFM,2020-03-12,,,,,,,,,,,category=批准; outcome=命中; direction=1; prices=1 日 -2.6% ▼、5 日 +12.0% ▲、20 日 +26.1% ▲、60 日 -34.4% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1618835/000161883520000045/exhibit991q4pressrelease.htm; evidence_quotes=1
+case_selected,case-937d75e505,"Aquestive Therapeutics, Inc.",AQST,2020-03-11,,,,,,,,,,,category=批准; outcome=命中; direction=1; prices=1 日 -24.2% ▼、5 日 -10.5% ▼、20 日 +23.6% ▲、60 日 +107.7% ▲; source_url=https://www.sec.gov/Archives/edgar/data/1398733/000114036120005493/ex99_1.htm; evidence_quotes=3
+case_selected,case-e70a2a336e,GLAUKOS Corp,GKOS,2020-03-06,,,,,,,,,,,category=批准; outcome=未命中; direction=1; prices=1 日 +16.6% ▲、5 日 +10.8% ▲、20 日 -6.4% ▼、60 日 +17.4% ▲; source_url=https://www.sec.gov/Archives/edgar/data/1192448/000155837020002140/ex-99d1.htm; evidence_quotes=1
+case_selected,case-23997ec33d,吉利德,GILD,2020-03-02,,,,,,,,,,,category=crl; outcome=未命中; direction=-1; prices=1 日 -12.2% ▼、5 日 -8.8% ▼、20 日 +3.0% ▲、60 日 -9.8% ▼; source_url=https://www.sec.gov/Archives/edgar/data/882095/000110465920027472/tm2011253d2_ex99-1.htm; evidence_quotes=1
+case_selected,case-7e75089aa8,Aptevo Therapeutics Inc.,APVO,2020-03-02,,,,,,,,,,,category=批准; outcome=未命中; direction=1; prices=1 日 +16.9% ▲、5 日 +5.1% ▲、20 日 -9.3% ▼、60 日 +17.9% ▲; source_url=https://www.sec.gov/Archives/edgar/data/1671584/000119312520059183/d872623d8k.htm; evidence_quotes=1
+case_selected,case-94521c8025,"HERON THERAPEUTICS, INC. /DE/",HRTX,2020-02-19,,,,,,,,,,,category=crl; outcome=命中; direction=-1; prices=1 日 +12.4% ▲、5 日 +5.3% ▲、20 日 -5.7% ▼、60 日 -5.5% ▼; source_url=https://www.sec.gov/Archives/edgar/data/818033/000156459020005303/hrtx-ex991_6.htm; evidence_quotes=1
+case_selected,case-a56ebb900e,"Baudax Bio, Inc.",BXRXQ,2020-02-11,,,,,,,,,,,category=批准; outcome=未命中; direction=1; prices=1 日 +15.0% ▲、5 日 +8.2% ▲、20 日 -12.0% ▼、60 日 -41.9% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1780097/000119312520030665/d887028dex991.htm; evidence_quotes=2
+case_selected,case-c65d425cf0,"Aquestive Therapeutics, Inc.",AQST,2020-02-10,,,,,,,,,,,category=批准; outcome=未命中; direction=1; prices=1 日 +3.0% ▲、5 日 -1.4% ▼、20 日 -12.3% ▼、60 日 +20.3% ▲; source_url=https://www.sec.gov/Archives/edgar/data/1398733/000114036120002638/ex99_1.htm; evidence_quotes=2
+case_negative,case-7255afc95d,Cytosorbents Corp,CTSO,2020-08-04,,,,,,,,,,,category=批准; outcome=未命中; direction=1; prices=1 日 +7.9% ▲、5 日 -1.4% ▼、20 日 -9.3% ▼、60 日 -7.7% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1175151/000110465920090345/tm2026593d1_ex99-1.htm; evidence_quotes=3
+case_negative,case-313b22745e,CERUS CORP,CERS,2020-08-04,,,,,,,,,,,category=批准; outcome=未命中; direction=1; prices=1 日 +2.0% ▲、5 日 -0.9% ▼、20 日 -15.8% ▼、60 日 -17.7% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1020214/000119312520209290/d65460dex991.htm; evidence_quotes=2
+case_negative,case-8650d98fff,艾伯维,ABBV,2020-07-31,,,,,,,,,,,category=trial_result; outcome=未命中; direction=1; prices=1 日 -14.3% ▼、5 日 -17.4% ▼、20 日 -18.4% ▼、60 日 -25.6% ▼; source_url=https://www.sec.gov/Archives/edgar/data/1551152/000155115220000019/abbv-20200630xexhibit991.htm; evidence_quotes=3
+case_negative,case-321cfdd5ae,吉利德,GILD,2020-07-30,,,,,,,,,,,category=trial_result; outcome=未命中; direction=1; prices=1 日 -11.1% ▼、5 日 -15.4% ▼、20 日 -24.6% ▼、60 日 -27.1% ▼; source_url=https://www.sec.gov/Archives/edgar/data/882095/000088209520000016/exhibit991earningspres.htm; evidence_quotes=1
+case_negative,case-51b4b0dadd,联合治疗,UTHR,2020-07-29,,,,,,,,,,,category=trial_result; outcome=未命中; direction=1; prices=1 日 +7.0% ▲、5 日 +5.4% ▲、20 日 -4.5% ▼、60 日 +11.2% ▲; source_url=https://www.sec.gov/Archives/edgar/data/1082554/000108255420000012/uthrq22020-ex991.htm; evidence_quotes=3
+case_negative,case-2f4ff21236,安进,AMGN,2020-07-28,,,,,,,,,,,category=trial_result; outcome=未命中; direction=1; prices=1 日 -11.2% ▼、5 日 -15.1% ▼、20 日 -16.0% ▼、60 日 -23.0% ▼; source_url=https://www.sec.gov/Archives/edgar/data/318154/000031815420000046/amgn-2020630xq1ex991.htm; evidence_quotes=1

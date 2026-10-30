@@ -43,6 +43,22 @@ jobs:
       - name: Offline demo smoke test (must not touch the network)
         run: medradar demo
 
+  data-stats:
+    name: offline data stats (fixture mini DB)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Data-scale stats tests (synthetic mini DB, no network)
+        # tests/test_stats_cmd.py builds tests/fixtures/stats/mini_events.json
+        # into a throwaway SQLite file; nothing touches data/ or the network.
+        run: python -m unittest tests.test_stats_cmd -v
+      - name: data_stats JSON contract smoke (fixture mini DB)
+        run: |
+          python -c "import json, tempfile; from pathlib import Path; from tests.test_stats_cmd import build_mini_db; from medradar.stats_cmd import data_stats, growth_row; tmp = tempfile.mkdtemp(); stats = data_stats(build_mini_db(Path(tmp) / 'mini.sqlite')); assert stats['status'] == 'ok', stats['status']; assert stats['events']['total'] == 5, stats['events']['total']; assert stats['events']['by_year'] == {'2019': 1, '2020': 2, '2021': 1}, stats['events']['by_year']; print(json.dumps({'events': stats['events']['total'], 'by_year': stats['events']['by_year'], 'growth': growth_row(stats)}, ensure_ascii=False))"
+
   windows-install:
     name: windows data-files + demo
     runs-on: windows-latest
@@ -63,5 +79,10 @@ jobs:
           python -c "import json, medradar.config as c; from medradar.config import load_companies; assert c.CONFIG_DIR.is_dir(), c.CONFIG_DIR; assert c.CONFIG_ORIGIN == 'installed', c.CONFIG_ORIGIN; n = len(load_companies('device').all()); assert n > 0, n; print(json.dumps({'config_dir': str(c.CONFIG_DIR), 'origin': c.CONFIG_ORIGIN, 'home': str(c.ROOT), 'companies': n, 'share': [str(p) for p in c.share_candidates('config')]}))"
       - name: Wheel data-files on Windows (--target install from a temp cwd)
         run: python scripts/check_install.py
+      - name: Nightly script dry run (no collectors, stats only)
+        # Proves scripts/nightly.ps1 parses and its stats stage works on an
+        # empty database (a checkout has no data/): exits 0 without touching
+        # docs/DATA.md.
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/nightly.ps1 -SkipCollect -SkipTrade -SkipReplay -SkipAnalyze -SkipReport -NoDataMd
       - name: Offline demo smoke test
         run: medradar demo

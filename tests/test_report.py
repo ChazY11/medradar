@@ -45,6 +45,15 @@ def _chapter_body(title: str) -> str:
 def _headings(markdown_text: str) -> list[str]:
     return re.findall(r"^## (.+)$", markdown_text, flags=re.MULTILINE)
 
+
+def _chapter_text(markdown_text: str, title: str) -> str:
+    match = re.search(
+        r"^## " + re.escape(title) + r"\n\n(.*?)(?=\n## |\Z)",
+        markdown_text,
+        flags=re.S | re.MULTILINE,
+    )
+    return match.group(1) if match else ""
+
 #: HTML void elements, plus SVG children our generator self-closes.
 VOID_TAGS = {
     "area",
@@ -132,7 +141,7 @@ class ReportBuildTest(unittest.TestCase):
         self.assertTrue((self.out / "index.html").stat().st_size > 5000)
         self.assertGreater(self.result["html_lines"], 100)
         self.assertEqual(self.result["chapters_zh"], len(CHAPTERS_ZH))
-        self.assertEqual(len(CHAPTERS_ZH), 18, "twelve original chapters + six W5 chapters")
+        self.assertEqual(len(CHAPTERS_ZH), 19, "twelve original + six W5 + case-library chapter")
 
     def test_docs_entry_point_is_copied_verbatim(self) -> None:
         docs_html = (self.docs / "index.html").read_text(encoding="utf-8")
@@ -140,9 +149,9 @@ class ReportBuildTest(unittest.TestCase):
         self.assertTrue((self.docs / ".nojekyll").exists())
         self.assertEqual((self.docs / ".nojekyll").read_text(encoding="utf-8"), "")
 
-    def test_report_zh_has_eighteen_chapters_and_keeps_original_order(self) -> None:
+    def test_report_zh_has_nineteen_chapters_and_keeps_original_order(self) -> None:
         headings = _headings(self.zh)
-        self.assertEqual(len(headings), 18, f"got {headings}")
+        self.assertEqual(len(headings), 19, f"got {headings}")
         for index, title in enumerate(CHAPTERS_ZH):
             self.assertEqual(headings[index], title)
             self.assertIn(f"## {title}", self.zh)
@@ -162,12 +171,17 @@ class ReportBuildTest(unittest.TestCase):
     # ----------------------------------------------------------------------- HTML
     def test_html_is_self_contained(self) -> None:
         lowered = self.html.lower()
-        self.assertNotIn("http://", lowered)
-        self.assertNotIn("https://", lowered)
         self.assertNotIn("<link", lowered)
         self.assertNotIn("@import", lowered)
         self.assertNotIn("src=", lowered)
         self.assertNotIn("cdn.", lowered)
+        # Only case-card anchors may carry external hrefs; everything else is inline.
+        external = re.findall(r'href="(https?://[^"]+)"', self.html, flags=re.I)
+        self.assertGreaterEqual(len(external), 1)
+        self.assertEqual(self.html.count('class="case-link"'), len(external))
+        cleaned = re.sub(r'href="https?://[^"]*"', "", self.html, flags=re.I)
+        self.assertNotIn("http://", cleaned.lower())
+        self.assertNotIn("https://", cleaned.lower())
         # exactly one inline script block, no module imports
         self.assertEqual(lowered.count("<script"), 1)
         self.assertIn("<style>", lowered)
@@ -195,6 +209,7 @@ class ReportBuildTest(unittest.TestCase):
             "中国空白度",
             "信号与模拟盘",
             "回放研究",
+            "案例库与证据",
             "时间质量与样本划分",
             "多重检验与生存偏差",
             "方法与局限",
@@ -207,6 +222,9 @@ class ReportBuildTest(unittest.TestCase):
         self.assertIn('<svg class="chart"', self.html)
         self.assertIn('aria-label="产品族热度条"', self.html)
         self.assertIn('<ol class="timeline">', self.html)
+        self.assertIn('class="casegrid"', self.html)
+        self.assertIn('class="casecard', self.html)
+        self.assertIn("<blockquote>", self.html)
         self.assertIn("<polyline", self.html)
         self.assertIn("@media (max-width:760px)", self.html)
 
@@ -244,7 +262,7 @@ class ReportBuildTest(unittest.TestCase):
         result = build_report(metrics_path, target, docs_dir=self.tmp / "docs_no_w5")
         zh = (target / "report_zh.md").read_text(encoding="utf-8")
         page = (target / "index.html").read_text(encoding="utf-8")
-        self.assertEqual(len(_headings(zh)), 18)
+        self.assertEqual(len(_headings(zh)), 19)
         for marker in (
             "产品族热度与新势力",
             "本周新品雷达",
@@ -276,8 +294,6 @@ class ReportBuildTest(unittest.TestCase):
             self.assertIn(text, self.html)
         # source URLs are displayed scheme-stripped so the page stays self-contained
         self.assertIn("www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K242001", self.html)
-        self.assertNotIn("https://", self.html.lower())
-        self.assertNotIn("http://", self.html.lower())
         self.assertIn("皮下植入式葡萄糖传感器", self.html)
 
     def test_replay_timeline_and_cost_buckets(self) -> None:
@@ -311,8 +327,61 @@ class ReportBuildTest(unittest.TestCase):
         self.assertIn("生存偏差", self.html)
         self.assertIn("多重检验", self.zh)
         self.assertIn("生存偏差", self.zh)
-        self.assertNotIn("http://", self.html.lower())
-        self.assertNotIn("https://", self.html.lower())
+
+    # --------------------------------------------------------------- case library
+    def test_cases_chapter_and_cards_rendered(self) -> None:
+        self.assertIn("十五、案例库与证据", self.zh)
+        for text in ("c001", "Autolus", "AUCATZYL", "分类统计（样本内）", "反例", "样本内", "不是策略业绩"):
+            self.assertIn(text, self.zh)
+        for marker in ("案例库与证据", "样本内回看", "精选案例", "分类统计（样本内）"):
+            self.assertIn(marker, self.html)
+        self.assertIn('class="casegrid"', self.html)
+        self.assertIn('class="casecard', self.html)
+        self.assertIn("badge badge-hit", self.html)
+        self.assertIn("badge badge-miss", self.html)
+        # direction and price reaction are spelled out, not colour-only
+        self.assertIn("▲", self.html)
+        self.assertIn("▼", self.html)
+        self.assertIn("命中", self.html)
+        self.assertEqual(self.result["case_selected"], 3)
+        self.assertEqual(self.result["case_negative"], 2)
+
+    def test_case_evidence_quotes_and_source_links(self) -> None:
+        quote = "The U.S. Food and Drug Administration has approved AUCATZYL"
+        self.assertIn(quote, self.html)
+        self.assertIn(quote, self.zh)
+        self.assertIn("first and only CAR-T therapy approved with a companion diagnostic", self.html)
+        self.assertIn("PMA Number: P230012", self.html)
+        # case cards are allowed clickable external anchors; the visible text is scheme-stripped
+        self.assertIn(
+            'href="https://www.sec.gov/Archives/edgar/data/1737287/000119312524258251/d812020dex991.htm"',
+            self.html,
+        )
+        self.assertIn("www.sec.gov/Archives/edgar/data/1737287", self.html)
+        external = re.findall(r'href="(https?://[^"]+)"', self.html, flags=re.I)
+        self.assertEqual(len(external), 5)  # 3 selected + 2 negative examples
+        self.assertEqual(self.html.count('class="case-link"'), len(external))
+        cleaned = re.sub(r'href="https?://[^"]*"', "", self.html, flags=re.I)
+        self.assertNotIn("http://", cleaned.lower())
+        self.assertNotIn("https://", cleaned.lower())
+
+    def test_cases_block_missing_degrades(self) -> None:
+        payload = {
+            key: value for key, value in self.metrics.items() if key != "cases"
+        }
+        metrics_path = self.tmp / "metrics_no_cases.json"
+        metrics_path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        target = self.tmp / "out_no_cases"
+        result = build_report(metrics_path, target, docs_dir=self.tmp / "docs_no_cases")
+        zh = (target / "report_zh.md").read_text(encoding="utf-8")
+        page = (target / "index.html").read_text(encoding="utf-8")
+        self.assertEqual(len(_headings(zh)), 19)
+        body = _chapter_text(zh, "十五、案例库与证据")
+        self.assertIn("暂无数据", body)
+        self.assertIn("cases 块缺失", page)
+        self.assertEqual(_parse(page).errors, [])
+        self.assertEqual(result["case_selected"], 0)
+        self.assertEqual(result["cases_present"], False)
 
     # ------------------------------------------------------------------------ CSV
     def test_summary_csv_is_excel_friendly(self) -> None:
@@ -357,11 +426,11 @@ class ReportBuildTest(unittest.TestCase):
                 result = build_report(metrics_path, target, docs_dir=self.tmp / f"docs_{label}")
                 zh = (target / "report_zh.md").read_text(encoding="utf-8")
                 page = (target / "index.html").read_text(encoding="utf-8")
-                self.assertEqual(len(re.findall(r"^## ", zh, flags=re.MULTILINE)), 18)
+                self.assertEqual(len(re.findall(r"^## ", zh, flags=re.MULTILINE)), 19)
                 self.assertIn("暂无数据", zh)
                 self.assertIn("暂无数据", page)
                 self.assertEqual(_parse(page).errors, [])
-                self.assertEqual(result["chapters_zh"], 18)
+                self.assertEqual(result["chapters_zh"], 19)
 
     def test_trading_insufficient_data_gets_explicit_message(self) -> None:
         payload = {
@@ -381,7 +450,7 @@ class ReportBuildTest(unittest.TestCase):
         bad = self.tmp / "metrics_broken.json"
         bad.write_text("{not valid json", encoding="utf-8")
         result = build_report(bad, self.tmp / "out_broken", docs_dir=self.tmp / "docs_broken")
-        self.assertEqual(result["chapters_zh"], 18)
+        self.assertEqual(result["chapters_zh"], 19)
         self.assertTrue((self.tmp / "out_broken" / "index.html").is_file())
         self.assertTrue((self.tmp / "docs_broken" / "index.html").is_file())
 

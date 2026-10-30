@@ -177,6 +177,95 @@ def corpus_tickers(path: str | Path | None = None) -> list[str]:
     return sorted(ticker for ticker in tickers if ticker)
 
 
+BUCKET_CATEGORY_PRIORITY = (
+    ("complete response letter", "crl"),
+    ("did not meet", "trial_result"),
+    ("announces positive topline", "trial_result"),
+    ("met the primary endpoint", "trial_result"),
+    ("receives fda approval", "approval"),
+    ("fda approval", "approval"),
+    ("financial results", "earnings"),
+)
+
+
+def _bucket_list(item: Mapping[str, Any]) -> list[str]:
+    raw = item.get("buckets")
+    if isinstance(raw, (list, tuple)):
+        return [str(value).lower() for value in raw]
+    text = str(raw or "")
+    try:
+        import ast
+
+        parsed = ast.literal_eval(text)
+        if isinstance(parsed, (list, tuple)):
+            return [str(value).lower() for value in parsed]
+    except (ValueError, SyntaxError):
+        pass
+    return [token for token in text.lower().replace("[", "").replace("]", "").replace("'", "").split(",") if token.strip()]
+
+
+def enrich_items(items: Sequence[Mapping[str, Any]], cik_to_ticker: Mapping[str, str]) -> list[dict[str, Any]]:
+    """Fill ticker/category/headline/company_key that the raw EDGAR pipeline lacks."""
+    device = load_companies("device")
+    drug = load_companies("drug")
+    enriched: list[dict[str, Any]] = []
+    for item in items:
+        row = dict(item)
+        cik = str(row.get("cik") or "").strip()
+        if not row.get("ticker") and cik:
+            row["ticker"] = cik_to_ticker.get(cik, "")
+        buckets = _bucket_list(row)
+        category = "other"
+        for phrase, value in BUCKET_CATEGORY_PRIORITY:
+            if any(phrase in bucket for bucket in buckets):
+                category = value
+                break
+        row["category"] = row.get("category") or category
+        company = str(row.get("company") or "").strip()
+        key = ""
+        for registry in (device, drug):
+            matched, confidence, _alias = registry.resolve(company)
+            if matched and confidence >= 0.82:
+                key = matched
+                break
+        row["company_key"] = row.get("company_key") or key
+        if not row.get("company_zh"):
+            entry = device.get(key) or drug.get(key) or {}
+            row["company_zh"] = entry.get("name_zh") or company
+        if not row.get("headline"):
+            row["headline"] = f"{company} · {' / '.join(buckets[:2])}"
+        enriched.append(row)
+    return enriched
+
+
+def write_corpus(items: Sequence[Mapping[str, Any]], path: str | Path) -> Path:
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with target.open("w", encoding="utf-8") as handle:
+        for item in items:
+            handle.write(json.dumps(item, ensure_ascii=False) + "\n")
+    return target
+
+
+def cik_ticker_map(fetcher: Any = None) -> dict[str, str]:
+    """CIK → ticker from SEC's public company_tickers.json (cached)."""
+    from .config import CACHE_DIR
+    from .http import Fetcher
+
+    if fetcher is None:
+        from .live import SEC_UA
+
+        fetcher = Fetcher(cache_dir=CACHE_DIR, min_interval=0.3, max_requests=5, ua=SEC_UA)
+    payload = fetcher.get_json("https://www.sec.gov/files/company_tickers.json")
+    mapping: dict[str, str] = {}
+    for item in payload.values() if isinstance(payload, dict) else []:
+        try:
+            mapping[str(item["cik_str"])] = str(item["ticker"]).upper()
+        except (KeyError, TypeError, ValueError):
+            continue
+    return mapping
+
+
 def load_corpus(path: str | Path | None = None) -> list[dict[str, Any]]:
     """Read ``corpus.jsonl`` (produced by ``scripts/build_corpus.py``)."""
     if path:

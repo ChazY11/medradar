@@ -40,6 +40,8 @@ MAX_SIGNAL_ROWS = 20
 MAX_FAMILY_ROWS = 20
 MAX_PRODUCT_ROWS = 20
 MAX_REPLAY_STEPS = 24
+MAX_CASE_CARDS = 5
+MAX_NEGATIVE_CASES = 3
 
 #: Fixed chapter names of the Chinese report (asserted by tests). The original
 #: twelve chapters keep their relative order; research-grade blocks are inserted.
@@ -58,10 +60,11 @@ CHAPTERS_ZH: tuple[str, ...] = (
     "十二、中国空白度",
     "十三、信号与模拟盘",
     "十四、回放研究",
-    "十五、时间质量与样本划分",
-    "十六、多重检验与生存偏差",
-    "十七、方法与局限",
-    "十八、免责声明",
+    "十五、案例库与证据",
+    "十六、时间质量与样本划分",
+    "十七、多重检验与生存偏差",
+    "十八、方法与局限",
+    "十九、免责声明",
 )
 
 SOURCE_LABELS = {
@@ -420,6 +423,7 @@ def _en_name(entry: Mapping[str, Any] | None) -> str:
         or _s(entry.get("key"))
         or _s(entry.get("track_id"))
         or _s(entry.get("name_zh"))
+        or _s(entry.get("company_zh"))
         or DASH
     )
 
@@ -545,6 +549,175 @@ QUALITY_LABELS = {
 def _quality_label(value: Any) -> str:
     key = _s(value).lower()
     return QUALITY_LABELS.get(key, _s(value) or DASH)
+
+
+CASE_CATEGORY_LABELS = {
+    "approval": "批准",
+    "drug_approval": "药品批准",
+    "device_clearance": "器械清关",
+    "510k": "510(k) 清关",
+    "pma": "PMA 批准",
+    "recall": "召回",
+    "recall_cluster": "召回聚集",
+    "trial": "临床试验",
+    "trial_start": "试验启动",
+    "device_novel_code": "新产品码",
+    "device_new_track": "新赛道",
+    "earnings": "财报",
+    "ma": "并购",
+    "labeling": "标签/说明书",
+}
+
+CASE_OUTCOME_LABELS = {"hit": "命中", "miss": "未命中", "mixed": "部分命中"}
+
+
+def _case_category(value: Any) -> str:
+    raw = _s(value)
+    return CASE_CATEGORY_LABELS.get(raw.lower(), raw or DASH)
+
+
+def _case_outcome(value: Any) -> str:
+    raw = _s(value).lower()
+    return CASE_OUTCOME_LABELS.get(raw, _s(value) or DASH)
+
+
+def _case_outcome_css(value: Any) -> str:
+    raw = _s(value).lower()
+    if raw == "hit":
+        return "badge badge-hit"
+    if raw == "miss":
+        return "badge badge-miss"
+    return "badge badge-mixed"
+
+
+def _case_company(case: Mapping[str, Any]) -> str:
+    return (
+        _s(case.get("company_zh"))
+        or _s(case.get("company_name"))
+        or _s(case.get("ticker"))
+        or _s(case.get("case_id"))
+        or DASH
+    )
+
+
+def _case_date(case: Mapping[str, Any]) -> str:
+    return _s(case.get("date")) or _s(case.get("event_date")) or _when_text(case.get("t")) or DASH
+
+
+def _when_text(value: Any) -> str:
+    """Shorten ISO datetimes for display: ``2026-05-12T09:30:00-04:00`` -> ``2026-05-12 09:30``."""
+    text = _s(value)
+    if "T" in text and len(text) >= 16:
+        date_part, _, time_part = text.partition("T")
+        return f"{date_part} {time_part[:5]}"
+    return text
+
+
+def _case_direction(case: Mapping[str, Any]) -> str:
+    number = _num(case.get("direction"))
+    if number is None:
+        return DASH
+    if number > 0:
+        return "做多 ▲"
+    if number < 0:
+        return "做空 ▼"
+    return "中性 →"
+
+
+def _case_evidence(case: Mapping[str, Any]) -> list[str]:
+    quotes = []
+    for quote in _l(case.get("evidence_quotes")):
+        text = _trim(quote, 500)
+        if text:
+            quotes.append(text)
+    return quotes
+
+
+def _case_price_rows(case: Mapping[str, Any]) -> list[tuple[str, float]]:
+    rows: list[tuple[str, float]] = []
+    for label, key in (("1 日", "price_1d"), ("5 日", "price_5d"), ("20 日", "price_20d"), ("60 日", "price_60d")):
+        number = _num(case.get(key))
+        if number is not None:
+            rows.append((label, number))
+    return rows
+
+
+def _case_price_text(case: Mapping[str, Any]) -> str:
+    rows = _case_price_rows(case)
+    if not rows:
+        return DASH
+    return "、".join(f"{label} {_signed_pct_text(value)}" for label, value in rows)
+
+
+def _case_source_text(case: Mapping[str, Any]) -> str:
+    return _source_text(case.get("source_url"), 100)
+
+
+def _case_link_html(case: Mapping[str, Any]) -> str:
+    """Case cards may carry a clickable anchor (allowed by the case contract)."""
+    url = _s(case.get("source_url"))
+    if not url:
+        return f'<span class="src">来源：{_h(DASH)}</span>'
+    label = _source_text(url, 100)
+    if url.lower().startswith(("http://", "https://")):
+        return f'<a class="case-link" href="{_h(url)}" rel="noopener">来源：{_h(label)}</a>'
+    return f'<span class="src">来源：{_h(label)}</span>'
+
+
+def _case_stats_rows(stats: Mapping[str, Any]) -> list[tuple[str, str]]:
+    rows: list[tuple[str, str]] = []
+    known = {
+        "total",
+        "hit_rate_20d",
+        "hit_rate_5d",
+        "hit_rate_1d",
+        "hit_rate_60d",
+        "by_category",
+    }
+    total = _num(stats.get("total"))
+    if total is not None or "total" in stats:
+        rows.append(("样本总数", _fmt_int(total)))
+    for key, label in (
+        ("hit_rate_1d", "1 日命中率"),
+        ("hit_rate_5d", "5 日命中率"),
+        ("hit_rate_20d", "20 日命中率"),
+        ("hit_rate_60d", "60 日命中率"),
+    ):
+        if key in stats:
+            rows.append((label, _fmt_prob(stats.get(key))))
+    for key, value in stats.items():
+        if key in known or isinstance(value, (dict, list, tuple)):
+            continue
+        rows.append((str(key), _describe(value)))
+    return rows
+
+
+def _case_category_rows(stats: Mapping[str, Any]) -> list[tuple[str, str, str]]:
+    rows: list[tuple[str, str, str]] = []
+    for item in _l(stats.get("by_category")):
+        if isinstance(item, (list, tuple)) and len(item) >= 2:
+            name = _case_category(item[0])
+            count = _fmt_int(item[1])
+            rate = _fmt_prob(item[2]) if len(item) >= 3 else DASH
+            rows.append((name, count, rate))
+        elif isinstance(item, dict):
+            name = _case_category(
+                item.get("category") or item.get("name") or item.get("kind")
+            )
+            count = _fmt_int(item.get("n") or item.get("count") or item.get("total"))
+            rate = _fmt_prob(
+                item.get("hit_rate") or item.get("win_rate") or item.get("rate")
+            )
+            rows.append((name, count, rate))
+    return rows
+
+
+def _sort_cases_desc(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    def rank(item: Mapping[str, Any]) -> tuple[int, str]:
+        value = _s(item.get("date")) or _s(item.get("event_date")) or _s(item.get("t"))
+        return (0, "~" + value) if value else (1, "")
+
+    return sorted(items, key=rank, reverse=True)
 
 
 def _sort_desc(items: list[dict[str, Any]], key: str) -> list[dict[str, Any]]:
@@ -1019,6 +1192,23 @@ def build_context(metrics: Any, metrics_path: Path | str = DEFAULT_METRICS, out_
     multiple_testing = _d(research.get("multiple_testing"))
     survivorship = _d(research.get("survivorship"))
 
+    cases_raw = metrics.get("cases")
+    if isinstance(cases_raw, list):
+        cases_raw = {"selected": cases_raw}
+    cases_raw = _d(cases_raw)
+    selected_cases = _sort_cases_desc(
+        [entry for entry in _l(cases_raw.get("selected")) if isinstance(entry, dict)]
+    )
+    negative_cases = _sort_cases_desc(
+        [entry for entry in _l(cases_raw.get("negative_examples")) if isinstance(entry, dict)]
+    )
+    cases_view = {
+        "present": bool(cases_raw),
+        "selected": selected_cases,
+        "negative": negative_cases,
+        "stats": _d(cases_raw.get("stats")),
+    }
+
     counts = _flatten_counts(meta.get("counts"))
     available = [status for status in data_status.values() if _s(status).lower() in ("ok", "loaded", "partial")]
     return {
@@ -1053,6 +1243,7 @@ def build_context(metrics: Any, metrics_path: Path | str = DEFAULT_METRICS, out_
         "sample_split": sample_split,
         "multiple_testing": multiple_testing,
         "survivorship": survivorship,
+        "cases": cases_view,
         "alerts": alerts_raw,
         "alert_lines": alert_lines,
         "trading": trading_view,
@@ -1399,13 +1590,30 @@ def _cost_row_values(stats: Mapping[str, Any]) -> tuple[str, str, str, str, str]
         "sharpe",
         "avg_trade_return",
     }
+    ignored = {
+        "cost_bps",
+        "final_equity",
+        "total_pnl",
+        "start",
+        "end",
+        "n_signals",
+        "n_steps",
+        "n_skipped",
+        "equity_curve",
+        "mean_gross_return",
+        "mean_outcome_1d",
+        "mean_outcome_5d",
+        "mean_outcome_20d",
+    }
     extras: list[str] = []
     if _num(stats.get("sharpe")) is not None:
         extras.append(f"夏普 {_fmt(stats.get('sharpe'), 2)}")
+    if _num(stats.get("avg_holding_days")) is not None:
+        extras.append(f"平均持有 {_fmt(stats.get('avg_holding_days'), 1)} 天")
     extras.extend(
         f"{key}={_describe(value)}"
         for key, value in stats.items()
-        if key not in known and not isinstance(value, (dict, list))
+        if key not in known and key not in ignored and not isinstance(value, (dict, list))
     )
     return (
         _fmt_auto_pct(stats.get("total_return")),
@@ -1444,9 +1652,12 @@ def _zh_replay(ctx: Mapping[str, Any]) -> str:
     rows = []
     for step in steps[:MAX_REPLAY_STEPS]:
         decision, _ = _decision_label(step.get("decision"))
+        skip_reason = _s(step.get("skip_reason_zh"))
+        if skip_reason:
+            decision = f"{decision}（{_trim(skip_reason, 16)}）"
         rows.append(
             (
-                _s(step.get("t")) or DASH,
+                _when_text(step.get("t") or step.get("fill_date")) or DASH,
                 _s(step.get("ticker")) or DASH,
                 _trim(_s(step.get("event_zh")) or _s(step.get("event")) or DASH, 42),
                 decision,
@@ -1524,7 +1735,7 @@ def _zh_timestamps(ctx: Mapping[str, Any]) -> str:
 
     sample_split = ctx["sample_split"]
     if sample_split:
-        rows = [(key, _describe(value)) for key, value in sample_split.items()]
+        rows = _sample_split_rows(sample_split)
         parts.append("**样本划分**（时间切分，避免用未来数据训练）：\n\n" + _md_table(["划分", "说明"], rows))
     else:
         parts.append(f"**样本划分**：{DASH}（research.sample_split 为空）。")
@@ -1629,6 +1840,77 @@ def _zh_research_quality(ctx: Mapping[str, Any]) -> str:
     lines.append("")
     lines.append("> 校正对象为各赛道 / 产品族的 THI 显著性检验，逐项 `adjusted` 与标记数均来自 `metrics.research`，可回查。")
     return "\n".join(lines)
+
+
+def _md_case_block(case: Mapping[str, Any]) -> str:
+    case_id = _s(case.get("case_id")) or "未编号"
+    ticker = _s(case.get("ticker")) or "—"
+    lines = [
+        f"#### 案例 {case_id} · {_case_date(case)} · {_case_company(case)}（{ticker}）",
+        "",
+        f"- **事件**：{_s(case.get('event_zh')) or _s(case.get('title')) or DASH}",
+        f"- **分类 / 方向 / 事后结果**：{_case_category(case.get('category'))} ｜ "
+        f"{_case_direction(case)} ｜ **{_case_outcome(case.get('outcome'))}**",
+        "- **逐字证据**：",
+    ]
+    quotes = _case_evidence(case)
+    if quotes:
+        lines.extend(f"  > {quote}" for quote in quotes)
+    else:
+        lines.append(f"  > {DASH}")
+    lines.append(f"- **价格反应（1/5/20/60 日）**：{_case_price_text(case)}")
+    verdict = _s(case.get("verdict_zh"))
+    if verdict:
+        lines.append(f"- **系统判定与事后**：{verdict}")
+    source_url = _s(case.get("source_url"))
+    if source_url.lower().startswith(("http://", "https://")):
+        source_md = f"[{_case_source_text(case)}]({source_url})"
+    else:
+        source_md = _case_source_text(case)
+    lines.append(f"- **原文链接**：{source_md} ｜ **案例 ID**：`{case_id}`")
+    return "\n".join(lines)
+
+
+def _zh_cases(ctx: Mapping[str, Any]) -> str:
+    cases = ctx["cases"]
+    if not cases.get("present"):
+        return f"{DASH}（cases 块缺失，案例库尚未生成）。"
+    selected = cases["selected"]
+    negative = cases["negative"]
+    stats = cases["stats"]
+    if not selected and not negative and not stats:
+        return f"{DASH}（cases 块为空，或本期没有可展示的案例）。"
+    parts: list[str] = [
+        f"本期案例库精选 **{len(selected)}** 个案例、**{len(negative)}** 个反例。"
+        "所有案例都是**样本内**回看：用系统当时的判定对照事后价格反应，只用于说明证据链，"
+        "**不是策略业绩，也不是样本外收益**。",
+    ]
+    stats_rows = _case_stats_rows(stats)
+    if stats_rows:
+        parts.append("**分类统计（样本内）**：\n\n" + _md_table(["指标", "数值"], stats_rows))
+        category_rows = _case_category_rows(stats)
+        if category_rows:
+            parts.append(_md_table(["案例分类", "样本数", "20 日命中率"], category_rows))
+    else:
+        parts.append(f"**分类统计**：{DASH}（cases.stats 为空）。")
+
+    if selected:
+        parts.append(f"### 精选案例（{len(selected)} 个）")
+        parts.extend(_md_case_block(case) for case in selected[:MAX_CASE_CARDS])
+    else:
+        parts.append(f"### 精选案例\n\n{DASH}（cases.selected 为空）。")
+
+    if negative:
+        parts.append(f"### 反例（{len(negative)} 个，未命中 / 反向）")
+        parts.extend(_md_case_block(case) for case in negative[:MAX_NEGATIVE_CASES])
+    else:
+        parts.append(f"### 反例\n\n{DASH}（cases.negative_examples 为空）。")
+
+    parts.append(
+        "> 口径说明：案例来自历史事件与行情的样本内回看，价格反应为事后统计；"
+        "命中率与分类统计仅描述这批案例，不代表策略业绩，也不构成投资建议。"
+    )
+    return "\n\n".join(parts)
 
 
 def _zh_migration(ctx: Mapping[str, Any]) -> str:
@@ -1977,10 +2259,11 @@ def _zh_sections(ctx: Mapping[str, Any]) -> list[tuple[str, str]]:
         (CHAPTERS_ZH[11], _zh_cn_gap(ctx)),
         (CHAPTERS_ZH[12], _zh_signals(ctx)),
         (CHAPTERS_ZH[13], _zh_replay(ctx)),
-        (CHAPTERS_ZH[14], _zh_timestamps(ctx)),
-        (CHAPTERS_ZH[15], _zh_research_quality(ctx)),
-        (CHAPTERS_ZH[16], _zh_methods(ctx)),
-        (CHAPTERS_ZH[17], _zh_disclaimer()),
+        (CHAPTERS_ZH[14], _zh_cases(ctx)),
+        (CHAPTERS_ZH[15], _zh_timestamps(ctx)),
+        (CHAPTERS_ZH[16], _zh_research_quality(ctx)),
+        (CHAPTERS_ZH[17], _zh_methods(ctx)),
+        (CHAPTERS_ZH[18], _zh_disclaimer()),
     ]
 
 
@@ -2171,6 +2454,22 @@ def render_report_en(ctx: Mapping[str, Any]) -> str:
     if assumptions_url:
         lines.append(f"- Assumption register: `{assumptions_url}`.")
     lines.append("")
+    cases = ctx["cases"]
+    if cases.get("selected") or cases.get("stats"):
+        lines.extend(["", "## Case library (in-sample evidence)", ""])
+        case_stats = _case_stats_rows(cases["stats"])
+        if case_stats:
+            lines.append("- " + "; ".join(f"{label}: {value}" for label, value in case_stats[:4]))
+        for case in cases["selected"][:3]:
+            lines.append(
+                f"- {_case_date(case)} · {_en_company(case)}: "
+                f"{_trim(_s(case.get('event_zh')) or _s(case.get('title')), 90)} — "
+                f"outcome {_case_outcome(case.get('outcome'))}; price 1/5/20/60d: {_case_price_text(case)}."
+            )
+        if cases["negative"]:
+            lines.append(f"- Negative examples: {len(cases['negative'])} (missed / reversed cases).")
+        lines.append("- Retrospective in-sample evidence only; not strategy performance.")
+        lines.append("")
     lines.extend(
         [
             "",
@@ -2452,6 +2751,28 @@ def render_summary_csv(ctx: Mapping[str, Any]) -> str:
             "",
             _trim(_describe(ctx["survivorship"]), 200),
         )
+    for section, bucket in (
+        ("case_selected", ctx["cases"]["selected"]),
+        ("case_negative", ctx["cases"]["negative"]),
+    ):
+        for case in bucket:
+            flat_row(
+                section,
+                _s(case.get("case_id")),
+                _case_company(case),
+                _s(case.get("ticker")),
+                _case_date(case),
+                "",
+                "",
+                "",
+                "",
+                f"category={_case_category(case.get('category'))}; "
+                f"outcome={_case_outcome(case.get('outcome'))}; "
+                f"direction={_s(case.get('direction'))}; "
+                f"prices={_case_price_text(case)}; "
+                f"source_url={_s(case.get('source_url')) or 'null'}; "
+                f"evidence_quotes={len(_case_evidence(case))}",
+            )
     return "\ufeff" + buffer.getvalue()
 
 
@@ -2680,6 +3001,24 @@ background:var(--accent);border:2px solid #fff;box-shadow:0 0 0 1px var(--line-s
 .badge-long{background:#eaf6f3;border-color:#b7dcd4;color:#0b5f57}
 .badge-short{background:#fdf1ea;border-color:#f0cbb6;color:#8f3f12}
 .badge-flat{background:#f1f3f6;border-color:#d7dde4;color:#4b5563}
+.badge-hit{background:#eaf6f3;border-color:#b7dcd4;color:#0b5f57}
+.badge-miss{background:#fdf1ea;border-color:#f0cbb6;color:#8f3f12}
+.badge-mixed{background:#f5f1e6;border-color:#e2d6ae;color:#6b5320}
+.casegrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 6px}
+.casecard{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fbfcfd;min-width:0}
+.casecard.negative{border-left:4px solid var(--amber);background:#fdfbf6}
+.casehead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;justify-content:space-between}
+.casecase{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.casetitle{font-weight:650;font-size:14.5px;margin:2px 0 6px}
+.casetitle .ticker{color:var(--muted);font-weight:560;font-size:12.5px;margin-left:4px}
+.casemeta{font-size:12.5px;color:#3f4c59;margin:0 0 6px}
+.casecard blockquote{margin:6px 0;padding:6px 12px;border-left:3px solid #c4d3e2;background:#f4f7fa;color:#33424f;
+font-size:12.8px;line-height:1.55;border-radius:0 5px 5px 0;overflow-wrap:anywhere}
+.caseprices{font-size:13px;margin:6px 0;font-variant-numeric:tabular-nums}
+.caseverdict{font-size:13px;color:#3f4c59;margin:6px 0}
+.case-link{color:var(--accent);font-size:12px;text-decoration:none;border-bottom:1px dotted currentColor;overflow-wrap:anywhere}
+.case-link:hover{border-bottom-style:solid}
+.src{color:var(--muted);font-size:12px;overflow-wrap:anywhere}
 .up-text{color:#0b5f57;font-weight:600;font-variant-numeric:tabular-nums}
 .down-text{color:#8f3f12;font-weight:600;font-variant-numeric:tabular-nums}
 .flat-text{color:var(--muted);font-variant-numeric:tabular-nums}
@@ -2697,6 +3036,7 @@ footer .disclaimer{color:#4b5563}
 .mark{font-size:20px}
 .toolbar{position:static}
 table{min-width:680px}
+.casegrid{grid-template-columns:1fr}
 }
 @media print{header.top{background:#fff;color:#111}.toolbar{display:none}.panel{break-inside:avoid}}
 """
@@ -3229,6 +3569,9 @@ def _html_replay_panel(ctx: Mapping[str, Any]) -> str:
     items: list[str] = []
     for step in steps[:MAX_REPLAY_STEPS]:
         decision_text, decision_css = _decision_label(step.get("decision"))
+        skip_reason = _s(step.get("skip_reason_zh"))
+        if skip_reason:
+            decision_text = f"{decision_text}（{_trim(skip_reason, 16)}）"
         url_source = _source_span(step.get("url"))
         meta = (
             f'成交价 {_h(_fmt(step.get("fill_price"), 2))} · 股数 {_h(_fmt_int(step.get("shares")))} · '
@@ -3237,7 +3580,7 @@ def _html_replay_panel(ctx: Mapping[str, Any]) -> str:
             f'20 日 {_outcome_html(step.get("outcome_20d"))}'
         )
         items.append(
-            f'<li><div class="when">{_h(_s(step.get("t")) or DASH)} · '
+            f'<li><div class="when">{_h(_when_text(step.get("t") or step.get("fill_date")) or DASH)} · '
             f'{_h(_s(step.get("ticker")) or DASH)} '
             f'<span class="{decision_css}">{_h(decision_text)}</span></div>'
             f'<div class="what">{_h(_trim(_s(step.get("event_zh")) or _s(step.get("event")) or DASH, 90))}</div>'
@@ -3269,8 +3612,33 @@ def _html_replay_panel(ctx: Mapping[str, Any]) -> str:
     )
 
 
-def _sample_split_rows(sample_split: Mapping[str, Any]) -> list[list[str]]:
-    return [[str(key), _describe(value)] for key, value in _d(sample_split).items()]
+def _sample_split_rows(sample_split: Mapping[str, Any]) -> list[tuple[str, str]]:
+    """Flatten the research sample split (supports ``bounds`` or flat mappings)."""
+    data = _d(sample_split)
+    if not data:
+        return []
+    bounds = _d(data.get("bounds"))
+    fractions = _d(data.get("sample_fractions"))
+    if bounds:
+        rows: list[tuple[str, str]] = []
+        for label, info in bounds.items():
+            info = _d(info)
+            parts: list[str] = []
+            start, end = _s(info.get("start")), _s(info.get("end"))
+            if start or end:
+                parts.append(f"{start or DASH} 至 {end or DASH}")
+            if _num(info.get("n")) is not None:
+                parts.append(f"{_fmt_int(info.get('n'))} 件")
+            if _num(info.get("n_days")) is not None:
+                parts.append(f"{_fmt(info.get('n_days'), 0)} 天")
+            if _num(fractions.get(label)) is not None:
+                parts.append(f"占比 {_fmt_share(fractions.get(label), 1)}")
+            rows.append((str(label), " · ".join(parts) if parts else DASH))
+        flags = [f"{key}={_describe(data.get(key))}" for key in ("key", "no_overlap", "status") if key in data]
+        if flags:
+            rows.append(("划分口径", "；".join(flags)))
+        return rows
+    return [(str(key), _describe(value)) for key, value in data.items()]
 
 
 def _html_timestamps_panel(ctx: Mapping[str, Any]) -> str:
@@ -3358,6 +3726,98 @@ def _html_research_panel(ctx: Mapping[str, Any]) -> str:
     parts.append(
         '<p class="note">校正对象为各赛道 / 产品族的 THI 检验，逐项 adjusted 与标记数均来自 '
         "<code>metrics.research</code>，可按赛道 ID 回查。</p>"
+    )
+    return "".join(parts)
+
+
+def _case_card_html(case: Mapping[str, Any], negative: bool = False) -> str:
+    quotes = _case_evidence(case)
+    quote_html = "".join(f"<blockquote>{_h(quote)}</blockquote>" for quote in quotes)
+    if not quote_html:
+        quote_html = f'<p class="empty">{_h(DASH)}（无逐字证据）</p>'
+    price_rows = _case_price_rows(case)
+    price_html = (
+        " · ".join(f"{label} {_outcome_html(value)}" for label, value in price_rows)
+        if price_rows
+        else f'<span class="flat-text">{_h(DASH)}</span>'
+    )
+    verdict = _s(case.get("verdict_zh"))
+    case_id = _s(case.get("case_id")) or "未编号"
+    ticker = _s(case.get("ticker")) or "—"
+    css = "casecard negative" if negative else "casecard"
+    return "".join(
+        [
+            f'<article class="{css}" id="case-{_h(case_id)}">',
+            '<div class="casehead">',
+            f'<span class="casecase">案例 {_h(case_id)} · {_h(_case_date(case))}</span>',
+            f'<span class="{_case_outcome_css(case.get("outcome"))}">'
+            f'{_h(_case_outcome(case.get("outcome")))}</span>',
+            "</div>",
+            f'<div class="casetitle">{_h(_case_company(case))}'
+            f'<span class="ticker">{_h(ticker)}</span></div>',
+            f'<div class="casemeta">事件：{_h(_s(case.get("event_zh")) or _s(case.get("title")) or DASH)}</div>',
+            f'<div class="casemeta">分类：{_h(_case_category(case.get("category")))} · '
+            f"方向：{_h(_case_direction(case))}</div>",
+            quote_html,
+            f'<div class="caseprices">价格反应（1/5/20/60 日）：{price_html}</div>',
+            f'<div class="caseverdict">系统判定与事后：{_h(verdict or DASH)}</div>',
+            f"<div>{_case_link_html(case)}</div>",
+            "</article>",
+        ]
+    )
+
+
+def _html_cases_panel(ctx: Mapping[str, Any]) -> str:
+    cases = ctx["cases"]
+    if not cases.get("present"):
+        return f'<p class="empty">{_h(DASH)}（cases 块缺失，案例库尚未生成）</p>'
+    selected = cases["selected"]
+    negative = cases["negative"]
+    stats = cases["stats"]
+    if not selected and not negative and not stats:
+        return f'<p class="empty">{_h(DASH)}（cases 块为空，或本期没有可展示的案例）</p>'
+    parts: list[str] = [
+        '<div class="callout"><strong>样本内回看，非策略业绩。</strong> '
+        "案例用系统当时的判定对照事后 1/5/20/60 日价格反应，只用于展示证据链与判定依据，"
+        "不代表样本外收益或可交易策略。</div>"
+    ]
+    stats_rows = _case_stats_rows(stats)
+    if stats_rows:
+        parts.append(
+            "<h3>分类统计（样本内）</h3>"
+            + _table([("指标", ""), ("数值", "num")], [[label, value] for label, value in stats_rows])
+        )
+        category_rows = _case_category_rows(stats)
+        if category_rows:
+            parts.append(
+                _table(
+                    [("案例分类", ""), ("样本数", "num"), ("20 日命中率", "num")],
+                    [[row[0], row[1], row[2]] for row in category_rows],
+                )
+            )
+    else:
+        parts.append(f'<p class="empty">{_h(DASH)}（cases.stats 为空）</p>')
+    if selected:
+        parts.append(f"<h3>精选案例（{len(selected)} 个）</h3>")
+        parts.append(
+            '<div class="casegrid">'
+            + "".join(_case_card_html(case) for case in selected[:MAX_CASE_CARDS])
+            + "</div>"
+        )
+    else:
+        parts.append(f'<p class="empty">{_h(DASH)}（cases.selected 为空）</p>')
+    if negative:
+        parts.append(f"<h3>反例（{len(negative)} 个，未命中 / 反向）</h3>")
+        parts.append(
+            '<div class="casegrid">'
+            + "".join(_case_card_html(case, negative=True) for case in negative[:MAX_NEGATIVE_CASES])
+            + "</div>"
+        )
+    else:
+        parts.append(f'<p class="empty">{_h(DASH)}（cases.negative_examples 为空）</p>')
+    parts.append(
+        '<p class="note">证据为逐字引用；价格反应为事后统计（▲/▼ + 正负号）；'
+        "原文链接可直接打开，页面本身不加载任何外部资源。</p>"
     )
     return "".join(parts)
 
@@ -3486,6 +3946,7 @@ def render_html(ctx: Mapping[str, Any]) -> str:
     portfolio_panel = _html_portfolio_panel(ctx)
     new_products_panel = _html_new_products_panel(ctx)
     replay_panel = _html_replay_panel(ctx)
+    cases_panel = _html_cases_panel(ctx)
     timestamps_panel = _html_timestamps_panel(ctx)
     research_panel = _html_research_panel(ctx)
 
@@ -3599,6 +4060,12 @@ def render_html(ctx: Mapping[str, Any]) -> str:
             "回放研究",
             replay_panel,
             note="回放为静态时间轴：决策时点 → 成交价 → 1/5/20 日结果，逐笔可回查来源。",
+        ),
+        _panel(
+            "cases",
+            "案例库与证据",
+            cases_panel,
+            note="精选案例 + 反例 + 分类统计；均为样本内回看，非策略业绩。",
         ),
         _panel(
             "timestamps",
@@ -3721,4 +4188,7 @@ def build_report(
             for block in (ctx["sample_split"], ctx["multiple_testing"], ctx["survivorship"])
             if block
         ),
+        "case_selected": len(ctx["cases"]["selected"]),
+        "case_negative": len(ctx["cases"]["negative"]),
+        "cases_present": bool(ctx["cases"]["present"]),
     }
