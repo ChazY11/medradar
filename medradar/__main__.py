@@ -566,6 +566,60 @@ def cmd_stats(args: argparse.Namespace) -> int:
     return 0
 
 
+# ------------------------------------------------------------------------- corpus
+def cmd_corpus(args: argparse.Namespace) -> int:
+    from .cases import cik_ticker_map, enrich_items, load_corpus
+    from .db import DB, make_event_id
+    from .util import truncate, utc_now_iso
+
+    items = load_corpus(args.path)
+    if not items:
+        _emit({"status": "missing", "path": args.path})
+        return 1
+    if args.enrich:
+        items = enrich_items(items, cik_ticker_map())
+    if not args.ingest:
+        _emit({"status": "ok", "items": len(items), "sample": items[0] if items else None})
+        return 0
+
+    now = utc_now_iso()
+    events = []
+    for item in items:
+        accession = str(item.get("accession") or "").strip()
+        filed = str(item.get("filed") or "").strip()
+        if not accession or not filed:
+            continue
+        events.append(
+            {
+                "event_id": make_event_id("sec_edgar_corpus", "8k_catalyst", accession),
+                "source": "sec_edgar_corpus",
+                "kind": "8k_catalyst",
+                "event_date": filed,
+                "published_at": filed,
+                "available_at": filed,
+                "timestamp_quality": "date",
+                "company_key": item.get("company_key") or None,
+                "applicant_raw": item.get("company") or "",
+                "track_id": None,
+                "title": truncate(item.get("headline") or item.get("company") or "", 300),
+                "summary": truncate(item.get("text") or "", 400),
+                "url": item.get("url") or item.get("fetch_url") or "",
+                "payload": {
+                    "category": item.get("category") or "",
+                    "buckets": item.get("buckets") or [],
+                    "cik": item.get("cik") or "",
+                    "accession": accession,
+                    "raw_chars": item.get("raw_chars") or 0,
+                },
+                "fetched_at": now,
+            }
+        )
+    with DB(args.db) as db:
+        written = db.upsert_events(events)
+    _emit({"status": "ok", "ingested": written, "source": "sec_edgar_corpus"})
+    return 0
+
+
 # ------------------------------------------------------------------------ status
 def cmd_status(args: argparse.Namespace) -> int:
     from .db import DB
@@ -755,6 +809,13 @@ def build_parser() -> argparse.ArgumentParser:
     cases.add_argument("--max-tickers", type=int, default=150)
     cases.add_argument("--price-budget", type=int, default=200)
     cases.set_defaults(func=cmd_cases)
+
+    corpus = sub.add_parser("corpus", help="inspect or ingest the EDGAR historical catalyst corpus")
+    corpus.add_argument("--path", default="data/edgar_corpus/corpus.jsonl")
+    corpus.add_argument("--enrich", action="store_true", help="fill ticker/category/company_key")
+    corpus.add_argument("--ingest", action="store_true", help="write corpus filings into the events table")
+    corpus.add_argument("--db", default=str(DEFAULT_DB))
+    corpus.set_defaults(func=cmd_corpus)
 
     audit = sub.add_parser("audit", help="data-quality audit (dates, matches, prices, freshness)")
     audit.add_argument("--db", default=str(DEFAULT_DB))
