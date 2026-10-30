@@ -93,6 +93,12 @@ POSITIVE_PHRASES = (
 )
 TERMINAL_TRIAL_STATUSES = ("TERMINATED", "SUSPENDED", "WITHDRAWN")
 
+# Only the fresh EDGAR 8-K feed may open a position. FDA RSS is days stale,
+# full-text backfill is by definition in the past, and trial status changes are
+# informational - allowing any of them to fill would be lookahead bias.
+TRADEABLE_SOURCES = {"sec_edgar"}
+MAX_QUOTE_AGE_SECONDS = 1_800.0  # 30 minutes; older quotes are "stale"
+
 # EDGAR item codes that can carry a clinical/regulatory catalyst
 CATALYST_ITEMS = ("8.01", "7.01", "1.01", "2.02", "2.05")
 
@@ -170,8 +176,13 @@ def classify_text(text: str) -> tuple[int, float, list[str]]:
 
 
 # ----------------------------------------------------------------------- market data
-def quote(fetcher: Fetcher, ticker: str) -> dict[str, Any] | None:
-    """Latest real quote: last 1-minute bar, falling back to the previous close."""
+def quote(fetcher: Fetcher, ticker: str, max_age_seconds: float = MAX_QUOTE_AGE_SECONDS) -> dict[str, Any] | None:
+    """Latest real quote: last 1-minute bar, falling back to the previous close.
+
+    Returns ``stale=True`` when the quote is older than ``max_age_seconds``
+    (market closed, halted ticker, delayed feed). Stale quotes may be used to
+    mark the book but never to fill an order.
+    """
     try:
         payload = fetcher.get_json(
             YAHOO_CHART.format(ticker=ticker), {"range": "1d", "interval": "1m"}
@@ -186,11 +197,19 @@ def quote(fetcher: Fetcher, ticker: str) -> dict[str, Any] | None:
             price = closes[-1] if closes else None
         if price is None:
             return None
+        age_seconds: float | None = None
+        if timestamp is not None:
+            try:
+                age_seconds = max(0.0, datetime.now(timezone.utc).timestamp() - float(timestamp))
+            except (TypeError, ValueError):
+                age_seconds = None
         return {
             "ticker": ticker,
             "price": float(price),
             "quote_time": _iso_from_epoch(timestamp),
             "market_state": meta.get("marketState"),
+            "age_seconds": round(age_seconds, 1) if age_seconds is not None else None,
+            "stale": bool(age_seconds is not None and age_seconds > max_age_seconds),
         }
     except Exception:
         return None
@@ -593,6 +612,19 @@ def _store_alerts(db: DB, alerts: Iterable[dict[str, Any]]) -> list[dict[str, An
     for alert in alerts:
         if db.scalar("SELECT 1 FROM live_alerts WHERE alert_id = ?", (alert["alert_id"],)):
             continue
+        # Cross-source dedupe: one approval usually shows up as the EDGAR feed
+        # item, a full-text hit, and often an FDA press release on the same day.
+        # Those are one event, not three independent opportunities.
+        ticker = (alert.get("ticker") or "").upper()
+        event_day = (alert.get("event_time") or "")[:10]
+        if ticker and event_day:
+            duplicate = db.scalar(
+                "SELECT 1 FROM live_alerts WHERE ticker = ? AND kind = ?"
+                " AND substr(event_time, 1, 10) = ? LIMIT 1",
+                (ticker, alert.get("kind") or "", event_day),
+            )
+            if duplicate:
+                continue
         db.execute(
             "INSERT OR REPLACE INTO live_alerts(alert_id, source, kind, ticker, company_key,"
             " direction, score, headline, url, event_time, detected_at, payload)"
@@ -637,6 +669,8 @@ def _handle_entries(
         ticker = (alert.get("ticker") or "").upper()
         if not ticker or int(alert.get("direction") or 0) <= 0:
             continue  # long-only: negative catalysts are alerted, not traded
+        if alert.get("source") not in TRADEABLE_SOURCES:
+            continue  # stale/derived sources may alert but never fill
         if (alert.get("payload") or {}).get("backfill"):
             continue  # old catalyst at today's price = lookahead, never trade it
         if (alert.get("catalyst_type") or "") == "earnings":
@@ -649,23 +683,25 @@ def _handle_entries(
         price = market.get("price")
         if not price:
             continue
+        if market.get("stale"):
+            continue  # closed market / delayed feed: never fill on an old print
         company_key = alert.get("company_key") or ""
         entry = registry.get(company_key) or {}
         track_id = entry.get("sector") or "device"
         equity_now = cash + book["market_value"]
+        # Size on the *filled* price so slippage can never push cash negative.
+        price_filled = fill_price(float(price), "buy", params.slippage_bps)
         qty = size_order(
             cash,
             equity_now,
-            float(price),
+            price_filled,
             track_exposure.get(track_id, 0.0),
             params,
             materiality=materiality or 1.0,
         )
-        if qty <= 0:
-            continue
-        price_filled = fill_price(float(price), "buy", params.slippage_bps)
         cost = qty * price_filled
-        cash -= cost
+        if qty <= 0 or cost > cash + 1e-9:
+            continue
         db.execute(
             "INSERT OR REPLACE INTO positions(ticker, qty, avg_price, opened_at, track_id,"
             " last_price, last_quote_time, market_value, unrealized_pnl, status)"
@@ -697,6 +733,8 @@ def _handle_exits(
     quote_fn: Callable,
     params: LiveParams,
 ) -> list[dict[str, Any]]:
+    if params.no_trade:
+        return []  # --no-trade must freeze the whole book, exits included
     orders: list[dict[str, Any]] = []
     cash = float(db.meta_get("live.cash", params.capital))
     now = datetime.now(timezone.utc)
@@ -705,7 +743,7 @@ def _handle_exits(
         ticker = position["ticker"]
         market = quote_fn(fetcher, ticker) or {}
         price = market.get("price")
-        if not price:
+        if not price or market.get("stale"):
             continue
         change = float(price) / float(position["avg_price"]) - 1 if position["avg_price"] else 0.0
         held_days = _days_held(position.get("opened_at"), now)

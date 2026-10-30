@@ -68,6 +68,18 @@ Long-only, ≤5% per name, ≤25% per track, −20% stop, 60‑trading‑day exi
 not traded**: borrow fees and squeeze-outs would turn the P&L into fiction. This is a simulation —
 no broker, no orders, no money at risk.
 
+**Execution guards** (added after a pre‑release review):
+
+* only the fresh EDGAR feed can open a position — backfill, FDA RSS and trial updates are alert‑only;
+* a quote older than 30 minutes may mark the book but never fills an order;
+* position size is computed on the *slipped fill price*, so cash cannot go negative;
+* `--no-trade` freezes exits as well as entries;
+* duplicate alerts for the same `(ticker, day, kind)` are collapsed across sources.
+
+**Timing honesty**: `signal_date = event_date + 1`, and the fill is the open of the next trading day —
+roughly **two trading days after the event**. Conservative, not same‑day. Alerts whose public
+timestamp is only date‑level are excluded from the trading study.
+
 ### LLM judgement of the filing text (decides position size)
 
 A keyword classifier can say "positive". It cannot tell a first‑in‑class approval from a label
@@ -116,11 +128,12 @@ use it for ranking, or shrink by 0.85 before sizing.
 ## Quickstart
 
 ```bash
-git clone https://github.com/OWNER/medradar.git
+git clone https://github.com/<your-username>/medradar.git
 cd medradar
 
 # no API key, no dependencies beyond Python 3.10+
-python -m medradar run --months 60 --with-trade
+# 24 months is the quick start (~2-3 min); use --months 120 for the full history
+python -m medradar run --months 24 --with-trade
 
 # open the dashboard
 #   out/index.html          (also copied to docs/index.html for GitHub Pages)

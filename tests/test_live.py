@@ -83,10 +83,12 @@ class SizingTests(unittest.TestCase):
 
 
 class RunOnceTests(unittest.TestCase):
-    def _cycle(self, db_path: Path, quote_price: float, alerts, params=None):
+    def _cycle(self, db_path: Path, quote_price: float, alerts, params=None, quote_payload=None):
         fetcher = mock.Mock()
-        quote_fn = lambda _fetcher, ticker: {"price": quote_price, "quote_time": "2026-10-30T20:00:00Z"}
+        payload = quote_payload or {"price": quote_price, "quote_time": "2026-10-30T20:00:00Z"}
+        quote_fn = lambda _fetcher, ticker: dict(payload)
         with mock.patch.object(live, "poll_edgar", return_value=alerts), \
+             mock.patch.object(live, "poll_edgar_fts", return_value=[]), \
              mock.patch.object(live, "poll_fda_rss", return_value=[]), \
              mock.patch.object(live, "poll_trials", return_value=[]), \
              mock.patch.object(live, "_watchlist", return_value={1234567: ("acme", "ACME")}), \
@@ -117,7 +119,8 @@ class RunOnceTests(unittest.TestCase):
             self.assertEqual(len(result["orders"]), 1)
             order = result["orders"][0]
             self.assertEqual(order["side"], "buy")
-            self.assertAlmostEqual(order["qty"], 50.0, places=4)
+            # sized on the slipped fill price (100.01), not the raw quote: 5000/100.01
+            self.assertAlmostEqual(order["qty"], 49.95, places=4)
             self.assertGreater(order["fill_price"], 100.0)  # slippage applied
             with DB(db_path) as check:
                 self.assertEqual(check.scalar("SELECT COUNT(*) FROM positions"), 1)
@@ -169,6 +172,91 @@ class RunOnceTests(unittest.TestCase):
             result = self._cycle(db_path, 110.0, [])
             self.assertAlmostEqual(result["book"]["equity"], 95_000.0 + 50.0 * 110.0, places=2)
             self.assertGreater(result["book"]["n_positions"], 0)
+
+    # --------------------------------------------------- trust / execution guards
+    def test_no_trade_freezes_exits_too(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / "live.sqlite"
+            with DB(db_path) as db:
+                db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
+                db.meta_set("live.cash", 95_000.0)
+                db.execute(
+                    "INSERT INTO positions(ticker, qty, avg_price, opened_at, track_id, last_price,"
+                    " market_value, unrealized_pnl, status) VALUES (?,?,?,?,?,?,?,?, 'open')",
+                    ("ACME", 50.0, 100.0, datetime.now(timezone.utc).isoformat(), "device", 100.0, 5_000.0, 0.0),
+                )
+                db.conn.commit()
+            result = self._cycle(db_path, 70.0, [], params=live.LiveParams(no_trade=True))
+            self.assertEqual(result["orders"], [])
+            with DB(db_path) as db:
+                self.assertEqual(db.scalar("SELECT status FROM positions WHERE ticker='ACME'"), "open")
+
+    def test_cash_never_negative_after_slippage(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / "live.sqlite"
+            with DB(db_path) as db:
+                db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
+                db.meta_set("live.cash", 5_000.0)
+            alert = {
+                "alert_id": "small-cash-1", "source": "sec_edgar", "kind": "8k_catalyst",
+                "ticker": "ACME", "company_key": "acme", "direction": 1, "score": 0.8,
+                "materiality": 1.0, "catalyst_type": "approval", "headline": "x", "url": "",
+                "event_time": "", "payload": {},
+            }
+            params = live.LiveParams(capital=5_000.0, max_position=1.0, slippage_bps=10.0)
+            result = self._cycle(db_path, 100.0, [alert], params=params)
+            self.assertEqual(len(result["orders"]), 1)
+            with DB(db_path) as db:
+                cash = float(db.meta_get("live.cash"))
+            self.assertGreaterEqual(cash, -1e-6)
+
+    def test_stale_quote_blocks_entry(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / "live.sqlite"
+            with DB(db_path) as db:
+                db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
+            alert = {
+                "alert_id": "stale-1", "source": "sec_edgar", "kind": "8k_catalyst",
+                "ticker": "ACME", "company_key": "acme", "direction": 1, "score": 0.8,
+                "materiality": 0.9, "catalyst_type": "approval", "headline": "x", "url": "",
+                "event_time": "", "payload": {},
+            }
+            payload = {"price": 100.0, "quote_time": "2026-10-30T20:00:00Z", "stale": True}
+            result = self._cycle(db_path, 100.0, [alert], quote_payload=payload)
+            self.assertEqual(result["orders"], [])
+            with DB(db_path) as db:
+                self.assertEqual(db.table_count("positions"), 0)
+
+    def test_cross_source_duplicate_is_collapsed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / "live.sqlite"
+            with DB(db_path) as db:
+                db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
+            base = {
+                "kind": "8k_catalyst", "ticker": "ACME", "company_key": "acme",
+                "direction": 1, "score": 0.8, "materiality": 0.9, "catalyst_type": "approval",
+                "headline": "FDA approval", "url": "", "event_time": "2026-10-30T13:00:00-04:00",
+                "payload": {},
+            }
+            first = dict(base, alert_id="feed-1", source="sec_edgar")
+            second = dict(base, alert_id="fts-1", source="sec_edgar_fts")
+            result = self._cycle(db_path, 100.0, [first, second], params=live.LiveParams(no_trade=True))
+            self.assertEqual(result["alerts_new"], 1)
+
+    def test_non_tradeable_source_is_alert_only(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / "live.sqlite"
+            with DB(db_path) as db:
+                db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
+            alert = {
+                "alert_id": "rss-1", "source": "fda_press", "kind": "fda_press",
+                "ticker": "ACME", "company_key": "acme", "direction": 1, "score": 0.9,
+                "materiality": 0.9, "catalyst_type": "approval", "headline": "x", "url": "",
+                "event_time": "", "payload": {},
+            }
+            result = self._cycle(db_path, 100.0, [alert])
+            self.assertEqual(result["orders"], [])
+            self.assertEqual(result["alerts_new"], 1)
 
 
 if __name__ == "__main__":

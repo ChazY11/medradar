@@ -62,6 +62,17 @@ ClinicalTrials.gov 状态变更 → 关键词分类 → **按 Yahoo 最新真实
 只做多、单票 ≤5%、单赛道 ≤25%、−20% 止损、60 个交易日离场。做空信号**只告警不下单**：
 借券费和并购逼平会让模拟收益变成假的。这是模拟盘，不接券商、不下真单、不构成投资建议。
 
+**执行护栏**（发布前评审后补上）：
+
+* 只有实时 EDGAR 流可以开仓；回填、FDA RSS、试验状态变更只告警不成交；
+* 报价超过 30 分钟一律不能成交（只能用于估值）；
+* 仓位按**含滑点的成交价**计算，现金不会变负；
+* `--no-trade` 同时冻结买入和卖出；
+* 同一 `(ticker, 日期, 类型)` 的跨源重复告警会被合并。
+
+**时间口径**：`signal_date = event_date + 1`，成交取其后第一个交易日开盘，即**事件后约 2 个交易日**。
+这是保守口径，不是"当日成交"。只有日期级公开时间戳的事件不进入交易研究。
+
 ### 8-K 全文 LLM 判定（决定仓位大小）
 
 关键词只能判断"像利好"，判断不了"这是公司首个 20 亿美元级适应症，还是一个小标签变更"——
@@ -106,11 +117,12 @@ python -m medradar judge --url https://www.sec.gov/Archives/... --headline "Comp
 ## 快速开始
 
 ```bash
-git clone https://github.com/OWNER/medradar.git
+git clone https://github.com/<你的用户名>/medradar.git
 cd medradar
 
 # 不需要 API key，除 Python 3.10+ 外无依赖
-python -m medradar run --months 60 --with-trade
+# 24 个月是快速体验（约 2-3 分钟）；完整十年历史用 --months 120
+python -m medradar run --months 24 --with-trade
 
 # 打开
 #   out/index.html      自包含看板（同时复制到 docs/index.html 供 GitHub Pages）

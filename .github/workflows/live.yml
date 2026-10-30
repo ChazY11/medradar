@@ -1,12 +1,16 @@
 name: live-lane
 
-# Stateless CI cycle for the event lane: polls catalysts, places simulated orders
-# at real quotes, uploads the alert log. State is cached between runs; for a
-# stateful always-on book use the DSH automation or a small VPS instead.
+# Event-driven paper trading is OPT-IN and not a reliable scheduler: GitHub
+# Actions cron fires late under load and the cache can be evicted, so the book
+# state is best effort. For a real always-on book run `medradar live --interval`
+# on a small VPS, or use the DSH automation in this repository's docs.
+#
+# Enable by uncommenting the schedule block, or run manually from the Actions tab.
+
 on:
-  schedule:
-    - cron: "*/15 * * * *"
   workflow_dispatch:
+  # schedule:
+  #   - cron: "*/15 * * * *"
 
 permissions:
   contents: read
@@ -25,7 +29,7 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Restore paper-trading state
+      - name: Restore paper-trading state (best effort)
         uses: actions/cache/restore@v4
         with:
           path: data/medradar.sqlite
@@ -37,7 +41,7 @@ jobs:
           MEDRADAR_SEC_UA: "MedRadar research (github actions; contact: medradar@users.noreply.github.com)"
         run: python -m medradar live --once --since-hours 2
 
-      - name: Save paper-trading state
+      - name: Save paper-trading state (best effort)
         if: always()
         uses: actions/cache/save@v4
         with:
