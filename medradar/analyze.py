@@ -906,17 +906,66 @@ def _products_block(db, win) -> dict[str, Any]:
     except Exception:
         return {}
     try:
-        news = new_products(db, days=90)
+        news = new_products(db, days=90, max_items=200)
     except Exception:
         news = []
     try:
         portfolio = company_portfolio(db, window_quarters=win["window_quarters"])
     except Exception:
-        portfolio = []
+        portfolio = {}
+
+    def short(value: Any, limit: int = 200) -> str:
+        text = str(value or "").strip()
+        return text if len(text) <= limit else text[: limit - 1] + "…"
+
+    news_rows = [
+        {
+            "date": item.get("event_date"),
+            "event_id": item.get("event_id"),
+            "company_zh": item.get("name_zh") or item.get("company_key") or "",
+            "ticker": item.get("ticker") or "",
+            "family_id": item.get("family_id") or "",
+            "family_zh": item.get("family_zh") or "",
+            "code": item.get("product_code") or "",
+            "device_name_zh": short(item.get("product_name_zh"), 120),
+            "definition_zh": short(item.get("product_definition_zh"), 240),
+            "kind": item.get("kind") or "",
+            "k_number": item.get("number") or "",
+            "url": item.get("url") or "",
+            "title": short(item.get("title"), 160),
+        }
+        for item in (news or [])
+    ]
+    portfolio_rows = []
+    for value in (portfolio or {}).values():
+        top = []
+        for entry in value.get("top_families") or []:
+            if isinstance(entry, (list, tuple)) and len(entry) >= 2:
+                top.append([entry[2] if len(entry) > 2 else str(entry[0]), round(float(entry[1]), 3)])
+        portfolio_rows.append(
+            {
+                "company_zh": value.get("name_zh") or value.get("key") or "",
+                "ticker": value.get("ticker") or "",
+                "recent": value.get("recent") or 0,
+                "family_count": value.get("family_count") or 0,
+                "new_families_12m": value.get("new_families_12m") or 0,
+                "top_families": top[:5],
+                "js_shift": value.get("js") or 0.0,
+            }
+        )
+    portfolio_rows.sort(key=lambda row: (-row["recent"], row["company_zh"]))
+
+    total_recent = sum(float(row.get("recent") or 0) for row in families) or 1.0
+    top20_recent = sum(float(row.get("recent") or 0) for row in families[:20])
     return {
-        "families": families,
-        "new_products": news,
-        "company_portfolio": portfolio,
+        "families": families[:60],
+        "new_products": news_rows[:60],
+        "company_portfolio": portfolio_rows[:40],
+        "coverage": {
+            "families": len(families),
+            "top20_event_share": round(top20_recent / total_recent, 4),
+            "new_products_90d": len(news_rows),
+        },
     }
 
 

@@ -73,7 +73,7 @@ from .util import (
     ensure_dir,
     iso,
     parse_date,
-    read_json,
+    sha1,
     summarize,
     t_stat,
     utc_now_iso,
@@ -587,6 +587,138 @@ def _load_signal_rows(db: Any) -> list[dict[str, Any]]:
     for row in rows:
         row["_ticker"] = str(row.get("ticker") or "").strip().upper()
         row["_signal_day"] = parse_date(row.get("signal_date"))
+    return rows
+
+
+DEVICE_ACTIVITY_KINDS = ("510k", "pma")
+
+
+def _auto_signal_rows(db: Any, start_day: date, end_day: date) -> list[dict[str, Any]]:
+    """Derive simple signals from ``events`` when the ``signals`` table is empty.
+
+    Kept intentionally minimal and **point-in-time**: events are processed in
+    ``available_at`` order and every "first ever" / "90-day cluster" test only
+    looks at what had already happened. Rules (mirroring ``analyze._signals``
+    qualitatively, not numerically):
+
+    * ``510k`` / ``pma`` first appearance of a ``(company, product_code)`` pair
+      → ``device_novel_code``, direction +1;
+    * each ``drug_approval`` → ``drug_approval``, direction +1;
+    * the second and later ``device_recall`` for a company inside 90 days →
+      ``recall_cluster``, direction -1 (at most one per 90-day window).
+
+    The result uses the same row shape as :func:`_load_signal_rows` so the rest
+    of the engine is unchanged.
+    """
+    event_columns = _table_columns(db, "events")
+    select = [
+        "event_id",
+        "source",
+        "kind",
+        "event_date",
+        "as_of",
+        "company_key",
+        "track_id",
+        "product_code",
+        "title",
+        "summary",
+        "url",
+        "payload",
+    ]
+    for column in ("available_at", "published_at", "first_seen_at", "timestamp_quality"):
+        select.append(column if column in event_columns else f"NULL AS {column}")
+    events = db.query(
+        "SELECT " + ", ".join(select) + " FROM events"
+        " WHERE company_key IS NOT NULL AND company_key != ''"
+    )
+    tickers: dict[str, str] = {}
+    try:
+        for row in db.query("SELECT key, ticker FROM companies"):
+            ticker = str(row.get("ticker") or "").strip().upper()
+            if row.get("key") and ticker:
+                tickers[str(row["key"])] = ticker
+    except Exception:  # pragma: no cover - a DB without companies still works
+        tickers = {}
+
+    prepared: list[tuple[datetime, dict[str, Any]]] = []
+    for event in events:
+        moment, _ = _resolve_available_at(event)
+        if moment is None:
+            continue
+        prepared.append((moment, event))
+    prepared.sort(key=lambda pair: (pair[0], str(pair[1].get("event_id") or "")))
+
+    first_code: dict[tuple[str, str], str] = {}
+    recall_days: dict[str, list[date]] = {}
+    recall_emitted: dict[str, date] = {}
+    emit_start = start_day - timedelta(days=1)
+    rows: list[dict[str, Any]] = []
+    for moment, event in prepared:
+        day = moment.date()
+        signal_day = day + timedelta(days=1)
+        if day < emit_start or signal_day < start_day or signal_day > end_day:
+            continue
+        company = str(event.get("company_key") or "")
+        ticker = tickers.get(company)
+        if not ticker:
+            continue
+        kind = str(event.get("kind") or "")
+        signal_kind = ""
+        direction = 0
+        score = 0.0
+        reason = ""
+        if kind in DEVICE_ACTIVITY_KINDS and event.get("product_code"):
+            key = (company, str(event["product_code"]))
+            if key in first_code:
+                continue
+            first_code[key] = day.isoformat()
+            signal_kind, direction, score = "device_novel_code", 1, 0.6
+            reason = f"首次出现产品码 {event['product_code']}（events 自动生成）"
+        elif kind == "drug_approval":
+            signal_kind, direction, score = "drug_approval", 1, 0.7
+            reason = "药品获批（events 自动生成）"
+        elif kind == "device_recall":
+            days = recall_days.setdefault(company, [])
+            days.append(day)
+            recent = sum(1 for value in days if value >= day - timedelta(days=90))
+            last = recall_emitted.get(company)
+            if recent < 2 or (last is not None and (day - last).days < 90):
+                continue
+            recall_emitted[company] = day
+            signal_kind, direction, score = "recall_cluster", -1, 0.7
+            reason = f"90 天内 {recent} 起召回（events 自动生成）"
+        else:
+            continue
+        event_id = str(event.get("event_id") or "")
+        rows.append(
+            {
+                "signal_id": f"auto-{sha1(f'{event_id}|{signal_kind}')[:12]}",
+                "event_id": event_id,
+                "ticker": ticker,
+                "signal_date": signal_day.isoformat(),
+                "kind": signal_kind,
+                "direction": direction,
+                "score": score,
+                "track_id": event.get("track_id"),
+                "reason_zh": reason,
+                "created_at": utc_now_iso(),
+                "event_kind": kind,
+                "event_source": event.get("source"),
+                "event_company": company,
+                "event_date": event.get("event_date"),
+                "title": event.get("title"),
+                "summary": event.get("summary"),
+                "url": event.get("url"),
+                "payload": event.get("payload"),
+                "as_of": event.get("as_of"),
+                "available_at": event.get("available_at"),
+                "published_at": event.get("published_at"),
+                "first_seen_at": event.get("first_seen_at"),
+                "timestamp_quality": event.get("timestamp_quality"),
+                "_ticker": ticker,
+                "_signal_day": signal_day,
+            }
+        )
     return rows
 
 
@@ -1109,6 +1241,13 @@ def _simulate(
 ) -> dict[str, Any]:
     names = _company_names()
     rows = _load_signal_rows(db)
+    signal_source = "signals_table"
+    if not rows:
+        # ``signals`` is empty (e.g. a fresh DB or a run before ``medradar trade``
+        # ingested signals): derive a minimal point-in-time signal set from
+        # events instead of returning an empty page.
+        rows = _auto_signal_rows(db, start_day, end_day)
+        signal_source = "events_fallback" if rows else "signals_table"
     unique_rows, duplicates = _dedupe_rows(rows)
     in_window = [
         row
@@ -1295,6 +1434,7 @@ def _simulate(
                 "entered": entered,
                 "skipped": len(steps) - entered,
                 "low_quality_excluded": len(filtered),
+                "signal_source": signal_source,
             },
             "timestamp_quality": dict(quality_counts),
             "price_sources": dict(price_sources),
@@ -1321,7 +1461,15 @@ def _simulate(
                 "免费数据无 bid/ask 报价：成交价按 bar/开盘价假定，成本用单边 bps 近似买卖两端。",
                 "无借券费、locate 费与并购逼平数据，因此默认只做多；direction=-1 仅记为观望。",
                 "available_at 为日精度的记录按当日 23:59:59 UTC 处理，首根可用 bar 落在下一交易日。",
-            ],
+            ]
+            + (
+                [
+                    "signals 表为空：本页信号由 events 按 point-in-time 规则自动生成"
+                    "（首次产品码 / 药品获批 / 90 天召回聚集），只用于演示回放链路。"
+                ]
+                if signal_source == "events_fallback"
+                else []
+            ),
         },
         "method": {
             "engine": ENGINE,
@@ -1338,6 +1486,7 @@ def _simulate(
             "concurrency": f"单标的不叠加；同时最多 {int(max_concurrent)} 笔",
             "long_only": not allow_short,
             "short_reference": "做空信号也解析参考成交价（1m/日线规则相同）并标记 reference_only，但不计入组合与收益",
+            "signals_source": "signals 表；为空时按 point-in-time 规则从 events 生成简易信号",
             "in_sample": True,
             "not_modelled": [
                 "bid/ask 价差与盘口冲击（只用一个 bps 档近似）",
@@ -1782,6 +1931,32 @@ def render_html(payload: Mapping[str, Any], *, docs_rel: str = "../../docs/ASSUM
             "</tr>"
         )
 
+    base_cost_key = next(iter(summary_by_cost), "")
+    trade_rows: list[str] = []
+    for index, trade in enumerate(payload.get("trades") or [], 1):
+        if not isinstance(trade, Mapping):
+            continue
+        kind_zh = KIND_ZH.get(str(trade.get("kind")), str(trade.get("kind") or ""))
+        trade_rows.append(
+            "<tr>"
+            f'<td class="num">{index}</td>'
+            f'<td>{_h(trade.get("ticker"))}</td>'
+            f'<td>{_h(kind_zh)}</td>'
+            f'<td>{_h(trade.get("entry_time"))}</td>'
+            f'<td class="num">{_money(trade.get("entry_price"))}</td>'
+            f'<td class="num">{_money(trade.get("shares"))}</td>'
+            f'<td class="num">{_money(trade.get("notional"))}</td>'
+            f'<td>{_h(trade.get("exit_date"))}</td>'
+            f'<td class="num">{_money(trade.get("exit_price"))}</td>'
+            f'<td class="num">{_h(trade.get("holding_days"))}</td>'
+            f'<td class="num">{_pct(trade.get("gross_return"))}</td>'
+            f'<td class="num">{_pct(trade.get("ret"))}</td>'
+            f'<td class="num">{_money(trade.get("pnl"))}</td>'
+            "</tr>"
+        )
+    if not trade_rows:
+        trade_rows.append('<tr><td colspan="13" class="muted">窗口内没有进入组合的成交。</td></tr>')
+
     study_rows: list[str] = []
     for horizon in ("1", "5", "20"):
         stats = (event_study.get("horizons") or {}).get(horizon) or {}
@@ -1872,6 +2047,16 @@ def render_html(payload: Mapping[str, Any], *, docs_rel: str = "../../docs/ASSUM
         '<p class="small muted">成本档为单边 bps，买卖各收一次；同一批成交在不同成本档下独立重估，'
         "因此收益随成本单调下降。回撤为已实现口径（不含浮亏）。</p>",
         '<div class="svgbox">' + _svg_equity(summary_by_cost) + "</div></div>",
+        "<h2>成交明细（基准成本档 " + _h(base_cost_key) + " bps）</h2>",
+        '<div class="card"><table><thead><tr>'
+        '<th class="num">#</th><th>代码</th><th>事件类型</th><th>成交时间</th>'
+        '<th class="num">成交价</th><th class="num">股数</th><th class="num">名义额</th>'
+        '<th>平仓日</th><th class="num">平仓价</th><th class="num">持有（交易日）</th>'
+        '<th class="num">毛收益</th><th class="num">净收益</th><th class="num">盈亏</th>'
+        "</tr></thead><tbody>" + "".join(trade_rows) + "</tbody></table>",
+        f'<p class="small muted">基准成本档 {_h(base_cost_key)} bps；其余成本档的净收益见上方成本敏感性表。'
+        "未进入组合的观望步骤（做空参考价、容量不足）不在此表中。"
+        "持有天数为交易日差；最近成交使用数据末端的收盘价（end_of_data）。</p></div>",
         "<h2>后续 1 / 5 / 20 日（方向调整后）</h2>",
         '<div class="card"><table><thead><tr>'
         '<th>持有窗口</th><th class="num">n</th><th class="num">平均毛收益</th>'

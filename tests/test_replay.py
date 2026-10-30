@@ -579,6 +579,66 @@ class HtmlContractTests(ReplayTestCase):
         self.assertIn(f'{step["fill_price"]:,.2f}', html)
 
 
+# --------------------------------------------------------------------------- events fallback
+class EventsFallbackTests(ReplayTestCase):
+    def _add_event(self, event_id, day, kind, product_code=None, company="acme"):
+        self.db.upsert_events(
+            [
+                {
+                    "event_id": event_id,
+                    "source": "openfda_device_510k" if kind != "drug_approval" else "openfda_drug_drugsfda",
+                    "kind": kind,
+                    "event_date": day,
+                    "as_of": "2024-01-05",
+                    "available_at": day,
+                    "timestamp_quality": "date",
+                    "company_key": company,
+                    "track_id": "track_a",
+                    "product_code": product_code,
+                    "title": f"fallback {kind} {day}",
+                    "url": "https://www.fda.gov/x",
+                    "payload": {},
+                }
+            ]
+        )
+
+    def test_empty_signals_table_falls_back_to_point_in_time_events(self) -> None:
+        self.db.upsert_companies([{"key": "acme", "name_en": "ACME Corp", "ticker": "AAA"}])
+        self._add_event("e1", "2024-01-02", "510k", product_code="P1")
+        self._add_event("e2", "2024-01-03", "510k", product_code="P2")
+        self._add_event("e3", "2024-01-04", "510k", product_code="P1")  # repeat: no new signal
+        payload = self.build()
+        self.assertEqual(payload["meta"]["counts"]["signal_source"], "events_fallback")
+        self.assertEqual(payload["status"], "ok")
+        novel = [step for step in payload["steps"] if step["kind"] == "device_novel_code"]
+        self.assertEqual(len(novel), 2)  # first P1 and first P2 only
+        self.assertTrue(all(step["price_source"] == "daily" for step in novel))
+        self.assertTrue(any("events 自动生成" in (step["reason_zh"] or "") for step in novel))
+        self.assertIn("signals 表为空", " ".join(payload["meta"]["notes_zh"]))
+
+    def test_fallback_recall_cluster_is_a_reference_only_skip(self) -> None:
+        self.db.upsert_companies([{"key": "acme", "name_en": "ACME Corp", "ticker": "AAA"}])
+        self._add_event("r1", "2024-01-08", "device_recall")
+        self._add_event("r2", "2024-01-18", "device_recall")
+        payload = self.build()
+        recalls = [step for step in payload["steps"] if step["kind"] == "recall_cluster"]
+        self.assertEqual(len(recalls), 1)  # only the second recall creates a cluster
+        self.assertEqual(recalls[0]["decision"], "SKIP")
+        self.assertEqual(recalls[0]["skip_reason"], "short_not_supported")
+        self.assertTrue(recalls[0]["reference_only"])
+        self.assertIsNotNone(recalls[0]["fill_price"])
+        self.assertEqual(payload["trades"], [])
+
+    def test_signals_table_wins_when_present(self) -> None:
+        self.db.upsert_companies([{"key": "acme", "name_en": "ACME Corp", "ticker": "AAA"}])
+        self._add_event("e1", "2024-01-02", "510k", product_code="P1")
+        self.add_event()
+        self.add_signal()
+        payload = self.build()
+        self.assertEqual(payload["meta"]["counts"]["signal_source"], "signals_table")
+        self.assertEqual([step["kind"] for step in payload["steps"]], ["device_novel_code"])
+
+
 # --------------------------------------------------------------------------- misc
 class BuildApiTests(ReplayTestCase):
     def test_accepts_a_database_path_and_custom_output_directory(self) -> None:

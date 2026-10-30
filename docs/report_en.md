@@ -1,6 +1,6 @@
 # MedRadar: FDA Device & Drug Industry Radar
 
-_Generated 2026-10-30T18:39:23Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
+_Generated 2026-10-30T18:57:48Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
 
 ## Key takeaways
 
@@ -40,6 +40,15 @@ _Generated 2026-10-30T18:39:23Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 | Terumo | TRUMY | 1.85 | 98.3% | 13 |
 | Teleflex | TFX | 1.7 | 95.5% | 11 |
 
+## Product families
+
+- 轮椅与代步车 (`rehab_wheelchair`): THI 2.53, P(up) 100.0%, 36 events, 0 new entrants in 12 months.
+- 栓塞材料与液体栓塞剂 (`nv_embolic`): THI 1.73, P(up) 99.2%, 20 events, 2 new entrants in 12 months.
+- 泌尿产品（结石/前列腺/尿失禁） (`uro`): THI 1.51, P(up) 100.0%, 97 events, 2 new entrants in 12 months.
+- 手术机器人与计算机辅助手术 (`surg_robot`): THI 1.5, P(up) 98.7%, 29 events, 0 new entrants in 12 months.
+- 经皮神经电刺激（TENS） (`neuro_tens`): THI 1.46, P(up) 97.9%, 28 events, 0 new entrants in 12 months.
+- New products in the weekly radar: 19 (Chinese names + 510(k)/PMA numbers).
+
 ## Portfolio migration
 
 - Orthofix moved towards trauma: share 75% vs baseline 23% (+51.7pp).
@@ -67,7 +76,7 @@ _Generated 2026-10-30T18:39:23Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 
 ## Drug side
 
-Top NDA/BLA momentum: Ionis Pharmaceuticals (THI 3.91), Daiichi Sankyo (THI 3.91), Otsuka (THI 3.91), Sanofi (THI 2.09), Boehringer Ingelheim (THI 2.09).
+Top NDA/BLA momentum: Ionis Pharmaceuticals (THI 3.91), Otsuka (THI 3.91), Daiichi Sankyo (THI 3.91), Sanofi (THI 2.09), Boehringer Ingelheim (THI 2.09).
 Hottest therapeutic areas: t_vaccines (P 100.0%), t_dermatology (P 100.0%), t_cardiometabolic (P 100.0%), t_neuroscience (P 100.0%).
 Trial starts: Novartis (暂无数据), Pfizer (暂无数据), AstraZeneca (暂无数据), Eli Lilly (暂无数据), Merck & Co. (暂无数据).
 
@@ -83,7 +92,7 @@ Trial starts: Novartis (暂无数据), Pfizer (暂无数据), AstraZeneca (暂�
 
 ## Replay and research hygiene
 
-- Replay: 60 steps from 2025-11-01 to 2026-10-31; multi-cost summary for 3 cost buckets.
+- Replay: 60 steps from 2026-05-04 to 2026-10-31; multi-cost summary for 3 cost buckets.
 - Timestamp quality: date 83,578; excluded from trading: 0.
 - Multiple testing: holm correction over 24 tests.
 - Survivorship flags: 4.

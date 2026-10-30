@@ -1,6 +1,6 @@
 # MedRadar 器械与药品产业方向雷达 · 中文研究报告
 
-> 生成时间：2026-10-30T18:39:23Z（UTC） ｜ 统计窗口：2025-01-01 至 2026-10-30（8 个季度） ｜ 数据状态：4 路可用 ｜ 中国空白度：不可用（NMPA 数据未加载）
+> 生成时间：2026-10-30T18:57:48Z（UTC） ｜ 统计窗口：2025-01-01 至 2026-10-30（8 个季度） ｜ 数据状态：4 路可用 ｜ 中国空白度：不可用（NMPA 数据未加载）
 
 本报告由 `python -m medradar report` 自动生成，全部数字来自当次运行的 `out/metrics.json`；字段缺失时显示「暂无数据」，不以 0 代替。
 
@@ -14,7 +14,7 @@
 
 ## 二、数据状态
 
-- **生成时间**：2026-10-30T18:39:23Z（UTC）
+- **生成时间**：2026-10-30T18:57:48Z（UTC）
 - **统计窗口**：2025-01-01 至 2026-10-30（8 个季度）
 - **基线窗口**：2020-01-01 至 2024-12-31（20 个季度）
 - **事件总数**：83,578 件
@@ -30,7 +30,7 @@
 
 **事件构成**：510(k) 清关 31,456、器械召回 16,764、药品批准 1,387、PMA 批准 24,073、临床试验启动 9,898
 
-**事实库**：`data\medradar.sqlite`
+**事实库**：`D:\DEPPSKK\medradar\data\medradar.sqlite`
 
 > **中国侧数据警告**：NMPA 注册证数据不可用（NMPA 数据未加载）。因此中国空白度仅为美国侧参考，报告不以 0 代替缺失值，也不做中美对比推断。
 
@@ -98,7 +98,33 @@
 
 ## 五、产品族热度与新势力
 
-暂无数据（products.families 为空，或产品级分析尚未运行）。
+产品族是在赛道之下按 openFDA 产品码族细分的一层。本期共 60 个产品族，热度最高的是 **轮椅与代步车**（ID `rehab_wheelchair`）：THI = 2.53，P(高于基线) = 100.0%，窗口内 36 件，覆盖 0 家公司，近 12 个月新进入 0 家。
+**新势力**：近 12 个月新进入公司最多的产品族为 栓塞材料与液体栓塞剂（2 家）、泌尿产品（结石/前列腺/尿失禁）（2 家）、伤口与止血（2 家）。
+
+| # | 产品族 | THI | P(高于基线) | 窗口事件 | 公司数 | 12月新进入 | 首次出现 | 产品族 ID |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 轮椅与代步车 | 2.53 | 100.0% | 36 | 0 | 0 | 2016-10-04 | rehab_wheelchair |
+| 2 | 栓塞材料与液体栓塞剂 | 1.73 | 99.2% | 20 | 5 | 2 | 2016-12-16 | nv_embolic |
+| 3 | 泌尿产品（结石/前列腺/尿失禁） | 1.51 | 100.0% | 97 | 8 | 2 | 2016-11-22 | uro |
+| 4 | 手术机器人与计算机辅助手术 | 1.5 | 98.7% | 29 | 1 | 0 | 2017-01-19 | surg_robot |
+| 5 | 经皮神经电刺激（TENS） | 1.46 | 97.9% | 28 | 0 | 0 | 2017-02-03 | neuro_tens |
+| 6 | 数字医疗与诊断决策软件 | 1.38 | 99.9% | 77 | 8 | 0 | 2016-10-07 | digital |
+| 7 | 其他普外/整形器械（按专科兜底） | 1.34 | 98.5% | 51 | 6 | 1 | 2016-10-07 | fb_general_surgery |
+| 8 | 康复与辅助器具 | 1.32 | 100.0% | 141 | 0 | 0 | 2016-10-03 | rehab |
+| 9 | 医美与整形 | 1.28 | 92.5% | 31 | 1 | 0 | 2016-10-31 | aes |
+| 10 | 神经介入导管与微导管 | 1.25 | 92.1% | 36 | 2 | 1 | 2020-02-27 | nv_microcatheter |
+| 11 | 疼痛管理与神经阻滞 | 1.23 | 82.7% | 20 | 4 | 1 | 2016-10-31 | pain_management |
+| 12 | 其他神经科器械（按专科兜底） | 1.21 | 87.1% | 31 | 2 | 0 | 2016-12-01 | fb_neuro |
+| 13 | 伤口与止血 | 1.19 | 97.9% | 118 | 7 | 2 | 2016-10-03 | wound_care |
+| 14 | 女性健康（产科/避孕/妇科） | 1.18 | 97.6% | 120 | 5 | 2 | 2016-10-28 | wh |
+| 15 | 耳鼻喉产品 | 1.17 | 84.1% | 36 | 4 | 0 | 2016-10-21 | ent |
+| 16 | 神经外科动力与颅骨修复 | 1.15 | 84.9% | 45 | 1 | 1 | 2016-10-19 | neurosurgery_instrument |
+| 17 | 影像后处理与影像AI | 1.14 | 99.7% | 378 | 14 | 1 | 2016-10-03 | img_ai |
+| 18 | 即时检验与自测 | 1.13 | 96.8% | 186 | 3 | 0 | 2016-10-05 | ivd_poct |
+| 19 | 其他麻醉器械（按专科兜底） | 1.12 | 72.1% | 27 | 3 | 1 | 2016-11-09 | fb_anes |
+| 20 | 手术器械、器械包与耗材 | 1.11 | 84.1% | 79 | 7 | 0 | 2016-10-05 | surg_instruments |
+
+> 每个产品族都可用 `产品族 ID` + 产品码回查到 `config/product_code_tracks.json` 与 openFDA 原始记录。
 
 ## 六、结构迁移
 
@@ -140,11 +166,66 @@
 
 ## 七、公司产品组合迁移
 
-暂无数据（products.company_portfolio 为空，或公司产品组合分析尚未运行）。
+公司产品组合迁移衡量公司「产品族结构」的变化：`js_shift` 是窗口内组合分布相对基线的 Jensen-Shannon 距离，越接近 0 说明产品结构越稳定，越大说明公司正在换产品方向。
+
+- **奥索菲克斯**：主产品族 创伤固定与运动医学 75%、骨科手术器械与导航 25%；组合迁移指数 JS = 0.539。
+- **爱尔康**：主产品族 隐形眼镜与护理产品 40%、屈光手术设备与耗材 40%、激光手术设备 20%；组合迁移指数 JS = 0.412。
+- **百特**：主产品族 输注、注射与糖尿病管理 50%、患者监护（多参数/血压/血氧/胎心） 25%、其他普外/整形器械（按专科兜底） 12%；组合迁移指数 JS = 0.400。
+- **麦朗**：主产品族 呼吸与麻醉 22%、开放手术基础器械 22%、感染控制与医院通用耗材 11%；组合迁移指数 JS = 0.381。
+- **泰尔茂**：主产品族 输注、注射与糖尿病管理 38%、冠脉与外周血管介入 23%、神经介入导管与微导管 15%；组合迁移指数 JS = 0.324。
+
+| 公司 | 主产品族（窗口占比） | JS 组合迁移 | 解读 |
+|---|---|---|---|
+| 奥索菲克斯 | 创伤固定与运动医学 75%、骨科手术器械与导航 25% | 0.539 | 结构明显变化 |
+| 爱尔康 | 隐形眼镜与护理产品 40%、屈光手术设备与耗材 40%、激光手术设备 20% | 0.412 | 结构明显变化 |
+| 百特 | 输注、注射与糖尿病管理 50%、患者监护（多参数/血压/血氧/胎心） 25%、其他普外/整形器械（按专科兜底） 12% | 0.400 | 结构明显变化 |
+| 麦朗 | 呼吸与麻醉 22%、开放手术基础器械 22%、感染控制与医院通用耗材 11% | 0.381 | 结构明显变化 |
+| 泰尔茂 | 输注、注射与糖尿病管理 38%、冠脉与外周血管介入 23%、神经介入导管与微导管 15% | 0.324 | 结构明显变化 |
+| 美瑞特 | 冠脉与外周血管介入 44%、输注、注射与糖尿病管理 12%、可调弯导管与血管扩张器 12% | 0.263 | 结构明显变化 |
+| 贝朗 | 灭菌设备与监测 20%、输注、注射与糖尿病管理 20%、神经调控与神经外科 20% | 0.248 | 结构明显变化 |
+| 泰利福 | 呼吸与麻醉 27%、冠脉与外周血管介入 27%、其他普外/整形器械（按专科兜底） 18% | 0.215 | 结构明显变化 |
+| 费森尤斯医疗 | 肾脏与透析 71%、其他消化/泌尿器械（按专科兜底） 18%、心脏诊断与遥测监测 6% | 0.207 | 结构明显变化 |
+| 英特格拉 | 神经调控与神经外科 80%、手术器械、器械包与耗材 20% | 0.192 | 结构明显变化 |
+| 波士顿科学 | 手术能量、内镜与机器人 16%、冠脉与外周血管介入 11%、影像后处理与影像AI 8% | 0.181 | 结构明显变化 |
+| 美敦力 | 神经调控与神经外科 9%、胰岛素泵与闭环输注 7%、脊柱植入（融合/内固定/椎体成形） 7% | 0.177 | 结构明显变化 |
+| 爱德华生命科学 | 结构性心脏病与心脏外科 28%、数字医疗与诊断决策软件 22%、冠脉与外周血管介入 17% | 0.166 | 结构明显变化 |
+| 强生医疗科技 | 关节假体与骨修复材料 18%、手术器械、器械包与耗材 16%、冠脉与外周血管介入 14% | 0.159 | 结构明显变化 |
+| 施乐辉 | 关节假体与骨修复材料 40%、负压伤口治疗 27%、运动医学与软组织固定 13% | 0.154 | 结构明显变化 |
+| 豪洛捷 | 体外诊断（生化/免疫/分子/微生物/POCT） 50%、影像后处理与影像AI 12%、医学影像设备（MRI/CT/X光/超声） 12% | 0.139 | 结构明显变化 |
+| 登士柏西诺德 | 口腔产品（种植/正畸/修复/根管） 25%、牙种植体与基台 25%、灭菌设备与监测 15% | 0.138 | 结构明显变化 |
+| 碧迪 | 体外诊断（生化/免疫/分子/微生物/POCT） 35%、冠脉与外周血管介入 21%、输注、注射与糖尿病管理 9% | 0.135 | 结构明显变化 |
+| 盈纬达 | 口腔产品（种植/正畸/修复/根管） 38%、牙种植体与基台 25%、灭菌设备与监测 12% | 0.134 | 结构明显变化 |
+| 半影 | 冠脉与外周血管介入 86%、栓塞材料与液体栓塞剂 14% | 0.125 | 结构明显变化 |
+
+> 组合迁移最大的是 **奥索菲克斯**（JS = 0.539）；占比与指数均可由产品族归属逐条回查。
 
 ## 八、本周新品雷达
 
-暂无数据（products.new_products 为空，或本周没有抓取到新品记录）。
+本周新品雷达共 19 条（按日期倒序），每条都保留中文产品名、用途、510(k)/PMA 编号与来源，可直接回查原始记录。
+
+| 日期 | 公司 | 产品族 | 产品码 | 中文产品名 | 用途 / 定义 | 510(k)/PMA 编号 | 来源 |
+|---|---|---|---|---|---|---|---|
+| 2026-10-02 | GE医疗 | 影像后处理与影像AI | QJU | Image Acquisition And/Or Optimization Guided By Artificial Intelligence | A radiological acquisition and/or optimization guidance… | K261042 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K261042 |
+| 2026-10-01 | 爱德华生命科学 | 结构性心脏病与心脏外科 | SJL | Heart-Valve, Polymeric | This device is a permanent implant intended to replace … | P260007 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P260007 |
+| 2026-09-24 | 卡尔史托斯 | 手术能量、内镜与机器人 | KNF | Coagulator-Cutter, Endoscopic, Unipolar (And Accessories) | 暂无数据 | K254303 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254303 |
+| 2026-09-23 | 泰利福 | 泌尿产品（结石/前列腺/尿失禁） | EZD | 直型导管 | 用于导尿与引流。 | K261418 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K261418 |
+| 2026-09-18 | ICU医疗 | 输注、注射与糖尿病管理 | LGZ | 输液加温器 | 用于输液/输血加温。 | K262532 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262532 |
+| 2026-09-17 | 美敦力 | 胆道与胰管介入 | FGE | 胆道支架/引流管/扩张器 | 用于胆道狭窄的引流与扩张治疗。 | K262913 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262913 |
+| 2026-09-14 | 碧迪 | 体外诊断（生化/免疫/分子/微生物/POCT） | JTZ | Culture Media, Antimicrobial Susceptibility Test, Mueller Hinton Agar/Broth | 暂无数据 | K262163 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262163 |
+| 2026-09-10 | 贝朗 | 手术器械、器械包与耗材 | LJH | System, Irrigation, Urological | 暂无数据 | K254111 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254111 |
+| 2026-09-04 | 西门子医疗 | 体外诊断（生化/免疫/分子/微生物/POCT） | DHB | 放射过敏原吸附试验（RAST）系统 | 用于过敏原特异性IgE检测。 | K260331 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K260331 |
+| 2026-09-03 | 泰尔茂 | 血栓清除与取栓 | QEZ | 抽吸式取栓导管 | 用于血栓抽吸清除。 | K254035 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254035 |
+| 2026-09-02 | 豪洛捷 | 医学影像设备（MRI/CT/X光/超声） | MUE | 全视野数字乳腺X射线摄影系统 | 用于乳腺X线筛查。 | K254090 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254090 |
+| 2026-08-27 | 瑞思迈 | 呼吸与麻醉 | MOD | Accessory To Continuous Ventilator (Respirator) | 暂无数据 | K261360 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K261360 |
+| 2026-08-26 | 卡尔史托斯 | 手术能量、内镜与机器人 | HRX | 关节镜 | 用于关节腔检查与关节镜手术。 | K254103 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254103 |
+| 2026-08-25 | 雅培 | 输注、注射与糖尿病管理 | SJD | Integrated Continuous Glucose Ketone Monitoring System | An integrated continuous glucose ketone monitoring syst… | DEN250049 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=DEN250049 |
+| 2026-08-14 | 强生医疗科技 | 神经介入（取栓/动脉瘤/颅内支架） | HCG | 神经血管栓塞装置 | 用于颅内动脉瘤/动静脉畸形的栓塞治疗。 | K262419 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262419 |
+| 2026-08-12 | 波士顿科学 | 伤口与止血 | FTM | 外科补片 | 用于疝修补与组织缺损修复。 | K262406 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262406 |
+| 2026-08-11 | 西门子医疗 | 体外诊断（生化/免疫/分子/微生物/POCT） | DAP | Fibrinogen And Fibrin Split Products, Antigen, Antiserum, Control | 暂无数据 | K253985 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253985 |
+| 2026-08-10 | 西门子医疗 | 体外诊断（生化/免疫/分子/微生物/POCT） | NIG | System, Test, Carbohydrate Antigen (Ca19-9), For Monitoring And Management Of Pancreatic Cancer | An in vitro diagnostic test for the quantitative measur… | K253528 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253528 |
+| 2026-08-07 | 直觉外科 | 手术能量、内镜与机器人 | FDS | 胃镜及附件（软/硬镜） | 用于上消化道检查与治疗。 | K253702 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253702 |
+
+> 来源列为去掉协议头的原文路径，可在 docs/ 与 openFDA 原始记录中逐条核对；未取得来源时显示暂无数据。
 
 ## 九、本周/本期首次出现
 
@@ -198,8 +279,8 @@
 | 公司 | 代码 | 批准数 | 近期/季 | 基线/季 | THI | P(高于基线) | 新分子实体 |
 |---|---|---|---|---|---|---|---|
 | 伊奥尼斯 | IONS | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
-| 第一三共 | DSNKY | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
 | 大冢 | OTSKY | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
+| 第一三共 | DSNKY | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
 | 赛诺菲 | SNY | 4 | 0.50 | 0.20 | 2.09 | 89.4% | 2 |
 | 勃林格殷格翰 | — | 3 | 0.38 | 0.15 | 2.09 | 84.9% | 2 |
 | 拜耳 | BAYRY | 3 | 0.38 | 0.15 | 2.09 | 84.9% | 3 |
@@ -216,7 +297,7 @@
 | 安进 | AMGN | 3 | 0.38 | 0.45 | 0.88 | 33.3% | 0 |
 | 武田 | TAK | 2 | 0.25 | 0.30 | 0.88 | 33.4% | 2 |
 | 礼来 | LLY | 3 | 0.38 | 0.50 | 0.82 | 27.4% | 3 |
-| 再生元 | REGN | 1 | 0.12 | 0.20 | 0.73 | 23.6% | 1 |
+| 晖致 | VTRS | 1 | 0.12 | 0.20 | 0.73 | 23.6% | 0 |
 
 **治疗领域**：
 
@@ -355,42 +436,42 @@
 
 ## 十四、回放研究
 
-回放研究把每条信号按「决策时点 → 成交价 → 1/5/20 日结果」逐笔展开，共 60 步，窗口 2025-11-01 至 2026-10-31。回放只使用决策时点可见的信息，避免前视偏差。
+回放研究把每条信号按「决策时点 → 成交价 → 1/5/20 日结果」逐笔展开，共 60 步，窗口 2026-05-04 至 2026-10-31。回放只使用决策时点可见的信息，避免前视偏差。
 
 | 时间 | 代码 | 事件 | 决策 | 成交价 | 股数 | 1 日 | 5 日 | 20 日 | 来源 |
 |---|---|---|---|---|---|---|---|---|---|
-| 2025-11-20T09:30:00-05:00 | BAYRY | 药品获批：HYRNUO (SEVABERTINIB) | 做多 | 7.78 | 1,852 | +1.8% ▲ | +12.9% ▲ | +34.0% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2025-11-26T09:30:00-05:00 | OTSKY | 药品获批：VOYXACT (SIBEPRENLIMAB-SZSI) | 做多 | 28.80 | 500 | -1.6% ▼ | +3.8% ▲ | +2.1% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2025-12-17T09:30:00-05:00 | GSK | 药品获批：EXDENSUR (DEPEMOKIMAB-ULAA) | 做多 | 48.08 | 300 | -2.1% ▼ | -0.8% ▼ | -2.3% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2025-12-18T09:30:00-05:00 | JNJ | 药品获批：RYBREVANT FASPRO (AMIVANTAMAB AND HY… | 做多 | 206.48 | 58 | -1.6% ▼ | -1.0% ▼ | +4.0% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2026-02-17T09:30:00-05:00 | JNJ | 药品获批：RYBREVANT FASPRO (AMIVANTAMAB AND HY… | 做多 | 240.27 | 50 | +0.4% ▲ | +1.4% ▲ | -1.9% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2026-03-02T09:30:00-05:00 | JNJ | 药品获批：PREZCOBIX (DARUNAVIR AND COBICISTAT) | 观望 | 246.55 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2026-03-18T09:30:00-04:00 | JNJ | 药品获批：ICOTYDE (ICOTROKINRA HYDROCHLORIDE) | 做多 | 235.35 | 61 | -0.1% ▼ | +0.9% ▲ | -1.4% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2026-03-27T09:30:00-04:00 | NVO | 药品获批：AWIQLI FLEXTOUCH (INSULIN ICODEC) | 做多 | 34.58 | 416 | +0.8% ▲ | +4.7% ▲ | +17.6% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2026-03-30T09:30:00-04:00 | TEVA | 药品获批：PONLIMSI (DENOSUMAB-ADET) | 做多 | 28.86 | 416 | +4.4% ▲ | +1.6% ▲ | +9.6% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2026-04-02T09:30:00-04:00 | LLY | 药品获批：FOUNDAYO (ORFORGLIPRON CALCIUM) | 做多 | 942.03 | 15 | -1.9% ▼ | -0.6% ▼ | +1.9% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2026-04-21T09:30:00-04:00 | MRK | 药品获批：IDVYNSO (DORAVIRINE) | 做多 | 114.98 | 125 | -3.1% ▼ | -5.5% ▼ | -1.9% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2026-04-27T09:30:00-04:00 | AZN | 药品获批：SAPHNELO (ANIFROLUMAB-FNIA) | 做多 | 188.91 | 64 | -1.2% ▼ | -2.9% ▼ | -0.9% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2026-05-04T09:30:00-04:00 | INCY | 药品获批：JAKAFI XR (RUXOLITINIB PHOSPHATE) | 做多 | 96.54 | 124 | +1.0% ▲ | +3.9% ▲ | -4.5% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
 | 2026-05-12T09:30:00-04:00 | ALC | III 期试验启动：An Investigation of FID 123472 … | 做多 | 62.54 | 160 | +1.4% ▲ | +6.0% ▲ | +5.7% ▲ | clinicaltrials.gov/study/NCT07578363 |
-| 2026-05-12T09:30:00-04:00 | SHL.DE | 首次出现产品码：Siemens Healthcare Diagnostics, I… | 做多 | 33.14 | 342 | +2.4% ▲ | +2.2% ▲ | +5.9% ▲ | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
-| 2026-05-14T09:30:00-04:00 | MMSI | 首次出现产品码：Merit Medical Systems, Inc. 510(k… | 观望 | 62.94 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
-| 2026-05-18T09:30:00-04:00 | AZN | 药品获批：BAXFENDY (BAXDROSTAT) | 观望 | 183.43 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2026-05-18T09:30:00-04:00 | JNJ | 首次出现产品码：Depuy Ireland UC 510(k)：Prostalac… | 观望 | 224.31 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-05-12T09:30:00-04:00 | SHL.DE | 首次出现产品码：Siemens Healthcare Diagnostics, I… | 做多 | 33.14 | 416 | +2.4% ▲ | +2.2% ▲ | +5.9% ▲ | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-05-14T09:30:00-04:00 | MMSI | 首次出现产品码：Merit Medical Systems, Inc. 510(k… | 做多 | 62.94 | 207 | -2.5% ▼ | +1.1% ▲ | +5.7% ▲ | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-05-18T09:30:00-04:00 | AZN | 药品获批：BAXFENDY (BAXDROSTAT) | 做多 | 183.43 | 79 | +0.7% ▲ | +2.0% ▲ | -2.6% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-05-18T09:30:00-04:00 | JNJ | 首次出现产品码：Depuy Ireland UC 510(k)：Prostalac… | 做多 | 224.31 | 67 | +1.5% ▲ | +2.1% ▲ | +4.3% ▲ | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
 | 2026-05-18T09:30:00-04:00 | TFX | 首次出现产品码：Teleflex Medical Sdn. Bhd. 510(k)… | 观望 | 129.39 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
-| 2026-05-26T09:30:00-04:00 | GILD | 药品获批：HEPCLUDEX (BULEVIRTIDE-GMOD) | 做多 | 133.61 | 108 | -1.2% ▼ | -5.7% ▼ | -6.9% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
-| 2026-05-28T09:30:00-04:00 | ABBV | 药品获批：DECNUPAZ (PIVEKIMAB SUNIRINE-PVZY) | 做多 | 213.07 | 68 | +0.8% ▲ | +4.2% ▲ | +17.3% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-05-26T09:30:00-04:00 | GILD | 药品获批：HEPCLUDEX (BULEVIRTIDE-GMOD) | 观望 | 133.61 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-05-28T09:30:00-04:00 | ABBV | 药品获批：DECNUPAZ (PIVEKIMAB SUNIRINE-PVZY) | 观望 | 213.07 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cder/daf/ind… |
 | 2026-05-28T09:30:00-04:00 | BAX | 首次出现产品码：Videomed Srl ( a Baxter Healthcar… | 观望 | 18.74 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
 | 2026-05-28T09:30:00-04:00 | FUJIY | 首次出现产品码：Fujifilm Corporation 510(k)：Synap… | 观望 | 10.38 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
 | 2026-05-29T09:30:00-04:00 | MDT | 首次出现产品码：Medtronic 510(k)：Trexon Monofila… | 观望 | 74.56 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-06-01T09:30:00-04:00 | BDX | 首次出现产品码：C.R. Bard, Inc. 510(k)：BD Touchle… | 观望 | 144.28 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-06-05T09:30:00-04:00 | MDT | 首次出现产品码：Covidien, LLC 510(k)：Instrument E… | 观望 | 80.70 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-06-10T09:30:00-04:00 | TRUMY | 首次出现产品码：MicroVention, Inc., d/b/a Terumo … | 做多 | 13.69 | 1,037 | +4.1% ▲ | +2.0% ▲ | -0.7% ▼ | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-06-12T09:30:00-04:00 | EW | 首次出现产品码：Edwards Lifesciences, LLC 510(k)：… | 做多 | 86.48 | 173 | -0.2% ▼ | -0.7% ▼ | +4.2% ▲ | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-06-15T09:30:00-04:00 | BAYRY | 药品获批：AMBELVIST (GADOQUATRANE) | 做多 | 10.50 | 1,371 | -1.1% ▼ | +4.2% ▲ | +29.8% ▲ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-06-15T09:30:00-04:00 | DXCM | 首次出现产品码：Dexcom, Inc. 510(k)：Stelo Glucose… | 观望 | 75.70 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-06-18T09:30:00-04:00 | GSK | 药品获批：UTEBZI (TEBIPENEM PIVOXIL HYDROBROMI… | 做多 | 51.33 | 281 | -2.0% ▼ | +1.4% ▲ | -3.4% ▼ | www.accessdata.fda.gov/scripts/cder/daf/ind… |
+| 2026-06-17T19:59:59-04:00 | HOLX | 首次出现产品码：Hologic, Inc. 510(k)：CoolSeal Gen… | 观望 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-06-24T09:30:00-04:00 | IART | 首次进入赛道：Integra Lifesciences Production Co… | 做多 | 17.86 | 605 | +1.3% ▲ | +0.2% ▲ | +3.9% ▲ | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-06-29T09:30:00-04:00 | ABT | 首次出现产品码：Abbott Point of Care, Inc. 510(k)… | 观望 | 93.30 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-06-29T09:30:00-04:00 | EW | 首次出现产品码：Edwards Lifesciences 510(k)：ECLIP… | 观望 | 91.02 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-06-30T09:30:00-04:00 | PODD | 首次出现产品码：Insulet Corporation 510(k)：Omnipo… | 观望 | 156.03 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
+| 2026-07-07T09:30:00-04:00 | SNN | 首次出现产品码：Smith & Nephew, Inc. 510(k)：TESSA… | 观望 | 30.64 | 暂无数据 | 暂无数据 | 暂无数据 | 暂无数据 | www.accessdata.fda.gov/scripts/cdrh/cfdocs/… |
 
 **多档交易成本下的回放结果**（成本以单边 bps 计）：
 
 | 成本档 | 区间总收益 | 最大回撤 | 胜率 | 笔数 | 备注 |
 |---|---|---|---|---|---|
-| 10 bps | +17.4% | -5.6% | 57.5% | 40 | cost_bps=10；final_equity=117,440.99；total_pnl=17,440.99 |
-| 25 bps | +15.9% | -5.9% | 57.5% | 40 | cost_bps=25；final_equity=115,931.04；total_pnl=15,931.04 |
-| 50 bps | +13.4% | -6.3% | 57.5% | 40 | cost_bps=50；final_equity=113,414.43；total_pnl=13,414.43 |
+| 10 bps | +12.0% | -4.2% | 64.3% | 28 | cost_bps=10；final_equity=112,011.16；total_pnl=12,011.16 |
+| 25 bps | +10.9% | -4.5% | 64.3% | 28 | cost_bps=25；final_equity=110,922.16；total_pnl=10,922.16 |
+| 50 bps | +9.1% | -4.8% | 64.3% | 28 | cost_bps=50；final_equity=109,107.16；total_pnl=9,107.16 |
 
 > 完整假设与数据口径见 [假设登记表](docs/ASSUMPTIONS.md)。
 

@@ -1,7 +1,7 @@
 {
  "meta": {
-  "generated_at": "2026-10-30T18:39:23Z",
-  "db": "data\\medradar.sqlite",
+  "generated_at": "2026-10-30T18:57:48Z",
+  "db": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
   "window": {
    "start": "2025-01-01",
    "end": "2026-10-30",
@@ -1815,10 +1815,10 @@
     "nme_recent": 2
    },
    {
-    "key": "daiichi_sankyo",
-    "name_en": "Daiichi Sankyo",
-    "name_zh": "第一三共",
-    "ticker": "DSNKY",
+    "key": "otsuka",
+    "name_en": "Otsuka",
+    "name_zh": "大冢",
+    "ticker": "OTSKY",
     "is_major": false,
     "recent": 2,
     "recent_per_q": 0.25,
@@ -1833,10 +1833,10 @@
     "nme_recent": 2
    },
    {
-    "key": "otsuka",
-    "name_en": "Otsuka",
-    "name_zh": "大冢",
-    "ticker": "OTSKY",
+    "key": "daiichi_sankyo",
+    "name_en": "Daiichi Sankyo",
+    "name_zh": "第一三共",
+    "ticker": "DSNKY",
     "is_major": false,
     "recent": 2,
     "recent_per_q": 0.25,
@@ -2139,6 +2139,24 @@
     "nme_recent": 3
    },
    {
+    "key": "viatris",
+    "name_en": "Viatris",
+    "name_zh": "晖致",
+    "ticker": "VTRS",
+    "is_major": false,
+    "recent": 1,
+    "recent_per_q": 0.125,
+    "baseline_per_q": 0.2,
+    "thi": 0.73,
+    "prob_up": 0.236,
+    "ci": [
+     0.05,
+     2.19
+    ],
+    "emerging": false,
+    "nme_recent": 0
+   },
+   {
     "key": "regeneron",
     "name_en": "Regeneron",
     "name_zh": "再生元",
@@ -2161,24 +2179,6 @@
     "name_en": "Incyte",
     "name_zh": "因塞特",
     "ticker": "INCY",
-    "is_major": false,
-    "recent": 1,
-    "recent_per_q": 0.125,
-    "baseline_per_q": 0.2,
-    "thi": 0.73,
-    "prob_up": 0.236,
-    "ci": [
-     0.05,
-     2.19
-    ],
-    "emerging": false,
-    "nme_recent": 0
-   },
-   {
-    "key": "viatris",
-    "name_en": "Viatris",
-    "name_zh": "晖致",
-    "ticker": "VTRS",
     "is_major": false,
     "recent": 1,
     "recent_per_q": 0.125,
@@ -8974,9 +8974,9 @@
  "replay": {
   "status": "ok",
   "window": {
-   "start": "2025-11-01",
+   "start": "2026-05-04",
    "end": "2026-10-31",
-   "signals": 98
+   "signals": 85
   },
   "method": {
    "engine": "replay_v1",
@@ -8990,6 +8990,7 @@
    "concurrency": "单标的不叠加；同时最多 5 笔",
    "long_only": true,
    "short_reference": "做空信号也解析参考成交价（1m/日线规则相同）并标记 reference_only，但不计入组合与收益",
+   "signals_source": "signals 表；为空时按 point-in-time 规则从 events 生成简易信号",
    "in_sample": true,
    "not_modelled": [
     "bid/ask 价差与盘口冲击（只用一个 bps 档近似）",
@@ -9003,554 +9004,410 @@
   "summary_by_cost": {
    "10": {
     "cost_bps": 10.0,
-    "trades": 40,
-    "n_trades": 40,
-    "total_return": 0.17441,
-    "final_equity": 117440.99,
-    "max_drawdown": -0.056158,
-    "win_rate": 0.575,
-    "avg_trade_return": 0.033761,
-    "total_pnl": 17440.99,
-    "avg_holding_days": 19.15,
-    "mean_gross_return": 0.035761,
-    "mean_outcome_1d": -0.000223,
-    "mean_outcome_5d": 0.007987,
+    "trades": 28,
+    "n_trades": 28,
+    "total_return": 0.120112,
+    "final_equity": 112011.16,
+    "max_drawdown": -0.042444,
+    "win_rate": 0.642857,
+    "avg_trade_return": 0.030896,
+    "total_pnl": 12011.16,
+    "avg_holding_days": 18.82,
+    "mean_gross_return": 0.032896,
+    "mean_outcome_1d": 0.007481,
+    "mean_outcome_5d": 0.017519,
     "mean_outcome_20d": 0.027792,
-    "start": "2025-11-20",
+    "start": "2026-05-12",
     "end": "2026-10-30",
     "equity_curve": [
      {
-      "date": "2025-11-20",
+      "date": "2026-05-12",
       "equity": 100000.0
      },
      {
-      "date": "2025-12-19",
-      "equity": 104863.5
-     },
-     {
-      "date": "2025-12-26",
-      "equity": 105139.71
-     },
-     {
-      "date": "2026-01-16",
-      "equity": 104781.18
-     },
-     {
-      "date": "2026-01-20",
-      "equity": 105238.21
-     },
-     {
-      "date": "2026-03-17",
-      "equity": 104980.52
-     },
-     {
-      "date": "2026-04-16",
-      "equity": 104750.13
-     },
-     {
-      "date": "2026-04-27",
-      "equity": 107259.88
-     },
-     {
-      "date": "2026-04-28",
-      "equity": 108383.49
-     },
-     {
-      "date": "2026-05-01",
-      "equity": 108634.01
-     },
-     {
-      "date": "2026-05-19",
-      "equity": 108327.07
-     },
-     {
-      "date": "2026-05-26",
-      "equity": 108193.81
-     },
-     {
-      "date": "2026-06-02",
-      "equity": 107635.32
-     },
-     {
       "date": "2026-06-10",
-      "equity": 108834.15
+      "equity": 101339.4
      },
      {
-      "date": "2026-06-24",
-      "equity": 107818.65
+      "date": "2026-06-12",
+      "equity": 102054.89
      },
      {
-      "date": "2026-06-26",
-      "equity": 110287.67
-     },
-     {
-      "date": "2026-07-07",
-      "equity": 110599.94
+      "date": "2026-06-16",
+      "equity": 102275.44
      },
      {
       "date": "2026-07-10",
-      "equity": 110497.58
+      "equity": 102143.31
      },
      {
       "date": "2026-07-14",
-      "equity": 110956.23
+      "equity": 102739.47
+     },
+     {
+      "date": "2026-07-15",
+      "equity": 107003.24
+     },
+     {
+      "date": "2026-07-20",
+      "equity": 106487.86
      },
      {
       "date": "2026-07-23",
-      "equity": 111328.17
-     },
-     {
-      "date": "2026-07-28",
-      "equity": 112876.37
-     },
-     {
-      "date": "2026-08-04",
-      "equity": 112655.65
+      "equity": 106889.56
      },
      {
       "date": "2026-08-07",
-      "equity": 112623.37
+      "equity": 106857.28
      },
      {
       "date": "2026-08-12",
-      "equity": 113493.26
+      "equity": 107727.17
+     },
+     {
+      "date": "2026-08-13",
+      "equity": 108997.88
+     },
+     {
+      "date": "2026-08-17",
+      "equity": 109552.88
      },
      {
       "date": "2026-08-24",
-      "equity": 115023.35
-     },
-     {
-      "date": "2026-08-26",
-      "equity": 114342.13
-     },
-     {
-      "date": "2026-09-03",
-      "equity": 115696.81
+      "equity": 111082.97
      },
      {
       "date": "2026-09-08",
-      "equity": 114831.33
+      "equity": 110217.49
      },
      {
       "date": "2026-09-10",
-      "equity": 114516.7
+      "equity": 109902.86
+     },
+     {
+      "date": "2026-09-11",
+      "equity": 108048.59
+     },
+     {
+      "date": "2026-09-15",
+      "equity": 108507.09
      },
      {
       "date": "2026-09-24",
-      "equity": 113128.75
-     },
-     {
-      "date": "2026-09-28",
-      "equity": 113393.55
-     },
-     {
-      "date": "2026-10-05",
-      "equity": 109698.14
+      "equity": 106866.79
      },
      {
       "date": "2026-10-06",
-      "equity": 109199.47
+      "equity": 106368.12
      },
      {
       "date": "2026-10-13",
-      "equity": 109477.81
+      "equity": 106646.46
+     },
+     {
+      "date": "2026-10-16",
+      "equity": 107077.89
+     },
+     {
+      "date": "2026-10-19",
+      "equity": 107554.37
      },
      {
       "date": "2026-10-22",
-      "equity": 111316.69
-     },
-     {
-      "date": "2026-10-26",
-      "equity": 112604.64
+      "equity": 109393.25
      },
      {
       "date": "2026-10-30",
-      "equity": 117440.99
+      "equity": 112011.16
      }
     ],
-    "n_signals": 98,
-    "n_steps": 98,
-    "n_skipped": 58
+    "n_signals": 85,
+    "n_steps": 85,
+    "n_skipped": 57
    },
    "25": {
     "cost_bps": 25.0,
-    "trades": 40,
-    "n_trades": 40,
-    "total_return": 0.15931,
-    "final_equity": 115931.04,
-    "max_drawdown": -0.058589,
-    "win_rate": 0.575,
-    "avg_trade_return": 0.030761,
-    "total_pnl": 15931.04,
-    "avg_holding_days": 19.15,
-    "mean_gross_return": 0.035761,
-    "mean_outcome_1d": -0.000223,
-    "mean_outcome_5d": 0.007987,
+    "trades": 28,
+    "n_trades": 28,
+    "total_return": 0.109222,
+    "final_equity": 110922.16,
+    "max_drawdown": -0.04467,
+    "win_rate": 0.642857,
+    "avg_trade_return": 0.027896,
+    "total_pnl": 10922.16,
+    "avg_holding_days": 18.82,
+    "mean_gross_return": 0.032896,
+    "mean_outcome_1d": 0.007481,
+    "mean_outcome_5d": 0.017519,
     "mean_outcome_20d": 0.027792,
-    "start": "2025-11-20",
+    "start": "2026-05-12",
     "end": "2026-10-30",
     "equity_curve": [
      {
-      "date": "2025-11-20",
+      "date": "2026-05-12",
       "equity": 100000.0
      },
      {
-      "date": "2025-12-19",
-      "equity": 104820.3
-     },
-     {
-      "date": "2025-12-26",
-      "equity": 105053.31
-     },
-     {
-      "date": "2026-01-16",
-      "equity": 104651.58
-     },
-     {
-      "date": "2026-01-20",
-      "equity": 105072.61
-     },
-     {
-      "date": "2026-03-17",
-      "equity": 104778.92
-     },
-     {
-      "date": "2026-04-16",
-      "equity": 104505.33
-     },
-     {
-      "date": "2026-04-27",
-      "equity": 106971.88
-     },
-     {
-      "date": "2026-04-28",
-      "equity": 108059.49
-     },
-     {
-      "date": "2026-05-01",
-      "equity": 108266.81
-     },
-     {
-      "date": "2026-05-19",
-      "equity": 107916.67
-     },
-     {
-      "date": "2026-05-26",
-      "equity": 107747.41
-     },
-     {
-      "date": "2026-06-02",
-      "equity": 107152.92
-     },
-     {
       "date": "2026-06-10",
-      "equity": 108287.73
+      "equity": 101268.0
      },
      {
-      "date": "2026-06-24",
-      "equity": 107229.03
+      "date": "2026-06-12",
+      "equity": 101944.49
      },
      {
-      "date": "2026-06-26",
-      "equity": 109654.85
-     },
-     {
-      "date": "2026-07-07",
-      "equity": 109934.0
+      "date": "2026-06-16",
+      "equity": 102076.84
      },
      {
       "date": "2026-07-10",
-      "equity": 109798.65
+      "equity": 101902.11
      },
      {
       "date": "2026-07-14",
-      "equity": 110222.68
+      "equity": 102453.27
+     },
+     {
+      "date": "2026-07-15",
+      "equity": 106673.84
+     },
+     {
+      "date": "2026-07-20",
+      "equity": 106115.26
      },
      {
       "date": "2026-07-23",
-      "equity": 110564.62
-     },
-     {
-      "date": "2026-07-28",
-      "equity": 112079.82
-     },
-     {
-      "date": "2026-08-04",
-      "equity": 111826.1
+      "equity": 106484.56
      },
      {
       "date": "2026-08-07",
-      "equity": 111757.82
+      "equity": 106416.28
      },
      {
       "date": "2026-08-12",
-      "equity": 112594.71
+      "equity": 107253.17
+     },
+     {
+      "date": "2026-08-13",
+      "equity": 108480.68
+     },
+     {
+      "date": "2026-08-17",
+      "equity": 108990.68
      },
      {
       "date": "2026-08-24",
-      "equity": 114081.6
-     },
-     {
-      "date": "2026-08-26",
-      "equity": 113364.38
-     },
-     {
-      "date": "2026-09-03",
-      "equity": 114675.86
+      "equity": 110477.57
      },
      {
       "date": "2026-09-08",
-      "equity": 113777.38
+      "equity": 109579.09
      },
      {
       "date": "2026-09-10",
-      "equity": 113429.75
+      "equity": 109231.46
+     },
+     {
+      "date": "2026-09-11",
+      "equity": 107344.19
+     },
+     {
+      "date": "2026-09-15",
+      "equity": 107763.69
      },
      {
       "date": "2026-09-24",
-      "equity": 112008.8
-     },
-     {
-      "date": "2026-09-28",
-      "equity": 112237.6
-     },
-     {
-      "date": "2026-10-05",
-      "equity": 108498.99
+      "equity": 106084.39
      },
      {
       "date": "2026-10-06",
-      "equity": 107957.12
+      "equity": 105542.52
      },
      {
       "date": "2026-10-13",
-      "equity": 108202.46
+      "equity": 105787.86
+     },
+     {
+      "date": "2026-10-16",
+      "equity": 106180.29
+     },
+     {
+      "date": "2026-10-19",
+      "equity": 106623.77
      },
      {
       "date": "2026-10-22",
-      "equity": 109998.14
-     },
-     {
-      "date": "2026-10-26",
-      "equity": 111242.89
+      "equity": 108419.45
      },
      {
       "date": "2026-10-30",
-      "equity": 115931.04
+      "equity": 110922.16
      }
     ],
-    "n_signals": 98,
-    "n_steps": 98,
-    "n_skipped": 58
+    "n_signals": 85,
+    "n_steps": 85,
+    "n_skipped": 57
    },
    "50": {
     "cost_bps": 50.0,
-    "trades": 40,
-    "n_trades": 40,
-    "total_return": 0.134144,
-    "final_equity": 113414.43,
-    "max_drawdown": -0.062738,
-    "win_rate": 0.575,
-    "avg_trade_return": 0.025761,
-    "total_pnl": 13414.43,
-    "avg_holding_days": 19.15,
-    "mean_gross_return": 0.035761,
-    "mean_outcome_1d": -0.000223,
-    "mean_outcome_5d": 0.007987,
+    "trades": 28,
+    "n_trades": 28,
+    "total_return": 0.091072,
+    "final_equity": 109107.16,
+    "max_drawdown": -0.048434,
+    "win_rate": 0.642857,
+    "avg_trade_return": 0.022896,
+    "total_pnl": 9107.16,
+    "avg_holding_days": 18.82,
+    "mean_gross_return": 0.032896,
+    "mean_outcome_1d": 0.007481,
+    "mean_outcome_5d": 0.017519,
     "mean_outcome_20d": 0.027792,
-    "start": "2025-11-20",
+    "start": "2026-05-12",
     "end": "2026-10-30",
     "equity_curve": [
      {
-      "date": "2025-11-20",
+      "date": "2026-05-12",
       "equity": 100000.0
      },
      {
-      "date": "2025-12-19",
-      "equity": 104748.3
-     },
-     {
-      "date": "2025-12-26",
-      "equity": 104909.31
-     },
-     {
-      "date": "2026-01-16",
-      "equity": 104435.58
-     },
-     {
-      "date": "2026-01-20",
-      "equity": 104796.61
-     },
-     {
-      "date": "2026-03-17",
-      "equity": 104442.92
-     },
-     {
-      "date": "2026-04-16",
-      "equity": 104097.33
-     },
-     {
-      "date": "2026-04-27",
-      "equity": 106491.88
-     },
-     {
-      "date": "2026-04-28",
-      "equity": 107519.49
-     },
-     {
-      "date": "2026-05-01",
-      "equity": 107654.81
-     },
-     {
-      "date": "2026-05-19",
-      "equity": 107232.67
-     },
-     {
-      "date": "2026-05-26",
-      "equity": 107003.41
-     },
-     {
-      "date": "2026-06-02",
-      "equity": 106348.92
-     },
-     {
       "date": "2026-06-10",
-      "equity": 107377.03
+      "equity": 101149.0
      },
      {
-      "date": "2026-06-24",
-      "equity": 106246.33
+      "date": "2026-06-12",
+      "equity": 101760.49
      },
      {
-      "date": "2026-06-26",
-      "equity": 108600.15
-     },
-     {
-      "date": "2026-07-07",
-      "equity": 108824.1
+      "date": "2026-06-16",
+      "equity": 101745.84
      },
      {
       "date": "2026-07-10",
-      "equity": 108633.74
+      "equity": 101500.11
      },
      {
       "date": "2026-07-14",
-      "equity": 109000.07
+      "equity": 101976.27
+     },
+     {
+      "date": "2026-07-15",
+      "equity": 106124.84
+     },
+     {
+      "date": "2026-07-20",
+      "equity": 105494.26
      },
      {
       "date": "2026-07-23",
-      "equity": 109292.01
-     },
-     {
-      "date": "2026-07-28",
-      "equity": 110752.2
-     },
-     {
-      "date": "2026-08-04",
-      "equity": 110443.49
+      "equity": 105809.56
      },
      {
       "date": "2026-08-07",
-      "equity": 110315.21
+      "equity": 105681.28
      },
      {
       "date": "2026-08-12",
-      "equity": 111097.1
+      "equity": 106463.17
+     },
+     {
+      "date": "2026-08-13",
+      "equity": 107618.68
+     },
+     {
+      "date": "2026-08-17",
+      "equity": 108053.68
      },
      {
       "date": "2026-08-24",
-      "equity": 112511.99
-     },
-     {
-      "date": "2026-08-26",
-      "equity": 111734.77
-     },
-     {
-      "date": "2026-09-03",
-      "equity": 112974.25
+      "equity": 109468.57
      },
      {
       "date": "2026-09-08",
-      "equity": 112020.77
+      "equity": 108515.09
      },
      {
       "date": "2026-09-10",
-      "equity": 111618.14
+      "equity": 108112.46
+     },
+     {
+      "date": "2026-09-11",
+      "equity": 106170.19
+     },
+     {
+      "date": "2026-09-15",
+      "equity": 106524.69
      },
      {
       "date": "2026-09-24",
-      "equity": 110142.19
-     },
-     {
-      "date": "2026-09-28",
-      "equity": 110310.99
-     },
-     {
-      "date": "2026-10-05",
-      "equity": 106500.38
+      "equity": 104780.39
      },
      {
       "date": "2026-10-06",
-      "equity": 105886.51
+      "equity": 104166.52
      },
      {
       "date": "2026-10-13",
-      "equity": 106076.85
+      "equity": 104356.86
+     },
+     {
+      "date": "2026-10-16",
+      "equity": 104684.29
+     },
+     {
+      "date": "2026-10-19",
+      "equity": 105072.77
      },
      {
       "date": "2026-10-22",
-      "equity": 107800.53
-     },
-     {
-      "date": "2026-10-26",
-      "equity": 108973.28
+      "equity": 106796.45
      },
      {
       "date": "2026-10-30",
-      "equity": 113414.43
+      "equity": 109107.16
      }
     ],
-    "n_signals": 98,
-    "n_steps": 98,
-    "n_skipped": 58
+    "n_signals": 85,
+    "n_steps": 85,
+    "n_skipped": 57
    }
   },
   "event_study": {
-   "n_entries": 40,
+   "n_entries": 28,
    "horizons": {
     "1": {
-     "n": 40,
-     "mean": -0.000223,
-     "median": -0.001724,
-     "std": 0.023501,
-     "hit_rate": 0.475,
-     "t": -0.060061,
+     "n": 28,
+     "mean": 0.007481,
+     "median": 0.00582,
+     "std": 0.024462,
+     "hit_rate": 0.607143,
+     "t": 1.618222,
      "mean_net_by_cost": {
-      "10": -0.002223,
-      "25": -0.005223,
-      "50": -0.010223
+      "10": 0.005481,
+      "25": 0.002481,
+      "50": -0.002519
      }
     },
     "5": {
-     "n": 40,
-     "mean": 0.007987,
-     "median": 0.010961,
-     "std": 0.041328,
-     "hit_rate": 0.625,
-     "t": 1.222342,
+     "n": 28,
+     "mean": 0.017519,
+     "median": 0.02011,
+     "std": 0.031054,
+     "hit_rate": 0.75,
+     "t": 2.985135,
      "mean_net_by_cost": {
-      "10": 0.005987,
-      "25": 0.002987,
-      "50": -0.002013
+      "10": 0.015519,
+      "25": 0.012519,
+      "50": 0.007519
      }
     },
     "20": {
-     "n": 36,
+     "n": 25,
      "mean": 0.027792,
-     "median": 0.022624,
-     "std": 0.099318,
-     "hit_rate": 0.555556,
-     "t": 1.678963,
+     "median": 0.039,
+     "std": 0.088412,
+     "hit_rate": 0.64,
+     "t": 1.571748,
      "mean_net_by_cost": {
       "10": 0.025792,
       "25": 0.022792,
@@ -9561,731 +9418,37 @@
    "by_side": {
     "BUY": {
      "1": {
-      "n": 40,
-      "mean": -0.000223
+      "n": 28,
+      "mean": 0.007481
      },
      "5": {
-      "n": 40,
-      "mean": 0.007987
+      "n": 28,
+      "mean": 0.017519
      },
      "20": {
-      "n": 36,
+      "n": 25,
       "mean": 0.027792
      }
     }
    }
   },
   "skipped": {
-   "count": 58,
+   "count": 57,
    "by_reason": {
-    "already_open": 6,
-    "no_capacity": 33,
+    "no_capacity": 35,
     "no_price": 4,
+    "already_open": 3,
     "short_not_supported": 15
    },
    "by_reason_zh": {
-    "同标的仍有未平仓仓位（不叠加）": 6,
-    "并发仓位已满（上限 5 笔）": 33,
+    "并发仓位已满（上限 5 笔）": 35,
     "没有该标的的日线价格（优雅降级）": 4,
+    "同标的仍有未平仓仓位（不叠加）": 3,
     "做空不建模（本回放仅做多）": 15
    },
    "low_quality_excluded": 0
   },
   "steps": [
-   {
-    "step_id": null,
-    "ticker": "BAYRY",
-    "company_key": "bayer",
-    "company_zh": "拜耳",
-    "event_id": "d8bfe8d1fcc8bf7472181bac23793230",
-    "signal_id": "sig-0085",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2025-11-20",
-    "available_at": "2025-11-19T18:59:59-05:00",
-    "available_at_utc": "2025-11-19T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.72,
-    "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
-    "t": "2025-11-20T09:30:00-05:00",
-    "fill_time": "2025-11-20T09:30:00-05:00",
-    "fill_date": "2025-11-20",
-    "fill_price": 7.776673,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": 1851.691587,
-    "notional": 14400.0,
-    "gross_return": 0.339743,
-    "exit_date": "2025-12-19",
-    "exit_price": 10.418747,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": 0.017949,
-    "outcome_5d": 0.129487,
-    "outcome_20d": 0.339743,
-    "net_by_cost": {
-     "10": 0.337743,
-     "25": 0.334743,
-     "50": 0.329743
-    },
-    "pnl_by_cost": {
-     "10": 4863.5,
-     "25": 4820.3,
-     "50": 4748.3
-    },
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：HYRNUO (SEVABERTINIB)",
-    "reason_zh": "新分子实体获批：HYRNUO (SEVABERTINIB)",
-    "title": "HYRNUO (SEVABERTINIB)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=219972",
-    "side": "long"
-   },
-   {
-    "step_id": null,
-    "ticker": "OTSKY",
-    "company_key": "otsuka",
-    "company_zh": "大冢",
-    "event_id": "3c9079b3282f46d6be857ee8815c3b7c",
-    "signal_id": "sig-0084",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2025-11-26",
-    "available_at": "2025-11-25T18:59:59-05:00",
-    "available_at_utc": "2025-11-25T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.72,
-    "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
-    "t": "2025-11-26T09:30:00-05:00",
-    "fill_time": "2025-11-26T09:30:00-05:00",
-    "fill_date": "2025-11-26",
-    "fill_price": 28.799999,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": 500.000013,
-    "notional": 14400.0,
-    "gross_return": 0.021181,
-    "exit_date": "2025-12-26",
-    "exit_price": 29.41,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": -0.016319,
-    "outcome_5d": 0.037847,
-    "outcome_20d": 0.021181,
-    "net_by_cost": {
-     "10": 0.019181,
-     "25": 0.016181,
-     "50": 0.011181
-    },
-    "pnl_by_cost": {
-     "10": 276.21,
-     "25": 233.01,
-     "50": 161.01
-    },
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：VOYXACT (SIBEPRENLIMAB-SZSI)",
-    "reason_zh": "新分子实体获批：VOYXACT (SIBEPRENLIMAB-SZSI)",
-    "title": "VOYXACT (SIBEPRENLIMAB-SZSI)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=761434",
-    "side": "long"
-   },
-   {
-    "step_id": null,
-    "ticker": "GSK",
-    "company_key": "gsk",
-    "company_zh": "葛兰素史克",
-    "event_id": "a4562a504fb31be7d33857f93e45cd43",
-    "signal_id": "sig-0083",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2025-12-17",
-    "available_at": "2025-12-16T18:59:59-05:00",
-    "available_at_utc": "2025-12-16T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.72,
-    "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
-    "t": "2025-12-17T09:30:00-05:00",
-    "fill_time": "2025-12-17T09:30:00-05:00",
-    "fill_date": "2025-12-17",
-    "fill_price": 48.078334,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": 299.51121,
-    "notional": 14400.0,
-    "gross_return": -0.022898,
-    "exit_date": "2026-01-16",
-    "exit_price": 46.977455,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": -0.021479,
-    "outcome_5d": -0.007903,
-    "outcome_20d": -0.022898,
-    "net_by_cost": {
-     "10": -0.024898,
-     "25": -0.027898,
-     "50": -0.032898
-    },
-    "pnl_by_cost": {
-     "10": -358.53,
-     "25": -401.73,
-     "50": -473.73
-    },
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：EXDENSUR (DEPEMOKIMAB-ULAA)",
-    "reason_zh": "新分子实体获批：EXDENSUR (DEPEMOKIMAB-ULAA)",
-    "title": "EXDENSUR (DEPEMOKIMAB-ULAA)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=761458",
-    "side": "long"
-   },
-   {
-    "step_id": null,
-    "ticker": "JNJ",
-    "company_key": "jnj_pharma",
-    "company_zh": "强生创新制药",
-    "event_id": "1f4c4d8cd4dacf23c850704a2cdd4b89",
-    "signal_id": "sig-0082",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2025-12-18",
-    "available_at": "2025-12-17T18:59:59-05:00",
-    "available_at_utc": "2025-12-17T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.6,
-    "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
-    "t": "2025-12-18T09:30:00-05:00",
-    "fill_time": "2025-12-18T09:30:00-05:00",
-    "fill_date": "2025-12-18",
-    "fill_price": 206.478916,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": 58.117314,
-    "notional": 12000.0,
-    "gross_return": 0.040086,
-    "exit_date": "2026-01-20",
-    "exit_price": 214.755798,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": -0.016349,
-    "outcome_5d": -0.010343,
-    "outcome_20d": 0.040086,
-    "net_by_cost": {
-     "10": 0.038086,
-     "25": 0.035086,
-     "50": 0.030086
-    },
-    "pnl_by_cost": {
-     "10": 457.03,
-     "25": 421.03,
-     "50": 361.03
-    },
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：RYBREVANT FASPRO (AMIVANTAMAB AND HYALURONIDASE-LPUJ)",
-    "reason_zh": "原始申请获批：RYBREVANT FASPRO (AMIVANTAMAB AND HYALURONIDASE-LPUJ)",
-    "title": "RYBREVANT FASPRO (AMIVANTAMAB AND HYALURONIDASE-LPUJ)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=761433",
-    "side": "long"
-   },
-   {
-    "step_id": null,
-    "ticker": "JNJ",
-    "company_key": "jnj_pharma",
-    "company_zh": "强生创新制药",
-    "event_id": "1704643833ea3cdc07824c926400fa1c",
-    "signal_id": "sig-0080",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2026-02-14",
-    "available_at": "2026-02-13T18:59:59-05:00",
-    "available_at_utc": "2026-02-13T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.6,
-    "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
-    "t": "2026-02-17T09:30:00-05:00",
-    "fill_time": "2026-02-17T09:30:00-05:00",
-    "fill_date": "2026-02-17",
-    "fill_price": 240.265489,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": 49.944751,
-    "notional": 12000.0,
-    "gross_return": -0.019474,
-    "exit_date": "2026-03-17",
-    "exit_price": 235.586548,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": 0.003523,
-    "outcome_5d": 0.01417,
-    "outcome_20d": -0.019474,
-    "net_by_cost": {
-     "10": -0.021474,
-     "25": -0.024474,
-     "50": -0.029474
-    },
-    "pnl_by_cost": {
-     "10": -257.69,
-     "25": -293.69,
-     "50": -353.69
-    },
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：RYBREVANT FASPRO (AMIVANTAMAB AND HYALURONIDASE-LPUJ)",
-    "reason_zh": "原始申请获批：RYBREVANT FASPRO (AMIVANTAMAB AND HYALURONIDASE-LPUJ)",
-    "title": "RYBREVANT FASPRO (AMIVANTAMAB AND HYALURONIDASE-LPUJ)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=761484",
-    "side": "long"
-   },
-   {
-    "step_id": null,
-    "ticker": "JNJ",
-    "company_key": "jnj_pharma",
-    "company_zh": "强生创新制药",
-    "event_id": "a921d7001df9a49d93dda91f7e29cee5",
-    "signal_id": "sig-0079",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2026-02-28",
-    "available_at": "2026-02-27T18:59:59-05:00",
-    "available_at_utc": "2026-02-27T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.6,
-    "direction": 1,
-    "decision": "SKIP",
-    "skip_reason": "already_open",
-    "skip_reason_zh": "同标的仍有未平仓仓位（不叠加）",
-    "t": "2026-03-02T09:30:00-05:00",
-    "fill_time": "2026-03-02T09:30:00-05:00",
-    "fill_date": "2026-03-02",
-    "fill_price": 246.549125,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": null,
-    "notional": null,
-    "gross_return": null,
-    "exit_date": null,
-    "exit_price": null,
-    "exit_reason": null,
-    "holding_days": null,
-    "outcome_1d": null,
-    "outcome_5d": null,
-    "outcome_20d": null,
-    "net_by_cost": {},
-    "pnl_by_cost": {},
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：PREZCOBIX (DARUNAVIR AND COBICISTAT)",
-    "reason_zh": "原始申请获批：PREZCOBIX (DARUNAVIR AND COBICISTAT)",
-    "title": "PREZCOBIX (DARUNAVIR AND COBICISTAT)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=220092",
-    "side": "long"
-   },
-   {
-    "step_id": null,
-    "ticker": "JNJ",
-    "company_key": "jnj_pharma",
-    "company_zh": "强生创新制药",
-    "event_id": "01302c5eb0fd55e1bf8dc9f67f283ae6",
-    "signal_id": "sig-0078",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2026-03-18",
-    "available_at": "2026-03-17T19:59:59-04:00",
-    "available_at_utc": "2026-03-17T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.72,
-    "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
-    "t": "2026-03-18T09:30:00-04:00",
-    "fill_time": "2026-03-18T09:30:00-04:00",
-    "fill_date": "2026-03-18",
-    "fill_price": 235.349079,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": 61.185708,
-    "notional": 14400.0,
-    "gross_return": -0.013999,
-    "exit_date": "2026-04-16",
-    "exit_price": 232.054382,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": -0.001135,
-    "outcome_5d": 0.00866,
-    "outcome_20d": -0.013999,
-    "net_by_cost": {
-     "10": -0.015999,
-     "25": -0.018999,
-     "50": -0.023999
-    },
-    "pnl_by_cost": {
-     "10": -230.39,
-     "25": -273.59,
-     "50": -345.59
-    },
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：ICOTYDE (ICOTROKINRA HYDROCHLORIDE)",
-    "reason_zh": "新分子实体获批：ICOTYDE (ICOTROKINRA HYDROCHLORIDE)",
-    "title": "ICOTYDE (ICOTROKINRA HYDROCHLORIDE)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=220149",
-    "side": "long"
-   },
-   {
-    "step_id": null,
-    "ticker": "NVO",
-    "company_key": "novo_nordisk",
-    "company_zh": "诺和诺德",
-    "event_id": "0a54ec27f5ecf1661b924b612779ea32",
-    "signal_id": "sig-0077",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2026-03-27",
-    "available_at": "2026-03-26T19:59:59-04:00",
-    "available_at_utc": "2026-03-26T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.72,
-    "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
-    "t": "2026-03-27T09:30:00-04:00",
-    "fill_time": "2026-03-27T09:30:00-04:00",
-    "fill_date": "2026-03-27",
-    "fill_price": 34.583529,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": 416.383188,
-    "notional": 14400.0,
-    "gross_return": 0.176288,
-    "exit_date": "2026-04-27",
-    "exit_price": 40.680176,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": 0.007553,
-    "outcome_5d": 0.046953,
-    "outcome_20d": 0.176288,
-    "net_by_cost": {
-     "10": 0.174288,
-     "25": 0.171288,
-     "50": 0.166288
-    },
-    "pnl_by_cost": {
-     "10": 2509.75,
-     "25": 2466.55,
-     "50": 2394.55
-    },
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：AWIQLI FLEXTOUCH (INSULIN ICODEC)",
-    "reason_zh": "新分子实体获批：AWIQLI FLEXTOUCH (INSULIN ICODEC)",
-    "title": "AWIQLI FLEXTOUCH (INSULIN ICODEC)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=761326",
-    "side": "long"
-   },
-   {
-    "step_id": null,
-    "ticker": "TEVA",
-    "company_key": "teva",
-    "company_zh": "梯瓦",
-    "event_id": "52b69574f9c166df1d0f01d8dccee45a",
-    "signal_id": "sig-0076",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2026-03-28",
-    "available_at": "2026-03-27T19:59:59-04:00",
-    "available_at_utc": "2026-03-27T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.6,
-    "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
-    "t": "2026-03-30T09:30:00-04:00",
-    "fill_time": "2026-03-30T09:30:00-04:00",
-    "fill_date": "2026-03-30",
-    "fill_price": 28.860001,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": 415.800407,
-    "notional": 12000.0,
-    "gross_return": 0.095634,
-    "exit_date": "2026-04-28",
-    "exit_price": 31.620001,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": 0.043659,
-    "outcome_5d": 0.016285,
-    "outcome_20d": 0.095634,
-    "net_by_cost": {
-     "10": 0.093634,
-     "25": 0.090634,
-     "50": 0.085634
-    },
-    "pnl_by_cost": {
-     "10": 1123.61,
-     "25": 1087.61,
-     "50": 1027.61
-    },
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：PONLIMSI (DENOSUMAB-ADET)",
-    "reason_zh": "原始申请获批：PONLIMSI (DENOSUMAB-ADET)",
-    "title": "PONLIMSI (DENOSUMAB-ADET)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=761385",
-    "side": "long"
-   },
-   {
-    "step_id": null,
-    "ticker": "LLY",
-    "company_key": "lilly",
-    "company_zh": "礼来",
-    "event_id": "82c2b3f30f814f8c9100e2029aa9878f",
-    "signal_id": "sig-0075",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2026-04-02",
-    "available_at": "2026-04-01T19:59:59-04:00",
-    "available_at_utc": "2026-04-01T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.72,
-    "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
-    "t": "2026-04-02T09:30:00-04:00",
-    "fill_time": "2026-04-02T09:30:00-04:00",
-    "fill_date": "2026-04-02",
-    "fill_price": 942.026142,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": 15.2862,
-    "notional": 14400.0,
-    "gross_return": 0.019397,
-    "exit_date": "2026-05-01",
-    "exit_price": 960.298462,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": -0.018984,
-    "outcome_5d": -0.005852,
-    "outcome_20d": 0.019397,
-    "net_by_cost": {
-     "10": 0.017397,
-     "25": 0.014397,
-     "50": 0.009397
-    },
-    "pnl_by_cost": {
-     "10": 250.52,
-     "25": 207.32,
-     "50": 135.32
-    },
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：FOUNDAYO (ORFORGLIPRON CALCIUM)",
-    "reason_zh": "新分子实体获批：FOUNDAYO (ORFORGLIPRON CALCIUM)",
-    "title": "FOUNDAYO (ORFORGLIPRON CALCIUM)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=220934",
-    "side": "long"
-   },
-   {
-    "step_id": null,
-    "ticker": "MRK",
-    "company_key": "merck",
-    "company_zh": "默沙东",
-    "event_id": "532389de3b723ff2f5afb4ba2c8f27d7",
-    "signal_id": "sig-0074",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2026-04-21",
-    "available_at": "2026-04-20T19:59:59-04:00",
-    "available_at_utc": "2026-04-20T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.72,
-    "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
-    "t": "2026-04-21T09:30:00-04:00",
-    "fill_time": "2026-04-21T09:30:00-04:00",
-    "fill_date": "2026-04-21",
-    "fill_price": 114.979576,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": 125.239634,
-    "notional": 14400.0,
-    "gross_return": -0.019315,
-    "exit_date": "2026-05-19",
-    "exit_price": 112.758751,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": -0.030904,
-    "outcome_5d": -0.055455,
-    "outcome_20d": -0.019315,
-    "net_by_cost": {
-     "10": -0.021315,
-     "25": -0.024315,
-     "50": -0.029315
-    },
-    "pnl_by_cost": {
-     "10": -306.94,
-     "25": -350.14,
-     "50": -422.14
-    },
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：IDVYNSO (DORAVIRINE)",
-    "reason_zh": "新分子实体获批：IDVYNSO (DORAVIRINE)",
-    "title": "IDVYNSO (DORAVIRINE)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=216964",
-    "side": "long"
-   },
-   {
-    "step_id": null,
-    "ticker": "AZN",
-    "company_key": "astrazeneca",
-    "company_zh": "阿斯利康",
-    "event_id": "12d6b2210591a4b09a74ea55348cda52",
-    "signal_id": "sig-0073",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2026-04-25",
-    "available_at": "2026-04-24T19:59:59-04:00",
-    "available_at_utc": "2026-04-24T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.6,
-    "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
-    "t": "2026-04-27T09:30:00-04:00",
-    "fill_time": "2026-04-27T09:30:00-04:00",
-    "fill_date": "2026-04-27",
-    "fill_price": 188.910004,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": 63.522311,
-    "notional": 12000.0,
-    "gross_return": -0.009105,
-    "exit_date": "2026-05-26",
-    "exit_price": 187.190002,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": -0.011805,
-    "outcome_5d": -0.02885,
-    "outcome_20d": -0.009105,
-    "net_by_cost": {
-     "10": -0.011105,
-     "25": -0.014105,
-     "50": -0.019105
-    },
-    "pnl_by_cost": {
-     "10": -133.26,
-     "25": -169.26,
-     "50": -229.26
-    },
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：SAPHNELO (ANIFROLUMAB-FNIA)",
-    "reason_zh": "原始申请获批：SAPHNELO (ANIFROLUMAB-FNIA)",
-    "title": "SAPHNELO (ANIFROLUMAB-FNIA)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=761451",
-    "side": "long"
-   },
-   {
-    "step_id": null,
-    "ticker": "INCY",
-    "company_key": "incyte",
-    "company_zh": "因塞特",
-    "event_id": "fb64b9a679706de7a7298df89241b270",
-    "signal_id": "sig-0072",
-    "kind": "drug_approval",
-    "kind_zh": "药品获批",
-    "track_id": "",
-    "source": "openfda_drug_drugsfda",
-    "signal_date": "2026-05-02",
-    "available_at": "2026-05-01T19:59:59-04:00",
-    "available_at_utc": "2026-05-01T23:59:59Z",
-    "timestamp_quality": "date",
-    "score": 0.6,
-    "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
-    "t": "2026-05-04T09:30:00-04:00",
-    "fill_time": "2026-05-04T09:30:00-04:00",
-    "fill_date": "2026-05-04",
-    "fill_price": 96.540001,
-    "price_source": "daily",
-    "price_source_zh": "次日交易日开盘",
-    "shares": 124.300807,
-    "notional": 12000.0,
-    "gross_return": -0.044541,
-    "exit_date": "2026-06-02",
-    "exit_price": 92.239998,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": 0.009633,
-    "outcome_5d": 0.039155,
-    "outcome_20d": -0.044541,
-    "net_by_cost": {
-     "10": -0.046541,
-     "25": -0.049541,
-     "50": -0.054541
-    },
-    "pnl_by_cost": {
-     "10": -558.49,
-     "25": -594.49,
-     "50": -654.49
-    },
-    "intraday_fallback": null,
-    "reference_only": false,
-    "event_zh": "药品获批：JAKAFI XR (RUXOLITINIB PHOSPHATE)",
-    "reason_zh": "原始申请获批：JAKAFI XR (RUXOLITINIB PHOSPHATE)",
-    "title": "JAKAFI XR (RUXOLITINIB PHOSPHATE)",
-    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=217180",
-    "side": "long"
-   },
    {
     "step_id": null,
     "ticker": "ALC",
@@ -10355,7 +9518,7 @@
     "available_at": "2026-05-11T19:59:59-04:00",
     "available_at_utc": "2026-05-11T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.567,
+    "score": 0.69,
     "direction": 1,
     "decision": "BUY",
     "skip_reason": null,
@@ -10366,8 +9529,8 @@
     "fill_price": 33.139999,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": 342.184677,
-    "notional": 11340.0,
+    "shares": 416.415216,
+    "notional": 13800.0,
     "gross_return": 0.059143,
     "exit_date": "2026-06-10",
     "exit_price": 35.099998,
@@ -10382,9 +9545,9 @@
      "50": 0.049143
     },
     "pnl_by_cost": {
-     "10": 648.0,
-     "25": 613.98,
-     "50": 557.28
+     "10": 788.57,
+     "25": 747.17,
+     "50": 678.17
     },
     "intraday_fallback": null,
     "reference_only": false,
@@ -10409,29 +9572,37 @@
     "available_at": "2026-05-13T19:59:59-04:00",
     "available_at_utc": "2026-05-13T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.555,
+    "score": 0.65,
     "direction": 1,
-    "decision": "SKIP",
-    "skip_reason": "no_capacity",
-    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "decision": "BUY",
+    "skip_reason": null,
+    "skip_reason_zh": null,
     "t": "2026-05-14T09:30:00-04:00",
     "fill_time": "2026-05-14T09:30:00-04:00",
     "fill_date": "2026-05-14",
     "fill_price": 62.939999,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": null,
-    "notional": null,
-    "gross_return": null,
-    "exit_date": null,
-    "exit_price": null,
-    "exit_reason": null,
-    "holding_days": null,
-    "outcome_1d": null,
-    "outcome_5d": null,
-    "outcome_20d": null,
-    "net_by_cost": {},
-    "pnl_by_cost": {},
+    "shares": 206.545921,
+    "notional": 13000.0,
+    "gross_return": 0.057038,
+    "exit_date": "2026-06-12",
+    "exit_price": 66.529999,
+    "exit_reason": "time_exit",
+    "holding_days": 20,
+    "outcome_1d": -0.025103,
+    "outcome_5d": 0.010963,
+    "outcome_20d": 0.057038,
+    "net_by_cost": {
+     "10": 0.055038,
+     "25": 0.052038,
+     "50": 0.047038
+    },
+    "pnl_by_cost": {
+     "10": 715.49,
+     "25": 676.49,
+     "50": 611.49
+    },
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "首次出现产品码：Merit Medical Systems, Inc. 510(k)：StatSeal Disc",
@@ -10457,27 +9628,35 @@
     "timestamp_quality": "date",
     "score": 0.72,
     "direction": 1,
-    "decision": "SKIP",
-    "skip_reason": "already_open",
-    "skip_reason_zh": "同标的仍有未平仓仓位（不叠加）",
+    "decision": "BUY",
+    "skip_reason": null,
+    "skip_reason_zh": null,
     "t": "2026-05-18T09:30:00-04:00",
     "fill_time": "2026-05-18T09:30:00-04:00",
     "fill_date": "2026-05-18",
     "fill_price": 183.429993,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": null,
-    "notional": null,
-    "gross_return": null,
-    "exit_date": null,
-    "exit_price": null,
-    "exit_reason": null,
-    "holding_days": null,
-    "outcome_1d": null,
-    "outcome_5d": null,
-    "outcome_20d": null,
-    "net_by_cost": {},
-    "pnl_by_cost": {},
+    "shares": 78.504065,
+    "notional": 14400.0,
+    "gross_return": -0.025732,
+    "exit_date": "2026-06-16",
+    "exit_price": 178.710007,
+    "exit_reason": "time_exit",
+    "holding_days": 20,
+    "outcome_1d": 0.006597,
+    "outcome_5d": 0.020498,
+    "outcome_20d": -0.025732,
+    "net_by_cost": {
+     "10": -0.027732,
+     "25": -0.030732,
+     "50": -0.035732
+    },
+    "pnl_by_cost": {
+     "10": -399.34,
+     "25": -442.54,
+     "50": -514.54
+    },
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "药品获批：BAXFENDY (BAXDROSTAT)",
@@ -10501,29 +9680,37 @@
     "available_at": "2026-05-15T19:59:59-04:00",
     "available_at_utc": "2026-05-15T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.55,
+    "score": 0.75,
     "direction": 1,
-    "decision": "SKIP",
-    "skip_reason": "no_capacity",
-    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "decision": "BUY",
+    "skip_reason": null,
+    "skip_reason_zh": null,
     "t": "2026-05-18T09:30:00-04:00",
     "fill_time": "2026-05-18T09:30:00-04:00",
     "fill_date": "2026-05-18",
     "fill_price": 224.307372,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": null,
-    "notional": null,
-    "gross_return": null,
-    "exit_date": null,
-    "exit_price": null,
-    "exit_reason": null,
-    "holding_days": null,
-    "outcome_1d": null,
-    "outcome_5d": null,
-    "outcome_20d": null,
-    "net_by_cost": {},
-    "pnl_by_cost": {},
+    "shares": 66.872523,
+    "notional": 15000.0,
+    "gross_return": 0.043326,
+    "exit_date": "2026-06-16",
+    "exit_price": 234.025787,
+    "exit_reason": "time_exit",
+    "holding_days": 20,
+    "outcome_1d": 0.014512,
+    "outcome_5d": 0.021145,
+    "outcome_20d": 0.043326,
+    "net_by_cost": {
+     "10": 0.041326,
+     "25": 0.038326,
+     "50": 0.033326
+    },
+    "pnl_by_cost": {
+     "10": 619.89,
+     "25": 574.89,
+     "50": 499.89
+    },
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "首次出现产品码：Depuy Ireland UC 510(k)：Prostalac Hip System, SmartSet V+G Dual Antibiotic Bone Cement",
@@ -10595,35 +9782,27 @@
     "timestamp_quality": "date",
     "score": 0.72,
     "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
+    "decision": "SKIP",
+    "skip_reason": "no_capacity",
+    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
     "t": "2026-05-26T09:30:00-04:00",
     "fill_time": "2026-05-26T09:30:00-04:00",
     "fill_date": "2026-05-26",
     "fill_price": 133.614369,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": 107.77284,
-    "notional": 14400.0,
-    "gross_return": -0.068521,
-    "exit_date": "2026-06-24",
-    "exit_price": 124.459023,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": -0.011534,
-    "outcome_5d": -0.056784,
-    "outcome_20d": -0.068521,
-    "net_by_cost": {
-     "10": -0.070521,
-     "25": -0.073521,
-     "50": -0.078521
-    },
-    "pnl_by_cost": {
-     "10": -1015.5,
-     "25": -1058.7,
-     "50": -1130.7
-    },
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "药品获批：HEPCLUDEX (BULEVIRTIDE-GMOD)",
@@ -10649,35 +9828,27 @@
     "timestamp_quality": "date",
     "score": 0.72,
     "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
+    "decision": "SKIP",
+    "skip_reason": "no_capacity",
+    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
     "t": "2026-05-28T09:30:00-04:00",
     "fill_time": "2026-05-28T09:30:00-04:00",
     "fill_date": "2026-05-28",
     "fill_price": 213.065836,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": 67.584744,
-    "notional": 14400.0,
-    "gross_return": 0.17346,
-    "exit_date": "2026-06-26",
-    "exit_price": 250.024231,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": 0.00843,
-    "outcome_5d": 0.041871,
-    "outcome_20d": 0.17346,
-    "net_by_cost": {
-     "10": 0.17146,
-     "25": 0.16846,
-     "50": 0.16346
-    },
-    "pnl_by_cost": {
-     "10": 2469.02,
-     "25": 2425.82,
-     "50": 2353.82
-    },
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "药品获批：DECNUPAZ (PIVEKIMAB SUNIRINE-PVZY)",
@@ -10701,7 +9872,7 @@
     "available_at": "2026-05-27T19:59:59-04:00",
     "available_at_utc": "2026-05-27T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.55,
+    "score": 0.75,
     "direction": 1,
     "decision": "SKIP",
     "skip_reason": "no_capacity",
@@ -10747,7 +9918,7 @@
     "available_at": "2026-05-27T19:59:59-04:00",
     "available_at_utc": "2026-05-27T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.55,
+    "score": 0.75,
     "direction": 1,
     "decision": "SKIP",
     "skip_reason": "no_capacity",
@@ -10793,7 +9964,7 @@
     "available_at": "2026-05-28T19:59:59-04:00",
     "available_at_utc": "2026-05-28T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.555,
+    "score": 0.71,
     "direction": 1,
     "decision": "SKIP",
     "skip_reason": "no_capacity",
@@ -10885,37 +10056,29 @@
     "available_at": "2026-06-04T19:59:59-04:00",
     "available_at_utc": "2026-06-04T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.552,
+    "score": 0.75,
     "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
+    "decision": "SKIP",
+    "skip_reason": "no_capacity",
+    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
     "t": "2026-06-05T09:30:00-04:00",
     "fill_time": "2026-06-05T09:30:00-04:00",
     "fill_date": "2026-06-05",
     "fill_price": 80.703984,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": 136.79622,
-    "notional": 11040.0,
-    "gross_return": 0.030285,
-    "exit_date": "2026-07-07",
-    "exit_price": 83.148071,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": -0.017174,
-    "outcome_5d": -0.023143,
-    "outcome_20d": 0.030285,
-    "net_by_cost": {
-     "10": 0.028285,
-     "25": 0.025285,
-     "50": 0.020285
-    },
-    "pnl_by_cost": {
-     "10": 312.27,
-     "25": 279.15,
-     "50": 223.95
-    },
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "首次出现产品码：Covidien, LLC 510(k)：Instrument Exit Point on Touch Surgery Aide",
@@ -10939,7 +10102,7 @@
     "available_at": "2026-06-09T19:59:59-04:00",
     "available_at_utc": "2026-06-09T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.55,
+    "score": 0.71,
     "direction": 1,
     "decision": "BUY",
     "skip_reason": null,
@@ -10950,8 +10113,8 @@
     "fill_price": 13.69,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": 803.506234,
-    "notional": 11000.0,
+    "shares": 1037.253501,
+    "notional": 14200.0,
     "gross_return": -0.007305,
     "exit_date": "2026-07-10",
     "exit_price": 13.59,
@@ -10966,9 +10129,9 @@
      "50": -0.017305
     },
     "pnl_by_cost": {
-     "10": -102.36,
-     "25": -135.35,
-     "50": -190.36
+     "10": -132.13,
+     "25": -174.73,
+     "50": -245.73
     },
     "intraday_fallback": null,
     "reference_only": false,
@@ -10993,7 +10156,7 @@
     "available_at": "2026-06-11T19:59:59-04:00",
     "available_at_utc": "2026-06-11T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.577,
+    "score": 0.75,
     "direction": 1,
     "decision": "BUY",
     "skip_reason": null,
@@ -11004,8 +10167,8 @@
     "fill_price": 86.480003,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": 133.441253,
-    "notional": 11540.0,
+    "shares": 173.450502,
+    "notional": 15000.0,
     "gross_return": 0.041744,
     "exit_date": "2026-07-14",
     "exit_price": 90.089996,
@@ -11020,9 +10183,9 @@
      "50": 0.031744
     },
     "pnl_by_cost": {
-     "10": 458.65,
-     "25": 424.03,
-     "50": 366.33
+     "10": 596.16,
+     "25": 551.16,
+     "50": 476.16
     },
     "intraday_fallback": null,
     "reference_only": false,
@@ -11049,27 +10212,35 @@
     "timestamp_quality": "date",
     "score": 0.72,
     "direction": 1,
-    "decision": "SKIP",
-    "skip_reason": "no_capacity",
-    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "decision": "BUY",
+    "skip_reason": null,
+    "skip_reason_zh": null,
     "t": "2026-06-15T09:30:00-04:00",
     "fill_time": "2026-06-15T09:30:00-04:00",
     "fill_date": "2026-06-15",
     "fill_price": 10.5,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": null,
-    "notional": null,
-    "gross_return": null,
-    "exit_date": null,
-    "exit_price": null,
-    "exit_reason": null,
-    "holding_days": null,
-    "outcome_1d": null,
-    "outcome_5d": null,
-    "outcome_20d": null,
-    "net_by_cost": {},
-    "pnl_by_cost": {},
+    "shares": 1371.428571,
+    "notional": 14400.0,
+    "gross_return": 0.298095,
+    "exit_date": "2026-07-15",
+    "exit_price": 13.63,
+    "exit_reason": "time_exit",
+    "holding_days": 20,
+    "outcome_1d": -0.011429,
+    "outcome_5d": 0.041905,
+    "outcome_20d": 0.298095,
+    "net_by_cost": {
+     "10": 0.296095,
+     "25": 0.293095,
+     "50": 0.288095
+    },
+    "pnl_by_cost": {
+     "10": 4263.77,
+     "25": 4220.57,
+     "50": 4148.57
+    },
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "药品获批：AMBELVIST (GADOQUATRANE)",
@@ -11093,7 +10264,7 @@
     "available_at": "2026-06-12T19:59:59-04:00",
     "available_at_utc": "2026-06-12T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.55,
+    "score": 0.65,
     "direction": 1,
     "decision": "SKIP",
     "skip_reason": "no_capacity",
@@ -11141,27 +10312,35 @@
     "timestamp_quality": "date",
     "score": 0.72,
     "direction": 1,
-    "decision": "SKIP",
-    "skip_reason": "no_capacity",
-    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "decision": "BUY",
+    "skip_reason": null,
+    "skip_reason_zh": null,
     "t": "2026-06-18T09:30:00-04:00",
     "fill_time": "2026-06-18T09:30:00-04:00",
     "fill_date": "2026-06-18",
     "fill_price": 51.325995,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": null,
-    "notional": null,
-    "gross_return": null,
-    "exit_date": null,
-    "exit_price": null,
-    "exit_reason": null,
-    "holding_days": null,
-    "outcome_1d": null,
-    "outcome_5d": null,
-    "outcome_20d": null,
-    "net_by_cost": {},
-    "pnl_by_cost": {},
+    "shares": 280.55959,
+    "notional": 14400.0,
+    "gross_return": -0.03379,
+    "exit_date": "2026-07-20",
+    "exit_price": 49.591675,
+    "exit_reason": "time_exit",
+    "holding_days": 20,
+    "outcome_1d": -0.020274,
+    "outcome_5d": 0.013709,
+    "outcome_20d": -0.03379,
+    "net_by_cost": {
+     "10": -0.03579,
+     "25": -0.03879,
+     "50": -0.04379
+    },
+    "pnl_by_cost": {
+     "10": -515.38,
+     "25": -558.58,
+     "50": -630.58
+    },
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "药品获批：UTEBZI (TEBIPENEM PIVOXIL HYDROBROMIDE)",
@@ -11185,7 +10364,7 @@
     "available_at": "2026-06-17T19:59:59-04:00",
     "available_at_utc": "2026-06-17T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.55,
+    "score": 0.61,
     "direction": 1,
     "decision": "SKIP",
     "skip_reason": "no_price",
@@ -11231,7 +10410,7 @@
     "available_at": "2026-06-23T19:59:59-04:00",
     "available_at_utc": "2026-06-23T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.5,
+    "score": 0.54,
     "direction": 1,
     "decision": "BUY",
     "skip_reason": null,
@@ -11242,8 +10421,8 @@
     "fill_price": 17.860001,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": 559.910395,
-    "notional": 10000.0,
+    "shares": 604.703227,
+    "notional": 10800.0,
     "gross_return": 0.039194,
     "exit_date": "2026-07-23",
     "exit_price": 18.559999,
@@ -11258,9 +10437,9 @@
      "50": 0.029194
     },
     "pnl_by_cost": {
-     "10": 371.94,
-     "25": 341.94,
-     "50": 291.94
+     "10": 401.7,
+     "25": 369.3,
+     "50": 315.3
     },
     "intraday_fallback": null,
     "reference_only": false,
@@ -11287,35 +10466,27 @@
     "timestamp_quality": "date",
     "score": 0.55,
     "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
+    "decision": "SKIP",
+    "skip_reason": "no_capacity",
+    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
     "t": "2026-06-29T09:30:00-04:00",
     "fill_time": "2026-06-29T09:30:00-04:00",
     "fill_date": "2026-06-29",
     "fill_price": 93.296159,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": 117.904103,
-    "notional": 11000.0,
-    "gross_return": 0.142745,
-    "exit_date": "2026-07-28",
-    "exit_price": 106.613686,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": -0.040195,
-    "outcome_5d": 0.013751,
-    "outcome_20d": 0.142745,
-    "net_by_cost": {
-     "10": 0.140745,
-     "25": 0.137745,
-     "50": 0.132745
-    },
-    "pnl_by_cost": {
-     "10": 1548.2,
-     "25": 1515.2,
-     "50": 1460.19
-    },
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "首次出现产品码：Abbott Point of Care, Inc. 510(k)：i-STAT Crea cartridge with the i-STAT 1 System",
@@ -11431,37 +10602,29 @@
     "available_at": "2026-07-06T19:59:59-04:00",
     "available_at_utc": "2026-07-06T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.55,
+    "score": 0.75,
     "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
+    "decision": "SKIP",
+    "skip_reason": "no_capacity",
+    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
     "t": "2026-07-07T09:30:00-04:00",
     "fill_time": "2026-07-07T09:30:00-04:00",
     "fill_date": "2026-07-07",
     "fill_price": 30.636118,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": 359.053328,
-    "notional": 11000.0,
-    "gross_return": -0.018065,
-    "exit_date": "2026-08-04",
-    "exit_price": 30.082691,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": -0.033871,
-    "outcome_5d": -0.037742,
-    "outcome_20d": -0.018065,
-    "net_by_cost": {
-     "10": -0.020065,
-     "25": -0.023065,
-     "50": -0.028065
-    },
-    "pnl_by_cost": {
-     "10": -220.72,
-     "25": -253.72,
-     "50": -308.71
-    },
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "首次出现产品码：Smith & Nephew, Inc. 510(k)：TESSA Spatial Surgery System; INTELLIO Tablet (72205455)",
@@ -11539,7 +10702,7 @@
     "available_at": "2026-07-09T19:59:59-04:00",
     "available_at_utc": "2026-07-09T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.555,
+    "score": 0.75,
     "direction": 1,
     "decision": "SKIP",
     "skip_reason": "no_capacity",
@@ -11687,27 +10850,35 @@
     "timestamp_quality": "date",
     "score": 0.72,
     "direction": 1,
-    "decision": "SKIP",
-    "skip_reason": "no_capacity",
-    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "decision": "BUY",
+    "skip_reason": null,
+    "skip_reason_zh": null,
     "t": "2026-07-16T09:30:00-04:00",
     "fill_time": "2026-07-16T09:30:00-04:00",
     "fill_date": "2026-07-16",
     "fill_price": 123.600419,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": null,
-    "notional": null,
-    "gross_return": null,
-    "exit_date": null,
-    "exit_price": null,
-    "exit_reason": null,
-    "holding_days": null,
-    "outcome_1d": null,
-    "outcome_5d": null,
-    "outcome_20d": null,
-    "net_by_cost": {},
-    "pnl_by_cost": {},
+    "shares": 116.504459,
+    "notional": 14400.0,
+    "gross_return": 0.090244,
+    "exit_date": "2026-08-13",
+    "exit_price": 134.754578,
+    "exit_reason": "time_exit",
+    "holding_days": 20,
+    "outcome_1d": 0.025497,
+    "outcome_5d": 0.049465,
+    "outcome_20d": 0.090244,
+    "net_by_cost": {
+     "10": 0.088244,
+     "25": 0.085244,
+     "50": 0.080244
+    },
+    "pnl_by_cost": {
+     "10": 1270.71,
+     "25": 1227.51,
+     "50": 1155.51
+    },
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "药品获批：LIPFENDRA (ENLICITIDE DECANOATE)",
@@ -11731,7 +10902,7 @@
     "available_at": "2026-07-15T19:59:59-04:00",
     "available_at_utc": "2026-07-15T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.555,
+    "score": 0.75,
     "direction": 1,
     "decision": "SKIP",
     "skip_reason": "no_capacity",
@@ -11777,7 +10948,7 @@
     "available_at": "2026-07-16T19:59:59-04:00",
     "available_at_utc": "2026-07-16T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.55,
+    "score": 0.65,
     "direction": 1,
     "decision": "SKIP",
     "skip_reason": "no_capacity",
@@ -11823,29 +10994,37 @@
     "available_at": "2026-07-17T19:59:59-04:00",
     "available_at_utc": "2026-07-17T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.552,
+    "score": 0.75,
     "direction": 1,
-    "decision": "SKIP",
-    "skip_reason": "no_capacity",
-    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "decision": "BUY",
+    "skip_reason": null,
+    "skip_reason_zh": null,
     "t": "2026-07-20T09:30:00-04:00",
     "fill_time": "2026-07-20T09:30:00-04:00",
     "fill_date": "2026-07-20",
     "fill_price": 318.222281,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": null,
-    "notional": null,
-    "gross_return": null,
-    "exit_date": null,
-    "exit_price": null,
-    "exit_reason": null,
-    "holding_days": null,
-    "outcome_1d": null,
-    "outcome_5d": null,
-    "outcome_20d": null,
-    "net_by_cost": {},
-    "pnl_by_cost": {},
+    "shares": 47.136863,
+    "notional": 15000.0,
+    "gross_return": 0.039,
+    "exit_date": "2026-08-17",
+    "exit_price": 330.632965,
+    "exit_reason": "time_exit",
+    "holding_days": 20,
+    "outcome_1d": -0.014566,
+    "outcome_5d": 0.054851,
+    "outcome_20d": 0.039,
+    "net_by_cost": {
+     "10": 0.037,
+     "25": 0.034,
+     "50": 0.029
+    },
+    "pnl_by_cost": {
+     "10": 555.0,
+     "25": 510.0,
+     "50": 435.0
+    },
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "首次出现产品码：Stryker Endoscopy 510(k)：SportSuite Vision Software",
@@ -11869,7 +11048,7 @@
     "available_at": "2026-07-21T19:59:59-04:00",
     "available_at_utc": "2026-07-21T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.577,
+    "score": 0.75,
     "direction": 1,
     "decision": "SKIP",
     "skip_reason": "no_capacity",
@@ -12017,35 +11196,27 @@
     "timestamp_quality": "date",
     "score": 0.6,
     "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
+    "decision": "SKIP",
+    "skip_reason": "no_capacity",
+    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
     "t": "2026-07-29T09:30:00-04:00",
     "fill_time": "2026-07-29T09:30:00-04:00",
     "fill_date": "2026-07-29",
     "fill_price": 17.826303,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": 673.162584,
-    "notional": 12000.0,
-    "gross_return": -0.054768,
-    "exit_date": "2026-08-26",
-    "exit_price": 16.85,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": -0.011136,
-    "outcome_5d": -0.017261,
-    "outcome_20d": -0.054768,
-    "net_by_cost": {
-     "10": -0.056768,
-     "25": -0.059768,
-     "50": -0.064768
-    },
-    "pnl_by_cost": {
-     "10": -681.22,
-     "25": -717.22,
-     "50": -777.22
-    },
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "药品获批：GWYN LO (ETHINYL ESTRADIOL)",
@@ -12117,35 +11288,27 @@
     "timestamp_quality": "date",
     "score": 0.72,
     "direction": 1,
-    "decision": "BUY",
-    "skip_reason": null,
-    "skip_reason_zh": null,
+    "decision": "SKIP",
+    "skip_reason": "no_capacity",
+    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
     "t": "2026-08-06T09:30:00-04:00",
     "fill_time": "2026-08-06T09:30:00-04:00",
     "fill_date": "2026-08-06",
     "fill_price": 17.07,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": 843.585252,
-    "notional": 14400.0,
-    "gross_return": 0.096075,
-    "exit_date": "2026-09-03",
-    "exit_price": 18.709999,
-    "exit_reason": "time_exit",
-    "holding_days": 20,
-    "outcome_1d": 0.022261,
-    "outcome_5d": 0.018746,
-    "outcome_20d": 0.096075,
-    "net_by_cost": {
-     "10": 0.094075,
-     "25": 0.091075,
-     "50": 0.086075
-    },
-    "pnl_by_cost": {
-     "10": 1354.68,
-     "25": 1311.48,
-     "50": 1239.48
-    },
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "药品获批：ORZEYFUL (OVEPOREXTON)",
@@ -12325,27 +11488,35 @@
     "timestamp_quality": "date",
     "score": 0.55,
     "direction": 1,
-    "decision": "SKIP",
-    "skip_reason": "no_capacity",
-    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "decision": "BUY",
+    "skip_reason": null,
+    "skip_reason_zh": null,
     "t": "2026-08-13T09:30:00-04:00",
     "fill_time": "2026-08-13T09:30:00-04:00",
     "fill_date": "2026-08-13",
     "fill_price": 51.57,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": null,
-    "notional": null,
-    "gross_return": null,
-    "exit_date": null,
-    "exit_price": null,
-    "exit_reason": null,
-    "holding_days": null,
-    "outcome_1d": null,
-    "outcome_5d": null,
-    "outcome_20d": null,
-    "net_by_cost": {},
-    "pnl_by_cost": {},
+    "shares": 213.302309,
+    "notional": 11000.0,
+    "gross_return": -0.16657,
+    "exit_date": "2026-09-11",
+    "exit_price": 42.98,
+    "exit_reason": "time_exit",
+    "holding_days": 20,
+    "outcome_1d": 0.005042,
+    "outcome_5d": -0.04266,
+    "outcome_20d": -0.16657,
+    "net_by_cost": {
+     "10": -0.16857,
+     "25": -0.17157,
+     "50": -0.17657
+    },
+    "pnl_by_cost": {
+     "10": -1854.27,
+     "25": -1887.27,
+     "50": -1942.27
+    },
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "首次出现产品码：Boston Scientific 510(k)：EluPro Antibiotic-Eluting BioEnvelope",
@@ -12461,29 +11632,37 @@
     "available_at": "2026-08-14T19:59:59-04:00",
     "available_at_utc": "2026-08-14T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.563,
+    "score": 0.65,
     "direction": 1,
-    "decision": "SKIP",
-    "skip_reason": "no_capacity",
-    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "decision": "BUY",
+    "skip_reason": null,
+    "skip_reason_zh": null,
     "t": "2026-08-17T09:30:00-04:00",
     "fill_time": "2026-08-17T09:30:00-04:00",
     "fill_date": "2026-08-17",
     "fill_price": 257.599544,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": null,
-    "notional": null,
-    "gross_return": null,
-    "exit_date": null,
-    "exit_price": null,
-    "exit_reason": null,
-    "holding_days": null,
-    "outcome_1d": null,
-    "outcome_5d": null,
-    "outcome_20d": null,
-    "net_by_cost": {},
-    "pnl_by_cost": {},
+    "shares": 50.465928,
+    "notional": 13000.0,
+    "gross_return": 0.037269,
+    "exit_date": "2026-09-15",
+    "exit_price": 267.200012,
+    "exit_reason": "time_exit",
+    "holding_days": 20,
+    "outcome_1d": 0.047282,
+    "outcome_5d": 0.054738,
+    "outcome_20d": 0.037269,
+    "net_by_cost": {
+     "10": 0.035269,
+     "25": 0.032269,
+     "50": 0.027269
+    },
+    "pnl_by_cost": {
+     "10": 458.5,
+     "25": 419.5,
+     "50": 354.5
+    },
     "intraday_fallback": null,
     "reference_only": false,
     "event_zh": "首次出现产品码：Cerenovus, Inc. 510(k)：MICRUSFRAME (MFR100202); MICRUSFRAME (MFR100253); MICRUSFRAME (MFR…",
@@ -12553,7 +11732,7 @@
     "available_at": "2026-08-25T19:59:59-04:00",
     "available_at_utc": "2026-08-25T23:59:59Z",
     "timestamp_quality": "date",
-    "score": 0.55,
+    "score": 0.65,
     "direction": 1,
     "decision": "BUY",
     "skip_reason": null,
@@ -12564,8 +11743,8 @@
     "fill_price": 114.69395,
     "price_source": "daily",
     "price_source_zh": "次日交易日开盘",
-    "shares": 95.907412,
-    "notional": 11000.0,
+    "shares": 113.345124,
+    "notional": 13000.0,
     "gross_return": -0.124177,
     "exit_date": "2026-09-24",
     "exit_price": 100.451622,
@@ -12580,9 +11759,9 @@
      "50": -0.134177
     },
     "pnl_by_cost": {
-     "10": -1387.95,
-     "25": -1420.95,
-     "50": -1475.95
+     "10": -1640.3,
+     "25": -1679.3,
+     "50": -1744.3
     },
     "intraday_fallback": null,
     "reference_only": false,
@@ -12591,15 +11770,3487 @@
     "title": "Abbott Diabetes Care 510(k)：Libre Duo 10 Day Continuous Dual Glucose Ketone Monitoring System",
     "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=DEN250049",
     "side": "long"
+   },
+   {
+    "step_id": null,
+    "ticker": "GILD",
+    "company_key": "gilead",
+    "company_zh": "吉利德",
+    "event_id": "5566731156c6f5418affdb410f5693f3",
+    "signal_id": "sig-0059",
+    "kind": "drug_approval",
+    "kind_zh": "药品获批",
+    "track_id": "",
+    "source": "openfda_drug_drugsfda",
+    "signal_date": "2026-08-28",
+    "available_at": "2026-08-27T19:59:59-04:00",
+    "available_at_utc": "2026-08-27T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.6,
+    "direction": 1,
+    "decision": "SKIP",
+    "skip_reason": "no_capacity",
+    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "t": "2026-08-28T09:30:00-04:00",
+    "fill_time": "2026-08-28T09:30:00-04:00",
+    "fill_date": "2026-08-28",
+    "fill_price": 148.632872,
+    "price_source": "daily",
+    "price_source_zh": "次日交易日开盘",
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
+    "intraday_fallback": null,
+    "reference_only": false,
+    "event_zh": "药品获批：BIXLENVO (BICTEGRAVIR SODIUM)",
+    "reason_zh": "原始申请获批：BIXLENVO (BICTEGRAVIR SODIUM)",
+    "title": "BIXLENVO (BICTEGRAVIR SODIUM)",
+    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=221104",
+    "side": "long"
+   },
+   {
+    "step_id": null,
+    "ticker": "RMD",
+    "company_key": "resmed",
+    "company_zh": "瑞思迈",
+    "event_id": "324538ed208a8b5478473e50fe59de3e",
+    "signal_id": "sig-0012",
+    "kind": "device_novel_code",
+    "kind_zh": "首次出现产品码",
+    "track_id": "respiratory",
+    "source": "openfda_device_510k",
+    "signal_date": "2026-08-28",
+    "available_at": "2026-08-27T19:59:59-04:00",
+    "available_at_utc": "2026-08-27T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.69,
+    "direction": 1,
+    "decision": "SKIP",
+    "skip_reason": "no_capacity",
+    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "t": "2026-08-28T09:30:00-04:00",
+    "fill_time": "2026-08-28T09:30:00-04:00",
+    "fill_date": "2026-08-28",
+    "fill_price": 236.639999,
+    "price_source": "daily",
+    "price_source_zh": "次日交易日开盘",
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
+    "intraday_fallback": null,
+    "reference_only": false,
+    "event_zh": "首次出现产品码：Resmed Corp 510(k)：EasyCare Tx 2",
+    "reason_zh": "首次出现产品码 MOD（呼吸与麻醉）",
+    "title": "Resmed Corp 510(k)：EasyCare Tx 2",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K261360",
+    "side": "long"
+   },
+   {
+    "step_id": null,
+    "ticker": "TAK",
+    "company_key": "takeda",
+    "company_zh": "武田",
+    "event_id": "d65d5af42b2108f284a6bb00b5e66cdf",
+    "signal_id": "sig-0058",
+    "kind": "drug_approval",
+    "kind_zh": "药品获批",
+    "track_id": "",
+    "source": "openfda_drug_drugsfda",
+    "signal_date": "2026-08-29",
+    "available_at": "2026-08-28T19:59:59-04:00",
+    "available_at_utc": "2026-08-28T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.72,
+    "direction": 1,
+    "decision": "SKIP",
+    "skip_reason": "no_capacity",
+    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "t": "2026-08-31T09:30:00-04:00",
+    "fill_time": "2026-08-31T09:30:00-04:00",
+    "fill_date": "2026-08-31",
+    "fill_price": 17.99,
+    "price_source": "daily",
+    "price_source_zh": "次日交易日开盘",
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
+    "intraday_fallback": null,
+    "reference_only": false,
+    "event_zh": "药品获批：MIMRYLO (RUSFERTIDE ACETATE)",
+    "reason_zh": "新分子实体获批：MIMRYLO (RUSFERTIDE ACETATE)",
+    "title": "MIMRYLO (RUSFERTIDE ACETATE)",
+    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=220605",
+    "side": "long"
+   },
+   {
+    "step_id": null,
+    "ticker": "HOLX",
+    "company_key": "hologic",
+    "company_zh": "豪洛捷",
+    "event_id": "0ac2e62d5f75183e0c7760e41321ec07",
+    "signal_id": "sig-0011",
+    "kind": "device_novel_code",
+    "kind_zh": "首次出现产品码",
+    "track_id": "imaging_mr_ct",
+    "source": "openfda_device_510k",
+    "signal_date": "2026-09-03",
+    "available_at": "2026-09-02T19:59:59-04:00",
+    "available_at_utc": "2026-09-02T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.75,
+    "direction": 1,
+    "decision": "SKIP",
+    "skip_reason": "no_price",
+    "skip_reason_zh": "没有该标的的日线价格（优雅降级）",
+    "t": "2026-09-02T19:59:59-04:00",
+    "fill_time": null,
+    "fill_date": null,
+    "fill_price": null,
+    "price_source": null,
+    "price_source_zh": null,
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
+    "intraday_fallback": null,
+    "reference_only": false,
+    "event_zh": "首次出现产品码：Hologic, Inc. 510(k)：I-View®",
+    "reason_zh": "首次出现产品码 MUE（影像（MR/CT/PET/X-ray））",
+    "title": "Hologic, Inc. 510(k)：I-View®",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254090",
+    "side": "long"
+   },
+   {
+    "step_id": null,
+    "ticker": "IONS",
+    "company_key": "ionis",
+    "company_zh": "伊奥尼斯",
+    "event_id": "a5bd799b82af5daf73185a89f50c2331",
+    "signal_id": "sig-0057",
+    "kind": "drug_approval",
+    "kind_zh": "药品获批",
+    "track_id": "",
+    "source": "openfda_drug_drugsfda",
+    "signal_date": "2026-09-04",
+    "available_at": "2026-09-03T19:59:59-04:00",
+    "available_at_utc": "2026-09-03T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.72,
+    "direction": 1,
+    "decision": "SKIP",
+    "skip_reason": "no_capacity",
+    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "t": "2026-09-04T09:30:00-04:00",
+    "fill_time": "2026-09-04T09:30:00-04:00",
+    "fill_date": "2026-09-04",
+    "fill_price": 58.360001,
+    "price_source": "daily",
+    "price_source_zh": "次日交易日开盘",
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
+    "intraday_fallback": null,
+    "reference_only": false,
+    "event_zh": "药品获批：ZANVASTRO (ZILGANERSEN SODIUM)",
+    "reason_zh": "新分子实体获批：ZANVASTRO (ZILGANERSEN SODIUM)",
+    "title": "ZANVASTRO (ZILGANERSEN SODIUM)",
+    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=220210",
+    "side": "long"
+   },
+   {
+    "step_id": null,
+    "ticker": "TRUMY",
+    "company_key": "terumo",
+    "company_zh": "泰尔茂",
+    "event_id": "a5ce192fba32cc9df8f5fb32862cafa7",
+    "signal_id": "sig-0010",
+    "kind": "device_novel_code",
+    "kind_zh": "首次出现产品码",
+    "track_id": "peripheral_vascular",
+    "source": "openfda_device_510k",
+    "signal_date": "2026-09-04",
+    "available_at": "2026-09-03T19:59:59-04:00",
+    "available_at_utc": "2026-09-03T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.63,
+    "direction": 1,
+    "decision": "SKIP",
+    "skip_reason": "no_capacity",
+    "skip_reason_zh": "并发仓位已满（上限 5 笔）",
+    "t": "2026-09-04T09:30:00-04:00",
+    "fill_time": "2026-09-04T09:30:00-04:00",
+    "fill_date": "2026-09-04",
+    "fill_price": 15.59,
+    "price_source": "daily",
+    "price_source_zh": "次日交易日开盘",
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
+    "intraday_fallback": null,
+    "reference_only": false,
+    "event_zh": "首次出现产品码：MicroVention, Inc., d/b/a Terumo Neuro 510(k)：Mayumi Thrombectomy System",
+    "reason_zh": "首次出现产品码 QEZ（外周血管）",
+    "title": "MicroVention, Inc., d/b/a Terumo Neuro 510(k)：Mayumi Thrombectomy System",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254035",
+    "side": "long"
+   },
+   {
+    "step_id": null,
+    "ticker": "ABT",
+    "company_key": "abbott",
+    "company_zh": "雅培",
+    "event_id": "51babd2f0011f5672100899adeffc85f",
+    "signal_id": "sig-0003",
+    "kind": "device_novel_code",
+    "kind_zh": "首次出现产品码",
+    "track_id": "ep_pfa",
+    "source": "openfda_device_pma",
+    "signal_date": "2026-09-05",
+    "available_at": "2026-09-04T19:59:59-04:00",
+    "available_at_utc": "2026-09-04T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.55,
+    "direction": 1,
+    "decision": "SKIP",
+    "skip_reason": "already_open",
+    "skip_reason_zh": "同标的仍有未平仓仓位（不叠加）",
+    "t": "2026-09-08T09:30:00-04:00",
+    "fill_time": "2026-09-08T09:30:00-04:00",
+    "fill_date": "2026-09-08",
+    "fill_price": 107.697025,
+    "price_source": "daily",
+    "price_source_zh": "次日交易日开盘",
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
+    "intraday_fallback": null,
+    "reference_only": false,
+    "event_zh": "首次出现产品码：ABBOTT MEDICAL PMA 补充 P220013/S028：TactiFlex Duo Ablation Catheter, Sensor Enabled (A-T…",
+    "reason_zh": "首次出现产品码 OAE（电生理与脉冲场消融）",
+    "title": "ABBOTT MEDICAL PMA 补充 P220013/S028：TactiFlex Duo Ablation Catheter, Sensor Enabled (A-TFDM-D, A-TFDM-F, A-TFDM-J, A-TFDM-DD, A-TFDM-DF, A-TFDM-FF, A-TFDM",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P220013",
+    "side": "long"
+   },
+   {
+    "step_id": null,
+    "ticker": "AZN",
+    "company_key": "astrazeneca",
+    "company_zh": "阿斯利康",
+    "event_id": "b721d8549d17c26292c49587c9fba02c",
+    "signal_id": "sig-0056",
+    "kind": "drug_approval",
+    "kind_zh": "药品获批",
+    "track_id": "",
+    "source": "openfda_drug_drugsfda",
+    "signal_date": "2026-09-05",
+    "available_at": "2026-09-04T19:59:59-04:00",
+    "available_at_utc": "2026-09-04T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.72,
+    "direction": 1,
+    "decision": "BUY",
+    "skip_reason": null,
+    "skip_reason_zh": null,
+    "t": "2026-09-08T09:30:00-04:00",
+    "fill_time": "2026-09-08T09:30:00-04:00",
+    "fill_date": "2026-09-08",
+    "fill_price": 163.960007,
+    "price_source": "daily",
+    "price_source_zh": "次日交易日开盘",
+    "shares": 87.826296,
+    "notional": 14400.0,
+    "gross_return": -0.03263,
+    "exit_date": "2026-10-06",
+    "exit_price": 158.610001,
+    "exit_reason": "time_exit",
+    "holding_days": 20,
+    "outcome_1d": -0.042815,
+    "outcome_5d": -0.012869,
+    "outcome_20d": -0.03263,
+    "net_by_cost": {
+     "10": -0.03463,
+     "25": -0.03763,
+     "50": -0.04263
+    },
+    "pnl_by_cost": {
+     "10": -498.67,
+     "25": -541.87,
+     "50": -613.87
+    },
+    "intraday_fallback": null,
+    "reference_only": false,
+    "event_zh": "药品获批：ETCAMAH (CAMIZESTRANT)",
+    "reason_zh": "新分子实体获批：ETCAMAH (CAMIZESTRANT)",
+    "title": "ETCAMAH (CAMIZESTRANT)",
+    "url": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=220359",
+    "side": "long"
+   },
+   {
+    "step_id": null,
+    "ticker": "SHL.DE",
+    "company_key": "siemens_healthineers",
+    "company_zh": "西门子医疗",
+    "event_id": "656a3145d25ccdc74a55f2c975ed51d3",
+    "signal_id": "sig-0009",
+    "kind": "device_novel_code",
+    "kind_zh": "首次出现产品码",
+    "track_id": "",
+    "source": "openfda_device_510k",
+    "signal_date": "2026-09-05",
+    "available_at": "2026-09-04T19:59:59-04:00",
+    "available_at_utc": "2026-09-04T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.55,
+    "direction": 1,
+    "decision": "SKIP",
+    "skip_reason": "already_open",
+    "skip_reason_zh": "同标的仍有未平仓仓位（不叠加）",
+    "t": "2026-09-07T09:30:00-04:00",
+    "fill_time": "2026-09-07T09:30:00-04:00",
+    "fill_date": "2026-09-07",
+    "fill_price": 38.73,
+    "price_source": "daily",
+    "price_source_zh": "次日交易日开盘",
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": null,
+    "outcome_5d": null,
+    "outcome_20d": null,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
+    "intraday_fallback": null,
+    "reference_only": false,
+    "event_zh": "首次出现产品码：Siemens Healthcare Diagnostics Products, Ltd. 510(k)：IMMULITE 2000 3gAllergy Specific IgE…",
+    "reason_zh": "首次出现产品码 DHB（未分类（产品码未映射））",
+    "title": "Siemens Healthcare Diagnostics Products, Ltd. 510(k)：IMMULITE 2000 3gAllergy Specific IgE Vantage; IMMULITE 2000 Systems Peanut Allergen (F13)",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K260331",
+    "side": "long"
+   },
+   {
+    "step_id": null,
+    "ticker": "BDX",
+    "company_key": "bd",
+    "company_zh": "碧迪",
+    "event_id": "3dde38263676c550edf94788a90abd70",
+    "signal_id": "sig-0007",
+    "kind": "device_novel_code",
+    "kind_zh": "首次出现产品码",
+    "track_id": "",
+    "source": "openfda_device_510k",
+    "signal_date": "2026-09-15",
+    "available_at": "2026-09-14T19:59:59-04:00",
+    "available_at_utc": "2026-09-14T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.55,
+    "direction": 1,
+    "decision": "BUY",
+    "skip_reason": null,
+    "skip_reason_zh": null,
+    "t": "2026-09-15T09:30:00-04:00",
+    "fill_time": "2026-09-15T09:30:00-04:00",
+    "fill_date": "2026-09-15",
+    "fill_price": 182.389999,
+    "price_source": "daily",
+    "price_source_zh": "次日交易日开盘",
+    "shares": 60.310324,
+    "notional": 11000.0,
+    "gross_return": 0.027304,
+    "exit_date": "2026-10-13",
+    "exit_price": 187.369995,
+    "exit_reason": "time_exit",
+    "holding_days": 20,
+    "outcome_1d": -0.002961,
+    "outcome_5d": 0.003344,
+    "outcome_20d": 0.027304,
+    "net_by_cost": {
+     "10": 0.025304,
+     "25": 0.022304,
+     "50": 0.017304
+    },
+    "pnl_by_cost": {
+     "10": 278.34,
+     "25": 245.34,
+     "50": 190.34
+    },
+    "intraday_fallback": null,
+    "reference_only": false,
+    "event_zh": "首次出现产品码：Becton Dickinson and Company 510(k)：BD BBL Mueller Hinton II Broth (Cation-Adjusted); BD …",
+    "reason_zh": "首次出现产品码 JTZ（未分类（产品码未映射））",
+    "title": "Becton Dickinson and Company 510(k)：BD BBL Mueller Hinton II Broth (Cation-Adjusted); BD Difco Mueller Hinton Broth",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262163",
+    "side": "long"
+   },
+   {
+    "step_id": null,
+    "ticker": "GEHC",
+    "company_key": "ge_healthcare",
+    "company_zh": "GE医疗",
+    "event_id": "f5fc9eeacee98976a0a251617e937f6a",
+    "signal_id": "sig-0299",
+    "kind": "recall_cluster",
+    "kind_zh": "召回聚集",
+    "track_id": "imaging_mr_ct",
+    "source": "openfda_device_recall",
+    "signal_date": "2026-09-16",
+    "available_at": "2026-09-15T19:59:59-04:00",
+    "available_at_utc": "2026-09-15T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.7,
+    "direction": -1,
+    "decision": "SKIP",
+    "skip_reason": "short_not_supported",
+    "skip_reason_zh": "做空不建模（本回放仅做多）",
+    "t": "2026-09-16T09:30:00-04:00",
+    "fill_time": "2026-09-16T09:30:00-04:00",
+    "fill_date": "2026-09-16",
+    "fill_price": 64.054104,
+    "price_source": "daily",
+    "price_source_zh": "次日交易日开盘",
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": -0.005539,
+    "outcome_5d": -0.031206,
+    "outcome_20d": -0.068341,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
+    "intraday_fallback": null,
+    "reference_only": true,
+    "event_zh": "召回聚集：GE Healthcare 召回：Centricity Enterprise Archive V2, V3, and V4, software product for recei…",
+    "reason_zh": "90 天内 5 起召回",
+    "title": "GE Healthcare 召回：Centricity Enterprise Archive V2, V3, and V4, software product for receiving, archiving, …",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRES/res.cfm?id=99661",
+    "side": "short"
+   },
+   {
+    "step_id": null,
+    "ticker": "ICUI",
+    "company_key": "icu_medical",
+    "company_zh": "ICU医疗",
+    "event_id": "deda8351e46f69671e4498f23078f38c",
+    "signal_id": "sig-0303",
+    "kind": "recall_cluster",
+    "kind_zh": "召回聚集",
+    "track_id": "",
+    "source": "openfda_device_recall",
+    "signal_date": "2026-09-18",
+    "available_at": "2026-09-17T19:59:59-04:00",
+    "available_at_utc": "2026-09-17T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.7,
+    "direction": -1,
+    "decision": "SKIP",
+    "skip_reason": "short_not_supported",
+    "skip_reason_zh": "做空不建模（本回放仅做多）",
+    "t": "2026-09-18T09:30:00-04:00",
+    "fill_time": "2026-09-18T09:30:00-04:00",
+    "fill_date": "2026-09-18",
+    "fill_price": 151.669998,
+    "price_source": "daily",
+    "price_source_zh": "次日交易日开盘",
+    "shares": null,
+    "notional": null,
+    "gross_return": null,
+    "exit_date": null,
+    "exit_price": null,
+    "exit_reason": null,
+    "holding_days": null,
+    "outcome_1d": -0.023406,
+    "outcome_5d": -0.087559,
+    "outcome_20d": -0.074636,
+    "net_by_cost": {},
+    "pnl_by_cost": {},
+    "intraday_fallback": null,
+    "reference_only": true,
+    "event_zh": "召回聚集：ICU Medical, Inc. 召回：CADD Yellow Medication Cassette Reservoir with NRFit connector\n\nUS P…",
+    "reason_zh": "90 天内 2 起召回",
+    "title": "ICU Medical, Inc. 召回：CADD Yellow Medication Cassette Reservoir with NRFit connector\n\nUS Product Codes: 21-7600…",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRES/res.cfm?id=99648",
+    "side": "short"
+   },
+   {
+    "step_id": null,
+    "ticker": "MDT",
+    "company_key": "medtronic",
+    "company_zh": "美敦力",
+    "event_id": "f5d951d8108df5595ea7830c889ae11e",
+    "signal_id": "sig-0006",
+    "kind": "device_novel_code",
+    "kind_zh": "首次出现产品码",
+    "track_id": "peripheral_vascular",
+    "source": "openfda_device_510k",
+    "signal_date": "2026-09-18",
+    "available_at": "2026-09-17T19:59:59-04:00",
+    "available_at_utc": "2026-09-17T23:59:59Z",
+    "timestamp_quality": "date",
+    "score": 0.65,
+    "direction": 1,
+    "decision": "BUY",
+    "skip_reason": null,
+    "skip_reason_zh": null,
+    "t": "2026-09-18T09:30:00-04:00",
+    "fill_time": "2026-09-18T09:30:00-04:00",
+    "fill_date": "2026-09-18",
+    "fill_price": 91.529336,
+    "price_source": "daily",
+    "price_source_zh": "次日交易日开盘",
+    "shares": 142.030967,
+    "notional": 13000.0,
+    "gross_return": 0.035187,
+    "exit_date": "2026-10-16",
+    "exit_price": 94.75,
+    "exit_reason": "time_exit",
+    "holding_days": 20,
+    "outcome_1d": -0.005743,
+    "outcome_5d": -0.031567,
+    "outcome_20d": 0.035187,
+    "net_by_cost": {
+     "10": 0.033187,
+     "25": 0.030187,
+     "50": 0.025187
+    },
+    "pnl_by_cost": {
+     "10": 431.43,
+     "25": 392.43,
+     "50": 327.43
+    },
+    "intraday_fallback": null,
+    "reference_only": false,
+    "event_zh": "首次出现产品码：Medtronic, Inc. 510(k)：Protégé EverFlex Self-expanding Peripheral Stent System",
+    "reason_zh": "首次出现产品码 FGE（外周血管）",
+    "title": "Medtronic, Inc. 510(k)：Protégé EverFlex Self-expanding Peripheral Stent System",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262913",
+    "side": "long"
    }
   ],
   "disclaimer_zh": "回放为研究口径，非投资建议；仅做多、固定持有 20 个交易日、成本按 bps 近似，未建模冲击成本、借券费、停牌/涨跌停与并购逼平。"
+ },
+ "products": {
+  "families": [
+   {
+    "family_id": "img_equipment",
+    "name_zh": "医学影像设备（MRI/CT/X光/超声）",
+    "name_en": "Medical Imaging Equipment",
+    "category": "影像与放疗",
+    "code_count": 202,
+    "recent": 451,
+    "recent_per_q": 56.375,
+    "baseline_per_q": 64.9,
+    "thi": 0.9,
+    "prob_up": 0.006,
+    "ci": [
+     0.84,
+     0.98
+    ],
+    "emerging": false,
+    "base": 1298,
+    "companies": 11,
+    "companies_total": 19,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-03",
+    "recalls_recent": 724,
+    "top_product": "脉冲多普勒超声成像系统",
+    "rank": 1
+   },
+   {
+    "family_id": "img_ai",
+    "name_zh": "影像后处理与影像AI",
+    "name_en": "Imaging Software and AI",
+    "category": "影像与放疗",
+    "code_count": 27,
+    "recent": 378,
+    "recent_per_q": 47.25,
+    "baseline_per_q": 39.8,
+    "thi": 1.14,
+    "prob_up": 0.997,
+    "ci": [
+     1.04,
+     1.24
+    ],
+    "emerging": false,
+    "base": 796,
+    "companies": 14,
+    "companies_total": 17,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-10-03",
+    "recalls_recent": 60,
+    "top_product": "放射影像后处理系统",
+    "rank": 2
+   },
+   {
+    "family_id": "ivd",
+    "name_zh": "体外诊断（生化/免疫/分子/微生物/POCT）",
+    "name_en": "In Vitro Diagnostics",
+    "category": "体外诊断",
+    "code_count": 1217,
+    "recent": 360,
+    "recent_per_q": 45.0,
+    "baseline_per_q": 40.05,
+    "thi": 1.09,
+    "prob_up": 0.968,
+    "ci": [
+     1.0,
+     1.19
+    ],
+    "emerging": false,
+    "base": 801,
+    "companies": 7,
+    "companies_total": 14,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-10-01",
+    "recalls_recent": 420,
+    "top_product": "手工药敏试验系统",
+    "rank": 3
+   },
+   {
+    "family_id": "surg_energy_endoscopy",
+    "name_zh": "手术能量、内镜与机器人",
+    "name_en": "Surgical Energy, Endoscopy and Robotics",
+    "category": "外科与内镜",
+    "code_count": 226,
+    "recent": 355,
+    "recent_per_q": 44.375,
+    "baseline_per_q": 45.3,
+    "thi": 0.99,
+    "prob_up": 0.357,
+    "ci": [
+     0.9,
+     1.08
+    ],
+    "emerging": false,
+    "base": 906,
+    "companies": 14,
+    "companies_total": 24,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-10-05",
+    "recalls_recent": 297,
+    "top_product": "电外科切割凝血设备及附件",
+    "rank": 4
+   },
+   {
+    "family_id": "vasc_endovascular",
+    "name_zh": "冠脉与外周血管介入",
+    "name_en": "Coronary and Peripheral Vascular Intervention",
+    "category": "外周与神经血管",
+    "code_count": 136,
+    "recent": 272,
+    "recent_per_q": 34.0,
+    "baseline_per_q": 33.05,
+    "thi": 1.02,
+    "prob_up": 0.636,
+    "ci": [
+     0.92,
+     1.13
+    ],
+    "emerging": false,
+    "base": 661,
+    "companies": 15,
+    "companies_total": 22,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-03",
+    "recalls_recent": 280,
+    "top_product": "经皮导管",
+    "rank": 5
+   },
+   {
+    "family_id": "ivd_poct",
+    "name_zh": "即时检验与自测",
+    "name_en": "Point-of-Care Testing",
+    "category": "体外诊断",
+    "code_count": 58,
+    "recent": 186,
+    "recent_per_q": 23.25,
+    "baseline_per_q": 19.75,
+    "thi": 1.13,
+    "prob_up": 0.968,
+    "ci": [
+     0.99,
+     1.28
+    ],
+    "emerging": false,
+    "base": 395,
+    "companies": 3,
+    "companies_total": 5,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-05",
+    "recalls_recent": 15,
+    "top_product": "经皮神经电刺激器（OTC）",
+    "rank": 6
+   },
+   {
+    "family_id": "orth_joint",
+    "name_zh": "关节假体与骨修复材料",
+    "name_en": "Joint Implants and Bone Graft",
+    "category": "骨科",
+    "code_count": 108,
+    "recent": 181,
+    "recent_per_q": 22.625,
+    "baseline_per_q": 27.5,
+    "thi": 0.87,
+    "prob_up": 0.012,
+    "ci": [
+     0.77,
+     0.98
+    ],
+    "emerging": false,
+    "base": 550,
+    "companies": 5,
+    "companies_total": 8,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-14",
+    "recalls_recent": 139,
+    "top_product": "骨水泥固定半限制型髌股胫骨膝关节假体",
+    "rank": 7
+   },
+   {
+    "family_id": "mon_patient",
+    "name_zh": "患者监护（多参数/血压/血氧/胎心）",
+    "name_en": "Patient Monitoring",
+    "category": "患者监护",
+    "code_count": 94,
+    "recent": 180,
+    "recent_per_q": 22.5,
+    "baseline_per_q": 21.6,
+    "thi": 1.03,
+    "prob_up": 0.661,
+    "ci": [
+     0.91,
+     1.17
+    ],
+    "emerging": false,
+    "base": 432,
+    "companies": 7,
+    "companies_total": 12,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-10-05",
+    "recalls_recent": 119,
+    "top_product": "无创血压测量系统",
+    "rank": 8
+   },
+   {
+    "family_id": "dent",
+    "name_zh": "口腔产品（种植/正畸/修复/根管）",
+    "name_en": "Dental Products",
+    "category": "口腔",
+    "code_count": 99,
+    "recent": 166,
+    "recent_per_q": 20.75,
+    "baseline_per_q": 27.7,
+    "thi": 0.82,
+    "prob_up": 0.001,
+    "ci": [
+     0.72,
+     0.93
+    ],
+    "emerging": false,
+    "base": 554,
+    "companies": 3,
+    "companies_total": 3,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-03",
+    "recalls_recent": 25,
+    "top_product": "根形骨内牙种植体",
+    "rank": 9
+   },
+   {
+    "family_id": "surg_laser",
+    "name_zh": "激光手术设备",
+    "name_en": "Surgical Lasers",
+    "category": "外科与内镜",
+    "code_count": 24,
+    "recent": 149,
+    "recent_per_q": 18.625,
+    "baseline_per_q": 16.6,
+    "thi": 1.09,
+    "prob_up": 0.877,
+    "ci": [
+     0.95,
+     1.25
+    ],
+    "emerging": false,
+    "base": 332,
+    "companies": 4,
+    "companies_total": 9,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-10-05",
+    "recalls_recent": 14,
+    "top_product": "动力激光手术设备",
+    "rank": 10
+   },
+   {
+    "family_id": "rehab",
+    "name_zh": "康复与辅助器具",
+    "name_en": "Rehabilitation and Assistive Devices",
+    "category": "康复与辅助",
+    "code_count": 123,
+    "recent": 141,
+    "recent_per_q": 17.625,
+    "baseline_per_q": 12.25,
+    "thi": 1.32,
+    "prob_up": 1.0,
+    "ci": [
+     1.13,
+     1.52
+    ],
+    "emerging": false,
+    "base": 245,
+    "companies": 0,
+    "companies_total": 4,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-03",
+    "recalls_recent": 70,
+    "top_product": "电动轮椅",
+    "rank": 11
+   },
+   {
+    "family_id": "inf_diabetes",
+    "name_zh": "输注、注射与糖尿病管理",
+    "name_en": "Infusion, Injection and Diabetes",
+    "category": "输注与糖尿病",
+    "code_count": 123,
+    "recent": 131,
+    "recent_per_q": 16.375,
+    "baseline_per_q": 21.35,
+    "thi": 0.83,
+    "prob_up": 0.004,
+    "ci": [
+     0.72,
+     0.95
+    ],
+    "emerging": false,
+    "base": 427,
+    "companies": 12,
+    "companies_total": 20,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-06",
+    "recalls_recent": 251,
+    "top_product": "活塞式注射器",
+    "rank": 12
+   },
+   {
+    "family_id": "orth_spine_fusion",
+    "name_zh": "脊柱融合与椎间植入物",
+    "name_en": "Spinal Fusion Devices",
+    "category": "骨科",
+    "code_count": 11,
+    "recent": 124,
+    "recent_per_q": 15.5,
+    "baseline_per_q": 21.95,
+    "thi": 0.79,
+    "prob_up": 0.0,
+    "ci": [
+     0.68,
+     0.9
+    ],
+    "emerging": false,
+    "base": 439,
+    "companies": 3,
+    "companies_total": 7,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-07",
+    "recalls_recent": 21,
+    "top_product": "腰椎间融合器（含植骨）",
+    "rank": 13
+   },
+   {
+    "family_id": "wh",
+    "name_zh": "女性健康（产科/避孕/妇科）",
+    "name_en": "Women's Health",
+    "category": "女性健康",
+    "code_count": 117,
+    "recent": 120,
+    "recent_per_q": 15.0,
+    "baseline_per_q": 12.05,
+    "thi": 1.18,
+    "prob_up": 0.976,
+    "ci": [
+     1.0,
+     1.37
+    ],
+    "emerging": false,
+    "base": 241,
+    "companies": 5,
+    "companies_total": 13,
+    "new_entrants_12m": 2,
+    "first_seen": "2016-10-28",
+    "recalls_recent": 71,
+    "top_product": "电动吸奶器",
+    "rank": 14
+   },
+   {
+    "family_id": "wound_care",
+    "name_zh": "伤口与止血",
+    "name_en": "Wound Care and Hemostasis",
+    "category": "伤口与止血",
+    "code_count": 133,
+    "recent": 118,
+    "recent_per_q": 14.75,
+    "baseline_per_q": 11.75,
+    "thi": 1.19,
+    "prob_up": 0.979,
+    "ci": [
+     1.01,
+     1.39
+    ],
+    "emerging": false,
+    "base": 235,
+    "companies": 7,
+    "companies_total": 14,
+    "new_entrants_12m": 2,
+    "first_seen": "2016-10-03",
+    "recalls_recent": 89,
+    "top_product": "含药伤口敷料",
+    "rank": 15
+   },
+   {
+    "family_id": "resp",
+    "name_zh": "呼吸与麻醉",
+    "name_en": "Respiratory and Anesthesia",
+    "category": "呼吸与麻醉",
+    "code_count": 129,
+    "recent": 118,
+    "recent_per_q": 14.75,
+    "baseline_per_q": 13.1,
+    "thi": 1.09,
+    "prob_up": 0.858,
+    "ci": [
+     0.93,
+     1.27
+    ],
+    "emerging": false,
+    "base": 262,
+    "companies": 5,
+    "companies_total": 10,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-04",
+    "recalls_recent": 213,
+    "top_product": "抗鼾装置",
+    "rank": 16
+   },
+   {
+    "family_id": "neuro_neurostim",
+    "name_zh": "神经调控与神经外科",
+    "name_en": "Neuromodulation and Neurosurgery",
+    "category": "神经调控与神经外科",
+    "code_count": 104,
+    "recent": 110,
+    "recent_per_q": 13.75,
+    "baseline_per_q": 12.15,
+    "thi": 1.1,
+    "prob_up": 0.858,
+    "ci": [
+     0.93,
+     1.29
+    ],
+    "emerging": false,
+    "base": 243,
+    "companies": 5,
+    "companies_total": 11,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-06",
+    "recalls_recent": 41,
+    "top_product": "神经外科立体定向器械",
+    "rank": 17
+   },
+   {
+    "family_id": "orth_trauma_plate",
+    "name_zh": "骨科钢板与接骨板",
+    "name_en": "Orthopedic Plates",
+    "category": "骨科",
+    "code_count": 2,
+    "recent": 104,
+    "recent_per_q": 13.0,
+    "baseline_per_q": 11.45,
+    "thi": 1.1,
+    "prob_up": 0.858,
+    "ci": [
+     0.93,
+     1.29
+    ],
+    "emerging": false,
+    "base": 229,
+    "companies": 4,
+    "companies_total": 8,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-12",
+    "recalls_recent": 38,
+    "top_product": "骨固定钢板",
+    "rank": 18
+   },
+   {
+    "family_id": "orth_instrument",
+    "name_zh": "骨科手术器械与导航",
+    "name_en": "Orthopedic Instruments and Navigation",
+    "category": "骨科",
+    "code_count": 13,
+    "recent": 104,
+    "recent_per_q": 13.0,
+    "baseline_per_q": 12.0,
+    "thi": 1.06,
+    "prob_up": 0.74,
+    "ci": [
+     0.89,
+     1.25
+    ],
+    "emerging": false,
+    "base": 240,
+    "companies": 7,
+    "companies_total": 7,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-12",
+    "recalls_recent": 89,
+    "top_product": "骨科立体定向器械",
+    "rank": 19
+   },
+   {
+    "family_id": "uro",
+    "name_zh": "泌尿产品（结石/前列腺/尿失禁）",
+    "name_en": "Urology Products",
+    "category": "泌尿",
+    "code_count": 104,
+    "recent": 97,
+    "recent_per_q": 12.125,
+    "baseline_per_q": 7.1,
+    "thi": 1.51,
+    "prob_up": 1.0,
+    "ci": [
+     1.26,
+     1.81
+    ],
+    "emerging": false,
+    "base": 142,
+    "companies": 8,
+    "companies_total": 15,
+    "new_entrants_12m": 2,
+    "first_seen": "2016-11-22",
+    "recalls_recent": 54,
+    "top_product": "输尿管镜及附件（软/硬镜）",
+    "rank": 20
+   },
+   {
+    "family_id": "orth_spine",
+    "name_zh": "脊柱植入（融合/内固定/椎体成形）",
+    "name_en": "Spinal Implants",
+    "category": "骨科",
+    "code_count": 27,
+    "recent": 95,
+    "recent_per_q": 11.875,
+    "baseline_per_q": 16.5,
+    "thi": 0.8,
+    "prob_up": 0.003,
+    "ci": [
+     0.67,
+     0.93
+    ],
+    "emerging": false,
+    "base": 330,
+    "companies": 2,
+    "companies_total": 7,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-04",
+    "recalls_recent": 10,
+    "top_product": "胸腰骶椎弓根螺钉系统",
+    "rank": 21
+   },
+   {
+    "family_id": "surg_instruments",
+    "name_zh": "手术器械、器械包与耗材",
+    "name_en": "Surgical Instruments, Trays and Consumables",
+    "category": "外科与内镜",
+    "code_count": 397,
+    "recent": 79,
+    "recent_per_q": 9.875,
+    "baseline_per_q": 8.6,
+    "thi": 1.11,
+    "prob_up": 0.841,
+    "ci": [
+     0.91,
+     1.34
+    ],
+    "emerging": false,
+    "base": 172,
+    "companies": 7,
+    "companies_total": 16,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-05",
+    "recalls_recent": 436,
+    "top_product": "聚乙烯不可吸收合成缝线",
+    "rank": 22
+   },
+   {
+    "family_id": "digital",
+    "name_zh": "数字医疗与诊断决策软件",
+    "name_en": "Digital Health and Clinical Software",
+    "category": "数字医疗",
+    "code_count": 31,
+    "recent": 77,
+    "recent_per_q": 9.625,
+    "baseline_per_q": 6.3,
+    "thi": 1.38,
+    "prob_up": 0.999,
+    "ci": [
+     1.13,
+     1.68
+    ],
+    "emerging": false,
+    "base": 126,
+    "companies": 8,
+    "companies_total": 10,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-07",
+    "recalls_recent": 6,
+    "top_product": "可编程诊断计算机软件",
+    "rank": 23
+   },
+   {
+    "family_id": "hosp_infection",
+    "name_zh": "感染控制与医院通用耗材",
+    "name_en": "Infection Control and Hospital Supplies",
+    "category": "感染控制与医院耗材",
+    "code_count": 129,
+    "recent": 77,
+    "recent_per_q": 9.625,
+    "baseline_per_q": 31.25,
+    "thi": 0.5,
+    "prob_up": 0.0,
+    "ci": [
+     0.43,
+     0.58
+    ],
+    "emerging": false,
+    "base": 625,
+    "companies": 4,
+    "companies_total": 8,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-11-04",
+    "recalls_recent": 74,
+    "top_product": "外科口罩",
+    "rank": 24
+   },
+   {
+    "family_id": "rt",
+    "name_zh": "放射治疗设备与治疗计划",
+    "name_en": "Radiation Therapy",
+    "category": "影像与放疗",
+    "code_count": 21,
+    "recent": 68,
+    "recent_per_q": 8.5,
+    "baseline_per_q": 8.55,
+    "thi": 1.0,
+    "prob_up": 0.467,
+    "ci": [
+     0.81,
+     1.21
+    ],
+    "emerging": false,
+    "base": 171,
+    "companies": 3,
+    "companies_total": 3,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-02",
+    "recalls_recent": 58,
+    "top_product": "医用直线加速器",
+    "rank": 25
+   },
+   {
+    "family_id": "orth_softtissue",
+    "name_zh": "运动医学与软组织固定",
+    "name_en": "Sports Medicine",
+    "category": "骨科",
+    "code_count": 2,
+    "recent": 68,
+    "recent_per_q": 8.5,
+    "baseline_per_q": 9.2,
+    "thi": 0.94,
+    "prob_up": 0.273,
+    "ci": [
+     0.77,
+     1.15
+    ],
+    "emerging": false,
+    "base": 184,
+    "companies": 3,
+    "companies_total": 4,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-25",
+    "recalls_recent": 12,
+    "top_product": "不可降解软组织固定扣",
+    "rank": 26
+   },
+   {
+    "family_id": "dent_implant",
+    "name_zh": "牙种植体与基台",
+    "name_en": "Dental Implants",
+    "category": "口腔",
+    "code_count": 6,
+    "recent": 63,
+    "recent_per_q": 7.875,
+    "baseline_per_q": 9.8,
+    "thi": 0.86,
+    "prob_up": 0.059,
+    "ci": [
+     0.69,
+     1.05
+    ],
+    "emerging": false,
+    "base": 196,
+    "companies": 2,
+    "companies_total": 3,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-07",
+    "recalls_recent": 23,
+    "top_product": "牙种植体基台",
+    "rank": 27
+   },
+   {
+    "family_id": "orth_trauma_screw",
+    "name_zh": "骨钉、骨螺钉与髓内钉",
+    "name_en": "Bone Screws and Nails",
+    "category": "骨科",
+    "code_count": 10,
+    "recent": 56,
+    "recent_per_q": 7.0,
+    "baseline_per_q": 9.2,
+    "thi": 0.83,
+    "prob_up": 0.033,
+    "ci": [
+     0.66,
+     1.01
+    ],
+    "emerging": false,
+    "base": 184,
+    "companies": 2,
+    "companies_total": 7,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-06",
+    "recalls_recent": 21,
+    "top_product": "骨固定螺钉",
+    "rank": 28
+   },
+   {
+    "family_id": "fb_dental",
+    "name_zh": "其他口腔器械（按专科兜底）",
+    "name_en": "Other Dental Devices",
+    "category": "口腔",
+    "code_count": 96,
+    "recent": 53,
+    "recent_per_q": 6.625,
+    "baseline_per_q": 6.7,
+    "thi": 0.99,
+    "prob_up": 0.455,
+    "ci": [
+     0.78,
+     1.23
+    ],
+    "emerging": false,
+    "base": 134,
+    "companies": 1,
+    "companies_total": 1,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-11-03",
+    "recalls_recent": 1,
+    "top_product": "临时树脂冠桥材料",
+    "rank": 29
+   },
+   {
+    "family_id": "fb_general_surgery",
+    "name_zh": "其他普外/整形器械（按专科兜底）",
+    "name_en": "Other General and Plastic Surgery Devices",
+    "category": "外科与内镜",
+    "code_count": 176,
+    "recent": 51,
+    "recent_per_q": 6.375,
+    "baseline_per_q": 4.35,
+    "thi": 1.34,
+    "prob_up": 0.985,
+    "ci": [
+     1.03,
+     1.68
+    ],
+    "emerging": false,
+    "base": 87,
+    "companies": 6,
+    "companies_total": 11,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-10-07",
+    "recalls_recent": 29,
+    "top_product": "便携式吸引泵（手动/电动）",
+    "rank": 30
+   },
+   {
+    "family_id": "orth_trauma",
+    "name_zh": "创伤固定与运动医学",
+    "name_en": "Trauma Fixation and Sports Medicine",
+    "category": "骨科",
+    "code_count": 37,
+    "recent": 50,
+    "recent_per_q": 6.25,
+    "baseline_per_q": 5.85,
+    "thi": 1.05,
+    "prob_up": 0.628,
+    "ci": [
+     0.82,
+     1.32
+    ],
+    "emerging": false,
+    "base": 117,
+    "companies": 5,
+    "companies_total": 8,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-20",
+    "recalls_recent": 30,
+    "top_product": "髓内固定棒及附件",
+    "rank": 31
+   },
+   {
+    "family_id": "cvd_diagnostics",
+    "name_zh": "心脏诊断与遥测监测",
+    "name_en": "Cardiac Diagnostics and Telemetry",
+    "category": "心血管",
+    "code_count": 32,
+    "recent": 49,
+    "recent_per_q": 6.125,
+    "baseline_per_q": 7.05,
+    "thi": 0.9,
+    "prob_up": 0.181,
+    "ci": [
+     0.71,
+     1.13
+    ],
+    "emerging": false,
+    "base": 141,
+    "companies": 5,
+    "companies_total": 11,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-10-14",
+    "recalls_recent": 36,
+    "top_product": "电子听诊器",
+    "rank": 32
+   },
+   {
+    "family_id": "hosp_glove",
+    "name_zh": "医用手套",
+    "name_en": "Medical Gloves",
+    "category": "感染控制与医院耗材",
+    "code_count": 7,
+    "recent": 46,
+    "recent_per_q": 5.75,
+    "baseline_per_q": 26.6,
+    "thi": 0.43,
+    "prob_up": 0.0,
+    "ci": [
+     0.36,
+     0.51
+    ],
+    "emerging": false,
+    "base": 532,
+    "companies": 0,
+    "companies_total": 1,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-13",
+    "recalls_recent": 4,
+    "top_product": "聚合物检查手套",
+    "rank": 33
+   },
+   {
+    "family_id": "neurosurgery_instrument",
+    "name_zh": "神经外科动力与颅骨修复",
+    "name_en": "Neurosurgical Power and Cranioplasty",
+    "category": "神经调控与神经外科",
+    "code_count": 26,
+    "recent": 45,
+    "recent_per_q": 5.625,
+    "baseline_per_q": 4.65,
+    "thi": 1.15,
+    "prob_up": 0.849,
+    "ci": [
+     0.88,
+     1.46
+    ],
+    "emerging": false,
+    "base": 93,
+    "companies": 1,
+    "companies_total": 4,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-10-19",
+    "recalls_recent": 1,
+    "top_product": "体表电极",
+    "rank": 34
+   },
+   {
+    "family_id": "obgyn_reproduction",
+    "name_zh": "生殖医学与避孕用品",
+    "name_en": "Reproductive Medicine and Contraception",
+    "category": "女性健康",
+    "code_count": 30,
+    "recent": 44,
+    "recent_per_q": 5.5,
+    "baseline_per_q": 4.8,
+    "thi": 1.11,
+    "prob_up": 0.756,
+    "ci": [
+     0.84,
+     1.41
+    ],
+    "emerging": false,
+    "base": 96,
+    "companies": 3,
+    "companies_total": 5,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-10-07",
+    "recalls_recent": 4,
+    "top_product": "辅助生殖培养基",
+    "rank": 35
+   },
+   {
+    "family_id": "fb_cardio",
+    "name_zh": "其他心血管器械（按专科兜底）",
+    "name_en": "Other Cardiovascular Devices",
+    "category": "心血管",
+    "code_count": 68,
+    "recent": 40,
+    "recent_per_q": 5.0,
+    "baseline_per_q": 5.65,
+    "thi": 0.92,
+    "prob_up": 0.234,
+    "ci": [
+     0.7,
+     1.17
+    ],
+    "emerging": false,
+    "base": 113,
+    "companies": 5,
+    "companies_total": 12,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-13",
+    "recalls_recent": 34,
+    "top_product": "生理监护网络通信系统",
+    "rank": 36
+   },
+   {
+    "family_id": "rehab_wheelchair",
+    "name_zh": "轮椅与代步车",
+    "name_en": "Wheelchairs",
+    "category": "康复与辅助",
+    "code_count": 1,
+    "recent": 36,
+    "recent_per_q": 4.5,
+    "baseline_per_q": 1.45,
+    "thi": 2.53,
+    "prob_up": 1.0,
+    "ci": [
+     1.82,
+     3.37
+    ],
+    "emerging": false,
+    "base": 29,
+    "companies": 0,
+    "companies_total": 0,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-04",
+    "recalls_recent": 0,
+    "top_product": "三轮电动代步车",
+    "rank": 37
+   },
+   {
+    "family_id": "nv_microcatheter",
+    "name_zh": "神经介入导管与微导管",
+    "name_en": "Neurovascular Catheters",
+    "category": "外周与神经血管",
+    "code_count": 1,
+    "recent": 36,
+    "recent_per_q": 4.5,
+    "baseline_per_q": 3.35,
+    "thi": 1.25,
+    "prob_up": 0.921,
+    "ci": [
+     0.92,
+     1.64
+    ],
+    "emerging": false,
+    "base": 67,
+    "companies": 2,
+    "companies_total": 4,
+    "new_entrants_12m": 1,
+    "first_seen": "2020-02-27",
+    "recalls_recent": 1,
+    "top_product": "神经血管经皮导管",
+    "rank": 38
+   },
+   {
+    "family_id": "ent",
+    "name_zh": "耳鼻喉产品",
+    "name_en": "Ear, Nose and Throat",
+    "category": "耳鼻喉",
+    "code_count": 72,
+    "recent": 36,
+    "recent_per_q": 4.5,
+    "baseline_per_q": 3.65,
+    "thi": 1.17,
+    "prob_up": 0.841,
+    "ci": [
+     0.86,
+     1.53
+    ],
+    "emerging": false,
+    "base": 73,
+    "companies": 4,
+    "companies_total": 10,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-21",
+    "recalls_recent": 76,
+    "top_product": "鼻咽镜（软/硬镜）",
+    "rank": 39
+   },
+   {
+    "family_id": "cvd_structural_heart",
+    "name_zh": "结构性心脏病与心脏外科",
+    "name_en": "Structural Heart and Cardiac Surgery",
+    "category": "结构性心脏病",
+    "code_count": 71,
+    "recent": 34,
+    "recent_per_q": 4.25,
+    "baseline_per_q": 4.95,
+    "thi": 0.9,
+    "prob_up": 0.199,
+    "ci": [
+     0.67,
+     1.17
+    ],
+    "emerging": false,
+    "base": 99,
+    "companies": 3,
+    "companies_total": 5,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-12",
+    "recalls_recent": 60,
+    "top_product": "体外循环氧合器",
+    "rank": 40
+   },
+   {
+    "family_id": "oph",
+    "name_zh": "眼科产品（IOL/隐形眼镜/屈光/眼底）",
+    "name_en": "Ophthalmic Products",
+    "category": "眼科",
+    "code_count": 146,
+    "recent": 34,
+    "recent_per_q": 4.25,
+    "baseline_per_q": 4.95,
+    "thi": 0.9,
+    "prob_up": 0.199,
+    "ci": [
+     0.67,
+     1.17
+    ],
+    "emerging": false,
+    "base": 99,
+    "companies": 0,
+    "companies_total": 3,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-04",
+    "recalls_recent": 45,
+    "top_product": "电动眼科照相机",
+    "rank": 41
+   },
+   {
+    "family_id": "fb_giuro",
+    "name_zh": "其他消化/泌尿器械（按专科兜底）",
+    "name_en": "Other Gastroenterology/Urology Devices",
+    "category": "泌尿",
+    "code_count": 138,
+    "recent": 33,
+    "recent_per_q": 4.125,
+    "baseline_per_q": 4.75,
+    "thi": 0.9,
+    "prob_up": 0.222,
+    "ci": [
+     0.67,
+     1.18
+    ],
+    "emerging": false,
+    "base": 95,
+    "companies": 4,
+    "companies_total": 14,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-11-03",
+    "recalls_recent": 64,
+    "top_product": "胃肠管及附件",
+    "rank": 42
+   },
+   {
+    "family_id": "dent_restorative",
+    "name_zh": "口腔修复材料",
+    "name_en": "Dental Restorative Materials",
+    "category": "口腔",
+    "code_count": 5,
+    "recent": 32,
+    "recent_per_q": 4.0,
+    "baseline_per_q": 3.6,
+    "thi": 1.08,
+    "prob_up": 0.664,
+    "ci": [
+     0.78,
+     1.43
+    ],
+    "emerging": false,
+    "base": 72,
+    "companies": 0,
+    "companies_total": 1,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-24",
+    "recalls_recent": 2,
+    "top_product": "牙色树脂材料",
+    "rank": 43
+   },
+   {
+    "family_id": "hosp_sterilization",
+    "name_zh": "灭菌设备与监测",
+    "name_en": "Sterilization Equipment",
+    "category": "感染控制与医院耗材",
+    "code_count": 3,
+    "recent": 32,
+    "recent_per_q": 4.0,
+    "baseline_per_q": 5.0,
+    "thi": 0.85,
+    "prob_up": 0.12,
+    "ci": [
+     0.63,
+     1.12
+    ],
+    "emerging": false,
+    "base": 100,
+    "companies": 5,
+    "companies_total": 13,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-07",
+    "recalls_recent": 3,
+    "top_product": "灭菌包装/托盘/卡匣及附件",
+    "rank": 44
+   },
+   {
+    "family_id": "aes",
+    "name_zh": "医美与整形",
+    "name_en": "Aesthetics and Plastic Surgery",
+    "category": "医美与整形",
+    "code_count": 36,
+    "recent": 31,
+    "recent_per_q": 3.875,
+    "baseline_per_q": 2.8,
+    "thi": 1.28,
+    "prob_up": 0.925,
+    "ci": [
+     0.91,
+     1.71
+    ],
+    "emerging": false,
+    "base": 56,
+    "companies": 1,
+    "companies_total": 2,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-31",
+    "recalls_recent": 14,
+    "top_product": "美容用真皮植入物",
+    "rank": 45
+   },
+   {
+    "family_id": "fb_neuro",
+    "name_zh": "其他神经科器械（按专科兜底）",
+    "name_en": "Other Neurology Devices",
+    "category": "神经调控与神经外科",
+    "code_count": 56,
+    "recent": 31,
+    "recent_per_q": 3.875,
+    "baseline_per_q": 3.0,
+    "thi": 1.21,
+    "prob_up": 0.871,
+    "ci": [
+     0.87,
+     1.62
+    ],
+    "emerging": false,
+    "base": 60,
+    "companies": 2,
+    "companies_total": 6,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-12-01",
+    "recalls_recent": 31,
+    "top_product": "动力钻/磨头/环钻及附件",
+    "rank": 46
+   },
+   {
+    "family_id": "fb_ivd",
+    "name_zh": "其他体外诊断试剂（按专科兜底）",
+    "name_en": "Other IVD Products",
+    "category": "体外诊断",
+    "code_count": 857,
+    "recent": 30,
+    "recent_per_q": 3.75,
+    "baseline_per_q": 3.85,
+    "thi": 0.98,
+    "prob_up": 0.425,
+    "ci": [
+     0.71,
+     1.3
+    ],
+    "emerging": false,
+    "base": 77,
+    "companies": 3,
+    "companies_total": 5,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-19",
+    "recalls_recent": 79,
+    "top_product": "Enzymatic Esterase--Oxidase, Cholesterol",
+    "rank": 47
+   },
+   {
+    "family_id": "orth_spine_fixation",
+    "name_zh": "脊柱内固定",
+    "name_en": "Spinal Fixation",
+    "category": "骨科",
+    "code_count": 14,
+    "recent": 30,
+    "recent_per_q": 3.75,
+    "baseline_per_q": 5.4,
+    "thi": 0.78,
+    "prob_up": 0.032,
+    "ci": [
+     0.57,
+     1.02
+    ],
+    "emerging": false,
+    "base": 108,
+    "companies": 0,
+    "companies_total": 5,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-04",
+    "recalls_recent": 2,
+    "top_product": "脊柱椎体间固定装置",
+    "rank": 48
+   },
+   {
+    "family_id": "surg_robot",
+    "name_zh": "手术机器人与计算机辅助手术",
+    "name_en": "Surgical Robotics",
+    "category": "外科与内镜",
+    "code_count": 3,
+    "recent": 29,
+    "recent_per_q": 3.625,
+    "baseline_per_q": 2.15,
+    "thi": 1.5,
+    "prob_up": 0.987,
+    "ci": [
+     1.05,
+     2.03
+    ],
+    "emerging": false,
+    "base": 43,
+    "companies": 1,
+    "companies_total": 1,
+    "new_entrants_12m": 0,
+    "first_seen": "2017-01-19",
+    "recalls_recent": 56,
+    "top_product": "计算机控制手术器械系统",
+    "rank": 49
+   },
+   {
+    "family_id": "neuro_muscle",
+    "name_zh": "肌肉电刺激与神经肌肉康复",
+    "name_en": "Muscle Stimulation",
+    "category": "神经调控与神经外科",
+    "code_count": 11,
+    "recent": 29,
+    "recent_per_q": 3.625,
+    "baseline_per_q": 5.2,
+    "thi": 0.78,
+    "prob_up": 0.037,
+    "ci": [
+     0.57,
+     1.03
+    ],
+    "emerging": false,
+    "base": 104,
+    "companies": 1,
+    "companies_total": 2,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-21",
+    "recalls_recent": 0,
+    "top_product": "动力肌肉电刺激器（肌肉训练）",
+    "rank": 50
+   },
+   {
+    "family_id": "neuro_tens",
+    "name_zh": "经皮神经电刺激（TENS）",
+    "name_en": "TENS Devices",
+    "category": "神经调控与神经外科",
+    "code_count": 11,
+    "recent": 28,
+    "recent_per_q": 3.5,
+    "baseline_per_q": 2.15,
+    "thi": 1.46,
+    "prob_up": 0.979,
+    "ci": [
+     1.02,
+     1.98
+    ],
+    "emerging": false,
+    "base": 43,
+    "companies": 0,
+    "companies_total": 0,
+    "new_entrants_12m": 0,
+    "first_seen": "2017-02-03",
+    "recalls_recent": 1,
+    "top_product": "美容用经皮电刺激器",
+    "rank": 51
+   },
+   {
+    "family_id": "fb_anes",
+    "name_zh": "其他麻醉器械（按专科兜底）",
+    "name_en": "Other Anesthesiology Devices",
+    "category": "呼吸与麻醉",
+    "code_count": 51,
+    "recent": 27,
+    "recent_per_q": 3.375,
+    "baseline_per_q": 2.9,
+    "thi": 1.12,
+    "prob_up": 0.721,
+    "ci": [
+     0.79,
+     1.52
+    ],
+    "emerging": false,
+    "base": 58,
+    "companies": 3,
+    "companies_total": 5,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-11-09",
+    "recalls_recent": 21,
+    "top_product": "药物剂量计算软件",
+    "rank": 52
+   },
+   {
+    "family_id": "inj_syringe",
+    "name_zh": "注射器与针头",
+    "name_en": "Syringes and Needles",
+    "category": "输注与糖尿病",
+    "code_count": 7,
+    "recent": 26,
+    "recent_per_q": 3.25,
+    "baseline_per_q": 4.5,
+    "thi": 0.8,
+    "prob_up": 0.062,
+    "ci": [
+     0.57,
+     1.07
+    ],
+    "emerging": false,
+    "base": 90,
+    "companies": 0,
+    "companies_total": 2,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-06",
+    "recalls_recent": 9,
+    "top_product": "一体式防针刺采血针",
+    "rank": 53
+   },
+   {
+    "family_id": "dial",
+    "name_zh": "肾脏与透析",
+    "name_en": "Renal and Dialysis",
+    "category": "肾脏与透析",
+    "code_count": 48,
+    "recent": 24,
+    "recent_per_q": 3.0,
+    "baseline_per_q": 2.9,
+    "thi": 1.03,
+    "prob_up": 0.525,
+    "ci": [
+     0.71,
+     1.41
+    ],
+    "emerging": false,
+    "base": 58,
+    "companies": 1,
+    "companies_total": 4,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-20",
+    "recalls_recent": 45,
+    "top_product": "高通量透析器（含/不含密闭透析液系统）",
+    "rank": 54
+   },
+   {
+    "family_id": "cvd_ecg",
+    "name_zh": "心电诊断与动态心电监护",
+    "name_en": "ECG and Holter Monitors",
+    "category": "心血管",
+    "code_count": 12,
+    "recent": 23,
+    "recent_per_q": 2.875,
+    "baseline_per_q": 2.9,
+    "thi": 0.99,
+    "prob_up": 0.46,
+    "ci": [
+     0.68,
+     1.37
+    ],
+    "emerging": false,
+    "base": 58,
+    "companies": 3,
+    "companies_total": 3,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-11-02",
+    "recalls_recent": 9,
+    "top_product": "心电图机",
+    "rank": 55
+   },
+   {
+    "family_id": "oph_contact",
+    "name_zh": "隐形眼镜与护理产品",
+    "name_en": "Contact Lenses",
+    "category": "眼科",
+    "code_count": 5,
+    "recent": 22,
+    "recent_per_q": 2.75,
+    "baseline_per_q": 2.65,
+    "thi": 1.03,
+    "prob_up": 0.526,
+    "ci": [
+     0.7,
+     1.43
+    ],
+    "emerging": false,
+    "base": 53,
+    "companies": 1,
+    "companies_total": 3,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-12",
+    "recalls_recent": 6,
+    "top_product": "日戴型软性隐形眼镜",
+    "rank": 56
+   },
+   {
+    "family_id": "ortho_tools",
+    "name_zh": "骨科工具、试模与内固定附件",
+    "name_en": "Orthopedic Tools and Trials",
+    "category": "骨科",
+    "code_count": 18,
+    "recent": 21,
+    "recent_per_q": 2.625,
+    "baseline_per_q": 3.25,
+    "thi": 0.86,
+    "prob_up": 0.175,
+    "ci": [
+     0.59,
+     1.19
+    ],
+    "emerging": false,
+    "base": 65,
+    "companies": 1,
+    "companies_total": 7,
+    "new_entrants_12m": 0,
+    "first_seen": "2017-01-10",
+    "recalls_recent": 9,
+    "top_product": "光滑骨固定针",
+    "rank": 57
+   },
+   {
+    "family_id": "orth_biologics",
+    "name_zh": "骨修复与骨移植材料",
+    "name_en": "Bone Graft Materials",
+    "category": "骨科",
+    "code_count": 13,
+    "recent": 21,
+    "recent_per_q": 2.625,
+    "baseline_per_q": 4.2,
+    "thi": 0.73,
+    "prob_up": 0.023,
+    "ci": [
+     0.5,
+     0.99
+    ],
+    "emerging": false,
+    "base": 84,
+    "companies": 2,
+    "companies_total": 5,
+    "new_entrants_12m": 0,
+    "first_seen": "2016-10-06",
+    "recalls_recent": 9,
+    "top_product": "钙基骨缺损填充材料",
+    "rank": 58
+   },
+   {
+    "family_id": "nv_embolic",
+    "name_zh": "栓塞材料与液体栓塞剂",
+    "name_en": "Embolic Materials",
+    "category": "外周与神经血管",
+    "code_count": 5,
+    "recent": 20,
+    "recent_per_q": 2.5,
+    "baseline_per_q": 1.25,
+    "thi": 1.73,
+    "prob_up": 0.992,
+    "ci": [
+     1.1,
+     2.49
+    ],
+    "emerging": false,
+    "base": 25,
+    "companies": 5,
+    "companies_total": 7,
+    "new_entrants_12m": 2,
+    "first_seen": "2016-12-16",
+    "recalls_recent": 4,
+    "top_product": "血管栓塞装置",
+    "rank": 59
+   },
+   {
+    "family_id": "pain_management",
+    "name_zh": "疼痛管理与神经阻滞",
+    "name_en": "Pain Management and Nerve Block",
+    "category": "神经调控与神经外科",
+    "code_count": 11,
+    "recent": 20,
+    "recent_per_q": 2.5,
+    "baseline_per_q": 1.9,
+    "thi": 1.23,
+    "prob_up": 0.827,
+    "ci": [
+     0.8,
+     1.75
+    ],
+    "emerging": false,
+    "base": 38,
+    "companies": 4,
+    "companies_total": 8,
+    "new_entrants_12m": 1,
+    "first_seen": "2016-10-31",
+    "recalls_recent": 13,
+    "top_product": "神经袖套电极",
+    "rank": 60
+   }
+  ],
+  "new_products": [
+   {
+    "date": "2026-10-02",
+    "event_id": "7a89a4a10830d5391cd086fcc5a4f3ea",
+    "company_zh": "GE医疗",
+    "ticker": "GEHC",
+    "family_id": "img_ai",
+    "family_zh": "影像后处理与影像AI",
+    "code": "QJU",
+    "device_name_zh": "Image Acquisition And/Or Optimization Guided By Artificial Intelligence",
+    "definition_zh": "A radiological acquisition and/or optimization guidance system is a device that is intended to aid in the acquisition and/or optimization of images and/or diagnostic signals. The device interfaces with the acquisition system, analyzes its …",
+    "kind": "510k",
+    "k_number": "K261042",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K261042",
+    "title": "GE Medical Systems Ultrasound & Primary Care Diagnostics, LLC 510(k)：Lung Guidance"
+   },
+   {
+    "date": "2026-10-01",
+    "event_id": "372a36618bb776ee50ccd78158a09951",
+    "company_zh": "爱德华生命科学",
+    "ticker": "EW",
+    "family_id": "cvd_structural_heart",
+    "family_zh": "结构性心脏病与心脏外科",
+    "code": "SJL",
+    "device_name_zh": "Heart-Valve, Polymeric",
+    "definition_zh": "This device is a permanent implant intended to replace a heart valve.",
+    "kind": "pma",
+    "k_number": "P260007",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P260007",
+    "title": "Edwards Lifesciences, LLC PMA 批准 P260007：Autus Size-Adjustable Valve"
+   },
+   {
+    "date": "2026-09-24",
+    "event_id": "c7df11a4618e688b4621e7a71fb04b64",
+    "company_zh": "卡尔史托斯",
+    "ticker": "",
+    "family_id": "surg_energy_endoscopy",
+    "family_zh": "手术能量、内镜与机器人",
+    "code": "KNF",
+    "device_name_zh": "Coagulator-Cutter, Endoscopic, Unipolar (And Accessories)",
+    "definition_zh": "",
+    "kind": "510k",
+    "k_number": "K254303",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254303",
+    "title": "Karl Storz SE & CO. KG 510(k)：KARL STORZ SUPRALOOP"
+   },
+   {
+    "date": "2026-09-23",
+    "event_id": "8a821731035c7a1eb98b294a49ddca99",
+    "company_zh": "泰利福",
+    "ticker": "TFX",
+    "family_id": "uro",
+    "family_zh": "泌尿产品（结石/前列腺/尿失禁）",
+    "code": "EZD",
+    "device_name_zh": "直型导管",
+    "definition_zh": "用于导尿与引流。",
+    "kind": "510k",
+    "k_number": "K261418",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K261418",
+    "title": "Teleflex Medical 510(k)：Liquick X-treme, Liquick X-treme Plus"
+   },
+   {
+    "date": "2026-09-18",
+    "event_id": "5dc1338a577332bc41fe61116f564738",
+    "company_zh": "ICU医疗",
+    "ticker": "ICUI",
+    "family_id": "inf_diabetes",
+    "family_zh": "输注、注射与糖尿病管理",
+    "code": "LGZ",
+    "device_name_zh": "输液加温器",
+    "definition_zh": "用于输液/输血加温。",
+    "kind": "510k",
+    "k_number": "K262532",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262532",
+    "title": "ICU Medical 510(k)：NORMOFLO Irrigation Fluid Warming Sets and Accessories (IR-601, IR-501, IR-61, PL-61)"
+   },
+   {
+    "date": "2026-09-17",
+    "event_id": "f5d951d8108df5595ea7830c889ae11e",
+    "company_zh": "美敦力",
+    "ticker": "MDT",
+    "family_id": "gi_biliary",
+    "family_zh": "胆道与胰管介入",
+    "code": "FGE",
+    "device_name_zh": "胆道支架/引流管/扩张器",
+    "definition_zh": "用于胆道狭窄的引流与扩张治疗。",
+    "kind": "510k",
+    "k_number": "K262913",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262913",
+    "title": "Medtronic, Inc. 510(k)：Protégé EverFlex Self-expanding Peripheral Stent System"
+   },
+   {
+    "date": "2026-09-14",
+    "event_id": "3dde38263676c550edf94788a90abd70",
+    "company_zh": "碧迪",
+    "ticker": "BDX",
+    "family_id": "ivd",
+    "family_zh": "体外诊断（生化/免疫/分子/微生物/POCT）",
+    "code": "JTZ",
+    "device_name_zh": "Culture Media, Antimicrobial Susceptibility Test, Mueller Hinton Agar/Broth",
+    "definition_zh": "",
+    "kind": "510k",
+    "k_number": "K262163",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262163",
+    "title": "Becton Dickinson and Company 510(k)：BD BBL Mueller Hinton II Broth (Cation-Adjusted); BD Difco Mueller Hinton Broth"
+   },
+   {
+    "date": "2026-09-10",
+    "event_id": "df9597e55be92e7620c9c74935370b35",
+    "company_zh": "贝朗",
+    "ticker": "",
+    "family_id": "surg_instruments",
+    "family_zh": "手术器械、器械包与耗材",
+    "code": "LJH",
+    "device_name_zh": "System, Irrigation, Urological",
+    "definition_zh": "",
+    "kind": "510k",
+    "k_number": "K254111",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254111",
+    "title": "B.Braun Medical, Inc. 510(k)：Irrigation/Urology Sets"
+   },
+   {
+    "date": "2026-09-04",
+    "event_id": "656a3145d25ccdc74a55f2c975ed51d3",
+    "company_zh": "西门子医疗",
+    "ticker": "SHL.DE",
+    "family_id": "ivd",
+    "family_zh": "体外诊断（生化/免疫/分子/微生物/POCT）",
+    "code": "DHB",
+    "device_name_zh": "放射过敏原吸附试验（RAST）系统",
+    "definition_zh": "用于过敏原特异性IgE检测。",
+    "kind": "510k",
+    "k_number": "K260331",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K260331",
+    "title": "Siemens Healthcare Diagnostics Products, Ltd. 510(k)：IMMULITE 2000 3gAllergy Specific IgE Vantage; IMMULITE 2000 Systems Peanut Allergen (F13)"
+   },
+   {
+    "date": "2026-09-03",
+    "event_id": "a5ce192fba32cc9df8f5fb32862cafa7",
+    "company_zh": "泰尔茂",
+    "ticker": "TRUMY",
+    "family_id": "vasc_thrombectomy",
+    "family_zh": "血栓清除与取栓",
+    "code": "QEZ",
+    "device_name_zh": "抽吸式取栓导管",
+    "definition_zh": "用于血栓抽吸清除。",
+    "kind": "510k",
+    "k_number": "K254035",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254035",
+    "title": "MicroVention, Inc., d/b/a Terumo Neuro 510(k)：Mayumi Thrombectomy System"
+   },
+   {
+    "date": "2026-09-02",
+    "event_id": "0ac2e62d5f75183e0c7760e41321ec07",
+    "company_zh": "豪洛捷",
+    "ticker": "HOLX",
+    "family_id": "img_equipment",
+    "family_zh": "医学影像设备（MRI/CT/X光/超声）",
+    "code": "MUE",
+    "device_name_zh": "全视野数字乳腺X射线摄影系统",
+    "definition_zh": "用于乳腺X线筛查。",
+    "kind": "510k",
+    "k_number": "K254090",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254090",
+    "title": "Hologic, Inc. 510(k)：I-View®"
+   },
+   {
+    "date": "2026-08-27",
+    "event_id": "324538ed208a8b5478473e50fe59de3e",
+    "company_zh": "瑞思迈",
+    "ticker": "RMD",
+    "family_id": "resp",
+    "family_zh": "呼吸与麻醉",
+    "code": "MOD",
+    "device_name_zh": "Accessory To Continuous Ventilator (Respirator)",
+    "definition_zh": "",
+    "kind": "510k",
+    "k_number": "K261360",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K261360",
+    "title": "Resmed Corp 510(k)：EasyCare Tx 2"
+   },
+   {
+    "date": "2026-08-26",
+    "event_id": "8682c1ef895259324000e03bba75a7ca",
+    "company_zh": "卡尔史托斯",
+    "ticker": "",
+    "family_id": "surg_energy_endoscopy",
+    "family_zh": "手术能量、内镜与机器人",
+    "code": "HRX",
+    "device_name_zh": "关节镜",
+    "definition_zh": "用于关节腔检查与关节镜手术。",
+    "kind": "510k",
+    "k_number": "K254103",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K254103",
+    "title": "Karl Storz SE & CO. KG 510(k)：HOPKINS Telescopes for Arthroscopy"
+   },
+   {
+    "date": "2026-08-25",
+    "event_id": "6b6fb1451f0b1876f380d37b897166f6",
+    "company_zh": "雅培",
+    "ticker": "ABT",
+    "family_id": "inf_diabetes",
+    "family_zh": "输注、注射与糖尿病管理",
+    "code": "SJD",
+    "device_name_zh": "Integrated Continuous Glucose Ketone Monitoring System",
+    "definition_zh": "An integrated continuous glucose ketone monitoring system (iCGK) is intended to automatically measure glucose and ketones in bodily fluids continuously or frequently for a specified period of time. iCGK systems are designed to reliably and…",
+    "kind": "510k",
+    "k_number": "DEN250049",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=DEN250049",
+    "title": "Abbott Diabetes Care 510(k)：Libre Duo 10 Day Continuous Dual Glucose Ketone Monitoring System"
+   },
+   {
+    "date": "2026-08-14",
+    "event_id": "018ba79b8ff4f301759234667b9df76d",
+    "company_zh": "强生医疗科技",
+    "ticker": "JNJ",
+    "family_id": "nv_neurovascular",
+    "family_zh": "神经介入（取栓/动脉瘤/颅内支架）",
+    "code": "HCG",
+    "device_name_zh": "神经血管栓塞装置",
+    "definition_zh": "用于颅内动脉瘤/动静脉畸形的栓塞治疗。",
+    "kind": "510k",
+    "k_number": "K262419",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262419",
+    "title": "Cerenovus, Inc. 510(k)：MICRUSFRAME (MFR100202); MICRUSFRAME (MFR100253); MICRUSFRAME (MFR100305); MICRUSFRAME (MFR100356); MICRUSFRAME (MFR100407); MICRUSFRAME…"
+   },
+   {
+    "date": "2026-08-12",
+    "event_id": "26bacf8eec6e79707835d98c7eac97f0",
+    "company_zh": "波士顿科学",
+    "ticker": "BSX",
+    "family_id": "wound_care",
+    "family_zh": "伤口与止血",
+    "code": "FTM",
+    "device_name_zh": "外科补片",
+    "definition_zh": "用于疝修补与组织缺损修复。",
+    "kind": "510k",
+    "k_number": "K262406",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K262406",
+    "title": "Boston Scientific 510(k)：EluPro Antibiotic-Eluting BioEnvelope"
+   },
+   {
+    "date": "2026-08-11",
+    "event_id": "765d36aa9bb00b0da262a8592c409e8e",
+    "company_zh": "西门子医疗",
+    "ticker": "SHL.DE",
+    "family_id": "ivd",
+    "family_zh": "体外诊断（生化/免疫/分子/微生物/POCT）",
+    "code": "DAP",
+    "device_name_zh": "Fibrinogen And Fibrin Split Products, Antigen, Antiserum, Control",
+    "definition_zh": "",
+    "kind": "510k",
+    "k_number": "K253985",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253985",
+    "title": "Siemens Healthcare Diagnostic Products GmbH 510(k)：INNOVANCE® D-Dimer 2.0 (SMN 10873803)"
+   },
+   {
+    "date": "2026-08-10",
+    "event_id": "6e0349a1832e9584954ef31d8eddc00a",
+    "company_zh": "西门子医疗",
+    "ticker": "SHL.DE",
+    "family_id": "ivd",
+    "family_zh": "体外诊断（生化/免疫/分子/微生物/POCT）",
+    "code": "NIG",
+    "device_name_zh": "System, Test, Carbohydrate Antigen (Ca19-9), For Monitoring And Management Of Pancreatic Cancer",
+    "definition_zh": "An in vitro diagnostic test for the quantitative measurement of the CA 19-9 tumor associated antigen in human serum or plasma.  The test is intended as an aid in the management of patients with confirmed pancreatic cancer and serial monito…",
+    "kind": "510k",
+    "k_number": "K253528",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253528",
+    "title": "Siemens Healthcare Diagnostics, Inc. 510(k)：Atellica IM CA 19-9 II"
+   },
+   {
+    "date": "2026-08-07",
+    "event_id": "7dd66c3d49e4483d654ffcb1e4f2f739",
+    "company_zh": "直觉外科",
+    "ticker": "ISRG",
+    "family_id": "surg_energy_endoscopy",
+    "family_zh": "手术能量、内镜与机器人",
+    "code": "FDS",
+    "device_name_zh": "胃镜及附件（软/硬镜）",
+    "definition_zh": "用于上消化道检查与治疗。",
+    "kind": "510k",
+    "k_number": "K253702",
+    "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253702",
+    "title": "Intuitive Surgical, Inc. 510(k)：Intuitive Endoluminal Gastrointestinal System (IG1000)"
+   }
+  ],
+  "company_portfolio": [
+   {
+    "company_zh": "美敦力",
+    "ticker": "MDT",
+    "recent": 81,
+    "family_count": 30,
+    "new_families_12m": 5,
+    "top_families": [
+     [
+      "神经调控与神经外科",
+      0.086
+     ],
+     [
+      "胰岛素泵与闭环输注",
+      0.074
+     ],
+     [
+      "脊柱植入（融合/内固定/椎体成形）",
+      0.074
+     ],
+     [
+      "输注、注射与糖尿病管理",
+      0.062
+     ],
+     [
+      "脊柱融合与椎间植入物",
+      0.062
+     ]
+    ],
+    "js_shift": 0.1775
+   },
+   {
+    "company_zh": "西门子医疗",
+    "ticker": "SHL.DE",
+    "recent": 77,
+    "family_count": 8,
+    "new_families_12m": 1,
+    "top_families": [
+     [
+      "医学影像设备（MRI/CT/X光/超声）",
+      0.351
+     ],
+     [
+      "影像后处理与影像AI",
+      0.247
+     ],
+     [
+      "放射治疗设备与治疗计划",
+      0.195
+     ],
+     [
+      "体外诊断（生化/免疫/分子/微生物/POCT）",
+      0.091
+     ],
+     [
+      "其他体外诊断试剂（按专科兜底）",
+      0.052
+     ]
+    ],
+    "js_shift": 0.0479
+   },
+   {
+    "company_zh": "史赛克",
+    "ticker": "SYK",
+    "recent": 65,
+    "family_count": 23,
+    "new_families_12m": 1,
+    "top_families": [
+     [
+      "关节假体与骨修复材料",
+      0.2
+     ],
+     [
+      "手术能量、内镜与机器人",
+      0.123
+     ],
+     [
+      "骨科手术器械与导航",
+      0.108
+     ],
+     [
+      "神经介入导管与微导管",
+      0.077
+     ],
+     [
+      "医学影像设备（MRI/CT/X光/超声）",
+      0.062
+     ]
+    ],
+    "js_shift": 0.0894
+   },
+   {
+    "company_zh": "飞利浦",
+    "ticker": "PHG",
+    "recent": 63,
+    "family_count": 11,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "医学影像设备（MRI/CT/X光/超声）",
+      0.587
+     ],
+     [
+      "患者监护（多参数/血压/血氧/胎心）",
+      0.111
+     ],
+     [
+      "影像后处理与影像AI",
+      0.095
+     ],
+     [
+      "冠脉与外周血管介入",
+      0.048
+     ],
+     [
+      "心电诊断与动态心电监护",
+      0.032
+     ]
+    ],
+    "js_shift": 0.0383
+   },
+   {
+    "company_zh": "GE医疗",
+    "ticker": "GEHC",
+    "recent": 53,
+    "family_count": 6,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "医学影像设备（MRI/CT/X光/超声）",
+      0.717
+     ],
+     [
+      "影像后处理与影像AI",
+      0.151
+     ],
+     [
+      "患者监护（多参数/血压/血氧/胎心）",
+      0.075
+     ],
+     [
+      "心电诊断与动态心电监护",
+      0.019
+     ],
+     [
+      "数字医疗与诊断决策软件",
+      0.019
+     ]
+    ],
+    "js_shift": 0.0165
+   },
+   {
+    "company_zh": "雅培",
+    "ticker": "ABT",
+    "recent": 49,
+    "family_count": 13,
+    "new_families_12m": 1,
+    "top_families": [
+     [
+      "体外诊断（生化/免疫/分子/微生物/POCT）",
+      0.347
+     ],
+     [
+      "冠脉与外周血管介入",
+      0.245
+     ],
+     [
+      "数字医疗与诊断决策软件",
+      0.122
+     ],
+     [
+      "心脏诊断与遥测监测",
+      0.041
+     ],
+     [
+      "其他体外诊断试剂（按专科兜底）",
+      0.041
+     ]
+    ],
+    "js_shift": 0.0827
+   },
+   {
+    "company_zh": "奥林巴斯",
+    "ticker": "OCPNY",
+    "recent": 48,
+    "family_count": 9,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "手术能量、内镜与机器人",
+      0.604
+     ],
+     [
+      "消化内镜附件",
+      0.083
+     ],
+     [
+      "医学影像设备（MRI/CT/X光/超声）",
+      0.083
+     ],
+     [
+      "手术器械、器械包与耗材",
+      0.062
+     ],
+     [
+      "耳鼻喉产品",
+      0.042
+     ]
+    ],
+    "js_shift": 0.0718
+   },
+   {
+    "company_zh": "强生医疗科技",
+    "ticker": "JNJ",
+    "recent": 44,
+    "family_count": 16,
+    "new_families_12m": 3,
+    "top_families": [
+     [
+      "关节假体与骨修复材料",
+      0.182
+     ],
+     [
+      "手术器械、器械包与耗材",
+      0.159
+     ],
+     [
+      "冠脉与外周血管介入",
+      0.136
+     ],
+     [
+      "手术能量、内镜与机器人",
+      0.091
+     ],
+     [
+      "吻合器与切割闭合器",
+      0.091
+     ]
+    ],
+    "js_shift": 0.1586
+   },
+   {
+    "company_zh": "碧迪",
+    "ticker": "BDX",
+    "recent": 43,
+    "family_count": 12,
+    "new_families_12m": 4,
+    "top_families": [
+     [
+      "体外诊断（生化/免疫/分子/微生物/POCT）",
+      0.349
+     ],
+     [
+      "冠脉与外周血管介入",
+      0.209
+     ],
+     [
+      "输注、注射与糖尿病管理",
+      0.093
+     ],
+     [
+      "其他医院通用器械（按专科兜底）",
+      0.07
+     ],
+     [
+      "伤口与止血",
+      0.07
+     ]
+    ],
+    "js_shift": 0.1351
+   },
+   {
+    "company_zh": "波士顿科学",
+    "ticker": "BSX",
+    "recent": 37,
+    "family_count": 20,
+    "new_families_12m": 1,
+    "top_families": [
+     [
+      "手术能量、内镜与机器人",
+      0.162
+     ],
+     [
+      "冠脉与外周血管介入",
+      0.108
+     ],
+     [
+      "影像后处理与影像AI",
+      0.081
+     ],
+     [
+      "激光手术设备",
+      0.081
+     ],
+     [
+      "泌尿产品（结石/前列腺/尿失禁）",
+      0.081
+     ]
+    ],
+    "js_shift": 0.1811
+   },
+   {
+    "company_zh": "捷迈邦美",
+    "ticker": "ZBH",
+    "recent": 34,
+    "family_count": 7,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "关节假体与骨修复材料",
+      0.618
+     ],
+     [
+      "创伤固定与运动医学",
+      0.088
+     ],
+     [
+      "骨科钢板与接骨板",
+      0.088
+     ],
+     [
+      "其他骨科器械（按专科兜底）",
+      0.059
+     ],
+     [
+      "肌肉电刺激与神经肌肉康复",
+      0.059
+     ]
+    ],
+    "js_shift": 0.1166
+   },
+   {
+    "company_zh": "直觉外科",
+    "ticker": "ISRG",
+    "recent": 31,
+    "family_count": 4,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "手术机器人与计算机辅助手术",
+      0.71
+     ],
+     [
+      "手术能量、内镜与机器人",
+      0.226
+     ],
+     [
+      "影像后处理与影像AI",
+      0.032
+     ],
+     [
+      "吻合器与切割闭合器",
+      0.032
+     ]
+    ],
+    "js_shift": 0.014
+   },
+   {
+    "company_zh": "富士胶片",
+    "ticker": "FUJIY",
+    "recent": 30,
+    "family_count": 5,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "医学影像设备（MRI/CT/X光/超声）",
+      0.433
+     ],
+     [
+      "手术能量、内镜与机器人",
+      0.333
+     ],
+     [
+      "影像后处理与影像AI",
+      0.167
+     ],
+     [
+      "其他消化/泌尿器械（按专科兜底）",
+      0.033
+     ],
+     [
+      "生殖医学与避孕用品",
+      0.033
+     ]
+    ],
+    "js_shift": 0.0455
+   },
+   {
+    "company_zh": "卡尔史托斯",
+    "ticker": "",
+    "recent": 22,
+    "family_count": 9,
+    "new_families_12m": 1,
+    "top_families": [
+     [
+      "手术能量、内镜与机器人",
+      0.409
+     ],
+     [
+      "泌尿产品（结石/前列腺/尿失禁）",
+      0.136
+     ],
+     [
+      "耳鼻喉产品",
+      0.091
+     ],
+     [
+      "医学影像设备（MRI/CT/X光/超声）",
+      0.091
+     ],
+     [
+      "女性健康（产科/避孕/妇科）",
+      0.091
+     ]
+    ],
+    "js_shift": 0.0872
+   },
+   {
+    "company_zh": "登士柏西诺德",
+    "ticker": "XRAY",
+    "recent": 20,
+    "family_count": 7,
+    "new_families_12m": 1,
+    "top_families": [
+     [
+      "口腔产品（种植/正畸/修复/根管）",
+      0.25
+     ],
+     [
+      "牙种植体与基台",
+      0.25
+     ],
+     [
+      "灭菌设备与监测",
+      0.15
+     ],
+     [
+      "影像后处理与影像AI",
+      0.15
+     ],
+     [
+      "其他口腔器械（按专科兜底）",
+      0.1
+     ]
+    ],
+    "js_shift": 0.138
+   },
+   {
+    "company_zh": "爱德华生命科学",
+    "ticker": "EW",
+    "recent": 18,
+    "family_count": 9,
+    "new_families_12m": 2,
+    "top_families": [
+     [
+      "结构性心脏病与心脏外科",
+      0.278
+     ],
+     [
+      "数字医疗与诊断决策软件",
+      0.222
+     ],
+     [
+      "冠脉与外周血管介入",
+      0.167
+     ],
+     [
+      "其他麻醉器械（按专科兜底）",
+      0.056
+     ],
+     [
+      "其他心血管器械（按专科兜底）",
+      0.056
+     ]
+    ],
+    "js_shift": 0.1661
+   },
+   {
+    "company_zh": "佳能医疗",
+    "ticker": "CAJ",
+    "recent": 17,
+    "family_count": 2,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "医学影像设备（MRI/CT/X光/超声）",
+      0.882
+     ],
+     [
+      "影像后处理与影像AI",
+      0.118
+     ]
+    ],
+    "js_shift": 0.0016
+   },
+   {
+    "company_zh": "费森尤斯医疗",
+    "ticker": "FMS",
+    "recent": 17,
+    "family_count": 4,
+    "new_families_12m": 2,
+    "top_families": [
+     [
+      "肾脏与透析",
+      0.706
+     ],
+     [
+      "其他消化/泌尿器械（按专科兜底）",
+      0.176
+     ],
+     [
+      "心脏诊断与遥测监测",
+      0.059
+     ],
+     [
+      "感染控制与医院通用耗材",
+      0.059
+     ]
+    ],
+    "js_shift": 0.207
+   },
+   {
+    "company_zh": "美瑞特",
+    "ticker": "MMSI",
+    "recent": 16,
+    "family_count": 8,
+    "new_families_12m": 2,
+    "top_families": [
+     [
+      "冠脉与外周血管介入",
+      0.438
+     ],
+     [
+      "输注、注射与糖尿病管理",
+      0.125
+     ],
+     [
+      "可调弯导管与血管扩张器",
+      0.125
+     ],
+     [
+      "其他普外/整形器械（按专科兜底）",
+      0.062
+     ],
+     [
+      "医学影像设备（MRI/CT/X光/超声）",
+      0.062
+     ]
+    ],
+    "js_shift": 0.2626
+   },
+   {
+    "company_zh": "施乐辉",
+    "ticker": "SNN",
+    "recent": 15,
+    "family_count": 6,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "关节假体与骨修复材料",
+      0.4
+     ],
+     [
+      "负压伤口治疗",
+      0.267
+     ],
+     [
+      "运动医学与软组织固定",
+      0.133
+     ],
+     [
+      "骨科手术器械与导航",
+      0.067
+     ],
+     [
+      "创伤固定与运动医学",
+      0.067
+     ]
+    ],
+    "js_shift": 0.1542
+   },
+   {
+    "company_zh": "思泰瑞",
+    "ticker": "STE",
+    "recent": 13,
+    "family_count": 4,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "感染控制与医院通用耗材",
+      0.615
+     ],
+     [
+      "手术能量、内镜与机器人",
+      0.231
+     ],
+     [
+      "其他医院通用器械（按专科兜底）",
+      0.077
+     ],
+     [
+      "消毒与清洁",
+      0.077
+     ]
+    ],
+    "js_shift": 0.0646
+   },
+   {
+    "company_zh": "泰尔茂",
+    "ticker": "TRUMY",
+    "recent": 13,
+    "family_count": 6,
+    "new_families_12m": 4,
+    "top_families": [
+     [
+      "输注、注射与糖尿病管理",
+      0.385
+     ],
+     [
+      "冠脉与外周血管介入",
+      0.231
+     ],
+     [
+      "神经介入导管与微导管",
+      0.154
+     ],
+     [
+      "冠脉球囊与旋磨旋切",
+      0.077
+     ],
+     [
+      "外周动脉支架",
+      0.077
+     ]
+    ],
+    "js_shift": 0.3241
+   },
+   {
+    "company_zh": "高博医疗",
+    "ticker": "GMED",
+    "recent": 13,
+    "family_count": 6,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "骨科手术器械与导航",
+      0.231
+     ],
+     [
+      "关节假体与骨修复材料",
+      0.231
+     ],
+     [
+      "脊柱融合与椎间植入物",
+      0.154
+     ],
+     [
+      "创伤固定与运动医学",
+      0.154
+     ],
+     [
+      "骨科钢板与接骨板",
+      0.154
+     ]
+    ],
+    "js_shift": 0.1167
+   },
+   {
+    "company_zh": "泰利福",
+    "ticker": "TFX",
+    "recent": 11,
+    "family_count": 5,
+    "new_families_12m": 1,
+    "top_families": [
+     [
+      "呼吸与麻醉",
+      0.273
+     ],
+     [
+      "冠脉与外周血管介入",
+      0.273
+     ],
+     [
+      "其他普外/整形器械（按专科兜底）",
+      0.182
+     ],
+     [
+      "手术器械、器械包与耗材",
+      0.182
+     ],
+     [
+      "泌尿产品（结石/前列腺/尿失禁）",
+      0.091
+     ]
+    ],
+    "js_shift": 0.2155
+   },
+   {
+    "company_zh": "ICU医疗",
+    "ticker": "ICUI",
+    "recent": 9,
+    "family_count": 3,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "输注、注射与糖尿病管理",
+      0.667
+     ],
+     [
+      "感染控制与医院通用耗材",
+      0.222
+     ],
+     [
+      "输液器与输注管路",
+      0.111
+     ]
+    ],
+    "js_shift": 0.089
+   },
+   {
+    "company_zh": "麦朗",
+    "ticker": "",
+    "recent": 9,
+    "family_count": 7,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "呼吸与麻醉",
+      0.222
+     ],
+     [
+      "开放手术基础器械",
+      0.222
+     ],
+     [
+      "感染控制与医院通用耗材",
+      0.111
+     ],
+     [
+      "输液器与输注管路",
+      0.111
+     ],
+     [
+      "患者监护（多参数/血压/血氧/胎心）",
+      0.111
+     ]
+    ],
+    "js_shift": 0.3806
+   },
+   {
+    "company_zh": "德康",
+    "ticker": "DXCM",
+    "recent": 8,
+    "family_count": 2,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "输注、注射与糖尿病管理",
+      0.625
+     ],
+     [
+      "即时检验与自测",
+      0.375
+     ]
+    ],
+    "js_shift": 0.0597
+   },
+   {
+    "company_zh": "瑞思迈",
+    "ticker": "RMD",
+    "recent": 8,
+    "family_count": 2,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "呼吸机与无创通气",
+      0.875
+     ],
+     [
+      "呼吸与麻醉",
+      0.125
+     ]
+    ],
+    "js_shift": 0.0454
+   },
+   {
+    "company_zh": "百特",
+    "ticker": "BAX",
+    "recent": 8,
+    "family_count": 4,
+    "new_families_12m": 2,
+    "top_families": [
+     [
+      "输注、注射与糖尿病管理",
+      0.5
+     ],
+     [
+      "患者监护（多参数/血压/血氧/胎心）",
+      0.25
+     ],
+     [
+      "其他普外/整形器械（按专科兜底）",
+      0.125
+     ],
+     [
+      "影像后处理与影像AI",
+      0.125
+     ]
+    ],
+    "js_shift": 0.4003
+   },
+   {
+    "company_zh": "盈纬达",
+    "ticker": "NVST",
+    "recent": 8,
+    "family_count": 5,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "口腔产品（种植/正畸/修复/根管）",
+      0.375
+     ],
+     [
+      "牙种植体与基台",
+      0.25
+     ],
+     [
+      "灭菌设备与监测",
+      0.125
+     ],
+     [
+      "体外诊断（生化/免疫/分子/微生物/POCT）",
+      0.125
+     ],
+     [
+      "伤口与止血",
+      0.125
+     ]
+    ],
+    "js_shift": 0.134
+   },
+   {
+    "company_zh": "豪洛捷",
+    "ticker": "HOLX",
+    "recent": 8,
+    "family_count": 5,
+    "new_families_12m": 1,
+    "top_families": [
+     [
+      "体外诊断（生化/免疫/分子/微生物/POCT）",
+      0.5
+     ],
+     [
+      "影像后处理与影像AI",
+      0.125
+     ],
+     [
+      "医学影像设备（MRI/CT/X光/超声）",
+      0.125
+     ],
+     [
+      "活检与穿刺器械",
+      0.125
+     ],
+     [
+      "手术能量、内镜与机器人",
+      0.125
+     ]
+    ],
+    "js_shift": 0.1389
+   },
+   {
+    "company_zh": "半影",
+    "ticker": "PEN",
+    "recent": 7,
+    "family_count": 2,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "冠脉与外周血管介入",
+      0.857
+     ],
+     [
+      "栓塞材料与液体栓塞剂",
+      0.143
+     ]
+    ],
+    "js_shift": 0.1246
+   },
+   {
+    "company_zh": "迈心诺",
+    "ticker": "MASI",
+    "recent": 7,
+    "family_count": 2,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "患者监护（多参数/血压/血氧/胎心）",
+      0.857
+     ],
+     [
+      "心电诊断与动态心电监护",
+      0.143
+     ]
+    ],
+    "js_shift": 0.1056
+   },
+   {
+    "company_zh": "丹纳糖尿病",
+    "ticker": "TNDM",
+    "recent": 6,
+    "family_count": 2,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "输注、注射与糖尿病管理",
+      0.667
+     ],
+     [
+      "胰岛素泵与闭环输注",
+      0.333
+     ]
+    ],
+    "js_shift": 0.0689
+   },
+   {
+    "company_zh": "安布",
+    "ticker": "AMBU-B.CO",
+    "recent": 5,
+    "family_count": 4,
+    "new_families_12m": 1,
+    "top_families": [
+     [
+      "手术能量、内镜与机器人",
+      0.4
+     ],
+     [
+      "神经外科动力与颅骨修复",
+      0.2
+     ],
+     [
+      "呼吸与麻醉",
+      0.2
+     ],
+     [
+      "泌尿产品（结石/前列腺/尿失禁）",
+      0.2
+     ]
+    ],
+    "js_shift": 0.111
+   },
+   {
+    "company_zh": "爱尔康",
+    "ticker": "ALC",
+    "recent": 5,
+    "family_count": 3,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "隐形眼镜与护理产品",
+      0.4
+     ],
+     [
+      "屈光手术设备与耗材",
+      0.4
+     ],
+     [
+      "激光手术设备",
+      0.2
+     ]
+    ],
+    "js_shift": 0.4119
+   },
+   {
+    "company_zh": "英特格拉",
+    "ticker": "IART",
+    "recent": 5,
+    "family_count": 2,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "神经调控与神经外科",
+      0.8
+     ],
+     [
+      "手术器械、器械包与耗材",
+      0.2
+     ]
+    ],
+    "js_shift": 0.1915
+   },
+   {
+    "company_zh": "贝朗",
+    "ticker": "",
+    "recent": 5,
+    "family_count": 5,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "灭菌设备与监测",
+      0.2
+     ],
+     [
+      "输注、注射与糖尿病管理",
+      0.2
+     ],
+     [
+      "神经调控与神经外科",
+      0.2
+     ],
+     [
+      "手术器械、器械包与耗材",
+      0.2
+     ],
+     [
+      "冠脉与外周血管介入",
+      0.2
+     ]
+    ],
+    "js_shift": 0.2477
+   },
+   {
+    "company_zh": "奥索菲克斯",
+    "ticker": "OFIX",
+    "recent": 4,
+    "family_count": 2,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "创伤固定与运动医学",
+      0.75
+     ],
+     [
+      "骨科手术器械与导航",
+      0.25
+     ]
+    ],
+    "js_shift": 0.5392
+   },
+   {
+    "company_zh": "PROCEPT 手术机器人",
+    "ticker": "PRCT",
+    "recent": 3,
+    "family_count": 1,
+    "new_families_12m": 0,
+    "top_families": [
+     [
+      "泌尿产品（结石/前列腺/尿失禁）",
+      1.0
+     ]
+    ],
+    "js_shift": 0.0
+   }
+  ],
+  "coverage": {
+   "families": 159,
+   "top20_event_share": 0.645,
+   "new_products_90d": 19
+  }
  },
  "trading": {
   "status": "ok",
   "as_of": "2026-10-30",
   "meta": {
-   "generated_at": "2026-10-30T18:32:03Z",
+   "generated_at": "2026-10-30T18:57:43Z",
    "capital": 100000.0,
    "signal_kind": null,
    "engine": "long_only_v1",
@@ -13433,16 +16084,6 @@
     "reason": "time_exit"
    },
    {
-    "ticker": "SNY",
-    "entry_date": "2026-07-13",
-    "entry_price": 43.84000015258789,
-    "exit_date": "2026-10-06",
-    "exit_price": 39.560001373291016,
-    "ret": -0.10178404846051212,
-    "pnl": -578.984887479945,
-    "reason": "time_exit"
-   },
-   {
     "ticker": "TFX",
     "entry_date": "2026-07-13",
     "entry_price": 135.7132685986053,
@@ -13450,6 +16091,16 @@
     "exit_price": 124.73999786376953,
     "ret": -0.08504616734564248,
     "pnl": -483.77369908135046,
+    "reason": "time_exit"
+   },
+   {
+    "ticker": "SNY",
+    "entry_date": "2026-07-13",
+    "entry_price": 43.84000015258789,
+    "exit_date": "2026-10-06",
+    "exit_price": 39.560001373291016,
+    "ret": -0.10178404846051212,
+    "pnl": -578.984887479945,
     "reason": "time_exit"
    },
    {

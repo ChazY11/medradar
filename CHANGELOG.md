@@ -10,16 +10,32 @@ This is a research tool; "fixed" means a documented behaviour changed.
   NMPA registration) with a single metrics contract (`docs/SCHEMA.md`).
 - Company/subsidiary registry (89 names) and a Chinese track dictionary
   (38 tracks, 1,958 mapped product codes).
+- **Product-level device intelligence**: 159 product families, 600 Chinese
+  product names (85.5% of device events), `medradar products` CLI, new-product
+  radar, company portfolio mix and a CSV export.
 - Metrics engine: Gamma-Poisson shrinkage, observed-exposure baselines,
   Jensen-Shannon mix shift, first-occurrence novelty, recall clusters.
-- Chinese report + self-contained HTML dashboard, English one-pager, summary CSV.
+- Chinese report + self-contained HTML dashboard (18 chapters), English
+  one-pager, summary CSV.
 - Event study and simulated long-only book on real daily bars (`paper`).
+- **Replay engine**: event → decision → fill → 1/5/20-day outcome, 1-minute
+  fills for the last ~7 days, daily fills beyond, 10/25/50 bps cost tiers,
+  standalone HTML timeline, `medradar replay` CLI.
+- **Research-grade timing**: `published_at` / `first_seen_at` / `available_at`
+  / `timestamp_quality` on every event and signal; point-in-time signal scoring.
+- **Statistics**: block bootstrap, Holm/Bonferroni correction, dev/validation/
+  holdout splits, survivorship flags, MDE/power hints.
+- **Reproducible calibration**: `medradar.calibration` with recorded fixtures;
+  no key needed in CI, drift fails the score script.
+- **Onboarding**: `medradar demo` (offline snapshot), `doctor`, `watchlist`;
+  `config/` ships inside the wheel; `MEDRADAR_HOME` keeps data out of site-packages.
 - Live lane: SEC EDGAR 8-K feed, full-text backfill, FDA RSS, ClinicalTrials.gov
   status changes, simulated fills at real quotes with 10 bps slippage.
 - LLM judge for 8-K materiality (OpenAI-compatible endpoint), content-hash cache,
   per-cycle budget, evidence-quote enforcement, heuristic fallback.
 - Calibration on 25 hand-labelled real filings (`docs/CALIBRATION.md`).
-- 139 offline tests; CI workflow; Pages deploy via artifact upload.
+- **274 offline tests**; CI matrix 3.10–3.12 + Windows install job; Pages deploy
+  via artifact upload; `docs/GOOD_FIRST_ISSUES.md`.
 
 ### Fixed
 - Baseline exposure now uses observed quarters (removed a 40x THI artefact).

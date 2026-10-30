@@ -50,7 +50,7 @@
 
 | # | 项目 | 状态 | 参数 / 做法 | 出处与说明 |
 |---|---|---|---|---|
-| 4.1 | 默认只做多 | 已建模 | `direction=-1`（召回聚集）判定 `SKIP / short_not_supported`，不计入收益；`allow_short=True` 仅用于研究对照 | 与 `paper.py` v1 一致；HTML 顶部与 `method.long_only` 明示 |
+| 4.1 | 默认只做多 | 已建模 | `direction=-1`（召回聚集）判定 `SKIP / short_not_supported`，不计入收益；仍会解析一个参考成交价并标记 `reference_only`（只用于时间轴审计，不入账）。`allow_short=True` 仅用于研究对照 | 与 `paper.py` v1 一致；HTML 顶部与 `method.long_only` 明示 |
 | 4.2 | 借券费 / locate | 未建模 | 无借券费率、无 locate 可得性、无 recall 强制平仓；若开启 `allow_short` 也只按等名义额做空 | 借券费需券商/Prime Broker 数据（如 IBKR borrow rates、Markit Securities Finance），免费源不提供 |
 | 4.3 | 做空逼平 / 并购 | 未建模 | 无 squeeze、无并购现金对价、无 delisting cash-out；仍持有到固定 20 日收盘 | 需要公司行动数据（CRSP/Compustat 或付费 vendor） |
 | 4.4 | 免费替代指标 | 未建模 | FINRA 双周做空兴趣（short interest）是免费的，但它不是借券费，也不能当日交易 | FINRA Equity Short Interest 数据（双周、T+结算滞后） |
@@ -79,6 +79,7 @@
 | 6.8 | 公司名匹配 | 未建模（上游偏差） | 依赖 `CompanyRegistry` 别名匹配（≥0.82），漏配公司记为 `NULL` 而非猜测 | `docs/METHODS.md` §2；回放只处理已有 `company_key/ticker` 的信号 |
 | 6.9 | 多重检验 | 未建模 | 回放对 98 条信号逐笔展示，未做 Holm/Bonferroni 校正；不能把单条 t 值当显著性 | ROADMAP "Multiple-testing correction"；`research.multiple_testing` 为后续项 |
 | 6.10 | 样本内外划分 | 未建模 | 回放窗口是用户给定区间，不是 walk-forward 样本外测试 | 报告中的 `research.sample_split` 是研究元信息，未接入回放校验 |
+| 6.11 | `signals` 表为空时的回退 | 已建模 | 表为空时从 `events` 按 point-in-time 规则生成简易信号：首次产品码 / 药品获批 / 90 天召回聚集；信号日 = 公开日 + 1；只用于演示回放链路，不替代 `analyze` 的完整信号 | `replay.py::_auto_signal_rows`；`meta.counts.signal_source='events_fallback'` 可审计 |
 
 ## 7. 组合与回放机制（Portfolio mechanics）
 

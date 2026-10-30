@@ -21,8 +21,10 @@ portfolio, what appeared for the first time, and where China still has a gap.
 | Signals emitted | 303 (→ 120 tradable) |
 | Simulated book | +20.6% over 11 months, 39 trades, max DD −6.6% — **in-sample, long-only, not investment advice** |
 | Event study | +6.0% 60‑day abnormal return vs SPY, t=2.59, n=53 — promising but small N and multiple-testing exposed |
-| Tests | **258 offline tests**, no network, no API key |
+| Tests | **274 offline tests**, no network, no API key |
 | Report | 18 chapters, self-contained HTML dashboard (no CDN, no external assets) |
+| Products | **159 device product families**, 600 Chinese product names (85.5% of device events covered) |
+| Research | event-time model, point-in-time signals, Holm correction, 10/25/50 bps replay |
 | Calibration | 25 hand-labelled real 8‑Ks: type accuracy **1.00 vs 0.60**, direction **0.92 vs 0.72** for the LLM judge |
 
 > Numbers move every week; every one of them is reproducible from `medradar run`.
@@ -42,6 +44,7 @@ Then, for a live data run:
 ```bash
 medradar run --months 24 --with-trade    # ~3 min, free public data only
 medradar replay --days 30                # event-to-fill timeline with cost tiers
+medradar products --limit 10             # product families + new-product radar, in Chinese
 ```
 
 ## What it answers
@@ -238,6 +241,12 @@ medradar/       standard-library-only package
   collect_*     openFDA / ClinicalTrials.gov collectors
   nmpa.py       honest pluggable China adapter (CSV / demo / off)
   analyze.py    metrics engine → out/metrics.json (contract: docs/SCHEMA.md)
+  products.py   device product families, Chinese catalog, new-product radar
+  families.py   keyword-based family builder (regenerates config/product_families.json)
+  replay.py     event-to-fill replay: 1m (last ~7d) or daily, 3 cost tiers, standalone HTML
+  stats.py      block bootstrap, Holm/Bonferroni, time splits, survivorship, power
+  calibration.py reproducible LLM-judge calibration (recorded fixtures, no key needed in CI)
+  onboarding.py demo / doctor / watchlist
   report.py     Chinese report + self-contained HTML dashboard
   prices.py     Yahoo daily bars (research use)
   eventstudy.py abnormal-return study

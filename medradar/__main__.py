@@ -421,6 +421,57 @@ def cmd_replay(args: argparse.Namespace) -> int:
     return 0 if payload.get("status") != "failed" else 1
 
 
+# ----------------------------------------------------------------------- products
+def cmd_products(args: argparse.Namespace) -> int:
+    import csv
+
+    from .db import DB
+    from .products import company_portfolio, family_stats, new_products
+
+    with DB(args.db) as db:
+        families = family_stats(db, window_quarters=args.window)
+        news = new_products(db, days=args.news_days, max_items=args.news_limit)
+        portfolio = company_portfolio(db, window_quarters=args.window)
+
+    rows = families[: args.limit]
+    if args.csv:
+        target = Path(args.csv)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        with target.open("w", encoding="utf-8-sig", newline="") as handle:
+            writer = csv.writer(handle)
+            writer.writerow(
+                ["family_id", "name_zh", "name_en", "category", "recent", "thi", "prob_up",
+                 "companies", "new_entrants_12m", "first_seen", "top_product"]
+            )
+            for row in families:
+                writer.writerow(
+                    [row.get("family_id"), row.get("name_zh"), row.get("name_en"), row.get("category"),
+                     row.get("recent"), row.get("thi"), row.get("prob_up"), row.get("companies"),
+                     row.get("new_entrants_12m"), row.get("first_seen"), row.get("top_product")]
+                )
+        print(json.dumps({"csv": str(target), "rows": len(families)}, ensure_ascii=False))
+        return 0
+
+    _emit(
+        {
+            "families": rows,
+            "coverage": {"families": len(families)},
+            "new_products": news[:20],
+            "new_products_total": len(news),
+            "companies": [
+                {
+                    "company_zh": value.get("name_zh"),
+                    "recent": value.get("recent"),
+                    "family_count": value.get("family_count"),
+                    "js": value.get("js"),
+                }
+                for value in list(portfolio.values())[:20]
+            ],
+        }
+    )
+    return 0
+
+
 # ------------------------------------------------------------------------ status
 def cmd_status(args: argparse.Namespace) -> int:
     from .db import DB
@@ -512,7 +563,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--skip-report", action="store_true")
     run.add_argument("--with-trade", action="store_true", help="also run the paper-trading study")
     run.add_argument("--with-replay", action="store_true", help="also build the replay timeline")
-    run.add_argument("--replay-days", type=int, default=30)
+    run.add_argument("--replay-days", type=int, default=180)
     run.add_argument("--replay-costs", default="10,25,50")
     run.add_argument("--refresh-prices", action="store_true", help="re-download price bars even if cached")
     add_db_options(run)
@@ -587,6 +638,15 @@ def build_parser() -> argparse.ArgumentParser:
     replay.add_argument("--db", default=str(DEFAULT_DB))
     replay.add_argument("--budget", type=int, default=60)
     replay.set_defaults(func=cmd_replay)
+
+    products = sub.add_parser("products", help="product-family intelligence for medical devices")
+    products.add_argument("--db", default=str(DEFAULT_DB))
+    products.add_argument("--window", type=int, default=8, help="window in quarters")
+    products.add_argument("--limit", type=int, default=25)
+    products.add_argument("--news-days", type=int, default=90)
+    products.add_argument("--news-limit", type=int, default=100)
+    products.add_argument("--csv", default=None, help="export the full family table to this CSV")
+    products.set_defaults(func=cmd_products)
 
     selftest = sub.add_parser("selftest", help="run the offline test suite")
     selftest.set_defaults(func=cmd_selftest)
