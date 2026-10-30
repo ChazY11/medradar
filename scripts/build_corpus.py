@@ -183,6 +183,12 @@ def cmd_search(args: argparse.Namespace) -> dict[str, Any]:
     raw_path = out / "search_hits.jsonl"
     searches_path = out / "searches.jsonl"
     done: set[str] = set()
+    if args.refresh and not getattr(args, "offline", False):
+        # a refresh re-queries everything: stale hit/progress files would otherwise
+        # be appended to and the query count in the manifest would double
+        for stale in (raw_path, searches_path):
+            if stale.exists():
+                stale.unlink()
     if not args.refresh:
         for row in corpus.read_jsonl(searches_path):
             done.add(_search_key(str(row.get("window") or ""), str(row.get("bucket") or "")))
@@ -491,12 +497,17 @@ def cmd_fetch(args: argparse.Namespace) -> dict[str, Any]:
     pending = [
         candidate
         for candidate in candidates
-        if (
-            str(candidate.get("accession")) not in ok_accessions
-            and (retry_failed or str(candidate.get("accession")) not in existing)
-        )
-        or (retry_short and str(candidate.get("accession")) in short_accessions)
+        if str(candidate.get("accession")) not in ok_accessions
+        and (retry_failed or str(candidate.get("accession")) not in existing)
     ]
+    if retry_short:
+        # exclusive mode: only the suspiciously-short recordings are retried, so a
+        # repair run cannot silently turn into a second full crawl
+        pending = [
+            candidate
+            for candidate in candidates
+            if str(candidate.get("accession")) in short_accessions
+        ]
     limit = int(getattr(args, "limit", DEFAULT_LIMIT) or 0)
     if limit > 0:
         # year-stratified sample: fetching the first N candidates would bias the

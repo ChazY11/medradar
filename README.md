@@ -55,10 +55,11 @@ medradar products --limit 10             # product families + new-product radar,
 |---|---|---|
 | Which device tracks are accelerating? | `THI` — shrinkage-adjusted recent rate ÷ baseline rate | Track heat table |
 | Is a specific major changing direction? | Jensen-Shannon divergence of its product-code mix | Migration table ("who is re-allocating") |
-| What is genuinely new? | First-ever `(company, product_code)` occurrences | "First seen" weekly list |
+| What is genuinely new? | First-ever `(company, product_code)` occurrences | "First seen" weekly list + product-family radar |
+| Which device product families are rising? | 204 families, 2,000 Chinese product names | Product radar chapter |
 | Is pharma shifting therapeutic focus? | Trial-start rates + phase mix per area | Drug radar |
 | Where is the China gap? | US activity share vs loaded NMPA registrations | `cn_gap` table (honest `unavailable` when no CN data) |
-| Does any of it predict equity returns? | Event study: AR vs SPY at +1/+5/+20/+60 trading days | `out/trading.json` (simulation only) |
+| Does any of it predict equity returns? | Event study: direction-aligned abnormal returns at +1/+5/+20/+60, block bootstrap + Holm | [Case library](docs/CASES.md) + `out/trading.json` (simulation only) |
 
 ## Live lane: event alerts + simulated trading (5–15 min)
 
