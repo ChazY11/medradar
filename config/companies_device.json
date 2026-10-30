@@ -1,0 +1,388 @@
+{
+  "schema": 1,
+  "updated": "2026-10-31",
+  "currency": "USD",
+  "notes": "parent company -> subsidiary aliases. openFDA stores whatever the submitter typed, so a single parent shows up under many legal entities (J&J under Ethicon/DePuy/Biosense Webster, GE HealthCare under GE Medical Systems). Aliases must stay distinctive: never add a bare generic token such as 'JOHNSON' because it would match hundreds of unrelated applicants.",
+  "companies": [
+    {
+      "key": "medtronic",
+      "name_en": "Medtronic",
+      "name_zh": "美敦力",
+      "ticker": "MDT",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": [
+        "MEDTRONIC", "MEDTRONIC MINIMED", "MEDTRONIC SOFAMOR DANEK",
+        "MEDTRONIC VASCULAR", "MEDTRONIC NEUROMODULATION", "MEDTRONIC CRYOCATH",
+        "MEDTRONIC XOMED", "MEDTRONIC PUERTO RICO", "MEDTRONIC BAKKEN",
+        "COVIDIEN", "TYCO HEALTHCARE", "COVIDIEN LP"
+      ]
+    },
+    {
+      "key": "johnson_johnson_medtech",
+      "name_en": "Johnson & Johnson MedTech",
+      "name_zh": "强生医疗科技",
+      "ticker": "JNJ",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": [
+        "JOHNSON & JOHNSON", "JOHNSON AND JOHNSON", "ETHICON",
+        "ETHICON ENDO SURGERY", "ETHICON INC", "DEPUY", "DEPUY SYNTHES",
+        "DEPUY ORTHOPAEDICS", "DEPUY SPINE", "BIOSENSE WEBSTER", "CERENOVUS",
+        "ACCLARENT", "MENTOR WORLDWIDE", "AURIS HEALTH", "SHOCKWAVE MEDICAL",
+        "NEUWAVE MEDICAL", "VERB SURGICAL", "ORTHOTAXY"
+      ]
+    },
+    {
+      "key": "abbott",
+      "name_en": "Abbott",
+      "name_zh": "雅培",
+      "ticker": "ABT",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": [
+        "ABBOTT", "ABBOTT LABORATORIES", "ABBOTT VASCULAR", "ABBOTT MEDICAL",
+        "ABBOTT DIABETES CARE", "ABBOTT POINT OF CARE", "ABBOTT NEUROMODULATION",
+        "ST JUDE MEDICAL", "ST JUDE MEDICAL CARDIOLOGY"
+      ]
+    },
+    {
+      "key": "boston_scientific",
+      "name_en": "Boston Scientific",
+      "name_zh": "波士顿科学",
+      "ticker": "BSX",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": [
+        "BOSTON SCIENTIFIC", "BOSTON SCIENTIFIC SCIMED",
+        "BOSTON SCIENTIFIC NEUROMODULATION", "GUIDANT", "AXONICS"
+      ]
+    },
+    {
+      "key": "stryker",
+      "name_en": "Stryker",
+      "name_zh": "史赛克",
+      "ticker": "SYK",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": [
+        "STRYKER", "STRYKER SPINE", "STRYKER TRAUMA", "STRYKER ENDOSCOPY",
+        "STRYKER INSTRUMENTS", "STRYKER NAVIGATION", "STRYKER ORTHOPAEDICS",
+        "HOWMEDICA", "WRIGHT MEDICAL", "MAKO SURGICAL"
+      ]
+    },
+    {
+      "key": "zimmer_biomet",
+      "name_en": "Zimmer Biomet",
+      "name_zh": "捷迈邦美",
+      "ticker": "ZBH",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": [
+        "ZIMMER BIOMET", "ZIMMER", "BIOMET", "ZIMMER INC",
+        "BIOMET MICROFIXATION", "ZIMMER DENTAL", "ZIMMER SPINE"
+      ]
+    },
+    {
+      "key": "edwards_lifesciences",
+      "name_en": "Edwards Lifesciences",
+      "name_zh": "爱德华生命科学",
+      "ticker": "EW",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": ["EDWARDS LIFESCIENCES", "EDWARDS LIFESCIENCES CORP"]
+    },
+    {
+      "key": "intuitive_surgical",
+      "name_en": "Intuitive Surgical",
+      "name_zh": "直觉外科",
+      "ticker": "ISRG",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": ["INTUITIVE SURGICAL", "INTUITIVE SURGICAL OPERATIONS"]
+    },
+    {
+      "key": "siemens_healthineers",
+      "name_en": "Siemens Healthineers",
+      "name_zh": "西门子医疗",
+      "ticker": "SHL.DE",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": [
+        "SIEMENS HEALTHINEERS", "SIEMENS MEDICAL SOLUTIONS", "SIEMENS MEDICAL",
+        "VARIAN MEDICAL SYSTEMS", "SIEMENS HEALTHCARE"
+      ]
+    },
+    {
+      "key": "philips",
+      "name_en": "Philips",
+      "name_zh": "飞利浦",
+      "ticker": "PHG",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": [
+        "PHILIPS", "PHILIPS HEALTHCARE", "PHILIPS MEDICAL SYSTEMS",
+        "PHILIPS NORTH AMERICA", "PHILIPS ULTRASOUND",
+        "PHILIPS IMAGE GUIDED THERAPY"
+      ]
+    },
+    {
+      "key": "ge_healthcare",
+      "name_en": "GE HealthCare",
+      "name_zh": "GE医疗",
+      "ticker": "GEHC",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": [
+        "GE HEALTHCARE", "GE MEDICAL SYSTEMS", "GE HEALTHCARE GLOBAL",
+        "GE MEDICAL"
+      ]
+    },
+    {
+      "key": "bd",
+      "name_en": "Becton Dickinson",
+      "name_zh": "碧迪",
+      "ticker": "BDX",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": [
+        "BECTON DICKINSON", "BECTON", "BD BARD", "C R BARD",
+        "BARD ACCESS SYSTEMS", "BD MEDICAL", "CAREFUSION"
+      ]
+    },
+    {
+      "key": "baxter",
+      "name_en": "Baxter",
+      "name_zh": "百特",
+      "ticker": "BAX",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": ["BAXTER", "BAXTER HEALTHCARE", "BAXTER INTERNATIONAL"]
+    },
+    {
+      "key": "resmed",
+      "name_en": "ResMed",
+      "name_zh": "瑞思迈",
+      "ticker": "RMD",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": ["RESMED", "RESMED CORP"]
+    },
+    {
+      "key": "masimo",
+      "name_en": "Masimo",
+      "name_zh": "迈心诺",
+      "ticker": "MASI",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["MASIMO", "MASIMO CORP"]
+    },
+    {
+      "key": "dexcom",
+      "name_en": "Dexcom",
+      "name_zh": "德康",
+      "ticker": "DXCM",
+      "sector": "device",
+      "is_major": 1,
+      "aliases": ["DEXCOM", "DEXCOM INC"]
+    },
+    {
+      "key": "insulet",
+      "name_en": "Insulet",
+      "name_zh": "银休特",
+      "ticker": "PODD",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["INSULET", "INSULET CORP"]
+    },
+    {
+      "key": "tandem_diabetes",
+      "name_en": "Tandem Diabetes Care",
+      "name_zh": "丹纳糖尿病",
+      "ticker": "TNDM",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["TANDEM DIABETES", "TANDEM DIABETES CARE"]
+    },
+    {
+      "key": "penumbra",
+      "name_en": "Penumbra",
+      "name_zh": "半影",
+      "ticker": "PEN",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["PENUMBRA", "PENUMBRA INC"]
+    },
+    {
+      "key": "globus_medical",
+      "name_en": "Globus Medical",
+      "name_zh": "高博医疗",
+      "ticker": "GMED",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["GLOBUS MEDICAL", "NUVASIVE"]
+    },
+    {
+      "key": "hologic",
+      "name_en": "Hologic",
+      "name_zh": "豪洛捷",
+      "ticker": "HOLX",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["HOLOGIC", "HOLOGIC INC"]
+    },
+    {
+      "key": "teleflex",
+      "name_en": "Teleflex",
+      "name_zh": "泰利福",
+      "ticker": "TFX",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["TELEFLEX", "TELEFLEX MEDICAL"]
+    },
+    {
+      "key": "cooper_companies",
+      "name_en": "Cooper Companies",
+      "name_zh": "库珀集团",
+      "ticker": "COO",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["COOPER COMPANIES", "COOPERVISION", "COOPER MEDICAL", "COOPER SURGICAL"]
+    },
+    {
+      "key": "alcon",
+      "name_en": "Alcon",
+      "name_zh": "爱尔康",
+      "ticker": "ALC",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["ALCON", "ALCON LABORATORIES", "ALCON RESEARCH"]
+    },
+    {
+      "key": "dentsply_sirona",
+      "name_en": "Dentsply Sirona",
+      "name_zh": "登士柏西诺德",
+      "ticker": "XRAY",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["DENTSPLY SIRONA", "DENTSPLY", "DENTSPLY INTERNATIONAL"]
+    },
+    {
+      "key": "integra_lifesciences",
+      "name_en": "Integra LifeSciences",
+      "name_zh": "英特格拉",
+      "ticker": "IART",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["INTEGRA LIFESCIENCES", "INTEGRA"]
+    },
+    {
+      "key": "irhythm",
+      "name_en": "iRhythm Technologies",
+      "name_zh": "艾律",
+      "ticker": "IRTC",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["IRHYTHM", "IRHYTHM TECHNOLOGIES"]
+    },
+    {
+      "key": "inspire_medical",
+      "name_en": "Inspire Medical Systems",
+      "name_zh": "激励医疗",
+      "ticker": "INSP",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["INSPIRE MEDICAL", "INSPIRE MEDICAL SYSTEMS"]
+    },
+    {
+      "key": "procept_biorobotics",
+      "name_en": "PROCEPT BioRobotics",
+      "name_zh": "PROCEPT 手术机器人",
+      "ticker": "PRCT",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["PROCEPT BIOROBOTICS", "PROCEPT"]
+    },
+    {
+      "key": "atricure",
+      "name_en": "AtriCure",
+      "name_zh": "艾特律",
+      "ticker": "ATRC",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["ATRICURE", "ATRICURE INC"]
+    },
+    {
+      "key": "nevro",
+      "name_en": "Nevro",
+      "name_zh": "内夫罗",
+      "ticker": "NVRO",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["NEVRO", "NEVRO CORP"]
+    },
+    {
+      "key": "orthofix",
+      "name_en": "Orthofix",
+      "name_zh": "奥索菲克斯",
+      "ticker": "OFIX",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["ORTHOFIX", "ORTHOFIX MEDICAL"]
+    },
+    {
+      "key": "merit_medical",
+      "name_en": "Merit Medical",
+      "name_zh": "美瑞特",
+      "ticker": "MMSI",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["MERIT MEDICAL", "MERIT MEDICAL SYSTEMS"]
+    },
+    {
+      "key": "icu_medical",
+      "name_en": "ICU Medical",
+      "name_zh": "ICU医疗",
+      "ticker": "ICUI",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["ICU MEDICAL", "SMITHS MEDICAL"]
+    },
+    {
+      "key": "ambu",
+      "name_en": "Ambu",
+      "name_zh": "安布",
+      "ticker": "AMBU-B.CO",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["AMBU", "AMBU A/S"]
+    },
+    {
+      "key": "invacare",
+      "name_en": "Invacare",
+      "name_zh": "英维康",
+      "ticker": "IVC",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["INVACARE"]
+    },
+    {
+      "key": "steris",
+      "name_en": "STERIS",
+      "name_zh": "思泰瑞",
+      "ticker": "STE",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["STERIS", "STERIS CORP"]
+    },
+    {
+      "key": "envista",
+      "name_en": "Envista",
+      "name_zh": "盈纬达",
+      "ticker": "NVST",
+      "sector": "device",
+      "is_major": 0,
+      "aliases": ["ENVISTA", "NOBEL BIOCARE", "ORMCO"]
+    }
+  ]
+}

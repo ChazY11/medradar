@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "updated": "2026-10-31",
+  "notes": "Public data sources used by MedRadar. Everything here is free and requires no credentials. openFDA without an API key is limited to 240 requests/minute and 1,000/day per IP, which is why every collector caches aggressively under data/cache/.",
+  "sources": {
+    "openfda": {
+      "base": "https://api.fda.gov",
+      "endpoints": {
+        "device_510k": "/device/510k.json",
+        "device_pma": "/device/pma.json",
+        "device_recall": "/device/recall.json",
+        "device_classification": "/device/classification.json",
+        "device_registrationlisting": "/device/registrationlisting.json",
+        "drug_drugsfda": "/drug/drugsfda.json",
+        "drug_enforcement": "/drug/enforcement.json"
+      },
+      "min_interval_seconds": 0.3,
+      "request_budget": 900,
+      "page_limit": 1000,
+      "public_domain": true
+    },
+    "clinicaltrials_gov": {
+      "base": "https://clinicaltrials.gov/api/v2",
+      "endpoints": {
+        "studies": "/studies"
+      },
+      "min_interval_seconds": 0.4,
+      "request_budget": 300,
+      "note": "v2 API, no key, results are posted within 21 days of first enrollment for many trials."
+    },
+    "sec_edgar": {
+      "base": "https://efts.sec.gov/LATEST",
+      "endpoints": {
+        "full_text_search": "/search-index"
+      },
+      "min_interval_seconds": 0.2,
+      "request_budget": 100,
+      "note": "Fair-access policy: identify yourself with a User-Agent and stay below 10 requests/second."
+    },
+    "nmpa": {
+      "base": "https://www.nmpa.gov.cn",
+      "status": "blocked_by_waf",
+      "note": "Probed on 2026-10-31: https://www.nmpa.gov.cn returns HTTP 412 and www.cmde.org.cn returns 202 (JavaScript challenge). MedRadar therefore does NOT scrape NMPA directly. Instead `medradar/nmpa.py` supports (a) a user-exported CSV, (b) a clearly-labelled demo seed, and (c) an HTTP adapter that is off by default. The China-gap metric reports data_status honestly when no CN data is loaded.",
+      "expected_csv_columns": ["registration_no", "product_name", "company_name", "approval_date", "valid_until", "class", "province"]
+    }
+  }
+}

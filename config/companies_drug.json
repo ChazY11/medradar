@@ -1,0 +1,356 @@
+{
+  "schema": 1,
+  "updated": "2026-10-31",
+  "notes": "Pharma/biotech watchlist for the drug radar. Sponsor names in FDA Drugs@FDA and ClinicalTrials.gov are messy in the same way as device applicants, so subsidiaries and legacy names are listed explicitly. Mid-caps are included on purpose: mega-caps barely move on a single FDA event, while a mid-cap trial failure can gap -50%.",
+  "companies": [
+    {
+      "key": "lilly",
+      "name_en": "Eli Lilly",
+      "name_zh": "礼来",
+      "ticker": "LLY",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["ELI LILLY", "LILLY", "LILLY RESEARCH LABORATORIES", "LILLY DEL CARIBE"]
+    },
+    {
+      "key": "novo_nordisk",
+      "name_en": "Novo Nordisk",
+      "name_zh": "诺和诺德",
+      "ticker": "NVO",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["NOVO NORDISK", "NOVO NORDISK INC"]
+    },
+    {
+      "key": "pfizer",
+      "name_en": "Pfizer",
+      "name_zh": "辉瑞",
+      "ticker": "PFE",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["PFIZER", "WYETH", "PHARMACIA", "HOSPIRA", "SEAGEN", "ARRAY BIOPHARMA"]
+    },
+    {
+      "key": "merck",
+      "name_en": "Merck & Co.",
+      "name_zh": "默沙东",
+      "ticker": "MRK",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["MERCK SHARP DOHME", "MERCK", "MSD", "SCHERING", "ORGANON"]
+    },
+    {
+      "key": "jnj_pharma",
+      "name_en": "Johnson & Johnson Innovative Medicine",
+      "name_zh": "强生创新制药",
+      "ticker": "JNJ",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": [
+        "JANSSEN", "JANSSEN BIOTECH", "JANSSEN PHARMACEUTICA",
+        "JANSSEN RESEARCH", "ACTELION", "MOMENTA", "CILAG",
+        "JOHNSON & JOHNSON"
+      ]
+    },
+    {
+      "key": "abbvie",
+      "name_en": "AbbVie",
+      "name_zh": "艾伯维",
+      "ticker": "ABBV",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["ABBVIE", "ALLERGAN", "PHARMACYCLICS", "IMMUNOGEN", "CEREVEL"]
+    },
+    {
+      "key": "astrazeneca",
+      "name_en": "AstraZeneca",
+      "name_zh": "阿斯利康",
+      "ticker": "AZN",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["ASTRAZENECA", "MEDIMMUNE", "ALEXION", "CINCLUS"]
+    },
+    {
+      "key": "roche",
+      "name_en": "Roche",
+      "name_zh": "罗氏",
+      "ticker": "RHHBY",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["ROCHE", "GENENTECH", "HOFFMANN LA ROCHE", "CHUGAI"]
+    },
+    {
+      "key": "novartis",
+      "name_en": "Novartis",
+      "name_zh": "诺华",
+      "ticker": "NVS",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["NOVARTIS", "CHINOOK", "AVEXIS", "GYNECARE"]
+    },
+    {
+      "key": "sanofi",
+      "name_en": "Sanofi",
+      "name_zh": "赛诺菲",
+      "ticker": "SNY",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["SANOFI", "GENZYME", "SANOFI AVENTIS"]
+    },
+    {
+      "key": "gsk",
+      "name_en": "GSK",
+      "name_zh": "葛兰素史克",
+      "ticker": "GSK",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["GLAXOSMITHKLINE", "GLAXO", "SMITHKLINE BEECHAM", "TESARO"]
+    },
+    {
+      "key": "amgen",
+      "name_en": "Amgen",
+      "name_zh": "安进",
+      "ticker": "AMGN",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["AMGEN", "IMMUNEX", "HORIZON THERAPEUTICS", "ONYX"]
+    },
+    {
+      "key": "gilead",
+      "name_en": "Gilead Sciences",
+      "name_zh": "吉利德",
+      "ticker": "GILD",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["GILEAD", "KITE PHARMA", "PHARMASSET", "IMMUNOMEDICS", "CYMABAY"]
+    },
+    {
+      "key": "regeneron",
+      "name_en": "Regeneron",
+      "name_zh": "再生元",
+      "ticker": "REGN",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["REGENERON", "REGENERON PHARMACEUTICALS"]
+    },
+    {
+      "key": "vertex",
+      "name_en": "Vertex Pharmaceuticals",
+      "name_zh": "福泰制药",
+      "ticker": "VRTX",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["VERTEX PHARMACEUTICALS", "VERTEX"]
+    },
+    {
+      "key": "moderna",
+      "name_en": "Moderna",
+      "name_zh": "莫德纳",
+      "ticker": "MRNA",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["MODERNA", "MODERNATX"]
+    },
+    {
+      "key": "biogen",
+      "name_en": "Biogen",
+      "name_zh": "渤健",
+      "ticker": "BIIB",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["BIOGEN", "IDEC", "REATA"]
+    },
+    {
+      "key": "bms",
+      "name_en": "Bristol Myers Squibb",
+      "name_zh": "百时美施贵宝",
+      "ticker": "BMY",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": [
+        "BRISTOL MYERS SQUIBB", "BRISTOL MYERS", "SQUIBB", "CELGENE",
+        "JUNO THERAPEUTICS", "KARUNA", "RAYZEBIO"
+      ]
+    },
+    {
+      "key": "boehringer",
+      "name_en": "Boehringer Ingelheim",
+      "name_zh": "勃林格殷格翰",
+      "ticker": "",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["BOEHRINGER INGELHEIM", "BOEHRINGER"]
+    },
+    {
+      "key": "bayer",
+      "name_en": "Bayer",
+      "name_zh": "拜耳",
+      "ticker": "BAYRY",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["BAYER", "BAYER HEALTHCARE"]
+    },
+    {
+      "key": "takeda",
+      "name_en": "Takeda",
+      "name_zh": "武田",
+      "ticker": "TAK",
+      "sector": "drug",
+      "is_major": 1,
+      "aliases": ["TAKEDA", "SHIRE", "MILLENNIUM"]
+    },
+    {
+      "key": "astellas",
+      "name_en": "Astellas",
+      "name_zh": "安斯泰来",
+      "ticker": "ALPMY",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["ASTELLAS", "ASTELLAS PHARMA"]
+    },
+    {
+      "key": "daiichi_sankyo",
+      "name_en": "Daiichi Sankyo",
+      "name_zh": "第一三共",
+      "ticker": "DSNKY",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["DAIICHI SANKYO", "DAIICHI"]
+    },
+    {
+      "key": "eisai",
+      "name_en": "Eisai",
+      "name_zh": "卫材",
+      "ticker": "ESALY",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["EISAI", "EISAI INC"]
+    },
+    {
+      "key": "otsuka",
+      "name_en": "Otsuka",
+      "name_zh": "大冢",
+      "ticker": "OTSKY",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["OTSUKA", "OTSUKA PHARMACEUTICAL"]
+    },
+    {
+      "key": "teva",
+      "name_en": "Teva",
+      "name_zh": "梯瓦",
+      "ticker": "TEVA",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["TEVA", "ACTAVIS"]
+    },
+    {
+      "key": "viatris",
+      "name_en": "Viatris",
+      "name_zh": "晖致",
+      "ticker": "VTRS",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["VIATRIS", "MYLAN", "UPJOHN"]
+    },
+    {
+      "key": "biomarin",
+      "name_en": "BioMarin",
+      "name_zh": "拜玛林",
+      "ticker": "BMRN",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["BIOMARIN"]
+    },
+    {
+      "key": "united_therapeutics",
+      "name_en": "United Therapeutics",
+      "name_zh": "联合治疗",
+      "ticker": "UTHR",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["UNITED THERAPEUTICS"]
+    },
+    {
+      "key": "neurocrine",
+      "name_en": "Neurocrine Biosciences",
+      "name_zh": "神经分泌",
+      "ticker": "NBIX",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["NEUROCRINE", "NEUROCRINE BIOSCIENCES"]
+    },
+    {
+      "key": "ionis",
+      "name_en": "Ionis Pharmaceuticals",
+      "name_zh": "伊奥尼斯",
+      "ticker": "IONS",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["IONIS", "IONIS PHARMACEUTICALS", "ISIS PHARMACEUTICALS"]
+    },
+    {
+      "key": "sarepta",
+      "name_en": "Sarepta Therapeutics",
+      "name_zh": "萨雷普塔",
+      "ticker": "SRPT",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["SAREPTA", "SAREPTA THERAPEUTICS"]
+    },
+    {
+      "key": "exelixis",
+      "name_en": "Exelixis",
+      "name_zh": "埃克塞里克斯",
+      "ticker": "EXEL",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["EXELIXIS"]
+    },
+    {
+      "key": "incyte",
+      "name_en": "Incyte",
+      "name_zh": "因塞特",
+      "ticker": "INCY",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["INCYTE", "INCYTE CORP"]
+    },
+    {
+      "key": "argenx",
+      "name_en": "argenx",
+      "name_zh": "阿根克斯",
+      "ticker": "ARGX",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["ARGENX"]
+    },
+    {
+      "key": "blueprint",
+      "name_en": "Blueprint Medicines",
+      "name_zh": "蓝图医药",
+      "ticker": "BPMC",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["BLUEPRINT MEDICINES"]
+    },
+    {
+      "key": "alnylam",
+      "name_en": "Alnylam",
+      "name_zh": "阿里拉姆",
+      "ticker": "ALNY",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["ALNYLAM", "ALNYLAM PHARMACEUTICALS"]
+    },
+    {
+      "key": "ark",
+      "name_en": "Arcturus Therapeutics",
+      "name_zh": "阿克图勒斯",
+      "ticker": "ARCT",
+      "sector": "drug",
+      "is_major": 0,
+      "aliases": ["ARCTURUS", "ARCTURUS THERAPEUTICS"]
+    }
+  ]
+}

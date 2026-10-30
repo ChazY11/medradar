@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "updated": "2026-10-31",
+  "notes": "Therapeutic-area dictionary for the drug radar. ClinicalTrials.gov `conditions` are free text; the longest matching keyword wins. Keep keywords specific enough that 'PAIN' does not swallow 'PAINLESS' trials.",
+  "tracks": [
+    {"id": "t_oncology", "name_zh": "肿瘤", "name_en": "Oncology", "category": "oncology", "keywords": ["CARCINOMA", "CANCER", "TUMOR", "TUMOUR", "MELANOMA", "LYMPHOMA", "LEUKEMIA", "MYELOMA", "SARCOMA", "GLIOMA", "ADENOCARCINOMA", "NEOPLASM", "SOLID TUMOR", "METASTATIC"]},
+    {"id": "t_immunology", "name_zh": "免疫与炎症", "name_en": "Immunology", "category": "immunology", "keywords": ["PSORIASIS", "ATOPIC DERMATITIS", "RHEUMATOID ARTHRITIS", "LUPUS", "CROHN", "ULCERATIVE COLITIS", "ASTHMA", "AUTOIMMUNE", "INFLAMMATORY BOWEL"]},
+    {"id": "t_neuroscience", "name_zh": "神经与精神", "name_en": "Neuroscience", "category": "neuroscience", "keywords": ["ALZHEIMER", "PARKINSON", "MULTIPLE SCLEROSIS", "EPILEPSY", "DEPRESSION", "SCHIZOPHRENIA", "MIGRAINE", "AMYOTROPHIC LATERAL", "HUNTINGTON", "NEUROPATHIC"]},
+    {"id": "t_cardiometabolic", "name_zh": "心血管代谢（含GLP-1）", "name_en": "Cardiometabolic", "category": "metabolic", "keywords": ["DIABETES", "OBESITY", "OVERWEIGHT", "HYPERTENSION", "HYPERLIPIDEMIA", "CARDIOVASCULAR", "HEART FAILURE", "ATHEROSCLEROSIS", "GLP-1", "SEMAGLUTIDE", "TIRZEPATIDE"]},
+    {"id": "t_respiratory", "name_zh": "呼吸", "name_en": "Respiratory", "category": "respiratory", "keywords": ["COPD", "PULMONARY FIBROSIS", "ASTHMA", "CYSTIC FIBROSIS", "PULMONARY ARTERIAL HYPERTENSION", "BRONCHIECTASIS"]},
+    {"id": "t_rare_disease", "name_zh": "罕见病", "name_en": "Rare Disease", "category": "rare", "keywords": ["ORPHAN", "RARE DISEASE", "FABRY", "GAUCHER", "POMPE", "DUCHENNE", "SPINAL MUSCULAR ATROPHY", "HUNTER SYNDROME"]},
+    {"id": "t_vaccines", "name_zh": "疫苗", "name_en": "Vaccines", "category": "infectious", "keywords": ["VACCINE", "IMMUNIZATION", "MRNA", "PROPHYLACTIC"]},
+    {"id": "t_infectious", "name_zh": "感染性疾病", "name_en": "Infectious Disease", "category": "infectious", "keywords": ["HIV", "HEPATITIS", "INFLUENZA", "COVID", "SEPSIS", "TUBERCULOSIS", "ANTIBIOTIC", "RESPIRATORY SYNCYTIAL"]},
+    {"id": "t_hematology", "name_zh": "血液", "name_en": "Hematology", "category": "hematology", "keywords": ["HEMOPHILIA", "THROMBOCYTOPENIA", "SICKLE CELL", "ANEMIA", "THROMBOSIS", "SICKLE"]},
+    {"id": "t_ophthalmology", "name_zh": "眼科", "name_en": "Ophthalmology", "category": "specialty", "keywords": ["MACULAR DEGENERATION", "GLAUCOMA", "DIABETIC RETINOPATHY", "RETINAL", "DRY EYE", "UVETIS"]},
+    {"id": "t_dermatology", "name_zh": "皮肤", "name_en": "Dermatology", "category": "specialty", "keywords": ["PSORIASIS", "ECZEMA", "ALOPECIA", "ACNE", "VITILIGO", "HIDRADENITIS"]},
+    {"id": "t_nephrology", "name_zh": "肾脏", "name_en": "Nephrology", "category": "renal", "keywords": ["CHRONIC KIDNEY", "IGA NEPHROPATHY", "NEPHROTIC", "DIALYSIS", "POLYCYSTIC KIDNEY", "ALPORT"]},
+    {"id": "t_hepatology", "name_zh": "肝病", "name_en": "Hepatology", "category": "hepatic", "keywords": ["NASH", "MASH", "CIRRHOSIS", "FATTY LIVER", "HEPATITIS B", "HEPATITIS C", "LIVER FIBROSIS"]},
+    {"id": "t_gene_therapy", "name_zh": "基因治疗", "name_en": "Gene Therapy", "category": "modality", "keywords": ["GENE THERAPY", "AAV", "LENTIVIRAL", "ADENO ASSOCIATED", "GENE EDITING", "CRISPR", "BASE EDITING"]},
+    {"id": "t_cell_therapy", "name_zh": "细胞治疗", "name_en": "Cell Therapy", "category": "modality", "keywords": ["CAR T", "CAR-T", "CELL THERAPY", "TCR", "NK CELL", "STEM CELL", "TIL"]},
+    {"id": "t_radiopharma", "name_zh": "放射性药物", "name_en": "Radiopharma", "category": "modality", "keywords": ["RADIOPHARMACEUTICAL", "RADIOLIGAND", "LUTETIUM", "ACTINIUM", "PSMA", "RADIONUCLIDE"]},
+    {"id": "t_pain", "name_zh": "疼痛", "name_en": "Pain", "category": "neuroscience", "keywords": ["CHRONIC PAIN", "NEUROPATHIC PAIN", "OSTEOARTHRITIS PAIN", "POSTOPERATIVE PAIN", "OPIOID", "NOCICEPTIVE"]},
+    {"id": "t_urology", "name_zh": "泌尿", "name_en": "Urology", "category": "specialty", "keywords": ["OVERACTIVE BLADDER", "PROSTATE", "ERECTILE", "URINARY", "BENIGN PROSTATIC"]},
+    {"id": "t_womens_health", "name_zh": "女性健康", "name_en": "Women's Health", "category": "specialty", "keywords": ["ENDOMETRIOSIS", "MENOPAUSE", "FERTILITY", "PREGNANCY", "CONTRACEPTION", "PCOS"]},
+    {"id": "t_musculoskeletal", "name_zh": "肌肉骨骼", "name_en": "Musculoskeletal", "category": "musculoskeletal", "keywords": ["OSTEOARTHRITIS", "OSTEOPOROSIS", "SARCOPENIA", "MUSCULAR DYSTROPHY", "FIBROMYALGIA"]},
+    {"id": "t_transplant", "name_zh": "移植与免疫抑制", "name_en": "Transplant", "category": "immunology", "keywords": ["TRANSPLANT", "GRAFT VERSUS HOST", "IMMUNOSUPPRESSION", "REJECTION"]},
+    {"id": "t_addiction", "name_zh": "成瘾与CNS", "name_en": "Addiction / CNS", "category": "neuroscience", "keywords": ["ALCOHOL USE DISORDER", "OPIOID USE DISORDER", "SMOKING CESSATION", "SUBSTANCE USE", "BINGE EATING"]}
+  ]
+}
