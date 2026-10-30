@@ -392,6 +392,57 @@ def render_markdown(cases: Mapping[str, Any], limit: int = 20) -> str:
     return "\n".join(lines)
 
 
+def event_study_summary(cases: Mapping[str, Any], horizons: Sequence[int] = HORIZONS) -> dict[str, Any]:
+    """Aggregate the case library into an event study with proper statistics.
+
+    Uses block bootstrap (blocks = event month) because overlapping holding
+    windows are correlated, and Holm correction across the category × horizon
+    tests so the result can be reported honestly.
+    """
+    try:
+        from .stats import block_bootstrap_ci, mean, median, multiple_testing, stdev, t_p_value, t_stat
+    except Exception:  # pragma: no cover - stats ships with the package
+        return {}
+    selected = list(cases.get("selected") or [])
+    if not selected:
+        return {}
+    result: dict[str, Any] = {"n_cases": len(selected), "by_horizon": {}}
+    categories = sorted({str(case.get("category") or "other") for case in selected})
+    for horizon in horizons:
+        key = f"price_{horizon}d"
+        per_category: dict[str, Any] = {}
+        p_values: list[float] = []
+        labels: list[str] = []
+        for category in categories:
+            rows = [case for case in selected if str(case.get("category") or "other") == category and case.get(key) is not None]
+            values = [float(case[key]) for case in rows]
+            if len(values) < 3:
+                continue
+            blocks = [str(case.get("date") or "")[:7] for case in rows]
+            ci = block_bootstrap_ci(values, blocks=blocks, seed=7)
+            stat = t_stat(values)
+            p_value = t_p_value(stat, len(values) - 1) if stat is not None else None
+            per_category[category] = {
+                "n": len(values),
+                "mean": round(mean(values), 6),
+                "median": round(median(values), 6),
+                "std": round(stdev(values), 6),
+                "t": round(stat, 4) if stat is not None else None,
+                "p": round(p_value, 6) if p_value is not None else None,
+                "ci95": [round(ci["lo"], 6), round(ci["hi"], 6)] if ci else None,
+                "hit_rate": round(sum(1 for value in values if value > 0) / len(values), 4),
+            }
+            if p_value is not None:
+                p_values.append(p_value)
+                labels.append(f"{category}:{horizon}d")
+        testing = multiple_testing(p_values, method="holm", labels=labels) if p_values else {}
+        result["by_horizon"][str(horizon)] = {
+            "categories": per_category,
+            "multiple_testing": testing,
+        }
+    return result
+
+
 def _pct(value: Any) -> str:
     try:
         return f"{float(value) * 100:+.2f}%"

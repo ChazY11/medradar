@@ -1085,6 +1085,14 @@ def build_metrics(
     cases_payload = read_json(OUT_DIR / "cases" / "cases.json")
     if cases_payload:
         metrics["cases"] = _compact_cases(cases_payload)
+        try:
+            from .cases import event_study_summary
+
+            study = event_study_summary(cases_payload)
+            if study:
+                metrics.setdefault("research", {})["event_study"] = study
+        except Exception:
+            pass
 
     trading_path = OUT_DIR / "trading.json"
     trading = read_json(trading_path)

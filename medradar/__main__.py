@@ -537,6 +537,19 @@ def cmd_audit(args: argparse.Namespace) -> int:
     return 0 if audit.get("status") != "fail" else 1
 
 
+# -------------------------------------------------------------------------- stats
+def cmd_stats(args: argparse.Namespace) -> int:
+    from .db import DB
+    from .stats_cmd import data_stats, update_stats_markdown
+
+    with DB(args.db) as db:
+        stats = data_stats(db)
+    if args.markdown:
+        update_stats_markdown(stats, args.markdown)
+    _emit(stats)
+    return 0
+
+
 # ------------------------------------------------------------------------ status
 def cmd_status(args: argparse.Namespace) -> int:
     from .db import DB
@@ -731,6 +744,11 @@ def build_parser() -> argparse.ArgumentParser:
     audit.add_argument("--stale-days", type=int, default=30)
     audit.add_argument("--markdown", default=None, help="also write a Markdown report")
     audit.set_defaults(func=cmd_audit)
+
+    stats = sub.add_parser("stats", help="dataset scale and distribution report")
+    stats.add_argument("--db", default=str(DEFAULT_DB))
+    stats.add_argument("--markdown", default=None, help="update the generated block in this Markdown file")
+    stats.set_defaults(func=cmd_stats)
 
     selftest = sub.add_parser("selftest", help="run the offline test suite")
     selftest.set_defaults(func=cmd_selftest)

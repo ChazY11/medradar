@@ -149,5 +149,35 @@ class CorpusTests(unittest.TestCase):
             self.assertEqual(result["status"], "insufficient_data")
 
 
+class EventStudySummaryTests(unittest.TestCase):
+    def test_aggregates_by_category_with_ci(self) -> None:
+        from medradar.cases import event_study_summary
+
+        cases = {
+            "selected": [
+                {"category": "approval", "date": f"2024-0{month}-01", "price_20d": value}
+                for month, value in zip(range(1, 7), (0.02, 0.03, 0.05, 0.01, 0.04, 0.06))
+            ]
+        }
+        summary = event_study_summary(cases, horizons=(20,))
+        block = summary["by_horizon"]["20"]["categories"]["approval"]
+        self.assertEqual(block["n"], 6)
+        self.assertAlmostEqual(block["mean"], 0.035, places=6)
+        self.assertLess(block["ci95"][0], block["ci95"][1])
+        self.assertIn("multiple_testing", summary["by_horizon"]["20"])
+
+    def test_small_category_is_skipped(self) -> None:
+        from medradar.cases import event_study_summary
+
+        cases = {"selected": [{"category": "crl", "date": "2024-01-01", "price_20d": -0.1}]}
+        summary = event_study_summary(cases, horizons=(20,))
+        self.assertNotIn("crl", summary["by_horizon"]["20"]["categories"])
+
+    def test_empty_cases(self) -> None:
+        from medradar.cases import event_study_summary
+
+        self.assertEqual(event_study_summary({"selected": []}), {})
+
+
 if __name__ == "__main__":
     unittest.main()
