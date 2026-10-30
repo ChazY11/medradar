@@ -1,69 +1,75 @@
 # MedRadar: FDA Device & Drug Industry Radar
 
-_Generated 2026-10-31T02:10:00Z (UTC) · Window 2024-11-01 to 2026-10-31 (8 quarters) · Baseline 2021-11-01 to 2024-10-31 (20 quarters)_
+_Generated 2026-10-30T17:40:50Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
 
 ## Key takeaways
 
-1. Top device track: Electrophysiology / PFA (THI 4.8, P(up) 99.7%), 42 events in window vs 1.1/quarter baseline.
-2. 4 of 6 tracked device segments are in a heating-up regime (THI 95% CI above 1.0).
-3. Strongest big-pharma momentum: Intuitive Surgical (THI 1.88), Boston Scientific (THI 1.53), Abbott (THI 1.25). Regulatory cadence is a proxy, not revenue.
-4. 4 first-seen records in the last 90 days; latest: Medtronic into ep_pfa.
-5. Recall clusters: Philips (3), Spine Frontier (2), Medtronic (2); watch product-line ageing and software-related causes.
+1. Top device track: Cardiac Rhythm (THI 1.94, P(up) 98.2%), 11 events in window vs 0.6/quarter baseline.
+2. 16 of 24 tracked device segments are in a heating-up regime (THI 95% CI above 1.0).
+3. Strongest big-pharma momentum: ResMed (THI 2.35), Olympus (THI 2.25), ICU Medical (THI 2.09). Regulatory cadence is a proxy, not revenue.
+4. 19 first-seen records in the last 90 days; latest: Ge Healthcare into imaging_mr_ct.
+5. Recall clusters: Medline (101), Philips (87), Bd (64); watch product-line ageing and software-related causes.
 
 ## Data status
 
 - Device / drug / trials: `ok`, `ok`, `ok`
 - NMPA (China registrations): `unavailable` - **unavailable (NMPA data not loaded)**; China-gap numbers are not inferred.
-- Prices: `partial`
-- Events in window: 1,302
+- Prices: `ok`
+- Events in window: 83,578
 
 ## Hottest device tracks
 
 | # | Track | THI | 95% CI | P(up) | Recent | Trend |
 |---|---|---|---|---|---|---|
-| 1 | Electrophysiology / PFA | 4.8 | [3.1, 6.9] | 99.7% | 42 | heating |
-| 2 | Surgical Robotics | 2.77 | [1.9, 3.9] | 97.8% | 31 | heating |
-| 3 | CGM | 1.78 | [1.2, 2.5] | 91.0% | 27 | heating |
-| 4 | Structural Heart | 1.25 | [0.95, 1.6] | 74.0% | 36 | heating |
-| 5 | Spine & Orthopedics | 1.04 | [0.85, 1.28] | 55.0% | 44 | steady |
-| 6 | Imaging & Diagnostics | 0.77 | [0.55, 0.98] | 21.0% | 19 | cooling |
+| 1 | Cardiac Rhythm | 1.94 | [1.03, 3.11] | 98.2% | 11 | heating |
+| 2 | Wearable & Remote Monitoring | 1.8 | [1.42, 2.24] | 100.0% | 64 | heating |
+| 3 | Structural Heart | 1.57 | [0.93, 2.37] | 95.9% | 15 | heating |
+| 4 | Medical AI / SaMD | 1.54 | [1.41, 1.68] | 100.0% | 422 | heating |
+| 5 | Surgical Robotics | 1.54 | [1.09, 2.08] | 99.1% | 30 | heating |
+| 6 | Rehabilitation / Exoskeleton | 1.51 | [1.28, 1.77] | 100.0% | 124 | heating |
+| 7 | Aesthetics | 1.42 | [1.24, 1.63] | 100.0% | 162 | heating |
+| 8 | Women's Health | 1.38 | [0.75, 2.21] | 85.6% | 11 | heating |
 
 ## Big-pharma momentum (top 5)
 
 | Company | Ticker | THI | P(up) | Recent |
 |---|---|---|---|---|
-| Intuitive Surgical | ISRG | 1.88 | 93.0% | 9 |
-| Boston Scientific | BSX | 1.53 | 81.0% | 11 |
-| Abbott | ABT | 1.25 | 70.0% | 14 |
-| Medtronic | MDT | 1.1 | 58.0% | 18 |
-| Philips | PHG | 0.83 | 27.0% | 12 |
+| ResMed | RMD | 2.35 | 98.5% | 8 |
+| Olympus | OCPNY | 2.25 | 100.0% | 49 |
+| ICU Medical | ICUI | 2.09 | 98.0% | 9 |
+| Terumo | TRUMY | 1.85 | 98.3% | 13 |
+| Teleflex | TFX | 1.7 | 95.5% | 11 |
 
 ## Portfolio migration
 
-- Intuitive Surgical moved towards surgical_robotics: share 35% vs baseline 12% (+23.0pp).
-- Philips moved towards imaging: share 31% vs baseline 52% (-21.0pp).
-- Boston Scientific moved towards ep_pfa: share 46% vs baseline 28% (+18.0pp).
+- Orthofix moved towards trauma: share 75% vs baseline 23% (+51.7pp).
+- Tandem Diabetes moved towards insulin_delivery: share 33% vs baseline 80% (-46.7pp).
+- Orthofix moved towards spine: share 0% vs baseline 43% (-43.3pp).
+- Wl Gore moved towards neurovascular: share 0% vs baseline 33% (-33.3pp).
 
 ## First seen in the last 90 days
 
-- 2026-10-20 · Medtronic · ep_pfa · Pulsed Field Ablation System
-- 2026-10-14 · Intuitive Surgical · surgical_robotics · da Vinci 6 Surgical System
-- 2026-09-28 · Abbott · cgm · Glucose Monitoring Sensor
-- 2026-08-30 · Boston Scientific · structural_heart · Transcatheter Valve Delivery Set
+- 2026-10-02 · Ge Healthcare · imaging_mr_ct · GE Medical Systems Ultrasound & Primary Care Diagnostics, L…
+- 2026-10-01 · Edwards Lifesciences · structural_heart · Edwards Lifesciences, LLC PMA 批准 P260007：Autus Size-Adjusta…
+- 2026-09-24 · Karl Storz · endoscopy · Karl Storz SE & CO. KG 510(k)：KARL STORZ SUPRALOOP
+- 2026-09-23 · Teleflex · __untracked__ · Teleflex Medical 510(k)：Liquick X-treme, Liquick X-treme Pl…
+- 2026-09-18 · Icu Medical · __untracked__ · ICU Medical 510(k)：NORMOFLO Irrigation Fluid Warming Sets …
 
 ## Recall clusters
 
 | Company | Recalls in window | Baseline / quarter | Top reason |
 |---|---|---|---|
-| Philips | 3 | 0.50 | Software |
-| Spine Frontier | 2 | 0.30 | Labeling |
-| Medtronic | 2 | 1.20 | Battery / power |
+| Medline | 101 | 3.70 | Medline Industries, LP is issuing a recall for specific item |
+| Philips | 87 | 6.15 | To provide clarification and labelling to define the useful |
+| Bd | 64 | 3.50 | Infusion pump module used with compatible  pump infusion set |
+| Medtronic | 63 | 6.50 | The device cap label may not adhere to the sensor, compromis |
+| Ge Healthcare | 45 | 3.35 | GE HealthCare has become aware that certain Nuclear Medicine |
 
 ## Drug side
 
-Top NDA/BLA momentum: Eli Lilly (THI 1.6), Novo Nordisk (THI 1.11), Merck (THI 0.94).
-Hottest therapeutic areas: t_cardiometabolic (P 95.0%), t_oncology (P 70.0%), t_neuro (P 30.0%).
-Trial starts: Novo Nordisk (19), Lilly (24), Merck (21).
+Top NDA/BLA momentum: Ionis Pharmaceuticals (THI 3.91), Daiichi Sankyo (THI 3.91), Otsuka (THI 3.91), Sanofi (THI 2.09), Boehringer Ingelheim (THI 2.09).
+Hottest therapeutic areas: t_vaccines (P 100.0%), t_dermatology (P 100.0%), t_cardiometabolic (P 100.0%), t_neuroscience (P 100.0%).
+Trial starts: Novartis (暂无数据), Pfizer (暂无数据), AstraZeneca (暂无数据), Eli Lilly (暂无数据), Merck & Co. (暂无数据).
 
 ## China gap
 
@@ -71,9 +77,9 @@ Trial starts: Novo Nordisk (19), Lilly (24), Merck (21).
 
 ## Signals and paper trading
 
-- Signals generated: 8
-- Paper portfolio: total return +8.3%, max drawdown -6.1%, win rate 57.1%, trades 21.
-- Equity curve: 22 trading days, 2026-01-05 to 2026-10-30.
+- Signals generated: 303
+- Paper portfolio: total return +20.6%, max drawdown -6.6%, win rate 74.4%, trades 39.
+- Equity curve: 48 trading days, 2025-11-21 to 2026-10-30.
 
 ## Method and limitations
 

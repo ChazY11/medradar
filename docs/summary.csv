@@ -1,29 +1,161 @@
 ﻿section,key,name_zh,name_en,recent,recent_per_q,baseline_per_q,thi,prob_up,ci_low,ci_high,major_share_recent,major_share_base,new_entrants_12m,recalls_recent,note
-device_track,ep_pfa,电生理与脉冲场消融,Electrophysiology / PFA,42,5.25,1.1,4.8,0.997,3.1,6.9,0.55,0.4,7,1,升温
-device_track,surgical_robotics,手术机器人,Surgical Robotics,31,3.88,1.4,2.77,0.978,1.9,3.9,0.62,0.44,4,2,升温
-device_track,cgm,连续血糖监测,CGM,27,3.38,1.9,1.78,0.91,1.2,2.5,0.48,0.46,3,1,升温
-device_track,structural_heart,结构性心脏病,Structural Heart,36,4.5,3.6,1.25,0.74,0.95,1.6,0.71,0.69,2,3,升温
-device_track,spine,脊柱与骨科,Spine & Orthopedics,44,5.5,5.3,1.04,0.55,0.85,1.28,0.66,0.67,1,4,平稳
-device_track,imaging,影像与诊断,Imaging & Diagnostics,19,2.38,3.1,0.77,0.21,0.55,0.98,0.58,0.6,0,2,降温
-device_company,intuitive_surgical,直觉外科,Intuitive Surgical,9,1.13,0.6,1.88,0.93,1.2,2.7,,,,0,ISRG
-device_company,boston_scientific,波士顿科学,Boston Scientific,11,1.38,0.9,1.53,0.81,0.95,2.2,,,,0,BSX
-device_company,abbott,雅培,Abbott,14,1.75,1.4,1.25,0.7,0.8,1.8,,,,1,ABT
-device_company,medtronic,美敦力,Medtronic,18,2.25,2.05,1.1,0.58,0.7,1.5,,,,2,MDT
-device_company,philips,飞利浦,Philips,12,1.5,1.8,0.83,0.27,0.5,1.2,,,,3,PHG
-device_migration,intuitive_surgical,直觉外科,intuitive_surgical,,,,,,,,,,,,track=手术机器人; delta=0.23; js=0.11
-device_migration,philips,飞利浦,philips,,,,,,,,,,,,track=影像与诊断; delta=-0.21; js=
-device_migration,boston_scientific,波士顿科学,boston_scientific,,,,,,,,,,,,track=电生理与脉冲场消融; delta=0.18; js=0.08
-drug_approval,lilly,礼来,lilly,5,0.63,0.4,1.6,0.84,,,,,,,nme_recent=2
-drug_approval,novo_nordisk,诺和诺德,novo_nordisk,4,0.5,0.45,1.11,0.56,,,,,,,nme_recent=1
-drug_approval,merck,默沙东,merck,6,0.75,0.8,0.94,0.46,,,,,,,nme_recent=1
-drug_area,t_cardiometabolic,心血管代谢（含GLP-1）,,31,,,1.9,0.95,,,,,,,升温
-drug_area,t_oncology,肿瘤,,48,,,1.18,0.7,,,,,,,升温
-drug_area,t_neuro,神经科学,,17,,,0.88,0.3,,,,,,,降温
-drug_trial,novo_nordisk,诺和诺德,novo_nordisk,,2.38,1.6,1.49,,,,,,,,starts_recent=19
-drug_trial,lilly,礼来,lilly,,3,2.1,1.4,,,,,,,,starts_recent=24
-drug_trial,merck,默沙东,merck,,2.63,2.7,0.97,,,,,,,,starts_recent=21
-cn_gap,ep_pfa,电生理与脉冲场消融,,42,,,,,,,,,,,cn_data_status=unavailable; us_share=0.198; cn_count=null; gap_index=null
-cn_gap,structural_heart,结构性心脏病,,36,,,,,,,,,,,cn_data_status=unavailable; us_share=0.17; cn_count=null; gap_index=null
-cn_gap,surgical_robotics,手术机器人,,31,,,,,,,,,,,cn_data_status=unavailable; us_share=0.146; cn_count=null; gap_index=null
-cn_gap,cgm,连续血糖监测,,27,,,,,,,,,,,cn_data_status=loaded; us_share=0.127; cn_count=12; gap_index=0.086
-cn_gap,imaging,影像与诊断,,19,,,,,,,,,,,cn_data_status=demo; us_share=0.09; cn_count=8; gap_index=0.063
+device_track,cardiac_rhythm,心脏节律（起搏/ICD）,Cardiac Rhythm,11,1.38,0.6,1.94,0.982,1.03,3.11,0.364,0.583,0,14,升温
+device_track,wearable_remote,可穿戴与远程监测,Wearable & Remote Monitoring,64,8,3.8,1.8,1,1.42,2.24,0.094,0.039,1,17,升温
+device_track,structural_heart,结构性心脏病,Structural Heart,15,1.88,1.05,1.57,0.959,0.93,2.37,0.667,0.524,0,5,升温
+device_track,medical_ai,医疗AI/软件(SaMD),Medical AI / SaMD,422,52.75,30.2,1.54,1,1.41,1.68,0.137,0.151,1,142,升温
+device_track,surgical_robotics,手术机器人,Surgical Robotics,30,3.75,2.15,1.54,0.991,1.09,2.08,0.733,0.767,0,16,升温
+device_track,rehab_exo,康复与外骨骼,Rehabilitation / Exoskeleton,124,15.5,9.1,1.51,1,1.28,1.77,0.016,0.011,0,13,升温
+device_track,aesthetics,医美与皮肤,Aesthetics,162,20.25,12.8,1.42,1,1.24,1.63,0.012,0,0,2,升温
+device_track,womens_health,女性健康,Women's Health,11,1.38,0.9,1.38,0.856,0.75,2.21,0,0,0,6,升温
+device_track,urology,泌尿,Urology,73,9.12,6.2,1.34,0.996,1.09,1.64,0.151,0.153,3,14,升温
+device_track,cmf,颌面与颅骨,CMF,5,0.62,0.45,1.28,0.671,0.48,2.48,0,0,0,2,升温
+device_track,neurovascular,神经介入,Neurovascular,51,6.38,4.7,1.26,0.962,0.97,1.58,0.176,0.234,0,28,升温
+device_track,ent,耳鼻喉,ENT,21,2.62,2,1.23,0.833,0.81,1.73,0.048,0.025,0,9,升温
+device_track,respiratory,呼吸与麻醉,Respiratory & Anesthesia,112,14,11,1.2,0.981,1.01,1.41,0.125,0.132,0,11,升温
+device_track,ivd_molecular,分子诊断,Molecular Diagnostics,95,11.88,9.3,1.2,0.975,1,1.43,0.095,0.091,0,34,升温
+device_track,coronary,冠脉介入,Coronary Intervention,53,6.62,5.35,1.17,0.893,0.92,1.47,0.17,0.15,0,6,升温
+device_track,wound_care,伤口与敷料,Wound Care,124,15.5,13.6,1.1,0.884,0.94,1.28,0.113,0.085,1,23,升温
+device_track,endoscopy,内窥镜,Endoscopy,209,26.12,24.35,1.05,0.792,0.94,1.18,0.234,0.209,0,5,平稳
+device_track,imaging_us,超声,Ultrasound,158,19.75,18.45,1.05,0.751,0.92,1.2,0.373,0.325,0,21,平稳
+device_track,insulin_delivery,胰岛素输注,Insulin Delivery,24,3,2.9,1.03,0.525,0.71,1.41,0.292,0.138,1,19,平稳
+device_track,vascular_access,血管通路,Vascular Access,140,17.5,17.6,1,0.465,0.86,1.14,0.214,0.21,0,73,平稳
+device_track,ortho_joint,关节与骨科植入,Orthopedic Joints,249,31.12,31.65,0.99,0.397,0.89,1.1,0.213,0.283,0,62,平稳
+device_track,ep_pfa,电生理与脉冲场消融,Electrophysiology / PFA,32,4,4.05,0.99,0.453,0.72,1.3,0.094,0.358,0,15,平稳
+device_track,trauma,创伤骨科,Trauma,187,23.38,23.9,0.98,0.387,0.87,1.11,0.064,0.149,0,19,平稳
+device_track,patient_monitoring,监护与生命体征,Patient Monitoring,115,14.38,15.35,0.95,0.26,0.81,1.11,0.122,0.124,2,43,平稳
+device_company,resmed,瑞思迈,ResMed,8,1,0.35,2.35,0.985,1.08,4.11,,,,1,RMD
+device_company,olympus,奥林巴斯,Olympus,49,6.12,2.25,2.25,1,1.71,2.88,,,,4,OCPNY
+device_company,icu_medical,ICU医疗,ICU Medical,9,1.12,0.45,2.09,0.98,1.02,3.52,,,,25,ICUI
+device_company,terumo,泰尔茂,Terumo,13,1.62,0.75,1.85,0.983,1.04,2.89,,,,3,TRUMY
+device_company,teleflex,泰利福,Teleflex,11,1.38,0.7,1.7,0.955,0.91,2.72,,,,1,TFX
+device_company,dexcom,德康,Dexcom,8,1,0.55,1.6,0.891,0.76,2.74,,,,7,DXCM
+device_company,intuitive_surgical,直觉外科,Intuitive Surgical,31,3.88,2.4,1.45,0.982,1.03,1.94,,,,16,ISRG
+device_company,tandem_diabetes,丹纳糖尿病,Tandem Diabetes Care,6,0.75,0.5,1.36,0.746,0.57,2.51,,,,7,TNDM
+device_company,procept_biorobotics,PROCEPT 手术机器人,PROCEPT BioRobotics,3,0.38,0.25,1.36,0.646,0.34,3.06,,,,0,PRCT
+device_company,dentsply_sirona,登士柏西诺德,Dentsply Sirona,20,2.5,1.7,1.34,0.91,0.87,1.92,,,,1,XRAY
+device_company,fujifilm,富士胶片,Fujifilm,30,3.75,2.65,1.3,0.932,0.92,1.75,,,,5,FUJIY
+device_company,fresenius_medical_care,费森尤斯医疗,Fresenius Medical Care,17,2.12,1.55,1.27,0.845,0.79,1.86,,,,23,FMS
+device_company,philips,飞利浦,Philips,63,7.88,5.85,1.25,0.973,1,1.54,,,,87,PHG
+device_company,karl_storz,卡尔史托斯,Karl Storz,22,2.75,2.05,1.25,0.859,0.84,1.75,,,,4,
+device_company,merit_medical,美瑞特,Merit Medical,16,2,1.55,1.21,0.772,0.74,1.79,,,,11,MMSI
+device_company,bd,碧迪,Becton Dickinson,43,5.38,4.8,1.09,0.712,0.83,1.39,,,,64,BDX
+device_company,envista,盈纬达,Envista,8,1,0.9,1.08,0.547,0.53,1.81,,,,1,NVST
+device_company,wl_gore,戈尔,W. L. Gore & Associates,4,0.5,0.45,1.08,0.505,0.37,2.18,,,,4,
+device_company,medtronic,美敦力,Medtronic,81,10.12,9.65,1.04,0.618,0.85,1.24,,,,63,MDT
+device_company,hologic,豪洛捷,Hologic,8,1,0.95,1.04,0.501,0.52,1.73,,,,8,HOLX
+device_company,edwards_lifesciences,爱德华生命科学,Edwards Lifesciences,18,2.25,2.15,1.03,0.53,0.67,1.48,,,,2,EW
+device_company,abbott,雅培,Abbott,49,6.12,6.5,0.96,0.341,0.75,1.2,,,,21,ABT
+device_company,ge_healthcare,GE医疗,GE HealthCare,53,6.62,7.4,0.92,0.229,0.73,1.15,,,,45,GEHC
+device_company,stryker,史赛克,Stryker,65,8.12,9.4,0.9,0.14,0.73,1.1,,,,35,SYK
+device_migration,orthofix,奥索菲克斯,orthofix,,,,,,,,,,,,track=创伤骨科; delta=0.517; js=0.424
+device_migration,tandem_diabetes,丹纳糖尿病,tandem_diabetes,,,,,,,,,,,,track=胰岛素输注; delta=-0.467; js=0.141
+device_migration,orthofix,奥索菲克斯,orthofix,,,,,,,,,,,,track=奥索菲克斯; delta=-0.433; js=0.424
+device_migration,wl_gore,戈尔,wl_gore,,,,,,,,,,,,track=神经介入; delta=-0.333; js=0.203
+device_migration,baxter,百特,baxter,,,,,,,,,,,,track=监护与生命体征; delta=0.25; js=0.212
+device_migration,wl_gore,戈尔,wl_gore,,,,,,,,,,,,track=戈尔; delta=0.25; js=0.203
+device_migration,integra_lifesciences,英特格拉,integra_lifesciences,,,,,,,,,,,,track=百特; delta=0.2; js=0.205
+device_migration,bbraun,贝朗,bbraun,,,,,,,,,,,,track=泌尿; delta=0.2; js=0.154
+device_migration,teleflex,泰利福,teleflex,,,,,,,,,,,,track=血管通路; delta=-0.195; js=0.134
+device_migration,baxter,百特,baxter,,,,,,,,,,,,track=百特; delta=-0.167; js=0.212
+device_migration,tandem_diabetes,丹纳糖尿病,tandem_diabetes,,,,,,,,,,,,track=血管通路; delta=0.167; js=0.141
+device_migration,terumo,泰尔茂,terumo,,,,,,,,,,,,track=戈尔; delta=0.164; js=0.155
+device_migration,integra_lifesciences,英特格拉,integra_lifesciences,,,,,,,,,,,,track=内窥镜; delta=0.138; js=0.205
+device_migration,johnson_johnson_medtech,强生医疗科技,johnson_johnson_medtech,,,,,,,,,,,,track=关节与骨科植入; delta=-0.129; js=0.113
+device_migration,terumo,泰尔茂,terumo,,,,,,,,,,,,track=冠脉介入; delta=-0.123; js=0.155
+device_migration,medline,麦朗,medline,,,,,,,,,,,,track=创伤骨科; delta=-0.119; js=0.179
+device_migration,medline,麦朗,medline,,,,,,,,,,,,track=监护与生命体征; delta=0.111; js=0.179
+device_migration,johnson_johnson_medtech,强生医疗科技,johnson_johnson_medtech,,,,,,,,,,,,track=伤口与敷料; delta=0.094; js=0.113
+device_migration,bbraun,贝朗,bbraun,,,,,,,,,,,,track=奥索菲克斯; delta=-0.091; js=0.154
+device_migration,boston_scientific,波士顿科学,boston_scientific,,,,,,,,,,,,track=波士顿科学; delta=-0.086; js=0.139
+drug_approval,ionis,伊奥尼斯,ionis,2,0.25,0.05,3.91,0.916,0.5,10.38,,,,,nme_recent=2
+drug_approval,daiichi_sankyo,第一三共,daiichi_sankyo,2,0.25,0.05,3.91,0.916,0.5,10.38,,,,,nme_recent=2
+drug_approval,otsuka,大冢,otsuka,2,0.25,0.05,3.91,0.916,0.5,10.38,,,,,nme_recent=2
+drug_approval,sanofi,赛诺菲,sanofi,4,0.5,0.2,2.09,0.894,0.62,4.4,,,,,nme_recent=2
+drug_approval,boehringer,勃林格殷格翰,boehringer,3,0.38,0.15,2.09,0.849,0.48,4.8,,,,,nme_recent=2
+drug_approval,bayer,拜耳,bayer,3,0.38,0.15,2.09,0.849,0.48,4.8,,,,,nme_recent=3
+drug_approval,eisai,卫材,eisai,1,0.12,0.05,2.09,0.636,0.07,7.39,,,,,nme_recent=0
+drug_approval,gsk,葛兰素史克,gsk,5,0.62,0.3,1.79,0.873,0.64,3.52,,,,,nme_recent=4
+drug_approval,gilead,吉利德,gilead,5,0.62,0.3,1.79,0.873,0.64,3.52,,,,,nme_recent=3
+drug_approval,merck,默沙东,merck,6,0.75,0.4,1.64,0.864,0.67,3.05,,,,,nme_recent=4
+drug_approval,novo_nordisk,诺和诺德,novo_nordisk,2,0.25,0.15,1.48,0.632,0.23,3.83,,,,,nme_recent=1
+drug_approval,jnj_pharma,强生创新制药,jnj_pharma,6,0.75,0.55,1.26,0.684,0.54,2.31,,,,,nme_recent=2
+drug_approval,vertex,福泰制药,vertex,1,0.12,0.1,1.18,0.441,0.06,3.84,,,,,nme_recent=1
+drug_approval,abbvie,艾伯维,abbvie,4,0.5,0.5,1,0.444,0.34,2.01,,,,,nme_recent=3
+drug_approval,astrazeneca,阿斯利康,astrazeneca,5,0.62,0.7,0.92,0.358,0.37,1.72,,,,,nme_recent=2
+drug_approval,teva,梯瓦,teva,3,0.38,0.45,0.88,0.333,0.25,1.89,,,,,nme_recent=0
+drug_approval,amgen,安进,amgen,3,0.38,0.45,0.88,0.333,0.25,1.89,,,,,nme_recent=0
+drug_approval,takeda,武田,takeda,2,0.25,0.3,0.88,0.334,0.17,2.14,,,,,nme_recent=2
+drug_approval,lilly,礼来,lilly,3,0.38,0.5,0.82,0.274,0.24,1.74,,,,,nme_recent=3
+drug_approval,regeneron,再生元,regeneron,1,0.12,0.2,0.73,0.236,0.05,2.19,,,,,nme_recent=1
+drug_approval,incyte,因塞特,incyte,1,0.12,0.2,0.73,0.236,0.05,2.19,,,,,nme_recent=0
+drug_approval,viatris,晖致,viatris,1,0.12,0.2,0.73,0.236,0.05,2.19,,,,,nme_recent=0
+drug_approval,bms,百时美施贵宝,bms,1,0.12,0.25,0.64,0.186,0.06,1.84,,,,,nme_recent=1
+drug_approval,novartis,诺华,novartis,2,0.25,0.65,0.55,0.075,0.14,1.22,,,,,nme_recent=2
+drug_area,t_vaccines,疫苗,Vaccines,17,2.12,0.6,2.85,1,1.7,4.28,,,,,升温
+drug_area,t_dermatology,皮肤,Dermatology,40,5,1.7,2.41,1,1.76,3.17,,,,,升温
+drug_area,t_cardiometabolic,心血管代谢（含GLP-1）,Cardiometabolic,396,49.5,17.05,2.38,1,2.17,2.62,,,,,升温
+drug_area,t_neuroscience,神经与精神,Neuroscience,122,15.25,7.55,1.74,1,1.47,2.04,,,,,升温
+drug_area,t_nephrology,肾脏,Nephrology,32,4,2.2,1.6,0.997,1.14,2.14,,,,,升温
+drug_area,t_oncology,肿瘤,Oncology,763,95.38,54,1.56,1,1.46,1.66,,,,,升温
+drug_area,t_immunology,免疫与炎症,Immunology,145,18.12,10.35,1.55,1,1.33,1.79,,,,,升温
+drug_area,t_transplant,移植与免疫抑制,Transplant,23,2.88,1.7,1.5,0.976,1.01,2.11,,,,,升温
+drug_area,t_ophthalmology,眼科,Ophthalmology,40,5,3.05,1.46,0.994,1.09,1.9,,,,,升温
+drug_area,t_respiratory,呼吸,Respiratory,36,4.5,3.3,1.26,0.929,0.93,1.66,,,,,升温
+drug_area,t_infectious,感染性疾病,Infectious Disease,94,11.75,8.85,1.24,0.987,1.03,1.47,,,,,升温
+drug_area,t_hematology,血液,Hematology,29,3.62,2.9,1.18,0.827,0.84,1.59,,,,,升温
+drug_area,t_urology,泌尿,Urology,34,4.25,3.6,1.13,0.769,0.83,1.49,,,,,升温
+drug_area,t_hepatology,肝病,Hepatology,20,2.5,2.15,1.12,0.685,0.73,1.59,,,,,升温
+drug_area,t_womens_health,女性健康,Women's Health,8,1,0.9,1.08,0.547,0.53,1.81,,,,,升温
+drug_area,t_pain,疼痛,Pain,11,1.38,1.35,1.01,0.483,0.57,1.59,,,,,平稳
+drug_area,t_addiction,成瘾与CNS,Addiction / CNS,5,0.62,0.8,0.84,0.269,0.35,1.55,,,,,降温
+drug_area,t_musculoskeletal,肌肉骨骼,Musculoskeletal,14,1.75,2.8,0.73,0.047,0.46,1.06,,,,,降温
+drug_area,t_rare_disease,罕见病,Rare Disease,5,0.62,1.15,0.67,0.085,0.3,1.19,,,,,降温
+drug_area,t_gene_therapy,基因治疗,Gene Therapy,1,0.12,0,0.29,0,0.17,0.43,,,,,降温
+drug_trial,novartis,诺华,novartis,110,13.75,0.35,28.84,1,23.81,34.59,,,,,starts_recent=
+drug_trial,pfizer,辉瑞,pfizer,156,19.5,1.35,10.78,1,9.2,12.55,,,,,starts_recent=
+drug_trial,astrazeneca,阿斯利康,astrazeneca,150,18.75,1.7,8.29,1,7.06,9.68,,,,,starts_recent=
+drug_trial,lilly,礼来,lilly,185,23.12,2.45,7.14,1,6.18,8.2,,,,,starts_recent=
+drug_trial,merck,默沙东,merck,193,24.12,3.7,5.01,1,4.36,5.74,,,,,starts_recent=
+drug_trial,teleflex,teleflex,teleflex,3,0.38,0.1,3,0.934,0.66,6.97,,,,,starts_recent=
+drug_trial,novo_nordisk,诺和诺德,novo_nordisk,96,12,3.8,2.57,1,2.11,3.09,,,,,starts_recent=
+drug_trial,abbvie,艾伯维,abbvie,114,14.25,4.95,2.37,1,1.98,2.8,,,,,starts_recent=
+drug_trial,gsk,葛兰素史克,gsk,120,15,5.35,2.31,1,1.95,2.73,,,,,starts_recent=
+drug_trial,cook_medical,cook_medical,cook_medical,1,0.12,0.05,2.09,0.636,0.07,7.39,,,,,starts_recent=
+drug_trial,johnson_johnson_medtech,johnson_johnson_medtech,johnson_johnson_medtech,1,0.12,0.05,2.09,0.636,0.07,7.39,,,,,starts_recent=
+drug_trial,roche,罗氏,roche,111,13.88,5.75,2.03,1,1.7,2.4,,,,,starts_recent=
+drug_trial,regeneron,再生元,regeneron,66,8.25,3.7,1.89,1,1.5,2.35,,,,,starts_recent=
+drug_trial,insulet,insulet,insulet,7,0.88,0.4,1.86,0.931,0.82,3.35,,,,,starts_recent=
+drug_trial,bms,百时美施贵宝,bms,94,11.75,5.65,1.79,1,1.47,2.14,,,,,starts_recent=
+drug_trial,sanofi,赛诺菲,sanofi,83,10.38,5.1,1.75,1,1.43,2.13,,,,,starts_recent=
+drug_trial,alnylam,阿里拉姆,alnylam,13,1.62,0.8,1.75,0.975,0.99,2.73,,,,,starts_recent=
+drug_trial,neurocrine,神经分泌,neurocrine,17,2.12,1.05,1.74,0.986,1.07,2.59,,,,,starts_recent=
+drug_trial,exelixis,埃克塞里克斯,exelixis,9,1.12,0.6,1.64,0.916,0.81,2.73,,,,,starts_recent=
+drug_trial,dentsply_sirona,dentsply_sirona,dentsply_sirona,3,0.38,0.2,1.64,0.745,0.39,3.73,,,,,starts_recent=
+drug_trial,baxter,baxter,baxter,5,0.62,0.35,1.57,0.816,0.57,3.07,,,,,starts_recent=
+drug_trial,boehringer,勃林格殷格翰,boehringer,91,11.38,6.45,1.56,1,1.28,1.87,,,,,starts_recent=
+drug_trial,otsuka,大冢,otsuka,43,5.38,3.45,1.41,0.989,1.06,1.81,,,,,starts_recent=
+drug_trial,united_therapeutics,联合治疗,united_therapeutics,3,0.38,0.25,1.36,0.646,0.34,3.06,,,,,starts_recent=
+cn_gap,medical_ai,医疗AI/软件(SaMD),Medical AI / SaMD,422,,,,,,,,,,,cn_data_status=unavailable; us_share=0.11; cn_count=null; gap_index=null
+cn_gap,imaging_mr_ct,影像（MR/CT/PET/X-ray）,Advanced Imaging,353,,,,,,,,,,,cn_data_status=unavailable; us_share=0.092; cn_count=null; gap_index=null
+cn_gap,dental,口腔,Dental,347,,,,,,,,,,,cn_data_status=unavailable; us_share=0.09; cn_count=null; gap_index=null
+cn_gap,ortho_joint,关节与骨科植入,Orthopedic Joints,249,,,,,,,,,,,cn_data_status=unavailable; us_share=0.065; cn_count=null; gap_index=null
+cn_gap,spine,脊柱,Spine,215,,,,,,,,,,,cn_data_status=unavailable; us_share=0.056; cn_count=null; gap_index=null
+cn_gap,endoscopy,内窥镜,Endoscopy,209,,,,,,,,,,,cn_data_status=unavailable; us_share=0.054; cn_count=null; gap_index=null
+cn_gap,trauma,创伤骨科,Trauma,187,,,,,,,,,,,cn_data_status=unavailable; us_share=0.049; cn_count=null; gap_index=null
+cn_gap,aesthetics,医美与皮肤,Aesthetics,162,,,,,,,,,,,cn_data_status=unavailable; us_share=0.042; cn_count=null; gap_index=null
+cn_gap,imaging_us,超声,Ultrasound,158,,,,,,,,,,,cn_data_status=unavailable; us_share=0.041; cn_count=null; gap_index=null
+cn_gap,vascular_access,血管通路,Vascular Access,140,,,,,,,,,,,cn_data_status=unavailable; us_share=0.036; cn_count=null; gap_index=null
+cn_gap,surgical_energy,手术能量器械,Surgical Energy,135,,,,,,,,,,,cn_data_status=unavailable; us_share=0.035; cn_count=null; gap_index=null
+cn_gap,rehab_exo,康复与外骨骼,Rehabilitation / Exoskeleton,124,,,,,,,,,,,cn_data_status=unavailable; us_share=0.032; cn_count=null; gap_index=null
+cn_gap,wound_care,伤口与敷料,Wound Care,124,,,,,,,,,,,cn_data_status=unavailable; us_share=0.032; cn_count=null; gap_index=null
+cn_gap,patient_monitoring,监护与生命体征,Patient Monitoring,115,,,,,,,,,,,cn_data_status=unavailable; us_share=0.03; cn_count=null; gap_index=null
+cn_gap,respiratory,呼吸与麻醉,Respiratory & Anesthesia,112,,,,,,,,,,,cn_data_status=unavailable; us_share=0.029; cn_count=null; gap_index=null
+cn_gap,ivd_molecular,分子诊断,Molecular Diagnostics,95,,,,,,,,,,,cn_data_status=unavailable; us_share=0.025; cn_count=null; gap_index=null
+cn_gap,urology,泌尿,Urology,73,,,,,,,,,,,cn_data_status=unavailable; us_share=0.019; cn_count=null; gap_index=null
+cn_gap,wearable_remote,可穿戴与远程监测,Wearable & Remote Monitoring,64,,,,,,,,,,,cn_data_status=unavailable; us_share=0.017; cn_count=null; gap_index=null
+cn_gap,peripheral_vascular,外周血管,Peripheral Vascular,62,,,,,,,,,,,cn_data_status=unavailable; us_share=0.016; cn_count=null; gap_index=null
+cn_gap,ophthalmology,眼科,Ophthalmology,60,,,,,,,,,,,cn_data_status=unavailable; us_share=0.016; cn_count=null; gap_index=null
+cn_gap,coronary,冠脉介入,Coronary Intervention,53,,,,,,,,,,,cn_data_status=unavailable; us_share=0.014; cn_count=null; gap_index=null
+cn_gap,neurovascular,神经介入,Neurovascular,51,,,,,,,,,,,cn_data_status=unavailable; us_share=0.013; cn_count=null; gap_index=null
+cn_gap,general_surgery,普外与手术耗材,General Surgery,40,,,,,,,,,,,cn_data_status=unavailable; us_share=0.01; cn_count=null; gap_index=null
+cn_gap,ivd_immuno,免疫诊断,Immunoassay,40,,,,,,,,,,,cn_data_status=unavailable; us_share=0.01; cn_count=null; gap_index=null

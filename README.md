@@ -9,6 +9,22 @@ portfolio, what appeared for the first time, and where China still has a gap.
 
 > 中文文档 → [README.zh-CN.md](README.zh-CN.md) · Methodology → [docs/METHODS.md](docs/METHODS.md)
 
+![MedRadar dashboard](docs/preview.png)
+
+### What one run produces (snapshot, 2026‑10‑31)
+
+| | |
+|---|---|
+| Events ingested | **83,578** (510(k) 31,456 · PMA 24,073 · recalls 16,764 · trials 9,898 · drug approvals 1,387) |
+| Coverage | 89 companies, 60 Chinese tracks, 7,097 product codes mapped |
+| Strongest track right now | 心脏节律 THI 1.94 (P=98.2%) · 可穿戴监测 1.80 · 结构性心脏病 1.57 · 手术机器人 1.54 |
+| Signals emitted | 303 (→ 120 tradable) |
+| Simulated book | +20.6% over 11 months, 39 trades, max DD −6.6% — **in-sample, long-only, not investment advice** |
+| Event study | +6.0% 60‑day abnormal return vs SPY, t=2.59, n=53 — promising but small N and multiple-testing exposed |
+
+> Numbers move every week; the point is that every one of them is reproducible from
+> `python -m medradar run`.
+
 ---
 
 ## What it answers

@@ -318,7 +318,7 @@ class TrialCollectorTests(unittest.TestCase):
                   "aliases": ["JOHNSON & JOHNSON"], "is_major": 1}
         self.assertEqual(clinical.plan_terms([device, drug]), ["JOHNSON JOHNSON", "JANSSEN"])
 
-    def test_collect_keeps_interventional_in_window_and_resolvable_only(self) -> None:
+    def test_collect_keeps_interventional_in_window_and_flags_unmatched(self) -> None:
         studies = [
             _study("NCT00000001"),
             _study("NCT00000002", study_type="OBSERVATIONAL"),
@@ -333,22 +333,30 @@ class TrialCollectorTests(unittest.TestCase):
             today=TODAY,
             companies=[TINY_COMPANY],
         )
-        self.assertEqual(stats["events"], 1)
-        self.assertEqual(stats["per_kind"], {"trial": 1})
+        self.assertEqual(stats["events"], 2)
+        self.assertEqual(stats["per_kind"], {"trial": 2})
         self.assertEqual(stats["interventional"], 3)
         self.assertEqual(stats["in_window"], 2)
         self.assertEqual(stats["matched"], 1)
         self.assertAlmostEqual(stats["match_rate"], 0.5)
-        self.assertEqual(stats["skipped_unresolved"], 1)
-        self.assertEqual(stats["track_matched"], 1)
+        self.assertEqual(stats["unmatched"], 1)
+        self.assertEqual(stats["track_matched"], 2)
         self.assertEqual(stats["top_unmatched"], [["Unknown Sponsor LLC", 1]])
 
-        rows = self.db.query("SELECT * FROM events WHERE kind = 'trial'")
-        self.assertEqual(len(rows), 1)
-        self.assertEqual(rows[0]["company_key"], "lilly")
-        self.assertEqual(rows[0]["event_date"], "2025-05-01")
-        self.assertEqual(rows[0]["track_id"], "t_cardiometabolic")
-        payload = json.loads(rows[0]["payload"])
+        rows = self.db.query(
+            "SELECT * FROM events WHERE kind = 'trial' ORDER BY company_key IS NOT NULL DESC"
+        )
+        self.assertEqual(len(rows), 2)
+        resolved = [row for row in rows if row["company_key"]]
+        unresolved = [row for row in rows if not row["company_key"]]
+        self.assertEqual(len(resolved), 1)
+        self.assertEqual(resolved[0]["event_date"], "2025-05-01")
+        self.assertEqual(resolved[0]["track_id"], "t_cardiometabolic")
+        # Unmatched sponsors are still stored (SCHEMA §6: company_key NULL) so
+        # their therapeutic-area signal is not thrown away.
+        self.assertEqual(len(unresolved), 1)
+        self.assertEqual(unresolved[0]["applicant_raw"], "Unknown Sponsor LLC")
+        payload = json.loads(resolved[0]["payload"])
         self.assertEqual(payload["nct_id"], "NCT00000001")
         self.assertEqual(payload["phase"], [])  # phases absent in the fixture
         self.assertIn("raw", payload)

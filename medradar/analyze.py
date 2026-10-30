@@ -94,11 +94,18 @@ def _resolve_window(
 ) -> dict[str, Any]:
     today = today or today_utc()
     latest = max((event["_day"] for event in events), default=today)
+    earliest = min((event["_day"] for event in events), default=latest)
     end = min(latest, today)
     end_idx = quarter_index(end)
     win_start_idx = end_idx - window_quarters + 1
     base_end_idx = win_start_idx - 1
     base_start_idx = base_end_idx - baseline_quarters + 1
+    # Exposure must be what the data actually covers. Dividing a 24-month pull
+    # by a nominal 20-quarter baseline is how naive FDA dashboards manufacture
+    # "40x growth" out of a single clearance.
+    data_q = quarter_index(earliest)
+    observed_recent_q = max(1, end_idx - max(win_start_idx, data_q) + 1)
+    observed_base_q = max(0, base_end_idx - max(base_start_idx, data_q) + 1)
     return {
         "end": end,
         "window_start": quarter_start(win_start_idx),
@@ -106,6 +113,9 @@ def _resolve_window(
         "baseline_end": quarter_start(win_start_idx) - timedelta(days=1),
         "window_quarters": window_quarters,
         "baseline_quarters": baseline_quarters,
+        "recent_q": observed_recent_q,
+        "base_q": observed_base_q,
+        "data_start": earliest,
         "window_label": f"{quarter_label(win_start_idx)}-{quarter_label(end_idx)}",
         "baseline_label": f"{quarter_label(base_start_idx)}-{quarter_label(base_end_idx)}",
     }
@@ -117,6 +127,11 @@ def _split(events: list[dict[str, Any]], win: dict[str, Any]) -> tuple[list, lis
     return recent, base
 
 
+def _base_exposure(win: dict[str, Any]) -> int:
+    """Observed baseline quarters - never the nominal window."""
+    return max(1, int(win.get("base_q") or 0))
+
+
 def _rate_metric(
     count_recent: int,
     count_base: int,
@@ -124,10 +139,10 @@ def _rate_metric(
     fallback_prior: float,
 ) -> dict[str, Any]:
     """Gamma-Poisson posterior rate ratio ("THI") and P(rate > baseline)."""
-    recent_q = max(1, win["window_quarters"])
-    base_q = max(1, win["baseline_quarters"])
+    recent_q = max(1, int(win.get("recent_q") or win["window_quarters"]))
+    base_q = int(win.get("base_q") or 0)
     recent_per_q = count_recent / recent_q
-    base_per_q = count_base / base_q
+    base_per_q = (count_base / base_q) if base_q > 0 else 0.0
     emerging = base_per_q <= 0.0
     reference = base_per_q if base_per_q > 0 else max(fallback_prior, 1e-6)
     post = gamma_poisson(count_recent, recent_q, reference, PRIOR_STRENGTH_QUARTERS)
@@ -213,16 +228,60 @@ def _is_nme(payload: dict[str, Any]) -> bool:
     return any("TYPE 1" in code.upper() for code in codes)
 
 
+def _is_material_pma(event: dict[str, Any]) -> bool:
+    """Only PMA submissions that actually reveal product direction.
+
+    Measured on 24 months of data: 30-Day Notice (2,979), Real-Time Process
+    (565) and 135-Review-Track-30-Day (179) supplements account for ~78% of all
+    PMA rows, and they are manufacturing / labelling / packaging changes. A
+    factory relocation must not look like a strategic bet, so activity counts
+    original PMAs and Panel-Track supplements only.
+    """
+    payload = _parse_payload(event)
+    number = str(payload.get("supplement_number") or "").strip().upper()
+    supplement_type = str(payload.get("supplement_type") or "").strip().upper()
+    if number in ("", "0", "S0"):
+        return True
+    return "PANEL TRACK" in supplement_type
+
+
+def _device_activity(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [
+        event
+        for event in events
+        if event["kind"] == "510k" or (event["kind"] == "pma" and _is_material_pma(event))
+    ]
+
+
+def _dedupe_recalls(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """One recall event often spans several product records; count it once."""
+    seen: set[str] = set()
+    unique: list[dict[str, Any]] = []
+    for event in events:
+        payload = _parse_payload(event)
+        key = (
+            payload.get("res_event_number")
+            or payload.get("product_res_number")
+            or event["event_id"]
+        )
+        key = str(key)
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(event)
+    return unique
+
+
 # --------------------------------------------------------------------- device block
 def _device_section(events, reg, tracks, win) -> dict[str, Any]:
-    activity = [e for e in events if e["kind"] in DEVICE_ACTIVITY_KINDS]
+    activity = _device_activity(events)
     recent, base = _split(activity, win)
-    recalls = [e for e in events if e["kind"] == "device_recall"]
+    recalls = _dedupe_recalls([e for e in events if e["kind"] == "device_recall"])
     recall_recent, recall_base = _split(recalls, win)
 
     recent_by_track = Counter(e["track_id"] or UNTRACKED for e in recent)
     base_by_track = Counter(e["track_id"] or UNTRACKED for e in base)
-    base_rates = [base_by_track[t] / win["baseline_quarters"] for t in base_by_track if t != UNTRACKED]
+    base_rates = [base_by_track[t] / _base_exposure(win) for t in base_by_track if t != UNTRACKED]
     typical_track_rate = (sum(base_rates) / len(base_rates)) if base_rates else 0.5
 
     first_track_seen = _first_occurrence(activity, ("company_key", "track_id"))
@@ -272,7 +331,7 @@ def _device_section(events, reg, tracks, win) -> dict[str, Any]:
     recent_by_company = Counter(e["company_key"] for e in recent_c)
     base_by_company = Counter(e["company_key"] for e in base_c)
     company_base_rates = [
-        base_by_company[k] / win["baseline_quarters"] for k in base_by_company
+        base_by_company[k] / _base_exposure(win) for k in base_by_company
     ]
     typical_company_rate = (
         sum(company_base_rates) / len(company_base_rates) if company_base_rates else 1.0
@@ -392,7 +451,7 @@ def _device_section(events, reg, tracks, win) -> dict[str, Any]:
                 "key": key,
                 "name_zh": meta["name_zh"],
                 "recent": count,
-                "baseline_per_q": round(base_recall_by_company.get(key, 0) / win["baseline_quarters"], 2),
+                "baseline_per_q": round(base_recall_by_company.get(key, 0) / _base_exposure(win), 2),
                 "reason_top": (reasons.most_common(1)[0][0] if reasons else ""),
             }
         )
@@ -422,7 +481,7 @@ def _drug_section(events, reg, tracks, win) -> dict[str, Any]:
     recent, base = _split(approvals, win)
     recent_by_company = Counter(e["company_key"] for e in recent)
     base_by_company = Counter(e["company_key"] for e in base)
-    base_rates = [base_by_company[k] / win["baseline_quarters"] for k in base_by_company]
+    base_rates = [base_by_company[k] / _base_exposure(win) for k in base_by_company]
     typical = sum(base_rates) / len(base_rates) if base_rates else 0.5
 
     approval_rows = []
@@ -443,7 +502,7 @@ def _drug_section(events, reg, tracks, win) -> dict[str, Any]:
     trials_recent, trials_base = _split(trials, win)
     area_recent = Counter(e["track_id"] for e in trials_recent if e["track_id"])
     area_base = Counter(e["track_id"] for e in trials_base if e["track_id"])
-    area_rates = [area_base[t] / win["baseline_quarters"] for t in area_base]
+    area_rates = [area_base[t] / _base_exposure(win) for t in area_base]
     typical_area = sum(area_rates) / len(area_rates) if area_rates else 1.0
     area_rows = []
     for track_id, count in area_recent.most_common(30):
@@ -457,7 +516,7 @@ def _drug_section(events, reg, tracks, win) -> dict[str, Any]:
     trial_by_company_recent = Counter(e["company_key"] for e in trials_recent if e["company_key"])
     trial_by_company_base = Counter(e["company_key"] for e in trials_base if e["company_key"])
     company_rates = [
-        trial_by_company_base[k] / win["baseline_quarters"] for k in trial_by_company_base
+        trial_by_company_base[k] / _base_exposure(win) for k in trial_by_company_base
     ]
     typical_trial = sum(company_rates) / len(company_rates) if company_rates else 1.0
     trial_rows = []
@@ -503,9 +562,7 @@ def _cn_gap(events, tracks, win) -> tuple[list[dict[str, Any]], str]:
     ``demo`` (clearly-labelled demo seed) or ``unavailable``. When no Chinese
     data exists every CN value is ``None`` - never 0.
     """
-    device_recent, _ = _split(
-        [e for e in events if e["kind"] in DEVICE_ACTIVITY_KINDS], win
-    )
+    device_recent, _ = _split(_device_activity(events), win)
     us_by_track = Counter(e["track_id"] for e in device_recent if e["track_id"])
     cn_events = [
         e
@@ -602,7 +659,9 @@ def _signals(
             }
         )
 
-    activity = [e for e in events if e["kind"] in DEVICE_ACTIVITY_KINDS and e["company_key"]]
+    activity = [
+        event for event in _device_activity(events) if event["company_key"]
+    ]
     cutoff_180 = win["end"] - timedelta(days=180)
     first_code = _first_occurrence(
         [e for e in activity if e["product_code"]], ("company_key", "product_code")
@@ -661,8 +720,8 @@ def _signals(
 
     recall_by_company = Counter(
         e["company_key"]
-        for e in events
-        if e["kind"] == "device_recall" and e["company_key"] and e["_day"] >= win["end"] - timedelta(days=90)
+        for e in _dedupe_recalls([event for event in events if event["kind"] == "device_recall"])
+        if e["company_key"] and e["_day"] >= win["end"] - timedelta(days=90)
     )
     for key, count in recall_by_company.items():
         if count < 2:
@@ -767,12 +826,14 @@ def build_metrics(
                 "start": iso(win["window_start"]),
                 "end": iso(win["end"]),
                 "quarters": win["window_quarters"],
+                "observed_quarters": win.get("recent_q"),
                 "label": win["window_label"],
             },
             "baseline": {
                 "start": iso(win["baseline_start"]),
                 "end": iso(win["baseline_end"]),
                 "quarters": win["baseline_quarters"],
+                "observed_quarters": win.get("base_q"),
                 "label": win["baseline_label"],
             },
             "counts": counts,

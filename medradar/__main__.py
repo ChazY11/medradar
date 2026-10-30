@@ -214,6 +214,8 @@ def _ensure_prices(args: argparse.Namespace) -> dict:
 
 def cmd_run(args: argparse.Namespace) -> int:
     args.sources = "device,drug,trials,nmpa"
+    # `run` names the metrics path --out; the individual sub-commands call it --metrics.
+    args.metrics = args.out
     if not args.skip_collect:
         code = cmd_collect(args)
         if code != 0:

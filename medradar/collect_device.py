@@ -154,6 +154,7 @@ def _get_json(
     endpoint: str,
     params: Mapping[str, Any],
     attempts: int = 3,
+    refresh: bool = False,
 ) -> Any:
     """``Fetcher.get_json`` with an extra retry ring (429 / 5xx / transient network).
 
@@ -164,7 +165,7 @@ def _get_json(
     last_error: HttpError | None = None
     for attempt in range(max(1, attempts)):
         try:
-            return fetcher.get_json(url, dict(params))
+            return fetcher.get_json(url, dict(params), refresh=refresh)
         except NotFound:
             return None
         except BudgetExceeded:
@@ -177,6 +178,61 @@ def _get_json(
                 _sleep(min(10.0, 1.5 * (attempt + 1)))
     assert last_error is not None
     raise last_error
+
+
+def _probe_total(fetcher: Fetcher, endpoint: str, search: str, probes: int = 2) -> int:
+    """openFDA (Elasticsearch) occasionally answers a *partial* shard result: HTTP 200 with
+    a ``total`` about half the real size. Probe twice, bypassing the cache both times (a
+    partial answer must never be replayed), and take the largest value: a dataset never
+    shrinks, so ``max`` is the safe estimator.
+    """
+    total = 0
+    for attempt in range(max(1, probes)):
+        try:
+            payload = _get_json(fetcher, endpoint, _count_params(search), refresh=True)
+        except HttpError:
+            continue
+        total = max(total, _total_of(payload))
+        if attempt + 1 < probes:
+            _sleep(0.5)
+    return total
+
+
+def _get_results(
+    fetcher: Fetcher,
+    endpoint: str,
+    params: Mapping[str, Any],
+    *,
+    expected: int,
+    hard_stop: int,
+    skip: int,
+    warnings: list[str],
+    attempts: int = 2,
+) -> list[dict[str, Any]]:
+    """Fetch one page and retry short (partial-shard) answers with a cache refresh."""
+    best: list[dict[str, Any]] = []
+    for attempt in range(max(1, attempts)):
+        try:
+            payload = _get_json(fetcher, endpoint, params, attempts=1, refresh=attempt > 0)
+        except NotFound:
+            # 404 can be a transient answer while openFDA is shedding load; retry
+            # once with a cache refresh before treating the page as truly empty.
+            if attempt + 1 < max(1, attempts):
+                _sleep(0.5)
+                continue
+            return best
+        if payload is None:
+            return best
+        results = payload.get("results") or []
+        if len(results) > len(best):
+            best = results
+        if len(results) >= expected or skip + len(results) >= hard_stop:
+            return best
+        _warn(
+            warnings,
+            f"{endpoint}: short page at skip={skip} ({len(results)}/{expected}); retrying",
+        )
+    return best
 
 
 def _total_of(payload: Any) -> int:
@@ -245,14 +301,7 @@ def _fetch_window(
     Every leaf window actually requested is appended to ``windows`` for the run stats.
     """
     search = _range_search(date_field, start, end)
-    try:
-        count_payload = _get_json(fetcher, endpoint, _count_params(search))
-    except HttpError as exc:
-        _warn(warnings, f"{endpoint} {search}: count failed ({_short_error(exc)})")
-        if windows is not None:
-            windows.append({"start": iso(start), "end": iso(end), "total": 0, "error": _short_error(exc)})
-        return []
-    total = _total_of(count_payload)
+    total = _probe_total(fetcher, endpoint, search)
     if total <= 0:
         return []
     if total > SKIP_CAP and depth < MAX_SPLIT_DEPTH and (end - start).days > 62:
@@ -271,7 +320,15 @@ def _fetch_window(
             if page_limit <= 0:
                 break
         try:
-            page = _get_json(fetcher, endpoint, _page_params(search, page_limit, skip))
+            results = _get_results(
+                fetcher,
+                endpoint,
+                _page_params(search, page_limit, skip),
+                expected=page_limit,
+                hard_stop=hard_stop,
+                skip=skip,
+                warnings=warnings,
+            )
         except HttpError as exc:
             if depth < MAX_SPLIT_DEPTH and (end - start).days > 62:
                 _warn(warnings, f"{endpoint} {search}: page skip={skip} failed ({_short_error(exc)}); splitting window")
@@ -280,17 +337,28 @@ def _fetch_window(
             _warn(warnings, f"{endpoint} {search}: page skip={skip} failed ({_short_error(exc)}); partial window")
             entry["error"] = _short_error(exc)
             break
-        if page is None:
-            # openFDA answers 404 for empty result sets; a tail page can do this while
-            # ``total`` still claims more rows. Keep what we have and move on.
-            _warn(warnings, f"{endpoint} {search}: no data at skip={skip} (tail quirk)")
-            break
-        results = page.get("results") or []
         if not results:
-            _warn(warnings, f"{endpoint} {search}: empty page at skip={skip}")
+            # openFDA sometimes answers 404 on a deep page while ``total`` still
+            # claims more rows (transient shard / rate-limit behaviour). Accepting
+            # the truncation silently would drop half the records and bias every
+            # rate in the report, so split the window and re-fetch in halves.
+            if depth < MAX_SPLIT_DEPTH and (end - start).days > 62:
+                _warn(
+                    warnings,
+                    f"{endpoint} {search}: empty page at skip={skip} of {total}; splitting window",
+                )
+                entry["split"] = True
+                return _split_window(
+                    fetcher, endpoint, date_field, start, end, cap, warnings, depth, windows
+                )
+            _warn(warnings, f"{endpoint} {search}: no data at skip={skip} (tail quirk)")
             break
         records.extend(results)
         skip += len(results)
+        if len(results) < page_limit:
+            # Short answer after the cache-refresh retry: accept it and keep the absolute
+            # skip moving so the next page stays aligned; a re-run fills any gap.
+            _warn(warnings, f"{endpoint} {search}: accepted short page at skip={skip - len(results)}")
     entry["fetched"] = len(records)
     if skip < total and skip >= SKIP_CAP:
         _warn(warnings, f"{endpoint} {search}: truncated at skip cap ({skip}/{total})")
@@ -298,13 +366,12 @@ def _fetch_window(
 
 
 def _fetch_classification(fetcher: Fetcher, warnings: list[str]) -> list[dict[str, Any]]:
-    """Pull the whole product-code dictionary (deduplicated by product_code)."""
-    try:
-        count_payload = _get_json(fetcher, CLASSIFICATION_ENDPOINT, _count_params(""))
-    except HttpError as exc:
-        _warn(warnings, f"device/classification unavailable ({_short_error(exc)})")
-        return []
-    total = _total_of(count_payload)
+    """Pull the whole product-code dictionary (deduplicated by product_code).
+
+    Self-healing: if openFDA answers a partial shard result first (``total`` ≈ half the
+    real size) the loop re-probes ``total`` and keeps paging instead of stopping early.
+    """
+    total = _probe_total(fetcher, CLASSIFICATION_ENDPOINT, "")
     if total <= 0:
         _warn(warnings, "device/classification returned zero product codes")
         return []
@@ -312,19 +379,41 @@ def _fetch_classification(fetcher: Fetcher, warnings: list[str]) -> list[dict[st
     records: list[dict[str, Any]] = []
     seen: set[str] = set()
     skip = 0
-    hard_stop = min(total, SKIP_CAP)
-    while skip < hard_stop:
+    refreshes = 0
+    while True:
+        hard_stop = min(total, SKIP_CAP)
+        if skip >= hard_stop:
+            if refreshes < 2:
+                refreshed = _probe_total(fetcher, CLASSIFICATION_ENDPOINT, "")
+                refreshes += 1
+                if refreshed > total and skip < min(refreshed, SKIP_CAP):
+                    _warn(warnings, f"device/classification total grew {total} -> {refreshed}; continuing")
+                    total = refreshed
+                    continue
+            break
         page_limit = min(PAGE_LIMIT, hard_stop - skip)
         try:
-            page = _get_json(fetcher, CLASSIFICATION_ENDPOINT, _page_params("", page_limit, skip))
+            results = _get_results(
+                fetcher,
+                CLASSIFICATION_ENDPOINT,
+                _page_params("", page_limit, skip),
+                expected=page_limit,
+                hard_stop=hard_stop,
+                skip=skip,
+                warnings=warnings,
+            )
         except HttpError as exc:
             _warn(warnings, f"device/classification page skip={skip} failed ({_short_error(exc)}); partial dictionary")
             break
-        if page is None:
-            _warn(warnings, f"device/classification tail unavailable at skip={skip}; partial dictionary")
-            break
-        results = page.get("results") or []
         if not results:
+            if refreshes < 2:
+                refreshed = _probe_total(fetcher, CLASSIFICATION_ENDPOINT, "")
+                refreshes += 1
+                if refreshed > total and skip < min(refreshed, SKIP_CAP):
+                    _warn(warnings, f"device/classification total grew {total} -> {refreshed}; continuing")
+                    total = refreshed
+                    continue
+            _warn(warnings, f"device/classification tail unavailable at skip={skip}; partial dictionary")
             break
         for record in results:
             code = _clean(record.get("product_code"))
@@ -332,8 +421,8 @@ def _fetch_classification(fetcher: Fetcher, warnings: list[str]) -> list[dict[st
                 seen.add(code)
                 records.append(record)
         skip += len(results)
-    if skip < total:
-        _warn(warnings, f"device/classification partial: {len(records)}/{total} codes")
+    if len(records) < min(total, SKIP_CAP):
+        _warn(warnings, f"device/classification partial: {len(records)}/{min(total, SKIP_CAP)} codes")
     return records
 
 
@@ -417,12 +506,25 @@ MANUAL_RULES: tuple[tuple[tuple[str, ...], str], ...] = (
     (("SOFTWARE", "ULTRASOUND"), "medical_ai"),
     (("SOFTWARE", "MONITOR"), "medical_ai"),
     (("COMPUTER ASSISTED", "SOFTWARE"), "medical_ai"),
+    (("COMPUTER", "DIAGNOSTIC", "PROGRAMMABLE"), "medical_ai"),
     # Orthopedic implant codes whose name only carries the joint, no "PROSTHESIS" keyword.
     (("HIP", "FEMORAL STEM"), "ortho_joint"),
     (("KNEE", "FEMORAL COMPONENT"), "ortho_joint"),
-    # Cardiac valve family codes are classified as "Heart-Valve, ..." without TRANSCATHETER.
-    (("HEART VALVE", "PROSTHESIS"), "structural_heart"),
-    (("HEART VALVE", "ANNULOPLASTY"), "structural_heart"),
+    (("ENDOSSEOUS", "ROOT FORM"), "dental"),
+    # Cardiac valve / heart-failure families whose openFDA name omits the track keyword.
+    (("HEART VALVE",), "structural_heart"),
+    (("AORTIC VALVE",), "structural_heart"),
+    (("HEMODYNAMIC", "IMPLANTABLE"), "heart_failure"),
+    (("CARDIAC CATHETERIZATION"), "coronary"),
+    # Vascular / neurovascular plain-language names.
+    (("SUPERFICIAL FEMORAL"), "peripheral_vascular"),
+    (("CAROTID", "STENT"), "neurovascular"),
+    (("HEMOSTASIS", "VASCULAR"), "peripheral_vascular"),
+    # Imaging primitives that never spell "ULTRASOUND".
+    (("DOPPLER", "ULTRASONIC"), "imaging_us"),
+    (("TRANSDUCER", "ULTRASONIC"), "imaging_us"),
+    # Neurostimulation families described by indication instead of device class.
+    (("STIMULATOR", "PARKINSONIAN"), "neurostimulation"),
 )
 
 
@@ -485,9 +587,15 @@ def build_product_code_map(
             stats[how] += 1
     for code, track_id in (existing or {}).items():
         code, track_id = _clean(code), _clean(track_id)
-        if code and track_id in valid_tracks:
+        if not code or track_id not in valid_tracks:
+            continue
+        auto = mapping.get(code)
+        if auto is None:
             mapping[code] = track_id
-            stats["existing"] += 1
+            stats["existing_new"] += 1
+        elif auto != track_id:
+            mapping[code] = track_id
+            stats["existing_override"] += 1
     return mapping, dict(stats)
 
 
@@ -516,6 +624,11 @@ def _payload(record: Mapping[str, Any], priority: tuple[str, ...] = ()) -> str:
     openFDA records carry a few very large fields (``openfda.registration_number``,
     ``code_info``) that can push the interesting keys past the 4,000-character cut, so the
     keys the analysis actually reads are moved to the front before truncation.
+
+    The truncation must yield **valid JSON**: the analysis layer parses this payload, and a
+    torn string used to silently disable recall deduplication and field extraction. When the
+    full record does not fit we shrink values and then stop adding keys, rather than cutting
+    the text mid-string.
     """
     ordered: dict[str, Any] = {key: record[key] for key in priority if key in record}
     for key, value in record.items():
@@ -525,7 +638,26 @@ def _payload(record: Mapping[str, Any], priority: tuple[str, ...] = ()) -> str:
         text = json.dumps(ordered, ensure_ascii=False, default=str)
     except (TypeError, ValueError):
         text = json.dumps({str(k): str(v) for k, v in ordered.items()}, ensure_ascii=False)
-    return truncate(text, PAYLOAD_LIMIT)
+    if len(text) <= PAYLOAD_LIMIT:
+        return text
+
+    def shrink(value: Any) -> Any:
+        if isinstance(value, str):
+            return truncate(value, 300)
+        if isinstance(value, (list, tuple)):
+            return [shrink(item) for item in list(value)[:20]]
+        if isinstance(value, dict):
+            return {str(key): shrink(item) for key, item in list(value.items())[:20]}
+        return value
+
+    compact: dict[str, Any] = {}
+    for key, value in ordered.items():
+        candidate = dict(compact)
+        candidate[key] = shrink(value)
+        if len(json.dumps(candidate, ensure_ascii=False, default=str)) > PAYLOAD_LIMIT:
+            break
+        compact = candidate
+    return json.dumps(compact, ensure_ascii=False, default=str)
 
 
 def _base_event(
@@ -779,7 +911,11 @@ def collect(
         existing_map = {}
 
     # 1) product-code dictionary --------------------------------------------------
-    classification = _fetch_classification(fetcher, warnings)
+    try:
+        classification = _fetch_classification(fetcher, warnings)
+    except BudgetExceeded as exc:
+        _warn(warnings, f"classification: request budget exhausted ({exc}); partial run")
+        classification = []
     code_map, map_stats = build_product_code_map(classification, track_registry, existing_map)
     if classification:
         _write_product_code_map(code_map, map_path)
@@ -874,6 +1010,23 @@ def collect(
     mapped_codes = sum(1 for code in classified_codes if code in code_map)
     unmapped_codes = len(classified_codes) - mapped_codes
 
+    # Which unmapped product codes actually show up in events? Ranked by event volume so
+    # the keyword dictionary can be extended where it matters.
+    code_names = {
+        _clean(record.get("product_code")): _clean(record.get("device_name"))
+        for record in classification
+        if _clean(record.get("product_code"))
+    }
+    unmapped_event_codes: Counter[str] = Counter()
+    for event in all_events:
+        code = _clean(event.get("product_code"))
+        if code and code not in code_map:
+            unmapped_event_codes[code] += 1
+    top_unmapped_codes = [
+        {"product_code": code, "device_name": code_names.get(code, ""), "events": count}
+        for code, count in unmapped_event_codes.most_common(TOP_UNMATCHED)
+    ]
+
     return {
         "window": {"start": iso(start), "end": iso(end), "months": max(1, int(months or 1))},
         "per_kind": per_kind,
@@ -888,6 +1041,8 @@ def collect(
         "track_matched": track_matched,
         "track_match_rate": round(track_matched / total, 4) if total else 0.0,
         "top_unmatched": top_unmatched,
+        "unmapped_codes": unmapped_codes,
+        "top_unmapped_codes": top_unmapped_codes,
         "missing_event_date": missing_event_date,
         "product_codes": {
             "classification_records": len(classification),

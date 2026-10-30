@@ -19,9 +19,10 @@ sponsors.
 
 Track assignment uses the **drug** therapeutic-area dictionary on the study
 ``Condition`` field (``tracks_drug.json``) - that is what the drug radar reports
-on. Company attribution uses ``CompanyRegistry.resolve(LeadSponsorName)``; a
-study whose lead sponsor does not resolve is skipped instead of being guessed,
-and the skip rate is reported honestly in ``stats``.
+on. Company attribution uses ``CompanyRegistry.resolve(LeadSponsorName)``. A
+study whose lead sponsor does not resolve is kept with ``company_key = NULL``
+(docs/SCHEMA.md §6) instead of being guessed or silently dropped, and the
+unmatched rate plus the noisiest unmatched sponsors are reported in ``stats``.
 
 Payload contract (shared with ``analyze``)
 ------------------------------------------
@@ -386,7 +387,6 @@ def collect_trials(
             )
 
     events: dict[str, dict[str, Any]] = {}
-    candidates = 0
     interventional = 0
     in_window = 0
     track_matched = 0
@@ -400,13 +400,14 @@ def collect_trials(
         if posted is None or posted < start or posted > end:
             continue
         in_window += 1
-        candidates += 1
         lead = payload.get("lead_sponsor") or ""
         company_key, confidence, alias = registry.resolve(lead)
         if not company_key:
+            # Keep the trial (docs/SCHEMA.md §6: unmatched => company_key NULL)
+            # instead of dropping it: it may still be an industry-collaborator
+            # study and it still carries a therapeutic-area signal.
             name = lead.strip() or "(empty)"
             unmatched[name] = unmatched.get(name, 0) + 1
-            continue
         track_id = drug_tracks.match_text(" ".join(payload.get("conditions") or []))
         if track_id:
             track_matched += 1
@@ -442,10 +443,9 @@ def collect_trials(
         "events": inserted,
         "per_kind": {KIND: inserted},
         "matched": matched,
-        "match_rate": round(matched / candidates, 4) if candidates else 0.0,
-        "unmatched": candidates - matched,
+        "match_rate": round(matched / inserted, 4) if inserted else 0.0,
+        "unmatched": inserted - matched,
         "top_unmatched": [[name, count] for name, count in top_unmatched],
-        "skipped_unresolved": candidates - matched,
         "track_matched": track_matched,
         "track_match_rate": round(track_matched / inserted, 4) if inserted else 0.0,
         "truncated": truncated,
@@ -454,7 +454,7 @@ def collect_trials(
     print(
         f"[trials] {inserted} trial events from {len(studies)} studies "
         f"({interventional} interventional, {in_window} in window), "
-        f"{matched}/{candidates} attributable ({stats['match_rate']:.0%}), "
+        f"{matched}/{inserted} attributable ({stats['match_rate']:.0%}), "
         f"track match {stats['track_match_rate']:.0%}, {stats['requests']} requests",
         file=sys.stderr,
     )

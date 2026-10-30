@@ -837,10 +837,18 @@ def build_context(metrics: Any, metrics_path: Path | str = DEFAULT_METRICS, out_
 
     cn_gap = [entry for entry in _l(metrics.get("cn_gap")) if isinstance(entry, dict)]
     cn_gap = _sort_desc(cn_gap, "us_recent")
-    cn_unavailable = any(
-        _s(entry.get("cn_data_status")).lower() in ("unavailable", "")
-        or _num(entry.get("cn_count")) is None
-        for entry in cn_gap
+    # A gap is "available" only when it can actually be computed: rows exist AND
+    # a Chinese source is loaded AND the rows carry a numeric CN count. An empty
+    # cn_gap (e.g. no US device events yet) must not be reported as available.
+    nmpa_status = _s(data_status.get("nmpa")).lower()
+    cn_unavailable = (
+        not cn_gap
+        or nmpa_status in ("unavailable", "")
+        or any(
+            _s(entry.get("cn_data_status")).lower() in ("unavailable", "")
+            or _num(entry.get("cn_count")) is None
+            for entry in cn_gap
+        )
     )
     signals = [entry for entry in _l(metrics.get("signals")) if isinstance(entry, dict)]
     trading_view = _trading_view(_resolve_trading(metrics, metrics_path, out_dir))
