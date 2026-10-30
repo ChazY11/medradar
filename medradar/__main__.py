@@ -134,6 +134,10 @@ def _publish_docs(args: argparse.Namespace) -> dict:
     if metrics_source.exists():
         shutil.copyfile(metrics_source, DOCS_DIR / "metrics.json")
         copied.append("metrics.json")
+    replay_html = out_dir / "replay" / "index.html"
+    if replay_html.exists():
+        shutil.copyfile(replay_html, DOCS_DIR / "replay.html")
+        copied.append("replay.html")
     return {"docs_dir": str(DOCS_DIR), "files": copied}
 
 
@@ -377,6 +381,12 @@ def _replay_payload(args: argparse.Namespace, start: str, end: str) -> dict:
     from .replay import build_replay
 
     costs = tuple(float(part) for part in str(args.costs or "10,25,50").split(",") if part.strip())
+    out_dir = getattr(args, "out_dir", None)
+    if out_dir:
+        # `run --out-dir` points at the report directory; the replay artefacts
+        # live in a `replay/` subfolder so they never overwrite out/index.html.
+        candidate = Path(out_dir)
+        out_dir = candidate if candidate.name == "replay" else candidate / "replay"
     with DB(args.db) as db:
         return build_replay(
             db,
@@ -385,7 +395,7 @@ def _replay_payload(args: argparse.Namespace, start: str, end: str) -> dict:
             capital=args.capital,
             costs_bps=costs,
             intraday_days=getattr(args, "intraday_days", 7),
-            out_dir=args.out_dir,
+            out_dir=out_dir,
             offline=getattr(args, "offline", False),
             hold_days=getattr(args, "hold_days", 20),
             allow_short=getattr(args, "allow_short", False),

@@ -21,11 +21,28 @@ portfolio, what appeared for the first time, and where China still has a gap.
 | Signals emitted | 303 (→ 120 tradable) |
 | Simulated book | +20.6% over 11 months, 39 trades, max DD −6.6% — **in-sample, long-only, not investment advice** |
 | Event study | +6.0% 60‑day abnormal return vs SPY, t=2.59, n=53 — promising but small N and multiple-testing exposed |
+| Tests | **258 offline tests**, no network, no API key |
+| Report | 18 chapters, self-contained HTML dashboard (no CDN, no external assets) |
+| Calibration | 25 hand-labelled real 8‑Ks: type accuracy **1.00 vs 0.60**, direction **0.92 vs 0.72** for the LLM judge |
 
-> Numbers move every week; the point is that every one of them is reproducible from
-> `python -m medradar run`.
+> Numbers move every week; every one of them is reproducible from `medradar run`.
 
 ---
+
+## Try it in 60 seconds
+
+```bash
+pip install -e .        # or: git clone https://github.com/<your-username>/medradar.git && cd medradar
+medradar demo           # offline, uses the committed snapshot, no API key, <60s
+# open out/demo/index.html
+```
+
+Then, for a live data run:
+
+```bash
+medradar run --months 24 --with-trade    # ~3 min, free public data only
+medradar replay --days 30                # event-to-fill timeline with cost tiers
+```
 
 ## What it answers
 
@@ -185,6 +202,19 @@ and the report says *"不可用（NMPA 数据未加载）"*. It never fabricates
   at the future.
 
 Full definitions, assumptions and threats to validity: [docs/METHODS.md](docs/METHODS.md).
+
+## Research-grade guarantees
+
+| Guarantee | How it is enforced |
+|---|---|
+| **No lookahead** | every event carries `available_at` + `timestamp_quality`; backtests only read `available_at`, and `unknown` timestamps never trade |
+| **Point-in-time features** | the "is this new?" test and the track-popularity boost use only history published before the event |
+| **Honest latency** | EDGAR seconds, FDA RSS days, openFDA 12 days — each source is labelled with what it can actually support |
+| **Cost sensitivity** | replay reports 10 / 25 / 50 bps tiers instead of a single flattering number |
+| **Multiple testing** | track claims are Holm-corrected; sample splits (dev / validation / holdout) are reported |
+| **Survivorship** | tickers without price coverage are flagged, not silently dropped |
+| **Reproducible calibration** | `medradar.calibration` replays recorded LLM responses by content fingerprint; drift makes the score script fail |
+| **Assumption registry** | every modelling assumption is listed with status in [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md) |
 
 ## Simulated US-equity study (not investment advice)
 

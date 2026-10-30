@@ -23,6 +23,21 @@
 
 ---
 
+## 60 秒试用
+
+```bash
+pip install -e .        # 或 git clone https://github.com/<你的用户名>/medradar.git && cd medradar
+medradar demo           # 离线、用已提交快照、不需要 API key、<60 秒
+# 打开 out/demo/index.html
+```
+
+真实数据运行：
+
+```bash
+medradar run --months 24 --with-trade    # 约 3 分钟，仅免费公开数据
+medradar replay --days 30                # 事件→成交回放，含多档成本
+```
+
 ## 这个项目回答什么问题
 
 | 问题 | 指标 | 产物 |

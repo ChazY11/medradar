@@ -13,7 +13,7 @@ import sqlite3
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
-from .util import ensure_dir, iso, utc_now_iso
+from .util import ensure_dir, iso, iso_moment, utc_now_iso
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS meta (
@@ -438,9 +438,9 @@ class DB:
                 payload = json.dumps(payload, ensure_ascii=False)
             event_date = iso(event.get("event_date"))
             as_of = iso(event.get("as_of")) or stamp[:10]
-            published_at = iso(event.get("published_at")) or event_date
-            first_seen_at = event.get("first_seen_at") or as_of
-            available_at = iso(event.get("available_at")) or published_at or event_date
+            published_at = iso_moment(event.get("published_at")) or event_date
+            first_seen_at = iso_moment(event.get("first_seen_at")) or as_of
+            available_at = iso_moment(event.get("available_at")) or published_at or event_date
             quality = str(event.get("timestamp_quality") or "date").lower()
             if quality not in TIMESTAMP_QUALITIES:
                 quality = "unknown"

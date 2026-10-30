@@ -52,6 +52,27 @@ def iso(value: Any) -> str:
     return parsed.isoformat() if parsed else ""
 
 
+def iso_moment(value: Any) -> str:
+    """Render a date **or** an ISO datetime, preserving time-of-day when present.
+
+    The trading lane needs minute-level availability (an 8-K is public at 16:05,
+    not "today"), while openFDA only offers dates. ``iso()`` truncates to the day
+    and would silently destroy that precision.
+    """
+    if value is None:
+        return ""
+    if isinstance(value, datetime):
+        return value.isoformat()
+    text = str(value).strip()
+    if not text:
+        return ""
+    try:
+        parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+        return parsed.isoformat()
+    except ValueError:
+        return iso(value)
+
+
 def month_key(value: Any) -> str:
     parsed = parse_date(value)
     return parsed.strftime("%Y-%m") if parsed else ""
