@@ -68,6 +68,40 @@ Long-only, ≤5% per name, ≤25% per track, −20% stop, 60‑trading‑day exi
 not traded**: borrow fees and squeeze-outs would turn the P&L into fiction. This is a simulation —
 no broker, no orders, no money at risk.
 
+### LLM judgement of the filing text (decides position size)
+
+A keyword classifier can say "positive". It cannot tell a first‑in‑class approval from a label
+tweak — and that difference is exactly what should scale a position from 1% to 5%. So the live lane
+sends the 8‑K text to an LLM and asks for a **structured, evidence‑quoted verdict**:
+
+```json
+{"direction": 1, "materiality": 0.82, "confidence": 0.9, "catalyst_type": "approval",
+ "asset": "Keytruda", "indication": "first-line NSCLC", "is_pivotal": true,
+ "revenue_relevance": "high", "evidence_quotes": ["..."], "rationale_zh": "..."}
+```
+
+* **Provider-agnostic**: any OpenAI-compatible endpoint.
+  `MEDRADAR_LLM_BASE_URL` (default `https://api.deepseek.com`), `MEDRADAR_LLM_API_KEY`,
+  `MEDRADAR_LLM_MODEL` (default `deepseek-chat`).
+* **Cached** by content hash — the same filing never costs tokens twice.
+* **Budgeted** — `--llm-budget 4` calls per cycle; over budget it falls back to the keyword judge.
+* **Evidence-first** — a verdict without a verbatim quote is down-weighted to half confidence.
+* **Sizing** — `position = 5% × clamp(materiality, 20%, 100%)`, so a routine earnings 8-K gets ~1%
+  and a first-in-class approval gets the full 5%.
+
+```bash
+# without a key it uses the deterministic fallback and says so ("judge": "heuristic(no-llm-key)")
+python -m medradar judge --file filing.txt --headline "Company 8-K"
+
+# with a key
+export MEDRADAR_LLM_API_KEY=sk-...
+python -m medradar judge --url https://www.sec.gov/Archives/... --headline "Company 8-K"
+```
+
+Real‑filing calibration (Merck Q3‑2026 earnings 8‑K, 481 KB): the keyword fallback labelled it
+`catalyst_type=approval` (wrong) and `is_pivotal=true` (false positive); an LLM returned
+`earnings / materiality 0.20 / is_pivotal false` with verbatim evidence — a 1% position instead of 5%.
+
 ## Quickstart
 
 ```bash

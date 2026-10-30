@@ -44,6 +44,7 @@ from typing import Any, Callable, Iterable, Mapping
 from .config import CACHE_DIR, DEFAULT_DB, load_companies
 from .db import DB
 from .http import Fetcher
+from .llm import make_judge
 from .util import ensure_dir, read_json, sha1, truncate, write_json
 
 EDGAR_CURRENT = (
@@ -109,6 +110,8 @@ class LiveParams:
     backfill_days: float = 0.0
     no_trade: bool = False
     fetch_text: bool = True
+    use_llm: bool = True
+    llm_budget: int = 4
     webhook: str | None = None
 
 
@@ -207,11 +210,18 @@ def size_order(
     price: float,
     track_exposure: float,
     params: LiveParams,
+    materiality: float = 1.0,
 ) -> float:
-    """Fractional share count for a new long, respecting per-name and per-track caps."""
+    """Fractional share count for a new long, respecting per-name and per-track caps.
+
+    ``materiality`` (0-1, from the LLM judge) scales the position between 20% and
+    100% of the per-name cap: a first-in-class approval gets 5%, a routine label
+    tweak gets 1%.
+    """
     if price <= 0 or cash <= 0 or equity <= 0:
         return 0.0
-    budget = min(equity * params.max_position, cash)
+    scale = min(1.0, max(0.2, float(materiality or 0.0)))
+    budget = min(equity * params.max_position * scale, cash)
     track_room = equity * params.max_track - track_exposure
     budget = min(budget, max(0.0, track_room))
     return math.floor((budget / price) * 10_000) / 10_000
@@ -230,6 +240,7 @@ def poll_edgar(
     watchlist: Mapping[int, tuple[str, str]],
     since: datetime,
     params: LiveParams,
+    judge: Any = None,
 ) -> list[dict[str, Any]]:
     xml = fetcher.get_text(EDGAR_CURRENT)
     alerts: list[dict[str, Any]] = []
@@ -242,12 +253,20 @@ def poll_edgar(
             continue
         company_key, ticker = watchlist[entry["cik"]]
         direction, score, matched = 0, 0.0, []
+        verdict: dict[str, Any] = {}
         item_hit = [item for item in entry["items"] if item in CATALYST_ITEMS]
+        headline = f"{entry['company_name']} 8-K（Item {','.join(entry['items']) or 'n/a'}）"
         if params.fetch_text and item_hit and text_budget > 0:
             text_budget -= 1
             body = fetch_filing_text(fetcher, entry["cik"], entry["accession"])
             if body:
-                direction, score, matched = classify_text(body)
+                if judge is not None:
+                    verdict = judge.judge_filing(headline, body)
+                    direction = int(verdict.get("direction") or 0)
+                    score = float(verdict.get("materiality") or verdict.get("confidence") or 0.4)
+                    matched = list(verdict.get("evidence_quotes") or [])
+                else:
+                    direction, score, matched = classify_text(body)
         if not item_hit and direction == 0:
             continue  # routine 8-K (officer changes, exhibits) - not a catalyst
         alerts.append(
@@ -259,10 +278,17 @@ def poll_edgar(
                 "company_key": company_key,
                 "direction": direction,
                 "score": score if score else 0.4,
-                "headline": f"{entry['company_name']} 8-K（Item {','.join(entry['items']) or 'n/a'}）",
+                "materiality": float(verdict.get("materiality") or 0.0),
+                "catalyst_type": verdict.get("catalyst_type", ""),
+                "headline": headline,
                 "url": entry["url"],
                 "event_time": entry["event_time"],
-                "payload": {"items": entry["items"], "matched": matched, "cik": entry["cik"]},
+                "payload": {
+                    "items": entry["items"],
+                    "matched": matched,
+                    "cik": entry["cik"],
+                    "verdict": verdict or None,
+                },
             }
         )
     return alerts
@@ -479,11 +505,12 @@ def run_once(
     with DB(db_path) as db:
         _init_state(db, params)
         watchlist = _watchlist(db, fetcher, registry, registry_drug)
+        judge = make_judge(db, use_llm=params.use_llm, budget=params.llm_budget)
         since = _since(db, params, now)
         fresh: list[dict[str, Any]] = []
 
         for source, poller in (
-            ("edgar", lambda: poll_edgar(db, fetcher, watchlist, since, params)),
+            ("edgar", lambda: poll_edgar(db, fetcher, watchlist, since, params, judge)),
             ("edgar_fts", lambda: poll_edgar_fts(db, fetcher, watchlist, since, params)),
             ("fda_rss", lambda: poll_fda_rss(db, fetcher, registry_drug, since)),
             ("ctgov", lambda: poll_trials(db, fetcher, registry_drug, since)),
@@ -612,6 +639,9 @@ def _handle_entries(
             continue  # long-only: negative catalysts are alerted, not traded
         if (alert.get("payload") or {}).get("backfill"):
             continue  # old catalyst at today's price = lookahead, never trade it
+        if (alert.get("catalyst_type") or "") == "earnings":
+            continue  # earnings are not a tradeable FDA catalyst
+        materiality = float(alert.get("materiality") or 0.0) or None
         existing = db.scalar("SELECT qty FROM positions WHERE ticker = ? AND status = 'open'", (ticker,))
         if existing:
             continue
@@ -623,7 +653,14 @@ def _handle_entries(
         entry = registry.get(company_key) or {}
         track_id = entry.get("sector") or "device"
         equity_now = cash + book["market_value"]
-        qty = size_order(cash, equity_now, float(price), track_exposure.get(track_id, 0.0), params)
+        qty = size_order(
+            cash,
+            equity_now,
+            float(price),
+            track_exposure.get(track_id, 0.0),
+            params,
+            materiality=materiality or 1.0,
+        )
         if qty <= 0:
             continue
         price_filled = fill_price(float(price), "buy", params.slippage_bps)

@@ -187,6 +187,14 @@ CREATE TABLE IF NOT EXISTS live_equity (
     n_positions INTEGER,
     note TEXT
 );
+
+-- LLM judge cache: same filing text never costs tokens twice.
+CREATE TABLE IF NOT EXISTS llm_verdicts (
+    content_hash TEXT PRIMARY KEY,
+    model TEXT,
+    verdict TEXT,
+    created_at TEXT
+);
 """
 
 EVENT_FIELDS = (

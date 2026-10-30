@@ -241,6 +241,39 @@ def cmd_run(args: argparse.Namespace) -> int:
     return 0
 
 
+# ------------------------------------------------------------------------- judge
+def cmd_judge(args: argparse.Namespace) -> int:
+    """Run the LLM judge on one filing text (manual inspection / calibration)."""
+    from .db import DB
+    from .llm import JudgeConfig, make_judge
+
+    if args.file:
+        text = Path(args.file).read_text(encoding="utf-8", errors="replace")
+    elif args.url:
+        from .config import CACHE_DIR
+        from .http import Fetcher
+        from .live import SEC_UA
+
+        fetcher = Fetcher(cache_dir=CACHE_DIR, min_interval=0.4, max_requests=5, ua=SEC_UA)
+        text = fetcher.get_text(args.url)
+    else:
+        text = sys.stdin.read()
+    config = JudgeConfig.from_env()
+    with DB(args.db) as db:
+        judge = make_judge(db, use_llm=not args.no_llm, budget=args.llm_budget)
+        verdict = judge.judge_filing(args.headline, text)
+    _emit(
+        {
+            "headline": args.headline,
+            "llm_configured": config.enabled,
+            "model": config.model if config.enabled else "heuristic",
+            "verdict": verdict,
+            "input_chars": len(text),
+        }
+    )
+    return 0
+
+
 # -------------------------------------------------------------------------- live
 def cmd_live(args: argparse.Namespace) -> int:
     import time as _time
@@ -262,6 +295,8 @@ def cmd_live(args: argparse.Namespace) -> int:
         backfill_days=args.backfill_days,
         no_trade=args.no_trade,
         fetch_text=not args.no_text,
+        use_llm=not args.no_llm,
+        llm_budget=args.llm_budget,
         webhook=args.webhook,
     )
     if args.interval and not args.once:
@@ -392,9 +427,20 @@ def build_parser() -> argparse.ArgumentParser:
     live.add_argument("--stop-loss", type=float, default=-0.20)
     live.add_argument("--no-trade", action="store_true", help="alerts only, no simulated orders")
     live.add_argument("--no-text", action="store_true", help="skip fetching 8-K full text")
+    live.add_argument("--no-llm", action="store_true", help="use the keyword judge only")
+    live.add_argument("--llm-budget", type=int, default=4, help="max LLM calls per cycle")
     live.add_argument("--webhook", default=None, help="POST each cycle summary to this URL")
     live.add_argument("--reset", action="store_true", help="wipe the simulated book and exit")
     live.set_defaults(func=cmd_live)
+
+    judge = sub.add_parser("judge", help="score one 8-K filing text with the LLM judge")
+    judge.add_argument("--file", default=None, help="path to filing text/HTML")
+    judge.add_argument("--url", default=None, help="fetch the filing text from a URL")
+    judge.add_argument("--headline", default="8-K filing")
+    judge.add_argument("--db", default=str(DEFAULT_DB))
+    judge.add_argument("--no-llm", action="store_true")
+    judge.add_argument("--llm-budget", type=int, default=1)
+    judge.set_defaults(func=cmd_judge)
 
     selftest = sub.add_parser("selftest", help="run the offline test suite")
     selftest.set_defaults(func=cmd_selftest)

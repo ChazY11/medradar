@@ -211,6 +211,20 @@
 | `paper_orders` | `order_id`(PK) `alert_id` `ticker` `side` `qty` `fill_price` `quote_time` `slippage_bps` `status` | 模拟成交；`fill_price` = 真实报价 ± 滑点 |
 | `positions` | `ticker`(PK) `qty` `avg_price` `opened_at` `track_id` `last_price` `market_value` `unrealized_pnl` `status` | 持仓，按最新真实报价重估 |
 | `live_equity` | `ts`(PK) `cash` `market_value` `equity` `n_positions` `note` | 每分钟净值点，`note` 记录回撤 |
+| `llm_verdicts` | `content_hash`(PK) `model` `verdict` `created_at` | LLM 判定缓存，`content_hash = sha1(prompt版本|模型|标题|正文前24k)` |
+
+`llm_verdicts.verdict` 是 `medradar/llm.py` 校验后的 JSON：
+
+```jsonc
+{"direction": 1, "materiality": 0.82, "confidence": 0.9, "catalyst_type": "approval",
+ "asset": "Keytruda", "indication": "first-line NSCLC", "is_pivotal": true,
+ "revenue_relevance": "high", "evidence_quotes": ["逐字引用"], "rationale_zh": "…",
+ "judge": "llm:deepseek-chat"}   // 或 "heuristic(no-llm-key)" / "heuristic(budget-exhausted)"
+```
+
+**仓位契约**：`qty = size_order(cash, equity, price, track_exposure, params, materiality)`，
+其中 `scale = clamp(materiality, 0.2, 1.0)`，作用于单票 5% 上限。`catalyst_type == "earnings"`
+的告警不进交易；`payload.backfill = true` 的回填告警永不成交。
 
 规则：仅做多；单票 ≤5% 权益、单赛道 ≤25%；`--stop-loss -0.20`；`--max-hold-days 84`（≈60 个
 交易日）。`payload.backfill = true` 的回填告警**永不成交**（用今天价格成交一周前的催化剂属于前视偏差）。

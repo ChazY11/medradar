@@ -62,6 +62,37 @@ ClinicalTrials.gov 状态变更 → 关键词分类 → **按 Yahoo 最新真实
 只做多、单票 ≤5%、单赛道 ≤25%、−20% 止损、60 个交易日离场。做空信号**只告警不下单**：
 借券费和并购逼平会让模拟收益变成假的。这是模拟盘，不接券商、不下真单、不构成投资建议。
 
+### 8-K 全文 LLM 判定（决定仓位大小）
+
+关键词只能判断"像利好"，判断不了"这是公司首个 20 亿美元级适应症，还是一个小标签变更"——
+而这恰恰决定仓位该给 1% 还是 5%。所以实时层把 8-K 全文交给 LLM，要求输出**结构化 + 带原文引用**的判定：
+
+```json
+{"direction": 1, "materiality": 0.82, "confidence": 0.9, "catalyst_type": "approval",
+ "asset": "Keytruda", "indication": "一线非小细胞肺癌", "is_pivotal": true,
+ "revenue_relevance": "high", "evidence_quotes": ["原文逐字引用"], "rationale_zh": "……"}
+```
+
+* **任意 OpenAI 兼容端点**：`MEDRADAR_LLM_BASE_URL`（默认 `https://api.deepseek.com`）、
+  `MEDRADAR_LLM_API_KEY`、`MEDRADAR_LLM_MODEL`（默认 `deepseek-chat`）。
+* **按内容哈希缓存**：同一份文件永不重复计费。
+* **预算硬上限**：`--llm-budget 4`，超预算自动回退关键词判定。
+* **证据优先**：没有逐字引用的判定，置信度直接砍半。
+* **仓位映射**：`仓位 = 5% × clamp(materiality, 20%, 100%)`——常规财报约 1%，首创获批给满 5%。
+
+```bash
+# 没 key 时用确定性回退，并在结果里标注 "judge": "heuristic(no-llm-key)"
+python -m medradar judge --file filing.txt --headline "Company 8-K"
+
+# 有 key 时
+export MEDRADAR_LLM_API_KEY=sk-...
+python -m medradar judge --url https://www.sec.gov/Archives/... --headline "Company 8-K"
+```
+
+真实文件校准（Merck 2026Q3 财报 8-K，481KB）：关键词回退把它标成 `approval`（错）、
+`is_pivotal=true`（误报）；LLM 判为 `earnings / materiality 0.20 / is_pivotal false` 并给出原文证据，
+对应 1% 仓位而不是 5%。
+
 ## 快速开始
 
 ```bash
