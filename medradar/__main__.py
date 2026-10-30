@@ -111,10 +111,37 @@ def cmd_analyze(args: argparse.Namespace) -> int:
 
 
 # ------------------------------------------------------------------------ report
+def _publish_docs(args: argparse.Namespace) -> dict:
+    """Mirror generated artefacts into ``docs/`` so GitHub Pages serves them.
+
+    Pages is configured to deploy from the ``main`` branch ``/docs`` folder, so
+    the weekly Action only needs to commit that directory.
+    """
+    import shutil
+
+    from .config import DOCS_DIR
+    from .util import ensure_dir
+
+    out_dir = Path(args.out_dir)
+    ensure_dir(DOCS_DIR)
+    copied: list[str] = []
+    for name in ("report_zh.md", "report_en.md", "summary.csv", "index.html"):
+        source = out_dir / name
+        if source.exists():
+            shutil.copyfile(source, DOCS_DIR / name)
+            copied.append(name)
+    metrics_source = Path(args.metrics)
+    if metrics_source.exists():
+        shutil.copyfile(metrics_source, DOCS_DIR / "metrics.json")
+        copied.append("metrics.json")
+    return {"docs_dir": str(DOCS_DIR), "files": copied}
+
+
 def cmd_report(args: argparse.Namespace) -> int:
     from .report import build_report
 
     result = build_report(metrics_path=args.metrics, out_dir=args.out_dir)
+    result["published"] = _publish_docs(args)
     _emit(result)
     return 0
 
@@ -134,18 +161,50 @@ def cmd_trade(args: argparse.Namespace) -> int:
 
 
 # --------------------------------------------------------------------------- run
+def _ensure_prices(args: argparse.Namespace) -> dict:
+    """Fetch free daily bars for the watchlist before the trading study.
+
+    Kept out of ``paper.run_paper`` on purpose: the trading engine must stay a
+    pure offline function of (signals, prices), so a backtest can be re-run
+    without any network access.
+    """
+    from .config import load_companies
+    from .db import DB
+    from .prices import fetch_prices
+
+    tickers: set[str] = set()
+    for kind in ("device", "drug"):
+        tickers.update(ticker for ticker in load_companies(kind).tickers().values() if ticker)
+    if not tickers:
+        return {"status": "skipped", "reason": "no tickers configured"}
+    try:
+        fetcher = _make_fetcher(args)
+        with DB(args.db) as db:
+            if db.table_count("prices") > 0 and not args.refresh_prices:
+                return {"status": "skipped", "reason": "prices already cached"}
+            result = fetch_prices(db, fetcher, sorted(tickers))
+        print(json.dumps({"prices": result}, ensure_ascii=False, default=str))
+        return result
+    except Exception as exc:  # never let a price feed failure kill the report
+        return {"status": "failed", "reason": f"{type(exc).__name__}: {exc}"}
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     args.sources = "device,drug,trials,nmpa"
     if not args.skip_collect:
         code = cmd_collect(args)
         if code != 0:
             print("[warn] some collectors failed; continuing with whatever data exists", file=sys.stderr)
+    # Trading runs before analyze on purpose: analyze embeds out/trading.json
+    # into metrics["trading"] so the report can render the simulated portfolio.
+    if args.with_trade:
+        prices = _ensure_prices(args)
+        if prices.get("status") not in ("failed",):
+            cmd_trade(args)
     if not args.skip_analyze:
         cmd_analyze(args)
     if not args.skip_report:
         cmd_report(args)
-    if args.with_trade:
-        cmd_trade(args)
     return 0
 
 
@@ -238,6 +297,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--skip-analyze", action="store_true")
     run.add_argument("--skip-report", action="store_true")
     run.add_argument("--with-trade", action="store_true", help="also run the paper-trading study")
+    run.add_argument("--refresh-prices", action="store_true", help="re-download price bars even if cached")
     add_db_options(run)
     run.set_defaults(func=cmd_run)
 

@@ -147,3 +147,56 @@
 | `payload` | 原始 JSON（截断），用于复核 |
 
 `kind` 取值同时决定 `signals` 生成规则，新增 kind 必须同步更新 §5。
+
+## 7. `trading`（模拟研究，可选）
+
+`medradar trade` 写出 `out/trading.json`，`analyze` 若发现该文件会嵌入 `metrics["trading"]`，
+报告据此渲染模拟盘面板。所有比率用小数（`0.12` 而非 `12%` 字符串）。
+
+```jsonc
+{
+  "meta": {"generated_at": "ISO", "capital": 100000.0, "signal_kind": null,
+           "engine": "long_only_v1",
+           "disclaimer_zh": "模拟研究，非投资建议；未建模做空借券费与并购逼平。"},
+  "summary": {"total_return": 0.12, "max_drawdown": -0.08, "win_rate": 0.55,
+              "trades": 42, "avg_trade_return": 0.021, "sharpe": 0.9,
+              "benchmark": "SPY", "start": "2024-01-02", "end": "2026-10-30"},
+  "equity_curve": [{"date": "2024-01-02", "equity": 100000.0}],
+  "attribution": [{"kind": "device_novel_code", "trades": 12,
+                   "avg_return": 0.03, "total_pnl": 1200.0}],
+  "event_study": {
+    "benchmark": "SPY",
+    "horizons": {"1": {"n": 42, "mean_ar": 0.004, "median_ar": 0.002,
+                        "t": 0.9, "ci95": [-0.004, 0.012], "hit_rate": 0.52}},
+    "curve": [{"t": -5, "ar": 0.0}]
+  },
+  "trades": [{"ticker": "MDT", "entry_date": "2025-01-06", "entry_price": 88.1,
+              "exit_date": "2025-04-01", "exit_price": 92.4, "ret": 0.048,
+              "pnl": 240.0, "reason": "time_exit"}]
+}
+```
+
+`event_study.horizons` 的键是字符串 `"1"/"5"/"20"/"60"`；`curve[].t` 是相对信号日的
+交易日偏移（负数 = 事件前）。数据不足时仍写该文件，`meta.status = "insufficient_data"`。
+
+### 7.1 字段权威定义（2026-10-31 定稿）
+
+`trading.json` 由 `paper.run_paper` 写出，**必须**包含以下键（可多不可少）：
+
+| 键 | 类型 | 说明 |
+|---|---|---|
+| `status` | str | `ok` / `insufficient_data` |
+| `as_of` | str | 数据截止日 |
+| `meta` | obj | `generated_at` / `capital` / `signal_kind` / `engine` / `disclaimer_zh` |
+| `method` | obj | 入场/持有/止损/仓位/成本/多空规则，可审计 |
+| `summary` | obj | `total_return` / `final_equity` / `max_drawdown`(负) / `win_rate` / `avg_trade_return` / `sharpe` / `n_trades` / `n_signals` / `benchmark` / `start` / `end` |
+| `equity_curve` | list | 按日期升序 `{"date","equity",...}`，周采样即可，但首末点必须有 |
+| `by_kind` | obj | 按信号类型归因 |
+| `attribution` | list | `by_kind` 的平表镜像：`{"kind","trades","avg_return","total_pnl"}` |
+| `event_study` | obj | `{"benchmark","horizons":{str:{n,mean_ar,median_ar,t,ci95,hit_rate}},"curve":[{"t","ar"}]}` |
+| `trades` | list | 成交明细（`reason`：`time_exit` / `stop` / `end`） |
+| `benchmark` | obj | 基准同期收益（如有） |
+| `disclaimer_zh` | str | 免责声明 |
+
+兼容别名：`summary.trades` = `summary.n_trades` 的数值别名（两者语义都是**笔数**，与顶层
+`trades` 成交列表无关）。报告渲染以 `summary` + `equity_curve` 为核心，其余为增强项。
