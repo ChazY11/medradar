@@ -228,7 +228,7 @@ _BODY_WEIGHT = 1
 _BUCKET_LEAD_WEIGHT = 3
 _BUCKET_BODY_WEIGHT = 1
 _ITEM_EARNINGS_WEIGHT = 4
-_ITEM_DEAL_WEIGHT = 2
+_ITEM_DEAL_WEIGHT = 3
 _OTHER_STRONG_WEIGHT = 5
 _OTHER_PRESENTATION_WEIGHT = 7
 _OTHER_WEAK_WEIGHT = 2
@@ -581,6 +581,7 @@ def classify_detail(
                            chars) else 1 if it appears anywhere
                         + 3 if a category keyword appears in the lead, else 1 in body
                         + 4 if the 8-K carries Item 2.02 (results of operations)
+                        + 3 if it carries Items 1.01/2.01 (a deal) -> "other"
                         + 5 for a lead-window financing/licensing marker -> "other"
                         + 7 for a corporate/investor presentation marker -> "other"
                         + 2 for a softer "business update" marker -> "other"
@@ -881,6 +882,7 @@ def build_manifest(
             "date_range": summary["date_range"],
             "avg_text_chars": summary["avg_text_chars"],
             "with_text": summary["with_text"],
+            "short_text": summary["short_text"],
             "companies": summary["companies"],
             "tickers": summary["tickers"],
         },
@@ -942,6 +944,7 @@ def summarize(
         "date_range": {"start": dates[0] if dates else None, "end": dates[-1] if dates else None},
         "with_text": with_text,
         "missing_text": n - with_text,
+        "short_text": sum(1 for value in text_chars if 0 < value < 3_500),
         "avg_text_chars": (sum(text_chars) / n) if n else 0.0,
         "text_chars_total": sum(text_chars),
         "by_direction": {

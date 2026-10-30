@@ -15,16 +15,18 @@ portfolio, what appeared for the first time, and where China still has a gap.
 
 | | |
 |---|---|
-| Events ingested | **83,578** (510(k) 31,456 · PMA 24,073 · recalls 16,764 · trials 9,898 · drug approvals 1,387) |
-| Coverage | 89 companies, 60 Chinese tracks, 7,097 product codes mapped |
+| Events ingested | **279,267** (510(k) 176,466 · PMA 24,073 · recalls 16,764 · trials 55,592 · drug approvals 5,326 · EDGAR catalysts 1,046) |
+| Coverage | 89 companies, 60 tracks, **204 device product families**, 7,097 product codes |
 | Strongest track right now | 心脏节律 THI 1.94 (P=98.2%) · 可穿戴监测 1.80 · 结构性心脏病 1.57 · 手术机器人 1.54 |
-| Signals emitted | 303 (→ 120 tradable) |
-| Simulated book | +20.6% over 11 months, 39 trades, max DD −6.6% — **in-sample, long-only, not investment advice** |
-| Event study | +6.0% 60‑day abnormal return vs SPY, t=2.59, n=53 — promising but small N and multiple-testing exposed |
-| Tests | **274 offline tests**, no network, no API key |
-| Report | 18 chapters, self-contained HTML dashboard (no CDN, no external assets) |
-| Products | **159 device product families**, 600 Chinese product names (85.5% of device events covered) |
+| Signals emitted | 283 (→ 127 tradable) |
+| Case library | **208 traceable cases** (verbatim evidence + 1/5/20/60-day reactions), 81 approvals · 23 CRLs · 104 trial readouts |
+| Event study (20d, direction-aligned) | approval +4.7% · trial result +2.9% · CRL −1.9% — **none survives Holm correction** (n=208 total) |
+| Simulated book | in-sample, long-only, not investment advice |
+| Tests | **378 offline tests**, no network, no API key |
+| Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |
+| Products | 204 families, **2,000 Chinese product names** (98.6% of device events) |
 | Research | event-time model, point-in-time signals, Holm correction, 10/25/50 bps replay |
+| Database | 878 MiB SQLite, 1999–2026 trial coverage, 1966–2026 drug approvals |
 | Calibration | 25 hand-labelled real 8‑Ks: type accuracy **1.00 vs 0.60**, direction **0.92 vs 0.72** for the LLM judge |
 
 > Numbers move every week; every one of them is reproducible from `medradar run`.

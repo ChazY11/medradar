@@ -20,10 +20,14 @@ be audited should not be promoted.
 
 ## Next (with an API key / external data)
 
+- [x] **Full-history data** for devices, drugs and trials (279k events, 1966–2026).
+- [x] **EDGAR historical corpus** (1,046 filings) + **case library** (208 cases).
 - [ ] 100-filing calibration with two independent annotators and Cohen's κ.
 - [ ] Re-run calibration against a live endpoint and record raw responses.
-- [ ] Replace the event study's iid bootstrap with `stats.block_bootstrap_ci`.
+- [ ] Replace the event study's iid bootstrap with `stats.block_bootstrap_ci`
+      (case-library event study already uses block bootstrap).
 - [ ] NMPA CSV importer + province-level China-gap view (needs data, not code).
+- [ ] Expand the corpus to 3,000+ filings and 500+ cases.
 - [ ] Interactive dashboard filters + shareable event permalinks.
 
 ## Later (reach)

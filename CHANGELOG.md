@@ -3,6 +3,33 @@
 All notable changes to MedRadar. Format loosely follows Keep a Changelog.
 This is a research tool; "fixed" means a documented behaviour changed.
 
+## [0.2.0] — 2026-10-31 (data & case library)
+
+### Added
+- **Full-history backfill**: 510(k) 176,466 (1976→2026), PMA 24,073, recalls 16,764,
+  drug approvals 5,326 (1966→2026), trials 55,592 (1999→2026) — **279,267 events** in an
+  878 MiB SQLite database.
+- **EDGAR historical catalyst corpus**: 1,046 8-K filings (2019–2026) with company,
+  category, verbatim text and source URL, ingested as `8k_catalyst` events.
+- **Case library engine** (`medradar/cases.py`): 208 traceable cases with verbatim
+  evidence, 1/5/20/60-day SPY-abnormal reactions, hit/miss outcomes and negative examples.
+- **Event study summary** from the case library: block bootstrap (event-month blocks),
+  direction-aligned returns, Holm correction across categories.
+- **Data audit** (`medradar audit`): dates, availability, quality, match rates, price
+  coverage, freshness, duplicate detection.
+- **`medradar stats`** + auto-generated `docs/DATA.md` block; `scripts/nightly.ps1`.
+- **Chinese product catalog 600 → 2,000** entries (98.6% of device events);
+  product families 159 → 204; fallback-family share 3.8% → 1.4%.
+- **19-chapter report** with a case-library chapter, 2 negative examples guaranteed.
+
+### Fixed
+- Company alias matching now requires a **contiguous token run** (no more
+  `JOHNSON CONTROLS` → J&J).
+- `run --with-replay` writes replay artefacts into `out/replay/` instead of overwriting
+  the report dashboard.
+- Datetime `available_at` is preserved end to end (minute-level reliability for replay).
+- `--with-cases` builds the case library before analyze so metrics can embed it.
+
 ## [0.1.0] — 2026-10-31
 
 ### Added

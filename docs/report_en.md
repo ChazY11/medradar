@@ -1,13 +1,13 @@
 # MedRadar: FDA Device & Drug Industry Radar
 
-_Generated 2026-10-30T19:14:52Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
+_Generated 2026-10-30T19:24:32Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
 
 ## Key takeaways
 
 1. Top device track: Cardiac Rhythm (THI 1.94, P(up) 98.2%), 11 events in window vs 0.6/quarter baseline.
 2. 16 of 24 tracked device segments are in a heating-up regime (THI 95% CI above 1.0).
 3. Strongest big-pharma momentum: ResMed (THI 2.35), Olympus (THI 2.25), ICU Medical (THI 2.09). Regulatory cadence is a proxy, not revenue.
-4. 19 first-seen records in the last 90 days; latest: Ge Healthcare into imaging_mr_ct.
+4. 9 first-seen records in the last 90 days; latest: Ge Healthcare into imaging_mr_ct.
 5. Recall clusters: Medline (101), Philips (87), Bd (64); watch product-line ageing and software-related causes.
 
 ## Data status
@@ -15,7 +15,7 @@ _Generated 2026-10-30T19:14:52Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 - Device / drug / trials: `ok`, `ok`, `ok`
 - NMPA (China registrations): `unavailable` - **unavailable (NMPA data not loaded)**; China-gap numbers are not inferred.
 - Prices: `ok`
-- Events in window: 92,585
+- Events in window: 279,267
 
 ## Hottest device tracks
 
@@ -44,10 +44,10 @@ _Generated 2026-10-30T19:14:52Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 
 - 轮椅与代步车 (`rehab_wheelchair`): THI 2.53, P(up) 100.0%, 36 events, 0 new entrants in 12 months.
 - 氧疗与制氧 (`resp_oxygen`): THI 1.83, P(up) 99.4%, 18 events, 0 new entrants in 12 months.
-- 栓塞材料与液体栓塞剂 (`nv_embolic`): THI 1.73, P(up) 99.2%, 20 events, 2 new entrants in 12 months.
-- 泌尿产品（结石/前列腺/尿失禁） (`uro`): THI 1.52, P(up) 100.0%, 96 events, 2 new entrants in 12 months.
+- 栓塞材料与液体栓塞剂 (`nv_embolic`): THI 1.73, P(up) 99.2%, 20 events, 1 new entrants in 12 months.
+- 泌尿产品（结石/前列腺/尿失禁） (`uro`): THI 1.52, P(up) 100.0%, 96 events, 1 new entrants in 12 months.
 - 手术机器人与计算机辅助手术 (`surg_robot`): THI 1.5, P(up) 98.7%, 29 events, 0 new entrants in 12 months.
-- New products in the weekly radar: 19 (Chinese names + 510(k)/PMA numbers).
+- New products in the weekly radar: 9 (Chinese names + 510(k)/PMA numbers).
 
 ## Portfolio migration
 
@@ -60,9 +60,9 @@ _Generated 2026-10-30T19:14:52Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 
 - 2026-10-02 · Ge Healthcare · imaging_mr_ct · GE Medical Systems Ultrasound & Primary Care Diagnostics, L…
 - 2026-10-01 · Edwards Lifesciences · structural_heart · Edwards Lifesciences, LLC PMA 批准 P260007：Autus Size-Adjusta…
-- 2026-09-24 · Karl Storz · endoscopy · Karl Storz SE & CO. KG 510(k)：KARL STORZ SUPRALOOP
 - 2026-09-23 · Teleflex · __untracked__ · Teleflex Medical 510(k)：Liquick X-treme, Liquick X-treme Pl…
-- 2026-09-18 · Icu Medical · __untracked__ · ICU Medical 510(k)：NORMOFLO Irrigation Fluid Warming Sets …
+- 2026-09-10 · Bbraun · urology · B.Braun Medical, Inc. 510(k)：Irrigation/Urology Sets
+- 2026-08-27 · Resmed · respiratory · Resmed Corp 510(k)：EasyCare Tx 2
 
 ## Recall clusters
 
@@ -76,9 +76,9 @@ _Generated 2026-10-30T19:14:52Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 
 ## Drug side
 
-Top NDA/BLA momentum: Otsuka (THI 3.91), Daiichi Sankyo (THI 3.91), Ionis Pharmaceuticals (THI 3.91), Sanofi (THI 2.09), Boehringer Ingelheim (THI 2.09).
-Hottest therapeutic areas: t_vaccines (P 100.0%), t_cardiometabolic (P 100.0%), t_dermatology (P 100.0%), t_neuroscience (P 100.0%).
-Trial starts: Novartis (暂无数据), Pfizer (暂无数据), AstraZeneca (暂无数据), Eli Lilly (暂无数据), Merck & Co. (暂无数据).
+Top NDA/BLA momentum: Daiichi Sankyo (THI 3.91), Otsuka (THI 3.91), Ionis Pharmaceuticals (THI 3.91), Sanofi (THI 2.09), Boehringer Ingelheim (THI 2.09).
+Hottest therapeutic areas: t_dermatology (P 98.0%), t_cardiometabolic (P 100.0%), t_vaccines (P 48.8%), t_ophthalmology (P 26.6%).
+Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无数据), Neurocrine Biosciences (暂无数据), Exelixis (暂无数据).
 
 ## China gap
 
@@ -86,25 +86,25 @@ Trial starts: Novartis (暂无数据), Pfizer (暂无数据), AstraZeneca (暂�
 
 ## Signals and paper trading
 
-- Signals generated: 303
-- Paper portfolio: total return +20.6%, max drawdown -6.6%, win rate 74.4%, trades 39.
+- Signals generated: 283
+- Paper portfolio: total return +19.2%, max drawdown -5.8%, win rate 73.7%, trades 38.
 - Equity curve: 48 trading days, 2025-11-21 to 2026-10-30.
 
 ## Replay and research hygiene
 
-- Replay: 60 steps from 2026-05-04 to 2026-10-31; multi-cost summary for 3 cost buckets.
-- Timestamp quality: date 91,830; excluded from trading: 0.
+- Replay: 60 steps from 2025-10-31 to 2026-10-31; multi-cost summary for 3 cost buckets.
+- Timestamp quality: date 279,267; excluded from trading: 0.
 - Multiple testing: holm correction over 24 tests.
-- Survivorship flags: 4.
+- Survivorship flags: 3.
 - Assumption register: `docs/ASSUMPTIONS.md`.
 
 
 ## Case library (in-sample evidence)
 
-- 样本总数: 98; 20 日命中率: 51.0%; 60 日命中率: 45.9%; corpus_total: 465
-- 2020-08-04 · CTSO: FDA 批准：Cytosorbents Corp · fda approval — outcome 未命中; price 1/5/20/60d: 1 日 +7.9% ▲、5 日 -1.4% ▼、20 日 -9.3% ▼、60 日 -7.7% ▼.
-- 2020-08-04 · CERS: FDA 批准：CERUS CORP · fda approval — outcome 未命中; price 1/5/20/60d: 1 日 +2.0% ▲、5 日 -0.9% ▼、20 日 -15.8% ▼、60 日 -17.7% ▼.
-- 2020-07-31 · ABBV: 临床数据读出：AbbVie Inc. · met the primary endpoint — outcome 未命中; price 1/5/20/60d: 1 日 -14.3% ▼、5 日 -17.4% ▼、20 日 -18.4% ▼、60 日 -25.6% ▼.
+- 样本总数: 208; 20 日命中率: 49.0%; 60 日命中率: 47.6%; corpus_total: 1,046
+- 2021-09-14 · CTSO: 临床数据读出： — outcome 未命中; price 1/5/20/60d: 1 日 +6.4% ▲、5 日 +6.9% ▲、20 日 -18.0% ▼、60 日 -35.5% ▼.
+- 2021-09-13 · CRVO: 收到 CRL： — outcome 部分命中; price 1/5/20/60d: 1 日 +8.7% ▲、5 日 +3.9% ▲、20 日 -1.6% ▼、60 日 -23.9% ▼.
+- 2021-09-10 · CYDY: 临床数据读出： — outcome 未命中; price 1/5/20/60d: 1 日 +27.7% ▲、5 日 +76.9% ▲、20 日 +30.1% ▲、60 日 -20.6% ▼.
 - Negative examples: 6 (missed / reversed cases).
 - Retrospective in-sample evidence only; not strategy performance.
 

@@ -62,6 +62,7 @@ START = "2019-01-01"
 END = "2026-10-31"
 HITS_PER_QUERY = 100
 MIN_TEXT_CHARS = 200
+SHORT_TEXT_CHARS = 3_500
 FETCH_RETRIES = 2
 DEFAULT_LIMIT = 0
 
@@ -316,7 +317,8 @@ def _pick_document(index_payload: Mapping[str, Any]) -> str | None:
 
     Preference order (catalyst corpus, not a legal archive):
 
-    1. **EX-99.x press release** - the announcement prose lives here;
+    1. **EX-99.x press release** (by the filing's own ``type`` field first, then
+       by filename) - the announcement prose lives here;
     2. **primary 8-K document** - contains Items 1.01/2.02/8.01 and the exhibit
        index, sometimes without the full press release;
     3. the largest HTML/TXT file - last resort for unusual filings.
@@ -337,10 +339,11 @@ def _pick_document(index_payload: Mapping[str, Any]) -> str | None:
         return None
 
     def rank(item: Mapping[str, Any]) -> tuple[int, int]:
+        declared = str(item.get("type") or "").upper()
         normalized = "".join(ch for ch in str(item.get("name", "")).lower() if ch.isalnum())
-        if "ex99" in normalized or "exhibit99" in normalized:
+        if "EX-99" in declared or "ex99" in normalized or "exhibit99" in normalized:
             tier = 0
-        elif "8k" in normalized:
+        elif declared.startswith("8-K") or "8k" in normalized:
             tier = 1
         else:
             tier = 2
@@ -409,6 +412,7 @@ def fetch_filing_text(
         if matched_url:
             plan.append((matched_url, "ok"))
 
+    best: dict[str, Any] | None = None
     for url, status in plan:
         actual_url = url
         if url == "__index__":
@@ -429,7 +433,7 @@ def fetch_filing_text(
         if len(text) < MIN_TEXT_CHARS:
             errors.append("short_text")
             continue
-        return {
+        result = {
             "accession": accession,
             "document": actual_url.rsplit("/", 1)[-1],
             "fetch_url": actual_url,
@@ -441,6 +445,12 @@ def fetch_filing_text(
             "attempts": attempts,
             "error": "",
         }
+        if best is None or len(text) > int(best.get("raw_chars") or 0):
+            best = result
+        if len(text) >= SHORT_TEXT_CHARS:
+            return result
+    if best is not None:
+        return best
     return {
         "accession": accession,
         "document": matched_document,
@@ -471,11 +481,21 @@ def cmd_fetch(args: argparse.Namespace) -> dict[str, Any]:
         if row.get("fetch_status") in ("ok", "fallback") and row.get("text")
     }
     retry_failed = bool(getattr(args, "retry_failed", False))
+    retry_short = bool(getattr(args, "retry_short", False))
+    short_accessions = {
+        accession
+        for accession, row in existing.items()
+        if row.get("fetch_status") in ("ok", "fallback")
+        and 0 < int(row.get("raw_chars") or 0) < SHORT_TEXT_CHARS
+    }
     pending = [
         candidate
         for candidate in candidates
-        if str(candidate.get("accession")) not in ok_accessions
-        and (retry_failed or str(candidate.get("accession")) not in existing)
+        if (
+            str(candidate.get("accession")) not in ok_accessions
+            and (retry_failed or str(candidate.get("accession")) not in existing)
+        )
+        or (retry_short and str(candidate.get("accession")) in short_accessions)
     ]
     limit = int(getattr(args, "limit", DEFAULT_LIMIT) or 0)
     if limit > 0:
@@ -711,6 +731,9 @@ def build_parser() -> argparse.ArgumentParser:
                        help="fetch at most N new texts this run (0 = all)")
     fetch.add_argument("--retry-failed", action="store_true",
                        help="retry accessions recorded as failed")
+    fetch.add_argument("--retry-short", action="store_true",
+                       help="re-fetch accessions whose stored text is suspiciously short "
+                            "(e.g. an 8-K cover page instead of the press release)")
 
     build = sub.add_parser("build", help="join + classify -> corpus.jsonl + manifest.json")
     _add_common(build)
@@ -723,6 +746,7 @@ def build_parser() -> argparse.ArgumentParser:
     all_.add_argument("--hits", type=int, default=HITS_PER_QUERY)
     all_.add_argument("--limit", type=int, default=DEFAULT_LIMIT)
     all_.add_argument("--retry-failed", action="store_true")
+    all_.add_argument("--retry-short", action="store_true")
     return parser
 
 

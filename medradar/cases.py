@@ -504,9 +504,12 @@ def event_study_summary(cases: Mapping[str, Any], horizons: Sequence[int] = HORI
         labels: list[str] = []
         for category in categories:
             rows = [case for case in selected if str(case.get("category") or "other") == category and case.get(key) is not None]
-            values = [float(case[key]) for case in rows]
-            if len(values) < 3:
+            if len(rows) < 3:
                 continue
+            # Direction-aligned: a CRL is a "win" when the stock falls. Report both
+            # the aligned series (what the signal claims) and the raw one.
+            raw_values = [float(case[key]) for case in rows]
+            values = [float(case[key]) * (int(case.get("direction") or 0) or 1) for case in rows]
             blocks = [str(case.get("date") or "")[:7] for case in rows]
             ci = block_bootstrap_ci(values, blocks=blocks, seed=7)
             stat = t_stat(values)
@@ -514,6 +517,7 @@ def event_study_summary(cases: Mapping[str, Any], horizons: Sequence[int] = HORI
             per_category[category] = {
                 "n": len(values),
                 "mean": round(mean(values), 6),
+                "raw_mean": round(mean(raw_values), 6),
                 "median": round(median(values), 6),
                 "std": round(stdev(values), 6),
                 "t": round(stat, 4) if stat is not None else None,
