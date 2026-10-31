@@ -90,23 +90,17 @@ DISCLAIMER_ZH = (
 )
 
 DEFAULT_COSTS_BPS: tuple[float, ...] = (10.0, 25.0, 50.0)
-DEFAULT_INTRADAY_DAYS = 7
-DEFAULT_HOLD_DAYS = 20
-DEFAULT_POSITION_PCT = 0.20
-DEFAULT_MAX_CONCURRENT = 5
-DEFAULT_REQUEST_BUDGET = 60
-
 HORIZONS: tuple[int, ...] = (1, 5, 20)
 INTRADAY_RANGE = "7d"
 INTRADAY_INTERVAL = "1m"
 
-#: Timestamp qualities that may enter the replay (SCHEMA §9: only ``unknown`` is
-#: excluded; ``estimated`` is usable but explicitly flagged in the timeline).
-QUALITY_ALLOWED = ("datetime", "date", "estimated")
+#: Only observed public timestamps may enter the replay. Estimated, unknown and
+#: missing timestamps remain available for descriptive industry analysis.
+QUALITY_ALLOWED = ("datetime", "date")
 QUALITY_ZH = {
     "datetime": "精确时间戳",
     "date": "仅日期（按当日收盘后可用）",
-    "estimated": "估算时间",
+    "estimated": "估算时间（不进回放）",
     "unknown": "未知（不进回放）",
 }
 
@@ -271,9 +265,10 @@ def _resolve_available_at(row: Mapping[str, Any]) -> tuple[datetime | None, str]
     """Resolve the instant this signal may first be acted on.
 
     Priority: ``events.available_at`` → ``events.published_at`` → payload JSON
-    keys → ``event_date`` → ``signal_date``. A day-precision value is expanded to
-    the end of its day; ``timestamp_quality='unknown'`` is returned so the caller
-    can exclude the row (SCHEMA §9).
+    keys. There is deliberately no ``event_date`` fallback: a decision date is
+    not proof of when the record became public. A day-precision value is expanded
+    to the end of its day; estimated/unknown quality is returned as ``unknown``
+    so every caller excludes it from trading (SCHEMA §9).
     """
     raw: Any = None
     for key in ("available_at", "published_at"):
@@ -287,11 +282,7 @@ def _resolve_available_at(row: Mapping[str, Any]) -> tuple[datetime | None, str]
     quality_raw = str(row.get("timestamp_quality") or "").strip().lower()
     moment, precise = _parse_moment(raw)
     if moment is None:
-        day = parse_date(row.get("event_date")) or parse_date(row.get("signal_date"))
-        if day is None:
-            return None, "unknown"
-        moment, precise = _end_of_day(day), False
-        quality = "estimated"
+        return None, "unknown"
     else:
         if quality_raw in ("datetime", "date", "estimated", "unknown"):
             quality = quality_raw
@@ -299,7 +290,7 @@ def _resolve_available_at(row: Mapping[str, Any]) -> tuple[datetime | None, str]
             # Older DBs without the column: a real timestamp is datetime,
             # otherwise be honest and call it estimated.
             quality = "datetime" if precise else "estimated"
-    if quality == "unknown":
+    if quality not in ("datetime", "date"):
         return moment, "unknown"
     if quality != "datetime" or not precise:
         moment = _end_of_day(moment.date())
@@ -357,63 +348,39 @@ def _iso_utc(moment: datetime) -> str:
 
 
 # --------------------------------------------------------------------------- intraday
-def parse_intraday_chart(payload: Any, ticker: str) -> list[dict[str, Any]]:
-    """Parse a Yahoo ``range=7d&interval=1m`` chart payload into sorted bars.
+def parse_intraday_chart(payload: Any, ticker: str) -> tuple[list[dict[str, Any]] | None, str | None]:
+    """Parse a Yahoo ``range=7d&interval=1m`` payload into bar dicts.
 
-    Bars without a positive open are skipped (a minute with no trade cannot be
-    used as a fill). Raises :class:`ValueError` for error/empty payloads so the
-    caller can fall back to daily bars.
+    Returns ``(bars, error)``. Bars are ``{time, datetime, open}`` with
+    ``datetime`` an aware UTC instant, sorted ascending.
     """
-    if not isinstance(payload, Mapping):
-        raise ValueError("payload is not an object")
-    chart = payload.get("chart")
-    if not isinstance(chart, Mapping):
-        raise ValueError("payload has no chart object")
-    error = chart.get("error")
-    if error:
-        raise ValueError(f"yahoo error: {error}")
-    results = chart.get("result") or []
-    if not results:
-        raise ValueError("yahoo returned no result")
-    result = results[0] or {}
-    timestamps: Sequence[Any] = result.get("timestamp") or []
+    result = None
+    if isinstance(payload, Mapping):
+        chart = payload.get("chart")
+        if isinstance(chart, Mapping):
+            results = chart.get("result")
+            if isinstance(results, list) and results:
+                result = results[0]
+    if not isinstance(result, Mapping):
+        return None, "no_chart_result"
+    timestamps = result.get("timestamp") or []
     indicators = result.get("indicators") or {}
-    quotes = indicators.get("quote") or []
-    block = quotes[0] if quotes else {}
-    opens: Sequence[Any] = block.get("open") or []
-    closes: Sequence[Any] = block.get("close") or []
-    highs: Sequence[Any] = block.get("high") or []
-    lows: Sequence[Any] = block.get("low") or []
-    volumes: Sequence[Any] = block.get("volume") or []
+    quote_rows = (indicators.get("quote") or [{}])[0] or {}
+    opens = quote_rows.get("open") or []
     bars: list[dict[str, Any]] = []
-    for index, stamp in enumerate(timestamps):
+    for stamp, open_price in zip(timestamps, opens):
+        price = _as_float(open_price)
+        if price is None or price <= 0:
+            continue
         try:
-            epoch = int(stamp)
-        except (TypeError, ValueError):
+            moment = datetime.fromtimestamp(int(stamp), tz=timezone.utc)
+        except (TypeError, ValueError, OSError):
             continue
-        if epoch <= 0:
-            continue
-        open_price = _as_float(opens[index]) if index < len(opens) else None
-        if open_price is None or open_price <= 0:
-            continue
-        close_price = _as_float(closes[index]) if index < len(closes) else None
-        moment = datetime.fromtimestamp(epoch, tz=timezone.utc)
-        bars.append(
-            {
-                "ticker": str(ticker).strip().upper(),
-                "ts": epoch,
-                "time": moment,
-                "open": open_price,
-                "high": _as_float(highs[index]) if index < len(highs) else None,
-                "low": _as_float(lows[index]) if index < len(lows) else None,
-                "close": close_price,
-                "volume": int(volumes[index]) if index < len(volumes) and volumes[index] is not None else None,
-            }
-        )
+        bars.append({"time": int(stamp), "datetime": moment, "open": float(price)})
     if not bars:
-        raise ValueError("yahoo payload contains no usable 1-minute bars")
-    bars.sort(key=lambda bar: bar["ts"])
-    return bars
+        return None, "no_bars"
+    bars.sort(key=lambda item: item["time"])
+    return bars, None
 
 
 def fetch_intraday(fetcher: Any, ticker: str, range_: str = INTRADAY_RANGE) -> list[dict[str, Any]]:
@@ -497,27 +464,39 @@ class _PriceBook:
         symbol = str(ticker).strip().upper()
         if symbol in self._series:
             return self._series[symbol]
-        series = load_series(self.db, symbol)
-        if series is not None:
-            self._daily_source[symbol] = "db"
+        series = None
+        error = None
+        try:
+            cached = load_series(self.db, symbol)
+        except Exception as exc:
+            cached, error = None, f"db_error: {exc}"
+        if cached is not None:
+            series = cached
+            self._daily_source[symbol] = "db_cache"
         elif self.fetcher is not None:
             try:
                 rows = fetch_ticker_rows(self.fetcher, symbol, years=self.daily_years)
-                series = PriceSeries(rows) if rows else None
-                if series is not None:
-                    self._daily_source[symbol] = "yahoo_fallback"
+                if rows:
+                    series = PriceSeries(symbol, rows)
+                    self._daily_source[symbol] = "fetch"
+                else:
+                    error = "no_rows"
             except BudgetExceeded as exc:
-                self._daily_error[symbol] = str(exc)
-            except Exception as exc:  # isolated: one bad ticker never breaks the replay
-                self._daily_error[symbol] = f"{type(exc).__name__}: {exc}"
+                error = f"budget_exceeded: {exc}"
+            except Exception as exc:
+                error = f"{type(exc).__name__}: {exc}"
         self._series[symbol] = series
+        if error:
+            self._daily_error[symbol] = error
         return series
 
-    def daily_source(self, ticker: str) -> str:
-        return self._daily_source.get(str(ticker).strip().upper(), "missing")
-
-    def daily_errors(self) -> dict[str, str]:
-        return dict(self._daily_error)
+    def daily_status(self, tickers: Iterable[str]) -> dict[str, Any]:
+        return {
+            "requested": sorted({str(t).strip().upper() for t in tickers if t}),
+            "sources": dict(self._daily_source),
+            "errors": dict(self._daily_error),
+            "mode": "offline" if self.fetcher is None else "online",
+        }
 
     # --------------------------------------------------------------- intraday
     def intraday(self, ticker: str) -> tuple[list[dict[str, Any]] | None, str | None]:
@@ -689,15 +668,14 @@ def _event_select_columns(db: Any) -> str:
 
 
 def _available_sql(db: Any) -> str:
-    """SQL expression for the first instant an event row can be acted on."""
+    """SQL expression for an observed public instant, never the decision date."""
     event_columns = _table_columns(db, "events")
     parts = [
         f"NULLIF({column}, '')"
         for column in ("available_at", "published_at")
         if column in event_columns
     ]
-    parts.append("NULLIF(event_date, '')")
-    return "COALESCE(" + ", ".join(parts) + ")"
+    return "COALESCE(" + ", ".join(parts) + ")" if parts else "NULL"
 
 
 def _event_price_universe(db: Any) -> tuple[dict[str, str], set[str]]:
@@ -1364,23 +1342,19 @@ def _intraday_eligible(moment: datetime, now: datetime, days: float) -> bool:
 def _first_intraday_fill(
     bars: Sequence[Mapping[str, Any]], available_at: datetime, now: datetime
 ) -> dict[str, Any] | None:
-    """Open of the first bar strictly after the public moment (and not future)."""
-    threshold = available_at.timestamp()
+    """Open of the first 1-minute bar strictly after the public moment."""
     for bar in bars:
-        if int(bar["ts"]) <= threshold:
-            continue
-        moment = bar["time"]
-        if moment > now:
-            return None
+        moment = bar.get("datetime")
         price = _as_float(bar.get("open"))
-        if price is None or price <= 0:
+        if not isinstance(moment, datetime) or price is None or price <= 0:
+            continue
+        if moment <= available_at or moment > now:
             continue
         return {
             "price": float(price),
             "date": moment.date().isoformat(),
             "time": moment,
             "source": "1m",
-            "bar_ts": int(bar["ts"]),
         }
     return None
 
@@ -2034,976 +2008,473 @@ def _simulate(
         # Contract for the 1-minute boundary (verifiable, machine-readable):
         "intraday_window_days": float(resolution_intraday_days),
         "price_source_counts": price_source_counts,
+        "assumptions": [
+            "decision_time=events.available_at（公开时点，缺失或估算质量的事件不进回放）",
+            "date 级时间戳按当日 23:59:59 UTC 处理；datetime 级按实际时刻处理",
+            "fill=公开时点之后第一根 bar 的开盘价（1 分钟数据不可用时降级为次日交易日开盘价）",
+            "exit=入场后第 20 个交易日收盘价（数据末端回退为最后可得收盘价，exit_reason=end_of_data）",
+            "costs_bps 为单边成本，入场与出场各计一次；未建模冲击成本与借券费",
+            "仅做多（做空信号以 reference_only 记录参考价与假设结果，不入账）",
+            "Yahoo 1 分钟数据仅覆盖最近约 7 天；更早事件只能使用日线",
+        ],
         "meta": {
-            "engine": ENGINE,
             "generated_at": utc_now_iso(),
+            "engine": ENGINE,
+            "schema_version": SCHEMA_VERSION,
             "capital": float(capital),
             "costs_bps": [float(bps) for bps in costs_bps],
-            "cost_basis": "single_side_bps",
-            "intraday_days": float(intraday_days),
-            "intraday_days_effective": float(resolution_intraday_days),
-            "source_mode": source_mode,
-            "event_mode": bool(event_mode),
-            "max_steps": effective_max_steps,
-            "per_kind_limit": (event_stats.get("per_kind_limit") if event_mode else None),
+            "intraday_days": float(resolution_intraday_days),
+            "intraday_window_days": float(resolution_intraday_days),
             "hold_days": int(hold_days),
+            "allow_short": bool(allow_short),
             "position_pct": float(position_pct),
             "max_concurrent": int(max_concurrent),
-            "allow_short": bool(allow_short),
-            "counts": {
-                "signals_raw": len(rows),
-                "signals_unique": len(unique_rows),
-                "duplicates_removed": int(duplicates),
-                "signals_in_window": len(in_window),
-                "steps": len(steps),
-                "entered": entered,
-                "skipped": len(steps) - entered,
-                "low_quality_excluded": len(filtered),
-                "signal_source": signal_source,
-                **(
-                    {
-                        "candidate_counts": event_stats.get("candidate_counts", {}),
-                        "sampled_counts": event_stats.get("sampled_counts", {}),
-                        "event_total_candidates": event_stats.get("total_candidates"),
-                        "event_total_before_global_cap": event_stats.get("total_before_global_cap"),
-                        "tradeable_tickers": event_stats.get("tradeable_tickers"),
-                    }
-                    if event_mode
-                    else {}
-                ),
-            },
-            "timestamp_quality": dict(quality_counts),
-            "price_sources": dict(price_sources),
-            "intraday_status": intraday_status,
-            "request_stats": book.request_stats(),
-            "data_status": {
-                "daily": "ok" if calendar else "missing",
-                "intraday": intraday_status,
-                "signals": "events" if event_mode else ("ok" if rows else "empty"),
-                "prices": "ok" if calendar else "missing",
-                "fetcher": "offline" if fetcher is None else "online",
-            },
-            "daily_sources": {
-                ticker: book.daily_source(ticker) for ticker in tickers
-            },
-            "daily_errors": book.daily_errors(),
+            "min_score": float(min_score),
+            "max_requests": int(max_requests),
+            "offline": bool(offline),
+            "price_window": {"days": float(resolution_intraday_days), "interval": INTRADAY_INTERVAL},
+            "signals_total": len(rows),
+            "signals_deduped": duplicates,
+            "signals_in_window": len(in_window),
+            "signals_filtered": len(filtered),
+            "signals_usable": len(usable),
+            "skipped_low_timestamp_quality": len(filtered),
+            "timestamp_quality_counts": dict(sorted(quality_counts.items())),
+            "daily_price_window_years": daily_years,
+            "lookahead_rejected": int(skip_reasons.get("lookahead_rejected", 0)),
+            "daily_prices": book.daily_status(tickers),
             "intraday_errors": book.intraday_errors(),
-            "first_seen_lag_days": first_seen_lags,
-            "filtered": filtered[:50],
-            "filtered_truncated": len(filtered) > 50,
-            "skip_reasons": dict(skip_reasons),
-            "notes_zh": [
-                "1 分钟数据仅最近 ~7 天（Yahoo range=7d、interval=1m），更早的成交只能回落到日线开盘。",
-                "免费数据无 bid/ask 报价：成交价按 bar/开盘价假定，成本用单边 bps 近似买卖两端。",
-                "无借券费、locate 费与并购逼平数据，因此默认只做多；direction=-1 仅记为观望。",
-                "available_at 为日精度的记录按当日 23:59:59 UTC 处理，首根可用 bar 落在下一交易日。",
-            ]
-            + (
-                [
-                    "signals 表为空：本页信号由 events 按 point-in-time 规则自动生成"
-                    "（首次产品码 / 药品获批 / 90 天召回聚集），只用于演示回放链路。"
-                ]
-                if signal_source == "events_fallback"
-                else []
-            )
-            + (
-                [
-                    "events 多年回放模式：按 point-in-time 从 events 生成候选"
-                    "（首次产品码/新赛道/药品批准/III 期启动/召回聚集/8-K 催化剂），"
-                    "每类有上限并做 kind×year×company 抽样；最近 intraday_days 天内的成交"
-                    "可用 1 分钟数据（公开时点后第一根 bar 开盘），更早的窗口回落日线次日开盘。"
-                ]
-                if event_mode
-                else []
-            ),
+            "signal_source": signal_source,
         },
-        "method": {
-            "engine": ENGINE,
-            "decision_time": "events.available_at（日精度按当日 23:59:59 UTC 处理）",
-            "entry_intraday": "公开时点之后第一根 1 分钟 bar 的开盘价",
-            "entry_daily": "公开日之后第一个交易日的开盘价",
-            "intraday_rule": (
-                "公开时点落在最近 intraday_days 天内且 Yahoo 1 分钟数据可得时用 1 分钟分支，"
-                "成交取公开时点之后第一根 1 分钟 bar 的开盘价；"
-                "否则回落日线次日开盘；1 分钟请求失败/无 bar 按日线降级并标记 fallback"
-            ),
-            "intraday_fill_rule": (
-                "1m bar 的 ts 必须严格大于 available_at；日精度 available_at 按当日 23:59:59 UTC 处理，"
-                "因此首根可用 bar 落在下一交易日 09:30 ET"
-            ),
-            "intraday_coverage": (
-                "Yahoo range=7d&interval=1m、includePrePost=false：免费 1m 仅覆盖最近约 7 个自然日，"
-                "盘前盘后 bar 已排除；更早的窗口只能日线"
-            ),
-            "intraday_no_quote": "无 bid/ask：1m 成交价按 bar 开盘价假定，不是真实可成交报价",
-            "exit": f"成交后第 {int(hold_days)} 个交易日收盘；数据不足时按最后一个可用收盘价，记 end_of_data",
-            "cost": "costs_bps 为单边成本（bps），买入与卖出各收一次，往返扣减 2×bps",
-            "sizing": "capital × position_pct × clamp(score,0.2,1.0)，固定名义额、不复利、不模拟现金约束",
-            "concurrency": f"单标的不叠加；同时最多 {int(max_concurrent)} 笔",
-            "long_only": not allow_short,
-            "short_reference": "做空信号也解析参考成交价（1m/日线规则相同）并标记 reference_only，但不计入组合与收益",
-            "signals_source": (
-                "events 多年语料：point-in-time 规则在 replay 内独立实现"
-                if event_mode
-                else "signals 表（source=auto 且表为空时回退到 events 生成）"
-            ),
-            "events_rules": (
-                {
-                    "device_novel_code": "(company_key, product_code) 全历史首次出现，落在窗口内才入选",
-                    "device_new_track": "(company_key, track_id) 全历史首次出现；与首次产品码同事件时不重复",
-                    "drug_approval": "所有 drug_approval 事件（payload 原始批准）",
-                    "trial_start": "ctgov trial 且 payload.phase 含 PHASE3",
-                    "recall_cluster": "同一公司 90 天内第 2 起召回起、每 90 天窗口最多 1 条",
-                    "8k_catalyst": "8-K 标题/buckets 关键词定向；payload.backfill=true 跳过；ticker 由公司表或标题括号解析",
-                }
-                if event_mode
-                else None
-            ),
-            "events_sampling": (
-                {
-                    "target": "200-500 steps",
-                    "per_kind_limit": event_stats.get("per_kind_limit"),
-                    "max_steps": effective_max_steps,
-                    "method": event_stats.get("diversity"),
-                }
-                if event_mode
-                else None
-            ),
-            "in_sample": True,
-            "not_modelled": [
-                "bid/ask 价差与盘口冲击（只用一个 bps 档近似）",
-                "借券费 / locate / 做空逼平（默认不做空）",
-                "停牌、涨跌停、盘前盘后与隔夜跳空成交",
-                "佣金、税费、汇率与并购/Delisting 现金流",
-                "复利与现金约束（固定名义额）",
-            ],
+        "window_stats": {
+            "signals": len(in_window),
+            "candidates": len(usable),
+            "entered": entered,
+            "skipped": len(steps) - entered,
         },
-        "assumptions_url": ASSUMPTIONS_URL,
-        "disclaimer_zh": DISCLAIMER_ZH,
-        "steps": steps_payload,
-        "event_study": _event_study(steps, cost_items),
-        "summary_by_cost": summary_by_cost,
-        "trades_by_cost": trades_by_cost,
-        "summary": summary_by_cost.get(first_key) if first_key else None,
-        "trades": trades_by_cost.get(first_key, []) if first_key else [],
-        "skipped": {
-            "count": len(steps) - entered,
-            "by_reason": dict(skip_reasons),
-            "by_reason_zh": {
-                SKIP_REASON_ZH.get(key, key): value for key, value in skip_reasons.items()
+        "coverage": {
+            "signals_total": len(rows),
+            "in_window": len(in_window),
+            "usable": len(usable),
+            "filtered_low_timestamp_quality": len(filtered),
+            "entered": entered,
+            "skipped": len(steps) - entered,
+        },
+        "timestamp_quality": {
+            "counts": dict(sorted(quality_counts.items())),
+            "counts_zh": {QUALITY_ZH.get(key, key): value for key, value in sorted(quality_counts.items())},
+            "filtered": len(filtered),
+            "filtered_signals": filtered[:50],
+        },
+        "data_sources": {
+            "daily": book.daily_status(tickers),
+            "intraday": {
+                "status": intraday_status,
+                "status_zh": INTRADAY_STATUS_ZH.get(intraday_status, intraday_status),
+                "requested": bool(book.intraday_errors()) or intraday_status in ("ok", "partial"),
+                "errors": book.intraday_errors(),
             },
-            "low_quality_excluded": len(filtered),
+            "requests": book.request_stats(),
         },
-        "quality": {
-            "by_quality": dict(quality_counts),
-            "allowed": list(QUALITY_ALLOWED),
-            "excluded": len(filtered),
-            "policy": "只能使用 available_at 之前的信息；timestamp_quality=unknown 的事件不进入回放",
+        "price_source_counts": price_source_counts,
+        "first_seen_lag_days": first_seen_lags,
+        "steps": steps_payload,
+        "timeline": steps_payload,
+        "trades_by_cost": trades_by_cost,
+        "trades": trades_by_cost.get(first_key or "", []),
+        "summary_by_cost": summary_by_cost,
+        "summary": summary_by_cost.get(first_key or "", {}),
+        "event_study": _event_study(steps, cost_items),
+        "skip_reasons": dict(sorted(skip_reasons.items())),
+        "price_sources": dict(sorted(price_sources.items())),
+        "decision_counts": {
+            "BUY": sum(1 for step in steps if step.get("decision") == "BUY"),
+            "SHORT": sum(1 for step in steps if step.get("decision") == "SHORT"),
+            "SKIP": sum(1 for step in steps if step.get("decision") == "SKIP"),
         },
-        "audit": {
-            "fill_after_available": entered,
-            "lookahead_rejected": skip_reasons.get("lookahead_rejected", 0),
-            "dedupe_key": "(event_id, ticker, direction, kind, signal_date)",
-        },
-        "files": {},
+        "lookahead_rejected": int(skip_reasons.get("lookahead_rejected", 0)),
+        "assumptions_url": ASSUMPTIONS_URL,
+        "disclaimer": DISCLAIMER_ZH,
+        "limits": [
+            "仅覆盖最近约 7 天的 1 分钟数据，其余交易日退化为次日开盘价",
+            "无 bid/ask，成交价为 bar 开盘价加 bps 成本的假设值",
+            "无借券数据，默认仅做多",
+        ],
     }
+    if signal_source != "signals_table":
+        payload["meta"]["event_mode"] = event_stats
+        payload["meta"]["candidate_kind_counts"] = event_stats.get("candidate_counts")
+        payload["meta"]["sampled_kind_counts"] = event_stats.get("sampled_counts")
+        payload["meta"]["selection"] = {
+            "per_kind_limit": event_stats.get("per_kind_limit"),
+            "max_steps": event_stats.get("max_steps"),
+            "total_candidates": event_stats.get("total_candidates"),
+            "total_steps": event_stats.get("total_steps"),
+            "diversity": event_stats.get("diversity"),
+        }
     return payload
 
 
 def _all_moments(rows: Iterable[Mapping[str, Any]]) -> list[datetime]:
-    moments: list[datetime] = []
+    moments = []
     for row in rows:
-        moment, _ = _resolve_available_at(row)
-        if moment is not None:
+        moment, quality = _resolve_available_at(row)
+        if moment is not None and quality in QUALITY_ALLOWED:
             moments.append(moment)
     return moments
 
 
+def _intraday_status(book: _PriceBook, eligible: bool) -> str:
+    errors = book.intraday_errors()
+    if not eligible:
+        return "not_requested"
+    if book.fetcher is None:
+        return "unavailable"
+    if not errors:
+        return "ok"
+    return "partial"
+
+
 def _first_seen_lags(rows: Iterable[Mapping[str, Any]]) -> dict[str, Any]:
-    """Report how stale the point-in-time snapshot is (backfill honesty)."""
     lags: list[float] = []
     for row in rows:
-        first_seen_moment, _ = _parse_moment(row.get("first_seen_at"))
-        available_at, _ = _resolve_available_at(row)
-        if first_seen_moment is None or available_at is None:
+        first_seen = _parse_moment(row.get("first_seen_at"))[0]
+        available_at = _resolve_available_at(row)[0]
+        if first_seen is None or available_at is None:
             continue
-        lags.append((first_seen_moment.date() - available_at.date()).days)
+        lag = (available_at - first_seen).total_seconds() / 86400.0
+        if lag >= 0:
+            lags.append(lag)
     if not lags:
-        return {"n": 0, "median_days": None, "max_days": None, "backfilled": None}
+        return {"n": 0, "mean": None, "median": None, "p90": None}
     ordered = sorted(lags)
-    mid = len(ordered) // 2
-    median = ordered[mid] if len(ordered) % 2 else (ordered[mid - 1] + ordered[mid]) / 2.0
+    p90_index = min(len(ordered) - 1, int(math.ceil(len(ordered) * 0.9)) - 1)
     return {
         "n": len(ordered),
-        "median_days": median,
-        "max_days": max(ordered),
-        "backfilled": sum(1 for value in ordered if value > 1),
+        "mean": _round(_mean(ordered), 3),
+        "median": _round(ordered[len(ordered) // 2], 3),
+        "p90": _round(ordered[p90_index], 3),
     }
 
 
-def _intraday_status(book: _PriceBook, eligible: bool) -> str:
-    """Badge for the 1-minute layer: ok / partial / unavailable / not_requested."""
-    if not eligible:
-        return "not_requested"
-    attempts = book._intraday  # ticker -> bars | None
-    if not attempts:
-        return "unavailable" if book.fetcher is None else "not_requested"
-    succeeded = any(bars for bars in attempts.values())
-    failed = any(bars is None for bars in attempts.values())
-    if succeeded and failed:
-        return "partial"
-    if succeeded:
-        return "ok"
-    return "unavailable"
-
-
 def _public_step(step: Mapping[str, Any]) -> dict[str, Any]:
-    """Strip internal keys and guarantee the SCHEMA §11 step fields."""
-    clean = {key: value for key, value in step.items() if not key.startswith("_")}
-    clean.setdefault("t", clean.get("available_at") or "")
-    clean.setdefault("event_zh", "")
-    return clean
+    """Strip internal bookkeeping fields from a step for the JSON/HTML output."""
+    keep = {
+        key: value
+        for key, value in step.items()
+        if not str(key).startswith("_")
+    }
+    return keep
 
 
 # --------------------------------------------------------------------------- HTML
 _CSS = """
-:root{--bg:#f6f7f9;--card:#fff;--ink:#14181f;--muted:#5c6672;--line:#dde2ea;
---up:#0f7b3f;--down:#b3261e;--warn:#8a4b00;--warn-bg:#fff4e0;--accent:#1f4e79;
---buy:#0b6b4f;--short:#8a4b00;--skip:#5b6470;}
+:root{--bg:#f6f7f9;--panel:#ffffff;--ink:#1b2733;--muted:#5d6b7a;--line:#d9e0e7;
+--accent:#2c6fbb;--good:#2e7d32;--bad:#c62828;--skip:#8a6d1d;--chip:#eef3f8}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,"Segoe UI","Noto Sans SC","Microsoft YaHei",sans-serif}
-header{background:linear-gradient(135deg,#10243d,#1f4e79);color:#fff;padding:26px 28px}
-header h1{margin:0 0 6px;font-size:24px;letter-spacing:.5px}
-header .sub{color:#cfe0f2;font-size:13px}
-.wrap{max-width:1120px;margin:0 auto;padding:0 20px 60px}
-.banner{margin:20px auto 0;max-width:1120px;background:var(--warn-bg);border:1px solid #f0c98a;border-left:6px solid #d98200;color:#4a3300;padding:14px 16px;border-radius:8px;font-size:14px}
-.banner b{color:#7a3e00}
-h2{font-size:19px;margin:34px 0 10px;border-left:4px solid var(--accent);padding-left:10px}
-h3{font-size:15px;margin:18px 0 8px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;box-shadow:0 1px 2px rgba(20,24,31,.04);overflow-x:auto}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:12px}
-.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
-.kpi .lab{font-size:12px;color:var(--muted)}
-.kpi .val{font-size:26px;font-weight:700;margin:4px 0 2px}
-.kpi .meta{font-size:12px;color:var(--muted)}
-.up{color:var(--up)}.down{color:var(--down)}
-table{width:100%;border-collapse:collapse;font-size:13px;background:var(--card)}
-th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
-th{background:#eef2f7;color:#33404f;font-weight:600;white-space:nowrap}
-td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-tr:last-child td{border-bottom:none}
+body{margin:0;background:var(--bg);color:var(--ink);
+font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.5}
+header{padding:22px 24px 14px;border-bottom:1px solid var(--line);background:var(--panel)}
+header h1{margin:0 0 6px;font-size:20px}
+header .sub{color:var(--muted);font-size:13px}
+.banner{margin:14px 24px 0;padding:10px 14px;border:1px solid #f0d48a;background:#fff8e1;border-radius:6px;font-size:13px}
+.banner b{color:#7a5c00}
+main{padding:16px 24px 40px;display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.card .k{font-size:12px;color:var(--muted)}
+.card .v{font-size:17px;font-weight:600;margin-top:2px;word-break:break-all}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:16px}
+.panel h2{margin:0 0 10px;font-size:15px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;white-space:nowrap}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.chip{display:inline-block;padding:1px 8px;border-radius:999px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.chip.buy{background:#e6f2e6;color:var(--good)}
+.chip.short{background:#fdecea;color:var(--bad)}
+.chip.skip{background:var(--chip);color:var(--skip)}
 .muted{color:var(--muted)}
-.small{font-size:12px}
-.badge{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:600;color:#fff;white-space:nowrap}
-.badge-buy{background:var(--buy)}.badge-short{background:var(--short)}.badge-skip{background:var(--skip)}
-.chip{display:inline-block;border:1px solid var(--line);background:#f1f4f8;border-radius:999px;padding:1px 8px;font-size:12px;color:#38505f;margin-right:4px}
-.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:10px 0 14px;font-size:13px}
-.controls label{cursor:pointer}
-.controls input[type=search]{padding:6px 10px;border:1px solid var(--line);border-radius:8px;min-width:220px}
-details.step{background:var(--card);border:1px solid var(--line);border-radius:9px;margin:8px 0;overflow:hidden}
-details.step summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:9px 12px;list-style:none}
-details.step summary::-webkit-details-marker{display:none}
-details.step summary:hover{background:#f7f9fc}
-.step-time{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12px;min-width:188px}
-.step-ticker{font-weight:700;min-width:58px}
-.step-event{flex:1 1 260px;min-width:200px}
-.step-outcomes{font-size:12px;font-variant-numeric:tabular-nums;color:#33404f}
-.step-body{padding:4px 14px 14px;border-top:1px dashed var(--line);font-size:13px;overflow-x:auto}
-.chain{color:var(--muted);font-size:12px;margin:10px 0 8px}
-.chips{margin:0 0 10px}
-.mini td,.mini th{padding:5px 8px;font-size:12.5px}
-a.src{color:var(--accent);text-decoration:none;font-weight:600}
-a.src:hover{text-decoration:underline}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:840px){.grid2{grid-template-columns:1fr}}
-.svgbox{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
-.svgbox svg{width:100%;height:auto;display:block}
-footer{margin-top:40px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
-ul.tight{margin:6px 0;padding-left:20px}
-ul.tight li{margin:3px 0}
-"""
-
-_JS = """
-(function(){
-  var form=document.getElementById('filters');
-  if(!form){return;}
-  function apply(){
-    var mode=(form.querySelector('input[name="decision"]:checked')||{}).value||'all';
-    var q=(document.getElementById('q').value||'').trim().toLowerCase();
-    var shown=0,total=0;
-    document.querySelectorAll('details.step').forEach(function(el){
-      total++;
-      var d=(el.dataset.decision||'').toLowerCase();
-      var text=(el.textContent||'').toLowerCase();
-      var okMode=(mode==='all')||(mode==='trade'&&(d==='buy'||d==='short'))||(mode==='skip'&&d==='skip');
-      var okQ=!q||text.indexOf(q)>=0;
-      var visible=okMode&&okQ;
-      el.style.display=visible?'':'none';
-      if(visible){shown++;}
-    });
-    var counter=document.getElementById('count');
-    if(counter){counter.textContent='显示 '+shown+' / '+total+' 步';}
-  }
-  form.addEventListener('change',apply);
-  document.getElementById('q').addEventListener('input',apply);
-  apply();
-})();
+.step{border-top:1px solid var(--line);padding:10px 2px}
+.step:first-of-type{border-top:none}
+.step .row1{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.step .row1 .t{font-weight:600;font-variant-numeric:tabular-nums}
+.step .row1 .ticker{font-weight:700;color:var(--accent)}
+.step .row2{margin-top:4px}
+.step .row3{margin-top:4px;font-size:12.5px;color:var(--muted)}
+.step .arrow{color:var(--muted);padding:0 4px}
+.pos{color:var(--good);font-weight:600}
+.neg{color:var(--bad);font-weight:600}
+.spark{width:100%;height:auto;display:block;margin-top:6px}
+footer{padding:14px 24px 28px;color:var(--muted);font-size:12px}
+footer p{margin:4px 0}
+a{color:var(--accent)}
+.src{display:block;font-size:11.5px;color:var(--muted);margin-top:2px;word-break:break-all}
+@media (max-width:720px){main,header,footer{padding-left:12px;padding-right:12px}}
 """
 
 
-def _h(value: Any) -> str:
-    return _html.escape("" if value is None else str(value), quote=True)
+def _esc(value: Any) -> str:
+    return _html.escape("" if value is None else str(value))
 
 
-def _pct(value: Any, digits: int = 2, signed: bool = True) -> str:
+def _fmt_pct(value: Any, digits: int = 1) -> str:
     number = _as_float(value)
     if number is None:
-        return '<span class="muted">—</span>'
-    glyph = "▲" if number > 0 else ("▼" if number < 0 else "→")
-    css = "up" if number > 0 else ("down" if number < 0 else "muted")
-    return f'<span class="{css}">{number * 100:+.{digits}f}% {glyph}</span>' if signed else f'<span class="{css}">{number * 100:.{digits}f}%</span>'
+        return "—"
+    return f"{number * 100:.{digits}f}%"
 
 
-def _money(value: Any) -> str:
+def _fmt_pct_signed(value: Any, digits: int = 2) -> str:
     number = _as_float(value)
-    return "—" if number is None else f"{number:,.2f}"
+    if number is None:
+        return "—"
+    cls = "pos" if number >= 0 else "neg"
+    return f'<span class="{cls}">{number * 100:+.{digits}f}%</span>'
 
 
-def _plain_pct(value: Any, digits: int = 2) -> str:
+def _fmt_money(value: Any) -> str:
     number = _as_float(value)
-    return "—" if number is None else f"{number*100:+.{digits}f}%"
+    if number is None:
+        return "—"
+    return f"${number:,.0f}"
 
 
-def _decision_badge(decision: Any) -> str:
-    raw = str(decision or "SKIP").upper()
-    label = {"BUY": "做多", "SHORT": "做空", "SKIP": "观望"}.get(raw, raw)
-    css = {"BUY": "badge-buy", "SHORT": "badge-short"}.get(raw, "badge-skip")
-    return f'<span class="badge {css}">{_h(label)}</span>'
+def _fmt_number(value: Any, digits: int = 2) -> str:
+    number = _as_float(value)
+    if number is None:
+        return "—"
+    return f"{number:,.{digits}f}"
 
 
-def _source_anchor(url: Any, label: str = "查看 SEC / FDA 原文") -> str:
-    """Clickable primary-source link with the scheme entity-encoded.
-
-    The page must not reference any external *resource* (no external stylesheet,
-    script, image or font), and the ``http(s)`` scheme is entity-encoded so the
-    self-contained check cannot confuse a citation with a resource load. Browsers
-    decode ``&#58;`` back to ``:`` so the link still opens the original filing.
-    """
-    raw = str(url or "").strip()
-    if not raw:
-        return '<span class="muted">无原文链接</span>'
-    if not raw.lower().startswith(("http://", "https://")):
-        return f'<span class="muted">{_h(raw)}</span>'
-    scheme, rest = raw.split("://", 1)
-    href = f"{scheme}&#58;//{_h(rest)}"
-    return f'<a class="src" href="{href}" target="_blank" rel="noopener noreferrer">{_h(label)} ↗</a>'
-
-
-def _svg_equity(summary_by_cost: Mapping[str, Mapping[str, Any]]) -> str:
-    curves: list[tuple[str, list[Mapping[str, Any]]]] = []
-    for key, stats in summary_by_cost.items():
-        points = [point for point in (stats.get("equity_curve") or []) if isinstance(point, Mapping)]
-        if len(points) >= 2:
-            curves.append((str(key), points))
-    if not curves:
-        return '<p class="muted small">没有已实现成交，暂无净值曲线。</p>'
-    values = [float(point["equity"]) for _, points in curves for point in points]
+def _sparkline(points: Sequence[Mapping[str, Any]]) -> str:
+    """Inline SVG equity sparkline (zero dependencies, zero JS)."""
+    values = [_as_float(point.get("equity")) for point in points]
+    values = [value for value in values if value is not None]
+    if len(values) < 2:
+        return '<span class="muted">权益曲线点不足</span>'
+    width, height = 320, 48
     low, high = min(values), max(values)
-    if high - low < 1e-9:
-        high = low + 1.0
-    width, height = 780, 240
-    left, right, top, bottom = 64, 18, 18, 34
-    colors = ["#1f4e79", "#0f7b3f", "#b3261e", "#8a4b00", "#5b3f99"]
-
-    def x_at(ratio: float) -> float:
-        return left + (width - left - right) * ratio
-
-    def y_at(value: float) -> float:
-        return top + (height - top - bottom) * (1.0 - (value - low) / (high - low))
-
-    parts = [
-        f'<svg viewBox="0 0 {width} {height}" width="100%" role="img" '
-        f'aria-label="各成本档已实现净值曲线" preserveAspectRatio="xMidYMid meet">',
-        f'<rect x="0" y="0" width="{width}" height="{height}" fill="#ffffff"/>',
-    ]
-    for fraction in (0.0, 0.25, 0.5, 0.75, 1.0):
-        y = top + (height - top - bottom) * fraction
-        parts.append(
-            f'<line x1="{left}" y1="{y:.1f}" x2="{width-right}" y2="{y:.1f}" '
-            f'stroke="#e6eaf0" stroke-width="1"/>'
-        )
-    capital = float(curves[0][1][0]["equity"])
-    capital_y = y_at(capital)
-    parts.append(
-        f'<line x1="{left}" y1="{capital_y:.1f}" x2="{width-right}" y2="{capital_y:.1f}" '
-        f'stroke="#9aa7b6" stroke-width="1.2" stroke-dasharray="5 4"/>'
+    span = (high - low) or 1.0
+    step_x = width / (len(values) - 1)
+    coords = []
+    for index, value in enumerate(values):
+        x = index * step_x
+        y = height - 4 - (value - low) / span * (height - 8)
+        coords.append(f"{x:.1f},{y:.1f}")
+    return (
+        f'<svg class="spark" viewBox="0 0 {width} {height}" role="img" '
+        f'aria-label="权益曲线">'
+        f'<polyline fill="none" stroke="#2c6fbb" stroke-width="1.6" points="{" ".join(coords)}"/>'
+        f"</svg>"
     )
-    parts.append(
-        f'<text x="{left-6}" y="{capital_y+4:.1f}" text-anchor="end" font-size="11" fill="#5c6672">'
-        f'{capital:,.0f} 本金</text>'
-    )
-    for index, (key, points) in enumerate(curves):
-        color = colors[index % len(colors)]
-        count = len(points) - 1
-        coords = " ".join(
-            f"{x_at(i / count):.1f},{y_at(float(point['equity'])):.1f}"
-            for i, point in enumerate(points)
-        )
-        parts.append(
-            f'<polyline fill="none" stroke="{color}" stroke-width="2" points="{coords}"/>'
-        )
-        last = points[-1]
-        parts.append(
-            f'<circle cx="{x_at(1.0):.1f}" cy="{y_at(float(last["equity"])):.1f}" r="3" fill="{color}"/>'
-        )
-        legend_x = left + 10 + index * 150
-        parts.append(
-            f'<rect x="{legend_x}" y="{height-20}" width="10" height="10" fill="{color}"/>'
-            f'<text x="{legend_x+14}" y="{height-11}" font-size="11" fill="#33404f">'
-            f'单边 {_h(key)} bps</text>'
-        )
-    parts.append(
-        f'<text x="{width-right}" y="{top+10}" text-anchor="end" font-size="11" fill="#5c6672">'
-        f'最高 {high:,.0f}</text>'
-    )
-    parts.append(
-        f'<text x="{width-right}" y="{height-bottom-2}" text-anchor="end" font-size="11" fill="#5c6672">'
-        f'最低 {low:,.0f}</text>'
-    )
-    parts.append("</svg>")
-    return "".join(parts)
 
 
-def _render_steps(steps: Sequence[Mapping[str, Any]]) -> str:
-    if not steps:
-        return '<div class="card muted">窗口内没有可回放的步骤（没有信号，或全部因时间戳质量被过滤）。</div>'
-    blocks: list[str] = []
-    for step in steps:
-        decision = str(step.get("decision") or "SKIP").upper()
-        kind = str(step.get("kind") or "")
-        outcomes = " ".join(
-            [
-                f'<span class="muted">1日</span> {_pct(step.get("outcome_1d"))}',
-                f'<span class="muted">5日</span> {_pct(step.get("outcome_5d"))}',
-                f'<span class="muted">20日</span> {_pct(step.get("outcome_20d"))}',
-            ]
-        )
-        quality = str(step.get("timestamp_quality") or "")
-        quality_zh = QUALITY_ZH.get(quality, quality)
-        price_source = str(step.get("price_source") or "")
-        price_source_zh = str(step.get("price_source_zh") or "")
-        chips = [
-            f'<span class="chip">{_h(step.get("kind_zh") or kind)}</span>',
-            f'<span class="chip">时间质量：{_h(quality_zh)}</span>',
-        ]
-        if price_source:
-            chips.append(f'<span class="chip">成交来源：{_h(price_source_zh or price_source)}</span>')
-        if step.get("intraday_fallback"):
-            chips.append(f'<span class="chip">1 分钟降级：{_h(step.get("intraday_fallback"))}</span>')
-        if step.get("reference_only"):
-            chips.append('<span class="chip">参考价（未入账）</span>')
+def _decision_chip(decision: str) -> str:
+    mapping = {"BUY": ("chip buy", "做多"), "SHORT": ("chip short", "做空"), "SKIP": ("chip skip", "跳过")}
+    cls, label = mapping.get(decision, ("chip skip", decision or "?"))
+    return f'<span class="{cls}">{_esc(label)}</span>'
 
-        body: list[str] = ['<div class="chain">事件 → 判定 → 成交 → 后续 1/5/20 日</div>']
-        if chips:
-            body.append('<div class="chips">' + "".join(chips) + "</div>")
-        body.append('<table class="mini"><tbody>')
-        body.append(
-            f'<tr><th>信号 / 公开时点</th><td>{_h(step.get("signal_date"))}'
-            f' <span class="muted">／ {_h(step.get("available_at"))}</span></td>'
-            f'<th>代码 / 公司</th><td>{_h(step.get("ticker"))}'
-            f' <span class="muted">{_h(step.get("company_zh") or step.get("company_key"))}</span></td></tr>'
-        )
-        body.append(
-            f'<tr><th>方向 / 分数</th><td>{_h(step.get("side"))} / {_h(step.get("score"))}</td>'
-            f'<th>判定</th><td>{_decision_badge(decision)}'
-            + (
-                f' <span class="muted">{_h(step.get("skip_reason_zh"))}</span>'
-                if decision == "SKIP"
-                else ""
-            )
-            + "</td></tr>"
-        )
+
+def _step_html(step: Mapping[str, Any]) -> str:
+    decision = str(step.get("decision") or "SKIP")
+    when = _esc(step.get("fill_time") or step.get("t") or step.get("available_at") or "—")
+    ticker = _esc(step.get("ticker") or "—")
+    event = _esc(step.get("event_zh") or step.get("kind_zh") or "事件")
+    fill = _esc(_fmt_number(step.get("fill_price")))
+    parts = [f'<div class="row1"><span class="t">{when}</span>'
+             f'<span class="ticker">{ticker}</span>{_decision_chip(decision)}</div>']
+    parts.append(f'<div class="row2">{_esc(step.get("company_zh") or "")} {event}</div>')
+    if decision == "SKIP":
+        reason = _esc(step.get("skip_reason_zh") or step.get("skip_reason") or "")
+        row3 = f"跳过原因：{reason}"
         if step.get("fill_price") is not None:
-            body.append(
-                f'<tr><th>成交</th><td>{_h(step.get("fill_time"))} @ {_money(step.get("fill_price"))}'
-                f'{"（参考价，未计入组合）" if decision == "SKIP" else ""}</td>'
-                f'<th>名义额 / 股数</th><td>{_money(step.get("notional"))} / '
-                f'{_money(step.get("shares"))}</td></tr>'
-            )
-        if decision != "SKIP":
-            body.append(
-                f'<tr><th>平仓</th><td>{_h(step.get("exit_date"))} @ {_money(step.get("exit_price"))}'
-                f' <span class="muted">（{_h(step.get("exit_reason"))}，持有 '
-                f'{_h(step.get("holding_days"))} 个交易日）</span></td>'
-                f'<th>毛收益</th><td>{_pct(step.get("gross_return"))}</td></tr>'
-            )
-        body.append(
-            f'<tr><th>后续 1 / 5 / 20 日</th><td colspan="3">{outcomes}</td></tr>'
+            tag = "（参考价，不入账）" if step.get("reference_only") else ""
+            row3 += f" ｜ 参考价 {fill}{tag}"
+    else:
+        row3 = (
+            f'成交价 {fill}'
+            f'<span class="arrow">→</span>1日 {_fmt_pct_signed(step.get("outcome_1d"))}'
+            f'<span class="arrow">·</span>5日 {_fmt_pct_signed(step.get("outcome_5d"))}'
+            f'<span class="arrow">·</span>20日 {_fmt_pct_signed(step.get("outcome_20d"))}'
         )
-        body.append("</tbody></table>")
-        if decision != "SKIP" and step.get("net_by_cost"):
-            body.append('<h3>按成本档（单边 bps，买卖各收一次）</h3>')
-            body.append('<table class="mini"><thead><tr><th>成本档</th><th class="num">净收益</th><th class="num">按名义额盈亏</th></tr></thead><tbody>')
-            for key in step["net_by_cost"]:
-                net = step["net_by_cost"].get(key)
-                pnl = (step.get("pnl_by_cost") or {}).get(key)
-                body.append(
-                    f'<tr><td>单边 {_h(key)} bps</td><td class="num">{_pct(net)}</td>'
-                    f'<td class="num">{_money(pnl)}</td></tr>'
-                )
-            body.append("</tbody></table>")
-        body.append(
-            f'<p class="small">{_source_anchor(step.get("url"))}　'
-            f'<span class="muted">原文标题：{_h(step.get("title"))}</span></p>'
-        )
-        body.append(f'<p class="small muted">判定理由：{_h(step.get("reason_zh"))}</p>')
-
-        blocks.append(
-            f'<details class="step" data-decision="{_h(decision.lower())}" data-kind="{_h(kind)}">'
-            f'<summary><span class="step-time">{_h(step.get("t"))}</span>'
-            f'<span class="step-ticker">{_h(step.get("ticker"))}</span>'
-            f'{_decision_badge(decision)}<span class="step-event">{_h(step.get("event_zh"))}</span>'
-            f'<span class="step-outcomes">{outcomes}</span></summary>'
-            f'<div class="step-body">{"".join(body)}</div></details>'
-        )
-    return "".join(blocks)
+        price_source = _esc(step.get("price_source_zh") or "")
+        if price_source:
+            row3 += f' ｜ {price_source}'
+        if step.get("intraday_fallback"):
+            row3 += f'（1 分钟降级：{_esc(step.get("intraday_fallback"))}）'
+    url = str(step.get("url") or "").strip()
+    if url:
+        parts.append(f'<div class="row3">{row3}<a class="src" href="{_esc(url)}" rel="noopener">{_esc(url)}</a></div>')
+    else:
+        parts.append(f'<div class="row3">{row3}</div>')
+    return f'<div class="step">{"".join(parts)}</div>'
 
 
-def _step_price_reason(
-    step: Mapping[str, Any],
-    *,
-    meta: Mapping[str, Any],
-    window_days: float,
-    now_moment: datetime | None,
-) -> str:
-    """Why a step used the daily open instead of a 1-minute bar.
-
-    Kept explicit so the HTML can show the 1-minute boundary as a table instead
-    of a generic disclaimer.
-    """
-    fallback = str(step.get("intraday_fallback") or "")
-    if fallback:
-        return f"1m 不可用/失败：{fallback} → 日线降级"
-    fetcher_mode = str((meta.get("data_status") or {}).get("fetcher") or "")
-    if fetcher_mode == "offline":
-        return "离线模式未请求 1m（价格全部来自日线）"
-    moment, _ = _parse_moment(step.get("available_at_utc"))
-    if moment is not None and now_moment is not None:
-        delta_days = (now_moment - moment).total_seconds() / 86400.0
-        if delta_days > float(window_days):
-            return f"公开时点早于最近 {float(window_days):g} 天，免费 1m 数据不可得"
-    return "1m 分支未触发（无可用 bar 或无 fetcher）"
-
-
-def render_html(payload: Mapping[str, Any], *, docs_rel: str = "../../docs/ASSUMPTIONS.md") -> str:
-    """Render a fully self-contained replay page (inline CSS/SVG/JS only)."""
+def render_html(payload: Mapping[str, Any], docs_rel: str = "../../docs/ASSUMPTIONS.md") -> str:
     meta = payload.get("meta") or {}
+    coverage = payload.get("coverage") or {}
+    quality = payload.get("timestamp_quality") or {}
+    sources = payload.get("data_sources") or {}
+    intraday = sources.get("intraday") or {}
     window = payload.get("window") or {}
-    steps = payload.get("steps") or []
-    summary_by_cost = payload.get("summary_by_cost") or {}
-    status = payload.get("status")
-    status_zh = "正常" if status == "ok" else "样本不足"
-    generated = meta.get("generated_at") or utc_now_iso()
-    counts = meta.get("counts") or {}
-    quality = payload.get("quality") or {}
-    event_study = payload.get("event_study") or {}
-    skipped = payload.get("skipped") or {}
-    intraday_window_days = float(
-        payload.get("intraday_window_days", meta.get("intraday_days_effective") or 0.0)
-    )
-    price_source_counts = payload.get("price_source_counts") or {}
-    now_moment, _ = _parse_moment(meta.get("generated_at"))
-    intraday_steps = [step for step in steps if step.get("price_source") == "1m"]
-    daily_steps = [step for step in steps if step.get("price_source") == "daily"]
-    fallback_steps = [step for step in daily_steps if step.get("intraday_fallback")]
-    daily_reason_counter: Counter[str] = Counter(
-        _step_price_reason(
-            step,
-            meta=meta,
-            window_days=intraday_window_days,
-            now_moment=now_moment,
-        )
-        for step in daily_steps
-    )
+    steps = list(payload.get("steps") or payload.get("timeline") or [])
+    status = str(payload.get("status") or "ok")
+    decision_counts = payload.get("decision_counts") or {}
 
-    kpis: list[str] = []
-    for key, stats in summary_by_cost.items():
-        total = stats.get("total_return")
-        css = "up" if (_as_float(total) or 0) > 0 else ("down" if (_as_float(total) or 0) < 0 else "")
-        kpis.append(
-            f'<div class="kpi"><div class="lab">单边成本 {_h(key)} bps</div>'
-            f'<div class="val {css}">{_plain_pct(total)}</div>'
-            f'<div class="meta">最大回撤 {_plain_pct(stats.get("max_drawdown"))} · '
-            f'胜率 {_plain_pct(stats.get("win_rate"), 1) if stats.get("win_rate") is not None else "—"} · '
-            f'{_h(stats.get("trades"))} 笔</div></div>'
-        )
-    if not kpis:
-        kpis.append('<div class="kpi"><div class="lab">回放</div><div class="val">—</div><div class="meta">没有可成交的步骤</div></div>')
-
-    cost_rows: list[str] = []
-    for key, stats in summary_by_cost.items():
-        cost_rows.append(
-            "<tr>"
-            f'<td>单边 {_h(key)} bps</td>'
-            f'<td class="num">往返 {_h(int(float(key) * 2))} bps</td>'
-            f'<td class="num">{_pct(stats.get("total_return"))}</td>'
-            f'<td class="num">{_money(stats.get("final_equity"))}</td>'
-            f'<td class="num">{_pct(stats.get("max_drawdown"))}</td>'
-            f'<td class="num">{_plain_pct(stats.get("win_rate"), 1) if stats.get("win_rate") is not None else "—"}</td>'
-            f'<td class="num">{_h(stats.get("trades"))}</td>'
-            f'<td class="num">{_h(stats.get("avg_holding_days"))}</td>'
-            f'<td class="num">{_pct(stats.get("avg_trade_return"))}</td>'
-            "</tr>"
-        )
-
-    base_cost_key = next(iter(summary_by_cost), "")
-    trade_rows: list[str] = []
-    for index, trade in enumerate(payload.get("trades") or [], 1):
-        if not isinstance(trade, Mapping):
-            continue
-        kind_zh = KIND_ZH.get(str(trade.get("kind")), str(trade.get("kind") or ""))
-        trade_rows.append(
-            "<tr>"
-            f'<td class="num">{index}</td>'
-            f'<td>{_h(trade.get("ticker"))}</td>'
-            f'<td>{_h(kind_zh)}</td>'
-            f'<td>{_h(trade.get("entry_time"))}</td>'
-            f'<td class="num">{_money(trade.get("entry_price"))}</td>'
-            f'<td class="num">{_money(trade.get("shares"))}</td>'
-            f'<td class="num">{_money(trade.get("notional"))}</td>'
-            f'<td>{_h(trade.get("exit_date"))}</td>'
-            f'<td class="num">{_money(trade.get("exit_price"))}</td>'
-            f'<td class="num">{_h(trade.get("holding_days"))}</td>'
-            f'<td class="num">{_pct(trade.get("gross_return"))}</td>'
-            f'<td class="num">{_pct(trade.get("ret"))}</td>'
-            f'<td class="num">{_money(trade.get("pnl"))}</td>'
-            "</tr>"
-        )
-    if not trade_rows:
-        trade_rows.append('<tr><td colspan="13" class="muted">窗口内没有进入组合的成交。</td></tr>')
-
-    study_rows: list[str] = []
-    for horizon in ("1", "5", "20"):
-        stats = (event_study.get("horizons") or {}).get(horizon) or {}
-        net = stats.get("mean_net_by_cost") or {}
-        net_cells = "".join(
-            f'<td class="num">{_pct(net.get(key))}</td>' for key in summary_by_cost
-        )
-        study_rows.append(
-            "<tr>"
-            f'<td>{_h(horizon)} 日</td>'
-            f'<td class="num">{_h(stats.get("n"))}</td>'
-            f'<td class="num">{_pct(stats.get("mean"))}</td>'
-            f'<td class="num">{_pct(stats.get("median"))}</td>'
-            f'<td class="num">{_plain_pct(stats.get("hit_rate"), 1) if stats.get("hit_rate") is not None else "—"}</td>'
-            f'<td class="num">{_h(round(stats["t"], 2)) if stats.get("t") is not None else "—"}</td>'
-            f"{net_cells}"
-            "</tr>"
-        )
-    study_headers = "".join(
-        f'<th class="num">平均净收益（{_h(key)} bps）</th>' for key in summary_by_cost
-    )
-
-    skip_rows: list[str] = []
-    for reason, count in sorted((skipped.get("by_reason") or {}).items(), key=lambda item: -item[1]):
-        skip_rows.append(
-            f'<tr><td>{_h(SKIP_REASON_ZH.get(reason, reason))}</td>'
-            f'<td class="num">{_h(count)}</td></tr>'
-        )
-    if not skip_rows:
-        skip_rows.append('<tr><td colspan="2" class="muted">窗口内没有跳过步骤。</td></tr>')
-
-    quality_rows: list[str] = []
-    for name, count in sorted((quality.get("by_quality") or {}).items(), key=lambda item: -item[1]):
-        quality_rows.append(
-            f'<tr><td>{_h(QUALITY_ZH.get(name, name))}</td><td class="num">{_h(count)}</td></tr>'
-        )
-    if not quality_rows:
-        quality_rows.append('<tr><td colspan="2" class="muted">无时间质量统计。</td></tr>')
-
-    lag = meta.get("first_seen_lag_days") or {}
-    request_stats = meta.get("request_stats") or {}
-    data_status = meta.get("data_status") or {}
-    daily_sources = meta.get("daily_sources") or {}
-    fetched_ticks = [ticker for ticker, source in daily_sources.items() if source == "yahoo_fallback"]
-    intraday_errors = meta.get("intraday_errors") or {}
-    method = payload.get("method") or {}
-    not_modelled = method.get("not_modelled") or []
-    event_mode = bool(meta.get("event_mode"))
-    source_text = str(counts.get("signal_source") or "")
-    candidate_counts = counts.get("candidate_counts") or {}
-    sampled_counts = counts.get("sampled_counts") or {}
-    event_mix_text = "；".join(
-        f"{KIND_ZH.get(kind, kind)} 候选 {_h(candidate_counts.get(kind))} → 抽样 {_h(sampled_counts.get(kind))}"
-        for kind in EVENT_MODE_KINDS
-        if kind in candidate_counts
-    )
-    event_rules = method.get("events_rules") or {}
-    event_rules_text = "；".join(
-        f"{KIND_ZH.get(kind, kind)}：{text}" for kind, text in event_rules.items()
-    )
-    events_sampling = method.get("events_sampling") or {}
-
-    price_legend = {
-        "1m": "公开时点后第一根 1 分钟 bar 开盘（Yahoo 1m，仅最近约 7 天）",
-        "daily": "日线：公开日之后第一个交易日开盘（窗口外 / 未请求 1m）",
-        "fallback": "尝试 1m 失败或无可用 bar → 日线降级（已标记）",
-        "missing": "未取得价格（缺价 / 公开后无未来交易日）",
-    }
-    count_rows = "".join(
-        f'<tr><td>{_h(label)}</td><td class="num">{_h(price_source_counts.get(key, 0))}</td>'
-        f'<td>{_h(price_legend[key])}</td></tr>'
-        for key, label in (
-            ("1m", "1 分钟 bar"),
-            ("daily", "日线（窗口外/未请求）"),
-            ("fallback", "日线降级（1m 失败）"),
-            ("missing", "无价格"),
-        )
-    )
-    intraday_rows = "".join(
-        f'<tr><td>{_h(step.get("t"))}</td><td>{_h(step.get("ticker"))}</td>'
-        f'<td>{_h(step.get("available_at"))}</td><td>{_h(step.get("fill_time"))}</td>'
-        f'<td class="num">{_money(step.get("fill_price"))}</td>'
-        f'<td>1m bar 晚于公开时点</td></tr>'
-        for step in intraday_steps[:80]
-    ) or '<tr><td colspan="6" class="muted">窗口内没有使用 1 分钟 bar 的成交。</td></tr>'
-    reason_rows = "".join(
-        f'<tr><td>{_h(reason)}</td><td class="num">{_h(count)}</td></tr>'
-        for reason, count in daily_reason_counter.most_common(12)
-    ) or '<tr><td colspan="2" class="muted">无日线成交。</td></tr>'
-    daily_rows = "".join(
-        f'<tr><td>{_h(step.get("t"))}</td><td>{_h(step.get("ticker"))}</td>'
-        f'<td>{_h(step.get("available_at"))}</td><td>{_h(step.get("fill_time"))}</td>'
-        f'<td class="num">{_money(step.get("fill_price"))}</td>'
-        f'<td>{_h(_step_price_reason(step, meta=meta, window_days=intraday_window_days, now_moment=now_moment))}</td></tr>'
-        for step in daily_steps[:80]
-    ) or '<tr><td colspan="6" class="muted">窗口内没有日线成交。</td></tr>'
-    error_rows = "".join(
-        f'<tr><td>{_h(ticker)}</td><td>{_h(text)}</td></tr>'
-        for ticker, text in sorted(intraday_errors.items())[:15]
-    ) or '<tr><td colspan="2" class="muted">没有 1 分钟请求失败记录。</td></tr>'
-    price_source_block = (
-        '<div class="card">'
-        "<p>Yahoo 免费 1 分钟数据（<code>range=7d&amp;interval=1m</code>）只覆盖最近约 "
-        f"<b>{intraday_window_days:g} 天</b>，且已用 <code>includePrePost=false</code> 排除盘前盘后。"
-        "本页据此决定每个 step 的成交价：</p>"
-        '<ul class="tight">'
-        "<li><b>1m</b>：<code>available_at</code> 落在窗口内且 1m 可得 → 成交 = "
-        "公开时点之后第一根 1 分钟 bar 的开盘价（bar 时间必须严格晚于公开时点）。</li>"
-        "<li><b>日线</b>：窗口外的公开时点或未请求 1m → 公开日之后第一个交易日 09:30 ET 开盘价。</li>"
-        "<li><b>fallback</b>：尝试了 1m 但请求失败 / 没有公开时点之后的 bar → 降级日线并标记。</li>"
-        "<li><b>无 bid/ask</b>：bar 开盘价只是假定成交价，不是真实可成交报价。</li>"
-        "</ul>"
-        '<table><thead><tr><th>价格来源</th><th class="num">步数</th><th>说明</th></tr></thead><tbody>'
-        + count_rows
-        + "</tbody></table>"
-        f'<p class="small muted">total = {_h(price_source_counts.get("total", len(steps)))} 步；'
-        "1m 只影响成交价，不影响决策时点（决策仍只用 available_at 之前的信息）。</p>"
-        "<h3>使用 1 分钟 bar 的 step（前 80 条）</h3>"
-        '<table><thead><tr><th>决策时间</th><th>代码</th><th>公开时点</th><th>成交时间</th>'
-        '<th class="num">成交价</th><th>说明</th></tr></thead><tbody>'
-        + intraday_rows
-        + "</tbody></table>"
-        f'<p class="small muted">共 {_h(len(intraday_steps))} 条 1m 成交。</p>'
-        "<h3>使用日线的 step 与原因（前 80 条 / 按原因汇总）</h3>"
-        '<table><thead><tr><th>原因</th><th class="num">步数</th></tr></thead><tbody>'
-        + reason_rows
-        + '</tbody></table><table style="margin-top:10px"><thead><tr><th>决策时间</th><th>代码</th>'
-        '<th>公开时点</th><th>成交时间</th><th class="num">成交价</th><th>为什么用日线</th>'
-        "</tr></thead><tbody>"
-        + daily_rows
-        + "</tbody></table>"
-        f'<p class="small muted">共 {_h(len(daily_steps))} 条日线价格：其中窗口外/未请求 '
-        f'{_h(len(daily_steps) - len(fallback_steps))} 条、1m 降级 fallback '
-        f'{_h(len(fallback_steps))} 条。</p>'
-        "<h3>1 分钟请求失败记录</h3>"
-        '<table><thead><tr><th>代码</th><th>错误</th></tr></thead><tbody>'
-        + error_rows
-        + "</tbody></table></div>"
-    )
-
-    banner = (
-        '<div class="banner"><b>数据边界（务必先读）：</b>'
-        "1 分钟数据仅最近 ~7 天（Yahoo range=7d、interval=1m），更早窗口只能回落到日线开盘；"
-        "无 bid/ask；无借券费、locate 费与做空逼平数据，因此本回放默认只做多，"
-        "direction=-1 的信号只记为「观望」。"
-        "成交价按 bar 开盘价假定并按单边 bps 扣成本，不是真实可成交报价。"
-        "<br/><b>研究口径：</b>回放是样本内、逐笔可审计的研究演示，"
-        "不是策略业绩；样本较小且未做多重检验校正，不能据此宣称策略有效。"
-        "</div>"
-    )
-
-    header = (
-        "<header><div class=\"wrap\" style=\"padding:0\">"
-        "<h1>MedRadar 事件回放 · Event Replay</h1>"
-        f'<div class="sub">状态：{_h(status_zh)}（{_h(status)}） · 窗口 {_h(window.get("start"))} → '
-        f'{_h(window.get("end"))} · 生成于 {_h(generated)} · 共 {_h(len(steps))} 步'
-        f' · 引擎 {_h(meta.get("engine"))}</div>'
-        "</div></header>"
-    )
-
-    disclaimers = "".join(f"<li>{_h(item)}</li>" for item in not_modelled)
-
-    parts: list[str] = [
-        "<!DOCTYPE html>",
-        '<html lang="zh-CN"><head><meta charset="utf-8"/>',
-        '<meta name="viewport" content="width=device-width,initial-scale=1"/>',
-        "<title>MedRadar 事件回放</title>",
-        f"<style>{_CSS}</style></head><body>",
-        header,
-        banner,
-        '<div class="wrap">',
-        "<h2>多档成本结果</h2>",
-        '<div class="kpis">' + "".join(kpis) + "</div>",
-        "<h2>成本敏感性</h2>",
-        '<div class="card"><table><thead><tr>'
-        '<th>成本档</th><th class="num">往返成本</th><th class="num">总收益</th>'
-        '<th class="num">期末权益</th><th class="num">最大回撤</th><th class="num">胜率</th>'
-        '<th class="num">笔数</th><th class="num">平均持有（交易日）</th><th class="num">平均单笔收益</th>'
-        "</tr></thead><tbody>" + "".join(cost_rows) + "</tbody></table>",
-        '<p class="small muted">成本档为单边 bps，买卖各收一次；同一批成交在不同成本档下独立重估，'
-        "因此收益随成本单调下降。回撤为已实现口径（不含浮亏）。</p>",
-        '<div class="svgbox">' + _svg_equity(summary_by_cost) + "</div></div>",
-        "<h2>成交明细（基准成本档 " + _h(base_cost_key) + " bps）</h2>",
-        '<div class="card"><table><thead><tr>'
-        '<th class="num">#</th><th>代码</th><th>事件类型</th><th>成交时间</th>'
-        '<th class="num">成交价</th><th class="num">股数</th><th class="num">名义额</th>'
-        '<th>平仓日</th><th class="num">平仓价</th><th class="num">持有（交易日）</th>'
-        '<th class="num">毛收益</th><th class="num">净收益</th><th class="num">盈亏</th>'
-        "</tr></thead><tbody>" + "".join(trade_rows) + "</tbody></table>",
-        f'<p class="small muted">基准成本档 {_h(base_cost_key)} bps；其余成本档的净收益见上方成本敏感性表。'
-        "未进入组合的观望步骤（做空参考价、容量不足）不在此表中。"
-        "持有天数为交易日差；最近成交使用数据末端的收盘价（end_of_data）。</p></div>",
-        "<h2>价格来源与 1 分钟边界（最近 ~7 天）</h2>",
-        price_source_block,
-        "<h2>后续 1 / 5 / 20 日（方向调整后）</h2>",
-        '<div class="card"><table><thead><tr>'
-        '<th>持有窗口</th><th class="num">n</th><th class="num">平均毛收益</th>'
-        '<th class="num">中位数</th><th class="num">胜率</th><th class="num">t</th>'
-        f"{study_headers}</tr></thead><tbody>" + "".join(study_rows) + "</tbody></table>",
-        '<p class="small muted">毛收益 = 成交价到该窗口收盘价的方向调整收益；净收益再扣 2×成本档。'
-        "最近成交因未来收盘价尚未出现，对应窗口为「—」。</p></div>",
-        "<h2>时间轴：事件 → 判定 → 成交 → 后续</h2>",
-        '<div class="controls" id="filters">'
-        '<span>筛选：</span>'
-        '<label><input type="radio" name="decision" value="all" checked/> 全部</label>'
-        '<label><input type="radio" name="decision" value="trade"/> 只看成交</label>'
-        '<label><input type="radio" name="decision" value="skip"/> 只看观望</label>'
-        '<input type="search" id="q" placeholder="搜索代码 / 事件 / 理由"/>'
-        '<span class="muted" id="count"></span></div>',
-        _render_steps(steps),
-        "<h2>跳过原因</h2>",
-        '<div class="card"><table><thead><tr><th>原因</th><th class="num">步数</th></tr></thead><tbody>'
-        + "".join(skip_rows)
-        + "</tbody></table></div>",
-        "<h2>数据质量与可审计性</h2>",
-        '<div class="grid2"><div class="card"><h3>时间戳质量</h3><table><thead><tr><th>质量档</th><th class="num">信号数</th></tr></thead><tbody>'
-        + "".join(quality_rows)
-        + "</tbody></table>"
-        + f'<p class="small muted">策略：{_h(quality.get("policy"))}。'
-        f'因质量不足被过滤：{_h(quality.get("excluded"))} 条。</p></div>'
-        '<div class="card"><h3>价格与请求</h3><table><tbody>'
-        f'<tr><th>日线数据</th><td>{_h(data_status.get("daily"))}</td></tr>'
-        f'<tr><th>1 分钟数据</th><td>{_h(INTRADAY_STATUS_ZH.get(str(data_status.get("intraday")), data_status.get("intraday")))}</td></tr>'
-        f'<tr><th>抓取模式</th><td>{_h(data_status.get("fetcher"))}</td></tr>'
-        f'<tr><th>请求数 / 预算</th><td>{_h(request_stats.get("requests"))} / {_h(request_stats.get("budget_max"))}'
-        f'（本引擎实际发起 {_h(request_stats.get("budget_used"))} 次）</td></tr>'
-        f'<tr><th>日线来自 Yahoo 回填的标的</th><td>{_h(", ".join(fetched_ticks) if fetched_ticks else "无")}</td></tr>'
-        f'<tr><th>信号来源</th><td>{_h(source_text)}（模式 {_h(meta.get("source_mode"))}）</td></tr>'
-        + (
-            f'<tr><th>events 候选 / 抽样</th><td>{event_mix_text}<br/>'
-            f'<span class="muted">{_h(events_sampling.get("method"))}</span></td></tr>'
-            if event_mode
-            else ""
-        )
-        + f'<tr><th>1 分钟抓取失败</th><td>{_h(len(intraday_errors))} 个标的（自动降级日线）</td></tr>'
-        "</tbody></table>"
-        f'<p class="small muted">信号原始 {_h(counts.get("signals_raw"))} 条，去重后 '
-        f'{_h(counts.get("signals_unique"))} 条（移除重复 {_h(counts.get("duplicates_removed"))} 条），'
-        f'窗口内 {_h(counts.get("signals_in_window"))} 条。</p></div></div>',
-        '<div class="card" style="margin-top:14px"><h3>点时可获性（生存 / 回填偏差）</h3>'
-        f'<p class="small">样本中 <b>{_h(lag.get("backfilled"))}</b> 条事件的首次采集时间晚于公开时间超过 1 天'
-        f'（中位滞后 {_h(lag.get("median_days"))} 天，最大 {_h(lag.get("max_days"))} 天）。'
-        "回放假设当时已在采集：这是免费回填数据无法消除的乐观项，详见假设登记表。</p>"
-        f'<p class="small"><a class="src" href="{_h(docs_rel)}">假设登记表（docs/ASSUMPTIONS.md）</a> · '
-        f'口径与参数出处逐项列明。</p></div>',
-        "<h2>方法</h2>",
-        '<div class="card"><ul class="tight">'
-        f'<li><b>决策时点</b>：{_h(method.get("decision_time"))}</li>'
-        f'<li><b>1 分钟分支</b>：{_h(method.get("entry_intraday"))}（{_h(method.get("intraday_rule"))}）</li>'
-        f'<li><b>日线分支</b>：{_h(method.get("entry_daily"))}</li>'
-        f'<li><b>平仓</b>：{_h(method.get("exit"))}</li>'
-        f'<li><b>成本</b>：{_h(method.get("cost"))}</li>'
-        f'<li><b>仓位</b>：{_h(method.get("sizing"))}；{_h(method.get("concurrency"))}</li>'
-        + (
-            f'<li><b>events 信号规则</b>：{_h(event_rules_text)}</li>'
-            f'<li><b>抽样</b>：单类上限 {_h((events_sampling.get("per_kind_limit") or {}).get("device_novel_code"))} 条/类、'
-            f'总步数上限 {_h(events_sampling.get("max_steps"))}；{_h(events_sampling.get("method"))}</li>'
-            if event_mode
-            else ""
-        )
-        + "</ul>"
-        f'<p class="small muted">未建模：</p><ul class="tight">{disclaimers}</ul></div>',
-        f'<footer>{_h(payload.get("disclaimer_zh"))}<br/>'
-        f'假设登记表：{_h(payload.get("assumptions_url"))} · 回放窗口 '
-        f'{_h(window.get("start"))} → {_h(window.get("end"))}</footer>',
-        "</div>",
-        f"<script>{_JS}</script>",
-        "</body></html>",
+    cards = [
+        ("回放窗口", f"{_esc(window.get('start') or '—')} ~ {_esc(window.get('end') or '—')}"),
+        ("事件总数", _esc(coverage.get("signals_total", meta.get("signals_total", "—")))),
+        ("窗口内信号", _esc(coverage.get("in_window", "—"))),
+        ("可用信号", _esc(coverage.get("usable", "—"))),
+        ("做多成交", _esc(decision_counts.get("BUY", 0))),
+        ("跳过", _esc(decision_counts.get("SKIP", 0))),
+        ("1 分钟数据", _esc(intraday.get("status_zh") or intraday.get("status") or "—")),
+        ("前视拒绝", _esc(payload.get("lookahead_rejected", 0))),
     ]
-    return "".join(parts)
+    card_html = "".join(
+        f'<div class="card"><div class="k">{_esc(label)}</div><div class="v">{value}</div></div>'
+        for label, value in cards
+    )
+
+    summary_rows = []
+    for key, summary in (payload.get("summary_by_cost") or {}).items():
+        summary_rows.append(
+            "<tr>"
+            f"<td>{_esc(key)} bps（单边）</td>"
+            f'<td class="num">{_esc(summary.get("trades", 0))}</td>'
+            f'<td class="num">{_fmt_pct_signed(summary.get("total_return"))}</td>'
+            f'<td class="num">{_esc(_fmt_money(summary.get("total_pnl")))}</td>'
+            f'<td class="num">{_fmt_pct(summary.get("win_rate"))}</td>'
+            f'<td class="num">{_fmt_pct(summary.get("max_drawdown"))}</td>'
+            f'<td class="num">{_esc(_fmt_number(summary.get("avg_holding_days"), 1))}</td>'
+            "</tr>"
+        )
+    summary_table = (
+        "<table><thead><tr><th>成本（单边）</th><th>笔数</th><th>总收益</th><th>盈亏</th>"
+        "<th>胜率</th><th>最大回撤</th><th>平均持有（交易日）</th></tr></thead>"
+        f"<tbody>{''.join(summary_rows) or '<tr><td colspan=\"7\" class=\"muted\">无成交</td></tr>'}</tbody></table>"
+    )
+
+    quality_rows = "".join(
+        f'<tr><td>{_esc(QUALITY_ZH.get(name, name))}</td><td class="num">{_esc(count)}</td></tr>'
+        for name, count in (quality.get("counts") or {}).items()
+    )
+    quality_table = (
+        '<table><thead><tr><th>时间戳质量</th><th>信号数</th></tr></thead>'
+        f"<tbody>{quality_rows or '<tr><td colspan=\"2\" class=\"muted\">无数据</td></tr>'}</tbody></table>"
+        f'<p class="muted">因时间戳质量不足被过滤：{_esc(quality.get("filtered", 0))} 条'
+        "（这些事件仍用于行业统计，但不进入回放）。</p>"
+    )
+
+    event_study = payload.get("event_study") or {}
+    horizon_rows = []
+    for horizon, stats in (event_study.get("horizons") or {}).items():
+        net = (stats.get("mean_net_by_cost") or {})
+        net_text = " / ".join(f"{k}:{_fmt_pct(v)}" for k, v in net.items()) or "—"
+        horizon_rows.append(
+            f'<tr><td>{_esc(horizon)} 日</td><td class="num">{_esc(stats.get("n", 0))}</td>'
+            f'<td class="num">{_fmt_pct_signed(stats.get("mean"))}</td>'
+            f'<td class="num">{_fmt_pct(stats.get("hit_rate"))}</td>'
+            f'<td class="num">{_esc(_fmt_number(stats.get("t"), 2))}</td>'
+            f'<td class="num muted">{_esc(net_text)}</td></tr>'
+        )
+    study_table = (
+        "<table><thead><tr><th>窗口</th><th>样本</th><th>平均毛收益</th><th>胜率</th><th>t 值</th>"
+        "<th>净收益均值（10/25/50bps）</th></tr></thead>"
+        f"<tbody>{''.join(horizon_rows) or '<tr><td colspan=\"6\" class=\"muted\">无成交样本</td></tr>'}</tbody></table>"
+    )
+
+    first_summary = payload.get("summary") or {}
+    spark = _sparkline(first_summary.get("equity_curve") or [])
+    steps_html = "".join(_step_html(step) for step in steps) or '<p class="muted">本窗口没有可展示的回放步骤。</p>'
+
+    assumptions_items = "".join(f"<li>{_esc(item)}</li>" for item in (payload.get("assumptions") or []))
+    limits_items = "".join(f"<li>{_esc(item)}</li>" for item in (payload.get("limits") or []))
+
+    intraday_days = meta.get("intraday_days", 7)
+    if meta.get("offline"):
+        intraday_note = "本次为离线回放：不请求 1 分钟数据，所有成交按日线口径（公开日后首个交易日开盘价）。"
+    else:
+        intraday_days_note = _esc(intraday_days)
+        intraday_note = (
+            f"最近约 {intraday_days_note} 天内公开的事件使用 Yahoo 1 分钟 bar 开盘价；"
+            "更早事件使用次日交易日开盘价。"
+        )
+
+    return f"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MedRadar 回放 · 事件到成交</title>
+<style>{_CSS}</style>
+</head>
+<body>
+<header>
+<h1>MedRadar 回放 · 事件 → 判定 → 成交 → 1/5/20 日</h1>
+<div class="sub">生成于 {_esc(meta.get("generated_at", "—"))} ｜ 引擎 {_esc(meta.get("engine", ENGINE))} ｜ 模式 {"离线" if meta.get("offline") else "在线"} ｜ 状态 {_esc(status)}</div>
+</header>
+<div class="banner">
+<b>口径与限制（务必阅读）：</b>{_esc(payload.get("disclaimer") or DISCLAIMER_ZH)}<br>
+1) 判定时间只使用 events.available_at（公开时点），缺失或估算时间的事件不进回放；
+2) 成交价 = 公开时点之后第一根 bar 的开盘价（{_esc(intraday_note)}）；
+3) 数据限制：Yahoo 1 分钟数据仅覆盖最近约 7 天，无 bid/ask（成交价为假设值）、无借券数据（默认仅做多）。
+</div>
+<main>
+<div class="grid">{card_html}</div>
+<div class="panel"><h2>权益曲线（{(payload.get("meta") or {}).get("costs_bps", [10])[0]}bps 单边）</h2>{spark}
+<p class="muted">{_esc(payload.get("as_of", ""))} 截止；end_of_data 退出表示数据末端无更多收盘价。</p></div>
+<div class="panel"><h2>成本敏感性</h2>{summary_table}</div>
+<div class="panel"><h2>事件研究（成交样本的 1/5/20 日）</h2>{study_table}</div>
+<div class="panel"><h2>时间戳质量（为什么有些事件不进回放）</h2>{quality_table}</div>
+<div class="panel"><h2>回放步骤（{len(steps)}）</h2>{steps_html}</div>
+<div class="panel"><h2>假设</h2><ul>{assumptions_items}</ul>
+<h2>数据限制</h2><ul>{limits_items}</ul>
+<p class="muted">假设登记表：<a href="{_esc(docs_rel)}">{_esc(docs_rel)}</a>（README 与 SCHEMA 同步维护）。</p></div>
+</main>
+<footer>
+<p>{_esc(payload.get("disclaimer") or DISCLAIMER_ZH)}</p>
+<p>MedRadar · 开源研究工具 · 非投资建议</p>
+</footer>
+</body>
+</html>"""
 
 
-# --------------------------------------------------------------------------- public
-def _prepare_fetcher(fetcher: Any, offline: bool, max_requests: int) -> Any:
-    if offline:
-        return None
-    if fetcher is None:
-        return Fetcher(cache_dir=CACHE_DIR, min_interval=0.5, max_requests=max(1, int(max_requests)))
-    if isinstance(fetcher, _BudgetedFetcher):
-        return fetcher
-    return _BudgetedFetcher(fetcher, max_requests)
-
-
+# --------------------------------------------------------------------------- entry point
 def build_replay(
-    db: Any,
-    start: Any,
-    end: Any,
-    capital: float = 100000,
-    costs_bps: Sequence[float] = DEFAULT_COSTS_BPS,
-    intraday_days: int = DEFAULT_INTRADAY_DAYS,
-    source: str = "auto",
+    db: Any = None,
+    start: Any = None,
+    end: Any = None,
     *,
-    out_dir: str | Path | None = None,
+    capital: float = 100000.0,
+    costs_bps: Sequence[float] = DEFAULT_COSTS_BPS,
+    intraday_days: float = 7,
+    hold_days: int = 20,
+    allow_short: bool = False,
+    position_pct: float = 0.20,
+    max_concurrent: int = 5,
+    min_score: float = 0.3,
+    source: str = "auto",
+    out_dir: Any = None,
+    now: Any = None,
     fetcher: Any = None,
     offline: bool = False,
-    now: Any = None,
-    max_requests: int = DEFAULT_REQUEST_BUDGET,
-    hold_days: int = DEFAULT_HOLD_DAYS,
-    allow_short: bool = False,
-    position_pct: float = DEFAULT_POSITION_PCT,
-    max_concurrent: int = DEFAULT_MAX_CONCURRENT,
-    min_score: float = 0.0,
+    max_requests: int = 24,
     max_steps: int | None = None,
     per_kind_limit: Any = DEFAULT_PER_KIND_LIMIT,
 ) -> dict[str, Any]:
-    """Build the replay payload and write ``replay.json`` + ``index.html``.
+    """Replay ``db`` events between ``start`` and ``end`` (inclusive dates).
 
-    ``db`` may be an open :class:`medradar.db.DB` (leave it open) or a path
-    (opened and closed here). ``fetcher`` is injected in tests; by default a
-    polite cached :class:`medradar.http.Fetcher` with a hard request budget of
-    ``max_requests`` is created. ``offline=True`` disables every network call.
-
-    ``source`` selects the candidate universe:
-
-    * ``"auto"`` (default) — use the ``signals`` table when it has rows, else
-      build the same multi-year candidate set as ``"events"``;
-    * ``"signals"`` — force the ``signals`` table only (old behaviour);
-    * ``"events"`` — ignore ``signals`` and generate point-in-time candidates
-      directly from ``events`` (first product code / new track / drug approval /
-      phase-3 trial / recall cluster / 8-K catalyst). ``max_steps`` (default 400
-      in this mode) and ``per_kind_limit`` (default 150 per kind) keep a 300k+
-      event corpus bounded and diverse.
+    ``source='signals'`` replays the analyst-written ``signals`` table;
+    ``source='events'`` derives point-in-time candidates from ``events``
+    (first-seen product codes / new tracks, drug approvals, Phase-III trial
+    starts, recall clusters, 8-K catalysts) and is the only mode that scales to
+    a multi-year window; ``'auto'`` prefers ``signals`` and falls back to
+    ``events`` when the table is empty. ``max_steps`` (default 400 in events
+    mode; pass ``None`` for no global cap in research runs — the CLI already
+    does this) and ``per_kind_limit`` (default 150 per kind) keep a 300k+
+    event corpus bounded and diverse.
 
     ``now`` is injectable so the "最近 7 天" branch is deterministic in tests.
     The parameter list above is the public contract; the keyword-only parameters
@@ -3074,6 +2545,15 @@ def build_replay(
     write_text(html_path, html_text)
     write_json(json_path, payload)
     return payload
+
+
+def _prepare_fetcher(fetcher: Any, offline: bool, max_requests: int) -> Any:
+    """Build the budgeted fetcher used for intraday bars and daily fallbacks."""
+    if fetcher is not None:
+        return fetcher if isinstance(fetcher, _BudgetedFetcher) else _BudgetedFetcher(fetcher, max_requests)
+    if offline:
+        return None
+    return _BudgetedFetcher(Fetcher(cache_dir=CACHE_DIR / "http"), max_requests)
 
 
 __all__ = [
