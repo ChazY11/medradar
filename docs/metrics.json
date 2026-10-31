@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generated_at": "2026-10-31T04:03:06Z",
+  "generated_at": "2026-10-31T04:58:53Z",
   "db": "data\\medradar.sqlite",
   "window": {
    "start": "2025-01-01",
@@ -1398,8 +1398,8 @@
    {
     "key": "medline",
     "name_zh": "麦朗",
-    "track_id": "patient_monitoring",
-    "track_zh": "监护与生命体征",
+    "track_id": "vascular_access",
+    "track_zh": "血管通路",
     "share_recent": 0.111,
     "share_base": 0.0,
     "delta": 0.111,
@@ -1688,10 +1688,10 @@
  "drug": {
   "approvals": [
    {
-    "key": "ionis",
-    "name_en": "Ionis Pharmaceuticals",
-    "name_zh": "伊奥尼斯",
-    "ticker": "IONS",
+    "key": "daiichi_sankyo",
+    "name_en": "Daiichi Sankyo",
+    "name_zh": "第一三共",
+    "ticker": "DSNKY",
     "is_major": false,
     "recent": 2,
     "recent_per_q": 0.25,
@@ -1706,10 +1706,10 @@
     "nme_recent": 2
    },
    {
-    "key": "daiichi_sankyo",
-    "name_en": "Daiichi Sankyo",
-    "name_zh": "第一三共",
-    "ticker": "DSNKY",
+    "key": "ionis",
+    "name_en": "Ionis Pharmaceuticals",
+    "name_zh": "伊奥尼斯",
+    "ticker": "IONS",
     "is_major": false,
     "recent": 2,
     "recent_per_q": 0.25,
@@ -1814,24 +1814,6 @@
     "nme_recent": 0
    },
    {
-    "key": "gilead",
-    "name_en": "Gilead Sciences",
-    "name_zh": "吉利德",
-    "ticker": "GILD",
-    "is_major": true,
-    "recent": 5,
-    "recent_per_q": 0.625,
-    "baseline_per_q": 0.3,
-    "thi": 1.79,
-    "prob_up": 0.873,
-    "ci": [
-     0.64,
-     3.52
-    ],
-    "emerging": false,
-    "nme_recent": 3
-   },
-   {
     "key": "gsk",
     "name_en": "GSK",
     "name_zh": "葛兰素史克",
@@ -1848,6 +1830,24 @@
     ],
     "emerging": false,
     "nme_recent": 4
+   },
+   {
+    "key": "gilead",
+    "name_en": "Gilead Sciences",
+    "name_zh": "吉利德",
+    "ticker": "GILD",
+    "is_major": true,
+    "recent": 5,
+    "recent_per_q": 0.625,
+    "baseline_per_q": 0.3,
+    "thi": 1.79,
+    "prob_up": 0.873,
+    "ci": [
+     0.64,
+     3.52
+    ],
+    "emerging": false,
+    "nme_recent": 3
    },
    {
     "key": "merck",
@@ -2030,10 +2030,10 @@
     "nme_recent": 3
    },
    {
-    "key": "incyte",
-    "name_en": "Incyte",
-    "name_zh": "因塞特",
-    "ticker": "INCY",
+    "key": "viatris",
+    "name_en": "Viatris",
+    "name_zh": "晖致",
+    "ticker": "VTRS",
     "is_major": false,
     "recent": 1,
     "recent_per_q": 0.125,
@@ -2066,10 +2066,10 @@
     "nme_recent": 1
    },
    {
-    "key": "viatris",
-    "name_en": "Viatris",
-    "name_zh": "晖致",
-    "ticker": "VTRS",
+    "key": "incyte",
+    "name_en": "Incyte",
+    "name_zh": "因塞特",
+    "ticker": "INCY",
     "is_major": false,
     "recent": 1,
     "recent_per_q": 0.125,
@@ -8502,68 +8502,68 @@
    }
   },
   "event_study": {
-   "n_cases": 1075,
+   "n_cases": 2384,
    "by_horizon": {
     "1": {
      "categories": {
       "approval": {
-       "n": 432,
-       "mean": 0.050669,
-       "raw_mean": 0.05607,
-       "median": 0.058137,
-       "p10": -0.10308,
-       "p90": 0.188439,
-       "std": 0.1166,
-       "t": 9.0321,
+       "n": 943,
+       "mean": 0.037782,
+       "raw_mean": 0.043515,
+       "median": 0.043743,
+       "p10": -0.102133,
+       "p90": 0.174092,
+       "std": 0.115416,
+       "t": 10.0525,
        "p": 0.0,
        "ci95": [
-        0.038236,
-        0.063344
+        0.02863,
+        0.046884
        ],
-       "hit_rate": 0.7176,
+       "hit_rate": 0.666,
        "winsor_bounds": [
-        -0.242973,
-        0.309235
+        -0.280088,
+        0.288761
        ]
       },
       "crl": {
-       "n": 171,
-       "mean": -0.055147,
-       "raw_mean": 0.065791,
-       "median": -0.048382,
-       "p10": -0.174864,
-       "p90": 0.065138,
-       "std": 0.10707,
-       "t": -6.7353,
+       "n": 379,
+       "mean": -0.048666,
+       "raw_mean": 0.069953,
+       "median": -0.042627,
+       "p10": -0.169996,
+       "p90": 0.08471,
+       "std": 0.133391,
+       "t": -7.1026,
        "p": 0.0,
        "ci95": [
-        -0.072294,
-        -0.038059
+        -0.06376,
+        -0.033248
        ],
-       "hit_rate": 0.2982,
+       "hit_rate": 0.2955,
        "winsor_bounds": [
-        -0.382053,
-        0.177705
+        -0.490463,
+        0.250604
        ]
       },
       "trial_result": {
-       "n": 472,
-       "mean": 0.016106,
-       "raw_mean": 0.039175,
-       "median": 0.028438,
-       "p10": -0.161892,
-       "p90": 0.162196,
-       "std": 0.137387,
-       "t": 2.5469,
-       "p": 0.011186,
+       "n": 1062,
+       "mean": 0.01201,
+       "raw_mean": 0.026222,
+       "median": 0.018283,
+       "p10": -0.136735,
+       "p90": 0.153705,
+       "std": 0.125018,
+       "t": 3.1307,
+       "p": 0.001791,
        "ci95": [
-        0.003419,
-        0.028475
+        0.004585,
+        0.019756
        ],
-       "hit_rate": 0.6059,
+       "hit_rate": 0.5819,
        "winsor_bounds": [
-        -0.346915,
-        0.314388
+        -0.336209,
+        0.282973
        ]
       }
      },
@@ -8575,22 +8575,22 @@
        {
         "label": "approval:1d",
         "index": 0,
-        "p": 5.6875946396194124e-18,
-        "adjusted_p": 1.706278391885824e-17,
+        "p": 1.1839856679671282e-22,
+        "adjusted_p": 3.5519570039013845e-22,
         "reject": true
        },
        {
         "label": "crl:1d",
         "index": 1,
-        "p": 2.419933647467571e-10,
-        "adjusted_p": 4.839867294935142e-10,
+        "p": 6.119788728103148e-12,
+        "adjusted_p": 1.2239577456206295e-11,
         "reject": true
        },
        {
         "label": "trial_result:1d",
         "index": 2,
-        "p": 0.011185761027861478,
-        "adjusted_p": 0.011185761027861478,
+        "p": 0.0017912882048454336,
+        "adjusted_p": 0.0017912882048454336,
         "reject": true
        }
       ],
@@ -8598,22 +8598,22 @@
        {
         "label": "approval:1d",
         "index": 0,
-        "p": 5.6875946396194124e-18,
-        "adjusted_p": 1.706278391885824e-17,
+        "p": 1.1839856679671282e-22,
+        "adjusted_p": 3.5519570039013845e-22,
         "reject": true
        },
        {
         "label": "crl:1d",
         "index": 1,
-        "p": 2.419933647467571e-10,
-        "adjusted_p": 4.839867294935142e-10,
+        "p": 6.119788728103148e-12,
+        "adjusted_p": 1.2239577456206295e-11,
         "reject": true
        },
        {
         "label": "trial_result:1d",
         "index": 2,
-        "p": 0.011185761027861478,
-        "adjusted_p": 0.011185761027861478,
+        "p": 0.0017912882048454336,
+        "adjusted_p": 0.0017912882048454336,
         "reject": true
        }
       ],
@@ -8629,27 +8629,27 @@
       "adjusted": [
        {
         "key": "approval:1d",
-        "raw_p": 5.6875946396194124e-18,
-        "adjusted_p": 1.706278391885824e-17,
+        "raw_p": 1.1839856679671282e-22,
+        "adjusted_p": 3.5519570039013845e-22,
         "significant": true
        },
        {
         "key": "crl:1d",
-        "raw_p": 2.419933647467571e-10,
-        "adjusted_p": 4.839867294935142e-10,
+        "raw_p": 6.119788728103148e-12,
+        "adjusted_p": 1.2239577456206295e-11,
         "significant": true
        },
        {
         "key": "trial_result:1d",
-        "raw_p": 0.011185761027861478,
-        "adjusted_p": 0.011185761027861478,
+        "raw_p": 0.0017912882048454336,
+        "adjusted_p": 0.0017912882048454336,
         "significant": true
        }
       ],
       "adjusted_p_values": [
-       1.706278391885824e-17,
-       4.839867294935142e-10,
-       0.011185761027861478
+       3.5519570039013845e-22,
+       1.2239577456206295e-11,
+       0.0017912882048454336
       ],
       "note_zh": "family-wise error rate 控制在 alpha 之下；adjusted_p 是可直接与 alpha 比较的校正后 p 值。adjusted_p_values 与输入 p 值一一对应。"
      }
@@ -8657,63 +8657,63 @@
     "5": {
      "categories": {
       "approval": {
-       "n": 432,
-       "mean": 0.056269,
-       "raw_mean": 0.057018,
-       "median": 0.05346,
-       "p10": -0.141415,
+       "n": 943,
+       "mean": 0.037439,
+       "raw_mean": 0.04612,
+       "median": 0.03445,
+       "p10": -0.162238,
        "p90": 0.225122,
-       "std": 0.162709,
-       "t": 7.1879,
+       "std": 0.170187,
+       "t": 6.7554,
        "p": 0.0,
        "ci95": [
-        0.039721,
-        0.073482
+        0.025476,
+        0.050254
        ],
-       "hit_rate": 0.6759,
+       "hit_rate": 0.6076,
        "winsor_bounds": [
-        -0.304989,
+        -0.360533,
         0.547343
        ]
       },
       "crl": {
-       "n": 171,
-       "mean": -0.055091,
-       "raw_mean": 0.068459,
-       "median": -0.055861,
-       "p10": -0.211644,
-       "p90": 0.122056,
-       "std": 0.168677,
-       "t": -4.2709,
-       "p": 3.2e-05,
+       "n": 379,
+       "mean": -0.052314,
+       "raw_mean": 0.065467,
+       "median": -0.033887,
+       "p10": -0.226424,
+       "p90": 0.141999,
+       "std": 0.180456,
+       "t": -5.6438,
+       "p": 0.0,
        "ci95": [
-        -0.082336,
-        -0.029562
+        -0.071252,
+        -0.033481
        ],
-       "hit_rate": 0.3392,
+       "hit_rate": 0.3852,
        "winsor_bounds": [
-        -0.697013,
-        0.29838
+        -0.723901,
+        0.2684
        ]
       },
       "trial_result": {
-       "n": 472,
-       "mean": 0.020281,
-       "raw_mean": 0.027964,
-       "median": 0.026358,
-       "p10": -0.213163,
-       "p90": 0.216551,
-       "std": 0.179496,
-       "t": 2.4548,
-       "p": 0.014458,
+       "n": 1062,
+       "mean": 0.008587,
+       "raw_mean": 45.208225,
+       "median": 0.008967,
+       "p10": -0.200842,
+       "p90": 0.202122,
+       "std": 0.174085,
+       "t": 1.6074,
+       "p": 0.108256,
        "ci95": [
-        0.003065,
-        0.036813
+        -0.001562,
+        0.018407
        ],
-       "hit_rate": 0.5657,
+       "hit_rate": 0.5301,
        "winsor_bounds": [
-        -0.406669,
-        0.452908
+        -0.429424,
+        0.44346
        ]
       }
      },
@@ -8725,81 +8725,80 @@
        {
         "label": "approval:5d",
         "index": 0,
-        "p": 2.9217572792489327e-12,
-        "adjusted_p": 8.765271837746798e-12,
+        "p": 2.491465003875222e-11,
+        "adjusted_p": 7.474395011625665e-11,
         "reject": true
        },
        {
         "label": "crl:5d",
         "index": 1,
-        "p": 3.231434937690112e-05,
-        "adjusted_p": 6.462869875380223e-05,
+        "p": 3.268700260550815e-08,
+        "adjusted_p": 6.53740052110163e-08,
         "reject": true
        },
        {
         "label": "trial_result:5d",
         "index": 2,
-        "p": 0.014457772236521492,
-        "adjusted_p": 0.014457772236521492,
-        "reject": true
+        "p": 0.10825558692446724,
+        "adjusted_p": 0.10825558692446724,
+        "reject": false
        }
       ],
       "ordered": [
        {
         "label": "approval:5d",
         "index": 0,
-        "p": 2.9217572792489327e-12,
-        "adjusted_p": 8.765271837746798e-12,
+        "p": 2.491465003875222e-11,
+        "adjusted_p": 7.474395011625665e-11,
         "reject": true
        },
        {
         "label": "crl:5d",
         "index": 1,
-        "p": 3.231434937690112e-05,
-        "adjusted_p": 6.462869875380223e-05,
+        "p": 3.268700260550815e-08,
+        "adjusted_p": 6.53740052110163e-08,
         "reject": true
        },
        {
         "label": "trial_result:5d",
         "index": 2,
-        "p": 0.014457772236521492,
-        "adjusted_p": 0.014457772236521492,
-        "reject": true
+        "p": 0.10825558692446724,
+        "adjusted_p": 0.10825558692446724,
+        "reject": false
        }
       ],
-      "rejected": 3,
-      "n_rejected": 3,
-      "n_significant": 3,
-      "significant": 3,
+      "rejected": 2,
+      "n_rejected": 2,
+      "n_significant": 2,
+      "significant": 2,
       "rejected_labels": [
        "approval:5d",
-       "crl:5d",
-       "trial_result:5d"
+       "crl:5d"
       ],
       "adjusted": [
        {
         "key": "approval:5d",
-        "raw_p": 2.9217572792489327e-12,
-        "adjusted_p": 8.765271837746798e-12,
+        "raw_p": 2.491465003875222e-11,
+        "adjusted_p": 7.474395011625665e-11,
         "significant": true
        },
        {
         "key": "crl:5d",
-        "raw_p": 3.231434937690112e-05,
-        "adjusted_p": 6.462869875380223e-05,
+        "raw_p": 3.268700260550815e-08,
+        "adjusted_p": 6.53740052110163e-08,
         "significant": true
        },
        {
         "key": "trial_result:5d",
-        "raw_p": 0.014457772236521492,
-        "adjusted_p": 0.014457772236521492,
-        "significant": true
+        "raw_p": 0.10825558692446724,
+        "adjusted_p": 0.10825558692446724,
+        "significant": false
        }
       ],
       "adjusted_p_values": [
-       8.765271837746798e-12,
-       6.462869875380223e-05,
-       0.014457772236521492
+       7.474395011625665e-11,
+       6.53740052110163e-08,
+       0.10825558692446724
       ],
       "note_zh": "family-wise error rate 控制在 alpha 之下；adjusted_p 是可直接与 alpha 比较的校正后 p 值。adjusted_p_values 与输入 p 值一一对应。"
      }
@@ -8807,63 +8806,63 @@
     "20": {
      "categories": {
       "approval": {
-       "n": 432,
-       "mean": 0.046136,
-       "raw_mean": 0.066141,
-       "median": 0.024883,
-       "p10": -0.241785,
-       "p90": 0.313999,
-       "std": 0.274883,
-       "t": 3.4885,
-       "p": 0.000536,
+       "n": 943,
+       "mean": 0.028233,
+       "raw_mean": 0.310228,
+       "median": 0.005324,
+       "p10": -0.271457,
+       "p90": 0.330217,
+       "std": 0.280497,
+       "t": 3.0909,
+       "p": 0.002054,
        "ci95": [
-        0.018873,
-        0.074778
+        0.009405,
+        0.047935
        ],
-       "hit_rate": 0.5579,
+       "hit_rate": 0.5048,
        "winsor_bounds": [
-        -0.501957,
-        0.943722
+        -0.526805,
+        0.969693
        ]
       },
       "crl": {
-       "n": 171,
-       "mean": -0.062435,
-       "raw_mean": 0.083571,
-       "median": -0.025064,
-       "p10": -0.349612,
-       "p90": 0.251503,
-       "std": 0.291444,
-       "t": -2.8014,
-       "p": 0.005679,
+       "n": 379,
+       "mean": -0.038103,
+       "raw_mean": 0.056977,
+       "median": -0.006893,
+       "p10": -0.33343,
+       "p90": 0.258357,
+       "std": 0.274189,
+       "t": -2.7054,
+       "p": 0.007132,
        "ci95": [
-        -0.105965,
-        -0.019855
+        -0.0667,
+        -0.008316
        ],
-       "hit_rate": 0.4327,
+       "hit_rate": 0.4776,
        "winsor_bounds": [
         -0.932181,
-        0.486109
+        0.480743
        ]
       },
       "trial_result": {
-       "n": 472,
-       "mean": 0.001798,
-       "raw_mean": 0.000159,
-       "median": 0.006988,
+       "n": 1062,
+       "mean": -0.002576,
+       "raw_mean": 45.197871,
+       "median": -0.00216,
        "p10": -0.335126,
-       "p90": 0.36046,
-       "std": 0.278101,
-       "t": 0.1405,
-       "p": 0.888333,
+       "p90": 0.337879,
+       "std": 0.280148,
+       "t": -0.2997,
+       "p": 0.764457,
        "ci95": [
-        -0.02187,
-        0.028632
+        -0.018482,
+        0.015435
        ],
-       "hit_rate": 0.5042,
+       "hit_rate": 0.4944,
        "winsor_bounds": [
-        -0.673565,
-        0.652976
+        -0.680666,
+        0.705479
        ]
       }
      },
@@ -8875,22 +8874,22 @@
        {
         "label": "approval:20d",
         "index": 0,
-        "p": 0.0005357091699692639,
-        "adjusted_p": 0.0016071275099077916,
+        "p": 0.0020540812224183877,
+        "adjusted_p": 0.006162243667255163,
         "reject": true
        },
        {
         "label": "crl:20d",
         "index": 1,
-        "p": 0.005678821987327925,
-        "adjusted_p": 0.01135764397465585,
+        "p": 0.007131958670612959,
+        "adjusted_p": 0.014263917341225918,
         "reject": true
        },
        {
         "label": "trial_result:20d",
         "index": 2,
-        "p": 0.8883331946552357,
-        "adjusted_p": 0.8883331946552357,
+        "p": 0.7644567495503969,
+        "adjusted_p": 0.7644567495503969,
         "reject": false
        }
       ],
@@ -8898,22 +8897,22 @@
        {
         "label": "approval:20d",
         "index": 0,
-        "p": 0.0005357091699692639,
-        "adjusted_p": 0.0016071275099077916,
+        "p": 0.0020540812224183877,
+        "adjusted_p": 0.006162243667255163,
         "reject": true
        },
        {
         "label": "crl:20d",
         "index": 1,
-        "p": 0.005678821987327925,
-        "adjusted_p": 0.01135764397465585,
+        "p": 0.007131958670612959,
+        "adjusted_p": 0.014263917341225918,
         "reject": true
        },
        {
         "label": "trial_result:20d",
         "index": 2,
-        "p": 0.8883331946552357,
-        "adjusted_p": 0.8883331946552357,
+        "p": 0.7644567495503969,
+        "adjusted_p": 0.7644567495503969,
         "reject": false
        }
       ],
@@ -8928,27 +8927,27 @@
       "adjusted": [
        {
         "key": "approval:20d",
-        "raw_p": 0.0005357091699692639,
-        "adjusted_p": 0.0016071275099077916,
+        "raw_p": 0.0020540812224183877,
+        "adjusted_p": 0.006162243667255163,
         "significant": true
        },
        {
         "key": "crl:20d",
-        "raw_p": 0.005678821987327925,
-        "adjusted_p": 0.01135764397465585,
+        "raw_p": 0.007131958670612959,
+        "adjusted_p": 0.014263917341225918,
         "significant": true
        },
        {
         "key": "trial_result:20d",
-        "raw_p": 0.8883331946552357,
-        "adjusted_p": 0.8883331946552357,
+        "raw_p": 0.7644567495503969,
+        "adjusted_p": 0.7644567495503969,
         "significant": false
        }
       ],
       "adjusted_p_values": [
-       0.0016071275099077916,
-       0.01135764397465585,
-       0.8883331946552357
+       0.006162243667255163,
+       0.014263917341225918,
+       0.7644567495503969
       ],
       "note_zh": "family-wise error rate 控制在 alpha 之下；adjusted_p 是可直接与 alpha 比较的校正后 p 值。adjusted_p_values 与输入 p 值一一对应。"
      }
@@ -8956,63 +8955,63 @@
     "60": {
      "categories": {
       "approval": {
-       "n": 422,
-       "mean": -0.005049,
-       "raw_mean": 0.021016,
-       "median": -0.022369,
-       "p10": -0.40547,
-       "p90": 0.374038,
-       "std": 0.361763,
-       "t": -0.2867,
-       "p": 0.77448,
+       "n": 921,
+       "mean": -0.015061,
+       "raw_mean": 0.548092,
+       "median": -0.055535,
+       "p10": -0.436477,
+       "p90": 0.468935,
+       "std": 0.383347,
+       "t": -1.1923,
+       "p": 0.233443,
        "ci95": [
-        -0.042378,
-        0.037221
+        -0.0431,
+        0.013642
        ],
-       "hit_rate": 0.4739,
+       "hit_rate": 0.4376,
        "winsor_bounds": [
-        -0.679334,
-        1.181408
+        -0.706449,
+        1.209207
        ]
       },
       "crl": {
-       "n": 169,
-       "mean": -0.070557,
-       "raw_mean": 0.090292,
-       "median": 0.056616,
-       "p10": -0.809477,
-       "p90": 0.324389,
-       "std": 0.469931,
-       "t": -1.9518,
-       "p": 0.052619,
+       "n": 371,
+       "mean": -0.028566,
+       "raw_mean": 0.060687,
+       "median": 0.073416,
+       "p10": -0.554826,
+       "p90": 0.41597,
+       "std": 0.440374,
+       "t": -1.2494,
+       "p": 0.2123,
        "ci95": [
-        -0.146195,
-        0.001021
+        -0.077566,
+        0.018071
        ],
-       "hit_rate": 0.5444,
+       "hit_rate": 0.5687,
        "winsor_bounds": [
-        -1.534283,
-        0.638025
+        -1.448295,
+        0.7337
        ]
       },
       "trial_result": {
-       "n": 461,
-       "mean": -0.010075,
-       "raw_mean": -0.004091,
-       "median": -0.048715,
-       "p10": -0.529688,
-       "p90": 0.570378,
-       "std": 0.418388,
-       "t": -0.517,
-       "p": 0.605391,
+       "n": 1037,
+       "mean": -0.022212,
+       "raw_mean": 42.652738,
+       "median": -0.046533,
+       "p10": -0.55385,
+       "p90": 0.530421,
+       "std": 0.436278,
+       "t": -1.6395,
+       "p": 0.101417,
        "ci95": [
-        -0.052674,
-        0.033559
+        -0.050648,
+        0.007085
        ],
-       "hit_rate": 0.4447,
+       "hit_rate": 0.4282,
        "winsor_bounds": [
-        -0.820429,
-        1.028566
+        -0.852486,
+        1.20116
        ]
       }
      },
@@ -9024,45 +9023,45 @@
        {
         "label": "approval:60d",
         "index": 0,
-        "p": 0.7744796031287393,
-        "adjusted_p": 1.0,
+        "p": 0.23344265461860003,
+        "adjusted_p": 0.42459915704413853,
         "reject": false
        },
        {
         "label": "crl:60d",
         "index": 1,
-        "p": 0.05261869388065014,
-        "adjusted_p": 0.15785608164195042,
+        "p": 0.21229957852206927,
+        "adjusted_p": 0.42459915704413853,
         "reject": false
        },
        {
         "label": "trial_result:60d",
         "index": 2,
-        "p": 0.6053906725076735,
-        "adjusted_p": 1.0,
+        "p": 0.10141688045082453,
+        "adjusted_p": 0.3042506413524736,
         "reject": false
        }
       ],
       "ordered": [
        {
-        "label": "crl:60d",
-        "index": 1,
-        "p": 0.05261869388065014,
-        "adjusted_p": 0.15785608164195042,
+        "label": "trial_result:60d",
+        "index": 2,
+        "p": 0.10141688045082453,
+        "adjusted_p": 0.3042506413524736,
         "reject": false
        },
        {
         "label": "approval:60d",
         "index": 0,
-        "p": 0.7744796031287393,
-        "adjusted_p": 1.0,
+        "p": 0.23344265461860003,
+        "adjusted_p": 0.42459915704413853,
         "reject": false
        },
        {
-        "label": "trial_result:60d",
-        "index": 2,
-        "p": 0.6053906725076735,
-        "adjusted_p": 1.0,
+        "label": "crl:60d",
+        "index": 1,
+        "p": 0.21229957852206927,
+        "adjusted_p": 0.42459915704413853,
         "reject": false
        }
       ],
@@ -9073,28 +9072,28 @@
       "rejected_labels": [],
       "adjusted": [
        {
-        "key": "crl:60d",
-        "raw_p": 0.05261869388065014,
-        "adjusted_p": 0.15785608164195042,
+        "key": "trial_result:60d",
+        "raw_p": 0.10141688045082453,
+        "adjusted_p": 0.3042506413524736,
         "significant": false
        },
        {
         "key": "approval:60d",
-        "raw_p": 0.7744796031287393,
-        "adjusted_p": 1.0,
+        "raw_p": 0.23344265461860003,
+        "adjusted_p": 0.42459915704413853,
         "significant": false
        },
        {
-        "key": "trial_result:60d",
-        "raw_p": 0.6053906725076735,
-        "adjusted_p": 1.0,
+        "key": "crl:60d",
+        "raw_p": 0.21229957852206927,
+        "adjusted_p": 0.42459915704413853,
         "significant": false
        }
       ],
       "adjusted_p_values": [
-       1.0,
-       0.15785608164195042,
-       1.0
+       0.42459915704413853,
+       0.42459915704413853,
+       0.3042506413524736
       ],
       "note_zh": "family-wise error rate 控制在 alpha 之下；adjusted_p 是可直接与 alpha 比较的校正后 p 值。adjusted_p_values 与输入 p 值一一对应。"
      }
@@ -16330,24 +16329,24 @@
    "end": "2026-10-01"
   },
   "stats": {
-   "total": 1075,
-   "hit_rate_20d": 0.4772,
-   "hit_rate_60d": 0.4363,
+   "total": 2384,
+   "hit_rate_20d": 0.4518,
+   "hit_rate_60d": 0.4113,
    "by_category": [
     [
      "approval",
-     432,
-     0.519
+     943,
+     0.466
     ],
     [
      "crl",
-     171,
-     0.374
+     379,
+     0.422
     ],
     [
      "trial_result",
-     472,
-     0.477
+     1062,
+     0.45
     ]
    ],
    "skipped": {
@@ -16357,7 +16356,7 @@
     "no_forward_window": 84
    },
    "corpus_total": 20976,
-   "evidence_quotes_total": 1681
+   "evidence_quotes_total": 3653
   },
   "selected": [
    {
@@ -16680,316 +16679,314 @@
     "outcome": "miss"
    },
    {
-    "case_id": "case-b2add8dca3",
-    "date": "2026-08-31",
-    "ticker": "KPTI",
-    "company_zh": "Karyopharm Therapeutics Inc.",
-    "event_zh": "FDA 批准：Karyopharm Therapeutics Inc. · fda approval / priority review",
+    "case_id": "case-c3e6a1e703",
+    "date": "2026-09-29",
+    "ticker": "UNCY",
+    "company_zh": "Unicycive Therapeutics, Inc.",
+    "event_zh": "FDA 批准：Unicycive Therapeutics, Inc. · fda approval",
     "category": "approval",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1503802/000119312526375495/d423030d8k.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1766140/000121390026104314/ea030696701ex99-1.htm",
     "evidence_quotes": [
-     "Management’s expectations and, therefore, any forward-looking statements in this Current Report on Form 8-K could also be affected by risks and uncertainties relating to a number of other factors, including the following: the adoption of XPOVIO in the commercial marketplace, the…",
-     "Food and Drug Administration and other regulatory authorities, investigational review boards at clinical trial sites and publication review bodies, including with respect to the need for additional clinical trials; the ability of the Company or its third party collaborators or s…"
+     "Unicycive is seeking FDA approval of OLC via the 505(b)(2) regulatory pathway.",
+     "These factors include, but are not limited to, clinical trials involve a lengthy and expensive process with an uncertain outcome, and results of earlier studies and trials may not be predictive of future trial results; our clinical trials may be suspended or discontinued due to …"
     ],
-    "price_1d": -0.115508,
-    "price_5d": -0.1614,
-    "price_20d": -0.396853,
+    "price_1d": -0.009806,
+    "price_5d": -0.107327,
+    "price_20d": -0.192027,
     "price_60d": null,
-    "raw_20d": -0.39604,
+    "raw_20d": -0.184382,
     "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
     "outcome": "miss"
    },
    {
-    "case_id": "case-b071e7180c",
-    "date": "2026-08-31",
-    "ticker": "PMVP",
-    "company_zh": "PMV Pharmaceuticals, Inc.",
-    "event_zh": "FDA 批准：PMV Pharmaceuticals, Inc. · accelerated approval",
+    "case_id": "case-62cb68770b",
+    "date": "2026-09-29",
+    "ticker": "RNAC",
+    "company_zh": "Cartesian Therapeutics, Inc.",
+    "event_zh": "临床数据读出：Cartesian Therapeutics, Inc. · announces positive topline",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1453687/000145368726000105/pressrelease9292026.htm",
+    "evidence_quotes": [
+     "Cartesian Therapeutics, Inc. · announces positive topline"
+    ],
+    "price_1d": -0.009102,
+    "price_5d": -0.100235,
+    "price_20d": -0.092461,
+    "price_60d": null,
+    "raw_20d": -0.084815,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-2bb7db66ec",
+    "date": "2026-09-29",
+    "ticker": "DYN",
+    "company_zh": "Dyne Therapeutics, Inc.",
+    "event_zh": "FDA 批准：Dyne Therapeutics, Inc. · announces positive topline / accelerated approval",
     "category": "approval",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1699382/000119312526376723/d441751dex991.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1818794/000181879426000009/dyn-ex99_1.htm",
     "evidence_quotes": [
-     "EX-99.1 2 d441751dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 PMV Pharmaceuticals Announces Updated Promising Rezatapopt Monotherapy Interim Ovarian Cancer Data From PYNNACLE Phase 2 Pivotal Trial • 46% ORR observed among 76 evaluable patients in the ovarian cancer cohort with a medi…",
-     "Food and Drug Administration (FDA), the Company obtained feedback that continues to support its strategy for submitting a New Drug Application (NDA) for accelerated approval of rezatapopt in patients with platinum-resistant/refractory ovarian cancer with a TP53 Y220C mutation ba…",
-     "Such statements include, but are not limited to, statements regarding the Company’s future plans or expectations for rezatapopt, including the Company’s ability to obtain approval as a treatment option as a monotherapy, expectations regarding timing, enrollment status and succes…"
+     "Dyne Therapeutics, Inc. · announces positive topline / accelerated approval"
     ],
-    "price_1d": 0.094006,
-    "price_5d": 0.197619,
-    "price_20d": 0.45136,
+    "price_1d": -0.011121,
+    "price_5d": -0.019036,
+    "price_20d": 0.050298,
     "price_60d": null,
-    "raw_20d": 0.452174,
+    "raw_20d": 0.057944,
     "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
     "outcome": "hit"
    },
    {
-    "case_id": "case-3cd67e6ed7",
-    "date": "2026-08-28",
-    "ticker": "ROIV",
-    "company_zh": "Roivant Sciences Ltd.",
-    "event_zh": "FDA 批准：Roivant Sciences Ltd. · fda approval / topline data",
+    "case_id": "case-b4568dc32b",
+    "date": "2026-09-28",
+    "ticker": "RNAZ",
+    "company_zh": "Transcode Therapeutics, Inc.",
+    "event_zh": "临床数据读出：Transcode Therapeutics, Inc. · met the primary endpoint",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1829635/000110465926111170/tm2626237d1_ex99-1.htm",
+    "evidence_quotes": [
+     "· The primary endpoint of the study was met o No dose-limiting toxicities were reported across the evaluated dose levels BOSTON, MA, September 28, 2026 – TransCode Therapeutics, Inc."
+    ],
+    "price_1d": -0.023425,
+    "price_5d": 0.012914,
+    "price_20d": -0.038373,
+    "price_60d": null,
+    "raw_20d": -0.034682,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-c7058adc92",
+    "date": "2026-09-28",
+    "ticker": "ONCY",
+    "company_zh": "ONCOLYTICS BIOTECH INC",
+    "event_zh": "FDA 批准：ONCOLYTICS BIOTECH INC · accelerated approval",
     "category": "approval",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036126034854/ef20081283_ex99-1.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1129928/000112992826000057/oncolyticsreo033trialmomen.htm",
     "evidence_quotes": [
-     "Roivant Sciences Ltd. · fda approval / topline data"
+     "ONCOLYTICS BIOTECH INC · accelerated approval"
     ],
-    "price_1d": 0.000792,
-    "price_5d": 0.195185,
-    "price_20d": 0.052026,
+    "price_1d": 0.005477,
+    "price_5d": -0.120466,
+    "price_20d": -0.317123,
     "price_60d": null,
-    "raw_20d": 0.047947,
-    "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
+    "raw_20d": -0.313433,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-44fd12a179",
+    "date": "2026-09-28",
+    "ticker": "KOD",
+    "company_zh": "Kodiak Sciences Inc.",
+    "event_zh": "临床数据读出：Kodiak Sciences Inc. · met the primary endpoint / phase 3 results",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1468748/000119312526403481/d185059dex991.htm",
+    "evidence_quotes": [
+     "EX-99.1 2 d185059dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 Zenkuda and tabirafusp-ted Meet Primary Endpoints in Pivotal DAYBREAK Trial in wAMD, with Zenkuda Demonstrating a Potential New Standard-of-Care Profile with Strong Immediacy and Sustained Clinical Effect with Majority of …",
+     "• Zenkuda (tarcocimab tedromer) met the primary endpoint (p-value of 0.0007) demonstrating meaningful vision gains as well as rapid and sustained retinal drying with the majority of patients (54%) on 6-month dosing, establishing a first-line benchmark in wet age-related macular …",
+     "(Nasdaq: KOD), a precommercial retina-focused biotechnology company committed to researching, developing and commercializing transformative therapeutics, today announced that the primary endpoints were met for both Zenkuda (tarcocimab tedromer) and tabirafusp-ted (KSI-501) in th…"
+    ],
+    "price_1d": 0.092633,
+    "price_5d": 0.042957,
+    "price_20d": 0.043557,
+    "price_60d": null,
+    "raw_20d": 0.047248,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
     "outcome": "hit"
    },
    {
-    "case_id": "case-a6cbdf0631",
-    "date": "2026-08-28",
-    "ticker": "CYTK",
-    "company_zh": "CYTOKINETICS INC",
-    "event_zh": "临床数据读出：CYTOKINETICS INC · met the primary endpoint",
+    "case_id": "case-cad5a1c4a3",
+    "date": "2026-09-28",
+    "ticker": "MIRM",
+    "company_zh": "Mirum Pharmaceuticals, Inc.",
+    "event_zh": "临床数据读出：Mirum Pharmaceuticals, Inc. · met the primary endpoint / phase 3 results",
+    "category": "trial_result",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1759425/000175942526000049/mirm-20260925.htm",
+    "evidence_quotes": [
+     "Announcement of Data from the Phase 3 AZURE-1 Study of Brelovitug in Chronic Hepatitis Delta On September 28, 2026, the Company announced the primary endpoint was met in the Phase 3 portion of the AZURE-1 study evaluating brelovitug, an investigational fully human monoclonal ant…",
+     "Phase 3 AZURE-1 Results: Brelovitug Met the Primary Endpoint at Week 24 The Phase 3 portion of the AZURE-1 study enrolled 153 treatment-naive patients randomized in a 2:2:1 ratio to receive brelovitug 300 mg self-administered once weekly (“QW”) by subcutaneous (“SC”) injection ,…",
+     "At Week 24, treatment with brelovitug met the primary endpoint, with 56% of patients in the 300 mg QW arm and 45% in the 900 mg Q4W arm achieving the combined endpoint of virologic response (≥2 log10 reduction in HDV RNA from baseline or undetectable HDV RNA [<LLOQ, TND]) and AL…"
+    ],
+    "price_1d": -0.034505,
+    "price_5d": -0.125939,
+    "price_20d": -0.042774,
+    "price_60d": null,
+    "raw_20d": -0.039084,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-8126947193",
+    "date": "2026-09-28",
+    "ticker": "NTHI",
+    "company_zh": "NEONC TECHNOLOGIES HOLDINGS, INC.",
+    "event_zh": "FDA 批准：NEONC TECHNOLOGIES HOLDINGS, INC. · fda approval / accelerated approval",
+    "category": "approval",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1979414/000182912626010493/neonctechnologies_ex99-1.htm",
+    "evidence_quotes": [
+     "The meeting provides an opportunity for discussion; its scheduling does not establish FDA agreement on a trial design, an accelerated approval pathway or eventual approval of NEO212."
+    ],
+    "price_1d": 0.021895,
+    "price_5d": -0.123451,
+    "price_20d": -0.108168,
+    "price_60d": null,
+    "raw_20d": -0.104478,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
+    "outcome": "miss"
+   },
+   {
+    "case_id": "case-467b9ca2ca",
+    "date": "2026-09-28",
+    "ticker": "NXL",
+    "company_zh": "Nexalin Technology, Inc.",
+    "event_zh": "临床数据读出：Nexalin Technology, Inc. · did not meet",
     "category": "trial_result",
     "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1061983/000119312526372456/cytk-ex99_1.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1527352/000182912626010495/nexalintec_8k.htm",
     "evidence_quotes": [
-     "1 ACACIA-HCM met both dual primary endpoints, demonstrating statistically significant improvements from baseline to Week 36 compared to placebo in both Kansas City Cardiomyopathy Questionnaire Clinical Summary Score (KCCQ-CSS) and maximal exercise performance (pVO 2 ).",
-     "Results for the dual primary endpoint analysis consistently favored aficamten across prespecified subgroups studied.",
-     "There were two pre-specified primary endpoints, KCCQ-CSS and pVO₂, evaluated in parallel."
+     "Additionally, as previously disclosed, on July 24, 2026, the Company received a Staff Determination Letter from Nasdaq (the “July Delisting Notice”) stating that the Company had not regained compliance with the minimum bid price requirement under Nasdaq Listing Rule 5550(a)(2) a…"
     ],
-    "price_1d": 0.007735,
-    "price_5d": 0.057515,
-    "price_20d": -0.078392,
+    "price_1d": -0.064088,
+    "price_5d": -0.037727,
+    "price_20d": -0.647169,
     "price_60d": null,
-    "raw_20d": -0.082471,
+    "raw_20d": -0.643478,
     "verdict_zh": "系统判定：利空（trial_result）；20 日跑输基准",
     "outcome": "hit"
    },
    {
-    "case_id": "case-122a4cd1a2",
-    "date": "2026-08-27",
-    "ticker": "ROIV",
-    "company_zh": "Roivant Sciences Ltd.",
-    "event_zh": "FDA 批准：Roivant Sciences Ltd. · announces positive topline",
-    "category": "approval",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1635088/000114036126034735/ef20081229_ex99-1.htm",
-    "evidence_quotes": [
-     "EX-99.1 2 ef20081229_ex99-1.htm EXHIBIT 99.1 Exhibit 99.1 Roivant Announces FDA Approval of LISRAYA™ (brepocitinib) for Adults with Dermatomyositis; Now Available in the U.S.",
-     "“We are hopeful the approval of LISRAYA in DM will be the first of many for brepocitinib, and will provide an important new treatment option for these patients.” said Matt Gline, CEO of Roivant.",
-     "The approval of LISRAYA marks a turning point for patients living with dermatomyositis."
-    ],
-    "price_1d": -0.055472,
-    "price_5d": -0.051695,
-    "price_20d": 0.007158,
-    "price_60d": null,
-    "raw_20d": -0.000811,
-    "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
-    "outcome": "mixed"
-   },
-   {
-    "case_id": "case-840a6ab514",
-    "date": "2026-08-26",
-    "ticker": "GYRE",
-    "company_zh": "GYRE THERAPEUTICS, INC.",
-    "event_zh": "临床数据读出：GYRE THERAPEUTICS, INC. · met the primary endpoint / breakthrough therapy",
-    "category": "trial_result",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1124105/000114036126034401/ef20081104_ex99-1.htm",
-    "evidence_quotes": [
-     "A One-stop Shop for Fibrosis – Building Physician Reach Ahead of F351 CDK2 / Cyclin E TYK2 / JAK1 TRK DAC Fibrosis GSPT1 Breakthrough Therapy Designation Priority Review of NDA (China NMPA, 2021, 2026) NDA accepted by NMPA in May 2026 22 F351 Phase 3 Results in CHB-associated Li…"
-    ],
-    "price_1d": -0.004659,
-    "price_5d": -0.032242,
-    "price_20d": 0.104889,
-    "price_60d": null,
-    "raw_20d": 0.108597,
-    "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
-    "outcome": "hit"
-   },
-   {
-    "case_id": "case-88c3c0b092",
-    "date": "2026-08-26",
-    "ticker": "LONA",
-    "company_zh": "LeonaBio, Inc.",
-    "event_zh": "收到 CRL：LeonaBio, Inc. · complete response letter",
+    "case_id": "case-9b00d1f173",
+    "date": "2026-09-25",
+    "ticker": "AQST",
+    "company_zh": "Aquestive Therapeutics, Inc.",
+    "event_zh": "收到 CRL：Aquestive Therapeutics, Inc. · fda approval / complete response letter",
     "category": "crl",
     "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1620463/000119312526368288/lona-20260826.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1398733/000139873326000048/corporatepresentation-se.htm",
     "evidence_quotes": [
-     "Food and Drug Administration approves, or issues a complete response letter with respect to, the marketing application, including any supplement to a new drug application, for imlunestrant in combination with abemaciclib in breast cancer submitted by Eli Lilly & Co., and (2) Oct…"
+     "Aquestive Therapeutics, Inc. · fda approval / complete response letter"
     ],
-    "price_1d": -0.02499,
-    "price_5d": -0.059379,
-    "price_20d": -0.60518,
+    "price_1d": 0.011867,
+    "price_5d": -0.02352,
+    "price_20d": -0.140518,
     "price_60d": null,
-    "raw_20d": -0.601471,
+    "raw_20d": -0.144397,
     "verdict_zh": "系统判定：利空（crl）；20 日跑输基准",
     "outcome": "hit"
    },
    {
-    "case_id": "case-7ed8331008",
-    "date": "2026-08-26",
-    "ticker": "SMMT",
-    "company_zh": "Summit Therapeutics Inc.",
-    "event_zh": "临床数据读出：Summit Therapeutics Inc. · met the primary endpoint",
-    "category": "trial_result",
+    "case_id": "case-e728da71b4",
+    "date": "2026-09-25",
+    "ticker": "CCCC",
+    "company_zh": "C4 Therapeutics, Inc.",
+    "event_zh": "FDA 批准：C4 Therapeutics, Inc. · label expansion",
+    "category": "approval",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1599298/000159929826000074/smmt-20260825.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1662579/000162828026063497/septembercorporatedeck_f.htm",
     "evidence_quotes": [
-     "Summit Therapeutics Inc. · met the primary endpoint"
+     "C4 Therapeutics, Inc. · label expansion"
     ],
-    "price_1d": -0.038486,
-    "price_5d": 0.194317,
-    "price_20d": 0.0879,
+    "price_1d": 0.043544,
+    "price_5d": -0.016726,
+    "price_20d": -0.00773,
     "price_60d": null,
-    "raw_20d": 0.091608,
-    "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
-    "outcome": "hit"
+    "raw_20d": -0.011609,
+    "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
+    "outcome": "mixed"
    },
    {
-    "case_id": "case-5cc93c3ed4",
-    "date": "2026-07-31",
-    "ticker": "KPTI",
-    "company_zh": "Karyopharm Therapeutics Inc.",
-    "event_zh": "临床数据读出：Karyopharm Therapeutics Inc. · fda approval / priority review",
+    "case_id": "case-f10ba42fbe",
+    "date": "2026-09-24",
+    "ticker": "KYTX",
+    "company_zh": "Kyverna Therapeutics, Inc.",
+    "event_zh": "临床数据读出：Kyverna Therapeutics, Inc. · topline data",
     "category": "trial_result",
-    "direction": -1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1503802/000119312526326995/d71318d8k.htm",
+    "direction": 1,
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1994702/000119312526400062/kytx-ex99_1.htm",
     "evidence_quotes": [
-     "(the “Company”) announced topline results from its Phase 3 XPORT-EC-042 trial evaluating selinexor as a maintenance-only therapy compared to placebo in adult patients with TP53 wild-type advanced or recurrent endometrial cancer.",
-     "The trial did not meet its primary endpoint of progression free survival (“PFS”).",
-     "The trial included two patient populations, for which the primary endpoint of PFS was designed to be tested sequentially: (1) a modified intent to treat population (“mITT”) that included patients with either (a) TP53 wild-type tumors with proficient mismatch repair status (“pMMR…"
+     "“After a single dose of miv-cel, the sustained improvements observed in mobility, stiffness and other disease-specific measures, together with a well-tolerated profile, underscore its potential to deliver significant, long-lasting benefit to patients with SPS.\" Topline 12-month …",
+     "Further strengthening the data shared at AAN 2026 , a single-dose of miv-cel led to deep and durable clinical responses, demonstrating: • All 7 patients (100%) achieved clinically meaningful improvement in Myasthenia Gravis Activities of Daily Living (MG-ADL) and Quantitative My…",
+     "The primary endpoints are the change from baseline in the T25FW at 16 weeks and the incidence and severity of adverse events (AEs)."
     ],
-    "price_1d": -0.01635,
-    "price_5d": -0.018613,
-    "price_20d": 0.040893,
-    "price_60d": -0.779557,
-    "raw_20d": 0.061856,
-    "verdict_zh": "系统判定：利空（trial_result）；20 日跑赢基准",
+    "price_1d": -0.020197,
+    "price_5d": -0.111276,
+    "price_20d": -0.217439,
+    "price_60d": null,
+    "raw_20d": -0.228898,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
     "outcome": "miss"
    },
    {
-    "case_id": "case-eea5192f49",
-    "date": "2026-07-31",
-    "ticker": "INMB",
-    "company_zh": "Inmune Bio, Inc.",
-    "event_zh": "FDA 批准：Inmune Bio, Inc. · receives fda approval",
-    "category": "approval",
+    "case_id": "case-4fcf71709e",
+    "date": "2026-09-24",
+    "ticker": "ACAD",
+    "company_zh": "ACADIA PHARMACEUTICALS INC",
+    "event_zh": "临床数据读出：ACADIA PHARMACEUTICALS INC · announces positive topline / phase 3 results",
+    "category": "trial_result",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1711754/000121390026083961/ea030006901ex99-1.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/1070494/000119312526401157/d168737dex991.htm",
     "evidence_quotes": [
-     "Inmune Bio, Inc. · receives fda approval"
+     "EX-99.1 2 d168737dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 Acadia Pharmaceuticals Announces Phase 3 Enabling Topline Results from Phase 2 RADIANT Study of Remlifanserin for the Treatment of Alzheimer’s Disease Psychosis (ADP) — Meaningful and consistent efficacy trends across endp…",
+     "(Nasdaq: ACAD) today announced Phase 3 enabling topline results from the Phase 2 portion of the ongoing RADIANT clinical trial program evaluating remlifanserin for the treatment of hallucinations and delusions associated with Alzheimer’s disease psychosis (ADP).",
+     "For the primary endpoint of change from baseline in the Scale for the Assessment of Positive Symptoms-Hallucinations and Delusions subscales (SAPS-H+D), once daily 60 mg remlifanserin demonstrated a change of -12.6 versus a -10.4 change for placebo at week 6, yielding a standard…"
     ],
-    "price_1d": 0.052437,
-    "price_5d": 0.168818,
-    "price_20d": 0.278473,
-    "price_60d": -0.168223,
-    "raw_20d": 0.299435,
-    "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
-    "outcome": "hit"
+    "price_1d": -0.071518,
+    "price_5d": -0.102875,
+    "price_20d": -0.100202,
+    "price_60d": null,
+    "raw_20d": -0.111661,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
+    "outcome": "miss"
    },
    {
-    "case_id": "case-cefe2036c9",
-    "date": "2026-07-30",
-    "ticker": "REPL",
-    "company_zh": "Replimune Group, Inc.",
-    "event_zh": "FDA 批准：Replimune Group, Inc. · fda approval / accelerated approval",
+    "case_id": "case-b951c3c0ca",
+    "date": "2026-09-23",
+    "ticker": "ARMP",
+    "company_zh": "Armata Pharmaceuticals, Inc.",
+    "event_zh": "FDA 批准：Armata Pharmaceuticals, Inc. · receives fda approval / breakthrough therapy",
     "category": "approval",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1737953/000110465926088481/tm2621663d1_ex99-1.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/921114/000110465926109809/tm2625977d1_ex99-1.htm",
     "evidence_quotes": [
-     "Therefore, the reviewers recommend for accelerated approval of VO, used in combinations with nivolumab, for adult patients with confirmed disease progression on anti-PD-1 based therapy…” CC-16 Regulatory Topics CC-17 Relevance of MOA to Response Assessment LOCAL IMMUNE EFFECT SY…",
-     "Robert 2015 CC-32 Limited Options Post Immune Checkpoint Inhibitor (ICI) Progression in Advanced Melanoma Neoadjuvant/ Adjuvant/ First line • Pembrolizumab (Keytruda) • Nivolumab (Opdivo) • Ipilimumab (Yervoy) • Ipilimumab + Nivolumab • Relatlimab/Nivolumab (Opdualag) Monotherap…",
-     "Other combination treatments per NCCN Combinations On progression CC-34 Lifileucel (AMTAGVI) is the Only FDA Approved Agent for Anti-PD-1 Failed Melanoma AMTAGVI (lifileucel) [package insert]; initial approval 2024 Lifileucel (AMTAGVI) Efficacy (ORR) • 31.5% (4.1% CR) • (n=73, p…"
+     "These forward-looking statements reflect management’s beliefs and views with respect to future events and are based on estimates and assumptions as of the date of this communication and are subject to risks and uncertainties including risks related to Armata’s development of bac…"
     ],
-    "price_1d": 0.031741,
-    "price_5d": 0.02404,
-    "price_20d": 0.331589,
-    "price_60d": 0.068095,
-    "raw_20d": 0.362158,
-    "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
-    "outcome": "hit"
-   },
-   {
-    "case_id": "case-8eed98ee01",
-    "date": "2026-07-30",
-    "ticker": "EYPT",
-    "company_zh": "EyePoint, Inc.",
-    "event_zh": "FDA 批准：EyePoint, Inc. · fda approval / phase 3 results",
-    "category": "approval",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1314102/000119312526324866/eypt-ex99_1.htm",
-    "evidence_quotes": [
-     "DURAVYU is delivered via a single standard intravitreal injection in the physician's office, similar to current FDA approved intravitreal treatments.",
-     "Food and Drug Administration and the ability to obtain regulatory approval from FDA for the commercialization of DURAVYU; unanticipated costs and expenses; the Company’s cash and cash equivalents may not be sufficient to support its operating plan for as long as anticipated; the…"
-    ],
-    "price_1d": -0.045368,
-    "price_5d": 0.048502,
-    "price_20d": -0.680842,
-    "price_60d": -0.9989,
-    "raw_20d": -0.650273,
+    "price_1d": 0.001283,
+    "price_5d": -0.105301,
+    "price_20d": -0.067424,
+    "price_60d": null,
+    "raw_20d": -0.067568,
     "verdict_zh": "系统判定：利好（approval）；20 日跑输基准",
     "outcome": "miss"
    },
    {
-    "case_id": "case-9d2ee3c196",
-    "date": "2026-07-30",
-    "ticker": "IBRX",
-    "company_zh": "ImmunityBio, Inc.",
-    "event_zh": "FDA 批准：ImmunityBio, Inc. · receives fda approval",
-    "category": "approval",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1326110/000132611026000071/ibrx-20267308xkexhibit991.htm",
-    "evidence_quotes": [
-     "The UAE has taken the lead in the broadest approval of ANKTIVA to date."
-    ],
-    "price_1d": -0.055192,
-    "price_5d": -0.010303,
-    "price_20d": 0.049968,
-    "price_60d": 0.020538,
-    "raw_20d": 0.080537,
-    "verdict_zh": "系统判定：利好（approval）；20 日跑赢基准",
-    "outcome": "hit"
-   },
-   {
-    "case_id": "case-1b14cddd7d",
-    "date": "2026-07-30",
-    "ticker": "GNPX",
-    "company_zh": "Genprex, Inc.",
-    "event_zh": "临床数据读出：Genprex, Inc. · did not meet",
+    "case_id": "case-7cbba2ee64",
+    "date": "2026-09-23",
+    "ticker": "IONS",
+    "company_zh": "伊奥尼斯",
+    "event_zh": "临床数据读出：IONIS PHARMACEUTICALS INC · met the primary endpoint",
     "category": "trial_result",
     "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1595248/000143774926025074/gnpx20260730_8k.htm",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/874015/000114036126037371/ef20082626_ex99-1.htm",
     "evidence_quotes": [
-     "Genprex, Inc. · did not meet"
+     "The study met its primary endpoint with sefaxersen achieving statistically significant and clinically meaningful improvements in proteinuria reduction, compared to placebo at 37 weeks, as measured by 24-hour urine protein-to-creatinine ratio (UPCR).",
+     "The primary endpoint of the study is the change from baseline in the urine protein-to-creatinine ratio at 37 weeks."
     ],
-    "price_1d": -0.225887,
-    "price_5d": -0.326504,
-    "price_20d": -0.420935,
-    "price_60d": -0.727119,
-    "raw_20d": -0.390365,
-    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
-    "outcome": "miss"
-   },
-   {
-    "case_id": "case-c41fcaa3ad",
-    "date": "2026-07-29",
-    "ticker": "VJET",
-    "company_zh": "Catheter Precision, Inc.",
-    "event_zh": "临床数据读出：Catheter Precision, Inc. · did not meet",
-    "category": "trial_result",
-    "direction": 1,
-    "source_url": "https://www.sec.gov/Archives/edgar/data/1716621/000143774926024717/ex_967333.htm",
-    "evidence_quotes": [
-     "Catheter Precision, Inc. · did not meet"
-    ],
-    "price_1d": -0.119546,
-    "price_5d": -0.077296,
-    "price_20d": -0.330738,
-    "price_60d": -0.778926,
-    "raw_20d": -0.285714,
-    "verdict_zh": "系统判定：利好（trial_result）；20 日跑输基准",
-    "outcome": "miss"
+    "price_1d": 0.00715,
+    "price_5d": 0.005359,
+    "price_20d": 0.003342,
+    "price_60d": null,
+    "raw_20d": 0.003199,
+    "verdict_zh": "系统判定：利好（trial_result）；20 日跑赢基准",
+    "outcome": "mixed"
    }
   ],
   "negative_examples": [

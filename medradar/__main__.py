@@ -528,6 +528,8 @@ def cmd_cases(args: argparse.Namespace) -> int:
             corpus_path=corpus_path,
             max_cases=args.limit,
             benchmark=args.benchmark,
+            per_company=getattr(args, "per_company", 3),
+            per_month=getattr(args, "per_month", 8),
         )
     files = write_cases(result, args.out_dir or "out/cases")
     _emit(
@@ -814,6 +816,8 @@ def build_parser() -> argparse.ArgumentParser:
     cases.add_argument("--fetch-prices", action="store_true", help="download daily bars for corpus tickers")
     cases.add_argument("--max-tickers", type=int, default=150)
     cases.add_argument("--price-budget", type=int, default=200)
+    cases.add_argument("--per-company", type=int, default=3, help="max cases per ticker")
+    cases.add_argument("--per-month", type=int, default=8, help="max cases per calendar month")
     cases.set_defaults(func=cmd_cases)
 
     corpus = sub.add_parser("corpus", help="inspect or ingest the EDGAR historical catalyst corpus")

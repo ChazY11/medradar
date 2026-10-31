@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "generated_at": "2026-10-31T00:00:00Z",
+    "db": "data/medradar.sqlite",
+    "window": {"start": "2025-01-01", "end": "2026-10-30", "quarters": 8},
+    "baseline": {"start": "2020-01-01", "end": "2024-12-31", "quarters": 20},
+    "counts": {"510k": 812, "pma": 95, "device_recall": 41, "drug_approval": 118, "trial": 236},
+    "event_total": 1302,
+    "data_status": {"device": "ok", "drug": "ok", "trials": "ok", "nmpa": "unavailable", "prices": "ok"}
+  },
+  "device": {
+    "coverage": {"events": 178417, "unmapped_track_events": 98254, "unmapped_company_events": 154056},
+    "tracks": [
+      {"track_id": "ep_pfa", "name_zh": "电生理与脉冲场消融", "name_en": "EP / PFA", "rank": 1, "recent": 42,
+       "recent_per_q": 5.25, "baseline_per_q": 1.1, "thi": 4.8, "prob_up": 0.997, "ci": [3.1, 6.9],
+       "major_share_recent": 0.55, "new_entrants_12m": 7, "recalls_recent": 1},
+      {"track_id": "imaging", "name_zh": "影像与诊断", "name_en": "Imaging", "rank": 2, "recent": 19,
+       "recent_per_q": 2.38, "baseline_per_q": 3.1, "thi": 0.77, "prob_up": 0.21, "ci": [0.55, 0.98],
+       "major_share_recent": 0.58, "new_entrants_12m": 0, "recalls_recent": 2}
+    ],
+    "companies": [
+      {"key": "medtronic", "name_zh": "美敦力", "name_en": "Medtronic", "ticker": "MDT", "recent": 18,
+       "recent_per_q": 2.25, "baseline_per_q": 2.05, "thi": 1.1, "prob_up": 0.58, "ci": [0.7, 1.5],
+       "novelty_12m": 3, "recalls_recent": 2},
+      {"key": "intuitive_surgical", "name_zh": "直觉外科", "ticker": "ISRG", "recent": 9,
+       "recent_per_q": 1.13, "baseline_per_q": 0.6, "thi": 1.88, "prob_up": 0.93, "ci": [1.2, 2.7],
+       "novelty_12m": 1, "recalls_recent": 0}
+    ],
+    "migration": [
+      {"key": "intuitive_surgical", "name_zh": "直觉外科", "track_id": "surgical_robotics",
+       "track_zh": "手术机器人", "share_recent": 0.35, "share_base": 0.12, "delta": 0.23, "js": 0.11}
+    ],
+    "firstseen": [
+      {"event_date": "2026-10-20", "key": "medtronic", "name_zh": "美敦力", "track_id": "ep_pfa",
+       "track_zh": "电生理与脉冲场消融", "product_code": "OAD", "device_name": "PFA System", "title": "PFA"}
+    ],
+    "recalls": [
+      {"key": "philips", "name_zh": "飞利浦", "recent": 3, "baseline_per_q": 0.5, "reason_top": "Software"}
+    ]
+  },
+  "drug": {
+    "approvals": [
+      {"key": "lilly", "name_zh": "礼来", "ticker": "LLY", "recent": 5, "recent_per_q": 0.63,
+       "baseline_per_q": 0.4, "thi": 1.6, "prob_up": 0.84, "nme_recent": 2}
+    ],
+    "areas": [
+      {"track_id": "t_cardiometabolic", "name_zh": "心血管代谢", "recent": 31, "thi": 1.9, "prob_up": 0.95}
+    ],
+    "trials": [
+      {"key": "lilly", "name_zh": "礼来", "starts_recent": 24, "recent_per_q": 3.0,
+       "baseline_per_q": 2.1, "phase_mix": {"PHASE2": 0.5, "PHASE3": 0.5}, "thi": 1.4}
+    ]
+  },
+  "products": {
+    "coverage": {"families": 60, "top20_event_share": 0.64, "new_products_90d": 9},
+    "families": [
+      {"family_id": "fam_pfa", "name_zh": "脉冲场消融发生器", "name_en": "PFA Generator", "category": "电生理",
+       "recent": 21, "thi": 3.4, "prob_up": 0.981, "companies": 6, "code_count": 4,
+       "new_entrants_12m": 4, "first_seen": "2025-02-11"},
+      {"family_id": "fam_cgm", "name_zh": "连续血糖传感器", "category": "血糖监测",
+       "recent": 15, "thi": 1.9, "prob_up": 0.902, "companies": 4, "code_count": 3,
+       "new_entrants_12m": 3, "first_seen": "2024-11-19"}
+    ],
+    "new_products": [
+      {"date": "2026-10-20", "company_zh": "美敦力", "ticker": "MDT", "family_zh": "脉冲场消融发生器",
+       "code": "OAD", "device_name_zh": "脉冲场消融发生器（带接触力感应）",
+       "definition_zh": "用于房颤消融的脉冲电场消融系统", "k_number": "K242001",
+       "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K242001",
+       "title": "PFA System"}
+    ],
+    "company_portfolio": [
+      {"company_zh": "美敦力", "ticker": "MDT", "recent": 81, "family_count": 30,
+       "top_families": [["脉冲场消融发生器", 0.38], ["结构性心脏", 0.22]], "js_shift": 0.18}
+    ]
+  },
+  "cn_gap": [
+    {"track_id": "ep_pfa", "name_zh": "电生理与脉冲场消融", "us_recent": 42, "cn_count": null,
+     "us_share": 0.2, "cn_share": null, "gap_index": null, "cn_data_status": "unavailable"}
+  ],
+  "signals": [
+    {"signal_id": "s1", "signal_date": "2026-10-21", "company_key": "medtronic", "ticker": "MDT",
+     "name_zh": "美敦力", "kind": "device_new_track", "direction": 1, "score": 0.72, "track_id": "ep_pfa",
+     "reason_zh": "首次进入脉冲场消融赛道"}
+  ],
+  "alerts": {
+    "accelerating_tracks": [{"track_id": "ep_pfa", "name_zh": "电生理与脉冲场消融", "thi": 4.8,
+                             "prob_up": 0.997, "recent": 42}],
+    "cn_gap_top": [{"track_id": "ep_pfa", "name_zh": "电生理与脉冲场消融", "us_recent": 42,
+                    "cn_count": null, "cn_data_status": "unavailable"}],
+    "company_movers": [{"key": "intuitive_surgical", "name_zh": "直觉外科", "thi": 1.88, "recent": 9, "novelty_12m": 1}],
+    "new_entries": [{"event_date": "2026-10-20", "key": "medtronic", "name_zh": "美敦力", "track_zh": "电生理与脉冲场消融", "device_name": "PFA"}],
+    "recall_clusters": [{"key": "philips", "name_zh": "飞利浦", "recent": 3}]
+  },
+  "timestamps": {"by_quality": {"date": 1180, "datetime": 74, "estimated": 32, "unknown": 16},
+                 "excluded_from_trading": 16, "policy": "回测只使用 available_at"},
+  "research": {
+    "sample_split": {"status": "ok", "key": "event_date", "no_overlap": true,
+                     "bounds": {"dev": {"start": "2020-01-01", "end": "2024-10-29", "n": 800, "n_days": 1400},
+                                "holdout": {"start": "2024-10-30", "end": "2026-10-30", "n": 502, "n_days": 730}}},
+    "multiple_testing": {"method": "holm", "adjusted": [{"track_id": "ep_pfa", "raw_p": 0.001, "adjusted_p": 0.003, "significant": true}]},
+    "survivorship": {"flagged": 2, "note": "退市/并购标的单独标注"}
+  },
+  "trading": {
+    "summary": {"total_return": 0.083, "max_drawdown": -0.061, "win_rate": 0.571, "trades": 21},
+    "meta": {"capital": 100000.0}
+  }
+}

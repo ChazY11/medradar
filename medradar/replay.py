@@ -1557,7 +1557,9 @@ def _resolve_step(
     # ------------------------------------------------------------ price branch
     fill: dict[str, Any] | None = None
     intraday_error: str | None = None
-    if _intraday_eligible(available_at, now, intraday_days):
+    # Offline runs never *attempt* a 1-minute request, so they must not be
+    # reported as fallbacks; the HTML explains the offline mode separately.
+    if book.fetcher is not None and _intraday_eligible(available_at, now, intraday_days):
         bars, error = book.intraday(step["ticker"])
         if bars:
             fill = _first_intraday_fill(bars, available_at, now)
@@ -1832,9 +1834,10 @@ def _simulate(
         signal_source = "signals_table"
         effective_max_steps = None
     event_mode = use_events
-    # Multi-year events replay is a daily-bar exercise: the free 1-minute feed
-    # only covers ~7 days, so the 1-minute branch is disabled by construction.
-    resolution_intraday_days = 0.0 if event_mode else intraday_days
+    # Both modes share one price rule: 1-minute bars exist only for the most
+    # recent ~7 days, so older public moments automatically fall back to the
+    # next-session daily open. ``intraday_days=0`` forces daily-only.
+    resolution_intraday_days = float(intraday_days)
     unique_rows, duplicates = _dedupe_rows(rows)
     in_window = [
         row
@@ -1961,6 +1964,30 @@ def _simulate(
     price_sources: Counter[str] = Counter(
         str(step.get("price_source")) for step in steps if step.get("price_source")
     )
+    # Verifiable 1-minute boundary statistics (also exposed top-level):
+    #   1m       = fill came from the first 1-minute bar after available_at
+    #   daily    = daily open, no 1-minute attempt was needed (outside window /
+    #              forced daily / offline)
+    #   fallback = 1-minute request attempted but unusable -> daily open
+    #   missing  = step never reached a price (no price / no future session)
+    price_source_counts: dict[str, int] = {
+        "1m": 0,
+        "daily": 0,
+        "fallback": 0,
+        "missing": 0,
+        "total": len(steps),
+    }
+    for step in steps:
+        source = step.get("price_source")
+        if source == "1m":
+            price_source_counts["1m"] += 1
+        elif source == "daily":
+            if step.get("intraday_fallback"):
+                price_source_counts["fallback"] += 1
+            else:
+                price_source_counts["daily"] += 1
+        else:
+            price_source_counts["missing"] += 1
     intraday_eligible = any(
         _intraday_eligible(moment, now, resolution_intraday_days) for moment in _all_moments(usable)
     )
@@ -2004,6 +2031,9 @@ def _simulate(
             "end": end_day.isoformat(),
             "signals": len(in_window),
         },
+        # Contract for the 1-minute boundary (verifiable, machine-readable):
+        "intraday_window_days": float(resolution_intraday_days),
+        "price_source_counts": price_source_counts,
         "meta": {
             "engine": ENGINE,
             "generated_at": utc_now_iso(),
@@ -2080,7 +2110,8 @@ def _simulate(
                 [
                     "events 多年回放模式：按 point-in-time 从 events 生成候选"
                     "（首次产品码/新赛道/药品批准/III 期启动/召回聚集/8-K 催化剂），"
-                    "每类有上限并做 kind×year×company 抽样；成交只用日线次日开盘，不使用 1 分钟分支。"
+                    "每类有上限并做 kind×year×company 抽样；最近 intraday_days 天内的成交"
+                    "可用 1 分钟数据（公开时点后第一根 bar 开盘），更早的窗口回落日线次日开盘。"
                 ]
                 if event_mode
                 else []
@@ -2093,9 +2124,18 @@ def _simulate(
             "entry_daily": "公开日之后第一个交易日的开盘价",
             "intraday_rule": (
                 "公开时点落在最近 intraday_days 天内且 Yahoo 1 分钟数据可得时用 1 分钟分支，"
-                "否则回落日线；1 分钟请求失败按日线降级并记录原因"
-                + ("；events 多年回放固定只用日线" if event_mode else "")
+                "成交取公开时点之后第一根 1 分钟 bar 的开盘价；"
+                "否则回落日线次日开盘；1 分钟请求失败/无 bar 按日线降级并标记 fallback"
             ),
+            "intraday_fill_rule": (
+                "1m bar 的 ts 必须严格大于 available_at；日精度 available_at 按当日 23:59:59 UTC 处理，"
+                "因此首根可用 bar 落在下一交易日 09:30 ET"
+            ),
+            "intraday_coverage": (
+                "Yahoo range=7d&interval=1m、includePrePost=false：免费 1m 仅覆盖最近约 7 个自然日，"
+                "盘前盘后 bar 已排除；更早的窗口只能日线"
+            ),
+            "intraday_no_quote": "无 bid/ask：1m 成交价按 bar 开盘价假定，不是真实可成交报价",
             "exit": f"成交后第 {int(hold_days)} 个交易日收盘；数据不足时按最后一个可用收盘价，记 end_of_data",
             "cost": "costs_bps 为单边成本（bps），买入与卖出各收一次，往返扣减 2×bps",
             "sizing": "capital × position_pct × clamp(score,0.2,1.0)，固定名义额、不复利、不模拟现金约束",
@@ -2529,6 +2569,32 @@ def _render_steps(steps: Sequence[Mapping[str, Any]]) -> str:
     return "".join(blocks)
 
 
+def _step_price_reason(
+    step: Mapping[str, Any],
+    *,
+    meta: Mapping[str, Any],
+    window_days: float,
+    now_moment: datetime | None,
+) -> str:
+    """Why a step used the daily open instead of a 1-minute bar.
+
+    Kept explicit so the HTML can show the 1-minute boundary as a table instead
+    of a generic disclaimer.
+    """
+    fallback = str(step.get("intraday_fallback") or "")
+    if fallback:
+        return f"1m 不可用/失败：{fallback} → 日线降级"
+    fetcher_mode = str((meta.get("data_status") or {}).get("fetcher") or "")
+    if fetcher_mode == "offline":
+        return "离线模式未请求 1m（价格全部来自日线）"
+    moment, _ = _parse_moment(step.get("available_at_utc"))
+    if moment is not None and now_moment is not None:
+        delta_days = (now_moment - moment).total_seconds() / 86400.0
+        if delta_days > float(window_days):
+            return f"公开时点早于最近 {float(window_days):g} 天，免费 1m 数据不可得"
+    return "1m 分支未触发（无可用 bar 或无 fetcher）"
+
+
 def render_html(payload: Mapping[str, Any], *, docs_rel: str = "../../docs/ASSUMPTIONS.md") -> str:
     """Render a fully self-contained replay page (inline CSS/SVG/JS only)."""
     meta = payload.get("meta") or {}
@@ -2542,6 +2608,23 @@ def render_html(payload: Mapping[str, Any], *, docs_rel: str = "../../docs/ASSUM
     quality = payload.get("quality") or {}
     event_study = payload.get("event_study") or {}
     skipped = payload.get("skipped") or {}
+    intraday_window_days = float(
+        payload.get("intraday_window_days", meta.get("intraday_days_effective") or 0.0)
+    )
+    price_source_counts = payload.get("price_source_counts") or {}
+    now_moment, _ = _parse_moment(meta.get("generated_at"))
+    intraday_steps = [step for step in steps if step.get("price_source") == "1m"]
+    daily_steps = [step for step in steps if step.get("price_source") == "daily"]
+    fallback_steps = [step for step in daily_steps if step.get("intraday_fallback")]
+    daily_reason_counter: Counter[str] = Counter(
+        _step_price_reason(
+            step,
+            meta=meta,
+            window_days=intraday_window_days,
+            now_moment=now_moment,
+        )
+        for step in daily_steps
+    )
 
     kpis: list[str] = []
     for key, stats in summary_by_cost.items():
@@ -2661,6 +2744,84 @@ def render_html(payload: Mapping[str, Any], *, docs_rel: str = "../../docs/ASSUM
     )
     events_sampling = method.get("events_sampling") or {}
 
+    price_legend = {
+        "1m": "公开时点后第一根 1 分钟 bar 开盘（Yahoo 1m，仅最近约 7 天）",
+        "daily": "日线：公开日之后第一个交易日开盘（窗口外 / 未请求 1m）",
+        "fallback": "尝试 1m 失败或无可用 bar → 日线降级（已标记）",
+        "missing": "未取得价格（缺价 / 公开后无未来交易日）",
+    }
+    count_rows = "".join(
+        f'<tr><td>{_h(label)}</td><td class="num">{_h(price_source_counts.get(key, 0))}</td>'
+        f'<td>{_h(price_legend[key])}</td></tr>'
+        for key, label in (
+            ("1m", "1 分钟 bar"),
+            ("daily", "日线（窗口外/未请求）"),
+            ("fallback", "日线降级（1m 失败）"),
+            ("missing", "无价格"),
+        )
+    )
+    intraday_rows = "".join(
+        f'<tr><td>{_h(step.get("t"))}</td><td>{_h(step.get("ticker"))}</td>'
+        f'<td>{_h(step.get("available_at"))}</td><td>{_h(step.get("fill_time"))}</td>'
+        f'<td class="num">{_money(step.get("fill_price"))}</td>'
+        f'<td>1m bar 晚于公开时点</td></tr>'
+        for step in intraday_steps[:80]
+    ) or '<tr><td colspan="6" class="muted">窗口内没有使用 1 分钟 bar 的成交。</td></tr>'
+    reason_rows = "".join(
+        f'<tr><td>{_h(reason)}</td><td class="num">{_h(count)}</td></tr>'
+        for reason, count in daily_reason_counter.most_common(12)
+    ) or '<tr><td colspan="2" class="muted">无日线成交。</td></tr>'
+    daily_rows = "".join(
+        f'<tr><td>{_h(step.get("t"))}</td><td>{_h(step.get("ticker"))}</td>'
+        f'<td>{_h(step.get("available_at"))}</td><td>{_h(step.get("fill_time"))}</td>'
+        f'<td class="num">{_money(step.get("fill_price"))}</td>'
+        f'<td>{_h(_step_price_reason(step, meta=meta, window_days=intraday_window_days, now_moment=now_moment))}</td></tr>'
+        for step in daily_steps[:80]
+    ) or '<tr><td colspan="6" class="muted">窗口内没有日线成交。</td></tr>'
+    error_rows = "".join(
+        f'<tr><td>{_h(ticker)}</td><td>{_h(text)}</td></tr>'
+        for ticker, text in sorted(intraday_errors.items())[:15]
+    ) or '<tr><td colspan="2" class="muted">没有 1 分钟请求失败记录。</td></tr>'
+    price_source_block = (
+        '<div class="card">'
+        "<p>Yahoo 免费 1 分钟数据（<code>range=7d&amp;interval=1m</code>）只覆盖最近约 "
+        f"<b>{intraday_window_days:g} 天</b>，且已用 <code>includePrePost=false</code> 排除盘前盘后。"
+        "本页据此决定每个 step 的成交价：</p>"
+        '<ul class="tight">'
+        "<li><b>1m</b>：<code>available_at</code> 落在窗口内且 1m 可得 → 成交 = "
+        "公开时点之后第一根 1 分钟 bar 的开盘价（bar 时间必须严格晚于公开时点）。</li>"
+        "<li><b>日线</b>：窗口外的公开时点或未请求 1m → 公开日之后第一个交易日 09:30 ET 开盘价。</li>"
+        "<li><b>fallback</b>：尝试了 1m 但请求失败 / 没有公开时点之后的 bar → 降级日线并标记。</li>"
+        "<li><b>无 bid/ask</b>：bar 开盘价只是假定成交价，不是真实可成交报价。</li>"
+        "</ul>"
+        '<table><thead><tr><th>价格来源</th><th class="num">步数</th><th>说明</th></tr></thead><tbody>'
+        + count_rows
+        + "</tbody></table>"
+        f'<p class="small muted">total = {_h(price_source_counts.get("total", len(steps)))} 步；'
+        "1m 只影响成交价，不影响决策时点（决策仍只用 available_at 之前的信息）。</p>"
+        "<h3>使用 1 分钟 bar 的 step（前 80 条）</h3>"
+        '<table><thead><tr><th>决策时间</th><th>代码</th><th>公开时点</th><th>成交时间</th>'
+        '<th class="num">成交价</th><th>说明</th></tr></thead><tbody>'
+        + intraday_rows
+        + "</tbody></table>"
+        f'<p class="small muted">共 {_h(len(intraday_steps))} 条 1m 成交。</p>'
+        "<h3>使用日线的 step 与原因（前 80 条 / 按原因汇总）</h3>"
+        '<table><thead><tr><th>原因</th><th class="num">步数</th></tr></thead><tbody>'
+        + reason_rows
+        + '</tbody></table><table style="margin-top:10px"><thead><tr><th>决策时间</th><th>代码</th>'
+        '<th>公开时点</th><th>成交时间</th><th class="num">成交价</th><th>为什么用日线</th>'
+        "</tr></thead><tbody>"
+        + daily_rows
+        + "</tbody></table>"
+        f'<p class="small muted">共 {_h(len(daily_steps))} 条日线价格：其中窗口外/未请求 '
+        f'{_h(len(daily_steps) - len(fallback_steps))} 条、1m 降级 fallback '
+        f'{_h(len(fallback_steps))} 条。</p>'
+        "<h3>1 分钟请求失败记录</h3>"
+        '<table><thead><tr><th>代码</th><th>错误</th></tr></thead><tbody>'
+        + error_rows
+        + "</tbody></table></div>"
+    )
+
     banner = (
         '<div class="banner"><b>数据边界（务必先读）：</b>'
         "1 分钟数据仅最近 ~7 天（Yahoo range=7d、interval=1m），更早窗口只能回落到日线开盘；"
@@ -2713,6 +2874,8 @@ def render_html(payload: Mapping[str, Any], *, docs_rel: str = "../../docs/ASSUM
         f'<p class="small muted">基准成本档 {_h(base_cost_key)} bps；其余成本档的净收益见上方成本敏感性表。'
         "未进入组合的观望步骤（做空参考价、容量不足）不在此表中。"
         "持有天数为交易日差；最近成交使用数据末端的收盘价（end_of_data）。</p></div>",
+        "<h2>价格来源与 1 分钟边界（最近 ~7 天）</h2>",
+        price_source_block,
         "<h2>后续 1 / 5 / 20 日（方向调整后）</h2>",
         '<div class="card"><table><thead><tr>'
         '<th>持有窗口</th><th class="num">n</th><th class="num">平均毛收益</th>'

@@ -12,13 +12,15 @@ This is a research tool; "fixed" means a documented behaviour changed.
 - **EDGAR historical catalyst corpus v2, fully fetched**: 20,976 8-K filings
   (2015–2026, 16 phrase buckets, 100% of candidates, 0 fetch failures) with
   verbatim text and source URLs.
-- **Case library**: **1,075 traceable cases** with verbatim evidence (1,681 quotes),
+- **Case library**: **2,384 traceable cases** with verbatim evidence (3,700+ quotes),
   1/5/20/60-day SPY-abnormal reactions, hit/miss outcomes and negative examples.
+  Diversity caps (`--per-company`, `--per-month`) are now configurable; the old
+  defaults silently capped the library at ~1,000 cases.
 - **Event study summary**: direction-aligned, winsorised at 2.5/97.5, block
-  bootstrap by event month, Holm correction. Result after expanding to 1,075
-  cases: **approval +4.6% (CI 1.9–7.5) and CRL −6.2% (CI −10.6–−2.0) survive
-  Holm; trial readouts do not** (+0.2%, n.s.). Caveats: price-coverage
-  survivorship and heuristic categories are documented.
+  bootstrap by event month, Holm correction. Final result at 2,384 cases:
+  **approval +2.8% (CI 0.9–4.8) and CRL −3.8% (CI −6.7–−0.8) survive Holm;
+  trial readouts do not** (−0.3%, n.s.). Caveats: price-coverage survivorship
+  (145 delisted tickers have no free price source) and heuristic categories.
 - **Data audit** (`medradar audit`): dates, availability, quality, match rates,
   price coverage, freshness, duplicate detection.
 - **`medradar stats`** + auto-generated `docs/DATA.md`; `scripts/nightly.ps1`.

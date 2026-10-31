@@ -19,9 +19,9 @@ portfolio, what appeared for the first time, and where China still has a gap.
 | Coverage | 89 companies, 60 tracks, **204 device product families**, 7,097 product codes, **1.2 GiB SQLite** |
 | Strongest track right now | 心脏节律 THI 1.94 (P=98.2%) · 可穿戴监测 1.80 · 结构性心脏病 1.57 · 手术机器人 1.54 |
 | Signals emitted | 281 (→ tradable subset) |
-| Case library | **1,075 traceable cases** (verbatim evidence + 1/5/20/60-day reactions): 432 approvals · 171 CRLs · 472 trial readouts, 1,681 evidence quotes |
-| Replay | **400-step, 7-year timeline** (2019–2026) with 10/25/50 bps cost tiers |
-| Event study (20d, direction-aligned, winsorised, Holm) | **approval +4.6% (CI 1.9–7.5) · CRL −6.2% (CI −10.6–−2.0) · trial +0.2% (n.s.) — 2/3 significant after Holm** |
+| Case library | **2,384 traceable cases** (verbatim evidence + 1/5/20/60-day reactions): 943 approvals · 379 CRLs · 1,062 trial readouts, 3,700+ evidence quotes |
+| Replay | **400-step, 7-year timeline** (2019–2026) with 10/25/50 bps cost tiers; 1-minute fills for the last 7 days |
+| Event study (20d, direction-aligned, winsorised, Holm) | **approval +2.8% (CI 0.9–4.8) · CRL −3.8% (CI −6.7–−0.8) · trial −0.3% (n.s.) — 2/3 significant after Holm** |
 | Simulated book | in-sample, long-only, not investment advice |
 | Tests | **402 offline tests**, no network, no API key |
 | Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |

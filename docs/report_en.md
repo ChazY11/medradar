@@ -1,6 +1,6 @@
 # MedRadar: FDA Device & Drug Industry Radar
 
-_Generated 2026-10-31T04:03:06Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
+_Generated 2026-10-31T04:58:53Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
 
 ## Key takeaways
 
@@ -76,7 +76,7 @@ _Generated 2026-10-31T04:03:06Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 
 ## Drug side
 
-Top NDA/BLA momentum: Ionis Pharmaceuticals (THI 3.91), Daiichi Sankyo (THI 3.91), Otsuka (THI 3.91), Sanofi (THI 2.09), Bayer (THI 2.09).
+Top NDA/BLA momentum: Daiichi Sankyo (THI 3.91), Ionis Pharmaceuticals (THI 3.91), Otsuka (THI 3.91), Sanofi (THI 2.09), Bayer (THI 2.09).
 Hottest therapeutic areas: t_dermatology (P 98.0%), t_cardiometabolic (P 100.0%), t_vaccines (P 48.8%), t_ophthalmology (P 26.6%).
 Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无数据), Neurocrine Biosciences (暂无数据), Exelixis (暂无数据).
 
@@ -101,7 +101,7 @@ Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无�
 
 ## Case library (in-sample evidence)
 
-- 样本总数: 1,075; 20 日命中率: 47.7%; 60 日命中率: 43.6%; 语料总数: 20,976
+- 样本总数: 2,384; 20 日命中率: 45.2%; 60 日命中率: 41.1%; 语料总数: 20,976
 - 2026-10-01 · OBIO: FDA 批准：Orchestra BioMed Holdings, Inc. · fda approval / breakthrough therapy — outcome 未命中; price 1/5/20/60d: 1 日 -6.3% ▼、5 日 -8.1% ▼、20 日 -5.7% ▼.
 - 2026-10-01 · EVMN: 临床数据读出：Evommune, Inc. · met the primary endpoint — outcome 未命中; price 1/5/20/60d: 1 日 -8.8% ▼、5 日 -14.8% ▼、20 日 -5.2% ▼.
 - 2026-10-01 · NKTR: 临床数据读出：NEKTAR THERAPEUTICS · phase 3 results — outcome 未命中; price 1/5/20/60d: 1 日 -10.9% ▼、5 日 -13.6% ▼、20 日 -17.0% ▼.

@@ -522,6 +522,16 @@ class HtmlContractTests(ReplayTestCase):
         payload = self.payload
         for key in ("status", "window", "steps", "summary_by_cost", "assumptions_url"):
             self.assertIn(key, payload)
+        # 1-minute boundary contract (task P1): machine-readable source counts
+        self.assertIn("price_source_counts", payload)
+        self.assertIn("intraday_window_days", payload)
+        self.assertEqual(float(payload["intraday_window_days"]), 7.0)
+        source_counts = payload["price_source_counts"]
+        self.assertEqual(source_counts["total"], len(payload["steps"]))
+        self.assertEqual(
+            source_counts["1m"] + source_counts["daily"] + source_counts["fallback"] + source_counts["missing"],
+            source_counts["total"],
+        )
         self.assertEqual(payload["status"], "ok")
         self.assertEqual(payload["window"]["start"], "2024-01-01")
         self.assertEqual(payload["window"]["end"], "2024-02-29")
@@ -531,7 +541,7 @@ class HtmlContractTests(ReplayTestCase):
         for key in ("total_return", "max_drawdown", "win_rate", "trades", "avg_holding_days"):
             self.assertIn(key, first)
         step = payload["steps"][0]
-        for key in ("t", "ticker", "event_zh", "decision", "fill_price", "shares", "outcome_1d", "outcome_5d", "outcome_20d", "url"):
+        for key in ("t", "ticker", "event_zh", "decision", "fill_price", "shares", "outcome_1d", "outcome_5d", "outcome_20d", "url", "price_source"):
             self.assertIn(key, step)
         self.assertIn(step["decision"], {"BUY", "SKIP"})
         self.assertLessEqual(payload["summary_by_cost"]["10"]["max_drawdown"], 0.0)
@@ -754,9 +764,18 @@ class EventModeTests(ReplayTestCase):
         self.assertAlmostEqual(steps[0]["fill_price"], self.aaa_opens[anchor], places=6)
         self.assertGreater(steps[0]["fill_date"], "2024-01-02")
 
-    def test_events_mode_forces_daily_branch_even_in_intraday_window(self) -> None:
+    def test_events_mode_uses_intraday_branch_inside_window(self) -> None:
         self.add_raw_event("e1", "2024-01-03", "510k", product_code="P1")
-        fetcher = FakeFetcher(intraday={"AAA": intraday_payload([("2024-01-03T15:30:00Z", 103.5)])})
+        fetcher = FakeFetcher(
+            intraday={
+                "AAA": intraday_payload(
+                    [
+                        ("2024-01-03T15:30:00Z", 103.5),  # before end-of-day: forbidden
+                        ("2024-01-04T13:30:00Z", 104.2),  # first bar after available_at
+                    ]
+                )
+            }
+        )
         payload = self.build(
             source="events",
             offline=False,
@@ -764,10 +783,13 @@ class EventModeTests(ReplayTestCase):
             now=datetime(2024, 1, 5, 23, 0, tzinfo=timezone.utc),
         )
         step = payload["steps"][0]
-        self.assertEqual(step["price_source"], "daily")
-        self.assertEqual(fetcher.calls_for("1m"), [])  # 1m feed must not be queried
-        self.assertEqual(payload["meta"]["intraday_days_effective"], 0.0)
-        self.assertIn("固定只用日线", payload["method"]["intraday_rule"])
+        self.assertEqual(step["price_source"], "1m")
+        self.assertEqual(step["fill_date"], "2024-01-04")
+        self.assertAlmostEqual(step["fill_price"], 104.2, places=6)
+        self.assertEqual(len(fetcher.calls_for("1m")), 1)
+        self.assertEqual(payload["meta"]["intraday_days_effective"], 7.0)
+        self.assertEqual(payload["price_source_counts"]["1m"], 1)
+        self.assertIn("1 分钟分支", payload["method"]["intraday_rule"])
 
     def test_events_mode_unknown_quality_is_filtered(self) -> None:
         self.add_raw_event("e1", "2024-01-03", "510k", product_code="P1", quality="unknown")
@@ -869,6 +891,103 @@ class EventModeTests(ReplayTestCase):
         fallback = self.build(source="auto")
         self.assertEqual(fallback["meta"]["counts"]["signal_source"], "events_fallback")
         self.assertEqual(len(fallback["steps"]), 1)
+
+
+class IntradayBoundaryTests(EventModeTests):
+    """Verifiable 1-minute boundary: selection, fallback, counts and no requests."""
+
+    def setUp(self) -> None:
+        super().setUp()  # seeds acme -> AAA
+        add_prices(self.db, "BBB", self.days, self.aaa_opens, self.aaa_closes)
+        self.db.upsert_companies([{"key": "beta", "name_en": "BETA Corp", "ticker": "BBB"}])
+        self.now = datetime(2024, 2, 20, tzinfo=timezone.utc)
+
+    def _mixed_setup(self) -> FakeFetcher:
+        # 2024-01-03 is ~48 days old at self.now: outside the free 1m window.
+        self.add_raw_event("old", "2024-01-03", "drug_approval", company_key="acme", title="old approval")
+        # 2024-02-15 is ~5 days old: inside the window, BBB has synthetic 1m bars.
+        self.add_raw_event("recent", "2024-02-15", "drug_approval", company_key="beta", title="recent approval")
+        return FakeFetcher(
+            intraday={
+                "BBB": intraday_payload(
+                    [
+                        ("2024-02-15T15:30:00Z", 103.5),  # before end-of-day: forbidden
+                        ("2024-02-16T13:30:00Z", 104.0),  # first bar after available_at
+                    ]
+                )
+            }
+        )
+
+    def test_price_source_counts_mixed_1m_and_daily(self) -> None:
+        fetcher = self._mixed_setup()
+        payload = self.build(source="events", offline=False, fetcher=fetcher, now=self.now)
+        steps = {step["event_id"]: step for step in payload["steps"]}
+        self.assertEqual(steps["old"]["price_source"], "daily")
+        self.assertEqual(steps["old"]["fill_date"], "2024-01-04")
+        self.assertEqual(steps["recent"]["price_source"], "1m")
+        self.assertEqual(steps["recent"]["fill_date"], "2024-02-16")
+        self.assertAlmostEqual(steps["recent"]["fill_price"], 104.0, places=6)
+        counts = payload["price_source_counts"]
+        self.assertEqual(counts["1m"], 1)
+        self.assertEqual(counts["daily"], 1)
+        self.assertEqual(counts["fallback"], 0)
+        self.assertEqual(counts["missing"], 0)
+        self.assertEqual(counts["total"], 2)
+        self.assertEqual(payload["intraday_window_days"], 7.0)
+        # only the in-window ticker is requested; the stale event never hits the 1m feed
+        self.assertEqual([call[0] for call in fetcher.calls_for("1m")], ["BBB"])
+
+    def test_price_source_counts_marks_fallback(self) -> None:
+        self.add_raw_event("recent", "2024-02-15", "drug_approval", company_key="acme")
+        fetcher = FakeFetcher(
+            intraday={"AAA": intraday_payload([("2024-02-16T13:30:00Z", 104.0)])},
+            fail_intervals=("1m",),
+        )
+        payload = self.build(source="events", offline=False, fetcher=fetcher, now=self.now)
+        step = payload["steps"][0]
+        self.assertEqual(step["price_source"], "daily")
+        self.assertIn("RuntimeError", step["intraday_fallback"] or "")
+        counts = payload["price_source_counts"]
+        self.assertEqual(counts["fallback"], 1)
+        self.assertEqual(counts["daily"], 0)
+        self.assertEqual(counts["1m"], 0)
+        self.assertIn("AAA", payload["meta"]["intraday_errors"])
+
+    def test_offline_mode_reports_daily_only(self) -> None:
+        self.add_raw_event("recent", "2024-02-15", "drug_approval", company_key="acme")
+        payload = self.build(source="events", offline=True, now=self.now)
+        counts = payload["price_source_counts"]
+        self.assertEqual(counts["daily"], 1)
+        self.assertEqual(counts["fallback"], 0)
+        self.assertEqual(counts["1m"], 0)
+        self.assertEqual(payload["meta"]["data_status"]["fetcher"], "offline")
+        html = self.html()
+        self.assertIn("离线模式未请求 1m", html)
+
+    def test_outside_window_never_requests_1m(self) -> None:
+        self.add_raw_event("old", "2024-01-03", "drug_approval", company_key="acme")
+        fetcher = FakeFetcher(intraday={"AAA": intraday_payload([("2024-01-04T13:30:00Z", 104.0)])})
+        payload = self.build(source="events", offline=False, fetcher=fetcher, now=self.now)
+        self.assertEqual(payload["steps"][0]["price_source"], "daily")
+        self.assertEqual(fetcher.calls, [])
+        counts = payload["price_source_counts"]
+        self.assertEqual(counts["daily"], 1)
+        self.assertEqual(counts["1m"], 0)
+
+    def test_html_price_source_section_explains_each_branch(self) -> None:
+        fetcher = self._mixed_setup()
+        self.build(source="events", offline=False, fetcher=fetcher, now=self.now)
+        html = self.html()
+        self.assertIn("价格来源与 1 分钟边界", html)
+        self.assertIn("1 分钟 bar", html)
+        self.assertIn("为什么用日线", html)
+        self.assertIn("共 1 条 1m 成交", html)
+        self.assertIn("共 1 条日线价格", html)
+        self.assertIn("公开时点早于最近 7 天", html)
+        self.assertIn("fallback", html)
+        # still fully self-contained
+        self.assertNotIn("http://", html)
+        self.assertNotIn("https://", html)
 
 
 class EventModeMultiYearTests(ReplayTestCase):

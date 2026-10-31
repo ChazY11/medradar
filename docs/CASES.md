@@ -1,9 +1,9 @@
 # MedRadar 案例库
 
 - 语料总量：20976
-- 入选案例：1075
-- 20 日命中率：0.4772
-- 逐字证据条数：1681
+- 入选案例：2384
+- 20 日命中率：0.4518
+- 逐字证据条数：3653
 
 > 样本内研究演示，非策略业绩；价格反应为相对 SPY 的超额收益。
 
@@ -131,47 +131,41 @@
 > All statements other than statements of historical fact contained in this report, including statements regarding: Phathom’s plans, expectations, and goals for the development of VOQUEZNA for as-needed use in Non-Erosive GERD (NERD); potential timelines for the pHalcon-NERD-302 s…
 > These statements involve known and unknown risks, uncertainties and other important factors that may cause Phathon’s actual results, performance or achievements to be materially different from any future results, performance or achievements expressed or implied by the forward-lo…
 
-## 2026-08-31 · Karyopharm Therapeutics Inc.（KPTI）· FDA 批准：Karyopharm Therapeutics Inc. · fda approval / priority review
+## 2026-09-29 · Unicycive Therapeutics, Inc.（UNCY）· FDA 批准：Unicycive Therapeutics, Inc. · fda approval
 
 - 类别：approval｜方向：+1｜结果：miss
-- 超额收益：1日 -11.55%｜5日 -16.14%｜20日 -39.69%｜60日 —
-- 来源：https://www.sec.gov/Archives/edgar/data/1503802/000119312526375495/d423030d8k.htm
-> Management’s expectations and, therefore, any forward-looking statements in this Current Report on Form 8-K could also be affected by risks and uncertainties relating to a number of other factors, including the following: the adoption of XPOVIO in the commercial marketplace, the…
-> Food and Drug Administration and other regulatory authorities, investigational review boards at clinical trial sites and publication review bodies, including with respect to the need for additional clinical trials; the ability of the Company or its third party collaborators or s…
+- 超额收益：1日 -0.98%｜5日 -10.73%｜20日 -19.20%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1766140/000121390026104314/ea030696701ex99-1.htm
+> Unicycive is seeking FDA approval of OLC via the 505(b)(2) regulatory pathway.
+> These factors include, but are not limited to, clinical trials involve a lengthy and expensive process with an uncertain outcome, and results of earlier studies and trials may not be predictive of future trial results; our clinical trials may be suspended or discontinued due to …
 
-## 2026-08-31 · PMV Pharmaceuticals, Inc.（PMVP）· FDA 批准：PMV Pharmaceuticals, Inc. · accelerated approval
+## 2026-09-29 · Cartesian Therapeutics, Inc.（RNAC）· 临床数据读出：Cartesian Therapeutics, Inc. · announces positive topline
 
-- 类别：approval｜方向：+1｜结果：hit
-- 超额收益：1日 +9.40%｜5日 +19.76%｜20日 +45.14%｜60日 —
-- 来源：https://www.sec.gov/Archives/edgar/data/1699382/000119312526376723/d441751dex991.htm
-> EX-99.1 2 d441751dex991.htm EX-99.1 EX-99.1 Exhibit 99.1 PMV Pharmaceuticals Announces Updated Promising Rezatapopt Monotherapy Interim Ovarian Cancer Data From PYNNACLE Phase 2 Pivotal Trial • 46% ORR observed among 76 evaluable patients in the ovarian cancer cohort with a medi…
-> Food and Drug Administration (FDA), the Company obtained feedback that continues to support its strategy for submitting a New Drug Application (NDA) for accelerated approval of rezatapopt in patients with platinum-resistant/refractory ovarian cancer with a TP53 Y220C mutation ba…
-> Such statements include, but are not limited to, statements regarding the Company’s future plans or expectations for rezatapopt, including the Company’s ability to obtain approval as a treatment option as a monotherapy, expectations regarding timing, enrollment status and succes…
+- 类别：trial_result｜方向：+1｜结果：miss
+- 超额收益：1日 -0.91%｜5日 -10.02%｜20日 -9.25%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1453687/000145368726000105/pressrelease9292026.htm
+> Cartesian Therapeutics, Inc. · announces positive topline
 
-## 2026-08-28 · Roivant Sciences Ltd.（ROIV）· FDA 批准：Roivant Sciences Ltd. · fda approval / topline data
+## 2026-09-29 · Dyne Therapeutics, Inc.（DYN）· FDA 批准：Dyne Therapeutics, Inc. · announces positive topline / accelerated approval
 
 - 类别：approval｜方向：+1｜结果：hit
-- 超额收益：1日 +0.08%｜5日 +19.52%｜20日 +5.20%｜60日 —
-- 来源：https://www.sec.gov/Archives/edgar/data/1635088/000114036126034854/ef20081283_ex99-1.htm
-> Roivant Sciences Ltd. · fda approval / topline data
+- 超额收益：1日 -1.11%｜5日 -1.90%｜20日 +5.03%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1818794/000181879426000009/dyn-ex99_1.htm
+> Dyne Therapeutics, Inc. · announces positive topline / accelerated approval
 
-## 2026-08-28 · CYTOKINETICS INC（CYTK）· 临床数据读出：CYTOKINETICS INC · met the primary endpoint
+## 2026-09-28 · Transcode Therapeutics, Inc.（RNAZ）· 临床数据读出：Transcode Therapeutics, Inc. · met the primary endpoint
 
-- 类别：trial_result｜方向：-1｜结果：hit
-- 超额收益：1日 +0.77%｜5日 +5.75%｜20日 -7.84%｜60日 —
-- 来源：https://www.sec.gov/Archives/edgar/data/1061983/000119312526372456/cytk-ex99_1.htm
-> 1 ACACIA-HCM met both dual primary endpoints, demonstrating statistically significant improvements from baseline to Week 36 compared to placebo in both Kansas City Cardiomyopathy Questionnaire Clinical Summary Score (KCCQ-CSS) and maximal exercise performance (pVO 2 ).
-> Results for the dual primary endpoint analysis consistently favored aficamten across prespecified subgroups studied.
-> There were two pre-specified primary endpoints, KCCQ-CSS and pVO₂, evaluated in parallel.
+- 类别：trial_result｜方向：+1｜结果：miss
+- 超额收益：1日 -2.34%｜5日 +1.29%｜20日 -3.84%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1829635/000110465926111170/tm2626237d1_ex99-1.htm
+> · The primary endpoint of the study was met o No dose-limiting toxicities were reported across the evaluated dose levels BOSTON, MA, September 28, 2026 – TransCode Therapeutics, Inc.
 
-## 2026-08-27 · Roivant Sciences Ltd.（ROIV）· FDA 批准：Roivant Sciences Ltd. · announces positive topline
+## 2026-09-28 · ONCOLYTICS BIOTECH INC（ONCY）· FDA 批准：ONCOLYTICS BIOTECH INC · accelerated approval
 
-- 类别：approval｜方向：+1｜结果：mixed
-- 超额收益：1日 -5.55%｜5日 -5.17%｜20日 +0.72%｜60日 —
-- 来源：https://www.sec.gov/Archives/edgar/data/1635088/000114036126034735/ef20081229_ex99-1.htm
-> EX-99.1 2 ef20081229_ex99-1.htm EXHIBIT 99.1 Exhibit 99.1 Roivant Announces FDA Approval of LISRAYA™ (brepocitinib) for Adults with Dermatomyositis; Now Available in the U.S.
-> “We are hopeful the approval of LISRAYA in DM will be the first of many for brepocitinib, and will provide an important new treatment option for these patients.” said Matt Gline, CEO of Roivant.
-> The approval of LISRAYA marks a turning point for patients living with dermatomyositis.
+- 类别：approval｜方向：+1｜结果：miss
+- 超额收益：1日 +0.55%｜5日 -12.05%｜20日 -31.71%｜60日 —
+- 来源：https://www.sec.gov/Archives/edgar/data/1129928/000112992826000057/oncolyticsreo033trialmomen.htm
+> ONCOLYTICS BIOTECH INC · accelerated approval
 
 ## 反例（系统判定与事后走势不一致）
 

@@ -54,6 +54,8 @@ def build_cases(
     max_cases: int = 120,
     benchmark: str = "SPY",
     missing_price_tickers: Iterable[str] | None = None,
+    per_company: int = 3,
+    per_month: int = 8,
 ) -> dict[str, Any]:
     """Build the case library from the EDGAR corpus, enriched with real prices.
 
@@ -118,16 +120,17 @@ def build_cases(
         )
 
     # Public cases must be diverse: cap per company and per month so one busy
-    # filer cannot dominate the library.
-    per_company: Counter[str] = Counter()
-    per_month: Counter[str] = Counter()
+    # filer cannot dominate the library. Both caps are parameters because the
+    # defaults silently limit the library to ~per_month × months cases.
+    per_company_count: Counter[str] = Counter()
+    per_month_count: Counter[str] = Counter()
     selected: list[dict[str, Any]] = []
     for case in sorted(cases, key=lambda row: row["date"], reverse=True):
         month = case["date"][:7]
-        if per_company[case["ticker"]] >= 3 or per_month[month] >= 8:
+        if per_company_count[case["ticker"]] >= per_company or per_month_count[month] >= per_month:
             continue
-        per_company[case["ticker"]] += 1
-        per_month[month] += 1
+        per_company_count[case["ticker"]] += 1
+        per_month_count[month] += 1
         selected.append(case)
         if len(selected) >= max_cases:
             break

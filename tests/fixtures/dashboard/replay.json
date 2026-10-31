@@ -1,0 +1,88 @@
+{
+  "status": "ok",
+  "window": {"start": "2019-01-01", "end": "2026-10-31"},
+  "meta": {
+    "engine": "replay_v1",
+    "capital": 100000.0,
+    "costs_bps": [10.0, 25.0, 50.0],
+    "hold_days": 20,
+    "notes_zh": [
+      "日线数据只使用 available_at 之前的信息，避免前视偏差。",
+      "无借券费、locate 费与并购逼平数据，因此默认只做多。"
+    ]
+  },
+  "method": {"entry": "next_open", "hold_days": 20, "cost_basis": "single_side_bps"},
+  "quality": {"by_quality": {"date": 400}, "allowed": ["datetime", "date", "estimated"], "excluded": 0,
+              "policy": "只能使用 available_at 之前的信息"},
+  "audit": {"fill_after_available": 129, "lookahead_rejected": 0},
+  "summary": {
+    "cost_bps": 10.0, "n_trades": 2, "total_return": 0.06, "final_equity": 106000.0,
+    "max_drawdown": -0.03, "win_rate": 0.5, "start": "2019-01-04", "end": "2026-10-29",
+    "equity_curve": [
+      {"date": "2019-01-04", "equity": 100000.0},
+      {"date": "2020-06-10", "equity": 102500.0},
+      {"date": "2026-10-29", "equity": 106000.0}
+    ]
+  },
+  "summary_by_cost": {
+    "10": {"cost_bps": 10.0, "n_trades": 2, "total_return": 0.06, "final_equity": 106000.0, "max_drawdown": -0.03, "win_rate": 0.5},
+    "25": {"cost_bps": 25.0, "n_trades": 2, "total_return": 0.04, "final_equity": 104000.0, "max_drawdown": -0.04, "win_rate": 0.5},
+    "50": {"cost_bps": 50.0, "n_trades": 2, "total_return": 0.01, "final_equity": 101000.0, "max_drawdown": -0.06, "win_rate": 0.0}
+  },
+  "trades_by_cost": {
+    "10": [
+      {"trade_id": "t1", "ticker": "MDT", "company_zh": "美敦力", "kind": "device_new_track",
+       "kind_zh": "新赛道进入", "side": "long", "entry_date": "2020-02-03", "exit_date": "2020-06-10",
+       "entry_price": 92.4, "exit_price": 96.1, "ret": 0.04, "pnl": 2500.0, "price_source": "daily",
+       "timestamp_quality": "date"},
+      {"trade_id": "t2", "ticker": "ISRG", "company_zh": "直觉外科", "kind": "device_novel_code",
+       "kind_zh": "新产品码", "side": "long", "entry_date": "2025-01-06", "exit_date": "2025-04-01",
+       "entry_price": 410.2, "exit_price": 428.6, "ret": 0.045, "pnl": 3500.0, "price_source": "intraday",
+       "timestamp_quality": "datetime"}
+    ],
+    "25": [
+      {"trade_id": "t1", "ticker": "MDT", "company_zh": "美敦力", "kind": "device_new_track",
+       "kind_zh": "新赛道进入", "side": "long", "entry_date": "2020-02-03", "exit_date": "2020-06-10",
+       "entry_price": 92.4, "exit_price": 96.1, "ret": 0.04, "pnl": 1500.0, "price_source": "daily",
+       "timestamp_quality": "date"},
+      {"trade_id": "t2", "ticker": "ISRG", "company_zh": "直觉外科", "kind": "device_novel_code",
+       "kind_zh": "新产品码", "side": "long", "entry_date": "2025-01-06", "exit_date": "2025-04-01",
+       "entry_price": 410.2, "exit_price": 428.6, "ret": 0.045, "pnl": 2500.0, "price_source": "intraday",
+       "timestamp_quality": "datetime"}
+    ],
+    "50": [
+      {"trade_id": "t1", "ticker": "MDT", "company_zh": "美敦力", "kind": "device_new_track",
+       "kind_zh": "新赛道进入", "side": "long", "entry_date": "2020-02-03", "exit_date": "2020-06-10",
+       "entry_price": 92.4, "exit_price": 96.1, "ret": 0.04, "pnl": 500.0, "price_source": "daily",
+       "timestamp_quality": "date"},
+      {"trade_id": "t2", "ticker": "ISRG", "company_zh": "直觉外科", "kind": "device_novel_code",
+       "kind_zh": "新产品码", "side": "long", "entry_date": "2025-01-06", "exit_date": "2025-04-01",
+       "entry_price": 410.2, "exit_price": 428.6, "ret": 0.045, "pnl": 500.0, "price_source": "intraday",
+       "timestamp_quality": "datetime"}
+    ]
+  },
+  "steps": [
+    {"step_id": "s1", "ticker": "MDT", "company_zh": "美敦力", "event_zh": "美敦力进入脉冲场消融赛道",
+     "kind": "device_new_track", "kind_zh": "新赛道进入", "decision": "BUY", "direction": 1,
+     "signal_date": "2020-01-31", "fill_date": "2020-02-03", "fill_price": 92.4, "shares": 108,
+     "outcome_1d": 0.012, "outcome_5d": 0.023, "outcome_20d": 0.041, "price_source": "daily",
+     "net_by_cost": {"10": 0.038, "25": 0.035, "50": 0.03}, "pnl_by_cost": {"10": 2500.0, "25": 1500.0, "50": 500.0},
+     "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K242001"},
+    {"step_id": "s2", "ticker": "ISRG", "company_zh": "直觉外科", "event_zh": "单孔机械臂产品码首次出现",
+     "kind": "device_novel_code", "kind_zh": "新产品码", "decision": "BUY", "direction": 1,
+     "signal_date": "2025-01-03", "fill_date": "2025-01-06", "fill_price": 410.2, "shares": 24,
+     "outcome_1d": -0.004, "outcome_5d": 0.018, "outcome_20d": 0.044, "price_source": "intraday",
+     "net_by_cost": {"10": 0.041, "25": 0.038, "50": 0.033}, "pnl_by_cost": {"10": 3500.0, "25": 2500.0, "50": 500.0},
+     "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P230012"},
+    {"step_id": "s3", "ticker": "HOLX", "company_zh": "豪洛捷", "event_zh": "手术能量器械新品，无价格覆盖",
+     "kind": "device_novel_code", "kind_zh": "新产品码", "decision": "SKIP", "direction": 1,
+     "signal_date": "2026-06-18", "fill_date": null, "fill_price": null, "shares": null,
+     "skip_reason": "no_price", "skip_reason_zh": "没有该标的日线价格",
+     "outcome_1d": null, "outcome_5d": null, "outcome_20d": null, "price_source": null,
+     "net_by_cost": {}, "pnl_by_cost": {},
+     "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K253634"}
+  ],
+  "event_study": {"n_entries": 2, "horizons": {"20": {"n": 2, "mean": 0.0425, "hit_rate": 1.0}}},
+  "assumptions_url": "docs/ASSUMPTIONS.md",
+  "disclaimer_zh": "回放为研究口径，不构成投资建议。"
+}
