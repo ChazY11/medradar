@@ -541,8 +541,8 @@ def _top_families_text(value: Any, limit: int = 3) -> str:
 QUALITY_LABELS = {
     "datetime": "精确时间戳（datetime）",
     "date": "仅日期（date）",
-    "estimated": "估算时间（estimated）",
-    "unknown": "未知（unknown，不进回测）",
+    "estimated": "估算时间（estimated，不进交易研究）",
+    "unknown": "未知（unknown，不进交易研究）",
 }
 
 
@@ -1855,8 +1855,8 @@ def _zh_timestamps(ctx: Mapping[str, Any]) -> str:
     parts: list[str] = []
     if rows_data:
         lines = [
-            "时间质量统计每条事件的时间戳精度：`datetime` 最可靠，`date` 只能按日对齐，"
-            "`estimated` 是估算值，`unknown` 不进入交易研究。",
+            "时间质量统计每条事件的时间戳精度：`datetime` 最可靠，`date` 只能按日对齐；"
+            "缺失公开时间、`estimated` 和 `unknown` 都不进入交易研究。",
             "",
         ]
         rows = []
@@ -1873,13 +1873,13 @@ def _zh_timestamps(ctx: Mapping[str, Any]) -> str:
         lines.append("")
         lines.append(
             f"**不进入交易研究的事件**：{_fmt_int(excluded)} 条"
-            + ("（时间质量未知，回测直接剔除）。" if excluded is not None else "（未统计）。")
+            + ("（缺失、估算或未知公开时间，交易研究直接剔除）。" if excluded is not None else "（未统计）。")
         )
         if ctx["timestamps_policy"]:
             lines.append("")
             lines.append(f"**口径说明**：{ctx['timestamps_policy']}")
         lines.append("")
-        lines.append("> 统计口径：逐条读取事件表的 `timestamp_quality` 字段并计数，可按事件 ID 回查；`unknown` 不进入交易研究。")
+        lines.append("> 统计口径：逐条读取事件表的 `timestamp_quality` 字段并计数，可按事件 ID 回查；缺失公开时间、`estimated` 和 `unknown` 不进入交易研究。")
         parts.append("\n".join(lines))
     else:
         parts.append(f"{DASH}（timestamps.by_quality 为空，或时间质量统计尚未运行）。")
@@ -3071,7 +3071,8 @@ def _svg_family_bars(families: Sequence[Mapping[str, Any]], limit: int = 12) -> 
         parts.append(f'<text class="tick" x="0" y="{y + 14}">{_h(name)}</text>')
         parts.append(f'<rect class="bar" x="{bar_x}" y="{y + 3}" width="{length:.1f}" height="15" rx="2" fill="{colour}"/>')
         baseline_x = bar_x + usable / maximum
-        parts.append(f'<line class="baseline" x1="{baseline_x:.1f}" y1="{y}" x2="{baseline_x:.1f}" y2="{y + 21}" />')
+        if baseline_x <= bar_x + usable:
+            parts.append(f'<line class="baseline" x1="{baseline_x:.1f}" y1="{y}" x2="{baseline_x:.1f}" y2="{y + 21}" />')
         value_text = f"THI {_fmt_thi(thi)}" if thi is not None else "THI 暂无数据"
         parts.append(
             f'<text class="val" x="{bar_x + length + 8:.1f}" y="{y + 14}">{_h(value_text)}　'
@@ -3891,13 +3892,13 @@ def _html_timestamps_panel(ctx: Mapping[str, Any]) -> str:
         excluded = ctx["excluded_from_trading"]
         parts.append(
             f'<p class="note">不进入交易研究的事件：<b>{_h(_fmt_int(excluded))}</b> 条'
-            "（未知时间质量直接剔除）。</p>"
+            "（缺失、估算或未知公开时间直接剔除）。</p>"
         )
         if ctx["timestamps_policy"]:
             parts.append(f'<p class="note">口径：{_h(ctx["timestamps_policy"])}</p>')
         parts.append(
             '<p class="note">统计口径：逐条读取事件表的 <code>timestamp_quality</code> 字段并计数，'
-            "可按事件 ID 回查；unknown 不进入交易研究。</p>"
+            "可按事件 ID 回查；缺失公开时间、estimated 和 unknown 不进入交易研究。</p>"
         )
     else:
         parts.append(f'<p class="empty">{_h(DASH)}（timestamps.by_quality 为空）</p>')
