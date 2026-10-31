@@ -9,13 +9,16 @@ This is a research tool; "fixed" means a documented behaviour changed.
 - **Full-history backfill**: 510(k) 176,466 (1976→2026), PMA 57,372 (1968→2026),
   recalls 59,646 (2002→2026), drug approvals 5,326 (1966→2026), trials 55,592
   (1999→2026) — **363,177 events**, 1.2 GiB SQLite.
-- **EDGAR historical catalyst corpus v2**: 8,775 8-K filings (2015–2026, 16 phrase
-  buckets, 4,600 new vs v1) with verbatim text and source URLs.
-- **Case library**: **758 traceable cases** with verbatim evidence, 1/5/20/60-day
-  SPY-abnormal reactions, hit/miss outcomes and negative examples.
+- **EDGAR historical catalyst corpus v2, fully fetched**: 20,976 8-K filings
+  (2015–2026, 16 phrase buckets, 100% of candidates, 0 fetch failures) with
+  verbatim text and source URLs.
+- **Case library**: **1,075 traceable cases** with verbatim evidence (1,681 quotes),
+  1/5/20/60-day SPY-abnormal reactions, hit/miss outcomes and negative examples.
 - **Event study summary**: direction-aligned, winsorised at 2.5/97.5, block
-  bootstrap by event month, Holm correction. Honest result: no category is
-  significant after correction (all CIs straddle zero).
+  bootstrap by event month, Holm correction. Result after expanding to 1,075
+  cases: **approval +4.6% (CI 1.9–7.5) and CRL −6.2% (CI −10.6–−2.0) survive
+  Holm; trial readouts do not** (+0.2%, n.s.). Caveats: price-coverage
+  survivorship and heuristic categories are documented.
 - **Data audit** (`medradar audit`): dates, availability, quality, match rates,
   price coverage, freshness, duplicate detection.
 - **`medradar stats`** + auto-generated `docs/DATA.md`; `scripts/nightly.ps1`.

@@ -1,6 +1,6 @@
 # MedRadar: FDA Device & Drug Industry Radar
 
-_Generated 2026-10-30T20:08:55Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
+_Generated 2026-10-31T04:03:06Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
 
 ## Key takeaways
 
@@ -15,7 +15,7 @@ _Generated 2026-10-30T20:08:55Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 - Device / drug / trials: `ok`, `ok`, `ok`
 - NMPA (China registrations): `unavailable` - **unavailable (NMPA data not loaded)**; China-gap numbers are not inferred.
 - Prices: `ok`
-- Events in window: 363,177
+- Events in window: 375,378
 
 ## Hottest device tracks
 
@@ -76,7 +76,7 @@ _Generated 2026-10-30T20:08:55Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 
 ## Drug side
 
-Top NDA/BLA momentum: Otsuka (THI 3.91), Ionis Pharmaceuticals (THI 3.91), Daiichi Sankyo (THI 3.91), Sanofi (THI 2.09), Bayer (THI 2.09).
+Top NDA/BLA momentum: Ionis Pharmaceuticals (THI 3.91), Daiichi Sankyo (THI 3.91), Otsuka (THI 3.91), Sanofi (THI 2.09), Bayer (THI 2.09).
 Hottest therapeutic areas: t_dermatology (P 98.0%), t_cardiometabolic (P 100.0%), t_vaccines (P 48.8%), t_ophthalmology (P 26.6%).
 Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无数据), Neurocrine Biosciences (暂无数据), Exelixis (暂无数据).
 
@@ -93,7 +93,7 @@ Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无�
 ## Replay and research hygiene
 
 - Replay: 60 steps from 2019-01-01 to 2026-10-31; multi-cost summary for 3 cost buckets.
-- Timestamp quality: date 363,177; excluded from trading: 0.
+- Timestamp quality: date 375,378; excluded from trading: 0.
 - Multiple testing: holm correction over 24 tests.
 - Survivorship flags: 3.
 - Assumption register: `docs/ASSUMPTIONS.md`.
@@ -101,10 +101,10 @@ Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无�
 
 ## Case library (in-sample evidence)
 
-- 样本总数: 758; 20 日命中率: 43.4%; 60 日命中率: 40.9%; 语料总数: 8,775
+- 样本总数: 1,075; 20 日命中率: 47.7%; 60 日命中率: 43.6%; 语料总数: 20,976
+- 2026-10-01 · OBIO: FDA 批准：Orchestra BioMed Holdings, Inc. · fda approval / breakthrough therapy — outcome 未命中; price 1/5/20/60d: 1 日 -6.3% ▼、5 日 -8.1% ▼、20 日 -5.7% ▼.
 - 2026-10-01 · EVMN: 临床数据读出：Evommune, Inc. · met the primary endpoint — outcome 未命中; price 1/5/20/60d: 1 日 -8.8% ▼、5 日 -14.8% ▼、20 日 -5.2% ▼.
-- 2026-10-01 · ALLR: FDA 批准：Allarity Therapeutics, Inc. · fda approval — outcome 未命中; price 1/5/20/60d: 1 日 -5.8% ▼、5 日 -7.2% ▼、20 日 -15.5% ▼.
-- 2026-10-01 · BCDA: FDA 批准：BioCardia, Inc. · fda approval / clinical hold — outcome 未命中; price 1/5/20/60d: 1 日 +4.3% ▲、5 日 -1.0% ▼、20 日 -15.2% ▼.
+- 2026-10-01 · NKTR: 临床数据读出：NEKTAR THERAPEUTICS · phase 3 results — outcome 未命中; price 1/5/20/60d: 1 日 -10.9% ▼、5 日 -13.6% ▼、20 日 -17.0% ▼.
 - Negative examples: 6 (missed / reversed cases).
 - Retrospective in-sample evidence only; not strategy performance.
 

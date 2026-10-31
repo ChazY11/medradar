@@ -1,6 +1,6 @@
 # MedRadar 器械与药品产业方向雷达 · 中文研究报告
 
-> 生成时间：2026-10-30T20:08:55Z（UTC） ｜ 统计窗口：2025-01-01 至 2026-10-30（8 个季度） ｜ 数据状态：4 路可用 ｜ 中国空白度：不可用（NMPA 数据未加载）
+> 生成时间：2026-10-31T04:03:06Z（UTC） ｜ 统计窗口：2025-01-01 至 2026-10-30（8 个季度） ｜ 数据状态：4 路可用 ｜ 中国空白度：不可用（NMPA 数据未加载）
 
 本报告由 `python -m medradar report` 自动生成，全部数字来自当次运行的 `out/metrics.json`；字段缺失时显示「暂无数据」，不以 0 代替。
 
@@ -14,10 +14,10 @@
 
 ## 二、数据状态
 
-- **生成时间**：2026-10-30T20:08:55Z（UTC）
+- **生成时间**：2026-10-31T04:03:06Z（UTC）
 - **统计窗口**：2025-01-01 至 2026-10-30（8 个季度）
 - **基线窗口**：2020-01-01 至 2024-12-31（20 个季度）
-- **事件总数**：363,177 件
+- **事件总数**：375,378 件
 - **数据源**：4 路可用（共 5 路登记）
 
 | 数据源 | 状态 |
@@ -28,7 +28,7 @@
 | 中国 NMPA 注册证 | 不可用（NMPA 数据未加载） |
 | 美股价格（Yahoo） | 可用 |
 
-**事件构成**：510(k) 清关 176,466、8k_catalyst 8,775、器械召回 59,646、药品批准 5,326、PMA 批准 57,372、临床试验启动 55,592
+**事件构成**：510(k) 清关 176,466、8k_catalyst 20,976、器械召回 59,646、药品批准 5,326、PMA 批准 57,372、临床试验启动 55,592
 
 **事实库**：`data\medradar.sqlite`
 
@@ -258,26 +258,26 @@
 
 | 公司 | 代码 | 批准数 | 近期/季 | 基线/季 | THI | P(高于基线) | 新分子实体 |
 |---|---|---|---|---|---|---|---|
-| 大冢 | OTSKY | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
 | 伊奥尼斯 | IONS | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
 | 第一三共 | DSNKY | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
+| 大冢 | OTSKY | 2 | 0.25 | 0.05 | 3.91 | 91.6% | 2 |
 | 赛诺菲 | SNY | 4 | 0.50 | 0.20 | 2.09 | 89.4% | 2 |
 | 拜耳 | BAYRY | 3 | 0.38 | 0.15 | 2.09 | 84.9% | 3 |
 | 勃林格殷格翰 | — | 3 | 0.38 | 0.15 | 2.09 | 84.9% | 2 |
 | 卫材 | ESALY | 1 | 0.12 | 0.05 | 2.09 | 63.6% | 0 |
-| 葛兰素史克 | GSK | 5 | 0.62 | 0.30 | 1.79 | 87.3% | 4 |
 | 吉利德 | GILD | 5 | 0.62 | 0.30 | 1.79 | 87.3% | 3 |
+| 葛兰素史克 | GSK | 5 | 0.62 | 0.30 | 1.79 | 87.3% | 4 |
 | 默沙东 | MRK | 6 | 0.75 | 0.40 | 1.64 | 86.4% | 4 |
 | 诺和诺德 | NVO | 2 | 0.25 | 0.15 | 1.48 | 63.2% | 1 |
 | 强生创新制药 | JNJ | 6 | 0.75 | 0.55 | 1.26 | 68.4% | 2 |
 | 福泰制药 | VRTX | 1 | 0.12 | 0.10 | 1.18 | 44.1% | 1 |
 | 艾伯维 | ABBV | 4 | 0.50 | 0.50 | 1 | 44.4% | 3 |
 | 阿斯利康 | AZN | 5 | 0.62 | 0.70 | 0.92 | 35.8% | 2 |
-| 安进 | AMGN | 3 | 0.38 | 0.45 | 0.88 | 33.3% | 0 |
 | 梯瓦 | TEVA | 3 | 0.38 | 0.45 | 0.88 | 33.3% | 0 |
+| 安进 | AMGN | 3 | 0.38 | 0.45 | 0.88 | 33.3% | 0 |
 | 武田 | TAK | 2 | 0.25 | 0.30 | 0.88 | 33.4% | 2 |
 | 礼来 | LLY | 3 | 0.38 | 0.50 | 0.82 | 27.4% | 3 |
-| 晖致 | VTRS | 1 | 0.12 | 0.20 | 0.73 | 23.6% | 0 |
+| 因塞特 | INCY | 1 | 0.12 | 0.20 | 0.73 | 23.6% | 0 |
 
 **治疗领域**：
 
@@ -464,20 +464,30 @@
 
 | 指标 | 数值 |
 |---|---|
-| 样本总数 | 758 |
-| 20 日命中率 | 43.4% |
-| 60 日命中率 | 40.9% |
-| 语料总数 | 8,775 |
-| 逐字证据总数 | 1,206 |
+| 样本总数 | 1,075 |
+| 20 日命中率 | 47.7% |
+| 60 日命中率 | 43.6% |
+| 语料总数 | 20,976 |
+| 逐字证据总数 | 1,681 |
 
 | 案例分类 | 样本数 | 20 日命中率 |
 |---|---|---|
-| 批准 | 309 | 43.0% |
-| CRL（完整回复函） | 90 | 46.7% |
-| 试验结果 | 359 | 42.9% |
+| 批准 | 432 | 51.9% |
+| CRL（完整回复函） | 171 | 37.4% |
+| 试验结果 | 472 | 47.7% |
 
 ### 精选案例（共 30 个，展示前 5 个）
 
+#### 案例 case-c0cd63a0ec · 2026-10-01 · Orchestra BioMed Holdings, Inc.（OBIO）
+
+- **事件**：FDA 批准：Orchestra BioMed Holdings, Inc. · fda approval / breakthrough therapy
+- **分类 / 方向 / 事后结果**：批准 ｜ 做多 ▲ ｜ **未命中**
+- **逐字证据**：
+  > These forward-looking statements are subject to a number of risks and uncertainties, including changes in domestic and foreign business, market, financial, political, and legal conditions; risks related to regulatory approval of the Company’s commercial product candidates and on…
+- **价格反应（1/5/20/60 日）**：1 日 -6.3% ▼、5 日 -8.1% ▼、20 日 -5.7% ▼
+- **系统判定与事后**：系统判定：利好（approval）；20 日跑输基准
+- **原文链接**：[www.sec.gov/Archives/edgar/data/1814114/000110465926112586/tm2626728d1_ex99-1.htm](https://www.sec.gov/Archives/edgar/data/1814114/000110465926112586/tm2626728d1_ex99-1.htm) ｜ **案例 ID**：`case-c0cd63a0ec`
+
 #### 案例 case-ae32aaa595 · 2026-10-01 · Evommune, Inc.（EVMN）
 
 - **事件**：临床数据读出：Evommune, Inc. · met the primary endpoint
@@ -488,6 +498,18 @@
 - **价格反应（1/5/20/60 日）**：1 日 -8.8% ▼、5 日 -14.8% ▼、20 日 -5.2% ▼
 - **系统判定与事后**：系统判定：利好（trial_result）；20 日跑输基准
 - **原文链接**：[www.sec.gov/Archives/edgar/data/2044725/000119312526409865/evmn-ex99_1.htm](https://www.sec.gov/Archives/edgar/data/2044725/000119312526409865/evmn-ex99_1.htm) ｜ **案例 ID**：`case-ae32aaa595`
+
+#### 案例 case-b3ca84dcff · 2026-10-01 · NEKTAR THERAPEUTICS（NKTR）
+
+- **事件**：临床数据读出：NEKTAR THERAPEUTICS · phase 3 results
+- **分类 / 方向 / 事后结果**：试验结果 ｜ 做多 ▲ ｜ **未命中**
+- **逐字证据**：
+  > ● Phase 3 Study to Initiate in Early 2027: ZENITH AA study will be conducted in 850 patients with severe-to-very-severe alopecia areata with a primary endpoint of SALT Score ≤20 at Week 52.
+  > The primary endpoint was the mean percentage reduction from baseline in the Severity of Alopecia Tool (SALT) score at Week 36.
+  > Investor Event: REZOLVE-AA 52-Week Topline Results and Treatment Extension Update.
+- **价格反应（1/5/20/60 日）**：1 日 -10.9% ▼、5 日 -13.6% ▼、20 日 -17.0% ▼
+- **系统判定与事后**：系统判定：利好（trial_result）；20 日跑输基准
+- **原文链接**：[www.sec.gov/Archives/edgar/data/906709/000121390026105453/ea030730601ex99-1.htm](https://www.sec.gov/Archives/edgar/data/906709/000121390026105453/ea030730601ex99-1.htm) ｜ **案例 ID**：`case-b3ca84dcff`
 
 #### 案例 case-9c3c6c96e3 · 2026-10-01 · Allarity Therapeutics, Inc.（ALLR）
 
@@ -509,31 +531,19 @@
 - **价格反应（1/5/20/60 日）**：1 日 +4.3% ▲、5 日 -1.0% ▼、20 日 -15.2% ▼
 - **系统判定与事后**：系统判定：利好（approval）；20 日跑输基准
 - **原文链接**：[www.sec.gov/Archives/edgar/data/925741/000143774926031665/ex_1021267.htm](https://www.sec.gov/Archives/edgar/data/925741/000143774926031665/ex_1021267.htm) ｜ **案例 ID**：`case-32a59b7c3d`
-
-#### 案例 case-d499cde7c3 · 2026-10-01 · NovoCure Ltd（NVCR）
-
-- **事件**：临床数据读出：NovoCure Ltd · met the primary endpoint
-- **分类 / 方向 / 事后结果**：试验结果 ｜ 做多 ▲ ｜ **未命中**
-- **逐字证据**：
-  > NovoCure Ltd · met the primary endpoint
-- **价格反应（1/5/20/60 日）**：1 日 -7.0% ▼、5 日 -11.3% ▼、20 日 -18.4% ▼
-- **系统判定与事后**：系统判定：利好（trial_result）；20 日跑输基准
-- **原文链接**：[www.sec.gov/Archives/edgar/data/1645113/000164511326000071/paxjapandecisionpr.htm](https://www.sec.gov/Archives/edgar/data/1645113/000164511326000071/paxjapandecisionpr.htm) ｜ **案例 ID**：`case-d499cde7c3`
-
-#### 案例 case-e47f284531 · 2026-09-30 · 再生元（REGN）
-
-- **事件**：FDA 批准：REGENERON PHARMACEUTICALS, INC. · fda approval / receives fda approval
-- **分类 / 方向 / 事后结果**：批准 ｜ 做多 ▲ ｜ **命中**
-- **逐字证据**：
-  > Food and Drug Administration (“ FDA ”) approval of New Product Filings and Eligible Supplemental Filings (as defined below) (“ New Product Approvals ”): a.
-  > 12,500 PSUs per FDA approval of a supplemental BLA (“ sBLA ”) or supplemental NDA (“ sNDA ”) obtained during the Performance Period, excluding (i) sBLAs/sNDAs for products marketed as of the Grant Date or (ii) sBLAs/sNDAs that do not expand the eligible patient population (“ Eli…
-  > The full 10-year performance period from January 1, 2026 through December 31, 2035 is referred to as the “ Performance Period .” Notwithstanding the start of the Performance Period on January 1, 2026, the 2026 BLA filing for Otarmeni ™ (lunsotogene parvec) and the 2026 FDA appro…
-- **价格反应（1/5/20/60 日）**：1 日 -4.8% ▼、5 日 -4.8% ▼、20 日 +6.2% ▲
-- **系统判定与事后**：系统判定：利好（approval）；20 日跑赢基准
-- **原文链接**：[www.sec.gov/Archives/edgar/data/872589/000110465926112340/tm2626090d1_ex99-1.htm](https://www.sec.gov/Archives/edgar/data/872589/000110465926112340/tm2626090d1_ex99-1.htm) ｜ **案例 ID**：`case-e47f284531`
 
 ### 反例（6 个，未命中 / 反向）
 
+#### 案例 case-c0cd63a0ec · 2026-10-01 · Orchestra BioMed Holdings, Inc.（OBIO）
+
+- **事件**：FDA 批准：Orchestra BioMed Holdings, Inc. · fda approval / breakthrough therapy
+- **分类 / 方向 / 事后结果**：批准 ｜ 做多 ▲ ｜ **未命中**
+- **逐字证据**：
+  > These forward-looking statements are subject to a number of risks and uncertainties, including changes in domestic and foreign business, market, financial, political, and legal conditions; risks related to regulatory approval of the Company’s commercial product candidates and on…
+- **价格反应（1/5/20/60 日）**：1 日 -6.3% ▼、5 日 -8.1% ▼、20 日 -5.7% ▼
+- **系统判定与事后**：系统判定：利好（approval）；20 日跑输基准
+- **原文链接**：[www.sec.gov/Archives/edgar/data/1814114/000110465926112586/tm2626728d1_ex99-1.htm](https://www.sec.gov/Archives/edgar/data/1814114/000110465926112586/tm2626728d1_ex99-1.htm) ｜ **案例 ID**：`case-c0cd63a0ec`
+
 #### 案例 case-ae32aaa595 · 2026-10-01 · Evommune, Inc.（EVMN）
 
 - **事件**：临床数据读出：Evommune, Inc. · met the primary endpoint
@@ -545,26 +555,17 @@
 - **系统判定与事后**：系统判定：利好（trial_result）；20 日跑输基准
 - **原文链接**：[www.sec.gov/Archives/edgar/data/2044725/000119312526409865/evmn-ex99_1.htm](https://www.sec.gov/Archives/edgar/data/2044725/000119312526409865/evmn-ex99_1.htm) ｜ **案例 ID**：`case-ae32aaa595`
 
-#### 案例 case-9c3c6c96e3 · 2026-10-01 · Allarity Therapeutics, Inc.（ALLR）
+#### 案例 case-b3ca84dcff · 2026-10-01 · NEKTAR THERAPEUTICS（NKTR）
 
-- **事件**：FDA 批准：Allarity Therapeutics, Inc. · fda approval
-- **分类 / 方向 / 事后结果**：批准 ｜ 做多 ▲ ｜ **未命中**
+- **事件**：临床数据读出：NEKTAR THERAPEUTICS · phase 3 results
+- **分类 / 方向 / 事后结果**：试验结果 ｜ 做多 ▲ ｜ **未命中**
 - **逐字证据**：
-  > Allarity Therapeutics, Inc. · fda approval
-- **价格反应（1/5/20/60 日）**：1 日 -5.8% ▼、5 日 -7.2% ▼、20 日 -15.5% ▼
-- **系统判定与事后**：系统判定：利好（approval）；20 日跑输基准
-- **原文链接**：[www.sec.gov/Archives/edgar/data/1860657/000121390026105457/ea030729801ex99-1.htm](https://www.sec.gov/Archives/edgar/data/1860657/000121390026105457/ea030729801ex99-1.htm) ｜ **案例 ID**：`case-9c3c6c96e3`
-
-#### 案例 case-32a59b7c3d · 2026-10-01 · BioCardia, Inc.（BCDA）
-
-- **事件**：FDA 批准：BioCardia, Inc. · fda approval / clinical hold
-- **分类 / 方向 / 事后结果**：批准 ｜ 做多 ▲ ｜ **未命中**
-- **逐字证据**：
-  > EX-99.1 2 ex_1021267.htm EXHIBIT 99.1 ex_1021267.htm Exhibit 99.1 BioCardia Files Revised De Novo Pre-Submission for FDA Approval of Helix ™ Catheter SUNNYVALE, Calif.
-  > [Nasdaq: BCDA], a global leader in cellular and cell-derived therapeutics for the treatment of cardiovascular and pulmonary diseases, today reported it has completed its revised Pre-Submission to FDA Center for Devices and Radiological Health (CDRH) under its Q-Submission progra…
-- **价格反应（1/5/20/60 日）**：1 日 +4.3% ▲、5 日 -1.0% ▼、20 日 -15.2% ▼
-- **系统判定与事后**：系统判定：利好（approval）；20 日跑输基准
-- **原文链接**：[www.sec.gov/Archives/edgar/data/925741/000143774926031665/ex_1021267.htm](https://www.sec.gov/Archives/edgar/data/925741/000143774926031665/ex_1021267.htm) ｜ **案例 ID**：`case-32a59b7c3d`
+  > ● Phase 3 Study to Initiate in Early 2027: ZENITH AA study will be conducted in 850 patients with severe-to-very-severe alopecia areata with a primary endpoint of SALT Score ≤20 at Week 52.
+  > The primary endpoint was the mean percentage reduction from baseline in the Severity of Alopecia Tool (SALT) score at Week 36.
+  > Investor Event: REZOLVE-AA 52-Week Topline Results and Treatment Extension Update.
+- **价格反应（1/5/20/60 日）**：1 日 -10.9% ▼、5 日 -13.6% ▼、20 日 -17.0% ▼
+- **系统判定与事后**：系统判定：利好（trial_result）；20 日跑输基准
+- **原文链接**：[www.sec.gov/Archives/edgar/data/906709/000121390026105453/ea030730601ex99-1.htm](https://www.sec.gov/Archives/edgar/data/906709/000121390026105453/ea030730601ex99-1.htm) ｜ **案例 ID**：`case-b3ca84dcff`
 
 > 口径说明：案例来自历史事件与行情的样本内回看，价格反应为事后统计；命中率与分类统计仅描述这批案例，不代表策略业绩，也不构成投资建议。
 
@@ -574,7 +575,7 @@
 
 | 时间质量档 | 事件数 | 占比 |
 |---|---|---|
-| 仅日期（date） | 363,177 | 100% |
+| 仅日期（date） | 375,378 | 100% |
 
 **不进入交易研究的事件**：0 条（时间质量未知，回测直接剔除）。
 
@@ -586,9 +587,9 @@
 
 | 划分 | 说明 |
 |---|---|
-| dev | 1966-12-14 至 2024-10-29 · 340,461 件 · 13,035 天 · 占比 93.7% |
-| validation | 2024-10-30 至 2025-10-29 · 11,273 件 · 309 天 · 占比 3.1% |
-| holdout | 2025-10-30 至 2026-10-30 · 11,443 件 · 297 天 · 占比 3.2% |
+| dev | 1966-12-14 至 2024-10-29 · 350,428 件 · 13,035 天 · 占比 93.4% |
+| validation | 2024-10-30 至 2025-10-29 · 12,348 件 · 309 天 · 占比 3.3% |
+| holdout | 2025-10-30 至 2026-10-30 · 12,602 件 · 297 天 · 占比 3.4% |
 | 划分口径 | key=event_date；no_overlap=是；status=ok |
 
 > 回放与时间质量的完整假设见 [假设登记表](docs/ASSUMPTIONS.md)。
@@ -597,26 +598,26 @@
 
 ### 事件研究（方向对齐）
 
-事件研究把 758 个历史案例按类别统计到 1/5/20/60 日：均值为**方向对齐后**的超额收益（做空/回避类信号已按 -1 取反），p 值为单类别 t 检验，Holm 校正在同一时间窗口的类别之间进行。
+事件研究把 1,075 个历史案例按类别统计到 1/5/20/60 日：均值为**方向对齐后**的超额收益（做空/回避类信号已按 -1 取反），p 值为单类别 t 检验，Holm 校正在同一时间窗口的类别之间进行。
 
 **20 日方向对齐表**：
 
 | 类别 | n | 平均超额 | 95% CI | p | Holm 校正 p | 命中率 | Holm 判定 |
 |---|---|---|---|---|---|---|---|
-| 批准 | 309 | +0.8% | [-1.9%, +3.7%] | 0.571 | 1.000 | 46.0% | 不显著 |
-| CRL（完整回复函） | 90 | -0.8% | [-7.5%, +4.9%] | 0.788 | 1.000 | 55.6% | 不显著 |
-| 试验结果 | 359 | +0.1% | [-2.8%, +3.1%] | 0.957 | 1.000 | 48.2% | 不显著 |
+| 批准 | 432 | +4.6% | [+1.9%, +7.5%] | 0.00054 | 0.0016 | 55.8% | 显著 |
+| CRL（完整回复函） | 171 | -6.2% | [-10.6%, -2.0%] | 0.0057 | 0.0114 | 43.3% | 显著 |
+| 试验结果 | 472 | +0.2% | [-2.2%, +2.9%] | 0.888 | 0.888 | 50.4% | 不显著 |
 
-**结论**：Holm 校正后无显著类别（α=0.05）。20 日方向对齐的超额收益只能作为方向性参考，不构成策略证据。
+**结论**：Holm 校正后仍有 2 个类别显著（α=0.05）：批准（Holm p=0.0016）、CRL（完整回复函）（Holm p=0.0114）。20 日方向对齐的超额收益可视为统计显著，但仍需样本外验证。
 
 **1/5/20/60 日均值（方向对齐，▲/▼ 表示正/负）**：
 
-| 窗口 | 样本 | 批准（n=309） | CRL（完整回复函）（n=90） | 试验结果（n=359） |
+| 窗口 | 样本 | 批准（n=432） | CRL（完整回复函）（n=171） | 试验结果（n=472） |
 |---|---|---|---|---|
-| 1 日 | 758 | +1.7% ▲ | -2.5% ▼ | +1.6% ▲ |
-| 5 日 | 758 | +1.4% ▲ | -3.6% ▼ | +1.2% ▲ |
-| 20 日 | 758 | +0.8% ▲ | -0.8% ▼ | +0.1% ▲ |
-| 60 日 | 738 | -5.1% ▼ | -4.7% ▼ | +1.8% ▲ |
+| 1 日 | 1,075 | +5.1% ▲ | -5.5% ▼ | +1.6% ▲ |
+| 5 日 | 1,075 | +5.6% ▲ | -5.5% ▼ | +2.0% ▲ |
+| 20 日 | 1,075 | +4.6% ▲ | -6.2% ▼ | +0.2% ▲ |
+| 60 日 | 1,052 | -0.5% ▼ | -7.1% ▼ | -1.0% ▼ |
 
 > 口径：Holm 校正的 α 由数据给定（20 日档 α=0.05）；方向对齐只改变符号，不改变样本量；结论由校正后的 p 值自动生成，不预设显著性。
 
