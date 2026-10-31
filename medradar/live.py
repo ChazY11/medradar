@@ -559,15 +559,22 @@ def _queue_pending(db: DB, alert: Mapping[str, Any], ticker: str, reason: str) -
     db.conn.commit()
 
 
-def _resolve_pending(db: DB, alert_id: str) -> None:
+def _resolve_pending(db: DB, alert_id: str, commit: bool = True) -> None:
     db.execute("UPDATE live_pending SET status = 'done' WHERE alert_id = ?", (alert_id,))
-    db.conn.commit()
+    if commit:
+        db.conn.commit()
 
 
 def _expire_pending(db: DB, now: datetime) -> None:
+    """Expire by *first queued* time.
+
+    Using ``last_attempt_at`` would let a news item that keeps failing to quote
+    stay tradeable forever (each retry refreshes the clock). The TTL is about the
+    age of the news, so it must anchor on ``created_at``.
+    """
     cutoff = (now - timedelta(hours=PENDING_TTL_HOURS)).isoformat()
     db.execute("UPDATE live_pending SET status = 'expired', last_reason = 'pending_expired'"
-               " WHERE status = 'pending' AND last_attempt_at < ?", (cutoff,))
+               " WHERE status = 'pending' AND created_at < ?", (cutoff,))
     db.conn.commit()
 
 
@@ -606,10 +613,10 @@ def _assert_book_invariant(db: DB, params: LiveParams, context: str = "") -> dic
     for position in positions:
         market_value += float(position["qty"] or 0) * float(position["last_price"] or 0)
     orders = db.query("SELECT side, qty, fill_price FROM paper_orders")
-    seeded = bool(db.meta_get("live.seeded")) or (not orders and abs(cash - float(params.capital)) > 1e-6)
+    seeded = bool(db.meta_get("live.seeded"))
     if seeded:
-        # Manually seeded book (tests / migration): the fills ledger cannot explain it.
-        db.meta_set("live.seeded", True)
+        # Explicitly imported/test book: its opening ledger is unknown.
+        pass
     else:
         ledger_cash = float(params.capital)
         for order in orders:
@@ -698,13 +705,9 @@ def run_once(
 def _init_state(db: DB, params: LiveParams) -> None:
     if db.meta_get("live.cash") is None:
         db.meta_set("live.cash", params.capital)
-    # A book whose cash was set by a migration/test rather than by fills is
-    # "seeded": the fills ledger cannot explain it, so the cash invariant skips
-    # the ledger comparison (it still rejects negative cash and bad holdings).
-    if db.meta_get("live.seeded") is None:
-        cash = float(db.meta_get("live.cash", params.capital))
-        if abs(cash - float(params.capital)) > 1e-6 and not db.scalar("SELECT COUNT(*) FROM paper_orders"):
-            db.meta_set("live.seeded", True)
+    # Seeded books are declared explicitly (tests/importers set live.seeded).
+    # Never infer it from "cash != capital and no orders": that is exactly what a
+    # crashed half-fill looks like, and silently exempting it would hide the bug.
     if db.meta_get("live.started_at") is None:
         db.meta_set("live.started_at", datetime.now(timezone.utc).isoformat())
 
@@ -878,31 +881,41 @@ def _handle_entries(
             continue
 
         before_equity = cash + book["market_value"]
-        cash -= cost  # the actual debit; its absence was the release-blocking bug
-        if cash < -1e-9:
-            cash += cost  # never leave a negative book behind
+        new_cash = cash - cost  # the actual debit; its absence was the release-blocking bug
+        if new_cash < -1e-9:
             skip(alert, "insufficient_cash")
             continue
-        db.execute(
-            "INSERT OR REPLACE INTO positions(ticker, qty, avg_price, opened_at, track_id,"
-            " last_price, last_quote_time, market_value, unrealized_pnl, status)"
-            " VALUES (?,?,?,?,?,?,?,?,?, 'open')",
-            (
-                ticker,
-                qty,
-                price_filled,
-                now.isoformat(),
-                track_id,
-                price,
-                market.get("quote_time") or "",
-                qty * price,
-                0.0,
-            ),
-        )
-        db.meta_set("live.cash", round(cash, 6))
-        order = _record_order(db, alert, ticker, "buy", qty, price_filled, market, params)
+        # Cash, position, fill record and pending state commit as one unit. A crash
+        # anywhere inside must leave the book exactly as it was, with the alert
+        # still queued for the next cycle.
+        try:
+            with db.transaction():
+                db.meta_set("live.cash", round(new_cash, 6), commit=False)
+                db.execute(
+                    "INSERT OR REPLACE INTO positions(ticker, qty, avg_price, opened_at, track_id,"
+                    " last_price, last_quote_time, market_value, unrealized_pnl, status)"
+                    " VALUES (?,?,?,?,?,?,?,?,?, 'open')",
+                    (
+                        ticker,
+                        qty,
+                        price_filled,
+                        now.isoformat(),
+                        track_id,
+                        price,
+                        market.get("quote_time") or "",
+                        qty * price,
+                        0.0,
+                    ),
+                )
+                order = _record_order(db, alert, ticker, "buy", qty, price_filled, market, params, commit=False)
+                _resolve_pending(db, alert_id, commit=False)
+        except Exception:
+            # The fill transaction rolled back; queue the alert durably (outside the
+            # rolled-back tx) so the next cycle retries instead of losing the trade.
+            _queue_pending(db, alert, ticker, "fill_failed")
+            raise
+        cash = new_cash
         orders.append(order)
-        _resolve_pending(db, alert_id)
         traded += 1
         track_exposure[track_id] = track_exposure.get(track_id, 0.0) + qty * price
         book["market_value"] = book["market_value"] + qty * price
@@ -951,14 +964,18 @@ def _handle_exits(
             continue
         price_filled = fill_price(price, "sell", params.slippage_bps)
         qty = float(position["qty"])
-        cash += qty * price_filled
-        db.execute(
-            "UPDATE positions SET status = 'closed', last_price = ?, last_quote_time = ?,"
-            " unrealized_pnl = ? WHERE ticker = ?",
-            (price, market.get("quote_time") or "", qty * (price_filled - float(position["avg_price"])), ticker),
-        )
+        new_cash = cash + qty * price_filled
         alert = {"alert_id": f"exit-{ticker}-{int(now.timestamp())}", "headline": reason, "score": 0.5}
-        orders.append(_record_order(db, alert, ticker, "sell", qty, price_filled, market, params, note=reason))
+        with db.transaction():
+            db.execute(
+                "UPDATE positions SET status = 'closed', last_price = ?, last_quote_time = ?,"
+                " unrealized_pnl = ? WHERE ticker = ?",
+                (price, market.get("quote_time") or "", qty * (price_filled - float(position["avg_price"])), ticker),
+            )
+            db.meta_set("live.cash", round(new_cash, 6), commit=False)
+            order = _record_order(db, alert, ticker, "sell", qty, price_filled, market, params, note=reason, commit=False)
+        cash = new_cash
+        orders.append(order)
     db.meta_set("live.cash", round(cash, 6))
     _assert_book_invariant(db, params, context="exits")
     return orders, skipped
@@ -974,6 +991,7 @@ def _record_order(
     market: Mapping[str, Any],
     params: LiveParams,
     note: str = "",
+    commit: bool = True,
 ) -> dict[str, Any]:
     now = datetime.now(timezone.utc).isoformat()
     order_id = sha1(f"{alert.get('alert_id')}|{ticker}|{side}|{now}")[:20]
@@ -994,7 +1012,8 @@ def _record_order(
             note or alert.get("headline") or "",
         ),
     )
-    db.conn.commit()
+    if commit:
+        db.conn.commit()
     return {
         "order_id": order_id,
         "ticker": ticker,

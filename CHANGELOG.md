@@ -3,6 +3,21 @@
 All notable changes to MedRadar. Format loosely follows Keep a Changelog.
 This is a research tool; "fixed" means a documented behaviour changed.
 
+## [0.2.1] — 2026-10-31
+
+### Fixed
+- **Pending-order expiry now anchors on the first queued time** (`created_at`),
+  not `last_attempt_at`: a news item that keeps failing to quote can no longer
+  stay tradeable forever by refreshing the retry clock.
+- **Fills are atomic**: cash debit, position write, order record and pending
+  state commit in one SQLite transaction; a failure rolls all of them back and
+  queues the alert for a durable retry instead of leaving a half-applied book.
+- **No implicit "seeded" exemption**: the cash-vs-ledger invariant no longer
+  silently marks a mismatched book as seeded. Seeded books must be declared
+  explicitly (tests/importers), so a crashed fill cannot hide behind it.
+- Python 3.10 CI compatibility for the release-consistency test (`tomllib` is
+  3.11+; falls back to a version-line regex).
+
 ## [0.2.0] — 2026-10-31 (data & case library)
 
 ### Added

@@ -168,6 +168,7 @@ class RunOnceTests(unittest.TestCase):
             with DB(db_path) as db:
                 db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
                 db.meta_set("live.cash", 95_000.0)
+                db.meta_set("live.seeded", True)
                 db.execute(
                     "INSERT INTO positions(ticker, qty, avg_price, opened_at, track_id, last_price,"
                     " market_value, unrealized_pnl, status) VALUES (?,?,?,?,?,?,?,?, 'open')",
@@ -186,6 +187,7 @@ class RunOnceTests(unittest.TestCase):
             with DB(db_path) as db:
                 db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
                 db.meta_set("live.cash", 95_000.0)
+                db.meta_set("live.seeded", True)
                 db.execute(
                     "INSERT INTO positions(ticker, qty, avg_price, opened_at, track_id, last_price,"
                     " market_value, unrealized_pnl, status) VALUES (?,?,?,?,?,?,?,?, 'open')",
@@ -203,6 +205,7 @@ class RunOnceTests(unittest.TestCase):
             with DB(db_path) as db:
                 db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
                 db.meta_set("live.cash", 95_000.0)
+                db.meta_set("live.seeded", True)
                 db.execute(
                     "INSERT INTO positions(ticker, qty, avg_price, opened_at, track_id, last_price,"
                     " market_value, unrealized_pnl, status) VALUES (?,?,?,?,?,?,?,?, 'open')",
@@ -355,6 +358,58 @@ class RunOnceTests(unittest.TestCase):
             self.assertEqual(len(second["orders"]), 1)
             with DB(db_path) as db:
                 self.assertEqual(db.scalar("SELECT COUNT(*) FROM paper_orders"), 1)
+
+    def test_pending_expiry_uses_first_queued_time(self) -> None:
+        """A pending order must expire by news age, not by retry time."""
+        from datetime import timedelta as _td
+
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / "live.sqlite"
+            with DB(db_path) as db:
+                db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
+                old = (datetime.now(timezone.utc) - _td(hours=48)).isoformat()
+                now = datetime.now(timezone.utc).isoformat()
+                db.execute(
+                    "INSERT INTO live_pending(alert_id, ticker, created_at, attempts, last_attempt_at,"
+                    " last_reason, status) VALUES ('old-1','ACME',?,3,?,'market_closed','pending')",
+                    (old, now),
+                )
+                db.conn.commit()
+                live._expire_pending(db, datetime.now(timezone.utc))
+                status = db.scalar("SELECT status FROM live_pending WHERE alert_id='old-1'")
+            self.assertEqual(status, "expired")
+
+    def test_interrupted_fill_rolls_back_and_is_not_masked(self) -> None:
+        """A crash inside the fill must not leave cash debited or mark the book seeded."""
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / "live.sqlite"
+            with DB(db_path) as db:
+                db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
+            original = live._record_order
+
+            def boom(*args, **kwargs):
+                raise RuntimeError("simulated order write failure")
+
+            with mock.patch.object(live, "_record_order", side_effect=boom):
+                with self.assertRaises(RuntimeError):
+                    self._cycle(db_path, 100.0, [self._alert()])
+            with DB(db_path) as db:
+                self.assertAlmostEqual(float(db.meta_get("live.cash")), 100_000.0, places=6)
+                self.assertEqual(db.table_count("positions"), 0)
+                self.assertEqual(db.table_count("paper_orders"), 0)
+                self.assertIsNone(db.meta_get("live.seeded"))
+                self.assertEqual(db.scalar("SELECT status FROM live_pending"), "pending")
+            # Recovery: the queued alert fills once, and the invariant accepts it.
+            with mock.patch.object(live, "_record_order", original):
+                recovered = self._cycle(db_path, 100.0, [], quote_payload={
+                    "price": 100.0,
+                    "quote_time": datetime.now(timezone.utc).isoformat(),
+                    "market_state": "REGULAR",
+                })
+            self.assertEqual(len(recovered["orders"]), 1)
+            with DB(db_path) as db:
+                self.assertEqual(db.table_count("positions"), 1)
+                self.assertLess(float(db.meta_get("live.cash")), 100_000.0)
 
     def test_cross_source_duplicate_is_collapsed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

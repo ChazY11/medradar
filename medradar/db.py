@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
@@ -361,13 +362,37 @@ class DB:
         except (TypeError, json.JSONDecodeError):
             return raw
 
-    def meta_set(self, key: str, value: Any) -> None:
+    def meta_set(self, key: str, value: Any, commit: bool = True) -> None:
         self.conn.execute(
             "INSERT INTO meta(key, value) VALUES (?, ?) "
             "ON CONFLICT(key) DO UPDATE SET value = excluded.value",
             (key, json.dumps(value, ensure_ascii=False)),
         )
-        self.conn.commit()
+        if commit:
+            self.conn.commit()
+
+    @contextmanager
+    def transaction(self):
+        """Run several writes atomically (fills must never be half-applied).
+
+        SQLite's implicit transaction is not enough here: `meta_set` commits by
+        default, so a crash between the cash update and the order insert would
+        leave cash debited with no trade record. This context manager uses an
+        explicit ``BEGIN IMMEDIATE`` and rolls everything back on exception.
+        """
+        started = False
+        if not self.conn.in_transaction:
+            self.conn.execute("BEGIN IMMEDIATE")
+            started = True
+        try:
+            yield self
+        except Exception:
+            if started:
+                self.conn.rollback()
+            raise
+        else:
+            if started:
+                self.conn.commit()
 
     # -------------------------------------------------------------- registries
     def upsert_companies(self, companies: Iterable[Mapping[str, Any]]) -> int:

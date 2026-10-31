@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import re
-import tomllib
 import unittest
 from pathlib import Path
+
+try:  # Python 3.11+
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10: the project still supports it
+    tomllib = None  # type: ignore[assignment]
 
 import medradar
 
@@ -14,8 +18,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class VersionTests(unittest.TestCase):
     def test_package_version_matches_pyproject(self) -> None:
-        data = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-        self.assertEqual(data["project"]["version"], medradar.__version__)
+        text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+        if tomllib is not None:
+            version = tomllib.loads(text)["project"]["version"]
+        else:  # Python 3.10 fallback: parse the [project] version line
+            version = re.search(r'^version\s*=\s*"([^"]+)"', text, re.M).group(1)
+        self.assertEqual(version, medradar.__version__)
 
     def test_changelog_has_current_release(self) -> None:
         changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
