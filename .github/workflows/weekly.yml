@@ -36,7 +36,7 @@ jobs:
       - name: Collect, analyze, render (free public data only)
         # No API key: openFDA allows 1,000 requests/day per IP, and 60 months of
         # history needs roughly 200. Everything is cached inside the job.
-        run: python -m medradar run --months 60 --with-trade --with-replay
+        run: python -m medradar run --months 60 --with-trade --with-replay --with-dashboard
 
       - name: Show summary
         run: |

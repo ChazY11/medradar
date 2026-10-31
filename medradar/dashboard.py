@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import Any
 
 from .config import DEFAULT_METRICS, OUT_DIR
-from .util import ensure_dir, iso, read_json, today_utc, write_text
+from .util import ensure_dir, read_json, utc_now_iso, write_text
 
 #: View ids, also used by the navigation and by ``tests/test_dashboard.py``.
 VIEWS: tuple[str, ...] = (
@@ -142,7 +142,7 @@ def build_dashboard(
         replay = {}
 
     payload = {
-        "generated_at": iso(today_utc()) + "T00:00:00Z",
+        "generated_at": utc_now_iso(),
         "views": list(VIEWS),
         "metrics": metrics,
         "cases": cases,
@@ -386,6 +386,9 @@ _JS = r"""
                     drug_approval: '药品批准', trial_start: '试验启动', recall_cluster: '召回聚集',
                     recall: '召回', trial: '临床试验', device_clearance: '器械清关'};
   var OUTCOME_LABELS = {hit: '命中', miss: '未命中', mixed: '部分命中'};
+  var KIND_LABELS = {device_novel_code: '新产品码', device_new_track: '新赛道进入',
+                     drug_approval: '药品批准', trial_start: '试验启动', recall_cluster: '召回聚集',
+                     '8k_catalyst': '8-K 催化剂', earnings: '财报', ma: '并购'};
   var SOURCE_LABELS = {daily: '日线', intraday: '盘中', db: '本地库', yahoo: 'Yahoo 日线'};
   var state = {
     view: 'overview', theme: 'dark', q: '',
@@ -466,7 +469,13 @@ _JS = r"""
   var familyList = arr(obj(M.products).families);
   var newProductList = arr(obj(M.products).new_products);
   var portfolioList = arr(obj(M.products).company_portfolio);
-  var allCases = arr(C.selected).concat(arr(C.negative_examples));
+  var allCases = (function () {
+    var negativeList = arr(C.negative_examples);
+    var negativeKeys = {};
+    negativeList.forEach(function (c) { if (c.case_id) { negativeKeys[c.case_id] = true; } });
+    var selected = arr(C.selected).filter(function (c) { return !(c.case_id && negativeKeys[c.case_id]); });
+    return selected.concat(negativeList);
+  })();
   var replaySteps = arr(R.steps);
   var caseIndex = {};
   allCases.forEach(function (c, i) {
@@ -970,7 +979,8 @@ _JS = r"""
       {key: 'entry_date', label: '入场日', get: function (t) { return t.entry_date; }, fmt: function (v) { return esc(v || '暂无数据'); }},
       {key: 'ticker', label: '代码', get: function (t) { return t.ticker; }, fmt: function (v) { return esc(v || '—'); }},
       {key: 'company_zh', label: '公司', get: function (t) { return t.company_zh; }, fmt: function (v) { return esc(v || '暂无数据'); }},
-      {key: 'kind', label: '类型', get: function (t) { return t.kind_zh || t.kind; }, fmt: function (v) { return esc(v || '暂无数据'); }},
+      {key: 'kind', label: '类型', get: function (t) { return t.kind; }, fmt: function (v, t) {
+        return esc(KIND_LABELS[String(v)] || t.kind_zh || String(v || '暂无数据')); }},
       {key: 'side', label: '方向', get: function (t) { return t.side; }, fmt: function (v) { return esc(v === 'short' ? '做空 ▼' : '做多 ▲'); }},
       {key: 'entry_price', label: '成交价', cls: 'num', get: function (t) { return num(t.entry_price); }, fmt: function (v) { return esc(fmtNum(v, 2)); }},
       {key: 'gross_return', label: '毛收益', cls: 'num', get: function (t) { return num(t.ret); }, fmt: function (v) { return signHtml(v); }},
@@ -1213,9 +1223,6 @@ _JS = r"""
   updateTheme(stored === 'light' ? 'light' : 'dark');
   var initial = location.hash.replace('#', '');
   activate(VIEWS.indexOf(initial) !== -1 ? initial : 'overview', false);
-  $$('.view').forEach(function (v) {
-    if (v.getAttribute('data-view') === 'overview') { v.classList.add('active'); }
-  });
   if (location.hash === '' && history.replaceState) {
     history.replaceState(null, '', '#' + state.view);
   }
@@ -1232,6 +1239,7 @@ _HTML = r"""<!DOCTYPE html>
 <meta name="generator" content="MedRadar dashboard.py">
 <meta name="description" content="MedRadar 交互式看板：赛道、公司、产品、案例库、回放与数据审计。">
 <title>__TITLE__</title>
+<link rel="icon" href="data:,">
 <style>__CSS__</style>
 </head>
 <body>

@@ -43,12 +43,20 @@ medradar demo           # offline, uses the committed snapshot, no API key, <60s
 # open out/demo/index.html
 ```
 
+Or open the **interactive dashboard** directly: [`docs/dashboard.html`](docs/dashboard.html) — 7 views
+(overview, tracks, companies, products, cases, replay, data), live search, sortable tables,
+case-evidence drawer, replay cost-tier switch and URL routing. It is a single self-contained HTML
+file (3.3 MB, zero external requests), so it also works offline and on GitHub Pages.
+
 Then, for a live data run:
 
 ```bash
 medradar run --months 24 --with-trade    # ~3 min, free public data only
 medradar replay --days 30                # event-to-fill timeline with cost tiers
+medradar replay --start 2019-01-01 --end 2026-10-31 --source events   # 7-year, 400 steps
+medradar cases --limit 20                # traceable case library with evidence quotes
 medradar products --limit 10             # product families + new-product radar, in Chinese
+medradar dashboard                       # rebuild docs/dashboard.html from the latest metrics
 ```
 
 ## What it answers

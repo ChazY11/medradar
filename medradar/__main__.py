@@ -16,7 +16,7 @@ import json
 import sys
 from pathlib import Path
 
-from .config import CACHE_DIR, DEFAULT_DB, DEFAULT_METRICS, OUT_DIR
+from .config import CACHE_DIR, DEFAULT_DB, DEFAULT_METRICS, DOCS_DIR, OUT_DIR
 
 
 def _emit(payload: object) -> None:
@@ -263,6 +263,20 @@ def cmd_run(args: argparse.Namespace) -> int:
             print(json.dumps({"cases": result.get("status"), "files": files}, ensure_ascii=False))
         except Exception as exc:
             print(f"[warn] cases failed: {type(exc).__name__}: {exc}", file=sys.stderr)
+
+    if args.with_dashboard:
+        try:
+            from .dashboard import build_dashboard
+
+            build_dashboard(
+                metrics_path=args.metrics,
+                cases_path=Path(args.out_dir) / "cases" / "cases.json",
+                replay_path=Path(args.out_dir) / "replay" / "replay.json",
+                out_path=DOCS_DIR / "dashboard.html",
+            )
+            print(json.dumps({"dashboard": "ok", "path": str(DOCS_DIR / "dashboard.html")}, ensure_ascii=False))
+        except Exception as exc:
+            print(f"[warn] dashboard failed: {type(exc).__name__}: {exc}", file=sys.stderr)
 
     if not args.skip_analyze:
         cmd_analyze(args)
@@ -571,6 +585,21 @@ def cmd_stats(args: argparse.Namespace) -> int:
     return 0
 
 
+# ---------------------------------------------------------------------- dashboard
+def cmd_dashboard(args: argparse.Namespace) -> int:
+    from .dashboard import build_dashboard
+
+    result = build_dashboard(
+        metrics_path=args.metrics,
+        cases_path=args.cases,
+        replay_path=args.replay,
+        out_path=args.out,
+        audit_path=args.audit,
+    )
+    _emit(result)
+    return 0 if result.get("status") == "ok" else 1
+
+
 # ------------------------------------------------------------------------- corpus
 def cmd_corpus(args: argparse.Namespace) -> int:
     from .cases import cik_ticker_map, enrich_items, load_corpus
@@ -717,6 +746,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--with-trade", action="store_true", help="also run the paper-trading study")
     run.add_argument("--with-replay", action="store_true", help="also build the replay timeline")
     run.add_argument("--with-cases", action="store_true", help="also build the case library")
+    run.add_argument("--with-dashboard", action="store_true", help="also build the interactive dashboard")
     run.add_argument("--cases-limit", type=int, default=120)
     run.add_argument("--replay-days", type=int, default=180)
     run.add_argument("--replay-costs", default="10,25,50")
@@ -826,6 +856,14 @@ def build_parser() -> argparse.ArgumentParser:
     corpus.add_argument("--ingest", action="store_true", help="write corpus filings into the events table")
     corpus.add_argument("--db", default=str(DEFAULT_DB))
     corpus.set_defaults(func=cmd_corpus)
+
+    dashboard = sub.add_parser("dashboard", help="build the interactive zero-dependency dashboard")
+    dashboard.add_argument("--metrics", default=str(OUT_DIR / "metrics.json"))
+    dashboard.add_argument("--cases", default=str(OUT_DIR / "cases" / "cases.json"))
+    dashboard.add_argument("--replay", default=str(OUT_DIR / "replay" / "replay.json"))
+    dashboard.add_argument("--out", default=str(DOCS_DIR / "dashboard.html"))
+    dashboard.add_argument("--audit", default=None)
+    dashboard.set_defaults(func=cmd_dashboard)
 
     audit = sub.add_parser("audit", help="data-quality audit (dates, matches, prices, freshness)")
     audit.add_argument("--db", default=str(DEFAULT_DB))

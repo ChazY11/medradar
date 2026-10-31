@@ -17,8 +17,8 @@
 |---|---|---|---|---|
 | 1.1 | 决策时点 | 已建模 | 只用 `events.available_at`；缺失时依次回退 `published_at` → payload → `event_date` → `signal_date` | `db.py` 的时间列；SCHEMA §9：回测只使用 `available_at` |
 | 1.2 | 日精度公开时间的语义 | 已建模 | `timestamp_quality='date'` 视为**当日 23:59:59 UTC** 才可用，因此首根可用 bar 一定落在下一交易日 | 当前 83,578 条历史事件全部是 `date` 精度（`data/medradar.sqlite` 实测）；把日期当成 00:00 会允许"当天开盘成交"，属于前视 |
-| 1.3 | 1 分钟分支成交价 | 已建模 | 公开时点之后**第一根 1 分钟 bar 的开盘价**；bar 时间必须晚于公开时点、且不晚于回放时点 | Yahoo `range=7d&interval=1m`；1m bar 的 open 是区间第一笔成交，不是 NBBO |
-| 1.4 | 日线分支成交价 | 已建模 | 公开日**之后第一个交易日**的开盘价（严格大于公开日期） | 与 `eventstudy.py` / `paper.py` "next-open entry" 同源；回放比 event study 早一天（event study 还要等 `signal_date`），已在 HTML 方法区写明 |
+| 1.3 | 1 分钟分支成交价 | 已建模 | 公开时点 `available_at` 落在最近 `intraday_days`（默认 7）天内且 Yahoo 1m 可得时：成交 = **公开时点之后第一根 1 分钟 bar 的开盘价**（bar 的 ts 严格大于 `available_at`，且 bar 时间 ≤ 回放 `now`）。日精度 `available_at` 按当日 23:59:59 UTC 处理，因此首根可用 bar 通常是下一交易日 09:30 ET。`includePrePost=false` 排除盘前盘后；无 bid/ask，bar open 只是假定成交价。窗口外/未请求 1m → 日线；1m 请求失败或无 bar → 日线并标记 `fallback` | `replay.py::_resolve_step` / `_first_intraday_fill`；`intraday_window_days`、`price_source_counts` 可在 replay JSON 中验证；单测 `test_intraday_fill_is_first_bar_after_public_moment` 等 |
+| 1.4 | 日线分支成交价 | 已建模 | 公开日**之后第一个交易日**的开盘价（严格大于公开日期），且开盘时刻 ≤ `now`；窗口内有 1m 的 step 不走日线 | 与 `eventstudy.py` / `paper.py` "next-open entry" 同源；回放比 event study 早一天（event study 还要等 `signal_date`），已在 HTML 方法区写明 |
 | 1.5 | 前视硬校验 | 已建模 | 每个成交在入账前断言 `fill_time > available_at`，违者记为 `lookahead_rejected` 并拒绝；`audit.fill_after_available` 只统计通过校验的成交 | `replay.py::_resolve_step`；单测 `test_future_public_time_is_rejected` 等 |
 | 1.6 | 未来事件 | 已建模 | `available_at > now` 的信号进入时间轴但判定为 `SKIP / not_yet_public`，不成交 | 回放 `now` 可注入（默认 UTC 当前时刻） |
 | 1.7 | 前视的剩余来源 | 未建模 | 信号规则本身（"首次出现"、召回聚集）在 `analyze.py` 中已改为只用 `available_at` 之前的历史；但回放使用的是**已落库的最终信号表**，若某次 analyze 规则改动包含未来信息，回放不会发现 | `docs/METHODS.md` §1、§7；ROADMAP "Point-in-time features" 仍未完成 |
@@ -70,14 +70,14 @@
 | # | 项目 | 状态 | 参数 / 做法 | 出处与说明 |
 |---|---|---|---|---|
 | 6.1 | 时间质量分级 | 已建模 | `datetime` / `date` / `estimated` 可用；`unknown` **不进回放**，计入 `quality.excluded` | `db.py TIMESTAMP_QUALITIES`、SCHEMA §9；`replay.py::_resolve_available_at` |
-| 6.2 | 重复信号 | 已建模 | 按 `(event_id, ticker, direction, kind, signal_date)` 去重，保留最新 `created_at`（并列取高分） | `analyze` 重跑会生成新 `signal_id`；当前库 120 行信号去重后 98 条 |
-| 6.3 | 1 分钟数据覆盖 | 免费数据做不到 | 仅最近约 7 天（Yahoo `range=7d&interval=1m`，实测返回约 7 个交易日）；更早窗口只有日线；页面顶部固定声明 | 实测 2026-10-22 → 2026-10-30 共 2,640 根 1m bar |
+| 6.2 | 重复信号 | 已建模 | 按 `(event_id, ticker, direction, kind, signal_date)` 去重，保留最新 `created_at`（并列取高分） | `analyze` 重跑会生成新 `signal_id`；当前快照 signals 表 127 行，重跑痕迹按上述键去重 |
+| 6.3 | 1 分钟数据覆盖边界 | 免费数据做不到 | 仅最近约 **7 个自然日**（Yahoo `range=7d&interval=1m`，实测约 7 个交易日）；更早窗口只有日线；页面顶部固定声明。JSON 输出 `intraday_window_days` 与 `price_source_counts{1m,daily,fallback,missing,total}`；HTML「价格来源与 1 分钟边界」逐条列出哪些 step 用 1m、哪些用日线及原因。窗口外/离线**不请求** 1m；请求失败/无 bar → fallback 日线；`intraday_days=0` 强制日线 | 实测 2026-10-22 → 2026-10-30 共 2,640 根 1m bar；成品见 `out/replay_intraday/` 与 §11.6 |
 | 6.4 | 1 分钟数据质量 | 未建模 | 不剔除异常 bar（错价、零成交、集合竞价外 bar）；缺失 bar 顺延到下一根；无成交量约束 | Yahoo 免费 1m 可能含异常；未与交易所对账 |
 | 6.5 | 日线数据来源 | 已建模 | 先读 SQLite `prices`；缺失时用 `prices.fetch_ticker_rows` 临时回填到内存（**不写 DB**），受 60 次请求预算约束 | `replay.py::_PriceBook`；预算见 `meta.request_stats` |
 | 6.6 | 价格缺口 | 已建模 | 平仓用"目标日收盘，缺失则向后找最近收盘"；1/5/20 日窗口缺失记为 `null`（不猜） | `_close_at_or_after`；与 event study "missing rather than guessed" 一致 |
 | 6.7 | 事件日期 vs 采集日期 | 已建模 | `event_date` 是事件日，`as_of` 是采集日；回放**不用** `as_of` 当可用时间（否则历史回填全部推后到采集日） | `meta.first_seen_lag_days` 报告其差距；SCHEMA §6 |
 | 6.8 | 公司名匹配 | 未建模（上游偏差） | 依赖 `CompanyRegistry` 别名匹配（≥0.82），漏配公司记为 `NULL` 而非猜测 | `docs/METHODS.md` §2；回放只处理已有 `company_key/ticker` 的信号 |
-| 6.9 | 多重检验 | 未建模 | 回放对 98 条信号逐笔展示，未做 Holm/Bonferroni 校正；不能把单条 t 值当显著性 | ROADMAP "Multiple-testing correction"；`research.multiple_testing` 为后续项 |
+| 6.9 | 多重检验 | 未建模 | 回放逐笔展示信号，未做 Holm/Bonferroni 校正；不能把单条 t 值当显著性 | ROADMAP "Multiple-testing correction"；`research.multiple_testing` 为后续项 |
 | 6.10 | 样本内外划分 | 未建模 | 回放窗口是用户给定区间，不是 walk-forward 样本外测试 | 报告中的 `research.sample_split` 是研究元信息，未接入回放校验 |
 | 6.11 | `signals` 表为空时的回退 | 已建模 | 表为空时从 `events` 按 point-in-time 规则生成简易信号：首次产品码 / 药品获批 / 90 天召回聚集；信号日 = 公开日 + 1；只用于演示回放链路，不替代 `analyze` 的完整信号 | `replay.py::_auto_signal_rows`；`meta.counts.signal_source='events_fallback'` 可审计 |
 
@@ -97,7 +97,8 @@
 ```text
 capital                 默认 100,000（仅用于名义额与收益率分母）
 costs_bps               单边成本档 (10, 25, 50)，往返 = 2 × bps
-intraday_days           7（Yahoo 1m 免费覆盖约 7 天；events 模式强制为 0）
+intraday_days           7（Yahoo 1m 免费覆盖约 7 个自然日；events/signals 模式同规则；0 = 强制日线）
+price_source_counts     1m / daily / fallback / missing / total（replay JSON 顶层，可验证 1m 边界）
 hold_days               20 个交易日
 position_pct            0.20（× score 缩放，clamp 到 [0.2, 1.0]）
 max_concurrent          5
@@ -190,8 +191,10 @@ with DB("data/medradar.sqlite") as db:
 2. "首次出现"用 `MIN(avail)`（只统计 `event_date <= end` 的历史）⇒ 2019 年的"首次"不会被
    2024 年的数据改写；90 天召回簇只数当前事件之前的召回。
 3. `timestamp_quality='unknown'` 的候选剔除；日精度 `available_at` 仍按当日 23:59:59 UTC 处理。
-4. **成交只用日线**：`source="events"` 时 `intraday_days` 被强制为 0，成交价 = 公开日之后
-   第一个交易日的开盘价，且开盘时刻必须 ≤ 回放 `now`；`fill_time > available_at` 硬校验不变。
+4. **成交价分支**：`available_at` 落在最近 `intraday_days`（默认 7）天内且 1m 可得时用
+   1 分钟 bar 开盘（bar ts 严格晚于公开时点）；窗口外/离线直接日线（公开日后第一个交易日开盘，
+   且开盘时刻 ≤ 回放 `now`）；1m 请求失败/无 bar → 日线并标记 `fallback`。
+   `fill_time > available_at` 硬校验不变；`out/replay_intraday/` 是这一分支的成品验证（§11.6）。
 5. 去重键：`(event_id, ticker, direction, kind, signal_date)`；每条 step 仍带原文链接。
 
 ### 11.3 上限与多样性抽样（避免 279k 级事件炸内存）
@@ -215,7 +218,7 @@ with DB("data/medradar.sqlite") as db:
 | 11.4.2 | 8-K 方向 | 未建模 | 关键词词表不理解否定嵌套、程度与语境；模糊标题丢弃，覆盖率偏低（当前约 135 条可交易候选） |
 | 11.4.3 | 事件宇宙完整性 | 免费数据做不到 | 多年窗口内的 trial/approval 数量是"当前快照中可解析"的数量，不是历史实时宇宙；退市/无价格公司不在样本（生存偏差同 §5） |
 | 11.4.4 | 回填时点 | 未建模 | 与 §3.2 相同：假设公开时点当时已采集，`first_seen_at` 滞后仍是已知乐观项 |
-| 11.4.5 | 1 分钟精度 | 免费数据做不到 | 多年回放固定日线开盘，无法还原历史分钟的成交时点与盘中滑点 |
+| 11.4.5 | 1 分钟精度 | 免费数据做不到 | 多年窗口的绝大多数 step 只能日线开盘（1m 仅覆盖最近 ~7 天）；即使近期 step 用 1m，也只是"公开时点后第一根 bar 开盘"，无法还原真实逐笔成交与盘中滑点 |
 | 11.4.6 | 8-K 原文语义 | 未建模 | 未使用 LLM 判定（成本/可复现性考虑）；`payload.backfill=true` 的告警一律不成交 |
 
 ### 11.5 实测（2026-10-31 快照，离线、只读 DB）
@@ -226,7 +229,8 @@ with DB("data/medradar.sqlite") as db:
       drug_approval 1,068 / 8k_catalyst 1,046）
 候选：3,755（novel 373 / new_track 3 / approval 294 / trial 2,598 / recall 352 / 8k 135）
 每类上限后：738  →  全局 max_steps 后：400 steps（2019–2026 每年 44–61 步）
-成交：129 笔入账（其余为做空参考价/容量上限/无未来价格跳过）；全部日线
+成交：129 笔入账（其余为做空参考价/容量上限/无未来价格跳过）；窗口跨度 7 年多，
+      因此几乎全部为日线，仅最近 7 天内的事件可能用 1 分钟 bar（offline 验证为全 daily）
 耗时：约 7–9 秒（offline=True，含 SQL 候选生成 + 400 步价格解析 + HTML/JSON 写出）
 产物：验证时写入 out/replay_events/{replay.json,index.html}（避免覆盖 signals 模式的 out/replay；
       `out_dir` 默认仍是 out/replay）；HTML 约 1.0 MB，自包含无外链
@@ -244,6 +248,28 @@ with DB("data/medradar.sqlite") as db:
         source="events", max_steps=400, per_kind_limit=150,
     )
 ```
+
+### 11.6 1 分钟边界成品（`out/replay_intraday/`，任务 P1）
+
+为把"1m 只覆盖最近约 7 天"做成可验证成品，用一段覆盖边界两侧的近期窗口生成
+`out/replay_intraday/{replay.json,index.html}`：
+
+```text
+窗口：2026-10-23 → 2026-10-31（8 个日历日；多取 1 天以便同时展示 7 天边界内外的 step）
+调用：build_replay(db, "2026-10-23", "2026-10-31", source="events", max_steps=200)
+steps：20
+price_source_counts：{"1m": 12, "daily": 3, "fallback": 1, "missing": 4, "total": 20}
+  - 1m 12：公开时点 10-26..10-29，成交 = 公开时点后第一根 1m bar 开盘（多数为下一交易日 09:30 ET）
+  - daily 3：公开时点 10-23，已超出最近 7 天 1m 覆盖窗口 → 日线次日开盘
+  - fallback 1：DBVTF 的 1m 响应无可用 bar → 日线降级并标记
+  - missing 4：10-30 公开的事件在回放时点前没有下一交易日（no_future_price）
+请求：13 次 Yahoo 请求（预算 60；DBVTF/OABIW 两个 ticker 的 1m 无可用 bar）
+耗时：约 16 秒（冷缓存、在线 1m 请求；13 次缓存命中时约 10 秒）
+自检：HTML「价格来源与 1 分钟边界」逐条列出 1m/日线 step 与原因，页面自包含无外链
+```
+
+该成品同时是 `price_source_counts` / `intraday_window_days` 两个 JSON 字段的可视化验收页面：
+`price_source_counts` 恒满足 `1m + daily + fallback + missing = total = len(steps)`。
 
 > 多年回放的定位仍是**研究工具**：它把十年事件摊开成可审计的时间轴，用来检查"规则在历史上
 > 长什么样"，而不是证明规则能赚钱。样本内、未做多重检验校正、只做多、无借券费，结论口径同 §10。

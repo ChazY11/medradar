@@ -4415,7 +4415,7 @@ def render_html(ctx: Mapping[str, Any]) -> str:
 <div class="wrap">
 <div class="brandline"><span class="mark">MedRadar<span class="dot"></span></span><span class="sub">FDA 器械与药品产业方向雷达 · 中文看板</span></div>
 <div class="statusbar {status_class}"><span class="dot"></span><strong>数据状态：{_h(status_label)}</strong><span class="detail">{_h(status_detail)}</span>{nmpa_chip}</div>
-<p class="tagline">统计窗口 {_h(window)} ｜ 生成时间 {_h(ctx["generated_at"] or DASH)}（UTC） ｜ 全部数字来自 metrics.json</p>
+<p class="tagline">统计窗口 {_h(window)} ｜ 生成时间 {_h(ctx["generated_at"] or DASH)}（UTC） ｜ 全部数字来自 metrics.json ｜ <a href="dashboard.html" style="font-weight:700">打开交互式看板 →</a> ｜ <a href="replay_intraday.html">7 天 1 分钟级回放 →</a></p>
 </div>
 </header>
 <main class="wrap">
