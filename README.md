@@ -1,11 +1,19 @@
 # MedRadar
 
+[![Built with DeepSeek Harness · deepseek-flash](https://img.shields.io/badge/built%20with-DeepSeek%20Harness%20%C2%B7%20deepseek--flash-4D6BFE)](https://github.com/ChazY11/medradar/blob/main/docs/ATTRIBUTION.md)
+
+
 **An open-source radar for FDA device & drug industry direction — built for people who need to know
 what US majors are actually building next, not what they said in an earnings call.**
 
 MedRadar turns free public FDA data into a weekly, quantified, Chinese-language intelligence
 brief: which technology tracks are heating up, which majors are quietly re-allocating their
 portfolio, what appeared for the first time, and where China still has a gap.
+
+> **Built entirely with DeepSeek Harness using Chinese domestic models (`deepseek-flash`).**
+> Every line of code, every data pull and every commit in this repository was produced by the
+> DeepSeek Harness agent team (1 Lead + 8 specialist agents) — no other model was used.
+> Details: [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md).
 
 > 中文文档 → [README.zh-CN.md](README.zh-CN.md) · Methodology → [docs/METHODS.md](docs/METHODS.md)
 

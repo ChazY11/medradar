@@ -1,7 +1,14 @@
 # MedRadar · FDA 产业方向雷达
 
+[![由 DeepSeek Harness · deepseek-flash 全程构建](https://img.shields.io/badge/%E7%94%B1-DeepSeek%20Harness%20%C2%B7%20deepseek--flash%20%E5%85%A8%E7%A8%8B%E6%9E%84%E5%BB%BA-4D6BFE)](https://github.com/ChazY11/medradar/blob/main/docs/ATTRIBUTION.md)
+
+
 > 把美国 FDA 的器械获批、药品批准、临床试验变成 **可量化、可复现、每周自动更新** 的中文产业情报。
 >
+> **本项目全程由 DeepSeek Harness 智能体团队使用国产模型 `deepseek-flash` 自主完成。**
+> 每一行代码、每一次数据采集、每一次提交都由 DSH 智能体团队（1 个 Lead + 8 个专职智能体）产生，
+> 全程使用中国国产模型，无其他模型参与。详见 [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md)。
+
 > 英文版 → [README.md](README.md) · 方法论 → [docs/METHODS.md](docs/METHODS.md)
 
 ![MedRadar 看板](docs/preview.png)

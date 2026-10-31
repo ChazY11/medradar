@@ -1,18 +1,24 @@
 [project]
 name = "medradar"
-version = "0.2.1"
+version = "0.2.2"
 description = "FDA device & drug industry radar: big-pharma pipeline direction, China-gap comparison, and paper-trading event study."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "MedRadar contributors" }]
-keywords = ["fda", "openfda", "medical-device", "clinical-trials", "quant", "china-gap"]
+keywords = ["fda", "openfda", "medical-device", "clinical-trials", "quant", "china-gap",
+            "sec-edgar", "research", "deepseek", "deepseek-harness"]
 dependencies = []
 
 [project.optional-dependencies]
 excel = ["openpyxl>=3.1"]
 pdf = ["pypdf>=4.0"]
 dev = ["pytest>=8.0"]
+
+[project.urls]
+Homepage = "https://chazy11.github.io/medradar/"
+Repository = "https://github.com/ChazY11/medradar"
+Attribution = "https://github.com/ChazY11/medradar/blob/main/docs/ATTRIBUTION.md"
 
 [project.scripts]
 medradar = "medradar.__main__:main"

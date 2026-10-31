@@ -3,6 +3,14 @@
 All notable changes to MedRadar. Format loosely follows Keep a Changelog.
 This is a research tool; "fixed" means a documented behaviour changed.
 
+## [0.2.2] — 2026-10-31
+
+### Docs
+- Attribution: the project is now explicitly marked as **built end-to-end by the
+  DeepSeek Harness agent team on Chinese domestic models (`deepseek-flash`)** —
+  in both READMEs, the report footer, the dashboard footer and
+  [`docs/ATTRIBUTION.md`](docs/ATTRIBUTION.md). No other model was used.
+
 ## [0.2.1] — 2026-10-31
 
 ### Fixed

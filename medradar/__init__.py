@@ -17,5 +17,5 @@ docs/       schema contract, methodology, GitHub Pages demo site
 tests/      offline unit tests (no network required)
 """
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 __all__ = ["__version__"]

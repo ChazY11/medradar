@@ -4393,6 +4393,8 @@ def render_html(ctx: Mapping[str, Any]) -> str:
     footer = (
         '<footer><div class="wrap">'
         "<p><strong>MedRadar</strong> · 开源 FDA 器械与药品产业方向雷达 · 为中国医疗器械从业者与量化学生而做</p>"
+        "<p>开发署名：本项目全程由 <strong>DeepSeek Harness</strong> 智能体团队使用国产模型 "
+        "<code>deepseek-flash</code> 自主完成，无其他模型参与；详见 docs/ATTRIBUTION.md。</p>"
         "<p>本页面完全自包含：内联 CSS、原生 JavaScript 与构建期生成的 SVG，不加载任何外部资源，可离线打开。</p>"
         "<p>数据来源：美国 FDA openFDA（510(k) / PMA / 召回 / Drugs@FDA）、ClinicalTrials.gov 等公开数据；"
         "中国 NMPA 注册证数据可用性以页内标注为准。</p>"

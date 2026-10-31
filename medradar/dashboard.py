@@ -1266,6 +1266,7 @@ _HTML = r"""<!DOCTYPE html>
       <a class="btn" href="index.html">静态报告</a></div>
       <div>构建：__BUILT_AT__</div>
       <div>零外部依赖 · 可离线打开</div>
+      <div>由 DeepSeek Harness · deepseek-flash 全程自主构建</div>
     </div>
   </aside>
   <div class="main">
