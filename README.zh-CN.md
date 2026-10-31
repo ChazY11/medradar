@@ -21,10 +21,11 @@
 | 覆盖 | 89 家公司、60 个赛道、**204 个器械产品族**、7,097 个产品码、1.2 GiB SQLite |
 | 当前最热赛道 | 心脏节律 THI 1.94（P=98.2%）· 可穿戴与远程监测 1.80 · 结构性心脏病 1.57 · 手术机器人 1.54 |
 | 生成信号 | 281 条 |
-| 案例库 | **2,384 个可追溯案例**（3,700+ 条逐字证据 + 1/5/20/60 日价格反应）：943 批准 · 379 CRL · 1,062 试验读出 |
+| 案例库 | 历史快照含 **2,384 个可追溯案例**；v0.3.0 起按新监管分类与异常收益审计重新计算，旧分类计数不再沿用 |
 | 回放 | **400 步、2019–2026 七年时间轴**，10/25/50bps 三档成本；最近 7 天用 1 分钟成交 |
-| 事件研究（20 日，方向对齐 + 缩尾，**12 个检验全家族 Holm**） | 批准 +2.8%（CI 0.9–4.8，**Holm p=0.007 → 显著**）· CRL −3.8%（CI −6.7–−0.8，Holm p=0.060 → 临界，不显著）· 试验 −0.3%（不显著） |
-| 测试 | **440 个离线测试**，不联网、不需要 API key |
+| 前沿雷达 | **50 个器械细分赛道、23 个领域**；AdCom 日程/材料、试验首次公示、预申请与资格认定统一汇总 |
+| 研究完整性 | 临床暂停、拒绝受理、CRL、预申请与资格认定独立分类；绝对超额收益超过 100% 的案例单列审计并退出推断样本 |
+| 测试 | **456 个离线测试**，不联网、不需要 API key |
 
 > 数字每周都会变，价值在于每一个数字都能用 `python -m medradar run` 复现。
 
@@ -51,12 +52,28 @@ medradar replay --days 30                # 事件→成交回放，含多档成�
 
 | 问题 | 指标 | 产物 |
 |---|---|---|
+| 获批之前发生了什么？ | AdCom、试验首次公示、预申请、突破性器械等资格认定 | `out/frontier.json` + `out/frontier.md` |
 | 哪些器械赛道在升温？ | `THI`＝收缩后的近期速率 ÷ 基线速率 | 赛道热度榜 |
 | 某家公司在换方向吗？ | 产品码结构的 JS 散度 | 迁移表（"谁在重新分配"） |
 | 什么是真正新的？ | 该公司历史上首次出现的产品码 | 每周"首次出现"清单 |
 | 药企的治疗领域在往哪走？ | 试验启动速率 + 各期占比 | 药品雷达 |
 | 中国缺什么？ | 美国活动份额 vs 已加载的 NMPA 注册证 | 中国空白度（无数据时诚实标 `unavailable`） |
 | 这些信号对股价有信息含量吗？ | 事件研究：相对 SPY 的超额收益（+1/+5/+20/+60 交易日） | `out/trading.json`（**仅模拟**） |
+
+## 前沿层：获批之前的公开信号
+
+```bash
+python -m medradar collect --sources adcom,trials --months 24
+python -m medradar frontier
+```
+
+`frontier` 把四类公开事件放进同一领域视图：FDA 咨询委员会日程与简报、临床试验首次公示、
+SEC 公告中的预申请、突破性器械/优先审评等资格认定。赛道配置包含生命支持（呼吸机、ECMO、
+氧疗、急救、监护）、IVD（NGS、液体活检、MRD、伴随诊断、微生物、数字病理等）、脑机接口、
+神经调控、心血管、影像、手术机器人、SaMD/AI、肾脏和糖尿病等。
+
+这是一层**公开信息监测**，不是 pending 申请窥探器。未公开的 510(k)/PMA 审评状态依法不可见，
+系统明确返回 `pending_510k_pma_monitoring=false`，不会用决定日或宣传稿补造“在审管线”。
 
 ## 实时层：事件告警 + 模拟交易（5–15 分钟）
 
@@ -152,13 +169,16 @@ python -m medradar run --months 24 --with-trade
 #   out/index.html      自包含看板（同时复制到 docs/index.html 供 GitHub Pages）
 #   out/report_zh.md    中文研究报告
 #   out/summary.csv     Excel 友好平表
+#   out/frontier.json   前沿事件机器可读 feed
+#   out/frontier.md     按领域组织的前沿中文报告
 ```
 
 分步执行（可断点续跑，HTTP 响应全部缓存在 `data/cache/`）：
 
 ```bash
-python -m medradar collect --sources device,drug,trials --months 120
+python -m medradar collect --sources device,drug,trials,adcom --months 120
 python -m medradar analyze --window-quarters 8 --baseline-quarters 20
+python -m medradar frontier
 python -m medradar report
 python -m medradar trade --capital 100000
 python -m medradar status
@@ -174,8 +194,9 @@ python -m medradar selftest      # 离线单测，不联网
 | openFDA `device/recall` | 器械召回，6 万条 | T−2 天 |
 | openFDA `device/classification` | 约 6,500 个产品码定义 | 静态 |
 | openFDA `drug/drugsfda` | NDA/BLA/ANDA 审评与批准，2.9 万条 | T−2 天 |
-| ClinicalTrials.gov API v2 | 临床试验登记（**药品 + 器械都覆盖**） | 入组开始后 ≤21 天登记 |
-| SEC EDGAR 全文检索 | 8-K / CRL 事件流（可选） | 近实时 |
+| ClinicalTrials.gov API v2 | 临床试验登记（**药品 + 器械都覆盖**） | 使用 `first_posted` 真实公示日 |
+| FDA Advisory Committee Calendar | 公开会议日程、议程与简报材料 | 页面更新时间为估计口径，不进入交易研究 |
+| SEC EDGAR 全文检索 | 8-K 监管/临床/资格认定事件流（可选） | 近实时 |
 | NMPA（中国） | 医疗器械注册证 | **不爬取**：官网有 JS WAF（HTTP 412/202），见下 |
 
 ### 关于 NMPA 的诚实说明
