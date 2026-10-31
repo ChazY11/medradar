@@ -21,14 +21,14 @@ portfolio, what appeared for the first time, and where China still has a gap.
 | Signals emitted | 281 (→ tradable subset) |
 | Case library | **2,384 traceable cases** (verbatim evidence + 1/5/20/60-day reactions): 943 approvals · 379 CRLs · 1,062 trial readouts, 3,700+ evidence quotes |
 | Replay | **400-step, 7-year timeline** (2019–2026) with 10/25/50 bps cost tiers; 1-minute fills for the last 7 days |
-| Event study (20d, direction-aligned, winsorised, Holm) | **approval +2.8% (CI 0.9–4.8) · CRL −3.8% (CI −6.7–−0.8) · trial −0.3% (n.s.) — 2/3 significant after Holm** |
+| Event study (20d, direction-aligned, winsorised, **Holm over the 12-test family**) | approval +2.8% (CI 0.9–4.8, **Holm p=0.007 → significant**) · CRL −3.8% (CI −6.7–−0.8, Holm p=0.060 → borderline, not significant) · trial −0.3% (n.s.) |
 | Simulated book | in-sample, long-only, not investment advice |
-| Tests | **402 offline tests**, no network, no API key |
+| Tests | **438 offline tests**, no network, no API key |
 | Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |
 | Products | 204 families, **2,740 Chinese product names** |
 | Research | event-time model, point-in-time signals, block bootstrap, Holm correction |
+| Timing scope | **all 375k events are date-level** (`timestamp_quality=date`); minute-level timing exists only for the live EDGAR lane / last-7-day replay, so minute-level studies are explicitly out of scope |
 | Database | 1.2 GiB SQLite, 1966–2026 drug approvals, 1999–2026 trials |
-| Calibration | 25 hand-labelled real 8‑Ks: type accuracy **1.00 vs 0.60**, direction **0.92 vs 0.72** for the LLM judge |
 | Calibration | 25 hand-labelled real 8‑Ks: type accuracy **1.00 vs 0.60**, direction **0.92 vs 0.72** for the LLM judge |
 
 > Numbers move every week; every one of them is reproducible from `medradar run`.
@@ -38,9 +38,11 @@ portfolio, what appeared for the first time, and where China still has a gap.
 ## Try it in 60 seconds
 
 ```bash
-pip install -e .        # or: git clone https://github.com/<your-username>/medradar.git && cd medradar
+# 1) clone the repository (or download the Release ZIP) and enter its root
+# 2) install and run the offline demo
+pip install -e .
 medradar demo           # offline, uses the committed snapshot, no API key, <60s
-# open out/demo/index.html
+# open out/demo/index.html (interactive dashboard: out/demo/dashboard.html)
 ```
 
 Or open the **interactive dashboard** directly: [`docs/dashboard.html`](docs/dashboard.html) — 7 views
@@ -161,15 +163,18 @@ use it for ranking, or shrink by 0.85 before sizing.
 ## Quickstart
 
 ```bash
-git clone https://github.com/<your-username>/medradar.git
-cd medradar
-
+# from the repository root (clone it or unpack the Release ZIP first)
 # no API key, no dependencies beyond Python 3.10+
-# 24 months is the quick start (~2-3 min); use --months 120 for the full history
-python -m medradar run --months 24 --with-trade
 
-# open the dashboard
+medradar demo                 # 60-second offline demo (snapshot, no network)
+# open out/demo/index.html
+
+# 24 months is the quick start (~2-3 min); use --months 120 for ten years
+python -m medradar run --months 24 --with-trade --with-dashboard
+
+# outputs
 #   out/index.html          (also copied to docs/index.html for GitHub Pages)
+#   docs/dashboard.html     (interactive 7-view dashboard)
 #   out/report_zh.md        (Chinese research report)
 #   out/summary.csv         (flat metrics for Excel)
 ```

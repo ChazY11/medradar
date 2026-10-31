@@ -492,7 +492,15 @@ def event_study_summary(cases: Mapping[str, Any], horizons: Sequence[int] = HORI
     tests so the result can be reported honestly.
     """
     try:
-        from .stats import block_bootstrap_ci, mean, median, multiple_testing, stdev, t_p_value, t_stat
+        from .stats import (
+            block_bootstrap_ci,
+            block_bootstrap_p_value,
+            mean,
+            median,
+            multiple_testing,
+            stdev,
+            t_stat,
+        )
     except Exception:  # pragma: no cover - stats ships with the package
         return {}
     selected = list(cases.get("selected") or [])
@@ -500,11 +508,10 @@ def event_study_summary(cases: Mapping[str, Any], horizons: Sequence[int] = HORI
         return {}
     result: dict[str, Any] = {"n_cases": len(selected), "by_horizon": {}}
     categories = sorted({str(case.get("category") or "other") for case in selected})
+    global_tests: list[dict[str, Any]] = []
     for horizon in horizons:
         key = f"price_{horizon}d"
         per_category: dict[str, Any] = {}
-        p_values: list[float] = []
-        labels: list[str] = []
         for category in categories:
             rows = [case for case in selected if str(case.get("category") or "other") == category and case.get(key) is not None]
             if len(rows) < 3:
@@ -522,8 +529,9 @@ def event_study_summary(cases: Mapping[str, Any], horizons: Sequence[int] = HORI
             high = ordered[min(len(ordered) - 1, int(0.975 * (len(ordered) - 1)))]
             winsorised = [min(high, max(low, value)) for value in values]
             ci = block_bootstrap_ci(winsorised, blocks=blocks, seed=7)
+            # Same sampling model for CI and p-value: block bootstrap, not a t-test.
+            p_value = block_bootstrap_p_value(winsorised, blocks=blocks, seed=7)["p"]
             stat = t_stat(winsorised)
-            p_value = t_p_value(stat, len(winsorised) - 1) if stat is not None else None
             per_category[category] = {
                 "n": len(values),
                 "mean": round(mean(winsorised), 6),
@@ -533,19 +541,56 @@ def event_study_summary(cases: Mapping[str, Any], horizons: Sequence[int] = HORI
                 "p90": round(ordered[min(len(ordered) - 1, int(0.90 * (len(ordered) - 1)))], 6),
                 "std": round(stdev(winsorised), 6),
                 "t": round(stat, 4) if stat is not None else None,
-                "p": round(p_value, 6) if p_value is not None else None,
+                "p": p_value,
                 "ci95": [round(ci["lo"], 6), round(ci["hi"], 6)] if ci else None,
                 "hit_rate": round(sum(1 for value in values if value > 0) / len(values), 4),
                 "winsor_bounds": [round(low, 6), round(high, 6)],
             }
             if p_value is not None:
-                p_values.append(p_value)
-                labels.append(f"{category}:{horizon}d")
-        testing = multiple_testing(p_values, method="holm", labels=labels) if p_values else {}
-        result["by_horizon"][str(horizon)] = {
-            "categories": per_category,
-            "multiple_testing": testing,
+                global_tests.append({"label": f"{category}:{horizon}d", "raw_p": p_value, "horizon": horizon})
+        result["by_horizon"][str(horizon)] = {"categories": per_category}
+
+    # Holm correction over the **whole family** (category × horizon), not once per
+    # horizon; otherwise the reported family size is understated 4x.
+    adjusted_rows: list[dict[str, Any]] = []
+    if global_tests:
+        corrected = multiple_testing(
+            [test["raw_p"] for test in global_tests],
+            method="holm",
+            labels=[test["label"] for test in global_tests],
+        )
+        adjusted_rows = list(corrected.get("adjusted") or [])
+        by_label = {str(row.get("key")): row for row in adjusted_rows}
+        for test in global_tests:
+            row = by_label.get(str(test["label"]))
+            if not row:
+                continue
+            category, horizon_label = str(test["label"]).rsplit(":", 1)
+            horizon = horizon_label.rstrip("d")
+            block = result["by_horizon"].get(horizon) or {}
+            if category in (block.get("categories") or {}):
+                block["categories"][category]["p_holm"] = row.get("adjusted_p")
+                block["categories"][category]["significant_holm"] = bool(row.get("significant"))
+    result["multiple_testing"] = {
+        "method": "holm",
+        "family": "category × horizon",
+        "m": len(global_tests),
+        "rejected": sum(1 for row in adjusted_rows if row.get("significant")),
+        "tests": adjusted_rows,
+    }
+    for horizon in horizons:
+        block = result["by_horizon"].get(str(horizon)) or {}
+        horizon_tests = [
+            row for row in adjusted_rows if str(row.get("key", "")).endswith(f":{horizon}d")
+        ]
+        block["multiple_testing"] = {
+            "method": "holm",
+            "family": "category × horizon",
+            "m": len(global_tests),
+            "rejected": sum(1 for row in horizon_tests if row.get("significant")),
+            "tests": horizon_tests,
         }
+        result["by_horizon"][str(horizon)] = block
     return result
 
 

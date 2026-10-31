@@ -138,21 +138,35 @@ class DashboardBuildTest(unittest.TestCase):
 
     # ---------------------------------------------------------------- zero deps
     def test_no_external_resources(self) -> None:
+        """No *resource* may be remote; inline data: URLs (favicon) are fine.
+
+        An earlier version banned every ``<link>`` tag, which is over-broad: a
+        ``<link rel="icon" href="data:,">`` loads nothing and is the correct way
+        to silence a favicon request in a single-file page.
+        """
         lowered = self.html.lower()
-        self.assertNotIn("<link", lowered)
         self.assertNotIn("@import", lowered)
-        self.assertNotIn("src=", lowered)
+        self.assertNotIn("<iframe", lowered)
         self.assertNotIn("cdn.", lowered)
         self.assertNotIn("unpkg", lowered)
         self.assertNotIn("googleapis", lowered)
-        self.assertNotIn("<iframe", lowered)
-        # user data contains source URLs; after stripping those, no remote refs remain
+        # inspect every resource-loading tag, not the tag names
+        resource_tags = re.findall(r"<(?:link|script|img|source|video|audio)\b[^>]*>", self.html, re.I)
+        for tag in resource_tags:
+            for attr in re.findall(r'(?:src|href)\s*=\s*"([^"]*)"', tag):
+                value = attr.strip().lower()
+                self.assertFalse(
+                    value.startswith(("http://", "https://", "//")),
+                    f"remote resource reference found: {tag[:120]}",
+                )
+        # scripts are inline only (JSON payload + application code)
+        self.assertEqual(lowered.count("<script"), 2)
+        self.assertNotRegex(lowered, r"<script[^>]*\bsrc\s*=")
+        self.assertIn("<style>", self.html)
+        # user-supplied anchor URLs are data, not resources
         stripped = USER_URL_RE.sub("", self.html)
         self.assertNotIn("http://", stripped.lower())
         self.assertNotIn("https://", stripped.lower())
-        # the only two scripts are inline (JSON payload + application code)
-        self.assertEqual(self.html.count("<script"), 2)
-        self.assertIn("<style>", self.html)
 
     def test_output_size_and_single_file(self) -> None:
         self.assertTrue(self.out.is_file())

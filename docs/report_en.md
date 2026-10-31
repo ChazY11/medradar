@@ -1,6 +1,6 @@
 # MedRadar: FDA Device & Drug Industry Radar
 
-_Generated 2026-10-31T04:58:53Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
+_Generated 2026-10-31T05:31:22Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quarters) · Baseline 2020-01-01 to 2024-12-31 (20 quarters)_
 
 ## Key takeaways
 
@@ -76,7 +76,7 @@ _Generated 2026-10-31T04:58:53Z (UTC) · Window 2025-01-01 to 2026-10-30 (8 quar
 
 ## Drug side
 
-Top NDA/BLA momentum: Daiichi Sankyo (THI 3.91), Ionis Pharmaceuticals (THI 3.91), Otsuka (THI 3.91), Sanofi (THI 2.09), Bayer (THI 2.09).
+Top NDA/BLA momentum: Daiichi Sankyo (THI 3.91), Ionis Pharmaceuticals (THI 3.91), Otsuka (THI 3.91), Sanofi (THI 2.09), Boehringer Ingelheim (THI 2.09).
 Hottest therapeutic areas: t_dermatology (P 98.0%), t_cardiometabolic (P 100.0%), t_vaccines (P 48.8%), t_ophthalmology (P 26.6%).
 Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无数据), Neurocrine Biosciences (暂无数据), Exelixis (暂无数据).
 

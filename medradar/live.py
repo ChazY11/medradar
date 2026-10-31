@@ -98,6 +98,10 @@ TERMINAL_TRIAL_STATUSES = ("TERMINATED", "SUSPENDED", "WITHDRAWN")
 # informational - allowing any of them to fill would be lookahead bias.
 TRADEABLE_SOURCES = {"sec_edgar"}
 MAX_QUOTE_AGE_SECONDS = 1_800.0  # 30 minutes; older quotes are "stale"
+# Yahoo returns these market states; only a continuous session may fill an order.
+MARKET_OPEN_STATES = {"REGULAR"}
+# A pending order that cannot fill for this long is dropped (news is stale by then).
+PENDING_TTL_HOURS = 24.0
 
 # EDGAR item codes that can carry a clinical/regulatory catalyst
 CATALYST_ITEMS = ("8.01", "7.01", "1.01", "2.02", "2.05")
@@ -501,6 +505,127 @@ def poll_trials(
     return alerts
 
 
+# ---------------------------------------------------------------- quote validity
+def quote_verdict(alert: Mapping[str, Any], market: Mapping[str, Any] | None, now: datetime) -> tuple[bool, str]:
+    """Decide whether a quote is usable for a **new** fill, and say why not.
+
+    Four independent conditions, each of which has caused a real bad fill or a
+    silent no-trade bug: the market must be open, the quote must carry a
+    timestamp, that timestamp must not predate the news, and it must be fresh.
+    """
+    market = market or {}
+    price = market.get("price")
+    if not price or float(price) <= 0:
+        return False, "no_price"
+    state = str(market.get("market_state") or "").upper()
+    if not state:
+        return False, "market_state_missing"
+    if state not in MARKET_OPEN_STATES:
+        return False, "market_closed"
+    quote_time = _parse_iso(str(market.get("quote_time") or ""))
+    if quote_time is None:
+        return False, "quote_time_missing"
+    if (now - quote_time).total_seconds() > MAX_QUOTE_AGE_SECONDS:
+        return False, "stale_quote"
+    news_time = _parse_iso(str(alert.get("event_time") or ""))
+    if news_time is not None and quote_time < news_time:
+        return False, "quote_before_news"
+    if market.get("stale"):
+        return False, "stale_quote"
+    return True, ""
+
+
+def _record_skip(db: DB, alert: Mapping[str, Any], reason: str) -> None:
+    db.execute(
+        "INSERT INTO live_skips(ts, alert_id, ticker, reason) VALUES (?,?,?,?)",
+        (
+            datetime.now(timezone.utc).isoformat(),
+            alert.get("alert_id") or "",
+            (alert.get("ticker") or "").upper(),
+            reason,
+        ),
+    )
+
+
+def _queue_pending(db: DB, alert: Mapping[str, Any], ticker: str, reason: str) -> None:
+    now = datetime.now(timezone.utc).isoformat()
+    db.execute(
+        "INSERT INTO live_pending(alert_id, ticker, created_at, attempts, last_attempt_at, last_reason, status)"
+        " VALUES (?,?,?,0,?,?,'pending')"
+        " ON CONFLICT(alert_id) DO UPDATE SET attempts = attempts + 1,"
+        " last_attempt_at = excluded.last_attempt_at, last_reason = excluded.last_reason",
+        (alert.get("alert_id") or "", ticker, now, now, reason),
+    )
+    db.conn.commit()
+
+
+def _resolve_pending(db: DB, alert_id: str) -> None:
+    db.execute("UPDATE live_pending SET status = 'done' WHERE alert_id = ?", (alert_id,))
+    db.conn.commit()
+
+
+def _expire_pending(db: DB, now: datetime) -> None:
+    cutoff = (now - timedelta(hours=PENDING_TTL_HOURS)).isoformat()
+    db.execute("UPDATE live_pending SET status = 'expired', last_reason = 'pending_expired'"
+               " WHERE status = 'pending' AND last_attempt_at < ?", (cutoff,))
+    db.conn.commit()
+
+
+def pending_alerts(db: DB) -> list[dict[str, Any]]:
+    """Rehydrate queued orders from the alert table, oldest first."""
+    rows = db.query(
+        "SELECT p.alert_id FROM live_pending p WHERE p.status = 'pending' ORDER BY p.created_at"
+    )
+    alerts: list[dict[str, Any]] = []
+    for row in rows:
+        stored = db.query("SELECT * FROM live_alerts WHERE alert_id = ?", (row["alert_id"],))
+        if not stored:
+            continue
+        item = dict(stored[0])
+        try:
+            item["payload"] = json.loads(item.get("payload") or "{}")
+        except (TypeError, ValueError):
+            item["payload"] = {}
+        item["materiality"] = item["payload"].get("materiality") or item.get("materiality")
+        item["catalyst_type"] = item["payload"].get("catalyst_type") or item.get("catalyst_type")
+        alerts.append(item)
+    return alerts
+
+
+def _assert_book_invariant(db: DB, params: LiveParams, context: str = "") -> dict[str, float]:
+    """Fail closed unless cash is explained by the fills ledger and never negative.
+
+    The original bug (buys created positions without debiting cash) is invisible to
+    a naive "cash + holdings = equity" check because equity is *defined* that way.
+    Comparing ``live.cash`` against ``capital ± every recorded fill`` catches it.
+    A manually seeded book (tests, migrations) has no ledger and is exempt.
+    """
+    cash = float(db.meta_get("live.cash", params.capital))
+    positions = db.query("SELECT ticker, qty, last_price FROM positions WHERE status = 'open'")
+    market_value = 0.0
+    for position in positions:
+        market_value += float(position["qty"] or 0) * float(position["last_price"] or 0)
+    orders = db.query("SELECT side, qty, fill_price FROM paper_orders")
+    seeded = bool(db.meta_get("live.seeded")) or (not orders and abs(cash - float(params.capital)) > 1e-6)
+    if seeded:
+        # Manually seeded book (tests / migration): the fills ledger cannot explain it.
+        db.meta_set("live.seeded", True)
+    else:
+        ledger_cash = float(params.capital)
+        for order in orders:
+            signed = 1.0 if order["side"] == "sell" else -1.0
+            ledger_cash += signed * float(order["qty"] or 0) * float(order["fill_price"] or 0)
+        if abs(ledger_cash - cash) > 1e-6:
+            raise RuntimeError(
+                f"live invariant violated after {context}: cash={cash:.6f} != ledger={ledger_cash:.6f}"
+            )
+    if cash < -1e-6:
+        raise RuntimeError(f"live invariant violated after {context}: cash={cash:.6f} < 0")
+    if market_value < -1e-6:
+        raise RuntimeError(f"live invariant violated after {context}: market_value={market_value:.6f} < 0")
+    return {"cash": cash, "market_value": market_value, "equity": cash + market_value}
+
+
 # -------------------------------------------------------------------- execution
 def run_once(
     db_path: str | Path = DEFAULT_DB,
@@ -540,18 +665,23 @@ def run_once(
                 db.meta_set(f"live.error.{source}", f"{type(exc).__name__}: {exc}")
         new_alerts = _store_alerts(db, fresh)
 
-        orders = _handle_exits(db, fetcher, quote_fn, params)
+        orders, skipped = _handle_exits(db, fetcher, quote_fn, params)
         if not params.no_trade:
-            orders.extend(_handle_entries(db, fetcher, quote_fn, params, new_alerts, watchlist))
+            entry_orders, entry_skips = _handle_entries(db, fetcher, quote_fn, params, new_alerts, watchlist)
+            orders.extend(entry_orders)
+            for reason, count in entry_skips.items():
+                skipped[reason] = skipped.get(reason, 0) + count
         book = _mark(db, fetcher, quote_fn, params, now)
+        _assert_book_invariant(db, params, context="cycle")
         db.meta_set("live.last_cycle", now.isoformat())
-        db.log_run("live", {"alerts": len(new_alerts), "orders": len(orders), **book})
+        db.log_run("live", {"alerts": len(new_alerts), "orders": len(orders), "skipped": skipped, **book})
 
     result = {
         "cycle_at": now.isoformat(),
         "alerts_new": len(new_alerts),
         "alerts": new_alerts,
         "orders": orders,
+        "skipped": skipped,
         "book": book,
         "params": {
             "capital": params.capital,
@@ -568,6 +698,13 @@ def run_once(
 def _init_state(db: DB, params: LiveParams) -> None:
     if db.meta_get("live.cash") is None:
         db.meta_set("live.cash", params.capital)
+    # A book whose cash was set by a migration/test rather than by fills is
+    # "seeded": the fills ledger cannot explain it, so the cash invariant skips
+    # the ledger comparison (it still rejects negative cash and bad holdings).
+    if db.meta_get("live.seeded") is None:
+        cash = float(db.meta_get("live.cash", params.capital))
+        if abs(cash - float(params.capital)) > 1e-6 and not db.scalar("SELECT COUNT(*) FROM paper_orders"):
+            db.meta_set("live.seeded", True)
     if db.meta_get("live.started_at") is None:
         db.meta_set("live.started_at", datetime.now(timezone.utc).isoformat())
 
@@ -641,7 +778,14 @@ def _store_alerts(db: DB, alerts: Iterable[dict[str, Any]]) -> list[dict[str, An
                 alert.get("url") or "",
                 alert.get("event_time") or "",
                 now,
-                json.dumps(alert.get("payload") or {}, ensure_ascii=False),
+                json.dumps(
+                    {
+                        **(alert.get("payload") or {}),
+                        "materiality": alert.get("materiality"),
+                        "catalyst_type": alert.get("catalyst_type") or "",
+                    },
+                    ensure_ascii=False,
+                ),
             ),
         )
         db.conn.commit()
@@ -656,51 +800,88 @@ def _handle_entries(
     params: LiveParams,
     alerts: list[dict[str, Any]],
     watchlist: Mapping[int, tuple[str, str]],
-) -> list[dict[str, Any]]:
+) -> tuple[list[dict[str, Any]], dict[str, int]]:
+    """Open long positions, debiting cash, and queue anything that cannot fill yet."""
     orders: list[dict[str, Any]] = []
+    skipped: dict[str, int] = {}
+    now = datetime.now(timezone.utc)
+    _expire_pending(db, now)
     cash = float(db.meta_get("live.cash", params.capital))
     book = _book_state(db)
     track_exposure = dict(book["track_exposure"])
     registry = load_companies("device")
     traded = 0
-    for alert in alerts:
+
+    def skip(alert: Mapping[str, Any], reason: str, queue: bool = False) -> None:
+        skipped[reason] = skipped.get(reason, 0) + 1
+        _record_skip(db, alert, reason)
+        if queue:
+            _queue_pending(db, alert, (alert.get("ticker") or "").upper(), reason)
+
+    candidates = pending_alerts(db) + list(alerts)
+    seen: set[str] = set()
+    for alert in candidates:
+        alert_id = str(alert.get("alert_id") or "")
+        if not alert_id or alert_id in seen:
+            continue
+        seen.add(alert_id)
         if traded >= params.max_buys:
             break
         ticker = (alert.get("ticker") or "").upper()
-        if not ticker or int(alert.get("direction") or 0) <= 0:
-            continue  # long-only: negative catalysts are alerted, not traded
+        if not ticker:
+            skip(alert, "no_ticker")
+            continue
+        if int(alert.get("direction") or 0) <= 0:
+            skip(alert, "not_long_catalyst")
+            continue
         if alert.get("source") not in TRADEABLE_SOURCES:
-            continue  # stale/derived sources may alert but never fill
+            skip(alert, "non_tradeable_source")
+            continue
         if (alert.get("payload") or {}).get("backfill"):
-            continue  # old catalyst at today's price = lookahead, never trade it
+            skip(alert, "backfill_lookahead")
+            continue
         if (alert.get("catalyst_type") or "") == "earnings":
-            continue  # earnings are not a tradeable FDA catalyst
-        materiality = float(alert.get("materiality") or 0.0) or None
-        existing = db.scalar("SELECT qty FROM positions WHERE ticker = ? AND status = 'open'", (ticker,))
-        if existing:
+            skip(alert, "earnings_not_tradeable")
+            continue
+        if db.scalar("SELECT qty FROM positions WHERE ticker = ? AND status = 'open'", (ticker,)):
+            skip(alert, "already_open")
             continue
         market = quote_fn(fetcher, ticker) or {}
-        price = market.get("price")
-        if not price:
+        ok, reason = quote_verdict(alert, market, now)
+        if not ok:
+            # Transient conditions are queued and retried next cycle.
+            queue = reason in {"no_price", "market_closed", "market_state_missing",
+                               "quote_time_missing", "stale_quote", "quote_before_news"}
+            skip(alert, reason, queue=queue)
             continue
-        if market.get("stale"):
-            continue  # closed market / delayed feed: never fill on an old print
+        price = float(market["price"])
         company_key = alert.get("company_key") or ""
         entry = registry.get(company_key) or {}
         track_id = entry.get("sector") or "device"
         equity_now = cash + book["market_value"]
         # Size on the *filled* price so slippage can never push cash negative.
-        price_filled = fill_price(float(price), "buy", params.slippage_bps)
+        price_filled = fill_price(price, "buy", params.slippage_bps)
         qty = size_order(
             cash,
             equity_now,
             price_filled,
             track_exposure.get(track_id, 0.0),
             params,
-            materiality=materiality or 1.0,
+            materiality=float(alert.get("materiality") or 1.0),
         )
         cost = qty * price_filled
-        if qty <= 0 or cost > cash + 1e-9:
+        if qty <= 0:
+            skip(alert, "size_zero")
+            continue
+        if cost > cash + 1e-9:
+            skip(alert, "insufficient_cash")
+            continue
+
+        before_equity = cash + book["market_value"]
+        cash -= cost  # the actual debit; its absence was the release-blocking bug
+        if cash < -1e-9:
+            cash += cost  # never leave a negative book behind
+            skip(alert, "insufficient_cash")
             continue
         db.execute(
             "INSERT OR REPLACE INTO positions(ticker, qty, avg_price, opened_at, track_id,"
@@ -710,21 +891,32 @@ def _handle_entries(
                 ticker,
                 qty,
                 price_filled,
-                datetime.now(timezone.utc).isoformat(),
+                now.isoformat(),
                 track_id,
-                float(price),
+                price,
                 market.get("quote_time") or "",
-                qty * float(price),
+                qty * price,
                 0.0,
             ),
         )
+        db.meta_set("live.cash", round(cash, 6))
         order = _record_order(db, alert, ticker, "buy", qty, price_filled, market, params)
         orders.append(order)
+        _resolve_pending(db, alert_id)
         traded += 1
-        track_exposure[track_id] = track_exposure.get(track_id, 0.0) + qty * float(price)
-        book["market_value"] = book["market_value"] + qty * float(price)
-    db.meta_set("live.cash", round(cash, 6))
-    return orders
+        track_exposure[track_id] = track_exposure.get(track_id, 0.0) + qty * price
+        book["market_value"] = book["market_value"] + qty * price
+
+        # Money-conservation check: equity may only change by the slippage cost.
+        after = _assert_book_invariant(db, params, context=f"buy {ticker}")
+        expected = before_equity - qty * (price_filled - price)
+        if abs(after["equity"] - expected) > 1e-6:
+            raise RuntimeError(
+                f"live invariant violated after buy {ticker}: equity={after['equity']:.6f}"
+                f" expected={expected:.6f}"
+            )
+    _assert_book_invariant(db, params, context="entries")
+    return orders, skipped
 
 
 def _handle_exits(
@@ -732,20 +924,23 @@ def _handle_exits(
     fetcher: Fetcher,
     quote_fn: Callable,
     params: LiveParams,
-) -> list[dict[str, Any]]:
+) -> tuple[list[dict[str, Any]], dict[str, int]]:
     if params.no_trade:
-        return []  # --no-trade must freeze the whole book, exits included
+        return [], {}  # --no-trade must freeze the whole book, exits included
     orders: list[dict[str, Any]] = []
+    skipped: dict[str, int] = {}
     cash = float(db.meta_get("live.cash", params.capital))
     now = datetime.now(timezone.utc)
     positions = db.query("SELECT * FROM positions WHERE status = 'open'")
     for position in positions:
         ticker = position["ticker"]
         market = quote_fn(fetcher, ticker) or {}
-        price = market.get("price")
-        if not price or market.get("stale"):
+        ok, reason = quote_verdict({"event_time": position.get("opened_at")}, market, now)
+        if not ok:
+            skipped[reason] = skipped.get(reason, 0) + 1
             continue
-        change = float(price) / float(position["avg_price"]) - 1 if position["avg_price"] else 0.0
+        price = float(market["price"])
+        change = price / float(position["avg_price"]) - 1 if position["avg_price"] else 0.0
         held_days = _days_held(position.get("opened_at"), now)
         reason = ""
         if change <= params.stop_loss:
@@ -754,18 +949,19 @@ def _handle_exits(
             reason = "time_exit"
         if not reason:
             continue
-        price_filled = fill_price(float(price), "sell", params.slippage_bps)
+        price_filled = fill_price(price, "sell", params.slippage_bps)
         qty = float(position["qty"])
         cash += qty * price_filled
         db.execute(
             "UPDATE positions SET status = 'closed', last_price = ?, last_quote_time = ?,"
             " unrealized_pnl = ? WHERE ticker = ?",
-            (float(price), market.get("quote_time") or "", qty * (price_filled - float(position["avg_price"])), ticker),
+            (price, market.get("quote_time") or "", qty * (price_filled - float(position["avg_price"])), ticker),
         )
         alert = {"alert_id": f"exit-{ticker}-{int(now.timestamp())}", "headline": reason, "score": 0.5}
         orders.append(_record_order(db, alert, ticker, "sell", qty, price_filled, market, params, note=reason))
     db.meta_set("live.cash", round(cash, 6))
-    return orders
+    _assert_book_invariant(db, params, context="exits")
+    return orders, skipped
 
 
 def _record_order(

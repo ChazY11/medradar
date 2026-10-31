@@ -571,6 +571,61 @@ def block_bootstrap_ci(
 
 
 # ------------------------------------------------------------ event study table
+def block_bootstrap_p_value(
+    values: Sequence[float],
+    blocks: Sequence[Any] | None = None,
+    *,
+    stat_fn: Callable[[Sequence[float]], float] | None = None,
+    n_boot: int = DEFAULT_N_BOOT,
+    seed: int = DEFAULT_SEED,
+) -> dict[str, Any]:
+    """Two-sided bootstrap p-value for ``H0: statistic == 0``.
+
+    Uses the same cluster resampling as :func:`block_bootstrap_ci`, so the CI and
+    the p-value in a report always come from the same sampling model. The p-value
+    is the doubled smaller tail share of the bootstrap distribution with a
+    ``+1 / (N+1)`` smoothing term (never exactly zero).
+    """
+    raw = list(values)
+    if blocks is not None and len(blocks) != len(raw):
+        raise ValueError("blocks must align with values (one block id per observation)")
+    pairs: list[tuple[float, str]] = []
+    for index, raw_value in enumerate(raw):
+        value = _num(raw_value)
+        if value is None:
+            continue
+        pairs.append((value, str(blocks[index]) if blocks is not None else str(index)))
+    if len(pairs) < 2:
+        return {"p": None, "n": len(pairs), "n_blocks": 0, "n_boot": 0, "seed": int(seed)}
+    groups: dict[str, list[float]] = {}
+    for value, group in pairs:
+        groups.setdefault(group, []).append(value)
+    m = len(groups)
+    if m < 2:
+        return {"p": None, "n": len(pairs), "n_blocks": m, "n_boot": 0, "seed": int(seed)}
+    ordered = sorted(groups, key=str)
+    rng = random.Random(seed)
+    fn = stat_fn or (lambda sample: sum(sample) / len(sample) if sample else 0.0)
+    draws: list[float] = []
+    for _ in range(int(n_boot)):
+        sample: list[float] = []
+        for _ in range(m):
+            sample.extend(groups[ordered[rng.randrange(m)]])
+        draws.append(float(fn(sample)))
+    left = sum(1 for draw in draws if draw <= 0.0) / len(draws)
+    right = sum(1 for draw in draws if draw >= 0.0) / len(draws)
+    p_value = min(1.0, 2.0 * min(left, right))
+    return {
+        "p": round(p_value, 6),
+        "n": len(pairs),
+        "n_blocks": m,
+        "n_boot": int(n_boot),
+        "seed": int(seed),
+        "method": "block_bootstrap_p",
+    }
+
+
+# ------------------------------------------------------------ event study table
 def _returns_of(event: Mapping[str, Any], returns_key: str) -> Mapping[str, Any] | None:
     """Find the per-horizon return mapping on an event row (forgiving lookup).
 

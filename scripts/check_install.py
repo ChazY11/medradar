@@ -116,6 +116,21 @@ else:
         problems.append("demo report escaped MEDRADAR_HOME (wrote outside the data home)")
     elif not os.path.isfile(index):
         problems.append("run_demo reported success but index.html is missing")
+    else:
+        demo_dir = os.path.dirname(index)
+        dashboard = os.path.join(demo_dir, "dashboard.html")
+        payload["demo"]["dashboard_html"] = dashboard
+        if not os.path.isfile(dashboard):
+            problems.append("run_demo succeeded but dashboard.html is missing")
+        import re as _re
+        with open(index, "r", encoding="utf-8", errors="replace") as _fh:
+            _html = _fh.read()
+        _hrefs = [h for h in _re.findall(r'href="([^"]+)"', _html)
+                  if not h.startswith(("http://", "https://", "#", "mailto:", "data:"))]
+        _missing = sorted({h for h in _hrefs if not os.path.exists(os.path.join(demo_dir, h))})
+        payload["demo"]["links_checked"] = len(set(_hrefs))
+        if _missing:
+            problems.append(f"demo report has dead local links: {_missing}")
 
 if doctor.get("status") != "ok":
     problems.append(f"run_doctor failed from the installed copy: {doctor.get('failures')}")

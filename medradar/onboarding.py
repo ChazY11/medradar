@@ -148,9 +148,47 @@ def run_demo(
         }
     ensure_dir(target)
 
+    # First-run experience, not just a report: build the interactive dashboard from
+    # the same snapshot *before* the report, so the report can link to a real file.
+    from .util import write_json
+
+    cases_payload = metrics.get("cases") if isinstance(metrics.get("cases"), dict) else {}
+    replay_payload = metrics.get("replay") if isinstance(metrics.get("replay"), dict) else {}
+    cases_file = write_json(target / "cases.json", cases_payload)
+    replay_file = write_json(target / "replay.json", replay_payload)
+    dashboard_ok = False
+    try:
+        from .dashboard import build_dashboard  # lazy: heavy, only demo needs it
+
+        build_dashboard(
+            metrics_path=snapshot,
+            cases_path=cases_file,
+            replay_path=replay_file,
+            out_path=target / "dashboard.html",
+        )
+        dashboard_ok = (target / "dashboard.html").is_file()
+    except Exception:
+        dashboard_ok = False
+
     from .report import build_report  # lazy: report.py is heavy and only demo needs it
 
     result = build_report(metrics_path=snapshot, out_dir=target, docs_dir=target)
+
+    # The report links to the assumption registry. Ship the real file when the
+    # repo snapshot is available, otherwise leave an explicit note instead of a
+    # dead link (the demo must never contain a broken button).
+    assumptions_target = target / "docs" / "ASSUMPTIONS.md"
+    if not assumptions_target.is_file():
+        ensure_dir(assumptions_target.parent)
+        source = config.SOURCE_ROOT / "docs" / "ASSUMPTIONS.md"
+        if source.is_file():
+            assumptions_target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+        else:
+            assumptions_target.write_text(
+                "# 假设登记表（演示版）\n\n"
+                "离线演示快照不包含完整假设表。完整条目请查看仓库 `docs/ASSUMPTIONS.md`。\n",
+                encoding="utf-8",
+            )
     elapsed = round(time.perf_counter() - started, 3)
 
     return {
@@ -161,6 +199,7 @@ def run_demo(
         "snapshot": str(snapshot),
         "out_dir": str(target),
         "index_html": result["files"]["index_html"],
+        "dashboard_html": str(target / "dashboard.html") if dashboard_ok else None,
         "files": result["files"],
         "html_bytes": result["html_bytes"],
         "html_lines": result["html_lines"],

@@ -627,11 +627,15 @@ _JS = r"""
       total = 0;
       Object.keys(counts).forEach(function (k) { total += num(counts[k]) || 0; });
     }
+    var reg = obj(meta.registry);
+    var regText = reg.companies_total
+      ? ('注册表 ' + fmtInt(reg.companies_total) + ' 家 / ' + fmtInt(reg.tracks_device) + ' 赛道')
+      : '注册表规模见数据页';
     var casesTotal = num(obj(C.stats).total);
     if (casesTotal === null) { casesTotal = allCases.length; }
     var html = metricCards([
       {label: '事件总数', value: fmtInt(total) + ' 件', sub: '窗口 ' + esc(obj(meta.window).start || '暂无数据') + ' → ' + esc(obj(meta.window).end || '暂无数据')},
-      {label: '赛道 / 公司', value: trackList.length + ' / ' + companyList.length, sub: '产品族 ' + familyList.length + ' 个'},
+      {label: '赛道 / 公司（展示）', value: trackList.length + ' / ' + companyList.length, sub: regText + '；产品族 ' + familyList.length + ' 个'},
       {label: '案例库', value: fmtInt(casesTotal) + ' 条', sub: '反例 ' + fmtInt(arr(C.negative_examples).length) + ' 条，命中率 ' + pct(obj(C.stats).hit_rate_20d)},
       {label: '回放步骤', value: fmtInt(replaySteps.length) + ' 步', sub: '成交 ' + fmtInt(obj(R.summary).n_trades) + ' 笔'},
       {label: '模拟盘收益', value: signed(summary.total_return).text, sub: '最大回撤 ' + signed(summary.max_drawdown).text},

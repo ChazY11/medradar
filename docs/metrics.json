@@ -1,6 +1,6 @@
 {
  "meta": {
-  "generated_at": "2026-10-31T04:58:53Z",
+  "generated_at": "2026-10-31T05:31:22Z",
   "db": "data\\medradar.sqlite",
   "window": {
    "start": "2025-01-01",
@@ -32,6 +32,15 @@
    "prices": "ok"
   },
   "event_total": 375378,
+  "registry": {
+   "companies_device": 51,
+   "companies_drug": 38,
+   "companies_total": 89,
+   "tracks_device": 38,
+   "tracks_drug": 22,
+   "shown_companies": 24,
+   "shown_tracks": 24
+  },
   "definitions": {
    "thi": "Gamma-Poisson 收缩后的近期速率 / 基线速率（先验强度 3 个季度）",
    "prob_up": "真实速率高于基线速率的后验概率",
@@ -1760,24 +1769,6 @@
     "nme_recent": 2
    },
    {
-    "key": "bayer",
-    "name_en": "Bayer",
-    "name_zh": "拜耳",
-    "ticker": "BAYRY",
-    "is_major": true,
-    "recent": 3,
-    "recent_per_q": 0.375,
-    "baseline_per_q": 0.15,
-    "thi": 2.09,
-    "prob_up": 0.849,
-    "ci": [
-     0.48,
-     4.8
-    ],
-    "emerging": false,
-    "nme_recent": 3
-   },
-   {
     "key": "boehringer",
     "name_en": "Boehringer Ingelheim",
     "name_zh": "勃林格殷格翰",
@@ -1794,6 +1785,24 @@
     ],
     "emerging": false,
     "nme_recent": 2
+   },
+   {
+    "key": "bayer",
+    "name_en": "Bayer",
+    "name_zh": "拜耳",
+    "ticker": "BAYRY",
+    "is_major": true,
+    "recent": 3,
+    "recent_per_q": 0.375,
+    "baseline_per_q": 0.15,
+    "thi": 2.09,
+    "prob_up": 0.849,
+    "ci": [
+     0.48,
+     4.8
+    ],
+    "emerging": false,
+    "nme_recent": 3
    },
    {
     "key": "eisai",
@@ -1814,24 +1823,6 @@
     "nme_recent": 0
    },
    {
-    "key": "gsk",
-    "name_en": "GSK",
-    "name_zh": "葛兰素史克",
-    "ticker": "GSK",
-    "is_major": true,
-    "recent": 5,
-    "recent_per_q": 0.625,
-    "baseline_per_q": 0.3,
-    "thi": 1.79,
-    "prob_up": 0.873,
-    "ci": [
-     0.64,
-     3.52
-    ],
-    "emerging": false,
-    "nme_recent": 4
-   },
-   {
     "key": "gilead",
     "name_en": "Gilead Sciences",
     "name_zh": "吉利德",
@@ -1848,6 +1839,24 @@
     ],
     "emerging": false,
     "nme_recent": 3
+   },
+   {
+    "key": "gsk",
+    "name_en": "GSK",
+    "name_zh": "葛兰素史克",
+    "ticker": "GSK",
+    "is_major": true,
+    "recent": 5,
+    "recent_per_q": 0.625,
+    "baseline_per_q": 0.3,
+    "thi": 1.79,
+    "prob_up": 0.873,
+    "ci": [
+     0.64,
+     3.52
+    ],
+    "emerging": false,
+    "nme_recent": 4
    },
    {
     "key": "merck",
@@ -1958,11 +1967,11 @@
     "nme_recent": 2
    },
    {
-    "key": "teva",
-    "name_en": "Teva",
-    "name_zh": "梯瓦",
-    "ticker": "TEVA",
-    "is_major": false,
+    "key": "amgen",
+    "name_en": "Amgen",
+    "name_zh": "安进",
+    "ticker": "AMGN",
+    "is_major": true,
     "recent": 3,
     "recent_per_q": 0.375,
     "baseline_per_q": 0.45,
@@ -1976,11 +1985,11 @@
     "nme_recent": 0
    },
    {
-    "key": "amgen",
-    "name_en": "Amgen",
-    "name_zh": "安进",
-    "ticker": "AMGN",
-    "is_major": true,
+    "key": "teva",
+    "name_en": "Teva",
+    "name_zh": "梯瓦",
+    "ticker": "TEVA",
+    "is_major": false,
     "recent": 3,
     "recent_per_q": 0.375,
     "baseline_per_q": 0.45,
@@ -2030,10 +2039,10 @@
     "nme_recent": 3
    },
    {
-    "key": "viatris",
-    "name_en": "Viatris",
-    "name_zh": "晖致",
-    "ticker": "VTRS",
+    "key": "incyte",
+    "name_en": "Incyte",
+    "name_zh": "因塞特",
+    "ticker": "INCY",
     "is_major": false,
     "recent": 1,
     "recent_per_q": 0.125,
@@ -2066,10 +2075,10 @@
     "nme_recent": 1
    },
    {
-    "key": "incyte",
-    "name_en": "Incyte",
-    "name_zh": "因塞特",
-    "ticker": "INCY",
+    "key": "viatris",
+    "name_en": "Viatris",
+    "name_zh": "晖致",
+    "ticker": "VTRS",
     "is_major": false,
     "recent": 1,
     "recent_per_q": 0.125,
@@ -8524,7 +8533,9 @@
        "winsor_bounds": [
         -0.280088,
         0.288761
-       ]
+       ],
+       "p_holm": 0.0,
+       "significant_holm": true
       },
       "crl": {
        "n": 379,
@@ -8544,7 +8555,9 @@
        "winsor_bounds": [
         -0.490463,
         0.250604
-       ]
+       ],
+       "p_holm": 0.0,
+       "significant_holm": true
       },
       "trial_result": {
        "n": 1062,
@@ -8555,7 +8568,7 @@
        "p90": 0.153705,
        "std": 0.125018,
        "t": 3.1307,
-       "p": 0.001791,
+       "p": 0.0,
        "ci95": [
         0.004585,
         0.019756
@@ -8564,94 +8577,36 @@
        "winsor_bounds": [
         -0.336209,
         0.282973
-       ]
+       ],
+       "p_holm": 0.0,
+       "significant_holm": true
       }
      },
      "multiple_testing": {
       "method": "holm",
-      "alpha": 0.05,
-      "m": 3,
+      "family": "category × horizon",
+      "m": 12,
+      "rejected": 3,
       "tests": [
        {
-        "label": "approval:1d",
-        "index": 0,
-        "p": 1.1839856679671282e-22,
-        "adjusted_p": 3.5519570039013845e-22,
-        "reject": true
-       },
-       {
-        "label": "crl:1d",
-        "index": 1,
-        "p": 6.119788728103148e-12,
-        "adjusted_p": 1.2239577456206295e-11,
-        "reject": true
-       },
-       {
-        "label": "trial_result:1d",
-        "index": 2,
-        "p": 0.0017912882048454336,
-        "adjusted_p": 0.0017912882048454336,
-        "reject": true
-       }
-      ],
-      "ordered": [
-       {
-        "label": "approval:1d",
-        "index": 0,
-        "p": 1.1839856679671282e-22,
-        "adjusted_p": 3.5519570039013845e-22,
-        "reject": true
-       },
-       {
-        "label": "crl:1d",
-        "index": 1,
-        "p": 6.119788728103148e-12,
-        "adjusted_p": 1.2239577456206295e-11,
-        "reject": true
-       },
-       {
-        "label": "trial_result:1d",
-        "index": 2,
-        "p": 0.0017912882048454336,
-        "adjusted_p": 0.0017912882048454336,
-        "reject": true
-       }
-      ],
-      "rejected": 3,
-      "n_rejected": 3,
-      "n_significant": 3,
-      "significant": 3,
-      "rejected_labels": [
-       "approval:1d",
-       "crl:1d",
-       "trial_result:1d"
-      ],
-      "adjusted": [
-       {
         "key": "approval:1d",
-        "raw_p": 1.1839856679671282e-22,
-        "adjusted_p": 3.5519570039013845e-22,
+        "raw_p": 0.0,
+        "adjusted_p": 0.0,
         "significant": true
        },
        {
         "key": "crl:1d",
-        "raw_p": 6.119788728103148e-12,
-        "adjusted_p": 1.2239577456206295e-11,
+        "raw_p": 0.0,
+        "adjusted_p": 0.0,
         "significant": true
        },
        {
         "key": "trial_result:1d",
-        "raw_p": 0.0017912882048454336,
-        "adjusted_p": 0.0017912882048454336,
+        "raw_p": 0.0,
+        "adjusted_p": 0.0,
         "significant": true
        }
-      ],
-      "adjusted_p_values": [
-       3.5519570039013845e-22,
-       1.2239577456206295e-11,
-       0.0017912882048454336
-      ],
-      "note_zh": "family-wise error rate 控制在 alpha 之下；adjusted_p 是可直接与 alpha 比较的校正后 p 值。adjusted_p_values 与输入 p 值一一对应。"
+      ]
      }
     },
     "5": {
@@ -8674,7 +8629,9 @@
        "winsor_bounds": [
         -0.360533,
         0.547343
-       ]
+       ],
+       "p_holm": 0.0,
+       "significant_holm": true
       },
       "crl": {
        "n": 379,
@@ -8694,7 +8651,9 @@
        "winsor_bounds": [
         -0.723901,
         0.2684
-       ]
+       ],
+       "p_holm": 0.0,
+       "significant_holm": true
       },
       "trial_result": {
        "n": 1062,
@@ -8705,7 +8664,7 @@
        "p90": 0.202122,
        "std": 0.174085,
        "t": 1.6074,
-       "p": 0.108256,
+       "p": 0.099,
        "ci95": [
         -0.001562,
         0.018407
@@ -8714,93 +8673,36 @@
        "winsor_bounds": [
         -0.429424,
         0.44346
-       ]
+       ],
+       "p_holm": 0.495,
+       "significant_holm": false
       }
      },
      "multiple_testing": {
       "method": "holm",
-      "alpha": 0.05,
-      "m": 3,
+      "family": "category × horizon",
+      "m": 12,
+      "rejected": 2,
       "tests": [
        {
-        "label": "approval:5d",
-        "index": 0,
-        "p": 2.491465003875222e-11,
-        "adjusted_p": 7.474395011625665e-11,
-        "reject": true
-       },
-       {
-        "label": "crl:5d",
-        "index": 1,
-        "p": 3.268700260550815e-08,
-        "adjusted_p": 6.53740052110163e-08,
-        "reject": true
-       },
-       {
-        "label": "trial_result:5d",
-        "index": 2,
-        "p": 0.10825558692446724,
-        "adjusted_p": 0.10825558692446724,
-        "reject": false
-       }
-      ],
-      "ordered": [
-       {
-        "label": "approval:5d",
-        "index": 0,
-        "p": 2.491465003875222e-11,
-        "adjusted_p": 7.474395011625665e-11,
-        "reject": true
-       },
-       {
-        "label": "crl:5d",
-        "index": 1,
-        "p": 3.268700260550815e-08,
-        "adjusted_p": 6.53740052110163e-08,
-        "reject": true
-       },
-       {
-        "label": "trial_result:5d",
-        "index": 2,
-        "p": 0.10825558692446724,
-        "adjusted_p": 0.10825558692446724,
-        "reject": false
-       }
-      ],
-      "rejected": 2,
-      "n_rejected": 2,
-      "n_significant": 2,
-      "significant": 2,
-      "rejected_labels": [
-       "approval:5d",
-       "crl:5d"
-      ],
-      "adjusted": [
-       {
         "key": "approval:5d",
-        "raw_p": 2.491465003875222e-11,
-        "adjusted_p": 7.474395011625665e-11,
+        "raw_p": 0.0,
+        "adjusted_p": 0.0,
         "significant": true
        },
        {
         "key": "crl:5d",
-        "raw_p": 3.268700260550815e-08,
-        "adjusted_p": 6.53740052110163e-08,
+        "raw_p": 0.0,
+        "adjusted_p": 0.0,
         "significant": true
        },
        {
         "key": "trial_result:5d",
-        "raw_p": 0.10825558692446724,
-        "adjusted_p": 0.10825558692446724,
+        "raw_p": 0.099,
+        "adjusted_p": 0.495,
         "significant": false
        }
-      ],
-      "adjusted_p_values": [
-       7.474395011625665e-11,
-       6.53740052110163e-08,
-       0.10825558692446724
-      ],
-      "note_zh": "family-wise error rate 控制在 alpha 之下；adjusted_p 是可直接与 alpha 比较的校正后 p 值。adjusted_p_values 与输入 p 值一一对应。"
+      ]
      }
     },
     "20": {
@@ -8814,7 +8716,7 @@
        "p90": 0.330217,
        "std": 0.280497,
        "t": 3.0909,
-       "p": 0.002054,
+       "p": 0.001,
        "ci95": [
         0.009405,
         0.047935
@@ -8823,7 +8725,9 @@
        "winsor_bounds": [
         -0.526805,
         0.969693
-       ]
+       ],
+       "p_holm": 0.007,
+       "significant_holm": true
       },
       "crl": {
        "n": 379,
@@ -8834,7 +8738,7 @@
        "p90": 0.258357,
        "std": 0.274189,
        "t": -2.7054,
-       "p": 0.007132,
+       "p": 0.01,
        "ci95": [
         -0.0667,
         -0.008316
@@ -8843,7 +8747,9 @@
        "winsor_bounds": [
         -0.932181,
         0.480743
-       ]
+       ],
+       "p_holm": 0.06,
+       "significant_holm": false
       },
       "trial_result": {
        "n": 1062,
@@ -8854,7 +8760,7 @@
        "p90": 0.337879,
        "std": 0.280148,
        "t": -0.2997,
-       "p": 0.764457,
+       "p": 0.794,
        "ci95": [
         -0.018482,
         0.015435
@@ -8863,93 +8769,36 @@
        "winsor_bounds": [
         -0.680666,
         0.705479
-       ]
+       ],
+       "p_holm": 0.794,
+       "significant_holm": false
       }
      },
      "multiple_testing": {
       "method": "holm",
-      "alpha": 0.05,
-      "m": 3,
+      "family": "category × horizon",
+      "m": 12,
+      "rejected": 1,
       "tests": [
        {
-        "label": "approval:20d",
-        "index": 0,
-        "p": 0.0020540812224183877,
-        "adjusted_p": 0.006162243667255163,
-        "reject": true
-       },
-       {
-        "label": "crl:20d",
-        "index": 1,
-        "p": 0.007131958670612959,
-        "adjusted_p": 0.014263917341225918,
-        "reject": true
-       },
-       {
-        "label": "trial_result:20d",
-        "index": 2,
-        "p": 0.7644567495503969,
-        "adjusted_p": 0.7644567495503969,
-        "reject": false
-       }
-      ],
-      "ordered": [
-       {
-        "label": "approval:20d",
-        "index": 0,
-        "p": 0.0020540812224183877,
-        "adjusted_p": 0.006162243667255163,
-        "reject": true
-       },
-       {
-        "label": "crl:20d",
-        "index": 1,
-        "p": 0.007131958670612959,
-        "adjusted_p": 0.014263917341225918,
-        "reject": true
-       },
-       {
-        "label": "trial_result:20d",
-        "index": 2,
-        "p": 0.7644567495503969,
-        "adjusted_p": 0.7644567495503969,
-        "reject": false
-       }
-      ],
-      "rejected": 2,
-      "n_rejected": 2,
-      "n_significant": 2,
-      "significant": 2,
-      "rejected_labels": [
-       "approval:20d",
-       "crl:20d"
-      ],
-      "adjusted": [
-       {
         "key": "approval:20d",
-        "raw_p": 0.0020540812224183877,
-        "adjusted_p": 0.006162243667255163,
+        "raw_p": 0.001,
+        "adjusted_p": 0.007,
         "significant": true
        },
        {
         "key": "crl:20d",
-        "raw_p": 0.007131958670612959,
-        "adjusted_p": 0.014263917341225918,
-        "significant": true
+        "raw_p": 0.01,
+        "adjusted_p": 0.06,
+        "significant": false
        },
        {
         "key": "trial_result:20d",
-        "raw_p": 0.7644567495503969,
-        "adjusted_p": 0.7644567495503969,
+        "raw_p": 0.794,
+        "adjusted_p": 0.794,
         "significant": false
        }
-      ],
-      "adjusted_p_values": [
-       0.006162243667255163,
-       0.014263917341225918,
-       0.7644567495503969
-      ],
-      "note_zh": "family-wise error rate 控制在 alpha 之下；adjusted_p 是可直接与 alpha 比较的校正后 p 值。adjusted_p_values 与输入 p 值一一对应。"
+      ]
      }
     },
     "60": {
@@ -8963,7 +8812,7 @@
        "p90": 0.468935,
        "std": 0.383347,
        "t": -1.1923,
-       "p": 0.233443,
+       "p": 0.293,
        "ci95": [
         -0.0431,
         0.013642
@@ -8972,7 +8821,9 @@
        "winsor_bounds": [
         -0.706449,
         1.209207
-       ]
+       ],
+       "p_holm": 0.753,
+       "significant_holm": false
       },
       "crl": {
        "n": 371,
@@ -8983,7 +8834,7 @@
        "p90": 0.41597,
        "std": 0.440374,
        "t": -1.2494,
-       "p": 0.2123,
+       "p": 0.251,
        "ci95": [
         -0.077566,
         0.018071
@@ -8992,7 +8843,9 @@
        "winsor_bounds": [
         -1.448295,
         0.7337
-       ]
+       ],
+       "p_holm": 0.753,
+       "significant_holm": false
       },
       "trial_result": {
        "n": 1037,
@@ -9003,7 +8856,7 @@
        "p90": 0.530421,
        "std": 0.436278,
        "t": -1.6395,
-       "p": 0.101417,
+       "p": 0.142,
        "ci95": [
         -0.050648,
         0.007085
@@ -9012,92 +8865,118 @@
        "winsor_bounds": [
         -0.852486,
         1.20116
-       ]
+       ],
+       "p_holm": 0.568,
+       "significant_holm": false
       }
      },
      "multiple_testing": {
       "method": "holm",
-      "alpha": 0.05,
-      "m": 3,
+      "family": "category × horizon",
+      "m": 12,
+      "rejected": 0,
       "tests": [
        {
-        "label": "approval:60d",
-        "index": 0,
-        "p": 0.23344265461860003,
-        "adjusted_p": 0.42459915704413853,
-        "reject": false
-       },
-       {
-        "label": "crl:60d",
-        "index": 1,
-        "p": 0.21229957852206927,
-        "adjusted_p": 0.42459915704413853,
-        "reject": false
-       },
-       {
-        "label": "trial_result:60d",
-        "index": 2,
-        "p": 0.10141688045082453,
-        "adjusted_p": 0.3042506413524736,
-        "reject": false
-       }
-      ],
-      "ordered": [
-       {
-        "label": "trial_result:60d",
-        "index": 2,
-        "p": 0.10141688045082453,
-        "adjusted_p": 0.3042506413524736,
-        "reject": false
-       },
-       {
-        "label": "approval:60d",
-        "index": 0,
-        "p": 0.23344265461860003,
-        "adjusted_p": 0.42459915704413853,
-        "reject": false
-       },
-       {
-        "label": "crl:60d",
-        "index": 1,
-        "p": 0.21229957852206927,
-        "adjusted_p": 0.42459915704413853,
-        "reject": false
-       }
-      ],
-      "rejected": 0,
-      "n_rejected": 0,
-      "n_significant": 0,
-      "significant": 0,
-      "rejected_labels": [],
-      "adjusted": [
-       {
         "key": "trial_result:60d",
-        "raw_p": 0.10141688045082453,
-        "adjusted_p": 0.3042506413524736,
+        "raw_p": 0.142,
+        "adjusted_p": 0.568,
         "significant": false
        },
        {
         "key": "approval:60d",
-        "raw_p": 0.23344265461860003,
-        "adjusted_p": 0.42459915704413853,
+        "raw_p": 0.293,
+        "adjusted_p": 0.753,
         "significant": false
        },
        {
         "key": "crl:60d",
-        "raw_p": 0.21229957852206927,
-        "adjusted_p": 0.42459915704413853,
+        "raw_p": 0.251,
+        "adjusted_p": 0.753,
         "significant": false
        }
-      ],
-      "adjusted_p_values": [
-       0.42459915704413853,
-       0.42459915704413853,
-       0.3042506413524736
-      ],
-      "note_zh": "family-wise error rate 控制在 alpha 之下；adjusted_p 是可直接与 alpha 比较的校正后 p 值。adjusted_p_values 与输入 p 值一一对应。"
+      ]
      }
     }
+   },
+   "multiple_testing": {
+    "method": "holm",
+    "family": "category × horizon",
+    "m": 12,
+    "rejected": 6,
+    "tests": [
+     {
+      "key": "approval:1d",
+      "raw_p": 0.0,
+      "adjusted_p": 0.0,
+      "significant": true
+     },
+     {
+      "key": "approval:5d",
+      "raw_p": 0.0,
+      "adjusted_p": 0.0,
+      "significant": true
+     },
+     {
+      "key": "crl:1d",
+      "raw_p": 0.0,
+      "adjusted_p": 0.0,
+      "significant": true
+     },
+     {
+      "key": "crl:5d",
+      "raw_p": 0.0,
+      "adjusted_p": 0.0,
+      "significant": true
+     },
+     {
+      "key": "trial_result:1d",
+      "raw_p": 0.0,
+      "adjusted_p": 0.0,
+      "significant": true
+     },
+     {
+      "key": "approval:20d",
+      "raw_p": 0.001,
+      "adjusted_p": 0.007,
+      "significant": true
+     },
+     {
+      "key": "crl:20d",
+      "raw_p": 0.01,
+      "adjusted_p": 0.06,
+      "significant": false
+     },
+     {
+      "key": "trial_result:5d",
+      "raw_p": 0.099,
+      "adjusted_p": 0.495,
+      "significant": false
+     },
+     {
+      "key": "trial_result:60d",
+      "raw_p": 0.142,
+      "adjusted_p": 0.568,
+      "significant": false
+     },
+     {
+      "key": "approval:60d",
+      "raw_p": 0.293,
+      "adjusted_p": 0.753,
+      "significant": false
+     },
+     {
+      "key": "crl:60d",
+      "raw_p": 0.251,
+      "adjusted_p": 0.753,
+      "significant": false
+     },
+     {
+      "key": "trial_result:20d",
+      "raw_p": 0.794,
+      "adjusted_p": 0.794,
+      "significant": false
+     }
+    ]
    }
   }
  },

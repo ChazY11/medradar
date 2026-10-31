@@ -1952,7 +1952,7 @@ def _zh_event_study(ctx: Mapping[str, Any]) -> str:
     parts.append(
         f"事件研究把 {_fmt_int(view.get('n_cases'))} 个历史案例按类别统计到 1/5/20/60 日："
         "均值为**方向对齐后**的超额收益（做空/回避类信号已按 -1 取反），"
-        "p 值为单类别 t 检验，Holm 校正在同一时间窗口的类别之间进行。"
+        "p 值来自按事件月份分块的 bootstrap（与置信区间同一抽样模型），Holm 校正在「类别 × 窗口」全家族内进行。"
     )
     horizon_20 = by_horizon.get("20")
     if horizon_20:
@@ -3924,7 +3924,7 @@ def _html_event_study(ctx: Mapping[str, Any]) -> str:
     parts: list[str] = [
         heading,
         '<p class="lead">历史案例按类别统计到 1/5/20/60 日；均值为<b>方向对齐后</b>的超额收益'
-        "（做空/回避类信号已按 -1 取反），p 值为单类别 t 检验，Holm 校正在同一时间窗口的类别之间进行。</p>",
+        "（做空/回避类信号已按 -1 取反），p 值来自按事件月份分块的 bootstrap，Holm 校正在「类别 × 窗口」全家族内进行。</p>",
     ]
     horizon_20 = by_horizon.get("20")
     if horizon_20:
@@ -4400,6 +4400,11 @@ def render_html(ctx: Mapping[str, Any]) -> str:
         "数据可能存在延迟、遗漏与口径差异，读者应自行核验原始来源。作者不对使用本页内容造成的任何损失负责。</p>"
         "</div></footer>"
     )
+    links = ctx.get("links") or {}
+    _dash = _h(links.get("dashboard") or "")
+    _intra = _h(links.get("intraday") or "")
+    dash_link = f' ｜ <a href="{_dash}" style="font-weight:700">打开交互式看板 →</a>' if _dash else ""
+    intraday_link = f' ｜ <a href="{_intra}">7 天 1 分钟级回放 →</a>' if _intra else ""
     document = f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -4410,12 +4415,11 @@ def render_html(ctx: Mapping[str, Any]) -> str:
 <title>MedRadar · 器械与药品产业方向雷达</title>
 <style>{_CSS}</style>
 </head>
-<body>
-<header class="top">
+<body><header class="top">
 <div class="wrap">
 <div class="brandline"><span class="mark">MedRadar<span class="dot"></span></span><span class="sub">FDA 器械与药品产业方向雷达 · 中文看板</span></div>
 <div class="statusbar {status_class}"><span class="dot"></span><strong>数据状态：{_h(status_label)}</strong><span class="detail">{_h(status_detail)}</span>{nmpa_chip}</div>
-<p class="tagline">统计窗口 {_h(window)} ｜ 生成时间 {_h(ctx["generated_at"] or DASH)}（UTC） ｜ 全部数字来自 metrics.json ｜ <a href="dashboard.html" style="font-weight:700">打开交互式看板 →</a> ｜ <a href="replay_intraday.html">7 天 1 分钟级回放 →</a></p>
+<p class="tagline">统计窗口 {_h(window)} ｜ 生成时间 {_h(ctx["generated_at"] or DASH)}（UTC） ｜ 全部数字来自 metrics.json{dash_link}{intraday_link}</p>
 </div>
 </header>
 <main class="wrap">
@@ -4455,6 +4459,13 @@ def build_report(
 
     metrics = read_json(metrics_path, default={})
     ctx = build_context(metrics, metrics_path=metrics_path, out_dir=out_dir)
+    # Link only to artefacts that actually exist next to the rendered page, so a
+    # fresh `medradar demo` never ships a dead "dashboard" / "intraday" button.
+    links: dict[str, str] = {}
+    for name, target_name in (("dashboard", "dashboard.html"), ("intraday", "replay_intraday.html")):
+        if (out_dir / target_name).is_file() or (docs_target / target_name).is_file():
+            links[name] = target_name
+    ctx["links"] = links
 
     report_zh = render_report_zh(ctx)
     report_en = render_report_en(ctx)

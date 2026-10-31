@@ -20,6 +20,7 @@ import os
 import shutil
 import subprocess
 import sys
+import re
 import tempfile
 import time
 import unittest
@@ -177,6 +178,26 @@ class DemoTests(unittest.TestCase):
             self.assertTrue(str(result["snapshot"]).endswith("metrics.json"))
             self.assertGreater(result["device_companies"], 0)
             self.assertGreater(result["chapters_zh"], 0)
+
+    def test_demo_first_run_has_no_dead_links(self) -> None:
+        """First-run UX: every local link in the demo report must resolve.
+
+        This is the regression test for the release blocker where the demo page
+        offered "interactive dashboard" and "1-minute replay" buttons but wrote
+        neither file.
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            out_dir = Path(tmp) / "demo"
+            result = run_demo(out_dir=out_dir)
+            self.assertEqual(result["status"], "ok", result.get("error"))
+            self.assertTrue((out_dir / "dashboard.html").is_file(), "demo must build the dashboard")
+            html = (out_dir / "index.html").read_text(encoding="utf-8", errors="replace")
+            hrefs = [
+                href for href in re.findall(r'href="([^"]+)"', html)
+                if not href.startswith(("http://", "https://", "#", "mailto:", "data:"))
+            ]
+            missing = sorted({href for href in hrefs if not (out_dir / href).exists()})
+            self.assertEqual(missing, [], f"dead links in demo: {missing}")
 
     def test_demo_uses_an_explicit_fixture_snapshot(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

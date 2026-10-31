@@ -141,11 +141,37 @@ def _publish_docs(args: argparse.Namespace) -> dict:
     return {"docs_dir": str(DOCS_DIR), "files": copied}
 
 
+def _ship_assumptions(out_dir: Path, docs_dir: Path) -> list[str]:
+    """Place ``ASSUMPTIONS.md`` where the report's relative links expect it.
+
+    The report links to ``docs/ASSUMPTIONS.md``; depending on whether the reader
+    opens ``out/index.html``, ``docs/index.html`` or the replay page, that path
+    resolves below a different root. Copying it into each expected ``docs/``
+    folder keeps every link alive instead of shipping a dead reference.
+    """
+    import shutil
+
+    from .config import ROOT
+    from .util import ensure_dir
+
+    source = ROOT / "docs" / "ASSUMPTIONS.md"
+    if not source.is_file():
+        return []
+    copied: list[str] = []
+    for base in (out_dir / "docs", docs_dir / "docs", out_dir / "replay" / "docs"):
+        ensure_dir(base)
+        shutil.copyfile(source, base / "ASSUMPTIONS.md")
+        copied.append(str(base / "ASSUMPTIONS.md"))
+    return copied
+
+
 def cmd_report(args: argparse.Namespace) -> int:
+    from .config import DOCS_DIR
     from .report import build_report
 
     result = build_report(metrics_path=args.metrics, out_dir=args.out_dir)
     result["published"] = _publish_docs(args)
+    result["assumptions_copied"] = _ship_assumptions(Path(args.out_dir), Path(DOCS_DIR))
     _emit(result)
     return 0
 

@@ -85,7 +85,11 @@ class SizingTests(unittest.TestCase):
 class RunOnceTests(unittest.TestCase):
     def _cycle(self, db_path: Path, quote_price: float, alerts, params=None, quote_payload=None):
         fetcher = mock.Mock()
-        payload = quote_payload or {"price": quote_price, "quote_time": "2026-10-30T20:00:00Z"}
+        payload = quote_payload if quote_payload is not None else {
+            "price": quote_price,
+            "quote_time": datetime.now(timezone.utc).isoformat(),
+            "market_state": "REGULAR",
+        }
         quote_fn = lambda _fetcher, ticker: dict(payload)
         with mock.patch.object(live, "poll_edgar", return_value=alerts), \
              mock.patch.object(live, "poll_edgar_fts", return_value=[]), \
@@ -94,6 +98,25 @@ class RunOnceTests(unittest.TestCase):
              mock.patch.object(live, "_watchlist", return_value={1234567: ("acme", "ACME")}), \
              mock.patch.object(live, "notify", return_value=None):
             return live.run_once(db_path, params or live.LiveParams(capital=100_000), fetcher=fetcher, quote_fn=quote_fn)
+
+    def _alert(self, alert_id: str = "edgar-1", **overrides):
+        alert = {
+            "alert_id": alert_id,
+            "source": "sec_edgar",
+            "kind": "8k_catalyst",
+            "ticker": "ACME",
+            "company_key": "acme",
+            "direction": 1,
+            "score": 0.6,
+            "materiality": 1.0,
+            "catalyst_type": "approval",
+            "headline": "FDA approval",
+            "url": "",
+            "event_time": (datetime.now(timezone.utc) - timedelta(minutes=5)).isoformat(),
+            "payload": {},
+        }
+        alert.update(overrides)
+        return alert
 
     def test_buy_creates_position_and_order(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -221,11 +244,117 @@ class RunOnceTests(unittest.TestCase):
                 "materiality": 0.9, "catalyst_type": "approval", "headline": "x", "url": "",
                 "event_time": "", "payload": {},
             }
-            payload = {"price": 100.0, "quote_time": "2026-10-30T20:00:00Z", "stale": True}
+            payload = {
+                "price": 100.0,
+                "quote_time": (datetime.now(timezone.utc) - timedelta(hours=2)).isoformat(),
+                "market_state": "REGULAR",
+                "stale": True,
+            }
             result = self._cycle(db_path, 100.0, [alert], quote_payload=payload)
             self.assertEqual(result["orders"], [])
+            self.assertEqual(result["skipped"].get("stale_quote"), 1)
             with DB(db_path) as db:
                 self.assertEqual(db.table_count("positions"), 0)
+
+    # ------------------------------------------------- cash conservation & retries
+    def test_buy_debits_cash_and_conserves_equity(self) -> None:
+        """The release-blocking bug: a buy must reduce cash by exactly qty × fill."""
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / "live.sqlite"
+            with DB(db_path) as db:
+                db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
+            result = self._cycle(db_path, 100.0, [self._alert()])
+            self.assertEqual(len(result["orders"]), 1)
+            order = result["orders"][0]
+            with DB(db_path) as db:
+                cash = float(db.meta_get("live.cash"))
+                position = db.query("SELECT * FROM positions")[0]
+            expected_cash = 100_000.0 - order["qty"] * order["fill_price"]
+            self.assertAlmostEqual(cash, expected_cash, places=6)
+            self.assertLess(cash, 100_000.0)
+            # equity = cash + holdings, and only the slippage may be lost
+            equity = cash + position["qty"] * position["last_price"]
+            self.assertAlmostEqual(equity, result["book"]["equity"], places=2)
+            slippage_cost = order["qty"] * (order["fill_price"] - 100.0)
+            self.assertAlmostEqual(equity, 100_000.0 - slippage_cost, places=2)
+
+    def test_market_closed_queues_then_fills_on_reopen(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / "live.sqlite"
+            with DB(db_path) as db:
+                db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
+            closed = {
+                "price": 100.0,
+                "quote_time": datetime.now(timezone.utc).isoformat(),
+                "market_state": "CLOSED",
+            }
+            first = self._cycle(db_path, 100.0, [self._alert()], quote_payload=closed)
+            self.assertEqual(first["orders"], [])
+            self.assertEqual(first["skipped"].get("market_closed"), 1)
+            with DB(db_path) as db:
+                self.assertEqual(db.scalar("SELECT status FROM live_pending"), "pending")
+                self.assertEqual(db.scalar("SELECT reason FROM live_skips"), "market_closed")
+
+            reopened = {
+                "price": 100.0,
+                "quote_time": datetime.now(timezone.utc).isoformat(),
+                "market_state": "REGULAR",
+            }
+            second = self._cycle(db_path, 100.0, [], quote_payload=reopened)
+            self.assertEqual(len(second["orders"]), 1)
+            with DB(db_path) as db:
+                self.assertEqual(db.table_count("positions"), 1)
+                self.assertEqual(db.scalar("SELECT status FROM live_pending"), "done")
+                self.assertLess(float(db.meta_get("live.cash")), 100_000.0)
+
+            third = self._cycle(db_path, 100.0, [], quote_payload=reopened)
+            self.assertEqual(third["orders"], [])  # no duplicate fill
+
+    def test_quote_before_news_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / "live.sqlite"
+            with DB(db_path) as db:
+                db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
+            alert = self._alert(event_time=datetime.now(timezone.utc).isoformat())
+            payload = {
+                "price": 100.0,
+                "quote_time": (datetime.now(timezone.utc) - timedelta(minutes=10)).isoformat(),
+                "market_state": "REGULAR",
+            }
+            result = self._cycle(db_path, 100.0, [alert], quote_payload=payload)
+            self.assertEqual(result["orders"], [])
+            self.assertEqual(result["skipped"].get("quote_before_news"), 1)
+            with DB(db_path) as db:
+                self.assertEqual(db.table_count("positions"), 0)
+
+    def test_quote_time_missing_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / "live.sqlite"
+            with DB(db_path) as db:
+                db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
+            payload = {"price": 100.0, "market_state": "REGULAR"}
+            result = self._cycle(db_path, 100.0, [self._alert()], quote_payload=payload)
+            self.assertEqual(result["orders"], [])
+            self.assertEqual(result["skipped"].get("quote_time_missing"), 1)
+
+    def test_missing_price_queues_and_retries_once(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / "live.sqlite"
+            with DB(db_path) as db:
+                db.upsert_companies([{"key": "acme", "ticker": "ACME", "sector": "device"}])
+            empty = {}
+            first = self._cycle(db_path, 100.0, [self._alert()], quote_payload=empty)
+            self.assertEqual(first["orders"], [])
+            self.assertEqual(first["skipped"].get("no_price"), 1)
+            ok = {
+                "price": 100.0,
+                "quote_time": datetime.now(timezone.utc).isoformat(),
+                "market_state": "REGULAR",
+            }
+            second = self._cycle(db_path, 100.0, [], quote_payload=ok)
+            self.assertEqual(len(second["orders"]), 1)
+            with DB(db_path) as db:
+                self.assertEqual(db.scalar("SELECT COUNT(*) FROM paper_orders"), 1)
 
     def test_cross_source_duplicate_is_collapsed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

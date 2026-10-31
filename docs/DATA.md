@@ -12,7 +12,7 @@
 
 <!-- stats:start -->
 
-> **自动生成区**（`medradar.stats_cmd.data_stats` 快照，生成于 2026-10-31T04:59:39Z）。
+> **自动生成区**（`medradar.stats_cmd.data_stats` 快照，生成于 2026-10-31T05:33:25Z）。
 > 请勿手工编辑本区块：运行 `python -m medradar stats --db data/medradar.sqlite`
 > 或 `scripts/nightly.ps1` 即会原地刷新。
 
@@ -33,7 +33,7 @@
 | 当前持仓 `positions` / 挂单 `paper_orders` | 0 / 0 |
 | 运行记录 `runs` | 14 |
 | LLM 缓存 `llm_verdicts` | 0 |
-| 数据库体积 | **1.3 GiB**（1,368,453,120 B；WAL 0 B；SQLite 3.49.1） |
+| 数据库体积 | **1.3 GiB**（1,368,469,504 B；WAL 0 B；SQLite 3.49.1） |
 
 ### 来源与类型
 

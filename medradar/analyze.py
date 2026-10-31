@@ -1054,6 +1054,17 @@ def build_metrics(
             "counts": counts,
             "data_status": data_status,
             "event_total": len(all_events),
+            # Registry size vs what this window actually shows: a KPI of "24
+            # companies" is the visible subset, not the 89-name registry.
+            "registry": {
+                "companies_device": len(device_reg.all()),
+                "companies_drug": len(drug_reg.all()),
+                "companies_total": len(device_reg.all()) + len(drug_reg.all()),
+                "tracks_device": len(device_tracks.all()),
+                "tracks_drug": len(drug_tracks.all()),
+                "shown_companies": len(device["companies"]),
+                "shown_tracks": len(device["tracks"]),
+            },
             "definitions": {
                 "thi": "Gamma-Poisson 收缩后的近期速率 / 基线速率（先验强度 3 个季度）",
                 "prob_up": "真实速率高于基线速率的后验概率",

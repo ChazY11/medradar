@@ -197,6 +197,29 @@ CREATE TABLE IF NOT EXISTS live_equity (
     note TEXT
 );
 
+-- Orders that passed every *news-side* check but could not fill yet (market
+-- closed, quote missing, quote older than the filing). They are retried on the
+-- next cycle instead of being silently dropped.
+CREATE TABLE IF NOT EXISTS live_pending (
+    alert_id TEXT PRIMARY KEY,
+    ticker TEXT NOT NULL,
+    created_at TEXT,
+    attempts INTEGER DEFAULT 0,
+    last_attempt_at TEXT,
+    last_reason TEXT,
+    status TEXT DEFAULT 'pending'
+);
+
+-- One row per skipped candidate, with a machine-readable reason. "Every skip
+-- has a reason" is a product requirement, not just a debugging aid.
+CREATE TABLE IF NOT EXISTS live_skips (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ts TEXT,
+    alert_id TEXT,
+    ticker TEXT,
+    reason TEXT
+);
+
 -- LLM judge cache: same filing text never costs tokens twice.
 CREATE TABLE IF NOT EXISTS llm_verdicts (
     content_hash TEXT PRIMARY KEY,

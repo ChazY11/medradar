@@ -219,16 +219,34 @@ def _curve(
     return values
 
 
-def _horizon_stats(values: Sequence[float | None]) -> dict[str, Any]:
+def _horizon_stats(values: Sequence[float | None], blocks: Sequence[Any] | None = None) -> dict[str, Any]:
     clean = [float(v) for v in values if v is not None]
     summary = summarize(clean)
-    ci = bootstrap_ci(clean) if len(clean) >= 3 else None
+    if blocks is not None:
+        block_ids = [str(blocks[i]) for i, value in enumerate(values) if value is not None]
+    else:
+        block_ids = None
+    ci = None
+    if len(clean) >= 3:
+        try:
+            from .stats import block_bootstrap_ci, block_bootstrap_p_value
+
+            ci = block_bootstrap_ci(clean, blocks=block_ids)
+            p_value = block_bootstrap_p_value(clean, blocks=block_ids)["p"]
+        except Exception:
+            from .util import bootstrap_ci
+
+            ci = bootstrap_ci(clean)
+            p_value = None
+    else:
+        p_value = None
     return {
         "n": summary["n"],
         "mean": summary["mean"],
         "median": summary["median"],
         "std": summary["std"],
         "t": t_stat(clean),
+        "p": p_value,
         "ci95": ci,
         "hit_rate": (sum(1 for value in clean if value > 0) / len(clean)) if clean else None,
     }
@@ -335,15 +353,23 @@ def run_event_study(
         return _insufficient("no_horizon_data", counts, benchmark=benchmark)
 
     kinds_present = sorted({event["kind"] for event in events})
+    blocks_by_event = [str(event.get("signal_date") or event.get("entry_date") or "")[:7] for event in events]
     by_kind: dict[str, dict[str, dict[str, Any]]] = {}
     for kind in kinds_present:
-        subset = [event for event in events if event["kind"] == kind]
+        indices = [index for index, event in enumerate(events) if event["kind"] == kind]
+        subset = [events[index] for index in indices]
         by_kind[kind] = {
-            str(horizon): _horizon_stats([event["abnormal"].get(horizon) for event in subset])
+            str(horizon): _horizon_stats(
+                [event["abnormal"].get(horizon) for event in subset],
+                blocks=[blocks_by_event[index] for index in indices],
+            )
             for horizon in horizons
         }
     all_stats = {
-        str(horizon): _horizon_stats([event["abnormal"].get(horizon) for event in events])
+        str(horizon): _horizon_stats(
+            [event["abnormal"].get(horizon) for event in events],
+            blocks=blocks_by_event,
+        )
         for horizon in horizons
     }
 

@@ -18,8 +18,9 @@ This is a research tool; "fixed" means a documented behaviour changed.
   defaults silently capped the library at ~1,000 cases.
 - **Event study summary**: direction-aligned, winsorised at 2.5/97.5, block
   bootstrap by event month, Holm correction. Final result at 2,384 cases:
-  **approval +2.8% (CI 0.9–4.8) and CRL −3.8% (CI −6.7–−0.8) survive Holm;
-  trial readouts do not** (−0.3%, n.s.). Caveats: price-coverage survivorship
+  **approval +2.8% survives Holm over the full 12-test category × horizon family
+  (adjusted p=0.007); CRL −3.8% is borderline (adjusted p=0.060); trial
+  readouts do not** (−0.3%, n.s.). Caveats: price-coverage survivorship
   (145 delisted tickers have no free price source) and heuristic categories.
 - **Data audit** (`medradar audit`): dates, availability, quality, match rates,
   price coverage, freshness, duplicate detection.
@@ -28,6 +29,20 @@ This is a research tool; "fixed" means a documented behaviour changed.
 - **19-chapter report** incl. case library, event study, replay, timing quality.
 
 ### Fixed
+- **Release blocker: simulated buys now debit cash.** `_handle_entries` booked
+  positions without subtracting `qty * fill_price`; the book is now checked
+  against the fills ledger after every order (`cash + holdings = equity`, cash
+  never negative) and the invariant fails closed.
+- **Quote-time / market-state guards**: only an OPEN market with a timestamped
+  quote that is not older than the news and not older than 30 minutes may fill.
+  Unfillable orders go to `live_pending` and retry next cycle; every skip is
+  written to `live_skips` with a machine-readable reason.
+- **Demo no longer has dead buttons**: it builds `dashboard.html` and ships the
+  assumptions file; report links are emitted only when the target exists.
+  `scripts/check_install.py` now verifies the dashboard and every local link.
+- **Research consistency**: `eventstudy.py` uses block bootstrap; case-study
+  p-values come from the same block bootstrap as the CI; Holm runs over the full
+  category × horizon family; the README states that all events are date-level.
 - Company alias matching requires a **contiguous token run** (no more
   `JOHNSON CONTROLS` → J&J).
 - Replay artefacts no longer overwrite the report dashboard; `--with-cases`
