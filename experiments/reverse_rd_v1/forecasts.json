@@ -1,26 +1,2252 @@
-[{"forecast_id":"acadb5e96494b24a7313f1b338b95be0","target_company":"siemens_healthineers","technology_track":"imaging_mr_ct","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9999816721261416,"uncertainty":{"temporal_ensemble_std":9.67540487501446e-07,"ensemble_min":0.9999800038738509,"ensemble_max":0.9999822958430599,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_36m","contribution":4.460148393366415,"value":55.0,"coefficient":0.6250995610825564},{"feature":"rd_count_previous_12m","contribution":2.665989329418796,"value":16.0,"coefficient":0.48007575162628235},{"feature":"rd_count_12m","contribution":2.259082351532819,"value":13.0,"coefficient":0.4793255231597048}],"contradictory_evidence":[{"feature":"rd_track_count_12m","contribution":-0.09193615357509889,"value":55.0,"coefficient":-0.037561370326759595},{"feature":"fin_rd_intensity","contribution":-0.018655096926639147,"value":null,"coefficient":0.09321305489488262},{"feature":"fin_acquisition_to_revenue","contribution":-0.01037866608492958,"value":null,"coefficient":0.03352604335516771}],"baseline_probability":0.9999838132091048,"verification_condition":{"table":"events","company_key":"siemens_healthineers","track_id":"imaging_mr_ct","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},
-"status":"pending"},{"forecast_id":"4c91fa51d5f59e189ac643a5f4038a80","target_company":"intuitive_surgical","technology_track":"surgical_robotics","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9997900805152966,"uncertainty":{"temporal_ensemble_std":1.68497554315869e-05,"ensemble_min":0.9997900805152966,"ensemble_max":0.9998298052281797,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_previous_12m","contribution":2.665989329418796,"value":16.0,"coefficient":0.48007575162628235},{"feature":"rd_count_36m","contribution":2.4415441529268405,"value":32.0,"coefficient":0.6250995610825564},{"feature":"rd_count_12m","contribution":1.485348089451479,"value":9.0,"coefficient":0.4793255231597048}],"contradictory_evidence":[{"feature":"fin_facts_available","contribution":-0.10013003710762804,"value":1684.0,"coefficient":-0.06368179105855636},{"feature":"fin_acquisition_to_revenue","contribution":-0.018553808390522168,"value":0.0013810645126034555,"coefficient":0.03352604335516771},{"feature":"fin_rd_growth","contribution":-0.004663477660888778,"value":0.4923777019340159,"coefficient":-0.010743399583702223}],"baseline_probability":0.9997426125362785,"verification_condition":{"table":"events","company_key":"intuitive_surgical","track_id":"surgical_robotics","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01",
-"event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"89f692ce0bb6332a3ee781233549ac83","target_company":"philips","technology_track":"imaging_mr_ct","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9997290077662635,"uncertainty":{"temporal_ensemble_std":1.1156829710211979e-05,"ensemble_min":0.9997098553103961,"ensemble_max":0.9997363142039075,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_36m","contribution":2.79260575995981,"value":36.0,"coefficient":0.6250995610825564},{"feature":"rd_count_12m","contribution":2.259082351532819,"value":13.0,"coefficient":0.4793255231597048},{"feature":"rd_count_previous_12m","contribution":1.7522919195909836,"value":11.0,"coefficient":0.48007575162628235}],"contradictory_evidence":[{"feature":"rd_track_count_12m","contribution":-0.09193615357509889,"value":55.0,"coefficient":-0.037561370326759595},{"feature":"rd_momentum","contribution":-0.034263067476076076,"value":0.1541506798272585,"coefficient":-0.11390199407980336},{"feature":"fin_rd_intensity","contribution":-0.018655096926639147,"value":null,"coefficient":0.09321305489488262}],"baseline_probability":0.9997537007360107,"verification_condition":{"table":"events","company_key":"philips","track_id":"imaging_mr_ct","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01",
-"event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"99786559b288b6d8d88294bdb5c980d5","target_company":"ge_healthcare","technology_track":"imaging_mr_ct","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9996068888142596,"uncertainty":{"temporal_ensemble_std":1.2770274378365903e-05,"ensemble_min":0.9995844711487454,"ensemble_max":0.9996145729905088,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_36m","contribution":2.4415441529268405,"value":32.0,"coefficient":0.6250995610825564},{"feature":"rd_count_12m","contribution":2.0656487860124844,"value":12.0,"coefficient":0.4793255231597048},{"feature":"rd_count_previous_12m","contribution":1.7522919195909836,"value":11.0,"coefficient":0.48007575162628235}],"contradictory_evidence":[{"feature":"rd_track_count_12m","contribution":-0.09193615357509889,"value":55.0,"coefficient":-0.037561370326759595},{"feature":"fin_rd_intensity","contribution":-0.04018590353635301,"value":0.06109090909090909,"coefficient":0.09321305489488262},{"feature":"rd_momentum","contribution":-0.02030859100408617,"value":0.08004270767353638,"coefficient":-0.11390199407980336}],"baseline_probability":0.9995633759085495,"verification_condition":{"table":"events","company_key":"ge_healthcare","track_id":"imaging_mr_ct","kinds":["510k","pma"],"material_pma_only":true,
-"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"87af428dee246071359797b5d6ec937c","target_company":"philips","technology_track":"imaging_us","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9993167040258497,"uncertainty":{"temporal_ensemble_std":3.220872678481025e-05,"ensemble_min":0.99929665281419,"ensemble_max":0.9993727599684897,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_previous_12m","contribution":2.1177708835221085,"value":13.0,"coefficient":0.48007575162628235},{"feature":"rd_count_36m","contribution":2.0027171441356284,"value":27.0,"coefficient":0.6250995610825564},{"feature":"rd_count_12m","contribution":1.678781654971814,"value":10.0,"coefficient":0.4793255231597048}],"contradictory_evidence":[{"feature":"rd_track_count_12m","contribution":-0.042840296584747445,"value":34.0,"coefficient":-0.037561370326759595},{"feature":"fin_rd_intensity","contribution":-0.018655096926639147,"value":null,"coefficient":0.09321305489488262},{"feature":"fin_acquisition_to_revenue","contribution":-0.01037866608492958,"value":null,"coefficient":0.03352604335516771}],"baseline_probability":0.9993814251534682,"verification_condition":{"table":"events","company_key":"philips","track_id":"imaging_us","kinds":["510k","pma"],"material_pma_only":true,
-"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"e8df855f9b9384470be97399d7972c6e","target_company":"stryker","technology_track":"ortho_joint","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9992769006636743,"uncertainty":{"temporal_ensemble_std":3.311070274451534e-05,"ensemble_min":0.9992519126810319,"ensemble_max":0.999331228333554,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_36m","contribution":2.4415441529268405,"value":32.0,"coefficient":0.6250995610825564},{"feature":"rd_count_previous_12m","contribution":1.7522919195909836,"value":11.0,"coefficient":0.48007575162628235},{"feature":"rd_count_12m","contribution":1.678781654971814,"value":10.0,"coefficient":0.4793255231597048}],"contradictory_evidence":[{"feature":"fin_facts_available","contribution":-0.16622578659964582,"value":2034.0,"coefficient":-0.06368179105855636},{"feature":"rd_track_count_12m","contribution":-0.04985399044051193,"value":37.0,"coefficient":-0.037561370326759595},{"feature":"fin_rd_intensity","contribution":-0.031585264819150596,"value":0.06462016244624941,"coefficient":0.09321305489488262}],"baseline_probability":0.9993756396457041,"verification_condition":{"table":"events","company_key":"stryker","track_id":"ortho_joint","kinds":["510k","pma"],"material_pma_only":true,
-"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"b455cdfc2caec631e465e8375de08fa1","target_company":"zimmer_biomet","technology_track":"ortho_joint","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9990864761224597,"uncertainty":{"temporal_ensemble_std":5.877625279969567e-05,"ensemble_min":0.9990864761224597,"ensemble_max":0.9992169473869387,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_12m","contribution":2.0656487860124844,"value":12.0,"coefficient":0.4793255231597048},{"feature":"rd_count_36m","contribution":2.0027171441356284,"value":27.0,"coefficient":0.6250995610825564},{"feature":"rd_count_previous_12m","contribution":1.569552437625421,"value":10.0,"coefficient":0.48007575162628235}],"contradictory_evidence":[{"feature":"fin_rd_intensity","contribution":-0.12227235534809393,"value":0.027406912470388144,"coefficient":0.09321305489488262},{"feature":"fin_facts_available","contribution":-0.05065264748788902,"value":1422.0,"coefficient":-0.06368179105855636},{"feature":"rd_track_count_12m","contribution":-0.04985399044051193,"value":37.0,"coefficient":-0.037561370326759595}],"baseline_probability":0.999201263227189,"verification_condition":{"table":"events","company_key":"zimmer_biomet","track_id":"ortho_joint","kinds":["510k",
-"pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"47c3174304c6eee6b9043e76c16bd3db","target_company":"ge_healthcare","technology_track":"imaging_us","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.998588868738236,"uncertainty":{"temporal_ensemble_std":3.602235385503792e-05,"ensemble_min":0.9985272709881685,"ensemble_max":0.9986127830497995,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_36m","contribution":2.0904825458938707,"value":28.0,"coefficient":0.6250995610825564},{"feature":"rd_count_12m","contribution":1.678781654971814,"value":10.0,"coefficient":0.4793255231597048},{"feature":"rd_count_previous_12m","contribution":1.2040734736942964,"value":8.0,"coefficient":0.48007575162628235}],"contradictory_evidence":[{"feature":"rd_momentum","contribution":-0.043022752092828964,"value":0.2006706954621511,"coefficient":-0.11390199407980336},{"feature":"rd_track_count_12m","contribution":-0.042840296584747445,"value":34.0,"coefficient":-0.037561370326759595},{"feature":"fin_rd_intensity","contribution":-0.04018590353635301,"value":0.06109090909090909,"coefficient":0.09321305489488262}],"baseline_probability":0.9984333463685602,"verification_condition":{"table":"events","company_key":"ge_healthcare","track_id":"imaging_us",
-"kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"4fbc52e234b5d83efa264ff64720c659","target_company":"olympus","technology_track":"endoscopy","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9979691966018936,"uncertainty":{"temporal_ensemble_std":0.00012691896137945384,"ensemble_min":0.9979691966018936,"ensemble_max":0.9982505790206977,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_previous_12m","contribution":2.1177708835221085,"value":13.0,"coefficient":0.48007575162628235},{"feature":"rd_count_36m","contribution":1.5638901353444161,"value":22.0,"coefficient":0.6250995610825564},{"feature":"rd_count_12m","contribution":1.0984809584108088,"value":7.0,"coefficient":0.4793255231597048}],"contradictory_evidence":[{"feature":"rd_track_count_12m","contribution":-0.03582660272898295,"value":31.0,"coefficient":-0.037561370326759595},{"feature":"fin_rd_intensity","contribution":-0.018655096926639147,"value":null,"coefficient":0.09321305489488262},{"feature":"fin_acquisition_to_revenue","contribution":-0.01037866608492958,"value":null,"coefficient":0.03352604335516771}],"baseline_probability":0.9980935259418316,"verification_condition":{"table":"events","company_key":"olympus","track_id":"endoscopy",
-"kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"8f41446001e67681a6fc281911036592","target_company":"siemens_healthineers","technology_track":"medical_ai","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9935406644468731,"uncertainty":{"temporal_ensemble_std":0.00018839376713628754,"ensemble_min":0.9930827888226088,"ensemble_max":0.9935406644468731,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_12m","contribution":1.678781654971814,"value":10.0,"coefficient":0.4793255231597048},{"feature":"rd_count_36m","contribution":1.6516555371026587,"value":23.0,"coefficient":0.6250995610825564},{"feature":"rd_count_previous_12m","contribution":0.655855027797609,"value":5.0,"coefficient":0.48007575162628235}],"contradictory_evidence":[{"feature":"rd_momentum","contribution":-0.11937153275534299,"value":0.6061358035703157,"coefficient":-0.11390199407980336},{"feature":"rd_track_count_12m","contribution":-0.06855717405588391,"value":45.0,"coefficient":-0.037561370326759595},{"feature":"fin_rd_intensity","contribution":-0.018655096926639147,"value":null,"coefficient":0.09321305489488262}],"baseline_probability":0.9941605288598696,"verification_condition":{"table":"events","company_key":"siemens_healthineers",
-"track_id":"medical_ai","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"7a8a99d7bf1f299ad82872407d6e4b77","target_company":"canon_medical","technology_track":"imaging_mr_ct","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9871375240591729,"uncertainty":{"temporal_ensemble_std":0.0004540491892476205,"ensemble_min":0.9870573442208626,"ensemble_max":0.9880581117099132,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_36m","contribution":1.3005939300696892,"value":19.0,"coefficient":0.6250995610825564},{"feature":"rd_count_12m","contribution":1.0984809584108088,"value":7.0,"coefficient":0.4793255231597048},{"feature":"rd_count_previous_12m","contribution":0.8385945097631714,"value":6.0,"coefficient":0.48007575162628235}],"contradictory_evidence":[{"feature":"rd_track_count_12m","contribution":-0.09193615357509889,"value":55.0,"coefficient":-0.037561370326759595},{"feature":"rd_momentum","contribution":-0.03038047091085174,"value":0.13353139262452252,"coefficient":-0.11390199407980336},{"feature":"rd_company_total_36m","contribution":-0.022080216800264375,"value":27.0,"coefficient":0.06009879910581614}],"baseline_probability":0.9875776160805279,"verification_condition":{"table":"events",
-"company_key":"canon_medical","track_id":"imaging_mr_ct","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"92c0b3e4c4ac33889af8c4cf9994a3e6","target_company":"medtronic","technology_track":"spine","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9833612039247376,"uncertainty":{"temporal_ensemble_std":0.00030990168000984933,"ensemble_min":0.98292253050217,"ensemble_max":0.9836783837108496,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_12m","contribution":1.291914523931144,"value":8.0,"coefficient":0.4793255231597048},{"feature":"rd_count_36m","contribution":0.8617669212784771,"value":14.0,"coefficient":0.6250995610825564},{"feature":"rd_pair_active_years","contribution":0.7137126972802237,"value":9.872689938398358,"coefficient":0.29178591353425354}],"contradictory_evidence":[{"feature":"rd_momentum","contribution":-0.11591640348402114,"value":0.5877866649021193,"coefficient":-0.11390199407980336},{"feature":"fin_inventory_growth","contribution":-0.022258448255237245,"value":-0.014899350134728167,"coefficient":0.03627147922624081},{"feature":"fin_acquisition_to_revenue","contribution":-0.01703036747636899,"value":0.01116488835111649,"coefficient":0.03352604335516771}],"baseline_probability":0.983202333797469,
-"verification_condition":{"table":"events","company_key":"medtronic","track_id":"spine","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"01ca85d296777c050ddf9c09a6234c66","target_company":"bd","technology_track":"vascular_access","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9822659108013305,"uncertainty":{"temporal_ensemble_std":0.0009811906317068744,"ensemble_min":0.9822659108013305,"ensemble_max":0.9845942943789764,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_previous_12m","contribution":1.2040734736942964,"value":8.0,"coefficient":0.48007575162628235},{"feature":"rd_count_36m","contribution":1.1250631265532043,"value":17.0,"coefficient":0.6250995610825564},{"feature":"rd_pair_active_years","contribution":0.7181253227223774,"value":9.905544147843942,"coefficient":0.29178591353425354}],"contradictory_evidence":[{"feature":"fin_facts_available","contribution":-0.06273872739500085,"value":1486.0,"coefficient":-0.06368179105855636},{"feature":"fin_inventory_growth","contribution":-0.05358117433451071,"value":-0.16029374525196252,"coefficient":0.03627147922624081},{"feature":"fin_rd_intensity","contribution":-0.0479102376470138,"value":0.057921245421245424,"coefficient":0.09321305489488262}],
-"baseline_probability":0.9849882888616439,"verification_condition":{"table":"events","company_key":"bd","track_id":"vascular_access","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"5db7521bab1a9eb9839993d869cb6255","target_company":"fujifilm","technology_track":"endoscopy","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9644464788495547,"uncertainty":{"temporal_ensemble_std":0.0013295577814680815,"ensemble_min":0.9644464788495547,"ensemble_max":0.9672933630067267,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_36m","contribution":0.7740015195202347,"value":13.0,"coefficient":0.6250995610825564},{"feature":"rd_count_12m","contribution":0.7116138273701388,"value":5.0,"coefficient":0.4793255231597048},{"feature":"rd_pair_active_years","contribution":0.6717927555797634,"value":9.560574948665298,"coefficient":0.29178591353425354}],"contradictory_evidence":[{"feature":"rd_track_count_12m","contribution":-0.03582660272898295,"value":31.0,"coefficient":-0.037561370326759595},{"feature":"fin_rd_intensity","contribution":-0.018655096926639147,"value":null,"coefficient":0.09321305489488262},{"feature":"fin_acquisition_to_revenue","contribution":-0.01037866608492958,"value":null,"coefficient":0.03352604335516771}],
-"baseline_probability":0.9657058598597373,"verification_condition":{"table":"events","company_key":"fujifilm","track_id":"endoscopy","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"e4abc8f7bf8bb18fef65ab55dddd2f6b","target_company":"johnson_johnson_medtech","technology_track":"ortho_joint","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9633216124227182,"uncertainty":{"temporal_ensemble_std":0.002122494799253092,"ensemble_min":0.9616574652430762,"ensemble_max":0.9667551442296985,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_36m","contribution":1.9149517423773859,"value":26.0,"coefficient":0.6250995610825564},{"feature":"rd_count_12m","contribution":1.0984809584108088,"value":7.0,"coefficient":0.4793255231597048},{"feature":"rd_count_previous_12m","contribution":0.655855027797609,"value":5.0,"coefficient":0.48007575162628235}],"contradictory_evidence":[{"feature":"fin_ocf_to_rd","contribution":-1.9616486097042816,"value":225.045871559633,"coefficient":-0.045240539812286866},{"feature":"fin_rd_intensity","contribution":-0.18624177987051493,"value":0.001157198517936577,"coefficient":0.09321305489488262},{"feature":"fin_facts_available","contribution":-0.07822401727598786,"value":1568.0,
-"coefficient":-0.06368179105855636}],"baseline_probability":0.9932749240607104,"verification_condition":{"table":"events","company_key":"johnson_johnson_medtech","track_id":"ortho_joint","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"ebc870272d449996759de843622b9580","target_company":"resmed","technology_track":"respiratory","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9586987652105269,"uncertainty":{"temporal_ensemble_std":0.0017848044134963481,"ensemble_min":0.9586987652105269,"ensemble_max":0.9630494554289204,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_12m","contribution":0.9050473928904739,"value":6.0,"coefficient":0.4793255231597048},{"feature":"rd_pair_active_years","contribution":0.7133449784933775,"value":9.869952087611225,"coefficient":0.29178591353425354},{"feature":"rd_count_36m","contribution":0.6862361177619923,"value":12.0,"coefficient":0.6250995610825564}],"contradictory_evidence":[{"feature":"rd_momentum","contribution":-0.16478217009955928,"value":0.8472978603872037,"coefficient":-0.11390199407980336},{"feature":"fin_facts_available","contribution":-0.07558018729630715,"value":1554.0,"coefficient":-0.06368179105855636},{"feature":"rd_company_count_12m","contribution":-0.053088386102809096,
-"value":6.0,"coefficient":0.0907564277773379}],"baseline_probability":0.9549205429335827,"verification_condition":{"table":"events","company_key":"resmed","track_id":"respiratory","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"7c916232307a39af1ab9aff998a0bf0a","target_company":"dentsply_sirona","technology_track":"dental","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9570418753058145,"uncertainty":{"temporal_ensemble_std":0.0015544327112728467,"ensemble_min":0.9570418753058145,"ensemble_max":0.9606594398400011,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_previous_12m","contribution":0.8385945097631714,"value":6.0,"coefficient":0.48007575162628235},{"feature":"rd_count_36m","contribution":0.7740015195202347,"value":13.0,"coefficient":0.6250995610825564},{"feature":"rd_count_12m","contribution":0.7116138273701388,"value":5.0,"coefficient":0.4793255231597048}],"contradictory_evidence":[{"feature":"fin_operating_margin","contribution":-0.20699214180449135,"value":-0.11467391304347826,"coefficient":0.09392689363314193},{"feature":"fin_facts_available","contribution":-0.10296271208585737,"value":1699.0,"coefficient":-0.06368179105855636},{"feature":"fin_rd_intensity","contribution":-0.0897293359460274,
-"value":0.04076086956521739,"coefficient":0.09321305489488262}],"baseline_probability":0.9710153204170998,"verification_condition":{"table":"events","company_key":"dentsply_sirona","track_id":"dental","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"2484cde47fa64d99b7c1e91b95d6e702","target_company":"medtronic","technology_track":"medical_ai","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9567019187143463,"uncertainty":{"temporal_ensemble_std":0.0007923647490294137,"ensemble_min":0.9555394894969176,"ensemble_max":0.9574667565806941,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_36m","contribution":0.6862361177619923,"value":12.0,"coefficient":0.6250995610825564},{"feature":"rd_pair_active_years","contribution":0.6640706610559943,"value":9.503080082135524,"coefficient":0.29178591353425354},{"feature":"rd_count_12m","contribution":0.5181802618498037,"value":4.0,"coefficient":0.4793255231597048}],"contradictory_evidence":[{"feature":"rd_track_count_12m","contribution":-0.06855717405588391,"value":45.0,"coefficient":-0.037561370326759595},{"feature":"rd_company_track_share","contribution":-0.02440613714362116,"value":0.1111111111111111,"coefficient":0.12385987081281036},{"feature":"fin_inventory_growth",
-"contribution":-0.022258448255237245,"value":-0.014899350134728167,"coefficient":0.03627147922624081}],"baseline_probability":0.9554071213946429,"verification_condition":{"table":"events","company_key":"medtronic","track_id":"medical_ai","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"59679855683fbb69e4ddb421830e9b65","target_company":"dexcom","technology_track":"diabetes_cgm","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.954497391248369,"uncertainty":{"temporal_ensemble_std":0.0013886945677552105,"ensemble_min":0.954497391248369,"ensemble_max":0.9578514789474177,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_12m","contribution":1.0984809584108088,"value":7.0,"coefficient":0.4793255231597048},{"feature":"rd_pair_active_years","contribution":0.7012102585274548,"value":9.779603011635865,"coefficient":0.29178591353425354},{"feature":"rd_count_36m","contribution":0.59847071600375,"value":11.0,"coefficient":0.6250995610825564}],"contradictory_evidence":[{"feature":"rd_momentum","contribution":-0.2662748134599457,"value":1.3862943611198904,"coefficient":-0.11390199407980336},{"feature":"fin_facts_available","contribution":-0.0837005222338979,"value":1597.0,"coefficient":-0.06368179105855636},
-{"feature":"rd_count_previous_12m","contribution":-0.07510290006464095,"value":1.0,"coefficient":0.48007575162628235}],"baseline_probability":0.9457400739743269,"verification_condition":{"table":"events","company_key":"dexcom","track_id":"diabetes_cgm","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"b8852ec8ba3f30554b7cbfe86f36fe26","target_company":"globus_medical","technology_track":"ortho_joint","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.950104385013521,"uncertainty":{"temporal_ensemble_std":0.0019694666657571933,"ensemble_min":0.9499212109249812,"ensemble_max":0.9541876549373214,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_36m","contribution":0.7740015195202347,"value":13.0,"coefficient":0.6250995610825564},{"feature":"rd_count_previous_12m","contribution":0.655855027797609,"value":5.0,"coefficient":0.48007575162628235},{"feature":"rd_pair_active_years","contribution":0.6133254684712264,"value":9.125256673511293,"coefficient":0.29178591353425354}],"contradictory_evidence":[{"feature":"fin_facts_available","contribution":-0.07746863728179337,"value":1564.0,"coefficient":-0.06368179105855636},{"feature":"fin_rd_intensity","contribution":-0.06696566875886664,"value":0.050101890789542185,
-"coefficient":0.09321305489488262},{"feature":"rd_track_count_12m","contribution":-0.04985399044051193,"value":37.0,"coefficient":-0.037561370326759595}],"baseline_probability":0.9477329799436996,"verification_condition":{"table":"events","company_key":"globus_medical","track_id":"ortho_joint","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"0937c318ff463651167c4cf4e4015115","target_company":"siemens_healthineers","technology_track":"imaging_us","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9449113233027463,"uncertainty":{"temporal_ensemble_std":0.0011353319408924176,"ensemble_min":0.9431074996374835,"ensemble_max":0.9458424605448879,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_pair_active_years","contribution":0.6956944767247625,"value":9.738535249828884,"coefficient":0.29178591353425354},{"feature":"rd_count_36m","contribution":0.6862361177619923,"value":12.0,"coefficient":0.6250995610825564},{"feature":"rd_recency_years","contribution":0.5341705777304052,"value":0.057494866529774126,"coefficient":-0.5976024346905613}],"contradictory_evidence":[{"feature":"rd_momentum","contribution":-0.04725437426696535,"value":0.2231435513142097,"coefficient":-0.11390199407980336},{"feature":"rd_track_count_12m",
-"contribution":-0.042840296584747445,"value":34.0,"coefficient":-0.037561370326759595},{"feature":"fin_rd_intensity","contribution":-0.018655096926639147,"value":null,"coefficient":0.09321305489488262}],"baseline_probability":0.9482073332887612,"verification_condition":{"table":"events","company_key":"siemens_healthineers","track_id":"imaging_us","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"996eb58f6254a0c02f17fd17edb743cb","target_company":"abbott","technology_track":"ivd_molecular","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9434446882607582,"uncertainty":{"temporal_ensemble_std":0.00437582019864867,"ensemble_min":0.9434446882607582,"ensemble_max":0.9540674837746081,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_count_previous_12m","contribution":1.0213339917287338,"value":7.0,"coefficient":0.48007575162628235},{"feature":"rd_pair_active_years","contribution":0.6464201592873793,"value":9.371663244353183,"coefficient":0.29178591353425354},{"feature":"rd_recency_years","contribution":0.5250457671581209,"value":0.08487337440109514,"coefficient":-0.5976024346905613}],"contradictory_evidence":[{"feature":"fin_facts_available","contribution":-0.07558018729630715,"value":1554.0,"coefficient":-0.06368179105855636},
-{"feature":"rd_count_12m","contribution":-0.06212043471120146,"value":1.0,"coefficient":0.4793255231597048},{"feature":"rd_company_track_share","contribution":-0.04241141336779385,"value":0.07142857142857142,"coefficient":0.12385987081281036}],"baseline_probability":0.9448328270871766,"verification_condition":{"table":"events","company_key":"abbott","track_id":"ivd_molecular","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"cae2f7d810f34227ecf163d12b9998cf","target_company":"smith_nephew","technology_track":"ortho_joint","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9323514420005692,"uncertainty":{"temporal_ensemble_std":0.003725958753415469,"ensemble_min":0.9323514420005692,"ensemble_max":0.9412601452445711,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_pair_active_years","contribution":0.7133449784933775,"value":9.869952087611225,"coefficient":0.29178591353425354},{"feature":"rd_count_previous_12m","contribution":0.655855027797609,"value":5.0,"coefficient":0.48007575162628235},{"feature":"rd_recency_years","contribution":0.5323456156159483,"value":0.06297056810403832,"coefficient":-0.5976024346905613}],"contradictory_evidence":[{"feature":"rd_company_count_12m","contribution":-0.07032118457569032,
-"value":4.0,"coefficient":0.0907564277773379},{"feature":"rd_track_count_12m","contribution":-0.04985399044051193,"value":37.0,"coefficient":-0.037561370326759595},{"feature":"rd_company_total_36m","contribution":-0.0335698396184694,"value":21.0,"coefficient":0.06009879910581614}],"baseline_probability":0.9332579800903114,"verification_condition":{"table":"events","company_key":"smith_nephew","track_id":"ortho_joint","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"9548be531795a6d3425e1998c7c43413","target_company":"stryker","technology_track":"trauma","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9320486282704338,"uncertainty":{"temporal_ensemble_std":0.0024944644248675934,"ensemble_min":0.9320486282704338,"ensemble_max":0.9376617061910547,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_pair_active_years","contribution":0.6846629131193783,"value":9.656399726214921,"coefficient":0.29178591353425354},{"feature":"rd_count_36m","contribution":0.5107053142455076,"value":10.0,"coefficient":0.6250995610825564},{"feature":"rd_count_previous_12m","contribution":0.47311554583204646,"value":4.0,"coefficient":0.48007575162628235}],"contradictory_evidence":[{"feature":"fin_facts_available","contribution":-0.16622578659964582,
-"value":2034.0,"coefficient":-0.06368179105855636},{"feature":"fin_rd_intensity","contribution":-0.031585264819150596,"value":0.06462016244624941,"coefficient":0.09321305489488262},{"feature":"rd_company_track_share","contribution":-0.0278830180696683,"value":0.10344827586206896,"coefficient":0.12385987081281036}],"baseline_probability":0.9392106248867715,"verification_condition":{"table":"events","company_key":"stryker","track_id":"trauma","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"},{"forecast_id":"1a1615e95163bba4f92b9d27864140da","target_company":"alcon","technology_track":"ophthalmology","forecast_creation_time":"2026-11-01T04:47:20Z","historical_information_cutoff":"2026-10-01","forecast_horizon_months":12,"horizon_end":"2027-10-01","model_version":"reverse-rd-logistic-v1","predicted_probability":0.9192459773221209,"uncertainty":{"temporal_ensemble_std":0.005491855105884947,"ensemble_min":0.9192459773221209,"ensemble_max":0.9325992090391111,"note":"Model instability across expanding time windows; not a causal confidence interval."},"supporting_evidence":[{"feature":"rd_pair_active_years","contribution":0.7137126972802237,"value":9.872689938398358,"coefficient":0.29178591353425354},{"feature":"rd_company_track_share","contribution":0.3789120502778472,"value":1.0,"coefficient":0.12385987081281036},{"feature":"rd_recency_years","contribution":0.3434620367696639,"value":0.6297056810403833,"coefficient":-0.5976024346905613}],"contradictory_evidence":[{"feature":"rd_company_count_12m",
-"contribution":-0.09617038228501217,"value":1.0,"coefficient":0.0907564277773379},{"feature":"rd_count_12m","contribution":-0.06212043471120146,"value":1.0,"coefficient":0.4793255231597048},{"feature":"rd_company_total_36m","contribution":-0.05846402239124695,"value":8.0,"coefficient":0.06009879910581614}],"baseline_probability":0.8800993030677405,"verification_condition":{"table":"events","company_key":"alcon","track_id":"ophthalmology","kinds":["510k","pma"],"material_pma_only":true,"event_date_after":"2026-10-01","event_date_on_or_before":"2027-10-01","minimum_coverage_end":"2027-10-01"},"status":"pending"}]
+[
+ {
+  "forecast_id": "acadb5e96494b24a7313f1b338b95be0",
+  "target_company": "siemens_healthineers",
+  "technology_track": "imaging_mr_ct",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9999816721261416,
+  "uncertainty": {
+   "temporal_ensemble_std": 9.67540487501446e-07,
+   "ensemble_min": 0.9999800038738509,
+   "ensemble_max": 0.9999822958430599,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_36m",
+    "contribution": 4.460148393366416,
+    "value": 55.0,
+    "raw_value": 55.0,
+    "standardized_value": 7.135100824006765,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 2.665989329418796,
+    "value": 16.0,
+    "raw_value": 16.0,
+    "standardized_value": 5.553268042361261,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 2.259082351532819,
+    "value": 13.0,
+    "raw_value": 13.0,
+    "standardized_value": 4.713044147202909,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.0919361535750989,
+    "value": 55.0,
+    "raw_value": 55.0,
+    "standardized_value": 2.4476251205777078,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.01865509692663915,
+    "value": null,
+    "raw_value": null,
+    "standardized_value": -0.20013395063252357,
+    "median_imputed": true,
+    "coefficient": 0.09321305489488263
+   },
+   {
+    "feature": "fin_acquisition_to_revenue",
+    "contribution": -0.010378666084929582,
+    "value": null,
+    "raw_value": null,
+    "standardized_value": -0.30957026377912295,
+    "median_imputed": true,
+    "coefficient": 0.03352604335516772
+   }
+  ],
+  "baseline_probability": 0.9999838132091048,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "siemens_healthineers",
+   "track_id": "imaging_mr_ct",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "4c91fa51d5f59e189ac643a5f4038a80",
+  "target_company": "intuitive_surgical",
+  "technology_track": "surgical_robotics",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9997900805152966,
+  "uncertainty": {
+   "temporal_ensemble_std": 1.68497554315869e-05,
+   "ensemble_min": 0.9997900805152966,
+   "ensemble_max": 0.9998298052281797,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 2.665989329418796,
+    "value": 16.0,
+    "raw_value": 16.0,
+    "standardized_value": 5.553268042361261,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   },
+   {
+    "feature": "rd_count_36m",
+    "contribution": 2.441544152926841,
+    "value": 32.0,
+    "raw_value": 32.0,
+    "standardized_value": 3.9058484518826715,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 1.4853480894514788,
+    "value": 9.0,
+    "raw_value": 9.0,
+    "standardized_value": 3.0988295379309085,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "fin_facts_available",
+    "contribution": -0.10013003710762804,
+    "value": 1684.0,
+    "raw_value": 1684.0,
+    "standardized_value": 1.5723495750230545,
+    "median_imputed": false,
+    "coefficient": -0.06368179105855636
+   },
+   {
+    "feature": "fin_acquisition_to_revenue",
+    "contribution": -0.01855380839052217,
+    "value": 0.0013810645126034555,
+    "raw_value": 0.0013810645126034555,
+    "standardized_value": -0.553414794402283,
+    "median_imputed": false,
+    "coefficient": 0.03352604335516772
+   },
+   {
+    "feature": "fin_rd_growth",
+    "contribution": -0.004663477660888774,
+    "value": 0.4923777019340159,
+    "raw_value": 0.4923777019340159,
+    "standardized_value": 0.4340783961869286,
+    "median_imputed": false,
+    "coefficient": -0.010743399583702216
+   }
+  ],
+  "baseline_probability": 0.9997426125362785,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "intuitive_surgical",
+   "track_id": "surgical_robotics",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "89f692ce0bb6332a3ee781233549ac83",
+  "target_company": "philips",
+  "technology_track": "imaging_mr_ct",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9997290077662635,
+  "uncertainty": {
+   "temporal_ensemble_std": 1.1156829710211979e-05,
+   "ensemble_min": 0.9997098553103961,
+   "ensemble_max": 0.9997363142039075,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_36m",
+    "contribution": 2.7926057599598106,
+    "value": 36.0,
+    "raw_value": 36.0,
+    "standardized_value": 4.4674575600781665,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 2.259082351532819,
+    "value": 13.0,
+    "raw_value": 13.0,
+    "standardized_value": 4.713044147202909,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 1.7522919195909834,
+    "value": 11.0,
+    "raw_value": 11.0,
+    "standardized_value": 3.6500321327519685,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.0919361535750989,
+    "value": 55.0,
+    "raw_value": 55.0,
+    "standardized_value": 2.4476251205777078,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "rd_momentum",
+    "contribution": -0.034263067476075985,
+    "value": 0.15415067982725805,
+    "raw_value": 0.15415067982725805,
+    "standardized_value": 0.30081183172324616,
+    "median_imputed": false,
+    "coefficient": -0.11390199407980335
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.01865509692663915,
+    "value": null,
+    "raw_value": null,
+    "standardized_value": -0.20013395063252357,
+    "median_imputed": true,
+    "coefficient": 0.09321305489488263
+   }
+  ],
+  "baseline_probability": 0.9997537007360107,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "philips",
+   "track_id": "imaging_mr_ct",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "99786559b288b6d8d88294bdb5c980d5",
+  "target_company": "ge_healthcare",
+  "technology_track": "imaging_mr_ct",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9996068888142596,
+  "uncertainty": {
+   "temporal_ensemble_std": 1.2770274378365903e-05,
+   "ensemble_min": 0.9995844711487454,
+   "ensemble_max": 0.9996145729905088,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_36m",
+    "contribution": 2.441544152926841,
+    "value": 32.0,
+    "raw_value": 32.0,
+    "standardized_value": 3.9058484518826715,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 2.065648786012484,
+    "value": 12.0,
+    "raw_value": 12.0,
+    "standardized_value": 4.309490494884909,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 1.7522919195909834,
+    "value": 11.0,
+    "raw_value": 11.0,
+    "standardized_value": 3.6500321327519685,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.0919361535750989,
+    "value": 55.0,
+    "raw_value": 55.0,
+    "standardized_value": 2.4476251205777078,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.04018590353635302,
+    "value": 0.06109090909090909,
+    "raw_value": 0.06109090909090909,
+    "standardized_value": -0.43111883396237893,
+    "median_imputed": false,
+    "coefficient": 0.09321305489488263
+   },
+   {
+    "feature": "rd_momentum",
+    "contribution": -0.020308591004086166,
+    "value": 0.08004270767353638,
+    "raw_value": 0.08004270767353638,
+    "standardized_value": 0.17829881880608098,
+    "median_imputed": false,
+    "coefficient": -0.11390199407980335
+   }
+  ],
+  "baseline_probability": 0.9995633759085495,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "ge_healthcare",
+   "track_id": "imaging_mr_ct",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "87af428dee246071359797b5d6ec937c",
+  "target_company": "philips",
+  "technology_track": "imaging_us",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9993167040258497,
+  "uncertainty": {
+   "temporal_ensemble_std": 3.220872678481025e-05,
+   "ensemble_min": 0.99929665281419,
+   "ensemble_max": 0.9993727599684897,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 2.117770883522108,
+    "value": 13.0,
+    "raw_value": 13.0,
+    "standardized_value": 4.411326496595685,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   },
+   {
+    "feature": "rd_count_36m",
+    "contribution": 2.002717144135629,
+    "value": 27.0,
+    "raw_value": 27.0,
+    "standardized_value": 3.2038370666383034,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 1.6787816549718138,
+    "value": 10.0,
+    "raw_value": 10.0,
+    "standardized_value": 3.5023831902489087,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.04284029658474745,
+    "value": 34.0,
+    "raw_value": 34.0,
+    "standardized_value": 1.1405413650264782,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.01865509692663915,
+    "value": null,
+    "raw_value": null,
+    "standardized_value": -0.20013395063252357,
+    "median_imputed": true,
+    "coefficient": 0.09321305489488263
+   },
+   {
+    "feature": "fin_acquisition_to_revenue",
+    "contribution": -0.010378666084929582,
+    "value": null,
+    "raw_value": null,
+    "standardized_value": -0.30957026377912295,
+    "median_imputed": true,
+    "coefficient": 0.03352604335516772
+   }
+  ],
+  "baseline_probability": 0.9993814251534682,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "philips",
+   "track_id": "imaging_us",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "e8df855f9b9384470be97399d7972c6e",
+  "target_company": "stryker",
+  "technology_track": "ortho_joint",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9992769006636743,
+  "uncertainty": {
+   "temporal_ensemble_std": 3.311070274451534e-05,
+   "ensemble_min": 0.9992519126810319,
+   "ensemble_max": 0.999331228333554,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_36m",
+    "contribution": 2.441544152926841,
+    "value": 32.0,
+    "raw_value": 32.0,
+    "standardized_value": 3.9058484518826715,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 1.7522919195909834,
+    "value": 11.0,
+    "raw_value": 11.0,
+    "standardized_value": 3.6500321327519685,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 1.6787816549718138,
+    "value": 10.0,
+    "raw_value": 10.0,
+    "standardized_value": 3.5023831902489087,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "fin_facts_available",
+    "contribution": -0.16622578659964582,
+    "value": 2034.0,
+    "raw_value": 2034.0,
+    "standardized_value": 2.6102561475822617,
+    "median_imputed": false,
+    "coefficient": -0.06368179105855636
+   },
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.04985399044051194,
+    "value": 37.0,
+    "raw_value": 37.0,
+    "standardized_value": 1.327267615819511,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.031585264819150596,
+    "value": 0.06462016244624941,
+    "raw_value": 0.06462016244624941,
+    "standardized_value": -0.3388502270928642,
+    "median_imputed": false,
+    "coefficient": 0.09321305489488263
+   }
+  ],
+  "baseline_probability": 0.9993756396457041,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "stryker",
+   "track_id": "ortho_joint",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "b455cdfc2caec631e465e8375de08fa1",
+  "target_company": "zimmer_biomet",
+  "technology_track": "ortho_joint",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9990864761224597,
+  "uncertainty": {
+   "temporal_ensemble_std": 5.877625279969567e-05,
+   "ensemble_min": 0.9990864761224597,
+   "ensemble_max": 0.9992169473869387,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_12m",
+    "contribution": 2.065648786012484,
+    "value": 12.0,
+    "raw_value": 12.0,
+    "standardized_value": 4.309490494884909,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_count_36m",
+    "contribution": 2.002717144135629,
+    "value": 27.0,
+    "raw_value": 27.0,
+    "standardized_value": 3.2038370666383034,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 1.569552437625421,
+    "value": 10.0,
+    "raw_value": 10.0,
+    "standardized_value": 3.26938495083011,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.12227235534809394,
+    "value": 0.027406912470388144,
+    "raw_value": 0.027406912470388144,
+    "standardized_value": -1.3117514009811373,
+    "median_imputed": false,
+    "coefficient": 0.09321305489488263
+   },
+   {
+    "feature": "fin_facts_available",
+    "contribution": -0.05065264748788902,
+    "value": 1422.0,
+    "raw_value": 1422.0,
+    "standardized_value": 0.795402369278734,
+    "median_imputed": false,
+    "coefficient": -0.06368179105855636
+   },
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.04985399044051194,
+    "value": 37.0,
+    "raw_value": 37.0,
+    "standardized_value": 1.327267615819511,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   }
+  ],
+  "baseline_probability": 0.999201263227189,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "zimmer_biomet",
+   "track_id": "ortho_joint",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "47c3174304c6eee6b9043e76c16bd3db",
+  "target_company": "ge_healthcare",
+  "technology_track": "imaging_us",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.998588868738236,
+  "uncertainty": {
+   "temporal_ensemble_std": 3.602235385503792e-05,
+   "ensemble_min": 0.9985272709881685,
+   "ensemble_max": 0.9986127830497995,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_36m",
+    "contribution": 2.090482545893871,
+    "value": 28.0,
+    "raw_value": 28.0,
+    "standardized_value": 3.344239343687177,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 1.6787816549718138,
+    "value": 10.0,
+    "raw_value": 10.0,
+    "standardized_value": 3.5023831902489087,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 1.2040734736942962,
+    "value": 8.0,
+    "raw_value": 8.0,
+    "standardized_value": 2.508090586986393,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_momentum",
+    "contribution": -0.04302275209282896,
+    "value": 0.2006706954621511,
+    "raw_value": 0.2006706954621511,
+    "standardized_value": 0.3777172861669643,
+    "median_imputed": false,
+    "coefficient": -0.11390199407980335
+   },
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.04284029658474745,
+    "value": 34.0,
+    "raw_value": 34.0,
+    "standardized_value": 1.1405413650264782,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.04018590353635302,
+    "value": 0.06109090909090909,
+    "raw_value": 0.06109090909090909,
+    "standardized_value": -0.43111883396237893,
+    "median_imputed": false,
+    "coefficient": 0.09321305489488263
+   }
+  ],
+  "baseline_probability": 0.9984333463685602,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "ge_healthcare",
+   "track_id": "imaging_us",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "4fbc52e234b5d83efa264ff64720c659",
+  "target_company": "olympus",
+  "technology_track": "endoscopy",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9979691966018936,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.00012691896137945384,
+   "ensemble_min": 0.9979691966018936,
+   "ensemble_max": 0.9982505790206977,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 2.117770883522108,
+    "value": 13.0,
+    "raw_value": 13.0,
+    "standardized_value": 4.411326496595685,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   },
+   {
+    "feature": "rd_count_36m",
+    "contribution": 1.5638901353444163,
+    "value": 22.0,
+    "raw_value": 22.0,
+    "standardized_value": 2.501825681393935,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 1.0984809584108088,
+    "value": 7.0,
+    "raw_value": 7.0,
+    "standardized_value": 2.2917222332949083,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.035826602728982956,
+    "value": 31.0,
+    "raw_value": 31.0,
+    "standardized_value": 0.9538151142334453,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.01865509692663915,
+    "value": null,
+    "raw_value": null,
+    "standardized_value": -0.20013395063252357,
+    "median_imputed": true,
+    "coefficient": 0.09321305489488263
+   },
+   {
+    "feature": "fin_acquisition_to_revenue",
+    "contribution": -0.010378666084929582,
+    "value": null,
+    "raw_value": null,
+    "standardized_value": -0.30957026377912295,
+    "median_imputed": true,
+    "coefficient": 0.03352604335516772
+   }
+  ],
+  "baseline_probability": 0.9980935259418316,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "olympus",
+   "track_id": "endoscopy",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "8f41446001e67681a6fc281911036592",
+  "target_company": "siemens_healthineers",
+  "technology_track": "medical_ai",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9935406644468731,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.00018839376713628754,
+   "ensemble_min": 0.9930827888226088,
+   "ensemble_max": 0.9935406644468731,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_12m",
+    "contribution": 1.6787816549718138,
+    "value": 10.0,
+    "raw_value": 10.0,
+    "standardized_value": 3.5023831902489087,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_count_36m",
+    "contribution": 1.651655537102659,
+    "value": 23.0,
+    "raw_value": 23.0,
+    "standardized_value": 2.6422279584428088,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 0.6558550277976088,
+    "value": 5.0,
+    "raw_value": 5.0,
+    "standardized_value": 1.3661490412208175,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_momentum",
+    "contribution": -0.11937153275534297,
+    "value": 0.6061358035703157,
+    "raw_value": 0.6061358035703157,
+    "standardized_value": 1.0480196920144127,
+    "median_imputed": false,
+    "coefficient": -0.11390199407980335
+   },
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.06855717405588392,
+    "value": 45.0,
+    "raw_value": 45.0,
+    "standardized_value": 1.8252042846009318,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.01865509692663915,
+    "value": null,
+    "raw_value": null,
+    "standardized_value": -0.20013395063252357,
+    "median_imputed": true,
+    "coefficient": 0.09321305489488263
+   }
+  ],
+  "baseline_probability": 0.9941605288598696,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "siemens_healthineers",
+   "track_id": "medical_ai",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "7a8a99d7bf1f299ad82872407d6e4b77",
+  "target_company": "canon_medical",
+  "technology_track": "imaging_mr_ct",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9871375240591729,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.00045404918924767926,
+   "ensemble_min": 0.9870573442208623,
+   "ensemble_max": 0.9880581117099132,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_36m",
+    "contribution": 1.3005939300696894,
+    "value": 19.0,
+    "raw_value": 19.0,
+    "standardized_value": 2.080618850247314,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 1.0984809584108088,
+    "value": 7.0,
+    "raw_value": 7.0,
+    "standardized_value": 2.2917222332949083,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 0.8385945097631713,
+    "value": 6.0,
+    "raw_value": 6.0,
+    "standardized_value": 1.746796223142676,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.0919361535750989,
+    "value": 55.0,
+    "raw_value": 55.0,
+    "standardized_value": 2.4476251205777078,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "rd_momentum",
+    "contribution": -0.030380470910851737,
+    "value": 0.13353139262452252,
+    "raw_value": 0.13353139262452252,
+    "standardized_value": 0.2667246623405576,
+    "median_imputed": false,
+    "coefficient": -0.11390199407980335
+   },
+   {
+    "feature": "rd_company_total_36m",
+    "contribution": -0.022080216800264365,
+    "value": 27.0,
+    "raw_value": 27.0,
+    "standardized_value": -0.3673986357262758,
+    "median_imputed": false,
+    "coefficient": 0.060098799105816114
+   }
+  ],
+  "baseline_probability": 0.9875776160805279,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "canon_medical",
+   "track_id": "imaging_mr_ct",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "92c0b3e4c4ac33889af8c4cf9994a3e6",
+  "target_company": "medtronic",
+  "technology_track": "spine",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9833612039247376,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.00030990168000984933,
+   "ensemble_min": 0.98292253050217,
+   "ensemble_max": 0.9836783837108496,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_12m",
+    "contribution": 1.2919145239311438,
+    "value": 8.0,
+    "raw_value": 8.0,
+    "standardized_value": 2.6952758856129084,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_count_36m",
+    "contribution": 0.8617669212784773,
+    "value": 14.0,
+    "raw_value": 14.0,
+    "standardized_value": 1.3786074650029458,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_pair_active_years",
+    "contribution": 0.7137126972802237,
+    "value": 9.872689938398358,
+    "raw_value": 9.872689938398358,
+    "standardized_value": 2.446014917702458,
+    "median_imputed": false,
+    "coefficient": 0.29178591353425354
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_momentum",
+    "contribution": -0.11591640348402113,
+    "value": 0.5877866649021193,
+    "raw_value": 0.5877866649021193,
+    "standardized_value": 1.0176854621421854,
+    "median_imputed": false,
+    "coefficient": -0.11390199407980335
+   },
+   {
+    "feature": "fin_inventory_growth",
+    "contribution": -0.02225844825523724,
+    "value": -0.014899350134728167,
+    "raw_value": -0.014899350134728167,
+    "standardized_value": -0.6136625450647252,
+    "median_imputed": false,
+    "coefficient": 0.036271479226240806
+   },
+   {
+    "feature": "fin_acquisition_to_revenue",
+    "contribution": -0.017030367476368994,
+    "value": 0.01116488835111649,
+    "raw_value": 0.01116488835111649,
+    "standardized_value": -0.5079742722978948,
+    "median_imputed": false,
+    "coefficient": 0.03352604335516772
+   }
+  ],
+  "baseline_probability": 0.983202333797469,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "medtronic",
+   "track_id": "spine",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "01ca85d296777c050ddf9c09a6234c66",
+  "target_company": "bd",
+  "technology_track": "vascular_access",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9822659108013305,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.0009811906317068744,
+   "ensemble_min": 0.9822659108013305,
+   "ensemble_max": 0.9845942943789764,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 1.2040734736942962,
+    "value": 8.0,
+    "raw_value": 8.0,
+    "standardized_value": 2.508090586986393,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   },
+   {
+    "feature": "rd_count_36m",
+    "contribution": 1.1250631265532045,
+    "value": 17.0,
+    "raw_value": 17.0,
+    "standardized_value": 1.7998142961495667,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_pair_active_years",
+    "contribution": 0.7181253227223774,
+    "value": 9.905544147843942,
+    "raw_value": 9.905544147843942,
+    "standardized_value": 2.461137736308421,
+    "median_imputed": false,
+    "coefficient": 0.29178591353425354
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "fin_facts_available",
+    "contribution": -0.06273872739500085,
+    "value": 1486.0,
+    "raw_value": 1486.0,
+    "standardized_value": 0.9851909996895604,
+    "median_imputed": false,
+    "coefficient": -0.06368179105855636
+   },
+   {
+    "feature": "fin_inventory_growth",
+    "contribution": -0.0535811743345107,
+    "value": -0.16029374525196252,
+    "raw_value": -0.16029374525196252,
+    "standardized_value": -1.4772260596349513,
+    "median_imputed": false,
+    "coefficient": 0.036271479226240806
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.047910237647013805,
+    "value": 0.057921245421245424,
+    "raw_value": 0.057921245421245424,
+    "standardized_value": -0.5139863477389803,
+    "median_imputed": false,
+    "coefficient": 0.09321305489488263
+   }
+  ],
+  "baseline_probability": 0.9849882888616439,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "bd",
+   "track_id": "vascular_access",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "5db7521bab1a9eb9839993d869cb6255",
+  "target_company": "fujifilm",
+  "technology_track": "endoscopy",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9644464788495547,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.0013295577814680815,
+   "ensemble_min": 0.9644464788495547,
+   "ensemble_max": 0.9672933630067267,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_36m",
+    "contribution": 0.7740015195202348,
+    "value": 13.0,
+    "raw_value": 13.0,
+    "standardized_value": 1.238205187954072,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 0.7116138273701387,
+    "value": 5.0,
+    "raw_value": 5.0,
+    "standardized_value": 1.4846149286589079,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_pair_active_years",
+    "contribution": 0.6717927555797634,
+    "value": 9.560574948665298,
+    "raw_value": 9.560574948665298,
+    "standardized_value": 2.3023481409458095,
+    "median_imputed": false,
+    "coefficient": 0.29178591353425354
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.035826602728982956,
+    "value": 31.0,
+    "raw_value": 31.0,
+    "standardized_value": 0.9538151142334453,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.01865509692663915,
+    "value": null,
+    "raw_value": null,
+    "standardized_value": -0.20013395063252357,
+    "median_imputed": true,
+    "coefficient": 0.09321305489488263
+   },
+   {
+    "feature": "fin_acquisition_to_revenue",
+    "contribution": -0.010378666084929582,
+    "value": null,
+    "raw_value": null,
+    "standardized_value": -0.30957026377912295,
+    "median_imputed": true,
+    "coefficient": 0.03352604335516772
+   }
+  ],
+  "baseline_probability": 0.9657058598597373,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "fujifilm",
+   "track_id": "endoscopy",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "e4abc8f7bf8bb18fef65ab55dddd2f6b",
+  "target_company": "johnson_johnson_medtech",
+  "technology_track": "ortho_joint",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9633216124227182,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.002122494799253092,
+   "ensemble_min": 0.9616574652430762,
+   "ensemble_max": 0.9667551442296985,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_36m",
+    "contribution": 1.914951742377386,
+    "value": 26.0,
+    "raw_value": 26.0,
+    "standardized_value": 3.0634347895894294,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 1.0984809584108088,
+    "value": 7.0,
+    "raw_value": 7.0,
+    "standardized_value": 2.2917222332949083,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 0.6558550277976088,
+    "value": 5.0,
+    "raw_value": 5.0,
+    "standardized_value": 1.3661490412208175,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "fin_ocf_to_rd",
+    "contribution": -1.961648609704281,
+    "value": 225.045871559633,
+    "raw_value": 225.045871559633,
+    "standardized_value": 43.36041563260741,
+    "median_imputed": false,
+    "coefficient": -0.04524053981228685
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.18624177987051496,
+    "value": 0.001157198517936577,
+    "raw_value": 0.001157198517936577,
+    "standardized_value": -1.9980224881647943,
+    "median_imputed": false,
+    "coefficient": 0.09321305489488263
+   },
+   {
+    "feature": "fin_facts_available",
+    "contribution": -0.07822401727598786,
+    "value": 1568.0,
+    "raw_value": 1568.0,
+    "standardized_value": 1.2283576824034317,
+    "median_imputed": false,
+    "coefficient": -0.06368179105855636
+   }
+  ],
+  "baseline_probability": 0.9932749240607104,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "johnson_johnson_medtech",
+   "track_id": "ortho_joint",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "ebc870272d449996759de843622b9580",
+  "target_company": "resmed",
+  "technology_track": "respiratory",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9586987652105269,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.0017848044134963481,
+   "ensemble_min": 0.9586987652105269,
+   "ensemble_max": 0.9630494554289204,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_12m",
+    "contribution": 0.9050473928904738,
+    "value": 6.0,
+    "raw_value": 6.0,
+    "standardized_value": 1.888168580976908,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_pair_active_years",
+    "contribution": 0.7133449784933775,
+    "value": 9.869952087611225,
+    "raw_value": 9.869952087611225,
+    "standardized_value": 2.4447546828186275,
+    "median_imputed": false,
+    "coefficient": 0.29178591353425354
+   },
+   {
+    "feature": "rd_count_36m",
+    "contribution": 0.6862361177619924,
+    "value": 12.0,
+    "raw_value": 12.0,
+    "standardized_value": 1.0978029109051985,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_momentum",
+    "contribution": -0.16478217009955923,
+    "value": 0.8472978603872034,
+    "raw_value": 0.8472978603872034,
+    "standardized_value": 1.446701363139504,
+    "median_imputed": false,
+    "coefficient": -0.11390199407980335
+   },
+   {
+    "feature": "fin_facts_available",
+    "contribution": -0.07558018729630715,
+    "value": 1554.0,
+    "raw_value": 1554.0,
+    "standardized_value": 1.1868414195010635,
+    "median_imputed": false,
+    "coefficient": -0.06368179105855636
+   },
+   {
+    "feature": "rd_company_count_12m",
+    "contribution": -0.05308838610280912,
+    "value": 6.0,
+    "raw_value": 6.0,
+    "standardized_value": -0.5849545580733555,
+    "median_imputed": false,
+    "coefficient": 0.09075642777733793
+   }
+  ],
+  "baseline_probability": 0.9549205429335827,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "resmed",
+   "track_id": "respiratory",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "7c916232307a39af1ab9aff998a0bf0a",
+  "target_company": "dentsply_sirona",
+  "technology_track": "dental",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9570418753058145,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.0015544327112728467,
+   "ensemble_min": 0.9570418753058145,
+   "ensemble_max": 0.9606594398400011,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 0.8385945097631713,
+    "value": 6.0,
+    "raw_value": 6.0,
+    "standardized_value": 1.746796223142676,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   },
+   {
+    "feature": "rd_count_36m",
+    "contribution": 0.7740015195202348,
+    "value": 13.0,
+    "raw_value": 13.0,
+    "standardized_value": 1.238205187954072,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 0.7116138273701387,
+    "value": 5.0,
+    "raw_value": 5.0,
+    "standardized_value": 1.4846149286589079,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "fin_operating_margin",
+    "contribution": -0.20699214180449135,
+    "value": -0.11467391304347826,
+    "raw_value": -0.11467391304347826,
+    "standardized_value": -2.2037579845124844,
+    "median_imputed": false,
+    "coefficient": 0.09392689363314193
+   },
+   {
+    "feature": "fin_facts_available",
+    "contribution": -0.10296271208585737,
+    "value": 1699.0,
+    "raw_value": 1699.0,
+    "standardized_value": 1.616831285275592,
+    "median_imputed": false,
+    "coefficient": -0.06368179105855636
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.08972933594602742,
+    "value": 0.04076086956521739,
+    "raw_value": 0.04076086956521739,
+    "standardized_value": -0.9626262764074855,
+    "median_imputed": false,
+    "coefficient": 0.09321305489488263
+   }
+  ],
+  "baseline_probability": 0.9710153204170998,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "dentsply_sirona",
+   "track_id": "dental",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "2484cde47fa64d99b7c1e91b95d6e702",
+  "target_company": "medtronic",
+  "technology_track": "medical_ai",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9567019187143463,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.0007923647490294137,
+   "ensemble_min": 0.9555394894969176,
+   "ensemble_max": 0.9574667565806941,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_36m",
+    "contribution": 0.6862361177619924,
+    "value": 12.0,
+    "raw_value": 12.0,
+    "standardized_value": 1.0978029109051985,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_pair_active_years",
+    "contribution": 0.6640706610559943,
+    "value": 9.503080082135524,
+    "raw_value": 9.503080082135524,
+    "standardized_value": 2.275883208385374,
+    "median_imputed": false,
+    "coefficient": 0.29178591353425354
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": 0.5181802618498036,
+    "value": 4.0,
+    "raw_value": 4.0,
+    "standardized_value": 1.0810612763409075,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.06855717405588392,
+    "value": 45.0,
+    "raw_value": 45.0,
+    "standardized_value": 1.8252042846009318,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "rd_company_track_share",
+    "contribution": -0.024406137143621158,
+    "value": 0.1111111111111111,
+    "raw_value": 0.1111111111111111,
+    "standardized_value": -0.19704636363222275,
+    "median_imputed": false,
+    "coefficient": 0.12385987081281033
+   },
+   {
+    "feature": "fin_inventory_growth",
+    "contribution": -0.02225844825523724,
+    "value": -0.014899350134728167,
+    "raw_value": -0.014899350134728167,
+    "standardized_value": -0.6136625450647252,
+    "median_imputed": false,
+    "coefficient": 0.036271479226240806
+   }
+  ],
+  "baseline_probability": 0.9554071213946429,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "medtronic",
+   "track_id": "medical_ai",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "59679855683fbb69e4ddb421830e9b65",
+  "target_company": "dexcom",
+  "technology_track": "diabetes_cgm",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.954497391248369,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.0013886945677552105,
+   "ensemble_min": 0.954497391248369,
+   "ensemble_max": 0.9578514789474177,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_12m",
+    "contribution": 1.0984809584108088,
+    "value": 7.0,
+    "raw_value": 7.0,
+    "standardized_value": 2.2917222332949083,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_pair_active_years",
+    "contribution": 0.7012102585274548,
+    "value": 9.779603011635865,
+    "raw_value": 9.779603011635865,
+    "standardized_value": 2.4031669316522293,
+    "median_imputed": false,
+    "coefficient": 0.29178591353425354
+   },
+   {
+    "feature": "rd_count_36m",
+    "contribution": 0.59847071600375,
+    "value": 11.0,
+    "raw_value": 11.0,
+    "standardized_value": 0.9574006338563249,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_momentum",
+    "contribution": -0.26627481345994564,
+    "value": 1.3862943611198904,
+    "raw_value": 1.3862943611198904,
+    "standardized_value": 2.3377537470800123,
+    "median_imputed": false,
+    "coefficient": -0.11390199407980335
+   },
+   {
+    "feature": "fin_facts_available",
+    "contribution": -0.0837005222338979,
+    "value": 1597.0,
+    "raw_value": 1597.0,
+    "standardized_value": 1.3143556555583373,
+    "median_imputed": false,
+    "coefficient": -0.06368179105855636
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": -0.07510290006464093,
+    "value": 1.0,
+    "raw_value": 1.0,
+    "standardized_value": -0.15643968646661666,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   }
+  ],
+  "baseline_probability": 0.9457400739743269,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "dexcom",
+   "track_id": "diabetes_cgm",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "b8852ec8ba3f30554b7cbfe86f36fe26",
+  "target_company": "globus_medical",
+  "technology_track": "ortho_joint",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.950104385013521,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.0019694666657571933,
+   "ensemble_min": 0.9499212109249812,
+   "ensemble_max": 0.9541876549373214,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_36m",
+    "contribution": 0.7740015195202348,
+    "value": 13.0,
+    "raw_value": 13.0,
+    "standardized_value": 1.238205187954072,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 0.6558550277976088,
+    "value": 5.0,
+    "raw_value": 5.0,
+    "standardized_value": 1.3661490412208175,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   },
+   {
+    "feature": "rd_pair_active_years",
+    "contribution": 0.6133254684712264,
+    "value": 9.125256673511293,
+    "raw_value": 9.125256673511293,
+    "standardized_value": 2.101970794416799,
+    "median_imputed": false,
+    "coefficient": 0.29178591353425354
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "fin_facts_available",
+    "contribution": -0.07746863728179337,
+    "value": 1564.0,
+    "raw_value": 1564.0,
+    "standardized_value": 1.216495893002755,
+    "median_imputed": false,
+    "coefficient": -0.06368179105855636
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.06696566875886666,
+    "value": 0.050101890789542185,
+    "raw_value": 0.050101890789542185,
+    "standardized_value": -0.7184151279494547,
+    "median_imputed": false,
+    "coefficient": 0.09321305489488263
+   },
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.04985399044051194,
+    "value": 37.0,
+    "raw_value": 37.0,
+    "standardized_value": 1.327267615819511,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   }
+  ],
+  "baseline_probability": 0.9477329799436996,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "globus_medical",
+   "track_id": "ortho_joint",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "0937c318ff463651167c4cf4e4015115",
+  "target_company": "siemens_healthineers",
+  "technology_track": "imaging_us",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9449113233027463,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.0011353319408924176,
+   "ensemble_min": 0.9431074996374835,
+   "ensemble_max": 0.9458424605448879,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_pair_active_years",
+    "contribution": 0.6956944767247625,
+    "value": 9.738535249828884,
+    "raw_value": 9.738535249828884,
+    "standardized_value": 2.384263408394775,
+    "median_imputed": false,
+    "coefficient": 0.29178591353425354
+   },
+   {
+    "feature": "rd_count_36m",
+    "contribution": 0.6862361177619924,
+    "value": 12.0,
+    "raw_value": 12.0,
+    "standardized_value": 1.0978029109051985,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_recency_years",
+    "contribution": 0.5341705777304052,
+    "value": 0.057494866529774126,
+    "raw_value": 0.057494866529774126,
+    "standardized_value": -0.8938560934862972,
+    "median_imputed": false,
+    "coefficient": -0.5976024346905613
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_momentum",
+    "contribution": -0.04725437426696534,
+    "value": 0.2231435513142097,
+    "raw_value": 0.2231435513142097,
+    "standardized_value": 0.41486871804770536,
+    "median_imputed": false,
+    "coefficient": -0.11390199407980335
+   },
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.04284029658474745,
+    "value": 34.0,
+    "raw_value": 34.0,
+    "standardized_value": 1.1405413650264782,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.01865509692663915,
+    "value": null,
+    "raw_value": null,
+    "standardized_value": -0.20013395063252357,
+    "median_imputed": true,
+    "coefficient": 0.09321305489488263
+   }
+  ],
+  "baseline_probability": 0.9482073332887612,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "siemens_healthineers",
+   "track_id": "imaging_us",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "996eb58f6254a0c02f17fd17edb743cb",
+  "target_company": "abbott",
+  "technology_track": "ivd_molecular",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9434446882607582,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.00437582019864867,
+   "ensemble_min": 0.9434446882607582,
+   "ensemble_max": 0.9540674837746081,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 1.0213339917287336,
+    "value": 7.0,
+    "raw_value": 7.0,
+    "standardized_value": 2.1274434050645343,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   },
+   {
+    "feature": "rd_pair_active_years",
+    "contribution": 0.6464201592873793,
+    "value": 9.371663244353183,
+    "raw_value": 9.371663244353183,
+    "standardized_value": 2.215391933961522,
+    "median_imputed": false,
+    "coefficient": 0.29178591353425354
+   },
+   {
+    "feature": "rd_recency_years",
+    "contribution": 0.5250457671581209,
+    "value": 0.08487337440109514,
+    "raw_value": 0.08487337440109514,
+    "standardized_value": -0.8785870616976146,
+    "median_imputed": false,
+    "coefficient": -0.5976024346905613
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "fin_facts_available",
+    "contribution": -0.07558018729630715,
+    "value": 1554.0,
+    "raw_value": 1554.0,
+    "standardized_value": 1.1868414195010635,
+    "median_imputed": false,
+    "coefficient": -0.06368179105855636
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": -0.062120434711201454,
+    "value": 1.0,
+    "raw_value": 1.0,
+    "standardized_value": -0.12959968061309302,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_company_track_share",
+    "contribution": -0.042411413367793846,
+    "value": 0.07142857142857142,
+    "raw_value": 0.07142857142857142,
+    "standardized_value": -0.34241448089260723,
+    "median_imputed": false,
+    "coefficient": 0.12385987081281033
+   }
+  ],
+  "baseline_probability": 0.9448328270871766,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "abbott",
+   "track_id": "ivd_molecular",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "cae2f7d810f34227ecf163d12b9998cf",
+  "target_company": "smith_nephew",
+  "technology_track": "ortho_joint",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9323514420005692,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.003725958753415469,
+   "ensemble_min": 0.9323514420005692,
+   "ensemble_max": 0.9412601452445711,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_pair_active_years",
+    "contribution": 0.7133449784933775,
+    "value": 9.869952087611225,
+    "raw_value": 9.869952087611225,
+    "standardized_value": 2.4447546828186275,
+    "median_imputed": false,
+    "coefficient": 0.29178591353425354
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 0.6558550277976088,
+    "value": 5.0,
+    "raw_value": 5.0,
+    "standardized_value": 1.3661490412208175,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   },
+   {
+    "feature": "rd_recency_years",
+    "contribution": 0.5323456156159483,
+    "value": 0.06297056810403832,
+    "raw_value": 0.06297056810403832,
+    "standardized_value": -0.8908022871285607,
+    "median_imputed": false,
+    "coefficient": -0.5976024346905613
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_company_count_12m",
+    "contribution": -0.07032118457569035,
+    "value": 4.0,
+    "raw_value": 4.0,
+    "standardized_value": -0.7748342051123535,
+    "median_imputed": false,
+    "coefficient": 0.09075642777733793
+   },
+   {
+    "feature": "rd_track_count_12m",
+    "contribution": -0.04985399044051194,
+    "value": 37.0,
+    "raw_value": 37.0,
+    "standardized_value": 1.327267615819511,
+    "median_imputed": false,
+    "coefficient": -0.0375613703267596
+   },
+   {
+    "feature": "rd_company_total_36m",
+    "contribution": -0.033569839618469384,
+    "value": 21.0,
+    "raw_value": 21.0,
+    "standardized_value": -0.5585775442760991,
+    "median_imputed": false,
+    "coefficient": 0.060098799105816114
+   }
+  ],
+  "baseline_probability": 0.9332579800903114,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "smith_nephew",
+   "track_id": "ortho_joint",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "9548be531795a6d3425e1998c7c43413",
+  "target_company": "stryker",
+  "technology_track": "trauma",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9320486282704338,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.0024944644248676346,
+   "ensemble_min": 0.9320486282704338,
+   "ensemble_max": 0.9376617061910547,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_pair_active_years",
+    "contribution": 0.6846629131193783,
+    "value": 9.656399726214921,
+    "raw_value": 9.656399726214921,
+    "standardized_value": 2.346456361879868,
+    "median_imputed": false,
+    "coefficient": 0.29178591353425354
+   },
+   {
+    "feature": "rd_count_36m",
+    "contribution": 0.5107053142455077,
+    "value": 10.0,
+    "raw_value": 10.0,
+    "standardized_value": 0.8169983568074513,
+    "median_imputed": false,
+    "coefficient": 0.6250995610825565
+   },
+   {
+    "feature": "rd_count_previous_12m",
+    "contribution": 0.4731155458320464,
+    "value": 4.0,
+    "raw_value": 4.0,
+    "standardized_value": 0.985501859298959,
+    "median_imputed": false,
+    "coefficient": 0.4800757516262823
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "fin_facts_available",
+    "contribution": -0.16622578659964582,
+    "value": 2034.0,
+    "raw_value": 2034.0,
+    "standardized_value": 2.6102561475822617,
+    "median_imputed": false,
+    "coefficient": -0.06368179105855636
+   },
+   {
+    "feature": "fin_rd_intensity",
+    "contribution": -0.031585264819150596,
+    "value": 0.06462016244624941,
+    "raw_value": 0.06462016244624941,
+    "standardized_value": -0.3388502270928642,
+    "median_imputed": false,
+    "coefficient": 0.09321305489488263
+   },
+   {
+    "feature": "rd_company_track_share",
+    "contribution": -0.027883018069668294,
+    "value": 0.10344827586206896,
+    "raw_value": 0.10344827586206896,
+    "standardized_value": -0.22511744834457284,
+    "median_imputed": false,
+    "coefficient": 0.12385987081281033
+   }
+  ],
+  "baseline_probability": 0.9392106248867715,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "stryker",
+   "track_id": "trauma",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ },
+ {
+  "forecast_id": "1a1615e95163bba4f92b9d27864140da",
+  "target_company": "alcon",
+  "technology_track": "ophthalmology",
+  "forecast_creation_time": "2026-11-01T23:16:37Z",
+  "historical_information_cutoff": "2026-10-01",
+  "forecast_horizon_months": 12,
+  "horizon_end": "2027-10-01",
+  "model_version": "reverse-rd-logistic-v1",
+  "predicted_probability": 0.9192459773221209,
+  "uncertainty": {
+   "temporal_ensemble_std": 0.005491855105884947,
+   "ensemble_min": 0.9192459773221209,
+   "ensemble_max": 0.9325992090391111,
+   "note": "Model instability across expanding time windows; not a causal confidence interval."
+  },
+  "supporting_evidence": [
+   {
+    "feature": "rd_pair_active_years",
+    "contribution": 0.7137126972802237,
+    "value": 9.872689938398358,
+    "raw_value": 9.872689938398358,
+    "standardized_value": 2.446014917702458,
+    "median_imputed": false,
+    "coefficient": 0.29178591353425354
+   },
+   {
+    "feature": "rd_company_track_share",
+    "contribution": 0.3789120502778471,
+    "value": 1.0,
+    "raw_value": 1.0,
+    "standardized_value": 3.0591994630003905,
+    "median_imputed": false,
+    "coefficient": 0.12385987081281033
+   },
+   {
+    "feature": "rd_recency_years",
+    "contribution": 0.3434620367696639,
+    "value": 0.6297056810403833,
+    "raw_value": 0.6297056810403833,
+    "standardized_value": -0.5747333291028318,
+    "median_imputed": false,
+    "coefficient": -0.5976024346905613
+   }
+  ],
+  "contradictory_evidence": [
+   {
+    "feature": "rd_company_count_12m",
+    "contribution": -0.09617038228501221,
+    "value": 1.0,
+    "raw_value": 1.0,
+    "standardized_value": -1.0596536756708503,
+    "median_imputed": false,
+    "coefficient": 0.09075642777733793
+   },
+   {
+    "feature": "rd_count_12m",
+    "contribution": -0.062120434711201454,
+    "value": 1.0,
+    "raw_value": 1.0,
+    "standardized_value": -0.12959968061309302,
+    "median_imputed": false,
+    "coefficient": 0.4793255231597047
+   },
+   {
+    "feature": "rd_company_total_36m",
+    "contribution": -0.05846402239124692,
+    "value": 8.0,
+    "raw_value": 8.0,
+    "standardized_value": -0.972798512800716,
+    "median_imputed": false,
+    "coefficient": 0.060098799105816114
+   }
+  ],
+  "baseline_probability": 0.8800993030677405,
+  "verification_condition": {
+   "table": "events",
+   "company_key": "alcon",
+   "track_id": "ophthalmology",
+   "kinds": [
+    "510k",
+    "pma"
+   ],
+   "material_pma_only": true,
+   "event_date_after": "2026-10-01",
+   "event_date_on_or_before": "2027-10-01",
+   "minimum_coverage_end": "2027-10-01"
+  },
+  "status": "pending"
+ }
+]
