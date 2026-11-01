@@ -10,10 +10,9 @@ MedRadar turns free public FDA data into a weekly, quantified, Chinese-language 
 brief: which technology tracks are heating up, which majors are quietly re-allocating their
 portfolio, what appeared for the first time, and where China still has a gap.
 
-> **Built entirely with DeepSeek Harness using Chinese domestic models (`deepseek-flash`).**
-> Every line of code, every data pull and every commit in this repository was produced by the
-> DeepSeek Harness agent team (1 Lead + 8 specialist agents) — no other model was used.
-> Details: [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md).
+> The stable core through `v0.2.2` was built with DeepSeek Harness using `deepseek-flash`.
+> The independent Market-to-R&D research branch is attributed separately; see
+> [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md).
 
 > 中文文档 → [README.zh-CN.md](README.zh-CN.md) · Methodology → [docs/METHODS.md](docs/METHODS.md)
 
@@ -31,7 +30,7 @@ portfolio, what appeared for the first time, and where China still has a gap.
 | Replay | **400-step, 7-year timeline** (2019–2026) with 10/25/50 bps cost tiers; 1-minute fills for the last 7 days |
 | Event study (20d, direction-aligned, winsorised, **Holm over the 12-test family**) | approval +2.8% (CI 0.9–4.8, **Holm p=0.007 → significant**) · CRL −3.8% (CI −6.7–−0.8, Holm p=0.060 → borderline, not significant) · trial −0.3% (n.s.) |
 | Simulated book | in-sample, long-only, not investment advice |
-| Tests | **529 offline tests**, no network, no API key |
+| Tests | **554 offline tests**, no network, no API key |
 | Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |
 | Products | 204 families, **2,740 Chinese product names** |
 | Research | event-time model, point-in-time signals, block bootstrap, Holm correction |
@@ -244,6 +243,24 @@ Full definitions, assumptions and threats to validity: [docs/METHODS.md](docs/ME
 | **Survivorship** | tickers without price coverage are flagged, not silently dropped |
 | **Reproducible calibration** | `medradar.calibration` replays recorded LLM responses by content fingerprint; drift makes the score script fail |
 | **Assumption registry** | every modelling assumption is listed with status in [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md) |
+
+## Market-to-R&D / Horizon forecasting
+
+The `feature/market-to-rd` research lane adds SEC XBRL Company Facts, USAspending awards,
+point-in-time company–track examples, rolling-origin Reverse R&D baselines and a persistent
+12-month forecast registry. It predicts **future public R&D/regulatory milestones**, not stock
+returns or the unobservable date internal research began.
+
+```bash
+python -m medradar.intelligence.pipeline collect --source sec
+python -m medradar.intelligence.pipeline collect --source procurement --start-date 2016-01-01
+python -m medradar.intelligence.pipeline research --horizon 12
+```
+
+SEC revenue stays consolidated (never relabelled product sales). USAspending obligations are not
+revenue and its current snapshot is excluded from historical gain claims. See
+[Reverse R&D methodology](docs/REVERSE_RD.md), the [repository audit](docs/AUDIT_MARKET_TO_RD.md),
+and the frozen experiment configuration/results under `experiments/reverse_rd_v1/`.
 
 ## Simulated US-equity study (not investment advice)
 

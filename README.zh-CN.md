@@ -1,13 +1,12 @@
 # MedRadar · FDA 产业方向雷达
 
-[![由 DeepSeek Harness · deepseek-flash 全程构建](https://img.shields.io/badge/%E7%94%B1-DeepSeek%20Harness%20%C2%B7%20deepseek--flash%20%E5%85%A8%E7%A8%8B%E6%9E%84%E5%BB%BA-4D6BFE)](https://github.com/ChazY11/medradar/blob/main/docs/ATTRIBUTION.md)
+[![由 DeepSeek Harness · deepseek-flash 构建](https://img.shields.io/badge/%E7%94%B1-DeepSeek%20Harness%20%C2%B7%20deepseek--flash%20%E6%9E%84%E5%BB%BA-4D6BFE)](https://github.com/ChazY11/medradar/blob/main/docs/ATTRIBUTION.md)
 
 
 > 把美国 FDA 的器械获批、药品批准、临床试验变成 **可量化、可复现、每周自动更新** 的中文产业情报。
 >
-> **本项目全程由 DeepSeek Harness 智能体团队使用国产模型 `deepseek-flash` 自主完成。**
-> 每一行代码、每一次数据采集、每一次提交都由 DSH 智能体团队（1 个 Lead + 8 个专职智能体）产生，
-> 全程使用中国国产模型，无其他模型参与。详见 [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md)。
+> `v0.2.2` 及此前的稳定核心由 DeepSeek Harness 智能体团队使用 `deepseek-flash` 构建。
+> 独立的 Market-to-R&D 研究分支单独署名，详见 [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md)。
 
 > 英文版 → [README.md](README.md) · 方法论 → [docs/METHODS.md](docs/METHODS.md)
 
@@ -24,7 +23,7 @@
 | 案例库 | **2,384 个可追溯案例**（3,700+ 条逐字证据 + 1/5/20/60 日价格反应）：943 批准 · 379 CRL · 1,062 试验读出 |
 | 回放 | **400 步、2019–2026 七年时间轴**，10/25/50bps 三档成本；最近 7 天用 1 分钟成交 |
 | 事件研究（20 日，方向对齐 + 缩尾，**12 个检验全家族 Holm**） | 批准 +2.8%（CI 0.9–4.8，**Holm p=0.007 → 显著**）· CRL −3.8%（CI −6.7–−0.8，Holm p=0.060 → 临界，不显著）· 试验 −0.3%（不显著） |
-| 测试 | **529 个离线测试**，不联网、不需要 API key |
+| 测试 | **554 个离线测试**，不联网、不需要 API key |
 
 > 数字每周都会变，价值在于每一个数字都能用 `python -m medradar run` 复现。
 
@@ -210,6 +209,22 @@ python -m medradar selftest      # 离线单测，不联网
 信号清单与模拟盘净值 → 方法与局限 → 免责声明。
 
 看板是**完全自包含**的 HTML（无 CDN、无外链字体），可离线打开、可托管在 GitHub Pages。
+
+## Market-to-R&D 与 Horizon 预测
+
+`feature/market-to-rd` 研究分支新增 SEC XBRL Company Facts、USAspending 合同授予、
+按时间一致原则构造的公司—赛道样本、rolling-origin Reverse R&D 基线，以及可持续核验的
+12 个月预测登记。预测对象是**未来公开可见的研发/监管里程碑**，不是股价，也不是无法公开观测的内部研发启动日。
+
+```bash
+python -m medradar.intelligence.pipeline collect --source sec
+python -m medradar.intelligence.pipeline collect --source procurement --start-date 2016-01-01
+python -m medradar.intelligence.pipeline research --horizon 12
+```
+
+SEC 营收始终保持公司合并口径，不会冒充产品或器械业务收入。USAspending 合同授予金额不等于营收，
+其当前快照不参与历史增益结论。完整口径见 [Reverse R&D 方法](docs/REVERSE_RD.md)、
+[仓库审计](docs/AUDIT_MARKET_TO_RD.md)，冻结实验配置与真实结果位于 `experiments/reverse_rd_v1/`。
 
 ## 模拟美股：定位与边界
 

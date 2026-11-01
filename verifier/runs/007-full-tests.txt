@@ -1,0 +1,36 @@
+timestamp=2026-11-01T04:00:23Z
+command=python3 -m pytest
+........................................................................ [ 16%]
+........................................................................ [ 32%]
+........................................................................ [ 48%]
+...............................F........................................ [ 64%]
+........................................................................ [ 80%]
+........................................................................ [ 96%]
+...............                                                          [100%]
+=================================== FAILURES ===================================
+________________ ArtifactTests.test_catalog_covers_real_top2000 ________________
+
+self = <tests.test_products.ArtifactTests testMethod=test_catalog_covers_real_top2000>
+
+    def test_catalog_covers_real_top2000(self) -> None:
+        """top-2000 ranking uses the *analysis* 口径: 510(k) + material PMA.
+    
+        The ranking helper is imported from the generator itself so the test can
+        never drift away from the script (this is the bug that broke the old
+        all-PMA ranking after the PMA backfill).
+        """
+        if not Path(DEFAULT_DB).exists():
+            self.skipTest("real database not available")
+        module = _load_catalog_script()
+        reader = _readonly_db(DEFAULT_DB)
+        self.addCleanup(reader.close)
+        ranked = module.rank_top_codes(reader, 2000)
+        counts = module.activity_counts(reader)
+>       self.assertEqual(len(ranked), 2000)
+E       AssertionError: 0 != 2000
+
+tests/test_products.py:348: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_products.py::ArtifactTests::test_catalog_covers_real_top2000
+1 failed, 446 passed in 12.52s
+exit_code=1

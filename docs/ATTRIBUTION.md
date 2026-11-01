@@ -2,7 +2,7 @@
 
 ## 一句话
 
-**MedRadar 的每一行代码、每一次数据采集、每一份报告和每一次提交，都由 DeepSeek Harness 智能体团队使用中国国产模型 `deepseek-flash` 自主完成，全程没有使用任何其他模型。**
+**截至 `v0.2.2`（提交 `7a639f7`）的稳定核心由 DeepSeek Harness 智能体团队使用 `deepseek-flash` 完成。后续 Market-to-R&D 功能分支的署名见文末，不回溯改写稳定核心的开发记录。**
 
 ## 增量贡献（后续）
 
@@ -56,3 +56,7 @@ python -m medradar selftest  # 440 tests, 不联网
 ```
 
 > 说明：以上署名为开发过程事实陈述，不构成对模型能力的第三方评测；项目内容仅用于开源研究与技术演示，不构成投资建议。
+
+## Market-to-R&D 功能分支（2026-11-01）
+
+`feature/market-to-rd` 的仓库审计、SEC/XBRL 与 USAspending 数据层、openFDA 批量流式管线、时点数据集、滚动回测、Horizon 登记、测试与研究文档由 **Kimi K3.1（Moonshot AI）独立执行**。未调度 Codex、GitHub Copilot 编码代理或其他 AI Agent。真实数据、负面实验结果和未能完成的边界均保留在 `experiments/reverse_rd_v1/` 与 `docs/REVERSE_RD.md`。

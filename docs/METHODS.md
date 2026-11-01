@@ -4,6 +4,9 @@ This document is the contract behind the numbers. If a metric changes meaning, t
 first. Everything here is computed with the Python standard library only, deterministically (fixed
 bootstrap seeds), from public data snapshots you can regenerate.
 
+The Market-to-R&D lane has a separate contract for SEC financial facts, procurement semantics,
+rolling-origin evaluation and Horizon forecasts: [docs/REVERSE_RD.md](REVERSE_RD.md).
+
 ---
 
 ## 1. The observation model
