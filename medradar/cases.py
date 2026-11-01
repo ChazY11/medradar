@@ -6,7 +6,8 @@ A case answers three questions, and every answer must be checkable:
 2. **What did the system decide at the time?** Direction and materiality using
    only information available at ``available_at`` (no hindsight).
 3. **What did the market do next?** Raw and SPY-abnormal returns at 1/5/20/60
-   trading days, so a hit and a miss are both visible.
+   trading days, computed on one adjusted-close basis (next-session adjusted
+   open in, adjusted close out) so a split/dividend is not fake alpha.
 
 The library deliberately keeps *negative examples*: a tool that only shows
 winning cases is marketing, not research.
@@ -23,6 +24,7 @@ from typing import Any, Iterable, Mapping, Sequence
 
 from .config import load_companies
 from .db import DB
+from .prices import adjusted_close, adjusted_open
 from .util import iso, parse_date, read_json, sha1, truncate, write_json
 
 HORIZONS = (1, 5, 20, 60)
@@ -304,14 +306,22 @@ def load_corpus(path: str | Path | None = None) -> list[dict[str, Any]]:
 
 # ------------------------------------------------------------------- price maths
 def _load_price_cache(db: DB, benchmark: str) -> dict[str, list[dict[str, Any]]]:
+    """Daily quotes on the adjusted-close basis, keyed by ticker.
+
+    Both legs of every case return go through the shared price helpers:
+    ``adjusted_close`` for the exit and ``adjusted_open`` (``open * adj_close /
+    close``) for the next-session entry. Mixing a raw open with an adjusted
+    close would turn a split/dividend inside the window into fake alpha (see
+    docs/DATA.md and the audit finding B4).
+    """
     rows = db.query("SELECT ticker, date, open, close, adj_close FROM prices ORDER BY ticker, date")
     cache: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
         cache[row["ticker"]].append(
             {
                 "date": row["date"],
-                "open": row.get("open"),
-                "close": row.get("adj_close") or row.get("close"),
+                "open": adjusted_open(row),
+                "close": adjusted_close(row),
             }
         )
     return dict(cache)
@@ -325,8 +335,11 @@ def price_reaction(
 ) -> dict[str, Any]:
     """Raw and abnormal returns from the first open after ``signal_day``.
 
-    Prices are daily adjusted closes; the entry is the next session open, which
-    is one full session later than the event date (conservative, never same-day).
+    The entry is the next session open and both entry and exit are on the
+    adjusted-close basis: ``_load_price_cache`` rescales the raw open with
+    ``prices.adjusted_open`` and exits at ``prices.adjusted_close``, so a split
+    or dividend inside the holding window is not fake alpha. The entry is one
+    full session later than the event date (conservative, never same-day).
     """
     dates = [row["date"] for row in series]
     entry_index = _first_index_after(dates, iso(signal_day))

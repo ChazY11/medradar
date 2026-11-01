@@ -14,6 +14,7 @@ from medradar.cases import (
     load_corpus,
     price_reaction,
     render_markdown,
+    _load_price_cache,
     _outcome,
 )
 from medradar.db import DB
@@ -54,6 +55,79 @@ class PriceReactionTests(unittest.TestCase):
     def test_no_session_after_signal_returns_empty(self) -> None:
         stock = _series([100], opens=[100])
         self.assertEqual(price_reaction(stock, date(2024, 6, 1)), {})
+
+
+def _split_price_rows(*, split: bool) -> list[dict[str, object]]:
+    """25 business days from 2024-01-01; a 2:1 split is effective 2024-01-03.
+
+    Pre-split raw quotes are 2x the post-split basis and ``adj_close`` is
+    split-adjusted (raw 100 -> adjusted 50), which is exactly how Yahoo ships
+    history. The true post-entry return is +10% (adjusted 50 -> 55) with or
+    without the split.
+    """
+    rows: list[dict[str, object]] = []
+    day = date(2024, 1, 1)
+    index = 0
+    while index < 25:
+        if day.weekday() < 5:
+            pre_split = split and day < date(2024, 1, 3)
+            adjusted_close = 50.0 if index <= 1 else 55.0
+            raw_close = adjusted_close * 2 if pre_split else adjusted_close
+            rows.append({
+                "ticker": "ACME", "date": day.isoformat(), "open": raw_close,
+                "high": raw_close, "low": raw_close, "close": raw_close,
+                "adj_close": adjusted_close, "volume": 1000,
+            })
+            index += 1
+        day = date.fromordinal(day.toordinal() + 1)
+    return rows
+
+
+def _benchmark_rows() -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
+    day = date(2024, 1, 1)
+    index = 0
+    while index < 25:
+        if day.weekday() < 5:
+            rows.append({
+                "ticker": "SPY", "date": day.isoformat(), "open": 100.0,
+                "high": 100.0, "low": 100.0, "close": 100.0,
+                "adj_close": 100.0, "volume": 1000,
+            })
+            index += 1
+        day = date.fromordinal(day.toordinal() + 1)
+    return rows
+
+
+class PriceBasisSplitTests(unittest.TestCase):
+    """Regression: entry uses adjusted_open, not the raw open (audit B4)."""
+
+    def _cache(self, tmp: str, *, split: bool) -> dict:
+        name = "split.sqlite" if split else "plain.sqlite"
+        with DB(Path(tmp) / name) as db:
+            db.upsert_prices(_split_price_rows(split=split) + _benchmark_rows())
+            return _load_price_cache(db, "SPY")
+
+    def test_two_for_one_split_is_not_fake_alpha(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            split_cache = self._cache(tmp, split=True)
+            plain_cache = self._cache(tmp, split=False)
+        split_result = price_reaction(
+            split_cache["ACME"], date(2024, 1, 1),
+            benchmark_series=split_cache["SPY"], horizons=(1, 5),
+        )
+        plain_result = price_reaction(
+            plain_cache["ACME"], date(2024, 1, 1),
+            benchmark_series=plain_cache["SPY"], horizons=(1, 5),
+        )
+        # Entry day raw open is 100 pre-split -> 50 on the adjusted-close basis.
+        self.assertAlmostEqual(split_result["entry_price"], 50.0, places=4)
+        self.assertAlmostEqual(split_result["raw_1d"], 0.10, places=6)
+        self.assertAlmostEqual(split_result["abnormal_1d"], 0.10, places=6)
+        # The same price path with and without a 2:1 split must give the same alpha.
+        self.assertAlmostEqual(split_result["raw_1d"], plain_result["raw_1d"], places=6)
+        self.assertAlmostEqual(split_result["abnormal_1d"], plain_result["abnormal_1d"], places=6)
+        self.assertAlmostEqual(split_result["abnormal_5d"], plain_result["abnormal_5d"], places=6)
 
 
 class OutcomeTests(unittest.TestCase):
