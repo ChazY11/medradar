@@ -221,10 +221,44 @@ class WindowTests(unittest.TestCase):
         fresh = ForecastRegistry(":memory:", clock=step_clock())
         ok_start = fresh.register(forecast_spec("w-ok-start", window_start=T0))
         self.assertEqual(ok_start["window_start"], stamp(T0))
-        # explicit future window too
+        # explicit future window too - end must match the horizon-derived end
         registry.register(forecast_spec("w-ok-explicit", window_start="2024-02-01T00:00:00Z",
-                                        window_end="2025-02-01T00:00:00Z"))
+                                        window_end="2024-05-01T00:00:00Z"))
         self.assertEqual(registry.count("forecasts"), 1)
+
+    def test_window_end_must_match_horizon_duration(self) -> None:
+        # horizon labels must denote the ACTUAL window duration: any explicit
+        # end differing from add_months_clamped(window_start, horizon) is
+        # rejected (no mislabeled 24-month one-day windows).
+        registry = ForecastRegistry(":memory:", clock=step_clock())
+        with self.assertRaises(ForecastValidationError):  # shortened override
+            registry.register(forecast_spec("w-short", horizon=24,
+                                            window_end="2024-01-16T00:00:00Z"))
+        with self.assertRaises(ForecastValidationError):  # lengthened override
+            registry.register(forecast_spec("w-long", window_end="2025-02-01T00:00:00Z"))
+        self.assertEqual(registry.count("forecasts"), 0)
+        # an explicit end exactly equal to the derived end is accepted
+        fresh = ForecastRegistry(":memory:", clock=step_clock())  # first tick is T0
+        ok = fresh.register(forecast_spec("w-exact", window_end="2024-04-15T00:00:00Z"))
+        self.assertEqual(ok["window_end"], "2024-04-15T00:00:00.000000Z")
+
+    def test_derived_window_calendar_boundaries(self) -> None:
+        # month-end clamping applies to explicit future starts too
+        registry = ForecastRegistry(":memory:", clock=step_clock())
+        jan31 = registry.register(forecast_spec("w-jan31", horizon=3,
+                                                window_start="2024-01-31T00:00:00Z"))
+        self.assertEqual(jan31["window_end"], "2024-04-30T00:00:00.000000Z")
+        leap = registry.register(forecast_spec("w-leap", horizon=12,
+                                               window_start="2024-02-29T00:00:00Z"))
+        self.assertEqual(leap["window_end"], "2025-02-28T00:00:00.000000Z")
+        # a far-future start keeps the full horizon duration (24 months = 2 years)
+        far = registry.register(forecast_spec("w-far", horizon=24,
+                                              window_start="2026-01-31T00:00:00Z"))
+        self.assertEqual(far["window_start"], "2026-01-31T00:00:00.000000Z")
+        self.assertEqual(far["window_end"], "2028-01-31T00:00:00.000000Z")
+        # the window always spans exactly the declared calendar months
+        self.assertEqual(add_months_clamped(datetime(2026, 1, 31, tzinfo=timezone.utc), 24),
+                         datetime(2028, 1, 31, tzinfo=timezone.utc))
 
     def test_no_implicit_event_date_fallback(self) -> None:
         # window_start defaults to generated_at, never to anything derived
@@ -331,8 +365,10 @@ class ImmutabilityGuardTests(unittest.TestCase):
             registry.conn.execute("DELETE FROM resolutions WHERE prediction_id = ?", (prediction_id,))
 
     def test_update_delete_and_insert_or_replace_are_physically_rejected(self) -> None:
-        registry = ForecastRegistry(":memory:", clock=step_clock())
+        clock = step_clock()
+        registry = ForecastRegistry(":memory:", clock=clock)
         result = registry.register(forecast_spec("guard"))
+        advance_past(clock, datetime(2024, 2, 1, tzinfo=timezone.utc))  # so the positive event is not future-dated
         registry.resolve(resolution_spec(result["prediction_id"]))
         self._guarded(registry, result["prediction_id"])
         # p is still the registered value - no silent rewrite to improve scores
@@ -388,6 +424,29 @@ class ResolutionTests(unittest.TestCase):
         # resolved_at comes from the store clock even though the evidence locator predates it
         self.assertGreaterEqual(resolved["resolved_at"], "2024-04-15T00:00:00.000000Z")
         self.assertGreater(resolved["resolved_at"], result["generated_at"])
+
+    def test_future_dated_positive_rejected_and_valid_resolution_still_works(self) -> None:
+        # No advance knowledge of future events: a positive outcome whose
+        # event_time is still in the future at resolution time must fail, the
+        # failed attempt must roll back cleanly (no resolution row, no clock
+        # consumption), and a later valid resolution must still work.
+        clock = step_clock()
+        registry = ForecastRegistry(":memory:", clock=clock)
+        result = registry.register(forecast_spec("no-future", horizon=3))  # [Jan15, Apr15)
+        pid = result["prediction_id"]
+        with self.assertRaises(ForecastValidationError) as ctx:
+            registry.resolve(resolution_spec(pid, event_time="2024-03-20T00:00:00Z"))
+        self.assertIn("future event", str(ctx.exception))
+        self.assertEqual(registry.count("resolutions"), 0)  # rolled back
+        self.assertEqual(registry.raw("SELECT last_at FROM clock_guard")[0]["last_at"],
+                         result["generated_at"])  # clock not consumed by the failed attempt
+        # once the event has actually happened, the same resolution succeeds;
+        # the event may predate the observation (evidence can lag the event)
+        advance_past(clock, datetime(2024, 3, 20, tzinfo=timezone.utc))
+        ok = registry.resolve(resolution_spec(pid, event_time="2024-03-20T00:00:00Z"))
+        self.assertEqual(ok["status"], "created")
+        self.assertGreaterEqual(ok["resolved_at"], ok["event_time"])
+        self.assertEqual(registry.count("resolutions"), 1)
 
     def test_correction_preserves_original_and_requires_reason(self) -> None:
         clock = step_clock(start=T0, step=timedelta(days=30))
@@ -572,6 +631,39 @@ class EvaluationTests(unittest.TestCase):
         # headline exists but is explicitly marked as mixed-target scope
         self.assertTrue(evaluation["headline"]["scope"]["mixed_targets"])
         self.assertEqual(evaluation["headline"]["n"], 2)
+
+    def test_retrospective_fixtures_never_contaminate_headline_metrics(self) -> None:
+        # record_kind='retrospective_fixture' (prior backtests) must not enter
+        # prospective headline metrics or denominators: it is reported only in
+        # the explicitly labeled retrospective cohort.
+        clock = step_clock(start=T0, step=timedelta(days=30))
+        registry = ForecastRegistry(":memory:", clock=clock)
+        fixture = registry.register(forecast_spec(
+            "retro", p=0.1, horizon=24, model_version="model-backtest",
+            record_kind="retrospective_fixture"))
+        real = registry.register(forecast_spec("real", p=0.9, horizon=3))
+        registry.resolve(resolution_spec(fixture["prediction_id"], event_time=fixture["window_start"]))
+        registry.resolve(resolution_spec(real["prediction_id"], event_time=real["window_start"]))
+        advance_past(clock, datetime(2025, 1, 1, tzinfo=timezone.utc))
+        evaluation = registry.evaluate("2025-01-01T00:00:00Z")
+        # prospective headline sees only the real forecast
+        self.assertEqual(evaluation["counts"], {
+            "total_forecasts": 1, "eligible": 1, "unresolved": 0, "censored": 0,
+        })
+        self.assertAlmostEqual(evaluation["headline"]["brier"], (0.9 - 1) ** 2)
+        self.assertEqual(set(evaluation["strata"]), {"horizon=3m|model=model-test-1"})
+        # the fixture lives in its own explicitly labeled cohort
+        retro = evaluation["retrospective"]
+        self.assertIn("retrospective_fixture", retro["label"])
+        self.assertEqual(retro["counts"]["total_forecasts"], 1)
+        self.assertAlmostEqual(retro["headline"]["brier"], (0.1 - 1) ** 2)
+        self.assertEqual(set(retro["strata"]), {"horizon=24m|model=model-backtest"})
+        # and the artifact keeps the two record kinds in separate lists
+        artifact = registry.build_artifact("2025-01-01T00:00:00Z")
+        self.assertEqual(len(artifact["forecasts"]), 1)
+        self.assertEqual(len(artifact["retrospective_fixtures"]), 1)
+        self.assertEqual(artifact["retrospective_fixtures"][0]["prediction_id"],
+                         fixture["prediction_id"])
 
     def test_snapshot_verification_modes(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

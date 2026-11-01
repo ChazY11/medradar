@@ -14,7 +14,9 @@ preserve the original, and evaluation at an ``as_of`` cutoff only sees
 forecasts/resolutions known by that time. Scoring (Brier, clipped log loss,
 fixed-boundary calibration bins / ECE) is a pure deterministic function of the
 as-of-visible ledger, and the export artifact carries a canonical SHA256 that
-later writes cannot alter.
+later writes cannot alter. ``retrospective_fixture`` records (prior backtests)
+are stored but never mixed into prospective headline metrics or denominators;
+they are reported only in an explicitly labeled separate cohort.
 
 Scope: this is a *registry and evaluation foundation*. It contains no model,
 generates no predictions, and makes no accuracy claims. All hashes are
@@ -464,10 +466,14 @@ class ForecastRegistry:
 
         The window must be genuinely future: ``window_start`` equals
         ``generated_at`` by default (never an implicit event-date fallback)
-        or is explicitly ``>= generated_at``; ``window_end`` defaults to the
-        horizon end with documented month-end clamping and must be
-        ``> window_start``. Validation of the explicit endpoints happens
-        here because they are only meaningful relative to ``generated_at``.
+        or is explicitly ``>= generated_at``. ``window_end`` is **always**
+        derived from the start plus the declared horizon
+        (``add_months_clamped(window_start, horizon_months)``) so the
+        ``horizon_months`` label always denotes the actual calendar duration
+        of the window - an arbitrary or shortened end can never be silently
+        mislabeled (e.g. a one-day window tagged ``horizon=24``). An explicit
+        ``window_end`` is accepted only when it exactly equals the derived
+        end; anything else is rejected.
         """
         if spec.get("window_start") is None:
             window_start = generated_at
@@ -477,11 +483,17 @@ class ForecastRegistry:
                 raise ForecastValidationError(
                     f"window_start {window_start} must not be before generated_at {generated_at}"
                 )
-        if spec.get("window_end") is None:
-            generated_dt = datetime.strptime(generated_at, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
-            window_end = _render_moment(add_months_clamped(generated_dt, prepared["horizon_months"]))
-        else:
-            window_end, _ = normalize_moment(spec["window_end"], "window_end")
+        start_dt = datetime.strptime(window_start, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
+        window_end = _render_moment(add_months_clamped(start_dt, prepared["horizon_months"]))
+        explicit_end = spec.get("window_end")
+        if explicit_end is not None:
+            stated_end, _ = normalize_moment(explicit_end, "window_end")
+            if stated_end != window_end:
+                raise ForecastValidationError(
+                    f"window_end {stated_end} does not match the horizon-derived end {window_end}"
+                    f" (window_start {window_start} + {prepared['horizon_months']} calendar months);"
+                    " horizon labels must denote the actual window duration"
+                )
         if window_end <= window_start:
             raise ForecastValidationError(
                 f"target window must be non-empty half-open [start, end) with end > start; got [{window_start}, {window_end})"
@@ -636,6 +648,15 @@ class ForecastRegistry:
                 raise ForecastValidationError(
                     f"negative resolution before the target window matured: resolved_at {resolved_at} < window_end {row['window_end']}"
                 )
+            if kind == "outcome" and outcome == 1 and event_time > resolved_at:
+                # No advance knowledge of future events: a positive outcome may
+                # only record an event that has already happened by resolution
+                # time. Both stamps are fixed-microsecond UTC, so the lexical
+                # comparison is chronological. Raising here rolls the whole
+                # transaction back, including the clock-guard advance.
+                raise ForecastValidationError(
+                    f"positive resolution cannot record a future event: event_time {event_time} > resolved_at {resolved_at}"
+                )
             seq_row = self.conn.execute(
                 "SELECT COALESCE(MAX(seq), 0) + 1 AS n FROM resolutions WHERE prediction_id = ? AND resolved_at = ?",
                 (prediction_id, resolved_at),
@@ -720,14 +741,50 @@ class ForecastRegistry:
         for negatives, the window has matured by ``as_of`` - unresolved or
         immature/censored forecasts are counted, never silently scored as
         zero. Metrics are stratified by (horizon_months, model_version); the
-        headline aggregates all eligible forecasts and carries explicit scope
-        metadata so strata are never mixed silently.
+        headline aggregates all eligible *prospective* forecasts and carries
+        explicit scope metadata so strata are never mixed silently.
+
+        ``record_kind='retrospective_fixture'`` rows (prior backtests) are
+        **never** silently mixed into the prospective headline metrics or
+        denominators: they are reported only in the explicitly labeled
+        ``retrospective`` block with their own counts and metrics.
         """
         as_of_text, _ = normalize_moment(as_of, "as_of")
         if as_of_text > self._read_now():
             raise ForecastValidationError(f"as_of {as_of_text} is after the current store clock")
         forecasts = self._forecasts_as_of(as_of_text)
         resolutions = self._resolutions_as_of(as_of_text)
+        prospective = [f for f in forecasts if f["record_kind"] == "forecast"]
+        fixtures = [f for f in forecasts if f["record_kind"] == "retrospective_fixture"]
+
+        counts, headline, strata_block = self._evaluate_cohort(prospective, resolutions, as_of_text)
+        retro_counts, retro_headline, retro_strata = self._evaluate_cohort(fixtures, resolutions, as_of_text)
+        return {
+            "scoring_version": SCORING_VERSION,
+            "as_of": as_of_text,
+            "counts": counts,
+            "headline": headline,
+            "strata": strata_block,
+            "retrospective": {
+                "label": "explicitly separated retrospective_fixture cohort (prior backtests);"
+                         " never mixed into prospective headline metrics or denominators",
+                "counts": retro_counts,
+                "headline": retro_headline,
+                "strata": retro_strata,
+            },
+        }
+
+    @staticmethod
+    def _evaluate_cohort(
+        forecasts: list[dict[str, Any]],
+        resolutions: list[dict[str, Any]],
+        as_of_text: str,
+    ) -> tuple[dict[str, int], dict[str, Any], dict[str, Any]]:
+        """Score one record-kind cohort; returns (counts, headline, strata).
+
+        Latest-resolution selection is per ``prediction_id``, so resolutions
+        of forecasts outside this cohort are simply never looked up.
+        """
         latest: dict[str, dict[str, Any]] = {}
         for resolution in resolutions:
             latest[resolution["prediction_id"]] = resolution
@@ -809,22 +866,17 @@ class ForecastRegistry:
             "unresolved": unresolved,
             "censored": censored,
         }
-        return {
-            "scoring_version": SCORING_VERSION,
-            "as_of": as_of_text,
-            "counts": counts,
-            "headline": {
-                "scope": {
-                    "stratified_by": ["horizon_months", "model_version"],
-                    "mixed_targets": True,
-                    "note": "headline mixes all eligible targets; per-cohort scope is authoritative",
-                },
-                **(cohort_metrics(sorted(eligible, key=lambda item: item[0])) or {
-                    "n": 0, "brier": None, "log_loss": None, "calibration": None,
-                }),
+        headline = {
+            "scope": {
+                "stratified_by": ["horizon_months", "model_version"],
+                "mixed_targets": True,
+                "note": "headline mixes all eligible targets; per-cohort scope is authoritative",
             },
-            "strata": strata_block,
+            **(cohort_metrics(sorted(eligible, key=lambda item: item[0])) or {
+                "n": 0, "brier": None, "log_loss": None, "calibration": None,
+            }),
         }
+        return counts, headline, strata_block
 
     # ------------------------------------------------------------------ export
     def build_artifact(self, as_of: Any) -> dict[str, Any]:
@@ -832,13 +884,17 @@ class ForecastRegistry:
 
         Contains the forecast and resolution versions visible at ``as_of``,
         the evaluation, the scoring version and provenance metadata, sorted
-        canonical UTF-8 JSON hashed with SHA256. No wall-clock report
-        timestamp is included: writes after ``as_of`` cannot change the hash.
+        canonical UTF-8 JSON hashed with SHA256. Prospective forecasts and
+        ``retrospective_fixture`` rows are stored in separate, explicitly
+        labeled lists. No wall-clock report timestamp is included: writes
+        after ``as_of`` cannot change the hash.
         """
         as_of_text, _ = normalize_moment(as_of, "as_of")
         evaluation = self.evaluate(as_of_text)
         forecasts = self._forecasts_as_of(as_of_text)
         resolutions = self._resolutions_as_of(as_of_text)
+        prospective = [f for f in forecasts if f["record_kind"] == "forecast"]
+        fixtures = [f for f in forecasts if f["record_kind"] == "retrospective_fixture"]
         verifications = sorted({f["snapshot"]["verification"] for f in forecasts})
         document: dict[str, Any] = {
             "format": FORMAT,
@@ -855,7 +911,8 @@ class ForecastRegistry:
                             " 'verified_local' was recomputed against a local TKG snapshot via medradar.tkg APIs",
                 },
             },
-            "forecasts": forecasts,
+            "forecasts": prospective,
+            "retrospective_fixtures": fixtures,
             "resolutions": resolutions,
             "evaluation": evaluation,
         }
@@ -986,6 +1043,10 @@ def cmd_demo(args: argparse.Namespace) -> int:
         "evidence_kind": "source_observed",
         "evidence_sha256": "3" * 64,
     }
+    # No advance knowledge of future events: jump the synthetic clock to the
+    # event day before recording the positive outcome (event_time must be <=
+    # the store-assigned resolved_at).
+    state["t"] = max(state["t"], datetime(2024, 3, 20, tzinfo=timezone.utc))
     resolutions = [
         registry.resolve({
             "prediction_id": registered[0]["prediction_id"], "outcome": 1,

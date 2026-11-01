@@ -37,7 +37,8 @@ unresolved, then evaluates and exports a deterministic artifact. It prints
   "p": 0.7,
   "information_cutoff": "2024-01-10T00:00:00Z",
   "window_start": "optional, must be >= generated_at (default: generated_at, never an event-date fallback)",
-  "window_end": "optional (default: horizon end, see month-end clamping)",
+  "window_end": "always derived: window_start + horizon_months calendar months (month-end clamped);"
+                " an explicit value is accepted only when exactly equal to the derived end",
   "model_version": "required", "feature_version": "required",
   "snapshot_sha256": "64-hex, or",
   "snapshot": {"sha256": "64-hex", "path": "optional local medradar-tkg snapshot.json to verify"},
@@ -55,7 +56,9 @@ unresolved, then evaluates and exports a deterministic artifact. It prints
 {
   "prediction_id": "sha256:... of a registered forecast",
   "outcome": 1,                          // 0/1 only; omit + "kind": "censor" for unknown/censored
-  "event_time": "2024-03-20T00:00:00Z",  // required for outcome=1, must lie in the target window; must be absent for 0/censor
+  "event_time": "2024-03-20T00:00:00Z",  // required for outcome=1: must lie in the target window AND
+                                      // must not be after the store-assigned resolved_at (no advance
+                                      // knowledge of future events); must be absent for 0/censor
   "reason": "required for every version past the first (corrections)",
   "evidence": {"source_locator": "...", "evidence_kind": "...", "evidence_sha256": "..."}
 }
@@ -74,11 +77,14 @@ unresolved, then evaluates and exports a deterministic artifact. It prints
   `evidence_sha256`, and a non-empty `provenance` locator list; horizon must
   be 3/6/12/24; `information_cutoff <= generated_at`.
 - The target window is **genuinely future**: `window_start` equals
-  `generated_at` or is explicitly `>= generated_at`; `window_end >
-  window_start`. Default `window_end` applies **month-end clamping**:
-  `generated_at + horizon` calendar months with the day clamped to the target
-  month's last day (`2024-01-31` + 3 → `2024-04-30`; `2024-02-29` + 12 →
-  `2025-02-28`). The window is half-open `[start, end)`.
+  `generated_at` or is explicitly `>= generated_at`. `window_end` is **always
+  derived** as `window_start + horizon_months` calendar months with documented
+  month-end clamping (`2024-01-31` + 3 → `2024-04-30`; `2024-02-29` + 12 →
+  `2025-02-28`), so the `horizon_months` label always denotes the **actual**
+  window duration and scoring strata never mix incomparable horizons. An
+  explicit `window_end` is accepted only when it exactly equals the derived
+  end; anything else (e.g. a shortened or lengthened override) is rejected.
+  The window is half-open `[start, end)`.
 - `prediction_id` is content-addressed (`sha256:` + canonical content hash).
   Idempotency: an exact retry returns the original record **without consuming
   the write clock even if the clock moved**; a conflicting key reuse raises
@@ -96,7 +102,9 @@ unresolved, then evaluates and exports a deterministic artifact. It prints
   (never backdated; evidence metadata may predate the resolution).
 - A positive outcome may resolve when the event arrives; its `event_time`
   must lie inside the target window — pre-forecast and post-window events are
-  rejected. A negative resolves only **after the full window matured**
+  rejected — and must **not be after the store-assigned `resolved_at`** (no
+  advance knowledge of future events; the failed attempt rolls back whole,
+  clock included). A negative resolves only **after the full window matured**
   (store clock ≥ `window_end`). Unknown/censored targets get
   `kind="censor"` and stay **explicitly unscored**.
 - Corrections are new `resolution_version` rows with a mandatory `reason`;
@@ -118,11 +126,18 @@ unresolved, then evaluates and exports a deterministic artifact. It prints
   aggregates all eligible forecasts and carries explicit `mixed_targets`
   scope metadata so strata are never mixed silently. No AUC/AP in the MVP.
   Toy-n results must not be read as calibration evidence.
+- `record_kind="retrospective_fixture"` rows (prior backtests) are stored but
+  **never** silently enter prospective headline metrics or denominators: the
+  default evaluation counts and scores only `record_kind="forecast"`, and the
+  fixture cohort is reported separately under the explicitly labeled
+  `retrospective` block (own counts, headline and strata).
 
 **Deterministic artifact (`export`)**
 - `evaluation.json` contains the forecast/resolution versions visible at
   `as_of`, the evaluation, `scoring_version`, schema/code versions and
   provenance metadata; canonical UTF-8 JSON (sorted keys) hashed with SHA256.
+  Prospective forecasts and `retrospective_fixture` rows live in separate,
+  explicitly labeled lists (`forecasts` / `retrospective_fixtures`).
   No wall-clock report timestamp: writes after `as_of` cannot change the hash,
   and no live whole-DB fingerprint is included.
 
