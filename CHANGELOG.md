@@ -3,6 +3,73 @@
 All notable changes to MedRadar. Format loosely follows Keep a Changelog.
 This is a research tool; "fixed" means a documented behaviour changed.
 
+## [Unreleased]
+
+### Added
+- **Forecast Registry** (`medradar/forecast_registry.py`): immutable forecast
+  store + deterministic binary-outcome evaluation foundation. Forecasts are
+  content-addressed, stamped with a server-assigned monotonic UTC
+  `generated_at`, physically append-only (SQL triggers reject UPDATE/DELETE
+  and INSERT OR REPLACE on both ledgers), retried safely via explicit
+  idempotency keys, and resolved through a separate append-only outcome
+  ledger (0/1 outcomes, corrections as new versions, censor records kept
+  explicitly unscored). Evaluation at an `as_of` cutoff uses only
+  forecasts/resolutions known by then (Brier, epsilon-clipped log loss,
+  fixed-boundary calibration bins/ECE; stratified by horizon+model; headline
+  carries explicit mixed-target scope). Deterministic canonical-JSON artifact
+  whose SHA256 survives later writes; snapshot hashes are declared provenance
+  unless a local TKG snapshot file is verified via `medradar.tkg` APIs.
+  CLI: `python -m medradar.forecast_registry {demo,register,resolve,evaluate,export}`
+  — fully offline, demo synthetic in-memory. 28 new offline tests
+  (`tests/test_forecast_registry.py`); zero new dependencies. See
+  `docs/FORECAST_REGISTRY.md` and `docs/research/FORECAST_REGISTRY_ADR.md`.
+
+### Fixed
+- **Foundation integration adversarial review** (FOUNDATION-INTEGRATE-007;
+  8 new tests + standalone probe suite, all synthetic):
+  a positive resolution can no longer record a future `event_time` — the event
+  must have happened by the store-assigned `resolved_at`, and the failed
+  attempt rolls back atomically (clock included);
+  `window_end` is now always derived as `window_start + horizon_months`
+  calendar months (explicit ends accepted only when exactly equal), so horizon
+  labels always denote the actual window duration and scoring strata never mix
+  incomparable horizons;
+  `record_kind='retrospective_fixture'` rows are excluded from prospective
+  headline metrics/denominators and reported only in a separate, explicitly
+  labeled retrospective cohort (evaluation block and artifact lists split);
+  the TKG store now stamps fresh databases with `meta.schema_version` and
+  refuses to open legacy/unstamped/mismatched stores with an actionable
+  message instead of silently mixing second-precision and microsecond rows
+  (no automatic migration, no data deletion; rebuild required);
+  provenance documentation corrected: manifest-level schema/adapter/code
+  versions are code/manifest identity, **not** per-assertion source versions;
+  `evidence_sha256` is a content hash, and the unimplemented per-assertion
+  `source_version` is marked explicitly unknown rather than claimed complete.
+- **TKG MVP** (`medradar/tkg/`): append-only bitemporal assertion store
+  (nodes + typed directed edges, stable `assertion_id` versioning, SQL
+  triggers forbidding UPDATE/DELETE on history), as-of query with
+  independent `known_at`/`valid_at` cutoffs (latest revision at `known_at`
+  selected before the valid-interval filter, so corrections/retractions
+  never resurrect old revisions), deterministic point-in-time export
+  (canonical JSON/JSONL + manifest with both cutoffs, schema/adapter/code
+  versions, evidence provenance and SHA256 content hash, no wall clock),
+  and a strictly read-only `events` adapter (source opened `mode=ro`,
+  import observation time as knowledge time, first_seen/available kept as
+  provenance metadata only). CLI: `python -m medradar.tkg
+  {demo,import,export,bench}` — fully offline, demo/bench synthetic.
+  31 new offline tests (`tests/test_tkg.py`); zero new dependencies.
+  See `docs/TKG.md`, `docs/research/TKG_ADR.md`, and the amended acceptance
+  contract in `docs/research/TKG_ACCEPTANCE.md` (Appendix).
+- **TKG hardening** (TKG-HARDEN-005 adversarial review of f1b8132; 11 new tests,
+  all synthetic): snapshot/export now emit an edge only when **both endpoints
+  are visible under the same `(known_at, valid_at)` cutoffs** (no dangling
+  references, no future-metadata backfill, no node resurrection); resubmit
+  guards reject `INSERT OR REPLACE`/upsert rewrites of `nodes`/`edges`/
+  `idempotency` history (guards stray SQL sessions, **not** the DB owner);
+  timestamps render as fixed-width microseconds (`tkg-schema-2`) so lexical
+  order equals chronological order; duplicate idempotent retries return the
+  exact original row per key. Report: `docs/research/TKG_HARDENING_REPORT.md`.
+
 ## [0.2.2] — 2026-10-31
 
 ### Docs
