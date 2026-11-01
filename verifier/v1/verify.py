@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
 """Behavioural v1 acceptance checks for the Market-to-R&D layer.
 
-This is deliberately not a self-certification checklist: it runs the offline
-test suite in a subprocess, parses the committed experiment artifacts, and
-recomputes numbers from the stored per-origin data instead of trusting the
+This is deliberately not a self-certification checklist: it runs the full
+offline test suite in a subprocess, parses the committed experiment artifacts,
+and recomputes numbers from the stored per-origin data instead of trusting the
 prose around them. Everything runs offline against the repository.
-
-Known external exclusion: ``tests/test_tkg.py`` has a pre-existing integration
-regression on the integration base branch and is owned by another fixer; it is
-excluded from the offline suite here and recorded in the output, never silently
-ignored.
 """
 from __future__ import annotations
 
@@ -21,12 +16,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 EXPERIMENT = ROOT / "experiments" / "reverse_rd_v1"
-EXCLUDED_SUITE = {
-    "tests/test_tkg.py": (
-        "KNOWN EXTERNAL FAILURE on the integration base (snapshot hash regression); owned by another "
-        "fixer, unrelated to the Market-to-R&D layer."
-    ),
-}
 EVIDENCE_FIELDS = {"feature", "contribution", "raw_value", "standardized_value", "median_imputed", "coefficient"}
 
 
@@ -37,13 +26,12 @@ def _fail(checks: dict, name: str, detail: str | None = None) -> None:
 
 
 def _check_offline_suite(checks: dict) -> None:
-    command = [sys.executable, "-m", "pytest", "tests/", "-q", "--ignore=tests/test_tkg.py"]
+    command = [sys.executable, "-m", "pytest", "tests/", "-q"]
     result = subprocess.run(command, cwd=ROOT, text=True, stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT, timeout=1800)
     print(result.stdout)
     checks["offline_selftest"] = result.returncode == 0
     checks["offline_selftest_command"] = " ".join(command[1:])
-    checks["offline_selftest_excluded"] = EXCLUDED_SUITE
     if result.returncode != 0:
         checks["offline_selftest_tail"] = "\n".join(result.stdout.strip().splitlines()[-15:])
 

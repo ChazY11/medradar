@@ -1,3 +1,9 @@
+> **Historical record (branch state dedfd68, recorded under code_version=medradar-0.2.2).**
+> The pinned hashes/counts below were correct for that branch. The 2026-11-02 integration
+> (v0.3.0) changed the canonical timestamp rendering and the package version, so re-running the
+> probes now yields different hash values; the current values and root causes are recorded in
+> [INTEGRATION_FIXES.md](INTEGRATION_FIXES.md). The substantive claims were re-verified by an
+> independent audit (docs/INTEGRATION_2026-11-02.md).
 # FOUNDATION-INTEGRATE-007 — Integration & Adversarial Review Acceptance
 
 Date: 2026-11-01 · Branch: `research/research-foundation-integration` · Base: `75acc2d`

@@ -1,6 +1,6 @@
 # Repository audit — Market-to-R&D starting point
 
-Audit target: `main` commit `7a639f795969e14a7b077dc609311f0b27ce4439` (`v0.2.2`). Baseline: 437 passed, 3 skipped.
+Audit target: `main` commit `7a639f795969e14a7b077dc609311f0b27ce4439` (`v0.2.2`). Baseline: 440 passed, 3 skipped (`python -m medradar selftest` on `main` v0.2.2); the integrated v0.3.0 suite is 578 tests (3 skipped).
 
 ## Reused rather than rebuilt
 

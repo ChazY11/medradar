@@ -3,108 +3,111 @@
 All notable changes to MedRadar. Format loosely follows Keep a Changelog.
 This is a research tool; "fixed" means a documented behaviour changed.
 
-## [Unreleased]
+## [0.3.0] — 2026-11-02 (research foundation + Market-to-R&D + frontier, integrated)
+
+This release consolidates three independently authored branches after an independent
+forensic audit and a defect-fix pass. Merge/audit/fix decisions and evidence:
+`docs/INTEGRATION_2026-11-02.md` and `docs/research/INTEGRATION_FIXES.md`.
 
 ### Added
-- **Forecast Registry** (`medradar/forecast_registry.py`): immutable forecast
-  store + deterministic binary-outcome evaluation foundation. Forecasts are
-  content-addressed, stamped with a server-assigned monotonic UTC
-  `generated_at`, physically append-only (SQL triggers reject UPDATE/DELETE
-  and INSERT OR REPLACE on both ledgers), retried safely via explicit
-  idempotency keys, and resolved through a separate append-only outcome
-  ledger (0/1 outcomes, corrections as new versions, censor records kept
-  explicitly unscored). Evaluation at an `as_of` cutoff uses only
-  forecasts/resolutions known by then (Brier, epsilon-clipped log loss,
-  fixed-boundary calibration bins/ECE; stratified by horizon+model; headline
-  carries explicit mixed-target scope). Deterministic canonical-JSON artifact
-  whose SHA256 survives later writes; snapshot hashes are declared provenance
-  unless a local TKG snapshot file is verified via `medradar.tkg` APIs.
-  CLI: `python -m medradar.forecast_registry {demo,register,resolve,evaluate,export}`
-  — fully offline, demo synthetic in-memory. 28 new offline tests
-  (`tests/test_forecast_registry.py`); zero new dependencies. See
-  `docs/FORECAST_REGISTRY.md` and `docs/research/FORECAST_REGISTRY_ADR.md`.
+- **Market-to-R&D research lane** (`medradar/intelligence/`): SEC EDGAR XBRL Company
+  Facts with filing-time availability and amendment handling; USAspending award
+  collection with explicit obligation semantics; official openFDA bulk ZIP ingestion
+  (streaming, resumable, offline-cache friendly); point-in-time company–track examples;
+  a dependency-free logistic Reverse R&D baseline with purged rolling-origin evaluation
+  and a chronological holdout; naive/persistence baselines; a Horizon forecaster with
+  machine-checkable verification conditions. Frozen real-data experiment under
+  `experiments/reverse_rd_v1/`: 55,090 in-window FDA events, 43,420 SEC facts over 32
+  companies, 3,453 procurement awards (obligations; 0 point-in-time usable), 6,701
+  examples over 25 quarterly origins, holdout 2025-10-01 (307 rows / 129 positives).
+  **Honest result:** consolidated financial features add no stable out-of-sample gain
+  (holdout PR-AUC 0.7935 → 0.7922), and a no-feature per-pair base rate already scores
+  AP 0.7913 vs the model's 0.7935 (paired-bootstrap Δ CI [−0.032, +0.037]) — v1 measures
+  persistence of public activity, not first-entry foresight.
+- **Bitemporal knowledge store** (`medradar/tkg/`): append-only nodes/edges with
+  independent valid-time and knowledge-time (`known_at`) queries, stable
+  `assertion_id` versioning, SQL guards against history rewrites, schema-version gate,
+  deterministic point-in-time export (canonical JSON/JSONL + manifest + content hash, no
+  wall clock), and a strictly read-only `events` adapter that imports observation time
+  as knowledge time. CLI: `python -m medradar.tkg {demo,import,export,bench}`.
+- **Immutable Forecast Registry** (`medradar/forecast_registry.py`): content-addressed
+  forecasts with a server-assigned monotonic `generated_at`, physically append-only
+  ledgers (triggers reject UPDATE/DELETE and key-rebind INSERT-OR-REPLACE), append-only
+  resolutions with corrections as new versions, 3/6/12/24 calendar-month windows,
+  as-of scoring (Brier, epsilon-clipped log loss, fixed-boundary ECE), deterministic
+  artifact hashing. CLI: `python -m medradar.forecast_registry
+  {demo,register,resolve,evaluate,export}`. 43 dedicated offline tests, synthetic only.
+- **Frontier radar & taxonomy**: FDA Advisory Committee schedules/materials,
+  first-posted trials, SEC pre-submissions/designations in one `medradar frontier` feed;
+  50 device tracks across 23 domains with machine-readable `domain`/`frontier_keywords`;
+  clinical-trial device-intervention filter and the `clinical_hold` / `refuse_to_file` /
+  `crl` / `pre_submission` / `designation` taxonomy.
+- **Extreme-return audit**: absolute SPY-abnormal returns above 100% are listed with
+  ticker/date/horizon and excluded from inference; unfiltered raw means stay visible.
 
 ### Fixed
-- **Foundation integration adversarial review** (FOUNDATION-INTEGRATE-007;
-  8 new tests + standalone probe suite, all synthetic):
-  a positive resolution can no longer record a future `event_time` — the event
-  must have happened by the store-assigned `resolved_at`, and the failed
-  attempt rolls back atomically (clock included);
-  `window_end` is now always derived as `window_start + horizon_months`
-  calendar months (explicit ends accepted only when exactly equal), so horizon
-  labels always denote the actual window duration and scoring strata never mix
-  incomparable horizons;
-  `record_kind='retrospective_fixture'` rows are excluded from prospective
-  headline metrics/denominators and reported only in a separate, explicitly
-  labeled retrospective cohort (evaluation block and artifact lists split);
-  the TKG store now stamps fresh databases with `meta.schema_version` and
-  refuses to open legacy/unstamped/mismatched stores with an actionable
-  message instead of silently mixing second-precision and microsecond rows
-  (no automatic migration, no data deletion; rebuild required);
-  provenance documentation corrected: manifest-level schema/adapter/code
-  versions are code/manifest identity, **not** per-assertion source versions;
-  `evidence_sha256` is a content hash, and the unimplemented per-assertion
-  `source_version` is marked explicitly unknown rather than claimed complete.
-- **TKG MVP** (`medradar/tkg/`): append-only bitemporal assertion store
-  (nodes + typed directed edges, stable `assertion_id` versioning, SQL
-  triggers forbidding UPDATE/DELETE on history), as-of query with
-  independent `known_at`/`valid_at` cutoffs (latest revision at `known_at`
-  selected before the valid-interval filter, so corrections/retractions
-  never resurrect old revisions), deterministic point-in-time export
-  (canonical JSON/JSONL + manifest with both cutoffs, schema/adapter/code
-  versions, evidence provenance and SHA256 content hash, no wall clock),
-  and a strictly read-only `events` adapter (source opened `mode=ro`,
-  import observation time as knowledge time, first_seen/available kept as
-  provenance metadata only). CLI: `python -m medradar.tkg
-  {demo,import,export,bench}` — fully offline, demo/bench synthetic.
-  31 new offline tests (`tests/test_tkg.py`); zero new dependencies.
-  See `docs/TKG.md`, `docs/research/TKG_ADR.md`, and the amended acceptance
-  contract in `docs/research/TKG_ACCEPTANCE.md` (Appendix).
-- **TKG hardening** (TKG-HARDEN-005 adversarial review of f1b8132; 11 new tests,
-  all synthetic): snapshot/export now emit an edge only when **both endpoints
-  are visible under the same `(known_at, valid_at)` cutoffs** (no dangling
-  references, no future-metadata backfill, no node resurrection); resubmit
-  guards reject `INSERT OR REPLACE`/upsert rewrites of `nodes`/`edges`/
-  `idempotency` history (guards stray SQL sessions, **not** the DB owner);
-  timestamps render as fixed-width microseconds (`tkg-schema-2`) so lexical
-  order equals chronological order; duplicate idempotent retries return the
-  exact original row per key. Report: `docs/research/TKG_HARDENING_REPORT.md`.
-## [0.3.0] — 2026-10-31 (frontier radar & research integrity)
-
-### Added
-- Public pre-decision device radar: FDA Advisory Committee schedules and briefing
-  materials, first-posted trials, SEC pre-submissions and designations. New
-  `medradar frontier` command writes `frontier.json` and `frontier.md`.
-- Hierarchical device registry: 50 tracks across 23 domains, including life
-  support, IVD (NGS/liquid biopsy/MRD/companion diagnostics/digital pathology),
-  BCI, neuromodulation, cardiovascular, imaging, robotics, SaMD/AI, renal and
-  diabetes. Every track exposes machine-readable `domain` and `frontier_keywords`.
-- Extreme-return audit: absolute SPY-abnormal returns above 100% are listed with
-  ticker/date/horizon and excluded from inference; unfiltered raw means remain
-  visible so broken prices cannot disappear into winsorisation.
-- Offline fixtures and regression tests for AdCom parsing, frontier domains,
-  regulatory taxonomy, public-time gates and extreme-return exclusions.
-
-### Fixed
-- `clinical_hold`, `refuse_to_file`, `crl`, `pre_submission` and `designation`
-  are independent categories. A "Pre-Submission for FDA Approval" headline no
-  longer counts as an approval, and designations no longer inflate approvals.
+- **Integration defect-fix pass (independent forensic audit, 2026-11-02):**
+  - **Python 3.10 CI blocker**: 1–5-digit fractional seconds (`.5Z`) raised on 3.10;
+    shared `medradar/tkg/_time.py` normalises 1–9 digits to 6 before parsing, used by
+    both the TKG store and the forecast registry.
+  - **Point-in-time corruption**: date-only timestamps bypassed the fixed-width
+    microsecond renderer (`…T00:00:00Z`), breaking same-second cuts and every
+    adapter-imported date-only row; both fast paths now render `.000000Z`.
+  - **Registry immutability hole**: `INSERT OR REPLACE` with a reused
+    `idempotency_key` and a new `prediction_id` could delete an unresolved forecast;
+    added a key-rebind `BEFORE INSERT` guard and `forecast_idempotency` ledger guards.
+    Owner-level raw SQL is still explicitly out of the threat model.
+  - **Leaky rolling-origin**: training at origin *t* used examples whose 12-month label
+    windows extended past *t*. Purged/embargoed training is now the default (holdout
+    PR-AUC 0.7924 → 0.7935; Brier 0.1687 → 0.1721; ECE 0.0605 → 0.0811; FPR 0.2416 →
+    0.2753); the old leaky variant is retained only as a labelled diagnostic block.
+  - **Rubber-stamp leakage audit**: replaced the self-declared `feature_available_at`
+    check with an independent as-of replay of all 21 features from source tables via a
+    separate SQL path (6,701 examples / 140,721 values / 0 mismatches) plus positive and
+    negative controls; docs state it is a consistency audit, not proof of no leakage.
+  - **Missing baselines**: constant / company / track / per-pair base-rate baselines and
+    a deterministic paired bootstrap CI are now reported with every comparison.
+  - **Forecast evidence labelling**: records now carry `raw_value`, `standardized_value`
+    and `median_imputed` alongside the standardized contribution.
+  - **AdCom collector no longer fakes success**: FDA renders the calendar `<tbody>`
+    client-side, so a static fetch parses 0 rows; collect now returns
+    `status="empty"`/`"source_changed"` with a warning, parses "Content current as of"
+    from `<time datetime>`, and documents the source as experimental.
+  - **Case-library price basis**: entry now uses `prices.adjusted_open` (exit already
+    used `adjusted_close`), removing split/dividend fake alpha; 2:1-split regression test.
+  - **Timestamp gate documented as prospective-only**: the shipped snapshot keeps
+    legacy `quality='date'` + `published_at=event_date` rows; `medradar audit` reports a
+    read-only `legacy_timestamp_promotions` count and `docs/DATA.md` gives the manual
+    (never auto-run) demotion recipe.
+  - **Repository hygiene**: duplicate `docs/docs/ASSUMPTIONS.md` removed and published
+    links rewritten; stale hardcoded test counts replaced by pointers to
+    `python -m medradar selftest`.
+- `clinical_hold`, `refuse_to_file`, `crl`, `pre_submission` and `designation` are
+  independent categories: a "Pre-Submission for FDA Approval" headline no longer counts
+  as an approval, and designations no longer inflate approvals.
 - Historical decision dates are no longer silently promoted to `published_at` or
-  `available_at`. Missing, `estimated` and `unknown` public times remain useful
-  for descriptive analysis but are excluded and counted in return studies.
-- SEC filing dates and ClinicalTrials.gov `first_posted` dates are preserved as
-  real public dates; openFDA 510(k)/PMA decision dates stay non-tradable unless
-  a genuine public timestamp is available. Signal generation applies the same gate
-  instead of falling back to `event_date`.
-- Device and diagnostic-test interventions now use the device taxonomy before the
-  drug therapeutic-area fallback. Drug-only trials and non-device SEC designations
-  no longer leak into the device frontier feed.
-- Documentation no longer presents the old, mixed-category CRL study as a current
-  result. Historical snapshot figures are labelled as such and require a rebuild.
+  `available_at`; missing/`estimated`/`unknown` public times stay descriptive only and
+  are excluded and counted in return studies. openFDA 510(k)/PMA decision dates stay
+  non-tradable unless a genuine public timestamp exists.
+- Device and diagnostic-test interventions use the device taxonomy before the drug
+  therapeutic-area fallback; drug-only trials and non-device SEC designations no longer
+  leak into the device frontier feed.
+- Foundation review (FOUNDATION-INTEGRATE-007) and TKG hardening (TKG-HARDEN-005):
+  positive resolutions cannot record a future `event_time`; `window_end` is always
+  derived from the horizon in calendar months; retrospective fixtures are excluded from
+  the prospective headline; TKG snapshots omit edges unless both endpoints are visible
+  under the same cutoffs; resubmit guards reject rewrites (not forged appends); duplicate
+  idempotent retries return the exact original row.
 
 ### Scope boundary
-- MedRadar monitors public pre-decision evidence only. It does not claim access to
+- MedRadar monitors public pre-decision evidence only; it does not claim access to
   confidential pending 510(k)/PMA reviews.
+- SEC revenue stays consolidated company facts (never product-line sales); USAspending
+  amounts are obligations, not revenue, and the current snapshot is not usable for
+  historical point-in-time claims; a regulatory milestone is a lagging proxy for R&D.
+- The Market-to-R&D experiment measures association and incremental prediction of
+  continued public activity; it does not establish a causal market→R&D mechanism, and a
+  single 307-row holdout is not proof of stability either way.
 
 ## [0.2.2] — 2026-10-31
 

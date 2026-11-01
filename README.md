@@ -11,8 +11,11 @@ brief: which technology tracks are heating up, which majors are quietly re-alloc
 portfolio, what appeared for the first time, and where China still has a gap.
 
 > The stable core through `v0.2.2` was built with DeepSeek Harness using `deepseek-flash`.
-> The independent Market-to-R&D research branch is attributed separately; see
-> [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md).
+> The research foundation (`medradar/tkg`, `forecast_registry`) and the Market-to-R&D lane were
+> authored in independent Kimi Code sessions; `v0.3.0` consolidates their branches after an
+> independent forensic audit and defect-fix pass. Authorship is recorded per increment in
+> [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md) and the merge/audit/fix decisions in
+> [docs/INTEGRATION_2026-11-02.md](docs/INTEGRATION_2026-11-02.md).
 
 > 中文文档 → [README.zh-CN.md](README.zh-CN.md) · Methodology → [docs/METHODS.md](docs/METHODS.md)
 
@@ -30,8 +33,10 @@ portfolio, what appeared for the first time, and where China still has a gap.
 | Replay | **400-step, 7-year timeline** (2019–2026) with 10/25/50 bps cost tiers; 1-minute fills for the last 7 days |
 | Frontier radar | **50 device tracks across 23 domains**; AdCom schedules/materials, first-posted trials, pre-submissions and designations in one feed |
 | Research integrity | Clinical holds, RTF, CRL, pre-submissions and designations are separate; absolute abnormal returns above 100% are audited and excluded from inference |
+| Market-to-R&D | **6,701 point-in-time company–track examples** (25 quarterly origins) from 55,090 FDA events + 43,420 SEC facts + 3,453 procurement awards; Reverse R&D baseline, honest negative result (below) |
+| Research infrastructure | Bitemporal knowledge store (valid time vs knowledge time) and an immutable forecast registry with as-of scoring; deterministic point-in-time export |
 | Simulated book | in-sample, long-only, not investment advice |
-| Tests | **554 offline tests**, no network, no API key |
+| Tests | **578 offline tests**, no network, no API key |
 | Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |
 | Products | 204 families, **2,740 Chinese product names** |
 | Research | event-time model, point-in-time signals, block bootstrap, Holm correction |
@@ -98,6 +103,12 @@ cardiovascular, imaging, robotics, SaMD/AI, renal and diabetes.
 This is public-source monitoring, not a pending-application oracle. Non-public 510(k)/PMA review
 status is confidential, so the machine-readable output explicitly sets
 `pending_510k_pma_monitoring=false` rather than manufacturing a pipeline from decision dates.
+
+**Known limitation (2026-11):** FDA renders the Advisory Committee calendar rows client-side, so a
+static fetch currently parses zero meetings. `collect --sources adcom` therefore returns
+`status="empty"`/`"source_changed"` with a warning instead of a silent `"ok"`, and the source is
+marked experimental in [docs/DATA.md](docs/DATA.md). The other frontier inputs (first-posted trials,
+8-K pre-submissions/designations) are unaffected.
 
 ## Live lane: event alerts + simulated trading (5–15 min)
 
@@ -264,24 +275,59 @@ Full definitions, assumptions and threats to validity: [docs/METHODS.md](docs/ME
 | **Survivorship** | tickers without price coverage are flagged, not silently dropped |
 | **Reproducible calibration** | `medradar.calibration` replays recorded LLM responses by content fingerprint; drift makes the score script fail |
 | **Assumption registry** | every modelling assumption is listed with status in [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md) |
+| **Bitemporal separation** | every TKG assertion carries `valid_time` and a knowledge time (`recorded_at`); as-of queries never return a fact whose knowledge time is later than the cutoff, and corrections never resurrect old revisions |
+| **Immutable forecasts** | the forecast registry is physically append-only (SQL triggers reject UPDATE/DELETE and key-rebind INSERT-OR-REPLACE); corrections are new versions; scoring uses only forecasts/resolutions known by `as_of` |
+| **Purged evaluation** | rolling-origin training uses only examples whose 12-month label window closed at or before the origin; the old leaky-label numbers are kept as a labelled diagnostic block, not as headline results |
+| **Independent leakage replay** | the Market-to-R&D audit re-derives all 21 features from the source tables through a separate as-of SQL path and compares them with the stored values (6,701 examples / 140,721 values / 0 mismatches), instead of re-reading a self-declared field |
+| **Naive baselines** | every forecast comparison includes constant / company / track / per-pair historical base-rate baselines with a paired bootstrap CI |
+| **Semantics guards** | SEC revenue stays consolidated company facts (never product sales); USAspending amounts are obligations, not revenue, and the current snapshot is excluded from historical gain claims |
 
 ## Market-to-R&D / Horizon forecasting
 
-The `feature/market-to-rd` research lane adds SEC XBRL Company Facts, USAspending awards,
-point-in-time company–track examples, rolling-origin Reverse R&D baselines and a persistent
+The research lane adds SEC XBRL Company Facts, USAspending awards, official openFDA bulk ingestion,
+point-in-time company–track examples, purged rolling-origin Reverse R&D baselines and a persistent
 12-month forecast registry. It predicts **future public R&D/regulatory milestones**, not stock
-returns or the unobservable date internal research began.
+returns and not the unobservable date internal research began.
 
 ```bash
+pip install -e '.[bulk]'          # only extra: ijson, for streaming the official openFDA ZIPs
+python -m medradar.intelligence.pipeline collect --source fda --months 120
 python -m medradar.intelligence.pipeline collect --source sec
 python -m medradar.intelligence.pipeline collect --source procurement --start-date 2016-01-01
 python -m medradar.intelligence.pipeline research --horizon 12
 ```
 
+Frozen real-data run (`experiments/reverse_rd_v1/`, rebuilt 2026-11-02): 55,090 in-window FDA
+events · 43,420 SEC facts over 32 companies · 3,453 procurement awards (obligations, 0 point-in-time
+usable) · 6,701 examples over 25 quarterly origins · holdout 2025-10-01 (307 rows / 129 positives).
+
+| Holdout metric (purged labels) | R&D only | R&D + consolidated financials |
+|---|---:|---:|
+| PR-AUC | 0.7935 | 0.7922 |
+| Brier ↓ | 0.1721 | 0.1721 |
+| ECE-10 ↓ | 0.0811 | 0.0737 |
+| FPR @ 0.5 ↓ | 0.2753 | 0.2640 |
+
+**The honest result is negative on two fronts.** Consolidated SEC financial features do not add a
+stable out-of-sample gain (holdout PR-AUC −0.0013; the small development gain does not replicate).
+And the headline PR-AUC is mostly persistence: a no-feature "this company–track pair historically
+produced events at rate x" baseline scores AP 0.7913 versus the model's 0.7935 — the paired
+bootstrap difference is +0.003 with a 95% CI of [−0.032, +0.037]. v1 predicts *continuation of
+public activity in an already-active pair*; it does not demonstrate foresight about first entry, and
+nothing here supports a claim that financial markets drive R&D.
+
+A separate two-layer research foundation sits under this lane: a **bitemporal knowledge store**
+(`medradar/tkg`) with independent valid-time / knowledge-time queries, deterministic point-in-time
+export and a read-only `events` adapter; and an **immutable forecast registry**
+(`medradar/forecast_registry.py`) with 3/6/12/24 calendar-month windows, append-only resolutions and
+as-of Brier / log-loss / ECE evaluation. Both are synthetic-test-first: they carry no real-data
+accuracy claim on their own.
+
 SEC revenue stays consolidated (never relabelled product sales). USAspending obligations are not
 revenue and its current snapshot is excluded from historical gain claims. See
-[Reverse R&D methodology](docs/REVERSE_RD.md), the [repository audit](docs/AUDIT_MARKET_TO_RD.md),
-and the frozen experiment configuration/results under `experiments/reverse_rd_v1/`.
+[Reverse R&D methodology](docs/REVERSE_RD.md), the [integration record](docs/INTEGRATION_2026-11-02.md),
+[docs/TKG.md](docs/TKG.md), [docs/FORECAST_REGISTRY.md](docs/FORECAST_REGISTRY.md), and the frozen
+experiment configuration/results under `experiments/reverse_rd_v1/`.
 
 ## Simulated US-equity study (not investment advice)
 
@@ -315,6 +361,11 @@ medradar/       standard-library-only package
   prices.py     Yahoo daily bars (research use)
   eventstudy.py abnormal-return study
   paper.py      simulate-only portfolio with frictions
+  tkg/          bitemporal store: valid-time vs knowledge-time, as-of query, deterministic PIT export
+  forecast_registry.py  append-only forecast ledger + as-of Brier/log-loss/ECE evaluation
+  intelligence/ Market-to-R&D lane: SEC XBRL, USAspending, openFDA bulk, PIT examples, Reverse R&D models
+  adcom.py      FDA Advisory Committee calendar (currently experimental: JS-rendered rows)
+  frontier.py   pre-approval frontier feed (AdCom + first-posted trials + 8-K pre-submissions)
 docs/           schema contract, methodology, GitHub Pages demo
 tests/          offline tests (synthetic fixtures, no network)
 ```
@@ -331,6 +382,16 @@ tests/          offline tests (synthetic fixtures, no network)
 
 ## Roadmap
 
+- [x] `v0.3.0` — consolidated research foundation (bitemporal TKG + immutable forecast registry) and
+  Market-to-R&D lane (SEC XBRL / USAspending / openFDA bulk, point-in-time dataset, purged
+  rolling-origin baseline, independent leakage replay, naive/persistence baselines)
+- [ ] Phase 1 — harder targets: first entry into a new technology track (censoring-aware) instead of
+  continuation only; ≥3 independent holdout windows; causal-hypothesis designs (DiD / synthetic control)
+- [ ] Phase 2 — patent (PatentsView) and publication (OpenAlex) features; market features from the
+  existing daily price table (12m return, volatility, drawdown, relative SPY/XBI, regime), all daily
+  point-in-time; then A–F ablation under the same purged protocol
+- [ ] Phase 3 — research agent over the TKG (multi-step evidence retrieval, counter-evidence search),
+  unified registry writes from the Horizon forecaster, continuous forecasting schedule
 - [ ] NMPA CSV importer UI + province-level gap analysis
 - [ ] FDA statistical-review PDF mining (trial-design red flags straight from FDA reviewers)
 - [ ] SHAP-style attribution for "why did this track's THI move"

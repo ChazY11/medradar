@@ -6,7 +6,9 @@
 > 把美国 FDA 的器械获批、药品批准、临床试验变成 **可量化、可复现、每周自动更新** 的中文产业情报。
 >
 > `v0.2.2` 及此前的稳定核心由 DeepSeek Harness 智能体团队使用 `deepseek-flash` 构建。
-> 独立的 Market-to-R&D 研究分支单独署名，详见 [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md)。
+> 研究底座（`medradar/tkg`、`forecast_registry`）与 Market-to-R&D 层由独立的 Kimi Code 会话完成；
+> `v0.3.0` 在独立取证审计与缺陷修复后合并这些分支。逐项署名见 [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md)，
+> 合并/审计/修复决策见 [docs/INTEGRATION_2026-11-02.md](docs/INTEGRATION_2026-11-02.md)。
 
 > 英文版 → [README.md](README.md) · 方法论 → [docs/METHODS.md](docs/METHODS.md)
 
@@ -24,7 +26,9 @@
 | 回放 | **400 步、2019–2026 七年时间轴**，10/25/50bps 三档成本；最近 7 天用 1 分钟成交 |
 | 前沿雷达 | **50 个器械细分赛道、23 个领域**；AdCom 日程/材料、试验首次公示、预申请与资格认定统一汇总 |
 | 研究完整性 | 临床暂停、拒绝受理、CRL、预申请与资格认定独立分类；绝对超额收益超过 100% 的案例单列审计并退出推断样本 |
-| 测试 | **554 个离线测试**，不联网、不需要 API key |
+| Market-to-R&D | 由 55,090 条 FDA 事件 + 43,420 条 SEC 财务事实 + 3,453 条采购授予构造 **6,701 个时点一致的样本**（25 个季度起点）；Reverse R&D 基线，负面结果如实报告（见下） |
+| 研究基础设施 | 双时态知识库（valid time / knowledge time）与不可篡改的预测登记簿，支持 as-of 查询和确定性 PIT 导出 |
+| 测试 | **578 个离线测试**，不联网、不需要 API key |
 
 > 数字每周都会变，价值在于每一个数字都能用 `python -m medradar run` 复现。
 
@@ -73,6 +77,11 @@ SEC 公告中的预申请、突破性器械/优先审评等资格认定。赛道
 
 这是一层**公开信息监测**，不是 pending 申请窥探器。未公开的 510(k)/PMA 审评状态依法不可见，
 系统明确返回 `pending_510k_pma_monitoring=false`，不会用决定日或宣传稿补造“在审管线”。
+
+**已知限制（2026-11）**：FDA 的咨询委员会日历表格由前端 JS 渲染，静态抓取解析出 0 条会议，
+因此 `collect --sources adcom` 现在返回 `status="empty"`/`"source_changed"` 并给出警告，
+不再静默报 `"ok"`；该数据源在 [docs/DATA.md](docs/DATA.md) 中标记为实验性。
+前沿层的其余输入（试验首次公示、8-K 预申请/资格认定）不受影响。
 
 ## 实时层：事件告警 + 模拟交易（5–15 分钟）
 
@@ -233,19 +242,45 @@ python -m medradar selftest      # 离线单测，不联网
 
 ## Market-to-R&D 与 Horizon 预测
 
-`feature/market-to-rd` 研究分支新增 SEC XBRL Company Facts、USAspending 合同授予、
-按时间一致原则构造的公司—赛道样本、rolling-origin Reverse R&D 基线，以及可持续核验的
+研究层新增 SEC XBRL Company Facts、USAspending 合同授予、官方 openFDA 批量流式入库、
+按时间一致原则构造的公司—赛道样本、purged rolling-origin Reverse R&D 基线，以及可持续核验的
 12 个月预测登记。预测对象是**未来公开可见的研发/监管里程碑**，不是股价，也不是无法公开观测的内部研发启动日。
 
 ```bash
+pip install -e '.[bulk]'          # 唯一新增可选依赖 ijson，用于流式解析官方 openFDA ZIP
+python -m medradar.intelligence.pipeline collect --source fda --months 120
 python -m medradar.intelligence.pipeline collect --source sec
 python -m medradar.intelligence.pipeline collect --source procurement --start-date 2016-01-01
 python -m medradar.intelligence.pipeline research --horizon 12
 ```
 
+冻结的真实数据实验（`experiments/reverse_rd_v1/`，2026-11-02 重建）：窗口内 55,090 条 FDA 事件、
+32 家公司 43,420 条 SEC 财务事实、3,453 条采购授予（义务金额，0 条可作时点使用）、
+25 个季度起点共 6,701 个样本，holdout 为 2025-10-01（307 行 / 129 正例）。
+
+| holdout（purged 标签） | 仅 R&D | R&D + 合并财务 |
+|---|---:|---:|
+| PR-AUC | 0.7935 | 0.7922 |
+| Brier ↓ | 0.1721 | 0.1721 |
+| ECE-10 ↓ | 0.0811 | 0.0737 |
+| FPR @ 0.5 ↓ | 0.2753 | 0.2640 |
+
+**负面结论有两层，如实报告**：其一，SEC 合并财务特征没有带来稳定的样本外增益（holdout PR-AUC −0.0013，
+开发集的小增益没有复现）；其二，0.79 的 PR-AUC 主要来自"持续性"——一个不含任何特征的
+"该 company–track 历史事件率"基线就能拿到 AP 0.7913，模型为 0.7935，配对 bootstrap 差值
++0.003，95% CI [−0.032, +0.037]。v1 预测的是**已活跃 pair 是否继续出现公开活动**，
+不构成对"首次进入"的预测能力，也不支持"资本市场驱动研发"的因果结论。
+
+研究层下还有两个底座：**双时态知识库**（`medradar/tkg`，独立的 valid-time / knowledge-time 查询、
+确定性 PIT 导出、只读 events 适配器）与**不可篡改预测登记簿**（`medradar/forecast_registry.py`，
+3/6/12/24 日历月窗口、追加式结果修订、as-of Brier/log-loss/ECE 评估）。两者以合成数据测试为主，
+本身不附带任何真实数据准确率声明。
+
 SEC 营收始终保持公司合并口径，不会冒充产品或器械业务收入。USAspending 合同授予金额不等于营收，
 其当前快照不参与历史增益结论。完整口径见 [Reverse R&D 方法](docs/REVERSE_RD.md)、
-[仓库审计](docs/AUDIT_MARKET_TO_RD.md)，冻结实验配置与真实结果位于 `experiments/reverse_rd_v1/`。
+[集成记录](docs/INTEGRATION_2026-11-02.md)、[docs/TKG.md](docs/TKG.md)、
+[docs/FORECAST_REGISTRY.md](docs/FORECAST_REGISTRY.md)，冻结实验配置与真实结果位于
+`experiments/reverse_rd_v1/`。
 
 ## 模拟美股：定位与边界
 
@@ -274,6 +309,11 @@ medradar/       纯标准库实现
   prices.py     Yahoo 日线（研究用途）
   eventstudy.py 事件研究
   paper.py      含摩擦成本的模拟盘
+  tkg/          双时态知识库：valid time / knowledge time、as-of 查询、确定性 PIT 导出
+  forecast_registry.py 追加式预测账本 + as-of Brier/log-loss/ECE 评估
+  intelligence/ Market-to-R&D 层：SEC XBRL、USAspending、openFDA 批量、时点样本、Reverse R&D 模型
+  adcom.py      FDA 咨询委员会日历（目前实验性：表格由前端 JS 渲染）
+  frontier.py   获批前前沿信号（AdCom + 试验首次公示 + 8-K 预申请）
 docs/           数据契约、方法论、GitHub Pages 演示
 tests/          离线测试（合成 fixture，不联网）
 ```
@@ -288,6 +328,14 @@ tests/          离线测试（合成 fixture，不联网）
 
 ## 路线图
 
+- [x] `v0.3.0` —— 合并研究底座（双时态 TKG + 不可篡改预测登记簿）与 Market-to-R&D 层
+  （SEC XBRL / USAspending / openFDA 批量、时点数据集、purged 滚动起点基线、独立泄漏重放、朴素/persistence 基线）
+- [ ] Phase 1 —— 更难的目标：企业**首次进入**某技术赛道（含左删失），而非只看持续性；≥3 个独立 holdout 窗口；
+  因果假设设计（DiD / 合成控制）
+- [ ] Phase 2 —— 专利（PatentsView）与论文（OpenAlex）特征；基于现有日线价格表的市场特征
+  （12 个月收益、波动、回撤、相对 SPY/XBI、市场状态），全部按日 point-in-time；然后跑 A–F 消融
+- [ ] Phase 3 —— 建立在 TKG 之上的研究 Agent（多步证据检索、反面证据搜索）、Horizon 预测统一写入登记簿、
+  持续预测调度
 - [ ] NMPA CSV 导入向导 + 省级空白度
 - [ ] FDA 统计审评 PDF 挖掘（直接从 FDA 统计师笔下提取"试验设计红旗"）
 - [ ] 赛道 THI 变动的归因分析
