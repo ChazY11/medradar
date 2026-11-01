@@ -77,6 +77,7 @@ def research(args: argparse.Namespace) -> dict[str, Any]:
         })
         examples = _examples(store)
         report = run_backtest(examples, dataset["base_features"], dataset["financial_features"],
+                              horizon_months=args.horizon,
                               data_provenance=provenance)
         report["dataset"] = {key: value for key, value in dataset.items() if key != "examples"}
         report["dataset"]["stored_examples"] = stored

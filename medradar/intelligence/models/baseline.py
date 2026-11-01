@@ -95,12 +95,35 @@ class LogisticBaseline:
         return [_sigmoid(self.intercept + sum(w * value for w, value in zip(self.weights, row))) for row in x]
 
     def contributions(self, row: dict[str, Any]) -> list[dict[str, Any]]:
+        """Per-feature evidence with explicit raw and standardized scales.
+
+        ``contribution`` is ``coefficient * standardized_value``, i.e. per one
+        training-standard-deviation change, not per raw unit. ``value`` is kept
+        as an alias of ``raw_value`` for backward compatibility; a null raw
+        value means the training median was imputed and ``median_imputed`` is
+        true (such a row still has a nonzero ``standardized_value`` and
+        ``contribution``).
+        """
         design = self._design([row])[0]
         values = []
         for j, name in enumerate(self.feature_names):
-            values.append({"feature": name, "contribution": self.weights[j] * design[j],
-                           "value": row.get(name), "coefficient": self.weights[j]})
+            raw = row.get(name)
+            values.append({
+                "feature": name, "contribution": self.weights[j] * design[j],
+                "value": raw, "raw_value": raw, "standardized_value": design[j],
+                "median_imputed": self._imputed(row, name),
+                "coefficient": self.weights[j],
+            })
         return sorted(values, key=lambda item: abs(item["contribution"]), reverse=True)
+
+    def _imputed(self, row: dict[str, Any], name: str) -> bool:
+        value = row.get(name)
+        if value is None:
+            return True
+        try:
+            return not math.isfinite(float(value))
+        except (TypeError, ValueError):
+            return True
 
     def to_dict(self) -> dict[str, Any]:
         return {
