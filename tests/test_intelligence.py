@@ -1,14 +1,18 @@
 """Offline tests for Market-to-R&D ingestion, timing, models and registry."""
 from __future__ import annotations
 
+import io
 import json
 import tempfile
 import unittest
+import urllib.error
 from datetime import date
 from pathlib import Path
+from unittest.mock import patch
 
 from medradar.config import load_companies
 from medradar.db import DB, make_event_id
+from medradar.http import Fetcher
 from medradar.intelligence.evaluation.backtesting import run_backtest
 from medradar.intelligence.evaluation.leakage_audit import audit_examples
 from medradar.intelligence.evaluation.metrics import evaluate, pr_auc
@@ -47,6 +51,35 @@ class SourceTests(unittest.TestCase):
         self.assertAlmostEqual(after["fin_rd_intensity"], 0.9)
         rows.append({**common, "tag": "ResearchAndDevelopmentExpense", "value": 900.0, "available_at": "2025-01-01"})
         self.assertEqual(financial_features(rows, "2024-02-15"), before)
+
+    def test_post_retry_preserves_method_and_body(self) -> None:
+        requests = []
+
+        def respond(request, timeout):
+            requests.append(request)
+            if len(requests) == 1:
+                raise urllib.error.HTTPError(request.full_url, 500, "retry", {}, io.BytesIO(b"error"))
+
+            class Response:
+                def __enter__(self):
+                    return self
+
+                def __exit__(self, *exc):
+                    return None
+
+                def read(self):
+                    return b'{"ok": true}'
+
+            return Response()
+
+        with patch("medradar.http.urllib.request.urlopen", side_effect=respond):
+            result = Fetcher(min_interval=0).post_json(
+                "https://example.test/awards", {"x": 1}, retries=1, backoff=0,
+            )
+        self.assertEqual(result, {"ok": True})
+        self.assertEqual([request.method for request in requests], ["POST", "POST"])
+        self.assertTrue(requests[0].data)
+        self.assertEqual(requests[1].data, requests[0].data)
 
     def test_procurement_is_not_revenue_or_pit(self) -> None:
         row = normalize_award({
