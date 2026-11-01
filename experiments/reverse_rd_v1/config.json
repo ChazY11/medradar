@@ -1,0 +1,31 @@
+{
+  "experiment": "reverse_rd_v1",
+  "frozen_before_holdout": "2026-11-01",
+  "target": "Any material public FDA 510(k) or original/panel-track PMA activity for an already-active company-track pair during the next 12 months",
+  "cutoff_frequency": "quarterly",
+  "horizon_months": 12,
+  "minimum_train_origins": 3,
+  "holdout": "last chronological origin; excluded from model and feature selection",
+  "split": "expanding-window rolling-origin, no random temporal split",
+  "algorithm": {
+    "name": "logistic_regression_batch_gd",
+    "epochs": 180,
+    "learning_rate": 0.15,
+    "l2": 1.0,
+    "standardization": "training origins only",
+    "missing_values": "training median plus missing indicator"
+  },
+  "ablations": {
+    "rd_only": "ten R&D/regulatory history features",
+    "rd_financial": "R&D features plus eleven consolidated SEC Company Facts features"
+  },
+  "excluded_from_historical_gain": {
+    "procurement": "USAspending current snapshot cannot reconstruct first-publication time",
+    "market": "not included in v1",
+    "patent": "not included in v1",
+    "publications": "not included in v1",
+    "jobs": "not included in v1"
+  },
+  "metrics": ["PR-AUC", "Brier", "ECE-10", "FPR@0.5", "Precision@ceil(10%N)", "mean lead time among positive targets", "origin PR-AUC stability"],
+  "notes": "This is a public-milestone proxy model, not a measurement of internal R&D start dates or a causal claim."
+}
