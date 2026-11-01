@@ -3071,8 +3071,7 @@ def _svg_family_bars(families: Sequence[Mapping[str, Any]], limit: int = 12) -> 
         parts.append(f'<text class="tick" x="0" y="{y + 14}">{_h(name)}</text>')
         parts.append(f'<rect class="bar" x="{bar_x}" y="{y + 3}" width="{length:.1f}" height="15" rx="2" fill="{colour}"/>')
         baseline_x = bar_x + usable / maximum
-        if baseline_x <= bar_x + usable:
-            parts.append(f'<line class="baseline" x1="{baseline_x:.1f}" y1="{y}" x2="{baseline_x:.1f}" y2="{y + 21}" />')
+        parts.append(f'<line class="baseline" x1="{baseline_x:.1f}" y1="{y}" x2="{baseline_x:.1f}" y2="{y + 21}" />')
         value_text = f"THI {_fmt_thi(thi)}" if thi is not None else "THI 暂无数据"
         parts.append(
             f'<text class="val" x="{bar_x + length + 8:.1f}" y="{y + 14}">{_h(value_text)}　'
