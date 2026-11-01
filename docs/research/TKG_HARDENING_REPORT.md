@@ -56,8 +56,12 @@
 - **断言粒度**：ADR D2/TKG.md 曾称"每条关系/属性是独立版本谱系"，实现实为
   "每节点身份一条谱系（属性整体版本化）+ 每有向边身份一条谱系"。已按实现更正文档，
   未实现属性级断言（"无属性级 diff"在 TKG.md 早已声明，现与 ADR 一致）。
-- **`source_version`**（验收 C2 证据五元组之一）：实现无逐断言该列；源版本标识由 manifest 级
-  `schema_version`/`adapter_version`/`code_version` 承担，逐条选中证据保留
+- **`source_version`**（验收 C2 证据五元组之一，**FOUNDATION-INTEGRATE-007 如实更正**）：
+  实现**未存储**逐断言该列；manifest 级 `schema_version`/`adapter_version`/`code_version`
+  是**代码与 manifest 身份，不构成源数据版本等价物**（此处更正本报告早期"由 manifest
+  版本承担"的过强表述）。`evidence_sha256` 是**内容哈希**，不是源修订号；缺省一律视为
+  **显式 unknown**。若某条断言的源修订号关键，由调用方显式写入 `source_locator`/`attrs`
+  （随导出保留）。逐条选中证据保留
   `assertion_id`/`source_locator`/`evidence_sha256`/`evidence_kind`。验收附录新增 O7–O9
   记录本次加固合同（O7 端点可见性、O8 重提交守卫、O9 微秒时间戳）。
 

@@ -1,0 +1,10 @@
+FOUNDATION-INTEGRATE-007 adversarial probes - 2026-11-01T03:02:39Z
+command: PYTHONPATH=. python docs/research/foundation_probe.py
+---
+[PASS] probe_raw_connection_tamper: ok: stray raw connections cannot UPDATE/DELETE/OR REPLACE either ledger
+[PASS] probe_artifact_stable_across_corrections: ok: artifact hash stable across later corrections; as-of view pins original outcome
+[PASS] probe_independent_known_value_scoring: ok: Decimal-recomputed brier=0.075 log_loss=0.299001 ece=0.250 match implementation
+[PASS] probe_snapshot_tamper_detection: ok: snapshot content tamper detected at registration (verified_local vs declared)
+[PASS] probe_demo_artifact_reproducible: ok: demo artifact hash reproducible across runs: 2ff5ca4226982621938d06b1019892c90291474cfceb242daff861e58700f288
+[PASS] probe_tkg_stamped_reopen_and_legacy: ok: fresh TKG store stamped tkg-schema-2 and reopens cleanly
+ALL PROBES PASSED

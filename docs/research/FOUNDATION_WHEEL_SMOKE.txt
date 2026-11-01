@@ -1,0 +1,20 @@
+=== wheel smoke from nonrepo cwd: /tmp/foundation_cwd ===
+--- forecast demo (run 1)
+synthetic: True counts: {'total_forecasts': 3, 'eligible': 1, 'unresolved': 1, 'censored': 1} artifact: 2ff5ca4226982621938d06b1019892c90291474cfceb242daff861e58700f288
+--- forecast demo (run 2, hash must match)
+synthetic: True counts: {'total_forecasts': 3, 'eligible': 1, 'unresolved': 1, 'censored': 1} artifact: 2ff5ca4226982621938d06b1019892c90291474cfceb242daff861e58700f288
+--- tkg demo
+   "GLOBEX": "private"
+  }
+ }
+}
+--- tkg bench (synthetic reproducibility/performance smoke)
+ "write_seconds": 0.1091,
+ "export_seconds": 0.0526,
+ "deterministic_repeat_export": true,
+ "snapshot_sha256": "1091db6eae483b9c946b30d1ee0848bb109374d59d87bab549171711c5dee49d",
+ "python": "3.12.10"
+}
+--- evaluation.json hash from wheel demo (eval1 vs eval2)
+eval1 b8d9bf0faf513d29d0e3090f1885cc666965a077f6d5a13f7d60af7adf4639a1
+eval2 b8d9bf0faf513d29d0e3090f1885cc666965a077f6d5a13f7d60af7adf4639a1

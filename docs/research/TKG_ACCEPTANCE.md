@@ -43,10 +43,13 @@
 - `payload TEXT NOT NULL`（原始断言 JSON）
 - 单调序号：`(entity_type, entity_id, recorded_at, seq)` 唯一；同刻多版本按 `seq` 定序
 
-**C2 证据五元组（每条记录必备，缺一则拒绝写入）**
+**C2 证据字段（`source_locator`/`content_hash`/`evidence_type`/`confidence` 必备，缺一则拒绝写入）**
 `source_locator`（URL/库表行号/文件名）、`content_hash`（payload 的 sha1）、
 `evidence_type`（`source_observed | inferred | reconstructed`）、
-`confidence`（0..1 实数）、`source_version`（源 schema/快照版本标识，无则显式 `"unknown"`）。
+`confidence`（0..1 实数）、`source_version`（**未实现**：实现不存储逐断言源版本，缺省视为显式
+`"unknown"`；manifest 级 schema/adapter/code 版本是代码与 manifest 身份，不声称等价于源数据版本；
+`content_hash`/`evidence_sha256` 是内容哈希，不是源修订号。源修订号关键时由调用方显式写入
+`source_locator`/`attrs`，随导出保留）。
 `evidence_type != source_observed` 时，公开时间字段必须显式标注为推断（`public_time_basis`）。
 
 **C3 写入规则**

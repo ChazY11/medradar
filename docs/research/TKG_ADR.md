@@ -39,9 +39,13 @@ KIMI_AUDIT 的 H1/H2 指出：现有 `events` 表虽有四列时态字段，但 
   diff、无属性级独立谱系（"属性级断言"不在本 MVP 范围，旧表述已按实现更正）。
 - 图模型：显式节点（`node_type`/`node_id`，属性同样版本化）+ 类型化有向边
   （`edge_type`, `src -> dst`），实体/关系词表可扩展，无硬编码业务关系。
-- 每条断言必备证据五元组：`source_locator`、`evidence_sha256`（载荷规范序列化
-  的 SHA256）、`evidence_kind`（`source_observed|inferred|reconstructed`）、
+- 每条断言的**必备证据字段**：`source_locator`、`evidence_sha256`（载荷规范序列化
+  的 SHA256，属**内容哈希**而非源修订号）、`evidence_kind`（`source_observed|inferred|reconstructed`）、
   有限 `confidence ∈ [0,1]`、`public_time(_basis)`（可选）。
+  验收规范 C2 中的逐断言 **`source_version` 未实现**：不存储、不拒绝，缺省视为显式
+  "unknown"；manifest 级 `schema_version`/`adapter_version`/`code_version` 是代码与
+  manifest 身份，**不声称**等价于源数据版本。需要源修订号时由调用方显式写入
+  `source_locator`/`attrs`（随导出保留）。
 - 边的导出**只携带端点引用**；节点元数据一律来自同一组切割线下选中的节点版本，
   因此历史导出不可能泄漏未来的节点属性。
 

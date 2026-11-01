@@ -78,9 +78,16 @@ print(doc["manifest"]["snapshot_sha256"])
   "属性级独立断言"未实现，文档与实现均以本条为准。
 - **时间戳渲染**：存储/比较的规范渲染为固定 6 位微秒 UTC
   （`YYYY-MM-DDTHH:MM:SS.ffffffZ`），保证字典序 = 时间序；schema 版本
-  `tkg-schema-2` 起生效（旧 `tkg-schema-1` 库请重建，不自动迁移）。
-- **证据 `source_version`**：验收规范 C2 的逐断言 `source_version` 未单列；源版本
-  标识由 manifest 级 `schema_version`/`adapter_version`/`code_version` 承担，
+  `tkg-schema-2` 起生效（旧 `tkg-schema-1` 库请重建，不自动迁移；打开时被
+  schema 版本门禁显式拒绝，见上条）。
+- **schema 版本门禁**：新库创建即永久写入 `meta.schema_version`；打开旧库时
+  校验该戳——缺失（schema-1 时代未打戳）或不匹配一律**拒绝打开**并给出可执行
+  提示（重建、不自动迁移、不删数据），不会把微秒级 schema-2 与秒级旧行混存。
+- **证据 `source_version`**：验收规范 C2 的逐断言 `source_version` **未实现**——
+  不存储、不拒绝，缺省视为**显式 unknown**。manifest 级
+  `schema_version`/`adapter_version`/`code_version` 是**代码与 manifest 身份**，
+  **不声称**等价于源数据版本；`evidence_sha256` 是**内容哈希**，不是源修订号。
+  源修订号关键时由调用方显式写入 `source_locator`/`attrs`（随导出保留）。
   逐条选中证据保留 `assertion_id`/`source_locator`/`evidence_sha256`/`evidence_kind`。
 - **单写者假设**：时钟单调锚点假定单进程写入；多进程并发写需外部串行化。
 - **导出是数据集快照**，不是预测基准；哈希稳定性仅保证"切割线之后的写入"
@@ -91,10 +98,11 @@ print(doc["manifest"]["snapshot_sha256"])
 
 ## 测试
 
-`tests/test_tkg.py`：42 个离线测试覆盖迟到、修正、撤销、先选后滤、时钟时区/
+`tests/test_tkg.py`：46 个离线测试覆盖迟到、修正、撤销、先选后滤、时钟时区/
 回退（含同秒微秒回退）、未来元数据泄漏、证据校验、原子回滚、幂等/冲突、SQL
 不可变守卫（含 `INSERT OR REPLACE`/upsert 绕过尝试）、端点可见性合同（撤销/
-未生效/缺失端点）、固定哈希向量、只读适配器、导出哈希稳定性、CLI 端到端。运行：
+未生效/缺失端点）、固定哈希向量、schema 版本门禁（legacy/未打戳/不匹配拒绝且
+不损数据）、只读适配器、导出哈希稳定性、CLI 端到端。运行：
 
 ```bash
 python -m medradar selftest     # 全量 482 tests OK (skipped=3)
