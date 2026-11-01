@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from ..config import CACHE_DIR, DEFAULT_DB, OUT_DIR
+from ..config import CACHE_DIR, DEFAULT_DB, OUT_DIR, load_companies
 from ..db import DB
 from ..http import Fetcher
 from ..live import SEC_UA
@@ -15,11 +15,18 @@ from .evaluation.backtesting import run_backtest
 from .evaluation.leakage_audit import audit_examples
 from .entities.technology_mapping import materialize_regulatory_edges
 from .features.demand_features import procurement_summary
+from .features.market_features import attach_market_features
+from .features.publication_features import attach_publication_features
 from .features.research_features import DATASET_VERSION, build_examples
 from .forecasting.calibration import calibration_report
 from .forecasting.horizon import create_forecasts, verify_forecasts
-from .sources import openfda_bulk, procurement_us, sec_financials
+from .sources import market_data, openfda_bulk, patents, procurement_us, publications, sec_financials
 from .storage import IntelligenceStore
+
+
+def _companies() -> list[dict[str, Any]]:
+    """Device company registry as plain dicts (key/name_en/aliases/ticker)."""
+    return [dict(row) for row in load_companies("device").all()]
 
 
 def _store(path: str | Path) -> IntelligenceStore:
@@ -55,6 +62,18 @@ def collect(args: argparse.Namespace) -> dict[str, Any]:
             result["sources"]["procurement_us"] = procurement_us.collect(
                 store, fetcher, companies=companies, start_date=args.start_date,
                 end_date=args.end_date, max_pages_per_company=args.max_pages)
+        if args.source in ("market", "all"):
+            if not args.prices_db:
+                raise SystemExit("--prices-db is required for --source market (base MedRadar prices table)")
+            result["sources"]["market_data"] = market_data.collect(
+                store, args.prices_db, _companies())
+        if args.source in ("publications", "all"):
+            result["sources"]["publications"] = publications.collect(
+                store, _companies(), offline=args.offline,
+                max_requests=args.max_publication_requests)
+        if args.source in ("patents", "all"):
+            result["sources"]["patents"] = patents.collect(
+                store, _companies(), fetcher=fetcher if not args.offline else None)
         result["request_stats"] = fetcher.stats
     write_json(args.out, result)
     return result
@@ -110,11 +129,16 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="MedRadar Market-to-R&D research pipeline")
     sub = parser.add_subparsers(dest="command", required=True)
     collector = sub.add_parser("collect", help="collect SEC financials and/or USAspending awards")
-    collector.add_argument("--source", choices=("fda", "sec", "procurement", "all"), default="all")
+    collector.add_argument("--source", choices=("fda", "sec", "procurement", "market",
+                                                "publications", "patents", "all"), default="all")
     collector.add_argument("--db", default=str(DEFAULT_DB))
     collector.add_argument("--months", type=int, default=120, help="FDA bulk history window")
     collector.add_argument("--companies", help="comma-separated company keys; default is the supported registry")
     collector.add_argument("--limit", type=int, default=0, help="maximum SEC companies, 0=all")
+    collector.add_argument("--prices-db", default=None,
+                           help="base MedRadar SQLite file holding the `prices` table (market import, read-only)")
+    collector.add_argument("--max-publication-requests", type=int, default=None,
+                           help="cap OpenAlex requests (default: all companies)")
     collector.add_argument("--start-date", default="2016-01-01")
     collector.add_argument("--end-date", default=None)
     collector.add_argument("--max-pages", type=int, default=2)
