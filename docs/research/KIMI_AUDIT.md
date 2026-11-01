@@ -10,7 +10,7 @@
 
 ## 0. 执行摘要（STATUS: PASS，附条件）
 
-MedRadar 是本次审计见过的**双时态纪律最好的同类研究仓库之一**：`events` 表显式区分
+MedRadar 具备少见的显式双时态字段设计：`events` 表显式区分
 `event_date / published_at / first_seen_at / available_at / timestamp_quality`（`medradar/db.py:73-79`），
 回放引擎有硬前视断言（`replay.py:1583-1585`，`fill_time > available_at` 违者拒单并计数），
 实时通道是真双时态（`live_alerts.event_time` + `detected_at`，`live.py:768-783`），
@@ -65,7 +65,7 @@ OK (skipped=3)                           # 与 README "440 offline tests" 声明
 - 实时通道：`test_stale_quote_blocks_entry`、`test_quote_before_news_is_rejected`、`test_cash_never_negative_after_slippage`、`test_interrupted_fill_rolls_back_and_is_not_masked`（`tests/test_live.py`）
 - 校准回放：`ReplayJudge` 顺序无关、缺录音即 raise、禁硬编码判定、字节级复现（`tests/test_stats.py:524-910`）
 
-**CI**：`ci.yml` 三 job × py3.10/3.11/3.12 + windows，全程零网络（连 demo 都用提交内快照）；
+**CI**：`ci.yml` 三 job × py3.10/3.11/3.12 + windows；测试与 demo 阶段零网络（demo 用提交内快照），`pip install .` 与 `weekly.yml`/`live.yml` 需要网络；
 `weekly.yml` 联网重建（openFDA 免费配额）；`live.yml` 仅手动触发（cron 被有意注释，附理由）。
 `test_release.py` 守卫版本一致与 README 测试数区间。
 
@@ -86,11 +86,14 @@ OK (skipped=3)                           # 与 README "440 offline tests" 声明
 
 ### 高
 
-- **H1 `available_at` 默认塌缩 + 质量标级虚高** — `db.py:489-494`（默认 `available_at=event_date, quality='date'`）；
+- **H1 `available_at` 写入塌缩 + 质量标级虚高 + 缺知识时钟查询模式** — `db.py:489-494`（默认 `available_at=event_date, quality='date'`）；
   `collect_device.py:679-694`、`collect_drug.py:153-160`、`nmpa.py:201-222`、`clinical.py:217-234`（采集器均不设 `published_at/available_at`）。
-  后果：回放/事件研究时钟从决策日+1 起跳，比真实可获知早 2–12 天（openFDA 滞后）。
-  缓解（日内扩张到 23:59:59、`_first_seen_lags` 披露）只吸收同日误差，不吸收跨日源滞后；
-  且被默认标成 `'date'`（源观测）而非 `'estimated'`（推断），下游无法区分。
+  后果：回放/事件研究时钟从决策日+1 起跳。openFDA 记录的实际公开滞后（METHODS 称 2–12 天）**未经本项目测量**，
+  因此该偏差的方向已知、幅度未知——修复必须先测量（D2），测量前不得推断 lag 先验。
+  另外两个独立缺陷：被默认标成 `'date'`（源观测）而非 `'estimated'`（推断），下游无法区分；
+  `first_seen_at` 记录了知识时间但**没有任何严格知识时钟查询模式**消费它（回放仅以 `_first_seen_lags` 诊断）。
+  注意：公开可得时间早于系统获知时间（`available_at < first_seen_at`）本身**完全合法**（信息先公开、后被抓取），
+  不得以此单独判异常；严格系统知识查询应门控在 `first_seen_at` 上，公开时间重建须另立名目并有源/版本证据支撑。
 - **H2 价格层单时态 + 历史重述 + 无退市建模** — `db.py:86-96,544-548`；`prices.py:8-18,187-214,291-293,343-345`。
   `adj_close` 重述使同一回测在拆股前后跑出不同历史成交价；退市票 404 静默落入 `failed`。
   与 `cases.py:296-305,324` 结合产生**价格基 bug（H3）**。
@@ -114,7 +117,7 @@ OK (skipped=3)                           # 与 README "440 offline tests" 声明
 
 - **L1** `timestamp_quality` 写入默认 `'date'`（`db.py:492`）vs 读取默认 `'estimated'`（`analyze.py:90`）vs 回放逐条推断（`replay.py:288-308`）——同一行在不同路径质量等级不一致。
 - **L2** `signals.signal_id` 为位置序号（`analyze.py:677`），重跑重编号，`created_at` 被 `INSERT OR REPLACE` 改写；信号溯源跨 run 不稳定（`db.py:561-589`）。
-- **L3** `audit.py:44-48,95-110` 缺 `available_at ≥ event_date`、缺 `available_at` 未来值、缺 `available_at − event_date` 滞后分布检查——H1 的天然侦测点未设防。
+- **L3** `audit.py:44-48,95-110` 缺 `available_at < event_date`、`available_at > today` 检查与 `available_at − event_date` 滞后分布测量——H1 的天然侦测点未设防。明确：`available_at < first_seen_at` **不是**异常（公开先于获知属正常），不得作为告警条件。
 - **L4** 样本切分键为 `event_date` 而非 `available_at`（`stats.py:1021` + `analyze.py:818`）：回填行可在阶段边界处把"后可知"事件放进前一折。
 - **L5** `analyze.py:1071` 对 `signal_date` 的 metrics.json 文字定义（"event_date + 1"）落后于代码（`available_at + 1`，`analyze.py:679`）——文档保守方向正确但表述过期。
 - **L6** `http.py` 缓存不记抓取时间；`fetched_at` 盖在 DB 写入时刻而非 HTTP 时刻（`http.py:96-99`）。
@@ -161,10 +164,12 @@ live 通道 `quote_before_news` 守卫、backfill 永不成交（`live.py:530-53
 
 > 定位：这些是**应当新增且当前会失败**的验收测试（先红后绿），不在本次审计中实现。
 
-1. `test_available_at_never_predates_first_seen`：全表断言 `available_at ≥ first_seen_at::date`；
-   当前快照必然失败（回填即反例）→ 驱动 H1 修复（引入 lag 先验或 as-of 门槛开关）。
-2. `test_first_seen_at_is_monotone_across_reingest`：同一 event 两次 upsert，`first_seen_at` 不得变大；
-   当前因 `INSERT OR REPLACE` 失败 → 驱动 append-only/`COALESCE(first_seen_at, excluded)` 修复。
+1. `test_public_before_first_seen_is_not_anomaly`：校验器/audit **不得**将 `available_at < first_seen_at` 判为异常；
+   同一数据上，严格知识时钟查询（gate on `first_seen_at`）与公开时间重建（gate on `available_at`，
+   须带源/版本证据）必须作为两个**分别命名**的模式暴露，结果可差异且差异可解释。
+2. `test_first_seen_at_is_monotone_across_reingest`（原 #2）：同一 event 重复摄入，`first_seen_at`（recorded knowledge time）
+   不得被改写；当前因 `INSERT OR REPLACE`（`db.py:519`）失败 → 驱动 append-only / `COALESCE` 修复。这条与 #1 不冲突：
+   知识时间不可变 ≠ 知识时间必须早于公开时间。
 3. `test_replay_supports_asof_clock`：`build_replay(..., clock="first_seen")` 模式下，任何 fill 必须
    满足 `fill_time > first_seen_at`；与 `clock="available"`（默认）结果对比并输出差值报告。
 4. `test_prices_freeze_on_first_write`：重复抓取含拆股的合成行情，历史 bar 的 `adj_close` 不得被
@@ -174,16 +179,21 @@ live 通道 `quote_before_news` 守卫、backfill 永不成交（`live.py:530-53
 6. `test_case_returns_use_adjusted_open`：构造持有期内拆股案例，案例收益必须等于复权口径收益；
    当前因 H3 失败。
 7. `test_eventstudy_family_is_corrected`：`run_event_study` 输出必须带 Holm 校正族（≥ kind×horizon 个 look）。
-8. `test_audit_flags_temporal_anomalies`：`audit.py` 输出必须包含 `available_at<event_date`、
-   `available_at>today`、`available_at−event_date` 滞后分布三项检查（L3）。
+8. `test_audit_flags_temporal_anomalies`：`audit.py` 输出必须包含 `available_at < event_date`、
+   `available_at > today`、`available_at − event_date` 滞后分布三项检查，且**不得**包含
+   `available_at ≥ first_seen_at` 类告警（L3、Director 复核结论）。
 
 ## 8. 建议首批任务（good first tasks，按 ROI 排序）
 
 1. **H3 修复（小而急）**：`cases.py` 改用 `prices.adjusted_open`；加 D1-⑤ 与测试 6；复算 D3。估计 <1 天，直接提升对外结论可信度。
 2. **L3+H1 侦测（纯增量）**：`audit.py` 加三条时态异常检查（测试 1/8），先让风险"可见"，再决定修复策略。半天。
 3. **L2 信号溯源稳定化**：`signal_id` 改内容哈希（仿 `llm_verdicts.content_hash`），upsert 保留最早 `created_at`。
-4. **H1 方案设计**（需决策）：三选一并写入 SCHEMA：a) `available_at = event_date + kind 分层 lag 先验`，quality 改 `'estimated'`；b) 回放增加 `clock="first_seen"` 模式（保守回放）；c) 全量双时态表（重）。建议先做 a+b。
-5. **H2 最小闭合**：`prices` 加 `fetched_at` 列 + 首写冻结（`INSERT ... ON CONFLICT DO NOTHING` 或快照表），加测试 4/5。
+4. **H1 方案设计**（需决策）：a) 先做 D2 经验测量（公开滞后分布），测量前**禁止**推断 lag 先验；
+   b) 增加严格知识时钟查询模式（gate on `first_seen_at`，与公开时间重建分别命名）；
+   c) `available_at` 无源证据时质量降级为 `'estimated'`。全量双时态表为 TKG 方向，见
+   `docs/research/TKG_ACCEPTANCE.md`（价格层 H2 属**独立 backlog**，不列入 TKG MVP）。
+5. **H2（独立 backlog，不属 TKG MVP）**：`prices` 加 `fetched_at` 列 + 首写冻结
+   （`INSERT ... ON CONFLICT DO NOTHING` 或快照表），加测试 4/5。
 6. **H4/H5 口径对齐**：eventstudy/replay 接 `stats.multiple_testing` + winsorize 开关。
 7. 文档收敛：L5、L7 两处过期定义/数字刷新。
 
@@ -194,6 +204,12 @@ live 通道 `quote_before_news` 守卫、backfill 永不成交（`live.py:530-53
 | selftest 快照（440 OK） | `docs/research/selftest_tail.txt` |
 | pytest 全量输出 | 本地会话后台任务日志（437 passed, 3 skipped, 12 subtests, 13.84s） |
 | 关键行号抽查 | `db.py:489-494,544-548`；`collect_device.py:679-694`；`cases.py:296-336`；`analyze.py:679,1071`；`replay.py:1583-1585,2222-2241`；`live.py:530-535`；`prices.py:8-18,71-85` |
+
+> 修订记录（Director 复核）：2026-11-01 按 VALIDATION-DESIGN-002 复核修正——① 明确
+> `available_at < first_seen_at` 合法、不作异常；严格知识查询与公开时间重建分别命名；
+> ② 删除"未测量即推断 lag 先验"的建议，改为先测量；③ 价格层（H2/H3）移出 TKG MVP，列为独立 backlog；
+> ④ 删除"同类仓库最佳"类无依据比较赞誉；⑤ "CI 零网络"更正为"测试零网络、安装需网络"。
+> 有效发现全部保留。
 | 环境 | Python 3.12.10 / pytest 9.1.1 / Windows，零网络零凭证 |
 
 > 审计限制：本 worktree 无 `data/medradar.sqlite`（主 worktree 只读），故 375k 行真实数据的
