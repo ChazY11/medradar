@@ -15,10 +15,10 @@ Hard rules (also stated in ``docs/ASSUMPTIONS.md`` and in the HTML banner):
   it enters the book (``lookahead_rejected`` would count violations, and it must
   stay ``0``).
 * **Date-quality timestamps are end-of-day.** The database currently stores
-  ``available_at`` with day precision (``timestamp_quality='date'``). Treating
-  a date as "known at 00:00" would allow a same-session fill that no trader
-  could have made, so a date is expanded to 23:59:59 UTC of that day. The first
-  usable bar is therefore the *next* session. A minute-quality timestamp
+  ``available_at`` with day precision (``timestamp_quality='date'``). Treating a
+  date as "known at 00:00" would allow a same-session fill that no trader could
+  have made, so a date is expanded to 23:59:59 UTC of that day. The first usable
+  bar is therefore the *next* session. A minute-quality timestamp
   (``timestamp_quality='datetime'``) can fill inside the same session.
 * **Intraday branch.** When the public moment is inside the last
   ``intraday_days`` days and Yahoo 1-minute bars are reachable, the fill is the
@@ -374,7 +374,7 @@ def parse_intraday_chart(payload: Any, ticker: str) -> list[dict[str, Any]]:
         raise ValueError("yahoo returned no result")
     result = results[0] or {}
     timestamps: Sequence[Any] = result.get("timestamp") or []
-    indicators: Sequence[Any] = result.get("indicators") or {}
+    indicators = result.get("indicators") or {}
     quotes = indicators.get("quote") or []
     block = quotes[0] if quotes else {}
     opens: Sequence[Any] = block.get("open") or []
@@ -2878,7 +2878,7 @@ def render_html(payload: Mapping[str, Any], *, docs_rel: str = "../../docs/ASSUM
         '<th class="num">中位数</th><th class="num">胜率</th><th class="num">t</th>'
         f"{study_headers}</tr></thead><tbody>" + "".join(study_rows) + "</tbody></table>",
         '<p class="small muted">毛收益 = 成交价到该窗口收盘价的方向调整收益；净收益再扣 2×成本档。'
-        "最近成交因未来收盘价尚未出现，对应窗口为「—」。 </p></div>",
+        "最近成交因未来收盘价尚未出现，对应窗口为「—」。</p></div>",
         "<h2>时间轴：事件 → 判定 → 成交 → 后续</h2>",
         '<div class="controls" id="filters">'
         '<span>筛选：</span>'
