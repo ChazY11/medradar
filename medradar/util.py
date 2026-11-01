@@ -131,7 +131,7 @@ def read_json(path: str | Path, default: Any = None) -> Any:
 
 
 def write_json(path: str | Path, obj: Any, indent: int = 1) -> Path:
-    """Atomically write UTF-8 JSON (Chinese stays readable, not \uXXXX)."""
+    """Atomically write UTF-8 JSON (Chinese stays readable, not \\uXXXX)."""
     target = Path(path)
     ensure_dir(target.parent)
     handle = tempfile.NamedTemporaryFile(
