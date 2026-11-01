@@ -36,6 +36,7 @@ from medradar.forecast_registry import (
     IdempotencyConflict,
     add_months_clamped,
     canonical_json,
+    normalize_moment,
     sha256_hex,
 )
 
@@ -136,6 +137,25 @@ class RegisterValidationTests(unittest.TestCase):
         registry.register(forecast_spec("eq-cutoff", information_cutoff=T0))
         registry.register(forecast_spec("past-cutoff", information_cutoff="2020-01-01"))
         self.assertEqual(registry.count("forecasts"), 2)
+
+    def test_fractional_seconds_parse_on_python_310(self) -> None:
+        # py3.10's fromisoformat accepts only 3 or 6 fractional digits, so the
+        # registry must normalise 1-9 digit fractions itself (F1).
+        for fraction in ("5", "50", "5000", "50000", "500000"):
+            self.assertEqual(
+                normalize_moment(f"2024-01-10T00:00:00.{fraction}Z", "t")[0],
+                "2024-01-10T00:00:00.500000Z",
+                msg=fraction,
+            )
+        # sub-microsecond digits are truncated, not rounded
+        self.assertEqual(normalize_moment("2024-01-10T00:00:00.5000009Z", "t")[0],
+                         "2024-01-10T00:00:00.500000Z")
+        self.assertEqual(normalize_moment("2024-01-10T08:00:00.2+08:00", "t")[0],
+                         "2024-01-10T00:00:00.200000Z")
+        # end-to-end: a 1-digit fractional cutoff is accepted and canonicalised
+        registry = ForecastRegistry(":memory:", clock=step_clock())
+        result = registry.register(forecast_spec("frac", information_cutoff="2024-01-10T00:00:00.5Z"))
+        self.assertEqual(result["information_cutoff"], "2024-01-10T00:00:00.500000Z")
 
     def test_evidence_and_provenance_are_required_and_shaped(self) -> None:
         registry = ForecastRegistry(":memory:", clock=step_clock())
@@ -269,6 +289,34 @@ class WindowTests(unittest.TestCase):
         ))
         self.assertEqual(result["window_start"], result["generated_at"])
 
+    def test_retrospective_fixture_may_hold_historical_prior_backtest_window(self) -> None:
+        # F4: docs say record_kind='retrospective_fixture' is for prior
+        # backtests, so a historical window must be registrable (prospective
+        # forecasts stay future-only) and such rows still never enter the
+        # prospective headline metrics/denominators.
+        registry = ForecastRegistry(":memory:", clock=step_clock())
+        fixture = registry.register(forecast_spec(
+            "prior-backtest", record_kind="retrospective_fixture", horizon=3,
+            information_cutoff="2020-01-01T00:00:00Z",
+            window_start="2020-01-01T00:00:00Z",
+        ))
+        self.assertEqual(fixture["window_start"], "2020-01-01T00:00:00.000000Z")
+        self.assertEqual(fixture["window_end"], "2020-04-01T00:00:00.000000Z")  # derived
+        with self.assertRaises(ForecastValidationError):
+            registry.register(forecast_spec(
+                "prospective-past", horizon=3,
+                information_cutoff="2020-01-01T00:00:00Z",
+                window_start="2020-01-01T00:00:00Z",
+            ))
+        evaluation = registry.evaluate("2024-01-15T00:00:00Z")
+        self.assertEqual(evaluation["counts"]["total_forecasts"], 0)  # headline untouched
+        self.assertEqual(evaluation["retrospective"]["counts"]["total_forecasts"], 1)
+        artifact = registry.build_artifact("2024-01-15T00:00:00Z")
+        self.assertEqual(len(artifact["forecasts"]), 0)
+        self.assertEqual(len(artifact["retrospective_fixtures"]), 1)
+        self.assertEqual(artifact["retrospective_fixtures"][0]["window_start"],
+                         "2020-01-01T00:00:00.000000Z")
+
 
 # ------------------------------------------------------------------ idempotency
 class IdempotencyTests(unittest.TestCase):
@@ -379,6 +427,89 @@ class ImmutabilityGuardTests(unittest.TestCase):
         registry = ForecastRegistry(":memory:", clock=step_clock())
         with self.assertRaises(ForecastValidationError):
             registry.resolve(resolution_spec("sha256:" + "0" * 64))
+
+    def test_insert_or_replace_with_reused_idempotency_key_is_rejected(self) -> None:
+        # F3: REPLACE keyed on a reused idempotency_key but a NEW prediction_id
+        # does not hit the primary-key guard; SQLite would resolve the UNIQUE
+        # conflict by deleting the unresolved original below the DELETE trigger
+        # layer. The dedicated idempotency-key guard must abort first.
+        registry = ForecastRegistry(":memory:", clock=step_clock())
+        original = registry.register(forecast_spec("reuse-key", p=0.7))
+        row = registry.raw("SELECT * FROM forecasts")[0]
+        cols = tuple(row)
+        forged = dict(row)
+        forged["prediction_id"] = "sha256:" + "f" * 64
+        forged["p"] = 0.99
+        with self.assertRaises(sqlite3.IntegrityError):
+            registry.conn.execute(
+                f"INSERT OR REPLACE INTO forecasts ({','.join(cols)}) VALUES ({','.join('?' * len(cols))})",
+                tuple(forged[c] for c in cols),
+            )
+        registry.conn.rollback()
+        self.assertEqual(registry.count("forecasts"), 1)
+        survivor = registry.raw("SELECT prediction_id, p, idempotency_key FROM forecasts")[0]
+        self.assertEqual(survivor["prediction_id"], original["prediction_id"])
+        self.assertEqual(survivor["p"], 0.7)
+        self.assertEqual(survivor["idempotency_key"], "reuse-key")
+        # the legitimate retry still replays as a duplicate of the real row
+        self.assertEqual(registry.register(forecast_spec("reuse-key", p=0.7))["status"], "duplicate")
+
+    def test_idempotency_ledger_cannot_be_rebound_deleted_or_replaced(self) -> None:
+        registry = ForecastRegistry(":memory:", clock=step_clock())
+        original = registry.register(forecast_spec("ledger-key"))
+        forged = "sha256:" + "e" * 64
+        for sql, params in (
+            ("UPDATE forecast_idempotency SET prediction_id = ? WHERE idempotency_key = ?",
+             (forged, "ledger-key")),
+            ("DELETE FROM forecast_idempotency WHERE idempotency_key = ?", ("ledger-key",)),
+            ("INSERT OR REPLACE INTO forecast_idempotency (idempotency_key, prediction_id) VALUES (?, ?)",
+             ("ledger-key", forged)),
+        ):
+            with self.assertRaises(sqlite3.IntegrityError, msg=sql):
+                registry.conn.execute(sql, params)
+            registry.conn.rollback()
+        # The key -> prediction_id mapping survived: exact retry is a duplicate
+        # and conflicting content still fails loudly (it cannot ride the key).
+        retry = registry.register(forecast_spec("ledger-key"))
+        self.assertEqual(retry["status"], "duplicate")
+        self.assertEqual(retry["prediction_id"], original["prediction_id"])
+        with self.assertRaises(IdempotencyConflict):
+            registry.register(forecast_spec("ledger-key", p=0.2))
+        self.assertEqual(registry.count("forecast_idempotency"), 1)
+
+    def test_existing_database_gets_new_guards_when_reopened(self) -> None:
+        # CREATE TRIGGER IF NOT EXISTS runs on every open, so a database
+        # created by an earlier build must gain the F3 guards automatically.
+        new_triggers = (
+            "forecasts_no_key_rebind",
+            "forecast_idempotency_no_update",
+            "forecast_idempotency_no_delete",
+            "forecast_idempotency_no_resubmit",
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "registry.sqlite"
+            with ForecastRegistry(path) as legacy:
+                legacy.register(forecast_spec("legacy-db", information_cutoff="2020-01-01T00:00:00Z"))
+                for trigger in new_triggers:  # simulate a pre-F3 database file
+                    legacy.conn.execute(f"DROP TRIGGER IF EXISTS {trigger}")
+                legacy.conn.commit()
+                self.assertEqual(legacy.raw(
+                    "SELECT name FROM sqlite_master WHERE type = 'trigger' AND name = 'forecasts_no_key_rebind'"), [])
+            with ForecastRegistry(path) as reopened:
+                names = {r["name"] for r in reopened.raw("SELECT name FROM sqlite_master WHERE type = 'trigger'")}
+                for trigger in new_triggers:
+                    self.assertIn(trigger, names)
+                row = reopened.raw("SELECT * FROM forecasts")[0]
+                cols = tuple(row)
+                forged = dict(row)
+                forged["prediction_id"] = "sha256:" + "a" * 64
+                with self.assertRaises(sqlite3.IntegrityError):
+                    reopened.conn.execute(
+                        f"INSERT OR REPLACE INTO forecasts ({','.join(cols)}) VALUES ({','.join('?' * len(cols))})",
+                        tuple(forged[c] for c in cols),
+                    )
+                reopened.conn.rollback()
+                self.assertEqual(reopened.count("forecasts"), 1)
 
 
 # ------------------------------------------------------------------ resolution

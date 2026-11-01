@@ -39,12 +39,14 @@ def export_snapshot(
 ) -> dict[str, Any]:
     """Build the deterministic export document for a knowledge cutoff.
 
-    ``known_at`` and ``valid_at`` are independent cutoffs (see
-    :class:`medradar.tkg.query.TKGQuery`); ``valid_at=None`` means "no
-    valid-time filter". Edge rows carry only node references - node metadata
-    in this document comes exclusively from node revisions selected under the
-    same cutoffs, so future node attribute writes can never leak into an
-    older export.
+    ``known_at`` and ``valid_at`` are independent inputs; ``valid_at=None``
+    does **not** disable the validity filter - it defaults to ``known_at``
+    (the "what was true and known at T" reading, see
+    :meth:`medradar.tkg.query.TKGQuery.snapshot`). Pass an explicit
+    ``valid_at`` to select a different validity cutoff. Edge rows carry only
+    node references - node metadata in this document comes exclusively from
+    node revisions selected under the same cutoffs, so future node attribute
+    writes can never leak into an older export.
     """
     from .query import TKGQuery
 

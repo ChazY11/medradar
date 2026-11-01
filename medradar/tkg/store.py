@@ -39,6 +39,8 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping
 
+from ._time import parse_iso8601, render_moment
+
 SCHEMA_VERSION = "tkg-schema-2"
 
 EVIDENCE_KINDS = ("source_observed", "inferred", "reconstructed")
@@ -204,24 +206,26 @@ def normalize_moment(value: Any, field: str) -> tuple[str, str]:
     """Normalize a time input to strict UTC ISO-8601.
 
     Returns ``(iso_string, precision)`` where precision is ``"date"`` for
-    date-only input (explicitly widened to ``T00:00:00Z``) and ``"datetime"``
-    otherwise. Naive datetimes are rejected outright - the caller must state a
-    timezone; we never guess one.
+    date-only input (explicitly widened to ``T00:00:00.000000Z``) and
+    ``"datetime"`` otherwise. Naive datetimes are rejected outright - the
+    caller must state a timezone; we never guess one. Fractions with 1-5
+    digits (and sub-microsecond digits, truncated) are accepted on every
+    supported interpreter, including Python 3.10.
     """
     if isinstance(value, datetime):
         moment, precision = value, "datetime"
         if moment.tzinfo is None or moment.utcoffset() is None:
             raise TKGValidationError(f"{field}: naive datetime without timezone is rejected")
     elif isinstance(value, date):
-        return value.isoformat() + "T00:00:00Z", "date"
+        return value.isoformat() + "T00:00:00.000000Z", "date"
     elif isinstance(value, str):
         text = value.strip()
         if not text:
             raise TKGValidationError(f"{field}: empty timestamp")
         if _DATE_ONLY.match(text):
-            return text + "T00:00:00Z", "date"
+            return text + "T00:00:00.000000Z", "date"
         try:
-            moment = datetime.fromisoformat(text.replace("Z", "+00:00"))
+            moment = parse_iso8601(text)
         except ValueError as exc:
             raise TKGValidationError(f"{field}: unparseable timestamp {value!r}") from exc
         precision = "datetime"
@@ -234,9 +238,9 @@ def normalize_moment(value: Any, field: str) -> tuple[str, str]:
     # order must equal chronological order for every stored/comparison path
     # (recorded_at <= known_at, clock_guard, valid interval cuts). A mixed
     # '...T00:00:00Z' vs '...T00:00:00.500000Z' comparison would be wrong
-    # ('Z' > '.' at the divergence point).
-    rendered = f"{utc:%Y-%m-%dT%H:%M:%S}.{utc.microsecond:06d}Z"
-    return rendered, precision
+    # ('Z' > '.' at the divergence point). Date-only inputs are rendered
+    # through this same canonical form (never a second-precision shortcut).
+    return render_moment(utc), precision
 
 
 def _validate_confidence(value: Any) -> float:
