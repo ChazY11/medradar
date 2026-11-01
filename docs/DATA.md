@@ -107,7 +107,7 @@
 | `ctgov` | ClinicalTrials.gov v2 | 只要 `INTERVENTIONAL`；事件日与公开日均取 `StudyFirstPostDate`（首次公示，避免前视） |
 | `openfda_drug_drugsfda` | openFDA `/drug/drugsfda` | 仅 `ORIG` + `AP` 且 NDA/BLA（**排除 ANDA 仿制药**） |
 | `sec_edgar_corpus` | SEC EDGAR 8-K 全文语料 | 公开时间取真实申报日；预申请、资格认定、临床暂停和拒绝受理独立分类 |
-| `fda_advisory_committee` | FDA Advisory Committee Calendar | 采集器械相关公开日程、议程与简报材料；页面“截至日期”只证明届时可见，因此标为 `estimated`，不进交易研究 |
+| `fda_advisory_committee` | FDA Advisory Committee Calendar | ⚠️ **experimental / 当前不可用**：日历 `<tbody>` 由 Drupal/DataTables 在浏览器端渲染，静态 HTML 只有表头；解析 0 行时采集器返回 `status="empty"`（页面结构变化时为 `"source_changed"`）并写 warning，**绝不报 `ok`**。“截至日期”优先从 `<time datetime>` 元素解析；事件标 `estimated`，不进交易研究 |
 | `nmpa` | 本地 CSV 适配器 | 官网有 JS WAF 无法直接抓；详见缺口 1，未加载时报告显式写"不可用" |
 
 时间口径：`event_date` 是事件发生日，`published_at` 是真实公开发布时间，`available_at` 是
@@ -116,6 +116,62 @@
 缺失、`estimated`、`unknown` 的记录仍可用于描述性行业分析，但必须排除并计数。
 公开数据通常比事件日延迟入库，所以“事后看很准”的结论必须用 `available_at` 复核，见
 `docs/ASSUMPTIONS.md`、`docs/RESEARCH.md`。
+
+### 1.1 案例库价格口径（拆股/分红不变，v0.3.0 修复）
+
+案例库的“价格反应”入场价用 `prices.adjusted_open`（= 原始 open × adj_close / close），
+出场价用 `prices.adjusted_close`，两端统一在**调整后收盘价基准**上；因此持仓窗口内发生
+拆股或分红时，`price_1d/5d/20d/60d` 与 `raw_*` 不会变成假 alpha。修复前入场缓存的是原始
+open、出场却是调整 close，一次 2:1 拆股就会产生 ±50% 的假超额（这正是极端收益审计会
+亮灯的原因之一）。回归测试见 `tests/test_cases.py::PriceBasisSplitTests`
+（同一条价格路径“有/无 2:1 拆股”必须得到相同的超额收益）。
+仓库里已提交的 `docs/CASES.md` 是修复前的生成快照，**未重算**；重新生成 `cases` 后才会反映新口径。
+
+### 1.2 时间戳门槛只对**新采集**行生效（旧库需重建或降级）
+
+`medradar.db.trading_timestamp_ok` 只允许 `timestamp_quality IN ('datetime','date')` 且
+`available_at` 非空的行进入交易研究。但**已发布的 375,378 行快照是旧口径**：旧版
+`upsert_events` 把 `published_at`/`available_at` 默认填成 `event_date` 并标 `date`，所以这些
+历史行在当前闸门下的判定仍是“可交易”。**闸门是前瞻性的（prospective-only），不会追溯改写旧行**。
+
+- 重新采集只对**刷新窗口内**的行 `INSERT OR REPLACE`，窗口外的历史行保持旧口径；且 REPLACE
+  会重置 `first_seen_at`（首次入库时间，属于来源追溯信息），所以“再跑一次全量采集”不是修复手段。
+- 在把历史行当作 trading / PIT（point-in-time）证据前，必须**重建**（从源站按真实公开时间重灌）
+  或**显式降级**。`python -m medradar audit` 输出中的 `legacy_timestamp_promotions` 块会给出
+  按来源统计的“会被降级行数”（只读；仓库**不会自动执行**降级）。
+- 降级只改 `events.timestamp_quality`：描述性分析仍可用，交易研究排除；审计里
+  `legacy_timestamp_promotions_demoted` 变为 PASS。降级后需重跑 `analyze` / `trade` /
+  `replay` / `cases` 等下游阶段，已生成的 `docs/` 快照仍是旧口径。
+
+一次性降级 SQL（**手工执行**、先备份 `data/medradar.sqlite`；本仓库不会自动运行）：
+
+```sql
+-- 0) 先看规模（只读）：哪些来源会被降级
+SELECT source, COUNT(*) AS n FROM events
+WHERE timestamp_quality = 'date'
+  AND event_date <> ''
+  AND date(published_at) = event_date
+  AND date(available_at) = event_date
+GROUP BY source ORDER BY n DESC;
+
+-- 1) 备份后，把“决定日冒充公开日”的 openFDA 行降级为 estimated
+UPDATE events
+SET timestamp_quality = 'estimated'
+WHERE timestamp_quality = 'date'
+  AND event_date <> ''
+  AND date(published_at) = event_date
+  AND date(available_at) = event_date
+  AND source IN ('openfda_device_510k','openfda_device_pma','openfda_device_recall','openfda_drug_drugsfda');
+
+-- 2) 更严格的口径（可选）：把推断出来的 available_at 也清空，只保留描述性用途
+-- UPDATE events SET available_at = NULL, timestamp_quality = 'estimated'
+-- WHERE timestamp_quality = 'date' AND event_date <> ''
+--   AND date(published_at) = event_date AND date(available_at) = event_date
+--   AND source IN ('openfda_device_510k','openfda_device_pma','openfda_device_recall','openfda_drug_drugsfda');
+```
+
+`ctgov`（首次公示日）与 `sec_edgar_corpus`（真实申报日）的 `date` 是真实公开日期，**不在降级范围**。
+降级后若因清空 `available_at` 使 `audit` 的 `availability_complete` 变红，是有意的强口径选择。
 
 ## 二、覆盖年份与窗口解释
 
@@ -143,11 +199,15 @@
 7. **国家字段未归一化**：`country` 保留 openFDA 原文（`CHINA`/`CN`、`NETHERLANDS`/`NL` 并存），
    国家维度统计前需归并；当前报告不据此下结论。
 8. **当前快照无 datetime 级时间戳**：自动生成区中的既有事件全为 `date`，无法做“发布后 1 小时”类研究；
-   新 AdCom 事件使用 `estimated`，只用于前沿行业监测。
+   新 AdCom 事件使用 `estimated`，只用于前沿行业监测。旧库时间戳门槛是前瞻性的，历史行的降级/重建见 §1.2。
 9. **公司匹配率偏低是设计选择**：长尾小申请人有意不匹配（宁漏不错），会低估小公司动量；
    提升方向是扩充 `config/companies_*.json` 别名，而不是降低置信阈值。
 10. **模拟盘只做多**：无做空/借券费/并购逼平建模（v1 范围，见 `docs/ASSUMPTIONS.md`）。
 11. **LLM judge 未启用**：无 key 时全部走启发式判分，校准结论见 `docs/CALIBRATION.md`。
+12. **AdCom 采集当前 experimental / unavailable**：`https://www.fda.gov/advisory-committees/advisory-committee-calendar`
+    的日历 `<tbody>` 由 Drupal/DataTables 在浏览器端渲染，服务器返回的静态 HTML 只有 `<thead>`（实测 2026-11-02，
+    HTTP 200 / 31,219 B，解析 0 行）。采集器现在在 0 行时返回 `status="empty"`（表结构消失时为 `"source_changed"`）
+    并写 warning，不会假报 `ok`；在 FDA 提供静态或 JSON 端点前，AdCom 事件为 0，frontier 不含咨询委员会信号。
 
 ## 四、增长记录
 

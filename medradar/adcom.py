@@ -3,6 +3,15 @@
 This is a public, pre-decision source: it can show an upcoming panel, agenda and
 briefing documents. It cannot reveal confidential pending 510(k)/PMA reviews.
 The parser is deterministic and standard-library only so fixtures run offline.
+
+Known live limitation (2026-11): FDA's calendar table ships only ``<thead>`` in
+the static HTML; the ``<tbody>`` rows are rendered client-side by Drupal
+DataTables. :func:`collect` therefore returns a loud non-ok status (``"empty"``
+when the table exists but has no server-rendered rows, ``"source_changed"``
+when the table markup is gone) with an explicit warning, and writes zero
+events. The source is experimental/unavailable until FDA exposes a static or
+JSON endpoint; a static fetch must never report ``status="ok"`` with zero
+meetings.
 """
 
 from __future__ import annotations
@@ -100,13 +109,40 @@ def parse_date(value: Any) -> str:
     return match.group(0) if match else ""
 
 
-def content_current_as_of(html: str) -> str:
-    match = re.search(
-        r"Content\s+current\s+as\s+of\s*:?\s*</?[^>]*>?\s*(\d{1,2}/\d{1,2}/20\d{2})",
+def _calendar_table_present(html: str) -> bool:
+    """Whether the page contains FDA's advisory-committee calendar table.
+
+    Match the table element's own class, not the many navigation links to
+    ``/advisory-committees/advisory-committee-calendar`` that survive a markup
+    change.
+    """
+    return bool(re.search(
+        r'<table[^>]*class=["\'][^"\']*lcds-datatable--advisory-committee-calendar',
         html or "", re.I,
-    )
-    if not match:
-        match = re.search(r"Content\s+current\s+as\s+of\s*:?\s*(\d{1,2}/\d{1,2}/20\d{2})", html or "", re.I)
+    ))
+
+
+def content_current_as_of(html: str) -> str:
+    """Read the page's "Content current as of" date.
+
+    The live page wraps the value in a machine-readable
+    ``<time datetime="2026-10-30T07:55:31-04:00">10/30/2026</time>`` element;
+    older/offline fixtures use a plain ``M/D/YYYY`` text node. Prefer the
+    ``datetime`` attribute, then fall back to the visible text.
+    """
+    page = html or ""
+    heading = re.search(r"Content\s+current\s+as\s+of", page, re.I)
+    if not heading:
+        return ""
+    # A small window after the heading: enough for the <h2> + <p> + <time> block.
+    window = page[heading.start(): heading.start() + 2000]
+    stamp = re.search(r"<time[^>]*\bdatetime=[\"']([^\"']+)[\"']", window, re.I)
+    if stamp:
+        parsed = parse_date(stamp.group(1))
+        if parsed:
+            return parsed
+    visible = re.sub(r"<[^>]+>", " ", window)
+    match = re.search(r"(\d{1,2}/\d{1,2}/20\d{2})", visible)
     return parse_date(match.group(1)) if match else ""
 
 
@@ -283,9 +319,34 @@ def collect(db: DB, fetcher: Fetcher, months: int = 12, limit: int = 100, **_: A
             documents=unique_documents,
         ))
     inserted = db.upsert_events(events) if events else 0
+    warnings: list[str] = []
+    if meetings:
+        status = "ok"
+        # A valid empty window (no device meetings in range) is fine; the only
+        # dishonest outcome is claiming success when the page itself parsed 0 rows.
+        if not content_date:
+            warnings.append(
+                "content_current_as_of missing; AdCom availability stays estimated from as_of"
+            )
+    elif _calendar_table_present(html):
+        status = "empty"
+        warnings.append(
+            "calendar table yielded 0 meetings: FDA renders the <tbody> rows client-side"
+            " (Drupal/DataTables JS), so the static page has no parseable rows;"
+            " the AdCom source is experimental until a static or JSON endpoint exists"
+        )
+        if not content_date:
+            warnings.append("content_current_as_of missing from the fetched page")
+    else:
+        status = "source_changed"
+        warnings.append(
+            "calendar table not found in the fetched page (expected"
+            " 'lcds-datatable--advisory-committee-calendar'); the FDA page structure"
+            " changed and 0 events were written"
+        )
     stats = {
         "source": SOURCE,
-        "status": "ok",
+        "status": status,
         "calendar_meetings": len(meetings),
         "device_meetings": len(device_meetings),
         "events": inserted,
@@ -293,8 +354,11 @@ def collect(db: DB, fetcher: Fetcher, months: int = 12, limit: int = 100, **_: A
         "detail_errors": detail_errors,
         "content_current_as_of": content_date or None,
         "timestamp_quality": "estimated",
+        "warnings": warnings,
         "scope": "public meetings/materials only; no confidential pending 510(k)/PMA data",
     }
+    for message in warnings:
+        print(f"[adcom] WARNING: {message}", file=sys.stderr)
     print(f"[adcom] {inserted} device meetings / {document_count} public documents", file=sys.stderr)
     return stats
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -58,6 +59,42 @@ class VersionTests(unittest.TestCase):
                 continue
             if href.endswith(".html") or "/" in href:
                 self.assertTrue((ROOT / "docs" / href).exists(), f"dead local link in docs/index.html: {href}")
+
+
+class PublishLinkTests(unittest.TestCase):
+    """No docs/docs/ASSUMPTIONS.md duplicate: publish rewrites the link instead."""
+
+    def test_published_assumptions_link_points_to_sibling(self) -> None:
+        from medradar.__main__ import _rewrite_published_links
+
+        with tempfile.TemporaryDirectory() as tmp:
+            page = Path(tmp) / "index.html"
+            page.write_text('<a href="docs/ASSUMPTIONS.md">docs/ASSUMPTIONS.md</a>', encoding="utf-8")
+            _rewrite_published_links(page)
+            text = page.read_text(encoding="utf-8")
+            self.assertIn('href="ASSUMPTIONS.md"', text)
+            self.assertNotIn("docs/ASSUMPTIONS.md", text)
+
+    def test_replay_page_link_is_rewritten(self) -> None:
+        from medradar.__main__ import _rewrite_published_links
+
+        with tempfile.TemporaryDirectory() as tmp:
+            page = Path(tmp) / "replay.html"
+            page.write_text('<a href="../../docs/ASSUMPTIONS.md">x</a>', encoding="utf-8")
+            _rewrite_published_links(page)
+            self.assertIn('href="ASSUMPTIONS.md"', page.read_text(encoding="utf-8"))
+
+    def test_ship_assumptions_does_not_recreate_docs_duplicate(self) -> None:
+        from medradar.__main__ import _ship_assumptions
+
+        with tempfile.TemporaryDirectory() as tmp:
+            out_dir = Path(tmp) / "out"
+            docs_dir = Path(tmp) / "docs"
+            copied = _ship_assumptions(out_dir, docs_dir)
+            self.assertTrue((out_dir / "docs" / "ASSUMPTIONS.md").is_file())
+            self.assertTrue((out_dir / "replay" / "docs" / "ASSUMPTIONS.md").is_file())
+            self.assertFalse((docs_dir / "docs" / "ASSUMPTIONS.md").exists())
+            self.assertTrue(copied)
 
 
 if __name__ == "__main__":
