@@ -1,0 +1,20 @@
+timestamp=2026-11-01T03:42:41Z
+command=python3 -m pytest tests/test_intelligence.py -q
+....F..                                                                  [100%]
+=================================== FAILURES ===================================
+_ TimingAndModelTests.test_dataset_excludes_unavailable_history_and_uses_future_label _
+
+self = <tests.test_intelligence.TimingAndModelTests testMethod=test_dataset_excludes_unavailable_history_and_uses_future_label>
+
+    def test_dataset_excludes_unavailable_history_and_uses_future_label(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            with self._store(Path(tmp) / "x.sqlite") as store:
+                data = build_examples(store, cutoffs=["2023-01-01"], horizon_months=12)
+>               row = data["examples"][0]
+                      ^^^^^^^^^^^^^^^^^^^
+E               IndexError: list index out of range
+
+tests/test_intelligence.py:88: IndexError
+=========================== short test summary info ============================
+FAILED tests/test_intelligence.py::TimingAndModelTests::test_dataset_excludes_unavailable_history_and_uses_future_label
+exit_code=1

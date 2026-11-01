@@ -1,0 +1,44 @@
+timestamp=2026-11-01T03:43:59Z
+command=python3 -m pytest tests/test_intelligence.py -q
+....F..                                                                  [100%]
+=================================== FAILURES ===================================
+_ TimingAndModelTests.test_dataset_excludes_unavailable_history_and_uses_future_label _
+
+self = <tests.test_intelligence.TimingAndModelTests testMethod=test_dataset_excludes_unavailable_history_and_uses_future_label>
+
+    def test_dataset_excludes_unavailable_history_and_uses_future_label(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            with self._store(Path(tmp) / "x.sqlite") as store:
+                data = build_examples(store, cutoffs=["2023-01-01"], horizon_months=12)
+                row = data["examples"][0]
+                self.assertEqual(row["features"]["rd_count_12m"], 1.0)  # not the late-publication row
+                self.assertEqual(row["label"], 1)
+                self.assertEqual(row["first_target_event_date"], "2023-06-01")
+>               store.replace_examples("reverse_rd_v1", data["examples"])
+
+tests/test_intelligence.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <medradar.intelligence.storage.IntelligenceStore object at 0x7fd0284eebd0>
+dataset_version = 'reverse_rd_v1'
+rows = [{'company_key': 'medtronic', 'cutoff': '2023-01-01', 'example_id': 'b89129379978b9fc6cf2df57bcfa45ee', 'feature_available_at': '2023-01-01', ...}]
+
+    def replace_examples(self, dataset_version: str, rows: Iterable[Mapping[str, Any]]) -> int:
+        materialized = list(rows)
+        with self.db.transaction():
+            self.conn.execute("DELETE FROM forecast_examples WHERE dataset_version = ?", (dataset_version,))
+>           self.conn.executemany(
+                "INSERT INTO forecast_examples VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                [(
+                    r["example_id"], r["cutoff"], r["horizon_months"], r["company_key"],
+                    r["track_id"], _json(r["features"]), r["feature_available_at"], r.get("label"),
+                    r.get("first_target_event_date"), r.get("target_event_count"), r["maturity"],
+                    dataset_version,
+                ) for r in materialized],
+            )
+E           sqlite3.OperationalError: table forecast_examples has 12 columns but 13 values were supplied
+
+medradar/intelligence/storage.py:218: OperationalError
+=========================== short test summary info ============================
+FAILED tests/test_intelligence.py::TimingAndModelTests::test_dataset_excludes_unavailable_history_and_uses_future_label
+exit_code=1
