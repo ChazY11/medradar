@@ -36,7 +36,8 @@ unresolved, then evaluates and exports a deterministic artifact. It prints
   "horizon_months": 6,
   "p": 0.7,
   "information_cutoff": "2024-01-10T00:00:00Z",
-  "window_start": "optional, must be >= generated_at (default: generated_at, never an event-date fallback)",
+  "window_start": "optional; default: generated_at. Prospective forecasts must be >= generated_at;"
+                  " retrospective_fixture rows may carry a historical (past) window for prior backtests",
   "window_end": "always derived: window_start + horizon_months calendar months (month-end clamped);"
                 " an explicit value is accepted only when exactly equal to the derived end",
   "model_version": "required", "feature_version": "required",
@@ -72,14 +73,22 @@ unresolved, then evaluates and exports a deterministic artifact. It prints
   accepted only on `:memory:` stores. Timestamps are strict: naive input is
   rejected, offsets/fractions normalize to fixed-microsecond UTC (`...Z`),
   date-only input is widened to `T00:00:00.000000Z` with its precision stored.
+  1–9 digit fractional seconds are accepted and normalised identically on every
+  supported Python (3.10+), where stdlib `fromisoformat` is stricter; parsing
+  and rendering share `medradar/tkg/_time.py` with the TKG store.
 - `p` must be a finite number in `[0,1]` (bools rejected); evidence requires a
   non-empty `source_locator`, a valid `evidence_kind`, 64-hex
   `evidence_sha256`, and a non-empty `provenance` locator list; horizon must
   be 3/6/12/24; `information_cutoff <= generated_at`.
-- The target window is **genuinely future**: `window_start` equals
-  `generated_at` or is explicitly `>= generated_at`. `window_end` is **always
-  derived** as `window_start + horizon_months` calendar months with documented
-  month-end clamping (`2024-01-31` + 3 → `2024-04-30`; `2024-02-29` + 12 →
+- For prospective `record_kind="forecast"` rows the target window is
+  **genuinely future**: `window_start` equals `generated_at` or is explicitly
+  `>= generated_at`, and `window_end > generated_at`.
+  `record_kind="retrospective_fixture"` is explicitly exempt from the
+  future-only rule so prior backtests can be registered with a historical
+  window (e.g. a 2020 window registered in 2026); such rows are still kept out
+  of the prospective headline. `window_end` is **always derived** as
+  `window_start + horizon_months` calendar months with documented month-end
+  clamping (`2024-01-31` + 3 → `2024-04-30`; `2024-02-29` + 12 →
   `2025-02-28`), so the `horizon_months` label always denotes the **actual**
   window duration and scoring strata never mix incomparable horizons. An
   explicit `window_end` is accepted only when it exactly equals the derived
@@ -90,11 +99,20 @@ unresolved, then evaluates and exports a deterministic artifact. It prints
   the write clock even if the clock moved**; a conflicting key reuse raises
   `IdempotencyConflict`; identical content under a new key is the same
   immutable forecast.
-- Immutability is **physical**: SQL triggers reject `UPDATE`, `DELETE`, and
-  `INSERT OR REPLACE` on both ledgers (REPLACE is guarded with a dedicated
-  `BEFORE INSERT` existence trigger because SQLite resolves it below the
-  trigger layer). This is **not** tamper-proofness against the DB owner, and
-  no such claim is made. Single writer per store file.
+- Immutability is **physical for rewrites/deletes**: SQL triggers reject
+  `UPDATE` and `DELETE` on `forecasts`, `resolutions` and the
+  `forecast_idempotency` ledger. `INSERT OR REPLACE` is rejected too: SQLite
+  resolves REPLACE conflicts below the DELETE-trigger layer, so dedicated
+  `BEFORE INSERT` guards cover (a) an existing `prediction_id`, (b) an
+  existing `idempotency_key` bound to a **different** `prediction_id`, and
+  (c) any duplicate insert into the idempotency ledger. Guard (b) is what
+  stops `INSERT OR REPLACE` with a new `prediction_id` from silently deleting
+  an unresolved forecast. **Boundary**: this is not tamper-proofness against
+  the DB owner - an owner can drop triggers or rebuild the file, and a stray
+  SQL session can still **append** forged rows (a trigger cannot tell a forged
+  append from a genuine one, and no such guarantee is claimed). What the guards
+  do guarantee is that existing history cannot be **rewritten or deleted**
+  through the trigger path. Single writer per store file.
 
 **Resolution**
 - Separate append-only ledger referencing `prediction_id` (FK enforced).
@@ -130,7 +148,9 @@ unresolved, then evaluates and exports a deterministic artifact. It prints
   **never** silently enter prospective headline metrics or denominators: the
   default evaluation counts and scores only `record_kind="forecast"`, and the
   fixture cohort is reported separately under the explicitly labeled
-  `retrospective` block (own counts, headline and strata).
+  `retrospective` block (own counts, headline and strata). Fixtures may carry
+  a historical window (see Registration), which is why the future-only window
+  rule would make the documented prior-backtest use case impossible.
 
 **Deterministic artifact (`export`)**
 - `evaluation.json` contains the forecast/resolution versions visible at
@@ -164,6 +184,15 @@ with ForecastRegistry("reg.sqlite") as registry:          # or ForecastRegistry(
 ## Limitations
 
 - Single writer per store file; no multi-writer coordination.
-- No tamper-proof guarantees against whoever controls the SQLite file.
+- No tamper-proof guarantees against whoever controls the SQLite file: the SQL
+  guards stop `UPDATE`/`DELETE`/`REPLACE` rewrites, not owner-level forged
+  **appends** (a stray session can still insert a plausible new row, and the
+  owner can drop triggers or rebuild the database).
 - `declared` snapshot hashes are caller assertions, not validation.
 - Outcomes are binary only; multi-class / continuous targets are future work.
+- No in-place schema migration: the immutability triggers are (re)applied with
+  `CREATE TRIGGER IF NOT EXISTS` every time a store is opened, so existing
+  files gain them automatically; the relaxed window `CHECK` that permits
+  historical `retrospective_fixture` windows is part of the fresh schema, so a
+  store file created by an earlier pre-release build must be recreated (no
+  released databases exist; this registry has never been published).

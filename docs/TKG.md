@@ -63,9 +63,10 @@ print(doc["manifest"]["snapshot_sha256"])
 6. **历史不可变**：`UPDATE`/`DELETE` 在版本表上被 SQL 触发器物理拒绝；
    重提交守卫（`BEFORE INSERT`）进一步拒绝任何主键（或幂等键）已存在的
    插入，因此 `INSERT OR REPLACE` / upsert 也无法覆写已记录的版本。
-   **边界**：这防的是游离 SQL 会话/缺陷代码，**不防数据库属主**——属主可以
-   删触发器或重建库；对属主的防护依赖文件权限与外部审计，不在本组件承诺内。
-6. **导入语义**：从现有 events 库导入时，`recorded_at` 一律为实际导入观测
+   **边界**：这防的是**改写/删除**（游离 SQL 会话/缺陷代码），**不防伪造追加**——
+   游离 SQL 仍可 `INSERT` 一条带任意 `recorded_at` 的伪造修订；也**不防数据库属主**
+   （可删触发器或重建库），属主级防护依赖文件权限与外部审计，不在本组件承诺内。
+7. **导入语义**：从现有 events 库导入时，`recorded_at` 一律为实际导入观测
    时刻；`first_seen_at`/`available_at` 仅保存为溯源字段，**不是**知识时间的证据。
 
 ## 精确限制（勿过度解读）
@@ -79,7 +80,12 @@ print(doc["manifest"]["snapshot_sha256"])
 - **时间戳渲染**：存储/比较的规范渲染为固定 6 位微秒 UTC
   （`YYYY-MM-DDTHH:MM:SS.ffffffZ`），保证字典序 = 时间序；schema 版本
   `tkg-schema-2` 起生效（旧 `tkg-schema-1` 库请重建，不自动迁移；打开时被
-  schema 版本门禁显式拒绝，见上条）。
+  schema 版本门禁显式拒绝，见上条）。**date-only 输入没有秒级快路径**：字符串
+  `2024-02-03` 或 `date(2024,2,3)` 一律补齐为 `2024-02-03T00:00:00.000000Z`
+  （适配器导入的 `event_date` 走同一路径），因此同日 `00:00:00.5Z` 切割线与
+  `valid_to` 的 half-open 判断都正确。小数秒接受 1–9 位：解析前统一右补/截断
+  为 6 位，因此 Python 3.10（`fromisoformat` 只接受 3/6 位）与 3.11+ 行为一致
+  （共享 helper：`medradar/tkg/_time.py`）。
 - **schema 版本门禁**：新库创建即永久写入 `meta.schema_version`；打开旧库时
   校验该戳——缺失（schema-1 时代未打戳）或不匹配一律**拒绝打开**并给出可执行
   提示（重建、不自动迁移、不删数据），不会把微秒级 schema-2 与秒级旧行混存。
@@ -98,12 +104,15 @@ print(doc["manifest"]["snapshot_sha256"])
 
 ## 测试
 
-`tests/test_tkg.py`：46 个离线测试覆盖迟到、修正、撤销、先选后滤、时钟时区/
-回退（含同秒微秒回退）、未来元数据泄漏、证据校验、原子回滚、幂等/冲突、SQL
-不可变守卫（含 `INSERT OR REPLACE`/upsert 绕过尝试）、端点可见性合同（撤销/
-未生效/缺失端点）、固定哈希向量、schema 版本门禁（legacy/未打戳/不匹配拒绝且
-不损数据）、只读适配器、导出哈希稳定性、CLI 端到端。运行：
+`tests/test_tkg.py` 与 `tests/test_forecast_registry.py` 为离线测试，覆盖迟到、修正、
+撤销、先选后滤、时钟时区/回退（含同秒微秒回退）、未来元数据泄漏、证据校验、原子回滚、
+幂等/冲突、SQL 不可变守卫（含 `INSERT OR REPLACE`/upsert 绕过尝试）、端点可见性合同
+（撤销/未生效/缺失端点）、固定哈希向量、schema 版本门禁（legacy/未打戳/不匹配拒绝且
+不损数据）、只读适配器、导出哈希稳定性、1–9 位小数秒与 date-only 时间戳规范化、
+CLI 端到端。运行全量离线测试：
 
 ```bash
-python -m medradar selftest     # 全量 482 tests OK (skipped=3)
+python -m medradar selftest
 ```
+
+以命令实际输出为准；本文档不硬编码测试数量（数量会随集成与新增用例变化）。

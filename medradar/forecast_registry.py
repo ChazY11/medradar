@@ -1,12 +1,13 @@
 """Immutable Forecast Registry + deterministic binary-outcome evaluation.
 
 A forecast, once registered, can never be changed: every row is stamped with a
-**server-assigned** ``generated_at`` (strict UTC, monotonic store clock), the
-target window must be genuinely in the future at registration, and SQL triggers
-physically reject ``UPDATE``/``DELETE`` (including ``INSERT OR REPLACE``) on
-both ledgers. Retries are safe through an explicit ``idempotency_key``: an
-exact retry returns the original record without consuming the write clock, a
-conflicting reuse of the key fails loudly.
+**server-assigned** ``generated_at`` (strict UTC, monotonic store clock), a
+prospective forecast's target window must be genuinely in the future at
+registration, and SQL triggers physically reject ``UPDATE``/``DELETE``
+(including ``INSERT OR REPLACE``, even one that reuses an
+``idempotency_key``) on both ledgers. Retries are safe through an explicit
+``idempotency_key``: an exact retry returns the original record without
+consuming the write clock, a conflicting reuse of the key fails loudly.
 
 Outcome resolution is a **separate append-only ledger** keyed by
 ``prediction_id``: outcomes are 0/1 only, corrections are new versions that
@@ -41,6 +42,8 @@ from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping
 
 import medradar
+
+from medradar.tkg._time import parse_iso8601, render_moment
 
 SCHEMA_VERSION = "forecast-registry-1"
 SCORING_VERSION = "scoring-1"
@@ -114,7 +117,10 @@ CREATE TABLE IF NOT EXISTS forecasts (
     p                 REAL NOT NULL CHECK (p >= 0.0 AND p <= 1.0),
     idempotency_key   TEXT NOT NULL UNIQUE,
     CHECK (information_cutoff <= generated_at),
-    CHECK (window_start >= generated_at),
+    -- Prospective forecasts must start in the future; retrospective fixtures
+    -- (prior backtests) are explicitly allowed to carry a historical window.
+    -- The API still validates the window in _finalize_window for both kinds.
+    CHECK (window_start >= generated_at OR record_kind = 'retrospective_fixture'),
     CHECK (window_end > window_start)
 );
 CREATE INDEX IF NOT EXISTS idx_forecasts_generated ON forecasts(generated_at);
@@ -147,10 +153,17 @@ CREATE TABLE IF NOT EXISTS forecast_idempotency (
 
 -- ------------------------------------------------------------- append-only
 -- The API never exposes UPDATE/DELETE; these triggers make the invariant
--- physical: even a stray raw SQL session cannot alter registered history.
--- INSERT OR REPLACE is rejected too: SQLite resolves REPLACE conflicts at
--- the btree layer without firing DELETE triggers, so a dedicated BEFORE
--- INSERT existence guard is required on top of the no-update/no-delete pair.
+-- physical for stray SQL/defective code: rewritten or deleted history is
+-- rejected. INSERT OR REPLACE is rejected too: SQLite resolves REPLACE
+-- conflicts at the btree layer without firing DELETE triggers, so BEFORE
+-- INSERT existence guards are required on top of the no-update/no-delete pair.
+-- The forecast guard is keyed on BOTH the primary key and the idempotency key:
+-- a REPLACE that reuses an existing idempotency_key with a new prediction_id
+-- would otherwise silently delete the unresolved original. The
+-- forecast_idempotency ledger (the key -> prediction_id mapping) is guarded
+-- separately so REPLACE cannot rebind a key either.
+-- Boundary: this stops rewrites/deletes, not owner-level forged appends (a DB
+-- owner can drop triggers/recreate the file); no tamper-proofness is claimed.
 CREATE TRIGGER IF NOT EXISTS forecasts_no_update BEFORE UPDATE ON forecasts
 BEGIN SELECT RAISE(ABORT, 'forecast history is append-only: UPDATE rejected'); END;
 CREATE TRIGGER IF NOT EXISTS forecasts_no_delete BEFORE DELETE ON forecasts
@@ -158,6 +171,23 @@ BEGIN SELECT RAISE(ABORT, 'forecast history is append-only: DELETE rejected'); E
 CREATE TRIGGER IF NOT EXISTS forecasts_no_replace BEFORE INSERT ON forecasts
 WHEN EXISTS (SELECT 1 FROM forecasts WHERE prediction_id = NEW.prediction_id)
 BEGIN SELECT RAISE(ABORT, 'forecast already registered: INSERT OR REPLACE rejected'); END;
+CREATE TRIGGER IF NOT EXISTS forecasts_no_key_rebind BEFORE INSERT ON forecasts
+WHEN EXISTS (
+    SELECT 1 FROM forecasts
+    WHERE idempotency_key = NEW.idempotency_key AND prediction_id <> NEW.prediction_id
+)
+BEGIN SELECT RAISE(ABORT, 'idempotency key already bound to another forecast: INSERT OR REPLACE rejected'); END;
+CREATE TRIGGER IF NOT EXISTS forecast_idempotency_no_update BEFORE UPDATE ON forecast_idempotency
+BEGIN SELECT RAISE(ABORT, 'idempotency ledger is append-only: UPDATE rejected'); END;
+CREATE TRIGGER IF NOT EXISTS forecast_idempotency_no_delete BEFORE DELETE ON forecast_idempotency
+BEGIN SELECT RAISE(ABORT, 'idempotency ledger is append-only: DELETE rejected'); END;
+CREATE TRIGGER IF NOT EXISTS forecast_idempotency_no_resubmit BEFORE INSERT ON forecast_idempotency
+BEGIN
+    SELECT RAISE(ABORT, 'idempotency ledger is append-only: key already recorded')
+    WHERE EXISTS (
+        SELECT 1 FROM forecast_idempotency WHERE idempotency_key = NEW.idempotency_key
+    );
+END;
 CREATE TRIGGER IF NOT EXISTS resolutions_no_update BEFORE UPDATE ON resolutions
 BEGIN SELECT RAISE(ABORT, 'resolution history is append-only: UPDATE rejected'); END;
 CREATE TRIGGER IF NOT EXISTS resolutions_no_delete BEFORE DELETE ON resolutions
@@ -190,7 +220,9 @@ def normalize_moment(value: Any, field: str) -> tuple[str, str]:
     date-only input (explicitly widened to ``T00:00:00.000000Z``) and
     ``"datetime"`` otherwise. Naive datetimes are rejected outright - the
     caller must state a timezone; we never guess one. Offsets and fractional
-    seconds are normalized so lexicographic order equals chronological order.
+    seconds are normalized so lexicographic order equals chronological order;
+    fractions with 1-5 digits (and sub-microsecond digits, truncated) are
+    accepted identically on Python 3.10 and newer.
     """
     if isinstance(value, datetime):
         moment, precision = value, "datetime"
@@ -205,7 +237,7 @@ def normalize_moment(value: Any, field: str) -> tuple[str, str]:
         if _DATE_ONLY.match(text):
             return text + "T00:00:00.000000Z", "date"
         try:
-            moment = datetime.fromisoformat(text.replace("Z", "+00:00"))
+            moment = parse_iso8601(text)
         except ValueError as exc:
             raise ForecastValidationError(f"{field}: unparseable timestamp {value!r}") from exc
         precision = "datetime"
@@ -214,11 +246,11 @@ def normalize_moment(value: Any, field: str) -> tuple[str, str]:
     else:
         raise ForecastValidationError(f"{field}: unsupported timestamp type {type(value).__name__}")
     utc = moment.astimezone(timezone.utc)
-    return f"{utc:%Y-%m-%dT%H:%M:%S}.{utc.microsecond:06d}Z", precision
+    return render_moment(utc), precision
 
 
 def _render_moment(utc: datetime) -> str:
-    return f"{utc:%Y-%m-%dT%H:%M:%S}.{utc.microsecond:06d}Z"
+    return render_moment(utc)
 
 
 def add_months_clamped(moment: datetime, months: int) -> datetime:
@@ -464,10 +496,15 @@ class ForecastRegistry:
     ) -> tuple[str, str]:
         """Resolve the target window *after* the store clock is known.
 
-        The window must be genuinely future: ``window_start`` equals
-        ``generated_at`` by default (never an implicit event-date fallback)
-        or is explicitly ``>= generated_at``. ``window_end`` is **always**
-        derived from the start plus the declared horizon
+        For prospective ``record_kind='forecast'`` rows the window must be
+        genuinely future: ``window_start`` equals ``generated_at`` by default
+        (never an implicit event-date fallback) or is explicitly
+        ``>= generated_at``, and ``window_end > generated_at``.
+        ``record_kind='retrospective_fixture'`` (prior backtests) is exempt
+        from the future-only rule: its window may be historical (e.g. a
+        backtest of 2020 data recorded in 2026), because such rows are never
+        scored in the prospective headline cohort anyway. ``window_end`` is
+        **always** derived from the start plus the declared horizon
         (``add_months_clamped(window_start, horizon_months)``) so the
         ``horizon_months`` label always denotes the actual calendar duration
         of the window - an arbitrary or shortened end can never be silently
@@ -475,13 +512,15 @@ class ForecastRegistry:
         ``window_end`` is accepted only when it exactly equals the derived
         end; anything else is rejected.
         """
+        is_fixture = prepared["record_kind"] == "retrospective_fixture"
         if spec.get("window_start") is None:
             window_start = generated_at
         else:
             window_start, _ = normalize_moment(spec["window_start"], "window_start")
-            if window_start < generated_at:
+            if window_start < generated_at and not is_fixture:
                 raise ForecastValidationError(
                     f"window_start {window_start} must not be before generated_at {generated_at}"
+                    " (historical windows are only accepted for record_kind='retrospective_fixture')"
                 )
         start_dt = datetime.strptime(window_start, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
         window_end = _render_moment(add_months_clamped(start_dt, prepared["horizon_months"]))
@@ -498,9 +537,11 @@ class ForecastRegistry:
             raise ForecastValidationError(
                 f"target window must be non-empty half-open [start, end) with end > start; got [{window_start}, {window_end})"
             )
-        if window_end <= generated_at:
+        if window_end <= generated_at and not is_fixture:
             raise ForecastValidationError(
-                f"target window must be genuinely future at registration: window_end {window_end} <= generated_at {generated_at}"
+                f"prospective target window must be genuinely future at registration:"
+                f" window_end {window_end} <= generated_at {generated_at}"
+                " (historical windows are only accepted for record_kind='retrospective_fixture')"
             )
         return window_start, window_end
 

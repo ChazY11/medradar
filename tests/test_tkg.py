@@ -16,8 +16,11 @@ import sqlite3
 import tempfile
 import unittest
 from contextlib import redirect_stdout
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from unittest import mock
+
+import medradar
 
 from medradar.tkg import (
     ClockRegressionError,
@@ -402,7 +405,7 @@ class ExportTests(unittest.TestCase):
                               adapter_version="events-adapter-1")
         manifest = doc["manifest"]
         self.assertEqual(manifest["known_at"], stamp(2))
-        self.assertEqual(manifest["valid_at"], "2021-01-01T00:00:00Z")
+        self.assertEqual(manifest["valid_at"], "2021-01-01T00:00:00.000000Z")
         self.assertEqual(manifest["adapter_version"], "events-adapter-1")
         self.assertTrue(manifest["code_version"].startswith("medradar-"))
         self.assertTrue(manifest["schema_version"])
@@ -518,10 +521,13 @@ class HardeningTests(unittest.TestCase):
         self.assertEqual(snap["edges"], [])
 
     def test_snapshot_keeps_edge_when_endpoints_visible_and_hash_regresses(self) -> None:
-        # Fixed-vector export: locks the whole canonical rendering (schema
-        # version, fixed-width timestamps, sorted canonical JSON, endpoint
-        # filtering). Rebuilding the identical history must reproduce the
-        # exact snapshot_sha256 byte for byte.
+        # Fixed-vector regression: locks the whole canonical export rendering -
+        # schema-2, fixed-width 6-digit-microsecond timestamps (including
+        # date-only inputs widened to .000000Z), sorted canonical JSON,
+        # endpoint filtering, and the manifest code_version. code_version is
+        # pinned explicitly: the vector must not move when the package version
+        # is bumped (the integration merge bumped medradar.__version__
+        # 0.2.2 -> 0.3.0 and turned the old literal stale).
         def build() -> TKGStore:
             store = TKGStore(":memory:", clock=make_clock(dt(0), dt(1), dt(2)))
             store.apply([
@@ -534,13 +540,18 @@ class HardeningTests(unittest.TestCase):
             store.apply([node_spec("ACME", {"stage": "ipo-filed"}, "r2")])
             return store
 
-        expected = "f39e25818c86e5dacfa2504d25f39d789a5575a5a774af494195b80280d934c9"
-        first = export_snapshot(build(), known_at=stamp(2), valid_at="2021-01-01",
-                                adapter_version="events-adapter-1")
+        expected = "e9822d6ef1068a85f28679a887be35b1ff9a7aad35bc6195e5147a7bbb9a45de"
+        with mock.patch.object(medradar, "__version__", "fixed-vector-1"):
+            first = export_snapshot(build(), known_at=stamp(2), valid_at="2021-01-01",
+                                    adapter_version="events-adapter-1")
+            second = export_snapshot(build(), known_at=stamp(2), valid_at="2021-01-01",
+                                     adapter_version="events-adapter-1")
+        self.assertEqual(first["manifest"]["code_version"], "medradar-fixed-vector-1")
+        self.assertEqual(first["manifest"]["schema_version"], "tkg-schema-2")
+        # Date-only valid_from is widened to the canonical fixed-width form.
+        self.assertEqual(first["nodes"][0]["valid_from"], "2020-01-01T00:00:00.000000Z")
         self.assertEqual(first["manifest"]["counts"], {"nodes": 2, "edges": 1})
         self.assertEqual(first["manifest"]["snapshot_sha256"], expected)
-        second = export_snapshot(build(), known_at=stamp(2), valid_at="2021-01-01",
-                                 adapter_version="events-adapter-1")
         self.assertEqual(canonical_json(second), canonical_json(first))
 
     def test_insert_or_replace_cannot_rewrite_history(self) -> None:
@@ -623,6 +634,65 @@ class HardeningTests(unittest.TestCase):
         self.assertEqual(offset, "2024-01-01T00:00:00.250000Z")  # normalized to UTC
         self.assertLess(whole, frac)
         self.assertLess(frac, "2024-01-01T00:00:01.000000Z")
+
+    def test_fractional_second_digits_parse_on_python_310(self) -> None:
+        # py3.10's fromisoformat accepts only 3 or 6 fractional digits (3.11+
+        # relaxed it), so every 1-9 digit fraction must normalize identically
+        # on every supported interpreter. Sub-microsecond digits are truncated.
+        for fraction, expected in (
+            ("5", "500000"),
+            ("50", "500000"),
+            ("500", "500000"),
+            ("5000", "500000"),
+            ("50000", "500000"),
+            ("500000", "500000"),
+            ("5000009", "500000"),
+        ):
+            rendered, _ = normalize_moment(f"2024-01-01T00:00:00.{fraction}Z", "t")
+            self.assertEqual(rendered, f"2024-01-01T00:00:00.{expected}Z", msg=fraction)
+        # a 1-digit fraction combined with a non-UTC offset parses too
+        offset, _ = normalize_moment("2024-01-01T08:00:00.2+08:00", "t")
+        self.assertEqual(offset, "2024-01-01T00:00:00.200000Z")
+        # a 6-digit fraction with a non-UTC offset (the CI-exact shape)
+        offset6, _ = normalize_moment("2024-01-01T08:00:00.250000+08:00", "t")
+        self.assertEqual(offset6, "2024-01-01T00:00:00.250000Z")
+
+    def test_date_only_inputs_render_fixed_width_microseconds(self) -> None:
+        # No second-precision fast path may bypass the canonical renderer.
+        self.assertEqual(normalize_moment("2024-02-03", "t"),
+                         ("2024-02-03T00:00:00.000000Z", "date"))
+        self.assertEqual(normalize_moment(date(2024, 2, 3), "t"),
+                         ("2024-02-03T00:00:00.000000Z", "date"))
+        store = TKGStore(":memory:", clock=step_clock())
+        store.add_node("company", "ACME", {}, valid_from="2024-02-03",
+                       **EVIDENCE, idempotency_key="k1")
+        self.assertEqual(store.raw("SELECT valid_from FROM nodes")[0]["valid_from"],
+                         "2024-02-03T00:00:00.000000Z")
+
+    def test_date_only_valid_from_visible_at_same_day_subsecond_cutoff(self) -> None:
+        # valid_at defaults to known_at; both sides must render fixed-width or
+        # the natural "as of the start of the day" call hides the node (F2).
+        store = TKGStore(":memory:", clock=step_clock())
+        store.add_node("company", "ACME", {}, valid_from="2024-02-03",
+                       **EVIDENCE, idempotency_key="k1")
+        day_start = TKGQuery(store).snapshot(known_at="2024-02-03T00:00:00Z")
+        self.assertEqual([n["node_id"] for n in day_start["nodes"]], ["ACME"])
+        at_half_second = TKGQuery(store).snapshot(
+            known_at=stamp(5), valid_at="2024-02-03T00:00:00.5Z")
+        self.assertEqual([n["node_id"] for n in at_half_second["nodes"]], ["ACME"])
+
+    def test_date_only_valid_to_is_honoured_half_open(self) -> None:
+        store = TKGStore(":memory:", clock=step_clock())
+        store.add_node("company", "ACME", {}, valid_from="2020-01-01",
+                       valid_to="2024-02-05", **EVIDENCE, idempotency_key="k1")
+        self.assertEqual(store.raw("SELECT valid_to FROM nodes")[0]["valid_to"],
+                         "2024-02-05T00:00:00.000000Z")
+        before = TKGQuery(store).snapshot(
+            known_at=stamp(5), valid_at="2024-02-04T23:59:59.999999Z")
+        self.assertEqual(len(before["nodes"]), 1)
+        after = TKGQuery(store).snapshot(
+            known_at=stamp(5), valid_at="2024-02-05T00:00:00.5Z")
+        self.assertEqual(after["nodes"], [])
 
     def test_cutoff_at_equal_instant_excludes_subsecond_later_write(self) -> None:
         # A write stamped 00:00:00.123456 must NOT be visible at a cutoff of
