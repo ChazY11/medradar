@@ -12,24 +12,26 @@ Every public act becomes one row in the `events` table:
 
 | Column | Meaning |
 |---|---|
-| `kind` | `510k` / `pma` / `device_recall` / `drug_approval` / `trial` / `nmpa_registration` |
+| `kind` | `510k` / `pma` / `device_recall` / `drug_approval` / `trial` / `advisory_committee` / `8k_catalyst` / `nmpa_registration` |
 | `event_date` | date the act happened (decision date, approval date, trial first-posted date) |
-| `published_at` | when the source made it public (openFDA gives dates only; EDGAR gives timestamps) |
+| `published_at` | when the source made it public; an openFDA decision date is **not** assumed to be public |
 | `first_seen_at` | when MedRadar first ingested it |
-| `available_at` | **the only timestamp a backtest may use** (defaults to `published_at`) |
-| `timestamp_quality` | `datetime` / `date` / `estimated` / `unknown`; `unknown` never trades |
+| `available_at` | **the only timestamp a backtest may use** (defaults to a real `published_at`, never to `event_date`) |
+| `timestamp_quality` | `datetime` / `date` / `estimated` / `unknown`; only `datetime`/`date` with a real timestamp can trade |
 | `as_of` | when MedRadar fetched it (point-in-time marker) |
 | `company_key` | resolved parent company (may be `NULL` — never guessed) |
 | `track_id` | resolved technology track (may be `NULL` for unmapped product codes) |
 
 Approximations that are documented rather than hidden:
 
-* openFDA publishes 2–12 days after the FDA decision, so `event_date` is the decision date but our
-  *knowledge* lags by days. The weekly cadence absorbs this; a daily intraday strategy would not.
+* openFDA publishes after the FDA decision, so `event_date` is the decision date but our *knowledge*
+  lags. Without a genuine publication field, 510(k)/PMA rows get `timestamp_quality=unknown` and no
+  `available_at`; they remain in industry counts but cannot enter return studies.
 * Trial registration may be posted up to 21 days after first enrollment. `event_date` uses
-  `studyFirstPostDate`, i.e. when the record became public — not when the trial started.
-* Signal dates add one calendar day to `event_date` (`event_date + 1`), modelling "you could act the
-  next day". This is the single most optimistic assumption in the study.
+  `studyFirstPostDate`, i.e. when the record became public — not when the trial started. Device and
+  diagnostic-test interventions use the device taxonomy; drug-only trials stay out of the device frontier.
+* Signal dates add one calendar day to a real `available_at` (`available_at + 1`), modelling "you could act the
+  next day". Missing, `estimated` and `unknown` public times never generate trading signals.
 
 ## 2. Company resolution (the make-or-break step)
 
@@ -132,9 +134,9 @@ seeing the backtest is how projects lie to themselves.
 
 **Event study** (`eventstudy.run_event_study`):
 
-* signals are read from the `signals` table, which now stores `available_at` and
-  `timestamp_quality`; signals with `timestamp_quality = unknown` are excluded (counted in
-  `skipped.unknown_timestamp`, never silently dropped);
+* signals are read from the `signals` table, which stores `available_at` and `timestamp_quality`;
+  missing, `estimated` and `unknown` public times are excluded with separate counts in
+  `skipped.missing_timestamp`, `skipped.estimated_timestamp` and `skipped.unknown_timestamp`;
 * entry = open of the first trading day **after** `signal_date`, where
   `signal_date = available_at + 1 day` — i.e. roughly two trading days after the event;
 * exit = close `h` trading days later, `h ∈ {1, 5, 20, 60}`;
@@ -143,6 +145,14 @@ seeing the backtest is how projects lie to themselves.
 
 Entries are never at the signal-day close. That single rule removes most of the accidental
 "profitability" in naive FDA backtests.
+
+**Case event-study audit (v0.3.0).** `clinical_hold`, `refuse_to_file`, `crl`, `pre_submission`
+and `designation` are separate categories; pre-submission wording is explicitly excluded from
+approval evidence. For each category × horizon, observations with absolute SPY-abnormal return
+above 100% are listed in `audit.flagged_cases`, counted in `extreme_n`/`excluded_n`, and removed
+before bootstrap inference. `raw_n`, `unfiltered_raw_mean`, the audited raw mean and winsorised
+mean are all retained. This is an audit gate, not a claim that every large return is a data error:
+each flagged ticker/date still requires split, adjustment and corporate-action review.
 
 **Paper portfolio** (`paper.run_paper`, v1): long only, equal-weight budget per signal capped at 5%
 per name and 25% per track, next-open entry, 60-trading-day hold, −20% close-based stop, 20 bps +
@@ -169,10 +179,27 @@ says so.
    press releases / 8-K / AdCom feeds.
 7. **NMPA data.** Absent by default (WAF). `cn_gap` is unavailable unless you supply a CSV.
 
-## 10. Reproducibility
+## 10. Frontier device radar
+
+`medradar frontier` reads public pre-decision events rather than inferring confidential status:
+
+* FDA Advisory Committee calendar rows and linked agenda/briefing/slide documents;
+* ClinicalTrials.gov `first_posted` registrations;
+* SEC 8-K `pre_submission` and `designation` records.
+
+`config/tracks_device.json` gives every track a `domain`, `domain_zh` and `frontier_keywords`.
+The registry covers 50 tracks in 23 domains. The JSON feed groups events by stage, domain and track,
+keeps source URLs and timestamp quality, and explicitly reports
+`pending_510k_pma_monitoring=false`. AdCom page-update dates are `estimated`, so they inform
+industry research but never enter a return study.
+
+## 11. Reproducibility
 
 * every HTTP response is cached by URL under `data/cache/` → re-runs are deterministic and offline;
 * `build_metrics` is a pure function of the SQLite facts; bootstrap seeds are fixed;
 * `--offline` replays cache only; CI runs the test suite with synthetic fixtures and zero network;
 * `docs/metrics.json` is a committed snapshot so readers can inspect the exact numbers behind a
-  published report.
+  published report. It is not a byte-for-byte reproduction kit for the full historical crawl: the
+  1.2 GiB SQLite database and raw HTTP cache are not committed. Rebuilding from public endpoints
+  can reflect later source revisions; a new research release must freeze its DB/cache manifest and
+  recompute metrics under the current taxonomy.

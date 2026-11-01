@@ -1,6 +1,6 @@
-# 研究协议（Research Protocol）v1
+# 研究协议（Research Protocol）v1.1
 
-> 状态：**生效中**｜版本：v1｜日期：2026-10-31｜实现：`medradar/stats.py`、`medradar/calibration.py`
+> 状态：**生效中**｜版本：v1.1｜日期：2026-10-31｜实现：`medradar/stats.py`、`medradar/calibration.py`、`medradar/cases.py`
 > 本文档是 MedRadar 一切"数字结论"的**事前规则**。任何对外发布的数字，必须能回答三个问题：
 > ① 用什么样本算的？② 多重检验怎么处理的？③ 缺失/偏差被标出来了吗？
 > 方法细节见 [`docs/METHODS.md`](METHODS.md)，数据契约见 [`docs/SCHEMA.md`](SCHEMA.md)，
@@ -14,7 +14,7 @@
 |---|---|
 | 研究性质 | **假设生成（hypothesis generation）**，不是策略验证，不是投资建议 |
 | 观察单位 | 一条公开监管/临床事件（`events` 行）+ 一个信号（`signals` 行） |
-| 时间锚点 | `event_date` = 事件**最早可公开获知**的日期；信号日 = `event_date + 1` |
+| 时间锚点 | `event_date` 只表示发生日；交易锚点是真实 `available_at`，且质量须为 `datetime`/`date`；缺失/估计/未知时间退出交易样本 |
 | 主统计量 | 事件后 h 个交易日的**异常收益**（个股收益 − SPY 同期收益），h ∈ {1, 5, 20, 60} |
 | 不确定性 | 按**事件日分块的 block bootstrap**（不是 i.i.d. bootstrap） |
 | 多重检验 | 家族 = 信号类型 × 持有期，Holm 逐步下降法控制 FWER 0.05；Bonferroni 作上界 |
@@ -47,10 +47,11 @@
 
 ## 2. 观察单位与反前视（anti-lookahead）规则
 
-1. 事件日期一律使用**最早公开可获知日**（`docs/METHODS.md` §1）：510(k) 用 `decision_date`、
-   试验用 `studyFirstPostDate`、召回用 `center_classification_date`。
-2. 交易/信号只在 `event_date + 1` 之后生效；事件研究**入场 = 信号日之后第一个交易日开盘价**，
-   禁止用信号日收盘价或当日开盘价。
+1. `event_date` 只表示发生日：510(k) 可用 `decision_date`，但它不等于公开日。没有真实公开时间的
+   510(k)/PMA 记录为 `unknown` 且无 `available_at`，只能做行业描述；试验使用 `studyFirstPostDate`，
+   SEC 使用申报日，召回只有真实 `event_date_posted` 才可作为公开日。
+2. 交易/信号只在真实 `available_at` 之后生效；`estimated`/`unknown`/缺失时间全部排除并计数。
+   事件研究**入场 = 信号日之后第一个交易日开盘价**，禁止用信号日收盘价或当日开盘价。
 3. 任何"当时不可知"的字段不得进入特征：当前市值不能给历史事件加权（见 §6）；
    公司归属只能用当时已存在的主体（子公司清单本身是今天的知识，这一项只能作为已知局限）。
 4. `payload.backfill = true` 的回填告警永不成交（见 `docs/SCHEMA.md` §8）。
@@ -61,10 +62,10 @@
 
 ### 3.1 事件研究样本
 
-* 窗口：`docs/metrics.json` 的 `meta.window`（当前 2025Q1–2026Q4，8 个季度）。
-* 信号总量：303 条（`trial_start` 198、`device_novel_code` 47、`drug_approval` 37、
-  `recall_cluster` 20、`device_new_track` 1）；`device_new_track` 仅 1 条，**不单独检验**，
-  只并入描述性汇总。
+* 窗口与信号总量必须来自**同一份冻结的 `metrics.json`**，字段分别为 `meta.window` 和
+  `len(signals)`，本文不再写死一个会漂移的总数。历史材料中的 303（早期运行）、281（2026-10-31
+  README 快照）与 127（SQLite 中可用于交易的子集）不是同一口径，不得拼接比较。
+* 样本少于 3 的 `kind × horizon` 不单独检验，只进入描述性汇总。
 * 切分（按 `signal_date` 时间排序，同日整体归入同一阶段）：
 
   | 阶段 | 占比 | 用途 |
@@ -134,6 +135,11 @@ API：`stats.block_bootstrap_ci(values, blocks, *, n_boot=2000, alpha=0.05, seed
 API：`stats.aggregate_event_study(events, horizons=(1,5,20,60), returns_key="ar", block_key="event_date", ...)`。
 输入行示例：`{"event_date": "2025-03-03", "kind": "drug_approval", "ar": {"1": 0.012, "5": null}}`。
 **缺失记为 missing，绝不按 0 处理。**
+
+案例库研究另设价格完整性闸门：绝对超额收益 >100% 的观测必须列入 `audit.flagged_cases`，
+记录 ticker、日期、持有期和原始收益，并退出 bootstrap 推断；同时报告未过滤均值和排除数。
+该阈值不是“收益不可能发生”的判断，而是强制复核复权、拆股、ticker 映射和公司行动。
+旧快照中约 4520% 的试验类原始均值在新结论发布前必须完成这一复核。
 
 ### 4.3 多重检验
 

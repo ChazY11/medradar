@@ -101,23 +101,28 @@
 
 | `source` | 采集端 | 口径要点 |
 | --- | --- | --- |
-| `openfda_device_510k` | openFDA `/device/510k` | 按时间窗**全量**抓取（不按申请人过滤，否则漏子公司）；本地用 `CompanyRegistry.resolve(applicant)` 归属 |
-| `openfda_device_pma` | openFDA `/device/pma` | 含 supplement；`kind="pma"` |
-| `openfda_device_recall` | openFDA `/device/recall` | 事件日取 `center_classification_date`（缺失回退 `report_date`） |
-| `ctgov` | ClinicalTrials.gov v2 | 只要 `INTERVENTIONAL`；事件日取 `StudyFirstPostDate`（最早公开可得，避免前视） |
+| `openfda_device_510k` | openFDA `/device/510k` | 按时间窗**全量**抓取（不按申请人过滤，否则漏子公司）；本地用 `CompanyRegistry.resolve(applicant)` 归属；决定日不冒充公开日 |
+| `openfda_device_pma` | openFDA `/device/pma` | 含 supplement；`kind="pma"`；决定日不冒充公开日 |
+| `openfda_device_recall` | openFDA `/device/recall` | 事件日取 `center_classification_date`（缺失回退 `report_date`）；只有真实 `event_date_posted` 才可作为公开日 |
+| `ctgov` | ClinicalTrials.gov v2 | 只要 `INTERVENTIONAL`；事件日与公开日均取 `StudyFirstPostDate`（首次公示，避免前视） |
 | `openfda_drug_drugsfda` | openFDA `/drug/drugsfda` | 仅 `ORIG` + `AP` 且 NDA/BLA（**排除 ANDA 仿制药**） |
+| `sec_edgar_corpus` | SEC EDGAR 8-K 全文语料 | 公开时间取真实申报日；预申请、资格认定、临床暂停和拒绝受理独立分类 |
+| `fda_advisory_committee` | FDA Advisory Committee Calendar | 采集器械相关公开日程、议程与简报材料；页面“截至日期”只证明届时可见，因此标为 `estimated`，不进交易研究 |
 | `nmpa` | 本地 CSV 适配器 | 官网有 JS WAF 无法直接抓；详见缺口 1，未加载时报告显式写"不可用" |
 
-时间口径：`event_date` 是事件发生日，`available_at` 是**回测允许使用**的时点（`published_at` →
-`event_date` 回退链，见 `medradar/db.py`）。公开数据通常比事件日延迟 2–12 天入库，
-所以"事后看很准"的结论必须用 `available_at` 复核，见 `docs/ASSUMPTIONS.md`、`docs/RESEARCH.md`。
+时间口径：`event_date` 是事件发生日，`published_at` 是真实公开发布时间，`available_at` 是
+**回测允许使用**的时点。`available_at` 只能来自显式公开时间或真实 `published_at`，不再回退到
+`event_date`。只有真实 `available_at` 且 `timestamp_quality=datetime/date` 的记录能进入交易研究；
+缺失、`estimated`、`unknown` 的记录仍可用于描述性行业分析，但必须排除并计数。
+公开数据通常比事件日延迟入库，所以“事后看很准”的结论必须用 `available_at` 复核，见
+`docs/ASSUMPTIONS.md`、`docs/RESEARCH.md`。
 
 ## 二、覆盖年份与窗口解释
 
-- **器械侧（510(k) / PMA / 召回）+ 临床试验**：collector 按约 10 年窗口抓取，最早约 2016 年 10 月；
-  更早的器械历史尚未回填（见缺口 4）。因此按年看，2016 年只有 Q4 的数据量。
+- **器械与试验**：当前自动生成快照中，510(k) 自 1976 年起、PMA 自 1968 年起、召回自 2002 年起、
+  临床试验自 1999 年起；这些区间描述事件历史，不代表每条记录都有真实公开时间。
 - **药品批准**：openFDA drugsfda 自带历史，`ORIG` 批准日期可回溯到 1960 年代；
-  这解释了"最早事件"远早于 2016（见自动生成区的日期范围）。
+  当前快照最早事件为 1966 年（见自动生成区的日期范围）。
 - **价格**：日线约 10 年（Yahoo chart API），1 分钟线只在回放中按需抓最近约 7 天、不落库。
 - **当年数据未走完**：最新的年份列只到生成日，不能当作全年同比。
 - 无日期事件单独计数（`undated`）：统计年份分布时它们不计入任何一年。
@@ -131,13 +136,14 @@
 2. **退市 / 被并购公司生存偏差**：公司表只保留当前存续主体，历史退市标的的价格与事件未补齐；
    事件研究/回放对此敏感，见 `docs/ASSUMPTIONS.md` 的"生存偏差"条目。
 3. **1 分钟行情仅最近约 7 天**：更早成交只能用日线次日开盘，无法还原盘中滑点。
-4. **器械侧 10 年窗口**：510(k)/PMA/召回/试验均自 2016 年 10 月起，更早器械历史未回填；
-   药品批准因 drugsfda 自带历史而回溯很深（两边不可比）。
+4. **历史公开时点不完整**：openFDA 510(k)/PMA 的决定日不是公开证据；没有真实公开时间的器械事件只用于描述性分析，
+   不进入交易研究。AdCom 页面“截至日期”标为 `estimated`，同样排除。
 5. **药品侧不含 ANDA 仿制药**：只保留 NDA/BLA 的 ORIG 批准，仿制药竞争不在覆盖范围。
-6. **试验仅 `INTERVENTIONAL`**：观察性研究/器械早期可行性研究被有意排除，避免赛道热度失真。
+6. **试验仅 `INTERVENTIONAL`**：观察性研究被有意排除，避免赛道热度失真。
 7. **国家字段未归一化**：`country` 保留 openFDA 原文（`CHINA`/`CN`、`NETHERLANDS`/`NL` 并存），
    国家维度统计前需归并；当前报告不据此下结论。
-8. **无 datetime 级时间戳**：`timestamp_quality` 全为 `date`，无法做"发布后 1 小时"类研究。
+8. **当前快照无 datetime 级时间戳**：自动生成区中的既有事件全为 `date`，无法做“发布后 1 小时”类研究；
+   新 AdCom 事件使用 `estimated`，只用于前沿行业监测。
 9. **公司匹配率偏低是设计选择**：长尾小申请人有意不匹配（宁漏不错），会低估小公司动量；
    提升方向是扩充 `config/companies_*.json` 别名，而不是降低置信阈值。
 10. **模拟盘只做多**：无做空/借券费/并购逼平建模（v1 范围，见 `docs/ASSUMPTIONS.md`）。
@@ -191,6 +197,7 @@ db = DB('data/medradar.sqlite'); print(json.dumps(data_stats(db), ensure_ascii=F
 | `out/nightly_status.json` | 各阶段退出码 / 耗时 / `core_failed` |
 | `out/data_stats.json` | 最近一次 `data_stats` 的完整 JSON 快照 |
 | `out/metrics.json` | 分析结果（报告输入） |
+| `out/frontier.json` / `out/frontier.md` | 获批前公开信号、阶段/领域汇总与器械前沿报告 |
 | `docs/DATA.md` | 本文（自动生成区 + 增长表由 nightly 更新） |
 
 `scripts/nightly.ps1` 关键参数：`-Database`（默认 `data/medradar.sqlite`）、`-Months`（默认 24，

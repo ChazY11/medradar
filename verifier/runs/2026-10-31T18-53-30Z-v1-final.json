@@ -1,0 +1,50 @@
+{
+  "timestamp": "2026-10-31T18:53:30.510427Z",
+  "command": "python3 verifier/v1/verify.py",
+  "exit_code": 0,
+  "output": "{\n  \"status\": \"ok\",\n  \"failures\": []\n}",
+  "stderr": "",
+  "validation": {
+    "offline_tests": {
+      "command": "python3 -m unittest discover",
+      "exit_code": 0,
+      "tests": 456,
+      "skipped": 3
+    },
+    "compileall": {
+      "command": "python3 -m compileall -q medradar",
+      "exit_code": 0
+    },
+    "calibration": {
+      "command": "python3 docs/calibration/score.py",
+      "exit_code": 0,
+      "match_published": true
+    },
+    "demo": {
+      "command": "MEDRADAR_HOME=<isolated> python3 -m medradar demo",
+      "exit_code": 0,
+      "status": "ok"
+    },
+    "install": {
+      "command": "python3 scripts/check_install.py --repo /tmp/medradar-install-final",
+      "exit_code": 0,
+      "status": "ok",
+      "companies": 51,
+      "tracks": 50,
+      "doctor": "ok",
+      "problems": []
+    },
+    "full_run": {
+      "command": "python3 -m medradar run --skip-collect --offline <isolated paths>",
+      "exit_code": 0,
+      "frontier_schema": "medradar.frontier.v1",
+      "tracks": 50,
+      "domains": 23,
+      "published": [
+        "frontier.json",
+        "frontier.md",
+        "index.html"
+      ]
+    }
+  }
+}

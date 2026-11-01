@@ -3,6 +3,43 @@
 All notable changes to MedRadar. Format loosely follows Keep a Changelog.
 This is a research tool; "fixed" means a documented behaviour changed.
 
+## [0.3.0] — 2026-10-31 (frontier radar & research integrity)
+
+### Added
+- Public pre-decision device radar: FDA Advisory Committee schedules and briefing
+  materials, first-posted trials, SEC pre-submissions and designations. New
+  `medradar frontier` command writes `frontier.json` and `frontier.md`.
+- Hierarchical device registry: 50 tracks across 23 domains, including life
+  support, IVD (NGS/liquid biopsy/MRD/companion diagnostics/digital pathology),
+  BCI, neuromodulation, cardiovascular, imaging, robotics, SaMD/AI, renal and
+  diabetes. Every track exposes machine-readable `domain` and `frontier_keywords`.
+- Extreme-return audit: absolute SPY-abnormal returns above 100% are listed with
+  ticker/date/horizon and excluded from inference; unfiltered raw means remain
+  visible so broken prices cannot disappear into winsorisation.
+- Offline fixtures and regression tests for AdCom parsing, frontier domains,
+  regulatory taxonomy, public-time gates and extreme-return exclusions.
+
+### Fixed
+- `clinical_hold`, `refuse_to_file`, `crl`, `pre_submission` and `designation`
+  are independent categories. A "Pre-Submission for FDA Approval" headline no
+  longer counts as an approval, and designations no longer inflate approvals.
+- Historical decision dates are no longer silently promoted to `published_at` or
+  `available_at`. Missing, `estimated` and `unknown` public times remain useful
+  for descriptive analysis but are excluded and counted in return studies.
+- SEC filing dates and ClinicalTrials.gov `first_posted` dates are preserved as
+  real public dates; openFDA 510(k)/PMA decision dates stay non-tradable unless
+  a genuine public timestamp is available. Signal generation applies the same gate
+  instead of falling back to `event_date`.
+- Device and diagnostic-test interventions now use the device taxonomy before the
+  drug therapeutic-area fallback. Drug-only trials and non-device SEC designations
+  no longer leak into the device frontier feed.
+- Documentation no longer presents the old, mixed-category CRL study as a current
+  result. Historical snapshot figures are labelled as such and require a rebuild.
+
+### Scope boundary
+- MedRadar monitors public pre-decision evidence only. It does not claim access to
+  confidential pending 510(k)/PMA reviews.
+
 ## [0.2.2] — 2026-10-31
 
 ### Docs

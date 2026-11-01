@@ -27,6 +27,7 @@ from datetime import date, timedelta
 from typing import Any, Iterable
 
 from .config import OUT_DIR, load_companies, load_tracks
+from .db import trading_timestamp_ok
 from .util import (
     bootstrap_ci,
     gamma_poisson,
@@ -84,10 +85,10 @@ def _load_events(db, kinds: Iterable[str] | None = None) -> list[dict[str, Any]]
     rows = db.query(sql, params)
     for row in rows:
         row["_day"] = parse_date(row["event_date"])
-        # The backtest may only use what was publicly available. Older databases
-        # fall back to the event date and are marked as estimated quality.
-        row["_available_day"] = parse_date(row.get("available_at")) or row["_day"]
-        quality = str(row.get("timestamp_quality") or "estimated").lower()
+        # A decision date is not public evidence. Missing/estimated/unknown
+        # public times stay in descriptive metrics but cannot become signals.
+        row["_available_day"] = parse_date(row.get("available_at"))
+        quality = str(row.get("timestamp_quality") or "unknown").lower()
         row["timestamp_quality"] = quality if quality in ("datetime", "date", "estimated", "unknown") else "unknown"
     return [row for row in rows if row["_day"]]
 
@@ -638,15 +639,23 @@ def _signals(
     seen: set[tuple] = set()
     import bisect
 
-    def registries_for(kind: str):
-        if kind in ("drug_approval", "trial"):
+    def registries_for(kind: str, track_id: str | None = None):
+        if kind == "drug_approval":
+            return drug_reg, drug_tracks
+        if kind == "trial" and not device_tracks.get(track_id):
             return drug_reg, drug_tracks
         return device_reg, device_tracks
 
-    def avail(event: dict[str, Any]) -> date:
-        return event.get("_available_day") or event["_day"]
+    def tradeable(event: dict[str, Any]) -> bool:
+        return trading_timestamp_ok(event.get("available_at"), event.get("timestamp_quality"))
 
-    activity = [event for event in _device_activity(events) if event["company_key"]]
+    def avail(event: dict[str, Any]) -> date:
+        return event["_available_day"]
+
+    activity = [
+        event for event in _device_activity(events)
+        if event["company_key"] and tradeable(event)
+    ]
     # Point-in-time track popularity: how many events did this track already have
     # in the 180 days *before* this one became public? No future data involved.
     track_days: dict[str, list[date]] = {}
@@ -665,11 +674,13 @@ def _signals(
         return max(0, high - low)
 
     def add(event, kind, direction, score, reason):
+        if not tradeable(event):
+            return
         key = (event.get("company_key"), kind, event.get("track_id"), iso(avail(event)))
         if key in seen:
             return
         seen.add(key)
-        reg, tracks = registries_for(kind)
+        reg, tracks = registries_for(kind, event.get("track_id"))
         meta = _company_meta(reg, event.get("company_key"))
         track_meta = _track_meta(tracks, event.get("track_id"))
         signals.append(
@@ -678,7 +689,7 @@ def _signals(
                 "event_id": event["event_id"],
                 "signal_date": iso(avail(event) + timedelta(days=1)),
                 "available_at": iso(avail(event)),
-                "timestamp_quality": event.get("timestamp_quality") or "estimated",
+                "timestamp_quality": event.get("timestamp_quality") or "unknown",
                 "company_key": event.get("company_key"),
                 "name_zh": meta["name_zh"],
                 "ticker": meta.get("ticker", ""),
@@ -725,7 +736,10 @@ def _signals(
                 f"首次进入赛道「{track_meta['name_zh']}」",
             )
 
-    for event in sorted([e for e in events if e["kind"] == "drug_approval"], key=lambda item: avail(item), reverse=True):
+    for event in sorted(
+        [e for e in events if e["kind"] == "drug_approval" and tradeable(e)],
+        key=lambda item: avail(item), reverse=True,
+    ):
         if avail(event) < win["end"] - timedelta(days=365):
             break
         if not event["company_key"]:
@@ -739,7 +753,10 @@ def _signals(
             ("新分子实体获批：" if nme else "原始申请获批：") + (event["title"] or ""),
         )
 
-    for event in sorted([e for e in events if e["kind"] == "trial"], key=lambda item: avail(item), reverse=True):
+    for event in sorted(
+        [e for e in events if e["kind"] == "trial" and tradeable(e)],
+        key=lambda item: avail(item), reverse=True,
+    ):
         if avail(event) < win["end"] - timedelta(days=180):
             break
         if not event["company_key"] or "PHASE3" not in _phases(event):
@@ -747,17 +764,21 @@ def _signals(
         track_meta = _track_meta(drug_tracks, event["track_id"])
         add(event, "trial_start", 1, 0.5, f"III 期试验启动（{track_meta['name_zh']}）")
 
+    recall_events = _dedupe_recalls([
+        event for event in events
+        if event["kind"] == "device_recall" and tradeable(event)
+    ])
     recall_by_company = Counter(
         e["company_key"]
-        for e in _dedupe_recalls([event for event in events if event["kind"] == "device_recall"])
-        if e["company_key"] and (e.get("_available_day") or e["_day"]) >= win["end"] - timedelta(days=90)
+        for e in recall_events
+        if e["company_key"] and avail(e) >= win["end"] - timedelta(days=90)
     )
     for key, count in recall_by_company.items():
         if count < 2:
             continue
         latest = max(
-            (e for e in events if e["kind"] == "device_recall" and e["company_key"] == key),
-            key=lambda item: item["_day"],
+            (e for e in recall_events if e["company_key"] == key),
+            key=lambda item: avail(item),
         )
         add(latest, "recall_cluster", -1, 0.7, f"90 天内 {count} 起召回")
 
@@ -1012,13 +1033,22 @@ def build_metrics(
     alerts = _alerts(device, drug, cn_gap)
 
     quality_counts = Counter(event.get("timestamp_quality") or "unknown" for event in all_events)
-    excluded_from_trading = sum(
-        1 for event in all_events if (event.get("timestamp_quality") or "unknown") in ("unknown",)
-    )
+    timing_exclusions: Counter[str] = Counter()
+    for event in all_events:
+        if trading_timestamp_ok(event.get("available_at"), event.get("timestamp_quality")):
+            continue
+        quality = str(event.get("timestamp_quality") or "unknown")
+        if not event.get("available_at"):
+            timing_exclusions["missing_public_timestamp"] += 1
+        elif quality == "estimated":
+            timing_exclusions["estimated_public_timestamp"] += 1
+        else:
+            timing_exclusions["unknown_public_timestamp"] += 1
     timestamps = {
         "by_quality": {key: int(value) for key, value in quality_counts.items()},
-        "excluded_from_trading": excluded_from_trading,
-        "policy": "回测只使用 available_at；quality=unknown 的事件不进入交易研究",
+        "excluded_from_trading": sum(timing_exclusions.values()),
+        "exclusion_reasons": dict(timing_exclusions),
+        "policy": "回测只使用真实 available_at 且 quality=datetime/date；estimated/unknown 仅用于描述性分析",
     }
 
     counts = {
@@ -1068,7 +1098,7 @@ def build_metrics(
             "definitions": {
                 "thi": "Gamma-Poisson 收缩后的近期速率 / 基线速率（先验强度 3 个季度）",
                 "prob_up": "真实速率高于基线速率的后验概率",
-                "signal_date": "event_date + 1 天（最早可公开获知的近似）",
+                "signal_date": "真实 available_at + 1 天；缺失/estimated/unknown 不生成交易信号",
                 "prior_strength_quarters": PRIOR_STRENGTH_QUARTERS,
             },
         },
