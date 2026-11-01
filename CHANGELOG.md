@@ -21,6 +21,15 @@ This is a research tool; "fixed" means a documented behaviour changed.
   31 new offline tests (`tests/test_tkg.py`); zero new dependencies.
   See `docs/TKG.md`, `docs/research/TKG_ADR.md`, and the amended acceptance
   contract in `docs/research/TKG_ACCEPTANCE.md` (Appendix).
+- **TKG hardening** (TKG-HARDEN-005 adversarial review of f1b8132; 11 new tests,
+  all synthetic): snapshot/export now emit an edge only when **both endpoints
+  are visible under the same `(known_at, valid_at)` cutoffs** (no dangling
+  references, no future-metadata backfill, no node resurrection); resubmit
+  guards reject `INSERT OR REPLACE`/upsert rewrites of `nodes`/`edges`/
+  `idempotency` history (guards stray SQL sessions, **not** the DB owner);
+  timestamps render as fixed-width microseconds (`tkg-schema-2`) so lexical
+  order equals chronological order; duplicate idempotent retries return the
+  exact original row per key. Report: `docs/research/TKG_HARDENING_REPORT.md`.
 
 ## [0.2.2] — 2026-10-31
 

@@ -31,7 +31,7 @@ portfolio, what appeared for the first time, and where China still has a gap.
 | Replay | **400-step, 7-year timeline** (2019–2026) with 10/25/50 bps cost tiers; 1-minute fills for the last 7 days |
 | Event study (20d, direction-aligned, winsorised, **Holm over the 12-test family**) | approval +2.8% (CI 0.9–4.8, **Holm p=0.007 → significant**) · CRL −3.8% (CI −6.7–−0.8, Holm p=0.060 → borderline, not significant) · trial −0.3% (n.s.) |
 | Simulated book | in-sample, long-only, not investment advice |
-| Tests | **471 offline tests**, no network, no API key |
+| Tests | **482 offline tests**, no network, no API key |
 | Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |
 | Products | 204 families, **2,740 Chinese product names** |
 | Research | event-time model, point-in-time signals, block bootstrap, Holm correction |
