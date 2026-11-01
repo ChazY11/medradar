@@ -23,8 +23,6 @@ from typing import Any, Iterable, Mapping
 
 from .store import TKGStore, normalize_moment
 
-_INFINITY = "9999-12-31T00:00:00Z"
-
 
 def _latest_by_identity(rows: Iterable[Mapping[str, Any]], key_fields: tuple[str, ...]) -> dict[tuple, dict[str, Any]]:
     """Keep, per identity, the revision with the greatest (recorded_at, seq)."""
@@ -141,14 +139,30 @@ class TKGQuery:
         ``known_at=None`` means "everything recorded so far" (now). ``valid_at``
         defaults to ``known_at`` - the intuitive "what was true and known at T"
         reading - but the two cutoffs are independent inputs everywhere else.
+
+        **Endpoint contract**: an edge is emitted only if *both* endpoints are
+        visible among the nodes selected under the same ``(known_at, valid_at)``
+        cutoffs. Nodes and edges are versioned as separate assertion lineages,
+        so an edge's own selected revision can survive while an endpoint's does
+        not (retraction, not-yet-valid window, endpoint never recorded under
+        this cutoff). Such an edge is *excluded* - never emitted with a
+        dangling reference, never patched with future node metadata, and the
+        node is never resurrected just to justify the edge.
         """
         if known_at is None:
             known_at = datetime.now(timezone.utc)
         known, _ = normalize_moment(known_at, "known_at")
         effective_valid = valid_at if valid_at is not None else known
+        nodes = self.latest_node_revisions(known, effective_valid)
+        node_keys = {(n["node_type"], n["node_id"]) for n in nodes}
+        edges = [
+            e for e in self.latest_edge_revisions(known, effective_valid)
+            if (e["src"]["node_type"], e["src"]["node_id"]) in node_keys
+            and (e["dst"]["node_type"], e["dst"]["node_id"]) in node_keys
+        ]
         return {
             "known_at": known,
             "valid_at": normalize_moment(effective_valid, "valid_at")[0] if effective_valid else None,
-            "nodes": self.latest_node_revisions(known, effective_valid),
-            "edges": self.latest_edge_revisions(known, effective_valid),
+            "nodes": nodes,
+            "edges": edges,
         }

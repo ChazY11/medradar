@@ -10,6 +10,11 @@ Facts are stored as **assertion revisions**, not as one mutable row per entity:
   rewrite or resurrect-remove an earlier revision;
 * retries are safe by explicit ``idempotency_key``: an identical retry returns
   the original revision unchanged, a conflicting reuse of the key fails loudly;
+* history cannot be rewritten by ``INSERT OR REPLACE`` either: resubmit guards
+  reject any insert whose primary key (or idempotency key) already exists, so
+  neither tampered nor identical re-submission can replace a stored revision;
+  (this guards stray raw SQL sessions, not the database owner, who can drop
+  triggers or recreate the database at will)
 * the write clock is monotonic per store and timestamps are strict
   timezone-aware UTC; an injected test clock is accepted **only** on the
   in-memory store (``":memory:"``) and rejected on persistent production paths.
@@ -30,7 +35,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping
 
-SCHEMA_VERSION = "tkg-schema-1"
+SCHEMA_VERSION = "tkg-schema-2"
 
 EVIDENCE_KINDS = ("source_observed", "inferred", "reconstructed")
 PUBLIC_TIME_BASES = ("observed", "inferred", "unknown")
@@ -140,6 +145,40 @@ CREATE TRIGGER IF NOT EXISTS edges_no_update BEFORE UPDATE ON edges
 BEGIN SELECT RAISE(ABORT, 'TKG history is append-only: UPDATE rejected'); END;
 CREATE TRIGGER IF NOT EXISTS edges_no_delete BEFORE DELETE ON edges
 BEGIN SELECT RAISE(ABORT, 'TKG history is append-only: DELETE rejected'); END;
+
+-- Resubmit guards: INSERT OR REPLACE resolves conflicts by deleting and
+-- re-inserting the conflicting row, which would bypass the UPDATE/DELETE
+-- triggers above. These guards make any insert whose primary key already
+-- exists a hard abort, whatever the conflict-resolution mode (plain,
+-- OR REPLACE, OR IGNORE-less upsert paths that target an existing row).
+CREATE TRIGGER IF NOT EXISTS nodes_no_resubmit BEFORE INSERT ON nodes
+BEGIN
+    SELECT RAISE(ABORT, 'TKG history is append-only: revision already recorded at this (recorded_at, seq)')
+    WHERE EXISTS (
+        SELECT 1 FROM nodes
+        WHERE node_type = NEW.node_type AND node_id = NEW.node_id
+          AND recorded_at = NEW.recorded_at AND seq = NEW.seq
+    );
+END;
+CREATE TRIGGER IF NOT EXISTS edges_no_resubmit BEFORE INSERT ON edges
+BEGIN
+    SELECT RAISE(ABORT, 'TKG history is append-only: revision already recorded at this (recorded_at, seq)')
+    WHERE EXISTS (
+        SELECT 1 FROM edges
+        WHERE edge_type = NEW.edge_type AND src_type = NEW.src_type AND src_id = NEW.src_id
+          AND dst_type = NEW.dst_type AND dst_id = NEW.dst_id
+          AND recorded_at = NEW.recorded_at AND seq = NEW.seq
+    );
+END;
+-- The idempotency ledger is part of history: replacing a key's assertion
+-- mapping would let forged content ride an existing key as a "duplicate".
+CREATE TRIGGER IF NOT EXISTS idempotency_no_resubmit BEFORE INSERT ON idempotency
+BEGIN
+    SELECT RAISE(ABORT, 'TKG history is append-only: idempotency key already recorded')
+    WHERE EXISTS (
+        SELECT 1 FROM idempotency WHERE idempotency_key = NEW.idempotency_key
+    );
+END;
 """
 
 
@@ -187,7 +226,12 @@ def normalize_moment(value: Any, field: str) -> tuple[str, str]:
     else:
         raise TKGValidationError(f"{field}: unsupported timestamp type {type(value).__name__}")
     utc = moment.astimezone(timezone.utc)
-    rendered = utc.isoformat().replace("+00:00", "Z")
+    # Fixed-width microseconds are part of the canonical rendering: lexical
+    # order must equal chronological order for every stored/comparison path
+    # (recorded_at <= known_at, clock_guard, valid interval cuts). A mixed
+    # '...T00:00:00Z' vs '...T00:00:00.500000Z' comparison would be wrong
+    # ('Z' > '.' at the divergence point).
+    rendered = f"{utc:%Y-%m-%dT%H:%M:%S}.{utc.microsecond:06d}Z"
     return rendered, precision
 
 
@@ -402,8 +446,15 @@ class TKGStore:
         status = self._check_idempotency(prepared["key"], assertion_id, kind)
         if status == "duplicate":
             # Identical retry: return the original revision, write nothing new.
+            # Look up by the caller's idempotency key (not by assertion_id:
+            # the same content may legitimately exist under several keys, and
+            # a keyless lookup would be non-deterministic about which row it
+            # returns).
             row = self.conn.execute(
-                f"SELECT recorded_at, seq FROM {table} WHERE assertion_id = ?", (assertion_id,)
+                f"SELECT recorded_at, seq FROM {table}"
+                f" WHERE idempotency_key = ?"
+                f" ORDER BY recorded_at DESC, seq DESC LIMIT 1",
+                (prepared["key"],),
             ).fetchone()
             return {
                 "status": "duplicate", "kind": kind, "assertion_id": assertion_id,

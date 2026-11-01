@@ -31,7 +31,7 @@ from medradar.tkg import (
     open_source,
     write_export,
 )
-from medradar.tkg.store import canonical_json
+from medradar.tkg.store import canonical_json, normalize_moment
 
 T0 = datetime(2024, 1, 1, tzinfo=timezone.utc)
 
@@ -58,7 +58,9 @@ def dt(day: int, hour: int = 0) -> datetime:
 
 
 def stamp(day: int, hour: int = 0) -> str:
-    return dt(day, hour).strftime("%Y-%m-%dT%H:%M:%SZ")
+    # Canonical store rendering: fixed-width microseconds (lexical order ==
+    # chronological order; see medradar.tkg.store.normalize_moment).
+    return dt(day, hour).strftime("%Y-%m-%dT%H:%M:%S") + ".000000Z"
 
 
 EVIDENCE = {
@@ -92,7 +94,7 @@ class StoreWriteTests(unittest.TestCase):
         store.add_node("company", "ACME", {}, valid_from="2024-06-01T20:00:00+08:00",
                        **EVIDENCE, idempotency_key="k1")
         row = store.raw("SELECT valid_from FROM nodes")[0]
-        self.assertEqual(row["valid_from"], "2024-06-01T12:00:00Z")
+        self.assertEqual(row["valid_from"], "2024-06-01T12:00:00.000000Z")
         self.assertTrue(row["valid_from"].endswith("Z"))
         # Naive datetimes are rejected, never guessed.
         with self.assertRaises(TKGValidationError):
@@ -330,10 +332,10 @@ class QuerySemanticsTests(unittest.TestCase):
         # public_time earlier than recorded_at is legal and stored as metadata.
         store = TKGStore(":memory:", clock=make_clock(dt(0), dt(1)))
         store.add_node("company", "ACME", {}, valid_from="2020-01-01",
-                       idempotency_key="k1", public_time="2019-12-01T00:00:00Z",
+                       idempotency_key="k1", public_time="2019-12-01T00:00:00.000000Z",
                        public_time_basis="observed", **EVIDENCE)
         row = store.raw("SELECT public_time, public_time_basis, recorded_at FROM nodes")[0]
-        self.assertEqual(row["public_time"], "2019-12-01T00:00:00Z")
+        self.assertEqual(row["public_time"], "2019-12-01T00:00:00.000000Z")
         self.assertEqual(row["recorded_at"], stamp(0))  # store clock, not public_time
         # naive public metadata is rejected just like any naive timestamp
         with self.assertRaises(TKGValidationError):
@@ -431,6 +433,251 @@ class ExportTests(unittest.TestCase):
                 self.assertEqual(line, canonical_json(json.loads(line)))
 
 
+class HardeningTests(unittest.TestCase):
+    """TKG-HARDEN-005 adversarial regression tests (all synthetic, offline).
+
+    Each test failed against the pre-hardening implementation; the fixes in
+    ``medradar/tkg`` (endpoint-visibility contract, resubmit guards,
+    microsecond-canonical timestamps) are what make them pass.
+    """
+
+    def _edge_store(self, extra_node_spec: dict) -> TKGStore:
+        """A(->B) edge history; ``extra_node_spec`` is a second revision of B."""
+        store = TKGStore(":memory:", clock=make_clock(dt(0), dt(1), dt(2), dt(3)))
+        store.apply([
+            node_spec("A", {}, "a", valid_from="2020-01-01"),
+            node_spec("B", {}, "b", valid_from="2020-01-01"),
+            {"record": "edge", "edge_type": "supplies", "src_type": "company",
+             "src_id": "A", "dst_type": "company", "dst_id": "B",
+             "attrs": {}, "valid_from": "2020-01-01", "idempotency_key": "e", **EVIDENCE},
+        ])
+        store.apply([extra_node_spec])
+        return store
+
+    def test_snapshot_excludes_edge_when_dst_retracted(self) -> None:
+        # B's latest revision at known_at closes validity before valid_at:
+        # B is not in the node set, so the edge must not be emitted at all -
+        # no dangling reference, no fabricated endpoint metadata.
+        store = self._edge_store(node_spec("B", {}, "b2", valid_from="2020-01-01",
+                                           valid_to="2022-06-01"))
+        snap = TKGQuery(store).snapshot(known_at=stamp(3), valid_at="2023-01-01")
+        self.assertEqual([n["node_id"] for n in snap["nodes"]], ["A"])
+        self.assertEqual(snap["edges"], [])
+        doc = export_snapshot(store, known_at=stamp(3), valid_at="2023-01-01")
+        self.assertEqual(doc["manifest"]["counts"], {"nodes": 1, "edges": 0})
+        # Earlier validity date: B still visible -> edge must be retained.
+        before = TKGQuery(store).snapshot(known_at=stamp(3), valid_at="2021-01-01")
+        self.assertEqual(len(before["edges"]), 1)
+
+    def test_snapshot_excludes_edge_when_src_retracted(self) -> None:
+        store = TKGStore(":memory:", clock=make_clock(dt(0), dt(1), dt(2)))
+        store.apply([
+            node_spec("A", {}, "a", valid_from="2020-01-01", valid_to="2022-01-01"),
+            node_spec("B", {}, "b", valid_from="2020-01-01"),
+            {"record": "edge", "edge_type": "supplies", "src_type": "company",
+             "src_id": "A", "dst_type": "company", "dst_id": "B",
+             "attrs": {}, "valid_from": "2020-01-01", "idempotency_key": "e", **EVIDENCE},
+        ])
+        snap = TKGQuery(store).snapshot(known_at=stamp(2), valid_at="2023-01-01")
+        self.assertEqual([n["node_id"] for n in snap["nodes"]], ["B"])
+        self.assertEqual(snap["edges"], [])
+
+    def test_snapshot_excludes_edge_when_endpoint_not_yet_valid(self) -> None:
+        # B is known at known_at but its valid window starts after valid_at.
+        store = self._edge_store(node_spec("B", {}, "b2", valid_from="2030-01-01"))
+        snap = TKGQuery(store).snapshot(known_at=stamp(3), valid_at="2025-01-01")
+        self.assertEqual([n["node_id"] for n in snap["nodes"]], ["A"])
+        self.assertEqual(snap["edges"], [])
+
+    def test_snapshot_excludes_edge_when_endpoint_missing_from_store(self) -> None:
+        # Simulates a raw-session artifact (database-owner territory): an
+        # entities row plus an edge row inserted directly, never a node
+        # revision. The snapshot must still never emit a dangling edge.
+        store = TKGStore(":memory:", clock=make_clock(dt(0)))
+        store.add_node("company", "A", {}, valid_from="2020-01-01",
+                       **EVIDENCE, idempotency_key="a")
+        row = store.raw("SELECT * FROM nodes WHERE node_id = 'A'")[0]
+        cols = tuple(row.keys())
+        ghost = dict(row)
+        ghost.update({"node_id": "GHOST", "seq": 1, "idempotency_key": "ghost",
+                      "assertion_id": "sha256:ghost"})
+        store.conn.execute("INSERT INTO entities (node_type, node_id) VALUES ('company', 'GHOST')")
+        edge_cols = ("edge_type, src_type, src_id, dst_type, dst_id, attrs, valid_from,"
+                     " valid_to, valid_precision, recorded_at, seq, assertion_id,"
+                     " idempotency_key, source_locator, evidence_sha256, evidence_kind,"
+                     " confidence, public_time, public_time_basis")
+        store.conn.execute(
+            f"INSERT INTO edges ({edge_cols}) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            ("supplies", "company", "A", "company", "GHOST", "{}", "2020-01-01", None,
+             "datetime", stamp(0), 1, "sha256:ghost-edge", "ghost-edge",
+             "synthetic://ghost", "deadbeef", "source_observed", 1.0, None, None),
+        )
+        store.conn.commit()
+        snap = TKGQuery(store).snapshot(known_at="2999-01-01T00:00:00Z")
+        self.assertEqual([n["node_id"] for n in snap["nodes"]], ["A"])
+        self.assertEqual(snap["edges"], [])
+
+    def test_snapshot_keeps_edge_when_endpoints_visible_and_hash_regresses(self) -> None:
+        # Fixed-vector export: locks the whole canonical rendering (schema
+        # version, fixed-width timestamps, sorted canonical JSON, endpoint
+        # filtering). Rebuilding the identical history must reproduce the
+        # exact snapshot_sha256 byte for byte.
+        def build() -> TKGStore:
+            store = TKGStore(":memory:", clock=make_clock(dt(0), dt(1), dt(2)))
+            store.apply([
+                node_spec("ACME", {"stage": "private"}, "r1"),
+                node_spec("GLOBEX", {}, "g1"),
+                {"record": "edge", "edge_type": "supplies", "src_type": "company",
+                 "src_id": "ACME", "dst_type": "company", "dst_id": "GLOBEX",
+                 "attrs": {}, "valid_from": "2020-01-01", "idempotency_key": "e1", **EVIDENCE},
+            ])
+            store.apply([node_spec("ACME", {"stage": "ipo-filed"}, "r2")])
+            return store
+
+        expected = "f39e25818c86e5dacfa2504d25f39d789a5575a5a774af494195b80280d934c9"
+        first = export_snapshot(build(), known_at=stamp(2), valid_at="2021-01-01",
+                                adapter_version="events-adapter-1")
+        self.assertEqual(first["manifest"]["counts"], {"nodes": 2, "edges": 1})
+        self.assertEqual(first["manifest"]["snapshot_sha256"], expected)
+        second = export_snapshot(build(), known_at=stamp(2), valid_at="2021-01-01",
+                                 adapter_version="events-adapter-1")
+        self.assertEqual(canonical_json(second), canonical_json(first))
+
+    def test_insert_or_replace_cannot_rewrite_history(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "tkg.sqlite"
+            store = TKGStore(path)
+            store.add_node("company", "ACME", {"v": 1}, valid_from="2020-01-01",
+                           **EVIDENCE, idempotency_key="k1")
+            row = store.raw("SELECT * FROM nodes")[0]
+            cols = tuple(row.keys())
+
+            def tampered() -> tuple:
+                vals = dict(row)
+                vals["attrs"] = '{"v":999}'
+                vals["assertion_id"] = "sha256:FORGED"
+                return tuple(vals[c] for c in cols)
+
+            # Separate raw connection, exactly what a stray SQL session would do.
+            attacker = sqlite3.connect(path)
+            attacker.execute("PRAGMA foreign_keys=ON")
+            for label, statement, params in (
+                ("OR REPLACE tampered",
+                 f"INSERT OR REPLACE INTO nodes ({','.join(cols)}) VALUES ({','.join('?' * len(cols))})",
+                 tampered()),
+                ("OR REPLACE identical",
+                 f"INSERT OR REPLACE INTO nodes ({','.join(cols)}) VALUES ({','.join('?' * len(cols))})",
+                 tuple(row[c] for c in cols)),
+                ("upsert DO UPDATE",
+                 f"INSERT INTO nodes ({','.join(cols)}) VALUES ({','.join('?' * len(cols))})"
+                 " ON CONFLICT(node_type,node_id,recorded_at,seq) DO UPDATE SET attrs = excluded.attrs",
+                 tampered()),
+                ("plain duplicate PK",
+                 f"INSERT INTO nodes ({','.join(cols)}) VALUES ({','.join('?' * len(cols))})",
+                 tampered()),
+            ):
+                with self.assertRaises(sqlite3.IntegrityError, msg=label):
+                    attacker.execute(statement, params)
+                    attacker.commit()
+            attacker.rollback()
+            attacker.close()
+            row_after = store.raw("SELECT attrs, assertion_id FROM nodes")[0]
+            self.assertEqual(json.loads(row_after["attrs"]), {"v": 1})
+            self.assertEqual(row_after["assertion_id"], row["assertion_id"])
+            self.assertEqual(store.count("nodes"), 1)
+            store.close()
+
+    def test_idempotency_key_cannot_be_rebound_via_replace(self) -> None:
+        # Rewriting the idempotency ledger would let forged content ride an
+        # existing key as a "duplicate"; the guard must reject it.
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "tkg.sqlite"
+            store = TKGStore(path)
+            store.add_node("company", "ACME", {"v": 1}, valid_from="2020-01-01",
+                           **EVIDENCE, idempotency_key="k1")
+            attacker = sqlite3.connect(path)
+            with self.assertRaises(sqlite3.IntegrityError):
+                attacker.execute(
+                    "INSERT OR REPLACE INTO idempotency (idempotency_key, assertion_id, kind, status)"
+                    " VALUES ('k1', 'sha256:FORGED', 'node', 'ok')")
+                attacker.commit()
+            attacker.rollback()
+            attacker.close()
+            # The original binding survived: identical content still replays
+            # as a duplicate of the real revision...
+            retry = store.add_node("company", "ACME", {"v": 1}, valid_from="2020-01-01",
+                                   **EVIDENCE, idempotency_key="k1")
+            self.assertEqual(retry["status"], "duplicate")
+            # ...and changed content still fails loudly instead of rebinding.
+            with self.assertRaises(IdempotencyConflict):
+                store.add_node("company", "ACME", {"v": 2}, valid_from="2020-01-01",
+                               **EVIDENCE, idempotency_key="k1")
+            store.close()
+
+    def test_timestamps_fixed_width_microseconds_lexical_order(self) -> None:
+        whole, _ = normalize_moment("2024-01-01T00:00:00Z", "t")
+        frac, _ = normalize_moment("2024-01-01T00:00:00.5Z", "t")
+        offset, _ = normalize_moment("2024-01-01T08:00:00.25+08:00", "t")
+        self.assertEqual(whole, "2024-01-01T00:00:00.000000Z")
+        self.assertEqual(frac, "2024-01-01T00:00:00.500000Z")
+        self.assertEqual(offset, "2024-01-01T00:00:00.250000Z")  # normalized to UTC
+        self.assertLess(whole, frac)
+        self.assertLess(frac, "2024-01-01T00:00:01.000000Z")
+
+    def test_cutoff_at_equal_instant_excludes_subsecond_later_write(self) -> None:
+        # A write stamped 00:00:00.123456 must NOT be visible at a cutoff of
+        # 00:00:00.000000: lexical comparison is only sound because both
+        # sides render fixed-width microseconds.
+        store = TKGStore(":memory:",
+                         clock=lambda: datetime(2024, 1, 1, 0, 0, 0, 123456, tzinfo=timezone.utc))
+        store.add_node("company", "ACME", {}, valid_from="2020-01-01",
+                       **EVIDENCE, idempotency_key="k1")
+        self.assertEqual(store.raw("SELECT recorded_at FROM nodes")[0]["recorded_at"],
+                         "2024-01-01T00:00:00.123456Z")
+        snap = TKGQuery(store).snapshot(known_at="2024-01-01T00:00:00Z")
+        self.assertEqual(snap["nodes"], [])
+        snap = TKGQuery(store).snapshot(known_at="2024-01-01T00:00:00.123456Z")
+        self.assertEqual(len(snap["nodes"]), 1)
+
+    def test_clock_guard_rejects_same_second_regression(self) -> None:
+        # Guard holds 00:00:00.500000; the clock returns the same second at
+        # whole-second rendering (an earlier instant) -> hard reject.
+        stamps_seq = [datetime(2024, 1, 1, 0, 0, 0, 500000, tzinfo=timezone.utc),
+                      datetime(2024, 1, 1, 0, 0, 0, tzinfo=timezone.utc),
+                      None]
+        store = TKGStore(":memory:", clock=lambda: stamps_seq.pop(0))
+        store.add_node("company", "A", {}, valid_from="2020-01-01",
+                       **EVIDENCE, idempotency_key="k1")
+        with self.assertRaises(ClockRegressionError):
+            store.add_node("company", "B", {}, valid_from="2020-01-01",
+                           **EVIDENCE, idempotency_key="k2")
+        # Equal instant rendered differently (whole vs .000000) is NOT a
+        # regression: it sequences normally under the same recorded_at.
+        store2 = TKGStore(":memory:", clock=make_clock(dt(0), dt(0)))
+        store2.add_node("company", "A", {"v": 1}, valid_from="2020-01-01",
+                        **EVIDENCE, idempotency_key="k1")
+        r2 = store2.add_node("company", "A", {"v": 2}, valid_from="2020-01-01",
+                             **EVIDENCE, idempotency_key="k2")
+        self.assertEqual(r2["seq"], 2)
+
+    def test_duplicate_retry_returns_exact_original_row_per_key(self) -> None:
+        # Same content under two keys = two legitimate revisions; a retry of
+        # key k1 must return k1's own row, not k2's identical-content row.
+        store = TKGStore(":memory:", clock=make_clock(dt(0), dt(1), dt(2)))
+        k1 = store.add_node("company", "ACME", {"v": 1}, valid_from="2020-01-01",
+                            **EVIDENCE, idempotency_key="k1")
+        k2 = store.add_node("company", "ACME", {"v": 1}, valid_from="2020-01-01",
+                            **EVIDENCE, idempotency_key="k2")
+        self.assertEqual(store.count("nodes"), 2)
+        retry = store.add_node("company", "ACME", {"v": 1}, valid_from="2020-01-01",
+                               **EVIDENCE, idempotency_key="k1")
+        self.assertEqual(retry["status"], "duplicate")
+        self.assertEqual(retry["recorded_at"], k1["recorded_at"])
+        self.assertEqual(retry["seq"], k1["seq"])
+        self.assertNotEqual((retry["recorded_at"], retry["seq"]),
+                            (k2["recorded_at"], k2["seq"]))
+
+
 class _source_db:
     """Synthetic temporary source events DB (never a production database)."""
 
@@ -479,7 +726,7 @@ class AdapterTests(unittest.TestCase):
             node = [r for r in store.raw("SELECT * FROM nodes") if r["node_type"] == "event"][0]
             self.assertEqual(node["recorded_at"], stamp(10))
             self.assertNotEqual(node["recorded_at"], "2024-02-02T00:00:00Z")
-            self.assertEqual(node["public_time"], "2024-02-01T00:00:00Z")
+            self.assertEqual(node["public_time"], "2024-02-01T00:00:00.000000Z")
             self.assertEqual(node["public_time_basis"], "inferred")
             provenance = json.loads(node["attrs"])
             self.assertEqual(provenance["first_seen_at"], "2024-02-02")
