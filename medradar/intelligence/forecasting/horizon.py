@@ -60,6 +60,10 @@ def create_forecasts(store: IntelligenceStore, *, base_features: list[str],
         row = candidates[index]
         company, track = row["company_key"], row["track_id"]
         forecast_id = sha1(f"{MODEL_VERSION}|{iso(cutoff)}|{horizon_months}|{company}|{track}")[:32]
+        # Evidence is labelled on both scales by baseline.contributions():
+        # ``contribution`` = coefficient * standardized_value, with
+        # raw_value + median_imputed disambiguating missing raw inputs. ``value``
+        # is kept as a backward-compatible alias of raw_value.
         contributions = model.contributions(row["features"])
         supporting = [item for item in contributions if item["contribution"] > 0][:3]
         contradictory = [item for item in contributions if item["contribution"] < 0][:3]
