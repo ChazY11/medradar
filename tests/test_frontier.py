@@ -33,6 +33,32 @@ class FakeFetcher:
         raise RuntimeError("missing offline detail fixture")
 
 
+class JsOnlyCalendarFetcher(FakeFetcher):
+    """Serves the real page shape: thead only, no server-rendered rows."""
+
+    def get_text(self, url: str) -> str:
+        if url == CALENDAR_URL:
+            return (FIXTURES / "adcom_calendar_js_only.html").read_text(encoding="utf-8")
+        raise RuntimeError("no detail pages: the calendar itself has no rows")
+
+
+class MissingTableFetcher(FakeFetcher):
+    """Serves a page where the calendar table markup is gone entirely.
+
+    The navigation link to the calendar page is kept on purpose: detecting the
+    table must not be fooled by the URL appearing in the page chrome.
+    """
+
+    def get_text(self, url: str) -> str:
+        return (
+            '<html><body><nav><a href="/advisory-committees/advisory-committee-calendar">'
+            "Advisory Committee Calendar</a></nav>"
+            "<h1>Advisory Committee Calendar</h1>"
+            '<p>Content current as of: <time datetime="2026-10-30">10/30/2026</time></p>'
+            "</body></html>"
+        )
+
+
 class AdComTests(unittest.TestCase):
     def test_deterministic_calendar_parser(self) -> None:
         html = (FIXTURES / "adcom_calendar.html").read_text(encoding="utf-8")
@@ -66,6 +92,33 @@ class AdComTests(unittest.TestCase):
                 self.assertEqual(rows[0]["track_id"], "brain_computer")
                 self.assertEqual(rows[0]["timestamp_quality"], "estimated")
                 self.assertIn("not confidential", rows[0]["payload"])
+
+    def test_content_current_as_of_reads_time_datetime_element(self) -> None:
+        # The live FDA page wraps the date in <time datetime="2026-10-30T07:55:31-04:00">.
+        html = (FIXTURES / "adcom_calendar_js_only.html").read_text(encoding="utf-8")
+        self.assertEqual(parse_calendar(html), [])
+        self.assertEqual(content_current_as_of(html), "2026-10-30")
+
+    def test_collect_reports_empty_when_calendar_body_is_js_rendered(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            with DB(Path(tmp) / "radar.sqlite") as db:
+                stats = collect(db, JsOnlyCalendarFetcher(), months=1200, limit=10)
+                self.assertEqual(stats["status"], "empty")
+                self.assertEqual(stats["calendar_meetings"], 0)
+                self.assertEqual(stats["events"], 0)
+                self.assertEqual(stats["content_current_as_of"], "2026-10-30")
+                self.assertTrue(stats["warnings"])
+                warning = " ".join(stats["warnings"]).lower()
+                self.assertIn("client-side", warning)
+                self.assertEqual(db.table_count("events"), 0)
+
+    def test_collect_reports_source_changed_when_table_missing(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            with DB(Path(tmp) / "radar.sqlite") as db:
+                stats = collect(db, MissingTableFetcher(), months=1200, limit=10)
+                self.assertEqual(stats["status"], "source_changed")
+                self.assertEqual(stats["events"], 0)
+                self.assertTrue(stats["warnings"])
 
 
 class FrontierTests(unittest.TestCase):
