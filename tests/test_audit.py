@@ -6,8 +6,13 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from medradar.audit import render_audit_markdown, run_audit
+from medradar.audit import (
+    legacy_timestamp_promotions,
+    render_audit_markdown,
+    run_audit,
+)
 from medradar.db import DB, make_event_id
+from medradar.util import iso, today_utc
 
 
 class AuditTests(unittest.TestCase):
@@ -78,6 +83,34 @@ class AuditTests(unittest.TestCase):
                 markdown = render_audit_markdown(run_audit(db))
             self.assertIn("数据质量审计", markdown)
             self.assertIn("| 检查 |", markdown)
+
+    def test_legacy_timestamp_promotions_are_counted_read_only(self) -> None:
+        today = iso(today_utc())
+        with tempfile.TemporaryDirectory() as tmp:
+            with DB(Path(tmp) / "legacy.sqlite") as db:
+                db.upsert_events([
+                    {
+                        # Old-ingest shape: public time inferred from the decision date.
+                        "event_id": make_event_id("openfda_device_510k", "510k", "K-legacy"),
+                        "source": "openfda_device_510k", "kind": "510k",
+                        "event_date": today, "published_at": today,
+                        "available_at": today, "timestamp_quality": "date",
+                    },
+                    {
+                        # A real first-posted timestamp is not a demotion candidate.
+                        "event_id": make_event_id("ctgov", "trial", "NCT-legacy"),
+                        "source": "ctgov", "kind": "trial",
+                        "event_date": today, "published_at": today + "T14:00:00Z",
+                        "available_at": today + "T14:00:00Z", "timestamp_quality": "datetime",
+                    },
+                ])
+                block = legacy_timestamp_promotions(db)
+                audit = run_audit(db)
+            self.assertEqual(block["total"], 1)
+            self.assertEqual(block["by_source"], {"openfda_device_510k": 1})
+            self.assertEqual(audit["legacy_timestamp_promotions"]["total"], 1)
+            names = [check["name"] for check in audit["checks"]]
+            self.assertIn("legacy_timestamp_promotions_demoted", names)
 
 
 if __name__ == "__main__":

@@ -26,6 +26,47 @@ EXPECTED_SOURCES = {
     "nmpa_demo": "nmpa_registration",
 }
 
+#: Sources whose ``event_date`` is a decision/event date rather than a public
+#: timestamp. Legacy ingest (pre-v0.3.0) promoted it into
+#: ``published_at``/``available_at`` with ``timestamp_quality='date'``, which the
+#: current trading gate cannot tell apart from a real public date.
+LEGACY_PROMOTION_SOURCES: tuple[str, ...] = (
+    "openfda_device_510k",
+    "openfda_device_pma",
+    "openfda_device_recall",
+    "openfda_drug_drugsfda",
+)
+
+
+def legacy_timestamp_promotions(db: DB) -> dict[str, Any]:
+    """Read-only count of legacy rows a manual demotion would touch.
+
+    Legacy ingest stored ``published_at = available_at = event_date`` with
+    ``timestamp_quality='date'`` for openFDA decision-date sources. The shipped
+    375,378-row snapshot is entirely in that shape, so the prospective gate does
+    not retroactively demote it. This helper reports the scale by source; it
+    never writes. The one-shot demotion SQL is documented (not auto-run) in
+    ``docs/DATA.md`` ("时间戳门槛只对新采集行生效").
+    """
+    placeholders = ",".join("?" for _ in LEGACY_PROMOTION_SOURCES)
+    rows = db.query(
+        "SELECT source, COUNT(*) AS n FROM events"
+        " WHERE timestamp_quality = 'date'"
+        " AND event_date <> ''"
+        " AND date(published_at) = event_date"
+        " AND date(available_at) = event_date"
+        f" AND source IN ({placeholders})"
+        " GROUP BY source ORDER BY n DESC",
+        LEGACY_PROMOTION_SOURCES,
+    )
+    by_source = {str(row["source"]): int(row["n"]) for row in rows}
+    return {
+        "total": sum(by_source.values()),
+        "by_source": by_source,
+        "sources": list(LEGACY_PROMOTION_SOURCES),
+        "note": "read-only; run the documented one-shot demotion manually (docs/DATA.md)",
+    }
+
 
 def run_audit(db: DB, stale_days: int = 30) -> dict[str, Any]:
     """Return a structured audit; every check has a status and a count."""
@@ -108,6 +149,17 @@ def run_audit(db: DB, stale_days: int = 30) -> dict[str, Any]:
         _check("data_fresh", staleness_days is not None and staleness_days <= stale_days,
                staleness_days, f"days since latest event (threshold {stale_days})"),
     ]
+    legacy_promotions = legacy_timestamp_promotions(db)
+    checks.append(
+        _check(
+            "legacy_timestamp_promotions_demoted",
+            legacy_promotions["total"] == 0,
+            legacy_promotions["total"],
+            "legacy 'date' rows whose public time was inferred from event_date"
+            " (manual demotion recipe in docs/DATA.md)",
+            warn_only=True,
+        )
+    )
     failures = [check for check in checks if check["status"] == "FAIL"]
     warnings = [check for check in checks if check["status"] == "WARN"]
 
@@ -146,6 +198,7 @@ def run_audit(db: DB, stale_days: int = 30) -> dict[str, Any]:
             "duplicate_keys": int(duplicate_prices[0]["n"]) if duplicate_prices else 0,
         },
         "signals": int(signals[0]["n"]) if signals else 0,
+        "legacy_timestamp_promotions": legacy_promotions,
         "checks": checks,
         "failures": [check["name"] for check in failures],
         "warnings": [check["name"] for check in warnings],
