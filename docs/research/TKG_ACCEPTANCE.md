@@ -164,6 +164,9 @@ PIT 导出必须附带 `snapshot_hash = sha1(canonical)`，其中 canonical 序�
 | O4 | C5 `replay_fixture=1` + 测试库命名约定 | **废除文件名/连接串机制**。注入时钟**仅允许内存存储**（`":memory:"`）；持久化路径注入即拒绝 | `test_test_clock_rejected_on_persistent_path` |
 | O5 | C5/A9/A10 first_seen 沿用 + 源指纹证明 | **无条件使用实际导入观测时刻**；`first_seen_at`/`available_at` 仅为溯源元数据；**不主张**指纹证明 first_seen 不可变 | `test_import_uses_observation_time_and_keeps_source_readonly` |
 | O6 | C10 sha1、provenance 含源库指纹 | SHA256；manifest 含双切割线、schema/adapter/code 版本、选中证据溯源、内容哈希；**排除墙钟生成时间，不含整库活指纹** | `test_snapshot_stability_after_later_writes`、`test_export_is_byte_deterministic_and_cutoff_sensitive` |
+| O7 | —（TKG-HARDEN-005 增补） | **端点可见性合同**：快照/导出只输出两端点在同一组 `(known_at, valid_at)` 选中节点集合中的边；端点被撤销/未生效/缺失时排除该边，不输出悬空引用、不回填未来元数据、不复活节点 | `HardeningTests::test_snapshot_excludes_edge_when_*`、`test_snapshot_keeps_edge_when_endpoints_visible_and_hash_regresses` |
+| O8 | C3 纯 append 强化 | 增补**重提交守卫**：`BEFORE INSERT` 拒绝主键已存在的插入，`INSERT OR REPLACE`/upsert 无法覆写 `nodes`/`edges`/`idempotency` 历史；**边界：不防数据库属主** | `HardeningTests::test_insert_or_replace_cannot_rewrite_history`、`test_idempotency_key_cannot_be_rebound_via_replace` |
+| O9 | C4 时间格式强化 | 规范渲染固定 6 位微秒 `...SS.ffffffZ`，字典序=时间序；schema 版本 `tkg-schema-2`（不自动迁移旧库） | `HardeningTests::test_timestamps_fixed_width_microseconds_lexical_order`、`test_cutoff_at_equal_instant_excludes_subsecond_later_write`、`test_clock_guard_rejects_same_second_regression` |
 
 ### 验收清单 A1–A14 现状映射
 
@@ -186,4 +189,5 @@ PIT 导出必须附带 `snapshot_hash = sha1(canonical)`，其中 canonical 序�
 
 **说明**：A4/A5 的"公开视角"半边整体 DEFERRED（O1）；A6/A8 按 O3/O4 改写而非原
 文逐字实现；A10 证明机制废除，改为保守的"导入观测时刻"策略。其余条目逐字落地。
+O7–O9 为 TKG-HARDEN-005 对抗性加固增补（2026-11-01），原规范无对应条目。
 DeepSeek 侧独立实现的对账仍待进行；本附录不构成对独立验证完成的声明。

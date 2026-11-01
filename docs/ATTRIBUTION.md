@@ -10,6 +10,7 @@
 |---|---|---|
 | 2026-11-01 | **TKG 双时态知识图谱 MVP**（`medradar/tkg/`：append-only 存储、as-of 查询、确定性 PIT 导出、只读 events 适配器、`python -m medradar.tkg` CLI、31 个离线测试、ADR 与验收规范修订） | **Kimi Code**（分支 `research/tkg-mvp`；仅上述 TKG 增量，不改动既有采集/回放/分析路径） |
 | 2026-11-01 | 独立审计 AUDIT-KIMI-001 + TKG/PIT 验收规范 VALIDATION-DESIGN-002（报告与规范，无代码） | Kimi Code（独立审计） |
+| 2026-11-01 | TKG-HARDEN-005 对抗性加固（端点可见性合同、重提交守卫、微秒级规范时间戳、tkg-schema-2、11 个对抗性回归测试、TKG_HARDENING_REPORT） | Kimi Code（分支 `research/kimi-tkg-hardening`，独立复审上下文） |
 
 > DeepSeek 侧对 TKG 实现的独立对账仍待进行；TKG 增量的独立验证**未完成**。
 

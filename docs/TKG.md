@@ -49,11 +49,22 @@ print(doc["manifest"]["snapshot_sha256"])
 2. **先选后滤**：查询先按 `known_at` 取每个断言谱系的最新版本，再按
    `valid_at` 过滤有效区间 `[from, to)`。因此后来的修正/撤销永远不会让旧版本
    "复活"。
-3. **版本单元是断言**：一个实体可有多条关系/属性，各自独立版本化
-   （`assertion_id` = 内容 SHA256）。
-4. **重试安全**：相同 `idempotency_key` + 相同内容 → 返回原始版本、零新历史；
+3. **版本单元是断言**：每个节点身份（`node_type, node_id`）是一条断言谱系，
+   每个有向边身份（`edge_type, src, dst`）是另一条独立谱系，各自按
+   `(recorded_at, seq)` 版本化（`assertion_id` = 内容 SHA256）。一个实体的
+   多条关系 = 多条边谱系；**节点属性整体作为一个对象版本化**（无属性级
+   diff，见下"精确限制"）。
+4. **端点可见性合同（快照/导出）**：边只在**两个端点都出现在同一组
+   `(known_at, valid_at)` 切割线选中的节点集合中**时才输出。端点被撤销、
+   尚未生效或在该切割线下不存在时，该边被**排除**——绝不输出悬空引用，
+   绝不回填未来节点元数据，也绝不为了让边成立而"复活"节点。
+5. **重试安全**：相同 `idempotency_key` + 相同内容 → 返回原始版本、零新历史；
    相同键不同内容 → 显式冲突；不同键 → 新版本。
-5. **历史不可变**：`UPDATE`/`DELETE` 在版本表上被 SQL 触发器物理拒绝。
+6. **历史不可变**：`UPDATE`/`DELETE` 在版本表上被 SQL 触发器物理拒绝；
+   重提交守卫（`BEFORE INSERT`）进一步拒绝任何主键（或幂等键）已存在的
+   插入，因此 `INSERT OR REPLACE` / upsert 也无法覆写已记录的版本。
+   **边界**：这防的是游离 SQL 会话/缺陷代码，**不防数据库属主**——属主可以
+   删触发器或重建库；对属主的防护依赖文件权限与外部审计，不在本组件承诺内。
 6. **导入语义**：从现有 events 库导入时，`recorded_at` 一律为实际导入观测
    时刻；`first_seen_at`/`available_at` 仅保存为溯源字段，**不是**知识时间的证据。
 
@@ -63,7 +74,14 @@ print(doc["manifest"]["snapshot_sha256"])
   `event_date`，见 KIMI_AUDIT H1）。需要先有公开滞后分布的经验测量（D2）。
 - **覆盖边界**：适配器只导入"源库存在哪些行、它们声称什么"（含保守包含关系），
   不推断股权/技术/竞争关系，不与外部世界去重，不认证公开可得性。
-- **节点属性即载荷**：节点属性整体作为一个 JSON 对象版本化（无属性级 diff）。
+- **节点属性即载荷**：节点属性整体作为一个 JSON 对象版本化（无属性级 diff）；
+  "属性级独立断言"未实现，文档与实现均以本条为准。
+- **时间戳渲染**：存储/比较的规范渲染为固定 6 位微秒 UTC
+  （`YYYY-MM-DDTHH:MM:SS.ffffffZ`），保证字典序 = 时间序；schema 版本
+  `tkg-schema-2` 起生效（旧 `tkg-schema-1` 库请重建，不自动迁移）。
+- **证据 `source_version`**：验收规范 C2 的逐断言 `source_version` 未单列；源版本
+  标识由 manifest 级 `schema_version`/`adapter_version`/`code_version` 承担，
+  逐条选中证据保留 `assertion_id`/`source_locator`/`evidence_sha256`/`evidence_kind`。
 - **单写者假设**：时钟单调锚点假定单进程写入；多进程并发写需外部串行化。
 - **导出是数据集快照**，不是预测基准；哈希稳定性仅保证"切割线之后的写入"
   不改变历史导出，schema/adapter/code 版本变化会改变哈希（刻意如此）。
@@ -73,10 +91,11 @@ print(doc["manifest"]["snapshot_sha256"])
 
 ## 测试
 
-`tests/test_tkg.py`：31 个离线测试覆盖迟到、修正、撤销、先选后滤、时钟时区/
-回退、未来元数据泄漏、证据校验、原子回滚、幂等/冲突、SQL 不可变守卫、只读
-适配器、导出哈希稳定性、CLI 端到端。运行：
+`tests/test_tkg.py`：42 个离线测试覆盖迟到、修正、撤销、先选后滤、时钟时区/
+回退（含同秒微秒回退）、未来元数据泄漏、证据校验、原子回滚、幂等/冲突、SQL
+不可变守卫（含 `INSERT OR REPLACE`/upsert 绕过尝试）、端点可见性合同（撤销/
+未生效/缺失端点）、固定哈希向量、只读适配器、导出哈希稳定性、CLI 端到端。运行：
 
 ```bash
-python -m medradar selftest     # 全量 471 tests OK (skipped=3)
+python -m medradar selftest     # 全量 482 tests OK (skipped=3)
 ```

@@ -3,7 +3,10 @@
 - **TASK_ID**: TKG-MVP-003（实现：Kimi Code，分支 `research/tkg-mvp`）
 - **日期**: 2026-11-01｜**状态**: 已实施（本分支）
 - **依据**: `docs/research/TKG_ACCEPTANCE.md`（VALIDATION-DESIGN-002，经 Director 覆盖修订，见文末附录 A）、`docs/research/KIMI_AUDIT.md`（AUDIT-KIMI-001）
-- **验收**: `tests/test_tkg.py`（31 个离线测试，全部合成数据）
+- **验收**: `tests/test_tkg.py`（42 个离线测试，全部合成数据）
+- **加固修订**（2026-11-01，TKG-HARDEN-005 对抗性复审，分支 `research/kimi-tkg-hardening`，
+  基线 f1b8132）：端点可见性合同、重提交守卫、微秒级规范时间戳；见 D2/D3/D4 与
+  `docs/research/TKG_HARDENING_REPORT.md`。schema 版本升至 `tkg-schema-2`。
 
 ---
 
@@ -30,8 +33,10 @@ KIMI_AUDIT 的 H1/H2 指出：现有 `events` 表虽有四列时态字段，但 
 
 ### D2 — 断言级版本化 + 显式节点/有向关系
 
-- 版本单元是**断言**（assertion），不是实体：实体可有多条关系，每条关系/属性
-  是独立版本谱系，以稳定 `assertion_id`（内容 SHA256）标识。
+- 版本单元是**断言**（assertion），不是实体：每个节点身份与每个有向边身份
+  各是一条独立版本谱系，以稳定 `assertion_id`（内容 SHA256）标识。一个实体的
+  多条关系即多条边谱系。**节点属性整体作为一个 JSON 对象版本化**——无属性级
+  diff、无属性级独立谱系（"属性级断言"不在本 MVP 范围，旧表述已按实现更正）。
 - 图模型：显式节点（`node_type`/`node_id`，属性同样版本化）+ 类型化有向边
   （`edge_type`, `src -> dst`），实体/关系词表可扩展，无硬编码业务关系。
 - 每条断言必备证据五元组：`source_locator`、`evidence_sha256`（载荷规范序列化
@@ -50,11 +55,21 @@ KIMI_AUDIT 的 H1/H2 指出：现有 `events` 表虽有四列时态字段，但 
 - 顺序不可颠倒：先过滤后选新会把"后来被修正/撤销的旧版本"在 T 视角复活。
   后来的撤销永远不会让旧版本复活（测试锁定）。
 - `snapshot(known_at, valid_at=None)` 中 `valid_at=None` 表示不做有效时间过滤。
+- **端点可见性合同（TKG-HARDEN-005 增补）**：节点与边是独立谱系，同一组切割线
+  下"边的选中版本仍在、端点的选中版本已不在"是合法状态（端点被撤销/未生效/
+  不存在）。快照与导出**只输出两端点都在选中节点集合中的边**；不输出悬空引用、
+  不回填未来元数据、不为边复活节点（测试锁定：撤销端点、未生效端点、缺失端点
+  三个场景 + 固定哈希向量回归）。
 
 ### D4 — 存储层强约束
 
 - **纯 append**：`nodes`/`edges` 上的 `UPDATE`/`DELETE` 由 SQL 触发器物理禁止；
   API 不暴露改写路径。
+- **重提交守卫（TKG-HARDEN-005 增补）**：`INSERT OR REPLACE` 以"删旧插新"解决主键
+  冲突，不会触发上述 UPDATE/DELETE 触发器，曾可绕过守卫覆写历史（实测确认）。
+  现以 `BEFORE INSERT` 守卫拒绝任何主键已存在的插入（`nodes`/`edges`），并守护
+  `idempotency` 表防止幂等键被重新绑定。边界声明：防游离 SQL 会话，**不防数据库
+  属主**（可删触发器/重建库）。
 - **`recorded_at` 一律由存储层在写事务内赋值**（timezone-aware UTC）；调用方
   无任何传入通道，不能倒签/预签。缺失输入知识时间对普通新观测**不构成错误**
   （存储层盖"现在"的章）；**导入断言禁止从事件日期静默推导知识时间**。
@@ -63,8 +78,12 @@ KIMI_AUDIT 的 H1/H2 指出：现有 `events` 表虽有四列时态字段，但 
 - **测试时钟仅允许注入内存存储**（`":memory:"`）；持久化路径注入测试时钟一律
   拒绝。**无 60 秒启发式**要求（接受规范 C3 该条被 Director 覆盖废除），也
   **无基于文件名的安全机制**。
-- 时间输入严格化：naive 时间拒绝（不猜时区）；带偏移输入归一化为 UTC
-  （`...Z`）；日期级输入显式记 `T00:00:00Z` 并存 `valid_precision='date'`。
+- 时间输入严格化：naive 时间拒绝（不猜时区）；带偏移输入归一化为 UTC；日期级
+  输入显式记零点并存 `valid_precision='date'`。
+- **规范渲染固定 6 位微秒**（TKG-HARDEN-005 增补，`tkg-schema-2` 起）：
+  `YYYY-MM-DDTHH:MM:SS.ffffffZ`。混合精度（`...T00:00:00Z` vs `...T00:00:00.5Z`）
+  下字典序 ≠ 时间序（`Z` > `.`），会导致切割线/单调锚点误判（实测确认），故渲染
+  宽度必须固定。
 - 浮点严格化：`confidence` 必须有限且在 `[0,1]`；attrs 规范序列化拒绝
   NaN/Infinity。
 
@@ -120,7 +139,7 @@ KIMI_AUDIT 的 H1/H2 指出：现有 `events` 表虽有四列时态字段，但 
 - 新增 `medradar/tkg/` 子包（store/query/export/adapter/CLI），零新依赖；
   `pyproject.toml` 打包列表加入 `medradar.tkg`。
 - 现有采集/回放/分析路径**不变**；TKG 库为并行事实源，经导出文件对接。
-- 测试总数 440 → 471；README 计数同步更新。
+- 测试总数 440 → 482（MVP 31 + 加固 11）；README 计数同步更新。
 - 残余风险与限制见 `docs/TKG.md` §限制。
 
 ## 5. 附录 A — 与 TKG_ACCEPTANCE 规范的差异对照
