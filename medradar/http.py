@@ -98,6 +98,38 @@ class Fetcher:
             write_json(self.cache_dir / f"{key}.json", payload, indent=0)
         return payload
 
+    def post_json(
+        self,
+        url: str,
+        payload: dict[str, Any],
+        retries: int = 3,
+        backoff: float = 2.0,
+        refresh: bool = False,
+    ) -> Any:
+        """POST JSON with the same cache, throttle and retry contract as GET.
+
+        The request body participates in the cache key, so two award searches
+        can never replay each other's results.
+        """
+        body = json.dumps(payload, ensure_ascii=False, sort_keys=True).encode("utf-8")
+        full = url + "#body=" + hashlib.sha1(body).hexdigest()
+        key = self._key(full)
+        if self.offline:
+            cached = self._read_cached(key)
+            if cached is None:
+                raise OfflineMiss(full)
+            self.stats["cache_hits"] += 1
+            return cached
+        if not refresh:
+            cached = self._read_cached(key)
+            if cached is not None:
+                self.stats["cache_hits"] += 1
+                return cached
+        result = self._request_json(full, retries=retries, backoff=backoff, body=body)
+        if self.cache_dir:
+            write_json(self.cache_dir / f"{key}.json", result, indent=0)
+        return result
+
     def get_text(
         self,
         url: str,
@@ -177,14 +209,22 @@ class Fetcher:
                     pass
         return min(30.0, backoff ** attempt) + 0.1 * attempt
 
-    def _request_json(self, url: str, retries: int, backoff: float) -> Any:
+    def _request_json(self, url: str, retries: int, backoff: float, body: bytes | None = None) -> Any:
         last_error: Exception | None = None
+        # POST cache keys carry a URL fragment for identity only; fragments are
+        # never sent over HTTP and must be stripped from the actual request.
+        request_url = url.split("#body=", 1)[0]
         for attempt in range(retries + 1):
             self._throttle()
             self._charge()
+            headers = {"User-Agent": self.ua, "Accept": "application/json, */*"}
+            if body is not None:
+                headers["Content-Type"] = "application/json"
             request = urllib.request.Request(
-                url,
-                headers={"User-Agent": self.ua, "Accept": "application/json, */*"},
+                request_url,
+                data=body,
+                headers=headers,
+                method="POST" if body is not None else "GET",
             )
             try:
                 with urllib.request.urlopen(request, timeout=self.timeout) as response:
@@ -194,20 +234,20 @@ class Fetcher:
                 except json.JSONDecodeError as exc:
                     raise HttpError(0, url, f"invalid JSON: {exc}") from exc
             except urllib.error.HTTPError as exc:
-                body = ""
+                error_body = ""
                 try:
-                    body = exc.read().decode("utf-8", errors="replace")[:2000]
+                    error_body = exc.read().decode("utf-8", errors="replace")[:2000]
                 except Exception:  # pragma: no cover - defensive
                     pass
                 last_error = exc
                 if exc.code == 404:
-                    raise NotFound(404, url, body) from exc
+                    raise NotFound(404, url, error_body) from exc
                 if exc.code == 429 or 500 <= exc.code < 600:
                     self.stats["retries"] += 1
                     time.sleep(self._retry_delay(exc, attempt, backoff))
                     continue
                 self.stats["errors"] += 1
-                raise HttpError(exc.code, url, body) from exc
+                raise HttpError(exc.code, url, error_body) from exc
             except (urllib.error.URLError, TimeoutError, OSError) as exc:
                 last_error = exc
                 self.stats["retries"] += 1
@@ -233,20 +273,20 @@ class Fetcher:
                 with urllib.request.urlopen(request, timeout=self.timeout) as response:
                     return response.read().decode("utf-8", errors="replace")
             except urllib.error.HTTPError as exc:
-                body = ""
+                error_body = ""
                 try:
-                    body = exc.read().decode("utf-8", errors="replace")[:2000]
-                except Exception:  # pragma: no cover
+                    error_body = exc.read().decode("utf-8", errors="replace")[:2000]
+                except Exception:  # pragma: no cover - defensive
                     pass
                 last_error = exc
                 if exc.code == 404:
-                    raise NotFound(404, url, body) from exc
+                    raise NotFound(404, url, error_body) from exc
                 if exc.code == 429 or 500 <= exc.code < 600:
                     self.stats["retries"] += 1
                     time.sleep(self._retry_delay(exc, attempt, backoff))
                     continue
                 self.stats["errors"] += 1
-                raise HttpError(exc.code, url, body) from exc
+                raise HttpError(exc.code, url, error_body) from exc
             except (urllib.error.URLError, TimeoutError, OSError) as exc:
                 last_error = exc
                 self.stats["retries"] += 1
