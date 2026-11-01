@@ -37,6 +37,13 @@ def parse_date(value: Any) -> date | None:
     text = str(value).strip()
     if not text:
         return None
+    # Research timestamps are normalised to ISO datetimes on ingest. Accept
+    # them here as well as plain dates so a real public time never becomes an
+    # accidental null in the signal layer.
+    try:
+        return datetime.fromisoformat(text.replace("Z", "+00:00")).date()
+    except ValueError:
+        pass
     text = text.replace("/", "-").replace(".", "-")
     for fmt in (ISO_DATE, "%Y-%m", "%Y%m%d", "%Y", "%b %d, %Y", "%B %d, %Y"):
         try:
@@ -124,7 +131,7 @@ def read_json(path: str | Path, default: Any = None) -> Any:
 
 
 def write_json(path: str | Path, obj: Any, indent: int = 1) -> Path:
-    """Atomically write UTF-8 JSON (Chinese stays readable, not \\uXXXX)."""
+    """Atomically write UTF-8 JSON (Chinese stays readable, not \uXXXX)."""
     target = Path(path)
     ensure_dir(target.parent)
     handle = tempfile.NamedTemporaryFile(

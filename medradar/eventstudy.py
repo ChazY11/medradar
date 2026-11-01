@@ -29,6 +29,7 @@ from __future__ import annotations
 import bisect
 from typing import Any, Iterable, Mapping, Sequence
 
+from .db import trading_timestamp_ok
 from .prices import load_series
 from .util import bootstrap_ci, iso, summarize, t_stat
 
@@ -85,7 +86,10 @@ def load_signals(db, kinds: tuple[str, ...] | None) -> tuple[list[dict[str, Any]
         " FROM signals"
     )
     signals: list[dict[str, Any]] = []
-    skipped = {"filtered_kind": 0, "no_ticker": 0, "no_date": 0, "unknown_timestamp": 0}
+    skipped = {
+        "filtered_kind": 0, "no_ticker": 0, "no_date": 0,
+        "unknown_timestamp": 0, "estimated_timestamp": 0, "missing_timestamp": 0,
+    }
     for row in rows:
         kind = str(row.get("kind") or "")
         if kinds is not None and kind not in kinds:
@@ -99,8 +103,17 @@ def load_signals(db, kinds: tuple[str, ...] | None) -> tuple[list[dict[str, Any]
         if not signal_date:
             skipped["no_date"] += 1
             continue
-        if str(row.get("timestamp_quality") or "date").lower() == "unknown":
-            skipped["unknown_timestamp"] += 1
+        quality = str(row.get("timestamp_quality") or "unknown").lower()
+        available_at = row.get("available_at") or (
+            signal_date if quality in ("datetime", "date") else None
+        )
+        if not trading_timestamp_ok(available_at, quality):
+            reason = (
+                "missing_timestamp" if not row.get("available_at")
+                else "estimated_timestamp" if quality == "estimated"
+                else "unknown_timestamp"
+            )
+            skipped[reason] += 1
             continue
         signals.append(
             {
@@ -111,8 +124,8 @@ def load_signals(db, kinds: tuple[str, ...] | None) -> tuple[list[dict[str, Any]
                 "direction": _direction(row.get("direction")),
                 "track_id": row.get("track_id") or "",
                 "score": float(row.get("score") or 0.0),
-                "available_at": iso(row.get("available_at")),
-                "timestamp_quality": str(row.get("timestamp_quality") or "date").lower(),
+                "available_at": iso(available_at),
+                "timestamp_quality": quality,
             }
         )
     return signals, skipped
@@ -137,7 +150,10 @@ def ingest_signals(db, signals: Iterable[Mapping[str, Any]]) -> int:
         if not signal_id or not ticker or not signal_date:
             continue
         quality = str(signal.get("timestamp_quality") or "date").lower()
-        if quality == "unknown":
+        available_at = signal.get("available_at") or (
+            signal_date if quality in ("datetime", "date") else None
+        )
+        if not trading_timestamp_ok(available_at, quality):
             continue  # cannot be traded or evaluated: no reliable public time
         rows.append(
             {
