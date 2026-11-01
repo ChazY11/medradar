@@ -130,6 +130,43 @@ CREATE TABLE IF NOT EXISTS horizon_forecasts (
     verified_at TEXT,
     verification_event_id TEXT
 );
+CREATE TABLE IF NOT EXISTS market_bars (
+    ticker TEXT NOT NULL,
+    date TEXT NOT NULL,
+    open REAL,
+    high REAL,
+    low REAL,
+    close REAL,
+    adj_close REAL,
+    volume INTEGER,
+    source TEXT NOT NULL,
+    retrieved_at TEXT NOT NULL,
+    PRIMARY KEY (ticker, date)
+);
+CREATE INDEX IF NOT EXISTS idx_market_bars_date ON market_bars(date, ticker);
+CREATE TABLE IF NOT EXISTS publication_counts (
+    company_key TEXT NOT NULL,
+    year INTEGER NOT NULL,
+    works INTEGER NOT NULL,
+    query TEXT,
+    alias TEXT,
+    source TEXT NOT NULL,
+    retrieved_at TEXT NOT NULL,
+    PRIMARY KEY (company_key, year, source)
+);
+CREATE TABLE IF NOT EXISTS patent_applications (
+    application_id TEXT PRIMARY KEY,
+    company_key TEXT,
+    assignee TEXT,
+    filing_date TEXT,
+    publication_date TEXT,
+    title TEXT,
+    source TEXT NOT NULL,
+    retrieved_at TEXT NOT NULL,
+    payload TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_patents_company_pub
+ON patent_applications(company_key, publication_date);
 """
 
 
