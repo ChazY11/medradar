@@ -14,6 +14,7 @@ dependencies = []
 excel = ["openpyxl>=3.1"]
 pdf = ["pypdf>=4.0"]
 dev = ["pytest>=8.0"]
+bulk = ["ijson>=3.3"]
 
 [project.urls]
 Homepage = "https://chazy11.github.io/medradar/"
@@ -27,8 +28,8 @@ medradar = "medradar.__main__:main"
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["medradar"]
+[tool.setuptools.packages.find]
+include = ["medradar*"]
 
 # JSON config is knowledge, not code: install it next to the wheel so a pip
 # install is usable without the git checkout. `medradar.config` resolves this
