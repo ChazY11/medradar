@@ -1,0 +1,16 @@
+{
+  "label": "SYNTHETIC BENCH - not a real-data result",
+  "n_nodes": 2000,
+  "n_edges": 1999,
+  "write_seconds": 0.1219,
+  "export_seconds": 0.071,
+  "deterministic_repeat_export": true,
+  "snapshot_sha256": "4d4b704932bf1ce8ffb14ea723e6ebbbaca5dc9e7b453e969321397c56b1e279",
+  "python": "3.12.10"
+}
+# NOTE (appended by Kimi Code, TKG-MVP-003):
+# This file is a SYNTHETIC-DATA reproducibility/performance smoke only.
+# It is NOT a measurement on real MedRadar data. The identical
+# snapshot_sha256 was reproduced both inside the source checkout and from a
+# wheel installed into an isolated --target directory run outside the repo,
+# on Python 3.12.10 / Windows, zero network.
