@@ -678,6 +678,120 @@ class HardeningTests(unittest.TestCase):
                             (k2["recorded_at"], k2["seq"]))
 
 
+# ---------------------------------------------------- schema versioning (integration)
+LEGACY_SCHEMA_1_DDL = """
+CREATE TABLE meta (key TEXT PRIMARY KEY, value TEXT);
+CREATE TABLE clock_guard (id INTEGER PRIMARY KEY CHECK (id = 1), last_recorded_at TEXT NOT NULL);
+CREATE TABLE entities (node_type TEXT NOT NULL, node_id TEXT NOT NULL,
+                       PRIMARY KEY (node_type, node_id));
+CREATE TABLE nodes (
+    node_type TEXT NOT NULL, node_id TEXT NOT NULL, attrs TEXT NOT NULL,
+    valid_from TEXT NOT NULL, valid_to TEXT, valid_precision TEXT NOT NULL DEFAULT 'datetime',
+    recorded_at TEXT NOT NULL, seq INTEGER NOT NULL, assertion_id TEXT NOT NULL,
+    idempotency_key TEXT NOT NULL, source_locator TEXT NOT NULL, evidence_sha256 TEXT NOT NULL,
+    evidence_kind TEXT NOT NULL, confidence REAL NOT NULL,
+    public_time TEXT, public_time_basis TEXT,
+    PRIMARY KEY (node_type, node_id, recorded_at, seq)
+);
+"""
+
+
+class SchemaVersioningTests(unittest.TestCase):
+    """tkg-schema-2 guard: legacy/unstamped stores are rejected, never mixed.
+
+    FOUNDATION-INTEGRATE-007 (director issue 6): docs say "no migration";
+    this verifies opening a pre-existing schema-1 store fails loudly with an
+    actionable message instead of silently stamping schema-2 next to
+    second-precision timestamps. No data is deleted.
+    """
+
+    def _legacy_file(self, tmp: str, stamp: str | None = None) -> Path:
+        """Build a faithful schema-1-era file: old DDL + second-precision row."""
+        path = Path(tmp) / "legacy.sqlite"
+        conn = sqlite3.connect(path)
+        try:
+            conn.executescript(LEGACY_SCHEMA_1_DDL)
+            conn.execute(
+                "INSERT INTO entities (node_type, node_id) VALUES ('company', 'LEGACY')")
+            conn.execute(
+                "INSERT INTO nodes (node_type, node_id, attrs, valid_from, valid_to,"
+                " valid_precision, recorded_at, seq, assertion_id, idempotency_key,"
+                " source_locator, evidence_sha256, evidence_kind, confidence)"
+                " VALUES ('company', 'LEGACY', '{}', '2020-01-01T00:00:00Z', NULL, 'date',"
+                " '2023-06-01T00:00:00Z', 1, 'sha256:legacy', 'legacy-key',"
+                " 'legacy://source', 'abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789',"
+                " 'source_observed', 0.8)")
+            if stamp is not None:
+                conn.execute("INSERT INTO meta (key, value) VALUES ('schema_version', ?)", (stamp,))
+            conn.commit()
+        finally:
+            conn.close()
+        return path
+
+    def test_legacy_schema1_store_rejected_without_data_loss(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = self._legacy_file(tmp)  # no schema_version stamp at all
+            with self.assertRaises(TKGError) as ctx:
+                TKGStore(path)
+            message = str(ctx.exception)
+            self.assertIn("schema_version", message)
+            self.assertIn("tkg-schema-2", message)
+            self.assertIn("migration", message)  # actionable: what to do instead
+            # the legacy file is untouched - nothing deleted, nothing stamped
+            conn = sqlite3.connect(path)
+            try:
+                self.assertEqual(
+                    conn.execute("SELECT COUNT(*) FROM nodes").fetchone()[0], 1)
+                self.assertIsNone(
+                    conn.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone())
+                # and no schema-2 triggers were installed over the old data
+                triggers = {r[0] for r in conn.execute(
+                    "SELECT name FROM sqlite_master WHERE type='trigger'")}
+                self.assertFalse(triggers)
+            finally:
+                conn.close()
+
+    def test_mismatched_schema_stamp_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = self._legacy_file(tmp, stamp="tkg-schema-1")
+            with self.assertRaises(TKGError) as ctx:
+                TKGStore(path)
+            self.assertIn("tkg-schema-1", str(ctx.exception))
+            self.assertIn("tkg-schema-2", str(ctx.exception))
+            conn = sqlite3.connect(path)
+            try:
+                self.assertEqual(
+                    conn.execute("SELECT COUNT(*) FROM nodes").fetchone()[0], 1)
+            finally:
+                conn.close()
+
+    def test_non_tkg_sqlite_file_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "other.sqlite"
+            conn = sqlite3.connect(path)
+            conn.execute("CREATE TABLE unrelated (id INTEGER)")
+            conn.commit()
+            conn.close()
+            with self.assertRaises(TKGError):
+                TKGStore(path)
+
+    def test_fresh_persistent_store_is_stamped_and_reopenable(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "store.sqlite"
+            store = TKGStore(path)
+            store.add_node("company", "ACME", {"v": 1}, valid_from="2020-01-01",
+                           **EVIDENCE, idempotency_key="k1")
+            self.assertEqual(store.meta_get("schema_version"), "tkg-schema-2")
+            store.close()
+            reopened = TKGStore(path)  # matching stamp opens cleanly
+            reopened.add_node("company", "ACME", {"v": 2}, valid_from="2020-01-01",
+                              **EVIDENCE, idempotency_key="k2")
+            self.assertEqual(reopened.count("nodes"), 2)
+            for row in reopened.raw("SELECT recorded_at FROM nodes"):
+                self.assertRegex(row["recorded_at"], r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z$")
+            reopened.close()
+
+
 class _source_db:
     """Synthetic temporary source events DB (never a production database)."""
 

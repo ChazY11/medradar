@@ -18,6 +18,10 @@ Facts are stored as **assertion revisions**, not as one mutable row per entity:
 * the write clock is monotonic per store and timestamps are strict
   timezone-aware UTC; an injected test clock is accepted **only** on the
   in-memory store (``":memory:"``) and rejected on persistent production paths.
+* every fresh store is stamped with ``meta.schema_version`` at creation, and
+  opening a file whose stamp is missing (pre-``tkg-schema-2``) or mismatched
+  fails loudly with an actionable message - no silent mixing of timestamp
+  precisions, no automatic migration, no data deletion (rebuild instead).
 
 Only the **system-knowledge clock** exists in this MVP. Public availability
 times may ride along as optional, provenance-grade source metadata
@@ -301,8 +305,57 @@ class TKGStore:
         self.conn = sqlite3.connect(self.path, timeout=60)
         self.conn.row_factory = sqlite3.Row
         self.conn.execute("PRAGMA foreign_keys=ON")
-        self.conn.executescript(SCHEMA)
-        self.conn.commit()
+        try:
+            self._check_or_init_schema()
+            self.conn.executescript(SCHEMA)
+            self.conn.commit()
+        except Exception:
+            # Never leave a half-open handle behind (e.g. on schema-version
+            # rejection) - the caller must be able to delete/retry the file.
+            self.conn.close()
+            raise
+
+    def _check_or_init_schema(self) -> None:
+        """Refuse to open a store whose stored schema stamp is missing or unknown.
+
+        ``tkg-schema-2`` changed the canonical timestamp rendering to fixed-width
+        microseconds; a pre-existing ``tkg-schema-1`` (or otherwise unstamped /
+        non-TKG) database would silently mix second-precision and microsecond
+        rows, breaking the lexical-order = chronological-order invariant. There
+        is deliberately **no automatic migration**: opening such a file raises
+        with an actionable message instead of stamping over it, and no data is
+        modified or deleted. Rebuild the store from source with the current
+        schema; a future migration task is tracked separately.
+        """
+        tables = {
+            row[0]
+            for row in self.conn.execute("SELECT name FROM sqlite_master WHERE type = 'table'")
+        }
+        if not tables:
+            # Fresh store: create below and stamp the schema version permanently.
+            self.conn.executescript(SCHEMA)
+            self.conn.execute(
+                "INSERT INTO meta (key, value) VALUES ('schema_version', ?)", (SCHEMA_VERSION,)
+            )
+            self.conn.commit()
+            return
+        if "meta" not in tables:
+            raise TKGError(
+                f"{self.path}: not a TKG store (no 'meta' table); refusing to open instead of"
+                f" mixing schemas. This build requires {SCHEMA_VERSION}. No data was modified."
+            )
+        row = self.conn.execute(
+            "SELECT value FROM meta WHERE key = 'schema_version'"
+        ).fetchone()
+        found = row[0] if row is not None else None
+        if found != SCHEMA_VERSION:
+            raise TKGError(
+                f"{self.path}: unsupported TKG schema_version {found!r}"
+                f" (this build requires {SCHEMA_VERSION!r}). Pre-schema-2 stores used"
+                " second-precision timestamps that cannot be mixed with the fixed-width"
+                " microsecond rendering; there is no automatic migration and no data was"
+                " modified or deleted. Rebuild the store from source."
+            )
 
     # ------------------------------------------------------------------ clock
     def _next_recorded_at(self) -> str:
