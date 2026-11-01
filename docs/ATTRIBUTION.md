@@ -4,6 +4,16 @@
 
 **MedRadar 的每一行代码、每一次数据采集、每一份报告和每一次提交，都由 DeepSeek Harness 智能体团队使用中国国产模型 `deepseek-flash` 自主完成，全程没有使用任何其他模型。**
 
+## 增量贡献（后续）
+
+| 时间 | 内容 | 负责方 |
+|---|---|---|
+| 2026-11-01 | **TKG 双时态知识图谱 MVP**（`medradar/tkg/`：append-only 存储、as-of 查询、确定性 PIT 导出、只读 events 适配器、`python -m medradar.tkg` CLI、31 个离线测试、ADR 与验收规范修订） | **Kimi Code**（分支 `research/tkg-mvp`；仅上述 TKG 增量，不改动既有采集/回放/分析路径） |
+| 2026-11-01 | 独立审计 AUDIT-KIMI-001 + TKG/PIT 验收规范 VALIDATION-DESIGN-002（报告与规范，无代码） | Kimi Code（独立审计） |
+
+> DeepSeek 侧对 TKG 实现的独立对账仍待进行；TKG 增量的独立验证**未完成**。
+
+
 ## 开发主体
 
 | 项 | 内容 |

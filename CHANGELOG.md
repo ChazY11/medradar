@@ -3,6 +3,25 @@
 All notable changes to MedRadar. Format loosely follows Keep a Changelog.
 This is a research tool; "fixed" means a documented behaviour changed.
 
+## [Unreleased]
+
+### Added
+- **TKG MVP** (`medradar/tkg/`): append-only bitemporal assertion store
+  (nodes + typed directed edges, stable `assertion_id` versioning, SQL
+  triggers forbidding UPDATE/DELETE on history), as-of query with
+  independent `known_at`/`valid_at` cutoffs (latest revision at `known_at`
+  selected before the valid-interval filter, so corrections/retractions
+  never resurrect old revisions), deterministic point-in-time export
+  (canonical JSON/JSONL + manifest with both cutoffs, schema/adapter/code
+  versions, evidence provenance and SHA256 content hash, no wall clock),
+  and a strictly read-only `events` adapter (source opened `mode=ro`,
+  import observation time as knowledge time, first_seen/available kept as
+  provenance metadata only). CLI: `python -m medradar.tkg
+  {demo,import,export,bench}` — fully offline, demo/bench synthetic.
+  31 new offline tests (`tests/test_tkg.py`); zero new dependencies.
+  See `docs/TKG.md`, `docs/research/TKG_ADR.md`, and the amended acceptance
+  contract in `docs/research/TKG_ACCEPTANCE.md` (Appendix).
+
 ## [0.2.2] — 2026-10-31
 
 ### Docs

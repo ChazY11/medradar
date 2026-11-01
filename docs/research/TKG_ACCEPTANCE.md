@@ -143,3 +143,47 @@ PIT 导出必须附带 `snapshot_hash = sha1(canonical)`，其中 canonical 序�
 **禁止事项**（Director 裁定，写入规范）：不得将 `available_at ≥ first_seen_at` 作为约束或告警；
 未测量不得推断公开滞后先验；价格层修复不得混入 TKG MVP；历史回填不得把
 `event_date`/`available_at` 冒充 knowledge time；重放 fixture 机制不得在生产路径可达。
+
+
+---
+
+## 附录（2026-11-01 修订，Director 覆盖后之实施合同）
+
+> 本附录由 TKG-MVP-003 实现方（Kimi Code，`research/tkg-mvp`）按 Director 覆盖
+> 裁定修订。**原规范正文保留作历史记录**；凡与本附录冲突处，以本附录为准。
+> 实现见 `medradar/tkg/`，决策理由见 `docs/research/TKG_ADR.md`，用法见
+> `docs/TKG.md`。
+
+### 覆盖条款 → 实施对照
+
+| # | 原规范条目 | 修订后合同（Director 裁定） | 实施/测试 |
+|---|---|---|---|
+| O1 | C9 双时钟模式 | **仅严格系统知识查询**。公开时钟重建整体 DEFERRED（现有源证据不足）；`public_time(_basis)` 为可选源元数据，允许早于摄取，**永不充当系统时钟** | `test_public_time_is_metadata_never_clock` |
+| O2 | C1 实体级版本 | **断言级版本化**：显式节点 + 类型化有向边；`assertion_id`（内容 SHA256）为稳定版本标识；节点属性同样版本化；边导出仅携带端点引用，不泄漏未来节点元数据 | `test_entity_has_many_relations_versioned_by_assertion`、`test_edge_export_does_not_leak_future_node_metadata` |
+| O3 | C3 60s 偏差拒绝 | **废除该启发式**。`recorded_at` 一律由存储层赋值（tz-aware UTC），调用方无传入通道；每存储单调锚点（回退即拒）；同时刻按 `seq` 确定性定序 | `test_recorded_at_assigned_by_store_not_caller`、`test_clock_regression_rejected_and_equal_timestamps_sequenced` |
+| O4 | C5 `replay_fixture=1` + 测试库命名约定 | **废除文件名/连接串机制**。注入时钟**仅允许内存存储**（`":memory:"`）；持久化路径注入即拒绝 | `test_test_clock_rejected_on_persistent_path` |
+| O5 | C5/A9/A10 first_seen 沿用 + 源指纹证明 | **无条件使用实际导入观测时刻**；`first_seen_at`/`available_at` 仅为溯源元数据；**不主张**指纹证明 first_seen 不可变 | `test_import_uses_observation_time_and_keeps_source_readonly` |
+| O6 | C10 sha1、provenance 含源库指纹 | SHA256；manifest 含双切割线、schema/adapter/code 版本、选中证据溯源、内容哈希；**排除墙钟生成时间，不含整库活指纹** | `test_snapshot_stability_after_later_writes`、`test_export_is_byte_deterministic_and_cutoff_sensitive` |
+
+### 验收清单 A1–A14 现状映射
+
+| # | 验收测试 | 状态 | 落点（tests/test_tkg.py） |
+|---|---|---|---|
+| A1 | revision_cannot_alter_history | ✅ | `test_revision_cannot_alter_history` |
+| A2 | retraction_respected_asof | ✅ | `test_retraction_never_resurrects_older_revision` |
+| A3 | latest_before_valid_filter | ✅ | `test_latest_before_valid_filtering` |
+| A4 | knowledge_clock_gates_on_recorded_at | ✅（知识侧；公开侧 DEFERRED，见 O1） | `test_late_arrival_gated_on_recorded_at` |
+| A5 | public_before_knowledge_is_legal | ✅（作为源元数据合法、零告警） | `test_public_time_is_metadata_never_clock` |
+| A6 | missing_knowledge_time_rejected_no_fallback | ✅（改写为：新观测由存储层盖时戳；导入断言不得由事件日期推导知识时间） | `test_recorded_at_assigned_by_store_not_caller`、`test_import_uses_observation_time_and_keeps_source_readonly` |
+| A7 | timezone_strictness | ✅（naive 拒绝、偏移归一 UTC、日期级显式记 precision） | `test_clock_timezone_strictness` |
+| A8 | future_backdated_writes_rejected | ✅（改写为：调用方无时戳通道 + 每存储单调锚点；无 60s 启发式，见 O3/O4） | `test_clock_regression_rejected_and_equal_timestamps_sequenced`、`test_test_clock_rejected_on_persistent_path` |
+| A9 | historical_import_uses_observation_time | ✅ | `test_import_uses_observation_time_and_keeps_source_readonly` |
+| A10 | first_seen_auditable 证明机制 | **已废除**（O5）；只读源库 + 字节级不变测试保留 | `test_import_uses_observation_time_and_keeps_source_readonly`、`test_source_is_opened_read_only` |
+| A11 | fk_rollback_idempotency | ✅ | `test_batch_is_atomic_rollback`、`test_orphan_edge_fails_and_rolls_back`、`test_identical_retry_returns_original_unchanged`、`test_conflicting_reuse_of_key_fails`、`test_different_keys_permit_later_revisions` |
+| A12 | snapshot_hash_determinism | ✅（sha256；manifest 变更项映射见 O6） | `test_export_is_byte_deterministic_and_cutoff_sensitive`、`test_snapshot_stability_after_later_writes`、`test_manifest_carries_cutoffs_versions_and_provenance` |
+| A13 | metadata_temporally_consistent | ✅（节点属性为版本化断言，先选后滤保证 as-of 一致） | `test_revision_cannot_alter_history`、`test_edge_export_does_not_leak_future_node_metadata` |
+| A14 | offline_cli_and_wheel | ✅（`python -m medradar.tkg demo/import/export` 离线端到端；wheel 安装 smoke 见任务报告） | `CliTests`、`test_import_export_cli_roundtrip` |
+
+**说明**：A4/A5 的"公开视角"半边整体 DEFERRED（O1）；A6/A8 按 O3/O4 改写而非原
+文逐字实现；A10 证明机制废除，改为保守的"导入观测时刻"策略。其余条目逐字落地。
+DeepSeek 侧独立实现的对账仍待进行；本附录不构成对独立验证完成的声明。
