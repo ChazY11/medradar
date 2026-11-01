@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-10-31T22:40:02.006016Z",
+  "command": "python3 verifier/v1/verify.py",
+  "exit_code": 0,
+  "output": {
+    "status": "ok",
+    "failures": []
+  },
+  "validation": {
+    "merged_remote_head": "7578ee4e309658367f039285eaf3d87dd79ff8d3",
+    "offline_tests": {
+      "command": "python3 -m unittest discover",
+      "exit_code": 0,
+      "tests": 456,
+      "skipped": 3
+    },
+    "compileall": {
+      "command": "python3 -m compileall -q medradar",
+      "exit_code": 0
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    "remote_regression_resolution": "The concurrently added replay/report rewrite failed 29 of 53 replay tests; the final tree restores the compatible implementation while retaining observed-public-timestamp safeguards."
+  }
+}

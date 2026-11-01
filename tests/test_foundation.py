@@ -157,6 +157,7 @@ class AnalyzeTests(unittest.TestCase):
                     "source": source or f"openfda_{kind}",
                     "kind": kind,
                     "event_date": day,
+                    "published_at": day,
                     "company_key": company,
                     "applicant_raw": company or "",
                     "track_id": track,
