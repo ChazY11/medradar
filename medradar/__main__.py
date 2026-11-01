@@ -40,6 +40,7 @@ COLLECTORS = {
     "device": ("medradar.collect_device", "collect"),
     "drug": ("medradar.collect_drug", "collect"),
     "trials": ("medradar.clinical", "collect_trials"),
+    "adcom": ("medradar.adcom", "collect"),
     "nmpa": ("medradar.nmpa", "collect"),
 }
 
@@ -125,7 +126,7 @@ def _publish_docs(args: argparse.Namespace) -> dict:
     out_dir = Path(args.out_dir)
     ensure_dir(DOCS_DIR)
     copied: list[str] = []
-    for name in ("report_zh.md", "report_en.md", "summary.csv", "index.html"):
+    for name in ("report_zh.md", "report_en.md", "summary.csv", "index.html", "frontier.json", "frontier.md"):
         source = out_dir / name
         if source.exists():
             shutil.copyfile(source, DOCS_DIR / name)
@@ -213,6 +214,24 @@ def cmd_trade(args: argparse.Namespace) -> int:
     return 0
 
 
+# ----------------------------------------------------------------------- frontier
+def cmd_frontier(args: argparse.Namespace) -> int:
+    from .db import DB
+    from .frontier import build_frontier, write_frontier
+
+    with DB(args.db) as db:
+        payload = build_frontier(db, limit=args.limit)
+    files = write_frontier(payload, args.out_dir)
+    _emit({
+        "status": payload.get("status"),
+        "events": payload.get("summary", {}).get("events", 0),
+        "domains": len(payload.get("summary", {}).get("by_domain") or []),
+        "files": files,
+        "pending_510k_pma_monitoring": False,
+    })
+    return 0
+
+
 # --------------------------------------------------------------------------- run
 def _ensure_prices(args: argparse.Namespace) -> dict:
     """Fetch free daily bars for the watchlist before the trading study.
@@ -243,7 +262,7 @@ def _ensure_prices(args: argparse.Namespace) -> dict:
 
 
 def cmd_run(args: argparse.Namespace) -> int:
-    args.sources = "device,drug,trials,nmpa"
+    args.sources = "device,drug,trials,adcom,nmpa"
     # `run` names the metrics path --out; the individual sub-commands call it --metrics.
     args.metrics = args.out
     if not args.skip_collect:
@@ -306,6 +325,8 @@ def cmd_run(args: argparse.Namespace) -> int:
 
     if not args.skip_analyze:
         cmd_analyze(args)
+        args.limit = args.limit or 500
+        cmd_frontier(args)
 
     if not args.skip_report:
         cmd_report(args)
@@ -731,7 +752,7 @@ def build_parser() -> argparse.ArgumentParser:
         target.add_argument("--budget", type=int, default=900, help="max HTTP requests for this run")
 
     collect = sub.add_parser("collect", help="fetch public data into SQLite")
-    collect.add_argument("--sources", default="device,drug,trials,nmpa")
+    collect.add_argument("--sources", default="device,drug,trials,adcom,nmpa")
     collect.add_argument("--months", type=int, default=120, help="history window to backfill")
     collect.add_argument("--limit", type=int, default=0, help="cap records per source (0 = no cap)")
     add_db_options(collect)
@@ -743,6 +764,12 @@ def build_parser() -> argparse.ArgumentParser:
     analyze.add_argument("--baseline-quarters", type=int, default=20)
     add_db_options(analyze)
     analyze.set_defaults(func=cmd_analyze)
+
+    frontier = sub.add_parser("frontier", help="build the domain-aware pre-decision device intelligence feed")
+    frontier.add_argument("--out-dir", default=str(OUT_DIR))
+    frontier.add_argument("--limit", type=int, default=500)
+    frontier.add_argument("--db", default=str(DEFAULT_DB))
+    frontier.set_defaults(func=cmd_frontier)
 
     report = sub.add_parser("report", help="render Chinese report + HTML dashboard")
     report.add_argument("--metrics", default=str(DEFAULT_METRICS))

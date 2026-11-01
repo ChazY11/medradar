@@ -253,6 +253,16 @@ EVENT_FIELDS = (
 )
 
 TIMESTAMP_QUALITIES = ("datetime", "date", "estimated", "unknown")
+TRADING_TIMESTAMP_QUALITIES = ("datetime", "date")
+
+
+def trading_timestamp_ok(available_at: Any, quality: Any) -> bool:
+    """Whether a public timestamp is reliable enough for a return study.
+
+    ``estimated`` remains useful for descriptive industry counts, but it is not
+    evidence that the market could have observed the event at that time.
+    """
+    return bool(iso_moment(available_at)) and str(quality or "unknown").lower() in TRADING_TIMESTAMP_QUALITIES
 
 
 def make_event_id(source: str, kind: str, *parts: Any) -> str:
@@ -486,11 +496,19 @@ class DB:
                 payload = json.dumps(payload, ensure_ascii=False)
             event_date = iso(event.get("event_date"))
             as_of = iso(event.get("as_of")) or stamp[:10]
-            published_at = iso_moment(event.get("published_at")) or event_date
-            first_seen_at = iso_moment(event.get("first_seen_at")) or as_of
-            available_at = iso_moment(event.get("available_at")) or published_at or event_date
-            quality = str(event.get("timestamp_quality") or "date").lower()
-            if quality not in TIMESTAMP_QUALITIES:
+            raw_published_at = str(event.get("published_at") or "")
+            raw_available_at = str(event.get("available_at") or "")
+            published_at = iso_moment(raw_published_at) or None
+            first_seen_at = iso_moment(event.get("first_seen_at")) or stamp
+            available_at = iso_moment(raw_available_at) or published_at
+            raw_public_time = raw_available_at or raw_published_at
+            default_quality = (
+                "datetime" if "T" in raw_public_time
+                else "date" if available_at
+                else "unknown"
+            )
+            quality = str(event.get("timestamp_quality") or default_quality).lower()
+            if quality not in TIMESTAMP_QUALITIES or not available_at:
                 quality = "unknown"
             rows.append(
                 (

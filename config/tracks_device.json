@@ -1,46 +1,1013 @@
 {
-  "schema": 1,
+  "schema": 2,
   "updated": "2026-10-31",
-  "notes": "Curated Chinese track dictionary for medical devices. `keywords` are matched against openFDA device_name / classification text; `config/product_code_tracks.json` is generated from the openFDA classification endpoint by `collect_device` and can be hand-corrected there. Longest keyword wins. Keywords must stay specific: a bare 'SYSTEM' would swallow the whole dataset.",
+  "notes": "Hierarchical medical-device registry. Each track has domain/domain_zh and machine-readable frontier_keywords. Existing track ids and generated product-code mappings remain compatible; longest keyword wins.",
   "tracks": [
-    {"id": "surgical_robotics", "name_zh": "手术机器人", "name_en": "Surgical Robotics", "category": "surgery", "keywords": ["SURGICAL ROBOT", "ROBOTICALLY ASSISTED", "ROBOTIC SURGERY", "TELEOPERATED SURGICAL", "COMPUTER CONTROLLED INSTRUMENT", "SURGICAL STEREOTAXIC"]},
-    {"id": "ep_pfa", "name_zh": "电生理与脉冲场消融", "name_en": "Electrophysiology / PFA", "category": "cardiovascular", "keywords": ["PULSED FIELD", "IRREVERSIBLE ELECTROPORATION", "CARDIAC ABLATION", "ELECTROPHYSIOLOGY", "ABLATION CATHETER", "MAPPING CATHETER"]},
-    {"id": "structural_heart", "name_zh": "结构性心脏病", "name_en": "Structural Heart", "category": "cardiovascular", "keywords": ["TRANSCATHETER VALVE", "MITRAL", "TRICUSPID", "ANNULOPLASTY", "OCCLUDER", "LAA CLOSURE", "ATRIAL SEPTAL"]},
-    {"id": "cardiac_rhythm", "name_zh": "心脏节律（起搏/ICD）", "name_en": "Cardiac Rhythm", "category": "cardiovascular", "keywords": ["PACEMAKER", "PULSE GENERATOR", "IMPLANTABLE CARDIOVERTER", "DEFIBRILLATOR", "CARDIAC RESYNCHRONIZATION", "LEADLESS"]},
-    {"id": "heart_failure", "name_zh": "心衰与机械循环支持", "name_en": "Heart Failure / MCS", "category": "cardiovascular", "keywords": ["VENTRICULAR ASSIST", "CARDIAC SUPPORT", "HEART FAILURE", "IMPELLA", "EXTRACORPOREAL MEMBRANE"]},
-    {"id": "coronary", "name_zh": "冠脉介入", "name_en": "Coronary Intervention", "category": "cardiovascular", "keywords": ["CORONARY STENT", "DRUG ELUTING STENT", "CORONARY CATHETER", "BALLOON DILATATION", "GUIDE WIRE"]},
-    {"id": "peripheral_vascular", "name_zh": "外周血管", "name_en": "Peripheral Vascular", "category": "cardiovascular", "keywords": ["PERIPHERAL STENT", "PERIPHERAL CATHETER", "VASCULAR CLOSURE", "ATHERECTOMY", "THROMBECTOMY", "VENOUS STENT"]},
-    {"id": "neurovascular", "name_zh": "神经介入", "name_en": "Neurovascular", "category": "neuroscience", "keywords": ["NEUROVASCULAR", "INTRACRANIAL", "FLOW DIVERTER", "ANEURYSM", "STROKE", "COIL"]},
-    {"id": "neurostimulation", "name_zh": "神经调控", "name_en": "Neurostimulation", "category": "neuroscience", "keywords": ["SPINAL CORD STIMULATOR", "DEEP BRAIN", "VAGUS NERVE", "NEUROMODULATION", "SACRAL NERVE", "IMPLANTABLE STIMULATOR"]},
-    {"id": "spine", "name_zh": "脊柱", "name_en": "Spine", "category": "orthopedics", "keywords": ["SPINAL FIXATION", "INTERVERTEBRAL", "SPINAL FUSION", "PEDICLE SCREW", "DISC REPLACEMENT", "VERTEBROPLASTY"]},
-    {"id": "ortho_joint", "name_zh": "关节与骨科植入", "name_en": "Orthopedic Joints", "category": "orthopedics", "keywords": ["HIP PROSTHESIS", "KNEE PROSTHESIS", "JOINT REPLACEMENT", "ACETABULAR", "TIBIAL", "ORTHOPEDIC STEREOTAXIC"]},
-    {"id": "trauma", "name_zh": "创伤骨科", "name_en": "Trauma", "category": "orthopedics", "keywords": ["BONE PLATE", "INTRAMEDULLARY", "FRACTURE FIXATION", "BONE SCREW", "EXTERNAL FIXATOR"]},
-    {"id": "cmf", "name_zh": "颌面与颅骨", "name_en": "CMF", "category": "orthopedics", "keywords": ["CRANIOMAXILLOFACIAL", "CRANIAL PLATE", "MANDIBULAR", "MAXILLOFACIAL"]},
-    {"id": "diabetes_cgm", "name_zh": "糖尿病与CGM", "name_en": "Diabetes / CGM", "category": "diabetes", "keywords": ["CONTINUOUS GLUCOSE", "GLUCOSE MONITOR", "GLUCOSE SENSOR", "BLOOD GLUCOSE"]},
-    {"id": "insulin_delivery", "name_zh": "胰岛素输注", "name_en": "Insulin Delivery", "category": "diabetes", "keywords": ["INSULIN PUMP", "INSULIN INFUSION", "SUBCUTANEOUS INFUSION", "PEN NEEDLE"]},
-    {"id": "ivd_molecular", "name_zh": "分子诊断", "name_en": "Molecular Diagnostics", "category": "ivd", "keywords": ["NUCLEIC ACID", "PCR", "SEQUENCING", "MOLECULAR DIAGNOSTIC", "NEXT GENERATION"]},
-    {"id": "ivd_immuno", "name_zh": "免疫诊断", "name_en": "Immunoassay", "category": "ivd", "keywords": ["IMMUNOASSAY", "CHEMILUMINESCENT", "ELISA", "ANTIBODY TEST", "LATERAL FLOW", "HEPATITIS", "SEROLOGY"]},
-    {"id": "ivd_poct", "name_zh": "床旁与即时检验", "name_en": "Point of Care", "category": "ivd", "keywords": ["POINT OF CARE", "RAPID TEST", "BLOOD GAS", "COAGULATION MONITOR"]},
-    {"id": "imaging_mr_ct", "name_zh": "影像（MR/CT/PET/X-ray）", "name_en": "Advanced Imaging", "category": "imaging", "keywords": ["MAGNETIC RESONANCE", "COMPUTED TOMOGRAPHY", "POSITRON EMISSION", "X RAY SYSTEM", "MAMMOGRAPHY", "FLUOROSCOPIC", "IMAGE PROCESSING", "RADIOLOGICAL"]},
-    {"id": "imaging_us", "name_zh": "超声", "name_en": "Ultrasound", "category": "imaging", "keywords": ["ULTRASOUND", "ECHOCARDIOGRAPHY", "SONOGRAPH"]},
-    {"id": "endoscopy", "name_zh": "内窥镜", "name_en": "Endoscopy", "category": "surgery", "keywords": ["ENDOSCOPE", "ENDOSCOPIC", "LAPAROSCOPE", "BRONCHOSCOPE", "ARTHROSCOPE"]},
-    {"id": "surgical_energy", "name_zh": "手术能量器械", "name_en": "Surgical Energy", "category": "surgery", "keywords": ["ELECTROSURGICAL", "HARMONIC", "LIGATION", "VESSEL SEALING", "MICROWAVE ABLATION", "CRYOSURGICAL"]},
-    {"id": "general_surgery", "name_zh": "普外与手术耗材", "name_en": "General Surgery", "category": "surgery", "keywords": ["GENERAL SURGERY", "SURGICAL TRAY", "SURGERY TRAY", "PROCEDURE KIT", "SURGICAL INSTRUMENT", "SUTURE", "STAPLER"]},
-    {"id": "patient_monitoring", "name_zh": "监护与生命体征", "name_en": "Patient Monitoring", "category": "monitoring", "keywords": ["PATIENT MONITOR", "PULSE OXIMETER", "CAPNOGRAPH", "VITAL SIGN", "BLOOD PRESSURE", "SPHYGMOMANOMETER"]},
-    {"id": "respiratory", "name_zh": "呼吸与麻醉", "name_en": "Respiratory & Anesthesia", "category": "respiratory", "keywords": ["VENTILATOR", "ANESTHESIA", "RESPIRATORY", "NEBULIZER", "CPAP", "AIRWAY"]},
-    {"id": "vascular_access", "name_zh": "血管通路", "name_en": "Vascular Access", "category": "vascular", "keywords": ["CATHETER INTRODUCER", "VASCULAR ACCESS", "PORT", "INFUSION SET", "NEEDLELESS", "ADMINISTRATION SET", "INTRAVASCULAR"]},
-    {"id": "wound_care", "name_zh": "伤口与敷料", "name_en": "Wound Care", "category": "wound", "keywords": ["WOUND DRESSING", "WOUND THERAPY", "NEGATIVE PRESSURE", "SUTURE", "HEMOSTAT"]},
-    {"id": "ophthalmology", "name_zh": "眼科", "name_en": "Ophthalmology", "category": "specialty", "keywords": ["INTRAOCULAR LENS", "OPHTHALMIC", "RETINA", "GLAUCOMA", "CORNEAL", "PHACOEMULSIFICATION", "CONTACT LENS"]},
-    {"id": "ent", "name_zh": "耳鼻喉", "name_en": "ENT", "category": "specialty", "keywords": ["HEARING AID", "COCHLEAR", "SINUS", "LARYNGOSCOPE", "TYMPANOSTOMY"]},
-    {"id": "urology", "name_zh": "泌尿", "name_en": "Urology", "category": "specialty", "keywords": ["UROLOGICAL", "URETEROSCOPE", "PROSTATE", "CYSTOSCOPE", "LITHOTRIPSY", "INCONTINENCE", "FECAL"]},
-    {"id": "womens_health", "name_zh": "女性健康", "name_en": "Women's Health", "category": "specialty", "keywords": ["OBSTETRIC", "GYNECOLOGIC", "FETAL MONITOR", "BREAST BIOPSY", "PELVIC FLOOR"]},
-    {"id": "dialysis", "name_zh": "血液净化", "name_en": "Dialysis", "category": "renal", "keywords": ["DIALYSIS", "HEMODIALYSIS", "HEMOPERFUSION", "PERITONEAL"]},
-    {"id": "dental", "name_zh": "口腔", "name_en": "Dental", "category": "specialty", "keywords": ["DENTAL IMPLANT", "DENTAL", "ORTHODONTIC", "ENDODONTIC"]},
-    {"id": "aesthetics", "name_zh": "医美与皮肤", "name_en": "Aesthetics", "category": "specialty", "keywords": ["DERMAL IMPLANT", "WRINKLE", "AESTHETIC", "LIGHT BASED", "DERMAL FILLER"]},
-    {"id": "medical_ai", "name_zh": "医疗AI/软件(SaMD)", "name_en": "Medical AI / SaMD", "category": "software", "keywords": ["SOFTWARE", "ALGORITHM", "MACHINE LEARNING", "COMPUTER AIDED", "CLINICAL DECISION SUPPORT"]},
-    {"id": "wearable_remote", "name_zh": "可穿戴与远程监测", "name_en": "Wearable & Remote Monitoring", "category": "monitoring", "keywords": ["WEARABLE", "REMOTE MONITORING", "AMBULATORY", "PATCH", "HOLTER"]},
-    {"id": "rehab_exo", "name_zh": "康复与外骨骼", "name_en": "Rehabilitation / Exoskeleton", "category": "rehab", "keywords": ["REHABILITATION", "EXOSKELETON", "PROSTHETIC", "NEUROSTIMULATION REHAB", "GAIT TRAINING", "WHEELCHAIR"]},
-    {"id": "infection_control", "name_zh": "感染控制与消毒", "name_en": "Infection Control", "category": "hospital", "keywords": ["STERILIZER", "DISINFECT", "INFECTION CONTROL", "ULTRAVIOLET", "ISOLATION"]}
+    {
+      "id": "surgical_robotics",
+      "name_zh": "手术机器人",
+      "name_en": "Surgical Robotics",
+      "category": "surgery",
+      "keywords": [
+        "SURGICAL ROBOT",
+        "ROBOTICALLY ASSISTED",
+        "ROBOTIC SURGERY",
+        "TELEOPERATED SURGICAL",
+        "COMPUTER CONTROLLED INSTRUMENT",
+        "SURGICAL STEREOTAXIC"
+      ],
+      "domain": "surgical_robotics",
+      "domain_zh": "手术机器人",
+      "frontier_keywords": [
+        "ROBOTIC SURGERY",
+        "SURGICAL ROBOT",
+        "AUTONOMOUS SURGERY"
+      ]
+    },
+    {
+      "id": "ep_pfa",
+      "name_zh": "电生理与脉冲场消融",
+      "name_en": "Electrophysiology / PFA",
+      "category": "cardiovascular",
+      "keywords": [
+        "PULSED FIELD",
+        "IRREVERSIBLE ELECTROPORATION",
+        "CARDIAC ABLATION",
+        "ELECTROPHYSIOLOGY",
+        "ABLATION CATHETER",
+        "MAPPING CATHETER"
+      ],
+      "domain": "cardiovascular",
+      "domain_zh": "心血管",
+      "frontier_keywords": [
+        "PULSED FIELD ABLATION",
+        "PFA",
+        "ELECTROPORATION"
+      ]
+    },
+    {
+      "id": "structural_heart",
+      "name_zh": "结构性心脏病",
+      "name_en": "Structural Heart",
+      "category": "cardiovascular",
+      "keywords": [
+        "TRANSCATHETER VALVE",
+        "MITRAL",
+        "TRICUSPID",
+        "ANNULOPLASTY",
+        "OCCLUDER",
+        "LAA CLOSURE",
+        "ATRIAL SEPTAL"
+      ],
+      "domain": "cardiovascular",
+      "domain_zh": "心血管",
+      "frontier_keywords": []
+    },
+    {
+      "id": "cardiac_rhythm",
+      "name_zh": "心脏节律（起搏/ICD）",
+      "name_en": "Cardiac Rhythm",
+      "category": "cardiovascular",
+      "keywords": [
+        "PACEMAKER",
+        "PULSE GENERATOR",
+        "IMPLANTABLE CARDIOVERTER",
+        "DEFIBRILLATOR",
+        "CARDIAC RESYNCHRONIZATION",
+        "LEADLESS"
+      ],
+      "domain": "cardiovascular",
+      "domain_zh": "心血管",
+      "frontier_keywords": []
+    },
+    {
+      "id": "heart_failure",
+      "name_zh": "心衰与机械循环支持",
+      "name_en": "Heart Failure / MCS",
+      "category": "cardiovascular",
+      "keywords": [
+        "VENTRICULAR ASSIST",
+        "CARDIAC SUPPORT",
+        "HEART FAILURE",
+        "IMPELLA"
+      ],
+      "domain": "cardiovascular",
+      "domain_zh": "心血管",
+      "frontier_keywords": []
+    },
+    {
+      "id": "coronary",
+      "name_zh": "冠脉介入",
+      "name_en": "Coronary Intervention",
+      "category": "cardiovascular",
+      "keywords": [
+        "CORONARY STENT",
+        "DRUG ELUTING STENT",
+        "CORONARY CATHETER",
+        "BALLOON DILATATION",
+        "GUIDE WIRE"
+      ],
+      "domain": "cardiovascular",
+      "domain_zh": "心血管",
+      "frontier_keywords": []
+    },
+    {
+      "id": "peripheral_vascular",
+      "name_zh": "外周血管",
+      "name_en": "Peripheral Vascular",
+      "category": "cardiovascular",
+      "keywords": [
+        "PERIPHERAL STENT",
+        "PERIPHERAL CATHETER",
+        "VASCULAR CLOSURE",
+        "ATHERECTOMY",
+        "THROMBECTOMY",
+        "VENOUS STENT"
+      ],
+      "domain": "cardiovascular",
+      "domain_zh": "心血管",
+      "frontier_keywords": []
+    },
+    {
+      "id": "neurovascular",
+      "name_zh": "神经介入",
+      "name_en": "Neurovascular",
+      "category": "neuroscience",
+      "keywords": [
+        "NEUROVASCULAR",
+        "INTRACRANIAL",
+        "FLOW DIVERTER",
+        "ANEURYSM",
+        "STROKE",
+        "COIL"
+      ],
+      "domain": "neurovascular",
+      "domain_zh": "神经介入",
+      "frontier_keywords": []
+    },
+    {
+      "id": "neurostimulation",
+      "name_zh": "神经调控",
+      "name_en": "Neurostimulation",
+      "category": "neuroscience",
+      "keywords": [
+        "SPINAL CORD STIMULATOR",
+        "DEEP BRAIN",
+        "VAGUS NERVE",
+        "NEUROMODULATION",
+        "SACRAL NERVE",
+        "IMPLANTABLE STIMULATOR"
+      ],
+      "domain": "neurotechnology",
+      "domain_zh": "神经技术",
+      "frontier_keywords": [
+        "NEUROMODULATION",
+        "DEEP BRAIN STIMULATION",
+        "VAGUS NERVE STIMULATION"
+      ]
+    },
+    {
+      "id": "spine",
+      "name_zh": "脊柱",
+      "name_en": "Spine",
+      "category": "orthopedics",
+      "keywords": [
+        "SPINAL FIXATION",
+        "INTERVERTEBRAL",
+        "SPINAL FUSION",
+        "PEDICLE SCREW",
+        "DISC REPLACEMENT",
+        "VERTEBROPLASTY"
+      ],
+      "domain": "orthopedics",
+      "domain_zh": "骨科",
+      "frontier_keywords": []
+    },
+    {
+      "id": "ortho_joint",
+      "name_zh": "关节与骨科植入",
+      "name_en": "Orthopedic Joints",
+      "category": "orthopedics",
+      "keywords": [
+        "HIP PROSTHESIS",
+        "KNEE PROSTHESIS",
+        "JOINT REPLACEMENT",
+        "ACETABULAR",
+        "TIBIAL",
+        "ORTHOPEDIC STEREOTAXIC"
+      ],
+      "domain": "orthopedics",
+      "domain_zh": "骨科",
+      "frontier_keywords": []
+    },
+    {
+      "id": "trauma",
+      "name_zh": "创伤骨科",
+      "name_en": "Trauma",
+      "category": "orthopedics",
+      "keywords": [
+        "BONE PLATE",
+        "INTRAMEDULLARY",
+        "FRACTURE FIXATION",
+        "BONE SCREW",
+        "EXTERNAL FIXATOR"
+      ],
+      "domain": "orthopedics",
+      "domain_zh": "骨科",
+      "frontier_keywords": []
+    },
+    {
+      "id": "cmf",
+      "name_zh": "颌面与颅骨",
+      "name_en": "CMF",
+      "category": "orthopedics",
+      "keywords": [
+        "CRANIOMAXILLOFACIAL",
+        "CRANIAL PLATE",
+        "MANDIBULAR",
+        "MAXILLOFACIAL"
+      ],
+      "domain": "orthopedics",
+      "domain_zh": "骨科",
+      "frontier_keywords": []
+    },
+    {
+      "id": "diabetes_cgm",
+      "name_zh": "糖尿病与CGM",
+      "name_en": "Diabetes / CGM",
+      "category": "diabetes",
+      "keywords": [
+        "CONTINUOUS GLUCOSE",
+        "GLUCOSE MONITOR",
+        "GLUCOSE SENSOR",
+        "BLOOD GLUCOSE"
+      ],
+      "domain": "diabetes",
+      "domain_zh": "糖尿病",
+      "frontier_keywords": [
+        "CONTINUOUS GLUCOSE MONITOR",
+        "CGM",
+        "AUTOMATED INSULIN DELIVERY"
+      ]
+    },
+    {
+      "id": "insulin_delivery",
+      "name_zh": "胰岛素输注",
+      "name_en": "Insulin Delivery",
+      "category": "diabetes",
+      "keywords": [
+        "INSULIN PUMP",
+        "INSULIN INFUSION",
+        "SUBCUTANEOUS INFUSION",
+        "PEN NEEDLE"
+      ],
+      "domain": "diabetes",
+      "domain_zh": "糖尿病",
+      "frontier_keywords": []
+    },
+    {
+      "id": "ivd_molecular",
+      "name_zh": "分子诊断",
+      "name_en": "Molecular Diagnostics",
+      "category": "ivd",
+      "keywords": [
+        "NUCLEIC ACID",
+        "PCR",
+        "SEQUENCING",
+        "MOLECULAR DIAGNOSTIC",
+        "NEXT GENERATION"
+      ],
+      "domain": "ivd",
+      "domain_zh": "体外诊断",
+      "frontier_keywords": []
+    },
+    {
+      "id": "ivd_immuno",
+      "name_zh": "免疫诊断",
+      "name_en": "Immunoassay",
+      "category": "ivd",
+      "keywords": [
+        "IMMUNOASSAY",
+        "CHEMILUMINESCENT",
+        "ELISA",
+        "ANTIBODY TEST",
+        "LATERAL FLOW",
+        "HEPATITIS",
+        "SEROLOGY"
+      ],
+      "domain": "ivd",
+      "domain_zh": "体外诊断",
+      "frontier_keywords": []
+    },
+    {
+      "id": "ivd_poct",
+      "name_zh": "床旁与即时检验",
+      "name_en": "Point of Care",
+      "category": "ivd",
+      "keywords": [
+        "POINT OF CARE",
+        "RAPID TEST",
+        "BLOOD GAS",
+        "COAGULATION MONITOR"
+      ],
+      "domain": "ivd",
+      "domain_zh": "体外诊断",
+      "frontier_keywords": []
+    },
+    {
+      "id": "imaging_mr_ct",
+      "name_zh": "影像（MR/CT/PET/X-ray）",
+      "name_en": "Advanced Imaging",
+      "category": "imaging",
+      "keywords": [
+        "MAGNETIC RESONANCE",
+        "COMPUTED TOMOGRAPHY",
+        "POSITRON EMISSION",
+        "X RAY SYSTEM",
+        "MAMMOGRAPHY",
+        "FLUOROSCOPIC",
+        "IMAGE PROCESSING",
+        "RADIOLOGICAL"
+      ],
+      "domain": "imaging",
+      "domain_zh": "医学影像",
+      "frontier_keywords": []
+    },
+    {
+      "id": "imaging_us",
+      "name_zh": "超声",
+      "name_en": "Ultrasound",
+      "category": "imaging",
+      "keywords": [
+        "ULTRASOUND",
+        "ECHOCARDIOGRAPHY",
+        "SONOGRAPH"
+      ],
+      "domain": "imaging",
+      "domain_zh": "医学影像",
+      "frontier_keywords": []
+    },
+    {
+      "id": "endoscopy",
+      "name_zh": "内窥镜",
+      "name_en": "Endoscopy",
+      "category": "surgery",
+      "keywords": [
+        "ENDOSCOPE",
+        "ENDOSCOPIC",
+        "LAPAROSCOPE",
+        "BRONCHOSCOPE",
+        "ARTHROSCOPE"
+      ],
+      "domain": "surgery",
+      "domain_zh": "外科器械",
+      "frontier_keywords": []
+    },
+    {
+      "id": "surgical_energy",
+      "name_zh": "手术能量器械",
+      "name_en": "Surgical Energy",
+      "category": "surgery",
+      "keywords": [
+        "ELECTROSURGICAL",
+        "HARMONIC",
+        "LIGATION",
+        "VESSEL SEALING",
+        "MICROWAVE ABLATION",
+        "CRYOSURGICAL"
+      ],
+      "domain": "surgery",
+      "domain_zh": "外科器械",
+      "frontier_keywords": []
+    },
+    {
+      "id": "general_surgery",
+      "name_zh": "普外与手术耗材",
+      "name_en": "General Surgery",
+      "category": "surgery",
+      "keywords": [
+        "GENERAL SURGERY",
+        "SURGICAL TRAY",
+        "SURGERY TRAY",
+        "PROCEDURE KIT",
+        "SURGICAL INSTRUMENT",
+        "SUTURE",
+        "STAPLER"
+      ],
+      "domain": "surgery",
+      "domain_zh": "外科器械",
+      "frontier_keywords": []
+    },
+    {
+      "id": "patient_monitoring",
+      "name_zh": "监护与生命体征",
+      "name_en": "Patient Monitoring",
+      "category": "monitoring",
+      "keywords": [
+        "PATIENT MONITOR",
+        "PULSE OXIMETER",
+        "CAPNOGRAPH",
+        "VITAL SIGN",
+        "BLOOD PRESSURE",
+        "SPHYGMOMANOMETER"
+      ],
+      "domain": "life_support",
+      "domain_zh": "生命支持",
+      "frontier_keywords": [
+        "CONTINUOUS MONITORING",
+        "EARLY WARNING SCORE",
+        "PHYSIOLOGIC MONITOR"
+      ]
+    },
+    {
+      "id": "respiratory",
+      "name_zh": "呼吸与麻醉",
+      "name_en": "Respiratory & Anesthesia",
+      "category": "respiratory",
+      "keywords": [
+        "VENTILATOR",
+        "ANESTHESIA",
+        "RESPIRATORY",
+        "NEBULIZER",
+        "CPAP",
+        "AIRWAY"
+      ],
+      "domain": "life_support",
+      "domain_zh": "生命支持",
+      "frontier_keywords": []
+    },
+    {
+      "id": "vascular_access",
+      "name_zh": "血管通路",
+      "name_en": "Vascular Access",
+      "category": "vascular",
+      "keywords": [
+        "CATHETER INTRODUCER",
+        "VASCULAR ACCESS",
+        "PORT",
+        "INFUSION SET",
+        "NEEDLELESS",
+        "ADMINISTRATION SET",
+        "INTRAVASCULAR"
+      ],
+      "domain": "hospital_devices",
+      "domain_zh": "医院通用器械",
+      "frontier_keywords": []
+    },
+    {
+      "id": "wound_care",
+      "name_zh": "伤口与敷料",
+      "name_en": "Wound Care",
+      "category": "wound",
+      "keywords": [
+        "WOUND DRESSING",
+        "WOUND THERAPY",
+        "NEGATIVE PRESSURE",
+        "SUTURE",
+        "HEMOSTAT"
+      ],
+      "domain": "wound_care",
+      "domain_zh": "伤口管理",
+      "frontier_keywords": []
+    },
+    {
+      "id": "ophthalmology",
+      "name_zh": "眼科",
+      "name_en": "Ophthalmology",
+      "category": "specialty",
+      "keywords": [
+        "INTRAOCULAR LENS",
+        "OPHTHALMIC",
+        "RETINA",
+        "GLAUCOMA",
+        "CORNEAL",
+        "PHACOEMULSIFICATION",
+        "CONTACT LENS"
+      ],
+      "domain": "ophthalmology",
+      "domain_zh": "眼科",
+      "frontier_keywords": []
+    },
+    {
+      "id": "ent",
+      "name_zh": "耳鼻喉",
+      "name_en": "ENT",
+      "category": "specialty",
+      "keywords": [
+        "HEARING AID",
+        "COCHLEAR",
+        "SINUS",
+        "LARYNGOSCOPE",
+        "TYMPANOSTOMY"
+      ],
+      "domain": "ent",
+      "domain_zh": "耳鼻喉",
+      "frontier_keywords": []
+    },
+    {
+      "id": "urology",
+      "name_zh": "泌尿",
+      "name_en": "Urology",
+      "category": "specialty",
+      "keywords": [
+        "UROLOGICAL",
+        "URETEROSCOPE",
+        "PROSTATE",
+        "CYSTOSCOPE",
+        "LITHOTRIPSY",
+        "INCONTINENCE",
+        "FECAL"
+      ],
+      "domain": "urology",
+      "domain_zh": "泌尿",
+      "frontier_keywords": []
+    },
+    {
+      "id": "womens_health",
+      "name_zh": "女性健康",
+      "name_en": "Women's Health",
+      "category": "specialty",
+      "keywords": [
+        "OBSTETRIC",
+        "GYNECOLOGIC",
+        "FETAL MONITOR",
+        "BREAST BIOPSY",
+        "PELVIC FLOOR"
+      ],
+      "domain": "womens_health",
+      "domain_zh": "女性健康",
+      "frontier_keywords": []
+    },
+    {
+      "id": "dialysis",
+      "name_zh": "血液净化",
+      "name_en": "Dialysis",
+      "category": "renal",
+      "keywords": [
+        "DIALYSIS",
+        "HEMODIALYSIS",
+        "HEMOPERFUSION",
+        "PERITONEAL"
+      ],
+      "domain": "renal",
+      "domain_zh": "肾脏与血液净化",
+      "frontier_keywords": [
+        "HOME DIALYSIS",
+        "WEARABLE ARTIFICIAL KIDNEY",
+        "HEMODIALYSIS"
+      ]
+    },
+    {
+      "id": "dental",
+      "name_zh": "口腔",
+      "name_en": "Dental",
+      "category": "specialty",
+      "keywords": [
+        "DENTAL IMPLANT",
+        "DENTAL",
+        "ORTHODONTIC",
+        "ENDODONTIC"
+      ],
+      "domain": "dental",
+      "domain_zh": "口腔",
+      "frontier_keywords": []
+    },
+    {
+      "id": "aesthetics",
+      "name_zh": "医美与皮肤",
+      "name_en": "Aesthetics",
+      "category": "specialty",
+      "keywords": [
+        "DERMAL IMPLANT",
+        "WRINKLE",
+        "AESTHETIC",
+        "LIGHT BASED",
+        "DERMAL FILLER"
+      ],
+      "domain": "aesthetics",
+      "domain_zh": "医美与皮肤",
+      "frontier_keywords": []
+    },
+    {
+      "id": "medical_ai",
+      "name_zh": "医疗AI/软件(SaMD)",
+      "name_en": "Medical AI / SaMD",
+      "category": "software",
+      "keywords": [
+        "SOFTWARE",
+        "ALGORITHM",
+        "MACHINE LEARNING",
+        "COMPUTER AIDED",
+        "CLINICAL DECISION SUPPORT"
+      ],
+      "domain": "samd_ai",
+      "domain_zh": "医疗软件与人工智能",
+      "frontier_keywords": [
+        "AI-ENABLED",
+        "ARTIFICIAL INTELLIGENCE",
+        "FOUNDATION MODEL",
+        "CLINICAL DECISION SUPPORT",
+        "AUTONOMOUS AI"
+      ]
+    },
+    {
+      "id": "wearable_remote",
+      "name_zh": "可穿戴与远程监测",
+      "name_en": "Wearable & Remote Monitoring",
+      "category": "monitoring",
+      "keywords": [
+        "WEARABLE",
+        "REMOTE MONITORING",
+        "AMBULATORY",
+        "PATCH",
+        "HOLTER"
+      ],
+      "domain": "remote_monitoring",
+      "domain_zh": "远程监测",
+      "frontier_keywords": []
+    },
+    {
+      "id": "rehab_exo",
+      "name_zh": "康复与外骨骼",
+      "name_en": "Rehabilitation / Exoskeleton",
+      "category": "rehab",
+      "keywords": [
+        "REHABILITATION",
+        "EXOSKELETON",
+        "PROSTHETIC",
+        "NEUROSTIMULATION REHAB",
+        "GAIT TRAINING",
+        "WHEELCHAIR"
+      ],
+      "domain": "rehabilitation",
+      "domain_zh": "康复",
+      "frontier_keywords": []
+    },
+    {
+      "id": "infection_control",
+      "name_zh": "感染控制与消毒",
+      "name_en": "Infection Control",
+      "category": "hospital",
+      "keywords": [
+        "STERILIZER",
+        "DISINFECT",
+        "INFECTION CONTROL",
+        "ULTRAVIOLET",
+        "ISOLATION"
+      ],
+      "domain": "hospital_devices",
+      "domain_zh": "医院通用器械",
+      "frontier_keywords": []
+    },
+    {
+      "id": "ecmo",
+      "name_zh": "ECMO 与体外生命支持",
+      "name_en": "ECMO / Extracorporeal Life Support",
+      "category": "life_support",
+      "domain": "life_support",
+      "domain_zh": "生命支持",
+      "keywords": [
+        "EXTRACORPOREAL MEMBRANE",
+        "EXTRACORPOREAL LIFE SUPPORT",
+        "ECMO",
+        "OXYGENATOR"
+      ],
+      "frontier_keywords": [
+        "ECMO",
+        "ECLS",
+        "EXTRACORPOREAL LIFE SUPPORT"
+      ]
+    },
+    {
+      "id": "oxygen_therapy",
+      "name_zh": "氧疗与呼吸支持",
+      "name_en": "Oxygen Therapy / Respiratory Support",
+      "category": "life_support",
+      "domain": "life_support",
+      "domain_zh": "生命支持",
+      "keywords": [
+        "OXYGEN CONCENTRATOR",
+        "HIGH FLOW NASAL",
+        "OXYGEN THERAPY",
+        "NONINVASIVE VENTILATION"
+      ],
+      "frontier_keywords": [
+        "HIGH FLOW NASAL",
+        "NONINVASIVE VENTILATION",
+        "RESPIRATORY SUPPORT"
+      ]
+    },
+    {
+      "id": "resuscitation",
+      "name_zh": "急救与复苏",
+      "name_en": "Emergency Care / Resuscitation",
+      "category": "life_support",
+      "domain": "life_support",
+      "domain_zh": "生命支持",
+      "keywords": [
+        "AUTOMATED EXTERNAL DEFIBRILLATOR",
+        "EXTERNAL DEFIBRILLATOR",
+        "CARDIOPULMONARY RESUSCITATION",
+        "RESUSCITATION",
+        "CPR"
+      ],
+      "frontier_keywords": [
+        "RESUSCITATION",
+        "CARDIAC ARREST",
+        "EXTERNAL DEFIBRILLATOR"
+      ]
+    },
+    {
+      "id": "brain_computer",
+      "name_zh": "脑机接口与神经信号",
+      "name_en": "Brain-Computer Interfaces / Neural Signals",
+      "category": "neuroscience",
+      "domain": "brain_computer",
+      "domain_zh": "脑机接口",
+      "keywords": [
+        "BRAIN COMPUTER INTERFACE",
+        "BRAIN-COMPUTER INTERFACE",
+        "NEURAL INTERFACE",
+        "CORTICAL IMPLANT",
+        "NEURAL DECODING"
+      ],
+      "frontier_keywords": [
+        "BRAIN-COMPUTER INTERFACE",
+        "BRAIN COMPUTER INTERFACE",
+        "NEURAL INTERFACE",
+        "CORTICAL IMPLANT",
+        "NEURAL DECODING",
+        "MOTOR NEUROPROSTHESIS"
+      ]
+    },
+    {
+      "id": "ivd_ngs",
+      "name_zh": "NGS 与基因组检测",
+      "name_en": "NGS / Genomic Testing",
+      "category": "ivd",
+      "domain": "ivd",
+      "domain_zh": "体外诊断",
+      "keywords": [
+        "NEXT GENERATION SEQUENCING",
+        "NGS",
+        "GENOMIC PROFILING",
+        "WHOLE EXOME",
+        "WHOLE GENOME"
+      ],
+      "frontier_keywords": [
+        "NEXT GENERATION SEQUENCING",
+        "NGS",
+        "GENOMIC PROFILING",
+        "MULTI-CANCER EARLY DETECTION"
+      ]
+    },
+    {
+      "id": "ivd_liquid_biopsy",
+      "name_zh": "液体活检",
+      "name_en": "Liquid Biopsy",
+      "category": "ivd",
+      "domain": "ivd",
+      "domain_zh": "体外诊断",
+      "keywords": [
+        "LIQUID BIOPSY",
+        "CIRCULATING TUMOR DNA",
+        "CTDNA",
+        "CELL FREE DNA"
+      ],
+      "frontier_keywords": [
+        "LIQUID BIOPSY",
+        "CIRCULATING TUMOR DNA",
+        "CTDNA",
+        "CELL-FREE DNA"
+      ]
+    },
+    {
+      "id": "ivd_mrd",
+      "name_zh": "微小/分子残留病灶",
+      "name_en": "Minimal / Molecular Residual Disease",
+      "category": "ivd",
+      "domain": "ivd",
+      "domain_zh": "体外诊断",
+      "keywords": [
+        "MINIMAL RESIDUAL DISEASE",
+        "MOLECULAR RESIDUAL DISEASE",
+        "MRD"
+      ],
+      "frontier_keywords": [
+        "MINIMAL RESIDUAL DISEASE",
+        "MOLECULAR RESIDUAL DISEASE",
+        "MRD"
+      ]
+    },
+    {
+      "id": "ivd_companion",
+      "name_zh": "伴随诊断",
+      "name_en": "Companion Diagnostics",
+      "category": "ivd",
+      "domain": "ivd",
+      "domain_zh": "体外诊断",
+      "keywords": [
+        "COMPANION DIAGNOSTIC",
+        "COMPLEMENTARY DIAGNOSTIC"
+      ],
+      "frontier_keywords": [
+        "COMPANION DIAGNOSTIC",
+        "COMPLEMENTARY DIAGNOSTIC"
+      ]
+    },
+    {
+      "id": "ivd_microbiology",
+      "name_zh": "微生物与感染诊断",
+      "name_en": "Microbiology / Infectious Disease IVD",
+      "category": "ivd",
+      "domain": "ivd",
+      "domain_zh": "体外诊断",
+      "keywords": [
+        "MICROBIOLOGY",
+        "ANTIMICROBIAL SUSCEPTIBILITY",
+        "PATHOGEN DETECTION",
+        "SEPSIS TEST",
+        "INFECTIOUS DISEASE TEST"
+      ],
+      "frontier_keywords": [
+        "PATHOGEN DETECTION",
+        "ANTIMICROBIAL SUSCEPTIBILITY",
+        "METAGENOMIC",
+        "SEPSIS DIAGNOSTIC"
+      ]
+    },
+    {
+      "id": "ivd_chemistry",
+      "name_zh": "临床生化",
+      "name_en": "Clinical Chemistry",
+      "category": "ivd",
+      "domain": "ivd",
+      "domain_zh": "体外诊断",
+      "keywords": [
+        "CLINICAL CHEMISTRY",
+        "BIOCHEMISTRY ANALYZER",
+        "CHEMISTRY ANALYZER",
+        "ELECTROLYTE ANALYZER"
+      ],
+      "frontier_keywords": [
+        "CLINICAL CHEMISTRY"
+      ]
+    },
+    {
+      "id": "ivd_hematology",
+      "name_zh": "血液与凝血检测",
+      "name_en": "Hematology / Coagulation IVD",
+      "category": "ivd",
+      "domain": "ivd",
+      "domain_zh": "体外诊断",
+      "keywords": [
+        "HEMATOLOGY ANALYZER",
+        "COMPLETE BLOOD COUNT",
+        "COAGULATION ANALYZER",
+        "FLOW CYTOMETER"
+      ],
+      "frontier_keywords": [
+        "FLOW CYTOMETRY",
+        "HEMATOLOGY",
+        "COAGULATION"
+      ]
+    },
+    {
+      "id": "ivd_digital_pathology",
+      "name_zh": "数字病理",
+      "name_en": "Digital Pathology",
+      "category": "ivd",
+      "domain": "ivd",
+      "domain_zh": "体外诊断",
+      "keywords": [
+        "DIGITAL PATHOLOGY",
+        "WHOLE SLIDE IMAGING",
+        "HISTOPATHOLOGY IMAGE",
+        "CYTOLOGY IMAGE"
+      ],
+      "frontier_keywords": [
+        "DIGITAL PATHOLOGY",
+        "COMPUTATIONAL PATHOLOGY",
+        "WHOLE SLIDE IMAGE"
+      ]
+    }
   ],
-  "product_codes": []
+  "product_codes": [],
+  "domains": [
+    {
+      "id": "surgical_robotics",
+      "name_zh": "手术机器人",
+      "name_en": "Surgical Robotics"
+    },
+    {
+      "id": "cardiovascular",
+      "name_zh": "心血管",
+      "name_en": "Cardiovascular"
+    },
+    {
+      "id": "neurovascular",
+      "name_zh": "神经介入",
+      "name_en": "Neurovascular"
+    },
+    {
+      "id": "neurotechnology",
+      "name_zh": "神经技术",
+      "name_en": "Neurotechnology"
+    },
+    {
+      "id": "orthopedics",
+      "name_zh": "骨科",
+      "name_en": "Orthopedics"
+    },
+    {
+      "id": "diabetes",
+      "name_zh": "糖尿病",
+      "name_en": "Diabetes"
+    },
+    {
+      "id": "ivd",
+      "name_zh": "体外诊断",
+      "name_en": "In Vitro Diagnostics"
+    },
+    {
+      "id": "imaging",
+      "name_zh": "医学影像",
+      "name_en": "Medical Imaging"
+    },
+    {
+      "id": "surgery",
+      "name_zh": "外科器械",
+      "name_en": "Surgery"
+    },
+    {
+      "id": "life_support",
+      "name_zh": "生命支持",
+      "name_en": "Life Support"
+    },
+    {
+      "id": "hospital_devices",
+      "name_zh": "医院通用器械",
+      "name_en": "Hospital Devices"
+    },
+    {
+      "id": "wound_care",
+      "name_zh": "伤口管理",
+      "name_en": "Wound Care"
+    },
+    {
+      "id": "ophthalmology",
+      "name_zh": "眼科",
+      "name_en": "Ophthalmology"
+    },
+    {
+      "id": "ent",
+      "name_zh": "耳鼻喉",
+      "name_en": "Ent"
+    },
+    {
+      "id": "urology",
+      "name_zh": "泌尿",
+      "name_en": "Urology"
+    },
+    {
+      "id": "womens_health",
+      "name_zh": "女性健康",
+      "name_en": "Womens Health"
+    },
+    {
+      "id": "renal",
+      "name_zh": "肾脏与血液净化",
+      "name_en": "Renal"
+    },
+    {
+      "id": "dental",
+      "name_zh": "口腔",
+      "name_en": "Dental"
+    },
+    {
+      "id": "aesthetics",
+      "name_zh": "医美与皮肤",
+      "name_en": "Aesthetics"
+    },
+    {
+      "id": "samd_ai",
+      "name_zh": "医疗软件与人工智能",
+      "name_en": "SaMD / AI"
+    },
+    {
+      "id": "remote_monitoring",
+      "name_zh": "远程监测",
+      "name_en": "Remote Monitoring"
+    },
+    {
+      "id": "rehabilitation",
+      "name_zh": "康复",
+      "name_en": "Rehabilitation"
+    },
+    {
+      "id": "brain_computer",
+      "name_zh": "脑机接口",
+      "name_en": "Brain-Computer Interfaces"
+    }
+  ]
 }

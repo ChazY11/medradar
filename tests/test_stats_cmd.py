@@ -128,8 +128,8 @@ class EventsDistributionTests(_MiniDbCase):
         self.assertEqual(events["undated"], 1)
         self.assertEqual(events["earliest"], "2019-12-31")
         self.assertEqual(events["latest"], "2021-06-15")
-        self.assertEqual(events["earliest_available"], "2019-12-31")
-        self.assertEqual(events["latest_available"], "2021-06-15")
+        self.assertEqual(events["earliest_available"], "2019-12-31T00:00:00")
+        self.assertEqual(events["latest_available"], "2021-06-15T00:00:00")
 
     def test_by_year_and_the_year_boundary(self) -> None:
         by_year = self.stats()["events"]["by_year"]

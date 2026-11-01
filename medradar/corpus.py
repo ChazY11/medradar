@@ -81,21 +81,18 @@ BUCKETS_V2: tuple[str, ...] = BUCKET_ORDER + (
     "topline data",
     "clinical hold",
     "refuse to file",
+    "pre-submission",
+    "pre submission",
     "breakthrough therapy",
+    "breakthrough device",
     "priority review",
     "label expansion",
     "accelerated approval",
 )
 
-#: Bucket -> category prior (what a filing is *probably* about if that query hit).
-#:
-#: v2 mapping notes (categories stay the five the case engine knows):
-#: * ``clinical hold`` / ``refuse to file`` are regulatory negatives -> ``crl``
-#:   (the only negative regulatory bin; the reason string keeps the nuance);
-#: * ``breakthrough therapy`` / ``priority review`` are designations, not
-#:   commercial events -> ``other`` (direction 0: a designation is not a catalyst
-#:   by itself and must not inflate the approval bucket);
-#: * ``label expansion`` / ``accelerated approval`` are approvals -> ``approval``.
+#: Bucket -> category prior. Regulatory outcomes and process milestones are
+#: deliberately separate: a clinical hold, RTF and CRL have different meanings,
+#: and a designation or pre-submission is not an approval.
 BUCKET_CATEGORY: dict[str, str] = {
     "fda approval": "approval",
     "receives fda approval": "approval",
@@ -107,18 +104,27 @@ BUCKET_CATEGORY: dict[str, str] = {
     "fda approves": "approval",
     "phase 3 results": "trial_result",
     "topline data": "trial_result",
-    "clinical hold": "crl",
-    "refuse to file": "crl",
-    "breakthrough therapy": "other",
-    "priority review": "other",
+    "clinical hold": "clinical_hold",
+    "refuse to file": "refuse_to_file",
+    "pre-submission": "pre_submission",
+    "pre submission": "pre_submission",
+    "breakthrough therapy": "designation",
+    "breakthrough device": "designation",
+    "priority review": "designation",
     "label expansion": "approval",
     "accelerated approval": "approval",
 }
 
-CATEGORIES: tuple[str, ...] = ("approval", "crl", "trial_result", "earnings", "other")
+CATEGORIES: tuple[str, ...] = (
+    "approval", "crl", "clinical_hold", "refuse_to_file", "pre_submission",
+    "designation", "trial_result", "earnings", "other",
+)
 
 #: Tie-break order when two categories have the same evidence score.
-CATEGORY_PRIORITY: tuple[str, ...] = ("crl", "trial_result", "approval", "earnings", "other")
+CATEGORY_PRIORITY: tuple[str, ...] = (
+    "clinical_hold", "refuse_to_file", "crl", "pre_submission", "designation",
+    "trial_result", "approval", "earnings", "other",
+)
 
 #: Healthcare name markers. Deliberately recall-oriented: a missed biotech is a
 #: missing case, a few false positives are visible and filterable downstream.
@@ -170,6 +176,32 @@ TEXT_PATTERNS: dict[str, tuple[str, ...]] = {
         "complete response (crl)",
         "received a crl",
         "receives a crl",
+    ),
+    "clinical_hold": (
+        "clinical hold",
+        "placed on hold",
+        "trial has been placed on hold",
+    ),
+    "refuse_to_file": (
+        "refuse to file",
+        "refusal to file",
+        "received an rtf",
+        "receives an rtf",
+    ),
+    "pre_submission": (
+        "pre-submission",
+        "pre submission",
+        "presubmission",
+        "q-submission",
+        "q submission",
+    ),
+    "designation": (
+        "breakthrough therapy designation",
+        "breakthrough device designation",
+        "breakthrough designation",
+        "priority review designation",
+        "priority review voucher",
+        "fast track designation",
     ),
     "trial_negative": (
         "did not meet",
@@ -249,6 +281,10 @@ OTHER_LEAD_WEAK: tuple[str, ...] = (
 #: Pattern group -> category, and the evidence weight of a hit.
 _PATTERN_CATEGORY: dict[str, str] = {
     "crl": "crl",
+    "clinical_hold": "clinical_hold",
+    "refuse_to_file": "refuse_to_file",
+    "pre_submission": "pre_submission",
+    "designation": "designation",
     "trial_negative": "trial_result",
     "approval": "approval",
     "trial_positive": "trial_result",
@@ -547,6 +583,29 @@ def merge_candidates(
 
 
 # ------------------------------------------------------------------ classifier
+_PROCESS_WORDS_RE = re.compile(
+    r"pre[- ]?submission|presubmission|q[- ]?submission|"
+    r"(?:request|seek|seeking|prepare|preparing|plan|planning)[^.!?]{0,60}(?:for|to obtain)\s+(?:fda\s+)?approval",
+    re.I,
+)
+
+
+def _process_only_approval(text: str, pattern: str) -> bool:
+    """True when every hit describes an approval request, not an approval.
+
+    SEC headlines such as ``Revised De Novo Pre-Submission for FDA Approval``
+    otherwise light up both the pre-submission and approval buckets.
+    """
+    matches = list(re.finditer(re.escape(pattern), text, re.I))
+    if not matches:
+        return False
+    for match in matches:
+        context = text[max(0, match.start() - 140): match.end() + 80]
+        if not _PROCESS_WORDS_RE.search(context):
+            return False
+    return True
+
+
 def _score_categories(
     text: str, buckets: Sequence[str], items: Sequence[str]
 ) -> tuple[dict[str, float], list[str]]:
@@ -559,6 +618,9 @@ def _score_categories(
         category = BUCKET_CATEGORY.get(bucket)
         if not category:
             continue
+        if category == "approval" and _process_only_approval(lower, bucket):
+            reasons.append(f"excluded-process-approval:{bucket}")
+            continue
         if bucket in lead:
             scores[category] += _BUCKET_LEAD_WEIGHT
             reasons.append(f"lead-bucket:{bucket}")
@@ -567,12 +629,26 @@ def _score_categories(
             reasons.append(f"bucket:{bucket}")
     for pattern_group, patterns in TEXT_PATTERNS.items():
         category = _PATTERN_CATEGORY[pattern_group]
-        if any(pattern in lead for pattern in patterns):
-            matched = next(pattern for pattern in patterns if pattern in lead)
+        lead_match = next(
+            (
+                pattern for pattern in patterns
+                if pattern in lead
+                and not (category == "approval" and _process_only_approval(lower, pattern))
+            ),
+            None,
+        )
+        if lead_match is not None:
             scores[category] += _LEAD_WEIGHT
-            reasons.append(f"lead:{matched}")
+            reasons.append(f"lead:{lead_match}")
             continue
-        matched = next((pattern for pattern in patterns if pattern in lower), None)
+        matched = next(
+            (
+                pattern for pattern in patterns
+                if pattern in lower
+                and not (category == "approval" and _process_only_approval(lower, pattern))
+            ),
+            None,
+        )
         if matched is not None:
             scores[category] += _BODY_WEIGHT
             reasons.append(f"text:{matched}")
@@ -668,7 +744,7 @@ def classify_detail(
         direction = -1 if negative else (1 if positive else 0)
     elif category == "approval":
         direction = 1
-    elif category == "crl":
+    elif category in ("crl", "clinical_hold", "refuse_to_file"):
         direction = -1
     else:
         direction = 0
@@ -1121,7 +1197,11 @@ def to_events(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
         direction = int(record.get("direction") or 0)
         label = {
             "approval": "获批",
-            "crl": "CRL/受挫",
+            "crl": "CRL",
+            "clinical_hold": "临床暂停",
+            "refuse_to_file": "拒绝受理",
+            "pre_submission": "预申请沟通",
+            "designation": "资格认定",
             "trial_result": "试验读出",
             "earnings": "财报",
             "other": "其他",
@@ -1132,6 +1212,8 @@ def to_events(records: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
                 "source": SOURCE,
                 "kind": KIND,
                 "event_date": filed,
+                "published_at": filed,
+                "timestamp_quality": "date",
                 "as_of": str(record.get("fetched_at") or "")[:10],
                 "company_key": record.get("company_key") or None,
                 "applicant_raw": company,

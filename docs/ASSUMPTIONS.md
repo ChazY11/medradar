@@ -15,7 +15,7 @@
 
 | # | 项目 | 状态 | 参数 / 做法 | 出处与说明 |
 |---|---|---|---|---|
-| 1.1 | 决策时点 | 已建模 | 只用 `events.available_at`；缺失时依次回退 `published_at` → payload → `event_date` → `signal_date` | `db.py` 的时间列；SCHEMA §9：回测只使用 `available_at` |
+| 1.1 | 决策时点 | 已建模 | 依次读取 `events.available_at` → `published_at` → payload 中的真实公开时间；**不回退** `event_date` 或 `signal_date`，且只接受 `timestamp_quality=datetime/date` | `db.py` 的时间列；SCHEMA §9：决定日不是公开证据，缺失/估算/未知时间不进交易研究 |
 | 1.2 | 日精度公开时间的语义 | 已建模 | `timestamp_quality='date'` 视为**当日 23:59:59 UTC** 才可用，因此首根可用 bar 一定落在下一交易日 | 当前 83,578 条历史事件全部是 `date` 精度（`data/medradar.sqlite` 实测）；把日期当成 00:00 会允许"当天开盘成交"，属于前视 |
 | 1.3 | 1 分钟分支成交价 | 已建模 | 公开时点 `available_at` 落在最近 `intraday_days`（默认 7）天内且 Yahoo 1m 可得时：成交 = **公开时点之后第一根 1 分钟 bar 的开盘价**（bar 的 ts 严格大于 `available_at`，且 bar 时间 ≤ 回放 `now`）。日精度 `available_at` 按当日 23:59:59 UTC 处理，因此首根可用 bar 通常是下一交易日 09:30 ET。`includePrePost=false` 排除盘前盘后；无 bid/ask，bar open 只是假定成交价。窗口外/未请求 1m → 日线；1m 请求失败或无 bar → 日线并标记 `fallback` | `replay.py::_resolve_step` / `_first_intraday_fill`；`intraday_window_days`、`price_source_counts` 可在 replay JSON 中验证；单测 `test_intraday_fill_is_first_bar_after_public_moment` 等 |
 | 1.4 | 日线分支成交价 | 已建模 | 公开日**之后第一个交易日**的开盘价（严格大于公开日期），且开盘时刻 ≤ `now`；窗口内有 1m 的 step 不走日线 | 与 `eventstudy.py` / `paper.py` "next-open entry" 同源；回放比 event study 早一天（event study 还要等 `signal_date`），已在 HTML 方法区写明 |
@@ -69,7 +69,7 @@
 
 | # | 项目 | 状态 | 参数 / 做法 | 出处与说明 |
 |---|---|---|---|---|
-| 6.1 | 时间质量分级 | 已建模 | `datetime` / `date` / `estimated` 可用；`unknown` **不进回放**，计入 `quality.excluded` | `db.py TIMESTAMP_QUALITIES`、SCHEMA §9；`replay.py::_resolve_available_at` |
+| 6.1 | 时间质量分级 | 已建模 | 只有真实公开时间且质量为 `datetime` / `date` 可用；缺失、`estimated`、`unknown` **不进回放或事件研究**，计入排除审计 | `db.py TIMESTAMP_QUALITIES`、SCHEMA §9；`replay.py::_resolve_available_at` |
 | 6.2 | 重复信号 | 已建模 | 按 `(event_id, ticker, direction, kind, signal_date)` 去重，保留最新 `created_at`（并列取高分） | `analyze` 重跑会生成新 `signal_id`；当前快照 signals 表 127 行，重跑痕迹按上述键去重 |
 | 6.3 | 1 分钟数据覆盖边界 | 免费数据做不到 | 仅最近约 **7 个自然日**（Yahoo `range=7d&interval=1m`，实测约 7 个交易日）；更早窗口只有日线；页面顶部固定声明。JSON 输出 `intraday_window_days` 与 `price_source_counts{1m,daily,fallback,missing,total}`；HTML「价格来源与 1 分钟边界」逐条列出哪些 step 用 1m、哪些用日线及原因。窗口外/离线**不请求** 1m；请求失败/无 bar → fallback 日线；`intraday_days=0` 强制日线 | 实测 2026-10-22 → 2026-10-30 共 2,640 根 1m bar；成品见 `out/replay_intraday/` 与 §11.6 |
 | 6.4 | 1 分钟数据质量 | 未建模 | 不剔除异常 bar（错价、零成交、集合竞价外 bar）；缺失 bar 顺延到下一根；无成交量约束 | Yahoo 免费 1m 可能含异常；未与交易所对账 |
@@ -107,7 +107,7 @@ source                  auto | signals | events（默认 auto）
 max_steps               events 模式默认 400（目标 200–500），signals 模式不设上限
 per_kind_limit          events 模式默认 150 条/类（可传 int 或 {kind: limit}）
 event sampling          kind×year 分层；每 (kind, company, year) 首轮 ≤2 条
-timestamp_quality       允许 datetime/date/estimated；unknown 剔除
+timestamp_quality       只允许真实公开时间且质量为 datetime/date；缺失/estimated/unknown 剔除
 dedupe key              (event_id, ticker, direction, kind, signal_date)
 date-quality available  = 当日 23:59:59 UTC
 ```
@@ -188,9 +188,9 @@ with DB("data/medradar.sqlite") as db:
 ### 11.2 Point-in-time 与成交
 
 1. 候选窗口按 **`available_at` 的日期** 落在 `[start, end]` 内；事件按 `available_at` 升序处理。
-2. "首次出现"用 `MIN(avail)`（只统计 `event_date <= end` 的历史）⇒ 2019 年的"首次"不会被
+2. "首次出现"用真实公开时间的 `MIN(avail)`（只统计 `event_date <= end` 的历史）⇒ 2019 年的"首次"不会被
    2024 年的数据改写；90 天召回簇只数当前事件之前的召回。
-3. `timestamp_quality='unknown'` 的候选剔除；日精度 `available_at` 仍按当日 23:59:59 UTC 处理。
+3. 缺失公开时间、`timestamp_quality='estimated'` 和 `'unknown'` 的候选全部剔除；日精度 `available_at` 仍按当日 23:59:59 UTC 处理。
 4. **成交价分支**：`available_at` 落在最近 `intraday_days`（默认 7）天内且 1m 可得时用
    1 分钟 bar 开盘（bar ts 严格晚于公开时点）；窗口外/离线直接日线（公开日后第一个交易日开盘，
    且开盘时刻 ≤ 回放 `now`）；1m 请求失败/无 bar → 日线并标记 `fallback`。
@@ -221,7 +221,10 @@ with DB("data/medradar.sqlite") as db:
 | 11.4.5 | 1 分钟精度 | 免费数据做不到 | 多年窗口的绝大多数 step 只能日线开盘（1m 仅覆盖最近 ~7 天）；即使近期 step 用 1m，也只是"公开时点后第一根 bar 开盘"，无法还原真实逐笔成交与盘中滑点 |
 | 11.4.6 | 8-K 原文语义 | 未建模 | 未使用 LLM 判定（成本/可复现性考虑）；`payload.backfill=true` 的告警一律不成交 |
 
-### 11.5 实测（2026-10-31 快照，离线、只读 DB）
+### 11.5 旧口径实测存档（2026-10-31 快照，离线、只读 DB）
+
+> 下列数字生成于严格公开时间门槛之前，当时部分决定日会被当作可用日；它们只保留作历史审计，
+> **不是当前版本的有效回放结果**。当前版本会排除缺失、`estimated`、`unknown` 的记录，需用完整原始库重跑后再更新。
 
 ```text
 调用：build_replay(db, "2019-01-01", "2026-10-31", source="events", max_steps=400)
@@ -249,7 +252,10 @@ with DB("data/medradar.sqlite") as db:
     )
 ```
 
-### 11.6 1 分钟边界成品（`out/replay_intraday/`，任务 P1）
+### 11.6 旧口径 1 分钟边界成品存档（`out/replay_intraday/`，任务 P1）
+
+> 本节同样是严格时间门槛前的历史验证记录，不能作为当前版本的样本量或收益证据。
+> 1 分钟数据的覆盖边界仍有效，但成品需按当前公开时间规则重跑。
 
 为把"1m 只覆盖最近约 7 天"做成可验证成品，用一段覆盖边界两侧的近期窗口生成
 `out/replay_intraday/{replay.json,index.html}`：

@@ -26,15 +26,16 @@ portfolio, what appeared for the first time, and where China still has a gap.
 | Coverage | 89 companies, 60 tracks, **204 device product families**, 7,097 product codes, **1.2 GiB SQLite** |
 | Strongest track right now | 心脏节律 THI 1.94 (P=98.2%) · 可穿戴监测 1.80 · 结构性心脏病 1.57 · 手术机器人 1.54 |
 | Signals emitted | 281 (→ tradable subset) |
-| Case library | **2,384 traceable cases** (verbatim evidence + 1/5/20/60-day reactions): 943 approvals · 379 CRLs · 1,062 trial readouts, 3,700+ evidence quotes |
+| Case library | The historical snapshot contains **2,384 traceable cases**; v0.3.0 recomputes studies under the corrected taxonomy and extreme-return audit instead of carrying forward old category counts |
 | Replay | **400-step, 7-year timeline** (2019–2026) with 10/25/50 bps cost tiers; 1-minute fills for the last 7 days |
-| Event study (20d, direction-aligned, winsorised, **Holm over the 12-test family**) | approval +2.8% (CI 0.9–4.8, **Holm p=0.007 → significant**) · CRL −3.8% (CI −6.7–−0.8, Holm p=0.060 → borderline, not significant) · trial −0.3% (n.s.) |
+| Frontier radar | **50 device tracks across 23 domains**; AdCom schedules/materials, first-posted trials, pre-submissions and designations in one feed |
+| Research integrity | Clinical holds, RTF, CRL, pre-submissions and designations are separate; absolute abnormal returns above 100% are audited and excluded from inference |
 | Simulated book | in-sample, long-only, not investment advice |
 | Tests | **554 offline tests**, no network, no API key |
 | Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |
 | Products | 204 families, **2,740 Chinese product names** |
 | Research | event-time model, point-in-time signals, block bootstrap, Holm correction |
-| Timing scope | **all 375k events are date-level** (`timestamp_quality=date`); minute-level timing exists only for the live EDGAR lane / last-7-day replay, so minute-level studies are explicitly out of scope |
+| Timing scope | Public-time quality is explicit (`datetime` / `date` / `estimated` / `unknown`). Only real `datetime`/`date` availability enters return studies; historical decision dates without a public timestamp remain descriptive only |
 | Database | 1.2 GiB SQLite, 1966–2026 drug approvals, 1999–2026 trials |
 | Calibration | 25 hand-labelled real 8‑Ks: type accuracy **1.00 vs 0.60**, direction **0.92 vs 0.72** for the LLM judge |
 
@@ -72,6 +73,7 @@ medradar dashboard                       # rebuild docs/dashboard.html from the 
 
 | Question | Metric | Output |
 |---|---|---|
+| What happens before approval? | AdCom meetings/materials, first-posted trials, pre-submissions and designations | `out/frontier.json` + `out/frontier.md` |
 | Which device tracks are accelerating? | `THI` — shrinkage-adjusted recent rate ÷ baseline rate | Track heat table |
 | Is a specific major changing direction? | Jensen-Shannon divergence of its product-code mix | Migration table ("who is re-allocating") |
 | What is genuinely new? | First-ever `(company, product_code)` occurrences | "First seen" weekly list + product-family radar |
@@ -79,6 +81,23 @@ medradar dashboard                       # rebuild docs/dashboard.html from the 
 | Is pharma shifting therapeutic focus? | Trial-start rates + phase mix per area | Drug radar |
 | Where is the China gap? | US activity share vs loaded NMPA registrations | `cn_gap` table (honest `unavailable` when no CN data) |
 | Does any of it predict equity returns? | Event study: direction-aligned abnormal returns at +1/+5/+20/+60, block bootstrap + Holm | [Case library](docs/CASES.md) + `out/trading.json` (simulation only) |
+
+## Frontier lane: public signals before approval
+
+```bash
+python -m medradar collect --sources adcom,trials --months 24
+python -m medradar frontier
+```
+
+The frontier feed combines FDA Advisory Committee schedules and briefing materials, first-posted
+clinical trials, pre-submissions and breakthrough/priority designations from SEC filings. Its 50
+tracks cover life support (ventilation, ECMO, oxygen, resuscitation, monitoring), IVD (NGS, liquid
+biopsy, MRD, companion diagnostics, microbiology, digital pathology), BCI, neuromodulation,
+cardiovascular, imaging, robotics, SaMD/AI, renal and diabetes.
+
+This is public-source monitoring, not a pending-application oracle. Non-public 510(k)/PMA review
+status is confidential, so the machine-readable output explicitly sets
+`pending_510k_pma_monitoring=false` rather than manufacturing a pipeline from decision dates.
 
 ## Live lane: event alerts + simulated trading (5–15 min)
 
@@ -190,7 +209,8 @@ Everything is resumable: every HTTP response is cached under `data/cache/`, ever
 re-run on its own.
 
 ```bash
-python -m medradar collect --sources device,drug,trials --months 120
+python -m medradar collect --sources device,drug,trials,adcom --months 120
+python -m medradar frontier --out-dir out
 python -m medradar analyze --window-quarters 8 --baseline-quarters 20
 python -m medradar report
 python -m medradar trade --capital 100000
@@ -208,7 +228,8 @@ python -m medradar selftest        # offline, no network
 | openFDA `device/classification` | ~6.5k product codes → regulated definitions | static |
 | openFDA `drug/drugsfda` | NDA/BLA/ANDA review & approvals, 29k | T−2d |
 | ClinicalTrials.gov API v2 | trial registrations (drug **and** device) | posted ≤21 days after enrollment starts |
-| SEC EDGAR full-text search | 8-K / CRL event stream (optional) | near real time |
+| FDA Advisory Committee Calendar | Public meetings, agendas and briefing materials | page-date estimates; descriptive only |
+| SEC EDGAR full-text search | 8-K regulatory, clinical and designation event stream (optional) | near real time |
 
 **NMPA (China) is deliberately not scraped.** `www.nmpa.gov.cn` answers HTTP 412 and `www.cmde.org.cn`
 HTTP 202 behind a JavaScript WAF. MedRadar ships an honest adapter instead: drop a CSV export at
@@ -235,7 +256,7 @@ Full definitions, assumptions and threats to validity: [docs/METHODS.md](docs/ME
 
 | Guarantee | How it is enforced |
 |---|---|
-| **No lookahead** | every event carries `available_at` + `timestamp_quality`; backtests only read `available_at`, and `unknown` timestamps never trade |
+| **No lookahead** | every event carries public-time metadata; return studies require real `available_at` plus `datetime`/`date` quality, while `estimated`/`unknown` and missing timestamps are counted and excluded |
 | **Point-in-time features** | the "is this new?" test and the track-popularity boost use only history published before the event |
 | **Honest latency** | EDGAR seconds, FDA RSS days, openFDA 12 days — each source is labelled with what it can actually support |
 | **Cost sensitivity** | replay reports 10 / 25 / 50 bps tiers instead of a single flattering number |

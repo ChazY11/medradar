@@ -675,12 +675,15 @@ def _base_event(
     summary: str,
     url: str,
     payload: str,
+    published_at: str = "",
 ) -> dict[str, Any]:
     return {
         "event_id": event_id,
         "source": SOURCE_BY_KIND[kind],
         "kind": kind,
         "event_date": iso(event_date) if event_date else "",
+        "published_at": published_at,
+        "timestamp_quality": "date" if published_at else "unknown",
         "as_of": as_of,
         "company_key": company_key or None,
         "applicant_raw": applicant_raw,
@@ -848,6 +851,7 @@ def normalize_recall(
         summary=summary,
         url=url,
         payload=_payload(record, PAYLOAD_PRIORITY["device_recall"]),
+        published_at=iso(parse_date(record.get("event_date_posted"))) if parse_date(record.get("event_date_posted")) else "",
     )
 
 

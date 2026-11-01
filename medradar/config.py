@@ -245,16 +245,25 @@ class TrackRegistry:
         self.tracks: dict[str, dict[str, Any]] = {}
         self._code_map: dict[str, str] = {}
         self._keyword_map: list[tuple[str, str]] = []
+        self._frontier_keyword_map: list[tuple[str, str]] = []
         for track in tracks:
             track_id = track["id"]
             entry = dict(track)
             entry.setdefault("keywords", [])
+            entry.setdefault("frontier_keywords", [])
+            entry.setdefault("domain", entry.get("category") or "other")
+            entry.setdefault("domain_zh", entry["domain"])
             self.tracks[track_id] = entry
             for keyword in entry["keywords"]:
                 normalized = norm_text(keyword)
                 if normalized:
                     self._keyword_map.append((normalized, track_id))
+            for keyword in entry["frontier_keywords"]:
+                normalized = norm_text(keyword)
+                if normalized:
+                    self._frontier_keyword_map.append((normalized, track_id))
         self._keyword_map.sort(key=lambda pair: len(pair[0]), reverse=True)
+        self._frontier_keyword_map.sort(key=lambda pair: len(pair[0]), reverse=True)
         for code in product_codes or []:
             code_id = str(code.get("product_code", "")).strip()
             if code_id and code.get("track_id"):
@@ -278,13 +287,28 @@ class TrackRegistry:
 
     def match_text(self, text: str | None) -> str | None:
         """Longest-keyword containment match, used for trial conditions."""
+        return self._match(text, self._keyword_map)
+
+    def match_frontier_text(self, text: str | None) -> str | None:
+        """Match emerging-technology vocabulary before ordinary device terms."""
+        return self._match(text, self._frontier_keyword_map) or self.match_text(text)
+
+    @staticmethod
+    def _match(text: str | None, mapping: Iterable[tuple[str, str]]) -> str | None:
         haystack = f" {norm_text(text)} "
         if not haystack.strip():
             return None
-        for keyword, track_id in self._keyword_map:
+        for keyword, track_id in mapping:
             if f" {keyword} " in haystack:
                 return track_id
         return None
+
+    def domain(self, track_id: str | None) -> dict[str, str]:
+        entry = self.get(track_id) or {}
+        return {
+            "id": str(entry.get("domain") or "unclassified"),
+            "name_zh": str(entry.get("domain_zh") or "未分类"),
+        }
 
 
 def load_companies(kind: str = "device") -> CompanyRegistry:

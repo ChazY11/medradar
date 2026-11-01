@@ -365,6 +365,26 @@ class TrialCollectorTests(unittest.TestCase):
         self.assertIn("StudyFirstPostDate", fetcher.calls[0]["sort"])
         self.assertIn("RANGE", fetcher.calls[0]["filter.advanced"])
 
+    def test_device_interventions_use_device_taxonomy(self) -> None:
+        study = _study("NCT00000009")
+        study["protocolSection"]["armsInterventionsModule"] = {
+            "interventions": [{
+                "type": "DEVICE",
+                "name": "ECMO life-support system",
+                "description": "Extracorporeal membrane oxygenation",
+            }]
+        }
+        fetcher = FakeFetcher({0: {"studies": [study], "totalCount": 1}})
+        stats = clinical.collect_trials(
+            self.db, fetcher, months=24, today=TODAY, companies=[TINY_COMPANY],
+        )
+        self.assertEqual(stats["device_trials"], 1)
+        self.assertEqual(stats["device_track_matched"], 1)
+        row = self.db.query("SELECT * FROM events WHERE kind = 'trial'")[0]
+        self.assertEqual(row["track_id"], "ecmo")
+        self.assertTrue(json.loads(row["payload"])["device_intervention"])
+        self.assertIn("InterventionType", fetcher.calls[0]["fields"])
+
     def test_collect_is_idempotent(self) -> None:
         studies = [_study("NCT00000001")]
         clinical.collect_trials(
