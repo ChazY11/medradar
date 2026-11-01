@@ -28,7 +28,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["medradar"]
+packages = ["medradar", "medradar.tkg"]
 
 # JSON config is knowledge, not code: install it next to the wheel so a pip
 # install is usable without the git checkout. `medradar.config` resolves this
