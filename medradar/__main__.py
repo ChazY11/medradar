@@ -112,6 +112,24 @@ def cmd_analyze(args: argparse.Namespace) -> int:
 
 
 # ------------------------------------------------------------------------ report
+def _rewrite_published_links(path: Path) -> None:
+    """Point the assumptions link at the sibling file after publishing.
+
+    Generators write artefacts for ``out/``, where ``docs/ASSUMPTIONS.md`` is the
+    correct relative path. Once copied into ``docs/`` the same link must become
+    the sibling ``ASSUMPTIONS.md``. The old ``docs/docs/ASSUMPTIONS.md``
+    duplicate only existed to paper over this; it has been removed (audit A3).
+    """
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return
+    updated = text.replace("../../docs/ASSUMPTIONS.md", "ASSUMPTIONS.md")
+    updated = updated.replace("docs/ASSUMPTIONS.md", "ASSUMPTIONS.md")
+    if updated != text:
+        path.write_text(updated, encoding="utf-8")
+
+
 def _publish_docs(args: argparse.Namespace) -> dict:
     """Mirror generated artefacts into ``docs/`` so GitHub Pages serves them.
 
@@ -131,6 +149,8 @@ def _publish_docs(args: argparse.Namespace) -> dict:
         if source.exists():
             shutil.copyfile(source, DOCS_DIR / name)
             copied.append(name)
+            if name.endswith((".html", ".md")):
+                _rewrite_published_links(DOCS_DIR / name)
     metrics_source = Path(args.metrics)
     if metrics_source.exists():
         shutil.copyfile(metrics_source, DOCS_DIR / "metrics.json")
@@ -139,16 +159,18 @@ def _publish_docs(args: argparse.Namespace) -> dict:
     if replay_html.exists():
         shutil.copyfile(replay_html, DOCS_DIR / "replay.html")
         copied.append("replay.html")
+        _rewrite_published_links(DOCS_DIR / "replay.html")
     return {"docs_dir": str(DOCS_DIR), "files": copied}
 
 
 def _ship_assumptions(out_dir: Path, docs_dir: Path) -> list[str]:
     """Place ``ASSUMPTIONS.md`` where the report's relative links expect it.
 
-    The report links to ``docs/ASSUMPTIONS.md``; depending on whether the reader
-    opens ``out/index.html``, ``docs/index.html`` or the replay page, that path
-    resolves below a different root. Copying it into each expected ``docs/``
-    folder keeps every link alive instead of shipping a dead reference.
+    Report pages generated under ``out/`` link to ``docs/ASSUMPTIONS.md``; copying
+    the register into ``out/docs`` and ``out/replay/docs`` keeps those offline
+    links alive. Published copies in ``docs/`` are rewritten to the sibling
+    ``ASSUMPTIONS.md`` by :func:`_rewrite_published_links`, so no
+    ``docs/docs/ASSUMPTIONS.md`` duplicate is recreated.
     """
     import shutil
 
@@ -159,7 +181,7 @@ def _ship_assumptions(out_dir: Path, docs_dir: Path) -> list[str]:
     if not source.is_file():
         return []
     copied: list[str] = []
-    for base in (out_dir / "docs", docs_dir / "docs", out_dir / "replay" / "docs"):
+    for base in (out_dir / "docs", out_dir / "replay" / "docs"):
         ensure_dir(base)
         shutil.copyfile(source, base / "ASSUMPTIONS.md")
         copied.append(str(base / "ASSUMPTIONS.md"))
