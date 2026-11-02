@@ -597,25 +597,23 @@ def compare_level(computed: dict[str, Any], expected: dict[str, Any], level: str
 
 
 # ------------------------------------------------------------- science readout
-def alternative_readout(evaluation: dict[str, Any], plan: Sequence[Sequence[int]],
-                        fixed_picks: dict[str, float]) -> dict[str, Any]:
-    """Detection probability + paired differences vs naive for one injection model."""
-    picks = evaluation["paired"]["picks"]
-    out: dict[str, Any] = {
-        "cells": evaluation["cells"],
-        "entities": evaluation["entities"],
-        "trials": evaluation["shift_trials"],
-        "picked_knobs": picks,
-        "detectors": {},
-    }
-    naive_flags = None
-    naive_knob = picks.get("naive_multiplier")
-    if naive_knob is not None:
-        naive_flags = [bool(row["detected"])
-                       for row in evaluation["_scores"]["naive_multiplier"][naive_knob]["trials"]]
+def _flags_at(evaluation: dict[str, Any], name: str, knob: float) -> list[bool]:
+    return [bool(row["detected"]) for row in evaluation["_scores"][name][knob]["trials"]]
+
+
+def _budget_block(evaluation: dict[str, Any], budget: float,
+                  plan: Sequence[Sequence[int]]) -> dict[str, Any]:
+    entries = evaluation["readout"][str(budget)]
+    naive_entry = entries["naive_multiplier"]
+    naive_knob = naive_entry.get("knob")
+    naive_flags = (_flags_at(evaluation, "naive_multiplier", naive_knob)
+                   if naive_knob is not None else None)
+    block: dict[str, Any] = {"picked_knobs": {}, "detectors": {}}
     for name in DETECTOR_ORDER:
-        entry = evaluation["readout"][str(BUDGET)][name]
-        block: dict[str, Any] = {
+        entry = entries[name]
+        if "knob" in entry:
+            block["picked_knobs"][name] = entry["knob"]
+        det_block: dict[str, Any] = {
             "knob": entry.get("knob"),
             "false_alarm_rate": entry.get("false_alarm_rate"),
             "detection_probability": entry.get("detection_probability"),
@@ -624,50 +622,142 @@ def alternative_readout(evaluation: dict[str, Any], plan: Sequence[Sequence[int]
             "by_multiplier": entry.get("by_multiplier"),
         }
         if name != "naive_multiplier" and naive_flags is not None and "knob" in entry:
-            flags = [bool(row["detected"])
-                     for row in evaluation["_scores"][name][entry["knob"]]["trials"]]
-            delta = paired_difference(flags, naive_flags, plan)
-            block["delta_vs_naive"] = delta
-            block["beats_naive_selected"] = bool(delta["difference"] > 0 and delta["ci_low"] > 0)
-            fixed_knob = fixed_picks.get(name)
-            fixed_naive = fixed_picks.get("naive_multiplier")
-            fixed_flags = [bool(row["detected"])
-                           for row in evaluation["_scores"][name][fixed_knob]["trials"]]
-            fixed_baseline = [bool(row["detected"])
-                              for row in evaluation["_scores"]["naive_multiplier"][fixed_naive]["trials"]]
-            fixed_delta = paired_difference(fixed_flags, fixed_baseline, plan)
-            block["delta_vs_naive_fixed_knob"] = fixed_delta
-            block["beats_naive_fixed_knob"] = bool(
-                fixed_delta["difference"] > 0 and fixed_delta["ci_low"] > 0)
-        out["detectors"][name] = block
+            delta = paired_difference(_flags_at(evaluation, name, entry["knob"]),
+                                      naive_flags, plan)
+            det_block["delta_vs_naive"] = delta
+            det_block["beats_naive"] = bool(delta["difference"] > 0 and delta["ci_low"] > 0)
+        block["detectors"][name] = det_block
+    return block
+
+
+def alternative_readout(evaluation: dict[str, Any], plan: Sequence[Sequence[int]],
+                        fixed_picks: dict[str, float]) -> dict[str, Any]:
+    """Detection probability + paired differences vs naive for one injection model.
+
+    Top-level ``detectors`` is the headline 2 % budget (used in the main table);
+    ``budgets`` carries every frontier budget so a budget-specific win cannot hide.
+    """
+    out: dict[str, Any] = {
+        "cells": evaluation["cells"],
+        "entities": evaluation["entities"],
+        "trials": evaluation["shift_trials"],
+        "picked_knobs": evaluation["paired"]["picks"],
+        "detectors": {},
+        "budgets": {},
+    }
+    for budget in FRONTIER_FARS:
+        out["budgets"][str(budget)] = _budget_block(evaluation, budget, plan)
+    out["detectors"] = out["budgets"][str(BUDGET)]["detectors"]
+    # Fixed-operating-point comparison at the step-model picks (removes knob selection).
+    naive_fixed = fixed_picks["naive_multiplier"]
+    naive_fixed_flags = _flags_at(evaluation, "naive_multiplier", naive_fixed)
+    for name in DETECTOR_ORDER:
+        if name == "naive_multiplier" or "delta_vs_naive" not in out["detectors"][name]:
+            continue
+        fixed_delta = paired_difference(
+            _flags_at(evaluation, name, fixed_picks[name]), naive_fixed_flags, plan)
+        out["detectors"][name]["delta_vs_naive_fixed_knob"] = fixed_delta
+        out["detectors"][name]["beats_naive_fixed_knob"] = bool(
+            fixed_delta["difference"] > 0 and fixed_delta["ci_low"] > 0)
     return out
 
 
 def scientific_verdict(models: dict[str, Any]) -> dict[str, Any]:
-    """Structural summary: where does a likelihood detector beat the naive baseline?"""
-    wins_selected: list[dict[str, Any]] = []
+    """Structural summary: where, if anywhere, does a likelihood detector beat naive?"""
+    wins_headline: list[dict[str, Any]] = []
+    wins_any_budget: list[dict[str, Any]] = []
+    point_leads_any_budget: list[dict[str, Any]] = []
     wins_fixed: list[dict[str, Any]] = []
-    losses: list[str] = []
     for model, block in models.items():
         for name in LIKELIHOOD_DETECTORS:
-            det = block["detectors"][name]
-            delta = det.get("delta_vs_naive")
-            if delta is None:
-                losses.append(f"{model}/{name}: not scored")
-                continue
-            if det.get("beats_naive_selected"):
-                wins_selected.append({"model": model, "detector": name,
-                                      "difference": delta["difference"],
-                                      "ci_low": delta["ci_low"], "ci_high": delta["ci_high"]})
-            if det.get("beats_naive_fixed_knob"):
-                fixed = det["delta_vs_naive_fixed_knob"]
+            for budget_key, budget_block in block["budgets"].items():
+                det = budget_block["detectors"][name]
+                delta = det.get("delta_vs_naive")
+                if delta is None:
+                    continue
+                record = {"model": model, "budget": float(budget_key), "detector": name,
+                          "difference": delta["difference"],
+                          "ci_low": delta["ci_low"], "ci_high": delta["ci_high"]}
+                if delta["difference"] > 0:
+                    point_leads_any_budget.append(record)
+                if det.get("beats_naive"):
+                    wins_any_budget.append(record)
+                    if abs(float(budget_key) - BUDGET) < 1e-12:
+                        wins_headline.append(record)
+            fixed = block["detectors"][name].get("delta_vs_naive_fixed_knob")
+            if block["detectors"][name].get("beats_naive_fixed_knob"):
                 wins_fixed.append({"model": model, "detector": name,
                                    "difference": fixed["difference"],
                                    "ci_low": fixed["ci_low"], "ci_high": fixed["ci_high"]})
     return {
-        "likelihood_wins_best_in_budget": wins_selected,
-        "likelihood_wins_fixed_benchmark_knobs": wins_fixed,
+        "at_headline_budget_2pct": wins_headline,
+        "any_frontier_budget": wins_any_budget,
+        "any_frontier_budget_point_leads": point_leads_any_budget,
+        "fixed_benchmark_knobs_2pct": wins_fixed,
+        "transient_nuisance_rejection": _transient_nuisance(models),
         "models_tested": list(models),
+    }
+
+
+def _transient_nuisance(models: dict[str, Any]) -> list[dict[str, Any]]:
+    """A 6-month surge is operationally a false sustained-change if declared.
+
+    If the transient is a nuisance rather than a target, the relevant statistic is
+    ``rate(naive declares) - rate(candidate declares)`` (positive = candidate is
+    better at not declaring a change).  It is exactly the negated paired difference,
+    with the interval reflected.
+    """
+    block = models.get("transient")
+    if not block:
+        return []
+    out: list[dict[str, Any]] = []
+    for name in DETECTOR_ORDER:
+        if name == "naive_multiplier":
+            continue
+        delta = block["detectors"][name].get("delta_vs_naive")
+        if delta is None:
+            continue
+        out.append({
+            "detector": name,
+            "naive_declares_minus_candidate": -delta["difference"],
+            "ci_low": -delta["ci_high"],
+            "ci_high": -delta["ci_low"],
+            "excludes_zero": bool(-delta["ci_high"] > 0 or -delta["ci_low"] < 0),
+        })
+    return out
+
+
+def claim_audit(computed_levels: dict[str, Any]) -> dict[str, Any]:
+    """Check the explicit prose claim in detect_v1/REPORT.md section 5.
+
+    'The naive rate-multiplier is the strongest detector at every reported
+    false-alarm budget on the primary panel and on the domain panel.'
+    """
+    violations: list[dict[str, Any]] = []
+    for level in computed_levels:
+        if level not in ("track", "domain"):  # the claim names these two panels only
+            continue
+        for budget in FRONTIER_FARS:
+            entries = computed_levels[level]["readout"][str(budget)]
+            naive = entries["naive_multiplier"]["detection_probability"]
+            for name in DETECTOR_ORDER:
+                if name == "naive_multiplier":
+                    continue
+                value = entries[name]["detection_probability"]
+                if value is not None and naive is not None and value > naive + 1e-12:
+                    violations.append({
+                        "level": level, "budget": budget, "detector": name,
+                        "detector_detection_probability": value,
+                        "naive_detection_probability": naive,
+                        "knob": entries[name].get("knob"),
+                        "naive_knob": entries["naive_multiplier"].get("knob"),
+                    })
+    return {
+        "claim": ("detect_v1/REPORT.md section 5: 'The naive rate-multiplier is the "
+                  "strongest detector at every reported false-alarm budget on the primary "
+                  "panel and on the domain panel.'"),
+        "pass": not violations,
+        "violations": violations,
     }
 
 
@@ -710,17 +800,45 @@ def build_report(results: dict[str, Any]) -> str:
         f"(primary panel: {alt['cells']} cells / {alt['entities']} entities / "
         f"{alt['trials']} trials per model).")
     verdict = results["verdict"]
-    if verdict["likelihood_wins_best_in_budget"]:
+    headline_wins = verdict["at_headline_budget_2pct"]
+    any_wins = verdict["any_frontier_budget"]
+    point_leads = verdict["any_frontier_budget_point_leads"]
+    if headline_wins:
         wins = "; ".join(f"{w['model']}/{w['detector']} {w['difference']:+.3f} "
                          f"[{w['ci_low']:+.3f}, {w['ci_high']:+.3f}]"
-                         for w in verdict["likelihood_wins_best_in_budget"])
+                         for w in headline_wins)
         add(f"* **Headline robustness: NOT robust** — a likelihood detector beats the "
-            f"naive comparator under: {wins}.")
+            f"naive comparator at the 2 % budget under: {wins}.")
     else:
-        add("* **Headline robustness: robust across the injection models tested** — "
-            "no likelihood detector beats the naive rate-multiplier at the matched 2 % "
-            "false-alarm budget under any of step / ramp / transient / heterogeneous "
-            "injections, and none beats it at the benchmark's fixed operating point either.")
+        add("* **Headline robustness at the 2 % budget: robust across the injection models "
+            "tested** — no Poisson CUSUM or Bayes factor beats the naive rate-multiplier at "
+            "the matched 2 % budget under step, ramp, transient or heterogeneous injections, "
+            "and none beats it at the benchmark's fixed operating points either.")
+    if any_wins:
+        other = "; ".join(f"{w['model']}/{w['detector']} @ {w['budget']:.0%} "
+                          f"{w['difference']:+.3f} [{w['ci_low']:+.3f}, {w['ci_high']:+.3f}]"
+                          for w in any_wins)
+        add(f"* **Wider frontier: a likelihood detector does win somewhere** — {other}.")
+    else:
+        add("* **Wider frontier (1/3/5 % budgets): no CI-confirmed likelihood win in any "
+            "model**; the only positive point estimates are listed in §2b.")
+    transient_block = alt["models"]["transient"]["detectors"]
+    nuisance = {row["detector"]: row for row in verdict["transient_nuisance_rejection"]}
+    if "poisson_bayes_factor" in nuisance:
+        row = nuisance["poisson_bayes_factor"]
+        add(f"* **One operational reversal (transient treated as a nuisance, not a target):** "
+            f"the Bayes factor declares a sustained change on only "
+            f"{fmt(transient_block['poisson_bayes_factor']['detection_probability'])} of 6-month "
+            f"surges versus "
+            f"{fmt(transient_block['naive_multiplier']['detection_probability'])} for the naive "
+            f"comparator; naive − Bayes factor = {row['naive_declares_minus_candidate']:+.3f} "
+            f"[{row['ci_low']:+.3f}, {row['ci_high']:+.3f}], CI excludes zero. That is a win "
+            f"for the likelihood detector on the opposite metric — see §2c.")
+    audit = results["claim_audit"]
+    add(f"* **Prose-claim audit: {'PASS' if audit['pass'] else 'FAIL'}** — "
+        f"{len(audit['violations'])} counter-example(s) to the sentence in "
+        f"`detect_v1/REPORT.md` §5 that the naive detector is 'the strongest detector at "
+        f"every reported false-alarm budget' (see §3).")
     add("")
     add("## 1. Reproduction of the benchmark")
     add("")
@@ -811,7 +929,7 @@ def build_report(results: dict[str, Any]) -> str:
             det = block["detectors"][name]
             delta = det.get("delta_vs_naive")
             fixed = det.get("delta_vs_naive_fixed_knob")
-            beats = "—" if delta is None else ("YES" if det.get("beats_naive_selected") else "no")
+            beats = "—" if delta is None else ("YES" if det.get("beats_naive") else "no")
             ci = det.get("detection_probability_ci") or [None, None]
             pdet = f"{fmt(det.get('detection_probability'))} [{fmt(ci[0])}, {fmt(ci[1])}]"
             add(f"| {model} | {name} | {fmt(det.get('knob'))} | {fmt(det.get('false_alarm_rate'))} "
@@ -828,11 +946,98 @@ def build_report(results: dict[str, Any]) -> str:
                 f"| {fmt(bm.get('3.0', {}).get('detection_probability'))} "
                 f"| {fmt(bm.get('5.0', {}).get('detection_probability'))} |")
     add("")
-    add("## 3. Verdict")
+    add("## 2b. Wider frontier: any likelihood win at 1 / 3 / 5 % budgets?")
+    add("")
+    add("The same paired comparison repeated at every reported false-alarm budget. "
+        "`point lead` means candidate detection > naive detection; `CI win` means the "
+        "entity-clustered paired interval excludes zero in the candidate's favour.")
+    add("")
+    add("| injection | detector | budgets with point lead | budgets with CI win |")
+    add("|---|---|---|---|")
+    for model, block in alt["models"].items():
+        for name in DETECTOR_ORDER:
+            if name == "naive_multiplier":
+                continue
+            leads = []
+            wins = []
+            for budget in FRONTIER_FARS:
+                det = block["budgets"][str(budget)]["detectors"][name]
+                delta = det.get("delta_vs_naive")
+                if delta is None:
+                    continue
+                if delta["difference"] > 0:
+                    leads.append(f"{budget:.0%} ({delta['difference']:+.3f})")
+                if det.get("beats_naive"):
+                    wins.append(f"{budget:.0%}")
+            add(f"| {model} | {name} | {', '.join(leads) if leads else '—'} "
+                f"| {', '.join(wins) if wins else '—'} |")
+    add("")
+    fixed_wins = verdict.get("fixed_benchmark_knobs_2pct") or []
+    if fixed_wins:
+        add("CI-confirmed wins at the fixed step-model operating points: "
+            + "; ".join(f"{w['model']}/{w['detector']}" for w in fixed_wins) + ".")
+        add("")
+    add("## 2c. One operational reversal: the transient row is a nuisance-rejection test")
+    add("")
+    transient = alt["models"]["transient"]["detectors"]
+    naive_pdet = transient["naive_multiplier"]["detection_probability"]
+    add("A 6-month surge that a detector declares a *sustained* change is a false-change "
+        "event operationally — that is what the benchmark's own spike table measures for a "
+        "one-month spike. Reversing the metric (higher is better: do not declare a change on "
+        "a temporary surge):")
+    add("")
+    add("| detector | declares a change | correctly does not declare | naive − candidate | 95% CI |")
+    add("|---|---:|---:|---:|---|")
+    for name in DETECTOR_ORDER:
+        det = transient[name]
+        specificity = 1.0 - det["detection_probability"]
+        if name == "naive_multiplier":
+            add(f"| {name} | {fmt(det['detection_probability'])} | {fmt(specificity)} | — | — |")
+            continue
+        row = next((item for item in verdict["transient_nuisance_rejection"]
+                    if item["detector"] == name), None)
+        if row is None:
+            add(f"| {name} | {fmt(det['detection_probability'])} | {fmt(specificity)} | — | — |")
+            continue
+        add(f"| {name} | {fmt(det['detection_probability'])} | {fmt(specificity)} "
+            f"| {row['naive_declares_minus_candidate']:+.3f} "
+            f"| [{row['ci_low']:+.3f}, {row['ci_high']:+.3f}] |")
+    add("")
+    add("This is the one place where the likelihood machinery does what it was designed to "
+        "do: a temporary surge is not fitted as a persistent split. If a transient is a "
+        "nuisance to be rejected rather than a target to be detected, the Bayes factor beats "
+        "the naive comparator on that model, with an interval excluding zero — while the "
+        "detection-power table above scores the same behaviour as a loss. Both readings are "
+        "of the same numbers; which one applies is an operational decision, not a statistical "
+        "one.")
+    add("")
+    add("## 3. Prose-claim audit of `detect_v1/REPORT.md`")
+    add("")
+    add(f"Claim: {results['claim_audit']['claim']}")
+    add("")
+    if results["claim_audit"]["pass"]:
+        add("No counter-example: the naive detector has the highest detection probability at "
+            "every reported budget on the primary and domain panels.")
+    else:
+        add(f"**This claim is false as written** — the naive detector is *not* the strongest "
+            f"at every reported budget. Counter-examples (candidate > naive, same budget):")
+        add("")
+        add("| level | budget | detector | knob | candidate P(det) | naive P(det) | naive knob |")
+        add("|---|---:|---|---:|---:|---:|---:|")
+        for violation in results["claim_audit"]["violations"]:
+            add(f"| {violation['level']} | {violation['budget']:.0%} | {violation['detector']} "
+                f"| {fmt(violation['knob'])} | {violation['detector_detection_probability']:.3f} "
+                f"| {violation['naive_detection_probability']:.3f} | {fmt(violation['naive_knob'])} |")
+        add("")
+        add("Some of these leads are small and may not survive a paired interval (see §2b), "
+            "but the sentence is a point-estimate statement and is contradicted by the "
+            "benchmark's own read-out. The pre-registered 2 % headline is unaffected.")
+    add("")
+    add("## 4. Verdict")
     add("")
     add(verdict_paragraph(results))
     add("")
-    add("## 4. Limitations of this verification")
+    add("## 5. Limitations of this verification")
     add("")
     add("* The four detector implementations are imported (`medradar.intelligence.changepoint`), "
         "not re-derived; a shared implementation bug would cancel out of the reproduction and "
@@ -854,7 +1059,7 @@ def build_report(results: dict[str, Any]) -> str:
         "trailing-12-month local baseline; they do not establish that real technology "
         "changes look like any of them.")
     add("")
-    add("## 5. Re-run")
+    add("## 6. Re-run")
     add("")
     add("```powershell")
     add("cd D:\\DEPPSKK\\worktrees\\integration-v2")
@@ -869,8 +1074,8 @@ def verdict_paragraph(results: dict[str, Any]) -> str:
     alt = results["alternatives"]["track"]["models"]
     verdict = results["verdict"]
 
-    def delta_text(model: str, name: str) -> str:
-        det = alt[model]["detectors"][name]
+    def delta_text(model: str, name: str, budget_key: str = "0.02") -> str:
+        det = alt[model]["budgets"][budget_key]["detectors"][name]
         delta = det.get("delta_vs_naive")
         if delta is None:
             return "not scored"
@@ -878,47 +1083,90 @@ def verdict_paragraph(results: dict[str, Any]) -> str:
                 f"[{delta['ci_low']:+.3f}, {delta['ci_high']:+.3f}]"
                 + (", CI excludes 0" if delta["excludes_zero"] else ", CI includes 0"))
 
-    cusum_parts = []
-    bayes_parts = []
-    for model in alt:
-        cusum_parts.append(f"{model}: {delta_text(model, 'poisson_cusum')}")
-        bayes_parts.append(f"{model}: {delta_text(model, 'poisson_bayes_factor')}")
-    wins = verdict["likelihood_wins_best_in_budget"]
-    fixed_wins = verdict["likelihood_wins_fixed_benchmark_knobs"]
-    if wins or fixed_wins:
-        result_sentence = (
-            "**The headline is not robust to the injection model.** "
-            + ("A likelihood detector wins when each detector is re-tuned inside the "
-               "budget under: "
-               + "; ".join(f"{w['model']}/{w['detector']}" for w in wins) + ". "
-               if wins else "")
-            + ("It also wins at the benchmark's fixed operating points under: "
-               + "; ".join(f"{w['model']}/{w['detector']}" for w in fixed_wins) + ". "
-               if fixed_wins else ""))
+    cusum_parts = [f"{model}: {delta_text(model, 'poisson_cusum')}" for model in alt]
+    bayes_parts = [f"{model}: {delta_text(model, 'poisson_bayes_factor')}" for model in alt]
+    headline_wins = verdict["at_headline_budget_2pct"]
+    fixed_wins = verdict["fixed_benchmark_knobs_2pct"]
+    any_wins = verdict["any_frontier_budget"]
+    point_leads = verdict["any_frontier_budget_point_leads"]
+
+    if headline_wins or fixed_wins:
+        first = ("**The headline is not robust to the injection model.** A likelihood "
+                 "detector wins at the 2 % budget under: "
+                 + "; ".join(f"{w['model']}/{w['detector']} {w['difference']:+.3f} "
+                             f"[{w['ci_low']:+.3f}, {w['ci_high']:+.3f}]"
+                             for w in headline_wins + fixed_wins) + ". ")
     else:
-        result_sentence = (
-            "**The 'simple baseline is not beaten' finding survives every injection model "
-            "tested here.** Under a smooth 12-month ramp, a 6-month transient surge and a "
-            "bursty 50 %-of-months increase, no likelihood detector beats the naive "
-            "rate-multiplier at the matched 2 % false-alarm budget, and none beats it at the "
-            "benchmark's fixed operating points either. ")
+        first = (
+            "**At the pre-registered 2 % false-alarm budget the headline is robust to the "
+            "injection model.** Under a smooth 12-month ramp, a 6-month transient surge and a "
+            "bursty 50 %-of-months increase, neither the Poisson CUSUM nor the Bayes factor "
+            "beats the naive rate-multiplier, and neither beats it at the benchmark's fixed "
+            "step-model operating points. ")
+    if any_wins:
+        second = (
+            "That robustness is budget-specific: on the wider frontier a likelihood detector "
+            "does win at "
+            + "; ".join(f"{w['model']}/{w['detector']} @ {w['budget']:.0%} "
+                        f"{w['difference']:+.3f} [{w['ci_low']:+.3f}, {w['ci_high']:+.3f}]"
+                        for w in any_wins) + ". ")
+    else:
+        second = (
+            "It is not rescued by a different budget either: across the 1 / 3 / 5 % frontier "
+            "no likelihood win is CI-confirmed in any injection model"
+            + (" (the only positive point estimates are "
+               + "; ".join(f"{w['model']}/{w['detector']} @ {w['budget']:.0%} "
+                           f"{w['difference']:+.3f}" for w in point_leads) + ")"
+               if point_leads else " ")
+            + ". ")
+    violations = results["claim_audit"]["violations"]
+    audit_sentence = ""
+    if violations:
+        examples = "; ".join(
+            f"{v['level']} @ {v['budget']:.0%}: {v['detector']} "
+            f"{v['detector_detection_probability']:.3f} vs naive "
+            f"{v['naive_detection_probability']:.3f}" for v in violations[:4])
+        audit_sentence = (
+            " One separate audit finding: `detect_v1/REPORT.md` §5 states that the naive "
+            "detector is 'the strongest detector at every reported false-alarm budget', which "
+            "is contradicted by the benchmark's own read-out ("
+            + examples + "); the 2 % headline is unaffected but that sentence is too strong. ")
+    nuisance = {row["detector"]: row for row in verdict["transient_nuisance_rejection"]}
+    nuisance_sentence = ""
+    if "poisson_bayes_factor" in nuisance:
+        row = nuisance["poisson_bayes_factor"]
+        transient_detectors = alt["transient"]["detectors"]
+        nuisance_sentence = (
+            "The one finding that cuts against the headline is the transient model read as a "
+            "nuisance rather than a target: the Bayes factor declares a sustained change on "
+            f"only {transient_detectors['poisson_bayes_factor']['detection_probability']:.3f} of "
+            f"6-month surges versus "
+            f"{transient_detectors['naive_multiplier']['detection_probability']:.3f} for the "
+            f"naive comparator (naive − Bayes factor "
+            f"{row['naive_declares_minus_candidate']:+.3f} "
+            f"[{row['ci_low']:+.3f}, {row['ci_high']:+.3f}], CI excludes zero). So if a "
+            "temporary surge is a false-change nuisance rather than a signal to detect, a "
+            "likelihood detector does beat the simple baseline — on that one model and on that "
+            "reading. ")
     return (
-        "Point estimates for the naive baseline stay ahead of both likelihood detectors in "
-        "every model, so the direction of the published result does not depend on the step "
-        "injection. "
-        + result_sentence
-        + "The design reviewer's concern was legitimate a priori: a step change is the "
-        "alternative a matched rate test is built for and a positive control, not a "
-        "falsification test. The answer here is empirical — under the alternative "
-        "trajectories, the likelihood statistics remain behind, mostly because at "
-        "~0.2 events/month a 2x rise adds so few events that the CUSUM's local rate "
-        "re-estimation and the Bayes factor's prior regularisation lose more than the "
-        "sharper model could gain. This supports stating the conclusion narrowly (\"for "
-        "abrupt or bursty multiplicative rate changes on sparse lanes, a matched simple test "
-        "is at least as good\") rather than using it as evidence against likelihood "
-        "detectors in general. Paired differences versus naive at the matched budget — "
-        "Poisson CUSUM {" + "; ".join(cusum_parts) + "}; Bayes factor {"
-        + "; ".join(bayes_parts) + "}.")
+        first + second + nuisance_sentence
+        + "Mechanically, the reason is the density of the lane: at ~0.2 events/month even a "
+        "3x or 5x rate change adds so few events that the CUSUM's locally re-estimated "
+        "baseline and target drift, and the Bayes factor's Gamma(1,1) regularisation, give "
+        "back more than the sharper alternative model can add; the naive comparator's "
+        "six-events-in-three-months guard plus a rate ratio over a long baseline is simply "
+        "well matched to this sparsity. Transient changes are the weakest case for every "
+        "detector and the Bayes factor nearly collapses (it is built to reject a split that "
+        "does not persist), so a transient is a sensitivity stress test, not a detector "
+        "endorsement. The correct reading of the published result is therefore narrow and "
+        "budget-explicit: **at a matched 2 % false alarm budget on this sparse lane, an "
+        "abrupt, ramped, transient or bursty multiplicative rate increase is not detected "
+        "better by a Poisson likelihood detector than by the matched simple rate test** — "
+        "and the report should keep the 2 % qualifier attached to every statement of that "
+        "claim rather than generalising it to all false-alarm budgets."
+        + audit_sentence
+        + "Paired differences versus naive at the 2 % budget — Poisson CUSUM {"
+        + "; ".join(cusum_parts) + "}; Bayes factor {" + "; ".join(bayes_parts) + "}.")
 
 
 # ------------------------------------------------------------------------ main
@@ -977,20 +1225,20 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     # ---- Seed-convention sensitivity on the primary panel (step model, fixed knobs)
     track_cells = split_cells(payload["track_cells"])
+    documented_trials = build_trials(track_cells, labels, INJECTORS["inject-shift"],
+                                     "inject-shift")
+    alt_seed_trials = build_trials(track_cells, labels, INJECTORS["inject-shift"],
+                                   "inject-shift", stable_fraction_alt)
     seed_block: dict[str, Any] = {}
     for name in DETECTOR_ORDER:
         knob = BENCHMARK_PICKS[name]
         detector = make_detector(name, knob)
-        documented = build_trials(track_cells, labels, INJECTORS["inject-shift"], "inject-shift")
-        alternative = build_trials(track_cells, labels, INJECTORS["inject-shift"],
-                                   "inject-shift", stable_fraction_alt)
-        documented_score = score_detector(detector, documented, [], track_cells, labels)
-        alternative_score = score_detector(detector, alternative, [], track_cells, labels)
-        documented_flags = [row["detected"] for row in documented_score["trials"]]
+        documented_score = score_detector(detector, documented_trials, [], track_cells, labels)
+        alternative_score = score_detector(detector, alt_seed_trials, [], track_cells, labels)
         seed_block[name] = {
             "knob": knob,
-            "detection_probability": sum(1 for flag in documented_flags if flag) / len(documented_flags),
-            "detection_probability_alt_seed": (alternative_score["detection_probability"]),
+            "detection_probability": documented_score["detection_probability"],
+            "detection_probability_alt_seed": alternative_score["detection_probability"],
             "false_alarm_rate": alternative_score["false_alarm_rate"],
         }
     print(f"[seed-sensitivity] done", flush=True)
@@ -1008,8 +1256,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             "note": ("same evaluation cells, seed discipline (paired across detectors), "
                      "detection window [onset-1, onset+12] and clean-cell false-alarm "
                      "accounting as the step benchmark; only the injected rate trajectory "
-                     "changes. Knobs are re-picked inside the same realised 2% budget, and "
-                     "the fixed-knob delta repeats the comparison at the step-model picks."),
+                     "changes. Knobs are re-picked inside the same realised budget for every "
+                     "reported budget (1/2/3/5%), and the fixed-knob delta repeats the "
+                     "headline comparison at the step-model picks."),
             "models": {},
         }
     }
@@ -1069,6 +1318,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             "seed_convention_sensitivity": seed_block,
         },
         "alternatives": alternatives,
+        "claim_audit": claim_audit(computed["levels"]),
     }
     for level in computed["levels_checked"]:
         source = computed["levels"][level]

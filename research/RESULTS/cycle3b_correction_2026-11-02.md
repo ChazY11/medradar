@@ -51,3 +51,30 @@ Queued as B-038. Until that test runs, the mechanism is speculative and is label
   0.129 of injected shifts at a 2 % budget. Data density remains the primary constraint.
 - The independent-confirmation question is still **blocked** (no second source).
 - A detection is still only a statement about the rate of public regulatory activity.
+
+---
+
+## Independent verification of this correction and of cycle 3 (added after the run)
+
+A separate agent re-implemented the benchmark from the artifacts and audited both the numbers and
+the report's prose (`experiments/detect_v1_verify/REPORT.md`):
+
+- **Reproduction PASS — 2,844 of 2,844 checks**, covering every frontier point, not just the 2 %
+  read-out.
+- **The monthly negative is robust to the shape of the injected change**: under ramp, 6-month
+  transient and bursty 50 %-of-months injections, no likelihood detector beats the naive comparator
+  at the 2 % budget, and no win is interval-confirmed on the 1/3/5 % frontier.
+- **The verifier found a real overclaim in this report's predecessor** — a sentence asserting the
+  naive detector was strongest at *every* budget was false (at 1 %, the Bayes factor is higher on
+  both the track and domain panels). Corrected in `REPORT.md` §5; recorded in DECISIONS D-019. The
+  2 % headline and this correction are unaffected.
+- **One operational reversal**: reading a 6-month surge as a nuisance to reject rather than a
+  target to detect, the Bayes factor declares a sustained change on 0.011 versus 0.168 for the
+  naive comparator (+0.157 [+0.119, +0.196]) — a genuine likelihood advantage, on that reading.
+
+### The combined position
+
+The monthly negative is **robust to injection shape but fragile to aggregation resolution**; and
+detector choice depends on the operational cost model (missed change versus false "sustained
+change" alarm). Any future statement about "the best detector" must carry budget, resolution and
+cost model with it.

@@ -406,3 +406,43 @@ one bin aggregates several events and the likelihood ratio separates a sustained
 That mechanism is a hypothesis, not a finding, and it is testable by sweeping bin width
 (1, 2, 3, 4, 6 months) and checking whether the crossover point moves with the expected count per
 bin. Recorded as the next experiment.
+
+---
+
+## D-019 — Independent verification of cycle 3, and a corrected prose claim
+
+**Date:** 2026-11-02. **Status:** accepted. A separate agent that did not write the benchmark
+re-implemented injection, scoring, false-alarm accounting, budget selection and the bootstrap from
+the artifacts, and audited the report's prose.
+
+**Reproduction: PASS.** 2,844 of 2,844 checks match `benchmark.json` exactly, covering every
+frontier point of every detector on the three frozen panels — not only the 2 % read-out. The
+verification is under `experiments/detect_v1_verify/` with its own report and script.
+
+**The monthly negative is robust to the injection model.** Under a smooth 12-month ramp, a
+6-month transient surge and a bursty 50 %-of-months increase, neither Poisson CUSUM nor the Bayes
+factor beats the naive rate-multiplier at the 2 % budget, nor at the benchmark's fixed step-model
+operating points, and no likelihood win is interval-confirmed anywhere on the 1/3/5 % frontier.
+This closes the strongest objection to cycle 3 raised in the design review: the result is not an
+artefact of the step-change injection alone.
+
+**One operational reversal cuts the other way.** When a 6-month surge is read as a *nuisance to be
+rejected* rather than a target to be detected, the Bayes factor declares a sustained change on only
+0.011 of such surges versus 0.168 for the naive comparator (naive − Bayes factor +0.157
+[+0.119, +0.196]). The same numbers are a loss in the detection table and a win in the nuisance
+table; which reading applies is an operational decision about which error costs more.
+
+**Prose correction (a real overclaim).** The verifier found that a sentence in an earlier version of
+the report — "the naive detector is the strongest at every reported false-alarm budget" — was false:
+at a 1 % budget the Bayes factor has a higher point estimate on both the track and domain panels
+(0.122 vs 0.098 and 0.129 vs 0.106), and at 3/5 % on the domain panel it is marginally higher. The
+2 % headline is unaffected, but the sentence generalised beyond the evidence. It has been replaced
+with a budget- and resolution-qualified statement (`REPORT.md` §5), and §5c now reports this
+verification in the report itself. Nothing else in the frozen numbers changed.
+
+**The combined position, which is what future work must carry.** The monthly negative is **robust to
+the shape of the injected change** but **fragile to the aggregation resolution** (D-018: quarterly
+reverses the ranking in favour of the Bayes factor); and the detector choice additionally depends on
+whether the operational cost is a missed change or a false "sustained change" alarm. No general
+statement such as "the simple baseline is not beaten" or "likelihood detectors are better" survives
+without attaching budget, resolution and cost model.

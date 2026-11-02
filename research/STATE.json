@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-02T12:10:00+08:00",
+  "updated_at": "2026-11-02T12:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -95,7 +95,10 @@
     "OBSERVE: at monthly resolution the naive rate-multiplier is not beaten by likelihood detectors (0.223 vs 0.181/0.122/0.112 at a 2% budget)",
     "OBSERVE: at quarterly resolution the ranking reverses - Poisson Bayes factor 0.129 vs naive 0.025, paired +0.104 [+0.068,+0.140]; detector choice is resolution-dependent",
     "OBSERVE: removing Special 510(k)s and masking late product codes do not change the monthly ranking",
-    "OBSERVE: independent confirmation of a detected change is BLOCKED - no second source exists in the spine"
+    "OBSERVE: independent confirmation of a detected change is BLOCKED - no second source exists in the spine",
+    "OBSERVE: independent reproduction of the detection benchmark PASSES 2844/2844 checks",
+    "OBSERVE: the monthly negative is robust to injection shape (ramp/transient/heterogeneous) but reverses under quarterly aggregation - statements about the best detector require budget, resolution and cost model",
+    "OBSERVE: on nuisance rejection (not declaring a sustained change for a 6-month surge) the Bayes factor beats naive by +0.157 [+0.119,+0.196]"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -132,6 +135,13 @@
     "what": "cycle 3's headline 'the simple baseline is not beaten' is monthly-resolution-specific and must not be stated generally",
     "evidence": "experiments/detect_v1/benchmark.json levels track_quarterly / track_no_special / track_stable_codes",
     "pre_registered": "DECISIONS D-017; outcome recorded in D-018",
-    "reproduction_check": "experiments/detect_v1/check_frozen_reproduction.py -> PASS (default panels identical to the frozen frontier)"
+    "reproduction_check": "experiments/detect_v1/check_frozen_reproduction.py -> PASS (default panels identical to the frozen frontier)",
+    "independent_verification": {
+      "report": "experiments/detect_v1_verify/REPORT.md",
+      "reproduction": "PASS - 2844 of 2844 checks match benchmark.json (every frontier point)",
+      "monthly_robustness": "the monthly negative survives ramp, transient and heterogeneous injections at the 2% budget; no likelihood win is interval-confirmed on the 1/3/5% frontier",
+      "prose_correction": "an earlier claim that the naive detector was strongest at every budget was false and has been corrected (DECISIONS D-019)",
+      "operational_reversal": "reading a 6-month surge as a nuisance to reject, the Bayes factor declares a sustained change on 0.011 vs 0.168 for naive (+0.157 [+0.119,+0.196])"
+    }
   }
 }

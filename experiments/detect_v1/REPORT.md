@@ -111,7 +111,18 @@ Paired comparison against the naive baseline inside the same 2% budget (picked k
 | poisson_cusum | -0.188 | [-0.220, -0.158] | True |
 | rolling_zscore | -0.117 | [-0.159, -0.073] | True |
 
-**How to read this.** The naive rate-multiplier is the strongest detector at every reported false-alarm budget on the primary panel and on the domain panel. On the deterministic-track-only panel the Bayes factor edges ahead (+0.039, CI [+0.003, +0.071]) — so the likelihood advantage exists but is not stable across panels, and it is the only place in three granularities where a likelihood detector wins. A fair summary is that the evidence **does not support preferring a likelihood detector** here.
+**How to read this.** At the **pre-registered 2 % budget** the naive rate-multiplier has the highest detection probability on the primary panel (and on the domain panel), while on the deterministic-track-only panel the Bayes factor edges ahead (+0.039, CI [+0.003, +0.071]). **It is not the strongest detector at every budget** — an independent audit of this report found that at a 1 % budget the Bayes factor has a higher point estimate on both the track and domain panels, and §5b shows the ordering reverses entirely under quarterly aggregation. Statements about 'which detector is best' are therefore only valid with both the budget and the resolution attached.
+
+## 5c. Independent verification (separate agent, separate implementation)
+
+A verifier that did not write this code re-implemented the injection, scoring, false-alarm accounting, budget selection and bootstrap from the artifacts, and compared every frontier point of every detector on the three frozen panels:
+
+* **Reproduction: PASS — 2,844 of 2,844 checks match** (`benchmark.json`), including all frontier knobs, not only the 2 % read-out.
+* **The monthly headline is robust to the injection model.** Under a 12-month ramp, a 6-month transient surge and a bursty 50 %-of-months increase, no likelihood detector beats the naive comparator at the 2 % budget, nor at the benchmark's fixed step-model operating points, and no win is interval-confirmed anywhere on the 1/3/5 % frontier.
+* **One operational reversal that cuts the other way.** Reading a 6-month surge as a *nuisance to be rejected* rather than a target to be detected, the Bayes factor declares a sustained change on only 0.011 of such surges against 0.168 for the naive comparator (naive − Bayes factor +0.157 [+0.119, +0.196], interval excludes zero). The same numbers appear as a loss in the detection table and as a win in the nuisance table; which reading applies is an operational decision. This is the one place where the likelihood machinery behaves as designed.
+* **Prose correction.** The verifier's audit found a sentence in an earlier version of this section claiming the naive detector was strongest at *every* budget. That was false as written and has been corrected above (DECISIONS D-019).
+
+Taken together with §5b, the precise position is: **the monthly negative is robust to the shape of the injected change but fragile to the aggregation resolution**, and the detector choice additionally depends on whether the operational cost is a missed change or a false 'sustained change' alarm.
 
 ## 5b. Sensitivity panels and the resolution reversal (pre-declared, DECISIONS D-017/D-018)
 
