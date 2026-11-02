@@ -79,7 +79,7 @@ def resolve_regulatory(events: list[dict[str, Any]], families: dict[str, dict[st
         if index is None:
             continue
         per_company[company].append({
-            "date": event["day"],
+            "date": str(event["day"])[:10],
             "track": event.get("track_id") or "",
             "code": codes.get(str(event.get("event_id")), ""),
         })
@@ -98,7 +98,9 @@ def code_first_seen(events: list[dict[str, Any]], codes: dict[str, str]) -> dict
     return {code: month_label(index) for code, index in first.items()}
 
 
-def resolve_trials(families: dict[str, dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+def resolve_trials(families: dict[str, dict[str, Any]],
+                   cutoff: str | None = None) -> dict[str, list[dict[str, Any]]]:
+    """Trials per company. ``cutoff`` enforces the point-in-time rule for the trial lane too."""
     per_company: dict[str, list[dict[str, Any]]] = {key: [] for key in families}
     if not TRIALS.exists():
         return per_company
@@ -114,6 +116,8 @@ def resolve_trials(families: dict[str, dict[str, Any]]) -> dict[str, list[dict[s
         company = str(row["company_key"] or "")
         track = str(row["track_id"] or "")
         date = str(row["event_date"] or "")
+        if cutoff is not None and date[:10] > cutoff:
+            continue
         if company in per_company and track and len(date) >= 10:
             per_company[company].append({"date": date, "track": track})
     return per_company
@@ -138,9 +142,14 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Build company technology profiles.")
     parser.add_argument("--scope", choices=("focus", "roster"), default="roster",
                         help="focus = the five mandated deep cases; roster = every curated company")
+    parser.add_argument("--as-of", default=AS_OF,
+                        help="point-in-time cut: only evidence on or before this date is used")
     parser.add_argument("--out", default=str(OUT_DIR))
     args = parser.parse_args(argv)
     out_dir = Path(args.out)
+    as_of = str(args.as_of)
+    window_end = min(WINDOW[1], as_of[:7])
+    window = (WINDOW[0], window_end)
 
     if not LANE.exists():
         print(f"lane database missing: {LANE}")
@@ -148,19 +157,21 @@ def main(argv: list[str] | None = None) -> int:
     families = load_families()
     from experiments.detect_v1.streams import load_product_codes
 
-    events = load_regulatory_events(LANE)
+    all_events = load_regulatory_events(LANE)
     codes = load_product_codes(LANE)
-    print(f"regulatory events: {len(events)}; product codes: {len(codes)}")
+    # point-in-time cut: nothing after the as-of date may influence a profile
+    events = [event for event in all_events if str(event["day"])[:10] <= as_of]
+    print(f"regulatory events: {len(all_events)} total, {len(events)} on or before {as_of}")
     regulatory = resolve_regulatory(events, families, codes)
     first_seen = code_first_seen(events, codes)
-    trials = resolve_trials(families)
+    trials = resolve_trials(families, cutoff=as_of)
 
     targets = sorted(FOCUS) if args.scope == "focus" else sorted(
         set(families) | set(FOCUS))
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "profiles").mkdir(exist_ok=True)
-    payload = {"schema": "profiles_v1", "as_of": AS_OF, "window": list(WINDOW),
-               "scope": args.scope,
+    payload = {"schema": "profiles_v1", "as_of": as_of, "window": list(window),
+               "scope": args.scope, "point_in_time": True,
                "focus_companies": list(FOCUS), "profiles": {}}
     for company_key in targets:
         family = families.get(company_key)
@@ -172,8 +183,8 @@ def main(argv: list[str] | None = None) -> int:
             display_name=family["display_name"],
             aliases=family["aliases"],
             entity_keys=family["entities"],
-            as_of=AS_OF,
-            window=WINDOW,
+            as_of=as_of,
+            window=window,
             sources=("data/research.sqlite (510(k)+PMA lane)", "data/b040_device_trials.sqlite",
                      "config/companies_device.json", "config/universe_v1.json"),
             regulatory_events=regulatory[company_key],
@@ -181,6 +192,17 @@ def main(argv: list[str] | None = None) -> int:
             code_first_seen=first_seen,
             hiring_status=hiring_status(company_key),
         )
+        # leakage audit: record the latest evidence date that actually entered this profile
+        latest_regulatory = max((row["date"] for row in regulatory[company_key]), default=None)
+        latest_trial = max((row["date"] for row in trials.get(company_key, [])), default=None)
+        profile["leakage_audit"] = {
+            "as_of": as_of,
+            "window": list(window),
+            "latest_regulatory_event": latest_regulatory,
+            "latest_trial_event": latest_trial,
+            "latest_code_first_seen": max(first_seen.values(), default=None),
+            "checked": True,
+        }
         payload["profiles"][company_key] = profile
         markdown = render_markdown(profile)
         (out_dir / "profiles" / f"{company_key}.md").write_text(

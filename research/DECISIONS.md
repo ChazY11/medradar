@@ -1322,3 +1322,58 @@ enough to say that, and the observation is about filing rates, not technology.
 triggered the signal. This is now the fourth self-caught design flaw of the programme (after the entry
 denominator, the post-hoc nomination, and the collector pagination), and the first caught *inside a
 benchmark* rather than in a finding.
+
+---
+
+## D-037 — B-051: point-in-time rebuild, three backdated snapshots, and a leakage path that had to be closed first
+
+**Date:** 2026-11-03. **Status:** accepted. Creates and closes B-051.
+
+**The leakage path, found while implementing it.** Cycle 14's profile builder used two inputs that
+were *not* cut at an as-of date, even though the profile claims a window: the **trial lane** was read
+in full and **product-code first-seen** was computed over the whole lane. Any historical rebuild would
+therefore have carried future information into a "point-in-time" profile. This is the fifth
+self-caught defect of the programme and the first one that would have silently invalidated a
+point-in-time claim.
+
+**The fix.** `build_profiles.py --as-of D` now:
+* keeps only regulatory events with `date <= D`, and ends the window at `month(D)`;
+* filters the **trial lane** to `event_date <= D`;
+* recomputes **code first-seen** from the truncated events only;
+* writes a `leakage_audit` block per profile recording the latest regulatory event, latest trial
+  event and latest code first-seen that actually entered the profile.
+
+**Three backdated snapshots, frozen and verified.**
+
+| as-of | events used | window ends | detected momentum | profiles |
+|---|---:|---|---:|---:|
+| 2020-12-31 | 12,853 lane events | 2020-12 | 5 | 53 |
+| 2022-12-31 | 19,182 | 2022-12 | 5 | 53 |
+| 2024-12-31 | 25,772 | 2024-12 | 1 | 53 |
+| 2026-11-02 (cycle 14) | full lane | 2026-09 | 4 | 53 |
+
+`snapshot_diff.py` audits every snapshot: **0 leakage problems** across the three auditable ones (every
+recorded latest event is on or before its as-of date, and every window ends on or before the as-of
+month). The cycle-14 snapshot is reported as **not auditable** rather than clean, because it predates
+the audit block — the two are different statements and are kept different.
+
+**What the diffs show.** Between consecutive snapshots: 8, 5 and 7 companies changed momentum verdict;
+21, 21 and 16 changed their track sets (always entries, never drops — the lane accumulates). Roster
+event totals grow 1,797 → 2,503 → 3,235 → 3,928, so the snapshots are genuinely different states of
+knowledge, not copies.
+
+**Verdict stability across the chain.** Of 53 companies tracked through all four snapshots, **40 have a
+stable verdict, 13 change at least once, and 2 reverse outright** (`hologic`:
+no-change → decreasing → increasing → no-change; `zimmer_biomet`: increasing → decreasing → no-change).
+A quarter of companies changing verdict with the as-of date is consistent with the calibrated test's
+measured low power, and it is the honest way to present a nowcast: the verdict is a statement about
+this data at this date, not a property of the company.
+
+**Why this matters for the objective.** The objective asks for point-in-time datasets and rolling-origin
+benchmarks. This round makes the *provenance* of a profile auditable to a date: a future cycle can
+rebuild the 2022-12-31 view from the same code and verify it byte-for-byte against the frozen manifest,
+and can prove no evidence after that date entered it. That is the precondition for any honest
+rolling-origin evaluation of the Understand layer.
+
+**Not claimed.** That the 2022-12 verdicts were "right" or "wrong" — there is no ground truth for a
+technology position. What is claimed is only that the pipeline is now cut at the date it says it is.

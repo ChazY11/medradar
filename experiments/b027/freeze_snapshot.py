@@ -81,7 +81,8 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"building {args.scope} profiles into {work_dir}")
     result = subprocess.run([sys.executable, "experiments/b027/build_profiles.py",
-                             "--scope", args.scope, "--out", str(work_dir)],
+                             "--scope", args.scope, "--as-of", args.as_of,
+                             "--out", str(work_dir)],
                             text=True)
     if result.returncode != 0:
         print("profile build failed")

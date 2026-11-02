@@ -457,4 +457,18 @@ tasks:
       increase point estimate is 1.22 [0.95, 1.53]; calibrated flags are too rare (5/717) to predict
       with at ~0.2 events per cell-month.
 
+  - id: B-051
+    layer: understand
+    priority: P0
+    title: Point-in-time rebuild and leakage audit of the profile engine
+    status: done
+    owner: lead
+    depends_on: [B-027, B-049]
+    acceptance: >
+      build_profiles --as-of cuts regulatory events, the trial lane and the product-code first-seen
+      map at the as-of date, and records a per-profile leakage_audit block. Three backdated snapshots
+      frozen (2020-12-31, 2022-12-31, 2024-12-31) with manifests; snapshot_diff.py audits leakage
+      (0 problems) and diffs consecutive snapshots; verdict_stability.py measures how often verdicts
+      flip across as-of dates. Result: 40 of 53 verdicts stable, 13 change, 2 reverse.
+
 

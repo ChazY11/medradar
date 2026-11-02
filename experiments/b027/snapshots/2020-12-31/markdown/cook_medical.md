@@ -1,0 +1,67 @@
+# Cook Medical — technology profile
+
+*As of 2020-12-31. Evidence window 2016-11 to 2020-12 (50 months). Schema profile_v1.*
+
+> A profile states what public evidence supports and what would change the answer. It is not a score, and it is only as good as the coverage below.
+
+## 1. Identity
+
+- Cook Medical: 11 resolved legal entities from 5 aliases, observed 2016-11 to 2020-12
+- Sources: data/research.sqlite (510(k)+PMA lane), data/b040_device_trials.sqlite, config/companies_device.json, config/universe_v1.json
+
+## 2. Technology footprint
+
+- 84 material events across 11 technology tracks (2 tracks rest on a single event)
+
+| track | events | first | last | share | evidence |
+|---|---:|---|---|---:|---|
+| vascular_access | 28 | 2017-05 | 2019-05 | 33% | sufficient |
+| endoscopy | 20 | 2017-04 | 2020-06 | 24% | sufficient |
+| coronary | 15 | 2016-12 | 2019-07 | 18% | sufficient |
+| urology | 5 | 2018-02 | 2018-06 | 6% | sufficient |
+| dental | 4 | 2017-01 | 2018-07 | 5% | sufficient |
+| surgical_energy | 4 | 2017-08 | 2020-01 | 5% | sufficient |
+| peripheral_vascular | 2 | 2017-02 | 2020-10 | 2% | sufficient |
+| respiratory | 2 | 2017-02 | 2017-08 | 2% | sufficient |
+| imaging_us | 2 | 2017-08 | 2018-07 | 2% | sufficient |
+| dialysis | 1 | 2017-01 | 2017-01 | 1% | single event |
+| neurovascular | 1 | 2018-12 | 2018-12 | 1% | single event |
+
+## 3. Momentum
+
+- activity decreasing: 42 events in the last 24 months vs 143 before (ratio 0.29), exact two-sided p=0.000
+- Test: exact two-sided binomial p=0.000 (alpha=0.05), minimum detectable ratio at 80 % power 1.64x, detected=True
+
+## 4. Concentration
+
+- diversified: top track vascular_access holds 33% of 84 material events across 11 tracks (HHI 0.21)
+
+## 5. Independent corroboration
+
+- 1 of 11 technology tracks have independent device-trial support; 10 do not
+- Tracks with **no** trial support: coronary, dental, dialysis, endoscopy, imaging_us, neurovascular, respiratory, surgical_energy
+
+## 6. Contradictory evidence
+
+- 6 contradictory observation(s) out of 4 checks
+- `single_event_tracks`: 2 track(s) rest on a single event: dialysis, neurovascular — a single filing is an anecdote; treat these tracks as unconfirmed
+- `activity_decline_by_track`: coronary: 3 events in the last 24 months vs 11 before — this track is retreating, which cuts against a growth reading
+- `activity_decline_by_track`: dental: 0 events in the last 24 months vs 4 before — this track is retreating, which cuts against a growth reading
+- `activity_decline_by_track`: vascular_access: 3 events in the last 24 months vs 25 before — this track is retreating, which cuts against a growth reading
+- `activity_decline_by_track`: surgical_energy: 1 events in the last 24 months vs 3 before — this track is retreating, which cuts against a growth reading
+- `activity_decline_by_track`: urology: 0 events in the last 24 months vs 5 before — this track is retreating, which cuts against a growth reading
+
+## 7. Limits and provenance
+
+- As of 2020-12-31; window 2016-11 to 2020-12
+- Hiring evidence: no archived hiring board found for this company (coverage absence, not zero hiring)
+- What would change the conclusion:
+  - a sustained activity change beyond the detector's measured minimum detectable effect
+  - independent evidence (trials, hiring, publications) that contradicts the track reading
+  - taxonomy changes that reclassify existing activity into new product codes
+  - entity-resolution changes that move filings between legal entities
+- Known limits:
+  - a detection is a statement about public regulatory activity rate, never about intent, capability or internal R&D
+  - the lane holds ~0.2 events per cell-month, so monthly per-track rates are noisy
+  - product-code taxonomy is not versioned by effective date
+  - the final month of the window is partially observed
