@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-02T13:05:00+08:00",
+  "updated_at": "2026-11-02T14:00:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "observe_deployment_calibration",
-  "cycle": 5,
+  "phase": "understand_prerequisites",
+  "cycle": 6,
   "last_completed_cycle": {
-    "cycle": "3c",
-    "name": "detector_memory_and_bin_width_sweep",
+    "cycle": 4,
+    "name": "independence_audit_and_comovement",
     "branch": "research/change-detection-v1",
-    "report": "experiments/detect_v1/REPORT.md",
-    "summary": "research/RESULTS/cycle3c_sweep_2026-11-02.md",
-    "verdict": "memory was parameterised in bins, so the quarterly winner was confounded; with calendar-matched memory the naive detector still collapses at quarterly resolution but the winner is the rolling z-score. The bin-width sweep puts the crossover at 2 months and shows the winner above it is NOT identifiable."
+    "report": "experiments/detect_v1/COMOVEMENT.md",
+    "summary": "research/RESULTS/cycle4_independence_comovement_2026-11-02.md",
+    "verdict": "no independent confirmation source exists in the spine (trial lane is drug-track only; 0/104 cells matchable), and no month-level cross-firm co-movement survives a null that conditions on the track's own volume (0/32 tracks)"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -94,13 +94,15 @@
     "no forecast has matured: zero calibration evidence",
     "OBSERVE: at monthly resolution the naive rate-multiplier is not beaten by likelihood detectors (0.223 vs 0.181/0.122/0.112 at a 2% budget)",
     "OBSERVE: removing Special 510(k)s and masking late product codes do not change the monthly ranking",
-    "OBSERVE: independent confirmation of a detected change is BLOCKED - no second source exists in the spine",
     "OBSERVE: independent reproduction of the detection benchmark PASSES 2844/2844 checks",
     "OBSERVE: the monthly negative is robust to injection shape (ramp/transient/heterogeneous) but reverses under quarterly aggregation - statements about the best detector require budget, resolution and cost model",
     "OBSERVE: on nuisance rejection (not declaring a sustained change for a 6-month surge) the Bayes factor beats naive by +0.157 [+0.119,+0.196]",
     "OBSERVE: at quarterly resolution the naive detector collapses (0.025) and all three likelihood detectors beat it; the best is the rolling z-score (0.147), not the Bayes factor",
     "OBSERVE: bin-width sweep (1/2/3/4/6 months) puts the crossover at 2 months (~0.42 expected events per bin) and shows the winner above it alternates, so it is not identifiable",
-    "OBSERVE: detector memory must be parameterised in calendar time - the first quarterly result was confounded by memory expressed in bins (D-020)"
+    "OBSERVE: detector memory must be parameterised in calendar time - the first quarterly result was confounded by memory expressed in bins (D-020)",
+    "OBSERVE: no independent confirmation source exists in the shipped spine - the only different registry (ClinicalTrials.gov) is mapped to drug tracks disjoint from device tracks (0/104 cells)",
+    "OBSERVE: no month-level cross-firm co-movement survives a null conditioning on the track's own volume (0/32 tracks; lane-wide null would have reported 3 false positives)",
+    "OBSERVE: technology activity in this lane is firm-specific plus track-level growth; the data do not show firms moving together"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -112,17 +114,17 @@
     "bulk lane availability = decision_date + 14 days (estimated), date-level not first-publication"
   ],
   "blockers": [
-    "independent change confirmation: no second source (B-033)",
+    "independent change confirmation: no second source (B-033 measured-blocked; unblock via B-040)",
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)",
     "B-030 hiring blocked on lawful snapshot history",
     "B-031 patents blocked on API key or bulk files"
   ],
   "next_actions": [
-    "B-039: fix the deployment resolution for the OBSERVE layer and re-run the sweep there with calendar-parameterised memory before naming a detector",
-    "B-033: find a genuinely independent confirmation source (the Understand-layer entry condition)",
+    "B-040: collect ClinicalTrials.gov DEVICE trials with device-track mapping - the prerequisite for independent confirmation",
+    "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there",
     "B-037: seasonal and lane-volume artifact adjustment",
-    "B-025: cross-company anomaly detection (do competitors move together?)",
-    "B-027: company technology-profile engine with the seven required evidence fields"
+    "B-027: company technology-profile engine (Understand layer) with the seven required evidence fields",
+    "B-020: acquisition-chain-aware parent panel"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -187,6 +189,35 @@
     "artifacts": [
       "experiments/detect_v1/bin_sweep.json",
       "experiments/detect_v1/widths.json"
+    ]
+  },
+  "independence_audit": {
+    "status": "BLOCKED - measured, not assumed",
+    "evidence": "experiments/detect_v1/probe_trials_source.py",
+    "reason": "the only genuinely different registry in the data spine (ClinicalTrials.gov, 55,592 events) is mapped to drug tracks (22 x t_*), which are disjoint from the device tracks used by the detection panel: 0 of 104 detection cells contain a trial event",
+    "other_sources_rejected": {
+      "openalex_publications": "annual, 51 curated companies only",
+      "usaspending": "award_date NULL in all 3,453 rows, pit_usable=0",
+      "pma_vs_510k": "same filing system, not independent"
+    },
+    "unblock_path": "B-040: collect ClinicalTrials.gov DEVICE trials with device-track mapping"
+  },
+  "comovement": {
+    "question": "do several competitors become active in the same technology track at once?",
+    "lane_volume_null_tracks_rejected": 3,
+    "lane_volume_null_rejected_keys": [
+      "ivd_molecular",
+      "medical_ai",
+      "spine"
+    ],
+    "track_volume_null_tracks_rejected": 0,
+    "track_volume_null_tests": 32,
+    "strongest_positive_z": 1.21,
+    "conclusion": "month-level cross-firm synchronisation is not detectable once the track's own growth is conditioned out; the three apparent cases are track growth admitting firms over time",
+    "limitation": "most tracks sit below the null because the null draws firm-months independently while firms file in bursts; the test is conservative in the positive direction and the negative direction is an artefact, not anti-synchronisation",
+    "artifacts": [
+      "experiments/detect_v1/comovement.json",
+      "experiments/detect_v1/COMOVEMENT.md"
     ]
   }
 }

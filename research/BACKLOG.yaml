@@ -1,4 +1,4 @@
-﻿# MedRadar Foresight Lab — backlog
+# MedRadar Foresight Lab — backlog
 # Realigned 2026-11-02 to Observe -> Understand -> Anticipate (DECISIONS D-011).
 # layer: observe | understand | anticipate | foundation | outside-mission
 # priority: P0 = scientific reliability floor; P1 = technology-change detection / observe;
@@ -102,7 +102,7 @@ tasks:
     layer: observe
     priority: P1
     title: Cross-company anomaly detection (are competitors moving together?)
-    status: todo
+    status: done
     owner: unassigned
     depends_on: [B-024]
     acceptance: >
@@ -223,7 +223,7 @@ tasks:
       visible as a version change rather than appearing as a technology change. Required by the
       detection layer's noise controls.
 
-  - id: B-033
+  - id: B-041
     layer: observe
     priority: P2
     title: Publication-lag sensitivity analysis
@@ -232,7 +232,7 @@ tasks:
     acceptance: Headline analyses re-run at assumed lags of 0/14/30/90 days; conclusions either survive or the sensitivity is published.
 
 # ------------------------------------------------------------ outside mission
-  - id: B-040
+  - id: B-045
     layer: outside-mission
     priority: P4
     title: Event study, paper trading, dashboards, drug lane — maintain only
@@ -246,7 +246,7 @@ tasks:
     layer: observe
     priority: P0
     title: Identify a genuinely independent confirmation source for detected changes
-    status: todo
+    status: blocked
     owner: unassigned
     acceptance: >
       A source whose publication path is INDEPENDENT of the FDA filing system (e.g. ClinicalTrials
@@ -333,3 +333,19 @@ tasks:
       panel, and only then name a detector. Report the identifiability check: if the ranking is still
       unstable across the memory parameterisation, the honest output is "no detector is identifiable"
       rather than a choice.
+
+
+  - id: B-040
+    layer: observe
+    priority: P0
+    title: Collect ClinicalTrials.gov DEVICE trials with device-track mapping
+    status: todo
+    owner: lead
+    depends_on: [B-033]
+    acceptance: >
+      Ingest device-relevant ClinicalTrials.gov studies (the device-intervention filter already
+      exists in medradar/clinical.py) into a lane mapped to the DEVICE track taxonomy, with
+      first-posted as the knowledge time and sponsor strings normalised through the same
+      deterministic entity normaliser. Report coverage against the 104 detection cells; then run
+      the independent-confirmation test (detected regulatory changes vs matched control periods).
+      This is the only currently identified path to answering "is the detected change real?".

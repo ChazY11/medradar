@@ -498,3 +498,62 @@ one depends on how memory is parameterised. Across widths: the winner is unstabl
 detector" claim survives; the defensible claims are (a) the rate-ratio test is resolution-fragile,
 (b) no likelihood detector is reliably better at monthly resolution, and (c) detector choice must be
 fixed at the deployment resolution with the memory parameterised in calendar time.
+
+---
+
+## D-021 — B-033 is blocked by measurement, not by effort; and no month-level co-movement survives a correct null
+
+**Date:** 2026-11-02. **Status:** accepted. Two results, both negative and both informative.
+
+### B-033: the independent confirmation source does not exist in the shipped spine — measured
+
+The backlog had B-033 as "blocked, assumed": there seemed to be no second source to confirm that a
+detected change is real. That is now **measured**, not assumed
+(`experiments/detect_v1/probe_trials_source.py`):
+
+* The legacy full-history DB does contain a ClinicalTrials.gov lane of 55,592 trial events
+  (1999-2026), i.e. a genuinely different registry from FDA filings.
+* But its tracks are **drug** tracks (`t_oncology`, `t_cardiometabolic`, … — 22 of them), while
+  the detection panel is device tracks (`cardiac_rhythm`, `imaging_mr_ct`, …). The two taxonomies
+  are disjoint.
+* Consequence for matching: **0 of 104 detection cells** have a single trial event; only 12 of 94
+  detection entities appear in the trial lane at all (as pharma sponsors, not device filers).
+* The other candidate sources are no better for this purpose: publications are annual and cover 51
+  curated companies (not the entity cohort); procurement rows are undated with `pit_usable=0` in
+  all 3,453 rows; the PMA/510(k) split is the same filing system.
+
+So the "is the detected change real?" question **cannot be answered with the current data spine**,
+and the reason is track-taxonomy disjointness, not a missing file. The concrete path forward is
+recorded as B-040: collect ClinicalTrials.gov **device** trials with device-track mapping (the
+device-intervention filter already exists in `medradar/clinical.py` from the earlier frontier work),
+which would give a genuinely independent, track-matched signal.
+
+### B-025: no cross-firm synchronisation survives a correct null
+
+Mission question 4 ("are several competitors moving into the same technology at once?") was tested
+with a presence panel (entity × track × month) and a co-activity statistic
+(`sum_m C(active firms, 2)`), against a permutation null that preserves each firm's activity level
+and draws active months with probability proportional to a monthly volume profile.
+
+**The volume profile used determines the answer, and the first choice was wrong.**
+
+| null conditions on | tracks with excess co-movement (BH q=0.10) |
+|---|---|
+| lane-wide monthly volume | 3 of 32 (`medical_ai` z=+5.47, `spine` z=+3.50, `ivd_molecular` z=+3.27) |
+| **the track's own monthly volume** | **0 of 32** |
+
+The three "synchronised" tracks are precisely the tracks that grew most over the decade: a growing
+track admits firms over time, which manufactures co-occurrence. Once a track's own growth and
+seasonality are absorbed, there is **no measurable month-level synchronisation** in this lane
+(strongest positive z = +1.21, for a 3-entity track). Firm-level activity and track-level growth are
+the two phenomena the data contain; their interaction is not one of them.
+
+Limitation, stated: most tracks sit *below* the track-volume null (down to z ≈ −3.9), because the
+null draws firm-months independently while real firms file in contiguous bursts. The test is
+therefore conservative in the positive direction — which strengthens the null finding — but its
+negative direction must **not** be read as anti-synchronisation.
+
+**What this changes.** The Observe layer's industry claim cannot be "the industry moved into X".
+At this granularity and with this lane, the defensible output is per-firm change plus track-level
+growth, and any cross-firm statement needs either denser data (device trials, patents, hiring) or a
+different unit of analysis (e.g. entry cohorts rather than month co-activity).

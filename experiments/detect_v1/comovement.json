@@ -1,0 +1,1801 @@
+{
+  "design": {
+    "eligibility": {
+      "min_active_months_per_entity": 6,
+      "min_entities_per_track": 3
+    },
+    "fdr_q": 0.1,
+    "lane_volume": {
+      "by_month": [
+        156,
+        147,
+        128,
+        135,
+        147,
+        158,
+        176,
+        183,
+        152,
+        175,
+        150,
+        157,
+        193,
+        161,
+        146,
+        145,
+        187,
+        164,
+        159,
+        146,
+        154,
+        145,
+        119,
+        157,
+        172,
+        170,
+        130,
+        109,
+        158,
+        136,
+        145,
+        127,
+        154,
+        148,
+        138,
+        151,
+        147,
+        159,
+        139,
+        130,
+        173,
+        163,
+        146,
+        141,
+        163,
+        132,
+        153,
+        152,
+        137,
+        162,
+        124,
+        132,
+        134,
+        153,
+        105,
+        106,
+        167,
+        163,
+        135,
+        121,
+        142,
+        177,
+        137,
+        121,
+        165,
+        144,
+        156,
+        160,
+        157,
+        148,
+        148,
+        160,
+        148,
+        160,
+        121,
+        152,
+        187,
+        156,
+        165,
+        199,
+        158,
+        169,
+        197,
+        196,
+        159,
+        194,
+        140,
+        138,
+        163,
+        165,
+        167,
+        160,
+        162,
+        174,
+        143,
+        208,
+        160,
+        176,
+        153,
+        151,
+        156,
+        185,
+        194,
+        172,
+        186,
+        170,
+        169,
+        216,
+        136,
+        195,
+        158,
+        138,
+        211,
+        194,
+        193,
+        212,
+        180,
+        171,
+        212
+      ],
+      "max": 216,
+      "mean": 157.9747899159664,
+      "min": 105
+    },
+    "null_primary": "each firm keeps its own number of active months and draws them with probability proportional to the TRACK's own monthly event volume, so firm activity and the track's growth/seasonality are both preserved; only the cross-firm timing pattern is free",
+    "null_secondary": "same, but weighted by LANE-wide monthly volume only — reported to show how much of an apparent co-movement is track growth rather than synchronisation",
+    "panel": "binary presence per (entity, track) month, 119 complete months",
+    "permutations": 1000,
+    "seed": 7,
+    "statistic": "sum over months of C(active firms, 2) within a track"
+  },
+  "fdr_lane_volume": {
+    "cutoff_pvalue": 0.001998001998001998,
+    "q": 0.1,
+    "rejected": 3,
+    "rejected_keys": [
+      "ivd_molecular",
+      "medical_ai",
+      "spine"
+    ],
+    "tests": 32
+  },
+  "fdr_track_volume": {
+    "cutoff_pvalue": null,
+    "q": 0.1,
+    "rejected": 0,
+    "rejected_keys": [],
+    "tests": 32
+  },
+  "tracks": {
+    "aesthetics": {
+      "entities": 12,
+      "null_lane_volume": {
+        "null_mean": 52.621,
+        "null_sd": 7.020780512165296,
+        "pvalue_one_sided": 0.6493506493506493,
+        "zscore": -0.3733203160899917
+      },
+      "null_track_volume": {
+        "null_mean": 72.202,
+        "null_sd": 9.192018059164157,
+        "pvalue_one_sided": 0.997002997002997,
+        "zscore": -2.415356438281286
+      },
+      "observed_coactivity": 50,
+      "top_pairs": [
+        {
+          "entity_a": "shenzhen-kaiyan-medical-equipment-ef33e78a",
+          "entity_b": "shenzhen-ulike-smart-electronics-766c40f1",
+          "excess": 5.668152563540511,
+          "expected_under_null": 3.3318474364594883,
+          "overlap": 9
+        },
+        {
+          "entity_a": "shenzhen-kaiyan-medical-equipment-ef33e78a",
+          "entity_b": "shenzhen-qianyu-technology-71f9ae4b",
+          "excess": 1.6280628202813872,
+          "expected_under_null": 1.3719371797186128,
+          "overlap": 3
+        },
+        {
+          "entity_a": "shenzhen-qianyu-technology-71f9ae4b",
+          "entity_b": "shenzhen-ulike-smart-electronics-766c40f1",
+          "excess": 1.5423167465489738,
+          "expected_under_null": 1.4576832534510262,
+          "overlap": 3
+        },
+        {
+          "entity_a": "foreo-ae5bd564",
+          "entity_b": "shenzhen-qianyu-technology-71f9ae4b",
+          "excess": 1.3997774838731067,
+          "expected_under_null": 0.6002225161268931,
+          "overlap": 2
+        },
+        {
+          "entity_a": "light-tree-ventures-europe-677f95c4",
+          "entity_b": "q-med-bcd13a3f",
+          "excess": 1.118040384466606,
+          "expected_under_null": 0.881959615533394,
+          "overlap": 2
+        }
+      ]
+    },
+    "coronary": {
+      "entities": 9,
+      "null_lane_volume": {
+        "null_mean": 29.906,
+        "null_sd": 5.055211568272885,
+        "pvalue_one_sided": 0.5774225774225774,
+        "zscore": -0.17922098566282837
+      },
+      "null_track_volume": {
+        "null_mean": 39.369,
+        "null_sd": 6.834093868246177,
+        "pvalue_one_sided": 0.952047952047952,
+        "zscore": -1.5172457680422495
+      },
+      "observed_coactivity": 29,
+      "top_pairs": [
+        {
+          "entity_a": "asahi-intecc-d4985a5d",
+          "entity_b": "vascular-solutions-a50f9c26",
+          "excess": 1.9205409974640744,
+          "expected_under_null": 2.0794590025359256,
+          "overlap": 4
+        },
+        {
+          "entity_a": "abbott-vascular-db997aa0",
+          "entity_b": "scientia-vascular-b2af34a2",
+          "excess": 1.8909551986475064,
+          "expected_under_null": 1.1090448013524936,
+          "overlap": 3
+        },
+        {
+          "entity_a": "medtronic-vascular-a716a021",
+          "entity_b": "merit-medical-systems-115df430",
+          "excess": 1.514792899408284,
+          "expected_under_null": 0.48520710059171596,
+          "overlap": 2
+        },
+        {
+          "entity_a": "filmecc-31d83516",
+          "entity_b": "scientia-vascular-b2af34a2",
+          "excess": 1.1682163989856298,
+          "expected_under_null": 0.8317836010143702,
+          "overlap": 2
+        },
+        {
+          "entity_a": "abbott-vascular-db997aa0",
+          "entity_b": "cook-10fd0b8f",
+          "excess": 1.075795998872922,
+          "expected_under_null": 0.924204001127078,
+          "overlap": 2
+        }
+      ]
+    },
+    "dental": {
+      "entities": 60,
+      "null_lane_volume": {
+        "null_mean": 1949.895,
+        "null_sd": 42.28607306194322,
+        "pvalue_one_sided": 0.4195804195804196,
+        "zscore": 0.21531911905516643
+      },
+      "null_track_volume": {
+        "null_mean": 2036.692,
+        "null_sd": 50.825221455493924,
+        "pvalue_one_sided": 0.949050949050949,
+        "zscore": -1.5286111457090745
+      },
+      "observed_coactivity": 1959,
+      "top_pairs": [
+        {
+          "entity_a": "quanta-system-1e809414",
+          "entity_b": "truabutment-f9c6d504",
+          "excess": 3.398790060060227,
+          "expected_under_null": 3.601209939939773,
+          "overlap": 7
+        },
+        {
+          "entity_a": "el-en-electronic-engineering-9b135f29",
+          "entity_b": "southern-implants-bc3f8056",
+          "excess": 3.2444101542793606,
+          "expected_under_null": 1.7555898457206394,
+          "overlap": 5
+        },
+        {
+          "entity_a": "lumenis-8a32152a",
+          "entity_b": "medentika-563d1e93",
+          "excess": 3.20773381321325,
+          "expected_under_null": 0.79226618678675,
+          "overlap": 4
+        },
+        {
+          "entity_a": "fotona-d-o-o-0d9ed0eb",
+          "entity_b": "ilooda-de51add8",
+          "excess": 3.1807247386637014,
+          "expected_under_null": 0.8192752613362984,
+          "overlap": 4
+        },
+        {
+          "entity_a": "dentsply-sirona-def5c5e3",
+          "entity_b": "wontech-a80556aa",
+          "excess": 3.1660398972975683,
+          "expected_under_null": 5.833960102702432,
+          "overlap": 9
+        }
+      ]
+    },
+    "diabetes_cgm": {
+      "entities": 9,
+      "null_lane_volume": {
+        "null_mean": 29.814,
+        "null_sd": 5.039782138148434,
+        "pvalue_one_sided": 0.025974025974025976,
+        "zscore": 2.2195403875354076
+      },
+      "null_track_volume": {
+        "null_mean": 40.034,
+        "null_sd": 6.7549125827060115,
+        "pvalue_one_sided": 0.42357642357642356,
+        "zscore": 0.14300703201891363
+      },
+      "observed_coactivity": 41,
+      "top_pairs": [
+        {
+          "entity_a": "apex-biotechnology-6d130829",
+          "entity_b": "i-sens-55676c70",
+          "excess": 1.8970850684116598,
+          "expected_under_null": 1.1029149315883402,
+          "overlap": 3
+        },
+        {
+          "entity_a": "ascensia-diabetes-care-1b59279f",
+          "entity_b": "nova-biomedical-81627b85",
+          "excess": 1.558834027364664,
+          "expected_under_null": 0.44116597263533613,
+          "overlap": 2
+        },
+        {
+          "entity_a": "bionime-4007f119",
+          "entity_b": "senseonics-d9b18aee",
+          "excess": 1.4853063652587746,
+          "expected_under_null": 0.5146936347412254,
+          "overlap": 2
+        },
+        {
+          "entity_a": "nova-biomedical-81627b85",
+          "entity_b": "taidoc-technology-d6d01735",
+          "excess": 1.4117787031528852,
+          "expected_under_null": 0.5882212968471148,
+          "overlap": 2
+        },
+        {
+          "entity_a": "bionime-4007f119",
+          "entity_b": "taidoc-technology-d6d01735",
+          "excess": 1.3137418203450326,
+          "expected_under_null": 0.6862581796549673,
+          "overlap": 2
+        }
+      ]
+    },
+    "dialysis": {
+      "entities": 5,
+      "null_lane_volume": {
+        "null_mean": 8.027,
+        "null_sd": 2.5931199355216874,
+        "pvalue_one_sided": 0.26573426573426573,
+        "zscore": 0.7608595240709798
+      },
+      "null_track_volume": {
+        "null_mean": 10.808,
+        "null_sd": 3.2148306331749423,
+        "pvalue_one_sided": 0.6253746253746254,
+        "zscore": -0.2513351688459013
+      },
+      "observed_coactivity": 10,
+      "top_pairs": [
+        {
+          "entity_a": "fresenius-medical-care-renal-therapies-g-02e6d204",
+          "entity_b": "medical-components-18d41982",
+          "excess": 1.2259248619489929,
+          "expected_under_null": 1.7740751380510071,
+          "overlap": 3
+        },
+        {
+          "entity_a": "fresenius-medical-care-renal-therapies-g-02e6d204",
+          "entity_b": "outset-medical-84b7c479",
+          "excess": 1.2259248619489929,
+          "expected_under_null": 1.7740751380510071,
+          "overlap": 3
+        },
+        {
+          "entity_a": "baxter-healthcare-c698d0a1",
+          "entity_b": "c-r-bard-9c3d4535",
+          "excess": 1.2016661878770467,
+          "expected_under_null": 0.7983338121229532,
+          "overlap": 2
+        },
+        {
+          "entity_a": "c-r-bard-9c3d4535",
+          "entity_b": "medical-components-18d41982",
+          "excess": 0.20166618787704682,
+          "expected_under_null": 0.7983338121229532,
+          "overlap": 1
+        },
+        {
+          "entity_a": "c-r-bard-9c3d4535",
+          "entity_b": "outset-medical-84b7c479",
+          "excess": 0.20166618787704682,
+          "expected_under_null": 0.7983338121229532,
+          "overlap": 1
+        }
+      ]
+    },
+    "endoscopy": {
+      "entities": 31,
+      "null_lane_volume": {
+        "null_mean": 567.408,
+        "null_sd": 21.643417844693566,
+        "pvalue_one_sided": 0.7632367632367633,
+        "zscore": -0.7119023488139918
+      },
+      "null_track_volume": {
+        "null_mean": 620.782,
+        "null_sd": 27.385552322346907,
+        "pvalue_one_sided": 0.998001998001998,
+        "zscore": -2.511616314704494
+      },
+      "observed_coactivity": 552,
+      "top_pairs": [
+        {
+          "entity_a": "ambu-834cc72d",
+          "entity_b": "zhejiang-chuangxiang-medical-technology-56289617",
+          "excess": 3.14272078660745,
+          "expected_under_null": 0.8572792133925498,
+          "overlap": 4
+        },
+        {
+          "entity_a": "hangzhou-ags-medtech-e54da160",
+          "entity_b": "olympus-medical-systems-4fa2f188",
+          "excess": 2.742338989108311,
+          "expected_under_null": 3.257661010891689,
+          "overlap": 6
+        },
+        {
+          "entity_a": "ga-health-584028af",
+          "entity_b": "steris-73b92d29",
+          "excess": 2.485314307381854,
+          "expected_under_null": 2.514685692618146,
+          "overlap": 5
+        },
+        {
+          "entity_a": "karl-storz-4a3cd312",
+          "entity_b": "olympus-medical-systems-4fa2f188",
+          "excess": 2.466263658195353,
+          "expected_under_null": 2.533736341804647,
+          "overlap": 5
+        },
+        {
+          "entity_a": "cook-10fd0b8f",
+          "entity_b": "fujifilm-df7e28b2",
+          "excess": 2.399745468333907,
+          "expected_under_null": 1.6002545316660928,
+          "overlap": 4
+        }
+      ]
+    },
+    "ep_pfa": {
+      "entities": 10,
+      "null_lane_volume": {
+        "null_mean": 33.68,
+        "null_sd": 5.441654160271489,
+        "pvalue_one_sided": 0.9500499500499501,
+        "zscore": -1.4113355560282128
+      },
+      "null_track_volume": {
+        "null_mean": 41.747,
+        "null_sd": 6.724506747710199,
+        "pvalue_one_sided": 0.999000999000999,
+        "zscore": -2.3417330951987076
+      },
+      "observed_coactivity": 26,
+      "top_pairs": [
+        {
+          "entity_a": "atricure-be2d2eea",
+          "entity_b": "medtronic-4bdceace",
+          "excess": 1.5666481994459835,
+          "expected_under_null": 1.4333518005540165,
+          "overlap": 3
+        },
+        {
+          "entity_a": "brainsway-c6e263fc",
+          "entity_b": "neuronetics-02d304a3",
+          "excess": 0.46792243767313024,
+          "expected_under_null": 0.5320775623268698,
+          "overlap": 1
+        },
+        {
+          "entity_a": "abbott-medical-59953a1d",
+          "entity_b": "medtronic-4bdceace",
+          "excess": 0.2833240997229918,
+          "expected_under_null": 0.7166759002770082,
+          "overlap": 1
+        },
+        {
+          "entity_a": "biosense-webster-f43ab132",
+          "entity_b": "boston-scientific-bc833359",
+          "excess": 0.2833240997229918,
+          "expected_under_null": 0.7166759002770082,
+          "overlap": 1
+        },
+        {
+          "entity_a": "boston-scientific-bc833359",
+          "entity_b": "magstim-4eff4d60",
+          "excess": 0.2833240997229918,
+          "expected_under_null": 0.7166759002770082,
+          "overlap": 1
+        }
+      ]
+    },
+    "general_surgery": {
+      "entities": 5,
+      "null_lane_volume": {
+        "null_mean": 7.408,
+        "null_sd": 2.435885054759358,
+        "pvalue_one_sided": 0.2917082917082917,
+        "zscore": 0.6535612166466837
+      },
+      "null_track_volume": {
+        "null_mean": 9.56,
+        "null_sd": 2.8457687889215455,
+        "pvalue_one_sided": 0.6213786213786214,
+        "zscore": -0.19678337965475487
+      },
+      "observed_coactivity": 9,
+      "top_pairs": [
+        {
+          "entity_a": "acclarent-c104e178",
+          "entity_b": "integra-lifesciences-b3d46d8f",
+          "excess": 2.184513760264879,
+          "expected_under_null": 0.815486239735121,
+          "overlap": 3
+        },
+        {
+          "entity_a": "acclarent-c104e178",
+          "entity_b": "fiagon-f70bd857",
+          "excess": 1.4563425068432527,
+          "expected_under_null": 0.5436574931567473,
+          "overlap": 2
+        },
+        {
+          "entity_a": "acclarent-c104e178",
+          "entity_b": "covidien-64e830a8",
+          "excess": 0.8220754314937142,
+          "expected_under_null": 1.1779245685062858,
+          "overlap": 2
+        },
+        {
+          "entity_a": "covidien-64e830a8",
+          "entity_b": "fiagon-f70bd857",
+          "excess": 0.1165565736202856,
+          "expected_under_null": 0.8834434263797144,
+          "overlap": 1
+        },
+        {
+          "entity_a": "fiagon-f70bd857",
+          "entity_b": "integra-lifesciences-b3d46d8f",
+          "excess": -0.6116146798013408,
+          "expected_under_null": 0.6116146798013408,
+          "overlap": 0
+        }
+      ]
+    },
+    "imaging_mr_ct": {
+      "entities": 61,
+      "null_lane_volume": {
+        "null_mean": 2713.976,
+        "null_sd": 45.35916030968828,
+        "pvalue_one_sided": 0.28771228771228774,
+        "zscore": 0.5296394341512666
+      },
+      "null_track_volume": {
+        "null_mean": 2809.294,
+        "null_sd": 54.50515171981452,
+        "pvalue_one_sided": 0.8941058941058941,
+        "zscore": -1.3080231455273983
+      },
+      "observed_coactivity": 2738,
+      "top_pairs": [
+        {
+          "entity_a": "ge-healthcare-06263bf9",
+          "entity_b": "spectrum-dynamics-medical-972fec4a",
+          "excess": 5.617815357971527,
+          "expected_under_null": 1.382184642028473,
+          "overlap": 7
+        },
+        {
+          "entity_a": "quality-electrodynamics-15703169",
+          "entity_b": "samsung-electronics-81bb2303",
+          "excess": 4.492162208696211,
+          "expected_under_null": 1.5078377913037886,
+          "overlap": 6
+        },
+        {
+          "entity_a": "materialise-6268e653",
+          "entity_b": "shimadzu-191bdd7e",
+          "excess": 3.569189202484632,
+          "expected_under_null": 0.43081079751536816,
+          "overlap": 4
+        },
+        {
+          "entity_a": "philips-medical-systems-nederland-2e7cf935",
+          "entity_b": "quality-electrodynamics-15703169",
+          "excess": 3.4764866260886347,
+          "expected_under_null": 4.523513373911365,
+          "overlap": 8
+        },
+        {
+          "entity_a": "canon-medical-systems-fcd23070",
+          "entity_b": "subtle-medical-7876e953",
+          "excess": 3.3381082211193704,
+          "expected_under_null": 3.6618917788806296,
+          "overlap": 7
+        }
+      ]
+    },
+    "imaging_us": {
+      "entities": 23,
+      "null_lane_volume": {
+        "null_mean": 497.709,
+        "null_sd": 18.02599009763403,
+        "pvalue_one_sided": 0.7492507492507493,
+        "zscore": -0.6495621009764588
+      },
+      "null_track_volume": {
+        "null_mean": 569.84,
+        "null_sd": 25.06149237375939,
+        "pvalue_one_sided": 1.0,
+        "zscore": -3.3453714068434577
+      },
+      "observed_coactivity": 486,
+      "top_pairs": [
+        {
+          "entity_a": "samsung-medison-281b823f",
+          "entity_b": "siemens-medical-solutions-usa-902782aa",
+          "excess": 3.988585122007782,
+          "expected_under_null": 13.011414877992218,
+          "overlap": 17
+        },
+        {
+          "entity_a": "ge-medical-systems-ultrasound-and-primar-689e90e9",
+          "entity_b": "samsung-medison-281b823f",
+          "excess": 3.1093045427607002,
+          "expected_under_null": 17.8906954572393,
+          "overlap": 21
+        },
+        {
+          "entity_a": "shenzhen-mindray-bio-medical-electronics-b4ea0e74",
+          "entity_b": "sonoscape-medical-b154c140",
+          "excess": 2.8462598881702696,
+          "expected_under_null": 5.15374011182973,
+          "overlap": 8
+        },
+        {
+          "entity_a": "clarius-mobile-health-cad38f36",
+          "entity_b": "siemens-medical-solutions-usa-902782aa",
+          "excess": 2.7230023963513617,
+          "expected_under_null": 2.2769976036486383,
+          "overlap": 5
+        },
+        {
+          "entity_a": "alpinion-medical-systems-a2556799",
+          "entity_b": "ge-healthcare-06263bf9",
+          "excess": 2.6785281764539155,
+          "expected_under_null": 1.3214718235460847,
+          "overlap": 4
+        }
+      ]
+    },
+    "infection_control": {
+      "entities": 3,
+      "null_lane_volume": {
+        "null_mean": 2.049,
+        "null_sd": 1.3132398866924504,
+        "pvalue_one_sided": 0.9040959040959041,
+        "zscore": -0.7987878000279371
+      },
+      "null_track_volume": {
+        "null_mean": 2.689,
+        "null_sd": 1.4533681570751438,
+        "pvalue_one_sided": 0.967032967032967,
+        "zscore": -1.1621281172136437
+      },
+      "observed_coactivity": 1,
+      "top_pairs": [
+        {
+          "entity_a": "advanced-sterilization-products-d2a22c19",
+          "entity_b": "steris-73b92d29",
+          "excess": -0.16410861865407322,
+          "expected_under_null": 1.1641086186540732,
+          "overlap": 1
+        },
+        {
+          "entity_a": "advanced-sterilization-products-d2a22c19",
+          "entity_b": "daavlin-distributing-fb8a90c2",
+          "excess": -0.41086186540731995,
+          "expected_under_null": 0.41086186540731995,
+          "overlap": 0
+        },
+        {
+          "entity_a": "daavlin-distributing-fb8a90c2",
+          "entity_b": "steris-73b92d29",
+          "excess": -1.1641086186540732,
+          "expected_under_null": 1.1641086186540732,
+          "overlap": 0
+        }
+      ]
+    },
+    "insulin_delivery": {
+      "entities": 6,
+      "null_lane_volume": {
+        "null_mean": 9.82,
+        "null_sd": 2.9273879141651182,
+        "pvalue_one_sided": 0.37962037962037964,
+        "zscore": 0.403089728658845
+      },
+      "null_track_volume": {
+        "null_mean": 12.12,
+        "null_sd": 3.4631777315061383,
+        "pvalue_one_sided": 0.6683316683316683,
+        "zscore": -0.32340240288877997
+      },
+      "observed_coactivity": 11,
+      "top_pairs": [
+        {
+          "entity_a": "becton-dickinson-and-940728ab",
+          "entity_b": "emed-technologies-1c52f8a0",
+          "excess": 1.6048710142605351,
+          "expected_under_null": 0.39512898573946487,
+          "overlap": 2
+        },
+        {
+          "entity_a": "insulet-cb3d65aa",
+          "entity_b": "medtronic-minimed-4064e4dd",
+          "excess": 0.8146130427816054,
+          "expected_under_null": 1.1853869572183946,
+          "overlap": 2
+        },
+        {
+          "entity_a": "insulet-cb3d65aa",
+          "entity_b": "tandem-diabetes-care-c365c570",
+          "excess": 0.8146130427816054,
+          "expected_under_null": 1.1853869572183946,
+          "overlap": 2
+        },
+        {
+          "entity_a": "medtronic-minimed-4064e4dd",
+          "entity_b": "tandem-diabetes-care-c365c570",
+          "excess": 0.41948405704214053,
+          "expected_under_null": 1.5805159429578595,
+          "overlap": 2
+        },
+        {
+          "entity_a": "emed-technologies-1c52f8a0",
+          "entity_b": "medtronic-minimed-4064e4dd",
+          "excess": 0.20974202852107027,
+          "expected_under_null": 0.7902579714789297,
+          "overlap": 1
+        }
+      ]
+    },
+    "ivd_immuno": {
+      "entities": 9,
+      "null_lane_volume": {
+        "null_mean": 29.146,
+        "null_sd": 5.044074146957001,
+        "pvalue_one_sided": 0.11188811188811189,
+        "zscore": 1.3588222140102546
+      },
+      "null_track_volume": {
+        "null_mean": 39.584,
+        "null_sd": 6.827953133992646,
+        "pvalue_one_sided": 0.7222777222777222,
+        "zscore": -0.524901083775345
+      },
+      "observed_coactivity": 36,
+      "top_pairs": [
+        {
+          "entity_a": "ark-diagnostics-5007c93d",
+          "entity_b": "phadia-e92c492d",
+          "excess": 2.232421875,
+          "expected_under_null": 0.767578125,
+          "overlap": 3
+        },
+        {
+          "entity_a": "microgenics-7465cc22",
+          "entity_b": "phadia-e92c492d",
+          "excess": 2.04052734375,
+          "expected_under_null": 0.95947265625,
+          "overlap": 3
+        },
+        {
+          "entity_a": "diasorin-6d79bb6c",
+          "entity_b": "roche-diagnostics-eec180c1",
+          "excess": 1.3209228515625,
+          "expected_under_null": 1.6790771484375,
+          "overlap": 3
+        },
+        {
+          "entity_a": "ark-diagnostics-5007c93d",
+          "entity_b": "beckman-coulter-4ca395b8",
+          "excess": 1.04052734375,
+          "expected_under_null": 0.95947265625,
+          "overlap": 2
+        },
+        {
+          "entity_a": "lin-zhi-international-e050ad68",
+          "entity_b": "phadia-e92c492d",
+          "excess": 1.04052734375,
+          "expected_under_null": 0.95947265625,
+          "overlap": 2
+        }
+      ]
+    },
+    "ivd_molecular": {
+      "entities": 16,
+      "null_lane_volume": {
+        "null_mean": 187.384,
+        "null_sd": 12.130067765680455,
+        "pvalue_one_sided": 0.000999000999000999,
+        "zscore": 3.2659339391396793
+      },
+      "null_track_volume": {
+        "null_mean": 242.419,
+        "null_sd": 17.454668114862567,
+        "pvalue_one_sided": 0.8231768231768232,
+        "zscore": -0.8833740004985146
+      },
+      "observed_coactivity": 227,
+      "top_pairs": [
+        {
+          "entity_a": "biofire-diagnostics-7c94a851",
+          "entity_b": "maine-molecular-quality-controls-c5cf00a0",
+          "excess": 3.9052465571117847,
+          "expected_under_null": 2.0947534428882153,
+          "overlap": 6
+        },
+        {
+          "entity_a": "abbott-molecular-46bf46c8",
+          "entity_b": "becton-dickinson-and-940728ab",
+          "excess": 3.2543721309264875,
+          "expected_under_null": 1.7456278690735128,
+          "overlap": 5
+        },
+        {
+          "entity_a": "maine-molecular-quality-controls-c5cf00a0",
+          "entity_b": "qiagen-07992917",
+          "excess": 3.0448967866376657,
+          "expected_under_null": 1.9551032133623343,
+          "overlap": 5
+        },
+        {
+          "entity_a": "cepheid-c2d9d4f3",
+          "entity_b": "hologic-ddbf05c1",
+          "excess": 3.0299526877685867,
+          "expected_under_null": 5.970047312231413,
+          "overlap": 9
+        },
+        {
+          "entity_a": "becton-dickinson-and-940728ab",
+          "entity_b": "diasorin-molecular-a4d363f1",
+          "excess": 2.952623278555892,
+          "expected_under_null": 1.0473767214441077,
+          "overlap": 4
+        }
+      ]
+    },
+    "medical_ai": {
+      "entities": 36,
+      "null_lane_volume": {
+        "null_mean": 438.04,
+        "null_sd": 20.290253818028006,
+        "pvalue_one_sided": 0.000999000999000999,
+        "zscore": 5.468635385004962
+      },
+      "null_track_volume": {
+        "null_mean": 615.32,
+        "null_sd": 35.98212889755135,
+        "pvalue_one_sided": 0.981018981018981,
+        "zscore": -1.8431371914882237
+      },
+      "observed_coactivity": 549,
+      "top_pairs": [
+        {
+          "entity_a": "anumana-094437b2",
+          "entity_b": "siemens-medical-solutions-usa-902782aa",
+          "excess": 3.659285972363299,
+          "expected_under_null": 1.340714027636701,
+          "overlap": 5
+        },
+        {
+          "entity_a": "centerline-biomedical-ab9e9e20",
+          "entity_b": "edwards-lifesciences-9a074605",
+          "excess": 3.3489355030029517,
+          "expected_under_null": 1.6510644969970483,
+          "overlap": 5
+        },
+        {
+          "entity_a": "abbott-medical-59953a1d",
+          "entity_b": "qure-ai-technologies-b6487e6a",
+          "excess": 2.9572224229492328,
+          "expected_under_null": 1.0427775770507672,
+          "overlap": 4
+        },
+        {
+          "entity_a": "aidoc-medical-f641f82c",
+          "entity_b": "deephealth-836d80af",
+          "excess": 2.9213233439453536,
+          "expected_under_null": 3.0786766560546464,
+          "overlap": 6
+        },
+        {
+          "entity_a": "aidoc-medical-f641f82c",
+          "entity_b": "ever-fortune-ai-4ce3eac5",
+          "excess": 2.7668195979248615,
+          "expected_under_null": 4.2331804020751385,
+          "overlap": 7
+        }
+      ]
+    },
+    "neurostimulation": {
+      "entities": 4,
+      "null_lane_volume": {
+        "null_mean": 2.354,
+        "null_sd": 1.4417641970863333,
+        "pvalue_one_sided": 0.6983016983016983,
+        "zscore": -0.2455325223884738
+      },
+      "null_track_volume": {
+        "null_mean": 2.349,
+        "null_sd": 1.4287053580077316,
+        "pvalue_one_sided": 0.7062937062937062,
+        "zscore": -0.24427709887409238
+      },
+      "observed_coactivity": 2,
+      "top_pairs": [
+        {
+          "entity_a": "boston-scientific-neuromodulation-1bab5ceb",
+          "entity_b": "stimwave-technologies-0544037f",
+          "excess": 0.618893095366865,
+          "expected_under_null": 0.381106904633135,
+          "overlap": 1
+        },
+        {
+          "entity_a": "electrocore-3eb5d03f",
+          "entity_b": "stimwave-technologies-0544037f",
+          "excess": 0.5644492518478457,
+          "expected_under_null": 0.43555074815215433,
+          "overlap": 1
+        },
+        {
+          "entity_a": "boston-scientific-bc833359",
+          "entity_b": "stimwave-technologies-0544037f",
+          "excess": -0.32666306111411575,
+          "expected_under_null": 0.32666306111411575,
+          "overlap": 0
+        },
+        {
+          "entity_a": "boston-scientific-bc833359",
+          "entity_b": "boston-scientific-neuromodulation-1bab5ceb",
+          "excess": -0.381106904633135,
+          "expected_under_null": 0.381106904633135,
+          "overlap": 0
+        },
+        {
+          "entity_a": "boston-scientific-bc833359",
+          "entity_b": "electrocore-3eb5d03f",
+          "excess": -0.43555074815215433,
+          "expected_under_null": 0.43555074815215433,
+          "overlap": 0
+        }
+      ]
+    },
+    "neurovascular": {
+      "entities": 10,
+      "null_lane_volume": {
+        "null_mean": 35.625,
+        "null_sd": 5.406512276874991,
+        "pvalue_one_sided": 0.08491508491508491,
+        "zscore": 1.549057797542045
+      },
+      "null_track_volume": {
+        "null_mean": 44.96,
+        "null_sd": 7.101718101980675,
+        "pvalue_one_sided": 0.5554445554445554,
+        "zscore": -0.1351785562612315
+      },
+      "observed_coactivity": 44,
+      "top_pairs": [
+        {
+          "entity_a": "alembic-094c69da",
+          "entity_b": "rapid-medical-1fa2321f",
+          "excess": 2.4661393969352448,
+          "expected_under_null": 0.5338606030647552,
+          "overlap": 3
+        },
+        {
+          "entity_a": "alembic-094c69da",
+          "entity_b": "perfuze-5e210158",
+          "excess": 1.5996045477014336,
+          "expected_under_null": 0.40039545229856643,
+          "overlap": 2
+        },
+        {
+          "entity_a": "cerenovus-fd363053",
+          "entity_b": "perfuze-5e210158",
+          "excess": 1.5996045477014336,
+          "expected_under_null": 0.40039545229856643,
+          "overlap": 2
+        },
+        {
+          "entity_a": "perfuze-5e210158",
+          "entity_b": "rapid-medical-1fa2321f",
+          "excess": 1.4661393969352448,
+          "expected_under_null": 0.5338606030647552,
+          "overlap": 2
+        },
+        {
+          "entity_a": "imperative-care-ed59ce0d",
+          "entity_b": "rapid-medical-1fa2321f",
+          "excess": 1.3771626297577855,
+          "expected_under_null": 0.6228373702422145,
+          "overlap": 2
+        }
+      ]
+    },
+    "ophthalmology": {
+      "entities": 13,
+      "null_lane_volume": {
+        "null_mean": 65.217,
+        "null_sd": 7.4732798020681654,
+        "pvalue_one_sided": 0.07092907092907093,
+        "zscore": 1.576683907477833
+      },
+      "null_track_volume": {
+        "null_mean": 84.589,
+        "null_sd": 10.206472407252175,
+        "pvalue_one_sided": 0.7822177822177823,
+        "zscore": -0.7435477897934315
+      },
+      "observed_coactivity": 77,
+      "top_pairs": [
+        {
+          "entity_a": "alcon-laboratories-1cf7fd61",
+          "entity_b": "contamac-c9a25569",
+          "excess": 2.8305785123966944,
+          "expected_under_null": 2.1694214876033056,
+          "overlap": 5
+        },
+        {
+          "entity_a": "alcon-laboratories-1cf7fd61",
+          "entity_b": "bausch-lomb-bbe30494",
+          "excess": 2.3512396694214877,
+          "expected_under_null": 4.648760330578512,
+          "overlap": 7
+        },
+        {
+          "entity_a": "alcon-laboratories-1cf7fd61",
+          "entity_b": "lensar-012d9e7b",
+          "excess": 2.1404958677685952,
+          "expected_under_null": 1.8595041322314048,
+          "overlap": 4
+        },
+        {
+          "entity_a": "coopervision-05bf304a",
+          "entity_b": "nidek-a8678a48",
+          "excess": 1.4490358126721763,
+          "expected_under_null": 0.5509641873278237,
+          "overlap": 2
+        },
+        {
+          "entity_a": "new-world-medical-b5c01097",
+          "entity_b": "pegavision-dd03a086",
+          "excess": 1.3112947658402203,
+          "expected_under_null": 0.6887052341597796,
+          "overlap": 2
+        }
+      ]
+    },
+    "ortho_joint": {
+      "entities": 58,
+      "null_lane_volume": {
+        "null_mean": 2825.503,
+        "null_sd": 48.36639319817015,
+        "pvalue_one_sided": 0.9040959040959041,
+        "zscore": -1.2509305738822214
+      },
+      "null_track_volume": {
+        "null_mean": 3026.974,
+        "null_sd": 67.66554015154242,
+        "pvalue_one_sided": 1.0,
+        "zscore": -3.871601400259103
+      },
+      "observed_coactivity": 2765,
+      "top_pairs": [
+        {
+          "entity_a": "depuy-ireland-uc-93959e9d",
+          "entity_b": "orthosoft-96531ba1",
+          "excess": 4.326479590601114,
+          "expected_under_null": 5.673520409398886,
+          "overlap": 10
+        },
+        {
+          "entity_a": "conformis-68f18c02",
+          "entity_b": "waldemar-link-62c7a34b",
+          "excess": 4.212967154569689,
+          "expected_under_null": 4.787032845430311,
+          "overlap": 9
+        },
+        {
+          "entity_a": "b-one-ortho-3836419f",
+          "entity_b": "signature-orthopaedics-6c741379",
+          "excess": 4.12591400313346,
+          "expected_under_null": 2.874085996866541,
+          "overlap": 7
+        },
+        {
+          "entity_a": "corin-u-18475ebc",
+          "entity_b": "smith-nephew-f4880c3a",
+          "excess": 4.121187733682075,
+          "expected_under_null": 5.878812266317925,
+          "overlap": 10
+        },
+        {
+          "entity_a": "conformis-68f18c02",
+          "entity_b": "medtronic-sofamor-danek-usa-82518551",
+          "excess": 3.8724298464754177,
+          "expected_under_null": 2.1275701535245823,
+          "overlap": 6
+        }
+      ]
+    },
+    "patient_monitoring": {
+      "entities": 21,
+      "null_lane_volume": {
+        "null_mean": 172.764,
+        "null_sd": 11.900685022300188,
+        "pvalue_one_sided": 0.22277722277722278,
+        "zscore": 0.7760897782516756
+      },
+      "null_track_volume": {
+        "null_mean": 203.649,
+        "null_sd": 15.582419548966072,
+        "pvalue_one_sided": 0.936063936063936,
+        "zscore": -1.3893221095716461
+      },
+      "observed_coactivity": 182,
+      "top_pairs": [
+        {
+          "entity_a": "microlife-intellectual-property-d2cfe98e",
+          "entity_b": "shenzhen-mindray-bio-medical-electronics-b4ea0e74",
+          "excess": 2.148897907842887,
+          "expected_under_null": 1.8511020921571133,
+          "overlap": 4
+        },
+        {
+          "entity_a": "shenzhen-jamr-technology-dcc82a54",
+          "entity_b": "shenzhen-mindray-bio-medical-electronics-b4ea0e74",
+          "excess": 2.1456451882351786,
+          "expected_under_null": 0.8543548117648215,
+          "overlap": 3
+        },
+        {
+          "entity_a": "edwards-lifesciences-9a074605",
+          "entity_b": "shenzhen-aoj-medical-technology-a261fd08",
+          "excess": 1.7184677823527676,
+          "expected_under_null": 1.2815322176472324,
+          "overlap": 3
+        },
+        {
+          "entity_a": "edan-instruments-01d3e85d",
+          "entity_b": "ge-medical-systems-information-technolog-bb4dd97c",
+          "excess": 1.6777842198877762,
+          "expected_under_null": 1.3222157801122238,
+          "overlap": 3
+        },
+        {
+          "entity_a": "edan-instruments-01d3e85d",
+          "entity_b": "guangdong-transtek-medical-electronics-5eee4bd9",
+          "excess": 1.5455626418765538,
+          "expected_under_null": 1.4544373581234462,
+          "overlap": 3
+        }
+      ]
+    },
+    "peripheral_vascular": {
+      "entities": 11,
+      "null_lane_volume": {
+        "null_mean": 57.725,
+        "null_sd": 6.761462489728091,
+        "pvalue_one_sided": 0.4805194805194805,
+        "zscore": 0.040671674274282275
+      },
+      "null_track_volume": {
+        "null_mean": 71.955,
+        "null_sd": 8.076074231952056,
+        "pvalue_one_sided": 0.975024975024975,
+        "zscore": -1.7279435031427337
+      },
+      "observed_coactivity": 58,
+      "top_pairs": [
+        {
+          "entity_a": "avinger-82f7a4cb",
+          "entity_b": "walk-vascular-d8bd7b46",
+          "excess": 1.4028508529609263,
+          "expected_under_null": 0.5971491470390738,
+          "overlap": 2
+        },
+        {
+          "entity_a": "cardiovascular-systems-6763d461",
+          "entity_b": "spectranetics-550eb9af",
+          "excess": 1.29226767758332,
+          "expected_under_null": 0.7077323224166802,
+          "overlap": 2
+        },
+        {
+          "entity_a": "avinger-82f7a4cb",
+          "entity_b": "boston-scientific-bc833359",
+          "excess": 1.2038011372812347,
+          "expected_under_null": 0.7961988627187652,
+          "overlap": 2
+        },
+        {
+          "entity_a": "c-r-bard-9c3d4535",
+          "entity_b": "cardiovascular-systems-6763d461",
+          "excess": 1.2038011372812347,
+          "expected_under_null": 0.7961988627187652,
+          "overlap": 2
+        },
+        {
+          "entity_a": "penumbra-d90a65a9",
+          "entity_b": "walk-vascular-d8bd7b46",
+          "excess": 0.7393518006952884,
+          "expected_under_null": 1.2606481993047116,
+          "overlap": 2
+        }
+      ]
+    },
+    "rehab_exo": {
+      "entities": 6,
+      "null_lane_volume": {
+        "null_mean": 5.096,
+        "null_sd": 2.199268969453259,
+        "pvalue_one_sided": 0.7502497502497503,
+        "zscore": -0.4983474123551459
+      },
+      "null_track_volume": {
+        "null_mean": 7.173,
+        "null_sd": 2.567308123307368,
+        "pvalue_one_sided": 0.957042957042957,
+        "zscore": -1.2359248861458598
+      },
+      "observed_coactivity": 4,
+      "top_pairs": [
+        {
+          "entity_a": "anhui-jbh-medical-apparatus-6eea9e2d",
+          "entity_b": "kunshan-hi-fortune-health-products-e42a484d",
+          "excess": 1.5616747774556021,
+          "expected_under_null": 0.4383252225443978,
+          "overlap": 2
+        },
+        {
+          "entity_a": "anhui-jbh-medical-apparatus-6eea9e2d",
+          "entity_b": "zhejiang-innuovo-rehabilitation-devices-c2a04b1b",
+          "excess": 0.48862057369820255,
+          "expected_under_null": 0.5113794263017974,
+          "overlap": 1
+        },
+        {
+          "entity_a": "invacare-f99c6bb7",
+          "entity_b": "kunshan-hi-fortune-health-products-e42a484d",
+          "excess": 0.48862057369820255,
+          "expected_under_null": 0.5113794263017974,
+          "overlap": 1
+        },
+        {
+          "entity_a": "anhui-jbh-medical-apparatus-6eea9e2d",
+          "entity_b": "zhenjiang-assure-medical-equipment-c7a8275f",
+          "excess": -0.4383252225443978,
+          "expected_under_null": 0.4383252225443978,
+          "overlap": 0
+        },
+        {
+          "entity_a": "anhui-jbh-medical-apparatus-6eea9e2d",
+          "entity_b": "zimmer-medizinsysteme-788d684f",
+          "excess": -0.4383252225443978,
+          "expected_under_null": 0.4383252225443978,
+          "overlap": 0
+        }
+      ]
+    },
+    "respiratory": {
+      "entities": 9,
+      "null_lane_volume": {
+        "null_mean": 35.197,
+        "null_sd": 5.289063338626225,
+        "pvalue_one_sided": 0.7992007992007992,
+        "zscore": -0.7935242464103534
+      },
+      "null_track_volume": {
+        "null_mean": 45.572,
+        "null_sd": 6.641747962697772,
+        "pvalue_one_sided": 0.996003996003996,
+        "zscore": -2.194000748273063
+      },
+      "observed_coactivity": 31,
+      "top_pairs": [
+        {
+          "entity_a": "fisher-paykel-healthcare-e852abe9",
+          "entity_b": "sleepnet-daaf7363",
+          "excess": 1.6996527777777777,
+          "expected_under_null": 2.3003472222222223,
+          "overlap": 4
+        },
+        {
+          "entity_a": "resmed-c6c5d1cf",
+          "entity_b": "shenzhen-mindray-bio-medical-electronics-b4ea0e74",
+          "excess": 1.55078125,
+          "expected_under_null": 1.44921875,
+          "overlap": 3
+        },
+        {
+          "entity_a": "medtronic-4bdceace",
+          "entity_b": "sleepnet-daaf7363",
+          "excess": 1.4479166666666665,
+          "expected_under_null": 0.5520833333333334,
+          "overlap": 2
+        },
+        {
+          "entity_a": "hamilton-medical-ff1bbfd9",
+          "entity_b": "resmed-c6c5d1cf",
+          "excess": 0.7578125,
+          "expected_under_null": 1.2421875,
+          "overlap": 2
+        },
+        {
+          "entity_a": "medtronic-4bdceace",
+          "entity_b": "resmed-c6c5d1cf",
+          "excess": 0.7578125,
+          "expected_under_null": 1.2421875,
+          "overlap": 2
+        }
+      ]
+    },
+    "spine": {
+      "entities": 79,
+      "null_lane_volume": {
+        "null_mean": 4622.094,
+        "null_sd": 65.11132899887698,
+        "pvalue_one_sided": 0.001998001998001998,
+        "zscore": 3.5002510853976085
+      },
+      "null_track_volume": {
+        "null_mean": 5046.249,
+        "null_sd": 102.45164224647645,
+        "pvalue_one_sided": 0.9790209790209791,
+        "zscore": -1.9155281037649667
+      },
+      "observed_coactivity": 4850,
+      "top_pairs": [
+        {
+          "entity_a": "medtronic-sofamor-danek-usa-82518551",
+          "entity_b": "nu-vasive-e3ce3c5c",
+          "excess": 5.623801623586328,
+          "expected_under_null": 13.376198376413672,
+          "overlap": 19
+        },
+        {
+          "entity_a": "astura-medical-de4065df",
+          "entity_b": "medos-international-69d83c48",
+          "excess": 5.189117271677016,
+          "expected_under_null": 3.810882728322983,
+          "overlap": 9
+        },
+        {
+          "entity_a": "altus-partners-c13fed93",
+          "entity_b": "medyssey-usa-65c77846",
+          "excess": 4.999286567630434,
+          "expected_under_null": 2.000713432369566,
+          "overlap": 7
+        },
+        {
+          "entity_a": "l-k-biomed-e7e51ac9",
+          "entity_b": "spinal-elements-7ff9a31d",
+          "excess": 4.836610619307141,
+          "expected_under_null": 4.163389380692859,
+          "overlap": 9
+        },
+        {
+          "entity_a": "k2m-b117177d",
+          "entity_b": "spineology-c0487074",
+          "excess": 4.5702055445093155,
+          "expected_under_null": 3.429794455490685,
+          "overlap": 8
+        }
+      ]
+    },
+    "structural_heart": {
+      "entities": 3,
+      "null_lane_volume": {
+        "null_mean": 1.866,
+        "null_sd": 1.261762259698712,
+        "pvalue_one_sided": 0.5674325674325674,
+        "zscore": 0.10620067209174325
+      },
+      "null_track_volume": {
+        "null_mean": 1.924,
+        "null_sd": 1.2100512385845485,
+        "pvalue_one_sided": 0.6093906093906094,
+        "zscore": 0.06280725772315286
+      },
+      "observed_coactivity": 2,
+      "top_pairs": [
+        {
+          "entity_a": "abbott-medical-59953a1d",
+          "entity_b": "edwards-lifesciences-9a074605",
+          "excess": 0.17662140900879908,
+          "expected_under_null": 0.8233785909912009,
+          "overlap": 1
+        },
+        {
+          "entity_a": "edwards-lifesciences-9a074605",
+          "entity_b": "medtronic-4bdceace",
+          "excess": 0.17662140900879908,
+          "expected_under_null": 0.8233785909912009,
+          "overlap": 1
+        },
+        {
+          "entity_a": "abbott-medical-59953a1d",
+          "entity_b": "medtronic-4bdceace",
+          "excess": -0.32935143639648035,
+          "expected_under_null": 0.32935143639648035,
+          "overlap": 0
+        }
+      ]
+    },
+    "surgical_energy": {
+      "entities": 31,
+      "null_lane_volume": {
+        "null_mean": 308.8,
+        "null_sd": 16.989290744466057,
+        "pvalue_one_sided": 0.5624375624375625,
+        "zscore": -0.16480970524988273
+      },
+      "null_track_volume": {
+        "null_mean": 359.708,
+        "null_sd": 22.29804332222897,
+        "pvalue_one_sided": 0.996003996003996,
+        "zscore": -2.4086418356923005
+      },
+      "observed_coactivity": 306,
+      "top_pairs": [
+        {
+          "entity_a": "applied-medical-resources-e10bb397",
+          "entity_b": "olympus-medical-systems-4fa2f188",
+          "excess": 3.548496732026144,
+          "expected_under_null": 1.4515032679738562,
+          "overlap": 5
+        },
+        {
+          "entity_a": "covidien-64e830a8",
+          "entity_b": "stryker-sustainability-solutions-0878460e",
+          "excess": 2.4497893972403775,
+          "expected_under_null": 2.5502106027596225,
+          "overlap": 5
+        },
+        {
+          "entity_a": "covidien-64e830a8",
+          "entity_b": "ethicon-endo-surgery-ba9fb6fc",
+          "excess": 2.377138707334786,
+          "expected_under_null": 1.6228612926652142,
+          "overlap": 4
+        },
+        {
+          "entity_a": "apyx-medical-c8ce3bbf",
+          "entity_b": "creo-medical-31d5dbd1",
+          "excess": 2.19360929557008,
+          "expected_under_null": 0.8063907044299201,
+          "overlap": 3
+        },
+        {
+          "entity_a": "boston-scientific-bc833359",
+          "entity_b": "creo-medical-31d5dbd1",
+          "excess": 2.09281045751634,
+          "expected_under_null": 0.9071895424836601,
+          "overlap": 3
+        }
+      ]
+    },
+    "surgical_robotics": {
+      "entities": 3,
+      "null_lane_volume": {
+        "null_mean": 8.55,
+        "null_sd": 1.9502563934006216,
+        "pvalue_one_sided": 0.06393606393606394,
+        "zscore": 1.7689981746370824
+      },
+      "null_track_volume": {
+        "null_mean": 9.566,
+        "null_sd": 2.014359451537883,
+        "pvalue_one_sided": 0.16983016983016982,
+        "zscore": 1.2083245610120565
+      },
+      "observed_coactivity": 12,
+      "top_pairs": [
+        {
+          "entity_a": "asensus-surgical-3c89ae2b",
+          "entity_b": "intuitive-surgical-0f89cd09",
+          "excess": 0.6502057613168724,
+          "expected_under_null": 4.349794238683128,
+          "overlap": 5
+        },
+        {
+          "entity_a": "intuitive-surgical-0f89cd09",
+          "entity_b": "transenterix-3d32d61b",
+          "excess": 0.47530864197530853,
+          "expected_under_null": 6.5246913580246915,
+          "overlap": 7
+        },
+        {
+          "entity_a": "asensus-surgical-3c89ae2b",
+          "entity_b": "transenterix-3d32d61b",
+          "excess": -0.6213991769547326,
+          "expected_under_null": 0.6213991769547326,
+          "overlap": 0
+        }
+      ]
+    },
+    "trauma": {
+      "entities": 41,
+      "null_lane_volume": {
+        "null_mean": 1124.699,
+        "null_sd": 32.728953527419726,
+        "pvalue_one_sided": 0.8461538461538461,
+        "zscore": -0.9990848003314691
+      },
+      "null_track_volume": {
+        "null_mean": 1239.312,
+        "null_sd": 43.335789550901225,
+        "pvalue_one_sided": 1.0,
+        "zscore": -3.3993150125249385
+      },
+      "observed_coactivity": 1092,
+      "top_pairs": [
+        {
+          "entity_a": "gm-dos-reis-industria-e-comercio-ee3cf6d5",
+          "entity_b": "trimed-b9554da5",
+          "excess": 3.893675988914084,
+          "expected_under_null": 2.106324011085916,
+          "overlap": 6
+        },
+        {
+          "entity_a": "globus-medical-bb7cb485",
+          "entity_b": "stryker-5ebd7853",
+          "excess": 3.7107583774250443,
+          "expected_under_null": 4.289241622574956,
+          "overlap": 8
+        },
+        {
+          "entity_a": "acumed-347d8b22",
+          "entity_b": "trimed-b9554da5",
+          "excess": 3.6596119929453264,
+          "expected_under_null": 1.3403880070546736,
+          "overlap": 5
+        },
+        {
+          "entity_a": "arthrex-6b0ed5e5",
+          "entity_b": "depuy-synthes-107295e5",
+          "excess": 3.5245653817082387,
+          "expected_under_null": 3.4754346182917613,
+          "overlap": 7
+        },
+        {
+          "entity_a": "trimed-b9554da5",
+          "entity_b": "vilex-bc97c0d9",
+          "excess": 3.4681279919375156,
+          "expected_under_null": 1.5318720080624844,
+          "overlap": 5
+        }
+      ]
+    },
+    "urology": {
+      "entities": 7,
+      "null_lane_volume": {
+        "null_mean": 13.24,
+        "null_sd": 3.341017808991745,
+        "pvalue_one_sided": 0.45454545454545453,
+        "zscore": 0.22747559080786617
+      },
+      "null_track_volume": {
+        "null_mean": 16.932,
+        "null_sd": 4.027328643157894,
+        "pvalue_one_sided": 0.7982017982017982,
+        "zscore": -0.7280260092459129
+      },
+      "observed_coactivity": 14,
+      "top_pairs": [
+        {
+          "entity_a": "shanghai-anqing-medical-instrument-21d63c3d",
+          "entity_b": "uroviu-2f24694c",
+          "excess": 1.3680931092564683,
+          "expected_under_null": 0.6319068907435317,
+          "overlap": 2
+        },
+        {
+          "entity_a": "boston-scientific-bc833359",
+          "entity_b": "guangzhou-red-pine-medical-instrument-ea80a556",
+          "excess": 0.8490267347171387,
+          "expected_under_null": 1.1509732652828613,
+          "overlap": 2
+        },
+        {
+          "entity_a": "guangzhou-red-pine-medical-instrument-ea80a556",
+          "entity_b": "uroviu-2f24694c",
+          "excess": 0.5260698319423512,
+          "expected_under_null": 0.47393016805764876,
+          "overlap": 1
+        },
+        {
+          "entity_a": "hunan-vathin-medical-instrument-4cc56ec3",
+          "entity_b": "uroviu-2f24694c",
+          "excess": 0.44708147059940984,
+          "expected_under_null": 0.5529185294005902,
+          "overlap": 1
+        },
+        {
+          "entity_a": "hunan-vathin-medical-instrument-4cc56ec3",
+          "entity_b": "shanghai-anqing-medical-instrument-21d63c3d",
+          "excess": 0.3680931092564683,
+          "expected_under_null": 0.6319068907435317,
+          "overlap": 1
+        }
+      ]
+    },
+    "vascular_access": {
+      "entities": 23,
+      "null_lane_volume": {
+        "null_mean": 176.384,
+        "null_sd": 12.610334809195194,
+        "pvalue_one_sided": 0.971028971028971,
+        "zscore": -1.695751962462346
+      },
+      "null_track_volume": {
+        "null_mean": 206.475,
+        "null_sd": 16.352717664045937,
+        "pvalue_one_sided": 1.0,
+        "zscore": -3.147794822702529
+      },
+      "observed_coactivity": 155,
+      "top_pairs": [
+        {
+          "entity_a": "bard-access-systems-0ec3213e",
+          "entity_b": "penumbra-d90a65a9",
+          "excess": 2.5119673469387758,
+          "expected_under_null": 0.48803265306122445,
+          "overlap": 3
+        },
+        {
+          "entity_a": "balt-usa-a0f4a414",
+          "entity_b": "becton-dickinson-infusion-therapy-system-a24ab5e2",
+          "excess": 2.2171142857142856,
+          "expected_under_null": 0.7828857142857142,
+          "overlap": 3
+        },
+        {
+          "entity_a": "c-r-bard-9c3d4535",
+          "entity_b": "merit-medical-systems-115df430",
+          "excess": 1.901926530612245,
+          "expected_under_null": 1.098073469387755,
+          "overlap": 3
+        },
+        {
+          "entity_a": "baxter-healthcare-c698d0a1",
+          "entity_b": "stryker-neurovascular-222a9687",
+          "excess": 1.861257142857143,
+          "expected_under_null": 1.138742857142857,
+          "overlap": 3
+        },
+        {
+          "entity_a": "balt-usa-a0f4a414",
+          "entity_b": "poly-medicure-724adc1c",
+          "excess": 1.5729714285714285,
+          "expected_under_null": 0.4270285714285714,
+          "overlap": 2
+        }
+      ]
+    },
+    "wearable_remote": {
+      "entities": 3,
+      "null_lane_volume": {
+        "null_mean": 2.397,
+        "null_sd": 1.396921973483129,
+        "pvalue_one_sided": 0.44455544455544455,
+        "zscore": 0.43166333656879996
+      },
+      "null_track_volume": {
+        "null_mean": 3.383,
+        "null_sd": 1.616883112658426,
+        "pvalue_one_sided": 0.6773226773226774,
+        "zscore": -0.2368755026269549
+      },
+      "observed_coactivity": 3,
+      "top_pairs": [
+        {
+          "entity_a": "shenzhen-root-innovation-technology-74676559",
+          "entity_b": "shenzhen-tph-technology-6b42a824",
+          "excess": 1.2880190362879238,
+          "expected_under_null": 1.7119809637120762,
+          "overlap": 3
+        },
+        {
+          "entity_a": "bardy-diagnostics-47d7f12f",
+          "entity_b": "shenzhen-root-innovation-technology-74676559",
+          "excess": -0.5706603212373588,
+          "expected_under_null": 0.5706603212373588,
+          "overlap": 0
+        },
+        {
+          "entity_a": "bardy-diagnostics-47d7f12f",
+          "entity_b": "shenzhen-tph-technology-6b42a824",
+          "excess": -1.467412254610351,
+          "expected_under_null": 1.467412254610351,
+          "overlap": 0
+        }
+      ]
+    },
+    "wound_care": {
+      "entities": 14,
+      "null_lane_volume": {
+        "null_mean": 67.352,
+        "null_sd": 7.929318760145792,
+        "pvalue_one_sided": 0.983016983016983,
+        "zscore": -1.8099915559121906
+      },
+      "null_track_volume": {
+        "null_mean": 81.282,
+        "null_sd": 9.38757029267957,
+        "pvalue_one_sided": 0.998001998001998,
+        "zscore": -3.0127071348860426
+      },
+      "observed_coactivity": 53,
+      "top_pairs": [
+        {
+          "entity_a": "ethicon-752cb229",
+          "entity_b": "teleflex-medical-72161508",
+          "excess": 2.049932813759742,
+          "expected_under_null": 0.950067186240258,
+          "overlap": 3
+        },
+        {
+          "entity_a": "genadyne-biotechnologies-5243089c",
+          "entity_b": "medela-2f0b1739",
+          "excess": 1.3349529696318194,
+          "expected_under_null": 0.6650470303681806,
+          "overlap": 2
+        },
+        {
+          "entity_a": "kci-usa-4292565d",
+          "entity_b": "medela-2f0b1739",
+          "excess": 1.2610588551464659,
+          "expected_under_null": 0.738941144853534,
+          "overlap": 2
+        },
+        {
+          "entity_a": "ethicon-752cb229",
+          "entity_b": "smith-nephew-medical-063dbb62",
+          "excess": 1.1497984412792261,
+          "expected_under_null": 2.850201558720774,
+          "overlap": 4
+        },
+        {
+          "entity_a": "genadyne-biotechnologies-5243089c",
+          "entity_b": "winner-medical-2b95b167",
+          "excess": 0.9549260951357161,
+          "expected_under_null": 1.0450739048642839,
+          "overlap": 2
+        }
+      ]
+    }
+  }
+}
