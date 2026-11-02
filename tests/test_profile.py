@@ -327,6 +327,17 @@ class DeploymentAlertTest(unittest.TestCase):
         self.assertIn(f"{DEPLOYMENT_RESOLUTION_MONTHS}-month resolution", markdown)
         self.assertIn(f"{DEPLOYMENT_FALSE_ALARM_RATE:.3f}", markdown)
 
+    def test_limits_carry_the_measured_blind_spots(self):
+        """The profile must state what this data cannot do, not only what it can."""
+        profile = _profile(_events({"cardiac": ["2021-01", "2022-01"]}))
+        limits = " ".join(profile["limits_and_provenance"]["known_limits"])
+        self.assertIn("ramp cannot be separated from a level shift", limits)
+        self.assertIn("quarterly resolution only", limits)
+
+    def test_limits_state_the_resolution_constraint(self):
+        markdown = render_markdown(_profile(_events({"cardiac": ["2021-01", "2022-01"]})))
+        self.assertIn("ramp cannot be separated from a level shift", markdown)
+
 
 class DeterminismTest(unittest.TestCase):
     def test_identical_inputs_give_identical_profiles(self):

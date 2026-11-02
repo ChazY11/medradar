@@ -80,3 +80,5 @@
   - the lane holds ~0.2 events per cell-month, so monthly per-track rates are noisy
   - product-code taxonomy is not versioned by effective date
   - the final month of the window is partially observed
+  - a spike can be separated from a sustained change, but a ramp cannot be separated from a level shift at this counting rate: no confirmation window between 1 and 6 months recovered ramps (best recall 0.229, D-051)
+  - the alert detector is validated at quarterly resolution only; at monthly resolution the same detector ranks last (D-045)

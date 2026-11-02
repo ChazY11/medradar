@@ -1894,3 +1894,89 @@ carry the filing-rate wording, or whose Markdown omits the verdict. Five profile
 
 **Not claimed.** That a promoted change is technological, or that the gate is adequate for a different corpus,
 resolution or regulatory lane.
+
+---
+
+## D-050 — Pre-registration: confirmation-window sensitivity analysis for the ramp class (B-058)
+
+**Date:** 2026-11-03. **Status:** accepted; written before `experiments/b026/window_tradeoff.py` was first
+run.
+
+**The gap.** The confirmed promotion rule (D-043, replicated D-048) fixes a **two-month** confirmation window.
+It separates spike from sustained well (precision 0.914–0.917) but cannot separate a **ramp** from a level
+shift: ramp recall is 0.142 at company level and 0.117 at entity level. A ramp is a change that keeps
+growing, so a longer window should help — at the cost of slower decisions and, possibly, precision.
+
+**What this is.** A **sensitivity analysis**, not a confirmation. It is declared here so the window grid is
+not chosen after seeing results, and its output can only ever be a **proposal** to re-pre-register, never a
+new rule. Any window change would require its own confirmatory run on fresh origins before it may be used.
+
+**Fixed design.**
+
+* Units: both — (company × track) and (legal entity × track) monthly series, same eligibility floors as
+  D-040.
+* Windows: **1, 2, 3, 4 and 6 months** after the alert (the alert month is always excluded, per D-041).
+* Same injected shapes, magnitudes, detector and thresholds; the only varied quantity is the window length.
+* Estimands per window and unit: three-class balanced accuracy, **ramp recall**, sustained-change precision
+  and recall, and the ramp/level confusion specifically.
+* Seeds fixed: 7071 for company cells, 7072 for entity cells, three origins per cell.
+
+**Decision rule for a recommendation.** A window is worth re-pre-registering only if it raises **ramp recall
+above 0.40** while keeping sustained-change precision **at or above 0.85** on **both** units. Anything less
+is reported as "the ramp class remains unrecoverable at this counting rate" and the policy stays at two
+months.
+
+**Not claimed even if a window qualifies.** That the longer window is better for decisions (it is slower);
+that the qualifying result is confirmed (it is exploratory until a fresh confirmatory run); or that ramp
+recovery implies technological significance.
+
+---
+
+## D-051 — B-058 outcome: no confirmation window recovers the ramp class; the two-month policy stands
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-058.
+
+**What ran.** The D-050 sensitivity analysis: window lengths 1, 2, 3, 4 and 6 months after the alert, on both
+units (65 eligible company cells, 191 eligible entity cells), three fresh origins per cell, fixed seeds, same
+shapes, magnitudes and detector. **495 company alerts and 1,222 entity alerts per window**, so the comparison
+is not sample-limited.
+
+**Ramp recall, by window.**
+
+| window | company ramp recall | company precision | entity ramp recall | entity precision |
+|---:|---:|---:|---:|---:|
+| 1 month | 0.000 | 0.911 | 0.000 | 0.937 |
+| 2 months | 0.154 | 0.897 | 0.128 | 0.897 |
+| 3 months | 0.183 | 0.895 | 0.107 | 0.889 |
+| 4 months | 0.143 | 0.886 | 0.107 | 0.889 |
+| 6 months | 0.229 | 0.862 | 0.114 | 0.885 |
+
+**No window qualifies** under the pre-declared rule (ramp recall > 0.40 with precision ≥ 0.85 on both units).
+The best ramp recall anywhere is **0.229**, and it buys nothing: precision falls monotonically as the window
+lengthens.
+
+**The trap worth naming.** Balanced accuracy is *highest* at the one-month window (0.588 company, 0.616
+entity) — because a one-month window can never see a ramp forming, so it calls every ramp "level" and gets
+those cases "right" for the wrong reason. Reporting balanced accuracy alone would recommend the window that
+is worst at the thing the window was added for. **The class-specific recall is the metric that matters**, which
+is why the pre-registration fixed it in advance.
+
+**Decision.** The promotion policy stays at **two months** (D-049). Three-way shape classification is
+recorded as **not available** at this counting rate rather than as a tuning problem: with 0.2 events per
+cell-month and a ramp that adds roughly one event per month at peak, the confirmation window would need to be
+longer than the ramps that need distinguishing.
+
+**What this changes in the product.** Nothing operational — the policy already promotes on the
+binary sustained/spike decision. What changes is the claim: the profile no longer implies that `ramp` is a
+recoverable class; the sensitivity analysis is the evidence that it is not.
+
+**Not claimed.** That ramp detection is impossible in principle; that a corpus with denser counting would
+fail the same way; or that the two-month window is optimal — only that no tested window beats it on the
+pre-declared criterion.
+
+**Carried into the product in the same cycle.** The blind spot is now part of every profile's
+`limits_and_provenance` field: two limits were added — "a ramp cannot be separated from a level shift at this
+counting rate (best recall 0.229 over windows of 1–6 months)" and "the alert detector is validated at
+quarterly resolution only; at monthly resolution the same detector ranks last". A profile that cannot state
+these is not allowed to present its alerts as more than they are, and two tests assert both strings are
+present in the JSON and in the rendered Markdown.

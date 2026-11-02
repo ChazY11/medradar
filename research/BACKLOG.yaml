@@ -559,4 +559,18 @@ tasks:
       which is the correct reading. selfcheck enforces the verdict set, the sign-off flag, the
       filing-rate statement and the markdown presence.
 
+  - id: B-058
+    layer: detect
+    priority: P2
+    title: Confirmation-window sensitivity analysis for the ramp class
+    status: done
+    owner: lead
+    depends_on: [B-026, B-055]
+    acceptance: >
+      Pre-registered window grid (1,2,3,4,6 months), both units, three fresh origins per cell, fixed
+      seeds; recommendation rule fixed in advance (ramp recall > 0.40 and precision >= 0.85 on both
+      units). Result: no window qualifies; best ramp recall 0.229 with precision falling monotonically.
+      Policy stays at two months; the blind spot and the quarterly-only validation are now carried in
+      every profile's limits field, with tests.
+
 
