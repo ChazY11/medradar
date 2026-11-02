@@ -1,0 +1,349 @@
+{
+  "schema": "third_source_crosswalk_v1",
+  "protocol": "THIRD_SOURCE_PROTOCOL.md (frozen before any query)",
+  "source": "Europe PMC REST API",
+  "disclosed_deviation": "packets carry no crosswalk keyword phrases, so keyword terms are the track's own keywords, longest first; each query is recorded verbatim",
+  "events": [
+    {
+      "event_id": "LT-01",
+      "company": "ge_healthcare",
+      "technology_track": "patient_monitoring",
+      "clearance_date": "2022-04-01",
+      "query": "(AFF:\"GE HealthCare\" OR AFF:\"GE Medical\") AND (\"PATIENT MONITOR\" OR \"PULSE OXIMETER\" OR \"BLOOD PRESSURE\")",
+      "query_terms": {
+        "affiliation": [
+          "GE HealthCare",
+          "GE Medical"
+        ],
+        "keywords": [
+          "PATIENT MONITOR",
+          "PULSE OXIMETER",
+          "BLOOD PRESSURE"
+        ]
+      },
+      "api_status": 200,
+      "api_error": null,
+      "hits_total": 227,
+      "records_inspected": 25,
+      "status": "AFTER_CLEARANCE",
+      "earliest_date": "2023-06-02",
+      "lead_days": -427,
+      "lead_quarters": -4.68,
+      "earliest_record": {
+        "title": "Comparative analysis of signal accuracy of three SpO&lt;sub&gt;2&lt;/sub&gt; monitors during motion and low perfusion conditions.",
+        "pmid": "37266709"
+      },
+      "usable_records": 24,
+      "undated": 0,
+      "trial_reports_excluded": 1,
+      "lead_years": -1.17,
+      "distance_class": "NEAR"
+    },
+    {
+      "event_id": "LT-02",
+      "company": "medtronic",
+      "technology_track": "imaging_mr_ct",
+      "clearance_date": "2019-03-06",
+      "query": "(AFF:\"Medtronic\") AND (\"X RAY SYSTEM\" OR \"COMPUTED TOMOGRAPHY\" OR \"MAGNETIC RESONANCE\")",
+      "query_terms": {
+        "affiliation": [
+          "Medtronic"
+        ],
+        "keywords": [
+          "X RAY SYSTEM",
+          "COMPUTED TOMOGRAPHY",
+          "MAGNETIC RESONANCE"
+        ]
+      },
+      "api_status": 200,
+      "api_error": null,
+      "hits_total": 418,
+      "records_inspected": 25,
+      "status": "AFTER_CLEARANCE",
+      "earliest_date": "2024-10-25",
+      "lead_days": -2060,
+      "lead_quarters": -22.58,
+      "earliest_record": {
+        "title": "Global Results of Implantable Loop Recorder for Detection of Atrial Fibrillation After Stroke: Reveal LINQ Registry.",
+        "pmid": "39450720"
+      },
+      "usable_records": 22,
+      "undated": 0,
+      "trial_reports_excluded": 3,
+      "lead_years": -5.64,
+      "distance_class": "NEAR"
+    },
+    {
+      "event_id": "LT-03",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "clearance_date": "2020-11-20",
+      "query": "(AFF:\"Medtronic\") AND (\"RESPIRATORY\" OR \"VENTILATOR\" OR \"ANESTHESIA\")",
+      "query_terms": {
+        "affiliation": [
+          "Medtronic"
+        ],
+        "keywords": [
+          "RESPIRATORY",
+          "VENTILATOR",
+          "ANESTHESIA"
+        ]
+      },
+      "api_status": 200,
+      "api_error": null,
+      "hits_total": 518,
+      "records_inspected": 25,
+      "status": "AFTER_CLEARANCE",
+      "earliest_date": "2022-09-01",
+      "lead_days": -650,
+      "lead_quarters": -7.12,
+      "earliest_record": {
+        "title": "Evaluation of Common Nasal Cannulas in Neonatal Noninvasive Ventilation (NIV) Using a Novel Neonatal Nasal Model.",
+        "pmid": "36072575"
+      },
+      "usable_records": 25,
+      "undated": 0,
+      "trial_reports_excluded": 0,
+      "lead_years": -1.78,
+      "distance_class": "NEAR"
+    },
+    {
+      "event_id": "LT-04",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "clearance_date": "2022-01-14",
+      "query": "(AFF:\"Medtronic\") AND (\"RESPIRATORY\" OR \"VENTILATOR\" OR \"ANESTHESIA\")",
+      "query_terms": {
+        "affiliation": [
+          "Medtronic"
+        ],
+        "keywords": [
+          "RESPIRATORY",
+          "VENTILATOR",
+          "ANESTHESIA"
+        ]
+      },
+      "api_status": 200,
+      "api_error": null,
+      "hits_total": 518,
+      "records_inspected": 25,
+      "status": "AFTER_CLEARANCE",
+      "earliest_date": "2022-09-01",
+      "lead_days": -230,
+      "lead_quarters": -2.52,
+      "earliest_record": {
+        "title": "Evaluation of Common Nasal Cannulas in Neonatal Noninvasive Ventilation (NIV) Using a Novel Neonatal Nasal Model.",
+        "pmid": "36072575"
+      },
+      "usable_records": 25,
+      "undated": 0,
+      "trial_reports_excluded": 0,
+      "lead_years": -0.63,
+      "distance_class": "NEAR"
+    },
+    {
+      "event_id": "LT-05",
+      "company": "medtronic",
+      "technology_track": "vascular_access",
+      "clearance_date": "2021-07-15",
+      "query": "(AFF:\"Medtronic\") AND (\"CATHETER INTRODUCER\" OR \"ADMINISTRATION SET\" OR \"VASCULAR ACCESS\")",
+      "query_terms": {
+        "affiliation": [
+          "Medtronic"
+        ],
+        "keywords": [
+          "CATHETER INTRODUCER",
+          "ADMINISTRATION SET",
+          "VASCULAR ACCESS"
+        ]
+      },
+      "api_status": 200,
+      "api_error": null,
+      "hits_total": 95,
+      "records_inspected": 25,
+      "status": "SUPPORTED_BEFORE",
+      "earliest_date": "1998-04-10",
+      "lead_days": 8497,
+      "lead_quarters": 93.12,
+      "earliest_record": {
+        "title": "Catheter introducer with thin walled sheath",
+        "authors": "NORDSTROM JON W, CULHANE JAMES P.",
+        "journal": null,
+        "pmid": null,
+        "doi": null
+      },
+      "usable_records": 23,
+      "undated": 0,
+      "trial_reports_excluded": 2,
+      "lead_years": 23.26,
+      "distance_class": "DISTANT"
+    },
+    {
+      "event_id": "LT-06",
+      "company": "philips",
+      "technology_track": "imaging_us",
+      "clearance_date": "2019-09-06",
+      "query": "(AFF:\"Philips\") AND (\"ECHOCARDIOGRAPHY\" OR \"ULTRASOUND\" OR \"SONOGRAPH\")",
+      "query_terms": {
+        "affiliation": [
+          "Philips"
+        ],
+        "keywords": [
+          "ECHOCARDIOGRAPHY",
+          "ULTRASOUND",
+          "SONOGRAPH"
+        ]
+      },
+      "api_status": 200,
+      "api_error": null,
+      "hits_total": 1934,
+      "records_inspected": 25,
+      "status": "AFTER_CLEARANCE",
+      "earliest_date": "2025-01-01",
+      "lead_days": -1944,
+      "lead_quarters": -21.3,
+      "earliest_record": {
+        "title": "A Retrospective Analysis: CCTA vs. TTE in Diagnosing Coronary Artery Fistula",
+        "pmid": "40248941"
+      },
+      "usable_records": 24,
+      "undated": 0,
+      "trial_reports_excluded": 1,
+      "lead_years": -5.32,
+      "distance_class": "NEAR"
+    },
+    {
+      "event_id": "LT-07",
+      "company": "philips",
+      "technology_track": "respiratory",
+      "clearance_date": "2024-07-31",
+      "query": "(AFF:\"Philips\") AND (\"RESPIRATORY\" OR \"VENTILATOR\" OR \"ANESTHESIA\")",
+      "query_terms": {
+        "affiliation": [
+          "Philips"
+        ],
+        "keywords": [
+          "RESPIRATORY",
+          "VENTILATOR",
+          "ANESTHESIA"
+        ]
+      },
+      "api_status": 200,
+      "api_error": null,
+      "hits_total": 1631,
+      "records_inspected": 25,
+      "status": "SUPPORTED_BEFORE",
+      "earliest_date": "2024-05-16",
+      "lead_days": 76,
+      "lead_quarters": 0.83,
+      "earliest_record": {
+        "title": "Development and performance evaluation of a solenoid valve assisted low-cost ventilator on gas exchange and respiratory mechanics in a porcine model.",
+        "authors": "Shyu D, Bliss P, Adams A, Cho RJ.",
+        "journal": "PloS one",
+        "pmid": "38753734",
+        "doi": "10.1371/journal.pone.0303443"
+      },
+      "usable_records": 25,
+      "undated": 0,
+      "trial_reports_excluded": 0,
+      "lead_years": 0.21,
+      "distance_class": "NEAR"
+    },
+    {
+      "event_id": "LT-08",
+      "company": "philips",
+      "technology_track": "vascular_access",
+      "clearance_date": "2025-06-24",
+      "query": "(AFF:\"Philips\") AND (\"CATHETER INTRODUCER\" OR \"ADMINISTRATION SET\" OR \"VASCULAR ACCESS\")",
+      "query_terms": {
+        "affiliation": [
+          "Philips"
+        ],
+        "keywords": [
+          "CATHETER INTRODUCER",
+          "ADMINISTRATION SET",
+          "VASCULAR ACCESS"
+        ]
+      },
+      "api_status": 200,
+      "api_error": null,
+      "hits_total": 32,
+      "records_inspected": 25,
+      "status": "SUPPORTED_BEFORE",
+      "earliest_date": "2011-01-05",
+      "lead_days": 5284,
+      "lead_quarters": 57.91,
+      "earliest_record": {
+        "title": "Effects of attenuation and thrombus age on the success of ultrasound and microbubble-mediated thrombus dissolution.",
+        "authors": "Xie F, Everbach EC, Gao S, Drvol LK, Shi WT, Vignon F, Powers JE, Lof J, Porter TR.",
+        "journal": "Ultrasound in medicine & biology",
+        "pmid": "21208727",
+        "doi": "10.1016/j.ultrasmedbio.2010.10.022"
+      },
+      "usable_records": 25,
+      "undated": 0,
+      "trial_reports_excluded": 0,
+      "lead_years": 14.47,
+      "distance_class": "DISTANT"
+    },
+    {
+      "event_id": "LT-09",
+      "company": "philips",
+      "technology_track": "wearable_remote",
+      "clearance_date": "2023-04-03",
+      "query": "(AFF:\"Philips\") AND (\"REMOTE MONITORING\" OR \"AMBULATORY\" OR \"WEARABLE\")",
+      "query_terms": {
+        "affiliation": [
+          "Philips"
+        ],
+        "keywords": [
+          "REMOTE MONITORING",
+          "AMBULATORY",
+          "WEARABLE"
+        ]
+      },
+      "api_status": 200,
+      "api_error": null,
+      "hits_total": 451,
+      "records_inspected": 25,
+      "status": "SUPPORTED_BEFORE",
+      "earliest_date": "2016-08-01",
+      "lead_days": 2436,
+      "lead_quarters": 26.7,
+      "earliest_record": {
+        "title": "Technology-Enabled Remote Monitoring and Self-Management - Vision for Patient Empowerment Following Cardiac and Vascular Surgery: User Testing and Randomized Controlled Trial Protocol.",
+        "authors": "McGillion M, Yost J, Turner A, Bender D, Scott T, Carroll S, Ritvo P, Peter E, Lamy A, Furze G, Krull K, Dunlop V, Good A, Dvirnik N, Bedini D, Naus F, Pettit S, Henry S, Probst C, Mills J, Gossage E, Travale I, Duquette J, Taberner C, Bhavnani S, Khan JS, Cowan D, Romeril E, Lee J, Colella T, Choinière M, Busse J, Katz J, Victor JC, Hoch J, Isaranuwatchai W, Kaasalainen S, Ladak S, O'Keefe-McCarthy S, Parry M, Sessler DI, Stacey M, Stevens B, Stremler R, Thabane L, Watt-Watson J, Whitlock R, MacDermid JC, Leegaard M, McKelvie R, Hillmer M, Cooper L, Arthur G, Sider K, Oliver S, Boyajian K, Farrow M, Lawton C, Gamble D, Walsh J, Field M, LeFort S, Clyne W, Ricupero M, Poole L, Russell-Wood K, Weber M, McNeil J, Alpert R, Sharpe S, Bhella S, Mohajer D, Ponnambalam S, Lakhani N, Khan R, Liu P, Devereaux PJ.",
+        "journal": "JMIR research protocols",
+        "pmid": "27480247",
+        "doi": "10.2196/resprot.5763"
+      },
+      "usable_records": 25,
+      "undated": 0,
+      "trial_reports_excluded": 0,
+      "lead_years": 6.67,
+      "distance_class": "DISTANT"
+    }
+  ],
+  "status_counts": {
+    "AFTER_CLEARANCE": 5,
+    "SUPPORTED_BEFORE": 4
+  },
+  "distance_counts": {
+    "NEAR": 6,
+    "DISTANT": 3
+  },
+  "distance_interpretation": "a SUPPORTED_BEFORE hit whose earliest record predates the clearance by more than three years is a keyword+affiliation match decades old, NOT programme-level corroboration; only NEAR hits may be read that way, and even then a human must confirm relevance",
+  "interpretation": {
+    "SUPPORTED_BEFORE": "an independent, dated publication precedes the clearance",
+    "NO_RECORD": "the query returned nothing usable; this is a null search, not evidence of absence",
+    "AMBIGUOUS": "records exist but none is independent or dated",
+    "AFTER_CLEARANCE": "records exist but none precedes the clearance",
+    "NOT_EVALUABLE": "no clearance date or no track keywords"
+  },
+  "not_claimed": [
+    "no label: every packet remains PENDING_HUMAN_REVIEW with final_label null",
+    "no predictive claim: a paper before a clearance is compatible with routine incremental work",
+    "no aggregate claim across nine events, three firms, and a post-hoc keyword crosswalk",
+    "NO_RECORD is not evidence that no research existed"
+  ]
+}
