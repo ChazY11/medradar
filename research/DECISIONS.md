@@ -1059,3 +1059,52 @@ not relaxed to manufacture a fourth usable company. Same rule as D-029/D-030.
 **Consequence for the lag test.** It remains **unrun** with 3 usable companies, unchanged from
 D-030. Probing stopped here because the marginal firm is not obtainable from this source; continuing
 would be the specification search the mission forbids.
+
+---
+
+## D-032 — Understand layer: company technology profiles with mandatory contradictory evidence
+
+**Date:** 2026-11-02. **Status:** accepted. Closes B-027.
+
+**What this is.** `medradar/intelligence/profile.py` turns the evidence the programme already holds —
+regulatory filings with tracks and product codes, device trials — into a company technology profile.
+It is **pure computation** (plain event dictionaries in, plain dict out); database access lives in
+`experiments/b027/build_profiles.py`, so the logic is unit-tested (34 tests) and the output is
+reproducible.
+
+**The seven required fields** (this is the contract, and `validate_profile` enforces it):
+
+1. `identity` — company, resolved legal entities, aliases, as-of date, coverage window, sources
+2. `technology_footprint` — per-track event counts, first/last dates, shares, sufficiency
+3. `momentum` — last 24 months vs the 24 before, with direction and the numbers behind it
+4. `concentration` — top-track share and HHI over tracks
+5. `independent_corroboration` — per-track device-trial support, and explicitly which tracks have none
+6. `contradictory_evidence` — **the checks that were run and what they found against the reading**
+7. `limits_and_provenance` — sources, window, and what would change the conclusion
+
+**Three design rules, and why.**
+
+* **No scores.** A single number would hide the evidence and invite use as a ranking. Every statement
+  is generated from the numbers in the same structure, so prose cannot drift from evidence.
+* **Contradictory evidence is structural, not optional.** Field 6 must list the checks that were run
+  and the findings (possibly none). A profile that does not say what was looked for and not found is
+  rejected by `validate_profile`, and `render_markdown` refuses to render it. The programme's repeated
+  failure mode has been a positive reading surviving because nobody looked for its contradiction;
+  this makes that omission a schema error.
+* **Degrade honestly.** A company with no trial support, no hiring board, or sparse months says so in
+  the profile rather than being dropped or scoring zero.
+
+**What a profile licenses.** Statements of the form "in the public regulatory lane this company shows
+X events across Y tracks, momentum Z, with these specific contrary observations and these coverage
+limits". Nothing about intent, capability, internal R&D, or future direction.
+
+**What was generated.** Profiles for all five MANDATED deep-case companies (Medtronic, GE HealthCare,
+Philips, Dräger, Mindray), including the two that are not in the device roster (resolved through the
+universe module's focus list rather than being silently dropped). Medtronic: 299 events / 24 tracks,
+momentum rising (90 vs 66), 14 of 24 tracks with trial support, two declining tracks flagged. GE
+HealthCare: 274 events / 5 tracks, no contradiction found across the four checks. Dräger: 16 events /
+2 tracks — thin, and the profile says so.
+
+**Verification.** `experiments/b027/selfcheck.py` re-derives every number the Markdown states from the
+JSON (footprint rows, totals, contradiction count, entity count), checks all seven headings, and
+confirms rendering is deterministic: 5 of 5 profiles pass.

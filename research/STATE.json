@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-02T22:40:00+08:00",
+  "updated_at": "2026-11-02T23:50:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "understand_layer_priority",
-  "cycle": 13,
+  "phase": "understand_profiles_shipped",
+  "cycle": 14,
   "last_completed_cycle": {
-    "cycle": 11,
-    "name": "hiring_board_discovery_limit",
+    "cycle": 12,
+    "name": "understand_layer_profiles",
     "branch": "research/change-detection-v1",
-    "report": "experiments/b030/REPORT.md",
-    "summary": "research/RESULTS/cycle11_b048_2026-11-02.md",
-    "verdict": "board discovery found a real Philips board (669 postings / 38 months) but it fails the silence criterion; Dräger, Mindray and Masimo have no archived job-level URLs. The hiring lane covers only 1 of the 5 mandated deep-case companies (Medtronic), which is a structural limit, not an outstanding search."
+    "report": "experiments/b027/profiles.json",
+    "summary": "research/RESULTS/cycle12_profiles_2026-11-02.md",
+    "verdict": "first Understand-layer deliverable shipped: a pure, unit-tested profile engine with seven required fields (contradictory evidence is structural, not optional), and profiles generated for all five mandated deep-case companies; selfcheck 5/5, selftest 829 tests OK"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -122,7 +122,9 @@
     "METHOD: a negative conclusion about data availability is as falsifiable as a positive claim; the measurement must be checked before the conclusion is carried forward",
     "OBSERVE: board discovery added a real Philips hiring board (669 postings, 38 months) but it fails the pre-declared silence criterion; Dräger, Mindray and Masimo have no archived job-level URLs at all",
     "OBSERVE: the hiring lane covers 1 of the 5 mandated deep-case companies (Medtronic); GE HealthCare's independence dates from 2023, Philips is archived too sparsely, Dräger/Mindray post on unarchived systems",
-    "DESIGN: the mandated deep cases must be served by filings + device trials + publications, not by the hiring lane"
+    "DESIGN: the mandated deep cases must be served by filings + device trials + publications, not by the hiring lane",
+    "UNDERSTAND: seven-field company technology profiles are now generated for all five mandated deep cases from holdings alone (no new data), with contradictory evidence as a required field",
+    "UNDERSTAND: automated self-check re-derives every number the Markdown states from the JSON; 5/5 profiles pass and rendering is deterministic"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -140,10 +142,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "B-027: company technology-profile engine (Understand layer) - assemble filings, tracks, trials and entries into explicit, contradictory-evidence-aware statements for the deep-case companies",
+    "extend profiles beyond the five deep cases to the full curated roster and freeze a dated snapshot set (rolling-origin prerequisite)",
     "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there",
-    "do not resume hiring probing; the remaining firms are structurally unreachable (D-031)",
-    "B-031: revisit patents only if an accessible bulk route is identified"
+    "wire the detection frontier (cycle 3c) into the profile's momentum field so 'change' means a calibrated detection rather than a rate ratio",
+    "do not resume hiring probing (structural limit, D-031); patents only if a route opens"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -426,5 +428,68 @@
       },
       "consequence": "the hiring lane cannot serve the mandated deep-case requirement; those cases need filings, device trials and publications instead"
     }
+  },
+  "understand_layer": {
+    "status": "SHIPPED for the five mandated deep cases",
+    "library": "medradar/intelligence/profile.py (pure; 34 unit tests in tests/test_profile.py)",
+    "builder": "experiments/b027/build_profiles.py",
+    "artifacts": [
+      "experiments/b027/profiles.json",
+      "experiments/b027/profiles/*.md",
+      "experiments/b027/selfcheck.py"
+    ],
+    "seven_fields": [
+      "identity",
+      "technology_footprint",
+      "momentum",
+      "concentration",
+      "independent_corroboration",
+      "contradictory_evidence",
+      "limits_and_provenance"
+    ],
+    "design_rules": [
+      "no scores: prose is generated from the same numbers it describes",
+      "contradictory evidence is a required field; validate_profile rejects a profile without it and render_markdown refuses to render it",
+      "degrade honestly: missing trial support / hiring / sparse months are stated, not dropped"
+    ],
+    "profiles": {
+      "medtronic": {
+        "events": 299,
+        "tracks": 24,
+        "momentum": "rising (90 vs 66)",
+        "trial_supported_tracks": "14/24",
+        "contradictions": 2
+      },
+      "ge_healthcare": {
+        "events": 274,
+        "tracks": 5,
+        "momentum": "stable",
+        "trial_supported_tracks": "n/a",
+        "contradictions": 0
+      },
+      "philips": {
+        "events": 224,
+        "tracks": 11,
+        "momentum": "rising",
+        "trial_supported_tracks": "n/a",
+        "contradictions": 1
+      },
+      "draeger": {
+        "events": 16,
+        "tracks": 2,
+        "momentum": "stable",
+        "trial_supported_tracks": "n/a",
+        "contradictions": 1,
+        "note": "thin evidence - the profile states this rather than scoring it"
+      },
+      "mindray": {
+        "events": 82,
+        "tracks": 3,
+        "momentum": "rising",
+        "trial_supported_tracks": "n/a",
+        "contradictions": 1
+      }
+    },
+    "selfcheck": "experiments/b027/selfcheck.py - 5/5 profiles pass"
   }
 }

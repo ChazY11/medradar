@@ -1,0 +1,1061 @@
+{
+  "as_of": "2026-11-02",
+  "focus_companies": [
+    "medtronic",
+    "ge_healthcare",
+    "philips",
+    "draeger",
+    "mindray"
+  ],
+  "profiles": {
+    "draeger": {
+      "concentration": {
+        "hhi": 0.5,
+        "label": "highly concentrated",
+        "statement": "highly concentrated: top track respiratory holds 50% of 16 material events across 2 tracks (HHI 0.50)",
+        "status": "estimated",
+        "top_share": 0.5,
+        "top_track": "respiratory",
+        "tracks": 2
+      },
+      "contradictory_evidence": {
+        "checks": [
+          "activity_decline_by_track",
+          "single_event_tracks",
+          "sparse_months",
+          "taxonomy_churn_exposure"
+        ],
+        "field": "contradictory_evidence",
+        "found": [
+          {
+            "check": "sparse_months",
+            "implication": "monthly series are mostly zeros; rate estimates are unstable",
+            "observation": "the company has material events in 26 of 119 months (78% silent)"
+          }
+        ],
+        "statement": "1 contradictory observation(s) out of 4 checks"
+      },
+      "fields": [
+        "identity",
+        "technology_footprint",
+        "momentum",
+        "concentration",
+        "independent_corroboration",
+        "contradictory_evidence",
+        "limits_and_provenance"
+      ],
+      "identity": {
+        "aliases_resolved": [
+          "DRAEGER",
+          "DRAEGERWERK",
+          "DRAGERWERK",
+          "Dräger"
+        ],
+        "as_of": "2026-11-02",
+        "company_key": "draeger",
+        "coverage_window": {
+          "end": "2026-09",
+          "months": 119,
+          "start": "2016-11"
+        },
+        "display_name": "Dräger",
+        "entity_count": 5,
+        "entity_keys_sample": [
+          "draeger-medical-systems-18043856",
+          "draeger-medical-sytems-b5e75cbe",
+          "draegerwerk-e1e0874e",
+          "dragerwerk-029e7aa6",
+          "shanghai-draeger-medical-instrument-7d740be7"
+        ],
+        "field": "identity",
+        "sources": [
+          "data/research.sqlite (510(k)+PMA lane)",
+          "data/b040_device_trials.sqlite",
+          "config/companies_device.json",
+          "config/universe_v1.json"
+        ],
+        "statement": "Dräger: 5 resolved legal entities from 4 aliases, observed 2016-11 to 2026-09"
+      },
+      "independent_corroboration": {
+        "field": "independent_corroboration",
+        "statement": "0 of 2 technology tracks have independent device-trial support; 2 do not",
+        "tracks_with_trial_support": [],
+        "tracks_without_trial_support": [
+          "patient_monitoring",
+          "respiratory"
+        ],
+        "trial_events": 0
+      },
+      "limits_and_provenance": {
+        "as_of": "2026-11-02",
+        "field": "limits_and_provenance",
+        "hiring_status": "no archived hiring board found for this company (coverage absence, not zero hiring)",
+        "known_limits": [
+          "a detection is a statement about public regulatory activity rate, never about intent, capability or internal R&D",
+          "the lane holds ~0.2 events per cell-month, so monthly per-track rates are noisy",
+          "product-code taxonomy is not versioned by effective date",
+          "the final month of the window is partially observed"
+        ],
+        "sources": [
+          "data/research.sqlite (510(k)+PMA lane)",
+          "data/b040_device_trials.sqlite",
+          "config/companies_device.json",
+          "config/universe_v1.json"
+        ],
+        "statement": "conclusion would change under: a sustained activity change beyond the detector's measured minimum detectable effect; independent evidence (trials, hiring, publications) that contradicts the track reading",
+        "what_would_change_the_conclusion": [
+          "a sustained activity change beyond the detector's measured minimum detectable effect",
+          "independent evidence (trials, hiring, publications) that contradicts the track reading",
+          "taxonomy changes that reclassify existing activity into new product codes",
+          "entity-resolution changes that move filings between legal entities"
+        ],
+        "window": {
+          "end": "2026-09",
+          "start": "2016-11"
+        }
+      },
+      "momentum": {
+        "direction": "stable",
+        "prior": 10,
+        "prior_rate": 0.4166666666666667,
+        "ratio": 1.0,
+        "recent": 10,
+        "recent_rate": 0.4166666666666667,
+        "statement": "activity broadly stable: 10 events in the last 24 months vs 10 in the prior 24 (ratio 1.00)",
+        "status": "estimated"
+      },
+      "schema": "profile_v1",
+      "technology_footprint": {
+        "field": "technology_footprint",
+        "rows": [
+          {
+            "events": 8,
+            "first": "2019-01",
+            "last": "2026-05",
+            "share": 0.5,
+            "sufficient_evidence": true,
+            "track": "respiratory"
+          },
+          {
+            "events": 8,
+            "first": "2020-08",
+            "last": "2026-08",
+            "share": 0.5,
+            "sufficient_evidence": true,
+            "track": "patient_monitoring"
+          }
+        ],
+        "statement": "16 material events across 2 technology tracks (0 tracks rest on a single event)",
+        "total_events": 16,
+        "tracks": 2
+      }
+    },
+    "ge_healthcare": {
+      "concentration": {
+        "hhi": 0.38385103095529866,
+        "label": "moderately concentrated",
+        "statement": "moderately concentrated: top track imaging_mr_ct holds 52% of 274 material events across 5 tracks (HHI 0.38)",
+        "status": "estimated",
+        "top_share": 0.5182481751824818,
+        "top_track": "imaging_mr_ct",
+        "tracks": 5
+      },
+      "contradictory_evidence": {
+        "checks": [
+          "activity_decline_by_track",
+          "single_event_tracks",
+          "sparse_months",
+          "taxonomy_churn_exposure"
+        ],
+        "field": "contradictory_evidence",
+        "found": [],
+        "statement": "no contradictory observation found across the 4 checks run"
+      },
+      "fields": [
+        "identity",
+        "technology_footprint",
+        "momentum",
+        "concentration",
+        "independent_corroboration",
+        "contradictory_evidence",
+        "limits_and_provenance"
+      ],
+      "identity": {
+        "aliases_resolved": [
+          "GE HEALTHCARE",
+          "GE HEALTHCARE GLOBAL",
+          "GE HealthCare",
+          "GE MEDICAL",
+          "GE MEDICAL SYSTEMS"
+        ],
+        "as_of": "2026-11-02",
+        "company_key": "ge_healthcare",
+        "coverage_window": {
+          "end": "2026-09",
+          "months": 119,
+          "start": "2016-11"
+        },
+        "display_name": "GE HealthCare",
+        "entity_count": 24,
+        "entity_keys_sample": [
+          "ge-hangwei-medical-systems-8290f31c",
+          "ge-healthcare-06263bf9",
+          "ge-healthcare-coils-usa-instruments-8b0cbaed",
+          "ge-healthcare-finland-25df35ce",
+          "ge-healthcare-ge-medical-systems-ea1e4a8f",
+          "ge-healthcare-information-technologies-ba645454",
+          "ge-healthcare-japan-2faaafec",
+          "ge-healthcare-tianjin-592bdeb0"
+        ],
+        "field": "identity",
+        "sources": [
+          "data/research.sqlite (510(k)+PMA lane)",
+          "data/b040_device_trials.sqlite",
+          "config/companies_device.json",
+          "config/universe_v1.json"
+        ],
+        "statement": "GE HealthCare: 24 resolved legal entities from 5 aliases, observed 2016-11 to 2026-09"
+      },
+      "independent_corroboration": {
+        "field": "independent_corroboration",
+        "statement": "4 of 5 technology tracks have independent device-trial support; 1 do not",
+        "tracks_with_trial_support": [
+          "imaging_mr_ct",
+          "imaging_us",
+          "patient_monitoring",
+          "respiratory"
+        ],
+        "tracks_without_trial_support": [
+          "medical_ai"
+        ],
+        "trial_events": 25
+      },
+      "limits_and_provenance": {
+        "as_of": "2026-11-02",
+        "field": "limits_and_provenance",
+        "hiring_status": "1 archived postings across 1 months (posting-flow proxy, not headcount)",
+        "known_limits": [
+          "a detection is a statement about public regulatory activity rate, never about intent, capability or internal R&D",
+          "the lane holds ~0.2 events per cell-month, so monthly per-track rates are noisy",
+          "product-code taxonomy is not versioned by effective date",
+          "the final month of the window is partially observed"
+        ],
+        "sources": [
+          "data/research.sqlite (510(k)+PMA lane)",
+          "data/b040_device_trials.sqlite",
+          "config/companies_device.json",
+          "config/universe_v1.json"
+        ],
+        "statement": "conclusion would change under: a sustained activity change beyond the detector's measured minimum detectable effect; independent evidence (trials, hiring, publications) that contradicts the track reading",
+        "what_would_change_the_conclusion": [
+          "a sustained activity change beyond the detector's measured minimum detectable effect",
+          "independent evidence (trials, hiring, publications) that contradicts the track reading",
+          "taxonomy changes that reclassify existing activity into new product codes",
+          "entity-resolution changes that move filings between legal entities"
+        ],
+        "window": {
+          "end": "2026-09",
+          "start": "2016-11"
+        }
+      },
+      "momentum": {
+        "direction": "stable",
+        "prior": 48,
+        "prior_rate": 2.0,
+        "ratio": 1.1875,
+        "recent": 57,
+        "recent_rate": 2.375,
+        "statement": "activity broadly stable: 57 events in the last 24 months vs 48 in the prior 24 (ratio 1.19)",
+        "status": "estimated"
+      },
+      "schema": "profile_v1",
+      "technology_footprint": {
+        "field": "technology_footprint",
+        "rows": [
+          {
+            "events": 142,
+            "first": "2016-11",
+            "last": "2026-08",
+            "share": 0.5182481751824818,
+            "sufficient_evidence": true,
+            "track": "imaging_mr_ct"
+          },
+          {
+            "events": 88,
+            "first": "2016-11",
+            "last": "2026-09",
+            "share": 0.32116788321167883,
+            "sufficient_evidence": true,
+            "track": "imaging_us"
+          },
+          {
+            "events": 26,
+            "first": "2017-05",
+            "last": "2026-09",
+            "share": 0.0948905109489051,
+            "sufficient_evidence": true,
+            "track": "patient_monitoring"
+          },
+          {
+            "events": 15,
+            "first": "2019-08",
+            "last": "2026-09",
+            "share": 0.05474452554744526,
+            "sufficient_evidence": true,
+            "track": "medical_ai"
+          },
+          {
+            "events": 3,
+            "first": "2017-08",
+            "last": "2021-10",
+            "share": 0.010948905109489052,
+            "sufficient_evidence": true,
+            "track": "respiratory"
+          }
+        ],
+        "statement": "274 material events across 5 technology tracks (0 tracks rest on a single event)",
+        "total_events": 274,
+        "tracks": 5
+      }
+    },
+    "medtronic": {
+      "concentration": {
+        "hhi": 0.0879520363306898,
+        "label": "diversified",
+        "statement": "diversified: top track spine holds 21% of 299 material events across 24 tracks (HHI 0.09)",
+        "status": "estimated",
+        "top_share": 0.20735785953177258,
+        "top_track": "spine",
+        "tracks": 24
+      },
+      "contradictory_evidence": {
+        "checks": [
+          "activity_decline_by_track",
+          "single_event_tracks",
+          "sparse_months",
+          "taxonomy_churn_exposure"
+        ],
+        "field": "contradictory_evidence",
+        "found": [
+          {
+            "check": "activity_decline_by_track",
+            "implication": "this track is retreating, which cuts against a growth reading",
+            "observation": "surgical_energy: 2 events in the last 24 months vs 6 before"
+          },
+          {
+            "check": "activity_decline_by_track",
+            "implication": "this track is retreating, which cuts against a growth reading",
+            "observation": "ep_pfa: 1 events in the last 24 months vs 4 before"
+          }
+        ],
+        "statement": "2 contradictory observation(s) out of 4 checks"
+      },
+      "fields": [
+        "identity",
+        "technology_footprint",
+        "momentum",
+        "concentration",
+        "independent_corroboration",
+        "contradictory_evidence",
+        "limits_and_provenance"
+      ],
+      "identity": {
+        "aliases_resolved": [
+          "COVIDIEN",
+          "COVIDIEN LP",
+          "MEDTRONIC",
+          "MEDTRONIC BAKKEN",
+          "MEDTRONIC CRYOCATH",
+          "MEDTRONIC MINIMED",
+          "MEDTRONIC NEUROMODULATION",
+          "MEDTRONIC PUERTO RICO",
+          "MEDTRONIC SOFAMOR DANEK",
+          "MEDTRONIC VASCULAR",
+          "MEDTRONIC XOMED",
+          "Medtronic",
+          "TYCO HEALTHCARE"
+        ],
+        "as_of": "2026-11-02",
+        "company_key": "medtronic",
+        "coverage_window": {
+          "end": "2026-09",
+          "months": 119,
+          "start": "2016-11"
+        },
+        "display_name": "Medtronic",
+        "entity_count": 30,
+        "entity_keys_sample": [
+          "bellco-srl-now-part-of-medtronic-b301a4f5",
+          "covidien-64e830a8",
+          "covidien-part-of-medtronic-cfba3e26",
+          "given-imaging-ltd-medtronic-390da423",
+          "medicrea-international-sas-medtronic-6d63861c",
+          "medtronic-4bdceace",
+          "medtronic-advanced-energy-c1e26922",
+          "medtronic-ats-medical-2ec4b0ff"
+        ],
+        "field": "identity",
+        "sources": [
+          "data/research.sqlite (510(k)+PMA lane)",
+          "data/b040_device_trials.sqlite",
+          "config/companies_device.json",
+          "config/universe_v1.json"
+        ],
+        "statement": "Medtronic: 30 resolved legal entities from 13 aliases, observed 2016-11 to 2026-09"
+      },
+      "independent_corroboration": {
+        "field": "independent_corroboration",
+        "statement": "14 of 24 technology tracks have independent device-trial support; 10 do not",
+        "tracks_with_trial_support": [
+          "cardiac_rhythm",
+          "diabetes_cgm",
+          "ep_pfa",
+          "general_surgery",
+          "heart_failure",
+          "imaging_mr_ct",
+          "insulin_delivery",
+          "medical_ai",
+          "neurovascular",
+          "peripheral_vascular",
+          "respiratory",
+          "spine",
+          "structural_heart",
+          "vascular_access"
+        ],
+        "tracks_without_trial_support": [
+          "coronary",
+          "dialysis",
+          "endoscopy",
+          "ent",
+          "neurostimulation",
+          "ortho_joint",
+          "patient_monitoring",
+          "surgical_energy",
+          "trauma",
+          "wound_care"
+        ],
+        "trial_events": 48
+      },
+      "limits_and_provenance": {
+        "as_of": "2026-11-02",
+        "field": "limits_and_provenance",
+        "hiring_status": "5107 archived postings across 60 months (posting-flow proxy, not headcount)",
+        "known_limits": [
+          "a detection is a statement about public regulatory activity rate, never about intent, capability or internal R&D",
+          "the lane holds ~0.2 events per cell-month, so monthly per-track rates are noisy",
+          "product-code taxonomy is not versioned by effective date",
+          "the final month of the window is partially observed"
+        ],
+        "sources": [
+          "data/research.sqlite (510(k)+PMA lane)",
+          "data/b040_device_trials.sqlite",
+          "config/companies_device.json",
+          "config/universe_v1.json"
+        ],
+        "statement": "conclusion would change under: a sustained activity change beyond the detector's measured minimum detectable effect; independent evidence (trials, hiring, publications) that contradicts the track reading",
+        "what_would_change_the_conclusion": [
+          "a sustained activity change beyond the detector's measured minimum detectable effect",
+          "independent evidence (trials, hiring, publications) that contradicts the track reading",
+          "taxonomy changes that reclassify existing activity into new product codes",
+          "entity-resolution changes that move filings between legal entities"
+        ],
+        "window": {
+          "end": "2026-09",
+          "start": "2016-11"
+        }
+      },
+      "momentum": {
+        "direction": "increasing",
+        "prior": 66,
+        "prior_rate": 2.75,
+        "ratio": 1.3636363636363635,
+        "recent": 90,
+        "recent_rate": 3.75,
+        "statement": "activity rising: 90 events in the last 24 months vs 66 in the prior 24 (ratio 1.36)",
+        "status": "estimated"
+      },
+      "schema": "profile_v1",
+      "technology_footprint": {
+        "field": "technology_footprint",
+        "rows": [
+          {
+            "events": 62,
+            "first": "2016-11",
+            "last": "2026-07",
+            "share": 0.20735785953177258,
+            "sufficient_evidence": true,
+            "track": "spine"
+          },
+          {
+            "events": 36,
+            "first": "2016-11",
+            "last": "2026-09",
+            "share": 0.12040133779264214,
+            "sufficient_evidence": true,
+            "track": "surgical_energy"
+          },
+          {
+            "events": 28,
+            "first": "2017-04",
+            "last": "2026-02",
+            "share": 0.09364548494983277,
+            "sufficient_evidence": true,
+            "track": "ortho_joint"
+          },
+          {
+            "events": 20,
+            "first": "2017-03",
+            "last": "2026-08",
+            "share": 0.06688963210702341,
+            "sufficient_evidence": true,
+            "track": "medical_ai"
+          },
+          {
+            "events": 18,
+            "first": "2017-03",
+            "last": "2026-09",
+            "share": 0.06020066889632107,
+            "sufficient_evidence": true,
+            "track": "general_surgery"
+          },
+          {
+            "events": 13,
+            "first": "2016-11",
+            "last": "2024-10",
+            "share": 0.043478260869565216,
+            "sufficient_evidence": true,
+            "track": "ep_pfa"
+          },
+          {
+            "events": 13,
+            "first": "2018-02",
+            "last": "2026-03",
+            "share": 0.043478260869565216,
+            "sufficient_evidence": true,
+            "track": "insulin_delivery"
+          },
+          {
+            "events": 12,
+            "first": "2017-04",
+            "last": "2026-08",
+            "share": 0.04013377926421405,
+            "sufficient_evidence": true,
+            "track": "coronary"
+          },
+          {
+            "events": 12,
+            "first": "2017-06",
+            "last": "2026-09",
+            "share": 0.04013377926421405,
+            "sufficient_evidence": true,
+            "track": "peripheral_vascular"
+          },
+          {
+            "events": 10,
+            "first": "2017-02",
+            "last": "2025-04",
+            "share": 0.033444816053511704,
+            "sufficient_evidence": true,
+            "track": "cardiac_rhythm"
+          },
+          {
+            "events": 9,
+            "first": "2017-10",
+            "last": "2026-07",
+            "share": 0.030100334448160536,
+            "sufficient_evidence": true,
+            "track": "respiratory"
+          },
+          {
+            "events": 8,
+            "first": "2016-11",
+            "last": "2026-06",
+            "share": 0.026755852842809364,
+            "sufficient_evidence": true,
+            "track": "endoscopy"
+          },
+          {
+            "events": 8,
+            "first": "2017-09",
+            "last": "2026-06",
+            "share": 0.026755852842809364,
+            "sufficient_evidence": true,
+            "track": "neurovascular"
+          },
+          {
+            "events": 8,
+            "first": "2017-12",
+            "last": "2024-06",
+            "share": 0.026755852842809364,
+            "sufficient_evidence": true,
+            "track": "imaging_mr_ct"
+          },
+          {
+            "events": 8,
+            "first": "2023-02",
+            "last": "2026-07",
+            "share": 0.026755852842809364,
+            "sufficient_evidence": true,
+            "track": "wound_care"
+          },
+          {
+            "events": 7,
+            "first": "2017-02",
+            "last": "2025-08",
+            "share": 0.023411371237458192,
+            "sufficient_evidence": true,
+            "track": "structural_heart"
+          },
+          {
+            "events": 6,
+            "first": "2016-11",
+            "last": "2021-07",
+            "share": 0.020066889632107024,
+            "sufficient_evidence": true,
+            "track": "vascular_access"
+          },
+          {
+            "events": 4,
+            "first": "2016-11",
+            "last": "2021-12",
+            "share": 0.013377926421404682,
+            "sufficient_evidence": true,
+            "track": "patient_monitoring"
+          },
+          {
+            "events": 4,
+            "first": "2018-07",
+            "last": "2022-01",
+            "share": 0.013377926421404682,
+            "sufficient_evidence": true,
+            "track": "dialysis"
+          },
+          {
+            "events": 3,
+            "first": "2017-10",
+            "last": "2020-08",
+            "share": 0.010033444816053512,
+            "sufficient_evidence": true,
+            "track": "trauma"
+          },
+          {
+            "events": 3,
+            "first": "2018-03",
+            "last": "2025-08",
+            "share": 0.010033444816053512,
+            "sufficient_evidence": true,
+            "track": "diabetes_cgm"
+          },
+          {
+            "events": 3,
+            "first": "2022-01",
+            "last": "2025-11",
+            "share": 0.010033444816053512,
+            "sufficient_evidence": true,
+            "track": "neurostimulation"
+          },
+          {
+            "events": 2,
+            "first": "2017-09",
+            "last": "2023-04",
+            "share": 0.006688963210702341,
+            "sufficient_evidence": true,
+            "track": "heart_failure"
+          },
+          {
+            "events": 2,
+            "first": "2020-12",
+            "last": "2026-02",
+            "share": 0.006688963210702341,
+            "sufficient_evidence": true,
+            "track": "ent"
+          }
+        ],
+        "statement": "299 material events across 24 technology tracks (0 tracks rest on a single event)",
+        "total_events": 299,
+        "tracks": 24
+      }
+    },
+    "mindray": {
+      "concentration": {
+        "hhi": 0.5478881618084473,
+        "label": "highly concentrated",
+        "statement": "highly concentrated: top track imaging_us holds 71% of 82 material events across 3 tracks (HHI 0.55)",
+        "status": "estimated",
+        "top_share": 0.7073170731707317,
+        "top_track": "imaging_us",
+        "tracks": 3
+      },
+      "contradictory_evidence": {
+        "checks": [
+          "activity_decline_by_track",
+          "single_event_tracks",
+          "sparse_months",
+          "taxonomy_churn_exposure"
+        ],
+        "field": "contradictory_evidence",
+        "found": [
+          {
+            "check": "sparse_months",
+            "implication": "monthly series are mostly zeros; rate estimates are unstable",
+            "observation": "the company has material events in 58 of 119 months (51% silent)"
+          }
+        ],
+        "statement": "1 contradictory observation(s) out of 4 checks"
+      },
+      "fields": [
+        "identity",
+        "technology_footprint",
+        "momentum",
+        "concentration",
+        "independent_corroboration",
+        "contradictory_evidence",
+        "limits_and_provenance"
+      ],
+      "identity": {
+        "aliases_resolved": [
+          "MINDRAY",
+          "Mindray"
+        ],
+        "as_of": "2026-11-02",
+        "company_key": "mindray",
+        "coverage_window": {
+          "end": "2026-09",
+          "months": 119,
+          "start": "2016-11"
+        },
+        "display_name": "Mindray",
+        "entity_count": 2,
+        "entity_keys_sample": [
+          "shenzhen-mindray-bio-medical-electronics-b4ea0e74",
+          "shenzhen-mindray-bio-meidcal-electronics-c80d59aa"
+        ],
+        "field": "identity",
+        "sources": [
+          "data/research.sqlite (510(k)+PMA lane)",
+          "data/b040_device_trials.sqlite",
+          "config/companies_device.json",
+          "config/universe_v1.json"
+        ],
+        "statement": "Mindray: 2 resolved legal entities from 2 aliases, observed 2016-11 to 2026-09"
+      },
+      "independent_corroboration": {
+        "field": "independent_corroboration",
+        "statement": "0 of 3 technology tracks have independent device-trial support; 3 do not",
+        "tracks_with_trial_support": [],
+        "tracks_without_trial_support": [
+          "imaging_us",
+          "patient_monitoring",
+          "respiratory"
+        ],
+        "trial_events": 0
+      },
+      "limits_and_provenance": {
+        "as_of": "2026-11-02",
+        "field": "limits_and_provenance",
+        "hiring_status": "no archived hiring board found for this company (coverage absence, not zero hiring)",
+        "known_limits": [
+          "a detection is a statement about public regulatory activity rate, never about intent, capability or internal R&D",
+          "the lane holds ~0.2 events per cell-month, so monthly per-track rates are noisy",
+          "product-code taxonomy is not versioned by effective date",
+          "the final month of the window is partially observed"
+        ],
+        "sources": [
+          "data/research.sqlite (510(k)+PMA lane)",
+          "data/b040_device_trials.sqlite",
+          "config/companies_device.json",
+          "config/universe_v1.json"
+        ],
+        "statement": "conclusion would change under: a sustained activity change beyond the detector's measured minimum detectable effect; independent evidence (trials, hiring, publications) that contradicts the track reading",
+        "what_would_change_the_conclusion": [
+          "a sustained activity change beyond the detector's measured minimum detectable effect",
+          "independent evidence (trials, hiring, publications) that contradicts the track reading",
+          "taxonomy changes that reclassify existing activity into new product codes",
+          "entity-resolution changes that move filings between legal entities"
+        ],
+        "window": {
+          "end": "2026-09",
+          "start": "2016-11"
+        }
+      },
+      "momentum": {
+        "direction": "increasing",
+        "prior": 12,
+        "prior_rate": 0.5,
+        "ratio": 1.5,
+        "recent": 18,
+        "recent_rate": 0.75,
+        "statement": "activity rising: 18 events in the last 24 months vs 12 in the prior 24 (ratio 1.50)",
+        "status": "estimated"
+      },
+      "schema": "profile_v1",
+      "technology_footprint": {
+        "field": "technology_footprint",
+        "rows": [
+          {
+            "events": 58,
+            "first": "2016-12",
+            "last": "2026-05",
+            "share": 0.7073170731707317,
+            "sufficient_evidence": true,
+            "track": "imaging_us"
+          },
+          {
+            "events": 16,
+            "first": "2017-08",
+            "last": "2026-05",
+            "share": 0.1951219512195122,
+            "sufficient_evidence": true,
+            "track": "patient_monitoring"
+          },
+          {
+            "events": 8,
+            "first": "2018-01",
+            "last": "2026-06",
+            "share": 0.0975609756097561,
+            "sufficient_evidence": true,
+            "track": "respiratory"
+          }
+        ],
+        "statement": "82 material events across 3 technology tracks (0 tracks rest on a single event)",
+        "total_events": 82,
+        "tracks": 3
+      }
+    },
+    "philips": {
+      "concentration": {
+        "hhi": 0.376594387755102,
+        "label": "moderately concentrated",
+        "statement": "moderately concentrated: top track imaging_mr_ct holds 57% of 224 material events across 11 tracks (HHI 0.38)",
+        "status": "estimated",
+        "top_share": 0.5669642857142857,
+        "top_track": "imaging_mr_ct",
+        "tracks": 11
+      },
+      "contradictory_evidence": {
+        "checks": [
+          "activity_decline_by_track",
+          "single_event_tracks",
+          "sparse_months",
+          "taxonomy_churn_exposure"
+        ],
+        "field": "contradictory_evidence",
+        "found": [
+          {
+            "check": "single_event_tracks",
+            "implication": "a single filing is an anecdote; treat these tracks as unconfirmed",
+            "observation": "3 track(s) rest on a single event: dental, respiratory, vascular_access"
+          }
+        ],
+        "statement": "1 contradictory observation(s) out of 4 checks"
+      },
+      "fields": [
+        "identity",
+        "technology_footprint",
+        "momentum",
+        "concentration",
+        "independent_corroboration",
+        "contradictory_evidence",
+        "limits_and_provenance"
+      ],
+      "identity": {
+        "aliases_resolved": [
+          "PHILIPS",
+          "PHILIPS HEALTHCARE",
+          "PHILIPS IMAGE GUIDED THERAPY",
+          "PHILIPS MEDICAL SYSTEMS",
+          "PHILIPS NORTH AMERICA",
+          "PHILIPS ULTRASOUND",
+          "Philips"
+        ],
+        "as_of": "2026-11-02",
+        "company_key": "philips",
+        "coverage_window": {
+          "end": "2026-09",
+          "months": 119,
+          "start": "2016-11"
+        },
+        "display_name": "Philips",
+        "entity_count": 36,
+        "entity_keys_sample": [
+          "connected-sensing-a-division-of-philips-dbaf7082",
+          "invivo-corporation-business-trade-name-p-6df2e614",
+          "philips-consumer-lifestyle-8c33f23b",
+          "philips-consumer-lifestyle-innovation-si-9030d06c",
+          "philips-ds-north-america-abc47bc5",
+          "philips-e75dd829",
+          "philips-electronics-nederland-a989c0f9",
+          "philips-france-commercial-7f75ad12"
+        ],
+        "field": "identity",
+        "sources": [
+          "data/research.sqlite (510(k)+PMA lane)",
+          "data/b040_device_trials.sqlite",
+          "config/companies_device.json",
+          "config/universe_v1.json"
+        ],
+        "statement": "Philips: 36 resolved legal entities from 7 aliases, observed 2016-11 to 2026-09"
+      },
+      "independent_corroboration": {
+        "field": "independent_corroboration",
+        "statement": "9 of 11 technology tracks have independent device-trial support; 2 do not",
+        "tracks_with_trial_support": [
+          "dental",
+          "imaging_mr_ct",
+          "imaging_us",
+          "medical_ai",
+          "patient_monitoring",
+          "peripheral_vascular",
+          "respiratory",
+          "vascular_access",
+          "wearable_remote"
+        ],
+        "tracks_without_trial_support": [
+          "aesthetics",
+          "cardiac_rhythm"
+        ],
+        "trial_events": 36
+      },
+      "limits_and_provenance": {
+        "as_of": "2026-11-02",
+        "field": "limits_and_provenance",
+        "hiring_status": "669 archived postings across 38 months (posting-flow proxy, not headcount)",
+        "known_limits": [
+          "a detection is a statement about public regulatory activity rate, never about intent, capability or internal R&D",
+          "the lane holds ~0.2 events per cell-month, so monthly per-track rates are noisy",
+          "product-code taxonomy is not versioned by effective date",
+          "the final month of the window is partially observed"
+        ],
+        "sources": [
+          "data/research.sqlite (510(k)+PMA lane)",
+          "data/b040_device_trials.sqlite",
+          "config/companies_device.json",
+          "config/universe_v1.json"
+        ],
+        "statement": "conclusion would change under: a sustained activity change beyond the detector's measured minimum detectable effect; independent evidence (trials, hiring, publications) that contradicts the track reading",
+        "what_would_change_the_conclusion": [
+          "a sustained activity change beyond the detector's measured minimum detectable effect",
+          "independent evidence (trials, hiring, publications) that contradicts the track reading",
+          "taxonomy changes that reclassify existing activity into new product codes",
+          "entity-resolution changes that move filings between legal entities"
+        ],
+        "window": {
+          "end": "2026-09",
+          "start": "2016-11"
+        }
+      },
+      "momentum": {
+        "direction": "increasing",
+        "prior": 36,
+        "prior_rate": 1.5,
+        "ratio": 2.0277777777777777,
+        "recent": 73,
+        "recent_rate": 3.0416666666666665,
+        "statement": "activity rising: 73 events in the last 24 months vs 36 in the prior 24 (ratio 2.03)",
+        "status": "estimated"
+      },
+      "schema": "profile_v1",
+      "technology_footprint": {
+        "field": "technology_footprint",
+        "rows": [
+          {
+            "events": 127,
+            "first": "2016-11",
+            "last": "2026-08",
+            "share": 0.5669642857142857,
+            "sufficient_evidence": true,
+            "track": "imaging_mr_ct"
+          },
+          {
+            "events": 45,
+            "first": "2016-11",
+            "last": "2026-09",
+            "share": 0.20089285714285715,
+            "sufficient_evidence": true,
+            "track": "imaging_us"
+          },
+          {
+            "events": 23,
+            "first": "2017-03",
+            "last": "2026-02",
+            "share": 0.10267857142857142,
+            "sufficient_evidence": true,
+            "track": "patient_monitoring"
+          },
+          {
+            "events": 12,
+            "first": "2018-10",
+            "last": "2026-03",
+            "share": 0.05357142857142857,
+            "sufficient_evidence": true,
+            "track": "medical_ai"
+          },
+          {
+            "events": 7,
+            "first": "2019-03",
+            "last": "2026-09",
+            "share": 0.03125,
+            "sufficient_evidence": true,
+            "track": "wearable_remote"
+          },
+          {
+            "events": 3,
+            "first": "2019-06",
+            "last": "2021-01",
+            "share": 0.013392857142857142,
+            "sufficient_evidence": true,
+            "track": "cardiac_rhythm"
+          },
+          {
+            "events": 2,
+            "first": "2016-12",
+            "last": "2023-12",
+            "share": 0.008928571428571428,
+            "sufficient_evidence": true,
+            "track": "peripheral_vascular"
+          },
+          {
+            "events": 2,
+            "first": "2025-02",
+            "last": "2025-12",
+            "share": 0.008928571428571428,
+            "sufficient_evidence": true,
+            "track": "aesthetics"
+          },
+          {
+            "events": 1,
+            "first": "2017-07",
+            "last": "2017-07",
+            "share": 0.004464285714285714,
+            "sufficient_evidence": false,
+            "track": "dental"
+          },
+          {
+            "events": 1,
+            "first": "2024-07",
+            "last": "2024-07",
+            "share": 0.004464285714285714,
+            "sufficient_evidence": false,
+            "track": "respiratory"
+          },
+          {
+            "events": 1,
+            "first": "2025-06",
+            "last": "2025-06",
+            "share": 0.004464285714285714,
+            "sufficient_evidence": false,
+            "track": "vascular_access"
+          }
+        ],
+        "statement": "224 material events across 11 technology tracks (3 tracks rest on a single event)",
+        "total_events": 224,
+        "tracks": 11
+      }
+    }
+  },
+  "schema": "profiles_v1",
+  "window": [
+    "2016-11",
+    "2026-09"
+  ]
+}
