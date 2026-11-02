@@ -2616,3 +2616,40 @@ first set is retained only as the record of the registration defect.
 The objective audit now checks committed forecast sets directly — validating structure and recomputing each
 content hash — instead of relying on the local, git-ignored registry. Current audit line: *"2 hash-verified
 forecast set(s); 25 genuinely prospective forecasts pending maturation"*.
+
+---
+
+## D-067 — B-069: second paper (methods), with its own machine-verified claim map
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-069.
+
+**Why a second paper rather than a longer first one.** The empirical paper answers an empirical question and
+carries five retractions plus one confirmed rule. The transferable output — the **measurement discipline** that
+produced those retractions — is a different claim about a different audience: people building self-auditing
+research systems. Folding it into the first paper would bury it in a results narrative.
+
+**What the methods paper contains.** Nine rules, each tied to the specific failure that motivated it: state the
+unit you measure (entity appearance vs firm entry, **79 %** of entry events); a ratio is not evidence (**35 of 53**
+vs **4**; MDE range **1.77×–22.93×**); a benchmark outcome must not use the window that triggered the signal
+(**0.49 → 1.22**); a holdout cannot confirm a hypothesis nominated with its help (**3** nominated, **0**
+confirmed); a negative conclusion about data availability is as falsifiable as a positive claim (**11** firms after
+the collector fix); robustness in the preferred direction is not validation; check the pipeline, not just the
+statistics; report class-specific recall (**Rule 8**); and a forecast registered after its outcome is known is a
+label (**7** of 32 forecasts, Brier **0.337**).
+
+**Two mechanisms, described as the enforcement layer.** The profile schema rejects a profile without contradictory
+evidence; the round-end command's exit code is the completion claim. The paper argues that rules in prose decay and
+these do not.
+
+**Two results that needed an intermediate category.** The density confirmation (post-failure: **0.018** inversion,
+**0.023** overlap, rank correlation **0.882** then **0.908** with effect ratio **2.18×**) and the pipeline test that
+found the detector but not the filter (**0.800 / 0.667 / 0.373**; difference **+0.133**, interval **−0.074 …
+0.344**). Both are reported as what they are rather than forced into "confirmed" or "refuted".
+
+**Sourcing, same rule as the first paper.** `papers/CLAIMS_METHODS.json` declares **22** quantitative claims with
+their artifacts and exact substrings; `verify_claims.py --claims` checks both directions. The round-end routine now
+runs **both** claim maps, so the methods paper cannot drift either.
+
+**Status.** Draft v1: not submitted, no venue claimed. Known gap: it is a practice report from one programme, not a
+validated framework; the paper says so in its own discussion, citing the instrumentation artefact the programme
+found in its own negative conclusion.

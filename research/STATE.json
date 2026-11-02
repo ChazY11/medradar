@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T22:40:00+08:00",
+  "updated_at": "2026-11-03T23:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "frozen_forecasts_registered",
-  "cycle": 37,
+  "phase": "two_papers_shipped",
+  "cycle": 38,
   "last_completed_cycle": {
-    "cycle": 35,
-    "name": "frozen_prospective_forecasts",
+    "cycle": 36,
+    "name": "methods_paper",
     "branch": "research/change-detection-v1",
-    "report": "research/forecasts/FORECAST_SET_2026-11-03_prospective.json",
-    "summary": "research/RESULTS/cycle35_forecasts_2026-11-03.md",
-    "verdict": "frozen forecast capability shipped: 25 genuinely prospective forecasts (13 promoted, 12 not) with content hash and explicit maturation dates; the first registration exposed 7 backfilled labels, which are excluded and reported (Brier 0.337, accuracy 0.429 - no better than the majority class)"
+    "report": "papers/PAPER_METHODS_v1.md",
+    "summary": "research/RESULTS/cycle36_methods_paper_2026-11-03.md",
+    "verdict": "second paper shipped: nine measurement rules each tied to the failure that motivated it, the two enforcement mechanisms, and two results needing an intermediate category; its own 22-claim map verifies in both directions and the round-end gate now runs both claim maps (8 steps)"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -176,7 +176,9 @@
     "EVALUATE: end-to-end, alerts persist far more than non-alert cell-quarters (0.80 / 0.67 vs 0.37) - the detector carries real information about persistence",
     "EVALUATE: the promotion filter's MARGINAL value is NOT established (difference +0.133, CI -0.074..0.344) with only 33 unpromoted alerts; it remains justified by shape-classification performance, not by this test",
     "PREDICT: 25 genuinely prospective forecasts are frozen with content hashes and explicit maturation dates (2026-Q4..2028-Q1); editing them breaks the hash and the maturer refuses to score",
-    "METHOD: 7 of the first 32 forecasts were backfilled (their outcome windows were already observed); they score Brier 0.337 / accuracy 0.429, no better than the majority class, and are excluded as evidence"
+    "METHOD: 7 of the first 32 forecasts were backfilled (their outcome windows were already observed); they score Brier 0.337 / accuracy 0.429, no better than the majority class, and are excluded as evidence",
+    "PUBLISH: two papers now exist with independent machine-verified claim maps (82 and 22 claims) and the round-end gate runs both, so neither can drift",
+    "PUBLISH: the methods paper names nine rules each tied to the specific failure that motivated it, and the two enforcement mechanisms that make the rules structural rather than advisory"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -194,10 +196,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "mature the prospective set as the lane advances (earliest 2026-Q4) and report Brier/calibration",
-    "run tools/round_end.py as the gate at the end of every round",
-    "consider a second paper focused on the measurement rules and the two confirmations",
-    "decide whether the promotion ledger should log relabelling events"
+    "mature the prospective forecast set as the lane advances (earliest 2026-Q4)",
+    "keep tools/round_end.py as the gate at the end of every round",
+    "refresh ROADMAP with what is done and what remains before the objective is declared complete",
+    "consider adding a figure to the methods paper showing the retraction-to-rule mapping"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -832,6 +834,22 @@
       "ramp_reporting_floor_events_per_month": 1.0,
       "below_floor_label": "sustained_unresolved",
       "reason": "D-061: ramp recall is density-limited, so the label is withheld where measurement cannot support it; promotion itself is unaffected"
+    },
+    "second_paper": {
+      "paper": "papers/PAPER_METHODS_v1.md",
+      "claims": "papers/CLAIMS_METHODS.json (22)",
+      "verifier": "papers/verify_claims.py --claims papers/CLAIMS_METHODS.json",
+      "index": "papers/README.md",
+      "rules": 9,
+      "mechanisms": [
+        "contradictory-evidence schema",
+        "round-end completion gate"
+      ],
+      "intermediate_category_results": [
+        "post-failure density confirmation",
+        "pipeline test: detector yes, filter unestablished"
+      ],
+      "status": "draft v1, not submitted"
     }
   },
   "detection_layer": {

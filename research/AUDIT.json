@@ -12,7 +12,7 @@
     {
       "requirement": "backlog integrity",
       "status": "PASS",
-      "evidence": "56 tasks, statuses {'done': 42, 'blocked': 4, 'todo': 9, 'frozen': 1}",
+      "evidence": "57 tasks, statuses {'done': 43, 'blocked': 4, 'todo': 9, 'frozen': 1}",
       "detail": {
         "duplicates": []
       }
@@ -20,16 +20,16 @@
     {
       "requirement": "state completeness",
       "status": "PASS",
-      "evidence": "phase='frozen_forecasts_registered', cycle=37",
+      "evidence": "phase='two_papers_shipped', cycle=38",
       "detail": {
         "absent": [],
-        "findings": 91
+        "findings": 93
       }
     },
     {
       "requirement": "loop ran and was recorded",
       "status": "PASS",
-      "evidence": "66 decisions, 133 result rows (27 negative/null), retractions marked: 2",
+      "evidence": "67 decisions, 136 result rows (27 negative/null), retractions marked: 2",
       "detail": {}
     },
     {
@@ -101,7 +101,7 @@
     {
       "requirement": "working tree committed",
       "status": "N/A",
-      "evidence": "14 uncommitted path(s) at audit time",
+      "evidence": "16 uncommitted path(s) at audit time",
       "detail": {}
     }
   ],

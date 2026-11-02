@@ -1,8 +1,8 @@
 {
   "schema": "round_end_v1",
-  "checked_at_utc": "2026-11-02T05:28:41+00:00",
+  "checked_at_utc": "2026-11-02T05:31:27+00:00",
   "branch": "research/change-detection-v1",
-  "head": "fd91b0289486b1751191810fcb3f930f317c47ec",
+  "head": "5b77dd3c440e8ca9e0484fa58b790347ad75a98c",
   "remote_synced": true,
   "uncommitted_paths": [
     "M research/AUDIT.json",
@@ -11,14 +11,16 @@
     " M research/DECISIONS.md",
     " M research/RESULTS/README.md",
     " M research/STATE.json",
-    " M tools/audit.log",
-    " M tools/audit_objectives.py",
+    " M tools/round_end.json",
+    " M tools/round_end.log",
+    " M tools/round_end.py",
     " M tools/round_end_console.log",
-    "?? experiments/b068/",
-    "?? medradar/intelligence/forecasts.py",
-    "?? research/RESULTS/cycle35_forecasts_2026-11-03.md",
-    "?? research/forecasts/",
-    "?? tests/test_forecasts.py"
+    "?? papers/CLAIMS_METHODS.json",
+    "?? papers/PAPER_METHODS_v1.md",
+    "?? papers/README.md",
+    "?? papers/build_claims_methods.py",
+    "?? papers/update_state_cycle36.py",
+    "?? research/RESULTS/cycle36_methods_paper_2026-11-03.md"
   ],
   "results": [
     {
@@ -31,6 +33,12 @@
       "step": "paper claim map",
       "status": "PASS",
       "detail": "claims checked: 82; failures: 0",
+      "exit": 0
+    },
+    {
+      "step": "methods claim map",
+      "status": "PASS",
+      "detail": "claims checked: 22; failures: 0",
       "exit": 0
     },
     {
@@ -60,11 +68,11 @@
     {
       "step": "repository state",
       "status": "PASS",
-      "detail": "HEAD fd91b0289486, remote synced, 14 uncommitted path(s)"
+      "detail": "HEAD 5b77dd3c440e, remote synced, 16 uncommitted path(s)"
     }
   ],
   "summary": {
-    "passed": 7,
+    "passed": 8,
     "failed": 0,
     "skipped": 0,
     "not_applicable": 0

@@ -33,6 +33,9 @@ OUT_LOG = ROOT / "tools" / "round_end.log"
 STEPS = (
     ("test suite", [sys.executable, "-m", "medradar", "selftest"], ("Ran ", "OK (")),
     ("paper claim map", [sys.executable, "papers/verify_claims.py"], ("claims checked",)),
+    ("methods claim map", [sys.executable, "papers/verify_claims.py", "--paper",
+                           "papers/PAPER_METHODS_v1.md", "--claims",
+                           "papers/CLAIMS_METHODS.json"], ("claims checked",)),
     ("paper figures", [sys.executable, "papers/verify_figures.py"], ("figures checked",)),
     ("profile self-check", [sys.executable, "experiments/b027/selfcheck.py"], ("checked ", "snapshots")),
     ("snapshot chain", [sys.executable, "experiments/b027/snapshot_diff.py"], ("leakage problems",)),

@@ -718,4 +718,19 @@ tasks:
       set of 25 (13 promoted, 12 not; 7 backfilled excluded; earliest maturation 2026-Q4; hash 09525994...). The
       objective audit verifies committed sets by structure and hash.
 
+  - id: B-069
+    layer: publish
+    priority: P1
+    title: Second paper — measurement rules derived from the retractions
+    status: done
+    owner: lead
+    depends_on: [B-063, B-068]
+    acceptance: >
+      papers/PAPER_METHODS_v1.md: nine rules each tied to the failure that motivated it, the two enforcement
+      mechanisms (contradictory-evidence schema; round-end command), and the two results needing an intermediate
+      category (post-failure density confirmation; pipeline test that found the detector not the filter).
+      papers/CLAIMS_METHODS.json declares 22 quantitative claims with artifacts and exact substrings;
+      verify_claims.py --claims checks both directions (22/22). round_end.py now runs both claim maps (8 steps).
+      papers/README.md indexes the two papers and how to read them together.
+
 
