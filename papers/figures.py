@@ -9,6 +9,7 @@ Figures:
   fig2_calibration.svg       rate ratio vs exact p-value across 53 companies, detected marked (cycle 14)
   fig3_rolling_origin.svg    rolling-origin lift with company-clustered CIs (cycle 15)
   fig4_verdict_stability.svg verdict per company across four as-of dates (cycle 16)
+  fig5_retraction_rules.svg  which measurement rule each failure motivated (methods paper)
 
     python papers/figures.py
 """
@@ -37,10 +38,11 @@ def esc(text: Any) -> str:
     return (str(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
 
 
-def svg_open(title: str, subtitle: str = "") -> list[str]:
-    lines = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
-             f'viewBox="0 0 {W} {H}" font-family="Helvetica, Arial, sans-serif">',
-             f'<rect width="{W}" height="{H}" fill="#ffffff"/>',
+def svg_open(title: str, subtitle: str = "", height: int | None = None) -> list[str]:
+    canvas = H if height is None else height
+    lines = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{canvas}" '
+             f'viewBox="0 0 {W} {canvas}" font-family="Helvetica, Arial, sans-serif">',
+             f'<rect width="{W}" height="{canvas}" fill="#ffffff"/>',
              f'<text x="{MARGIN["left"]}" y="22" font-size="15" font-weight="bold">{esc(title)}</text>']
     if subtitle:
         lines.append(f'<text x="{MARGIN["left"]}" y="38" font-size="11" fill="#555">'
@@ -288,6 +290,62 @@ def figure_stability(stability: dict[str, Any]) -> tuple[str, list[dict[str, Any
     return svg_close(lines), plotted
 
 
+# ------------------------------------------------------------------ figure 5
+def figure_rules_map() -> tuple[str, list[dict[str, Any]]]:
+    """Which measurement rule each failure (or confirmation) motivated."""
+    from rules_map import RULES, STATUS_COLOURS, map_data
+
+    rows = map_data()
+    canvas_height = 600
+    filled = sum(len(row["rules"]) for row in rows)
+    lines = svg_open("Figure 1. Which measurement rule each failure motivated",
+                     f"{len(rows)} events, {len(RULES)} rules, {filled} filled cells "
+                     f"(methods paper)", height=canvas_height)
+    left, top = 246.0, 74.0
+    grid_width = 330.0
+    status_x = left + grid_width + 14
+    row_height = 40.0
+    column_width = grid_width / len(RULES)
+    for column in RULES:
+        label(lines, left + column_width * (column - 0.5), top - 12, str(column), size=10,
+              anchor="middle", colour="#444", weight="bold")
+    grid_height = row_height * len(rows)
+    for row_index, row in enumerate(rows):
+        y = top + row_height * row_index
+        label(lines, left - 12, y + row_height * 0.45, row["event"], size=9, anchor="end",
+              colour="#333")
+        label(lines, left - 12, y + row_height * 0.45 + 12, row["decision"], size=7.5,
+              anchor="end", colour="#999")
+        for column in RULES:
+            marked = column in row["rules"]
+            fill = STATUS_COLOURS.get(row["status"], "#333") if marked else "#f4f4f4"
+            lines.append(f'<rect x="{left + column_width * (column - 1) + 2:.1f}" '
+                         f'y="{y + 5:.1f}" width="{column_width - 4:.1f}" '
+                         f'height="{row_height - 10:.1f}" fill="{fill}" '
+                         f'stroke="#ffffff" stroke-width="0.8"/>')
+        label(lines, status_x, y + row_height * 0.45 + 3, row["status"], size=8,
+              colour=STATUS_COLOURS.get(row["status"], "#333"))
+    # legend below the grid, in two rows, so it cannot cover a heading or run off the canvas
+    legend_y = top + grid_height + 30
+    for index, (status, colour) in enumerate(STATUS_COLOURS.items()):
+        row, column = divmod(index, 3)
+        legend_x = left + column * 168
+        y = legend_y + row * 20
+        lines.append(f'<rect x="{legend_x}" y="{y - 9}" width="11" height="10" '
+                     f'fill="{colour}" stroke="#999" stroke-width="0.5"/>')
+        label(lines, legend_x + 16, y, status, size=8.5)
+    legend_y += 26
+    label(lines, left, legend_y + 30,
+          "columns are the nine rules of the methods paper; a filled cell means that event motivated "
+          "that rule", size=9, colour="#555")
+    label(lines, left, legend_y + 46,
+          "shading marks the event's outcome; the id under each label is the committed decision record",
+          size=9, colour="#555")
+    plotted = [{"event": row["event"], "status": row["status"], "decision": row["decision"],
+                "rules": row["rules"]} for row in rows]
+    return svg_close(lines), plotted
+
+
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     benchmark = json.loads(Path("experiments/detect_v1/benchmark.json").read_text(encoding="utf-8"))
@@ -303,10 +361,14 @@ def main() -> int:
         ("fig2_calibration", figure_calibration(calibration)),
         ("fig3_rolling_origin", figure_rolling(rolling)),
         ("fig4_verdict_stability", figure_stability(stability)),
+        ("fig5_retraction_rules", figure_rules_map()),
     ):
         path = OUT / f"{name}.svg"
         path.write_text(markup, encoding="utf-8", newline="\n")
         figures[name] = {"svg": str(path), "points": len(data), "data": data}
+        if name == "fig5_retraction_rules":
+            figures[name]["filled_cells"] = sum(len(row["rules"]) for row in data)
+            figures[name]["rules"] = len({rule for row in data for rule in row["rules"]})
         print(f"wrote {path} ({len(markup)} bytes, {len(data)} plotted points)")
 
     payload = {
@@ -316,6 +378,7 @@ def main() -> int:
             "fig2_calibration": "experiments/b027/momentum_calibration.json",
             "fig3_rolling_origin": "experiments/b050/rolling_origin.json",
             "fig4_verdict_stability": "experiments/b027/verdict_stability.json",
+            "fig5_retraction_rules": "papers/rules_map.py",
         },
         "figures": figures,
     }

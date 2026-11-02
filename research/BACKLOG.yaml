@@ -749,4 +749,19 @@ tasks:
       coverage). research/MISSION.md keeps section 9 as the 2026-11-02 record and adds section 10 with today's
       position, established and unchanged. Audit stays 11 PASS / 0 FAIL / 1 N/A.
 
+  - id: B-071
+    layer: publish
+    priority: P2
+    title: Figure 1 of the methods paper — the retraction-to-rule map
+    status: done
+    owner: lead
+    depends_on: [B-069]
+    acceptance: >
+      papers/figures/fig5_retraction_rules.svg generated from papers/rules_map.py: ten events, nine rules, 21
+      filled cells; verify_figures.py re-derives every cell and compares with figures_data.json. Three layout
+      defects found only by a headless-Edge render (legend covering columns 8-9, decision ids printed on top of
+      event labels, legend running off the canvas) and fixed; recorded as a recurring class. PAPER_METHODS_v1.md
+      links the figure with captions tied to the counts; CLAIMS_METHODS.json is now 25 claims, three asserting the
+      figure's numbers; the round-end gate runs both figure verifications (9 steps).
+
 

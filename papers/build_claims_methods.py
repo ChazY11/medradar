@@ -34,6 +34,11 @@ CLAIMS = [
     ("K20", "pipeline promotion difference", "+0.133", "research/DECISIONS.md", "0.133"),
     ("K21", "pipeline promotion interval lower bound", "−0.074", "research/DECISIONS.md", "\u22120.074"),
     ("K22", "pipeline promotion interval upper bound", "0.344", "research/DECISIONS.md", "0.344"),
+    ("K23", "rule map filled cells", "21 filled cells", "papers/figures/figures_data.json",
+     '"filled_cells": 21'),
+    ("K24", "events in the rule map", "ten events", "papers/figures/figures_data.json",
+     '"points": 10'),
+    ("K25", "rules in the rule map", "nine rules", "papers/figures/figures_data.json", '"rules": 9'),
 ]
 
 

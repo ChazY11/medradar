@@ -2688,3 +2688,37 @@ state; the mission is a charter and must keep its history. Appending to both wou
 
 **Not claimed.** That the programme is complete: maturation is time-dependent and three lanes are access-dependent.
 The roadmap now says so in the place a reader will look first.
+
+---
+
+## D-069 — B-071: Figure 1 of the methods paper, and the layout defects its first render exposed
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-071.
+
+**What was built.** A fifth figure, `papers/figures/fig5_retraction_rules.svg`, mapping ten events in the
+programme's record to the nine rules they motivated: **21 filled cells**, six retractions (including the hiring
+coverage conclusion, which motivated Rule 5), two confirmations, one unestablished result and one excluded forecast
+set. The map lives in `papers/rules_map.py`, so the drawing and the verification read the same source;
+`verify_figures.py` re-derives every cell and compares it with the recorded data.
+
+**What the count shows, and why it is worth a figure.** Rule 7 (check the pipeline, not just the statistics) is
+motivated by **four** separate events and Rule 3 (a benchmark outcome must not use the triggering window) by
+**three** — the two rules a reader is most likely to dismiss as boilerplate are the two with the most independent
+evidence behind them. Rule 5 and Rule 6 have exactly one origin each, which is stated rather than evened out.
+
+**The layout defects, found only by rendering.** The first version pushed its legend over columns 8 and 9 (two
+column headings were invisible), printed the decision id on top of the event label, and ran the legend off the right
+edge of the canvas. None of these is visible in the SVG source and none would be caught by `check_svg`, which
+validates structure, not legibility. The fix was to move the legend into two rows below the grid, offset the decision
+ids under their labels, and shrink the grid so the status column fits. This is the fourth time in the programme that
+a headless-browser render found a defect the verifier could not — recorded because it is a recurring class, not an
+accident.
+
+**Supporting changes.** `papers/PAPER_METHODS_v1.md` gains the figure with a caption that states the counts;
+`CLAIMS_METHODS.json` grows to **25** claims, three of which assert the figure's own numbers (21 filled cells, ten
+events, nine rules) against `figures_data.json`; `verify_figures.py` now takes the paper into account when deciding
+which figures a paper must link, so the methods paper is checked for its figure and the empirical paper for its four;
+and the round-end gate runs both figure verifications, making the gate **9 steps**.
+
+**Not claimed.** That the map is exhaustive — it records the events that motivated rules, not every failed
+experiment; several negative results informed no new rule and are listed only in the results index.

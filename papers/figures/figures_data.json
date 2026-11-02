@@ -4,7 +4,8 @@
     "fig1_frontier": "experiments/detect_v1/benchmark.json",
     "fig2_calibration": "experiments/b027/momentum_calibration.json",
     "fig3_rolling_origin": "experiments/b050/rolling_origin.json",
-    "fig4_verdict_stability": "experiments/b027/verdict_stability.json"
+    "fig4_verdict_stability": "experiments/b027/verdict_stability.json",
+    "fig5_retraction_rules": "papers/rules_map.py"
   },
   "figures": {
     "fig1_frontier": {
@@ -1128,6 +1129,105 @@
           "reversed": true
         }
       ]
+    },
+    "fig5_retraction_rules": {
+      "svg": "papers\\figures\\fig5_retraction_rules.svg",
+      "points": 10,
+      "data": [
+        {
+          "event": "entity-appearance entry signal",
+          "status": "retracted",
+          "decision": "D-025",
+          "rules": [
+            1,
+            6,
+            7
+          ]
+        },
+        {
+          "event": "lane co-movement",
+          "status": "retracted",
+          "decision": "D-021",
+          "rules": [
+            3,
+            8
+          ]
+        },
+        {
+          "event": "cross-lane corroboration",
+          "status": "retracted",
+          "decision": "D-023",
+          "rules": [
+            3,
+            7
+          ]
+        },
+        {
+          "event": "IVD entry wave",
+          "status": "retracted",
+          "decision": "D-027",
+          "rules": [
+            1,
+            4,
+            7
+          ]
+        },
+        {
+          "event": "aesthetics split sample",
+          "status": "retracted",
+          "decision": "D-027",
+          "rules": [
+            4
+          ]
+        },
+        {
+          "event": "hiring coverage conclusion",
+          "status": "retracted",
+          "decision": "D-029",
+          "rules": [
+            5,
+            7
+          ]
+        },
+        {
+          "event": "density scaling",
+          "status": "confirmed after failure",
+          "decision": "D-059",
+          "rules": [
+            2,
+            3,
+            9
+          ]
+        },
+        {
+          "event": "promotion rule",
+          "status": "confirmed",
+          "decision": "D-043",
+          "rules": [
+            1,
+            8
+          ]
+        },
+        {
+          "event": "pipeline filter",
+          "status": "unestablished",
+          "decision": "D-065",
+          "rules": [
+            2,
+            8
+          ]
+        },
+        {
+          "event": "backfilled forecasts",
+          "status": "excluded",
+          "decision": "D-066",
+          "rules": [
+            9
+          ]
+        }
+      ],
+      "filled_cells": 21,
+      "rules": 9
     }
   }
 }

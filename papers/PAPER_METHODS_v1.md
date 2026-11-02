@@ -84,6 +84,19 @@ snapshot, **7** had outcome windows already observed and matured immediately; th
 an accuracy equal to the majority-class rate. They are excluded, and registration now filters on outcome windows
 entirely in the future.
 
+### Figure 1 — which failure motivated which rule
+
+![Figure 1. Which measurement rule each failure motivated](figures/fig5_retraction_rules.svg)
+
+*Figure 1* (`fig5_retraction_rules`) maps ten events in the programme's record — six retractions, two
+confirmations, one unestablished result and one excluded forecast set — to the nine rules they motivated
+(**21 filled cells**). Filled cells are shaded by outcome; the decision id under each row is the committed record of
+the event. The
+pattern is worth noticing: **Rule 7** (check the pipeline, not just the statistics) is motivated by four separate
+events and **Rule 3** (a benchmark outcome must not use the triggering window) by three, which is why both are
+enforced in code rather than in prose. The figure is generated from `papers/rules_map.py` and re-derived by
+`papers/verify_figures.py`, so the drawing and the check cannot drift apart.
+
 ---
 
 ## 3. Two mechanisms that enforce discipline

@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-04T00:40:00+08:00",
+  "updated_at": "2026-11-04T01:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "roadmap_current",
-  "cycle": 39,
+  "phase": "methods_figure_shipped",
+  "cycle": 40,
   "last_completed_cycle": {
-    "cycle": 37,
-    "name": "roadmap_and_position_refresh",
+    "cycle": 38,
+    "name": "methods_figure",
     "branch": "research/change-detection-v1",
-    "report": "research/ROADMAP.md",
-    "summary": "research/RESULTS/cycle37_roadmap_2026-11-03.md",
-    "verdict": "roadmap rewritten as a plan of record where every capability cites its evidence, with a section stating what remains and why it cannot be simulated; mission section 10 added while section 9 is preserved as the 2026-11-02 record"
+    "report": "papers/figures/fig5_retraction_rules.svg",
+    "summary": "research/RESULTS/cycle38_rules_figure_2026-11-03.md",
+    "verdict": "fifth figure maps ten events to nine rules (21 filled cells); Rules 7 and 3 carry the most independent evidence (four and three events). Three layout defects were found only by a rendered check and fixed; the methods paper now links its own figure and the gate runs both figure verifications (9 steps)"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -180,7 +180,9 @@
     "PUBLISH: two papers now exist with independent machine-verified claim maps (82 and 22 claims) and the round-end gate runs both, so neither can drift",
     "PUBLISH: the methods paper names nine rules each tied to the specific failure that motivated it, and the two enforcement mechanisms that make the rules structural rather than advisory",
     "GOVERN: the roadmap now cites an artifact for every capability and names the remaining work as time- or access-dependent rather than open-ended",
-    "GOVERN: the mission distinguishes charter history (section 9, 2026-11-02) from current position (section 10) instead of overwriting the record"
+    "GOVERN: the mission distinguishes charter history (section 9, 2026-11-02) from current position (section 10) instead of overwriting the record",
+    "PUBLISH: the retraction-to-rule map shows Rule 7 (check the pipeline) motivated by four separate events and Rule 3 (benchmark outcome independence) by three - the two most 'boilerplate'-looking rules have the most independent evidence",
+    "METHOD: a rendered check caught three layout defects the SVG validator could not (legend covering column headings, overlapping labels, legend off-canvas); this is the fourth such case and is now treated as a recurring class rather than an accident"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -198,10 +200,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "consider a retraction-to-rule figure for the methods paper (material already exists)",
-    "run tools/round_end.py as the gate at the end of every round",
+    "mark backlog items whose data is structurally unavailable as blocked rather than open",
     "mature the prospective forecast set when the lane advances (earliest 2026-Q4)",
-    "review backlog items whose data is structurally unavailable and mark them blocked rather than open"
+    "keep tools/round_end.py as the gate at the end of every round",
+    "consider a rendering check step for figures in the gate (currently manual)"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -851,7 +853,20 @@
         "post-failure density confirmation",
         "pipeline test: detector yes, filter unestablished"
       ],
-      "status": "draft v1, not submitted"
+      "status": "draft v1, not submitted",
+      "figures": {
+        "file": "papers/figures/fig5_retraction_rules.svg",
+        "source": "papers/rules_map.py",
+        "events": 10,
+        "rules": 9,
+        "filled_cells": 21,
+        "max_rule": {
+          "rule": 7,
+          "events": 4
+        },
+        "claims": 3,
+        "gate_step": "methods figures"
+      }
     }
   },
   "detection_layer": {

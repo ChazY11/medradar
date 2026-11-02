@@ -67,11 +67,25 @@ def expected_stability() -> list[dict]:
              "reversed": bool(detail[company]["reversed"])} for company in sorted(detail)]
 
 
+def expected_rules_map() -> list[dict]:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from rules_map import map_data
+    return map_data()
+
+
 EXPECTED = {
     "fig1_frontier": expected_frontier,
     "fig2_calibration": expected_calibration,
     "fig3_rolling_origin": expected_rolling,
     "fig4_verdict_stability": expected_stability,
+    "fig5_retraction_rules": expected_rules_map,
+}
+
+#: which figures each paper is required to link; every SVG is still validated and re-derived either way
+FIGURES_FOR_PAPER = {
+    "PAPER_v1.md": ("fig1_frontier", "fig2_calibration", "fig3_rolling_origin",
+                    "fig4_verdict_stability"),
+    "PAPER_METHODS_v1.md": ("fig5_retraction_rules",),
 }
 
 
@@ -124,10 +138,11 @@ def main(argv: list[str] | None = None) -> int:
             if json.dumps(want, sort_keys=True) != json.dumps(got, sort_keys=True):
                 failures.append(f"{name}: point {index} differs from source artifact")
                 break
-        if name not in paper:
-            failures.append(f"{name}: figure not referenced in the paper")
-        if f"{name}.svg" not in paper:
-            failures.append(f"{name}: paper does not link the SVG file")
+        if name in FIGURES_FOR_PAPER.get(Path(args.paper).name, ()):
+            if name not in paper:
+                failures.append(f"{name}: figure not referenced in the paper")
+            if f"{name}.svg" not in paper:
+                failures.append(f"{name}: paper does not link the SVG file")
         print(f"{name}: {len(recorded)} points re-derived from source, SVG valid")
     print(f"\nfigures checked: {len(EXPECTED)}; failures: {len(failures)}")
     for failure in failures:
