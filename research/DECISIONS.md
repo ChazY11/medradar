@@ -649,3 +649,62 @@ address the cause.
 signals?") now has one honest, re-runnable answer at device-track granularity: **none detectable**
 between the two independent lanes. That is a finding about this data, not about the industry, and it
 is the third consecutive cycle in which a tempting positive dissolved under a better design.
+
+---
+
+## D-024 — Entry-cohort unit of analysis: design fixed before the run, outcome recorded after
+
+**Date:** 2026-11-02. **Status:** accepted. Closes B-042.
+
+**Sequencing, stated explicitly.** The design was written into `experiments/detect_v1/entries.py`'s
+module docstring and its constants **before** the script was first executed (the commit history shows
+script and results together, but the docstring is the pre-declaration). The outcome is recorded here
+afterwards. There was no tuning against results: the constants (36-month dormancy, 24-month minimum
+observation, 2000 permutations, seed 7, BH q = 0.10, minimum 3 entries per unit) were never changed
+after the first run.
+
+**Why a new unit.** Every previous cycle hit the same wall: at (entity, track, month) granularity the
+lane holds ~0.2 events/month, so cell-level statistics are starved and all four earlier tests were
+underpowered or null. The event that actually matters for the mission — *a company entering a
+technology track it has not been active in* — is far denser (4,814 events) and is the right unit for
+"are competitors moving into a technology together?"
+
+**Design.** Entry = a cell's first observed event, at least 24 months into the window. Risk set at
+month m = firms already observable (any prior event) that have not yet touched the track. Null: the
+unit's entries are distributed over months with probability proportional to its at-risk count, which
+conditions out lane growth and risk-set shrinkage — the two confounds that invalidated the naive
+co-movement test in D-021. Statistic: dispersion index (variance/mean) of monthly entry counts. Both
+tests are run per track (industry clustering) and per firm (strategic-redirection bursts).
+
+**Outcome.**
+
+| run | entries | tracks rejected (BH q=0.10) | firms rejected |
+|---|---:|---|---|
+| all events | 4,814 | 0 of 38 (smallest p = 0.0040, `medical_ai`) | 0 of 60 |
+| **taxonomy-churn controlled** | 4,590 | **1 of 36: `ivd_immuno`** (p = 0.0010, z = 4.73) | 0 of 60 |
+
+1. **The density ceiling is lifted.** 4,814 entry events versus roughly 0.2 events per cell-month:
+   the cohort unit makes the industry question testable at all.
+2. **One technology track shows FDR-controlled industry entry clustering**, and it is *not* a churn
+   artifact: `ivd_immuno` strengthens when the 467 events on 506 late-created product codes are
+   removed (p 0.0055 → 0.0010), which is the opposite of what churn would do. `medical_ai`'s apparent
+   clustering weakens under the same filter (p 0.0040 → 0.0365 and no longer FDR-significant), i.e.
+   part of the "AI wave" in entry counts was new product codes appearing.
+3. **No firm shows entry bursts.** 0 of 60 firms reject: strategic redirection, at least as measured
+   by simultaneous multi-track entry, is not a detectable pattern in this lane.
+4. **The surviving signal is single.** One rejection among 36 tests under 10 % FDR is *suggestive,
+   not established*; a lone rejection is compatible with a false discovery. What makes it credible is
+   the robustness direction (strengthening under the churn control), not the p-value alone.
+
+**What this licenses.** "At least one device technology area (immunoassay IVD) shows a detectable
+industry-wide wave of first entries across firms, after controlling for risk-set size and product-code
+churn" — a narrow, falsifiable, re-runnable claim, and the first positive empirical finding of the
+programme that survived its own controls.
+
+**What it does not license.** That the wave is technology-driven rather than, for example, a
+procurement/regulatory-classification effect; that entry timing is predictable; or that any firm
+deliberately synchronised. Those are Understand-layer questions.
+
+**Next step this opens.** A focused case study of `ivd_immuno` entry waves (2019 and 2023-24), asking
+which firms entered, with what evidence, and whether the wave is visible in the independent
+device-trial lane collected in B-040 — the first test with a *positive* target rather than a null.

@@ -355,7 +355,7 @@ tasks:
     layer: observe
     priority: P1
     title: Company entry-cohort unit of analysis
-    status: todo
+    status: done
     owner: lead
     depends_on: [B-040]
     acceptance: >
@@ -364,3 +364,19 @@ tasks:
       timing relates to independent signals (trials, publications) at cohort level rather than by
       monthly correlation. Report whether the density ceiling that killed the cell-level tests is
       actually lifted, and if not, say so.
+
+
+  - id: B-043
+    layer: understand
+    priority: P1
+    title: ivd_immuno entry-wave case study (first positive target)
+    status: todo
+    owner: lead
+    depends_on: [B-042, B-040]
+    acceptance: >
+      Case study of the surviving positive signal: which firms entered the immunoassay IVD track in
+      the 2019 and 2023-24 waves, with what supporting evidence (product codes, device/trial activity,
+      publications), and whether the wave is visible in the independent B-040 device-trial lane. Must
+      include contradictory evidence and an explicit statement of what would make the wave an artifact
+      (regulatory reclassification, acquisition-driven relabelling, procurement effects). This is the
+      first test in the programme with a positive target rather than a null.
