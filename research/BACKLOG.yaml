@@ -1,4 +1,4 @@
-# MedRadar Foresight Lab — backlog
+﻿# MedRadar Foresight Lab — backlog
 # Realigned 2026-11-02 to Observe -> Understand -> Anticipate (DECISIONS D-011).
 # layer: observe | understand | anticipate | foundation | outside-mission
 # priority: P0 = scientific reliability floor; P1 = technology-change detection / observe;
@@ -246,7 +246,7 @@ tasks:
     layer: observe
     priority: P0
     title: Identify a genuinely independent confirmation source for detected changes
-    status: blocked
+    status: done
     owner: unassigned
     acceptance: >
       A source whose publication path is INDEPENDENT of the FDA filing system (e.g. ClinicalTrials
@@ -339,7 +339,7 @@ tasks:
     layer: observe
     priority: P0
     title: Collect ClinicalTrials.gov DEVICE trials with device-track mapping
-    status: todo
+    status: done
     owner: lead
     depends_on: [B-033]
     acceptance: >
@@ -349,3 +349,18 @@ tasks:
       deterministic entity normaliser. Report coverage against the 104 detection cells; then run
       the independent-confirmation test (detected regulatory changes vs matched control periods).
       This is the only currently identified path to answering "is the detected change real?".
+
+
+  - id: B-042
+    layer: observe
+    priority: P1
+    title: Company entry-cohort unit of analysis
+    status: todo
+    owner: lead
+    depends_on: [B-040]
+    acceptance: >
+      Replace cell-month counts with an entry-cohort design: for each company, the sequence of
+      technology-track entries over time, so density no longer limits inference. Test whether entry
+      timing relates to independent signals (trials, publications) at cohort level rather than by
+      monthly correlation. Report whether the density ceiling that killed the cell-level tests is
+      actually lifted, and if not, say so.

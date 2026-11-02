@@ -1,0 +1,161 @@
+{
+  "collection": {
+    "collector_stats_from_log": {
+      "device_track_matched": 1181,
+      "device_trials": 1949,
+      "errors": 0,
+      "events": 2663,
+      "in_window": 2663,
+      "interventional": 2663,
+      "match_rate": 0.5528,
+      "matched": 1472,
+      "studies_returned": 4130,
+      "track_match_rate": 0.4799,
+      "track_matched": 1278,
+      "truncated": false
+    },
+    "command": "python experiments/b040/collect_device_trials.py",
+    "max_pages_per_term": 3,
+    "max_requests_cap": 360,
+    "reference_date": "2026-11-02",
+    "requests_used": 107,
+    "sponsor_terms_planned": 82,
+    "sponsor_watchlist": "config/companies_device.json (51 curated device companies)",
+    "window_months": 122
+  },
+  "known_limits": [
+    "sponsor resolution covers 55% of returned studies",
+    "device-track mapping is keyword-based and covers 48%",
+    "3-page/term cap makes large sponsors a sample, not a census",
+    "trials attach to a company, not to a legal sub-entity"
+  ],
+  "regeneration_note": "The rows are NOT committed (data/ is git-ignored and the registry is live). Re-running the collector reproduces the method, not the exact sample; this manifest pins what was collected on the date above so the analysis can be audited.",
+  "schema": "b040_device_trials_manifest_v1",
+  "source": {
+    "endpoint": "https://clinicaltrials.gov/api/v2/studies",
+    "knowledge_time": "study first-posted date",
+    "licence": "public domain (US NIH registry)",
+    "name": "ClinicalTrials.gov API v2",
+    "study_type": "INTERVENTIONAL"
+  },
+  "stored": {
+    "attributable_to_curated_company": 1472,
+    "date_range": [
+      "2016-09-07",
+      "2026-10-29"
+    ],
+    "device_intervention_studies": 1949,
+    "distinct_companies": 46,
+    "distinct_device_tracks": 43,
+    "mapped_to_device_track": 1278,
+    "trial_events": 2663
+  },
+  "top_companies": [
+    {
+      "company_key": "alcon",
+      "events": 144
+    },
+    {
+      "company_key": "johnson_johnson_medtech",
+      "events": 124
+    },
+    {
+      "company_key": "cooper_companies",
+      "events": 111
+    },
+    {
+      "company_key": "masimo",
+      "events": 100
+    },
+    {
+      "company_key": "boston_scientific",
+      "events": 95
+    },
+    {
+      "company_key": "abbott",
+      "events": 94
+    },
+    {
+      "company_key": "medtronic",
+      "events": 82
+    },
+    {
+      "company_key": "philips",
+      "events": 72
+    },
+    {
+      "company_key": "fresenius_medical_care",
+      "events": 57
+    },
+    {
+      "company_key": "ge_healthcare",
+      "events": 54
+    },
+    {
+      "company_key": "edwards_lifesciences",
+      "events": 50
+    },
+    {
+      "company_key": "zimmer_biomet",
+      "events": 42
+    },
+    {
+      "company_key": "resmed",
+      "events": 36
+    },
+    {
+      "company_key": "biotronik",
+      "events": 34
+    },
+    {
+      "company_key": "smith_nephew",
+      "events": 31
+    }
+  ],
+  "tracks": {
+    "cardiac_rhythm": 38,
+    "cmf": 2,
+    "coronary": 12,
+    "dental": 23,
+    "diabetes_cgm": 135,
+    "dialysis": 39,
+    "ecmo": 2,
+    "endoscopy": 25,
+    "ent": 4,
+    "ep_pfa": 43,
+    "general_surgery": 11,
+    "heart_failure": 65,
+    "imaging_mr_ct": 36,
+    "imaging_us": 45,
+    "infection_control": 11,
+    "insulin_delivery": 24,
+    "ivd_hematology": 8,
+    "ivd_immuno": 9,
+    "ivd_liquid_biopsy": 1,
+    "ivd_molecular": 12,
+    "ivd_mrd": 1,
+    "ivd_poct": 6,
+    "medical_ai": 44,
+    "neurostimulation": 29,
+    "neurovascular": 48,
+    "ophthalmology": 225,
+    "ortho_joint": 22,
+    "oxygen_therapy": 7,
+    "patient_monitoring": 79,
+    "peripheral_vascular": 17,
+    "rehab_exo": 11,
+    "respiratory": 74,
+    "resuscitation": 7,
+    "spine": 4,
+    "structural_heart": 37,
+    "surgical_energy": 6,
+    "surgical_robotics": 3,
+    "trauma": 3,
+    "urology": 45,
+    "vascular_access": 20,
+    "wearable_remote": 20,
+    "womens_health": 10,
+    "wound_care": 15
+  },
+  "written_at_utc": "2026-11-02T03:24:06+00:00"
+}

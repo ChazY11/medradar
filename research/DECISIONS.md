@@ -557,3 +557,95 @@ negative direction must **not** be read as anti-synchronisation.
 At this granularity and with this lane, the defensible output is per-firm change plus track-level
 growth, and any cross-firm statement needs either denser data (device trials, patents, hiring) or a
 different unit of analysis (e.g. entry cohorts rather than month co-activity).
+
+---
+
+## D-022 — B-040 device-trial lane collected; lag analysis pre-declared before any association is computed
+
+**Date:** 2026-11-02. **Status:** accepted.
+
+Cycle 4 established that the shipped spine has no source able to confirm a detected regulatory
+change, because the only other registry in it (ClinicalTrials.gov) was mapped to *drug* tracks
+disjoint from the device tracks (0 of 104 cells matchable). B-040 closes that gap by **collection**,
+not by re-description.
+
+**What was collected.** `experiments/b040/collect_device_trials.py` invokes the repository's
+existing, audited device-trial collector against ClinicalTrials.gov API v2 into a **new, disposable**
+database (`data/b040_device_trials.sqlite`); the frozen research lane is never touched.
+
+* 82 sponsor terms planned from the curated 51-company device watchlist; 107 requests used
+  (bounded by the collector's own 3-page/term and 360-request caps); 0 errors.
+* 4,130 studies returned → 2,663 interventional studies inside the window → **2,663 trial events**
+  stored, 2016-09-07 … 2026-10-29.
+* 1,472 (55 %) attributable to a curated device company by sponsor resolution; 1,278 (48 %) mapped
+  to a **device** track; 1,181 are device-intervention studies with a device track; 43 distinct
+  device tracks covered.
+* Knowledge time = study first-posted date; per-study match evidence (confidence, alias,
+  device-intervention flag) stored in the payload.
+
+**Honest limitations of the lane.** Sponsor resolution covers 55 % of returned studies (the rest are
+academic centres, subsidiaries without a curated alias, or other firms). Track mapping is
+keyword-based on device intervention text (48 % coverage) and is therefore noisy in the same way the
+regulatory lane's 6 % fallback is noisy. The 3-page/term cap truncates very large sponsors, so the
+lane is a sample, not a census. All of this must be carried into any claim.
+
+**The analysis, pre-declared before computing any association.** With two independent monthly lanes
+(regulatory clearances and device trials) mapped to the same (company, device track) cells, the
+question is mission question 3 — **the time relation between public signals** — asked for the first
+time with a genuinely independent pair:
+
+1. Cell set: (curated company, device track) pairs with at least 6 regulatory events and at least 3
+   trial events over the 119-month window (floors fixed now, before seeing any correlation).
+2. Statistic: cross-correlation of the two monthly count series at lags −6 … +12 months, where a
+   positive lag means **regulatory activity leads trial activity**.
+3. Inference: pool per-cell correlations by Fisher z, with an entity-cluster bootstrap over cells;
+   null distribution from circularly shifting each cell's trial series (preserves each series' own
+   autocorrelation and volume profile, destroys cross-series alignment).
+4. Reporting: the lag profile with intervals, the cell count, and an explicit statement of whether
+   the design has power to detect a correlation of the size the literature would suggest; if it does
+   not, that is the result.
+
+**Predictions, stated so the outcome can count against them.** A positive association at lag 0–6
+(regulatory clearances accompanying or slightly trailing trial activity, since trials usually start
+before a device is cleared) is the most plausible shape. A flat lag profile would mean the two
+lanes carry unrelated information about a cell — which would weaken any "evidence fusion" claim.
+Either outcome is reportable.
+
+---
+
+## D-023 — B-040 outcome: an independent device-trial lane now exists, and it shows no association with clearances
+
+**Date:** 2026-11-02. **Status:** accepted. Closes B-033 and B-040.
+
+**The gap is closed.** Cycle 4 measured that no source in the spine could confirm a detected
+regulatory change, because the only other registry present was mapped to drug tracks (0 of 104 cells
+matchable). B-040 collected **ClinicalTrials.gov device trials into a new, disposable database**
+using the repository's audited collector: 2,663 trial events (2016-09 … 2026-10) from 4,130 returned
+studies, 46 companies, **43 device tracks**, 55 % attributable to a curated company, 48 % mapped to a
+device track, 107 requests, 0 errors (`experiments/b040/collection_manifest.json`).
+
+**The pre-declared test (D-022) returns a null.** Cells carrying both lanes: 26; passing the
+pre-registered activity floors: **16**. The cross-correlation profile from −6 to +12 months lies
+inside the circular-shift null interval at every lag; the largest observed value is r = 0.036 at lag
++7 (null band [−0.046, +0.048]). There is no detectable aligned time structure, in either direction,
+at this granularity.
+
+**Licensed.** Any claim that device-trial activity and regulatory clearance activity "confirm one
+another" at the cell level is unsupported by this test — including the evidence-fusion premise that
+motivated collecting the lane. The premise must now be argued from a different design, not asserted.
+
+**Not licensed.** This is not evidence that trials and clearances are unrelated. Three limits
+dominate and are stated in `experiments/b040/REPORT.md`: coverage (55 %/48 %), sparsity (floors of 3
+and 6 events over 119 months mean the series are mostly zero), and granularity (trials attach to a
+company, not to a legal sub-entity, so a multi-subsidiary firm is pooled while its clearances sit in
+separate entities).
+
+**What would move this forward** — and what would not. More lag-window variants on the same 16 cells
+would not; the limit is signal density. The two declared data gaps (hiring, patents) and a different
+unit of analysis (company-entry cohorts rather than cell-month counts) are the only routes that
+address the cause.
+
+**Consequence for the mission.** Mission question 3 ("what are the time relations between public
+signals?") now has one honest, re-runnable answer at device-track granularity: **none detectable**
+between the two independent lanes. That is a finding about this data, not about the industry, and it
+is the third consecutive cycle in which a tempting positive dissolved under a better design.
