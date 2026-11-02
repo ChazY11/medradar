@@ -33,10 +33,10 @@ portfolio, what appeared for the first time, and where China still has a gap.
 | Replay | **400-step, 7-year timeline** (2019–2026) with 10/25/50 bps cost tiers; 1-minute fills for the last 7 days |
 | Frontier radar | **50 device tracks across 23 domains**; AdCom schedules/materials, first-posted trials, pre-submissions and designations in one feed |
 | Research integrity | Clinical holds, RTF, CRL, pre-submissions and designations are separate; absolute abnormal returns above 100% are audited and excluded from inference |
-| Market-to-R&D | **6,701 point-in-time company–track examples** (25 quarterly origins) from 55,090 FDA events + 43,420 SEC facts + 3,453 procurement awards; Reverse R&D baseline, honest negative result (below) |
+| Market-to-R&D | **6,701 continuation + 41,003 dormant→active entry examples** (25/24 quarterly origins) from 55,090 FDA events + 43,420 SEC facts + 3,453 procurement awards; purged multi-window evaluation and a 7-source ablation, honest negative result (below) |
 | Research infrastructure | Bitemporal knowledge store (valid time vs knowledge time) and an immutable forecast registry with as-of scoring; deterministic point-in-time export |
 | Simulated book | in-sample, long-only, not investment advice |
-| Tests | **578 offline tests**, no network, no API key |
+| Tests | **625 offline tests**, no network, no API key |
 | Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |
 | Products | 204 families, **2,740 Chinese product names** |
 | Research | event-time model, point-in-time signals, block bootstrap, Holm correction |
@@ -297,24 +297,50 @@ python -m medradar.intelligence.pipeline collect --source procurement --start-da
 python -m medradar.intelligence.pipeline research --horizon 12
 ```
 
-Frozen real-data run (`experiments/reverse_rd_v1/`, rebuilt 2026-11-02): 55,090 in-window FDA
-events · 43,420 SEC facts over 32 companies · 3,453 procurement awards (obligations, 0 point-in-time
-usable) · 6,701 examples over 25 quarterly origins · holdout 2025-10-01 (307 rows / 129 positives).
+### Frozen real-data runs (rebuilt 2026-11-02)
 
-| Holdout metric (purged labels) | R&D only | R&D + consolidated financials |
+**v1** (`experiments/reverse_rd_v1/`): 55,090 in-window FDA events · 43,420 SEC facts over 32
+companies · 3,453 procurement awards (obligations, 0 point-in-time usable) · 6,701 examples over 25
+quarterly origins · holdout 2025-10-01 (307 rows / 129 positives).
+
+**v2** (`experiments/reverse_rd_v2/`): purged multi-window evaluation (3 chronological holdouts
+2025-04 / 2025-07 / 2025-10) plus a harder **dormant→active track-entry** target — 41,003 examples
+over 24 origins, 503 positives (1.23% base rate), with an explicit left-censoring statement.
+
+| Holdout 2025-10-01 | Continuation (307 rows / 129 pos) | Entry (1,716 rows / 26 pos) |
 |---|---:|---:|
-| PR-AUC | 0.7935 | 0.7922 |
-| Brier ↓ | 0.1721 | 0.1721 |
-| ECE-10 ↓ | 0.0811 | 0.0737 |
-| FPR @ 0.5 ↓ | 0.2753 | 0.2640 |
+| PR-AUC, R&D only | 0.7935 | 0.1139 |
+| PR-AUC, + consolidated financials | 0.7922 | 0.1163 |
+| Brier, R&D only / + financials | 0.1721 / 0.1721 | 0.0143 / 0.0143 |
+| ECE-10, R&D only / + financials | 0.0811 / 0.0737 | 0.0041 / 0.0046 |
 
-**The honest result is negative on two fronts.** Consolidated SEC financial features do not add a
-stable out-of-sample gain (holdout PR-AUC −0.0013; the small development gain does not replicate).
-And the headline PR-AUC is mostly persistence: a no-feature "this company–track pair historically
-produced events at rate x" baseline scores AP 0.7913 versus the model's 0.7935 — the paired
-bootstrap difference is +0.003 with a 95% CI of [−0.032, +0.037]. v1 predicts *continuation of
-public activity in an already-active pair*; it does not demonstrate foresight about first entry, and
-nothing here supports a claim that financial markets drive R&D.
+**Source ablation (A–G on identical purged rows, 3 windows).** Market features (8, from the local
+daily price lane), OpenAlex publication features (5) and consolidated financials were each added on
+top of the R&D-only baseline. **No added source produces a statistically detectable ranking gain.**
+On continuation every marginal PR-AUC delta is negative (financial −0.0013, market −0.0015,
+publication −0.0001, all −0.0068) while the all-source model improves calibration (ECE 0.0811→0.0628)
+and FPR (0.2753→0.2472) — better calibrated, not better ranking. On entry the final holdout favours
+the shared-only baseline over the entry-specific/new-feature specifications, while the three-window
+mean favours the richer specs; the differences sit inside the 0.014–0.026 window std, so they are not
+a stable effect. Procurement is excluded (its snapshot is not point-in-time usable) and patents were
+**not evaluated** (USPTO Open Data Portal requires an API key); hiring is deferred. The continuation
+headline is still mostly persistence: a per-pair base-rate baseline scores AP 0.7913 vs the model's
+0.7935 (Δ +0.0022, 95% CI [−0.032, +0.037]).
+
+```bash
+pip install -e '.[bulk]'          # only extra: ijson, for streaming the official openFDA ZIPs
+python -m medradar.intelligence.pipeline collect --source fda --months 120
+python -m medradar.intelligence.pipeline collect --source sec
+python -m medradar.intelligence.pipeline collect --source procurement --start-date 2016-01-01
+python -m medradar.intelligence.pipeline collect --source market --prices-db /path/to/base-medradar/data/medradar.sqlite
+python -m medradar.intelligence.pipeline collect --source publications
+# v1 aggregates
+python -m medradar.intelligence.pipeline research --horizon 12
+# v2: entry dataset + multi-window metrics, then one cell per source specification
+python experiments/reverse_rd_v2/run_v2.py --db data/medradar.sqlite --holdouts 3
+python experiments/reverse_rd_v2/run_ablation.py --db data/medradar.sqlite --target continuation --spec C --out cells/continuation_C.json
+python experiments/reverse_rd_v2/merge_ablation.py --cells cells --out experiments/reverse_rd_v2/ablation_metrics.json
+```
 
 A separate two-layer research foundation sits under this lane: a **bitemporal knowledge store**
 (`medradar/tkg`) with independent valid-time / knowledge-time queries, deterministic point-in-time
@@ -326,8 +352,10 @@ accuracy claim on their own.
 SEC revenue stays consolidated (never relabelled product sales). USAspending obligations are not
 revenue and its current snapshot is excluded from historical gain claims. See
 [Reverse R&D methodology](docs/REVERSE_RD.md), the [integration record](docs/INTEGRATION_2026-11-02.md),
-[docs/TKG.md](docs/TKG.md), [docs/FORECAST_REGISTRY.md](docs/FORECAST_REGISTRY.md), and the frozen
-experiment configuration/results under `experiments/reverse_rd_v1/`.
+[docs/TKG.md](docs/TKG.md), [docs/FORECAST_REGISTRY.md](docs/FORECAST_REGISTRY.md),
+[docs/PHASE1.md](docs/PHASE1.md), [docs/PHASE2.md](docs/PHASE2.md), and the frozen experiment
+configuration/results under `experiments/reverse_rd_v1/` (v1) and `experiments/reverse_rd_v2/`
+(v2 multi-window + source ablation).
 
 ## Simulated US-equity study (not investment advice)
 
@@ -385,13 +413,16 @@ tests/          offline tests (synthetic fixtures, no network)
 - [x] `v0.3.0` — consolidated research foundation (bitemporal TKG + immutable forecast registry) and
   Market-to-R&D lane (SEC XBRL / USAspending / openFDA bulk, point-in-time dataset, purged
   rolling-origin baseline, independent leakage replay, naive/persistence baselines)
-- [ ] Phase 1 — harder targets: first entry into a new technology track (censoring-aware) instead of
-  continuation only; ≥3 independent holdout windows; causal-hypothesis designs (DiD / synthetic control)
-- [ ] Phase 2 — patent (PatentsView) and publication (OpenAlex) features; market features from the
-  existing daily price table (12m return, volatility, drawdown, relative SPY/XBI, regime), all daily
-  point-in-time; then A–F ablation under the same purged protocol
+- [x] `v0.4.0` Phase 1 — harder target: dormant→active track entry (left-censored, documented);
+  purged multi-window evaluation (`holdouts=K`) with per-window baselines and bootstrap CIs
+- [x] `v0.4.0` Phase 2 — market features from the local daily price lane (12m return, volatility,
+  drawdown, relative SPY/XBI, regime) and OpenAlex publication features, all point-in-time; frozen
+  A–G source ablation (patents key-blocked, procurement excluded; both documented)
 - [ ] Phase 3 — research agent over the TKG (multi-step evidence retrieval, counter-evidence search),
   unified registry writes from the Horizon forecaster, continuous forecasting schedule
+- [ ] Phase 2 remainder — patent features once a USPTO ODP API key is available; versioned historical
+  track taxonomy instead of the current curated mapping
+- [ ] Causal designs (DiD / synthetic control) once a defensible point-in-time demand shock exists
 - [ ] NMPA CSV importer UI + province-level gap analysis
 - [ ] FDA statistical-review PDF mining (trial-design red flags straight from FDA reviewers)
 - [ ] SHAP-style attribution for "why did this track's THI move"

@@ -195,11 +195,61 @@ def _check_provenance(checks: dict) -> None:
         path.suffix in {".sqlite", ".zip", ".gz"} for path in (ROOT / "experiments").rglob("*"))
 
 
+def _check_v2_experiment(checks: dict) -> None:
+    """Phase 1/2 frozen artefacts: entry target, multi-window, feature ablation."""
+    v2 = ROOT / "experiments" / "reverse_rd_v2"
+    required = ["config.json", "continuation_metrics.json", "entry_metrics.json", "ablation_metrics.json"]
+    checks["v2_artifacts_present"] = all((v2 / name).exists() for name in required)
+    if not checks["v2_artifacts_present"]:
+        return
+    continuation = json.loads((v2 / "continuation_metrics.json").read_text(encoding="utf-8"))
+    entry = json.loads((v2 / "entry_metrics.json").read_text(encoding="utf-8"))
+    ablation = json.loads((v2 / "ablation_metrics.json").read_text(encoding="utf-8"))
+    checks["v2_multi_window_holdouts"] = (
+        continuation.get("holdouts") == 3 and entry.get("holdouts") == 3
+        and len(continuation.get("holdout_origins") or []) == 3
+        and len(entry.get("holdout_origins") or []) == 3)
+    entry_dataset = entry.get("dataset") or {}
+    checks["v2_entry_target_defined"] = (
+        entry_dataset.get("dataset_version") == "first_entry_v1"
+        and int(entry_dataset.get("examples_mature") or 0) > 1000
+        and int(entry_dataset.get("positives_mature") or 0) > 0
+        and bool(entry_dataset.get("left_censoring")))
+    checks["v2_purged_and_audited"] = (
+        (entry.get("purge") or {}).get("default") is True
+        and (continuation.get("purge") or {}).get("default") is True
+        and (continuation.get("leakage_audit") or {}).get("ok") is True
+        and (entry.get("leakage_audit") or {}).get("ok") is True)
+    v1 = json.loads((EXPERIMENT / "metrics.json").read_text(encoding="utf-8"))
+    v1_ap = {model["name"]: model["holdout_metrics"].get("pr_auc") for model in v1.get("models", [])}
+    v2_ap = {model["name"]: model["holdout_metrics"].get("pr_auc") for model in continuation.get("models", [])}
+    checks["v2_continuation_reproduces_v1"] = bool(v1_ap) and all(
+        v1_ap.get(name) is not None and v2_ap.get(name) is not None
+        and math.isclose(v1_ap[name], v2_ap[name], rel_tol=1e-9, abs_tol=1e-9)
+        for name in v1_ap)
+    targets = ablation.get("targets") or {}
+    checks["v2_ablation_targets"] = set(targets) >= {"continuation", "entry"}
+    checks["v2_ablation_reference_specs"] = all(
+        block.get("reference_spec") in (block.get("specs") or {}) for block in targets.values())
+    checks["v2_ablation_spec_metrics"] = all(
+        all(spec.get("holdout_metrics", {}).get("pr_auc") is not None
+            for spec in (block.get("specs") or {}).values())
+        for block in targets.values())
+    excluded = (ablation.get("protocol") or {}).get("excluded_sources") or {}
+    checks["v2_excluded_sources_documented"] = "procurement" in excluded and "patents" in excluded
+    checks["v2_no_patent_feature_claims"] = not any(
+        name.startswith("pat_")
+        for block in targets.values()
+        for spec in (block.get("specs") or {}).values()
+        for name in (spec.get("features") or []))
+
+
 def main() -> int:
     checks: dict[str, object] = {"version": "v1"}
     _check_offline_suite(checks)
     _check_experiment(checks)
     _check_provenance(checks)
+    _check_v2_experiment(checks)
     ok = all(value is True for key, value in checks.items()
              if key != "version"
              and not key.endswith(("_detail", "_command", "_excluded", "_rows", "_tail", "_numbers")))

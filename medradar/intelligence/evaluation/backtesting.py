@@ -226,6 +226,7 @@ def _evaluate_specs(mature: list[dict[str, Any]], origins: list[str],
 def run_backtest(examples: list[dict[str, Any]], base_features: list[str],
                  financial_features: list[str], *, min_train_origins: int = 3,
                  horizon_months: int = DEFAULT_HORIZON_MONTHS, holdouts: int = 1,
+                 specifications: list[tuple[str, str, list[str]]] | None = None,
                  experiment: str = "reverse_rd_v1",
                  data_provenance: dict[str, Any] | None = None) -> dict[str, Any]:
     mature = [row for row in examples if row["maturity"] == "mature" and row["label"] is not None]
@@ -246,10 +247,14 @@ def run_backtest(examples: list[dict[str, Any]], base_features: list[str],
             f"(origins={len(origins)}, min_train_origins={min_train_origins})")
     holdout_origins = evaluable[-holdouts:]
     holdout = holdout_origins[-1]
-    specifications = [
-        ("rd_only", "A: R&D history only", base_features),
-        ("rd_financial", "B: R&D + consolidated SEC financials", base_features + financial_features),
-    ]
+    # A feature-group ablation passes an explicit specification list; the default
+    # two-spec shape (A: R&D only, B: R&D + financials) is what v1/v2 artefacts use.
+    default_specifications = specifications is None
+    if specifications is None:
+        specifications = [
+            ("rd_only", "A: R&D history only", base_features),
+            ("rd_financial", "B: R&D + consolidated SEC financials", base_features + financial_features),
+        ]
     models, predictions = _evaluate_specs(
         mature, origins, specifications, min_train_origins=min_train_origins,
         purge=True, horizon_months=horizon_months, window_origins=holdout_origins)
@@ -337,7 +342,7 @@ def run_backtest(examples: list[dict[str, Any]], base_features: list[str],
             {"cutoff": window["origin"], **window["model_metrics"][model["name"]]} for window in windows]
         model["holdout_window_summary"] = report["holdout_window_summary"]["models"][model["name"]]
 
-    if len(report["models"]) == 2:
+    if default_specifications and len(report["models"]) == 2:
         first, second = report["models"]
         report["financial_marginal_value"] = {
             metric: ((second["holdout_metrics"].get(metric) - first["holdout_metrics"].get(metric))

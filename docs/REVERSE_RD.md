@@ -122,7 +122,7 @@ Feature contributions are labelled on both scales: `contribution = coefficient *
 
 ## Current boundaries
 
-- No market-price, patent, publication, UK procurement or jobs features are in v1. Adapters should only be added after point-in-time availability and licensing are demonstrated.
+- Market prices and OpenAlex publications were added in v0.4.0 (Phase 2, see `docs/PHASE2.md`); USPTO patents and UK procurement are **not** evaluated (patent API key unavailable; procurement snapshot not point-in-time usable), and hiring/jobs signals remain deferred. Adapters are added only after point-in-time availability and licensing are demonstrated.
 - `CrossDomainCompanyResolver` was dead code and has been removed; company resolution uses the curated registry directly in the SEC and USAspending collectors.
 - Static product-code/track mappings are current curated knowledge, not historical mapping versions. This is a documented metadata limitation and is not covered by the leakage replay.
 - OpenFDA publication lag is date-level. Forecast horizons are monthly/quarterly, not intraday.
@@ -133,3 +133,9 @@ Feature contributions are labelled on both scales: `contribution = coefficient *
 - Entry candidates are dominated by pairs that were never observed inside the bulk window (322 ever-observed pairs versus a 51 × 38 cross product); that is the honest left-censored population, and it makes the entry base rate near 1%. The per-pair persistence baseline is nevertheless computable for 99.3–99.5% of entry holdout rows because candidate pairs recur across origins; only pairs appearing for the first time in a holdout window fall back to training prevalence.
 - Entry positives per origin are few (order 10–30), so per-window AP/Brier intervals are wide and three windows are not an independent replication.
 - Multi-window holdouts share overlapping 12-month label windows; mean/std across windows describes window-to-window dispersion, not sampling uncertainty.
+
+## Phase 2 sources and the source ablation (v0.4.0)
+
+Market features (8 + missing flag) come from the base MedRadar Yahoo daily price lane imported read-only into `market_bars`; at cutoff `t` only bars with `date <= t` are used, so the trading date is the knowledge time. Publication features (5) come from OpenAlex annual counts filtered on raw affiliation strings; only complete years are used, with a conservative 15-Feb knowledge lag. Patents are adapter-only (USPTO ODP needs `USPTO_ODP_API_KEY`) and were **not** evaluated; procurement is excluded from historical gain claims because the current snapshot is not point-in-time usable (`pit_usable=0`).
+
+The frozen ablation (`experiments/reverse_rd_v2/ablation_metrics.json`, narrative in `experiments/reverse_rd_v2/REPORT.md` §C and `docs/PHASE2.md`) evaluates A–G specifications on the identical purged multi-window rows. Result: **no added source improves ranking on either target**; financial features (continuation) and the all-source model improve calibration/FPR while losing ranking; entry-specific features do not add a stable gain. This is a negative incremental-value result for the evaluated sources — not a claim that procurement or patents are useless, since those two were never tested for documented access/point-in-time reasons.

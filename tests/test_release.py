@@ -47,7 +47,7 @@ class VersionTests(unittest.TestCase):
         self.assertIsNotNone(match)
         advertised = int(match.group(1))
         self.assertGreaterEqual(advertised, 400)
-        self.assertLessEqual(advertised, 600)
+        self.assertLessEqual(advertised, 900)
 
     def test_docs_do_not_link_missing_local_pages(self) -> None:
         index = ROOT / "docs" / "index.html"

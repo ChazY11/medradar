@@ -45,14 +45,14 @@
 
 - **375,378** 条事件（510(k) 176,466 / PMA 57,372 / 召回 59,646 / 试验 55,592 / 药品 5,326 / 8‑K 催化剂 20,976）
 - **20,976** 份 EDGAR 8‑K 语料，**2,384** 个可追溯案例（含逐字证据与价格反应）
-- **578** 个离线测试全绿（`v0.3.0`，py3.10/3.11/3.12）；19 章报告；7 视图交互式看板；GitHub Pages 在线
+- **625** 个离线测试全绿（`v0.4.0`，py3.10/3.11/3.12）；19 章报告；7 视图交互式看板；GitHub Pages 在线
 - 数据来自公开来源（openFDA、ClinicalTrials.gov、SEC EDGAR、Yahoo Finance），不包含任何非公开数据
 
 ## 复核方式
 
 ```bash
 git log --oneline            # 全部提交均来自该智能体团队
-python -m medradar selftest  # 578 tests, 不联网
+python -m medradar selftest  # 625 tests, 不联网
 ```
 
 > 说明：以上署名为开发过程事实陈述，不构成对模型能力的第三方评测；项目内容仅用于开源研究与技术演示，不构成投资建议。
@@ -70,5 +70,16 @@ python -m medradar selftest  # 578 tests, 不联网
 | 整合：三支合并、文档与版本统一、py3.10/3.11/3.12 测试矩阵、wheel 冒烟、行为式验收脚本、推送整合分支（不合并 main） | DeepSeek Harness 智能体团队（`integration/market-to-rd-v2`） |
 
 **PR #1 的来源说明**：`feat/frontier-device-radar` 的 Git 提交由 `ChazY11` 账号提交，本记录不推断其生成方式；其内容已在 2026-11-02 的审计中逐项核验（真实采集器、无伪造数据；AdCom 采集器对实时页面失效已修复），并以 squash 方式合入，不保留其原始提交历史（原因见整合记录 §3）。
+
+## Phase 1–2 研究增量（2026-11-02，`v0.4.0`）
+
+| 内容 | 负责方 |
+|---|---|
+| Phase 1：休眠→进入（`first_entry_v1`）目标、左删失说明、6 个 entry 特征、`holdouts=K` 多窗口评估、泄漏重放扩展、41,003 样本真实实验 | DeepSeek Harness 智能体团队（`phase1/entry-multiwindow` 分支） |
+| Phase 2A：`market_bars` 只读导入 + 8 个 PIT 市场特征 + 真实消融 | DeepSeek Harness 智能体团队（`phase2/market-features` 分支） |
+| Phase 2B：OpenAlex 论文采集/特征（51 家公司、150,087 works）+ 需 API key 的 USPTO 专利适配器（未评估）+ 消融 | DeepSeek Harness 智能体团队（`phase2/publications-patents` 分支） |
+| Phase 2 整合、A–G 特征消融矩阵、`ablation_metrics.json`、文档与验收 | DeepSeek Harness 智能体团队（`integration/market-to-rd-v2` 分支，Lead 集成） |
+
+> 所有 Phase 1–2 结果均为真实数据可复现实验；新增来源的增量价值结论为负面（无统计可检测的排序增益），已如实报告。专利因缺少 USPTO ODP API key 未评估，采购因快照不可作时点使用而排除。
 
 > 以上为开发过程事实陈述，不构成对任何模型能力的第三方评测；项目仅用于开源研究与技术演示，不构成投资建议。

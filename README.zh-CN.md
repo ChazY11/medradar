@@ -26,9 +26,9 @@
 | 回放 | **400 步、2019–2026 七年时间轴**，10/25/50bps 三档成本；最近 7 天用 1 分钟成交 |
 | 前沿雷达 | **50 个器械细分赛道、23 个领域**；AdCom 日程/材料、试验首次公示、预申请与资格认定统一汇总 |
 | 研究完整性 | 临床暂停、拒绝受理、CRL、预申请与资格认定独立分类；绝对超额收益超过 100% 的案例单列审计并退出推断样本 |
-| Market-to-R&D | 由 55,090 条 FDA 事件 + 43,420 条 SEC 财务事实 + 3,453 条采购授予构造 **6,701 个时点一致的样本**（25 个季度起点）；Reverse R&D 基线，负面结果如实报告（见下） |
+| Market-to-R&D | 由 55,090 条 FDA 事件 + 43,420 条 SEC 财务事实 + 3,453 条采购授予构造 **6,701 条持续性样本 + 41,003 条"休眠→进入"样本**（25/24 个季度起点）；purged 多窗口评估与 7 组特征消融，负面结果如实报告（见下） |
 | 研究基础设施 | 双时态知识库（valid time / knowledge time）与不可篡改的预测登记簿，支持 as-of 查询和确定性 PIT 导出 |
-| 测试 | **578 个离线测试**，不联网、不需要 API key |
+| 测试 | **625 个离线测试**，不联网、不需要 API key |
 
 > 数字每周都会变，价值在于每一个数字都能用 `python -m medradar run` 复现。
 
@@ -254,22 +254,42 @@ python -m medradar.intelligence.pipeline collect --source procurement --start-da
 python -m medradar.intelligence.pipeline research --horizon 12
 ```
 
-冻结的真实数据实验（`experiments/reverse_rd_v1/`，2026-11-02 重建）：窗口内 55,090 条 FDA 事件、
-32 家公司 43,420 条 SEC 财务事实、3,453 条采购授予（义务金额，0 条可作时点使用）、
-25 个季度起点共 6,701 个样本，holdout 为 2025-10-01（307 行 / 129 正例）。
+冻结的真实数据实验：
 
-| holdout（purged 标签） | 仅 R&D | R&D + 合并财务 |
+- **v1**（`experiments/reverse_rd_v1/`，2026-11-02 重建）：窗口内 55,090 条 FDA 事件、32 家公司
+  43,420 条 SEC 财务事实、3,453 条采购授予（义务金额，0 条可作时点使用）、25 个季度起点共
+  6,701 个样本，holdout 为 2025-10-01（307 行 / 129 正例）。
+- **v2**（`experiments/reverse_rd_v2/`）：purged 三窗口评估（2025-04 / 2025-07 / 2025-10）加上
+  更难的**休眠→进入赛道**目标（41,003 条样本、24 个起点、503 正例、基准率 1.23%，左删失限制已写明）。
+
+| holdout 2025-10-01 | 持续性（307 行 / 129 正例） | 进入（1,716 行 / 26 正例） |
 |---|---:|---:|
-| PR-AUC | 0.7935 | 0.7922 |
-| Brier ↓ | 0.1721 | 0.1721 |
-| ECE-10 ↓ | 0.0811 | 0.0737 |
-| FPR @ 0.5 ↓ | 0.2753 | 0.2640 |
+| PR-AUC，仅 R&D | 0.7935 | 0.1139 |
+| PR-AUC，+ 合并财务 | 0.7922 | 0.1163 |
+| Brier，仅 R&D / + 财务 | 0.1721 / 0.1721 | 0.0143 / 0.0143 |
+| ECE-10，仅 R&D / + 财务 | 0.0811 / 0.0737 | 0.0041 / 0.0046 |
 
-**负面结论有两层，如实报告**：其一，SEC 合并财务特征没有带来稳定的样本外增益（holdout PR-AUC −0.0013，
-开发集的小增益没有复现）；其二，0.79 的 PR-AUC 主要来自"持续性"——一个不含任何特征的
-"该 company–track 历史事件率"基线就能拿到 AP 0.7913，模型为 0.7935，配对 bootstrap 差值
-+0.003，95% CI [−0.032, +0.037]。v1 预测的是**已活跃 pair 是否继续出现公开活动**，
-不构成对"首次进入"的预测能力，也不支持"资本市场驱动研发"的因果结论。
+**来源消融（A–G，同一批 purged 样本、3 个窗口）**：在 R&D 基线之上分别加入市场特征（8 个，来自
+本地日线价格）、OpenAlex 论文特征（5 个）与合并财务特征。**没有任何新增来源带来统计可检测的排序增益。**
+持续性目标上所有边际 PR-AUC 均为负（财务 −0.0013、市场 −0.0015、论文 −0.0001、全来源 −0.0068），
+而全来源模型改善了校准（ECE 0.0811→0.0628）与 FPR（0.2753→0.2472）——校准更好，不是排序更好。
+进入目标上，最终 holdout 偏向"仅共享特征"基线，而三窗口均值偏向更丰富规格，差异落在
+0.014–0.026 的窗口标准差内，不构成稳定效应。采购因当前快照不可作时点使用而排除，专利因
+USPTO Open Data Portal 需要 API key 而**未评估**，招聘信号暂缓。持续性的 0.79 PR-AUC 仍主要来自
+持续性本身：per-pair 基线 AP 0.7913 vs 模型 0.7935（Δ +0.0022，95% CI [−0.032, +0.037]）。
+
+```bash
+pip install -e '.[bulk]'
+python -m medradar.intelligence.pipeline collect --source fda --months 120
+python -m medradar.intelligence.pipeline collect --source sec
+python -m medradar.intelligence.pipeline collect --source procurement --start-date 2016-01-01
+python -m medradar.intelligence.pipeline collect --source market --prices-db /path/to/base-medradar/data/medradar.sqlite
+python -m medradar.intelligence.pipeline collect --source publications
+python -m medradar.intelligence.pipeline research --horizon 12
+python experiments/reverse_rd_v2/run_v2.py --db data/medradar.sqlite --holdouts 3
+python experiments/reverse_rd_v2/run_ablation.py --db data/medradar.sqlite --target continuation --spec C --out cells/continuation_C.json
+python experiments/reverse_rd_v2/merge_ablation.py --cells cells --out experiments/reverse_rd_v2/ablation_metrics.json
+```
 
 研究层下还有两个底座：**双时态知识库**（`medradar/tkg`，独立的 valid-time / knowledge-time 查询、
 确定性 PIT 导出、只读 events 适配器）与**不可篡改预测登记簿**（`medradar/forecast_registry.py`，
@@ -279,8 +299,9 @@ python -m medradar.intelligence.pipeline research --horizon 12
 SEC 营收始终保持公司合并口径，不会冒充产品或器械业务收入。USAspending 合同授予金额不等于营收，
 其当前快照不参与历史增益结论。完整口径见 [Reverse R&D 方法](docs/REVERSE_RD.md)、
 [集成记录](docs/INTEGRATION_2026-11-02.md)、[docs/TKG.md](docs/TKG.md)、
-[docs/FORECAST_REGISTRY.md](docs/FORECAST_REGISTRY.md)，冻结实验配置与真实结果位于
-`experiments/reverse_rd_v1/`。
+[docs/FORECAST_REGISTRY.md](docs/FORECAST_REGISTRY.md)、[Phase 1](docs/PHASE1.md)、
+[Phase 2](docs/PHASE2.md)；冻结实验配置与真实结果位于 `experiments/reverse_rd_v1/`（v1）与
+`experiments/reverse_rd_v2/`（v2 多窗口 + 来源消融）。
 
 ## 模拟美股：定位与边界
 
@@ -330,12 +351,15 @@ tests/          离线测试（合成 fixture，不联网）
 
 - [x] `v0.3.0` —— 合并研究底座（双时态 TKG + 不可篡改预测登记簿）与 Market-to-R&D 层
   （SEC XBRL / USAspending / openFDA 批量、时点数据集、purged 滚动起点基线、独立泄漏重放、朴素/persistence 基线）
-- [ ] Phase 1 —— 更难的目标：企业**首次进入**某技术赛道（含左删失），而非只看持续性；≥3 个独立 holdout 窗口；
-  因果假设设计（DiD / 合成控制）
-- [ ] Phase 2 —— 专利（PatentsView）与论文（OpenAlex）特征；基于现有日线价格表的市场特征
-  （12 个月收益、波动、回撤、相对 SPY/XBI、市场状态），全部按日 point-in-time；然后跑 A–F 消融
+- [x] `v0.4.0` Phase 1 —— 更难的目标：**休眠→进入**某技术赛道（左删失，已写明限制）；
+  purged 多窗口评估（`holdouts=K`），含每窗口基线与 bootstrap 置信区间
+- [x] `v0.4.0` Phase 2 —— 市场特征（本地日线：12 个月收益、波动、回撤、相对 SPY/XBI、市场状态）
+  与 OpenAlex 论文特征，全部 point-in-time；冻结 A–G 来源消融（专利因 API key 缺失未评估，
+  采购因快照不可作时点使用而排除，均已写明）
 - [ ] Phase 3 —— 建立在 TKG 之上的研究 Agent（多步证据检索、反面证据搜索）、Horizon 预测统一写入登记簿、
   持续预测调度
+- [ ] Phase 2 剩余 —— 拿到 USPTO ODP API key 后补专利特征；用版本化历史赛道分类替代当前静态映射
+- [ ] 因果设计（DiD / 合成控制）—— 需要先有可辩护的时点需求冲击
 - [ ] NMPA CSV 导入向导 + 省级空白度
 - [ ] FDA 统计审评 PDF 挖掘（直接从 FDA 统计师笔下提取"试验设计红旗"）
 - [ ] 赛道 THI 变动的归因分析

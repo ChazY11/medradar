@@ -1,4 +1,4 @@
-# Reverse R&D v2 — Phase 1 scientific hardening (real-data report)
+# Reverse R&D v2 — Phase 1–2 real-data report (entry target, multi-window, source ablation)
 
 Generated 2026-11-02 from the frozen research database (openFDA bulk lane 2016-11-01..2026-10-15, SEC Company Facts, USAspending snapshot); no network was used. Configuration: [`config.json`](config.json). Machine-readable values: [`continuation_metrics.json`](continuation_metrics.json) and [`entry_metrics.json`](entry_metrics.json). Every number below is read from those two files (or from [`data_provenance.json`](data_provenance.json)); none is estimated. Regenerate with:
 
@@ -122,3 +122,44 @@ The point estimate beats per-pair persistence in every window, but the 2025-04-0
 - 51 curated companies are not an industry-wide random sample; the two IFRS filers have no US-GAAP financial features.
 - Three overlapping holdout windows are not three independent replications. The paired-bootstrap intervals are wide by construction; a null or positive window delta should not be generalized.
 - The leakage replay is an as-of consistency audit, not a proof of absence of semantic leakage (unversioned mappings, aliases, target-definition choices are not detectable this way).
+
+## C. Phase 2 feature-group ablation (v0.4.0)
+
+New sources evaluated on the identical rows, purge and multi-window protocol (`holdouts=3`), one specification per run, same logistic model and hyperparameters:
+
+- **Market features (8 + missing flag):** daily Yahoo-adjusted closes imported read-only from the base MedRadar `prices` table into `market_bars` (95,725 bars, 38/44 mapped tickers + SPY/XBI, 2016-10-31..2026-10-30). Features at cutoff `t` use bars with `date <= t` only: 12-month return, 12-month volatility, 12-month max drawdown, return vs SPY, return vs XBI, 3-month volume z-score, SPY-above-200d regime flag, days since 12-month high. Complete on 5,206/6,701 continuation examples (77.7%) and 245/307 final-holdout rows; missing tickers receive `None` + `mkt_missing=1`. Market capitalisation and valuation multiples are **not** implemented (no shares-outstanding data), and stock returns are not treated as technological capability.
+- **Publication features (5, OpenAlex):** annual work counts from raw-affiliation alias searches for 51/51 curated companies (150,087 works, 2014–2026); at cutoff `t` only complete years `<= year(t)-1` are used with a 15-Feb knowledge lag (`pub_count_prev_year`, `pub_count_3y`, `pub_growth_prev_year`, `pub_intensity_vs_company`, `pub_missing`). Alias matching is noisy and is a weak signal, not evidence of approved R&D projects.
+- **Excluded:** procurement (the current USAspending snapshot is not point-in-time usable, `pit_usable=0`) and patents (USPTO Open Data Portal requires an API key; adapter implemented, **no rows collected or evaluated**).
+
+Specifications — continuation: A `rd_only` (reference), B `+financial`, C `+market`, D `+publication`, E `+financial+market+publication`. Entry: A shared R&D only (Phase 1 parity), B shared+financial (Phase 1 parity), C shared+entry-specific, D shared+entry+financial (reference), E D+market, F D+publication, G D+market+publication.
+
+**Continuation target** (holdout 2025-10-01, n=307 / 129 positives; AP window mean over 2025-04/07/10):
+
+| Spec | Features | AP | Brier | ECE-10 | FPR@0.5 | P@10% | AP window mean (std) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| A rd_only | 10 | **0.793476** | 0.172134 | 0.081120 | 0.275281 | 0.935484 | **0.773718** (0.023156) |
+| B +financial | 21 | 0.792199 | 0.172104 | 0.073737 | 0.264045 | 0.935484 | 0.772689 (0.023820) |
+| C +market | 18 | 0.792020 | 0.171955 | 0.080433 | 0.269663 | 0.935484 | 0.771247 (0.023441) |
+| D +publication | 15 | 0.793349 | 0.172047 | 0.086677 | 0.286517 | 0.935484 | 0.771593 (0.024131) |
+| E all available | 34 | 0.786696 | 0.172341 | **0.062777** | **0.247191** | 0.935484 | 0.768162 (0.024795) |
+
+Marginal deltas vs A: financial AP **−0.001278** (window mean −0.001030), market **−0.001456** (−0.002471), publication **−0.000128** (−0.002125), all **−0.006780** (−0.005556). The only replicating improvement is calibration/threshold: E lowers ECE by 0.018343 and FPR by 0.028090 while losing ranking. **No added source improves continuation ranking, and the v1 negative conclusion stands.**
+
+**Entry target** (holdout 2025-10-01, n=1,716 / 26 positives; AP window mean over the same three windows):
+
+| Spec | Features | AP | Brier | ECE-10 | P@10% | AP window mean (std) |
+|---|---:|---:|---:|---:|---:|---:|
+| A shared only (parity) | 10 | **0.113927** | 0.014298 | 0.004060 | 0.063953 | 0.106792 (0.013675) |
+| B shared+financial (parity) | 21 | **0.116347** | 0.014330 | 0.004585 | **0.081395** | 0.114869 (0.014715) |
+| C shared+entry | 16 | 0.100476 | 0.014315 | 0.003184 | 0.069767 | 0.110862 (0.018675) |
+| D shared+entry+financial | 27 | 0.102205 | 0.014361 | 0.003232 | 0.069767 | 0.118180 (0.022483) |
+| E D+market | 35 | 0.096865 | 0.014459 | 0.003347 | 0.075581 | **0.119426** (0.026396) |
+| F D+publication | 32 | 0.105083 | 0.014351 | 0.002568 | 0.075581 | 0.119135 (0.021890) |
+| G D+market+publication | 40 | 0.097863 | 0.014450 | 0.003254 | 0.075581 | **0.119658** (0.025998) |
+
+Marginal deltas vs D: entry-specific C **−0.001729**, market E **−0.005340**, publication F **+0.002879**, all G **−0.004341**; window-mean deltas are +0.001245 (E), +0.000955 (F), +0.001478 (G). The final holdout favours the Phase-1 shared-only cells A/B, while the window mean favours D/E/G; the differences (≤0.015 AP) are small relative to the window std (0.014–0.026). **Entry-specific features did not add a stable ranking gain, and no new source produced one either.** FPR@0.5 remains uninformative for entry; use Precision@10% (B 0.0814 highest on the final holdout).
+
+Frozen machine-readable values: [`ablation_metrics.json`](ablation_metrics.json). Regenerate a cell with `python experiments/reverse_rd_v2/run_ablation.py --db data/medradar.sqlite --target continuation --spec C --out <cell>.json` and merge with `python experiments/reverse_rd_v2/merge_ablation.py --cells <dir> --out experiments/reverse_rd_v2/ablation_metrics.json`. The Phase 1 A/B cells are read from [`continuation_metrics.json`](continuation_metrics.json)/[`entry_metrics.json`](entry_metrics.json) so the parity numbers cannot drift.
+
+**Honest bottom line for v0.4.0:** across both targets and all available added sources (consolidated SEC financials, PIT market features, OpenAlex publications), the only replicating effect is a small calibration/FPR shift from financial features and from the all-source continuation model; no source adds a statistically detectable ranking improvement, and the entry target's apparent skill is weak and window-dependent. Procurement and patents are excluded for documented reasons, not because they were tested and failed.
+

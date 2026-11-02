@@ -3,6 +3,57 @@
 All notable changes to MedRadar. Format loosely follows Keep a Changelog.
 This is a research tool; "fixed" means a documented behaviour changed.
 
+## [0.4.0] — 2026-11-02 (Phase 1–2: harder target, multi-window, market/publication signals)
+
+### Added
+- **Dormant→active track-entry target** (`first_entry_v1`): candidate at quarterly cutoff
+  `t` = a `(company, track)` pair whose company is already active but whose pair has no
+  material event in `(t−36m, t]`; label = first material 510(k)/original-or-panel-track PMA
+  activity in `(t, t+12m]`. 41,003 mature examples over 24 origins, 503 positives (1.23%
+  base rate), six new point-in-time entry features (inactive months, active-track/company
+  counts and deltas, novelty share) and an explicit left-censoring statement. The
+  independent as-of leakage replay was extended to the entry dataset (1,107,081 values,
+  0 mismatches).
+- **Multi-window purged evaluation**: `run_backtest(holdouts=K)` evaluates the last K
+  evaluable origins with purged expanding training sets and reports per-window metrics,
+  mean/std, and per-window paired bootstrap CIs; `holdouts=1` reproduces the v1 contract.
+- **Market-data lane**: the base repo's Yahoo daily `prices` table is imported read-only
+  into `market_bars` (95,725 bars, 38/44 mapped tickers, SPY/XBI benchmarks) with eight
+  point-in-time features (`mkt_ret_12m`, `mkt_vol_12m`, `mkt_max_drawdown_12m`,
+  `mkt_rel_spy_12m`, `mkt_rel_xbi_12m`, `mkt_volume_z_3m`, `mkt_regime_spy_above_200d`,
+  `mkt_days_since_12m_high`) and an explicit missing flag. `pipeline collect --source
+  market --prices-db <base.sqlite>`. Consolidation note: market capitalisation and
+  valuation multiples are not implemented (no shares-outstanding data).
+- **Publication lane (OpenAlex, keyless)**: annual work counts for all 51 curated
+  companies (150,087 works, 2014–2026), five point-in-time features using complete years
+  only with a 15-Feb knowledge lag, disk cache + offline replay, and per-company alias
+  provenance. `pipeline collect --source publications`.
+- **Patent adapter (key-gated)**: USPTO Open Data Portal collector that returns an explicit
+  `unavailable_missing_api_key` status (no rows, no fabricated numbers) without
+  `USPTO_ODP_API_KEY`, plus a documented JSONL importer and publication-date PIT rule.
+  Patents are **not evaluated** in this release.
+- **Feature-group ablation harness**: `experiments/reverse_rd_v2/run_ablation.py` +
+  `merge_ablation.py`, frozen `ablation_metrics.json`, covering A–G specifications for both
+  targets on identical rows (`holdouts=3`, purged). Procurement is excluded from historical
+  gain claims (current snapshot is not point-in-time usable).
+- Docs: `docs/PHASE1.md`, `docs/PHASE2.md`, `docs/MARKET_DATA.md`,
+  `docs/PUBLICATION_PATENT_DATA.md`, updated `docs/REVERSE_RD.md`, `README`/`README.zh-CN`
+  and a behavioural v2 check in `verifier/v1/verify.py`.
+
+### Fixed
+- Phase 1's frozen `entry_metrics.json` A/B cells were trained on shared R&D features only;
+  the v2 ablation adds the six entry-specific features (spec C/D) and keeps A/B as
+  explicitly labelled Phase-1 parity cells. The corrected entry baseline is spec D in
+  `ablation_metrics.json`.
+- `tests/test_intelligence.py` gained a regression test for custom ablation specifications
+  and for the unchanged default two-spec contract.
+
+### Scope boundary
+- Market returns are not treated as technological capability; publication counts are a weak
+  alias-matched signal, not evidence of approved R&D projects; patents are not evaluated.
+- Neither target establishes causality; multi-window holdouts share overlapping 12-month
+  label windows and are not independent replications.
+
 ## [0.3.0] — 2026-11-02 (research foundation + Market-to-R&D + frontier, integrated)
 
 This release consolidates three independently authored branches after an independent

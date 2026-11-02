@@ -568,6 +568,29 @@ class EntryTargetTests(unittest.TestCase):
                 self.assertGreater(result["per_feature_mismatches"]["rd_company_active_tracks_12m"], 0)
 
 
+class AblationSpecificationTests(unittest.TestCase):
+    """Custom feature-group specifications used by the Phase 2 ablation driver."""
+
+    def test_custom_specifications_are_evaluated_once_and_named(self) -> None:
+        examples = _quarterly_backtest_examples(12)
+        report = run_backtest(
+            examples, ["rd"], [], holdouts=1,
+            specifications=[("custom", "custom group", ["rd", "fin"])],
+            experiment="custom_spec_test")
+        self.assertEqual([model["name"] for model in report["models"]], ["custom"])
+        self.assertIn("holdout_metrics", report["models"][0])
+        self.assertIn("holdout_window_metrics", report["models"][0])
+        # The two-spec financial ledger is only meaningful for the default shape.
+        self.assertNotIn("financial_marginal_value", report)
+        self.assertEqual(report["experiment"], "custom_spec_test")
+
+    def test_default_specifications_unchanged(self) -> None:
+        examples = _quarterly_backtest_examples(12)
+        report = run_backtest(examples, ["rd"], ["fin"], holdouts=1)
+        self.assertEqual([model["name"] for model in report["models"]], ["rd_only", "rd_financial"])
+        self.assertIn("financial_marginal_value", report)
+
+
 class StorageTests(unittest.TestCase):
     def test_financial_procurement_and_forecast_roundtrip(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
