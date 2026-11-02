@@ -2478,3 +2478,84 @@ executable objective audit and round-end routine, so progress can be re-run rath
 **Why this is worth a cycle.** Twenty-eight rounds produced verification tools faster than they produced a
 repeatable finish line. A round now ends with one command whose exit code is the claim, which removes the main
 remaining opportunity for an over-stated summary.
+
+---
+
+## D-064 — Pre-registration: rolling-origin evaluation of the promotion pipeline (B-067)
+
+**Date:** 2026-11-03. **Status:** accepted; written before `experiments/b067/promotion_rolling_origin.py` was
+first run.
+
+**The question nobody has asked yet.** The programme has tested detectors, calibrated momentum, confirmed a
+promotion rule on injected shapes, and validated it across units and domains. It has **not** tested whether the
+**promotion filter improves downstream decisions on real history**. Every component has been validated in
+isolation; the pipeline as a whole has not been evaluated end to end. That is the gap this cycle closes.
+
+**Design, fixed now.**
+
+* **Units.** Every (curated company × technology track) cell, quarterly counts, same lane.
+* **Origins.** Quarterly, from 2019-Q1 to 2024-Q4 (a confirmation window and a follow-up window must both fit).
+* **Alert.** At origin *t*, the deployed detector: z of the current quarter against the mean of the previous
+  eight quarters (24 months), threshold **3.5** — the D-045 operating point.
+* **Promotion decision.** The confirmed rule applied to the two quarters after the alert (t+1, t+2), using the
+  same per-quarter baseline: shape *spike* → not promoted; *level* / *ramp* / *sustained_unresolved* → promoted.
+  Alert month excluded, exactly as in live use.
+* **Outcome.** Activity in the four quarters after the confirmation window (t+3 … t+6), compared with the
+  alert-time baseline: **persisted** iff the mean count is at least the baseline mean.
+* **Comparison.** P(persisted) among **promoted** alerts versus **unpromoted** alerts (spikes), plus a control
+  group of non-alert cell-quarters. Bootstrap resampling **companies** (2,000 replications).
+
+**Pre-declared decision.**
+
+* **PROMOTION ADDS VALUE** iff P(persisted | promoted) exceeds P(persisted | unpromoted) with the bootstrap
+  95 % interval on the difference excluding zero.
+* **NO ADDED VALUE** otherwise, in which case the promotion filter is recorded as a documentation discipline
+  rather than a predictive improvement, and the paper must say so.
+
+**What a positive would license.** That the two-month filter improves the downstream hit rate of the alerting
+pipeline on real history — a statement about decision quality, not about technology.
+**What it would not license.** Any claim that promoted changes are technological, or that the pipeline is
+predictive beyond the persistence of elevated filing rates.
+
+---
+
+## D-065 — B-067 outcome: the alerting pipeline predicts persistence, but the promotion filter's ADDED value is not established
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-067.
+
+**What ran.** The D-064 design: quarterly origins 2019-Q1 … 2024-Q4, the deployed detector (z ≥ 3.5 against the
+previous eight quarters), the confirmed two-quarter promotion rule, outcome = mean activity in t+3 … t+6 at least
+the alert-time baseline; companies resampled in the bootstrap.
+
+**Result: 68 alerts (35 promoted, 33 unpromoted) and 4,594 control cell-quarters.**
+
+| group | P(persisted) | 95 % CI |
+|---|---:|---|
+| promoted | **0.800** | 0.652–0.917 |
+| unpromoted (spikes) | 0.667 | — |
+| no alert (control) | **0.373** | — |
+| difference (promoted − unpromoted) | **+0.133** | **−0.074 … 0.344** |
+
+**Verdict as pre-registered: NO ADDED VALUE.** The interval on the difference includes zero, so by the rule fixed
+in D-064 the promotion filter is recorded as a **documentation discipline, not a measured predictive
+improvement**.
+
+**But the pipeline result is not a null, and it would be dishonest to report only the verdict.** Alerts persist
+far more often than comparable non-alert cell-quarters (0.80 and 0.67 against 0.37). That is the detector doing
+its job: cells flagged at z ≥ 3.5 are substantially more likely to remain elevated than cells that were quiet.
+What the experiment fails to establish is the **marginal** contribution of the second, two-month filter on top of
+the alert — a 13-point difference measured on 33 unpromoted alerts, with a bootstrap interval spanning zero.
+
+**Why it is underpowered, precisely.** Spikes are rare among alerts (33 of 68) precisely because the promotion
+rule exists — the pipeline was designed to make shape the discriminator, and the design leaves few negative cases
+to learn from. A test of the filter needs either a longer history or a lower alert threshold; the former is not
+obtainable and the latter would change the operating point under test.
+
+**Consequence for the product.** No change. The filter remains justified by its **shape classification**
+performance measured on injections (D-043/D-048/D-057/D-061), not by this end-to-end test; the promotion policy
+already says promotion is a decision with a measured error rate, not an optimisation. What changes is the paper:
+the pipeline-level result must appear beside the injection results so that neither is read alone.
+
+**Not claimed.** That the detector "predicts technology"; that the promotion filter is useless (it is
+unestablished, not refuted); or that the 0.37 control rate is a fair counterfactual for cells at risk of
+alerting — control cells are, by construction, not on an elevated path.

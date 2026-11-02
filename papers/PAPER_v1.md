@@ -355,6 +355,16 @@ consequence: the promotion policy now refuses to label a change a *ramp* in a ce
 event per month, reporting it as `sustained_unresolved` instead, because that label is not supported by
 measurement there.
 
+*End-to-end check, added after the component results.* Every component above was validated in
+isolation; the pipeline as a whole was then evaluated on real history (quarterly origins 2019-Q1 … 2024-Q4,
+detector z ≥ 3.5, the confirmed two-quarter rule, outcome = activity four quarters later). Of **68 alerts**, 35 were
+promoted and 33 were not. Promoted alerts persisted **0.800** of the time (95 % CI 0.652–0.917), unpromoted ones
+**0.667**, and comparable non-alert cell-quarters **0.373**. The alert therefore carries real information about
+persistence — but the **marginal** contribution of the promotion filter is **not established**: the difference is
+**+0.133** with an interval of **−0.074 … 0.344**. With only 33 unpromoted alerts the test is underpowered,
+because the filter exists precisely to make spikes rare. The filter remains justified by its shape-classification
+performance on injected changes, not by this test, and the paper reports both so that neither is read alone.
+
 *What no window fixes.* A pre-registered sensitivity analysis over confirmation windows of 1–6 months found
 **no window that recovers the ramp class**: best ramp recall 0.229, with precision falling monotonically as the
 window lengthens. Balanced accuracy is highest at a **one-month** window precisely because it can never see a

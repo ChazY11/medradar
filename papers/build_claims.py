@@ -125,6 +125,11 @@ CLAIMS = [
     ("AA3", "density-confirmation rank correlation", "0.908", "research/DECISIONS.md", "0.908"),
     ("AA4", "density-confirmation effect ratio", "2.18", "research/DECISIONS.md", "2.18"),
     ("AA5", "ramp reporting density floor", "1.0", "research/DECISIONS.md", "1.0 event per month"),
+    # ---- pipeline evaluation (cycle 34)
+    ("BB1", "pipeline promoted persistence rate", "0.800", "research/DECISIONS.md", "0.800"),
+    ("BB2", "pipeline unpromoted persistence rate", "0.667", "research/DECISIONS.md", "0.667"),
+    ("BB3", "pipeline control persistence rate", "0.373", "research/DECISIONS.md", "0.373"),
+    ("BB4", "pipeline promotion difference", "0.133", "research/DECISIONS.md", "0.133"),
 ]
 
 

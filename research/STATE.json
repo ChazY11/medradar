@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T20:40:00+08:00",
+  "updated_at": "2026-11-03T21:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "round_end_routine_executable",
-  "cycle": 35,
+  "phase": "pipeline_evaluated",
+  "cycle": 36,
   "last_completed_cycle": {
-    "cycle": 33,
-    "name": "round_end_routine_and_limitations",
+    "cycle": 34,
+    "name": "pipeline_rolling_origin",
     "branch": "research/change-detection-v1",
-    "report": "tools/round_end.json",
-    "summary": "research/RESULTS/cycle33_round_end_2026-11-03.md",
-    "verdict": "a round now ends with one command: tools/round_end.py runs seven verifiers and exits with the claim (7 PASS / 0 FAIL, ~23 s); the paper's limitations section states the 1-confirmed-rule to 5-retraction ratio, the human sign-off requirement, the density floor and the post-failure status of the density confirmation"
+    "report": "experiments/b067/promotion_rolling_origin.json",
+    "summary": "research/RESULTS/cycle34_pipeline_2026-11-03.md",
+    "verdict": "end-to-end pipeline evaluation: alerts predict persistence (promoted 0.800, unpromoted 0.667, control 0.373), but the promotion filter's MARGINAL value is not established (difference +0.133, CI -0.074..0.344) - recorded as a documentation discipline, not a measured predictive improvement"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -172,7 +172,9 @@
     "POINT-IN-TIME: the record can now show WHICH claims a policy change altered (32 labels, 8 shape changes from ramp to sustained_unresolved) alongside zero data-level movement",
     "POINT-IN-TIME: labelled snapshots are supported (as-of plus suffix) without weakening verification: 6 of 6 snapshots verify and the leakage audit stays clean",
     "GOVERN: a round ends with an executable verification routine (7 steps, one exit code), so the round-end claim is re-runnable rather than asserted",
-    "PUBLISH: the paper's limitations now state the honest ratio - one confirmed decision rule against five retractions - plus the sign-off requirement, the density floor and the post-failure status of the density confirmation"
+    "PUBLISH: the paper's limitations now state the honest ratio - one confirmed decision rule against five retractions - plus the sign-off requirement, the density floor and the post-failure status of the density confirmation",
+    "EVALUATE: end-to-end, alerts persist far more than non-alert cell-quarters (0.80 / 0.67 vs 0.37) - the detector carries real information about persistence",
+    "EVALUATE: the promotion filter's MARGINAL value is NOT established (difference +0.133, CI -0.074..0.344) with only 33 unpromoted alerts; it remains justified by shape-classification performance, not by this test"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -190,10 +192,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "run tools/round_end.py at the end of every round as the completion gate",
-    "consider a second paper focused on the measurement rules and the density confirmation",
+    "run tools/round_end.py as the gate at the end of every round",
+    "consider a second paper focused on the measurement rules and the two confirmations",
     "decide whether the promotion ledger should log relabelling events as an audit trail",
-    "revisit the 1.0/month floor if a denser domain becomes available"
+    "revisit the pipeline test only if a longer history becomes available"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -1160,5 +1162,27 @@
     },
     "lesson": "unittest writes its summary to stderr and per-step marker extraction is required; a generic keyword heuristic reported the wrong line on the first attempt",
     "rule": "a round is not finished until this command exits 0"
+  },
+  "evaluation": {
+    "pipeline_rolling_origin": {
+      "artifact": "experiments/b067/promotion_rolling_origin.json",
+      "decision": "research/DECISIONS.md D-064 (pre-registration), D-065 (outcome)",
+      "alerts": 68,
+      "promoted": 35,
+      "unpromoted": 33,
+      "control_cell_quarters": 4594,
+      "rates": {
+        "promoted": 0.8,
+        "unpromoted": 0.667,
+        "control": 0.373
+      },
+      "difference": 0.133,
+      "difference_ci": [
+        -0.074,
+        0.344
+      ],
+      "verdict": "NO ADDED VALUE by the pre-declared rule",
+      "reading": "alerts carry information about persistence; the two-month filter's marginal contribution is unestablished and underpowered because spikes are rare by design"
+    }
   }
 }

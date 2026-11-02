@@ -1,0 +1,51 @@
+{
+  "bootstrap": {
+    "companies": 53,
+    "control_ci": [
+      0.336983842010772,
+      0.40518482957273166
+    ],
+    "difference_ci": [
+      -0.07357859531772581,
+      0.34375
+    ],
+    "promoted_ci": [
+      0.6521739130434783,
+      0.9166666666666666
+    ],
+    "reps": 2000
+  },
+  "counts": {
+    "alerts": 68,
+    "cells": 329,
+    "control": 4594,
+    "origins": [
+      12,
+      35
+    ],
+    "promoted": 35,
+    "unpromoted": 33
+  },
+  "decision": {
+    "adds_value": false,
+    "verdict": "NO ADDED VALUE - the promotion filter is a documentation discipline, not a measured predictive improvement"
+  },
+  "design": {
+    "baseline_quarters": 8,
+    "bootstrap": "companies resampled",
+    "confirmation_quarters": 2,
+    "decision": "research/DECISIONS.md D-064 (pre-registered)",
+    "followup_quarters": 4,
+    "origins": "2019-Q1 .. 2024-Q4",
+    "outcome": "mean quarterly count in t+3..t+6 at least the alert-time baseline",
+    "reps": 2000,
+    "seed": 4242,
+    "z_threshold": 3.5
+  },
+  "rates": {
+    "control": 0.3733130169786678,
+    "difference": 0.13333333333333341,
+    "promoted": 0.8,
+    "unpromoted": 0.6666666666666666
+  }
+}
