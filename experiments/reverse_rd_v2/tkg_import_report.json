@@ -1,0 +1,200 @@
+{
+  "task": "PHASE3B",
+  "generated_at": "2026-11-02T01:09:32Z",
+  "command": "python scripts/tkg_import_research.py --db data\\research.sqlite --tkg data\\tkg.sqlite --known-at 2026-12-31T00:00:00Z --report-out experiments\\reverse_rd_v2\\tkg_import_report.json",
+  "python": "3.12.10",
+  "medradar_version": "0.4.0",
+  "git_commit": "bffc9d29b3c2f2f99282e40f6ae1b5b0e190ee1e",
+  "adapter_version": "events-adapter-1",
+  "schema_version": "tkg-schema-2",
+  "source": {
+    "path": "D:\\DEPPSKK\\worktrees\\phase3-tkg\\data\\research.sqlite",
+    "bytes": 289443840,
+    "sha256_before": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+    "hash_seconds_before": 0.247,
+    "sha256_after": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+    "hash_seconds_after": 0.247,
+    "unchanged": true
+  },
+  "filters": {
+    "kinds": null,
+    "limit": null
+  },
+  "tkg_store": {
+    "path": "D:\\DEPPSKK\\worktrees\\phase3-tkg\\data\\tkg.sqlite",
+    "existed_before": false,
+    "bytes": 194723840,
+    "committed": false
+  },
+  "cutoffs": {
+    "known_at": "2026-12-31T00:00:00Z",
+    "valid_at": null,
+    "early_known_at": "2026-01-01T00:00:00Z"
+  },
+  "import_optimization": {
+    "operational_indexes": [
+      "tkg_import_nodes_idempotency",
+      "tkg_import_edges_idempotency"
+    ],
+    "note": "tkg-schema-2 has no index on nodes/edges.idempotency_key; duplicate-retry lookups are O(n^2) without these operational indexes. They are local store plumbing, not part of any committed artefact, and do not change exported content."
+  },
+  "timings": {
+    "open_store_seconds": 0.091,
+    "create_indexes_seconds": 0.012,
+    "export_seconds": 6.514,
+    "reexport_seconds": 7.301,
+    "write_export_seconds": 5.695
+  },
+  "import": {
+    "counters": {
+      "rows_seen": 55090,
+      "assertions_created": 171800,
+      "idempotent_duplicates": 112128,
+      "skipped_missing_event_id": 0,
+      "skipped_missing_event_date": 0,
+      "invalid_public_time_dropped": 55090,
+      "skipped_invalid_row": 0
+    },
+    "seconds": 32.593,
+    "rows_per_second": 1690.3,
+    "store_counts_before": {
+      "nodes": 0,
+      "edges": 0,
+      "entities": 0,
+      "idempotency": 0
+    },
+    "store_counts_after": {
+      "nodes": 57381,
+      "edges": 114419,
+      "entities": 57381,
+      "idempotency": 171800
+    },
+    "errors_sample": [
+      {
+        "reason": "invalid_available_at",
+        "event_id": "8f14b31cc9230e94640978984b1d829d",
+        "value": "2021-05-28T00:00:00"
+      },
+      {
+        "reason": "invalid_available_at",
+        "event_id": "e26904a3c6489b93c36f825cc8e9b4cf",
+        "value": "2018-02-27T00:00:00"
+      },
+      {
+        "reason": "invalid_available_at",
+        "event_id": "cfd186ba95e797ccee516db579de4a5f",
+        "value": "2017-05-19T00:00:00"
+      },
+      {
+        "reason": "invalid_available_at",
+        "event_id": "989e875869cc18f2c888a20c4f5ef050",
+        "value": "2017-09-08T00:00:00"
+      },
+      {
+        "reason": "invalid_available_at",
+        "event_id": "1a9d43f9ca250cc9f524740c7fffff84",
+        "value": "2017-03-13T00:00:00"
+      },
+      {
+        "reason": "invalid_available_at",
+        "event_id": "0bc5f605bed66c1e95c0882699cae6ae",
+        "value": "2017-11-27T00:00:00"
+      },
+      {
+        "reason": "invalid_available_at",
+        "event_id": "d07fe1bb407682894a5cf0cc53efbf97",
+        "value": "2017-09-26T00:00:00"
+      },
+      {
+        "reason": "invalid_available_at",
+        "event_id": "44e2a97079bfdb3471cc413f9725bbc0",
+        "value": "2017-10-12T00:00:00"
+      },
+      {
+        "reason": "invalid_available_at",
+        "event_id": "f89dc38eee72c1c4f8c3c225e8b6f2b2",
+        "value": "2023-01-06T00:00:00"
+      },
+      {
+        "reason": "invalid_available_at",
+        "event_id": "28dd72ed9b6c067b74af87f6a3a5d8f7",
+        "value": "2022-05-08T00:00:00"
+      }
+    ],
+    "error_count": 55090
+  },
+  "reimport": {
+    "counters": {
+      "rows_seen": 55090,
+      "assertions_created": 0,
+      "idempotent_duplicates": 283928,
+      "skipped_missing_event_id": 0,
+      "skipped_missing_event_date": 0,
+      "invalid_public_time_dropped": 55090,
+      "skipped_invalid_row": 0
+    },
+    "seconds": 13.661,
+    "idempotent": true,
+    "store_grew": false,
+    "store_counts_after": {
+      "nodes": 57381,
+      "edges": 114419,
+      "entities": 57381,
+      "idempotency": 171800
+    }
+  },
+  "snapshot": {
+    "known_at": "2026-12-31T00:00:00.000000Z",
+    "valid_at": "2026-12-31T00:00:00.000000Z",
+    "counts": {
+      "nodes": 57381,
+      "edges": 114419
+    },
+    "snapshot_sha256": "b60c8360656d15def5f7a81115ab069e48fb21281ac8d51167667c226c3010f3",
+    "schema_version": "tkg-schema-2",
+    "code_version": "medradar-0.4.0",
+    "adapter_version": "events-adapter-1",
+    "reexport_sha256": "b60c8360656d15def5f7a81115ab069e48fb21281ac8d51167667c226c3010f3",
+    "identical_on_reexport": true,
+    "written_files": {
+      "snapshot.json": "out\\tkg_import\\snapshot.json"
+    }
+  },
+  "pit": {
+    "early": {
+      "known_at": "2026-01-01T00:00:00.000000Z",
+      "valid_at": "2026-01-01T00:00:00.000000Z",
+      "counts": {
+        "nodes": 0,
+        "edges": 0
+      },
+      "snapshot_sha256": "d2da586ae329ffe0cf93631411f8ea2f9c4004a20a122e88978ecba07de05ab3",
+      "schema_version": "tkg-schema-2",
+      "code_version": "medradar-0.4.0",
+      "adapter_version": "events-adapter-1",
+      "seconds": 0.0
+    },
+    "late": {
+      "known_at": "2026-12-31T00:00:00.000000Z",
+      "counts": {
+        "nodes": 57381,
+        "edges": 114419
+      }
+    },
+    "interpretation": "All imported rows carry recorded_at = the backfill observation time, so a knowledge cutoff before the import sees zero nodes/edges; the later cutoff sees the whole imported graph. This proves the knowledge-time gate, not historical publication availability."
+  },
+  "store_counts": {
+    "nodes": 57381,
+    "edges": 114419,
+    "entities": 57381,
+    "idempotency_keys": 171800
+  },
+  "checks": {
+    "source_unchanged": true,
+    "reimport_idempotent": true,
+    "reimport_store_grew": false,
+    "snapshot_identical_on_reexport": true,
+    "passed": true
+  },
+  "failures": []
+}
