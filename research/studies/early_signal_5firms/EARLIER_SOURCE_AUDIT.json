@@ -1,0 +1,368 @@
+{
+  "schema": "earlier_source_audit_v1",
+  "study": "early_signal_5firms",
+  "phase": "Phase 1 / A1",
+  "window": [
+    "2018-01-01",
+    "2025-12-31"
+  ],
+  "sources": {
+    "clinical_trials_ctgov": {
+      "tier": "B",
+      "total_records": 55592,
+      "tier_reason": "event_date is the posting date, which is a PIT-safe boundary; the payload's trial start_date precedes posting and may not be used as availability",
+      "by_firm": {
+        "medtronic": {
+          "total_in_window": 113,
+          "with_track": 51,
+          "without_track": 62,
+          "tracks": [
+            {
+              "track": null,
+              "count": 62,
+              "first": "2018-04-11",
+              "last": "2025-12-30"
+            },
+            {
+              "track": "t_cardiometabolic",
+              "count": 42,
+              "first": "2018-01-31",
+              "last": "2025-11-14"
+            },
+            {
+              "track": "t_oncology",
+              "count": 3,
+              "first": "2018-07-13",
+              "last": "2023-05-12"
+            },
+            {
+              "track": "t_urology",
+              "count": 2,
+              "first": "2023-01-25",
+              "last": "2023-02-08"
+            },
+            {
+              "track": "t_womens_health",
+              "count": 1,
+              "first": "2025-08-13",
+              "last": "2025-08-13"
+            },
+            {
+              "track": "t_respiratory",
+              "count": 1,
+              "first": "2020-12-17",
+              "last": "2020-12-17"
+            },
+            {
+              "track": "t_musculoskeletal",
+              "count": 1,
+              "first": "2018-11-05",
+              "last": "2018-11-05"
+            },
+            {
+              "track": "t_hematology",
+              "count": 1,
+              "first": "2020-07-31",
+              "last": "2020-07-31"
+            }
+          ]
+        },
+        "ge_healthcare": {
+          "total_in_window": 35,
+          "with_track": 11,
+          "without_track": 24,
+          "tracks": [
+            {
+              "track": null,
+              "count": 24,
+              "first": "2018-08-06",
+              "last": "2025-12-30"
+            },
+            {
+              "track": "t_oncology",
+              "count": 6,
+              "first": "2018-03-07",
+              "last": "2025-10-21"
+            },
+            {
+              "track": "t_neuroscience",
+              "count": 3,
+              "first": "2019-12-10",
+              "last": "2022-12-05"
+            },
+            {
+              "track": "t_womens_health",
+              "count": 2,
+              "first": "2024-12-10",
+              "last": "2025-02-19"
+            }
+          ]
+        },
+        "philips": {
+          "total_in_window": 59,
+          "with_track": 10,
+          "without_track": 49,
+          "tracks": [
+            {
+              "track": null,
+              "count": 49,
+              "first": "2018-07-26",
+              "last": "2025-04-25"
+            },
+            {
+              "track": "t_hepatology",
+              "count": 3,
+              "first": "2020-12-08",
+              "last": "2023-10-23"
+            },
+            {
+              "track": "t_womens_health",
+              "count": 2,
+              "first": "2019-01-23",
+              "last": "2020-01-28"
+            },
+            {
+              "track": "t_respiratory",
+              "count": 2,
+              "first": "2019-05-01",
+              "last": "2021-01-26"
+            },
+            {
+              "track": "t_neuroscience",
+              "count": 1,
+              "first": "2024-01-05",
+              "last": "2024-01-05"
+            },
+            {
+              "track": "t_immunology",
+              "count": 1,
+              "first": "2022-08-26",
+              "last": "2022-08-26"
+            },
+            {
+              "track": "t_cardiometabolic",
+              "count": 1,
+              "first": "2018-08-22",
+              "last": "2018-08-22"
+            }
+          ]
+        },
+        "mindray": {
+          "total_in_window": 0,
+          "with_track": 0,
+          "without_track": 0,
+          "tracks": []
+        },
+        "draeger": {
+          "total_in_window": 0,
+          "with_track": 0,
+          "without_track": 0,
+          "tracks": []
+        }
+      },
+      "alias_only": {
+        "medtronic": {
+          "total": 113,
+          "tracks": {
+            "None": 62,
+            "t_cardiometabolic": 42,
+            "t_hematology": 1,
+            "t_musculoskeletal": 1,
+            "t_oncology": 3,
+            "t_respiratory": 1,
+            "t_urology": 2,
+            "t_womens_health": 1
+          }
+        },
+        "ge_healthcare": {
+          "total": 35,
+          "tracks": {
+            "None": 24,
+            "t_neuroscience": 3,
+            "t_oncology": 6,
+            "t_womens_health": 2
+          }
+        },
+        "philips": {
+          "total": 59,
+          "tracks": {
+            "None": 49,
+            "t_cardiometabolic": 1,
+            "t_hepatology": 3,
+            "t_immunology": 1,
+            "t_neuroscience": 1,
+            "t_respiratory": 2,
+            "t_womens_health": 2
+          }
+        },
+        "draeger": {
+          "total": 0,
+          "tracks": {}
+        },
+        "mindray": {
+          "total": 0,
+          "tracks": {}
+        }
+      }
+    },
+    "sec_8k": {
+      "tier": "B",
+      "total_records": 20976,
+      "tier_reason": "event_date is the filing date, a PIT-safe boundary",
+      "by_firm": {
+        "medtronic": {
+          "total_in_window": 5,
+          "tracks": [
+            {
+              "track": null,
+              "count": 5,
+              "first": "2019-03-07",
+              "last": "2024-06-03"
+            }
+          ]
+        },
+        "ge_healthcare": {
+          "total_in_window": 4,
+          "tracks": [
+            {
+              "track": null,
+              "count": 4,
+              "first": "2024-02-16",
+              "last": "2025-07-30"
+            }
+          ]
+        },
+        "philips": {
+          "total_in_window": 0,
+          "tracks": []
+        },
+        "mindray": {
+          "total_in_window": 0,
+          "tracks": []
+        },
+        "draeger": {
+          "total_in_window": 0,
+          "tracks": []
+        }
+      },
+      "alias_only": {
+        "medtronic": {
+          "total": 5,
+          "tracks": {
+            "None": 5
+          }
+        },
+        "ge_healthcare": {
+          "total": 9,
+          "tracks": {
+            "None": 9
+          }
+        },
+        "philips": {
+          "total": 0,
+          "tracks": {}
+        },
+        "draeger": {
+          "total": 0,
+          "tracks": {}
+        },
+        "mindray": {
+          "total": 0,
+          "tracks": {}
+        }
+      }
+    }
+  },
+  "taxonomy": {
+    "n_tracks": 60,
+    "n_therapy_area": 22,
+    "n_device": 38,
+    "candidate_crosswalks": {
+      "t_respiratory": {
+        "device_track": "respiratory",
+        "basis": "identical id after the t_ prefix",
+        "therapy_name": "Respiratory",
+        "device_name": "Respiratory & Anesthesia"
+      },
+      "t_ophthalmology": {
+        "device_track": "ophthalmology",
+        "basis": "identical id after the t_ prefix",
+        "therapy_name": "Ophthalmology",
+        "device_name": "Ophthalmology"
+      },
+      "t_urology": {
+        "device_track": "urology",
+        "basis": "identical id after the t_ prefix",
+        "therapy_name": "Urology",
+        "device_name": "Urology"
+      },
+      "t_womens_health": {
+        "device_track": "womens_health",
+        "basis": "identical id after the t_ prefix",
+        "therapy_name": "Women's Health",
+        "device_name": "Women's Health"
+      }
+    },
+    "note": "a candidate is not an established mapping: it needs review, and identical naming does not prove that a therapy-area trial belongs to the same technology reading"
+  },
+  "date_semantics": {
+    "trial": {
+      "event_date": "1999-10-19",
+      "published_at": "1999-10-19",
+      "available_at": "1999-10-19",
+      "first_seen_at": "2026-10-30",
+      "payload_date_fields": {
+        "start_date": "1998-10-01",
+        "first_posted": "1999-10-19"
+      },
+      "reading": "for trials, event_date is the posting date (PIT-safe boundary), while the payload also carries a trial start_date that precedes posting and therefore may not be used as the availability time"
+    },
+    "8k_catalyst": {
+      "event_date": "2015-01-02",
+      "published_at": "2015-01-02T00:00:00",
+      "available_at": "2015-01-02T00:00:00",
+      "first_seen_at": "2026-10-31",
+      "payload_date_fields": {},
+      "reading": "for 8-K, event_date equals the filing date; the payload carries the accession and a keyword category, not a technology track"
+    }
+  },
+  "pair_feasibility": {
+    "trials_on_confirmatory_device_tracks": {
+      "medtronic": {
+        "imaging_us": 0,
+        "respiratory": 0
+      },
+      "ge_healthcare": {
+        "imaging_us": 0,
+        "respiratory": 0
+      },
+      "philips": {
+        "imaging_us": 0,
+        "respiratory": 0
+      },
+      "mindray": {
+        "imaging_us": 0,
+        "respiratory": 0
+      },
+      "draeger": {
+        "imaging_us": 0,
+        "respiratory": 0
+      }
+    },
+    "trials_total_on_confirmatory": 0,
+    "eightk_per_firm_in_window": {
+      "medtronic": 5,
+      "ge_healthcare": 4,
+      "philips": 0,
+      "mindray": 0,
+      "draeger": 0
+    },
+    "verdict": "NOT_EVALUABLE for lead-time pairing on the confirmatory tracks: the trial lane assigns therapy-area ids (t_*) and only two of them have an id-identical device counterpart, so a defensible crosswalk does not exist; 8-K carries no technology track and occurs ~5 times per firm in the window"
+  },
+  "consequences": [
+    "pairing trials to the study's device tracks requires a therapy-area -> device crosswalk that the store does not contain; inventing one after seeing outcomes would be a pre-registration violation",
+    "8-K is too sparse and trackless to support cell-level lead-time measurement",
+    "the only defensible earlier-source pairing available today is at the *firm* level, not the firm-track level; that supports RQ3 weakly and RQ4 not at all"
+  ],
+  "generated_at_utc": "2026-11-02T17:45:58+00:00"
+}

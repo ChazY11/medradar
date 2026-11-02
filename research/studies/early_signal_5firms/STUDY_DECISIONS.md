@@ -59,3 +59,39 @@ Phase 1 may only begin if: (a) the positive definition becomes a *sustained* cha
 the tier audit so lead time is measurable at all; (c) per-cell results are reported separately and cross-firm pooling
 is limited to the two confirmatory tracks; (d) 60 candidate cases are adjudicated by a named human reviewer with the
 independence rule enforced. Until then Phase 1 is **CONDITIONAL-GO at best**.
+
+---
+
+## S-007 — G1 = NO-GO for lead-time measurement (pre-registered gate, run as specified)
+
+**Date:** 2026-11-03 · **Status:** accepted · **Evidence:** `EARLIER_SOURCE_AUDIT.json`, `LEAD_LAG_PROBE.json`,
+`PHASE1_SHRINKAGE.md`
+
+The frozen G1 criteria (≥10 eligible pairs with lead ≥2 quarters across ≥2 firms) were applied to three scopes:
+S1 primary (trials on the device tracks) produced **0** pairs; S2 (assumed crosswalk `t_respiratory → respiratory`)
+produced **3** pairs across 2 firms; S3 firm-level produced 0 eligible pairs because every trial is followed by a
+clearance within the 2-quarter floor. The best scope reaches 3 pairs, below the floor of 10, so **G1 = NO-GO**.
+
+Cause is structural, not statistical: the trial lane assigns therapy-area tracks (`t_*`), only four of which have an
+id-identical device counterpart, and only one of those touches a confirmatory track. A crosswalk would have to be
+built and reviewed, and building it after seeing outcomes would violate pre-registration. SEC 8-K is unusable at cell
+level: 1,360 of 20,976 records carry a company_key (~5 per firm in the window) and none carries a track.
+
+## S-008 — Firm-level pairing is recorded as invalid for inference, with the number that shows why
+
+**Date:** 2026-11-03 · **Status:** accepted
+
+At firm level, Medtronic's 113 in-window trials pair to the next clearance with **303,942** skipped follow-on events,
+and **112 of 113** pairs fall below the 2-quarter floor. With thousands of clearances any trial will be followed by
+one almost immediately, so the pairing carries almost no information about whether a technology change exists. This
+is recorded so that no later analysis revives firm-level lead times as if they were evidence.
+
+## S-009 — Next question is concurrent detection (O1), not lead time
+
+**Date:** 2026-11-03 · **Status:** open, awaiting human decision
+
+The corpus can support a question about *as-it-happens* multi-source detection (H1) but not about lead time (H2). The
+recommendation in `PHASE1_SHRINKAGE.md` §6 is to run O1 next, after the positive definition is changed to a sustained
+change, and to state the lead-time question as unanswerable on this corpus rather than replace it with a proxy.
+O2 (a reviewed trial crosswalk) would need a human-adjudicated mapping before it can be used; O3 (patents/procurement)
+remains blocked by access and by Tier C timestamps.
