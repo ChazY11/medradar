@@ -20,7 +20,8 @@
 
 ## 3. Momentum
 
-- activity broadly stable: 10 events in the last 24 months vs 10 in the prior 24 (ratio 1.00)
+- no detectable change: 10 events in the last 24 months vs 10 before (ratio 1.00), p=1.000; minimum detectable ratio at 80% power is 3.50x
+- Test: exact two-sided binomial p=1.000 (alpha=0.05), minimum detectable ratio at 80 % power 3.50x, detected=False
 
 ## 4. Concentration
 

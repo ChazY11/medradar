@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 from collections import Counter, defaultdict
 from typing import Any, Iterable, Mapping, Sequence
 
@@ -48,9 +49,40 @@ CHURN_LOOKBACK_MONTHS = 18    # share of events on codes first seen this recentl
 SPARSE_MONTH_FRACTION = 0.5   # a company silent in more than half the window is flagged
 DECLINE_RATIO = 0.5           # a track below half its prior rate is flagged as declining
 MIN_TRACK_EVENTS = 2          # one event is an anecdote, not a footprint
+MOMENTUM_ALPHA = 0.05         # significance level for the momentum test
+MOMENTUM_POWER = 0.80         # target power for the minimum detectable ratio
+Z_ALPHA = 1.959963985         # two-sided 5 %
+Z_POWER = 0.841621234         # 80 % power
 
 
 # --------------------------------------------------------------------- helpers
+def _normal_cdf(value: float) -> float:
+    """Standard normal CDF via the error function (stdlib only)."""
+    return 0.5 * (1.0 + math.erf(value / math.sqrt(2.0)))
+
+
+def _binom_two_sided_p(successes: int, trials: int, p_null: float) -> float:
+    """Exact two-sided binomial p-value (sum of outcomes no more likely than observed)."""
+    if trials <= 0:
+        return 1.0
+    p_null = min(max(p_null, 1e-12), 1 - 1e-12)
+    probabilities = [math.comb(trials, k) * (p_null ** k) * ((1 - p_null) ** (trials - k))
+                     for k in range(trials + 1)]
+    observed = probabilities[successes]
+    tolerance = observed * (1 + 1e-9)
+    return min(1.0, sum(prob for prob in probabilities if prob <= tolerance))
+
+
+def _minimum_detectable_ratio(n_prior: int, n_recent: int) -> float | None:
+    """Smallest rate ratio detectable at the configured alpha and power, given these counts.
+
+    Uses the log-scale standard error sqrt(1/n_prior + 1/n_recent); returned as a ratio in
+    (1, +inf). ``None`` when either count is zero, because the ratio is then unbounded.
+    """
+    if n_prior <= 0 or n_recent <= 0:
+        return None
+    standard_error = math.sqrt(1.0 / n_prior + 1.0 / n_recent)
+    return math.exp((Z_ALPHA + Z_POWER) * standard_error)
 def _month_labels(start: str, end: str) -> list[str]:
     """Inclusive list of ``YYYY-MM`` labels from ``start`` to ``end``."""
     start_year, start_month = (int(part) for part in start.split("-"))
@@ -86,38 +118,51 @@ def _rate(months: Sequence[str], labels: Sequence[str]) -> tuple[int, int, float
 
 
 def _momentum(events: Sequence[Mapping[str, Any]], labels: Sequence[str]) -> dict[str, Any]:
-    """Compare the most recent MATERIAL_MONTHS with the EQUAL window before it."""
+    """Compare the most recent MATERIAL_MONTHS with the equal window before it, with a test.
+
+    A rate ratio alone is not a finding: 90 versus 66 events can be noise. The comparison is a
+    two-sided exact binomial test of the recent count conditional on the total, which is the
+    Poisson rate-ratio test under a constant-rate null. When the test does not reject, the field
+    reports the **minimum detectable ratio** at 80 % power rather than calling the change real or
+    absent.
+    """
     if len(labels) < 2 * MATERIAL_MONTHS:
         return {"status": "insufficient_window", "recent": 0, "prior": 0, "ratio": None,
+                "detected": False, "p_value": None, "mde_ratio": None,
                 "statement": "window shorter than two comparison periods; momentum not estimated"}
     recent_labels = labels[-MATERIAL_MONTHS:]
     prior_labels = labels[-2 * MATERIAL_MONTHS:-MATERIAL_MONTHS]
     months = [str(event.get("date") or "")[:7] for event in events]
     recent, _, recent_rate = _rate(months, recent_labels)
     prior, _, prior_rate = _rate(months, prior_labels)
-    if prior_rate in (None, 0):
-        ratio = None
+    total = recent + prior
+    ratio = (recent_rate / prior_rate) if prior_rate else None
+    mde = _minimum_detectable_ratio(prior, recent)
+
+    if total == 0:
+        return {"status": "estimated", "recent": 0, "prior": 0, "ratio": None,
+                "recent_rate": 0.0, "prior_rate": 0.0, "detected": False, "p_value": 1.0,
+                "mde_ratio": None, "alpha": MOMENTUM_ALPHA,
+                "statement": (f"no material events in either {MATERIAL_MONTHS}-month period; "
+                              "momentum not estimable")}
+
+    p_value = _binom_two_sided_p(recent, total, 0.5)
+    detected = p_value < MOMENTUM_ALPHA and ratio is not None and ratio != 1.0
+    if detected:
+        direction = "increasing" if (ratio or 0) > 1 else "decreasing"
+        statement = (f"activity {direction}: {recent} events in the last {MATERIAL_MONTHS} months "
+                     f"vs {prior} before (ratio {ratio:.2f}), exact two-sided p={p_value:.3f}")
     else:
-        ratio = recent_rate / prior_rate
-    if ratio is None:
-        direction = "undefined"
-        statement = (f"{recent} material events in the last {MATERIAL_MONTHS} months against "
-                     f"{prior} in the prior {MATERIAL_MONTHS}; no prior activity to compare with")
-    elif ratio >= 1.25:
-        direction = "increasing"
-        statement = (f"activity rising: {recent} events in the last {MATERIAL_MONTHS} months vs "
-                     f"{prior} in the prior {MATERIAL_MONTHS} (ratio {ratio:.2f})")
-    elif ratio <= DECLINE_RATIO:
-        direction = "decreasing"
-        statement = (f"activity falling: {recent} events in the last {MATERIAL_MONTHS} months vs "
-                     f"{prior} in the prior {MATERIAL_MONTHS} (ratio {ratio:.2f})")
-    else:
-        direction = "stable"
-        statement = (f"activity broadly stable: {recent} events in the last {MATERIAL_MONTHS} "
-                     f"months vs {prior} in the prior {MATERIAL_MONTHS} (ratio {ratio:.2f})")
+        direction = "no_detectable_change"
+        mde_text = f"{mde:.2f}x" if mde else "not estimable"
+        statement = (f"no detectable change: {recent} events in the last {MATERIAL_MONTHS} months "
+                     f"vs {prior} before (ratio {'n/a' if ratio is None else f'{ratio:.2f}'}), "
+                     f"p={p_value:.3f}; minimum detectable ratio at {int(MOMENTUM_POWER * 100)}% "
+                     f"power is {mde_text}")
     return {"status": "estimated", "recent": recent, "prior": prior,
             "recent_rate": recent_rate, "prior_rate": prior_rate, "ratio": ratio,
-            "direction": direction, "statement": statement}
+            "detected": detected, "p_value": p_value, "alpha": MOMENTUM_ALPHA,
+            "mde_ratio": mde, "direction": direction, "statement": statement}
 
 
 def _concentration(track_counts: Mapping[str, int]) -> dict[str, Any]:
@@ -374,8 +419,15 @@ def render_markdown(profile: Mapping[str, Any]) -> str:
         evidence = "sufficient" if row["sufficient_evidence"] else "single event"
         lines.append(f"| {row['track']} | {row['events']} | {row['first']} | {row['last']} | "
                      f"{(row['share'] or 0):.0%} | {evidence} |")
-    lines += ["", "## 3. Momentum", "", f"- {momentum['statement']}", "",
-              "## 4. Concentration", "", f"- {concentration['statement']}", ""]
+    lines += ["", "## 3. Momentum", "", f"- {momentum['statement']}"]
+    if momentum.get("status") == "estimated" and momentum.get("p_value") is not None:
+        mde = momentum.get("mde_ratio")
+        mde_text = f"{mde:.2f}x" if mde else "not estimable"
+        lines.append(
+            f"- Test: exact two-sided binomial p={momentum['p_value']:.3f} "
+            f"(alpha={momentum.get('alpha')}), minimum detectable ratio at 80 % power "
+            f"{mde_text}, detected={momentum.get('detected')}")
+    lines += ["", "## 4. Concentration", "", f"- {concentration['statement']}", ""]
     lines += ["## 5. Independent corroboration", "", f"- {corroboration['statement']}"]
     if corroboration["tracks_without_trial_support"]:
         lines.append(f"- Tracks with **no** trial support: "

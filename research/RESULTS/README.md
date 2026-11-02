@@ -94,3 +94,19 @@ split was degenerate. Details and all numbers: `cycle2_2026-11-02.md` and
 | R55 | **Understand layer shipped**: a pure, unit-tested profile engine with seven required fields; contradictory evidence is a schema requirement (`validate_profile` rejects profiles without it) | infrastructure / method | `medradar/intelligence/profile.py`, `tests/test_profile.py` (34 tests) |
 | R56 | Profiles generated for **all five mandated deep cases** from existing holdings: Medtronic 299 events/24 tracks (momentum 90 vs 66, 14/24 tracks trial-supported, 2 declining tracks), GE HealthCare 274/5, Philips 224/11, Mindray 82/3, Dräger 16/2 (thin, and says so) | deliverable | `experiments/b027/profiles/*.md` |
 | R57 | Self-check re-derives every number in the Markdown from the JSON, verifies all seven fields and determinism: **5/5 pass**; full suite 829 tests OK | verification | `experiments/b027/selfcheck.py` |
+| R58 | **Momentum is now a calibrated test** (two-sided exact binomial, α=0.05) with a mandatory minimum detectable ratio; a non-detection can no longer be reported as stability | method | `medradar/intelligence/profile.py`, D-033 |
+| R59 | **Three of five cycle-12 momentum readings were noise**: Medtronic 90v66 p=0.065 (MDE 1.57×), Mindray 18v12 p=0.362, GE HealthCare 57v48 p=0.435 — only **Philips** survives (73v36, p=0.001) | **retracted readings** | `experiments/b027/profiles.json` |
+| R60 | Calibration happened **inside the product**: D-032's structural contradiction rule forced the test to exist, so the correction did not depend on a reviewer noticing | design result | `research/RESULTS/cycle13_momentum_2026-11-02.md` |
+
+  - id: B-049
+    layer: understand
+    priority: P1
+    title: Full-roster profiles and a frozen dated snapshot set
+    status: todo
+    owner: lead
+    depends_on: [B-027]
+    acceptance: >
+      Extend the seven-field profile engine beyond the five mandated deep cases to the full curated
+      roster, then freeze a dated snapshot (profiles + source hashes + as-of date) so later cycles can
+      compare against it. The snapshot is the point-in-time artifact any rolling-origin evaluation
+      needs; without it, "what did we believe on date X" cannot be audited.

@@ -115,13 +115,17 @@
         }
       },
       "momentum": {
-        "direction": "stable",
+        "alpha": 0.05,
+        "detected": false,
+        "direction": "no_detectable_change",
+        "mde_ratio": 3.5005041426811188,
+        "p_value": 1.0,
         "prior": 10,
         "prior_rate": 0.4166666666666667,
         "ratio": 1.0,
         "recent": 10,
         "recent_rate": 0.4166666666666667,
-        "statement": "activity broadly stable: 10 events in the last 24 months vs 10 in the prior 24 (ratio 1.00)",
+        "statement": "no detectable change: 10 events in the last 24 months vs 10 before (ratio 1.00), p=1.000; minimum detectable ratio at 80% power is 3.50x",
         "status": "estimated"
       },
       "schema": "profile_v1",
@@ -259,13 +263,17 @@
         }
       },
       "momentum": {
-        "direction": "stable",
+        "alpha": 0.05,
+        "detected": false,
+        "direction": "no_detectable_change",
+        "mde_ratio": 1.7312319812034198,
+        "p_value": 0.43511449489230064,
         "prior": 48,
         "prior_rate": 2.0,
         "ratio": 1.1875,
         "recent": 57,
         "recent_rate": 2.375,
-        "statement": "activity broadly stable: 57 events in the last 24 months vs 48 in the prior 24 (ratio 1.19)",
+        "statement": "no detectable change: 57 events in the last 24 months vs 48 before (ratio 1.19), p=0.435; minimum detectable ratio at 80% power is 1.73x",
         "status": "estimated"
       },
       "schema": "profile_v1",
@@ -465,13 +473,17 @@
         }
       },
       "momentum": {
-        "direction": "increasing",
+        "alpha": 0.05,
+        "detected": false,
+        "direction": "no_detectable_change",
+        "mde_ratio": 1.5746260818529085,
+        "p_value": 0.06520677354687995,
         "prior": 66,
         "prior_rate": 2.75,
         "ratio": 1.3636363636363635,
         "recent": 90,
         "recent_rate": 3.75,
-        "statement": "activity rising: 90 events in the last 24 months vs 66 in the prior 24 (ratio 1.36)",
+        "statement": "no detectable change: 90 events in the last 24 months vs 66 before (ratio 1.36), p=0.065; minimum detectable ratio at 80% power is 1.57x",
         "status": "estimated"
       },
       "schema": "profile_v1",
@@ -779,13 +791,17 @@
         }
       },
       "momentum": {
-        "direction": "increasing",
+        "alpha": 0.05,
+        "detected": false,
+        "direction": "no_detectable_change",
+        "mde_ratio": 2.8408098379736124,
+        "p_value": 0.361594608053565,
         "prior": 12,
         "prior_rate": 0.5,
         "ratio": 1.5,
         "recent": 18,
         "recent_rate": 0.75,
-        "statement": "activity rising: 18 events in the last 24 months vs 12 in the prior 24 (ratio 1.50)",
+        "statement": "no detectable change: 18 events in the last 24 months vs 12 before (ratio 1.50), p=0.362; minimum detectable ratio at 80% power is 2.84x",
         "status": "estimated"
       },
       "schema": "profile_v1",
@@ -945,13 +961,17 @@
         }
       },
       "momentum": {
+        "alpha": 0.05,
+        "detected": true,
         "direction": "increasing",
+        "mde_ratio": 1.7692647278211404,
+        "p_value": 0.0005050343915302426,
         "prior": 36,
         "prior_rate": 1.5,
         "ratio": 2.0277777777777777,
         "recent": 73,
         "recent_rate": 3.0416666666666665,
-        "statement": "activity rising: 73 events in the last 24 months vs 36 in the prior 24 (ratio 2.03)",
+        "statement": "activity increasing: 73 events in the last 24 months vs 36 before (ratio 2.03), exact two-sided p=0.001",
         "status": "estimated"
       },
       "schema": "profile_v1",

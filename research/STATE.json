@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-02T23:50:00+08:00",
+  "updated_at": "2026-11-03T00:50:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "understand_profiles_shipped",
-  "cycle": 14,
+  "phase": "understand_calibrated_momentum",
+  "cycle": 15,
   "last_completed_cycle": {
-    "cycle": 12,
-    "name": "understand_layer_profiles",
+    "cycle": 13,
+    "name": "calibrated_momentum",
     "branch": "research/change-detection-v1",
     "report": "experiments/b027/profiles.json",
-    "summary": "research/RESULTS/cycle12_profiles_2026-11-02.md",
-    "verdict": "first Understand-layer deliverable shipped: a pure, unit-tested profile engine with seven required fields (contradictory evidence is structural, not optional), and profiles generated for all five mandated deep-case companies; selfcheck 5/5, selftest 829 tests OK"
+    "summary": "research/RESULTS/cycle13_momentum_2026-11-02.md",
+    "verdict": "momentum is now an exact binomial rate-ratio test at alpha=0.05 with a reported MDE; THREE of five cycle-12 momentum readings did not survive (Medtronic 90v66 p=0.065 MDE 1.57x, Mindray 18v12 p=0.362, GE HealthCare 57v48 p=0.435); only Philips' doubling survives (73v36 p=0.001)"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -124,7 +124,9 @@
     "OBSERVE: the hiring lane covers 1 of the 5 mandated deep-case companies (Medtronic); GE HealthCare's independence dates from 2023, Philips is archived too sparsely, Dräger/Mindray post on unarchived systems",
     "DESIGN: the mandated deep cases must be served by filings + device trials + publications, not by the hiring lane",
     "UNDERSTAND: seven-field company technology profiles are now generated for all five mandated deep cases from holdings alone (no new data), with contradictory evidence as a required field",
-    "UNDERSTAND: automated self-check re-derives every number the Markdown states from the JSON; 5/5 profiles pass and rendering is deterministic"
+    "UNDERSTAND: automated self-check re-derives every number the Markdown states from the JSON; 5/5 profiles pass and rendering is deterministic",
+    "UNDERSTAND: momentum is a calibrated test (exact binomial, alpha=0.05) with a reported minimum detectable ratio; 3 of 5 cycle-12 momentum readings were noise and were overturned inside the product by design",
+    "UNDERSTAND: only Philips' activity increase survives (73 vs 36, p=0.001); Medtronic's +36% has p=0.065 and an MDE of 1.57x, so the data cannot distinguish it from a constant rate"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -142,9 +144,9 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "extend profiles beyond the five deep cases to the full curated roster and freeze a dated snapshot set (rolling-origin prerequisite)",
+    "B-049: extend profiles to the full curated roster and freeze a dated snapshot set (point-in-time artifact prerequisite for any rolling-origin evaluation)",
     "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there",
-    "wire the detection frontier (cycle 3c) into the profile's momentum field so 'change' means a calibrated detection rather than a rate ratio",
+    "use the cycle-3c detection frontier, not only the 24-month rate test, for the per-track change field so 'change' is calibrated against the controlled-truth benchmark",
     "do not resume hiring probing (structural limit, D-031); patents only if a route opens"
   ],
   "invariants": [
@@ -490,6 +492,58 @@
         "contradictions": 1
       }
     },
-    "selfcheck": "experiments/b027/selfcheck.py - 5/5 profiles pass"
+    "selfcheck": "experiments/b027/selfcheck.py - 5/5 profiles pass",
+    "momentum_test": {
+      "method": "two-sided exact binomial test of the recent count given the total (Poisson rate-ratio under a constant-rate null)",
+      "alpha": 0.05,
+      "power_for_mde": 0.8,
+      "mde_definition": "smallest rate ratio detectable at alpha and 80% power given the observed counts; reported whenever the test does not reject",
+      "results": {
+        "medtronic": {
+          "recent": 90,
+          "prior": 66,
+          "ratio": 1.36,
+          "p": 0.065,
+          "mde": 1.57,
+          "detected": false,
+          "supersedes": "was 'rising' in cycle 12"
+        },
+        "philips": {
+          "recent": 73,
+          "prior": 36,
+          "ratio": 2.03,
+          "p": 0.001,
+          "mde": 1.77,
+          "detected": true,
+          "direction": "increasing"
+        },
+        "ge_healthcare": {
+          "recent": 57,
+          "prior": 48,
+          "ratio": 1.19,
+          "p": 0.435,
+          "mde": 1.73,
+          "detected": false
+        },
+        "mindray": {
+          "recent": 18,
+          "prior": 12,
+          "ratio": 1.5,
+          "p": 0.362,
+          "mde": 2.84,
+          "detected": false,
+          "supersedes": "was 'rising' in cycle 12"
+        },
+        "draeger": {
+          "recent": 10,
+          "prior": 10,
+          "ratio": 1.0,
+          "p": 1.0,
+          "mde": 3.5,
+          "detected": false
+        }
+      },
+      "reading_rule": "a non-detection is never reported as stability: the MDE must accompany it"
+    }
   }
 }

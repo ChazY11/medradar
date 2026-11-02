@@ -71,6 +71,20 @@ def check_profile(key: str, profile: dict, markdown: str) -> list[str]:
     if f"{identity['entity_count']} resolved legal entities" not in markdown:
         problems.append("entity count not found in markdown")
 
+    # momentum must carry its test, not just a ratio
+    momentum = profile["momentum"]
+    if momentum.get("status") == "estimated" and momentum.get("p_value") is not None:
+        if f"p={momentum['p_value']:.3f}" not in markdown:
+            problems.append("momentum p-value not found in markdown")
+        if "minimum detectable ratio at 80 % power" not in markdown:
+            problems.append("momentum MDE not found in markdown")
+        if f"detected={momentum.get('detected')}" not in markdown:
+            problems.append("momentum detected flag not found in markdown")
+        if momentum.get("detected") and momentum.get("direction") == "no_detectable_change":
+            problems.append("momentum reports no detectable change but is marked detected")
+        if not momentum.get("detected") and momentum.get("direction") != "no_detectable_change":
+            problems.append("momentum direction contradicts the detected flag")
+
     if render_markdown(profile) != markdown:
         problems.append("rendering is not deterministic")
     return problems

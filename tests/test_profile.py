@@ -89,39 +89,64 @@ class ValidationTest(unittest.TestCase):
 
 
 class MomentumTest(unittest.TestCase):
-    def test_increasing(self):
-        # 1 event in the prior 24 months, 6 in the last 24
-        events = _events({"cardiac": ["2021-06", "2022-06",
-                                      "2022-09", "2022-10", "2022-11", "2022-12",
-                                      "2023-01", "2023-02"]})
-        profile = _profile(events)
-        self.assertEqual(profile["momentum"]["direction"], "increasing")
-        self.assertEqual(profile["momentum"]["status"], "estimated")
+    """Momentum is a calibrated test, not a rate ratio: direction only when p < alpha."""
 
-    def test_decreasing(self):
-        events = _events({"cardiac": ["2020-02", "2020-03", "2020-04", "2020-05",
-                                      "2021-02", "2023-10"]})
-        profile = _profile(events)
-        self.assertEqual(profile["momentum"]["direction"], "decreasing")
+    def _months(self, count, start_year):
+        months = []
+        for index in range(count):
+            year = start_year + index // 12
+            month = index % 12 + 1
+            months.append(f"{year}-{month:02d}")
+        return months
 
-    def test_stable(self):
-        events = _events({"cardiac": ["2021-01", "2021-02", "2021-03", "2023-01",
-                                      "2023-02", "2023-03"]})
-        profile = _profile(events)
-        self.assertEqual(profile["momentum"]["direction"], "stable")
+    def test_increasing_is_detected(self):
+        events = _events({"cardiac": self._months(2, 2020) + self._months(20, 2022)})
+        momentum = _profile(events)["momentum"]
+        self.assertTrue(momentum["detected"])
+        self.assertEqual(momentum["direction"], "increasing")
+        self.assertLess(momentum["p_value"], momentum["alpha"])
+
+    def test_decreasing_is_detected(self):
+        events = _events({"cardiac": self._months(20, 2020) + self._months(2, 2022)})
+        momentum = _profile(events)["momentum"]
+        self.assertTrue(momentum["detected"])
+        self.assertEqual(momentum["direction"], "decreasing")
+
+    def test_equal_counts_are_not_detectable(self):
+        events = _events({"cardiac": self._months(10, 2020) + self._months(10, 2022)})
+        momentum = _profile(events)["momentum"]
+        self.assertFalse(momentum["detected"])
+        self.assertEqual(momentum["direction"], "no_detectable_change")
+        self.assertAlmostEqual(momentum["p_value"], 1.0)
+        self.assertIsNotNone(momentum["mde_ratio"])
+
+    def test_modest_difference_does_not_claim_a_change(self):
+        # 10 versus 13 events is a rate ratio of 1.3 that a test cannot distinguish from noise
+        events = _events({"cardiac": self._months(10, 2020) + self._months(13, 2022)})
+        momentum = _profile(events)["momentum"]
+        self.assertFalse(momentum["detected"])
+        self.assertIn("minimum detectable ratio", momentum["statement"])
 
     def test_insufficient_window(self):
         profile = _profile(_events({"cardiac": ["2021-01"]}),
                            window=("2023-01", "2023-12"))
         self.assertEqual(profile["momentum"]["status"], "insufficient_window")
+        self.assertFalse(profile["momentum"]["detected"])
 
-    def test_no_prior_activity_is_undefined(self):
-        events = _events({"cardiac": ["2023-01", "2023-02"]})
-        profile = _profile(events)
-        self.assertEqual(profile["momentum"]["direction"], "undefined")
+    def test_empty_activity_is_not_estimable(self):
+        momentum = _profile([])["momentum"]
+        self.assertEqual(momentum["status"], "estimated")
+        self.assertFalse(momentum["detected"])
+        self.assertIsNone(momentum["mde_ratio"])
+        self.assertIn("not estimable", momentum["statement"])
 
-    def test_statement_matches_numbers(self):
-        events = _events({"cardiac": ["2021-01", "2021-02", "2023-01"]})
+    def test_mde_shrinks_with_more_events(self):
+        sparse = _profile(_events({"cardiac": self._months(4, 2020) + self._months(4, 2022)}))
+        dense = _profile(_events({"cardiac": self._months(60, 2020) + self._months(60, 2022)}))
+        self.assertLess(dense["momentum"]["mde_ratio"], sparse["momentum"]["mde_ratio"])
+
+    def test_statement_reports_its_own_numbers(self):
+        events = _events({"cardiac": self._months(20, 2020) + self._months(2, 2022)})
         momentum = _profile(events)["momentum"]
         self.assertIn(str(momentum["recent"]), momentum["statement"])
         self.assertIn(str(momentum["prior"]), momentum["statement"])

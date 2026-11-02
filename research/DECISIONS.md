@@ -1108,3 +1108,54 @@ HealthCare: 274 events / 5 tracks, no contradiction found across the four checks
 **Verification.** `experiments/b027/selfcheck.py` re-derives every number the Markdown states from the
 JSON (footprint rows, totals, contradiction count, entity count), checks all seven headings, and
 confirms rendering is deterministic: 5 of 5 profiles pass.
+
+---
+
+## D-033 — Momentum is now a calibrated test, and three of the five cycle-12 momentum readings did not survive it
+
+**Date:** 2026-11-02. **Status:** accepted. **Supersedes** the momentum statements of D-032.
+
+### The defect
+
+Cycle 12's profile computed momentum as a rate ratio between the last 24 months and the 24 before,
+and called a ratio ≥ 1.25 "rising". That is the same mistake the programme has paid for repeatedly in
+the laboratory: a ratio is not evidence. With counts in the tens, a ratio of 1.36 is entirely
+compatible with a constant rate.
+
+### The fix
+
+`momentum` is now a **two-sided exact binomial test** of the recent count conditional on the total
+(equivalently the Poisson rate-ratio test under a constant-rate null), at α = 0.05. Three outcomes:
+
+* `increasing` / `decreasing` only when p < 0.05;
+* otherwise `no_detectable_change`, and the field must then report the **minimum detectable ratio at
+  80 % power** implied by the observed counts (`mde_ratio`), so a null is never read as "no change".
+
+The rendered profile prints the p-value, α, the MDE and the `detected` flag, and `selfcheck.py`
+re-derives them from the JSON.
+
+### What happened to the cycle-12 readings
+
+| company | last 24 m | prior 24 m | ratio | exact p | MDE (80 %) | verdict |
+|---|---:|---:|---:|---:|---:|---|
+| Medtronic | 90 | 66 | 1.36 | 0.065 | 1.57× | **no detectable change** (was "rising") |
+| GE HealthCare | 57 | 48 | 1.19 | 0.435 | 1.73× | no detectable change (was "stable") |
+| Philips | 73 | 36 | 2.03 | **0.001** | 1.77× | **increasing** (survives) |
+| Mindray | 18 | 12 | 1.50 | 0.362 | 2.84× | **no detectable change** (was "rising") |
+| Dräger | 10 | 10 | 1.00 | 1.000 | 3.50× | no detectable change (was "stable") |
+
+**Three of five cycle-12 momentum readings were noise.** Medtronic's +36 % and Mindray's +50 % are
+comfortably inside what a constant rate produces at these counts, and only Philips' doubling clears
+the test.
+
+This is the fourth time a tempting positive has dissolved under a better null — and the first time it
+dissolved **inside the product**, automatically, because the design forced the contradiction check to
+exist. That is the intended behaviour of D-032's third rule: the profile is not allowed to state a
+direction without the test that supports it.
+
+### Not claimed
+
+A non-detection is not evidence of stability. The MDE column says exactly how large a change this
+data could have seen: Medtronic's data would have needed a 57 % increase to be detectable, so a 20 %
+real increase is fully compatible with the data and simply invisible. "No detectable change" with a
+stated MDE is the honest sentence; "stable" is not.

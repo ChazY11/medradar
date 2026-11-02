@@ -29,7 +29,8 @@
 
 ## 3. Momentum
 
-- activity rising: 73 events in the last 24 months vs 36 in the prior 24 (ratio 2.03)
+- activity increasing: 73 events in the last 24 months vs 36 before (ratio 2.03), exact two-sided p=0.001
+- Test: exact two-sided binomial p=0.001 (alpha=0.05), minimum detectable ratio at 80 % power 1.77x, detected=True
 
 ## 4. Concentration
 
