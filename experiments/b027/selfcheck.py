@@ -104,6 +104,21 @@ def check_profile(key: str, profile: dict, markdown: str) -> list[str]:
             problems.append("deployment detector line not found in markdown")
         if f"{deployment.get('false_alarm_rate'):.3f}" not in markdown:
             problems.append("deployment false-alarm rate not found in markdown")
+        # promotion policy gates: no automated promotion, sign-off always required, and the
+        # statement must stay a claim about filing rate
+        for alert in deployment.get("flagged", []):
+            promotion = alert.get("promotion")
+            if not promotion:
+                problems.append(f"alert {alert.get('track')} has no promotion decision")
+                continue
+            if promotion.get("verdict") not in ("reject", "promote_pending_signoff"):
+                problems.append(f"alert {alert.get('track')} has an unexpected promotion verdict")
+            if promotion.get("requires_signoff") is not True:
+                problems.append(f"alert {alert.get('track')} does not require sign-off")
+            if "PUBLIC FILING RATE" not in promotion.get("statement", ""):
+                problems.append(f"alert {alert.get('track')} statement overclaims")
+            if f"promotion: **{promotion['verdict']}**" not in markdown:
+                problems.append(f"alert {alert.get('track')} promotion verdict not found in markdown")
 
     if render_markdown(profile) != markdown:
         problems.append("rendering is not deterministic")

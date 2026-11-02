@@ -1850,3 +1850,47 @@ paper's caveat can be narrowed from "same cells" to "a nested unit, not an indep
 alert machinery is unaffected because it operates at the company level, which is the unit already confirmed.
 
 **Not claimed.** Portability to another corpus, another resolution, or another regulatory lane.
+
+---
+
+## D-049 — B-057: promotion policy is code, not prose; and a sixth frozen snapshot
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-057.
+
+**The policy question this answers.** The programme has one confirmed rule (D-043, replicated D-048) and a
+deployed detector (D-045), but until now nothing stated **when a detected change may be called a technology
+change**. Leaving that to prose would repeat the failure mode this programme keeps catching: a claim that
+lives in a methods note and gets upgraded in a slide.
+
+**The policy, implemented.** `medradar/intelligence/promotion.py` gates promotion through four conditions and
+is covered by **18 tests**:
+
+1. the alert must carry the validated detector provenance (rolling z-score, 3-month resolution, threshold
+   3.5) and clear its own threshold;
+2. the two quarters **after** the alert (never including it) must classify as sustained under the confirmed
+   rule;
+3. the profile's contradictory-evidence checks must exist (the schema already forbids their absence);
+4. **human sign-off is required and recorded** — `decide_promotion` can only return
+   `promote_pending_signoff` or `reject`, and the policy sets `automated_promotion_allowed: False`.
+   A test asserts no verdict other than those two is ever produced, so an automated path cannot be added
+   without breaking a test.
+
+The policy is also written into `research/PREDICTION_PROTOCOL.md` §8, so document and code say the same thing.
+
+**What it produces on the frozen data.** Medtronic's two live alerts diverge as they should:
+`coronary` 2026-Q3 is **rejected** because no confirmation quarters exist yet, and `insulin_delivery`
+2025-Q3 is **promote_pending_signoff** (classified ramp, elevated and still rising). Both verdicts appear
+in the profile with the sign-off requirement and the filing-rate statement attached.
+
+**Sixth frozen snapshot.** `snapshots/2026-11-03` was frozen and verified (manifest `5b7062d2…`), now carrying
+the deployment block and promotion verdicts. The diff against `2026-11-02` reports **identical data** —
+3,928 events, 0 momentum changes, 0 track changes — which is the correct reading: what changed between the
+two snapshots is **knowledge about the data**, not the data. The earlier four snapshots remain verifiable as
+frozen, and none was rewritten.
+
+**Verification.** `selfcheck.py` now fails a profile whose alert lacks a promotion decision, whose verdict is
+outside `{reject, promote_pending_signoff}`, whose `requires_signoff` is not true, whose statement does not
+carry the filing-rate wording, or whose Markdown omits the verdict. Five profiles and five snapshots pass.
+
+**Not claimed.** That a promoted change is technological, or that the gate is adequate for a different corpus,
+resolution or regulatory lane.

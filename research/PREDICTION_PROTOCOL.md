@@ -118,3 +118,35 @@ favourable. A single favourable window is a hypothesis, not a finding.
 - Reporting a null without its power/MDE.
 - Using future-published data to build historical features.
 - Labelling a retrieval-time knowledge clock as a historical publication time.
+
+---
+
+## 8. Promotion policy (added 2026-11-03, decision D-049)
+
+A detected change becomes a **technology-change claim** only through this gate chain. The policy is
+implemented as code (`medradar/intelligence/promotion.py`) and tested (18 tests), so it cannot drift
+from this document.
+
+**Gates, in order.**
+
+1. **Calibrated alert.** The alert must come from the deployed detector at the validated resolution —
+   rolling z-score, 3-month (quarterly) bins, threshold 3.5, measured false-alarm rate 0.0179
+   (D-044, D-045). An alert produced at another resolution, by another detector, or below its own
+   threshold is rejected automatically.
+2. **Confirmation window.** The two quarters **after** the alert quarter — never including it — must
+   classify the change as sustained (level shift or ramp) under the confirmed rule (D-043, replicated
+   at the legal-entity unit in D-048). A spike, or an alert too recent to have two following quarters,
+   is rejected.
+3. **Contradiction check.** The profile's contradictory-evidence field must have been evaluated; a
+   profile without its checks-run record is not renderable, so this gate cannot be skipped silently.
+4. **Human sign-off, recorded.** `decide_promotion` can only return `promote_pending_signoff` or
+   `reject`. **There is no automated promotion path** (D-046): the function's verdict never asserts a
+   promotion, and the policy marks `automated_promotion_allowed: False`.
+
+**What a promotion is.** A statement that the **public filing rate** in a track changed and stayed
+changed. It is not evidence of intent, capability, internal R&D or technological significance, and the
+string that ships with every decision says so.
+
+**Known limits of the gate.** The rule's precision is 0.914–0.917 at company and entity level against
+a base rate near 0.70; it cannot distinguish a ramp from a level shift (ramp recall 0.117–0.142); and
+it was confirmed on the same corpus, not on a second domain. Promotion therefore inherits all three.

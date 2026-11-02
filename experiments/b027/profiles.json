@@ -135,17 +135,77 @@
           "flagged": [
             {
               "baseline_mean": 0.12,
+              "detector": "rolling_zscore",
               "events": 2,
+              "false_alarm_rate": 0.0179,
               "memory_quarters": 4,
+              "promotion": {
+                "detector_provenance": {
+                  "detector": "rolling_zscore",
+                  "false_alarm_rate": 0.0179,
+                  "resolution_months": 3,
+                  "rule": "two-month post-alert window excluding the alert month (D-043, replicated D-048)",
+                  "threshold": 3.5
+                },
+                "evidence_required": [
+                  "calibrated_alert",
+                  "confirmation_window",
+                  "contradiction_check",
+                  "human_signoff"
+                ],
+                "gate_failures": [],
+                "policy_version": "promotion_policy_v1",
+                "quarter": "2026-Q2",
+                "relative_post_rate": 8.333,
+                "requires_signoff": true,
+                "shape": "level",
+                "shape_reason": "post-alert rate is elevated and flat",
+                "statement": "promotion marks a sustained change in PUBLIC FILING RATE; it is not evidence of intent, capability, internal R&D or technological significance",
+                "track": "patient_monitoring",
+                "verdict": "promote_pending_signoff"
+              },
               "quarter": "2026-Q2",
+              "resolution_months": 3,
+              "threshold": 3.5,
               "track": "patient_monitoring",
               "z": 5.3
             },
             {
               "baseline_mean": 0.12,
+              "detector": "rolling_zscore",
               "events": 2,
+              "false_alarm_rate": 0.0179,
               "memory_quarters": 4,
+              "promotion": {
+                "detector_provenance": {
+                  "detector": "rolling_zscore",
+                  "false_alarm_rate": 0.0179,
+                  "resolution_months": 3,
+                  "rule": "two-month post-alert window excluding the alert month (D-043, replicated D-048)",
+                  "threshold": 3.5
+                },
+                "evidence_required": [
+                  "calibrated_alert",
+                  "confirmation_window",
+                  "contradiction_check",
+                  "human_signoff"
+                ],
+                "gate_failures": [
+                  "shape classified as spike: post-alert rate 0.00x baseline is below the 1.5x floor"
+                ],
+                "policy_version": "promotion_policy_v1",
+                "quarter": "2026-Q2",
+                "relative_post_rate": 0.0,
+                "requires_signoff": true,
+                "shape": "spike",
+                "shape_reason": "post-alert rate 0.00x baseline is below the 1.5x floor",
+                "statement": "promotion marks a sustained change in PUBLIC FILING RATE; it is not evidence of intent, capability, internal R&D or technological significance",
+                "track": "respiratory",
+                "verdict": "reject"
+              },
               "quarter": "2026-Q2",
+              "resolution_months": 3,
+              "threshold": 3.5,
               "track": "respiratory",
               "z": 5.3
             }
@@ -328,9 +388,40 @@
           "flagged": [
             {
               "baseline_mean": 0.12,
+              "detector": "rolling_zscore",
               "events": 3,
+              "false_alarm_rate": 0.0179,
               "memory_quarters": 4,
+              "promotion": {
+                "detector_provenance": {
+                  "detector": "rolling_zscore",
+                  "false_alarm_rate": 0.0179,
+                  "resolution_months": 3,
+                  "rule": "two-month post-alert window excluding the alert month (D-043, replicated D-048)",
+                  "threshold": 3.5
+                },
+                "evidence_required": [
+                  "calibrated_alert",
+                  "confirmation_window",
+                  "contradiction_check",
+                  "human_signoff"
+                ],
+                "gate_failures": [
+                  "shape classified as unknown: no confirmation quarters available"
+                ],
+                "policy_version": "promotion_policy_v1",
+                "quarter": "2026-Q3",
+                "relative_post_rate": null,
+                "requires_signoff": true,
+                "shape": "unknown",
+                "shape_reason": "no confirmation quarters available",
+                "statement": "promotion marks a sustained change in PUBLIC FILING RATE; it is not evidence of intent, capability, internal R&D or technological significance",
+                "track": "patient_monitoring",
+                "verdict": "reject"
+              },
               "quarter": "2026-Q3",
+              "resolution_months": 3,
+              "threshold": 3.5,
               "track": "patient_monitoring",
               "z": 8.13
             }
@@ -574,17 +665,77 @@
           "flagged": [
             {
               "baseline_mean": 0.25,
+              "detector": "rolling_zscore",
               "events": 2,
+              "false_alarm_rate": 0.0179,
               "memory_quarters": 4,
+              "promotion": {
+                "detector_provenance": {
+                  "detector": "rolling_zscore",
+                  "false_alarm_rate": 0.0179,
+                  "resolution_months": 3,
+                  "rule": "two-month post-alert window excluding the alert month (D-043, replicated D-048)",
+                  "threshold": 3.5
+                },
+                "evidence_required": [
+                  "calibrated_alert",
+                  "confirmation_window",
+                  "contradiction_check",
+                  "human_signoff"
+                ],
+                "gate_failures": [
+                  "shape classified as unknown: no confirmation quarters available"
+                ],
+                "policy_version": "promotion_policy_v1",
+                "quarter": "2026-Q3",
+                "relative_post_rate": null,
+                "requires_signoff": true,
+                "shape": "unknown",
+                "shape_reason": "no confirmation quarters available",
+                "statement": "promotion marks a sustained change in PUBLIC FILING RATE; it is not evidence of intent, capability, internal R&D or technological significance",
+                "track": "coronary",
+                "verdict": "reject"
+              },
               "quarter": "2026-Q3",
+              "resolution_months": 3,
+              "threshold": 3.5,
               "track": "coronary",
               "z": 3.5
             },
             {
               "baseline_mean": 0.25,
+              "detector": "rolling_zscore",
               "events": 2,
+              "false_alarm_rate": 0.0179,
               "memory_quarters": 4,
+              "promotion": {
+                "detector_provenance": {
+                  "detector": "rolling_zscore",
+                  "false_alarm_rate": 0.0179,
+                  "resolution_months": 3,
+                  "rule": "two-month post-alert window excluding the alert month (D-043, replicated D-048)",
+                  "threshold": 3.5
+                },
+                "evidence_required": [
+                  "calibrated_alert",
+                  "confirmation_window",
+                  "contradiction_check",
+                  "human_signoff"
+                ],
+                "gate_failures": [],
+                "policy_version": "promotion_policy_v1",
+                "quarter": "2025-Q3",
+                "relative_post_rate": 6.0,
+                "requires_signoff": true,
+                "shape": "ramp",
+                "shape_reason": "post-alert rate is elevated and still rising",
+                "statement": "promotion marks a sustained change in PUBLIC FILING RATE; it is not evidence of intent, capability, internal R&D or technological significance",
+                "track": "insulin_delivery",
+                "verdict": "promote_pending_signoff"
+              },
               "quarter": "2025-Q3",
+              "resolution_months": 3,
+              "threshold": 3.5,
               "track": "insulin_delivery",
               "z": 3.5
             }
@@ -937,9 +1088,40 @@
           "flagged": [
             {
               "baseline_mean": 0.25,
+              "detector": "rolling_zscore",
               "events": 2,
+              "false_alarm_rate": 0.0179,
               "memory_quarters": 4,
+              "promotion": {
+                "detector_provenance": {
+                  "detector": "rolling_zscore",
+                  "false_alarm_rate": 0.0179,
+                  "resolution_months": 3,
+                  "rule": "two-month post-alert window excluding the alert month (D-043, replicated D-048)",
+                  "threshold": 3.5
+                },
+                "evidence_required": [
+                  "calibrated_alert",
+                  "confirmation_window",
+                  "contradiction_check",
+                  "human_signoff"
+                ],
+                "gate_failures": [
+                  "shape classified as unknown: no confirmation quarters available"
+                ],
+                "policy_version": "promotion_policy_v1",
+                "quarter": "2026-Q2",
+                "relative_post_rate": null,
+                "requires_signoff": true,
+                "shape": "unknown",
+                "shape_reason": "no confirmation quarters available",
+                "statement": "promotion marks a sustained change in PUBLIC FILING RATE; it is not evidence of intent, capability, internal R&D or technological significance",
+                "track": "respiratory",
+                "verdict": "reject"
+              },
               "quarter": "2026-Q2",
+              "resolution_months": 3,
+              "threshold": 3.5,
               "track": "respiratory",
               "z": 3.5
             }
@@ -1143,9 +1325,40 @@
           "flagged": [
             {
               "baseline_mean": 1.25,
+              "detector": "rolling_zscore",
               "events": 8,
+              "false_alarm_rate": 0.0179,
               "memory_quarters": 4,
+              "promotion": {
+                "detector_provenance": {
+                  "detector": "rolling_zscore",
+                  "false_alarm_rate": 0.0179,
+                  "resolution_months": 3,
+                  "rule": "two-month post-alert window excluding the alert month (D-043, replicated D-048)",
+                  "threshold": 3.5
+                },
+                "evidence_required": [
+                  "calibrated_alert",
+                  "confirmation_window",
+                  "contradiction_check",
+                  "human_signoff"
+                ],
+                "gate_failures": [
+                  "shape classified as spike: post-alert rate 1.20x baseline is below the 1.5x floor"
+                ],
+                "policy_version": "promotion_policy_v1",
+                "quarter": "2025-Q2",
+                "relative_post_rate": 1.2,
+                "requires_signoff": true,
+                "shape": "spike",
+                "shape_reason": "post-alert rate 1.20x baseline is below the 1.5x floor",
+                "statement": "promotion marks a sustained change in PUBLIC FILING RATE; it is not evidence of intent, capability, internal R&D or technological significance",
+                "track": "imaging_us",
+                "verdict": "reject"
+              },
               "quarter": "2025-Q2",
+              "resolution_months": 3,
+              "threshold": 3.5,
               "track": "imaging_us",
               "z": 6.04
             }

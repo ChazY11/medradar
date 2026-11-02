@@ -543,4 +543,20 @@ tasks:
       whose alert fails its own threshold, or whose markdown omits the detector line or FAR. The
       promotion rule stays manual.
 
+  - id: B-057
+    layer: understand
+    priority: P0
+    title: Promotion policy as code, and a snapshot carrying the deployment block
+    status: done
+    owner: lead
+    depends_on: [B-043, B-046]
+    acceptance: >
+      medradar/intelligence/promotion.py gates promotion through validated-detector provenance, the
+      confirmed two-quarter window, the contradiction check and human sign-off, and can only return
+      reject or promote_pending_signoff (automated promotion disabled and asserted by a test). Policy
+      written into PREDICTION_PROTOCOL.md section 8. A sixth frozen snapshot (2026-11-03) carries the
+      deployment block and promotion verdicts; its diff against 2026-11-02 reports identical data,
+      which is the correct reading. selfcheck enforces the verdict set, the sign-off flag, the
+      filing-rate statement and the markdown presence.
+
 

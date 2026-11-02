@@ -46,7 +46,9 @@
 - Test: exact two-sided binomial p=0.065 (alpha=0.05), minimum detectable ratio at 80 % power 1.57x, detected=False
 - Deployment detector: rolling_zscore at 3-month resolution, threshold z>=3.5, 2 calibrated alert(s) in the last 8 quarters across 2 track(s) (125 track-quarters examined at 3-month resolution, threshold z>=3.5, measured FAR 0.018)
   - `coronary` 2026-Q3: 2 events against a baseline of 0.25 (z=3.5)
+    - promotion: **reject** — shape unknown (no confirmation quarters available); sign-off required=true; promotion marks a change in public filing rate, not in technology
   - `insulin_delivery` 2025-Q3: 2 events against a baseline of 0.25 (z=3.5)
+    - promotion: **promote_pending_signoff** — shape ramp (post-alert rate is elevated and still rising); sign-off required=true; promotion marks a change in public filing rate, not in technology
   - these alerts are calibrated at the measured false-alarm rate 0.018 and sensitivity 0.147; they are statements about filing rate, not about technology
 
 ## 4. Concentration

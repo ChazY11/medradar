@@ -33,6 +33,7 @@
 - Test: exact two-sided binomial p=0.001 (alpha=0.05), minimum detectable ratio at 80 % power 1.77x, detected=True
 - Deployment detector: rolling_zscore at 3-month resolution, threshold z>=3.5, 1 calibrated alert(s) in the last 8 quarters across 1 track(s) (64 track-quarters examined at 3-month resolution, threshold z>=3.5, measured FAR 0.018)
   - `imaging_us` 2025-Q2: 8 events against a baseline of 1.25 (z=6.04)
+    - promotion: **reject** — shape spike (post-alert rate 1.20x baseline is below the 1.5x floor); sign-off required=true; promotion marks a change in public filing rate, not in technology
   - these alerts are calibrated at the measured false-alarm rate 0.018 and sensitivity 0.147; they are statements about filing rate, not about technology
 
 ## 4. Concentration

@@ -29,6 +29,8 @@ from __future__ import annotations
 import argparse
 import json
 import math
+
+from medradar.intelligence.promotion import CONFIRMATION_QUARTERS, decide_promotion
 from collections import Counter, defaultdict
 from typing import Any, Iterable, Mapping, Sequence
 
@@ -199,10 +201,22 @@ def deployment_alerts(events: Sequence[Mapping[str, Any]], *,
             count = counts.get(quarter, 0)
             zscore = (count - baseline_mean) / math.sqrt(baseline_mean)
             if zscore >= threshold:
-                flagged.append({"track": track, "quarter": _quarter_label(quarter),
-                                "events": count, "baseline_mean": round(baseline_mean, 2),
-                                "z": round(zscore, 2),
-                                "memory_quarters": memory_quarters})
+                alert = {"track": track, "quarter": _quarter_label(quarter),
+                         "events": count, "baseline_mean": round(baseline_mean, 2),
+                         "z": round(zscore, 2),
+                         "memory_quarters": memory_quarters,
+                         "detector": "rolling_zscore",
+                         "resolution_months": resolution_months,
+                         "threshold": threshold,
+                         "false_alarm_rate": DEPLOYMENT_FALSE_ALARM_RATE}
+                # the confirmed promotion rule (D-043, replicated D-048) applied to the two
+                # quarters AFTER the alert; a human sign-off is still required and cannot be
+                # simulated by data
+                following = [counts.get(quarter + offset, 0)
+                             for offset in range(1, CONFIRMATION_QUARTERS + 1)
+                             if quarter + offset <= latest]
+                alert["promotion"] = decide_promotion(alert, following)
+                flagged.append(alert)
     flagged.sort(key=lambda item: (-item["z"], item["track"]))
     tracks = sorted({item["track"] for item in flagged})
     return {
@@ -549,6 +563,12 @@ def render_markdown(profile: Mapping[str, Any]) -> str:
         for alert in deployment["flagged"][:6]:
             lines.append(f"  - `{alert['track']}` {alert['quarter']}: {alert['events']} events "
                          f"against a baseline of {alert['baseline_mean']} (z={alert['z']})")
+            promotion = alert.get("promotion")
+            if promotion:
+                lines.append(f"    - promotion: **{promotion['verdict']}** — shape "
+                             f"{promotion['shape']} ({promotion['shape_reason']}); sign-off required="
+                             f"{str(promotion['requires_signoff']).lower()}; "
+                             f"promotion marks a change in public filing rate, not in technology")
         lines.append("  - these alerts are calibrated at the measured false-alarm rate "
                      f"{deployment['false_alarm_rate']:.3f} and sensitivity "
                      f"{deployment['sensitivity']:.3f}; they are statements about filing rate, "
