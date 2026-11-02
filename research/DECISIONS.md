@@ -1728,3 +1728,45 @@ choice together with the reversal.
 **Not claimed.** That the z-score is the best detector; that the quarterly sensitivity of 0.147 is adequate
 for any particular decision; or that a detector validated here transfers to another corpus or another
 resolution.
+
+---
+
+## D-046 — B-056: the validated detector and promotion rule are now in the product, with provenance
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-056.
+
+**What changed.** The profile engine no longer carries only a 24-month rate test. Each profile's momentum
+field now includes a **`deployment_alerts`** block that applies the detector the programme actually validated:
+
+* **resolution 3 months** (D-045), memory 12 months, baseline 24 months;
+* **rolling z-score with threshold 3.5**, the setting that achieved a **0.018** false-alarm rate in the
+  controlled-truth sweep (measured sensitivity **0.147** at that operating point);
+* alerts reported only for the **last 8 quarters**, because a 2019 alert is not a live decision input;
+* every alert lists track, quarter, event count, baseline mean and z, and the block states the measured
+  false-alarm rate and sensitivity **in the profile itself** — not in a methods note the reader may never see.
+
+**Why the seven-field contract survives.** The block is nested inside `momentum`; the top-level schema is
+still the seven required fields. No new field, no version bump, and the historical snapshots remain
+verifiable as they were frozen.
+
+**What it produces on real data, and why that is sobering.** Medtronic's profile now shows two live alerts
+(`coronary` 2026-Q3, `insulin_delivery` 2025-Q3), each **two events against a baseline of 0.25** (z = 3.5).
+Both are legitimate at the measured false-alarm rate, and both are substantively thin — which is what a
+0.147-sensitivity detector at 0.2 events per cell-month is *supposed* to look like. The profile prints the
+counts and the baseline next to the alert precisely so a reader cannot mistake "calibrated" for
+"substantial".
+
+**Verification, now enforced.** `selfcheck.py` fails a profile whose deployment block names a detector or
+resolution other than the validated one, or whose alert fails to clear its own threshold, or whose Markdown
+omits the detector line or the false-alarm rate. The 36 pre-existing profile tests grew to **44**, covering
+the resolution lock, provenance fields, steady-series silence, burst flagging, recency window, empty history,
+and the Markdown statement.
+
+**Deliberately not done.** The **promotion rule** (D-043: two-month post-alert window, precision 0.914) is
+*not* applied automatically here. It needs a live alert stream and an explicit human or policy decision to
+promote, and wiring it silently would turn a measured decision rule into an opaque default. It is recorded
+in `STATE.json` as an available, measured rule for the Understand layer to use.
+
+**Not claimed.** That these alerts are technology changes; that two-event alerts are actionable on their own;
+or that the quarterly detector is the best possible — only that it is the one measured to be deployable at
+this resolution.

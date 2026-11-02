@@ -86,6 +86,25 @@ def check_profile(key: str, profile: dict, markdown: str) -> list[str]:
         if not momentum.get("detected") and momentum.get("direction") != "no_detectable_change":
             problems.append("momentum direction contradicts the detected flag")
 
+    # deployment block: the detector must be the one fixed by D-045, and every alert must clear its
+    # own threshold, otherwise the profile would be reporting a detection the calibration does not
+    # support
+    deployment = momentum.get("deployment_alerts")
+    if deployment:
+        if deployment.get("resolution_months") != 3:
+            problems.append("deployment resolution is not the quarterly one fixed by D-045")
+        if deployment.get("detector") != "rolling_zscore":
+            problems.append("deployment detector is not the one fixed by D-045")
+        for alert in deployment.get("flagged", []):
+            if alert.get("z", 0) < deployment.get("threshold", 0):
+                problems.append(f"alert {alert.get('track')} does not clear its own threshold")
+        marker = f"Deployment detector: {deployment.get('detector')} at " \
+                 f"{deployment.get('resolution_months')}-month resolution"
+        if marker not in markdown:
+            problems.append("deployment detector line not found in markdown")
+        if f"{deployment.get('false_alarm_rate'):.3f}" not in markdown:
+            problems.append("deployment false-alarm rate not found in markdown")
+
     if render_markdown(profile) != markdown:
         problems.append("rendering is not deterministic")
     return problems

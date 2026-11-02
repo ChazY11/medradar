@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T08:40:00+08:00",
+  "updated_at": "2026-11-03T09:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "deployment_resolution_fixed",
-  "cycle": 23,
+  "phase": "product_carries_validated_detector",
+  "cycle": 24,
   "last_completed_cycle": {
-    "cycle": 21,
-    "name": "deployment_resolution",
+    "cycle": 22,
+    "name": "deployment_detector_in_product",
     "branch": "research/change-detection-v1",
-    "report": "experiments/b039/deployment_resolution.json",
-    "summary": "research/RESULTS/cycle21_deployment_2026-11-03.md",
-    "verdict": "the OBSERVE layer deploys at 3-month (quarterly) resolution; at that resolution the rolling z-score has the highest measured sensitivity (0.147, CI 0.112-0.182) and no detector is identifiable across resolutions (winner changes; Kendall tau -1.0 vs monthly), so the choice is resolution-specific and must never be cited as a ranking"
+    "report": "experiments/b027/profiles.json",
+    "summary": "research/RESULTS/cycle22_product_2026-11-03.md",
+    "verdict": "the profile's momentum field now carries the validated detector (quarterly rolling z-score, threshold 3.5, FAR 0.018, sensitivity 0.147) with the measured rates printed inside the profile; 44 profile tests; selfcheck enforces the detector, resolution, threshold and FAR statement; the promotion rule stays manual"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -147,7 +147,9 @@
     "DETECT: the confirmation does NOT extend to three-way shape recovery (ramp recall 0.142) and does NOT rescue any earlier association finding",
     "PUBLISH: the paper title, abstract and a new section 4.9 now report the confirmed rule with its post-discovery caveat; 51 of 51 claims verified",
     "OBSERVE: deployment resolution fixed at 3 months (quarterly), justified by the decision cadence and by the measured sparsity ceiling",
-    "OBSERVE: at quarterly resolution the rolling z-score is significantly best (0.147, CI 0.112-0.182; no overlap with the other three) but NO detector is identifiable across resolutions (Kendall tau -1.0 against the monthly ranking), so the choice is resolution-specific"
+    "OBSERVE: at quarterly resolution the rolling z-score is significantly best (0.147, CI 0.112-0.182; no overlap with the other three) but NO detector is identifiable across resolutions (Kendall tau -1.0 against the monthly ranking), so the choice is resolution-specific",
+    "UNDERSTAND: the validated deployment detector now runs inside every profile with its measured false-alarm rate and sensitivity printed in the profile itself, not in a methods note",
+    "UNDERSTAND: on real data the quarterly detector returns sparse, thin alerts (Medtronic: two events against a 0.25 baseline) - calibrated is not the same as substantial, and the profile says so beside the alert"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -165,10 +167,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "wire the deployment choice (quarterly, rolling z-score) into the profile alert provenance",
     "B-055: confirm the promotion rule on fresh cells (requires a larger eligible-cell set)",
-    "add the deployment-resolution section to the paper's reproduction notes (done in this cycle)",
-    "consider a second-domain validation before calling any of this portable"
+    "decide the promotion policy explicitly (manual review vs automated) before wiring D-043",
+    "second-domain validation before calling any of this portable",
+    "extend the profile snapshot chain with the deployment block (new as-of snapshot)"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -565,6 +567,37 @@
         }
       },
       "reading_rule": "a non-detection is never reported as stability: the MDE must accompany it"
+    },
+    "deployment_alerts": {
+      "status": "SHIPPED - nested in momentum, no schema change",
+      "resolution_months": 3,
+      "detector": "rolling_zscore",
+      "threshold": 3.5,
+      "memory_months": 12,
+      "baseline_months": 24,
+      "false_alarm_rate": 0.0179,
+      "sensitivity": 0.147,
+      "recency_quarters": 8,
+      "provenance_in_profile": true,
+      "medtronic_live_alerts": [
+        {
+          "track": "coronary",
+          "quarter": "2026-Q3",
+          "events": 2,
+          "baseline_mean": 0.25,
+          "z": 3.5
+        },
+        {
+          "track": "insulin_delivery",
+          "quarter": "2025-Q3",
+          "events": 2,
+          "baseline_mean": 0.25,
+          "z": 3.5
+        }
+      ],
+      "honest_reading": "two-event alerts are legitimate at the measured false-alarm rate and substantively thin; the profile prints counts and baselines beside the alert",
+      "promotion_rule": "manual - D-043 rule recorded but deliberately not auto-applied",
+      "enforcement": "selfcheck.py checks detector, resolution, threshold clearance and FAR statement"
     }
   },
   "point_in_time": {

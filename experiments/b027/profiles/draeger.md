@@ -22,6 +22,10 @@
 
 - no detectable change: 10 events in the last 24 months vs 10 before (ratio 1.00), p=1.000; minimum detectable ratio at 80% power is 3.50x
 - Test: exact two-sided binomial p=1.000 (alpha=0.05), minimum detectable ratio at 80 % power 3.50x, detected=False
+- Deployment detector: rolling_zscore at 3-month resolution, threshold z>=3.5, 2 calibrated alert(s) in the last 8 quarters across 2 track(s) (16 track-quarters examined at 3-month resolution, threshold z>=3.5, measured FAR 0.018)
+  - `patient_monitoring` 2026-Q2: 2 events against a baseline of 0.12 (z=5.3)
+  - `respiratory` 2026-Q2: 2 events against a baseline of 0.12 (z=5.3)
+  - these alerts are calibrated at the measured false-alarm rate 0.018 and sensitivity 0.147; they are statements about filing rate, not about technology
 
 ## 4. Concentration
 

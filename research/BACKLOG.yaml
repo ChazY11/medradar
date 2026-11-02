@@ -528,4 +528,19 @@ tasks:
       never appeared in discovery. If the rule does not survive fresh cells, restrict promotion to the
       companies where it was measured.
 
+  - id: B-056
+    layer: understand
+    priority: P1
+    title: Carry the validated deployment detector inside the profile
+    status: done
+    owner: lead
+    depends_on: [B-039, B-027]
+    acceptance: >
+      Momentum carries a nested deployment_alerts block applying the D-045 detector (quarterly rolling
+      z-score, threshold 3.5, measured FAR 0.018, sensitivity 0.147), reporting alerts from the last
+      eight quarters with track/quarter/count/baseline/z, and stating the measured FAR and sensitivity
+      inside the profile. selfcheck fails any profile whose block names another detector/resolution,
+      whose alert fails its own threshold, or whose markdown omits the detector line or FAR. The
+      promotion rule stays manual.
+
 

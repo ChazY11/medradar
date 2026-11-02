@@ -7,6 +7,7 @@
     "draeger",
     "mindray"
   ],
+  "point_in_time": true,
   "profiles": {
     "draeger": {
       "concentration": {
@@ -86,6 +87,17 @@
         ],
         "trial_events": 0
       },
+      "leakage_audit": {
+        "as_of": "2026-11-02",
+        "checked": true,
+        "latest_code_first_seen": "2025-11",
+        "latest_regulatory_event": "2026-08-20",
+        "latest_trial_event": null,
+        "window": [
+          "2016-11",
+          "2026-09"
+        ]
+      },
       "limits_and_provenance": {
         "as_of": "2026-11-02",
         "field": "limits_and_provenance",
@@ -116,6 +128,40 @@
       },
       "momentum": {
         "alpha": 0.05,
+        "deployment_alerts": {
+          "baseline_months": 24,
+          "detector": "rolling_zscore",
+          "false_alarm_rate": 0.0179,
+          "flagged": [
+            {
+              "baseline_mean": 0.12,
+              "events": 2,
+              "memory_quarters": 4,
+              "quarter": "2026-Q2",
+              "track": "patient_monitoring",
+              "z": 5.3
+            },
+            {
+              "baseline_mean": 0.12,
+              "events": 2,
+              "memory_quarters": 4,
+              "quarter": "2026-Q2",
+              "track": "respiratory",
+              "z": 5.3
+            }
+          ],
+          "flagged_tracks": [
+            "patient_monitoring",
+            "respiratory"
+          ],
+          "memory_months": 12,
+          "quarters_examined": 16,
+          "recency_quarters": 8,
+          "resolution_months": 3,
+          "sensitivity": 0.147,
+          "statement": "2 calibrated alert(s) in the last 8 quarters across 2 track(s) (16 track-quarters examined at 3-month resolution, threshold z>=3.5, measured FAR 0.018)",
+          "threshold": 3.5
+        },
         "detected": false,
         "direction": "no_detectable_change",
         "mde_ratio": 3.5005041426811188,
@@ -234,6 +280,17 @@
         ],
         "trial_events": 25
       },
+      "leakage_audit": {
+        "as_of": "2026-11-02",
+        "checked": true,
+        "latest_code_first_seen": "2025-11",
+        "latest_regulatory_event": "2026-09-16",
+        "latest_trial_event": "2026-07-13",
+        "window": [
+          "2016-11",
+          "2026-09"
+        ]
+      },
       "limits_and_provenance": {
         "as_of": "2026-11-02",
         "field": "limits_and_provenance",
@@ -264,6 +321,31 @@
       },
       "momentum": {
         "alpha": 0.05,
+        "deployment_alerts": {
+          "baseline_months": 24,
+          "detector": "rolling_zscore",
+          "false_alarm_rate": 0.0179,
+          "flagged": [
+            {
+              "baseline_mean": 0.12,
+              "events": 3,
+              "memory_quarters": 4,
+              "quarter": "2026-Q3",
+              "track": "patient_monitoring",
+              "z": 8.13
+            }
+          ],
+          "flagged_tracks": [
+            "patient_monitoring"
+          ],
+          "memory_months": 12,
+          "quarters_examined": 32,
+          "recency_quarters": 8,
+          "resolution_months": 3,
+          "sensitivity": 0.147,
+          "statement": "1 calibrated alert(s) in the last 8 quarters across 1 track(s) (32 track-quarters examined at 3-month resolution, threshold z>=3.5, measured FAR 0.018)",
+          "threshold": 3.5
+        },
         "detected": false,
         "direction": "no_detectable_change",
         "mde_ratio": 1.7312319812034198,
@@ -444,6 +526,17 @@
         ],
         "trial_events": 48
       },
+      "leakage_audit": {
+        "as_of": "2026-11-02",
+        "checked": true,
+        "latest_code_first_seen": "2025-11",
+        "latest_regulatory_event": "2026-09-17",
+        "latest_trial_event": "2026-10-07",
+        "window": [
+          "2016-11",
+          "2026-09"
+        ]
+      },
       "limits_and_provenance": {
         "as_of": "2026-11-02",
         "field": "limits_and_provenance",
@@ -474,6 +567,40 @@
       },
       "momentum": {
         "alpha": 0.05,
+        "deployment_alerts": {
+          "baseline_months": 24,
+          "detector": "rolling_zscore",
+          "false_alarm_rate": 0.0179,
+          "flagged": [
+            {
+              "baseline_mean": 0.25,
+              "events": 2,
+              "memory_quarters": 4,
+              "quarter": "2026-Q3",
+              "track": "coronary",
+              "z": 3.5
+            },
+            {
+              "baseline_mean": 0.25,
+              "events": 2,
+              "memory_quarters": 4,
+              "quarter": "2025-Q3",
+              "track": "insulin_delivery",
+              "z": 3.5
+            }
+          ],
+          "flagged_tracks": [
+            "coronary",
+            "insulin_delivery"
+          ],
+          "memory_months": 12,
+          "quarters_examined": 125,
+          "recency_quarters": 8,
+          "resolution_months": 3,
+          "sensitivity": 0.147,
+          "statement": "2 calibrated alert(s) in the last 8 quarters across 2 track(s) (125 track-quarters examined at 3-month resolution, threshold z>=3.5, measured FAR 0.018)",
+          "threshold": 3.5
+        },
         "detected": false,
         "direction": "no_detectable_change",
         "mde_ratio": 1.5746260818529085,
@@ -762,6 +889,17 @@
         ],
         "trial_events": 0
       },
+      "leakage_audit": {
+        "as_of": "2026-11-02",
+        "checked": true,
+        "latest_code_first_seen": "2025-11",
+        "latest_regulatory_event": "2026-06-25",
+        "latest_trial_event": null,
+        "window": [
+          "2016-11",
+          "2026-09"
+        ]
+      },
       "limits_and_provenance": {
         "as_of": "2026-11-02",
         "field": "limits_and_provenance",
@@ -792,6 +930,31 @@
       },
       "momentum": {
         "alpha": 0.05,
+        "deployment_alerts": {
+          "baseline_months": 24,
+          "detector": "rolling_zscore",
+          "false_alarm_rate": 0.0179,
+          "flagged": [
+            {
+              "baseline_mean": 0.25,
+              "events": 2,
+              "memory_quarters": 4,
+              "quarter": "2026-Q2",
+              "track": "respiratory",
+              "z": 3.5
+            }
+          ],
+          "flagged_tracks": [
+            "respiratory"
+          ],
+          "memory_months": 12,
+          "quarters_examined": 18,
+          "recency_quarters": 8,
+          "resolution_months": 3,
+          "sensitivity": 0.147,
+          "statement": "1 calibrated alert(s) in the last 8 quarters across 1 track(s) (18 track-quarters examined at 3-month resolution, threshold z>=3.5, measured FAR 0.018)",
+          "threshold": 3.5
+        },
         "detected": false,
         "direction": "no_detectable_change",
         "mde_ratio": 2.8408098379736124,
@@ -932,6 +1095,17 @@
         ],
         "trial_events": 36
       },
+      "leakage_audit": {
+        "as_of": "2026-11-02",
+        "checked": true,
+        "latest_code_first_seen": "2025-11",
+        "latest_regulatory_event": "2026-09-25",
+        "latest_trial_event": "2026-01-26",
+        "window": [
+          "2016-11",
+          "2026-09"
+        ]
+      },
       "limits_and_provenance": {
         "as_of": "2026-11-02",
         "field": "limits_and_provenance",
@@ -962,6 +1136,31 @@
       },
       "momentum": {
         "alpha": 0.05,
+        "deployment_alerts": {
+          "baseline_months": 24,
+          "detector": "rolling_zscore",
+          "false_alarm_rate": 0.0179,
+          "flagged": [
+            {
+              "baseline_mean": 1.25,
+              "events": 8,
+              "memory_quarters": 4,
+              "quarter": "2025-Q2",
+              "track": "imaging_us",
+              "z": 6.04
+            }
+          ],
+          "flagged_tracks": [
+            "imaging_us"
+          ],
+          "memory_months": 12,
+          "quarters_examined": 64,
+          "recency_quarters": 8,
+          "resolution_months": 3,
+          "sensitivity": 0.147,
+          "statement": "1 calibrated alert(s) in the last 8 quarters across 1 track(s) (64 track-quarters examined at 3-month resolution, threshold z>=3.5, measured FAR 0.018)",
+          "threshold": 3.5
+        },
         "detected": true,
         "direction": "increasing",
         "mde_ratio": 1.7692647278211404,

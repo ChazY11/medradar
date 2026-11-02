@@ -6,9 +6,14 @@ import json
 import unittest
 
 from medradar.intelligence.profile import (
+    DEPLOYMENT_FALSE_ALARM_RATE,
+    DEPLOYMENT_RESOLUTION_MONTHS,
+    DEPLOYMENT_SENSITIVITY,
+    DEPLOYMENT_Z_THRESHOLD,
     MATERIAL_MONTHS,
     SEVEN_FIELDS,
     build_profile,
+    deployment_alerts,
     render_markdown,
     validate_profile,
     _month_labels,
@@ -259,6 +264,68 @@ class MonthLabelTest(unittest.TestCase):
 
     def test_single_month(self):
         self.assertEqual(_month_labels("2020-05", "2020-05"), ["2020-05"])
+
+
+class DeploymentAlertTest(unittest.TestCase):
+    """The quarterly alert block must apply the measured detector, not choose one."""
+
+    @staticmethod
+    def baseline_series(years=12, track="cardiac"):
+        events = []
+        for year in range(2014, 2014 + years):
+            for month in (2, 5, 8, 11):
+                events.append({"track": track, "date": f"{year}-{month:02d}-15"})
+        return events
+
+    def test_resolution_is_fixed_by_decision(self):
+        with self.assertRaises(ValueError):
+            deployment_alerts(self.baseline_series(), resolution_months=1)
+
+    def test_alert_block_carries_measured_provenance(self):
+        result = deployment_alerts(self.baseline_series())
+        self.assertEqual(result["resolution_months"], DEPLOYMENT_RESOLUTION_MONTHS)
+        self.assertEqual(result["detector"], "rolling_zscore")
+        self.assertEqual(result["threshold"], DEPLOYMENT_Z_THRESHOLD)
+        self.assertEqual(result["false_alarm_rate"], DEPLOYMENT_FALSE_ALARM_RATE)
+        self.assertEqual(result["sensitivity"], DEPLOYMENT_SENSITIVITY)
+
+    def test_steady_series_produces_no_alert(self):
+        result = deployment_alerts(self.baseline_series())
+        self.assertEqual(result["flagged"], [])
+        self.assertIn("no calibrated alert", result["statement"])
+
+    def test_burst_is_flagged_with_its_z_score(self):
+        events = self.baseline_series() + [{"track": "cardiac", "date": "2025-11-15"}
+                                           for _ in range(8)]
+        result = deployment_alerts(events)
+        self.assertEqual(len(result["flagged"]), 1)
+        alert = result["flagged"][0]
+        self.assertEqual(alert["track"], "cardiac")
+        self.assertGreaterEqual(alert["z"], DEPLOYMENT_Z_THRESHOLD)
+        self.assertGreater(alert["events"], alert["baseline_mean"])
+
+    def test_only_recent_quarters_are_reported(self):
+        # a burst twelve years back is not a live alert
+        events = self.baseline_series() + [{"track": "cardiac", "date": "2015-05-15"}
+                                           for _ in range(8)]
+        result = deployment_alerts(events)
+        self.assertEqual(result["flagged"], [])
+
+    def test_no_history_is_handled(self):
+        result = deployment_alerts([])
+        self.assertEqual(result["flagged"], [])
+        self.assertEqual(result["quarters_examined"], 0)
+
+    def test_profile_embeds_deployment_alerts(self):
+        profile = _profile(_events({"cardiac": ["2021-01", "2021-02", "2022-01"]}))
+        deployment = profile["momentum"]["deployment_alerts"]
+        self.assertEqual(deployment["resolution_months"], DEPLOYMENT_RESOLUTION_MONTHS)
+
+    def test_markdown_states_resolution_and_false_alarm_rate(self):
+        markdown = render_markdown(_profile(_events({"cardiac": ["2021-01", "2022-01"]})))
+        self.assertIn("Deployment detector: rolling_zscore", markdown)
+        self.assertIn(f"{DEPLOYMENT_RESOLUTION_MONTHS}-month resolution", markdown)
+        self.assertIn(f"{DEPLOYMENT_FALSE_ALARM_RATE:.3f}", markdown)
 
 
 class DeterminismTest(unittest.TestCase):

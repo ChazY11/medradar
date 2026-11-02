@@ -96,6 +96,9 @@ CLAIMS = [
     ("U2", "quarterly deployment z-score CI lower bound", "0.112", "research/DECISIONS.md", "0.112"),
     ("U3", "quarterly deployment z-score CI upper bound", "0.182", "research/DECISIONS.md", "0.182"),
     ("U4", "Kendall tau between quarterly and monthly rankings", "−1.0", "research/DECISIONS.md", "−1.0"),
+    # ---- product integration (cycle 22)
+    ("V1", "deployment false-alarm rate stated in profiles", "0.018", "research/DECISIONS.md", "**0.018**"),
+    ("V2", "profile test count after the deployment block", "44", "research/RESULTS/cycle22_product_2026-11-03.md", "44 tests"),
 ]
 
 

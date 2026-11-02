@@ -54,6 +54,18 @@ MOMENTUM_POWER = 0.80         # target power for the minimum detectable ratio
 Z_ALPHA = 1.959963985         # two-sided 5 %
 Z_POWER = 0.841621234         # 80 % power
 
+# deployment detection, fixed by B-039 (DECISIONS D-044/D-045): the layer runs quarterly, the detector
+# is the rolling z-score, and the threshold is the one that achieved a 2 % false-alarm budget in the
+# controlled-truth sweep. These values are measurements, not preferences, and must never be re-tuned
+# here; if the resolution changes, the detector must be re-measured (at monthly it ranks last).
+DEPLOYMENT_RESOLUTION_MONTHS = 3
+DEPLOYMENT_MEMORY_MONTHS = 12
+DEPLOYMENT_BASELINE_MONTHS = 24
+DEPLOYMENT_Z_THRESHOLD = 3.5
+DEPLOYMENT_FALSE_ALARM_RATE = 0.0179
+DEPLOYMENT_SENSITIVITY = 0.147
+ALERT_RECENCY_QUARTERS = 8    # only alerts in the last two years are reported as live
+
 
 # --------------------------------------------------------------------- helpers
 def _normal_cdf(value: float) -> float:
@@ -115,6 +127,107 @@ def _rate(months: Sequence[str], labels: Sequence[str]) -> tuple[int, int, float
     if not labels:
         return count, 0, None
     return count, len(labels), count / len(labels)
+
+
+def _quarter_label(quarter_index: int) -> str:
+    year, quarter = divmod(quarter_index, 4)
+    return f"{year:04d}-Q{quarter + 1}"
+
+
+def _quarter_index(date: str) -> int | None:
+    """Calendar quarter index from an ISO date; None if the date cannot be parsed."""
+    text = str(date or "")[:10]
+    if len(text) < 7 or text[4] != "-":
+        return None
+    try:
+        year = int(text[:4])
+        month = int(text[5:7])
+    except ValueError:
+        return None
+    if not 1 <= month <= 12:
+        return None
+    return year * 4 + (month - 1) // 3
+
+
+def deployment_alerts(events: Sequence[Mapping[str, Any]], *,
+                      resolution_months: int = DEPLOYMENT_RESOLUTION_MONTHS,
+                      memory_months: int = DEPLOYMENT_MEMORY_MONTHS,
+                      baseline_months: int = DEPLOYMENT_BASELINE_MONTHS,
+                      threshold: float = DEPLOYMENT_Z_THRESHOLD) -> dict[str, Any]:
+    """Calibrated change alerts at the deployment resolution (quarterly rolling z-score).
+
+    The detector, its threshold and its resolution are the ones measured in the controlled-truth sweep
+    (DECISIONS D-044/D-045); this function applies them, it does not choose them. A track is flagged in
+    a quarter when the count exceeds its own baseline mean by at least ``threshold`` Poisson standard
+    deviations, with the baseline taken from the preceding ``baseline_months`` of history.
+    """
+    if resolution_months != DEPLOYMENT_RESOLUTION_MONTHS:
+        raise ValueError("the deployment resolution is fixed by D-045; re-measure before changing it")
+    memory_quarters = max(1, memory_months // resolution_months)
+    baseline_quarters = max(2, baseline_months // resolution_months)
+
+    per_track: dict[str, dict[int, int]] = {}
+    for event in events:
+        track = str(event.get("track") or "")
+        quarter = _quarter_index(str(event.get("date") or ""))
+        if not track or quarter is None:
+            continue
+        per_track.setdefault(track, {})
+        per_track[track][quarter] = per_track[track].get(quarter, 0) + 1
+    if not per_track:
+        return {"resolution_months": resolution_months, "detector": "rolling_zscore",
+                "threshold": threshold, "memory_months": memory_months,
+                "false_alarm_rate": DEPLOYMENT_FALSE_ALARM_RATE,
+                "sensitivity": DEPLOYMENT_SENSITIVITY,
+                "flagged": [], "quarters_examined": 0,
+                "statement": "no quarterly history to examine"}
+
+    all_quarters = sorted({quarter for counts in per_track.values() for quarter in counts})
+    latest = all_quarters[-1]
+    first_examined = latest - ALERT_RECENCY_QUARTERS + 1
+    flagged: list[dict[str, Any]] = []
+    examined = 0
+    for track, counts in sorted(per_track.items()):
+        for quarter in range(max(first_examined, all_quarters[0] + baseline_quarters),
+                             latest + 1):
+            baseline_values = [counts.get(previous, 0)
+                               for previous in range(quarter - baseline_quarters, quarter)]
+            baseline_mean = sum(baseline_values) / len(baseline_values)
+            if baseline_mean <= 0:
+                continue
+            examined += 1
+            count = counts.get(quarter, 0)
+            zscore = (count - baseline_mean) / math.sqrt(baseline_mean)
+            if zscore >= threshold:
+                flagged.append({"track": track, "quarter": _quarter_label(quarter),
+                                "events": count, "baseline_mean": round(baseline_mean, 2),
+                                "z": round(zscore, 2),
+                                "memory_quarters": memory_quarters})
+    flagged.sort(key=lambda item: (-item["z"], item["track"]))
+    tracks = sorted({item["track"] for item in flagged})
+    return {
+        "resolution_months": resolution_months,
+        "detector": "rolling_zscore",
+        "threshold": threshold,
+        "memory_months": memory_months,
+        "baseline_months": baseline_months,
+        "false_alarm_rate": DEPLOYMENT_FALSE_ALARM_RATE,
+        "sensitivity": DEPLOYMENT_SENSITIVITY,
+        "flagged": flagged,
+        "flagged_tracks": tracks,
+        "quarters_examined": examined,
+        "recency_quarters": ALERT_RECENCY_QUARTERS,
+        "statement": (f"{len(flagged)} calibrated alert(s) in the last "
+                      f"{ALERT_RECENCY_QUARTERS} quarters across {len(tracks)} track(s)"
+                      f" ({examined} track-quarters examined at {resolution_months}-month "
+                      f"resolution, threshold z>={threshold}, measured FAR "
+                      f"{DEPLOYMENT_FALSE_ALARM_RATE:.3f})"
+                      if flagged else
+                      f"no calibrated alert in the last {ALERT_RECENCY_QUARTERS} quarters "
+                      f"({examined} track-quarters examined at {resolution_months}-month "
+                      f"resolution, threshold z>={threshold}, measured FAR "
+                      f"{DEPLOYMENT_FALSE_ALARM_RATE:.3f})"),
+    }
 
 
 def _momentum(events: Sequence[Mapping[str, Any]], labels: Sequence[str]) -> dict[str, Any]:
@@ -347,7 +460,8 @@ def build_profile(*, company_key: str, display_name: str, aliases: Sequence[str]
                                    aliases=aliases, entity_keys=entity_keys, as_of=as_of,
                                    window=window, sources=sources),
         "technology_footprint": field_footprint(regulatory_events, labels),
-        "momentum": _momentum(regulatory_events, labels),
+        "momentum": {**_momentum(regulatory_events, labels),
+                     "deployment_alerts": deployment_alerts(regulatory_events)},
         "concentration": _concentration(
             {row["track"]: row["events"]
              for row in field_footprint(regulatory_events, labels)["rows"]}),
@@ -427,6 +541,18 @@ def render_markdown(profile: Mapping[str, Any]) -> str:
             f"- Test: exact two-sided binomial p={momentum['p_value']:.3f} "
             f"(alpha={momentum.get('alpha')}), minimum detectable ratio at 80 % power "
             f"{mde_text}, detected={momentum.get('detected')}")
+    deployment = momentum.get("deployment_alerts")
+    if deployment:
+        lines.append(f"- Deployment detector: {deployment['detector']} at "
+                     f"{deployment['resolution_months']}-month resolution, threshold "
+                     f"z>={deployment['threshold']}, {deployment['statement']}")
+        for alert in deployment["flagged"][:6]:
+            lines.append(f"  - `{alert['track']}` {alert['quarter']}: {alert['events']} events "
+                         f"against a baseline of {alert['baseline_mean']} (z={alert['z']})")
+        lines.append("  - these alerts are calibrated at the measured false-alarm rate "
+                     f"{deployment['false_alarm_rate']:.3f} and sensitivity "
+                     f"{deployment['sensitivity']:.3f}; they are statements about filing rate, "
+                     "not about technology")
     lines += ["", "## 4. Concentration", "", f"- {concentration['statement']}", ""]
     lines += ["## 5. Independent corroboration", "", f"- {corroboration['statement']}"]
     if corroboration["tracks_without_trial_support"]:

@@ -259,6 +259,15 @@ contradictory evidence, limits and provenance. Two rules make it honest: no scor
 generated from the numbers in the same structure), and contradictory evidence as a required field, so a
 profile without the list of checks it ran is rejected before rendering.
 
+The profile's momentum field now also carries the **validated detector** rather than only a rate test: a
+nested `deployment_alerts` block applies the quarterly rolling z-score at threshold 3.5 — the operating point
+measured in Section 4.2 — reports alerts from the last eight quarters, and states the measured false-alarm
+rate (0.018) and sensitivity (0.147) **inside the profile**. On Medtronic the block returns two live alerts,
+each two events against a baseline of 0.25; the counts are printed beside the alert so that "calibrated"
+cannot be read as "substantial". The promotion rule of §4.9 is deliberately **not** applied automatically:
+it requires the live alert stream and an explicit decision, and automating it would convert a measured rule
+into an opaque default.
+
 ---
 
 ## 4.9 A confirmed decision rule, and how narrowly it is confirmed
