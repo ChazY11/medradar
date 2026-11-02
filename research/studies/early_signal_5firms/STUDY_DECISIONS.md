@@ -436,3 +436,50 @@ description with its nine packets, and the third paper with its 24-claim map. Th
 **What is still not done, and cannot be done by the agent:** adjudicating the **69 packets** (60 candidates + 9
 small-sample) — they remain `PENDING_HUMAN_REVIEW` with `final_label = null`, verified programmatically in the review.
 Target B analysis therefore still does not exist, and neither paper claims it does.
+
+---
+
+## S-028 — Third-source cross-check run: one near-term hit, three decade-old keyword matches
+
+**Date:** 2026-11-03 · **Status:** accepted · **Branch:** `research/early-signal-third-source` ·
+**Evidence:** `THIRD_SOURCE_CROSSWALK.{json,md}`, `THIRD_SOURCE_PROTOCOL.md`, `medradar/studies/thirdsource.py`
+(15 tests), `experiments/b095/europepmc_crosscheck.py`
+
+Protocol frozen before any query. Nine events queried against Europe PMC with deterministic
+`(AFF:"company") AND ("keyword")` strings, all recorded verbatim; availability = first publication date; trial reports
+excluded as non-independent.
+
+Result: **4 `SUPPORTED_BEFORE`, 5 `AFTER_CLEARANCE`** — but the distances change the reading, so a distance class was
+added as a **descriptive** field (not a status change):
+
+| distance class | count | meaning |
+|---|---:|---|
+| NEAR (≤1 year before clearance) | 6 (all AFTER_CLEARANCE except one) | the only class that can be read as programme-level corroboration |
+| MID (1–3 years) | 0 | — |
+| DISTANT (>3 years before) | **3** | keyword+affiliation matches **6.7, 14.5 and 23.3 years** old — not corroboration of this clearance |
+
+So the honest summary is: **exactly one event (LT-07, Philips respiratory) has a near-term prior publication** (76 days
+before the clearance, a low-cost ventilator study in *PLoS ONE*); three "before" hits are decades-old matches; five
+events have publications only **after** the clearance. One distant hit is not even a paper but a patent-style record
+(`Catheter introducer with thin walled sheath`).
+
+**Disclosed deviation.** The packets carry no crosswalk keyword phrases (they were not propagated when the packets were
+built), so the keyword terms come from the track's own keyword list, longest first. Every query is recorded, so the
+deviation is visible and reproducible.
+
+## S-029 — What the third-source check does and does not buy
+
+**Date:** 2026-11-03 · **Status:** accepted
+
+**Buys:** packets now carry an independent evidence field with a citable record (or an explicit `NO_RECORD` /
+`AFTER_CLEARANCE` status), which is what a human reviewer needs to adjudicate.
+
+**Does not buy:** any corroboration of a programme-level early signal. A keyword+affiliation search matches work from
+any era; three of the four "before" hits predate their clearance by 6.7–23.3 years, and an old paper by the same
+company in the same track says nothing about whether *this* clearance was prefigured. `NO_RECORD` is a null search, not
+evidence of absence. No label was created: all packets remain `PENDING_HUMAN_REVIEW` with `final_label = null`
+(`CASE_PACKETS_SMALL_SAMPLE_V2.json` preserves every original field and adds `third_source`).
+
+**Consequence:** the third-source line is now closed as far as the agent may take it. Extracting a real
+programme-level prior-publication signal would need author-level disambiguation and topic modelling of the paper's
+content — a different study, and one that would need its own pre-registration.
