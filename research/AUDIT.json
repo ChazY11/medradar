@@ -20,7 +20,7 @@
     {
       "requirement": "state completeness",
       "status": "PASS",
-      "evidence": "phase='post_audit_full_history', cycle=45",
+      "evidence": "phase='external_ai_review_ingested_target_b_still_unlabelled', cycle=46",
       "detail": {
         "absent": [],
         "findings": 102
@@ -29,7 +29,7 @@
     {
       "requirement": "loop ran and was recorded",
       "status": "PASS",
-      "evidence": "77 decisions, 167 result rows (32 negative/null), retractions marked: 4",
+      "evidence": "78 decisions, 171 result rows (33 negative/null), retractions marked: 4",
       "detail": {}
     },
     {
@@ -100,15 +100,15 @@
     },
     {
       "requirement": "working tree committed",
-      "status": "PASS",
-      "evidence": "0 uncommitted path(s) at audit time",
+      "status": "N/A",
+      "evidence": "12 uncommitted path(s) at audit time",
       "detail": {}
     }
   ],
   "summary": {
-    "passed": 12,
+    "passed": 11,
     "failed": 0,
-    "not_applicable": 0,
+    "not_applicable": 1,
     "total": 12
   }
 }

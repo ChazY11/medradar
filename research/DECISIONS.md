@@ -3030,3 +3030,43 @@ precision; 20 % → 38/94 at 7.3 %) is a quantified operating characteristic, no
 registered — D-075 (prospective set 25 → 13) and D-076 (rolling-origin reproducibility). The audit's remaining findings
 (summary-number drift, gate self-dirtying, momentum multiplicity, dead evidence pointers) are carried as open items in
 `research/RESEARCH_STATE.md` §6–7.
+---
+
+## D-078 — The external AI review is a non-human tier; the halt rule fires and the nine-event lead time is withdrawn
+
+**Date:** 2026-11-03 · **Status:** accepted · **Study:** `early_signal_5firms`
+
+**Decision.** The project owner commissioned an independent AI review of the 69 adjudication packets (delivered against
+commit `969fd0c`). It is registered as a new explicit tier, `EXTERNAL_AI_REVIEW`, because its own header says it is
+"AI advice only, not a human gold standard, may not be used to score detectors", its human fields are empty, its
+authority is `AI_ONLY_NOT_HUMAN_GOLD_STANDARD`, `blind_review` is false (it had read the earlier labels) and
+`may_score_detectors` is false. The ingester `experiments/b099/ingest_external_ai_review.py` refuses to write on any
+boundary violation (filled human field, human reviewer, out-of-vocabulary label, CSV/JSON disagreement, wrong source
+commit). `can_count_as_human_truth` and `eligible_for_target_b_scoring` are false in the artifact.
+
+**What the review found.** Routine Iteration 52, Uncertain 9, False Signal / No Confirmed Shift 8, **Confirmed Shift
+0**, Insufficient Observation 0; uncertainty low 26 / medium 34 / high 9. The pre-registered halt rule (fewer than
+~10 `Confirmed Shift` across the confirmatory tracks ⇒ descriptive design) fires. **Target B stays unlabelled**; the
+human-adjudication requirement is not discharged and `ADJUDICATION_HUMAN_V1.json` still does not exist.
+
+**Withdrawn result.** The external review finds that 8 of the 9 small-sample pairs (`LT-02 … LT-09`) are device/project
+mismatches and `LT-01` is Uncertain. The "3.3-quarter median lead" in `LEAD_TIME_SMALL_SAMPLE.md` is therefore not a
+lead-time estimate of anything: the file now carries a withdrawal banner (result row R170, study decision S-034) and is
+kept only as the historical record of what was computed. It had previously been labelled "descriptive only, below the
+floor of 10"; that mitigation is now superseded by outright withdrawal.
+
+**Other evidence the review supplies.** 13 `novel_entry` packets are flagged `LEFT_CENSORED_GAP_NONE` (first
+observation in-window, not proven first entry) and 43 packets have earlier same-applicant/same-product-code records in
+the current store; 5 candidate packets are manufacturing/QC notices rather than product-platform events
+(ES5-022/044/052/053/057); one packet is a De Novo misrecorded as a 510(k) (ES5-010); and the packet set is Philips 23 /
+Medtronic 21 / GE HealthCare 16 / Mindray 9 / **Dräger 0**, so the "five firms, 69 packets" framing cannot support an
+equal-depth five-firm comparison.
+
+**What does not change.** The pilot's concurrent-detection null, the coverage matrix, the entity/domain audit and every
+main-programme result stand. The review does not license the opposite claim either: it judges whether these packets'
+evidence chains support a technology shift, not whether the companies innovate.
+
+**Remaining human work.** Resolve the 9 high-uncertainty packets and the 8 evidence mismatches first
+(`HUMAN_DECISION_QUEUE.md`), then the remaining rows; a named human must sign. Until then Target B is unlabelled and no
+Target B metric, calibration or detector score may be reported from this tier.
+

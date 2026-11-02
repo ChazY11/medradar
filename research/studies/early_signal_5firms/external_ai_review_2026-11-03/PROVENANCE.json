@@ -1,0 +1,26 @@
+{
+  "review_date": "2026-11-03 Asia/Shanghai",
+  "store_path": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
+  "store_access": "sqlite URI mode=ro",
+  "store_bytes": 1368469504,
+  "store_sha256_at_packaging": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92",
+  "store_warning": "本地数据库不是Git提交的一部分，可能晚于固定分支；保留本次实际读取记录和原始资料，不能将它当作历史时点快照。未写数据库。",
+  "queries": {
+    "packet_event": "SELECT * FROM events WHERE event_id = ?",
+    "LT_resolution": "SELECT * FROM events WHERE company_key = ? AND track_id = ? AND event_date = ? AND kind IN ('510k','pma')",
+    "previous_records": "SELECT * FROM events WHERE applicant_raw = ? AND product_code = ? AND event_date < ? AND kind IN ('510k','pma') ORDER BY event_date DESC LIMIT 3",
+    "mapping": "SELECT * FROM product_codes WHERE product_code = ?"
+  },
+  "pdf_portfolio": {
+    "K182075.pdf": {
+      "K182075_attachment_0.pdf": "K182075.510kSummary.Final_Sent001.pdf",
+      "K182075_attachment_1.pdf": "K182075.IFU.FINAL_Sent001.pdf",
+      "K182075_attachment_2.pdf": "K182075.Letter.SE.FINAL_Sent001.pdf"
+    }
+  },
+  "page_numbering": "PDF file physical pages, except K182075 refers to embedded summary physical pages",
+  "visual_checks": [
+    "K173456 physical pages 5 and 6: malformed text encoding, visually read",
+    "K182075 physical page 1: portfolio cover, then extracted embedded files"
+  ]
+}

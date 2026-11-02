@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T07:30:00+08:00",
+  "updated_at": "2026-11-03T08:30:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "post_audit_full_history",
-  "cycle": 45,
+  "phase": "external_ai_review_ingested_target_b_still_unlabelled",
+  "cycle": 46,
   "last_completed_cycle": {
-    "cycle": 45,
-    "name": "hist_v1_full_history_barrier",
-    "branch": "research/full-history-v1",
-    "report": "experiments/hist_v1/REPORT.md",
-    "summary": "research/RESULTS/cycle43_full_history_2026-11-03.md",
-    "verdict": "full-history panel (1976-2026; 53 firms; 38 tracks; 528 pairs; 14,704 material events) built and audited; pre-registered primary test (R_adj, h=8) SUPPORTED: M1C mean AP 0.1137 vs B1 0.0553, delta +0.0584, CI [+0.0020,+0.1213], p=0.045, MDE 0.090; permutation p=0.0299 (200 perms); NOT established against the two-way baseline B3 (delta +0.0438, CI [-0.0184,+0.0957]); gain is track tempo + adjacency, firm-only features below persistence (-0.0064); fusion negative (-0.0053); lead-time frontier 9/94 at 1%, 38/94 at 20%; five mandated firms track-saturated after 2012-2014; a leak-audit defect voided the first run and was fixed"
+    "cycle": 46,
+    "name": "external_ai_review_ingest",
+    "branch": "research/early-signal-ai-review",
+    "report": "research/studies/early_signal_5firms/AI_REVIEW_DECISION_2026-11-03.md",
+    "summary": "research/RESULTS/README.md R168-R171",
+    "verdict": "the owner-commissioned external AI review of the 69 five-firm packets was ingested as an explicit non-human tier (EXTERNAL_AI_REVIEW, can_count_as_human_truth=false); labels Routine 52 / Uncertain 9 / False Signal 8 / Confirmed Shift 0; the pre-registered halt rule fires (Target B stays unlabelled); the 9-event lead-time description is withdrawn because 8/9 pairs are device/project mismatches; 13 novel-entry packets are left-censored, 5 are manufacturing notices, 1 is a De Novo misrecorded as 510(k); the human-adjudication requirement remains open"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\hist-v1",
@@ -1695,6 +1695,59 @@
       "fix": "sort the index; replay 0/300; 8,415 candidates / 181 positives; bootstrap OK; H1 UNRELIABLE -> SUPPORTED",
       "decision": "D-077",
       "result_row": "R167"
+    }
+  },
+  "early_signal_5firms": {
+    "study": "research/studies/early_signal_5firms/",
+    "phase": "phase1_blocked_on_human_but_descriptive_design_forced_by_external_review",
+    "external_ai_review": {
+      "artifact": "research/studies/early_signal_5firms/AI_REVIEW_ADJUDICATION_V1.json",
+      "ingester": "experiments/b099/ingest_external_ai_review.py",
+      "delivery": "research/studies/early_signal_5firms/external_ai_review_2026-11-03/",
+      "reviewed_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "tier": "EXTERNAL_AI_REVIEW",
+      "can_count_as_human_truth": false,
+      "eligible_for_target_b_scoring": false,
+      "labels": {
+        "Routine Iteration": 52,
+        "Uncertain": 9,
+        "False Signal / No Confirmed Shift": 8,
+        "Confirmed Shift": 0,
+        "Insufficient Observation": 0
+      },
+      "halt_rule_triggered": true,
+      "small_sample_false_pairs": [
+        "LT-02",
+        "LT-03",
+        "LT-04",
+        "LT-05",
+        "LT-06",
+        "LT-07",
+        "LT-08",
+        "LT-09"
+      ],
+      "left_censored_novel_entries": 13,
+      "manufacturing_notices": [
+        "ES5-022",
+        "ES5-044",
+        "ES5-052",
+        "ES5-053",
+        "ES5-057"
+      ],
+      "dr_absent_note": "packet set is Philips 23 / Medtronic 21 / GE HealthCare 16 / Mindray 9 / Draeger 0"
+    },
+    "human_review": {
+      "state": "PENDING_HUMAN_REVIEW",
+      "worksheet_rows": 69,
+      "human_fields_filled": 0,
+      "adjudication_human_artifact_exists": false,
+      "requirement": "a named human reviewer must sign; the external AI review is not human truth and the b098 ingester still refuses anything less"
+    },
+    "withdrawn": {
+      "result": "nine-event lead-time description (3.3-quarter median lead)",
+      "reason": "8/9 pairs are device/project mismatches under the external review; LT-01 Uncertain",
+      "decision": "S-034",
+      "result_row": "R170"
     }
   }
 }

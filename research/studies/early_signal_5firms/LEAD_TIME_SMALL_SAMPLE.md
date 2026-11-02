@@ -1,5 +1,12 @@
 # NINE-EVENT LEAD-TIME DESCRIPTION (S1-crosswalk-effective)
 
+> **WITHDRAWN 2026-11-03 (S-034).** The external AI review of all 69 packets found that **8 of these 9 pairs are
+> device/project mismatches** (`LT-02 … LT-09`) and the ninth (`LT-01`) is Uncertain: the "trial that precedes a
+> clearance" is a different device or a different programme in at least eight cases. The numbers below are therefore
+> **not a lead-time estimate of anything** and must not be quoted as a finding. The document is kept as the record of
+> what was computed before the review; see `AI_REVIEW_DECISION_2026-11-03.md` and
+> `AI_REVIEW_ADJUDICATION_V1.json`.
+
 **descriptive only; n = 9 independent event(s), below the floor of 10, therefore underpowered and not a lead-time estimate.**
 
 Source pairs: 17 → distinct later clearances: **9**. Representative = latest paired trial per event (minimum lead); the maximum is reported only as an upper bound.

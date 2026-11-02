@@ -1,4 +1,4 @@
-# RESEARCH_STATE — the live state of the MedRadar research programme
+﻿# RESEARCH_STATE — the live state of the MedRadar research programme
 
 **Last updated:** 2026-11-03 · **Branch:** `research/full-history-v1` · **Worktree:** `D:/DEPPSKK/worktrees/hist-v1`
 **Supersedes as "current state":** `research/STATE.json` remains the machine-readable record; this file is the
@@ -19,7 +19,8 @@ material events belong to no roster company)**, and the **small number of entry 
 ## 2. Latest verified results (this round, hist_v1)
 
 All from `experiments/hist_v1/results.json`; report: `experiments/hist_v1/REPORT.md`; numbers re-checked by
-`experiments/hist_v1/verify_report_numbers.py` (**155 checks, 0 failed**).
+`experiments/hist_v1/verify_report_numbers.py` (**155 checks, 0 failed**). The external-AI-review rows H-14–H-16 are
+from `research/studies/early_signal_5firms/AI_REVIEW_ADJUDICATION_V1.json` and its ingester tests (7 tests).
 
 | # | result | value | status |
 |---|---|---|---|
@@ -36,6 +37,9 @@ All from `experiments/hist_v1/results.json`; report: `experiments/hist_v1/REPORT
 | H-11 | prospective-set correction (defect found by audit) | 25 → **13** genuinely prospective forecasts (12 had partially observed outcome windows); 19 excluded; new hash `8ac0b8df…` | **corrected (D-075)** |
 | H-12 | rolling-origin reproducibility (defect found by audit) | `b050/rolling_origin.py` fixed and now reproduces committed JSON **identically** | **fixed (D-076)** |
 | H-13 | leak-audit defect in this study's own first run | unsorted company-category index corrupted risk set (7,556 vs 8,415 candidates) and features (184/300 replay mismatches); after fix 0/300 and verdict UNRELIABLE → SUPPORTED; void result not published | **defect found and fixed (D-077, R167)** |
+| H-14 | external AI review of the 69 five-firm packets ingested | 69/69 labelled with evidence locators; human fields empty; reviewer "Codex AI (not a human reviewer)"; authority `AI_ONLY_NOT_HUMAN_GOLD_STANDARD`, `blind_review=false`; registered as tier `EXTERNAL_AI_REVIEW` with `can_count_as_human_truth=false` by a validating ingester | **deliverable (non-human tier, D-078)** |
+| H-15 | the five-firm halt rule fires | labels Routine 52 / Uncertain 9 / False Signal 8 / **Confirmed Shift 0**; pre-registered rule (<10 confirmed ⇒ descriptive design) triggers; **Target B stays unlabelled** and no Target B metric may be computed from this tier | **decision (negative for Target B)** |
+| H-16 | the nine-event lead-time description is withdrawn | 8/9 small-sample pairs (`LT-02…LT-09`) are device/project mismatches and `LT-01` is Uncertain, so the 3.3-quarter median lead is not a lead-time estimate of anything; 13 novel-entry packets are left-censored, 5 are manufacturing notices, 1 is a De Novo misrecorded as a 510(k); packet set is Philips 23 / Medtronic 21 / GEHC 16 / Mindray 9 / Dräger 0 | **retraction + packet-defect failure analysis (R170/R171)** |
 
 ## 3. Hypotheses and their current status
 
@@ -83,7 +87,7 @@ All from `experiments/hist_v1/results.json`; report: `experiments/hist_v1/REPORT
 | item | status | why |
 |---|---|---|
 | prospective calibration | **blocked on wall clock** | corrected set matures 2027-Q3…2028-Q1; zero matured |
-| human adjudication of the 69 five-firm packets | **blocked on a human** | `HUMAN_REVIEW_WORKSHEET.csv` all human columns empty; `ADJUDICATION_HUMAN_V1.json` does not exist |
+| human adjudication of the 69 five-firm packets | **still blocked on a human** | the owner-commissioned external **AI** review is now ingested as `EXTERNAL_AI_REVIEW` (R168); it is not human truth, its labels are 0 `Confirmed Shift` and the halt rule fires; `HUMAN_REVIEW_WORKSHEET.csv` human columns remain empty and `ADJUDICATION_HUMAN_V1.json` still does not exist |
 | patents lane | **blocked on access** | PatentsView 403; USPTO ODP needs a key |
 | broad hiring lane | **structurally unavailable** for Dräger/Mindray/GEHC | archive coverage; see D-031 |
 | a design that can beat B3 / new-category entries | **open work** | needs a coarser taxonomy, larger roster, or a new pre-registration |
@@ -95,7 +99,9 @@ All from `experiments/hist_v1/results.json`; report: `experiments/hist_v1/REPORT
 1. **Pre-register a design that can beat B3 and cover new-category entries**: coarser technology domains, a larger
    company roster, and origins concentrated in 1995–2015 where entries occur. This is a new pre-registration, not a
    reinterpretation of hist_v1.
-2. **Get the 69 human labels** (owner action) — the five-firm study cannot proceed without them.
+2. **Turn the external AI review into human labels**: the AI review is done and ingested (R168, D-078), but Target B
+   needs a named human. Work through `HUMAN_DECISION_QUEUE.md` first (9 high-uncertainty packets + 8 evidence
+   mismatches), then the rest; `experiments/b098/ingest_human_review.py` still refuses anything less.
 3. **Resolve the entity-mapping limitation** for the 48 roster companies (current-group attribution; unaudited).
 4. **Fix the remaining audit defects** (summary-number drift, round-end-writes-its-own-dirt, momentum multiplicity,
    taxonomy stamp, dead evidence pointers).
@@ -130,3 +136,4 @@ python experiments/b068/maturate_forecasts.py      # only when the lane advances
 `python tools/round_end.py` (gate), `python experiments/hist_v1/verify_report_numbers.py` (this round's numbers, 155
 checks), `research/audits/initial_research_audit.md` (independent verification of the prior record), and
 `research/RESULTS/README.md` rows R1–R167 (the full result index).
+

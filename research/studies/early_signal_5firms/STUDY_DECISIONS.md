@@ -1,4 +1,4 @@
-# Study decision log — early_signal_5firms
+﻿# Study decision log — early_signal_5firms
 
 Append-only. Entries are numbered `S-nnn` and record decisions made inside this study; the programme's main
 `research/DECISIONS.md` is left untouched (it is prior record, not this study's scratchpad).
@@ -587,3 +587,53 @@ The path was then verified end-to-end on temporary copies (`verify_review_path.p
 
 No synthetic label entered the study: every case wrote to a temporary directory, and no
 `ADJUDICATION_HUMAN_V1.json` exists yet.
+---
+
+## S-034 — External AI review ingested as a non-human tier; the halt rule fires and the nine-event lead-time is withdrawn
+
+**Date:** 2026-11-03 · **Status:** accepted · **Evidence:** `AI_REVIEW_ADJUDICATION_V1.json`,
+`AI_REVIEW_DECISION_2026-11-03.md`, `external_ai_review_2026-11-03/` (delivery pinned by SHA-256),
+`experiments/b099/ingest_external_ai_review.py`
+
+**What was delivered.** The project owner commissioned an independent AI review (Codex/chat-GPT-driven) of all 69
+packets, delivered against commit `969fd0c`. Its own header says it is **"AI advice only, not a human gold standard,
+may not be used to score detectors; the original human fields remain empty; this review had read the earlier labels,
+so it is not blind"** (`AI_REVIEW_69.md`, `AI_REVIEW_69.json` authority `AI_ONLY_NOT_HUMAN_GOLD_STANDARD`,
+`blind_review: false`, `may_score_detectors: false`).
+
+**How it was ingested.** Not as human truth. A new tier `EXTERNAL_AI_REVIEW` is registered by
+`experiments/b099/ingest_external_ai_review.py`, which validates: 69 unique ids exactly covering the frozen worksheet;
+**all five human fields empty on all 69 rows**; labels inside the frozen vocabulary; every
+`ai_eligible_for_target_b_scoring=false`; the source commit; CSV/JSON label agreement; and the non-human reviewer
+field. It refuses to write on any defect. `can_count_as_human_truth=false` and `eligible_for_target_b_scoring=false`
+are written into the artifact. The human-review requirement is **not** discharged.
+
+**Label distribution (69 packets):** Routine Iteration **52**, Uncertain **9**, False Signal / No Confirmed Shift
+**8**, Confirmed Shift **0**, Insufficient Observation 0. Agreement with the earlier agent pre-adjudication is
+observed 0.478, kappa 0.160 (descriptive only; the reviewer had seen the earlier labels, so this is neither
+independent nor usable to score anything).
+
+**The halt rule fires.** The Phase-0 rule was: fewer than ~10 `Confirmed Shift` labels across the confirmatory tracks
+⇒ narrow the study to a descriptive design. The count is **0**. Target B therefore stays empty; no Target B metric,
+calibration, detector score or five-firm comparative claim may be produced from this tier.
+
+**The nine-event lead-time description is withdrawn, not merely downgraded.** 8 of the 9 small-sample pairs
+(`LT-02 … LT-09`) are device/project mismatches and `LT-01` is Uncertain, so the 3.3-quarter median lead in
+`LEAD_TIME_SMALL_SAMPLE.md` is **not a lead-time estimate of anything**; the file now carries a withdrawal banner and
+is kept only as the record of what was computed.
+
+**Other evidence the review supplies** (all in `AI_REVIEW_ADJUDICATION_V1.json`): 13 `novel_entry` packets are flagged
+`LEFT_CENSORED_GAP_NONE` (first observation in-window, not proven first entry) and 43 packets have earlier
+same-applicant/same-product-code records in the current store; 5 candidate packets are manufacturing/QC notices
+not product-platform events (ES5-022/044/052/053/057); one packet is a De Novo misrecorded as a 510(k) (ES5-010); the
+packet set is Philips 23 / Medtronic 21 / GE HealthCare 16 / Mindray 9 / **Dräger 0**, so no equal-depth five-firm
+comparison can be claimed from it.
+
+**What this does not change.** The pilot's concurrent-detection null, the coverage matrix, the entity/domain audit and
+every main-programme result stand. Nor does the review license the opposite claim ("the firms never shift"): it judges
+whether *these packets' evidence chains* support a technology shift.
+
+**Remaining human work:** resolve the 9 high-uncertainty packets and the 8 evidence mismatches first
+(`HUMAN_DECISION_QUEUE.md`), then the rest; a named human must sign, and `experiments/b098/ingest_human_review.py`
+still refuses anything less. Until then, Target B is unlabelled.
+

@@ -1,4 +1,4 @@
-# EXPERIMENT_REGISTRY — every experiment, its inputs, and its verdict
+﻿# EXPERIMENT_REGISTRY — every experiment, its inputs, and its verdict
 
 **Last updated:** 2026-11-03 · **Branch:** `research/full-history-v1`
 This file registers the experiments of the current work unit (hist_v1 and the record-repair that accompanied it) in
@@ -43,6 +43,7 @@ Panel artifact: `out/hist_v1/panel.json` SHA-256 `10f8c00aff51ad061f6aa237449a7d
 | `HIST-11` | leakage controls | — | — | seeded 300-cell replay | all 15 | independent linear-scan replay | 20261103 | label purge 0 violations; replay mismatches **0/300** (and 0/102,441 in the exhaustive check) | **verification** | features PIT-consistent after the fix |
 | `HIST-12` | first full run (VOID) | h=8 | as HIST-01 | as HIST-01 | C | same | 20261103 | pre-fix: 7,556 candidates / 110 positives; replay **184/300** mismatches; bootstrap UNRELIABLE; H1 UNRELIABLE | **VOID — not published** | unsorted company-category index corrupted risk set and features (D-077, R167) |
 | `REPAIR-01` | prospective forecast set | — | — | lane through 2026-Q3 | — | `register_forecasts.py` window-start filter | — | 25 → **13** prospective (19 excluded); hash `8ac0b8df…`; maturities 2027-Q3…2028-Q1 | **CORRECTED** | D-075; supersedes R130 |
+| `INGEST-01` | external AI review of the 69 five-firm packets | — | human worksheet (frozen, 69 rows) + review worksheet/json | all 69 packets | — (labelling task, not modelling) | `experiments/b099/ingest_external_ai_review.py` (validating ingester) | — | labels Routine 52 / Uncertain 9 / False Signal 8 / Confirmed Shift 0; halt rule triggered; 8/9 small-sample pairs false signals; 13 left-censored novel entries; 5 manufacturing notices; 44/69 changed from the earlier agent rubric (descriptive only; not blind) | **non-human tier ingested; Target B stays unlabelled** | D-078, S-034, R168–R171; the nine-event lead-time description is withdrawn |
 | `REPAIR-02` | rolling-origin reproducibility | — | — | 12 origins 2019-12…2025-06 | — | `b050/rolling_origin.py` date-type fix | 7 | re-run == committed JSON (`identical: True`) | **FIXED** | D-076; closes audit defect 2 |
 
 ## 3. Why HIST-01 is "supported" but not "strong"
@@ -72,3 +73,5 @@ reproduction status is audited in `research/audits/initial_research_audit.md` (2
 Append a row to §2 before running it: ID, target/risk set, horizon, train/test windows, features, model, seed. After
 running, fill result/status/conclusion from the committed artifact only — never from memory. A result whose artifact
 is not committed is not registered.
+
+

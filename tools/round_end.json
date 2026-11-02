@@ -1,18 +1,30 @@
 {
   "schema": "round_end_v1",
-  "checked_at_utc": "2026-11-02T23:20:13+00:00",
-  "branch": "research/full-history-v1",
-  "head": "799dd86604161fb4fb51004c3f4f2c03ddb6db4a",
+  "checked_at_utc": "2026-11-02T23:48:04+00:00",
+  "branch": "research/early-signal-ai-review",
+  "head": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
   "remote_synced": false,
   "uncommitted_paths": [
     "M research/AUDIT.json",
-    " M research/AUDIT.md"
+    " M research/AUDIT.md",
+    " M research/DECISIONS.md",
+    " M research/EXPERIMENT_REGISTRY.md",
+    " M research/RESEARCH_STATE.md",
+    " M research/RESULTS/README.md",
+    " M research/STATE.json",
+    " M research/studies/early_signal_5firms/LEAD_TIME_SMALL_SAMPLE.md",
+    " M research/studies/early_signal_5firms/STUDY_DECISIONS.md",
+    "?? experiments/b099/",
+    "?? research/studies/early_signal_5firms/AI_REVIEW_ADJUDICATION_V1.json",
+    "?? research/studies/early_signal_5firms/AI_REVIEW_DECISION_2026-11-03.md",
+    "?? research/studies/early_signal_5firms/external_ai_review_2026-11-03/",
+    "?? tests/test_ai_review_ingest.py"
   ],
   "results": [
     {
       "step": "test suite",
       "status": "PASS",
-      "detail": "Ran 1117 tests in 43.719s",
+      "detail": "Ran 1124 tests in 40.398s",
       "exit": 0
     },
     {
@@ -72,13 +84,13 @@
     {
       "step": "objective audit",
       "status": "PASS",
-      "detail": "audit: 12 PASS, 0 FAIL, 0 N/A of 12",
+      "detail": "audit: 11 PASS, 0 FAIL, 1 N/A of 12",
       "exit": 0
     },
     {
       "step": "repository state",
       "status": "N/A",
-      "detail": "HEAD 799dd8660416, remote unknown, 2 uncommitted path(s)"
+      "detail": "HEAD 969fd0cc4fea, remote unknown, 14 uncommitted path(s)"
     }
   ],
   "summary": {

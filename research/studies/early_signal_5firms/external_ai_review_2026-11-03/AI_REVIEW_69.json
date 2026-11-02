@@ -1,0 +1,4051 @@
+{
+  "schema": "independent_ai_review_v1",
+  "source_repository": "ChazY11/medradar",
+  "source_branch": "research/full-history-v1",
+  "source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+  "review_date": "2026-11-03 Asia/Shanghai",
+  "authority": "AI_ONLY_NOT_HUMAN_GOLD_STANDARD",
+  "blind_review": false,
+  "independence_disclosure": "另行依据器械内容形成判断；曾读取原工作表及既有AI标签，因此不是盲评、不是独立真人复核，也未使用第二AI评审者。",
+  "may_score_detectors": false,
+  "uncertainty_definition": {
+    "低": "关键事件改动或错配有直接材料，少量语义空间；不代表获真人确认",
+    "中": "有直接材料但涉及扩展幅度、软件赛道或实体连续性判断",
+    "高": "转向阈值/独立确认/具体器械链接/原始摘要仍不足"
+  },
+  "counts": {
+    "Routine Iteration": 52,
+    "Uncertain": 9,
+    "False Signal / No Confirmed Shift": 8
+  },
+  "company_counts": {
+    "philips": 23,
+    "mindray": 9,
+    "medtronic": 21,
+    "ge_healthcare": 16
+  },
+  "rows": [
+    {
+      "packet_id": "ES5-001",
+      "company": "philips",
+      "technology_track": "imaging_mr_ct",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "Zenition 70沿用自家Veradius Unity的基本技术与适应证，变更为PC架构、机头及显示配置；支持同方向产品迭代，不能仅因新商品名视为企业转向。",
+      "ai_evidence_locator": "K183040 pp6-8",
+      "ai_primary_record": "K183040",
+      "ai_primary_title": "Philips Medical Systems Nederland B.V. 510(k)：Zenition 70",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K183040",
+      "ai_event_date": "2018-12-06",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "这些配置改动是否达到预先定义的战略转向门槛？",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K183040",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf18/K183040.pdf",
+          "status": "retrieved",
+          "sha256": "0a38e844c2ba09c66fce74b1a13d16861730631b39b4930fa42b0103e4d2cb44",
+          "pages": 9,
+          "characters": 17137,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K183040.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/0",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K181830",
+          "date": "2018-08-02",
+          "title": "Philips Medical Systems Nederland B.V. 510(k)：Azurion R2.0",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K181830"
+        },
+        {
+          "id": "K172822",
+          "date": "2017-11-22",
+          "title": "Philips Medical Systems Nederland B.V. 510(k)：Azurion series R1.2",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K172822"
+        },
+        {
+          "id": "K172307",
+          "date": "2017-10-24",
+          "title": "Philips Medical Systems Nederland B.V. 510(k)：Dynamic Coronary Roadmap 2.0",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K172307"
+        }
+      ],
+      "original_gap_days": 111,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-002",
+      "company": "mindray",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "Passport既有型号更新，适应证未变，比较对象包括自家K152902/K170876；新增功能在既有监护方向内。",
+      "ai_evidence_locator": "K190011 pp5-9",
+      "ai_primary_record": "K190011",
+      "ai_primary_title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Passport Series Patient Monitors (including Passport 17m, Passport 12m and T1)",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K190011",
+      "ai_event_date": "2019-07-10",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准常规产品更新的排除口径。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K190011",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf19/K190011.pdf",
+          "status": "retrieved",
+          "sha256": "9f28e8db75fef643198e28affd58f468f1a350d1b9e5b7bd7497b06c4d6edb28",
+          "pages": 30,
+          "characters": 41278,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K190011.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/1",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K182075",
+          "date": "2018-12-10",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：BeneVision N Series Patient Monitors (Including BeneVision N12, BeneVision N15, BeneVision N17, BeneVision N19. BeneVision N22, BeneVision N1)",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K182075"
+        },
+        {
+          "id": "K171901",
+          "date": "2017-11-15",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：uMEC Series Patient Monitors (including uMEC6, uMEC7, uMEC10, uMEC12, uMEC15, uMEC15S)",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K171901"
+        },
+        {
+          "id": "K170876",
+          "date": "2017-08-23",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Passport Series Patient Monitors(Passport 12m, Passport 17m)",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K170876"
+        }
+      ],
+      "original_gap_days": 105,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-003",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "明确为StealthStation颅脑导航软件小版本更新，自家v2.2.7/v3.0已有记录；HAW立体定位器械不能仅凭软件字样证明AI转向。",
+      "ai_evidence_locator": "K190672 pp4-8",
+      "ai_primary_record": "K190672",
+      "ai_primary_title": "Medtronic Navigation, Inc. 510(k)：StealthStation Synergy Cranial S7 Software v.2.2.8, StealthStation Cranial Software v3.1.1",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K190672",
+      "ai_event_date": "2019-07-31",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "AI_VS_BROAD_SOFTWARE_TRACK"
+      ],
+      "ai_human_question": "确认medical_ai是否包括非AI导航软件。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K190672",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf19/K190672.pdf",
+          "status": "retrieved",
+          "sha256": "a2329e4d67ed7bb5764db6e62872886308fbccd695de972e421cb96fe96ad3e2",
+          "pages": 11,
+          "characters": 27057,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K190672.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/2",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K162655",
+          "date": "2017-04-21",
+          "title": "Medtronic Navigation, Inc. 510(k)：StealthConnect Remote Viewing, Planning and Collaboration System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K162655"
+        },
+        {
+          "id": "K162309",
+          "date": "2017-03-31",
+          "title": "Medtronic Navigation, Inc. 510(k)：StealthStation S8 System Platforms and StealthStation Cranial Software",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K162309"
+        },
+        {
+          "id": "K162604",
+          "date": "2016-12-30",
+          "title": "Medtronic Navigation, Inc. 510(k)：Cranial Reducing Tubes",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K162604"
+        }
+      ],
+      "original_gap_days": 265,
+      "previous_rubric_label": "Not Assessable (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-004",
+      "company": "philips",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "PIC iX从C.01到C.03，核心变化为QRS检测阈值，基本技术和用途保持一致。",
+      "ai_evidence_locator": "K183387 pp6-8",
+      "ai_primary_record": "K183387",
+      "ai_primary_title": "Philips Medical Systems 510(k)：M3290B Patient Information Center iX",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K183387",
+      "ai_event_date": "2019-08-06",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "确认这种算法参数更新属于常规迭代。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K183387",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf18/K183387.pdf",
+          "status": "retrieved",
+          "sha256": "d6d14341613556f99df36ede2deda2d4dc169dd32b92a4ec89f8de63a013ffbf",
+          "pages": 12,
+          "characters": 22524,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K183387.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/3",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K180017",
+          "date": "2018-07-24",
+          "title": "Philips Medical Systems 510(k)：MX40 Release C.01",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K180017"
+        },
+        {
+          "id": "K172226",
+          "date": "2017-11-09",
+          "title": "Philips Medical Systems 510(k)：MX40 Release B.07",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K172226"
+        },
+        {
+          "id": "K163584",
+          "date": "2017-07-07",
+          "title": "Philips Medical Systems 510(k)：M3290B Philips IntelliVue Information Center iX",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K163584"
+        }
+      ],
+      "original_gap_days": 264,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-005",
+      "company": "philips",
+      "technology_track": "imaging_us",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "Lumify既有超声平台新增iOS应用与电源接口模块；探头、扫描模式及适应证沿用K162549，没有新增3D胎儿自动测量的证据。",
+      "ai_evidence_locator": "K192226 pp4-6",
+      "ai_primary_record": "K192226",
+      "ai_primary_title": "Philips Health Care 510(k)：Lumify Diagnostic Ultrasound System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K192226",
+      "ai_event_date": "2019-09-06",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "是否把跨操作系统适配视为战略转向？",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K192226",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf19/K192226.pdf",
+          "status": "retrieved",
+          "sha256": "62c94dbf743947bff36dc15daa67d0fcc6f6809555f847a5c67aa70fa7bb215b",
+          "pages": 7,
+          "characters": 14834,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K192226.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/4",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K172607",
+          "date": "2017-10-04",
+          "title": "Philips Health Care 510(k)：Philips EPIQ 5 Diagnostic Ultrasound System, EPIQ 7 Diagnostic Ultrasound System, Affiniti 30 Diagnostic Ultrasound System, Affiniti 50 Diagnostic Ultrasound System, Affiniti 70 Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K172607"
+        },
+        {
+          "id": "K163020",
+          "date": "2016-11-16",
+          "title": "Philips Health Care 510(k)：Xperius Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K163020"
+        },
+        {
+          "id": "K162549",
+          "date": "2016-10-03",
+          "title": "Philips Health Care 510(k)：Lumify Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K162549"
+        }
+      ],
+      "original_gap_days": 301,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-006",
+      "company": "philips",
+      "technology_track": "imaging_mr_ct",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "IQon Spectral CT沿用K163711的探测器和主要组件，摘要将改动描述为适应证文字及小幅修改。",
+      "ai_evidence_locator": "K193454 pp5-7",
+      "ai_primary_record": "K193454",
+      "ai_primary_title": "Philips Medical Systems Nederland B.V. 510(k)：IQon Spectral CT",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K193454",
+      "ai_event_date": "2020-01-24",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准此版本作为已有光谱CT方向的延续。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K193454",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf19/K193454.pdf",
+          "status": "retrieved",
+          "sha256": "f2b4fce957f874be89c73304f36ff8c74870942fadab3f522958a4c1b21892ef",
+          "pages": 8,
+          "characters": 21554,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K193454.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/5",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K182716",
+          "date": "2019-05-29",
+          "title": "Philips Medical Systems Nederland B.V. 510(k)：Brain Perfusion (BP) application",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K182716"
+        }
+      ],
+      "original_gap_days": 179,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-007",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_mr_ct",
+      "origin": "candidate",
+      "ai_label": "Uncertain",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "高",
+      "ai_reason": "SIGNA Artist沿用扫描硬件但新增AIR Recon DL深度学习重建；存在实质算法功能，不能由112天间隔或SE结论判定其战略重要性。缺独立来源的转向与持续性证据。",
+      "ai_evidence_locator": "K202238 pp5-7",
+      "ai_primary_record": "K202238",
+      "ai_primary_title": "Ge Healthcare (Tianjin) Company Limited 510(k)：SIGNA Artist",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K202238",
+      "ai_event_date": "2020-09-04",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "AIR Recon DL在本研究中属于MR产品迭代还是新的技术定位？补同产品推出和持续采用证据。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K202238",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/K202238.pdf",
+          "status": "retrieved",
+          "sha256": "dfd6e93f3331c0c72d542af02626b14c782d6d80c7fb0af61360e2b4e726f4eb",
+          "pages": 7,
+          "characters": 14602,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K202238.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/6",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K192426",
+          "date": "2019-10-01",
+          "title": "Ge Healthcare (Tianjin) Company Limited 510(k)：Signa Voyager, Signa Voyager Quantum",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K192426"
+        }
+      ],
+      "original_gap_days": 112,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-008",
+      "company": "philips",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "MX500/MX550在既有同型号监护仪基础上更新，摘要以K161531为主对照并列出相同生理监测用途；支持已有监护平台演进。",
+      "ai_evidence_locator": "K192137 pp5-12",
+      "ai_primary_record": "K192137",
+      "ai_primary_title": "Philips Medizin Systeme Boeblingen GmbH 510(k)：IntelliVue Patient Monitor MX500, IntelliVue Patient Monitor MX550",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K192137",
+      "ai_event_date": "2020-09-11",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准新增功能是否改变定位，不能只依据297天间隔。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K192137",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf19/K192137.pdf",
+          "status": "retrieved",
+          "sha256": "51f45aae0bb5cc996dca4aa80b435cb477964354e43b48efc1fec260fa129026",
+          "pages": 15,
+          "characters": 35811,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K192137.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/7",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K182979",
+          "date": "2019-11-19",
+          "title": "Philips Medizin Systeme Boeblingen GmbH 510(k)：IntelliVue Patient Monitors MX100, MX400, MX430, MX450, MX500, MX550, IntelliVue Patient Monitors MX700, MX800, IntelliVue Patient Monitors MP5, MP5SC, Multi-Measurement Module X3",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K182979"
+        },
+        {
+          "id": "K181831",
+          "date": "2018-11-15",
+          "title": "Philips Medizin Systeme Boeblingen GmbH 510(k)：IntelliVue Multi-Measurement Module MMX",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K181831"
+        },
+        {
+          "id": "K181314",
+          "date": "2018-09-04",
+          "title": "Philips Medizin Systeme Boeblingen GmbH 510(k)：IntelliVue Patient Monitor MX100, IntelliVue Multi-Measurement Module X3, IntelliVue Microstream Extension",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K181314"
+        }
+      ],
+      "original_gap_days": 297,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-009",
+      "company": "mindray",
+      "technology_track": "imaging_us",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "TE系列新增探头、腹腔镜/胸膜应用和自动测量功能，多个功能已在自家M9等产品获准；倾向平台扩展而非进入新方向。",
+      "ai_evidence_locator": "K203391 pp5-8",
+      "ai_primary_record": "K203391",
+      "ai_primary_title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：TE7/TE5/TE7 Max/TE5 Max/TE9 Diagnostic Ultrasound System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K203391",
+      "ai_event_date": "2021-03-23",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "新增应用范围是否超过常规产品线扩展？",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K203391",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/K203391.pdf",
+          "status": "retrieved",
+          "sha256": "0a30485cfb65588b961e2fa31440614e49d29ef2f44faa9a7ed60c30d9b8816f",
+          "pages": 8,
+          "characters": 18992,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K203391.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/8",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K201990",
+          "date": "2020-11-09",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：DC-30/DC-32/DC-28/DC-26/DC-25/DC-20/DC-30 Exp/DC-32 Exp Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K201990"
+        },
+        {
+          "id": "K201693",
+          "date": "2020-08-21",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：DC-90/DC-90S/DC-90Q/DC-95/DC-95S/DC-88/DC-88S/DC-80A/DC-80AExp/DC-80A Pro/DC-8X/DC-8Q/DC-81/DC-82 Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K201693"
+        },
+        {
+          "id": "K200643",
+          "date": "2020-07-24",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Hepatus 7/Hepatus 6/Hepatus 5/Hepatus 7S/Hepatus 6S/Hepatus 5S/Hepatus 7T/Hepatus 6T/Hepatus 5T/Fibrous 7/Fibrous",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K200643"
+        }
+      ],
+      "original_gap_days": 134,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-010",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "origin": "candidate",
+      "ai_label": "Uncertain",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "高",
+      "ai_reason": "SureTune4是DBS编程规划软件的De Novo分类，packet将它写为510k不准确。新的监管类别本身不能证明企业战略转向；需要比较既有SureTune及神经调控业务。",
+      "ai_evidence_locator": "DEN210003 pp1-5",
+      "ai_primary_record": "DEN210003",
+      "ai_primary_title": "Medtronic Neuromodulation 510(k)：SureTune4 Software",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=DEN210003",
+      "ai_event_date": "2021-08-23",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "AI_VS_BROAD_SOFTWARE_TRACK",
+        "DE_NOVO_MISRECORDED_AS_510K"
+      ],
+      "ai_human_question": "先修正监管路径，再裁决软件新类别是否构成企业转向；补独立商业化及持续性证据。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "DEN210003",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/reviews/DEN210003.pdf",
+          "status": "retrieved",
+          "sha256": "e2b7abed24c52f8515c6da84097dfb721b35e2cc541c4e6c520ec83c780472cd",
+          "pages": 6,
+          "characters": 13920,
+          "source_family": "regulatory",
+          "local_file": "external_sources/DEN210003.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/9",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": 222,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-011",
+      "company": "mindray",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "Accutorr 3/Rosebud延续K132037生命体征监护仪，新增TrueTemp模块及探头；不是首次进入监护领域。",
+      "ai_evidence_locator": "K221113 pp5-10",
+      "ai_primary_record": "K221113",
+      "ai_primary_title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Accutorr 3 Vital Signs Monitor, Rosebud Vital Signs Monitor",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K221113",
+      "ai_event_date": "2022-12-02",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准温度测量模块增加是否属常规迭代。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K221113",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf22/K221113.pdf",
+          "status": "retrieved",
+          "sha256": "ede8aa00d50e0a427f4756fe646a2341211493754c984471a1a0ccdc22f47028",
+          "pages": 10,
+          "characters": 19050,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K221113.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/10",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K211475",
+          "date": "2021-10-05",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Vital Signs Monitors",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K211475"
+        },
+        {
+          "id": "K182821",
+          "date": "2019-03-27",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Accutorr 7/VS-900/VS-900c Vital Signs Monitor",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K182821"
+        },
+        {
+          "id": "K063055",
+          "date": "2006-12-21",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：VS-800 VITAL SIGNS MONITOR",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K063055"
+        }
+      ],
+      "original_gap_days": 143,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-012",
+      "company": "philips",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "MX750/MX850硬件架构与既有测量性能保留，主要接入此前获准的Masimo外部测量模块。",
+      "ai_evidence_locator": "K221348 pp8-10",
+      "ai_primary_record": "K221348",
+      "ai_primary_title": "Philips Medizin Systeme Böblingen GmbH 510(k)：IntelliVue Patient Monitor MX750 (866471);IntelliVue Patient Monitor MX850 (866470)",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K221348",
+      "ai_event_date": "2023-02-03",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "确认模块接入属于既有监护方向延续。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K221348",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf22/K221348.pdf",
+          "status": "retrieved",
+          "sha256": "6626360d592e0eddc629b5ad557bb47480491f7727e2ed0d9aa967ce3ac2b6ea",
+          "pages": 13,
+          "characters": 28479,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K221348.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/11",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K211900",
+          "date": "2022-03-04",
+          "title": "Philips Medizin Systeme Böblingen GmbH 510(k)：Patient Information Center iX",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K211900"
+        }
+      ],
+      "original_gap_days": 336,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-013",
+      "company": "mindray",
+      "technology_track": "imaging_us",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "明确以K210416同系列为对照，主要新增P8-2s探头；已有M9系列延伸。",
+      "ai_evidence_locator": "K230768 pp5-8",
+      "ai_primary_record": "K230768",
+      "ai_primary_title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：M9/M9CV/M9T/M8 Elite/M10/M10CV/Crius M10/M11/M11CV/Crius M11/Operus M11/M9 Premium Diagnostic Ultrasound System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K230768",
+      "ai_event_date": "2023-06-09",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准探头增加的常规迭代归类。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K230768",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf23/K230768.pdf",
+          "status": "retrieved",
+          "sha256": "c85d47a7f99696547ced4545dc78985cf8040eef239a366c331e0ff78f39cc69",
+          "pages": 11,
+          "characters": 14960,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K230768.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/12",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K222928",
+          "date": "2023-02-07",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Resona R9/ Resona R9 Exp/ Resona R9 Pro/ Resona R9S/ Nuewa R9/ Nuewa R9 Exp Diagnostic Ultrasound Sysem, Nuewa R9 Pro/ Nuewa R9S/ Resona 7/ Resona 7CV/Resona 7EXP/Resona 7S/ Resona 70B Diagnostic Ultrasound System, Resona 7PRO/Imagyn 7/ Resona Y/Resona R9W/Resona R7W Nuewa R9W/Nuewa R7W Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K222928"
+        },
+        {
+          "id": "K221496",
+          "date": "2022-09-29",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Consona N6, Consona N6 Pro, Consona N6 Super, Consona AR, Consona N6S, Consona AE, Consona AT, Consona N6 Exp Diagnostic Ultrasound System, Consona N6 Elite, Consona N6T Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K221496"
+        },
+        {
+          "id": "K221300",
+          "date": "2022-09-29",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Consona N9, Consona N9 Pro, Consona N9 Super, Consona Nova, Consona N9S, Consona NI, Consona NT, Nuewa N9, Recho N9, Consona N9 Exp, Consona N9 Elite, Resona N9, Consona N9T, Consona N8, Consona N8 Pro, Consona N8 Super, Consona OR, Consona N8S, Consona OI, Consona OT, Consona N8 Exp, Consona N8 Elite, Consona N8T, Consona N7, Consona N7 P…",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K221300"
+        }
+      ],
+      "original_gap_days": 122,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-014",
+      "company": "philips",
+      "technology_track": "imaging_mr_ct",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "Ingenia Elition R5.7.1 SP4为Special 510(k)修改，适应证未改，沿用既有脉冲序列及线圈。",
+      "ai_evidence_locator": "K232030 pp4-6",
+      "ai_primary_record": "K232030",
+      "ai_primary_title": "Philips Medical Systems Nederland B.V. 510(k)：Ingenia Elition R5.7.1 SP4 MR Systems",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K232030",
+      "ai_event_date": "2023-08-02",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准该软硬件修订不单独计作技术转向。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K232030",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf23/K232030.pdf",
+          "status": "retrieved",
+          "sha256": "c0eb0edaeabc21c237ea27f128630ad28d9479d38b955a3fdcb0bd92b58acfe7",
+          "pages": 8,
+          "characters": 20232,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K232030.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/13",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K230972",
+          "date": "2023-04-28",
+          "title": "Philips Medical Systems Nederland B.V. 510(k)：Ingenia Elition and MR 7700 MR Systems",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K230972"
+        },
+        {
+          "id": "K223458",
+          "date": "2023-04-06",
+          "title": "Philips Medical Systems Nederland B.V. 510(k)：Ingenia, Ingenia CX, Ingenia Elition, Ingenia Ambition, MR 5300 and MR 7700 MR Systems",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K223458"
+        },
+        {
+          "id": "K213583",
+          "date": "2022-05-16",
+          "title": "Philips Medical Systems Nederland B.V. 510(k)：Achieva, Ingenia, Ingenia CX, Ingenia Elition and Ingenia Ambition MR Systems",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K213583"
+        }
+      ],
+      "original_gap_days": 96,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-015",
+      "company": "mindray",
+      "technology_track": "imaging_us",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "TE Air无线超声已存在于K220051；本次新增AutoEF和Android支持并更新iOS，不是首次无线超声进入。",
+      "ai_evidence_locator": "K231685 pp5-6",
+      "ai_primary_record": "K231685",
+      "ai_primary_title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：TE Air Diagnostic Ultrasound System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K231685",
+      "ai_event_date": "2023-10-26",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "AutoEF是否达到转向门槛需按统一定义判断。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K231685",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf23/K231685.pdf",
+          "status": "retrieved",
+          "sha256": "66f32ea8c51155d0686581d2a26fd546d41099553989c2953c9fba654719d421",
+          "pages": 9,
+          "characters": 15483,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K231685.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/14",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K230768",
+          "date": "2023-06-09",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：M9/M9CV/M9T/M8 Elite/M10/M10CV/Crius M10/M11/M11CV/Crius M11/Operus M11/M9 Premium Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K230768"
+        },
+        {
+          "id": "K222928",
+          "date": "2023-02-07",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Resona R9/ Resona R9 Exp/ Resona R9 Pro/ Resona R9S/ Nuewa R9/ Nuewa R9 Exp Diagnostic Ultrasound Sysem, Nuewa R9 Pro/ Nuewa R9S/ Resona 7/ Resona 7CV/Resona 7EXP/Resona 7S/ Resona 70B Diagnostic Ultrasound System, Resona 7PRO/Imagyn 7/ Resona Y/Resona R9W/Resona R7W Nuewa R9W/Nuewa R7W Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K222928"
+        },
+        {
+          "id": "K221496",
+          "date": "2022-09-29",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Consona N6, Consona N6 Pro, Consona N6 Super, Consona AR, Consona N6S, Consona AE, Consona AT, Consona N6 Exp Diagnostic Ultrasound System, Consona N6 Elite, Consona N6T Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K221496"
+        }
+      ],
+      "original_gap_days": 139,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-016",
+      "company": "philips",
+      "technology_track": "medical_ai",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "LumiGuide继承AltaTrack，导丝体内长度由120cm改为160cm并增加配置；设备与3D Hub无显著技术变化，名称变化不能当作新方向。",
+      "ai_evidence_locator": "K233853 pp5-8",
+      "ai_primary_record": "K233853",
+      "ai_primary_title": "Philips Medical Systems Nederland B.V. 510(k)：LumiGuide Wire; LumiGuide Equipment R2.0; LumiGuide 3D Hub",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K233853",
+      "ai_event_date": "2024-03-14",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "AI_VS_BROAD_SOFTWARE_TRACK"
+      ],
+      "ai_human_question": "核准重命名及导丝长度变化的处理。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K233853",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf23/K233853.pdf",
+          "status": "retrieved",
+          "sha256": "8e791e07c3eccda8781bf43ec36ff47f3653a1586b463878e34452c7e1e9bef8",
+          "pages": 8,
+          "characters": 15859,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K233853.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/15",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K223918",
+          "date": "2023-06-08",
+          "title": "Philips Medical Systems Nederland B.V. 510(k)：AltaTrack Equipment R1.2, AltaTrack Guidewire, AltaTrack 3D Hub",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K223918"
+        },
+        {
+          "id": "K180940",
+          "date": "2018-10-24",
+          "title": "Philips Medical Systems Nederland B.V. 510(k)：KODEX EPD System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K180940"
+        }
+      ],
+      "original_gap_days": 280,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-017",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "origin": "candidate",
+      "ai_label": "Uncertain",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "高",
+      "ai_reason": "VitalFlow ECMO套装整合既有泵、氧合器及涂层组件；2024-09-26公司发布新系统并说明此前收购MC3及多年合作。存在商业推进，但新系统、并购归属与企业原有ECMO方向的界限未定。",
+      "ai_evidence_locator": "K240880 pp5-8; MEDTRONIC_VITALFLOW_2024",
+      "ai_primary_record": "K240880",
+      "ai_primary_title": "Medtronic, Inc. 510(k)：VitalFlow Set with Balance Biosurface",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K240880",
+      "ai_event_date": "2024-09-12",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "MC3并购及系统整合应计为战略转向还是既有业务扩展？需同项目后续持续性材料。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K240880",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf24/K240880.pdf",
+          "status": "retrieved",
+          "sha256": "b8769925fd728849d0864c0b06c4e2b4388f020345671b2c686997beba21fbb3",
+          "pages": 10,
+          "characters": 17593,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K240880.pdf"
+        },
+        {
+          "id": "MEDTRONIC_VITALFLOW_2024",
+          "url": "https://news.medtronic.com/Medtronic-launches-VitalFlow-TM-%2C-a-new-Extracorporeal-Membrane-Oxygenation-ECMO-system",
+          "status": "retrieved",
+          "file": "MEDTRONIC_VITALFLOW_2024.html",
+          "sha256": "ba442169ca677310a993c3a5a73168c66c740dfe662b3e3e0122f9ce28ace7d2",
+          "source_family": "company_disclosure",
+          "local_file": "external_sources/MEDTRONIC_VITALFLOW_2024.html"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/16",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": 146,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-018",
+      "company": "philips",
+      "technology_track": "imaging_mr_ct",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "Spectral CT保留K203020主要组件，增加呼吸门控4DCT等功能，且参考既有放疗CT；倾向现有光谱CT平台扩展。",
+      "ai_evidence_locator": "K244008 pp6-16",
+      "ai_primary_record": "K244008",
+      "ai_primary_title": "Philips Medical Systems Technologies , Ltd. 510(k)：Spectral CT",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K244008",
+      "ai_event_date": "2025-05-16",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "新增放疗工作流是否跨越预定转向阈值？",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K244008",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf24/K244008.pdf",
+          "status": "retrieved",
+          "sha256": "75243a8a34e027e63c4b222e27bc460dd258c3efbf0c145862024627f9d53b23",
+          "pages": 16,
+          "characters": 38251,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K244008.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/17",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K240844",
+          "date": "2024-10-18",
+          "title": "Philips Medical Systems Technologies , Ltd. 510(k)：Spectral CT 7500 RT",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K240844"
+        }
+      ],
+      "original_gap_days": 179,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-019",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "VitalFlow Console此次变更为维修人员通过USB升级软件及配套网络安全措施，使用说明延续K230364；不能把整个平台的上市意义归给此次USB更新。",
+      "ai_evidence_locator": "K250199 pp5-7",
+      "ai_primary_record": "K250199",
+      "ai_primary_title": "Medtronic, Inc. 510(k)：VitalFlow Console",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K250199",
+      "ai_event_date": "2025-05-20",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准事件级与平台级判断的分离。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K250199",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf25/K250199.pdf",
+          "status": "retrieved",
+          "sha256": "6090362ee5299bca451b33df45a3a40fdbf9a02f5fe0dd3bd545ca550b3c6329",
+          "pages": 7,
+          "characters": 12423,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K250199.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/18",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": 250,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-020",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "UNiD Spine Analyzer由4.0升至5.0，扩展退变预测模型至L5情形，原有脊柱手术规划用途仍在；有AI功能但并非由此证明新AI战略。",
+      "ai_evidence_locator": "K251629 pp5-9",
+      "ai_primary_record": "K251629",
+      "ai_primary_title": "Medicrea International S.A.S. (Medtronic) 510(k)：UNiD Spine Analyzer",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K251629",
+      "ai_event_date": "2025-08-07",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "AI_VS_BROAD_SOFTWARE_TRACK"
+      ],
+      "ai_human_question": "核准模型扩展阈值及Medicrea并购实体归属。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K251629",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf25/K251629.pdf",
+          "status": "retrieved",
+          "sha256": "63c78a95bdd5edef8ec95a2fabf38dcd83a052e61f7535df52a5b5ccd58b206f",
+          "pages": 9,
+          "characters": 20301,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K251629.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/19",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": 202,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-021",
+      "company": "mindray",
+      "technology_track": "imaging_us",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "Resona 5/6系列以既有Resona 7、M9为参照；库中2017年已有同申请人超声记录。gap=None是左删失，不能证明至少12个月无活动。",
+      "ai_evidence_locator": "K172860 pp5-8",
+      "ai_primary_record": "K172860",
+      "ai_primary_title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Resona 6/Resona 6T/Resona 6EXP/Resona 6Elite Diagnostic Ultrasound System/Resona 6S/Resona 6PRO/Resona 6OB Diagnostic Ultrasound System /Resona 5/Resona 5T/Resona 5EXP/Resona 5Elite Diagnostic Ultrasound System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K172860",
+      "ai_event_date": "2018-01-02",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE"
+      ],
+      "ai_human_question": "确认补历史后重新计算gap，不把窗口首条当首次进入。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K172860",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf17/K172860.pdf",
+          "status": "retrieved",
+          "sha256": "8a120079e541f1f8a53b7853cc90ae65ea6424ef4f7147f6f13b0a9979fcdc3b",
+          "pages": 22,
+          "characters": 47792,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K172860.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/20",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K172970",
+          "date": "2017-10-25",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：M7/M7T/M7 Premium/M7 Expert/M7 Super Diagnostic Ultrasound",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K172970"
+        },
+        {
+          "id": "K171579",
+          "date": "2017-10-18",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：M6/M6T/M6 EXP/M6S/M6 PRO/M5 EXP/M55/M58 Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K171579"
+        },
+        {
+          "id": "K171891",
+          "date": "2017-09-21",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：ZS3 Ultrasound System, z.one pro Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K171891"
+        }
+      ],
+      "original_gap_days": null,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-022",
+      "company": "medtronic",
+      "technology_track": "cardiac_rhythm",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "S615仅增加制造过程中切割互连带所用设备，属于30-Day Notice；2017年已有同申请人的CRT-D补充记录，既非新产品批准也非新赛道进入。",
+      "ai_evidence_locator": "P010031S615 results[0].ao_statement",
+      "ai_primary_record": "P010031S615",
+      "ai_primary_title": "Medtronic Cardiac Rhythm Disease Management PMA 补充 P010031/S615：Amplia MRI CRT-D / Amplia MRI Quad CRT-D / Brava CRT-D / Brava Quad CRT-D / Claria MRI & Quad Quad CRT-D / Compia MRI &",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P010031",
+      "ai_event_date": "2018-01-03",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE",
+        "MANUFACTURING_NOTICE_NOT_NEW_PRODUCT"
+      ],
+      "ai_human_question": "核准将制造工艺通知排除出实质技术转向。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "P010031S615",
+          "url": "https://api.fda.gov/device/pma.json?search=pma_number:P010031+AND+supplement_number:S615&limit=10",
+          "status": "retrieved",
+          "file": "P010031S615.json",
+          "sha256": "c212c8c2ee117746d648b2720ae8ad5250ec83c779cb55bdc9240ddf9680c99e",
+          "source_family": "regulatory",
+          "local_file": "external_sources/P010031S615.json"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/21",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "P010031S614",
+          "date": "2017-12-21",
+          "title": "Medtronic Cardiac Rhythm Disease Management PMA 补充 P010031/S614：Amplia MRI CRT-D / Brava CRT-D / Claria & Compia MRI CRT-D / Protecta CR-d / Protecta XT CRT-D / Viva S CRT-D",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P010031"
+        },
+        {
+          "id": "P010031S613",
+          "date": "2017-12-15",
+          "title": "Medtronic Cardiac Rhythm Disease Management PMA 补充 P010031/S613：Amplia MRI CRT-D, Brava CRT-D, Claria MRI CRT-D, Compia MRI CRT-D, Viva S CRT-D, Viva XT CRT-D",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P010031"
+        },
+        {
+          "id": "P010031S611",
+          "date": "2017-12-14",
+          "title": "Medtronic Cardiac Rhythm Disease Management PMA 补充 P010031/S611：Amplia MRI CRT-D, Amplia MRI Quad CRT-D, Brava CRT-D, Brava Quad CRT-D, Claria MRI CRT-D, Claria MRI Quad CRT-D, Compia",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P010031"
+        }
+      ],
+      "original_gap_days": null,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-023",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_mr_ct",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "ViewPoint 6是以超声报告为主要用途的影像归档软件，本次在既有K162743基础上加入已在Voluson E10获准的模型；LLZ映射为MR/CT不等于开发了新MR/CT设备。",
+      "ai_evidence_locator": "K173456 pp4-6 (visually checked)",
+      "ai_primary_record": "K173456",
+      "ai_primary_title": "Ge Medical Systems Ultrasound and Primary 510(k)：ViewPoint 6",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K173456",
+      "ai_event_date": "2018-01-05",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE",
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "审核LLZ泛影像软件的赛道归属，以及GE业务谱系连续性。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K173456",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf17/K173456.pdf",
+          "status": "retrieved",
+          "sha256": "223d447c5c259ad39504e740f93067d617546642e61ab96b0cc9115a12c7c233",
+          "pages": 6,
+          "characters": 11621,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K173456.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/22",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": null,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-024",
+      "company": "philips",
+      "technology_track": "imaging_mr_ct",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "Illumeo是I4的营销重命名并有小幅可视化改动；摘要明确不改变用途和基本技术。窗口首条不构成新技术进入。",
+      "ai_evidence_locator": "K173588 pp4-8",
+      "ai_primary_record": "K173588",
+      "ai_primary_title": "Philips Medical Systems Technologies , Ltd. 510(k)：Illumeo System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K173588",
+      "ai_event_date": "2018-01-12",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE"
+      ],
+      "ai_human_question": "核准重命名不计转向，并补窗口前历史。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K173588",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf17/K173588.pdf",
+          "status": "retrieved",
+          "sha256": "2b9b85d9a82b0eb5f772467fbbe146980f8beb114579d49947fb2b7833d0bcb1",
+          "pages": 13,
+          "characters": 24183,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K173588.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/23",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": null,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-025",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_us",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "Voluson S8/S10延续S系列平台，主要调整探头；2017年同申请人已有超声记录，gap=None不是无既往活动。",
+      "ai_evidence_locator": "K180374 pp4-6",
+      "ai_primary_record": "K180374",
+      "ai_primary_title": "GE Healthcare 510(k)：Voluson S8/ Voluson S10/ Voluson S10 Expert",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K180374",
+      "ai_event_date": "2018-03-13",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE",
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "核准系列扩展，并按GE影像业务谱系处理实体。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K180374",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf18/K180374.pdf",
+          "status": "retrieved",
+          "sha256": "787f2e8995819770d883bad72cfd6d6521709dca09bb9a52e591248503ed9b80",
+          "pages": 22,
+          "characters": 41674,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K180374.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/24",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K173555",
+          "date": "2017-12-20",
+          "title": "GE Healthcare 510(k)：LOGIQ E10",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K173555"
+        },
+        {
+          "id": "K172342",
+          "date": "2017-09-29",
+          "title": "GE Healthcare 510(k)：Voluson E6, Voluson E8, Voluson E10",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K172342"
+        },
+        {
+          "id": "K170445",
+          "date": "2017-04-11",
+          "title": "GE Healthcare 510(k)：LOGIQ S8",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K170445"
+        }
+      ],
+      "original_gap_days": null,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-026",
+      "company": "philips",
+      "technology_track": "imaging_us",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "EPIQ/Affiniti继承K172607，增加S9-2探头与弹性成像应用；已有同企业超声方向，不能用窗口首条认定新进入。",
+      "ai_evidence_locator": "K181485 pp4-7",
+      "ai_primary_record": "K181485",
+      "ai_primary_title": "Philips Ultrasound, Inc. 510(k)：EPIQ , EPIQ 5, EPIQ 7, Affiniti 30, Affiniti 50 and Affiniti 70 Diagnostic Ultrasound System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K181485",
+      "ai_event_date": "2018-07-27",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE"
+      ],
+      "ai_human_question": "确认探头及弹性成像功能扩展的分类门槛。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K181485",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf18/K181485.pdf",
+          "status": "retrieved",
+          "sha256": "717daae9fe2f386b02b5e0e2dee381b1a36305a723f8a00b201f3389e45ebcf4",
+          "pages": 70,
+          "characters": 142264,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K181485.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/25",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K163120",
+          "date": "2017-01-10",
+          "title": "Philips Ultrasound, Inc. 510(k)：EPIQ 5 Diagnostic Ultrasound System; EPIQ 7 Diagnostic Ultrasound System; Affiniti 50 Diagnostic Ultrasound System; Affiniti 70 Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K163120"
+        },
+        {
+          "id": "K160807",
+          "date": "2016-04-06",
+          "title": "Philips Ultrasound, Inc. 510(k)：EPIQ 5 Diagnostic Ultrasound System, EPIQ 7Diagnostic Ultrasound System, Affiniti 50 Diagnostic Ultrasound System, Affiniti 70 Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K160807"
+        },
+        {
+          "id": "K141369",
+          "date": "2014-07-02",
+          "title": "Philips Ultrasound, Inc. 510(k)：VISIQ DIAGNOSTIC ULTRA SOUND SYSTEM",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K141369"
+        }
+      ],
+      "original_gap_days": null,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-027",
+      "company": "philips",
+      "technology_track": "medical_ai",
+      "origin": "candidate",
+      "ai_label": "Uncertain",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "高",
+      "ai_reason": "KODEX-EPD采用介电心脏标测；2019合作发布与2022新版发布支持同项目延续。但并购引入的心脏标测是否构成medical_ai/SaMD方向改变、改变起点为何，仍需统一裁决。它是优先复核的潜在转向案例。",
+      "ai_evidence_locator": "K180940 pp4-10; PHILIPS_KODEX_2019; PHILIPS_KODEX_2022",
+      "ai_primary_record": "K180940",
+      "ai_primary_title": "Philips Medical Systems Nederland B.V. 510(k)：KODEX EPD System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K180940",
+      "ai_event_date": "2018-10-24",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE",
+        "AI_VS_BROAD_SOFTWARE_TRACK"
+      ],
+      "ai_human_question": "先确定并购业务是否计转向、DQK心脏标测是否属本赛道，再确认改变日期与首次公开确认日期。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K180940",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf18/K180940.pdf",
+          "status": "retrieved",
+          "sha256": "fbf17f7592fed3ed72e2044640c9e91f72e16cce8669e144679331b3d2bd0e5e",
+          "pages": 10,
+          "characters": 17864,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K180940.pdf"
+        },
+        {
+          "id": "PHILIPS_KODEX_2019",
+          "url": "https://www.philips.com/a-w/about/news/archive/standard/news/press/2019/20190509-philips-announces-collaboration-with-medtronic-to-further-advance-the-image-guided-treatment-of-atrial-fibrillation.html",
+          "status": "retrieved",
+          "file": "PHILIPS_KODEX_2019.html",
+          "sha256": "a8401462f8a40f6d357d88fcddb9038cf5e7d1d7884b5465c52e51b2ee1ead61",
+          "source_family": "company_disclosure",
+          "local_file": "external_sources/PHILIPS_KODEX_2019.html"
+        },
+        {
+          "id": "PHILIPS_KODEX_2022",
+          "url": "https://www.usa.philips.com/a-w/about/news/archive/standard/news/press/2022/20220401-philips-showcases-new-innovations-in-the-treatment-of-heart-rhythm-disorders-at-ehra-2022.html",
+          "status": "retrieved",
+          "file": "PHILIPS_KODEX_2022.html",
+          "sha256": "1e5c7650edbeecd177c25cb21b50600c6a7668b62465bc20837635011ff17c73",
+          "source_family": "company_disclosure",
+          "local_file": "external_sources/PHILIPS_KODEX_2022.html"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/26",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": null,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-028",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "CardioInsight由v3.0到v3.5，软件增强、问题修复和安全功能基于2016年K162440；并非窗口首见即新进入。",
+      "ai_evidence_locator": "K181918 pp4-8",
+      "ai_primary_record": "K181918",
+      "ai_primary_title": "Medtronic, Inc. 510(k)：CardioInsight Cardiac Mapping System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K181918",
+      "ai_event_date": "2018-11-08",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE",
+        "AI_VS_BROAD_SOFTWARE_TRACK"
+      ],
+      "ai_human_question": "核准DQK心脏标测的软件赛道口径。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K181918",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf18/K181918.pdf",
+          "status": "retrieved",
+          "sha256": "15239f626f9ff78f7a51b530cb15ff8b384cd7377b72be7c2539db918b64805c",
+          "pages": 8,
+          "characters": 12505,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K181918.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/27",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": null,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-029",
+      "company": "ge_healthcare",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "Unity Network ID已有V8及2015/2017记录，本次是监护数据互联产品延续；gap=None不支持首次进入。",
+      "ai_evidence_locator": "K183116 pp4-6",
+      "ai_primary_record": "K183116",
+      "ai_primary_title": "GE Healthcare 510(k)：Unity Network ID",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K183116",
+      "ai_event_date": "2018-12-06",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE",
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "补历史并核准GE业务谱系，确认更新范围。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K183116",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf18/K183116.pdf",
+          "status": "retrieved",
+          "sha256": "b94cdaf2ae560682768225ecec6b2d9ceba52424ab88580de5cb2e11bffe425f",
+          "pages": 6,
+          "characters": 9829,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K183116.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/28",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K170199",
+          "date": "2017-05-12",
+          "title": "GE Healthcare 510(k)：Unity Network ID",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K170199"
+        },
+        {
+          "id": "K142840",
+          "date": "2015-01-07",
+          "title": "GE Healthcare 510(k)：Unity Network ID",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K142840"
+        }
+      ],
+      "original_gap_days": null,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-030",
+      "company": "mindray",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Uncertain",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "高",
+      "ai_reason": "BeneVision N为新一代监护产品族，比较既有Passport并新增EEG、NMT及多模块能力；既不是首次监护进入，也不能只因同类器械实质等同就断言普通迭代。缺独立定位变化证据。",
+      "ai_evidence_locator": "K182075 embedded 510kSummary pp3-6",
+      "ai_primary_record": "K182075",
+      "ai_primary_title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：BeneVision N Series Patient Monitors (Including BeneVision N12, BeneVision N15, BeneVision N17, BeneVision N19. BeneVision N22, BeneVision N1)",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K182075",
+      "ai_event_date": "2018-12-10",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE"
+      ],
+      "ai_human_question": "新平台与多模块扩展是否属于企业技术定位改变？补上市与后续持续性证据。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K182075",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf18/K182075.pdf",
+          "status": "retrieved",
+          "sha256": "bb6990a5ff6d95c1114298192fc5249df73c1bf880e7464c842778c4cb4aa76f",
+          "pages": 1,
+          "characters": 134,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K182075.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/29",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K171901",
+          "date": "2017-11-15",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：uMEC Series Patient Monitors (including uMEC6, uMEC7, uMEC10, uMEC12, uMEC15, uMEC15S)",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K171901"
+        },
+        {
+          "id": "K170876",
+          "date": "2017-08-23",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Passport Series Patient Monitors(Passport 12m, Passport 17m)",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K170876"
+        },
+        {
+          "id": "K153448",
+          "date": "2016-03-03",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Passport Series Patient Monitors (Including Passport 8, Passport 12)",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K153448"
+        }
+      ],
+      "original_gap_days": null,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-031",
+      "company": "ge_healthcare",
+      "technology_track": "respiratory",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "CARESCAPE呼吸模块此次重点改变D-lite++传感器接头和材料，使用范围保留；CCK本地映射缺失不代表装置不相关。",
+      "ai_evidence_locator": "K183394 pp6-10",
+      "ai_primary_record": "K183394",
+      "ai_primary_title": "GE Healthcare Finland Oy 510(k)：CARESCAPE Respiratory Modules, E-sCO, E-sCOV, E-sCOVX, E-sCAiO",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K183394",
+      "ai_event_date": "2019-05-01",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE",
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "修复映射缺项并核准呼吸监测模块属于respiratory还是patient_monitoring。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K183394",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf18/K183394.pdf",
+          "status": "retrieved",
+          "sha256": "ebe4362d20e4d9e77bd1af870b3d5db97445376496442d31d33ec125256964f2",
+          "pages": 11,
+          "characters": 16922,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K183394.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/30",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K171028",
+          "date": "2017-08-17",
+          "title": "GE Healthcare Finland Oy 510(k)：CARESCAPE Respiratory MOdules, E-sCO, E-sCOV, E-sCOVX, E-sCAiO, E-sCAiOV, E-sCAiOVX and accessories",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K171028"
+        },
+        {
+          "id": "K150245",
+          "date": "2015-07-17",
+          "title": "GE Healthcare Finland Oy 510(k)：CARESCAPE Respiratory Modules, E-sCO, E-sCOV, E-sCOVX, E-sCAiO, E-sCAiOV, E-sCAiOVX",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K150245"
+        }
+      ],
+      "original_gap_days": null,
+      "previous_rubric_label": "Not Assessable (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-032",
+      "company": "ge_healthcare",
+      "technology_track": "respiratory",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "CARESCAPE在K183394基础上增加E-sCAiOE/E-sCAiOVE型号，沿用软件，现有宿主设备下表现相同；904天间隔不足以定义战略变化。",
+      "ai_evidence_locator": "K211171 pp6-13",
+      "ai_primary_record": "K211171",
+      "ai_primary_title": "GE Healthcare Finland Oy 510(k)：CARESCAPE Respiratory Modules E-sCO, E-sCOV, E-sCOVX, E-sCAiO, E-sCAiOV, E-sCAiOVX, E-sCAiOE, E-sCAiOVE and accessories",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K211171",
+      "ai_event_date": "2021-10-21",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "核准新增模块及气体接口属于迭代，另审GE谱系。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K211171",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/K211171.pdf",
+          "status": "retrieved",
+          "sha256": "6d89ea7f7d12ceec7b9411fcc44a72e8fac0b84be67c60ae874f703255630c8a",
+          "pages": 15,
+          "characters": 31284,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K211171.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/31",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K183394",
+          "date": "2019-05-01",
+          "title": "GE Healthcare Finland Oy 510(k)：CARESCAPE Respiratory Modules, E-sCO, E-sCOV, E-sCOVX, E-sCAiO",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K183394"
+        },
+        {
+          "id": "K171028",
+          "date": "2017-08-17",
+          "title": "GE Healthcare Finland Oy 510(k)：CARESCAPE Respiratory MOdules, E-sCO, E-sCOV, E-sCOVX, E-sCAiO, E-sCAiOV, E-sCAiOVX and accessories",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K171028"
+        },
+        {
+          "id": "K150245",
+          "date": "2015-07-17",
+          "title": "GE Healthcare Finland Oy 510(k)：CARESCAPE Respiratory Modules, E-sCO, E-sCOV, E-sCOVX, E-sCAiO, E-sCAiOV, E-sCAiOVX",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K150245"
+        }
+      ],
+      "original_gap_days": 904,
+      "previous_rubric_label": "Not Assessable (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-033",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "origin": "candidate",
+      "ai_label": "Uncertain",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "高",
+      "ai_reason": "Bio-Medicus从原有套管扩展到较长期ECMO/ECLS使用，改变部分材料及耐久要求；确有适用范围变化，但可能受监管再分类影响，缺独立企业转向确认。",
+      "ai_evidence_locator": "K201057 pp4-7",
+      "ai_primary_record": "K201057",
+      "ai_primary_title": "Medtronic, Inc. 510(k)：Bio-Medicus Life Support Catheter and Introducer",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K201057",
+      "ai_event_date": "2022-01-14",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE"
+      ],
+      "ai_human_question": "长期ECMO用途扩展与监管分类变化应如何区分？补同产品商业材料及持续性。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K201057",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/K201057.pdf",
+          "status": "retrieved",
+          "sha256": "e61e8eb70f3f27ddbb06cac753833ccc040562a1619eeefac49bd0174421d945",
+          "pages": 7,
+          "characters": 14627,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K201057.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/32",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": null,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-034",
+      "company": "ge_healthcare",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "B105/B125系列硬件功能延续K201941，加入已获准测量模块、软件和网络安全增强；513天gap不能推导新监护方向。",
+      "ai_evidence_locator": "K213490 pp7-10",
+      "ai_primary_record": "K213490",
+      "ai_primary_title": "Ge Medical Systems Information Technologies, Inc. 510(k)：Monitor B105M, Monitor B125M, Monitor B155M, Monitor B105P, Monitor B125P",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K213490",
+      "ai_event_date": "2022-04-01",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "核准功能增强及GE实体连续性。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K213490",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/K213490.pdf",
+          "status": "retrieved",
+          "sha256": "69e00b4b58ffc004c72bc0cdf2e6f66283346aa7f668213290583252ed13b283",
+          "pages": 17,
+          "characters": 31348,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K213490.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/33",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K201941",
+          "date": "2020-11-04",
+          "title": "Ge Medical Systems Information Technologies, Inc. 510(k)：Monitor B125, Monitor B105",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K201941"
+        },
+        {
+          "id": "K170155",
+          "date": "2017-06-06",
+          "title": "Ge Medical Systems Information Technologies, Inc. 510(k)：EK12 Algorithm",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K170155"
+        },
+        {
+          "id": "K141963",
+          "date": "2015-02-05",
+          "title": "Ge Medical Systems Information Technologies, Inc. 510(k)：12SL ECG ANALYSIS PROGRAM",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K141963"
+        }
+      ],
+      "original_gap_days": 513,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-035",
+      "company": "philips",
+      "technology_track": "imaging_us",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "5000 Compact以Affiniti/CX50为基础，延续成像、信号处理及用途，主要为便携产品形态整合；368天gap只是采样规则。",
+      "ai_evidence_locator": "K222648 pp5-10",
+      "ai_primary_record": "K222648",
+      "ai_primary_title": "Philips Ultrasound, LLC 510(k)：5000 Compact Series Ultrasound Systems (Ultrasound System 5500 G, Ultrasound System 5500 P, Ultrasound System 5500 W, Ultrasound System 5500 CV, Ultrasound System 5300 G, Ultrasound System 5300 P, Ultrasound System 5300 W)",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K222648",
+      "ai_event_date": "2022-09-27",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "便携形态整合在本研究中是否达到战略转向门槛？",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K222648",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf22/K222648.pdf",
+          "status": "retrieved",
+          "sha256": "586931fff1c783e3cf0b71ccdf93bd1bb383536cadbf358fa42ee7cd6bbb8fd4",
+          "pages": 13,
+          "characters": 31169,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K222648.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/34",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": 368,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-036",
+      "company": "philips",
+      "technology_track": "medical_ai",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "KODEX-EPD 1.5.0直接继承K180940，心脏标测适应证未改；应与早期平台引入事件分开，676天gap不使更新变成新方向。",
+      "ai_evidence_locator": "K212493 pp4-11",
+      "ai_primary_record": "K212493",
+      "ai_primary_title": "Philips Medical Systems Nederland, B.V. (Pmsn) 510(k)：KODEX  EPD System 1.5.0",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K212493",
+      "ai_event_date": "2022-10-24",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "AI_VS_BROAD_SOFTWARE_TRACK"
+      ],
+      "ai_human_question": "确认以ES5-027作为平台引入候选，避免重复把新版计作转向。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K212493",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/K212493.pdf",
+          "status": "retrieved",
+          "sha256": "440060f6a30d7d197a7426c614c956243369aeff43b6756a2a35ea9575004c41",
+          "pages": 12,
+          "characters": 23830,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K212493.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/35",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": 676,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-037",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "PillCam增加云端阅片与报告选项，摘要明确该组件不处理或分析获取的图像，基础胶囊和软件沿用K211684；不能据medical_ai字段宣称新增AI。",
+      "ai_evidence_locator": "K230991 pp4-6",
+      "ai_primary_record": "K230991",
+      "ai_primary_title": "Given Imaging Ltd. (Medtronic) 510(k)：PillCam SB 3 capsule endoscopy system, PillCam Software 9.0E",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K230991",
+      "ai_event_date": "2023-06-30",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "AI_VS_BROAD_SOFTWARE_TRACK"
+      ],
+      "ai_human_question": "云端工作流是否单独算技术定位变化？保持与AI功能区分。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K230991",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf23/K230991.pdf",
+          "status": "retrieved",
+          "sha256": "55c126eeb120afc5d0b55f1d243cfd8ce38ab4fbe1b08a773773ddf1ba7511d4",
+          "pages": 6,
+          "characters": 12783,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K230991.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/36",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K211684",
+          "date": "2021-08-27",
+          "title": "Given Imaging Ltd. (Medtronic) 510(k)：PillCam SB 3 capsule endoscopy system, PillCam Software 9.0E",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K211684"
+        }
+      ],
+      "original_gap_days": 672,
+      "previous_rubric_label": "Not Assessable (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-038",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "Bio-Medicus此次明确修改通气连接型号的鲁尔帽材料配方，参照K201057/K201100；826天间隔不是新技术进入。",
+      "ai_evidence_locator": "K240534 pp4-6",
+      "ai_primary_record": "K240534",
+      "ai_primary_title": "Medtronic, Inc. 510(k)：Bio-Medicus Life Support Catheter and Introducer",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K240534",
+      "ai_event_date": "2024-04-19",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准材料配方改动作为常规迭代。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K240534",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf24/K240534.pdf",
+          "status": "retrieved",
+          "sha256": "f925e3625e08fc8f03027ff1c2180dc7245793321d425f6901b2e14c106035f9",
+          "pages": 7,
+          "characters": 16072,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K240534.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/37",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K201057",
+          "date": "2022-01-14",
+          "title": "Medtronic, Inc. 510(k)：Bio-Medicus Life Support Catheter and Introducer",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K201057"
+        }
+      ],
+      "original_gap_days": 826,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-039",
+      "company": "philips",
+      "technology_track": "respiratory",
+      "origin": "candidate",
+      "ai_label": "Uncertain",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "高",
+      "ai_reason": "实际器械为AF531口鼻面罩，源记录能确认型号及日期，但本次摘要链接404，尚不能确定具体改动；不能凭respiratory首次记录或缺资料判为转向或假信号。",
+      "ai_evidence_locator": "K233555 store payload; FDA PDF fetch 404",
+      "ai_primary_record": "K233555",
+      "ai_primary_title": "Philips Respironics 510(k)：AF531 Oro-Nasal EE Leak 1 Face Mask; AF531 Oro-Nasal EE Leak 2 Face Mask",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K233555",
+      "ai_event_date": "2024-07-31",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "LEFT_CENSORED_GAP_NONE",
+        "FDA_SUMMARY_HTTP_404"
+      ],
+      "ai_human_question": "取得K233555摘要或正式产品变更资料，比较既有AF531并补公司归属历史。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K233555",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf23/K233555.pdf",
+          "status": "failed",
+          "error": "404 Client Error: Not Found for url: https://www.accessdata.fda.gov/cdrh_docs/pdf23/K233555.pdf",
+          "source_family": "regulatory"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/38",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": null,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-040",
+      "company": "philips",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "Telemetry Monitor 5500延续MX40院内遥测用途，主要更新无线硬件、报警及端到端加密；503天gap不能证明新的远程监护方向，且用途不包含居家。",
+      "ai_evidence_locator": "K242962 pp6-10",
+      "ai_primary_record": "K242962",
+      "ai_primary_title": "Philips Medizin Systeme Böblingen GmbH 510(k)：Telemetry Monitor 5500 Release 4.0 (867232)",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K242962",
+      "ai_event_date": "2025-05-05",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准院内遥测升级，不混同居家远程监护转向。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K242962",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf24/K242962.pdf",
+          "status": "retrieved",
+          "sha256": "af67d4339082120ac48b227962fc811c54df2c42de60a1c7327c490788417369",
+          "pages": 12,
+          "characters": 26083,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K242962.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/39",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K221348",
+          "date": "2023-02-03",
+          "title": "Philips Medizin Systeme Böblingen GmbH 510(k)：IntelliVue Patient Monitor MX750 (866471);IntelliVue Patient Monitor MX850 (866470)",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K221348"
+        },
+        {
+          "id": "K211900",
+          "date": "2022-03-04",
+          "title": "Philips Medizin Systeme Böblingen GmbH 510(k)：Patient Information Center iX",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K211900"
+        }
+      ],
+      "original_gap_days": 503,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-041",
+      "company": "philips",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "MMX与既有X1/X3提供同范围监测参数，测量实现及工作原理延续；有具体产品延续证据，不仅是routine分层。",
+      "ai_evidence_locator": "K181831 pp5-7",
+      "ai_primary_record": "K181831",
+      "ai_primary_title": "Philips Medizin Systeme Boeblingen GmbH 510(k)：IntelliVue Multi-Measurement Module MMX",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K181831",
+      "ai_event_date": "2018-11-15",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准该模块更新的归类。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K181831",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf18/K181831.pdf",
+          "status": "retrieved",
+          "sha256": "ba6de21a87a53f9eaafa852ffc73f1ddb1a5a70364520bba5e216c406df4d049",
+          "pages": 7,
+          "characters": 16594,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K181831.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/40",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K181314",
+          "date": "2018-09-04",
+          "title": "Philips Medizin Systeme Boeblingen GmbH 510(k)：IntelliVue Patient Monitor MX100, IntelliVue Multi-Measurement Module X3, IntelliVue Microstream Extension",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K181314"
+        },
+        {
+          "id": "K171801",
+          "date": "2017-10-06",
+          "title": "Philips Medizin Systeme Boeblingen GmbH 510(k)：IntelliVue Patient Monitor MX100 and Multi-Measurement Module X3; intelliVue Hemodynamic Extension, Capnography Extension, Microstream Extension;Transpac IV Dual IBP Cable",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K171801"
+        },
+        {
+          "id": "K161531",
+          "date": "2016-07-01",
+          "title": "Philips Medizin Systeme Boeblingen GmbH 510(k)：IntelliVue Patient Monitors MP2, MP5, MP5T, MP5SC, and Multi-Measurement Module X2; IntelliVue Patient Monitors MP20, MP30, MP40, MP50, MP60; IntelliVue Patient Monitors MP70, MP80, MP90;IntelliVue Patient Monitors MX400, MX430, MX450, MX500, MX550, MX600;IntelliVue Patient Monitors MX700, MX800",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K161531"
+        }
+      ],
+      "original_gap_days": 69,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-042",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_mr_ct",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "深度学习重建不是本事件首次出现：摘要明确K183202已有DLIR，本次移植到Revolution EVO及Edison平台；支持既有算法部署扩展。",
+      "ai_evidence_locator": "K193170 pp4-8",
+      "ai_primary_record": "K193170",
+      "ai_primary_title": "Ge Healthcare Japan Corporation 510(k)：Deep Learning Image Reconstruction",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K193170",
+      "ai_event_date": "2019-12-13",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "核准跨机型移植为迭代，不能仅凭Deep Learning名称判转向。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K193170",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf19/K193170.pdf",
+          "status": "retrieved",
+          "sha256": "69372c739ade1e08281bc627c148a2a52ef3ab8f048db0abc73bf9023ade9bf0",
+          "pages": 8,
+          "characters": 15547,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K193170.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/41",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": 57,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-043",
+      "company": "ge_healthcare",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "CARESCAPE B850 V3沿用既有B850基础功能，无新的监测参数类型；倾向平台更新。GE谱系尚需人工统一处理。",
+      "ai_evidence_locator": "K191323 pp7-9",
+      "ai_primary_record": "K191323",
+      "ai_primary_title": "GE Healthcare Finland Oy 510(k)：Carescape B850",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K191323",
+      "ai_event_date": "2020-01-29",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "核准具体改动与GE法律实体/业务谱系处理。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K191323",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf19/K191323.pdf",
+          "status": "retrieved",
+          "sha256": "1ca96dccdaa78373a17c62aae2ea55fa0085787e0070cdf3c3354ef624b44e19",
+          "pages": 13,
+          "characters": 24683,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K191323.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/42",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K191249",
+          "date": "2020-01-24",
+          "title": "GE Healthcare Finland Oy 510(k)：CARESCAPE B450",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K191249"
+        },
+        {
+          "id": "K191149",
+          "date": "2020-01-21",
+          "title": "GE Healthcare Finland Oy 510(k)：CARESCAPE B650",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K191149"
+        },
+        {
+          "id": "K143676",
+          "date": "2015-07-31",
+          "title": "GE Healthcare Finland Oy 510(k)：B40i Patient Monitor",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K143676"
+        }
+      ],
+      "original_gap_days": 5,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-044",
+      "company": "medtronic",
+      "technology_track": "cardiac_rhythm",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "此次Micra AV记录仅更新Galway制造中的灭菌后测试；不能把Micra AV产品整体创新归给该制造通知。",
+      "ai_evidence_locator": "P150033S071 results[0].ao_statement",
+      "ai_primary_record": "P150033S071",
+      "ai_primary_title": "Medtronic, Inc. PMA 补充 P150033/S071：Micra AV Transcatheter Pacemaker System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P150033",
+      "ai_event_date": "2020-04-16",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "MANUFACTURING_NOTICE_NOT_NEW_PRODUCT"
+      ],
+      "ai_human_question": "核准事件级排除，而非评价整个Micra AV平台。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "P150033S071",
+          "url": "https://api.fda.gov/device/pma.json?search=pma_number:P150033+AND+supplement_number:S071&limit=10",
+          "status": "retrieved",
+          "file": "P150033S071.json",
+          "sha256": "a7ebd8996fac989aca7901bea397e4bbf8a7393a014714d1fe9fa20343f32a41",
+          "source_family": "regulatory",
+          "local_file": "external_sources/P150033S071.json"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/43",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "P150033S068",
+          "date": "2020-04-06",
+          "title": "Medtronic, Inc. PMA 补充 P150033/S068：Micra TPS",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P150033"
+        },
+        {
+          "id": "P150033S069",
+          "date": "2020-04-01",
+          "title": "Medtronic, Inc. PMA 补充 P150033/S069：Micra Transcatheter Pacing System and Micra AV TPS",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P150033"
+        },
+        {
+          "id": "P150033S066",
+          "date": "2020-03-06",
+          "title": "Medtronic, Inc. PMA 补充 P150033/S066：Micra TPS",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P150033"
+        }
+      ],
+      "original_gap_days": 1,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-045",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_mr_ct",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "AMX Navigate延续移动X射线的基本技术和用途，未改变供电、电池、驱动和X射线发生子系统；倾向已有产品方向扩展。",
+      "ai_evidence_locator": "K210982 pp4-7",
+      "ai_primary_record": "K210982",
+      "ai_primary_title": "Ge Medical Systems, LLC 510(k)：AMX Navigate",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K210982",
+      "ai_event_date": "2021-04-28",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "新增操作/机械功能是否达到转向门槛，另审GE谱系。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K210982",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/K210982.pdf",
+          "status": "retrieved",
+          "sha256": "14327fac57433c41c6e44e8ee262cfb6195f716a5880a2eb3c38d43e6a4fde25",
+          "pages": 7,
+          "characters": 15854,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K210982.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/44",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K182234",
+          "date": "2018-09-06",
+          "title": "Ge Medical Systems, LLC 510(k)：Optima XR240amx",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K182234"
+        },
+        {
+          "id": "K173602",
+          "date": "2018-01-12",
+          "title": "Ge Medical Systems, LLC 510(k)：Optima XR240amx, AutoGrid",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K173602"
+        },
+        {
+          "id": "K162990",
+          "date": "2016-11-15",
+          "title": "Ge Medical Systems, LLC 510(k)：Optima XR240amx",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K162990"
+        }
+      ],
+      "original_gap_days": 30,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-046",
+      "company": "medtronic",
+      "technology_track": "cardiac_rhythm",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "S096批准在已有CareLink SmartSync管理器上增加CIED软件应用，属于已存在起搏器管理方向；不能由一天gap直接判断重要性。",
+      "ai_evidence_locator": "P150033S096 results[0].ao_statement",
+      "ai_primary_record": "P150033S096",
+      "ai_primary_title": "Medtronic, Inc. PMA 补充 P150033/S096：CareLink SmartSync Micra VR/AV Application",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P150033",
+      "ai_event_date": "2021-05-27",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准软件应用扩展是否仍属原方向。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "P150033S096",
+          "url": "https://api.fda.gov/device/pma.json?search=pma_number:P150033+AND+supplement_number:S096&limit=10",
+          "status": "retrieved",
+          "file": "P150033S096.json",
+          "sha256": "e57e92bd11550f4d297e0dd37b519bc943a2cdf74d4c4d834935f905ee178f14",
+          "source_family": "regulatory",
+          "local_file": "external_sources/P150033S096.json"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/45",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "P150033S105",
+          "date": "2021-05-21",
+          "title": "Medtronic, Inc. PMA 补充 P150033/S105：Micra Transcatheter Pacemaker System, Micra Transcatheter Pacemaker System, Micra AV application software",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P150033"
+        },
+        {
+          "id": "P150033S095",
+          "date": "2021-05-05",
+          "title": "Medtronic, Inc. PMA 补充 P150033/S095：Micra AV TPS and Micra TPS",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P150033"
+        },
+        {
+          "id": "P150033S101",
+          "date": "2021-04-15",
+          "title": "Medtronic, Inc. PMA 补充 P150033/S101：Micra Transcatheter Pacing System (TPS)",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P150033"
+        }
+      ],
+      "original_gap_days": 0,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-047",
+      "company": "mindray",
+      "technology_track": "imaging_us",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "M9系列增加型号、探头和自动测量功能，沿用既有超声平台；同日事件可能是批量申报，不是负例证明，结论依据器械内容。",
+      "ai_evidence_locator": "K210416 pp5-8",
+      "ai_primary_record": "K210416",
+      "ai_primary_title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：M9/M9CV/M9T/M8 Elite/M10/M10CV/Crius M10/M11/M11CV/Crius M11/Operus M11/M9 Premium Diagnostic Ultrasound System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K210416",
+      "ai_event_date": "2021-06-10",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "确认新增应用的战略阈值，排除同日批量记录造成的分层偏差。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K210416",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/K210416.pdf",
+          "status": "retrieved",
+          "sha256": "0f0dd02f628bb228c7839d61d5a111e32da7581f236c275ec79d65e643327169",
+          "pages": 11,
+          "characters": 19917,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K210416.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/46",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K203391",
+          "date": "2021-03-23",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：TE7/TE5/TE7 Max/TE5 Max/TE9 Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K203391"
+        },
+        {
+          "id": "K201990",
+          "date": "2020-11-09",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：DC-30/DC-32/DC-28/DC-26/DC-25/DC-20/DC-30 Exp/DC-32 Exp Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K201990"
+        },
+        {
+          "id": "K201693",
+          "date": "2020-08-21",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：DC-90/DC-90S/DC-90Q/DC-95/DC-95S/DC-88/DC-88S/DC-80A/DC-80AExp/DC-80A Pro/DC-8X/DC-8Q/DC-81/DC-82 Diagnostic Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K201693"
+        }
+      ],
+      "original_gap_days": 0,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-048",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "PillCam硬件和主要软件组件延续既有产品，本次增加远程给药/实施工作流；可能有业务模式意义，但现有资料倾向既有胶囊内镜应用扩展。",
+      "ai_evidence_locator": "K211684 pp4-6",
+      "ai_primary_record": "K211684",
+      "ai_primary_title": "Given Imaging Ltd. (Medtronic) 510(k)：PillCam SB 3 capsule endoscopy system, PillCam Software 9.0E",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K211684",
+      "ai_event_date": "2021-08-27",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "AI_VS_BROAD_SOFTWARE_TRACK"
+      ],
+      "ai_human_question": "远程实施工作流是否计技术转向？不要把其与新AI算法混为一谈。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K211684",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/K211684.pdf",
+          "status": "retrieved",
+          "sha256": "0265e4a1f9268974b7b62b8200739c10f69f9ec0d167a408d094c736dad406d2",
+          "pages": 8,
+          "characters": 17870,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K211684.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/47",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": 4,
+      "previous_rubric_label": "Not Assessable (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-049",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_us",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "Versana Premier沿用K200138及既有影像模式和基础技术，参考自家多种超声设备；支持已有系列更新。",
+      "ai_evidence_locator": "K210438 pp4-7",
+      "ai_primary_record": "K210438",
+      "ai_primary_title": "GE Medical Systems Ultrasound and Primary Care Diagnostics 510(k)：Versana Premier",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K210438",
+      "ai_event_date": "2021-09-10",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "核准功能组合扩展及GE业务谱系。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K210438",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/K210438.pdf",
+          "status": "retrieved",
+          "sha256": "42e22870c0b8c5b9621e4bba02e25821947abae1348cf3a529c24329ce5dfd1e",
+          "pages": 8,
+          "characters": 16551,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K210438.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/48",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K211216",
+          "date": "2021-06-09",
+          "title": "GE Medical Systems Ultrasound and Primary Care Diagnostics 510(k)：Vivid S60N / Vivid S70N",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K211216"
+        },
+        {
+          "id": "K202658",
+          "date": "2021-03-05",
+          "title": "GE Medical Systems Ultrasound and Primary Care Diagnostics 510(k)：Vivid E80/ Vivid E90/ Vivid E95",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K202658"
+        },
+        {
+          "id": "K203114",
+          "date": "2021-01-08",
+          "title": "GE Medical Systems Ultrasound and Primary Care Diagnostics 510(k)：LOGIQ P10, LOGIQ P9, LOGIQ P8",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K203114"
+        }
+      ],
+      "original_gap_days": 14,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-050",
+      "company": "ge_healthcare",
+      "technology_track": "medical_ai",
+      "origin": "candidate",
+      "ai_label": "Uncertain",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "高",
+      "ai_reason": "该AI实际识别气管插管、定位尖端及隆突并量化距离，不能仅因routine分层就判常规。2021发布提供不同来源族的产品证据，但未充分建立相对于既有Critical Care Suite的企业定位改变与持续性。 公司公告另称2020年11月起已分发该技术，因此2021年监管日期并非最早商业公开/使用日期。",
+      "ai_evidence_locator": "K211161 pp5-9; GE_ETT_2021 web retrieval",
+      "ai_primary_record": "K211161",
+      "ai_primary_title": "Ge Medical Systems, LLC 510(k)：Critical Care Suite with Endotracheal Tube Positing AI algorithm",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K211161",
+      "ai_event_date": "2021-10-29",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY",
+        "AI_VS_BROAD_SOFTWARE_TRACK"
+      ],
+      "ai_human_question": "ETT量化新用途是平台迭代还是技术转向？需要前后产品组合及持续商业应用证据。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K211161",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/K211161.pdf",
+          "status": "retrieved",
+          "sha256": "ff73557f70250628c4c754622d52b063f1cd329611287dcbf46fbe8933c07ec2",
+          "pages": 9,
+          "characters": 18469,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K211161.pdf"
+        },
+        {
+          "id": "GE_ETT_2021",
+          "url": "https://www.gehealthcare.com/en/about/newsroom/press-releases/ge-healthcare-x-ray-ai-receives-fda-clearance-to-assess-endotracheal-tube-placement",
+          "status": "failed",
+          "error": "403 Client Error: Forbidden for url: https://www.gehealthcare.com/en/about/newsroom/press-releases/ge-healthcare-x-ray-ai-receives-fda-clearance-to-assess-endotracheal-tube-placement",
+          "source_family": "company_disclosure",
+          "web_tool_status": "full page retrieved via web tool; direct HTTP download 403",
+          "local_note": "external_sources/GE_ETT_2021_NOTE.md"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/49",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": 101,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-051",
+      "company": "ge_healthcare",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "CARESCAPE B650以K191149为对照，更新软件和小幅硬件，基础功能和工作方式延续。",
+      "ai_evidence_locator": "K213181 pp7-9",
+      "ai_primary_record": "K213181",
+      "ai_primary_title": "GE Healthcare Finland Oy 510(k)：CARESCAPE B650, E-musb",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K213181",
+      "ai_event_date": "2022-04-13",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "核准改动范围及GE谱系连续性。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K213181",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/K213181.pdf",
+          "status": "retrieved",
+          "sha256": "ad134f5793836e5c92fe0ae1760aada44a03e03a7b2d2cb2f9ce986948983b39",
+          "pages": 11,
+          "characters": 19086,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K213181.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/50",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K191323",
+          "date": "2020-01-29",
+          "title": "GE Healthcare Finland Oy 510(k)：Carescape B850",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K191323"
+        },
+        {
+          "id": "K191249",
+          "date": "2020-01-24",
+          "title": "GE Healthcare Finland Oy 510(k)：CARESCAPE B450",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K191249"
+        },
+        {
+          "id": "K191149",
+          "date": "2020-01-21",
+          "title": "GE Healthcare Finland Oy 510(k)：CARESCAPE B650",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K191149"
+        }
+      ],
+      "original_gap_days": 1,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-052",
+      "company": "medtronic",
+      "technology_track": "cardiac_rhythm",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "补充记录仅在Polaris电池制造过程中增加阳极密封检查；没有新的ICD技术方向证据。",
+      "ai_evidence_locator": "P980016S822 results[0].ao_statement",
+      "ai_primary_record": "P980016S822",
+      "ai_primary_title": "Medtronic Cardiac Rhythm Disease Management PMA 补充 P980016/S822：Cobalt MRI ICD, Cobalt XT MRI ICD, Crome MRI ICD",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P980016",
+      "ai_event_date": "2022-05-20",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "MANUFACTURING_NOTICE_NOT_NEW_PRODUCT"
+      ],
+      "ai_human_question": "核准制造质检变更不计战略转向。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "P980016S822",
+          "url": "https://api.fda.gov/device/pma.json?search=pma_number:P980016+AND+supplement_number:S822&limit=10",
+          "status": "retrieved",
+          "file": "P980016S822.json",
+          "sha256": "5c076bf46a3854c5d83b212a4ef79a18dedb0159c257414bea99bb0a703277e7",
+          "source_family": "regulatory",
+          "local_file": "external_sources/P980016S822.json"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/51",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "P980016S819",
+          "date": "2022-05-17",
+          "title": "Medtronic Cardiac Rhythm Disease Management PMA 补充 P980016/S819：Cobalt MRI ICD, Cobalt XT MRI ICD, Crome MRI ICD, Evera MRI DF-1 ICD, Evera MRI ICD, Evera S DR/VR ICD, Evera XT DR/VR I",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P980016"
+        },
+        {
+          "id": "P980016S818",
+          "date": "2022-05-16",
+          "title": "Medtronic Cardiac Rhythm Disease Management PMA 补充 P980016/S818：Cobalt MRI ICD, Cobalt XT MRI ICD, Crome MRI ICD, Evera MRI DF-1 ICD, Evera MRI ICD, Evera S DR/VR ICD, Evera XT DR/VR I",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P980016"
+        },
+        {
+          "id": "P980016S815",
+          "date": "2022-05-03",
+          "title": "Medtronic Cardiac Rhythm Disease Management PMA 补充 P980016/S815：Cobalt MRI ICD, Cobalt XT MRI ICD, Crome MRI ICD",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P980016"
+        }
+      ],
+      "original_gap_days": 0,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-053",
+      "company": "medtronic",
+      "technology_track": "cardiac_rhythm",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "S787仅新增电容器生产线，属于制造流程通知；并非Cobalt/CRT-D平台的首次创新事件。",
+      "ai_evidence_locator": "P010031S787 results[0].ao_statement",
+      "ai_primary_record": "P010031S787",
+      "ai_primary_title": "Medtronic Cardiac Rhythm Disease Management PMA 补充 P010031/S787：Amplia MRI CRT-D, Amplia MRI Quad CRT-D, Brava CRT-D, Brava Quad CRT-D, Claria MRI CRT-D, Claria MRI Quad CRT-D, Cobalt",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P010031",
+      "ai_event_date": "2022-05-26",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "MANUFACTURING_NOTICE_NOT_NEW_PRODUCT"
+      ],
+      "ai_human_question": "核准生产线增加的排除。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "P010031S787",
+          "url": "https://api.fda.gov/device/pma.json?search=pma_number:P010031+AND+supplement_number:S787&limit=10",
+          "status": "retrieved",
+          "file": "P010031S787.json",
+          "sha256": "b37f98cc97188a39c7d5243259ff8649b52d42fba7d20c2223a586c8c0955f9b",
+          "source_family": "regulatory",
+          "local_file": "external_sources/P010031S787.json"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/52",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "P010031S788",
+          "date": "2022-05-25",
+          "title": "Medtronic Cardiac Rhythm Disease Management PMA 补充 P010031/S788：Cobalt MRI CRT-D, Cobalt XT MRI CRT-D, Crome MRI CRT-D",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P010031"
+        },
+        {
+          "id": "P010031S789",
+          "date": "2022-05-20",
+          "title": "Medtronic Cardiac Rhythm Disease Management PMA 补充 P010031/S789：Cobalt MRI CRT-D, Cobalt XT MRI CRT-D, Crome MRI CRT-D",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P010031"
+        },
+        {
+          "id": "P010031S786",
+          "date": "2022-05-17",
+          "title": "Medtronic Cardiac Rhythm Disease Management PMA 补充 P010031/S786：Amplia MRI CRT-D, Amplia MRI Quad CRT-D, Brava CRT-D, Brava Quad CRT-D, Claria MRI CRT-D, Claria MRI Quad CRT-D, Cobalt",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P010031"
+        }
+      ],
+      "original_gap_days": 1,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-054",
+      "company": "philips",
+      "technology_track": "imaging_mr_ct",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "MR5300/MR7700 R11是Special 510(k)平台修订，沿用已有MR平台及获准序列/线圈；支持版本迭代。",
+      "ai_evidence_locator": "K223442 pp4-7",
+      "ai_primary_record": "K223442",
+      "ai_primary_title": "Philips Medical Systems Nederlands B.V. 510(k)：MR 5300 and MR 7700 R11 MR Systems",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K223442",
+      "ai_event_date": "2022-12-23",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准硬软件组合修订是否仍在既有方向。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K223442",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf22/K223442.pdf",
+          "status": "retrieved",
+          "sha256": "054de0e40daad8296877dc5f8879728dec56f7ae39bbb89adbe1f6a9623aa639",
+          "pages": 10,
+          "characters": 19758,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K223442.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/53",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K153324",
+          "date": "2016-03-22",
+          "title": "Philips Medical Systems Nederlands B.V. 510(k)：Ingenia 1.5T and Ingenia 1.5T S R5.2",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K153324"
+        },
+        {
+          "id": "K143128",
+          "date": "2015-03-20",
+          "title": "Philips Medical Systems Nederlands B.V. 510(k)：mDIXON XD",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K143128"
+        }
+      ],
+      "original_gap_days": 1,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-055",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_us",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "Vivid S60N/S70N直接继承K220619，保持基本成像技术，结合既有参考设备；倾向既有心脏超声产品扩展。",
+      "ai_evidence_locator": "K223832 pp4-7",
+      "ai_primary_record": "K223832",
+      "ai_primary_title": "Ge Medical System Ultrasound and Primary Care Diagnostics 510(k)：Vivid S60N, Vivid S70N",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K223832",
+      "ai_event_date": "2023-02-16",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "核准新增探头/应用范围及GE谱系。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K223832",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf22/K223832.pdf",
+          "status": "retrieved",
+          "sha256": "70a7f4db1f1ebba5c1239e083c5eb59f85c2528b46a9be87cb9a718fbc103882",
+          "pages": 7,
+          "characters": 15258,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K223832.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/54",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": 1,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-056",
+      "company": "philips",
+      "technology_track": "patient_monitoring",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "IntelliVue X3/MX100硬件和测量性能延续，新增报警音、权限及单点登录等功能；属于明确的监护软件更新。",
+      "ai_evidence_locator": "K230604 pp8-9",
+      "ai_primary_record": "K230604",
+      "ai_primary_title": "Philips Medizin Systeme Boeblingen GmbH 510(k)：IntelliVue Patient Monitor MX100 (867033), IntelliVue Multi-Measurement Module X3 (867030)",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K230604",
+      "ai_event_date": "2023-11-22",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准报警与权限管理更新归类。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K230604",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf23/K230604.pdf",
+          "status": "retrieved",
+          "sha256": "20bc6b512f5cf9e177eb8bbdba3932ba82a4b35165e52b2a20f7f2ee10e86df7",
+          "pages": 11,
+          "characters": 17099,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K230604.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/55",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K223574",
+          "date": "2023-08-22",
+          "title": "Philips Medizin Systeme Boeblingen GmbH 510(k)：IntelliVue Patient Monitor MX400 (866060), IntelliVue Patient Monitor MX450 (866062), IntelliVue Patient Monitor MX500 (866064), IntelliVue Patient Monitor MX550 (866066)",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K223574"
+        },
+        {
+          "id": "K210906",
+          "date": "2021-10-07",
+          "title": "Philips Medizin Systeme Boeblingen GmbH 510(k)：IntelliVue Patient Monitor MX750, IntelliVue Patient Monitor MX850, IntelliVue 4-Slot module rack FMX-4",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K210906"
+        },
+        {
+          "id": "K192137",
+          "date": "2020-09-11",
+          "title": "Philips Medizin Systeme Boeblingen GmbH 510(k)：IntelliVue Patient Monitor MX500, IntelliVue Patient Monitor MX550",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K192137"
+        }
+      ],
+      "original_gap_days": 92,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-057",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "虽然product_code为空，ao_statement明确仅将收货与检验活动从Rice Creek转至Memphis；可判断本次是生产运营变化，无需因缺映射一律无法评估。",
+      "ai_evidence_locator": "P980035S782 results[0].ao_statement",
+      "ai_primary_record": "P980035S782",
+      "ai_primary_title": "Medtronic, Inc. PMA 补充 P980035/S782：SWCOMBO / Application Software, SW030 / Application Software",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P980035",
+      "ai_event_date": "2024-06-05",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "AI_VS_BROAD_SOFTWARE_TRACK",
+        "LOCAL_PRODUCT_CODE_MAPPING_MISSING",
+        "MANUFACTURING_NOTICE_NOT_NEW_PRODUCT"
+      ],
+      "ai_human_question": "另核medical_ai映射，但该通知本身不应视为技术转向。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "P980035S782",
+          "url": "https://api.fda.gov/device/pma.json?search=pma_number:P980035+AND+supplement_number:S782&limit=10",
+          "status": "retrieved",
+          "file": "P980035S782.json",
+          "sha256": "5fc413754ab22ddd4201024de8f2d9885d2a6548338337234497194786f23106",
+          "source_family": "regulatory",
+          "local_file": "external_sources/P980035S782.json"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/56",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [],
+      "original_gap_days": 26,
+      "previous_rubric_label": "Not Assessable (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "ES5-058",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "Affera Integrated Mapping System以K241828为直接对照，沿用用途及电磁/阻抗定位机制；本次记录倾向既有系统更新。",
+      "ai_evidence_locator": "K243892 pp5-7",
+      "ai_primary_record": "K243892",
+      "ai_primary_title": "Medtronic, Inc. 510(k)：Affera Integrated Mapping System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K243892",
+      "ai_event_date": "2025-01-17",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "AI_VS_BROAD_SOFTWARE_TRACK"
+      ],
+      "ai_human_question": "确认新增功能的重要性及Affera并购归属。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K243892",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf24/K243892.pdf",
+          "status": "retrieved",
+          "sha256": "478b3679082a238ba9b9f681ca676313a4e83486b5b750f0e29a2ab40af40033",
+          "pages": 8,
+          "characters": 16557,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K243892.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/57",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K243435",
+          "date": "2024-12-05",
+          "title": "Medtronic, Inc. 510(k)：Magnetic Localization Patch Kit (AFR-00021)",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K243435"
+        },
+        {
+          "id": "K241828",
+          "date": "2024-11-01",
+          "title": "Medtronic, Inc. 510(k)：Affera Integrated Mapping System; Impedance Localization Patch Kit",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K241828"
+        },
+        {
+          "id": "K233943",
+          "date": "2024-03-08",
+          "title": "Medtronic, Inc. 510(k)：Affera Mapping System (AFR-00003); Location Reference Patch Kit (AFR-00007); System Cart (AFR-00013)",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K233943"
+        }
+      ],
+      "original_gap_days": 43,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-059",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_mr_ct",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "CardIQ Suite沿用K233731，新增非增强心脏分割并提高冠脉追踪分辨率；属于现有心脏CT软件算法扩展，AI特征本身不等于新方向。",
+      "ai_evidence_locator": "K243672 pp9-14",
+      "ai_primary_record": "K243672",
+      "ai_primary_title": "GE Medical Systems SCS 510(k)：CardIQ Suite",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K243672",
+      "ai_event_date": "2025-06-18",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [
+        "GE_LINEAGE_REQUIRES_HUMAN_POLICY"
+      ],
+      "ai_human_question": "核准算法范围扩展阈值及GE谱系。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K243672",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf24/K243672.pdf",
+          "status": "retrieved",
+          "sha256": "e18413a14959011b96ac453d8c6f330431bc17819e78a3e3201034928401bf2b",
+          "pages": 15,
+          "characters": 25751,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K243672.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/58",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K233731",
+          "date": "2024-08-01",
+          "title": "GE Medical Systems SCS 510(k)：CardIQ Suite",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K233731"
+        },
+        {
+          "id": "K223424",
+          "date": "2023-07-13",
+          "title": "GE Medical Systems SCS 510(k)：Spine Auto Views",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K223424"
+        },
+        {
+          "id": "K211180",
+          "date": "2022-05-02",
+          "title": "GE Medical Systems SCS 510(k)：Liver Suite",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K211180"
+        }
+      ],
+      "original_gap_days": 6,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "ES5-060",
+      "company": "mindray",
+      "technology_track": "imaging_us",
+      "origin": "candidate",
+      "ai_label": "Routine Iteration",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "Consona N5/N3系列主要复用N9及Resona/MX6已获准用途、探头和附件；新增打印机固定架等配置，支持产品线扩展。近期事件不能用于声称长期持续转向。",
+      "ai_evidence_locator": "K251853 pp6-10",
+      "ai_primary_record": "K251853",
+      "ai_primary_title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Consona N5, Consona N5 Pro, Consona N5 Super, Consona N5 Exp, Consona ER, Consona N5S, Consona EI, Consona EF, Consona N5 Elite, Consona N5 Ultra, Consona N3, Consona N3 Exp Diagnostic Ultrasound System",
+      "ai_primary_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K251853",
+      "ai_event_date": "2025-11-07",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该具体监管事件的技术转向/迭代含义，而非整个产品平台的创新程度",
+      "ai_flags": [],
+      "ai_human_question": "核准系列扩展；若改判转向，必须另定义后续观察窗口。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "K251853",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf25/K251853.pdf",
+          "status": "retrieved",
+          "sha256": "a3a4f95af78b8faaa0bad79d277fffe198cc5afd4c3e7807d594e9ed920d5b74",
+          "pages": 12,
+          "characters": 26805,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K251853.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/59",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_prior_same_applicant_code": [
+        {
+          "id": "K251820",
+          "date": "2025-09-12",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：ViewMateTM Ultrasound System",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K251820"
+        },
+        {
+          "id": "K251250",
+          "date": "2025-09-05",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：ViewMate Multi Ultrasound System (VMM-ICE-01); ViewMate Multi Ultrasound System (VMM-ICE-02)",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K251250"
+        },
+        {
+          "id": "K251192",
+          "date": "2025-08-22",
+          "title": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. 510(k)：Diagnostic Ultrasound System (MX7); Diagnostic Ultrasound System (MX7T); Diagnostic Ultrasound System (Vaus7); Diagnostic Ultrasound System (Zeus); Diagnostic Ultrasound System (ME7); Diagnostic Ultrasound System (Anesus ME7); Diagnostic Ultrasound System (Anesus ME7T); Diagnostic Ultrasound System (MX7P); Diagnostic Ultrasound System (MX7…",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K251192"
+        }
+      ],
+      "original_gap_days": 56,
+      "previous_rubric_label": "Routine Iteration (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "LT-01",
+      "company": "ge_healthcare",
+      "technology_track": "patient_monitoring",
+      "origin": "small_sample",
+      "ai_label": "Uncertain",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "高",
+      "ai_reason": "试验研究连续无创血压与未来AMS工程用途，候选监管结果是B105/B125/B155多参数监护仪。记录未给出具体试验设备型号，无法证明或排除同一项目；SpO2论文不能补齐此关联。",
+      "ai_evidence_locator": "NCT04876664 protocolSection; K213490 pp7-10",
+      "ai_primary_record": "NCT04876664",
+      "ai_primary_title": "Evaluation of Continuous Non Invasive Blood Pressure With Adult Volunteers",
+      "ai_primary_url": "https://clinicaltrials.gov/study/NCT04876664",
+      "ai_event_date": "2021-05-06",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该packet作为技术转向证据的有效性；错配不等于企业无转向",
+      "ai_flags": [
+        "SYNTHETIC_CLEARANCE_ID_RESOLVED_IN_CURRENT_STORE",
+        "CURRENT_TRIAL_VERSION_NOT_HISTORICAL_REPLAY"
+      ],
+      "ai_human_question": "索取试验设备型号、申办方项目编号或FDA摘要中的明确交叉引用。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "NCT04876664",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT04876664",
+          "status": "retrieved",
+          "file": "NCT04876664.json",
+          "sha256": "9dc1aab5069bdb0e0bab7d6e40c3e8d7e56b1033c330b95f5ef0f038544508d3",
+          "source_family": "trial_registry",
+          "local_file": "external_sources/NCT04876664.json"
+        },
+        {
+          "id": "K213490",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf21/K213490.pdf",
+          "status": "retrieved",
+          "sha256": "69e00b4b58ffc004c72bc0cdf2e6f66283346aa7f668213290583252ed13b283",
+          "pages": 17,
+          "characters": 31348,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K213490.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/60",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_clearance_match_count": 1,
+      "ai_resolved_clearance_records": [
+        {
+          "id": "K213490",
+          "event_id": "c57e50686c10fafa46237972c4e3a229",
+          "title": "Ge Medical Systems Information Technologies, Inc. 510(k)：Monitor B105M, Monitor B125M, Monitor B155M, Monitor B105P, Monitor B125P",
+          "date": "2022-04-01",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K213490",
+          "product_code": "MHX"
+        }
+      ],
+      "ai_trial_to_clearance_calendar_days": 330,
+      "original_lead_days": 300,
+      "ai_declared_lag_days": 30,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": false
+    },
+    {
+      "packet_id": "LT-02",
+      "company": "medtronic",
+      "technology_track": "imaging_mr_ct",
+      "origin": "small_sample",
+      "ai_label": "False Signal / No Confirmed Shift",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "试验是superDimension肺部活检导航，监管结果为Visualase热疗系统；不是同一器械项目。试验确实器械相关，旧规则因关键词未命中而给出的理由不成立。",
+      "ai_evidence_locator": "NCT03585959 protocolSection; K181859 pp3-6",
+      "ai_primary_record": "NCT03585959",
+      "ai_primary_title": "superDimension™ Navigation System Version 7.2 With Fluoroscopic Navigation Technology",
+      "ai_primary_url": "https://clinicaltrials.gov/study/NCT03585959",
+      "ai_event_date": "2018-07-13",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该packet作为技术转向证据的有效性；错配不等于企业无转向",
+      "ai_flags": [
+        "SYNTHETIC_CLEARANCE_ID_RESOLVED_IN_CURRENT_STORE",
+        "CURRENT_TRIAL_VERSION_NOT_HISTORICAL_REPLAY",
+        "UNSUPPORTED_SAME_PROGRAM_INFERENCE"
+      ],
+      "ai_human_question": "核准排除的是该配对支持技术转向的主张，不是否认试验真实或设备相关。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "NCT03585959",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT03585959",
+          "status": "retrieved",
+          "file": "NCT03585959.json",
+          "sha256": "d2dcda3fe5ff7ebe421d868215af9c635e576463465a2e1edd68fa11bdd460c1",
+          "source_family": "trial_registry",
+          "local_file": "external_sources/NCT03585959.json"
+        },
+        {
+          "id": "K181859",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf18/K181859.pdf",
+          "status": "retrieved",
+          "sha256": "4ee9dfe304bab4936c27e13e0481b708c55027df2569acce3325219da0904dc9",
+          "pages": 6,
+          "characters": 12647,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K181859.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/61",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_clearance_match_count": 1,
+      "ai_resolved_clearance_records": [
+        {
+          "id": "K181859",
+          "event_id": "0803232eada9059c98bdc1c5ae074e05",
+          "title": "Medtronic Navigation, Inc. 510(k)：Visualase Thermal Therapy System",
+          "date": "2019-03-06",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K181859",
+          "product_code": "LLZ"
+        }
+      ],
+      "ai_trial_to_clearance_calendar_days": 236,
+      "original_lead_days": 206,
+      "ai_declared_lag_days": 30,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "LT-03",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "origin": "small_sample",
+      "ai_label": "False Signal / No Confirmed Shift",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "试验使用Capnostream/PM1000N-RR/Vital Sync进行病房呼吸监测，监管结果为Puritan Bennett 980呼吸机；监测与机械通气被宽赛道归到一起，未建立同项目关联。",
+      "ai_evidence_locator": "NCT03571646 protocolSection; K193056 pp3-6",
+      "ai_primary_record": "NCT03571646",
+      "ai_primary_title": "LIFEGUARD Study - Continuous Respiratory Monitoring on the General Ward",
+      "ai_primary_url": "https://clinicaltrials.gov/study/NCT03571646",
+      "ai_event_date": "2018-06-27",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该packet作为技术转向证据的有效性；错配不等于企业无转向",
+      "ai_flags": [
+        "SYNTHETIC_CLEARANCE_ID_RESOLVED_IN_CURRENT_STORE",
+        "CURRENT_TRIAL_VERSION_NOT_HISTORICAL_REPLAY",
+        "UNSUPPORTED_SAME_PROGRAM_INFERENCE"
+      ],
+      "ai_human_question": "确认不能用同公司同赛道的先后顺序证明该项目转向。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "NCT03571646",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT03571646",
+          "status": "retrieved",
+          "file": "NCT03571646.json",
+          "sha256": "e6c6789a9c77f88da199a407fd8cf257279efd0d8dbc12e29883c31d1cce51f7",
+          "source_family": "trial_registry",
+          "local_file": "external_sources/NCT03571646.json"
+        },
+        {
+          "id": "K193056",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf19/K193056.pdf",
+          "status": "retrieved",
+          "sha256": "5b0cc3156783d4c8d2f3782f9cade7f697e0b821c12fa1013f2debfb0af775a6",
+          "pages": 6,
+          "characters": 13149,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K193056.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/62",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_clearance_match_count": 1,
+      "ai_resolved_clearance_records": [
+        {
+          "id": "K193056",
+          "event_id": "056396f0c52cf9d2b22965e10f632a57",
+          "title": "Covidien, LLC 510(k)：Puritan Bennett 980 Series Ventilator System",
+          "date": "2020-11-20",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K193056",
+          "product_code": "CBK"
+        }
+      ],
+      "ai_trial_to_clearance_calendar_days": 877,
+      "original_lead_days": 847,
+      "ai_declared_lag_days": 30,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "LT-04",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "origin": "small_sample",
+      "ai_label": "False Signal / No Confirmed Shift",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "试验研究BIS脑电麻醉深度监测，监管结果为Bio-Medicus ECMO套管；仅麻醉关键词与宽呼吸赛道相连，器械及机制不同。",
+      "ai_evidence_locator": "NCT04810481 protocolSection; K201057 pp4-6",
+      "ai_primary_record": "NCT04810481",
+      "ai_primary_title": "Bispectral Index and End-Tidal Anesthetic Gas Concentration in Pediatric Patients",
+      "ai_primary_url": "https://clinicaltrials.gov/study/NCT04810481",
+      "ai_event_date": "2021-03-23",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该packet作为技术转向证据的有效性；错配不等于企业无转向",
+      "ai_flags": [
+        "SYNTHETIC_CLEARANCE_ID_RESOLVED_IN_CURRENT_STORE",
+        "CURRENT_TRIAL_VERSION_NOT_HISTORICAL_REPLAY",
+        "UNSUPPORTED_SAME_PROGRAM_INFERENCE"
+      ],
+      "ai_human_question": "核准该跨项目配对不可作为技术转向证据。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "NCT04810481",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT04810481",
+          "status": "retrieved",
+          "file": "NCT04810481.json",
+          "sha256": "df98c29ed78f06159a1dc473b95c372059feb387fa7c6dec935c0450c4a935d1",
+          "source_family": "trial_registry",
+          "local_file": "external_sources/NCT04810481.json"
+        },
+        {
+          "id": "K201057",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/K201057.pdf",
+          "status": "retrieved",
+          "sha256": "e61e8eb70f3f27ddbb06cac753833ccc040562a1619eeefac49bd0174421d945",
+          "pages": 7,
+          "characters": 14627,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K201057.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/63",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_clearance_match_count": 1,
+      "ai_resolved_clearance_records": [
+        {
+          "id": "K201057",
+          "event_id": "a68fa7e4ccb048b3e24fe5c1c4641083",
+          "title": "Medtronic, Inc. 510(k)：Bio-Medicus Life Support Catheter and Introducer",
+          "date": "2022-01-14",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K201057",
+          "product_code": "QHW"
+        }
+      ],
+      "ai_trial_to_clearance_calendar_days": 297,
+      "original_lead_days": 267,
+      "ai_declared_lag_days": 30,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "LT-05",
+      "company": "medtronic",
+      "technology_track": "vascular_access",
+      "origin": "small_sample",
+      "ai_label": "False Signal / No Confirmed Shift",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "Ellipsys试验明确为已上市AV瘘建立系统的上市后监测，而监管结果是Bio-Medicus生命支持套管；既非同产品，也不是该产品上市前预警。1998导管引入器标题不补足关联。",
+      "ai_evidence_locator": "NCT04484220 protocolSection; K201100 pp3-6",
+      "ai_primary_record": "NCT04484220",
+      "ai_primary_title": "Ellipsys Vascular Access System Post Market Surveillance (PS) Study",
+      "ai_primary_url": "https://clinicaltrials.gov/study/NCT04484220",
+      "ai_event_date": "2020-07-23",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该packet作为技术转向证据的有效性；错配不等于企业无转向",
+      "ai_flags": [
+        "SYNTHETIC_CLEARANCE_ID_RESOLVED_IN_CURRENT_STORE",
+        "CURRENT_TRIAL_VERSION_NOT_HISTORICAL_REPLAY",
+        "UNSUPPORTED_SAME_PROGRAM_INFERENCE"
+      ],
+      "ai_human_question": "核准排除该配对；不要把上市后试验日期当首次研发信号。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "NCT04484220",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT04484220",
+          "status": "retrieved",
+          "file": "NCT04484220.json",
+          "sha256": "b9e45c707e593adb7125596b744a58cf9696c2f77555d30ba8bef307038f881c",
+          "source_family": "trial_registry",
+          "local_file": "external_sources/NCT04484220.json"
+        },
+        {
+          "id": "K201100",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf20/K201100.pdf",
+          "status": "retrieved",
+          "sha256": "5878e0fa3d6a96db4a4a68f7e6cd15598d22595e71c0c4791a5d0a30e70ddd05",
+          "pages": 6,
+          "characters": 11212,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K201100.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/64",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_clearance_match_count": 1,
+      "ai_resolved_clearance_records": [
+        {
+          "id": "K201100",
+          "event_id": "9ce63eccefc425e114d07b855fbeee89",
+          "title": "Medtronic, Inc. 510(k)：Bio-Medicus Life Support Catheter and Introducer",
+          "date": "2021-07-15",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K201100",
+          "product_code": "DWF"
+        }
+      ],
+      "ai_trial_to_clearance_calendar_days": 357,
+      "original_lead_days": 327,
+      "ai_declared_lag_days": 30,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "LT-06",
+      "company": "philips",
+      "technology_track": "imaging_us",
+      "origin": "small_sample",
+      "ai_label": "False Signal / No Confirmed Shift",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "中",
+      "ai_reason": "试验为BabySize3D三维胎儿自动平面提取和测量，监管结果为Lumify增加iOS与电源模块；未见BabySize3D关联，现有摘要指向不同用途/改动。",
+      "ai_evidence_locator": "NCT03812471 protocolSection; K192226 pp4-6",
+      "ai_primary_record": "NCT03812471",
+      "ai_primary_title": "Optimization of Fetal Biometry With 3D Ultrasound and Image Recognition",
+      "ai_primary_url": "https://clinicaltrials.gov/study/NCT03812471",
+      "ai_event_date": "2019-01-23",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该packet作为技术转向证据的有效性；错配不等于企业无转向",
+      "ai_flags": [
+        "SYNTHETIC_CLEARANCE_ID_RESOLVED_IN_CURRENT_STORE",
+        "CURRENT_TRIAL_VERSION_NOT_HISTORICAL_REPLAY",
+        "UNSUPPORTED_SAME_PROGRAM_INFERENCE"
+      ],
+      "ai_human_question": "如主张同项目，提供BabySize3D与本次Lumify版本的明确技术交叉引用。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "NCT03812471",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT03812471",
+          "status": "retrieved",
+          "file": "NCT03812471.json",
+          "sha256": "6b207e9913ef87b5c99b47155d17e9ce0f004163dc7d2f37917ce9d186868694",
+          "source_family": "trial_registry",
+          "local_file": "external_sources/NCT03812471.json"
+        },
+        {
+          "id": "K192226",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf19/K192226.pdf",
+          "status": "retrieved",
+          "sha256": "62c94dbf743947bff36dc15daa67d0fcc6f6809555f847a5c67aa70fa7bb215b",
+          "pages": 7,
+          "characters": 14834,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K192226.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/65",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_clearance_match_count": 1,
+      "ai_resolved_clearance_records": [
+        {
+          "id": "K192226",
+          "event_id": "da4de4a126f0a3de67190d751f930d47",
+          "title": "Philips Health Care 510(k)：Lumify Diagnostic Ultrasound System",
+          "date": "2019-09-06",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K192226",
+          "product_code": "IYN"
+        }
+      ],
+      "ai_trial_to_clearance_calendar_days": 226,
+      "original_lead_days": 196,
+      "ai_declared_lag_days": 30,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "LT-07",
+      "company": "philips",
+      "technology_track": "respiratory",
+      "origin": "small_sample",
+      "ai_label": "False Signal / No Confirmed Shift",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "DreamKit用于睡眠呼吸信号验证，监管结果是AF531面罩；第三来源是猪模型低成本呼吸机研究。三者不是同产品项目，论文仅提前76天不构成独立确认。",
+      "ai_evidence_locator": "NCT04926077 protocolSection; K233555 store payload; PLOS_LT07",
+      "ai_primary_record": "NCT04926077",
+      "ai_primary_title": "DreamKit Respiratory Effort Signal Validation",
+      "ai_primary_url": "https://clinicaltrials.gov/study/NCT04926077",
+      "ai_event_date": "2021-06-14",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该packet作为技术转向证据的有效性；错配不等于企业无转向",
+      "ai_flags": [
+        "SYNTHETIC_CLEARANCE_ID_RESOLVED_IN_CURRENT_STORE",
+        "CURRENT_TRIAL_VERSION_NOT_HISTORICAL_REPLAY",
+        "UNSUPPORTED_SAME_PROGRAM_INFERENCE"
+      ],
+      "ai_human_question": "核准排除这一证据链；若另有同项目来源，应重新建立packet。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "NCT04926077",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT04926077",
+          "status": "retrieved",
+          "file": "NCT04926077.json",
+          "sha256": "f06cdccc08c05973d3d11052c238d8cae5f1498864f955aa279097d751213a34",
+          "source_family": "trial_registry",
+          "local_file": "external_sources/NCT04926077.json"
+        },
+        {
+          "id": "K233555",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf23/K233555.pdf",
+          "status": "failed",
+          "error": "404 Client Error: Not Found for url: https://www.accessdata.fda.gov/cdrh_docs/pdf23/K233555.pdf",
+          "source_family": "regulatory"
+        },
+        {
+          "id": "PLOS_LT07",
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0303443",
+          "status": "retrieved",
+          "file": "PLOS_LT07.html",
+          "sha256": "2454716d82f8efbf3fed7129a4d27c67ba1f27346c37486d2f4b604f73f0816e",
+          "source_family": "publication",
+          "local_file": "external_sources/PLOS_LT07.html"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/66",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_clearance_match_count": 1,
+      "ai_resolved_clearance_records": [
+        {
+          "id": "K233555",
+          "event_id": "4317764df35a7138021a7fec6a32c2e7",
+          "title": "Philips Respironics 510(k)：AF531 Oro-Nasal EE Leak 1 Face Mask; AF531 Oro-Nasal EE Leak 2 Face Mask",
+          "date": "2024-07-31",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K233555",
+          "product_code": "BZD"
+        }
+      ],
+      "ai_trial_to_clearance_calendar_days": 1143,
+      "original_lead_days": 1113,
+      "ai_declared_lag_days": 30,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "LT-08",
+      "company": "philips",
+      "technology_track": "vascular_access",
+      "origin": "small_sample",
+      "ai_label": "False Signal / No Confirmed Shift",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "试验为SyncVision/压力导丝指导PCI，监管结果为Bridge Plus阻断球囊；器械和用途不同，2011超声微泡溶栓论文也非该项目。",
+      "ai_evidence_locator": "NCT04451044 protocolSection; K251358 pp3-6",
+      "ai_primary_record": "NCT04451044",
+      "ai_primary_title": "Distal Evaluation of Functional Performance with Intravascular Sensors to Assess the Narrowing Effect: Guided Physiologic Stenting",
+      "ai_primary_url": "https://clinicaltrials.gov/study/NCT04451044",
+      "ai_event_date": "2020-06-30",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该packet作为技术转向证据的有效性；错配不等于企业无转向",
+      "ai_flags": [
+        "SYNTHETIC_CLEARANCE_ID_RESOLVED_IN_CURRENT_STORE",
+        "CURRENT_TRIAL_VERSION_NOT_HISTORICAL_REPLAY",
+        "UNSUPPORTED_SAME_PROGRAM_INFERENCE"
+      ],
+      "ai_human_question": "核准宽vascular_access标签不能替代同项目关联。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "NCT04451044",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT04451044",
+          "status": "retrieved",
+          "file": "NCT04451044.json",
+          "sha256": "ba4f65c002d99ff3f588faeb2300e9780304833efdd8a82bdf4d7dd319574868",
+          "source_family": "trial_registry",
+          "local_file": "external_sources/NCT04451044.json"
+        },
+        {
+          "id": "K251358",
+          "url": "https://www.accessdata.fda.gov/cdrh_docs/pdf25/K251358.pdf",
+          "status": "retrieved",
+          "sha256": "8bfed089fddf6b3d30700046da7bc75c0f1b60f013c338a0db5bbf301cab8be4",
+          "pages": 7,
+          "characters": 13888,
+          "source_family": "regulatory",
+          "local_file": "external_sources/K251358.pdf"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/67",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_clearance_match_count": 1,
+      "ai_resolved_clearance_records": [
+        {
+          "id": "K251358",
+          "event_id": "514ba31fd3fe0afd646166530af093bd",
+          "title": "Philips Image Guided Therapy Devices 510(k)：Bridge Plus Occlusion Balloon (590-002)",
+          "date": "2025-06-24",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K251358",
+          "product_code": "MJN"
+        }
+      ],
+      "ai_trial_to_clearance_calendar_days": 1820,
+      "original_lead_days": 1790,
+      "ai_declared_lag_days": 30,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    },
+    {
+      "packet_id": "LT-09",
+      "company": "philips",
+      "technology_track": "wearable_remote",
+      "origin": "small_sample",
+      "ai_label": "False Signal / No Confirmed Shift",
+      "ai_label_authority": "independent_ai_evidence_review_v1",
+      "ai_uncertainty": "低",
+      "ai_reason": "ALPACA为儿童哮喘eHealth/居家监测，监管结果为HeartStart FRx除颤器的PMA补充；与远程哮喘照护无同项目关联，2016心血管术后远程监测论文也不对应。",
+      "ai_evidence_locator": "NCT05517096 protocolSection; P180028S013 results[0]",
+      "ai_primary_record": "NCT05517096",
+      "ai_primary_title": "AmbuLatory Pediatric Asthma CAre",
+      "ai_primary_url": "https://clinicaltrials.gov/study/NCT05517096",
+      "ai_event_date": "2022-08-26",
+      "ai_source_commit": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+      "ai_scope": "该packet作为技术转向证据的有效性；错配不等于企业无转向",
+      "ai_flags": [
+        "SYNTHETIC_CLEARANCE_ID_RESOLVED_IN_CURRENT_STORE",
+        "CURRENT_TRIAL_VERSION_NOT_HISTORICAL_REPLAY",
+        "UNSUPPORTED_SAME_PROGRAM_INFERENCE"
+      ],
+      "ai_human_question": "核准本配对不支持技术转向，另修除颤器的wearable_remote映射。",
+      "ai_review_date": "2026-11-03",
+      "ai_reviewer": "Codex AI (not a human reviewer)",
+      "ai_search_scope": "读取提交版本packet/规范/工作表；只读本地原始记录；按编号读取FDA原始摘要或PMA；LT另检索CT.gov全文；仅所列案例定向查公司公告/论文，未做穷尽性全网检索",
+      "ai_sources": [
+        {
+          "id": "NCT05517096",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT05517096",
+          "status": "retrieved",
+          "file": "NCT05517096.json",
+          "sha256": "591f5ef3e59958d6fc4c4a2f683f8d4d3248a94274ebb7117cdb44762ab20923",
+          "source_family": "trial_registry",
+          "local_file": "external_sources/NCT05517096.json"
+        },
+        {
+          "id": "P180028S013",
+          "url": "https://api.fda.gov/device/pma.json?search=pma_number:P180028+AND+supplement_number:S013&limit=10",
+          "status": "retrieved",
+          "file": "P180028S013.json",
+          "sha256": "d1086976f3faa6e519c59c698fcfc616beb0f544b4978d41f467e59383b797b9",
+          "source_family": "regulatory",
+          "local_file": "external_sources/P180028S013.json"
+        }
+      ],
+      "ai_evidence_extract_pointer": "EVIDENCE_EXTRACT.json#/68",
+      "ai_independent_confirmation_status": "未达到Confirmed Shift的全部要求；不得把同源FDA摘要或仅公司/赛道相同的资料当作独立转向确认",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "eligible_for_target_b_scoring": false,
+      "ai_clearance_match_count": 1,
+      "ai_resolved_clearance_records": [
+        {
+          "id": "P180028S013",
+          "event_id": "d1c8b6f45c104716c4a342fcec120690",
+          "title": "Philips Medical Systems PMA 补充 P180028/S013：HeartStart FRx Defibrillator",
+          "date": "2023-04-03",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P180028",
+          "product_code": "MKJ"
+        }
+      ],
+      "ai_trial_to_clearance_calendar_days": 220,
+      "original_lead_days": 190,
+      "ai_declared_lag_days": 30,
+      "previous_rubric_label": "Uncertain (agent-preliminary)",
+      "ai_changed_from_previous_rubric": true
+    }
+  ]
+}
