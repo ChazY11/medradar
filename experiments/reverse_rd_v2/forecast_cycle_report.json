@@ -1,0 +1,158 @@
+{
+ "cycle_version": "forecast-cycle-1",
+ "run_id": "5a8bf2b0ad66626c",
+ "generated_at": "2026-11-02T01:17:33Z",
+ "offline": true,
+ "inputs": {
+  "db": ".audit\\v2.sqlite",
+  "registry": "data\\registry.sqlite",
+  "coverage_end": "2026-10-15",
+  "horizon_months": 12,
+  "top_n": 25,
+  "dataset_version": "reverse_rd_v1",
+  "feature_version": "reverse-rd-v2-features",
+  "provenance": {
+   "entries": [
+    {
+     "source": "experiments/reverse_rd_v2/data_provenance.json",
+     "sha256": "a19bc05d4f2aa7d0f1101e12f581cfa7e4e7c2d905aa904b2409586c3e7d9de0",
+     "note": "frozen reverse_rd_v2 collection provenance (fda_event_count=3833, coverage 2016-11-01..2026-10-15)",
+     "retrieved_at": "2026-11-01T04:34:49Z"
+    }
+   ]
+  }
+ },
+ "counts": {
+  "horizon_records": 25,
+  "registered": 0,
+  "idempotent": 25,
+  "rejected": 0,
+  "verified": 0,
+  "positives": 0,
+  "pending": 25,
+  "verification_errors": 0
+ },
+ "registration": {
+  "registered": 0,
+  "idempotent": 25,
+  "rejected": [],
+  "prediction_ids": [
+   "sha256:e2b0750039217d4e3edd7578d36caa30fd5fa6e695305a95c48797eeb0f9050a",
+   "sha256:c3b6df5283ea9e1cdab833d332134a70b18dab13f1d2e453f9fbc464a2d4e4c5",
+   "sha256:e9a2afe70c4620a3b2b7f8a7648a13360f40d24b4ee2068fca0f1b7e792c10dc",
+   "sha256:bdf87c341b4a03adb1b38fc6be765a37ceaa5a43d7eae8f88fd99d42ab82c95a",
+   "sha256:2843c98a324fd2c83334ba0410428974c754fdff4e75d646ea25b97d73f3d8d9",
+   "sha256:9cfe090a2ee940d11b8b1cbcdd78c1769ccd24dc9a2fa057b996877b47db4c6c",
+   "sha256:7b854df238e50f0dca18e06e4683c684c7995e4d294c0a1cce99100045c06b8a",
+   "sha256:3596e1a923e7bddcd6b7f1def6f9f09d08453d8c709261f948e205392362e14c",
+   "sha256:5ae85039ddb80a95cbc5bae3b4f9d65d7c95dad3247d489d7d4617c3c97d84c8",
+   "sha256:b74e274518f0da4650150b185792fd4594e4b86789ab314f8c3acf93d40e76c5",
+   "sha256:ab6524bc3010591a406d9572e131dd00a292038dd9a318c1d0fb78d6722653d6",
+   "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+   "sha256:f870f7d8fc7a55c0a2705849a27e9d05c584cedd66023ea29e1fa8bfa574982b",
+   "sha256:90913fda517638d29262a4a939e9476662275e08750c0b6a4738974c4e6ea2b3",
+   "sha256:5061742df9588cc26e72eb66835ed1e6fa9968d294e3773b35e07f2c539ebdad",
+   "sha256:930ae9f162fc8a3a5f62d51b7808660b9780af92c6f599e5a33099ded6a38391",
+   "sha256:118ab1da56e3d157571ada25ac95b431f9c73b1703582bbbdc7e96355b15d0c1",
+   "sha256:ef6ef1690fe6282fb26a04a648ea8f5c18bc36e68d5dc64836b82d24072a10af",
+   "sha256:6c8856749247b19bc9c51cd9dc0d5cf1ce861b7c14779d6263b58004be4e3f08",
+   "sha256:df0c29b9cfa21ca38137d5ed8170c2c73d42f25e6af3f13e79a1c517392cb49d",
+   "sha256:ed8e300fd026b9cb166dcd4da430e0a97febc78fdace86174d3adffe4eb2952f",
+   "sha256:07a8382e710e90c9ff67dcaeead27d10e1e1bb1efe65aba7be93934897839b97",
+   "sha256:d49346bda145bf554768553188dc322d0bab84b4b1e19c26d922face1c1f0020",
+   "sha256:11da5702c6b9b4a03923c3318e1e333687542e84034ca66b70eab66783df91bd",
+   "sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732"
+  ]
+ },
+ "verification": {
+  "checked": 25,
+  "verified": 0,
+  "positives": 0,
+  "pending": 25,
+  "errors": 0,
+  "error_details": []
+ },
+ "registry": {
+  "forecasts_total": 25,
+  "by_record_kind": {
+   "nowcast": 25
+  },
+  "resolutions_total": 0,
+  "idempotency_keys_total": 25
+ },
+ "artifact": {
+  "path": ".audit\\forecast_cycle\\evaluation.json",
+  "sha256": "c65ce22bdd79c4a3d744a2ffb26acd12c6a08aea8a80111159c8da08ae0060d5",
+  "as_of": "2026-11-02T01:17:09.870975Z",
+  "counts_by_record_kind": {
+   "forecast": 0,
+   "nowcast": 25,
+   "retrospective_fixture": 0
+  }
+ },
+ "evaluation": {
+  "pure_forecast_headline": {
+   "scope": {
+    "stratified_by": [
+     "horizon_months",
+     "model_version"
+    ],
+    "mixed_targets": true,
+    "note": "headline mixes all eligible targets; per-cohort scope is authoritative"
+   },
+   "n": 0,
+   "brier": null,
+   "log_loss": null,
+   "calibration": null
+  },
+  "nowcast_headline": {
+   "scope": {
+    "stratified_by": [
+     "horizon_months",
+     "model_version"
+    ],
+    "mixed_targets": true,
+    "note": "headline mixes all eligible targets; per-cohort scope is authoritative"
+   },
+   "n": 0,
+   "brier": null,
+   "log_loss": null,
+   "calibration": null
+  },
+  "record_kind_breakdown": {
+   "forecast": {
+    "total_forecasts": 0,
+    "eligible": 0,
+    "unresolved": 0,
+    "censored": 0
+   },
+   "nowcast": {
+    "total_forecasts": 25,
+    "eligible": 0,
+    "unresolved": 25,
+    "censored": 0
+   },
+   "retrospective_fixture": {
+    "total_forecasts": 0,
+    "eligible": 0,
+    "unresolved": 0,
+    "censored": 0
+   }
+  }
+ },
+ "calibration": {
+  "nowcast_registered": 25,
+  "nowcast_eligible": 0,
+  "nowcast_unresolved": 25,
+  "research_registry_verified": 0,
+  "status": "insufficient_matured_forecasts",
+  "note": "No calibration claim is made until at least 20 registered nowcasts have matured and been verified inside the observed coverage; ECE/Brier for fewer rows are not meaningful. Registered 2026-Q4 nowcasts mature 2027-10-01, after the frozen coverage end, so they are expected to stay pending."
+ },
+ "timings": {
+  "train_score_seconds": 19.144,
+  "register_seconds": 0.003,
+  "verify_seconds": 0.0,
+  "export_seconds": 0.002,
+  "total_seconds": 19.156
+ }
+}

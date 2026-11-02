@@ -35,8 +35,11 @@ portfolio, what appeared for the first time, and where China still has a gap.
 | Research integrity | Clinical holds, RTF, CRL, pre-submissions and designations are separate; absolute abnormal returns above 100% are audited and excluded from inference |
 | Market-to-R&D | **6,701 continuation + 41,003 dormant→active entry examples** (25/24 quarterly origins) from 55,090 FDA events + 43,420 SEC facts + 3,453 procurement awards; purged multi-window evaluation and a 7-source ablation, honest negative result (below) |
 | Research infrastructure | Bitemporal knowledge store (valid time vs knowledge time) and an immutable forecast registry with as-of scoring; deterministic point-in-time export |
+| Forecast cycle | Canonical registry with a separate `nowcast` cohort; continuous cycle registers 25 real forecasts, verifies matured windows, exports a deterministic artifact; idempotent re-run |
+| Temporal graph | 55,090 events imported read-only → **57,381 nodes / 114,419 edges**; PIT snapshot hash stable, idempotent re-import, read-only pair context/timeline queries |
+| Research agent | Deterministic 8-tool workflow with cited evidence, 5 question templates, conflict detection and counter-evidence; real demo: 5 questions / 55 claims / 224 unique citations / 0 missing |
 | Simulated book | in-sample, long-only, not investment advice |
-| Tests | **625 offline tests**, no network, no API key |
+| Tests | **678 offline tests**, no network, no API key |
 | Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |
 | Products | 204 families, **2,740 Chinese product names** |
 | Research | event-time model, point-in-time signals, block bootstrap, Holm correction |
@@ -346,16 +349,54 @@ A separate two-layer research foundation sits under this lane: a **bitemporal kn
 (`medradar/tkg`) with independent valid-time / knowledge-time queries, deterministic point-in-time
 export and a read-only `events` adapter; and an **immutable forecast registry**
 (`medradar/forecast_registry.py`) with 3/6/12/24 calendar-month windows, append-only resolutions and
-as-of Brier / log-loss / ECE evaluation. Both are synthetic-test-first: they carry no real-data
-accuracy claim on their own.
+as-of Brier / log-loss / ECE evaluation.
+
+## Phase 3: closed research loop
+
+- **One forecast ledger.** The canonical registry is the system of record. It gained an immutable
+  `nowcast` record kind for forecasts registered while their window is already open (the quarterly
+  Horizon case), scored in a separate cohort and never mixed into the pure-future headline.
+  `medradar/intelligence/forecasting/registry_adapter.py` maps Horizon records through stable
+  idempotency keys and resolves matured forecasts from the real events table with coverage guards.
+- **Continuous cycle.** `scripts/forecast_cycle.py` trains the frozen model, scores the current
+  quarter, registers nowcasts, verifies matured windows and exports a deterministic artifact + cycle
+  log. Real run: 25 nowcasts registered, 25 pending (windows end 2027-10), calibration
+  `insufficient_matured_forecasts`, second run fully idempotent. A weekly GitHub workflow is
+  committed (`forecast-cycle.yml`) but was not executed here — no green run is claimed.
+- **Temporal graph.** `scripts/tkg_import_research.py` imports the 55,090-event history read-only into
+  the bitemporal store (171,800 assertions → 57,381 nodes / 114,419 edges; source hash unchanged),
+  exports a deterministic PIT snapshot and proves idempotent re-import. `graph_context.py` exposes
+  read-only pair context/timeline under independent known-time/valid-time cutoffs.
+- **Research agent.** `medradar/research_agent.py` is a deterministic, evidence-grounded workflow (not
+  a chatbot): plan → 8 point-in-time tools → evidence table → 5 conflict rules → labelled hypothesis
+  → counter-evidence → baseline/statistical validation → cited synthesis → uncertainty → research log
+  → stop condition. Every claim cites a stored id; probabilities come only from the model/registry.
+  Real demo (`experiments/reverse_rd_v2/agent_demo.json`): 5 questions, 55 claims, 224 unique cited
+  ids, 314 citation checks, 0 missing, 3 cross-source conflicts.
+
+What is **not** claimed: no matured forecast yet (calibration is `insufficient_data`), the TKG
+knowledge clock for the current import is the backfill time (not historical publication time), the
+agent narrates stored evidence rather than establishing causality, and patents/hiring remain absent
+evidence gaps. Details: [docs/PHASE3.md](docs/PHASE3.md), [docs/PHASE3_REGISTRY.md](docs/PHASE3_REGISTRY.md),
+[docs/PHASE3_AGENT.md](docs/PHASE3_AGENT.md), [docs/TKG_INTEGRATION.md](docs/TKG_INTEGRATION.md).
+
+```bash
+python scripts/forecast_cycle.py --db data/research.sqlite --registry data/registry.sqlite \
+  --out out/forecast_cycle --horizon 12 --top-n 25 --coverage-end 2026-10-15 --offline
+python scripts/tkg_import_research.py --db data/research.sqlite --tkg data/tkg.sqlite \
+  --known-at 2026-12-31T00:00:00Z --report-out experiments/reverse_rd_v2/tkg_import_report.json
+python -m medradar.research_agent ask --company medtronic --track spine \
+  --template market_leading_indicator --as-of 2026-11-02 \
+  --db data/research.sqlite --registry data/registry.sqlite --tkg data/tkg.sqlite
+```
 
 SEC revenue stays consolidated (never relabelled product sales). USAspending obligations are not
 revenue and its current snapshot is excluded from historical gain claims. See
 [Reverse R&D methodology](docs/REVERSE_RD.md), the [integration record](docs/INTEGRATION_2026-11-02.md),
 [docs/TKG.md](docs/TKG.md), [docs/FORECAST_REGISTRY.md](docs/FORECAST_REGISTRY.md),
-[docs/PHASE1.md](docs/PHASE1.md), [docs/PHASE2.md](docs/PHASE2.md), and the frozen experiment
-configuration/results under `experiments/reverse_rd_v1/` (v1) and `experiments/reverse_rd_v2/`
-(v2 multi-window + source ablation).
+[docs/PHASE1.md](docs/PHASE1.md), [docs/PHASE2.md](docs/PHASE2.md), [docs/PHASE3.md](docs/PHASE3.md),
+and the frozen experiment configuration/results under `experiments/reverse_rd_v1/` (v1) and
+`experiments/reverse_rd_v2/` (v2 multi-window + source ablation + Phase-3 reports).
 
 ## Simulated US-equity study (not investment advice)
 
@@ -418,8 +459,12 @@ tests/          offline tests (synthetic fixtures, no network)
 - [x] `v0.4.0` Phase 2 — market features from the local daily price lane (12m return, volatility,
   drawdown, relative SPY/XBI, regime) and OpenAlex publication features, all point-in-time; frozen
   A–G source ablation (patents key-blocked, procurement excluded; both documented)
-- [ ] Phase 3 — research agent over the TKG (multi-step evidence retrieval, counter-evidence search),
-  unified registry writes from the Horizon forecaster, continuous forecasting schedule
+- [x] `v0.5.0` Phase 3 — unified canonical registry with a separate nowcast cohort, Horizon adapter and
+  idempotent continuous forecast cycle; TKG imported from the real 55,090-event history with
+  deterministic PIT snapshots; deterministic evidence-grounded research agent with cited synthesis and
+  counter-evidence
+- [ ] Phase 3 remainder — execute the weekly workflow on GitHub once windows mature (needs ≥20 matured
+  forecasts before calibration claims); feed graph features into the models rather than only the agent
 - [ ] Phase 2 remainder — patent features once a USPTO ODP API key is available; versioned historical
   track taxonomy instead of the current curated mapping
 - [ ] Causal designs (DiD / synthetic control) once a defensible point-in-time demand shock exists

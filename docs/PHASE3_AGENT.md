@@ -131,34 +131,47 @@ marked degraded.
 ## Reproduce the real demo
 
 ```bash
-python scripts/run_agent_demo.py
-# writes experiments/reverse_rd_v2/agent_demo.json and prints a compact summary
+# requires the research DB + canonical registry + TKG store (see docs/PHASE3.md §Reproduce)
+python scripts/run_agent_demo.py --db data/research.sqlite --registry data/registry.sqlite \
+  --tkg data/tkg.sqlite --out experiments/reverse_rd_v2/agent_demo.json --as-of 2026-11-02
+# writes the artifact and prints a compact summary
 ```
 
 The script opens `data/research.sqlite` read-only, runs the five real questions
 below at a fixed `as-of` of 2026-11-02, verifies **every** citation against the
 database/registry, and exits non-zero if any id is missing.
 
-## Real demo results (from the committed artifact)
+## Real demo results (from the committed artifact, integrated run)
 
 Five questions, 55 claims, 224 unique cited ids, 314 citation checks, **0 missing
-citations**; 3 conflicts; all five documents are marked degraded because the
-sibling canonical registry and TKG are absent in this checkout (the documents say
-so explicitly instead of substituting).
+citations**; 3 genuine cross-source conflicts; `degraded_questions = 0`. The
+canonical registry and the bitemporal TKG are both reported `present`, and the
+citation kinds include `registry_forecast` alongside events, financial facts,
+market bars, publications and forecast examples. (An earlier run without those two
+stores marked every question degraded and is superseded.)
 
-| # | Template | Question | Key evidence | Conflict |
-|---|---|---|---|---|
-| 1 | `entry_forecast` | intuitive_surgical → imaging_mr_ct | pair dormant since 2019-02-22 (92.3 months), 1 material event ever, track has 54 other-company events in the trailing 12 months; entry base rate 0.0 over 15 purged examples; no registered probability | `track_activity_vs_company_dormancy` |
-| 2 | `market_leading_indicator` | medtronic / spine | 62 material events (last 2026-07-17), 12m market return 0.1062, revenue growth 0.1645, publication growth −0.1597; frozen model p 0.9834 vs base rate 1.0 (Δ −0.0166) | `market_positive_vs_publication_negative` |
-| 3 | `early_signal` | boston_scientific / ep_pfa | 6 material events (last 2024-02-26, 0 in trailing 12m), 12m market return −0.5822, publication growth +0.1085; continuation base rate 0.48; no visible probability | none |
-| 4 | `strategic_shift` | medtronic / ep_pfa | 13 material events, recent/prior 2-year mix 4 vs 3, share of pair events in last 2 years 0.3077; base rate 0.76; no visible probability | `market_positive_vs_publication_negative` |
-| 5 | `cross_source_validation` | alcon / ophthalmology | 34 material events (last 2026-02-13), revenue growth 0.2822, 12m market return −0.0262, publication growth +0.1754; frozen model p 0.9192 vs base rate 1.0 (Δ −0.0808) | none |
+| # | Template | Question | Candidates | Citations | Conflict |
+|---|---|---|---|---|---|
+| 1 | `entry_forecast` | intuitive_surgical → imaging_mr_ct | 1 material event ever (2019-02-22), 0 in trailing 12m | 58 | `track_activity_vs_company_dormancy` |
+| 2 | `market_leading_indicator` | medtronic / spine | 62 material events (last 2026-07-17), 6 in trailing 12m | 68 | `market_positive_vs_publication_negative` |
+| 3 | `early_signal` | boston_scientific / ep_pfa | 6 material events (last 2024-02-26), 0 in trailing 12m | 62 | none |
+| 4 | `strategic_shift` | medtronic / ep_pfa | 13 material events (last 2024-10-24), 0 in trailing 12m | 69 | `market_positive_vs_publication_negative` |
+| 5 | `cross_source_validation` | alcon / ophthalmology | 34 material events (last 2026-02-13), 1 in trailing 12m | 57 | none |
 
 These are **evidence narrations at a retrospective as-of date**, not accuracy
-claims. The model probabilities quoted are the frozen rows' values; the agent did
-not produce them and does not claim they are correct. Two of the five questions
+claims. Model/registry probabilities are quoted from the stored rows; the agent did
+not produce them and does not claim they are correct. Three of the five questions
 were selected because the resulting evidence genuinely conflicts (entries 1, 2 and
 4), which is the point of the conflict block.
+
+## Integrated demo update (2026-11-02, v0.5.0)
+
+The committed artifact was regenerated **after** the canonical registry (25 registered
+nowcasts) and the real TKG store (57,381 nodes / 114,419 edges) existed, using the command
+above. Re-running it reproduces the documents byte-for-byte except timestamps. The `.sqlite`
+stores are gitignored, so a fresh checkout needs the Phase-3 reproduce steps in
+[PHASE3.md](PHASE3.md) first.
+
 
 ## What is NOT claimed
 

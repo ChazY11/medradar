@@ -80,6 +80,17 @@ python -m medradar selftest  # 625 tests, 不联网
 | Phase 2B：OpenAlex 论文采集/特征（51 家公司、150,087 works）+ 需 API key 的 USPTO 专利适配器（未评估）+ 消融 | DeepSeek Harness 智能体团队（`phase2/publications-patents` 分支） |
 | Phase 2 整合、A–G 特征消融矩阵、`ablation_metrics.json`、文档与验收 | DeepSeek Harness 智能体团队（`integration/market-to-rd-v2` 分支，Lead 集成） |
 
-> 所有 Phase 1–2 结果均为真实数据可复现实验；新增来源的增量价值结论为负面（无统计可检测的排序增益），已如实报告。专利因缺少 USPTO ODP API key 未评估，采购因快照不可作时点使用而排除。
+## Phase 3 研究闭环（2026-11-02，`v0.5.0`）
+
+| 内容 | 负责方 |
+|---|---|
+| Phase 3A：规范登记簿新增 `nowcast` 类型 + 队列隔离、Horizon→canonical 适配器、幂等持续预测周期（25 条真实 nowcast）、周度 workflow | DeepSeek Harness 智能体团队（`phase3/registry-cycle` 分支） |
+| Phase 3B：真实 55,090 条事件只读导入双时态 TKG（57,381 节点 / 114,419 边、确定性 PIT 快照、重复导入幂等）、`graph_context` 只读查询 | DeepSeek Harness 智能体团队（`phase3/tkg-integration` 分支） |
+| Phase 3C：确定性证据驱动研究 Agent（8 工具、5 模板、冲突检测、反证、引用式综合、19 个离线测试）与真实演示 | DeepSeek Harness 智能体团队（`phase3/research-agent` 分支） |
+| Phase 3 整合、真实 registry/TKG/Agent 端到端复跑、行为式验收与文档 | DeepSeek Harness 智能体团队（`integration/market-to-rd-v2` 分支，Lead 集成） |
+
+> Phase 3 的 TKG 知识时钟等于回填观测时间（不是历史公开时间）；预测登记簿尚无到期预测（校准为 `insufficient_data`）；研究 Agent 只叙述存储证据，不做因果断言；专利/招聘仍是明确的证据缺口。
+
+> 所有 Phase 1–3 结果均为真实数据可复现实验；新增来源的增量价值结论为负面（无统计可检测的排序增益），已如实报告。专利因缺少 USPTO ODP API key 未评估，采购因快照不可作时点使用而排除。
 
 > 以上为开发过程事实陈述，不构成对任何模型能力的第三方评测；项目仅用于开源研究与技术演示，不构成投资建议。

@@ -3,6 +3,61 @@
 All notable changes to MedRadar. Format loosely follows Keep a Changelog.
 This is a research tool; "fixed" means a documented behaviour changed.
 
+## [0.5.0] — 2026-11-02 (Phase 3: unified forecast cycle, temporal graph, evidence-grounded research agent)
+
+### Added
+- **Canonical `nowcast` record kind** (`medradar/forecast_registry.py`, schema `forecast-registry-2`):
+  a genuine prospective forecast registered while its target window is already open (the quarterly
+  Horizon case). Strict validation (`window_start <= generated_at < window_end`, closed windows
+  rejected), append-only history, and explicit cohort separation in `evaluate()`: pure-future
+  headline, nowcast cohort, descriptive prospective union and a `record_kind_breakdown`.
+- **Horizon→canonical adapter** (`medradar/intelligence/forecasting/registry_adapter.py`): stable
+  `horizon:<forecast_id>:<model_version>` idempotency keys, `company_track` targets, canonical
+  evidence provenance (locator + SHA-256), idempotent re-registration (`IdempotencyConflict` on a
+  changed probability), and coverage-guarded resolution of matured forecasts from the real events
+  table.
+- **Continuous forecasting cycle** (`scripts/forecast_cycle.py`, `medradar/intelligence/forecasting/cycle.py`):
+  train frozen model → score current quarter → register nowcasts → verify matured → export
+  deterministic registry artifact + cycle log; idempotent and offline-safe. Weekly
+  `.github/workflows/forecast-cycle.yml` committed (not executed in this environment).
+  Real run: 25 Horizon records → 25 nowcasts registered, 0 rejected, 25 pending; second run
+  `registered=0, idempotent=25`, identical artifact hash.
+- **TKG real-data integration** (`scripts/tkg_import_research.py`,
+  `medradar/intelligence/graph_context.py`): the 55,090-event `events` table imported read-only into
+  the bitemporal store → 171,800 assertions, **57,381 nodes / 114,419 edges**, deterministic PIT
+  snapshot (sha256 `b60c8360…`), idempotent re-import (0 created, same hash), source unchanged;
+  read-only pair context/timeline/counts helpers under independent known-time/valid-time cutoffs.
+- **Evidence-grounded research agent** (`medradar/research_agent.py`, CLI `python -m medradar.research_agent`):
+  deterministic workflow (plan → 8 point-in-time tools → evidence table → 5 conflict rules →
+  labelled hypothesis → counter-evidence → statistical validation → cited synthesis → uncertainty →
+  research log → stop condition). Five question templates (`entry_forecast`,
+  `market_leading_indicator`, `early_signal`, `strategic_shift`, `cross_source_validation`). Every
+  claim cites a stored id; probabilities come only from the model/registry; no LLM path by default.
+  Real demo: 5 questions · 55 claims · 224 unique cited ids · 314 citation checks · 0 missing ·
+  3 cross-source conflicts, with the canonical registry and TKG in use.
+- Docs: `docs/PHASE3.md`, `docs/PHASE3_REGISTRY.md`, `docs/PHASE3_AGENT.md`,
+  `docs/TKG_INTEGRATION.md`; behavioural Phase-3 checks added to `verifier/v1/verify.py`.
+
+### Fixed
+- The two disconnected forecast ledgers are unified: the immutable canonical registry is the system
+  of record and the Horizon forecaster writes through the adapter; the legacy research-table
+  forecasts remain as an untouched historical artifact, not a parallel ledger.
+- `tkg-schema-2` idempotency lookup is O(n²) without an index; the import script installs
+  operational indexes on the target store only (documented; exported content/hash unaffected).
+
+### Scope boundary
+- Nowcast records are **not** pre-registered future forecasts; they are kept in a separate cohort and
+  never merged into the pure-future headline.
+- The canonical registry has no matured forecast yet → calibration status is
+  `insufficient_matured_forecasts`, not a quality claim.
+- TKG knowledge time for the current import equals the backfill observation time; it cannot support
+  "what was known in 2020" claims for these rows. Most source public timestamps are date-level and
+  timezone-naive (explicitly dropped from `public_time` and counted).
+- The research agent narrates stored evidence; it does not establish causality, predict returns, or
+  replace the statistical experiments. Conflict rules are heuristics. Patents (no API key) and
+  hiring signals (no stable legal source) are explicit evidence gaps.
+- The weekly forecast workflow is committed but was not executed here; no green CI run is claimed.
+
 ## [0.4.0] — 2026-11-02 (Phase 1–2: harder target, multi-window, market/publication signals)
 
 ### Added

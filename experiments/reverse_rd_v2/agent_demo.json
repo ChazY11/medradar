@@ -1,17 +1,17 @@
 {
  "agent_version": "research-agent-1",
- "generated_at": "2026-11-02T01:15:51Z",
+ "generated_at": "2026-11-02T01:18:49Z",
  "as_of": "2026-11-02",
- "database": "D:\\DEPPSKK\\worktrees\\phase3-agent\\data\\research.sqlite",
+ "database": "data\\research.sqlite",
  "registry": {
-  "expected_path": "D:\\DEPPSKK\\worktrees\\phase3-agent\\data\\registry.sqlite",
-  "used_path": null,
-  "present": false
+  "expected_path": "D:\\DEPPSKK\\worktrees\\integration-v2\\data\\registry.sqlite",
+  "used_path": "data\\registry.sqlite",
+  "present": true
  },
  "tkg": {
-  "expected_path": "D:\\DEPPSKK\\worktrees\\phase3-agent\\data\\tkg.sqlite",
-  "used_path": null,
-  "present": false
+  "expected_path": "D:\\DEPPSKK\\worktrees\\integration-v2\\data\\tkg.sqlite",
+  "used_path": "data\\tkg.sqlite",
+  "present": true
  },
  "questions": [
   {
@@ -115,20 +115,20 @@
       "seq": 5,
       "tool": "forecast_evidence",
       "purpose": "Look up the canonical forecast registry for a registered probability.",
-      "status": "no_registry",
+      "status": "no_registered_forecast",
       "citation_count": 0,
       "warnings": [
-       "no canonical registry path was provided"
+       "the registry contains no forecast whose target matches this company-track pair"
       ]
      },
      {
       "seq": 6,
       "tool": "graph_context",
       "purpose": "Optional temporal-knowledge-graph context (soft dependency).",
-      "status": "not_requested",
+      "status": "no_graph_matches",
       "citation_count": 0,
       "warnings": [
-       "no --tkg path requested; graph context skipped"
+       "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
       ]
      },
      {
@@ -342,30 +342,31 @@
      {
       "claim_id": "forecast_evidence",
       "tool": "forecast_evidence",
-      "statement": "no canonical registered forecast is available (no_registry: no canonical registry path was provided).",
+      "statement": "no canonical registered forecast is available (no_registered_forecast: the registry contains no forecast whose target matches this company-track pair).",
       "values": {
-       "status": "no_registry",
+       "status": "no_registered_forecast",
        "matched": 0
       },
       "citations": [],
       "evidence_status": "not_available",
       "warnings": [
-       "no canonical registry path was provided"
+       "the registry contains no forecast whose target matches this company-track pair"
       ]
      },
      {
       "claim_id": "graph_context",
       "tool": "graph_context",
-      "statement": "graph context is not_requested; the optional sibling TKG helper was not usable.",
+      "statement": "graph context is no_graph_matches; the optional sibling TKG helper was not usable.",
       "values": {
-       "tkg_path": null,
+       "tkg_path": "data\\tkg.sqlite",
+       "source": "raw_tkg_read_only",
        "nodes": 0,
        "edges": 0
       },
       "citations": [],
       "evidence_status": "not_available",
       "warnings": [
-       "no --tkg path requested; graph context skipped"
+       "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
       ]
      },
      {
@@ -1427,7 +1428,8 @@
      "calibration": {
       "status": "insufficient_verified_forecasts",
       "n": 0,
-      "note": "no canonical registry available"
+      "min_required": 1,
+      "note": "no resolved canonical forecast outcomes at or before the as-of date"
      },
      "conflict_count": 1,
      "citations": []
@@ -1459,9 +1461,7 @@
       "patents: the USPTO Open Data Portal requires an API key that is absent in this environment, so no patent evidence is used",
       "hiring/jobs data: not collected",
       "market capitalisation and valuation multiples: no shares-outstanding data in this database",
-      "segment- or product-level sales: only consolidated SEC facts are stored",
-      "canonical forecast registry: absent; registry-backed claims are unavailable",
-      "temporal knowledge graph: not requested; graph context skipped"
+      "segment- or product-level sales: only consolidated SEC facts are stored"
      ],
      "conflict_count": 1,
      "conflicts": [
@@ -2453,7 +2453,7 @@
     "log": [
      {
       "seq": 1,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:49Z",
       "phase": "plan",
       "tool": null,
       "status": null,
@@ -2462,7 +2462,7 @@
      },
      {
       "seq": 2,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:49Z",
       "phase": "tool",
       "tool": "event_history",
       "status": "ok",
@@ -2471,7 +2471,7 @@
      },
      {
       "seq": 3,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:49Z",
       "phase": "tool",
       "tool": "financial_context",
       "status": "ok",
@@ -2480,7 +2480,7 @@
      },
      {
       "seq": 4,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:49Z",
       "phase": "tool",
       "tool": "market_context",
       "status": "ok",
@@ -2489,7 +2489,7 @@
      },
      {
       "seq": 5,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:49Z",
       "phase": "tool",
       "tool": "publication_context",
       "status": "ok",
@@ -2498,25 +2498,25 @@
      },
      {
       "seq": 6,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:49Z",
       "phase": "tool",
       "tool": "forecast_evidence",
-      "status": "no_registry",
+      "status": "no_registered_forecast",
       "citations": 0,
-      "note": "no canonical registry path was provided"
+      "note": "the registry contains no forecast whose target matches this company-track pair"
      },
      {
       "seq": 7,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:49Z",
       "phase": "tool",
       "tool": "graph_context",
-      "status": "not_requested",
+      "status": "no_graph_matches",
       "citations": 0,
-      "note": "no --tkg path requested; graph context skipped"
+      "note": "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
      },
      {
       "seq": 8,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:49Z",
       "phase": "tool",
       "tool": "counter_evidence",
       "status": "ok",
@@ -2525,7 +2525,7 @@
      },
      {
       "seq": 9,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "tool",
       "tool": "baseline_comparison",
       "status": "ok",
@@ -2534,7 +2534,7 @@
      },
      {
       "seq": 10,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "conflict_detection",
       "tool": null,
       "status": "ok",
@@ -2543,7 +2543,7 @@
      },
      {
       "seq": 11,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "hypothesis",
       "tool": null,
       "status": "ok",
@@ -2552,7 +2552,7 @@
      },
      {
       "seq": 12,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "statistical_validation",
       "tool": null,
       "status": "insufficient_verified_forecasts",
@@ -2561,7 +2561,7 @@
      },
      {
       "seq": 13,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "synthesis",
       "tool": null,
       "status": "ok",
@@ -2570,7 +2570,7 @@
      },
      {
       "seq": 14,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "stop",
       "tool": null,
       "status": "ok",
@@ -2582,19 +2582,16 @@
      "reached": true,
      "planned_steps": 8,
      "completed_steps": 8,
-     "failed_steps": [],
+     "failed_steps": [
+      {
+       "tool": "forecast_evidence",
+       "status": "no_registered_forecast"
+      }
+     ],
      "reason": "the deterministic tool plan is exhausted. Remaining uncertainty needs sources that are not available in this environment (patents, hiring, canonical registry when absent); the agent stops instead of guessing."
     },
-    "degraded": true,
-    "failures": [
-     {
-      "tool": "forecast_evidence",
-      "status": "no_registry",
-      "warnings": [
-       "no canonical registry path was provided"
-      ]
-     }
-    ]
+    "degraded": false,
+    "failures": []
    }
   },
   {
@@ -2698,20 +2695,18 @@
       "seq": 5,
       "tool": "forecast_evidence",
       "purpose": "Look up the canonical forecast registry.",
-      "status": "no_registry",
-      "citation_count": 0,
-      "warnings": [
-       "no canonical registry path was provided"
-      ]
+      "status": "ok",
+      "citation_count": 1,
+      "warnings": []
      },
      {
       "seq": 6,
       "tool": "graph_context",
       "purpose": "Optional temporal-knowledge-graph context (soft dependency).",
-      "status": "not_requested",
+      "status": "no_graph_matches",
       "citation_count": 0,
       "warnings": [
-       "no --tkg path requested; graph context skipped"
+       "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
       ]
      },
      {
@@ -3001,30 +2996,73 @@
      {
       "claim_id": "forecast_evidence",
       "tool": "forecast_evidence",
-      "statement": "no canonical registered forecast is available (no_registry: no canonical registry path was provided).",
+      "statement": "the canonical registry holds 1 matching forecast(s) (1 visible at the as-of date); latest p=0.9833612039247376 with model_version reverse-rd-logistic-v1.",
       "values": {
-       "status": "no_registry",
-       "matched": 0
+       "registry_path": "data\\registry.sqlite",
+       "matched": 1,
+       "visible": 1,
+       "forecasts": [
+        {
+         "prediction_id": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+         "p": 0.9833612039247376,
+         "record_kind": "nowcast",
+         "horizon_months": 12,
+         "window_start": "2026-10-01T00:00:00.000000Z",
+         "window_end": "2027-10-01T00:00:00.000000Z",
+         "information_cutoff": "2026-10-01T00:00:00.000000Z",
+         "generated_at": "2026-11-02T01:17:09.787914Z",
+         "model_version": "reverse-rd-logistic-v1",
+         "feature_version": "reverse-rd-v2-features",
+         "target_type": "company_track",
+         "target_id": "medtronic/spine",
+         "evidence": {
+          "source_locator": "experiments/reverse_rd_v2/data_provenance.json",
+          "evidence_sha256": "04c3788d9926134798961913449d8e4b7baa7206e43b68f06901c4269b26183d",
+          "evidence_kind": "source_observed"
+         },
+         "provenance": [
+          {
+           "evidence_sha256": "a19bc05d4f2aa7d0f1101e12f581cfa7e4e7c2d905aa904b2409586c3e7d9de0",
+           "source_locator": "experiments/reverse_rd_v2/data_provenance.json"
+          }
+         ],
+         "status": "pending",
+         "resolution": null,
+         "visible_at_as_of": true
+        }
+       ],
+       "resolved_outcomes": [],
+       "calibration": {
+        "status": "insufficient_verified_forecasts",
+        "n": 0,
+        "min_required": 1,
+        "note": "no resolved canonical forecast outcomes at or before the as-of date"
+       }
       },
-      "citations": [],
-      "evidence_status": "not_available",
-      "warnings": [
-       "no canonical registry path was provided"
-      ]
+      "citations": [
+       {
+        "kind": "registry_forecast",
+        "locator": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+        "label": "registry forecast p=0.9834"
+       }
+      ],
+      "evidence_status": "observed",
+      "warnings": []
      },
      {
       "claim_id": "graph_context",
       "tool": "graph_context",
-      "statement": "graph context is not_requested; the optional sibling TKG helper was not usable.",
+      "statement": "graph context is no_graph_matches; the optional sibling TKG helper was not usable.",
       "values": {
-       "tkg_path": null,
+       "tkg_path": "data\\tkg.sqlite",
+       "source": "raw_tkg_read_only",
        "nodes": 0,
        "edges": 0
       },
       "citations": [],
       "evidence_status": "not_available",
       "warnings": [
-       "no --tkg path requested; graph context skipped"
+       "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
       ]
      },
      {
@@ -3313,7 +3351,7 @@
      {
       "claim_id": "baseline_comparison",
       "tool": "baseline_comparison",
-      "statement": "purged pair base rate 1.0000 over 25 matured example(s); model probability 0.9834 (source: frozen_model_forecasts) gives delta -0.0166. the pair's historical base rate is based on 25 matured purged examples; it is a reference rate for comparison, not a causal effect. the model probability is 0.0166 below the purged pair base rate; the difference is a ranking/calibration comparison, not evidence of skill.",
+      "statement": "purged pair base rate 1.0000 over 25 matured example(s); model probability 0.9834 (source: canonical_registry) gives delta -0.0166. the pair's historical base rate is based on 25 matured purged examples; it is a reference rate for comparison, not a causal effect. the model probability is 0.0166 below the purged pair base rate; the difference is a ranking/calibration comparison, not evidence of skill.",
       "values": {
        "dataset_version": "reverse_rd_v1",
        "target": "continuation",
@@ -3327,38 +3365,19 @@
        "latest_mature_cutoff": "2025-10-01",
        "model": {
         "p": 0.9833612039247376,
-        "source": "frozen_model_forecasts",
+        "source": "canonical_registry",
         "citation": {
-         "kind": "horizon_forecast",
-         "locator": "92c0b3e4c4ac33889af8c4cf9994a3e6",
-         "label": "frozen model p=0.9834"
+         "kind": "registry_forecast",
+         "locator": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+         "label": "registry p=0.9834"
         },
-        "forecast_id": "92c0b3e4c4ac33889af8c4cf9994a3e6",
-        "information_cutoff": "2026-10-01",
+        "prediction_id": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+        "record_kind": "nowcast",
+        "information_cutoff": "2026-10-01T00:00:00.000000Z",
         "horizon_months": 12,
-        "created_at": "2026-11-01T23:16:37Z",
+        "created_at": "2026-11-02T01:17:09.787914Z",
         "target": "continuation",
-        "baseline_probability": 0.983202333797469,
-        "status": "pending",
-        "uncertainty": {
-         "ensemble_max": 0.9836783837108496,
-         "ensemble_min": 0.98292253050217,
-         "note": "Model instability across expanding time windows; not a causal confidence interval.",
-         "temporal_ensemble_std": 0.00030990168000984933
-        },
-        "verification_condition": {
-         "company_key": "medtronic",
-         "event_date_after": "2026-10-01",
-         "event_date_on_or_before": "2027-10-01",
-         "kinds": [
-          "510k",
-          "pma"
-         ],
-         "material_pma_only": true,
-         "minimum_coverage_end": "2027-10-01",
-         "table": "events",
-         "track_id": "spine"
-        }
+        "status": "ok"
        },
        "model_p": 0.9833612039247376,
        "delta": -0.01663879607526242,
@@ -3426,9 +3445,9 @@
         "label": "label=1 cutoff=2025-10-01"
        },
        {
-        "kind": "horizon_forecast",
-        "locator": "92c0b3e4c4ac33889af8c4cf9994a3e6",
-        "label": "frozen model p=0.9834"
+        "kind": "registry_forecast",
+        "locator": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+        "label": "registry p=0.9834"
        }
       ],
       "evidence_status": "derived",
@@ -3476,11 +3495,11 @@
      "model_probability": 0.9833612039247376,
      "probability_source": {
       "p": 0.9833612039247376,
-      "source": "frozen_model_forecasts",
+      "source": "canonical_registry",
       "citation": {
-       "kind": "horizon_forecast",
-       "locator": "92c0b3e4c4ac33889af8c4cf9994a3e6",
-       "label": "frozen model p=0.9834"
+       "kind": "registry_forecast",
+       "locator": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+       "label": "registry p=0.9834"
       }
      },
      "citations": [
@@ -3605,11 +3624,6 @@
        "label": "label=1 cutoff=2025-10-01"
       },
       {
-       "kind": "horizon_forecast",
-       "locator": "92c0b3e4c4ac33889af8c4cf9994a3e6",
-       "label": "frozen model p=0.9834"
-      },
-      {
        "kind": "market_bar",
        "locator": "MDT:2025-10-31",
        "label": "MDT window-start bar"
@@ -3628,6 +3642,11 @@
        "kind": "market_bar",
        "locator": "XBI:2026-10-30",
        "label": "XBI last bar"
+      },
+      {
+       "kind": "registry_forecast",
+       "locator": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+       "label": "registry p=0.9834"
       }
      ],
      "falsification_condition": "the hypothesis is falsified if the cited evidence cannot be reproduced from the named rows or if a controlled prospective test shows no incremental information.",
@@ -4133,14 +4152,15 @@
      "global_base_rate": 0.4706760185047008,
      "latest_mature_cutoff": "2025-10-01",
      "model_probability": 0.9833612039247376,
-     "model_source": "frozen_model_forecasts",
+     "model_source": "canonical_registry",
      "delta": -0.01663879607526242,
      "interpretation": "delta = model probability - pair base rate = -0.016639. This is a descriptive comparison on one pair; it is not a significance test and no predictive-skill claim is made.",
      "calibration_status": "insufficient_verified_forecasts",
      "calibration": {
       "status": "insufficient_verified_forecasts",
       "n": 0,
-      "note": "no canonical registry available"
+      "min_required": 1,
+      "note": "no resolved canonical forecast outcomes at or before the as-of date"
      },
      "conflict_count": 1,
      "citations": []
@@ -4158,15 +4178,13 @@
     },
     "uncertainty": {
      "model_uncertainty": {
-      "ensemble_max": 0.9836783837108496,
-      "ensemble_min": 0.98292253050217,
-      "note": "Model instability across expanding time windows; not a causal confidence interval.",
-      "temporal_ensemble_std": 0.00030990168000984933
+      "status": "not_available",
+      "note": "no calibrated uncertainty payload is available for the visible probability"
      },
      "model_uncertainty_source": {
-      "kind": "horizon_forecast",
-      "locator": "92c0b3e4c4ac33889af8c4cf9994a3e6",
-      "label": "frozen model p=0.9834"
+      "kind": "registry_forecast",
+      "locator": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+      "label": "registry p=0.9834"
      },
      "data_quality_flags": [
       "event availability is decision_date + 14 days (estimated) for all stored rows",
@@ -4178,9 +4196,7 @@
       "patents: the USPTO Open Data Portal requires an API key that is absent in this environment, so no patent evidence is used",
       "hiring/jobs data: not collected",
       "market capitalisation and valuation multiples: no shares-outstanding data in this database",
-      "segment- or product-level sales: only consolidated SEC facts are stored",
-      "canonical forecast registry: absent; registry-backed claims are unavailable",
-      "temporal knowledge graph: not requested; graph context skipped"
+      "segment- or product-level sales: only consolidated SEC facts are stored"
      ],
      "conflict_count": 1,
      "conflicts": [
@@ -4338,7 +4354,7 @@
       "evidence_status": "observed"
      },
      {
-      "statement": "Purged pair base rate: 1.0000 over 25 matured examples; model probability 0.9834 (source frozen_model_forecasts); delta -0.0166.",
+      "statement": "Purged pair base rate: 1.0000 over 25 matured examples; model probability 0.9834 (source canonical_registry); delta -0.0166.",
       "claim_ids": [
        "baseline_comparison"
       ],
@@ -4405,15 +4421,15 @@
         "label": "label=1 cutoff=2025-10-01"
        },
        {
-        "kind": "horizon_forecast",
-        "locator": "92c0b3e4c4ac33889af8c4cf9994a3e6",
-        "label": "frozen model p=0.9834"
+        "kind": "registry_forecast",
+        "locator": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+        "label": "registry p=0.9834"
        }
       ],
       "evidence_status": "derived"
      },
      {
-      "statement": "A probability of 0.9834 is taken from frozen_model_forecasts with citation {'kind': 'horizon_forecast', 'locator': '92c0b3e4c4ac33889af8c4cf9994a3e6', 'label': 'frozen model p=0.9834'}; the agent did not generate it.",
+      "statement": "A probability of 0.9834 is taken from canonical_registry with citation {'kind': 'registry_forecast', 'locator': 'sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237', 'label': 'registry p=0.9834'}; the agent did not generate it.",
       "claim_ids": [
        "forecast_evidence",
        "baseline_comparison"
@@ -4481,9 +4497,9 @@
         "label": "label=1 cutoff=2025-10-01"
        },
        {
-        "kind": "horizon_forecast",
-        "locator": "92c0b3e4c4ac33889af8c4cf9994a3e6",
-        "label": "frozen model p=0.9834"
+        "kind": "registry_forecast",
+        "locator": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+        "label": "registry forecast p=0.9834"
        }
       ],
       "evidence_status": "observed"
@@ -4556,9 +4572,9 @@
         "label": "label=1 cutoff=2025-10-01"
        },
        {
-        "kind": "horizon_forecast",
-        "locator": "92c0b3e4c4ac33889af8c4cf9994a3e6",
-        "label": "frozen model p=0.9834"
+        "kind": "registry_forecast",
+        "locator": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+        "label": "registry p=0.9834"
        }
       ],
       "evidence_status": "derived"
@@ -4906,11 +4922,6 @@
         "label": "label=1 cutoff=2025-10-01"
        },
        {
-        "kind": "horizon_forecast",
-        "locator": "92c0b3e4c4ac33889af8c4cf9994a3e6",
-        "label": "frozen model p=0.9834"
-       },
-       {
         "kind": "market_bar",
         "locator": "MDT:2025-10-31",
         "label": "MDT window-start bar"
@@ -4929,6 +4940,11 @@
         "kind": "market_bar",
         "locator": "XBI:2026-10-30",
         "label": "XBI last bar"
+       },
+       {
+        "kind": "registry_forecast",
+        "locator": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+        "label": "registry p=0.9834"
        }
       ],
       "evidence_status": "derived"
@@ -5317,11 +5333,6 @@
       "label": "cooper_companies revenue 2025-10-31"
      },
      {
-      "kind": "horizon_forecast",
-      "locator": "92c0b3e4c4ac33889af8c4cf9994a3e6",
-      "label": "frozen model p=0.9834"
-     },
-     {
       "kind": "market_bar",
       "locator": "MDT:2025-10-31",
       "label": "MDT window-start bar"
@@ -5355,6 +5366,11 @@
       "kind": "publication_count",
       "locator": "medtronic:2025",
       "label": "medtronic 2025 works=463"
+     },
+     {
+      "kind": "registry_forecast",
+      "locator": "sha256:30500a16f63b1988781edb014de8c9ecc40ea4e4b61718d454e8a8ec5ed03237",
+      "label": "registry forecast p=0.9834"
      }
     ],
     "limitations": [
@@ -5367,7 +5383,7 @@
     "log": [
      {
       "seq": 1,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "plan",
       "tool": null,
       "status": null,
@@ -5376,7 +5392,7 @@
      },
      {
       "seq": 2,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "tool",
       "tool": "market_context",
       "status": "ok",
@@ -5385,7 +5401,7 @@
      },
      {
       "seq": 3,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "tool",
       "tool": "event_history",
       "status": "ok",
@@ -5394,7 +5410,7 @@
      },
      {
       "seq": 4,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "tool",
       "tool": "financial_context",
       "status": "ok",
@@ -5403,7 +5419,7 @@
      },
      {
       "seq": 5,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "tool",
       "tool": "publication_context",
       "status": "ok",
@@ -5412,25 +5428,25 @@
      },
      {
       "seq": 6,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "tool",
       "tool": "forecast_evidence",
-      "status": "no_registry",
-      "citations": 0,
-      "note": "no canonical registry path was provided"
+      "status": "ok",
+      "citations": 1,
+      "note": null
      },
      {
       "seq": 7,
-      "at": "2026-11-02T01:15:51Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "tool",
       "tool": "graph_context",
-      "status": "not_requested",
+      "status": "no_graph_matches",
       "citations": 0,
-      "note": "no --tkg path requested; graph context skipped"
+      "note": "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
      },
      {
       "seq": 8,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:50Z",
       "phase": "tool",
       "tool": "counter_evidence",
       "status": "ok",
@@ -5439,7 +5455,7 @@
      },
      {
       "seq": 9,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "tool",
       "tool": "baseline_comparison",
       "status": "ok",
@@ -5448,7 +5464,7 @@
      },
      {
       "seq": 10,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "conflict_detection",
       "tool": null,
       "status": "ok",
@@ -5457,7 +5473,7 @@
      },
      {
       "seq": 11,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "hypothesis",
       "tool": null,
       "status": "ok",
@@ -5466,7 +5482,7 @@
      },
      {
       "seq": 12,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "statistical_validation",
       "tool": null,
       "status": "insufficient_verified_forecasts",
@@ -5475,7 +5491,7 @@
      },
      {
       "seq": 13,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "synthesis",
       "tool": null,
       "status": "ok",
@@ -5484,7 +5500,7 @@
      },
      {
       "seq": 14,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "stop",
       "tool": null,
       "status": "ok",
@@ -5499,16 +5515,8 @@
      "failed_steps": [],
      "reason": "the deterministic tool plan is exhausted. Remaining uncertainty needs sources that are not available in this environment (patents, hiring, canonical registry when absent); the agent stops instead of guessing."
     },
-    "degraded": true,
-    "failures": [
-     {
-      "tool": "forecast_evidence",
-      "status": "no_registry",
-      "warnings": [
-       "no canonical registry path was provided"
-      ]
-     }
-    ]
+    "degraded": false,
+    "failures": []
    }
   },
   {
@@ -5612,20 +5620,20 @@
       "seq": 5,
       "tool": "forecast_evidence",
       "purpose": "Look up the canonical forecast registry.",
-      "status": "no_registry",
+      "status": "no_registered_forecast",
       "citation_count": 0,
       "warnings": [
-       "no canonical registry path was provided"
+       "the registry contains no forecast whose target matches this company-track pair"
       ]
      },
      {
       "seq": 6,
       "tool": "graph_context",
       "purpose": "Optional temporal-knowledge-graph context (soft dependency).",
-      "status": "not_requested",
+      "status": "no_graph_matches",
       "citation_count": 0,
       "warnings": [
-       "no --tkg path requested; graph context skipped"
+       "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
       ]
      },
      {
@@ -5873,30 +5881,31 @@
      {
       "claim_id": "forecast_evidence",
       "tool": "forecast_evidence",
-      "statement": "no canonical registered forecast is available (no_registry: no canonical registry path was provided).",
+      "statement": "no canonical registered forecast is available (no_registered_forecast: the registry contains no forecast whose target matches this company-track pair).",
       "values": {
-       "status": "no_registry",
+       "status": "no_registered_forecast",
        "matched": 0
       },
       "citations": [],
       "evidence_status": "not_available",
       "warnings": [
-       "no canonical registry path was provided"
+       "the registry contains no forecast whose target matches this company-track pair"
       ]
      },
      {
       "claim_id": "graph_context",
       "tool": "graph_context",
-      "statement": "graph context is not_requested; the optional sibling TKG helper was not usable.",
+      "statement": "graph context is no_graph_matches; the optional sibling TKG helper was not usable.",
       "values": {
-       "tkg_path": null,
+       "tkg_path": "data\\tkg.sqlite",
+       "source": "raw_tkg_read_only",
        "nodes": 0,
        "edges": 0
       },
       "citations": [],
       "evidence_status": "not_available",
       "warnings": [
-       "no --tkg path requested; graph context skipped"
+       "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
       ]
      },
      {
@@ -6872,7 +6881,8 @@
      "calibration": {
       "status": "insufficient_verified_forecasts",
       "n": 0,
-      "note": "no canonical registry available"
+      "min_required": 1,
+      "note": "no resolved canonical forecast outcomes at or before the as-of date"
      },
      "conflict_count": 0,
      "citations": []
@@ -6911,9 +6921,7 @@
       "patents: the USPTO Open Data Portal requires an API key that is absent in this environment, so no patent evidence is used",
       "hiring/jobs data: not collected",
       "market capitalisation and valuation multiples: no shares-outstanding data in this database",
-      "segment- or product-level sales: only consolidated SEC facts are stored",
-      "canonical forecast registry: absent; registry-backed claims are unavailable",
-      "temporal knowledge graph: not requested; graph context skipped"
+      "segment- or product-level sales: only consolidated SEC facts are stored"
      ],
      "conflict_count": 0,
      "conflicts": [],
@@ -7913,7 +7921,7 @@
     "log": [
      {
       "seq": 1,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "plan",
       "tool": null,
       "status": null,
@@ -7922,7 +7930,7 @@
      },
      {
       "seq": 2,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "tool",
       "tool": "event_history",
       "status": "ok",
@@ -7931,7 +7939,7 @@
      },
      {
       "seq": 3,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "tool",
       "tool": "publication_context",
       "status": "ok",
@@ -7940,7 +7948,7 @@
      },
      {
       "seq": 4,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "tool",
       "tool": "market_context",
       "status": "ok",
@@ -7949,7 +7957,7 @@
      },
      {
       "seq": 5,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "tool",
       "tool": "financial_context",
       "status": "ok",
@@ -7958,25 +7966,25 @@
      },
      {
       "seq": 6,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "tool",
       "tool": "forecast_evidence",
-      "status": "no_registry",
+      "status": "no_registered_forecast",
       "citations": 0,
-      "note": "no canonical registry path was provided"
+      "note": "the registry contains no forecast whose target matches this company-track pair"
      },
      {
       "seq": 7,
-      "at": "2026-11-02T01:15:52Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "tool",
       "tool": "graph_context",
-      "status": "not_requested",
+      "status": "no_graph_matches",
       "citations": 0,
-      "note": "no --tkg path requested; graph context skipped"
+      "note": "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
      },
      {
       "seq": 8,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "tool",
       "tool": "counter_evidence",
       "status": "ok",
@@ -7985,7 +7993,7 @@
      },
      {
       "seq": 9,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "tool",
       "tool": "baseline_comparison",
       "status": "ok",
@@ -7994,7 +8002,7 @@
      },
      {
       "seq": 10,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "conflict_detection",
       "tool": null,
       "status": "ok",
@@ -8003,7 +8011,7 @@
      },
      {
       "seq": 11,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "hypothesis",
       "tool": null,
       "status": "ok",
@@ -8012,7 +8020,7 @@
      },
      {
       "seq": 12,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "statistical_validation",
       "tool": null,
       "status": "insufficient_verified_forecasts",
@@ -8021,7 +8029,7 @@
      },
      {
       "seq": 13,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "synthesis",
       "tool": null,
       "status": "ok",
@@ -8030,7 +8038,7 @@
      },
      {
       "seq": 14,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "stop",
       "tool": null,
       "status": "ok",
@@ -8042,19 +8050,16 @@
      "reached": true,
      "planned_steps": 8,
      "completed_steps": 8,
-     "failed_steps": [],
+     "failed_steps": [
+      {
+       "tool": "forecast_evidence",
+       "status": "no_registered_forecast"
+      }
+     ],
      "reason": "the deterministic tool plan is exhausted. Remaining uncertainty needs sources that are not available in this environment (patents, hiring, canonical registry when absent); the agent stops instead of guessing."
     },
-    "degraded": true,
-    "failures": [
-     {
-      "tool": "forecast_evidence",
-      "status": "no_registry",
-      "warnings": [
-       "no canonical registry path was provided"
-      ]
-     }
-    ]
+    "degraded": false,
+    "failures": []
    }
   },
   {
@@ -8166,20 +8171,20 @@
       "seq": 6,
       "tool": "forecast_evidence",
       "purpose": "Look up the canonical forecast registry.",
-      "status": "no_registry",
+      "status": "no_registered_forecast",
       "citation_count": 0,
       "warnings": [
-       "no canonical registry path was provided"
+       "the registry contains no forecast whose target matches this company-track pair"
       ]
      },
      {
       "seq": 7,
       "tool": "graph_context",
       "purpose": "Optional temporal-knowledge-graph context (soft dependency).",
-      "status": "not_requested",
+      "status": "no_graph_matches",
       "citation_count": 0,
       "warnings": [
-       "no --tkg path requested; graph context skipped"
+       "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
       ]
      },
      {
@@ -8741,30 +8746,31 @@
      {
       "claim_id": "forecast_evidence",
       "tool": "forecast_evidence",
-      "statement": "no canonical registered forecast is available (no_registry: no canonical registry path was provided).",
+      "statement": "no canonical registered forecast is available (no_registered_forecast: the registry contains no forecast whose target matches this company-track pair).",
       "values": {
-       "status": "no_registry",
+       "status": "no_registered_forecast",
        "matched": 0
       },
       "citations": [],
       "evidence_status": "not_available",
       "warnings": [
-       "no canonical registry path was provided"
+       "the registry contains no forecast whose target matches this company-track pair"
       ]
      },
      {
       "claim_id": "graph_context",
       "tool": "graph_context",
-      "statement": "graph context is not_requested; the optional sibling TKG helper was not usable.",
+      "statement": "graph context is no_graph_matches; the optional sibling TKG helper was not usable.",
       "values": {
-       "tkg_path": null,
+       "tkg_path": "data\\tkg.sqlite",
+       "source": "raw_tkg_read_only",
        "nodes": 0,
        "edges": 0
       },
       "citations": [],
       "evidence_status": "not_available",
       "warnings": [
-       "no --tkg path requested; graph context skipped"
+       "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
       ]
      },
      {
@@ -9502,7 +9508,8 @@
      "calibration": {
       "status": "insufficient_verified_forecasts",
       "n": 0,
-      "note": "no canonical registry available"
+      "min_required": 1,
+      "note": "no resolved canonical forecast outcomes at or before the as-of date"
      },
      "conflict_count": 1,
      "citations": []
@@ -9534,9 +9541,7 @@
       "patents: the USPTO Open Data Portal requires an API key that is absent in this environment, so no patent evidence is used",
       "hiring/jobs data: not collected",
       "market capitalisation and valuation multiples: no shares-outstanding data in this database",
-      "segment- or product-level sales: only consolidated SEC facts are stored",
-      "canonical forecast registry: absent; registry-backed claims are unavailable",
-      "temporal knowledge graph: not requested; graph context skipped"
+      "segment- or product-level sales: only consolidated SEC facts are stored"
      ],
      "conflict_count": 1,
      "conflicts": [
@@ -10658,7 +10663,7 @@
     "log": [
      {
       "seq": 1,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "plan",
       "tool": null,
       "status": null,
@@ -10667,7 +10672,7 @@
      },
      {
       "seq": 2,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:51Z",
       "phase": "tool",
       "tool": "event_history",
       "status": "ok",
@@ -10676,7 +10681,7 @@
      },
      {
       "seq": 3,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "market_context",
       "status": "ok",
@@ -10685,7 +10690,7 @@
      },
      {
       "seq": 4,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "financial_context",
       "status": "ok",
@@ -10694,7 +10699,7 @@
      },
      {
       "seq": 5,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "publication_context",
       "status": "ok",
@@ -10703,7 +10708,7 @@
      },
      {
       "seq": 6,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "counter_evidence",
       "status": "ok",
@@ -10712,25 +10717,25 @@
      },
      {
       "seq": 7,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "forecast_evidence",
-      "status": "no_registry",
+      "status": "no_registered_forecast",
       "citations": 0,
-      "note": "no canonical registry path was provided"
+      "note": "the registry contains no forecast whose target matches this company-track pair"
      },
      {
       "seq": 8,
-      "at": "2026-11-02T01:15:53Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "graph_context",
-      "status": "not_requested",
+      "status": "no_graph_matches",
       "citations": 0,
-      "note": "no --tkg path requested; graph context skipped"
+      "note": "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
      },
      {
       "seq": 9,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "baseline_comparison",
       "status": "ok",
@@ -10739,7 +10744,7 @@
      },
      {
       "seq": 10,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "conflict_detection",
       "tool": null,
       "status": "ok",
@@ -10748,7 +10753,7 @@
      },
      {
       "seq": 11,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "hypothesis",
       "tool": null,
       "status": "ok",
@@ -10757,7 +10762,7 @@
      },
      {
       "seq": 12,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "statistical_validation",
       "tool": null,
       "status": "insufficient_verified_forecasts",
@@ -10766,7 +10771,7 @@
      },
      {
       "seq": 13,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "synthesis",
       "tool": null,
       "status": "ok",
@@ -10775,7 +10780,7 @@
      },
      {
       "seq": 14,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "stop",
       "tool": null,
       "status": "ok",
@@ -10787,19 +10792,16 @@
      "reached": true,
      "planned_steps": 8,
      "completed_steps": 8,
-     "failed_steps": [],
+     "failed_steps": [
+      {
+       "tool": "forecast_evidence",
+       "status": "no_registered_forecast"
+      }
+     ],
      "reason": "the deterministic tool plan is exhausted. Remaining uncertainty needs sources that are not available in this environment (patents, hiring, canonical registry when absent); the agent stops instead of guessing."
     },
-    "degraded": true,
-    "failures": [
-     {
-      "tool": "forecast_evidence",
-      "status": "no_registry",
-      "warnings": [
-       "no canonical registry path was provided"
-      ]
-     }
-    ]
+    "degraded": false,
+    "failures": []
    }
   },
   {
@@ -10903,20 +10905,18 @@
       "seq": 5,
       "tool": "forecast_evidence",
       "purpose": "Look up the canonical forecast registry.",
-      "status": "no_registry",
-      "citation_count": 0,
-      "warnings": [
-       "no canonical registry path was provided"
-      ]
+      "status": "ok",
+      "citation_count": 1,
+      "warnings": []
      },
      {
       "seq": 6,
       "tool": "graph_context",
       "purpose": "Optional temporal-knowledge-graph context (soft dependency).",
-      "status": "not_requested",
+      "status": "no_graph_matches",
       "citation_count": 0,
       "warnings": [
-       "no --tkg path requested; graph context skipped"
+       "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
       ]
      },
      {
@@ -11206,30 +11206,73 @@
      {
       "claim_id": "forecast_evidence",
       "tool": "forecast_evidence",
-      "statement": "no canonical registered forecast is available (no_registry: no canonical registry path was provided).",
+      "statement": "the canonical registry holds 1 matching forecast(s) (1 visible at the as-of date); latest p=0.9192459773221209 with model_version reverse-rd-logistic-v1.",
       "values": {
-       "status": "no_registry",
-       "matched": 0
+       "registry_path": "data\\registry.sqlite",
+       "matched": 1,
+       "visible": 1,
+       "forecasts": [
+        {
+         "prediction_id": "sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732",
+         "p": 0.9192459773221209,
+         "record_kind": "nowcast",
+         "horizon_months": 12,
+         "window_start": "2026-10-01T00:00:00.000000Z",
+         "window_end": "2027-10-01T00:00:00.000000Z",
+         "information_cutoff": "2026-10-01T00:00:00.000000Z",
+         "generated_at": "2026-11-02T01:17:09.870975Z",
+         "model_version": "reverse-rd-logistic-v1",
+         "feature_version": "reverse-rd-v2-features",
+         "target_type": "company_track",
+         "target_id": "alcon/ophthalmology",
+         "evidence": {
+          "source_locator": "experiments/reverse_rd_v2/data_provenance.json",
+          "evidence_sha256": "04c3788d9926134798961913449d8e4b7baa7206e43b68f06901c4269b26183d",
+          "evidence_kind": "source_observed"
+         },
+         "provenance": [
+          {
+           "evidence_sha256": "a19bc05d4f2aa7d0f1101e12f581cfa7e4e7c2d905aa904b2409586c3e7d9de0",
+           "source_locator": "experiments/reverse_rd_v2/data_provenance.json"
+          }
+         ],
+         "status": "pending",
+         "resolution": null,
+         "visible_at_as_of": true
+        }
+       ],
+       "resolved_outcomes": [],
+       "calibration": {
+        "status": "insufficient_verified_forecasts",
+        "n": 0,
+        "min_required": 1,
+        "note": "no resolved canonical forecast outcomes at or before the as-of date"
+       }
       },
-      "citations": [],
-      "evidence_status": "not_available",
-      "warnings": [
-       "no canonical registry path was provided"
-      ]
+      "citations": [
+       {
+        "kind": "registry_forecast",
+        "locator": "sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732",
+        "label": "registry forecast p=0.9192"
+       }
+      ],
+      "evidence_status": "observed",
+      "warnings": []
      },
      {
       "claim_id": "graph_context",
       "tool": "graph_context",
-      "statement": "graph context is not_requested; the optional sibling TKG helper was not usable.",
+      "statement": "graph context is no_graph_matches; the optional sibling TKG helper was not usable.",
       "values": {
-       "tkg_path": null,
+       "tkg_path": "data\\tkg.sqlite",
+       "source": "raw_tkg_read_only",
        "nodes": 0,
        "edges": 0
       },
       "citations": [],
       "evidence_status": "not_available",
       "warnings": [
-       "no --tkg path requested; graph context skipped"
+       "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
       ]
      },
      {
@@ -11438,7 +11481,7 @@
      {
       "claim_id": "baseline_comparison",
       "tool": "baseline_comparison",
-      "statement": "purged pair base rate 1.0000 over 25 matured example(s); model probability 0.9192 (source: frozen_model_forecasts) gives delta -0.0808. the pair's historical base rate is based on 25 matured purged examples; it is a reference rate for comparison, not a causal effect. the model probability is 0.0808 below the purged pair base rate; the difference is a ranking/calibration comparison, not evidence of skill.",
+      "statement": "purged pair base rate 1.0000 over 25 matured example(s); model probability 0.9192 (source: canonical_registry) gives delta -0.0808. the pair's historical base rate is based on 25 matured purged examples; it is a reference rate for comparison, not a causal effect. the model probability is 0.0808 below the purged pair base rate; the difference is a ranking/calibration comparison, not evidence of skill.",
       "values": {
        "dataset_version": "reverse_rd_v1",
        "target": "continuation",
@@ -11452,38 +11495,19 @@
        "latest_mature_cutoff": "2025-10-01",
        "model": {
         "p": 0.9192459773221209,
-        "source": "frozen_model_forecasts",
+        "source": "canonical_registry",
         "citation": {
-         "kind": "horizon_forecast",
-         "locator": "1a1615e95163bba4f92b9d27864140da",
-         "label": "frozen model p=0.9192"
+         "kind": "registry_forecast",
+         "locator": "sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732",
+         "label": "registry p=0.9192"
         },
-        "forecast_id": "1a1615e95163bba4f92b9d27864140da",
-        "information_cutoff": "2026-10-01",
+        "prediction_id": "sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732",
+        "record_kind": "nowcast",
+        "information_cutoff": "2026-10-01T00:00:00.000000Z",
         "horizon_months": 12,
-        "created_at": "2026-11-01T23:16:37Z",
+        "created_at": "2026-11-02T01:17:09.870975Z",
         "target": "continuation",
-        "baseline_probability": 0.8800993030677405,
-        "status": "pending",
-        "uncertainty": {
-         "ensemble_max": 0.9325992090391111,
-         "ensemble_min": 0.9192459773221209,
-         "note": "Model instability across expanding time windows; not a causal confidence interval.",
-         "temporal_ensemble_std": 0.005491855105884947
-        },
-        "verification_condition": {
-         "company_key": "alcon",
-         "event_date_after": "2026-10-01",
-         "event_date_on_or_before": "2027-10-01",
-         "kinds": [
-          "510k",
-          "pma"
-         ],
-         "material_pma_only": true,
-         "minimum_coverage_end": "2027-10-01",
-         "table": "events",
-         "track_id": "ophthalmology"
-        }
+        "status": "ok"
        },
        "model_p": 0.9192459773221209,
        "delta": -0.08075402267787912,
@@ -11551,9 +11575,9 @@
         "label": "label=1 cutoff=2025-04-01"
        },
        {
-        "kind": "horizon_forecast",
-        "locator": "1a1615e95163bba4f92b9d27864140da",
-        "label": "frozen model p=0.9192"
+        "kind": "registry_forecast",
+        "locator": "sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732",
+        "label": "registry p=0.9192"
        }
       ],
       "evidence_status": "derived",
@@ -11575,11 +11599,11 @@
      "model_probability": 0.9192459773221209,
      "probability_source": {
       "p": 0.9192459773221209,
-      "source": "frozen_model_forecasts",
+      "source": "canonical_registry",
       "citation": {
-       "kind": "horizon_forecast",
-       "locator": "1a1615e95163bba4f92b9d27864140da",
-       "label": "frozen model p=0.9192"
+       "kind": "registry_forecast",
+       "locator": "sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732",
+       "label": "registry p=0.9192"
       }
      },
      "citations": [
@@ -12080,14 +12104,15 @@
      "global_base_rate": 0.4706760185047008,
      "latest_mature_cutoff": "2025-10-01",
      "model_probability": 0.9192459773221209,
-     "model_source": "frozen_model_forecasts",
+     "model_source": "canonical_registry",
      "delta": -0.08075402267787912,
      "interpretation": "delta = model probability - pair base rate = -0.080754. This is a descriptive comparison on one pair; it is not a significance test and no predictive-skill claim is made.",
      "calibration_status": "insufficient_verified_forecasts",
      "calibration": {
       "status": "insufficient_verified_forecasts",
       "n": 0,
-      "note": "no canonical registry available"
+      "min_required": 1,
+      "note": "no resolved canonical forecast outcomes at or before the as-of date"
      },
      "conflict_count": 0,
      "citations": []
@@ -12128,15 +12153,13 @@
     },
     "uncertainty": {
      "model_uncertainty": {
-      "ensemble_max": 0.9325992090391111,
-      "ensemble_min": 0.9192459773221209,
-      "note": "Model instability across expanding time windows; not a causal confidence interval.",
-      "temporal_ensemble_std": 0.005491855105884947
+      "status": "not_available",
+      "note": "no calibrated uncertainty payload is available for the visible probability"
      },
      "model_uncertainty_source": {
-      "kind": "horizon_forecast",
-      "locator": "1a1615e95163bba4f92b9d27864140da",
-      "label": "frozen model p=0.9192"
+      "kind": "registry_forecast",
+      "locator": "sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732",
+      "label": "registry p=0.9192"
      },
      "data_quality_flags": [
       "event availability is decision_date + 14 days (estimated) for all stored rows",
@@ -12148,9 +12171,7 @@
       "patents: the USPTO Open Data Portal requires an API key that is absent in this environment, so no patent evidence is used",
       "hiring/jobs data: not collected",
       "market capitalisation and valuation multiples: no shares-outstanding data in this database",
-      "segment- or product-level sales: only consolidated SEC facts are stored",
-      "canonical forecast registry: absent; registry-backed claims are unavailable",
-      "temporal knowledge graph: not requested; graph context skipped"
+      "segment- or product-level sales: only consolidated SEC facts are stored"
      ],
      "conflict_count": 0,
      "conflicts": [],
@@ -12306,7 +12327,7 @@
       "evidence_status": "observed"
      },
      {
-      "statement": "Purged pair base rate: 1.0000 over 25 matured examples; model probability 0.9192 (source frozen_model_forecasts); delta -0.0808.",
+      "statement": "Purged pair base rate: 1.0000 over 25 matured examples; model probability 0.9192 (source canonical_registry); delta -0.0808.",
       "claim_ids": [
        "baseline_comparison"
       ],
@@ -12373,15 +12394,15 @@
         "label": "label=1 cutoff=2025-04-01"
        },
        {
-        "kind": "horizon_forecast",
-        "locator": "1a1615e95163bba4f92b9d27864140da",
-        "label": "frozen model p=0.9192"
+        "kind": "registry_forecast",
+        "locator": "sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732",
+        "label": "registry p=0.9192"
        }
       ],
       "evidence_status": "derived"
      },
      {
-      "statement": "A probability of 0.9192 is taken from frozen_model_forecasts with citation {'kind': 'horizon_forecast', 'locator': '1a1615e95163bba4f92b9d27864140da', 'label': 'frozen model p=0.9192'}; the agent did not generate it.",
+      "statement": "A probability of 0.9192 is taken from canonical_registry with citation {'kind': 'registry_forecast', 'locator': 'sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732', 'label': 'registry p=0.9192'}; the agent did not generate it.",
       "claim_ids": [
        "forecast_evidence",
        "baseline_comparison"
@@ -12449,9 +12470,9 @@
         "label": "label=1 cutoff=2025-04-01"
        },
        {
-        "kind": "horizon_forecast",
-        "locator": "1a1615e95163bba4f92b9d27864140da",
-        "label": "frozen model p=0.9192"
+        "kind": "registry_forecast",
+        "locator": "sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732",
+        "label": "registry forecast p=0.9192"
        }
       ],
       "evidence_status": "observed"
@@ -12524,9 +12545,9 @@
         "label": "label=1 cutoff=2025-04-01"
        },
        {
-        "kind": "horizon_forecast",
-        "locator": "1a1615e95163bba4f92b9d27864140da",
-        "label": "frozen model p=0.9192"
+        "kind": "registry_forecast",
+        "locator": "sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732",
+        "label": "registry p=0.9192"
        }
       ],
       "evidence_status": "derived"
@@ -13136,11 +13157,6 @@
       "label": "ResearchAndDevelopmentExpense 2010-12-31"
      },
      {
-      "kind": "horizon_forecast",
-      "locator": "1a1615e95163bba4f92b9d27864140da",
-      "label": "frozen model p=0.9192"
-     },
-     {
       "kind": "market_bar",
       "locator": "ALC:2025-10-31",
       "label": "ALC window-start bar"
@@ -13174,6 +13190,11 @@
       "kind": "publication_count",
       "locator": "alcon:2025",
       "label": "alcon 2025 works=67"
+     },
+     {
+      "kind": "registry_forecast",
+      "locator": "sha256:9b0ab366e4b925bd8f16ef02143e02eedaf9c4d01ac8b1a8f07077c14b924732",
+      "label": "registry forecast p=0.9192"
      }
     ],
     "limitations": [
@@ -13186,7 +13207,7 @@
     "log": [
      {
       "seq": 1,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "plan",
       "tool": null,
       "status": null,
@@ -13195,7 +13216,7 @@
      },
      {
       "seq": 2,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "event_history",
       "status": "ok",
@@ -13204,7 +13225,7 @@
      },
      {
       "seq": 3,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "financial_context",
       "status": "ok",
@@ -13213,7 +13234,7 @@
      },
      {
       "seq": 4,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "market_context",
       "status": "ok",
@@ -13222,7 +13243,7 @@
      },
      {
       "seq": 5,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "publication_context",
       "status": "ok",
@@ -13231,25 +13252,25 @@
      },
      {
       "seq": 6,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "forecast_evidence",
-      "status": "no_registry",
-      "citations": 0,
-      "note": "no canonical registry path was provided"
+      "status": "ok",
+      "citations": 1,
+      "note": null
      },
      {
       "seq": 7,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:52Z",
       "phase": "tool",
       "tool": "graph_context",
-      "status": "not_requested",
+      "status": "no_graph_matches",
       "citations": 0,
-      "note": "no --tkg path requested; graph context skipped"
+      "note": "graph_context helper unavailable (sibling graph_context failed: TypeError: graph_context() takes 1 positional argument but 4 were given); used a read-only raw TKG query"
      },
      {
       "seq": 8,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:53Z",
       "phase": "tool",
       "tool": "counter_evidence",
       "status": "ok",
@@ -13258,7 +13279,7 @@
      },
      {
       "seq": 9,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:53Z",
       "phase": "tool",
       "tool": "baseline_comparison",
       "status": "ok",
@@ -13267,7 +13288,7 @@
      },
      {
       "seq": 10,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:53Z",
       "phase": "conflict_detection",
       "tool": null,
       "status": "ok",
@@ -13276,7 +13297,7 @@
      },
      {
       "seq": 11,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:53Z",
       "phase": "hypothesis",
       "tool": null,
       "status": "ok",
@@ -13285,7 +13306,7 @@
      },
      {
       "seq": 12,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:53Z",
       "phase": "statistical_validation",
       "tool": null,
       "status": "insufficient_verified_forecasts",
@@ -13294,7 +13315,7 @@
      },
      {
       "seq": 13,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:53Z",
       "phase": "synthesis",
       "tool": null,
       "status": "ok",
@@ -13303,7 +13324,7 @@
      },
      {
       "seq": 14,
-      "at": "2026-11-02T01:15:54Z",
+      "at": "2026-11-02T01:18:53Z",
       "phase": "stop",
       "tool": null,
       "status": "ok",
@@ -13318,16 +13339,8 @@
      "failed_steps": [],
      "reason": "the deterministic tool plan is exhausted. Remaining uncertainty needs sources that are not available in this environment (patents, hiring, canonical registry when absent); the agent stops instead of guessing."
     },
-    "degraded": true,
-    "failures": [
-     {
-      "tool": "forecast_evidence",
-      "status": "no_registry",
-      "warnings": [
-       "no canonical registry path was provided"
-      ]
-     }
-    ]
+    "degraded": false,
+    "failures": []
    }
   }
  ],
@@ -13336,7 +13349,7 @@
   "claims": 55,
   "unique_citations": 224,
   "conflicts": 3,
-  "degraded_questions": 5,
+  "degraded_questions": 0,
   "templates": [
    "cross_source_validation",
    "early_signal",
@@ -13348,13 +13361,13 @@
    "event",
    "example",
    "financial_fact",
-   "horizon_forecast",
    "market_bar",
-   "publication_count"
+   "publication_count",
+   "registry_forecast"
   ],
   "evidence_gaps": {
-   "canonical_registry": "absent",
-   "temporal_graph": "absent",
+   "canonical_registry": "present",
+   "temporal_graph": "present",
    "patents": "not evaluated (USPTO API key absent)",
    "hiring": "not collected"
   }

@@ -244,12 +244,98 @@ def _check_v2_experiment(checks: dict) -> None:
         for name in (spec.get("features") or []))
 
 
+def _check_phase3(checks: dict) -> None:
+    """Phase 3 artefacts: canonical nowcast registry, TKG real import, research agent."""
+    v3 = ROOT / "experiments" / "reverse_rd_v2"
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    try:
+        import tempfile
+        from datetime import datetime, timedelta, timezone
+
+        from medradar.forecast_registry import ForecastRegistry
+        from medradar.intelligence import graph_context  # noqa: F401
+        from medradar.intelligence.forecasting import cycle, registry_adapter  # noqa: F401
+        from medradar import research_agent  # noqa: F401
+        checks["v3_modules_importable"] = True
+    except Exception as exc:  # noqa: BLE001 - report, do not crash
+        checks["v3_modules_importable"] = False
+        checks["v3_modules_import_error"] = str(exc)[:200]
+        return
+    sha = "a" * 64
+    spec = {
+        "idempotency_key": "verify-nowcast", "record_kind": "nowcast", "p": 0.4,
+        "horizon_months": 12, "information_cutoff": "2026-01-01T00:00:00Z",
+        "window_start": "2026-01-01T00:00:00Z", "model_version": "verify-model-1",
+        "feature_version": "verify-features-1",
+        "target": {"type": "company_track", "id": "acme:track", "attrs": {"company": "acme"}},
+        "evidence": {"source_locator": "sqlite://verify", "evidence_kind": "source_observed",
+                     "evidence_sha256": sha,
+                     "provenance": [{"source_locator": "sqlite://verify/src", "evidence_sha256": sha}]},
+    }
+    clock = lambda: datetime(2026, 6, 1, tzinfo=timezone.utc)  # noqa: E731
+    with ForecastRegistry(":memory:", clock=clock) as registry:
+        record = registry.register(spec)
+        checks["v3_nowcast_registered"] = (
+            record["record_kind"] == "nowcast"
+            and record["window_start"] == "2026-01-01T00:00:00.000000Z"
+            and record["window_end"] == "2027-01-01T00:00:00.000000Z")
+        try:
+            registry.register({**spec, "idempotency_key": "verify-closed",
+                               "window_start": "2020-01-01T00:00:00Z",
+                               "information_cutoff": "2020-01-01T00:00:00Z"})
+            checks["v3_closed_window_nowcast_rejected"] = False
+        except Exception:  # noqa: BLE001 - rejection is the expected behaviour
+            checks["v3_closed_window_nowcast_rejected"] = True
+    tkg_path = v3 / "tkg_import_report.json"
+    if tkg_path.exists():
+        tkg = json.loads(tkg_path.read_text(encoding="utf-8"))
+        checks["v3_tkg_real_data_report"] = (
+            int((tkg.get("import") or {}).get("counters", {}).get("rows_seen") or 0) > 1000
+            and int((tkg.get("store_counts") or {}).get("nodes") or 0) > 0
+            and (tkg.get("checks") or {}).get("passed") is True
+            and (tkg.get("checks") or {}).get("reimport_idempotent") is True)
+    else:
+        checks["v3_tkg_real_data_report"] = False
+    demo_path = v3 / "agent_demo.json"
+    if demo_path.exists():
+        demo = json.loads(demo_path.read_text(encoding="utf-8"))
+        summary = demo.get("summary") or {}
+        verification = demo.get("verification") or {}
+        checks["v3_agent_demo_cited"] = (
+            int(summary.get("questions") or 0) >= 3
+            and int(summary.get("claims") or 0) > 0
+            and int(summary.get("unique_citations") or 0) > 0
+            and verification.get("ok") is True
+            and not verification.get("citations_missing"))
+        checks["v3_agent_registry_used"] = (
+            (demo.get("registry") or {}).get("present") is True
+            and "registry_forecast" in (summary.get("citation_kinds") or []))
+        checks["v3_agent_tkg_used"] = (demo.get("tkg") or {}).get("present") is True
+    else:
+        checks["v3_agent_demo_cited"] = False
+    cycle_path = v3 / "forecast_cycle_report.json"
+    if cycle_path.exists():
+        cycle_report = json.loads(cycle_path.read_text(encoding="utf-8"))
+        registry_block = cycle_report.get("registry") or {}
+        checks["v3_cycle_registered_nowcasts"] = (
+            int((cycle_report.get("counts") or {}).get("horizon_records") or 0) > 0
+            and int(registry_block.get("by_record_kind", {}).get("nowcast") or 0) > 0
+            and (cycle_report.get("calibration") or {}).get("status") == "insufficient_matured_forecasts")
+    else:
+        checks["v3_cycle_registered_nowcasts"] = False
+    checks["v3_docs_present"] = all(
+        (ROOT / "docs" / name).is_file()
+        for name in ("PHASE3.md", "PHASE3_REGISTRY.md", "PHASE3_AGENT.md", "TKG_INTEGRATION.md"))
+
+
 def main() -> int:
     checks: dict[str, object] = {"version": "v1"}
     _check_offline_suite(checks)
     _check_experiment(checks)
     _check_provenance(checks)
     _check_v2_experiment(checks)
+    _check_phase3(checks)
     ok = all(value is True for key, value in checks.items()
              if key != "version"
              and not key.endswith(("_detail", "_command", "_excluded", "_rows", "_tail", "_numbers")))

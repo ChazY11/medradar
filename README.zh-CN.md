@@ -28,7 +28,10 @@
 | 研究完整性 | 临床暂停、拒绝受理、CRL、预申请与资格认定独立分类；绝对超额收益超过 100% 的案例单列审计并退出推断样本 |
 | Market-to-R&D | 由 55,090 条 FDA 事件 + 43,420 条 SEC 财务事实 + 3,453 条采购授予构造 **6,701 条持续性样本 + 41,003 条"休眠→进入"样本**（25/24 个季度起点）；purged 多窗口评估与 7 组特征消融，负面结果如实报告（见下） |
 | 研究基础设施 | 双时态知识库（valid time / knowledge time）与不可篡改的预测登记簿，支持 as-of 查询和确定性 PIT 导出 |
-| 测试 | **625 个离线测试**，不联网、不需要 API key |
+| 预测闭环 | 规范登记簿新增独立 `nowcast` 队列；持续预测周期登记 25 条真实预测、核验到期结果、导出确定性工件；重跑幂等 |
+| 时序图谱 | 55,090 条事件只读导入 → **57,381 节点 / 114,419 边**；PIT 快照哈希稳定、重复导入幂等、只读 pair 上下文/时间线查询 |
+| 研究 Agent | 确定性 8 工具工作流，逐条引用证据、5 个问题模板、冲突检测与反证；真实演示：5 个问题 / 55 条论点 / 224 个唯一引用 / 0 缺失 |
+| 测试 | **678 个离线测试**，不联网、不需要 API key |
 
 > 数字每周都会变，价值在于每一个数字都能用 `python -m medradar run` 复现。
 
@@ -293,15 +296,47 @@ python experiments/reverse_rd_v2/merge_ablation.py --cells cells --out experimen
 
 研究层下还有两个底座：**双时态知识库**（`medradar/tkg`，独立的 valid-time / knowledge-time 查询、
 确定性 PIT 导出、只读 events 适配器）与**不可篡改预测登记簿**（`medradar/forecast_registry.py`，
-3/6/12/24 日历月窗口、追加式结果修订、as-of Brier/log-loss/ECE 评估）。两者以合成数据测试为主，
-本身不附带任何真实数据准确率声明。
+3/6/12/24 日历月窗口、追加式结果修订、as-of Brier/log-loss/ECE 评估）。
+
+## Phase 3：研究闭环
+
+- **统一预测账本**：规范登记簿为唯一事实来源，新增不可变 `nowcast` 记录类型（窗口已打开时登记的
+  真实前瞻预测，即季度 Horizon 场景），单独成队列、绝不混入"纯未来"主口径。
+  `registry_adapter.py` 用稳定幂等键映射 Horizon 记录，并按来源覆盖门槛从真实事件表结算到期预测。
+- **持续预测周期**：`scripts/forecast_cycle.py` 训练冻结模型 → 评分当前季度 → 登记 nowcast →
+  核验到期 → 导出确定性工件与周期日志。真实运行：25 条 nowcast 登记、25 条 pending（窗口 2027-10
+  结束）、校准状态 `insufficient_matured_forecasts`、第二次运行完全幂等。周度 GitHub workflow 已提交
+  （`forecast-cycle.yml`）但未在本环境执行，不声称 CI 通过。
+- **时序图谱**：`scripts/tkg_import_research.py` 把真实 55,090 条事件只读导入双时态库
+  （171,800 条断言 → 57,381 节点 / 114,419 边，源文件哈希不变），导出确定性 PIT 快照并证明重复导入
+  幂等；`graph_context.py` 提供只读 pair 上下文/时间线（独立 known-time/valid-time 截断）。
+- **研究 Agent**：`medradar/research_agent.py` 是确定性的证据驱动工作流（不是聊天机器人）：
+  plan → 8 个时点工具 → 证据表 → 5 条冲突规则 → 带标签的假设 → 反证 → 基线/统计校验 → 引用式综合 →
+  不确定性 → 研究日志 → 停止条件。每条论点都引用真实存储 id，概率只来自模型/登记簿。真实演示
+  （`experiments/reverse_rd_v2/agent_demo.json`）：5 个问题、55 条论点、224 个唯一引用、
+  314 次引用校验、0 缺失、3 个跨来源冲突。
+
+**不声称**：尚无到期预测（校准为 `insufficient_data`）；当前导入的 TKG knowledge clock 是回填时间
+（不是历史公开时间）；Agent 只叙述存储证据，不做因果断言；专利/招聘仍是明确的证据缺口。详见
+[docs/PHASE3.md](docs/PHASE3.md)、[PHASE3_REGISTRY](docs/PHASE3_REGISTRY.md)、
+[PHASE3_AGENT](docs/PHASE3_AGENT.md)、[TKG_INTEGRATION](docs/TKG_INTEGRATION.md)。
+
+```bash
+python scripts/forecast_cycle.py --db data/research.sqlite --registry data/registry.sqlite \
+  --out out/forecast_cycle --horizon 12 --top-n 25 --coverage-end 2026-10-15 --offline
+python scripts/tkg_import_research.py --db data/research.sqlite --tkg data/tkg.sqlite \
+  --known-at 2026-12-31T00:00:00Z --report-out experiments/reverse_rd_v2/tkg_import_report.json
+python -m medradar.research_agent ask --company medtronic --track spine \
+  --template market_leading_indicator --as-of 2026-11-02 \
+  --db data/research.sqlite --registry data/registry.sqlite --tkg data/tkg.sqlite
+```
 
 SEC 营收始终保持公司合并口径，不会冒充产品或器械业务收入。USAspending 合同授予金额不等于营收，
 其当前快照不参与历史增益结论。完整口径见 [Reverse R&D 方法](docs/REVERSE_RD.md)、
 [集成记录](docs/INTEGRATION_2026-11-02.md)、[docs/TKG.md](docs/TKG.md)、
 [docs/FORECAST_REGISTRY.md](docs/FORECAST_REGISTRY.md)、[Phase 1](docs/PHASE1.md)、
-[Phase 2](docs/PHASE2.md)；冻结实验配置与真实结果位于 `experiments/reverse_rd_v1/`（v1）与
-`experiments/reverse_rd_v2/`（v2 多窗口 + 来源消融）。
+[Phase 2](docs/PHASE2.md)、[Phase 3](docs/PHASE3.md)；冻结实验配置与真实结果位于
+`experiments/reverse_rd_v1/`（v1）与 `experiments/reverse_rd_v2/`（v2 多窗口 + 来源消融 + Phase 3 报告）。
 
 ## 模拟美股：定位与边界
 
@@ -356,8 +391,10 @@ tests/          离线测试（合成 fixture，不联网）
 - [x] `v0.4.0` Phase 2 —— 市场特征（本地日线：12 个月收益、波动、回撤、相对 SPY/XBI、市场状态）
   与 OpenAlex 论文特征，全部 point-in-time；冻结 A–G 来源消融（专利因 API key 缺失未评估，
   采购因快照不可作时点使用而排除，均已写明）
-- [ ] Phase 3 —— 建立在 TKG 之上的研究 Agent（多步证据检索、反面证据搜索）、Horizon 预测统一写入登记簿、
-  持续预测调度
+- [x] `v0.5.0` Phase 3 —— 规范登记簿新增独立 nowcast 队列、Horizon 适配器与幂等持续预测周期；
+  真实 55,090 条事件导入双时态 TKG（确定性 PIT 快照）；确定性、证据驱动的研究 Agent（引用式综合 + 反证）
+- [ ] Phase 3 剩余 —— 窗口到期后在 GitHub 执行周度 workflow（需要 ≥20 条到期预测才能谈校准）；
+  把图特征接入模型而不只是 Agent
 - [ ] Phase 2 剩余 —— 拿到 USPTO ODP API key 后补专利特征；用版本化历史赛道分类替代当前静态映射
 - [ ] 因果设计（DiD / 合成控制）—— 需要先有可辩护的时点需求冲击
 - [ ] NMPA CSV 导入向导 + 省级空白度
