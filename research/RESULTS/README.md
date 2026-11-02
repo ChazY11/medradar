@@ -55,3 +55,7 @@ split was degenerate. Details and all numbers: `cycle2_2026-11-02.md` and
 | R16 | The Bayes factor wins on the deterministic-track-only panel (+0.039 [+0.003,+0.071]) but loses on the other two panels: no stable preference | mixed / not robust | `experiments/detect_v1/benchmark.json` |
 | R17 | Absolute detection is low: ~22% of shifts overall, ~50% of 5× shifts; a 2× change is undetectable at an honest budget. Data density, not the algorithm, is binding | finding | `experiments/detect_v1/REPORT.md` §6 |
 | R18 | Real-data independence/confirmation is **blocked** on the current spine; the only available "independent" pathway shares the filing system | blocked | `docs/research/DETECTION_DESIGN_REVIEW.md` |
+| R19 | Pre-declared sensitivity: quarterly aggregation **reverses** the detector ranking — Bayes factor 0.129 vs naive 0.025, paired +0.104 [+0.068,+0.140] | **correction to R15** | `experiments/detect_v1/benchmark.json` §track_quarterly |
+| R20 | Removing 15.01% Special 510(k)s leaves the naive detector best and makes likelihood detectors worse: the monthly comparison is not maintenance noise | confirms R15 locally | `benchmark.json` §track_no_special |
+| R21 | Masking product codes first seen 2022+ changes nothing material: taxonomy churn is concentrated, not global | confirms R15 locally | `benchmark.json` §track_stable_codes |
+| R22 | Detector ranking is resolution-dependent on this lane; the mechanism (expected count per bin) is a hypothesis awaiting a bin-width sweep | finding | `research/RESULTS/cycle3b_correction_2026-11-02.md` |

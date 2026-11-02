@@ -140,15 +140,18 @@ def group_of(cell: dict[str, Any]) -> str:
 
 
 # ------------------------------------------------------------------------ trials
-def build_trials(cells: Sequence[dict[str, Any]], labels: Sequence[str]
+def build_trials(cells: Sequence[dict[str, Any]], labels: Sequence[str],
+                 onsets: Sequence[int] = ONSETS,
+                 horizon: int = HORIZON_MONTHS,
+                 min_baseline: int = MIN_BASELINE_MONTHS
                  ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Build every injected trial ONCE, so all detectors see identical series."""
     months = len(labels)
     shifts: list[dict[str, Any]] = []
     spikes: list[dict[str, Any]] = []
     for cell in cells:
-        for onset in ONSETS:
-            if onset < MIN_BASELINE_MONTHS or onset + HORIZON_MONTHS > months:
+        for onset in onsets:
+            if onset < min_baseline or onset + horizon > months:
                 continue
             for multiplier in MULTIPLIERS:
                 base = f"{cell['entity']}|{group_of(cell)}|{onset}|{multiplier}"
@@ -171,13 +174,13 @@ def build_trials(cells: Sequence[dict[str, Any]], labels: Sequence[str]
 
 def score_detector(detector: Callable[[list], list[dict]], shifts: list[dict[str, Any]],
                    spikes: list[dict[str, Any]], control_cells: Sequence[dict[str, Any]],
-                   labels: Sequence[str]) -> dict[str, Any]:
+                   labels: Sequence[str], horizon: int = HORIZON_MONTHS) -> dict[str, Any]:
     """Return per-trial rows plus the uninjected false-alarm rate."""
     shift_rows = []
     for trial in shifts:
         detections = detector(trial["stream"])
         window = [d for d in detections
-                  if trial["onset"] - ONSET_TOLERANCE_MONTHS <= d["index"] <= trial["onset"] + HORIZON_MONTHS
+                  if trial["onset"] - ONSET_TOLERANCE_MONTHS <= d["index"] <= trial["onset"] + horizon
                   and d.get("direction", "up") == "up"]
         shift_rows.append({
             "entity": trial["entity"], "group": trial["group"],
@@ -188,7 +191,7 @@ def score_detector(detector: Callable[[list], list[dict]], shifts: list[dict[str
     spike_rows = []
     for trial in spikes:
         detections = detector(trial["stream"])
-        declared = any(trial["onset"] - ONSET_TOLERANCE_MONTHS <= d["index"] <= trial["onset"] + HORIZON_MONTHS
+        declared = any(trial["onset"] - ONSET_TOLERANCE_MONTHS <= d["index"] <= trial["onset"] + horizon
                        and d.get("direction", "up") == "up" for d in detections)
         spike_rows.append({"entity": trial["entity"], "group": trial["group"],
                            "multiplier": trial["multiplier"], "declared": bool(declared)})
@@ -254,11 +257,27 @@ def best_under(entries: list[dict[str, Any]], far_budget: float) -> dict[str, An
 
 
 # ------------------------------------------------------------------------- driver
-def run_level(level_key: str, cells: list[dict[str, Any]], labels: list[str]) -> dict[str, Any]:
+def run_level(level_key: str, cells: list[dict[str, Any]], labels: list[str], *,
+              bin_months: int = 1) -> dict[str, Any]:
+    """Score every detector's frontier on one panel.
+
+    ``bin_months`` scales the pre-registered monthly constants to the panel's bin size:
+    onsets, horizon and minimum baseline are all divided by it, so a 3-month panel uses
+    the same *calendar* onsets and the same 12-month horizon expressed in bins.
+    """
     _calibration, evaluation_cells = split_cells(cells)
-    shifts, spikes = build_trials(evaluation_cells, labels)
+    onsets = tuple(max(1, onset // bin_months) for onset in ONSETS)
+    horizon = max(1, HORIZON_MONTHS // bin_months)
+    min_baseline = max(1, MIN_BASELINE_MONTHS // bin_months)
+    shifts, spikes = build_trials(evaluation_cells, labels, onsets=onsets,
+                                  horizon=horizon, min_baseline=min_baseline)
     output: dict[str, Any] = {
         "level": level_key,
+        "bin_months": bin_months,
+        "bins": len(labels),
+        "onsets_used": list(onsets),
+        "horizon_bins": horizon,
+        "min_baseline_bins": min_baseline,
         "cells_total": len(cells),
         "evaluation_cells": len(evaluation_cells),
         "evaluation_entities": len({cell["entity"] for cell in evaluation_cells}),
@@ -276,7 +295,8 @@ def run_level(level_key: str, cells: list[dict[str, Any]], labels: list[str]) ->
         entries = []
         for knob in grid:
             detector = make_detector(name, knob)
-            score = score_detector(detector, shifts, spikes, evaluation_cells, labels)
+            score = score_detector(detector, shifts, spikes, evaluation_cells, labels,
+                                   horizon=horizon)
             scores[(name, knob)] = score
             entries.append({"knob": knob, **frontier_entry(score)})
         output["detectors"][name] = {"knob_name": kwarg, "frontier": entries}
@@ -337,6 +357,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--streams", default="experiments/detect_v1/streams.json")
     parser.add_argument("--out", default="experiments/detect_v1/benchmark.json")
+    parser.add_argument("--ext", default="experiments/detect_v1/streams_ext.json")
     args = parser.parse_args(argv)
 
     payload = json.loads(Path(args.streams).read_text(encoding="utf-8"))
@@ -364,14 +385,36 @@ def main(argv: list[str] | None = None) -> int:
         },
         "levels": {},
     }
-    for level_key, cells in (("track", payload["track_cells"]),
-                             ("track_clean", payload.get("track_cells_clean", [])),
-                             ("domain", payload["domain_cells"])):
+    level_specs: list[tuple[str, list[dict[str, Any]], list[str], int]] = [
+        ("track", payload["track_cells"], labels, 1),
+        ("track_clean", payload.get("track_cells_clean", []), labels, 1),
+        ("domain", payload["domain_cells"], labels, 1),
+    ]
+    ext_path = Path(args.ext) if args.ext else Path("experiments/detect_v1/streams_ext.json")
+    if ext_path.exists():
+        ext = json.loads(ext_path.read_text(encoding="utf-8"))
+        quarter_labels = ext["quarter_labels"]
+        level_specs.extend([
+            ("track_no_special", ext["track_no_special"], labels, 1),
+            ("track_stable_codes", ext["track_stable_codes"], labels, 1),
+            ("track_quarterly", ext["track_quarterly"], quarter_labels, 3),
+        ])
+        results["design"]["ext"] = {
+            "path": str(ext_path),
+            "decision": ext.get("decision"),
+            "filters": ext.get("filters"),
+            "summaries": {key: ext[key] for key in
+                          ("track_no_special_summary", "track_stable_codes_summary",
+                           "track_quarterly_summary")},
+        }
+    for level_key, cells, level_labels, bin_months in level_specs:
         if not cells:
             print(f"level {level_key}: no cells (skipped)")
             continue
-        print(f"level {level_key}: {len(cells)} cells")
-        results["levels"][level_key] = run_level(level_key, cells, labels)
+        print(f"level {level_key}: {len(cells)} cells, {len(level_labels)} bins "
+              f"({bin_months}-month)")
+        results["levels"][level_key] = run_level(level_key, cells, level_labels,
+                                                 bin_months=bin_months)
 
     write_json(Path(args.out), results)
     print(f"wrote {args.out}")
@@ -380,4 +423,6 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
 

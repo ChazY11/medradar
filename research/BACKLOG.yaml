@@ -1,4 +1,4 @@
-# MedRadar Foresight Lab — backlog
+﻿# MedRadar Foresight Lab — backlog
 # Realigned 2026-11-02 to Observe -> Understand -> Anticipate (DECISIONS D-011).
 # layer: observe | understand | anticipate | foundation | outside-mission
 # priority: P0 = scientific reliability floor; P1 = technology-change detection / observe;
@@ -260,7 +260,7 @@ tasks:
     layer: observe
     priority: P1
     title: Quarterly aggregation and density-stratified detection
-    status: todo
+    status: done
     owner: unassigned
     depends_on: [B-023]
     acceptance: >
@@ -273,7 +273,7 @@ tasks:
     layer: observe
     priority: P1
     title: Separate technical activity from product maintenance
-    status: todo
+    status: done
     owner: unassigned
     acceptance: >
       A defensible filter for 510(k) "Special" submissions (modifications of the filer's own
@@ -284,7 +284,7 @@ tasks:
     layer: observe
     priority: P1
     title: Taxonomy churn control (versioned mapping with effective dates)
-    status: todo
+    status: done
     owner: unassigned
     depends_on: [B-032]
     acceptance: >
@@ -302,3 +302,19 @@ tasks:
       Month-of-year and lane-wide volume effects estimated and removed (or explicitly conditioned on)
       before detection; the January deficit and boundary-volume artifacts documented in the design
       review are quantified and either corrected or stated as an upper bound on the false-alarm rate.
+
+
+  - id: B-038
+    layer: observe
+    priority: P0
+    title: Bin-width sweep to locate the resolution crossover
+    status: todo
+    owner: lead
+    depends_on: [B-034]
+    acceptance: >
+      Re-run the controlled-truth benchmark at 1, 2, 3, 4 and 6 month bins with identical
+      onsets-in-calendar-time, horizon and alarm budget. Report detection probability per detector
+      and the expected count per bin at each width, and test whether the naive-to-likelihood
+      crossover tracks the expected count per bin rather than the aggregation label. This decides
+      which detector the OBSERVE layer should actually deploy, and whether the D-018 mechanism
+      hypothesis survives.

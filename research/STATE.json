@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-02T11:40:00+08:00",
+  "updated_at": "2026-11-02T12:10:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "observe_change_detection_complete",
+  "phase": "observe_detection_resolution_sweep",
   "cycle": 4,
   "last_completed_cycle": {
-    "cycle": 3,
-    "name": "observe_change_detection",
+    "cycle": "3b",
+    "name": "detection_sensitivity_and_correction",
     "branch": "research/change-detection-v1",
     "report": "experiments/detect_v1/REPORT.md",
-    "summary": "research/RESULTS/cycle3_detection_2026-11-02.md",
-    "verdict": "the simple rate-multiplier alert is not beaten at a matched 2% false-alarm budget; absolute detection is low and limited by data density"
+    "summary": "research/RESULTS/cycle3b_correction_2026-11-02.md",
+    "verdict": "detector ranking is resolution-dependent: the naive alert wins monthly but the Poisson Bayes factor wins quarterly (+0.104 [+0.068,+0.140]); maintenance and churn sensitivities confirm the monthly result"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -32,8 +32,15 @@
   "layer_status": {
     "observe": {
       "state": "data spine + entity universe + a working change detector with measured operating characteristics",
-      "measured": "at a 2% per-stream false-alarm budget the best detector recovers 0.223 of injected sustained shifts; ~0.5 of 5x shifts; 2x shifts are undetectable",
-      "gaps": ["hiring not collected", "patents not collected", "8-K CIK linking missing (19,616 events)", "taxonomy not versioned by effective date", "no seasonal adjustment", "no Special-510k filter"]
+      "measured": "monthly (104 cells): best detector recovers 0.223 of injected sustained shifts; quarterly: Bayes factor 0.129, naive 0.025. Detector ranking is resolution-dependent. 2x shifts remain undetectable at any honest budget; data density is the binding constraint.",
+      "gaps": [
+        "hiring not collected",
+        "patents not collected",
+        "8-K CIK linking missing (19,616 events)",
+        "no independent source to confirm a detected change",
+        "no seasonal adjustment; lane-wide boundary volume artifacts",
+        "Special 510(k)s (15.01%) are not separated in the primary panel"
+      ]
     },
     "understand": {
       "state": "prototypes only; no validated research-quality output",
@@ -49,11 +56,29 @@
       "cells": 104,
       "window": "2016-11..2026-09 (partial final month excluded)",
       "budget": 0.02,
-      "detection_probability": {"naive_multiplier": 0.223, "poisson_cusum": 0.181,
-                                "poisson_bayes_factor": 0.122, "rolling_zscore": 0.112},
-      "paired_vs_naive": {"poisson_bayes_factor": [-0.101, -0.134, -0.067],
-                          "poisson_cusum": [-0.042, -0.070, -0.012],
-                          "rolling_zscore": [-0.111, -0.153, -0.070]}
+      "detection_probability": {
+        "naive_multiplier": 0.223,
+        "poisson_cusum": 0.181,
+        "poisson_bayes_factor": 0.122,
+        "rolling_zscore": 0.112
+      },
+      "paired_vs_naive": {
+        "poisson_bayes_factor": [
+          -0.101,
+          -0.134,
+          -0.067
+        ],
+        "poisson_cusum": [
+          -0.042,
+          -0.07,
+          -0.012
+        ],
+        "rolling_zscore": [
+          -0.111,
+          -0.153,
+          -0.07
+        ]
+      }
     },
     "counter_example": "on the deterministic-track-only panel the Bayes factor is ahead by +0.039 [+0.003, +0.071]; the only panel where a likelihood detector wins",
     "data_density": "median 25 material events per cell over 119 months (~0.21/month), 97 of 119 months are zero",
@@ -64,10 +89,13 @@
     "temporal foundation is audited: bitemporal store, immutable registry, PIT export, leakage replay 0 mismatches over 656,048 values",
     "deterministic legal-entity universe: 9,412 entities, 91.32% of lane events in detailed records, no fuzzy matching",
     "track assignment is deterministic for ~94% of material events; the 6% keyword fallback is a real false-change channel",
-    "OBSERVE: the naive rate-multiplier is not beaten by likelihood detectors at a matched false-alarm budget; data density is the binding constraint",
     "ANTICIPATE B: continuation of active pairs is not detectably better than per-pair persistence",
     "ANTICIPATE B: first entry on the 200-entity cohort delta-AP +0.0973 (3/3 windows exclude zero, above MDE 0.0877); the 51-parent panel is underpowered",
-    "no forecast has matured: zero calibration evidence"
+    "no forecast has matured: zero calibration evidence",
+    "OBSERVE: at monthly resolution the naive rate-multiplier is not beaten by likelihood detectors (0.223 vs 0.181/0.122/0.112 at a 2% budget)",
+    "OBSERVE: at quarterly resolution the ranking reverses - Poisson Bayes factor 0.129 vs naive 0.025, paired +0.104 [+0.068,+0.140]; detector choice is resolution-dependent",
+    "OBSERVE: removing Special 510(k)s and masking late product codes do not change the monthly ranking",
+    "OBSERVE: independent confirmation of a detected change is BLOCKED - no second source exists in the spine"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -85,11 +113,11 @@
     "B-031 patents blocked on API key or bulk files"
   ],
   "next_actions": [
-    "B-034: quarterly aggregation and density strata, so small shifts can be tested where monthly resolution is underpowered",
-    "B-035: Special-510(k) filter so 'material' activity is closer to 'technical' activity",
-    "B-036: taxonomy churn control (versioned mapping with effective dates)",
-    "B-033: identify a genuinely independent confirmation source (trials table, hiring, patents) — this is the Understand-layer entry condition",
-    "then cross-company anomaly detection (B-025) and the company technology profile (B-027)"
+    "B-038: bin-width sweep (1/2/3/4/6 months) to test whether the resolution crossover tracks the expected count per bin",
+    "B-033: find a genuinely independent confirmation source (the Understand-layer entry condition)",
+    "B-037: seasonal and lane-volume artifact adjustment",
+    "B-025: cross-company anomaly detection (do competitors move together?)",
+    "B-027: company technology-profile engine with the seven required evidence fields"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -99,5 +127,11 @@
     "a null result must be reported with its minimum detectable effect",
     "a detection is a statistical statement about activity rate, never a claim about intent, capability or internal R&D",
     "LLMs may organise evidence and propose hypotheses, never generate facts, citations or probabilities"
-  ]
+  ],
+  "correction_to_cycle3": {
+    "what": "cycle 3's headline 'the simple baseline is not beaten' is monthly-resolution-specific and must not be stated generally",
+    "evidence": "experiments/detect_v1/benchmark.json levels track_quarterly / track_no_special / track_stable_codes",
+    "pre_registered": "DECISIONS D-017; outcome recorded in D-018",
+    "reproduction_check": "experiments/detect_v1/check_frozen_reproduction.py -> PASS (default panels identical to the frozen frontier)"
+  }
 }

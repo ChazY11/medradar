@@ -40,6 +40,10 @@ def main() -> int:
     readout = primary["frontier_readout"][str(budget)]
     paired_cmp = primary["paired_comparison"]["comparisons"]
     naive_best = readout["naive_multiplier"]["detection_probability"]
+    quarter = levels["track_quarterly"]
+    quarter_budget = quarter["paired_comparison"]["budget"]
+    quarter_readout = quarter["frontier_readout"][str(quarter_budget)]
+    quarter_paired = quarter["paired_comparison"]["comparisons"]
 
     lines: list[str] = []
     add = lines.append
@@ -51,13 +55,31 @@ def main() -> int:
     add("")
     add("## 0. Verdict")
     add("")
-    add(f"**The simple baseline is not beaten, and that is the result.** On the primary "
-        f"panel, inside a matched false-alarm budget of {pct(budget,0)} per stream, the naive "
-        f"rate-multiplier alert detects {num(naive_best)} of injected sustained rate changes, "
-        f"while the best likelihood detector reaches only "
+    add(f"**The answer depends on resolution, and both halves matter.** At the pre-registered "
+        f"*monthly* resolution, inside a matched {pct(budget,0)} per-stream false-alarm budget, "
+        f"the naive rate-multiplier alert detects {num(naive_best)} of injected sustained rate "
+        f"changes while the best likelihood detector reaches only "
         f"{num(readout['poisson_cusum']['detection_probability'])} (Poisson CUSUM) and the "
-        f"Poisson Bayes factor {num(readout['poisson_bayes_factor']['detection_probability'])}. "
-        f"The paired, entity-clustered differences versus the naive baseline are **negative**:")
+        f"Poisson Bayes factor {num(readout['poisson_bayes_factor']['detection_probability'])}; "
+        f"the paired, entity-clustered differences versus the naive baseline are **negative**. "
+        f"Under quarterly aggregation the ordering **reverses**: the Bayes factor reaches "
+        f"{num(quarter_readout['poisson_bayes_factor']['detection_probability'])} against the "
+        f"naive detector's {num(quarter_readout['naive_multiplier']['detection_probability'])}, a "
+        f"paired advantage of "
+        f"{quarter_paired['poisson_bayes_factor']['difference']:+.3f} "
+        f"[{quarter_paired['poisson_bayes_factor']['ci_low']:+.3f}, "
+        f"{quarter_paired['poisson_bayes_factor']['ci_high']:+.3f}].")
+    add("")
+    add("This reversal was **pre-declared as a possible outcome** (DECISIONS D-017) and is recorded "
+        "as a correction to the first version of this report (D-018). The honest summary is that "
+        "**detector ranking is resolution-dependent on this lane**, that the monthly negative "
+        "cannot be used to argue that likelihood detection is unnecessary, and that the OBSERVE "
+        "layer must choose its detector at the resolution it will actually operate at. Absolute "
+        "detection remains low everywhere — the binding constraint is data density — but the "
+        "choice of detector is not settled by the monthly panel.")
+    add("")
+    add("At monthly resolution, the paired, entity-clustered differences versus the naive baseline "
+        "are:")
     add("")
     add("| detector | Δ detection vs naive | 95% clustered CI | excludes zero |")
     add("|---|---:|---|---|")
@@ -213,6 +235,69 @@ def main() -> int:
         "— so the likelihood advantage exists but is not stable across panels, and it is the "
         "only place in three granularities where a likelihood detector wins. A fair summary is "
         "that the evidence **does not support preferring a likelihood detector** here.")
+    add("")
+
+    add("## 5b. Sensitivity panels and the resolution reversal (pre-declared, DECISIONS D-017/D-018)")
+    add("")
+    add("Three sensitivities were declared before they were run. The default panels were re-run "
+        "first and reproduce the frozen frontier point-for-point "
+        "(`check_frozen_reproduction.py` → PASS), so the comparison is not a harness artefact.")
+    add("")
+    add("| panel | naive | rolling z | Poisson CUSUM | Poisson Bayes | paired Bayes − naive |")
+    add("|---|---:|---:|---:|---:|---|")
+    panel_labels = (("track", "track (monthly, frozen)"),
+                    ("track_stable_codes", "stable codes (churn masked)"),
+                    ("track_no_special", "no Special 510(k)"),
+                    ("track_quarterly", "**quarterly (3-month bins)**"),
+                    ("domain", "domain (monthly)"))
+    for key, label in panel_labels:
+        block = levels.get(key)
+        if not block:
+            continue
+        panel_budget = block["paired_comparison"]["budget"]
+        points = block["frontier_readout"][str(panel_budget)]
+        comparison = block["paired_comparison"]["comparisons"].get("poisson_bayes_factor", {})
+        add(f"| {label} | {num(points['naive_multiplier'].get('detection_probability'))} | "
+            f"{num(points['rolling_zscore'].get('detection_probability'))} | "
+            f"{num(points['poisson_cusum'].get('detection_probability'))} | "
+            f"{num(points['poisson_bayes_factor'].get('detection_probability'))} | "
+            f"{comparison.get('difference', 0):+.3f} "
+            f"[{comparison.get('ci_low', 0):+.3f}, {comparison.get('ci_high', 0):+.3f}] |")
+    add("")
+    add(f"**Density (B-034): REFUTED the prediction that the ranking would hold.** Quarterly "
+        f"aggregation collapses the naive detector "
+        f"({num(readout['naive_multiplier']['detection_probability'])} → "
+        f"{num(quarter_readout['naive_multiplier']['detection_probability'])}) and leaves the Bayes "
+        f"factor essentially intact "
+        f"({num(readout['poisson_bayes_factor']['detection_probability'])} → "
+        f"{num(quarter_readout['poisson_bayes_factor']['detection_probability'])}), so the Bayes "
+        f"factor becomes the best detector with a paired advantage that excludes zero. Cycle 3's "
+        f"monthly headline is therefore **resolution-specific** and is restated here as such.")
+    add("")
+    no_special = levels.get("track_no_special", {})
+    if no_special:
+        points = no_special["frontier_readout"][str(no_special["paired_comparison"]["budget"])]
+        add(f"**Maintenance filings (B-035): prediction confirmed.** Removing the 15.01 % Special "
+            f"510(k)s keeps the naive detector best "
+            f"({num(points['naive_multiplier'].get('detection_probability'))}) and makes every "
+            f"likelihood detector worse, so the monthly comparison is not an artefact of "
+            f"maintenance noise. Cell count falls to {no_special['cells_total']} because many cells "
+            f"no longer clear the activity floor.")
+        add("")
+    stable = levels.get("track_stable_codes", {})
+    if stable:
+        points = stable["frontier_readout"][str(stable["paired_comparison"]["budget"])]
+        add(f"**Taxonomy churn (B-036): prediction confirmed.** Masking events under codes first "
+            f"seen in 2022 or later changes nothing material "
+            f"(naive {num(points['naive_multiplier'].get('detection_probability'))}, Bayes "
+            f"{num(points['poisson_bayes_factor'].get('detection_probability'))}): churn is "
+            f"concentrated rather than global.")
+        add("")
+    add("A mechanism for the reversal is now a hypothesis, not a finding: at monthly resolution a "
+        "single observation already exceeds a rate threshold, which favours a rate-ratio test and "
+        "defeats evidence accumulation; at quarterly resolution one bin aggregates several events "
+        "and the likelihood ratio can separate a sustained shift from a burst. It is testable by "
+        "sweeping the bin width — the next experiment.")
     add("")
 
     add("## 6. Per-magnitude behaviour (primary panel, 2 % budget)")

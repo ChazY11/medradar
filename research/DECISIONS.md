@@ -319,3 +319,90 @@ control** and the licensed claim is narrow: *for abrupt, permanent, multiplicati
 this lane, a matched simple test is at least as good as the likelihood detectors.* Ramp, transient
 and heterogeneous alternatives remain untested (B-026), and no claim is made about detectors in
 general.
+
+---
+
+## D-017 — Three robustness sensitivities pre-declared before running them
+
+**Date:** 2026-11-02. **Status:** accepted. Declared after cycle 3 was published but **before** these
+sensitivity results exist. Cycle-3 artifacts stay frozen; these are separate panels.
+
+The cycle-3 conclusion ("the naive rate-multiplier is not beaten at a matched 2 % false-alarm
+budget, and data density is the binding constraint") has two obvious threats that can be tested
+with data already in the lane. All three are pre-declared with predictions so the outcome can count
+for or against the conclusion.
+
+1. **Density (B-034) — quarterly aggregation.** Monthly cells have a median of 25 events over 119
+   months. Aggregating to quarters triples the count per bin and cuts the series to 40 points.
+   *Prediction:* absolute detection probability rises for **every** detector, the naive detector
+   stays best or the gap narrows, and the ranking is unchanged. If a likelihood detector overtakes
+   the naive one at quarterly resolution, cycle 3's conclusion is resolution-specific and must be
+   restated that way.
+2. **Product maintenance (B-035) — exclude Special 510(k)s.** 4,685 of 31,219 lane 510(k)s (15.01 %)
+   are `clearance_type="Special"`, i.e. modifications of the filer's own cleared device. *Prediction:*
+   cell counts fall substantially, detection probability falls slightly for all detectors, and the
+   ranking does not change. If the naive advantage disappears when maintenance filings are removed,
+   the cycle-3 comparison was partly a comparison of how each detector responds to maintenance noise.
+3. **Taxonomy churn (B-036) — mask codes first appearing late in the lane.** 436 of 1,905 lane
+   product codes (22.9 %) first appear in 2022 or later, though they carry only 2.6 % of events;
+   an independent review measured much higher concentration in specific tracks (e.g. ~41 % of one
+   track's recent events under codes created 2022+). *Prediction:* the churn-masked panel changes
+   detection probability by less than its interval width at the whole-lane level, because churn is
+   concentrated rather than global.
+
+**What would overturn cycle 3.** Any of: a likelihood detector becoming the best detector under
+quarterly aggregation; the naive advantage vanishing under the maintenance filter; or the
+churn-masked panel reversing the ranking. Each outcome is a legitimate result and will be reported
+as a correction to cycle 3 rather than as a new finding.
+
+---
+
+## D-018 — Outcome of the D-017 sensitivities: the cycle-3 conclusion is resolution-specific
+
+**Date:** 2026-11-02. **Status:** accepted. This records the result of a pre-declared test; it
+**corrects** cycle 3 rather than adding to it.
+
+The three sensitivities were declared in D-017 before being run. Default panels were re-run first
+and reproduce the frozen cycle-3 frontier point-for-point
+(`experiments/detect_v1/check_frozen_reproduction.py` → PASS), so the comparison is not a harness
+artefact. Results at a matched 2 % per-stream false-alarm budget, best point inside the budget:
+
+| panel | naive | rolling z | Poisson CUSUM | Poisson Bayes factor | paired Bayes vs naive |
+|---|---:|---:|---:|---:|---|
+| track (monthly, frozen) | 0.223 | 0.112 | 0.181 | 0.122 | −0.101 [−0.134,−0.067] |
+| track_stable_codes | 0.222 | 0.114 | 0.183 | 0.124 | −0.098 [−0.132,−0.064] |
+| track_no_special | 0.224 | 0.031 | 0.026 | 0.096 | −0.127 [−0.169,−0.088] |
+| **track_quarterly** | **0.025** | 0.010 | 0.006 | **0.129** | **+0.104 [+0.068,+0.140]** |
+
+**Outcomes against the pre-declared predictions.**
+
+1. **Density (B-034) — the prediction that the ranking would be unchanged is REFUTED.** Quarterly
+   aggregation collapses the naive detector (0.223 → 0.025) and lifts the Bayes factor (0.122 →
+   0.129), so the Bayes factor becomes the best detector with a paired advantage that excludes zero
+   (+0.104 [+0.068, +0.140]). **Cycle 3's headline — "the simple baseline is not beaten" — holds
+   only at monthly resolution.** The correct statement is that detector ranking is
+   **resolution-dependent**: with fewer, denser bins a matched rate-ratio test loses its advantage
+   and evidence-accumulating detectors win. This is the outcome D-017 said would force a
+   restatement, and it does.
+2. **Maintenance filings (B-035) — prediction confirmed.** Removing the 15.01 % Special 510(k)s
+   leaves the naive detector best and makes every likelihood detector worse (CUSUM 0.026,
+   z-score 0.031). Cycle 3's comparison is not an artefact of maintenance noise.
+3. **Taxonomy churn (B-036) — prediction confirmed.** Masking events under codes first seen in
+   2022+ (506 codes, 467 events) changes nothing material (naive 0.222, Bayes 0.124). Churn is
+   concentrated rather than global, as the design review argued.
+
+**What changes in the published record.** The report's headline is restated as
+resolution-conditional; the monthly negative and the quarterly positive are both reported, and
+neither is presented as the general answer. The practical recommendation for the OBSERVE layer
+follows from the pair of results: **the choice of detector must be made at the resolution the
+layer will actually operate at**, and on this lane denser aggregation is both more powerful and
+more favourable to evidence accumulation. It also means the thin monthly result cannot be used to
+argue that likelihood detection is unnecessary.
+
+**New open question for the next cycle.** Why does aggregation reverse the ranking? The most likely
+mechanism is that at monthly resolution a single observation already exceeds a rate threshold
+(favouring the rate-ratio test and defeating evidence accumulation), while at quarterly resolution
+one bin aggregates several events and the likelihood ratio separates a sustained shift from a burst.
+That mechanism is a hypothesis, not a finding, and it is testable by sweeping bin width
+(1, 2, 3, 4, 6 months) and checking whether the crossover point moves with the expected count per
+bin. Recorded as the next experiment.
