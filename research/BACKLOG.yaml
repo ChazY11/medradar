@@ -471,4 +471,19 @@ tasks:
       (0 problems) and diffs consecutive snapshots; verdict_stability.py measures how often verdicts
       flip across as-of dates. Result: 40 of 53 verdicts stable, 13 change, 2 reverse.
 
+  - id: B-052
+    layer: publish
+    priority: P1
+    title: Paper draft v1 from the committed record
+    status: done
+    owner: lead
+    depends_on: [B-020, B-023, B-050, B-051]
+    acceptance: >
+      papers/PAPER_v1.md covering corpus and provenance, controlled-truth frontier, five retracted
+      findings with the control that killed each, calibration result, rolling-origin null, verdict
+      instability, the Understand layer, seven measurement rules, limitations and reproduction. Every
+      quantitative claim declared in papers/CLAIMS.json with its artifact and exact substring, verified
+      in both directions by papers/verify_claims.py (45/45). Draft only: not submitted, no venue
+      claimed, no figures.
+
 

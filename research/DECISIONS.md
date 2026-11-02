@@ -1377,3 +1377,42 @@ rolling-origin evaluation of the Understand layer.
 
 **Not claimed.** That the 2022-12 verdicts were "right" or "wrong" — there is no ground truth for a
 technology position. What is claimed is only that the pipeline is now cut at the date it says it is.
+
+---
+
+## D-038 — B-052: paper draft v1 written from committed artifacts, with a machine-verified claim map
+
+**Date:** 2026-11-03. **Status:** accepted. Creates B-052 (draft v1 shipped).
+
+**What was produced.** `papers/PAPER_v1.md` — a complete draft (~3,500 words) covering the corpus and
+provenance, the controlled-truth detection frontier, the five retracted findings, the calibration
+result, the rolling-origin null, verdict instability across as-of dates, the Understand layer, seven
+measurement rules, limitations, reproduction commands and references.
+
+**The sourcing rule, and why it is mechanical.** A paper about retraction discipline cannot contain
+hand-copied numbers. Every quantitative claim is declared in `papers/CLAIMS.json` with the artifact that
+holds it and the exact source substring, and `papers/verify_claims.py` checks **both directions**: the
+artifact must contain the recorded value and the paper must contain it too. The current state is **45 of
+45 claims verified**. Notably, drafting failed this check three times before it passed — two claimed
+figures were mis-transcribed from memory and one was omitted from the text — which is exactly the failure
+mode the check exists to catch, caught on the author rather than on a reader.
+
+**Three drafting decisions worth recording.**
+
+1. **The paper's headline is negative.** Five retractions, no surviving positive result, and the
+   programme's real output (a frontier, a calibration rule, a point-in-time chain, seven measurement
+   rules) is methodological. Presenting it otherwise would be the exact behaviour the programme exists
+   to prevent.
+2. **The retraction table names the control that killed each finding**, not only the finding. A retraction
+   without its mechanism cannot be learned from.
+3. **The limitations section states what the data cannot see** (intent, capability, internal R&D,
+   resolution) and points to the decision log for the full record rather than curating it here.
+
+**Status.** Draft v1. It is not submitted anywhere and no venue is claimed. It is a repository artifact
+with a verifiable claim map, which is what the mission's "ship papers" requirement asks of an autonomous
+programme that cannot present results to peers.
+
+**Known gaps before any submission.** No figures (the artifacts contain the data; plotting is deferred);
+no external validation on a second domain; the retraction table would benefit from a per-finding
+reproduction script index; and the two independent lanes are reported as collected limits rather than as
+standalone studies.

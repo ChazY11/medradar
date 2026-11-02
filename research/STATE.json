@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T03:40:00+08:00",
+  "updated_at": "2026-11-03T04:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "point_in_time_validated",
-  "cycle": 18,
+  "phase": "publish_draft_v1",
+  "cycle": 19,
   "last_completed_cycle": {
-    "cycle": 16,
-    "name": "point_in_time_rebuild_and_leakage_audit",
+    "cycle": 17,
+    "name": "paper_draft_v1",
     "branch": "research/change-detection-v1",
-    "report": "experiments/b027/snapshot_diff.json",
-    "summary": "research/RESULTS/cycle16_point_in_time_2026-11-03.md",
-    "verdict": "point-in-time rebuild shipped and audited: 3 backdated snapshots, 0 leakage problems; a real leakage path (trial lane + code first-seen were not cut at the as-of date) was found and closed; 40 of 53 verdicts stable across as-of dates, 13 change, 2 reverse"
+    "report": "papers/PAPER_v1.md",
+    "summary": "research/RESULTS/cycle17_paper_2026-11-03.md",
+    "verdict": "paper draft v1 shipped with a machine-verified claim map (45/45 claims sourced both ways); it reports five retractions, a controlled false-alarm frontier, the calibration result, a rolling-origin null, verdict instability and a leakage-free point-in-time chain, and claims no predictive success"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -135,7 +135,9 @@
     "EVALUATE: the calibrated change signal is too rare to be a prediction trigger (5 flags in 717 observations) at this lane's resolution",
     "POINT-IN-TIME: three backdated profile snapshots are frozen and leakage-audited (0 problems); the 2020-12-31 / 2022-12-31 / 2024-12-31 views use 12,853 / 19,182 / 25,772 lane events",
     "POINT-IN-TIME: a real leakage path was found and closed - the trial lane and the code first-seen map were previously read in full regardless of the as-of date",
-    "POINT-IN-TIME: verdict stability across four as-of dates is 40 stable / 13 changed / 2 reversed of 53 companies - a quarter of nowcasts move with the date, consistent with the calibrated test's measured low power"
+    "POINT-IN-TIME: verdict stability across four as-of dates is 40 stable / 13 changed / 2 reversed of 53 companies - a quarter of nowcasts move with the date, consistent with the calibrated test's measured low power",
+    "PUBLISH: paper draft v1 exists as a repository artifact with 45 machine-verified claims; every number is traced to a committed artifact in both directions (source contains it, paper contains it)",
+    "PUBLISH: the paper's headline is negative by design - five retractions with their control mechanisms, no predictive success claimed"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -153,10 +155,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "B-026: spike vs sustained level-shift classifier (the last P1 model task not needing new data)",
+    "B-026: spike vs sustained level-shift classifier (last P1 model task needing no new data)",
+    "add figures to the paper from existing artifacts (frontier curve, calibration scatter, verdict-stability matrix) - the only blocking gap for a readable submission",
     "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there",
-    "consider a paper draft from the surviving artifacts (lane provenance, frontier benchmark, calibration results, point-in-time chain) - the objective lists papers as deliverables",
-    "do not resume hiring probing (D-031); patents only if a route opens"
+    "consider external validation of the measurement rules on a second domain before any submission"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -679,5 +681,19 @@
   },
   "design_lessons": [
     "a benchmark outcome must not be defined relative to the same window that triggered the signal (fourth self-caught design flaw; first caught inside a benchmark)"
-  ]
+  ],
+  "publication": {
+    "status": "DRAFT v1 IN REPOSITORY - not submitted, no venue claimed",
+    "paper": "papers/PAPER_v1.md",
+    "claims": "papers/CLAIMS.json",
+    "verifier": "papers/verify_claims.py",
+    "claims_verified": 45,
+    "headline": "no surviving positive result; five retractions with mechanisms; methodological artifacts (frontier, calibration rule, point-in-time chain, measurement rules)",
+    "known_gaps": [
+      "no figures",
+      "no external validation on a second domain",
+      "retraction table needs a per-finding reproduction index",
+      "independent lanes reported as measured limits, not standalone studies"
+    ]
+  }
 }

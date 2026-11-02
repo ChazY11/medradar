@@ -1,0 +1,319 @@
+{
+  "claims": [
+    {
+      "id": "D1",
+      "statement": "regulatory lane events",
+      "value": "31,802",
+      "source": "research/STATE.json",
+      "source_needle": "31802"
+    },
+    {
+      "id": "D2",
+      "statement": "legal entities resolved",
+      "value": "9,412",
+      "source": "research/MISSION.md",
+      "source_needle": "9,412 entities"
+    },
+    {
+      "id": "D3",
+      "statement": "window start",
+      "value": "2016-11",
+      "source": "research/STATE.json",
+      "source_needle": "2016-11"
+    },
+    {
+      "id": "D4",
+      "statement": "device trial lane events",
+      "value": "2,663",
+      "source": "experiments/b040/REPORT.md",
+      "source_needle": "2,663"
+    },
+    {
+      "id": "D5",
+      "statement": "trial lane device tracks",
+      "value": "43",
+      "source": "experiments/b040/collection_manifest.json",
+      "source_needle": "\"distinct_device_tracks\": 43"
+    },
+    {
+      "id": "D6",
+      "statement": "trial lane companies",
+      "value": "46",
+      "source": "experiments/b040/collection_manifest.json",
+      "source_needle": "\"distinct_companies\": 46"
+    },
+    {
+      "id": "M1",
+      "statement": "naive detector sensitivity at 2 % FAR",
+      "value": "0.223",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0.223"
+    },
+    {
+      "id": "M2",
+      "statement": "CUSUM sensitivity at 2 % FAR",
+      "value": "0.181",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0.181"
+    },
+    {
+      "id": "M3",
+      "statement": "Bayes factor sensitivity at 2 % FAR",
+      "value": "0.122",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0.122"
+    },
+    {
+      "id": "M4",
+      "statement": "z-score sensitivity at 2 % FAR",
+      "value": "0.112",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0.112"
+    },
+    {
+      "id": "P1",
+      "statement": "curated-panel ΔAP",
+      "value": "0.056",
+      "source": "experiments/cycle2_coverage/analysis.json",
+      "source_needle": "0.05644645491148638"
+    },
+    {
+      "id": "P2",
+      "statement": "entity-panel ΔAP",
+      "value": "0.097",
+      "source": "experiments/cycle2_coverage/pred_p2.json",
+      "source_needle": "0.09738123148139934"
+    },
+    {
+      "id": "P3",
+      "statement": "entity-panel MDE at 140 positives",
+      "value": "0.167",
+      "source": "experiments/cycle2_coverage/analysis.json",
+      "source_needle": "0.16742674021055617"
+    },
+    {
+      "id": "C1",
+      "statement": "co-movement cells under lane-volume null",
+      "value": "3 of 32",
+      "source": "research/DECISIONS.md",
+      "source_needle": "3 of 32"
+    },
+    {
+      "id": "C2",
+      "statement": "co-movement cells under track-volume null",
+      "value": "0 of 32",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0 of 32"
+    },
+    {
+      "id": "L1",
+      "statement": "eligible cross-lane cells",
+      "value": "16",
+      "source": "experiments/b040/REPORT.md",
+      "source_needle": "16 pass the floors"
+    },
+    {
+      "id": "L2",
+      "statement": "largest cross-lane correlation",
+      "value": "0.036",
+      "source": "experiments/b040/REPORT.md",
+      "source_needle": "0.036"
+    },
+    {
+      "id": "E1",
+      "statement": "entries that were entity appearances",
+      "value": "3,804",
+      "source": "research/DECISIONS.md",
+      "source_needle": "3,804"
+    },
+    {
+      "id": "E2",
+      "statement": "share of entries that were entity appearances",
+      "value": "79 %",
+      "source": "research/DECISIONS.md",
+      "source_needle": "79 %"
+    },
+    {
+      "id": "E3",
+      "statement": "entries after the prior-filer control",
+      "value": "1,010",
+      "source": "experiments/detect_v1/entries_priorfiler.json",
+      "source_needle": "\"entries\": 1010"
+    },
+    {
+      "id": "E4",
+      "statement": "ivd_immuno under the churn control",
+      "value": "0.0010",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0.0010"
+    },
+    {
+      "id": "E5",
+      "statement": "ivd_immuno after the prior-filer control",
+      "value": "1.0",
+      "source": "research/DECISIONS.md",
+      "source_needle": "p = 1.0"
+    },
+    {
+      "id": "H1",
+      "statement": "tracks nominated by the clean design",
+      "value": "3",
+      "source": "research/DECISIONS.md",
+      "source_needle": "3 nominated"
+    },
+    {
+      "id": "H2",
+      "statement": "tracks confirmed by the clean design",
+      "value": "0",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0 confirmed"
+    },
+    {
+      "id": "H3",
+      "statement": "holdout power at 30 % wave concentration",
+      "value": "0.25",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0.25"
+    },
+    {
+      "id": "K1",
+      "statement": "naive ratio flags across the roster",
+      "value": "35 of 53",
+      "source": "research/DECISIONS.md",
+      "source_needle": "35 of 53"
+    },
+    {
+      "id": "K2",
+      "statement": "calibrated detections across the roster",
+      "value": "4",
+      "source": "research/DECISIONS.md",
+      "source_needle": "supports **4**"
+    },
+    {
+      "id": "K3",
+      "statement": "Olympus rate ratio",
+      "value": "4.17",
+      "source": "research/DECISIONS.md",
+      "source_needle": "4.17"
+    },
+    {
+      "id": "K4",
+      "statement": "Philips rate ratio",
+      "value": "2.03",
+      "source": "research/DECISIONS.md",
+      "source_needle": "2.03"
+    },
+    {
+      "id": "K5",
+      "statement": "largest per-company MDE",
+      "value": "22.93",
+      "source": "research/DECISIONS.md",
+      "source_needle": "22.93"
+    },
+    {
+      "id": "R1",
+      "statement": "rolling-origin cells",
+      "value": "376",
+      "source": "research/DECISIONS.md",
+      "source_needle": "376"
+    },
+    {
+      "id": "R2",
+      "statement": "rolling-origin observations",
+      "value": "717",
+      "source": "research/DECISIONS.md",
+      "source_needle": "717"
+    },
+    {
+      "id": "R3",
+      "statement": "pre-registered naive increase lift",
+      "value": "0.49",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0.49"
+    },
+    {
+      "id": "R4",
+      "statement": "corrected naive increase lift",
+      "value": "1.22",
+      "source": "research/DECISIONS.md",
+      "source_needle": "1.22"
+    },
+    {
+      "id": "R5",
+      "statement": "calibrated flags in the benchmark",
+      "value": "5 flags in 717",
+      "source": "research/DECISIONS.md",
+      "source_needle": "5 flags in 717"
+    },
+    {
+      "id": "T1",
+      "statement": "leakage problems found",
+      "value": "0",
+      "source": "research/RESULTS/cycle16_point_in_time_2026-11-03.md",
+      "source_needle": "0 leakage problems"
+    },
+    {
+      "id": "T2",
+      "statement": "lane events used at 2020-12-31",
+      "value": "12,853",
+      "source": "research/RESULTS/cycle16_point_in_time_2026-11-03.md",
+      "source_needle": "12,853"
+    },
+    {
+      "id": "T3",
+      "statement": "stable verdicts across four as-of dates",
+      "value": "40",
+      "source": "research/RESULTS/cycle16_point_in_time_2026-11-03.md",
+      "source_needle": "40 stable"
+    },
+    {
+      "id": "T4",
+      "statement": "reversed verdicts",
+      "value": "2",
+      "source": "research/RESULTS/cycle16_point_in_time_2026-11-03.md",
+      "source_needle": "2 reverse"
+    },
+    {
+      "id": "G1",
+      "statement": "test suite size",
+      "value": "854",
+      "source": "experiments/b027/selftest_cycle16.log",
+      "source_needle": "Ran 854 tests"
+    },
+    {
+      "id": "D7",
+      "statement": "months in the evidence window",
+      "value": "119",
+      "source": "research/STATE.json",
+      "source_needle": "119 months"
+    },
+    {
+      "id": "D8",
+      "statement": "median material events per cell per month",
+      "value": "0.21",
+      "source": "research/STATE.json",
+      "source_needle": "~0.21/month"
+    },
+    {
+      "id": "D9",
+      "statement": "rolling-origin origins",
+      "value": "12",
+      "source": "research/RESULTS/cycle15_rolling_origin_2026-11-03.md",
+      "source_needle": "12 origins"
+    },
+    {
+      "id": "D10",
+      "statement": "mandated deep-case companies",
+      "value": "5",
+      "source": "research/MISSION.md",
+      "source_needle": "Deep-case companies (5, mandated)"
+    },
+    {
+      "id": "D11",
+      "statement": "device roster size",
+      "value": "51",
+      "source": "research/DECISIONS.md",
+      "source_needle": "51-company device roster"
+    }
+  ]
+}
