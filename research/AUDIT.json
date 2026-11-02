@@ -12,7 +12,7 @@
     {
       "requirement": "backlog integrity",
       "status": "PASS",
-      "evidence": "62 tasks, statuses {'done': 49, 'blocked': 5, 'todo': 7, 'frozen': 1}",
+      "evidence": "62 tasks, statuses {'done': 50, 'blocked': 5, 'todo': 6, 'frozen': 1}",
       "detail": {
         "duplicates": []
       }
@@ -20,22 +20,22 @@
     {
       "requirement": "state completeness",
       "status": "PASS",
-      "evidence": "phase='backlog_repaired_and_taxonomy_versioned', cycle=42",
+      "evidence": "phase='seasonality_quantified', cycle=43",
       "detail": {
         "absent": [],
-        "findings": 100
+        "findings": 102
       }
     },
     {
       "requirement": "loop ran and was recorded",
       "status": "PASS",
-      "evidence": "71 decisions, 149 result rows (27 negative/null), retractions marked: 3",
+      "evidence": "73 decisions, 152 result rows (28 negative/null), retractions marked: 3",
       "detail": {}
     },
     {
       "requirement": "experiments with committed artifacts",
       "status": "PASS",
-      "evidence": "86 JSON artifacts across 20 experiment dirs",
+      "evidence": "87 JSON artifacts across 21 experiment dirs",
       "detail": {}
     },
     {
@@ -83,7 +83,7 @@
     {
       "requirement": "paper with verified claims",
       "status": "PASS",
-      "evidence": "papers/PAPER_v1.md; claims checked: 82; failures: 0",
+      "evidence": "papers/PAPER_v1.md; claims checked: 88; failures: 0",
       "detail": {}
     },
     {
@@ -101,7 +101,7 @@
     {
       "requirement": "working tree committed",
       "status": "N/A",
-      "evidence": "16 uncommitted path(s) at audit time",
+      "evidence": "12 uncommitted path(s) at audit time",
       "detail": {}
     }
   ],

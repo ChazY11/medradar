@@ -1,0 +1,106 @@
+{
+  "boundary_artifact": {
+    "means": {
+      "quarter_end": 33.55,
+      "quarter_interior": 31.82,
+      "quarter_start": 33.67
+    },
+    "quarter_end_vs_interior": 1.0542,
+    "quarter_start_vs_interior": 1.0579
+  },
+  "design": {
+    "decision": "research/DECISIONS.md D-072 (pre-registered)",
+    "far_material_difference": 0.001,
+    "months": 119,
+    "permutations": 2000,
+    "seed": 7373
+  },
+  "difference": 0.0,
+  "factors_within_a_quarter": {
+    "q1": [
+      0.8907,
+      0.8907,
+      1.1179
+    ],
+    "q2": [
+      1.0452,
+      0.9967,
+      0.9967
+    ],
+    "q3": [
+      1.1179,
+      0.9876,
+      0.924
+    ],
+    "q4": [
+      1.0267,
+      0.9816,
+      1.027
+    ]
+  },
+  "month_factors": {
+    "dispersion": 5.1791724047104495,
+    "factors": {
+      "0": 0.8907,
+      "1": 0.8907,
+      "10": 0.9816,
+      "11": 1.027,
+      "2": 1.1179,
+      "3": 1.0452,
+      "4": 0.9967,
+      "5": 0.9967,
+      "6": 1.1179,
+      "7": 0.9876,
+      "8": 0.924,
+      "9": 1.0267
+    },
+    "overall_monthly_mean": 33.00840336134454,
+    "spread_max_over_min": 1.2551020408163265
+  },
+  "monthly_adjusted": {
+    "alert_rate": 0.9719806763285024,
+    "alerts": 2012,
+    "class_accuracy": {
+      "level": 0.9028985507246376,
+      "ramp": 0.09970674486803519,
+      "spike": 0.8296875
+    },
+    "class_totals": {
+      "level": 690,
+      "ramp": 682,
+      "spike": 640
+    },
+    "injections": 2070
+  },
+  "monthly_raw": {
+    "alert_rate": 0.9719806763285024,
+    "alerts": 2012,
+    "class_accuracy": {
+      "level": 0.9043478260869565,
+      "ramp": 0.09970674486803519,
+      "spike": 0.8296875
+    },
+    "class_totals": {
+      "level": 690,
+      "ramp": 682,
+      "spike": 640
+    },
+    "injections": 2070
+  },
+  "permutation": {
+    "exceedances": 0,
+    "p_value": 0.0004997501249375312,
+    "permutations": 2000
+  },
+  "quarterly_adjusted": {
+    "alert_rate": 0.009017223910840932,
+    "alerts": 89,
+    "opportunities": 9870
+  },
+  "quarterly_raw": {
+    "alert_rate": 0.009017223910840932,
+    "alerts": 89,
+    "opportunities": 9870
+  },
+  "verdict": "ALERT RATE IS AN UPPER BOUND - adjustment does not lower the observed rate materially"
+}

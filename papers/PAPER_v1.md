@@ -445,6 +445,15 @@ to market-aggregate series — not to another country's filings, another taxonom
 confirmed on fresh draws. A reader should weight that differently from a first-pass result, which is why it is
 labelled as such wherever it appears.
 
+**Seasonality is real, quantified, and unreachable at this resolution.** Calendar month explains a genuine share of
+lane volume — a January and February factor of **0.891** against a **1.255×** annual spread (a −11 % January deficit),
+with an adjacent-month test statistic that **0 of 2,000** label shuffles reach (**p = 0.0005**). The first and last
+months of a quarter run at **1.058×** and **1.054×** the interior-month mean. Per-cell scaling cannot remove
+it: it changes only **9 of 39,151** cell-months, because the lane is 91.8 % zeros. The detector's alert rate is
+therefore identical on raw and adjusted counts (**0.0090**, 89 of 9,870), so the measured false-alarm rate of
+**0.0179** is reported as an **upper bound** that this correction cannot reduce — the seasonal effect is a lane-wide
+fraction of an event for most cells, not a per-cell false-alarm mechanism.
+
 The programme's canonical track record, including retractions and their reasons, is the committed decision log
 and results index; the repository also contains an executable objective audit and a round-end verification
 routine, so a claim of progress can be re-run rather than trusted.

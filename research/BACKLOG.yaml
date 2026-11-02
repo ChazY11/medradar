@@ -303,13 +303,16 @@ tasks:
     layer: observe
     priority: P1
     title: Seasonal and lane-volume artifact adjustment
-    status: todo
-    owner: unassigned
-    acceptance: >
-      Month-of-year and lane-wide volume effects estimated and removed (or explicitly conditioned on)
-      before detection; the January deficit and boundary-volume artifacts documented in the design
-      review are quantified and either corrected or stated as an upper bound on the false-alarm rate.
-    notes: "data present - events=55090 over 38 tracks and 119 months"
+    status: done
+    owner: lead
+    depends_on: [B-073]
+    notes: >
+      Month-of-year effects quantified on the frozen lane (329 cells, 3,928 events, 119 months): January and February
+      factor 0.891 against a 1.255x annual spread, permutation p = 0.0005 with 0 of 2,000 shuffles reaching the
+      observed dispersion; quarter-boundary months run at 1.058x and 1.054x the interior mean. Per-cell scaling
+      cannot remove the effect: it changes 9 of 39,151 cell-months because the lane is 91.8 % zeros, so the detector's
+      alert rate is identical on raw and adjusted counts (0.0090, 89 of 9,870). The measured false-alarm rate 0.0179 is
+      therefore reported as an upper bound this correction cannot reduce. No detector change.
 
 
   - id: B-038

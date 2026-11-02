@@ -125,6 +125,13 @@ CLAIMS = [
     ("AA3", "density-confirmation rank correlation", "0.908", "research/DECISIONS.md", "0.908"),
     ("AA4", "density-confirmation effect ratio", "2.18", "research/DECISIONS.md", "2.18"),
     ("AA5", "ramp reporting density floor", "1.0", "research/DECISIONS.md", "1.0 event per month"),
+    # ---- seasonality (cycle 41)
+    ('CC1', 'January month factor', '0.891', 'experiments/b074/seasonality.json', '0.8907'),
+    ('CC2', 'annual month-factor spread', '1.255', 'experiments/b074/seasonality.json', '1.2551020408163265'),
+    ('CC3', 'month-of-year permutation p-value', '0.0005', 'experiments/b074/seasonality.json', '0.0004997501249375312'),
+    ('CC4', 'quarter-boundary factor', '1.058', 'experiments/b074/seasonality.json', '1.0579'),
+    ('CC5', 'detector alert rate on raw counts', '0.0090', 'experiments/b074/seasonality.json', '0.009017223910840932'),
+    ('CC6', 'cell-months changed by seasonal adjustment', '9 of 39,151', 'research/DECISIONS.md', '9 of 39,151'),
     # ---- pipeline evaluation (cycle 34)
     ("BB1", "pipeline promoted persistence rate", "0.800", "research/DECISIONS.md", "0.800"),
     ("BB2", "pipeline unpromoted persistence rate", "0.667", "research/DECISIONS.md", "0.667"),

@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-04T03:40:00+08:00",
+  "updated_at": "2026-11-04T04:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "backlog_repaired_and_taxonomy_versioned",
-  "cycle": 42,
+  "phase": "seasonality_quantified",
+  "cycle": 43,
   "last_completed_cycle": {
-    "cycle": 40,
-    "name": "lane_inventory_taxonomy_backlog",
+    "cycle": 41,
+    "name": "seasonality",
     "branch": "research/change-detection-v1",
-    "report": "experiments/b073/lane_inventory.json",
-    "summary": "research/RESULTS/cycle40_inventory_taxonomy_2026-11-03.md",
-    "verdict": "counted the stores before calling anything blocked: financial, market and publication data are present, so five 'todo' items stay open with row counts recorded and only B-014 is newly blocked (on a human adjudicator). B-032 shipped as a versioned taxonomy with mapping fingerprints; backlog parses, 60 tasks, audit 11 PASS"
+    "report": "experiments/b074/seasonality.json",
+    "summary": "research/RESULTS/cycle41_seasonality_2026-11-03.md",
+    "verdict": "month-of-year effects are real and quantified (Jan/Feb 0.891, 1.255x spread, permutation p = 0.0005) but per-cell scaling cannot remove them (9 of 39,151 cell-months change, 91.8 % zeros), so the alert rate is identical raw vs adjusted (0.0090) and the 0.0179 false-alarm rate is stated as an upper bound; no detector change"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -185,7 +185,9 @@
     "METHOD: a rendered check caught three layout defects the SVG validator could not (legend covering column headings, overlapping labels, legend off-canvas); this is the fourth such case and is now treated as a recurring class rather than an accident",
     "GOVERN: the fourth render-only defect class is now static - off-canvas text and text painted over by a later shape are caught by check_layout.py, proven against injected defects, and run as gate step 10",
     "GOVERN: the stores were counted before any item was called blocked - financial (43,420), market (95,725) and publication (616) data are present, so five open items are scheduled work, not blocked work",
-    "DETECT: the taxonomy now carries a version, an effective date and fingerprints of both mapping files, so a code remap is detectable as a regime change (B-032)"
+    "DETECT: the taxonomy now carries a version, an effective date and fingerprints of both mapping files, so a code remap is detectable as a regime change (B-032)",
+    "DETECT: calendar month explains a real share of lane volume (Jan/Feb factor 0.891, annual spread 1.255x, permutation p = 0.0005) and quarter-boundary months run 1.058x/1.054x the interior mean",
+    "DETECT: per-cell deseasonalisation is inapplicable at this density - it changes 9 of 39,151 cell-months (91.8 % zeros), so the measured false-alarm rate 0.0179 is an upper bound the correction cannot reduce"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -203,10 +205,9 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "schedule the six open items by cost and by what the papers still need (B-074)",
+    "final consolidation: verify the whole record and state the completion position",
     "mature the prospective forecast set when the lane advances (earliest 2026-Q4)",
-    "keep tools/round_end.py as the gate at the end of every round",
-    "schedule a rendered figure review before any submission"
+    "keep tools/round_end.py as the gate at the end of every round"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -1099,6 +1100,38 @@
       "effect_ratio": 2.18,
       "verdict": "CONFIRMED under the revised criterion on fresh draws",
       "disclosure": "revised after D-059 failed a stricter gate; must be described that way"
+    },
+    "seasonality": {
+      "artifact": "experiments/b074/seasonality.json",
+      "decision": "research/DECISIONS.md D-072 (pre-registration), D-073 (outcome)",
+      "month_factors": {
+        "january": 0.891,
+        "february": 0.891,
+        "march": 1.118,
+        "spread_max_over_min": 1.255
+      },
+      "permutation": {
+        "p_value": 0.0005,
+        "permutations": 2000,
+        "exceedances": 0
+      },
+      "boundary": {
+        "quarter_start": 1.058,
+        "quarter_end": 1.054
+      },
+      "adjustment_effect": {
+        "cell_months_changed": 9,
+        "cell_months_total": 39151,
+        "zero_share": 0.918
+      },
+      "alert_rate": {
+        "raw": 0.009,
+        "adjusted": 0.009,
+        "opportunities": 9870,
+        "alerts": 89
+      },
+      "verdict": "alert rate is an upper bound; the correction cannot reduce it",
+      "no_detector_change": true
     }
   },
   "observe_layer": {
