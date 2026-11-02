@@ -30,8 +30,8 @@ CLAIMS = [
     # ---- cycle 2 power
     ("P1", "curated-panel ΔAP", "0.056", "experiments/cycle2_coverage/analysis.json",
      "0.05644645491148638"),
-    ("P2", "entity-panel ΔAP", "0.097", "experiments/cycle2_coverage/pred_p2.json",
-     "0.09738123148139934"),
+    ("P2", "entity-panel ΔAP", "0.097", "experiments/cycle2_coverage/analysis.log",
+     "0.09732061085035523"),
     ("P3", "entity-panel MDE at 140 positives", "0.167",
      "experiments/cycle2_coverage/analysis.json", "0.16742674021055617"),
     # ---- cycle 4 co-movement
