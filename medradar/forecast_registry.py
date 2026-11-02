@@ -1,13 +1,24 @@
 """Immutable Forecast Registry + deterministic binary-outcome evaluation.
 
 A forecast, once registered, can never be changed: every row is stamped with a
-**server-assigned** ``generated_at`` (strict UTC, monotonic store clock), a
-prospective forecast's target window must be genuinely in the future at
-registration, and SQL triggers physically reject ``UPDATE``/``DELETE``
-(including ``INSERT OR REPLACE``, even one that reuses an
-``idempotency_key``) on both ledgers. Retries are safe through an explicit
-``idempotency_key``: an exact retry returns the original record without
-consuming the write clock, a conflicting reuse of the key fails loudly.
+**server-assigned** ``generated_at`` (strict UTC, monotonic store clock), and
+SQL triggers physically reject ``UPDATE``/``DELETE`` (including
+``INSERT OR REPLACE``, even one that reuses an ``idempotency_key``) on both
+ledgers. Retries are safe through an explicit ``idempotency_key``: an exact
+retry returns the original record without consuming the write clock, a
+conflicting reuse of the key fails loudly.
+
+Record kinds are explicit because registration time relative to the target
+window is evidence quality, not a formatting choice:
+
+* ``forecast`` - pure ex-ante: the half-open target window is fully in the
+  future at registration (``window_start >= generated_at``);
+* ``nowcast`` - prospective but registered while the window is already open
+  (``window_start <= generated_at < window_end``), e.g. a quarterly-cutoff
+  Horizon forecast registered before its 12-month horizon ends. Honest label:
+  an ex-ante forecast is impossible for this window, a prior-backtest fixture
+  would be false;
+* ``retrospective_fixture`` - prior backtests only, historically labelled.
 
 Outcome resolution is a **separate append-only ledger** keyed by
 ``prediction_id``: outcomes are 0/1 only, corrections are new versions that
@@ -15,9 +26,10 @@ preserve the original, and evaluation at an ``as_of`` cutoff only sees
 forecasts/resolutions known by that time. Scoring (Brier, clipped log loss,
 fixed-boundary calibration bins / ECE) is a pure deterministic function of the
 as-of-visible ledger, and the export artifact carries a canonical SHA256 that
-later writes cannot alter. ``retrospective_fixture`` records (prior backtests)
-are stored but never mixed into prospective headline metrics or denominators;
-they are reported only in an explicitly labeled separate cohort.
+later writes cannot alter. ``nowcast`` rows are scored in their own explicitly
+labelled prospective cohort so they can never contaminate the pure-future
+``forecast`` headline/denominators; ``retrospective_fixture`` rows are reported
+only in a separate cohort.
 
 Scope: this is a *registry and evaluation foundation*. It contains no model,
 generates no predictions, and makes no accuracy claims. All hashes are
@@ -45,7 +57,7 @@ import medradar
 
 from medradar.tkg._time import parse_iso8601, render_moment
 
-SCHEMA_VERSION = "forecast-registry-1"
+SCHEMA_VERSION = "forecast-registry-2"
 SCORING_VERSION = "scoring-1"
 
 FORMAT = "medradar-forecast-evaluation"
@@ -53,7 +65,11 @@ FORMAT_VERSION = 1
 
 HORIZON_MONTHS = (3, 6, 12, 24)
 EVIDENCE_KINDS = ("source_observed", "inferred", "reconstructed")
-RECORD_KINDS = ("forecast", "retrospective_fixture")
+# ``forecast`` = pure ex-ante (window fully in the future at registration);
+# ``nowcast`` = prospective but registered while the target window is already
+# open (the honest label for a quarterly-cutoff Horizon forecast);
+# ``retrospective_fixture`` = prior backtests, never scored prospectively.
+RECORD_KINDS = ("forecast", "nowcast", "retrospective_fixture")
 RESOLUTION_KINDS = ("outcome", "censor")
 
 # Documented scoring constants (see docs/FORECAST_REGISTRY.md):
@@ -97,7 +113,7 @@ CREATE TABLE IF NOT EXISTS forecasts (
     prediction_id     TEXT PRIMARY KEY,
     generated_at      TEXT NOT NULL,
     record_kind       TEXT NOT NULL DEFAULT 'forecast'
-                      CHECK (record_kind IN ('forecast', 'retrospective_fixture')),
+                      CHECK (record_kind IN ('forecast', 'nowcast', 'retrospective_fixture')),
     information_cutoff TEXT NOT NULL,
     information_cutoff_precision TEXT NOT NULL DEFAULT 'datetime',
     target_type       TEXT NOT NULL,
@@ -108,8 +124,11 @@ CREATE TABLE IF NOT EXISTS forecasts (
     window_end        TEXT NOT NULL,
     model_version     TEXT NOT NULL,
     feature_version   TEXT NOT NULL,
-    snapshot_sha256   TEXT NOT NULL,
-    snapshot_verification TEXT NOT NULL DEFAULT 'declared',
+    -- Optional declared snapshot identity. NULL = "no TKG snapshot declared"
+    -- (verification='none'); a supplied hash is only ever *declared* provenance
+    -- unless a local snapshot file is also verified.
+    snapshot_sha256   TEXT,
+    snapshot_verification TEXT NOT NULL DEFAULT 'none',
     provenance        TEXT NOT NULL,
     source_locator    TEXT NOT NULL,
     evidence_sha256   TEXT NOT NULL,
@@ -117,10 +136,14 @@ CREATE TABLE IF NOT EXISTS forecasts (
     p                 REAL NOT NULL CHECK (p >= 0.0 AND p <= 1.0),
     idempotency_key   TEXT NOT NULL UNIQUE,
     CHECK (information_cutoff <= generated_at),
-    -- Prospective forecasts must start in the future; retrospective fixtures
-    -- (prior backtests) are explicitly allowed to carry a historical window.
-    -- The API still validates the window in _finalize_window for both kinds.
-    CHECK (window_start >= generated_at OR record_kind = 'retrospective_fixture'),
+    -- Pure-future forecasts must start in the future; nowcasts are registered
+    -- while the window is already open (start <= generated_at < end);
+    -- retrospective fixtures may carry a historical window. The API still
+    -- validates the exact window rules in _finalize_window for every kind.
+    CHECK (window_start >= generated_at
+           OR record_kind IN ('nowcast', 'retrospective_fixture')),
+    CHECK (record_kind <> 'nowcast'
+           OR (window_start <= generated_at AND window_end > generated_at)),
     CHECK (window_end > window_start)
 );
 CREATE INDEX IF NOT EXISTS idx_forecasts_generated ON forecasts(generated_at);
@@ -453,7 +476,13 @@ class ForecastRegistry:
         if "snapshot" in spec and spec["snapshot"] is not None:
             snapshot_verification, snapshot_path = _verify_snapshot(spec["snapshot"])
             snapshot_sha256 = spec["snapshot"].get("sha256")
-        snapshot_sha256 = _validate_sha256(snapshot_sha256, "snapshot_sha256")
+        if snapshot_sha256 is None or str(snapshot_sha256).strip() == "":
+            # No snapshot identity declared: explicit "none", never a fabricated
+            # hash. Records without a TKG snapshot are still valid forecasts.
+            snapshot_sha256 = None
+            snapshot_verification = "none"
+        else:
+            snapshot_sha256 = _validate_sha256(snapshot_sha256, "snapshot_sha256")
 
         evidence = spec.get("evidence")
         locator, evidence_sha256, evidence_kind = _validate_evidence(evidence)
@@ -496,31 +525,51 @@ class ForecastRegistry:
     ) -> tuple[str, str]:
         """Resolve the target window *after* the store clock is known.
 
-        For prospective ``record_kind='forecast'`` rows the window must be
-        genuinely future: ``window_start`` equals ``generated_at`` by default
-        (never an implicit event-date fallback) or is explicitly
-        ``>= generated_at``, and ``window_end > generated_at``.
-        ``record_kind='retrospective_fixture'`` (prior backtests) is exempt
-        from the future-only rule: its window may be historical (e.g. a
-        backtest of 2020 data recorded in 2026), because such rows are never
-        scored in the prospective headline cohort anyway. ``window_end`` is
-        **always** derived from the start plus the declared horizon
-        (``add_months_clamped(window_start, horizon_months)``) so the
+        Three record kinds with distinct window rules:
+
+        * ``forecast`` (pure ex-ante): ``window_start`` defaults to
+          ``generated_at`` (never an implicit event-date fallback) or is
+          explicitly ``>= generated_at``; ``window_end > generated_at``.
+        * ``nowcast``: the window is **already open** when registered -
+          an explicit ``window_start <= generated_at < window_end`` is
+          required (a quarterly-cutoff Horizon forecast registered before its
+          horizon end). ``information_cutoff <= window_start`` is enforced.
+          A nowcast whose window has already closed is rejected: that is a
+          retrospective claim, not a nowcast.
+        * ``retrospective_fixture`` (prior backtests): exempt from the
+          future-only rule, may carry a historical window; never scored in the
+          prospective cohorts.
+
+        ``window_end`` is **always** derived from the start plus the declared
+        horizon (``add_months_clamped(window_start, horizon_months)``) so the
         ``horizon_months`` label always denotes the actual calendar duration
         of the window - an arbitrary or shortened end can never be silently
         mislabeled (e.g. a one-day window tagged ``horizon=24``). An explicit
         ``window_end`` is accepted only when it exactly equals the derived
         end; anything else is rejected.
         """
-        is_fixture = prepared["record_kind"] == "retrospective_fixture"
+        record_kind = prepared["record_kind"]
+        is_fixture = record_kind == "retrospective_fixture"
+        is_nowcast = record_kind == "nowcast"
+        if is_nowcast and spec.get("window_start") is None:
+            raise ForecastValidationError(
+                "nowcast requires an explicit window_start: the already-open target window"
+                " must be stated by the caller (it cannot default to generated_at)"
+            )
         if spec.get("window_start") is None:
             window_start = generated_at
         else:
             window_start, _ = normalize_moment(spec["window_start"], "window_start")
-            if window_start < generated_at and not is_fixture:
+            if is_nowcast and window_start > generated_at:
+                raise ForecastValidationError(
+                    f"window_start {window_start} is after generated_at {generated_at}:"
+                    " a nowcast window must already be open (window_start <= generated_at)"
+                )
+            if window_start < generated_at and not (is_fixture or is_nowcast):
                 raise ForecastValidationError(
                     f"window_start {window_start} must not be before generated_at {generated_at}"
-                    " (historical windows are only accepted for record_kind='retrospective_fixture')"
+                    " (historical windows are only accepted for record_kind='nowcast' or"
+                    " 'retrospective_fixture')"
                 )
         start_dt = datetime.strptime(window_start, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc)
         window_end = _render_moment(add_months_clamped(start_dt, prepared["horizon_months"]))
@@ -537,11 +586,24 @@ class ForecastRegistry:
             raise ForecastValidationError(
                 f"target window must be non-empty half-open [start, end) with end > start; got [{window_start}, {window_end})"
             )
-        if window_end <= generated_at and not is_fixture:
+        if is_nowcast:
+            if prepared["cutoff"] > window_start:
+                raise ForecastValidationError(
+                    f"nowcast information_cutoff {prepared['cutoff']} must not be after the"
+                    f" already-open window_start {window_start}"
+                )
+            if window_end <= generated_at:
+                raise ForecastValidationError(
+                    f"nowcast window already closed at registration: window_end {window_end}"
+                    f" <= generated_at {generated_at}; a past window is a"
+                    " record_kind='retrospective_fixture', not a nowcast"
+                )
+        elif window_end <= generated_at and not is_fixture:
             raise ForecastValidationError(
                 f"prospective target window must be genuinely future at registration:"
                 f" window_end {window_end} <= generated_at {generated_at}"
-                " (historical windows are only accepted for record_kind='retrospective_fixture')"
+                " (historical windows are only accepted for record_kind='nowcast' or"
+                " 'retrospective_fixture')"
             )
         return window_start, window_end
 
@@ -785,10 +847,16 @@ class ForecastRegistry:
         headline aggregates all eligible *prospective* forecasts and carries
         explicit scope metadata so strata are never mixed silently.
 
-        ``record_kind='retrospective_fixture'`` rows (prior backtests) are
-        **never** silently mixed into the prospective headline metrics or
-        denominators: they are reported only in the explicitly labeled
-        ``retrospective`` block with their own counts and metrics.
+        ``record_kind='nowcast'`` rows (prospective forecasts registered while
+        their target window was already open) are genuine prospective evidence
+        but are **reported separately** so they cannot contaminate the
+        pure-future ``forecast`` cohort: ``headline``/``counts``/``strata``
+        contain only ``record_kind='forecast'``; ``nowcast`` holds the nowcast
+        cohort's own counts/headline/strata; ``prospective`` is the explicitly
+        labelled descriptive union of both; ``record_kind_breakdown`` gives the
+        denominators per kind. ``record_kind='retrospective_fixture'`` rows are
+        **never** silently mixed into either prospective cohort: they are
+        reported only in the explicitly labeled ``retrospective`` block.
         """
         as_of_text, _ = normalize_moment(as_of, "as_of")
         if as_of_text > self._read_now():
@@ -796,9 +864,13 @@ class ForecastRegistry:
         forecasts = self._forecasts_as_of(as_of_text)
         resolutions = self._resolutions_as_of(as_of_text)
         prospective = [f for f in forecasts if f["record_kind"] == "forecast"]
+        nowcasts = [f for f in forecasts if f["record_kind"] == "nowcast"]
         fixtures = [f for f in forecasts if f["record_kind"] == "retrospective_fixture"]
 
         counts, headline, strata_block = self._evaluate_cohort(prospective, resolutions, as_of_text)
+        now_counts, now_headline, now_strata = self._evaluate_cohort(nowcasts, resolutions, as_of_text)
+        combined_counts, combined_headline, _ = self._evaluate_cohort(
+            prospective + nowcasts, resolutions, as_of_text)
         retro_counts, retro_headline, retro_strata = self._evaluate_cohort(fixtures, resolutions, as_of_text)
         return {
             "scoring_version": SCORING_VERSION,
@@ -806,6 +878,25 @@ class ForecastRegistry:
             "counts": counts,
             "headline": headline,
             "strata": strata_block,
+            "nowcast": {
+                "label": "explicitly separated record_kind='nowcast' cohort (prospective forecasts"
+                         " registered while the target window was already open); scored separately"
+                         " from the pure-future forecast cohort",
+                "counts": now_counts,
+                "headline": now_headline,
+                "strata": now_strata,
+            },
+            "prospective": {
+                "label": "descriptive union of forecast+nowcast prospective cohorts;"
+                         " headline is NOT the pure-future estimate",
+                "counts": combined_counts,
+                "headline": combined_headline,
+            },
+            "record_kind_breakdown": {
+                "forecast": counts,
+                "nowcast": now_counts,
+                "retrospective_fixture": retro_counts,
+            },
             "retrospective": {
                 "label": "explicitly separated retrospective_fixture cohort (prior backtests);"
                          " never mixed into prospective headline metrics or denominators",
@@ -925,16 +1016,19 @@ class ForecastRegistry:
 
         Contains the forecast and resolution versions visible at ``as_of``,
         the evaluation, the scoring version and provenance metadata, sorted
-        canonical UTF-8 JSON hashed with SHA256. Prospective forecasts and
-        ``retrospective_fixture`` rows are stored in separate, explicitly
-        labeled lists. No wall-clock report timestamp is included: writes
-        after ``as_of`` cannot change the hash.
+        canonical UTF-8 JSON hashed with SHA256. The three record kinds are
+        stored in separate, explicitly labeled lists (``forecasts`` /
+        ``nowcasts`` / ``retrospective_fixtures``) so a consumer can never
+        silently blend a nowcast with a pure-future forecast. No wall-clock
+        report timestamp is included: writes after ``as_of`` cannot change the
+        hash.
         """
         as_of_text, _ = normalize_moment(as_of, "as_of")
         evaluation = self.evaluate(as_of_text)
         forecasts = self._forecasts_as_of(as_of_text)
         resolutions = self._resolutions_as_of(as_of_text)
         prospective = [f for f in forecasts if f["record_kind"] == "forecast"]
+        nowcasts = [f for f in forecasts if f["record_kind"] == "nowcast"]
         fixtures = [f for f in forecasts if f["record_kind"] == "retrospective_fixture"]
         verifications = sorted({f["snapshot"]["verification"] for f in forecasts})
         document: dict[str, Any] = {
@@ -946,13 +1040,19 @@ class ForecastRegistry:
                 "schema_version": SCHEMA_VERSION,
                 "code_version": code_version(),
                 "counts": evaluation["counts"],
+                "counts_by_record_kind": {
+                    kind: evaluation["record_kind_breakdown"][kind]["total_forecasts"]
+                    for kind in RECORD_KINDS
+                },
                 "provenance": {
                     "snapshot_verification": verifications,
                     "note": "'declared' hashes are caller-supplied provenance, not cryptographically validated;"
-                            " 'verified_local' was recomputed against a local TKG snapshot via medradar.tkg APIs",
+                            " 'verified_local' was recomputed against a local TKG snapshot via medradar.tkg APIs;"
+                            " 'none' means no snapshot identity was declared",
                 },
             },
             "forecasts": prospective,
+            "nowcasts": nowcasts,
             "retrospective_fixtures": fixtures,
             "resolutions": resolutions,
             "evaluation": evaluation,

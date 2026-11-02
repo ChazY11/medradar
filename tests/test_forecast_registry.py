@@ -84,6 +84,19 @@ def forecast_spec(key: str = "k1", p: float = 0.7, horizon: int = 3, **extra) ->
     return spec
 
 
+def nowcast_spec(key: str = "n1", p: float = 0.6, horizon: int = 3, **extra) -> dict:
+    """A nowcast registered at T0 (2024-01-15) with an already-open window.
+
+    ``window_start`` is before ``generated_at`` and the horizon-derived
+    ``window_end`` is after it, i.e. exactly the quarterly-cutoff Horizon case.
+    """
+    spec = forecast_spec(key, p=p, horizon=horizon, record_kind="nowcast", **extra)
+    spec["window_start"] = "2024-01-01T00:00:00Z"
+    spec["information_cutoff"] = "2024-01-01T00:00:00Z"
+    spec.pop("snapshot_sha256", None)  # no TKG snapshot declared for nowcasts
+    return spec
+
+
 def advance_past(clock, moment: datetime) -> None:
     while clock() < moment:
         pass
@@ -319,6 +332,116 @@ class WindowTests(unittest.TestCase):
 
 
 # ------------------------------------------------------------------ idempotency
+class NowcastTests(unittest.TestCase):
+    """``record_kind='nowcast'``: prospective forecast with an already-open window."""
+
+    def test_nowcast_accepts_an_already_open_window(self) -> None:
+        registry = ForecastRegistry(":memory:", clock=step_clock())
+        result = registry.register(nowcast_spec("nc-ok", horizon=3))
+        self.assertEqual(result["status"], "created")
+        self.assertEqual(result["record_kind"], "nowcast")
+        self.assertEqual(result["window_start"], "2024-01-01T00:00:00.000000Z")
+        self.assertEqual(result["window_end"], "2024-04-01T00:00:00.000000Z")  # derived
+        self.assertEqual(result["generated_at"], stamp(T0))
+        # generated_at is inside the window: that is the whole point
+        self.assertLess(result["window_start"], result["generated_at"])
+        self.assertLess(result["generated_at"], result["window_end"])
+        self.assertEqual(result["snapshot"]["verification"], "none")  # no snapshot declared
+
+    def test_nowcast_requires_an_explicit_window_start(self) -> None:
+        registry = ForecastRegistry(":memory:", clock=step_clock())
+        spec = forecast_spec("nc-no-start", record_kind="nowcast")
+        spec["information_cutoff"] = "2024-01-01"
+        with self.assertRaises(ForecastValidationError):
+            registry.register(spec)
+        self.assertEqual(registry.count("forecasts"), 0)
+
+    def test_nowcast_window_must_already_be_open(self) -> None:
+        registry = ForecastRegistry(":memory:", clock=step_clock())
+        # window_start after generated_at is a pure-future forecast, not a nowcast
+        spec = nowcast_spec("nc-future-start")
+        spec["window_start"] = "2024-02-01T00:00:00Z"
+        with self.assertRaises(ForecastValidationError):
+            registry.register(spec)
+        # information_cutoff after window_start is rejected too
+        spec = nowcast_spec("nc-cutoff-after-start")
+        spec["information_cutoff"] = "2024-01-10T00:00:00Z"
+        with self.assertRaises(ForecastValidationError):
+            registry.register(spec)
+        self.assertEqual(registry.count("forecasts"), 0)
+
+    def test_nowcast_window_must_not_already_be_closed(self) -> None:
+        registry = ForecastRegistry(":memory:", clock=step_clock())
+        spec = nowcast_spec("nc-closed", horizon=3)
+        spec["window_start"] = "2023-01-01T00:00:00Z"  # window_end 2023-04-01 <= T0
+        with self.assertRaises(ForecastValidationError):
+            registry.register(spec)
+        self.assertEqual(registry.count("forecasts"), 0)
+
+    def test_nowcast_window_end_must_match_horizon(self) -> None:
+        registry = ForecastRegistry(":memory:", clock=step_clock())
+        with self.assertRaises(ForecastValidationError):
+            registry.register(nowcast_spec("nc-bad-end", window_end="2024-05-01T00:00:00Z"))
+        self.assertEqual(registry.count("forecasts"), 0)
+
+    def test_nowcast_cohort_is_scored_separately_from_pure_forecast(self) -> None:
+        clock = step_clock(start=T0, step=timedelta(days=30))
+        registry = ForecastRegistry(":memory:", clock=clock)
+        pure = registry.register(forecast_spec("pure", p=0.9, horizon=3))
+        now = registry.register(nowcast_spec("now", p=0.2, horizon=3))
+        fixture = registry.register(forecast_spec(
+            "fixture", p=0.5, horizon=3, record_kind="retrospective_fixture"))
+        # resolve all three with outcome 1 (in-window event times)
+        registry.resolve(resolution_spec(pure["prediction_id"], event_time=pure["window_start"]))
+        registry.resolve(resolution_spec(now["prediction_id"], event_time=now["window_start"]))
+        registry.resolve(resolution_spec(fixture["prediction_id"], event_time=fixture["window_start"]))
+        advance_past(clock, datetime(2024, 7, 1, tzinfo=timezone.utc))
+        evaluation = registry.evaluate("2024-07-01T00:00:00Z")
+
+        # pure-future headline counts only record_kind='forecast'
+        self.assertEqual(evaluation["counts"],
+                         {"total_forecasts": 1, "eligible": 1, "unresolved": 0, "censored": 0})
+        self.assertAlmostEqual(evaluation["headline"]["brier"], (0.9 - 1) ** 2)
+        # nowcast is its own prospective cohort - no contamination
+        nowcast = evaluation["nowcast"]
+        self.assertIn("nowcast", nowcast["label"])
+        self.assertEqual(nowcast["counts"],
+                         {"total_forecasts": 1, "eligible": 1, "unresolved": 0, "censored": 0})
+        self.assertAlmostEqual(nowcast["headline"]["brier"], (0.2 - 1) ** 2)
+        # descriptive union is explicit, not the pure-future headline
+        self.assertEqual(evaluation["prospective"]["counts"]["total_forecasts"], 2)
+        self.assertIn("NOT the pure-future", evaluation["prospective"]["label"])
+        self.assertEqual(evaluation["record_kind_breakdown"]["forecast"]["total_forecasts"], 1)
+        self.assertEqual(evaluation["record_kind_breakdown"]["nowcast"]["total_forecasts"], 1)
+        self.assertEqual(
+            evaluation["record_kind_breakdown"]["retrospective_fixture"]["total_forecasts"], 1)
+        # retrospective cohort is unchanged
+        self.assertEqual(evaluation["retrospective"]["counts"]["total_forecasts"], 1)
+
+        artifact = registry.build_artifact("2024-07-01T00:00:00Z")
+        self.assertEqual([f["prediction_id"] for f in artifact["forecasts"]], [pure["prediction_id"]])
+        self.assertEqual([f["prediction_id"] for f in artifact["nowcasts"]], [now["prediction_id"]])
+        self.assertEqual([f["prediction_id"] for f in artifact["retrospective_fixtures"]],
+                         [fixture["prediction_id"]])
+        self.assertEqual(artifact["manifest"]["counts_by_record_kind"],
+                         {"forecast": 1, "nowcast": 1, "retrospective_fixture": 1})
+        # nowcast manifest identity: schema-2, and "none" present because the
+        # nowcast declared no snapshot while the other two declared a hash
+        self.assertEqual(artifact["manifest"]["schema_version"], "forecast-registry-2")
+        self.assertIn("none", artifact["manifest"]["provenance"]["snapshot_verification"])
+
+    def test_nowcast_is_append_only_like_forecast(self) -> None:
+        registry = ForecastRegistry(":memory:", clock=step_clock())
+        result = registry.register(nowcast_spec("nc-guard"))
+        with self.assertRaises(sqlite3.IntegrityError):
+            registry.conn.execute("UPDATE forecasts SET p = 0.99 WHERE prediction_id = ?",
+                                  (result["prediction_id"],))
+        with self.assertRaises(sqlite3.IntegrityError):
+            registry.conn.execute("DELETE FROM forecasts WHERE prediction_id = ?",
+                                  (result["prediction_id"],))
+        self.assertEqual(registry.get_forecast(result["prediction_id"])["p"], 0.6)
+
+
 class IdempotencyTests(unittest.TestCase):
     def test_exact_retry_returns_original_without_new_history_even_if_clock_moves(self) -> None:
         clock = step_clock()
