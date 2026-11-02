@@ -170,13 +170,27 @@ At a 2 % FAR on the controlled-truth benchmark, sensitivity is **0.223** for the
 possible; the best operating point is weak. At monthly resolution the ordering favours the naive method,
 which is uncomfortable and, as the next subsection shows, not stable.
 
-### 4.2 Resolution dependence: the ranking is not identifiable
+### 4.2 Resolution dependence: no detector is identifiable, but the layer still has to choose one
 
 Repeating the benchmark across bin widths produces a **crossover at a 2-month width** (about 0.42
 expected events per bin). Above the crossover the identity of the best detector changes across widths —
 naive, CUSUM, z-score and back — and no detector dominates. We therefore report the frontier and say
 what it shows: at this sample size, **the best detector is not identifiable**, and any single-winner
 claim is an artefact of the chosen resolution.
+
+That is an honest limitation but not an operational answer, because the layer must run at some
+resolution. We fixed the deployment resolution to **3 months (quarterly)** — the cadence of portfolio
+decisions and re-forecasting this system serves — and read the sweep there. At quarterly resolution with
+a 2 % false-alarm budget the **rolling z-score** reaches sensitivity **0.147** (95 % CI 0.112–0.182),
+against 0.073 for the Bayes factor, 0.065 for CUSUM and 0.025 for the naive rule: within that resolution
+its interval overlaps none of the others, so it is the best of the four *there*.
+
+The identifiability check still fails, and instructively: the winner across widths is naive (1 month),
+CUSUM (2), z-score (3), CUSUM (4), z-score (6), and the Kendall tau between the quarterly ranking and the
+monthly one is **−1.0** — a complete reversal. The layer therefore "names" a detector only as a
+resolution-specific deployment choice, states `resolution: 3 months` wherever the choice is used, and
+never cites it as a ranking. If the operating resolution changes, the detector must be re-measured,
+because at monthly resolution the same detector is **last**.
 
 ### 4.3 Five retracted findings
 

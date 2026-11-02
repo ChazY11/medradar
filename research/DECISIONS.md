@@ -1637,3 +1637,94 @@ change is technological.
 
 **Not claimed.** That the rule generalises beyond (company, track) monthly filing counts at ~0.2 events per
 month; that shape recovery implies technological significance; that a ramp can be distinguished at all.
+
+---
+
+## D-044 — Pre-registration: deployment resolution for the OBSERVE layer (B-039)
+
+**Date:** 2026-11-03. **Status:** accepted; written before `experiments/b039/deployment_resolution.py` was
+first run.
+
+**The question.** The layer has to operate at *some* resolution. Cycle 3b/3c measured that detector memory
+must be expressed in calendar time (D-020) and that the identity of the best detector changes with the bin
+width (D-018). B-039 requires choosing the operating resolution, re-reading the sweep there, and naming a
+detector **only if** the choice is identifiable.
+
+**Resolution.** **Three months (quarterly)**, justified by the decision cadence the layer serves: technology
+portfolio reviews, board cycles and analyst re-forecasting in this domain are quarterly, and a monthly
+resolution produces ~0.2 events per cell-month where the detectors cannot resolve anything (measured, not
+assumed). The choice is recorded here; it is a deployment decision, not an empirical optimum.
+
+**Rules fixed now.**
+
+* Evaluated on the existing bin-width sweep (widths 1, 2, 3, 4, 6 months), with all detector memory in
+  calendar months, at a 2 % false-alarm budget.
+* Each detector's operating point is the sweep row whose achieved false-alarm rate is closest to and not
+  above the budget. A detector with **no** row at or below the budget is reported as **not calibratable at
+  this budget**, which is a finding, not a missing value.
+* Uncertainty: Wilson 95 % intervals on each sensitivity, from the sweep's trial counts.
+* **Identifiability rule:** the detector is named only if the winner is the same at every width **and**
+  every pairwise Kendall tau between width rankings is ≥ 0.5. Otherwise the report must state that no
+  detector is identifiable and that the deployment choice is resolution-specific.
+
+**What naming a detector would license.** Only: "at the resolution this layer operates at, and within this
+corpus, detector X has the highest measured sensitivity at the stated false-alarm budget." Not a claim that
+X is the best detector in general, and not transferable to another resolution without re-measurement.
+
+**What failure would license.** That the layer must present the frontier rather than a winner, and that any
+downstream artifact using a single detector must carry the resolution at which it was validated.
+
+---
+
+## D-045 — B-039 outcome: the layer deploys at quarterly resolution; at that resolution one detector wins, but no detector is identifiable across resolutions
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-039.
+
+**The deployment decision.** The OBSERVE layer will operate at **3 months (quarterly)**. The justification
+is the decision cadence it serves — quarterly technology-portfolio reviews and analyst re-forecasting — plus
+a measured reason: at monthly resolution a cell holds ~0.2 events per month, where the detectors cannot
+resolve anything (D-018, D-024). This is a **deployment choice**, not an empirical optimum, and it is
+recorded as such.
+
+Detector memory was already expressed in calendar months (D-020), so the sweep read here is the corrected
+one.
+
+**Result at the deployment resolution** (39 bins, 101 cells, 56 evaluation cells, 224 trials per detector,
+2 % false-alarm budget, achieved FAR 0.0179):
+
+| detector | sensitivity | 95 % CI | median delay |
+|---|---:|---|---:|
+| **rolling z-score** | **0.147** | 0.112–0.182 | 2 months |
+| Poisson Bayes factor | 0.073 | 0.051–0.096 | 0 months |
+| Poisson CUSUM | 0.065 | 0.036–0.102 | 3 months |
+| naive rate multiplier | 0.025 | 0.011–0.042 | 2 months |
+
+At this resolution the z-score interval does not overlap any other detector's interval: within the
+deployment resolution, it is the best of the four.
+
+**The identifiability check (the part that forbids a general winner).**
+
+| width (months) | winner |
+|---:|---|
+| 1 | naive rate multiplier |
+| 2 | Poisson CUSUM |
+| 3 | rolling z-score |
+| 4 | Poisson CUSUM |
+| 6 | rolling z-score |
+
+Kendall tau between the deployment ranking and the others: **−1.0** at monthly (a complete reversal), 0.0 at
+2 months, 0.33 at 4 months, 0.67 at 6 months. The pre-registered rule (same winner everywhere AND every tau
+≥ 0.5) therefore **fails**.
+
+**Verdict, stated in the form B-039 demanded.** No detector is identifiable as best in general. The layer
+deploys the **rolling z-score at quarterly resolution**, and every downstream artifact must state that
+resolution. The choice is not a ranking claim and must not be cited as one; if the operating resolution ever
+changes, the detector must be re-measured, because the monthly ranking puts the same detector **last**.
+
+**What this changes in the product.** The profile's alert machinery operates quarterly and carries
+`resolution: 3 months` in its provenance. The detection section of the paper now reports the deployment
+choice together with the reversal.
+
+**Not claimed.** That the z-score is the best detector; that the quarterly sensitivity of 0.147 is adequate
+for any particular decision; or that a detector validated here transfers to another corpus or another
+resolution.

@@ -135,3 +135,6 @@ split was degenerate. Details and all numbers: `cycle2_2026-11-02.md` and
 | R83 | The confirmation is **binary only**: 78.7 % of spikes caught, but ramp recall 0.142, so ramp-vs-level remains unrecovered | limitation | `confirm_window.json` §confusion |
 | R84 | **Caveat carried**: post-discovery confirmation — fresh injection months, same 65 cells; it does not rescue any earlier association finding | limitation | `research/DECISIONS.md` D-043 |
 | R85 | Paper updated: title, abstract (labelled "after drafting") and new §4.9; **51 of 51** claims verified | deliverable | `papers/PAPER_v1.md` |
+| R86 | **Deployment resolution fixed at 3 months (quarterly)**, justified by decision cadence and the measured sparsity ceiling; OBSERVE now names a detector only resolution-specifically | decision | `experiments/b039/deployment_resolution.json` |
+| R87 | At quarterly resolution the **rolling z-score** leads: sensitivity **0.147** (CI 0.112–0.182), vs Bayes 0.073, CUSUM 0.065, naive 0.025 — no interval overlap within that resolution | measurement | `deployment_resolution.json` §per_width.3 |
+| R88 | **No detector is identifiable across resolutions**: winner cycles naive→CUSUM→z→CUSUM→z and Kendall tau vs monthly is **−1.0** (complete reversal) | **negative** | `deployment_resolution.json` §conclusion |

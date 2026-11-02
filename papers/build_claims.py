@@ -91,6 +91,11 @@ CLAIMS = [
     ("S4", "confirmed spike recall", "0.787", "research/DECISIONS.md", "0.787"),
     ("S5", "alert-shape discovery balanced accuracy", "0.394", "research/DECISIONS.md", "0.394"),
     ("S6", "post-hoc discovery balanced accuracy", "0.608", "research/DECISIONS.md", "0.608"),
+    # ---- deployment resolution (cycle 21)
+    ("U1", "quarterly deployment sensitivity of the z-score", "0.147", "research/DECISIONS.md", "0.147"),
+    ("U2", "quarterly deployment z-score CI lower bound", "0.112", "research/DECISIONS.md", "0.112"),
+    ("U3", "quarterly deployment z-score CI upper bound", "0.182", "research/DECISIONS.md", "0.182"),
+    ("U4", "Kendall tau between quarterly and monthly rankings", "−1.0", "research/DECISIONS.md", "−1.0"),
 ]
 
 

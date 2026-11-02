@@ -1,0 +1,355 @@
+{
+  "conclusion": {
+    "identifiable": false,
+    "kendall_all_at_least_floor": false,
+    "kendall_floor": 0.5,
+    "resolution_months": 3,
+    "same_winner_across_widths": false,
+    "statement": "At the quarterly deployment resolution, rolling_zscore has the highest measured sensitivity (0.147), but the detector ranking is NOT identifiable across resolutions, so the choice is resolution-specific and must not be reported as a general winner.",
+    "winner": "rolling_zscore",
+    "winner_ci": [
+      0.11217948717948718,
+      0.1824712643678161
+    ],
+    "winner_sensitivity": 0.14732142857142858
+  },
+  "design": {
+    "budget": 0.02,
+    "decision": "research/DECISIONS.md D-044 (pre-registered)",
+    "deployment_width_months": 3,
+    "identifiability_rule": "same winner at every width AND all pairwise Kendall tau >= floor",
+    "kendall_floor": 0.5,
+    "operating_point_rule": "sweep row with achieved FAR closest to and not above the budget",
+    "resolution_justification": "quarterly technology reviews and analyst re-forecasting; monthly resolution leaves ~0.2 events per cell-month, where the detectors cannot resolve a change (measured in D-018/D-024)"
+  },
+  "kendall_tau_vs_deployment": {
+    "1": -1.0,
+    "2": 0.0,
+    "4": 0.3333333333333333,
+    "6": 0.6666666666666666
+  },
+  "per_width": {
+    "1": {
+      "bins": 119,
+      "cells": 104,
+      "detectors": {
+        "naive_multiplier": {
+          "achieved_false_alarm_rate": 0.017241379310344827,
+          "calibratable": true,
+          "ci": [
+            0.18081761006289307,
+            0.2646198830409357
+          ],
+          "detected": 52,
+          "median_delay_months": 4,
+          "sensitivity": 0.22270114942528735,
+          "trials": 232
+        },
+        "poisson_bayes_factor": {
+          "achieved_false_alarm_rate": 0.0,
+          "calibratable": true,
+          "ci": [
+            0.08908045977011494,
+            0.15948275862068967
+          ],
+          "detected": 28,
+          "median_delay_months": 2,
+          "sensitivity": 0.1221264367816092,
+          "trials": 232
+        },
+        "poisson_cusum": {
+          "achieved_false_alarm_rate": 0.017241379310344827,
+          "calibratable": true,
+          "ci": [
+            0.13364779874213836,
+            0.22953216374269006
+          ],
+          "detected": 42,
+          "median_delay_months": 7,
+          "sensitivity": 0.1810344827586207,
+          "trials": 232
+        },
+        "rolling_zscore": {
+          "achieved_false_alarm_rate": 0.017241379310344827,
+          "calibratable": true,
+          "ci": [
+            0.07738095238095238,
+            0.15211640211640212
+          ],
+          "detected": 26,
+          "median_delay_months": 9,
+          "sensitivity": 0.11206896551724138,
+          "trials": 232
+        }
+      },
+      "evaluation_cells": 58,
+      "median_expected_events_per_bin": 0.21008403361344538,
+      "ranking": [
+        "naive_multiplier",
+        "poisson_cusum",
+        "poisson_bayes_factor",
+        "rolling_zscore"
+      ],
+      "winner": "naive_multiplier"
+    },
+    "2": {
+      "bins": 59,
+      "cells": 103,
+      "detectors": {
+        "naive_multiplier": {
+          "achieved_false_alarm_rate": 0.017543859649122806,
+          "calibratable": true,
+          "ci": [
+            0.001388888888888889,
+            0.015723270440251572
+          ],
+          "detected": 2,
+          "median_delay_months": 2,
+          "sensitivity": 0.007309941520467836,
+          "trials": 228
+        },
+        "poisson_bayes_factor": {
+          "achieved_false_alarm_rate": 0.0,
+          "calibratable": true,
+          "ci": [
+            0.06060606060606061,
+            0.11748633879781421
+          ],
+          "detected": 20,
+          "median_delay_months": 1,
+          "sensitivity": 0.08771929824561403,
+          "trials": 228
+        },
+        "poisson_cusum": {
+          "achieved_false_alarm_rate": 0.017543859649122806,
+          "calibratable": true,
+          "ci": [
+            0.07561728395061729,
+            0.15566037735849056
+          ],
+          "detected": 25,
+          "median_delay_months": 5,
+          "sensitivity": 0.1111111111111111,
+          "trials": 228
+        },
+        "rolling_zscore": {
+          "achieved_false_alarm_rate": 0.017543859649122806,
+          "calibratable": true,
+          "ci": [
+            0.05608974358974359,
+            0.11202185792349727
+          ],
+          "detected": 19,
+          "median_delay_months": 5,
+          "sensitivity": 0.08333333333333333,
+          "trials": 228
+        }
+      },
+      "evaluation_cells": 57,
+      "median_expected_events_per_bin": 0.423728813559322,
+      "ranking": [
+        "poisson_cusum",
+        "poisson_bayes_factor",
+        "rolling_zscore",
+        "naive_multiplier"
+      ],
+      "winner": "poisson_cusum"
+    },
+    "3": {
+      "bins": 39,
+      "cells": 101,
+      "detectors": {
+        "naive_multiplier": {
+          "achieved_false_alarm_rate": 0.017857142857142856,
+          "calibratable": true,
+          "ci": [
+            0.011299435028248588,
+            0.04245283018867924
+          ],
+          "detected": 6,
+          "median_delay_months": 2,
+          "sensitivity": 0.025297619047619048,
+          "trials": 224
+        },
+        "poisson_bayes_factor": {
+          "achieved_false_alarm_rate": 0.0,
+          "calibratable": true,
+          "ci": [
+            0.05116959064327485,
+            0.09562841530054644
+          ],
+          "detected": 16,
+          "median_delay_months": 0,
+          "sensitivity": 0.07291666666666667,
+          "trials": 224
+        },
+        "poisson_cusum": {
+          "achieved_false_alarm_rate": 0.017857142857142856,
+          "calibratable": true,
+          "ci": [
+            0.03571428571428571,
+            0.10201149425287356
+          ],
+          "detected": 15,
+          "median_delay_months": 3,
+          "sensitivity": 0.06547619047619048,
+          "trials": 224
+        },
+        "rolling_zscore": {
+          "achieved_false_alarm_rate": 0.017857142857142856,
+          "calibratable": true,
+          "ci": [
+            0.11217948717948718,
+            0.1824712643678161
+          ],
+          "detected": 33,
+          "median_delay_months": 2,
+          "sensitivity": 0.14732142857142858,
+          "trials": 224
+        }
+      },
+      "evaluation_cells": 56,
+      "median_expected_events_per_bin": 0.6410256410256411,
+      "ranking": [
+        "rolling_zscore",
+        "poisson_bayes_factor",
+        "poisson_cusum",
+        "naive_multiplier"
+      ],
+      "winner": "rolling_zscore"
+    },
+    "4": {
+      "bins": 29,
+      "cells": 99,
+      "detectors": {
+        "naive_multiplier": {
+          "achieved_false_alarm_rate": 0.0,
+          "calibratable": true,
+          "ci": [
+            0.0,
+            0.011904761904761904
+          ],
+          "detected": 1,
+          "median_delay_months": 3,
+          "sensitivity": 0.004464285714285714,
+          "trials": 224
+        },
+        "poisson_bayes_factor": {
+          "achieved_false_alarm_rate": 0.0,
+          "calibratable": true,
+          "ci": [
+            0.03869047619047619,
+            0.08035714285714286
+          ],
+          "detected": 13,
+          "median_delay_months": 0,
+          "sensitivity": 0.05952380952380952,
+          "trials": 224
+        },
+        "poisson_cusum": {
+          "achieved_false_alarm_rate": 0.017857142857142856,
+          "calibratable": true,
+          "ci": [
+            0.1286549707602339,
+            0.22575757575757577
+          ],
+          "detected": 39,
+          "median_delay_months": 2,
+          "sensitivity": 0.17559523809523808,
+          "trials": 224
+        },
+        "rolling_zscore": {
+          "achieved_false_alarm_rate": 0.017857142857142856,
+          "calibratable": true,
+          "ci": [
+            0.06666666666666667,
+            0.11925287356321838
+          ],
+          "detected": 21,
+          "median_delay_months": 2,
+          "sensitivity": 0.09226190476190477,
+          "trials": 224
+        }
+      },
+      "evaluation_cells": 56,
+      "median_expected_events_per_bin": 0.8620689655172413,
+      "ranking": [
+        "poisson_cusum",
+        "rolling_zscore",
+        "poisson_bayes_factor",
+        "naive_multiplier"
+      ],
+      "winner": "poisson_cusum"
+    },
+    "6": {
+      "bins": 19,
+      "cells": 91,
+      "detectors": {
+        "naive_multiplier": {
+          "achieved_false_alarm_rate": 0.018867924528301886,
+          "calibratable": true,
+          "ci": [
+            0.05,
+            0.09693877551020408
+          ],
+          "detected": 15,
+          "median_delay_months": 2,
+          "sensitivity": 0.07075471698113207,
+          "trials": 212
+        },
+        "poisson_bayes_factor": {
+          "achieved_false_alarm_rate": 0.0,
+          "calibratable": true,
+          "ci": [
+            0.11054421768707483,
+            0.16176470588235295
+          ],
+          "detected": 29,
+          "median_delay_months": 0,
+          "sensitivity": 0.13522012578616352,
+          "trials": 212
+        },
+        "poisson_cusum": {
+          "achieved_false_alarm_rate": 0.018867924528301886,
+          "calibratable": true,
+          "ci": [
+            0.10897435897435898,
+            0.2028301886792453
+          ],
+          "detected": 32,
+          "median_delay_months": 1,
+          "sensitivity": 0.15251572327044025,
+          "trials": 212
+        },
+        "rolling_zscore": {
+          "achieved_false_alarm_rate": 0.0,
+          "calibratable": true,
+          "ci": [
+            0.1330128205128205,
+            0.22448979591836735
+          ],
+          "detected": 38,
+          "median_delay_months": 1,
+          "sensitivity": 0.1792452830188679,
+          "trials": 212
+        }
+      },
+      "evaluation_cells": 53,
+      "median_expected_events_per_bin": 1.3157894736842106,
+      "ranking": [
+        "rolling_zscore",
+        "poisson_cusum",
+        "poisson_bayes_factor",
+        "naive_multiplier"
+      ],
+      "winner": "rolling_zscore"
+    }
+  },
+  "winners": {
+    "1": "naive_multiplier",
+    "2": "poisson_cusum",
+    "3": "rolling_zscore",
+    "4": "poisson_cusum",
+    "6": "rolling_zscore"
+  }
+}
