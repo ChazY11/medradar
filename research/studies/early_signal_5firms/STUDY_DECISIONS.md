@@ -408,3 +408,31 @@ check that makes it fragile, and no case label was fabricated. Publication appro
 
 **What this review is not.** It is a *procedural and reproducibility* review, not peer review of the science, and not
 human adjudication of the 69 packets. Both remain outstanding and are stated as such in the paper and in S-019.
+
+---
+
+## S-027 — Publication record: PR #6 merged into main as `4627672`
+
+**Date:** 2026-11-03 · **Status:** accepted · **PR:** https://github.com/ChazY11/medradar/pull/6
+
+The study branch was published and merged, after the agent-performed review recorded in S-026 and with all five CI
+checks green on the merged head.
+
+| item | value |
+|---|---|
+| pull request | **#6**, base `main`, head `research/early-signal-5firms` |
+| reviewed head | `bb8f9f8` (14 commits, 97 files) |
+| CI | 5 of 5 checks passed (py3.10/3.11/3.12 offline suites + wheel smoke, Windows data-files demo, offline data stats) |
+| merge | merge commit **`4627672`**, history preserved (no squash) |
+| `main` before | `ae18f27`; **after: `4627672`**, 174 commits |
+| local `main` | fast-forwarded to `4627672` |
+| gate on `main` after merge | **12 steps, 0 failures** |
+
+**What is now on `main`:** the complete study directory (36 files), all six protocols including the small-sample
+amendment, the crosswalk and its G1 re-run, the concurrent-detection and event-sequence experiments, the nine-event
+description with its nine packets, and the third paper with its 24-claim map. The three papers are indexed in
+`papers/README.md`.
+
+**What is still not done, and cannot be done by the agent:** adjudicating the **69 packets** (60 candidates + 9
+small-sample) — they remain `PENDING_HUMAN_REVIEW` with `final_label = null`, verified programmatically in the review.
+Target B analysis therefore still does not exist, and neither paper claims it does.
