@@ -3,13 +3,25 @@
 Minimal **immutable Forecast Registry + deterministic evaluation** foundation
 (`medradar/forecast_registry.py`, stdlib+SQLite only). It exists so that future
 3/6/12/24-month forecasting research can register *real* forecasts before
-outcomes are known and score them later without after-the-fact leakage.
+outcomes are known and score them later without after-the-fact leakage. Since
+Phase 3 it is also the canonical registry for the Horizon forecasting lane
+(`medradar/intelligence/forecasting/registry_adapter.py`); see
+[PHASE3_REGISTRY.md](PHASE3_REGISTRY.md).
 
 Scope discipline: this module contains **no model**, generates **no
 predictions**, and makes **no accuracy claims**. All demo/test records are
 synthetic and in-memory; they never masquerade as historical forecasts. See
 `docs/research/FORECAST_REGISTRY_ADR.md` for the decisions and acceptance
 report.
+
+Three **record kinds** are explicit because registration time relative to the
+target window is evidence quality:
+
+| `record_kind` | Registration-time window | Meaning |
+|---|---|---|
+| `forecast` | `window_start >= generated_at` (pure future) | genuinely ex-ante forecast |
+| `nowcast` | `window_start <= generated_at < window_end` | prospective forecast registered while the window is already open (e.g. a quarterly-cutoff Horizon forecast before its 12-month horizon ends) |
+| `retrospective_fixture` | any window, may be historical | prior backtests only; never scored prospectively |
 
 ## CLI (fully offline)
 
@@ -31,17 +43,18 @@ unresolved, then evaluates and exports a deterministic artifact. It prints
 ```json
 {
   "idempotency_key": "required, stable, caller-chosen",
-  "record_kind": "forecast | retrospective_fixture (default forecast; use the latter for prior backtests and label them)",
+  "record_kind": "forecast | nowcast | retrospective_fixture (default forecast; nowcast = prospective with an already-open window; retrospective_fixture = prior backtests)",
   "target": {"type": "nmpa_acceptance", "id": "DEV-123", "attrs": {"synthetic": true}},
   "horizon_months": 6,
   "p": 0.7,
   "information_cutoff": "2024-01-10T00:00:00Z",
-  "window_start": "optional; default: generated_at. Prospective forecasts must be >= generated_at;"
-                  " retrospective_fixture rows may carry a historical (past) window for prior backtests",
+  "window_start": "forecast: optional >= generated_at (default generated_at);"
+                  " nowcast: REQUIRED and <= generated_at (the already-open window);"
+                  " retrospective_fixture: may be historical",
   "window_end": "always derived: window_start + horizon_months calendar months (month-end clamped);"
                 " an explicit value is accepted only when exactly equal to the derived end",
   "model_version": "required", "feature_version": "required",
-  "snapshot_sha256": "64-hex, or",
+  "snapshot_sha256": "optional 64-hex declared snapshot identity (omit for 'none'), or",
   "snapshot": {"sha256": "64-hex", "path": "optional local medradar-tkg snapshot.json to verify"},
   "evidence": {
     "source_locator": "required", "evidence_kind": "source_observed|inferred|reconstructed",
@@ -83,10 +96,18 @@ unresolved, then evaluates and exports a deterministic artifact. It prints
 - For prospective `record_kind="forecast"` rows the target window is
   **genuinely future**: `window_start` equals `generated_at` or is explicitly
   `>= generated_at`, and `window_end > generated_at`.
-  `record_kind="retrospective_fixture"` is explicitly exempt from the
+- `record_kind="nowcast"` is a prospective forecast registered **while the
+  target window is already open**: an explicit `window_start` is required and
+  must satisfy `window_start <= generated_at < window_end`, with
+  `information_cutoff <= window_start`. A nowcast whose window has already
+  closed is rejected (that is a retrospective claim, not a nowcast). Nowcast
+  rows are append-only exactly like pure forecasts and are scored in their own
+  prospective cohort (see Evaluation).
+- `record_kind="retrospective_fixture"` is explicitly exempt from the
   future-only rule so prior backtests can be registered with a historical
   window (e.g. a 2020 window registered in 2026); such rows are still kept out
-  of the prospective headline. `window_end` is **always derived** as
+  of the prospective cohorts.
+- `window_end` is **always derived** as
   `window_start + horizon_months` calendar months with documented month-end
   clamping (`2024-01-31` + 3 → `2024-04-30`; `2024-02-29` + 12 →
   `2025-02-28`), so the `horizon_months` label always denotes the **actual**
@@ -144,29 +165,37 @@ unresolved, then evaluates and exports a deterministic artifact. It prints
   aggregates all eligible forecasts and carries explicit `mixed_targets`
   scope metadata so strata are never mixed silently. No AUC/AP in the MVP.
   Toy-n results must not be read as calibration evidence.
+- **Cohort separation.** `counts`/`headline`/`strata` contain only
+  `record_kind="forecast"` (the pure-future estimate). `nowcast` is a sibling
+  block with its own `counts`/`headline`/`strata` and an explicit label;
+  `prospective` is the descriptive union `forecast+nowcast` (explicitly *not*
+  the pure-future estimate); `record_kind_breakdown` gives the denominators per
+  kind. A nowcast can therefore never contaminate the pure-future aggregate.
 - `record_kind="retrospective_fixture"` rows (prior backtests) are stored but
-  **never** silently enter prospective headline metrics or denominators: the
-  default evaluation counts and scores only `record_kind="forecast"`, and the
-  fixture cohort is reported separately under the explicitly labeled
-  `retrospective` block (own counts, headline and strata). Fixtures may carry
-  a historical window (see Registration), which is why the future-only window
-  rule would make the documented prior-backtest use case impossible.
+  **never** silently enter any prospective metrics or denominators: they are
+  reported only under the explicitly labeled `retrospective` block (own
+  counts, headline and strata). Fixtures may carry a historical window (see
+  Registration), which is why the future-only window rule would make the
+  documented prior-backtest use case impossible.
 
 **Deterministic artifact (`export`)**
 - `evaluation.json` contains the forecast/resolution versions visible at
   `as_of`, the evaluation, `scoring_version`, schema/code versions and
   provenance metadata; canonical UTF-8 JSON (sorted keys) hashed with SHA256.
-  Prospective forecasts and `retrospective_fixture` rows live in separate,
-  explicitly labeled lists (`forecasts` / `retrospective_fixtures`).
+  The three record kinds live in separate, explicitly labeled lists
+  (`forecasts` / `nowcasts` / `retrospective_fixtures`); the manifest carries
+  both the pure-future `counts` and `counts_by_record_kind`.
   No wall-clock report timestamp: writes after `as_of` cannot change the hash,
   and no live whole-DB fingerprint is included.
 
 **Snapshot provenance**
-- The registry stores the TKG snapshot manifest identity (`snapshot_sha256`)
-  plus a verification flag. A bare hash is **declared provenance** — hash
-  length proves nothing cryptographically. If a local `snapshot.json` path is
-  supplied at registration, the hash is recomputed with the existing
-  `medradar.tkg` APIs and a mismatch is a hard error (`verified_local`).
+- The registry may store the TKG snapshot manifest identity
+  (`snapshot_sha256`) plus a verification flag. Omitting a snapshot is
+  explicit: the row records `verification="none"` and never a fabricated hash.
+  A bare hash is **declared provenance** — hash length proves nothing
+  cryptographically. If a local `snapshot.json` path is supplied at
+  registration, the hash is recomputed with the existing `medradar.tkg` APIs
+  and a mismatch is a hard error (`verified_local`).
 
 ## Library use
 
@@ -181,6 +210,19 @@ with ForecastRegistry("reg.sqlite") as registry:          # or ForecastRegistry(
     artifact = registry.build_artifact("2024-06-01T00:00:00Z")
 ```
 
+The Horizon lane registers through the adapter instead of hand-building specs
+(see [PHASE3_REGISTRY.md](PHASE3_REGISTRY.md)):
+
+```python
+from medradar.intelligence.forecasting.registry_adapter import (
+    FEATURE_VERSION, register_horizon_forecasts, verify_registered_forecasts)
+
+counts = register_horizon_forecasts(registry, horizon_records,
+                                    data_provenance=provenance,
+                                    feature_version=FEATURE_VERSION)
+verification = verify_registered_forecasts(registry, intelligence_store, "2026-10-15")
+```
+
 ## Limitations
 
 - Single writer per store file; no multi-writer coordination.
@@ -188,11 +230,17 @@ with ForecastRegistry("reg.sqlite") as registry:          # or ForecastRegistry(
   guards stop `UPDATE`/`DELETE`/`REPLACE` rewrites, not owner-level forged
   **appends** (a stray session can still insert a plausible new row, and the
   owner can drop triggers or rebuild the database).
-- `declared` snapshot hashes are caller assertions, not validation.
+- `declared` snapshot hashes are caller assertions, not validation; omitting a
+  snapshot is recorded as `none` (never invented).
 - Outcomes are binary only; multi-class / continuous targets are future work.
+- A `nowcast` is honest but weaker evidence than a pure `forecast`: part of its
+  target window elapsed before registration, so the two cohorts must be
+  compared separately (`nowcast` block vs `headline`), never merged into one
+  claim.
 - No in-place schema migration: the immutability triggers are (re)applied with
   `CREATE TRIGGER IF NOT EXISTS` every time a store is opened, so existing
-  files gain them automatically; the relaxed window `CHECK` that permits
-  historical `retrospective_fixture` windows is part of the fresh schema, so a
-  store file created by an earlier pre-release build must be recreated (no
-  released databases exist; this registry has never been published).
+  files gain them automatically. Schema changes that SQLite cannot `ALTER`
+  (nullable `snapshot_sha256`, the `nowcast` record-kind/window `CHECK`s) are
+  part of the fresh **`forecast-registry-2`** schema: a registry file created
+  by an earlier pre-release build (schema-1) must be recreated. No released
+  database exists; this registry has never been published.

@@ -7,7 +7,7 @@ from datetime import date
 from typing import Any
 
 from ...util import add_months, iso, parse_date, quarter_index, quarter_start, sha1, utc_now_iso
-from ..features.research_features import build_examples
+from ..features.research_features import DATASET_VERSION, build_examples
 from ..models.baseline import LogisticBaseline
 from ..storage import IntelligenceStore
 
@@ -19,9 +19,19 @@ def _train(examples: list[dict[str, Any]], features: list[str]) -> LogisticBasel
     return LogisticBaseline(features).fit([row["features"] for row in mature], [int(row["label"]) for row in mature])
 
 
-def create_forecasts(store: IntelligenceStore, *, base_features: list[str],
-                     financial_features: list[str], coverage_end: str,
-                     horizon_months: int = 12, top_n: int = 25) -> list[dict[str, Any]]:
+def build_forecasts(store: IntelligenceStore, *, base_features: list[str],
+                    financial_features: list[str], coverage_end: str,
+                    horizon_months: int = 12, top_n: int = 25,
+                    dataset_version: str = DATASET_VERSION) -> list[dict[str, Any]]:
+    """Train, score candidates and return Horizon records **without writing**.
+
+    Pure counterpart of :func:`create_forecasts`: the continuous cycle needs
+    the records (to map them into the canonical registry) without mutating the
+    research DB's legacy ``horizon_forecasts`` table. ``dataset_version`` keeps
+    the training set homogeneous - the frozen DB now also stores the
+    ``first_entry_v1`` target, which must never be mixed into the continuation
+    model.
+    """
     coverage = parse_date(coverage_end)
     if not coverage:
         raise ValueError("invalid coverage end")
@@ -29,7 +39,8 @@ def create_forecasts(store: IntelligenceStore, *, base_features: list[str],
     current = build_examples(store, horizon_months=horizon_months, cutoffs=[cutoff], include_unmatured=True)
     candidates = [row for row in current["examples"] if row["maturity"] == "pending"]
     mature = [row for row in store.conn.execute(
-        "SELECT * FROM forecast_examples WHERE maturity='mature' ORDER BY cutoff")]
+        "SELECT * FROM forecast_examples WHERE maturity='mature' AND dataset_version=? ORDER BY cutoff",
+        (dataset_version,))]
     examples = []
     for row in mature:
         item = dict(row)
@@ -88,8 +99,20 @@ def create_forecasts(store: IntelligenceStore, *, base_features: list[str],
             },
             "status": "pending",
         }
-        store.upsert_forecast(record)
         results.append(record)
+    return results
+
+
+def create_forecasts(store: IntelligenceStore, *, base_features: list[str],
+                     financial_features: list[str], coverage_end: str,
+                     horizon_months: int = 12, top_n: int = 25,
+                     dataset_version: str = DATASET_VERSION) -> list[dict[str, Any]]:
+    results = build_forecasts(
+        store, base_features=base_features, financial_features=financial_features,
+        coverage_end=coverage_end, horizon_months=horizon_months, top_n=top_n,
+        dataset_version=dataset_version)
+    for record in results:
+        store.upsert_forecast(record)
     return results
 
 
