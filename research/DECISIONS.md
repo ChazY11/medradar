@@ -1013,3 +1013,49 @@ the same discipline applies: when a measurement says "the data is too thin", the
 must be checked before the conclusion is carried forward. This is the second time this cycle family
 has had to retract its own result (D-025 was the first), and both times the retraction came from
 testing the claim against an alternative explanation rather than from new data.
+
+---
+
+## D-031 — B-048 outcome: one more board found, but the hiring lane cannot cover four of the five mandated focus companies
+
+**Date:** 2026-11-02. **Status:** accepted. Closes B-048 as a **measured coverage limit**.
+
+**What was searched, and how.** Instead of guessing hosts again, the archive was asked what it has:
+for each firm, a CDX query over the main domain filtered to career/job URLs, followed by an ATS-host
+battery of ~40 candidate patterns per company (Workday pods, Taleo, SuccessFactors, Avature, iCIMS,
+Jobvite, Greenhouse, Lever, SmartRecruiters, Eightfold, plus own-domain career paths).
+
+**Results.**
+
+| firm | discovered board | postings | months | clears the unchanged floor? |
+|---|---|---:|---:|---|
+| Philips | `philips.taleo.net/careersection/*` | 669 | 38 | **no** — silent-month fraction too high |
+| Zimmer Biomet | `careers.zimmer.com/*` | 4 | 4 | no — far too thin |
+| Dräger | none (only `www.draeger.com/...career` marketing pages; `draeger.taleo.net` errored) | 0 | 0 | no |
+| Mindray | none (only `mindray.com/...careers` marketing pages) | 0 | 0 | no |
+| Masimo | none | 0 | 0 | no |
+
+**The structural finding.** MISSION.md mandates five deep-case companies: Medtronic, GE HealthCare,
+Philips, Dräger, Mindray. Under the **unchanged** usability floor the hiring lane covers **one** of
+them (Medtronic). The reasons differ and are not fixable by more probing:
+
+* **GE HealthCare** only became an independent filer in 2023, so a hiring series that predates its
+  independence does not exist; and its archived board yields one URL.
+* **Philips** has a real board but covers 38 of 119 months — its postings are not archived densely
+  enough for a monthly series that passes the silence criterion.
+* **Dräger and Mindray** post on career systems whose job-level URLs are not archived; only marketing
+  pages were captured.
+* **Masimo** returned nothing at all.
+
+**What this means for the mission.** The hiring lane can serve the *statistical* question for a subset
+of the roster, but it can **not** serve the mandated deep-case requirement. Those five cases need an
+evidence type that exists for them: their own regulatory filings (already held), their device trials
+(held for 46 firms), and their publications. This is now a recorded constraint on the design, not an
+outstanding search.
+
+**Deliberately not done.** The floor was not loosened to admit Philips, and the silence criterion was
+not relaxed to manufacture a fourth usable company. Same rule as D-029/D-030.
+
+**Consequence for the lag test.** It remains **unrun** with 3 usable companies, unchanged from
+D-030. Probing stopped here because the marginal firm is not obtainable from this source; continuing
+would be the specification search the mission forbids.

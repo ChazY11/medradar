@@ -498,16 +498,16 @@
       "distinct_postings": 0,
       "hosts": [
         {
+          "pattern": "www.draeger.com/en-us_us/career/*",
+          "postings": 0,
+          "truncated": false,
+          "urls": 17
+        },
+        {
           "pattern": "www.draeger.com/job/*",
           "postings": 0,
           "truncated": false,
           "urls": 4
-        },
-        {
-          "pattern": "draeger.taleo.net/careersection/*",
-          "postings": 0,
-          "truncated": false,
-          "urls": 0
         }
       ],
       "months": 0,
@@ -829,39 +829,94 @@
       "distinct_postings": 0,
       "hosts": [
         {
-          "pattern": "mindray.com/careers/*",
+          "pattern": "www.mindray.com/en/careers/*",
           "postings": 0,
           "truncated": false,
-          "urls": 0
-        },
-        {
-          "pattern": "jobs.mindray.com/*",
-          "postings": 0,
-          "truncated": false,
-          "urls": 0
+          "urls": 36
         }
       ],
       "months": 0,
       "status": "no coverage"
     },
     "philips": {
-      "distinct_postings": 0,
+      "depth_rank": 21,
+      "distinct_postings": 669,
       "hosts": [
+        {
+          "pattern": "philips.taleo.net/careersection/*",
+          "postings": 669,
+          "truncated": false,
+          "urls": 1018
+        },
         {
           "pattern": "philips.wd3.myworkdayjobs.com/*",
           "postings": 0,
           "truncated": false,
           "urls": 0
-        },
-        {
-          "pattern": "philips.com/careers/*",
-          "postings": 0,
-          "truncated": false,
-          "urls": 0
         }
       ],
-      "months": 0,
-      "status": "no coverage"
+      "monthly": {
+        "201401": 98,
+        "201402": 6,
+        "201403": 2,
+        "201404": 16,
+        "201405": 1,
+        "201406": 5,
+        "201407": 6,
+        "201408": 10,
+        "201409": 1,
+        "201410": 34,
+        "201411": 66,
+        "201412": 3,
+        "201501": 2,
+        "201503": 1,
+        "201504": 69,
+        "201505": 12,
+        "201506": 30,
+        "201507": 1,
+        "201509": 170,
+        "201510": 13,
+        "201511": 4,
+        "201512": 20,
+        "201601": 9,
+        "201602": 1,
+        "201603": 7,
+        "201604": 8,
+        "201605": 11,
+        "201606": 28,
+        "201607": 4,
+        "201608": 14,
+        "201609": 2,
+        "201610": 1,
+        "201611": 1,
+        "201612": 1,
+        "201701": 5,
+        "201702": 3,
+        "201704": 2,
+        "201710": 2
+      },
+      "months": 38,
+      "shape_first_seen": {
+        "philips.taleo.net/<slug>/<id>/<id>/<slug>": "20150415152814",
+        "philips.taleo.net/<slug>/<id>/<slug>": "20140102104437",
+        "philips.taleo.net/<slug>/<id>/<slug>/<slug>": "20140211134142",
+        "philips.taleo.net/<slug>/<id>/iam/<slug>": "20141005171758",
+        "philips.taleo.net/<slug>/<slug>": "20140104081936",
+        "philips.taleo.net/<slug>/<slug>/<id>/<id>": "20141019134558",
+        "philips.taleo.net/<slug>/iam/<slug>/<slug>": "20140825000221",
+        "philips.taleo.net:80/<slug>/<id>/<slug>": "20150110185828",
+        "philips.taleo.net:80/<slug>/<slug>": "20150516031000"
+      },
+      "shapes": {
+        "philips.taleo.net/<slug>/<id>/<id>/<slug>": 9,
+        "philips.taleo.net/<slug>/<id>/<slug>": 348,
+        "philips.taleo.net/<slug>/<id>/<slug>/<slug>": 3,
+        "philips.taleo.net/<slug>/<slug>": 273,
+        "philips.taleo.net/<slug>/<slug>/<id>/<id>": 26,
+        "philips.taleo.net:80/<slug>/<id>/<slug>": 4
+      },
+      "status": "collected",
+      "truncated": false
     },
     "stryker": {
       "depth_rank": 68,
@@ -999,8 +1054,15 @@
       "truncated": true
     },
     "zimmer_biomet": {
-      "distinct_postings": 0,
+      "depth_rank": 0,
+      "distinct_postings": 4,
       "hosts": [
+        {
+          "pattern": "careers.zimmer.com/*",
+          "postings": 4,
+          "truncated": false,
+          "urls": 332
+        },
         {
           "pattern": "zimmerbiomet.wd5.myworkdayjobs.com/*",
           "postings": 0,
@@ -1014,15 +1076,30 @@
           "urls": 0
         }
       ],
-      "months": 0,
-      "status": "no coverage"
+      "monthly": {
+        "201412": 1,
+        "201506": 1,
+        "201510": 1,
+        "201610": 1
+      },
+      "months": 4,
+      "shape_first_seen": {
+        "careers.zimmer.com:80/de/<slug>/<slug>/<slug>": "20141222182643",
+        "careers.zimmer.com:80/de_de/<slug>/<slug>/<slug>": "20150619035155"
+      },
+      "shapes": {
+        "careers.zimmer.com:80/de/<slug>/<slug>/<slug>": 2,
+        "careers.zimmer.com:80/de_de/<slug>/<slug>/<slug>": 2
+      },
+      "status": "collected",
+      "truncated": false
     }
   },
   "coverage": {
     "companies_probed": 16,
-    "companies_with_24plus_months": 6,
-    "companies_with_50plus_postings": 9,
-    "companies_with_postings": 11
+    "companies_with_24plus_months": 7,
+    "companies_with_50plus_postings": 10,
+    "companies_with_postings": 13
   },
   "design": {
     "decision": "research/DECISIONS.md D-030 (supersedes the cycle-9 panel builder)",
@@ -1045,6 +1122,7 @@
         "dexcom.wd1.myworkdayjobs.com/*"
       ],
       "draeger": [
+        "www.draeger.com/en-us_us/career/*",
         "www.draeger.com/job/*",
         "draeger.taleo.net/careersection/*"
       ],
@@ -1071,17 +1149,19 @@
       ],
       "mindray": [
         "mindray.com/careers/*",
-        "jobs.mindray.com/*"
+        "jobs.mindray.com/*",
+        "www.mindray.com/en/careers/*"
       ],
       "philips": [
-        "philips.wd3.myworkdayjobs.com/*",
-        "philips.com/careers/*"
+        "philips.taleo.net/careersection/*",
+        "philips.wd3.myworkdayjobs.com/*"
       ],
       "stryker": [
         "careers.stryker.com/jobs/*",
         "careers.stryker.com/job/*"
       ],
       "zimmer_biomet": [
+        "careers.zimmer.com/*",
         "zimmerbiomet.wd5.myworkdayjobs.com/*",
         "careers.zimmerbiomet.com/job/*"
       ]

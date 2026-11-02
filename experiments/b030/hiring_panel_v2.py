@@ -52,10 +52,13 @@ HOSTS: dict[str, list[str]] = {
     "baxter": ["baxter.taleo.net/careersection/*"],
     "hologic": ["hologic.taleo.net/careersection/*"],
     "ge_healthcare": ["gehealthcare.wd5.myworkdayjobs.com/*"],
-    "philips": ["philips.wd3.myworkdayjobs.com/*", "philips.com/careers/*"],
-    "draeger": ["www.draeger.com/job/*", "draeger.taleo.net/careersection/*"],
-    "mindray": ["mindray.com/careers/*", "jobs.mindray.com/*"],
-    "zimmer_biomet": ["zimmerbiomet.wd5.myworkdayjobs.com/*",
+    "philips": ["philips.taleo.net/careersection/*", "philips.wd3.myworkdayjobs.com/*"],
+    # B-048: boards found by archived-career-URL search and the ATS-host battery
+    "draeger": ["www.draeger.com/en-us_us/career/*", "www.draeger.com/job/*",
+                "draeger.taleo.net/careersection/*"],
+    "mindray": ["mindray.com/careers/*", "jobs.mindray.com/*",
+                "www.mindray.com/en/careers/*"],
+    "zimmer_biomet": ["careers.zimmer.com/*", "zimmerbiomet.wd5.myworkdayjobs.com/*",
                       "careers.zimmerbiomet.com/job/*"],
     "masimo": ["masimo.wd1.myworkdayjobs.com/*", "www.masimo.com/careers/*"],
 }
@@ -181,3 +184,4 @@ def keys_rank(monthly: Counter) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

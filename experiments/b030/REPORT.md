@@ -26,7 +26,7 @@ A direct per-host measurement with a single generous request shows the same host
 | `baxter.taleo.net/careersection/*` | 69 | 21 | 4 |
 | `hologic.taleo.net/careersection/*` | error | — | — |
 
-Corrected panel coverage: **11 companies with posting URLs**, 6 with ≥24 months, 9 with ≥50 postings — against 2 usable companies in cycle 9.
+Corrected panel coverage: **13 companies with posting URLs**, 7 with ≥24 months, 10 with ≥50 postings — against 2 usable companies in cycle 9.
 
 ## 2. Source selection (unchanged, measured)
 
@@ -55,13 +55,13 @@ The Wayback route is used as index-only access (no page content), rate-limited a
 | masimo | 0 | 0 | — | no coverage |
 | medtronic | 5107 | 60 | True | collected |
 | mindray | 0 | 0 | — | no coverage |
-| philips | 0 | 0 | — | no coverage |
+| philips | 669 | 38 | False | collected |
 | stryker | 8839 | 90 | True | collected |
-| zimmer_biomet | 0 | 0 | — | no coverage |
+| zimmer_biomet | 4 | 4 | False | collected |
 
 The `limit` is 5000 per host; `truncated` marks hosts where the cap was hit, so the table understates rather than overstates depth.
 
-Companies still without coverage: draeger, masimo, mindray, philips, zimmer_biomet.
+Companies still without coverage: draeger, masimo, mindray.
 
 ## 4. The lag test on the corrected panel — still not a result
 
@@ -93,7 +93,7 @@ With 3 companies the pooled profile has no usable standard error, and every valu
 
 ## 5. What is now established, and what still blocks
 
-**Established.** The hiring lane is lawful, keyless and historical; it now covers 6 firms with ≥24 months of posting data; the collector's truncation is recorded per host rather than hidden; and the posting-URL shape audit is stored for platform-migration detection.
+**Established.** The hiring lane is lawful, keyless and historical; it now covers 7 firms with ≥24 months of posting data; the collector's truncation is recorded per host rather than hidden; and the posting-URL shape audit is stored for platform-migration detection.
 
 **Still blocking a verdict:**
 

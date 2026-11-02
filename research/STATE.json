@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-02T21:10:00+08:00",
+  "updated_at": "2026-11-02T22:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "hiring_coverage_corrected",
-  "cycle": 12,
+  "phase": "understand_layer_priority",
+  "cycle": 13,
   "last_completed_cycle": {
-    "cycle": 10,
-    "name": "hiring_coverage_correction",
+    "cycle": 11,
+    "name": "hiring_board_discovery_limit",
     "branch": "research/change-detection-v1",
     "report": "experiments/b030/REPORT.md",
-    "summary": "research/RESULTS/cycle10_hiring_v2_2026-11-02.md",
-    "verdict": "cycle 9's 'coverage too thin' was partly a collector bug (collapse=urlkey + limit/page does not page); corrected coverage is 11 companies with posting URLs and 6 with >=24 months. The pre-registered lag test is still UNRUN (3 usable companies), not answered."
+    "summary": "research/RESULTS/cycle11_b048_2026-11-02.md",
+    "verdict": "board discovery found a real Philips board (669 postings / 38 months) but it fails the silence criterion; Dräger, Mindray and Masimo have no archived job-level URLs. The hiring lane covers only 1 of the 5 mandated deep-case companies (Medtronic), which is a structural limit, not an outstanding search."
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -119,7 +119,10 @@
     "OBSERVE: the Wayback hiring lane covers 11 of 16 probed device firms with posting URLs and 6 with >=24 months (Boston Scientific 4,999 postings/123 months; Stryker 8,839/90; Medtronic 5,107/60; BD 4,709/68) - cycle 9's 'coverage too thin' was a collector pagination bug",
     "OBSERVE: the pre-registered hiring/regulatory lag test remains UNRUN - 3 usable companies, all values inside the null band, negative sign uninterpretable (capture-gap confound)",
     "OBSERVE: 5 probed firms still have no archived board (Philips, Draeger, Mindray, Zimmer Biomet, Masimo); 4 firms hit the per-host cap so their series are lower bounds",
-    "METHOD: a negative conclusion about data availability is as falsifiable as a positive claim; the measurement must be checked before the conclusion is carried forward"
+    "METHOD: a negative conclusion about data availability is as falsifiable as a positive claim; the measurement must be checked before the conclusion is carried forward",
+    "OBSERVE: board discovery added a real Philips hiring board (669 postings, 38 months) but it fails the pre-declared silence criterion; Dräger, Mindray and Masimo have no archived job-level URLs at all",
+    "OBSERVE: the hiring lane covers 1 of the 5 mandated deep-case companies (Medtronic); GE HealthCare's independence dates from 2023, Philips is archived too sparsely, Dräger/Mindray post on unarchived systems",
+    "DESIGN: the mandated deep cases must be served by filings + device trials + publications, not by the hiring lane"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -131,16 +134,16 @@
     "bulk lane availability = decision_date + 14 days (estimated), date-level not first-publication"
   ],
   "blockers": [
-    "hiring lag question: statistical power (3 usable companies) and board discovery for 5 firms (B-048)",
+    "hiring lag question: unrun - 3 usable companies; the remaining firms are unreachable from this source (D-031), so the limit is now structural",
     "independent change confirmation: trial lane exists but is too sparse at cell level (cycle 5)",
     "patents: no key and no accessible bulk route (B-031)",
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "B-048: career-board discovery for the five uncovered firms (Philips, Draeger, Mindray, Zimmer Biomet, Masimo), two of them mandated focus companies",
-    "B-027: company technology-profile engine (Understand layer; independent of a positive association result)",
-    "re-run the pre-registered lag test only when enough firms clear the unchanged floor",
-    "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there"
+    "B-027: company technology-profile engine (Understand layer) - assemble filings, tracks, trials and entries into explicit, contradictory-evidence-aware statements for the deep-case companies",
+    "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there",
+    "do not resume hiring probing; the remaining firms are structurally unreachable (D-031)",
+    "B-031: revisit patents only if an accessible bulk route is identified"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -387,12 +390,41 @@
         "boston_scientific",
         "stryker"
       ],
-      "result": "every value inside the null band; sign uninterpretable; UNRUN not null"
+      "result": "UNRUN - 3 companies, all values inside the null band"
     },
     "remaining_blockers": [
       "statistical power (3 usable companies)",
       "board discovery for 5 firms incl. 2 mandated focus companies",
       "platform-migration audit before any level-shift claim"
-    ]
+    ],
+    "coverage_v3": {
+      "companies_probed": 16,
+      "companies_with_postings": 13,
+      "companies_with_24plus_months": 7,
+      "companies_with_50plus_postings": 10,
+      "new_boards": {
+        "philips": "philips.taleo.net/careersection/* (669/38 months)",
+        "zimmer_biomet": "careers.zimmer.com/* (4/4 months)"
+      }
+    },
+    "mandated_focus_coverage": {
+      "mandated": [
+        "medtronic",
+        "ge_healthcare",
+        "philips",
+        "draeger",
+        "mindray"
+      ],
+      "covered_with_usable_series": [
+        "medtronic"
+      ],
+      "why_not": {
+        "ge_healthcare": "independent filer only since 2023; archived board yields 1 URL",
+        "philips": "real board but 38 of 119 months; fails the silence criterion",
+        "draeger": "only marketing career pages archived; no job-level URLs",
+        "mindray": "only marketing career pages archived; no job-level URLs"
+      },
+      "consequence": "the hiring lane cannot serve the mandated deep-case requirement; those cases need filings, device trials and publications instead"
+    }
   }
 }
