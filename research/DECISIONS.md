@@ -2559,3 +2559,60 @@ the pipeline-level result must appear beside the injection results so that neith
 **Not claimed.** That the detector "predicts technology"; that the promotion filter is useless (it is
 unestablished, not refuted); or that the 0.37 control rate is a fair counterfactual for cells at risk of
 alerting — control cells are, by construction, not on an elevated path.
+
+---
+
+## D-066 — B-068: a frozen prospective forecast set, and the 7 forecasts that do not count as evidence
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-068.
+
+**Why.** The objective lists frozen forecasts; the legacy registry holds 25 nowcasts that cannot mature until
+2027. This cycle registered a forecast set that can be scored as soon as the lane advances, from the current
+frozen snapshot.
+
+**What was built.**
+
+* `medradar/intelligence/forecasts.py` — pure functions for quarter arithmetic, fixed windows, registration,
+  validation and scoring (Brier, log loss, accuracy, per-decision breakdown; pending forecasts always reported).
+* `research/forecasts/FORECAST_SET_2026-11-03.json` — **32 forecasts**, one per alert in the policy-v2 snapshot:
+  17 promoted (probability 0.800 that activity persists) and 15 not promoted (0.667). Those probabilities are the
+  **measured end-to-end pipeline rates** from D-065, not preferences. The set carries a content hash
+  `d236b83f…` and the source snapshot's manifest hash.
+* `experiments/b068/maturate_forecasts.py` — refuses to score a modified set (hash check), computes outcomes from
+  the lane, and scores only what has matured.
+
+**The finding that matters most is a defect in how I registered the set.** Because alerts in the snapshot include
+quarters whose outcome windows are already observed, **7 of the 32 forecasts matured immediately at registration**.
+A forecast registered after its outcome is known is not a forecast; it is a backfilled label. Those 7 are reported
+separately and **excluded from prospective evidence**:
+
+| group | n (matured) | mean predicted p | observed persistence | Brier |
+|---|---:|---:|---:|---:|
+| promoted | 4 | 0.800 | 0.500 | — |
+| not promoted | 3 | 0.667 | 0.333 | — |
+| overall | 7 | — | — | **0.337** (accuracy 0.429, log loss 0.896) |
+
+The overall accuracy of 0.429 equals the majority-class base rate in that subsample: the forecasts carry **no
+discernible information** there, which is consistent with D-065's end-to-end result and with the small sample. It
+is a **sanity check that failed to reassure**, not evidence about the model.
+
+**What is genuinely prospective.** The remaining **25 forecasts** mature between 2026-Q4 and 2028-Q1 and are the
+only ones that can count as prospective evidence. They are frozen: any edit breaks the hash and the scorer refuses
+to run.
+
+**Rule recorded for future registrations.** A forecast set may only be registered from alerts whose **outcome
+window is entirely in the future at registration time**. Future registration scripts must filter on that condition
+and report the count of backfilled alerts separately; the current set predates this rule and is annotated as such.
+
+**Not claimed.** Anything from the 7 backfilled forecasts; any scoring from the 25 pending ones before they mature.
+
+**The clean prospective set (added in the same cycle).** The rule above was applied immediately rather than
+deferred: `register_forecasts.py --lane-through 2026-Q3` produced
+`research/forecasts/FORECAST_SET_2026-11-03_prospective.json` with **25 genuinely prospective forecasts** (13
+promoted, 12 not), **7 backfilled alerts excluded** and counted explicitly, earliest maturation **2026-Q4**, hash
+`09525994…`. Those 25 are the only forecasts in the repository that can later count as prospective evidence; the
+first set is retained only as the record of the registration defect.
+
+The objective audit now checks committed forecast sets directly — validating structure and recomputing each
+content hash — instead of relying on the local, git-ignored registry. Current audit line: *"2 hash-verified
+forecast set(s); 25 genuinely prospective forecasts pending maturation"*.

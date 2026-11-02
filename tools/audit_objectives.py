@@ -146,22 +146,48 @@ def main(argv: list[str] | None = None) -> int:
     else:
         items.append(record("rolling-origin benchmark", "FAIL", "experiments/b050/rolling_origin.json missing"))
 
-    # 8. frozen forecasts (data-dependent; declared honestly if the store is not in this checkout)
-    registry = ROOT / "data" / "registry.sqlite"
-    if registry.exists():
-        import sqlite3
-        con = sqlite3.connect(f"file:{registry}?mode=ro", uri=True)
-        try:
-            nowcasts = con.execute("select count(*) from forecasts").fetchone()[0]
-        except sqlite3.Error:
-            nowcasts = None
-        con.close()
-        items.append(record("frozen forecasts", "PASS" if nowcasts else "N/A",
-                            f"registry present, {nowcasts} registered forecasts"))
+    # 8. frozen forecasts: committed, hash-verified sets first; the local registry is secondary evidence
+    from medradar.intelligence.forecasts import validate_forecast_set
+    from medradar.intelligence.snapshot import content_hash
+
+    forecast_files = sorted((ROOT / "research" / "forecasts").glob("*.json"))
+    verified_sets, forecast_problems, prospective_total = [], [], 0
+    for path in forecast_files:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        recorded = payload.pop("forecast_set_hash", None)
+        problems = validate_forecast_set(payload)
+        if recorded and content_hash(payload) != recorded:
+            problems.append("content hash does not match its own records")
+        payload["forecast_set_hash"] = recorded
+        if problems:
+            forecast_problems.append(f"{path.name}: {problems[0]}")
+            continue
+        verified_sets.append({"file": path.name, "forecasts": len(payload["forecasts"]),
+                              "prospective_only": bool(payload.get("prospective_only"))})
+        if payload.get("prospective_only"):
+            prospective_total += len(payload["forecasts"])
+    if verified_sets:
+        items.append(record("frozen forecasts", "PASS" if prospective_total else "FAIL",
+                            f"{len(verified_sets)} hash-verified forecast set(s); "
+                            f"{prospective_total} genuinely prospective forecasts pending maturation",
+                            {"sets": verified_sets, "problems": forecast_problems}))
+    elif forecast_problems:
+        items.append(record("frozen forecasts", "FAIL", "; ".join(forecast_problems)))
     else:
-        items.append(record("frozen forecasts", "N/A",
-                            "data/registry.sqlite is not in this checkout (git-ignored, regenerable); "
-                            "the protocol and the cycle-1 report are the committed evidence"))
+        registry = ROOT / "data" / "registry.sqlite"
+        if registry.exists():
+            import sqlite3
+            con = sqlite3.connect(f"file:{registry}?mode=ro", uri=True)
+            try:
+                nowcasts = con.execute("select count(*) from forecasts").fetchone()[0]
+            except sqlite3.Error:
+                nowcasts = None
+            con.close()
+            items.append(record("frozen forecasts", "PASS" if nowcasts else "N/A",
+                                f"registry present, {nowcasts} registered forecasts; no committed forecast set"))
+        else:
+            items.append(record("frozen forecasts", "N/A",
+                                "no committed forecast set and no registry in this checkout"))
 
     # 9. paper with a verifying claim map
     paper = ROOT / "papers" / "PAPER_v1.md"

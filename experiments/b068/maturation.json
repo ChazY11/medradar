@@ -1,0 +1,54 @@
+{
+  "forecast_set": "research/forecasts/FORECAST_SET_2026-11-03.json",
+  "forecast_set_hash": "d236b83fa9494610156d8bf671576ca70bc8bf5603edb6282401e41a244ef85c",
+  "lane_data_through": "2026-Q3",
+  "pending_ids": [
+    "abbott|ivd_immuno|2026-Q2",
+    "abbott|medical_ai|2025-Q3",
+    "draeger|patient_monitoring|2026-Q2",
+    "draeger|respiratory|2026-Q2",
+    "fujifilm|endoscopy|2025-Q2",
+    "fujifilm|medical_ai|2025-Q2",
+    "fujifilm|medical_ai|2026-Q2",
+    "ge_healthcare|patient_monitoring|2026-Q3",
+    "globus_medical|spine|2026-Q2",
+    "globus_medical|trauma|2026-Q2",
+    "intuitive_surgical|surgical_robotics|2025-Q3",
+    "johnson_johnson_medtech|medical_ai|2026-Q1",
+    "johnson_johnson_medtech|wound_care|2025-Q4",
+    "karl_storz|endoscopy|2025-Q4",
+    "medtronic|coronary|2026-Q3",
+    "medtronic|insulin_delivery|2025-Q3",
+    "merit_medical|coronary|2026-Q1",
+    "mindray|respiratory|2026-Q2",
+    "olympus|dental|2026-Q3",
+    "olympus|endoscopy|2025-Q2",
+    "olympus|imaging_us|2025-Q3",
+    "olympus|surgical_energy|2025-Q4",
+    "philips|imaging_us|2025-Q2",
+    "siemens_healthineers|medical_ai|2026-Q2",
+    "stryker|neurovascular|2025-Q4"
+  ],
+  "scoring": {
+    "accuracy": 0.42857142857142855,
+    "brier": 0.3372381428571429,
+    "by_decision": {
+      "not_promoted": {
+        "brier": 0.33355566666666664,
+        "mean_outcome": 0.3333333333333333,
+        "mean_probability": 0.6670000000000001,
+        "n": 3
+      },
+      "promoted": {
+        "brier": 0.3400000000000001,
+        "mean_outcome": 0.5,
+        "mean_probability": 0.8,
+        "n": 4
+      }
+    },
+    "log_loss": 0.89562196265236,
+    "pending": 25,
+    "resolved": 7,
+    "status": "partially matured"
+  }
+}

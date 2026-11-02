@@ -1,0 +1,440 @@
+{
+  "schema": "forecast_set_v1",
+  "registered_at_utc": "2026-11-03T00:00:00+00:00",
+  "as_of": "2026-11-03",
+  "source_snapshot": "experiments/b027/snapshots/2026-11-03-policy-v2",
+  "source_manifest_hash": "44abde1672dff0d36afdb23aa790379f38e08e1f03f810cab6d857d660d40e61",
+  "probability_source": "end-to-end pipeline persistence rates measured in DECISIONS D-065",
+  "maturation": "each forecast names its maturation quarter; scoring requires lane data through it",
+  "lane_through_at_registration": "2026-Q3",
+  "backfilled_alerts_excluded": 7,
+  "prospective_only": true,
+  "forecasts": [
+    {
+      "id": "abbott|medical_ai|2025-Q3",
+      "company": "abbott",
+      "track": "medical_ai",
+      "alert_quarter": "2025-Q3",
+      "decision": "not_promoted",
+      "shape": "spike",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.667,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2025-Q4..2026-Q1",
+        "outcome": "2026-Q2..2027-Q1",
+        "matures_when_data_through": "2027-Q1"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "abbott|ivd_immuno|2026-Q2",
+      "company": "abbott",
+      "track": "ivd_immuno",
+      "alert_quarter": "2026-Q2",
+      "decision": "promoted",
+      "shape": "level",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q3..2026-Q4",
+        "outcome": "2027-Q1..2027-Q4",
+        "matures_when_data_through": "2027-Q4"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "draeger|patient_monitoring|2026-Q2",
+      "company": "draeger",
+      "track": "patient_monitoring",
+      "alert_quarter": "2026-Q2",
+      "decision": "promoted",
+      "shape": "level",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q3..2026-Q4",
+        "outcome": "2027-Q1..2027-Q4",
+        "matures_when_data_through": "2027-Q4"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "draeger|respiratory|2026-Q2",
+      "company": "draeger",
+      "track": "respiratory",
+      "alert_quarter": "2026-Q2",
+      "decision": "not_promoted",
+      "shape": "spike",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.667,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q3..2026-Q4",
+        "outcome": "2027-Q1..2027-Q4",
+        "matures_when_data_through": "2027-Q4"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "fujifilm|medical_ai|2025-Q2",
+      "company": "fujifilm",
+      "track": "medical_ai",
+      "alert_quarter": "2025-Q2",
+      "decision": "not_promoted",
+      "shape": "spike",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.667,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2025-Q3..2025-Q4",
+        "outcome": "2026-Q1..2026-Q4",
+        "matures_when_data_through": "2026-Q4"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "fujifilm|endoscopy|2025-Q2",
+      "company": "fujifilm",
+      "track": "endoscopy",
+      "alert_quarter": "2025-Q2",
+      "decision": "not_promoted",
+      "shape": "spike",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.667,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2025-Q3..2025-Q4",
+        "outcome": "2026-Q1..2026-Q4",
+        "matures_when_data_through": "2026-Q4"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "fujifilm|medical_ai|2026-Q2",
+      "company": "fujifilm",
+      "track": "medical_ai",
+      "alert_quarter": "2026-Q2",
+      "decision": "promoted",
+      "shape": "level",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q3..2026-Q4",
+        "outcome": "2027-Q1..2027-Q4",
+        "matures_when_data_through": "2027-Q4"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "ge_healthcare|patient_monitoring|2026-Q3",
+      "company": "ge_healthcare",
+      "track": "patient_monitoring",
+      "alert_quarter": "2026-Q3",
+      "decision": "not_promoted",
+      "shape": "unknown",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.667,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q4..2027-Q1",
+        "outcome": "2027-Q2..2028-Q1",
+        "matures_when_data_through": "2028-Q1"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "globus_medical|spine|2026-Q2",
+      "company": "globus_medical",
+      "track": "spine",
+      "alert_quarter": "2026-Q2",
+      "decision": "not_promoted",
+      "shape": "spike",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.667,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q3..2026-Q4",
+        "outcome": "2027-Q1..2027-Q4",
+        "matures_when_data_through": "2027-Q4"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "globus_medical|trauma|2026-Q2",
+      "company": "globus_medical",
+      "track": "trauma",
+      "alert_quarter": "2026-Q2",
+      "decision": "not_promoted",
+      "shape": "spike",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.667,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q3..2026-Q4",
+        "outcome": "2027-Q1..2027-Q4",
+        "matures_when_data_through": "2027-Q4"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "intuitive_surgical|surgical_robotics|2025-Q3",
+      "company": "intuitive_surgical",
+      "track": "surgical_robotics",
+      "alert_quarter": "2025-Q3",
+      "decision": "promoted",
+      "shape": "level",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2025-Q4..2026-Q1",
+        "outcome": "2026-Q2..2027-Q1",
+        "matures_when_data_through": "2027-Q1"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "johnson_johnson_medtech|medical_ai|2026-Q1",
+      "company": "johnson_johnson_medtech",
+      "track": "medical_ai",
+      "alert_quarter": "2026-Q1",
+      "decision": "promoted",
+      "shape": "sustained_unresolved",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q2..2026-Q3",
+        "outcome": "2026-Q4..2027-Q3",
+        "matures_when_data_through": "2027-Q3"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "johnson_johnson_medtech|wound_care|2025-Q4",
+      "company": "johnson_johnson_medtech",
+      "track": "wound_care",
+      "alert_quarter": "2025-Q4",
+      "decision": "promoted",
+      "shape": "level",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q1..2026-Q2",
+        "outcome": "2026-Q3..2027-Q2",
+        "matures_when_data_through": "2027-Q2"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "karl_storz|endoscopy|2025-Q4",
+      "company": "karl_storz",
+      "track": "endoscopy",
+      "alert_quarter": "2025-Q4",
+      "decision": "promoted",
+      "shape": "sustained_unresolved",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q1..2026-Q2",
+        "outcome": "2026-Q3..2027-Q2",
+        "matures_when_data_through": "2027-Q2"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "medtronic|coronary|2026-Q3",
+      "company": "medtronic",
+      "track": "coronary",
+      "alert_quarter": "2026-Q3",
+      "decision": "not_promoted",
+      "shape": "unknown",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.667,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q4..2027-Q1",
+        "outcome": "2027-Q2..2028-Q1",
+        "matures_when_data_through": "2028-Q1"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "medtronic|insulin_delivery|2025-Q3",
+      "company": "medtronic",
+      "track": "insulin_delivery",
+      "alert_quarter": "2025-Q3",
+      "decision": "promoted",
+      "shape": "sustained_unresolved",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2025-Q4..2026-Q1",
+        "outcome": "2026-Q2..2027-Q1",
+        "matures_when_data_through": "2027-Q1"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "merit_medical|coronary|2026-Q1",
+      "company": "merit_medical",
+      "track": "coronary",
+      "alert_quarter": "2026-Q1",
+      "decision": "promoted",
+      "shape": "level",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q2..2026-Q3",
+        "outcome": "2026-Q4..2027-Q3",
+        "matures_when_data_through": "2027-Q3"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "mindray|respiratory|2026-Q2",
+      "company": "mindray",
+      "track": "respiratory",
+      "alert_quarter": "2026-Q2",
+      "decision": "not_promoted",
+      "shape": "unknown",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.667,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q3..2026-Q4",
+        "outcome": "2027-Q1..2027-Q4",
+        "matures_when_data_through": "2027-Q4"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "olympus|surgical_energy|2025-Q4",
+      "company": "olympus",
+      "track": "surgical_energy",
+      "alert_quarter": "2025-Q4",
+      "decision": "promoted",
+      "shape": "level",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q1..2026-Q2",
+        "outcome": "2026-Q3..2027-Q2",
+        "matures_when_data_through": "2027-Q2"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "olympus|endoscopy|2025-Q2",
+      "company": "olympus",
+      "track": "endoscopy",
+      "alert_quarter": "2025-Q2",
+      "decision": "promoted",
+      "shape": "level",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2025-Q3..2025-Q4",
+        "outcome": "2026-Q1..2026-Q4",
+        "matures_when_data_through": "2026-Q4"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "olympus|dental|2026-Q3",
+      "company": "olympus",
+      "track": "dental",
+      "alert_quarter": "2026-Q3",
+      "decision": "not_promoted",
+      "shape": "unknown",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.667,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q4..2027-Q1",
+        "outcome": "2027-Q2..2028-Q1",
+        "matures_when_data_through": "2028-Q1"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "olympus|imaging_us|2025-Q3",
+      "company": "olympus",
+      "track": "imaging_us",
+      "alert_quarter": "2025-Q3",
+      "decision": "promoted",
+      "shape": "level",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2025-Q4..2026-Q1",
+        "outcome": "2026-Q2..2027-Q1",
+        "matures_when_data_through": "2027-Q1"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "philips|imaging_us|2025-Q2",
+      "company": "philips",
+      "track": "imaging_us",
+      "alert_quarter": "2025-Q2",
+      "decision": "not_promoted",
+      "shape": "spike",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.667,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2025-Q3..2025-Q4",
+        "outcome": "2026-Q1..2026-Q4",
+        "matures_when_data_through": "2026-Q4"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "siemens_healthineers|medical_ai|2026-Q2",
+      "company": "siemens_healthineers",
+      "track": "medical_ai",
+      "alert_quarter": "2026-Q2",
+      "decision": "not_promoted",
+      "shape": "spike",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.667,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q3..2026-Q4",
+        "outcome": "2027-Q1..2027-Q4",
+        "matures_when_data_through": "2027-Q4"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    },
+    {
+      "id": "stryker|neurovascular|2025-Q4",
+      "company": "stryker",
+      "track": "neurovascular",
+      "alert_quarter": "2025-Q4",
+      "decision": "promoted",
+      "shape": "sustained_unresolved",
+      "policy_version": "promotion_policy_v2",
+      "probability_persisted": 0.8,
+      "question": "mean quarterly activity in the outcome window is at or above the alert-time baseline",
+      "windows": {
+        "confirmation": "2026-Q1..2026-Q2",
+        "outcome": "2026-Q3..2027-Q2",
+        "matures_when_data_through": "2027-Q2"
+      },
+      "source": "experiments/b027/snapshots/2026-11-03-policy-v2"
+    }
+  ],
+  "forecast_set_hash": "09525994e7b6ae12cd4ddc5d66de6de3911a969c10c7a9044bac8070086eef27"
+}

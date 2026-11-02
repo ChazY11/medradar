@@ -12,7 +12,7 @@
     {
       "requirement": "backlog integrity",
       "status": "PASS",
-      "evidence": "55 tasks, statuses {'done': 41, 'blocked': 4, 'todo': 9, 'frozen': 1}",
+      "evidence": "56 tasks, statuses {'done': 42, 'blocked': 4, 'todo': 9, 'frozen': 1}",
       "detail": {
         "duplicates": []
       }
@@ -20,22 +20,22 @@
     {
       "requirement": "state completeness",
       "status": "PASS",
-      "evidence": "phase='pipeline_evaluated', cycle=36",
+      "evidence": "phase='frozen_forecasts_registered', cycle=37",
       "detail": {
         "absent": [],
-        "findings": 89
+        "findings": 91
       }
     },
     {
       "requirement": "loop ran and was recorded",
       "status": "PASS",
-      "evidence": "65 decisions, 129 result rows (26 negative/null), retractions marked: 2",
+      "evidence": "66 decisions, 133 result rows (27 negative/null), retractions marked: 2",
       "detail": {}
     },
     {
       "requirement": "experiments with committed artifacts",
       "status": "PASS",
-      "evidence": "84 JSON artifacts across 18 experiment dirs",
+      "evidence": "85 JSON artifacts across 19 experiment dirs",
       "detail": {}
     },
     {
@@ -63,8 +63,22 @@
     {
       "requirement": "frozen forecasts",
       "status": "PASS",
-      "evidence": "registry present, 25 registered forecasts",
-      "detail": {}
+      "evidence": "2 hash-verified forecast set(s); 25 genuinely prospective forecasts pending maturation",
+      "detail": {
+        "sets": [
+          {
+            "file": "FORECAST_SET_2026-11-03.json",
+            "forecasts": 32,
+            "prospective_only": false
+          },
+          {
+            "file": "FORECAST_SET_2026-11-03_prospective.json",
+            "forecasts": 25,
+            "prospective_only": true
+          }
+        ],
+        "problems": []
+      }
     },
     {
       "requirement": "paper with verified claims",
@@ -87,7 +101,7 @@
     {
       "requirement": "working tree committed",
       "status": "N/A",
-      "evidence": "10 uncommitted path(s) at audit time",
+      "evidence": "14 uncommitted path(s) at audit time",
       "detail": {}
     }
   ],

@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T21:40:00+08:00",
+  "updated_at": "2026-11-03T22:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "pipeline_evaluated",
-  "cycle": 36,
+  "phase": "frozen_forecasts_registered",
+  "cycle": 37,
   "last_completed_cycle": {
-    "cycle": 34,
-    "name": "pipeline_rolling_origin",
+    "cycle": 35,
+    "name": "frozen_prospective_forecasts",
     "branch": "research/change-detection-v1",
-    "report": "experiments/b067/promotion_rolling_origin.json",
-    "summary": "research/RESULTS/cycle34_pipeline_2026-11-03.md",
-    "verdict": "end-to-end pipeline evaluation: alerts predict persistence (promoted 0.800, unpromoted 0.667, control 0.373), but the promotion filter's MARGINAL value is not established (difference +0.133, CI -0.074..0.344) - recorded as a documentation discipline, not a measured predictive improvement"
+    "report": "research/forecasts/FORECAST_SET_2026-11-03_prospective.json",
+    "summary": "research/RESULTS/cycle35_forecasts_2026-11-03.md",
+    "verdict": "frozen forecast capability shipped: 25 genuinely prospective forecasts (13 promoted, 12 not) with content hash and explicit maturation dates; the first registration exposed 7 backfilled labels, which are excluded and reported (Brier 0.337, accuracy 0.429 - no better than the majority class)"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -174,7 +174,9 @@
     "GOVERN: a round ends with an executable verification routine (7 steps, one exit code), so the round-end claim is re-runnable rather than asserted",
     "PUBLISH: the paper's limitations now state the honest ratio - one confirmed decision rule against five retractions - plus the sign-off requirement, the density floor and the post-failure status of the density confirmation",
     "EVALUATE: end-to-end, alerts persist far more than non-alert cell-quarters (0.80 / 0.67 vs 0.37) - the detector carries real information about persistence",
-    "EVALUATE: the promotion filter's MARGINAL value is NOT established (difference +0.133, CI -0.074..0.344) with only 33 unpromoted alerts; it remains justified by shape-classification performance, not by this test"
+    "EVALUATE: the promotion filter's MARGINAL value is NOT established (difference +0.133, CI -0.074..0.344) with only 33 unpromoted alerts; it remains justified by shape-classification performance, not by this test",
+    "PREDICT: 25 genuinely prospective forecasts are frozen with content hashes and explicit maturation dates (2026-Q4..2028-Q1); editing them breaks the hash and the maturer refuses to score",
+    "METHOD: 7 of the first 32 forecasts were backfilled (their outcome windows were already observed); they score Brier 0.337 / accuracy 0.429, no better than the majority class, and are excluded as evidence"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -192,10 +194,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
+    "mature the prospective set as the lane advances (earliest 2026-Q4) and report Brier/calibration",
     "run tools/round_end.py as the gate at the end of every round",
     "consider a second paper focused on the measurement rules and the two confirmations",
-    "decide whether the promotion ledger should log relabelling events as an audit trail",
-    "revisit the pipeline test only if a longer history becomes available"
+    "decide whether the promotion ledger should log relabelling events"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -1184,5 +1186,33 @@
       "verdict": "NO ADDED VALUE by the pre-declared rule",
       "reading": "alerts carry information about persistence; the two-month filter's marginal contribution is unestablished and underpowered because spikes are rare by design"
     }
+  },
+  "forecasts": {
+    "module": "medradar/intelligence/forecasts.py (18 tests)",
+    "registrar": "experiments/b068/register_forecasts.py",
+    "maturer": "experiments/b068/maturate_forecasts.py (refuses a modified set by content hash)",
+    "prospective_set": {
+      "path": "research/forecasts/FORECAST_SET_2026-11-03_prospective.json",
+      "count": 25,
+      "promoted": 13,
+      "not_promoted": 12,
+      "backfilled_excluded": 7,
+      "earliest_maturation": "2026-Q4",
+      "hash": "09525994e7b6ae12",
+      "can_count_as_evidence": true
+    },
+    "original_set": {
+      "path": "research/forecasts/FORECAST_SET_2026-11-03.json",
+      "count": 32,
+      "matured_at_registration": 7,
+      "score_on_backfilled": {
+        "brier": 0.337,
+        "accuracy": 0.429,
+        "log_loss": 0.896
+      },
+      "can_count_as_evidence": false,
+      "reason": "a forecast registered after its outcome is known is a label, not a forecast"
+    },
+    "rule": "register only alerts whose outcome window is entirely in the future; report backfilled alerts separately"
   }
 }

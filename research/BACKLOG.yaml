@@ -703,4 +703,19 @@ tasks:
       -0.074..0.344 -> NO ADDED VALUE by the pre-declared rule. Alerts carry information about persistence; the
       filter's marginal value is unestablished (underpowered: spikes are rare by design).
 
+  - id: B-068
+    layer: predict
+    priority: P1
+    title: Frozen prospective forecast sets with maturation
+    status: done
+    owner: lead
+    depends_on: [B-067]
+    acceptance: >
+      medradar/intelligence/forecasts.py (18 tests) provides quarter arithmetic, fixed windows, registration,
+      validation and scoring (Brier/log loss/accuracy, pending always reported); the maturer refuses a modified
+      set by content hash. Two committed sets: the original 32-forecast registration (which exposed 7 backfilled
+      labels: matured at registration, Brier 0.337/accuracy 0.429, excluded as evidence) and a clean prospective
+      set of 25 (13 promoted, 12 not; 7 backfilled excluded; earliest maturation 2026-Q4; hash 09525994...). The
+      objective audit verifies committed sets by structure and hash.
+
 
