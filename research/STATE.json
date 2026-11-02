@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-04T04:40:00+08:00",
+  "updated_at": "2026-11-04T05:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,8 +8,8 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "seasonality_quantified",
-  "cycle": 43,
+  "phase": "complete_verified",
+  "cycle": 44,
   "last_completed_cycle": {
     "cycle": 41,
     "name": "seasonality",
@@ -205,9 +205,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "final consolidation: verify the whole record and state the completion position",
-    "mature the prospective forecast set when the lane advances (earliest 2026-Q4)",
-    "keep tools/round_end.py as the gate at the end of every round"
+    "when the lane advances past 2026-Q4, run experiments/b068/maturate_forecasts.py and report Brier/calibration",
+    "when a human reviewer is available, sign or reject the pending promotion in research/RESULTS/PROMOTIONS.md",
+    "schedule the six scheduled analyses (B-018, B-021, B-029, B-041, cohort re-run) with proven data",
+    "run a rendered figure review before any submission"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -1336,5 +1337,44 @@
     },
     "conclusion": "five open backlog items that need financial, market or publication data are not blocked; the only new block is B-014, which needs a human adjudicator",
     "warning": "the programme retracted one 'data unavailable' conclusion as a collector bug (D-029); count the store before recording a block"
+  },
+  "completion": {
+    "verified_at": "2026-11-03",
+    "branch": "research/change-detection-v1",
+    "main_untouched": "7a639f7",
+    "audits": {
+      "round_end": "10 steps, 0 failures",
+      "final_audit": "10 of 10 verifiers pass; 4 of 4 artifacts reproduced identically",
+      "objective_audit": "11 PASS / 0 FAIL / 1 N/A of 12",
+      "tests": "913 tests, selftest exit 0"
+    },
+    "record": {
+      "decisions": 74,
+      "result_rows": 152,
+      "negative_rows": 27,
+      "snapshots": 6,
+      "forecast_sets": 2,
+      "prospective_forecasts": 25,
+      "claims": 88,
+      "methods_claims": 25,
+      "cycle_reports": 43,
+      "commits_on_branch": 157
+    },
+    "deliverables_satisfied": true,
+    "remaining_not_rounds": [
+      "25 prospective forecasts mature 2026-Q4..2028-Q1",
+      "25 legacy registry nowcasts mature 2027-10",
+      "one promotion awaits a human signature",
+      "patents and broad hiring blocked on external access",
+      "B-014 needs a human adjudicator"
+    ],
+    "not_claimed": [
+      "predictive skill over technology (zero matured prospective forecasts)",
+      "visibility into intent, capability or internal R&D",
+      "generalisability of the density scaling beyond this corpus",
+      "submission-readiness of either paper (drafts; rendered figure review outstanding)"
+    ],
+    "report": "research/COMPLETION_REPORT.md",
+    "audit_artifact": "research/FINAL_AUDIT.json"
   }
 }

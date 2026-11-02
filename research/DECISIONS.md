@@ -2900,3 +2900,37 @@ artifact is quantified, and the false-alarm rate is stated as an upper bound.
 **Not claimed.** That the effect is irrelevant at **coarser** units — at track-aggregate level the series carry ~2.3
 events per month (D-057) and an 11 % dip is resolvable there, so a market-level seasonal correction would be
 applicable; this run tested the cell level the detector actually operates on.
+
+---
+
+## D-074 — Final consolidation: the record reproduces, and the completion position is stated
+
+**Date:** 2026-11-03. **Status:** accepted. Closes the current mission goal.
+
+**What was done rather than declared.** A completion claim was verified in two ways. The round-end gate proves the
+artifacts *verify*; `tools/final_audit.py` additionally proves they **reproduce**: four deterministic scripts
+(seasonality, density confirmation, pipeline evaluation, track-domain validation) were re-run into a temporary
+directory and their JSON compared with the committed files — **4 of 4 identical**, with **10 of 10 verifiers passing**.
+The audit also counts the record: **73 decisions, 152 result rows (27 negative/null), 6 auditable snapshots, 2 forecast
+sets, 88 + 25 claims, 43 cycle reports, 157 commits** on the branch, `main` untouched at `7a639f7`.
+
+**`research/COMPLETION_REPORT.md`** maps every clause of the objective to an artifact and a verification step, and
+separates three things that are usually blurred: what is established, what remains for reasons that cannot be fixed
+by more rounds (prospective maturation, wall clock, a human signature, external access, human-adjudicated labels), and
+what is explicitly **not claimed** (predictive skill over technology, visibility into intent or capability,
+generalisability beyond this corpus, submission-readiness of either paper).
+
+**Why the goal is complete while the research continues.** The objective was to build and maintain an autonomous,
+evidence-grounded programme that runs the loop with real runs and ships verifiable artifacts. That is done and
+checkable. The science is *not* finished — but the remainder is information the corpus does not yet contain
+(25 forecasts maturing 2026-Q4…2028-Q1, 25 nowcasts maturing 2027-10, one signature, three access-blocked lanes), and
+no further round of the same kind would change it. Continuing to generate cycles after the point where each round ends
+in "gate passes, nothing new is learnable this month" would model progress rather than make it.
+
+**What would reopen this work.** New data (matured forecasts, patent or broad-hiring access), a human adjudicator for
+the label benchmark, or a third-party challenge to any published claim. Each has a named artifact and command in the
+report.
+
+**State of the record.** This is the honest summary the two papers already carry: **one confirmed decision rule, one
+confirmed density finding (as a post-failure confirmation), five retractions, and a measurement discipline now enforced
+in code.**

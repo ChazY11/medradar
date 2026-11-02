@@ -815,3 +815,19 @@ tasks:
     notes: >
       Six open items now have proven data (B-018, B-021, B-029, B-037, B-041, plus B-017's cohort re-run). Their order
       should be decided by cost and by what the papers still need, not by availability.
+
+  - id: B-075
+    layer: govern
+    priority: P0
+    title: Final consolidation — reproducibility audit and completion report
+    status: done
+    owner: lead
+    depends_on: [B-037, B-068, B-070, B-073]
+    notes: >
+      tools/final_audit.py re-runs four deterministic scripts into a temporary directory and compares with the
+      committed JSON: 4 of 4 reproduced identically, 10 of 10 verifiers passing. research/COMPLETION_REPORT.md maps
+      each objective clause to an artifact and a verification step, and states what remains (prospective maturation
+      2026-Q4..2028-Q1, legacy nowcasts 2027-10, one human signature, three access-blocked lanes, one human-adjudicated
+      label set) and what is explicitly not claimed. Record at closure: 73 decisions, 152 result rows (27
+      negative/null), 6 auditable snapshots, 2 forecast sets, 113 verified claims across two papers, 43 cycle reports,
+      157 commits; main untouched at 7a639f7.

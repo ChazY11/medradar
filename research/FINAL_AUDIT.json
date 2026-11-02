@@ -1,0 +1,129 @@
+{
+  "schema": "final_audit_v1",
+  "git": {
+    "branch": "research/change-detection-v1",
+    "head": "c39e3f88952daeda77cd9b8425702cc308abadd2",
+    "commits_on_branch": 157,
+    "dirty": [
+      "M research/AUDIT.json",
+      " M research/AUDIT.md",
+      " M research/BACKLOG.yaml",
+      " M research/DECISIONS.md",
+      " M research/RESULTS/README.md",
+      " M research/STATE.json",
+      " M tools/audit.log",
+      " M tools/audit_objectives.py",
+      "?? research/COMPLETION_REPORT.md",
+      "?? research/FINAL_AUDIT.json",
+      "?? research/RESULTS/cycle42_completion_2026-11-03.md",
+      "?? tools/final_audit.log",
+      "?? tools/final_audit.py",
+      "?? tools/update_state_final.py"
+    ],
+    "main_untouched": "7a639f7"
+  },
+  "record_shape": {
+    "decisions": 74,
+    "retraction_decisions": 22,
+    "results_rows": 155,
+    "snapshots": 6,
+    "forecast_sets": 2,
+    "claims": 88,
+    "methods_claims": 25,
+    "paper_lines": 508,
+    "methods_paper_lines": 161,
+    "results_reports": 44
+  },
+  "verifiers": [
+    {
+      "step": "test suite",
+      "ok": true,
+      "detail": "OK (skipped=3)"
+    },
+    {
+      "step": "claims",
+      "ok": true,
+      "detail": "claims checked: 88; failures: 0"
+    },
+    {
+      "step": "methods claims",
+      "ok": true,
+      "detail": "claims checked: 25; failures: 0"
+    },
+    {
+      "step": "figures",
+      "ok": true,
+      "detail": "figures checked: 5; failures: 0"
+    },
+    {
+      "step": "methods figures",
+      "ok": true,
+      "detail": "figures checked: 5; failures: 0"
+    },
+    {
+      "step": "figure layout",
+      "ok": true,
+      "detail": "layout checks: 5 figures; problems: 0"
+    },
+    {
+      "step": "self-check",
+      "ok": true,
+      "detail": "snapshot 2026-11-03-policy-v2: OK (53 companies, manifest 44abde1672df...)"
+    },
+    {
+      "step": "snapshot chain",
+      "ok": true,
+      "detail": "leakage problems: 0"
+    },
+    {
+      "step": "forecast scorer",
+      "ok": true,
+      "detail": "wrote experiments/b068/maturation.json"
+    },
+    {
+      "step": "objective audit",
+      "ok": true,
+      "detail": "wrote research/AUDIT.json and research/AUDIT.md"
+    }
+  ],
+  "reproducibility": [
+    {
+      "label": "seasonality",
+      "script": "experiments/b074/seasonality.py",
+      "committed": "experiments/b074/seasonality.json",
+      "exit_ok": true,
+      "detail": "wrote C:\\Users\\yjx0\\AppData\\Local\\Temp\\tmp74m0epid\\seasonality.json",
+      "identical": true
+    },
+    {
+      "label": "density confirmation",
+      "script": "experiments/b026/density_confirm.py",
+      "committed": "experiments/b026/density_confirm.json",
+      "exit_ok": true,
+      "detail": "wrote C:\\Users\\yjx0\\AppData\\Local\\Temp\\tmp74m0epid\\density_confirmation.json",
+      "identical": true
+    },
+    {
+      "label": "pipeline evaluation",
+      "script": "experiments/b067/promotion_rolling_origin.py",
+      "committed": "experiments/b067/promotion_rolling_origin.json",
+      "exit_ok": true,
+      "detail": "wrote C:\\Users\\yjx0\\AppData\\Local\\Temp\\tmp74m0epid\\pipeline_evaluation.json",
+      "identical": true
+    },
+    {
+      "label": "track-domain validation",
+      "script": "experiments/b026/validate_track_domain.py",
+      "committed": "experiments/b026/validate_track_domain.json",
+      "exit_ok": true,
+      "detail": "wrote C:\\Users\\yjx0\\AppData\\Local\\Temp\\tmp74m0epid\\track-domain_validation.json",
+      "identical": true
+    }
+  ],
+  "summary": {
+    "verifiers_passed": 10,
+    "verifiers_failed": 0,
+    "artifacts_reproduced": 4,
+    "artifacts_differing": 0
+  }
+}

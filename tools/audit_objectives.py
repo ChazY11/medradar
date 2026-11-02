@@ -38,6 +38,8 @@ STATE_FILES = {
     "DATA_PROVENANCE.md": "data provenance",
     "PREDICTION_PROTOCOL.md": "pre-registered protocol",
     "RESULTS/README.md": "results ledger",
+    "COMPLETION_REPORT.md": "completion report against the objective",
+    "FINAL_AUDIT.json": "end-to-end reproducibility audit",
 }
 MIN_BYTES = 2_000
 

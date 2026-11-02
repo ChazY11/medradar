@@ -4,7 +4,7 @@
     {
       "requirement": "persistent research state files",
       "status": "PASS",
-      "evidence": "11 files under research/",
+      "evidence": "13 files under research/",
       "detail": {
         "problems": []
       }
@@ -12,7 +12,7 @@
     {
       "requirement": "backlog integrity",
       "status": "PASS",
-      "evidence": "62 tasks, statuses {'done': 50, 'blocked': 5, 'todo': 6, 'frozen': 1}",
+      "evidence": "63 tasks, statuses {'done': 51, 'blocked': 5, 'todo': 6, 'frozen': 1}",
       "detail": {
         "duplicates": []
       }
@@ -20,7 +20,7 @@
     {
       "requirement": "state completeness",
       "status": "PASS",
-      "evidence": "phase='seasonality_quantified', cycle=43",
+      "evidence": "phase='complete_verified', cycle=44",
       "detail": {
         "absent": [],
         "findings": 102
@@ -29,7 +29,7 @@
     {
       "requirement": "loop ran and was recorded",
       "status": "PASS",
-      "evidence": "73 decisions, 152 result rows (28 negative/null), retractions marked: 3",
+      "evidence": "74 decisions, 155 result rows (29 negative/null), retractions marked: 3",
       "detail": {}
     },
     {
@@ -101,7 +101,7 @@
     {
       "requirement": "working tree committed",
       "status": "N/A",
-      "evidence": "12 uncommitted path(s) at audit time",
+      "evidence": "15 uncommitted path(s) at audit time",
       "detail": {}
     }
   ],
