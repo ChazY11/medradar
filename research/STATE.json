@@ -1,0 +1,86 @@
+{
+  "schema": "medradar.foresight.state.v1",
+  "updated_at": "2026-11-02T10:45:00+08:00",
+  "phase": "phase3_signal_timing",
+  "cycle": 3,
+  "last_completed_cycle": {
+    "cycle": 2,
+    "name": "coverage_power_entry_signal",
+    "branch": "research/cycle2-coverage-power",
+    "report": "experiments/cycle2_coverage/REPORT.md",
+    "verdict": "P2 entity panel meets the pre-registered support condition; P1 curated panel does not"
+  },
+  "base": {
+    "branch": "research/cycle2-coverage-power",
+    "parent_branch": "integration/market-to-rd-v2",
+    "parent_commit": "1749bd5",
+    "parent_release": "0.5.0",
+    "worktree": "D:\\DEPPSKK\\worktrees\\integration-v2",
+    "main_untouched_at": "7a639f7"
+  },
+  "last_verified": {
+    "command": "python -m medradar selftest",
+    "result": "Ran 751 tests, OK (skipped=3), exit 0",
+    "python": "3.12.10",
+    "verified_by": "lead",
+    "verified_at": "2026-11-02T10:25:00+08:00"
+  },
+  "cycle2_results": {
+    "harness_validation": "PASS - parametric panel builder reproduces the frozen cycle-1 panel exactly (41003 examples, 503 positives, identical per-origin counts, 0 feature mismatches)",
+    "p1_curated": {
+      "examples": 41003, "positives": 503, "holdout_rows": 5159, "holdout_positives": 78,
+      "pooled_ap_model": 0.10106, "pooled_ap_persistence": 0.044614,
+      "delta_ap": 0.056446,
+      "ci_entity": [0.00535, 0.10363], "ci_pair": [-0.018239, 0.145578],
+      "mde80": 0.070761, "support_condition_met": false
+    },
+    "p2_legal_entities": {
+      "examples": 161636, "positives": 1082, "holdout_rows": 20671, "holdout_positives": 140,
+      "pooled_ap_model": 0.129189, "pooled_ap_persistence": 0.031868,
+      "delta_ap": 0.097321,
+      "ci_entity": [0.042609, 0.169722], "ci_pair": [0.049106, 0.158317],
+      "mde80": 0.087689, "support_condition_met": true,
+      "entities_in_panel": 193, "observed_pairs": 634
+    },
+    "lead_time": "at matched FAR the model detects +0.30..+0.44 more events in every window but lead-time deltas are negative in 4 of 6 windows: detection advantage, not earlier warning",
+    "heterogeneity": "pre-declared firm-scale split degenerate on both panels; mission question 6 still unanswered",
+    "cohort_reproducibility_gap": "panel ranks by material-event count; committed universe artifact ranks by all-row activity; 5/200 boundary entities differ (2.5%), documented, sensitivity queued as B-017"
+  },
+  "established_findings": [
+    "continuation target AP ~0.7737 vs per-pair persistence 0.7555: model advantage not detectable (cycle 1)",
+    "entry target on curated parents AP 0.1011 (16-feature spec) vs persistence 0.0446; underpowered (cycle 1 froze a 10-feature variant at AP 0.107-0.115)",
+    "entry target on the 200-entity legal-entity cohort AP 0.1292 vs persistence 0.0319; delta excludes zero in 3/3 windows under both clustering choices (cycle 2)",
+    "no added source (financial, market, publication) adds detectable ranking gain on the cycle-1 panel; NOT yet re-tested on the larger panel",
+    "no forecast has matured: zero calibration evidence to date"
+  ],
+  "known_measurement_defects": [
+    "research lane 510k link rate 16.9% (5287/31219) under the curated roster; 148 curated-family events remain unlinked (Cook 126, GE HealthCare 20, Canon 2)",
+    "Mindray (90 events) and Draeger (29-30 events) are absent from config/companies_device.json; they are resolvable only through the entity universe",
+    "17,308 lane events have no track_id and cannot enter any Technology dimension",
+    "bulk lane availability = decision_date + 14 days (estimated); date-level, not first-publication",
+    "track taxonomy applied to history is the current curated mapping, not versioned over time",
+    "cohort eligibility and label definition use different material-event rules (documented superset relationship)"
+  ],
+  "running": [],
+  "blockers": [
+    "B-015 matured-forecast calibration blocked on wall-clock time (windows end 2027-10)",
+    "B-013 hiring data blocked on lawful point-in-time source identification",
+    "B-014 patents blocked on API key or bulk-file access"
+  ],
+  "next_actions": [
+    "cycle 3: re-test the financial/market/publication source nulls on the entity panel to decide underpowered-null vs well-powered-negative",
+    "cycle 3: lead/lag analysis between source classes with multiplicity control (mission question 3)",
+    "B-017: sensitivity run on the committed artifact cohort",
+    "B-011: CIK-based deterministic linking of the 19,616 unlinked 8-K events in the legacy DB",
+    "B-012: publication-lag sensitivity (0/14/30/90 days)",
+    "add a firm-scale measure independent of cohort selection so heterogeneity can be tested",
+    "commit cycle-2 artifacts, push branch, open PR against main"
+  ],
+  "invariants": [
+    "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
+    "no merge to main without independent verification of the exact commit",
+    "every reported number must be reproducible from a committed artifact or command",
+    "empty/insufficient data is reported as such, never padded",
+    "a null result must be reported with its minimum detectable effect"
+  ]
+}

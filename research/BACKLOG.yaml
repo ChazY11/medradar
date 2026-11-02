@@ -1,0 +1,221 @@
+# MedRadar Foresight Lab — backlog
+# Priority: P0 blocks the current phase gate; P1 is the current phase; P2 is next.
+# status: todo | doing | done | blocked | abandoned
+# Every task has an explicit acceptance criterion. Idle tasks are re-ranked, not deleted.
+
+meta:
+  schema: medradar.foresight.backlog.v1
+  updated: "2026-11-02"
+  phase: phase3_signal_timing
+  note: cycle 2 closed; cycle 3 items are B-018 onward
+
+tasks:
+  - id: B-001
+    priority: P0
+    title: Deterministic applicant-entity universe v1
+    status: done
+    owner: universe-eng
+    writes: [medradar/intelligence/universe.py, config/universe_v1.json, tests/test_universe.py, docs/research/UNIVERSE.md]
+    result: >
+      55,090 events -> 9,412 legal entities; 4,632 detailed records (91.32%) + explicit 4,780-event
+      remainder; no fuzzy merging; 35 tests pass; DB hash verified unchanged; deterministic
+      (7dc2b9e8... twice). Draeger and Mindray now resolvable.
+
+  - id: B-002
+    priority: P0
+    title: Evaluation statistics engine (clustered bootstrap, MDE, matched-FAR lead time)
+    status: done
+    owner: evalstats-eng
+    writes: [medradar/intelligence/evalstats.py, tests/test_evalstats.py, docs/research/EVALSTATS.md]
+    result: >
+      Pure stdlib; 37 tests pass; cluster bootstrap, mde_from_se (authoritative), design-stage MDE
+      bound, matched_far_lead_time with censoring, metric CIs. Synthetic calibration check passes.
+
+  - id: B-003
+    priority: P0
+    title: Independent audit of five frozen cycle-1 numeric claims
+    status: done
+    owner: research-auditor
+    writes: [docs/research/AUDIT_CYCLE2.md]
+    result: >
+      5/5 PASS by independent re-implementation; full 41,003-row leakage replay 0/656,048
+      mismatches; qualifications O1-O6 recorded (material-rule shorthand, min_train_origins
+      mislabel, degenerate subgroups, uninformative FPR@0.5, no run id/DB hash).
+
+  - id: B-004
+    priority: P0
+    title: Literature review and falsifiable hypothesis cards
+    status: done
+    owner: research-auditor
+    writes: [research/LITERATURE.md, research/HYPOTHESES.md]
+    result: 30 Crossref-verified entries, 0 UNVERIFIED; 7 hypothesis cards with kill conditions.
+
+  - id: B-005
+    priority: P0
+    title: Cycle-2 driver — expanded-universe panel under the frozen protocol
+    status: done
+    owner: lead
+    writes: [experiments/cycle2_coverage/]
+    result: >
+      selfcheck_p1 PASS (41,003/503, identical per-origin counts, 0 feature mismatches); P1 and P2
+      panels + purged rolling-origin backtests; single command reproduces every artifact.
+
+  - id: B-006
+    priority: P1
+    title: Power / MDE analysis of the frozen entry result
+    status: done
+    owner: lead
+    result: >
+      E2 configuration is underpowered: observed delta-AP 0.0564 < MDE80 0.0708; design-stage MDE
+      for a 26-positive window is 0.3885, ~50x the marginal source effects cycle 1 was nulling.
+
+  - id: B-007
+    priority: P1
+    title: Entity-granularity ablation (legal applicant vs corporate parent)
+    status: done
+    owner: lead
+    result: >
+      Delivered as the P1-vs-P2 contrast. Caveat: the panels differ in composition as well as
+      granularity, so this is a panel-definition comparison, not a clean single-variable ablation.
+      A clean version needs acquisition chains (B-020).
+
+  - id: B-008
+    priority: P1
+    title: Matched-false-alarm-rate lead time for model vs persistence baseline
+    status: done
+    owner: lead
+    result: >
+      Detection advantage +0.30...+0.44 in every window; lead-time delta negative in 4/6 windows.
+      Conclusion: detection, not earlier warning.
+
+  - id: B-009
+    priority: P1
+    title: Heterogeneity of predictability (mission question 6)
+    status: done
+    owner: lead
+    result: >
+      FAILED as designed: the pre-declared firm-scale split is degenerate on both panels
+      (P1 all low-activity, P2 all high-activity by construction). Mission question 6 remains
+      unanswered; needs an exogenous scale measure (B-019).
+
+  - id: B-010
+    priority: P1
+    title: Curated roster fix — add Draeger and Mindray with evidence
+    status: todo
+    owner: lead
+    writes: [config/companies_device.json]
+    acceptance: >
+      Both focus companies present with aliases justified by applicant strings observed in the lane
+      (Draeger: 30 rows across 5 entity variants incl. umlaut; Mindray: 90 rows incl. 6 typo rows);
+      no alias broad enough to match unrelated firms; linkage count before/after recorded; then
+      re-run the universe build (config SHA changes) and record the new artifact hash.
+
+  - id: B-011
+    priority: P2
+    title: CIK-based deterministic linking for the 8-K lane
+    status: todo
+    owner: unassigned
+    writes: [medradar/corpus.py or medradar/intelligence/]
+    acceptance: >
+      19,616 currently unlinked 8-K events that carry a CIK resolvable through company_identifiers
+      become linked with confidence 1.0 and stored evidence; precision spot-checked; no fuzzy
+      matching.
+
+  - id: B-012
+    priority: P2
+    title: Publication-lag sensitivity analysis
+    status: todo
+    owner: unassigned
+    acceptance: >
+      Re-run the headline target at assumed lags of 0/14/30/90 days and report whether conclusions
+      survive; document that lag=0 is the optimistic direction.
+
+  - id: B-013
+    priority: P2
+    title: Public hiring data collection (lawful, point-in-time)
+    status: blocked
+    owner: unassigned
+    acceptance: >
+      A source with lawful access and genuine snapshot history is identified and documented before
+      any collection; no scraping behind authentication; snapshots carry first-seen time.
+
+  - id: B-014
+    priority: P2
+    title: Patent feature ingestion (API key or bulk files)
+    status: blocked
+    owner: unassigned
+    acceptance: >
+      A key-free reproducible ingestion path or a provided key; rows carry filing and publication
+      dates; zero fabricated rows.
+
+  - id: B-015
+    priority: P2
+    title: Matured-forecast calibration report
+    status: blocked
+    owner: unassigned
+    acceptance: >
+      Requires the 25 registered nowcasts' windows to close (through 2027-10). Until then the report
+      must say insufficient_matured_forecasts.
+
+  - id: B-016
+    priority: P1
+    title: Open benchmark release package
+    status: todo
+    owner: unassigned
+    depends_on: [B-017, B-019]
+    acceptance: >
+      Dataset card, provenance table, licence statement, one-command reproduction of the headline
+      numbers, and an explicit list of negative results including the degenerate heterogeneity split.
+
+  - id: B-017
+    priority: P1
+    title: Sensitivity run on the committed artifact cohort
+    status: todo
+    owner: lead
+    depends_on: [B-005]
+    acceptance: >
+      Re-run the P2 pipeline using the exact 200 entity keys in config/universe_v1.json (rather than
+      the material-ranked cohort) and report whether the cycle-2 conclusion is unchanged. Needed to
+      close the 5/200 cohort reproducibility gap documented in DECISIONS D-008.
+
+  - id: B-018
+    priority: P1
+    title: Re-test the source nulls on the entity panel (underpowered or true null?)
+    status: todo
+    owner: unassigned
+    depends_on: [B-005]
+    acceptance: >
+      Financial / market / publication feature groups re-evaluated on the P2 panel under the same
+      purged protocol; each null reported with its MDE at the panel's positive count, so the verdict
+      is "well-powered negative" or "underpowered" — never an unqualified "no effect".
+
+  - id: B-019
+    priority: P1
+    title: Exogenous firm-scale measure for heterogeneity
+    status: todo
+    owner: unassigned
+    depends_on: [B-005]
+    acceptance: >
+      A scale measure not derived from cohort selection (e.g. employees, revenue, or total filing
+      volume over a window wholly before the first holdout origin); stratified AP with cluster CIs
+      and an explicit multiplicity statement; answers mission question 6 or records that it cannot.
+
+  - id: B-020
+    priority: P2
+    title: Acquisition-chain-aware parent panel
+    status: todo
+    owner: unassigned
+    acceptance: >
+      Entity-to-parent mapping with dated acquisition evidence (valid_from/valid_to), so a parent
+      panel can be built point-in-time; no undated merges; affects no historical row before its
+      evidence date. This is what a clean entity-granularity ablation requires (B-007's caveat).
+
+  - id: B-021
+    priority: P2
+    title: Lead/lag program between source classes and milestones (mission question 3)
+    status: todo
+    owner: unassigned
+    acceptance: >
+      Pre-registered lag windows per source class; cross-correlation or discrete-time hazard
+      estimates with cluster-robust CIs and Holm correction across the family of tests; negative
+      results published; no causal language.

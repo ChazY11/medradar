@@ -1,0 +1,2923 @@
+{
+  "baselines": {
+    "holdout": "2025-10-01",
+    "holdout_rows": 1716,
+    "lead_times": "Same target lead times as the model metrics, so only the probability columns differ.",
+    "pair_base_rate_coverage": 0.9947552447552448,
+    "predictors": {
+      "company_base_rate": {
+        "brier": 0.014756224134432255,
+        "description": "Positive rate of the company over eligible training origins; training prevalence for unseen companies.",
+        "ece": 0.00359997608313381,
+        "false_positive_rate": 0.0,
+        "k": 172,
+        "lead_time_n": 26,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "positives": 26,
+        "pr_auc": 0.04173558937284826,
+        "precision_at_k": 0.046511627906976744,
+        "prevalence": 0.015151515151515152,
+        "threshold": 0.5,
+        "training_rows_seen": 1716,
+        "unseen_fallback": "constant training prevalence"
+      },
+      "constant_training_prevalence": {
+        "brier": 0.014933503790899888,
+        "description": "Same probability for every holdout row: positive rate over eligible training origins.",
+        "ece": 0.003399566262235509,
+        "false_positive_rate": 0.0,
+        "k": 172,
+        "lead_time_n": 26,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "positives": 26,
+        "pr_auc": 0.015151515151515152,
+        "precision_at_k": 0.011627906976744186,
+        "prevalence": 0.015151515151515152,
+        "threshold": 0.5,
+        "training_rows_seen": 1716,
+        "unseen_fallback": "not applicable (single constant)"
+      },
+      "pair_base_rate": {
+        "brier": 0.01721061831157665,
+        "description": "Positive rate of the exact company-track pair over eligible training origins; training prevalence for pairs without matured history. This one-parameter persistence benchmark is the honest comparator for the headline PR-AUC.",
+        "ece": 0.018100462748343878,
+        "false_positive_rate": 0.004142011834319527,
+        "k": 172,
+        "lead_time_n": 26,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "positives": 26,
+        "pr_auc": 0.027826340326340328,
+        "precision_at_k": 0.023255813953488372,
+        "prevalence": 0.015151515151515152,
+        "threshold": 0.5,
+        "training_rows_seen": 1707,
+        "unseen_fallback": "constant training prevalence"
+      },
+      "track_base_rate": {
+        "brier": 0.014848755253557201,
+        "description": "Positive rate of the technology track over eligible training origins; training prevalence for unseen tracks.",
+        "ece": 0.003592866386164035,
+        "false_positive_rate": 0.0,
+        "k": 172,
+        "lead_time_n": 26,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "positives": 26,
+        "pr_auc": 0.03231157119210804,
+        "precision_at_k": 0.03488372093023256,
+        "prevalence": 0.015151515151515152,
+        "threshold": 0.5,
+        "training_rows_seen": 1716,
+        "unseen_fallback": "constant training prevalence"
+      }
+    },
+    "training_origins": [
+      "2020-01-01",
+      "2020-04-01",
+      "2020-07-01",
+      "2020-10-01",
+      "2021-01-01",
+      "2021-04-01",
+      "2021-07-01",
+      "2021-10-01",
+      "2022-01-01",
+      "2022-04-01",
+      "2022-07-01",
+      "2022-10-01",
+      "2023-01-01",
+      "2023-04-01",
+      "2023-07-01",
+      "2023-10-01",
+      "2024-01-01",
+      "2024-04-01",
+      "2024-07-01",
+      "2024-10-01"
+    ],
+    "training_prevalence": 0.011751948889279643,
+    "training_rows": 34122
+  },
+  "constraints": [
+    "No random temporal split.",
+    "Identical rows, algorithm and hyperparameters across ablations.",
+    "Training labels must mature before the evaluation origin (purge/embargo); the unpurged variant is diagnostic only.",
+    "Current-snapshot procurement is excluded from historical gain claims.",
+    "Consolidated company revenue is not product- or segment-level device sales.",
+    "Multi-window holdouts are separate origins, so their test rows never overlap; their label windows do."
+  ],
+  "data_provenance": {
+    "entity_field": "company_key",
+    "panel": "P1 curated corporate parents (company_key)"
+  },
+  "evaluation": "expanding-window rolling-origin with matured-label purge; the last chronological origin is the primary holdout. Training at origin t only uses examples whose label window closed at or before t. With holdouts=K the last K origins are reported as sequential holdout windows; their test rows are disjoint (one origin each) while their 12-month label windows overlap.",
+  "experiment": "cycle2_p1_curated_parents",
+  "holdout": "2025-10-01",
+  "holdout_origin_rule": "The last K origins that have at least one purged training example. With quarterly origins and a 12-month horizon the first four origins have no matured training examples, so this equals the last K chronological origins.",
+  "holdout_origins": [
+    "2025-04-01",
+    "2025-07-01",
+    "2025-10-01"
+  ],
+  "holdout_window_summary": {
+    "baselines": {
+      "company_base_rate": {
+        "brier": {
+          "max": 0.01524885643084037,
+          "mean": 0.01467938647337528,
+          "min": 0.014033078854853222,
+          "std": 0.0004993040477743837,
+          "windows": 3
+        },
+        "ece": {
+          "max": 0.00411226204386657,
+          "mean": 0.0035735376830489662,
+          "min": 0.0030083749221465183,
+          "std": 0.0004510476221155441,
+          "windows": 3
+        },
+        "false_positive_rate": {
+          "max": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "std": 0.0,
+          "windows": 3
+        },
+        "mean_lead_time_days": {
+          "max": 200.14814814814815,
+          "mean": 190.64681861348527,
+          "min": 182.6,
+          "std": 7.237452469490793,
+          "windows": 3
+        },
+        "n": {
+          "max": 1722,
+          "mean": 1719.6666666666667,
+          "min": 1716,
+          "std": 2.6246692913372702,
+          "windows": 3
+        },
+        "positives": {
+          "max": 27,
+          "mean": 26.0,
+          "min": 25,
+          "std": 0.816496580927726,
+          "windows": 3
+        },
+        "pr_auc": {
+          "max": 0.0655337356878378,
+          "mean": 0.052127758357348876,
+          "min": 0.04173558937284826,
+          "std": 0.009946531139620957,
+          "windows": 3
+        },
+        "precision_at_k": {
+          "max": 0.057803468208092484,
+          "mean": 0.05211273916745082,
+          "min": 0.046511627906976744,
+          "std": 0.004610310029804,
+          "windows": 3
+        },
+        "prevalence": {
+          "max": 0.01568855316676351,
+          "mean": 0.015119356880386346,
+          "min": 0.014518002322880372,
+          "std": 0.00047841609179344926,
+          "windows": 3
+        }
+      },
+      "constant_training_prevalence": {
+        "brier": {
+          "max": 0.015458356489075693,
+          "mean": 0.014902527151005448,
+          "min": 0.014315721173040762,
+          "std": 0.0004669928839764218,
+          "windows": 3
+        },
+        "ece": {
+          "max": 0.003991744327802952,
+          "mean": 0.003435094699473439,
+          "min": 0.002913973508381856,
+          "std": 0.0004407147128535134,
+          "windows": 3
+        },
+        "false_positive_rate": {
+          "max": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "std": 0.0,
+          "windows": 3
+        },
+        "mean_lead_time_days": {
+          "max": 200.14814814814815,
+          "mean": 190.64681861348527,
+          "min": 182.6,
+          "std": 7.237452469490793,
+          "windows": 3
+        },
+        "n": {
+          "max": 1722,
+          "mean": 1719.6666666666667,
+          "min": 1716,
+          "std": 2.6246692913372702,
+          "windows": 3
+        },
+        "positives": {
+          "max": 27,
+          "mean": 26.0,
+          "min": 25,
+          "std": 0.816496580927726,
+          "windows": 3
+        },
+        "pr_auc": {
+          "max": 0.01568855316676351,
+          "mean": 0.015119356880386346,
+          "min": 0.014518002322880372,
+          "std": 0.00047841609179344926,
+          "windows": 3
+        },
+        "precision_at_k": {
+          "max": 0.011627906976744186,
+          "mean": 0.00965631581305731,
+          "min": 0.005780346820809248,
+          "std": 0.002740861315931669,
+          "windows": 3
+        },
+        "prevalence": {
+          "max": 0.01568855316676351,
+          "mean": 0.015119356880386346,
+          "min": 0.014518002322880372,
+          "std": 0.00047841609179344926,
+          "windows": 3
+        }
+      },
+      "pair_base_rate": {
+        "brier": {
+          "max": 0.01721061831157665,
+          "mean": 0.01648010975175573,
+          "min": 0.015176166465403205,
+          "std": 0.0009242543364947098,
+          "windows": 3
+        },
+        "ece": {
+          "max": 0.018100462748343878,
+          "mean": 0.01707004411891311,
+          "min": 0.01557092485865678,
+          "std": 0.0010845584953773817,
+          "windows": 3
+        },
+        "false_positive_rate": {
+          "max": 0.004714201532115498,
+          "mean": 0.0043294815904645675,
+          "min": 0.004132231404958678,
+          "std": 0.0002720673805359524,
+          "windows": 3
+        },
+        "mean_lead_time_days": {
+          "max": 200.14814814814815,
+          "mean": 190.64681861348527,
+          "min": 182.6,
+          "std": 7.237452469490793,
+          "windows": 3
+        },
+        "n": {
+          "max": 1722,
+          "mean": 1719.6666666666667,
+          "min": 1716,
+          "std": 2.6246692913372702,
+          "windows": 3
+        },
+        "positives": {
+          "max": 27,
+          "mean": 26.0,
+          "min": 25,
+          "std": 0.816496580927726,
+          "windows": 3
+        },
+        "pr_auc": {
+          "max": 0.07946333453482318,
+          "mean": 0.05151116651686145,
+          "min": 0.027826340326340328,
+          "std": 0.02129557774790956,
+          "windows": 3
+        },
+        "precision_at_k": {
+          "max": 0.028901734104046242,
+          "mean": 0.02701976072052695,
+          "min": 0.023255813953488372,
+          "std": 0.0026615122829981622,
+          "windows": 3
+        },
+        "prevalence": {
+          "max": 0.01568855316676351,
+          "mean": 0.015119356880386346,
+          "min": 0.014518002322880372,
+          "std": 0.00047841609179344926,
+          "windows": 3
+        }
+      },
+      "track_base_rate": {
+        "brier": {
+          "max": 0.01536955992723491,
+          "mean": 0.014768479937856112,
+          "min": 0.01408712463277622,
+          "std": 0.000526620145108736,
+          "windows": 3
+        },
+        "ece": {
+          "max": 0.00414889707565114,
+          "mean": 0.0035884361196165233,
+          "min": 0.0030235448970343942,
+          "std": 0.00045943378335049594,
+          "windows": 3
+        },
+        "false_positive_rate": {
+          "max": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "std": 0.0,
+          "windows": 3
+        },
+        "mean_lead_time_days": {
+          "max": 200.14814814814815,
+          "mean": 190.64681861348527,
+          "min": 182.6,
+          "std": 7.237452469490793,
+          "windows": 3
+        },
+        "n": {
+          "max": 1722,
+          "mean": 1719.6666666666667,
+          "min": 1716,
+          "std": 2.6246692913372702,
+          "windows": 3
+        },
+        "positives": {
+          "max": 27,
+          "mean": 26.0,
+          "min": 25,
+          "std": 0.816496580927726,
+          "windows": 3
+        },
+        "pr_auc": {
+          "max": 0.04792583148092744,
+          "mean": 0.0371364108596765,
+          "min": 0.031171829905994018,
+          "std": 0.00764344819901439,
+          "windows": 3
+        },
+        "precision_at_k": {
+          "max": 0.04046242774566474,
+          "mean": 0.03667607653358426,
+          "min": 0.03468208092485549,
+          "std": 0.0026786198310398083,
+          "windows": 3
+        },
+        "prevalence": {
+          "max": 0.01568855316676351,
+          "mean": 0.015119356880386346,
+          "min": 0.014518002322880372,
+          "std": 0.00047841609179344926,
+          "windows": 3
+        }
+      }
+    },
+    "models": {
+      "rd_plus_entry_history": {
+        "brier": {
+          "max": 0.01488209835640864,
+          "mean": 0.01419124792942184,
+          "min": 0.01337683620685584,
+          "std": 0.0006207007223254414,
+          "windows": 3
+        },
+        "ece": {
+          "max": 0.0039922824135791325,
+          "mean": 0.003418244236305788,
+          "min": 0.0030789338649111707,
+          "std": 0.0004081456030862428,
+          "windows": 3
+        },
+        "false_positive_rate": {
+          "max": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "std": 0.0,
+          "windows": 3
+        },
+        "mean_lead_time_days": {
+          "max": 200.14814814814815,
+          "mean": 190.64681861348527,
+          "min": 182.6,
+          "std": 7.237452469490793,
+          "windows": 3
+        },
+        "n": {
+          "max": 1722,
+          "mean": 1719.6666666666667,
+          "min": 1716,
+          "std": 2.6246692913372702,
+          "windows": 3
+        },
+        "positives": {
+          "max": 27,
+          "mean": 26.0,
+          "min": 25,
+          "std": 0.816496580927726,
+          "windows": 3
+        },
+        "pr_auc": {
+          "max": 0.13708495061705483,
+          "mean": 0.11086249458843579,
+          "min": 0.09502674847371553,
+          "std": 0.018675043935853897,
+          "windows": 3
+        },
+        "precision_at_k": {
+          "max": 0.07514450867052024,
+          "mean": 0.07142537079356544,
+          "min": 0.06936416184971098,
+          "std": 0.0026349761039546854,
+          "windows": 3
+        },
+        "prevalence": {
+          "max": 0.01568855316676351,
+          "mean": 0.015119356880386346,
+          "min": 0.014518002322880372,
+          "std": 0.00047841609179344926,
+          "windows": 3
+        }
+      }
+    },
+    "rule": "Per-window metrics are computed at each origin; mean/std/min/max aggregate the holdouts=K windows. std is the population standard deviation across windows, not a confidence interval."
+  },
+  "holdout_windows": [
+    {
+      "baseline_predictors": {
+        "company_base_rate": {
+          "brier": 0.014033078854853222,
+          "description": "Positive rate of the company over eligible training origins; training prevalence for unseen companies.",
+          "ece": 0.0030083749221465183,
+          "false_positive_rate": 0.0,
+          "k": 173,
+          "lead_time_n": 25,
+          "mean_lead_time_days": 182.6,
+          "n": 1722,
+          "positives": 25,
+          "pr_auc": 0.0655337356878378,
+          "precision_at_k": 0.057803468208092484,
+          "prevalence": 0.014518002322880372,
+          "threshold": 0.5,
+          "training_rows_seen": 1722,
+          "unseen_fallback": "constant training prevalence"
+        },
+        "constant_training_prevalence": {
+          "brier": 0.014315721173040762,
+          "description": "Same probability for every holdout row: positive rate over eligible training origins.",
+          "ece": 0.002913973508381856,
+          "false_positive_rate": 0.0,
+          "k": 173,
+          "lead_time_n": 25,
+          "mean_lead_time_days": 182.6,
+          "n": 1722,
+          "positives": 25,
+          "pr_auc": 0.014518002322880372,
+          "precision_at_k": 0.005780346820809248,
+          "prevalence": 0.014518002322880372,
+          "threshold": 0.5,
+          "training_rows_seen": 1722,
+          "unseen_fallback": "not applicable (single constant)"
+        },
+        "pair_base_rate": {
+          "brier": 0.015176166465403205,
+          "description": "Positive rate of the exact company-track pair over eligible training origins; training prevalence for pairs without matured history. This one-parameter persistence benchmark is the honest comparator for the headline PR-AUC.",
+          "ece": 0.01557092485865678,
+          "false_positive_rate": 0.004714201532115498,
+          "k": 173,
+          "lead_time_n": 25,
+          "mean_lead_time_days": 182.6,
+          "n": 1722,
+          "positives": 25,
+          "pr_auc": 0.07946333453482318,
+          "precision_at_k": 0.028901734104046242,
+          "prevalence": 0.014518002322880372,
+          "threshold": 0.5,
+          "training_rows_seen": 1710,
+          "unseen_fallback": "constant training prevalence"
+        },
+        "track_base_rate": {
+          "brier": 0.01408712463277622,
+          "description": "Positive rate of the technology track over eligible training origins; training prevalence for unseen tracks.",
+          "ece": 0.0030235448970343942,
+          "false_positive_rate": 0.0,
+          "k": 173,
+          "lead_time_n": 25,
+          "mean_lead_time_days": 182.6,
+          "n": 1722,
+          "positives": 25,
+          "pr_auc": 0.04792583148092744,
+          "precision_at_k": 0.04046242774566474,
+          "prevalence": 0.014518002322880372,
+          "threshold": 0.5,
+          "training_rows_seen": 1722,
+          "unseen_fallback": "constant training prevalence"
+        }
+      },
+      "model_metrics": {
+        "rd_plus_entry_history": {
+          "brier": 0.01337683620685584,
+          "ece": 0.0039922824135791325,
+          "false_positive_rate": 0.0,
+          "k": 173,
+          "lead_time_n": 25,
+          "mean_lead_time_days": 182.6,
+          "n": 1722,
+          "positives": 25,
+          "pr_auc": 0.13708495061705483,
+          "precision_at_k": 0.07514450867052024,
+          "prevalence": 0.014518002322880372,
+          "threshold": 0.5
+        }
+      },
+      "origin": "2025-04-01",
+      "pair_base_rate_coverage": 0.9930313588850174,
+      "positives": 25,
+      "prevalence": 0.014518002322880372,
+      "rows": 1722,
+      "training_origins": [
+        "2020-01-01",
+        "2020-04-01",
+        "2020-07-01",
+        "2020-10-01",
+        "2021-01-01",
+        "2021-04-01",
+        "2021-07-01",
+        "2021-10-01",
+        "2022-01-01",
+        "2022-04-01",
+        "2022-07-01",
+        "2022-10-01",
+        "2023-01-01",
+        "2023-04-01",
+        "2023-07-01",
+        "2023-10-01",
+        "2024-01-01",
+        "2024-04-01"
+      ],
+      "training_rows": 30679
+    },
+    {
+      "baseline_predictors": {
+        "company_base_rate": {
+          "brier": 0.01524885643084037,
+          "description": "Positive rate of the company over eligible training origins; training prevalence for unseen companies.",
+          "ece": 0.00411226204386657,
+          "false_positive_rate": 0.0,
+          "k": 173,
+          "lead_time_n": 27,
+          "mean_lead_time_days": 200.14814814814815,
+          "n": 1721,
+          "positives": 27,
+          "pr_auc": 0.04911395001136058,
+          "precision_at_k": 0.05202312138728324,
+          "prevalence": 0.01568855316676351,
+          "threshold": 0.5,
+          "training_rows_seen": 1721,
+          "unseen_fallback": "constant training prevalence"
+        },
+        "constant_training_prevalence": {
+          "brier": 0.015458356489075693,
+          "description": "Same probability for every holdout row: positive rate over eligible training origins.",
+          "ece": 0.003991744327802952,
+          "false_positive_rate": 0.0,
+          "k": 173,
+          "lead_time_n": 27,
+          "mean_lead_time_days": 200.14814814814815,
+          "n": 1721,
+          "positives": 27,
+          "pr_auc": 0.01568855316676351,
+          "precision_at_k": 0.011560693641618497,
+          "prevalence": 0.01568855316676351,
+          "threshold": 0.5,
+          "training_rows_seen": 1721,
+          "unseen_fallback": "not applicable (single constant)"
+        },
+        "pair_base_rate": {
+          "brier": 0.01705354447828733,
+          "description": "Positive rate of the exact company-track pair over eligible training origins; training prevalence for pairs without matured history. This one-parameter persistence benchmark is the honest comparator for the headline PR-AUC.",
+          "ece": 0.017538744749738672,
+          "false_positive_rate": 0.004132231404958678,
+          "k": 173,
+          "lead_time_n": 27,
+          "mean_lead_time_days": 200.14814814814815,
+          "n": 1721,
+          "positives": 27,
+          "pr_auc": 0.04724382468942083,
+          "precision_at_k": 0.028901734104046242,
+          "prevalence": 0.01568855316676351,
+          "threshold": 0.5,
+          "training_rows_seen": 1710,
+          "unseen_fallback": "constant training prevalence"
+        },
+        "track_base_rate": {
+          "brier": 0.01536955992723491,
+          "description": "Positive rate of the technology track over eligible training origins; training prevalence for unseen tracks.",
+          "ece": 0.00414889707565114,
+          "false_positive_rate": 0.0,
+          "k": 173,
+          "lead_time_n": 27,
+          "mean_lead_time_days": 200.14814814814815,
+          "n": 1721,
+          "positives": 27,
+          "pr_auc": 0.031171829905994018,
+          "precision_at_k": 0.03468208092485549,
+          "prevalence": 0.01568855316676351,
+          "threshold": 0.5,
+          "training_rows_seen": 1721,
+          "unseen_fallback": "constant training prevalence"
+        }
+      },
+      "model_metrics": {
+        "rd_plus_entry_history": {
+          "brier": 0.01488209835640864,
+          "ece": 0.0030789338649111707,
+          "false_positive_rate": 0.0,
+          "k": 173,
+          "lead_time_n": 27,
+          "mean_lead_time_days": 200.14814814814815,
+          "n": 1721,
+          "positives": 27,
+          "pr_auc": 0.09502674847371553,
+          "precision_at_k": 0.06936416184971098,
+          "prevalence": 0.01568855316676351,
+          "threshold": 0.5
+        }
+      },
+      "origin": "2025-07-01",
+      "pair_base_rate_coverage": 0.9936083672283557,
+      "positives": 27,
+      "prevalence": 0.01568855316676351,
+      "rows": 1721,
+      "training_origins": [
+        "2020-01-01",
+        "2020-04-01",
+        "2020-07-01",
+        "2020-10-01",
+        "2021-01-01",
+        "2021-04-01",
+        "2021-07-01",
+        "2021-10-01",
+        "2022-01-01",
+        "2022-04-01",
+        "2022-07-01",
+        "2022-10-01",
+        "2023-01-01",
+        "2023-04-01",
+        "2023-07-01",
+        "2023-10-01",
+        "2024-01-01",
+        "2024-04-01",
+        "2024-07-01"
+      ],
+      "training_rows": 32402
+    },
+    {
+      "baseline_predictors": {
+        "company_base_rate": {
+          "brier": 0.014756224134432255,
+          "description": "Positive rate of the company over eligible training origins; training prevalence for unseen companies.",
+          "ece": 0.00359997608313381,
+          "false_positive_rate": 0.0,
+          "k": 172,
+          "lead_time_n": 26,
+          "mean_lead_time_days": 189.19230769230768,
+          "n": 1716,
+          "positives": 26,
+          "pr_auc": 0.04173558937284826,
+          "precision_at_k": 0.046511627906976744,
+          "prevalence": 0.015151515151515152,
+          "threshold": 0.5,
+          "training_rows_seen": 1716,
+          "unseen_fallback": "constant training prevalence"
+        },
+        "constant_training_prevalence": {
+          "brier": 0.014933503790899888,
+          "description": "Same probability for every holdout row: positive rate over eligible training origins.",
+          "ece": 0.003399566262235509,
+          "false_positive_rate": 0.0,
+          "k": 172,
+          "lead_time_n": 26,
+          "mean_lead_time_days": 189.19230769230768,
+          "n": 1716,
+          "positives": 26,
+          "pr_auc": 0.015151515151515152,
+          "precision_at_k": 0.011627906976744186,
+          "prevalence": 0.015151515151515152,
+          "threshold": 0.5,
+          "training_rows_seen": 1716,
+          "unseen_fallback": "not applicable (single constant)"
+        },
+        "pair_base_rate": {
+          "brier": 0.01721061831157665,
+          "description": "Positive rate of the exact company-track pair over eligible training origins; training prevalence for pairs without matured history. This one-parameter persistence benchmark is the honest comparator for the headline PR-AUC.",
+          "ece": 0.018100462748343878,
+          "false_positive_rate": 0.004142011834319527,
+          "k": 172,
+          "lead_time_n": 26,
+          "mean_lead_time_days": 189.19230769230768,
+          "n": 1716,
+          "positives": 26,
+          "pr_auc": 0.027826340326340328,
+          "precision_at_k": 0.023255813953488372,
+          "prevalence": 0.015151515151515152,
+          "threshold": 0.5,
+          "training_rows_seen": 1707,
+          "unseen_fallback": "constant training prevalence"
+        },
+        "track_base_rate": {
+          "brier": 0.014848755253557201,
+          "description": "Positive rate of the technology track over eligible training origins; training prevalence for unseen tracks.",
+          "ece": 0.003592866386164035,
+          "false_positive_rate": 0.0,
+          "k": 172,
+          "lead_time_n": 26,
+          "mean_lead_time_days": 189.19230769230768,
+          "n": 1716,
+          "positives": 26,
+          "pr_auc": 0.03231157119210804,
+          "precision_at_k": 0.03488372093023256,
+          "prevalence": 0.015151515151515152,
+          "threshold": 0.5,
+          "training_rows_seen": 1716,
+          "unseen_fallback": "constant training prevalence"
+        }
+      },
+      "model_metrics": {
+        "rd_plus_entry_history": {
+          "brier": 0.014314809225001036,
+          "ece": 0.0031835164304270603,
+          "false_positive_rate": 0.0,
+          "k": 172,
+          "lead_time_n": 26,
+          "mean_lead_time_days": 189.19230769230768,
+          "n": 1716,
+          "positives": 26,
+          "pr_auc": 0.10047578467453702,
+          "precision_at_k": 0.06976744186046512,
+          "prevalence": 0.015151515151515152,
+          "threshold": 0.5
+        }
+      },
+      "origin": "2025-10-01",
+      "pair_base_rate_coverage": 0.9947552447552448,
+      "positives": 26,
+      "prevalence": 0.015151515151515152,
+      "rows": 1716,
+      "training_origins": [
+        "2020-01-01",
+        "2020-04-01",
+        "2020-07-01",
+        "2020-10-01",
+        "2021-01-01",
+        "2021-04-01",
+        "2021-07-01",
+        "2021-10-01",
+        "2022-01-01",
+        "2022-04-01",
+        "2022-07-01",
+        "2022-10-01",
+        "2023-01-01",
+        "2023-04-01",
+        "2023-07-01",
+        "2023-10-01",
+        "2024-01-01",
+        "2024-04-01",
+        "2024-07-01",
+        "2024-10-01"
+      ],
+      "training_rows": 34122
+    }
+  ],
+  "holdouts": 3,
+  "leaky_labels_diagnostic": {
+    "delta_purged_minus_leaky": {
+      "rd_plus_entry_history": {
+        "brier": 2.2478906866331416e-05,
+        "development_pr_auc": -0.0034048759886443625,
+        "ece": 0.0008883185241992872,
+        "false_positive_rate": 0.0,
+        "pr_auc": 0.002482313493365973,
+        "precision_at_k": 0.0
+      }
+    },
+    "interpretation": "deltas are purged minus leaky: positive PR-AUC means the purged model ranks better, positive Brier/ECE/FPR means the leaky numbers were optimistic (lower is better).",
+    "models": [
+      {
+        "development_metrics": {
+          "brier": 0.011817646674403232,
+          "ece": 0.0018577021447531853,
+          "false_positive_rate": 0.0,
+          "k": 3435,
+          "lead_time_n": 434,
+          "mean_lead_time_days": 185.3294930875576,
+          "n": 34342,
+          "positives": 434,
+          "pr_auc": 0.1067695508985181,
+          "precision_at_k": 0.06579330422125182,
+          "prevalence": 0.012637586628618018,
+          "threshold": 0.5
+        },
+        "holdout_metrics": {
+          "brier": 0.014292330318134705,
+          "ece": 0.002295197906227773,
+          "false_positive_rate": 0.0,
+          "k": 172,
+          "lead_time_n": 26,
+          "mean_lead_time_days": 189.19230769230768,
+          "n": 1716,
+          "positives": 26,
+          "pr_auc": 0.09799347118117105,
+          "precision_at_k": 0.06976744186046512,
+          "prevalence": 0.015151515151515152,
+          "threshold": 0.5
+        },
+        "name": "rd_plus_entry_history",
+        "origin_pr_auc": [
+          {
+            "cutoff": "2020-10-01",
+            "pr_auc": 0.08284167778410158
+          },
+          {
+            "cutoff": "2021-01-01",
+            "pr_auc": 0.03998191722987012
+          },
+          {
+            "cutoff": "2021-04-01",
+            "pr_auc": 0.06673626212468382
+          },
+          {
+            "cutoff": "2021-07-01",
+            "pr_auc": 0.12324292140266485
+          },
+          {
+            "cutoff": "2021-10-01",
+            "pr_auc": 0.07340116841665287
+          },
+          {
+            "cutoff": "2022-01-01",
+            "pr_auc": 0.07994005940288254
+          },
+          {
+            "cutoff": "2022-04-01",
+            "pr_auc": 0.09316721820480414
+          },
+          {
+            "cutoff": "2022-07-01",
+            "pr_auc": 0.1757429522683045
+          },
+          {
+            "cutoff": "2022-10-01",
+            "pr_auc": 0.24459988215718995
+          },
+          {
+            "cutoff": "2023-01-01",
+            "pr_auc": 0.291138038105002
+          },
+          {
+            "cutoff": "2023-04-01",
+            "pr_auc": 0.2777067679144293
+          },
+          {
+            "cutoff": "2023-07-01",
+            "pr_auc": 0.243459675948388
+          },
+          {
+            "cutoff": "2023-10-01",
+            "pr_auc": 0.16180046708338686
+          },
+          {
+            "cutoff": "2024-01-01",
+            "pr_auc": 0.1436962964130023
+          },
+          {
+            "cutoff": "2024-04-01",
+            "pr_auc": 0.1160431971042998
+          },
+          {
+            "cutoff": "2024-07-01",
+            "pr_auc": 0.09699443031221384
+          },
+          {
+            "cutoff": "2024-10-01",
+            "pr_auc": 0.11542550116579357
+          },
+          {
+            "cutoff": "2025-01-01",
+            "pr_auc": 0.11516682382912202
+          },
+          {
+            "cutoff": "2025-04-01",
+            "pr_auc": 0.14128573118966856
+          },
+          {
+            "cutoff": "2025-07-01",
+            "pr_auc": 0.09500281392955837
+          },
+          {
+            "cutoff": "2025-10-01",
+            "pr_auc": 0.09799347118117105
+          }
+        ]
+      }
+    ],
+    "purge": false,
+    "role": "diagnostic_only",
+    "warning": "NOT the headline result. Training rows here may have label windows overlapping the test window (up to horizon_months-3 months of overlap). Reported only to quantify the optimism of the previously published numbers."
+  },
+  "min_train_origins": 3,
+  "model_vs_pair_baseline": {
+    "by_window": [
+      {
+        "holdout_rows": 1722,
+        "models": {
+          "rd_plus_entry_history": {
+            "ci_high": 0.21230431867641092,
+            "ci_low": -0.0874831621766001,
+            "confidence_level": 0.95,
+            "delta": 0.05762161608223165,
+            "mean_delta": 0.06283477742596197,
+            "model_pr_auc": 0.13708495061705483,
+            "p_delta_le_zero": 0.1765,
+            "pair_baseline_pr_auc": 0.07946333453482318,
+            "resamples": 2000,
+            "seed": 7,
+            "valid_resamples": 2000
+          }
+        },
+        "origin": "2025-04-01",
+        "pair_base_rate_coverage": 0.9930313588850174,
+        "training_rows": 30679
+      },
+      {
+        "holdout_rows": 1721,
+        "models": {
+          "rd_plus_entry_history": {
+            "ci_high": 0.15556387411155911,
+            "ci_low": -0.03231224081126227,
+            "confidence_level": 0.95,
+            "delta": 0.047782923784294704,
+            "mean_delta": 0.05378039357520302,
+            "model_pr_auc": 0.09502674847371553,
+            "p_delta_le_zero": 0.0965,
+            "pair_baseline_pr_auc": 0.04724382468942083,
+            "resamples": 2000,
+            "seed": 7,
+            "valid_resamples": 2000
+          }
+        },
+        "origin": "2025-07-01",
+        "pair_base_rate_coverage": 0.9936083672283557,
+        "training_rows": 32402
+      },
+      {
+        "holdout_rows": 1716,
+        "models": {
+          "rd_plus_entry_history": {
+            "ci_high": 0.1801981564343706,
+            "ci_low": 0.013423717849043445,
+            "confidence_level": 0.95,
+            "delta": 0.0726494443481967,
+            "mean_delta": 0.0813130412941975,
+            "model_pr_auc": 0.10047578467453702,
+            "p_delta_le_zero": 0.009,
+            "pair_baseline_pr_auc": 0.027826340326340328,
+            "resamples": 2000,
+            "seed": 7,
+            "valid_resamples": 2000
+          }
+        },
+        "origin": "2025-10-01",
+        "pair_base_rate_coverage": 0.9947552447552448,
+        "training_rows": 34122
+      }
+    ],
+    "comparison": "Paired bootstrap (rows resampled with replacement, identical rows for both predictors) of PR-AUC(model) - PR-AUC(pair_base_rate) on the untouched holdout, repeated for every holdout window.",
+    "confidence_level": 0.95,
+    "holdout_rows": 1716,
+    "interpretation": "If the interval includes zero, the R&D features add no statistically detectable ranking value beyond stable per-pair activity persistence on that holdout window. A per-pair base rate is degenerate when most holdout pairs have no matured training history (never-observed entry candidates), in which case it collapses towards constant training prevalence.",
+    "model_scores": {
+      "rd_plus_entry_history": {
+        "ci_high": 0.1801981564343706,
+        "ci_low": 0.013423717849043445,
+        "confidence_level": 0.95,
+        "delta": 0.0726494443481967,
+        "mean_delta": 0.0813130412941975,
+        "model_pr_auc": 0.10047578467453702,
+        "p_delta_le_zero": 0.009,
+        "pair_baseline_pr_auc": 0.027826340326340328,
+        "persistence_share_of_lift_over_constant_prevalence": 0.14854888586424175,
+        "resamples": 2000,
+        "seed": 7,
+        "valid_resamples": 2000
+      }
+    },
+    "pair_baseline_pr_auc": 0.027826340326340328,
+    "resamples": 2000,
+    "seed": 7,
+    "window_mean_delta": {
+      "rd_plus_entry_history": 0.05935132807157436
+    },
+    "windows_with_ci_excluding_zero": {
+      "rd_plus_entry_history": [
+        "2025-10-01"
+      ]
+    }
+  },
+  "models": [
+    {
+      "description": "R&D history + entry-specific history, no financial features (shared by both panels)",
+      "development_metrics": {
+        "brier": 0.012169804543348752,
+        "ece": 0.0013478292299375976,
+        "false_positive_rate": 0.0,
+        "k": 3267,
+        "lead_time_n": 424,
+        "mean_lead_time_days": 186.88443396226415,
+        "n": 32663,
+        "positives": 424,
+        "pr_auc": 0.10336467490987374,
+        "precision_at_k": 0.06458524640342822,
+        "prevalence": 0.012981048893243119,
+        "threshold": 0.5
+      },
+      "features": [
+        "rd_count_12m",
+        "rd_count_previous_12m",
+        "rd_momentum",
+        "rd_count_36m",
+        "rd_recency_years",
+        "rd_company_count_12m",
+        "rd_track_count_12m",
+        "rd_company_track_share",
+        "rd_pair_active_years",
+        "rd_company_total_36m",
+        "rd_pair_inactive_months",
+        "rd_company_active_tracks_12m",
+        "rd_company_active_tracks_delta",
+        "rd_track_active_companies_12m",
+        "rd_track_active_companies_delta",
+        "rd_company_track_novelty_share"
+      ],
+      "forecast_horizon_stability": {
+        "origins": 19,
+        "pr_auc_max": 0.2524300339777662,
+        "pr_auc_mean": 0.13128187386771348,
+        "pr_auc_min": 0.008836978758844153,
+        "pr_auc_std": 0.06283819084616768
+      },
+      "holdout_metrics": {
+        "brier": 0.014314809225001036,
+        "ece": 0.0031835164304270603,
+        "false_positive_rate": 0.0,
+        "k": 172,
+        "lead_time_n": 26,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "positives": 26,
+        "pr_auc": 0.10047578467453702,
+        "precision_at_k": 0.06976744186046512,
+        "prevalence": 0.015151515151515152,
+        "threshold": 0.5
+      },
+      "holdout_subgroups": {
+        "company": {
+          "abbott": {
+            "brier": 0.004042032834760354,
+            "ece": 0.032974297745956664,
+            "false_positive_rate": 0.0,
+            "k": 3,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 23,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "alcon": {
+            "brier": 0.0003174999526538035,
+            "ece": 0.01175987315176533,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 37,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "ambu": {
+            "brier": 9.832562893091057e-05,
+            "ece": 0.009722157605411376,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 36,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "atricure": {
+            "brier": 0.00033988669923879964,
+            "ece": 0.011534326866535168,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 36,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "baxter": {
+            "brier": 0.05643246194425481,
+            "ece": 0.051745896527953854,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 2,
+            "mean_lead_time_days": 157.0,
+            "n": 35,
+            "positives": 2,
+            "pr_auc": 0.34090909090909094,
+            "precision_at_k": 0.25,
+            "prevalence": 0.05714285714285714,
+            "threshold": 0.5
+          },
+          "bbraun": {
+            "brier": 0.031222686475414253,
+            "ece": 0.035346161550525806,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 344.0,
+            "n": 35,
+            "positives": 1,
+            "pr_auc": 0.09090909090909091,
+            "precision_at_k": 0.0,
+            "prevalence": 0.02857142857142857,
+            "threshold": 0.5
+          },
+          "bd": {
+            "brier": 0.07475379098958569,
+            "ece": 0.07617115956300327,
+            "false_positive_rate": 0.0,
+            "k": 3,
+            "lead_time_n": 2,
+            "mean_lead_time_days": 156.0,
+            "n": 27,
+            "positives": 2,
+            "pr_auc": 0.19642857142857142,
+            "precision_at_k": 0.0,
+            "prevalence": 0.07407407407407407,
+            "threshold": 0.5
+          },
+          "biotronik": {
+            "brier": 9.784102807403953e-05,
+            "ece": 0.009677474339082039,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 35,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "boston_scientific": {
+            "brier": 0.07990198171977131,
+            "ece": 0.08111714897526912,
+            "false_positive_rate": 0.0,
+            "k": 3,
+            "lead_time_n": 2,
+            "mean_lead_time_days": 70.5,
+            "n": 25,
+            "positives": 2,
+            "pr_auc": 0.22549019607843135,
+            "precision_at_k": 0.3333333333333333,
+            "prevalence": 0.08,
+            "threshold": 0.5
+          },
+          "canon_medical": {
+            "brier": 0.00011732073009927496,
+            "ece": 0.010681415040826255,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 35,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "cook_medical": {
+            "brier": 0.016794297237865557,
+            "ece": 0.04598513822728743,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 244.0,
+            "n": 36,
+            "positives": 1,
+            "pr_auc": 1.0,
+            "precision_at_k": 0.25,
+            "prevalence": 0.027777777777777776,
+            "threshold": 0.5
+          },
+          "cooper_companies": {
+            "brier": 0.026599872110287075,
+            "ece": 0.018002897325274665,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 111.0,
+            "n": 37,
+            "positives": 1,
+            "pr_auc": 0.1111111111111111,
+            "precision_at_k": 0.0,
+            "prevalence": 0.02702702702702703,
+            "threshold": 0.5
+          },
+          "dentsply_sirona": {
+            "brier": 0.023541906477094768,
+            "ece": 0.029631889352564042,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 338.0,
+            "n": 36,
+            "positives": 1,
+            "pr_auc": 0.3333333333333333,
+            "precision_at_k": 0.25,
+            "prevalence": 0.027777777777777776,
+            "threshold": 0.5
+          },
+          "dexcom": {
+            "brier": 9.299244647187677e-05,
+            "ece": 0.009442138814920807,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 37,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "edwards_lifesciences": {
+            "brier": 0.0003690503550741165,
+            "ece": 0.013723049660176869,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 33,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "envista": {
+            "brier": 0.0008583829050669017,
+            "ece": 0.015181123133850878,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 36,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "fresenius_medical_care": {
+            "brier": 0.0009795532173238436,
+            "ece": 0.014434315984099394,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 35,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "fujifilm": {
+            "brier": 0.00013937113822955655,
+            "ece": 0.011674119780412473,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 34,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "ge_healthcare": {
+            "brier": 0.002306395164597202,
+            "ece": 0.02188916741326169,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 34,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "globus_medical": {
+            "brier": 0.0015427158761986963,
+            "ece": 0.01907117404982122,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 35,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "hologic": {
+            "brier": 0.04622142519906394,
+            "ece": 0.03940277255552895,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 2,
+            "mean_lead_time_days": 297.5,
+            "n": 35,
+            "positives": 2,
+            "pr_auc": 0.6428571428571428,
+            "precision_at_k": 0.25,
+            "prevalence": 0.05714285714285714,
+            "threshold": 0.5
+          },
+          "icu_medical": {
+            "brier": 0.0004405563095069753,
+            "ece": 0.013038229666483476,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 36,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "inspire_medical": {
+            "brier": 8.138158272950964e-05,
+            "ece": 0.008831060624970369,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 37,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "insulet": {
+            "brier": 0.027008394601742133,
+            "ece": 0.018491515632337814,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 63.0,
+            "n": 36,
+            "positives": 1,
+            "pr_auc": 1.0,
+            "precision_at_k": 0.25,
+            "prevalence": 0.027777777777777776,
+            "threshold": 0.5
+          },
+          "integra_lifesciences": {
+            "brier": 0.030450433318536512,
+            "ece": 0.030675988374708106,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 265.0,
+            "n": 35,
+            "positives": 1,
+            "pr_auc": 0.05,
+            "precision_at_k": 0.0,
+            "prevalence": 0.02857142857142857,
+            "threshold": 0.5
+          },
+          "intuitive_surgical": {
+            "brier": 0.0009147303613584279,
+            "ece": 0.017131773517048372,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 33,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "invacare": {
+            "brier": 0.000646013331451961,
+            "ece": 0.012449877056633397,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 38,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "irhythm": {
+            "brier": 8.290231944357568e-05,
+            "ece": 0.00896199534262796,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 36,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "johnson_johnson_medtech": {
+            "brier": 0.03774734236989227,
+            "ece": 0.04343424274045735,
+            "false_positive_rate": 0.0,
+            "k": 3,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 267.0,
+            "n": 24,
+            "positives": 1,
+            "pr_auc": 0.25,
+            "precision_at_k": 0.0,
+            "prevalence": 0.041666666666666664,
+            "threshold": 0.5
+          },
+          "karl_storz": {
+            "brier": 0.024668041797969237,
+            "ece": 0.022715565502863973,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 226.0,
+            "n": 35,
+            "positives": 1,
+            "pr_auc": 0.3333333333333333,
+            "precision_at_k": 0.25,
+            "prevalence": 0.02857142857142857,
+            "threshold": 0.5
+          },
+          "masimo": {
+            "brier": 0.000307016355695912,
+            "ece": 0.011470772675028055,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 36,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "medline": {
+            "brier": 0.04991470755007299,
+            "ece": 0.04539431564904093,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 2,
+            "mean_lead_time_days": 282.5,
+            "n": 32,
+            "positives": 2,
+            "pr_auc": 0.6,
+            "precision_at_k": 0.25,
+            "prevalence": 0.0625,
+            "threshold": 0.5
+          },
+          "medtronic": {
+            "brier": 0.08789069338653895,
+            "ece": 0.10366205113350152,
+            "false_positive_rate": 0.0,
+            "k": 2,
+            "lead_time_n": 2,
+            "mean_lead_time_days": 123.0,
+            "n": 20,
+            "positives": 2,
+            "pr_auc": 0.26666666666666666,
+            "precision_at_k": 0.0,
+            "prevalence": 0.1,
+            "threshold": 0.5
+          },
+          "merit_medical": {
+            "brier": 0.03130342484388023,
+            "ece": 0.03178843761284379,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 224.0,
+            "n": 34,
+            "positives": 1,
+            "pr_auc": 0.07692307692307693,
+            "precision_at_k": 0.0,
+            "prevalence": 0.029411764705882353,
+            "threshold": 0.5
+          },
+          "nevro": {
+            "brier": 0.0002957144751590825,
+            "ece": 0.010979795768673558,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 38,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "olympus": {
+            "brier": 0.0017830792224451436,
+            "ece": 0.02013070400134652,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 33,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "orthofix": {
+            "brier": 0.022832844526145705,
+            "ece": 0.03506761082203935,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 30.0,
+            "n": 34,
+            "positives": 1,
+            "pr_auc": 1.0,
+            "precision_at_k": 0.25,
+            "prevalence": 0.029411764705882353,
+            "threshold": 0.5
+          },
+          "pentax_medical": {
+            "brier": 9.304960888631632e-05,
+            "ece": 0.009460086824853223,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 36,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "penumbra": {
+            "brier": 0.0010382479822026352,
+            "ece": 0.014994351802417323,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 35,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "philips": {
+            "brier": 0.002335963646599103,
+            "ece": 0.027701599687433735,
+            "false_positive_rate": 0.0,
+            "k": 3,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 29,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "procept_biorobotics": {
+            "brier": 8.516881470992388e-05,
+            "ece": 0.009034275573544843,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 37,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "resmed": {
+            "brier": 9.396895874812925e-05,
+            "ece": 0.009489812698080856,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 37,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "siemens_healthineers": {
+            "brier": 0.0019452803854591966,
+            "ece": 0.02528391090205257,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 32,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "smith_nephew": {
+            "brier": 0.001431563609791868,
+            "ece": 0.01731685377283803,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 33,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "steris": {
+            "brier": 0.00012129383444707394,
+            "ece": 0.010794683702924976,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 34,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "stryker": {
+            "brier": 0.03534713265435255,
+            "ece": 0.06308125338759137,
+            "false_positive_rate": 0.0,
+            "k": 3,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 287.0,
+            "n": 24,
+            "positives": 1,
+            "pr_auc": 0.3333333333333333,
+            "precision_at_k": 0.3333333333333333,
+            "prevalence": 0.041666666666666664,
+            "threshold": 0.5
+          },
+          "tandem_diabetes": {
+            "brier": 0.0002399103913308252,
+            "ece": 0.01098167635591716,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 36,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "teleflex": {
+            "brier": 0.022711932442978814,
+            "ece": 0.028487596495914914,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 217.0,
+            "n": 35,
+            "positives": 1,
+            "pr_auc": 0.5,
+            "precision_at_k": 0.25,
+            "prevalence": 0.02857142857142857,
+            "threshold": 0.5
+          },
+          "terumo": {
+            "brier": 0.030790004935409978,
+            "ece": 0.021272189048614353,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 51.0,
+            "n": 32,
+            "positives": 1,
+            "pr_auc": 0.045454545454545456,
+            "precision_at_k": 0.0,
+            "prevalence": 0.03125,
+            "threshold": 0.5
+          },
+          "wl_gore": {
+            "brier": 0.027166004029361805,
+            "ece": 0.019794871260637524,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 79.0,
+            "n": 37,
+            "positives": 1,
+            "pr_auc": 0.06666666666666667,
+            "precision_at_k": 0.0,
+            "prevalence": 0.02702702702702703,
+            "threshold": 0.5
+          },
+          "zimmer_biomet": {
+            "brier": 0.0016516190819650613,
+            "ece": 0.022289288536557303,
+            "false_positive_rate": 0.0,
+            "k": 3,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 30,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          }
+        },
+        "track": {
+          "aesthetics": {
+            "brier": 0.0003897417399195989,
+            "ece": 0.011342914244796519,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 50,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "cardiac_rhythm": {
+            "brier": 0.001773449837829624,
+            "ece": 0.018871677361784904,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 47,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "cmf": {
+            "brier": 0.00047880416835476426,
+            "ece": 0.011506094263529304,
+            "false_positive_rate": 0.0,
+            "k": 6,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 51,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "coronary": {
+            "brier": 0.002389251674259268,
+            "ece": 0.023783102632611235,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 44,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "dental": {
+            "brier": 0.022675181182757846,
+            "ece": 0.015223354056769865,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 167.0,
+            "n": 45,
+            "positives": 1,
+            "pr_auc": 0.09090909090909091,
+            "precision_at_k": 0.0,
+            "prevalence": 0.022222222222222223,
+            "threshold": 0.5
+          },
+          "diabetes_cgm": {
+            "brier": 0.00022695304922390813,
+            "ece": 0.011591303078280159,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 47,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "dialysis": {
+            "brier": 0.02390143767414697,
+            "ece": 0.02084958735005024,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 265.0,
+            "n": 47,
+            "positives": 1,
+            "pr_auc": 0.02857142857142857,
+            "precision_at_k": 0.0,
+            "prevalence": 0.02127659574468085,
+            "threshold": 0.5
+          },
+          "endoscopy": {
+            "brier": 0.01922631309712192,
+            "ece": 0.04740137758244346,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 244.0,
+            "n": 37,
+            "positives": 1,
+            "pr_auc": 1.0,
+            "precision_at_k": 0.25,
+            "prevalence": 0.02702702702702703,
+            "threshold": 0.5
+          },
+          "ent": {
+            "brier": 0.02956722926513681,
+            "ece": 0.04253529240034723,
+            "false_positive_rate": 0.0,
+            "k": 6,
+            "lead_time_n": 2,
+            "mean_lead_time_days": 183.5,
+            "n": 51,
+            "positives": 2,
+            "pr_auc": 1.0,
+            "precision_at_k": 0.3333333333333333,
+            "prevalence": 0.0392156862745098,
+            "threshold": 0.5
+          },
+          "ep_pfa": {
+            "brier": 0.0010652847514165365,
+            "ece": 0.014366996440133957,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 46,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "general_surgery": {
+            "brier": 0.001164623332947209,
+            "ece": 0.016318584594442576,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 44,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "heart_failure": {
+            "brier": 0.001478995303487834,
+            "ece": 0.013890663128597032,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 50,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "imaging_mr_ct": {
+            "brier": 0.06734082670493309,
+            "ece": 0.0799191240208558,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 3,
+            "mean_lead_time_days": 200.33333333333334,
+            "n": 40,
+            "positives": 3,
+            "pr_auc": 0.46296296296296297,
+            "precision_at_k": 0.25,
+            "prevalence": 0.075,
+            "threshold": 0.5
+          },
+          "imaging_us": {
+            "brier": 0.0005446112598121995,
+            "ece": 0.015765942556734032,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 39,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "infection_control": {
+            "brier": 0.00024435506867734346,
+            "ece": 0.011045160083495357,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 49,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "insulin_delivery": {
+            "brier": 0.020997191633326404,
+            "ece": 0.011374376335890843,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 51.0,
+            "n": 47,
+            "positives": 1,
+            "pr_auc": 0.045454545454545456,
+            "precision_at_k": 0.0,
+            "prevalence": 0.02127659574468085,
+            "threshold": 0.5
+          },
+          "ivd_immuno": {
+            "brier": 9.26998989892858e-05,
+            "ece": 0.00932528806935779,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 49,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "ivd_molecular": {
+            "brier": 0.00011901498475225753,
+            "ece": 0.010542240558418578,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 48,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "ivd_poct": {
+            "brier": 0.0005261446093916339,
+            "ece": 0.012549031227749717,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 48,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "medical_ai": {
+            "brier": 0.03542528070969274,
+            "ece": 0.04026121045947245,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 63.0,
+            "n": 31,
+            "positives": 1,
+            "pr_auc": 0.041666666666666664,
+            "precision_at_k": 0.0,
+            "prevalence": 0.03225806451612903,
+            "threshold": 0.5
+          },
+          "neurostimulation": {
+            "brier": 0.0002627738904687441,
+            "ece": 0.010938927327258137,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 47,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "neurovascular": {
+            "brier": 0.013345932632834867,
+            "ece": 0.030758200880881305,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 105.0,
+            "n": 44,
+            "positives": 1,
+            "pr_auc": 1.0,
+            "precision_at_k": 0.2,
+            "prevalence": 0.022727272727272728,
+            "threshold": 0.5
+          },
+          "ophthalmology": {
+            "brier": 0.0004510218505523087,
+            "ece": 0.012362672445773736,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 47,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "ortho_joint": {
+            "brier": 0.01875329222033604,
+            "ece": 0.021941405265337034,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 30.0,
+            "n": 45,
+            "positives": 1,
+            "pr_auc": 0.3333333333333333,
+            "precision_at_k": 0.2,
+            "prevalence": 0.022222222222222223,
+            "threshold": 0.5
+          },
+          "patient_monitoring": {
+            "brier": 0.04675031257013428,
+            "ece": 0.040271285428243056,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 2,
+            "mean_lead_time_days": 170.0,
+            "n": 45,
+            "positives": 2,
+            "pr_auc": 0.07670454545454546,
+            "precision_at_k": 0.0,
+            "prevalence": 0.044444444444444446,
+            "threshold": 0.5
+          },
+          "peripheral_vascular": {
+            "brier": 0.025172788108431106,
+            "ece": 0.020550308438792506,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 79.0,
+            "n": 42,
+            "positives": 1,
+            "pr_auc": 0.02564102564102564,
+            "precision_at_k": 0.0,
+            "prevalence": 0.023809523809523808,
+            "threshold": 0.5
+          },
+          "rehab_exo": {
+            "brier": 0.017166283061111384,
+            "ece": 0.02623494679404933,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 338.0,
+            "n": 49,
+            "positives": 1,
+            "pr_auc": 0.5,
+            "precision_at_k": 0.2,
+            "prevalence": 0.02040816326530612,
+            "threshold": 0.5
+          },
+          "respiratory": {
+            "brier": 0.0033037046463561207,
+            "ece": 0.02592588026331908,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 43,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "spine": {
+            "brier": 0.0001113605549761502,
+            "ece": 0.010313670198223037,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 44,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "structural_heart": {
+            "brier": 0.0002300681123762602,
+            "ece": 0.011565117000567502,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 47,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "surgical_energy": {
+            "brier": 0.027563001396109302,
+            "ece": 0.023572773889060563,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 259.0,
+            "n": 38,
+            "positives": 1,
+            "pr_auc": 0.07692307692307693,
+            "precision_at_k": 0.0,
+            "prevalence": 0.02631578947368421,
+            "threshold": 0.5
+          },
+          "surgical_robotics": {
+            "brier": 0.00011153066692674512,
+            "ece": 0.010194066037023197,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 50,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "trauma": {
+            "brier": 0.002642931972490479,
+            "ece": 0.02150842166181591,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 44,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "urology": {
+            "brier": 0.0722867348692704,
+            "ece": 0.06533805323333891,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 3,
+            "mean_lead_time_days": 200.0,
+            "n": 42,
+            "positives": 3,
+            "pr_auc": 0.09111721611721611,
+            "precision_at_k": 0.0,
+            "prevalence": 0.07142857142857142,
+            "threshold": 0.5
+          },
+          "vascular_access": {
+            "brier": 0.02539450996631415,
+            "ece": 0.05570826453214799,
+            "false_positive_rate": 0.0,
+            "k": 4,
+            "lead_time_n": 1,
+            "mean_lead_time_days": 301.0,
+            "n": 33,
+            "positives": 1,
+            "pr_auc": 0.5,
+            "precision_at_k": 0.25,
+            "prevalence": 0.030303030303030304,
+            "threshold": 0.5
+          },
+          "wearable_remote": {
+            "brier": 0.03585227880620385,
+            "ece": 0.024275606678690016,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 2,
+            "mean_lead_time_days": 190.5,
+            "n": 49,
+            "positives": 2,
+            "pr_auc": 0.6,
+            "precision_at_k": 0.2,
+            "prevalence": 0.04081632653061224,
+            "threshold": 0.5
+          },
+          "womens_health": {
+            "brier": 0.0002010518824365264,
+            "ece": 0.01037236910308879,
+            "false_positive_rate": 0.0,
+            "k": 6,
+            "lead_time_n": 0,
+            "mean_lead_time_days": null,
+            "n": 51,
+            "positives": 0,
+            "pr_auc": null,
+            "precision_at_k": 0.0,
+            "prevalence": 0.0,
+            "threshold": 0.5
+          },
+          "wound_care": {
+            "brier": 0.054381688659461275,
+            "ece": 0.04323884092272763,
+            "false_positive_rate": 0.0,
+            "k": 5,
+            "lead_time_n": 3,
+            "mean_lead_time_days": 242.66666666666666,
+            "n": 46,
+            "positives": 3,
+            "pr_auc": 0.7166666666666667,
+            "precision_at_k": 0.4,
+            "prevalence": 0.06521739130434782,
+            "threshold": 0.5
+          }
+        }
+      },
+      "holdout_window_metrics": [
+        {
+          "brier": 0.01337683620685584,
+          "cutoff": "2025-04-01",
+          "ece": 0.0039922824135791325,
+          "false_positive_rate": 0.0,
+          "k": 173,
+          "lead_time_n": 25,
+          "mean_lead_time_days": 182.6,
+          "n": 1722,
+          "positives": 25,
+          "pr_auc": 0.13708495061705483,
+          "precision_at_k": 0.07514450867052024,
+          "prevalence": 0.014518002322880372,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.01488209835640864,
+          "cutoff": "2025-07-01",
+          "ece": 0.0030789338649111707,
+          "false_positive_rate": 0.0,
+          "k": 173,
+          "lead_time_n": 27,
+          "mean_lead_time_days": 200.14814814814815,
+          "n": 1721,
+          "positives": 27,
+          "pr_auc": 0.09502674847371553,
+          "precision_at_k": 0.06936416184971098,
+          "prevalence": 0.01568855316676351,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.014314809225001036,
+          "cutoff": "2025-10-01",
+          "ece": 0.0031835164304270603,
+          "false_positive_rate": 0.0,
+          "k": 172,
+          "lead_time_n": 26,
+          "mean_lead_time_days": 189.19230769230768,
+          "n": 1716,
+          "positives": 26,
+          "pr_auc": 0.10047578467453702,
+          "precision_at_k": 0.06976744186046512,
+          "prevalence": 0.015151515151515152,
+          "threshold": 0.5
+        }
+      ],
+      "holdout_window_summary": {
+        "brier": {
+          "max": 0.01488209835640864,
+          "mean": 0.01419124792942184,
+          "min": 0.01337683620685584,
+          "std": 0.0006207007223254414,
+          "windows": 3
+        },
+        "ece": {
+          "max": 0.0039922824135791325,
+          "mean": 0.003418244236305788,
+          "min": 0.0030789338649111707,
+          "std": 0.0004081456030862428,
+          "windows": 3
+        },
+        "false_positive_rate": {
+          "max": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "std": 0.0,
+          "windows": 3
+        },
+        "mean_lead_time_days": {
+          "max": 200.14814814814815,
+          "mean": 190.64681861348527,
+          "min": 182.6,
+          "std": 7.237452469490793,
+          "windows": 3
+        },
+        "n": {
+          "max": 1722,
+          "mean": 1719.6666666666667,
+          "min": 1716,
+          "std": 2.6246692913372702,
+          "windows": 3
+        },
+        "positives": {
+          "max": 27,
+          "mean": 26.0,
+          "min": 25,
+          "std": 0.816496580927726,
+          "windows": 3
+        },
+        "pr_auc": {
+          "max": 0.13708495061705483,
+          "mean": 0.11086249458843579,
+          "min": 0.09502674847371553,
+          "std": 0.018675043935853897,
+          "windows": 3
+        },
+        "precision_at_k": {
+          "max": 0.07514450867052024,
+          "mean": 0.07142537079356544,
+          "min": 0.06936416184971098,
+          "std": 0.0026349761039546854,
+          "windows": 3
+        },
+        "prevalence": {
+          "max": 0.01568855316676351,
+          "mean": 0.015119356880386346,
+          "min": 0.014518002322880372,
+          "std": 0.00047841609179344926,
+          "windows": 3
+        }
+      },
+      "name": "rd_plus_entry_history",
+      "origin_metrics": [
+        {
+          "brier": 0.005969029311381442,
+          "cutoff": "2021-01-01",
+          "ece": 0.004512486974395488,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 168,
+          "lead_time_n": 10,
+          "mean_lead_time_days": 209.4,
+          "n": 1678,
+          "positives": 10,
+          "pr_auc": 0.008836978758844153,
+          "precision_at_k": 0.011904761904761904,
+          "prevalence": 0.0059594755661501785,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.0103158755631765,
+          "cutoff": "2021-04-01",
+          "ece": 0.0003894653621226756,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 169,
+          "lead_time_n": 18,
+          "mean_lead_time_days": 240.66666666666666,
+          "n": 1687,
+          "positives": 18,
+          "pr_auc": 0.06972612720849365,
+          "precision_at_k": 0.047337278106508875,
+          "prevalence": 0.01066982809721399,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.013977593291111937,
+          "cutoff": "2021-07-01",
+          "ece": 0.004032502368110542,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 170,
+          "lead_time_n": 25,
+          "mean_lead_time_days": 219.92,
+          "n": 1691,
+          "positives": 25,
+          "pr_auc": 0.1169543133851331,
+          "precision_at_k": 0.07647058823529412,
+          "prevalence": 0.01478415138971023,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.01453272682339186,
+          "cutoff": "2021-10-01",
+          "ece": 0.006738079283909029,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 26,
+          "mean_lead_time_days": 178.30769230769232,
+          "n": 1730,
+          "positives": 26,
+          "pr_auc": 0.07058655162778955,
+          "precision_at_k": 0.06358381502890173,
+          "prevalence": 0.015028901734104046,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.01331696060717658,
+          "cutoff": "2022-01-01",
+          "ece": 0.004776326444196936,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 24,
+          "mean_lead_time_days": 141.45833333333334,
+          "n": 1727,
+          "positives": 24,
+          "pr_auc": 0.08545860422452084,
+          "precision_at_k": 0.06358381502890173,
+          "prevalence": 0.013896931094383324,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.01160988242929129,
+          "cutoff": "2022-04-01",
+          "ece": 0.0019295529361049192,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 21,
+          "mean_lead_time_days": 163.28571428571428,
+          "n": 1727,
+          "positives": 21,
+          "pr_auc": 0.08590227230137978,
+          "precision_at_k": 0.057803468208092484,
+          "prevalence": 0.012159814707585408,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.009377825738147006,
+          "cutoff": "2022-07-01",
+          "ece": 0.003818742823133205,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 17,
+          "mean_lead_time_days": 188.47058823529412,
+          "n": 1724,
+          "positives": 17,
+          "pr_auc": 0.16965590598553257,
+          "precision_at_k": 0.046242774566473986,
+          "prevalence": 0.009860788863109048,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.009189156034611587,
+          "cutoff": "2022-10-01",
+          "ece": 0.006073801869085968,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 17,
+          "mean_lead_time_days": 208.47058823529412,
+          "n": 1724,
+          "positives": 17,
+          "pr_auc": 0.19390828545442634,
+          "precision_at_k": 0.05202312138728324,
+          "prevalence": 0.009860788863109048,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.009971160449772285,
+          "cutoff": "2023-01-01",
+          "ece": 0.005877433439148037,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 19,
+          "mean_lead_time_days": 190.57894736842104,
+          "n": 1725,
+          "positives": 19,
+          "pr_auc": 0.2524300339777662,
+          "precision_at_k": 0.057803468208092484,
+          "prevalence": 0.011014492753623189,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.011340334696188734,
+          "cutoff": "2023-04-01",
+          "ece": 0.0046120034129842205,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 22,
+          "mean_lead_time_days": 209.36363636363637,
+          "n": 1726,
+          "positives": 22,
+          "pr_auc": 0.2376370659891691,
+          "precision_at_k": 0.08092485549132948,
+          "prevalence": 0.012746234067207415,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.014242225316135008,
+          "cutoff": "2023-07-01",
+          "ece": 0.00211243436895136,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 28,
+          "mean_lead_time_days": 188.39285714285714,
+          "n": 1730,
+          "positives": 28,
+          "pr_auc": 0.24056330416553937,
+          "precision_at_k": 0.09826589595375723,
+          "prevalence": 0.016184971098265895,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.013786586226924233,
+          "cutoff": "2023-10-01",
+          "ece": 0.000987905096569548,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 26,
+          "mean_lead_time_days": 183.6153846153846,
+          "n": 1730,
+          "positives": 26,
+          "pr_auc": 0.16064207704040734,
+          "precision_at_k": 0.09248554913294797,
+          "prevalence": 0.015028901734104046,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.014013125309528062,
+          "cutoff": "2024-01-01",
+          "ece": 0.003139619587971111,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 26,
+          "mean_lead_time_days": 164.6153846153846,
+          "n": 1730,
+          "positives": 26,
+          "pr_auc": 0.14215658950581947,
+          "precision_at_k": 0.09826589595375723,
+          "prevalence": 0.015028901734104046,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.013188736118039175,
+          "cutoff": "2024-04-01",
+          "ece": 0.002336166141306155,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 24,
+          "mean_lead_time_days": 171.5,
+          "n": 1726,
+          "positives": 24,
+          "pr_auc": 0.1150970782208555,
+          "precision_at_k": 0.07514450867052024,
+          "prevalence": 0.013904982618771726,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.012782708417695889,
+          "cutoff": "2024-07-01",
+          "ece": 0.003515978550125882,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 23,
+          "mean_lead_time_days": 174.43478260869566,
+          "n": 1723,
+          "positives": 23,
+          "pr_auc": 0.0971143073788326,
+          "precision_at_k": 0.07514450867052024,
+          "prevalence": 0.013348810214741729,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.012078501235041804,
+          "cutoff": "2024-10-01",
+          "ece": 0.004414980332806292,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 172,
+          "lead_time_n": 22,
+          "mean_lead_time_days": 185.5,
+          "n": 1720,
+          "positives": 22,
+          "pr_auc": 0.10593594569159899,
+          "precision_at_k": 0.06976744186046512,
+          "prevalence": 0.012790697674418604,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.013084169382190432,
+          "cutoff": "2025-01-01",
+          "ece": 0.003832999058892575,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 24,
+          "mean_lead_time_days": 182.20833333333334,
+          "n": 1722,
+          "positives": 24,
+          "pr_auc": 0.10963846347967694,
+          "precision_at_k": 0.06936416184971098,
+          "prevalence": 0.013937282229965157,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.01337683620685584,
+          "cutoff": "2025-04-01",
+          "ece": 0.0039922824135791325,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 25,
+          "mean_lead_time_days": 182.6,
+          "n": 1722,
+          "positives": 25,
+          "pr_auc": 0.13708495061705483,
+          "precision_at_k": 0.07514450867052024,
+          "prevalence": 0.014518002322880372,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.01488209835640864,
+          "cutoff": "2025-07-01",
+          "ece": 0.0030789338649111707,
+          "false_positive_rate": 0.0,
+          "is_holdout": false,
+          "k": 173,
+          "lead_time_n": 27,
+          "mean_lead_time_days": 200.14814814814815,
+          "n": 1721,
+          "positives": 27,
+          "pr_auc": 0.09502674847371553,
+          "precision_at_k": 0.06936416184971098,
+          "prevalence": 0.01568855316676351,
+          "threshold": 0.5
+        },
+        {
+          "brier": 0.014314809225001036,
+          "cutoff": "2025-10-01",
+          "ece": 0.0031835164304270603,
+          "false_positive_rate": 0.0,
+          "is_holdout": true,
+          "k": 172,
+          "lead_time_n": 26,
+          "mean_lead_time_days": 189.19230769230768,
+          "n": 1716,
+          "positives": 26,
+          "pr_auc": 0.10047578467453702,
+          "precision_at_k": 0.06976744186046512,
+          "prevalence": 0.015151515151515152,
+          "threshold": 0.5
+        }
+      ],
+      "training_label_policy": "matured_by_origin"
+    }
+  ],
+  "origins": [
+    "2020-01-01",
+    "2020-04-01",
+    "2020-07-01",
+    "2020-10-01",
+    "2021-01-01",
+    "2021-04-01",
+    "2021-07-01",
+    "2021-10-01",
+    "2022-01-01",
+    "2022-04-01",
+    "2022-07-01",
+    "2022-10-01",
+    "2023-01-01",
+    "2023-04-01",
+    "2023-07-01",
+    "2023-10-01",
+    "2024-01-01",
+    "2024-04-01",
+    "2024-07-01",
+    "2024-10-01",
+    "2025-01-01",
+    "2025-04-01",
+    "2025-07-01",
+    "2025-10-01"
+  ],
+  "purge": {
+    "default": true,
+    "description": "Purged/embargoed rolling origin. The league result below is the purged one; the old overlapping-label variant is reported separately under leaky_labels_diagnostic.",
+    "horizon_months": 12,
+    "rule": "A training example may only be used at origin t when its label window has matured: cutoff + horizon_months <= t. Otherwise the label encodes events inside (t, t+horizon], i.e. the test window.",
+    "training_rows_by_origin": [
+      {
+        "cutoff": "2020-10-01",
+        "leaky_training_rows": 4945,
+        "purged_training_rows": 0
+      },
+      {
+        "cutoff": "2021-01-01",
+        "leaky_training_rows": 6624,
+        "purged_training_rows": 1634
+      },
+      {
+        "cutoff": "2021-04-01",
+        "leaky_training_rows": 8302,
+        "purged_training_rows": 3270
+      },
+      {
+        "cutoff": "2021-07-01",
+        "leaky_training_rows": 9989,
+        "purged_training_rows": 4945
+      },
+      {
+        "cutoff": "2021-10-01",
+        "leaky_training_rows": 11680,
+        "purged_training_rows": 6624
+      },
+      {
+        "cutoff": "2022-01-01",
+        "leaky_training_rows": 13410,
+        "purged_training_rows": 8302
+      },
+      {
+        "cutoff": "2022-04-01",
+        "leaky_training_rows": 15137,
+        "purged_training_rows": 9989
+      },
+      {
+        "cutoff": "2022-07-01",
+        "leaky_training_rows": 16864,
+        "purged_training_rows": 11680
+      },
+      {
+        "cutoff": "2022-10-01",
+        "leaky_training_rows": 18588,
+        "purged_training_rows": 13410
+      },
+      {
+        "cutoff": "2023-01-01",
+        "leaky_training_rows": 20312,
+        "purged_training_rows": 15137
+      },
+      {
+        "cutoff": "2023-04-01",
+        "leaky_training_rows": 22037,
+        "purged_training_rows": 16864
+      },
+      {
+        "cutoff": "2023-07-01",
+        "leaky_training_rows": 23763,
+        "purged_training_rows": 18588
+      },
+      {
+        "cutoff": "2023-10-01",
+        "leaky_training_rows": 25493,
+        "purged_training_rows": 20312
+      },
+      {
+        "cutoff": "2024-01-01",
+        "leaky_training_rows": 27223,
+        "purged_training_rows": 22037
+      },
+      {
+        "cutoff": "2024-04-01",
+        "leaky_training_rows": 28953,
+        "purged_training_rows": 23763
+      },
+      {
+        "cutoff": "2024-07-01",
+        "leaky_training_rows": 30679,
+        "purged_training_rows": 25493
+      },
+      {
+        "cutoff": "2024-10-01",
+        "leaky_training_rows": 32402,
+        "purged_training_rows": 27223
+      },
+      {
+        "cutoff": "2025-01-01",
+        "leaky_training_rows": 34122,
+        "purged_training_rows": 28953
+      },
+      {
+        "cutoff": "2025-04-01",
+        "leaky_training_rows": 35844,
+        "purged_training_rows": 30679
+      },
+      {
+        "cutoff": "2025-07-01",
+        "leaky_training_rows": 37566,
+        "purged_training_rows": 32402
+      },
+      {
+        "cutoff": "2025-10-01",
+        "leaky_training_rows": 39287,
+        "purged_training_rows": 34122
+      }
+    ]
+  },
+  "target_horizon_months": 12
+}

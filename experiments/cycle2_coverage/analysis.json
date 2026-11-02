@@ -1,0 +1,3128 @@
+{
+  "evalstats": {
+    "available": true,
+    "error": null
+  },
+  "panels": {
+    "p1": {
+      "decision_inputs": {
+        "per_window_majority": {
+          "entity": {
+            "deltas": [
+              0.057622,
+              0.047783,
+              0.072649
+            ],
+            "majority": true,
+            "sign_stable_positive": true,
+            "windows_excluding_zero": 2,
+            "windows_total": 3
+          },
+          "pair": {
+            "deltas": [
+              0.057622,
+              0.047783,
+              0.072649
+            ],
+            "majority": false,
+            "sign_stable_positive": true,
+            "windows_excluding_zero": 1,
+            "windows_total": 3
+          }
+        },
+        "pooled_delta": 0.05644645491148638,
+        "pooled_entity_ci_excludes_zero": true,
+        "pooled_pair_ci_excludes_zero": false,
+        "pre_registered_rule": "H2.2: signal is SUPPORTED if the cluster CI on delta-AP excludes zero in the majority of pre-declared windows AND pooled CIs exclude zero under BOTH clustering choices; it is a WELL-POWERED NEGATIVE if the pooled point estimate is inside the MDE but no CI excludes zero; otherwise still underpowered.",
+        "rule_satisfied": false
+      },
+      "experiment": "cycle2_p1_curated_parents",
+      "heterogeneity": {
+        "by_entity_activity": {
+          "high_activity": {
+            "n": 0,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "lower_activity": {
+            "baseline_pr_auc": 0.044613691543500006,
+            "delta_ap": 0.05644645491148638,
+            "model_pr_auc": 0.10106014645498639,
+            "n": 5159,
+            "positives": 78,
+            "prevalence": 0.015119209149059896
+          }
+        },
+        "by_track": {
+          "aesthetics": {
+            "n": 150,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "cardiac_rhythm": {
+            "n": 141,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "cmf": {
+            "n": 153,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "coronary": {
+            "n": 131,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "dental": {
+            "baseline_pr_auc": 0.4218978102189781,
+            "delta_ap": 0.04409957654060381,
+            "model_pr_auc": 0.4659973867595819,
+            "n": 137,
+            "positives": 5,
+            "prevalence": 0.0364963503649635
+          },
+          "diabetes_cgm": {
+            "n": 141,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "dialysis": {
+            "n": 141,
+            "positives": 2,
+            "status": "insufficient"
+          },
+          "endoscopy": {
+            "n": 110,
+            "positives": 2,
+            "status": "insufficient"
+          },
+          "ent": {
+            "baseline_pr_auc": 0.6130718954248365,
+            "delta_ap": 0.35359477124183014,
+            "model_pr_auc": 0.9666666666666667,
+            "n": 153,
+            "positives": 5,
+            "prevalence": 0.032679738562091505
+          },
+          "ep_pfa": {
+            "n": 138,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "general_surgery": {
+            "n": 132,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "heart_failure": {
+            "n": 150,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "imaging_mr_ct": {
+            "baseline_pr_auc": 0.05,
+            "delta_ap": 0.08896486229819563,
+            "model_pr_auc": 0.13896486229819563,
+            "n": 120,
+            "positives": 6,
+            "prevalence": 0.05
+          },
+          "imaging_us": {
+            "n": 119,
+            "positives": 2,
+            "status": "insufficient"
+          },
+          "infection_control": {
+            "n": 147,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "insulin_delivery": {
+            "n": 141,
+            "positives": 3,
+            "status": "insufficient"
+          },
+          "ivd_immuno": {
+            "n": 147,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "ivd_molecular": {
+            "n": 144,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "ivd_poct": {
+            "n": 145,
+            "positives": 1,
+            "status": "insufficient"
+          },
+          "medical_ai": {
+            "baseline_pr_auc": 0.164328231292517,
+            "delta_ap": 0.024525771847200395,
+            "model_pr_auc": 0.1888540031397174,
+            "n": 96,
+            "positives": 7,
+            "prevalence": 0.07291666666666667
+          },
+          "neurostimulation": {
+            "n": 141,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "neurovascular": {
+            "n": 132,
+            "positives": 3,
+            "status": "insufficient"
+          },
+          "ophthalmology": {
+            "n": 141,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "ortho_joint": {
+            "n": 135,
+            "positives": 3,
+            "status": "insufficient"
+          },
+          "patient_monitoring": {
+            "baseline_pr_auc": 0.037037037037037035,
+            "delta_ap": 0.010419823487859435,
+            "model_pr_auc": 0.04745686052489647,
+            "n": 135,
+            "positives": 5,
+            "prevalence": 0.037037037037037035
+          },
+          "peripheral_vascular": {
+            "n": 125,
+            "positives": 4,
+            "status": "insufficient"
+          },
+          "rehab_exo": {
+            "n": 146,
+            "positives": 1,
+            "status": "insufficient"
+          },
+          "respiratory": {
+            "n": 127,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "spine": {
+            "n": 132,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "structural_heart": {
+            "n": 145,
+            "positives": 4,
+            "status": "insufficient"
+          },
+          "surgical_energy": {
+            "n": 114,
+            "positives": 2,
+            "status": "insufficient"
+          },
+          "surgical_robotics": {
+            "n": 150,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "trauma": {
+            "n": 132,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "urology": {
+            "baseline_pr_auc": 0.056,
+            "delta_ap": 0.009274905110017724,
+            "model_pr_auc": 0.06527490511001773,
+            "n": 125,
+            "positives": 7,
+            "prevalence": 0.056
+          },
+          "vascular_access": {
+            "baseline_pr_auc": 0.21428571428571427,
+            "delta_ap": 0.003070889167681834,
+            "model_pr_auc": 0.2173566034533961,
+            "n": 105,
+            "positives": 6,
+            "prevalence": 0.05714285714285714
+          },
+          "wearable_remote": {
+            "baseline_pr_auc": 0.034013605442176874,
+            "delta_ap": 0.2865090392183988,
+            "model_pr_auc": 0.3205226446605757,
+            "n": 147,
+            "positives": 5,
+            "prevalence": 0.034013605442176874
+          },
+          "womens_health": {
+            "n": 153,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "wound_care": {
+            "baseline_pr_auc": 0.036231884057971016,
+            "delta_ap": 0.2403875472655448,
+            "model_pr_auc": 0.2766194313235158,
+            "n": 138,
+            "positives": 5,
+            "prevalence": 0.036231884057971016
+          }
+        },
+        "strata": {
+          "min_positives": 5,
+          "min_rows": 60,
+          "note": "pre-declared strata; no post-hoc subgroup selection; multiplicity not corrected in this descriptive table",
+          "scale_split": "entity n_material >= 20 (high_activity) vs below"
+        }
+      },
+      "holdout_origins": [
+        "2025-04-01",
+        "2025-07-01",
+        "2025-10-01"
+      ],
+      "inference": {
+        "clustered_bootstrap": {
+          "entity": {
+            "ci_high": 0.10362954438711772,
+            "ci_low": 0.0053495731714762185,
+            "cluster_method": "cluster",
+            "confidence_level": 0.95,
+            "delta": 0.05644645491148638,
+            "interval": "percentile",
+            "mean_delta": 0.053257345124790495,
+            "metric": "average_precision_delta",
+            "n_clusters": 51,
+            "n_positives": 78,
+            "n_rows": 5159,
+            "p_delta_le_zero": 0.018,
+            "point_delta": 0.05644645491148638,
+            "resamples": 2000,
+            "se_delta": 0.02525732132656568,
+            "seed": 7,
+            "skipped_resamples": 0,
+            "valid_resamples": 2000
+          },
+          "pair": {
+            "ci_high": 0.14557792130731773,
+            "ci_low": -0.018238868559234192,
+            "cluster_method": "cluster",
+            "confidence_level": 0.95,
+            "delta": 0.05644645491148638,
+            "interval": "percentile",
+            "mean_delta": 0.05916644228614417,
+            "metric": "average_precision_delta",
+            "n_clusters": 1729,
+            "n_positives": 78,
+            "n_rows": 5159,
+            "p_delta_le_zero": 0.0495,
+            "point_delta": 0.05644645491148638,
+            "resamples": 2000,
+            "se_delta": 0.04043082190977755,
+            "seed": 7,
+            "skipped_resamples": 0,
+            "valid_resamples": 2000
+          }
+        },
+        "evalstats_available": true,
+        "evalstats_error": null,
+        "mde": {
+          "design_stage_cycle1_26_positives": {
+            "alpha": 0.05,
+            "approximation": "plug_in_binomial_ap_variance",
+            "assumed_ap": 0.5,
+            "assumed_ap_is_worst_case": true,
+            "base_rate": 0.005039736383019965,
+            "conservative": true,
+            "exact": false,
+            "limitations": [
+              "AP is not a binomial proportion; Var(AP) ~= m(1-m)/n_positives is a plug-in approximation, not an exact variance. With m = 0.5 it is a conservative upper bound on m(1-m).",
+              "Real skill usually makes the bootstrap SE larger than the no-skill simulation (reported separately as the optimistic lower bound), which is why the analytic bound defaults to the m = 0.5 worst case.",
+              "The paired correlation is assumed (default 0); positively correlated scorers have a smaller SE.",
+              "The authoritative MDE uses mde_from_se(clustered_bootstrap_delta_ap(...)['se_delta']) on the actual holdout, not this design value."
+            ],
+            "mde": 0.3885099675612053,
+            "mde_delta_ap": 0.3885099675612053,
+            "mde_delta_ap_null_simulation": 0.014284810132476818,
+            "model": "plug_in_binomial_ap_variance",
+            "n_positives": 26,
+            "n_rows": 5159,
+            "null_simulation_resamples": 1000,
+            "null_simulation_seed": 7,
+            "power": 0.8,
+            "power_at_observed_delta": null,
+            "scorer_correlation": 0.0,
+            "se": 0.1386750490563073,
+            "se_delta_ap": 0.1386750490563073,
+            "se_delta_ap_null_simulation": 0.005098831204553799,
+            "variance_ap_approximation": 0.009615384615384616,
+            "variance_delta_approximation": 0.019230769230769232,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          },
+          "design_stage_cycle2_46_positives": {
+            "alpha": 0.05,
+            "approximation": "plug_in_binomial_ap_variance",
+            "assumed_ap": 0.5,
+            "assumed_ap_is_worst_case": true,
+            "base_rate": 0.008916456677650708,
+            "conservative": true,
+            "exact": false,
+            "limitations": [
+              "AP is not a binomial proportion; Var(AP) ~= m(1-m)/n_positives is a plug-in approximation, not an exact variance. With m = 0.5 it is a conservative upper bound on m(1-m).",
+              "Real skill usually makes the bootstrap SE larger than the no-skill simulation (reported separately as the optimistic lower bound), which is why the analytic bound defaults to the m = 0.5 worst case.",
+              "The paired correlation is assumed (default 0); positively correlated scorers have a smaller SE.",
+              "The authoritative MDE uses mde_from_se(clustered_bootstrap_delta_ap(...)['se_delta']) on the actual holdout, not this design value."
+            ],
+            "mde": 0.29208545009587406,
+            "mde_delta_ap": 0.29208545009587406,
+            "mde_delta_ap_null_simulation": 0.012224206668864793,
+            "model": "plug_in_binomial_ap_variance",
+            "n_positives": 46,
+            "n_rows": 5159,
+            "null_simulation_resamples": 1000,
+            "null_simulation_seed": 7,
+            "power": 0.8,
+            "power_at_observed_delta": null,
+            "scorer_correlation": 0.0,
+            "se": 0.10425720702853739,
+            "se_delta_ap": 0.10425720702853739,
+            "se_delta_ap_null_simulation": 0.004363317806543034,
+            "variance_ap_approximation": 0.005434782608695652,
+            "variance_delta_approximation": 0.010869565217391304,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          },
+          "design_stage_pooled": {
+            "alpha": 0.05,
+            "approximation": "plug_in_binomial_ap_variance",
+            "assumed_ap": 0.5,
+            "assumed_ap_is_worst_case": true,
+            "base_rate": 0.015119209149059896,
+            "conservative": true,
+            "exact": false,
+            "limitations": [
+              "AP is not a binomial proportion; Var(AP) ~= m(1-m)/n_positives is a plug-in approximation, not an exact variance. With m = 0.5 it is a conservative upper bound on m(1-m).",
+              "Real skill usually makes the bootstrap SE larger than the no-skill simulation (reported separately as the optimistic lower bound), which is why the analytic bound defaults to the m = 0.5 worst case.",
+              "The paired correlation is assumed (default 0); positively correlated scorers have a smaller SE.",
+              "The authoritative MDE uses mde_from_se(clustered_bootstrap_delta_ap(...)['se_delta']) on the actual holdout, not this design value."
+            ],
+            "mde": 0.22430633435431466,
+            "mde_delta_ap": 0.22430633435431466,
+            "mde_delta_ap_null_simulation": 0.011691041287088862,
+            "model": "plug_in_binomial_ap_variance",
+            "n_positives": 78,
+            "n_rows": 5159,
+            "null_simulation_resamples": 1000,
+            "null_simulation_seed": 7,
+            "power": 0.8,
+            "power_at_observed_delta": null,
+            "scorer_correlation": 0.0,
+            "se": 0.08006407690254357,
+            "se_delta_ap": 0.08006407690254357,
+            "se_delta_ap_null_simulation": 0.00417300934177693,
+            "variance_ap_approximation": 0.003205128205128205,
+            "variance_delta_approximation": 0.00641025641025641,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          },
+          "observed_from_entity_cluster_se": {
+            "alpha": 0.05,
+            "approximation": "normal_two_sided",
+            "exact": false,
+            "mde_delta_ap": 0.07076053807835783,
+            "notes": [
+              "MDE assumes the bootstrap distribution of the AP difference is roughly normal and symmetric.",
+              "The SE must come from the same clustered resampling model as the interval that is reported."
+            ],
+            "power": 0.8,
+            "se_delta_ap": 0.02525732132656568,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          }
+        },
+        "pooled": {
+          "baseline_pr_auc": 0.044613691543500006,
+          "entity_clusters": 51,
+          "model_pr_auc": 0.10106014645498639,
+          "pair_clusters": 1729,
+          "positives": 78,
+          "prevalence": 0.015119209149059896,
+          "rows": 5159
+        }
+      },
+      "lead_time": {
+        "censor_date": "2026-10-15",
+        "definition": "Two lead-time views. (1) naive: both scorers select the same k units (10% of rows), so top-k precision is comparable but the false-alarm count is not controlled. (2) matched FAR (cite this one): identical false-positive budget m = floor(far * n_negatives) for both scorers, censored positives counted, positives without observable lead excluded and reported.",
+        "windows": [
+          {
+            "baseline": {
+              "censored_positives": 20,
+              "mean_lead_days": 155.4,
+              "precision": 0.028901734104046242,
+              "selected": 173,
+              "true_positives": 5
+            },
+            "k": 173,
+            "matched_far": {
+              "censor_date_field": "censor_date",
+              "delta": {
+                "detection_probability": 0.32,
+                "mean_lead_time_days": -3.7846153846153925,
+                "median_lead_time_days": 0,
+                "observed_leads": 8
+              },
+              "event_date_field": "event_date",
+              "far_target": 0.1,
+              "matched_false_alarm_rate": 0.0995875073659399,
+              "matched_false_positive_count": 169,
+              "max_detection_probability": 1.0,
+              "metric": "mean_lead_time_days_at_matched_false_alarm_rate",
+              "n_negatives": 1697,
+              "n_positives": 25,
+              "n_units": 1722,
+              "notes": [
+                "False positives are matched by count (floor(far * n_negatives)) for both scorers.",
+                "Mean lead time is conditional on an observed, non-negative lead; censored leads are counted separately.",
+                "Never-detected positives are reported as negatives of the detection metric, not silently dropped."
+              ],
+              "origin_date_field": "origin_date",
+              "pod_curve": [
+                {
+                  "false_positive_budget": 16,
+                  "far_target": 0.01,
+                  "score_a": {
+                    "detection_probability": 0.2,
+                    "false_alarm_rate": 0.009428403064230996,
+                    "false_positives": 16,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 288,
+                      "mean_lead_time_days": 147.4,
+                      "median_lead_time_days": 148,
+                      "min_lead_time_days": 71,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 5
+                    },
+                    "precision": 0.23809523809523808,
+                    "score_field": "score_a",
+                    "selected_units": 21,
+                    "threshold": 0.1927462589104293,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 5,
+                    "undetected_positives": 20
+                  },
+                  "score_b": {
+                    "detection_probability": 0.16,
+                    "false_alarm_rate": 0.009428403064230996,
+                    "false_positives": 16,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 324,
+                      "mean_lead_time_days": 176.5,
+                      "median_lead_time_days": 141.5,
+                      "min_lead_time_days": 99,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 4
+                    },
+                    "precision": 0.2,
+                    "score_field": "score_b",
+                    "selected_units": 20,
+                    "threshold": 0.011604028814498516,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 4,
+                    "undetected_positives": 21
+                  }
+                },
+                {
+                  "false_positive_budget": 33,
+                  "far_target": 0.02,
+                  "score_a": {
+                    "detection_probability": 0.28,
+                    "false_alarm_rate": 0.019446081319976428,
+                    "false_positives": 33,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 324,
+                      "mean_lead_time_days": 160.85714285714286,
+                      "median_lead_time_days": 148,
+                      "min_lead_time_days": 65,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 7
+                    },
+                    "precision": 0.175,
+                    "score_field": "score_a",
+                    "selected_units": 40,
+                    "threshold": 0.1529822768278104,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 7,
+                    "undetected_positives": 18
+                  },
+                  "score_b": {
+                    "detection_probability": 0.2,
+                    "false_alarm_rate": 0.019446081319976428,
+                    "false_positives": 33,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 324,
+                      "mean_lead_time_days": 155.4,
+                      "median_lead_time_days": 133,
+                      "min_lead_time_days": 71,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 5
+                    },
+                    "precision": 0.13157894736842105,
+                    "score_field": "score_b",
+                    "selected_units": 38,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 5,
+                    "undetected_positives": 20
+                  }
+                },
+                {
+                  "false_positive_budget": 84,
+                  "far_target": 0.05,
+                  "score_a": {
+                    "detection_probability": 0.44,
+                    "false_alarm_rate": 0.049499116087212726,
+                    "false_positives": 84,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 324,
+                      "mean_lead_time_days": 152.45454545454547,
+                      "median_lead_time_days": 133,
+                      "min_lead_time_days": 65,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 11
+                    },
+                    "precision": 0.11578947368421053,
+                    "score_field": "score_a",
+                    "selected_units": 95,
+                    "threshold": 0.022190216132171064,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 11,
+                    "undetected_positives": 14
+                  },
+                  "score_b": {
+                    "detection_probability": 0.2,
+                    "false_alarm_rate": 0.049499116087212726,
+                    "false_positives": 84,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 324,
+                      "mean_lead_time_days": 155.4,
+                      "median_lead_time_days": 133,
+                      "min_lead_time_days": 71,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 5
+                    },
+                    "precision": 0.056179775280898875,
+                    "score_field": "score_b",
+                    "selected_units": 89,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 5,
+                    "undetected_positives": 20
+                  }
+                },
+                {
+                  "false_positive_budget": 169,
+                  "far_target": 0.1,
+                  "score_a": {
+                    "detection_probability": 0.52,
+                    "false_alarm_rate": 0.0995875073659399,
+                    "false_positives": 169,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 324,
+                      "mean_lead_time_days": 151.6153846153846,
+                      "median_lead_time_days": 133,
+                      "min_lead_time_days": 65,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 13
+                    },
+                    "precision": 0.07142857142857142,
+                    "score_field": "score_a",
+                    "selected_units": 182,
+                    "threshold": 0.01641614275202827,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 13,
+                    "undetected_positives": 12
+                  },
+                  "score_b": {
+                    "detection_probability": 0.2,
+                    "false_alarm_rate": 0.0995875073659399,
+                    "false_positives": 169,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 324,
+                      "mean_lead_time_days": 155.4,
+                      "median_lead_time_days": 133,
+                      "min_lead_time_days": 71,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 5
+                    },
+                    "precision": 0.028735632183908046,
+                    "score_field": "score_b",
+                    "selected_units": 174,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 5,
+                    "undetected_positives": 20
+                  }
+                },
+                {
+                  "false_positive_budget": 339,
+                  "far_target": 0.2,
+                  "score_a": {
+                    "detection_probability": 0.56,
+                    "false_alarm_rate": 0.19976428992339423,
+                    "false_positives": 339,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 324,
+                      "mean_lead_time_days": 142.85714285714286,
+                      "median_lead_time_days": 119.5,
+                      "min_lead_time_days": 29,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 14
+                    },
+                    "precision": 0.039660056657223795,
+                    "score_field": "score_a",
+                    "selected_units": 353,
+                    "threshold": 0.013036562258142096,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 14,
+                    "undetected_positives": 11
+                  },
+                  "score_b": {
+                    "detection_probability": 0.2,
+                    "false_alarm_rate": 0.19976428992339423,
+                    "false_positives": 339,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 324,
+                      "mean_lead_time_days": 155.4,
+                      "median_lead_time_days": 133,
+                      "min_lead_time_days": 71,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 5
+                    },
+                    "precision": 0.014534883720930232,
+                    "score_field": "score_b",
+                    "selected_units": 344,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 5,
+                    "undetected_positives": 20
+                  }
+                }
+              ],
+              "positives_with_negative_lead": 0,
+              "positives_without_observable_lead": 0,
+              "scorers": {
+                "score_a": {
+                  "detection_probability": 0.52,
+                  "false_alarm_rate": 0.0995875073659399,
+                  "false_positives": 169,
+                  "lead_time": {
+                    "censored_detected_positives": 0,
+                    "max_lead_time_days": 324,
+                    "mean_lead_time_days": 151.6153846153846,
+                    "median_lead_time_days": 133,
+                    "min_lead_time_days": 65,
+                    "negative_lead_positives": 0,
+                    "observed_leads": 13
+                  },
+                  "precision": 0.07142857142857142,
+                  "score_field": "score_a",
+                  "selected_units": 182,
+                  "threshold": 0.01641614275202827,
+                  "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                  "true_positives": 13,
+                  "undetected_positives": 12
+                },
+                "score_b": {
+                  "detection_probability": 0.2,
+                  "false_alarm_rate": 0.0995875073659399,
+                  "false_positives": 169,
+                  "lead_time": {
+                    "censored_detected_positives": 0,
+                    "max_lead_time_days": 324,
+                    "mean_lead_time_days": 155.4,
+                    "median_lead_time_days": 133,
+                    "min_lead_time_days": 71,
+                    "negative_lead_positives": 0,
+                    "observed_leads": 5
+                  },
+                  "precision": 0.028735632183908046,
+                  "score_field": "score_b",
+                  "selected_units": 174,
+                  "threshold": 0.0,
+                  "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                  "true_positives": 5,
+                  "undetected_positives": 20
+                }
+              }
+            },
+            "model": {
+              "censored_positives": 12,
+              "mean_lead_days": 151.6153846153846,
+              "precision": 0.07514450867052024,
+              "selected": 173,
+              "true_positives": 13
+            },
+            "origin": "2025-04-01",
+            "positives": 25,
+            "rows": 1722
+          },
+          {
+            "baseline": {
+              "censored_positives": 22,
+              "mean_lead_days": 189.8,
+              "precision": 0.028901734104046242,
+              "selected": 173,
+              "true_positives": 5
+            },
+            "k": 173,
+            "matched_far": {
+              "censor_date_field": "censor_date",
+              "delta": {
+                "detection_probability": 0.2962962962962963,
+                "mean_lead_time_days": 21.5,
+                "median_lead_time_days": 22.0,
+                "observed_leads": 8
+              },
+              "event_date_field": "event_date",
+              "far_target": 0.1,
+              "matched_false_alarm_rate": 0.09976387249114523,
+              "matched_false_positive_count": 169,
+              "max_detection_probability": 1.0,
+              "metric": "mean_lead_time_days_at_matched_false_alarm_rate",
+              "n_negatives": 1694,
+              "n_positives": 27,
+              "n_units": 1721,
+              "notes": [
+                "False positives are matched by count (floor(far * n_negatives)) for both scorers.",
+                "Mean lead time is conditional on an observed, non-negative lead; censored leads are counted separately.",
+                "Never-detected positives are reported as negatives of the detection metric, not silently dropped."
+              ],
+              "origin_date_field": "origin_date",
+              "pod_curve": [
+                {
+                  "false_positive_budget": 16,
+                  "far_target": 0.01,
+                  "score_a": {
+                    "detection_probability": 0.1111111111111111,
+                    "false_alarm_rate": 0.009445100354191263,
+                    "false_positives": 16,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 196.66666666666666,
+                      "median_lead_time_days": 197,
+                      "min_lead_time_days": 57,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 3
+                    },
+                    "precision": 0.15789473684210525,
+                    "score_field": "score_a",
+                    "selected_units": 19,
+                    "threshold": 0.20203290123210485,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 3,
+                    "undetected_positives": 24
+                  },
+                  "score_b": {
+                    "detection_probability": 0.1111111111111111,
+                    "false_alarm_rate": 0.009445100354191263,
+                    "false_positives": 16,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 233,
+                      "mean_lead_time_days": 94.33333333333333,
+                      "median_lead_time_days": 42,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 3
+                    },
+                    "precision": 0.15789473684210525,
+                    "score_field": "score_b",
+                    "selected_units": 19,
+                    "threshold": 0.125,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 3,
+                    "undetected_positives": 24
+                  }
+                },
+                {
+                  "false_positive_budget": 33,
+                  "far_target": 0.02,
+                  "score_a": {
+                    "detection_probability": 0.18518518518518517,
+                    "false_alarm_rate": 0.01948051948051948,
+                    "false_positives": 33,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 166.2,
+                      "median_lead_time_days": 197,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 5
+                    },
+                    "precision": 0.13157894736842105,
+                    "score_field": "score_a",
+                    "selected_units": 38,
+                    "threshold": 0.1526425286717062,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 5,
+                    "undetected_positives": 22
+                  },
+                  "score_b": {
+                    "detection_probability": 0.14814814814814814,
+                    "false_alarm_rate": 0.01948051948051948,
+                    "false_positives": 33,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 154.75,
+                      "median_lead_time_days": 137.5,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 4
+                    },
+                    "precision": 0.10810810810810811,
+                    "score_field": "score_b",
+                    "selected_units": 37,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 4,
+                    "undetected_positives": 23
+                  }
+                },
+                {
+                  "false_positive_budget": 84,
+                  "far_target": 0.05,
+                  "score_a": {
+                    "detection_probability": 0.4074074074074074,
+                    "false_alarm_rate": 0.049586776859504134,
+                    "false_positives": 84,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 359,
+                      "mean_lead_time_days": 181.45454545454547,
+                      "median_lead_time_days": 197,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 11
+                    },
+                    "precision": 0.11578947368421053,
+                    "score_field": "score_a",
+                    "selected_units": 95,
+                    "threshold": 0.022979468408029786,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 11,
+                    "undetected_positives": 16
+                  },
+                  "score_b": {
+                    "detection_probability": 0.14814814814814814,
+                    "false_alarm_rate": 0.049586776859504134,
+                    "false_positives": 84,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 154.75,
+                      "median_lead_time_days": 137.5,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 4
+                    },
+                    "precision": 0.045454545454545456,
+                    "score_field": "score_b",
+                    "selected_units": 88,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 4,
+                    "undetected_positives": 23
+                  }
+                },
+                {
+                  "false_positive_budget": 169,
+                  "far_target": 0.1,
+                  "score_a": {
+                    "detection_probability": 0.4444444444444444,
+                    "false_alarm_rate": 0.09976387249114523,
+                    "false_positives": 169,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 359,
+                      "mean_lead_time_days": 176.25,
+                      "median_lead_time_days": 159.5,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 12
+                    },
+                    "precision": 0.06629834254143646,
+                    "score_field": "score_a",
+                    "selected_units": 181,
+                    "threshold": 0.016636033871388962,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 12,
+                    "undetected_positives": 15
+                  },
+                  "score_b": {
+                    "detection_probability": 0.14814814814814814,
+                    "false_alarm_rate": 0.09976387249114523,
+                    "false_positives": 169,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 154.75,
+                      "median_lead_time_days": 137.5,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 4
+                    },
+                    "precision": 0.023121387283236993,
+                    "score_field": "score_b",
+                    "selected_units": 173,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 4,
+                    "undetected_positives": 23
+                  }
+                },
+                {
+                  "false_positive_budget": 338,
+                  "far_target": 0.2,
+                  "score_a": {
+                    "detection_probability": 0.5185185185185185,
+                    "false_alarm_rate": 0.19952774498229045,
+                    "false_positives": 338,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 359,
+                      "mean_lead_time_days": 179.07142857142858,
+                      "median_lead_time_days": 176.0,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 14
+                    },
+                    "precision": 0.03977272727272727,
+                    "score_field": "score_a",
+                    "selected_units": 352,
+                    "threshold": 0.013420632565611712,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 14,
+                    "undetected_positives": 13
+                  },
+                  "score_b": {
+                    "detection_probability": 0.14814814814814814,
+                    "false_alarm_rate": 0.19952774498229045,
+                    "false_positives": 338,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 154.75,
+                      "median_lead_time_days": 137.5,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 4
+                    },
+                    "precision": 0.011695906432748537,
+                    "score_field": "score_b",
+                    "selected_units": 342,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 4,
+                    "undetected_positives": 23
+                  }
+                }
+              ],
+              "positives_with_negative_lead": 0,
+              "positives_without_observable_lead": 0,
+              "scorers": {
+                "score_a": {
+                  "detection_probability": 0.4444444444444444,
+                  "false_alarm_rate": 0.09976387249114523,
+                  "false_positives": 169,
+                  "lead_time": {
+                    "censored_detected_positives": 0,
+                    "max_lead_time_days": 359,
+                    "mean_lead_time_days": 176.25,
+                    "median_lead_time_days": 159.5,
+                    "min_lead_time_days": 8,
+                    "negative_lead_positives": 0,
+                    "observed_leads": 12
+                  },
+                  "precision": 0.06629834254143646,
+                  "score_field": "score_a",
+                  "selected_units": 181,
+                  "threshold": 0.016636033871388962,
+                  "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                  "true_positives": 12,
+                  "undetected_positives": 15
+                },
+                "score_b": {
+                  "detection_probability": 0.14814814814814814,
+                  "false_alarm_rate": 0.09976387249114523,
+                  "false_positives": 169,
+                  "lead_time": {
+                    "censored_detected_positives": 0,
+                    "max_lead_time_days": 336,
+                    "mean_lead_time_days": 154.75,
+                    "median_lead_time_days": 137.5,
+                    "min_lead_time_days": 8,
+                    "negative_lead_positives": 0,
+                    "observed_leads": 4
+                  },
+                  "precision": 0.023121387283236993,
+                  "score_field": "score_b",
+                  "selected_units": 173,
+                  "threshold": 0.0,
+                  "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                  "true_positives": 4,
+                  "undetected_positives": 23
+                }
+              }
+            },
+            "model": {
+              "censored_positives": 15,
+              "mean_lead_days": 176.25,
+              "precision": 0.06936416184971098,
+              "selected": 173,
+              "true_positives": 12
+            },
+            "origin": "2025-07-01",
+            "positives": 27,
+            "rows": 1721
+          },
+          {
+            "baseline": {
+              "censored_positives": 22,
+              "mean_lead_days": 240.25,
+              "precision": 0.023255813953488372,
+              "selected": 172,
+              "true_positives": 4
+            },
+            "k": 172,
+            "matched_far": {
+              "censor_date_field": "censor_date",
+              "delta": {
+                "detection_probability": 0.34615384615384615,
+                "mean_lead_time_days": -31.083333333333343,
+                "median_lead_time_days": -9.0,
+                "observed_leads": 9
+              },
+              "event_date_field": "event_date",
+              "far_target": 0.1,
+              "matched_false_alarm_rate": 0.1,
+              "matched_false_positive_count": 169,
+              "max_detection_probability": 1.0,
+              "metric": "mean_lead_time_days_at_matched_false_alarm_rate",
+              "n_negatives": 1690,
+              "n_positives": 26,
+              "n_units": 1716,
+              "notes": [
+                "False positives are matched by count (floor(far * n_negatives)) for both scorers.",
+                "Mean lead time is conditional on an observed, non-negative lead; censored leads are counted separately.",
+                "Never-detected positives are reported as negatives of the detection metric, not silently dropped."
+              ],
+              "origin_date_field": "origin_date",
+              "pod_curve": [
+                {
+                  "false_positive_budget": 16,
+                  "far_target": 0.01,
+                  "score_a": {
+                    "detection_probability": 0.15384615384615385,
+                    "false_alarm_rate": 0.009467455621301775,
+                    "false_positives": 16,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 246.5,
+                      "median_lead_time_days": 272.5,
+                      "min_lead_time_days": 105,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 4
+                    },
+                    "precision": 0.2,
+                    "score_field": "score_a",
+                    "selected_units": 20,
+                    "threshold": 0.18634960269821568,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 4,
+                    "undetected_positives": 22
+                  },
+                  "score_b": {
+                    "detection_probability": 0.07692307692307693,
+                    "false_alarm_rate": 0.009467455621301775,
+                    "false_positives": 16,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 338,
+                      "mean_lead_time_days": 239.5,
+                      "median_lead_time_days": 239.5,
+                      "min_lead_time_days": 141,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 2
+                    },
+                    "precision": 0.1111111111111111,
+                    "score_field": "score_b",
+                    "selected_units": 18,
+                    "threshold": 0.125,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 2,
+                    "undetected_positives": 24
+                  }
+                },
+                {
+                  "false_positive_budget": 33,
+                  "far_target": 0.02,
+                  "score_a": {
+                    "detection_probability": 0.23076923076923078,
+                    "false_alarm_rate": 0.01952662721893491,
+                    "false_positives": 33,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 235.66666666666666,
+                      "median_lead_time_days": 265.5,
+                      "min_lead_time_days": 105,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 6
+                    },
+                    "precision": 0.15384615384615385,
+                    "score_field": "score_a",
+                    "selected_units": 39,
+                    "threshold": 0.14580481789122832,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 6,
+                    "undetected_positives": 20
+                  },
+                  "score_b": {
+                    "detection_probability": 0.11538461538461539,
+                    "false_alarm_rate": 0.01952662721893491,
+                    "false_positives": 33,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 338,
+                      "mean_lead_time_days": 241.0,
+                      "median_lead_time_days": 244,
+                      "min_lead_time_days": 141,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 3
+                    },
+                    "precision": 0.08333333333333333,
+                    "score_field": "score_b",
+                    "selected_units": 36,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 3,
+                    "undetected_positives": 23
+                  }
+                },
+                {
+                  "false_positive_budget": 84,
+                  "far_target": 0.05,
+                  "score_a": {
+                    "detection_probability": 0.4230769230769231,
+                    "false_alarm_rate": 0.04970414201183432,
+                    "false_positives": 84,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 338,
+                      "mean_lead_time_days": 226.54545454545453,
+                      "median_lead_time_days": 244,
+                      "min_lead_time_days": 30,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 11
+                    },
+                    "precision": 0.11578947368421053,
+                    "score_field": "score_a",
+                    "selected_units": 95,
+                    "threshold": 0.021812590575532954,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 11,
+                    "undetected_positives": 15
+                  },
+                  "score_b": {
+                    "detection_probability": 0.11538461538461539,
+                    "false_alarm_rate": 0.04970414201183432,
+                    "false_positives": 84,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 338,
+                      "mean_lead_time_days": 241.0,
+                      "median_lead_time_days": 244,
+                      "min_lead_time_days": 141,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 3
+                    },
+                    "precision": 0.034482758620689655,
+                    "score_field": "score_b",
+                    "selected_units": 87,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 3,
+                    "undetected_positives": 23
+                  }
+                },
+                {
+                  "false_positive_budget": 169,
+                  "far_target": 0.1,
+                  "score_a": {
+                    "detection_probability": 0.46153846153846156,
+                    "false_alarm_rate": 0.1,
+                    "false_positives": 169,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 338,
+                      "mean_lead_time_days": 209.91666666666666,
+                      "median_lead_time_days": 235.0,
+                      "min_lead_time_days": 27,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 12
+                    },
+                    "precision": 0.06629834254143646,
+                    "score_field": "score_a",
+                    "selected_units": 181,
+                    "threshold": 0.016496615733934353,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 12,
+                    "undetected_positives": 14
+                  },
+                  "score_b": {
+                    "detection_probability": 0.11538461538461539,
+                    "false_alarm_rate": 0.1,
+                    "false_positives": 169,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 338,
+                      "mean_lead_time_days": 241.0,
+                      "median_lead_time_days": 244,
+                      "min_lead_time_days": 141,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 3
+                    },
+                    "precision": 0.01744186046511628,
+                    "score_field": "score_b",
+                    "selected_units": 172,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 3,
+                    "undetected_positives": 23
+                  }
+                },
+                {
+                  "false_positive_budget": 338,
+                  "far_target": 0.2,
+                  "score_a": {
+                    "detection_probability": 0.5384615384615384,
+                    "false_alarm_rate": 0.2,
+                    "false_positives": 338,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 338,
+                      "mean_lead_time_days": 201.42857142857142,
+                      "median_lead_time_days": 232.0,
+                      "min_lead_time_days": 27,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 14
+                    },
+                    "precision": 0.03977272727272727,
+                    "score_field": "score_a",
+                    "selected_units": 352,
+                    "threshold": 0.013404043610774324,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 14,
+                    "undetected_positives": 12
+                  },
+                  "score_b": {
+                    "detection_probability": 0.11538461538461539,
+                    "false_alarm_rate": 0.2,
+                    "false_positives": 338,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 338,
+                      "mean_lead_time_days": 241.0,
+                      "median_lead_time_days": 244,
+                      "min_lead_time_days": 141,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 3
+                    },
+                    "precision": 0.008797653958944282,
+                    "score_field": "score_b",
+                    "selected_units": 341,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 3,
+                    "undetected_positives": 23
+                  }
+                }
+              ],
+              "positives_with_negative_lead": 0,
+              "positives_without_observable_lead": 0,
+              "scorers": {
+                "score_a": {
+                  "detection_probability": 0.46153846153846156,
+                  "false_alarm_rate": 0.1,
+                  "false_positives": 169,
+                  "lead_time": {
+                    "censored_detected_positives": 0,
+                    "max_lead_time_days": 338,
+                    "mean_lead_time_days": 209.91666666666666,
+                    "median_lead_time_days": 235.0,
+                    "min_lead_time_days": 27,
+                    "negative_lead_positives": 0,
+                    "observed_leads": 12
+                  },
+                  "precision": 0.06629834254143646,
+                  "score_field": "score_a",
+                  "selected_units": 181,
+                  "threshold": 0.016496615733934353,
+                  "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                  "true_positives": 12,
+                  "undetected_positives": 14
+                },
+                "score_b": {
+                  "detection_probability": 0.11538461538461539,
+                  "false_alarm_rate": 0.1,
+                  "false_positives": 169,
+                  "lead_time": {
+                    "censored_detected_positives": 0,
+                    "max_lead_time_days": 338,
+                    "mean_lead_time_days": 241.0,
+                    "median_lead_time_days": 244,
+                    "min_lead_time_days": 141,
+                    "negative_lead_positives": 0,
+                    "observed_leads": 3
+                  },
+                  "precision": 0.01744186046511628,
+                  "score_field": "score_b",
+                  "selected_units": 172,
+                  "threshold": 0.0,
+                  "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                  "true_positives": 3,
+                  "undetected_positives": 23
+                }
+              }
+            },
+            "model": {
+              "censored_positives": 14,
+              "mean_lead_days": 209.91666666666666,
+              "precision": 0.06976744186046512,
+              "selected": 172,
+              "true_positives": 12
+            },
+            "origin": "2025-10-01",
+            "positives": 26,
+            "rows": 1716
+          }
+        ]
+      },
+      "per_window_inference": [
+        {
+          "baseline_pr_auc": 0.07946333453482318,
+          "ci_entity": {
+            "ci_high": 0.1339259018955341,
+            "ci_low": -0.06445804289918876,
+            "delta": 0.05762161608223165,
+            "n_clusters": 51,
+            "p_delta_le_zero": 0.162,
+            "se_delta": 0.05105854386792698
+          },
+          "ci_pair": {
+            "ci_high": 0.21230431867641086,
+            "ci_low": -0.08748316217660004,
+            "delta": 0.05762161608223165,
+            "n_clusters": 1722,
+            "p_delta_le_zero": 0.1765,
+            "se_delta": 0.07299493591870759
+          },
+          "delta_ap": 0.05762161608223165,
+          "excludes_zero_entity": false,
+          "excludes_zero_pair": false,
+          "model_pr_auc": 0.13708495061705483,
+          "origin": "2025-04-01",
+          "positives": 25,
+          "rows": 1722
+        },
+        {
+          "baseline_pr_auc": 0.04724382468942083,
+          "ci_entity": {
+            "ci_high": 0.11999123900781095,
+            "ci_low": 0.002070198332941321,
+            "delta": 0.047782923784294704,
+            "n_clusters": 51,
+            "p_delta_le_zero": 0.023,
+            "se_delta": 0.030885988832277406
+          },
+          "ci_pair": {
+            "ci_high": 0.15556387411155911,
+            "ci_low": -0.032312240811262244,
+            "delta": 0.047782923784294704,
+            "n_clusters": 1721,
+            "p_delta_le_zero": 0.0965,
+            "se_delta": 0.04542635876060253
+          },
+          "delta_ap": 0.047782923784294704,
+          "excludes_zero_entity": true,
+          "excludes_zero_pair": false,
+          "model_pr_auc": 0.09502674847371553,
+          "origin": "2025-07-01",
+          "positives": 27,
+          "rows": 1721
+        },
+        {
+          "baseline_pr_auc": 0.027826340326340328,
+          "ci_entity": {
+            "ci_high": 0.1789515685761624,
+            "ci_low": 0.022390438661808017,
+            "delta": 0.0726494443481967,
+            "n_clusters": 51,
+            "p_delta_le_zero": 0.002,
+            "se_delta": 0.03966715617968923
+          },
+          "ci_pair": {
+            "ci_high": 0.18019815643437065,
+            "ci_low": 0.013423717849043443,
+            "delta": 0.0726494443481967,
+            "n_clusters": 1716,
+            "p_delta_le_zero": 0.009,
+            "se_delta": 0.04371022135746375
+          },
+          "delta_ap": 0.0726494443481967,
+          "excludes_zero_entity": true,
+          "excludes_zero_pair": true,
+          "model_pr_auc": 0.10047578467453702,
+          "origin": "2025-10-01",
+          "positives": 26,
+          "rows": 1716
+        }
+      ],
+      "prediction_rows": 5159,
+      "windows": [
+        {
+          "baseline_brier": 0.015176166465403205,
+          "baseline_pr_auc": 0.07946333453482318,
+          "baseline_precision_at_k": 0.028901734104046242,
+          "delta_ap": 0.05762161608223165,
+          "lead_time_days": 182.6,
+          "model_brier": 0.01337683620685584,
+          "model_pr_auc": 0.13708495061705483,
+          "origin": "2025-04-01",
+          "positives": 25,
+          "precision_at_k": 0.07514450867052024,
+          "prevalence": 0.014518002322880372,
+          "rows": 1722,
+          "training_rows": 30679
+        },
+        {
+          "baseline_brier": 0.01705354447828733,
+          "baseline_pr_auc": 0.04724382468942083,
+          "baseline_precision_at_k": 0.028901734104046242,
+          "delta_ap": 0.047782923784294704,
+          "lead_time_days": 200.14814814814815,
+          "model_brier": 0.01488209835640864,
+          "model_pr_auc": 0.09502674847371553,
+          "origin": "2025-07-01",
+          "positives": 27,
+          "precision_at_k": 0.06936416184971098,
+          "prevalence": 0.01568855316676351,
+          "rows": 1721,
+          "training_rows": 32402
+        },
+        {
+          "baseline_brier": 0.01721061831157665,
+          "baseline_pr_auc": 0.027826340326340328,
+          "baseline_precision_at_k": 0.023255813953488372,
+          "delta_ap": 0.0726494443481967,
+          "lead_time_days": 189.19230769230768,
+          "model_brier": 0.014314809225001036,
+          "model_pr_auc": 0.10047578467453702,
+          "origin": "2025-10-01",
+          "positives": 26,
+          "precision_at_k": 0.06976744186046512,
+          "prevalence": 0.015151515151515152,
+          "rows": 1716,
+          "training_rows": 34122
+        }
+      ]
+    },
+    "p2": {
+      "decision_inputs": {
+        "per_window_majority": {
+          "entity": {
+            "deltas": [
+              0.058165,
+              0.118931,
+              0.149265
+            ],
+            "majority": true,
+            "sign_stable_positive": true,
+            "windows_excluding_zero": 3,
+            "windows_total": 3
+          },
+          "pair": {
+            "deltas": [
+              0.058165,
+              0.118931,
+              0.149265
+            ],
+            "majority": true,
+            "sign_stable_positive": true,
+            "windows_excluding_zero": 3,
+            "windows_total": 3
+          }
+        },
+        "pooled_delta": 0.09732061085035523,
+        "pooled_entity_ci_excludes_zero": true,
+        "pooled_pair_ci_excludes_zero": true,
+        "pre_registered_rule": "H2.2: signal is SUPPORTED if the cluster CI on delta-AP excludes zero in the majority of pre-declared windows AND pooled CIs exclude zero under BOTH clustering choices; it is a WELL-POWERED NEGATIVE if the pooled point estimate is inside the MDE but no CI excludes zero; otherwise still underpowered.",
+        "rule_satisfied": true
+      },
+      "experiment": "cycle2_p2_legal_entities",
+      "heterogeneity": {
+        "by_entity_activity": {
+          "high_activity": {
+            "baseline_pr_auc": 0.03284051939756217,
+            "delta_ap": 0.09691834549896358,
+            "model_pr_auc": 0.12975886489652574,
+            "n": 20011,
+            "positives": 138,
+            "prevalence": 0.006896207086102644
+          },
+          "lower_activity": {
+            "n": 660,
+            "positives": 2,
+            "status": "insufficient"
+          }
+        },
+        "by_track": {
+          "aesthetics": {
+            "n": 567,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "cardiac_rhythm": {
+            "n": 567,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "cmf": {
+            "n": 570,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "coronary": {
+            "n": 547,
+            "positives": 2,
+            "status": "insufficient"
+          },
+          "dental": {
+            "baseline_pr_auc": 0.5057471264367817,
+            "delta_ap": 0.02392515042720955,
+            "model_pr_auc": 0.5296722768639912,
+            "n": 522,
+            "positives": 6,
+            "prevalence": 0.011494252873563218
+          },
+          "diabetes_cgm": {
+            "n": 564,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "dialysis": {
+            "n": 561,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "endoscopy": {
+            "baseline_pr_auc": 0.05678967631158866,
+            "delta_ap": 0.1832257453138068,
+            "model_pr_auc": 0.24001542162539546,
+            "n": 502,
+            "positives": 6,
+            "prevalence": 0.01195219123505976
+          },
+          "ent": {
+            "baseline_pr_auc": 0.010416666666666666,
+            "delta_ap": 0.3318772401433691,
+            "model_pr_auc": 0.3422939068100358,
+            "n": 576,
+            "positives": 6,
+            "prevalence": 0.010416666666666666
+          },
+          "ep_pfa": {
+            "n": 557,
+            "positives": 1,
+            "status": "insufficient"
+          },
+          "general_surgery": {
+            "n": 544,
+            "positives": 3,
+            "status": "insufficient"
+          },
+          "heart_failure": {
+            "n": 573,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "imaging_mr_ct": {
+            "baseline_pr_auc": 0.0125,
+            "delta_ap": 0.04392707404177679,
+            "model_pr_auc": 0.05642707404177679,
+            "n": 480,
+            "positives": 6,
+            "prevalence": 0.0125
+          },
+          "imaging_us": {
+            "n": 532,
+            "positives": 1,
+            "status": "insufficient"
+          },
+          "infection_control": {
+            "n": 570,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "insulin_delivery": {
+            "n": 568,
+            "positives": 1,
+            "status": "insufficient"
+          },
+          "ivd_immuno": {
+            "n": 555,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "ivd_molecular": {
+            "n": 555,
+            "positives": 1,
+            "status": "insufficient"
+          },
+          "ivd_poct": {
+            "n": 562,
+            "positives": 1,
+            "status": "insufficient"
+          },
+          "medical_ai": {
+            "baseline_pr_auc": 0.16849816849816848,
+            "delta_ap": -0.1007371242148304,
+            "model_pr_auc": 0.06776104428333808,
+            "n": 468,
+            "positives": 14,
+            "prevalence": 0.029914529914529916
+          },
+          "neurostimulation": {
+            "n": 567,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "neurovascular": {
+            "n": 551,
+            "positives": 4,
+            "status": "insufficient"
+          },
+          "ophthalmology": {
+            "n": 564,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "ortho_joint": {
+            "baseline_pr_auc": 0.195375253544959,
+            "delta_ap": 0.27892906948736945,
+            "model_pr_auc": 0.47430432303232845,
+            "n": 465,
+            "positives": 14,
+            "prevalence": 0.030107526881720432
+          },
+          "patient_monitoring": {
+            "baseline_pr_auc": 0.014571948998178506,
+            "delta_ap": -0.00014812136112950756,
+            "model_pr_auc": 0.014423827637048999,
+            "n": 549,
+            "positives": 8,
+            "prevalence": 0.014571948998178506
+          },
+          "peripheral_vascular": {
+            "n": 546,
+            "positives": 2,
+            "status": "insufficient"
+          },
+          "rehab_exo": {
+            "n": 572,
+            "positives": 1,
+            "status": "insufficient"
+          },
+          "respiratory": {
+            "baseline_pr_auc": 0.01263537906137184,
+            "delta_ap": 0.11426537100145322,
+            "model_pr_auc": 0.12690075006282506,
+            "n": 554,
+            "positives": 7,
+            "prevalence": 0.01263537906137184
+          },
+          "spine": {
+            "baseline_pr_auc": 0.26242236024844723,
+            "delta_ap": 0.5480754752493884,
+            "model_pr_auc": 0.8104978354978356,
+            "n": 483,
+            "positives": 8,
+            "prevalence": 0.016563146997929608
+          },
+          "structural_heart": {
+            "n": 565,
+            "positives": 4,
+            "status": "insufficient"
+          },
+          "surgical_energy": {
+            "baseline_pr_auc": 0.009727626459143969,
+            "delta_ap": 0.3626809804949174,
+            "model_pr_auc": 0.3724086069540614,
+            "n": 514,
+            "positives": 5,
+            "prevalence": 0.009727626459143969
+          },
+          "surgical_robotics": {
+            "n": 573,
+            "positives": 0,
+            "status": "insufficient"
+          },
+          "trauma": {
+            "baseline_pr_auc": 0.01417004048582996,
+            "delta_ap": 0.023115183080734812,
+            "model_pr_auc": 0.037285223566564774,
+            "n": 494,
+            "positives": 7,
+            "prevalence": 0.01417004048582996
+          },
+          "urology": {
+            "baseline_pr_auc": 0.012797074954296161,
+            "delta_ap": 0.00522318930057929,
+            "model_pr_auc": 0.01802026425487545,
+            "n": 547,
+            "positives": 7,
+            "prevalence": 0.012797074954296161
+          },
+          "vascular_access": {
+            "baseline_pr_auc": 0.05563872255489022,
+            "delta_ap": -0.008452459962109797,
+            "model_pr_auc": 0.04718626259278042,
+            "n": 501,
+            "positives": 8,
+            "prevalence": 0.015968063872255488
+          },
+          "wearable_remote": {
+            "n": 570,
+            "positives": 2,
+            "status": "insufficient"
+          },
+          "womens_health": {
+            "baseline_pr_auc": 0.17189314750290363,
+            "delta_ap": 0.6864401858304298,
+            "model_pr_auc": 0.8583333333333334,
+            "n": 574,
+            "positives": 5,
+            "prevalence": 0.008710801393728223
+          },
+          "wound_care": {
+            "baseline_pr_auc": 0.21476014760147602,
+            "delta_ap": 0.033432741789328146,
+            "model_pr_auc": 0.24819288939080417,
+            "n": 542,
+            "positives": 10,
+            "prevalence": 0.01845018450184502
+          }
+        },
+        "strata": {
+          "min_positives": 5,
+          "min_rows": 60,
+          "note": "pre-declared strata; no post-hoc subgroup selection; multiplicity not corrected in this descriptive table",
+          "scale_split": "entity n_material >= 20 (high_activity) vs below"
+        }
+      },
+      "holdout_origins": [
+        "2025-04-01",
+        "2025-07-01",
+        "2025-10-01"
+      ],
+      "inference": {
+        "clustered_bootstrap": {
+          "entity": {
+            "ci_high": 0.16972161650100834,
+            "ci_low": 0.042609217917385214,
+            "cluster_method": "cluster",
+            "confidence_level": 0.95,
+            "delta": 0.09732061085035523,
+            "interval": "percentile",
+            "mean_delta": 0.09933125292396049,
+            "metric": "average_precision_delta",
+            "n_clusters": 192,
+            "n_positives": 140,
+            "n_rows": 20671,
+            "p_delta_le_zero": 0.0,
+            "point_delta": 0.09732061085035523,
+            "resamples": 2000,
+            "se_delta": 0.03129962434150082,
+            "seed": 7,
+            "skipped_resamples": 0,
+            "valid_resamples": 2000
+          },
+          "pair": {
+            "ci_high": 0.15831710891720455,
+            "ci_low": 0.04910569974922681,
+            "cluster_method": "cluster",
+            "confidence_level": 0.95,
+            "delta": 0.09732061085035523,
+            "interval": "percentile",
+            "mean_delta": 0.099279945849747,
+            "metric": "average_precision_delta",
+            "n_clusters": 6914,
+            "n_positives": 140,
+            "n_rows": 20671,
+            "p_delta_le_zero": 0.0,
+            "point_delta": 0.09732061085035523,
+            "resamples": 2000,
+            "se_delta": 0.027715363327186656,
+            "seed": 7,
+            "skipped_resamples": 0,
+            "valid_resamples": 2000
+          }
+        },
+        "evalstats_available": true,
+        "evalstats_error": null,
+        "mde": {
+          "design_stage_cycle1_26_positives": {
+            "alpha": 0.05,
+            "approximation": "plug_in_binomial_ap_variance",
+            "assumed_ap": 0.5,
+            "assumed_ap_is_worst_case": true,
+            "base_rate": 0.0012578007837066422,
+            "conservative": true,
+            "exact": false,
+            "limitations": [
+              "AP is not a binomial proportion; Var(AP) ~= m(1-m)/n_positives is a plug-in approximation, not an exact variance. With m = 0.5 it is a conservative upper bound on m(1-m).",
+              "Real skill usually makes the bootstrap SE larger than the no-skill simulation (reported separately as the optimistic lower bound), which is why the analytic bound defaults to the m = 0.5 worst case.",
+              "The paired correlation is assumed (default 0); positively correlated scorers have a smaller SE.",
+              "The authoritative MDE uses mde_from_se(clustered_bootstrap_delta_ap(...)['se_delta']) on the actual holdout, not this design value."
+            ],
+            "mde": 0.3885099675612053,
+            "mde_delta_ap": 0.3885099675612053,
+            "mde_delta_ap_null_simulation": 0.005705953863371634,
+            "model": "plug_in_binomial_ap_variance",
+            "n_positives": 26,
+            "n_rows": 20671,
+            "null_simulation_resamples": 1000,
+            "null_simulation_seed": 7,
+            "power": 0.8,
+            "power_at_observed_delta": null,
+            "scorer_correlation": 0.0,
+            "se": 0.1386750490563073,
+            "se_delta_ap": 0.1386750490563073,
+            "se_delta_ap_null_simulation": 0.002036687596159116,
+            "variance_ap_approximation": 0.009615384615384616,
+            "variance_delta_approximation": 0.019230769230769232,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          },
+          "design_stage_cycle2_46_positives": {
+            "alpha": 0.05,
+            "approximation": "plug_in_binomial_ap_variance",
+            "assumed_ap": 0.5,
+            "assumed_ap_is_worst_case": true,
+            "base_rate": 0.002225339848096367,
+            "conservative": true,
+            "exact": false,
+            "limitations": [
+              "AP is not a binomial proportion; Var(AP) ~= m(1-m)/n_positives is a plug-in approximation, not an exact variance. With m = 0.5 it is a conservative upper bound on m(1-m).",
+              "Real skill usually makes the bootstrap SE larger than the no-skill simulation (reported separately as the optimistic lower bound), which is why the analytic bound defaults to the m = 0.5 worst case.",
+              "The paired correlation is assumed (default 0); positively correlated scorers have a smaller SE.",
+              "The authoritative MDE uses mde_from_se(clustered_bootstrap_delta_ap(...)['se_delta']) on the actual holdout, not this design value."
+            ],
+            "mde": 0.29208545009587406,
+            "mde_delta_ap": 0.29208545009587406,
+            "mde_delta_ap_null_simulation": 0.005089164528709302,
+            "model": "plug_in_binomial_ap_variance",
+            "n_positives": 46,
+            "n_rows": 20671,
+            "null_simulation_resamples": 1000,
+            "null_simulation_seed": 7,
+            "power": 0.8,
+            "power_at_observed_delta": null,
+            "scorer_correlation": 0.0,
+            "se": 0.10425720702853739,
+            "se_delta_ap": 0.10425720702853739,
+            "se_delta_ap_null_simulation": 0.0018165303328110884,
+            "variance_ap_approximation": 0.005434782608695652,
+            "variance_delta_approximation": 0.010869565217391304,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          },
+          "design_stage_pooled": {
+            "alpha": 0.05,
+            "approximation": "plug_in_binomial_ap_variance",
+            "assumed_ap": 0.5,
+            "assumed_ap_is_worst_case": true,
+            "base_rate": 0.006772773450728073,
+            "conservative": true,
+            "exact": false,
+            "limitations": [
+              "AP is not a binomial proportion; Var(AP) ~= m(1-m)/n_positives is a plug-in approximation, not an exact variance. With m = 0.5 it is a conservative upper bound on m(1-m).",
+              "Real skill usually makes the bootstrap SE larger than the no-skill simulation (reported separately as the optimistic lower bound), which is why the analytic bound defaults to the m = 0.5 worst case.",
+              "The paired correlation is assumed (default 0); positively correlated scorers have a smaller SE.",
+              "The authoritative MDE uses mde_from_se(clustered_bootstrap_delta_ap(...)['se_delta']) on the actual holdout, not this design value."
+            ],
+            "mde": 0.16742674021055617,
+            "mde_delta_ap": 0.16742674021055617,
+            "mde_delta_ap_null_simulation": 0.004322938080909238,
+            "model": "plug_in_binomial_ap_variance",
+            "n_positives": 140,
+            "n_rows": 20671,
+            "null_simulation_resamples": 1000,
+            "null_simulation_seed": 7,
+            "power": 0.8,
+            "power_at_observed_delta": null,
+            "scorer_correlation": 0.0,
+            "se": 0.05976143046671968,
+            "se_delta_ap": 0.05976143046671968,
+            "se_delta_ap_null_simulation": 0.001543032870432148,
+            "variance_ap_approximation": 0.0017857142857142857,
+            "variance_delta_approximation": 0.0035714285714285713,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          },
+          "observed_from_entity_cluster_se": {
+            "alpha": 0.05,
+            "approximation": "normal_two_sided",
+            "exact": false,
+            "mde_delta_ap": 0.08768856488853226,
+            "notes": [
+              "MDE assumes the bootstrap distribution of the AP difference is roughly normal and symmetric.",
+              "The SE must come from the same clustered resampling model as the interval that is reported."
+            ],
+            "power": 0.8,
+            "se_delta_ap": 0.03129962434150082,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          }
+        },
+        "pooled": {
+          "baseline_pr_auc": 0.031868463565008075,
+          "entity_clusters": 192,
+          "model_pr_auc": 0.12918907441536331,
+          "pair_clusters": 6914,
+          "positives": 140,
+          "prevalence": 0.006772773450728073,
+          "rows": 20671
+        }
+      },
+      "lead_time": {
+        "censor_date": "2026-10-16",
+        "definition": "Two lead-time views. (1) naive: both scorers select the same k units (10% of rows), so top-k precision is comparable but the false-alarm count is not controlled. (2) matched FAR (cite this one): identical false-positive budget m = floor(far * n_negatives) for both scorers, censored positives counted, positives without observable lead excluded and reported.",
+        "windows": [
+          {
+            "baseline": {
+              "censored_positives": 33,
+              "mean_lead_days": 182.875,
+              "precision": 0.011611030478955007,
+              "selected": 689,
+              "true_positives": 8
+            },
+            "k": 689,
+            "matched_far": {
+              "censor_date_field": "censor_date",
+              "delta": {
+                "detection_probability": 0.41463414634146334,
+                "mean_lead_time_days": 14.660714285714278,
+                "median_lead_time_days": 13.5,
+                "observed_leads": 17
+              },
+              "event_date_field": "event_date",
+              "far_target": 0.1,
+              "matched_false_alarm_rate": 0.09986859395532194,
+              "matched_false_positive_count": 684,
+              "max_detection_probability": 1.0,
+              "metric": "mean_lead_time_days_at_matched_false_alarm_rate",
+              "n_negatives": 6849,
+              "n_positives": 41,
+              "n_units": 6890,
+              "notes": [
+                "False positives are matched by count (floor(far * n_negatives)) for both scorers.",
+                "Mean lead time is conditional on an observed, non-negative lead; censored leads are counted separately.",
+                "Never-detected positives are reported as negatives of the detection metric, not silently dropped."
+              ],
+              "origin_date_field": "origin_date",
+              "pod_curve": [
+                {
+                  "false_positive_budget": 68,
+                  "far_target": 0.01,
+                  "score_a": {
+                    "detection_probability": 0.2682926829268293,
+                    "false_alarm_rate": 0.009928456709008614,
+                    "false_positives": 68,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 349,
+                      "mean_lead_time_days": 164.0,
+                      "median_lead_time_days": 148,
+                      "min_lead_time_days": 2,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 11
+                    },
+                    "precision": 0.13924050632911392,
+                    "score_field": "score_a",
+                    "selected_units": 79,
+                    "threshold": 0.1593869200264871,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 11,
+                    "undetected_positives": 30
+                  },
+                  "score_b": {
+                    "detection_probability": 0.17073170731707318,
+                    "false_alarm_rate": 0.009928456709008614,
+                    "false_positives": 68,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 288,
+                      "mean_lead_time_days": 166.71428571428572,
+                      "median_lead_time_days": 150,
+                      "min_lead_time_days": 65,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 7
+                    },
+                    "precision": 0.09333333333333334,
+                    "score_field": "score_b",
+                    "selected_units": 75,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 7,
+                    "undetected_positives": 34
+                  }
+                },
+                {
+                  "false_positive_budget": 136,
+                  "far_target": 0.02,
+                  "score_a": {
+                    "detection_probability": 0.36585365853658536,
+                    "false_alarm_rate": 0.01985691341801723,
+                    "false_positives": 136,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 349,
+                      "mean_lead_time_days": 172.4,
+                      "median_lead_time_days": 148,
+                      "min_lead_time_days": 2,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 15
+                    },
+                    "precision": 0.09933774834437085,
+                    "score_field": "score_a",
+                    "selected_units": 151,
+                    "threshold": 0.10951419074313391,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 15,
+                    "undetected_positives": 26
+                  },
+                  "score_b": {
+                    "detection_probability": 0.17073170731707318,
+                    "false_alarm_rate": 0.01985691341801723,
+                    "false_positives": 136,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 288,
+                      "mean_lead_time_days": 166.71428571428572,
+                      "median_lead_time_days": 150,
+                      "min_lead_time_days": 65,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 7
+                    },
+                    "precision": 0.04895104895104895,
+                    "score_field": "score_b",
+                    "selected_units": 143,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 7,
+                    "undetected_positives": 34
+                  }
+                },
+                {
+                  "false_positive_budget": 342,
+                  "far_target": 0.05,
+                  "score_a": {
+                    "detection_probability": 0.4634146341463415,
+                    "false_alarm_rate": 0.04993429697766097,
+                    "false_positives": 342,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 349,
+                      "mean_lead_time_days": 175.31578947368422,
+                      "median_lead_time_days": 150,
+                      "min_lead_time_days": 2,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 19
+                    },
+                    "precision": 0.05263157894736842,
+                    "score_field": "score_a",
+                    "selected_units": 361,
+                    "threshold": 0.008945033249395645,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 19,
+                    "undetected_positives": 22
+                  },
+                  "score_b": {
+                    "detection_probability": 0.17073170731707318,
+                    "false_alarm_rate": 0.04993429697766097,
+                    "false_positives": 342,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 288,
+                      "mean_lead_time_days": 166.71428571428572,
+                      "median_lead_time_days": 150,
+                      "min_lead_time_days": 65,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 7
+                    },
+                    "precision": 0.02005730659025788,
+                    "score_field": "score_b",
+                    "selected_units": 349,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 7,
+                    "undetected_positives": 34
+                  }
+                },
+                {
+                  "false_positive_budget": 684,
+                  "far_target": 0.1,
+                  "score_a": {
+                    "detection_probability": 0.5853658536585366,
+                    "false_alarm_rate": 0.09986859395532194,
+                    "false_positives": 684,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 349,
+                      "mean_lead_time_days": 181.375,
+                      "median_lead_time_days": 163.5,
+                      "min_lead_time_days": 2,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 24
+                    },
+                    "precision": 0.03389830508474576,
+                    "score_field": "score_a",
+                    "selected_units": 708,
+                    "threshold": 0.008003325046788329,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 24,
+                    "undetected_positives": 17
+                  },
+                  "score_b": {
+                    "detection_probability": 0.17073170731707318,
+                    "false_alarm_rate": 0.09986859395532194,
+                    "false_positives": 684,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 288,
+                      "mean_lead_time_days": 166.71428571428572,
+                      "median_lead_time_days": 150,
+                      "min_lead_time_days": 65,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 7
+                    },
+                    "precision": 0.010130246020260492,
+                    "score_field": "score_b",
+                    "selected_units": 691,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 7,
+                    "undetected_positives": 34
+                  }
+                },
+                {
+                  "false_positive_budget": 1369,
+                  "far_target": 0.2,
+                  "score_a": {
+                    "detection_probability": 0.6829268292682927,
+                    "false_alarm_rate": 0.19988319462695284,
+                    "false_positives": 1369,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 350,
+                      "mean_lead_time_days": 190.5,
+                      "median_lead_time_days": 183.0,
+                      "min_lead_time_days": 2,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 28
+                    },
+                    "precision": 0.020042949176807445,
+                    "score_field": "score_a",
+                    "selected_units": 1397,
+                    "threshold": 0.00695958138925702,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 28,
+                    "undetected_positives": 13
+                  },
+                  "score_b": {
+                    "detection_probability": 0.17073170731707318,
+                    "false_alarm_rate": 0.19988319462695284,
+                    "false_positives": 1369,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 288,
+                      "mean_lead_time_days": 166.71428571428572,
+                      "median_lead_time_days": 150,
+                      "min_lead_time_days": 65,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 7
+                    },
+                    "precision": 0.005087209302325582,
+                    "score_field": "score_b",
+                    "selected_units": 1376,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 7,
+                    "undetected_positives": 34
+                  }
+                }
+              ],
+              "positives_with_negative_lead": 0,
+              "positives_without_observable_lead": 0,
+              "scorers": {
+                "score_a": {
+                  "detection_probability": 0.5853658536585366,
+                  "false_alarm_rate": 0.09986859395532194,
+                  "false_positives": 684,
+                  "lead_time": {
+                    "censored_detected_positives": 0,
+                    "max_lead_time_days": 349,
+                    "mean_lead_time_days": 181.375,
+                    "median_lead_time_days": 163.5,
+                    "min_lead_time_days": 2,
+                    "negative_lead_positives": 0,
+                    "observed_leads": 24
+                  },
+                  "precision": 0.03389830508474576,
+                  "score_field": "score_a",
+                  "selected_units": 708,
+                  "threshold": 0.008003325046788329,
+                  "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                  "true_positives": 24,
+                  "undetected_positives": 17
+                },
+                "score_b": {
+                  "detection_probability": 0.17073170731707318,
+                  "false_alarm_rate": 0.09986859395532194,
+                  "false_positives": 684,
+                  "lead_time": {
+                    "censored_detected_positives": 0,
+                    "max_lead_time_days": 288,
+                    "mean_lead_time_days": 166.71428571428572,
+                    "median_lead_time_days": 150,
+                    "min_lead_time_days": 65,
+                    "negative_lead_positives": 0,
+                    "observed_leads": 7
+                  },
+                  "precision": 0.010130246020260492,
+                  "score_field": "score_b",
+                  "selected_units": 691,
+                  "threshold": 0.0,
+                  "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                  "true_positives": 7,
+                  "undetected_positives": 34
+                }
+              }
+            },
+            "model": {
+              "censored_positives": 17,
+              "mean_lead_days": 181.375,
+              "precision": 0.03483309143686502,
+              "selected": 689,
+              "true_positives": 24
+            },
+            "origin": "2025-04-01",
+            "positives": 41,
+            "rows": 6890
+          },
+          {
+            "baseline": {
+              "censored_positives": 36,
+              "mean_lead_days": 214.5,
+              "precision": 0.01451378809869376,
+              "selected": 689,
+              "true_positives": 10
+            },
+            "k": 689,
+            "matched_far": {
+              "censor_date_field": "censor_date",
+              "delta": {
+                "detection_probability": 0.4347826086956522,
+                "mean_lead_time_days": -5.659003831417607,
+                "median_lead_time_days": 18,
+                "observed_leads": 20
+              },
+              "event_date_field": "event_date",
+              "far_target": 0.1,
+              "matched_false_alarm_rate": 0.09994155464640561,
+              "matched_false_positive_count": 684,
+              "max_detection_probability": 1.0,
+              "metric": "mean_lead_time_days_at_matched_false_alarm_rate",
+              "n_negatives": 6844,
+              "n_positives": 46,
+              "n_units": 6890,
+              "notes": [
+                "False positives are matched by count (floor(far * n_negatives)) for both scorers.",
+                "Mean lead time is conditional on an observed, non-negative lead; censored leads are counted separately.",
+                "Never-detected positives are reported as negatives of the detection metric, not silently dropped."
+              ],
+              "origin_date_field": "origin_date",
+              "pod_curve": [
+                {
+                  "false_positive_budget": 68,
+                  "far_target": 0.01,
+                  "score_a": {
+                    "detection_probability": 0.34782608695652173,
+                    "false_alarm_rate": 0.009935710111046173,
+                    "false_positives": 68,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 344,
+                      "mean_lead_time_days": 222.375,
+                      "median_lead_time_days": 241.0,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 16
+                    },
+                    "precision": 0.19047619047619047,
+                    "score_field": "score_a",
+                    "selected_units": 84,
+                    "threshold": 0.15153543254358312,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 16,
+                    "undetected_positives": 30
+                  },
+                  "score_b": {
+                    "detection_probability": 0.1956521739130435,
+                    "false_alarm_rate": 0.009935710111046173,
+                    "false_positives": 68,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 215.55555555555554,
+                      "median_lead_time_days": 205,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 9
+                    },
+                    "precision": 0.11688311688311688,
+                    "score_field": "score_b",
+                    "selected_units": 77,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 9,
+                    "undetected_positives": 37
+                  }
+                },
+                {
+                  "false_positive_budget": 136,
+                  "far_target": 0.02,
+                  "score_a": {
+                    "detection_probability": 0.43478260869565216,
+                    "false_alarm_rate": 0.019871420222092345,
+                    "false_positives": 136,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 344,
+                      "mean_lead_time_days": 206.5,
+                      "median_lead_time_days": 222.0,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 20
+                    },
+                    "precision": 0.1282051282051282,
+                    "score_field": "score_a",
+                    "selected_units": 156,
+                    "threshold": 0.10641233190483654,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 20,
+                    "undetected_positives": 26
+                  },
+                  "score_b": {
+                    "detection_probability": 0.1956521739130435,
+                    "false_alarm_rate": 0.019871420222092345,
+                    "false_positives": 136,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 215.55555555555554,
+                      "median_lead_time_days": 205,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 9
+                    },
+                    "precision": 0.06206896551724138,
+                    "score_field": "score_b",
+                    "selected_units": 145,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 9,
+                    "undetected_positives": 37
+                  }
+                },
+                {
+                  "false_positive_budget": 342,
+                  "far_target": 0.05,
+                  "score_a": {
+                    "detection_probability": 0.5,
+                    "false_alarm_rate": 0.049970777323202806,
+                    "false_positives": 342,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 359,
+                      "mean_lead_time_days": 202.82608695652175,
+                      "median_lead_time_days": 220,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 23
+                    },
+                    "precision": 0.06301369863013699,
+                    "score_field": "score_a",
+                    "selected_units": 365,
+                    "threshold": 0.008868130746447222,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 23,
+                    "undetected_positives": 23
+                  },
+                  "score_b": {
+                    "detection_probability": 0.1956521739130435,
+                    "false_alarm_rate": 0.049970777323202806,
+                    "false_positives": 342,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 215.55555555555554,
+                      "median_lead_time_days": 205,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 9
+                    },
+                    "precision": 0.02564102564102564,
+                    "score_field": "score_b",
+                    "selected_units": 351,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 9,
+                    "undetected_positives": 37
+                  }
+                },
+                {
+                  "false_positive_budget": 684,
+                  "far_target": 0.1,
+                  "score_a": {
+                    "detection_probability": 0.6304347826086957,
+                    "false_alarm_rate": 0.09994155464640561,
+                    "false_positives": 684,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 359,
+                      "mean_lead_time_days": 209.89655172413794,
+                      "median_lead_time_days": 223,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 29
+                    },
+                    "precision": 0.04067321178120617,
+                    "score_field": "score_a",
+                    "selected_units": 713,
+                    "threshold": 0.00814823115935727,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 29,
+                    "undetected_positives": 17
+                  },
+                  "score_b": {
+                    "detection_probability": 0.1956521739130435,
+                    "false_alarm_rate": 0.09994155464640561,
+                    "false_positives": 684,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 215.55555555555554,
+                      "median_lead_time_days": 205,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 9
+                    },
+                    "precision": 0.012987012987012988,
+                    "score_field": "score_b",
+                    "selected_units": 693,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 9,
+                    "undetected_positives": 37
+                  }
+                },
+                {
+                  "false_positive_budget": 1368,
+                  "far_target": 0.2,
+                  "score_a": {
+                    "detection_probability": 0.7391304347826086,
+                    "false_alarm_rate": 0.19988310929281122,
+                    "false_positives": 1368,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 359,
+                      "mean_lead_time_days": 217.7058823529412,
+                      "median_lead_time_days": 223.5,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 34
+                    },
+                    "precision": 0.024251069900142655,
+                    "score_field": "score_a",
+                    "selected_units": 1402,
+                    "threshold": 0.0070792368826079624,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 34,
+                    "undetected_positives": 12
+                  },
+                  "score_b": {
+                    "detection_probability": 0.1956521739130435,
+                    "false_alarm_rate": 0.19988310929281122,
+                    "false_positives": 1368,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 336,
+                      "mean_lead_time_days": 215.55555555555554,
+                      "median_lead_time_days": 205,
+                      "min_lead_time_days": 8,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 9
+                    },
+                    "precision": 0.006535947712418301,
+                    "score_field": "score_b",
+                    "selected_units": 1377,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 9,
+                    "undetected_positives": 37
+                  }
+                }
+              ],
+              "positives_with_negative_lead": 0,
+              "positives_without_observable_lead": 0,
+              "scorers": {
+                "score_a": {
+                  "detection_probability": 0.6304347826086957,
+                  "false_alarm_rate": 0.09994155464640561,
+                  "false_positives": 684,
+                  "lead_time": {
+                    "censored_detected_positives": 0,
+                    "max_lead_time_days": 359,
+                    "mean_lead_time_days": 209.89655172413794,
+                    "median_lead_time_days": 223,
+                    "min_lead_time_days": 8,
+                    "negative_lead_positives": 0,
+                    "observed_leads": 29
+                  },
+                  "precision": 0.04067321178120617,
+                  "score_field": "score_a",
+                  "selected_units": 713,
+                  "threshold": 0.00814823115935727,
+                  "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                  "true_positives": 29,
+                  "undetected_positives": 17
+                },
+                "score_b": {
+                  "detection_probability": 0.1956521739130435,
+                  "false_alarm_rate": 0.09994155464640561,
+                  "false_positives": 684,
+                  "lead_time": {
+                    "censored_detected_positives": 0,
+                    "max_lead_time_days": 336,
+                    "mean_lead_time_days": 215.55555555555554,
+                    "median_lead_time_days": 205,
+                    "min_lead_time_days": 8,
+                    "negative_lead_positives": 0,
+                    "observed_leads": 9
+                  },
+                  "precision": 0.012987012987012988,
+                  "score_field": "score_b",
+                  "selected_units": 693,
+                  "threshold": 0.0,
+                  "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                  "true_positives": 9,
+                  "undetected_positives": 37
+                }
+              }
+            },
+            "model": {
+              "censored_positives": 17,
+              "mean_lead_days": 209.89655172413794,
+              "precision": 0.0420899854862119,
+              "selected": 689,
+              "true_positives": 29
+            },
+            "origin": "2025-07-01",
+            "positives": 46,
+            "rows": 6890
+          },
+          {
+            "baseline": {
+              "censored_positives": 40,
+              "mean_lead_days": 220.30769230769232,
+              "precision": 0.01884057971014493,
+              "selected": 690,
+              "true_positives": 13
+            },
+            "k": 690,
+            "matched_far": {
+              "censor_date_field": "censor_date",
+              "delta": {
+                "detection_probability": 0.4150943396226415,
+                "mean_lead_time_days": -31.073529411764696,
+                "median_lead_time_days": -19.5,
+                "observed_leads": 22
+              },
+              "event_date_field": "event_date",
+              "far_target": 0.1,
+              "matched_false_alarm_rate": 0.09988300672711319,
+              "matched_false_positive_count": 683,
+              "max_detection_probability": 1.0,
+              "metric": "mean_lead_time_days_at_matched_false_alarm_rate",
+              "n_negatives": 6838,
+              "n_positives": 53,
+              "n_units": 6891,
+              "notes": [
+                "False positives are matched by count (floor(far * n_negatives)) for both scorers.",
+                "Mean lead time is conditional on an observed, non-negative lead; censored leads are counted separately.",
+                "Never-detected positives are reported as negatives of the detection metric, not silently dropped."
+              ],
+              "origin_date_field": "origin_date",
+              "pod_curve": [
+                {
+                  "false_positive_budget": 68,
+                  "far_target": 0.01,
+                  "score_a": {
+                    "detection_probability": 0.3584905660377358,
+                    "false_alarm_rate": 0.009944428195378765,
+                    "false_positives": 68,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 351,
+                      "mean_lead_time_days": 200.21052631578948,
+                      "median_lead_time_days": 217,
+                      "min_lead_time_days": 6,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 19
+                    },
+                    "precision": 0.21839080459770116,
+                    "score_field": "score_a",
+                    "selected_units": 87,
+                    "threshold": 0.1474666364544683,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 19,
+                    "undetected_positives": 34
+                  },
+                  "score_b": {
+                    "detection_probability": 0.22641509433962265,
+                    "false_alarm_rate": 0.009944428195378765,
+                    "false_positives": 68,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 351,
+                      "mean_lead_time_days": 229.25,
+                      "median_lead_time_days": 241.0,
+                      "min_lead_time_days": 64,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 12
+                    },
+                    "precision": 0.15,
+                    "score_field": "score_b",
+                    "selected_units": 80,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 12,
+                    "undetected_positives": 41
+                  }
+                },
+                {
+                  "false_positive_budget": 136,
+                  "far_target": 0.02,
+                  "score_a": {
+                    "detection_probability": 0.4716981132075472,
+                    "false_alarm_rate": 0.01988885639075753,
+                    "false_positives": 136,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 351,
+                      "mean_lead_time_days": 216.92,
+                      "median_lead_time_days": 230,
+                      "min_lead_time_days": 6,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 25
+                    },
+                    "precision": 0.15527950310559005,
+                    "score_field": "score_a",
+                    "selected_units": 161,
+                    "threshold": 0.1001948773626442,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 25,
+                    "undetected_positives": 28
+                  },
+                  "score_b": {
+                    "detection_probability": 0.22641509433962265,
+                    "false_alarm_rate": 0.01988885639075753,
+                    "false_positives": 136,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 351,
+                      "mean_lead_time_days": 229.25,
+                      "median_lead_time_days": 241.0,
+                      "min_lead_time_days": 64,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 12
+                    },
+                    "precision": 0.08108108108108109,
+                    "score_field": "score_b",
+                    "selected_units": 148,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 12,
+                    "undetected_positives": 41
+                  }
+                },
+                {
+                  "false_positive_budget": 341,
+                  "far_target": 0.05,
+                  "score_a": {
+                    "detection_probability": 0.5471698113207547,
+                    "false_alarm_rate": 0.04986838256800234,
+                    "false_positives": 341,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 351,
+                      "mean_lead_time_days": 206.31034482758622,
+                      "median_lead_time_days": 230,
+                      "min_lead_time_days": 6,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 29
+                    },
+                    "precision": 0.07837837837837838,
+                    "score_field": "score_a",
+                    "selected_units": 370,
+                    "threshold": 0.009076127331925313,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 29,
+                    "undetected_positives": 24
+                  },
+                  "score_b": {
+                    "detection_probability": 0.22641509433962265,
+                    "false_alarm_rate": 0.04986838256800234,
+                    "false_positives": 341,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 351,
+                      "mean_lead_time_days": 229.25,
+                      "median_lead_time_days": 241.0,
+                      "min_lead_time_days": 64,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 12
+                    },
+                    "precision": 0.0339943342776204,
+                    "score_field": "score_b",
+                    "selected_units": 353,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 12,
+                    "undetected_positives": 41
+                  }
+                },
+                {
+                  "false_positive_budget": 683,
+                  "far_target": 0.1,
+                  "score_a": {
+                    "detection_probability": 0.6415094339622641,
+                    "false_alarm_rate": 0.09988300672711319,
+                    "false_positives": 683,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 351,
+                      "mean_lead_time_days": 198.1764705882353,
+                      "median_lead_time_days": 221.5,
+                      "min_lead_time_days": 6,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 34
+                    },
+                    "precision": 0.04741980474198047,
+                    "score_field": "score_a",
+                    "selected_units": 717,
+                    "threshold": 0.008110219364492475,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 34,
+                    "undetected_positives": 19
+                  },
+                  "score_b": {
+                    "detection_probability": 0.22641509433962265,
+                    "false_alarm_rate": 0.09988300672711319,
+                    "false_positives": 683,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 351,
+                      "mean_lead_time_days": 229.25,
+                      "median_lead_time_days": 241.0,
+                      "min_lead_time_days": 64,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 12
+                    },
+                    "precision": 0.017266187050359712,
+                    "score_field": "score_b",
+                    "selected_units": 695,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 12,
+                    "undetected_positives": 41
+                  }
+                },
+                {
+                  "false_positive_budget": 1367,
+                  "far_target": 0.2,
+                  "score_a": {
+                    "detection_probability": 0.7735849056603774,
+                    "false_alarm_rate": 0.19991225504533489,
+                    "false_positives": 1367,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 351,
+                      "mean_lead_time_days": 199.5121951219512,
+                      "median_lead_time_days": 219,
+                      "min_lead_time_days": 6,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 41
+                    },
+                    "precision": 0.02911931818181818,
+                    "score_field": "score_a",
+                    "selected_units": 1408,
+                    "threshold": 0.007016279135390148,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 41,
+                    "undetected_positives": 12
+                  },
+                  "score_b": {
+                    "detection_probability": 0.22641509433962265,
+                    "false_alarm_rate": 0.19991225504533489,
+                    "false_positives": 1367,
+                    "lead_time": {
+                      "censored_detected_positives": 0,
+                      "max_lead_time_days": 351,
+                      "mean_lead_time_days": 229.25,
+                      "median_lead_time_days": 241.0,
+                      "min_lead_time_days": 64,
+                      "negative_lead_positives": 0,
+                      "observed_leads": 12
+                    },
+                    "precision": 0.00870195794053662,
+                    "score_field": "score_b",
+                    "selected_units": 1379,
+                    "threshold": 0.0,
+                    "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                    "true_positives": 12,
+                    "undetected_positives": 41
+                  }
+                }
+              ],
+              "positives_with_negative_lead": 0,
+              "positives_without_observable_lead": 0,
+              "scorers": {
+                "score_a": {
+                  "detection_probability": 0.6415094339622641,
+                  "false_alarm_rate": 0.09988300672711319,
+                  "false_positives": 683,
+                  "lead_time": {
+                    "censored_detected_positives": 0,
+                    "max_lead_time_days": 351,
+                    "mean_lead_time_days": 198.1764705882353,
+                    "median_lead_time_days": 221.5,
+                    "min_lead_time_days": 6,
+                    "negative_lead_positives": 0,
+                    "observed_leads": 34
+                  },
+                  "precision": 0.04741980474198047,
+                  "score_field": "score_a",
+                  "selected_units": 717,
+                  "threshold": 0.008110219364492475,
+                  "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                  "true_positives": 34,
+                  "undetected_positives": 19
+                },
+                "score_b": {
+                  "detection_probability": 0.22641509433962265,
+                  "false_alarm_rate": 0.09988300672711319,
+                  "false_positives": 683,
+                  "lead_time": {
+                    "censored_detected_positives": 0,
+                    "max_lead_time_days": 351,
+                    "mean_lead_time_days": 229.25,
+                    "median_lead_time_days": 241.0,
+                    "min_lead_time_days": 64,
+                    "negative_lead_positives": 0,
+                    "observed_leads": 12
+                  },
+                  "precision": 0.017266187050359712,
+                  "score_field": "score_b",
+                  "selected_units": 695,
+                  "threshold": 0.0,
+                  "threshold_rule": "threshold = m-th highest negative score (or the highest negative score when m = 0); a positive is detected iff its score is strictly greater",
+                  "true_positives": 12,
+                  "undetected_positives": 41
+                }
+              }
+            },
+            "model": {
+              "censored_positives": 20,
+              "mean_lead_days": 200.75757575757575,
+              "precision": 0.04782608695652174,
+              "selected": 690,
+              "true_positives": 33
+            },
+            "origin": "2025-10-01",
+            "positives": 53,
+            "rows": 6891
+          }
+        ]
+      },
+      "per_window_inference": [
+        {
+          "baseline_pr_auc": 0.02508705394033863,
+          "ci_entity": {
+            "ci_high": 0.1611610263738822,
+            "ci_low": 0.001482252512136989,
+            "delta": 0.05816534587660598,
+            "n_clusters": 192,
+            "p_delta_le_zero": 0.0225,
+            "se_delta": 0.040028244445745036
+          },
+          "ci_pair": {
+            "ci_high": 0.1396940288877547,
+            "ci_low": 0.00941732313652592,
+            "delta": 0.05816534587660598,
+            "n_clusters": 6890,
+            "p_delta_le_zero": 0.012,
+            "se_delta": 0.033281690268119196
+          },
+          "delta_ap": 0.05816534587660598,
+          "excludes_zero_entity": true,
+          "excludes_zero_pair": true,
+          "model_pr_auc": 0.08325239981694461,
+          "origin": "2025-04-01",
+          "positives": 41,
+          "rows": 6890
+        },
+        {
+          "baseline_pr_auc": 0.03099681366612002,
+          "ci_entity": {
+            "ci_high": 0.20942431494775995,
+            "ci_low": 0.03864479965386208,
+            "delta": 0.1189314470628156,
+            "n_clusters": 192,
+            "p_delta_le_zero": 0.0005,
+            "se_delta": 0.04351978694785093
+          },
+          "ci_pair": {
+            "ci_high": 0.20598216754221688,
+            "ci_low": 0.04208233567525347,
+            "delta": 0.1189314470628156,
+            "n_clusters": 6890,
+            "p_delta_le_zero": 0.0005,
+            "se_delta": 0.042161718752913864
+          },
+          "delta_ap": 0.1189314470628156,
+          "excludes_zero_entity": true,
+          "excludes_zero_pair": true,
+          "model_pr_auc": 0.14992826072893561,
+          "origin": "2025-07-01",
+          "positives": 46,
+          "rows": 6890
+        },
+        {
+          "baseline_pr_auc": 0.04294671202440673,
+          "ci_entity": {
+            "ci_high": 0.2342514996550591,
+            "ci_low": 0.06972037842851288,
+            "delta": 0.1492651130381278,
+            "n_clusters": 192,
+            "p_delta_le_zero": 0.0,
+            "se_delta": 0.04166026544147954
+          },
+          "ci_pair": {
+            "ci_high": 0.23754362981404087,
+            "ci_low": 0.07018055354466257,
+            "delta": 0.1492651130381278,
+            "n_clusters": 6891,
+            "p_delta_le_zero": 0.0,
+            "se_delta": 0.04256035973510142
+          },
+          "delta_ap": 0.1492651130381278,
+          "excludes_zero_entity": true,
+          "excludes_zero_pair": true,
+          "model_pr_auc": 0.19221182506253454,
+          "origin": "2025-10-01",
+          "positives": 53,
+          "rows": 6891
+        }
+      ],
+      "prediction_rows": 20671,
+      "windows": [
+        {
+          "baseline_brier": 0.007435384668191602,
+          "baseline_pr_auc": 0.02508705394033863,
+          "baseline_precision_at_k": 0.011611030478955007,
+          "delta_ap": 0.05816534587660598,
+          "lead_time_days": 189.1951219512195,
+          "model_brier": 0.005851140468976348,
+          "model_pr_auc": 0.08325239981694461,
+          "origin": "2025-04-01",
+          "positives": 41,
+          "precision_at_k": 0.03483309143686502,
+          "prevalence": 0.0059506531204644416,
+          "rows": 6890,
+          "training_rows": 120273
+        },
+        {
+          "baseline_brier": 0.008138555174114638,
+          "baseline_pr_auc": 0.03099681366612002,
+          "baseline_precision_at_k": 0.01451378809869376,
+          "delta_ap": 0.1189314470628156,
+          "lead_time_days": 213.2391304347826,
+          "model_brier": 0.006262692449848455,
+          "model_pr_auc": 0.14992826072893561,
+          "origin": "2025-07-01",
+          "positives": 46,
+          "precision_at_k": 0.0420899854862119,
+          "prevalence": 0.006676342525399129,
+          "rows": 6890,
+          "training_rows": 127172
+        },
+        {
+          "baseline_brier": 0.009059301673616751,
+          "baseline_pr_auc": 0.04294671202440673,
+          "baseline_precision_at_k": 0.01884057971014493,
+          "delta_ap": 0.1492651130381278,
+          "lead_time_days": 196.9056603773585,
+          "model_brier": 0.006978649477867219,
+          "model_pr_auc": 0.19221182506253454,
+          "origin": "2025-10-01",
+          "positives": 53,
+          "precision_at_k": 0.04782608695652174,
+          "prevalence": 0.007691191409084313,
+          "rows": 6891,
+          "training_rows": 134069
+        }
+      ]
+    }
+  }
+}
