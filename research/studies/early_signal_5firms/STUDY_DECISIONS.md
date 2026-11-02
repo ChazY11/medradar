@@ -344,3 +344,35 @@ summary is in `PHASE0_REPORT.md`, `PHASE1_SHRINKAGE.md` and `PAPER_NEGATIVE_v1.m
 
 Nothing else in the study is blocked: the branch is complete, verified by the round-end gate (12 steps, 0 failures),
 and `main` remains untouched at `ae18f27`.
+
+---
+
+## S-024 — Nine-event description: a median lead of 3.3 quarters, on a truncated sample
+
+**Date:** 2026-11-03 · **Status:** accepted · **Evidence:** `LEAD_TIME_SMALL_SAMPLE.{json,md}`,
+`LEAD_TIME_SMALL_SAMPLE_PROTOCOL.md`, `medradar/studies/leadtimedesc.py` (7 tests)
+
+Protocol frozen first (independence = distinct later clearance; conservative representative = latest paired trial;
+no confidence interval at n = 9). Result: **17 pairs collapse to 9 events**; representative leads have median **3.3
+quarters**, IQR **[2.26, 9.31]**, range **[2.09, 19.67]**. Per event, the leads run from 2.09 quarters (Philips,
+wearable_remote) to 19.67 quarters (Philips, vascular_access), with one event whose six candidate trials span 12.2–23.7
+quarters (`philips|respiratory`).
+
+**The description is conditional and I have to say how.** Every event entered only because its lead was already ≥ 2
+quarters — that is the G1 eligibility rule — so the shares `share ≥ 1q = 1.0` and `share ≥ 2q = 1.0` are **tautologies,
+not findings**, and the median is the median of a **truncated** distribution. The artifact carries this as a
+`conditioning` block and the markdown states it under the distribution. The study therefore cannot say how often leads
+are shorter than two quarters, because such pairs were excluded by design.
+
+Per the frozen wording, every mention carries: **"descriptive only; n = 9 independent events, below the floor of 10,
+therefore underpowered and not a lead-time estimate."**
+
+## S-025 — Nine evidence packets handed to human review; nothing labelled
+
+**Date:** 2026-11-03 · **Status:** accepted (human review pending) · **Evidence:** `CASE_PACKETS_SMALL_SAMPLE.json`
+
+Each of the nine events has a packet with firm, track, clearance id/date, the representative trial id/date, candidate
+trial count and lead range, and four review questions: is the trial device-relevant rather than a drug trial matched by
+keyword accident; does the clearance belong to the same firm-track; could the lead be an artefact of the post-hoc
+crosswalk; and does a third source place the programme before the clearance. All nine are
+`PENDING_HUMAN_REVIEW` with `final_label = null`. **No label was produced by the agent**, consistent with S-019.

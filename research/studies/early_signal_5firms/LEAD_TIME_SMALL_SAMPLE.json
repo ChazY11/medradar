@@ -1,0 +1,278 @@
+{
+  "schema": "lead_time_small_sample_v1",
+  "protocol": "LEAD_TIME_SMALL_SAMPLE_PROTOCOL.md (frozen before this run)",
+  "source": "research/studies/early_signal_5firms/LEAD_LAG_PROBE_CROSSWALK.json",
+  "independence": {
+    "unit": "distinct later clearance",
+    "pairs_in_source": 17,
+    "distinct_events": 9,
+    "independence_floor": 10
+  },
+  "representative_rule": "latest paired trial per event (minimum lead); maximum reported only as upper bound",
+  "summary": {
+    "n": 9,
+    "median": 3.3,
+    "iqr": [
+      2.26,
+      9.31
+    ],
+    "range": [
+      2.09,
+      19.67
+    ],
+    "share_ge_1q": 1.0,
+    "share_ge_2q": 1.0
+  },
+  "underpowered_statement": "descriptive only; n = 9 independent event(s), below the floor of 10, therefore underpowered and not a lead-time estimate.",
+  "conditioning": {
+    "note": "every event entered this description only because its lead was already >= 2 quarters, which is the G1 eligibility rule. The share 'lead >= 2 quarters = 1.0' is therefore a tautology, not a finding, and the median is a median of a truncated distribution.",
+    "truncation_point_quarters": 2.0,
+    "implication": "the distribution says nothing about how often leads are shorter than two quarters"
+  },
+  "events": [
+    {
+      "later_id": "510k:2019-03-06",
+      "company": "medtronic",
+      "track": "imaging_mr_ct",
+      "later_date": "2019-03-06",
+      "representative_trial": "6cd572d81d0ef8cd8f3d1498fbce116c",
+      "representative_trial_date": "2018-07-13",
+      "lead_quarters": 2.26,
+      "lead_days": 206,
+      "candidate_trials": 1,
+      "upper_bound_lead_quarters": 2.26
+    },
+    {
+      "later_id": "510k:2019-09-06",
+      "company": "philips",
+      "track": "imaging_us",
+      "later_date": "2019-09-06",
+      "representative_trial": "5130282779bb5c6f7fc8dec3183b3fe9",
+      "representative_trial_date": "2019-01-23",
+      "lead_quarters": 2.15,
+      "lead_days": 196,
+      "candidate_trials": 1,
+      "upper_bound_lead_quarters": 2.15
+    },
+    {
+      "later_id": "510k:2020-11-20",
+      "company": "medtronic",
+      "track": "respiratory",
+      "later_date": "2020-11-20",
+      "representative_trial": "a1a4e56656b1737ad0a26f00e3b1cbb8",
+      "representative_trial_date": "2018-06-27",
+      "lead_quarters": 9.31,
+      "lead_days": 847,
+      "candidate_trials": 1,
+      "upper_bound_lead_quarters": 9.31
+    },
+    {
+      "later_id": "510k:2021-07-15",
+      "company": "medtronic",
+      "track": "vascular_access",
+      "later_date": "2021-07-15",
+      "representative_trial": "8172ead9237536e78af31a89449ed19a",
+      "representative_trial_date": "2020-07-23",
+      "lead_quarters": 3.59,
+      "lead_days": 327,
+      "candidate_trials": 2,
+      "upper_bound_lead_quarters": 6.82
+    },
+    {
+      "later_id": "510k:2022-01-14",
+      "company": "medtronic",
+      "track": "respiratory",
+      "later_date": "2022-01-14",
+      "representative_trial": "4dd4990d474768df01e19bf9dd5486d0",
+      "representative_trial_date": "2021-03-23",
+      "lead_quarters": 2.93,
+      "lead_days": 267,
+      "candidate_trials": 3,
+      "upper_bound_lead_quarters": 4.56
+    },
+    {
+      "later_id": "510k:2022-04-01",
+      "company": "ge_healthcare",
+      "track": "patient_monitoring",
+      "later_date": "2022-04-01",
+      "representative_trial": "99729fd0628c1960e22810ff72769cef",
+      "representative_trial_date": "2021-05-06",
+      "lead_quarters": 3.3,
+      "lead_days": 300,
+      "candidate_trials": 1,
+      "upper_bound_lead_quarters": 3.3
+    },
+    {
+      "later_id": "510k:2024-07-31",
+      "company": "philips",
+      "track": "respiratory",
+      "later_date": "2024-07-31",
+      "representative_trial": "5510904212a842c43191330a82c6c0d9",
+      "representative_trial_date": "2021-06-14",
+      "lead_quarters": 12.23,
+      "lead_days": 1113,
+      "candidate_trials": 6,
+      "upper_bound_lead_quarters": 23.73
+    },
+    {
+      "later_id": "510k:2025-06-24",
+      "company": "philips",
+      "track": "vascular_access",
+      "later_date": "2025-06-24",
+      "representative_trial": "b733adae536daa01777d4e98bf6d22d8",
+      "representative_trial_date": "2020-06-30",
+      "lead_quarters": 19.67,
+      "lead_days": 1790,
+      "candidate_trials": 1,
+      "upper_bound_lead_quarters": 19.67
+    },
+    {
+      "later_id": "pma:2023-04-03",
+      "company": "philips",
+      "track": "wearable_remote",
+      "later_date": "2023-04-03",
+      "representative_trial": "4a0887acb4649c1d6d01bda094a9424c",
+      "representative_trial_date": "2022-08-26",
+      "lead_quarters": 2.09,
+      "lead_days": 190,
+      "candidate_trials": 1,
+      "upper_bound_lead_quarters": 2.09
+    }
+  ],
+  "by_firm": {
+    "ge_healthcare": {
+      "n": 1,
+      "median": 3.3,
+      "iqr": [
+        3.3,
+        3.3
+      ],
+      "range": [
+        3.3,
+        3.3
+      ],
+      "share_ge_1q": 1.0,
+      "share_ge_2q": 1.0
+    },
+    "medtronic": {
+      "n": 4,
+      "median": 3.59,
+      "iqr": [
+        2.93,
+        3.59
+      ],
+      "range": [
+        2.26,
+        9.31
+      ],
+      "share_ge_1q": 1.0,
+      "share_ge_2q": 1.0
+    },
+    "philips": {
+      "n": 4,
+      "median": 12.23,
+      "iqr": [
+        2.15,
+        12.23
+      ],
+      "range": [
+        2.09,
+        19.67
+      ],
+      "share_ge_1q": 1.0,
+      "share_ge_2q": 1.0
+    }
+  },
+  "by_track": {
+    "imaging_mr_ct": {
+      "n": 1,
+      "median": 2.26,
+      "iqr": [
+        2.26,
+        2.26
+      ],
+      "range": [
+        2.26,
+        2.26
+      ],
+      "share_ge_1q": 1.0,
+      "share_ge_2q": 1.0
+    },
+    "imaging_us": {
+      "n": 1,
+      "median": 2.15,
+      "iqr": [
+        2.15,
+        2.15
+      ],
+      "range": [
+        2.15,
+        2.15
+      ],
+      "share_ge_1q": 1.0,
+      "share_ge_2q": 1.0
+    },
+    "patient_monitoring": {
+      "n": 1,
+      "median": 3.3,
+      "iqr": [
+        3.3,
+        3.3
+      ],
+      "range": [
+        3.3,
+        3.3
+      ],
+      "share_ge_1q": 1.0,
+      "share_ge_2q": 1.0
+    },
+    "respiratory": {
+      "n": 3,
+      "median": 9.31,
+      "iqr": [
+        2.93,
+        12.23
+      ],
+      "range": [
+        2.93,
+        12.23
+      ],
+      "share_ge_1q": 1.0,
+      "share_ge_2q": 1.0
+    },
+    "vascular_access": {
+      "n": 2,
+      "median": 3.59,
+      "iqr": [
+        3.59,
+        19.67
+      ],
+      "range": [
+        3.59,
+        19.67
+      ],
+      "share_ge_1q": 1.0,
+      "share_ge_2q": 1.0
+    },
+    "wearable_remote": {
+      "n": 1,
+      "median": 2.09,
+      "iqr": [
+        2.09,
+        2.09
+      ],
+      "range": [
+        2.09,
+        2.09
+      ],
+      "share_ge_1q": 1.0,
+      "share_ge_2q": 1.0
+    }
+  },
+  "not_claimed": [
+    "not a lead-time estimate: nine events, below the independence floor of ten",
+    "no confidence interval is computed, by protocol",
+    "the crosswalk is a post-hoc text heuristic; a reviewer must confirm each packet",
+    "a trial preceding a clearance is compatible with an earlier signal and with the same R&D programme being filed in that order"
+  ]
+}
