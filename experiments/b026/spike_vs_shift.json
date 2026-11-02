@@ -1,0 +1,149 @@
+{
+  "always_level_baseline": {
+    "confusion": {
+      "level": {
+        "level": 57,
+        "ramp": 0,
+        "spike": 0
+      },
+      "ramp": {
+        "level": 53,
+        "ramp": 0,
+        "spike": 0
+      },
+      "spike": {
+        "level": 41,
+        "ramp": 0,
+        "spike": 0
+      }
+    },
+    "metrics": {
+      "balanced_accuracy": 0.3333333333333333,
+      "recalls": {
+        "level": 1.0,
+        "ramp": 0.0,
+        "spike": 0.0
+      },
+      "sustained_base_rate": 0.7284768211920529,
+      "sustained_precision": 0.7284768211920529,
+      "sustained_recall": 1.0
+    }
+  },
+  "bootstrap": {
+    "balanced_accuracy_ci": [
+      0.36109960892569587,
+      0.43800730445220265
+    ],
+    "companies": 31,
+    "reps": 2000,
+    "sustained_precision_ci": [
+      0.7265625,
+      0.8108108108108109
+    ]
+  },
+  "confusion": {
+    "level": {
+      "level": 49,
+      "ramp": 8,
+      "spike": 0
+    },
+    "ramp": {
+      "level": 45,
+      "ramp": 8,
+      "spike": 0
+    },
+    "spike": {
+      "level": 34,
+      "ramp": 0,
+      "spike": 7
+    }
+  },
+  "counts": {
+    "alerts": 151,
+    "alerts_by_truth": {
+      "level": 57,
+      "ramp": 53,
+      "spike": 41
+    },
+    "cells": 329,
+    "eligible": 65,
+    "injections": 171
+  },
+  "design": {
+    "baseline_months": 18,
+    "bootstraps": 2000,
+    "chance_balanced_accuracy": 0.3333333333333333,
+    "confirmation_months": 2,
+    "decision": "research/DECISIONS.md D-040 (pre-registered)",
+    "effect_multiplier": 3.0,
+    "ratio_alert": 2.0,
+    "recent_months": 3,
+    "seed": 7,
+    "shapes": [
+      "spike",
+      "level",
+      "ramp"
+    ],
+    "spike_fallback": 1.5
+  },
+  "metrics": {
+    "balanced_accuracy": 0.39377474211683533,
+    "recalls": {
+      "level": 0.8596491228070176,
+      "ramp": 0.1509433962264151,
+      "spike": 0.17073170731707318
+    },
+    "sustained_base_rate": 0.7284768211920529,
+    "sustained_precision": 0.7638888888888888,
+    "sustained_recall": 1.0
+  },
+  "posthoc_variant": {
+    "bootstrap": {
+      "balanced_accuracy_ci": [
+        0.5523432857991682,
+        0.659109477124183
+      ],
+      "companies": 31,
+      "reps": 2000,
+      "sustained_precision_ci": [
+        0.9032258064516129,
+        0.9782608695652174
+      ]
+    },
+    "confusion": {
+      "level": {
+        "level": 47,
+        "ramp": 10,
+        "spike": 0
+      },
+      "ramp": {
+        "level": 43,
+        "ramp": 9,
+        "spike": 1
+      },
+      "spike": {
+        "level": 2,
+        "ramp": 5,
+        "spike": 34
+      }
+    },
+    "description": "confirmation window excludes the alert month, so a spike's own pulse cannot inflate the post-alert rate",
+    "metrics": {
+      "balanced_accuracy": 0.6078803389821386,
+      "recalls": {
+        "level": 0.8245614035087719,
+        "ramp": 0.16981132075471697,
+        "spike": 0.8292682926829268
+      },
+      "sustained_base_rate": 0.7284768211920529,
+      "sustained_precision": 0.9396551724137931,
+      "sustained_recall": 0.990909090909091
+    }
+  },
+  "prediction_distribution": {
+    "level": 128,
+    "no_alert": 0,
+    "ramp": 16,
+    "spike": 7
+  }
+}

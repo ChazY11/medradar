@@ -1453,3 +1453,100 @@ readable submission. That gap is now closed with generated, verified, dependency
 
 **Not claimed.** The figures do not add evidence; they re-present committed numbers. Their value is that
 a reader can see the frontier's shape and the calibration gap without reading seventeen result files.
+
+---
+
+## D-040 — Pre-registration: spike / level-shift / ramp classification of alerts (B-026)
+
+**Date:** 2026-11-03. **Status:** accepted; written before `experiments/b026/spike_vs_shift.py` was first
+run.
+
+An alert that cannot be classified is half useless: a one-month burst and a genuine level shift demand
+different responses. B-026 asks whether the **shape** of a detected change can be recovered from a short
+confirmation window, with measured accuracy against **known injected shapes**.
+
+**Design.**
+
+* **Base series.** Real (company, track) monthly cell series from the lane, using only cells with a
+  measurable baseline (≥24 months of history and a baseline rate that admits an increase). Each cell is
+  used once, at a recorded injection month.
+* **Injected shapes.** At the injection month *t*, three shapes are added to the observed counts:
+  1. **spike** — a single-month pulse;
+  2. **level shift** — a step that persists for twelve months;
+  3. **ramp** — a linear increase across twelve months.
+  Panel counts are conditioned on the cell's own baseline rate so the three shapes have comparable
+  magnitude, and injections are applied on a common random number scheme across shapes.
+* **Detector.** A fixed, deliberately simple rule: alert when the three-month rate exceeds twice the
+  eighteen-month baseline rate. The detector is not tuned here; its behaviour is already characterised in
+  cycle 3.
+* **Confirmation window.** Two months. The classifier may look at the alert month and the two months
+  after it — **never later** — because in use that is all the time a decision-maker has.
+* **Classifier.** Transparent rules, not a fitted model: if the post-alert rate has fallen back toward
+  baseline it is a **spike**; if it is elevated and still rising across the confirmation window it is a
+  **ramp**; otherwise it is a **level shift**. Thresholds are fixed here: "fallen back" means below 1.5×
+  baseline in the confirmation window; "still rising" means the last confirmation month exceeds the
+  first.
+* **Estimands.** (a) a 3×3 confusion matrix over the three true shapes; (b) balanced accuracy
+  (mean per-class recall), since classes are equally frequent by construction; (c) for the binary
+  decision that actually matters — promote to "technology change" only if sustained — precision and
+  recall of the *sustained* class (level + ramp). Inference by company-clustered bootstrap over cells.
+* **What counts as success.** Balanced accuracy meaningfully above the 1/3 chance line, and binary
+  precision above the base rate of sustained alerts. The pre-declared failure mode: the confirmation
+  window is too short at this data's counting rates, in which case the honest output is "shape cannot be
+  recovered at this resolution", not a tuned classifier.
+
+**Not claimed even on success.** Shape recovery says nothing about whether the change is technological;
+it is a property of the time series. Promotion to "technology change" remains a human judgement supported
+by the profile's other evidence fields.
+
+---
+
+## D-041 — B-026 outcome: the pre-registered shape classifier failed; the failure was the rule's window, and the corrected version works moderately well (post-hoc)
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-026; opens B-054 for confirmation.
+
+**What ran.** 171 injections of three known shapes (spike, level, ramp) into real (company, track) series
+from 65 cells with a measurable baseline; a fixed detector produced **151 alerts** (88 %); a
+pre-registered rule classified each alert from the alert month plus two confirmation months. Company-
+clustered bootstrap, 2000 replications.
+
+**Pre-registered result: failure by its own criterion.**
+
+| truth \ predicted | spike | level | ramp | recall |
+|---|---:|---:|---:|---:|
+| spike (41) | 7 | 34 | 0 | **0.171** |
+| level (57) | 0 | 49 | 8 | 0.860 |
+| ramp (53) | 0 | 45 | 8 | 0.151 |
+
+Balanced accuracy **0.394** (95 % CI 0.361–0.438) against a 0.333 chance line; sustained-change precision
+**0.764** against a **0.728** base rate — the rule is barely better than always saying "level", and its
+own reference implementation scores 0.333 / 0.728. Ramp and level were essentially never separated.
+
+**Diagnosis, and the declared post-hoc variant.** The pre-registered window began at the alert month,
+which for a spike *is* the pulse: the burst inflated the "post-alert" rate and the rule almost never
+called a spike. Re-running the same rule with the alert month excluded:
+
+| truth \ predicted | spike | level | ramp | recall |
+|---|---:|---:|---:|---:|
+| spike (41) | 34 | 2 | 5 | **0.829** |
+| level (57) | 0 | 47 | 10 | 0.825 |
+| ramp (53) | 1 | 43 | 9 | 0.170 |
+
+Balanced accuracy **0.608** (95 % CI 0.552–0.659); sustained-change precision **0.940** (95 % CI
+0.903–0.978) against the 0.728 base rate, with recall 0.991.
+
+**What this licenses, and how narrowly.** The binary decision that matters — *promote an alert to
+"technology change" or treat it as a transient spike* — becomes meaningfully better than a blanket
+promotion: precision 0.94 instead of 0.73, driven by detecting 83 % of spikes. The three-way distinction
+does **not** work: ramp recall stays at 0.17, so "ramp versus level shift" is not recoverable from a
+two-month window at this counting rate.
+
+**Why the good result must be labelled.** The improvement was found by changing the rule after seeing its
+failure. It is a post-hoc result and cannot be treated as confirmed. **B-054** will re-pre-register the
+corrected window against fresh injections (different origins and cells) before this is used to justify
+promotion logic. Until that runs, the pre-registered 0.394 stands as the reported classification accuracy
+and 0.608 is a hypothesis.
+
+**Never claimed.** Shape recovery says nothing about whether a change is technological. It classifies the
+time series, not the technology, and promotion of an alert to "technology change" remains a human
+judgement supported by the profile's other evidence fields.

@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T05:40:00+08:00",
+  "updated_at": "2026-11-03T06:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "publish_draft_v1_figures",
-  "cycle": 20,
+  "phase": "detection_shape_classification",
+  "cycle": 21,
   "last_completed_cycle": {
-    "cycle": 18,
-    "name": "paper_figures",
+    "cycle": 19,
+    "name": "spike_vs_sustained_classification",
     "branch": "research/change-detection-v1",
-    "report": "papers/figures/figures_data.json",
-    "summary": "research/RESULTS/cycle18_figures_2026-11-03.md",
-    "verdict": "four SVG figures generated from the artifacts with zero dependencies, 131 plotted points re-derived and verified, paper links checked; headless rendering caught three layout defects that structural checks missed"
+    "report": "experiments/b026/spike_vs_shift.json",
+    "summary": "research/RESULTS/cycle19_spike_shift_2026-11-03.md",
+    "verdict": "pre-registered shape classifier FAILED by its own criterion (balanced accuracy 0.394 vs 0.333 chance; sustained precision 0.764 vs 0.728 base rate). The failure was the rule's window: excluding the alert month lifts balanced accuracy to 0.608 and sustained precision to 0.940, but that is POST-HOC and must be confirmed on fresh injections (B-054). Three-way ramp/level separation does not work (0.17)."
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -139,7 +139,10 @@
     "PUBLISH: paper draft v1 exists as a repository artifact with 45 machine-verified claims; every number is traced to a committed artifact in both directions (source contains it, paper contains it)",
     "PUBLISH: the paper's headline is negative by design - five retractions with their control mechanisms, no predictive success claimed",
     "PUBLISH: the paper now has four generated, verified, dependency-free figures (131 plotted points re-derived from artifacts); the only previously blocking readability gap is closed",
-    "PROCESS: structural SVG validity is not readability - headless rendering caught three layout defects (clipped labels, annotation off-frame, missing row labels) that checks could not"
+    "PROCESS: structural SVG validity is not readability - headless rendering caught three layout defects (clipped labels, annotation off-frame, missing row labels) that checks could not",
+    "DETECT: the pre-registered alert-shape classifier fails (balanced accuracy 0.394 vs 0.333 chance; sustained precision 0.764 vs 0.728 base rate) because its window contains the pulse",
+    "DETECT: excluding the alert month from the confirmation window raises balanced accuracy to 0.608 and sustained-change precision to 0.940 - a POST-HOC result awaiting confirmation (B-054)",
+    "DETECT: ramp-versus-level separation is not recoverable from a two-month window (ramp recall 0.17) at ~0.2 events per cell-month"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -157,10 +160,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "B-026: spike vs sustained level-shift classifier (last P1 model task needing no new data)",
+    "B-054: confirm the corrected confirmation window on fresh injections (pre-register, no reuse)",
     "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there",
-    "add a per-finding reproduction index to the paper's retraction table",
-    "consider external validation of the measurement rules on a second domain before submission"
+    "B-026 follow-up: consider a longer confirmation window and report the precision/recall trade-off explicitly if the ramp class stays unrecoverable",
+    "add the shape classifier to the paper as a further negative-with-diagnosis result"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -708,5 +711,48 @@
       ],
       "visual_check": "rendered with headless Edge; three layout defects found and fixed"
     }
+  },
+  "detection_layer": {
+    "status": "alert shape classification: pre-registered failure, post-hoc improvement pending confirmation",
+    "artifact": "experiments/b026/spike_vs_shift.json",
+    "design": "research/DECISIONS.md D-040 (pre-registered), D-041 (outcome)",
+    "scale": {
+      "cells": 329,
+      "eligible": 65,
+      "injections": 171,
+      "alerts": 151
+    },
+    "pre_registered": {
+      "balanced_accuracy": 0.394,
+      "ci": [
+        0.361,
+        0.438
+      ],
+      "sustained_precision": 0.764,
+      "sustained_precision_ci": [
+        0.727,
+        0.811
+      ],
+      "sustained_base_rate": 0.728,
+      "spike_recall": 0.171,
+      "ramp_recall": 0.151
+    },
+    "posthoc_window_fix": {
+      "balanced_accuracy": 0.608,
+      "ci": [
+        0.552,
+        0.659
+      ],
+      "sustained_precision": 0.94,
+      "sustained_precision_ci": [
+        0.903,
+        0.978
+      ],
+      "spike_recall": 0.829,
+      "ramp_recall": 0.17,
+      "status": "POST-HOC, not confirmed"
+    },
+    "reading": "binary spike-vs-sustained promotion becomes useful (0.94 precision vs 0.73 base rate) once the pulse is excluded from the confirmation window; ramp-vs-level is not recoverable at this counting rate",
+    "not_claimed": "shape recovery is a property of the time series, never of the technology"
   }
 }

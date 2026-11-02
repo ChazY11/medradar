@@ -114,7 +114,7 @@ tasks:
     layer: observe
     priority: P1
     title: Spike vs sustained level-shift classifier for alerts
-    status: todo
+    status: done
     owner: unassigned
     depends_on: [B-023]
     acceptance: >
@@ -499,5 +499,19 @@ tasks:
       papers/verify_figures.py re-derives every plotted value from its source artifact, parses each
       SVG, rejects numeric artefacts, and requires the paper to link each figure. Rendered to PNG and
       visually inspected; three layout defects found and fixed.
+
+  - id: B-054
+    layer: detect
+    priority: P1
+    title: Confirm the corrected confirmation window on fresh injections
+    status: todo
+    owner: lead
+    depends_on: [B-026]
+    acceptance: >
+      The post-hoc window fix (exclude the alert month) lifted balanced accuracy from 0.394 to 0.608
+      and sustained-change precision from 0.764 to 0.940 against a 0.728 base rate. Because it was
+      found after seeing the pre-registered rule fail, re-pre-register it and confirm on injections
+      with fresh origins and cells (no reuse), reporting the same estimands. If it does not confirm,
+      the promotion rule stays at the pre-registered accuracy and the fix is recorded as overfit.
 
 
