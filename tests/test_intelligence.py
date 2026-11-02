@@ -22,11 +22,17 @@ from medradar.intelligence.evaluation.backtesting import (
 from medradar.intelligence.evaluation.leakage_audit import audit_examples
 from medradar.intelligence.evaluation.metrics import evaluate, paired_bootstrap_delta_ap, pr_auc
 from medradar.intelligence.features.financial_features import financial_features
-from medradar.intelligence.features.research_features import build_examples
+from medradar.intelligence.features.research_features import (
+    ENTRY_DATASET_VERSION,
+    ENTRY_FEATURES,
+    build_entry_examples,
+    build_examples,
+)
 from medradar.intelligence.models.baseline import LogisticBaseline
 from medradar.intelligence.sources.procurement_us import normalize_award
 from medradar.intelligence.sources.sec_financials import normalize_companyfacts, ticker_cik_map
 from medradar.intelligence.storage import IntelligenceStore
+from medradar.util import add_months, parse_date
 
 
 def _timeline_store(path: Path) -> IntelligenceStore:
@@ -52,6 +58,41 @@ def _backtest_examples() -> list[dict]:
     examples = []
     for origin_index, cutoff in enumerate(("2020-01-01", "2020-04-01", "2020-07-01", "2020-10-01",
                                            "2021-01-01", "2021-04-01")):
+        for index in range(12):
+            label = int((index + origin_index) % 3 == 0)
+            examples.append({
+                "cutoff": cutoff, "label": label, "maturity": "mature",
+                "company_key": f"c{index % 3}", "track_id": f"t{index % 2}",
+                "first_target_event_date": "2021-06-01" if label else None,
+                "features": {"rd": float(index % 4), "fin": float(index % 2)},
+            })
+    return examples
+
+
+def _entry_store(path: Path, timeline: list[tuple[str, str, str, str]]) -> IntelligenceStore:
+    """Synthetic store for the entry target.
+
+    ``timeline`` rows are ``(event_date, available_at, company_key, track_id)``.
+    """
+    store = IntelligenceStore(DB(path))
+    store.db.upsert_events([
+        {"event_id": make_event_id("test", "510k", index), "source": "test", "kind": "510k",
+         "event_date": day, "available_at": available, "company_key": company,
+         "track_id": track, "product_code": "ABC", "payload": {}}
+        for index, (day, available, company, track) in enumerate(timeline)])
+    return store
+
+
+def _entry_examples(data: dict) -> dict[tuple[str, str], dict]:
+    return {(row["company_key"], row["track_id"]): row for row in data["examples"]}
+
+
+def _quarterly_backtest_examples(count: int = 10) -> list[dict]:
+    """Synthetic quarterly origins; needs >4 origins before purged training exists."""
+    examples = []
+    start = date(2020, 1, 1)
+    for origin_index in range(count):
+        cutoff = add_months(start, origin_index * 3).isoformat()
         for index in range(12):
             label = int((index + origin_index) % 3 == 0)
             examples.append({
@@ -302,6 +343,229 @@ class TimingAndModelTests(unittest.TestCase):
         for model in report["models"]:
             self.assertTrue(model["holdout_metrics"]["n"] > 0)
             self.assertTrue(all(row["cutoff"] < report["holdout"] for row in model["origin_metrics"] if not row["is_holdout"]))
+
+
+class MultiWindowBacktestTests(unittest.TestCase):
+    def test_holdouts_default_preserves_single_holdout_contract(self) -> None:
+        report = run_backtest(_backtest_examples(), ["rd"], ["fin"], min_train_origins=3)
+        self.assertEqual(report["holdouts"], 1)
+        self.assertEqual(report["holdout"], "2021-04-01")
+        self.assertEqual(report["holdout_origins"], ["2021-04-01"])
+        self.assertEqual(len(report["holdout_windows"]), 1)
+        window = report["holdout_windows"][0]
+        for model in report["models"]:
+            self.assertEqual(window["model_metrics"][model["name"]], model["holdout_metrics"])
+            self.assertEqual(model["holdout_window_metrics"][0]["cutoff"], report["holdout"])
+            self.assertEqual(model["holdout_window_summary"],
+                             report["holdout_window_summary"]["models"][model["name"]])
+        # Legacy (v1) keys stay in place; the multi-window block is additive only.
+        for key in ("baselines", "model_vs_pair_baseline", "leaky_labels_diagnostic",
+                    "financial_marginal_value", "purge", "models", "origins", "holdout"):
+            self.assertIn(key, report)
+        self.assertIn("by_window", report["model_vs_pair_baseline"])
+        for metric in ("pr_auc", "brier", "ece"):
+            self.assertEqual(report["holdout_window_summary"]["models"]["rd_only"][metric]["std"], 0.0)
+
+    def test_holdouts_three_are_chronological_and_purged_per_window(self) -> None:
+        examples = _quarterly_backtest_examples(10)
+        report = run_backtest(examples, ["rd"], ["fin"], min_train_origins=3, holdouts=3)
+        self.assertEqual(report["holdouts"], 3)
+        self.assertEqual(report["holdout_origins"], ["2021-10-01", "2022-01-01", "2022-04-01"])
+        self.assertEqual([window["origin"] for window in report["holdout_windows"]],
+                         report["holdout_origins"])
+        self.assertEqual(len({window["origin"] for window in report["holdout_windows"]}), 3)
+        training_sizes = []
+        for window in report["holdout_windows"]:
+            origin = parse_date(window["origin"])
+            self.assertTrue(window["training_origins"])
+            for cutoff in window["training_origins"]:
+                cutoff_day = parse_date(cutoff)
+                self.assertLess(cutoff_day, origin)
+                # Purge rule per window: the label window closed at or before the origin.
+                self.assertLessEqual(add_months(cutoff_day, report["target_horizon_months"]), origin)
+            self.assertEqual(window["rows"], 12)  # one example per synthetic pair at that origin
+            training_sizes.append(window["training_rows"])
+        self.assertEqual(training_sizes, sorted(training_sizes))  # expanding origin
+        for model in report["models"]:
+            self.assertEqual(len(model["holdout_window_metrics"]), 3)
+            self.assertEqual({row["cutoff"] for row in model["holdout_window_metrics"]},
+                             set(report["holdout_origins"]))
+            self.assertIn("pr_auc", model["holdout_window_summary"])
+            self.assertEqual(model["holdout_window_summary"]["pr_auc"]["windows"], 3)
+        comparison = report["model_vs_pair_baseline"]
+        self.assertEqual([entry["origin"] for entry in comparison["by_window"]], report["holdout_origins"])
+        for name in ("rd_only", "rd_financial"):
+            self.assertIn(name, comparison["window_mean_delta"])
+            for entry in comparison["by_window"]:
+                self.assertIn(name, entry["models"])
+
+    def test_holdouts_validation(self) -> None:
+        with self.assertRaises(ValueError):
+            run_backtest(_quarterly_backtest_examples(10), ["rd"], ["fin"], holdouts=0)
+        with self.assertRaises(ValueError):
+            run_backtest(_quarterly_backtest_examples(10), ["rd"], ["fin"], holdouts=7)
+
+
+class EntryTargetTests(unittest.TestCase):
+    def test_active_pair_excluded_and_dormant_pairs_included(self) -> None:
+        timeline = [
+            ("2016-06-01", "2016-06-01", "acme", "x"),      # (acme, x) last seen 2016 -> dormant
+            ("2020-06-01", "2020-06-01", "acme", "y"),      # (acme, y) active inside dormancy -> excluded
+            ("2016-07-01", "2016-07-01", "other", "z"),     # second active company + third track
+            ("2021-07-01", "2021-07-01", "acme", "z"),      # future entry for a dormant pair
+            ("2022-06-01", "2022-06-01", "acme", "x"),      # coverage anchor after the horizon
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            with _entry_store(Path(tmp) / "x.sqlite", timeline) as store:
+                data = build_entry_examples(store, cutoffs=["2021-01-01"], expected_coverage_end=None)
+        rows = _entry_examples(data)
+        self.assertNotIn(("acme", "y"), rows)
+        self.assertIn(("acme", "x"), rows)
+        # active companies {acme, other} x tracks {x, y, z} = 6; only (acme, y) is non-dormant
+        self.assertEqual(data["candidates_by_origin"]["2021-01-01"], 5)
+        self.assertEqual(len(data["examples"]), 5)
+        self.assertEqual(data["positives_by_origin"]["2021-01-01"], 1)
+        self.assertEqual(rows[("acme", "z")]["label"], 1)
+        self.assertEqual(rows[("acme", "z")]["first_target_event_date"], "2021-07-01")
+        self.assertEqual(rows[("acme", "x")]["label"], 0)
+
+    def test_dormancy_boundary_uses_exact_calendar_months(self) -> None:
+        timeline = [
+            ("2018-01-01", "2018-01-01", "acme", "boundary"),    # exactly t - 36 months -> dormant
+            ("2018-01-02", "2018-01-02", "acme", "just_active"),  # one day later -> not dormant
+            ("2022-06-01", "2022-06-01", "acme", "anchor"),       # coverage anchor
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            with _entry_store(Path(tmp) / "x.sqlite", timeline) as store:
+                data = build_entry_examples(store, cutoffs=["2021-01-01"], expected_coverage_end=None)
+        rows = _entry_examples(data)
+        self.assertEqual(add_months(parse_date("2021-01-01"), -36).isoformat(), "2018-01-01")
+        self.assertIn(("acme", "boundary"), rows)
+        self.assertNotIn(("acme", "just_active"), rows)
+
+    def test_label_horizon_is_inclusive_at_t_plus_horizon(self) -> None:
+        timeline = [
+            ("2016-01-01", "2016-01-01", "acme", "inside"),
+            ("2016-01-02", "2016-01-02", "acme", "boundary"),
+            ("2016-01-03", "2016-01-03", "acme", "after"),
+            ("2021-07-01", "2021-07-01", "acme", "inside"),     # inside (t, t+12m] -> label 1
+            ("2022-01-01", "2022-01-01", "acme", "boundary"),   # exactly t+12m -> label 1
+            ("2022-01-02", "2022-01-02", "acme", "after"),      # one day after the horizon -> label 0
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            with _entry_store(Path(tmp) / "x.sqlite", timeline) as store:
+                data = build_entry_examples(store, cutoffs=["2021-01-01"], expected_coverage_end=None)
+        rows = _entry_examples(data)
+        self.assertEqual(rows[("acme", "inside")]["label"], 1)
+        self.assertEqual(rows[("acme", "inside")]["first_target_event_date"], "2021-07-01")
+        self.assertEqual(rows[("acme", "boundary")]["label"], 1)
+        self.assertEqual(rows[("acme", "after")]["label"], 0)
+        self.assertIsNone(rows[("acme", "after")]["first_target_event_date"])
+
+    def test_immature_origin_is_pending_or_excluded(self) -> None:
+        timeline = [("2016-01-01", "2016-01-01", "acme", "a"),
+                    ("2021-06-01", "2021-06-01", "acme", "b")]
+        with tempfile.TemporaryDirectory() as tmp:
+            with _entry_store(Path(tmp) / "x.sqlite", timeline) as store:
+                # horizon_end 2022-01-01 > coverage_end 2021-06-01 -> pending
+                excluded = build_entry_examples(store, cutoffs=["2021-01-01"], expected_coverage_end=None)
+                included = build_entry_examples(store, cutoffs=["2021-01-01"], expected_coverage_end=None,
+                                                include_unmatured=True)
+        self.assertEqual(excluded["examples"], [])
+        self.assertEqual(excluded["cutoffs"], [])
+        self.assertGreater(excluded["skipped_pending_examples"], 0)
+        self.assertTrue(included["examples"])
+        for row in included["examples"]:
+            self.assertEqual(row["maturity"], "pending")
+            self.assertIsNone(row["label"])
+            self.assertIsNone(row["target_event_count"])
+
+    def test_coverage_end_assertion_rejects_wrong_window(self) -> None:
+        timeline = [("2016-01-01", "2016-01-01", "acme", "a"),
+                    ("2022-06-01", "2022-06-01", "acme", "b")]
+        with tempfile.TemporaryDirectory() as tmp:
+            with _entry_store(Path(tmp) / "x.sqlite", timeline) as store:
+                accepted = build_entry_examples(store, cutoffs=["2021-01-01"],
+                                                expected_coverage_end="2022-06-01")
+                self.assertTrue(accepted["coverage_check"]["ok"])
+                with self.assertRaises(ValueError):
+                    build_entry_examples(store, cutoffs=["2021-01-01"],
+                                         expected_coverage_end="2029-01-01")
+
+    def test_entry_features_are_point_in_time(self) -> None:
+        base_timeline = [
+            ("2016-01-01", "2016-01-01", "acme", "dormant"),
+            ("2020-06-01", "2020-06-01", "acme", "recent"),
+            ("2020-09-01", "2020-09-01", "other", "c"),
+            ("2026-01-01", "2026-01-01", "other", "anchor"),  # stabilise coverage_end
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            with _entry_store(Path(tmp) / "x.sqlite", base_timeline) as store:
+                store.upsert_financial_facts([{
+                    "fact_id": "f-old", "company_key": "acme", "cik": "0000000001", "tag": "Revenues",
+                    "unit": "USD", "value": 500.0, "period_start": "2019-01-01",
+                    "period_end": "2019-12-31", "available_at": "2020-02-01",
+                    "retrieved_at": "2026-11-01", "accession": "f-old", "fiscal_year": 2019,
+                }])
+                first = build_entry_examples(store, cutoffs=["2021-01-01"], expected_coverage_end=None)
+                before = _entry_examples(first)[("acme", "dormant")]["features"]
+                label_before = _entry_examples(first)[("acme", "dormant")]["label"]
+                # (a) decision before the cutoff but only public after it; (b) genuinely
+                # future event; (c) SEC amendment filed after the cutoff.
+                store.db.upsert_events([
+                    {"event_id": make_event_id("test", "late", 1), "source": "test", "kind": "510k",
+                     "event_date": "2020-11-01", "available_at": "2021-06-01", "company_key": "acme",
+                     "track_id": "recent", "product_code": "ABC", "payload": {}},
+                    {"event_id": make_event_id("test", "future", 2), "source": "test", "kind": "510k",
+                     "event_date": "2021-06-01", "available_at": "2021-06-01", "company_key": "acme",
+                     "track_id": "dormant", "product_code": "ABC", "payload": {}},
+                ])
+                store.upsert_financial_facts([{
+                    "fact_id": "f-amended", "company_key": "acme", "cik": "0000000001", "tag": "Revenues",
+                    "unit": "USD", "value": 9000.0, "period_start": "2019-01-01",
+                    "period_end": "2019-12-31", "available_at": "2021-06-01",
+                    "retrieved_at": "2026-11-01", "accession": "f-amended", "fiscal_year": 2019,
+                }])
+                leaky = build_entry_examples(store, cutoffs=["2021-01-01"], expected_coverage_end=None)
+                after = _entry_examples(leaky)[("acme", "dormant")]
+                self.assertEqual(after["features"], before)
+                self.assertEqual(after["label"], 1)  # the future event does change the label ...
+                self.assertEqual(label_before, 0)     # ... but not the features
+                # A fact that was already public at the cutoff does change the feature row,
+                # proving the financial path is live rather than the comparison being vacuous.
+                store.upsert_financial_facts([{
+                    "fact_id": "f-new", "company_key": "acme", "cik": "0000000001", "tag": "Revenues",
+                    "unit": "USD", "value": 700.0, "period_start": "2020-01-01",
+                    "period_end": "2020-12-31", "available_at": "2020-12-01",
+                    "retrieved_at": "2026-11-01", "accession": "f-new", "fiscal_year": 2020,
+                }])
+                sensitive = build_entry_examples(store, cutoffs=["2021-01-01"], expected_coverage_end=None)
+                self.assertNotEqual(_entry_examples(sensitive)[("acme", "dormant")]["features"], after["features"])
+
+    def test_entry_audit_replays_entry_features_and_catches_tampering(self) -> None:
+        timeline = [
+            ("2016-01-01", "2016-01-01", "acme", "a"),
+            ("2020-06-01", "2020-06-01", "acme", "b"),
+            ("2020-09-01", "2020-09-01", "other", "c"),
+            ("2026-01-01", "2026-01-01", "other", "anchor"),
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            with _entry_store(Path(tmp) / "x.sqlite", timeline) as store:
+                data = build_entry_examples(store, cutoffs=["2021-01-01"], expected_coverage_end=None)
+                store.replace_examples(ENTRY_DATASET_VERSION, data["examples"])
+                audit = audit_examples(store, ENTRY_DATASET_VERSION)
+                self.assertTrue(audit["ok"], audit["mismatches"][:3])
+                self.assertTrue(audit["entry_target"])
+                self.assertEqual(audit["checked_examples"], len(data["examples"]))
+                self.assertEqual(audit["mismatch_count"], 0)
+                for name in ENTRY_FEATURES:
+                    self.assertIn(name, audit["replayed_features"])
+                tampered = json.loads(json.dumps(data["examples"]))
+                tampered[0]["features"]["rd_company_active_tracks_12m"] += 1.0
+                store.replace_examples(ENTRY_DATASET_VERSION, tampered)
+                result = audit_examples(store, ENTRY_DATASET_VERSION)
+                self.assertFalse(result["ok"])
+                self.assertGreater(result["per_feature_mismatches"]["rd_company_active_tracks_12m"], 0)
 
 
 class StorageTests(unittest.TestCase):

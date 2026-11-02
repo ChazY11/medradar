@@ -27,7 +27,13 @@ from ..features.financial_features import (
     RD_TAGS,
     REVENUE_TAGS,
 )
-from ..features.research_features import BASE_FEATURES
+from ..features.research_features import (
+    BASE_FEATURES,
+    ENTRY_DATASET_VERSION,
+    ENTRY_FEATURES,
+    ENTRY_INACTIVE_MONTHS_CAP,
+    MONTH_LENGTH_DAYS,
+)
 
 TOLERANCE = 1e-9
 MAX_REPORTED_MISMATCHES = 25
@@ -85,8 +91,14 @@ def _same(stored: Any, replayed: Any) -> bool:
 
 
 def _replay_base_features(history: list[Any], pairs: set[tuple[str, str]],
-                          cutoff_day: date) -> dict[tuple[str, str], dict[str, float | None]]:
-    """Recompute the ten R&D-history features from the as-of event rows."""
+                          cutoff_day: date,
+                          include_never_active: bool = False) -> dict[tuple[str, str], dict[str, float | None]]:
+    """Recompute the ten R&D-history features from the as-of event rows.
+
+    ``include_never_active`` is used by the entry target, whose candidates include
+    company-track pairs with no observed event inside the bulk window: those get
+    zero counts, the recency top-code and zero observable active years.
+    """
     by_pair: dict[tuple[str, str], list[date]] = defaultdict(list)
     by_company: Counter[str] = Counter()
     by_company36: Counter[str] = Counter()
@@ -106,25 +118,92 @@ def _replay_base_features(history: list[Any], pairs: set[tuple[str, str]],
             by_track[track] += 1
     result: dict[tuple[str, str], dict[str, float | None]] = {}
     for pair in pairs:
-        days = by_pair.get(pair)
-        if not days:
-            continue  # builder only emits examples for already-active pairs
+        days = by_pair.get(pair) or []
+        if not days and not include_never_active:
+            continue  # builder only emits continuation examples for already-active pairs
         company, track = pair
         recent = sum(1 for day in days if cutoff_day - timedelta(days=365) < day <= cutoff_day)
         previous = sum(1 for day in days if cutoff_day - timedelta(days=730) < day <= cutoff_day - timedelta(days=365))
         trailing36 = sum(1 for day in days if cutoff_day - timedelta(days=1095) < day <= cutoff_day)
-        first_day = min(days)
+        first_day = min(days) if days else None
         result[pair] = {
             "rd_count_12m": float(recent),
             "rd_count_previous_12m": float(previous),
             "rd_momentum": math.log1p(recent) - math.log1p(previous),
             "rd_count_36m": float(trailing36),
-            "rd_recency_years": min(20.0, max(0.0, (cutoff_day - max(days)).days / 365.25)),
+            "rd_recency_years": (min(20.0, max(0.0, (cutoff_day - max(days)).days / 365.25))
+                                 if days else 20.0),
             "rd_company_count_12m": float(by_company[company]),
             "rd_track_count_12m": float(by_track[track]),
             "rd_company_track_share": recent / max(by_company[company], 1),
-            "rd_pair_active_years": max(0.0, (cutoff_day - first_day).days / 365.25),
+            "rd_pair_active_years": max(0.0, (cutoff_day - first_day).days / 365.25) if first_day else 0.0,
             "rd_company_total_36m": float(by_company36[company]),
+        }
+    return result
+
+
+def _replay_entry_features(history: list[Any], pairs: set[tuple[str, str]],
+                           cutoff_day: date) -> dict[tuple[str, str], dict[str, float | None]]:
+    """Independent replay of the six entry-specific features from as-of rows.
+
+    This shares only the feature *names* with the builder; the aggregation is a
+    separate implementation so a stored value that could not exist at the cutoff
+    is caught (for example a company activity count that includes a future row).
+    """
+    day_12 = cutoff_day - timedelta(days=365)
+    day_24 = cutoff_day - timedelta(days=730)
+    by_pair: dict[tuple[str, str], list[date]] = defaultdict(list)
+    by_company: Counter[str] = Counter()
+    by_company_previous: Counter[str] = Counter()
+    by_track: Counter[str] = Counter()
+    by_track_previous: Counter[str] = Counter()
+    company_tracks: dict[str, set[str]] = defaultdict(set)
+    company_tracks_previous: dict[str, set[str]] = defaultdict(set)
+    track_companies: dict[str, set[str]] = defaultdict(set)
+    track_companies_previous: dict[str, set[str]] = defaultdict(set)
+    company_events24: Counter[str] = Counter()
+    for row in history:
+        if row["kind"] == "pma" and not _material_pma(row["payload"]):
+            continue
+        day = parse_date(row["event_date"])
+        if day is None or day > cutoff_day:
+            continue
+        company, track = row["company_key"], row["track_id"]
+        by_pair[(company, track)].append(day)
+        if day_12 < day <= cutoff_day:
+            by_company[company] += 1
+            by_track[track] += 1
+            company_tracks[company].add(track)
+            track_companies[track].add(company)
+        elif day_24 < day <= day_12:
+            by_company_previous[company] += 1
+            by_track_previous[track] += 1
+            company_tracks_previous[company].add(track)
+            track_companies_previous[track].add(company)
+        if day_24 < day <= cutoff_day:
+            company_events24[company] += 1
+    pair_first = {pair: min(days) for pair, days in by_pair.items()}
+    novel_events24: Counter[str] = Counter()
+    for pair, days in by_pair.items():
+        if pair_first[pair] > day_24:
+            novel_events24[pair[0]] += sum(1 for day in days if day_24 < day <= cutoff_day)
+    result: dict[tuple[str, str], dict[str, float | None]] = {}
+    for pair in pairs:
+        company, track = pair
+        days = by_pair.get(pair, [])
+        last_day = max(days) if days else None
+        total24 = company_events24[company]
+        result[pair] = {
+            "rd_pair_inactive_months": (
+                min(ENTRY_INACTIVE_MONTHS_CAP, (cutoff_day - last_day).days / MONTH_LENGTH_DAYS)
+                if last_day else ENTRY_INACTIVE_MONTHS_CAP),
+            "rd_company_active_tracks_12m": float(len(company_tracks[company])),
+            "rd_company_active_tracks_delta": float(
+                len(company_tracks[company]) - len(company_tracks_previous[company])),
+            "rd_track_active_companies_12m": float(len(track_companies[track])),
+            "rd_track_active_companies_delta": float(
+                len(track_companies[track]) - len(track_companies_previous[track])),
+            "rd_company_track_novelty_share": novel_events24[company] / total24 if total24 else 0.0,
         }
     return result
 
@@ -234,6 +313,9 @@ def audit_examples(store: Any, dataset_version: str) -> dict[str, Any]:
         violations.append({"reason": "snapshot procurement incorrectly marked point-in-time usable", "rows": procurement})
 
     feature_names = list(BASE_FEATURES) + list(FINANCIAL_FEATURE_NAMES)
+    entry_target = dataset_version == ENTRY_DATASET_VERSION
+    if entry_target:
+        feature_names += list(ENTRY_FEATURES)
     per_feature: dict[str, int] = {name: 0 for name in feature_names}
     mismatches: list[dict[str, Any]] = []
     mismatch_count = 0
@@ -252,7 +334,9 @@ def audit_examples(store: Any, dataset_version: str) -> dict[str, Any]:
             continue
         history = store.conn.execute(_EVENTS_AS_OF_SQL, (cutoff, cutoff)).fetchall()
         pairs = {(row["company_key"], row["track_id"]) for row in group}
-        replayed_base = _replay_base_features(history, pairs, cutoff_day)
+        replayed_base = _replay_base_features(
+            history, pairs, cutoff_day, include_never_active=entry_target)
+        replayed_entry = _replay_entry_features(history, pairs, cutoff_day) if entry_target else {}
         for row in group:
             pair = (row["company_key"], row["track_id"])
             expected = replayed_base.get(pair)
@@ -264,6 +348,8 @@ def audit_examples(store: Any, dataset_version: str) -> dict[str, Any]:
                 continue
             expected.update(_replay_financial(
                 store, row["company_key"], cutoff, cutoff_day, financial_cache, company_has_facts))
+            if entry_target:
+                expected.update(replayed_entry.get(pair, {}))
             try:
                 stored = json.loads(row["features"])
             except (TypeError, ValueError):
@@ -297,9 +383,13 @@ def audit_examples(store: Any, dataset_version: str) -> dict[str, Any]:
             "tables with SQL restricted to rows whose availability is at or before the cutoff "
             "(events: event_date<=cutoff AND available_at<=cutoff; financials: available_at<=cutoff AND "
             "period_end<=cutoff, latest filed row per period), then compared with the stored feature JSON. "
-            "The builder's filtering code is not called."),
+            "The builder's filtering code is not called. Entry datasets additionally replay the six "
+            "entry-specific features, including pairs with no observed event inside the bulk window."),
         "declared_field_checks": ["feature_available_at<=cutoff", "label only on mature origins",
                                   "snapshot procurement is not pit_usable"],
+        "dataset_version": dataset_version,
+        "entry_target": entry_target,
+        "replayed_features": list(feature_names),
         "tolerance": {"absolute": TOLERANCE, "relative": TOLERANCE},
         "checked_examples": len(rows),
         "checked_cutoffs": len(by_cutoff),
