@@ -1,0 +1,575 @@
+{
+  "schema": "event_sequence_detection_v1",
+  "protocol": "PHASE1D_PROTOCOL.md (frozen before this run)",
+  "window": [
+    "2017-01-01",
+    "2025-12-31"
+  ],
+  "lag_days": 30,
+  "injection": {
+    "change_fraction": 0.6,
+    "multipliers": [
+      2.0,
+      3.0
+    ],
+    "replications": 200,
+    "seed": 4242
+  },
+  "budget": {
+    "far_target_a": 0.1
+  },
+  "cells": {
+    "ge_healthcare|imaging_mr_ct": {
+      "set": "primary",
+      "status": "OK",
+      "events": 127,
+      "span_days": 3297,
+      "threshold_a": 8.53,
+      "threshold_b": 2.828,
+      "far_a": 0.1,
+      "far_b": 0.0,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 75,
+          "events_after": 51,
+          "replications": 200,
+          "power_a": 0.9,
+          "power_b": 0.73,
+          "median_delay_days_a": 185.5,
+          "median_delay_days_b": 47.1
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 75,
+          "events_after": 51,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.865,
+          "median_delay_days_a": 67.7,
+          "median_delay_days_b": 43.5
+        }
+      }
+    },
+    "medtronic|cardiac_rhythm": {
+      "set": "primary",
+      "status": "OK",
+      "events": 2459,
+      "span_days": 3299,
+      "threshold_a": 144.319,
+      "threshold_b": 41.719,
+      "far_a": 0.1,
+      "far_b": 0.0,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 1474,
+          "events_after": 984,
+          "replications": 200,
+          "power_a": 0.85,
+          "power_b": 0.0,
+          "median_delay_days_a": 140.5,
+          "median_delay_days_b": null
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 1474,
+          "events_after": 984,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.07,
+          "median_delay_days_a": 62.7,
+          "median_delay_days_b": null
+        }
+      }
+    },
+    "medtronic|diabetes_cgm": {
+      "set": "primary",
+      "status": "OK",
+      "events": 141,
+      "span_days": 3285,
+      "threshold_a": 117.215,
+      "threshold_b": 9.5,
+      "far_a": 0.1,
+      "far_b": 0.09,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 84,
+          "events_after": 56,
+          "replications": 200,
+          "power_a": 0.44,
+          "power_b": 0.225,
+          "median_delay_days_a": 175.5,
+          "median_delay_days_b": 516.1
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 84,
+          "events_after": 56,
+          "replications": 200,
+          "power_a": 0.515,
+          "power_b": 0.435,
+          "median_delay_days_a": 86.3,
+          "median_delay_days_b": 64.5
+        }
+      }
+    },
+    "medtronic|insulin_delivery": {
+      "set": "primary",
+      "status": "OK",
+      "events": 252,
+      "span_days": 3298,
+      "threshold_a": 136.043,
+      "threshold_b": 9.329,
+      "far_a": 0.095,
+      "far_b": 0.08,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 150,
+          "events_after": 101,
+          "replications": 200,
+          "power_a": 0.48,
+          "power_b": 0.135,
+          "median_delay_days_a": 120.0,
+          "median_delay_days_b": 48.5
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 150,
+          "events_after": 101,
+          "replications": 200,
+          "power_a": 0.585,
+          "power_b": 0.16,
+          "median_delay_days_a": 86.0,
+          "median_delay_days_b": 25.1
+        }
+      }
+    },
+    "philips|imaging_mr_ct": {
+      "set": "primary",
+      "status": "OK",
+      "events": 112,
+      "span_days": 3245,
+      "threshold_a": 11.235,
+      "threshold_b": 3.674,
+      "far_a": 0.1,
+      "far_b": 0.0,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 66,
+          "events_after": 45,
+          "replications": 200,
+          "power_a": 0.895,
+          "power_b": 0.33,
+          "median_delay_days_a": 210.5,
+          "median_delay_days_b": 45.3
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 66,
+          "events_after": 45,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.53,
+          "median_delay_days_a": 92.3,
+          "median_delay_days_b": 65.0
+        }
+      }
+    },
+    "ge_healthcare|imaging_us": {
+      "set": "secondary",
+      "status": "OK",
+      "events": 85,
+      "span_days": 3239,
+      "threshold_a": 13.925,
+      "threshold_b": 4.716,
+      "far_a": 0.095,
+      "far_b": 0.055,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 50,
+          "events_after": 34,
+          "replications": 200,
+          "power_a": 0.625,
+          "power_b": 0.33,
+          "median_delay_days_a": 303.5,
+          "median_delay_days_b": 53.1
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 50,
+          "events_after": 34,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.56,
+          "median_delay_days_a": 163.7,
+          "median_delay_days_b": 59.7
+        }
+      }
+    },
+    "medtronic|coronary": {
+      "set": "secondary",
+      "status": "OK",
+      "events": 146,
+      "span_days": 3292,
+      "threshold_a": 25.016,
+      "threshold_b": 5.307,
+      "far_a": 0.095,
+      "far_b": 0.025,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 87,
+          "events_after": 58,
+          "replications": 200,
+          "power_a": 0.745,
+          "power_b": 0.435,
+          "median_delay_days_a": 207.0,
+          "median_delay_days_b": 113.2
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 87,
+          "events_after": 58,
+          "replications": 200,
+          "power_a": 0.885,
+          "power_b": 0.615,
+          "median_delay_days_a": 96.3,
+          "median_delay_days_b": 100.5
+        }
+      }
+    },
+    "medtronic|ep_pfa": {
+      "set": "secondary",
+      "status": "OK",
+      "events": 211,
+      "span_days": 3270,
+      "threshold_a": 12.046,
+      "threshold_b": 4.797,
+      "far_a": 0.1,
+      "far_b": 0.0,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 126,
+          "events_after": 84,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.09,
+          "median_delay_days_a": 149.5,
+          "median_delay_days_b": 92.4
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 126,
+          "events_after": 84,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.31,
+          "median_delay_days_a": 59.0,
+          "median_delay_days_b": 35.1
+        }
+      }
+    },
+    "medtronic|heart_failure": {
+      "set": "secondary",
+      "status": "OK",
+      "events": 137,
+      "span_days": 3069,
+      "threshold_a": 25.346,
+      "threshold_b": 6.503,
+      "far_a": 0.095,
+      "far_b": 0.0,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 81,
+          "events_after": 55,
+          "replications": 200,
+          "power_a": 0.78,
+          "power_b": 0.43,
+          "median_delay_days_a": 280.0,
+          "median_delay_days_b": 140.2
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 81,
+          "events_after": 55,
+          "replications": 200,
+          "power_a": 0.775,
+          "power_b": 0.435,
+          "median_delay_days_a": 141.0,
+          "median_delay_days_b": 77.5
+        }
+      }
+    },
+    "medtronic|neurostimulation": {
+      "set": "secondary",
+      "status": "OK",
+      "events": 516,
+      "span_days": 3282,
+      "threshold_a": 24.774,
+      "threshold_b": 9.192,
+      "far_a": 0.1,
+      "far_b": 0.0,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 309,
+          "events_after": 206,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.61,
+          "median_delay_days_a": 152.0,
+          "median_delay_days_b": 18.1
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 309,
+          "events_after": 206,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.495,
+          "median_delay_days_a": 60.3,
+          "median_delay_days_b": 11.4
+        }
+      }
+    },
+    "medtronic|neurovascular": {
+      "set": "secondary",
+      "status": "OK",
+      "events": 147,
+      "span_days": 3289,
+      "threshold_a": 17.509,
+      "threshold_b": 3.944,
+      "far_a": 0.095,
+      "far_b": 0.02,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 87,
+          "events_after": 59,
+          "replications": 200,
+          "power_a": 0.77,
+          "power_b": 0.47,
+          "median_delay_days_a": 248.0,
+          "median_delay_days_b": 30.5
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 87,
+          "events_after": 59,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.665,
+          "median_delay_days_a": 96.0,
+          "median_delay_days_b": 38.9
+        }
+      }
+    },
+    "medtronic|peripheral_vascular": {
+      "set": "secondary",
+      "status": "OK",
+      "events": 212,
+      "span_days": 3272,
+      "threshold_a": 32.216,
+      "threshold_b": 9.0,
+      "far_a": 0.1,
+      "far_b": 0.0,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 126,
+          "events_after": 85,
+          "replications": 200,
+          "power_a": 0.59,
+          "power_b": 0.08,
+          "median_delay_days_a": 202.5,
+          "median_delay_days_b": 19.4
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 126,
+          "events_after": 85,
+          "replications": 200,
+          "power_a": 0.88,
+          "power_b": 0.05,
+          "median_delay_days_a": 88.7,
+          "median_delay_days_b": 56.0
+        }
+      }
+    },
+    "medtronic|spine": {
+      "set": "secondary",
+      "status": "OK",
+      "events": 68,
+      "span_days": 3247,
+      "threshold_a": 9.792,
+      "threshold_b": 3.674,
+      "far_a": 0.1,
+      "far_b": 0.07,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 40,
+          "events_after": 27,
+          "replications": 200,
+          "power_a": 0.665,
+          "power_b": 0.335,
+          "median_delay_days_a": 68.5,
+          "median_delay_days_b": 285.6
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 40,
+          "events_after": 27,
+          "replications": 200,
+          "power_a": 0.85,
+          "power_b": 0.52,
+          "median_delay_days_a": 141.7,
+          "median_delay_days_b": 182.2
+        }
+      }
+    },
+    "medtronic|structural_heart": {
+      "set": "secondary",
+      "status": "OK",
+      "events": 360,
+      "span_days": 3228,
+      "threshold_a": 43.377,
+      "threshold_b": 11.196,
+      "far_a": 0.1,
+      "far_b": 0.065,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 215,
+          "events_after": 144,
+          "replications": 200,
+          "power_a": 0.885,
+          "power_b": 0.19,
+          "median_delay_days_a": 136.5,
+          "median_delay_days_b": 41.3
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 215,
+          "events_after": 144,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.31,
+          "median_delay_days_a": 75.3,
+          "median_delay_days_b": 11.3
+        }
+      }
+    },
+    "medtronic|urology": {
+      "set": "secondary",
+      "status": "OK",
+      "events": 406,
+      "span_days": 3291,
+      "threshold_a": 31.226,
+      "threshold_b": 7.826,
+      "far_a": 0.1,
+      "far_b": 0.025,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 243,
+          "events_after": 162,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.435,
+          "median_delay_days_a": 316.0,
+          "median_delay_days_b": 40.1
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 243,
+          "events_after": 162,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.715,
+          "median_delay_days_a": 72.0,
+          "median_delay_days_b": 11.2
+        }
+      }
+    },
+    "philips|cardiac_rhythm": {
+      "set": "secondary",
+      "status": "OK",
+      "events": 47,
+      "span_days": 3299,
+      "threshold_a": 6.392,
+      "threshold_b": 2.711,
+      "far_a": 0.045,
+      "far_b": 0.035,
+      "by_multiplier": {
+        "2.0": {
+          "status": "OK",
+          "events_before": 27,
+          "events_after": 19,
+          "replications": 200,
+          "power_a": 0.57,
+          "power_b": 0.5,
+          "median_delay_days_a": 135.0,
+          "median_delay_days_b": 57.6
+        },
+        "3.0": {
+          "status": "OK",
+          "events_before": 27,
+          "events_after": 19,
+          "replications": 200,
+          "power_a": 1.0,
+          "power_b": 0.72,
+          "median_delay_days_a": 97.7,
+          "median_delay_days_b": 114.1
+        }
+      }
+    }
+  },
+  "pooled": {
+    "2.0": {
+      "status": "OK",
+      "cells": 16,
+      "mean_power_a": 0.762,
+      "mean_power_b": 0.333,
+      "median_delay_a": 185.5,
+      "median_delay_b": 48.5,
+      "paired_bootstrap": {
+        "cells": 15,
+        "median_difference": 133.9,
+        "interval": [
+          71.5,
+          165.2
+        ]
+      }
+    },
+    "3.0": {
+      "status": "OK",
+      "cells": 16,
+      "mean_power_a": 0.906,
+      "mean_power_b": 0.466,
+      "median_delay_a": 88.7,
+      "median_delay_b": 56.0,
+      "paired_bootstrap": {
+        "cells": 15,
+        "median_difference": 32.7,
+        "interval": [
+          23.9,
+          60.9
+        ]
+      }
+    }
+  },
+  "verdict": "m=2.0: A 185.5 d vs B 48.5 d, power 0.762 vs 0.333, paired median difference 133.9 [71.5, 165.2] (B earlier than A (fine unit is slower)); m=3.0: A 88.7 d vs B 56.0 d, power 0.906 vs 0.466, paired median difference 32.7 [23.9, 60.9] (B earlier than A (fine unit is slower))",
+  "not_claimed": [
+    "the truth is synthetic: this measures detector geometry, not whether real technology shifts exist",
+    "no lead-time claim relative to real milestones (G1)",
+    "no causal, intent or R&D claim"
+  ]
+}

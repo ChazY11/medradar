@@ -174,3 +174,61 @@ onset; expanded O1 underpowered with 0 onsets), the taxonomy gap that caused the
 explains the second and third. Its 15 quantitative claims are verified in both directions by
 `papers/CLAIMS_NEGATIVE.json` (`verify_claims.py --claims`, 15/15). No refuted result is re-used as valid, and the
 paper states explicitly that the definitional limitation is not resolved by it.
+
+---
+
+## S-016 — Phase 1D: the fine unit does not detect earlier, and calibration took three attempts
+
+**Date:** 2026-11-03 · **Status:** accepted · **Evidence:** `EVENT_SEQUENCE_DETECTION.{json,md}`,
+`PHASE1D_PROTOCOL.md`, `medradar/studies/pointprocess.py`, `tests/test_study_pointprocess.py` (20 tests)
+
+Under controlled truth (rate ×2 or ×3 injected at 60 % of each cell's real sequence, 200 replications, 16 cells), at a
+matched nominal false-alarm budget of 0.10 per run:
+
+| multiplier | interval detector A delay | quarterly detector B delay | power A | power B | paired median difference |
+|---|---|---:|---:|---:|---|
+| ×2 | 185.5 d | 48.5 d | 0.762 | 0.333 | +133.9 [71.5, 165.2] |
+| ×3 | 88.7 d | 56.0 d | 0.906 | 0.466 | +32.7 [23.9, 60.9] |
+
+Both intervals exclude zero and both point estimates are positive: **the coarser quarterly detector fires earlier**,
+while the interval detector detects more injections. The fine unit buys **power, not latency** — the likelihood ratio
+needs several post-change events to accumulate evidence, whereas a quarterly bin boundaries converts a rate jump into
+an immediate z-score.
+
+**Two caveats that must travel with these numbers.** (i) Delays are conditional on detection, so a detector that fires
+rarely has an optimistically short conditional delay; power is reported alongside for exactly that reason.
+(ii) Realised false-alarm rates could not be exactly matched because the coarse detector's null statistic has heavy
+ties at its maximum: A realised 0.095 while B realised 0.029, i.e. B was **stricter** than the nominal budget and still
+earlier. That asymmetry narrows the claim from "B is better" to "at or below the same budget, B's detections come
+earlier".
+
+## S-017 — Three calibration defects found and fixed inside one round; the sequence is recorded
+
+**Date:** 2026-11-03 · **Status:** accepted
+
+1. **Poisson null miscalibrated on real data.** The first run calibrated the interval detector with parametric Poisson
+   simulations; realised false-alarm rates on rotated real sequences averaged **0.84** against a 0.10 target (per-cell
+   0.22–1.0), because filing sequences are overdispersed and bursty. Parametric calibration was abandoned.
+2. **Ties inflated the empirical rate.** A plain quantile with a `≥` rule counted every tied value as an alarm and gave
+   B **0.26**. Thresholds now use a strict-above rule.
+3. **Over-correction to zero.** The strict rule pushed both realised rates to **0.0** when null statistics tied at the
+   maximum; the final rule allows ⌊budget·n⌋ observations above the threshold.
+Realised rates after the fixes: A **0.095**, B **0.029**. All three defects are recorded because the pattern — an audit
+or calibration that is subtly wrong on real data — has now occurred four times in this study.
+
+## S-018 — The negative arc is closed; what remains is data, not methods
+
+**Date:** 2026-11-03 · **Status:** accepted
+
+Four independent lines now agree, each with a frozen gate:
+1. **Lead time** is unmeasurable on this corpus (G1: trial lane uses therapy-area tracks; 3 pairs vs a floor of 10);
+2. **Sustained changes do not occur** at firm × track × quarter (1 qualifying quarter in 16 cells over 9 years; 0 at
+   24-month silence);
+3. **Fusion cannot be tested** (0 onsets in the expanded evaluation window);
+4. **The finer unit does not help**: it detects more injections but later (S-016).
+
+Therefore further method work inside this corpus cannot answer the directive's question. The remaining options are
+data-shaped: an event-level source with earlier availability (patents, regulatory pre-submission, procurement with
+usable dates), a different target with an independently recorded confirmation date, or a coarser unit where changes do
+exist. All three require inputs this session cannot obtain, so the study stops here with its negative result published
+in `papers/PAPER_NEGATIVE_v1.md` rather than continuing to produce models that have nothing to detect.
