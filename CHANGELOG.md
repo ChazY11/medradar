@@ -39,6 +39,10 @@ This is a research tool; "fixed" means a documented behaviour changed.
   `docs/TKG_INTEGRATION.md`; behavioural Phase-3 checks added to `verifier/v1/verify.py`.
 
 ### Fixed
+- Windows console encoding: the research-agent CLI reconfigures stdout/stderr to UTF-8 with
+  `errors="replace"` before printing, so evidence text containing `→`/CJK cannot raise
+  `UnicodeEncodeError` on legacy Windows codepages (this was caught by the Windows CI job, not by
+  the local UTF-8 shells).
 - The two disconnected forecast ledgers are unified: the immutable canonical registry is the system
   of record and the Horizon forecaster writes through the adapter; the legacy research-table
   forecasts remain as an untouched historical artifact, not a parallel ledger.

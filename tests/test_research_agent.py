@@ -8,6 +8,7 @@ module.
 from __future__ import annotations
 
 import json
+import io
 import re
 import socket
 import sqlite3
@@ -518,6 +519,27 @@ class AgentCliTests(unittest.TestCase):
         with self.assertRaises(SystemExit):
             agent.main(["ask", "--company", COMPANY, "--track", TRACK,
                         "--template", "not-a-template", "--db", str(self.db)])
+
+
+class StdioEncodingTests(unittest.TestCase):
+    """Windows consoles use a legacy codepage; the CLI must not crash on →."""
+
+    def test_configure_stdio_requests_utf8_and_tolerates_plain_streams(self) -> None:
+        class Dummy:
+            def __init__(self) -> None:
+                self.kwargs = None
+
+            def reconfigure(self, **kwargs) -> None:
+                self.kwargs = kwargs
+
+        out, err = Dummy(), Dummy()
+        with patch.object(agent.sys, "stdout", out), patch.object(agent.sys, "stderr", err):
+            agent._configure_stdio()
+        self.assertEqual(out.kwargs, {"encoding": "utf-8", "errors": "replace"})
+        self.assertEqual(err.kwargs, {"encoding": "utf-8", "errors": "replace"})
+        # Streams without ``reconfigure`` (StringIO) must be left alone, not fail.
+        with patch.object(agent.sys, "stdout", io.StringIO()), patch.object(agent.sys, "stderr", io.StringIO()):
+            agent._configure_stdio()
 
 
 if __name__ == "__main__":

@@ -36,6 +36,7 @@ import argparse
 import json
 import math
 import sqlite3
+import sys
 from collections import Counter, defaultdict
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -1806,6 +1807,26 @@ def latest_example_as_of(db: str | Path) -> str | None:
         conn.close()
 
 
+def _configure_stdio() -> None:
+    """Make CLI output safe on non-UTF-8 consoles (e.g. Windows cp1252).
+
+    Generated questions/synthesis legitimately contain non-ASCII characters such
+    as ``→``; printing them to a legacy console codepage raises
+    ``UnicodeEncodeError`` (observed in the Windows CI job). Reconfiguring the
+    standard streams to UTF-8 with ``errors="replace"`` keeps the CLI usable and
+    never lets a display-encoding issue turn into a test failure. Streams without
+    ``reconfigure`` (e.g. ``io.StringIO`` in tests) are left untouched.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is None:
+            continue
+        try:
+            reconfigure(encoding="utf-8", errors="replace")
+        except Exception:  # pragma: no cover - exotic stream wrappers
+            pass
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Deterministic evidence-grounded research agent (no LLM, no network).")
@@ -1841,6 +1862,7 @@ def _default_registry() -> Path | None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    _configure_stdio()
     parser = build_parser()
     args = parser.parse_args(argv)
     if args.list_templates:
