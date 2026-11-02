@@ -1,0 +1,177 @@
+{
+ "experiment": "reverse_rd_v2",
+ "purpose": "Phase 1 scientific hardening: harder entry target + multi-window expanding-origin evaluation",
+ "frozen_before_holdout": "2026-11-02",
+ "generated_at": "2026-11-01T23:53:31Z",
+ "cutoff_frequency": "quarterly quarter-start",
+ "horizon_months": 12,
+ "min_train_origins": 3,
+ "holdouts": 3,
+ "holdout_origin_rule": "last K origins with at least one purged training example; for these quarterly origins that is also the last K chronological origins",
+ "purge": {
+  "default": true,
+  "rule": "A training example may only be used at origin t when its label window has matured: cutoff + horizon_months <= t. Otherwise the label encodes events inside (t, t+horizon], i.e. the test window.",
+  "horizon_months": 12
+ },
+ "split": "expanding-window rolling-origin, no random temporal split",
+ "algorithm": {
+  "name": "logistic_regression_batch_gd",
+  "epochs": 180,
+  "learning_rate": 0.15,
+  "l2": 1.0,
+  "standardization": "training origins only",
+  "missing_values": "training median plus missing indicator",
+  "note": "identical algorithm and hyperparameters in every window and ablation"
+ },
+ "targets": {
+  "continuation": {
+   "dataset_version": "reverse_rd_v1",
+   "definition": "Any material public FDA 510(k)/original-or-panel-track PMA activity for an already-active company-track pair in the next 12 months",
+   "origins": [
+    "2019-10-01",
+    "2020-01-01",
+    "2020-04-01",
+    "2020-07-01",
+    "2020-10-01",
+    "2021-01-01",
+    "2021-04-01",
+    "2021-07-01",
+    "2021-10-01",
+    "2022-01-01",
+    "2022-04-01",
+    "2022-07-01",
+    "2022-10-01",
+    "2023-01-01",
+    "2023-04-01",
+    "2023-07-01",
+    "2023-10-01",
+    "2024-01-01",
+    "2024-04-01",
+    "2024-07-01",
+    "2024-10-01",
+    "2025-01-01",
+    "2025-04-01",
+    "2025-07-01",
+    "2025-10-01"
+   ],
+   "holdout_origins": [
+    "2025-04-01",
+    "2025-07-01",
+    "2025-10-01"
+   ]
+  },
+  "entry": {
+   "dataset_version": "first_entry_v1",
+   "definition": "First material public FDA 510(k)/original-or-panel-track PMA activity in a technology track the company had not touched for >= dormancy_months before the cutoff",
+   "dormancy_months": 36,
+   "horizon_months": 12,
+   "candidate_universe": "cross product of companies with >=1 material event by t and tracks observed by t",
+   "coverage_start": "2016-11-01",
+   "coverage_end": "2026-10-15",
+   "coverage_check": {
+    "expected_coverage_end": "2026-10-15",
+    "observed_coverage_end": "2026-10-15",
+    "tolerance_days": 45,
+    "checked": true,
+    "delta_days": 0,
+    "ok": true
+   },
+   "left_censoring": "The bulk window starts 2016-11-01; 'dormant' means no observed event inside the observed window, not provably inactive before it. Event dates are decision dates with availability estimated as decision_date+14d.",
+   "origins": [
+    "2020-01-01",
+    "2020-04-01",
+    "2020-07-01",
+    "2020-10-01",
+    "2021-01-01",
+    "2021-04-01",
+    "2021-07-01",
+    "2021-10-01",
+    "2022-01-01",
+    "2022-04-01",
+    "2022-07-01",
+    "2022-10-01",
+    "2023-01-01",
+    "2023-04-01",
+    "2023-07-01",
+    "2023-10-01",
+    "2024-01-01",
+    "2024-04-01",
+    "2024-07-01",
+    "2024-10-01",
+    "2025-01-01",
+    "2025-04-01",
+    "2025-07-01",
+    "2025-10-01"
+   ],
+   "holdout_origins": [
+    "2025-04-01",
+    "2025-07-01",
+    "2025-10-01"
+   ],
+   "inactive_months_cap": 120.0,
+   "features": {
+    "shared": [
+     "rd_count_12m",
+     "rd_count_previous_12m",
+     "rd_momentum",
+     "rd_count_36m",
+     "rd_recency_years",
+     "rd_company_count_12m",
+     "rd_track_count_12m",
+     "rd_company_track_share",
+     "rd_pair_active_years",
+     "rd_company_total_36m"
+    ],
+    "financial": [
+     "fin_revenue_growth",
+     "fin_rd_growth",
+     "fin_rd_intensity",
+     "fin_rd_intensity_delta",
+     "fin_operating_margin",
+     "fin_cash_to_rd",
+     "fin_ocf_to_rd",
+     "fin_capex_intensity",
+     "fin_acquisition_to_revenue",
+     "fin_inventory_growth",
+     "fin_facts_available"
+    ],
+    "entry_specific": [
+     "rd_pair_inactive_months",
+     "rd_company_active_tracks_12m",
+     "rd_company_active_tracks_delta",
+     "rd_track_active_companies_12m",
+     "rd_track_active_companies_delta",
+     "rd_company_track_novelty_share"
+    ]
+   }
+  }
+ },
+ "ablations": {
+  "rd_only": "shared R&D/regulatory history features (plus entry-specific features for the entry target)",
+  "rd_financial": "the same features plus eleven consolidated SEC Company Facts features"
+ },
+ "baselines": [
+  "constant_training_prevalence",
+  "company_base_rate",
+  "track_base_rate",
+  "pair_base_rate (degenerate for never-observed entry candidates)"
+ ],
+ "metrics": [
+  "PR-AUC",
+  "Brier",
+  "ECE-10",
+  "FPR@0.5",
+  "Precision@ceil(10%N)",
+  "mean lead time among positive targets",
+  "per-window mean/std across the last K origins",
+  "paired bootstrap AP(model)-AP(pair base rate) per window"
+ ],
+ "excluded_from_historical_gain": {
+  "procurement": "USAspending current snapshot cannot reconstruct first-publication time",
+  "market": "not in v2",
+  "patent": "not in v2",
+  "publications": "not in v2",
+  "jobs": "not in v2"
+ },
+ "notes": "A public regulatory milestone is a lagging R&D proxy. The continuation target is not first entry; the entry target is first *observed* entry inside the 2016-11-01..2026-10-15 bulk window and is left-censored. Neither target measures internal R&D start, product revenue or a causal market->R&D effect."
+}
