@@ -534,3 +534,31 @@ study's detectors would be exactly the circularity this programme retracted once
 
 **What it does not mean:** that 45 packets are "probably shifts"; that the rubric is a substitute for a reviewer; or
 that any Target B analysis now exists. Target B still requires a named human.
+
+---
+
+## S-032 — Human review workbench delivered; the labels remain the owner's
+
+**Date:** 2026-11-03 · **Status:** accepted (awaiting human labels) · **Evidence:** `HUMAN_REVIEW_WORKSHEET.csv`,
+`HUMAN_REVIEW_WORKSHEET.md`, `REVIEW_GUIDE.md`, `medradar/studies/humanreview.py` (15 tests),
+`experiments/b097/build_review_worksheet.py`, `experiments/b098/ingest_human_review.py`
+
+The owner chose to adjudicate the packets personally. The agent's job is therefore to make that act cheap and
+un-fakeable, not to label anything:
+
+- **`HUMAN_REVIEW_WORKSHEET.csv`** — 69 rows, evidence columns pre-filled (firm, track, stratum, dates, product code and
+  its mapped track, Europe PMC status and lead, a one-line summary, the rubric's preliminary label for contrast), five
+  empty human columns.
+- **Ordering by evidence strength** so a reviewer can stop early: NEAR third-source first (1 packet), DISTANT (3),
+  novel-entry with consistent mapping, routine-stratum controls, then unassessable.
+- **`REVIEW_GUIDE.md`** — the five labels, the independence rule, what to write in each column, how to query the store
+  for more evidence, and how to submit.
+- **`experiments/b098/ingest_human_review.py`** — validates every row and **refuses to write** on any defect: empty label,
+  unknown label, missing reviewer, missing reason, `Confirmed Shift` without an independent confirmation, duplicate
+  packet ids. Verified against the empty worksheet: it refuses with 207 problems (69 rows × 3 missing fields).
+- **`medradar/studies/humanreview.py`** — the vocabulary, validation and summarisation; the agreement between human
+  labels and the agent rubric is computed as a **descriptive diagnostic only**, with the prohibition against tuning
+  written into the returned note.
+
+**What has not changed:** no label exists yet. `ADJUDICATION_HUMAN_V1.json` is produced only by running the ingester on a
+completed worksheet, and until then Target B remains empty.
