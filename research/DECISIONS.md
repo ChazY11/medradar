@@ -1210,3 +1210,115 @@ for a high-count firm mean very different things. The per-profile MDE is what ke
 rolling-origin evaluation: without a frozen record of what the system believed on a given date, later
 "predictions" cannot be audited for look-ahead. The snapshot is dated, source-hashed and
 self-verifying, so a future cycle can prove what this one knew.
+
+---
+
+## D-035 — Pre-registration: rolling-origin benchmark of the change signal (fixed before the run)
+
+**Date:** 2026-11-03. **Status:** accepted; written before `experiments/b050/rolling_origin.py` was
+first executed. Creates B-050.
+
+The mission objective names **rolling-origin benchmarks** and the programme has none. This fixes the
+design of the first one before any outcome is computed.
+
+**Question.** Does a calibrated change signal at time *t* say anything about activity in *t+1 … t+12*?
+Concretely: are cells flagged as increasing more likely to keep increasing than cells that are not
+flagged, and is a calibrated flag better than a raw ratio rule?
+
+**Unit.** (curated company, technology track) cell over the 119-month lane.
+
+**Origins.** Every six months from 2019-12 to 2025-06 (12 origins). At each origin *t*, only events
+with month ≤ *t* are used. Nothing after *t* enters the signal.
+
+**Eligibility, fixed now.** At least 8 events in the cell's history up to *t*, and at least 3 events in
+the prior 12-month block (i-23 … i-12) — without a prior block the comparison is undefined.
+
+**Signal.** Two-sided exact binomial test comparing the recent 12-month block (i-11 … i) with the prior
+block, at α = 0.05. `flag_increase` when p < 0.05 and recent > prior; `flag_decrease` when p < 0.05 and
+recent < prior.
+
+**Outcome, fixed now.** `future_increase` = the 12 months after the origin (i+1 … i+12) contain more
+events than the recent block; `future_decrease` = fewer.
+
+**Estimands.**
+1. **Precision**: P(future_increase | flag_increase) versus P(future_increase | not flagged). Lift is
+   the ratio of the two. The same for decreases.
+2. **Head-to-head**: the same estimate for a raw ratio rule (flag when recent/prior ≥ 1.25) and for a
+   persistence rule (predict increase whenever recent > prior, no test) computed on the *same* cells
+   and origins.
+
+**Inference.** Company-clustered bootstrap (resample companies with replacement, 2000 replications,
+seed 7), reporting 95 % intervals for precision and lift. Cells from one company are not independent,
+which is why the bootstrap resamples companies rather than cells.
+
+**Pre-declared expectation and its failure mode.** If the signal carries information, flagged cells
+should show a higher `future_increase` rate than unflagged cells, and the calibrated rule should beat
+the raw ratio rule because the latter flags 8× more cells (measured in D-034: 35 versus 4 of 53).
+**A null is an acceptable and expected outcome**, and it must be reported with the sample size and the
+minimum detectable difference in precision, not as "no prediction is possible".
+
+**What even a positive would mean.** Only that public regulatory activity tends to persist in the
+direction a calibrated test detected — a statement about the time series, not about technology,
+capability, or intent.
+
+---
+
+## D-036 — B-050 outcome: the first rolling-origin benchmark, its pre-registered design bias, and an honest null
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-050.
+
+**What ran.** The pre-registered benchmark (D-035): 376 (company, track) cells, 12 origins every six
+months from 2019-12 to 2025-06, **717 company-origin-cell observations**. At each origin the signal
+uses only events up to that month; the outcome is the following 12 months. Company-clustered bootstrap,
+2000 replications.
+
+**The pre-registered result, and why it cannot be read at face value.**
+
+| predictor (pre-registered) | flags | P(outcome\|flag) | P(outcome\|no flag) | lift | 95 % CI |
+|---|---:|---:|---:|---:|---|
+| calibrated increase | 5 | 0.00 | 0.41 | 0.00 | [0.00, 0.00] |
+| naive increase (ratio ≥ 1.25) | 149 | 0.22 | 0.46 | 0.49 | [0.32, 0.66] |
+| persistence increase (no test) | 173 | 0.21 | 0.47 | 0.46 | [0.31, 0.61] |
+| naive decrease | 434 | 0.32 | 0.63 | 0.50 | [0.40, 0.61] |
+
+Read naively, that says extrapolation is *anti*-predictive with tight intervals. **That reading is
+wrong, and the design is why.** The outcome asks whether the future block beats the *recent* block, and
+a cell is flagged precisely because its recent block is high. At a constant rate the next block is then
+mechanically lower — regression to the mean is built into the numerator. The negative lift is a
+property of the comparison, not of the technology.
+
+**The declared post-hoc correction.** Comparing the same future block with the cell's **long-run rate**
+up to the origin removes the mechanical dependence:
+
+| predictor (vs long-run baseline) | flags | P(outcome\|flag) | P(outcome\|no flag) | lift | 95 % CI |
+|---|---:|---:|---:|---:|---|
+| calibrated increase | 5 | 0.20 | 0.33 | 0.60 | [0.00, 2.08] |
+| naive increase | 149 | 0.39 | 0.32 | **1.22** | [0.95, 1.53] |
+| persistence increase | 173 | 0.38 | 0.32 | 1.20 | [0.94, 1.49] |
+| calibrated decrease | 16 | 0.88 | 0.65 | 1.35 | [0.90, 1.57] |
+| naive decrease | 434 | 0.67 | 0.63 | 1.06 | [0.92, 1.23] |
+
+**The sign flips.** Under the unbiased baseline, naive increase flags show a *positive* point estimate
+(lift 1.22) instead of a strongly negative one — which confirms that the pre-registered negative lift
+was the bias, not a finding.
+
+**The honest verdict.**
+
+1. **No predictor achieves a 95 % interval excluding 1** against the long-run baseline. There is **no
+   evidence that a change signal predicts 12-month-ahead activity above the cell's own long-run rate**.
+2. The naive-increase point estimate of 1.22 (CI 0.95–1.53) is the closest thing to a hint, and it is
+   not established. It is also not the calibrated signal — it is the raw ratio the programme spent
+   cycle 13 dismantling.
+3. **The calibrated signal is too rare to be a prediction trigger at this resolution**: 5 flags in 717
+   observations. Calibration made the momentum honest and, in the same move, too sparse to predict with.
+   That is a property of ~0.2 events per cell-month, not of the method.
+
+**What this licenses.** A statement about the predictability of public filing activity at this
+granularity: no detectable 12-month-ahead predictability above baseline, with the intervals reported.
+**Not** a statement that corporate technological evolution is unpredictable — the data cannot see far
+enough to say that, and the observation is about filing rates, not technology.
+
+**Design lesson recorded.** A benchmark outcome must not be defined relative to the same window that
+triggered the signal. This is now the fourth self-caught design flaw of the programme (after the entry
+denominator, the post-hoc nomination, and the collector pagination), and the first caught *inside a
+benchmark* rather than in a finding.

@@ -441,3 +441,20 @@ tasks:
       roster, then freeze a dated snapshot (profiles + source hashes + as-of date) so later cycles can
       compare against it. The snapshot is the point-in-time artifact any rolling-origin evaluation
       needs; without it, "what did we believe on date X" cannot be audited.
+
+  - id: B-050
+    layer: evaluate
+    priority: P1
+    title: Rolling-origin benchmark of the change signal
+    status: done
+    owner: lead
+    depends_on: [B-027]
+    acceptance: >
+      First rolling-origin benchmark: 376 (company, track) cells, 12 origins (2019-12..2025-06), 717
+      observations, signal uses only data up to each origin, outcome is the next 12 months,
+      company-clustered bootstrap. Pre-registered in D-035, outcome and the design flaw in D-036.
+      Result: no predictor's 95% interval excludes 1 against the long-run baseline; the naive
+      increase point estimate is 1.22 [0.95, 1.53]; calibrated flags are too rare (5/717) to predict
+      with at ~0.2 events per cell-month.
+
+

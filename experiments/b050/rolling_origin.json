@@ -1,0 +1,243 @@
+{
+  "counts": {
+    "cells": 376,
+    "companies": 46,
+    "observations": 717
+  },
+  "design": {
+    "alpha": 0.05,
+    "block_months": 12,
+    "bootstraps": 2000,
+    "decision": "research/DECISIONS.md D-035 (pre-registered)",
+    "min_history": 8,
+    "min_prior": 3,
+    "naive_ratio": 1.25,
+    "origins": [
+      37,
+      43,
+      49,
+      55,
+      61,
+      67,
+      73,
+      79,
+      85,
+      91,
+      97,
+      103
+    ],
+    "outcome": "future 12-month count vs recent 12-month count",
+    "seed": 7
+  },
+  "predictors": {
+    "calibrated_decrease_vs_baseline": {
+      "companies": 46,
+      "flagged": 16,
+      "lift": 1.3510462555066078,
+      "lift_ci": [
+        0.9007444168734491,
+        1.5744234800838572
+      ],
+      "precision_flagged": 0.875,
+      "precision_flagged_ci": [
+        0.5714285714285714,
+        1.0
+      ],
+      "precision_unflagged": 0.6476462196861626,
+      "reps": 2000,
+      "unflagged": 701
+    },
+    "calibrated_decrease_vs_recent": {
+      "companies": 46,
+      "flagged": 16,
+      "lift": 0.9893145161290322,
+      "lift_ci": [
+        0.0,
+        1.5814538592865488
+      ],
+      "precision_flagged": 0.4375,
+      "precision_flagged_ci": [
+        0.0,
+        0.7
+      ],
+      "precision_unflagged": 0.442225392296719,
+      "reps": 2000,
+      "unflagged": 701
+    },
+    "calibrated_increase_vs_baseline": {
+      "companies": 46,
+      "flagged": 5,
+      "lift": 0.5983193277310925,
+      "lift_ci": [
+        0.0,
+        2.077834179357022
+      ],
+      "precision_flagged": 0.2,
+      "precision_flagged_ci": [
+        0.0,
+        0.6666666666666666
+      ],
+      "precision_unflagged": 0.3342696629213483,
+      "reps": 2000,
+      "unflagged": 712
+    },
+    "calibrated_increase_vs_recent": {
+      "companies": 46,
+      "flagged": 5,
+      "lift": 0.0,
+      "lift_ci": [
+        0.0,
+        0.0
+      ],
+      "precision_flagged": 0.0,
+      "precision_flagged_ci": [
+        0.0,
+        0.0
+      ],
+      "precision_unflagged": 0.4101123595505618,
+      "reps": 2000,
+      "unflagged": 712
+    },
+    "naive_decrease_vs_baseline": {
+      "companies": 46,
+      "flagged": 434,
+      "lift": 1.062367317351007,
+      "lift_ci": [
+        0.9208504801097395,
+        1.2302792084575767
+      ],
+      "precision_flagged": 0.6682027649769585,
+      "precision_flagged_ci": [
+        0.6132723112128147,
+        0.7283950617283951
+      ],
+      "precision_unflagged": 0.6289752650176679,
+      "reps": 2000,
+      "unflagged": 283
+    },
+    "naive_decrease_vs_recent": {
+      "companies": 46,
+      "flagged": 434,
+      "lift": 0.5027160620961305,
+      "lift_ci": [
+        0.40285714285714286,
+        0.6095415661329239
+      ],
+      "precision_flagged": 0.31797235023041476,
+      "precision_flagged_ci": [
+        0.27014218009478674,
+        0.36404494382022473
+      ],
+      "precision_unflagged": 0.6325088339222615,
+      "reps": 2000,
+      "unflagged": 283
+    },
+    "naive_increase_vs_baseline": {
+      "companies": 46,
+      "flagged": 149,
+      "lift": 1.221550669286959,
+      "lift_ci": [
+        0.9531279178338001,
+        1.5315315315315314
+      ],
+      "precision_flagged": 0.38926174496644295,
+      "precision_flagged_ci": [
+        0.30578512396694213,
+        0.46703296703296704
+      ],
+      "precision_unflagged": 0.31866197183098594,
+      "reps": 2000,
+      "unflagged": 568
+    },
+    "naive_increase_vs_recent": {
+      "companies": 46,
+      "flagged": 149,
+      "lift": 0.48570910315876764,
+      "lift_ci": [
+        0.3243677238057005,
+        0.6572903685241231
+      ],
+      "precision_flagged": 0.2214765100671141,
+      "precision_flagged_ci": [
+        0.152317880794702,
+        0.28859060402684567
+      ],
+      "precision_unflagged": 0.45598591549295775,
+      "reps": 2000,
+      "unflagged": 568
+    },
+    "persistence_decrease_vs_baseline": {
+      "companies": 46,
+      "flagged": 459,
+      "lift": 1.1028377595764043,
+      "lift_ci": [
+        0.9593890435885418,
+        1.2835858585858586
+      ],
+      "precision_flagged": 0.6753812636165577,
+      "precision_flagged_ci": [
+        0.6224899598393574,
+        0.7324324324324324
+      ],
+      "precision_unflagged": 0.6124031007751938,
+      "reps": 2000,
+      "unflagged": 258
+    },
+    "persistence_decrease_vs_recent": {
+      "companies": 46,
+      "flagged": 459,
+      "lift": 0.5310557760936686,
+      "lift_ci": [
+        0.43789583197867216,
+        0.6309333333333333
+      ],
+      "precision_flagged": 0.3355119825708061,
+      "precision_flagged_ci": [
+        0.2895927601809955,
+        0.3765432098765432
+      ],
+      "precision_unflagged": 0.6317829457364341,
+      "reps": 2000,
+      "unflagged": 258
+    },
+    "persistence_increase_vs_baseline": {
+      "companies": 46,
+      "flagged": 173,
+      "lift": 1.1996391459788165,
+      "lift_ci": [
+        0.9432773109243698,
+        1.490732921463176
+      ],
+      "precision_flagged": 0.3815028901734104,
+      "precision_flagged_ci": [
+        0.3048780487804878,
+        0.4488888888888889
+      ],
+      "precision_unflagged": 0.3180147058823529,
+      "reps": 2000,
+      "unflagged": 544
+    },
+    "persistence_increase_vs_recent": {
+      "companies": 46,
+      "flagged": 173,
+      "lift": 0.45626204238921003,
+      "lift_ci": [
+        0.3117386489479512,
+        0.6050592411138329
+      ],
+      "precision_flagged": 0.2138728323699422,
+      "precision_flagged_ci": [
+        0.14814814814814814,
+        0.27419354838709675
+      ],
+      "precision_unflagged": 0.46875,
+      "reps": 2000,
+      "unflagged": 544
+    }
+  },
+  "resolution": {
+    "calibrated_flags": 5,
+    "note": "with this many calibrated flags the precision interval is wide; a null is reported with its interval rather than as evidence of no predictability",
+    "pre_registered_design_flaw": "comparing the future block with the recent block conditions on the recent block being unusually high for flagged cells, so lift below 1 is expected at a constant rate (regression to the mean). The pre-registered numerator cannot separate that from anti-momentum; the _vs_baseline predictors are the declared post-hoc correction."
+  }
+}
