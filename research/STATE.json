@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T14:40:00+08:00",
+  "updated_at": "2026-11-03T15:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "promotions_attributed",
-  "cycle": 29,
+  "phase": "objective_mechanical_audit",
+  "cycle": 30,
   "last_completed_cycle": {
-    "cycle": 27,
-    "name": "promotion_ledger",
+    "cycle": 28,
+    "name": "objective_audit",
     "branch": "research/change-detection-v1",
-    "report": "research/RESULTS/PROMOTIONS.md",
-    "summary": "research/RESULTS/cycle27_promotions_ledger_2026-11-03.md",
-    "verdict": "promotions now live in their own append-only ledger with enforced attribution (signer, timestamp, justification); the logger refuses unsigned promotions and the ledger is hashed into snapshot manifests; the one candidate promotion is left PENDING_SIGNOFF because the programme cannot sign for a human"
+    "report": "research/AUDIT.md",
+    "summary": "research/RESULTS/cycle28_audit_2026-11-03.md",
+    "verdict": "objective audited mechanically: 11 PASS, 0 FAIL, 1 N/A across state files, backlog, loop evidence, experiments, 5 verifying snapshots, the rolling-origin benchmark, frozen forecasts, 66/66 claims, 4 figures and the profile self-check"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -160,7 +160,9 @@
     "DETECT: the second-domain result is not a second confirmation (43 vs 494/1,196 alerts) and grants no portability beyond that domain; ramp recall there (0.300) rests on ten cases",
     "METHOD: the domain was chosen by measured feasibility - the trial lane was inspected first and rejected with 5 eligible cells",
     "ACCOUNTING: promotions are recorded in their own append-only ledger with enforced attribution and are explicitly not findings - nothing in the findings ledger may cite a promotion as evidence",
-    "ACCOUNTING: the promotion ledger is hashed into snapshot manifests, so a promotion recorded after a snapshot is visibly absent from that snapshot's manifest"
+    "ACCOUNTING: the promotion ledger is hashed into snapshot manifests, so a promotion recorded after a snapshot is visibly absent from that snapshot's manifest",
+    "GOVERN: the objective is checked mechanically and re-runnably (11 PASS, 0 FAIL, 1 N/A); a claim of progress no longer depends on a narrative",
+    "UNDERSTAND: profiles now name the governing promotion policy version in their limits, and the promotion ledger carries a reviewer checklist for signers"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -178,10 +180,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "add a reviewer checklist to the promotion ledger (what a signer must inspect)",
-    "extend the profile's limits field with the governing promotion policy version",
-    "third domain only if >=15 eligible series exist at these floors",
-    "add promotion policy and the two blind spots to the paper's limitations section"
+    "wire the audit into the round-end routine so every round reports it",
+    "third domain only if >=15 eligible series exist at the established floors",
+    "add the promotion policy and both blind spots to the paper's limitations section",
+    "consider a second paper focused on the measurement rules rather than the frontier"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -989,5 +991,33 @@
       "rule": "same winner everywhere AND all tau >= 0.5"
     },
     "carry_forward": "every artifact using the detector must state resolution: 3 months; a change of resolution requires re-measurement (at monthly the same detector ranks last)"
+  },
+  "audit": {
+    "tool": "tools/audit_objectives.py",
+    "artifacts": [
+      "research/AUDIT.json",
+      "research/AUDIT.md"
+    ],
+    "last_result": {
+      "passed": 11,
+      "failed": 0,
+      "not_applicable": 1
+    },
+    "not_applicable_reason": "working tree is expected to be dirty while a cycle is in progress",
+    "checks": [
+      "state files",
+      "backlog integrity",
+      "state completeness",
+      "loop evidence",
+      "committed experiments",
+      "snapshots verify",
+      "rolling-origin benchmark",
+      "frozen forecasts",
+      "paper claims",
+      "figures",
+      "profile self-check",
+      "working tree"
+    ],
+    "purpose": "completeness and reproducibility, not correctness: it cannot prove the science is right, only that the artifacts exist, verify and are committed"
   }
 }

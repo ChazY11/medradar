@@ -602,4 +602,19 @@ tasks:
       manifest ties profiles to the exact ledger. The Medtronic insulin_delivery alert is recorded
       PENDING_SIGNOFF because the programme cannot sign for a human.
 
+  - id: B-061
+    layer: govern
+    priority: P0
+    title: Mechanical audit of the mission objective
+    status: done
+    owner: lead
+    depends_on: []
+    acceptance: >
+      tools/audit_objectives.py turns the mission text into checks and writes research/AUDIT.json and
+      research/AUDIT.md: eleven required state files, backlog integrity, state completeness, loop evidence
+      (decisions, result rows, negatives, retractions), committed experiments, point-in-time snapshots
+      verifying, the rolling-origin benchmark, frozen forecasts, the paper's claim map, figures, the
+      profile self-check and working-tree cleanliness. Current result: 11 PASS, 0 FAIL, 1 N/A, exit 0.
+      Re-runnable, so "the objective is met" is tested rather than asserted.
+
 

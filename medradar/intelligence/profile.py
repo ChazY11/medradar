@@ -30,7 +30,11 @@ import argparse
 import json
 import math
 
-from medradar.intelligence.promotion import CONFIRMATION_QUARTERS, decide_promotion
+from medradar.intelligence.promotion import (
+    CONFIRMATION_QUARTERS,
+    POLICY_VERSION,
+    decide_promotion,
+)
 from collections import Counter, defaultdict
 from typing import Any, Iterable, Mapping, Sequence
 
@@ -459,6 +463,8 @@ def field_limits(*, window: tuple[str, str], sources: Sequence[str],
             "ramps (best recall 0.229, D-051)",
             "the alert detector is validated at quarterly resolution only; at monthly resolution the "
             "same detector ranks last (D-045)",
+            f"alerts in this profile were governed by promotion policy {POLICY_VERSION}, which requires "
+            "a named human sign-off before any change may be described as a technology change (D-054)",
         ],
         "statement": ("conclusion would change under: " + "; ".join(what_would_change[:2])),
     }

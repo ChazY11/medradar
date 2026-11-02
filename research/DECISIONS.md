@@ -2100,3 +2100,47 @@ measured precision (0.914–0.929) means roughly one promotion in twelve is expe
 **First entry.** The Medtronic `insulin_delivery` 2025-Q3 alert is recorded as **pending sign-off**, not
 promoted: the programme has no human signer in this session, and inventing one would defeat the mechanism. The
 ledger shows the row as awaiting signature with all evidence attached.
+
+---
+
+## D-055 — B-061: the objective is audited mechanically, not asserted
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-061.
+
+**Why.** Every goal round ends with a claim that the programme advanced. After twenty-seven cycles that claim
+needs evidence a reviewer can re-run, not a narrative. `tools/audit_objectives.py` turns the mission text into
+checks and writes `research/AUDIT.json` and `research/AUDIT.md`.
+
+**What it checks.** The eleven required research-state files (existence and non-trivial size); backlog
+integrity (parses, unique ids, status distribution); state completeness (phase, cycle, findings, next actions);
+that the loop actually ran (decision count, result rows, recorded negatives, retractions marked); experiments
+with committed artifacts; **point-in-time snapshots verifying** through the manifest machinery; the
+rolling-origin benchmark; frozen forecasts (honestly N/A when the git-ignored registry is absent);
+the paper's claim map re-verifying; the figures re-verifying; the profile self-check; optionally the test
+suite; and whether the working tree is committed.
+
+**Result on the current repository.**
+
+| requirement | status | evidence |
+|---|---|---|
+| persistent research state files | PASS | 11 files under `research/` |
+| backlog integrity | PASS | 48 tasks, no duplicate ids |
+| state completeness | PASS | phase, cycle, findings, next actions |
+| loop ran and was recorded | PASS | 54 decisions, 108 result rows, 24 negative/null |
+| experiments with committed artifacts | PASS | 77 JSON artifacts across 16 experiment dirs |
+| point-in-time snapshots verify | PASS | **5 of 5** |
+| rolling-origin benchmark | PASS | 376 cells, 12 origins, 717 observations |
+| frozen forecasts | PASS | registry present, 25 registered forecasts |
+| paper with verified claims | PASS | 66/66 claims |
+| figures verify | PASS | 4 figures, 0 failures |
+| profile self-check | PASS | 5 profiles + 5 snapshots |
+| working tree committed | N/A | expected non-empty while a cycle is in progress |
+
+**What the audit is for, and what it is not.** It is a **completeness and reproducibility** check: it can prove
+that the artifacts exist, are committed, and still verify. It **cannot** prove the science is right — no script
+can. The retraction discipline and the claim maps are what stand in for that, and the audit simply refuses to
+let a missing or broken artifact survive into a later round.
+
+**A second, smaller change in the same cycle.** The profile's limits now name the **governing promotion policy
+version**, and the promotion ledger gained a **reviewer checklist** stating what a signer must inspect —
+including that a promotion signed without independent corroboration is a rate change, not a technology change.
