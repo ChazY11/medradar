@@ -113,7 +113,8 @@ def dispersion(counts: list[int]) -> float | None:
     return variance / mean
 
 
-def at_risk_and_entries(resolved: list[dict[str, Any]]) -> dict[str, Any]:
+def at_risk_and_entries(resolved: list[dict[str, Any]], *,
+                        require_prior_filer: bool = False) -> dict[str, Any]:
     """Build risk sets and first-entry events for both units of analysis.
 
     Only *first* event months matter, which makes the risk sets exact and cheap:
@@ -144,14 +145,25 @@ def at_risk_and_entries(resolved: list[dict[str, Any]]) -> dict[str, Any]:
     all_tracks = sorted({track for _, track in first_in_track})
     track_count = len(all_tracks)
 
-    # entries: first observed touch of a track, at least MIN_ENTRY_MONTH into the window
+    # entries: first observed touch of a track, at least MIN_ENTRY_MONTH into the window.
+    # With ``require_prior_filer`` an entry only counts when the entity was already an
+    # observable filer (had some event in another track before the entry month). Without it,
+    # a brand-new legal entity appearing in the lane is scored as a technology entry, which is
+    # a different phenomenon (entity appearance, not firm-level technology entry) and is the
+    # first artifact the ivd_immuno wave must be tested against.
     entries: list[dict[str, Any]] = []
+    new_entity_entries = 0
     entered_by_month: dict[str, list[int]] = defaultdict(lambda: [0] * WINDOW_MONTHS)
     for (entity, track), month in first_in_track.items():
         entered_by_month[track][month] += 1
-        if month >= MIN_ENTRY_MONTH:
-            entries.append({"entity": entity, "track": track, "month": month,
-                            "date": month_labels()[month]})
+        if month < MIN_ENTRY_MONTH:
+            continue
+        prior_filer = first_month.get(entity, month) < month
+        if require_prior_filer and not prior_filer:
+            new_entity_entries += 1
+            continue
+        entries.append({"entity": entity, "track": track, "month": month,
+                        "date": month_labels()[month], "prior_filer": prior_filer})
 
     # risk sets via prefix counts
     filers_before = [0] * (WINDOW_MONTHS + 1)
@@ -190,6 +202,7 @@ def at_risk_and_entries(resolved: list[dict[str, Any]]) -> dict[str, Any]:
         "risk_entity": risk_entity,
         "first_month": first_month,
         "track_count": track_count,
+        "new_entity_entries_excluded": new_entity_entries,
     }
 
 
@@ -261,6 +274,8 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--db", default="data/research.sqlite")
     parser.add_argument("--out", default="experiments/detect_v1/entries.json")
+    parser.add_argument("--require-prior-filer", action="store_true",
+                        help="score only entries by entities already observable before the entry")
     parser.add_argument("--churn-cutoff", default=None,
                         help="ISO month; drop events on product codes first seen on/after it")
     args = parser.parse_args(argv)
@@ -269,10 +284,11 @@ def main(argv: list[str] | None = None) -> int:
         resolved = resolve_events_with_codes(Path(args.db), args.churn_cutoff)
     else:
         resolved = resolve_events(Path(args.db))
-    bundle = at_risk_and_entries(resolved)
+    bundle = at_risk_and_entries(resolved, require_prior_filer=args.require_prior_filer)
     entries = bundle["entries"]
     print(f"entry events: {len(entries)}  (dormancy {DORMANCY_MONTHS}m, min entry month "
-          f"{MIN_ENTRY_MONTH})")
+          f"{MIN_ENTRY_MONTH}; prior-filer required={bool(args.require_prior_filer)}; "
+          f"new-entity entries excluded={bundle['new_entity_entries_excluded']})")
 
     by_track: dict[str, list[int]] = defaultdict(list)
     by_entity: dict[str, list[int]] = defaultdict(list)
@@ -314,9 +330,15 @@ def main(argv: list[str] | None = None) -> int:
             "statistic": "variance/mean of monthly entry counts (dispersion index)",
             "permutations": PERMUTATIONS, "seed": SEED, "fdr_q": BH_Q,
             "min_entries_per_unit": MIN_ENTRIES_PER_UNIT,
+            "require_prior_filer": bool(args.require_prior_filer),
+            "require_prior_filer_note": (
+                "when set, an entry only counts if the entity was already an observable filer "
+                "(some event in another track before the entry month); this separates firm-level "
+                "technology entry from a brand-new legal entity appearing in the lane"),
         },
         "counts": {
             "entries": len(entries),
+            "new_entity_entries_excluded": bundle["new_entity_entries_excluded"],
             "entities_with_entries": len(by_entity),
             "tracks_with_entries": len(by_track),
             "by_year": dict(sorted(year_counts.items())),
@@ -350,5 +372,8 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+
 
 

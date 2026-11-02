@@ -370,7 +370,7 @@ tasks:
     layer: understand
     priority: P1
     title: ivd_immuno entry-wave case study (first positive target)
-    status: todo
+    status: done
     owner: lead
     depends_on: [B-042, B-040]
     acceptance: >
@@ -380,3 +380,19 @@ tasks:
       include contradictory evidence and an explicit statement of what would make the wave an artifact
       (regulatory reclassification, acquisition-driven relabelling, procurement effects). This is the
       first test in the programme with a positive target rather than a null.
+
+
+  - id: B-046
+    layer: observe
+    priority: P1
+    title: Split-sample pre-registered test of the aesthetics candidate
+    status: todo
+    owner: lead
+    depends_on: [B-043]
+    acceptance: >
+      The aesthetics track showed the only specification-stable small nominal p (0.007-0.015 across
+      four specifications) but fails FDR everywhere. Because it was selected after seeing p-values,
+      re-test it out of sample: fix the hypothesis and the threshold now, estimate the entry-rate
+      pattern on a predetermined early window ending 2022-12, and test on the held-out later window
+      2023-01..2026-09 with the threshold untouched. A failure is the expected outcome and must be
+      reported as such; a success is the programme's first verified empirical finding.

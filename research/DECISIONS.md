@@ -708,3 +708,54 @@ deliberately synchronised. Those are Understand-layer questions.
 **Next step this opens.** A focused case study of `ivd_immuno` entry waves (2019 and 2023-24), asking
 which firms entered, with what evidence, and whether the wave is visible in the independent
 device-trial lane collected in B-040 — the first test with a *positive* target rather than a null.
+
+---
+
+## D-025 — Retraction: the cycle-6 "ivd_immuno entry wave" was an entity-appearance artifact, and no track has a specification-stable wave
+
+**Date:** 2026-11-02. **Status:** accepted. This **retracts** the positive finding recorded in D-024
+and replaces it with a negative result plus a measurement lesson.
+
+**What was wrong.** Cycle 6's entry list scored a cell's first observed event as a technology entry
+regardless of whether the firm was already an observable filer. But the risk set (and therefore the
+null) already required observability, so the numerator and the denominator disagreed: an entry could
+be counted for an entity that was not at risk. In practice **3,804 of 4,814 entries (79 %) were
+first-ever appearances of a legal entity in the lane** — new small firms registering, or newly
+resolvable applicant strings — not established firms entering a new technology area.
+
+**The control.** `--require-prior-filer` counts an entry only when the entity had some event in
+another track before the entry month. This restores numerator/denominator consistency and separates
+*firm-level technology entry* from *entity appearance*.
+
+**What happens to the finding.**
+
+| track | all events | churn controlled | prior-filer | prior-filer + churn |
+|---|---|---|---|---|
+| `ivd_immuno` | n=49, p=0.0055 | n=40, **p=0.0010** | n=8, **p=1.0000** | n=5, p=1.0 |
+| `ivd_molecular` | n=68, p=0.69 | n=61, p=0.56 | n=5, **p=0.0025** | n=5, p=0.0005 |
+| `aesthetics` | n=197, p=0.015 | n=195, p=0.0070 | n=27, p=0.0135 | n=27, p=0.0085 |
+| `medical_ai` | n=464, p=0.0040 | n=418, p=0.0365 | n=144, p=0.0525 | n=135, p=0.0815 |
+| `cardiac_rhythm` | n=21, p=0.0155 | n=18, p=0.0275 | n=3, p=0.0275 | n=3, p=0.0235 |
+
+1. **`ivd_immuno` collapses to nothing** (40 → 8 entries, p = 1.0). The "wave" was new entities
+   appearing in the track, not incumbents entering. **The cycle-6 positive finding is retracted.**
+2. **The surviving track changes identity with the specification** (`ivd_immuno` → `ivd_molecular`),
+   and `ivd_molecular`'s rejection rests on **five** entries (p = 0.0025, down from p = 0.69 with 68
+   entries). A finding that appears only in one specification and on five events is specification
+   noise, not an industry wave.
+3. **`aesthetics` is the only track with a consistently small nominal p** across all four
+   specifications (0.0070–0.0150, n = 27–197), and it **fails** FDR control in every one. It is a
+   candidate, not a finding.
+4. **Firm-level bursts remain null** in every specification (0 of 46–60).
+
+**What replaces the finding.** No device technology track has a **specification-stable** industry
+entry wave in this lane. The honest result of B-042/B-043 is negative, and it comes with a
+measurement lesson that matters more than the original claim: **most "entry" events in this lane are
+first appearances of legal entities, not established firms entering new areas.** Any future entry
+study must state which of the two it measures; the two are not interchangeable.
+
+**The one legitimate way forward on `aesthetics`.** Because it was selected after looking at p-values,
+testing it on the same window would be circular. The remedy is split-sample pre-registration: choose
+the track now (recorded here), estimate on a fixed early window, and test on a held-out later window
+without touching the threshold. That is B-046, and it is the only route that could turn this candidate
+into evidence.

@@ -64,3 +64,17 @@ A focused case study of the `ivd_immuno` entry waves (2019 and 2023-24): which f
 what evidence, and whether the wave is visible in the independent device-trial lane from B-040. That
 is the first test in this programme with a *positive* target rather than a null — a materially
 different kind of work.
+
+---
+
+## RETRACTED 2026-11-02 — read `cycle7_retraction_2026-11-02.md`
+
+The positive finding below (`ivd_immuno` entry wave) did **not** survive the entry-definition control
+introduced the next cycle. 79 % of the "entry" events in this file were first-ever appearances of a
+legal entity, not established firms entering a track; restricting to entities that were already
+observable filers collapses `ivd_immuno` to 8 entries (p = 1.0) and the surviving track identity
+becomes specification-dependent. The measurement rule that replaces it: state explicitly whether an
+entry study measures *firm-level technology entry* or *entity appearance*.
+
+This file is kept unedited as the record of what was concluded at the time, per the programme's rule
+that superseded results get a pointer, never a rewrite.
