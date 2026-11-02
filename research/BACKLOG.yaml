@@ -733,4 +733,20 @@ tasks:
       verify_claims.py --claims checks both directions (22/22). round_end.py now runs both claim maps (8 steps).
       papers/README.md indexes the two papers and how to read them together.
 
+  - id: B-070
+    layer: govern
+    priority: P0
+    title: Rewrite the roadmap from what exists and update the mission's honest position
+    status: done
+    owner: lead
+    depends_on: [B-069]
+    acceptance: >
+      research/ROADMAP.md rewritten as a plan of record: one status table where every capability cites its
+      evidence, phase-by-phase results (A done, B done with the non-identifiability limit, C partly blocked, D
+      done, E four diagnosed failures, F null now prospective, G not started on purpose), and a section 3 listing
+      what remains and why it cannot be simulated (25 forecasts maturing 2026-Q4..2028-Q1, 25 nowcasts maturing
+      2027-10, one promotion awaiting human sign-off, access-blocked lanes, structurally unavailable hiring
+      coverage). research/MISSION.md keeps section 9 as the 2026-11-02 record and adds section 10 with today's
+      position, established and unchanged. Audit stays 11 PASS / 0 FAIL / 1 N/A.
+
 

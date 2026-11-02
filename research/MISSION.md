@@ -208,3 +208,45 @@ What is already established (evidence in `RESULTS/`):
   0.0877). No forecast has matured, so there is **zero** calibration evidence.
 - The **OBSERVE layer — which this document makes the first priority — has no validated change
   detector yet.** That is the current frontier and the current bottleneck.
+
+---
+
+## 10. Honest position as of 2026-11-03 (update; §9 kept as the record of the 2026-11-02 position)
+
+Thirty-six cycles later, the position has changed in specific ways and not in others.
+
+**What is now established, with artifacts.**
+
+- **OBSERVE has a validated detector at a chosen resolution.** A controlled-truth benchmark produced a
+  sensitivity/false-alarm frontier (best monthly sensitivity 0.223 at a 2 % false-alarm budget); the detector
+  ranking is *not* identifiable across resolutions (D-018), so deployment fixed a resolution and then a detector:
+  quarterly, rolling z-score, threshold 3.5, measured false-alarm rate 0.0179 and sensitivity 0.147 (D-044/D-045).
+  Every downstream artifact states the resolution.
+- **One decision rule is confirmed, and only one.** An alert followed by a sustained two-month confirmation window
+  may be promoted at measured precision 0.914–0.917 against a base rate near 0.70 (D-043), replicated at the
+  legal-entity unit (D-048), extended to a second recording process (D-057) and to market-aggregate series (D-061).
+  The ramp label is withheld below 1.0 event per series-month because measurement there cannot support it (D-061).
+- **UNDERSTAND exists as a working instrument.** Seven-field company profiles for the full curated roster, with a
+  schema that **rejects** any profile lacking contradictory evidence, the validated detector embedded with its
+  measured error rates, a promotion policy in code with mandatory human sign-off and no automated path, and five
+  auditable frozen snapshots (three backdated, two policy-labelled) whose provenance is verifiable to a date.
+- **ANTICIPATE has been tested four times and failed each time, for diagnosed reasons.** Co-movement dissolved under
+  a track-growth null; entry waves were an entity-appearance artefact; the surviving candidate failed a clean split
+  sample; cross-lane association was null. A rolling-origin benchmark found no predictability above baseline, and its
+  own outcome definition was biased (corrected 0.49 → 1.22).
+- **Prospective machinery exists and is frozen.** 25 genuinely prospective forecasts with content hashes mature
+  2026-Q4 … 2028-Q1; the first registration exposed seven backfilled labels, which are excluded and reported.
+- **Two papers exist**, each with a machine-verified claim map (82 and 22 claims), and a round-end command whose exit
+  code is the completion claim.
+
+**What has not changed, and should not be papered over.**
+
+- No forecast has matured. There is still **zero prospective calibration evidence**, and no claim about predictive
+  skill over technology can be made (D-036, and the prospective set matures no earlier than 2026-Q4).
+- The corpus cannot see intent, capability or internal R&D. Every surviving statement is about **public filing
+  rates** and about the **resolution** of this data.
+- The binding constraint is **information**, not modelling: ~0.2 events per cell-month, unversioned taxonomy,
+  access-blocked patent and hiring sources, and a hiring lane structurally unable to cover four of the five mandated
+  deep-case companies.
+- Five findings were retracted, and the programme's most transferable output is the measurement discipline that
+  produced the retractions (`papers/PAPER_METHODS_v1.md`).

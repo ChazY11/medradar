@@ -2653,3 +2653,38 @@ runs **both** claim maps, so the methods paper cannot drift either.
 **Status.** Draft v1: not submitted, no venue claimed. Known gap: it is a practice report from one programme, not a
 validated framework; the paper says so in its own discussion, citing the instrumentation artefact the programme
 found in its own negative conclusion.
+
+---
+
+## D-068 — B-070: the roadmap is rewritten from what exists, and the mission's honest position is updated
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-070.
+
+**Why this is a research act and not housekeeping.** The roadmap was written on 2026-11-02, before the detector was
+validated, before the promotion rule existed, before four anticipations had failed and before either paper. Left
+alone it would describe a programme that no longer exists, and a reader would have to reconstruct the real state from
+36 results files. A plan of record that is stale is worse than none, because it invites the reader to trust it.
+
+**What changed in `ROADMAP.md`.** It is now organised around a single status table where **every capability cites its
+evidence**: foundation, entity universe, detection with its named non-identifiability limit, the deployment choice,
+independent lanes with their coverage limits, the blocked patent and broad-hiring lanes, seven-field profiles, the
+promotion policy with its sign-off gate, one confirmed decision rule, four failed anticipations with the design flaw
+that produced each, the rolling-origin null, 25 frozen prospective forecasts, two papers with claim maps, and the
+governance tooling. P4 is recorded as **not started on purpose**, with the reason (no baseline gap; the bottleneck is
+information, not model capacity).
+
+Section 3 is the part that matters for completion: it states **what remains and why it cannot be simulated** — 25
+forecasts maturing 2026-Q4…2028-Q1, 25 legacy nowcasts maturing 2027-10, one promotion awaiting a human signature the
+session cannot give, access-blocked lanes, and structurally unavailable hiring coverage for three deep-case companies.
+
+**What changed in `MISSION.md`.** §9 is preserved unchanged as the record of the 2026-11-02 position; a new §10 states
+today's position with the same discipline: what is now established (detector, one rule, the instrument, four
+diagnosed failures, frozen prospective machinery, two papers), and what has **not** changed (zero prospective
+calibration evidence; no visibility into intent, capability or internal R&D; information as the binding constraint;
+five retractions).
+
+**Why both documents were edited rather than appended to.** The roadmap is a plan of record and must read as current
+state; the mission is a charter and must keep its history. Appending to both would have blurred that distinction.
+
+**Not claimed.** That the programme is complete: maturation is time-dependent and three lanes are access-dependent.
+The roadmap now says so in the place a reader will look first.
