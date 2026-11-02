@@ -1,0 +1,772 @@
+{
+  "schema": "crosswalk_g1_v1",
+  "authorisation": "STUDY_DECISIONS.md S-019 (owner sign-off for the crosswalk)",
+  "window": [
+    "2017-01-01",
+    "2025-12-31"
+  ],
+  "lag_days": 30,
+  "min_lead_quarters": 2,
+  "criteria": {
+    "min_pairs": 10,
+    "min_firms": 2
+  },
+  "crosswalk": {
+    "method": "deterministic keyword match of trial condition/title against each device track's own keywords; unique winner only, ties left unassigned",
+    "device_tracks_with_keywords": 38,
+    "coverage": {
+      "assigned": 2157,
+      "ambiguous": 122,
+      "no_match": 16778,
+      "total": 19057,
+      "assigned_share": 0.113
+    },
+    "assigned_to_five_firms": 71
+  },
+  "pairs_by_cell": {
+    "ge_healthcare|imaging_mr_ct": {
+      "trials_assigned": 2,
+      "regulatory_events": 127,
+      "eligible_pairs": 0,
+      "below_threshold": 2,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "ge_healthcare|imaging_us": {
+      "trials_assigned": 5,
+      "regulatory_events": 85,
+      "eligible_pairs": 0,
+      "below_threshold": 5,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "ge_healthcare|ivd_molecular": {
+      "trials_assigned": 1,
+      "regulatory_events": 0,
+      "eligible_pairs": 0,
+      "below_threshold": 0,
+      "unpaired": 1,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "ge_healthcare|patient_monitoring": {
+      "trials_assigned": 1,
+      "regulatory_events": 23,
+      "eligible_pairs": 1,
+      "below_threshold": 0,
+      "unpaired": 0,
+      "leads": {
+        "n": 1,
+        "median": 3.3,
+        "min": 3.3,
+        "max": 3.3,
+        "quartiles": [
+          3.3,
+          3.3,
+          3.3
+        ]
+      }
+    },
+    "ge_healthcare|wearable_remote": {
+      "trials_assigned": 1,
+      "regulatory_events": 0,
+      "eligible_pairs": 0,
+      "below_threshold": 0,
+      "unpaired": 1,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|cardiac_rhythm": {
+      "trials_assigned": 2,
+      "regulatory_events": 2459,
+      "eligible_pairs": 0,
+      "below_threshold": 2,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|diabetes_cgm": {
+      "trials_assigned": 2,
+      "regulatory_events": 141,
+      "eligible_pairs": 0,
+      "below_threshold": 2,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|endoscopy": {
+      "trials_assigned": 1,
+      "regulatory_events": 6,
+      "eligible_pairs": 0,
+      "below_threshold": 0,
+      "unpaired": 1,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|ep_pfa": {
+      "trials_assigned": 1,
+      "regulatory_events": 211,
+      "eligible_pairs": 0,
+      "below_threshold": 1,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|heart_failure": {
+      "trials_assigned": 14,
+      "regulatory_events": 137,
+      "eligible_pairs": 0,
+      "below_threshold": 14,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|imaging_mr_ct": {
+      "trials_assigned": 1,
+      "regulatory_events": 8,
+      "eligible_pairs": 1,
+      "below_threshold": 0,
+      "unpaired": 0,
+      "leads": {
+        "n": 1,
+        "median": 2.26,
+        "min": 2.26,
+        "max": 2.26,
+        "quartiles": [
+          2.26,
+          2.26,
+          2.26
+        ]
+      }
+    },
+    "medtronic|insulin_delivery": {
+      "trials_assigned": 1,
+      "regulatory_events": 252,
+      "eligible_pairs": 0,
+      "below_threshold": 1,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|ivd_molecular": {
+      "trials_assigned": 1,
+      "regulatory_events": 0,
+      "eligible_pairs": 0,
+      "below_threshold": 0,
+      "unpaired": 1,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|medical_ai": {
+      "trials_assigned": 1,
+      "regulatory_events": 19,
+      "eligible_pairs": 0,
+      "below_threshold": 1,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|neurovascular": {
+      "trials_assigned": 3,
+      "regulatory_events": 147,
+      "eligible_pairs": 0,
+      "below_threshold": 3,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|peripheral_vascular": {
+      "trials_assigned": 2,
+      "regulatory_events": 212,
+      "eligible_pairs": 0,
+      "below_threshold": 2,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|respiratory": {
+      "trials_assigned": 5,
+      "regulatory_events": 6,
+      "eligible_pairs": 4,
+      "below_threshold": 1,
+      "unpaired": 0,
+      "leads": {
+        "n": 4,
+        "median": 4.56,
+        "min": 2.93,
+        "max": 9.31,
+        "quartiles": [
+          3.26,
+          4.56,
+          4.56
+        ]
+      }
+    },
+    "medtronic|spine": {
+      "trials_assigned": 1,
+      "regulatory_events": 68,
+      "eligible_pairs": 0,
+      "below_threshold": 1,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|structural_heart": {
+      "trials_assigned": 3,
+      "regulatory_events": 360,
+      "eligible_pairs": 0,
+      "below_threshold": 3,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|urology": {
+      "trials_assigned": 2,
+      "regulatory_events": 406,
+      "eligible_pairs": 0,
+      "below_threshold": 2,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "medtronic|vascular_access": {
+      "trials_assigned": 2,
+      "regulatory_events": 5,
+      "eligible_pairs": 2,
+      "below_threshold": 0,
+      "unpaired": 0,
+      "leads": {
+        "n": 2,
+        "median": 3.59,
+        "min": 3.59,
+        "max": 6.82,
+        "quartiles": [
+          3.59,
+          3.59,
+          6.82
+        ]
+      }
+    },
+    "philips|dental": {
+      "trials_assigned": 1,
+      "regulatory_events": 1,
+      "eligible_pairs": 0,
+      "below_threshold": 0,
+      "unpaired": 1,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "philips|imaging_mr_ct": {
+      "trials_assigned": 1,
+      "regulatory_events": 112,
+      "eligible_pairs": 0,
+      "below_threshold": 1,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "philips|imaging_us": {
+      "trials_assigned": 3,
+      "regulatory_events": 37,
+      "eligible_pairs": 1,
+      "below_threshold": 2,
+      "unpaired": 0,
+      "leads": {
+        "n": 1,
+        "median": 2.15,
+        "min": 2.15,
+        "max": 2.15,
+        "quartiles": [
+          2.15,
+          2.15,
+          2.15
+        ]
+      }
+    },
+    "philips|medical_ai": {
+      "trials_assigned": 2,
+      "regulatory_events": 10,
+      "eligible_pairs": 0,
+      "below_threshold": 2,
+      "unpaired": 0,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "philips|neurovascular": {
+      "trials_assigned": 3,
+      "regulatory_events": 0,
+      "eligible_pairs": 0,
+      "below_threshold": 0,
+      "unpaired": 3,
+      "leads": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null,
+        "quartiles": [
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    "philips|respiratory": {
+      "trials_assigned": 6,
+      "regulatory_events": 1,
+      "eligible_pairs": 6,
+      "below_threshold": 0,
+      "unpaired": 0,
+      "leads": {
+        "n": 6,
+        "median": 14.54,
+        "min": 12.23,
+        "max": 23.73,
+        "quartiles": [
+          14.44,
+          14.54,
+          22.53
+        ]
+      }
+    },
+    "philips|vascular_access": {
+      "trials_assigned": 1,
+      "regulatory_events": 1,
+      "eligible_pairs": 1,
+      "below_threshold": 0,
+      "unpaired": 0,
+      "leads": {
+        "n": 1,
+        "median": 19.67,
+        "min": 19.67,
+        "max": 19.67,
+        "quartiles": [
+          19.67,
+          19.67,
+          19.67
+        ]
+      }
+    },
+    "philips|wearable_remote": {
+      "trials_assigned": 2,
+      "regulatory_events": 29,
+      "eligible_pairs": 1,
+      "below_threshold": 1,
+      "unpaired": 0,
+      "leads": {
+        "n": 1,
+        "median": 2.09,
+        "min": 2.09,
+        "max": 2.09,
+        "quartiles": [
+          2.09,
+          2.09,
+          2.09
+        ]
+      }
+    }
+  },
+  "pairs": [
+    {
+      "earlier_id": "99729fd0628c1960e22810ff72769cef",
+      "earlier_date": "2021-05-06",
+      "available_at": "2021-06-05",
+      "later_id": "510k:2022-04-01",
+      "later_date": "2022-04-01",
+      "lead_days": 300,
+      "lead_quarters": 3.3,
+      "resolved_by": "crosswalk",
+      "company": "ge_healthcare",
+      "track": "patient_monitoring"
+    },
+    {
+      "earlier_id": "6cd572d81d0ef8cd8f3d1498fbce116c",
+      "earlier_date": "2018-07-13",
+      "available_at": "2018-08-12",
+      "later_id": "510k:2019-03-06",
+      "later_date": "2019-03-06",
+      "lead_days": 206,
+      "lead_quarters": 2.26,
+      "resolved_by": "crosswalk",
+      "company": "medtronic",
+      "track": "imaging_mr_ct"
+    },
+    {
+      "earlier_id": "a1a4e56656b1737ad0a26f00e3b1cbb8",
+      "earlier_date": "2018-06-27",
+      "available_at": "2018-07-27",
+      "later_id": "510k:2020-11-20",
+      "later_date": "2020-11-20",
+      "lead_days": 847,
+      "lead_quarters": 9.31,
+      "resolved_by": "crosswalk",
+      "company": "medtronic",
+      "track": "respiratory"
+    },
+    {
+      "earlier_id": "dbe27e0bb7dfb73549be399efbeab263",
+      "earlier_date": "2020-10-26",
+      "available_at": "2020-11-25",
+      "later_id": "510k:2022-01-14",
+      "later_date": "2022-01-14",
+      "lead_days": 415,
+      "lead_quarters": 4.56,
+      "resolved_by": "crosswalk",
+      "company": "medtronic",
+      "track": "respiratory"
+    },
+    {
+      "earlier_id": "5d899bd63135482f1b5d3c65970e8bd3",
+      "earlier_date": "2021-02-21",
+      "available_at": "2021-03-23",
+      "later_id": "510k:2022-01-14",
+      "later_date": "2022-01-14",
+      "lead_days": 297,
+      "lead_quarters": 3.26,
+      "resolved_by": "crosswalk",
+      "company": "medtronic",
+      "track": "respiratory"
+    },
+    {
+      "earlier_id": "4dd4990d474768df01e19bf9dd5486d0",
+      "earlier_date": "2021-03-23",
+      "available_at": "2021-04-22",
+      "later_id": "510k:2022-01-14",
+      "later_date": "2022-01-14",
+      "lead_days": 267,
+      "lead_quarters": 2.93,
+      "resolved_by": "crosswalk",
+      "company": "medtronic",
+      "track": "respiratory"
+    },
+    {
+      "earlier_id": "4c31ff47074258d71b27771372bb1a43",
+      "earlier_date": "2019-10-03",
+      "available_at": "2019-11-02",
+      "later_id": "510k:2021-07-15",
+      "later_date": "2021-07-15",
+      "lead_days": 621,
+      "lead_quarters": 6.82,
+      "resolved_by": "crosswalk",
+      "company": "medtronic",
+      "track": "vascular_access"
+    },
+    {
+      "earlier_id": "8172ead9237536e78af31a89449ed19a",
+      "earlier_date": "2020-07-23",
+      "available_at": "2020-08-22",
+      "later_id": "510k:2021-07-15",
+      "later_date": "2021-07-15",
+      "lead_days": 327,
+      "lead_quarters": 3.59,
+      "resolved_by": "crosswalk",
+      "company": "medtronic",
+      "track": "vascular_access"
+    },
+    {
+      "earlier_id": "5130282779bb5c6f7fc8dec3183b3fe9",
+      "earlier_date": "2019-01-23",
+      "available_at": "2019-02-22",
+      "later_id": "510k:2019-09-06",
+      "later_date": "2019-09-06",
+      "lead_days": 196,
+      "lead_quarters": 2.15,
+      "resolved_by": "crosswalk",
+      "company": "philips",
+      "track": "imaging_us"
+    },
+    {
+      "earlier_id": "e8154a8c25a86952783488327d2cf52e",
+      "earlier_date": "2018-08-03",
+      "available_at": "2018-09-02",
+      "later_id": "510k:2024-07-31",
+      "later_date": "2024-07-31",
+      "lead_days": 2159,
+      "lead_quarters": 23.73,
+      "resolved_by": "crosswalk",
+      "company": "philips",
+      "track": "respiratory"
+    },
+    {
+      "earlier_id": "eeeebba259c8febd55057ed20a463b56",
+      "earlier_date": "2018-11-20",
+      "available_at": "2018-12-20",
+      "later_id": "510k:2024-07-31",
+      "later_date": "2024-07-31",
+      "lead_days": 2050,
+      "lead_quarters": 22.53,
+      "resolved_by": "crosswalk",
+      "company": "philips",
+      "track": "respiratory"
+    },
+    {
+      "earlier_id": "1c907e13f705f9515b2b346538be2505",
+      "earlier_date": "2019-05-01",
+      "available_at": "2019-05-31",
+      "later_id": "510k:2024-07-31",
+      "later_date": "2024-07-31",
+      "lead_days": 1888,
+      "lead_quarters": 20.75,
+      "resolved_by": "crosswalk",
+      "company": "philips",
+      "track": "respiratory"
+    },
+    {
+      "earlier_id": "952ad54474afec70866f54fd680aa0e7",
+      "earlier_date": "2020-11-16",
+      "available_at": "2020-12-16",
+      "later_id": "510k:2024-07-31",
+      "later_date": "2024-07-31",
+      "lead_days": 1323,
+      "lead_quarters": 14.54,
+      "resolved_by": "crosswalk",
+      "company": "philips",
+      "track": "respiratory"
+    },
+    {
+      "earlier_id": "8cc8c9c4b4d34d0a22164ea6baf79026",
+      "earlier_date": "2020-11-25",
+      "available_at": "2020-12-25",
+      "later_id": "510k:2024-07-31",
+      "later_date": "2024-07-31",
+      "lead_days": 1314,
+      "lead_quarters": 14.44,
+      "resolved_by": "crosswalk",
+      "company": "philips",
+      "track": "respiratory"
+    },
+    {
+      "earlier_id": "5510904212a842c43191330a82c6c0d9",
+      "earlier_date": "2021-06-14",
+      "available_at": "2021-07-14",
+      "later_id": "510k:2024-07-31",
+      "later_date": "2024-07-31",
+      "lead_days": 1113,
+      "lead_quarters": 12.23,
+      "resolved_by": "crosswalk",
+      "company": "philips",
+      "track": "respiratory"
+    },
+    {
+      "earlier_id": "b733adae536daa01777d4e98bf6d22d8",
+      "earlier_date": "2020-06-30",
+      "available_at": "2020-07-30",
+      "later_id": "510k:2025-06-24",
+      "later_date": "2025-06-24",
+      "lead_days": 1790,
+      "lead_quarters": 19.67,
+      "resolved_by": "crosswalk",
+      "company": "philips",
+      "track": "vascular_access"
+    },
+    {
+      "earlier_id": "4a0887acb4649c1d6d01bda094a9424c",
+      "earlier_date": "2022-08-26",
+      "available_at": "2022-09-25",
+      "later_id": "pma:2023-04-03",
+      "later_date": "2023-04-03",
+      "lead_days": 190,
+      "lead_quarters": 2.09,
+      "resolved_by": "crosswalk",
+      "company": "philips",
+      "track": "wearable_remote"
+    }
+  ],
+  "eligible_pairs_total": 17,
+  "distinct_later_events": 9,
+  "independence_ratio": 0.529,
+  "firms_with_pairs": [
+    "ge_healthcare",
+    "medtronic",
+    "philips"
+  ],
+  "verdict_frozen_count": "GO",
+  "verdict_effective_independence": "NO-GO",
+  "verdict": "GO (frozen count) / FRAGILE (independence check)",
+  "verdict_note": "the frozen criterion counts pairs and is met (17 pairs, 3 firms), but those pairs reuse only 9 distinct later clearances, so the independent evidence is below the floor of 10. The gate passes formally and is fragile in substance.",
+  "not_claimed": [
+    "the crosswalk is a text heuristic, not a validated mapping; its coverage and ambiguity are reported",
+    "no lead-time statement is made in either direction unless the gate returns GO"
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "schema": "pilot_results_v1",
+  "status": "PILOT ONLY — rule-based proxy labels, unadjudicated; not a test of H1-H4",
+  "window": [
+    "2018-01-01",
+    "2025-12-31"
+  ],
+  "unit": "firm x track x quarter (confirmatory tracks from DOMAIN_AMENDMENT_001)",
+  "availability_rule": "Tier B: event visible from event_date + 30 days",
+  "baseline_quarters": 8,
+  "z_threshold": 3.5,
+  "budget_false_alerts_per_company_year": 2.0,
+  "leak_audit": {
+    "violations": 0,
+    "events_checked": 819,
+    "examples": [],
+    "rule": "every event informing the score for quarter q must be visible by the end of q-1 (Tier B: event_date + 30 days)",
+    "own_quarter_note": "the alert itself is raised at quarter end, so an entry inside that same quarter can at best be detected with zero lead time; real lead time needs an earlier signal source"
+  },
+  "by_cell": {
+    "ge_healthcare|imaging_us": {
+      "firm": "ge_healthcare",
+      "track": "imaging_us",
+      "quarters_with_events": 26,
+      "positives": 1,
+      "m0_persistence": {
+        "alerts": 1,
+        "hits": 0,
+        "alert_quarters": [
+          "2022-Q3"
+        ],
+        "hit_quarters": [],
+        "false_alerts": 1,
+        "false_alerts_per_company_year": 0.125
+      },
+      "m1_zscore": {
+        "alerts": 0,
+        "hits": 0,
+        "alert_quarters": [],
+        "hit_quarters": [],
+        "false_alerts": 0,
+        "false_alerts_per_company_year": 0.0
+      }
+    },
+    "ge_healthcare|respiratory": {
+      "firm": "ge_healthcare",
+      "track": "respiratory",
+      "quarters_with_events": 2,
+      "positives": 2,
+      "m0_persistence": {
+        "alerts": 0,
+        "hits": 0,
+        "alert_quarters": [],
+        "hit_quarters": [],
+        "false_alerts": 0,
+        "false_alerts_per_company_year": 0.0
+      },
+      "m1_zscore": {
+        "alerts": 0,
+        "hits": 0,
+        "alert_quarters": [],
+        "hit_quarters": [],
+        "false_alerts": 0,
+        "false_alerts_per_company_year": 0.0
+      }
+    },
+    "medtronic|respiratory": {
+      "firm": "medtronic",
+      "track": "respiratory",
+      "quarters_with_events": 4,
+      "positives": 2,
+      "m0_persistence": {
+        "alerts": 0,
+        "hits": 0,
+        "alert_quarters": [],
+        "hit_quarters": [],
+        "false_alerts": 0,
+        "false_alerts_per_company_year": 0.0
+      },
+      "m1_zscore": {
+        "alerts": 0,
+        "hits": 0,
+        "alert_quarters": [],
+        "hit_quarters": [],
+        "false_alerts": 0,
+        "false_alerts_per_company_year": 0.0
+      }
+    },
+    "mindray|imaging_us": {
+      "firm": "mindray",
+      "track": "imaging_us",
+      "quarters_with_events": 24,
+      "positives": 1,
+      "m0_persistence": {
+        "alerts": 0,
+        "hits": 0,
+        "alert_quarters": [],
+        "hit_quarters": [],
+        "false_alerts": 0,
+        "false_alerts_per_company_year": 0.0
+      },
+      "m1_zscore": {
+        "alerts": 0,
+        "hits": 0,
+        "alert_quarters": [],
+        "hit_quarters": [],
+        "false_alerts": 0,
+        "false_alerts_per_company_year": 0.0
+      }
+    },
+    "philips|imaging_us": {
+      "firm": "philips",
+      "track": "imaging_us",
+      "quarters_with_events": 18,
+      "positives": 2,
+      "m0_persistence": {
+        "alerts": 1,
+        "hits": 0,
+        "alert_quarters": [
+          "2025-Q2"
+        ],
+        "hit_quarters": [],
+        "false_alerts": 1,
+        "false_alerts_per_company_year": 0.125
+      },
+      "m1_zscore": {
+        "alerts": 1,
+        "hits": 0,
+        "alert_quarters": [
+          "2025-Q2"
+        ],
+        "hit_quarters": [],
+        "false_alerts": 1,
+        "false_alerts_per_company_year": 0.125
+      }
+    },
+    "philips|respiratory": {
+      "firm": "philips",
+      "track": "respiratory",
+      "quarters_with_events": 1,
+      "positives": 1,
+      "m0_persistence": {
+        "alerts": 0,
+        "hits": 0,
+        "alert_quarters": [],
+        "hit_quarters": [],
+        "false_alerts": 0,
+        "false_alerts_per_company_year": 0.0
+      },
+      "m1_zscore": {
+        "alerts": 0,
+        "hits": 0,
+        "alert_quarters": [],
+        "hit_quarters": [],
+        "false_alerts": 0,
+        "false_alerts_per_company_year": 0.0
+      }
+    }
+  },
+  "pooled": {
+    "positives": 9,
+    "m0_persistence": {
+      "alerts": 2,
+      "hits": 0,
+      "false_alerts": 2,
+      "recall": 0.0
+    },
+    "m1_zscore": {
+      "alerts": 1,
+      "hits": 0,
+      "false_alerts": 1,
+      "recall": 0.0
+    }
+  },
+  "evaluation_status": {
+    "lead_time": "NOT MEASURABLE with this design: the proxy labels the entry quarter itself, and no earlier signal source was included in this pilot; a lead-time claim would be fabricated",
+    "recall_at_fixed_budget": "computed, but the false-alert budget is reported rather than enforced because the pilot has no threshold-tuning step",
+    "independent_confirmation": "NOT PERFORMED: confirmation requires a source independent of the alert, and the pilot used a single source family"
+  },
+  "generated_at_utc": "2026-11-02T17:17:45+00:00"
+}

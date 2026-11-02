@@ -1,0 +1,596 @@
+{
+  "schema": "concurrent_detection_v1",
+  "protocol": "PHASE1B_PROTOCOL.md (frozen before this run)",
+  "window": {
+    "series": [
+      "2017-Q1",
+      "2025-Q4"
+    ],
+    "calibration": [
+      "2017-Q1",
+      "2021-Q4"
+    ],
+    "evaluation": [
+      "2022-Q1",
+      "2025-Q4"
+    ]
+  },
+  "false_alarm_budget_per_company_year": 2.0,
+  "leak_audit": {
+    "violations": 0,
+    "examples": [],
+    "rule": "feature visibility uses event_date + 30 days, must be <= end of the informing quarter"
+  },
+  "cells": {
+    "ge_healthcare|imaging_us": {
+      "firm": "ge_healthcare",
+      "track": "imaging_us",
+      "regulatory_events": 97,
+      "recall_events": 34,
+      "onsets_all": [],
+      "onsets_evaluation": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 6,
+            "calibration_alerts": 6
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 3.344222410278922,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.344222410278922,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 0.5330017908890261,
+          "alerts": 4,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 4,
+          "false_alerts_per_company_year": 1.0,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 0.5330017908890261,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 3.344222410278922,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.344222410278922,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    "mindray|imaging_us": {
+      "firm": "mindray",
+      "track": "imaging_us",
+      "regulatory_events": 59,
+      "recall_events": 1,
+      "onsets_all": [],
+      "onsets_evaluation": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 3,
+            "calibration_alerts": 3
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 2.7105759945484325,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 2.7105759945484325,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "status": "NOT_EVALUABLE",
+          "reason": "no finite scores"
+        },
+        "m5_fused": {
+          "threshold": 2.7105759945484325,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 2.7105759945484325,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    "philips|imaging_us": {
+      "firm": "philips",
+      "track": "imaging_us",
+      "regulatory_events": 41,
+      "recall_events": 113,
+      "onsets_all": [],
+      "onsets_evaluation": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 3,
+            "calibration_alerts": 3
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 3.5355339059327373,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.5355339059327373,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 4.0,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 4.0,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 4.0,
+          "alerts": 3,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 3,
+          "false_alerts_per_company_year": 0.75,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 4.0,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    "ge_healthcare|respiratory": {
+      "firm": "ge_healthcare",
+      "track": "respiratory",
+      "regulatory_events": 3,
+      "recall_events": 74,
+      "onsets_all": [],
+      "onsets_evaluation": [],
+      "censored": [
+        "2021-Q2",
+        "2021-Q3",
+        "2021-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 2,
+            "calibration_alerts": 2
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 0.0,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 0.0,
+            "calibration_false_alerts": 2,
+            "calibration_alerts": 2
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 6.502621848846118,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 6.502621848846118,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 6.502621848846118,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 6.502621848846118,
+            "calibration_false_alerts": 2,
+            "calibration_alerts": 2
+          },
+          "status": "OK"
+        }
+      }
+    },
+    "medtronic|respiratory": {
+      "firm": "medtronic",
+      "track": "respiratory",
+      "regulatory_events": 7,
+      "recall_events": 39,
+      "onsets_all": [
+        "2024-Q2"
+      ],
+      "onsets_evaluation": [
+        "2024-Q2"
+      ],
+      "censored": [
+        "2024-Q4",
+        "2025-Q1",
+        "2025-Q2"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 1,
+          "hits": 1,
+          "recall": 1.0,
+          "recall_interval": [
+            0.207,
+            1.0
+          ],
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": 1.0,
+          "positives": 1,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 2,
+            "calibration_alerts": 2
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 0.0,
+          "alerts": 4,
+          "hits": 1,
+          "recall": 1.0,
+          "recall_interval": [
+            0.207,
+            1.0
+          ],
+          "false_alerts": 3,
+          "false_alerts_per_company_year": 0.75,
+          "precision": 0.25,
+          "positives": 1,
+          "calibration": {
+            "status": "OK",
+            "threshold": 0.0,
+            "calibration_false_alerts": 4,
+            "calibration_alerts": 4
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 7.5,
+          "alerts": 1,
+          "hits": 0,
+          "recall": 0.0,
+          "recall_interval": [
+            0.0,
+            0.793
+          ],
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 1,
+          "calibration": {
+            "status": "OK",
+            "threshold": 7.5,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 7.5,
+          "alerts": 2,
+          "hits": 1,
+          "recall": 1.0,
+          "recall_interval": [
+            0.207,
+            1.0
+          ],
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.5,
+          "positives": 1,
+          "calibration": {
+            "status": "OK",
+            "threshold": 7.5,
+            "calibration_false_alerts": 2,
+            "calibration_alerts": 2
+          },
+          "status": "OK"
+        }
+      }
+    },
+    "philips|respiratory": {
+      "firm": "philips",
+      "track": "respiratory",
+      "regulatory_events": 1,
+      "recall_events": 86,
+      "onsets_all": [],
+      "onsets_evaluation": [],
+      "censored": [
+        "2024-Q3"
+      ],
+      "models": {
+        "m0_persistence": {
+          "status": "NOT_EVALUABLE",
+          "reason": "no finite scores"
+        },
+        "m1_regulatory_z": {
+          "status": "NOT_EVALUABLE",
+          "reason": "no finite scores"
+        },
+        "m2_recall_z": {
+          "threshold": 4.947753344488258,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 4.947753344488258,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 4.947753344488258,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 4.947753344488258,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    }
+  },
+  "pooled": {
+    "m0_persistence": {
+      "status": "OK",
+      "cells": 5,
+      "alerts": 3,
+      "hits": 1,
+      "false_alerts": 2,
+      "onsets": 1,
+      "recall": 1.0,
+      "recall_interval": [
+        0.207,
+        1.0
+      ],
+      "precision": 0.333,
+      "false_alerts_per_company_year": 0.083,
+      "mean_threshold": 1.0
+    },
+    "m1_regulatory_z": {
+      "status": "OK",
+      "cells": 5,
+      "alerts": 5,
+      "hits": 1,
+      "false_alerts": 4,
+      "onsets": 1,
+      "recall": 1.0,
+      "recall_interval": [
+        0.207,
+        1.0
+      ],
+      "precision": 0.2,
+      "false_alerts_per_company_year": 0.167,
+      "mean_threshold": 1.918
+    },
+    "m2_recall_z": {
+      "status": "OK",
+      "cells": 5,
+      "alerts": 10,
+      "hits": 0,
+      "false_alerts": 10,
+      "onsets": 1,
+      "recall": 0.0,
+      "recall_interval": [
+        0.0,
+        0.793
+      ],
+      "precision": 0.0,
+      "false_alerts_per_company_year": 0.417,
+      "mean_threshold": 4.697
+    },
+    "m5_fused": {
+      "status": "OK",
+      "cells": 6,
+      "alerts": 10,
+      "hits": 1,
+      "false_alerts": 9,
+      "onsets": 1,
+      "recall": 1.0,
+      "recall_interval": [
+        0.207,
+        1.0
+      ],
+      "precision": 0.1,
+      "false_alerts_per_company_year": 0.375,
+      "mean_threshold": 4.834
+    }
+  },
+  "totals": {
+    "onsets_evaluation": 1,
+    "company_years": 24.0
+  },
+  "verdict": "UNDERPOWERED — 1 onset(s) in the evaluation window (floor 10). No model comparison may be stated as support or refutation of H1; results are descriptive only.",
+  "not_claimed": [
+    "no lead-time statement: G1 closed that question (PHASE1_SHRINKAGE.md)",
+    "no causal, intent or R&D claim; the unit is public filing activity",
+    "recalls are a different recording process but the same regulator: independence is partial and is stated as such"
+  ]
+}

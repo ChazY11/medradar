@@ -1,0 +1,56 @@
+{
+  "schema": "external_source_probe_v1",
+  "probed_at_utc": "2026-11-02T19:23:35+00:00",
+  "note": "HEAD/GET probes without credentials; a 200 means the endpoint answers, not that bulk access is granted",
+  "results": {
+    "patentsview_api": {
+      "url": "https://api.patentsview.org/patents/query?q=%7B%22patent_number%22%3A%22%2210000000%22%7D",
+      "status": 200,
+      "reachable": true,
+      "content_type": "text/html",
+      "usable_json": false
+    },
+    "uspto_patents_home": {
+      "url": "https://patents.google.com/",
+      "status": 200,
+      "reachable": true,
+      "content_type": "text/html",
+      "usable_json": false
+    },
+    "sec_edgar_companyfacts": {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001613103.json",
+      "status": 200,
+      "reachable": true,
+      "content_type": "application/json",
+      "usable_json": true
+    },
+    "clinicaltrials_api": {
+      "url": "https://clinicaltrials.gov/api/v2/studies?pageSize=1",
+      "status": 200,
+      "reachable": true,
+      "content_type": "application/json",
+      "usable_json": true
+    },
+    "openfda_device_510k": {
+      "url": "https://api.fda.gov/device/510k.json?limit=1",
+      "status": 200,
+      "reachable": true,
+      "content_type": "application/json; charset=utf-8",
+      "usable_json": true
+    },
+    "europe_pmc": {
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=pacemaker&format=json&pageSize=1",
+      "status": 200,
+      "reachable": true,
+      "content_type": "application/json;charset=UTF-8",
+      "usable_json": true
+    }
+  },
+  "verdict": {
+    "patents": false,
+    "sec": true,
+    "ctgov": true,
+    "openfda": true,
+    "europe_pmc": true
+  }
+}

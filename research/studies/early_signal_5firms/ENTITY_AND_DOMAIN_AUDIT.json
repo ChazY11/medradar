@@ -1,0 +1,3561 @@
+{
+  "schema": "entity_and_domain_audit_v1",
+  "study": "early_signal_5firms",
+  "window": [
+    "2018-01-01",
+    "2025-12-31"
+  ],
+  "entity_resolution": {
+    "draeger": {
+      "distinct_strings": 10,
+      "observations": 48,
+      "strings": [
+        {
+          "applicant_raw": "Drager, Inc.",
+          "observations": 20,
+          "first": "1991-06-10",
+          "last": "1999-08-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Drager Medizintechnik GmbH",
+          "observations": 8,
+          "first": "1999-03-29",
+          "last": "2003-01-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Draegerwerk AG & CO Kgaa",
+          "observations": 8,
+          "first": "2010-03-30",
+          "last": "2026-05-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Dragerwerk AG",
+          "observations": 3,
+          "first": "1980-04-02",
+          "last": "1991-11-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Drager Medical AG & Co. Kgaa",
+          "observations": 3,
+          "first": "2005-07-12",
+          "last": "2010-04-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Dragerwerk AG & CO Kgaa",
+          "observations": 2,
+          "first": "2019-01-17",
+          "last": "2019-02-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Drager Safety",
+          "observations": 1,
+          "first": "2008-03-11",
+          "last": "2008-03-11",
+          "suspicion_tokens": [
+            "SAFETY"
+          ],
+          "verdict": "REVIEW"
+        },
+        {
+          "applicant_raw": "Drager Medical GmbH",
+          "observations": 1,
+          "first": "2013-03-08",
+          "last": "2013-03-08",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Drager Medical B.V.",
+          "observations": 1,
+          "first": "2006-10-31",
+          "last": "2006-10-31",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Draegerwerk Ag & Co. Kgaa",
+          "observations": 1,
+          "first": "2024-02-01",
+          "last": "2024-02-01",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        }
+      ]
+    },
+    "mindray": {
+      "distinct_strings": 10,
+      "observations": 244,
+      "strings": [
+        {
+          "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+          "observations": 161,
+          "first": "2004-03-03",
+          "last": "2026-10-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Mindray DS USA, Inc. dba Mindray North America",
+          "observations": 39,
+          "first": "2013-11-25",
+          "last": "2025-12-12",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Mindray DS USA, Inc.",
+          "observations": 11,
+          "first": "2010-09-10",
+          "last": "2026-10-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Mindray DS USA, Inc. d.b.a. Mindray North America",
+          "observations": 10,
+          "first": "2012-02-24",
+          "last": "2013-03-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Shenzhen Mindray Bio-Meidcal Electronics Co., Ltd.",
+          "observations": 9,
+          "first": "2012-01-25",
+          "last": "2022-12-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Mindray DS USA, Inc., dba Datascope Patient Monitoring",
+          "observations": 7,
+          "first": "2008-12-05",
+          "last": "2010-06-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Mindray North America",
+          "observations": 3,
+          "first": "2014-04-18",
+          "last": "2014-05-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Mindray Bio-Medical Electronics Co., Ltd.",
+          "observations": 2,
+          "first": "2015-08-21",
+          "last": "2016-09-01",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Shenzhen Mindray Biomedical Electronics Co., Ltd.",
+          "observations": 1,
+          "first": "2014-08-01",
+          "last": "2014-08-01",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co.",
+          "observations": 1,
+          "first": "2014-11-14",
+          "last": "2014-11-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        }
+      ]
+    },
+    "ge_healthcare": {
+      "distinct_strings": 135,
+      "observations": 2911,
+      "strings": [
+        {
+          "applicant_raw": "GE Healthcare, LLC",
+          "observations": 581,
+          "first": "2009-08-14",
+          "last": "2022-08-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Healthcare",
+          "observations": 527,
+          "first": "2000-01-28",
+          "last": "2026-10-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems, LLC",
+          "observations": 233,
+          "first": "2006-05-10",
+          "last": "2026-07-13",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems",
+          "observations": 170,
+          "first": "1989-05-22",
+          "last": "2026-08-13",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Information Technologies",
+          "observations": 140,
+          "first": "1978-03-02",
+          "last": "2012-12-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems, LLC",
+          "observations": 105,
+          "first": "2003-10-08",
+          "last": "2026-06-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Merge Healthcare, Inc.",
+          "observations": 96,
+          "first": "2011-10-19",
+          "last": "2026-08-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Highridge Medical, LLC",
+          "observations": 85,
+          "first": "2013-08-07",
+          "last": "2026-09-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems Ultrasound and Primary Care Diagnostics",
+          "observations": 68,
+          "first": "2015-06-18",
+          "last": "2026-09-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems, Inc.",
+          "observations": 66,
+          "first": "1988-08-31",
+          "last": "2012-10-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Healthcare Finland Oy",
+          "observations": 54,
+          "first": "2007-10-10",
+          "last": "2026-09-01",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Nxstage Medical, Inc.",
+          "observations": 51,
+          "first": "2001-01-17",
+          "last": "2024-03-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE HEALTHCARE",
+          "observations": 43,
+          "first": "1969-08-21",
+          "last": "2020-05-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE MEDICAL SYSTEMS ISRAEL, FUNCTIONAL IMAGING",
+          "observations": 41,
+          "first": "2023-02-08",
+          "last": "2026-01-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems SCS",
+          "observations": 39,
+          "first": "2008-02-26",
+          "last": "2026-07-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "NxStage Medical, Inc.",
+          "observations": 36,
+          "first": "2004-07-20",
+          "last": "2019-08-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Information Technologies, Inc.",
+          "observations": 32,
+          "first": "2010-12-17",
+          "last": "2026-07-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems China Co., Ltd.",
+          "observations": 27,
+          "first": "2017-10-11",
+          "last": "2026-06-03",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Healthcare (China) Co., Ltd.",
+          "observations": 24,
+          "first": "2024-08-26",
+          "last": "2025-02-28",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Healthcare Integrated IT Solutions",
+          "observations": 20,
+          "first": "2007-01-25",
+          "last": "2009-11-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare",
+          "observations": 19,
+          "first": "2006-10-20",
+          "last": "2020-08-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems Information Technologies Inc",
+          "observations": 18,
+          "first": "2023-09-19",
+          "last": "2026-09-11",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems F.I. Haifa",
+          "observations": 17,
+          "first": "1998-06-04",
+          "last": "2013-04-12",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Advantage Medical Systems, Inc.",
+          "observations": 17,
+          "first": "1980-03-07",
+          "last": "1987-10-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare It",
+          "observations": 15,
+          "first": "2010-04-15",
+          "last": "2016-09-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems Ultrasound & Primary Care Diagnostics, LLC",
+          "observations": 15,
+          "first": "2016-01-04",
+          "last": "2026-10-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Cambridge Medical Technology",
+          "observations": 14,
+          "first": "1982-07-02",
+          "last": "1989-04-26",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Surge Medical Solutions, LLC",
+          "observations": 13,
+          "first": "2007-06-06",
+          "last": "2007-06-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Orange Medical Instruments, Inc.",
+          "observations": 12,
+          "first": "1982-10-26",
+          "last": "1986-03-13",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems China Co., Ltd.",
+          "observations": 12,
+          "first": "2009-05-05",
+          "last": "2015-12-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare, Llc",
+          "observations": 12,
+          "first": "2010-05-11",
+          "last": "2010-08-12",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Coils (Usa Instruments, Inc.)",
+          "observations": 12,
+          "first": "2009-11-25",
+          "last": "2026-01-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems, SCS",
+          "observations": 12,
+          "first": "2018-10-05",
+          "last": "2025-10-08",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems Ultrasound & Primary Care Diagnostics, LL",
+          "observations": 12,
+          "first": "2018-03-16",
+          "last": "2018-04-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "CHANGE HEALTHCARE CANADA COMPANY",
+          "observations": 12,
+          "first": "2020-02-10",
+          "last": "2025-10-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Triage Medical, Inc.",
+          "observations": 11,
+          "first": "2001-08-17",
+          "last": "2006-09-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Wipro GE Healthcare Private Ltd.",
+          "observations": 10,
+          "first": "2024-02-09",
+          "last": "2025-10-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Japan Corporation",
+          "observations": 10,
+          "first": "2011-09-30",
+          "last": "2026-03-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Healthcare It",
+          "observations": 10,
+          "first": "2012-11-15",
+          "last": "2014-01-29",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Emerge Medical",
+          "observations": 10,
+          "first": "2010-11-23",
+          "last": "2014-10-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems Information Technologies",
+          "observations": 9,
+          "first": "2003-09-17",
+          "last": "2005-08-30",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Merge Healthcare Incorporated",
+          "observations": 8,
+          "first": "2016-04-07",
+          "last": "2025-04-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Cambridge Medical Instruments, Inc.",
+          "observations": 8,
+          "first": "1985-11-13",
+          "last": "1990-02-26",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Vital Signs Devices, a GE Healthcare Company",
+          "observations": 7,
+          "first": "2011-06-29",
+          "last": "2013-08-13",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Ultrasound and Primary Care Dia",
+          "observations": 7,
+          "first": "2004-07-23",
+          "last": "2011-05-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare (Tianjin) Company Limited",
+          "observations": 6,
+          "first": "2019-10-01",
+          "last": "2024-01-19",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare (Ge Medical Systems, LLC)",
+          "observations": 6,
+          "first": "2013-03-13",
+          "last": "2022-01-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Wipro GE Healthcare Private, Ltd.",
+          "observations": 5,
+          "first": "2010-10-01",
+          "last": "2013-02-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Ultrasound And",
+          "observations": 5,
+          "first": "2020-01-06",
+          "last": "2022-07-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE HealthCare Technologies Inc.",
+          "observations": 5,
+          "first": "2024-02-16",
+          "last": "2026-07-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Lange Medical Products, Inc.",
+          "observations": 4,
+          "first": "1994-11-17",
+          "last": "1996-12-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Israel, Functional Imaging",
+          "observations": 4,
+          "first": "2010-11-03",
+          "last": "2025-01-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical System Israel , Ltd.",
+          "observations": 4,
+          "first": "2010-11-04",
+          "last": "2012-08-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Integrated IT Solutions",
+          "observations": 4,
+          "first": "2006-12-26",
+          "last": "2012-06-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems Information Tecnology",
+          "observations": 4,
+          "first": "2009-05-04",
+          "last": "2009-09-04",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Healthcare Japan Corporation",
+          "observations": 4,
+          "first": "2018-04-27",
+          "last": "2018-04-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Datex Ohmeda, Inc.  dba GE Healthcare",
+          "observations": 4,
+          "first": "2005-11-18",
+          "last": "2008-11-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Change Healthcare Inc.",
+          "observations": 4,
+          "first": "2021-01-06",
+          "last": "2021-03-26",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "MERGE HEALTHCARE INC",
+          "observations": 3,
+          "first": "2015-02-26",
+          "last": "2015-10-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Israel, Ultrasound, Ltd.",
+          "observations": 3,
+          "first": "2008-09-02",
+          "last": "2009-08-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Information Technologies GmbH",
+          "observations": 3,
+          "first": "2000-10-30",
+          "last": "2011-02-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Surgery GE Oec Medical Systems, Inc.",
+          "observations": 3,
+          "first": "2012-04-06",
+          "last": "2013-05-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Healthcare GmbH",
+          "observations": 3,
+          "first": "2024-09-13",
+          "last": "2025-12-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Change Healthcare Israel , Ltd.",
+          "observations": 3,
+          "first": "2018-05-24",
+          "last": "2023-09-11",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Change Healthcare Canada Company",
+          "observations": 3,
+          "first": "2018-08-29",
+          "last": "2024-11-12",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Vital Signs, Inc., A GE Healthcare Company",
+          "observations": 2,
+          "first": "2012-11-28",
+          "last": "2013-06-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Verge Medical, Inc.",
+          "observations": 2,
+          "first": "2026-01-21",
+          "last": "2026-04-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Suzhou Borage Medical Technology Co., Ltd.",
+          "observations": 2,
+          "first": "2022-09-30",
+          "last": "2024-05-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Sturbridge Medical",
+          "observations": 2,
+          "first": "1986-02-13",
+          "last": "1986-09-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "NxStage Medical Inc",
+          "observations": 2,
+          "first": "2024-06-20",
+          "last": "2025-05-28",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Imperial College Healthcare NHS Trust",
+          "observations": 2,
+          "first": "2016-07-22",
+          "last": "2016-09-28",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Heritage Medical Products",
+          "observations": 2,
+          "first": "1981-12-18",
+          "last": "1988-03-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems,Llc (Ge Healthcare)",
+          "observations": 2,
+          "first": "2022-06-08",
+          "last": "2023-05-30",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Ultrasound and Primary Care Diagnostic,",
+          "observations": 2,
+          "first": "2023-11-03",
+          "last": "2023-11-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Lunar",
+          "observations": 2,
+          "first": "2007-06-27",
+          "last": "2012-04-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Syst. Information Technologies",
+          "observations": 2,
+          "first": "2004-12-03",
+          "last": "2009-02-19",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Technologies",
+          "observations": 2,
+          "first": "2004-11-02",
+          "last": "2005-11-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Dynamic Imaging Solutions",
+          "observations": 2,
+          "first": "2008-08-25",
+          "last": "2008-11-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare (Ge Medical Systems Scs)",
+          "observations": 2,
+          "first": "2011-05-03",
+          "last": "2012-06-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems Ultrasound and Primary care Diagnostics, LLC",
+          "observations": 2,
+          "first": "2026-08-07",
+          "last": "2026-10-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems LLC",
+          "observations": 2,
+          "first": "2007-05-18",
+          "last": "2007-05-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Medical Systems Information Technologies, Inc.",
+          "observations": 2,
+          "first": "2017-07-13",
+          "last": "2018-01-25",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Forge Medical, Inc.",
+          "observations": 2,
+          "first": "2013-05-29",
+          "last": "2016-01-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Change Healthcare Israel Ltd.",
+          "observations": 2,
+          "first": "2019-03-25",
+          "last": "2019-03-25",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Bridge Medical, Inc.",
+          "observations": 2,
+          "first": "1998-08-25",
+          "last": "2011-05-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Advantage Medical Division of Cme Telemetrix",
+          "observations": 2,
+          "first": "1997-12-05",
+          "last": "1998-01-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Zhuhai Gaoge Medical Technology Co., Ltd.",
+          "observations": 1,
+          "first": "2021-06-11",
+          "last": "2021-06-11",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Wipro GE Healthcare",
+          "observations": 1,
+          "first": "2014-01-23",
+          "last": "2014-01-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Surge Medical Sales, LLC (DBA Surge Cardiovascular)",
+          "observations": 1,
+          "first": "2018-07-18",
+          "last": "2018-07-18",
+          "suspicion_tokens": [
+            "SALES"
+          ],
+          "verdict": "REVIEW"
+        },
+        {
+          "applicant_raw": "Shenzhen Shuge Medical Beauty Devices Co., Ltd.",
+          "observations": 1,
+          "first": "2024-04-24",
+          "last": "2024-04-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Royal Free and University College Medical School",
+          "observations": 1,
+          "first": "2006-11-29",
+          "last": "2006-11-29",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Prestige Medical Corp.",
+          "observations": 1,
+          "first": "1998-03-03",
+          "last": "1998-03-03",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Mirage Medical & Chemical, Inc.",
+          "observations": 1,
+          "first": "1990-08-01",
+          "last": "1990-08-01",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medi-Physics, Inc., Dba GE Healthcare",
+          "observations": 1,
+          "first": "2008-05-05",
+          "last": "2008-05-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medi-Physics Inc. dba GE Healthcare",
+          "observations": 1,
+          "first": "2011-11-22",
+          "last": "2011-11-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Image Medical, Inc.",
+          "observations": 1,
+          "first": "1997-02-10",
+          "last": "1997-02-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Heritage Medical Products, Inc.",
+          "observations": 1,
+          "first": "2016-09-02",
+          "last": "2016-09-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Sysyems Ultrasound & Primary Care Diagn",
+          "observations": 1,
+          "first": "2014-05-16",
+          "last": "2014-05-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems W-400",
+          "observations": 1,
+          "first": "2003-12-04",
+          "last": "2003-12-04",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Ultrasound and Primary Care Diagnotics, L",
+          "observations": 1,
+          "first": "2016-03-10",
+          "last": "2016-03-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Ultrasound and Primary Care Diagnostics L",
+          "observations": 1,
+          "first": "2016-08-05",
+          "last": "2016-08-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Ultrasound and Primary",
+          "observations": 1,
+          "first": "2018-01-05",
+          "last": "2018-01-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Ultrasound & Primary Care Diagnostic, LLC",
+          "observations": 1,
+          "first": "2023-06-20",
+          "last": "2023-06-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Ultrasound & Primary Care Diagn",
+          "observations": 1,
+          "first": "2014-05-15",
+          "last": "2014-05-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Navigation and Visualization IN",
+          "observations": 1,
+          "first": "2004-03-24",
+          "last": "2004-03-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Israel , Ltd.",
+          "observations": 1,
+          "first": "2014-10-10",
+          "last": "2014-10-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Israel",
+          "observations": 1,
+          "first": "2025-06-12",
+          "last": "2025-06-12",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Information T",
+          "observations": 1,
+          "first": "2017-04-11",
+          "last": "2017-04-11",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems Europe",
+          "observations": 1,
+          "first": "2003-06-20",
+          "last": "2003-06-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical Systems (China) Co., Ltd.",
+          "observations": 1,
+          "first": "2017-11-01",
+          "last": "2017-11-01",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Medical System Ultrasound and Primary Care Diagnostics",
+          "observations": 1,
+          "first": "2023-02-16",
+          "last": "2023-02-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare, Breas Medical AB",
+          "observations": 1,
+          "first": "2013-06-18",
+          "last": "2013-06-18",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Systems Information Technologies",
+          "observations": 1,
+          "first": "2008-01-25",
+          "last": "2008-01-25",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Surgery",
+          "observations": 1,
+          "first": "2009-05-01",
+          "last": "2009-05-01",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Information Technologies, Inc.",
+          "observations": 1,
+          "first": "2022-02-17",
+          "last": "2022-02-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Information Technologies",
+          "observations": 1,
+          "first": "2006-05-30",
+          "last": "2006-05-30",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare GmbH",
+          "observations": 1,
+          "first": "2024-07-02",
+          "last": "2024-07-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Filand OY",
+          "observations": 1,
+          "first": "2015-11-12",
+          "last": "2015-11-12",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Clinical Systems",
+          "observations": 1,
+          "first": "2007-08-06",
+          "last": "2007-08-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE MEDICAL SYSTEMS, ISRAEL LTD.",
+          "observations": 1,
+          "first": "2023-09-29",
+          "last": "2023-09-29",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Healthcare LLC",
+          "observations": 1,
+          "first": "2026-04-02",
+          "last": "2026-04-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Healthcare Clinical Systems",
+          "observations": 1,
+          "first": "2008-06-12",
+          "last": "2008-06-12",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Healthcare Biosciences",
+          "observations": 1,
+          "first": "2018-09-10",
+          "last": "2018-09-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE Healthcare Beijing , Hangwei Medical Systems, Co. LTD",
+          "observations": 1,
+          "first": "2013-10-24",
+          "last": "2013-10-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "GE HEALTHCARE AUSTRIA GMBH & CO",
+          "observations": 1,
+          "first": "2024-01-30",
+          "last": "2024-01-30",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Footbridge Medical",
+          "observations": 1,
+          "first": "2024-11-26",
+          "last": "2024-11-26",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Emerge Medical, Inc.",
+          "observations": 1,
+          "first": "2014-06-10",
+          "last": "2014-06-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Edge Medical, LLC",
+          "observations": 1,
+          "first": "2014-11-18",
+          "last": "2014-11-18",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Edge Medical Devices , Ltd.",
+          "observations": 1,
+          "first": "2006-06-07",
+          "last": "2006-06-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Blue Ridge Medical, Inc.",
+          "observations": 1,
+          "first": "1996-09-06",
+          "last": "1996-09-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Advantage Medical Services, Inc.",
+          "observations": 1,
+          "first": "1996-01-30",
+          "last": "1996-01-30",
+          "suspicion_tokens": [
+            "SERVICE"
+          ],
+          "verdict": "REVIEW"
+        },
+        {
+          "applicant_raw": "Advantage Medical Electronics, Inc.",
+          "observations": 1,
+          "first": "2000-03-01",
+          "last": "2000-03-01",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Advantage Medical Device",
+          "observations": 1,
+          "first": "2008-04-30",
+          "last": "2008-04-30",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Advantage Medical Cables, Inc.",
+          "observations": 1,
+          "first": "2007-03-20",
+          "last": "2007-03-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Absolute Advantage Medical, LLC",
+          "observations": 1,
+          "first": "2018-08-29",
+          "last": "2018-08-29",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        }
+      ]
+    },
+    "philips": {
+      "distinct_strings": 106,
+      "observations": 3567,
+      "strings": [
+        {
+          "applicant_raw": "Philips Medical Systems (Cleveland) Inc",
+          "observations": 411,
+          "first": "2003-05-15",
+          "last": "2025-09-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips North America Llc",
+          "observations": 324,
+          "first": "2020-11-18",
+          "last": "2026-09-29",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems",
+          "observations": 229,
+          "first": "2002-01-07",
+          "last": "2026-05-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems, Inc.",
+          "observations": 219,
+          "first": "1983-10-28",
+          "last": "2026-05-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems (Cleveland), Inc.",
+          "observations": 212,
+          "first": "1977-05-26",
+          "last": "2017-11-09",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "PHILIPS MEDICAL SYSTEMS NEDERLAND B.V.",
+          "observations": 210,
+          "first": "2021-12-02",
+          "last": "2026-10-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Healthcare Inc.",
+          "observations": 149,
+          "first": "2009-05-19",
+          "last": "2014-06-11",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips North America",
+          "observations": 142,
+          "first": "2023-05-12",
+          "last": "2026-10-26",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems North America Co.   Phillips",
+          "observations": 131,
+          "first": "2005-06-16",
+          "last": "2013-01-04",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Nederland B.V.",
+          "observations": 115,
+          "first": "2005-08-02",
+          "last": "2026-08-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Electronics North America Corporation",
+          "observations": 106,
+          "first": "2016-03-15",
+          "last": "2018-11-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Ultrasound, Inc",
+          "observations": 101,
+          "first": "2025-07-02",
+          "last": "2026-03-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Respironics, Inc.",
+          "observations": 94,
+          "first": "2011-10-04",
+          "last": "2026-04-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips North America, LLC",
+          "observations": 89,
+          "first": "2017-03-24",
+          "last": "2022-02-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Nederlands",
+          "observations": 83,
+          "first": "2011-04-25",
+          "last": "2019-03-25",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems North America, Inc.",
+          "observations": 71,
+          "first": "1989-04-20",
+          "last": "2010-08-09",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Spectranetics (Philips)",
+          "observations": 68,
+          "first": "1997-12-09",
+          "last": "2025-12-18",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Ultrasound, Inc.",
+          "observations": 68,
+          "first": "1985-01-25",
+          "last": "2024-05-03",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Electronics North  America Corporation",
+          "observations": 54,
+          "first": "2015-03-23",
+          "last": "2016-04-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Clinical & Medical Affairs Global",
+          "observations": 54,
+          "first": "2012-05-08",
+          "last": "2026-09-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medizin Systeme Boeblingen GmbH",
+          "observations": 48,
+          "first": "2004-03-01",
+          "last": "2026-02-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Healthcare",
+          "observations": 42,
+          "first": "2009-02-05",
+          "last": "2023-09-30",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Respironics",
+          "observations": 37,
+          "first": "2008-01-15",
+          "last": "2024-07-31",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Gmbh, DMC",
+          "observations": 34,
+          "first": "2012-03-23",
+          "last": "2020-07-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Ultrasound, LLC",
+          "observations": 31,
+          "first": "2022-09-27",
+          "last": "2026-10-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Sales & Service Region No. America",
+          "observations": 26,
+          "first": "2003-09-11",
+          "last": "2005-04-08",
+          "suspicion_tokens": [
+            "SERVICE",
+            "SALES"
+          ],
+          "verdict": "REVIEW"
+        },
+        {
+          "applicant_raw": "Philips Medizinsysteme Boeblingen GmbH, Cardiac AN",
+          "observations": 25,
+          "first": "2007-02-08",
+          "last": "2014-05-19",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems North America Co.",
+          "observations": 24,
+          "first": "2001-10-01",
+          "last": "2010-09-30",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Healthcare (Suzhou) Co., Ltd.",
+          "observations": 21,
+          "first": "2014-06-12",
+          "last": "2026-08-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Hearing Instruments Co.",
+          "observations": 20,
+          "first": "1991-02-05",
+          "last": "1997-10-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Health Care",
+          "observations": 20,
+          "first": "2011-03-22",
+          "last": "2020-08-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Dmc GmbH",
+          "observations": 18,
+          "first": "2013-10-07",
+          "last": "2024-06-13",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Image Guided Therapy Corporation",
+          "observations": 17,
+          "first": "2019-04-11",
+          "last": "2026-08-26",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "North American Philips Corp.",
+          "observations": 15,
+          "first": "1981-05-15",
+          "last": "1984-08-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Ultrasound Inc",
+          "observations": 14,
+          "first": "2019-08-06",
+          "last": "2021-09-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medizin Systeme Boblingen GmbH",
+          "observations": 12,
+          "first": "2001-12-03",
+          "last": "2015-10-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Healthcare Informatics, Inc.",
+          "observations": 12,
+          "first": "2008-05-08",
+          "last": "2019-04-19",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "PHILIPS MEDICAL SYSTEMS",
+          "observations": 12,
+          "first": "2024-02-08",
+          "last": "2026-10-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Park",
+          "observations": 11,
+          "first": "1984-01-30",
+          "last": "1986-11-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips North America LLC",
+          "observations": 11,
+          "first": "2018-08-08",
+          "last": "2022-04-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems DMC GmbH",
+          "observations": 11,
+          "first": "2022-07-12",
+          "last": "2025-11-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Int'L B.V.",
+          "observations": 11,
+          "first": "1985-02-21",
+          "last": "1992-01-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medizin Systeme Böblingen GmbH",
+          "observations": 10,
+          "first": "2022-03-04",
+          "last": "2026-05-29",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Nederlands B.V.",
+          "observations": 8,
+          "first": "2015-03-20",
+          "last": "2024-05-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips And Neusoft Medical Systems Co., Ltd.",
+          "observations": 8,
+          "first": "2008-09-17",
+          "last": "2013-04-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Lighting Co.",
+          "observations": 6,
+          "first": "1991-05-23",
+          "last": "2002-05-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Image Guided Therapy Corporation (Formerly Intact)",
+          "observations": 6,
+          "first": "2020-04-10",
+          "last": "2022-11-09",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Healthcare (Cleveland)",
+          "observations": 6,
+          "first": "2011-11-23",
+          "last": "2014-11-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Invivo Corporation (Business Trade Name: Philips)",
+          "observations": 6,
+          "first": "2021-10-29",
+          "last": "2023-10-03",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Ultrasound",
+          "observations": 5,
+          "first": "2004-02-17",
+          "last": "2025-05-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems, Inc. Cardiac & Monitoring Systems",
+          "observations": 5,
+          "first": "2002-12-18",
+          "last": "2003-02-28",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems North America Inc.",
+          "observations": 5,
+          "first": "2013-11-20",
+          "last": "2014-03-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Nethrlands BV",
+          "observations": 5,
+          "first": "2014-10-22",
+          "last": "2016-11-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Electronics Nederland BV",
+          "observations": 5,
+          "first": "2012-02-08",
+          "last": "2017-03-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Digital Mammography Sweden AB",
+          "observations": 5,
+          "first": "2012-04-19",
+          "last": "2016-05-13",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Technologies , Ltd.",
+          "observations": 4,
+          "first": "2018-01-12",
+          "last": "2026-03-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems MR Finland",
+          "observations": 4,
+          "first": "2008-03-10",
+          "last": "2020-01-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Consumer Lifestyle",
+          "observations": 4,
+          "first": "2015-07-21",
+          "last": "2019-05-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips (China) Investment CO., LTD",
+          "observations": 4,
+          "first": "2020-08-19",
+          "last": "2023-10-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "PHILIPS HEADQUARTERS CAMBRIDGE",
+          "observations": 4,
+          "first": "2023-05-23",
+          "last": "2023-05-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems B.V.",
+          "observations": 3,
+          "first": "2025-10-24",
+          "last": "2026-07-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Electronics UK Limited",
+          "observations": 3,
+          "first": "2009-06-18",
+          "last": "2010-11-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Electronics North America Corp.",
+          "observations": 3,
+          "first": "2018-03-14",
+          "last": "2018-10-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Consumer Lifestyle B.V.",
+          "observations": 3,
+          "first": "2025-02-10",
+          "last": "2026-09-03",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Consumer Lifestyle - Innovation Site Eindhoven",
+          "observations": 3,
+          "first": "2016-08-29",
+          "last": "2020-12-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "EPD Solutions, A Philips Company",
+          "observations": 3,
+          "first": "2016-05-11",
+          "last": "2020-12-08",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Volcano",
+          "observations": 2,
+          "first": "2016-12-02",
+          "last": "2017-05-26",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Visicu",
+          "observations": 2,
+          "first": "2016-03-10",
+          "last": "2017-03-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Oral Healthcare",
+          "observations": 2,
+          "first": "2010-12-01",
+          "last": "2014-07-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Nuclear Medicine, Inc.",
+          "observations": 2,
+          "first": "2007-09-25",
+          "last": "2008-04-18",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips India Limited",
+          "observations": 2,
+          "first": "2017-11-16",
+          "last": "2021-04-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips France Commercial",
+          "observations": 2,
+          "first": "2022-05-16",
+          "last": "2025-08-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Electronics Nederland B.V.",
+          "observations": 2,
+          "first": "2017-07-06",
+          "last": "2019-09-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Volcano Corporation (Dba Philips Image Guided Therapy Device",
+          "observations": 1,
+          "first": "2025-10-28",
+          "last": "2025-10-28",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Stentor Inc., A Philips Medical Systems Co.",
+          "observations": 1,
+          "first": "2006-11-09",
+          "last": "2006-11-09",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Respironics Inc. (Dba Philips Respironics)",
+          "observations": 1,
+          "first": "2015-01-16",
+          "last": "2015-01-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Remote Diagnostic Technologies, Ltd. A Philips Company",
+          "observations": 1,
+          "first": "2020-07-24",
+          "last": "2020-07-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips and Neusoft Medical Systems Co., Ltd.",
+          "observations": 1,
+          "first": "2016-04-27",
+          "last": "2016-04-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Portuguesa S.A.",
+          "observations": 1,
+          "first": "2021-05-27",
+          "last": "2021-05-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Oral Healthcare, Inc.",
+          "observations": 1,
+          "first": "2004-07-02",
+          "last": "2004-07-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips OY",
+          "observations": 1,
+          "first": "2022-04-05",
+          "last": "2022-04-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medizin Systeme",
+          "observations": 1,
+          "first": "2026-05-01",
+          "last": "2026-05-01",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systesms",
+          "observations": 1,
+          "first": "2011-01-13",
+          "last": "2011-01-13",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Technologies Ltd.",
+          "observations": 1,
+          "first": "2024-11-20",
+          "last": "2024-11-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Technologies",
+          "observations": 1,
+          "first": "2024-04-24",
+          "last": "2024-04-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Netherland BV",
+          "observations": 1,
+          "first": "2014-08-19",
+          "last": "2014-08-19",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Nederland, B.V. (Pmsn)",
+          "observations": 1,
+          "first": "2022-10-24",
+          "last": "2022-10-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems Inc",
+          "observations": 1,
+          "first": "2003-02-21",
+          "last": "2003-02-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems GmbH, Dmc",
+          "observations": 1,
+          "first": "2007-03-09",
+          "last": "2007-03-09",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical System Nederlands B.V.",
+          "observations": 1,
+          "first": "2023-10-24",
+          "last": "2023-10-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical System Nederland B.V.",
+          "observations": 1,
+          "first": "2020-12-17",
+          "last": "2020-12-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Medical Stystems Nederland BV",
+          "observations": 1,
+          "first": "2017-06-07",
+          "last": "2017-06-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Lighting Company",
+          "observations": 1,
+          "first": "2013-12-24",
+          "last": "2013-12-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Lifeline Inc",
+          "observations": 1,
+          "first": "2009-11-25",
+          "last": "2009-11-25",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Image Guided Therapy Devices",
+          "observations": 1,
+          "first": "2025-06-24",
+          "last": "2025-06-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Healthcare, Inc.",
+          "observations": 1,
+          "first": "2015-10-30",
+          "last": "2015-10-30",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Healthcare Group",
+          "observations": 1,
+          "first": "2012-03-09",
+          "last": "2012-03-09",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Healthcare (Suzhou) Co., Lit.",
+          "observations": 1,
+          "first": "2020-07-10",
+          "last": "2020-07-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Electronic North America Corp. (Pena)",
+          "observations": 1,
+          "first": "1994-11-28",
+          "last": "1994-11-28",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips DS North America, LLC",
+          "observations": 1,
+          "first": "2025-06-05",
+          "last": "2025-06-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Consumer Electronics",
+          "observations": 1,
+          "first": "2002-08-20",
+          "last": "2002-08-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Children'S Medical Ventures",
+          "observations": 1,
+          "first": "2010-06-14",
+          "last": "2010-06-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Philips Anesthesia Care",
+          "observations": 1,
+          "first": "2013-08-02",
+          "last": "2013-08-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "PHILIPS HOME HEALTHCARE SOLUTION",
+          "observations": 1,
+          "first": "2021-01-28",
+          "last": "2021-01-28",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Connected Sensing- A Division of Philips Medical Systems",
+          "observations": 1,
+          "first": "2019-03-07",
+          "last": "2019-03-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Björn Philips",
+          "observations": 1,
+          "first": "2024-01-05",
+          "last": "2024-01-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        }
+      ]
+    },
+    "medtronic": {
+      "distinct_strings": 142,
+      "observations": 17110,
+      "strings": [
+        {
+          "applicant_raw": "Medtronic, Inc.",
+          "observations": 6608,
+          "first": "1981-05-27",
+          "last": "2026-10-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Cardiac Rhythm Disease Management",
+          "observations": 2699,
+          "first": "1979-03-27",
+          "last": "2026-10-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Neuromodulation",
+          "observations": 1607,
+          "first": "1984-11-30",
+          "last": "2026-10-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Vascular",
+          "observations": 1322,
+          "first": "1977-10-28",
+          "last": "2026-10-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Minimed",
+          "observations": 494,
+          "first": "1986-12-12",
+          "last": "2026-07-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Sofamor Danek USA, Inc.",
+          "observations": 366,
+          "first": "2000-02-08",
+          "last": "2026-08-26",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic",
+          "observations": 313,
+          "first": "2005-07-29",
+          "last": "2026-09-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Vascular, Inc.",
+          "observations": 278,
+          "first": "2002-04-03",
+          "last": "2026-10-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Cryocath, LP",
+          "observations": 261,
+          "first": "2003-04-17",
+          "last": "2026-09-25",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic, Ireland",
+          "observations": 250,
+          "first": "1980-03-24",
+          "last": "2026-01-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Inc., Cardiac Rhythm and Heart Failure (CRHF)",
+          "observations": 198,
+          "first": "2018-02-01",
+          "last": "2023-06-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Sofamor Danek USA Inc",
+          "observations": 170,
+          "first": "2006-06-08",
+          "last": "2026-10-09",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Perfusion Systems",
+          "observations": 170,
+          "first": "2000-01-13",
+          "last": "2026-07-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Cardiac Rhythm and Heart Failure",
+          "observations": 168,
+          "first": "2005-09-07",
+          "last": "2026-05-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Sofamor Danek",
+          "observations": 154,
+          "first": "2002-02-05",
+          "last": "2021-12-13",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Minimed, Inc.",
+          "observations": 147,
+          "first": "2007-10-17",
+          "last": "2026-09-29",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Navigation, Inc.",
+          "observations": 136,
+          "first": "2005-07-27",
+          "last": "2026-10-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Sofamor Danek, Inc.",
+          "observations": 125,
+          "first": "2000-03-10",
+          "last": "2025-06-12",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic MiniMed, Inc.",
+          "observations": 109,
+          "first": "2005-05-19",
+          "last": "2026-10-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic - MITG",
+          "observations": 97,
+          "first": "2005-09-22",
+          "last": "2026-01-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Neurosurgery",
+          "observations": 96,
+          "first": "2001-12-05",
+          "last": "2026-07-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Xomed, Inc.",
+          "observations": 87,
+          "first": "1983-06-21",
+          "last": "2026-09-04",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Inc.",
+          "observations": 85,
+          "first": "2015-11-02",
+          "last": "2024-09-13",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Heart Valves",
+          "observations": 69,
+          "first": "1979-11-15",
+          "last": "2025-04-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronics Interventional Vascular",
+          "observations": 66,
+          "first": "1988-03-25",
+          "last": "1999-03-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Ats Medical, Inc.",
+          "observations": 60,
+          "first": "2000-10-13",
+          "last": "2023-11-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Cardiac Surgery",
+          "observations": 58,
+          "first": "1981-12-23",
+          "last": "2024-07-18",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "COVIDIEN MEDTRONIC",
+          "observations": 55,
+          "first": "2017-01-26",
+          "last": "2018-07-19",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Cardiovascular",
+          "observations": 53,
+          "first": "2006-12-19",
+          "last": "2026-08-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Spinal and Biologics",
+          "observations": 44,
+          "first": "2004-11-01",
+          "last": "2026-02-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic MiniMed",
+          "observations": 42,
+          "first": "2003-11-27",
+          "last": "2026-07-09",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Endovascular",
+          "observations": 42,
+          "first": "2007-07-31",
+          "last": "2024-12-19",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Sofamor Danek Instrument Manufacturing",
+          "observations": 39,
+          "first": "2005-12-28",
+          "last": "2007-02-08",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Inc. Cardiac Rhythm Disease Management",
+          "observations": 37,
+          "first": "2011-04-29",
+          "last": "2015-10-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Inc. Cardiac Rhythm Managment",
+          "observations": 34,
+          "first": "2004-07-20",
+          "last": "2009-08-18",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Inc. Cardiac Rhythm Disease Managment",
+          "observations": 32,
+          "first": "2009-06-11",
+          "last": "2010-11-26",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Emergency Response Systems, Inc.",
+          "observations": 27,
+          "first": "2004-07-01",
+          "last": "2007-08-04",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Inc",
+          "observations": 25,
+          "first": "2004-09-29",
+          "last": "2026-01-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Cardiac Ablation Solutions",
+          "observations": 25,
+          "first": "2005-12-20",
+          "last": "2026-08-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic BRC",
+          "observations": 22,
+          "first": "2005-09-12",
+          "last": "2020-12-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Navigation, Inc.-Littleton",
+          "observations": 20,
+          "first": "2016-03-17",
+          "last": "2024-06-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Blood Systems, Inc.",
+          "observations": 15,
+          "first": "1988-05-06",
+          "last": "1995-07-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Advanced Energy, LLC",
+          "observations": 15,
+          "first": "2012-11-02",
+          "last": "2017-02-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic PS Medical",
+          "observations": 14,
+          "first": "1996-07-18",
+          "last": "2002-02-11",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Bio-Medicus, Inc.",
+          "observations": 13,
+          "first": "1992-05-20",
+          "last": "1998-04-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Ave, Inc.",
+          "observations": 13,
+          "first": "1999-08-02",
+          "last": "2003-10-09",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Surgical Technologies",
+          "observations": 12,
+          "first": "2009-07-22",
+          "last": "2014-11-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Surgical Navigation Technologies",
+          "observations": 12,
+          "first": "2000-06-12",
+          "last": "2005-06-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Neurovascular Clinical Affairs",
+          "observations": 12,
+          "first": "2008-10-22",
+          "last": "2020-05-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Powered Surgical Solutions",
+          "observations": 11,
+          "first": "2005-08-03",
+          "last": "2021-11-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Navigation, Inc",
+          "observations": 11,
+          "first": "2006-04-07",
+          "last": "2011-10-03",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Functional Diagnostics A/S",
+          "observations": 11,
+          "first": "1999-02-04",
+          "last": "2002-11-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Navigation",
+          "observations": 10,
+          "first": "2016-07-06",
+          "last": "2025-05-29",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic MiniMed Inc.",
+          "observations": 10,
+          "first": "2014-08-08",
+          "last": "2016-02-19",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Xomed",
+          "observations": 9,
+          "first": "1996-09-23",
+          "last": "2020-12-08",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Sofamor Danek USA",
+          "observations": 9,
+          "first": "2011-10-12",
+          "last": "2022-04-12",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Inc., Cardiac Rhythm and Heart Failure",
+          "observations": 9,
+          "first": "2016-03-31",
+          "last": "2017-07-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Physio-Control Corp.",
+          "observations": 8,
+          "first": "2001-01-31",
+          "last": "2004-04-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Neurological",
+          "observations": 8,
+          "first": "2001-12-11",
+          "last": "2006-12-19",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Advanced Energy",
+          "observations": 8,
+          "first": "2014-12-31",
+          "last": "2019-07-26",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Spine LLC",
+          "observations": 7,
+          "first": "2005-09-21",
+          "last": "2008-12-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Physio Control Corp",
+          "observations": 7,
+          "first": "2003-02-05",
+          "last": "2004-07-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Heart Valves Division",
+          "observations": 7,
+          "first": "2020-10-23",
+          "last": "2026-07-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Cardiovascular Revascularization & Surgical Therap",
+          "observations": 7,
+          "first": "2009-01-26",
+          "last": "2010-07-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Cardiac Surgical Products",
+          "observations": 7,
+          "first": "2000-02-10",
+          "last": "2003-01-08",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Warsaw Orthopedic, Inc. dba Medtronic SOFAMOR DANEK",
+          "observations": 6,
+          "first": "2007-11-07",
+          "last": "2009-03-12",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic, Inc. - Neuromodulation",
+          "observations": 6,
+          "first": "2010-11-09",
+          "last": "2011-08-29",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Inc, Neurological & Spinal Division",
+          "observations": 6,
+          "first": "2004-07-20",
+          "last": "2006-05-25",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic CardioVascular",
+          "observations": 6,
+          "first": "2008-04-08",
+          "last": "2011-01-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Andover Medical, Inc.",
+          "observations": 6,
+          "first": "1985-09-16",
+          "last": "1991-04-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "The Heart Valve Div. Medtronic Cardiovascular Surg",
+          "observations": 5,
+          "first": "1991-11-22",
+          "last": "1998-04-30",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic plc",
+          "observations": 5,
+          "first": "2019-03-07",
+          "last": "2024-06-03",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Vascular Galway DBA Medtronic Ireland",
+          "observations": 5,
+          "first": "2017-09-20",
+          "last": "2020-05-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Hemotec, Inc.",
+          "observations": 5,
+          "first": "1992-07-21",
+          "last": "1996-06-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Gastroenterology / Urology",
+          "observations": 5,
+          "first": "2004-07-20",
+          "last": "2006-06-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Cardiorhythm",
+          "observations": 5,
+          "first": "1994-06-06",
+          "last": "1998-08-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Cardiac Surgery Technologies",
+          "observations": 5,
+          "first": "2002-11-11",
+          "last": "2008-09-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "MEDTRONIC ATS MEDICAL, INC.",
+          "observations": 5,
+          "first": "2020-02-11",
+          "last": "2020-10-12",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Sofamor Danek Usa, Inc - Dallas Distribution",
+          "observations": 4,
+          "first": "2009-12-17",
+          "last": "2016-06-28",
+          "suspicion_tokens": [
+            "DISTRIBUT"
+          ],
+          "verdict": "REVIEW"
+        },
+        {
+          "applicant_raw": "Medtronic Sofamor Danek USA, Inc",
+          "observations": 4,
+          "first": "2021-03-17",
+          "last": "2023-08-09",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Sofamor Danck USA, Inc.",
+          "observations": 4,
+          "first": "2011-06-08",
+          "last": "2015-04-28",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Cardiovascular Surgery-the Heart Valve Division",
+          "observations": 4,
+          "first": "2014-02-03",
+          "last": "2016-08-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medicrea International S.A.S. (Medtronic)",
+          "observations": 4,
+          "first": "2024-09-06",
+          "last": "2026-05-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Surgical Navigation",
+          "observations": 3,
+          "first": "2000-05-03",
+          "last": "2005-06-08",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Spine LLC, formerly Kyphon Inc",
+          "observations": 3,
+          "first": "2009-05-11",
+          "last": "2011-03-11",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Diabetes R&D Denmark",
+          "observations": 3,
+          "first": "2013-01-18",
+          "last": "2013-01-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Corporate Technologies and New Ventures",
+          "observations": 3,
+          "first": "2009-06-12",
+          "last": "2013-04-04",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Blood Management",
+          "observations": 3,
+          "first": "1998-04-27",
+          "last": "1998-08-20",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Versaflex, Inc.",
+          "observations": 2,
+          "first": "1989-04-12",
+          "last": "1989-06-12",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Tyrx, Inc.",
+          "observations": 2,
+          "first": "2014-12-31",
+          "last": "2015-03-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Spine, LLC",
+          "observations": 2,
+          "first": "2010-10-22",
+          "last": "2011-01-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Sofamor Danek USA, Incorporated",
+          "observations": 2,
+          "first": "2015-02-25",
+          "last": "2016-01-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Percusurge, Inc.",
+          "observations": 2,
+          "first": "2002-01-25",
+          "last": "2002-11-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Navigation, Inc.-Boxborough",
+          "observations": 2,
+          "first": "2025-07-09",
+          "last": "2026-06-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Minimally Invasive Therapies Group",
+          "observations": 2,
+          "first": "2017-10-14",
+          "last": "2018-03-05",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Italia",
+          "observations": 2,
+          "first": "2010-04-23",
+          "last": "2011-02-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Ireland",
+          "observations": 2,
+          "first": "2026-07-27",
+          "last": "2026-08-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Inc. Cardiac Rhythm Management",
+          "observations": 2,
+          "first": "2004-01-22",
+          "last": "2007-03-15",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Heart Valve Division",
+          "observations": 2,
+          "first": "2008-08-27",
+          "last": "2008-08-27",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic CoreValve LLC",
+          "observations": 2,
+          "first": "2020-02-14",
+          "last": "2020-02-14",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Core Valve, LLC",
+          "observations": 2,
+          "first": "2015-08-03",
+          "last": "2018-05-03",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Cardiac Surgery, Medtronic, Inc.",
+          "observations": 2,
+          "first": "1996-02-02",
+          "last": "1996-05-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Given Imaging Ltd. (Medtronic)",
+          "observations": 2,
+          "first": "2021-08-27",
+          "last": "2023-06-30",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Covidien (Part of Medtronic)",
+          "observations": 2,
+          "first": "2024-11-01",
+          "last": "2026-04-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Melmedtronics, Inc.",
+          "observations": 1,
+          "first": "2007-06-29",
+          "last": "2007-06-29",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronics Midas Rex",
+          "observations": 1,
+          "first": "2003-01-09",
+          "last": "2003-01-09",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic-Synectics",
+          "observations": 1,
+          "first": "1997-09-23",
+          "last": "1997-09-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic,Inc/Rice Creek Facil",
+          "observations": 1,
+          "first": "2003-03-06",
+          "last": "2003-03-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic, PLC",
+          "observations": 1,
+          "first": "2020-02-10",
+          "last": "2020-02-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic, Inc. Heart Valve Division",
+          "observations": 1,
+          "first": "2017-10-03",
+          "last": "2017-10-03",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic, Inc. (Formerly D.B.A. Ev3, Inc. Covidien, LLC.)",
+          "observations": 1,
+          "first": "2019-04-23",
+          "last": "2019-04-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic formerly Covidien",
+          "observations": 1,
+          "first": "2022-04-25",
+          "last": "2022-04-25",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Vertelink, Inc.",
+          "observations": 1,
+          "first": "2004-11-24",
+          "last": "2004-11-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Vascular,Inc(Formerly D.B.A Ev3 Inc.,Covidien, LLC)",
+          "observations": 1,
+          "first": "2020-11-18",
+          "last": "2020-11-18",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Vascular, Inc.(Formerly Ev3 Inc.)",
+          "observations": 1,
+          "first": "2016-09-22",
+          "last": "2016-09-22",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Vascular Galway Limited",
+          "observations": 1,
+          "first": "2009-08-21",
+          "last": "2009-08-21",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Surgical Navigation Technologies, Inc",
+          "observations": 1,
+          "first": "2005-04-16",
+          "last": "2005-04-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Surgical Navigation Tech, Inc",
+          "observations": 1,
+          "first": "2003-12-17",
+          "last": "2003-12-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Spine LLC (formerly Kyphon Inc.)",
+          "observations": 1,
+          "first": "2011-09-09",
+          "last": "2011-09-09",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Spinal and Biologics Div",
+          "observations": 1,
+          "first": "2006-09-26",
+          "last": "2006-09-26",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Soafamor Danek",
+          "observations": 1,
+          "first": "2009-08-06",
+          "last": "2009-08-06",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Powered Surgical Solutions (Mpss)",
+          "observations": 1,
+          "first": "2020-11-02",
+          "last": "2020-11-02",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Neurovascular",
+          "observations": 1,
+          "first": "2018-08-24",
+          "last": "2018-08-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Navigation, Inc. (Littleton)",
+          "observations": 1,
+          "first": "2010-06-17",
+          "last": "2010-06-17",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Navigation Israel, Ltd.",
+          "observations": 1,
+          "first": "2010-03-16",
+          "last": "2010-03-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Midas Rex",
+          "observations": 1,
+          "first": "2002-03-18",
+          "last": "2002-03-18",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Latin America",
+          "observations": 1,
+          "first": "2010-11-11",
+          "last": "2010-11-11",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Interventional Vascular, Inc.",
+          "observations": 1,
+          "first": "2026-04-23",
+          "last": "2026-04-23",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic International Trade Inc",
+          "observations": 1,
+          "first": "2008-07-30",
+          "last": "2008-07-30",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Instent, Inc.",
+          "observations": 1,
+          "first": "1998-12-18",
+          "last": "1998-12-18",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Inc.,Neurological Division.",
+          "observations": 1,
+          "first": "2005-07-28",
+          "last": "2005-07-28",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Image Guided Neurologics, Inc.",
+          "observations": 1,
+          "first": "2008-02-07",
+          "last": "2008-02-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Hellas Medical Devices ΑEE",
+          "observations": 1,
+          "first": "2007-11-16",
+          "last": "2007-11-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Endovascular Innovations",
+          "observations": 1,
+          "first": "2005-04-13",
+          "last": "2005-04-13",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Care Management Services",
+          "observations": 1,
+          "first": "2020-05-15",
+          "last": "2020-05-15",
+          "suspicion_tokens": [
+            "SERVICE"
+          ],
+          "verdict": "REVIEW"
+        },
+        {
+          "applicant_raw": "Medtronic Ave Inc",
+          "observations": 1,
+          "first": "2003-05-07",
+          "last": "2003-05-07",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic Ablation Frontiers, LLC",
+          "observations": 1,
+          "first": "2011-03-18",
+          "last": "2011-03-18",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic A/S",
+          "observations": 1,
+          "first": "2007-02-08",
+          "last": "2007-02-08",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Medtronic - Sofradim Production",
+          "observations": 1,
+          "first": "2025-10-24",
+          "last": "2025-10-24",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Given Imaging Ltd. (D.B.A. Medtronic)",
+          "observations": 1,
+          "first": "2024-05-10",
+          "last": "2024-05-10",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Covidien (Dba Medtronic)",
+          "observations": 1,
+          "first": "2017-05-16",
+          "last": "2017-05-16",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        },
+        {
+          "applicant_raw": "Bellco Srl (Now Part of Medtronic, Inc)",
+          "observations": 1,
+          "first": "2020-04-29",
+          "last": "2020-04-29",
+          "suspicion_tokens": [],
+          "verdict": "plausible"
+        }
+      ]
+    }
+  },
+  "ge_continuity": {
+    "roster_rows": [
+      [
+        "ge_healthcare",
+        "GE HealthCare",
+        "GEHC"
+      ]
+    ],
+    "per_year_by_alias_group": {
+      "ge_healthcare": {
+        "1969": 2,
+        "1972": 1,
+        "1973": 1,
+        "1974": 5,
+        "1976": 10,
+        "1977": 2,
+        "1978": 2,
+        "1979": 1,
+        "1980": 1,
+        "1982": 4,
+        "1984": 1,
+        "1985": 2,
+        "1988": 1,
+        "1992": 1,
+        "1993": 1,
+        "1995": 1,
+        "1996": 1,
+        "1997": 2,
+        "2000": 2,
+        "2001": 7,
+        "2002": 7,
+        "2004": 4,
+        "2005": 35,
+        "2006": 42,
+        "2007": 30,
+        "2008": 87,
+        "2009": 43,
+        "2010": 65,
+        "2011": 111,
+        "2012": 75,
+        "2013": 112,
+        "2014": 93,
+        "2015": 88,
+        "2016": 88,
+        "2017": 72,
+        "2018": 81,
+        "2019": 81,
+        "2020": 82,
+        "2021": 101,
+        "2022": 52,
+        "2023": 30,
+        "2024": 55,
+        "2025": 37,
+        "2026": 24
+      },
+      "ge_medical_systems": {
+        "1978": 2,
+        "1979": 3,
+        "1980": 3,
+        "1981": 1,
+        "1982": 10,
+        "1983": 9,
+        "1984": 16,
+        "1985": 9,
+        "1986": 18,
+        "1987": 13,
+        "1988": 8,
+        "1989": 13,
+        "1990": 16,
+        "1991": 20,
+        "1992": 9,
+        "1993": 8,
+        "1994": 15,
+        "1995": 21,
+        "1996": 31,
+        "1997": 24,
+        "1998": 18,
+        "1999": 19,
+        "2000": 20,
+        "2001": 33,
+        "2002": 33,
+        "2003": 50,
+        "2004": 30,
+        "2005": 30,
+        "2006": 16,
+        "2007": 27,
+        "2008": 26,
+        "2009": 74,
+        "2010": 27,
+        "2011": 19,
+        "2012": 21,
+        "2013": 27,
+        "2014": 57,
+        "2015": 34,
+        "2016": 46,
+        "2017": 37,
+        "2018": 58,
+        "2019": 19,
+        "2020": 34,
+        "2021": 22,
+        "2022": 46,
+        "2023": 33,
+        "2024": 65,
+        "2025": 136,
+        "2026": 72
+      },
+      "other_ge": {
+        "1969": 2,
+        "1972": 1,
+        "1973": 1,
+        "1974": 5,
+        "1976": 14,
+        "1977": 4,
+        "1978": 6,
+        "1979": 11,
+        "1980": 18,
+        "1981": 10,
+        "1982": 35,
+        "1983": 19,
+        "1984": 22,
+        "1985": 25,
+        "1986": 25,
+        "1987": 24,
+        "1988": 21,
+        "1989": 30,
+        "1990": 28,
+        "1991": 31,
+        "1992": 22,
+        "1993": 22,
+        "1994": 37,
+        "1995": 56,
+        "1996": 45,
+        "1997": 43,
+        "1998": 28,
+        "1999": 31,
+        "2000": 50,
+        "2001": 60,
+        "2002": 48,
+        "2003": 66,
+        "2004": 44,
+        "2005": 93,
+        "2006": 91,
+        "2007": 97,
+        "2008": 133,
+        "2009": 154,
+        "2010": 116,
+        "2011": 154,
+        "2012": 202,
+        "2013": 181,
+        "2014": 178,
+        "2015": 160,
+        "2016": 168,
+        "2017": 159,
+        "2018": 192,
+        "2019": 148,
+        "2020": 176,
+        "2021": 187,
+        "2022": 146,
+        "2023": 117,
+        "2024": 207,
+        "2025": 212,
+        "2026": 124
+      }
+    },
+    "reading": "the roster key ge_healthcare is mapped to raw applicants from several corporate eras; the continuity of 'the same legal entity' across 1978-2026 is NOT established by these strings and must not be assumed in a firm-level claim"
+  },
+  "domain_sharing": {
+    "floors": {
+      "min_observations": 40,
+      "min_quarters": 12,
+      "min_firms_per_track": 3
+    },
+    "shared_tracks": {
+      "imaging_us": {
+        "firms_meeting_floor": [
+          "ge_healthcare",
+          "mindray",
+          "philips"
+        ],
+        "count": 3,
+        "detail": {
+          "ge_healthcare": {
+            "observations": 107,
+            "quarters": 28,
+            "meets_floor": true
+          },
+          "philips": {
+            "observations": 146,
+            "quarters": 20,
+            "meets_floor": true
+          },
+          "mindray": {
+            "observations": 48,
+            "quarters": 26,
+            "meets_floor": true
+          }
+        }
+      },
+      "respiratory": {
+        "firms_meeting_floor": [
+          "ge_healthcare",
+          "medtronic",
+          "philips"
+        ],
+        "count": 3,
+        "detail": {
+          "ge_healthcare": {
+            "observations": 61,
+            "quarters": 13,
+            "meets_floor": true
+          },
+          "medtronic": {
+            "observations": 42,
+            "quarters": 15,
+            "meets_floor": true
+          },
+          "philips": {
+            "observations": 86,
+            "quarters": 14,
+            "meets_floor": true
+          },
+          "draeger": {
+            "observations": 6,
+            "quarters": 4,
+            "meets_floor": false
+          },
+          "mindray": {
+            "observations": 12,
+            "quarters": 7,
+            "meets_floor": false
+          }
+        }
+      }
+    },
+    "all_tracks_touched": [
+      "aesthetics",
+      "cardiac_rhythm",
+      "coronary",
+      "dental",
+      "diabetes_cgm",
+      "dialysis",
+      "endoscopy",
+      "ent",
+      "ep_pfa",
+      "general_surgery",
+      "heart_failure",
+      "imaging_mr_ct",
+      "imaging_us",
+      "insulin_delivery",
+      "ivd_molecular",
+      "medical_ai",
+      "neurostimulation",
+      "neurovascular",
+      "ophthalmology",
+      "ortho_joint",
+      "patient_monitoring",
+      "peripheral_vascular",
+      "respiratory",
+      "spine",
+      "structural_heart",
+      "surgical_energy",
+      "t_cardiometabolic",
+      "t_hematology",
+      "t_hepatology",
+      "t_immunology",
+      "t_musculoskeletal",
+      "t_neuroscience",
+      "t_oncology",
+      "t_respiratory",
+      "t_urology",
+      "t_womens_health",
+      "trauma",
+      "urology",
+      "vascular_access",
+      "wearable_remote",
+      "womens_health",
+      "wound_care"
+    ]
+  },
+  "limitations": [
+    "alias matching on applicant_raw is substring matching: it can match distributors, service arms or product-line names, which is why suspicion tokens are flagged for human review",
+    "a matched string does not establish legal-entity identity for a firm-level claim",
+    "the store records no per-record publication timestamp, so this audit says nothing about availability time; see EVIDENCE_TIME_AUDIT.json"
+  ]
+}
