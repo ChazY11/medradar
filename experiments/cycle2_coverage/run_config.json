@@ -1,0 +1,48 @@
+{
+  "db": {
+    "path": "data\\research.sqlite",
+    "sha256": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+    "size_bytes": 289443840
+  },
+  "generated_at_unix": 1793584361,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "protocol": {
+    "dormancy_months": 36,
+    "entity_determinism": "normalise_applicant (no fuzzy matching)",
+    "holdouts": 3,
+    "horizon_months": 12,
+    "metric_primary": "pr_auc (average precision)",
+    "model": "LogisticBaseline(epochs=180, learning_rate=0.15, l2=1.0)",
+    "purge_rule": "cutoff + 12 months <= origin"
+  },
+  "python": "3.12.10",
+  "specification": {
+    "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m",
+      "rd_pair_inactive_months",
+      "rd_company_active_tracks_12m",
+      "rd_company_active_tracks_delta",
+      "rd_track_active_companies_12m",
+      "rd_track_active_companies_delta",
+      "rd_company_track_novelty_share"
+    ],
+    "n_features": 16,
+    "name": "rd_plus_entry_history"
+  },
+  "timings": {
+    "backtest_p1_seconds": 320.7,
+    "backtest_p2_seconds": 1289.7,
+    "build_p1_seconds": 1.3,
+    "build_p2_seconds": 3.2,
+    "total_seconds": 1615.3
+  }
+}

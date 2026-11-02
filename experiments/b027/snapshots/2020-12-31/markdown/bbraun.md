@@ -1,0 +1,60 @@
+# B. Braun — technology profile
+
+*As of 2020-12-31. Evidence window 2016-11 to 2020-12 (50 months). Schema profile_v1.*
+
+> A profile states what public evidence supports and what would change the answer. It is not a score, and it is only as good as the coverage below.
+
+## 1. Identity
+
+- B. Braun: 8 resolved legal entities from 4 aliases, observed 2016-11 to 2020-12
+- Sources: data/research.sqlite (510(k)+PMA lane), data/b040_device_trials.sqlite, config/companies_device.json, config/universe_v1.json
+
+## 2. Technology footprint
+
+- 23 material events across 8 technology tracks (3 tracks rest on a single event)
+
+| track | events | first | last | share | evidence |
+|---|---:|---|---|---:|---|
+| vascular_access | 8 | 2017-04 | 2020-09 | 35% | sufficient |
+| wound_care | 5 | 2016-11 | 2018-03 | 22% | sufficient |
+| surgical_energy | 3 | 2019-03 | 2020-12 | 13% | sufficient |
+| spine | 2 | 2016-12 | 2018-04 | 9% | sufficient |
+| neurovascular | 2 | 2017-11 | 2018-04 | 9% | sufficient |
+| coronary | 1 | 2017-06 | 2017-06 | 4% | single event |
+| endoscopy | 1 | 2018-02 | 2018-02 | 4% | single event |
+| ortho_joint | 1 | 2018-03 | 2018-03 | 4% | single event |
+
+## 3. Momentum
+
+- no detectable change: 19 events in the last 24 months vs 27 before (ratio 0.70), p=0.302; minimum detectable ratio at 80% power is 2.31x
+- Test: exact two-sided binomial p=0.302 (alpha=0.05), minimum detectable ratio at 80 % power 2.31x, detected=False
+
+## 4. Concentration
+
+- diversified: top track vascular_access holds 35% of 23 material events across 8 tracks (HHI 0.21)
+
+## 5. Independent corroboration
+
+- 0 of 8 technology tracks have independent device-trial support; 8 do not
+- Tracks with **no** trial support: coronary, endoscopy, neurovascular, ortho_joint, spine, surgical_energy, vascular_access, wound_care
+
+## 6. Contradictory evidence
+
+- 2 contradictory observation(s) out of 4 checks
+- `single_event_tracks`: 3 track(s) rest on a single event: coronary, endoscopy, ortho_joint — a single filing is an anecdote; treat these tracks as unconfirmed
+- `activity_decline_by_track`: wound_care: 0 events in the last 24 months vs 4 before — this track is retreating, which cuts against a growth reading
+
+## 7. Limits and provenance
+
+- As of 2020-12-31; window 2016-11 to 2020-12
+- Hiring evidence: no archived hiring board found for this company (coverage absence, not zero hiring)
+- What would change the conclusion:
+  - a sustained activity change beyond the detector's measured minimum detectable effect
+  - independent evidence (trials, hiring, publications) that contradicts the track reading
+  - taxonomy changes that reclassify existing activity into new product codes
+  - entity-resolution changes that move filings between legal entities
+- Known limits:
+  - a detection is a statement about public regulatory activity rate, never about intent, capability or internal R&D
+  - the lane holds ~0.2 events per cell-month, so monthly per-track rates are noisy
+  - product-code taxonomy is not versioned by effective date
+  - the final month of the window is partially observed

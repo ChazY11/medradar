@@ -1,0 +1,1563 @@
+{
+ "experiment": "reverse_rd_v2_market_ablation",
+ "dataset_version": "reverse_rd_v1",
+ "generated_by": "scripts/run_market_ablation.py",
+ "python_version": "3.12.10",
+ "evaluation_protocol": {
+  "name": "reverse_rd_v2_market_ablation",
+  "target": "Any material public FDA 510(k)/original-or-panel-track PMA activity for an already-active company-track pair in the next 12 months",
+  "target_horizon_months": 12,
+  "mode": "expanding-window rolling-origin with matured-label purge; the final chronological origin is the single untouched holdout",
+  "purge_rule": "a training example may be used at origin t only when cutoff + horizon_months <= t",
+  "purge_used": true,
+  "holdout": "2025-10-01",
+  "origins": [
+   "2019-10-01",
+   "2020-01-01",
+   "2020-04-01",
+   "2020-07-01",
+   "2020-10-01",
+   "2021-01-01",
+   "2021-04-01",
+   "2021-07-01",
+   "2021-10-01",
+   "2022-01-01",
+   "2022-04-01",
+   "2022-07-01",
+   "2022-10-01",
+   "2023-01-01",
+   "2023-04-01",
+   "2023-07-01",
+   "2023-10-01",
+   "2024-01-01",
+   "2024-04-01",
+   "2024-07-01",
+   "2024-10-01",
+   "2025-01-01",
+   "2025-04-01",
+   "2025-07-01",
+   "2025-10-01"
+  ],
+  "min_train_origins": 3,
+  "algorithm": "LogisticBaseline (deterministic batch-gradient logistic regression, 180 epochs, learning rate 0.15, l2 1.0, training-only median imputation with missing indicators)",
+  "rows_identical_across_feature_sets": true,
+  "features": {
+   "base": [
+    "rd_count_12m",
+    "rd_count_previous_12m",
+    "rd_momentum",
+    "rd_count_36m",
+    "rd_recency_years",
+    "rd_company_count_12m",
+    "rd_track_count_12m",
+    "rd_company_track_share",
+    "rd_pair_active_years",
+    "rd_company_total_36m"
+   ],
+   "financial": [
+    "fin_revenue_growth",
+    "fin_rd_growth",
+    "fin_rd_intensity",
+    "fin_rd_intensity_delta",
+    "fin_operating_margin",
+    "fin_cash_to_rd",
+    "fin_ocf_to_rd",
+    "fin_capex_intensity",
+    "fin_acquisition_to_revenue",
+    "fin_inventory_growth",
+    "fin_facts_available"
+   ],
+   "market": [
+    "mkt_ret_12m",
+    "mkt_vol_12m",
+    "mkt_max_drawdown_12m",
+    "mkt_rel_spy_12m",
+    "mkt_rel_xbi_12m",
+    "mkt_volume_z_3m",
+    "mkt_regime_spy_above_200d",
+    "mkt_days_since_12m_high"
+   ]
+  },
+  "multi_holdout": {
+   "requested_origins": 3,
+   "available": false,
+   "reason": "the run_backtest installed in this worktree has no 'holdouts' parameter (multi-holdout support is owned by a separate worktree); the frozen single final holdout was used instead",
+   "results": null
+  },
+  "metrics": [
+   "pr_auc",
+   "brier",
+   "ece",
+   "false_positive_rate",
+   "precision_at_k"
+  ],
+  "positive_class": "continue: at least one material public FDA 510(k)/PMA event for the already-active company-track pair inside the 12-month label window",
+  "reproduce": "python scripts/run_market_ablation.py"
+ },
+ "coverage": {
+  "companies_total": 51,
+  "companies_with_ticker": 44,
+  "companies_without_ticker": 7,
+  "company_tickers_requested": 44,
+  "company_tickers_matched": 38,
+  "benchmarks_requested": 2,
+  "benchmarks_matched": 2,
+  "price_source": "yahoo_finance_daily",
+  "bars_imported": 95725,
+  "bars_in_table": 95725,
+  "bars_date_min": "2016-10-31",
+  "bars_date_max": "2026-10-30",
+  "missing_tickers": [
+   "CAJ",
+   "HOLX",
+   "IVC",
+   "MASI",
+   "NVRO",
+   "OCPNY"
+  ],
+  "unmapped_companies": [
+   "bbraun",
+   "biotronik",
+   "cook_medical",
+   "karl_storz",
+   "medline",
+   "pentax_medical",
+   "wl_gore"
+  ],
+  "examples_total": 6701,
+  "examples_with_market_features": 5206,
+  "examples_missing_market_features": 1495,
+  "examples_company_without_ticker": 945,
+  "examples_cutoff_min": "2019-10-01",
+  "examples_cutoff_max": "2025-10-01",
+  "holdout_examples": 307,
+  "holdout_market_missing": 62,
+  "holdout_non_null_by_feature": {
+   "mkt_ret_12m": 245,
+   "mkt_vol_12m": 245,
+   "mkt_max_drawdown_12m": 245,
+   "mkt_rel_spy_12m": 245,
+   "mkt_rel_xbi_12m": 245,
+   "mkt_volume_z_3m": 245,
+   "mkt_regime_spy_above_200d": 245,
+   "mkt_days_since_12m_high": 245
+  },
+  "attach_non_null_by_feature": {
+   "mkt_ret_12m": 5206,
+   "mkt_vol_12m": 5206,
+   "mkt_max_drawdown_12m": 5206,
+   "mkt_rel_spy_12m": 5206,
+   "mkt_rel_xbi_12m": 5206,
+   "mkt_volume_z_3m": 5206,
+   "mkt_regime_spy_above_200d": 5206,
+   "mkt_days_since_12m_high": 5206
+  },
+  "examples_by_cutoff": [
+   {
+    "cutoff": "2019-10-01",
+    "examples": 226,
+    "market_missing": 58
+   },
+   {
+    "cutoff": "2020-01-01",
+    "examples": 230,
+    "market_missing": 59
+   },
+   {
+    "cutoff": "2020-04-01",
+    "examples": 234,
+    "market_missing": 59
+   },
+   {
+    "cutoff": "2020-07-01",
+    "examples": 238,
+    "market_missing": 57
+   },
+   {
+    "cutoff": "2020-10-01",
+    "examples": 242,
+    "market_missing": 54
+   },
+   {
+    "cutoff": "2021-01-01",
+    "examples": 246,
+    "market_missing": 56
+   },
+   {
+    "cutoff": "2021-04-01",
+    "examples": 248,
+    "market_missing": 58
+   },
+   {
+    "cutoff": "2021-07-01",
+    "examples": 250,
+    "market_missing": 59
+   },
+   {
+    "cutoff": "2021-10-01",
+    "examples": 252,
+    "market_missing": 60
+   },
+   {
+    "cutoff": "2022-01-01",
+    "examples": 256,
+    "market_missing": 61
+   },
+   {
+    "cutoff": "2022-04-01",
+    "examples": 263,
+    "market_missing": 61
+   },
+   {
+    "cutoff": "2022-07-01",
+    "examples": 267,
+    "market_missing": 61
+   },
+   {
+    "cutoff": "2022-10-01",
+    "examples": 271,
+    "market_missing": 61
+   },
+   {
+    "cutoff": "2023-01-01",
+    "examples": 273,
+    "market_missing": 61
+   },
+   {
+    "cutoff": "2023-04-01",
+    "examples": 276,
+    "market_missing": 61
+   },
+   {
+    "cutoff": "2023-07-01",
+    "examples": 278,
+    "market_missing": 62
+   },
+   {
+    "cutoff": "2023-10-01",
+    "examples": 281,
+    "market_missing": 64
+   },
+   {
+    "cutoff": "2024-01-01",
+    "examples": 285,
+    "market_missing": 59
+   },
+   {
+    "cutoff": "2024-04-01",
+    "examples": 289,
+    "market_missing": 59
+   },
+   {
+    "cutoff": "2024-07-01",
+    "examples": 292,
+    "market_missing": 59
+   },
+   {
+    "cutoff": "2024-10-01",
+    "examples": 294,
+    "market_missing": 60
+   },
+   {
+    "cutoff": "2025-01-01",
+    "examples": 297,
+    "market_missing": 61
+   },
+   {
+    "cutoff": "2025-04-01",
+    "examples": 302,
+    "market_missing": 61
+   },
+   {
+    "cutoff": "2025-07-01",
+    "examples": 304,
+    "market_missing": 62
+   },
+   {
+    "cutoff": "2025-10-01",
+    "examples": 307,
+    "market_missing": 62
+   }
+  ],
+  "per_company": [
+   {
+    "company_key": "medtronic",
+    "ticker": "MDT",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 571,
+    "has_market_data": true
+   },
+   {
+    "company_key": "johnson_johnson_medtech",
+    "ticker": "JNJ",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 457,
+    "has_market_data": true
+   },
+   {
+    "company_key": "abbott",
+    "ticker": "ABT",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 407,
+    "has_market_data": true
+   },
+   {
+    "company_key": "boston_scientific",
+    "ticker": "BSX",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 347,
+    "has_market_data": true
+   },
+   {
+    "company_key": "stryker",
+    "ticker": "SYK",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 402,
+    "has_market_data": true
+   },
+   {
+    "company_key": "zimmer_biomet",
+    "ticker": "ZBH",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 214,
+    "has_market_data": true
+   },
+   {
+    "company_key": "edwards_lifesciences",
+    "ticker": "EW",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 129,
+    "has_market_data": true
+   },
+   {
+    "company_key": "intuitive_surgical",
+    "ticker": "ISRG",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 94,
+    "has_market_data": true
+   },
+   {
+    "company_key": "siemens_healthineers",
+    "ticker": "SHL.DE",
+    "bars": 2174,
+    "date_min": "2018-04-12",
+    "date_max": "2026-10-30",
+    "examples": 181,
+    "has_market_data": true
+   },
+   {
+    "company_key": "philips",
+    "ticker": "PHG",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 209,
+    "has_market_data": true
+   },
+   {
+    "company_key": "ge_healthcare",
+    "ticker": "GEHC",
+    "bars": 972,
+    "date_min": "2022-12-15",
+    "date_max": "2026-10-30",
+    "examples": 125,
+    "has_market_data": true
+   },
+   {
+    "company_key": "bd",
+    "ticker": "BDX",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 247,
+    "has_market_data": true
+   },
+   {
+    "company_key": "baxter",
+    "ticker": "BAX",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 98,
+    "has_market_data": true
+   },
+   {
+    "company_key": "resmed",
+    "ticker": "RMD",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 25,
+    "has_market_data": true
+   },
+   {
+    "company_key": "masimo",
+    "ticker": "MASI",
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 68,
+    "has_market_data": false
+   },
+   {
+    "company_key": "dexcom",
+    "ticker": "DXCM",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 25,
+    "has_market_data": true
+   },
+   {
+    "company_key": "insulet",
+    "ticker": "PODD",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 40,
+    "has_market_data": true
+   },
+   {
+    "company_key": "tandem_diabetes",
+    "ticker": "TNDM",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 51,
+    "has_market_data": true
+   },
+   {
+    "company_key": "penumbra",
+    "ticker": "PEN",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 89,
+    "has_market_data": true
+   },
+   {
+    "company_key": "globus_medical",
+    "ticker": "GMED",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 117,
+    "has_market_data": true
+   },
+   {
+    "company_key": "hologic",
+    "ticker": "HOLX",
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 100,
+    "has_market_data": false
+   },
+   {
+    "company_key": "teleflex",
+    "ticker": "TFX",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 89,
+    "has_market_data": true
+   },
+   {
+    "company_key": "cooper_companies",
+    "ticker": "COO",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 25,
+    "has_market_data": true
+   },
+   {
+    "company_key": "alcon",
+    "ticker": "ALC",
+    "bars": 1902,
+    "date_min": "2019-04-09",
+    "date_max": "2026-10-30",
+    "examples": 50,
+    "has_market_data": true
+   },
+   {
+    "company_key": "dentsply_sirona",
+    "ticker": "XRAY",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 124,
+    "has_market_data": true
+   },
+   {
+    "company_key": "integra_lifesciences",
+    "ticker": "IART",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 148,
+    "has_market_data": true
+   },
+   {
+    "company_key": "irhythm",
+    "ticker": "IRTC",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 50,
+    "has_market_data": true
+   },
+   {
+    "company_key": "inspire_medical",
+    "ticker": "INSP",
+    "bars": 2136,
+    "date_min": "2018-05-03",
+    "date_max": "2026-10-30",
+    "examples": 22,
+    "has_market_data": true
+   },
+   {
+    "company_key": "procept_biorobotics",
+    "ticker": "PRCT",
+    "bars": 1288,
+    "date_min": "2021-09-15",
+    "date_max": "2026-10-30",
+    "examples": 25,
+    "has_market_data": true
+   },
+   {
+    "company_key": "atricure",
+    "ticker": "ATRC",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 57,
+    "has_market_data": true
+   },
+   {
+    "company_key": "nevro",
+    "ticker": "NVRO",
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 17,
+    "has_market_data": false
+   },
+   {
+    "company_key": "orthofix",
+    "ticker": "OFIX",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 98,
+    "has_market_data": true
+   },
+   {
+    "company_key": "merit_medical",
+    "ticker": "MMSI",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 126,
+    "has_market_data": true
+   },
+   {
+    "company_key": "icu_medical",
+    "ticker": "ICUI",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 84,
+    "has_market_data": true
+   },
+   {
+    "company_key": "ambu",
+    "ticker": "AMBU-B.CO",
+    "bars": 2501,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 47,
+    "has_market_data": true
+   },
+   {
+    "company_key": "invacare",
+    "ticker": "IVC",
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 25,
+    "has_market_data": false
+   },
+   {
+    "company_key": "smith_nephew",
+    "ticker": "SNN",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 120,
+    "has_market_data": true
+   },
+   {
+    "company_key": "terumo",
+    "ticker": "TRUMY",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 92,
+    "has_market_data": true
+   },
+   {
+    "company_key": "fresenius_medical_care",
+    "ticker": "FMS",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 78,
+    "has_market_data": true
+   },
+   {
+    "company_key": "cook_medical",
+    "ticker": null,
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 250,
+    "has_market_data": false
+   },
+   {
+    "company_key": "olympus",
+    "ticker": "OCPNY",
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 169,
+    "has_market_data": false
+   },
+   {
+    "company_key": "wl_gore",
+    "ticker": null,
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 75,
+    "has_market_data": false
+   },
+   {
+    "company_key": "biotronik",
+    "ticker": null,
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 48,
+    "has_market_data": false
+   },
+   {
+    "company_key": "bbraun",
+    "ticker": null,
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 223,
+    "has_market_data": false
+   },
+   {
+    "company_key": "medline",
+    "ticker": null,
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 150,
+    "has_market_data": false
+   },
+   {
+    "company_key": "karl_storz",
+    "ticker": null,
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 149,
+    "has_market_data": false
+   },
+   {
+    "company_key": "pentax_medical",
+    "ticker": null,
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 50,
+    "has_market_data": false
+   },
+   {
+    "company_key": "fujifilm",
+    "ticker": "FUJIY",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 83,
+    "has_market_data": true
+   },
+   {
+    "company_key": "canon_medical",
+    "ticker": "CAJ",
+    "bars": 0,
+    "date_min": null,
+    "date_max": null,
+    "examples": 52,
+    "has_market_data": false
+   },
+   {
+    "company_key": "steris",
+    "ticker": "STE",
+    "bars": 2514,
+    "date_min": "2016-10-31",
+    "date_max": "2026-10-30",
+    "examples": 79,
+    "has_market_data": true
+   },
+   {
+    "company_key": "envista",
+    "ticker": "NVST",
+    "bars": 1790,
+    "date_min": "2019-09-18",
+    "date_max": "2026-10-30",
+    "examples": 100,
+    "has_market_data": true
+   }
+  ]
+ },
+ "models": {
+  "rd_only": {
+   "description": "A: R&D history only",
+   "features": [
+    "rd_count_12m",
+    "rd_count_previous_12m",
+    "rd_momentum",
+    "rd_count_36m",
+    "rd_recency_years",
+    "rd_company_count_12m",
+    "rd_track_count_12m",
+    "rd_company_track_share",
+    "rd_pair_active_years",
+    "rd_company_total_36m"
+   ],
+   "training_label_policy": "matured_by_origin",
+   "holdout_metrics": {
+    "n": 307,
+    "positives": 129,
+    "prevalence": 0.4201954397394137,
+    "pr_auc": 0.793476494625078,
+    "brier": 0.17213399933774418,
+    "ece": 0.08112028344071491,
+    "false_positive_rate": 0.2752808988764045,
+    "precision_at_k": 0.9354838709677419,
+    "k": 31,
+    "mean_lead_time_days": 139.03875968992247,
+    "lead_time_n": 129,
+    "threshold": 0.5
+   },
+   "development_metrics": {
+    "n": 5466,
+    "positives": 2530,
+    "prevalence": 0.4628613245517746,
+    "pr_auc": 0.7973503816541118,
+    "brier": 0.18151523498179029,
+    "ece": 0.0747189869064463,
+    "false_positive_rate": 0.3239100817438692,
+    "precision_at_k": 0.9378427787934186,
+    "k": 547,
+    "mean_lead_time_days": 134.0818181818182,
+    "lead_time_n": 2530,
+    "threshold": 0.5
+   },
+   "origin_pr_auc": [
+    {
+     "cutoff": "2020-10-01",
+     "pr_auc": 0.8167440202383611
+    },
+    {
+     "cutoff": "2021-01-01",
+     "pr_auc": 0.8194338633568848
+    },
+    {
+     "cutoff": "2021-04-01",
+     "pr_auc": 0.8153883689238315
+    },
+    {
+     "cutoff": "2021-07-01",
+     "pr_auc": 0.7829791990096567
+    },
+    {
+     "cutoff": "2021-10-01",
+     "pr_auc": 0.7877610470315742
+    },
+    {
+     "cutoff": "2022-01-01",
+     "pr_auc": 0.8500251754434627
+    },
+    {
+     "cutoff": "2022-04-01",
+     "pr_auc": 0.8230701108817037
+    },
+    {
+     "cutoff": "2022-07-01",
+     "pr_auc": 0.7983326965861233
+    },
+    {
+     "cutoff": "2022-10-01",
+     "pr_auc": 0.8256403339084565
+    },
+    {
+     "cutoff": "2023-01-01",
+     "pr_auc": 0.8201619211624402
+    },
+    {
+     "cutoff": "2023-04-01",
+     "pr_auc": 0.7892665073875702
+    },
+    {
+     "cutoff": "2023-07-01",
+     "pr_auc": 0.8147443978013287
+    },
+    {
+     "cutoff": "2023-10-01",
+     "pr_auc": 0.7889344980957965
+    },
+    {
+     "cutoff": "2024-01-01",
+     "pr_auc": 0.7749192382245502
+    },
+    {
+     "cutoff": "2024-04-01",
+     "pr_auc": 0.7891597676197776
+    },
+    {
+     "cutoff": "2024-07-01",
+     "pr_auc": 0.8128283212774498
+    },
+    {
+     "cutoff": "2024-10-01",
+     "pr_auc": 0.7702214455130415
+    },
+    {
+     "cutoff": "2025-01-01",
+     "pr_auc": 0.792677421155825
+    },
+    {
+     "cutoff": "2025-04-01",
+     "pr_auc": 0.7864552120251936
+    },
+    {
+     "cutoff": "2025-07-01",
+     "pr_auc": 0.7412225797050219
+    },
+    {
+     "cutoff": "2025-10-01",
+     "pr_auc": 0.793476494625078
+    }
+   ],
+   "forecast_horizon_stability": {
+    "origins": 20,
+    "pr_auc_mean": 0.7999983062674024,
+    "pr_auc_std": 0.023854346609322993,
+    "pr_auc_min": 0.7412225797050219,
+    "pr_auc_max": 0.8500251754434627
+   }
+  },
+  "rd_financial": {
+   "description": "B: R&D + consolidated SEC financials",
+   "features": [
+    "rd_count_12m",
+    "rd_count_previous_12m",
+    "rd_momentum",
+    "rd_count_36m",
+    "rd_recency_years",
+    "rd_company_count_12m",
+    "rd_track_count_12m",
+    "rd_company_track_share",
+    "rd_pair_active_years",
+    "rd_company_total_36m",
+    "fin_revenue_growth",
+    "fin_rd_growth",
+    "fin_rd_intensity",
+    "fin_rd_intensity_delta",
+    "fin_operating_margin",
+    "fin_cash_to_rd",
+    "fin_ocf_to_rd",
+    "fin_capex_intensity",
+    "fin_acquisition_to_revenue",
+    "fin_inventory_growth",
+    "fin_facts_available"
+   ],
+   "training_label_policy": "matured_by_origin",
+   "holdout_metrics": {
+    "n": 307,
+    "positives": 129,
+    "prevalence": 0.4201954397394137,
+    "pr_auc": 0.7921988470383661,
+    "brier": 0.1721035586735966,
+    "ece": 0.0737371499308207,
+    "false_positive_rate": 0.2640449438202247,
+    "precision_at_k": 0.9354838709677419,
+    "k": 31,
+    "mean_lead_time_days": 139.03875968992247,
+    "lead_time_n": 129,
+    "threshold": 0.5
+   },
+   "development_metrics": {
+    "n": 5466,
+    "positives": 2530,
+    "prevalence": 0.4628613245517746,
+    "pr_auc": 0.7900398156945674,
+    "brier": 0.18423104382348446,
+    "ece": 0.07445732811223799,
+    "false_positive_rate": 0.31471389645776565,
+    "precision_at_k": 0.9360146252285192,
+    "k": 547,
+    "mean_lead_time_days": 134.0818181818182,
+    "lead_time_n": 2530,
+    "threshold": 0.5
+   },
+   "origin_pr_auc": [
+    {
+     "cutoff": "2020-10-01",
+     "pr_auc": 0.7676638026912981
+    },
+    {
+     "cutoff": "2021-01-01",
+     "pr_auc": 0.7612571584956593
+    },
+    {
+     "cutoff": "2021-04-01",
+     "pr_auc": 0.8063529642861063
+    },
+    {
+     "cutoff": "2021-07-01",
+     "pr_auc": 0.7754707962155841
+    },
+    {
+     "cutoff": "2021-10-01",
+     "pr_auc": 0.7854223786047052
+    },
+    {
+     "cutoff": "2022-01-01",
+     "pr_auc": 0.8454844758822254
+    },
+    {
+     "cutoff": "2022-04-01",
+     "pr_auc": 0.82580958039111
+    },
+    {
+     "cutoff": "2022-07-01",
+     "pr_auc": 0.7967451034876633
+    },
+    {
+     "cutoff": "2022-10-01",
+     "pr_auc": 0.8190021031397363
+    },
+    {
+     "cutoff": "2023-01-01",
+     "pr_auc": 0.8198864241997519
+    },
+    {
+     "cutoff": "2023-04-01",
+     "pr_auc": 0.7983639201375228
+    },
+    {
+     "cutoff": "2023-07-01",
+     "pr_auc": 0.8187405578823388
+    },
+    {
+     "cutoff": "2023-10-01",
+     "pr_auc": 0.7906956158020525
+    },
+    {
+     "cutoff": "2024-01-01",
+     "pr_auc": 0.7783583325405545
+    },
+    {
+     "cutoff": "2024-04-01",
+     "pr_auc": 0.7807314069212219
+    },
+    {
+     "cutoff": "2024-07-01",
+     "pr_auc": 0.8040083672355401
+    },
+    {
+     "cutoff": "2024-10-01",
+     "pr_auc": 0.74293656056591
+    },
+    {
+     "cutoff": "2025-01-01",
+     "pr_auc": 0.7960957825842674
+    },
+    {
+     "cutoff": "2025-04-01",
+     "pr_auc": 0.7867157540037596
+    },
+    {
+     "cutoff": "2025-07-01",
+     "pr_auc": 0.7391511571924124
+    },
+    {
+     "cutoff": "2025-10-01",
+     "pr_auc": 0.7921988470383661
+    }
+   ],
+   "forecast_horizon_stability": {
+    "origins": 20,
+    "pr_auc_mean": 0.791944612112971,
+    "pr_auc_std": 0.026506804124708152,
+    "pr_auc_min": 0.7391511571924124,
+    "pr_auc_max": 0.8454844758822254
+   }
+  },
+  "rd_market": {
+   "description": "C: R&D history + point-in-time market features",
+   "features": [
+    "rd_count_12m",
+    "rd_count_previous_12m",
+    "rd_momentum",
+    "rd_count_36m",
+    "rd_recency_years",
+    "rd_company_count_12m",
+    "rd_track_count_12m",
+    "rd_company_track_share",
+    "rd_pair_active_years",
+    "rd_company_total_36m",
+    "mkt_ret_12m",
+    "mkt_vol_12m",
+    "mkt_max_drawdown_12m",
+    "mkt_rel_spy_12m",
+    "mkt_rel_xbi_12m",
+    "mkt_volume_z_3m",
+    "mkt_regime_spy_above_200d",
+    "mkt_days_since_12m_high"
+   ],
+   "training_label_policy": "matured_by_origin",
+   "holdout_metrics": {
+    "n": 307,
+    "positives": 129,
+    "prevalence": 0.4201954397394137,
+    "pr_auc": 0.7920201542197304,
+    "brier": 0.17195468588007107,
+    "ece": 0.08043260870747038,
+    "false_positive_rate": 0.2696629213483146,
+    "precision_at_k": 0.9354838709677419,
+    "k": 31,
+    "mean_lead_time_days": 139.03875968992247,
+    "lead_time_n": 129,
+    "threshold": 0.5
+   },
+   "development_metrics": {
+    "n": 5466,
+    "positives": 2530,
+    "prevalence": 0.4628613245517746,
+    "pr_auc": 0.7963902202682382,
+    "brier": 0.18394289165722147,
+    "ece": 0.0817329298269403,
+    "false_positive_rate": 0.3310626702997275,
+    "precision_at_k": 0.9378427787934186,
+    "k": 547,
+    "mean_lead_time_days": 134.0818181818182,
+    "lead_time_n": 2530,
+    "threshold": 0.5
+   },
+   "origin_pr_auc": [
+    {
+     "cutoff": "2020-10-01",
+     "pr_auc": 0.8065465425022198
+    },
+    {
+     "cutoff": "2021-01-01",
+     "pr_auc": 0.8357081510399017
+    },
+    {
+     "cutoff": "2021-04-01",
+     "pr_auc": 0.8136080558332925
+    },
+    {
+     "cutoff": "2021-07-01",
+     "pr_auc": 0.7801175190676707
+    },
+    {
+     "cutoff": "2021-10-01",
+     "pr_auc": 0.7895164398136623
+    },
+    {
+     "cutoff": "2022-01-01",
+     "pr_auc": 0.8513534495319864
+    },
+    {
+     "cutoff": "2022-04-01",
+     "pr_auc": 0.8240705266363004
+    },
+    {
+     "cutoff": "2022-07-01",
+     "pr_auc": 0.8019428166149215
+    },
+    {
+     "cutoff": "2022-10-01",
+     "pr_auc": 0.8264047687784886
+    },
+    {
+     "cutoff": "2023-01-01",
+     "pr_auc": 0.8210229203156297
+    },
+    {
+     "cutoff": "2023-04-01",
+     "pr_auc": 0.7889493583366002
+    },
+    {
+     "cutoff": "2023-07-01",
+     "pr_auc": 0.8161466095474071
+    },
+    {
+     "cutoff": "2023-10-01",
+     "pr_auc": 0.7861271450976262
+    },
+    {
+     "cutoff": "2024-01-01",
+     "pr_auc": 0.772181835016896
+    },
+    {
+     "cutoff": "2024-04-01",
+     "pr_auc": 0.7853004503592317
+    },
+    {
+     "cutoff": "2024-07-01",
+     "pr_auc": 0.8116177838709757
+    },
+    {
+     "cutoff": "2024-10-01",
+     "pr_auc": 0.7656465017192592
+    },
+    {
+     "cutoff": "2025-01-01",
+     "pr_auc": 0.7951090530431747
+    },
+    {
+     "cutoff": "2025-04-01",
+     "pr_auc": 0.7832343253151476
+    },
+    {
+     "cutoff": "2025-07-01",
+     "pr_auc": 0.7384865650892137
+    },
+    {
+     "cutoff": "2025-10-01",
+     "pr_auc": 0.7920201542197304
+    }
+   ],
+   "forecast_horizon_stability": {
+    "origins": 20,
+    "pr_auc_mean": 0.7996545408764802,
+    "pr_auc_std": 0.025821228410987298,
+    "pr_auc_min": 0.7384865650892137,
+    "pr_auc_max": 0.8513534495319864
+   }
+  },
+  "rd_financial_market": {
+   "description": "D: R&D history + consolidated SEC financials + point-in-time market features",
+   "features": [
+    "rd_count_12m",
+    "rd_count_previous_12m",
+    "rd_momentum",
+    "rd_count_36m",
+    "rd_recency_years",
+    "rd_company_count_12m",
+    "rd_track_count_12m",
+    "rd_company_track_share",
+    "rd_pair_active_years",
+    "rd_company_total_36m",
+    "fin_revenue_growth",
+    "fin_rd_growth",
+    "fin_rd_intensity",
+    "fin_rd_intensity_delta",
+    "fin_operating_margin",
+    "fin_cash_to_rd",
+    "fin_ocf_to_rd",
+    "fin_capex_intensity",
+    "fin_acquisition_to_revenue",
+    "fin_inventory_growth",
+    "fin_facts_available",
+    "mkt_ret_12m",
+    "mkt_vol_12m",
+    "mkt_max_drawdown_12m",
+    "mkt_rel_spy_12m",
+    "mkt_rel_xbi_12m",
+    "mkt_volume_z_3m",
+    "mkt_regime_spy_above_200d",
+    "mkt_days_since_12m_high"
+   ],
+   "training_label_policy": "matured_by_origin",
+   "holdout_metrics": {
+    "n": 307,
+    "positives": 129,
+    "prevalence": 0.4201954397394137,
+    "pr_auc": 0.787156262866295,
+    "brier": 0.17232568044040322,
+    "ece": 0.06147538119175647,
+    "false_positive_rate": 0.24719101123595505,
+    "precision_at_k": 0.9354838709677419,
+    "k": 31,
+    "mean_lead_time_days": 139.03875968992247,
+    "lead_time_n": 129,
+    "threshold": 0.5
+   },
+   "development_metrics": {
+    "n": 5466,
+    "positives": 2530,
+    "prevalence": 0.4628613245517746,
+    "pr_auc": 0.79051414813705,
+    "brier": 0.18643678792859747,
+    "ece": 0.0811051479516039,
+    "false_positive_rate": 0.32595367847411444,
+    "precision_at_k": 0.946983546617916,
+    "k": 547,
+    "mean_lead_time_days": 134.0818181818182,
+    "lead_time_n": 2530,
+    "threshold": 0.5
+   },
+   "origin_pr_auc": [
+    {
+     "cutoff": "2020-10-01",
+     "pr_auc": 0.7752601158314045
+    },
+    {
+     "cutoff": "2021-01-01",
+     "pr_auc": 0.7753710906050097
+    },
+    {
+     "cutoff": "2021-04-01",
+     "pr_auc": 0.8052599750749505
+    },
+    {
+     "cutoff": "2021-07-01",
+     "pr_auc": 0.7719566040960949
+    },
+    {
+     "cutoff": "2021-10-01",
+     "pr_auc": 0.7846573367997141
+    },
+    {
+     "cutoff": "2022-01-01",
+     "pr_auc": 0.8516246016878464
+    },
+    {
+     "cutoff": "2022-04-01",
+     "pr_auc": 0.8273258723592765
+    },
+    {
+     "cutoff": "2022-07-01",
+     "pr_auc": 0.8021190813810334
+    },
+    {
+     "cutoff": "2022-10-01",
+     "pr_auc": 0.824949456607457
+    },
+    {
+     "cutoff": "2023-01-01",
+     "pr_auc": 0.821321466493902
+    },
+    {
+     "cutoff": "2023-04-01",
+     "pr_auc": 0.7995651456203907
+    },
+    {
+     "cutoff": "2023-07-01",
+     "pr_auc": 0.823140368450163
+    },
+    {
+     "cutoff": "2023-10-01",
+     "pr_auc": 0.7930277864656238
+    },
+    {
+     "cutoff": "2024-01-01",
+     "pr_auc": 0.7756182736514506
+    },
+    {
+     "cutoff": "2024-04-01",
+     "pr_auc": 0.7753959901808396
+    },
+    {
+     "cutoff": "2024-07-01",
+     "pr_auc": 0.7977293812312929
+    },
+    {
+     "cutoff": "2024-10-01",
+     "pr_auc": 0.7458469089140531
+    },
+    {
+     "cutoff": "2025-01-01",
+     "pr_auc": 0.7946218929106146
+    },
+    {
+     "cutoff": "2025-04-01",
+     "pr_auc": 0.7851596344536943
+    },
+    {
+     "cutoff": "2025-07-01",
+     "pr_auc": 0.7348828647589293
+    },
+    {
+     "cutoff": "2025-10-01",
+     "pr_auc": 0.787156262866295
+    }
+   ],
+   "forecast_horizon_stability": {
+    "origins": 20,
+    "pr_auc_mean": 0.7932416923786871,
+    "pr_auc_std": 0.027440152241055976,
+    "pr_auc_min": 0.7348828647589293,
+    "pr_auc_max": 0.8516246016878464
+   }
+  }
+ },
+ "marginal_value": {
+  "notation": "delta = second - first on the same holdout rows; positive PR-AUC/Precision and negative Brier/ECE/FPR are improvements.",
+  "rd_market_minus_rd_only": {
+   "pr_auc": -0.0014563404053475892,
+   "brier": -0.00017931345767310813,
+   "ece": -0.0006876747332445338,
+   "false_positive_rate": -0.005617977528089901,
+   "precision_at_k": 0.0
+  },
+  "rd_financial_minus_rd_only": {
+   "pr_auc": -0.0012776475867118942,
+   "brier": -3.0440664147562968e-05,
+   "ece": -0.00738313350989421,
+   "false_positive_rate": -0.011235955056179803,
+   "precision_at_k": 0.0
+  },
+  "rd_financial_market_minus_rd_financial": {
+   "pr_auc": -0.005042584172071041,
+   "brier": 0.00022212176680661,
+   "ece": -0.012261768739064233,
+   "false_positive_rate": -0.01685393258426965,
+   "precision_at_k": 0.0
+  },
+  "rd_financial_market_minus_rd_only": {
+   "pr_auc": -0.006320231758782935,
+   "brier": 0.00019168110265904703,
+   "ece": -0.019644902248958443,
+   "false_positive_rate": -0.02808988764044945,
+   "precision_at_k": 0.0
+  }
+ },
+ "baselines": {
+  "holdout": "2025-10-01",
+  "training_rows": 5491,
+  "training_origins": [
+   "2019-10-01",
+   "2020-01-01",
+   "2020-04-01",
+   "2020-07-01",
+   "2020-10-01",
+   "2021-01-01",
+   "2021-04-01",
+   "2021-07-01",
+   "2021-10-01",
+   "2022-01-01",
+   "2022-04-01",
+   "2022-07-01",
+   "2022-10-01",
+   "2023-01-01",
+   "2023-04-01",
+   "2023-07-01",
+   "2023-10-01",
+   "2024-01-01",
+   "2024-04-01",
+   "2024-07-01",
+   "2024-10-01"
+  ],
+  "holdout_rows": 307,
+  "training_prevalence": 0.4835184847932981,
+  "pair_base_rate_coverage": 0.9576547231270358,
+  "predictors": {
+   "constant_training_prevalence": {
+    "description": "Same probability for every holdout row: positive rate over eligible training origins.",
+    "training_rows_seen": 307,
+    "unseen_fallback": "not applicable (single constant)",
+    "n": 307,
+    "positives": 129,
+    "prevalence": 0.4201954397394137,
+    "pr_auc": 0.4201954397394137,
+    "brier": 0.24764104019651076,
+    "ece": 0.06332304505388442,
+    "false_positive_rate": 0.0,
+    "precision_at_k": 0.3870967741935484,
+    "k": 31,
+    "mean_lead_time_days": 139.03875968992247,
+    "lead_time_n": 129,
+    "threshold": 0.5
+   },
+   "company_base_rate": {
+    "description": "Positive rate of the company over eligible training origins; training prevalence for unseen companies.",
+    "training_rows_seen": 307,
+    "unseen_fallback": "constant training prevalence",
+    "n": 307,
+    "positives": 129,
+    "prevalence": 0.4201954397394137,
+    "pr_auc": 0.5706893058230107,
+    "brier": 0.230846615532163,
+    "ece": 0.067133305427701,
+    "false_positive_rate": 0.4438202247191011,
+    "precision_at_k": 0.6129032258064516,
+    "k": 31,
+    "mean_lead_time_days": 139.03875968992247,
+    "lead_time_n": 129,
+    "threshold": 0.5
+   },
+   "track_base_rate": {
+    "description": "Positive rate of the technology track over eligible training origins; training prevalence for unseen tracks.",
+    "training_rows_seen": 307,
+    "unseen_fallback": "constant training prevalence",
+    "n": 307,
+    "positives": 129,
+    "prevalence": 0.4201954397394137,
+    "pr_auc": 0.5068324186145513,
+    "brier": 0.24611186559008988,
+    "ece": 0.10030374097453781,
+    "false_positive_rate": 0.4101123595505618,
+    "precision_at_k": 0.45161290322580644,
+    "k": 31,
+    "mean_lead_time_days": 139.03875968992247,
+    "lead_time_n": 129,
+    "threshold": 0.5
+   },
+   "pair_base_rate": {
+    "description": "Positive rate of the exact company-track pair over eligible training origins; training prevalence for pairs without matured history. This one-parameter persistence benchmark is the honest comparator for the headline PR-AUC.",
+    "training_rows_seen": 294,
+    "unseen_fallback": "constant training prevalence",
+    "n": 307,
+    "positives": 129,
+    "prevalence": 0.4201954397394137,
+    "pr_auc": 0.7912589226819778,
+    "brier": 0.17328983052360156,
+    "ece": 0.11046660583011003,
+    "false_positive_rate": 0.24719101123595505,
+    "precision_at_k": 0.967741935483871,
+    "k": 31,
+    "mean_lead_time_days": 139.03875968992247,
+    "lead_time_n": 129,
+    "threshold": 0.5
+   }
+  },
+  "lead_times": "Same target lead times as the model metrics, so only the probability columns differ."
+ },
+ "model_vs_pair_baseline": {
+  "resamples": 2000,
+  "seed": 7,
+  "confidence_level": 0.95,
+  "pair_baseline_pr_auc": 0.7912589226819778,
+  "holdout_rows": 307,
+  "model_scores": {
+   "rd_only": {
+    "model_pr_auc": 0.793476494625078,
+    "pair_baseline_pr_auc": 0.7912589226819778,
+    "delta": 0.0022175719431001273,
+    "valid_resamples": 2000,
+    "ci_low": -0.031599292588537664,
+    "ci_high": 0.036773758559445424,
+    "p_delta_le_zero": 0.431
+   },
+   "rd_financial": {
+    "model_pr_auc": 0.7921988470383661,
+    "pair_baseline_pr_auc": 0.7912589226819778,
+    "delta": 0.0009399243563882331,
+    "valid_resamples": 2000,
+    "ci_low": -0.03264208621191311,
+    "ci_high": 0.035645377077036744,
+    "p_delta_le_zero": 0.465
+   }
+  }
+ },
+ "v1_reproduction": {
+  "reference": "D:\\DEPPSKK\\worktrees\\phase2-market\\experiments\\reverse_rd_v1\\metrics.json",
+  "note": "The v1 examples are reused unchanged; identical metrics confirm that the reference block and the market ablations share the same rows and protocol.",
+  "checks": {
+   "rd_only": {
+    "pr_auc": {
+     "committed_v1": 0.793476494625078,
+     "recomputed": 0.793476494625078,
+     "delta": 0.0
+    },
+    "brier": {
+     "committed_v1": 0.17213399933774418,
+     "recomputed": 0.17213399933774418,
+     "delta": 0.0
+    },
+    "ece": {
+     "committed_v1": 0.08112028344071491,
+     "recomputed": 0.08112028344071491,
+     "delta": 0.0
+    },
+    "false_positive_rate": {
+     "committed_v1": 0.2752808988764045,
+     "recomputed": 0.2752808988764045,
+     "delta": 0.0
+    },
+    "precision_at_k": {
+     "committed_v1": 0.9354838709677419,
+     "recomputed": 0.9354838709677419,
+     "delta": 0.0
+    }
+   },
+   "rd_financial": {
+    "pr_auc": {
+     "committed_v1": 0.7921988470383661,
+     "recomputed": 0.7921988470383661,
+     "delta": 0.0
+    },
+    "brier": {
+     "committed_v1": 0.1721035586735966,
+     "recomputed": 0.1721035586735966,
+     "delta": 0.0
+    },
+    "ece": {
+     "committed_v1": 0.0737371499308207,
+     "recomputed": 0.0737371499308207,
+     "delta": 0.0
+    },
+    "false_positive_rate": {
+     "committed_v1": 0.2640449438202247,
+     "recomputed": 0.2640449438202247,
+     "delta": 0.0
+    },
+    "precision_at_k": {
+     "committed_v1": 0.9354838709677419,
+     "recomputed": 0.9354838709677419,
+     "delta": 0.0
+    }
+   }
+  }
+ },
+ "interpretation": "On the single chronological holdout 2025-10-01 (307 examples, 129 positives), market features were available for 5206 of 6701 stored examples (77.7%; 38 of 51 companies have price bars). rd_only PR-AUC 0.793476494625078 -> rd_market 0.7920201542197304 (delta -0.001456); adding market features to R&D+financial moves PR-AUC from 0.7921988470383661 to 0.787156262866295 (delta -0.005043). The financial block's own holdout PR-AUC delta versus rd_only is -0.001278 and the market-vs-R&D Brier delta is -0.000179 (negative Brier is better calibration). These are one-holdout point estimates with no significance test; a positive delta is a directional ranking improvement, not evidence that market prices cause or predict R&D capability, and a non-positive delta means the market group added no measurable incremental ranking value on this holdout.",
+ "limitations": [
+  "One chronological holdout (2025-10-01, 307 rows / 129 positives): point estimates only, no significance claim.",
+  "Market bars are the base repo's Yahoo Finance daily lane imported offline; not a licensed market-data feed.",
+  "Survivorship: delisted/acquired tickers and tickers never fetched are absent; 38 of 51 curated companies matched.",
+  "6 companies have a ticker that is absent from the local price table and 7 have no ticker at all; their market features are null and the model falls back to training-median imputation with a missing indicator.",
+  "ADRs (PHG, TRUMY, OJPNY/FUJIY) and foreign listings are a different instrument from the local shares.",
+  "The research database's stored v1 examples were reused unchanged; only market features were added.",
+  "No market cap, valuation multiple or fundamental market factor is implemented (no shares-outstanding data).",
+  "Stock returns are not a measure of technological capability and no causal market-to-R&D claim is made.",
+  "The multi-holdout protocol was not available in this worktree; see evaluation_protocol.multi_holdout."
+ ]
+}

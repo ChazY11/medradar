@@ -1,0 +1,68 @@
+{
+  "bootstrap": {
+    "balanced_accuracy_ci": [
+      0.5561668204119354,
+      0.6072008672067423
+    ],
+    "companies": 33,
+    "reps": 2000,
+    "sustained_precision_ci": [
+      0.8918918918918919,
+      0.9341317365269461
+    ]
+  },
+  "confusion": {
+    "level": {
+      "level": 144,
+      "ramp": 31,
+      "spike": 0
+    },
+    "ramp": {
+      "level": 142,
+      "ramp": 24,
+      "spike": 3
+    },
+    "spike": {
+      "level": 15,
+      "ramp": 17,
+      "spike": 118
+    }
+  },
+  "counts": {
+    "alerts": 494,
+    "discovery_sustained_base_rate": 0.7284768211920529,
+    "eligible_cells": 65,
+    "origins_within_guard": 0,
+    "records": 525,
+    "scored": 494
+  },
+  "decision": {
+    "balanced_ok": true,
+    "ci_ok": true,
+    "confirmed": true,
+    "precision_ok": true,
+    "verdict": "CONFIRMED"
+  },
+  "design": {
+    "bootstraps": 2000,
+    "ci_rule": "bootstrap lower 95% bound on sustained precision must exceed the base rate",
+    "classifier_window": "months alert+1 .. alert+2",
+    "decision": "research/DECISIONS.md D-042 (pre-registered)",
+    "declared_balanced_accuracy": 0.5,
+    "declared_precision": 0.85,
+    "fresh_origins_per_cell": 3,
+    "guard_months_around_discovery_origin": 6,
+    "seed": 2026
+  },
+  "metrics": {
+    "balanced_accuracy": 0.5838452146144454,
+    "recalls": {
+      "level": 0.8228571428571428,
+      "ramp": 0.14201183431952663,
+      "spike": 0.7866666666666666
+    },
+    "sustained_base_rate": 0.6963562753036437,
+    "sustained_precision": 0.9142091152815014,
+    "sustained_recall": 0.9912790697674418
+  }
+}

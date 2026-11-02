@@ -40,7 +40,8 @@
 {
   "by_quality": {"datetime": 0, "date": 83578, "estimated": 0, "unknown": 0},
   "excluded_from_trading": 0,
-  "policy": "回测只使用 available_at；quality=unknown 的事件不进入交易研究"
+  "exclusion_reasons": {"missing_public_timestamp": 0, "estimated_public_timestamp": 0},
+  "policy": "只使用真实 available_at 且 quality=datetime/date；estimated/unknown 仅用于描述性分析"
 }
 ```
 
@@ -187,13 +188,13 @@
 | 字段 | 说明 |
 |---|---|
 | `event_id` | 确定性哈希，重复采集幂等 |
-| `source` | `openfda_device_510k` / `openfda_device_pma` / `openfda_device_recall` / `openfda_drug_drugsfda` / `ctgov` / `nmpa` |
-| `kind` | `510k` / `pma` / `device_recall` / `drug_approval` / `trial` / `nmpa_registration` |
+| `source` | `openfda_device_510k` / `openfda_device_pma` / `openfda_device_recall` / `openfda_drug_drugsfda` / `ctgov` / `fda_advisory_committee` / `sec_edgar_8k` / `nmpa` |
+| `kind` | `510k` / `pma` / `device_recall` / `drug_approval` / `trial` / `advisory_committee` / `8k_catalyst` / `nmpa_registration` |
 | `event_date` | **事件发生日**（决策日/批准日/试验首次登记日），用于窗口统计 |
-| `published_at` | 来源公开发布时间（openFDA 只有日期，EDGAR 有精确时间） |
+| `published_at` | 来源公开发布时间；没有该字段时不允许用决定日补齐 |
 | `first_seen_at` | MedRadar 首次采集到该记录的时间 |
-| `available_at` | **回测允许使用的时间**（默认等于 `published_at`）；交易/回放只读这一列 |
-| `timestamp_quality` | `datetime` / `date` / `estimated` / `unknown`；`unknown` 不进入交易研究 |
+| `available_at` | **回测允许使用的时间**（默认等于真实 `published_at`，不回退 `event_date`） |
+| `timestamp_quality` | `datetime` / `date` / `estimated` / `unknown`；只有前两者可进入交易研究 |
 | `as_of` | 该数据的采集日期（point-in-time 标记） |
 | `company_key` | 由 `CompanyRegistry.resolve()` 得出，未匹配为 `NULL` |
 | `applicant_raw` | 原始公司名（永远保留，方便人工复核漏检） |
@@ -214,8 +215,10 @@
 | `available_at` | 回测可用时间 | **只有交易/回放** |
 | `timestamp_quality` | 精度等级 | 交易过滤器 |
 
-规则：**交易研究必须使用 `available_at`**；`timestamp_quality=unknown` 的事件只能进入行业分析，
-必须显式计入 `metrics.timestamps.excluded_from_trading`，不得静默丢弃。
+规则：**交易研究必须使用真实 `available_at`，且 `timestamp_quality` 只能是 `datetime`/`date`**。
+缺失、`estimated`、`unknown` 的记录只能进入行业分析，分别计入
+`metrics.timestamps.exclusion_reasons` 与 `excluded_from_trading`，不得静默丢弃。
+旧数据库中由 `event_date` 回填的 `estimated` 时间同样不可交易。
 
 ## 7. `trading`（模拟研究，可选）
 
@@ -269,6 +272,37 @@
 
 兼容别名：`summary.trades` = `summary.n_trades` 的数值别名（两者语义都是**笔数**，与顶层
 `trades` 成交列表无关）。报告渲染以 `summary` + `equity_curve` 为核心，其余为增强项。
+
+### 7.2 案例事件研究的异常收益审计
+
+`cases.event_study_summary()` 顶层增加 `audit`：
+
+```jsonc
+{"audit": {"extreme_threshold_abs_abnormal_return": 1.0,
+           "flagged_observations": 2, "excluded_from_inference": 2,
+           "flagged_cases": [{"case_id":"case-…", "ticker":"AAA", "date":"2024-01-01",
+                              "horizon_days":20, "abnormal_return":45.2,
+                              "review":"check adjusted prices, splits, ticker mapping and corporate actions"}]}}
+```
+
+每个 `category × horizon` 同时暴露 `raw_n`、`n`、`extreme_n`、`excluded_n`、
+`unfiltered_raw_mean`、审计后 `raw_mean` 与缩尾后 `mean`。绝对超额收益 >100% 的观测退出推断样本，
+但原始均值和案例审计信息保留，不能用缩尾掩盖价格/ticker/公司行动问题。
+
+### 7.3 `frontier.json`（前沿事件流）
+
+`medradar frontier` 固定输出 `schema="medradar.frontier.v1"`：
+
+| 键 | 内容 |
+|---|---|
+| `events[]` | `event_id` / `date` / `stage` / `domain` / `track_id` / `source` / `url` / `timestamp_quality` / `documents` |
+| `summary` | 按阶段、领域统计，以及公开材料数和未分类数 |
+| `coverage` | 配置赛道数、领域数和活跃赛道 |
+| `sources` | FDA AdCom、ClinicalTrials.gov、SEC 官方入口 |
+| `capabilities` | `public_pre_decision_signals=true`；`pending_510k_pma_monitoring=false` 及原因 |
+
+`stage` 只允许 `advisory_committee` / `clinical_trial` / `pre_submission` / `designation`。
+`domain` 来自赛道配置的显式字段，例如 `life_support` / `ivd` / `brain_computer`。
 
 ## 8. 实时层表（`medradar live`）
 

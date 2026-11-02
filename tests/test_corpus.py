@@ -559,43 +559,48 @@ class V2BucketTests(unittest.TestCase):
         "topline data",
         "clinical hold",
         "refuse to file",
+        "pre-submission",
+        "pre submission",
         "breakthrough therapy",
+        "breakthrough device",
         "priority review",
         "label expansion",
         "accelerated approval",
     )
 
-    def test_v2_bucket_set_is_the_v1_set_plus_nine(self) -> None:
-        self.assertEqual(len(corpus.BUCKETS_V2), 16)
+    def test_v2_bucket_set_is_the_v1_set_plus_twelve(self) -> None:
+        self.assertEqual(len(corpus.BUCKETS_V2), 19)
         self.assertEqual(corpus.BUCKETS_V2[:7], corpus.BUCKET_ORDER)
         for bucket in self.NEW_BUCKETS:
             self.assertIn(bucket, corpus.BUCKETS_V2)
             self.assertNotIn(bucket, corpus.BUCKET_ORDER)
             self.assertIn(bucket, corpus.BUCKET_CATEGORY)
 
-    def test_v2_buckets_map_to_the_five_known_categories(self) -> None:
+    def test_v2_buckets_map_to_independent_regulatory_categories(self) -> None:
         for bucket in corpus.BUCKETS_V2:
             self.assertIn(corpus.BUCKET_CATEGORY[bucket], corpus.CATEGORIES)
         self.assertEqual(corpus.BUCKET_CATEGORY["fda approves"], "approval")
         self.assertEqual(corpus.BUCKET_CATEGORY["phase 3 results"], "trial_result")
         self.assertEqual(corpus.BUCKET_CATEGORY["topline data"], "trial_result")
-        self.assertEqual(corpus.BUCKET_CATEGORY["clinical hold"], "crl")
-        self.assertEqual(corpus.BUCKET_CATEGORY["refuse to file"], "crl")
-        self.assertEqual(corpus.BUCKET_CATEGORY["breakthrough therapy"], "other")
-        self.assertEqual(corpus.BUCKET_CATEGORY["priority review"], "other")
+        self.assertEqual(corpus.BUCKET_CATEGORY["clinical hold"], "clinical_hold")
+        self.assertEqual(corpus.BUCKET_CATEGORY["refuse to file"], "refuse_to_file")
+        self.assertEqual(corpus.BUCKET_CATEGORY["pre-submission"], "pre_submission")
+        self.assertEqual(corpus.BUCKET_CATEGORY["breakthrough therapy"], "designation")
+        self.assertEqual(corpus.BUCKET_CATEGORY["breakthrough device"], "designation")
+        self.assertEqual(corpus.BUCKET_CATEGORY["priority review"], "designation")
         self.assertEqual(corpus.BUCKET_CATEGORY["label expansion"], "approval")
         self.assertEqual(corpus.BUCKET_CATEGORY["accelerated approval"], "approval")
 
     def test_classify_new_buckets(self) -> None:
         self.assertEqual(corpus.classify("filed today", ["phase 3 results"]), "trial_result")
         hold = corpus.classify_detail("The program is paused.", ["clinical hold"])
-        self.assertEqual(hold["category"], "crl")
+        self.assertEqual(hold["category"], "clinical_hold")
         self.assertEqual(hold["direction"], -1)
         rtf = corpus.classify_detail("The application was rejected.", ["refuse to file"])
-        self.assertEqual(rtf["category"], "crl")
+        self.assertEqual(rtf["category"], "refuse_to_file")
         self.assertEqual(rtf["direction"], -1)
         breakthrough = corpus.classify_detail("Designation granted.", ["breakthrough therapy"])
-        self.assertEqual(breakthrough["category"], "other")
+        self.assertEqual(breakthrough["category"], "designation")
         self.assertEqual(breakthrough["direction"], 0)
         label = corpus.classify_detail("New indication approved.", ["label expansion"])
         self.assertEqual(label["category"], "approval")
@@ -627,14 +632,14 @@ class V2BucketTests(unittest.TestCase):
             _record(buckets=["priority review"], accession="a2", filed="2024-02-01"),
         ]
         summary = corpus.summarize(rows, bucket_order=corpus.BUCKETS_V2)
-        self.assertEqual(len(summary["by_bucket"]), 16)
+        self.assertEqual(len(summary["by_bucket"]), 19)
         self.assertEqual(summary["by_bucket"]["clinical hold"], 1)
         self.assertEqual(summary["by_bucket"]["priority review"], 1)
         manifest = corpus.build_manifest(
             rows, buckets=corpus.BUCKETS_V2, bucket_order=corpus.BUCKETS_V2
         )
-        self.assertEqual(len(manifest["corpus"]["by_bucket"]), 16)
-        self.assertEqual(len(manifest["buckets"]), 16)
+        self.assertEqual(len(manifest["corpus"]["by_bucket"]), 19)
+        self.assertEqual(len(manifest["buckets"]), 19)
 
 
 class MergeCorporaTests(unittest.TestCase):

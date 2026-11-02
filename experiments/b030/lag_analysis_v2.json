@@ -1,0 +1,185 @@
+{
+  "best_lag": 9,
+  "caveats": [
+    "the proxy counts postings the archive happened to capture, not headcount",
+    "coverage depends on which career sites were archived; several focus companies have none",
+    "URL-scheme changes can create level shifts that are collection artifacts",
+    "with this many companies the pooled profile is not a precise estimate"
+  ],
+  "coverage": {
+    "companies_in_panel": 16,
+    "companies_usable": 3,
+    "usable_detail": {
+      "bd": {
+        "months_with_postings": 64,
+        "silent_month_fraction": 0.46218487394957986,
+        "total": 4555
+      },
+      "boston_scientific": {
+        "months_with_postings": 90,
+        "silent_month_fraction": 0.24369747899159663,
+        "total": 4702
+      },
+      "stryker": {
+        "months_with_postings": 74,
+        "silent_month_fraction": 0.37815126050420167,
+        "total": 5746
+      }
+    },
+    "usable_keys": [
+      "bd",
+      "boston_scientific",
+      "stryker"
+    ]
+  },
+  "design": {
+    "decision": "research/DECISIONS.md D-028 (pre-registered)",
+    "eligibility": {
+      "max_silent_month_fraction": 0.5,
+      "min_months": 24,
+      "min_postings": 50
+    },
+    "lag_sign_convention": "positive lag = hiring leads regulatory activity",
+    "lags": [
+      -6,
+      -5,
+      -4,
+      -3,
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "proxy": "distinct job-posting URLs first captured per month",
+    "seed": 7,
+    "shifts": 2000,
+    "source": "Wayback Machine CDX (index only, keyless, historical)"
+  },
+  "lag_profile": {
+    "-6": {
+      "companies": 3,
+      "null_high": 0.13552394570651624,
+      "null_low": -0.15734993087112858,
+      "observed": -0.13500364232500536
+    },
+    "-5": {
+      "companies": 3,
+      "null_high": 0.1443198487608482,
+      "null_low": -0.14972535911950546,
+      "observed": -0.12090010395456952
+    },
+    "-4": {
+      "companies": 3,
+      "null_high": 0.14045739907039628,
+      "null_low": -0.14582209221265796,
+      "observed": -0.08993043033893176
+    },
+    "-3": {
+      "companies": 3,
+      "null_high": 0.14432186556269247,
+      "null_low": -0.14991485582965627,
+      "observed": -0.12089592181735746
+    },
+    "-2": {
+      "companies": 3,
+      "null_high": 0.13928850754849567,
+      "null_low": -0.15184201984231496,
+      "observed": -0.16449048141234796
+    },
+    "-1": {
+      "companies": 3,
+      "null_high": 0.1360495238312272,
+      "null_low": -0.15276327472143109,
+      "observed": -0.10476610613558884
+    },
+    "0": {
+      "companies": 3,
+      "null_high": 0.13084136127877222,
+      "null_low": -0.14904383783128997,
+      "observed": -0.13065907832774878
+    },
+    "1": {
+      "companies": 3,
+      "null_high": 0.1348783583480167,
+      "null_low": -0.1483215290198934,
+      "observed": -0.06609874153178663
+    },
+    "2": {
+      "companies": 3,
+      "null_high": 0.13999180000340714,
+      "null_low": -0.15666545817873107,
+      "observed": -0.1159571165970077
+    },
+    "3": {
+      "companies": 3,
+      "null_high": 0.13816809996792287,
+      "null_low": -0.150718588896054,
+      "observed": -0.18809808405392558
+    },
+    "4": {
+      "companies": 3,
+      "null_high": 0.13908324474469103,
+      "null_low": -0.15075575463209023,
+      "observed": -0.08900084912225086
+    },
+    "5": {
+      "companies": 3,
+      "null_high": 0.1388561368568345,
+      "null_low": -0.15314856636650412,
+      "observed": -0.08482290072117539
+    },
+    "6": {
+      "companies": 3,
+      "null_high": 0.13862133091331327,
+      "null_low": -0.15825810313417293,
+      "observed": -0.07553598969487652
+    },
+    "7": {
+      "companies": 3,
+      "null_high": 0.14145143113557906,
+      "null_low": -0.15722606194213157,
+      "observed": -0.10968632173278188
+    },
+    "8": {
+      "companies": 3,
+      "null_high": 0.14109967655220337,
+      "null_low": -0.1541456898445799,
+      "observed": -0.14515934111989534
+    },
+    "9": {
+      "companies": 3,
+      "null_high": 0.14905760379502336,
+      "null_low": -0.15958215141398252,
+      "observed": -0.014030447632485517
+    },
+    "10": {
+      "companies": 3,
+      "null_high": 0.14789496353857529,
+      "null_low": -0.1619776551186575,
+      "observed": -0.04269476434003458
+    },
+    "11": {
+      "companies": 3,
+      "null_high": 0.14800040037257,
+      "null_low": -0.16129790934865393,
+      "observed": -0.1669253987922881
+    },
+    "12": {
+      "companies": 3,
+      "null_high": 0.14186974862867596,
+      "null_low": -0.16127742125297714,
+      "observed": -0.08868469187525482
+    }
+  }
+}

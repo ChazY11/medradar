@@ -30,6 +30,11 @@ Madrigal、Ocular、Dare、Capricor、Heron。
 
 > 说明：LLM 判定通过 DSH 的并行子代理执行，使用与 `medradar/llm.py` 相同的 system prompt、
 > JSON schema 与规则（温度 0、必须逐字引用证据），不是另一个宽松提示词。
+>
+> **证据边界（v0.3.0 补充）**：当前 25 份样本只有一名标注者，部分 fixture 的 `raw` 字段由
+> 已解析的结构化判定重建，只能用于离线回归，不能当作独立的真实端点响应审计。下列指标是
+> pilot 结果，不是对生产模型准确率的上界或保证；正式结论需要至少 100 份样本、双标注者、
+> Cohen's κ、预先冻结的 holdout，以及未经重建的原始 API 响应。
 
 ## 2. 总体指标
 

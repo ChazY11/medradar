@@ -1,0 +1,210 @@
+{
+  "availability_by_backlog_item": {
+    "B-014": {
+      "tables": [
+        {
+          "rows": 51,
+          "table": "companies"
+        },
+        {
+          "rows": 34,
+          "table": "company_identifiers"
+        }
+      ]
+    },
+    "B-015": {
+      "tables": [
+        {
+          "rows": 25,
+          "table": "horizon_forecasts"
+        }
+      ]
+    },
+    "B-018": {
+      "tables": [
+        {
+          "rows": 43420,
+          "table": "financial_facts"
+        },
+        {
+          "rows": 95725,
+          "table": "market_bars"
+        },
+        {
+          "rows": 616,
+          "table": "publication_counts"
+        }
+      ]
+    },
+    "B-021": {
+      "tables": [
+        {
+          "rows": 43420,
+          "table": "financial_facts"
+        },
+        {
+          "rows": 95725,
+          "table": "market_bars"
+        },
+        {
+          "rows": 616,
+          "table": "publication_counts"
+        },
+        {
+          "rows": 3453,
+          "table": "procurement_awards"
+        }
+      ]
+    },
+    "B-029": {
+      "tables": [
+        {
+          "rows": 55090,
+          "table": "events"
+        },
+        {
+          "rows": 34,
+          "table": "company_identifiers"
+        }
+      ]
+    },
+    "B-032": {
+      "tables": [
+        {
+          "rows": 55090,
+          "table": "events"
+        },
+        {
+          "rows": 38,
+          "table": "tracks"
+        },
+        {
+          "rows": 0,
+          "table": "product_codes"
+        }
+      ]
+    },
+    "B-037": {
+      "tables": [
+        {
+          "rows": 55090,
+          "table": "events"
+        },
+        {
+          "rows": 38,
+          "table": "tracks"
+        }
+      ]
+    },
+    "B-041": {
+      "tables": [
+        {
+          "rows": 616,
+          "table": "publication_counts"
+        }
+      ]
+    }
+  },
+  "databases": {
+    "registry": {
+      "present": true,
+      "size_bytes": 81920,
+      "tables": {
+        "clock_guard": 1,
+        "forecast_idempotency": 25,
+        "forecasts": 25,
+        "meta": 0,
+        "resolutions": 0
+      }
+    },
+    "research": {
+      "present": true,
+      "size_bytes": 289443840,
+      "tables": {
+        "companies": 51,
+        "company_identifiers": 34,
+        "events": 55090,
+        "financial_facts": 43420,
+        "forecast_examples": 47704,
+        "horizon_forecasts": 25,
+        "live_alerts": 0,
+        "live_equity": 0,
+        "live_pending": 0,
+        "live_skips": 0,
+        "llm_verdicts": 0,
+        "market_bars": 95725,
+        "meta": 0,
+        "paper_equity": 0,
+        "paper_orders": 0,
+        "paper_trades": 0,
+        "positions": 0,
+        "prices": 0,
+        "procurement_awards": 3453,
+        "product_codes": 0,
+        "publication_counts": 616,
+        "runs": 0,
+        "signals": 0,
+        "sqlite_sequence": 0,
+        "temporal_edges": 5580,
+        "tracks": 38
+      }
+    },
+    "tkg": {
+      "present": true,
+      "size_bytes": 194723840,
+      "tables": {
+        "clock_guard": 1,
+        "edges": 114419,
+        "entities": 57381,
+        "idempotency": 171800,
+        "meta": 1,
+        "nodes": 57381
+      }
+    }
+  },
+  "reading": {
+    "conclusion": "the financial, market and publication lanes are populated, so backlog items B-018, B-021, B-029, B-037 and B-041 are NOT blocked on data; only items needing a human adjudicator (B-014) or external access (B-030 patents, B-031 hiring, B-015 wall clock) are blocked",
+    "warning": "a 'data unavailable' conclusion must be counted against the store before it is recorded - the programme already retracted one such conclusion as a collector bug (D-029)"
+  },
+  "relevance": {
+    "companies": [
+      "B-014"
+    ],
+    "company_identifiers": [
+      "B-014",
+      "B-029"
+    ],
+    "events": [
+      "B-029",
+      "B-032",
+      "B-037"
+    ],
+    "financial_facts": [
+      "B-018",
+      "B-021"
+    ],
+    "horizon_forecasts": [
+      "B-015"
+    ],
+    "market_bars": [
+      "B-018",
+      "B-021"
+    ],
+    "procurement_awards": [
+      "B-021"
+    ],
+    "product_codes": [
+      "B-032"
+    ],
+    "publication_counts": [
+      "B-018",
+      "B-021",
+      "B-041"
+    ],
+    "tracks": [
+      "B-032",
+      "B-037"
+    ]
+  },
+  "schema": "lane_inventory_v1"
+}

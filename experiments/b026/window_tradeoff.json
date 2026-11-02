@@ -1,0 +1,328 @@
+{
+  "design": {
+    "alert_month_excluded": true,
+    "company_seed": 7071,
+    "decision": "research/DECISIONS.md D-050 (sensitivity analysis, not a confirmation)",
+    "entity_seed": 7072,
+    "origins_per_cell": 3,
+    "recommend_precision": 0.85,
+    "recommend_ramp_recall": 0.4,
+    "windows_months": [
+      1,
+      2,
+      3,
+      4,
+      6
+    ]
+  },
+  "recommendation": {
+    "qualifying_windows": [],
+    "verdict": "no window qualifies: the ramp class stays unrecoverable at this counting rate, and the policy remains at two months"
+  },
+  "units": {
+    "company": {
+      "1": {
+        "alerts": 495,
+        "balanced_accuracy": 0.5879629629629629,
+        "matrix": {
+          "level": {
+            "level": 176,
+            "ramp": 0,
+            "spike": 0
+          },
+          "ramp": {
+            "level": 170,
+            "ramp": 0,
+            "spike": 5
+          },
+          "spike": {
+            "level": 34,
+            "ramp": 0,
+            "spike": 110
+          }
+        },
+        "ramp_as_level": 170,
+        "ramp_as_ramp": 0,
+        "recall": {
+          "level": 1.0,
+          "ramp": 0.0,
+          "spike": 0.7638888888888888
+        },
+        "sustained_precision": 0.9105263157894737,
+        "sustained_recall": 0.9857549857549858
+      },
+      "2": {
+        "alerts": 495,
+        "balanced_accuracy": 0.5800481000481,
+        "matrix": {
+          "level": {
+            "level": 152,
+            "ramp": 24,
+            "spike": 0
+          },
+          "ramp": {
+            "level": 145,
+            "ramp": 27,
+            "spike": 3
+          },
+          "spike": {
+            "level": 27,
+            "ramp": 13,
+            "spike": 104
+          }
+        },
+        "ramp_as_level": 145,
+        "ramp_as_ramp": 27,
+        "recall": {
+          "level": 0.8636363636363636,
+          "ramp": 0.15428571428571428,
+          "spike": 0.7222222222222222
+        },
+        "sustained_precision": 0.8969072164948454,
+        "sustained_recall": 0.9914529914529915
+      },
+      "3": {
+        "alerts": 495,
+        "balanced_accuracy": 0.5758934583934584,
+        "matrix": {
+          "level": {
+            "level": 146,
+            "ramp": 30,
+            "spike": 0
+          },
+          "ramp": {
+            "level": 142,
+            "ramp": 32,
+            "spike": 1
+          },
+          "spike": {
+            "level": 27,
+            "ramp": 14,
+            "spike": 103
+          }
+        },
+        "ramp_as_level": 142,
+        "ramp_as_ramp": 32,
+        "recall": {
+          "level": 0.8295454545454546,
+          "ramp": 0.18285714285714286,
+          "spike": 0.7152777777777778
+        },
+        "sustained_precision": 0.8951406649616368,
+        "sustained_recall": 0.9971509971509972
+      },
+      "4": {
+        "alerts": 495,
+        "balanced_accuracy": 0.558982683982684,
+        "matrix": {
+          "level": {
+            "level": 149,
+            "ramp": 27,
+            "spike": 0
+          },
+          "ramp": {
+            "level": 149,
+            "ramp": 25,
+            "spike": 1
+          },
+          "spike": {
+            "level": 34,
+            "ramp": 11,
+            "spike": 99
+          }
+        },
+        "ramp_as_level": 149,
+        "ramp_as_ramp": 25,
+        "recall": {
+          "level": 0.8465909090909091,
+          "ramp": 0.14285714285714285,
+          "spike": 0.6875
+        },
+        "sustained_precision": 0.8860759493670886,
+        "sustained_recall": 0.9971509971509972
+      },
+      "6": {
+        "alerts": 495,
+        "balanced_accuracy": 0.5507275132275132,
+        "matrix": {
+          "level": {
+            "level": 143,
+            "ramp": 33,
+            "spike": 0
+          },
+          "ramp": {
+            "level": 135,
+            "ramp": 40,
+            "spike": 0
+          },
+          "spike": {
+            "level": 46,
+            "ramp": 10,
+            "spike": 88
+          }
+        },
+        "ramp_as_level": 135,
+        "ramp_as_ramp": 40,
+        "recall": {
+          "level": 0.8125,
+          "ramp": 0.22857142857142856,
+          "spike": 0.6111111111111112
+        },
+        "sustained_precision": 0.8624078624078624,
+        "sustained_recall": 1.0
+      }
+    },
+    "entity": {
+      "1": {
+        "alerts": 1222,
+        "balanced_accuracy": 0.616,
+        "matrix": {
+          "level": {
+            "level": 425,
+            "ramp": 0,
+            "spike": 0
+          },
+          "ramp": {
+            "level": 419,
+            "ramp": 0,
+            "spike": 3
+          },
+          "spike": {
+            "level": 57,
+            "ramp": 0,
+            "spike": 318
+          }
+        },
+        "ramp_as_level": 419,
+        "ramp_as_ramp": 0,
+        "recall": {
+          "level": 1.0,
+          "ramp": 0.0,
+          "spike": 0.848
+        },
+        "sustained_precision": 0.9367369589345172,
+        "sustained_recall": 0.9964580873671782
+      },
+      "2": {
+        "alerts": 1222,
+        "balanced_accuracy": 0.5791769042530124,
+        "matrix": {
+          "level": {
+            "level": 369,
+            "ramp": 56,
+            "spike": 0
+          },
+          "ramp": {
+            "level": 365,
+            "ramp": 54,
+            "spike": 3
+          },
+          "spike": {
+            "level": 48,
+            "ramp": 49,
+            "spike": 278
+          }
+        },
+        "ramp_as_level": 365,
+        "ramp_as_ramp": 54,
+        "recall": {
+          "level": 0.8682352941176471,
+          "ramp": 0.12796208530805686,
+          "spike": 0.7413333333333333
+        },
+        "sustained_precision": 0.8969181721572795,
+        "sustained_recall": 0.9964580873671782
+      },
+      "3": {
+        "alerts": 1222,
+        "balanced_accuracy": 0.5743685531084471,
+        "matrix": {
+          "level": {
+            "level": 381,
+            "ramp": 44,
+            "spike": 0
+          },
+          "ramp": {
+            "level": 375,
+            "ramp": 45,
+            "spike": 2
+          },
+          "spike": {
+            "level": 75,
+            "ramp": 30,
+            "spike": 270
+          }
+        },
+        "ramp_as_level": 375,
+        "ramp_as_ramp": 45,
+        "recall": {
+          "level": 0.8964705882352941,
+          "ramp": 0.1066350710900474,
+          "spike": 0.72
+        },
+        "sustained_precision": 0.8894736842105263,
+        "sustained_recall": 0.9976387249114522
+      },
+      "4": {
+        "alerts": 1222,
+        "balanced_accuracy": 0.5726953504940681,
+        "matrix": {
+          "level": {
+            "level": 380,
+            "ramp": 45,
+            "spike": 0
+          },
+          "ramp": {
+            "level": 376,
+            "ramp": 45,
+            "spike": 1
+          },
+          "spike": {
+            "level": 82,
+            "ramp": 24,
+            "spike": 269
+          }
+        },
+        "ramp_as_level": 376,
+        "ramp_as_ramp": 45,
+        "recall": {
+          "level": 0.8941176470588236,
+          "ramp": 0.1066350710900474,
+          "spike": 0.7173333333333334
+        },
+        "sustained_precision": 0.8886554621848739,
+        "sustained_recall": 0.9988193624557261
+      },
+      "6": {
+        "alerts": 1222,
+        "balanced_accuracy": 0.5777839729888796,
+        "matrix": {
+          "level": {
+            "level": 388,
+            "ramp": 37,
+            "spike": 0
+          },
+          "ramp": {
+            "level": 374,
+            "ramp": 48,
+            "spike": 0
+          },
+          "spike": {
+            "level": 84,
+            "ramp": 26,
+            "spike": 265
+          }
+        },
+        "ramp_as_level": 374,
+        "ramp_as_ramp": 48,
+        "recall": {
+          "level": 0.9129411764705883,
+          "ramp": 0.11374407582938388,
+          "spike": 0.7066666666666667
+        },
+        "sustained_precision": 0.8850574712643678,
+        "sustained_recall": 1.0
+      }
+    }
+  }
+}

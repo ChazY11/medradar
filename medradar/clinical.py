@@ -17,9 +17,9 @@ J&J, ``COVIDIEN`` for Medtronic). Results are fetched newest-first, so paging ca
 stop as soon as the window is exhausted, and are de-duplicated by NCT id across
 sponsors.
 
-Track assignment uses the **drug** therapeutic-area dictionary on the study
-``Condition`` field (``tracks_drug.json``) - that is what the drug radar reports
-on. Company attribution uses ``CompanyRegistry.resolve(LeadSponsorName)``. A
+Track assignment first uses device/diagnostic intervention text with the
+**device** taxonomy, then falls back to the **drug** therapeutic-area dictionary
+on ``Condition``. Company attribution uses ``CompanyRegistry.resolve(LeadSponsorName)``. A
 study whose lead sponsor does not resolve is kept with ``company_key = NULL``
 (docs/SCHEMA.md §6) instead of being guessed or silently dropped, and the
 unmatched rate plus the noisiest unmatched sponsors are reported in ``stats``.
@@ -55,10 +55,12 @@ KIND = "trial"
 API_URL = "https://clinicaltrials.gov/api/v2/studies"
 FIELDS = (
     "NCTId,BriefTitle,Phase,StartDate,StudyFirstPostDate,OverallStatus,"
-    "LeadSponsorName,Condition,StudyType,EnrollmentCount"
+    "LeadSponsorName,Condition,StudyType,EnrollmentCount,"
+    "InterventionType,InterventionName,InterventionDescription,InterventionOtherName"
 )
 PAGE_SIZE = 100
 STUDY_TYPE = "INTERVENTIONAL"
+DEVICE_INTERVENTION_TYPES = {"DEVICE", "DIAGNOSTIC_TEST"}
 #: Hard cap on how deep one sponsor query is paged.
 MAX_PAGES_PER_TERM = 3
 #: This collector refuses to spend more than this many requests per run.
@@ -136,6 +138,31 @@ def normalize_conditions(conditions: Iterable[Any] | None) -> list[str]:
         if text and text not in result:
             result.append(text)
     return result
+
+
+def device_intervention_text(payload: Mapping[str, Any]) -> str:
+    """Return public text for device and diagnostic-test interventions only.
+
+    Drug-only studies must not leak into the device frontier merely because a
+    condition happens to match a device keyword. ``DIAGNOSTIC_TEST`` is included
+    so IVD and other diagnostic trials follow the same path as devices.
+    """
+    raw = payload.get("raw") or {}
+    protocol = raw.get("protocolSection") or {}
+    module = protocol.get("armsInterventionsModule") or {}
+    parts: list[str] = []
+    for intervention in module.get("interventions") or []:
+        if not isinstance(intervention, Mapping):
+            continue
+        if str(intervention.get("type") or "").strip().upper() not in DEVICE_INTERVENTION_TYPES:
+            continue
+        for key in ("name", "description", "otherNames"):
+            value = intervention.get(key)
+            if isinstance(value, (list, tuple)):
+                parts.extend(str(item).strip() for item in value if str(item).strip())
+            elif value:
+                parts.append(str(value).strip())
+    return " ".join(parts)
 
 
 def _enrollment(value: Any) -> int | None:
@@ -219,6 +246,8 @@ def build_event(
         "source": SOURCE,
         "kind": KIND,
         "event_date": payload["first_posted"],
+        "published_at": payload["first_posted"],
+        "timestamp_quality": "date",
         "as_of": as_of,
         "company_key": company_key,
         "applicant_raw": payload.get("lead_sponsor") or "",
@@ -231,7 +260,12 @@ def build_event(
             f"｜{phases}｜{conditions}"
         ),
         "url": f"https://clinicaltrials.gov/study/{nct_id}",
-        "payload": {**payload, "match_confidence": confidence, "matched_alias": alias},
+        "payload": {
+            **payload,
+            "match_confidence": confidence,
+            "matched_alias": alias,
+            "device_intervention": bool(device_intervention_text(payload)),
+        },
     }
 
 
@@ -390,6 +424,8 @@ def collect_trials(
     interventional = 0
     in_window = 0
     track_matched = 0
+    device_trials = 0
+    device_track_matched = 0
     unmatched: dict[str, int] = {}
     for study in studies.values():
         payload = normalize_study(study)
@@ -408,9 +444,21 @@ def collect_trials(
             # study and it still carries a therapeutic-area signal.
             name = lead.strip() or "(empty)"
             unmatched[name] = unmatched.get(name, 0) + 1
-        track_id = drug_tracks.match_text(" ".join(payload.get("conditions") or []))
+        device_text = device_intervention_text(payload)
+        if device_text:
+            device_trials += 1
+        device_match_text = " ".join(
+            [device_text, str(payload.get("brief_title") or ""), " ".join(payload.get("conditions") or [])]
+        )
+        track_id = (
+            device_tracks.match_frontier_text(device_match_text)
+            if device_text
+            else None
+        ) or drug_tracks.match_text(" ".join(payload.get("conditions") or []))
         if track_id:
             track_matched += 1
+        if device_text and device_tracks.get(track_id):
+            device_track_matched += 1
         event = build_event(
             payload,
             company_key=company_key,
@@ -448,6 +496,8 @@ def collect_trials(
         "top_unmatched": [[name, count] for name, count in top_unmatched],
         "track_matched": track_matched,
         "track_match_rate": round(track_matched / inserted, 4) if inserted else 0.0,
+        "device_trials": device_trials,
+        "device_track_matched": device_track_matched,
         "truncated": truncated,
         "requests": int(fetcher.stats.get("requests", 0)) - requests_before,
     }

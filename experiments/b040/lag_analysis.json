@@ -1,0 +1,281 @@
+{
+  "best_lag": 7,
+  "coverage": {
+    "cells_eligible": 16,
+    "cells_in_both_lanes": 26,
+    "companies_in_watchlist": 51,
+    "companies_with_entities": 51,
+    "regulatory_events_eligible": 579,
+    "trial_events_eligible": 199
+  },
+  "design": {
+    "bootstrap": 2000,
+    "decision": "research/DECISIONS.md D-022 (pre-declared before this run)",
+    "lag_sign_convention": "positive lag = regulatory activity leads trial activity",
+    "lags": [
+      -6,
+      -5,
+      -4,
+      -3,
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "min_regulatory_events": 6,
+    "min_trial_events": 3,
+    "null_shifts": 2000,
+    "seed": 7,
+    "trials_db": "data/b040_device_trials.sqlite",
+    "window_months": 119
+  },
+  "eligible_cells": [
+    {
+      "company": "alcon",
+      "regulatory_events": 30,
+      "track": "ophthalmology",
+      "trial_events": 65
+    },
+    {
+      "company": "boston_scientific",
+      "regulatory_events": 26,
+      "track": "endoscopy",
+      "trial_events": 9
+    },
+    {
+      "company": "boston_scientific",
+      "regulatory_events": 18,
+      "track": "urology",
+      "trial_events": 4
+    },
+    {
+      "company": "dentsply_sirona",
+      "regulatory_events": 44,
+      "track": "dental",
+      "trial_events": 4
+    },
+    {
+      "company": "dexcom",
+      "regulatory_events": 27,
+      "track": "diabetes_cgm",
+      "trial_events": 11
+    },
+    {
+      "company": "fresenius_medical_care",
+      "regulatory_events": 25,
+      "track": "dialysis",
+      "trial_events": 10
+    },
+    {
+      "company": "ge_healthcare",
+      "regulatory_events": 86,
+      "track": "imaging_mr_ct",
+      "trial_events": 3
+    },
+    {
+      "company": "ge_healthcare",
+      "regulatory_events": 58,
+      "track": "imaging_us",
+      "trial_events": 4
+    },
+    {
+      "company": "masimo",
+      "regulatory_events": 19,
+      "track": "patient_monitoring",
+      "trial_events": 46
+    },
+    {
+      "company": "penumbra",
+      "regulatory_events": 22,
+      "track": "peripheral_vascular",
+      "trial_events": 3
+    },
+    {
+      "company": "philips",
+      "regulatory_events": 60,
+      "track": "imaging_mr_ct",
+      "trial_events": 4
+    },
+    {
+      "company": "philips",
+      "regulatory_events": 37,
+      "track": "imaging_us",
+      "trial_events": 7
+    },
+    {
+      "company": "resmed",
+      "regulatory_events": 20,
+      "track": "respiratory",
+      "trial_events": 15
+    },
+    {
+      "company": "smith_nephew",
+      "regulatory_events": 24,
+      "track": "wound_care",
+      "trial_events": 5
+    },
+    {
+      "company": "stryker",
+      "regulatory_events": 30,
+      "track": "ortho_joint",
+      "trial_events": 5
+    },
+    {
+      "company": "zimmer_biomet",
+      "regulatory_events": 53,
+      "track": "ortho_joint",
+      "trial_events": 4
+    }
+  ],
+  "lag_profile": {
+    "-6": {
+      "cells": 16,
+      "null_high": 0.052999892092292375,
+      "null_low": -0.04352522028358126,
+      "null_mean": 0.0002909525992995792,
+      "observed": -0.016311167554052316
+    },
+    "-5": {
+      "cells": 16,
+      "null_high": 0.04947329238885246,
+      "null_low": -0.04486070397339621,
+      "null_mean": 0.00029674433231947347,
+      "observed": -0.001463329126312822
+    },
+    "-4": {
+      "cells": 16,
+      "null_high": 0.048304618054977,
+      "null_low": -0.04483693413662657,
+      "null_mean": -6.685225707067351e-05,
+      "observed": -0.03257931901310899
+    },
+    "-3": {
+      "cells": 16,
+      "null_high": 0.05031006877189816,
+      "null_low": -0.0418868518345116,
+      "null_mean": 0.0011587950454029535,
+      "observed": 0.0009879180084842282
+    },
+    "-2": {
+      "cells": 16,
+      "null_high": 0.04971281471507268,
+      "null_low": -0.04348668723637946,
+      "null_mean": 0.0005420580639314048,
+      "observed": 0.02235330134521187
+    },
+    "-1": {
+      "cells": 16,
+      "null_high": 0.04862878342603516,
+      "null_low": -0.04419835240509071,
+      "null_mean": -0.0002567040602172129,
+      "observed": 0.0008331971251863529
+    },
+    "0": {
+      "cells": 16,
+      "null_high": 0.049756519713130845,
+      "null_low": -0.0431729012287958,
+      "null_mean": 0.00036932267599270913,
+      "observed": -0.01866798791920117
+    },
+    "1": {
+      "cells": 16,
+      "null_high": 0.046602394396647505,
+      "null_low": -0.044440905224788455,
+      "null_mean": -0.00025615207107844825,
+      "observed": 0.025693086380780116
+    },
+    "2": {
+      "cells": 16,
+      "null_high": 0.04960523054829051,
+      "null_low": -0.04348158484810058,
+      "null_mean": 0.000399252005879219,
+      "observed": -0.01721641582107733
+    },
+    "3": {
+      "cells": 16,
+      "null_high": 0.04737559240315411,
+      "null_low": -0.04408341483255816,
+      "null_mean": -0.000183208150761669,
+      "observed": 0.030054752754489374
+    },
+    "4": {
+      "cells": 16,
+      "null_high": 0.04954288674682286,
+      "null_low": -0.042396638150279595,
+      "null_mean": 0.000832706554122344,
+      "observed": 0.009851413856547152
+    },
+    "5": {
+      "cells": 16,
+      "null_high": 0.05135091455852734,
+      "null_low": -0.04438586812915855,
+      "null_mean": 0.0005570639222646396,
+      "observed": -0.004661977904899949
+    },
+    "6": {
+      "cells": 16,
+      "null_high": 0.05223650027618881,
+      "null_low": -0.044352652078953184,
+      "null_mean": 0.0012382801029399689,
+      "observed": 0.027553456200759975
+    },
+    "7": {
+      "cells": 16,
+      "null_high": 0.047740265829597624,
+      "null_low": -0.04573645550684131,
+      "null_mean": -0.0008931937068475793,
+      "observed": 0.0359506062695478
+    },
+    "8": {
+      "cells": 16,
+      "null_high": 0.05145513069203744,
+      "null_low": -0.041198106326156066,
+      "null_mean": 0.0008230279823176538,
+      "observed": -0.01216762517263911
+    },
+    "9": {
+      "cells": 16,
+      "null_high": 0.049435241547830154,
+      "null_low": -0.043055100320217116,
+      "null_mean": 0.00026660030275252094,
+      "observed": -0.01237125608422389
+    },
+    "10": {
+      "cells": 16,
+      "null_high": 0.04774892745382114,
+      "null_low": -0.04276570544786679,
+      "null_mean": -0.0002579592197378505,
+      "observed": -0.00558549755672291
+    },
+    "11": {
+      "cells": 16,
+      "null_high": 0.05405757365134067,
+      "null_low": -0.044672744302053986,
+      "null_mean": 0.002413600019343039,
+      "observed": -0.038770561466883215
+    },
+    "12": {
+      "cells": 16,
+      "null_high": 0.0498321103732319,
+      "null_low": -0.04472307409238957,
+      "null_mean": 0.0005517324441751303,
+      "observed": -0.03981312677664724
+    }
+  },
+  "power": {
+    "cells": 16,
+    "note": "with this many cells the pooled estimate is imprecise; the lag profile is reported with its null interval rather than as a point finding",
+    "standard_error_of_pooled_fisher_z_at_lag0": 0.2773500981126146
+  }
+}

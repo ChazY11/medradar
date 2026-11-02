@@ -1,0 +1,833 @@
+﻿# MedRadar Foresight Lab — backlog
+# Realigned 2026-11-02 to Observe -> Understand -> Anticipate (DECISIONS D-011).
+# layer: observe | understand | anticipate | foundation | outside-mission
+# priority: P0 = scientific reliability floor; P1 = technology-change detection / observe;
+#           P2 = AI research intelligence; P3 = forecasting research; P4 = advanced algorithms.
+# status: todo | doing | done | blocked | frozen
+# Every task has an explicit acceptance criterion. Idle tasks are re-ranked, not deleted.
+
+meta:
+  schema: medradar.foresight.backlog.v2
+  updated: "2026-11-02"
+  phase: observe_change_detection
+  realignment: "DECISIONS D-011; scope frozen, no restart"
+
+# ---------------------------------------------------------------- P0 foundation
+tasks:
+  - id: B-001
+    layer: observe
+    priority: P0
+    title: Deterministic applicant-entity universe v1
+    status: done
+    owner: universe-eng
+    result: 55,090 events -> 9,412 legal entities; 4,632 detailed records (91.32%) + explicit remainder; no fuzzy matching; 35 tests; deterministic; Draeger and Mindray resolvable.
+
+  - id: B-002
+    layer: foundation
+    priority: P0
+    title: Evaluation statistics engine (cluster bootstrap, MDE, matched-FAR lead time)
+    status: done
+    owner: evalstats-eng
+    result: pure stdlib; 37 tests; reusable by the detection benchmark for delay/FAR inference.
+
+  - id: B-003
+    layer: foundation
+    priority: P0
+    title: Independent audit of the frozen cycle-1 numeric claims
+    status: done
+    owner: research-auditor
+    result: 5/5 PASS by independent re-implementation; full 41,003-row leakage replay 0/656,048 mismatches; qualifications O1-O6.
+
+  - id: B-013
+    layer: observe
+    priority: P0
+    title: Curated roster fix — add Draeger and Mindray with evidence
+    status: blocked
+    owner: lead
+    blocked_by: universe artifact member strings
+    acceptance: Both focus companies present with aliases justified by observed applicant strings (Draeger 30 rows across 5 variants incl. umlaut; Mindray 90 rows incl. 6 typo rows); no alias broad enough to match unrelated firms; linkage before/after recorded; universe artifact rebuilt with new hash.
+
+  - id: B-014
+    layer: understand
+    priority: P0
+    title: Cross-source entity-alignment benchmark from genuine labels
+    status: blocked
+    owner: unassigned
+    acceptance: >
+      A labelled sample of applicant/company pairs adjudicated by a human reviewer (AI-created
+      fixtures explicitly may NOT count as human truth); precision/recall for the deterministic
+      universe and the curated registry on that sample; disagreements published.
+    notes: "Needs a human-adjudicated labelled sample, which this session cannot produce: AI-created fixtures are explicitly not human truth, so the benchmark cannot be built here without violating its own acceptance criterion"
+
+# ------------------------------------------------ P1 observe / change detection
+  - id: B-022
+    layer: observe
+    priority: P1
+    title: Change-point detector suite for sparse company x technology activity streams
+    status: done
+    owner: changepoint-eng
+    writes: [medradar/intelligence/changepoint.py, tests/test_changepoint.py, docs/research/CHANGEPOINT.md]
+    acceptance: >
+      Naive multiplier baseline + rolling z-score + Poisson CUSUM + Poisson Bayes factor; exact API
+      contract; deterministic; degenerate inputs return []; realistic sparse streams do not fire;
+      tests assert a spike-vs-level-shift distinction.
+
+  - id: B-023
+    layer: observe
+    priority: P1
+    title: Controlled-truth detection benchmark (semi-synthetic injection)
+    status: done
+    owner: lead
+    depends_on: [B-022]
+    acceptance: >
+      Known step-changes injected into real monthly stream shapes over a seeded grid of magnitudes
+      and onsets; reported detection probability, detection delay (months) and false alarms per
+      stream-year per detector; delay-vs-FAR frontier; leave-company-out generalisation; the naive
+      baseline is included and may win.
+
+  - id: B-024
+    layer: observe
+    priority: P1
+    title: Real-data change alerts with FDR control and independent-source confirmation
+    status: done
+    owner: lead
+    depends_on: [B-023]
+    result: >
+      DONE for FDR and the reassignment audit: 17 of 104 cells survive Benjamini-Hochberg at
+      q=0.10, detectors emit 0-2 alerts each, and 94% of events have deterministic track
+      assignment. NOT DONE for confirmation: no independent source exists on the current spine
+      (blocks B-033). The novelty signature was measured and failed (zero new product codes in
+      both alerted and control cells). Recorded as a partial completion, not a success.
+
+  - id: B-025
+    layer: observe
+    priority: P1
+    title: Cross-company anomaly detection (are competitors moving together?)
+    status: done
+    owner: unassigned
+    depends_on: [B-024]
+    acceptance: >
+      Detect simultaneous increases in the same technology track across multiple independent
+      companies, with a pre-registered definition of "same window" and a null model for coincident
+      activity; report false-positive behaviour on shuffled labels.
+
+  - id: B-026
+    layer: observe
+    priority: P1
+    title: Spike vs sustained level-shift classifier for alerts
+    status: done
+    owner: unassigned
+    depends_on: [B-023]
+    acceptance: >
+      Alerts classified as transient spike / level shift / ramp with measured accuracy on injected
+      known-shape changes; only sustained changes are promoted to "technology change" status.
+
+# -------------------------------------------- P2 understand / research intelligence
+  - id: B-027
+    layer: understand
+    priority: P2
+    title: Company technology-profile engine (R&D portrait from evidence)
+    status: done
+    owner: unassigned
+    depends_on: [B-023]
+    acceptance: >
+      Per-company profile: active technology tracks, entry events, intensity trend, competitor
+      context, resource context; every field carries the seven required evidence fields from
+      MISSION §2 (raw evidence, source, timing, classification basis, supporting, contradictory,
+      uncertainty).
+
+  - id: B-028
+    layer: understand
+    priority: P2
+    title: Contradictory-evidence discovery as a first-class output
+    status: done
+    owner: unassigned
+    acceptance: >
+      For every material judgement the system must surface evidence that argues against it, with a
+      measured rate of non-empty counter-evidence; a judgement with no counter-evidence search
+      performed is invalid.
+    notes: "Contradictory evidence is a first-class profile field and the schema rejects a profile without it; measured rate reported per build (51 of 53 roster companies carry counter-evidence)"
+
+# --------------------------------------------- P3 anticipate (forecasting program)
+  - id: B-005
+    layer: anticipate
+    priority: P3
+    title: Cycle-2 expanded-universe entry benchmark (preserved)
+    status: done
+    owner: lead
+    result: P2 entity panel delta-AP +0.0973, 3/3 windows exclude zero under both clusterings, above MDE 0.0877; P1 underpowered.
+
+  - id: B-017
+    layer: anticipate
+    priority: P3
+    title: Sensitivity run on the committed artifact cohort
+    status: todo
+    owner: lead
+    acceptance: Re-run the P2 pipeline on the exact 200 cohort keys in config/universe_v1.json and report whether the conclusion is unchanged; closes the 5/200 reproducibility gap (DECISIONS D-008).
+
+  - id: B-018
+    layer: anticipate
+    priority: P3
+    title: Re-test the source nulls on the entity panel (underpowered or true null?)
+    status: todo
+    owner: unassigned
+    acceptance: Financial/market/publication groups re-evaluated on the P2 panel with each null carrying its MDE; verdict is "well-powered negative" or "underpowered", never an unqualified "no effect".
+    notes: "data present - financial_facts=43420, market_bars=95725, publication_counts=616 (b073 inventory)"
+
+  - id: B-021
+    layer: anticipate
+    priority: P3
+    title: Lead/lag program between source classes and milestones (mission question 3)
+    status: todo
+    owner: unassigned
+    acceptance: Pre-registered lag windows; cluster-robust CIs; Holm correction; negatives published; no causal language.
+    notes: "data present - financial_facts=43420, market_bars=95725, publication_counts=616, procurement_awards=3453"
+
+  - id: B-015
+    layer: anticipate
+    priority: P3
+    title: Matured-forecast calibration report
+    status: blocked
+    owner: unassigned
+    acceptance: Requires the 25 nowcasts' windows to close (through 2027-10); until then report insufficient_matured_forecasts.
+
+# ------------------------------------------------------- observe data completion
+  - id: B-029
+    layer: observe
+    priority: P1
+    title: CIK-based deterministic linking for the 8-K lane
+    status: todo
+    owner: unassigned
+    acceptance: 19,616 unlinked 8-K events carrying a resolvable CIK become linked at confidence 1.0 with stored evidence; precision spot-checked; no fuzzy matching.
+    notes: "data present - events=55090, company_identifiers=34 (unlinked CIK-bearing 8-K events are in the store)"
+
+  - id: B-030
+    layer: observe
+    priority: P1
+    title: Public hiring collection (lawful, point-in-time)
+    status: blocked
+    owner: unassigned
+    acceptance: A lawful source with genuine snapshot history is identified and documented before collection; no scraping behind authentication; snapshots carry first-seen time.
+
+  - id: B-031
+    layer: observe
+    priority: P1
+    title: Patent ingestion (key-free path or provided key)
+    status: blocked
+    owner: unassigned
+    acceptance: Reproducible ingestion with filing and publication dates; zero fabricated rows.
+
+  - id: B-032
+    layer: observe
+    priority: P1
+    title: Versioned technology taxonomy
+    status: done
+    owner: unassigned
+    acceptance: >
+      Track assignment carries a taxonomy version with an effective date, so a product-code remap is
+      visible as a version change rather than appearing as a technology change. Required by the
+      detection layer's noise controls.
+    notes: "Versioned technology taxonomy with effective date and mapping fingerprints (medradar/intelligence/taxonomy.py; regime stamped into profiles.json; 10 tests)"
+
+  - id: B-041
+    layer: observe
+    priority: P2
+    title: Publication-lag sensitivity analysis
+    status: todo
+    owner: unassigned
+    acceptance: Headline analyses re-run at assumed lags of 0/14/30/90 days; conclusions either survive or the sensitivity is published.
+    notes: "publication_counts=616 present; the lag question is about publication timing, which the store records at monthly resolution"
+
+# ------------------------------------------------------------ outside mission
+  - id: B-045
+    layer: outside-mission
+    priority: P4
+    title: Event study, paper trading, dashboards, drug lane — maintain only
+    status: frozen
+    owner: none
+    acceptance: No new features; tests keep passing; no deletion without a recorded decision.
+
+
+# ------------------------------------------------ cycle 3 follow-ups (new)
+  - id: B-033
+    layer: observe
+    priority: P0
+    title: Identify a genuinely independent confirmation source for detected changes
+    status: done
+    owner: unassigned
+    acceptance: >
+      A source whose publication path is INDEPENDENT of the FDA filing system (e.g. ClinicalTrials
+      trials table, hiring snapshots, patent publications, supplier/procurement records with real
+      dates) is ingested with point-in-time knowledge time; confirmation of detected changes is then
+      tested against matched control periods. This is the Understand-layer entry condition: without
+      it, "a detected change is real" cannot be asserted. Explicitly NOT satisfied by splitting the
+      same filing system into two pathways.
+
+  - id: B-034
+    layer: observe
+    priority: P1
+    title: Quarterly aggregation and density-stratified detection
+    status: done
+    owner: unassigned
+    depends_on: [B-023]
+    acceptance: >
+      The detection benchmark re-run at quarterly resolution and with pre-declared density strata
+      (S-LO / S-MID / S-HI by material-event count), so that the small-shift regime and the
+      spike-versus-level-shift question can be tested where monthly resolution is underpowered.
+      Report whether the detector ranking changes with resolution.
+
+  - id: B-035
+    layer: observe
+    priority: P1
+    title: Separate technical activity from product maintenance
+    status: done
+    owner: unassigned
+    acceptance: >
+      A defensible filter for 510(k) "Special" submissions (modifications of the filer's own
+      existing device), which are ~15% of the lane, so that a detected activity change is closer to
+      a technology change. Report the effect on cell counts and on the detection benchmark.
+
+  - id: B-036
+    layer: observe
+    priority: P1
+    title: Taxonomy churn control (versioned mapping with effective dates)
+    status: done
+    owner: unassigned
+    depends_on: [B-032]
+    acceptance: >
+      Product-code -> track assignments carry an effective date, and the detector masks any cell
+      whose recent events rest on codes created in the last N months. Demonstrates the share of
+      alerts that are taxonomy churn rather than activity change.
+
+  - id: B-037
+    layer: observe
+    priority: P1
+    title: Seasonal and lane-volume artifact adjustment
+    status: done
+    owner: lead
+    depends_on: [B-073]
+    notes: >
+      Month-of-year effects quantified on the frozen lane (329 cells, 3,928 events, 119 months): January and February
+      factor 0.891 against a 1.255x annual spread, permutation p = 0.0005 with 0 of 2,000 shuffles reaching the
+      observed dispersion; quarter-boundary months run at 1.058x and 1.054x the interior mean. Per-cell scaling
+      cannot remove the effect: it changes 9 of 39,151 cell-months because the lane is 91.8 % zeros, so the detector's
+      alert rate is identical on raw and adjusted counts (0.0090, 89 of 9,870). The measured false-alarm rate 0.0179 is
+      therefore reported as an upper bound this correction cannot reduce. No detector change.
+
+
+  - id: B-038
+    layer: observe
+    priority: P0
+    title: Bin-width sweep to locate the resolution crossover
+    status: done
+    owner: lead
+    depends_on: [B-034]
+    acceptance: >
+      Re-run the controlled-truth benchmark at 1, 2, 3, 4 and 6 month bins with identical
+      onsets-in-calendar-time, horizon and alarm budget. Report detection probability per detector
+      and the expected count per bin at each width, and test whether the naive-to-likelihood
+      crossover tracks the expected count per bin rather than the aggregation label. This decides
+      which detector the OBSERVE layer should actually deploy, and whether the D-018 mechanism
+      hypothesis survives.
+
+
+  - id: B-039
+    layer: observe
+    priority: P0
+    title: Fix the OBSERVE deployment resolution and re-calibrate there
+    status: done
+    owner: lead
+    depends_on: [B-038]
+    acceptance: >
+      Choose the resolution the layer will actually operate at (justified by the analyst's decision
+      cadence), express every detector's memory in calendar time, re-run the bin-width sweep on that
+      panel, and only then name a detector. Report the identifiability check: if the ranking is still
+      unstable across the memory parameterisation, the honest output is "no detector is identifiable"
+      rather than a choice.
+
+
+  - id: B-040
+    layer: observe
+    priority: P0
+    title: Collect ClinicalTrials.gov DEVICE trials with device-track mapping
+    status: done
+    owner: lead
+    depends_on: [B-033]
+    acceptance: >
+      Ingest device-relevant ClinicalTrials.gov studies (the device-intervention filter already
+      exists in medradar/clinical.py) into a lane mapped to the DEVICE track taxonomy, with
+      first-posted as the knowledge time and sponsor strings normalised through the same
+      deterministic entity normaliser. Report coverage against the 104 detection cells; then run
+      the independent-confirmation test (detected regulatory changes vs matched control periods).
+      This is the only currently identified path to answering "is the detected change real?".
+
+
+  - id: B-042
+    layer: observe
+    priority: P1
+    title: Company entry-cohort unit of analysis
+    status: done
+    owner: lead
+    depends_on: [B-040]
+    acceptance: >
+      Replace cell-month counts with an entry-cohort design: for each company, the sequence of
+      technology-track entries over time, so density no longer limits inference. Test whether entry
+      timing relates to independent signals (trials, publications) at cohort level rather than by
+      monthly correlation. Report whether the density ceiling that killed the cell-level tests is
+      actually lifted, and if not, say so.
+
+
+  - id: B-043
+    layer: understand
+    priority: P1
+    title: ivd_immuno entry-wave case study (first positive target)
+    status: done
+    owner: lead
+    depends_on: [B-042, B-040]
+    acceptance: >
+      Case study of the surviving positive signal: which firms entered the immunoassay IVD track in
+      the 2019 and 2023-24 waves, with what supporting evidence (product codes, device/trial activity,
+      publications), and whether the wave is visible in the independent B-040 device-trial lane. Must
+      include contradictory evidence and an explicit statement of what would make the wave an artifact
+      (regulatory reclassification, acquisition-driven relabelling, procurement effects). This is the
+      first test in the programme with a positive target rather than a null.
+
+
+  - id: B-046
+    layer: observe
+    priority: P1
+    title: Split-sample pre-registered test of the aesthetics candidate
+    status: done
+    owner: lead
+    depends_on: [B-043]
+    acceptance: >
+      The aesthetics track showed the only specification-stable small nominal p (0.007-0.015 across
+      four specifications) but fails FDR everywhere. Because it was selected after seeing p-values,
+      re-test it out of sample: fix the hypothesis and the threshold now, estimate the entry-rate
+      pattern on a predetermined early window ending 2022-12, and test on the held-out later window
+      2023-01..2026-09 with the threshold untouched. A failure is the expected outcome and must be
+      reported as such; a success is the programme's first verified empirical finding.
+
+
+
+  - id: B-047
+    layer: observe
+    priority: P0
+    title: Career-domain mapping, platform-change audit, and CDX deep-paging fix for the hiring lane
+    status: done
+    owner: lead
+    depends_on: [B-030]
+    acceptance: >
+      (1) Resolve each curated device company's real career domain(s) rather than guessing hosts -
+      eight firms returned no archived postings under the probed patterns. (2) Detect per-company
+      posting-URL-scheme changes and flag any level shift that coincides with a migration as a
+      collection artifact. (3) Fix CDX deep paging so Medtronic's 15-page index is fully collected
+      instead of 31 postings. Only then re-run the pre-registered hiring lag test (D-028) and report
+      it, with the usability floor unchanged.
+
+
+  - id: B-048
+    layer: observe
+    priority: P0
+    title: Career-board discovery for the five uncovered device firms
+    status: done
+    owner: lead
+    depends_on: [B-047]
+    acceptance: >
+      Find an archived job board (own careers site, Workday, Taleo, Greenhouse, Lever,
+      SmartRecruiters, iCIMS or similar) for Philips, Draeger, Mindray, Zimmer Biomet and Masimo, two
+      of which are mandated focus companies. For each, record the host pattern, measured posting URL
+      count and month coverage in host_depth.json. If a firm genuinely has no archived board, record
+      that as a measured absence with the patterns tried. Do not loosen the usability floor.
+
+  - id: B-049
+    layer: understand
+    priority: P1
+    title: Full-roster profiles and a frozen dated snapshot set
+    status: done
+    owner: lead
+    depends_on: [B-027]
+    acceptance: >
+      Extend the seven-field profile engine beyond the five mandated deep cases to the full curated
+      roster, then freeze a dated snapshot (profiles + source hashes + as-of date) so later cycles can
+      compare against it. The snapshot is the point-in-time artifact any rolling-origin evaluation
+      needs; without it, "what did we believe on date X" cannot be audited.
+
+  - id: B-050
+    layer: evaluate
+    priority: P1
+    title: Rolling-origin benchmark of the change signal
+    status: done
+    owner: lead
+    depends_on: [B-027]
+    acceptance: >
+      First rolling-origin benchmark: 376 (company, track) cells, 12 origins (2019-12..2025-06), 717
+      observations, signal uses only data up to each origin, outcome is the next 12 months,
+      company-clustered bootstrap. Pre-registered in D-035, outcome and the design flaw in D-036.
+      Result: no predictor's 95% interval excludes 1 against the long-run baseline; the naive
+      increase point estimate is 1.22 [0.95, 1.53]; calibrated flags are too rare (5/717) to predict
+      with at ~0.2 events per cell-month.
+
+  - id: B-051
+    layer: understand
+    priority: P0
+    title: Point-in-time rebuild and leakage audit of the profile engine
+    status: done
+    owner: lead
+    depends_on: [B-027, B-049]
+    acceptance: >
+      build_profiles --as-of cuts regulatory events, the trial lane and the product-code first-seen
+      map at the as-of date, and records a per-profile leakage_audit block. Three backdated snapshots
+      frozen (2020-12-31, 2022-12-31, 2024-12-31) with manifests; snapshot_diff.py audits leakage
+      (0 problems) and diffs consecutive snapshots; verdict_stability.py measures how often verdicts
+      flip across as-of dates. Result: 40 of 53 verdicts stable, 13 change, 2 reverse.
+
+  - id: B-052
+    layer: publish
+    priority: P1
+    title: Paper draft v1 from the committed record
+    status: done
+    owner: lead
+    depends_on: [B-020, B-023, B-050, B-051]
+    acceptance: >
+      papers/PAPER_v1.md covering corpus and provenance, controlled-truth frontier, five retracted
+      findings with the control that killed each, calibration result, rolling-origin null, verdict
+      instability, the Understand layer, seven measurement rules, limitations and reproduction. Every
+      quantitative claim declared in papers/CLAIMS.json with its artifact and exact substring, verified
+      in both directions by papers/verify_claims.py (45/45). Draft only: not submitted, no venue
+      claimed, no figures.
+
+  - id: B-053
+    layer: publish
+    priority: P1
+    title: Paper figures generated from artifacts (stdlib SVG)
+    status: done
+    owner: lead
+    depends_on: [B-052]
+    acceptance: >
+      papers/figures.py emits four SVG plates directly (no plotting dependency): detection frontier,
+      ratio-vs-p calibration scatter, rolling-origin lift with CIs, verdict-stability matrix.
+      papers/verify_figures.py re-derives every plotted value from its source artifact, parses each
+      SVG, rejects numeric artefacts, and requires the paper to link each figure. Rendered to PNG and
+      visually inspected; three layout defects found and fixed.
+
+  - id: B-054
+    layer: detect
+    priority: P1
+    title: Confirm the corrected confirmation window on fresh injections
+    status: done
+    owner: lead
+    depends_on: [B-026]
+    acceptance: >
+      The post-hoc window fix (exclude the alert month) lifted balanced accuracy from 0.394 to 0.608
+      and sustained-change precision from 0.764 to 0.940 against a 0.728 base rate. Because it was
+      found after seeing the pre-registered rule fail, re-pre-register it and confirm on injections
+      with fresh origins and cells (no reuse), reporting the same estimands. If it does not confirm,
+      the promotion rule stays at the pre-registered accuracy and the fix is recorded as overfit.
+
+  - id: B-055
+    layer: detect
+    priority: P2
+    title: Confirm the promotion rule on fresh CELLS, not just fresh origins
+    status: done
+    owner: lead
+    depends_on: [B-054]
+    acceptance: >
+      The two-month post-alert promotion rule is confirmed on fresh injection months but the same 65
+      cells, so cell reuse is a declared limitation. Expand the eligible-cell set (lower the baseline
+      floor or widen the roster / add a second lane) and re-run the confirmatory design with cells that
+      never appeared in discovery. If the rule does not survive fresh cells, restrict promotion to the
+      companies where it was measured.
+
+  - id: B-056
+    layer: understand
+    priority: P1
+    title: Carry the validated deployment detector inside the profile
+    status: done
+    owner: lead
+    depends_on: [B-039, B-027]
+    acceptance: >
+      Momentum carries a nested deployment_alerts block applying the D-045 detector (quarterly rolling
+      z-score, threshold 3.5, measured FAR 0.018, sensitivity 0.147), reporting alerts from the last
+      eight quarters with track/quarter/count/baseline/z, and stating the measured FAR and sensitivity
+      inside the profile. selfcheck fails any profile whose block names another detector/resolution,
+      whose alert fails its own threshold, or whose markdown omits the detector line or FAR. The
+      promotion rule stays manual.
+
+  - id: B-057
+    layer: understand
+    priority: P0
+    title: Promotion policy as code, and a snapshot carrying the deployment block
+    status: done
+    owner: lead
+    depends_on: [B-043, B-046]
+    acceptance: >
+      medradar/intelligence/promotion.py gates promotion through validated-detector provenance, the
+      confirmed two-quarter window, the contradiction check and human sign-off, and can only return
+      reject or promote_pending_signoff (automated promotion disabled and asserted by a test). Policy
+      written into PREDICTION_PROTOCOL.md section 8. A sixth frozen snapshot (2026-11-03) carries the
+      deployment block and promotion verdicts; its diff against 2026-11-02 reports identical data,
+      which is the correct reading. selfcheck enforces the verdict set, the sign-off flag, the
+      filing-rate statement and the markdown presence.
+
+  - id: B-058
+    layer: detect
+    priority: P2
+    title: Confirmation-window sensitivity analysis for the ramp class
+    status: done
+    owner: lead
+    depends_on: [B-026, B-055]
+    acceptance: >
+      Pre-registered window grid (1,2,3,4,6 months), both units, three fresh origins per cell, fixed
+      seeds; recommendation rule fixed in advance (ramp recall > 0.40 and precision >= 0.85 on both
+      units). Result: no window qualifies; best ramp recall 0.229 with precision falling monotonically.
+      Policy stays at two months; the blind spot and the quarterly-only validation are now carried in
+      every profile's limits field, with tests.
+
+  - id: B-059
+    layer: detect
+    priority: P0
+    title: Second-domain validation of the promotion rule
+    status: done
+    owner: lead
+    depends_on: [B-054, B-055, B-030]
+    acceptance: >
+      Domain chosen by measured feasibility (trial lane had 5 eligible cells; hiring lane 8 series), then
+      the identical detector, classifier, shapes and 3x elevation applied to archived job-posting series.
+      43 scored alerts: balanced accuracy 0.593 (0.503-0.806), sustained precision 0.929 (0.872-1.000) vs
+      a 0.794 base rate, interval width 0.128 below the declared underpowered threshold. Verdict:
+      CONSISTENT. Not a second confirmation and no portability beyond this one domain.
+
+  - id: B-060
+    layer: understand
+    priority: P1
+    title: Promotion ledger with enforced attribution
+    status: done
+    owner: lead
+    depends_on: [B-057]
+    acceptance: >
+      research/RESULTS/PROMOTIONS.md is an append-only ledger separate from the findings ledger; rows
+      carry signer, timestamp, justification and policy version. build_promotion_record raises on an empty
+      signer, missing justification, missing timestamp or a non-promotable verdict, so an unattributed
+      promotion cannot be written. freeze_snapshot hashes the ledger as an input source so every future
+      manifest ties profiles to the exact ledger. The Medtronic insulin_delivery alert is recorded
+      PENDING_SIGNOFF because the programme cannot sign for a human.
+
+  - id: B-061
+    layer: govern
+    priority: P0
+    title: Mechanical audit of the mission objective
+    status: done
+    owner: lead
+    depends_on: []
+    acceptance: >
+      tools/audit_objectives.py turns the mission text into checks and writes research/AUDIT.json and
+      research/AUDIT.md: eleven required state files, backlog integrity, state completeness, loop evidence
+      (decisions, result rows, negatives, retractions), committed experiments, point-in-time snapshots
+      verifying, the rolling-origin benchmark, frozen forecasts, the paper's claim map, figures, the
+      profile self-check and working-tree cleanliness. Current result: 11 PASS, 0 FAIL, 1 N/A, exit 0.
+      Re-runnable, so "the objective is met" is tested rather than asserted.
+
+  - id: B-062
+    layer: detect
+    priority: P1
+    title: Third-unit validation at market-aggregate (track) level
+    status: done
+    owner: lead
+    depends_on: [B-059]
+    acceptance: >
+      Identical detector, classifier, shapes and 3x elevation applied to monthly counts per technology track
+      (38 tracks, all eligible, median 270 events). 297 scored alerts: balanced accuracy 0.559 (0.514-0.605),
+      sustained precision 0.889 (0.851-0.925) vs a 0.690 base rate, interval width 0.074. Verdict: CONSISTENT.
+      Ramp recall rises with density across all tested units (0.117 entity -> 0.142 company -> 0.300 hiring ->
+      0.396 track), an observational gradient that needs a controlled down-sampling test to be established.
+
+  - id: B-063
+    layer: detect
+    priority: P1
+    title: Controlled density experiment (thin dense track series)
+    status: done
+    owner: lead
+    depends_on: [B-062]
+    acceptance: >
+      Binomial thinning of the 38 dense track series at factors 1,2,5,10,20, then identical injection,
+      detector and classifier. Ramp recall 0.440 -> 0.415 -> 0.300 -> 0.318 -> 0.222 as density falls
+      twentyfold; Spearman rho 0.882 (passes its floor) but strict monotonicity failed on a 0.018 inversion
+      and dense/sparse intervals overlapped by 0.023. Verdict as pre-registered: NOT SUPPORTED. Recorded as a
+      strength of the pre-registration and a defect of its brittleness; scaling stays suggestive.
+
+  - id: B-064
+    layer: detect
+    priority: P1
+    title: Confirmation of the density scaling with a robust criterion and fresh draws
+    status: done
+    owner: lead
+    depends_on: [B-063]
+    acceptance: >
+      Revised criterion pre-registered (rank correlation >= 0.8 AND dense ramp recall >= 2x sparse, no
+      strict-monotonicity clause), then confirmed on fresh thinning/origin/bootstrap seeds (7171/8181/9191).
+      Result: rho 0.908, dense 0.444 vs sparse 0.204, ratio 2.18x -> CONFIRMED under the post-failure revised
+      criterion. Product consequence: promotion policy v2 refuses the ramp label below 1.0 event/series-month
+      and reports sustained_unresolved instead; three tests cover the relabelling.
+
+  - id: B-065
+    layer: govern
+    priority: P1
+    title: Labelled snapshots and a promotion-label diff
+    status: done
+    owner: lead
+    depends_on: [B-060, B-064]
+    acceptance: >
+      freeze_snapshot --label allows a second snapshot at the same as-of (2026-11-03-policy-v2) with the
+      manifest recording the true as-of; selfcheck and snapshot_diff accept as-of or as-of-<label>; the leakage
+      audit uses the manifest as-of. snapshot_diff compares per-alert (verdict, shape, policy version) and
+      reports changes. Result: 32 alert labels changed between v1 and v2, 8 of them from ramp to
+      sustained_unresolved, while the data-level diff reports zero change. 6 of 6 snapshots verify; 0 leakage
+      problems.
+
+  - id: B-066
+    layer: govern
+    priority: P0
+    title: Executable round-end routine and honest paper limitations
+    status: done
+    owner: lead
+    depends_on: [B-061]
+    acceptance: >
+      tools/round_end.py runs seven verifiers in one pass (test suite, claim map, figures, profile self-check,
+      snapshot chain, objective audit, repository state) and writes tools/round_end.json plus a readable log;
+      exit code is the claim. Current result 7 PASS / 0 FAIL in ~23 s. Paper section 6 now states that exactly
+      one decision rule was confirmed against five retractions, that promotion requires human sign-off with no
+      automated path, that the ramp label is withheld below 1.0 event/month, and that the density scaling is a
+      post-failure confirmation.
+
+  - id: B-067
+    layer: evaluate
+    priority: P1
+    title: End-to-end rolling-origin evaluation of the promotion pipeline
+    status: done
+    owner: lead
+    depends_on: [B-064]
+    acceptance: >
+      Pre-registered design (D-064): quarterly origins 2019-Q1..2024-Q4, deployed detector, confirmed two-quarter
+      rule, outcome = activity four quarters on. Result: 68 alerts (35 promoted, 33 unpromoted), control 4,594.
+      P(persisted) promoted 0.800 (0.652-0.917), unpromoted 0.667, control 0.373; difference +0.133 with interval
+      -0.074..0.344 -> NO ADDED VALUE by the pre-declared rule. Alerts carry information about persistence; the
+      filter's marginal value is unestablished (underpowered: spikes are rare by design).
+
+  - id: B-068
+    layer: predict
+    priority: P1
+    title: Frozen prospective forecast sets with maturation
+    status: done
+    owner: lead
+    depends_on: [B-067]
+    acceptance: >
+      medradar/intelligence/forecasts.py (18 tests) provides quarter arithmetic, fixed windows, registration,
+      validation and scoring (Brier/log loss/accuracy, pending always reported); the maturer refuses a modified
+      set by content hash. Two committed sets: the original 32-forecast registration (which exposed 7 backfilled
+      labels: matured at registration, Brier 0.337/accuracy 0.429, excluded as evidence) and a clean prospective
+      set of 25 (13 promoted, 12 not; 7 backfilled excluded; earliest maturation 2026-Q4; hash 09525994...). The
+      objective audit verifies committed sets by structure and hash.
+
+  - id: B-069
+    layer: publish
+    priority: P1
+    title: Second paper — measurement rules derived from the retractions
+    status: done
+    owner: lead
+    depends_on: [B-063, B-068]
+    acceptance: >
+      papers/PAPER_METHODS_v1.md: nine rules each tied to the failure that motivated it, the two enforcement
+      mechanisms (contradictory-evidence schema; round-end command), and the two results needing an intermediate
+      category (post-failure density confirmation; pipeline test that found the detector not the filter).
+      papers/CLAIMS_METHODS.json declares 22 quantitative claims with artifacts and exact substrings;
+      verify_claims.py --claims checks both directions (22/22). round_end.py now runs both claim maps (8 steps).
+      papers/README.md indexes the two papers and how to read them together.
+
+  - id: B-070
+    layer: govern
+    priority: P0
+    title: Rewrite the roadmap from what exists and update the mission's honest position
+    status: done
+    owner: lead
+    depends_on: [B-069]
+    acceptance: >
+      research/ROADMAP.md rewritten as a plan of record: one status table where every capability cites its
+      evidence, phase-by-phase results (A done, B done with the non-identifiability limit, C partly blocked, D
+      done, E four diagnosed failures, F null now prospective, G not started on purpose), and a section 3 listing
+      what remains and why it cannot be simulated (25 forecasts maturing 2026-Q4..2028-Q1, 25 nowcasts maturing
+      2027-10, one promotion awaiting human sign-off, access-blocked lanes, structurally unavailable hiring
+      coverage). research/MISSION.md keeps section 9 as the 2026-11-02 record and adds section 10 with today's
+      position, established and unchanged. Audit stays 11 PASS / 0 FAIL / 1 N/A.
+
+  - id: B-071
+    layer: publish
+    priority: P2
+    title: Figure 1 of the methods paper — the retraction-to-rule map
+    status: done
+    owner: lead
+    depends_on: [B-069]
+    acceptance: >
+      papers/figures/fig5_retraction_rules.svg generated from papers/rules_map.py: ten events, nine rules, 21
+      filled cells; verify_figures.py re-derives every cell and compares with figures_data.json. Three layout
+      defects found only by a headless-Edge render (legend covering columns 8-9, decision ids printed on top of
+      event labels, legend running off the canvas) and fixed; recorded as a recurring class. PAPER_METHODS_v1.md
+      links the figure with captions tied to the counts; CLAIMS_METHODS.json is now 25 claims, three asserting the
+      figure's numbers; the round-end gate runs both figure verifications (9 steps).
+
+  - id: B-072
+    layer: govern
+    priority: P2
+    title: Static figure-layout check in the round-end gate
+    status: done
+    owner: lead
+    depends_on: [B-071]
+    acceptance: >
+      papers/check_layout.py catches the two mechanical defect classes that only a rendered review had caught before
+      (text outside the canvas; text painted over by a later filled shape), measures rotated axis labels vertically,
+      and is verified against injected defects rather than only clean figures. Seven unit tests including one that
+      asserts the committed figures are clean. tools/round_end.py runs it as a tenth step: "layout checks: 5
+      figures; problems: 0".
+
+  - id: B-073
+    layer: govern
+    priority: P1
+    title: Lane inventory before any "blocked" claim; versioned taxonomy; backlog repair
+    status: done
+    owner: lead
+    depends_on: [B-072]
+    acceptance: >
+      experiments/b073/inventory_lanes.json counts every table in the frozen stores and maps tables to backlog items.
+      Result: financial_facts=43420, market_bars=95725, publication_counts=616, events=55090, procurement_awards=3453
+      are all present, so B-018, B-021, B-029, B-037 and B-041 are NOT blocked on data and stay open with the counts
+      recorded as notes. Only B-014 is newly blocked, on a human adjudicator rather than on a store. B-028 marked done
+      (contradictory evidence is a required profile field). B-032 shipped: medradar/intelligence/taxonomy.py gives the
+      taxonomy a version, effective date and fingerprints of both mapping files, stamps profiles.json, detects regime
+      change; 10 tests. Backlog parses (60 tasks) and the audit returns 11 PASS / 0 FAIL / 1 N/A.
+
+  - id: B-074
+    layer: predict
+    priority: P1
+    title: 重新点检剩余六项开放任务的数据可得性并排期
+    status: todo
+    owner: lead
+    depends_on: [B-073]
+    notes: >
+      Six open items now have proven data (B-018, B-021, B-029, B-037, B-041, plus B-017's cohort re-run). Their order
+      should be decided by cost and by what the papers still need, not by availability.
+
+  - id: B-075
+    layer: govern
+    priority: P0
+    title: Final consolidation — reproducibility audit and completion report
+    status: done
+    owner: lead
+    depends_on: [B-037, B-068, B-070, B-073]
+    notes: >
+      tools/final_audit.py re-runs four deterministic scripts into a temporary directory and compares with the
+      committed JSON: 4 of 4 reproduced identically, 10 of 10 verifiers passing. research/COMPLETION_REPORT.md maps
+      each objective clause to an artifact and a verification step, and states what remains (prospective maturation
+      2026-Q4..2028-Q1, legacy nowcasts 2027-10, one human signature, three access-blocked lanes, one human-adjudicated
+      label set) and what is explicitly not claimed. Record at closure: 73 decisions, 152 result rows (27
+      negative/null), 6 auditable snapshots, 2 forecast sets, 113 verified claims across two papers, 43 cycle reports,
+      157 commits; main untouched at 7a639f7.

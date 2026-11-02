@@ -1,0 +1,67 @@
+{
+  "bootstrap": {
+    "balanced_accuracy_ci": [
+      0.5832535972647989,
+      0.6157027045945462
+    ],
+    "companies": 30,
+    "reps": 2000,
+    "sustained_precision_ci": [
+      0.9090909090909091,
+      0.9413919413919414
+    ]
+  },
+  "confusion": {
+    "level": {
+      "level": 373,
+      "ramp": 50,
+      "spike": 0
+    },
+    "ramp": {
+      "level": 368,
+      "ramp": 49,
+      "spike": 3
+    },
+    "spike": {
+      "level": 39,
+      "ramp": 37,
+      "spike": 277
+    }
+  },
+  "counts": {
+    "alerts": 1196,
+    "companies": 30,
+    "eligible": 191,
+    "entity_cells": 6841,
+    "records": 1269,
+    "scored": 1196
+  },
+  "decision": {
+    "balanced_ok": true,
+    "ci_ok": true,
+    "precision_ok": true,
+    "verdict": "CONFIRMED AT ENTITY LEVEL"
+  },
+  "design": {
+    "bootstrap_clustering": "by company of the entity",
+    "classifier_window": "months alert+1 .. alert+2",
+    "decision": "research/DECISIONS.md D-047 (pre-registered)",
+    "declared_balanced_accuracy": 0.5,
+    "declared_precision": 0.85,
+    "dependence_note": "entity cells nest inside company cells, so this tests aggregation level, not independence",
+    "origins_per_cell": 3,
+    "seed": 4040,
+    "unit": "legal entity x technology track"
+  },
+  "metrics": {
+    "balanced_accuracy": 0.5943886355163553,
+    "recalls": {
+      "level": 0.8817966903073287,
+      "ramp": 0.11666666666666667,
+      "spike": 0.7847025495750708
+    },
+    "sustained_base_rate": 0.7048494983277592,
+    "sustained_precision": 0.9170305676855895,
+    "sustained_recall": 0.99644128113879
+  }
+}

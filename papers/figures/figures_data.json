@@ -1,0 +1,1233 @@
+{
+  "schema": "figures_v1",
+  "sources": {
+    "fig1_frontier": "experiments/detect_v1/benchmark.json",
+    "fig2_calibration": "experiments/b027/momentum_calibration.json",
+    "fig3_rolling_origin": "experiments/b050/rolling_origin.json",
+    "fig4_verdict_stability": "experiments/b027/verdict_stability.json",
+    "fig5_retraction_rules": "papers/rules_map.py"
+  },
+  "figures": {
+    "fig1_frontier": {
+      "svg": "papers\\figures\\fig1_frontier.svg",
+      "points": 16,
+      "data": [
+        {
+          "far_target": 0.01,
+          "false_alarm_rate": 0.0,
+          "detector": "naive_multiplier",
+          "sensitivity": 0.09770114942528736,
+          "ci": [
+            0.06761006289308176,
+            0.12980769230769232
+          ]
+        },
+        {
+          "far_target": 0.01,
+          "false_alarm_rate": 0.0,
+          "detector": "poisson_cusum",
+          "sensitivity": 0.0014367816091954023,
+          "ci": [
+            0.0,
+            0.0047169811320754715
+          ]
+        },
+        {
+          "far_target": 0.01,
+          "false_alarm_rate": 0.0,
+          "detector": "poisson_bayes_factor",
+          "sensitivity": 0.1221264367816092,
+          "ci": [
+            0.08908045977011494,
+            0.15948275862068967
+          ]
+        },
+        {
+          "far_target": 0.01,
+          "false_alarm_rate": 0.0,
+          "detector": "rolling_zscore",
+          "sensitivity": 0.035919540229885055,
+          "ci": [
+            0.019005847953216373,
+            0.05737704918032787
+          ]
+        },
+        {
+          "far_target": 0.02,
+          "false_alarm_rate": 0.017241379310344827,
+          "detector": "naive_multiplier",
+          "sensitivity": 0.22270114942528735,
+          "ci": [
+            0.18081761006289307,
+            0.2646198830409357
+          ]
+        },
+        {
+          "far_target": 0.02,
+          "false_alarm_rate": 0.017241379310344827,
+          "detector": "poisson_cusum",
+          "sensitivity": 0.1810344827586207,
+          "ci": [
+            0.13364779874213836,
+            0.22953216374269006
+          ]
+        },
+        {
+          "far_target": 0.02,
+          "false_alarm_rate": 0.0,
+          "detector": "poisson_bayes_factor",
+          "sensitivity": 0.1221264367816092,
+          "ci": [
+            0.08908045977011494,
+            0.15948275862068967
+          ]
+        },
+        {
+          "far_target": 0.02,
+          "false_alarm_rate": 0.017241379310344827,
+          "detector": "rolling_zscore",
+          "sensitivity": 0.11206896551724138,
+          "ci": [
+            0.07738095238095238,
+            0.15211640211640212
+          ]
+        },
+        {
+          "far_target": 0.03,
+          "false_alarm_rate": 0.017241379310344827,
+          "detector": "naive_multiplier",
+          "sensitivity": 0.22270114942528735,
+          "ci": [
+            0.18081761006289307,
+            0.2646198830409357
+          ]
+        },
+        {
+          "far_target": 0.03,
+          "false_alarm_rate": 0.017241379310344827,
+          "detector": "poisson_cusum",
+          "sensitivity": 0.1810344827586207,
+          "ci": [
+            0.13364779874213836,
+            0.22953216374269006
+          ]
+        },
+        {
+          "far_target": 0.03,
+          "false_alarm_rate": 0.0,
+          "detector": "poisson_bayes_factor",
+          "sensitivity": 0.1221264367816092,
+          "ci": [
+            0.08908045977011494,
+            0.15948275862068967
+          ]
+        },
+        {
+          "far_target": 0.03,
+          "false_alarm_rate": 0.017241379310344827,
+          "detector": "rolling_zscore",
+          "sensitivity": 0.11206896551724138,
+          "ci": [
+            0.07738095238095238,
+            0.15211640211640212
+          ]
+        },
+        {
+          "far_target": 0.05,
+          "false_alarm_rate": 0.034482758620689655,
+          "detector": "naive_multiplier",
+          "sensitivity": 0.30028735632183906,
+          "ci": [
+            0.24707602339181287,
+            0.3531073446327684
+          ]
+        },
+        {
+          "far_target": 0.05,
+          "false_alarm_rate": 0.017241379310344827,
+          "detector": "poisson_cusum",
+          "sensitivity": 0.1810344827586207,
+          "ci": [
+            0.13364779874213836,
+            0.22953216374269006
+          ]
+        },
+        {
+          "far_target": 0.05,
+          "false_alarm_rate": 0.034482758620689655,
+          "detector": "poisson_bayes_factor",
+          "sensitivity": 0.2629310344827586,
+          "ci": [
+            0.21363636363636362,
+            0.3146551724137931
+          ]
+        },
+        {
+          "far_target": 0.05,
+          "false_alarm_rate": 0.034482758620689655,
+          "detector": "rolling_zscore",
+          "sensitivity": 0.17385057471264367,
+          "ci": [
+            0.1335978835978836,
+            0.21540880503144655
+          ]
+        }
+      ]
+    },
+    "fig2_calibration": {
+      "svg": "papers\\figures\\fig2_calibration.svg",
+      "points": 50,
+      "data": [
+        {
+          "company": "abbott",
+          "ratio": 0.9,
+          "p": 0.63976936864295,
+          "detected": false
+        },
+        {
+          "company": "alcon",
+          "ratio": 0.75,
+          "p": 0.79052734375,
+          "detected": false
+        },
+        {
+          "company": "ambu",
+          "ratio": 0.7000000000000001,
+          "p": 0.629058837890625,
+          "detected": false
+        },
+        {
+          "company": "atricure",
+          "ratio": 0.6666666666666666,
+          "p": 0.75390625,
+          "detected": false
+        },
+        {
+          "company": "baxter",
+          "ratio": 0.5714285714285714,
+          "p": 0.28627872467041016,
+          "detected": false
+        },
+        {
+          "company": "bbraun",
+          "ratio": 0.6250000000000001,
+          "p": 0.5810546875,
+          "detected": false
+        },
+        {
+          "company": "bd",
+          "ratio": 1.3235294117647058,
+          "p": 0.26042552589724327,
+          "detected": false
+        },
+        {
+          "company": "biotronik",
+          "ratio": 0.6,
+          "p": 0.7265625,
+          "detected": false
+        },
+        {
+          "company": "boston_scientific",
+          "ratio": 0.9565217391304347,
+          "p": 0.9161288770112894,
+          "detected": false
+        },
+        {
+          "company": "canon_medical",
+          "ratio": 0.8999999999999999,
+          "p": 0.8714146793645341,
+          "detected": false
+        },
+        {
+          "company": "cook_medical",
+          "ratio": 0.7999999999999999,
+          "p": 0.8145294189453125,
+          "detected": false
+        },
+        {
+          "company": "cooper_companies",
+          "ratio": 1.0,
+          "p": 1.0,
+          "detected": false
+        },
+        {
+          "company": "dentsply_sirona",
+          "ratio": 2.0909090909090913,
+          "p": 0.05761267291381955,
+          "detected": false
+        },
+        {
+          "company": "dexcom",
+          "ratio": 1.3333333333333333,
+          "p": 0.79052734375,
+          "detected": false
+        },
+        {
+          "company": "draeger",
+          "ratio": 1.0,
+          "p": 1.0,
+          "detected": false
+        },
+        {
+          "company": "edwards_lifesciences",
+          "ratio": 0.826086956521739,
+          "p": 0.6439689563703723,
+          "detected": false
+        },
+        {
+          "company": "envista",
+          "ratio": 1.7999999999999998,
+          "p": 0.4239501953125,
+          "detected": false
+        },
+        {
+          "company": "fresenius_medical_care",
+          "ratio": 1.2142857142857142,
+          "p": 0.720100131817162,
+          "detected": false
+        },
+        {
+          "company": "fujifilm",
+          "ratio": 1.24,
+          "p": 0.5044037600228256,
+          "detected": false
+        },
+        {
+          "company": "ge_healthcare",
+          "ratio": 1.1875,
+          "p": 0.43511449489230064,
+          "detected": false
+        },
+        {
+          "company": "globus_medical",
+          "ratio": 0.6818181818181819,
+          "p": 0.3240086000878364,
+          "detected": false
+        },
+        {
+          "company": "hologic",
+          "ratio": 0.9090909090909092,
+          "p": 1.0,
+          "detected": false
+        },
+        {
+          "company": "icu_medical",
+          "ratio": 2.25,
+          "p": 0.266845703125,
+          "detected": false
+        },
+        {
+          "company": "insulet",
+          "ratio": 0.39999999999999997,
+          "p": 0.453125,
+          "detected": false
+        },
+        {
+          "company": "integra_lifesciences",
+          "ratio": 0.7142857142857143,
+          "p": 0.7744140625,
+          "detected": false
+        },
+        {
+          "company": "intuitive_surgical",
+          "ratio": 1.5454545454545456,
+          "p": 0.14089542359848076,
+          "detected": false
+        },
+        {
+          "company": "irhythm",
+          "ratio": 4.0,
+          "p": 0.375,
+          "detected": false
+        },
+        {
+          "company": "johnson_johnson_medtech",
+          "ratio": 0.8688524590163935,
+          "p": 0.5122548722298448,
+          "detected": false
+        },
+        {
+          "company": "karl_storz",
+          "ratio": 1.4375000000000002,
+          "p": 0.3367836351899314,
+          "detected": false
+        },
+        {
+          "company": "masimo",
+          "ratio": 0.5454545454545455,
+          "p": 0.332305908203125,
+          "detected": false
+        },
+        {
+          "company": "medline",
+          "ratio": 0.43999999999999995,
+          "p": 0.028816719655878842,
+          "detected": true
+        },
+        {
+          "company": "medtronic",
+          "ratio": 1.3636363636363635,
+          "p": 0.06520677354687995,
+          "detected": false
+        },
+        {
+          "company": "merit_medical",
+          "ratio": 1.6363636363636365,
+          "p": 0.26493089646101,
+          "detected": false
+        },
+        {
+          "company": "mindray",
+          "ratio": 1.5,
+          "p": 0.361594608053565,
+          "detected": false
+        },
+        {
+          "company": "olympus",
+          "ratio": 4.166666666666667,
+          "p": 1.2143807700186297e-06,
+          "detected": true
+        },
+        {
+          "company": "orthofix",
+          "ratio": 0.8571428571428571,
+          "p": 1.0,
+          "detected": false
+        },
+        {
+          "company": "pentax_medical",
+          "ratio": 0.4444444444444444,
+          "p": 0.266845703125,
+          "detected": false
+        },
+        {
+          "company": "penumbra",
+          "ratio": 0.7272727272727273,
+          "p": 0.6476058959960938,
+          "detected": false
+        },
+        {
+          "company": "philips",
+          "ratio": 2.0277777777777777,
+          "p": 0.0005050343915302426,
+          "detected": true
+        },
+        {
+          "company": "procept_biorobotics",
+          "ratio": 1.0,
+          "p": 1.0,
+          "detected": false
+        },
+        {
+          "company": "resmed",
+          "ratio": 1.5999999999999999,
+          "p": 0.5810546875,
+          "detected": false
+        },
+        {
+          "company": "siemens_healthineers",
+          "ratio": 0.8761904761904762,
+          "p": 0.3926260446804673,
+          "detected": false
+        },
+        {
+          "company": "smith_nephew",
+          "ratio": 0.6875,
+          "p": 0.22032849417661104,
+          "detected": false
+        },
+        {
+          "company": "steris",
+          "ratio": 0.5,
+          "p": 0.019834326728068286,
+          "detected": true
+        },
+        {
+          "company": "stryker",
+          "ratio": 1.0133333333333332,
+          "p": 1.0,
+          "detected": false
+        },
+        {
+          "company": "tandem_diabetes",
+          "ratio": 1.0,
+          "p": 1.0,
+          "detected": false
+        },
+        {
+          "company": "teleflex",
+          "ratio": 2.0,
+          "p": 0.237884521484375,
+          "detected": false
+        },
+        {
+          "company": "terumo",
+          "ratio": 1.5714285714285712,
+          "p": 0.480682373046875,
+          "detected": false
+        },
+        {
+          "company": "wl_gore",
+          "ratio": 0.42857142857142855,
+          "p": 0.34375,
+          "detected": false
+        },
+        {
+          "company": "zimmer_biomet",
+          "ratio": 1.3333333333333333,
+          "p": 0.31350305329645284,
+          "detected": false
+        }
+      ]
+    },
+    "fig3_rolling_origin": {
+      "svg": "papers\\figures\\fig3_rolling_origin.svg",
+      "points": 12,
+      "data": [
+        {
+          "predictor": "calibrated_increase_vs_recent",
+          "lift": 0.0,
+          "ci": [
+            0.0,
+            0.0
+          ],
+          "flags": 5
+        },
+        {
+          "predictor": "persistence_increase_vs_recent",
+          "lift": 0.45626204238921003,
+          "ci": [
+            0.3117386489479512,
+            0.6050592411138329
+          ],
+          "flags": 173
+        },
+        {
+          "predictor": "naive_increase_vs_recent",
+          "lift": 0.48570910315876764,
+          "ci": [
+            0.3243677238057005,
+            0.6572903685241231
+          ],
+          "flags": 149
+        },
+        {
+          "predictor": "naive_decrease_vs_recent",
+          "lift": 0.5027160620961305,
+          "ci": [
+            0.40285714285714286,
+            0.6095415661329239
+          ],
+          "flags": 434
+        },
+        {
+          "predictor": "persistence_decrease_vs_recent",
+          "lift": 0.5310557760936686,
+          "ci": [
+            0.43789583197867216,
+            0.6309333333333333
+          ],
+          "flags": 459
+        },
+        {
+          "predictor": "calibrated_increase_vs_baseline",
+          "lift": 0.5983193277310925,
+          "ci": [
+            0.0,
+            2.077834179357022
+          ],
+          "flags": 5
+        },
+        {
+          "predictor": "calibrated_decrease_vs_recent",
+          "lift": 0.9893145161290322,
+          "ci": [
+            0.0,
+            1.5814538592865488
+          ],
+          "flags": 16
+        },
+        {
+          "predictor": "naive_decrease_vs_baseline",
+          "lift": 1.062367317351007,
+          "ci": [
+            0.9208504801097395,
+            1.2302792084575767
+          ],
+          "flags": 434
+        },
+        {
+          "predictor": "persistence_decrease_vs_baseline",
+          "lift": 1.1028377595764043,
+          "ci": [
+            0.9593890435885418,
+            1.2835858585858586
+          ],
+          "flags": 459
+        },
+        {
+          "predictor": "persistence_increase_vs_baseline",
+          "lift": 1.1996391459788165,
+          "ci": [
+            0.9432773109243698,
+            1.490732921463176
+          ],
+          "flags": 173
+        },
+        {
+          "predictor": "naive_increase_vs_baseline",
+          "lift": 1.221550669286959,
+          "ci": [
+            0.9531279178338001,
+            1.5315315315315314
+          ],
+          "flags": 149
+        },
+        {
+          "predictor": "calibrated_decrease_vs_baseline",
+          "lift": 1.3510462555066078,
+          "ci": [
+            0.9007444168734491,
+            1.5744234800838572
+          ],
+          "flags": 16
+        }
+      ]
+    },
+    "fig4_verdict_stability": {
+      "svg": "papers\\figures\\fig4_verdict_stability.svg",
+      "points": 53,
+      "data": [
+        {
+          "company": "abbott",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "alcon",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "ambu",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "atricure",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "baxter",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "bbraun",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "bd",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "biotronik",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "boston_scientific",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "canon_medical",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "cook_medical",
+          "sequence": [
+            "decreasing",
+            "decreasing",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "cooper_companies",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "dentsply_sirona",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "dexcom",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "draeger",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "edwards_lifesciences",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "envista",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "fresenius_medical_care",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "fujifilm",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "ge_healthcare",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "globus_medical",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "hologic",
+          "sequence": [
+            "no_detectable_change",
+            "decreasing",
+            "increasing",
+            "no_detectable_change"
+          ],
+          "reversed": true
+        },
+        {
+          "company": "icu_medical",
+          "sequence": [
+            "decreasing",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "inspire_medical",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "insulet",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "integra_lifesciences",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "intuitive_surgical",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "invacare",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "estimated"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "irhythm",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "johnson_johnson_medtech",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "karl_storz",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "masimo",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "medline",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "decreasing"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "medtronic",
+          "sequence": [
+            "no_detectable_change",
+            "decreasing",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "merit_medical",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "mindray",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "nevro",
+          "sequence": [
+            "estimated",
+            "no_detectable_change",
+            "no_detectable_change",
+            "estimated"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "olympus",
+          "sequence": [
+            "no_detectable_change",
+            "decreasing",
+            "no_detectable_change",
+            "increasing"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "orthofix",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "pentax_medical",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "penumbra",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "philips",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "increasing"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "procept_biorobotics",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "resmed",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "siemens_healthineers",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "smith_nephew",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "steris",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "decreasing"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "stryker",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "tandem_diabetes",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "teleflex",
+          "sequence": [
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "terumo",
+          "sequence": [
+            "decreasing",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "wl_gore",
+          "sequence": [
+            "decreasing",
+            "no_detectable_change",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": false
+        },
+        {
+          "company": "zimmer_biomet",
+          "sequence": [
+            "increasing",
+            "decreasing",
+            "no_detectable_change",
+            "no_detectable_change"
+          ],
+          "reversed": true
+        }
+      ]
+    },
+    "fig5_retraction_rules": {
+      "svg": "papers\\figures\\fig5_retraction_rules.svg",
+      "points": 10,
+      "data": [
+        {
+          "event": "entity-appearance entry signal",
+          "status": "retracted",
+          "decision": "D-025",
+          "rules": [
+            1,
+            6,
+            7
+          ]
+        },
+        {
+          "event": "lane co-movement",
+          "status": "retracted",
+          "decision": "D-021",
+          "rules": [
+            3,
+            8
+          ]
+        },
+        {
+          "event": "cross-lane corroboration",
+          "status": "retracted",
+          "decision": "D-023",
+          "rules": [
+            3,
+            7
+          ]
+        },
+        {
+          "event": "IVD entry wave",
+          "status": "retracted",
+          "decision": "D-027",
+          "rules": [
+            1,
+            4,
+            7
+          ]
+        },
+        {
+          "event": "aesthetics split sample",
+          "status": "retracted",
+          "decision": "D-027",
+          "rules": [
+            4
+          ]
+        },
+        {
+          "event": "hiring coverage conclusion",
+          "status": "retracted",
+          "decision": "D-029",
+          "rules": [
+            5,
+            7
+          ]
+        },
+        {
+          "event": "density scaling",
+          "status": "confirmed after failure",
+          "decision": "D-059",
+          "rules": [
+            2,
+            3,
+            9
+          ]
+        },
+        {
+          "event": "promotion rule",
+          "status": "confirmed",
+          "decision": "D-043",
+          "rules": [
+            1,
+            8
+          ]
+        },
+        {
+          "event": "pipeline filter",
+          "status": "unestablished",
+          "decision": "D-065",
+          "rules": [
+            2,
+            8
+          ]
+        },
+        {
+          "event": "backfilled forecasts",
+          "status": "excluded",
+          "decision": "D-066",
+          "rules": [
+            9
+          ]
+        }
+      ],
+      "filled_cells": 21,
+      "rules": 9
+    }
+  }
+}

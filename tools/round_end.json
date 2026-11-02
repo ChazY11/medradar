@@ -1,0 +1,91 @@
+{
+  "schema": "round_end_v1",
+  "checked_at_utc": "2026-11-02T05:51:42+00:00",
+  "branch": "research/change-detection-v1",
+  "head": "c39e3f88952daeda77cd9b8425702cc308abadd2",
+  "remote_synced": true,
+  "uncommitted_paths": [
+    "M research/AUDIT.json",
+    " M research/AUDIT.md",
+    " M research/BACKLOG.yaml",
+    " M research/DECISIONS.md",
+    " M research/RESULTS/README.md",
+    " M research/STATE.json",
+    " M tools/audit.log",
+    " M tools/audit_objectives.py",
+    " M tools/round_end_console.log",
+    "?? research/COMPLETION_REPORT.md",
+    "?? research/FINAL_AUDIT.json",
+    "?? research/RESULTS/cycle42_completion_2026-11-03.md",
+    "?? tools/final_audit.log",
+    "?? tools/final_audit.py",
+    "?? tools/update_state_final.py"
+  ],
+  "results": [
+    {
+      "step": "test suite",
+      "status": "PASS",
+      "detail": "OK (skipped=3)",
+      "exit": 0
+    },
+    {
+      "step": "paper claim map",
+      "status": "PASS",
+      "detail": "claims checked: 88; failures: 0",
+      "exit": 0
+    },
+    {
+      "step": "methods claim map",
+      "status": "PASS",
+      "detail": "claims checked: 25; failures: 0",
+      "exit": 0
+    },
+    {
+      "step": "paper figures",
+      "status": "PASS",
+      "detail": "figures checked: 5; failures: 0",
+      "exit": 0
+    },
+    {
+      "step": "methods figures",
+      "status": "PASS",
+      "detail": "figures checked: 5; failures: 0",
+      "exit": 0
+    },
+    {
+      "step": "figure layout",
+      "status": "PASS",
+      "detail": "layout checks: 5 figures; problems: 0",
+      "exit": 0
+    },
+    {
+      "step": "profile self-check",
+      "status": "PASS",
+      "detail": "checked 5 profiles; failures=0",
+      "exit": 0
+    },
+    {
+      "step": "snapshot chain",
+      "status": "PASS",
+      "detail": "leakage problems: 0",
+      "exit": 0
+    },
+    {
+      "step": "objective audit",
+      "status": "PASS",
+      "detail": "audit: 11 PASS, 0 FAIL, 1 N/A of 12",
+      "exit": 0
+    },
+    {
+      "step": "repository state",
+      "status": "PASS",
+      "detail": "HEAD c39e3f88952d, remote synced, 15 uncommitted path(s)"
+    }
+  ],
+  "summary": {
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "not_applicable": 0
+  }
+}

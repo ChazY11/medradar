@@ -1,0 +1,21 @@
+timestamp=2026-11-01T03:43:07Z
+command=python3 -m pytest tests/test_intelligence.py -q
+....F..                                                                  [100%]
+=================================== FAILURES ===================================
+_ TimingAndModelTests.test_dataset_excludes_unavailable_history_and_uses_future_label _
+
+self = <tests.test_intelligence.TimingAndModelTests testMethod=test_dataset_excludes_unavailable_history_and_uses_future_label>
+
+    def test_dataset_excludes_unavailable_history_and_uses_future_label(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            with self._store(Path(tmp) / "x.sqlite") as store:
+                data = build_examples(store, cutoffs=["2023-01-01"], horizon_months=12)
+                row = data["examples"][0]
+>               self.assertEqual(row["features"]["rd_count_12m"], 1.0)  # not the late-publication row
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               AssertionError: 2.0 != 1.0
+
+tests/test_intelligence.py:89: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_intelligence.py::TimingAndModelTests::test_dataset_excludes_unavailable_history_and_uses_future_label
+exit_code=1

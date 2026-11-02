@@ -1,0 +1,67 @@
+{
+  "bootstrap": {
+    "balanced_ci": [
+      0.5144993066859589,
+      0.6054410875057827
+    ],
+    "precision_ci": [
+      0.8508064516129032,
+      0.9252336448598131
+    ],
+    "reps": 2000,
+    "tracks": 38
+  },
+  "confusion": {
+    "level": {
+      "level": 63,
+      "ramp": 51,
+      "spike": 0
+    },
+    "ramp": {
+      "level": 50,
+      "ramp": 36,
+      "spike": 5
+    },
+    "spike": {
+      "level": 17,
+      "ramp": 8,
+      "spike": 67
+    }
+  },
+  "counts": {
+    "alerts": 297,
+    "eligible": 38,
+    "records": 342,
+    "scored": 297,
+    "tracks": 38
+  },
+  "decision": {
+    "balanced_ok": true,
+    "interval_width": 0.07442719324690983,
+    "precision_ok": true,
+    "underpowered": false,
+    "verdict": "CONSISTENT at market-aggregate level"
+  },
+  "design": {
+    "bootstrap": "tracks resampled (units are not nested)",
+    "classifier_window": "two months after the alert, alert month excluded",
+    "decision": "research/DECISIONS.md D-056 (pre-registered)",
+    "declared_balanced_accuracy": 0.5,
+    "declared_precision": 0.85,
+    "origins_per_track": 3,
+    "seed": 5150,
+    "underpowered_interval": 0.3,
+    "unit": "technology track (monthly counts summed across companies)"
+  },
+  "metrics": {
+    "balanced_accuracy": 0.5588322813723271,
+    "recalls": {
+      "level": 0.5526315789473685,
+      "ramp": 0.3956043956043956,
+      "spike": 0.7282608695652174
+    },
+    "sustained_base_rate": 0.6902356902356902,
+    "sustained_precision": 0.8888888888888888,
+    "sustained_recall": 0.975609756097561
+  }
+}

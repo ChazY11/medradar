@@ -1,0 +1,216 @@
+{
+  "always_level_baseline": {
+    "confusion": {
+      "level": {
+        "level": 57,
+        "ramp": 0,
+        "spike": 0
+      },
+      "ramp": {
+        "level": 53,
+        "ramp": 0,
+        "spike": 0
+      },
+      "spike": {
+        "level": 41,
+        "ramp": 0,
+        "spike": 0
+      }
+    },
+    "metrics": {
+      "balanced_accuracy": 0.3333333333333333,
+      "recalls": {
+        "level": 1.0,
+        "ramp": 0.0,
+        "spike": 0.0
+      },
+      "sustained_base_rate": 0.7284768211920529,
+      "sustained_precision": 0.7284768211920529,
+      "sustained_recall": 1.0
+    }
+  },
+  "bootstrap": {
+    "balanced_accuracy_ci": [
+      0.36109960892569587,
+      0.43800730445220265
+    ],
+    "companies": 31,
+    "reps": 2000,
+    "sustained_precision_ci": [
+      0.7265625,
+      0.8108108108108109
+    ]
+  },
+  "confusion": {
+    "level": {
+      "level": 49,
+      "ramp": 8,
+      "spike": 0
+    },
+    "ramp": {
+      "level": 45,
+      "ramp": 8,
+      "spike": 0
+    },
+    "spike": {
+      "level": 34,
+      "ramp": 0,
+      "spike": 7
+    }
+  },
+  "counts": {
+    "alerts": 151,
+    "alerts_by_truth": {
+      "level": 57,
+      "ramp": 53,
+      "spike": 41
+    },
+    "cells": 329,
+    "eligible": 65,
+    "injections": 171
+  },
+  "design": {
+    "baseline_months": 18,
+    "bootstraps": 2000,
+    "chance_balanced_accuracy": 0.3333333333333333,
+    "confirmation_months": 2,
+    "decision": "research/DECISIONS.md D-040 (pre-registered)",
+    "effect_multiplier": 3.0,
+    "ratio_alert": 2.0,
+    "recent_months": 3,
+    "seed": 7,
+    "shapes": [
+      "spike",
+      "level",
+      "ramp"
+    ],
+    "spike_fallback": 1.5
+  },
+  "discovery_origins": {
+    "abbott|medical_ai": 78,
+    "alcon|ophthalmology": 88,
+    "baxter|vascular_access": 94,
+    "bbraun|vascular_access": 87,
+    "bbraun|wound_care": 33,
+    "bd|vascular_access": 74,
+    "boston_scientific|coronary": 31,
+    "boston_scientific|endoscopy": 41,
+    "canon_medical|imaging_mr_ct": 98,
+    "cook_medical|coronary": 52,
+    "cook_medical|dental": 97,
+    "cook_medical|endoscopy": 50,
+    "cook_medical|urology": 55,
+    "cook_medical|vascular_access": 64,
+    "dentsply_sirona|dental": 97,
+    "envista|dental": 32,
+    "fresenius_medical_care|dialysis": 92,
+    "fujifilm|endoscopy": 47,
+    "fujifilm|imaging_mr_ct": 37,
+    "ge_healthcare|imaging_mr_ct": 65,
+    "ge_healthcare|imaging_us": 28,
+    "globus_medical|spine": 74,
+    "globus_medical|trauma": 95,
+    "hologic|ivd_molecular": 29,
+    "intuitive_surgical|surgical_robotics": 98,
+    "invacare|rehab_exo": 98,
+    "johnson_johnson_medtech|general_surgery": 96,
+    "johnson_johnson_medtech|medical_ai": 70,
+    "johnson_johnson_medtech|ortho_joint": 83,
+    "johnson_johnson_medtech|surgical_energy": 95,
+    "karl_storz|endoscopy": 98,
+    "medtronic|cardiac_rhythm": 93,
+    "medtronic|general_surgery": 97,
+    "medtronic|ortho_joint": 94,
+    "medtronic|spine": 31,
+    "medtronic|structural_heart": 42,
+    "medtronic|surgical_energy": 92,
+    "medtronic|vascular_access": 51,
+    "merit_medical|coronary": 63,
+    "mindray|imaging_us": 96,
+    "olympus|endoscopy": 77,
+    "olympus|surgical_energy": 62,
+    "orthofix|spine": 39,
+    "orthofix|trauma": 30,
+    "penumbra|neurovascular": 31,
+    "penumbra|peripheral_vascular": 78,
+    "philips|imaging_mr_ct": 35,
+    "philips|imaging_us": 70,
+    "philips|patient_monitoring": 48,
+    "resmed|respiratory": 79,
+    "siemens_healthineers|imaging_mr_ct": 98,
+    "siemens_healthineers|imaging_us": 31,
+    "siemens_healthineers|ivd_immuno": 36,
+    "smith_nephew|ortho_joint": 35,
+    "smith_nephew|trauma": 36,
+    "smith_nephew|wound_care": 32,
+    "steris|infection_control": 71,
+    "stryker|ortho_joint": 61,
+    "stryker|spine": 30,
+    "stryker|surgical_energy": 77,
+    "stryker|trauma": 52,
+    "terumo|vascular_access": 82,
+    "zimmer_biomet|ortho_joint": 43,
+    "zimmer_biomet|spine": 39,
+    "zimmer_biomet|trauma": 54
+  },
+  "metrics": {
+    "balanced_accuracy": 0.39377474211683533,
+    "recalls": {
+      "level": 0.8596491228070176,
+      "ramp": 0.1509433962264151,
+      "spike": 0.17073170731707318
+    },
+    "sustained_base_rate": 0.7284768211920529,
+    "sustained_precision": 0.7638888888888888,
+    "sustained_recall": 1.0
+  },
+  "posthoc_variant": {
+    "bootstrap": {
+      "balanced_accuracy_ci": [
+        0.5523432857991682,
+        0.659109477124183
+      ],
+      "companies": 31,
+      "reps": 2000,
+      "sustained_precision_ci": [
+        0.9032258064516129,
+        0.9782608695652174
+      ]
+    },
+    "confusion": {
+      "level": {
+        "level": 47,
+        "ramp": 10,
+        "spike": 0
+      },
+      "ramp": {
+        "level": 43,
+        "ramp": 9,
+        "spike": 1
+      },
+      "spike": {
+        "level": 2,
+        "ramp": 5,
+        "spike": 34
+      }
+    },
+    "description": "confirmation window excludes the alert month, so a spike's own pulse cannot inflate the post-alert rate",
+    "metrics": {
+      "balanced_accuracy": 0.6078803389821386,
+      "recalls": {
+        "level": 0.8245614035087719,
+        "ramp": 0.16981132075471697,
+        "spike": 0.8292682926829268
+      },
+      "sustained_base_rate": 0.7284768211920529,
+      "sustained_precision": 0.9396551724137931,
+      "sustained_recall": 0.990909090909091
+    }
+  },
+  "prediction_distribution": {
+    "level": 128,
+    "no_alert": 0,
+    "ramp": 16,
+    "spike": 7
+  }
+}

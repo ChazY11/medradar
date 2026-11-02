@@ -1,0 +1,1277 @@
+{
+ "experiment": "reverse_rd_v2_feature_group_ablation",
+ "generated_at": "2026-11-02T00:53:50Z",
+ "protocol": {
+  "evaluation": "purged/embargoed expanding-window rolling origin",
+  "holdouts": 3,
+  "horizon_months": 12,
+  "min_train_origins": 3,
+  "model": "dependency-free logistic regression (fixed hyperparameters), identical rows across specs",
+  "feature_selection": "one specification per run; every spec trained on exactly the same examples",
+  "targets": {
+   "continuation": "reverse_rd_v1: any material public FDA 510(k)/original-or-panel-track PMA activity for an already-active company-track pair in the next 12 months",
+   "entry": "first_entry_v1: first material public FDA activity in a track the company had not touched for >= 36 months before the cutoff"
+  },
+  "excluded_sources": {
+   "procurement": "USAspending snapshot is not point-in-time usable (pit_usable=0); excluded from historical gain claims",
+   "patents": "USPTO Open Data Portal requires an API key; no patent rows were collected or evaluated",
+   "hiring": "no stable legal source evaluated in this phase"
+  }
+ },
+ "targets": {
+  "continuation": {
+   "dataset_version": "reverse_rd_v1",
+   "reference_spec": "A",
+   "specs": {
+    "A": {
+     "spec": "A",
+     "spec_name": "A: R&D history only",
+     "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m"
+     ],
+     "feature_counts": {
+      "total_features": 10,
+      "market_features": 0,
+      "publication_features": 0
+     },
+     "holdout": "2025-10-01",
+     "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+     ],
+     "holdout_metrics": {
+      "pr_auc": 0.793476494625078,
+      "brier": 0.17213399933774418,
+      "ece": 0.08112028344071491,
+      "false_positive_rate": 0.2752808988764045,
+      "precision_at_k": 0.9354838709677419
+     },
+     "holdout_rows": 307,
+     "holdout_positives": 129,
+     "holdout_prevalence": 0.4201954397394137,
+     "per_window_pr_auc": [
+      0.7864552120251936,
+      0.7412225797050219,
+      0.793476494625078
+     ],
+     "window_pr_auc_mean": 0.7737180954517645,
+     "window_pr_auc_std": 0.02315589932136742,
+     "window_brier_mean": 0.17739168155215876,
+     "window_ece_mean": 0.09266822853802421,
+     "baseline_pr_auc": {
+      "constant_training_prevalence": 0.4201954397394137,
+      "company_base_rate": 0.5706893058230107,
+      "track_base_rate": 0.5068324186145513,
+      "pair_base_rate": 0.7912589226819778
+     },
+     "model_vs_pair_baseline": {
+      "model_pr_auc": 0.793476494625078,
+      "pair_baseline_pr_auc": 0.7912589226819778,
+      "delta": 0.0022175719431001273,
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "mean_delta": 0.0029450480963300095,
+      "ci_low": -0.031599292588537664,
+      "ci_high": 0.036773758559445424,
+      "p_delta_le_zero": 0.431,
+      "confidence_level": 0.95,
+      "seed": 7,
+      "persistence_share_of_lift_over_constant_prevalence": 0.9940592432589986
+     },
+     "runtime_seconds": 49.8,
+     "market_coverage": {
+      "examples": 6701,
+      "with_market_data": 5206,
+      "missing": 1495,
+      "no_ticker": 945,
+      "non_null_by_feature": {
+       "mkt_ret_12m": 5206,
+       "mkt_vol_12m": 5206,
+       "mkt_max_drawdown_12m": 5206,
+       "mkt_rel_spy_12m": 5206,
+       "mkt_rel_xbi_12m": 5206,
+       "mkt_volume_z_3m": 5206,
+       "mkt_regime_spy_above_200d": 5206,
+       "mkt_days_since_12m_high": 5206
+      }
+     }
+    },
+    "C": {
+     "spec": "C",
+     "spec_name": "C: A + market (equity/benchmark) features",
+     "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m",
+      "mkt_ret_12m",
+      "mkt_vol_12m",
+      "mkt_max_drawdown_12m",
+      "mkt_rel_spy_12m",
+      "mkt_rel_xbi_12m",
+      "mkt_volume_z_3m",
+      "mkt_regime_spy_above_200d",
+      "mkt_days_since_12m_high"
+     ],
+     "feature_counts": {
+      "total_features": 18,
+      "market_features": 8,
+      "publication_features": 0
+     },
+     "holdout": "2025-10-01",
+     "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+     ],
+     "holdout_metrics": {
+      "pr_auc": 0.7920201542197304,
+      "brier": 0.17195468588007107,
+      "ece": 0.08043260870747038,
+      "false_positive_rate": 0.2696629213483146,
+      "precision_at_k": 0.9354838709677419
+     },
+     "holdout_rows": 307,
+     "holdout_positives": 129,
+     "holdout_prevalence": 0.4201954397394137,
+     "per_window_pr_auc": [
+      0.7832343253151476,
+      0.7384865650892137,
+      0.7920201542197304
+     ],
+     "window_pr_auc_mean": 0.7712470148746973,
+     "window_pr_auc_std": 0.023441174600768052,
+     "window_brier_mean": 0.1801950548148227,
+     "window_ece_mean": 0.09700560148169629,
+     "baseline_pr_auc": {
+      "constant_training_prevalence": 0.4201954397394137,
+      "company_base_rate": 0.5706893058230107,
+      "track_base_rate": 0.5068324186145513,
+      "pair_base_rate": 0.7912589226819778
+     },
+     "model_vs_pair_baseline": {
+      "model_pr_auc": 0.7920201542197304,
+      "pair_baseline_pr_auc": 0.7912589226819778,
+      "delta": 0.000761231537752538,
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "mean_delta": 0.0014415978075905218,
+      "ci_low": -0.0337643069594501,
+      "ci_high": 0.03604256930842242,
+      "p_delta_le_zero": 0.467,
+      "confidence_level": 0.95,
+      "seed": 7,
+      "persistence_share_of_lift_over_constant_prevalence": 0.9979527139856303
+     },
+     "runtime_seconds": 91.9,
+     "market_coverage": {
+      "examples": 6701,
+      "with_market_data": 5206,
+      "missing": 1495,
+      "no_ticker": 945,
+      "non_null_by_feature": {
+       "mkt_ret_12m": 5206,
+       "mkt_vol_12m": 5206,
+       "mkt_max_drawdown_12m": 5206,
+       "mkt_rel_spy_12m": 5206,
+       "mkt_rel_xbi_12m": 5206,
+       "mkt_volume_z_3m": 5206,
+       "mkt_regime_spy_above_200d": 5206,
+       "mkt_days_since_12m_high": 5206
+      }
+     }
+    },
+    "D": {
+     "spec": "D",
+     "spec_name": "D: A + publication (OpenAlex) features",
+     "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m",
+      "pub_count_prev_year",
+      "pub_count_3y",
+      "pub_growth_prev_year",
+      "pub_intensity_vs_company",
+      "pub_missing"
+     ],
+     "feature_counts": {
+      "total_features": 15,
+      "market_features": 0,
+      "publication_features": 5
+     },
+     "holdout": "2025-10-01",
+     "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+     ],
+     "holdout_metrics": {
+      "pr_auc": 0.7933485818937521,
+      "brier": 0.17204675441633754,
+      "ece": 0.08667669020856054,
+      "false_positive_rate": 0.28651685393258425,
+      "precision_at_k": 0.9354838709677419
+     },
+     "holdout_rows": 307,
+     "holdout_positives": 129,
+     "holdout_prevalence": 0.4201954397394137,
+     "per_window_pr_auc": [
+      0.7834861659445633,
+      0.7379457026279675,
+      0.7933485818937521
+     ],
+     "window_pr_auc_mean": 0.7715934834887609,
+     "window_pr_auc_std": 0.02413084719787361,
+     "window_brier_mean": 0.17774981575674367,
+     "window_ece_mean": 0.09494305328468106,
+     "baseline_pr_auc": {
+      "constant_training_prevalence": 0.4201954397394137,
+      "company_base_rate": 0.5706893058230107,
+      "track_base_rate": 0.5068324186145513,
+      "pair_base_rate": 0.7912589226819778
+     },
+     "model_vs_pair_baseline": {
+      "model_pr_auc": 0.7933485818937521,
+      "pair_baseline_pr_auc": 0.7912589226819778,
+      "delta": 0.0020896592117742863,
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "mean_delta": 0.0027984935305725815,
+      "ci_low": -0.03170656374982128,
+      "ci_high": 0.03635381609181343,
+      "p_delta_le_zero": 0.432,
+      "confidence_level": 0.95,
+      "seed": 7,
+      "persistence_share_of_lift_over_constant_prevalence": 0.9943999956701155
+     },
+     "runtime_seconds": 69.1,
+     "market_coverage": {
+      "examples": 6701,
+      "with_market_data": 5206,
+      "missing": 1495,
+      "no_ticker": 945,
+      "non_null_by_feature": {
+       "mkt_ret_12m": 5206,
+       "mkt_vol_12m": 5206,
+       "mkt_max_drawdown_12m": 5206,
+       "mkt_rel_spy_12m": 5206,
+       "mkt_rel_xbi_12m": 5206,
+       "mkt_volume_z_3m": 5206,
+       "mkt_regime_spy_above_200d": 5206,
+       "mkt_days_since_12m_high": 5206
+      }
+     }
+    },
+    "E": {
+     "spec": "E",
+     "spec_name": "E: A + financial + market + publication",
+     "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m",
+      "fin_revenue_growth",
+      "fin_rd_growth",
+      "fin_rd_intensity",
+      "fin_rd_intensity_delta",
+      "fin_operating_margin",
+      "fin_cash_to_rd",
+      "fin_ocf_to_rd",
+      "fin_capex_intensity",
+      "fin_acquisition_to_revenue",
+      "fin_inventory_growth",
+      "fin_facts_available",
+      "mkt_ret_12m",
+      "mkt_vol_12m",
+      "mkt_max_drawdown_12m",
+      "mkt_rel_spy_12m",
+      "mkt_rel_xbi_12m",
+      "mkt_volume_z_3m",
+      "mkt_regime_spy_above_200d",
+      "mkt_days_since_12m_high",
+      "pub_count_prev_year",
+      "pub_count_3y",
+      "pub_growth_prev_year",
+      "pub_intensity_vs_company",
+      "pub_missing"
+     ],
+     "feature_counts": {
+      "total_features": 34,
+      "market_features": 8,
+      "publication_features": 5
+     },
+     "holdout": "2025-10-01",
+     "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+     ],
+     "holdout_metrics": {
+      "pr_auc": 0.7866961085637085,
+      "brier": 0.17234137798220292,
+      "ece": 0.06277679122379393,
+      "false_positive_rate": 0.24719101123595505,
+      "precision_at_k": 0.9354838709677419
+     },
+     "holdout_rows": 307,
+     "holdout_positives": 129,
+     "holdout_prevalence": 0.4201954397394137,
+     "per_window_pr_auc": [
+      0.7846733116002268,
+      0.733115775910918,
+      0.7866961085637085
+     ],
+     "window_pr_auc_mean": 0.7681617320249511,
+     "window_pr_auc_std": 0.024794988833081007,
+     "window_brier_mean": 0.1802422798865347,
+     "window_ece_mean": 0.087672535787936,
+     "baseline_pr_auc": {
+      "constant_training_prevalence": 0.4201954397394137,
+      "company_base_rate": 0.5706893058230107,
+      "track_base_rate": 0.5068324186145513,
+      "pair_base_rate": 0.7912589226819778
+     },
+     "model_vs_pair_baseline": {
+      "model_pr_auc": 0.7866961085637085,
+      "pair_baseline_pr_auc": 0.7912589226819778,
+      "delta": -0.004562814118269309,
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "mean_delta": -0.003742707743617278,
+      "ci_low": -0.03986183897518358,
+      "ci_high": 0.030832666159155697,
+      "p_delta_le_zero": 0.5875,
+      "confidence_level": 0.95,
+      "seed": 7,
+      "persistence_share_of_lift_over_constant_prevalence": 1.0124496747384022
+     },
+     "runtime_seconds": 158.0,
+     "market_coverage": {
+      "examples": 6701,
+      "with_market_data": 5206,
+      "missing": 1495,
+      "no_ticker": 945,
+      "non_null_by_feature": {
+       "mkt_ret_12m": 5206,
+       "mkt_vol_12m": 5206,
+       "mkt_max_drawdown_12m": 5206,
+       "mkt_rel_spy_12m": 5206,
+       "mkt_rel_xbi_12m": 5206,
+       "mkt_volume_z_3m": 5206,
+       "mkt_regime_spy_above_200d": 5206,
+       "mkt_days_since_12m_high": 5206
+      }
+     }
+    },
+    "B": {
+     "spec": "B",
+     "spec_name": "B: R&D + consolidated SEC financials",
+     "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m",
+      "fin_revenue_growth",
+      "fin_rd_growth",
+      "fin_rd_intensity",
+      "fin_rd_intensity_delta",
+      "fin_operating_margin",
+      "fin_cash_to_rd",
+      "fin_ocf_to_rd",
+      "fin_capex_intensity",
+      "fin_acquisition_to_revenue",
+      "fin_inventory_growth",
+      "fin_facts_available"
+     ],
+     "feature_counts": {},
+     "holdout": "2025-10-01",
+     "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+     ],
+     "holdout_metrics": {
+      "pr_auc": 0.7921988470383661,
+      "brier": 0.1721035586735966,
+      "ece": 0.0737371499308207,
+      "false_positive_rate": 0.2640449438202247,
+      "precision_at_k": 0.9354838709677419
+     },
+     "holdout_rows": 307,
+     "holdout_positives": 129,
+     "holdout_prevalence": 0.4201954397394137,
+     "per_window_pr_auc": [
+      0.7867157540037596,
+      0.7391511571924124,
+      0.7921988470383661
+     ],
+     "window_pr_auc_mean": 0.7726885860781794,
+     "window_pr_auc_std": 0.023819955632584534,
+     "window_brier_mean": 0.1771841324495175,
+     "window_ece_mean": 0.08010517137489126,
+     "baseline_pr_auc": {
+      "constant_training_prevalence": 0.4201954397394137,
+      "company_base_rate": 0.5706893058230107,
+      "track_base_rate": 0.5068324186145513,
+      "pair_base_rate": 0.7912589226819778
+     },
+     "model_vs_pair_baseline": {
+      "model_pr_auc": 0.7921988470383661,
+      "pair_baseline_pr_auc": 0.7912589226819778,
+      "delta": 0.0009399243563882331,
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "mean_delta": 0.0016944864799580963,
+      "ci_low": -0.03264208621191311,
+      "ci_high": 0.035645377077036744,
+      "p_delta_le_zero": 0.465,
+      "confidence_level": 0.95,
+      "seed": 7,
+      "persistence_share_of_lift_over_constant_prevalence": 0.9974733447652728
+     },
+     "runtime_seconds": null,
+     "source": "frozen_v2_metrics"
+    }
+   },
+   "marginal_deltas": {
+    "B": {
+     "vs": "A",
+     "group": "financial",
+     "delta": {
+      "pr_auc": -0.0012776475867118942,
+      "brier": -3.0440664147562968e-05,
+      "ece": -0.00738313350989421,
+      "false_positive_rate": -0.011235955056179803,
+      "precision_at_k": 0.0,
+      "window_pr_auc_mean": -0.0010295093735851468
+     }
+    },
+    "C": {
+     "vs": "A",
+     "group": "market",
+     "delta": {
+      "pr_auc": -0.0014563404053475892,
+      "brier": -0.00017931345767310813,
+      "ece": -0.0006876747332445338,
+      "false_positive_rate": -0.005617977528089901,
+      "precision_at_k": 0.0,
+      "window_pr_auc_mean": -0.0024710805770672417
+     }
+    },
+    "D": {
+     "vs": "A",
+     "group": "publication",
+     "delta": {
+      "pr_auc": -0.00012791273132584102,
+      "brier": -8.724492140663176e-05,
+      "ece": 0.005556406767845634,
+      "false_positive_rate": 0.011235955056179747,
+      "precision_at_k": 0.0,
+      "window_pr_auc_mean": -0.0021246119630036198
+     }
+    },
+    "E": {
+     "vs": "A",
+     "group": "financial+market+publication (all available)",
+     "delta": {
+      "pr_auc": -0.006780386061369437,
+      "brier": 0.00020737864445874443,
+      "ece": -0.018343492216920984,
+      "false_positive_rate": -0.02808988764044945,
+      "precision_at_k": 0.0,
+      "window_pr_auc_mean": -0.0055563634268134265
+     }
+    }
+   },
+   "best_spec_by_holdout_pr_auc": "A",
+   "specs_evaluated": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "specs_missing": []
+  },
+  "entry": {
+   "dataset_version": "first_entry_v1",
+   "reference_spec": "D",
+   "specs": {
+    "C": {
+     "spec": "C",
+     "spec_name": "C: A + entry-specific features",
+     "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m",
+      "rd_pair_inactive_months",
+      "rd_company_active_tracks_12m",
+      "rd_company_active_tracks_delta",
+      "rd_track_active_companies_12m",
+      "rd_track_active_companies_delta",
+      "rd_company_track_novelty_share"
+     ],
+     "feature_counts": {
+      "total_features": 16,
+      "market_features": 0,
+      "publication_features": 0
+     },
+     "holdout": "2025-10-01",
+     "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+     ],
+     "holdout_metrics": {
+      "pr_auc": 0.10047578467453702,
+      "brier": 0.014314809225001036,
+      "ece": 0.0031835164304270603,
+      "false_positive_rate": 0.0,
+      "precision_at_k": 0.06976744186046512
+     },
+     "holdout_rows": 1716,
+     "holdout_positives": 26,
+     "holdout_prevalence": 0.015151515151515152,
+     "per_window_pr_auc": [
+      0.13708495061705483,
+      0.09502674847371553,
+      0.10047578467453702
+     ],
+     "window_pr_auc_mean": 0.11086249458843579,
+     "window_pr_auc_std": 0.018675043935853897,
+     "window_brier_mean": 0.01419124792942184,
+     "window_ece_mean": 0.003418244236305788,
+     "baseline_pr_auc": {
+      "constant_training_prevalence": 0.015151515151515152,
+      "company_base_rate": 0.04173558937284826,
+      "track_base_rate": 0.03231157119210804,
+      "pair_base_rate": 0.027826340326340328
+     },
+     "model_vs_pair_baseline": {
+      "model_pr_auc": 0.10047578467453702,
+      "pair_baseline_pr_auc": 0.027826340326340328,
+      "delta": 0.0726494443481967,
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "mean_delta": 0.0813130412941975,
+      "ci_low": 0.013423717849043445,
+      "ci_high": 0.1801981564343706,
+      "p_delta_le_zero": 0.009,
+      "confidence_level": 0.95,
+      "seed": 7,
+      "persistence_share_of_lift_over_constant_prevalence": 0.14854888586424175
+     },
+     "runtime_seconds": 350.8,
+     "market_coverage": {
+      "examples": 41003,
+      "with_market_data": 29176,
+      "missing": 11827,
+      "no_ticker": 5850,
+      "non_null_by_feature": {
+       "mkt_ret_12m": 29176,
+       "mkt_vol_12m": 29176,
+       "mkt_max_drawdown_12m": 29176,
+       "mkt_rel_spy_12m": 29176,
+       "mkt_rel_xbi_12m": 29176,
+       "mkt_volume_z_3m": 29176,
+       "mkt_regime_spy_above_200d": 29176,
+       "mkt_days_since_12m_high": 29176
+      }
+     }
+    },
+    "D": {
+     "spec": "D",
+     "spec_name": "D: C + financial (corrected entry baseline)",
+     "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m",
+      "rd_pair_inactive_months",
+      "rd_company_active_tracks_12m",
+      "rd_company_active_tracks_delta",
+      "rd_track_active_companies_12m",
+      "rd_track_active_companies_delta",
+      "rd_company_track_novelty_share",
+      "fin_revenue_growth",
+      "fin_rd_growth",
+      "fin_rd_intensity",
+      "fin_rd_intensity_delta",
+      "fin_operating_margin",
+      "fin_cash_to_rd",
+      "fin_ocf_to_rd",
+      "fin_capex_intensity",
+      "fin_acquisition_to_revenue",
+      "fin_inventory_growth",
+      "fin_facts_available"
+     ],
+     "feature_counts": {
+      "total_features": 27,
+      "market_features": 0,
+      "publication_features": 0
+     },
+     "holdout": "2025-10-01",
+     "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+     ],
+     "holdout_metrics": {
+      "pr_auc": 0.10220480143856071,
+      "brier": 0.01436083014005574,
+      "ece": 0.0032319694778947623,
+      "false_positive_rate": 0.0,
+      "precision_at_k": 0.06976744186046512
+     },
+     "holdout_rows": 1716,
+     "holdout_positives": 26,
+     "holdout_prevalence": 0.015151515151515152,
+     "per_window_pr_auc": [
+      0.14997579757093243,
+      0.10236012005900219,
+      0.10220480143856071
+     ],
+     "window_pr_auc_mean": 0.11818023968949844,
+     "window_pr_auc_std": 0.022482944005210975,
+     "window_brier_mean": 0.014163285719602554,
+     "window_ece_mean": 0.0032116410951841534,
+     "baseline_pr_auc": {
+      "constant_training_prevalence": 0.015151515151515152,
+      "company_base_rate": 0.04173558937284826,
+      "track_base_rate": 0.03231157119210804,
+      "pair_base_rate": 0.027826340326340328
+     },
+     "model_vs_pair_baseline": {
+      "model_pr_auc": 0.10220480143856071,
+      "pair_baseline_pr_auc": 0.027826340326340328,
+      "delta": 0.07437846111222038,
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "mean_delta": 0.08082946275155083,
+      "ci_low": 0.01771553986777745,
+      "ci_high": 0.1668094428696264,
+      "p_delta_le_zero": 0.0095,
+      "confidence_level": 0.95,
+      "seed": 7,
+      "persistence_share_of_lift_over_constant_prevalence": 0.14559846865552878
+     },
+     "runtime_seconds": 624.4,
+     "market_coverage": {
+      "examples": 41003,
+      "with_market_data": 29176,
+      "missing": 11827,
+      "no_ticker": 5850,
+      "non_null_by_feature": {
+       "mkt_ret_12m": 29176,
+       "mkt_vol_12m": 29176,
+       "mkt_max_drawdown_12m": 29176,
+       "mkt_rel_spy_12m": 29176,
+       "mkt_rel_xbi_12m": 29176,
+       "mkt_volume_z_3m": 29176,
+       "mkt_regime_spy_above_200d": 29176,
+       "mkt_days_since_12m_high": 29176
+      }
+     }
+    },
+    "E": {
+     "spec": "E",
+     "spec_name": "E: D + market features",
+     "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m",
+      "rd_pair_inactive_months",
+      "rd_company_active_tracks_12m",
+      "rd_company_active_tracks_delta",
+      "rd_track_active_companies_12m",
+      "rd_track_active_companies_delta",
+      "rd_company_track_novelty_share",
+      "fin_revenue_growth",
+      "fin_rd_growth",
+      "fin_rd_intensity",
+      "fin_rd_intensity_delta",
+      "fin_operating_margin",
+      "fin_cash_to_rd",
+      "fin_ocf_to_rd",
+      "fin_capex_intensity",
+      "fin_acquisition_to_revenue",
+      "fin_inventory_growth",
+      "fin_facts_available",
+      "mkt_ret_12m",
+      "mkt_vol_12m",
+      "mkt_max_drawdown_12m",
+      "mkt_rel_spy_12m",
+      "mkt_rel_xbi_12m",
+      "mkt_volume_z_3m",
+      "mkt_regime_spy_above_200d",
+      "mkt_days_since_12m_high"
+     ],
+     "feature_counts": {
+      "total_features": 35,
+      "market_features": 8,
+      "publication_features": 0
+     },
+     "holdout": "2025-10-01",
+     "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+     ],
+     "holdout_metrics": {
+      "pr_auc": 0.09686514938013059,
+      "brier": 0.014458503664979604,
+      "ece": 0.0033465689086281288,
+      "false_positive_rate": 0.000591715976331361,
+      "precision_at_k": 0.0755813953488372
+     },
+     "holdout_rows": 1716,
+     "holdout_positives": 26,
+     "holdout_prevalence": 0.015151515151515152,
+     "per_window_pr_auc": [
+      0.1564616015646904,
+      0.10495042287195827,
+      0.09686514938013059
+     ],
+     "window_pr_auc_mean": 0.11942572460559309,
+     "window_pr_auc_std": 0.026395517908115382,
+     "window_brier_mean": 0.014181185259026272,
+     "window_ece_mean": 0.0038341821520590257,
+     "baseline_pr_auc": {
+      "constant_training_prevalence": 0.015151515151515152,
+      "company_base_rate": 0.04173558937284826,
+      "track_base_rate": 0.03231157119210804,
+      "pair_base_rate": 0.027826340326340328
+     },
+     "model_vs_pair_baseline": {
+      "model_pr_auc": 0.09686514938013059,
+      "pair_baseline_pr_auc": 0.027826340326340328,
+      "delta": 0.06903880905379026,
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "mean_delta": 0.07513178952754708,
+      "ci_low": 0.01586221155134948,
+      "ci_high": 0.16006764863294895,
+      "p_delta_le_zero": 0.0095,
+      "confidence_level": 0.95,
+      "seed": 7,
+      "persistence_share_of_lift_over_constant_prevalence": 0.1551127335661514
+     },
+     "runtime_seconds": 847.8,
+     "market_coverage": {
+      "examples": 41003,
+      "with_market_data": 29176,
+      "missing": 11827,
+      "no_ticker": 5850,
+      "non_null_by_feature": {
+       "mkt_ret_12m": 29176,
+       "mkt_vol_12m": 29176,
+       "mkt_max_drawdown_12m": 29176,
+       "mkt_rel_spy_12m": 29176,
+       "mkt_rel_xbi_12m": 29176,
+       "mkt_volume_z_3m": 29176,
+       "mkt_regime_spy_above_200d": 29176,
+       "mkt_days_since_12m_high": 29176
+      }
+     }
+    },
+    "F": {
+     "spec": "F",
+     "spec_name": "F: D + publication features",
+     "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m",
+      "rd_pair_inactive_months",
+      "rd_company_active_tracks_12m",
+      "rd_company_active_tracks_delta",
+      "rd_track_active_companies_12m",
+      "rd_track_active_companies_delta",
+      "rd_company_track_novelty_share",
+      "fin_revenue_growth",
+      "fin_rd_growth",
+      "fin_rd_intensity",
+      "fin_rd_intensity_delta",
+      "fin_operating_margin",
+      "fin_cash_to_rd",
+      "fin_ocf_to_rd",
+      "fin_capex_intensity",
+      "fin_acquisition_to_revenue",
+      "fin_inventory_growth",
+      "fin_facts_available",
+      "pub_count_prev_year",
+      "pub_count_3y",
+      "pub_growth_prev_year",
+      "pub_intensity_vs_company",
+      "pub_missing"
+     ],
+     "feature_counts": {
+      "total_features": 32,
+      "market_features": 0,
+      "publication_features": 5
+     },
+     "holdout": "2025-10-01",
+     "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+     ],
+     "holdout_metrics": {
+      "pr_auc": 0.10508342153831597,
+      "brier": 0.01435059792308126,
+      "ece": 0.0025682647737198605,
+      "false_positive_rate": 0.0,
+      "precision_at_k": 0.0755813953488372
+     },
+     "holdout_rows": 1716,
+     "holdout_positives": 26,
+     "holdout_prevalence": 0.015151515151515152,
+     "per_window_pr_auc": [
+      0.15004948172863988,
+      0.10227225383019486,
+      0.10508342153831597
+     ],
+     "window_pr_auc_mean": 0.1191350523657169,
+     "window_pr_auc_std": 0.02188990822422,
+     "window_brier_mean": 0.014160357481256223,
+     "window_ece_mean": 0.003079510942911678,
+     "baseline_pr_auc": {
+      "constant_training_prevalence": 0.015151515151515152,
+      "company_base_rate": 0.04173558937284826,
+      "track_base_rate": 0.03231157119210804,
+      "pair_base_rate": 0.027826340326340328
+     },
+     "model_vs_pair_baseline": {
+      "model_pr_auc": 0.10508342153831597,
+      "pair_baseline_pr_auc": 0.027826340326340328,
+      "delta": 0.07725708121197564,
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "mean_delta": 0.08436850628665125,
+      "ci_low": 0.018833711416291844,
+      "ci_high": 0.17564872086639916,
+      "p_delta_le_zero": 0.008,
+      "confidence_level": 0.95,
+      "seed": 7,
+      "persistence_share_of_lift_over_constant_prevalence": 0.14093802393457816
+     },
+     "runtime_seconds": 714.3,
+     "market_coverage": {
+      "examples": 41003,
+      "with_market_data": 29176,
+      "missing": 11827,
+      "no_ticker": 5850,
+      "non_null_by_feature": {
+       "mkt_ret_12m": 29176,
+       "mkt_vol_12m": 29176,
+       "mkt_max_drawdown_12m": 29176,
+       "mkt_rel_spy_12m": 29176,
+       "mkt_rel_xbi_12m": 29176,
+       "mkt_volume_z_3m": 29176,
+       "mkt_regime_spy_above_200d": 29176,
+       "mkt_days_since_12m_high": 29176
+      }
+     }
+    },
+    "G": {
+     "spec": "G",
+     "spec_name": "G: D + market + publication (all available sources)",
+     "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m",
+      "rd_pair_inactive_months",
+      "rd_company_active_tracks_12m",
+      "rd_company_active_tracks_delta",
+      "rd_track_active_companies_12m",
+      "rd_track_active_companies_delta",
+      "rd_company_track_novelty_share",
+      "fin_revenue_growth",
+      "fin_rd_growth",
+      "fin_rd_intensity",
+      "fin_rd_intensity_delta",
+      "fin_operating_margin",
+      "fin_cash_to_rd",
+      "fin_ocf_to_rd",
+      "fin_capex_intensity",
+      "fin_acquisition_to_revenue",
+      "fin_inventory_growth",
+      "fin_facts_available",
+      "mkt_ret_12m",
+      "mkt_vol_12m",
+      "mkt_max_drawdown_12m",
+      "mkt_rel_spy_12m",
+      "mkt_rel_xbi_12m",
+      "mkt_volume_z_3m",
+      "mkt_regime_spy_above_200d",
+      "mkt_days_since_12m_high",
+      "pub_count_prev_year",
+      "pub_count_3y",
+      "pub_growth_prev_year",
+      "pub_intensity_vs_company",
+      "pub_missing"
+     ],
+     "feature_counts": {
+      "total_features": 40,
+      "market_features": 8,
+      "publication_features": 5
+     },
+     "holdout": "2025-10-01",
+     "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+     ],
+     "holdout_metrics": {
+      "pr_auc": 0.09786330745130628,
+      "brier": 0.014450496525981354,
+      "ece": 0.00325420617018153,
+      "false_positive_rate": 0.000591715976331361,
+      "precision_at_k": 0.0755813953488372
+     },
+     "holdout_rows": 1716,
+     "holdout_positives": 26,
+     "holdout_prevalence": 0.015151515151515152,
+     "per_window_pr_auc": [
+      0.1561995771968646,
+      0.10491122963872956,
+      0.09786330745130628
+     ],
+     "window_pr_auc_mean": 0.11965803809563347,
+     "window_pr_auc_std": 0.02599847895172709,
+     "window_brier_mean": 0.01417864520395143,
+     "window_ece_mean": 0.0038120742064570614,
+     "baseline_pr_auc": {
+      "constant_training_prevalence": 0.015151515151515152,
+      "company_base_rate": 0.04173558937284826,
+      "track_base_rate": 0.03231157119210804,
+      "pair_base_rate": 0.027826340326340328
+     },
+     "model_vs_pair_baseline": {
+      "model_pr_auc": 0.09786330745130628,
+      "pair_baseline_pr_auc": 0.027826340326340328,
+      "delta": 0.07003696712496596,
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "mean_delta": 0.07631739534308656,
+      "ci_low": 0.016521064507507503,
+      "ci_high": 0.16280733099360345,
+      "p_delta_le_zero": 0.0095,
+      "confidence_level": 0.95,
+      "seed": 7,
+      "persistence_share_of_lift_over_constant_prevalence": 0.1532408477969493
+     },
+     "runtime_seconds": 976.6,
+     "market_coverage": {
+      "examples": 41003,
+      "with_market_data": 29176,
+      "missing": 11827,
+      "no_ticker": 5850,
+      "non_null_by_feature": {
+       "mkt_ret_12m": 29176,
+       "mkt_vol_12m": 29176,
+       "mkt_max_drawdown_12m": 29176,
+       "mkt_rel_spy_12m": 29176,
+       "mkt_rel_xbi_12m": 29176,
+       "mkt_volume_z_3m": 29176,
+       "mkt_regime_spy_above_200d": 29176,
+       "mkt_days_since_12m_high": 29176
+      }
+     }
+    },
+    "A": {
+     "spec": "A",
+     "spec_name": "A: R&D history only",
+     "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m"
+     ],
+     "feature_counts": {},
+     "holdout": "2025-10-01",
+     "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+     ],
+     "holdout_metrics": {
+      "pr_auc": 0.11392697072426704,
+      "brier": 0.014298044456379066,
+      "ece": 0.004060177686823418,
+      "false_positive_rate": 0.0,
+      "precision_at_k": 0.06395348837209303
+     },
+     "holdout_rows": 1716,
+     "holdout_positives": 26,
+     "holdout_prevalence": 0.015151515151515152,
+     "per_window_pr_auc": [
+      0.11879252579894639,
+      0.08765730951471584,
+      0.11392697072426704
+     ],
+     "window_pr_auc_mean": 0.10679226867930976,
+     "window_pr_auc_std": 0.013675486663349912,
+     "window_brier_mean": 0.014393400676934115,
+     "window_ece_mean": 0.004204272309858911,
+     "baseline_pr_auc": {
+      "constant_training_prevalence": 0.015151515151515152,
+      "company_base_rate": 0.04173558937284826,
+      "track_base_rate": 0.03231157119210804,
+      "pair_base_rate": 0.027826340326340328
+     },
+     "model_vs_pair_baseline": {
+      "model_pr_auc": 0.11392697072426704,
+      "pair_baseline_pr_auc": 0.027826340326340328,
+      "delta": 0.0861006303979267,
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "mean_delta": 0.09568016132191005,
+      "ci_low": 0.008276134342114383,
+      "ci_high": 0.21938887630378195,
+      "p_delta_le_zero": 0.014,
+      "confidence_level": 0.95,
+      "seed": 7,
+      "persistence_share_of_lift_over_constant_prevalence": 0.12831958203918062
+     },
+     "runtime_seconds": null,
+     "source": "frozen_v2_metrics"
+    },
+    "B": {
+     "spec": "B",
+     "spec_name": "B: R&D + consolidated SEC financials",
+     "features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m",
+      "fin_revenue_growth",
+      "fin_rd_growth",
+      "fin_rd_intensity",
+      "fin_rd_intensity_delta",
+      "fin_operating_margin",
+      "fin_cash_to_rd",
+      "fin_ocf_to_rd",
+      "fin_capex_intensity",
+      "fin_acquisition_to_revenue",
+      "fin_inventory_growth",
+      "fin_facts_available"
+     ],
+     "feature_counts": {},
+     "holdout": "2025-10-01",
+     "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+     ],
+     "holdout_metrics": {
+      "pr_auc": 0.11634672055344537,
+      "brier": 0.014330359964299313,
+      "ece": 0.004585365469570737,
+      "false_positive_rate": 0.0,
+      "precision_at_k": 0.08139534883720931
+     },
+     "holdout_rows": 1716,
+     "holdout_positives": 26,
+     "holdout_prevalence": 0.015151515151515152,
+     "per_window_pr_auc": [
+      0.1321072021642875,
+      0.0961536823307378,
+      0.11634672055344537
+     ],
+     "window_pr_auc_mean": 0.11486920168282355,
+     "window_pr_auc_std": 0.014715098677099104,
+     "window_brier_mean": 0.014348938335489997,
+     "window_ece_mean": 0.004395210302452599,
+     "baseline_pr_auc": {
+      "constant_training_prevalence": 0.015151515151515152,
+      "company_base_rate": 0.04173558937284826,
+      "track_base_rate": 0.03231157119210804,
+      "pair_base_rate": 0.027826340326340328
+     },
+     "model_vs_pair_baseline": {
+      "model_pr_auc": 0.11634672055344537,
+      "pair_baseline_pr_auc": 0.027826340326340328,
+      "delta": 0.08852038022710504,
+      "resamples": 2000,
+      "valid_resamples": 2000,
+      "mean_delta": 0.09866385046452186,
+      "ci_low": 0.01625466687193526,
+      "ci_high": 0.21949094791168505,
+      "p_delta_le_zero": 0.011,
+      "confidence_level": 0.95,
+      "seed": 7,
+      "persistence_share_of_lift_over_constant_prevalence": 0.12525124213625455
+     },
+     "runtime_seconds": null,
+     "source": "frozen_v2_metrics"
+    }
+   },
+   "marginal_deltas": {
+    "A": {
+     "vs": "D",
+     "group": "shared-only baseline (Phase 1 parity, no entry-specific features)",
+     "delta": {
+      "pr_auc": 0.011722169285706324,
+      "brier": -6.278568367667353e-05,
+      "ece": 0.000828208208928656,
+      "false_positive_rate": 0.0,
+      "precision_at_k": -0.0058139534883720895,
+      "window_pr_auc_mean": -0.01138797101018868
+     }
+    },
+    "B": {
+     "vs": "D",
+     "group": "shared+financial (Phase 1 parity)",
+     "delta": {
+      "pr_auc": 0.01414191911488466,
+      "brier": -3.047017575642623e-05,
+      "ece": 0.0013533959916759751,
+      "false_positive_rate": 0.0,
+      "precision_at_k": 0.011627906976744193,
+      "window_pr_auc_mean": -0.003311038006674885
+     }
+    },
+    "C": {
+     "vs": "D",
+     "group": "entry-specific features",
+     "delta": {
+      "pr_auc": -0.0017290167640236914,
+      "brier": -4.602091505470293e-05,
+      "ece": -4.845304746770203e-05,
+      "false_positive_rate": 0.0,
+      "precision_at_k": 0.0,
+      "window_pr_auc_mean": -0.007317745101062645
+     }
+    },
+    "E": {
+     "vs": "D",
+     "group": "market",
+     "delta": {
+      "pr_auc": -0.005339652058430122,
+      "brier": 9.76735249238643e-05,
+      "ece": 0.00011459943073336646,
+      "false_positive_rate": 0.000591715976331361,
+      "precision_at_k": 0.0058139534883720895,
+      "window_pr_auc_mean": 0.0012454849160946496
+     }
+    },
+    "F": {
+     "vs": "D",
+     "group": "publication",
+     "delta": {
+      "pr_auc": 0.002878620099755258,
+      "brier": -1.0232216974478958e-05,
+      "ece": -0.0006637047041749018,
+      "false_positive_rate": 0.0,
+      "precision_at_k": 0.0058139534883720895,
+      "window_pr_auc_mean": 0.0009548126762184694
+     }
+    },
+    "G": {
+     "vs": "D",
+     "group": "financial+market+publication (all available)",
+     "delta": {
+      "pr_auc": -0.004341493987254433,
+      "brier": 8.966638592561478e-05,
+      "ece": 2.223669228676754e-05,
+      "false_positive_rate": 0.000591715976331361,
+      "precision_at_k": 0.0058139534883720895,
+      "window_pr_auc_mean": 0.0014777984061350308
+     }
+    }
+   },
+   "best_spec_by_holdout_pr_auc": "B",
+   "specs_evaluated": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "specs_missing": []
+  }
+ }
+}

@@ -1,0 +1,1380 @@
+{
+  "schema": "medradar.foresight.state.v2",
+  "updated_at": "2026-11-04T05:40:00+08:00",
+  "mission": {
+    "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
+    "architecture": "Observe -> Understand -> Anticipate",
+    "realigned_at": "2026-11-02",
+    "decision": "DECISIONS D-011",
+    "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
+  },
+  "phase": "complete_verified",
+  "cycle": 44,
+  "last_completed_cycle": {
+    "cycle": 41,
+    "name": "seasonality",
+    "branch": "research/change-detection-v1",
+    "report": "experiments/b074/seasonality.json",
+    "summary": "research/RESULTS/cycle41_seasonality_2026-11-03.md",
+    "verdict": "month-of-year effects are real and quantified (Jan/Feb 0.891, 1.255x spread, permutation p = 0.0005) but per-cell scaling cannot remove them (9 of 39,151 cell-months change, 91.8 % zeros), so the alert rate is identical raw vs adjusted (0.0090) and the 0.0179 false-alarm rate is stated as an upper bound; no detector change"
+  },
+  "working_tree": {
+    "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
+    "branch": "research/change-detection-v1",
+    "base_commit": "ce99ea1",
+    "main_untouched_at": "7a639f7"
+  },
+  "last_verified": {
+    "command": "python -m medradar selftest",
+    "expected": "795 tests (751 baseline + 44 changepoint), OK (skipped=3)",
+    "note": "must be re-confirmed before commit; recorded from the run in this cycle"
+  },
+  "layer_status": {
+    "observe": {
+      "state": "data spine + entity universe + a working change detector with measured operating characteristics",
+      "measured": "monthly (104 cells): best detector recovers 0.223 of injected sustained shifts; quarterly: Bayes factor 0.129, naive 0.025. Detector ranking is resolution-dependent. 2x shifts remain undetectable at any honest budget; data density is the binding constraint.",
+      "gaps": [
+        "hiring not collected",
+        "patents not collected",
+        "8-K CIK linking missing (19,616 events)",
+        "no independent source to confirm a detected change",
+        "no seasonal adjustment; lane-wide boundary volume artifacts",
+        "Special 510(k)s (15.01%) are not separated in the primary panel"
+      ]
+    },
+    "understand": {
+      "state": "prototypes only; no validated research-quality output",
+      "blocking_question": "there is currently no independent source to confirm that a detected change is real"
+    },
+    "anticipate": {
+      "level_a": "not built (needs a detector that can be trusted)",
+      "level_b": "frozen benchmark preserved at P3; zero calibration evidence (no matured forecast)"
+    }
+  },
+  "cycle3_findings": {
+    "primary_panel": {
+      "cells": 104,
+      "window": "2016-11..2026-09 (partial final month excluded)",
+      "budget": 0.02,
+      "detection_probability": {
+        "naive_multiplier": 0.223,
+        "poisson_cusum": 0.181,
+        "poisson_bayes_factor": 0.122,
+        "rolling_zscore": 0.112
+      },
+      "paired_vs_naive": {
+        "poisson_bayes_factor": [
+          -0.101,
+          -0.134,
+          -0.067
+        ],
+        "poisson_cusum": [
+          -0.042,
+          -0.07,
+          -0.012
+        ],
+        "rolling_zscore": [
+          -0.111,
+          -0.153,
+          -0.07
+        ]
+      }
+    },
+    "counter_example": "on the deterministic-track-only panel the Bayes factor is ahead by +0.039 [+0.003, +0.071]; the only panel where a likelihood detector wins",
+    "data_density": "median 25 material events per cell over 119 months (~0.21/month), 97 of 119 months are zero",
+    "real_data": "17 of 104 cells survive BH at q=0.10; detectors emit 0-2 alerts; novelty confirmation failed (zero everywhere)",
+    "blocked": "independent-source confirmation is not runnable on the current spine (single filing system; undated procurement; annual publications; no trials table)"
+  },
+  "established_findings": [
+    "temporal foundation is audited: bitemporal store, immutable registry, PIT export, leakage replay 0 mismatches over 656,048 values",
+    "deterministic legal-entity universe: 9,412 entities, 91.32% of lane events in detailed records, no fuzzy matching",
+    "track assignment is deterministic for ~94% of material events; the 6% keyword fallback is a real false-change channel",
+    "ANTICIPATE B: continuation of active pairs is not detectably better than per-pair persistence",
+    "ANTICIPATE B: first entry on the 200-entity cohort delta-AP +0.0973 (3/3 windows exclude zero, above MDE 0.0877); the 51-parent panel is underpowered",
+    "no forecast has matured: zero calibration evidence",
+    "OBSERVE: at monthly resolution the naive rate-multiplier is not beaten by likelihood detectors (0.223 vs 0.181/0.122/0.112 at a 2% budget)",
+    "OBSERVE: removing Special 510(k)s and masking late product codes do not change the monthly ranking",
+    "OBSERVE: independent reproduction of the detection benchmark PASSES 2844/2844 checks",
+    "OBSERVE: the monthly negative is robust to injection shape (ramp/transient/heterogeneous) but reverses under quarterly aggregation - statements about the best detector require budget, resolution and cost model",
+    "OBSERVE: on nuisance rejection (not declaring a sustained change for a 6-month surge) the Bayes factor beats naive by +0.157 [+0.119,+0.196]",
+    "OBSERVE: at quarterly resolution the naive detector collapses (0.025) and all three likelihood detectors beat it; the best is the rolling z-score (0.147), not the Bayes factor",
+    "OBSERVE: bin-width sweep (1/2/3/4/6 months) puts the crossover at 2 months (~0.42 expected events per bin) and shows the winner above it alternates, so it is not identifiable",
+    "OBSERVE: detector memory must be parameterised in calendar time - the first quarterly result was confounded by memory expressed in bins (D-020)",
+    "OBSERVE: no month-level cross-firm co-movement survives a null conditioning on the track's own volume (0/32 tracks; lane-wide null would have reported 3 false positives)",
+    "OBSERVE: technology activity in this lane is firm-specific plus track-level growth; the data do not show firms moving together",
+    "OBSERVE: a device-track-mapped ClinicalTrials.gov lane now exists (2,663 events, 43 tracks, 46 companies) and is documented in a committed manifest",
+    "OBSERVE: the two independent lanes show NO detectable aligned time structure at cell level (16 eligible cells; whole lag profile -6..+12 inside the null band)",
+    "OBSERVE: evidence-fusion claims between trials and clearances are unsupported by this test",
+    "OBSERVE: the entry-cohort unit removes the density ceiling (4,814 entry events vs ~0.2 events per cell-month) and makes the industry-wave question testable",
+    "OBSERVE: no firm shows multi-track entry bursts (0 of 60), so simultaneous-entry is not a detectable signature of strategic redirection at this granularity",
+    "OBSERVE: 79% of raw entry events are first appearances of a legal entity; firm-level entry requires the prior-filer control, which leaves 1,010 of 4,814 events",
+    "OBSERVE: medical_ai's apparent entry wave was partly taxonomy churn (p 0.0040 -> 0.0365)",
+    "OBSERVE: no firm shows multi-track entry bursts (0 of 46-60 in every specification)",
+    "OBSERVE: the entry-clustering thread is CLOSED AS NULL - under a clean split-sample design 3 tracks are nominated and 0 replicate; no device track shows an industry entry wave",
+    "OBSERVE: the aesthetics candidate failed as post-hoc selection (its apparent replication used the holdout; it is not nominated by the early window)",
+    "OBSERVE: holdout power for entry clustering is 0.25/0.52/0.95 at 30/50/70% wave concentration, so the null excludes strong clustering only",
+    "METHOD: a holdout cannot confirm a hypothesis that was nominated with its help; nomination and confirmation must use disjoint data",
+    "OBSERVE: a lawful, keyless, genuinely historical hiring proxy exists (Wayback CDX index) and a bounded collector builds a monthly panel from it",
+    "ACCESS: PatentsView bulk is 403 (key required) and the Common Crawl index returns persistent 504",
+    "OBSERVE: the Wayback hiring lane covers 11 of 16 probed device firms with posting URLs and 6 with >=24 months (Boston Scientific 4,999 postings/123 months; Stryker 8,839/90; Medtronic 5,107/60; BD 4,709/68) - cycle 9's 'coverage too thin' was a collector pagination bug",
+    "OBSERVE: the pre-registered hiring/regulatory lag test remains UNRUN - 3 usable companies, all values inside the null band, negative sign uninterpretable (capture-gap confound)",
+    "OBSERVE: 5 probed firms still have no archived board (Philips, Draeger, Mindray, Zimmer Biomet, Masimo); 4 firms hit the per-host cap so their series are lower bounds",
+    "METHOD: a negative conclusion about data availability is as falsifiable as a positive claim; the measurement must be checked before the conclusion is carried forward",
+    "OBSERVE: board discovery added a real Philips hiring board (669 postings, 38 months) but it fails the pre-declared silence criterion; Dräger, Mindray and Masimo have no archived job-level URLs at all",
+    "OBSERVE: the hiring lane covers 1 of the 5 mandated deep-case companies (Medtronic); GE HealthCare's independence dates from 2023, Philips is archived too sparsely, Dräger/Mindray post on unarchived systems",
+    "DESIGN: the mandated deep cases must be served by filings + device trials + publications, not by the hiring lane",
+    "UNDERSTAND: seven-field company technology profiles are now generated for all five mandated deep cases from holdings alone (no new data), with contradictory evidence as a required field",
+    "UNDERSTAND: automated self-check re-derives every number the Markdown states from the JSON; 5/5 profiles pass and rendering is deterministic",
+    "UNDERSTAND: momentum is a calibrated test (exact binomial, alpha=0.05) with a reported minimum detectable ratio; 3 of 5 cycle-12 momentum readings were noise and were overturned inside the product by design",
+    "UNDERSTAND: only Philips' activity increase survives (73 vs 36, p=0.001); Medtronic's +36% has p=0.065 and an MDE of 1.57x, so the data cannot distinguish it from a constant rate",
+    "POINT-IN-TIME: a dated, source-hashed, self-verifying profile snapshot now exists (snapshots/2026-11-02, 53 companies, manifest 31af25c9); later cycles can prove what this one knew",
+    "CALIBRATION: across 53 companies a naive ratio rule flags 35 and the exact binomial test supports 4 - 31 would have been unsupported claims (e.g. iRhythm 4 vs 1, ratio 4.00, p=0.375, MDE 22.9x)",
+    "CALIBRATION: per-company MDEs range from 1.77x to 22.9x, so detected counts cannot be compared as an innovation ranking",
+    "EVALUATE: the first rolling-origin benchmark finds no 12-month-ahead predictability above the long-run baseline for any predictor (all 95% intervals include 1)",
+    "EVALUATE: the naive-increase point estimate is 1.22 [0.95, 1.53] after correcting the regression-to-the-mean bias that made the pre-registered lift look like anti-prediction",
+    "EVALUATE: the calibrated change signal is too rare to be a prediction trigger (5 flags in 717 observations) at this lane's resolution",
+    "POINT-IN-TIME: three backdated profile snapshots are frozen and leakage-audited (0 problems); the 2020-12-31 / 2022-12-31 / 2024-12-31 views use 12,853 / 19,182 / 25,772 lane events",
+    "POINT-IN-TIME: a real leakage path was found and closed - the trial lane and the code first-seen map were previously read in full regardless of the as-of date",
+    "POINT-IN-TIME: verdict stability across four as-of dates is 40 stable / 13 changed / 2 reversed of 53 companies - a quarter of nowcasts move with the date, consistent with the calibrated test's measured low power",
+    "PUBLISH: paper draft v1 exists as a repository artifact with 45 machine-verified claims; every number is traced to a committed artifact in both directions (source contains it, paper contains it)",
+    "PUBLISH: the paper's headline is negative by design - five retractions with their control mechanisms, no predictive success claimed",
+    "PUBLISH: the paper now has four generated, verified, dependency-free figures (131 plotted points re-derived from artifacts); the only previously blocking readability gap is closed",
+    "PROCESS: structural SVG validity is not readability - headless rendering caught three layout defects (clipped labels, annotation off-frame, missing row labels) that checks could not",
+    "DETECT: the pre-registered alert-shape classifier fails (balanced accuracy 0.394 vs 0.333 chance; sustained precision 0.764 vs 0.728 base rate) because its window contains the pulse",
+    "DETECT: excluding the alert month from the confirmation window raises balanced accuracy to 0.608 and sustained-change precision to 0.940 - a POST-HOC result awaiting confirmation (B-054)",
+    "DETECT: ramp-versus-level separation is not recoverable from a two-month window (ramp recall 0.17) at ~0.2 events per cell-month",
+    "DETECT: the corrected two-month post-alert promotion rule is CONFIRMED out of sample (494 alerts; balanced accuracy 0.584, sustained precision 0.914 vs 0.696 base rate; 78.7% of spikes caught) - the programme's first pre-registered prediction to survive confirmation",
+    "DETECT: the confirmation does NOT extend to three-way shape recovery (ramp recall 0.142) and does NOT rescue any earlier association finding",
+    "PUBLISH: the paper title, abstract and a new section 4.9 now report the confirmed rule with its post-discovery caveat; 51 of 51 claims verified",
+    "OBSERVE: deployment resolution fixed at 3 months (quarterly), justified by the decision cadence and by the measured sparsity ceiling",
+    "OBSERVE: at quarterly resolution the rolling z-score is significantly best (0.147, CI 0.112-0.182; no overlap with the other three) but NO detector is identifiable across resolutions (Kendall tau -1.0 against the monthly ranking), so the choice is resolution-specific",
+    "UNDERSTAND: the validated deployment detector now runs inside every profile with its measured false-alarm rate and sensitivity printed in the profile itself, not in a methods note",
+    "UNDERSTAND: on real data the quarterly detector returns sparse, thin alerts (Medtronic: two events against a 0.25 baseline) - calibrated is not the same as substantial, and the profile says so beside the alert",
+    "DETECT: the promotion rule confirms at the legal-entity unit with essentially identical numbers (balanced accuracy 0.594 vs 0.584; sustained precision 0.917 vs 0.914), so it is not an artefact of the curated-company unit",
+    "DETECT: entity cells nest inside company cells, so the confirmation narrows the caveat rather than removing it; three-way shape recovery still fails (ramp recall 0.117 at both units)",
+    "UNDERSTAND: promotion to 'technology change' is gated in code by validated-detector provenance, the confirmed two-quarter window, the contradiction check and mandatory human sign-off; no automated promotion path exists and a test prevents one being added quietly",
+    "POINT-IN-TIME: a fifth auditable snapshot (2026-11-03) carries the deployment block; its diff against 2026-11-02 shows identical data, which is the correct way to report a knowledge-only change",
+    "DETECT: no confirmation window between 1 and 6 months recovers the ramp class (best recall 0.229); the ramp blind spot is a property of the counting rate, not of the classifier",
+    "METHOD: reporting balanced accuracy alone would have recommended the one-month window, the worst choice for detecting ramps; class-specific recall must be reported with it",
+    "DETECT: the promotion rule is CONSISTENT on a second domain (archived job postings, 43 alerts): balanced accuracy 0.593, sustained precision 0.929 vs a 0.794 base rate - it is not a property of the FDA filing corpus alone",
+    "DETECT: the second-domain result is not a second confirmation (43 vs 494/1,196 alerts) and grants no portability beyond that domain; ramp recall there (0.300) rests on ten cases",
+    "METHOD: the domain was chosen by measured feasibility - the trial lane was inspected first and rejected with 5 eligible cells",
+    "ACCOUNTING: promotions are recorded in their own append-only ledger with enforced attribution and are explicitly not findings - nothing in the findings ledger may cite a promotion as evidence",
+    "ACCOUNTING: the promotion ledger is hashed into snapshot manifests, so a promotion recorded after a snapshot is visibly absent from that snapshot's manifest",
+    "GOVERN: the objective is checked mechanically and re-runnably (11 PASS, 0 FAIL, 1 N/A); a claim of progress no longer depends on a narrative",
+    "UNDERSTAND: profiles now name the governing promotion policy version in their limits, and the promotion ledger carries a reviewer checklist for signers",
+    "DETECT: the promotion rule is CONSISTENT at market-aggregate level too (297 alerts; balanced accuracy 0.559, sustained precision 0.889 vs a 0.690 base rate) - it now holds across three units and a ~1000x density range",
+    "DETECT: ramp recall rises monotonically with series density across units (0.117 entity -> 0.142 company -> 0.300 hiring -> 0.396 track): the first coherent scaling relationship found, and an observational one that needs a controlled down-sampling test",
+    "DETECT: the controlled density experiment FAILED its pre-declared bar (strict monotonicity broke by 0.018; intervals overlapped by 0.023) even though ramp recall halved with density and rho = 0.882 - the scaling remains suggestive, not established",
+    "METHOD: a pre-registration can be too brittle - requiring strict monotonicity from five noisy point estimates voids a large, consistent effect on a 0.018 wobble; the criterion, not the data, was the problem and is recorded as such",
+    "DETECT: the density scaling is CONFIRMED on fresh draws under a revised criterion (rho 0.908, dense 0.444 vs sparse 0.204, ratio 2.18x) - stated as a post-failure confirmation",
+    "PRODUCT: promotion policy v2 refuses the ramp label below 1.0 event per series-month and reports sustained_unresolved instead, with three tests covering the relabelling",
+    "POINT-IN-TIME: the record can now show WHICH claims a policy change altered (32 labels, 8 shape changes from ramp to sustained_unresolved) alongside zero data-level movement",
+    "POINT-IN-TIME: labelled snapshots are supported (as-of plus suffix) without weakening verification: 6 of 6 snapshots verify and the leakage audit stays clean",
+    "GOVERN: a round ends with an executable verification routine (7 steps, one exit code), so the round-end claim is re-runnable rather than asserted",
+    "PUBLISH: the paper's limitations now state the honest ratio - one confirmed decision rule against five retractions - plus the sign-off requirement, the density floor and the post-failure status of the density confirmation",
+    "EVALUATE: end-to-end, alerts persist far more than non-alert cell-quarters (0.80 / 0.67 vs 0.37) - the detector carries real information about persistence",
+    "EVALUATE: the promotion filter's MARGINAL value is NOT established (difference +0.133, CI -0.074..0.344) with only 33 unpromoted alerts; it remains justified by shape-classification performance, not by this test",
+    "PREDICT: 25 genuinely prospective forecasts are frozen with content hashes and explicit maturation dates (2026-Q4..2028-Q1); editing them breaks the hash and the maturer refuses to score",
+    "METHOD: 7 of the first 32 forecasts were backfilled (their outcome windows were already observed); they score Brier 0.337 / accuracy 0.429, no better than the majority class, and are excluded as evidence",
+    "PUBLISH: two papers now exist with independent machine-verified claim maps (82 and 22 claims) and the round-end gate runs both, so neither can drift",
+    "PUBLISH: the methods paper names nine rules each tied to the specific failure that motivated it, and the two enforcement mechanisms that make the rules structural rather than advisory",
+    "GOVERN: the roadmap now cites an artifact for every capability and names the remaining work as time- or access-dependent rather than open-ended",
+    "GOVERN: the mission distinguishes charter history (section 9, 2026-11-02) from current position (section 10) instead of overwriting the record",
+    "PUBLISH: the retraction-to-rule map shows Rule 7 (check the pipeline) motivated by four separate events and Rule 3 (benchmark outcome independence) by three - the two most 'boilerplate'-looking rules have the most independent evidence",
+    "METHOD: a rendered check caught three layout defects the SVG validator could not (legend covering column headings, overlapping labels, legend off-canvas); this is the fourth such case and is now treated as a recurring class rather than an accident",
+    "GOVERN: the fourth render-only defect class is now static - off-canvas text and text painted over by a later shape are caught by check_layout.py, proven against injected defects, and run as gate step 10",
+    "GOVERN: the stores were counted before any item was called blocked - financial (43,420), market (95,725) and publication (616) data are present, so five open items are scheduled work, not blocked work",
+    "DETECT: the taxonomy now carries a version, an effective date and fingerprints of both mapping files, so a code remap is detectable as a regime change (B-032)",
+    "DETECT: calendar month explains a real share of lane volume (Jan/Feb factor 0.891, annual spread 1.255x, permutation p = 0.0005) and quarter-boundary months run 1.058x/1.054x the interior mean",
+    "DETECT: per-cell deseasonalisation is inapplicable at this density - it changes 9 of 39,151 cell-months (91.8 % zeros), so the measured false-alarm rate 0.0179 is an upper bound the correction cannot reduce"
+  ],
+  "known_measurement_defects": [
+    "no independent confirmation source exists in the current data spine",
+    "technology taxonomy is not versioned by effective date; recent product codes can manufacture apparent entry",
+    "~15% of lane 510(k)s are Special (modifications of the filer's own device), so material != technical",
+    "lane-wide volume artifacts at the boundary of the original data; no seasonal adjustment (January ~14% below mean)",
+    "zero trailing baseline in most stream-months, making rate-ratio alerts fragile where the lane is sparsest",
+    "17,308 lane events have no track_id; Draeger and Mindray still absent from config/companies_device.json",
+    "bulk lane availability = decision_date + 14 days (estimated), date-level not first-publication"
+  ],
+  "blockers": [
+    "hiring lag question: unrun - 3 usable companies; the remaining firms are unreachable from this source (D-031), so the limit is now structural",
+    "independent change confirmation: trial lane exists but is too sparse at cell level (cycle 5)",
+    "patents: no key and no accessible bulk route (B-031)",
+    "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
+  ],
+  "next_actions": [
+    "when the lane advances past 2026-Q4, run experiments/b068/maturate_forecasts.py and report Brier/calibration",
+    "when a human reviewer is available, sign or reject the pending promotion in research/RESULTS/PROMOTIONS.md",
+    "schedule the six scheduled analyses (B-018, B-021, B-029, B-041, cohort re-run) with proven data",
+    "run a rendered figure review before any submission"
+  ],
+  "invariants": [
+    "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
+    "no merge to main without independent verification of the exact commit",
+    "every reported number must be reproducible from a committed artifact or command",
+    "empty/insufficient data is reported as such, never padded",
+    "a null result must be reported with its minimum detectable effect",
+    "a detection is a statistical statement about activity rate, never a claim about intent, capability or internal R&D",
+    "LLMs may organise evidence and propose hypotheses, never generate facts, citations or probabilities"
+  ],
+  "correction_to_cycle3": {
+    "what": "cycle 3's headline 'the simple baseline is not beaten' is monthly-resolution-specific and must not be stated generally",
+    "evidence": "experiments/detect_v1/benchmark.json levels track_quarterly / track_no_special / track_stable_codes",
+    "pre_registered": "DECISIONS D-017; outcome recorded in D-018",
+    "reproduction_check": "experiments/detect_v1/check_frozen_reproduction.py -> PASS (default panels identical to the frozen frontier)",
+    "independent_verification": {
+      "report": "experiments/detect_v1_verify/REPORT.md",
+      "reproduction": "PASS - 2844 of 2844 checks match benchmark.json (every frontier point)",
+      "monthly_robustness": "the monthly negative survives ramp, transient and heterogeneous injections at the 2% budget; no likelihood win is interval-confirmed on the 1/3/5% frontier",
+      "prose_correction": "an earlier claim that the naive detector was strongest at every budget was false and has been corrected (DECISIONS D-019)",
+      "operational_reversal": "reading a 6-month surge as a nuisance to reject, the Bayes factor declares a sustained change on 0.011 vs 0.168 for naive (+0.157 [+0.119,+0.196])"
+    },
+    "correction_2": {
+      "what": "cycle 3b named the Bayes factor as the quarterly winner (+0.104). That was partly a 72-month-baseline artefact: detector memory was in bins, not calendar months.",
+      "fix": "make_detector rescales z-score window to 12 months and CUSUM/Bayes baseline to 24 months",
+      "corrected_numbers": {
+        "rolling_zscore": 0.147,
+        "poisson_bayes_factor": 0.073,
+        "poisson_cusum": 0.065,
+        "naive_multiplier": 0.025
+      },
+      "what_survives": "the quarterly reversal (naive collapses; all three likelihood detectors win)",
+      "what_does_not": "the identity of the winner",
+      "evidence": "experiments/detect_v1/benchmark.json track_quarterly; DECISIONS D-020"
+    }
+  },
+  "bin_width_sweep": {
+    "widths_months": [
+      1,
+      2,
+      3,
+      4,
+      6
+    ],
+    "crossover_months": 2,
+    "crossover_expected_events_per_bin": 0.424,
+    "naive_detection_by_width": [
+      0.223,
+      0.007,
+      0.025,
+      0.004,
+      0.071
+    ],
+    "winner_by_width": [
+      "naive_multiplier",
+      "poisson_cusum",
+      "rolling_zscore",
+      "poisson_cusum",
+      "rolling_zscore"
+    ],
+    "conclusion": "the naive rate-ratio test is resolution-fragile; the identity of the best detector above the crossover is not identifiable at this sample size",
+    "artifacts": [
+      "experiments/detect_v1/bin_sweep.json",
+      "experiments/detect_v1/widths.json"
+    ]
+  },
+  "independence_audit": {
+    "status": "ADDRESSED - independent lane collected; association test run and null",
+    "lane": {
+      "source": "ClinicalTrials.gov API v2, interventional, device tracks",
+      "events": 2663,
+      "date_range": "2016-09 .. 2026-10",
+      "companies": 46,
+      "device_tracks": 43,
+      "sponsor_attribution_rate": 0.55,
+      "device_track_mapping_rate": 0.48,
+      "manifest": "experiments/b040/collection_manifest.json",
+      "rows_committed": false,
+      "why_not_committed": "data/ is git-ignored and the registry is live; the manifest pins the sample"
+    },
+    "test": {
+      "pre_registration": "DECISIONS D-022",
+      "cells_in_both_lanes": 26,
+      "cells_eligible": 16,
+      "lags": "-6..+12 months",
+      "largest_observed_r": 0.036,
+      "largest_observed_lag": 7,
+      "null_band_at_that_lag": [
+        -0.046,
+        0.048
+      ],
+      "verdict": "no detectable association at any lag"
+    },
+    "what_is_not_licensed": "that trials and clearances are unrelated - coverage 55%/48%, sparse series, and company-vs-legal-entity granularity all dominate"
+  },
+  "comovement": {
+    "question": "do several competitors become active in the same technology track at once?",
+    "lane_volume_null_tracks_rejected": 3,
+    "lane_volume_null_rejected_keys": [
+      "ivd_molecular",
+      "medical_ai",
+      "spine"
+    ],
+    "track_volume_null_tracks_rejected": 0,
+    "track_volume_null_tests": 32,
+    "strongest_positive_z": 1.21,
+    "conclusion": "month-level cross-firm synchronisation is not detectable once the track's own growth is conditioned out; the three apparent cases are track growth admitting firms over time",
+    "limitation": "most tracks sit below the null because the null draws firm-months independently while firms file in bursts; the test is conservative in the positive direction and the negative direction is an artefact, not anti-synchronisation",
+    "artifacts": [
+      "experiments/detect_v1/comovement.json",
+      "experiments/detect_v1/COMOVEMENT.md"
+    ]
+  },
+  "entry_cohort": {
+    "design": "research/DECISIONS.md D-024 (constants fixed in the module before the first run)",
+    "unit": "technology-entry event: first observed touch of a track by a company",
+    "entries_all_events": 4814,
+    "entries_churn_controlled": 4590,
+    "churn_control": "dropped 467 events on 506 product codes first seen 2022-01 or later",
+    "industry_clustering": {
+      "all_events": {
+        "tracks_rejected": 0,
+        "tests": 38,
+        "smallest_p": 0.004,
+        "smallest_track": "medical_ai"
+      },
+      "churn_controlled": {
+        "tracks_rejected": 1,
+        "tests": 36,
+        "rejected": [
+          "ivd_immuno"
+        ],
+        "p": 0.001,
+        "z": 4.73,
+        "second": "aesthetics p=0.0070",
+        "medical_ai_p": 0.0365
+      }
+    },
+    "firm_clustering": {
+      "entities_rejected": 0,
+      "tests": 60,
+      "reading": "no detectable multi-track entry bursts (strategic redirection)"
+    },
+    "first_positive_finding": "ivd_immuno shows an industry-wide wave of first entries that survives risk-set conditioning and taxonomy-churn control; single rejection under 10% FDR, so suggestive not established, but the churn control strengthens rather than weakens it"
+  },
+  "retraction": {
+    "retracts": "the ivd_immuno positive finding recorded in cycle 6 / D-024",
+    "reason": "entry events were scored for cells whose entity was not in the risk set: 3,804 of 4,814 entries (79%) were first-ever appearances of a legal entity in the lane",
+    "control": "--require-prior-filer: entry counts only if the entity had an event in another track before the entry month",
+    "evidence": {
+      "ivd_immuno": {
+        "all_events": {
+          "entries": 49,
+          "p": 0.0055
+        },
+        "churn": {
+          "entries": 40,
+          "p": 0.001
+        },
+        "prior_filer": {
+          "entries": 8,
+          "p": 1.0
+        },
+        "prior_filer_churn": {
+          "entries": 5,
+          "p": 1.0
+        }
+      },
+      "ivd_molecular": {
+        "prior_filer": {
+          "entries": 5,
+          "p": 0.0025
+        },
+        "note": "n=5 after being p=0.69 with 68 entries - specification noise"
+      },
+      "aesthetics": {
+        "p_range": [
+          0.007,
+          0.015
+        ],
+        "fdr": "fails in every specification",
+        "status": "candidate only"
+      },
+      "firm_bursts": "0 rejected in every specification"
+    }
+  },
+  "measurement_rule": "most 'entry' events in this lane are first appearances of legal entities, not established firms entering new technology areas; an entry study must state which of the two it measures, because mixing them manufactures waves",
+  "entry_thread_closure": {
+    "status": "CLOSED AS NULL",
+    "candidates": {
+      "ivd_immuno": "failed as entity appearance (79% of raw entries were first-ever legal entities)",
+      "aesthetics": "failed as post-hoc selection: not nominated by a clean early-window design; apparent replication used the holdout"
+    },
+    "clean_design": {
+      "nomination": "estimation window only (2016-11..2022-12), BH q=0.10 over 30 tracks",
+      "confirmation": "untouched holdout 2023-01..2026-09 at alpha=0.05",
+      "nominated": [
+        "ivd_molecular",
+        "medical_ai",
+        "vascular_access"
+      ],
+      "confirmed": [],
+      "power": {
+        "holdout_entries": 13,
+        "detection_probability_at_wave_share": {
+          "0.3": 0.25,
+          "0.5": 0.52,
+          "0.7": 0.95
+        }
+      }
+    },
+    "reading": "no evidence of replication, not proven absence; the holdout can rule out strong clustering only",
+    "why_stop": "three cycles of re-specifying clustering tests on one sparse filing stream is the unlimited algorithm trial-and-error the mission forbids; the limit is information content, not the statistic"
+  },
+  "hiring_lane": {
+    "status": "CORRECTED COVERAGE - lag question still unrun (power, not depth)",
+    "source": "Wayback Machine CDX API (public archive, index only, keyless)",
+    "collector_bug": "cycle 9 combined collapse=urlkey with limit+page pagination, which does not page on this endpoint, so most of the archive was invisible and the conclusion 'archive depth is the limit' was an artefact",
+    "panel_v2": "experiments/b030/hiring_panel_v2.json",
+    "coverage_v2": {
+      "companies_probed": 16,
+      "companies_with_postings": 11,
+      "companies_with_24plus_months": 6,
+      "companies_with_50plus_postings": 9,
+      "truncated_hosts": [
+        "medtronic",
+        "bd",
+        "boston_scientific",
+        "stryker"
+      ],
+      "no_coverage": [
+        "philips",
+        "draeger",
+        "mindray",
+        "zimmer_biomet",
+        "masimo"
+      ]
+    },
+    "depth_evidence": "experiments/b030/host_depth.json",
+    "lag_test": {
+      "panel": "experiments/b030/lag_analysis_v2.json",
+      "usable_companies": [
+        "bd",
+        "boston_scientific",
+        "stryker"
+      ],
+      "result": "UNRUN - 3 companies, all values inside the null band"
+    },
+    "remaining_blockers": [
+      "statistical power (3 usable companies)",
+      "board discovery for 5 firms incl. 2 mandated focus companies",
+      "platform-migration audit before any level-shift claim"
+    ],
+    "coverage_v3": {
+      "companies_probed": 16,
+      "companies_with_postings": 13,
+      "companies_with_24plus_months": 7,
+      "companies_with_50plus_postings": 10,
+      "new_boards": {
+        "philips": "philips.taleo.net/careersection/* (669/38 months)",
+        "zimmer_biomet": "careers.zimmer.com/* (4/4 months)"
+      }
+    },
+    "mandated_focus_coverage": {
+      "mandated": [
+        "medtronic",
+        "ge_healthcare",
+        "philips",
+        "draeger",
+        "mindray"
+      ],
+      "covered_with_usable_series": [
+        "medtronic"
+      ],
+      "why_not": {
+        "ge_healthcare": "independent filer only since 2023; archived board yields 1 URL",
+        "philips": "real board but 38 of 119 months; fails the silence criterion",
+        "draeger": "only marketing career pages archived; no job-level URLs",
+        "mindray": "only marketing career pages archived; no job-level URLs"
+      },
+      "consequence": "the hiring lane cannot serve the mandated deep-case requirement; those cases need filings, device trials and publications instead"
+    }
+  },
+  "understand_layer": {
+    "status": "SHIPPED for the five mandated deep cases",
+    "library": "medradar/intelligence/profile.py (pure; 34 unit tests in tests/test_profile.py)",
+    "builder": "experiments/b027/build_profiles.py",
+    "artifacts": [
+      "experiments/b027/profiles.json",
+      "experiments/b027/profiles/*.md",
+      "experiments/b027/selfcheck.py"
+    ],
+    "seven_fields": [
+      "identity",
+      "technology_footprint",
+      "momentum",
+      "concentration",
+      "independent_corroboration",
+      "contradictory_evidence",
+      "limits_and_provenance"
+    ],
+    "design_rules": [
+      "no scores: prose is generated from the same numbers it describes",
+      "contradictory evidence is a required field; validate_profile rejects a profile without it and render_markdown refuses to render it",
+      "degrade honestly: missing trial support / hiring / sparse months are stated, not dropped"
+    ],
+    "profiles": {
+      "medtronic": {
+        "events": 299,
+        "tracks": 24,
+        "momentum": "rising (90 vs 66)",
+        "trial_supported_tracks": "14/24",
+        "contradictions": 2
+      },
+      "ge_healthcare": {
+        "events": 274,
+        "tracks": 5,
+        "momentum": "stable",
+        "trial_supported_tracks": "n/a",
+        "contradictions": 0
+      },
+      "philips": {
+        "events": 224,
+        "tracks": 11,
+        "momentum": "rising",
+        "trial_supported_tracks": "n/a",
+        "contradictions": 1
+      },
+      "draeger": {
+        "events": 16,
+        "tracks": 2,
+        "momentum": "stable",
+        "trial_supported_tracks": "n/a",
+        "contradictions": 1,
+        "note": "thin evidence - the profile states this rather than scoring it"
+      },
+      "mindray": {
+        "events": 82,
+        "tracks": 3,
+        "momentum": "rising",
+        "trial_supported_tracks": "n/a",
+        "contradictions": 1
+      }
+    },
+    "selfcheck": "experiments/b027/selfcheck.py - 5/5 profiles pass",
+    "momentum_test": {
+      "method": "two-sided exact binomial test of the recent count given the total (Poisson rate-ratio under a constant-rate null)",
+      "alpha": 0.05,
+      "power_for_mde": 0.8,
+      "mde_definition": "smallest rate ratio detectable at alpha and 80% power given the observed counts; reported whenever the test does not reject",
+      "results": {
+        "medtronic": {
+          "recent": 90,
+          "prior": 66,
+          "ratio": 1.36,
+          "p": 0.065,
+          "mde": 1.57,
+          "detected": false,
+          "supersedes": "was 'rising' in cycle 12"
+        },
+        "philips": {
+          "recent": 73,
+          "prior": 36,
+          "ratio": 2.03,
+          "p": 0.001,
+          "mde": 1.77,
+          "detected": true,
+          "direction": "increasing"
+        },
+        "ge_healthcare": {
+          "recent": 57,
+          "prior": 48,
+          "ratio": 1.19,
+          "p": 0.435,
+          "mde": 1.73,
+          "detected": false
+        },
+        "mindray": {
+          "recent": 18,
+          "prior": 12,
+          "ratio": 1.5,
+          "p": 0.362,
+          "mde": 2.84,
+          "detected": false,
+          "supersedes": "was 'rising' in cycle 12"
+        },
+        "draeger": {
+          "recent": 10,
+          "prior": 10,
+          "ratio": 1.0,
+          "p": 1.0,
+          "mde": 3.5,
+          "detected": false
+        }
+      },
+      "reading_rule": "a non-detection is never reported as stability: the MDE must accompany it"
+    },
+    "deployment_alerts": {
+      "status": "SHIPPED - nested in momentum, no schema change",
+      "resolution_months": 3,
+      "detector": "rolling_zscore",
+      "threshold": 3.5,
+      "memory_months": 12,
+      "baseline_months": 24,
+      "false_alarm_rate": 0.0179,
+      "sensitivity": 0.147,
+      "recency_quarters": 8,
+      "provenance_in_profile": true,
+      "medtronic_live_alerts": [
+        {
+          "track": "coronary",
+          "quarter": "2026-Q3",
+          "events": 2,
+          "baseline_mean": 0.25,
+          "z": 3.5
+        },
+        {
+          "track": "insulin_delivery",
+          "quarter": "2025-Q3",
+          "events": 2,
+          "baseline_mean": 0.25,
+          "z": 3.5
+        }
+      ],
+      "honest_reading": "two-event alerts are legitimate at the measured false-alarm rate and substantively thin; the profile prints counts and baselines beside the alert",
+      "promotion_rule": "manual - D-043 rule recorded but deliberately not auto-applied",
+      "enforcement": "selfcheck.py checks detector, resolution, threshold clearance and FAR statement"
+    }
+  },
+  "point_in_time": {
+    "status": "VALIDATED - leakage audit clean, snapshot chain frozen",
+    "snapshot": "experiments/b027/snapshots/2026-11-02",
+    "manifest_hash": "31af25c989f2650d",
+    "companies": 53,
+    "scope": "roster (51-company device roster + Draeger and Mindray from the universe focus list)",
+    "sources_hashed": [
+      "data/research.sqlite",
+      "data/b040_device_trials.sqlite",
+      "config/companies_device.json",
+      "config/universe_v1.json",
+      "config/product_code_tracks.json"
+    ],
+    "verification": {
+      "library": "medradar/intelligence/snapshot.py (23 unit tests)",
+      "selfcheck": "manifest hashes, summary/profile agreement, markdown reproduction, as-of match",
+      "result": "snapshot OK; markdown reproduces exactly from the JSON"
+    },
+    "calibration": {
+      "naive_ratio_rule_flags": 35,
+      "exact_binomial_detections": 4,
+      "unsupported_naive_claims": 31,
+      "detected": {
+        "olympus": {
+          "ratio": 4.17,
+          "p": 0.0001,
+          "mde": 2.46
+        },
+        "philips": {
+          "ratio": 2.03,
+          "p": 0.0005,
+          "mde": 1.77
+        },
+        "steris": {
+          "ratio": 0.5,
+          "p": 0.0198,
+          "mde": 2.25
+        },
+        "medline": {
+          "ratio": 0.44,
+          "p": 0.0288,
+          "mde": 2.76
+        }
+      },
+      "report": "experiments/b027/momentum_calibration.json"
+    },
+    "next_prerequisite": "freeze a second snapshot at the next as-of date and diff the two - the first genuinely point-in-time comparison available to the programme",
+    "snapshots": [
+      "2020-12-31",
+      "2022-12-31",
+      "2024-12-31",
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-03-policy-v2"
+    ],
+    "auditable_snapshots": 6,
+    "unauditable_snapshots": {
+      "2026-11-02": "frozen before the audit block existed"
+    },
+    "leakage_path_fixed": "the trial lane and the product-code first-seen map were read in full regardless of as-of; both are now truncated at the as-of date and the trial cut is recorded in each profile's leakage_audit",
+    "lane_events_used": {
+      "2020-12-31": 12853,
+      "2022-12-31": 19182,
+      "2024-12-31": 25772,
+      "2026-11-02": 31802
+    },
+    "diff_artifact": "experiments/b027/snapshot_diff.json",
+    "stability_artifact": "experiments/b027/verdict_stability.json",
+    "verdict_stability": {
+      "companies": 53,
+      "stable": 40,
+      "changed": 13,
+      "reversed": 2,
+      "reversals": [
+        "hologic",
+        "zimmer_biomet"
+      ]
+    },
+    "leakage_problems": 0,
+    "latest_snapshot": {
+      "as_of": "2026-11-03",
+      "manifest_hash": "5b7062d2f9dd432d",
+      "adds": "deployment block and promotion verdicts",
+      "diff_vs_previous": "identical data (3,928 events, 0 momentum changes, 0 track changes); knowledge changed, not data"
+    },
+    "labelled_snapshots": {
+      "supported_by": "freeze_snapshot.py --label",
+      "example": "2026-11-03-policy-v2 (manifest 44abde1672df)",
+      "as_of_handling": "manifest records the true as-of; selfcheck and snapshot_diff accept as-of or as-of-<label>; the leakage audit uses the manifest value"
+    },
+    "promotion_diff": {
+      "artifact": "experiments/b027/snapshot_diff.json",
+      "policy_v1_to_v2": {
+        "alert_labels_changed": 32,
+        "shape_changes": 8,
+        "shape_change_direction": "ramp -> sustained_unresolved",
+        "data_level_changes": 0
+      },
+      "reading": "both readings are correct: the data did not move, the labels did - only reporting one of them would mislead"
+    }
+  },
+  "rolling_origin": {
+    "status": "FIRST BENCHMARK SHIPPED - honest null",
+    "design": "research/DECISIONS.md D-035 (pre-registered), D-036 (outcome + design flaw)",
+    "artifact": "experiments/b050/rolling_origin.json",
+    "scale": {
+      "cells": 376,
+      "origins": 12,
+      "observations": 717,
+      "origin_range": "2019-12..2025-06",
+      "bootstrap": "company-clustered, 2000 reps"
+    },
+    "pre_registered_result": {
+      "design_flaw": "outcome compared with the same recent block that triggered the flag; regression to the mean is built into the numerator",
+      "naive_increase_lift": 0.486,
+      "naive_increase_ci": [
+        0.32,
+        0.66
+      ],
+      "persistence_increase_lift": 0.456,
+      "ci": [
+        0.31,
+        0.61
+      ]
+    },
+    "corrected_result": {
+      "baseline": "cell long-run rate up to the origin x 12 months",
+      "naive_increase_lift": 1.222,
+      "naive_increase_ci": [
+        0.95,
+        1.53
+      ],
+      "persistence_increase_lift": 1.2,
+      "ci": [
+        0.9,
+        1.57
+      ],
+      "calibrated_increase_lift": 0.598,
+      "flags": 16,
+      "calibrated_decrease_lift": 1.351,
+      "verdict": "no predictor's interval excludes 1"
+    },
+    "reading": "no evidence that a change signal predicts 12-month-ahead filing activity above the cell's long-run rate; the calibrated signal is too sparse (5/717) to trigger on at ~0.2 events per cell-month",
+    "not_claimed": "not evidence that corporate technological evolution is unpredictable - the observation is about public filing rates and the data cannot see far enough"
+  },
+  "design_lessons": [
+    "a benchmark outcome must not be defined relative to the same window that triggered the signal (fourth self-caught design flaw; first caught inside a benchmark)"
+  ],
+  "publication": {
+    "status": "DRAFT v1 IN REPOSITORY - not submitted, no venue claimed",
+    "paper": "papers/PAPER_v1.md",
+    "claims": "papers/CLAIMS.json",
+    "verifier": "papers/verify_claims.py",
+    "claims_verified": 45,
+    "headline": "no surviving positive result; five retractions with mechanisms; methodological artifacts (frontier, calibration rule, point-in-time chain, measurement rules)",
+    "known_gaps": [
+      "no external validation on a second domain",
+      "retraction table needs a per-finding reproduction index",
+      "independent lanes reported as measured limits, not standalone studies"
+    ],
+    "figures": {
+      "count": 4,
+      "generator": "papers/figures.py (hand-written SVG, no dependencies)",
+      "verifier": "papers/verify_figures.py (re-derives 131 plotted points, 0 failures)",
+      "plates": [
+        "fig1_frontier.svg",
+        "fig2_calibration.svg",
+        "fig3_rolling_origin.svg",
+        "fig4_verdict_stability.svg"
+      ],
+      "visual_check": "rendered with headless Edge; three layout defects found and fixed"
+    },
+    "promotion_policy": {
+      "module": "medradar/intelligence/promotion.py",
+      "tests": "tests/test_promotion.py (18)",
+      "protocol": "research/PREDICTION_PROTOCOL.md section 8",
+      "gates": [
+        "calibrated_alert",
+        "confirmation_window",
+        "contradiction_check",
+        "human_signoff"
+      ],
+      "verdicts": [
+        "reject",
+        "promote_pending_signoff"
+      ],
+      "automated_promotion_allowed": false,
+      "live_results": {
+        "medtronic:coronary:2026-Q3": "reject (no confirmation quarters yet)",
+        "medtronic:insulin_delivery:2025-Q3": "promote_pending_signoff (ramp)"
+      },
+      "statement": "promotion marks a sustained change in PUBLIC FILING RATE; not intent, capability, internal R&D or technological significance",
+      "ledger": "research/RESULTS/PROMOTIONS.md (append-only, separate from findings)",
+      "logger": "experiments/b027/log_promotion.py",
+      "attribution_enforced": true,
+      "manifest_attribution": "freeze_snapshot hashes the ledger as an input source (7 sources total)",
+      "first_entry": {
+        "id": "medtronic:insulin_delivery:2025-Q3",
+        "verdict": "PENDING_SIGNOFF",
+        "reason": "the programme cannot sign for a human; inventing a signer would defeat the mechanism"
+      },
+      "version": "promotion_policy_v2",
+      "ramp_reporting_floor_events_per_month": 1.0,
+      "below_floor_label": "sustained_unresolved",
+      "reason": "D-061: ramp recall is density-limited, so the label is withheld where measurement cannot support it; promotion itself is unaffected"
+    },
+    "second_paper": {
+      "paper": "papers/PAPER_METHODS_v1.md",
+      "claims": "papers/CLAIMS_METHODS.json (22)",
+      "verifier": "papers/verify_claims.py --claims papers/CLAIMS_METHODS.json",
+      "index": "papers/README.md",
+      "rules": 9,
+      "mechanisms": [
+        "contradictory-evidence schema",
+        "round-end completion gate"
+      ],
+      "intermediate_category_results": [
+        "post-failure density confirmation",
+        "pipeline test: detector yes, filter unestablished"
+      ],
+      "status": "draft v1, not submitted",
+      "figures": {
+        "file": "papers/figures/fig5_retraction_rules.svg",
+        "source": "papers/rules_map.py",
+        "events": 10,
+        "rules": 9,
+        "filled_cells": 21,
+        "max_rule": {
+          "rule": 7,
+          "events": 4
+        },
+        "claims": 3,
+        "gate_step": "methods figures"
+      }
+    },
+    "taxonomy_versioning": {
+      "module": "medradar/intelligence/taxonomy.py",
+      "version": "tracks_device_2026-11",
+      "effective_from": "2026-11-03",
+      "fingerprints": "sha256 of config/product_code_tracks.json and config/tracks_list; both stored in profiles.json",
+      "tests": "tests/test_taxonomy.py (10)",
+      "purpose": "a product-code remap is visible as a regime change rather than as a technology change"
+    }
+  },
+  "detection_layer": {
+    "status": "promotion rule CONFIRMED on fresh origins (post-discovery confirmation)",
+    "artifact": "experiments/b026/spike_vs_shift.json",
+    "design": "research/DECISIONS.md D-040 (pre-registered), D-041 (outcome)",
+    "scale": {
+      "cells": 329,
+      "eligible": 65,
+      "injections": 171,
+      "alerts": 151
+    },
+    "pre_registered": {
+      "balanced_accuracy": 0.394,
+      "ci": [
+        0.361,
+        0.438
+      ],
+      "sustained_precision": 0.764,
+      "sustained_precision_ci": [
+        0.727,
+        0.811
+      ],
+      "sustained_base_rate": 0.728,
+      "spike_recall": 0.171,
+      "ramp_recall": 0.151
+    },
+    "posthoc_window_fix": {
+      "balanced_accuracy": 0.608,
+      "ci": [
+        0.552,
+        0.659
+      ],
+      "sustained_precision": 0.94,
+      "sustained_precision_ci": [
+        0.903,
+        0.978
+      ],
+      "spike_recall": 0.829,
+      "ramp_recall": 0.17,
+      "status": "POST-HOC, not confirmed"
+    },
+    "reading": "binary spike-vs-sustained promotion becomes useful (0.94 precision vs 0.73 base rate) once the pulse is excluded from the confirmation window; ramp-vs-level is not recoverable at this counting rate",
+    "not_claimed": "shape recovery is a property of the time series, never of the technology",
+    "confirmation": {
+      "artifact": "experiments/b026/confirm_window.json",
+      "decision": "research/DECISIONS.md D-042 (pre-registration), D-043 (outcome)",
+      "alerts": 494,
+      "balanced_accuracy": 0.584,
+      "ci": [
+        0.556,
+        0.607
+      ],
+      "sustained_precision": 0.914,
+      "precision_ci": [
+        0.892,
+        0.934
+      ],
+      "sustained_base_rate": 0.696,
+      "spike_recall": 0.787,
+      "ramp_recall": 0.142,
+      "verdict": "CONFIRMED by the pre-declared rule",
+      "scope": "binary promotion decision only; three-way ramp/level not recovered",
+      "caveat": "post-discovery confirmation - fresh injection months, same 65 cells"
+    },
+    "confirmation_entity_level": {
+      "artifact": "experiments/b026/confirm_entity_cells.json",
+      "decision": "research/DECISIONS.md D-047 (pre-registration), D-048 (outcome)",
+      "entity_cells": 6841,
+      "eligible": 191,
+      "scored_alerts": 1196,
+      "balanced_accuracy": 0.594,
+      "ci": [
+        0.583,
+        0.616
+      ],
+      "sustained_precision": 0.917,
+      "precision_ci": [
+        0.909,
+        0.941
+      ],
+      "sustained_base_rate": 0.705,
+      "spike_recall": 0.785,
+      "ramp_recall": 0.117,
+      "verdict": "CONFIRMED AT ENTITY LEVEL",
+      "reading": "not an aggregation artefact; still not an independent sample because entity cells nest inside company cells"
+    },
+    "ramp_limitation": {
+      "artifact": "experiments/b026/window_tradeoff.json",
+      "decision": "research/DECISIONS.md D-050 (pre-registration), D-051 (outcome)",
+      "windows_months": [
+        1,
+        2,
+        3,
+        4,
+        6
+      ],
+      "best_ramp_recall": {
+        "company": 0.229,
+        "entity": 0.128
+      },
+      "precision_range": [
+        0.862,
+        0.937
+      ],
+      "qualifying_windows": [],
+      "metric_trap": "balanced accuracy is highest at the one-month window because it can never see a ramp forming; class-specific recall is the metric that matters",
+      "consequence": "policy stays at two months; three-way shape classification is recorded as NOT AVAILABLE at this counting rate rather than as a tuning problem",
+      "product": "both limits are in limits_and_provenance and asserted by two tests"
+    },
+    "second_domain": {
+      "artifact": "experiments/b026/validate_hiring_domain.json",
+      "decision": "research/DECISIONS.md D-052 (pre-registration), D-053 (outcome)",
+      "domain": "archived job-posting lane (Internet Archive CDX)",
+      "domain_choice_evidence": {
+        "trial_lane_eligible_cells": 5,
+        "hiring_series_eligible": 8
+      },
+      "alerts": 43,
+      "balanced_accuracy": 0.593,
+      "ci": [
+        0.503,
+        0.806
+      ],
+      "sustained_precision": 0.929,
+      "precision_ci": [
+        0.872,
+        1.0
+      ],
+      "sustained_base_rate": 0.794,
+      "interval_width": 0.128,
+      "verdict": "CONSISTENT",
+      "scope": "transfers once to a different recording process; not a second confirmation, no portability beyond this domain, registry error rates remain the policy numbers"
+    },
+    "third_unit": {
+      "artifact": "experiments/b026/validate_track_domain.json",
+      "decision": "research/DECISIONS.md D-056 (pre-registration), D-057 (outcome)",
+      "unit": "technology track (monthly counts summed across companies)",
+      "series": 38,
+      "alerts": 297,
+      "balanced_accuracy": 0.559,
+      "ci": [
+        0.514,
+        0.605
+      ],
+      "sustained_precision": 0.889,
+      "precision_ci": [
+        0.851,
+        0.925
+      ],
+      "sustained_base_rate": 0.69,
+      "ramp_recall": 0.396,
+      "verdict": "CONSISTENT at market-aggregate level"
+    },
+    "ramp_density_gradient": {
+      "artifact": "experiments/b026/validate_track_domain.json",
+      "observations": [
+        {
+          "unit": "entity x track",
+          "density": 0.05,
+          "ramp_recall": 0.117
+        },
+        {
+          "unit": "company x track",
+          "density": 0.2,
+          "ramp_recall": 0.142
+        },
+        {
+          "unit": "company job postings",
+          "density": "2.9-98",
+          "ramp_recall": 0.3
+        },
+        {
+          "unit": "technology track aggregate",
+          "density": 2.3,
+          "ramp_recall": 0.396
+        }
+      ],
+      "status": "observational gradient - density and unit type vary together; needs a controlled down-sampling test before being called a law"
+    },
+    "density_experiment": {
+      "artifact": "experiments/b026/density_experiment.json",
+      "decision": "research/DECISIONS.md D-058 (pre-registration), D-059 (outcome)",
+      "design": "binomial thinning of 38 dense track series at factors 1,2,5,10,20",
+      "ramp_recall": {
+        "1": 0.44,
+        "2": 0.415,
+        "5": 0.3,
+        "10": 0.318,
+        "20": 0.222
+      },
+      "spearman_rho": 0.882,
+      "precision_range": [
+        0.885,
+        0.927
+      ],
+      "monotone": false,
+      "intervals_disjoint": false,
+      "verdict": "NOT SUPPORTED as pre-registered",
+      "reading": "effect size halves with density and rank correlation is 0.88, but two of three gates fail narrowly; scaling stays suggestive, not established",
+      "preregistration_defect": "strict monotonicity across five noisy point estimates is brittle; a rank-correlation plus effect-size criterion is the right test (B-064)"
+    },
+    "density_confirmation": {
+      "artifact": "experiments/b026/density_confirm.json",
+      "decision": "research/DECISIONS.md D-060 (revised pre-registration), D-061 (outcome)",
+      "seeds": {
+        "thinning": 7171,
+        "origins": 8181,
+        "bootstrap": 9191
+      },
+      "rho": 0.908,
+      "ramp_recall": {
+        "1": 0.444,
+        "2": 0.402,
+        "5": 0.321,
+        "10": 0.214,
+        "20": 0.204
+      },
+      "effect_ratio": 2.18,
+      "verdict": "CONFIRMED under the revised criterion on fresh draws",
+      "disclosure": "revised after D-059 failed a stricter gate; must be described that way"
+    },
+    "seasonality": {
+      "artifact": "experiments/b074/seasonality.json",
+      "decision": "research/DECISIONS.md D-072 (pre-registration), D-073 (outcome)",
+      "month_factors": {
+        "january": 0.891,
+        "february": 0.891,
+        "march": 1.118,
+        "spread_max_over_min": 1.255
+      },
+      "permutation": {
+        "p_value": 0.0005,
+        "permutations": 2000,
+        "exceedances": 0
+      },
+      "boundary": {
+        "quarter_start": 1.058,
+        "quarter_end": 1.054
+      },
+      "adjustment_effect": {
+        "cell_months_changed": 9,
+        "cell_months_total": 39151,
+        "zero_share": 0.918
+      },
+      "alert_rate": {
+        "raw": 0.009,
+        "adjusted": 0.009,
+        "opportunities": 9870,
+        "alerts": 89
+      },
+      "verdict": "alert rate is an upper bound; the correction cannot reduce it",
+      "no_detector_change": true
+    }
+  },
+  "observe_layer": {
+    "deployment_resolution_months": 3,
+    "resolution_justification": "quarterly portfolio-decision cadence; monthly resolution leaves ~0.2 events per cell-month where detectors cannot resolve a change",
+    "deployed_detector": "rolling_zscore (resolution-specific choice, not a ranking claim)",
+    "artifact": "experiments/b039/deployment_resolution.json",
+    "decision": "research/DECISIONS.md D-044 (pre-registration), D-045 (outcome)",
+    "at_deployment_resolution": {
+      "rolling_zscore": {
+        "sensitivity": 0.147,
+        "ci": [
+          0.112,
+          0.182
+        ],
+        "delay_months": 2
+      },
+      "poisson_bayes_factor": {
+        "sensitivity": 0.073,
+        "ci": [
+          0.051,
+          0.096
+        ],
+        "delay_months": 0
+      },
+      "poisson_cusum": {
+        "sensitivity": 0.065,
+        "ci": [
+          0.036,
+          0.102
+        ],
+        "delay_months": 3
+      },
+      "naive_multiplier": {
+        "sensitivity": 0.025,
+        "ci": [
+          0.011,
+          0.042
+        ],
+        "delay_months": 2
+      }
+    },
+    "identifiability": {
+      "winners_by_width": {
+        "1": "naive_multiplier",
+        "2": "poisson_cusum",
+        "3": "rolling_zscore",
+        "4": "poisson_cusum",
+        "6": "rolling_zscore"
+      },
+      "kendall_tau_vs_deployment": {
+        "1": -1.0,
+        "2": 0.0,
+        "4": 0.33,
+        "6": 0.67
+      },
+      "identifiable": false,
+      "rule": "same winner everywhere AND all tau >= 0.5"
+    },
+    "carry_forward": "every artifact using the detector must state resolution: 3 months; a change of resolution requires re-measurement (at monthly the same detector ranks last)"
+  },
+  "audit": {
+    "tool": "tools/audit_objectives.py",
+    "artifacts": [
+      "research/AUDIT.json",
+      "research/AUDIT.md"
+    ],
+    "last_result": {
+      "passed": 11,
+      "failed": 0,
+      "not_applicable": 1
+    },
+    "not_applicable_reason": "working tree is expected to be dirty while a cycle is in progress",
+    "checks": [
+      "state files",
+      "backlog integrity",
+      "state completeness",
+      "loop evidence",
+      "committed experiments",
+      "snapshots verify",
+      "rolling-origin benchmark",
+      "frozen forecasts",
+      "paper claims",
+      "figures",
+      "profile self-check",
+      "working tree"
+    ],
+    "purpose": "completeness and reproducibility, not correctness: it cannot prove the science is right, only that the artifacts exist, verify and are committed"
+  },
+  "governance_routine": {
+    "tool": "tools/round_end.py",
+    "artifacts": [
+      "tools/round_end.json",
+      "tools/round_end.log"
+    ],
+    "steps": [
+      "test suite",
+      "paper claim map",
+      "paper figures",
+      "profile self-check",
+      "snapshot chain",
+      "objective audit",
+      "repository state",
+      "figure layout"
+    ],
+    "last_result": {
+      "passed": 10,
+      "failed": 0
+    },
+    "lesson": "unittest writes its summary to stderr and per-step marker extraction is required; a generic keyword heuristic reported the wrong line on the first attempt",
+    "rule": "a round is not finished until this command exits 0",
+    "layout_check": {
+      "tool": "papers/check_layout.py",
+      "classes": [
+        "text outside the canvas",
+        "text painted over by a later filled shape"
+      ],
+      "tests": "tests/test_check_layout.py (7, incl. injected defects and a committed-figures assertion)",
+      "calibration": "character width ratio 0.50 after 0.56 produced three false alarms; the estimate errs toward over-width, so a clean pass is meaningful and a failure needs a glance",
+      "limits": "does not replace a rendered review: contrast, text-on-text overlap and other SVG features are still the render's job"
+    }
+  },
+  "evaluation": {
+    "pipeline_rolling_origin": {
+      "artifact": "experiments/b067/promotion_rolling_origin.json",
+      "decision": "research/DECISIONS.md D-064 (pre-registration), D-065 (outcome)",
+      "alerts": 68,
+      "promoted": 35,
+      "unpromoted": 33,
+      "control_cell_quarters": 4594,
+      "rates": {
+        "promoted": 0.8,
+        "unpromoted": 0.667,
+        "control": 0.373
+      },
+      "difference": 0.133,
+      "difference_ci": [
+        -0.074,
+        0.344
+      ],
+      "verdict": "NO ADDED VALUE by the pre-declared rule",
+      "reading": "alerts carry information about persistence; the two-month filter's marginal contribution is unestablished and underpowered because spikes are rare by design"
+    }
+  },
+  "forecasts": {
+    "module": "medradar/intelligence/forecasts.py (18 tests)",
+    "registrar": "experiments/b068/register_forecasts.py",
+    "maturer": "experiments/b068/maturate_forecasts.py (refuses a modified set by content hash)",
+    "prospective_set": {
+      "path": "research/forecasts/FORECAST_SET_2026-11-03_prospective.json",
+      "count": 25,
+      "promoted": 13,
+      "not_promoted": 12,
+      "backfilled_excluded": 7,
+      "earliest_maturation": "2026-Q4",
+      "hash": "09525994e7b6ae12",
+      "can_count_as_evidence": true
+    },
+    "original_set": {
+      "path": "research/forecasts/FORECAST_SET_2026-11-03.json",
+      "count": 32,
+      "matured_at_registration": 7,
+      "score_on_backfilled": {
+        "brier": 0.337,
+        "accuracy": 0.429,
+        "log_loss": 0.896
+      },
+      "can_count_as_evidence": false,
+      "reason": "a forecast registered after its outcome is known is a label, not a forecast"
+    },
+    "rule": "register only alerts whose outcome window is entirely in the future; report backfilled alerts separately"
+  },
+  "completion_position": {
+    "deliverables_satisfied": {
+      "persistent research state": "research/ (11 required files) - audit PASS",
+      "observe_question_hypothesize_implement_experiment_evaluate_record_improve loop": "67 decisions, 136 result rows (27 negative/null), 2 retractions marked - audit PASS",
+      "verifiable code": "910 tests; selftest exit 0; every artifact re-derivable",
+      "point-in-time datasets": "6 auditable snapshots, 0 leakage problems",
+      "rolling-origin benchmarks": "376 cells, 12 origins, 717 observations",
+      "frozen forecasts": "2 hash-verified sets; 25 genuinely prospective forecasts pending maturation",
+      "papers": "2 papers with machine-verified claim maps (82 + 22 claims)"
+    },
+    "remaining_not_code": [
+      "25 prospective forecasts mature 2026-Q4..2028-Q1 (no prospective calibration claim before that)",
+      "25 legacy registry nowcasts mature 2027-10",
+      "one promotion awaits a human signature the session cannot give",
+      "patents and broad-hiring lanes blocked on access",
+      "hiring coverage structurally unavailable for three deep-case companies"
+    ],
+    "statement": "the objective's deliverable list is satisfied and machine-checked; what remains is time- and access-dependent, which is stated in ROADMAP.md section 3 rather than simulated"
+  },
+  "data_availability": {
+    "artifact": "experiments/b073/lane_inventory.json",
+    "tables": {
+      "events": 55090,
+      "financial_facts": 43420,
+      "market_bars": 95725,
+      "publication_counts": 616,
+      "procurement_awards": 3453,
+      "company_identifiers": 34,
+      "horizon_forecasts": 25
+    },
+    "conclusion": "five open backlog items that need financial, market or publication data are not blocked; the only new block is B-014, which needs a human adjudicator",
+    "warning": "the programme retracted one 'data unavailable' conclusion as a collector bug (D-029); count the store before recording a block"
+  },
+  "completion": {
+    "verified_at": "2026-11-03",
+    "branch": "research/change-detection-v1",
+    "main_untouched": "7a639f7",
+    "audits": {
+      "round_end": "10 steps, 0 failures",
+      "final_audit": "10 of 10 verifiers pass; 4 of 4 artifacts reproduced identically",
+      "objective_audit": "11 PASS / 0 FAIL / 1 N/A of 12",
+      "tests": "913 tests, selftest exit 0"
+    },
+    "record": {
+      "decisions": 74,
+      "result_rows": 152,
+      "negative_rows": 27,
+      "snapshots": 6,
+      "forecast_sets": 2,
+      "prospective_forecasts": 25,
+      "claims": 88,
+      "methods_claims": 25,
+      "cycle_reports": 43,
+      "commits_on_branch": 157
+    },
+    "deliverables_satisfied": true,
+    "remaining_not_rounds": [
+      "25 prospective forecasts mature 2026-Q4..2028-Q1",
+      "25 legacy registry nowcasts mature 2027-10",
+      "one promotion awaits a human signature",
+      "patents and broad hiring blocked on external access",
+      "B-014 needs a human adjudicator"
+    ],
+    "not_claimed": [
+      "predictive skill over technology (zero matured prospective forecasts)",
+      "visibility into intent, capability or internal R&D",
+      "generalisability of the density scaling beyond this corpus",
+      "submission-readiness of either paper (drafts; rendered figure review outstanding)"
+    ],
+    "report": "research/COMPLETION_REPORT.md",
+    "audit_artifact": "research/FINAL_AUDIT.json"
+  }
+}

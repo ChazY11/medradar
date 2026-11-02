@@ -100,13 +100,13 @@ HORIZONS: tuple[int, ...] = (1, 5, 20)
 INTRADAY_RANGE = "7d"
 INTRADAY_INTERVAL = "1m"
 
-#: Timestamp qualities that may enter the replay (SCHEMA §9: only ``unknown`` is
-#: excluded; ``estimated`` is usable but explicitly flagged in the timeline).
-QUALITY_ALLOWED = ("datetime", "date", "estimated")
+#: Only observed public timestamps may enter the replay. Estimated, unknown and
+#: missing timestamps remain available for descriptive industry analysis.
+QUALITY_ALLOWED = ("datetime", "date")
 QUALITY_ZH = {
     "datetime": "精确时间戳",
     "date": "仅日期（按当日收盘后可用）",
-    "estimated": "估算时间",
+    "estimated": "估算时间（不进回放）",
     "unknown": "未知（不进回放）",
 }
 
@@ -271,9 +271,10 @@ def _resolve_available_at(row: Mapping[str, Any]) -> tuple[datetime | None, str]
     """Resolve the instant this signal may first be acted on.
 
     Priority: ``events.available_at`` → ``events.published_at`` → payload JSON
-    keys → ``event_date`` → ``signal_date``. A day-precision value is expanded to
-    the end of its day; ``timestamp_quality='unknown'`` is returned so the caller
-    can exclude the row (SCHEMA §9).
+    keys. There is deliberately no ``event_date`` fallback: a decision date is
+    not proof of when the record became public. A day-precision value is expanded
+    to the end of its day; estimated/unknown quality is returned as ``unknown``
+    so every caller excludes it from trading (SCHEMA §9).
     """
     raw: Any = None
     for key in ("available_at", "published_at"):
@@ -287,11 +288,7 @@ def _resolve_available_at(row: Mapping[str, Any]) -> tuple[datetime | None, str]
     quality_raw = str(row.get("timestamp_quality") or "").strip().lower()
     moment, precise = _parse_moment(raw)
     if moment is None:
-        day = parse_date(row.get("event_date")) or parse_date(row.get("signal_date"))
-        if day is None:
-            return None, "unknown"
-        moment, precise = _end_of_day(day), False
-        quality = "estimated"
+        return None, "unknown"
     else:
         if quality_raw in ("datetime", "date", "estimated", "unknown"):
             quality = quality_raw
@@ -299,7 +296,7 @@ def _resolve_available_at(row: Mapping[str, Any]) -> tuple[datetime | None, str]
             # Older DBs without the column: a real timestamp is datetime,
             # otherwise be honest and call it estimated.
             quality = "datetime" if precise else "estimated"
-    if quality == "unknown":
+    if quality not in ("datetime", "date"):
         return moment, "unknown"
     if quality != "datetime" or not precise:
         moment = _end_of_day(moment.date())
@@ -689,15 +686,14 @@ def _event_select_columns(db: Any) -> str:
 
 
 def _available_sql(db: Any) -> str:
-    """SQL expression for the first instant an event row can be acted on."""
+    """SQL expression for an observed public instant, never the decision date."""
     event_columns = _table_columns(db, "events")
     parts = [
         f"NULLIF({column}, '')"
         for column in ("available_at", "published_at")
         if column in event_columns
     ]
-    parts.append("NULLIF(event_date, '')")
-    return "COALESCE(" + ", ".join(parts) + ")"
+    return "COALESCE(" + ", ".join(parts) + ")" if parts else "NULL"
 
 
 def _event_price_universe(db: Any) -> tuple[dict[str, str], set[str]]:
@@ -2198,7 +2194,7 @@ def _simulate(
             "by_quality": dict(quality_counts),
             "allowed": list(QUALITY_ALLOWED),
             "excluded": len(filtered),
-            "policy": "只能使用 available_at 之前的信息；timestamp_quality=unknown 的事件不进入回放",
+            "policy": "只能使用真实 available_at 且 timestamp_quality=datetime/date 的事件；缺失、estimated、unknown 均不进入回放",
         },
         "audit": {
             "fill_after_available": entered,

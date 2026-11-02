@@ -10,10 +10,12 @@ MedRadar turns free public FDA data into a weekly, quantified, Chinese-language 
 brief: which technology tracks are heating up, which majors are quietly re-allocating their
 portfolio, what appeared for the first time, and where China still has a gap.
 
-> **Built entirely with DeepSeek Harness using Chinese domestic models (`deepseek-flash`).**
-> Every line of code, every data pull and every commit in this repository was produced by the
-> DeepSeek Harness agent team (1 Lead + 8 specialist agents) — no other model was used.
-> Details: [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md).
+> The stable core through `v0.2.2` was built with DeepSeek Harness using `deepseek-flash`.
+> The research foundation (`medradar/tkg`, `forecast_registry`) and the Market-to-R&D lane were
+> authored in independent Kimi Code sessions; `v0.3.0` consolidates their branches after an
+> independent forensic audit and defect-fix pass. Authorship is recorded per increment in
+> [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md) and the merge/audit/fix decisions in
+> [docs/INTEGRATION_2026-11-02.md](docs/INTEGRATION_2026-11-02.md).
 
 > 中文文档 → [README.zh-CN.md](README.zh-CN.md) · Methodology → [docs/METHODS.md](docs/METHODS.md)
 
@@ -27,15 +29,21 @@ portfolio, what appeared for the first time, and where China still has a gap.
 | Coverage | 89 companies, 60 tracks, **204 device product families**, 7,097 product codes, **1.2 GiB SQLite** |
 | Strongest track right now | 心脏节律 THI 1.94 (P=98.2%) · 可穿戴监测 1.80 · 结构性心脏病 1.57 · 手术机器人 1.54 |
 | Signals emitted | 281 (→ tradable subset) |
-| Case library | **2,384 traceable cases** (verbatim evidence + 1/5/20/60-day reactions): 943 approvals · 379 CRLs · 1,062 trial readouts, 3,700+ evidence quotes |
+| Case library | The historical snapshot contains **2,384 traceable cases**; v0.3.0 recomputes studies under the corrected taxonomy and extreme-return audit instead of carrying forward old category counts |
 | Replay | **400-step, 7-year timeline** (2019–2026) with 10/25/50 bps cost tiers; 1-minute fills for the last 7 days |
-| Event study (20d, direction-aligned, winsorised, **Holm over the 12-test family**) | approval +2.8% (CI 0.9–4.8, **Holm p=0.007 → significant**) · CRL −3.8% (CI −6.7–−0.8, Holm p=0.060 → borderline, not significant) · trial −0.3% (n.s.) |
+| Frontier radar | **50 device tracks across 23 domains**; AdCom schedules/materials, first-posted trials, pre-submissions and designations in one feed |
+| Research integrity | Clinical holds, RTF, CRL, pre-submissions and designations are separate; absolute abnormal returns above 100% are audited and excluded from inference |
+| Market-to-R&D | **6,701 continuation + 41,003 dormant→active entry examples** (25/24 quarterly origins) from 55,090 FDA events + 43,420 SEC facts + 3,453 procurement awards; purged multi-window evaluation and a 7-source ablation, honest negative result (below) |
+| Research infrastructure | Bitemporal knowledge store (valid time vs knowledge time) and an immutable forecast registry with as-of scoring; deterministic point-in-time export |
+| Forecast cycle | Canonical registry with a separate `nowcast` cohort; continuous cycle registers 25 real forecasts, verifies matured windows, exports a deterministic artifact; idempotent re-run |
+| Temporal graph | 55,090 events imported read-only → **57,381 nodes / 114,419 edges**; PIT snapshot hash stable, idempotent re-import, read-only pair context/timeline queries |
+| Research agent | Deterministic 8-tool workflow with cited evidence, 5 question templates, conflict detection and counter-evidence; real demo: 5 questions / 55 claims / 224 unique citations / 0 missing |
 | Simulated book | in-sample, long-only, not investment advice |
-| Tests | **440 offline tests**, no network, no API key |
+| Tests | **678 offline tests**, no network, no API key |
 | Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |
 | Products | 204 families, **2,740 Chinese product names** |
 | Research | event-time model, point-in-time signals, block bootstrap, Holm correction |
-| Timing scope | **all 375k events are date-level** (`timestamp_quality=date`); minute-level timing exists only for the live EDGAR lane / last-7-day replay, so minute-level studies are explicitly out of scope |
+| Timing scope | Public-time quality is explicit (`datetime` / `date` / `estimated` / `unknown`). Only real `datetime`/`date` availability enters return studies; historical decision dates without a public timestamp remain descriptive only |
 | Database | 1.2 GiB SQLite, 1966–2026 drug approvals, 1999–2026 trials |
 | Calibration | 25 hand-labelled real 8‑Ks: type accuracy **1.00 vs 0.60**, direction **0.92 vs 0.72** for the LLM judge |
 
@@ -73,6 +81,7 @@ medradar dashboard                       # rebuild docs/dashboard.html from the 
 
 | Question | Metric | Output |
 |---|---|---|
+| What happens before approval? | AdCom meetings/materials, first-posted trials, pre-submissions and designations | `out/frontier.json` + `out/frontier.md` |
 | Which device tracks are accelerating? | `THI` — shrinkage-adjusted recent rate ÷ baseline rate | Track heat table |
 | Is a specific major changing direction? | Jensen-Shannon divergence of its product-code mix | Migration table ("who is re-allocating") |
 | What is genuinely new? | First-ever `(company, product_code)` occurrences | "First seen" weekly list + product-family radar |
@@ -80,6 +89,29 @@ medradar dashboard                       # rebuild docs/dashboard.html from the 
 | Is pharma shifting therapeutic focus? | Trial-start rates + phase mix per area | Drug radar |
 | Where is the China gap? | US activity share vs loaded NMPA registrations | `cn_gap` table (honest `unavailable` when no CN data) |
 | Does any of it predict equity returns? | Event study: direction-aligned abnormal returns at +1/+5/+20/+60, block bootstrap + Holm | [Case library](docs/CASES.md) + `out/trading.json` (simulation only) |
+
+## Frontier lane: public signals before approval
+
+```bash
+python -m medradar collect --sources adcom,trials --months 24
+python -m medradar frontier
+```
+
+The frontier feed combines FDA Advisory Committee schedules and briefing materials, first-posted
+clinical trials, pre-submissions and breakthrough/priority designations from SEC filings. Its 50
+tracks cover life support (ventilation, ECMO, oxygen, resuscitation, monitoring), IVD (NGS, liquid
+biopsy, MRD, companion diagnostics, microbiology, digital pathology), BCI, neuromodulation,
+cardiovascular, imaging, robotics, SaMD/AI, renal and diabetes.
+
+This is public-source monitoring, not a pending-application oracle. Non-public 510(k)/PMA review
+status is confidential, so the machine-readable output explicitly sets
+`pending_510k_pma_monitoring=false` rather than manufacturing a pipeline from decision dates.
+
+**Known limitation (2026-11):** FDA renders the Advisory Committee calendar rows client-side, so a
+static fetch currently parses zero meetings. `collect --sources adcom` therefore returns
+`status="empty"`/`"source_changed"` with a warning instead of a silent `"ok"`, and the source is
+marked experimental in [docs/DATA.md](docs/DATA.md). The other frontier inputs (first-posted trials,
+8-K pre-submissions/designations) are unaffected.
 
 ## Live lane: event alerts + simulated trading (5–15 min)
 
@@ -191,7 +223,8 @@ Everything is resumable: every HTTP response is cached under `data/cache/`, ever
 re-run on its own.
 
 ```bash
-python -m medradar collect --sources device,drug,trials --months 120
+python -m medradar collect --sources device,drug,trials,adcom --months 120
+python -m medradar frontier --out-dir out
 python -m medradar analyze --window-quarters 8 --baseline-quarters 20
 python -m medradar report
 python -m medradar trade --capital 100000
@@ -209,7 +242,8 @@ python -m medradar selftest        # offline, no network
 | openFDA `device/classification` | ~6.5k product codes → regulated definitions | static |
 | openFDA `drug/drugsfda` | NDA/BLA/ANDA review & approvals, 29k | T−2d |
 | ClinicalTrials.gov API v2 | trial registrations (drug **and** device) | posted ≤21 days after enrollment starts |
-| SEC EDGAR full-text search | 8-K / CRL event stream (optional) | near real time |
+| FDA Advisory Committee Calendar | Public meetings, agendas and briefing materials | page-date estimates; descriptive only |
+| SEC EDGAR full-text search | 8-K regulatory, clinical and designation event stream (optional) | near real time |
 
 **NMPA (China) is deliberately not scraped.** `www.nmpa.gov.cn` answers HTTP 412 and `www.cmde.org.cn`
 HTTP 202 behind a JavaScript WAF. MedRadar ships an honest adapter instead: drop a CSV export at
@@ -236,7 +270,7 @@ Full definitions, assumptions and threats to validity: [docs/METHODS.md](docs/ME
 
 | Guarantee | How it is enforced |
 |---|---|
-| **No lookahead** | every event carries `available_at` + `timestamp_quality`; backtests only read `available_at`, and `unknown` timestamps never trade |
+| **No lookahead** | every event carries public-time metadata; return studies require real `available_at` plus `datetime`/`date` quality, while `estimated`/`unknown` and missing timestamps are counted and excluded |
 | **Point-in-time features** | the "is this new?" test and the track-popularity boost use only history published before the event |
 | **Honest latency** | EDGAR seconds, FDA RSS days, openFDA 12 days — each source is labelled with what it can actually support |
 | **Cost sensitivity** | replay reports 10 / 25 / 50 bps tiers instead of a single flattering number |
@@ -244,6 +278,125 @@ Full definitions, assumptions and threats to validity: [docs/METHODS.md](docs/ME
 | **Survivorship** | tickers without price coverage are flagged, not silently dropped |
 | **Reproducible calibration** | `medradar.calibration` replays recorded LLM responses by content fingerprint; drift makes the score script fail |
 | **Assumption registry** | every modelling assumption is listed with status in [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md) |
+| **Bitemporal separation** | every TKG assertion carries `valid_time` and a knowledge time (`recorded_at`); as-of queries never return a fact whose knowledge time is later than the cutoff, and corrections never resurrect old revisions |
+| **Immutable forecasts** | the forecast registry is physically append-only (SQL triggers reject UPDATE/DELETE and key-rebind INSERT-OR-REPLACE); corrections are new versions; scoring uses only forecasts/resolutions known by `as_of` |
+| **Purged evaluation** | rolling-origin training uses only examples whose 12-month label window closed at or before the origin; the old leaky-label numbers are kept as a labelled diagnostic block, not as headline results |
+| **Independent leakage replay** | the Market-to-R&D audit re-derives all 21 features from the source tables through a separate as-of SQL path and compares them with the stored values (6,701 examples / 140,721 values / 0 mismatches), instead of re-reading a self-declared field |
+| **Naive baselines** | every forecast comparison includes constant / company / track / per-pair historical base-rate baselines with a paired bootstrap CI |
+| **Semantics guards** | SEC revenue stays consolidated company facts (never product sales); USAspending amounts are obligations, not revenue, and the current snapshot is excluded from historical gain claims |
+
+## Market-to-R&D / Horizon forecasting
+
+The research lane adds SEC XBRL Company Facts, USAspending awards, official openFDA bulk ingestion,
+point-in-time company–track examples, purged rolling-origin Reverse R&D baselines and a persistent
+12-month forecast registry. It predicts **future public R&D/regulatory milestones**, not stock
+returns and not the unobservable date internal research began.
+
+```bash
+pip install -e '.[bulk]'          # only extra: ijson, for streaming the official openFDA ZIPs
+python -m medradar.intelligence.pipeline collect --source fda --months 120
+python -m medradar.intelligence.pipeline collect --source sec
+python -m medradar.intelligence.pipeline collect --source procurement --start-date 2016-01-01
+python -m medradar.intelligence.pipeline research --horizon 12
+```
+
+### Frozen real-data runs (rebuilt 2026-11-02)
+
+**v1** (`experiments/reverse_rd_v1/`): 55,090 in-window FDA events · 43,420 SEC facts over 32
+companies · 3,453 procurement awards (obligations, 0 point-in-time usable) · 6,701 examples over 25
+quarterly origins · holdout 2025-10-01 (307 rows / 129 positives).
+
+**v2** (`experiments/reverse_rd_v2/`): purged multi-window evaluation (3 chronological holdouts
+2025-04 / 2025-07 / 2025-10) plus a harder **dormant→active track-entry** target — 41,003 examples
+over 24 origins, 503 positives (1.23% base rate), with an explicit left-censoring statement.
+
+| Holdout 2025-10-01 | Continuation (307 rows / 129 pos) | Entry (1,716 rows / 26 pos) |
+|---|---:|---:|
+| PR-AUC, R&D only | 0.7935 | 0.1139 |
+| PR-AUC, + consolidated financials | 0.7922 | 0.1163 |
+| Brier, R&D only / + financials | 0.1721 / 0.1721 | 0.0143 / 0.0143 |
+| ECE-10, R&D only / + financials | 0.0811 / 0.0737 | 0.0041 / 0.0046 |
+
+**Source ablation (A–G on identical purged rows, 3 windows).** Market features (8, from the local
+daily price lane), OpenAlex publication features (5) and consolidated financials were each added on
+top of the R&D-only baseline. **No added source produces a statistically detectable ranking gain.**
+On continuation every marginal PR-AUC delta is negative (financial −0.0013, market −0.0015,
+publication −0.0001, all −0.0068) while the all-source model improves calibration (ECE 0.0811→0.0628)
+and FPR (0.2753→0.2472) — better calibrated, not better ranking. On entry the final holdout favours
+the shared-only baseline over the entry-specific/new-feature specifications, while the three-window
+mean favours the richer specs; the differences sit inside the 0.014–0.026 window std, so they are not
+a stable effect. Procurement is excluded (its snapshot is not point-in-time usable) and patents were
+**not evaluated** (USPTO Open Data Portal requires an API key); hiring is deferred. The continuation
+headline is still mostly persistence: a per-pair base-rate baseline scores AP 0.7913 vs the model's
+0.7935 (Δ +0.0022, 95% CI [−0.032, +0.037]).
+
+```bash
+pip install -e '.[bulk]'          # only extra: ijson, for streaming the official openFDA ZIPs
+python -m medradar.intelligence.pipeline collect --source fda --months 120
+python -m medradar.intelligence.pipeline collect --source sec
+python -m medradar.intelligence.pipeline collect --source procurement --start-date 2016-01-01
+python -m medradar.intelligence.pipeline collect --source market --prices-db /path/to/base-medradar/data/medradar.sqlite
+python -m medradar.intelligence.pipeline collect --source publications
+# v1 aggregates
+python -m medradar.intelligence.pipeline research --horizon 12
+# v2: entry dataset + multi-window metrics, then one cell per source specification
+python experiments/reverse_rd_v2/run_v2.py --db data/medradar.sqlite --holdouts 3
+python experiments/reverse_rd_v2/run_ablation.py --db data/medradar.sqlite --target continuation --spec C --out cells/continuation_C.json
+python experiments/reverse_rd_v2/merge_ablation.py --cells cells --out experiments/reverse_rd_v2/ablation_metrics.json
+```
+
+A separate two-layer research foundation sits under this lane: a **bitemporal knowledge store**
+(`medradar/tkg`) with independent valid-time / knowledge-time queries, deterministic point-in-time
+export and a read-only `events` adapter; and an **immutable forecast registry**
+(`medradar/forecast_registry.py`) with 3/6/12/24 calendar-month windows, append-only resolutions and
+as-of Brier / log-loss / ECE evaluation.
+
+## Phase 3: closed research loop
+
+- **One forecast ledger.** The canonical registry is the system of record. It gained an immutable
+  `nowcast` record kind for forecasts registered while their window is already open (the quarterly
+  Horizon case), scored in a separate cohort and never mixed into the pure-future headline.
+  `medradar/intelligence/forecasting/registry_adapter.py` maps Horizon records through stable
+  idempotency keys and resolves matured forecasts from the real events table with coverage guards.
+- **Continuous cycle.** `scripts/forecast_cycle.py` trains the frozen model, scores the current
+  quarter, registers nowcasts, verifies matured windows and exports a deterministic artifact + cycle
+  log. Real run: 25 nowcasts registered, 25 pending (windows end 2027-10), calibration
+  `insufficient_matured_forecasts`, second run fully idempotent. A weekly GitHub workflow is
+  committed (`forecast-cycle.yml`) but was not executed here — no green run is claimed.
+- **Temporal graph.** `scripts/tkg_import_research.py` imports the 55,090-event history read-only into
+  the bitemporal store (171,800 assertions → 57,381 nodes / 114,419 edges; source hash unchanged),
+  exports a deterministic PIT snapshot and proves idempotent re-import. `graph_context.py` exposes
+  read-only pair context/timeline under independent known-time/valid-time cutoffs.
+- **Research agent.** `medradar/research_agent.py` is a deterministic, evidence-grounded workflow (not
+  a chatbot): plan → 8 point-in-time tools → evidence table → 5 conflict rules → labelled hypothesis
+  → counter-evidence → baseline/statistical validation → cited synthesis → uncertainty → research log
+  → stop condition. Every claim cites a stored id; probabilities come only from the model/registry.
+  Real demo (`experiments/reverse_rd_v2/agent_demo.json`): 5 questions, 55 claims, 224 unique cited
+  ids, 314 citation checks, 0 missing, 3 cross-source conflicts.
+
+What is **not** claimed: no matured forecast yet (calibration is `insufficient_data`), the TKG
+knowledge clock for the current import is the backfill time (not historical publication time), the
+agent narrates stored evidence rather than establishing causality, and patents/hiring remain absent
+evidence gaps. Details: [docs/PHASE3.md](docs/PHASE3.md), [docs/PHASE3_REGISTRY.md](docs/PHASE3_REGISTRY.md),
+[docs/PHASE3_AGENT.md](docs/PHASE3_AGENT.md), [docs/TKG_INTEGRATION.md](docs/TKG_INTEGRATION.md).
+
+```bash
+python scripts/forecast_cycle.py --db data/research.sqlite --registry data/registry.sqlite \
+  --out out/forecast_cycle --horizon 12 --top-n 25 --coverage-end 2026-10-15 --offline
+python scripts/tkg_import_research.py --db data/research.sqlite --tkg data/tkg.sqlite \
+  --known-at 2026-12-31T00:00:00Z --report-out experiments/reverse_rd_v2/tkg_import_report.json
+python -m medradar.research_agent ask --company medtronic --track spine \
+  --template market_leading_indicator --as-of 2026-11-02 \
+  --db data/research.sqlite --registry data/registry.sqlite --tkg data/tkg.sqlite
+```
+
+SEC revenue stays consolidated (never relabelled product sales). USAspending obligations are not
+revenue and its current snapshot is excluded from historical gain claims. See
+[Reverse R&D methodology](docs/REVERSE_RD.md), the [integration record](docs/INTEGRATION_2026-11-02.md),
+[docs/TKG.md](docs/TKG.md), [docs/FORECAST_REGISTRY.md](docs/FORECAST_REGISTRY.md),
+[docs/PHASE1.md](docs/PHASE1.md), [docs/PHASE2.md](docs/PHASE2.md), [docs/PHASE3.md](docs/PHASE3.md),
+and the frozen experiment configuration/results under `experiments/reverse_rd_v1/` (v1) and
+`experiments/reverse_rd_v2/` (v2 multi-window + source ablation + Phase-3 reports).
 
 ## Simulated US-equity study (not investment advice)
 
@@ -277,6 +430,11 @@ medradar/       standard-library-only package
   prices.py     Yahoo daily bars (research use)
   eventstudy.py abnormal-return study
   paper.py      simulate-only portfolio with frictions
+  tkg/          bitemporal store: valid-time vs knowledge-time, as-of query, deterministic PIT export
+  forecast_registry.py  append-only forecast ledger + as-of Brier/log-loss/ECE evaluation
+  intelligence/ Market-to-R&D lane: SEC XBRL, USAspending, openFDA bulk, PIT examples, Reverse R&D models
+  adcom.py      FDA Advisory Committee calendar (currently experimental: JS-rendered rows)
+  frontier.py   pre-approval frontier feed (AdCom + first-posted trials + 8-K pre-submissions)
 docs/           schema contract, methodology, GitHub Pages demo
 tests/          offline tests (synthetic fixtures, no network)
 ```
@@ -293,6 +451,23 @@ tests/          offline tests (synthetic fixtures, no network)
 
 ## Roadmap
 
+- [x] `v0.3.0` — consolidated research foundation (bitemporal TKG + immutable forecast registry) and
+  Market-to-R&D lane (SEC XBRL / USAspending / openFDA bulk, point-in-time dataset, purged
+  rolling-origin baseline, independent leakage replay, naive/persistence baselines)
+- [x] `v0.4.0` Phase 1 — harder target: dormant→active track entry (left-censored, documented);
+  purged multi-window evaluation (`holdouts=K`) with per-window baselines and bootstrap CIs
+- [x] `v0.4.0` Phase 2 — market features from the local daily price lane (12m return, volatility,
+  drawdown, relative SPY/XBI, regime) and OpenAlex publication features, all point-in-time; frozen
+  A–G source ablation (patents key-blocked, procurement excluded; both documented)
+- [x] `v0.5.0` Phase 3 — unified canonical registry with a separate nowcast cohort, Horizon adapter and
+  idempotent continuous forecast cycle; TKG imported from the real 55,090-event history with
+  deterministic PIT snapshots; deterministic evidence-grounded research agent with cited synthesis and
+  counter-evidence
+- [ ] Phase 3 remainder — execute the weekly workflow on GitHub once windows mature (needs ≥20 matured
+  forecasts before calibration claims); feed graph features into the models rather than only the agent
+- [ ] Phase 2 remainder — patent features once a USPTO ODP API key is available; versioned historical
+  track taxonomy instead of the current curated mapping
+- [ ] Causal designs (DiD / synthetic control) once a defensible point-in-time demand shock exists
 - [ ] NMPA CSV importer UI + province-level gap analysis
 - [ ] FDA statistical-review PDF mining (trial-design red flags straight from FDA reviewers)
 - [ ] SHAP-style attribution for "why did this track's THI move"

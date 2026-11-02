@@ -96,7 +96,7 @@ Trial starts: Teleflex (暂无数据), Insulet (暂无数据), Alnylam (暂无�
 - Timestamp quality: date 375,378; excluded from trading: 0.
 - Multiple testing: holm correction over 24 tests.
 - Survivorship flags: 3.
-- Assumption register: `docs/ASSUMPTIONS.md`.
+- Assumption register: `ASSUMPTIONS.md`.
 
 
 ## Case library (in-sample evidence)

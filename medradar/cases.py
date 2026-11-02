@@ -6,7 +6,8 @@ A case answers three questions, and every answer must be checkable:
 2. **What did the system decide at the time?** Direction and materiality using
    only information available at ``available_at`` (no hindsight).
 3. **What did the market do next?** Raw and SPY-abnormal returns at 1/5/20/60
-   trading days, so a hit and a miss are both visible.
+   trading days, computed on one adjusted-close basis (next-session adjusted
+   open in, adjusted close out) so a split/dividend is not fake alpha.
 
 The library deliberately keeps *negative examples*: a tool that only shows
 winning cases is marketing, not research.
@@ -23,9 +24,13 @@ from typing import Any, Iterable, Mapping, Sequence
 
 from .config import load_companies
 from .db import DB
+from .prices import adjusted_close, adjusted_open
 from .util import iso, parse_date, read_json, sha1, truncate, write_json
 
 HORIZONS = (1, 5, 20, 60)
+#: Absolute SPY-abnormal return above which a case is audited and excluded from
+#: inferential statistics. The unfiltered raw mean remains visible.
+EXTREME_ABNORMAL_RETURN = 1.0
 CATEGORY_DIRECTION = {
     "approval": 1,
     "trial_result": 1,   # refined below by text: "did not meet" flips it
@@ -33,6 +38,10 @@ CATEGORY_DIRECTION = {
     "deal": 0,
     "earnings": 0,
     "crl": -1,
+    "clinical_hold": -1,
+    "refuse_to_file": -1,
+    "pre_submission": 0,
+    "designation": 0,
     "safety": -1,
     "other": 0,
 }
@@ -40,6 +49,10 @@ CATEGORY_DIRECTION = {
 EVIDENCE_PATTERNS = {
     "approval": (r"fda (?:has )?approved", r"receives? fda approval", r"approval of"),
     "crl": (r"complete response letter", r"cannot approve", r"not approvable"),
+    "clinical_hold": (r"clinical hold", r"placed on hold"),
+    "refuse_to_file": (r"refus(?:e|al) to file", r"received an rtf"),
+    "pre_submission": (r"pre[- ]?submission", r"q[- ]?submission"),
+    "designation": (r"breakthrough (?:therapy|device) designation", r"priority review"),
     "trial_result": (r"met the primary endpoint", r"did not meet", r"topline results", r"primary endpoint"),
     "earnings": (r"financial results", r"revenue", r"net (?:loss|income)"),
     "safety": (r"recall", r"safety signal", r"adverse event"),
@@ -293,14 +306,22 @@ def load_corpus(path: str | Path | None = None) -> list[dict[str, Any]]:
 
 # ------------------------------------------------------------------- price maths
 def _load_price_cache(db: DB, benchmark: str) -> dict[str, list[dict[str, Any]]]:
+    """Daily quotes on the adjusted-close basis, keyed by ticker.
+
+    Both legs of every case return go through the shared price helpers:
+    ``adjusted_close`` for the exit and ``adjusted_open`` (``open * adj_close /
+    close``) for the next-session entry. Mixing a raw open with an adjusted
+    close would turn a split/dividend inside the window into fake alpha (see
+    docs/DATA.md and the audit finding B4).
+    """
     rows = db.query("SELECT ticker, date, open, close, adj_close FROM prices ORDER BY ticker, date")
     cache: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
         cache[row["ticker"]].append(
             {
                 "date": row["date"],
-                "open": row.get("open"),
-                "close": row.get("adj_close") or row.get("close"),
+                "open": adjusted_open(row),
+                "close": adjusted_close(row),
             }
         )
     return dict(cache)
@@ -314,8 +335,11 @@ def price_reaction(
 ) -> dict[str, Any]:
     """Raw and abnormal returns from the first open after ``signal_day``.
 
-    Prices are daily adjusted closes; the entry is the next session open, which
-    is one full session later than the event date (conservative, never same-day).
+    The entry is the next session open and both entry and exit are on the
+    adjusted-close basis: ``_load_price_cache`` rescales the raw open with
+    ``prices.adjusted_open`` and exits at ``prices.adjusted_close``, so a split
+    or dividend inside the holding window is not fake alpha. The entry is one
+    full session later than the event date (conservative, never same-day).
     """
     dates = [row["date"] for row in series]
     entry_index = _first_index_after(dates, iso(signal_day))
@@ -428,6 +452,10 @@ def _headline_zh(category: str, fallback: str) -> str:
     labels = {
         "approval": "FDA 批准",
         "crl": "收到 CRL",
+        "clinical_hold": "临床试验暂停",
+        "refuse_to_file": "FDA 拒绝受理",
+        "pre_submission": "FDA 预申请沟通",
+        "designation": "监管资格认定",
         "trial_result": "临床数据读出",
         "earnings": "财报",
         "safety": "安全/召回",
@@ -506,18 +534,53 @@ def event_study_summary(cases: Mapping[str, Any], horizons: Sequence[int] = HORI
     selected = list(cases.get("selected") or [])
     if not selected:
         return {}
-    result: dict[str, Any] = {"n_cases": len(selected), "by_horizon": {}}
+    result: dict[str, Any] = {
+        "n_cases": len(selected),
+        "audit": {
+            "extreme_threshold_abs_abnormal_return": EXTREME_ABNORMAL_RETURN,
+            "flagged_observations": 0,
+            "excluded_from_inference": 0,
+            "flagged_cases": [],
+        },
+        "by_horizon": {},
+    }
     categories = sorted({str(case.get("category") or "other") for case in selected})
     global_tests: list[dict[str, Any]] = []
+    flagged_case_ids: set[str] = set()
     for horizon in horizons:
         key = f"price_{horizon}d"
         per_category: dict[str, Any] = {}
         for category in categories:
-            rows = [case for case in selected if str(case.get("category") or "other") == category and case.get(key) is not None]
+            all_rows = [
+                case for case in selected
+                if str(case.get("category") or "other") == category and case.get(key) is not None
+            ]
+            extreme_rows = [
+                case for case in all_rows
+                if abs(float(case[key])) > EXTREME_ABNORMAL_RETURN
+            ]
+            rows = [case for case in all_rows if case not in extreme_rows]
+            for case in extreme_rows:
+                case_id = str(case.get("case_id") or f"{case.get('ticker')}:{case.get('date')}")
+                result["audit"]["flagged_observations"] += 1
+                result["audit"]["excluded_from_inference"] += 1
+                if case_id not in flagged_case_ids and len(result["audit"]["flagged_cases"]) < 100:
+                    flagged_case_ids.add(case_id)
+                    result["audit"]["flagged_cases"].append({
+                        "case_id": case_id,
+                        "ticker": case.get("ticker") or "",
+                        "date": case.get("date") or "",
+                        "category": category,
+                        "horizon_days": horizon,
+                        "abnormal_return": round(float(case[key]), 6),
+                        "raw_20d": case.get("raw_20d"),
+                        "review": "check adjusted prices, splits, ticker mapping and corporate actions",
+                    })
             if len(rows) < 3:
                 continue
-            # Direction-aligned: a CRL is a "win" when the stock falls. Report both
-            # the aligned series (what the signal claims) and the raw one.
+            # Direction-aligned: a CRL is a "win" when the stock falls. Extreme
+            # observations are explicitly listed and excluded; inference is not
+            # allowed to hide a broken price series behind winsorisation.
             raw_values = [float(case[key]) for case in rows]
             values = [float(case[key]) * (int(case.get("direction") or 0) or 1) for case in rows]
             blocks = [str(case.get("date") or "")[:7] for case in rows]
@@ -534,8 +597,12 @@ def event_study_summary(cases: Mapping[str, Any], horizons: Sequence[int] = HORI
             stat = t_stat(winsorised)
             per_category[category] = {
                 "n": len(values),
+                "raw_n": len(all_rows),
+                "extreme_n": len(extreme_rows),
+                "excluded_n": len(extreme_rows),
                 "mean": round(mean(winsorised), 6),
                 "raw_mean": round(mean(raw_values), 6),
+                "unfiltered_raw_mean": round(mean([float(case[key]) for case in all_rows]), 6),
                 "median": round(median(values), 6),
                 "p10": round(ordered[max(0, int(0.10 * (len(ordered) - 1)))], 6),
                 "p90": round(ordered[min(len(ordered) - 1, int(0.90 * (len(ordered) - 1)))], 6),

@@ -9,6 +9,7 @@ __pycache__/
 .venv/
 venv/
 build/
+.audit/
 dist/
 .pytest_cache/
 .mypy_cache/
@@ -23,3 +24,6 @@ dist/
 Thumbs.db
 
 # NOTE: docs/ IS committed on purpose - it hosts the GitHub Pages demo site.
+
+# cycle-2 per-row prediction dumps: regenerable intermediates, not aggregates (~7 MB)
+experiments/**/pred_*.json
