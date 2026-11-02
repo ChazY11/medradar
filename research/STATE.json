@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-02T18:30:00+08:00",
+  "updated_at": "2026-11-02T19:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "data_acquisition_priority",
-  "cycle": 10,
+  "phase": "data_acquisition_blocked_on_coverage",
+  "cycle": 11,
   "last_completed_cycle": {
-    "cycle": 8,
-    "name": "split_sample_test_and_thread_closure",
+    "cycle": 9,
+    "name": "hiring_lane_feasibility",
     "branch": "research/change-detection-v1",
-    "report": "experiments/detect_v1/aesthetics_holdout.json",
-    "summary": "research/RESULTS/cycle8_holdout_2026-11-02.md",
-    "verdict": "no entry-clustering claim survives: the aesthetics candidate is not nominated by a clean early-window design and its apparent split-sample replication used the holdout; under the clean design 3 tracks nominated and 0 confirmed. The entry-clustering thread is closed as a null."
+    "report": "experiments/b030/REPORT.md",
+    "summary": "research/RESULTS/cycle9_hiring_2026-11-02.md",
+    "verdict": "a lawful, keyless, genuinely historical hiring proxy was built from the Wayback CDX archive, but only 2 of 16 probed firms pass the pre-declared usability floor, so the company-level lag question is unrun rather than answered"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -113,7 +113,10 @@
     "OBSERVE: the entry-clustering thread is CLOSED AS NULL - under a clean split-sample design 3 tracks are nominated and 0 replicate; no device track shows an industry entry wave",
     "OBSERVE: the aesthetics candidate failed as post-hoc selection (its apparent replication used the holdout; it is not nominated by the early window)",
     "OBSERVE: holdout power for entry clustering is 0.25/0.52/0.95 at 30/50/70% wave concentration, so the null excludes strong clustering only",
-    "METHOD: a holdout cannot confirm a hypothesis that was nominated with its help; nomination and confirmation must use disjoint data"
+    "METHOD: a holdout cannot confirm a hypothesis that was nominated with its help; nomination and confirmation must use disjoint data",
+    "OBSERVE: a lawful, keyless, genuinely historical hiring proxy exists (Wayback CDX index) and a bounded collector builds a monthly panel from it",
+    "OBSERVE: hiring coverage is thin - 2 of 16 probed device firms pass the pre-declared usability floor; the company-level hiring/regulatory lag question is unrun, not answered",
+    "ACCESS: PatentsView bulk is 403 (key required) and the Common Crawl index returns persistent 504"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -125,15 +128,16 @@
     "bulk lane availability = decision_date + 14 days (estimated), date-level not first-publication"
   ],
   "blockers": [
-    "dense per-cell independent signal: hiring and patents remain uncollected (B-030, B-031); the trial lane exists but is too sparse at cell level for association testing",
+    "hiring lag question: coverage too thin (B-030 blocked; unblock via B-047 career-domain mapping)",
+    "independent change confirmation: trial lane exists but is too sparse at cell level (cycle 5)",
+    "patents: no key and no accessible bulk route (B-031)",
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "B-030: attempt a lawful, point-in-time hiring source - the densest remaining independent signal and the one that would change information content rather than the estimator",
-    "B-031: patents via bulk files or a key (second declared gap)",
-    "B-027: company technology-profile engine (Understand layer, does not depend on a positive clustering result)",
+    "B-047: per-company career-domain mapping + platform-change audit + CDX deep-paging fix, then run the pre-registered hiring lag test",
+    "B-027: company technology-profile engine (Understand layer; does not depend on a positive clustering or hiring result)",
     "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there",
-    "stop re-specifying clustering tests on the current lane (recorded reason in D-027)"
+    "B-031: revisit patents only if an accessible bulk route is identified"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -347,5 +351,27 @@
     },
     "reading": "no evidence of replication, not proven absence; the holdout can rule out strong clustering only",
     "why_stop": "three cycles of re-specifying clustering tests on one sparse filing stream is the unlimited algorithm trial-and-error the mission forbids; the limit is information content, not the statistic"
+  },
+  "hiring_lane": {
+    "status": "FEASIBILITY PARTIAL - source obtained, coverage too thin",
+    "source": "Wayback Machine CDX API (public archive, index only, keyless)",
+    "rejected_routes": {
+      "patentsview_bulk_s3": "403 Forbidden - credentials required",
+      "common_crawl_index": "persistent 504 Gateway Time-out"
+    },
+    "proxy": "distinct job-posting URLs whose earliest archive capture falls in a month",
+    "panel": "experiments/b030/hiring_panel.json",
+    "coverage": {
+      "firms_probed": 16,
+      "firms_with_postings": 6,
+      "firms_usable": 2,
+      "usable_keys": [
+        "bd",
+        "boston_scientific"
+      ]
+    },
+    "why_not_a_result": "the pre-registered lag test rests on 2 companies and the proxy's sign is uninterpretable because capture gaps and regulatory gaps can align",
+    "deliberately_not_done": "the usability floor was NOT loosened to raise the sample - that is the specification search closed by D-027",
+    "unblock_path": "B-047: per-company career-domain mapping + platform-change audit + CDX deep-paging fix"
   }
 }

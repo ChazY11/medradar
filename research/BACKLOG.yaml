@@ -397,3 +397,19 @@ tasks:
       2023-01..2026-09 with the threshold untouched. A failure is the expected outcome and must be
       reported as such; a success is the programme's first verified empirical finding.
 
+
+
+  - id: B-047
+    layer: observe
+    priority: P0
+    title: Career-domain mapping, platform-change audit, and CDX deep-paging fix for the hiring lane
+    status: todo
+    owner: lead
+    depends_on: [B-030]
+    acceptance: >
+      (1) Resolve each curated device company's real career domain(s) rather than guessing hosts -
+      eight firms returned no archived postings under the probed patterns. (2) Detect per-company
+      posting-URL-scheme changes and flag any level shift that coincides with a migration as a
+      collection artifact. (3) Fix CDX deep paging so Medtronic's 15-page index is fully collected
+      instead of 31 postings. Only then re-run the pre-registered hiring lag test (D-028) and report
+      it, with the usability floor unchanged.

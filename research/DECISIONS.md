@@ -866,3 +866,92 @@ gaps that would change the information content (hiring B-030, patents B-031), an
 layer deliverable that does not depend on a positive clustering result (company technology profile,
 B-027). Continuing to re-specify clustering tests on the same lane would be exactly the "unlimited
 trial-and-error by changing the algorithm" that the mission forbids.
+
+---
+
+## D-028 — B-030 hiring panel: lawful source identified, construction and tests pre-declared
+
+**Date:** 2026-11-02. **Status:** accepted. Written while the first panel build was running, before
+any association was computed.
+
+**Source selection, measured rather than assumed.** Three candidate lawful routes were probed:
+
+| route | probe result |
+|---|---|
+| PatentsView bulk (S3) | **403 Forbidden** — requires credentials; patents remain blocked |
+| Common Crawl index API | **persistent 504 Gateway Time-out** from this network, even for `example.com` |
+| **Wayback Machine CDX API** | **works, keyless**, and job-posting URLs with real slugs are archived (Medtronic: 15 index pages of `jobs.medtronic.com/job/*`) |
+
+The Wayback route is used: public web archive, index only (no page content is fetched), bounded and
+rate-limited queries. It satisfies the mission's requirement of a source with **genuine historical
+point-in-time availability** — the archive predates our analysis by years, so no part of the signal
+is manufactured by our own collection.
+
+**Proxy and its honest meaning.** For each company's career domain, we take each distinct
+job-posting URL's **earliest archive capture month** and count new postings per month. This is a
+*posting-flow proxy*, not a headcount: it counts postings the archive happened to capture, so it
+measures hiring activity up to (a) archive coverage of that site, (b) URL-scheme stability, and
+(c) crawl cadence. All three are reported, not assumed away.
+
+**Pre-declared analyses (in this order).**
+1. **Coverage and validity.** Which companies yield ≥20 distinct postings; months with data; and a
+   platform-change check — a step change in the monthly series that coincides with a URL-scheme
+   change is a collection artifact, not a hiring change.
+2. **Association with regulatory activity**, company level (hiring domains identify companies, not
+   legal sub-entities). Lags −6 … +12 months, positive lag = hiring leads regulatory activity.
+   Statistic and inference as in D-022: pooled lag profile, null from circular shifts of the hiring
+   series, and the same power caveat.
+3. **Prediction, stated so it can fail:** if hiring reflects R&D team expansion before filings, the
+   profile should peak at positive lags (hiring leading by roughly 3–12 months). A flat profile means
+   the two lanes carry unrelated information at company level; a peak at negative lags would suggest
+   the proxy is capturing backfill after approvals, which is a different (and weaker) claim.
+
+**What this cannot support even if positive.** Hiring intensity is not R&D spending, not technical
+team composition, and not evidence of intent; and the proxy's coverage is a sample of captured
+postings. Any claim is about *posted hiring activity as archived*, nothing more.
+
+---
+
+## D-029 — B-030 outcome: a lawful historical hiring signal exists, but coverage is too thin to test the lag question
+
+**Date:** 2026-11-02. **Status:** accepted. Closes B-030 as a **feasibility partial**, not a result.
+
+**What was achieved.** Three lawful routes were probed and two were closed on access grounds:
+PatentsView bulk returns **403** (credentials required) and the Common Crawl index returns **persistent
+504s**. The **Wayback Machine CDX API works keyless** and archives real job-posting URLs — Medtronic's
+`jobs.medtronic.com/job/*` alone spans 15 index pages with postings back to 2010. A bounded,
+rate-limited collector now builds a monthly posting-flow panel, committed as
+`experiments/b030/hiring_panel.json` with full provenance. This is the first time the programme has a
+genuinely historical, independent hiring signal in hand rather than a declared gap.
+
+**What the coverage actually is.** 16 device firms probed: 6 yielded posting URLs, and **only 2 pass
+the pre-declared usability floor** (≥50 postings, ≥24 months with postings, ≤50 % silent months):
+`bd` (2,408 postings, 60 months) and `boston_scientific` (2,065, 88 months). Eight firms have no
+archived postings under the probed hosts at all.
+
+**Why the lag profile is not a finding.** The pre-registered lag test (D-028) was run and its output
+is committed, but it rests on **two** companies, so the pooled profile is close to an average of two
+correlations with no usable standard error. Its values are uniformly negative, and that sign is **not
+interpretable**: the proxy counts only postings the archive happened to capture, so capture gaps and
+regulatory gaps can align for reasons unrelated to hiring. Reported as an unrun question with its
+machinery built, not as a null result about hiring.
+
+**What was deliberately NOT done.** The usability floor admits 2 companies and I did **not** loosen it
+to increase the sample. Adjusting eligibility after seeing that it excludes most of the data is the
+same specification search that D-027 closed for the entry thread; it would produce a number that looks
+like a result and is not one.
+
+**What would actually unblock it** (recorded as B-047):
+1. **Per-company career-domain mapping** — several focus companies returned nothing because their
+   career sites live on hosts the patterns did not guess (Philips, GE HealthCare, Dräger, Mindray,
+   Abbott, Zimmer Biomet, Masimo, Hologic). This is a discovery problem, not a statistical one.
+2. **Platform-change audit** — career sites migrate between posting-URL schemes; a migration creates a
+   level shift that is a collection artifact and must be detected per company before any level-shift
+   claim.
+3. **Archive-depth handling** — CDX deep paging did not yield Medtronic's full 15 pages under the
+   current parameterisation, so its series stays shallow; this is an implementation defect to fix, not
+   a property of the source.
+
+**Honest position.** The hiring lane exists, is lawful, is historical, and is currently too thin for
+the company-level lag question it was collected for. B-030 therefore moves to `blocked` with a measured
+reason and a concrete unblock path, in the same way B-033 did before B-040 resolved it by collection.
