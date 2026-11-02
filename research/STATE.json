@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T09:40:00+08:00",
+  "updated_at": "2026-11-03T10:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "product_carries_validated_detector",
-  "cycle": 24,
+  "phase": "promotion_rule_confirmed_two_units",
+  "cycle": 25,
   "last_completed_cycle": {
-    "cycle": 22,
-    "name": "deployment_detector_in_product",
+    "cycle": 23,
+    "name": "entity_level_confirmation",
     "branch": "research/change-detection-v1",
-    "report": "experiments/b027/profiles.json",
-    "summary": "research/RESULTS/cycle22_product_2026-11-03.md",
-    "verdict": "the profile's momentum field now carries the validated detector (quarterly rolling z-score, threshold 3.5, FAR 0.018, sensitivity 0.147) with the measured rates printed inside the profile; 44 profile tests; selfcheck enforces the detector, resolution, threshold and FAR statement; the promotion rule stays manual"
+    "report": "experiments/b026/confirm_entity_cells.json",
+    "summary": "research/RESULTS/cycle23_entity_confirm_2026-11-03.md",
+    "verdict": "the promotion rule CONFIRMS at the legal-entity unit too: balanced accuracy 0.594 (CI 0.583-0.616), sustained precision 0.917 (CI 0.909-0.941) vs a 0.705 base rate, essentially identical to the company-level result - so it is not an aggregation artefact; entity cells nest inside company cells, so this is not an independent sample, and ramp recall stays at 0.117"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -149,7 +149,9 @@
     "OBSERVE: deployment resolution fixed at 3 months (quarterly), justified by the decision cadence and by the measured sparsity ceiling",
     "OBSERVE: at quarterly resolution the rolling z-score is significantly best (0.147, CI 0.112-0.182; no overlap with the other three) but NO detector is identifiable across resolutions (Kendall tau -1.0 against the monthly ranking), so the choice is resolution-specific",
     "UNDERSTAND: the validated deployment detector now runs inside every profile with its measured false-alarm rate and sensitivity printed in the profile itself, not in a methods note",
-    "UNDERSTAND: on real data the quarterly detector returns sparse, thin alerts (Medtronic: two events against a 0.25 baseline) - calibrated is not the same as substantial, and the profile says so beside the alert"
+    "UNDERSTAND: on real data the quarterly detector returns sparse, thin alerts (Medtronic: two events against a 0.25 baseline) - calibrated is not the same as substantial, and the profile says so beside the alert",
+    "DETECT: the promotion rule confirms at the legal-entity unit with essentially identical numbers (balanced accuracy 0.594 vs 0.584; sustained precision 0.917 vs 0.914), so it is not an artefact of the curated-company unit",
+    "DETECT: entity cells nest inside company cells, so the confirmation narrows the caveat rather than removing it; three-way shape recovery still fails (ramp recall 0.117 at both units)"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -167,10 +169,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "B-055: confirm the promotion rule on fresh cells (requires a larger eligible-cell set)",
     "decide the promotion policy explicitly (manual review vs automated) before wiring D-043",
+    "freeze a new dated snapshot carrying the deployment block so point-in-time diffs include alerts",
     "second-domain validation before calling any of this portable",
-    "extend the profile snapshot chain with the deployment block (new as-of snapshot)"
+    "consider whether ramp detection needs a longer confirmation window and report the trade-off"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -812,6 +814,28 @@
       "verdict": "CONFIRMED by the pre-declared rule",
       "scope": "binary promotion decision only; three-way ramp/level not recovered",
       "caveat": "post-discovery confirmation - fresh injection months, same 65 cells"
+    },
+    "confirmation_entity_level": {
+      "artifact": "experiments/b026/confirm_entity_cells.json",
+      "decision": "research/DECISIONS.md D-047 (pre-registration), D-048 (outcome)",
+      "entity_cells": 6841,
+      "eligible": 191,
+      "scored_alerts": 1196,
+      "balanced_accuracy": 0.594,
+      "ci": [
+        0.583,
+        0.616
+      ],
+      "sustained_precision": 0.917,
+      "precision_ci": [
+        0.909,
+        0.941
+      ],
+      "sustained_base_rate": 0.705,
+      "spike_recall": 0.785,
+      "ramp_recall": 0.117,
+      "verdict": "CONFIRMED AT ENTITY LEVEL",
+      "reading": "not an aggregation artefact; still not an independent sample because entity cells nest inside company cells"
     }
   },
   "observe_layer": {

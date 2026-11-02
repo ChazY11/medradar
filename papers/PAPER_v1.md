@@ -314,6 +314,15 @@ were fresh. This is a post-discovery confirmation, weaker than confirming an a-p
 not rescue any earlier finding: the five retractions and the rolling-origin null stand. It says nothing about
 whether a promoted change is technological.
 
+*Second unit.* To test whether the rule is an artefact of the curated-company unit, the same confirmatory
+design was run at the **legal-entity × track** unit instead: 6,841 entity cells, 191 eligible, three fresh
+origins each, 1,196 scored alerts. The result matches: balanced accuracy **0.594** (95 % CI 0.583–0.616) and
+sustained-change precision **0.917** (95 % CI 0.909–0.941) against a **0.705** base rate — a difference of
+0.010 and 0.003 from the company-level confirmation. A rule that survives at a unit five times finer with the
+same accuracy is not an aggregation artefact. It is still **not an independent sample**: entity cells nest
+inside company cells, which is why the caveat narrows rather than disappears. Ramp recall falls to **0.117**,
+so the three-way limitation holds at both units.
+
 ---
 
 ## 4.10 Figures

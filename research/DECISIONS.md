@@ -1770,3 +1770,83 @@ in `STATE.json` as an available, measured rule for the Understand layer to use.
 **Not claimed.** That these alerts are technology changes; that two-event alerts are actionable on their own;
 or that the quarterly detector is the best possible — only that it is the one measured to be deployable at
 this resolution.
+
+---
+
+## D-047 — Pre-registration: confirm the promotion rule at the legal-entity unit (B-055)
+
+**Date:** 2026-11-03. **Status:** accepted; written before `experiments/b026/confirm_entity_cells.py` was
+first run.
+
+**Why.** D-043 confirmed the corrected promotion rule on fresh injection months but the **same 65
+company-level cells**, and the paper carries that caveat. The natural next test is a **different unit of
+analysis**: the legal entity rather than the curated company. Each company cell aggregates one to thirty
+entities, so entity-level cells are finer, more numerous, and exercise a different aggregation.
+
+**What is fresh and what is not — stated before the run.** Entity cells are **not independent** of company
+cells: every entity belongs to a company, and a company's discoveries are the sum of its entities'. This
+test therefore does **not** establish independence; it establishes whether the rule depends on the level of
+aggregation. That distinction is the honest scope of the result, whatever it shows.
+
+**Fixed design.**
+
+* Unit: (legal entity, technology track) monthly series from the same frozen lane.
+* Eligibility, unchanged from D-040: at least 24 months of history and a baseline rate admitting an
+  increase (≥0.15 events per month).
+* Injection: same three shapes at three times the cell's baseline rate, three fresh origins per cell, seed
+  4040, guard band not applicable (no entity-level discovery run exists).
+* Detector and classifier: identical to D-042 — alert when the three-month rate reaches twice the
+  eighteen-month baseline; classify from the two months **after** the alert, excluding the alert month.
+* Estimands: 3×3 confusion matrix, balanced accuracy, sustained-change precision and recall; company-clustered
+  bootstrap over the **company** of each entity (2,000 replications), because entities in one company share
+  that company's filing behaviour.
+* **Decision rule, identical to D-042:** CONFIRMED iff sustained-change precision ≥ 0.85 AND balanced accuracy
+  ≥ 0.50 AND the bootstrap lower 95 % bound on precision exceeds the sustained base rate measured here.
+
+**Possible outcomes and what each means.** Confirmation at entity level would show the rule is not an
+artefact of company aggregation. Non-confirmation would show it is **company-level only**, which must then be
+stated wherever the rule is used, and the product's alert machinery (which is company-level today) would be
+unaffected. A partial pattern (precision clears, balanced accuracy does not) is reported as "binary promotion
+confirmed at entity level, three-way classification not".
+
+**Never claimed.** That entity-level confirmation makes the rule portable to another corpus, another
+resolution, or another country's regulatory lane.
+
+---
+
+## D-048 — B-055 outcome: the promotion rule also holds at the legal-entity unit; the result is no longer an artefact of company aggregation
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-055.
+
+**What ran.** The D-047 confirmatory design at a different unit of analysis: **(legal entity × track)**
+monthly series instead of (curated company × track). **6,841** entity cells, **191** eligible under the
+unchanged floors, three fresh origins per cell (seed 4040), same shapes, magnitudes, detector and classifier;
+bootstrap clustered by the entity's **company** because entities in one firm share filing behaviour.
+
+**Result: 1,196 scored alerts, CONFIRMED at entity level.**
+
+| truth \ predicted | spike | level | ramp | recall |
+|---|---:|---:|---:|---:|
+| spike | 277 | 39 | 37 | **0.785** |
+| level | 0 | 373 | 50 | 0.882 |
+| ramp | 3 | 368 | 49 | 0.117 |
+
+* balanced accuracy **0.594** (95 % CI 0.583–0.616), floor 0.50 → pass
+* sustained-change precision **0.917** (95 % CI 0.909–0.941), floor 0.85 → pass
+* sustained base rate **0.705**; CI lower bound 0.909 exceeds it → pass
+
+The numbers are almost identical to the company-level confirmation (0.584; 0.914): balanced accuracy differs
+by 0.010 and precision by 0.003. A rule that survives at a unit **five times finer** with essentially the same
+accuracy is not an aggregation artefact.
+
+**What this does and does not establish.** It establishes that the two-month promotion rule is not dependent
+on the curated-company unit: it holds when the same filings are counted per legal entity. It does **not**
+establish independence — entity cells nest inside company cells, so the estimate is not a second independent
+sample, and the pre-registration says so. It also does not fix the scope limit: **ramp recall falls to
+0.117**, so three-way shape recovery remains unrecovered at either unit.
+
+**Consequence for the claim.** `STATE.json` now records the rule as confirmed at **both** units, and the
+paper's caveat can be narrowed from "same cells" to "a nested unit, not an independent sample". The product's
+alert machinery is unaffected because it operates at the company level, which is the unit already confirmed.
+
+**Not claimed.** Portability to another corpus, another resolution, or another regulatory lane.

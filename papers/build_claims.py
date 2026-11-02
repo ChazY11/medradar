@@ -99,6 +99,12 @@ CLAIMS = [
     # ---- product integration (cycle 22)
     ("V1", "deployment false-alarm rate stated in profiles", "0.018", "research/DECISIONS.md", "**0.018**"),
     ("V2", "profile test count after the deployment block", "44", "research/RESULTS/cycle22_product_2026-11-03.md", "44 tests"),
+    # ---- entity-level confirmation (cycle 23)
+    ("W1", "entity-level balanced accuracy", "0.594", "research/DECISIONS.md", "0.594"),
+    ("W2", "entity-level sustained precision", "0.917", "research/DECISIONS.md", "0.917"),
+    ("W3", "entity-level sustained base rate", "0.705", "research/DECISIONS.md", "0.705"),
+    ("W4", "entity-level ramp recall", "0.117", "research/DECISIONS.md", "0.117"),
+    ("W5", "eligible entity cells", "191", "research/DECISIONS.md", "191"),
 ]
 
 
