@@ -110,6 +110,11 @@ CLAIMS = [
     ("X2", "second-domain sustained precision", "0.929", "research/DECISIONS.md", "0.929"),
     ("X3", "second-domain sustained base rate", "0.794", "research/DECISIONS.md", "0.794"),
     ("X4", "eligible hiring series in the second domain", "eight of thirteen", "research/DECISIONS.md", "Eight of thirteen"),
+    # ---- market-aggregate validation (cycle 29)
+    ("Y1", "market-aggregate balanced accuracy", "0.559", "research/DECISIONS.md", "0.559"),
+    ("Y2", "market-aggregate sustained precision", "0.889", "research/DECISIONS.md", "0.889"),
+    ("Y3", "market-aggregate ramp recall", "0.396", "research/DECISIONS.md", "0.396"),
+    ("Y4", "tracks eligible at market-aggregate level", "38", "research/DECISIONS.md", "38 tracks, all eligible"),
 ]
 
 

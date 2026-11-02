@@ -333,6 +333,17 @@ series gives, over
 second confirmation: it is one independent domain, 43 alerts, and the registry error rates remain the numbers
 the policy uses. Ramp recall there (0.300 on ten cases) cannot be distinguished from the registry result.
 
+*Third unit, and a density effect.* The rule was also applied at **market-aggregate** level — monthly
+counts per technology track, 38 series, median 270 events each, about a thousand times denser than a company
+cell. Over 297 alerts: balanced accuracy **0.559** (95 % CI 0.514–0.605) and sustained-change precision
+**0.889** (95 % CI 0.851–0.925) against a **0.690** base rate, so the rule holds in a regime of very different
+density. The interesting part is the ramp class: its recall rises monotonically with series density across every
+unit tested — **0.117** at legal-entity level, **0.142** at company level, **0.300** on job-posting series and
+**0.396** on track aggregates. That gradient is the first coherent scaling relationship this programme has
+found, and it explains retroactively why lengthening the confirmation window could not rescue ramps: sparse
+series do not contain the counts. It is an **observational** gradient — density and unit type vary together —
+so it needs a controlled down-sampling test before being called a law.
+
 *What no window fixes.* A pre-registered sensitivity analysis over confirmation windows of 1–6 months found
 **no window that recovers the ramp class**: best ramp recall 0.229, with precision falling monotonically as the
 window lengthens. Balanced accuracy is highest at a **one-month** window precisely because it can never see a

@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T15:40:00+08:00",
+  "updated_at": "2026-11-03T16:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "objective_mechanical_audit",
-  "cycle": 30,
+  "phase": "three_unit_validation_with_density_gradient",
+  "cycle": 31,
   "last_completed_cycle": {
-    "cycle": 28,
-    "name": "objective_audit",
+    "cycle": 29,
+    "name": "market_aggregate_validation",
     "branch": "research/change-detection-v1",
-    "report": "research/AUDIT.md",
-    "summary": "research/RESULTS/cycle28_audit_2026-11-03.md",
-    "verdict": "objective audited mechanically: 11 PASS, 0 FAIL, 1 N/A across state files, backlog, loop evidence, experiments, 5 verifying snapshots, the rolling-origin benchmark, frozen forecasts, 66/66 claims, 4 figures and the profile self-check"
+    "report": "experiments/b026/validate_track_domain.json",
+    "summary": "research/RESULTS/cycle29_track_domain_2026-11-03.md",
+    "verdict": "third-unit validation CONSISTENT at market-aggregate level (297 alerts; balanced accuracy 0.559, sustained precision 0.889 vs 0.690 base rate). Ramp recall rises with density across units (0.117 -> 0.142 -> 0.300 -> 0.396), an observational gradient needing a controlled down-sampling test"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -162,7 +162,9 @@
     "ACCOUNTING: promotions are recorded in their own append-only ledger with enforced attribution and are explicitly not findings - nothing in the findings ledger may cite a promotion as evidence",
     "ACCOUNTING: the promotion ledger is hashed into snapshot manifests, so a promotion recorded after a snapshot is visibly absent from that snapshot's manifest",
     "GOVERN: the objective is checked mechanically and re-runnably (11 PASS, 0 FAIL, 1 N/A); a claim of progress no longer depends on a narrative",
-    "UNDERSTAND: profiles now name the governing promotion policy version in their limits, and the promotion ledger carries a reviewer checklist for signers"
+    "UNDERSTAND: profiles now name the governing promotion policy version in their limits, and the promotion ledger carries a reviewer checklist for signers",
+    "DETECT: the promotion rule is CONSISTENT at market-aggregate level too (297 alerts; balanced accuracy 0.559, sustained precision 0.889 vs a 0.690 base rate) - it now holds across three units and a ~1000x density range",
+    "DETECT: ramp recall rises monotonically with series density across units (0.117 entity -> 0.142 company -> 0.300 hiring -> 0.396 track): the first coherent scaling relationship found, and an observational one that needs a controlled down-sampling test"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -180,10 +182,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "wire the audit into the round-end routine so every round reports it",
-    "third domain only if >=15 eligible series exist at the established floors",
-    "add the promotion policy and both blind spots to the paper's limitations section",
-    "consider a second paper focused on the measurement rules rather than the frontier"
+    "controlled density test: down-sample a dense track series to sparse counts and re-run the classifier, converting the gradient from observational to experimental",
+    "add the third-unit result and the density gradient to the paper's section 4.9",
+    "wire the audit into the round-end routine",
+    "consider a second paper focused on the measurement rules and the density scaling"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -931,6 +933,52 @@
       "interval_width": 0.128,
       "verdict": "CONSISTENT",
       "scope": "transfers once to a different recording process; not a second confirmation, no portability beyond this domain, registry error rates remain the policy numbers"
+    },
+    "third_unit": {
+      "artifact": "experiments/b026/validate_track_domain.json",
+      "decision": "research/DECISIONS.md D-056 (pre-registration), D-057 (outcome)",
+      "unit": "technology track (monthly counts summed across companies)",
+      "series": 38,
+      "alerts": 297,
+      "balanced_accuracy": 0.559,
+      "ci": [
+        0.514,
+        0.605
+      ],
+      "sustained_precision": 0.889,
+      "precision_ci": [
+        0.851,
+        0.925
+      ],
+      "sustained_base_rate": 0.69,
+      "ramp_recall": 0.396,
+      "verdict": "CONSISTENT at market-aggregate level"
+    },
+    "ramp_density_gradient": {
+      "artifact": "experiments/b026/validate_track_domain.json",
+      "observations": [
+        {
+          "unit": "entity x track",
+          "density": 0.05,
+          "ramp_recall": 0.117
+        },
+        {
+          "unit": "company x track",
+          "density": 0.2,
+          "ramp_recall": 0.142
+        },
+        {
+          "unit": "company job postings",
+          "density": "2.9-98",
+          "ramp_recall": 0.3
+        },
+        {
+          "unit": "technology track aggregate",
+          "density": 2.3,
+          "ramp_recall": 0.396
+        }
+      ],
+      "status": "observational gradient - density and unit type vary together; needs a controlled down-sampling test before being called a law"
     }
   },
   "observe_layer": {

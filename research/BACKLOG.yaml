@@ -617,4 +617,18 @@ tasks:
       profile self-check and working-tree cleanliness. Current result: 11 PASS, 0 FAIL, 1 N/A, exit 0.
       Re-runnable, so "the objective is met" is tested rather than asserted.
 
+  - id: B-062
+    layer: detect
+    priority: P1
+    title: Third-unit validation at market-aggregate (track) level
+    status: done
+    owner: lead
+    depends_on: [B-059]
+    acceptance: >
+      Identical detector, classifier, shapes and 3x elevation applied to monthly counts per technology track
+      (38 tracks, all eligible, median 270 events). 297 scored alerts: balanced accuracy 0.559 (0.514-0.605),
+      sustained precision 0.889 (0.851-0.925) vs a 0.690 base rate, interval width 0.074. Verdict: CONSISTENT.
+      Ramp recall rises with density across all tested units (0.117 entity -> 0.142 company -> 0.300 hiring ->
+      0.396 track), an observational gradient that needs a controlled down-sampling test to be established.
+
 

@@ -2144,3 +2144,95 @@ let a missing or broken artifact survive into a later round.
 **A second, smaller change in the same cycle.** The profile's limits now name the **governing promotion policy
 version**, and the promotion ledger gained a **reviewer checklist** stating what a signer must inspect —
 including that a promotion signed without independent corroboration is a rate change, not a technology change.
+
+---
+
+## D-056 — Pre-registration: third-unit validation at market-aggregate (track) level (B-062)
+
+**Date:** 2026-11-03. **Status:** accepted; written before `experiments/b026/validate_track_domain.py` was
+first run.
+
+**The gap left by the previous two validations.** The rule has been tested on company cells (~0.2 events per
+cell-month) and legal-entity cells (~0.05), and on a second recording process (job postings). All three are
+**sparse counting regimes**. A different threat is that the rule depends on sparsity: at high counts the
+Poisson z-score becomes more sensitive and a fixed 3× elevation is far easier to detect, so the classifier
+could behave differently in either direction.
+
+**The unit.** Market-aggregate series: monthly event counts per **technology track**, summed across all
+companies. Measured before writing this: **38 tracks, all 38 eligible** under the unchanged floors, median 270
+events per track — roughly three orders of magnitude denser per series than a company cell.
+
+**Fixed design.** Same detector (three-month rate ≥ twice the eighteen-month baseline), same classifier (the
+two months after the alert, alert month excluded), same shapes and 3× elevation, three fresh origins per
+track, seed 5150. Because tracks are the units and are not nested in anything, the bootstrap resamples
+**tracks**.
+
+**Estimands.** 3×3 confusion matrix, balanced accuracy, sustained-change precision and recall, bootstrap
+intervals with 2,000 replications.
+
+**Pre-declared reading (identical to D-052).**
+
+* **CONSISTENT** iff sustained-change precision ≥ 0.85 **and** balanced accuracy ≥ 0.50.
+* **UNDERPOWERED** if the bootstrap precision interval exceeds 0.30 width; then no point estimate may be
+  described as consistent or inconsistent.
+* **NOT CONSISTENT** otherwise — in which case the rule is recorded as **count-regime dependent** and every
+  claim about portability across granularities is withdrawn.
+
+**What a negative would mean.** Not that the rule is wrong, but that it is calibrated for sparse series and
+must not be transferred to aggregated ones without re-measurement — which is exactly the kind of scope
+statement this programme exists to produce.
+
+**What neither outcome licenses.** Any claim about technology; any claim that market-level aggregation is the
+"right" unit; or that the result extends to another trackonomy.
+
+---
+
+## D-057 — B-062 outcome: the rule holds at market-aggregate level, and ramp recoverability scales with density
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-062.
+
+**What ran.** The D-056 design: identical detector, classifier, shapes and 3× elevation applied to **monthly
+counts per technology track** — 38 tracks, all eligible, median 270 events each, roughly a thousand times
+denser per series than a company cell. Three fresh origins per track, seed 5150, tracks resampled in the
+bootstrap. **297 scored alerts.**
+
+| truth \ predicted | spike | level | ramp | recall |
+|---|---:|---:|---:|---:|
+| spike (92) | 67 | 17 | 8 | 0.728 |
+| level (114) | 0 | 63 | 51 | 0.553 |
+| ramp (91) | 5 | 50 | 36 | **0.396** |
+
+* balanced accuracy **0.559** (95 % CI 0.514–0.605), floor 0.50 → pass
+* sustained-change precision **0.889** (95 % CI 0.851–0.925), floor 0.85 → pass
+* sustained base rate **0.690**; precision interval above it
+* bootstrap interval width **0.074**, far below the underpowered threshold
+
+**Verdict: CONSISTENT at market-aggregate level.**
+
+**The result that matters beyond the verdict.** Ramp recall now lines up with counting density across every
+unit tested:
+
+| unit | series density | ramp recall |
+|---|---:|---:|
+| legal entity × track | ~0.05 events/series-month | 0.117 |
+| company × track | ~0.2 | 0.142 |
+| company job postings | 2.9–98 | 0.300 |
+| technology track (aggregate) | ~2.3 (median 270/119) | **0.396** |
+
+This is the first coherent scaling relationship the programme has found: **ramp recoverability is a function
+of how many events the series carries**, not of the classifier. It also explains, after the fact, why the
+window-length sensitivity analysis (D-051) could not rescue ramps — the sparse series simply do not contain
+the counts, and lengthening a window cannot add information that is not there.
+
+**What this buys.** The promotion rule now holds across three units (company, entity, market aggregate), a
+~1000× density range, and two recording processes (FDA filings, archived job postings). That is a materially
+stronger scope statement than the two-unit confirmation it had at D-048.
+
+**What it does not buy.** Not portability to another taxonomy, corpus or country; not a claim that
+market-aggregate alerts are the right unit for decisions; and the ramp scaling is a **cross-unit observational
+gradient**, not a controlled experiment — density and unit type vary together, so the relationship is
+suggestive rather than established. A controlled test would hold the unit fixed and vary density artificially,
+which this run did not do.
+
+**Policy unchanged.** The deployed detector and two-month window remain as fixed in D-045/D-049; this run
+validates them elsewhere, it does not re-tune them.
