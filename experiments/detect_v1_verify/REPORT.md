@@ -129,7 +129,7 @@ A 6-month surge that a detector declares a *sustained* change is a false-change 
 | detector | declares a change | correctly does not declare | naive − candidate | 95% CI |
 |---|---:|---:|---:|---|
 | naive_multiplier | 0.168 | 0.832 | — | — |
-| rolling_zscore | 0.029 | 0.971 | — | — |
+| rolling_zscore | 0.029 | 0.971 | +0.139 | [+0.105, +0.177] |
 | poisson_cusum | 0.065 | 0.935 | +0.103 | [+0.068, +0.141] |
 | poisson_bayes_factor | 0.011 | 0.989 | +0.157 | [+0.119, +0.196] |
 
@@ -170,3 +170,18 @@ cd D:\DEPPSKK\worktrees\integration-v2
 $env:PYTHONIOENCODING="utf-8"
 python experiments/detect_v1_verify/verify.py
 ```
+
+---
+
+## Lead note (added after this audit; auditor's text above is unmodified)
+
+The prose claim audited in §3 has since been **corrected** in `experiments/detect_v1/REPORT.md`
+§5 and is no longer present there: the sentence now states that the naive detector has the highest
+detection probability **at the pre-registered 2 % budget**, that the Bayes factor has a higher
+point estimate at 1 %, and that the ordering reverses under quarterly aggregation (§5b). The audit
+is retained verbatim as the record of what was found, and it is cited in `REPORT.md` §5c and in
+DECISIONS D-019. No number in `benchmark.json` changed as a result.
+
+One scope note: this verification ran against the three **frozen** panels (track, track_clean,
+domain). It therefore speaks to the monthly claim, not to the quarterly reversal added afterwards
+in §5b, which remains independently unverified.
