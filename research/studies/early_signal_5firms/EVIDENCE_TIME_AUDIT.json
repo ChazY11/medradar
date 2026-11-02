@@ -1,0 +1,125 @@
+{
+  "schema": "evidence_time_audit_v1",
+  "generated_at_utc": "2026-11-02T17:14:21+00:00",
+  "source_tiers": {
+    "openfda_device_510k|510k": {
+      "tier": "A",
+      "reasons": [
+        "records both published_at and available_at"
+      ]
+    },
+    "openfda_device_recall|device_recall": {
+      "tier": "A",
+      "reasons": [
+        "records both published_at and available_at"
+      ]
+    },
+    "openfda_device_pma|pma": {
+      "tier": "A",
+      "reasons": [
+        "records both published_at and available_at"
+      ]
+    },
+    "ctgov|trial": {
+      "tier": "A",
+      "reasons": [
+        "records both published_at and available_at"
+      ]
+    },
+    "sec_edgar_corpus|8k_catalyst": {
+      "tier": "A",
+      "reasons": [
+        "records both published_at and available_at"
+      ]
+    },
+    "openfda_drug_drugsfda|drug_approval": {
+      "tier": "A",
+      "reasons": [
+        "records both published_at and available_at"
+      ]
+    }
+  },
+  "first_seen_at_semantics": "first_seen_at is written at collection time for these stores, so it records OUR fetch date, not the source's publication date; it therefore cannot be used as a publication timestamp",
+  "tier_b_assumptions_days": {
+    "openfda_device_510k": 30,
+    "openfda_device_pma": 30,
+    "openfda_device_recall": 30,
+    "ctgov": 30,
+    "sec_edgar_corpus": 5,
+    "openfda_device_510k_bulk": 30,
+    "openfda_device_pma_bulk": 30
+  },
+  "unresolved": [
+    "no recorded per-record publication timestamp for openFDA bulk extracts: availability must be reconstructed from the event date with a declared lag and sensitivity analysis",
+    "the roster has no company_key for draeger or mindray: their events are alias-resolved, which requires an entity-resolution audit before any firm-level claim",
+    "procurement_awards in the research lane records announcement_date/award_date as NULL for all rows and data_quality says first_publication_unknown, so that source is Tier C for this study",
+    "patents are absent from all frozen stores (upstream access blocked); no patent claim can be made",
+    "publication_counts is annual, company-level and limited to 616 rows, so it cannot supply quarterly lead-time evidence"
+  ],
+  "clock": {
+    "system_local_now": "2026-11-03T01:14:21+08:00",
+    "system_utc_now": "2026-11-02T17:14:21+00:00",
+    "timezone": "中国标准时间",
+    "git_head": "ae18f27dc602f17a3b2c2c581f1802ddbb1e1315 2026-11-02T19:22:45+08:00 Merge pull request #5 from ChazY11/research/change-detection-v1",
+    "research_doc_mtimes": {
+      "AUDIT.md": {
+        "mtime": "2026-11-03T01:12:12.316551+08:00",
+        "first_date_mention": "| profile self-check | **PASS** | snapshot 2026-11-03-policy-v2: OK (53 companies, manifest 44abde1672df...) |"
+      },
+      "COMPLETION_REPORT.md": {
+        "mtime": "2026-11-03T01:12:12.317756+08:00",
+        "first_date_mention": "**Date:** 2026-11-03 · **Branch:** `research/change-detection-v1` (`main` untouched at `7a639f7`) ·"
+      },
+      "CYCLE2_DESIGN.md": {
+        "mtime": "2026-11-03T01:12:12.317756+08:00",
+        "first_date_mention": null
+      },
+      "DATA_PROVENANCE.md": {
+        "mtime": "2026-11-03T01:12:12.318757+08:00",
+        "first_date_mention": "375,378 events, 1966-12-14 .. 2026-10-30, 89 companies, 60 tracks."
+      },
+      "DECISIONS.md": {
+        "mtime": "2026-11-03T01:12:12.320756+08:00",
+        "first_date_mention": "**Date:** 2026-11-02. **Status:** accepted."
+      },
+      "EXPERIMENTS.md": {
+        "mtime": "2026-11-03T01:12:12.320756+08:00",
+        "first_date_mention": null
+      },
+      "HYPOTHESES.md": {
+        "mtime": "2026-11-03T01:12:12.321757+08:00",
+        "first_date_mention": "Created 2026-11-02 on branch `research/cycle2-coverage-power`"
+      },
+      "HYPOTHESES_DETECTION.md": {
+        "mtime": "2026-11-03T01:12:12.321757+08:00",
+        "first_date_mention": "2026-11-02 on branch `research/change-detection-v1`, before the detector suite"
+      },
+      "LAYERS.md": {
+        "mtime": "2026-11-03T01:12:12.323001+08:00",
+        "first_date_mention": "Created 2026-11-02 as part of the strategic realignment (instruction step 2: map existing work to"
+      },
+      "LITERATURE.md": {
+        "mtime": "2026-11-03T01:12:12.323001+08:00",
+        "first_date_mention": "`research/cycle2-coverage-power`). Written 2026-11-02 by `research-auditor`."
+      },
+      "LITERATURE_DETECTION.md": {
+        "mtime": "2026-11-03T01:12:12.324957+08:00",
+        "first_date_mention": "`research/change-detection-v1`. Written 2026-11-02 by `detect-auditor`."
+      },
+      "MISSION.md": {
+        "mtime": "2026-11-03T01:12:12.326421+08:00",
+        "first_date_mention": "**Status:** living document. Realigned 2026-11-02 (see `DECISIONS.md` D-011). Supersedes the"
+      },
+      "PREDICTION_PROTOCOL.md": {
+        "mtime": "2026-11-03T01:12:12.326421+08:00",
+        "first_date_mention": "## 8. Promotion policy (added 2026-11-03, decision D-049)"
+      },
+      "ROADMAP.md": {
+        "mtime": "2026-11-03T01:12:12.344681+08:00",
+        "first_date_mention": "**Status as of 2026-11-03, after 36 cycles.** This file is the plan of record; it is rewritten when the"
+      }
+    },
+    "docs_with_future_mtime": [],
+    "conclusion": "no document mtime is in the future relative to the system clock"
+  }
+}

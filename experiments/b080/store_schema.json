@@ -1,0 +1,1035 @@
+{
+  "schema": "store_schema_v1",
+  "stores": {
+    "research": {
+      "path": "data/research.sqlite",
+      "present": true,
+      "size_mb": 289.4,
+      "tables": {
+        "companies": {
+          "rows": 51,
+          "columns": [
+            "key",
+            "name_en",
+            "name_zh",
+            "ticker",
+            "cik",
+            "sector",
+            "country",
+            "is_major",
+            "aliases",
+            "updated_at"
+          ]
+        },
+        "company_identifiers": {
+          "rows": 34,
+          "columns": [
+            "company_key",
+            "scheme",
+            "identifier",
+            "source",
+            "valid_from",
+            "valid_to",
+            "available_at",
+            "confidence",
+            "evidence"
+          ]
+        },
+        "events": {
+          "rows": 55090,
+          "columns": [
+            "event_id",
+            "source",
+            "kind",
+            "event_date",
+            "as_of",
+            "company_key",
+            "applicant_raw",
+            "country",
+            "track_id",
+            "product_code",
+            "title",
+            "summary",
+            "url",
+            "payload",
+            "fetched_at",
+            "published_at",
+            "first_seen_at",
+            "available_at",
+            "timestamp_quality"
+          ]
+        },
+        "financial_facts": {
+          "rows": 43420,
+          "columns": [
+            "fact_id",
+            "company_key",
+            "cik",
+            "taxonomy",
+            "tag",
+            "unit",
+            "value",
+            "period_start",
+            "period_end",
+            "valid_time",
+            "available_at",
+            "form",
+            "fiscal_year",
+            "fiscal_period",
+            "accession",
+            "frame",
+            "segment_scope",
+            "data_quality",
+            "source",
+            "retrieved_at",
+            "payload"
+          ]
+        },
+        "forecast_examples": {
+          "rows": 47704,
+          "columns": [
+            "example_id",
+            "cutoff",
+            "horizon_months",
+            "company_key",
+            "track_id",
+            "features",
+            "feature_available_at",
+            "label",
+            "first_target_event_date",
+            "target_event_count",
+            "maturity",
+            "dataset_version"
+          ]
+        },
+        "horizon_forecasts": {
+          "rows": 25,
+          "columns": [
+            "forecast_id",
+            "target_company",
+            "technology_track",
+            "forecast_creation_time",
+            "historical_information_cutoff",
+            "forecast_horizon_months",
+            "horizon_end",
+            "model_version",
+            "predicted_probability",
+            "uncertainty",
+            "supporting_evidence",
+            "contradictory_evidence",
+            "verification_condition",
+            "baseline_probability",
+            "status",
+            "outcome",
+            "verified_at",
+            "verification_event_id"
+          ]
+        },
+        "live_alerts": {
+          "rows": 0,
+          "columns": [
+            "alert_id",
+            "source",
+            "kind",
+            "ticker",
+            "company_key",
+            "direction",
+            "score",
+            "headline",
+            "url",
+            "event_time",
+            "detected_at",
+            "payload"
+          ]
+        },
+        "live_equity": {
+          "rows": 0,
+          "columns": [
+            "ts",
+            "cash",
+            "market_value",
+            "equity",
+            "n_positions",
+            "note"
+          ]
+        },
+        "live_pending": {
+          "rows": 0,
+          "columns": [
+            "alert_id",
+            "ticker",
+            "created_at",
+            "attempts",
+            "last_attempt_at",
+            "last_reason",
+            "status"
+          ]
+        },
+        "live_skips": {
+          "rows": 0,
+          "columns": [
+            "id",
+            "ts",
+            "alert_id",
+            "ticker",
+            "reason"
+          ]
+        },
+        "llm_verdicts": {
+          "rows": 0,
+          "columns": [
+            "content_hash",
+            "model",
+            "verdict",
+            "created_at"
+          ]
+        },
+        "market_bars": {
+          "rows": 95725,
+          "columns": [
+            "ticker",
+            "date",
+            "open",
+            "high",
+            "low",
+            "close",
+            "adj_close",
+            "volume",
+            "source",
+            "retrieved_at"
+          ]
+        },
+        "meta": {
+          "rows": 0,
+          "columns": [
+            "key",
+            "value"
+          ]
+        },
+        "paper_equity": {
+          "rows": 0,
+          "columns": [
+            "date",
+            "equity",
+            "cash",
+            "exposure",
+            "drawdown"
+          ]
+        },
+        "paper_orders": {
+          "rows": 0,
+          "columns": [
+            "order_id",
+            "alert_id",
+            "ticker",
+            "side",
+            "qty",
+            "fill_price",
+            "fill_time",
+            "quote_time",
+            "slippage_bps",
+            "status",
+            "note"
+          ]
+        },
+        "paper_trades": {
+          "rows": 0,
+          "columns": [
+            "trade_id",
+            "signal_id",
+            "ticker",
+            "side",
+            "entry_date",
+            "entry_price",
+            "exit_date",
+            "exit_price",
+            "shares",
+            "pnl",
+            "ret",
+            "reason",
+            "created_at"
+          ]
+        },
+        "positions": {
+          "rows": 0,
+          "columns": [
+            "ticker",
+            "qty",
+            "avg_price",
+            "opened_at",
+            "track_id",
+            "last_price",
+            "last_quote_time",
+            "market_value",
+            "unrealized_pnl",
+            "status"
+          ]
+        },
+        "prices": {
+          "rows": 0,
+          "columns": [
+            "ticker",
+            "date",
+            "open",
+            "high",
+            "low",
+            "close",
+            "adj_close",
+            "volume"
+          ]
+        },
+        "procurement_awards": {
+          "rows": 3453,
+          "columns": [
+            "procurement_id",
+            "buyer",
+            "buyer_subagency",
+            "supplier",
+            "company_key",
+            "product_category",
+            "naics_code",
+            "contract_value",
+            "currency",
+            "announcement_date",
+            "award_date",
+            "period_start",
+            "period_end",
+            "country",
+            "original_source",
+            "source_url",
+            "available_at",
+            "retrieved_at",
+            "pit_usable",
+            "data_quality",
+            "match_confidence",
+            "matched_alias",
+            "payload"
+          ]
+        },
+        "product_codes": {
+          "rows": 0,
+          "columns": [
+            "product_code",
+            "track_id",
+            "device_name",
+            "definition",
+            "specialty",
+            "regulation_number",
+            "updated_at"
+          ]
+        },
+        "publication_counts": {
+          "rows": 616,
+          "columns": [
+            "company_key",
+            "year",
+            "works",
+            "source",
+            "retrieved_at"
+          ]
+        },
+        "runs": {
+          "rows": 0,
+          "columns": [
+            "run_id",
+            "started_at",
+            "finished_at",
+            "stage",
+            "stats"
+          ]
+        },
+        "signals": {
+          "rows": 0,
+          "columns": [
+            "signal_id",
+            "event_id",
+            "company_key",
+            "ticker",
+            "signal_date",
+            "kind",
+            "direction",
+            "score",
+            "track_id",
+            "reason_zh",
+            "available_at",
+            "timestamp_quality",
+            "created_at"
+          ]
+        },
+        "sqlite_sequence": {
+          "rows": 0,
+          "columns": [
+            "name",
+            "seq"
+          ]
+        },
+        "temporal_edges": {
+          "rows": 5580,
+          "columns": [
+            "edge_id",
+            "subject_type",
+            "subject_id",
+            "relation",
+            "object_type",
+            "object_id",
+            "valid_time",
+            "available_at",
+            "assertion_status",
+            "evidence_source",
+            "evidence_id",
+            "confidence",
+            "created_at"
+          ]
+        },
+        "tracks": {
+          "rows": 38,
+          "columns": [
+            "id",
+            "name_zh",
+            "name_en",
+            "category",
+            "keywords",
+            "updated_at"
+          ]
+        }
+      }
+    },
+    "device_trials": {
+      "path": "data/b040_device_trials.sqlite",
+      "present": true,
+      "size_mb": 7.3,
+      "tables": {
+        "companies": {
+          "rows": 51,
+          "columns": [
+            "key",
+            "name_en",
+            "name_zh",
+            "ticker",
+            "cik",
+            "sector",
+            "country",
+            "is_major",
+            "aliases",
+            "updated_at"
+          ]
+        },
+        "events": {
+          "rows": 2663,
+          "columns": [
+            "event_id",
+            "source",
+            "kind",
+            "event_date",
+            "as_of",
+            "company_key",
+            "applicant_raw",
+            "country",
+            "track_id",
+            "product_code",
+            "title",
+            "summary",
+            "url",
+            "payload",
+            "fetched_at",
+            "published_at",
+            "first_seen_at",
+            "available_at",
+            "timestamp_quality"
+          ]
+        },
+        "live_alerts": {
+          "rows": 0,
+          "columns": [
+            "alert_id",
+            "source",
+            "kind",
+            "ticker",
+            "company_key",
+            "direction",
+            "score",
+            "headline",
+            "url",
+            "event_time",
+            "detected_at",
+            "payload"
+          ]
+        },
+        "live_equity": {
+          "rows": 0,
+          "columns": [
+            "ts",
+            "cash",
+            "market_value",
+            "equity",
+            "n_positions",
+            "note"
+          ]
+        },
+        "live_pending": {
+          "rows": 0,
+          "columns": [
+            "alert_id",
+            "ticker",
+            "created_at",
+            "attempts",
+            "last_attempt_at",
+            "last_reason",
+            "status"
+          ]
+        },
+        "live_skips": {
+          "rows": 0,
+          "columns": [
+            "id",
+            "ts",
+            "alert_id",
+            "ticker",
+            "reason"
+          ]
+        },
+        "llm_verdicts": {
+          "rows": 0,
+          "columns": [
+            "content_hash",
+            "model",
+            "verdict",
+            "created_at"
+          ]
+        },
+        "meta": {
+          "rows": 0,
+          "columns": [
+            "key",
+            "value"
+          ]
+        },
+        "paper_equity": {
+          "rows": 0,
+          "columns": [
+            "date",
+            "equity",
+            "cash",
+            "exposure",
+            "drawdown"
+          ]
+        },
+        "paper_orders": {
+          "rows": 0,
+          "columns": [
+            "order_id",
+            "alert_id",
+            "ticker",
+            "side",
+            "qty",
+            "fill_price",
+            "fill_time",
+            "quote_time",
+            "slippage_bps",
+            "status",
+            "note"
+          ]
+        },
+        "paper_trades": {
+          "rows": 0,
+          "columns": [
+            "trade_id",
+            "signal_id",
+            "ticker",
+            "side",
+            "entry_date",
+            "entry_price",
+            "exit_date",
+            "exit_price",
+            "shares",
+            "pnl",
+            "ret",
+            "reason",
+            "created_at"
+          ]
+        },
+        "positions": {
+          "rows": 0,
+          "columns": [
+            "ticker",
+            "qty",
+            "avg_price",
+            "opened_at",
+            "track_id",
+            "last_price",
+            "last_quote_time",
+            "market_value",
+            "unrealized_pnl",
+            "status"
+          ]
+        },
+        "prices": {
+          "rows": 0,
+          "columns": [
+            "ticker",
+            "date",
+            "open",
+            "high",
+            "low",
+            "close",
+            "adj_close",
+            "volume"
+          ]
+        },
+        "product_codes": {
+          "rows": 0,
+          "columns": [
+            "product_code",
+            "track_id",
+            "device_name",
+            "definition",
+            "specialty",
+            "regulation_number",
+            "updated_at"
+          ]
+        },
+        "runs": {
+          "rows": 1,
+          "columns": [
+            "run_id",
+            "started_at",
+            "finished_at",
+            "stage",
+            "stats"
+          ]
+        },
+        "signals": {
+          "rows": 0,
+          "columns": [
+            "signal_id",
+            "event_id",
+            "company_key",
+            "ticker",
+            "signal_date",
+            "kind",
+            "direction",
+            "score",
+            "track_id",
+            "reason_zh",
+            "available_at",
+            "timestamp_quality",
+            "created_at"
+          ]
+        },
+        "sqlite_sequence": {
+          "rows": 0,
+          "columns": [
+            "name",
+            "seq"
+          ]
+        },
+        "tracks": {
+          "rows": 50,
+          "columns": [
+            "id",
+            "name_zh",
+            "name_en",
+            "category",
+            "keywords",
+            "updated_at"
+          ]
+        }
+      }
+    },
+    "registry": {
+      "path": "data/registry.sqlite",
+      "present": true,
+      "size_mb": 0.1,
+      "tables": {
+        "clock_guard": {
+          "rows": 1,
+          "columns": [
+            "id",
+            "last_at"
+          ]
+        },
+        "forecast_idempotency": {
+          "rows": 25,
+          "columns": [
+            "idempotency_key",
+            "prediction_id"
+          ]
+        },
+        "forecasts": {
+          "rows": 25,
+          "columns": [
+            "prediction_id",
+            "generated_at",
+            "record_kind",
+            "information_cutoff",
+            "information_cutoff_precision",
+            "target_type",
+            "target_id",
+            "target_attrs",
+            "horizon_months",
+            "window_start",
+            "window_end",
+            "model_version",
+            "feature_version",
+            "snapshot_sha256",
+            "snapshot_verification",
+            "provenance",
+            "source_locator",
+            "evidence_sha256",
+            "evidence_kind",
+            "p",
+            "idempotency_key"
+          ]
+        },
+        "meta": {
+          "rows": 0,
+          "columns": [
+            "key",
+            "value"
+          ]
+        },
+        "resolutions": {
+          "rows": 0,
+          "columns": [
+            "prediction_id",
+            "resolution_version",
+            "kind",
+            "outcome",
+            "event_time",
+            "event_time_precision",
+            "resolved_at",
+            "seq",
+            "source_locator",
+            "evidence_sha256",
+            "evidence_kind",
+            "reason"
+          ]
+        }
+      }
+    },
+    "tkg": {
+      "path": "data/tkg.sqlite",
+      "present": true,
+      "size_mb": 194.7,
+      "tables": {
+        "clock_guard": {
+          "rows": 1,
+          "columns": [
+            "id",
+            "last_recorded_at"
+          ]
+        },
+        "edges": {
+          "rows": 114419,
+          "columns": [
+            "edge_type",
+            "src_type",
+            "src_id",
+            "dst_type",
+            "dst_id",
+            "attrs",
+            "valid_from",
+            "valid_to",
+            "valid_precision",
+            "recorded_at",
+            "seq",
+            "assertion_id",
+            "idempotency_key",
+            "source_locator",
+            "evidence_sha256",
+            "evidence_kind",
+            "confidence",
+            "public_time",
+            "public_time_basis"
+          ]
+        },
+        "entities": {
+          "rows": 57381,
+          "columns": [
+            "node_type",
+            "node_id"
+          ]
+        },
+        "idempotency": {
+          "rows": 171800,
+          "columns": [
+            "idempotency_key",
+            "assertion_id",
+            "kind",
+            "status"
+          ]
+        },
+        "meta": {
+          "rows": 1,
+          "columns": [
+            "key",
+            "value"
+          ]
+        },
+        "nodes": {
+          "rows": 57381,
+          "columns": [
+            "node_type",
+            "node_id",
+            "attrs",
+            "valid_from",
+            "valid_to",
+            "valid_precision",
+            "recorded_at",
+            "seq",
+            "assertion_id",
+            "idempotency_key",
+            "source_locator",
+            "evidence_sha256",
+            "evidence_kind",
+            "confidence",
+            "public_time",
+            "public_time_basis"
+          ]
+        }
+      }
+    },
+    "main_store": {
+      "path": "D:/DEPPSKK/medradar/data/medradar.sqlite",
+      "present": true,
+      "size_mb": 1368.5,
+      "tables": {
+        "companies": {
+          "rows": 89,
+          "columns": [
+            "key",
+            "name_en",
+            "name_zh",
+            "ticker",
+            "cik",
+            "sector",
+            "country",
+            "is_major",
+            "aliases",
+            "updated_at"
+          ]
+        },
+        "events": {
+          "rows": 375378,
+          "columns": [
+            "event_id",
+            "source",
+            "kind",
+            "event_date",
+            "as_of",
+            "company_key",
+            "applicant_raw",
+            "country",
+            "track_id",
+            "product_code",
+            "title",
+            "summary",
+            "url",
+            "payload",
+            "fetched_at",
+            "published_at",
+            "first_seen_at",
+            "available_at",
+            "timestamp_quality"
+          ]
+        },
+        "live_alerts": {
+          "rows": 11,
+          "columns": [
+            "alert_id",
+            "source",
+            "kind",
+            "ticker",
+            "company_key",
+            "direction",
+            "score",
+            "headline",
+            "url",
+            "event_time",
+            "detected_at",
+            "payload"
+          ]
+        },
+        "live_equity": {
+          "rows": 4,
+          "columns": [
+            "ts",
+            "cash",
+            "market_value",
+            "equity",
+            "n_positions",
+            "note"
+          ]
+        },
+        "live_pending": {
+          "rows": 0,
+          "columns": [
+            "alert_id",
+            "ticker",
+            "created_at",
+            "attempts",
+            "last_attempt_at",
+            "last_reason",
+            "status"
+          ]
+        },
+        "live_skips": {
+          "rows": 0,
+          "columns": [
+            "id",
+            "ts",
+            "alert_id",
+            "ticker",
+            "reason"
+          ]
+        },
+        "llm_verdicts": {
+          "rows": 0,
+          "columns": [
+            "content_hash",
+            "model",
+            "verdict",
+            "created_at"
+          ]
+        },
+        "meta": {
+          "rows": 5,
+          "columns": [
+            "key",
+            "value"
+          ]
+        },
+        "paper_equity": {
+          "rows": 236,
+          "columns": [
+            "date",
+            "equity",
+            "cash",
+            "exposure",
+            "drawdown"
+          ]
+        },
+        "paper_orders": {
+          "rows": 0,
+          "columns": [
+            "order_id",
+            "alert_id",
+            "ticker",
+            "side",
+            "qty",
+            "fill_price",
+            "fill_time",
+            "quote_time",
+            "slippage_bps",
+            "status",
+            "note"
+          ]
+        },
+        "paper_trades": {
+          "rows": 38,
+          "columns": [
+            "trade_id",
+            "signal_id",
+            "ticker",
+            "side",
+            "entry_date",
+            "entry_price",
+            "exit_date",
+            "exit_price",
+            "shares",
+            "pnl",
+            "ret",
+            "reason",
+            "created_at"
+          ]
+        },
+        "positions": {
+          "rows": 0,
+          "columns": [
+            "ticker",
+            "qty",
+            "avg_price",
+            "opened_at",
+            "track_id",
+            "last_price",
+            "last_quote_time",
+            "market_value",
+            "unrealized_pnl",
+            "status"
+          ]
+        },
+        "prices": {
+          "rows": 1898409,
+          "columns": [
+            "ticker",
+            "date",
+            "open",
+            "high",
+            "low",
+            "close",
+            "adj_close",
+            "volume"
+          ]
+        },
+        "product_codes": {
+          "rows": 7097,
+          "columns": [
+            "product_code",
+            "track_id",
+            "device_name",
+            "definition",
+            "specialty",
+            "regulation_number",
+            "updated_at"
+          ]
+        },
+        "runs": {
+          "rows": 14,
+          "columns": [
+            "run_id",
+            "started_at",
+            "finished_at",
+            "stage",
+            "stats"
+          ]
+        },
+        "signals": {
+          "rows": 127,
+          "columns": [
+            "signal_id",
+            "event_id",
+            "company_key",
+            "ticker",
+            "signal_date",
+            "kind",
+            "direction",
+            "score",
+            "track_id",
+            "reason_zh",
+            "created_at",
+            "available_at",
+            "timestamp_quality"
+          ]
+        },
+        "sqlite_sequence": {
+          "rows": 0,
+          "columns": [
+            "name",
+            "seq"
+          ]
+        },
+        "tracks": {
+          "rows": 60,
+          "columns": [
+            "id",
+            "name_zh",
+            "name_en",
+            "category",
+            "keywords",
+            "updated_at"
+          ]
+        }
+      }
+    }
+  }
+}

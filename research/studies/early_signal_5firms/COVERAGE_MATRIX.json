@@ -1,0 +1,1217 @@
+{
+  "schema": "coverage_matrix_v1",
+  "study": "early_signal_5firms",
+  "directive": "RESEARCH DIRECTIVE 001 (Phase 0)",
+  "store": "D:/DEPPSKK/medradar/data/medradar.sqlite",
+  "windows": {
+    "historical": [
+      "2018-01-01",
+      "2025-12-31"
+    ]
+  },
+  "roster": {
+    "medtronic": {
+      "company_key_present": true,
+      "name_en": "Medtronic",
+      "ticker": "MDT"
+    },
+    "ge_healthcare": {
+      "company_key_present": true,
+      "name_en": "GE HealthCare",
+      "ticker": "GEHC"
+    },
+    "philips": {
+      "company_key_present": true,
+      "name_en": "Philips",
+      "ticker": "PHG"
+    },
+    "draeger": {
+      "company_key_present": false,
+      "name_en": null,
+      "ticker": null
+    },
+    "mindray": {
+      "company_key_present": false,
+      "name_en": null,
+      "ticker": null
+    }
+  },
+  "resolution": {
+    "company_key": 24206,
+    "applicant_alias": 831
+  },
+  "coverage": {
+    "window": {
+      "start": "2018-01-01",
+      "end": "2025-12-31",
+      "quarters": 32
+    },
+    "matrix": [
+      {
+        "company": "draeger",
+        "domain": "advanced_imaging",
+        "tracks": [
+          "imaging_mr_ct"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "draeger",
+        "domain": "medical_ai_samd",
+        "tracks": [
+          "medical_ai"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "draeger",
+        "domain": "patient_monitoring",
+        "tracks": [
+          "patient_monitoring"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "draeger",
+        "domain": "respiratory_critical_care",
+        "tracks": [
+          "respiratory"
+        ],
+        "observations_in_window": 6,
+        "quarters_with_observation": 4,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.125,
+        "first_observation": "2019-01-17",
+        "last_observation": "2025-04-04",
+        "outside_window": 26,
+        "sources": {
+          "openfda_device_510k": 31,
+          "openfda_device_recall": 1
+        }
+      },
+      {
+        "company": "draeger",
+        "domain": "ultrasound_imaging",
+        "tracks": [
+          "imaging_us"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "advanced_imaging",
+        "tracks": [
+          "imaging_mr_ct"
+        ],
+        "observations_in_window": 495,
+        "quarters_with_observation": 32,
+        "expected_quarters": 32,
+        "quarter_coverage": 1.0,
+        "first_observation": "2018-01-05",
+        "last_observation": "2025-12-23",
+        "outside_window": 995,
+        "sources": {
+          "openfda_device_510k": 521,
+          "openfda_device_pma": 37,
+          "openfda_device_recall": 932
+        }
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "medical_ai_samd",
+        "tracks": [
+          "medical_ai"
+        ],
+        "observations_in_window": 34,
+        "quarters_with_observation": 22,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.688,
+        "first_observation": "2018-01-25",
+        "last_observation": "2025-10-21",
+        "outside_window": 96,
+        "sources": {
+          "openfda_device_510k": 54,
+          "openfda_device_recall": 76
+        }
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "patient_monitoring",
+        "tracks": [
+          "patient_monitoring"
+        ],
+        "observations_in_window": 60,
+        "quarters_with_observation": 20,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.625,
+        "first_observation": "2018-04-02",
+        "last_observation": "2025-11-07",
+        "outside_window": 144,
+        "sources": {
+          "openfda_device_510k": 88,
+          "openfda_device_pma": 3,
+          "openfda_device_recall": 113
+        }
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "respiratory_critical_care",
+        "tracks": [
+          "respiratory"
+        ],
+        "observations_in_window": 61,
+        "quarters_with_observation": 13,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.406,
+        "first_observation": "2018-07-24",
+        "last_observation": "2025-12-18",
+        "outside_window": 66,
+        "sources": {
+          "openfda_device_510k": 15,
+          "openfda_device_recall": 112
+        }
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "ultrasound_imaging",
+        "tracks": [
+          "imaging_us"
+        ],
+        "observations_in_window": 107,
+        "quarters_with_observation": 28,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.875,
+        "first_observation": "2018-03-13",
+        "last_observation": "2025-11-24",
+        "outside_window": 142,
+        "sources": {
+          "openfda_device_510k": 190,
+          "openfda_device_recall": 47,
+          "openfda_device_pma": 12
+        }
+      },
+      {
+        "company": "medtronic",
+        "domain": "advanced_imaging",
+        "tracks": [
+          "imaging_mr_ct"
+        ],
+        "observations_in_window": 26,
+        "quarters_with_observation": 12,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.375,
+        "first_observation": "2018-01-25",
+        "last_observation": "2025-07-09",
+        "outside_window": 38,
+        "sources": {
+          "openfda_device_510k": 18,
+          "openfda_device_recall": 46
+        }
+      },
+      {
+        "company": "medtronic",
+        "domain": "medical_ai_samd",
+        "tracks": [
+          "medical_ai"
+        ],
+        "observations_in_window": 41,
+        "quarters_with_observation": 19,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.594,
+        "first_observation": "2018-07-26",
+        "last_observation": "2025-12-18",
+        "outside_window": 43,
+        "sources": {
+          "openfda_device_pma": 10,
+          "openfda_device_510k": 28,
+          "openfda_device_recall": 46
+        }
+      },
+      {
+        "company": "medtronic",
+        "domain": "patient_monitoring",
+        "tracks": [
+          "patient_monitoring"
+        ],
+        "observations_in_window": 4,
+        "quarters_with_observation": 4,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.125,
+        "first_observation": "2019-01-08",
+        "last_observation": "2023-12-01",
+        "outside_window": 32,
+        "sources": {
+          "openfda_device_510k": 13,
+          "openfda_device_pma": 12,
+          "openfda_device_recall": 11
+        }
+      },
+      {
+        "company": "medtronic",
+        "domain": "respiratory_critical_care",
+        "tracks": [
+          "respiratory"
+        ],
+        "observations_in_window": 42,
+        "quarters_with_observation": 15,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.469,
+        "first_observation": "2018-12-18",
+        "last_observation": "2025-11-14",
+        "outside_window": 117,
+        "sources": {
+          "openfda_device_510k": 34,
+          "openfda_device_pma": 7,
+          "openfda_device_recall": 118
+        }
+      },
+      {
+        "company": "medtronic",
+        "domain": "ultrasound_imaging",
+        "tracks": [
+          "imaging_us"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 1,
+        "sources": {
+          "openfda_device_recall": 1
+        }
+      },
+      {
+        "company": "mindray",
+        "domain": "advanced_imaging",
+        "tracks": [
+          "imaging_mr_ct"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "mindray",
+        "domain": "medical_ai_samd",
+        "tracks": [
+          "medical_ai"
+        ],
+        "observations_in_window": 2,
+        "quarters_with_observation": 2,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.062,
+        "first_observation": "2021-02-22",
+        "last_observation": "2025-12-12",
+        "outside_window": 1,
+        "sources": {
+          "openfda_device_recall": 3
+        }
+      },
+      {
+        "company": "mindray",
+        "domain": "patient_monitoring",
+        "tracks": [
+          "patient_monitoring"
+        ],
+        "observations_in_window": 17,
+        "quarters_with_observation": 11,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.344,
+        "first_observation": "2018-08-30",
+        "last_observation": "2025-09-25",
+        "outside_window": 61,
+        "sources": {
+          "openfda_device_510k": 44,
+          "openfda_device_recall": 34
+        }
+      },
+      {
+        "company": "mindray",
+        "domain": "respiratory_critical_care",
+        "tracks": [
+          "respiratory"
+        ],
+        "observations_in_window": 12,
+        "quarters_with_observation": 7,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.219,
+        "first_observation": "2018-01-12",
+        "last_observation": "2025-11-26",
+        "outside_window": 14,
+        "sources": {
+          "openfda_device_510k": 12,
+          "openfda_device_recall": 14
+        }
+      },
+      {
+        "company": "mindray",
+        "domain": "ultrasound_imaging",
+        "tracks": [
+          "imaging_us"
+        ],
+        "observations_in_window": 48,
+        "quarters_with_observation": 26,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.812,
+        "first_observation": "2018-01-02",
+        "last_observation": "2025-12-03",
+        "outside_window": 51,
+        "sources": {
+          "openfda_device_510k": 98,
+          "openfda_device_recall": 1
+        }
+      },
+      {
+        "company": "philips",
+        "domain": "advanced_imaging",
+        "tracks": [
+          "imaging_mr_ct"
+        ],
+        "observations_in_window": 799,
+        "quarters_with_observation": 32,
+        "expected_quarters": 32,
+        "quarter_coverage": 1.0,
+        "first_observation": "2018-01-03",
+        "last_observation": "2025-12-09",
+        "outside_window": 1275,
+        "sources": {
+          "openfda_device_510k": 472,
+          "openfda_device_pma": 26,
+          "openfda_device_recall": 1576
+        }
+      },
+      {
+        "company": "philips",
+        "domain": "medical_ai_samd",
+        "tracks": [
+          "medical_ai"
+        ],
+        "observations_in_window": 28,
+        "quarters_with_observation": 15,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.469,
+        "first_observation": "2018-02-22",
+        "last_observation": "2025-10-24",
+        "outside_window": 41,
+        "sources": {
+          "openfda_device_510k": 31,
+          "openfda_device_recall": 38
+        }
+      },
+      {
+        "company": "philips",
+        "domain": "patient_monitoring",
+        "tracks": [
+          "patient_monitoring"
+        ],
+        "observations_in_window": 99,
+        "quarters_with_observation": 28,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.875,
+        "first_observation": "2018-01-03",
+        "last_observation": "2025-12-02",
+        "outside_window": 190,
+        "sources": {
+          "openfda_device_510k": 140,
+          "openfda_device_pma": 1,
+          "openfda_device_recall": 148
+        }
+      },
+      {
+        "company": "philips",
+        "domain": "respiratory_critical_care",
+        "tracks": [
+          "respiratory"
+        ],
+        "observations_in_window": 86,
+        "quarters_with_observation": 14,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.438,
+        "first_observation": "2018-06-12",
+        "last_observation": "2025-08-08",
+        "outside_window": 43,
+        "sources": {
+          "openfda_device_510k": 8,
+          "openfda_device_recall": 121
+        }
+      },
+      {
+        "company": "philips",
+        "domain": "ultrasound_imaging",
+        "tracks": [
+          "imaging_us"
+        ],
+        "observations_in_window": 146,
+        "quarters_with_observation": 20,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.625,
+        "first_observation": "2018-07-27",
+        "last_observation": "2025-12-31",
+        "outside_window": 79,
+        "sources": {
+          "openfda_device_510k": 79,
+          "openfda_device_recall": 146
+        }
+      }
+    ],
+    "per_firm": {
+      "draeger": {
+        "observations": 6,
+        "domains_nonempty": 1
+      },
+      "ge_healthcare": {
+        "observations": 757,
+        "domains_nonempty": 5
+      },
+      "medtronic": {
+        "observations": 113,
+        "domains_nonempty": 4
+      },
+      "mindray": {
+        "observations": 79,
+        "domains_nonempty": 4
+      },
+      "philips": {
+        "observations": 1158,
+        "domains_nonempty": 5
+      }
+    },
+    "unassigned": {
+      "unknown_track": 19469,
+      "unknown_firm": 25037
+    }
+  },
+  "coverage_roster_only": {
+    "window": {
+      "start": "2018-01-01",
+      "end": "2025-12-31",
+      "quarters": 32
+    },
+    "matrix": [
+      {
+        "company": "draeger",
+        "domain": "advanced_imaging",
+        "tracks": [
+          "imaging_mr_ct"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "draeger",
+        "domain": "medical_ai_samd",
+        "tracks": [
+          "medical_ai"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "draeger",
+        "domain": "patient_monitoring",
+        "tracks": [
+          "patient_monitoring"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "draeger",
+        "domain": "respiratory_critical_care",
+        "tracks": [
+          "respiratory"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "draeger",
+        "domain": "ultrasound_imaging",
+        "tracks": [
+          "imaging_us"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "advanced_imaging",
+        "tracks": [
+          "imaging_mr_ct"
+        ],
+        "observations_in_window": 471,
+        "quarters_with_observation": 32,
+        "expected_quarters": 32,
+        "quarter_coverage": 1.0,
+        "first_observation": "2018-01-05",
+        "last_observation": "2025-12-23",
+        "outside_window": 936,
+        "sources": {
+          "openfda_device_510k": 510,
+          "openfda_device_pma": 37,
+          "openfda_device_recall": 860
+        }
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "medical_ai_samd",
+        "tracks": [
+          "medical_ai"
+        ],
+        "observations_in_window": 24,
+        "quarters_with_observation": 19,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.594,
+        "first_observation": "2018-01-25",
+        "last_observation": "2025-10-21",
+        "outside_window": 77,
+        "sources": {
+          "openfda_device_510k": 50,
+          "openfda_device_recall": 51
+        }
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "patient_monitoring",
+        "tracks": [
+          "patient_monitoring"
+        ],
+        "observations_in_window": 56,
+        "quarters_with_observation": 19,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.594,
+        "first_observation": "2018-04-02",
+        "last_observation": "2025-11-07",
+        "outside_window": 139,
+        "sources": {
+          "openfda_device_510k": 85,
+          "openfda_device_pma": 3,
+          "openfda_device_recall": 107
+        }
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "respiratory_critical_care",
+        "tracks": [
+          "respiratory"
+        ],
+        "observations_in_window": 61,
+        "quarters_with_observation": 13,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.406,
+        "first_observation": "2018-07-24",
+        "last_observation": "2025-12-18",
+        "outside_window": 66,
+        "sources": {
+          "openfda_device_510k": 15,
+          "openfda_device_recall": 112
+        }
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "ultrasound_imaging",
+        "tracks": [
+          "imaging_us"
+        ],
+        "observations_in_window": 107,
+        "quarters_with_observation": 28,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.875,
+        "first_observation": "2018-03-13",
+        "last_observation": "2025-11-24",
+        "outside_window": 142,
+        "sources": {
+          "openfda_device_510k": 190,
+          "openfda_device_recall": 47,
+          "openfda_device_pma": 12
+        }
+      },
+      {
+        "company": "medtronic",
+        "domain": "advanced_imaging",
+        "tracks": [
+          "imaging_mr_ct"
+        ],
+        "observations_in_window": 26,
+        "quarters_with_observation": 12,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.375,
+        "first_observation": "2018-01-25",
+        "last_observation": "2025-07-09",
+        "outside_window": 38,
+        "sources": {
+          "openfda_device_510k": 18,
+          "openfda_device_recall": 46
+        }
+      },
+      {
+        "company": "medtronic",
+        "domain": "medical_ai_samd",
+        "tracks": [
+          "medical_ai"
+        ],
+        "observations_in_window": 41,
+        "quarters_with_observation": 19,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.594,
+        "first_observation": "2018-07-26",
+        "last_observation": "2025-12-18",
+        "outside_window": 43,
+        "sources": {
+          "openfda_device_pma": 10,
+          "openfda_device_510k": 28,
+          "openfda_device_recall": 46
+        }
+      },
+      {
+        "company": "medtronic",
+        "domain": "patient_monitoring",
+        "tracks": [
+          "patient_monitoring"
+        ],
+        "observations_in_window": 4,
+        "quarters_with_observation": 4,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.125,
+        "first_observation": "2019-01-08",
+        "last_observation": "2023-12-01",
+        "outside_window": 32,
+        "sources": {
+          "openfda_device_510k": 13,
+          "openfda_device_pma": 12,
+          "openfda_device_recall": 11
+        }
+      },
+      {
+        "company": "medtronic",
+        "domain": "respiratory_critical_care",
+        "tracks": [
+          "respiratory"
+        ],
+        "observations_in_window": 42,
+        "quarters_with_observation": 15,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.469,
+        "first_observation": "2018-12-18",
+        "last_observation": "2025-11-14",
+        "outside_window": 117,
+        "sources": {
+          "openfda_device_510k": 34,
+          "openfda_device_pma": 7,
+          "openfda_device_recall": 118
+        }
+      },
+      {
+        "company": "medtronic",
+        "domain": "ultrasound_imaging",
+        "tracks": [
+          "imaging_us"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 1,
+        "sources": {
+          "openfda_device_recall": 1
+        }
+      },
+      {
+        "company": "mindray",
+        "domain": "advanced_imaging",
+        "tracks": [
+          "imaging_mr_ct"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "mindray",
+        "domain": "medical_ai_samd",
+        "tracks": [
+          "medical_ai"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "mindray",
+        "domain": "patient_monitoring",
+        "tracks": [
+          "patient_monitoring"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "mindray",
+        "domain": "respiratory_critical_care",
+        "tracks": [
+          "respiratory"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "mindray",
+        "domain": "ultrasound_imaging",
+        "tracks": [
+          "imaging_us"
+        ],
+        "observations_in_window": 0,
+        "quarters_with_observation": 0,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.0,
+        "first_observation": null,
+        "last_observation": null,
+        "outside_window": 0,
+        "sources": {}
+      },
+      {
+        "company": "philips",
+        "domain": "advanced_imaging",
+        "tracks": [
+          "imaging_mr_ct"
+        ],
+        "observations_in_window": 799,
+        "quarters_with_observation": 32,
+        "expected_quarters": 32,
+        "quarter_coverage": 1.0,
+        "first_observation": "2018-01-03",
+        "last_observation": "2025-12-09",
+        "outside_window": 1275,
+        "sources": {
+          "openfda_device_510k": 472,
+          "openfda_device_pma": 26,
+          "openfda_device_recall": 1576
+        }
+      },
+      {
+        "company": "philips",
+        "domain": "medical_ai_samd",
+        "tracks": [
+          "medical_ai"
+        ],
+        "observations_in_window": 28,
+        "quarters_with_observation": 15,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.469,
+        "first_observation": "2018-02-22",
+        "last_observation": "2025-10-24",
+        "outside_window": 41,
+        "sources": {
+          "openfda_device_510k": 31,
+          "openfda_device_recall": 38
+        }
+      },
+      {
+        "company": "philips",
+        "domain": "patient_monitoring",
+        "tracks": [
+          "patient_monitoring"
+        ],
+        "observations_in_window": 99,
+        "quarters_with_observation": 28,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.875,
+        "first_observation": "2018-01-03",
+        "last_observation": "2025-12-02",
+        "outside_window": 190,
+        "sources": {
+          "openfda_device_510k": 140,
+          "openfda_device_pma": 1,
+          "openfda_device_recall": 148
+        }
+      },
+      {
+        "company": "philips",
+        "domain": "respiratory_critical_care",
+        "tracks": [
+          "respiratory"
+        ],
+        "observations_in_window": 86,
+        "quarters_with_observation": 14,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.438,
+        "first_observation": "2018-06-12",
+        "last_observation": "2025-08-08",
+        "outside_window": 43,
+        "sources": {
+          "openfda_device_510k": 8,
+          "openfda_device_recall": 121
+        }
+      },
+      {
+        "company": "philips",
+        "domain": "ultrasound_imaging",
+        "tracks": [
+          "imaging_us"
+        ],
+        "observations_in_window": 146,
+        "quarters_with_observation": 20,
+        "expected_quarters": 32,
+        "quarter_coverage": 0.625,
+        "first_observation": "2018-07-27",
+        "last_observation": "2025-12-31",
+        "outside_window": 79,
+        "sources": {
+          "openfda_device_510k": 79,
+          "openfda_device_recall": 146
+        }
+      }
+    ],
+    "per_firm": {
+      "draeger": {
+        "observations": 0,
+        "domains_nonempty": 0
+      },
+      "ge_healthcare": {
+        "observations": 719,
+        "domains_nonempty": 5
+      },
+      "medtronic": {
+        "observations": 113,
+        "domains_nonempty": 4
+      },
+      "mindray": {
+        "observations": 0,
+        "domains_nonempty": 0
+      },
+      "philips": {
+        "observations": 1158,
+        "domains_nonempty": 5
+      }
+    },
+    "unassigned": {
+      "unknown_track": 18997,
+      "unknown_firm": 24206
+    }
+  },
+  "sources": {
+    "openfda_device_510k|510k": {
+      "store": "medradar.sqlite",
+      "source": "openfda_device_510k",
+      "kind": "510k",
+      "observations": 176466,
+      "event_date_min": "1976-07-15",
+      "event_date_max": "2026-10-18",
+      "tier": "A",
+      "tier_reasons": [
+        "records both published_at and available_at"
+      ],
+      "tier_description": "historically verifiable: a recorded first-publication or availability time independent of the event date",
+      "availability_assumption_days": 30
+    },
+    "openfda_device_recall|device_recall": {
+      "store": "medradar.sqlite",
+      "source": "openfda_device_recall",
+      "kind": "device_recall",
+      "observations": 59646,
+      "event_date_min": "2002-11-01",
+      "event_date_max": "2026-10-28",
+      "tier": "A",
+      "tier_reasons": [
+        "records both published_at and available_at"
+      ],
+      "tier_description": "historically verifiable: a recorded first-publication or availability time independent of the event date",
+      "availability_assumption_days": 30
+    },
+    "openfda_device_pma|pma": {
+      "store": "medradar.sqlite",
+      "source": "openfda_device_pma",
+      "kind": "pma",
+      "observations": 57372,
+      "event_date_min": "1968-10-09",
+      "event_date_max": "2026-10-16",
+      "tier": "A",
+      "tier_reasons": [
+        "records both published_at and available_at"
+      ],
+      "tier_description": "historically verifiable: a recorded first-publication or availability time independent of the event date",
+      "availability_assumption_days": 30
+    },
+    "ctgov|trial": {
+      "store": "medradar.sqlite",
+      "source": "ctgov",
+      "kind": "trial",
+      "observations": 55592,
+      "event_date_min": "1999-10-19",
+      "event_date_max": "2026-10-30",
+      "tier": "A",
+      "tier_reasons": [
+        "records both published_at and available_at"
+      ],
+      "tier_description": "historically verifiable: a recorded first-publication or availability time independent of the event date",
+      "availability_assumption_days": 30
+    },
+    "sec_edgar_corpus|8k_catalyst": {
+      "store": "medradar.sqlite",
+      "source": "sec_edgar_corpus",
+      "kind": "8k_catalyst",
+      "observations": 20976,
+      "event_date_min": "2015-01-02",
+      "event_date_max": "2026-10-30",
+      "tier": "A",
+      "tier_reasons": [
+        "records both published_at and available_at"
+      ],
+      "tier_description": "historically verifiable: a recorded first-publication or availability time independent of the event date",
+      "availability_assumption_days": 5
+    },
+    "openfda_drug_drugsfda|drug_approval": {
+      "store": "medradar.sqlite",
+      "source": "openfda_drug_drugsfda",
+      "kind": "drug_approval",
+      "observations": 5326,
+      "event_date_min": "1966-12-14",
+      "event_date_max": "2026-10-22",
+      "tier": "A",
+      "tier_reasons": [
+        "records both published_at and available_at"
+      ],
+      "tier_description": "historically verifiable: a recorded first-publication or availability time independent of the event date",
+      "availability_assumption_days": null
+    }
+  },
+  "evaluability": {
+    "floors": {
+      "min_observations": 40,
+      "min_quarters": 12
+    },
+    "evaluable": [
+      {
+        "company": "ge_healthcare",
+        "domain": "advanced_imaging",
+        "observations": 495,
+        "quarters": 32
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "patient_monitoring",
+        "observations": 60,
+        "quarters": 20
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "respiratory_critical_care",
+        "observations": 61,
+        "quarters": 13
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "ultrasound_imaging",
+        "observations": 107,
+        "quarters": 28
+      },
+      {
+        "company": "medtronic",
+        "domain": "medical_ai_samd",
+        "observations": 41,
+        "quarters": 19
+      },
+      {
+        "company": "medtronic",
+        "domain": "respiratory_critical_care",
+        "observations": 42,
+        "quarters": 15
+      },
+      {
+        "company": "mindray",
+        "domain": "ultrasound_imaging",
+        "observations": 48,
+        "quarters": 26
+      },
+      {
+        "company": "philips",
+        "domain": "advanced_imaging",
+        "observations": 799,
+        "quarters": 32
+      },
+      {
+        "company": "philips",
+        "domain": "patient_monitoring",
+        "observations": 99,
+        "quarters": 28
+      },
+      {
+        "company": "philips",
+        "domain": "respiratory_critical_care",
+        "observations": 86,
+        "quarters": 14
+      },
+      {
+        "company": "philips",
+        "domain": "ultrasound_imaging",
+        "observations": 146,
+        "quarters": 20
+      }
+    ],
+    "not_evaluable": [
+      {
+        "company": "draeger",
+        "domain": "advanced_imaging",
+        "reason": "no observations in the window"
+      },
+      {
+        "company": "draeger",
+        "domain": "medical_ai_samd",
+        "reason": "no observations in the window"
+      },
+      {
+        "company": "draeger",
+        "domain": "patient_monitoring",
+        "reason": "no observations in the window"
+      },
+      {
+        "company": "draeger",
+        "domain": "respiratory_critical_care",
+        "reason": "below floors (6 obs, 4 quarters; need 40+ and 12+)"
+      },
+      {
+        "company": "draeger",
+        "domain": "ultrasound_imaging",
+        "reason": "no observations in the window"
+      },
+      {
+        "company": "ge_healthcare",
+        "domain": "medical_ai_samd",
+        "reason": "below floors (34 obs, 22 quarters; need 40+ and 12+)"
+      },
+      {
+        "company": "medtronic",
+        "domain": "advanced_imaging",
+        "reason": "below floors (26 obs, 12 quarters; need 40+ and 12+)"
+      },
+      {
+        "company": "medtronic",
+        "domain": "patient_monitoring",
+        "reason": "below floors (4 obs, 4 quarters; need 40+ and 12+)"
+      },
+      {
+        "company": "medtronic",
+        "domain": "ultrasound_imaging",
+        "reason": "no observations in the window"
+      },
+      {
+        "company": "mindray",
+        "domain": "advanced_imaging",
+        "reason": "no observations in the window"
+      },
+      {
+        "company": "mindray",
+        "domain": "medical_ai_samd",
+        "reason": "below floors (2 obs, 2 quarters; need 40+ and 12+)"
+      },
+      {
+        "company": "mindray",
+        "domain": "patient_monitoring",
+        "reason": "below floors (17 obs, 11 quarters; need 40+ and 12+)"
+      },
+      {
+        "company": "mindray",
+        "domain": "respiratory_critical_care",
+        "reason": "below floors (12 obs, 7 quarters; need 40+ and 12+)"
+      },
+      {
+        "company": "philips",
+        "domain": "medical_ai_samd",
+        "reason": "below floors (28 obs, 15 quarters; need 40+ and 12+)"
+      }
+    ],
+    "counts": {
+      "evaluable": 11,
+      "not_evaluable": 14
+    }
+  }
+}

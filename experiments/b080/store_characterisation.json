@@ -1,0 +1,879 @@
+{
+  "research": {
+    "present": true,
+    "tables": {
+      "companies": {
+        "rows": 51,
+        "columns": [
+          "key",
+          "name_en",
+          "name_zh",
+          "ticker",
+          "cik",
+          "sector",
+          "country",
+          "is_major",
+          "aliases",
+          "updated_at"
+        ],
+        "date_columns": {
+          "updated_at": {
+            "min": "2026-11-01T22:46:09Z",
+            "max": "2026-11-01T22:46:09Z"
+          }
+        }
+      },
+      "company_identifiers": {
+        "rows": 34,
+        "columns": [
+          "company_key",
+          "scheme",
+          "identifier",
+          "source",
+          "valid_from",
+          "valid_to",
+          "available_at",
+          "confidence",
+          "evidence"
+        ],
+        "date_columns": {
+          "available_at": {
+            "min": "2026-11-01T22:48:06Z",
+            "max": "2026-11-01T22:48:06Z"
+          }
+        },
+        "value_distributions": {
+          "source": {
+            "sec_company_tickers": 34
+          }
+        }
+      },
+      "events": {
+        "rows": 55090,
+        "columns": [
+          "event_id",
+          "source",
+          "kind",
+          "event_date",
+          "as_of",
+          "company_key",
+          "applicant_raw",
+          "country",
+          "track_id",
+          "product_code",
+          "title",
+          "summary",
+          "url",
+          "payload",
+          "fetched_at",
+          "published_at",
+          "first_seen_at",
+          "available_at",
+          "timestamp_quality"
+        ],
+        "date_columns": {
+          "event_date": {
+            "min": "2016-11-01",
+            "max": "2026-10-18"
+          },
+          "fetched_at": {
+            "min": "2026-11-01T22:46:25Z",
+            "max": "2026-11-01T22:48:05Z"
+          },
+          "published_at": {
+            "min": "2016-11-15T00:00:00",
+            "max": "2026-11-01T00:00:00"
+          },
+          "first_seen_at": {
+            "min": "2026-11-01",
+            "max": "2026-11-01"
+          },
+          "available_at": {
+            "min": "2016-11-15T00:00:00",
+            "max": "2026-11-01T00:00:00"
+          },
+          "timestamp_quality": {
+            "min": "estimated",
+            "max": "estimated"
+          }
+        },
+        "value_distributions": {
+          "source": {
+            "openfda_device_510k_bulk": 31219,
+            "openfda_device_pma_bulk": 23871
+          },
+          "kind": {
+            "510k": 31219,
+            "pma": 23871
+          }
+        }
+      },
+      "financial_facts": {
+        "rows": 43420,
+        "columns": [
+          "fact_id",
+          "company_key",
+          "cik",
+          "taxonomy",
+          "tag",
+          "unit",
+          "value",
+          "period_start",
+          "period_end",
+          "valid_time",
+          "available_at",
+          "form",
+          "fiscal_year",
+          "fiscal_period",
+          "accession",
+          "frame",
+          "segment_scope",
+          "data_quality",
+          "source",
+          "retrieved_at",
+          "payload"
+        ],
+        "date_columns": {
+          "valid_time": {
+            "min": "2006-09-30",
+            "max": "2026-09-30"
+          },
+          "available_at": {
+            "min": "2009-04-23",
+            "max": "2026-10-30"
+          },
+          "data_quality": {
+            "min": "companyfacts_no_segment_dimension",
+            "max": "companyfacts_no_segment_dimension"
+          },
+          "retrieved_at": {
+            "min": "2026-11-01T22:48:06Z",
+            "max": "2026-11-01T22:48:06Z"
+          }
+        },
+        "value_distributions": {
+          "source": {
+            "sec_xbrl_companyfacts": 43420
+          }
+        }
+      },
+      "forecast_examples": {
+        "rows": 47704,
+        "columns": [
+          "example_id",
+          "cutoff",
+          "horizon_months",
+          "company_key",
+          "track_id",
+          "features",
+          "feature_available_at",
+          "label",
+          "first_target_event_date",
+          "target_event_count",
+          "maturity",
+          "dataset_version"
+        ],
+        "date_columns": {
+          "features": {
+            "min": "{\"fin_acquisition_to_revenue\": -0.10969461882334977, \"fin_capex_intensity\": 0.1956168569102856, \"fin_cash_to_rd\": 4.602208617673869, \"fin_facts_available\": 743.0, \"fin_inventory_growth\": 0.06782550737151448, \"fin_ocf_to_rd\": 13.179534872262325, \"fin_operating_margin\": 0.500920355972267, \"fin_rd_growth\": 0.2906005325702476, \"fin_rd_intensity\": 0.030836293248279224, \"fin_rd_intensity_delta\": 0.005525040590250635, \"fin_revenue_growth\": 0.0593593690867729, \"rd_company_active_tracks_12m\": 0.0, \"rd_company_active_tracks_delta\": -1.0, \"rd_company_count_12m\": 0.0, \"rd_company_total_36m\": 9.0, \"rd_company_track_novelty_share\": 0.0, \"rd_company_track_share\": 0.0, \"rd_count_12m\": 0.0, \"rd_count_36m\": 0.0, \"rd_count_previous_12m\": 0.0, \"rd_momentum\": 0.0, \"rd_pair_active_years\": 0.0, \"rd_pair_inactive_months\": 120.0, \"rd_recency_years\": 20.0, \"rd_track_active_companies_12m\": 0.0, \"rd_track_active_companies_delta\": -1.0, \"rd_track_count_12m\": 0.0}",
+            "max": "{\"fin_acquisition_to_revenue\": null, \"fin_capex_intensity\": null, \"fin_cash_to_rd\": null, \"fin_facts_available\": null, \"fin_inventory_growth\": null, \"fin_ocf_to_rd\": null, \"fin_operating_margin\": null, \"fin_rd_growth\": null, \"fin_rd_intensity\": null, \"fin_rd_intensity_delta\": null, \"fin_revenue_growth\": null, \"rd_company_count_12m\": 9.0, \"rd_company_total_36m\": 68.0, \"rd_company_track_share\": 0.5555555555555556, \"rd_count_12m\": 5.0, \"rd_count_36m\": 17.0, \"rd_count_previous_12m\": 4.0, \"rd_momentum\": 0.18232155679395468, \"rd_pair_active_years\": 2.9295003422313486, \"rd_recency_years\": 0.28473648186173856, \"rd_track_count_12m\": 47.0}"
+          },
+          "feature_available_at": {
+            "min": "2019-10-01",
+            "max": "2025-10-01"
+          },
+          "first_target_event_date": {
+            "min": "2019-10-03",
+            "max": "2026-09-17"
+          },
+          "maturity": {
+            "min": "mature",
+            "max": "mature"
+          },
+          "dataset_version": {
+            "min": "first_entry_v1",
+            "max": "reverse_rd_v1"
+          }
+        }
+      },
+      "horizon_forecasts": {
+        "rows": 25,
+        "columns": [
+          "forecast_id",
+          "target_company",
+          "technology_track",
+          "forecast_creation_time",
+          "historical_information_cutoff",
+          "forecast_horizon_months",
+          "horizon_end",
+          "model_version",
+          "predicted_probability",
+          "uncertainty",
+          "supporting_evidence",
+          "contradictory_evidence",
+          "verification_condition",
+          "baseline_probability",
+          "status",
+          "outcome",
+          "verified_at",
+          "verification_event_id"
+        ],
+        "date_columns": {
+          "forecast_creation_time": {
+            "min": "2026-11-01T23:16:37Z",
+            "max": "2026-11-01T23:16:37Z"
+          },
+          "historical_information_cutoff": {
+            "min": "2026-10-01",
+            "max": "2026-10-01"
+          },
+          "verification_condition": {
+            "min": "{\"company_key\": \"abbott\", \"event_date_after\": \"2026-10-01\", \"event_date_on_or_before\": \"2027-10-01\", \"kinds\": [\"510k\", \"pma\"], \"material_pma_only\": true, \"minimum_coverage_end\": \"2027-10-01\", \"table\": \"events\", \"track_id\": \"ivd_molecular\"}",
+            "max": "{\"company_key\": \"zimmer_biomet\", \"event_date_after\": \"2026-10-01\", \"event_date_on_or_before\": \"2027-10-01\", \"kinds\": [\"510k\", \"pma\"], \"material_pma_only\": true, \"minimum_coverage_end\": \"2027-10-01\", \"table\": \"events\", \"track_id\": \"ortho_joint\"}"
+          },
+          "status": {
+            "min": "pending",
+            "max": "pending"
+          },
+          "verified_at": {
+            "min": null,
+            "max": null
+          },
+          "verification_event_id": {
+            "min": null,
+            "max": null
+          }
+        }
+      },
+      "market_bars": {
+        "rows": 95725,
+        "columns": [
+          "ticker",
+          "date",
+          "open",
+          "high",
+          "low",
+          "close",
+          "adj_close",
+          "volume",
+          "source",
+          "retrieved_at"
+        ],
+        "date_columns": {
+          "date": {
+            "min": "2016-10-31",
+            "max": "2026-10-30"
+          },
+          "retrieved_at": {
+            "min": "2026-11-02T00:36:05Z",
+            "max": "2026-11-02T00:36:05Z"
+          }
+        },
+        "value_distributions": {
+          "source": {
+            "yahoo_finance_daily": 95725
+          }
+        }
+      },
+      "procurement_awards": {
+        "rows": 3453,
+        "columns": [
+          "procurement_id",
+          "buyer",
+          "buyer_subagency",
+          "supplier",
+          "company_key",
+          "product_category",
+          "naics_code",
+          "contract_value",
+          "currency",
+          "announcement_date",
+          "award_date",
+          "period_start",
+          "period_end",
+          "country",
+          "original_source",
+          "source_url",
+          "available_at",
+          "retrieved_at",
+          "pit_usable",
+          "data_quality",
+          "match_confidence",
+          "matched_alias",
+          "payload"
+        ],
+        "date_columns": {
+          "product_category": {
+            "min": "ELECTROMEDICAL AND ELECTROTHERAPEUTIC APPARATUS MANUFACTURING",
+            "max": "SURGICAL APPLIANCE AND SUPPLIES MANUFACTURING"
+          },
+          "announcement_date": {
+            "min": null,
+            "max": null
+          },
+          "award_date": {
+            "min": null,
+            "max": null
+          },
+          "available_at": {
+            "min": "2026-11-01T22:48:28Z",
+            "max": "2026-11-01T22:48:28Z"
+          },
+          "retrieved_at": {
+            "min": "2026-11-01T22:48:28Z",
+            "max": "2026-11-01T22:48:28Z"
+          },
+          "data_quality": {
+            "min": "current_snapshot_obligation_not_revenue_first_publication_unknown",
+            "max": "current_snapshot_obligation_not_revenue_first_publication_unknown"
+          },
+          "match_confidence": {
+            "min": 0.125,
+            "max": 1.0
+          },
+          "matched_alias": {
+            "min": "ABBOTT",
+            "max": "ZIMMER BIOMET"
+          }
+        }
+      },
+      "publication_counts": {
+        "rows": 616,
+        "columns": [
+          "company_key",
+          "year",
+          "works",
+          "source",
+          "retrieved_at"
+        ],
+        "date_columns": {
+          "retrieved_at": {
+            "min": "2026-11-01T23:42:46Z",
+            "max": "2026-11-01T23:43:03Z"
+          }
+        },
+        "value_distributions": {
+          "source": {
+            "openalex_group_by_publication_year": 616
+          }
+        }
+      },
+      "temporal_edges": {
+        "rows": 5580,
+        "columns": [
+          "edge_id",
+          "subject_type",
+          "subject_id",
+          "relation",
+          "object_type",
+          "object_id",
+          "valid_time",
+          "available_at",
+          "assertion_status",
+          "evidence_source",
+          "evidence_id",
+          "confidence",
+          "created_at"
+        ],
+        "date_columns": {
+          "relation": {
+            "min": "COMPANY_DEVELOPS_PRODUCT",
+            "max": "PRODUCT_BELONGS_TO_TECHNOLOGY"
+          },
+          "valid_time": {
+            "min": "2007-11-02",
+            "max": "2026-10-26"
+          },
+          "available_at": {
+            "min": "2016-11-15T00:00:00",
+            "max": "2026-11-01T22:48:28Z"
+          },
+          "assertion_status": {
+            "min": "observed",
+            "max": "observed"
+          },
+          "created_at": {
+            "min": "2026-11-01T22:48:06Z",
+            "max": "2026-11-01T23:16:14Z"
+          }
+        }
+      },
+      "tracks": {
+        "rows": 38,
+        "columns": [
+          "id",
+          "name_zh",
+          "name_en",
+          "category",
+          "keywords",
+          "updated_at"
+        ],
+        "date_columns": {
+          "category": {
+            "min": "cardiovascular",
+            "max": "wound"
+          },
+          "updated_at": {
+            "min": "2026-11-01T22:46:09Z",
+            "max": "2026-11-01T22:46:09Z"
+          }
+        }
+      }
+    }
+  },
+  "main_store": {
+    "present": true,
+    "tables": {
+      "companies": {
+        "rows": 89,
+        "columns": [
+          "key",
+          "name_en",
+          "name_zh",
+          "ticker",
+          "cik",
+          "sector",
+          "country",
+          "is_major",
+          "aliases",
+          "updated_at"
+        ],
+        "date_columns": {
+          "updated_at": {
+            "min": "2026-10-30T19:19:19Z",
+            "max": "2026-10-30T19:56:45Z"
+          }
+        }
+      },
+      "events": {
+        "rows": 375378,
+        "columns": [
+          "event_id",
+          "source",
+          "kind",
+          "event_date",
+          "as_of",
+          "company_key",
+          "applicant_raw",
+          "country",
+          "track_id",
+          "product_code",
+          "title",
+          "summary",
+          "url",
+          "payload",
+          "fetched_at",
+          "published_at",
+          "first_seen_at",
+          "available_at",
+          "timestamp_quality"
+        ],
+        "date_columns": {
+          "event_date": {
+            "min": "1966-12-14",
+            "max": "2026-10-30"
+          },
+          "fetched_at": {
+            "min": "2026-10-30T19:11:43Z",
+            "max": "2026-10-31T03:55:55Z"
+          },
+          "published_at": {
+            "min": "1966-12-14",
+            "max": "2026-10-30T00:00:00"
+          },
+          "first_seen_at": {
+            "min": "2026-10-30",
+            "max": "2026-10-31"
+          },
+          "available_at": {
+            "min": "1966-12-14",
+            "max": "2026-10-30T00:00:00"
+          },
+          "timestamp_quality": {
+            "min": "date",
+            "max": "date"
+          }
+        },
+        "value_distributions": {
+          "source": {
+            "openfda_device_510k": 176466,
+            "openfda_device_recall": 59646,
+            "openfda_device_pma": 57372,
+            "ctgov": 55592,
+            "sec_edgar_corpus": 20976,
+            "openfda_drug_drugsfda": 5326
+          },
+          "kind": {
+            "510k": 176466,
+            "device_recall": 59646,
+            "pma": 57372,
+            "trial": 55592,
+            "8k_catalyst": 20976,
+            "drug_approval": 5326
+          }
+        }
+      },
+      "live_alerts": {
+        "rows": 11,
+        "columns": [
+          "alert_id",
+          "source",
+          "kind",
+          "ticker",
+          "company_key",
+          "direction",
+          "score",
+          "headline",
+          "url",
+          "event_time",
+          "detected_at",
+          "payload"
+        ],
+        "date_columns": {
+          "event_time": {
+            "min": "2026-10-28",
+            "max": "2026-10-30T07:51:51-04:00"
+          },
+          "detected_at": {
+            "min": "2026-10-30T17:51:47.663555+00:00",
+            "max": "2026-10-30T17:51:47.663555+00:00"
+          }
+        },
+        "value_distributions": {
+          "source": {
+            "sec_edgar_fts": 10,
+            "sec_edgar": 1
+          },
+          "kind": {
+            "8k_catalyst": 11
+          }
+        }
+      },
+      "live_equity": {
+        "rows": 4,
+        "columns": [
+          "ts",
+          "cash",
+          "market_value",
+          "equity",
+          "n_positions",
+          "note"
+        ]
+      },
+      "meta": {
+        "rows": 5,
+        "columns": [
+          "key",
+          "value"
+        ]
+      },
+      "paper_equity": {
+        "rows": 236,
+        "columns": [
+          "date",
+          "equity",
+          "cash",
+          "exposure",
+          "drawdown"
+        ],
+        "date_columns": {
+          "date": {
+            "min": "2025-11-21",
+            "max": "2026-10-30"
+          }
+        }
+      },
+      "paper_trades": {
+        "rows": 38,
+        "columns": [
+          "trade_id",
+          "signal_id",
+          "ticker",
+          "side",
+          "entry_date",
+          "entry_price",
+          "exit_date",
+          "exit_price",
+          "shares",
+          "pnl",
+          "ret",
+          "reason",
+          "created_at"
+        ],
+        "date_columns": {
+          "entry_date": {
+            "min": "2025-11-21",
+            "max": "2026-10-26"
+          },
+          "exit_date": {
+            "min": "2026-02-20",
+            "max": "2026-10-30"
+          },
+          "created_at": {
+            "min": "2026-10-30T19:23:33Z",
+            "max": "2026-10-30T19:23:33Z"
+          }
+        }
+      },
+      "prices": {
+        "rows": 1898409,
+        "columns": [
+          "ticker",
+          "date",
+          "open",
+          "high",
+          "low",
+          "close",
+          "adj_close",
+          "volume"
+        ],
+        "date_columns": {
+          "date": {
+            "min": "2016-10-31",
+            "max": "2026-10-30"
+          }
+        }
+      },
+      "product_codes": {
+        "rows": 7097,
+        "columns": [
+          "product_code",
+          "track_id",
+          "device_name",
+          "definition",
+          "specialty",
+          "regulation_number",
+          "updated_at"
+        ],
+        "date_columns": {
+          "regulation_number": {
+            "min": "",
+            "max": "892.8500"
+          },
+          "updated_at": {
+            "min": "2026-10-30T19:02:40Z",
+            "max": "2026-10-30T19:02:40Z"
+          }
+        }
+      },
+      "runs": {
+        "rows": 14,
+        "columns": [
+          "run_id",
+          "started_at",
+          "finished_at",
+          "stage",
+          "stats"
+        ],
+        "date_columns": {
+          "started_at": {
+            "min": "2026-10-30T17:29:31Z",
+            "max": "2026-10-30T19:19:48Z"
+          },
+          "finished_at": {
+            "min": "2026-10-30T17:29:31Z",
+            "max": "2026-10-30T19:19:48Z"
+          },
+          "stats": {
+            "min": "{\"alerts\": 0, \"orders\": 0, \"cash\": 100000.0, \"market_value\": 0.0, \"equity\": 100000.0, \"drawdown\": 0.0, \"n_positions\": 0}",
+            "max": "{\"events\": 9898, \"pages\": 233}"
+          }
+        }
+      },
+      "signals": {
+        "rows": 127,
+        "columns": [
+          "signal_id",
+          "event_id",
+          "company_key",
+          "ticker",
+          "signal_date",
+          "kind",
+          "direction",
+          "score",
+          "track_id",
+          "reason_zh",
+          "created_at",
+          "available_at",
+          "timestamp_quality"
+        ],
+        "date_columns": {
+          "signal_date": {
+            "min": "2025-11-20",
+            "max": "2026-10-28"
+          },
+          "created_at": {
+            "min": "2026-10-30T17:32:02Z",
+            "max": "2026-10-30T19:23:30Z"
+          },
+          "available_at": {
+            "min": "2025-11-19",
+            "max": "2026-10-27"
+          },
+          "timestamp_quality": {
+            "min": "date",
+            "max": "date"
+          }
+        },
+        "value_distributions": {
+          "kind": {
+            "drug_approval": 56,
+            "recall_cluster": 41,
+            "device_novel_code": 28,
+            "trial_start": 2
+          }
+        }
+      },
+      "tracks": {
+        "rows": 60,
+        "columns": [
+          "id",
+          "name_zh",
+          "name_en",
+          "category",
+          "keywords",
+          "updated_at"
+        ],
+        "date_columns": {
+          "category": {
+            "min": "cardiovascular",
+            "max": "wound"
+          },
+          "updated_at": {
+            "min": "2026-10-30T19:19:19Z",
+            "max": "2026-10-30T19:56:45Z"
+          }
+        }
+      }
+    }
+  },
+  "device_trials": {
+    "present": true,
+    "tables": {
+      "companies": {
+        "rows": 51,
+        "columns": [
+          "key",
+          "name_en",
+          "name_zh",
+          "ticker",
+          "cik",
+          "sector",
+          "country",
+          "is_major",
+          "aliases",
+          "updated_at"
+        ],
+        "date_columns": {
+          "updated_at": {
+            "min": "2026-11-02T03:22:05Z",
+            "max": "2026-11-02T03:22:05Z"
+          }
+        }
+      },
+      "events": {
+        "rows": 2663,
+        "columns": [
+          "event_id",
+          "source",
+          "kind",
+          "event_date",
+          "as_of",
+          "company_key",
+          "applicant_raw",
+          "country",
+          "track_id",
+          "product_code",
+          "title",
+          "summary",
+          "url",
+          "payload",
+          "fetched_at",
+          "published_at",
+          "first_seen_at",
+          "available_at",
+          "timestamp_quality"
+        ],
+        "date_columns": {
+          "event_date": {
+            "min": "2016-09-07",
+            "max": "2026-10-29"
+          },
+          "fetched_at": {
+            "min": "2026-11-02T03:22:39Z",
+            "max": "2026-11-02T03:22:39Z"
+          },
+          "published_at": {
+            "min": "2016-09-07T00:00:00",
+            "max": "2026-10-29T00:00:00"
+          },
+          "first_seen_at": {
+            "min": "2026-11-02T03:22:39Z",
+            "max": "2026-11-02T03:22:39Z"
+          },
+          "available_at": {
+            "min": "2016-09-07T00:00:00",
+            "max": "2026-10-29T00:00:00"
+          },
+          "timestamp_quality": {
+            "min": "date",
+            "max": "date"
+          }
+        },
+        "value_distributions": {
+          "source": {
+            "ctgov": 2663
+          },
+          "kind": {
+            "trial": 2663
+          }
+        }
+      },
+      "runs": {
+        "rows": 1,
+        "columns": [
+          "run_id",
+          "started_at",
+          "finished_at",
+          "stage",
+          "stats"
+        ],
+        "date_columns": {
+          "started_at": {
+            "min": "2026-11-02T03:22:39Z",
+            "max": "2026-11-02T03:22:39Z"
+          },
+          "finished_at": {
+            "min": "2026-11-02T03:22:39Z",
+            "max": "2026-11-02T03:22:39Z"
+          },
+          "stats": {
+            "min": "{\"events\": 2663, \"pages\": 107}",
+            "max": "{\"events\": 2663, \"pages\": 107}"
+          }
+        }
+      },
+      "tracks": {
+        "rows": 50,
+        "columns": [
+          "id",
+          "name_zh",
+          "name_en",
+          "category",
+          "keywords",
+          "updated_at"
+        ],
+        "date_columns": {
+          "category": {
+            "min": "cardiovascular",
+            "max": "wound"
+          },
+          "updated_at": {
+            "min": "2026-11-02T03:22:05Z",
+            "max": "2026-11-02T03:22:05Z"
+          }
+        }
+      }
+    }
+  }
+}
