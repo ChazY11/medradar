@@ -61,6 +61,19 @@ def audit_leakage(as_of: str, payload: dict[str, Any]) -> dict[str, Any]:
             "auditable": len(payload["profiles"]) - unauditable}
 
 
+def _promotion_map(payload: dict[str, Any]) -> dict[str, tuple]:
+    """(track, quarter) -> (promotion verdict, shape, policy version) for every alert in a snapshot."""
+    mapping: dict[str, tuple] = {}
+    for company, profile in payload["profiles"]["profiles"].items():
+        deployment = profile.get("momentum", {}).get("deployment_alerts") or {}
+        for alert in deployment.get("flagged") or []:
+            promotion = alert.get("promotion") or {}
+            key = f"{company}|{alert.get('track')}|{alert.get('quarter')}"
+            mapping[key] = (promotion.get("verdict"), promotion.get("shape"),
+                            promotion.get("policy_version"))
+    return mapping
+
+
 def compare(older: dict[str, Any], newer: dict[str, Any]) -> dict[str, Any]:
     old_profiles = older["profiles"]["profiles"]
     new_profiles = newer["profiles"]["profiles"]
@@ -85,12 +98,21 @@ def compare(older: dict[str, Any], newer: dict[str, Any]) -> dict[str, Any]:
             track_changes.append({"company": key,
                                   "entered": sorted(new_tracks - old_tracks),
                                   "dropped": sorted(old_tracks - new_tracks)})
+    old_promotions = _promotion_map(older)
+    new_promotions = _promotion_map(newer)
+    promotion_changes = []
+    for key in sorted(set(old_promotions) | set(new_promotions)):
+        before = old_promotions.get(key)
+        after = new_promotions.get(key)
+        if before != after:
+            promotion_changes.append({"alert": key, "from": before, "to": after})
     return {
         "from": older["profiles"]["as_of"],
         "to": newer["profiles"]["as_of"],
         "momentum_changes": momentum_changes,
         "event_changes": event_changes,
         "track_changes": track_changes,
+        "promotion_changes": promotion_changes,
         "detected_before": older["summary"].get("detected_momentum", {}),
         "detected_after": newer["summary"].get("detected_momentum", {}),
         "total_events_before": sum(block["technology_footprint"]["total_events"]
@@ -110,7 +132,9 @@ def main() -> int:
     failures = 0
     for directory in directories:
         loaded = load(directory)
-        audit = audit_leakage(directory.name, loaded["profiles"])
+        # a labelled snapshot (as-of plus suffix, e.g. 2026-11-03-policy-v2) audits against its own as-of
+        as_of = str(loaded["profiles"].get("as_of") or directory.name)
+        audit = audit_leakage(as_of, loaded["profiles"])
         report["leakage_audit"][directory.name] = audit
         if audit["problems"]:
             failures += len(audit["problems"])

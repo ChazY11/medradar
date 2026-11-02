@@ -366,6 +366,7 @@
           "to": "decreasing"
         }
       ],
+      "promotion_changes": [],
       "to": "2022-12-31",
       "total_events_after": 2503,
       "total_events_before": 1797,
@@ -872,6 +873,7 @@
           "to": "no_detectable_change"
         }
       ],
+      "promotion_changes": [],
       "to": "2024-12-31",
       "total_events_after": 3235,
       "total_events_before": 2503,
@@ -1379,6 +1381,7 @@
           "to": "decreasing"
         }
       ],
+      "promotion_changes": [],
       "to": "2026-11-02",
       "total_events_after": 3928,
       "total_events_before": 3235,
@@ -1521,6 +1524,735 @@
       "event_changes": [],
       "from": "2026-11-02",
       "momentum_changes": [],
+      "promotion_changes": [
+        {
+          "alert": "abbott|ivd_immuno|2026-Q2",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "abbott|ivd_molecular|2025-Q1",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "abbott|medical_ai|2025-Q3",
+          "from": null,
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "ambu|urology|2024-Q4",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "baxter|vascular_access|2025-Q1",
+          "from": null,
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "boston_scientific|endoscopy|2025-Q1",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "draeger|patient_monitoring|2026-Q2",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "draeger|respiratory|2026-Q2",
+          "from": null,
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "fujifilm|endoscopy|2025-Q2",
+          "from": null,
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "fujifilm|medical_ai|2025-Q2",
+          "from": null,
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "fujifilm|medical_ai|2026-Q2",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "ge_healthcare|patient_monitoring|2026-Q3",
+          "from": null,
+          "to": [
+            "reject",
+            "unknown",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "globus_medical|spine|2026-Q2",
+          "from": null,
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "globus_medical|trauma|2026-Q2",
+          "from": null,
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "intuitive_surgical|surgical_robotics|2025-Q3",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "johnson_johnson_medtech|medical_ai|2026-Q1",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "johnson_johnson_medtech|wound_care|2025-Q4",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "karl_storz|endoscopy|2025-Q4",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "medtronic|coronary|2026-Q3",
+          "from": null,
+          "to": [
+            "reject",
+            "unknown",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "medtronic|insulin_delivery|2025-Q3",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "merit_medical|coronary|2026-Q1",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "mindray|respiratory|2026-Q2",
+          "from": null,
+          "to": [
+            "reject",
+            "unknown",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "olympus|dental|2026-Q3",
+          "from": null,
+          "to": [
+            "reject",
+            "unknown",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "olympus|endoscopy|2025-Q2",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "olympus|imaging_us|2025-Q3",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "olympus|surgical_energy|2025-Q4",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "penumbra|vascular_access|2024-Q4",
+          "from": null,
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "philips|imaging_us|2025-Q2",
+          "from": null,
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "siemens_healthineers|medical_ai|2026-Q2",
+          "from": null,
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "stryker|neurovascular|2025-Q4",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "stryker|vascular_access|2024-Q4",
+          "from": null,
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ]
+        },
+        {
+          "alert": "stryker|vascular_access|2025-Q1",
+          "from": null,
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ]
+        }
+      ],
+      "to": "2026-11-03",
+      "total_events_after": 3928,
+      "total_events_before": 3928,
+      "track_changes": []
+    },
+    {
+      "detected_after": {
+        "medline": "decreasing",
+        "olympus": "increasing",
+        "philips": "increasing",
+        "steris": "decreasing"
+      },
+      "detected_before": {
+        "medline": "decreasing",
+        "olympus": "increasing",
+        "philips": "increasing",
+        "steris": "decreasing"
+      },
+      "event_changes": [],
+      "from": "2026-11-03",
+      "momentum_changes": [],
+      "promotion_changes": [
+        {
+          "alert": "abbott|ivd_immuno|2026-Q2",
+          "from": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "abbott|ivd_molecular|2025-Q1",
+          "from": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "sustained_unresolved",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "abbott|medical_ai|2025-Q3",
+          "from": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "ambu|urology|2024-Q4",
+          "from": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "sustained_unresolved",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "baxter|vascular_access|2025-Q1",
+          "from": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "boston_scientific|endoscopy|2025-Q1",
+          "from": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "sustained_unresolved",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "draeger|patient_monitoring|2026-Q2",
+          "from": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "draeger|respiratory|2026-Q2",
+          "from": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "fujifilm|endoscopy|2025-Q2",
+          "from": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "fujifilm|medical_ai|2025-Q2",
+          "from": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "fujifilm|medical_ai|2026-Q2",
+          "from": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "ge_healthcare|patient_monitoring|2026-Q3",
+          "from": [
+            "reject",
+            "unknown",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "unknown",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "globus_medical|spine|2026-Q2",
+          "from": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "globus_medical|trauma|2026-Q2",
+          "from": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "intuitive_surgical|surgical_robotics|2025-Q3",
+          "from": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "johnson_johnson_medtech|medical_ai|2026-Q1",
+          "from": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "sustained_unresolved",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "johnson_johnson_medtech|wound_care|2025-Q4",
+          "from": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "karl_storz|endoscopy|2025-Q4",
+          "from": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "sustained_unresolved",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "medtronic|coronary|2026-Q3",
+          "from": [
+            "reject",
+            "unknown",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "unknown",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "medtronic|insulin_delivery|2025-Q3",
+          "from": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "sustained_unresolved",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "merit_medical|coronary|2026-Q1",
+          "from": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "mindray|respiratory|2026-Q2",
+          "from": [
+            "reject",
+            "unknown",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "unknown",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "olympus|dental|2026-Q3",
+          "from": [
+            "reject",
+            "unknown",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "unknown",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "olympus|endoscopy|2025-Q2",
+          "from": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "olympus|imaging_us|2025-Q3",
+          "from": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "olympus|surgical_energy|2025-Q4",
+          "from": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "penumbra|vascular_access|2024-Q4",
+          "from": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "philips|imaging_us|2025-Q2",
+          "from": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "siemens_healthineers|medical_ai|2026-Q2",
+          "from": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "stryker|neurovascular|2025-Q4",
+          "from": [
+            "promote_pending_signoff",
+            "ramp",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "sustained_unresolved",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "stryker|vascular_access|2024-Q4",
+          "from": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "promote_pending_signoff",
+            "level",
+            "promotion_policy_v2"
+          ]
+        },
+        {
+          "alert": "stryker|vascular_access|2025-Q1",
+          "from": [
+            "reject",
+            "spike",
+            "promotion_policy_v1"
+          ],
+          "to": [
+            "reject",
+            "spike",
+            "promotion_policy_v2"
+          ]
+        }
+      ],
       "to": "2026-11-03",
       "total_events_after": 3928,
       "total_events_before": 3928,
@@ -1557,6 +2289,12 @@
       "problems": [],
       "profiles": 53,
       "unauditable": 0
+    },
+    "2026-11-03-policy-v2": {
+      "auditable": 53,
+      "problems": [],
+      "profiles": 53,
+      "unauditable": 0
     }
   },
   "snapshots": [
@@ -1564,6 +2302,7 @@
     "2022-12-31",
     "2024-12-31",
     "2026-11-02",
-    "2026-11-03"
+    "2026-11-03",
+    "2026-11-03-policy-v2"
   ]
 }

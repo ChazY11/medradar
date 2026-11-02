@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T18:40:00+08:00",
+  "updated_at": "2026-11-03T19:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "density_confirmed_and_policy_v2",
-  "cycle": 33,
+  "phase": "policy_change_visible_in_record",
+  "cycle": 34,
   "last_completed_cycle": {
-    "cycle": 31,
-    "name": "density_confirmation_and_policy_v2",
+    "cycle": 32,
+    "name": "labelled_snapshots_and_promotion_diff",
     "branch": "research/change-detection-v1",
-    "report": "experiments/b026/density_confirm.json",
-    "summary": "research/RESULTS/cycle31_density_confirm_2026-11-03.md",
-    "verdict": "density scaling CONFIRMED on fresh draws under a disclosed post-failure revised criterion (rho 0.908, dense 0.444 vs sparse 0.204, ratio 2.18x); promotion policy v2 refuses the ramp label below 1.0 event/month and reports sustained_unresolved instead"
+    "report": "experiments/b027/snapshot_diff.json",
+    "summary": "research/RESULTS/cycle32_snapshot_labels_2026-11-03.md",
+    "verdict": "a sixth auditable snapshot (2026-11-03-policy-v2) and a promotion-label diff make the policy change visible: 32 alert labels changed, 8 from ramp to sustained_unresolved, while the data-level diff reports zero change; 6/6 snapshots verify, 0 leakage problems"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -168,7 +168,9 @@
     "DETECT: the controlled density experiment FAILED its pre-declared bar (strict monotonicity broke by 0.018; intervals overlapped by 0.023) even though ramp recall halved with density and rho = 0.882 - the scaling remains suggestive, not established",
     "METHOD: a pre-registration can be too brittle - requiring strict monotonicity from five noisy point estimates voids a large, consistent effect on a 0.018 wobble; the criterion, not the data, was the problem and is recorded as such",
     "DETECT: the density scaling is CONFIRMED on fresh draws under a revised criterion (rho 0.908, dense 0.444 vs sparse 0.204, ratio 2.18x) - stated as a post-failure confirmation",
-    "PRODUCT: promotion policy v2 refuses the ramp label below 1.0 event per series-month and reports sustained_unresolved instead, with three tests covering the relabelling"
+    "PRODUCT: promotion policy v2 refuses the ramp label below 1.0 event per series-month and reports sustained_unresolved instead, with three tests covering the relabelling",
+    "POINT-IN-TIME: the record can now show WHICH claims a policy change altered (32 labels, 8 shape changes from ramp to sustained_unresolved) alongside zero data-level movement",
+    "POINT-IN-TIME: labelled snapshots are supported (as-of plus suffix) without weakening verification: 6 of 6 snapshots verify and the leakage audit stays clean"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -186,9 +188,9 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "freeze a snapshot under policy v2 so the label change is visible in the point-in-time chain",
-    "wire the audit into the round-end routine",
+    "wire the audit into the round-end routine so every round reports it",
     "consider a second paper focused on the measurement rules and the density confirmation",
+    "decide whether the promotion ledger should record relabelling events as an audit trail",
     "revisit the 1.0/month floor if a denser domain becomes available"
   ],
   "invariants": [
@@ -671,9 +673,10 @@
       "2022-12-31",
       "2024-12-31",
       "2026-11-02",
-      "2026-11-03"
+      "2026-11-03",
+      "2026-11-03-policy-v2"
     ],
-    "auditable_snapshots": 5,
+    "auditable_snapshots": 6,
     "unauditable_snapshots": {
       "2026-11-02": "frozen before the audit block existed"
     },
@@ -702,6 +705,21 @@
       "manifest_hash": "5b7062d2f9dd432d",
       "adds": "deployment block and promotion verdicts",
       "diff_vs_previous": "identical data (3,928 events, 0 momentum changes, 0 track changes); knowledge changed, not data"
+    },
+    "labelled_snapshots": {
+      "supported_by": "freeze_snapshot.py --label",
+      "example": "2026-11-03-policy-v2 (manifest 44abde1672df)",
+      "as_of_handling": "manifest records the true as-of; selfcheck and snapshot_diff accept as-of or as-of-<label>; the leakage audit uses the manifest value"
+    },
+    "promotion_diff": {
+      "artifact": "experiments/b027/snapshot_diff.json",
+      "policy_v1_to_v2": {
+        "alert_labels_changed": 32,
+        "shape_changes": 8,
+        "shape_change_direction": "ramp -> sustained_unresolved",
+        "data_level_changes": 0
+      },
+      "reading": "both readings are correct: the data did not move, the labels did - only reporting one of them would mislead"
     }
   },
   "rolling_origin": {

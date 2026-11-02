@@ -173,7 +173,9 @@ def check_snapshots() -> int:
         summary = json.loads(summary_path.read_text(encoding="utf-8"))
         problems = verify_manifest(manifest, artifacts={"profiles": profiles,
                                                         "summary": summary})
-        if manifest.get("as_of") != directory.name:
+        # a labelled snapshot appends a suffix to its as-of (e.g. 2026-11-03-policy-v2)
+        as_of = str(manifest.get("as_of") or "")
+        if directory.name != as_of and not directory.name.startswith(as_of + "-"):
             problems.append("manifest as_of does not match the snapshot directory name")
         if summary.get("companies") != len(profiles["profiles"]):
             problems.append("summary company count does not match profiles.json")

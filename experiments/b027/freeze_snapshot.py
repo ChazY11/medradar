@@ -69,12 +69,18 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--as-of", default="2026-11-02")
     parser.add_argument("--scope", choices=("focus", "roster"), default="roster")
+    parser.add_argument("--label", default="",
+                        help="optional suffix for a second snapshot at the same as-of, e.g. policy-v2")
     args = parser.parse_args(argv)
     if not is_iso_date(args.as_of):
         print(f"invalid --as-of {args.as_of!r}; expected YYYY-MM-DD")
         return 1
+    if args.label and not all(char.isalnum() or char in "-." for char in args.label):
+        print(f"invalid --label {args.label!r}; use letters, digits, dash or dot")
+        return 1
+    snapshot_name = args.as_of if not args.label else f"{args.as_of}-{args.label}"
 
-    snapshot_dir = BASE / "snapshots" / args.as_of
+    snapshot_dir = BASE / "snapshots" / snapshot_name
     if snapshot_dir.exists():
         print(f"snapshot already exists: {snapshot_dir}")
         return 1

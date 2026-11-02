@@ -659,4 +659,19 @@ tasks:
       criterion. Product consequence: promotion policy v2 refuses the ramp label below 1.0 event/series-month
       and reports sustained_unresolved instead; three tests cover the relabelling.
 
+  - id: B-065
+    layer: govern
+    priority: P1
+    title: Labelled snapshots and a promotion-label diff
+    status: done
+    owner: lead
+    depends_on: [B-060, B-064]
+    acceptance: >
+      freeze_snapshot --label allows a second snapshot at the same as-of (2026-11-03-policy-v2) with the
+      manifest recording the true as-of; selfcheck and snapshot_diff accept as-of or as-of-<label>; the leakage
+      audit uses the manifest as-of. snapshot_diff compares per-alert (verdict, shape, policy version) and
+      reports changes. Result: 32 alert labels changed between v1 and v2, 8 of them from ramp to
+      sustained_unresolved, while the data-level diff reports zero change. 6 of 6 snapshots verify; 0 leakage
+      problems.
+
 

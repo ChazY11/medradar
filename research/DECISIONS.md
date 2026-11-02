@@ -2410,3 +2410,36 @@ measured ramp recall is 0.14. That label was unjustified. Policy **v2** therefor
 **Not claimed.** That the scaling generalises beyond binomial thinning of this taxonomy; that the 1.0/month floor
 is optimal (it is a conservative choice consistent with the measured curve, not a fitted threshold); or that any
 ramp above the floor is technological.
+
+---
+
+## D-062 — B-065: labelled snapshots and a promotion-label diff, so a policy change is visible in the record
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-065.
+
+**The problem.** D-061 changed the promotion policy to v2, which relabels some alerts from `ramp` to
+`sustained_unresolved`. A point-in-time chain that cannot show **which claims a policy change altered** is only
+half a record: a reader comparing two snapshots would see identical data, zero momentum changes and zero track
+changes, and could reasonably conclude nothing happened.
+
+**What was built.**
+
+1. **Labelled snapshots.** `freeze_snapshot.py --label` allows a second snapshot at the same as-of date
+   (`2026-11-03-policy-v2`). The manifest still records the true as-of; the directory carries the suffix. Both
+   the self-check and the diff accept `as-of` or `as-of-<label>` so the chain stays verifiable, and the leakage
+   audit uses the manifest's as-of rather than the directory name.
+2. **A promotion-label diff.** `snapshot_diff.py` now compares, per alert, the triple
+   (verdict, shape, policy version) and records every change. The policy-v2 snapshot therefore shows **32 alert
+   labels changed**, of which **8 changed shape** from `ramp` to `sustained_unresolved` — the exact set of claims
+   the density finding disqualified.
+3. **The sixth auditable snapshot**, `2026-11-03-policy-v2`, frozen and verified (manifest `44abde16…`), which
+   also carries the promotion-ledger hash so the labels are tied to the signed ledger at that moment.
+
+**What this establishes.** The record can now answer a question that previously had no artefact: *what did the
+policy change alter, and what did it leave alone?* Data-level diffs report zero change (3,928 events, no momentum
+or track movement), while the label-level diff reports 32 changes with their before/after triples. Both are
+correct; only reporting one of them would be misleading.
+
+**Not claimed.** That the relabelled alerts are now wrong — the binary promotion verdict is unchanged
+(`promote_pending_signoff` for all eight); only the shape label was withdrawn. Nor that the
+1.0-event-per-month floor is optimal; D-061 already states it is a conservative point on a measured curve.

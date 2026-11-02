@@ -12,7 +12,7 @@
     {
       "requirement": "backlog integrity",
       "status": "PASS",
-      "evidence": "52 tasks, statuses {'done': 38, 'blocked': 4, 'todo': 9, 'frozen': 1}",
+      "evidence": "53 tasks, statuses {'done': 39, 'blocked': 4, 'todo': 9, 'frozen': 1}",
       "detail": {
         "duplicates": []
       }
@@ -20,35 +20,36 @@
     {
       "requirement": "state completeness",
       "status": "PASS",
-      "evidence": "phase='density_confirmed_and_policy_v2', cycle=33",
+      "evidence": "phase='policy_change_visible_in_record', cycle=34",
       "detail": {
         "absent": [],
-        "findings": 83
+        "findings": 85
       }
     },
     {
       "requirement": "loop ran and was recorded",
       "status": "PASS",
-      "evidence": "61 decisions, 120 result rows (25 negative/null), retractions marked: 2",
+      "evidence": "62 decisions, 123 result rows (25 negative/null), retractions marked: 2",
       "detail": {}
     },
     {
       "requirement": "experiments with committed artifacts",
       "status": "PASS",
-      "evidence": "80 JSON artifacts across 16 experiment dirs",
+      "evidence": "83 JSON artifacts across 17 experiment dirs",
       "detail": {}
     },
     {
       "requirement": "point-in-time snapshots verify",
       "status": "PASS",
-      "evidence": "5 of 5 snapshots verify",
+      "evidence": "6 of 6 snapshots verify",
       "detail": {
         "verified": [
           "2020-12-31",
           "2022-12-31",
           "2024-12-31",
           "2026-11-02",
-          "2026-11-03"
+          "2026-11-03",
+          "2026-11-03-policy-v2"
         ],
         "problems": []
       }
@@ -80,13 +81,13 @@
     {
       "requirement": "profile self-check",
       "status": "PASS",
-      "evidence": "snapshot 2026-11-03: OK (53 companies, manifest 5b7062d2f9dd...)",
+      "evidence": "snapshot 2026-11-03-policy-v2: OK (53 companies, manifest 44abde1672df...)",
       "detail": {}
     },
     {
       "requirement": "working tree committed",
       "status": "N/A",
-      "evidence": "22 uncommitted path(s) at audit time",
+      "evidence": "15 uncommitted path(s) at audit time",
       "detail": {}
     }
   ],
