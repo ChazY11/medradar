@@ -764,4 +764,18 @@ tasks:
       links the figure with captions tied to the counts; CLAIMS_METHODS.json is now 25 claims, three asserting the
       figure's numbers; the round-end gate runs both figure verifications (9 steps).
 
+  - id: B-072
+    layer: govern
+    priority: P2
+    title: Static figure-layout check in the round-end gate
+    status: done
+    owner: lead
+    depends_on: [B-071]
+    acceptance: >
+      papers/check_layout.py catches the two mechanical defect classes that only a rendered review had caught before
+      (text outside the canvas; text painted over by a later filled shape), measures rotated axis labels vertically,
+      and is verified against injected defects rather than only clean figures. Seven unit tests including one that
+      asserts the committed figures are clean. tools/round_end.py runs it as a tenth step: "layout checks: 5
+      figures; problems: 0".
+
 

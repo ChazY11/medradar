@@ -1,22 +1,16 @@
 {
   "schema": "round_end_v1",
-  "checked_at_utc": "2026-11-02T05:38:41+00:00",
+  "checked_at_utc": "2026-11-02T05:41:03+00:00",
   "branch": "research/change-detection-v1",
-  "head": "2f7127d845218ddd50615f27c184ff0d7333310b",
+  "head": "b98665ab8b97bf3c99e65f5064b900bff6e89a67",
   "remote_synced": true,
   "uncommitted_paths": [
-    "M papers/CLAIMS_METHODS.json",
-    " M papers/PAPER_METHODS_v1.md",
-    " M papers/build_claims_methods.py",
-    " M papers/figures.py",
-    " M papers/figures/figures_data.json",
-    " M papers/verify_figures.py",
-    " M research/AUDIT.json",
+    "M research/AUDIT.json",
     " M research/AUDIT.md",
     " M tools/round_end.py",
     " M tools/round_end_console.log",
-    "?? papers/figures/fig5_retraction_rules.svg",
-    "?? papers/rules_map.py"
+    "?? papers/check_layout.py",
+    "?? tests/test_check_layout.py"
   ],
   "results": [
     {
@@ -50,6 +44,12 @@
       "exit": 0
     },
     {
+      "step": "figure layout",
+      "status": "PASS",
+      "detail": "layout checks: 5 figures; problems: 0",
+      "exit": 0
+    },
+    {
       "step": "profile self-check",
       "status": "PASS",
       "detail": "checked 5 profiles; failures=0",
@@ -70,11 +70,11 @@
     {
       "step": "repository state",
       "status": "PASS",
-      "detail": "HEAD 2f7127d84521, remote synced, 12 uncommitted path(s)"
+      "detail": "HEAD b98665ab8b97, remote synced, 6 uncommitted path(s)"
     }
   ],
   "summary": {
-    "passed": 9,
+    "passed": 10,
     "failed": 0,
     "skipped": 0,
     "not_applicable": 0

@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-04T01:40:00+08:00",
+  "updated_at": "2026-11-04T02:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "methods_figure_shipped",
-  "cycle": 40,
+  "phase": "layout_check_automated",
+  "cycle": 41,
   "last_completed_cycle": {
-    "cycle": 38,
-    "name": "methods_figure",
+    "cycle": 39,
+    "name": "static_layout_check",
     "branch": "research/change-detection-v1",
-    "report": "papers/figures/fig5_retraction_rules.svg",
-    "summary": "research/RESULTS/cycle38_rules_figure_2026-11-03.md",
-    "verdict": "fifth figure maps ten events to nine rules (21 filled cells); Rules 7 and 3 carry the most independent evidence (four and three events). Three layout defects were found only by a rendered check and fixed; the methods paper now links its own figure and the gate runs both figure verifications (9 steps)"
+    "report": "tools/round_end.json",
+    "summary": "research/RESULTS/cycle39_layout_check_2026-11-03.md",
+    "verdict": "the recurring render-only defect class is now a static check: off-canvas text and text painted over by a later shape are detected without a browser, verified against injected defects, and the round-end gate is 10 steps with 0 failures"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -182,7 +182,8 @@
     "GOVERN: the roadmap now cites an artifact for every capability and names the remaining work as time- or access-dependent rather than open-ended",
     "GOVERN: the mission distinguishes charter history (section 9, 2026-11-02) from current position (section 10) instead of overwriting the record",
     "PUBLISH: the retraction-to-rule map shows Rule 7 (check the pipeline) motivated by four separate events and Rule 3 (benchmark outcome independence) by three - the two most 'boilerplate'-looking rules have the most independent evidence",
-    "METHOD: a rendered check caught three layout defects the SVG validator could not (legend covering column headings, overlapping labels, legend off-canvas); this is the fourth such case and is now treated as a recurring class rather than an accident"
+    "METHOD: a rendered check caught three layout defects the SVG validator could not (legend covering column headings, overlapping labels, legend off-canvas); this is the fourth such case and is now treated as a recurring class rather than an accident",
+    "GOVERN: the fourth render-only defect class is now static - off-canvas text and text painted over by a later shape are caught by check_layout.py, proven against injected defects, and run as gate step 10"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -200,10 +201,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "mark backlog items whose data is structurally unavailable as blocked rather than open",
+    "reclassify backlog items whose data is structurally unavailable as blocked, with the evidence recorded",
     "mature the prospective forecast set when the lane advances (earliest 2026-Q4)",
     "keep tools/round_end.py as the gate at the end of every round",
-    "consider a rendering check step for figures in the gate (currently manual)"
+    "a rendered review is still needed for contrast and text-on-text overlap; schedule one before any submission"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -1190,15 +1191,25 @@
       "profile self-check",
       "snapshot chain",
       "objective audit",
-      "repository state"
+      "repository state",
+      "figure layout"
     ],
     "last_result": {
-      "passed": 7,
-      "failed": 0,
-      "runtime_seconds": 23
+      "passed": 10,
+      "failed": 0
     },
     "lesson": "unittest writes its summary to stderr and per-step marker extraction is required; a generic keyword heuristic reported the wrong line on the first attempt",
-    "rule": "a round is not finished until this command exits 0"
+    "rule": "a round is not finished until this command exits 0",
+    "layout_check": {
+      "tool": "papers/check_layout.py",
+      "classes": [
+        "text outside the canvas",
+        "text painted over by a later filled shape"
+      ],
+      "tests": "tests/test_check_layout.py (7, incl. injected defects and a committed-figures assertion)",
+      "calibration": "character width ratio 0.50 after 0.56 produced three false alarms; the estimate errs toward over-width, so a clean pass is meaningful and a failure needs a glance",
+      "limits": "does not replace a rendered review: contrast, text-on-text overlap and other SVG features are still the render's job"
+    }
   },
   "evaluation": {
     "pipeline_rolling_origin": {
