@@ -153,3 +153,25 @@ class CountsTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SignAndHolmTest(unittest.TestCase):
+    def test_sign_test_unanimous_small_sample(self):
+        from medradar.studies.concurrent import sign_test_p
+        self.assertAlmostEqual(sign_test_p(4, 0), 0.125, places=3)
+
+    def test_sign_test_ties_are_caller_excluded(self):
+        from medradar.studies.concurrent import sign_test_p
+        self.assertEqual(sign_test_p(0, 0), 1.0)
+
+    def test_holm_orders_and_caps(self):
+        from medradar.studies.concurrent import holm
+        result = holm({"a": 0.001, "b": 0.02, "c": 0.9})
+        self.assertTrue(result["a"]["reject"])
+        self.assertFalse(result["c"]["reject"])
+        self.assertGreaterEqual(result["b"]["adjusted_p"], result["a"]["adjusted_p"])
+
+    def test_holm_never_exceeds_one(self):
+        from medradar.studies.concurrent import holm
+        result = holm({"a": 0.9, "b": 0.95})
+        self.assertTrue(all(entry["adjusted_p"] <= 1.0 for entry in result.values()))

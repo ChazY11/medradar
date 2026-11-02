@@ -195,3 +195,32 @@ def split_window(labels: Iterable[str], *, split: str) -> dict[str, list[str]]:
     for label in sorted(set(labels)):
         (calibration if label < split else evaluation).append(label)
     return {"calibration": calibration, "evaluation": evaluation}
+
+
+def sign_test_p(positive: int, negative: int) -> float:
+    """Two-sided exact sign test p-value for `positive` vs `negative` discordant pairs (ties excluded by caller)."""
+    total = positive + negative
+    if total == 0:
+        return 1.0
+    # exact binomial with p=0.5, two-sided: 2 * min(P(X<=k), P(X>=k)) capped at 1
+    from math import comb
+
+    def pmf(k: int) -> float:
+        return comb(total, k) / (2 ** total)
+
+    lower = sum(pmf(k) for k in range(0, positive + 1))
+    upper = sum(pmf(k) for k in range(positive, total + 1))
+    return round(min(1.0, 2 * min(lower, upper)), 6)
+
+
+def holm(pvalues: Mapping[str, float], alpha: float = 0.05) -> dict[str, dict]:
+    """Holm-Bonferroni adjustment; returns adjusted p-values and rejection flags in input order."""
+    items = sorted(pvalues.items(), key=lambda item: item[1])
+    m = len(items)
+    adjusted: dict[str, dict] = {}
+    previous = 0.0
+    for rank, (name, pvalue) in enumerate(items):
+        value = min(1.0, max(previous, (m - rank) * pvalue))
+        previous = value
+        adjusted[name] = {"p_value": pvalue, "adjusted_p": round(value, 6), "reject": value < alpha}
+    return adjusted

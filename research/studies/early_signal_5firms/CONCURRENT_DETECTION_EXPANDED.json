@@ -1,0 +1,1538 @@
+{
+  "schema": "concurrent_detection_expanded_v1",
+  "protocol": "PHASE1C_PROTOCOL.md (frozen before this run)",
+  "cell_selection": "CELL_INVENTORY.json (coverage only; contains no outcome quantities)",
+  "window": {
+    "calibration": [
+      "2017-Q1",
+      "2021-Q4"
+    ],
+    "evaluation": [
+      "2022-Q1",
+      "2025-Q4"
+    ]
+  },
+  "budget": 2.0,
+  "leak_audit": {
+    "events_checked": 5182,
+    "violations": 0,
+    "examples": [],
+    "rule": "visibility = event_date + 30 days, must be <= the real last day of its quarter"
+  },
+  "primary": [
+    {
+      "company": "ge_healthcare",
+      "track": "imaging_mr_ct",
+      "set": "primary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 4,
+            "calibration_alerts": 4
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 2.517531124527155,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 2.517531124527155,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 5.5,
+          "alerts": 3,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 3,
+          "false_alerts_per_company_year": 0.75,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 5.5,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 5.5,
+          "alerts": 3,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 3,
+          "false_alerts_per_company_year": 0.75,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 5.5,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "medtronic",
+      "track": "cardiac_rhythm",
+      "set": "primary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 4,
+            "calibration_alerts": 4
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 2.764138086991603,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 2.764138086991603,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 4.5,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 4.5,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 4.5,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 4.5,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "medtronic",
+      "track": "diabetes_cgm",
+      "set": "primary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 3,
+            "calibration_alerts": 3
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 1.4896989288278102,
+          "alerts": 3,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 3,
+          "false_alerts_per_company_year": 0.75,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.4896989288278102,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 15.717559182858727,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 15.717559182858727,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 15.717559182858727,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 15.717559182858727,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "medtronic",
+      "track": "insulin_delivery",
+      "set": "primary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 2,
+            "calibration_alerts": 2
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 1.106605743337003,
+          "alerts": 5,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 5,
+          "false_alerts_per_company_year": 1.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.106605743337003,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 8.685990362153793,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 8.685990362153793,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 8.685990362153793,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 8.685990362153793,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "philips",
+      "track": "imaging_mr_ct",
+      "set": "primary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 2,
+            "calibration_alerts": 2
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 2.5628464289109907,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 2.5628464289109907,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 12.048502034439192,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 12.048502034439192,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 12.048502034439192,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 12.048502034439192,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    }
+  ],
+  "secondary": [
+    {
+      "company": "ge_healthcare",
+      "track": "imaging_us",
+      "set": "secondary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 6,
+            "calibration_alerts": 6
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 3.344222410278922,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.344222410278922,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 0.5330017908890261,
+          "alerts": 4,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 4,
+          "false_alerts_per_company_year": 1.0,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 0.5330017908890261,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 3.344222410278922,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.344222410278922,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "medtronic",
+      "track": "coronary",
+      "set": "secondary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q1",
+        "2025-Q2",
+        "2025-Q3"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 4,
+            "calibration_alerts": 4
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 1.8682571063385829,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.8682571063385829,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 3.5,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.5,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 3.5,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.5,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "medtronic",
+      "track": "ep_pfa",
+      "set": "secondary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 4,
+            "calibration_alerts": 4
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 1.4153462926807445,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.4153462926807445,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 0.7071067811865475,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 0.7071067811865475,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 1.4153462926807445,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.4153462926807445,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "medtronic",
+      "track": "heart_failure",
+      "set": "secondary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q1",
+        "2025-Q2",
+        "2025-Q3"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 3,
+            "calibration_alerts": 3
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 2.400284074096988,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 2.400284074096988,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "status": "NOT_EVALUABLE",
+          "reason": "no finite scores"
+        },
+        "m5_fused": {
+          "threshold": 2.400284074096988,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 2.400284074096988,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "medtronic",
+      "track": "neurostimulation",
+      "set": "secondary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 4,
+            "calibration_alerts": 4
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 3.2941429769753325,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.2941429769753325,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 5.303300858899106,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 5.303300858899106,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 5.303300858899106,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 5.303300858899106,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "medtronic",
+      "track": "neurovascular",
+      "set": "secondary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 3,
+            "calibration_alerts": 3
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 4.202095750414569,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 4.202095750414569,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 3.5355339059327373,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.5355339059327373,
+            "calibration_false_alerts": 2,
+            "calibration_alerts": 2
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 4.202095750414569,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 4.202095750414569,
+            "calibration_false_alerts": 2,
+            "calibration_alerts": 2
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "medtronic",
+      "track": "peripheral_vascular",
+      "set": "secondary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 4,
+            "calibration_alerts": 4
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 3.6799003609699357,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.6799003609699357,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 0.0,
+          "alerts": 6,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 6,
+          "false_alerts_per_company_year": 1.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 0.0,
+            "calibration_false_alerts": 8,
+            "calibration_alerts": 8
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 3.6799003609699357,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.6799003609699357,
+            "calibration_false_alerts": 2,
+            "calibration_alerts": 2
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "medtronic",
+      "track": "spine",
+      "set": "secondary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 4,
+            "calibration_alerts": 4
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 2.1213203435596424,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 2.1213203435596424,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 5.303300858899106,
+          "alerts": 3,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 3,
+          "false_alerts_per_company_year": 0.75,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 5.303300858899106,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 5.303300858899106,
+          "alerts": 3,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 3,
+          "false_alerts_per_company_year": 0.75,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 5.303300858899106,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "medtronic",
+      "track": "structural_heart",
+      "set": "secondary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 3,
+            "calibration_alerts": 3
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 2.8077525845898865,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 2.8077525845898865,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": 0.944911182523068,
+          "alerts": 0,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 0,
+          "false_alerts_per_company_year": 0.0,
+          "precision": null,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 0.944911182523068,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 2.8077525845898865,
+          "alerts": 2,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 2,
+          "false_alerts_per_company_year": 0.5,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 2.8077525845898865,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "medtronic",
+      "track": "urology",
+      "set": "secondary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q2",
+        "2025-Q3",
+        "2025-Q4"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 3,
+            "calibration_alerts": 3
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 3.127070742495511,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.127070742495511,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "threshold": -0.31980107453341566,
+          "alerts": 3,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 3,
+          "false_alerts_per_company_year": 0.75,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": -0.31980107453341566,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m5_fused": {
+          "threshold": 3.127070742495511,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 3.127070742495511,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    },
+    {
+      "company": "philips",
+      "track": "cardiac_rhythm",
+      "set": "secondary",
+      "onsets_evaluation": [],
+      "onsets_all": [],
+      "censored": [
+        "2025-Q1",
+        "2025-Q2",
+        "2025-Q3"
+      ],
+      "models": {
+        "m0_persistence": {
+          "threshold": 1.0,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 1.0,
+            "calibration_false_alerts": 4,
+            "calibration_alerts": 4
+          },
+          "status": "OK"
+        },
+        "m1_regulatory_z": {
+          "threshold": 2.4596747752497685,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 2.4596747752497685,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        },
+        "m2_recall_z": {
+          "status": "NOT_EVALUABLE",
+          "reason": "no finite scores"
+        },
+        "m5_fused": {
+          "threshold": 2.4596747752497685,
+          "alerts": 1,
+          "hits": 0,
+          "recall": null,
+          "recall_interval": null,
+          "false_alerts": 1,
+          "false_alerts_per_company_year": 0.25,
+          "precision": 0.0,
+          "positives": 0,
+          "calibration": {
+            "status": "OK",
+            "threshold": 2.4596747752497685,
+            "calibration_false_alerts": 1,
+            "calibration_alerts": 1
+          },
+          "status": "OK"
+        }
+      }
+    }
+  ],
+  "pooled_primary": {
+    "m0_persistence": {
+      "status": "OK",
+      "cells": 5,
+      "alerts": 7,
+      "hits": 0,
+      "false_alerts": 7,
+      "onsets": 0,
+      "recall": null,
+      "recall_interval": null,
+      "precision": 0.0,
+      "false_alerts_per_company_year": 0.35
+    },
+    "m1_regulatory_z": {
+      "status": "OK",
+      "cells": 5,
+      "alerts": 9,
+      "hits": 0,
+      "false_alerts": 9,
+      "onsets": 0,
+      "recall": null,
+      "recall_interval": null,
+      "precision": 0.0,
+      "false_alerts_per_company_year": 0.45
+    },
+    "m2_recall_z": {
+      "status": "OK",
+      "cells": 5,
+      "alerts": 8,
+      "hits": 0,
+      "false_alerts": 8,
+      "onsets": 0,
+      "recall": null,
+      "recall_interval": null,
+      "precision": 0.0,
+      "false_alerts_per_company_year": 0.4
+    },
+    "m5_fused": {
+      "status": "OK",
+      "cells": 5,
+      "alerts": 8,
+      "hits": 0,
+      "false_alerts": 8,
+      "onsets": 0,
+      "recall": null,
+      "recall_interval": null,
+      "precision": 0.0,
+      "false_alerts_per_company_year": 0.4
+    }
+  },
+  "pooled_secondary": {
+    "m0_persistence": {
+      "status": "OK",
+      "cells": 11,
+      "alerts": 10,
+      "hits": 0,
+      "false_alerts": 10,
+      "onsets": 0,
+      "recall": null,
+      "recall_interval": null,
+      "precision": 0.0,
+      "false_alerts_per_company_year": 0.227
+    },
+    "m1_regulatory_z": {
+      "status": "OK",
+      "cells": 11,
+      "alerts": 5,
+      "hits": 0,
+      "false_alerts": 5,
+      "onsets": 0,
+      "recall": null,
+      "recall_interval": null,
+      "precision": 0.0,
+      "false_alerts_per_company_year": 0.114
+    },
+    "m2_recall_z": {
+      "status": "OK",
+      "cells": 9,
+      "alerts": 19,
+      "hits": 0,
+      "false_alerts": 19,
+      "onsets": 0,
+      "recall": null,
+      "recall_interval": null,
+      "precision": 0.0,
+      "false_alerts_per_company_year": 0.528
+    },
+    "m5_fused": {
+      "status": "OK",
+      "cells": 11,
+      "alerts": 11,
+      "hits": 0,
+      "false_alerts": 11,
+      "onsets": 0,
+      "recall": null,
+      "recall_interval": null,
+      "precision": 0.0,
+      "false_alerts_per_company_year": 0.25
+    }
+  },
+  "comparisons": {
+    "m0_persistence": {
+      "single": "m0_persistence",
+      "cells_compared": 0,
+      "ties_dropped": 0,
+      "pairs": [],
+      "positive": 0,
+      "negative": 0,
+      "sign_test_p": 1.0
+    },
+    "m1_regulatory_z": {
+      "single": "m1_regulatory_z",
+      "cells_compared": 0,
+      "ties_dropped": 0,
+      "pairs": [],
+      "positive": 0,
+      "negative": 0,
+      "sign_test_p": 1.0
+    },
+    "m2_recall_z": {
+      "single": "m2_recall_z",
+      "cells_compared": 0,
+      "ties_dropped": 0,
+      "pairs": [],
+      "positive": 0,
+      "negative": 0,
+      "sign_test_p": 1.0
+    }
+  },
+  "holm": {
+    "m0_persistence": {
+      "p_value": 1.0,
+      "adjusted_p": 1.0,
+      "reject": false
+    },
+    "m1_regulatory_z": {
+      "p_value": 1.0,
+      "adjusted_p": 1.0,
+      "reject": false
+    },
+    "m2_recall_z": {
+      "p_value": 1.0,
+      "adjusted_p": 1.0,
+      "reject": false
+    }
+  },
+  "decision_steps": {
+    "underpowered_clause_satisfied": false,
+    "pooled_difference_at_least_0.10": false,
+    "any_comparison_passes_holm": false
+  },
+  "pooled_difference_fusion_vs_best_single": null,
+  "totals": {
+    "primary_onsets": 0,
+    "primary_cells": 5,
+    "secondary_cells": 11
+  },
+  "verdict": "UNDERPOWERED — 0 onset(s) in the primary evaluation set (floor 10). H1 is neither supported nor refuted; results are descriptive.",
+  "not_claimed": [
+    "no lead-time statement (G1 closed it)",
+    "recalls share the regulator with clearances: independence is partial",
+    "no causal, intent or R&D claim",
+    "H2-H4 untested"
+  ]
+}

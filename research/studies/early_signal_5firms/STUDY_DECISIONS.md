@@ -135,3 +135,42 @@ Therefore the choice is between (a) **expanding** the cell set to the explorator
 multiplicity control, since per-firm exploratory cells invite cherry-picking), (b) **changing the unit** from
 quarter-counts to event-level sequences, or (c) **closing** the programme at this scope and publishing the negative
 result. Each is a scientific judgement about what the question is worth, and none is the agent's to make silently.
+
+---
+
+## S-013 — Expanded design: 5 two-stream cells, and still 0 onsets
+
+**Date:** 2026-11-03 · **Status:** accepted · **Evidence:** `CELL_INVENTORY.json`, `PHASE1C_PROTOCOL.md`,
+`CONCURRENT_DETECTION_EXPANDED.json`
+
+Coverage-only cell selection found **47** firm-track cells touched by any stream and only **5** with both streams above
+the frozen floors (GE `imaging_mr_ct`; Medtronic `cardiac_rhythm`, `diabetes_cgm`, `insulin_delivery`; Philips
+`imaging_mr_ct`), plus **11** regulatory-only cells. The protocol (sign test + Holm across three fusion-vs-single
+comparisons, ≥10 onsets, pooled gain ≥0.10) was frozen before the run.
+
+Result: **0 onsets** in the primary evaluation window (5 cells, 2022-2025); the frozen underpowered clause fires, so
+no model comparison is interpreted. The 11 secondary cells also produced 0 onsets. Leak audit: 0 violations.
+
+## S-014 — The positive class is empty at this granularity; the incidence ladder separates cause from definition
+
+**Date:** 2026-11-03 · **Status:** accepted · **Evidence:** `ONSET_LADDER.json`, `CLAIMS_EVIDENCE.json`
+
+Before writing up "zero onsets", the ladder distinguished *no changes in the corpus* from *a definition that cannot
+fire*. Across 16 cells and 2017-2025 there is exactly **1** quarter preceded by twelve months of silence, and it
+qualifies as an onset; requiring twenty-four months of silence leaves **0** candidates. Loosening the episode window
+(4 → 8 quarters) or raising the event requirement (2 → 3) does not change that. The cells' activity is continuous:
+active tracks report regularly, quiet tracks never accumulate events.
+
+Therefore the study's target phenomenon does not occur often enough to measure at firm × track × quarter granularity,
+and the negative result is **definitional as well as empirical**: a different operationalisation of change could
+behave differently, which is stated in the paper's limitations rather than hidden.
+
+## S-015 — Third paper written from the negative evidence
+
+**Date:** 2026-11-03 · **Status:** accepted
+
+`papers/PAPER_NEGATIVE_v1.md` synthesises the three pre-registered gates (G1 NO-GO; two-track O1 underpowered with 1
+onset; expanded O1 underpowered with 0 onsets), the taxonomy gap that caused the first, and the incidence ladder that
+explains the second and third. Its 15 quantitative claims are verified in both directions by
+`papers/CLAIMS_NEGATIVE.json` (`verify_claims.py --claims`, 15/15). No refuted result is re-used as valid, and the
+paper states explicitly that the definitional limitation is not resolved by it.
