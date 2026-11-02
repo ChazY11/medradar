@@ -483,3 +483,54 @@ evidence of absence. No label was created: all packets remain `PENDING_HUMAN_REV
 **Consequence:** the third-source line is now closed as far as the agent may take it. Extracting a real
 programme-level prior-publication signal would need author-level disambiguation and topic modelling of the paper's
 content — a different study, and one that would need its own pre-registration.
+
+---
+
+## S-030 — Agent pre-adjudication: a new, explicitly non-human tier (owner-instructed)
+
+**Date:** 2026-11-03 · **Status:** accepted · **Evidence:** `ADJUDICATION_AMENDMENT_002.md`,
+`medradar/studies/adjudication.py` (19 tests), `experiments/b096/adjudicate_packets.py`, `ADJUDICATION_AGENT_V1.{json,md}`
+
+The owner instructed the agent to adjudicate the 69 packets. `LABELING_PROTOCOL.md` forbids the agent from producing
+human truth, so the instruction is honoured by creating a **third tier** rather than by breaking the rule:
+
+| tier | authority | usable as ground truth | usable to score the study's detectors |
+|---|---|---|---|
+| `PENDING_HUMAN_REVIEW` | none yet | — | no |
+| **`AGENT_PRE_ADJUDICATION`** (new) | `agent_rubric_v1`, deterministic | **no** | **no** |
+| human adjudication | named reviewer | yes | yes |
+
+`agent_preliminary_label` is a **separate field**; `human_review_status` stays `PENDING_HUMAN_REVIEW` and
+`final_label` stays null on all 69 packets, so a reader who opens a packet still sees the human boundary.
+
+## S-031 — The rubric was wrong on its first run, and the correction is recorded before any distribution was published
+
+**Date:** 2026-11-03 · **Status:** accepted
+
+**The defect:** the first application scored *regulatory* packets (the 60 candidates) by searching **trial text** for
+device keywords. Regulatory events carry no trial conditions, so every candidate scored `NONE` and the "distribution"
+was an artefact of the wrong field. Caught before publication; the rubric now judges regulatory packets from the
+**product code's own track mapping** (`relevance_from_mapping`) and keeps trial text only for the nine small-sample
+packets.
+
+**The corrected distribution** (69 packets, rubric `agent_rubric_v1`, second run):
+
+| agent preliminary label | packets |
+|---|---:|
+| `Uncertain (agent-preliminary)` | **45** |
+| `Routine Iteration (agent-preliminary)` | **18** |
+| `Not Assessable (agent-preliminary)` | **6** |
+| `False Signal / No Confirmed Shift (agent-preliminary)` | **0** |
+| `Confirmed Shift (agent-preliminary)` | **0** |
+
+Rules that fired: "strong relevance, consistent taxonomy, no near third source" 36; "strong relevance in the routine
+stratum" 18; "strong relevance but no checkable mapping" 9 (all nine small-sample packets, whose clearance ids are
+synthetic); "no rule matched" 6.
+
+**What this distribution means:** the rubric finds **no packet it can call a confirmed shift**, 45 it cannot resolve
+without a human, 18 that look like routine iteration, and 6 it cannot assess at all. That is consistent with the
+study's overall result — but it is **not evidence for it**: the labels are the agent's own, and using them to score the
+study's detectors would be exactly the circularity this programme retracted once.
+
+**What it does not mean:** that 45 packets are "probably shifts"; that the rubric is a substitute for a reviewer; or
+that any Target B analysis now exists. Target B still requires a named human.
