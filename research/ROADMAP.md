@@ -1,93 +1,98 @@
 # Roadmap
 
-Living plan. Phase gates are evidence-based: a phase is "done" only when its
-acceptance criterion is met by a committed artifact.
+Living plan, realigned 2026-11-02 to the Observe → Understand → Anticipate architecture
+(`DECISIONS.md` D-011). Phase gates are evidence-based: a phase is done only when its acceptance
+criterion is met by a committed artifact. Module-to-layer mapping: `LAYERS.md`.
 
-## Phase 0 — Audit and foundation (DONE, 2026-11-01/02)
+## Where the program actually stands (2026-11-02)
 
-Independently audited the existing repo, then built the temporal/causal foundation
-that every later claim depends on.
+| Layer | Capability | State |
+|---|---|---|
+| Foundation | bitemporal store, PIT export, immutable forecast registry, leakage audit | **done and independently audited** |
+| Observe | data lanes (FDA, trials, SEC, market, publications), entity universe, taxonomy | **partly done** — entity universe is new and solid; detection is absent |
+| Observe | **technology-change detection with false-alarm control** | **not started → current phase** |
+| Understand | knowledge graph, evidence fusion, research agent with citations | **prototype exists, not validated for research-quality claims** |
+| Anticipate (Level A) | emerging-trend identification | **not built** (depends on Observe detections) |
+| Anticipate (Level B) | probabilistic milestone forecasting + calibration | **frozen benchmark exists; no matured calibration** |
 
-- Forensic audit of three divergent branches; defects fixed (AdCom empty-feed silent
-  `ok`, 8-K pre-submission mislabel, raw-open/adjusted-close price basis, purge in
-  rolling validation, verifier-by-grep).
-- Bitemporal knowledge store (`medradar/tkg`): append-only assertions, separate
-  valid time and knowledge time, as-of snapshot queries, deterministic PIT export.
-- Immutable forecast registry (`medradar/forecast_registry.py`): append-only
-  forecasts and resolutions, as-of scoring, idempotency keys, nowcast record kind.
-- Integrations consolidated on `integration/market-to-rd-v2` (v0.5.0).
-- **Gate met:** 679 offline tests `OK (skipped=3)` on CPython 3.12.10 (re-run by the
-  Lead 2026-11-02), independent verifier exit 0, real-data TKG import 171,800
-  assertions / 57,381 nodes / 114,419 edges.
+## Phase A — Reliability floor (P0) — largely done, continuous
 
-## Phase 1 — Real-data reverse-R&D benchmark v1/v2 (DONE, 2026-11-02)
+Acceptance: a third party can re-run every reported number; no claim without provenance.
 
-- Bulk openFDA lane, SEC Company Facts, market bars, OpenAlex publications.
-- Two targets: continuation (`reverse_rd_v1`) and first-entry (`first_entry_v1`).
-- Purged expanding-window rolling origin, persistence baselines, paired bootstrap,
-  independent as-of leakage replay.
-- **Gate met, with a negative headline:** frozen artifacts reproducible; the model
-  does not beat per-pair persistence detectably on continuation, and the entry
-  signal is weak/window-dependent. No added source yields a detectable ranking gain.
+- Done: audit of three divergent branches and defect fixes; bitemporal store; forecast registry;
+  deterministic applicant-entity universe (9,412 entities, no fuzzy matching); independent audit of
+  the five frozen cycle-1 claims (5/5 PASS, full leakage replay 0/656,048); 751 offline tests green;
+  verifier exit 0.
+- Continuous obligations: every new module ships with tests; every claim carries a DB/artifact hash
+  (audit finding O5); nulls carry MDEs.
 
-## Phase 2 — Coverage, power and the reality of the entry signal (CURRENT)
+## Phase B — OBSERVE: change detection (P1) — **CURRENT**
 
-The v2 negative results may be underpowered artifacts of a 51-firm, 322-pair panel
-rather than facts about predictability. Phase 2 tests that explanation.
+Question: **can we detect a real change in a company's technology activity, early, without drowning
+the analyst in false alarms?**
 
 Deliverables:
-1. Deterministic applicant-entity universe from the industry lane, replacing the
-   hand-curated 51-parent roster as the primary panel definition, with an explicit
-   *entity-granularity ablation* (legal applicant entity vs corporate parent).
-2. Focus-company gap closed: Dräger and Mindray enter the roster with evidence.
-3. Inference upgrade: cluster-aware bootstrap CIs and minimum detectable effects, so
-   a null is reported as "no effect" or "underpowered" — never conflated.
-4. Lead time at matched false-alarm rate (a benchmark metric the project requires
-   but has not implemented).
-5. Heterogeneity: predictability by track, firm activity scale and data maturity
-   (mission question 6).
-6. Re-run the frozen targets on the expanded panel under the identical protocol and
-   report the delta honestly, including the possibility that the entry signal
-   disappears with more entities rather than getting stronger.
+1. A detector suite for sparse monthly company×technology activity streams: naive rate-multiplier
+   baseline, rolling z-score, Poisson CUSUM, Poisson Bayes factor (`medradar/intelligence/changepoint.py`).
+2. **Controlled-truth evaluation**: semi-synthetic injection of known step-changes into real monthly
+   stream shapes → detection probability, detection delay (months), false alarms per stream-year;
+   leave-company-out to test cross-company generalisation.
+3. **Real-data application with FDR control**: Benjamini–Hochberg across tested cells, and a
+   confirmation test against an *independent* source to separate genuine change from single-source
+   artefacts.
+4. **Noise controls**: minimum baseline/total events, seasonality check, product-code reassignment
+   audit (the taxonomy is unversioned, so a code remap can manufacture a change point), and an
+   explicit spike-vs-level-shift distinction.
+5. A pre-registered decision: which detector, if any, beats the naive baseline on the
+   delay/false-alarm frontier, and whether real detections confirm cross-source.
 
-**Gate:** a committed, re-runnable experiment answering one question: *does widening
-the entity universe change the measured predictability of first entry, and is the
-remaining estimate distinguishable from zero?* Either answer is publishable.
+**Gate:** a committed, re-runnable benchmark plus a real-data alert set with a documented FDR and
+confirmation rate — including the possibility that no detector beats the naive baseline.
 
-## Phase 3 — Signal-timing program (NEXT)
+## Phase C — OBSERVE: coverage completion (P1, after B)
 
-- Lead/lag measurement between source classes (regulatory, trial, publication,
-  financial, procurement, market, hiring) and technology milestones, with
-  clustering-aware inference and explicit multiple-comparison control.
-- Public hiring data (the one mandated source class still genuinely missing):
-  lawful, reproducible job-posting collection with point-in-time snapshots.
-- Procurement: only after a snapshot with genuine historical publication times
-  exists; the current USAspending pull is `pit_usable=0` and must not be smuggled
-  into a retrospective claim.
-- Patents: requires either an API key or bulk-file ingestion; until then it stays an
-  unimplemented, explicitly declared gap.
+- Focus-company roster fix: add Dräger and Mindray with evidence from the lane (B-010); re-run the
+  universe build and record the new artifact hash.
+- Hiring signals (the mandated source class still missing): lawful, point-in-time collection (B-013).
+- Patents: key-free ingestion path or bulk files (B-014).
+- 8-K/CIK deterministic linking (B-011) — 19,616 unlinked events that carry a CIK.
+- Publication-lag sensitivity (B-012).
 
-## Phase 4 — Evidence-aware method (AFTER BASELINES)
+## Phase D — UNDERSTAND: explanation with traceable evidence (P2)
 
-Only if Phase 2/3 produce a real baseline gap to explain:
-- discrete-time survival formulation for entry timing (time-to-event, not just
-  binary horizon labels);
-- evidence-aware fusion with per-source reliability/lag weighting;
-- temporal knowledge-graph representation;
-- calibration-first probabilistic output.
-Explicit non-goal: adopting a Transformer/GNN because it is modern. Adoption
-requires a purged, multi-window, baseline-beating, reproducible result.
+- Corporate technology knowledge graph over real history (prototype exists; needs a QA pass against
+  the new entity universe).
+- Company R&D profiles: which directions changed, related to capability, competitors, demand and
+  resources.
+- Evidence fusion and **contradictory-evidence discovery** as first-class outputs.
+- Auditable research conclusions: every judgement carries the seven required evidence fields
+  (`MISSION.md` §2, Layer 2).
+- Evaluation must use verifiable evidence and labelled samples; LLM assistance is permitted for
+  organisation and hypothesis generation only, never for facts or citations.
 
-## Phase 5 — Prospective track record and open benchmark
+## Phase E — ANTICIPATE Level A: emerging-trend identification (P3)
 
-- Continuous forecast cycle registering genuine future-window forecasts.
-- Matured-forecast calibration report (including "worse than base rate" outcomes).
-- Open benchmark release: dataset cards, provenance, licence, reproduction scripts.
-- Publication draft with negative results in the main text.
+Feeds directly on Phase B detections: a trend is "forming" when multiple independent evidence types
+cross their own detection thresholds within a window. Requires the Phase B detector to work and the
+Phase C sources to exist.
+
+## Phase F — ANTICIPATE Level B: probabilistic forecasting and prospective validation (P3)
+
+Continues the frozen cycle-1/2 work (see `RESULTS/`), re-tested on the entity panel:
+- source-null re-test with MDEs (B-018), exogenous scale measure (B-019), acquisition chains (B-020),
+  lead/lag program (B-021);
+- 25 registered nowcasts mature through 2027-10 → the first real calibration report (B-015).
+
+## Phase G — P4 advanced methods, only with cause
+
+Temporal graph learning, dynamic knowledge graphs, multimodal temporal models, evidence-aware
+forecasting, causal designs. Entry condition: a baseline gap that simpler methods demonstrably
+cannot close.
 
 ## Standing constraints
 
-- Compute: one workstation; overnight-scale jobs only. Prefer deterministic,
-  resumable pipelines over large hyperparameter sweeps.
-- Every phase must keep `python -m medradar selftest` green.
-- No merge to `main` without an independent verification pass on the exact commit.
+- One workstation; deterministic, resumable pipelines; no hyperparameter sweeps for their own sake.
+- Every phase keeps `python -m medradar selftest` green.
+- No merge to `main` without independent verification of the exact commit.
+- Scope discipline: no global-industry prediction, no cross-industry digital twin, no macro
+  forecasting, no large LLM training, no unverifiable speculation about internal R&D.

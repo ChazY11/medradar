@@ -50,3 +50,8 @@ rate), part of the gain is the persistence baseline getting weaker, the advantag
 **detection rather than earlier warning**, and the pre-declared firm-scale heterogeneity
 split was degenerate. Details and all numbers: `cycle2_2026-11-02.md` and
 `experiments/cycle2_coverage/REPORT.md`.
+| R14 | Track assignment is deterministic for ~94% of material events; 6% rests on text keywords and every multi-track product code sits in that fallback | measurement | `experiments/detect_v1/track_assignment_audit.json` |
+| R15 | At a matched 2% false-alarm budget the naive rate-multiplier detects 0.223 of injected shifts versus 0.181 (CUSUM), 0.122 (Bayes factor), 0.112 (z-score): the simple baseline is not beaten | **negative for complexity** | `experiments/detect_v1/REPORT.md` §0/§5 |
+| R16 | The Bayes factor wins on the deterministic-track-only panel (+0.039 [+0.003,+0.071]) but loses on the other two panels: no stable preference | mixed / not robust | `experiments/detect_v1/benchmark.json` |
+| R17 | Absolute detection is low: ~22% of shifts overall, ~50% of 5× shifts; a 2× change is undetectable at an honest budget. Data density, not the algorithm, is binding | finding | `experiments/detect_v1/REPORT.md` §6 |
+| R18 | Real-data independence/confirmation is **blocked** on the current spine; the only available "independent" pathway shares the filing system | blocked | `docs/research/DETECTION_DESIGN_REVIEW.md` |

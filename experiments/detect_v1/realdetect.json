@@ -1,0 +1,591 @@
+{
+  "design": {
+    "caveat": "alerts are statements about the rate of public regulatory activity in a cell, not about intent, capability or internal R&D",
+    "cells_tested": 104,
+    "fdr": {
+      "method": "Benjamini-Hochberg",
+      "q": 0.1
+    },
+    "novelty": "product codes in the 12 months after an alert that were unused in the previous 36 months, reported as a share of post-alert events; elevated activity mechanically yields more new codes, so this is descriptive, not proof of a technology change",
+    "test": "recent 24 months vs preceding 48 months, exact one-sided Poisson upper tail"
+  },
+  "detectors": {
+    "naive_multiplier": {
+      "alert_rate_per_cell": 0.0,
+      "alerts": [],
+      "alerts_surviving_bh": 0,
+      "alerts_total": 0,
+      "calibration": {
+        "budget_met": true,
+        "chosen_false_alarm_rate": 0.0,
+        "chosen_knob": 16.0,
+        "detector": "naive_multiplier",
+        "grid": [
+          {
+            "alarmed_cells": 5,
+            "false_alarm_rate": 0.10869565217391304,
+            "knob": 1.5
+          },
+          {
+            "alarmed_cells": 5,
+            "false_alarm_rate": 0.10869565217391304,
+            "knob": 2.0
+          },
+          {
+            "alarmed_cells": 5,
+            "false_alarm_rate": 0.10869565217391304,
+            "knob": 2.5
+          },
+          {
+            "alarmed_cells": 4,
+            "false_alarm_rate": 0.08695652173913043,
+            "knob": 3.0
+          },
+          {
+            "alarmed_cells": 4,
+            "false_alarm_rate": 0.08695652173913043,
+            "knob": 4.0
+          },
+          {
+            "alarmed_cells": 4,
+            "false_alarm_rate": 0.08695652173913043,
+            "knob": 6.0
+          },
+          {
+            "alarmed_cells": 2,
+            "false_alarm_rate": 0.043478260869565216,
+            "knob": 10.0
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 16.0
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 25.0
+          }
+        ],
+        "rule": "most sensitive knob with calibration false-alarm rate <= 0.02",
+        "target_false_alarm_rate": 0.02
+      },
+      "novelty_comparison": {
+        "alerted_cells_with_post_activity": 0,
+        "control_cells": 90,
+        "difference": null,
+        "mean_novelty_share_alerted": null,
+        "mean_novelty_share_control": 0.0
+      }
+    },
+    "poisson_bayes_factor": {
+      "alert_rate_per_cell": 0.019230769230769232,
+      "alerts": [
+        {
+          "alert_month": "2025-03",
+          "alert_month_index": 100,
+          "baseline_rate": 0.06,
+          "cell_events": 22,
+          "entity": "shenzhen-tph-technology-6b42a824",
+          "entity_name": "Shenzhen TPH Technology Co., Ltd.",
+          "example_events": [
+            {
+              "date": "2025-03-20",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2025-04-02",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2025-04-17",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2025-04-21",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2025-05-30",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2025-07-31",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2025-08-20",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2025-09-08",
+              "kind": "510k",
+              "product_code": ""
+            }
+          ],
+          "key": "shenzhen-tph-technology-6b42a824|wearable_remote",
+          "novelty": {
+            "novel_codes": 0,
+            "novel_codes_sample": [],
+            "novelty_share_per_event": 0.0,
+            "post_codes": 0,
+            "post_events": 9
+          },
+          "observed_rate": 0.842105,
+          "statistic": 10.613737,
+          "survives_bh": true,
+          "track": "wearable_remote"
+        },
+        {
+          "alert_month": "2024-01",
+          "alert_month_index": 86,
+          "baseline_rate": 0.034884,
+          "cell_events": 22,
+          "entity": "shenzhen-ulike-smart-electronics-766c40f1",
+          "entity_name": "Shenzhen Ulike Smart Electronics Co., Ltd.",
+          "example_events": [
+            {
+              "date": "2024-01-05",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2024-01-11",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2024-01-22",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2024-04-04",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2024-06-21",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2024-09-09",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2024-11-06",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2024-12-13",
+              "kind": "510k",
+              "product_code": ""
+            }
+          ],
+          "key": "shenzhen-ulike-smart-electronics-766c40f1|aesthetics",
+          "novelty": {
+            "novel_codes": 0,
+            "novel_codes_sample": [],
+            "novelty_share_per_event": 0.0,
+            "post_codes": 0,
+            "post_events": 6
+          },
+          "observed_rate": 0.575758,
+          "statistic": 10.051039,
+          "survives_bh": true,
+          "track": "aesthetics"
+        }
+      ],
+      "alerts_surviving_bh": 2,
+      "alerts_total": 2,
+      "calibration": {
+        "budget_met": true,
+        "chosen_false_alarm_rate": 0.0,
+        "chosen_knob": 10.0,
+        "detector": "poisson_bayes_factor",
+        "grid": [
+          {
+            "alarmed_cells": 21,
+            "false_alarm_rate": 0.45652173913043476,
+            "knob": 2.0
+          },
+          {
+            "alarmed_cells": 13,
+            "false_alarm_rate": 0.2826086956521739,
+            "knob": 3.0
+          },
+          {
+            "alarmed_cells": 7,
+            "false_alarm_rate": 0.15217391304347827,
+            "knob": 5.0
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 10.0
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 20.0
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 30.0
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 60.0
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 120.0
+          }
+        ],
+        "rule": "most sensitive knob with calibration false-alarm rate <= 0.02",
+        "target_false_alarm_rate": 0.02
+      },
+      "novelty_comparison": {
+        "alerted_cells_with_post_activity": 2,
+        "control_cells": 88,
+        "difference": 0.0,
+        "mean_novelty_share_alerted": 0.0,
+        "mean_novelty_share_control": 0.0
+      }
+    },
+    "poisson_cusum": {
+      "alert_rate_per_cell": 0.0,
+      "alerts": [],
+      "alerts_surviving_bh": 0,
+      "alerts_total": 0,
+      "calibration": {
+        "budget_met": true,
+        "chosen_false_alarm_rate": 0.0,
+        "chosen_knob": 80.0,
+        "detector": "poisson_cusum",
+        "grid": [
+          {
+            "alarmed_cells": 46,
+            "false_alarm_rate": 1.0,
+            "knob": 2.0
+          },
+          {
+            "alarmed_cells": 40,
+            "false_alarm_rate": 0.8695652173913043,
+            "knob": 3.0
+          },
+          {
+            "alarmed_cells": 36,
+            "false_alarm_rate": 0.782608695652174,
+            "knob": 4.0
+          },
+          {
+            "alarmed_cells": 28,
+            "false_alarm_rate": 0.6086956521739131,
+            "knob": 5.0
+          },
+          {
+            "alarmed_cells": 14,
+            "false_alarm_rate": 0.30434782608695654,
+            "knob": 8.0
+          },
+          {
+            "alarmed_cells": 8,
+            "false_alarm_rate": 0.17391304347826086,
+            "knob": 12.0
+          },
+          {
+            "alarmed_cells": 5,
+            "false_alarm_rate": 0.10869565217391304,
+            "knob": 20.0
+          },
+          {
+            "alarmed_cells": 1,
+            "false_alarm_rate": 0.021739130434782608,
+            "knob": 40.0
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 80.0
+          }
+        ],
+        "rule": "most sensitive knob with calibration false-alarm rate <= 0.02",
+        "target_false_alarm_rate": 0.02
+      },
+      "novelty_comparison": {
+        "alerted_cells_with_post_activity": 0,
+        "control_cells": 90,
+        "difference": null,
+        "mean_novelty_share_alerted": null,
+        "mean_novelty_share_control": 0.0
+      }
+    },
+    "rolling_zscore": {
+      "alert_rate_per_cell": 0.009615384615384616,
+      "alerts": [
+        {
+          "alert_month": "2019-02",
+          "alert_month_index": 27,
+          "baseline_rate": 0.555556,
+          "cell_events": 79,
+          "entity": "shanghai-united-imaging-healthcare-2ab5e736",
+          "entity_name": "Shanghai United Imaging Healthcare Co., Ltd.",
+          "example_events": [
+            {
+              "date": "2019-02-08",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2019-02-27",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2019-03-22",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2019-05-29",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2019-06-24",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2019-09-12",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2019-11-20",
+              "kind": "510k",
+              "product_code": ""
+            },
+            {
+              "date": "2019-12-19",
+              "kind": "510k",
+              "product_code": ""
+            }
+          ],
+          "key": "shanghai-united-imaging-healthcare-2ab5e736|imaging_mr_ct",
+          "novelty": {
+            "novel_codes": 0,
+            "novel_codes_sample": [],
+            "novelty_share_per_event": 0.0,
+            "post_codes": 0,
+            "post_events": 8
+          },
+          "observed_rate": 0.695652,
+          "statistic": 4.064449,
+          "survives_bh": true,
+          "track": "imaging_mr_ct"
+        }
+      ],
+      "alerts_surviving_bh": 1,
+      "alerts_total": 1,
+      "calibration": {
+        "budget_met": true,
+        "chosen_false_alarm_rate": 0.0,
+        "chosen_knob": 4.0,
+        "detector": "rolling_zscore",
+        "grid": [
+          {
+            "alarmed_cells": 28,
+            "false_alarm_rate": 0.6086956521739131,
+            "knob": 2.0
+          },
+          {
+            "alarmed_cells": 11,
+            "false_alarm_rate": 0.2391304347826087,
+            "knob": 2.5
+          },
+          {
+            "alarmed_cells": 5,
+            "false_alarm_rate": 0.10869565217391304,
+            "knob": 3.0
+          },
+          {
+            "alarmed_cells": 2,
+            "false_alarm_rate": 0.043478260869565216,
+            "knob": 3.5
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 4.0
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 5.0
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 7.0
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 10.0
+          },
+          {
+            "alarmed_cells": 0,
+            "false_alarm_rate": 0.0,
+            "knob": 15.0
+          }
+        ],
+        "rule": "most sensitive knob with calibration false-alarm rate <= 0.02",
+        "target_false_alarm_rate": 0.02
+      },
+      "novelty_comparison": {
+        "alerted_cells_with_post_activity": 1,
+        "control_cells": 89,
+        "difference": 0.0,
+        "mean_novelty_share_alerted": 0.0,
+        "mean_novelty_share_control": 0.0
+      }
+    }
+  },
+  "hypothesis_test": {
+    "bh": {
+      "cutoff_pvalue": 0.016026642171248273,
+      "cutoff_rank": 17,
+      "median_pvalue": 0.47347637748200033,
+      "q": 0.1,
+      "rejected": 17,
+      "rejected_keys": [
+        "philips-ultrasound-4aa037a2|imaging_us",
+        "shenzhen-tph-technology-6b42a824|wearable_remote",
+        "maxx-orthopedics-8dda2d7b|ortho_joint",
+        "olympus-medical-systems-4fa2f188|endoscopy",
+        "trimed-b9554da5|trauma",
+        "shanghai-united-imaging-healthcare-2ab5e736|imaging_mr_ct",
+        "fujifilm-df7e28b2|endoscopy",
+        "roche-molecular-systems-bb3f5913|ivd_molecular",
+        "shenzhen-ulike-smart-electronics-766c40f1|aesthetics",
+        "resmed-c6c5d1cf|respiratory",
+        "intuitive-surgical-0f89cd09|surgical_robotics",
+        "cepheid-c2d9d4f3|ivd_molecular",
+        "qiagen-07992917|ivd_molecular",
+        "carlsmed-86abadcd|spine",
+        "roche-diagnostics-eec180c1|ivd_immuno",
+        "dentsply-sirona-def5c5e3|dental",
+        "arthrex-6b0ed5e5|trauma"
+      ],
+      "smallest_pvalue": 3.4639902057875815e-10,
+      "tests": 104
+    },
+    "smallest_pvalues": [
+      {
+        "expected_recent": 4.0,
+        "key": "philips-ultrasound-4aa037a2|imaging_us",
+        "observed_recent": 22,
+        "pvalue": 3.4639902057875815e-10
+      },
+      {
+        "expected_recent": 2.5,
+        "key": "shenzhen-tph-technology-6b42a824|wearable_remote",
+        "observed_recent": 17,
+        "pvalue": 1.557907025606653e-09
+      },
+      {
+        "expected_recent": 1.0,
+        "key": "maxx-orthopedics-8dda2d7b|ortho_joint",
+        "observed_recent": 11,
+        "pvalue": 1.0047766396681368e-08
+      },
+      {
+        "expected_recent": 5.5,
+        "key": "olympus-medical-systems-4fa2f188|endoscopy",
+        "observed_recent": 19,
+        "pvalue": 5.371388587249726e-06
+      },
+      {
+        "expected_recent": 3.5,
+        "key": "trimed-b9554da5|trauma",
+        "observed_recent": 14,
+        "pvalue": 1.860293742139696e-05
+      },
+      {
+        "expected_recent": 11.0,
+        "key": "shanghai-united-imaging-healthcare-2ab5e736|imaging_mr_ct",
+        "observed_recent": 25,
+        "pvalue": 0.00019871304482887986
+      },
+      {
+        "expected_recent": 2.5,
+        "key": "fujifilm-df7e28b2|endoscopy",
+        "observed_recent": 10,
+        "pvalue": 0.00027735209462076416
+      },
+      {
+        "expected_recent": 5.0,
+        "key": "roche-molecular-systems-bb3f5913|ivd_molecular",
+        "observed_recent": 14,
+        "pvalue": 0.0006979899791399458
+      },
+      {
+        "expected_recent": 4.5,
+        "key": "shenzhen-ulike-smart-electronics-766c40f1|aesthetics",
+        "observed_recent": 13,
+        "pvalue": 0.0008051378803213272
+      },
+      {
+        "expected_recent": 2.0,
+        "key": "resmed-c6c5d1cf|respiratory",
+        "observed_recent": 8,
+        "pvalue": 0.0010967189678585676
+      },
+      {
+        "expected_recent": 13.0,
+        "key": "intuitive-surgical-0f89cd09|surgical_robotics",
+        "observed_recent": 25,
+        "pvalue": 0.0019943111232926247
+      },
+      {
+        "expected_recent": 4.0,
+        "key": "cepheid-c2d9d4f3|ivd_molecular",
+        "observed_recent": 11,
+        "pvalue": 0.0028397661205139535
+      },
+      {
+        "expected_recent": 2.0,
+        "key": "qiagen-07992917|ivd_molecular",
+        "observed_recent": 7,
+        "pvalue": 0.004533805526248713
+      },
+      {
+        "expected_recent": 4.5,
+        "key": "carlsmed-86abadcd|spine",
+        "observed_recent": 11,
+        "pvalue": 0.006668672087181915
+      },
+      {
+        "expected_recent": 3.0,
+        "key": "roche-diagnostics-eec180c1|ivd_immuno",
+        "observed_recent": 8,
+        "pvalue": 0.01190450385635744
+      }
+    ]
+  }
+}

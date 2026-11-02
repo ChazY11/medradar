@@ -1,86 +1,103 @@
 {
-  "schema": "medradar.foresight.state.v1",
-  "updated_at": "2026-11-02T10:45:00+08:00",
-  "phase": "phase3_signal_timing",
-  "cycle": 3,
-  "last_completed_cycle": {
-    "cycle": 2,
-    "name": "coverage_power_entry_signal",
-    "branch": "research/cycle2-coverage-power",
-    "report": "experiments/cycle2_coverage/REPORT.md",
-    "verdict": "P2 entity panel meets the pre-registered support condition; P1 curated panel does not"
+  "schema": "medradar.foresight.state.v2",
+  "updated_at": "2026-11-02T11:40:00+08:00",
+  "mission": {
+    "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
+    "architecture": "Observe -> Understand -> Anticipate",
+    "realigned_at": "2026-11-02",
+    "decision": "DECISIONS D-011",
+    "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "base": {
-    "branch": "research/cycle2-coverage-power",
-    "parent_branch": "integration/market-to-rd-v2",
-    "parent_commit": "1749bd5",
-    "parent_release": "0.5.0",
-    "worktree": "D:\\DEPPSKK\\worktrees\\integration-v2",
+  "phase": "observe_change_detection_complete",
+  "cycle": 4,
+  "last_completed_cycle": {
+    "cycle": 3,
+    "name": "observe_change_detection",
+    "branch": "research/change-detection-v1",
+    "report": "experiments/detect_v1/REPORT.md",
+    "summary": "research/RESULTS/cycle3_detection_2026-11-02.md",
+    "verdict": "the simple rate-multiplier alert is not beaten at a matched 2% false-alarm budget; absolute detection is low and limited by data density"
+  },
+  "working_tree": {
+    "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
+    "branch": "research/change-detection-v1",
+    "base_commit": "ce99ea1",
     "main_untouched_at": "7a639f7"
   },
   "last_verified": {
     "command": "python -m medradar selftest",
-    "result": "Ran 751 tests, OK (skipped=3), exit 0",
-    "python": "3.12.10",
-    "verified_by": "lead",
-    "verified_at": "2026-11-02T10:25:00+08:00"
+    "expected": "795 tests (751 baseline + 44 changepoint), OK (skipped=3)",
+    "note": "must be re-confirmed before commit; recorded from the run in this cycle"
   },
-  "cycle2_results": {
-    "harness_validation": "PASS - parametric panel builder reproduces the frozen cycle-1 panel exactly (41003 examples, 503 positives, identical per-origin counts, 0 feature mismatches)",
-    "p1_curated": {
-      "examples": 41003, "positives": 503, "holdout_rows": 5159, "holdout_positives": 78,
-      "pooled_ap_model": 0.10106, "pooled_ap_persistence": 0.044614,
-      "delta_ap": 0.056446,
-      "ci_entity": [0.00535, 0.10363], "ci_pair": [-0.018239, 0.145578],
-      "mde80": 0.070761, "support_condition_met": false
+  "layer_status": {
+    "observe": {
+      "state": "data spine + entity universe + a working change detector with measured operating characteristics",
+      "measured": "at a 2% per-stream false-alarm budget the best detector recovers 0.223 of injected sustained shifts; ~0.5 of 5x shifts; 2x shifts are undetectable",
+      "gaps": ["hiring not collected", "patents not collected", "8-K CIK linking missing (19,616 events)", "taxonomy not versioned by effective date", "no seasonal adjustment", "no Special-510k filter"]
     },
-    "p2_legal_entities": {
-      "examples": 161636, "positives": 1082, "holdout_rows": 20671, "holdout_positives": 140,
-      "pooled_ap_model": 0.129189, "pooled_ap_persistence": 0.031868,
-      "delta_ap": 0.097321,
-      "ci_entity": [0.042609, 0.169722], "ci_pair": [0.049106, 0.158317],
-      "mde80": 0.087689, "support_condition_met": true,
-      "entities_in_panel": 193, "observed_pairs": 634
+    "understand": {
+      "state": "prototypes only; no validated research-quality output",
+      "blocking_question": "there is currently no independent source to confirm that a detected change is real"
     },
-    "lead_time": "at matched FAR the model detects +0.30..+0.44 more events in every window but lead-time deltas are negative in 4 of 6 windows: detection advantage, not earlier warning",
-    "heterogeneity": "pre-declared firm-scale split degenerate on both panels; mission question 6 still unanswered",
-    "cohort_reproducibility_gap": "panel ranks by material-event count; committed universe artifact ranks by all-row activity; 5/200 boundary entities differ (2.5%), documented, sensitivity queued as B-017"
+    "anticipate": {
+      "level_a": "not built (needs a detector that can be trusted)",
+      "level_b": "frozen benchmark preserved at P3; zero calibration evidence (no matured forecast)"
+    }
+  },
+  "cycle3_findings": {
+    "primary_panel": {
+      "cells": 104,
+      "window": "2016-11..2026-09 (partial final month excluded)",
+      "budget": 0.02,
+      "detection_probability": {"naive_multiplier": 0.223, "poisson_cusum": 0.181,
+                                "poisson_bayes_factor": 0.122, "rolling_zscore": 0.112},
+      "paired_vs_naive": {"poisson_bayes_factor": [-0.101, -0.134, -0.067],
+                          "poisson_cusum": [-0.042, -0.070, -0.012],
+                          "rolling_zscore": [-0.111, -0.153, -0.070]}
+    },
+    "counter_example": "on the deterministic-track-only panel the Bayes factor is ahead by +0.039 [+0.003, +0.071]; the only panel where a likelihood detector wins",
+    "data_density": "median 25 material events per cell over 119 months (~0.21/month), 97 of 119 months are zero",
+    "real_data": "17 of 104 cells survive BH at q=0.10; detectors emit 0-2 alerts; novelty confirmation failed (zero everywhere)",
+    "blocked": "independent-source confirmation is not runnable on the current spine (single filing system; undated procurement; annual publications; no trials table)"
   },
   "established_findings": [
-    "continuation target AP ~0.7737 vs per-pair persistence 0.7555: model advantage not detectable (cycle 1)",
-    "entry target on curated parents AP 0.1011 (16-feature spec) vs persistence 0.0446; underpowered (cycle 1 froze a 10-feature variant at AP 0.107-0.115)",
-    "entry target on the 200-entity legal-entity cohort AP 0.1292 vs persistence 0.0319; delta excludes zero in 3/3 windows under both clustering choices (cycle 2)",
-    "no added source (financial, market, publication) adds detectable ranking gain on the cycle-1 panel; NOT yet re-tested on the larger panel",
-    "no forecast has matured: zero calibration evidence to date"
+    "temporal foundation is audited: bitemporal store, immutable registry, PIT export, leakage replay 0 mismatches over 656,048 values",
+    "deterministic legal-entity universe: 9,412 entities, 91.32% of lane events in detailed records, no fuzzy matching",
+    "track assignment is deterministic for ~94% of material events; the 6% keyword fallback is a real false-change channel",
+    "OBSERVE: the naive rate-multiplier is not beaten by likelihood detectors at a matched false-alarm budget; data density is the binding constraint",
+    "ANTICIPATE B: continuation of active pairs is not detectably better than per-pair persistence",
+    "ANTICIPATE B: first entry on the 200-entity cohort delta-AP +0.0973 (3/3 windows exclude zero, above MDE 0.0877); the 51-parent panel is underpowered",
+    "no forecast has matured: zero calibration evidence"
   ],
   "known_measurement_defects": [
-    "research lane 510k link rate 16.9% (5287/31219) under the curated roster; 148 curated-family events remain unlinked (Cook 126, GE HealthCare 20, Canon 2)",
-    "Mindray (90 events) and Draeger (29-30 events) are absent from config/companies_device.json; they are resolvable only through the entity universe",
-    "17,308 lane events have no track_id and cannot enter any Technology dimension",
-    "bulk lane availability = decision_date + 14 days (estimated); date-level, not first-publication",
-    "track taxonomy applied to history is the current curated mapping, not versioned over time",
-    "cohort eligibility and label definition use different material-event rules (documented superset relationship)"
+    "no independent confirmation source exists in the current data spine",
+    "technology taxonomy is not versioned by effective date; recent product codes can manufacture apparent entry",
+    "~15% of lane 510(k)s are Special (modifications of the filer's own device), so material != technical",
+    "lane-wide volume artifacts at the boundary of the original data; no seasonal adjustment (January ~14% below mean)",
+    "zero trailing baseline in most stream-months, making rate-ratio alerts fragile where the lane is sparsest",
+    "17,308 lane events have no track_id; Draeger and Mindray still absent from config/companies_device.json",
+    "bulk lane availability = decision_date + 14 days (estimated), date-level not first-publication"
   ],
-  "running": [],
   "blockers": [
-    "B-015 matured-forecast calibration blocked on wall-clock time (windows end 2027-10)",
-    "B-013 hiring data blocked on lawful point-in-time source identification",
-    "B-014 patents blocked on API key or bulk-file access"
+    "independent change confirmation: no second source (B-033)",
+    "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)",
+    "B-030 hiring blocked on lawful snapshot history",
+    "B-031 patents blocked on API key or bulk files"
   ],
   "next_actions": [
-    "cycle 3: re-test the financial/market/publication source nulls on the entity panel to decide underpowered-null vs well-powered-negative",
-    "cycle 3: lead/lag analysis between source classes with multiplicity control (mission question 3)",
-    "B-017: sensitivity run on the committed artifact cohort",
-    "B-011: CIK-based deterministic linking of the 19,616 unlinked 8-K events in the legacy DB",
-    "B-012: publication-lag sensitivity (0/14/30/90 days)",
-    "add a firm-scale measure independent of cohort selection so heterogeneity can be tested",
-    "commit cycle-2 artifacts, push branch, open PR against main"
+    "B-034: quarterly aggregation and density strata, so small shifts can be tested where monthly resolution is underpowered",
+    "B-035: Special-510(k) filter so 'material' activity is closer to 'technical' activity",
+    "B-036: taxonomy churn control (versioned mapping with effective dates)",
+    "B-033: identify a genuinely independent confirmation source (trials table, hiring, patents) — this is the Understand-layer entry condition",
+    "then cross-company anomaly detection (B-025) and the company technology profile (B-027)"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
     "no merge to main without independent verification of the exact commit",
     "every reported number must be reproducible from a committed artifact or command",
     "empty/insufficient data is reported as such, never padded",
-    "a null result must be reported with its minimum detectable effect"
+    "a null result must be reported with its minimum detectable effect",
+    "a detection is a statistical statement about activity rate, never a claim about intent, capability or internal R&D",
+    "LLMs may organise evidence and propose hypotheses, never generate facts, citations or probabilities"
   ]
 }

@@ -1,221 +1,304 @@
 # MedRadar Foresight Lab — backlog
-# Priority: P0 blocks the current phase gate; P1 is the current phase; P2 is next.
-# status: todo | doing | done | blocked | abandoned
+# Realigned 2026-11-02 to Observe -> Understand -> Anticipate (DECISIONS D-011).
+# layer: observe | understand | anticipate | foundation | outside-mission
+# priority: P0 = scientific reliability floor; P1 = technology-change detection / observe;
+#           P2 = AI research intelligence; P3 = forecasting research; P4 = advanced algorithms.
+# status: todo | doing | done | blocked | frozen
 # Every task has an explicit acceptance criterion. Idle tasks are re-ranked, not deleted.
 
 meta:
-  schema: medradar.foresight.backlog.v1
+  schema: medradar.foresight.backlog.v2
   updated: "2026-11-02"
-  phase: phase3_signal_timing
-  note: cycle 2 closed; cycle 3 items are B-018 onward
+  phase: observe_change_detection
+  realignment: "DECISIONS D-011; scope frozen, no restart"
 
+# ---------------------------------------------------------------- P0 foundation
 tasks:
   - id: B-001
+    layer: observe
     priority: P0
     title: Deterministic applicant-entity universe v1
     status: done
     owner: universe-eng
-    writes: [medradar/intelligence/universe.py, config/universe_v1.json, tests/test_universe.py, docs/research/UNIVERSE.md]
-    result: >
-      55,090 events -> 9,412 legal entities; 4,632 detailed records (91.32%) + explicit 4,780-event
-      remainder; no fuzzy merging; 35 tests pass; DB hash verified unchanged; deterministic
-      (7dc2b9e8... twice). Draeger and Mindray now resolvable.
+    result: 55,090 events -> 9,412 legal entities; 4,632 detailed records (91.32%) + explicit remainder; no fuzzy matching; 35 tests; deterministic; Draeger and Mindray resolvable.
 
   - id: B-002
+    layer: foundation
     priority: P0
-    title: Evaluation statistics engine (clustered bootstrap, MDE, matched-FAR lead time)
+    title: Evaluation statistics engine (cluster bootstrap, MDE, matched-FAR lead time)
     status: done
     owner: evalstats-eng
-    writes: [medradar/intelligence/evalstats.py, tests/test_evalstats.py, docs/research/EVALSTATS.md]
-    result: >
-      Pure stdlib; 37 tests pass; cluster bootstrap, mde_from_se (authoritative), design-stage MDE
-      bound, matched_far_lead_time with censoring, metric CIs. Synthetic calibration check passes.
+    result: pure stdlib; 37 tests; reusable by the detection benchmark for delay/FAR inference.
 
   - id: B-003
+    layer: foundation
     priority: P0
-    title: Independent audit of five frozen cycle-1 numeric claims
+    title: Independent audit of the frozen cycle-1 numeric claims
     status: done
     owner: research-auditor
-    writes: [docs/research/AUDIT_CYCLE2.md]
-    result: >
-      5/5 PASS by independent re-implementation; full 41,003-row leakage replay 0/656,048
-      mismatches; qualifications O1-O6 recorded (material-rule shorthand, min_train_origins
-      mislabel, degenerate subgroups, uninformative FPR@0.5, no run id/DB hash).
+    result: 5/5 PASS by independent re-implementation; full 41,003-row leakage replay 0/656,048 mismatches; qualifications O1-O6.
 
-  - id: B-004
+  - id: B-013
+    layer: observe
     priority: P0
-    title: Literature review and falsifiable hypothesis cards
-    status: done
-    owner: research-auditor
-    writes: [research/LITERATURE.md, research/HYPOTHESES.md]
-    result: 30 Crossref-verified entries, 0 UNVERIFIED; 7 hypothesis cards with kill conditions.
-
-  - id: B-005
-    priority: P0
-    title: Cycle-2 driver — expanded-universe panel under the frozen protocol
-    status: done
-    owner: lead
-    writes: [experiments/cycle2_coverage/]
-    result: >
-      selfcheck_p1 PASS (41,003/503, identical per-origin counts, 0 feature mismatches); P1 and P2
-      panels + purged rolling-origin backtests; single command reproduces every artifact.
-
-  - id: B-006
-    priority: P1
-    title: Power / MDE analysis of the frozen entry result
-    status: done
-    owner: lead
-    result: >
-      E2 configuration is underpowered: observed delta-AP 0.0564 < MDE80 0.0708; design-stage MDE
-      for a 26-positive window is 0.3885, ~50x the marginal source effects cycle 1 was nulling.
-
-  - id: B-007
-    priority: P1
-    title: Entity-granularity ablation (legal applicant vs corporate parent)
-    status: done
-    owner: lead
-    result: >
-      Delivered as the P1-vs-P2 contrast. Caveat: the panels differ in composition as well as
-      granularity, so this is a panel-definition comparison, not a clean single-variable ablation.
-      A clean version needs acquisition chains (B-020).
-
-  - id: B-008
-    priority: P1
-    title: Matched-false-alarm-rate lead time for model vs persistence baseline
-    status: done
-    owner: lead
-    result: >
-      Detection advantage +0.30...+0.44 in every window; lead-time delta negative in 4/6 windows.
-      Conclusion: detection, not earlier warning.
-
-  - id: B-009
-    priority: P1
-    title: Heterogeneity of predictability (mission question 6)
-    status: done
-    owner: lead
-    result: >
-      FAILED as designed: the pre-declared firm-scale split is degenerate on both panels
-      (P1 all low-activity, P2 all high-activity by construction). Mission question 6 remains
-      unanswered; needs an exogenous scale measure (B-019).
-
-  - id: B-010
-    priority: P1
     title: Curated roster fix — add Draeger and Mindray with evidence
+    status: blocked
+    owner: lead
+    blocked_by: universe artifact member strings
+    acceptance: Both focus companies present with aliases justified by observed applicant strings (Draeger 30 rows across 5 variants incl. umlaut; Mindray 90 rows incl. 6 typo rows); no alias broad enough to match unrelated firms; linkage before/after recorded; universe artifact rebuilt with new hash.
+
+  - id: B-014
+    layer: understand
+    priority: P0
+    title: Cross-source entity-alignment benchmark from genuine labels
+    status: todo
+    owner: unassigned
+    acceptance: >
+      A labelled sample of applicant/company pairs adjudicated by a human reviewer (AI-created
+      fixtures explicitly may NOT count as human truth); precision/recall for the deterministic
+      universe and the curated registry on that sample; disagreements published.
+
+# ------------------------------------------------ P1 observe / change detection
+  - id: B-022
+    layer: observe
+    priority: P1
+    title: Change-point detector suite for sparse company x technology activity streams
+    status: done
+    owner: changepoint-eng
+    writes: [medradar/intelligence/changepoint.py, tests/test_changepoint.py, docs/research/CHANGEPOINT.md]
+    acceptance: >
+      Naive multiplier baseline + rolling z-score + Poisson CUSUM + Poisson Bayes factor; exact API
+      contract; deterministic; degenerate inputs return []; realistic sparse streams do not fire;
+      tests assert a spike-vs-level-shift distinction.
+
+  - id: B-023
+    layer: observe
+    priority: P1
+    title: Controlled-truth detection benchmark (semi-synthetic injection)
+    status: done
+    owner: lead
+    depends_on: [B-022]
+    acceptance: >
+      Known step-changes injected into real monthly stream shapes over a seeded grid of magnitudes
+      and onsets; reported detection probability, detection delay (months) and false alarms per
+      stream-year per detector; delay-vs-FAR frontier; leave-company-out generalisation; the naive
+      baseline is included and may win.
+
+  - id: B-024
+    layer: observe
+    priority: P1
+    title: Real-data change alerts with FDR control and independent-source confirmation
+    status: done
+    owner: lead
+    depends_on: [B-023]
+    result: >
+      DONE for FDR and the reassignment audit: 17 of 104 cells survive Benjamini-Hochberg at
+      q=0.10, detectors emit 0-2 alerts each, and 94% of events have deterministic track
+      assignment. NOT DONE for confirmation: no independent source exists on the current spine
+      (blocks B-033). The novelty signature was measured and failed (zero new product codes in
+      both alerted and control cells). Recorded as a partial completion, not a success.
+
+  - id: B-025
+    layer: observe
+    priority: P1
+    title: Cross-company anomaly detection (are competitors moving together?)
+    status: todo
+    owner: unassigned
+    depends_on: [B-024]
+    acceptance: >
+      Detect simultaneous increases in the same technology track across multiple independent
+      companies, with a pre-registered definition of "same window" and a null model for coincident
+      activity; report false-positive behaviour on shuffled labels.
+
+  - id: B-026
+    layer: observe
+    priority: P1
+    title: Spike vs sustained level-shift classifier for alerts
+    status: todo
+    owner: unassigned
+    depends_on: [B-023]
+    acceptance: >
+      Alerts classified as transient spike / level shift / ramp with measured accuracy on injected
+      known-shape changes; only sustained changes are promoted to "technology change" status.
+
+# -------------------------------------------- P2 understand / research intelligence
+  - id: B-027
+    layer: understand
+    priority: P2
+    title: Company technology-profile engine (R&D portrait from evidence)
+    status: todo
+    owner: unassigned
+    depends_on: [B-023]
+    acceptance: >
+      Per-company profile: active technology tracks, entry events, intensity trend, competitor
+      context, resource context; every field carries the seven required evidence fields from
+      MISSION §2 (raw evidence, source, timing, classification basis, supporting, contradictory,
+      uncertainty).
+
+  - id: B-028
+    layer: understand
+    priority: P2
+    title: Contradictory-evidence discovery as a first-class output
+    status: todo
+    owner: unassigned
+    acceptance: >
+      For every material judgement the system must surface evidence that argues against it, with a
+      measured rate of non-empty counter-evidence; a judgement with no counter-evidence search
+      performed is invalid.
+
+# --------------------------------------------- P3 anticipate (forecasting program)
+  - id: B-005
+    layer: anticipate
+    priority: P3
+    title: Cycle-2 expanded-universe entry benchmark (preserved)
+    status: done
+    owner: lead
+    result: P2 entity panel delta-AP +0.0973, 3/3 windows exclude zero under both clusterings, above MDE 0.0877; P1 underpowered.
+
+  - id: B-017
+    layer: anticipate
+    priority: P3
+    title: Sensitivity run on the committed artifact cohort
     status: todo
     owner: lead
-    writes: [config/companies_device.json]
-    acceptance: >
-      Both focus companies present with aliases justified by applicant strings observed in the lane
-      (Draeger: 30 rows across 5 entity variants incl. umlaut; Mindray: 90 rows incl. 6 typo rows);
-      no alias broad enough to match unrelated firms; linkage count before/after recorded; then
-      re-run the universe build (config SHA changes) and record the new artifact hash.
+    acceptance: Re-run the P2 pipeline on the exact 200 cohort keys in config/universe_v1.json and report whether the conclusion is unchanged; closes the 5/200 reproducibility gap (DECISIONS D-008).
 
-  - id: B-011
-    priority: P2
+  - id: B-018
+    layer: anticipate
+    priority: P3
+    title: Re-test the source nulls on the entity panel (underpowered or true null?)
+    status: todo
+    owner: unassigned
+    acceptance: Financial/market/publication groups re-evaluated on the P2 panel with each null carrying its MDE; verdict is "well-powered negative" or "underpowered", never an unqualified "no effect".
+
+  - id: B-021
+    layer: anticipate
+    priority: P3
+    title: Lead/lag program between source classes and milestones (mission question 3)
+    status: todo
+    owner: unassigned
+    acceptance: Pre-registered lag windows; cluster-robust CIs; Holm correction; negatives published; no causal language.
+
+  - id: B-015
+    layer: anticipate
+    priority: P3
+    title: Matured-forecast calibration report
+    status: blocked
+    owner: unassigned
+    acceptance: Requires the 25 nowcasts' windows to close (through 2027-10); until then report insufficient_matured_forecasts.
+
+# ------------------------------------------------------- observe data completion
+  - id: B-029
+    layer: observe
+    priority: P1
     title: CIK-based deterministic linking for the 8-K lane
     status: todo
     owner: unassigned
-    writes: [medradar/corpus.py or medradar/intelligence/]
-    acceptance: >
-      19,616 currently unlinked 8-K events that carry a CIK resolvable through company_identifiers
-      become linked with confidence 1.0 and stored evidence; precision spot-checked; no fuzzy
-      matching.
+    acceptance: 19,616 unlinked 8-K events carrying a resolvable CIK become linked at confidence 1.0 with stored evidence; precision spot-checked; no fuzzy matching.
 
-  - id: B-012
+  - id: B-030
+    layer: observe
+    priority: P1
+    title: Public hiring collection (lawful, point-in-time)
+    status: blocked
+    owner: unassigned
+    acceptance: A lawful source with genuine snapshot history is identified and documented before collection; no scraping behind authentication; snapshots carry first-seen time.
+
+  - id: B-031
+    layer: observe
+    priority: P1
+    title: Patent ingestion (key-free path or provided key)
+    status: blocked
+    owner: unassigned
+    acceptance: Reproducible ingestion with filing and publication dates; zero fabricated rows.
+
+  - id: B-032
+    layer: observe
+    priority: P1
+    title: Versioned technology taxonomy
+    status: todo
+    owner: unassigned
+    acceptance: >
+      Track assignment carries a taxonomy version with an effective date, so a product-code remap is
+      visible as a version change rather than appearing as a technology change. Required by the
+      detection layer's noise controls.
+
+  - id: B-033
+    layer: observe
     priority: P2
     title: Publication-lag sensitivity analysis
     status: todo
     owner: unassigned
-    acceptance: >
-      Re-run the headline target at assumed lags of 0/14/30/90 days and report whether conclusions
-      survive; document that lag=0 is the optimistic direction.
+    acceptance: Headline analyses re-run at assumed lags of 0/14/30/90 days; conclusions either survive or the sensitivity is published.
 
-  - id: B-013
-    priority: P2
-    title: Public hiring data collection (lawful, point-in-time)
-    status: blocked
+# ------------------------------------------------------------ outside mission
+  - id: B-040
+    layer: outside-mission
+    priority: P4
+    title: Event study, paper trading, dashboards, drug lane — maintain only
+    status: frozen
+    owner: none
+    acceptance: No new features; tests keep passing; no deletion without a recorded decision.
+
+
+# ------------------------------------------------ cycle 3 follow-ups (new)
+  - id: B-033
+    layer: observe
+    priority: P0
+    title: Identify a genuinely independent confirmation source for detected changes
+    status: todo
     owner: unassigned
     acceptance: >
-      A source with lawful access and genuine snapshot history is identified and documented before
-      any collection; no scraping behind authentication; snapshots carry first-seen time.
+      A source whose publication path is INDEPENDENT of the FDA filing system (e.g. ClinicalTrials
+      trials table, hiring snapshots, patent publications, supplier/procurement records with real
+      dates) is ingested with point-in-time knowledge time; confirmation of detected changes is then
+      tested against matched control periods. This is the Understand-layer entry condition: without
+      it, "a detected change is real" cannot be asserted. Explicitly NOT satisfied by splitting the
+      same filing system into two pathways.
 
-  - id: B-014
-    priority: P2
-    title: Patent feature ingestion (API key or bulk files)
-    status: blocked
-    owner: unassigned
-    acceptance: >
-      A key-free reproducible ingestion path or a provided key; rows carry filing and publication
-      dates; zero fabricated rows.
-
-  - id: B-015
-    priority: P2
-    title: Matured-forecast calibration report
-    status: blocked
-    owner: unassigned
-    acceptance: >
-      Requires the 25 registered nowcasts' windows to close (through 2027-10). Until then the report
-      must say insufficient_matured_forecasts.
-
-  - id: B-016
+  - id: B-034
+    layer: observe
     priority: P1
-    title: Open benchmark release package
+    title: Quarterly aggregation and density-stratified detection
     status: todo
     owner: unassigned
-    depends_on: [B-017, B-019]
+    depends_on: [B-023]
     acceptance: >
-      Dataset card, provenance table, licence statement, one-command reproduction of the headline
-      numbers, and an explicit list of negative results including the degenerate heterogeneity split.
+      The detection benchmark re-run at quarterly resolution and with pre-declared density strata
+      (S-LO / S-MID / S-HI by material-event count), so that the small-shift regime and the
+      spike-versus-level-shift question can be tested where monthly resolution is underpowered.
+      Report whether the detector ranking changes with resolution.
 
-  - id: B-017
+  - id: B-035
+    layer: observe
     priority: P1
-    title: Sensitivity run on the committed artifact cohort
+    title: Separate technical activity from product maintenance
     status: todo
-    owner: lead
-    depends_on: [B-005]
+    owner: unassigned
     acceptance: >
-      Re-run the P2 pipeline using the exact 200 entity keys in config/universe_v1.json (rather than
-      the material-ranked cohort) and report whether the cycle-2 conclusion is unchanged. Needed to
-      close the 5/200 cohort reproducibility gap documented in DECISIONS D-008.
+      A defensible filter for 510(k) "Special" submissions (modifications of the filer's own
+      existing device), which are ~15% of the lane, so that a detected activity change is closer to
+      a technology change. Report the effect on cell counts and on the detection benchmark.
 
-  - id: B-018
+  - id: B-036
+    layer: observe
     priority: P1
-    title: Re-test the source nulls on the entity panel (underpowered or true null?)
+    title: Taxonomy churn control (versioned mapping with effective dates)
     status: todo
     owner: unassigned
-    depends_on: [B-005]
+    depends_on: [B-032]
     acceptance: >
-      Financial / market / publication feature groups re-evaluated on the P2 panel under the same
-      purged protocol; each null reported with its MDE at the panel's positive count, so the verdict
-      is "well-powered negative" or "underpowered" — never an unqualified "no effect".
+      Product-code -> track assignments carry an effective date, and the detector masks any cell
+      whose recent events rest on codes created in the last N months. Demonstrates the share of
+      alerts that are taxonomy churn rather than activity change.
 
-  - id: B-019
+  - id: B-037
+    layer: observe
     priority: P1
-    title: Exogenous firm-scale measure for heterogeneity
-    status: todo
-    owner: unassigned
-    depends_on: [B-005]
-    acceptance: >
-      A scale measure not derived from cohort selection (e.g. employees, revenue, or total filing
-      volume over a window wholly before the first holdout origin); stratified AP with cluster CIs
-      and an explicit multiplicity statement; answers mission question 6 or records that it cannot.
-
-  - id: B-020
-    priority: P2
-    title: Acquisition-chain-aware parent panel
+    title: Seasonal and lane-volume artifact adjustment
     status: todo
     owner: unassigned
     acceptance: >
-      Entity-to-parent mapping with dated acquisition evidence (valid_from/valid_to), so a parent
-      panel can be built point-in-time; no undated merges; affects no historical row before its
-      evidence date. This is what a clean entity-granularity ablation requires (B-007's caveat).
-
-  - id: B-021
-    priority: P2
-    title: Lead/lag program between source classes and milestones (mission question 3)
-    status: todo
-    owner: unassigned
-    acceptance: >
-      Pre-registered lag windows per source class; cross-correlation or discrete-time hazard
-      estimates with cluster-robust CIs and Holm correction across the family of tests; negative
-      results published; no causal language.
+      Month-of-year and lane-wide volume effects estimated and removed (or explicitly conditioned on)
+      before detection; the January deficit and boundary-volume artifacts documented in the design
+      review are quantified and either corrected or stated as an upper bound on the false-alarm rate.
