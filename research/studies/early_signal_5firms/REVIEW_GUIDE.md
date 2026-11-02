@@ -98,3 +98,23 @@ independent confirmation, or if packet ids are duplicated. It prints the exact p
    them `Confirmed Shift`, the definition is being stretched.
 5. **Unassessable packets** — no product code or no mapping; `Insufficient Observation` or `Uncertain` with the reason
    stated.
+
+---
+
+## 8. Prefer Excel? Use the workbook, not the CSV
+
+`HUMAN_REVIEW_WORKSHEET.xlsx` is the same 69 rows with the formatting that makes review comfortable:
+
+- **`REVIEW` sheet** — frozen header, auto-filter, readable column widths, wrapped evidence text, human columns shaded,
+  and a **drop-down on `human_label`** listing exactly the five allowed labels, so an invalid label cannot be typed;
+- **`INSTRUCTIONS` sheet** — the five label definitions, the independence rule, what to fill, and the submit commands.
+
+Both files are interchangeable; the ingester reads either:
+
+```bash
+python experiments/b098/ingest_human_review.py --in research/studies/early_signal_5firms/HUMAN_REVIEW_WORKSHEET.xlsx --dry-run
+```
+
+The full path was verified end-to-end (`experiments/b098/verify_review_path.py`): a complete worksheet is accepted, and
+a missing reviewer, a `Confirmed Shift` without an independent confirmation, or an out-of-vocabulary label are each
+refused with the packet id, without writing any output file.

@@ -562,3 +562,28 @@ un-fakeable, not to label anything:
 
 **What has not changed:** no label exists yet. `ADJUDICATION_HUMAN_V1.json` is produced only by running the ingester on a
 completed worksheet, and until then Target B remains empty.
+
+---
+
+## S-033 — The review workbench is verified end-to-end, including its refusals
+
+**Date:** 2026-11-03 · **Status:** accepted · **Evidence:** `HUMAN_REVIEW_WORKSHEET.xlsx`, `REVIEW_GUIDE.md` §8,
+`experiments/b097/build_review_xlsx.py`, `experiments/b098/verify_review_path.py`
+
+The owner asked to review the packets, then asked for the file to be opened. The CSV opened but was hard to use in Excel
+(`####` on date columns, no label validation), so a formatted workbook was added: frozen header, auto-filter, readable
+widths, shaded human columns, and a **drop-down restricted to the five labels**, plus an INSTRUCTIONS sheet. The
+ingester now reads either format.
+
+The path was then verified end-to-end on temporary copies (`verify_review_path.py`), which is the part that matters:
+
+| case | expected | observed |
+|---|---|---|
+| all 69 rows filled correctly | accept | **exit 0**, dry run |
+| one row missing the reviewer | refuse | **exit 2**, 1 problem, packet named |
+| `Confirmed Shift` without independent confirmation | refuse | **exit 2**, 14 problems |
+| out-of-vocabulary label | refuse | **exit 2**, 1 problem |
+| output file written during any dry run | none | **none** |
+
+No synthetic label entered the study: every case wrote to a temporary directory, and no
+`ADJUDICATION_HUMAN_V1.json` exists yet.
