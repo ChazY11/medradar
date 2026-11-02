@@ -2765,3 +2765,56 @@ figure.
 **Not claimed.** That the checker replaces a rendered review. It catches two mechanical classes and nothing else: colour
 contrast, unreadable overlap between two text labels, and SVG features outside these two shapes remain the render's
 job. The lesson is that the mechanical part is now automatic, not that the manual part is unnecessary.
+
+---
+
+## D-071 — B-073: count the store before calling an item blocked; the data was there
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-073.
+
+**The plan I was about to carry out, and why it was wrong.** The previous cycle's next action was to "reclassify
+backlog items whose data is structurally unavailable as blocked". That is exactly the move the programme already
+retracted once: D-029 recorded a "coverage too thin" conclusion that turned out to be a pagination bug in our own
+collector. So the count came first.
+
+**What the count found** (`experiments/b073/lane_inventory.json`):
+
+| table | rows | backlog items that need it |
+|---|---:|---|
+| events | 55,090 | B-029, B-032, B-037 |
+| financial_facts | 43,420 | B-018, B-021 |
+| market_bars | 95,725 | B-018, B-021 |
+| publication_counts | 616 | B-018, B-021, B-041 |
+| procurement_awards | 3,453 | B-021 |
+| company_identifiers | 34 | B-014, B-029 |
+| horizon_forecasts | 25 | B-015 |
+
+**The financial, market and publication data that five "todo" items need is present.** Marking them blocked would
+have been a second self-inflicted falsehood. They stay open with a note recording the row counts, so the next reader
+does not redo the inventory.
+
+**What is genuinely blocked, and why it is not about data.**
+
+* **B-014** — needs a **human-adjudicated** labelled sample, and its own acceptance criterion says AI-created fixtures
+  may not count. This session cannot manufacture human truth, so the item is blocked on a person, not on a store.
+* B-015 (wall clock to 2027-10), B-030 and B-031 (external access) were already blocked for the same reasons.
+* **B-028** is marked done: contradictory evidence is a first-class profile field, the schema rejects a profile without
+  it, and the measured rate is reported per build (51 of 53 roster companies carry counter-evidence).
+
+**B-032 shipped rather than being discussed.** `medradar/intelligence/taxonomy.py` gives the taxonomy a version
+(`tracks_device_2026-11`), an effective date (`2026-11-03`) and SHA-256 fingerprints of **both** mapping files, so a
+product-code remap is visible as a regime change even if nobody remembers to bump the version. `profiles.json` now
+carries the regime; `regime_changed()` and `compare()` report comparability between two artifacts; ten tests cover the
+fingerprints, the stamp, and the change detection.
+
+**A process defect found while doing this, worth recording.** My first backlog edit inserted `notes:` lines after the
+section comments rather than inside their items, and the unquoted prose contained colons — the file became
+unparseable and the objective audit failed with `could not parse BACKLOG.yaml`. Both were repaired, and the lesson is
+the standing one: a text-formatting change to a machine-read file needs the parser run before the commit, not after.
+The audit and the round-end gate both check it, which is why the defect was caught in the same cycle rather than
+shipping.
+
+**Not claimed.** That the remaining six open items are cheap: they are analyses with real work in them (panel
+re-tests, lead/lag with Holm correction, CIK linking, seasonal adjustment, publication-lag sensitivity). What this
+cycle establishes is only that **their data exists**, so their absence from the results is a scheduling fact, not a
+data-availability one.

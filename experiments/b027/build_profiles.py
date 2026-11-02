@@ -21,6 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from experiments.cycle2_coverage.panel import load_regulatory_events, write_json  # noqa: E402
 from experiments.detect_v1.streams import month_index  # noqa: E402
 from medradar.intelligence.profile import build_profile, render_markdown  # noqa: E402
+from medradar.intelligence.taxonomy import regime as taxonomy_regime  # noqa: E402
 from medradar.intelligence.universe import entity_key, normalise_applicant, resolve_entities  # noqa: E402
 
 LANE = Path("data/research.sqlite")
@@ -172,6 +173,7 @@ def main(argv: list[str] | None = None) -> int:
     (out_dir / "profiles").mkdir(exist_ok=True)
     payload = {"schema": "profiles_v1", "as_of": as_of, "window": list(window),
                "scope": args.scope, "point_in_time": True,
+               "taxonomy": taxonomy_regime(),
                "focus_companies": list(FOCUS), "profiles": {}}
     for company_key in targets:
         family = families.get(company_key)

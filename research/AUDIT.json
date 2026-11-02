@@ -12,7 +12,7 @@
     {
       "requirement": "backlog integrity",
       "status": "PASS",
-      "evidence": "59 tasks, statuses {'done': 45, 'blocked': 4, 'todo': 9, 'frozen': 1}",
+      "evidence": "62 tasks, statuses {'done': 49, 'blocked': 5, 'todo': 7, 'frozen': 1}",
       "detail": {
         "duplicates": []
       }
@@ -20,22 +20,22 @@
     {
       "requirement": "state completeness",
       "status": "PASS",
-      "evidence": "phase='methods_figure_shipped', cycle=40",
+      "evidence": "phase='backlog_repaired_and_taxonomy_versioned', cycle=42",
       "detail": {
         "absent": [],
-        "findings": 97
+        "findings": 100
       }
     },
     {
       "requirement": "loop ran and was recorded",
       "status": "PASS",
-      "evidence": "69 decisions, 143 result rows (27 negative/null), retractions marked: 3",
+      "evidence": "71 decisions, 149 result rows (27 negative/null), retractions marked: 3",
       "detail": {}
     },
     {
       "requirement": "experiments with committed artifacts",
       "status": "PASS",
-      "evidence": "85 JSON artifacts across 19 experiment dirs",
+      "evidence": "86 JSON artifacts across 20 experiment dirs",
       "detail": {}
     },
     {
@@ -101,7 +101,7 @@
     {
       "requirement": "working tree committed",
       "status": "N/A",
-      "evidence": "4 uncommitted path(s) at audit time",
+      "evidence": "16 uncommitted path(s) at audit time",
       "detail": {}
     }
   ],

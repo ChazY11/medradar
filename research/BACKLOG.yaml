@@ -51,12 +51,13 @@ tasks:
     layer: understand
     priority: P0
     title: Cross-source entity-alignment benchmark from genuine labels
-    status: todo
+    status: blocked
     owner: unassigned
     acceptance: >
       A labelled sample of applicant/company pairs adjudicated by a human reviewer (AI-created
       fixtures explicitly may NOT count as human truth); precision/recall for the deterministic
       universe and the curated registry on that sample; disagreements published.
+    notes: "Needs a human-adjudicated labelled sample, which this session cannot produce: AI-created fixtures are explicitly not human truth, so the benchmark cannot be built here without violating its own acceptance criterion"
 
 # ------------------------------------------------ P1 observe / change detection
   - id: B-022
@@ -139,12 +140,13 @@ tasks:
     layer: understand
     priority: P2
     title: Contradictory-evidence discovery as a first-class output
-    status: todo
+    status: done
     owner: unassigned
     acceptance: >
       For every material judgement the system must surface evidence that argues against it, with a
       measured rate of non-empty counter-evidence; a judgement with no counter-evidence search
       performed is invalid.
+    notes: "Contradictory evidence is a first-class profile field and the schema rejects a profile without it; measured rate reported per build (51 of 53 roster companies carry counter-evidence)"
 
 # --------------------------------------------- P3 anticipate (forecasting program)
   - id: B-005
@@ -170,6 +172,7 @@ tasks:
     status: todo
     owner: unassigned
     acceptance: Financial/market/publication groups re-evaluated on the P2 panel with each null carrying its MDE; verdict is "well-powered negative" or "underpowered", never an unqualified "no effect".
+    notes: "data present - financial_facts=43420, market_bars=95725, publication_counts=616 (b073 inventory)"
 
   - id: B-021
     layer: anticipate
@@ -178,6 +181,7 @@ tasks:
     status: todo
     owner: unassigned
     acceptance: Pre-registered lag windows; cluster-robust CIs; Holm correction; negatives published; no causal language.
+    notes: "data present - financial_facts=43420, market_bars=95725, publication_counts=616, procurement_awards=3453"
 
   - id: B-015
     layer: anticipate
@@ -195,6 +199,7 @@ tasks:
     status: todo
     owner: unassigned
     acceptance: 19,616 unlinked 8-K events carrying a resolvable CIK become linked at confidence 1.0 with stored evidence; precision spot-checked; no fuzzy matching.
+    notes: "data present - events=55090, company_identifiers=34 (unlinked CIK-bearing 8-K events are in the store)"
 
   - id: B-030
     layer: observe
@@ -216,12 +221,13 @@ tasks:
     layer: observe
     priority: P1
     title: Versioned technology taxonomy
-    status: todo
+    status: done
     owner: unassigned
     acceptance: >
       Track assignment carries a taxonomy version with an effective date, so a product-code remap is
       visible as a version change rather than appearing as a technology change. Required by the
       detection layer's noise controls.
+    notes: "Versioned technology taxonomy with effective date and mapping fingerprints (medradar/intelligence/taxonomy.py; regime stamped into profiles.json; 10 tests)"
 
   - id: B-041
     layer: observe
@@ -230,6 +236,7 @@ tasks:
     status: todo
     owner: unassigned
     acceptance: Headline analyses re-run at assumed lags of 0/14/30/90 days; conclusions either survive or the sensitivity is published.
+    notes: "publication_counts=616 present; the lag question is about publication timing, which the store records at monthly resolution"
 
 # ------------------------------------------------------------ outside mission
   - id: B-045
@@ -302,6 +309,7 @@ tasks:
       Month-of-year and lane-wide volume effects estimated and removed (or explicitly conditioned on)
       before detection; the January deficit and boundary-volume artifacts documented in the design
       review are quantified and either corrected or stated as an upper bound on the false-alarm rate.
+    notes: "data present - events=55090 over 38 tracks and 119 months"
 
 
   - id: B-038
@@ -778,4 +786,29 @@ tasks:
       asserts the committed figures are clean. tools/round_end.py runs it as a tenth step: "layout checks: 5
       figures; problems: 0".
 
+  - id: B-073
+    layer: govern
+    priority: P1
+    title: Lane inventory before any "blocked" claim; versioned taxonomy; backlog repair
+    status: done
+    owner: lead
+    depends_on: [B-072]
+    acceptance: >
+      experiments/b073/inventory_lanes.json counts every table in the frozen stores and maps tables to backlog items.
+      Result: financial_facts=43420, market_bars=95725, publication_counts=616, events=55090, procurement_awards=3453
+      are all present, so B-018, B-021, B-029, B-037 and B-041 are NOT blocked on data and stay open with the counts
+      recorded as notes. Only B-014 is newly blocked, on a human adjudicator rather than on a store. B-028 marked done
+      (contradictory evidence is a required profile field). B-032 shipped: medradar/intelligence/taxonomy.py gives the
+      taxonomy a version, effective date and fingerprints of both mapping files, stamps profiles.json, detects regime
+      change; 10 tests. Backlog parses (60 tasks) and the audit returns 11 PASS / 0 FAIL / 1 N/A.
 
+  - id: B-074
+    layer: predict
+    priority: P1
+    title: 重新点检剩余六项开放任务的数据可得性并排期
+    status: todo
+    owner: lead
+    depends_on: [B-073]
+    notes: >
+      Six open items now have proven data (B-018, B-021, B-029, B-037, B-041, plus B-017's cohort re-run). Their order
+      should be decided by cost and by what the papers still need, not by availability.
