@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T06:40:00+08:00",
+  "updated_at": "2026-11-03T07:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "detection_shape_classification",
-  "cycle": 21,
+  "phase": "first_confirmed_rule",
+  "cycle": 22,
   "last_completed_cycle": {
-    "cycle": 19,
-    "name": "spike_vs_sustained_classification",
+    "cycle": 20,
+    "name": "promotion_rule_confirmation",
     "branch": "research/change-detection-v1",
-    "report": "experiments/b026/spike_vs_shift.json",
-    "summary": "research/RESULTS/cycle19_spike_shift_2026-11-03.md",
-    "verdict": "pre-registered shape classifier FAILED by its own criterion (balanced accuracy 0.394 vs 0.333 chance; sustained precision 0.764 vs 0.728 base rate). The failure was the rule's window: excluding the alert month lifts balanced accuracy to 0.608 and sustained precision to 0.940, but that is POST-HOC and must be confirmed on fresh injections (B-054). Three-way ramp/level separation does not work (0.17)."
+    "report": "experiments/b026/confirm_window.json",
+    "summary": "research/RESULTS/cycle20_confirmation_2026-11-03.md",
+    "verdict": "FIRST CONFIRMED PRE-REGISTERED PREDICTION: on fresh injection months the corrected confirmation window reaches balanced accuracy 0.584 (CI 0.556-0.607) and sustained-change precision 0.914 (CI 0.892-0.934) vs a 0.696 base rate, clearing every pre-declared floor. The binary promotion rule is confirmed; the three-way ramp/level distinction is not (ramp recall 0.142); cells were reused, which is a declared limitation."
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -142,7 +142,10 @@
     "PROCESS: structural SVG validity is not readability - headless rendering caught three layout defects (clipped labels, annotation off-frame, missing row labels) that checks could not",
     "DETECT: the pre-registered alert-shape classifier fails (balanced accuracy 0.394 vs 0.333 chance; sustained precision 0.764 vs 0.728 base rate) because its window contains the pulse",
     "DETECT: excluding the alert month from the confirmation window raises balanced accuracy to 0.608 and sustained-change precision to 0.940 - a POST-HOC result awaiting confirmation (B-054)",
-    "DETECT: ramp-versus-level separation is not recoverable from a two-month window (ramp recall 0.17) at ~0.2 events per cell-month"
+    "DETECT: ramp-versus-level separation is not recoverable from a two-month window (ramp recall 0.17) at ~0.2 events per cell-month",
+    "DETECT: the corrected two-month post-alert promotion rule is CONFIRMED out of sample (494 alerts; balanced accuracy 0.584, sustained precision 0.914 vs 0.696 base rate; 78.7% of spikes caught) - the programme's first pre-registered prediction to survive confirmation",
+    "DETECT: the confirmation does NOT extend to three-way shape recovery (ramp recall 0.142) and does NOT rescue any earlier association finding",
+    "PUBLISH: the paper title, abstract and a new section 4.9 now report the confirmed rule with its post-discovery caveat; 51 of 51 claims verified"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -160,10 +163,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "B-054: confirm the corrected confirmation window on fresh injections (pre-register, no reuse)",
     "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there",
-    "B-026 follow-up: consider a longer confirmation window and report the precision/recall trade-off explicitly if the ramp class stays unrecoverable",
-    "add the shape classifier to the paper as a further negative-with-diagnosis result"
+    "B-055: confirm the promotion rule on fresh CELLS (requires expanding the eligible-cell set)",
+    "wire the confirmed promotion rule into the profile alert field with its measured error rate",
+    "consider a second-domain validation of the promotion rule before calling it portable"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -713,7 +716,7 @@
     }
   },
   "detection_layer": {
-    "status": "alert shape classification: pre-registered failure, post-hoc improvement pending confirmation",
+    "status": "promotion rule CONFIRMED on fresh origins (post-discovery confirmation)",
     "artifact": "experiments/b026/spike_vs_shift.json",
     "design": "research/DECISIONS.md D-040 (pre-registered), D-041 (outcome)",
     "scale": {
@@ -753,6 +756,27 @@
       "status": "POST-HOC, not confirmed"
     },
     "reading": "binary spike-vs-sustained promotion becomes useful (0.94 precision vs 0.73 base rate) once the pulse is excluded from the confirmation window; ramp-vs-level is not recoverable at this counting rate",
-    "not_claimed": "shape recovery is a property of the time series, never of the technology"
+    "not_claimed": "shape recovery is a property of the time series, never of the technology",
+    "confirmation": {
+      "artifact": "experiments/b026/confirm_window.json",
+      "decision": "research/DECISIONS.md D-042 (pre-registration), D-043 (outcome)",
+      "alerts": 494,
+      "balanced_accuracy": 0.584,
+      "ci": [
+        0.556,
+        0.607
+      ],
+      "sustained_precision": 0.914,
+      "precision_ci": [
+        0.892,
+        0.934
+      ],
+      "sustained_base_rate": 0.696,
+      "spike_recall": 0.787,
+      "ramp_recall": 0.142,
+      "verdict": "CONFIRMED by the pre-declared rule",
+      "scope": "binary promotion decision only; three-way ramp/level not recovered",
+      "caveat": "post-discovery confirmation - fresh injection months, same 65 cells"
+    }
   }
 }

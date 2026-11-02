@@ -231,11 +231,13 @@ def main(argv: list[str] | None = None) -> int:
     print(f"cells: {len(cells)}; eligible with a measurable baseline: {len(eligible)}")
 
     records: list[dict[str, Any]] = []
+    discovery_origins: dict[str, int] = {}
     for company, track, counts in eligible:
         origins = [month for month in range(MIN_HISTORY, WINDOW_MONTHS - MIN_TAIL)]
         if not origins:
             continue
         origin = origins[rng.randrange(len(origins))]
+        discovery_origins[f"{company}|{track}"] = origin
         baseline_counts = counts[origin - BASELINE_MONTHS:origin]
         baseline_rate = sum(baseline_counts) / len(baseline_counts) if baseline_counts else 0.0
         if baseline_rate <= 0:
@@ -299,6 +301,7 @@ def main(argv: list[str] | None = None) -> int:
             "bootstrap": boot_posthoc,
         },
         "always_level_baseline": {"confusion": matrix_always, "metrics": result_always},
+        "discovery_origins": discovery_origins,
         "prediction_distribution": {shape: sum(1 for record in alerted
                                                if record["prediction"] == shape)
                                     for shape in (*SHAPES, "no_alert")},

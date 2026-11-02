@@ -84,6 +84,13 @@ CLAIMS = [
     ("D10", "mandated deep-case companies", "5", "research/MISSION.md",
      "Deep-case companies (5, mandated)"),
     ("D11", "device roster size", "51", "research/DECISIONS.md", "51-company device roster"),
+    # ---- alert-shape classification (cycles 19-20)
+    ("S1", "confirmed sustained-change precision", "0.914", "research/DECISIONS.md", "0.914"),
+    ("S2", "confirmed sustained base rate", "0.696", "research/DECISIONS.md", "0.696"),
+    ("S3", "confirmed balanced accuracy", "0.584", "research/DECISIONS.md", "0.584"),
+    ("S4", "confirmed spike recall", "0.787", "research/DECISIONS.md", "0.787"),
+    ("S5", "alert-shape discovery balanced accuracy", "0.394", "research/DECISIONS.md", "0.394"),
+    ("S6", "post-hoc discovery balanced accuracy", "0.608", "research/DECISIONS.md", "0.608"),
 ]
 
 

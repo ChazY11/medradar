@@ -1,4 +1,4 @@
-# Predicting corporate technological evolution from public regulatory filings: a pre-registered study with five retracted findings and no surviving positive result
+# Predicting corporate technological evolution from public regulatory filings: five retractions, a controlled-truth frontier, and one confirmed decision rule
 
 **MedRadar Foresight Lab** · version 1 draft · 2026-11-03
 
@@ -29,6 +29,13 @@ predictor's 95 % interval excludes 1, and the calibrated signal fires **5 flags 
 too rarely to trigger on. We show that profile verdicts are unstable across as-of dates (40 stable, 13
 changed, **2** reversed of 53), and we report a point-in-time rebuild with **0** leakage problems after
 closing a real leakage path in the trial lane and the product-code map.
+
+One narrow exception emerged **after drafting**, and is reported here as an addition rather than folded
+into the claim above: a pre-registered confirmatory test shows that a two-month post-alert window
+separates transient spikes from sustained changes well enough to make *promotion* a measured decision —
+sustained-change precision **0.914** against a **0.696** base rate, with **78.7 %** of spikes caught —
+while the three-way ramp-versus-level distinction remains unrecovered. That result was obtained by fixing
+a defect found in the discovery sample, so it is a post-discovery confirmation and carries that caveat.
 
 We conclude that this data supports **narrow, budget-explicit statements about public filing rates**
 and nothing about intent, capability or internal R&D, and we publish the measurement rules that make
@@ -240,7 +247,53 @@ profile without the list of checks it ran is rejected before rendering.
 
 ---
 
-## 4.8 Figures
+## 4.9 A confirmed decision rule, and how narrowly it is confirmed
+
+**Note added after drafting.** Section 4 removed every association claim this programme made. This
+subsection reports the one thing that survived an out-of-sample test — not an association, but a
+**decision rule** about alerts.
+
+*Setup.* Three known shapes — a one-month spike, a twelve-month level shift, a twelve-month ramp — were
+injected into real (company, track) series at magnitudes of three times the cell's baseline rate. A fixed
+detector (three-month rate ≥ twice the eighteen-month baseline) produced the alerts. The classifier may use
+only the two months after the alert.
+
+*Pre-registered attempt, and its failure.* The first classifier also looked at the alert month itself.
+Balanced accuracy was **0.394** against a 0.333 chance line, and sustained-change precision **0.764** against
+a **0.728** base rate: the rule was barely better than always answering "level shift".
+
+*Why it failed.* For a spike the alert month **is** the pulse, so the burst inflated the "post-alert" rate
+and the rule almost never called a spike (recall 0.171).
+
+*The fix, and its confirmation.* Excluding the alert month from the window lifted balanced accuracy to
+**0.608** on the discovery sample. Because that improvement came from seeing the failure, it was
+pre-registered as a confirmatory test on **fresh injections**: three new origins per cell, each at least
+six months from the discovery origin, zero origins inside the guard band; same shapes, magnitudes and
+detector. Result over **494 alerts**:
+
+| truth \ predicted | spike | level | ramp | recall |
+|---|---:|---:|---:|---:|
+| spike | 118 | 15 | 17 | **0.787** |
+| level | 0 | 144 | 31 | 0.823 |
+| ramp | 3 | 142 | 24 | 0.142 |
+
+Balanced accuracy **0.584** (95 % CI 0.556–0.607) and sustained-change precision **0.914** (95 % CI
+0.892–0.934) against a **0.696** base rate — both clearing the floors fixed before the run.
+
+*What is confirmed, and what is not.* The **binary** decision — promote an alert to "technology change", or
+treat it as a transient spike — is now evidence-based: 0.914 precision instead of 0.696, driven by catching
+78.7 % of spikes. The **three-way** distinction is not: ramp recall is 0.142, so a ramp cannot be separated
+from a level shift at this counting rate. The aggregate balanced accuracy passes because two of three classes
+separate, which is a narrower success than the number suggests.
+
+*Caveat.* Cell reuse across discovery and confirmation is a declared limitation — only the injection months
+were fresh. This is a post-discovery confirmation, weaker than confirming an a-priori hypothesis, and it does
+not rescue any earlier finding: the five retractions and the rolling-origin null stand. It says nothing about
+whether a promoted change is technological.
+
+---
+
+## 4.10 Figures
 
 Four figures are generated **from the committed artifacts** by `papers/figures.py`, which emits SVG
 directly (the repository is stdlib-only, so there is no plotting dependency). `papers/verify_figures.py`

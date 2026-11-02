@@ -1550,3 +1550,90 @@ and 0.608 is a hypothesis.
 **Never claimed.** Shape recovery says nothing about whether a change is technological. It classifies the
 time series, not the technology, and promotion of an alert to "technology change" remains a human
 judgement supported by the profile's other evidence fields.
+
+---
+
+## D-042 — Pre-registration: confirmatory test of the corrected confirmation window (B-054)
+
+**Date:** 2026-11-03. **Status:** accepted; written before `experiments/b026/confirm_window.py` was first
+run.
+
+**Why a separate confirmation.** D-041 found that excluding the alert month from the confirmation window
+lifts balanced accuracy from 0.394 to 0.608 and sustained-change precision from 0.764 to 0.940. That
+improvement was obtained **after** seeing the pre-registered rule fail, so it is a hypothesis, not a
+result. This fixes a confirmatory test in advance.
+
+**Fixed design.**
+
+* **Cells.** The same 65 eligible cells. They cannot be replaced (that is the entire eligible set), so cell
+  reuse is **declared as a limitation**, not hidden.
+* **Fresh origins.** For each cell, the injection month must be at least **6 months away** from the
+  discovery origin recorded in `experiments/b026/spike_vs_shift.json`, and three fresh origins are drawn
+  per cell with seed 2026. No injected observation from the discovery run is reused.
+* **Injected shapes, detector, magnitudes.** Identical to D-040: spike / level / ramp at three times the
+  cell's baseline rate; alert when the three-month rate reaches twice the eighteen-month baseline.
+* **Classifier.** The corrected rule only: the confirmation window is the two months **after** the alert
+  month, never including it. Thresholds unchanged (falls back below 1.5× baseline → spike; rising across
+  the window → ramp; else level).
+* **Estimands.** Balanced accuracy; sustained-change precision and recall; 3×3 confusion matrix;
+  company-clustered bootstrap (2,000 replications, seed 7).
+
+**Pre-declared decision rule.**
+
+* **CONFIRMED** iff sustained-change precision ≥ 0.85 **and** balanced accuracy ≥ 0.50 **and** the
+  bootstrap lower 95 % bound on sustained-change precision exceeds the sustained base rate measured in this
+  sample.
+* **NOT CONFIRMED** otherwise. A partial pattern (precision high, balanced accuracy low) is reported as
+  "binary promotion confirmed, three-way classification not", which is a narrower claim and must be stated
+  that way.
+* **Never** re-tuned after seeing these numbers. If it fails, the promotion rule stays at the
+  pre-registered accuracy of D-041 and the window fix is recorded as overfitting to the discovery sample.
+
+**What confirmation would license.** That a two-month post-alert window can tell a transient spike from a
+sustained change at this data's counting rate, so that "promote to technology change" is an evidence-based
+decision rather than a blanket one. It would still say nothing about whether the change is technological.
+
+---
+
+## D-043 — B-054 outcome: the corrected confirmation window CONFIRMS on fresh injections; the programme has its first validated decision rule
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-054. **First pre-registered confirmation that passed.**
+
+**What ran.** The D-042 confirmatory design: 65 cells, three fresh origins per cell with every injection
+month at least six months from the discovery origin, zero origins inside the guard band, same shapes,
+magnitudes and detector. **525 injections, 494 alerts.** Company-clustered bootstrap, 2,000 replications.
+
+| truth \ predicted | spike | level | ramp | recall |
+|---|---:|---:|---:|---:|
+| spike (120) | 118 | 15 | 17 | **0.787** |
+| level (175) | 0 | 144 | 31 | 0.823 |
+| ramp (169) | 3 | 142 | 24 | 0.142 |
+
+* balanced accuracy **0.584** (95 % CI 0.556–0.607), pre-declared floor 0.50 → **pass**
+* sustained-change precision **0.914** (95 % CI 0.892–0.934), pre-declared floor 0.85 → **pass**
+* sustained base rate **0.696**; CI lower bound 0.892 exceeds it → **pass**
+
+**Verdict: CONFIRMED** by the rule fixed in D-042 before the run.
+
+**What exactly is confirmed — and what is not.** The confirmable claim is the **binary** one: with a
+two-month post-alert window, the decision *promote this alert to "technology change" or treat it as a
+transient spike* is better than blanket promotion — precision 0.914 against a 0.696 base rate, because
+78.7 % of spikes are caught. The **three-way** claim is not confirmed in substance: ramp recall is 0.142,
+so "ramp versus level shift" remains unrecovered at this counting rate even though the aggregate balanced
+accuracy clears its floor. The aggregate passes because two of the three classes are separated; that is a
+narrower success than the aggregate number suggests and must be stated that way.
+
+**The honest caveat about how it was obtained.** The window fix came from the discovery sample, so this is
+confirmation of a *hypothesis that was informed by data*, on data that were not. That is the standard
+pre-registration-after-discovery pattern, and it is weaker than confirming an a-priori hypothesis: the
+hypothesis space was narrowed using the same cells. Cell reuse across discovery and confirmation is a
+declared limitation; only the injection months were fresh.
+
+**What this changes for the programme.** It is the first time a pre-registered prediction of this
+programme's own behaviour survived an out-of-sample test. The promotion rule can be used in the Understand
+layer with a measured error rate rather than as a default. It does **not** rescue any earlier finding: the
+five retractions stand, the rolling-origin null stands, and no claim is made about whether a promoted
+change is technological.
+
+**Not claimed.** That the rule generalises beyond (company, track) monthly filing counts at ~0.2 events per
+month; that shape recovery implies technological significance; that a ramp can be distinguished at all.

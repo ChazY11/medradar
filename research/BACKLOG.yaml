@@ -504,7 +504,7 @@ tasks:
     layer: detect
     priority: P1
     title: Confirm the corrected confirmation window on fresh injections
-    status: todo
+    status: done
     owner: lead
     depends_on: [B-026]
     acceptance: >
@@ -513,5 +513,19 @@ tasks:
       found after seeing the pre-registered rule fail, re-pre-register it and confirm on injections
       with fresh origins and cells (no reuse), reporting the same estimands. If it does not confirm,
       the promotion rule stays at the pre-registered accuracy and the fix is recorded as overfit.
+
+  - id: B-055
+    layer: detect
+    priority: P2
+    title: Confirm the promotion rule on fresh CELLS, not just fresh origins
+    status: todo
+    owner: lead
+    depends_on: [B-054]
+    acceptance: >
+      The two-month post-alert promotion rule is confirmed on fresh injection months but the same 65
+      cells, so cell reuse is a declared limitation. Expand the eligible-cell set (lower the baseline
+      floor or widen the roster / add a second lane) and re-run the confirmatory design with cells that
+      never appeared in discovery. If the rule does not survive fresh cells, restrict promotion to the
+      companies where it was measured.
 
 
