@@ -326,3 +326,21 @@ it yet.
 
 **Lesson recorded:** a probe that reports only status codes can "unblock" a source that has no data behind the URL.
 The probe now records content type and a `usable_json` flag, and both are in the committed artifact.
+
+---
+
+## S-023 — PR publication blocked on authentication; branch is merge-ready
+
+**Date:** 2026-11-03 · **Status:** blocked (external), not a scientific issue
+
+The owner authorised opening a pull request (S-019). The branch `research/early-signal-5firms` is pushed and the compare
+page reports **"Able to merge"** with **11 commits, 89 files changed**, but the browser session is no longer signed in:
+requesting `https://github.com/settings/profile` redirects to the sign-in page. Creating the PR needs an authenticated
+session, and the agent holds no credential and will not ask for one or fabricate one.
+
+State left for the owner: open `https://github.com/ChazY11/medradar/compare/main...research/early-signal-5firms`
+after signing in, and create the PR (the title/body drafted for PR #5's sibling work can be reused; this branch's
+summary is in `PHASE0_REPORT.md`, `PHASE1_SHRINKAGE.md` and `PAPER_NEGATIVE_v1.md`).
+
+Nothing else in the study is blocked: the branch is complete, verified by the round-end gate (12 steps, 0 failures),
+and `main` remains untouched at `ae18f27`.
