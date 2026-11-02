@@ -2443,3 +2443,38 @@ correct; only reporting one of them would be misleading.
 **Not claimed.** That the relabelled alerts are now wrong — the binary promotion verdict is unchanged
 (`promote_pending_signoff` for all eight); only the shape label was withdrawn. Nor that the
 1.0-event-per-month floor is optimal; D-061 already states it is a conservative point on a measured curve.
+
+---
+
+## D-063 — B-066: one command ends a round, and the paper's limitations now state the scope
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-066.
+
+**The round-end routine is now executable.** `tools/round_end.py` runs every verifier in the repository in one
+pass and writes `tools/round_end.json` plus a readable log:
+
+| step | current result |
+|---|---|
+| test suite (`medradar selftest`) | PASS — OK (skipped=3) |
+| paper claim map | PASS — 78 claims, 0 failures |
+| paper figures | PASS — 4 figures, 0 failures |
+| profile self-check | PASS — 5 profiles, 0 failures |
+| snapshot chain | PASS — 0 leakage problems |
+| objective audit | PASS — 11 PASS / 0 FAIL / 1 N/A |
+| repository state | PASS — HEAD synced with remote |
+
+Two implementation details matter and are recorded because both were wrong on the first attempt: unittest
+reports its summary on **stderr**, so a detail extractor that reads only stdout silently reports the last
+documentation line instead of `OK (skipped=3)`; and a generic "last line containing a keyword" heuristic reports
+the wrong line for the audit, so each step now declares the markers to look for.
+
+**The paper's Limitations section was updated to say what a reader most needs to know and previously had to
+reconstruct.** It now states plainly that **exactly one decision rule was confirmed** against five retractions;
+that the rule requires human sign-off with no automated path; that the ramp label is withheld below 1.0 event per
+month and those alerts are reported as `sustained_unresolved`; that the density scaling is a **post-failure
+confirmation** which should be weighted differently from a first-pass result; and that the repository contains an
+executable objective audit and round-end routine, so progress can be re-run rather than trusted.
+
+**Why this is worth a cycle.** Twenty-eight rounds produced verification tools faster than they produced a
+repeatable finish line. A round now ends with one command whose exit code is the claim, which removes the main
+remaining opportunity for an over-stated summary.

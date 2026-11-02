@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T19:40:00+08:00",
+  "updated_at": "2026-11-03T20:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "policy_change_visible_in_record",
-  "cycle": 34,
+  "phase": "round_end_routine_executable",
+  "cycle": 35,
   "last_completed_cycle": {
-    "cycle": 32,
-    "name": "labelled_snapshots_and_promotion_diff",
+    "cycle": 33,
+    "name": "round_end_routine_and_limitations",
     "branch": "research/change-detection-v1",
-    "report": "experiments/b027/snapshot_diff.json",
-    "summary": "research/RESULTS/cycle32_snapshot_labels_2026-11-03.md",
-    "verdict": "a sixth auditable snapshot (2026-11-03-policy-v2) and a promotion-label diff make the policy change visible: 32 alert labels changed, 8 from ramp to sustained_unresolved, while the data-level diff reports zero change; 6/6 snapshots verify, 0 leakage problems"
+    "report": "tools/round_end.json",
+    "summary": "research/RESULTS/cycle33_round_end_2026-11-03.md",
+    "verdict": "a round now ends with one command: tools/round_end.py runs seven verifiers and exits with the claim (7 PASS / 0 FAIL, ~23 s); the paper's limitations section states the 1-confirmed-rule to 5-retraction ratio, the human sign-off requirement, the density floor and the post-failure status of the density confirmation"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -170,7 +170,9 @@
     "DETECT: the density scaling is CONFIRMED on fresh draws under a revised criterion (rho 0.908, dense 0.444 vs sparse 0.204, ratio 2.18x) - stated as a post-failure confirmation",
     "PRODUCT: promotion policy v2 refuses the ramp label below 1.0 event per series-month and reports sustained_unresolved instead, with three tests covering the relabelling",
     "POINT-IN-TIME: the record can now show WHICH claims a policy change altered (32 labels, 8 shape changes from ramp to sustained_unresolved) alongside zero data-level movement",
-    "POINT-IN-TIME: labelled snapshots are supported (as-of plus suffix) without weakening verification: 6 of 6 snapshots verify and the leakage audit stays clean"
+    "POINT-IN-TIME: labelled snapshots are supported (as-of plus suffix) without weakening verification: 6 of 6 snapshots verify and the leakage audit stays clean",
+    "GOVERN: a round ends with an executable verification routine (7 steps, one exit code), so the round-end claim is re-runnable rather than asserted",
+    "PUBLISH: the paper's limitations now state the honest ratio - one confirmed decision rule against five retractions - plus the sign-off requirement, the density floor and the post-failure status of the density confirmation"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -188,9 +190,9 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "wire the audit into the round-end routine so every round reports it",
+    "run tools/round_end.py at the end of every round as the completion gate",
     "consider a second paper focused on the measurement rules and the density confirmation",
-    "decide whether the promotion ledger should record relabelling events as an audit trail",
+    "decide whether the promotion ledger should log relabelling events as an audit trail",
     "revisit the 1.0/month floor if a denser domain becomes available"
   ],
   "invariants": [
@@ -1135,5 +1137,28 @@
       "working tree"
     ],
     "purpose": "completeness and reproducibility, not correctness: it cannot prove the science is right, only that the artifacts exist, verify and are committed"
+  },
+  "governance_routine": {
+    "tool": "tools/round_end.py",
+    "artifacts": [
+      "tools/round_end.json",
+      "tools/round_end.log"
+    ],
+    "steps": [
+      "test suite",
+      "paper claim map",
+      "paper figures",
+      "profile self-check",
+      "snapshot chain",
+      "objective audit",
+      "repository state"
+    ],
+    "last_result": {
+      "passed": 7,
+      "failed": 0,
+      "runtime_seconds": 23
+    },
+    "lesson": "unittest writes its summary to stderr and per-step marker extraction is required; a generic keyword heuristic reported the wrong line on the first attempt",
+    "rule": "a round is not finished until this command exits 0"
   }
 }

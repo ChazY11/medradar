@@ -1,0 +1,64 @@
+{
+  "schema": "round_end_v1",
+  "checked_at_utc": "2026-11-02T05:22:34+00:00",
+  "branch": "research/change-detection-v1",
+  "head": "41a1df8daa02ebd0a93b1138b15317fc53384cef",
+  "remote_synced": true,
+  "uncommitted_paths": [
+    "M research/AUDIT.json",
+    " M research/AUDIT.md",
+    "?? tools/round_end.json",
+    "?? tools/round_end.log",
+    "?? tools/round_end.py",
+    "?? tools/round_end_console.log"
+  ],
+  "results": [
+    {
+      "step": "test suite",
+      "status": "PASS",
+      "detail": "OK (skipped=3)",
+      "exit": 0
+    },
+    {
+      "step": "paper claim map",
+      "status": "PASS",
+      "detail": "claims checked: 78; failures: 0",
+      "exit": 0
+    },
+    {
+      "step": "paper figures",
+      "status": "PASS",
+      "detail": "figures checked: 4; failures: 0",
+      "exit": 0
+    },
+    {
+      "step": "profile self-check",
+      "status": "PASS",
+      "detail": "checked 5 profiles; failures=0",
+      "exit": 0
+    },
+    {
+      "step": "snapshot chain",
+      "status": "PASS",
+      "detail": "leakage problems: 0",
+      "exit": 0
+    },
+    {
+      "step": "objective audit",
+      "status": "PASS",
+      "detail": "audit: 11 PASS, 0 FAIL, 1 N/A of 12",
+      "exit": 0
+    },
+    {
+      "step": "repository state",
+      "status": "PASS",
+      "detail": "HEAD 41a1df8daa02, remote synced, 6 uncommitted path(s)"
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "not_applicable": 0
+  }
+}

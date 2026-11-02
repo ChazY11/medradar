@@ -416,8 +416,28 @@ The taxonomy is unversioned, so apparent novelty can be classification churn. En
 deliberately conservative, so some true activity is split across entities. The trial and hiring lanes are
 partial samples, not censuses. No result here speaks to intent, capability, internal R&D, or future
 technology: they are statements about public regulatory activity and, where relevant, about the
-resolution of this data. The programme's canonical track record, including retractions and their reasons,
-is the committed decision log and results index.
+resolution of this data.
+
+**Exactly one decision rule was confirmed.** Of everything this programme tested, a single rule survived
+out-of-sample confirmation: an alert followed by a sustained two-month confirmation window may be promoted, at
+measured precision 0.914–0.917 against a base rate near 0.70. Everything else is negative, methodological, or
+scope-limited. That ratio — five retractions to one confirmed rule — is the honest summary of the work.
+
+**The confirmed rule carries its own limits, and the product states them.** Promotion requires a named human
+sign-off; no automated promotion path exists, and a test prevents one from being added quietly. The ramp label is
+withheld below **1.0** event per series-month because the density confirmation showed the label is not supported
+there, so those alerts are reported as `sustained_unresolved`. The rule does not distinguish a ramp from a level
+shift at sparse densities, was confirmed on this corpus's taxonomy, and transfers to one non-registry domain and
+to market-aggregate series — not to another country's filings, another taxonomy, or another resolution.
+
+**The density scaling is a post-failure confirmation.** Its first controlled test failed its pre-registered gate
+(strict monotonicity broke on a 0.018 inversion); the gate was recorded as the defect and a revised criterion was
+confirmed on fresh draws. A reader should weight that differently from a first-pass result, which is why it is
+labelled as such wherever it appears.
+
+The programme's canonical track record, including retractions and their reasons, is the committed decision log
+and results index; the repository also contains an executable objective audit and a round-end verification
+routine, so a claim of progress can be re-run rather than trusted.
 
 ---
 

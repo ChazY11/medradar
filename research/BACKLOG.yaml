@@ -674,4 +674,19 @@ tasks:
       sustained_unresolved, while the data-level diff reports zero change. 6 of 6 snapshots verify; 0 leakage
       problems.
 
+  - id: B-066
+    layer: govern
+    priority: P0
+    title: Executable round-end routine and honest paper limitations
+    status: done
+    owner: lead
+    depends_on: [B-061]
+    acceptance: >
+      tools/round_end.py runs seven verifiers in one pass (test suite, claim map, figures, profile self-check,
+      snapshot chain, objective audit, repository state) and writes tools/round_end.json plus a readable log;
+      exit code is the claim. Current result 7 PASS / 0 FAIL in ~23 s. Paper section 6 now states that exactly
+      one decision rule was confirmed against five retractions, that promotion requires human sign-off with no
+      automated path, that the ramp label is withheld below 1.0 event/month, and that the density scaling is a
+      post-failure confirmation.
+
 
