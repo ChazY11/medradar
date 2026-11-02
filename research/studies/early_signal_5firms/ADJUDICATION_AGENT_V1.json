@@ -1,0 +1,1359 @@
+{
+  "schema": "adjudication_agent_v1",
+  "tier": "AGENT_PRE_ADJUDICATION",
+  "rubric_version": "agent_rubric_v1",
+  "amendment": "ADJUDICATION_AMENDMENT_002.md",
+  "authorisation": "project owner instructed the agent to adjudicate the packets (2026-11-03); this tier exists because the study forbids the agent from producing human truth",
+  "generated_at_utc": "2026-11-02T20:08:51+00:00",
+  "packets_assessed": 69,
+  "summary": {
+    "counts": {
+      "Uncertain (agent-preliminary)": 45,
+      "Not Assessable (agent-preliminary)": 6,
+      "Routine Iteration (agent-preliminary)": 18
+    },
+    "rules": {
+      "strong relevance, consistent taxonomy, no near third source": 36,
+      "no rule matched": 6,
+      "strong relevance in the routine stratum": 18,
+      "strong relevance but no checkable mapping": 9
+    },
+    "total": 69
+  },
+  "meaning": {
+    "agent_preliminary_label": "how a fixed text/mapping rubric classifies the packet",
+    "not_human_truth": "these labels may not be used as ground truth, may not score the study's detectors, and must be redone by a named human before any Target B claim",
+    "human_review_status": "still PENDING_HUMAN_REVIEW on every packet"
+  },
+  "rows": [
+    {
+      "packet_id": "ES5-001",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "imaging_mr_ct",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_mr_ct"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-002",
+      "origin": "candidate",
+      "company": "mindray",
+      "track": "patient_monitoring",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-003",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "medical_ai",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "UNKNOWN",
+          "reason": "no product code and no checkable mapping"
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Not Assessable (agent-preliminary)",
+      "rule_fired": "no rule matched",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-004",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "patient_monitoring",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-005",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "imaging_us",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_us"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-006",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "imaging_mr_ct",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_mr_ct"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-007",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "imaging_mr_ct",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_mr_ct"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-008",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "patient_monitoring",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-009",
+      "origin": "candidate",
+      "company": "mindray",
+      "track": "imaging_us",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_us"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-010",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "medical_ai",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to medical_ai"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-011",
+      "origin": "candidate",
+      "company": "mindray",
+      "track": "patient_monitoring",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-012",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "patient_monitoring",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-013",
+      "origin": "candidate",
+      "company": "mindray",
+      "track": "imaging_us",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_us"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-014",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "imaging_mr_ct",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_mr_ct"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-015",
+      "origin": "candidate",
+      "company": "mindray",
+      "track": "imaging_us",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_us"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-016",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "medical_ai",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to medical_ai"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-017",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "respiratory",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to respiratory"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-018",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "imaging_mr_ct",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_mr_ct"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-019",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "respiratory",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to respiratory"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-020",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "medical_ai",
+      "stratum": "ambiguous",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to medical_ai"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-021",
+      "origin": "candidate",
+      "company": "mindray",
+      "track": "imaging_us",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_us"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-022",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "cardiac_rhythm",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to cardiac_rhythm"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-023",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "imaging_mr_ct",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_mr_ct"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-024",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "imaging_mr_ct",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_mr_ct"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-025",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "imaging_us",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_us"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-026",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "imaging_us",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_us"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-027",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "medical_ai",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to medical_ai"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-028",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "medical_ai",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to medical_ai"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-029",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "patient_monitoring",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-030",
+      "origin": "candidate",
+      "company": "mindray",
+      "track": "patient_monitoring",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-031",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "respiratory",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "UNKNOWN",
+          "reason": "no product code and no checkable mapping"
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Not Assessable (agent-preliminary)",
+      "rule_fired": "no rule matched",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-032",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "respiratory",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "UNKNOWN",
+          "reason": "no product code and no checkable mapping"
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Not Assessable (agent-preliminary)",
+      "rule_fired": "no rule matched",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-033",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "respiratory",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to respiratory"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-034",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "patient_monitoring",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-035",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "imaging_us",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_us"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-036",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "medical_ai",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to medical_ai"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-037",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "medical_ai",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "UNKNOWN",
+          "reason": "no product code and no checkable mapping"
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Not Assessable (agent-preliminary)",
+      "rule_fired": "no rule matched",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-038",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "respiratory",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to respiratory"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-039",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "respiratory",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to respiratory"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-040",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "patient_monitoring",
+      "stratum": "novel_entry",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance, consistent taxonomy, no near third source",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-041",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "patient_monitoring",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-042",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "imaging_mr_ct",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_mr_ct"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-043",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "patient_monitoring",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-044",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "cardiac_rhythm",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to cardiac_rhythm"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-045",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "imaging_mr_ct",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_mr_ct"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-046",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "cardiac_rhythm",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to cardiac_rhythm"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-047",
+      "origin": "candidate",
+      "company": "mindray",
+      "track": "imaging_us",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_us"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-048",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "medical_ai",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "UNKNOWN",
+          "reason": "no product code and no checkable mapping"
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Not Assessable (agent-preliminary)",
+      "rule_fired": "no rule matched",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-049",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "imaging_us",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_us"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-050",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "medical_ai",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to medical_ai"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-051",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "patient_monitoring",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-052",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "cardiac_rhythm",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to cardiac_rhythm"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-053",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "cardiac_rhythm",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to cardiac_rhythm"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-054",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "imaging_mr_ct",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_mr_ct"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-055",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "imaging_us",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_us"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-056",
+      "origin": "candidate",
+      "company": "philips",
+      "track": "patient_monitoring",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to patient_monitoring"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-057",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "medical_ai",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "UNKNOWN",
+          "reason": "no product code and no checkable mapping"
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Not Assessable (agent-preliminary)",
+      "rule_fired": "no rule matched",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-058",
+      "origin": "candidate",
+      "company": "medtronic",
+      "track": "medical_ai",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to medical_ai"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-059",
+      "origin": "candidate",
+      "company": "ge_healthcare",
+      "track": "imaging_mr_ct",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_mr_ct"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "ES5-060",
+      "origin": "candidate",
+      "company": "mindray",
+      "track": "imaging_us",
+      "stratum": "routine",
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "reason": "product code maps to imaging_us"
+        },
+        "R2_taxonomy_consistency": "CONSISTENT",
+        "R3_third_source": "NOT_CHECKED"
+      },
+      "agent_preliminary_label": "Routine Iteration (agent-preliminary)",
+      "rule_fired": "strong relevance in the routine stratum",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "LT-01",
+      "origin": "small_sample",
+      "company": "ge_healthcare",
+      "track": "patient_monitoring",
+      "stratum": null,
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "matched_theses": [
+            "BLOOD PRESSURE"
+          ]
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "AFTER"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance but no checkable mapping",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "LT-02",
+      "origin": "small_sample",
+      "company": "medtronic",
+      "track": "imaging_mr_ct",
+      "stratum": null,
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "matched_theses": [
+            "FLUOROSCOPIC"
+          ]
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "AFTER"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance but no checkable mapping",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "LT-03",
+      "origin": "small_sample",
+      "company": "medtronic",
+      "track": "respiratory",
+      "stratum": null,
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "matched_theses": [
+            "RESPIRATORY"
+          ]
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "AFTER"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance but no checkable mapping",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "LT-04",
+      "origin": "small_sample",
+      "company": "medtronic",
+      "track": "respiratory",
+      "stratum": null,
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "matched_theses": [
+            "ANESTHESIA"
+          ]
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "AFTER"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance but no checkable mapping",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "LT-05",
+      "origin": "small_sample",
+      "company": "medtronic",
+      "track": "vascular_access",
+      "stratum": null,
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "matched_theses": [
+            "VASCULAR ACCESS"
+          ]
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "DISTANT_SUPPORT"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance but no checkable mapping",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "LT-06",
+      "origin": "small_sample",
+      "company": "philips",
+      "track": "imaging_us",
+      "stratum": null,
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "matched_theses": [
+            "ULTRASOUND"
+          ]
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "AFTER"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance but no checkable mapping",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "LT-07",
+      "origin": "small_sample",
+      "company": "philips",
+      "track": "respiratory",
+      "stratum": null,
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "matched_theses": [
+            "RESPIRATORY"
+          ]
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "DISTANT_SUPPORT"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance but no checkable mapping",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "LT-08",
+      "origin": "small_sample",
+      "company": "philips",
+      "track": "vascular_access",
+      "stratum": null,
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "matched_theses": [
+            "INTRAVASCULAR"
+          ]
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "DISTANT_SUPPORT"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance but no checkable mapping",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    },
+    {
+      "packet_id": "LT-09",
+      "origin": "small_sample",
+      "company": "philips",
+      "track": "wearable_remote",
+      "stratum": null,
+      "rules": {
+        "R1_device_relevance": {
+          "score": "STRONG",
+          "matched_theses": [
+            "AMBULATORY"
+          ]
+        },
+        "R2_taxonomy_consistency": "UNKNOWN",
+        "R3_third_source": "DISTANT_SUPPORT"
+      },
+      "agent_preliminary_label": "Uncertain (agent-preliminary)",
+      "rule_fired": "strong relevance but no checkable mapping",
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null
+    }
+  ]
+}
