@@ -109,7 +109,7 @@
           "the final month of the window is partially observed",
           "a spike can be separated from a sustained change, but a ramp cannot be separated from a level shift at this counting rate: no confirmation window between 1 and 6 months recovered ramps (best recall 0.229, D-051)",
           "the alert detector is validated at quarterly resolution only; at monthly resolution the same detector ranks last (D-045)",
-          "alerts in this profile were governed by promotion policy promotion_policy_v1, which requires a named human sign-off before any change may be described as a technology change (D-054)"
+          "alerts in this profile were governed by promotion policy promotion_policy_v2, which requires a named human sign-off before any change may be described as a technology change (D-054)"
         ],
         "sources": [
           "data/research.sqlite (510(k)+PMA lane)",
@@ -157,7 +157,7 @@
                   "human_signoff"
                 ],
                 "gate_failures": [],
-                "policy_version": "promotion_policy_v1",
+                "policy_version": "promotion_policy_v2",
                 "quarter": "2026-Q2",
                 "relative_post_rate": 8.333,
                 "requires_signoff": true,
@@ -196,7 +196,7 @@
                 "gate_failures": [
                   "shape classified as spike: post-alert rate 0.00x baseline is below the 1.5x floor"
                 ],
-                "policy_version": "promotion_policy_v1",
+                "policy_version": "promotion_policy_v2",
                 "quarter": "2026-Q2",
                 "relative_post_rate": 0.0,
                 "requires_signoff": true,
@@ -365,7 +365,7 @@
           "the final month of the window is partially observed",
           "a spike can be separated from a sustained change, but a ramp cannot be separated from a level shift at this counting rate: no confirmation window between 1 and 6 months recovered ramps (best recall 0.229, D-051)",
           "the alert detector is validated at quarterly resolution only; at monthly resolution the same detector ranks last (D-045)",
-          "alerts in this profile were governed by promotion policy promotion_policy_v1, which requires a named human sign-off before any change may be described as a technology change (D-054)"
+          "alerts in this profile were governed by promotion policy promotion_policy_v2, which requires a named human sign-off before any change may be described as a technology change (D-054)"
         ],
         "sources": [
           "data/research.sqlite (510(k)+PMA lane)",
@@ -415,7 +415,7 @@
                 "gate_failures": [
                   "shape classified as unknown: no confirmation quarters available"
                 ],
-                "policy_version": "promotion_policy_v1",
+                "policy_version": "promotion_policy_v2",
                 "quarter": "2026-Q3",
                 "relative_post_rate": null,
                 "requires_signoff": true,
@@ -645,7 +645,7 @@
           "the final month of the window is partially observed",
           "a spike can be separated from a sustained change, but a ramp cannot be separated from a level shift at this counting rate: no confirmation window between 1 and 6 months recovered ramps (best recall 0.229, D-051)",
           "the alert detector is validated at quarterly resolution only; at monthly resolution the same detector ranks last (D-045)",
-          "alerts in this profile were governed by promotion policy promotion_policy_v1, which requires a named human sign-off before any change may be described as a technology change (D-054)"
+          "alerts in this profile were governed by promotion policy promotion_policy_v2, which requires a named human sign-off before any change may be described as a technology change (D-054)"
         ],
         "sources": [
           "data/research.sqlite (510(k)+PMA lane)",
@@ -695,7 +695,7 @@
                 "gate_failures": [
                   "shape classified as unknown: no confirmation quarters available"
                 ],
-                "policy_version": "promotion_policy_v1",
+                "policy_version": "promotion_policy_v2",
                 "quarter": "2026-Q3",
                 "relative_post_rate": null,
                 "requires_signoff": true,
@@ -732,12 +732,12 @@
                   "human_signoff"
                 ],
                 "gate_failures": [],
-                "policy_version": "promotion_policy_v1",
+                "policy_version": "promotion_policy_v2",
                 "quarter": "2025-Q3",
                 "relative_post_rate": 6.0,
                 "requires_signoff": true,
-                "shape": "ramp",
-                "shape_reason": "post-alert rate is elevated and still rising",
+                "shape": "sustained_unresolved",
+                "shape_reason": "post-alert rate is elevated and still rising, but this cell carries 0.08 events per month, below the 1/month floor at which ramps are recoverable (D-061); the shape stays unresolved",
                 "statement": "promotion marks a sustained change in PUBLIC FILING RATE; it is not evidence of intent, capability, internal R&D or technological significance",
                 "track": "insulin_delivery",
                 "verdict": "promote_pending_signoff"
@@ -1071,7 +1071,7 @@
           "the final month of the window is partially observed",
           "a spike can be separated from a sustained change, but a ramp cannot be separated from a level shift at this counting rate: no confirmation window between 1 and 6 months recovered ramps (best recall 0.229, D-051)",
           "the alert detector is validated at quarterly resolution only; at monthly resolution the same detector ranks last (D-045)",
-          "alerts in this profile were governed by promotion policy promotion_policy_v1, which requires a named human sign-off before any change may be described as a technology change (D-054)"
+          "alerts in this profile were governed by promotion policy promotion_policy_v2, which requires a named human sign-off before any change may be described as a technology change (D-054)"
         ],
         "sources": [
           "data/research.sqlite (510(k)+PMA lane)",
@@ -1121,7 +1121,7 @@
                 "gate_failures": [
                   "shape classified as unknown: no confirmation quarters available"
                 ],
-                "policy_version": "promotion_policy_v1",
+                "policy_version": "promotion_policy_v2",
                 "quarter": "2026-Q2",
                 "relative_post_rate": null,
                 "requires_signoff": true,
@@ -1311,7 +1311,7 @@
           "the final month of the window is partially observed",
           "a spike can be separated from a sustained change, but a ramp cannot be separated from a level shift at this counting rate: no confirmation window between 1 and 6 months recovered ramps (best recall 0.229, D-051)",
           "the alert detector is validated at quarterly resolution only; at monthly resolution the same detector ranks last (D-045)",
-          "alerts in this profile were governed by promotion policy promotion_policy_v1, which requires a named human sign-off before any change may be described as a technology change (D-054)"
+          "alerts in this profile were governed by promotion policy promotion_policy_v2, which requires a named human sign-off before any change may be described as a technology change (D-054)"
         ],
         "sources": [
           "data/research.sqlite (510(k)+PMA lane)",
@@ -1361,7 +1361,7 @@
                 "gate_failures": [
                   "shape classified as spike: post-alert rate 1.20x baseline is below the 1.5x floor"
                 ],
-                "policy_version": "promotion_policy_v1",
+                "policy_version": "promotion_policy_v2",
                 "quarter": "2025-Q2",
                 "relative_post_rate": 1.2,
                 "requires_signoff": true,

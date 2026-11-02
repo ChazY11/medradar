@@ -59,4 +59,4 @@
   - the final month of the window is partially observed
   - a spike can be separated from a sustained change, but a ramp cannot be separated from a level shift at this counting rate: no confirmation window between 1 and 6 months recovered ramps (best recall 0.229, D-051)
   - the alert detector is validated at quarterly resolution only; at monthly resolution the same detector ranks last (D-045)
-  - alerts in this profile were governed by promotion policy promotion_policy_v1, which requires a named human sign-off before any change may be described as a technology change (D-054)
+  - alerts in this profile were governed by promotion policy promotion_policy_v2, which requires a named human sign-off before any change may be described as a technology change (D-054)

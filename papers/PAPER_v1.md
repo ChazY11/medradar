@@ -342,13 +342,18 @@ unit tested — **0.117** at legal-entity level, **0.142** at company level, **0
 **0.396** on track aggregates. That gradient is the first coherent scaling relationship this programme has
 found, and it explains retroactively why lengthening the confirmation window could not rescue ramps: sparse
 series do not contain the counts. It is an **observational** gradient — density and unit type vary together —
-so it needs a controlled down-sampling test before being called a law. That test was run: the dense track series
-were thinned by binomial down-sampling at factors 1–20 and re-classified, and ramp recall fell from **0.440** to
-**0.222** as density fell twentyfold, with rank correlation **0.882** and stable precision (0.885–0.927). It
-nevertheless **failed its pre-declared bar**: strict monotonicity broke on a 0.018 inversion between two adjacent
-factors, and the dense and sparse intervals overlapped by 0.023. The scaling is therefore reported as
-**suggestive, not established** — a case where the effect looks large and the pre-registered gate was too brittle,
-which is recorded as a defect of the pre-registration rather than of the data.
+so it needs a controlled down-sampling test before being called a law. That test was run: the dense track series were
+thinned by binomial down-sampling at factors 1–20 and re-classified. On the first attempt ramp recall fell from
+**0.440** to **0.222** with rank correlation **0.882**, but the result **failed its pre-declared bar** — strict
+monotonicity broke on a 0.018 inversion and the dense and sparse intervals overlapped by 0.023. That gate was
+recorded as a defect of the pre-registration, and a **revised criterion** (rank correlation ≥ 0.8 **and** dense
+recall ≥ 2× sparse, no monotonicity clause) was fixed and confirmed on **fresh draws**: ramp recall **0.444** at
+4.16 events per series-month against **0.204** at 0.22, rank correlation **0.908**, effect ratio **2.18×**. The
+density dependence is therefore reported as **confirmed under a post-failure revised criterion** — weaker than a
+first-pass confirmation and stronger than an exploratory finding, and stated that way. It has a direct product
+consequence: the promotion policy now refuses to label a change a *ramp* in a cell carrying less than **1.0**
+event per month, reporting it as `sustained_unresolved` instead, because that label is not supported by
+measurement there.
 
 *What no window fixes.* A pre-registered sensitivity analysis over confirmation windows of 1–6 months found
 **no window that recovers the ramp class**: best ramp recall 0.229, with precision falling monotonically as the

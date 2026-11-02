@@ -119,6 +119,12 @@ CLAIMS = [
     ("Z1", "dense track ramp recall", "0.440", "research/DECISIONS.md", "0.440"),
     ("Z2", "sparse track ramp recall", "0.222", "research/DECISIONS.md", "0.222"),
     ("Z3", "density rank correlation", "0.882", "research/DECISIONS.md", "0.882"),
+    # ---- density confirmation (cycle 31)
+    ("AA1", "density-confirmation dense ramp recall", "0.444", "research/DECISIONS.md", "0.444"),
+    ("AA2", "density-confirmation sparse ramp recall", "0.204", "research/DECISIONS.md", "0.204"),
+    ("AA3", "density-confirmation rank correlation", "0.908", "research/DECISIONS.md", "0.908"),
+    ("AA4", "density-confirmation effect ratio", "2.18", "research/DECISIONS.md", "2.18"),
+    ("AA5", "ramp reporting density floor", "1.0", "research/DECISIONS.md", "1.0 event per month"),
 ]
 
 

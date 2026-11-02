@@ -48,7 +48,7 @@
   - `coronary` 2026-Q3: 2 events against a baseline of 0.25 (z=3.5)
     - promotion: **reject** — shape unknown (no confirmation quarters available); sign-off required=true; promotion marks a change in public filing rate, not in technology
   - `insulin_delivery` 2025-Q3: 2 events against a baseline of 0.25 (z=3.5)
-    - promotion: **promote_pending_signoff** — shape ramp (post-alert rate is elevated and still rising); sign-off required=true; promotion marks a change in public filing rate, not in technology
+    - promotion: **promote_pending_signoff** — shape sustained_unresolved (post-alert rate is elevated and still rising, but this cell carries 0.08 events per month, below the 1/month floor at which ramps are recoverable (D-061); the shape stays unresolved); sign-off required=true; promotion marks a change in public filing rate, not in technology
   - these alerts are calibrated at the measured false-alarm rate 0.018 and sensitivity 0.147; they are statements about filing rate, not about technology
 
 ## 4. Concentration
@@ -82,4 +82,4 @@
   - the final month of the window is partially observed
   - a spike can be separated from a sustained change, but a ramp cannot be separated from a level shift at this counting rate: no confirmation window between 1 and 6 months recovered ramps (best recall 0.229, D-051)
   - the alert detector is validated at quarterly resolution only; at monthly resolution the same detector ranks last (D-045)
-  - alerts in this profile were governed by promotion policy promotion_policy_v1, which requires a named human sign-off before any change may be described as a technology change (D-054)
+  - alerts in this profile were governed by promotion policy promotion_policy_v2, which requires a named human sign-off before any change may be described as a technology change (D-054)

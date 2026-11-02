@@ -23,12 +23,18 @@ from __future__ import annotations
 import json
 from typing import Any, Mapping, Sequence
 
-POLICY_VERSION = "promotion_policy_v1"
+POLICY_VERSION = "promotion_policy_v2"
 
 #: the confirmed rule, fixed by D-043 and replicated at the entity unit in D-048
 CONFIRMATION_QUARTERS = 2
 RATE_FLOOR = 1.5          # below this multiple of the baseline the change is a spike
 MIN_ALERT_EVENTS = 1
+
+#: below this many events per series-month the ramp label is not supported by measurement (D-061): the
+#: controlled density confirmation puts ramp recall near 0.20 at 0.22 events/month and near 0.44 at 4.16.
+#: A conservative floor of 1.0/month keeps the label off sparse cells while leaving promotion untouched,
+#: because promotion only needs the binary spike-versus-sustained decision.
+RAMP_REPORTING_FLOOR = 1.0
 
 REQUIRED_EVIDENCE = (
     "calibrated_alert",
@@ -88,6 +94,17 @@ def decide_promotion(alert: Mapping[str, Any], following_counts: Sequence[int] |
         problems.append("alert does not clear its own threshold")
 
     classification = classify_shape(following_counts or [], float(alert.get("baseline_mean") or 0.0))
+    # D-061: below the measured density floor the ramp label is not supported, so it is reported as
+    # an unresolved sustained change. `baseline_mean` is per quarter, the floor is per month.
+    monthly_baseline = float(alert.get("baseline_mean") or 0.0) / 3.0
+    if classification["shape"] == "ramp" and monthly_baseline < RAMP_REPORTING_FLOOR:
+        classification = {
+            **classification,
+            "shape": "sustained_unresolved",
+            "reason": (f"{classification['reason']}, but this cell carries {monthly_baseline:.2f} events "
+                       f"per month, below the {RAMP_REPORTING_FLOOR:g}/month floor at which ramps are "
+                       f"recoverable (D-061); the shape stays unresolved"),
+        }
     if classification["shape"] in ("spike", "unknown"):
         problems.append(f"shape classified as {classification['shape']}: {classification['reason']}")
 

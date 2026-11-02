@@ -94,6 +94,34 @@ class DecidePromotionTest(unittest.TestCase):
             self.assertNotIn("auto_promote", verdicts)
 
 
+class DensityFloorTest(unittest.TestCase):
+    """Below the measured density floor the ramp label is not supported (D-061)."""
+
+    @staticmethod
+    def alert(baseline_mean):
+        return {"track": "insulin_delivery", "quarter": "2025-Q3", "events": 2,
+                "baseline_mean": baseline_mean, "z": 3.5, "detector": "rolling_zscore",
+                "resolution_months": 3, "threshold": 3.5, "false_alarm_rate": 0.0179}
+
+    def test_sparse_cell_ramp_is_relabelled_unresolved(self):
+        # 0.25 events per quarter = 0.083 per month, far below the 1.0 floor
+        decision = decide_promotion(self.alert(0.25), [3, 4])
+        self.assertEqual(decision["shape"], "sustained_unresolved")
+        self.assertIn("below the 1/month floor", decision["shape_reason"])
+        # promotion itself is unaffected: the binary decision only needs "sustained"
+        self.assertEqual(decision["verdict"], "promote_pending_signoff")
+
+    def test_dense_cell_keeps_the_ramp_label(self):
+        # 6 events per quarter = 2.0 per month, above the floor; following quarters rise above baseline
+        decision = decide_promotion(self.alert(6.0), [10, 12])
+        self.assertEqual(decision["shape"], "ramp")
+
+    def test_floor_is_per_month_not_per_quarter(self):
+        # 2.7 per quarter = 0.9 per month: still below the floor; following quarters rise markedly
+        decision = decide_promotion(self.alert(2.7), [5, 7])
+        self.assertEqual(decision["shape"], "sustained_unresolved")
+
+
 class PromotionLedgerTest(unittest.TestCase):
     """A promotion must be attributable, or it must not be written at all."""
 

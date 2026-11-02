@@ -1,0 +1,227 @@
+{
+  "decision": {
+    "confirmed": true,
+    "dense_recall": 0.4444444444444444,
+    "effect_ok": true,
+    "effect_ratio": 2.1777777777777776,
+    "rho": 0.90780417813641,
+    "rho_ok": true,
+    "sparse_recall": 0.20408163265306123,
+    "verdict": "CONFIRMED under the revised criterion on fresh draws - ramp recoverability is limited by counts, holding the unit fixed (post-failure revised criterion; disclose as such)"
+  },
+  "design": {
+    "bootstrap_seed": 9191,
+    "criterion": "rho >= 0.8 AND dense ramp recall >= 2 x sparse ramp recall; no monotonicity clause",
+    "decision": "research/DECISIONS.md D-060 (revised pre-registration after D-059)",
+    "disclosure": "revised criterion after D-059 failed; fresh draws only",
+    "effect_ratio_floor": 2.0,
+    "factors": [
+      1,
+      2,
+      5,
+      10,
+      20
+    ],
+    "origin_seed": 8181,
+    "origins_per_track": 3,
+    "rho_floor": 0.8,
+    "thinning_seed": 7171
+  },
+  "factors": {
+    "1": {
+      "confusion": {
+        "level": {
+          "level": 75,
+          "ramp": 39,
+          "spike": 0
+        },
+        "ramp": {
+          "level": 46,
+          "ramp": 40,
+          "spike": 4
+        },
+        "spike": {
+          "level": 12,
+          "ramp": 8,
+          "spike": 71
+        }
+      },
+      "density": {
+        "mean_events_per_series_month": 4.1572313135780625,
+        "total_events": 18799
+      },
+      "metrics": {
+        "balanced_accuracy": 0.6275196538354434,
+        "recalls": {
+          "level": 0.6578947368421053,
+          "ramp": 0.4444444444444444,
+          "spike": 0.7802197802197802
+        },
+        "sustained_base_rate": 0.6915254237288135,
+        "sustained_precision": 0.9090909090909091,
+        "sustained_recall": 0.9803921568627451
+      },
+      "ramp_recall_ci": [
+        0.3333333333333333,
+        0.5604395604395604
+      ],
+      "scored": 295
+    },
+    "10": {
+      "confusion": {
+        "level": {
+          "level": 54,
+          "ramp": 21,
+          "spike": 0
+        },
+        "ramp": {
+          "level": 47,
+          "ramp": 15,
+          "spike": 8
+        },
+        "spike": {
+          "level": 14,
+          "ramp": 7,
+          "spike": 36
+        }
+      },
+      "density": {
+        "mean_events_per_series_month": 0.42127377266696153,
+        "total_events": 1905
+      },
+      "metrics": {
+        "balanced_accuracy": 0.5219548872180451,
+        "recalls": {
+          "level": 0.72,
+          "ramp": 0.21428571428571427,
+          "spike": 0.631578947368421
+        },
+        "sustained_base_rate": 0.7178217821782178,
+        "sustained_precision": 0.8670886075949367,
+        "sustained_recall": 0.9448275862068966
+      },
+      "ramp_recall_ci": [
+        0.11428571428571428,
+        0.3283582089552239
+      ],
+      "scored": 202
+    },
+    "2": {
+      "confusion": {
+        "level": {
+          "level": 71,
+          "ramp": 38,
+          "spike": 0
+        },
+        "ramp": {
+          "level": 54,
+          "ramp": 39,
+          "spike": 4
+        },
+        "spike": {
+          "level": 9,
+          "ramp": 8,
+          "spike": 64
+        }
+      },
+      "density": {
+        "mean_events_per_series_month": 2.0561698363555947,
+        "total_events": 9298
+      },
+      "metrics": {
+        "balanced_accuracy": 0.6145204864164058,
+        "recalls": {
+          "level": 0.6513761467889908,
+          "ramp": 0.4020618556701031,
+          "spike": 0.7901234567901234
+        },
+        "sustained_base_rate": 0.7177700348432056,
+        "sustained_precision": 0.9223744292237442,
+        "sustained_recall": 0.9805825242718447
+      },
+      "ramp_recall_ci": [
+        0.27956989247311825,
+        0.5252525252525253
+      ],
+      "scored": 287
+    },
+    "20": {
+      "confusion": {
+        "level": {
+          "level": 43,
+          "ramp": 7,
+          "spike": 0
+        },
+        "ramp": {
+          "level": 37,
+          "ramp": 10,
+          "spike": 2
+        },
+        "spike": {
+          "level": 10,
+          "ramp": 2,
+          "spike": 27
+        }
+      },
+      "density": {
+        "mean_events_per_series_month": 0.21517027863777088,
+        "total_events": 973
+      },
+      "metrics": {
+        "balanced_accuracy": 0.5854631083202512,
+        "recalls": {
+          "level": 0.86,
+          "ramp": 0.20408163265306123,
+          "spike": 0.6923076923076923
+        },
+        "sustained_base_rate": 0.717391304347826,
+        "sustained_precision": 0.8899082568807339,
+        "sustained_recall": 0.9797979797979798
+      },
+      "ramp_recall_ci": [
+        0.1111111111111111,
+        0.3
+      ],
+      "scored": 138
+    },
+    "5": {
+      "confusion": {
+        "level": {
+          "level": 60,
+          "ramp": 28,
+          "spike": 0
+        },
+        "ramp": {
+          "level": 47,
+          "ramp": 25,
+          "spike": 6
+        },
+        "spike": {
+          "level": 10,
+          "ramp": 11,
+          "spike": 53
+        }
+      },
+      "density": {
+        "mean_events_per_series_month": 0.8447589562140646,
+        "total_events": 3820
+      },
+      "metrics": {
+        "balanced_accuracy": 0.5728490728490728,
+        "recalls": {
+          "level": 0.6818181818181818,
+          "ramp": 0.32051282051282054,
+          "spike": 0.7162162162162162
+        },
+        "sustained_base_rate": 0.6916666666666667,
+        "sustained_precision": 0.8839779005524862,
+        "sustained_recall": 0.963855421686747
+      },
+      "ramp_recall_ci": [
+        0.21794871794871795,
+        0.43209876543209874
+      ],
+      "scored": 240
+    }
+  }
+}

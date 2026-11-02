@@ -2325,3 +2325,88 @@ present it as established, and the profile keeps its per-unit measured limits ra
 
 **Policy unchanged.** No detector, window or promotion rule changes on the basis of a result that failed its own
 pre-registered bar.
+
+---
+
+## D-060 — Pre-registration: robust-criterion confirmation of the density scaling (B-064)
+
+**Date:** 2026-11-03. **Status:** accepted; written before `experiments/b026/density_confirm.py` was first run.
+
+**Why a second run.** D-059 reported that the controlled density experiment **failed its pre-declared bar** even
+though ramp recall halved (0.440 → 0.222) with rank correlation 0.882: strict monotonicity broke on a 0.018
+inversion and the dense/sparse intervals overlapped by 0.023. D-059 recorded that the **criterion** was the weak
+part — requiring strict monotonicity across five noisy point estimates. A criterion chosen now must therefore be
+(a) stated before looking, and (b) confirmed on data not used to design it.
+
+**Fresh data.** Same 38 dense track series and the same five thinning factors, but **entirely fresh random
+draws**: thinning seed **7171**, origins seed **8181**, bootstrap seed **9191**. No observation from D-058's run
+enters this run; only the design (thinning method, shapes, detector, classifier, floors) is reused, which is what
+a confirmation must do.
+
+**Revised criterion, fixed now.**
+
+* **CONFIRMED** iff **both**: Spearman ρ between density and ramp recall **≥ 0.8**, **and** dense ramp recall
+  (τ = 1) **≥ 2 ×** sparse ramp recall (τ = 20), using point estimates.
+* **NOT CONFIRMED** otherwise — including if ρ is high but the effect size falls short, which would mean the
+  association is rank-order only and not a practically meaningful scaling.
+* **No strict-monotonicity clause.** That gate was D-058's defect and is deliberately dropped: with 50–100 ramp
+  cases per factor, adjacent-factor point estimates are expected to wobble.
+* Reported alongside: per-factor recall with bootstrap intervals and sustained-change precision, so the shape of
+  the effect remains visible rather than being reduced to a pass/fail.
+
+**Disclosure.** This is a **revised pre-registration after a failure**, and it carries the risk that a relaxed
+criterion is merely easier to pass. That risk is bounded by the fresh draws and by the effect-size clause: the
+dense value must be at least **double** the sparse value, which is a substantive requirement rather than a
+significance formality. If it confirms, the claim is "the density dependence was confirmed under a criterion
+fixed after the first attempt failed, on fresh draws" — and it must be stated that way, not as a first-pass
+success.
+
+**What a confirmation would license.** That, holding the taxonomy and unit fixed, ramp recoverability is limited
+by counts — enough to state a **density floor** below which the profile must not report ramp-shaped changes.
+**What it would not license.** Extrapolation to another corpus, taxonomy or recording process; or any claim that
+density improves spike and level detection, which are already near ceiling.
+
+---
+
+## D-061 — B-064 outcome: the density scaling CONFIRMS on fresh draws, and the product must stop labelling ramps below the floor
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-064.
+
+**What ran.** The D-060 design: the same 38 dense track series and five thinning factors, but **entirely fresh
+draws** (thinning seed 7171, origins 8181, bootstrap 9191) and a criterion fixed before looking — rank
+correlation ≥ 0.8 **and** dense ramp recall ≥ 2× sparse, with the strict-monotonicity clause removed because D-059
+showed it was the brittle part.
+
+| τ | density (events/series-month) | ramp recall | 95 % CI | precision |
+|---:|---:|---:|---|---:|
+| 1 | 4.16 | **0.444** | 0.333–0.560 | 0.909 |
+| 2 | 2.06 | 0.402 | 0.280–0.525 | 0.922 |
+| 5 | 0.84 | 0.321 | 0.218–0.432 | 0.884 |
+| 10 | 0.42 | 0.214 | 0.114–0.328 | 0.867 |
+| 20 | 0.22 | **0.204** | 0.111–0.300 | 0.890 |
+
+Spearman ρ = **0.908** (floor 0.8), dense/sparse ratio = **2.18×** (floor 2.0). The ordering is also monotone
+here, though that is not required by the criterion any more.
+
+**Verdict: CONFIRMED under the revised criterion on fresh draws.** It must be stated with its history: the
+**first** controlled test failed a stricter pre-registered gate, the gate was recorded as the defect, and the
+revised criterion was confirmed out of sample. That is weaker than a first-pass confirmation and stronger than an
+exploratory finding, and the paper says exactly that.
+
+**What this establishes.** Holding the taxonomy and unit fixed, **ramp recoverability is limited by counts.**
+Below roughly one event per series-month the classifier can separate a spike from a sustained change but cannot
+say which sustained shape it is; at two or more events per series-month ramp recall roughly doubles.
+
+**The product consequence, which is the real output of this cycle.** The promotion policy was still labelling
+Medtronic's `insulin_delivery` alert a **ramp** — a company cell carrying about 0.08 events per month, where the
+measured ramp recall is 0.14. That label was unjustified. Policy **v2** therefore adds a reporting rule:
+
+* if the classifier says *ramp* but the cell's baseline rate is **below 1.0 event per month**, the shape is
+  reported as **`sustained_unresolved`** with the reason attached;
+* the alert remains **promotable** — the binary spike-versus-sustained decision is unaffected and remains
+  confirmed at these densities;
+* the profile and the promotion ledger inherit the honest label, and a test asserts the relabelling.
+
+**Not claimed.** That the scaling generalises beyond binomial thinning of this taxonomy; that the 1.0/month floor
+is optimal (it is a conservative choice consistent with the measured curve, not a fitted threshold); or that any
+ramp above the floor is technological.

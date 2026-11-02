@@ -649,13 +649,14 @@ tasks:
     layer: detect
     priority: P1
     title: Confirmation of the density scaling with a robust criterion and fresh draws
-    status: todo
+    status: done
     owner: lead
     depends_on: [B-063]
     acceptance: >
-      Pre-register a criterion in terms of rank correlation (>=0.8) AND dense-to-sparse effect size (dense ramp
-      recall >= 2x sparse) with no strict-monotonicity clause, then confirm on FRESH seeds and a FRESH thinning
-      draw. If it confirms, the scaling may be reported as an experimentally established density dependence; if
-      not, it is closed as suggestive only.
+      Revised criterion pre-registered (rank correlation >= 0.8 AND dense ramp recall >= 2x sparse, no
+      strict-monotonicity clause), then confirmed on fresh thinning/origin/bootstrap seeds (7171/8181/9191).
+      Result: rho 0.908, dense 0.444 vs sparse 0.204, ratio 2.18x -> CONFIRMED under the post-failure revised
+      criterion. Product consequence: promotion policy v2 refuses the ramp label below 1.0 event/series-month
+      and reports sustained_unresolved instead; three tests cover the relabelling.
 
 
