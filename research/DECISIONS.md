@@ -1,4 +1,4 @@
-# Decision record
+﻿# Decision record
 
 ADR-style. Each decision states the alternatives considered and the evidence that
 settled it. Superseded decisions stay in the file with a pointer.
@@ -2934,3 +2934,99 @@ report.
 **State of the record.** This is the honest summary the two papers already carry: **one confirmed decision rule, one
 confirmed density finding (as a post-failure confirmation), five retractions, and a measurement discipline now enforced
 in code.**
+---
+
+## D-075 — The prospective forecast filter checked the window end only; the set is corrected to 13
+
+**Date:** 2026-11-03 · **Status:** accepted · **Supersedes the count in D-066, not its rule**
+
+**The defect.** D-066 recorded and applied the rule "register only alerts whose outcome window is entirely in the
+future". The implementation (`experiments/b068/register_forecasts.py`) tested `matures_when_data_through <=
+lane_through` — the window **end** only. An independent audit (`research/audits/initial_research_audit.md` §6.1)
+parsed every record's `windows.outcome` and found **12 of the 25** "genuinely prospective" forecasts had outcome
+windows that **began at or before** the 2026-Q3 lane cutoff (4 start 2026-Q1, 4 start 2026-Q2, 4 start 2026-Q3):
+between one and three of their four outcome quarters were already in the lane at registration. The claim "25
+genuinely prospective" was therefore false in `MISSION.md` §10, `ROADMAP.md`, `research/AUDIT.md`,
+`COMPLETION_REPORT.md` and result row R130.
+
+**The fix.** The filter now also requires `outcome_start > lane_through`, with the same helper that parses the
+outcome window; a record whose outcome window cannot be parsed is excluded. Re-registered from the same frozen
+snapshot (`2026-11-03-policy-v2`, manifest `44abde1672df…`): **13 forecasts** (5 promoted, 8 not), **19 backfilled
+excluded** (12 partially observed + the 7 that had matured at registration), earliest maturation **2027-Q3**, hash
+**8ac0b8df65f0a9ad**, file `research/forecasts/FORECAST_SET_2026-11-03_prospective.json` (the superseded 25-record
+version remains in git history). `tools/audit_objectives.py` now counts **13** pending prospective forecasts.
+
+**What this does not change.** No forecast had matured, so no calibration claim existed and none is retracted. The
+maturation dates move later (2027-Q3 … 2028-Q1), which weakens the programme's forward-evidence asset further: it is
+still zero evidence until 2027-Q3.
+
+**Lesson (adds to the methods paper's rule set).** A rule stated in prose must be enforced by a check on the
+property that matters. "Entirely in the future" is a property of the window's **start**; the code tested its end.
+This is the second recorded case of the same class (D-025 was a risk-set property, D-075 a window property).
+
+---
+
+## D-076 — `rolling_origin.py` was not reproducible at HEAD; the defect was a date type, and the fix reproduces R65/R67 bit-for-bit
+
+**Date:** 2026-11-03 · **Status:** accepted
+
+**The defect.** The independent audit found `python experiments/b050/rolling_origin.py` exits 1 at HEAD:
+`AttributeError: 'str' object has no attribute 'year'`. Cause: commit `5dffaab` changed
+`experiments/b027/build_profiles.py::resolve_regulatory` to emit `date` as an ISO string (for the as-of
+truncation), while `experiments/detect_v1/streams.py::month_index` expects a `date` object. No gate step ran the
+script, so the flagship rolling-origin benchmark (R65/R67) was inspectable but not regenerable.
+
+**The fix.** `build_cells` accepts both types (`date.fromisoformat(str(raw)[:10])` when needed); `streams.py` and
+`build_profiles.py` are untouched (frozen modules; changing them would invalidate frozen artifacts).
+
+**Verification.** Re-running the fixed script writes a JSON object **identical** to committed
+`experiments/b050/rolling_origin.json` (compared as parsed objects: `identical: True`). R65/R67 are therefore
+reproducible again, and `final_audit.py` can adopt this script as a fifth re-derivation.
+---
+## D-077 — hist_v1: the full-history entry benchmark; H1 supported marginally, not against the two-way baseline; fusion negative
+
+**Date:** 2026-11-03 · **Status:** accepted · **Protocol:** `research/protocols/hist_v1_preregistration.md`
+
+**Decision.** The 1976–2026 full-history panel is adopted as the programme's longitudinal spine (`hist_v1`), and its
+first evaluation is recorded with three separate verdicts rather than one headline.
+
+1. **Primary pre-registered test — SUPPORTED, marginally.** `R_adj` (adjacency-restricted), h=8, 30 origins, 8,415
+   candidate cells, 181 positives: mean per-origin AP **0.1137** (M1C) vs 0.0553 (B1), point Δ **+0.0584**,
+   company-clustered 95 % CI **[+0.0020, +0.1213]**, p 0.045, MDE 0.0896. The permutation null rejects at
+   **p = 0.0299** (6/200 permutations reach the observed Δ). The criterion is met, but the lower CI bound is 0.002,
+   the MDE exceeds the observed effect, and the result is *not* practically established.
+2. **Not established against the strongest no-feature baseline.** M1C − B3 (B1×B2) = +0.0438, CI [−0.0184, +0.0957],
+   p 0.198. The time-varying features beat firm persistence (+0.0584) and track tempo (+0.0669) separately; their
+   incremental value over the product of the two is not established. The unrestricted risk set repeats the pattern
+   (R_full, h=8: point Δ +0.0300, CI [+0.0128, +0.0699]; vs B3 +0.0210, CI [−0.0087, +0.0565]).
+3. **Fusion — NOT SUPPORTED.** Adding trial + publication features on the 2016+ origins moves mean AP 0.0401 → 0.0348
+   (Δ −0.0053, bootstrap UNRELIABLE). H2 is evaluated and negative, not merely unevaluable.
+
+**A defect in the first execution voided its result.** The first run (110 positive cells) produced an UNRELIABLE
+bootstrap. The pre-registered leak audit then found 184/300 feature-replay mismatches: `company_cat_q` was built in
+pair-record order rather than sorted order, so the bisect in `features()` returned wrong adjacency counts and the same
+unsorted index corrupted the risk-set predicate `active_categories()` (7,556 candidates instead of 8,415). After the
+sort fix: replay 0/300 (and 0/102,441 in an exhaustive re-check), positives 110 → 181, bootstrap OK, and the verdict
+changes UNRELIABLE → SUPPORTED. The void result was not published; the audit did its job. This is recorded as R167.
+
+**Why the effect is thin is a design fact.** 161 of the 255 entry events in the window are new-category entries that
+the primary risk set excludes by construction, and the mandated firms are track-saturated (last first-ever track:
+Medtronic 2012, GE HealthCare 2000, Dräger 2014, Mindray 2011; Philips added 4 in 2016–2025). The binding constraints
+are the taxonomy resolution (55.1 % of material events untracked) and the roster coverage (86.1 % of material events
+outside it), not the length of the history.
+
+**Consequence.** No product, detector or taxonomy change is made on this result. `R_adj` is not re-declared and `R_full`
+is not promoted after seeing results; a stronger design needs a **new pre-registration** (a coarser taxonomy for
+new-category entries, a larger company roster, origins concentrated where entries occur). The five-firm study stays
+blocked on its human adjudicator, and no prospective calibration claim is possible before the corrected forecast set
+matures (2027-Q3).
+
+**What the round licenses.** (a) The full-history panel is a reusable, audited artifact with a source-hash manifest;
+(b) the mechanism result — track tempo and the firm's activity in adjacent tracks carry the signal, firm momentum alone
+does not — is a testable hypothesis for the next design; (c) the lead-time frontier (1 % → 9/94 entries at 20.6 %
+precision; 20 % → 38/94 at 7.3 %) is a quantified operating characteristic, not a marketing number.
+
+**Also recorded in this round:** the independent audit's two integrity defects were repaired before the new result was
+registered — D-075 (prospective set 25 → 13) and D-076 (rolling-origin reproducibility). The audit's remaining findings
+(summary-number drift, gate self-dirtying, momentum multiplicity, dead evidence pointers) are carried as open items in
+`research/RESEARCH_STATE.md` §6–7.

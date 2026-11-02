@@ -1,27 +1,18 @@
 {
   "schema": "round_end_v1",
-  "checked_at_utc": "2026-11-02T19:31:05+00:00",
-  "branch": "research/early-signal-5firms",
-  "head": "b170017a9cccdaeb6b5fe976d91c09c38a0e9ee0",
-  "remote_synced": true,
+  "checked_at_utc": "2026-11-02T23:20:13+00:00",
+  "branch": "research/full-history-v1",
+  "head": "799dd86604161fb4fb51004c3f4f2c03ddb6db4a",
+  "remote_synced": false,
   "uncommitted_paths": [
     "M research/AUDIT.json",
-    " M research/AUDIT.md",
-    " M research/studies/early_signal_5firms/STUDY_DECISIONS.md",
-    " M tools/round_end_console.log",
-    "?? experiments/b094/",
-    "?? medradar/studies/leadtimedesc.py",
-    "?? research/studies/early_signal_5firms/CASE_PACKETS_SMALL_SAMPLE.json",
-    "?? research/studies/early_signal_5firms/LEAD_TIME_SMALL_SAMPLE.json",
-    "?? research/studies/early_signal_5firms/LEAD_TIME_SMALL_SAMPLE.md",
-    "?? research/studies/early_signal_5firms/LEAD_TIME_SMALL_SAMPLE_PROTOCOL.md",
-    "?? tests/test_study_leadtimedesc.py"
+    " M research/AUDIT.md"
   ],
   "results": [
     {
       "step": "test suite",
       "status": "PASS",
-      "detail": "OK (skipped=3)",
+      "detail": "Ran 1117 tests in 43.719s",
       "exit": 0
     },
     {
@@ -81,19 +72,19 @@
     {
       "step": "objective audit",
       "status": "PASS",
-      "detail": "audit: 11 PASS, 0 FAIL, 1 N/A of 12",
+      "detail": "audit: 12 PASS, 0 FAIL, 0 N/A of 12",
       "exit": 0
     },
     {
       "step": "repository state",
-      "status": "PASS",
-      "detail": "HEAD b170017a9ccc, remote synced, 11 uncommitted path(s)"
+      "status": "N/A",
+      "detail": "HEAD 799dd8660416, remote unknown, 2 uncommitted path(s)"
     }
   ],
   "summary": {
-    "passed": 12,
+    "passed": 11,
     "failed": 0,
     "skipped": 0,
-    "not_applicable": 0
+    "not_applicable": 1
   }
 }

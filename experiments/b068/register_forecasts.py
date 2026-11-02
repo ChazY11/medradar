@@ -63,9 +63,18 @@ def main(argv: list[str] | None = None) -> int:
                 shape=str(promotion.get("shape") or "unknown"),
             )
             if lane_through is not None:
+                # A forecast is genuinely prospective only if its ENTIRE outcome window opens after
+                # the last observed lane quarter.  Checking the window end alone (the pre-correction
+                # behaviour) admitted 12 of 25 forecasts whose outcome window had already started
+                # inside the lane; those are partially observed labels, not forecasts (D-075).
+                outcome_start = str(record["windows"].get("outcome", "")).split("..")[0]
                 maturity = quarter_to_index(record["windows"]["matures_when_data_through"])
-                if maturity <= lane_through:
-                    # the outcome is already observed, so this is a label, not a forecast (D-066)
+                start_index = quarter_to_index(outcome_start) if outcome_start else None
+                if (start_index is not None and start_index <= lane_through) or maturity <= lane_through:
+                    # the outcome is already (partly) observed, so this is a label, not a forecast (D-066)
+                    backfilled += 1
+                    continue
+                if start_index is None:
                     backfilled += 1
                     continue
             records.append(record)

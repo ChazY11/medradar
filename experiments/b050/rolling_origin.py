@@ -25,6 +25,7 @@ import json
 import random
 import sys
 from collections import defaultdict
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -57,7 +58,12 @@ def build_cells() -> dict[tuple[str, str], list[int]]:
     cells: dict[tuple[str, str], list[int]] = defaultdict(list)
     for company, rows in regulatory.items():
         for row in rows:
-            index = month_index(row["date"])
+            # b027.resolve_regulatory emits an ISO date string (it began doing so when the
+            # as-of truncation was added in 5dffaab); month_index() expects a date.  Accept
+            # both so the benchmark can still be regenerated from the current pipeline.
+            raw = row["date"]
+            day = raw if isinstance(raw, date) else date.fromisoformat(str(raw)[:10])
+            index = month_index(day)
             if index is not None:
                 cells[(company, row["track"])].append(index)
     for months in cells.values():

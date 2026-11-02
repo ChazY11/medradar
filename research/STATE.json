@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-04T05:40:00+08:00",
+  "updated_at": "2026-11-03T07:30:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,21 +8,21 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "complete_verified",
-  "cycle": 44,
+  "phase": "post_audit_full_history",
+  "cycle": 45,
   "last_completed_cycle": {
-    "cycle": 41,
-    "name": "seasonality",
-    "branch": "research/change-detection-v1",
-    "report": "experiments/b074/seasonality.json",
-    "summary": "research/RESULTS/cycle41_seasonality_2026-11-03.md",
-    "verdict": "month-of-year effects are real and quantified (Jan/Feb 0.891, 1.255x spread, permutation p = 0.0005) but per-cell scaling cannot remove them (9 of 39,151 cell-months change, 91.8 % zeros), so the alert rate is identical raw vs adjusted (0.0090) and the 0.0179 false-alarm rate is stated as an upper bound; no detector change"
+    "cycle": 45,
+    "name": "hist_v1_full_history_barrier",
+    "branch": "research/full-history-v1",
+    "report": "experiments/hist_v1/REPORT.md",
+    "summary": "research/RESULTS/cycle43_full_history_2026-11-03.md",
+    "verdict": "full-history panel (1976-2026; 53 firms; 38 tracks; 528 pairs; 14,704 material events) built and audited; pre-registered primary test (R_adj, h=8) SUPPORTED: M1C mean AP 0.1137 vs B1 0.0553, delta +0.0584, CI [+0.0020,+0.1213], p=0.045, MDE 0.090; permutation p=0.0299 (200 perms); NOT established against the two-way baseline B3 (delta +0.0438, CI [-0.0184,+0.0957]); gain is track tempo + adjacency, firm-only features below persistence (-0.0064); fusion negative (-0.0053); lead-time frontier 9/94 at 1%, 38/94 at 20%; five mandated firms track-saturated after 2012-2014; a leak-audit defect voided the first run and was fixed"
   },
   "working_tree": {
-    "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
-    "branch": "research/change-detection-v1",
-    "base_commit": "ce99ea1",
-    "main_untouched_at": "7a639f7"
+    "path": "D:\\DEPPSKK\\worktrees\\hist-v1",
+    "branch": "research/full-history-v1",
+    "base_commit": "b2a14c0",
+    "main_untouched_at": "b2a14c0"
   },
   "last_verified": {
     "command": "python -m medradar selftest",
@@ -86,7 +86,7 @@
     "blocked": "independent-source confirmation is not runnable on the current spine (single filing system; undated procurement; annual publications; no trials table)"
   },
   "established_findings": [
-    "temporal foundation is audited: bitemporal store, immutable registry, PIT export, leakage replay 0 mismatches over 656,048 values",
+    "temporal foundation is audited: bitemporal store, immutable registry, PIT export, leakage replay 0 mismatches over 1,107,081 values",
     "deterministic legal-entity universe: 9,412 entities, 91.32% of lane events in detailed records, no fuzzy matching",
     "track assignment is deterministic for ~94% of material events; the 6% keyword fallback is a real false-change channel",
     "ANTICIPATE B: continuation of active pairs is not detectably better than per-pair persistence",
@@ -1283,13 +1283,16 @@
     "maturer": "experiments/b068/maturate_forecasts.py (refuses a modified set by content hash)",
     "prospective_set": {
       "path": "research/forecasts/FORECAST_SET_2026-11-03_prospective.json",
-      "count": 25,
-      "promoted": 13,
-      "not_promoted": 12,
-      "backfilled_excluded": 7,
-      "earliest_maturation": "2026-Q4",
-      "hash": "09525994e7b6ae12",
-      "can_count_as_evidence": true
+      "count": 13,
+      "promoted": 5,
+      "not_promoted": 8,
+      "backfilled_excluded": 19,
+      "earliest_maturation": "2027-Q3",
+      "hash": "8ac0b8df65f0a9ad",
+      "can_count_as_evidence": true,
+      "latest_maturation": "2028-Q1",
+      "corrected_at": "2026-11-03",
+      "correction": "D-075: the original registration filtered on window end only; 12 of 25 forecasts had outcome windows that began at or before the 2026-Q3 lane cutoff and were partially observed. Re-registered under the corrected rule (outcome start > lane cutoff): 13 forecasts, 19 backfilled excluded. The superseded 25-record file remains in git history."
     },
     "original_set": {
       "path": "research/forecasts/FORECAST_SET_2026-11-03.json",
@@ -1303,7 +1306,16 @@
       "can_count_as_evidence": false,
       "reason": "a forecast registered after its outcome is known is a label, not a forecast"
     },
-    "rule": "register only alerts whose outcome window is entirely in the future; report backfilled alerts separately"
+    "rule": "register only alerts whose outcome window is entirely in the future; report backfilled alerts separately",
+    "correction_2026_11_03": {
+      "defect": "register_forecasts.py checked matures_when_data_through (window end) only",
+      "found_by": "research/audits/initial_research_audit.md §6.1 (independent audit)",
+      "affected_claim": "25 genuinely prospective forecasts (MISSION §10, ROADMAP, AUDIT.md, COMPLETION_REPORT, R130)",
+      "corrected_count": 13,
+      "excluded": 19,
+      "decision": "D-075",
+      "result_row": "R156"
+    }
   },
   "completion_position": {
     "deliverables_satisfied": {
@@ -1312,7 +1324,7 @@
       "verifiable code": "910 tests; selftest exit 0; every artifact re-derivable",
       "point-in-time datasets": "6 auditable snapshots, 0 leakage problems",
       "rolling-origin benchmarks": "376 cells, 12 origins, 717 observations",
-      "frozen forecasts": "2 hash-verified sets; 25 genuinely prospective forecasts pending maturation",
+      "frozen forecasts": "2 hash-verified sets; 13 genuinely prospective forecasts pending maturation (corrected by D-075; the 25-record claim was withdrawn)",
       "papers": "2 papers with machine-verified claim maps (82 + 22 claims)"
     },
     "remaining_not_code": [
@@ -1376,5 +1388,313 @@
     ],
     "report": "research/COMPLETION_REPORT.md",
     "audit_artifact": "research/FINAL_AUDIT.json"
+  },
+  "audit_2026_11_03": {
+    "artifact": "research/audits/initial_research_audit.md",
+    "claims_audited": 33,
+    "verified": 21,
+    "partially_verified": 8,
+    "unverified": 2,
+    "failed": 2,
+    "failed_rows": [
+      "R19 (superseded by R25; evidence pointer dead)",
+      "R130 (25 genuinely prospective; corrected by R156)"
+    ],
+    "fixed_this_round": [
+      "R157 rolling_origin.py reproducibility (D-076)",
+      "R156 prospective set correction (D-075)"
+    ],
+    "outstanding": [
+      "summary documents still quote stale counts (COMPLETION_REPORT, MISSION §10 pre-correction, R155); RESEARCH_STATE.md is now the live state of record",
+      "claim maps verify prose substring agreement, not data correctness (61/88 main claims cite DECISIONS.md)",
+      "round_end writes the files that make its own repository-state step N/A",
+      "momentum calibration has no multiplicity control (only Philips survives Bonferroni 0.05/53)",
+      "taxonomy stamp is missing from the frozen snapshots it claims to cover"
+    ]
+  },
+  "hist_v1": {
+    "study": "hist_v1 — full-history early-warning benchmark (1976-2026)",
+    "protocol": "research/protocols/hist_v1_preregistration.md (frozen; amendments A1-A5)",
+    "outcome_definition": "research/protocols/outcome_definition.md (T-FIRSTENTRY)",
+    "report": "experiments/hist_v1/REPORT.md",
+    "registry": "research/EXPERIMENT_REGISTRY.md",
+    "state_doc": "research/RESEARCH_STATE.md",
+    "panel": {
+      "artifact": "out/hist_v1/panel.json (regenerable; git-ignored)",
+      "sha256": "10f8c00aff51ad061f6aa237449a7dfb571ccf57fe4ea6705623cda0fd350e20",
+      "builder": "experiments/hist_v1/build_panel.py",
+      "manifest": "experiments/hist_v1/manifest.json",
+      "audits": "experiments/hist_v1/audits.json",
+      "quarters": "1976-Q1..2026-Q2 (202)",
+      "companies": 53,
+      "deep_case_companies": 5,
+      "tracks": 38,
+      "pairs": 528,
+      "material_events": 14704,
+      "funnel": {
+        "material_device_events": 178417,
+        "no_track": 98254,
+        "no_company": 153676,
+        "after_grid_end": 118,
+        "in_panel": 14704
+      }
+    },
+    "results": {
+      "artifact": "experiments/hist_v1/results.json",
+      "verifier": "experiments/hist_v1/verify_report_numbers.py (152 checks)",
+      "primary_R_adj_h8": {
+        "origins": 30,
+        "candidate_cells": 8415,
+        "positives": 181,
+        "mean_per_origin_ap": {
+          "B0": 0.0229,
+          "B1": 0.0553,
+          "B2": 0.0468,
+          "B3": 0.0699,
+          "M1A": 0.0489,
+          "M1B": 0.0905,
+          "M1C": 0.1137
+        },
+        "delta_M1C_minus_B1": 0.0584,
+        "ci95": [
+          0.002,
+          0.1213
+        ],
+        "p_two_sided": 0.045,
+        "mde_80": 0.0896,
+        "bootstrap": "OK (0.1% degenerate resamples; median 29/30 origins)",
+        "status": "SUPPORTED (marginal: lower CI bound 0.002; MDE > observed effect)",
+        "delta_M1C_minus_B2": {
+          "point": 0.0669,
+          "ci95": [
+            0.0147,
+            0.1198
+          ],
+          "p": 0.004
+        },
+        "delta_M1C_minus_B3": {
+          "point": 0.0438,
+          "ci95": [
+            -0.0184,
+            0.0957
+          ],
+          "p": 0.198,
+          "status": "not established against the two-way exposure baseline"
+        },
+        "h4_secondary": {
+          "delta": 0.0565,
+          "status": "UNRELIABLE",
+          "descriptive_interval": [
+            -0.002,
+            0.1143
+          ]
+        },
+        "permutation_null": {
+          "observed": 0.0584,
+          "null_mean": 0.0239,
+          "null_sd": 0.0129,
+          "null_max": 0.0667,
+          "p_one_sided": 0.0299,
+          "permutations": 200
+        }
+      },
+      "secondary_R_full_h8": {
+        "origins": 30,
+        "candidate_cells": 41892,
+        "positives": 459,
+        "mean_per_origin_ap": {
+          "B1": 0.0307,
+          "B3": 0.0397,
+          "M1C": 0.0607
+        },
+        "delta_M1C_minus_B1_point": 0.03,
+        "delta_M1C_minus_B1_bootstrap_mean": 0.0371,
+        "ci95": [
+          0.0128,
+          0.0699
+        ],
+        "delta_M1C_minus_B3_point": 0.021,
+        "delta_M1C_minus_B3_bootstrap_mean": 0.0225,
+        "delta_M1C_minus_B3_ci95": [
+          -0.0087,
+          0.0565
+        ],
+        "delta_M1C_minus_B3_p": 0.173,
+        "status": "SUPPORTED vs persistence; not vs two-way baseline"
+      },
+      "secondary_R_full_h4": {
+        "delta_M1C_minus_B1_point": 0.0204,
+        "bootstrap_mean": 0.0281,
+        "ci95": [
+          0.0099,
+          0.0516
+        ],
+        "status": "SUPPORTED (secondary)"
+      },
+      "ablation": {
+        "A_firm_only": {
+          "mean_ap": 0.0489,
+          "delta_vs_B1": -0.0064
+        },
+        "B_plus_industry": {
+          "mean_ap": 0.0905,
+          "delta_vs_B1": 0.0352
+        },
+        "C_plus_adjacency": {
+          "mean_ap": 0.1137,
+          "delta_vs_B1": 0.0584
+        },
+        "reading": "track tempo adds 0.035; adjacency adds a further 0.023; firm momentum alone is below persistence"
+      },
+      "era_deltas": {
+        "1995-2004": 0.0879,
+        "2005-2014": 0.0634,
+        "2015-2024": 0.0239
+      },
+      "fusion_h2": {
+        "status": "EVALUATED_BUT_WORSE_AND_BOOTSTRAP_UNRELIABLE",
+        "delta_ap_D_minus_C": -0.0053,
+        "coverage": {
+          "cells": 2902,
+          "publication_join_rate": 0.786,
+          "trial_track_present_rate": 0.91,
+          "trial_events": 2663,
+          "trial_events_unmapped": 1364
+        }
+      },
+      "lead_time": {
+        "entries_in_window": 255,
+        "entries_in_risk_set": 94,
+        "frontier": {
+          "1%": {
+            "alerted": 9,
+            "precision": 0.206,
+            "median_lead_q": 5,
+            "fa_per_1000": 5.9
+          },
+          "5%": {
+            "alerted": 19,
+            "precision": 0.137,
+            "median_lead_q": 6,
+            "fa_per_1000": 24.0
+          },
+          "10%": {
+            "alerted": 24,
+            "precision": 0.094,
+            "median_lead_q": 6,
+            "fa_per_1000": 50.6
+          },
+          "20%": {
+            "alerted": 38,
+            "precision": 0.073,
+            "median_lead_q": 6,
+            "fa_per_1000": 98.3
+          }
+        }
+      },
+      "heterogeneity": {
+        "eligible_companies": 3,
+        "per_company_delta": {
+          "abbott": 0.192,
+          "bbraun": 0.397,
+          "medtronic": 0.286
+        },
+        "deep_vs_auxiliary": {
+          "difference": -0.038,
+          "ci95": [
+            -0.168,
+            0.093
+          ]
+        },
+        "category_deltas": {
+          "orthopedics": 0.342,
+          "diabetes": 0.308,
+          "neuroscience": 0.144,
+          "surgery": 0.095,
+          "specialty": 0.044,
+          "cardiovascular": 0.033,
+          "imaging": 0.024,
+          "monitoring": -0.077,
+          "ivd": -0.099
+        },
+        "status": "DESCRIPTIVE (H3/H4); heterogeneous, small category counts"
+      },
+      "leakage": {
+        "label_purge_violations": 0,
+        "independent_replay_mismatches": 0,
+        "replay_cells": 300,
+        "note": "the first run had 184/300 mismatches (unsorted company-category index); the first run was void"
+      }
+    },
+    "five_firm_descriptive": {
+      "artifact": "experiments/hist_v1/five_firm_timeline.json",
+      "medtronic": {
+        "material_events": 1298,
+        "tracks": 32,
+        "last_new_track": "2012-Q4"
+      },
+      "ge_healthcare": {
+        "material_events": 875,
+        "tracks": 11,
+        "last_new_track": "2000-Q4"
+      },
+      "philips": {
+        "material_events": 808,
+        "tracks": 15,
+        "last_new_track": "2025-Q2"
+      },
+      "draeger": {
+        "material_events": 133,
+        "tracks": 4,
+        "last_new_track": "2014-Q4"
+      },
+      "mindray": {
+        "material_events": 152,
+        "tracks": 3,
+        "last_new_track": "2011-Q1"
+      },
+      "reading": "track portfolios saturated; only 94/255 entry events are same-category entries inside the primary risk set; new-category entries (161) are outside the primary target by construction"
+    },
+    "record_repairs": {
+      "REPAIR-01": {
+        "decision": "D-075",
+        "result_row": "R156",
+        "what": "prospective forecast set corrected 25 -> 13; 19 backfilled excluded; hash 8ac0b8df65f0a9ad",
+        "cause": "register_forecasts.py filtered on window end only, not window start"
+      },
+      "REPAIR-02": {
+        "decision": "D-076",
+        "result_row": "R157",
+        "what": "b050/rolling_origin.py fixed (date type) and reproduces committed JSON identically"
+      }
+    },
+    "audit": {
+      "artifact": "research/audits/initial_research_audit.md",
+      "claims_audited": 33,
+      "verified": 21,
+      "partially_verified": 8,
+      "unverified": 2,
+      "failed": 2,
+      "top_threats": [
+        "12/25 prospective forecasts partially backfilled (corrected, D-075)",
+        "rolling_origin.py not reproducible at HEAD (fixed, D-076)",
+        "clean-clone reproducibility claimed but data/ is git-ignored; gate passes outside a repo",
+        "summary documents quote stale counts (COMPLETION_REPORT/MISSION/ROADMAP/R155)",
+        "claim maps verify prose substrings, not data correctness"
+      ]
+    },
+    "next": [
+      "pre-register a design that can beat the two-way baseline: coarser taxonomy for new-category entries, larger roster, origins concentrated where entries occur",
+      "obtain the 69 human labels for the five-firm study (owner action)",
+      "audit entity attribution for the 48 roster companies",
+      "finish the remaining audit repairs (summary-number drift, gate self-dirtying, momentum multiplicity)"
+    ],
+    "implementation_defect": {
+      "what": "company_cat_q built in pair-record order instead of sorted order; bisect in features() and the active_categories() risk-set test read unsorted lists",
+      "effect": "first execution: 7,556 candidates / 110 positives, 184/300 replay mismatches, bootstrap UNRELIABLE",
+      "fix": "sort the index; replay 0/300; 8,415 candidates / 181 positives; bootstrap OK; H1 UNRELIABLE -> SUPPORTED",
+      "decision": "D-077",
+      "result_row": "R167"
+    }
   }
 }

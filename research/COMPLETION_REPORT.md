@@ -1,5 +1,17 @@
 # Completion report — MedRadar Foresight Lab as an autonomous, evidence-grounded research programme
 
+> **POST-AUDIT CORRECTION (2026-11-03, appended, not rewritten).** An independent audit of this report and the record
+> behind it (`research/audits/initial_research_audit.md`) verified 21 of 33 audited claim rows, partially verified 8,
+> could not verify 2, and **failed 2**. Two were integrity defects and are now repaired: the "25 genuinely
+> prospective" forecasts were **12/25 partially backfilled** and are corrected to **13** (D-075, R156), and
+> `b050/rolling_origin.py` was not regenerable at HEAD and is now fixed and reproducing identically (D-076, R157).
+> The counts in the body below (157 commits, 913 tests, 152 result rows, 73 decisions, 10 gate steps, "25 prospective")
+> are the numbers **as of the original writing** and are now stale; the live state of record is
+> `research/RESEARCH_STATE.md` (cycle 45: **1,117 tests**, 12-step gate, **R1–R167**, **77 decisions**). The audit's
+> remaining
+> findings (clean-clone reproducibility, gate self-dirtying, summary-number drift, claim-map semantics, momentum
+> multiplicity) are open items in `RESEARCH_STATE.md` §6–7 and are not excused by this note.
+
 **Date:** 2026-11-03 · **Branch:** `research/change-detection-v1` (`main` untouched at `7a639f7`) ·
 **Audit:** `research/FINAL_AUDIT.json` · **Gate:** `python tools/round_end.py` → 10 steps, 0 failures
 

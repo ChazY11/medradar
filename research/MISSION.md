@@ -234,15 +234,18 @@ Thirty-six cycles later, the position has changed in specific ways and not in ot
   a track-growth null; entry waves were an entity-appearance artefact; the surviving candidate failed a clean split
   sample; cross-lane association was null. A rolling-origin benchmark found no predictability above baseline, and its
   own outcome definition was biased (corrected 0.49 → 1.22).
-- **Prospective machinery exists and is frozen.** 25 genuinely prospective forecasts with content hashes mature
-  2026-Q4 … 2028-Q1; the first registration exposed seven backfilled labels, which are excluded and reported.
+- **Prospective machinery exists and is frozen.** 13 genuinely prospective forecasts with content hashes mature
+  2027-Q3 … 2028-Q1. The first registration exposed 7 backfilled labels; the independent audit of 2026-11-03
+  then found a further 12 whose outcome windows had already opened inside the lane, because the filter checked
+  only the window end. Both groups are excluded and reported, and the set was re-registered under the corrected
+  rule (D-075; `FORECAST_SET_2026-11-03_prospective.json`, hash `8ac0b8df…`).
 - **Two papers exist**, each with a machine-verified claim map (82 and 22 claims), and a round-end command whose exit
   code is the completion claim.
 
 **What has not changed, and should not be papered over.**
 
 - No forecast has matured. There is still **zero prospective calibration evidence**, and no claim about predictive
-  skill over technology can be made (D-036, and the prospective set matures no earlier than 2026-Q4).
+  skill over technology can be made (D-036, and the corrected prospective set matures no earlier than 2027-Q3).
 - The corpus cannot see intent, capability or internal R&D. Every surviving statement is about **public filing
   rates** and about the **resolution** of this data.
 - The binding constraint is **information**, not modelling: ~0.2 events per cell-month, unversioned taxonomy,

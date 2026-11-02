@@ -53,7 +53,8 @@ design; cross-lane association was null. Reported with the design flaw that prod
 **Phase F — ANTICIPATE Level B (P3). Benchmarked, null, and now prospective.** Rolling-origin benchmark found no
 predictability above baseline, and its own outcome definition was biased (corrected 0.49 → 1.22; D-036). One
 confirmed decision rule emerged from injected-shape work instead (D-043, replicated D-048, twice extended D-057/D-061).
-25 genuinely prospective forecasts are frozen and mature 2026-Q4 … 2028-Q1.
+13 genuinely prospective forecasts are frozen and mature 2027-Q3 … 2028-Q1 (corrected after the 2026-11-03
+audit found 12 of the original 25 had partially observed outcome windows; D-075).
 
 **Phase G — P4 advanced methods. Not started, on purpose.** No baseline gap exists that simpler methods demonstrably
 fail to close; the programme's bottleneck is data density and access, not model capacity.
@@ -63,8 +64,9 @@ fail to close; the programme's bottleneck is data density and access, not model 
 The objective's deliverable list is satisfied and machine-checked (see `research/AUDIT.md`). What remains is not
 code, and should not be simulated:
 
-1. **Prospective forecast maturation.** 25 frozen forecasts mature between 2026-Q4 and 2028-Q1. Until then no
-   prospective calibration claim can be made. Command: `python experiments/b068/maturate_forecasts.py`.
+1. **Prospective forecast maturation.** 13 corrected prospective forecasts mature between 2027-Q3 and 2028-Q1.
+   Until then no prospective calibration claim can be made. Command:
+   `python experiments/b068/maturate_forecasts.py`.
 2. **Registry calibration.** The 25 legacy nowcasts mature 2027-10 (B-015).
 3. **Human sign-off on the one pending promotion** (`medtronic:insulin_delivery:2025-Q3`). The programme can prepare
    it but cannot sign for a person; the ledger shows it as `PENDING_SIGNOFF`.
