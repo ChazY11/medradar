@@ -232,3 +232,97 @@ data-shaped: an event-level source with earlier availability (patents, regulator
 usable dates), a different target with an independently recorded confirmation date, or a coarser unit where changes do
 exist. All three require inputs this session cannot obtain, so the study stops here with its negative result published
 in `papers/PAPER_NEGATIVE_v1.md` rather than continuing to produce models that have nothing to detect.
+
+---
+
+## S-019 — Owner sign-off recorded (2026-11-03): scope, and the one boundary that stays
+
+**Date:** 2026-11-03 · **Status:** accepted · **Author:** project owner (`ChazY11`), recorded by the agent
+
+The project owner gave blanket approval in session ("我都同意，我都人工同意了"). To keep the record honest, this entry
+states exactly what that approval covers and what it does not.
+
+**Signed off by the owner:**
+
+1. `DOMAIN_AMENDMENT_001.md` — the two-domain confirmatory set, the secondary/exploratory split, and dropping
+   `advanced_imaging` as a cross-company domain.
+2. The GE HealthCare lineage treatment — claims speak of "the GE imaging business lineage", never the post-2023 legal
+   entity, until a reviewer establishes continuity.
+3. Adjudication of the six flagged `applicant_raw` strings: they are accepted as reviewed; the substring false positive
+   (`Surge Medical Sales`) stays excluded.
+4. The four study protocols as frozen: `PHASE1_PROTOCOL.md`, `PHASE1B_PROTOCOL.md`, `PHASE1C_PROTOCOL.md`,
+   `PHASE1D_PROTOCOL.md`.
+5. Authorisation to build the therapy-area → device-track crosswalk (O2), to re-run G1 with it as a new scope, and to
+   open a pull request from this branch.
+
+**Not covered — and not fabricated:** the **60 case labels**. `CASE_CANDIDATES.json` still holds
+`final_label = null` and `human_review_status = PENDING_HUMAN_REVIEW` for every packet. A blanket statement is not a
+per-case adjudication, and an agent may not convert one into the other. The review worksheet remains the only path to
+Target B, one case at a time.
+
+**Consequence for later sections.** Where the study previously wrote "PENDING_HUMAN_REVIEW" against a protocol or a
+domain decision, that now means "owner-approved, not peer-reviewed". Peer review is still outstanding and is said so in
+the papers.
+
+---
+
+## S-020 — Authorised crosswalk flips G1 formally, but the independence check makes it fragile
+
+**Date:** 2026-11-03 · **Status:** accepted · **Authorisation:** S-019 · **Evidence:** `CROSSWALK.json`,
+`LEAD_LAG_PROBE_CROSSWALK.json`, `medradar/studies/crosswalk.py` (11 tests)
+
+With the owner-authorised text crosswalk, the trial lane can finally be joined to device tracks. Coverage is reported with
+its denominators: **2,157 of 19,057** trials assigned (11.3 %), **122 ambiguous** (left unassigned by rule), 16,778 with
+no device keyword — consistent with most ctgov records being drug trials. Among the five study firms, **71 trials**
+receive a device track.
+
+Applying the frozen G1 criteria unchanged to scope S1-crosswalk: **17 eligible pairs** (trial → later clearance in the
+same device track, lead ≥ 2 quarters) across **3 firms** (GE HealthCare, Medtronic, Philips) → the frozen gate returns
+**GO**, where the therapy-area route returned 3 pairs.
+
+**A post-hoc but conservative check changes the reading.** The frozen count is *pairs*; a pair is not independent
+evidence if several trials point at the same later clearance. The 17 pairs reuse only **9 distinct later clearances**
+(independence ratio 0.53); the worst cell is `philips|respiratory`, where 6 trials pair to the single clearance in that
+cell. Under a distinct-event count the gate is **below the floor of 10**.
+
+Verdict recorded as **"GO (frozen count) / FRAGILE (independence check)"**. This is a tightening applied **after**
+seeing the numbers, which is disclosed because it moves the conclusion in the conservative direction; it does not
+manufacture a positive. Phase 1 lead-time estimation, if pursued, must carry `n_effective = 9` and treat any interval
+built on it as underpowered.
+
+## S-021 — External sources probed again; still unavailable
+
+**Date:** 2026-11-03 · **Status:** accepted · **Evidence:** `EXTERNAL_SOURCE_PROBE.json`
+
+The previously blocked sources were re-probed rather than assumed blocked (see the probe artifact): the result decides
+whether the third option in `PHASE1_SHRINKAGE.md` §5 (new data) is actionable now. Where a probe fails, the study
+records the status code and the date instead of an opinion.
+
+---
+
+## S-022 — Correction to S-021: HTTP 200 is not usable data; patents are still unavailable, Europe PMC is new
+
+**Date:** 2026-11-03 · **Status:** accepted · **Evidence:** `EXTERNAL_SOURCE_PROBE.json`,
+`experiments/b093/check_patents_endpoint.py`
+
+The first probe (S-021) recorded "reachable" from HTTP status codes and would have supported the wrong conclusion. A
+payload check corrects it:
+
+| source | status | content type | usable as data |
+|---|---:|---|---|
+| PatentsView legacy API | 200 | **text/html** | **no** — the endpoint now returns USPTO's data-platform landing page; the JSON API has been retired or moved, and the replacement needs registration |
+| PatentsView search API | DNS failure | — | no |
+| SEC EDGAR companyfacts | 200 | application/json | **yes** |
+| ClinicalTrials.gov API | 200 | application/json | **yes** |
+| openFDA 510(k) | 200 | application/json | **yes** |
+| **Europe PMC** | 200 | application/json | **yes** — a publication source the study had never used |
+
+Consequences: **patents remain Tier D** (no machine API without registration), so the third option in
+`PHASE1_SHRINKAGE.md` §5 is not unblocked by reachability. But **Europe PMC opens a genuinely new earlier source**:
+publication dates with abstracts, queryable by organisation. That is the first new source since the study began that
+(a) is point-in-time dateable, (b) is independent of the regulatory family, and (c) is machine-readable without
+credentials. It requires its own coverage and availability audit before any use, and no claim in this study depends on
+it yet.
+
+**Lesson recorded:** a probe that reports only status codes can "unblock" a source that has no data behind the URL.
+The probe now records content type and a `usable_json` flag, and both are in the committed artifact.

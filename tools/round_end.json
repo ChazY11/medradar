@@ -1,17 +1,22 @@
 {
   "schema": "round_end_v1",
-  "checked_at_utc": "2026-11-02T19:19:35+00:00",
+  "checked_at_utc": "2026-11-02T19:24:11+00:00",
   "branch": "research/early-signal-5firms",
-  "head": "ba507b79b6736c5bb27441143f0b5c4348d8560c",
+  "head": "88228cb9c51e5e9153284bbee7da3cc5873dacaf",
   "remote_synced": true,
   "uncommitted_paths": [
-    "M papers/CLAIMS_NEGATIVE.json",
-    " M papers/PAPER_NEGATIVE_v1.md",
-    " M papers/build_claims_negative.py",
-    " M research/AUDIT.json",
+    "M research/AUDIT.json",
     " M research/AUDIT.md",
-    " M research/studies/early_signal_5firms/CLAIMS_EVIDENCE.json",
-    " M tools/round_end_console.log"
+    " M research/studies/early_signal_5firms/STUDY_DECISIONS.md",
+    " M tools/round_end_console.log",
+    "?? experiments/b092/",
+    "?? experiments/b093/",
+    "?? medradar/studies/crosswalk.py",
+    "?? research/studies/early_signal_5firms/CROSSWALK.json",
+    "?? research/studies/early_signal_5firms/EXTERNAL_SOURCE_PROBE.json",
+    "?? research/studies/early_signal_5firms/LEAD_LAG_PROBE_CROSSWALK.json",
+    "?? research/studies/early_signal_5firms/LEAD_LAG_PROBE_CROSSWALK.md",
+    "?? tests/test_study_crosswalk.py"
   ],
   "results": [
     {
@@ -83,7 +88,7 @@
     {
       "step": "repository state",
       "status": "PASS",
-      "detail": "HEAD ba507b79b673, remote synced, 7 uncommitted path(s)"
+      "detail": "HEAD 88228cb9c51e, remote synced, 12 uncommitted path(s)"
     }
   ],
   "summary": {
