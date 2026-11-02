@@ -121,13 +121,32 @@ def inject_spike(series: Sequence[int], onset: int, multiplier: float, seed: int
     return out
 
 
-def make_detector(name: str, knob_value: float) -> Callable[[list], list[dict]]:
+def make_detector(name: str, knob_value: float, bin_months: int = 1) -> Callable[[list], list[dict]]:
+    """Bind a detector's sensitivity knob (and calendar-matched memory) to concrete values.
+
+    The detectors express their memory windows in *bins*. Leaving them fixed while bin
+    width grows would silently give a coarse panel a much longer calendar memory (at
+    6-month bins a 24-bin baseline is 144 months, longer than the panel). To keep the
+    comparison about aggregation rather than about memory, the exposed window parameters
+    are rescaled so their calendar length stays at the monthly default: 12 months for the
+    z-score window and 24 months for the CUSUM / Bayes baseline.
+
+    The naive comparator exposes no window parameter, so its internal trailing-window and
+    minimum-event guards cannot be rescaled; this is recorded as a limitation of the sweep.
+    """
     function = changepoint.DETECTORS[name]
     kwarg = KNOB_GRIDS[name][0]
+    extra: dict[str, float] = {}
+    if bin_months > 1:
+        if name == "rolling_zscore":
+            extra["window"] = max(2, 12 // bin_months)
+        elif name in ("poisson_cusum", "poisson_bayes_factor"):
+            extra["baseline_window"] = max(2, 24 // bin_months)
 
     def run(stream: list) -> list[dict]:
-        return function(stream, **{kwarg: knob_value})
+        return function(stream, **{kwarg: knob_value, **extra})
 
+    run.calendar_memory = extra  # type: ignore[attr-defined]
     return run
 
 
@@ -174,13 +193,19 @@ def build_trials(cells: Sequence[dict[str, Any]], labels: Sequence[str],
 
 def score_detector(detector: Callable[[list], list[dict]], shifts: list[dict[str, Any]],
                    spikes: list[dict[str, Any]], control_cells: Sequence[dict[str, Any]],
-                   labels: Sequence[str], horizon: int = HORIZON_MONTHS) -> dict[str, Any]:
-    """Return per-trial rows plus the uninjected false-alarm rate."""
+                   labels: Sequence[str], horizon: int = HORIZON_MONTHS,
+                   tolerance: int = ONSET_TOLERANCE_MONTHS) -> dict[str, Any]:
+    """Return per-trial rows plus the uninjected false-alarm rate.
+
+    ``tolerance`` is expressed in *bins*. At a 1-month bin it is one month; at coarser
+    bins it is set to 0 so a detector cannot be credited for firing before the change,
+    which would otherwise let a 6-month bin be credited for a 6-month-early alarm.
+    """
     shift_rows = []
     for trial in shifts:
         detections = detector(trial["stream"])
         window = [d for d in detections
-                  if trial["onset"] - ONSET_TOLERANCE_MONTHS <= d["index"] <= trial["onset"] + horizon
+                  if trial["onset"] - tolerance <= d["index"] <= trial["onset"] + horizon
                   and d.get("direction", "up") == "up"]
         shift_rows.append({
             "entity": trial["entity"], "group": trial["group"],
@@ -191,7 +216,7 @@ def score_detector(detector: Callable[[list], list[dict]], shifts: list[dict[str
     spike_rows = []
     for trial in spikes:
         detections = detector(trial["stream"])
-        declared = any(trial["onset"] - ONSET_TOLERANCE_MONTHS <= d["index"] <= trial["onset"] + horizon
+        declared = any(trial["onset"] - tolerance <= d["index"] <= trial["onset"] + horizon
                        and d.get("direction", "up") == "up" for d in detections)
         spike_rows.append({"entity": trial["entity"], "group": trial["group"],
                            "multiplier": trial["multiplier"], "declared": bool(declared)})
@@ -269,6 +294,9 @@ def run_level(level_key: str, cells: list[dict[str, Any]], labels: list[str], *,
     onsets = tuple(max(1, onset // bin_months) for onset in ONSETS)
     horizon = max(1, HORIZON_MONTHS // bin_months)
     min_baseline = max(1, MIN_BASELINE_MONTHS // bin_months)
+    # One bin of tolerance only at monthly resolution; at coarser bins a one-bin
+    # tolerance would credit an alarm up to `bin_months` before the change.
+    tolerance = ONSET_TOLERANCE_MONTHS if bin_months == 1 else 0
     shifts, spikes = build_trials(evaluation_cells, labels, onsets=onsets,
                                   horizon=horizon, min_baseline=min_baseline)
     output: dict[str, Any] = {
@@ -278,6 +306,7 @@ def run_level(level_key: str, cells: list[dict[str, Any]], labels: list[str], *,
         "onsets_used": list(onsets),
         "horizon_bins": horizon,
         "min_baseline_bins": min_baseline,
+        "onset_tolerance_bins": tolerance,
         "cells_total": len(cells),
         "evaluation_cells": len(evaluation_cells),
         "evaluation_entities": len({cell["entity"] for cell in evaluation_cells}),
@@ -294,12 +323,16 @@ def run_level(level_key: str, cells: list[dict[str, Any]], labels: list[str], *,
         kwarg, grid = KNOB_GRIDS[name]
         entries = []
         for knob in grid:
-            detector = make_detector(name, knob)
+            detector = make_detector(name, knob, bin_months)
             score = score_detector(detector, shifts, spikes, evaluation_cells, labels,
-                                   horizon=horizon)
+                                   horizon=horizon, tolerance=tolerance)
             scores[(name, knob)] = score
             entries.append({"knob": knob, **frontier_entry(score)})
-        output["detectors"][name] = {"knob_name": kwarg, "frontier": entries}
+        output["detectors"][name] = {
+            "knob_name": kwarg,
+            "frontier": entries,
+            "calendar_memory_scaling": getattr(detector, "calendar_memory", {}),
+        }
 
     for budget in FRONTIER_FARS:
         readout = {}
@@ -423,6 +456,9 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+
 
 
 

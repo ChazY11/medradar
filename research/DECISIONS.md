@@ -446,3 +446,55 @@ reverses the ranking in favour of the Bayes factor); and the detector choice add
 whether the operational cost is a missed change or a false "sustained change" alarm. No general
 statement such as "the simple baseline is not beaten" or "likelihood detectors are better" survives
 without attaching budget, resolution and cost model.
+
+---
+
+## D-020 — Detector memory was in bins, not months: the quarterly winner was confounded
+
+**Date:** 2026-11-02. **Status:** accepted. This corrects the *identity* of the winning detector
+in D-018's resolution reversal. The *reversal itself* survives.
+
+**The defect.** The detectors express their memory windows in stream units. With
+`baseline_window=24` and `window=12`, a 3-month panel silently gave the CUSUM/Bayes factor a
+72-month baseline and the z-score a 36-month window, versus 24 and 12 months on the monthly panel.
+At a 6-month width the Bayes/CUSUM baseline (24 bins = 144 months) is longer than the whole panel,
+so the detector cannot re-estimate. Comparing detectors across bin widths without fixing this
+compares aggregation *and* memory at the same time.
+
+**The fix.** Exposed window parameters are rescaled so their **calendar** length stays at the
+monthly defaults: z-score window 12 months, CUSUM/Bayes baseline 24 months
+(`make_detector(..., bin_months)`). The naive comparator exposes no window parameter, so its
+internal trailing-window and minimum-event guards cannot be rescaled; this is recorded as a
+limitation, and it is precisely why the naive detector's collapse at coarse widths remains partly a
+property of its fixed guards rather than of aggregation as such.
+
+**What changes (disclosed, not silent).** `check_frozen_reproduction.py` now separates the two
+classes of panel: the three monthly panels are **identical** to the committed values (PASS), while
+the quarterly panel is reported as changed:
+
+| quarterly read-out (2 % budget) | before memory fix | after memory fix |
+|---|---:|---:|
+| naive rate multiplier | 0.025 | 0.025 |
+| rolling z-score | 0.010 | **0.147** |
+| Poisson CUSUM | 0.006 | 0.065 |
+| Poisson Bayes factor | 0.129 | 0.073 |
+
+So at quarterly resolution the naive detector still collapses and **all three** likelihood detectors
+now beat it (z +0.122 [+0.080,+0.164], Bayes +0.048 [+0.019,+0.075], CUSUM +0.040 [+0.005,+0.080]),
+but the **winner is the rolling z-score, not the Bayes factor**. D-018 named the wrong winner: its
+"Bayes factor beats naive by +0.104" was partly a 72-month-baseline advantage.
+
+**Bin-width sweep (B-038), with memory fixed.** Across 1, 2, 3, 4 and 6 month bins the best detector
+is: naive at 1 m, CUSUM at 2 m, z-score at 3 m, CUSUM at 4 m, z-score at 6 m. The naive detector's
+advantage exists only at the finest resolution and collapses immediately (0.223 at 1 m → 0.007 at
+2 m). **No single detector is best across widths** — the ranking is unstable, so at this sample size
+"which detector is best" is not identifiable; what *is* identifiable is that the naive rate-ratio
+test is uniquely fragile once aggregation changes, and that it must not be deployed across
+resolutions without re-calibration.
+
+**Honest summary of the three rounds of this question.** Monthly: naive best, robust to injection
+shape (independent verification). Quarterly: naive collapses, a likelihood detector wins, but which
+one depends on how memory is parameterised. Across widths: the winner is unstable. No general "best
+detector" claim survives; the defensible claims are (a) the rate-ratio test is resolution-fragile,
+(b) no likelihood detector is reliably better at monthly resolution, and (c) detector choice must be
+fixed at the deployment resolution with the memory parameterised in calendar time.

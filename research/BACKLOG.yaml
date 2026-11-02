@@ -308,7 +308,7 @@ tasks:
     layer: observe
     priority: P0
     title: Bin-width sweep to locate the resolution crossover
-    status: todo
+    status: done
     owner: lead
     depends_on: [B-034]
     acceptance: >
@@ -318,3 +318,18 @@ tasks:
       crossover tracks the expected count per bin rather than the aggregation label. This decides
       which detector the OBSERVE layer should actually deploy, and whether the D-018 mechanism
       hypothesis survives.
+
+
+  - id: B-039
+    layer: observe
+    priority: P0
+    title: Fix the OBSERVE deployment resolution and re-calibrate there
+    status: todo
+    owner: lead
+    depends_on: [B-038]
+    acceptance: >
+      Choose the resolution the layer will actually operate at (justified by the analyst's decision
+      cadence), express every detector's memory in calendar time, re-run the bin-width sweep on that
+      panel, and only then name a detector. Report the identifiability check: if the ranking is still
+      unstable across the memory parameterisation, the honest output is "no detector is identifiable"
+      rather than a choice.

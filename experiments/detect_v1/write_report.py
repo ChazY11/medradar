@@ -32,6 +32,8 @@ def main() -> int:
     real = load("realdetect.json")
     assignment = load("track_assignment_audit.json")
     reassign = load("reassignment_audit.json")
+    sweep_path = BASE / "bin_sweep.json"
+    sweep = json.loads(sweep_path.read_text(encoding="utf-8")) if sweep_path.exists() else None
     design = bench["design"]
     levels = bench["levels"]
     primary = levels["track"]
@@ -44,6 +46,11 @@ def main() -> int:
     quarter_budget = quarter["paired_comparison"]["budget"]
     quarter_readout = quarter["frontier_readout"][str(quarter_budget)]
     quarter_paired = quarter["paired_comparison"]["comparisons"]
+    quarter_winner = max(
+        ((name, point.get("detection_probability") or -1)
+         for name, point in quarter_readout.items()),
+        key=lambda item: item[1])
+    quarter_winner_paired = quarter_paired.get(quarter_winner[0], {})
 
     lines: list[str] = []
     add = lines.append
@@ -62,13 +69,13 @@ def main() -> int:
         f"{num(readout['poisson_cusum']['detection_probability'])} (Poisson CUSUM) and the "
         f"Poisson Bayes factor {num(readout['poisson_bayes_factor']['detection_probability'])}; "
         f"the paired, entity-clustered differences versus the naive baseline are **negative**. "
-        f"Under quarterly aggregation the ordering **reverses**: the Bayes factor reaches "
-        f"{num(quarter_readout['poisson_bayes_factor']['detection_probability'])} against the "
-        f"naive detector's {num(quarter_readout['naive_multiplier']['detection_probability'])}, a "
-        f"paired advantage of "
-        f"{quarter_paired['poisson_bayes_factor']['difference']:+.3f} "
-        f"[{quarter_paired['poisson_bayes_factor']['ci_low']:+.3f}, "
-        f"{quarter_paired['poisson_bayes_factor']['ci_high']:+.3f}].")
+        f"Under quarterly aggregation the naive detector collapses to "
+        f"{num(quarter_readout['naive_multiplier']['detection_probability'])} and a likelihood "
+        f"detector becomes best: {quarter_winner[0]} at {num(quarter_winner[1])} "
+        f"(paired advantage over naive "
+        f"{quarter_winner_paired.get('difference', 0):+.3f} "
+        f"[{quarter_winner_paired.get('ci_low', 0):+.3f}, "
+        f"{quarter_winner_paired.get('ci_high', 0):+.3f}]).")
     add("")
     add("This reversal was **pre-declared as a possible outcome** (DECISIONS D-017) and is recorded "
         "as a correction to the first version of this report (D-018). The honest summary is that "
@@ -299,12 +306,21 @@ def main() -> int:
     add(f"**Density (B-034): REFUTED the prediction that the ranking would hold.** Quarterly "
         f"aggregation collapses the naive detector "
         f"({num(readout['naive_multiplier']['detection_probability'])} → "
-        f"{num(quarter_readout['naive_multiplier']['detection_probability'])}) and leaves the Bayes "
-        f"factor essentially intact "
-        f"({num(readout['poisson_bayes_factor']['detection_probability'])} → "
-        f"{num(quarter_readout['poisson_bayes_factor']['detection_probability'])}), so the Bayes "
-        f"factor becomes the best detector with a paired advantage that excludes zero. Cycle 3's "
-        f"monthly headline is therefore **resolution-specific** and is restated here as such.")
+        f"{num(quarter_readout['naive_multiplier']['detection_probability'])}); all three "
+        f"likelihood detectors then beat it, and the best is **{quarter_winner[0]}** at "
+        f"{num(quarter_winner[1])} (paired "
+        f"{quarter_winner_paired.get('difference', 0):+.3f}). Cycle 3's monthly headline is "
+        f"therefore **resolution-specific** and is restated here as such.")
+    add("")
+    add("**Correction inside this section (DECISIONS D-020).** The first version of this sensitivity "
+        "named the Bayes factor as the quarterly winner (+0.104). That number was confounded: the "
+        "detectors express their memory windows in *bins*, so a 3-month panel silently gave them a "
+        "72-month baseline (and a 6-month panel a baseline longer than the panel itself). With "
+        "memory rescaled to a constant calendar length, the quarterly winner is the rolling "
+        "z-score and the Bayes factor's advantage falls to "
+        f"{num(quarter_paired.get('poisson_bayes_factor', {}).get('difference'))}. The reversal "
+        "survives; the identity of the winner did not. The frozen monthly panels are unaffected "
+        "and still reproduce exactly (`check_frozen_reproduction.py`).")
     add("")
     no_special = levels.get("track_no_special", {})
     if no_special:
@@ -330,6 +346,48 @@ def main() -> int:
         "defeats evidence accumulation; at quarterly resolution one bin aggregates several events "
         "and the likelihood ratio can separate a sustained shift from a burst. It is testable by "
         "sweeping the bin width — the next experiment.")
+    add("")
+    add("## 5d. Bin-width sweep: where does the crossover happen, and is the winner identifiable?")
+    add("")
+    if sweep:
+        add("Same lane, same entity assignment, same calendar onsets, same 12-month horizon, same "
+            "2 % budget, same seeds — only the aggregation width changes (1, 2, 3, 4, 6 months). "
+            "Detector memory is rescaled so its *calendar* length stays constant "
+            "(DECISIONS D-020).")
+        add("")
+        add("| bin width | bins | median expected events/bin | naive | rolling z | CUSUM | "
+            "Bayes factor | best |")
+        add("|---:|---:|---:|---:|---:|---:|---:|---|")
+        for width in sweep["design"]["widths_months"]:
+            block = sweep["panels"][str(width)]
+            read = block["readout"]
+            add(f"| {width} m | {block['bins']} | "
+                f"{num(block['median_expected_events_per_bin'], 3)} | "
+                f"{num(read['naive_multiplier']['detection_probability'])} | "
+                f"{num(read['rolling_zscore']['detection_probability'])} | "
+                f"{num(read['poisson_cusum']['detection_probability'])} | "
+                f"{num(read['poisson_bayes_factor']['detection_probability'])} | "
+                f"{block['best_detector']['winner']} |")
+        add("")
+        cross = sweep.get("crossover") or {}
+        add(f"**The crossover is at {cross.get('bin_months')} months** "
+            f"(~{num(cross.get('median_expected_events_per_bin'), 2)} expected events per bin): the "
+            "naive detector's advantage exists only at the finest resolution and collapses at the "
+            "next width. But the *winner above the crossover is not stable* — it alternates "
+            "between the rolling z-score and the CUSUM across widths — so the "
+            "expected-events-per-bin mechanism explains **why the naive test fails** (a fixed "
+            "multiplicative threshold plus fixed event guards cannot absorb a change in bin width) "
+            "without establishing which likelihood detector should replace it.")
+        add("")
+        add("After three rounds on this question the defensible claims are narrow: (a) the matched "
+            "rate-ratio test is **resolution-fragile**; (b) no likelihood detector is reliably "
+            "better at **monthly** resolution (independently verified); (c) at this sample size the "
+            "identity of the best detector above the crossover is **not identifiable** — the "
+            "ranking is unstable across widths. Deploying a detector therefore requires fixing the "
+            "resolution first and re-calibrating its memory in calendar time, then re-running this "
+            "sweep on the deployment panels.")
+    else:
+        add("Not run: `bin_sweep.json` is absent.")
     add("")
 
     add("## 6. Per-magnitude behaviour (primary panel, 2 % budget)")

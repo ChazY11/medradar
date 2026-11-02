@@ -178,6 +178,7 @@
       "cells_total": 121,
       "detectors": {
         "naive_multiplier": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -498,6 +499,7 @@
           "knob_name": "multiplier"
         },
         "poisson_bayes_factor": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -783,6 +785,7 @@
           "knob_name": "threshold"
         },
         "poisson_cusum": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -1103,6 +1106,7 @@
           "knob_name": "threshold"
         },
         "rolling_zscore": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -1998,6 +2002,7 @@
       "horizon_bins": 12,
       "level": "domain",
       "min_baseline_bins": 24,
+      "onset_tolerance_bins": 1,
       "onsets_used": [
         36,
         54,
@@ -2067,6 +2072,7 @@
       "cells_total": 104,
       "detectors": {
         "naive_multiplier": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -2387,6 +2393,7 @@
           "knob_name": "multiplier"
         },
         "poisson_bayes_factor": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -2672,6 +2679,7 @@
           "knob_name": "threshold"
         },
         "poisson_cusum": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -2992,6 +3000,7 @@
           "knob_name": "threshold"
         },
         "rolling_zscore": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -3887,6 +3896,7 @@
       "horizon_bins": 12,
       "level": "track",
       "min_baseline_bins": 24,
+      "onset_tolerance_bins": 1,
       "onsets_used": [
         36,
         54,
@@ -3956,6 +3966,7 @@
       "cells_total": 98,
       "detectors": {
         "naive_multiplier": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -4276,6 +4287,7 @@
           "knob_name": "multiplier"
         },
         "poisson_bayes_factor": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -4561,6 +4573,7 @@
           "knob_name": "threshold"
         },
         "poisson_cusum": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -4881,6 +4894,7 @@
           "knob_name": "threshold"
         },
         "rolling_zscore": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -5776,6 +5790,7 @@
       "horizon_bins": 12,
       "level": "track_clean",
       "min_baseline_bins": 24,
+      "onset_tolerance_bins": 1,
       "onsets_used": [
         36,
         54,
@@ -5845,6 +5860,7 @@
       "cells_total": 70,
       "detectors": {
         "naive_multiplier": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -6165,6 +6181,7 @@
           "knob_name": "multiplier"
         },
         "poisson_bayes_factor": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -6450,6 +6467,7 @@
           "knob_name": "threshold"
         },
         "poisson_cusum": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -6770,6 +6788,7 @@
           "knob_name": "threshold"
         },
         "rolling_zscore": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -7665,6 +7684,7 @@
       "horizon_bins": 12,
       "level": "track_no_special",
       "min_baseline_bins": 24,
+      "onset_tolerance_bins": 1,
       "onsets_used": [
         36,
         54,
@@ -7734,75 +7754,41 @@
       "cells_total": 101,
       "detectors": {
         "naive_multiplier": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 79,
-                  "detection_probability": 0.35267857142857145,
+                  "detected": 76,
+                  "detection_probability": 0.3392857142857143,
                   "median_delay_months": 1,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 122,
-                  "detection_probability": 0.5446428571428571,
+                  "detected": 119,
+                  "detection_probability": 0.53125,
                   "median_delay_months": 1,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 150,
-                  "detection_probability": 0.6696428571428571,
+                  "detected": 147,
+                  "detection_probability": 0.65625,
                   "median_delay_months": 1,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.5223214285714286,
+              "detection_probability": 0.5089285714285714,
               "detection_probability_ci": [
-                0.44841269841269843,
-                0.5969945355191257
+                0.4287878787878788,
+                0.5847222222222223
               ],
               "false_alarm_rate": 0.375,
               "knob": 1.5,
               "median_delay_months": 1,
               "spike_false_change_rate": {
-                "2.0": 0.12946428571428573,
-                "3.0": 0.17857142857142858,
-                "5.0": 0.3705357142857143
-              }
-            },
-            {
-              "by_multiplier": {
-                "2.0": {
-                  "detected": 73,
-                  "detection_probability": 0.32589285714285715,
-                  "median_delay_months": 1,
-                  "trials": 224
-                },
-                "3.0": {
-                  "detected": 126,
-                  "detection_probability": 0.5625,
-                  "median_delay_months": 1,
-                  "trials": 224
-                },
-                "5.0": {
-                  "detected": 159,
-                  "detection_probability": 0.7098214285714286,
-                  "median_delay_months": 1,
-                  "trials": 224
-                }
-              },
-              "detection_probability": 0.5327380952380952,
-              "detection_probability_ci": [
-                0.45760233918128657,
-                0.6065573770491803
-              ],
-              "false_alarm_rate": 0.32142857142857145,
-              "knob": 2.0,
-              "median_delay_months": 1,
-              "spike_false_change_rate": {
-                "2.0": 0.09821428571428571,
-                "3.0": 0.15178571428571427,
-                "5.0": 0.36607142857142855
+                "2.0": 0.11607142857142858,
+                "3.0": 0.16517857142857142,
+                "5.0": 0.35714285714285715
               }
             },
             {
@@ -7820,129 +7806,164 @@
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 169,
-                  "detection_probability": 0.7544642857142857,
+                  "detected": 156,
+                  "detection_probability": 0.6964285714285714,
                   "median_delay_months": 1,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.5386904761904762,
+              "detection_probability": 0.5193452380952381,
               "detection_probability_ci": [
-                0.4638364779874214,
-                0.6149425287356322
+                0.4410919540229885,
+                0.594632768361582
+              ],
+              "false_alarm_rate": 0.32142857142857145,
+              "knob": 2.0,
+              "median_delay_months": 1,
+              "spike_false_change_rate": {
+                "2.0": 0.08482142857142858,
+                "3.0": 0.13839285714285715,
+                "5.0": 0.35267857142857145
+              }
+            },
+            {
+              "by_multiplier": {
+                "2.0": {
+                  "detected": 67,
+                  "detection_probability": 0.29910714285714285,
+                  "median_delay_months": 2,
+                  "trials": 224
+                },
+                "3.0": {
+                  "detected": 120,
+                  "detection_probability": 0.5357142857142857,
+                  "median_delay_months": 2,
+                  "trials": 224
+                },
+                "5.0": {
+                  "detected": 166,
+                  "detection_probability": 0.7410714285714286,
+                  "median_delay_months": 1,
+                  "trials": 224
+                }
+              },
+              "detection_probability": 0.5252976190476191,
+              "detection_probability_ci": [
+                0.4481132075471698,
+                0.6020114942528736
               ],
               "false_alarm_rate": 0.25,
               "knob": 2.5,
               "median_delay_months": 1,
               "spike_false_change_rate": {
-                "2.0": 0.08928571428571429,
-                "3.0": 0.125,
-                "5.0": 0.32142857142857145
+                "2.0": 0.07589285714285714,
+                "3.0": 0.11160714285714286,
+                "5.0": 0.3080357142857143
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 50,
-                  "detection_probability": 0.22321428571428573,
+                  "detected": 48,
+                  "detection_probability": 0.21428571428571427,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 99,
-                  "detection_probability": 0.4419642857142857,
+                  "detected": 97,
+                  "detection_probability": 0.4330357142857143,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 167,
-                  "detection_probability": 0.7455357142857143,
+                  "detected": 165,
+                  "detection_probability": 0.7366071428571429,
                   "median_delay_months": 1,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.47023809523809523,
+              "detection_probability": 0.46130952380952384,
               "detection_probability_ci": [
-                0.40476190476190477,
-                0.5368852459016393
+                0.3933333333333333,
+                0.5296610169491526
               ],
               "false_alarm_rate": 0.19642857142857142,
               "knob": 3.0,
               "median_delay_months": 1,
               "spike_false_change_rate": {
-                "2.0": 0.05357142857142857,
-                "3.0": 0.09375,
-                "5.0": 0.25892857142857145
+                "2.0": 0.044642857142857144,
+                "3.0": 0.08482142857142858,
+                "5.0": 0.25
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 26,
-                  "detection_probability": 0.11607142857142858,
+                  "detected": 25,
+                  "detection_probability": 0.11160714285714286,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 60,
-                  "detection_probability": 0.26785714285714285,
+                  "detected": 59,
+                  "detection_probability": 0.26339285714285715,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 148,
-                  "detection_probability": 0.6607142857142857,
+                  "detected": 147,
+                  "detection_probability": 0.65625,
                   "median_delay_months": 1,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.3482142857142857,
+              "detection_probability": 0.34375,
               "detection_probability_ci": [
-                0.29848484848484846,
-                0.4018817204301075
+                0.29239766081871343,
+                0.3977987421383648
               ],
               "false_alarm_rate": 0.14285714285714285,
               "knob": 4.0,
               "median_delay_months": 2,
               "spike_false_change_rate": {
-                "2.0": 0.026785714285714284,
-                "3.0": 0.05357142857142857,
-                "5.0": 0.14732142857142858
+                "2.0": 0.022321428571428572,
+                "3.0": 0.049107142857142856,
+                "5.0": 0.14285714285714285
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 8,
-                  "detection_probability": 0.03571428571428571,
+                  "detected": 7,
+                  "detection_probability": 0.03125,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 14,
-                  "detection_probability": 0.0625,
+                  "detected": 13,
+                  "detection_probability": 0.05803571428571429,
                   "median_delay_months": 3,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 78,
-                  "detection_probability": 0.3482142857142857,
+                  "detected": 77,
+                  "detection_probability": 0.34375,
                   "median_delay_months": 2,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.1488095238095238,
+              "detection_probability": 0.14434523809523808,
               "detection_probability_ci": [
-                0.11695906432748537,
-                0.18601190476190477
+                0.11160714285714286,
+                0.18166666666666667
               ],
               "false_alarm_rate": 0.10714285714285714,
               "knob": 6.0,
               "median_delay_months": 2,
               "spike_false_change_rate": {
-                "2.0": 0.017857142857142856,
-                "3.0": 0.022321428571428572,
-                "5.0": 0.05803571428571429
+                "2.0": 0.013392857142857142,
+                "3.0": 0.017857142857142856,
+                "5.0": 0.05357142857142857
               }
             },
             {
@@ -8054,139 +8075,142 @@
           "knob_name": "multiplier"
         },
         "poisson_bayes_factor": {
+          "calendar_memory_scaling": {
+            "baseline_window": 8
+          },
           "frontier": [
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 51,
-                  "detection_probability": 0.22767857142857142,
-                  "median_delay_months": 0,
+                  "detected": 41,
+                  "detection_probability": 0.18303571428571427,
+                  "median_delay_months": 1,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 101,
-                  "detection_probability": 0.45089285714285715,
-                  "median_delay_months": 0,
+                  "detected": 91,
+                  "detection_probability": 0.40625,
+                  "median_delay_months": 1,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 147,
-                  "detection_probability": 0.65625,
+                  "detected": 90,
+                  "detection_probability": 0.4017857142857143,
                   "median_delay_months": 0,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.44494047619047616,
+              "detection_probability": 0.33035714285714285,
               "detection_probability_ci": [
-                0.375,
-                0.5148809523809523
+                0.279320987654321,
+                0.38181818181818183
               ],
-              "false_alarm_rate": 0.4107142857142857,
+              "false_alarm_rate": 0.39285714285714285,
               "knob": 2.0,
               "median_delay_months": 0,
               "spike_false_change_rate": {
-                "2.0": 0.04017857142857143,
+                "2.0": 0.03571428571428571,
                 "3.0": 0.04017857142857143,
-                "5.0": 0.05803571428571429
+                "5.0": 0.05357142857142857
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 39,
-                  "detection_probability": 0.17410714285714285,
+                  "detected": 35,
+                  "detection_probability": 0.15625,
                   "median_delay_months": 1,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 101,
-                  "detection_probability": 0.45089285714285715,
+                  "detected": 87,
+                  "detection_probability": 0.38839285714285715,
                   "median_delay_months": 1,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 161,
-                  "detection_probability": 0.71875,
+                  "detected": 108,
+                  "detection_probability": 0.48214285714285715,
                   "median_delay_months": 0,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.4479166666666667,
+              "detection_probability": 0.34226190476190477,
               "detection_probability_ci": [
-                0.3878787878787879,
-                0.5068306010928961
+                0.29559748427672955,
+                0.38936781609195403
               ],
-              "false_alarm_rate": 0.19642857142857142,
+              "false_alarm_rate": 0.23214285714285715,
               "knob": 3.0,
               "median_delay_months": 0,
               "spike_false_change_rate": {
-                "2.0": 0.026785714285714284,
-                "3.0": 0.022321428571428572,
-                "5.0": 0.026785714285714284
+                "2.0": 0.04017857142857143,
+                "3.0": 0.03571428571428571,
+                "5.0": 0.03125
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 24,
-                  "detection_probability": 0.10714285714285714,
+                  "detected": 18,
+                  "detection_probability": 0.08035714285714286,
                   "median_delay_months": 1,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 74,
-                  "detection_probability": 0.33035714285714285,
+                  "detected": 60,
+                  "detection_probability": 0.26785714285714285,
                   "median_delay_months": 1,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 155,
-                  "detection_probability": 0.6919642857142857,
+                  "detected": 127,
+                  "detection_probability": 0.5669642857142857,
                   "median_delay_months": 0,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.37648809523809523,
+              "detection_probability": 0.30505952380952384,
               "detection_probability_ci": [
-                0.32,
-                0.43333333333333335
+                0.26282051282051283,
+                0.3488700564971751
               ],
-              "false_alarm_rate": 0.10714285714285714,
+              "false_alarm_rate": 0.07142857142857142,
               "knob": 5.0,
               "median_delay_months": 0,
               "spike_false_change_rate": {
                 "2.0": 0.017857142857142856,
                 "3.0": 0.017857142857142856,
-                "5.0": 0.022321428571428572
+                "5.0": 0.017857142857142856
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 4,
-                  "detection_probability": 0.017857142857142856,
-                  "median_delay_months": 2,
+                  "detected": 2,
+                  "detection_probability": 0.008928571428571428,
+                  "median_delay_months": 3,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 39,
-                  "detection_probability": 0.17410714285714285,
+                  "detected": 26,
+                  "detection_probability": 0.11607142857142858,
                   "median_delay_months": 1,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 141,
-                  "detection_probability": 0.6294642857142857,
+                  "detected": 116,
+                  "detection_probability": 0.5178571428571429,
                   "median_delay_months": 0,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.27380952380952384,
+              "detection_probability": 0.21428571428571427,
               "detection_probability_ci": [
-                0.22767857142857142,
-                0.3194444444444444
+                0.1712121212121212,
+                0.2568306010928962
               ],
-              "false_alarm_rate": 0.05357142857142857,
+              "false_alarm_rate": 0.03571428571428571,
               "knob": 10.0,
               "median_delay_months": 0,
               "spike_false_change_rate": {
@@ -8204,22 +8228,22 @@
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 5,
-                  "detection_probability": 0.022321428571428572,
+                  "detected": 2,
+                  "detection_probability": 0.008928571428571428,
                   "median_delay_months": 0,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 82,
-                  "detection_probability": 0.36607142857142855,
+                  "detected": 47,
+                  "detection_probability": 0.20982142857142858,
                   "median_delay_months": 0,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.12946428571428573,
+              "detection_probability": 0.07291666666666667,
               "detection_probability_ci": [
-                0.09666666666666666,
-                0.16374269005847952
+                0.05116959064327485,
+                0.09562841530054644
               ],
               "false_alarm_rate": 0.0,
               "knob": 20.0,
@@ -8245,16 +8269,16 @@
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 38,
-                  "detection_probability": 0.16964285714285715,
+                  "detected": 18,
+                  "detection_probability": 0.08035714285714286,
                   "median_delay_months": 0,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.05654761904761905,
+              "detection_probability": 0.026785714285714284,
               "detection_probability_ci": [
-                0.03125,
-                0.08333333333333333
+                0.011695906432748537,
+                0.0423728813559322
               ],
               "false_alarm_rate": 0.0,
               "knob": 30.0,
@@ -8280,16 +8304,16 @@
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 4,
-                  "detection_probability": 0.017857142857142856,
+                  "detected": 1,
+                  "detection_probability": 0.004464285714285714,
                   "median_delay_months": 0,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.005952380952380952,
+              "detection_probability": 0.001488095238095238,
               "detection_probability_ci": [
                 0.0,
-                0.017543859649122806
+                0.0043859649122807015
               ],
               "false_alarm_rate": 0.0,
               "knob": 60.0,
@@ -8339,244 +8363,247 @@
           "knob_name": "threshold"
         },
         "poisson_cusum": {
+          "calendar_memory_scaling": {
+            "baseline_window": 8
+          },
           "frontier": [
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 65,
-                  "detection_probability": 0.29017857142857145,
+                  "detected": 73,
+                  "detection_probability": 0.32589285714285715,
                   "median_delay_months": 1,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 102,
-                  "detection_probability": 0.45535714285714285,
+                  "detected": 101,
+                  "detection_probability": 0.45089285714285715,
                   "median_delay_months": 1,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 126,
-                  "detection_probability": 0.5625,
+                  "detected": 113,
+                  "detection_probability": 0.5044642857142857,
                   "median_delay_months": 0,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.43601190476190477,
+              "detection_probability": 0.4270833333333333,
               "detection_probability_ci": [
-                0.3660130718954248,
-                0.5058479532163743
+                0.3472222222222222,
+                0.5083333333333333
               ],
-              "false_alarm_rate": 0.6607142857142857,
+              "false_alarm_rate": 0.7857142857142857,
               "knob": 2.0,
               "median_delay_months": 1,
               "spike_false_change_rate": {
-                "2.0": 0.14732142857142858,
-                "3.0": 0.19642857142857142,
-                "5.0": 0.35267857142857145
+                "2.0": 0.16517857142857142,
+                "3.0": 0.21875,
+                "5.0": 0.375
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 66,
-                  "detection_probability": 0.29464285714285715,
-                  "median_delay_months": 2,
+                  "detected": 84,
+                  "detection_probability": 0.375,
+                  "median_delay_months": 1,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 113,
-                  "detection_probability": 0.5044642857142857,
+                  "detected": 127,
+                  "detection_probability": 0.5669642857142857,
                   "median_delay_months": 1,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 143,
-                  "detection_probability": 0.6383928571428571,
+                  "detected": 157,
+                  "detection_probability": 0.7008928571428571,
                   "median_delay_months": 1,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.4791666666666667,
+              "detection_probability": 0.5476190476190477,
               "detection_probability_ci": [
-                0.39969135802469136,
-                0.5603448275862069
+                0.4666666666666667,
+                0.6194444444444445
               ],
-              "false_alarm_rate": 0.4642857142857143,
+              "false_alarm_rate": 0.5178571428571429,
               "knob": 3.0,
               "median_delay_months": 1,
               "spike_false_change_rate": {
-                "2.0": 0.15178571428571427,
-                "3.0": 0.1875,
-                "5.0": 0.3482142857142857
+                "2.0": 0.17857142857142858,
+                "3.0": 0.22767857142857142,
+                "5.0": 0.41517857142857145
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 61,
-                  "detection_probability": 0.27232142857142855,
-                  "median_delay_months": 1,
+                  "detected": 71,
+                  "detection_probability": 0.3169642857142857,
+                  "median_delay_months": 2,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 104,
-                  "detection_probability": 0.4642857142857143,
+                  "detected": 120,
+                  "detection_probability": 0.5357142857142857,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 148,
-                  "detection_probability": 0.6607142857142857,
+                  "detected": 163,
+                  "detection_probability": 0.7276785714285714,
                   "median_delay_months": 1,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.46577380952380953,
+              "detection_probability": 0.5267857142857143,
               "detection_probability_ci": [
-                0.3942307692307692,
-                0.5402777777777777
+                0.45987654320987653,
+                0.5913978494623656
               ],
-              "false_alarm_rate": 0.4107142857142857,
+              "false_alarm_rate": 0.42857142857142855,
               "knob": 4.0,
               "median_delay_months": 1,
               "spike_false_change_rate": {
-                "2.0": 0.15625,
-                "3.0": 0.17410714285714285,
-                "5.0": 0.29910714285714285
+                "2.0": 0.13392857142857142,
+                "3.0": 0.16517857142857142,
+                "5.0": 0.32142857142857145
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 58,
-                  "detection_probability": 0.25892857142857145,
+                  "detected": 64,
+                  "detection_probability": 0.2857142857142857,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 92,
-                  "detection_probability": 0.4107142857142857,
+                  "detected": 108,
+                  "detection_probability": 0.48214285714285715,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 145,
-                  "detection_probability": 0.6473214285714286,
+                  "detected": 163,
+                  "detection_probability": 0.7276785714285714,
                   "median_delay_months": 1,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.43898809523809523,
+              "detection_probability": 0.49851190476190477,
               "detection_probability_ci": [
-                0.369281045751634,
-                0.5147849462365591
+                0.4261006289308176,
+                0.5710382513661202
               ],
-              "false_alarm_rate": 0.375,
+              "false_alarm_rate": 0.35714285714285715,
               "knob": 5.0,
               "median_delay_months": 2,
               "spike_false_change_rate": {
-                "2.0": 0.09375,
-                "3.0": 0.12946428571428573,
+                "2.0": 0.07142857142857142,
+                "3.0": 0.09375,
                 "5.0": 0.22767857142857142
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 46,
-                  "detection_probability": 0.20535714285714285,
+                  "detected": 41,
+                  "detection_probability": 0.18303571428571427,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 61,
-                  "detection_probability": 0.27232142857142855,
+                  "detected": 71,
+                  "detection_probability": 0.3169642857142857,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 138,
-                  "detection_probability": 0.6160714285714286,
+                  "detected": 145,
+                  "detection_probability": 0.6473214285714286,
                   "median_delay_months": 2,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.3645833333333333,
+              "detection_probability": 0.38244047619047616,
               "detection_probability_ci": [
-                0.2982456140350877,
-                0.4305555555555556
+                0.32253086419753085,
+                0.44298245614035087
               ],
-              "false_alarm_rate": 0.26785714285714285,
+              "false_alarm_rate": 0.16071428571428573,
               "knob": 8.0,
               "median_delay_months": 2,
               "spike_false_change_rate": {
-                "2.0": 0.08482142857142858,
-                "3.0": 0.07589285714285714,
-                "5.0": 0.12053571428571429
+                "2.0": 0.049107142857142856,
+                "3.0": 0.05357142857142857,
+                "5.0": 0.11607142857142858
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 30,
-                  "detection_probability": 0.13392857142857142,
-                  "median_delay_months": 4,
+                  "detected": 19,
+                  "detection_probability": 0.08482142857142858,
+                  "median_delay_months": 2,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 44,
-                  "detection_probability": 0.19642857142857142,
+                  "detected": 34,
+                  "detection_probability": 0.15178571428571427,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 99,
-                  "detection_probability": 0.4419642857142857,
+                  "detected": 103,
+                  "detection_probability": 0.45982142857142855,
                   "median_delay_months": 3,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.25744047619047616,
+              "detection_probability": 0.23214285714285715,
               "detection_probability_ci": [
-                0.18859649122807018,
-                0.3287878787878788
+                0.1724137931034483,
+                0.29393939393939394
               ],
-              "false_alarm_rate": 0.125,
+              "false_alarm_rate": 0.05357142857142857,
               "knob": 12.0,
               "median_delay_months": 3,
               "spike_false_change_rate": {
-                "2.0": 0.04017857142857143,
-                "3.0": 0.06696428571428571,
-                "5.0": 0.09821428571428571
+                "2.0": 0.022321428571428572,
+                "3.0": 0.026785714285714284,
+                "5.0": 0.05803571428571429
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 4,
-                  "detection_probability": 0.017857142857142856,
+                  "detected": 2,
+                  "detection_probability": 0.008928571428571428,
                   "median_delay_months": 4,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 12,
-                  "detection_probability": 0.05357142857142857,
-                  "median_delay_months": 4,
+                  "detected": 9,
+                  "detection_probability": 0.04017857142857143,
+                  "median_delay_months": 3,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 42,
-                  "detection_probability": 0.1875,
+                  "detected": 33,
+                  "detection_probability": 0.14732142857142858,
                   "median_delay_months": 3,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.08630952380952381,
+              "detection_probability": 0.06547619047619048,
               "detection_probability_ci": [
-                0.04874213836477988,
-                0.1286549707602339
+                0.03571428571428571,
+                0.10201149425287356
               ],
-              "false_alarm_rate": 0.07142857142857142,
+              "false_alarm_rate": 0.017857142857142856,
               "knob": 20.0,
               "median_delay_months": 3,
               "spike_false_change_rate": {
@@ -8600,16 +8627,16 @@
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 4,
-                  "detection_probability": 0.017857142857142856,
+                  "detected": 3,
+                  "detection_probability": 0.013392857142857142,
                   "median_delay_months": 4,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.005952380952380952,
+              "detection_probability": 0.004464285714285714,
               "detection_probability_ci": [
-                0.0014124293785310734,
-                0.012121212121212121
+                0.0,
+                0.009408602150537635
               ],
               "false_alarm_rate": 0.0,
               "knob": 40.0,
@@ -8659,75 +8686,113 @@
           "knob_name": "threshold"
         },
         "rolling_zscore": {
+          "calendar_memory_scaling": {
+            "window": 4
+          },
           "frontier": [
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 17,
-                  "detection_probability": 0.07589285714285714,
-                  "median_delay_months": 1,
+                  "detected": 45,
+                  "detection_probability": 0.20089285714285715,
+                  "median_delay_months": 2,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 32,
-                  "detection_probability": 0.14285714285714285,
+                  "detected": 82,
+                  "detection_probability": 0.36607142857142855,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 61,
-                  "detection_probability": 0.27232142857142855,
+                  "detected": 136,
+                  "detection_probability": 0.6071428571428571,
                   "median_delay_months": 2,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.1636904761904762,
+              "detection_probability": 0.3913690476190476,
               "detection_probability_ci": [
-                0.12727272727272726,
-                0.2
+                0.32589285714285715,
+                0.4576271186440678
               ],
-              "false_alarm_rate": 0.5535714285714286,
+              "false_alarm_rate": 0.44642857142857145,
               "knob": 2.0,
               "median_delay_months": 2,
               "spike_false_change_rate": {
-                "2.0": 0.04017857142857143,
-                "3.0": 0.04017857142857143,
-                "5.0": 0.07589285714285714
+                "2.0": 0.022321428571428572,
+                "3.0": 0.044642857142857144,
+                "5.0": 0.20089285714285715
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 10,
-                  "detection_probability": 0.044642857142857144,
-                  "median_delay_months": 3,
+                  "detected": 18,
+                  "detection_probability": 0.08035714285714286,
+                  "median_delay_months": 2,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 19,
-                  "detection_probability": 0.08482142857142858,
+                  "detected": 63,
+                  "detection_probability": 0.28125,
                   "median_delay_months": 3,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 51,
-                  "detection_probability": 0.22767857142857142,
-                  "median_delay_months": 3,
+                  "detected": 140,
+                  "detection_probability": 0.625,
+                  "median_delay_months": 2,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.11904761904761904,
+              "detection_probability": 0.3288690476190476,
               "detection_probability_ci": [
-                0.08796296296296297,
-                0.15
+                0.27575757575757576,
+                0.3850574712643678
               ],
-              "false_alarm_rate": 0.2857142857142857,
+              "false_alarm_rate": 0.19642857142857142,
               "knob": 2.5,
-              "median_delay_months": 3,
+              "median_delay_months": 2,
               "spike_false_change_rate": {
-                "2.0": 0.013392857142857142,
+                "2.0": 0.017857142857142856,
                 "3.0": 0.022321428571428572,
-                "5.0": 0.044642857142857144
+                "5.0": 0.10714285714285714
+              }
+            },
+            {
+              "by_multiplier": {
+                "2.0": {
+                  "detected": 9,
+                  "detection_probability": 0.04017857142857143,
+                  "median_delay_months": 2,
+                  "trials": 224
+                },
+                "3.0": {
+                  "detected": 31,
+                  "detection_probability": 0.13839285714285715,
+                  "median_delay_months": 3,
+                  "trials": 224
+                },
+                "5.0": {
+                  "detected": 110,
+                  "detection_probability": 0.49107142857142855,
+                  "median_delay_months": 2,
+                  "trials": 224
+                }
+              },
+              "detection_probability": 0.22321428571428573,
+              "detection_probability_ci": [
+                0.17973856209150327,
+                0.26785714285714285
+              ],
+              "false_alarm_rate": 0.08928571428571429,
+              "knob": 3.0,
+              "median_delay_months": 2,
+              "spike_false_change_rate": {
+                "2.0": 0.0,
+                "3.0": 0.013392857142857142,
+                "5.0": 0.049107142857142856
               }
             },
             {
@@ -8735,7 +8800,7 @@
                 "2.0": {
                   "detected": 4,
                   "detection_probability": 0.017857142857142856,
-                  "median_delay_months": 4,
+                  "median_delay_months": 3,
                   "trials": 224
                 },
                 "3.0": {
@@ -8745,88 +8810,53 @@
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 40,
-                  "detection_probability": 0.17857142857142858,
-                  "median_delay_months": 3,
+                  "detected": 81,
+                  "detection_probability": 0.36160714285714285,
+                  "median_delay_months": 2,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.08630952380952381,
+              "detection_probability": 0.14732142857142858,
               "detection_probability_ci": [
-                0.06147540983606557,
-                0.11212121212121212
+                0.11217948717948718,
+                0.1824712643678161
               ],
-              "false_alarm_rate": 0.14285714285714285,
-              "knob": 3.0,
-              "median_delay_months": 3,
+              "false_alarm_rate": 0.017857142857142856,
+              "knob": 3.5,
+              "median_delay_months": 2,
               "spike_false_change_rate": {
-                "2.0": 0.004464285714285714,
-                "3.0": 0.008928571428571428,
-                "5.0": 0.022321428571428572
+                "2.0": 0.0,
+                "3.0": 0.0,
+                "5.0": 0.017857142857142856
               }
             },
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 2,
-                  "detection_probability": 0.008928571428571428,
+                  "detected": 1,
+                  "detection_probability": 0.004464285714285714,
                   "median_delay_months": 2,
                   "trials": 224
                 },
                 "3.0": {
-                  "detected": 6,
-                  "detection_probability": 0.026785714285714284,
-                  "median_delay_months": 4,
-                  "trials": 224
-                },
-                "5.0": {
-                  "detected": 29,
-                  "detection_probability": 0.12946428571428573,
-                  "median_delay_months": 3,
-                  "trials": 224
-                }
-              },
-              "detection_probability": 0.05505952380952381,
-              "detection_probability_ci": [
-                0.035256410256410256,
-                0.07702020202020202
-              ],
-              "false_alarm_rate": 0.10714285714285714,
-              "knob": 3.5,
-              "median_delay_months": 3,
-              "spike_false_change_rate": {
-                "2.0": 0.004464285714285714,
-                "3.0": 0.0,
-                "5.0": 0.008928571428571428
-              }
-            },
-            {
-              "by_multiplier": {
-                "2.0": {
-                  "detected": 0,
-                  "detection_probability": 0.0,
-                  "median_delay_months": null,
-                  "trials": 224
-                },
-                "3.0": {
-                  "detected": 4,
-                  "detection_probability": 0.017857142857142856,
+                  "detected": 7,
+                  "detection_probability": 0.03125,
                   "median_delay_months": 3,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 17,
-                  "detection_probability": 0.07589285714285714,
+                  "detected": 58,
+                  "detection_probability": 0.25892857142857145,
                   "median_delay_months": 3,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.03125,
+              "detection_probability": 0.09821428571428571,
               "detection_probability_ci": [
-                0.018518518518518517,
-                0.04597701149425287
+                0.06891025641025642,
+                0.1285310734463277
               ],
-              "false_alarm_rate": 0.03571428571428571,
+              "false_alarm_rate": 0.0,
               "knob": 4.0,
               "median_delay_months": 3,
               "spike_false_change_rate": {
@@ -8838,32 +8868,32 @@
             {
               "by_multiplier": {
                 "2.0": {
-                  "detected": 0,
-                  "detection_probability": 0.0,
-                  "median_delay_months": null,
+                  "detected": 1,
+                  "detection_probability": 0.004464285714285714,
+                  "median_delay_months": 3,
                   "trials": 224
                 },
                 "3.0": {
                   "detected": 1,
                   "detection_probability": 0.004464285714285714,
-                  "median_delay_months": 4,
+                  "median_delay_months": 3,
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 6,
-                  "detection_probability": 0.026785714285714284,
-                  "median_delay_months": 4,
+                  "detected": 18,
+                  "detection_probability": 0.08035714285714286,
+                  "median_delay_months": 3,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.010416666666666666,
+              "detection_probability": 0.02976190476190476,
               "detection_probability_ci": [
-                0.004310344827586207,
-                0.017857142857142856
+                0.010416666666666666,
+                0.051515151515151514
               ],
               "false_alarm_rate": 0.0,
               "knob": 5.0,
-              "median_delay_months": 4,
+              "median_delay_months": 3,
               "spike_false_change_rate": {
                 "2.0": 0.0,
                 "3.0": 0.0,
@@ -8885,20 +8915,20 @@
                   "trials": 224
                 },
                 "5.0": {
-                  "detected": 0,
-                  "detection_probability": 0.0,
-                  "median_delay_months": null,
+                  "detected": 3,
+                  "detection_probability": 0.013392857142857142,
+                  "median_delay_months": 3,
                   "trials": 224
                 }
               },
-              "detection_probability": 0.0,
+              "detection_probability": 0.004464285714285714,
               "detection_probability_ci": [
                 0.0,
-                0.0
+                0.01092896174863388
               ],
               "false_alarm_rate": 0.0,
               "knob": 7.0,
-              "median_delay_months": null,
+              "median_delay_months": 3,
               "spike_false_change_rate": {
                 "2.0": 0.0,
                 "3.0": 0.0,
@@ -9027,22 +9057,22 @@
                 "trials": 224
               },
               "3.0": {
-                "detected": 5,
-                "detection_probability": 0.022321428571428572,
+                "detected": 2,
+                "detection_probability": 0.008928571428571428,
                 "median_delay_months": 0,
                 "trials": 224
               },
               "5.0": {
-                "detected": 82,
-                "detection_probability": 0.36607142857142855,
+                "detected": 47,
+                "detection_probability": 0.20982142857142858,
                 "median_delay_months": 0,
                 "trials": 224
               }
             },
-            "detection_probability": 0.12946428571428573,
+            "detection_probability": 0.07291666666666667,
             "detection_probability_ci": [
-              0.09666666666666666,
-              0.16374269005847952
+              0.05116959064327485,
+              0.09562841530054644
             ],
             "false_alarm_rate": 0.0,
             "knob": 20.0,
@@ -9068,16 +9098,16 @@
                 "trials": 224
               },
               "5.0": {
-                "detected": 4,
-                "detection_probability": 0.017857142857142856,
+                "detected": 3,
+                "detection_probability": 0.013392857142857142,
                 "median_delay_months": 4,
                 "trials": 224
               }
             },
-            "detection_probability": 0.005952380952380952,
+            "detection_probability": 0.004464285714285714,
             "detection_probability_ci": [
-              0.0014124293785310734,
-              0.012121212121212121
+              0.0,
+              0.009408602150537635
             ],
             "false_alarm_rate": 0.0,
             "knob": 40.0,
@@ -9091,36 +9121,36 @@
           "rolling_zscore": {
             "by_multiplier": {
               "2.0": {
-                "detected": 0,
-                "detection_probability": 0.0,
-                "median_delay_months": null,
+                "detected": 1,
+                "detection_probability": 0.004464285714285714,
+                "median_delay_months": 2,
                 "trials": 224
               },
               "3.0": {
-                "detected": 1,
-                "detection_probability": 0.004464285714285714,
-                "median_delay_months": 4,
+                "detected": 7,
+                "detection_probability": 0.03125,
+                "median_delay_months": 3,
                 "trials": 224
               },
               "5.0": {
-                "detected": 6,
-                "detection_probability": 0.026785714285714284,
-                "median_delay_months": 4,
+                "detected": 58,
+                "detection_probability": 0.25892857142857145,
+                "median_delay_months": 3,
                 "trials": 224
               }
             },
-            "detection_probability": 0.010416666666666666,
+            "detection_probability": 0.09821428571428571,
             "detection_probability_ci": [
-              0.004310344827586207,
-              0.017857142857142856
+              0.06891025641025642,
+              0.1285310734463277
             ],
             "false_alarm_rate": 0.0,
-            "knob": 5.0,
-            "median_delay_months": 4,
+            "knob": 4.0,
+            "median_delay_months": 3,
             "spike_false_change_rate": {
               "2.0": 0.0,
               "3.0": 0.0,
-              "5.0": 0.0
+              "5.0": 0.004464285714285714
             }
           }
         },
@@ -9169,22 +9199,22 @@
                 "trials": 224
               },
               "3.0": {
-                "detected": 5,
-                "detection_probability": 0.022321428571428572,
+                "detected": 2,
+                "detection_probability": 0.008928571428571428,
                 "median_delay_months": 0,
                 "trials": 224
               },
               "5.0": {
-                "detected": 82,
-                "detection_probability": 0.36607142857142855,
+                "detected": 47,
+                "detection_probability": 0.20982142857142858,
                 "median_delay_months": 0,
                 "trials": 224
               }
             },
-            "detection_probability": 0.12946428571428573,
+            "detection_probability": 0.07291666666666667,
             "detection_probability_ci": [
-              0.09666666666666666,
-              0.16374269005847952
+              0.05116959064327485,
+              0.09562841530054644
             ],
             "false_alarm_rate": 0.0,
             "knob": 20.0,
@@ -9198,32 +9228,32 @@
           "poisson_cusum": {
             "by_multiplier": {
               "2.0": {
-                "detected": 0,
-                "detection_probability": 0.0,
-                "median_delay_months": null,
+                "detected": 2,
+                "detection_probability": 0.008928571428571428,
+                "median_delay_months": 4,
                 "trials": 224
               },
               "3.0": {
-                "detected": 0,
-                "detection_probability": 0.0,
-                "median_delay_months": null,
+                "detected": 9,
+                "detection_probability": 0.04017857142857143,
+                "median_delay_months": 3,
                 "trials": 224
               },
               "5.0": {
-                "detected": 4,
-                "detection_probability": 0.017857142857142856,
-                "median_delay_months": 4,
+                "detected": 33,
+                "detection_probability": 0.14732142857142858,
+                "median_delay_months": 3,
                 "trials": 224
               }
             },
-            "detection_probability": 0.005952380952380952,
+            "detection_probability": 0.06547619047619048,
             "detection_probability_ci": [
-              0.0014124293785310734,
-              0.012121212121212121
+              0.03571428571428571,
+              0.10201149425287356
             ],
-            "false_alarm_rate": 0.0,
-            "knob": 40.0,
-            "median_delay_months": 4,
+            "false_alarm_rate": 0.017857142857142856,
+            "knob": 20.0,
+            "median_delay_months": 3,
             "spike_false_change_rate": {
               "2.0": 0.0,
               "3.0": 0.0,
@@ -9233,36 +9263,36 @@
           "rolling_zscore": {
             "by_multiplier": {
               "2.0": {
-                "detected": 0,
-                "detection_probability": 0.0,
-                "median_delay_months": null,
+                "detected": 4,
+                "detection_probability": 0.017857142857142856,
+                "median_delay_months": 3,
                 "trials": 224
               },
               "3.0": {
-                "detected": 1,
-                "detection_probability": 0.004464285714285714,
-                "median_delay_months": 4,
+                "detected": 14,
+                "detection_probability": 0.0625,
+                "median_delay_months": 3,
                 "trials": 224
               },
               "5.0": {
-                "detected": 6,
-                "detection_probability": 0.026785714285714284,
-                "median_delay_months": 4,
+                "detected": 81,
+                "detection_probability": 0.36160714285714285,
+                "median_delay_months": 2,
                 "trials": 224
               }
             },
-            "detection_probability": 0.010416666666666666,
+            "detection_probability": 0.14732142857142858,
             "detection_probability_ci": [
-              0.004310344827586207,
-              0.017857142857142856
+              0.11217948717948718,
+              0.1824712643678161
             ],
-            "false_alarm_rate": 0.0,
-            "knob": 5.0,
-            "median_delay_months": 4,
+            "false_alarm_rate": 0.017857142857142856,
+            "knob": 3.5,
+            "median_delay_months": 2,
             "spike_false_change_rate": {
               "2.0": 0.0,
               "3.0": 0.0,
-              "5.0": 0.0
+              "5.0": 0.017857142857142856
             }
           }
         },
@@ -9311,22 +9341,22 @@
                 "trials": 224
               },
               "3.0": {
-                "detected": 5,
-                "detection_probability": 0.022321428571428572,
+                "detected": 2,
+                "detection_probability": 0.008928571428571428,
                 "median_delay_months": 0,
                 "trials": 224
               },
               "5.0": {
-                "detected": 82,
-                "detection_probability": 0.36607142857142855,
+                "detected": 47,
+                "detection_probability": 0.20982142857142858,
                 "median_delay_months": 0,
                 "trials": 224
               }
             },
-            "detection_probability": 0.12946428571428573,
+            "detection_probability": 0.07291666666666667,
             "detection_probability_ci": [
-              0.09666666666666666,
-              0.16374269005847952
+              0.05116959064327485,
+              0.09562841530054644
             ],
             "false_alarm_rate": 0.0,
             "knob": 20.0,
@@ -9340,32 +9370,32 @@
           "poisson_cusum": {
             "by_multiplier": {
               "2.0": {
-                "detected": 0,
-                "detection_probability": 0.0,
-                "median_delay_months": null,
+                "detected": 2,
+                "detection_probability": 0.008928571428571428,
+                "median_delay_months": 4,
                 "trials": 224
               },
               "3.0": {
-                "detected": 0,
-                "detection_probability": 0.0,
-                "median_delay_months": null,
+                "detected": 9,
+                "detection_probability": 0.04017857142857143,
+                "median_delay_months": 3,
                 "trials": 224
               },
               "5.0": {
-                "detected": 4,
-                "detection_probability": 0.017857142857142856,
-                "median_delay_months": 4,
+                "detected": 33,
+                "detection_probability": 0.14732142857142858,
+                "median_delay_months": 3,
                 "trials": 224
               }
             },
-            "detection_probability": 0.005952380952380952,
+            "detection_probability": 0.06547619047619048,
             "detection_probability_ci": [
-              0.0014124293785310734,
-              0.012121212121212121
+              0.03571428571428571,
+              0.10201149425287356
             ],
-            "false_alarm_rate": 0.0,
-            "knob": 40.0,
-            "median_delay_months": 4,
+            "false_alarm_rate": 0.017857142857142856,
+            "knob": 20.0,
+            "median_delay_months": 3,
             "spike_false_change_rate": {
               "2.0": 0.0,
               "3.0": 0.0,
@@ -9375,36 +9405,36 @@
           "rolling_zscore": {
             "by_multiplier": {
               "2.0": {
-                "detected": 0,
-                "detection_probability": 0.0,
-                "median_delay_months": null,
+                "detected": 4,
+                "detection_probability": 0.017857142857142856,
+                "median_delay_months": 3,
                 "trials": 224
               },
               "3.0": {
-                "detected": 1,
-                "detection_probability": 0.004464285714285714,
-                "median_delay_months": 4,
+                "detected": 14,
+                "detection_probability": 0.0625,
+                "median_delay_months": 3,
                 "trials": 224
               },
               "5.0": {
-                "detected": 6,
-                "detection_probability": 0.026785714285714284,
-                "median_delay_months": 4,
+                "detected": 81,
+                "detection_probability": 0.36160714285714285,
+                "median_delay_months": 2,
                 "trials": 224
               }
             },
-            "detection_probability": 0.010416666666666666,
+            "detection_probability": 0.14732142857142858,
             "detection_probability_ci": [
-              0.004310344827586207,
-              0.017857142857142856
+              0.11217948717948718,
+              0.1824712643678161
             ],
-            "false_alarm_rate": 0.0,
-            "knob": 5.0,
-            "median_delay_months": 4,
+            "false_alarm_rate": 0.017857142857142856,
+            "knob": 3.5,
+            "median_delay_months": 2,
             "spike_false_change_rate": {
               "2.0": 0.0,
               "3.0": 0.0,
-              "5.0": 0.0
+              "5.0": 0.017857142857142856
             }
           }
         },
@@ -9447,67 +9477,67 @@
           "poisson_bayes_factor": {
             "by_multiplier": {
               "2.0": {
-                "detected": 0,
-                "detection_probability": 0.0,
-                "median_delay_months": null,
+                "detected": 2,
+                "detection_probability": 0.008928571428571428,
+                "median_delay_months": 3,
                 "trials": 224
               },
               "3.0": {
-                "detected": 5,
-                "detection_probability": 0.022321428571428572,
-                "median_delay_months": 0,
+                "detected": 26,
+                "detection_probability": 0.11607142857142858,
+                "median_delay_months": 1,
                 "trials": 224
               },
               "5.0": {
-                "detected": 82,
-                "detection_probability": 0.36607142857142855,
+                "detected": 116,
+                "detection_probability": 0.5178571428571429,
                 "median_delay_months": 0,
                 "trials": 224
               }
             },
-            "detection_probability": 0.12946428571428573,
+            "detection_probability": 0.21428571428571427,
             "detection_probability_ci": [
-              0.09666666666666666,
-              0.16374269005847952
+              0.1712121212121212,
+              0.2568306010928962
             ],
-            "false_alarm_rate": 0.0,
-            "knob": 20.0,
+            "false_alarm_rate": 0.03571428571428571,
+            "knob": 10.0,
             "median_delay_months": 0,
             "spike_false_change_rate": {
-              "2.0": 0.0,
-              "3.0": 0.0,
-              "5.0": 0.0
+              "2.0": 0.008928571428571428,
+              "3.0": 0.008928571428571428,
+              "5.0": 0.013392857142857142
             }
           },
           "poisson_cusum": {
             "by_multiplier": {
               "2.0": {
-                "detected": 0,
-                "detection_probability": 0.0,
-                "median_delay_months": null,
+                "detected": 2,
+                "detection_probability": 0.008928571428571428,
+                "median_delay_months": 4,
                 "trials": 224
               },
               "3.0": {
-                "detected": 0,
-                "detection_probability": 0.0,
-                "median_delay_months": null,
+                "detected": 9,
+                "detection_probability": 0.04017857142857143,
+                "median_delay_months": 3,
                 "trials": 224
               },
               "5.0": {
-                "detected": 4,
-                "detection_probability": 0.017857142857142856,
-                "median_delay_months": 4,
+                "detected": 33,
+                "detection_probability": 0.14732142857142858,
+                "median_delay_months": 3,
                 "trials": 224
               }
             },
-            "detection_probability": 0.005952380952380952,
+            "detection_probability": 0.06547619047619048,
             "detection_probability_ci": [
-              0.0014124293785310734,
-              0.012121212121212121
+              0.03571428571428571,
+              0.10201149425287356
             ],
-            "false_alarm_rate": 0.0,
-            "knob": 40.0,
-            "median_delay_months": 4,
+            "false_alarm_rate": 0.017857142857142856,
+            "knob": 20.0,
+            "median_delay_months": 3,
             "spike_false_change_rate": {
               "2.0": 0.0,
               "3.0": 0.0,
@@ -9517,36 +9547,36 @@
           "rolling_zscore": {
             "by_multiplier": {
               "2.0": {
-                "detected": 0,
-                "detection_probability": 0.0,
-                "median_delay_months": null,
-                "trials": 224
-              },
-              "3.0": {
                 "detected": 4,
                 "detection_probability": 0.017857142857142856,
                 "median_delay_months": 3,
                 "trials": 224
               },
-              "5.0": {
-                "detected": 17,
-                "detection_probability": 0.07589285714285714,
+              "3.0": {
+                "detected": 14,
+                "detection_probability": 0.0625,
                 "median_delay_months": 3,
+                "trials": 224
+              },
+              "5.0": {
+                "detected": 81,
+                "detection_probability": 0.36160714285714285,
+                "median_delay_months": 2,
                 "trials": 224
               }
             },
-            "detection_probability": 0.03125,
+            "detection_probability": 0.14732142857142858,
             "detection_probability_ci": [
-              0.018518518518518517,
-              0.04597701149425287
+              0.11217948717948718,
+              0.1824712643678161
             ],
-            "false_alarm_rate": 0.03571428571428571,
-            "knob": 4.0,
-            "median_delay_months": 3,
+            "false_alarm_rate": 0.017857142857142856,
+            "knob": 3.5,
+            "median_delay_months": 2,
             "spike_false_change_rate": {
               "2.0": 0.0,
               "3.0": 0.0,
-              "5.0": 0.004464285714285714
+              "5.0": 0.017857142857142856
             }
           }
         }
@@ -9554,6 +9584,7 @@
       "horizon_bins": 4,
       "level": "track_quarterly",
       "min_baseline_bins": 8,
+      "onset_tolerance_bins": 0,
       "onsets_used": [
         12,
         18,
@@ -9566,11 +9597,11 @@
           "poisson_bayes_factor": {
             "baseline_knob": 10.0,
             "candidate_knob": 20.0,
-            "ci_high": 0.1398305084745763,
-            "ci_low": 0.06790123456790123,
+            "ci_high": 0.07471264367816091,
+            "ci_low": 0.019005847953216373,
             "clusters": 48,
             "confidence": 0.95,
-            "difference": 0.10416666666666669,
+            "difference": 0.04761904761904762,
             "excludes_zero": true,
             "interpretation": "entity-clustered paired percentile interval; the comparison is paired trial-by-trial because every detector sees the identical injected series",
             "n": 672,
@@ -9579,12 +9610,12 @@
           },
           "poisson_cusum": {
             "baseline_knob": 10.0,
-            "candidate_knob": 40.0,
-            "ci_high": -0.00423728813559322,
-            "ci_low": -0.037037037037037035,
+            "candidate_knob": 20.0,
+            "ci_high": 0.08018867924528303,
+            "ci_low": 0.004545454545454547,
             "clusters": 48,
             "confidence": 0.95,
-            "difference": -0.019345238095238096,
+            "difference": 0.04017857142857143,
             "excludes_zero": true,
             "interpretation": "entity-clustered paired percentile interval; the comparison is paired trial-by-trial because every detector sees the identical injected series",
             "n": 672,
@@ -9593,13 +9624,13 @@
           },
           "rolling_zscore": {
             "baseline_knob": 10.0,
-            "candidate_knob": 5.0,
-            "ci_high": 0.0,
-            "ci_low": -0.03273809523809524,
+            "candidate_knob": 3.5,
+            "ci_high": 0.1638418079096045,
+            "ci_low": 0.08018867924528303,
             "clusters": 48,
             "confidence": 0.95,
-            "difference": -0.014880952380952382,
-            "excludes_zero": false,
+            "difference": 0.12202380952380953,
+            "excludes_zero": true,
             "interpretation": "entity-clustered paired percentile interval; the comparison is paired trial-by-trial because every detector sees the identical injected series",
             "n": 672,
             "resamples": 2000,
@@ -9610,8 +9641,8 @@
         "picked_knobs": {
           "naive_multiplier": 10.0,
           "poisson_bayes_factor": 20.0,
-          "poisson_cusum": 40.0,
-          "rolling_zscore": 5.0
+          "poisson_cusum": 20.0,
+          "rolling_zscore": 3.5
         }
       },
       "shift_trials": 672,
@@ -9623,6 +9654,7 @@
       "cells_total": 101,
       "detectors": {
         "naive_multiplier": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -9943,6 +9975,7 @@
           "knob_name": "multiplier"
         },
         "poisson_bayes_factor": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -10228,6 +10261,7 @@
           "knob_name": "threshold"
         },
         "poisson_cusum": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -10548,6 +10582,7 @@
           "knob_name": "threshold"
         },
         "rolling_zscore": {
+          "calendar_memory_scaling": {},
           "frontier": [
             {
               "by_multiplier": {
@@ -11443,6 +11478,7 @@
       "horizon_bins": 12,
       "level": "track_stable_codes",
       "min_baseline_bins": 24,
+      "onset_tolerance_bins": 1,
       "onsets_used": [
         36,
         54,

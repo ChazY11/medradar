@@ -59,3 +59,7 @@ split was degenerate. Details and all numbers: `cycle2_2026-11-02.md` and
 | R20 | Removing 15.01% Special 510(k)s leaves the naive detector best and makes likelihood detectors worse: the monthly comparison is not maintenance noise | confirms R15 locally | `benchmark.json` §track_no_special |
 | R21 | Masking product codes first seen 2022+ changes nothing material: taxonomy churn is concentrated, not global | confirms R15 locally | `benchmark.json` §track_stable_codes |
 | R22 | Detector ranking is resolution-dependent on this lane; the mechanism (expected count per bin) is a hypothesis awaiting a bin-width sweep | finding | `research/RESULTS/cycle3b_correction_2026-11-02.md` |
+| R23 | Bin-width sweep (1/2/3/4/6 months) puts the resolution crossover at 2 months (~0.42 expected events/bin) | finding | `experiments/detect_v1/bin_sweep.json` |
+| R24 | Above the crossover the winning detector is NOT stable (alternates z-score / CUSUM): the best detector is not identifiable at this sample size | **negative / identifiability limit** | `bin_sweep.json` §crossover |
+| R25 | Detector memory was parameterised in bins, so cycle 3b's quarterly winner was confounded: with calendar-matched memory the naive detector still collapses but the winner is the rolling z-score, not the Bayes factor | **correction to R19** | `research/RESULTS/cycle3c_sweep_2026-11-02.md` |
+| R26 | The matched rate-ratio test is resolution-fragile: it wins only at the finest resolution and collapses at the next width | finding | `bin_sweep.json` |
