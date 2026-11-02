@@ -631,4 +631,31 @@ tasks:
       Ramp recall rises with density across all tested units (0.117 entity -> 0.142 company -> 0.300 hiring ->
       0.396 track), an observational gradient that needs a controlled down-sampling test to be established.
 
+  - id: B-063
+    layer: detect
+    priority: P1
+    title: Controlled density experiment (thin dense track series)
+    status: done
+    owner: lead
+    depends_on: [B-062]
+    acceptance: >
+      Binomial thinning of the 38 dense track series at factors 1,2,5,10,20, then identical injection,
+      detector and classifier. Ramp recall 0.440 -> 0.415 -> 0.300 -> 0.318 -> 0.222 as density falls
+      twentyfold; Spearman rho 0.882 (passes its floor) but strict monotonicity failed on a 0.018 inversion
+      and dense/sparse intervals overlapped by 0.023. Verdict as pre-registered: NOT SUPPORTED. Recorded as a
+      strength of the pre-registration and a defect of its brittleness; scaling stays suggestive.
+
+  - id: B-064
+    layer: detect
+    priority: P1
+    title: Confirmation of the density scaling with a robust criterion and fresh draws
+    status: todo
+    owner: lead
+    depends_on: [B-063]
+    acceptance: >
+      Pre-register a criterion in terms of rank correlation (>=0.8) AND dense-to-sparse effect size (dense ramp
+      recall >= 2x sparse) with no strict-monotonicity clause, then confirm on FRESH seeds and a FRESH thinning
+      draw. If it confirms, the scaling may be reported as an experimentally established density dependence; if
+      not, it is closed as suggestive only.
+
 

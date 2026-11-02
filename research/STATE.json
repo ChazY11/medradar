@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T16:40:00+08:00",
+  "updated_at": "2026-11-03T17:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "three_unit_validation_with_density_gradient",
-  "cycle": 31,
+  "phase": "density_experiment_failed_its_bar",
+  "cycle": 32,
   "last_completed_cycle": {
-    "cycle": 29,
-    "name": "market_aggregate_validation",
+    "cycle": 30,
+    "name": "controlled_density_experiment",
     "branch": "research/change-detection-v1",
-    "report": "experiments/b026/validate_track_domain.json",
-    "summary": "research/RESULTS/cycle29_track_domain_2026-11-03.md",
-    "verdict": "third-unit validation CONSISTENT at market-aggregate level (297 alerts; balanced accuracy 0.559, sustained precision 0.889 vs 0.690 base rate). Ramp recall rises with density across units (0.117 -> 0.142 -> 0.300 -> 0.396), an observational gradient needing a controlled down-sampling test"
+    "report": "experiments/b026/density_experiment.json",
+    "summary": "research/RESULTS/cycle30_density_2026-11-03.md",
+    "verdict": "controlled thinning test did NOT clear its pre-declared bar: ramp recall fell 0.440 -> 0.222 as density fell twentyfold with rank correlation 0.882, but strict monotonicity broke by 0.018 and dense/sparse intervals overlapped by 0.023. Scaling stays suggestive; the brittle criterion is recorded as a defect of the pre-registration"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -164,7 +164,9 @@
     "GOVERN: the objective is checked mechanically and re-runnably (11 PASS, 0 FAIL, 1 N/A); a claim of progress no longer depends on a narrative",
     "UNDERSTAND: profiles now name the governing promotion policy version in their limits, and the promotion ledger carries a reviewer checklist for signers",
     "DETECT: the promotion rule is CONSISTENT at market-aggregate level too (297 alerts; balanced accuracy 0.559, sustained precision 0.889 vs a 0.690 base rate) - it now holds across three units and a ~1000x density range",
-    "DETECT: ramp recall rises monotonically with series density across units (0.117 entity -> 0.142 company -> 0.300 hiring -> 0.396 track): the first coherent scaling relationship found, and an observational one that needs a controlled down-sampling test"
+    "DETECT: ramp recall rises monotonically with series density across units (0.117 entity -> 0.142 company -> 0.300 hiring -> 0.396 track): the first coherent scaling relationship found, and an observational one that needs a controlled down-sampling test",
+    "DETECT: the controlled density experiment FAILED its pre-declared bar (strict monotonicity broke by 0.018; intervals overlapped by 0.023) even though ramp recall halved with density and rho = 0.882 - the scaling remains suggestive, not established",
+    "METHOD: a pre-registration can be too brittle - requiring strict monotonicity from five noisy point estimates voids a large, consistent effect on a 0.018 wobble; the criterion, not the data, was the problem and is recorded as such"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -182,10 +184,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "controlled density test: down-sample a dense track series to sparse counts and re-run the classifier, converting the gradient from observational to experimental",
-    "add the third-unit result and the density gradient to the paper's section 4.9",
+    "B-064: robust-criterion confirmation of the density scaling on fresh seeds and a fresh thinning draw",
+    "keep the paper's density claim marked suggestive until B-064 reports",
     "wire the audit into the round-end routine",
-    "consider a second paper focused on the measurement rules and the density scaling"
+    "consider a second paper focused on the measurement rules"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -979,6 +981,28 @@
         }
       ],
       "status": "observational gradient - density and unit type vary together; needs a controlled down-sampling test before being called a law"
+    },
+    "density_experiment": {
+      "artifact": "experiments/b026/density_experiment.json",
+      "decision": "research/DECISIONS.md D-058 (pre-registration), D-059 (outcome)",
+      "design": "binomial thinning of 38 dense track series at factors 1,2,5,10,20",
+      "ramp_recall": {
+        "1": 0.44,
+        "2": 0.415,
+        "5": 0.3,
+        "10": 0.318,
+        "20": 0.222
+      },
+      "spearman_rho": 0.882,
+      "precision_range": [
+        0.885,
+        0.927
+      ],
+      "monotone": false,
+      "intervals_disjoint": false,
+      "verdict": "NOT SUPPORTED as pre-registered",
+      "reading": "effect size halves with density and rank correlation is 0.88, but two of three gates fail narrowly; scaling stays suggestive, not established",
+      "preregistration_defect": "strict monotonicity across five noisy point estimates is brittle; a rank-correlation plus effect-size criterion is the right test (B-064)"
     }
   },
   "observe_layer": {

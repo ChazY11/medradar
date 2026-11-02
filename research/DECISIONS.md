@@ -2236,3 +2236,92 @@ which this run did not do.
 
 **Policy unchanged.** The deployed detector and two-month window remain as fixed in D-045/D-049; this run
 validates them elsewhere, it does not re-tune them.
+
+---
+
+## D-058 — Pre-registration: controlled density experiment for the ramp scaling (B-063)
+
+**Date:** 2026-11-03. **Status:** accepted; written before `experiments/b026/density_experiment.py` was first
+run.
+
+**What is being tested.** D-057 found ramp recall rising with series density across units (0.117 entity → 0.142
+company → 0.300 hiring → 0.396 track). That is **observational**: density and unit type vary together, so the
+association could be produced by the unit rather than by the counts. This experiment holds the unit fixed and
+varies density artificially.
+
+**Design, fixed now.**
+
+* **Base series.** The 38 technology-track monthly series (dense, median 270 events).
+* **Thinning.** Each series is thinned by binomial down-sampling at factors **τ ∈ {1, 2, 5, 10, 20}**: each
+  monthly count is replaced by a Binomial(count, 1/τ) draw. This preserves the temporal shape while reducing
+  counts, which is exactly the manipulation the observational comparison lacked.
+* **Injection and classification.** Identical to every previous run: three shapes at three times the **thinned**
+  baseline rate, injected after thinning; detection and classification use the same detector and the same
+  two-month post-alert window.
+* **Fixed seeds.** Seed 6161 for the thinning draws and the origins, three origins per track per factor.
+* **Estimands.** Per factor: 3×3 confusion, balanced accuracy, sustained-change precision, **ramp recall**,
+  achieved alerts. Bootstrap resampling tracks (2,000 replications).
+
+**Pre-declared decision.**
+
+* **EXPERIMENTALLY SUPPORTED** iff ramp recall is **monotonically non-decreasing** in density with
+  Spearman ρ ≥ 0.8 across the five factors **and** the ramp-recall interval at τ = 1 does not overlap the
+  interval at τ = 20.
+* **NOT SUPPORTED** otherwise, in which case the cross-unit gradient is recorded as a unit effect, not a
+  density effect.
+
+**What even support would mean.** That, holding the taxonomy and the unit fixed, ramp recoverability is limited
+by counts. It would justify stating a **density threshold below which ramps must not be reported** — a
+practical rule for the profile — and would not license extrapolation to another corpus.
+
+**What it would not mean.** That denser data makes the classifier better at everything (spike and level are
+already near ceiling), or that the scaling law generalises beyond binomial thinning of this taxonomy.
+
+---
+
+## D-059 — B-063 outcome: the controlled density experiment did NOT clear its pre-declared bar
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-063. **Negative against the pre-registered criterion.**
+
+**What ran.** The D-058 design: the 38 dense track series thinned by binomial down-sampling at τ ∈ {1, 2, 5, 10,
+20}, then the same shapes, detector and classifier. Seed 6161; three origins per track per factor; 135–276
+scored alerts per factor.
+
+| τ | density (events/series-month) | ramp recall | 95 % CI | sustained precision |
+|---:|---:|---:|---|---:|
+| 1 | 4.16 | **0.440** | 0.333–0.556 | 0.926 |
+| 2 | 2.08 | 0.415 | 0.295–0.532 | 0.889 |
+| 5 | 0.84 | 0.300 | 0.200–0.407 | 0.927 |
+| 10 | 0.43 | 0.318 | 0.182–0.456 | 0.893 |
+| 20 | 0.21 | **0.222** | 0.106–0.356 | 0.885 |
+
+**The pre-declared decision fails on two of its three criteria.**
+
+* Spearman ρ between density and ramp recall = **0.882** (floor 0.8) → pass
+* **strict monotonicity: FAILS**, by one inversion: τ = 5 (0.300) sits 0.018 *below* τ = 10 (0.318)
+* **interval separation: FAILS**, by an overlap of 0.023 between the dense interval's lower bound (0.333) and
+  the sparse interval's upper bound (0.356)
+
+**Verdict as pre-registered: NOT SUPPORTED.** By the rule fixed before the run, the cross-unit gradient is
+recorded as **not established as a density effect**. That is the reported result and it is not being revised
+after the fact.
+
+**But the reading has to be exact, because "not supported" is not "disconfirmed".** The point estimate roughly
+**halves** (0.440 → 0.222) as density falls twentyfold, with ρ = 0.88 and precision stable across every factor
+(0.885–0.927). The two failures are narrow: an 0.018 inversion between adjacent factors whose intervals overlap
+almost entirely, and a 0.023 overlap of interval edges. What the experiment establishes is that the **effect size
+is large and consistent in direction while the evidence is insufficient to certify strict monotonicity at this
+sample size** — 50 to 100 ramp cases per factor.
+
+**The pre-registration's own flaw.** Requiring *strict* monotonicity across five noisy point estimates is a
+brittle gate: a single 0.018 wobble between adjacent factors voids the whole claim even when ρ = 0.88. A better
+criterion would be stated in terms of the rank correlation and the dense-to-sparse effect size. Recording this
+as a defect of my own pre-registration, not of the data.
+
+**What happens next (B-064).** A revised criterion will be pre-registered — rank correlation ≥ 0.8 **and** dense
+ramp recall at least twice the sparse value, both required, with no strict-monotonicity clause — and confirmed on
+**fresh seeds and a fresh thinning draw**. Until that runs, the scaling stays **suggestive**: the paper must not
+present it as established, and the profile keeps its per-unit measured limits rather than a density threshold.
+
+**Policy unchanged.** No detector, window or promotion rule changes on the basis of a result that failed its own
+pre-registered bar.

@@ -115,6 +115,10 @@ CLAIMS = [
     ("Y2", "market-aggregate sustained precision", "0.889", "research/DECISIONS.md", "0.889"),
     ("Y3", "market-aggregate ramp recall", "0.396", "research/DECISIONS.md", "0.396"),
     ("Y4", "tracks eligible at market-aggregate level", "38", "research/DECISIONS.md", "38 tracks, all eligible"),
+    # ---- density experiment (cycle 30)
+    ("Z1", "dense track ramp recall", "0.440", "research/DECISIONS.md", "0.440"),
+    ("Z2", "sparse track ramp recall", "0.222", "research/DECISIONS.md", "0.222"),
+    ("Z3", "density rank correlation", "0.882", "research/DECISIONS.md", "0.882"),
 ]
 
 

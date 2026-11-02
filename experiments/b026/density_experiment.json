@@ -1,0 +1,239 @@
+{
+  "decision": {
+    "dense_vs_sparse_intervals_disjoint": false,
+    "densities_by_factor": {
+      "1": 4.1572313135780625,
+      "10": 0.4252543122512163,
+      "2": 2.0849181777974346,
+      "20": 0.21340114993365766,
+      "5": 0.8356921716054843
+    },
+    "monotone_in_density": false,
+    "ramp_recalls_by_factor": {
+      "1": 0.43956043956043955,
+      "10": 0.3181818181818182,
+      "2": 0.4146341463414634,
+      "20": 0.2222222222222222,
+      "5": 0.3
+    },
+    "spearman_rho": 0.8817699453897965,
+    "supported": false,
+    "verdict": "NOT SUPPORTED - the cross-unit gradient is a unit effect, not a density effect"
+  },
+  "design": {
+    "decision": "research/DECISIONS.md D-058 (pre-registered)",
+    "factors": [
+      1,
+      2,
+      5,
+      10,
+      20
+    ],
+    "method": "binomial thinning of dense track series, then inject and classify as before",
+    "origins_per_track": 3,
+    "rho_floor": 0.8,
+    "seed": 6161
+  },
+  "factors": {
+    "1": {
+      "alerts": 276,
+      "confusion": {
+        "level": {
+          "level": 59,
+          "ramp": 54,
+          "spike": 0
+        },
+        "ramp": {
+          "level": 48,
+          "ramp": 40,
+          "spike": 3
+        },
+        "spike": {
+          "level": 8,
+          "ramp": 8,
+          "spike": 56
+        }
+      },
+      "density": {
+        "mean_events_per_series_month": 4.1572313135780625,
+        "total_events": 18799
+      },
+      "metrics": {
+        "balanced_accuracy": 0.579820703714509,
+        "recalls": {
+          "level": 0.5221238938053098,
+          "ramp": 0.43956043956043955,
+          "spike": 0.7777777777777778
+        },
+        "sustained_base_rate": 0.7391304347826086,
+        "sustained_precision": 0.9262672811059908,
+        "sustained_recall": 0.9852941176470589
+      },
+      "ramp_recall_ci": [
+        0.3333333333333333,
+        0.5555555555555556
+      ],
+      "scored": 276
+    },
+    "10": {
+      "alerts": 195,
+      "confusion": {
+        "level": {
+          "level": 47,
+          "ramp": 25,
+          "spike": 0
+        },
+        "ramp": {
+          "level": 41,
+          "ramp": 21,
+          "spike": 4
+        },
+        "spike": {
+          "level": 8,
+          "ramp": 8,
+          "spike": 41
+        }
+      },
+      "density": {
+        "mean_events_per_series_month": 0.4252543122512163,
+        "total_events": 1923
+      },
+      "metrics": {
+        "balanced_accuracy": 0.5634192805245437,
+        "recalls": {
+          "level": 0.6527777777777778,
+          "ramp": 0.3181818181818182,
+          "spike": 0.7192982456140351
+        },
+        "sustained_base_rate": 0.7076923076923077,
+        "sustained_precision": 0.8933333333333333,
+        "sustained_recall": 0.9710144927536232
+      },
+      "ramp_recall_ci": [
+        0.18181818181818182,
+        0.45588235294117646
+      ],
+      "scored": 195
+    },
+    "2": {
+      "alerts": 258,
+      "confusion": {
+        "level": {
+          "level": 70,
+          "ramp": 31,
+          "spike": 0
+        },
+        "ramp": {
+          "level": 42,
+          "ramp": 34,
+          "spike": 6
+        },
+        "spike": {
+          "level": 14,
+          "ramp": 8,
+          "spike": 53
+        }
+      },
+      "density": {
+        "mean_events_per_series_month": 2.0849181777974346,
+        "total_events": 9428
+      },
+      "metrics": {
+        "balanced_accuracy": 0.6047900399796077,
+        "recalls": {
+          "level": 0.693069306930693,
+          "ramp": 0.4146341463414634,
+          "spike": 0.7066666666666667
+        },
+        "sustained_base_rate": 0.7093023255813954,
+        "sustained_precision": 0.8894472361809045,
+        "sustained_recall": 0.9672131147540983
+      },
+      "ramp_recall_ci": [
+        0.2948717948717949,
+        0.5324675324675324
+      ],
+      "scored": 258
+    },
+    "20": {
+      "alerts": 135,
+      "confusion": {
+        "level": {
+          "level": 38,
+          "ramp": 10,
+          "spike": 0
+        },
+        "ramp": {
+          "level": 34,
+          "ramp": 10,
+          "spike": 1
+        },
+        "spike": {
+          "level": 5,
+          "ramp": 7,
+          "spike": 30
+        }
+      },
+      "density": {
+        "mean_events_per_series_month": 0.21340114993365766,
+        "total_events": 965
+      },
+      "metrics": {
+        "balanced_accuracy": 0.576058201058201,
+        "recalls": {
+          "level": 0.7916666666666666,
+          "ramp": 0.2222222222222222,
+          "spike": 0.7142857142857143
+        },
+        "sustained_base_rate": 0.6888888888888889,
+        "sustained_precision": 0.8846153846153846,
+        "sustained_recall": 0.989247311827957
+      },
+      "ramp_recall_ci": [
+        0.10638297872340426,
+        0.35555555555555557
+      ],
+      "scored": 135
+    },
+    "5": {
+      "alerts": 238,
+      "confusion": {
+        "level": {
+          "level": 64,
+          "ramp": 25,
+          "spike": 0
+        },
+        "ramp": {
+          "level": 52,
+          "ramp": 24,
+          "spike": 4
+        },
+        "spike": {
+          "level": 12,
+          "ramp": 1,
+          "spike": 56
+        }
+      },
+      "density": {
+        "mean_events_per_series_month": 0.8356921716054843,
+        "total_events": 3779
+      },
+      "metrics": {
+        "balanced_accuracy": 0.6102317754980188,
+        "recalls": {
+          "level": 0.7191011235955056,
+          "ramp": 0.3,
+          "spike": 0.8115942028985508
+        },
+        "sustained_base_rate": 0.7100840336134454,
+        "sustained_precision": 0.9269662921348315,
+        "sustained_recall": 0.9763313609467456
+      },
+      "ramp_recall_ci": [
+        0.2,
+        0.4074074074074074
+      ],
+      "scored": 238
+    }
+  }
+}
