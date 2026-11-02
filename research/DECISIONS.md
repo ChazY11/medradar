@@ -955,3 +955,61 @@ like a result and is not one.
 **Honest position.** The hiring lane exists, is lawful, is historical, and is currently too thin for
 the company-level lag question it was collected for. B-030 therefore moves to `blocked` with a measured
 reason and a concrete unblock path, in the same way B-033 did before B-040 resolved it by collection.
+
+---
+
+## D-030 — Correction: cycle 9's "coverage too thin" was partly a collector bug; coverage is 6 firms, and the lag test is still unrun
+
+**Date:** 2026-11-02. **Status:** accepted. **Corrects** the coverage conclusion of D-029.
+
+### The defect
+
+Cycle 9's panel builder combined `collapse=urlkey` with `limit` + `page` pagination. On this CDX
+endpoint that combination **does not page** — every query silently returned one capped page — so the
+collector saw a fraction of the archive and I concluded that archive depth was the binding
+constraint. That conclusion was an artefact of my own code, not a property of the source.
+
+A direct measurement with a single generous request per host (`measure_host_depth.py`) shows the same
+hosts hold far more:
+
+| host | posting URLs | months | months with ≥5 postings |
+|---|---:|---:|---:|
+| `jobs.bostonscientific.com/job/*` | 4,999 | 123 | 100 |
+| `jobs.medtronic.com/job/*` | 4,984 | 46 | 29 |
+| `jobs.bd.com/job/*` | 4,672 | 66 | 44 |
+| `careers.stryker.com/*` | 3,878 | 39 | 28 |
+| `abbott.taleo.net/careersection/*` | 579 | 34 | 15 |
+| `careers.intuitive.com/job/*` | 532 | 18 | 8 |
+| `dexcom.wd1.myworkdayjobs.com/*` | 767 | 31 | 16 |
+
+### Corrected coverage
+
+The rebuilt panel (`hiring_panel_v2.py`, single request per host, truncation recorded rather than
+hidden) covers **11 companies with posting URLs**, 6 with ≥24 months and 9 with ≥50 postings — against
+2 usable companies in cycle 9. Medtronic, BD, Boston Scientific and Stryker each hit the per-host cap,
+so their series are lower bounds.
+
+### The lag test is still not a result
+
+Under the **unchanged** pre-declared floor, **3 companies** are usable (`bd`, `boston_scientific`,
+`stryker`). The pre-registered lag profile is committed (`lag_analysis_v2.json`); every value sits
+inside its null band and the uniformly negative sign is uninterpretable because the proxy counts only
+archive-captured postings, so capture gaps can align with regulatory gaps. This remains an **unrun
+question with working machinery** — not a null result about hiring.
+
+### What this changes, and what it does not
+
+* **Changes:** the blocker is no longer "archive depth". It is **statistical power** (3 companies) plus
+  **five firms with no discovered board** (Philips, Dräger, Mindray, Zimmer Biomet, Masimo — two of
+  the five mandated focus companies among them).
+* **Does not change:** the source remains lawful, keyless and genuinely historical; the association
+  question remains open; and the discipline of not loosening the usability floor after seeing the
+  coverage stands (the floor was applied unchanged to the corrected panel).
+
+### Lesson recorded for the programme
+
+A negative conclusion about data availability is as falsifiable as a positive scientific claim, and
+the same discipline applies: when a measurement says "the data is too thin", the measurement itself
+must be checked before the conclusion is carried forward. This is the second time this cycle family
+has had to retract its own result (D-025 was the first), and both times the retraction came from
+testing the claim against an alternative explanation rather than from new data.

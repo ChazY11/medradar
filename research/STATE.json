@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-02T19:40:00+08:00",
+  "updated_at": "2026-11-02T21:10:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "data_acquisition_blocked_on_coverage",
-  "cycle": 11,
+  "phase": "hiring_coverage_corrected",
+  "cycle": 12,
   "last_completed_cycle": {
-    "cycle": 9,
-    "name": "hiring_lane_feasibility",
+    "cycle": 10,
+    "name": "hiring_coverage_correction",
     "branch": "research/change-detection-v1",
     "report": "experiments/b030/REPORT.md",
-    "summary": "research/RESULTS/cycle9_hiring_2026-11-02.md",
-    "verdict": "a lawful, keyless, genuinely historical hiring proxy was built from the Wayback CDX archive, but only 2 of 16 probed firms pass the pre-declared usability floor, so the company-level lag question is unrun rather than answered"
+    "summary": "research/RESULTS/cycle10_hiring_v2_2026-11-02.md",
+    "verdict": "cycle 9's 'coverage too thin' was partly a collector bug (collapse=urlkey + limit/page does not page); corrected coverage is 11 companies with posting URLs and 6 with >=24 months. The pre-registered lag test is still UNRUN (3 usable companies), not answered."
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -115,8 +115,11 @@
     "OBSERVE: holdout power for entry clustering is 0.25/0.52/0.95 at 30/50/70% wave concentration, so the null excludes strong clustering only",
     "METHOD: a holdout cannot confirm a hypothesis that was nominated with its help; nomination and confirmation must use disjoint data",
     "OBSERVE: a lawful, keyless, genuinely historical hiring proxy exists (Wayback CDX index) and a bounded collector builds a monthly panel from it",
-    "OBSERVE: hiring coverage is thin - 2 of 16 probed device firms pass the pre-declared usability floor; the company-level hiring/regulatory lag question is unrun, not answered",
-    "ACCESS: PatentsView bulk is 403 (key required) and the Common Crawl index returns persistent 504"
+    "ACCESS: PatentsView bulk is 403 (key required) and the Common Crawl index returns persistent 504",
+    "OBSERVE: the Wayback hiring lane covers 11 of 16 probed device firms with posting URLs and 6 with >=24 months (Boston Scientific 4,999 postings/123 months; Stryker 8,839/90; Medtronic 5,107/60; BD 4,709/68) - cycle 9's 'coverage too thin' was a collector pagination bug",
+    "OBSERVE: the pre-registered hiring/regulatory lag test remains UNRUN - 3 usable companies, all values inside the null band, negative sign uninterpretable (capture-gap confound)",
+    "OBSERVE: 5 probed firms still have no archived board (Philips, Draeger, Mindray, Zimmer Biomet, Masimo); 4 firms hit the per-host cap so their series are lower bounds",
+    "METHOD: a negative conclusion about data availability is as falsifiable as a positive claim; the measurement must be checked before the conclusion is carried forward"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -128,16 +131,16 @@
     "bulk lane availability = decision_date + 14 days (estimated), date-level not first-publication"
   ],
   "blockers": [
-    "hiring lag question: coverage too thin (B-030 blocked; unblock via B-047 career-domain mapping)",
+    "hiring lag question: statistical power (3 usable companies) and board discovery for 5 firms (B-048)",
     "independent change confirmation: trial lane exists but is too sparse at cell level (cycle 5)",
     "patents: no key and no accessible bulk route (B-031)",
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "B-047: per-company career-domain mapping + platform-change audit + CDX deep-paging fix, then run the pre-registered hiring lag test",
-    "B-027: company technology-profile engine (Understand layer; does not depend on a positive clustering or hiring result)",
-    "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there",
-    "B-031: revisit patents only if an accessible bulk route is identified"
+    "B-048: career-board discovery for the five uncovered firms (Philips, Draeger, Mindray, Zimmer Biomet, Masimo), two of them mandated focus companies",
+    "B-027: company technology-profile engine (Understand layer; independent of a positive association result)",
+    "re-run the pre-registered lag test only when enough firms clear the unchanged floor",
+    "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -353,25 +356,43 @@
     "why_stop": "three cycles of re-specifying clustering tests on one sparse filing stream is the unlimited algorithm trial-and-error the mission forbids; the limit is information content, not the statistic"
   },
   "hiring_lane": {
-    "status": "FEASIBILITY PARTIAL - source obtained, coverage too thin",
+    "status": "CORRECTED COVERAGE - lag question still unrun (power, not depth)",
     "source": "Wayback Machine CDX API (public archive, index only, keyless)",
-    "rejected_routes": {
-      "patentsview_bulk_s3": "403 Forbidden - credentials required",
-      "common_crawl_index": "persistent 504 Gateway Time-out"
-    },
-    "proxy": "distinct job-posting URLs whose earliest archive capture falls in a month",
-    "panel": "experiments/b030/hiring_panel.json",
-    "coverage": {
-      "firms_probed": 16,
-      "firms_with_postings": 6,
-      "firms_usable": 2,
-      "usable_keys": [
+    "collector_bug": "cycle 9 combined collapse=urlkey with limit+page pagination, which does not page on this endpoint, so most of the archive was invisible and the conclusion 'archive depth is the limit' was an artefact",
+    "panel_v2": "experiments/b030/hiring_panel_v2.json",
+    "coverage_v2": {
+      "companies_probed": 16,
+      "companies_with_postings": 11,
+      "companies_with_24plus_months": 6,
+      "companies_with_50plus_postings": 9,
+      "truncated_hosts": [
+        "medtronic",
         "bd",
-        "boston_scientific"
+        "boston_scientific",
+        "stryker"
+      ],
+      "no_coverage": [
+        "philips",
+        "draeger",
+        "mindray",
+        "zimmer_biomet",
+        "masimo"
       ]
     },
-    "why_not_a_result": "the pre-registered lag test rests on 2 companies and the proxy's sign is uninterpretable because capture gaps and regulatory gaps can align",
-    "deliberately_not_done": "the usability floor was NOT loosened to raise the sample - that is the specification search closed by D-027",
-    "unblock_path": "B-047: per-company career-domain mapping + platform-change audit + CDX deep-paging fix"
+    "depth_evidence": "experiments/b030/host_depth.json",
+    "lag_test": {
+      "panel": "experiments/b030/lag_analysis_v2.json",
+      "usable_companies": [
+        "bd",
+        "boston_scientific",
+        "stryker"
+      ],
+      "result": "every value inside the null band; sign uninterpretable; UNRUN not null"
+    },
+    "remaining_blockers": [
+      "statistical power (3 usable companies)",
+      "board discovery for 5 firms incl. 2 mandated focus companies",
+      "platform-migration audit before any level-shift claim"
+    ]
   }
 }
