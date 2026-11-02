@@ -1980,3 +1980,86 @@ counting rate (best recall 0.229 over windows of 1–6 months)" and "the alert d
 quarterly resolution only; at monthly resolution the same detector ranks last". A profile that cannot state
 these is not allowed to present its alerts as more than they are, and two tests assert both strings are
 present in the JSON and in the rendered Markdown.
+
+---
+
+## D-052 — Pre-registration: second-domain validation of the promotion rule on the hiring lane (B-059)
+
+**Date:** 2026-11-03. **Status:** accepted; written before `experiments/b026/validate_hiring_domain.py` was
+first run.
+
+**Why.** The promotion rule has been confirmed twice — on company cells and on legal-entity cells — but both
+are the **same corpus and the same recording process** (FDA premarket submissions). The obvious remaining
+threat is that the rule is a property of that corpus's counting behaviour. A second domain is required before
+any portability claim.
+
+**Domain chosen, and why it was measured first.** Two candidate independent lanes were inspected:
+
+| lane | series available | cells meeting the unchanged floors |
+|---|---|---|
+| ClinicalTrials.gov device trials | 180 company-track cells | **5** |
+| archived job postings (hiring) | 13 company series | **7** |
+
+The trial lane is too sparse to test anything; the hiring lane provides **seven company-level monthly posting
+series** with rates from 16.6 to 98.2 postings per month. That is the domain used, and its size is a **known
+power limitation declared now**, not after looking at the result.
+
+**Fixed design.** Same detector (three-month rate ≥ twice the eighteen-month baseline), same classifier (the
+two months after the alert, alert month excluded), same shapes and the same 3× elevation, three fresh origins
+per series, seed 9091. Posting counts are mapped onto the same 119-month window as the regulatory lane so the
+injection geometry is identical.
+
+**Estimands.** Confusion matrix over the three shapes, balanced accuracy, sustained-change precision and
+recall; company bootstrap (2,000 replications) — with seven companies the intervals will be wide, which is
+reported rather than hidden.
+
+**Pre-declared reading.**
+
+* **CONSISTENT** iff sustained-change precision ≥ 0.85 **and** balanced accuracy ≥ 0.50.
+* **NOT CONSISTENT** otherwise, in which case the rule is recorded as corpus-specific and every downstream
+  claim about portability is withdrawn.
+* **UNDERPOWERED** is reported explicitly if the bootstrap precision interval is wider than 0.30, in which
+  case a point estimate is not allowed to be described as either consistent or inconsistent.
+
+**What it cannot establish.** That the rule transfers to a third domain; that posting-flow counts behave like
+filing counts in general; or anything about which domain is "better". It establishes only whether the rule
+survives a change of recording process with seven series and the power that implies.
+
+---
+
+## D-053 — B-059 outcome: the promotion rule survives a second domain; scope of the claim widens by exactly that much
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-059.
+
+**What ran.** The D-052 design: the identical detector, classifier, shapes and 3× elevation applied to
+**archived job-posting series** — a different recording process from FDA filings. Eight of thirteen hiring
+series met the unchanged eligibility floors (rates 2.9–98.2 postings per month), three fresh origins each,
+seed 9091. **43 scored alerts.**
+
+| truth \ predicted | spike | level | ramp | recall |
+|---|---:|---:|---:|---:|
+| spike (7) | 5 | 2 | 0 | 0.714 |
+| level (17) | 0 | 13 | 4 | 0.765 |
+| ramp (10) | 1 | 6 | 3 | 0.300 |
+
+* balanced accuracy **0.593** (95 % CI 0.503–0.806), floor 0.50 → pass
+* sustained-change precision **0.929** (95 % CI 0.872–1.000), floor 0.85 → pass
+* sustained base rate **0.794**; precision interval lies above it
+* bootstrap interval width **0.128**, below the declared 0.30 underpowered threshold
+
+**Verdict: CONSISTENT with the confirmed rule on a second domain.**
+
+**What this buys, precisely.** The rule is not a property of the FDA filing corpus alone: applying it to a
+web-archive posting-flow series produces the same qualitative behaviour (spike separated, sustained promoted,
+precision above base rate). The programme may now say its one confirmed decision rule transfers **once** to a
+different recording process.
+
+**What this does not buy.** It is **not** a second confirmation: 43 alerts against 494 and 1,196 in the
+registry runs, eight series, one non-registry domain, and the ramp class remains unreliable (recall 0.300 on
+ten cases — higher than the registry's 0.117–0.142 but far too few cases to claim a difference). It does not
+establish portability to a third domain, to another resolution, or to another country's filings, and the
+policy's error rates remain the registry-measured ones.
+
+**A detail worth recording.** The trial lane was inspected first and rejected on measured grounds — only
+**5** of its cells met the eligibility floors — so the domain choice was made by feasibility data, not by
+picking the flattering option. Both probe scripts are committed.

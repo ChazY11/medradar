@@ -573,4 +573,18 @@ tasks:
       Policy stays at two months; the blind spot and the quarterly-only validation are now carried in
       every profile's limits field, with tests.
 
+  - id: B-059
+    layer: detect
+    priority: P0
+    title: Second-domain validation of the promotion rule
+    status: done
+    owner: lead
+    depends_on: [B-054, B-055, B-030]
+    acceptance: >
+      Domain chosen by measured feasibility (trial lane had 5 eligible cells; hiring lane 8 series), then
+      the identical detector, classifier, shapes and 3x elevation applied to archived job-posting series.
+      43 scored alerts: balanced accuracy 0.593 (0.503-0.806), sustained precision 0.929 (0.872-1.000) vs
+      a 0.794 base rate, interval width 0.128 below the declared underpowered threshold. Verdict:
+      CONSISTENT. Not a second confirmation and no portability beyond this one domain.
+
 

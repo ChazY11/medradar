@@ -105,6 +105,11 @@ CLAIMS = [
     ("W3", "entity-level sustained base rate", "0.705", "research/DECISIONS.md", "0.705"),
     ("W4", "entity-level ramp recall", "0.117", "research/DECISIONS.md", "0.117"),
     ("W5", "eligible entity cells", "191", "research/DECISIONS.md", "191"),
+    # ---- second-domain validation (cycle 26)
+    ("X1", "second-domain balanced accuracy", "0.593", "research/DECISIONS.md", "0.593"),
+    ("X2", "second-domain sustained precision", "0.929", "research/DECISIONS.md", "0.929"),
+    ("X3", "second-domain sustained base rate", "0.794", "research/DECISIONS.md", "0.794"),
+    ("X4", "eligible hiring series in the second domain", "eight of thirteen", "research/DECISIONS.md", "Eight of thirteen"),
 ]
 
 

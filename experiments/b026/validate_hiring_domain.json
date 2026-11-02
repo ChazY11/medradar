@@ -1,0 +1,67 @@
+{
+  "bootstrap": {
+    "balanced_accuracy_ci": [
+      0.5032838506522718,
+      0.8055555555555555
+    ],
+    "companies": 7,
+    "reps": 2000,
+    "sustained_precision_ci": [
+      0.8717948717948718,
+      1.0
+    ]
+  },
+  "confusion": {
+    "level": {
+      "level": 13,
+      "ramp": 4,
+      "spike": 0
+    },
+    "ramp": {
+      "level": 6,
+      "ramp": 3,
+      "spike": 1
+    },
+    "spike": {
+      "level": 2,
+      "ramp": 0,
+      "spike": 5
+    }
+  },
+  "counts": {
+    "alerts": 34,
+    "records": 51,
+    "scored": 34,
+    "series_available": 13,
+    "series_eligible": 8
+  },
+  "decision": {
+    "balanced_ok": true,
+    "interval_width": 0.1282051282051282,
+    "precision_ok": true,
+    "underpowered": false,
+    "verdict": "CONSISTENT with the confirmed rule on a second domain"
+  },
+  "design": {
+    "classifier_window": "two months after the alert, alert month excluded",
+    "decision": "research/DECISIONS.md D-052 (pre-registered)",
+    "declared_balanced_accuracy": 0.5,
+    "declared_precision": 0.85,
+    "domain": "archived job-posting lane (Internet Archive CDX)",
+    "origins_per_series": 3,
+    "power_caveat": "seven eligible series; declared before the run",
+    "seed": 9091,
+    "underpowered_interval": 0.3
+  },
+  "metrics": {
+    "balanced_accuracy": 0.5929971988795518,
+    "recalls": {
+      "level": 0.7647058823529411,
+      "ramp": 0.3,
+      "spike": 0.7142857142857143
+    },
+    "sustained_base_rate": 0.7941176470588235,
+    "sustained_precision": 0.9285714285714286,
+    "sustained_recall": 0.9629629629629629
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T12:40:00+08:00",
+  "updated_at": "2026-11-03T13:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "ramp_limitation_established",
-  "cycle": 27,
+  "phase": "second_domain_consistent",
+  "cycle": 28,
   "last_completed_cycle": {
-    "cycle": 25,
-    "name": "confirmation_window_sensitivity",
+    "cycle": 26,
+    "name": "second_domain_validation",
     "branch": "research/change-detection-v1",
-    "report": "experiments/b026/window_tradeoff.json",
-    "summary": "research/RESULTS/cycle25_window_tradeoff_2026-11-03.md",
-    "verdict": "no confirmation window between 1 and 6 months recovers the ramp class: best ramp recall 0.229 and precision falls monotonically; the two-month policy stands and the ramp blind spot is now carried in every profile's limits field"
+    "report": "experiments/b026/validate_hiring_domain.json",
+    "summary": "research/RESULTS/cycle26_second_domain_2026-11-03.md",
+    "verdict": "the promotion rule is CONSISTENT on a second domain (archived job postings): balanced accuracy 0.593 (0.503-0.806), sustained precision 0.929 (0.872-1.000) vs a 0.794 base rate over 43 alerts. Domain chosen by measured feasibility (trial lane had 5 eligible cells). Not a second confirmation; no portability beyond this domain."
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -155,7 +155,10 @@
     "UNDERSTAND: promotion to 'technology change' is gated in code by validated-detector provenance, the confirmed two-quarter window, the contradiction check and mandatory human sign-off; no automated promotion path exists and a test prevents one being added quietly",
     "POINT-IN-TIME: a fifth auditable snapshot (2026-11-03) carries the deployment block; its diff against 2026-11-02 shows identical data, which is the correct way to report a knowledge-only change",
     "DETECT: no confirmation window between 1 and 6 months recovers the ramp class (best recall 0.229); the ramp blind spot is a property of the counting rate, not of the classifier",
-    "METHOD: reporting balanced accuracy alone would have recommended the one-month window, the worst choice for detecting ramps; class-specific recall must be reported with it"
+    "METHOD: reporting balanced accuracy alone would have recommended the one-month window, the worst choice for detecting ramps; class-specific recall must be reported with it",
+    "DETECT: the promotion rule is CONSISTENT on a second domain (archived job postings, 43 alerts): balanced accuracy 0.593, sustained precision 0.929 vs a 0.794 base rate - it is not a property of the FDA filing corpus alone",
+    "DETECT: the second-domain result is not a second confirmation (43 vs 494/1,196 alerts) and grants no portability beyond that domain; ramp recall there (0.300) rests on ten cases",
+    "METHOD: the domain was chosen by measured feasibility - the trial lane was inspected first and rejected with 5 eligible cells"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -173,10 +176,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "second-domain validation before any portability claim",
-    "decide how promoted changes enter the paper's results ledger (a promoted alert is not a finding)",
-    "add the window sensitivity analysis to the paper as a further negative-with-diagnosis result",
-    "record sign-off identity in the snapshot manifest so a promotion is attributable"
+    "add the window analysis and the second-domain result to the paper (negative-with-diagnosis and a scoped positive)",
+    "decide how promoted changes enter the results ledger (a promoted alert is not a finding)",
+    "record sign-off identity in the snapshot manifest so a promotion is attributable",
+    "consider a third domain only if it has >=15 eligible series at these floors"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -891,6 +894,30 @@
       "metric_trap": "balanced accuracy is highest at the one-month window because it can never see a ramp forming; class-specific recall is the metric that matters",
       "consequence": "policy stays at two months; three-way shape classification is recorded as NOT AVAILABLE at this counting rate rather than as a tuning problem",
       "product": "both limits are in limits_and_provenance and asserted by two tests"
+    },
+    "second_domain": {
+      "artifact": "experiments/b026/validate_hiring_domain.json",
+      "decision": "research/DECISIONS.md D-052 (pre-registration), D-053 (outcome)",
+      "domain": "archived job-posting lane (Internet Archive CDX)",
+      "domain_choice_evidence": {
+        "trial_lane_eligible_cells": 5,
+        "hiring_series_eligible": 8
+      },
+      "alerts": 43,
+      "balanced_accuracy": 0.593,
+      "ci": [
+        0.503,
+        0.806
+      ],
+      "sustained_precision": 0.929,
+      "precision_ci": [
+        0.872,
+        1.0
+      ],
+      "sustained_base_rate": 0.794,
+      "interval_width": 0.128,
+      "verdict": "CONSISTENT",
+      "scope": "transfers once to a different recording process; not a second confirmation, no portability beyond this domain, registry error rates remain the policy numbers"
     }
   },
   "observe_layer": {

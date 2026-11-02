@@ -323,6 +323,22 @@ same accuracy is not an aggregation artefact. It is still **not an independent s
 inside company cells, which is why the caveat narrows rather than disappears. Ramp recall falls to **0.117**,
 so the three-way limitation holds at both units.
 
+*Second domain.* Both confirmations share one recording process (FDA filings), so the rule was then applied to
+an independent lane: **archived job postings** from the Internet Archive. The domain was chosen by measured
+feasibility after the trial lane was inspected and rejected (5 eligible cells against eight of thirteen
+eligible hiring series). Applying the identical detector, classifier, shapes and elevation to posting-flow
+series gives, over
+43 alerts, balanced accuracy **0.593** (95 % CI 0.503–0.806) and sustained-change precision **0.929**
+(95 % CI 0.872–1.000) against a **0.794** base rate — consistent with the confirmed rule. This is **not** a
+second confirmation: it is one independent domain, 43 alerts, and the registry error rates remain the numbers
+the policy uses. Ramp recall there (0.300 on ten cases) cannot be distinguished from the registry result.
+
+*What no window fixes.* A pre-registered sensitivity analysis over confirmation windows of 1–6 months found
+**no window that recovers the ramp class**: best ramp recall 0.229, with precision falling monotonically as the
+window lengthens. Balanced accuracy is highest at a **one-month** window precisely because it can never see a
+ramp forming — a warning about reporting aggregate accuracy alone. Three-way shape classification is therefore
+recorded as unavailable at this counting rate, and both blind spots travel inside every profile's limits field.
+
 ---
 
 ## 4.10 Figures
