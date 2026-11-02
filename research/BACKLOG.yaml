@@ -486,4 +486,18 @@ tasks:
       in both directions by papers/verify_claims.py (45/45). Draft only: not submitted, no venue
       claimed, no figures.
 
+  - id: B-053
+    layer: publish
+    priority: P1
+    title: Paper figures generated from artifacts (stdlib SVG)
+    status: done
+    owner: lead
+    depends_on: [B-052]
+    acceptance: >
+      papers/figures.py emits four SVG plates directly (no plotting dependency): detection frontier,
+      ratio-vs-p calibration scatter, rolling-origin lift with CIs, verdict-stability matrix.
+      papers/verify_figures.py re-derives every plotted value from its source artifact, parses each
+      SVG, rejects numeric artefacts, and requires the paper to link each figure. Rendered to PNG and
+      visually inspected; three layout defects found and fixed.
+
 

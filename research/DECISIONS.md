@@ -1416,3 +1416,40 @@ programme that cannot present results to peers.
 no external validation on a second domain; the retraction table would benefit from a per-finding
 reproduction script index; and the two independent lanes are reported as collected limits rather than as
 standalone studies.
+
+---
+
+## D-039 — B-053: paper figures generated as SVG from the artifacts, and visually verified
+
+**Date:** 2026-11-03. **Status:** accepted. Creates and closes B-053.
+
+**Why hand-written SVG.** The repository is stdlib-only by policy (`dependencies = []`) and matplotlib
+is not installed. Rather than add a plotting dependency for four figures, `papers/figures.py` emits SVG
+directly: a deterministic, text-diffable format whose values can be re-derived and checked.
+
+**The four figures and what each shows.**
+
+| figure | artifact | plotted points | what it settles |
+|---|---|---:|---|
+| `fig1_frontier.svg` | `experiments/detect_v1/benchmark.json` | 16 | sensitivity vs achieved false-alarm rate for four detectors with clustered CIs — the frontier, not a ranking |
+| `fig2_calibration.svg` | `experiments/b027/momentum_calibration.json` | 50 | rate ratio against exact p-value; grey markers pass the 1.25 ratio rule but not the test |
+| `fig3_rolling_origin.svg` | `experiments/b050/rolling_origin.json` | 12 | rolling-origin lift with clustered intervals for all twelve predictor/outcome pairs; every interval crosses 1 |
+| `fig4_verdict_stability.svg` | `experiments/b027/verdict_stability.json` | 53 | one cell per company and as-of date; two companies marked reversed |
+
+**Verification, and a rendering check that caught real defects.** `papers/verify_figures.py` re-derives
+every plotted value from its source artifact and requires an exact match with
+`papers/figures/figures_data.json`, parses each SVG as XML, rejects numeric artefacts (NaN/inf/None as
+standalone tokens, not substrings of words), and requires the paper to link each file. That is
+**4 figures, 131 plotted points, 0 failures**.
+
+Because SVG validity is not the same as readability, each figure was additionally rendered to PNG with
+headless Edge and inspected. That step caught three layout defects that no structural check would have
+found: figure 3's predictor labels were clipped outside the canvas; figure 2's rightmost annotation ran
+off the frame; and figure 4 had no company labels at all. All three are fixed and the regenerated plates
+were re-inspected.
+
+**What this changes about the paper.** D-038 recorded "no figures" as the only blocking gap for a
+readable submission. That gap is now closed with generated, verified, dependency-free plates.
+
+**Not claimed.** The figures do not add evidence; they re-present committed numbers. Their value is that
+a reader can see the frontier's shape and the calibration gap without reading seventeen result files.

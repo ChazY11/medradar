@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T04:40:00+08:00",
+  "updated_at": "2026-11-03T05:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "publish_draft_v1",
-  "cycle": 19,
+  "phase": "publish_draft_v1_figures",
+  "cycle": 20,
   "last_completed_cycle": {
-    "cycle": 17,
-    "name": "paper_draft_v1",
+    "cycle": 18,
+    "name": "paper_figures",
     "branch": "research/change-detection-v1",
-    "report": "papers/PAPER_v1.md",
-    "summary": "research/RESULTS/cycle17_paper_2026-11-03.md",
-    "verdict": "paper draft v1 shipped with a machine-verified claim map (45/45 claims sourced both ways); it reports five retractions, a controlled false-alarm frontier, the calibration result, a rolling-origin null, verdict instability and a leakage-free point-in-time chain, and claims no predictive success"
+    "report": "papers/figures/figures_data.json",
+    "summary": "research/RESULTS/cycle18_figures_2026-11-03.md",
+    "verdict": "four SVG figures generated from the artifacts with zero dependencies, 131 plotted points re-derived and verified, paper links checked; headless rendering caught three layout defects that structural checks missed"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -137,7 +137,9 @@
     "POINT-IN-TIME: a real leakage path was found and closed - the trial lane and the code first-seen map were previously read in full regardless of the as-of date",
     "POINT-IN-TIME: verdict stability across four as-of dates is 40 stable / 13 changed / 2 reversed of 53 companies - a quarter of nowcasts move with the date, consistent with the calibrated test's measured low power",
     "PUBLISH: paper draft v1 exists as a repository artifact with 45 machine-verified claims; every number is traced to a committed artifact in both directions (source contains it, paper contains it)",
-    "PUBLISH: the paper's headline is negative by design - five retractions with their control mechanisms, no predictive success claimed"
+    "PUBLISH: the paper's headline is negative by design - five retractions with their control mechanisms, no predictive success claimed",
+    "PUBLISH: the paper now has four generated, verified, dependency-free figures (131 plotted points re-derived from artifacts); the only previously blocking readability gap is closed",
+    "PROCESS: structural SVG validity is not readability - headless rendering caught three layout defects (clipped labels, annotation off-frame, missing row labels) that checks could not"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -156,9 +158,9 @@
   ],
   "next_actions": [
     "B-026: spike vs sustained level-shift classifier (last P1 model task needing no new data)",
-    "add figures to the paper from existing artifacts (frontier curve, calibration scatter, verdict-stability matrix) - the only blocking gap for a readable submission",
     "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there",
-    "consider external validation of the measurement rules on a second domain before any submission"
+    "add a per-finding reproduction index to the paper's retraction table",
+    "consider external validation of the measurement rules on a second domain before submission"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -690,10 +692,21 @@
     "claims_verified": 45,
     "headline": "no surviving positive result; five retractions with mechanisms; methodological artifacts (frontier, calibration rule, point-in-time chain, measurement rules)",
     "known_gaps": [
-      "no figures",
       "no external validation on a second domain",
       "retraction table needs a per-finding reproduction index",
       "independent lanes reported as measured limits, not standalone studies"
-    ]
+    ],
+    "figures": {
+      "count": 4,
+      "generator": "papers/figures.py (hand-written SVG, no dependencies)",
+      "verifier": "papers/verify_figures.py (re-derives 131 plotted points, 0 failures)",
+      "plates": [
+        "fig1_frontier.svg",
+        "fig2_calibration.svg",
+        "fig3_rolling_origin.svg",
+        "fig4_verdict_stability.svg"
+      ],
+      "visual_check": "rendered with headless Edge; three layout defects found and fixed"
+    }
   }
 }

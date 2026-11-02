@@ -240,6 +240,31 @@ profile without the list of checks it ran is rejected before rendering.
 
 ---
 
+## 4.8 Figures
+
+Four figures are generated **from the committed artifacts** by `papers/figures.py`, which emits SVG
+directly (the repository is stdlib-only, so there is no plotting dependency). `papers/verify_figures.py`
+re-derives every plotted value from its source artifact, checks the SVG parses, and checks the paper
+links it.
+
+- **Figure 1** (fig1_frontier) — detection sensitivity against false-alarm rate for the four detectors on
+  the track-level panels, with entity-clustered intervals. Read it as a frontier, not a ranking:
+  the ordering at 2 % FAR is why Section 4.2 exists.
+- **Figure 2** (fig2_calibration) — rate ratio against exact p-value across 50 companies. Grey markers
+  pass the 1.25 ratio rule but not the test; that gap is the calibration result of Section 4.4.
+- **Figure 3** (fig3_rolling_origin) — rolling-origin lift with company-clustered intervals for the
+  twelve predictor/outcome pairs. Every interval crosses 1 (Section 4.5).
+- **Figure 4** (fig4_verdict_stability) — one cell per company and as-of date. Colour changes down a
+  column are nowcast verdicts that move with the evaluation date (Section 4.6).
+
+Files: [`fig1_frontier.svg`](figures/fig1_frontier.svg) ·
+[`fig2_calibration.svg`](figures/fig2_calibration.svg) ·
+[`fig3_rolling_origin.svg`](figures/fig3_rolling_origin.svg) ·
+[`fig4_verdict_stability.svg`](figures/fig4_verdict_stability.svg).
+Plotted values are recorded in `papers/figures/figures_data.json` for verification.
+
+---
+
 ## 5. Measurement rules the programme now enforces
 
 Each retraction left a rule; the rules are the most transferable output of this work.
@@ -284,6 +309,8 @@ python experiments/detect_v1/benchmark.py        # controlled-truth frontier
 python experiments/b050/rolling_origin.py        # rolling-origin benchmark
 python experiments/b027/snapshot_diff.py         # point-in-time audit + snapshot diffs
 python experiments/b027/selfcheck.py             # profile self-check (5 profiles + 4 snapshots)
+python papers/figures.py                         # regenerate the four figures from the artifacts
+python papers/verify_figures.py                  # re-derive every plotted value; check paper links
 python papers/verify_claims.py                   # every number in this paper, sourced
 ```
 
