@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-02T17:20:00+08:00",
+  "updated_at": "2026-11-02T18:30:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "entry_definition_repaired",
-  "cycle": 9,
+  "phase": "data_acquisition_priority",
+  "cycle": 10,
   "last_completed_cycle": {
-    "cycle": 7,
-    "name": "entry_definition_control_and_retraction",
+    "cycle": 8,
+    "name": "split_sample_test_and_thread_closure",
     "branch": "research/change-detection-v1",
-    "report": "experiments/detect_v1/compare_entry_specs.py",
-    "summary": "research/RESULTS/cycle7_retraction_2026-11-02.md",
-    "verdict": "the cycle-6 ivd_immuno entry wave is RETRACTED: 79% of entries were first-ever appearances of a legal entity, not established firms entering; under the prior-filer control ivd_immuno collapses (p=1.0) and the surviving track becomes specification-dependent (ivd_molecular on 5 entries). No track has a specification-stable wave."
+    "report": "experiments/detect_v1/aesthetics_holdout.json",
+    "summary": "research/RESULTS/cycle8_holdout_2026-11-02.md",
+    "verdict": "no entry-clustering claim survives: the aesthetics candidate is not nominated by a clean early-window design and its apparent split-sample replication used the holdout; under the clean design 3 tracks nominated and 0 confirmed. The entry-clustering thread is closed as a null."
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -108,9 +108,12 @@
     "OBSERVE: the entry-cohort unit removes the density ceiling (4,814 entry events vs ~0.2 events per cell-month) and makes the industry-wave question testable",
     "OBSERVE: no firm shows multi-track entry bursts (0 of 60), so simultaneous-entry is not a detectable signature of strategic redirection at this granularity",
     "OBSERVE: 79% of raw entry events are first appearances of a legal entity; firm-level entry requires the prior-filer control, which leaves 1,010 of 4,814 events",
-    "OBSERVE: NO device track has a specification-stable industry entry wave (ivd_immuno collapses under the prior-filer control; ivd_molecular rejects on 5 entries; aesthetics fails FDR in every specification)",
     "OBSERVE: medical_ai's apparent entry wave was partly taxonomy churn (p 0.0040 -> 0.0365)",
-    "OBSERVE: no firm shows multi-track entry bursts (0 of 46-60 in every specification)"
+    "OBSERVE: no firm shows multi-track entry bursts (0 of 46-60 in every specification)",
+    "OBSERVE: the entry-clustering thread is CLOSED AS NULL - under a clean split-sample design 3 tracks are nominated and 0 replicate; no device track shows an industry entry wave",
+    "OBSERVE: the aesthetics candidate failed as post-hoc selection (its apparent replication used the holdout; it is not nominated by the early window)",
+    "OBSERVE: holdout power for entry clustering is 0.25/0.52/0.95 at 30/50/70% wave concentration, so the null excludes strong clustering only",
+    "METHOD: a holdout cannot confirm a hypothesis that was nominated with its help; nomination and confirmation must use disjoint data"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -126,11 +129,11 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "B-046: split-sample pre-registered test of the aesthetics candidate (fix the track now, estimate on an early window, test on a held-out later window without touching the threshold)",
-    "B-030: attempt a lawful, point-in-time hiring source (densest remaining independent signal)",
-    "B-031: patents via bulk files or a key",
+    "B-030: attempt a lawful, point-in-time hiring source - the densest remaining independent signal and the one that would change information content rather than the estimator",
+    "B-031: patents via bulk files or a key (second declared gap)",
+    "B-027: company technology-profile engine (Understand layer, does not depend on a positive clustering result)",
     "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there",
-    "B-027: company technology-profile engine (Understand layer)"
+    "stop re-specifying clustering tests on the current lane (recorded reason in D-027)"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -317,5 +320,32 @@
       "firm_bursts": "0 rejected in every specification"
     }
   },
-  "measurement_rule": "most 'entry' events in this lane are first appearances of legal entities, not established firms entering new technology areas; an entry study must state which of the two it measures, because mixing them manufactures waves"
+  "measurement_rule": "most 'entry' events in this lane are first appearances of legal entities, not established firms entering new technology areas; an entry study must state which of the two it measures, because mixing them manufactures waves",
+  "entry_thread_closure": {
+    "status": "CLOSED AS NULL",
+    "candidates": {
+      "ivd_immuno": "failed as entity appearance (79% of raw entries were first-ever legal entities)",
+      "aesthetics": "failed as post-hoc selection: not nominated by a clean early-window design; apparent replication used the holdout"
+    },
+    "clean_design": {
+      "nomination": "estimation window only (2016-11..2022-12), BH q=0.10 over 30 tracks",
+      "confirmation": "untouched holdout 2023-01..2026-09 at alpha=0.05",
+      "nominated": [
+        "ivd_molecular",
+        "medical_ai",
+        "vascular_access"
+      ],
+      "confirmed": [],
+      "power": {
+        "holdout_entries": 13,
+        "detection_probability_at_wave_share": {
+          "0.3": 0.25,
+          "0.5": 0.52,
+          "0.7": 0.95
+        }
+      }
+    },
+    "reading": "no evidence of replication, not proven absence; the holdout can rule out strong clustering only",
+    "why_stop": "three cycles of re-specifying clustering tests on one sparse filing stream is the unlimited algorithm trial-and-error the mission forbids; the limit is information content, not the statistic"
+  }
 }

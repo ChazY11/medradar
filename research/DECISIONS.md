@@ -759,3 +759,110 @@ testing it on the same window would be circular. The remedy is split-sample pre-
 the track now (recorded here), estimate on a fixed early window, and test on a held-out later window
 without touching the threshold. That is B-046, and it is the only route that could turn this candidate
 into evidence.
+
+---
+
+## D-026 — Pre-registered split-sample test of the `aesthetics` candidate (fixed before the run)
+
+**Date:** 2026-11-02. **Status:** accepted; written before `aesthetics_holdout.py` was first
+executed. B-046.
+
+`aesthetics` is the only track whose nominal p was small across all four entry specifications
+(0.0070–0.0150, n = 27–197), and it failed FDR in every one. Because it was selected by looking at
+p-values, re-testing it on the same window would be circular. This fixes the test in advance.
+
+**Hypothesis.** In the curated legal-entity lane, first entries into the `aesthetics` technology
+track by firms that were already observable filers are temporally clustered beyond what the
+risk-weighted null predicts.
+
+**Statistic.** Dispersion index (variance/mean) of monthly first-entry counts, exactly as in
+D-024/D-025. Null: entries distributed over months with probability proportional to the at-risk
+count in that month (observable filers that have not yet touched the track).
+
+**Split (fixed now).**
+* estimation window: 2016-09 … 2022-12 (the first 76 months of the 119-month window);
+* holdout window: 2023-01 … 2026-09 (the remaining 43 months);
+* the holdout is never used to choose anything.
+
+**Decision rule (one-sided, α = 0.05), fixed now.**
+* **REPLICATED** iff holdout p ≤ 0.05 *and* estimation-window p ≤ 0.20 in the same direction.
+* **REJECTED** iff holdout p > 0.05.
+* **NOT RESOLVABLE** is allowed *only* if the power simulation below shows < 50 % probability of
+  detecting the effect size implied by the estimation window. In that case the candidate is closed
+  as unresolvable with this data — **not** as refuted — and must not be reported as a finding either
+  way.
+
+**Power, reported with the result.** For the holdout's risk profile and its number of entries, the
+script simulates (a) the null distribution of the statistic and (b) waves in which a pre-declared
+share of the holdout's entries (30 %, 50 %, 70 %) concentrates inside a random 6-month block, and
+reports the detection probability at the same α. This is what distinguishes "no clustering" from
+"cannot tell", and it is computed whether or not the replication succeeds.
+
+**What a success would mean.** If REPLICATED, the programme has its first verified empirical finding:
+a device technology area in which firms' first entries are temporally clustered beyond risk-set
+composition. Even then it would be a statement about *public regulatory entry timing*, not about
+technology waves or causal drivers — those remain Understand-layer questions.
+
+---
+
+## D-027 — B-046 outcome: the aesthetics candidate cannot be confirmed, and no track replicates out of sample
+
+**Date:** 2026-11-02. **Status:** accepted. Closes the entry-clustering thread as a null.
+
+D-026 pre-registered a split-sample test of the `aesthetics` candidate. While running it, a
+methodological problem in the pre-registration itself became visible and is recorded first, because it
+changes the verdict.
+
+### The pre-registration was contaminated (and this is the important part)
+
+`aesthetics` was nominated in cycle 7 **using the full 119-month window**, which includes the months
+later declared to be the holdout. A holdout can only confirm a hypothesis that was fixed without it.
+Nomination used the holdout data implicitly, so the split-sample p-value is **not confirmatory** no
+matter what it says. D-026's decision rule was therefore unable to deliver the confirmatory test it
+promised, and the fix had to be a different design, not a different threshold.
+
+**The clean design, run in the same script:** nominate tracks using the **estimation window only**
+(2016-11 … 2022-12), all tracks, Benjamini–Hochberg at q = 0.10; then test the nominee(s) on the
+untouched holdout (2023-01 … 2026-09) at α = 0.05. Here the holdout p-value *is* a valid confirmatory
+test, because the nominee set was fixed without it.
+
+### Results
+
+**Post-hoc candidate (invalid as confirmation, reported for completeness).** Estimation p = 0.0215
+(14 entries), holdout p = 0.0360 (13 entries) — it looks like a replication. It is not one: the
+candidate was selected using the holdout, and it is **not even nominated** by the clean early-window
+design (p = 0.0215 does not survive BH across 30 tracks).
+
+**Clean design (the confirmatory one).**
+
+| nominated track (estimation window) | estimation p | holdout p | confirms |
+|---|---:|---:|---|
+| `ivd_molecular` | 0.0015 | — (no holdout entries) | no |
+| `medical_ai` | 0.0045 | 0.8411 | no |
+| `vascular_access` | 0.0070 | 0.0825 | no |
+
+**3 nominated, 0 confirmed.** No device technology track shows entry clustering that replicates out
+of sample.
+
+**Power, so the null is not over-read.** With the holdout's 13 entries, the probability of detecting a
+wave that concentrates 30 % / 50 % / 70 % of entries in a six-month block is 0.25 / 0.52 / 0.95. So the
+holdout can rule out strong clustering and cannot rule out weak clustering. The correct statement is
+**"no evidence of replication"**, not "proven absence of clustering".
+
+### What this closes
+
+The B-042/B-043/B-046 thread is closed as a **null**: this lane does not support a claim that any
+device technology area shows an industry-wide wave of first entries. The candidates that appeared in
+cycles 6 and 7 were, in order, an entity-appearance artifact (D-025) and a post-hoc selection
+(D-027), and neither survives a design that controls for its own selection.
+
+### What the programme does next, and why it is not another specification search
+
+Three cycles have now been spent trying to rescue a positive finding from cell- and entry-level
+clustering. The recurring failure mode is not the statistic but the **information content of the lane**:
+a single regulatory filing stream, at ~0.2 events per cell-month, cannot support claims of this kind.
+The next-round priorities therefore move off clustering entirely and onto (a) the two declared data
+gaps that would change the information content (hiring B-030, patents B-031), and (b) the Understand
+layer deliverable that does not depend on a positive clustering result (company technology profile,
+B-027). Continuing to re-specify clustering tests on the same lane would be exactly the "unlimited
+trial-and-error by changing the algorithm" that the mission forbids.

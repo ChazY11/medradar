@@ -1,0 +1,197 @@
+{
+  "clean_nomination_design": {
+    "confirmations": {
+      "ivd_molecular": {
+        "confirms": false,
+        "estimation": {
+          "entries": 4,
+          "months": 74,
+          "null_mean_dispersion": 0.9914459459459459,
+          "null_p95": 1.445945945945946,
+          "observed_dispersion": 2.4459459459459456,
+          "permutations": 2000,
+          "pvalue_one_sided": 0.0014992503748125937,
+          "window": [
+            0,
+            74
+          ]
+        },
+        "holdout": {
+          "entries": 1,
+          "observed_dispersion": 0.9777777777777777,
+          "status": "insufficient"
+        }
+      },
+      "medical_ai": {
+        "confirms": false,
+        "estimation": {
+          "entries": 50,
+          "months": 74,
+          "null_mean_dispersion": 1.1172443243243244,
+          "null_p95": 1.4443243243243244,
+          "observed_dispersion": 1.7243243243243245,
+          "permutations": 2000,
+          "pvalue_one_sided": 0.004497751124437781,
+          "window": [
+            0,
+            74
+          ]
+        },
+        "holdout": {
+          "entries": 94,
+          "months": 45,
+          "null_mean_dispersion": 1.0020685579196216,
+          "null_p95": 1.3791962174940897,
+          "observed_dispersion": 0.8047281323877068,
+          "permutations": 2000,
+          "pvalue_one_sided": 0.841079460269865,
+          "window": [
+            74,
+            119
+          ]
+        }
+      },
+      "vascular_access": {
+        "confirms": false,
+        "estimation": {
+          "entries": 33,
+          "months": 74,
+          "null_mean_dispersion": 1.0733570843570843,
+          "null_p95": 1.4025389025389026,
+          "observed_dispersion": 1.644963144963145,
+          "permutations": 2000,
+          "pvalue_one_sided": 0.0069965017491254375,
+          "window": [
+            0,
+            74
+          ]
+        },
+        "holdout": {
+          "entries": 28,
+          "months": 45,
+          "null_mean_dispersion": 0.9851706349206348,
+          "null_p95": 1.3063492063492064,
+          "observed_dispersion": 1.3063492063492064,
+          "permutations": 2000,
+          "pvalue_one_sided": 0.08245877061469266,
+          "window": [
+            74,
+            119
+          ]
+        }
+      }
+    },
+    "design": "nominate tracks on the estimation window only (BH q=0.10), then test the nominee(s) on the untouched holdout window at alpha=0.05",
+    "fdr": {
+      "cutoff_pvalue": 0.0069965017491254375,
+      "q": 0.1,
+      "rejected": 3,
+      "rejected_keys": [
+        "ivd_molecular",
+        "medical_ai",
+        "vascular_access"
+      ],
+      "tests": 30
+    },
+    "nominated": [
+      "ivd_molecular",
+      "medical_ai",
+      "vascular_access"
+    ],
+    "outcome": "NOMINATED BUT NOT CONFIRMED on the holdout",
+    "tracks_tested_in_estimation": 30
+  },
+  "counts": {
+    "entries_estimation": 14,
+    "entries_holdout": 13,
+    "entries_total": 27,
+    "risk_mean": 2938.9663865546217
+  },
+  "design": {
+    "alpha": 0.05,
+    "decision": "research/DECISIONS.md D-026 (written before this run)",
+    "estimation_p_ceiling": 0.2,
+    "estimation_window": [
+      "2016-11",
+      "2022-12"
+    ],
+    "holdout_window": [
+      "2023-01",
+      "2026-09"
+    ],
+    "note": "entries restricted to entities already observable in another track, per D-025; this is the specification in which the candidate was selected",
+    "null": "entries allocated proportional to the at-risk count per month",
+    "power_sims": 1000,
+    "prior_filer_control": true,
+    "seed": 7,
+    "split_label": "2022-12",
+    "statistic": "dispersion index of monthly first-entry counts",
+    "track": "aesthetics",
+    "wave_block_months": 6,
+    "wave_shares": [
+      0.3,
+      0.5,
+      0.7
+    ]
+  },
+  "estimation_window": {
+    "entries": 14,
+    "months": 74,
+    "null_mean_dispersion": 1.023739382239382,
+    "null_p95": 1.3822393822393821,
+    "observed_dispersion": 1.525096525096525,
+    "permutations": 2000,
+    "pvalue_one_sided": 0.02148925537231384,
+    "window": [
+      0,
+      74
+    ]
+  },
+  "full_window": {
+    "entries": 27,
+    "months": 119,
+    "null_mean_dispersion": 1.0365907251789603,
+    "null_p95": 1.2916277622159973,
+    "observed_dispersion": 1.5138499844382198,
+    "permutations": 2000,
+    "pvalue_one_sided": 0.00849575212393803,
+    "window": [
+      0,
+      119
+    ]
+  },
+  "holdout_window": {
+    "entries": 13,
+    "months": 45,
+    "null_mean_dispersion": 0.9797264957264958,
+    "null_p95": 1.3264957264957267,
+    "observed_dispersion": 1.4803418803418806,
+    "permutations": 2000,
+    "pvalue_one_sided": 0.035982008995502246,
+    "window": [
+      74,
+      119
+    ]
+  },
+  "power": [
+    {
+      "detection_probability": 0.25,
+      "share": 0.3,
+      "sims": 1000,
+      "threshold_dispersion": 1.3264957264957267
+    },
+    {
+      "detection_probability": 0.523,
+      "share": 0.5,
+      "sims": 1000,
+      "threshold_dispersion": 1.3264957264957267
+    },
+    {
+      "detection_probability": 0.951,
+      "share": 0.7,
+      "sims": 1000,
+      "threshold_dispersion": 1.3264957264957267
+    }
+  ],
+  "verdict": "REPLICATED"
+}
