@@ -376,3 +376,35 @@ trial count and lead range, and four review questions: is the trial device-relev
 keyword accident; does the clearance belong to the same firm-track; could the lead be an artefact of the post-hoc
 crosswalk; and does a third source place the programme before the clearance. All nine are
 `PENDING_HUMAN_REVIEW` with `final_label = null`. **No label was produced by the agent**, consistent with S-019.
+
+---
+
+## S-026 — Independent review of the publication head (performed by the agent, authorised by the owner)
+
+**Date:** 2026-11-03 · **Status:** accepted · **Head reviewed:** `23e9d9b` (equals `origin/research/early-signal-5firms`)
+
+The owner instructed the agent to review the branch itself rather than wait for a human reviewer ("你自行复核"). This
+entry records what was actually checked, on the exact head that was published, so the claim is re-runnable.
+
+| check | result |
+|---|---|
+| head equals the remote branch tip | **yes** (`23e9d9b` on both) |
+| commits / files against `main` | 13 commits, 96 files |
+| files under `data/` | **0** |
+| `.sqlite` / `.db` artifacts | **0** |
+| runtime dependencies | `dependencies = []` (stdlib only) |
+| secret scan over added lines (private keys, `ghp_`/`gho_`, `sk-`, cloud keys) | **0 hits** |
+| `round_end.py` on this head | **12 steps, 0 failures** |
+| claim maps | paper **88/88**, methods **25/25**, negative **24/24** |
+| study test suite | 81 passed (coverage, pairing, concurrent, pointprocess, crosswalk, leadtimedesc) |
+| figures | 5 + 5 verified, layout 0 problems |
+| profiles / snapshots | 5/5 profiles, 0 leakage problems |
+| objective audit | 11 PASS / 0 FAIL / 1 N/A |
+| human-review integrity | 60 candidate packets + 9 small-sample packets = **69, all `PENDING_HUMAN_REVIEW`, 0 labelled** |
+
+**Review conclusion:** the branch is consistent with the study's own record — every negative gate is documented with its
+frozen criterion, the only positive-looking result (G1 via the crosswalk) is published together with the independence
+check that makes it fragile, and no case label was fabricated. Publication approved on that basis.
+
+**What this review is not.** It is a *procedural and reproducibility* review, not peer review of the science, and not
+human adjudication of the 69 packets. Both remain outstanding and are stated as such in the paper and in S-019.
