@@ -38,6 +38,16 @@ CLAIMS = [
     ("N14", "cells in the incidence ladder", "16", EVIDENCE, '"ladder_cells": 16'),
     ("N15", "cells with an onset under the frozen definition", "1 / 16", EVIDENCE,
      '"ladder_frozen_cells_with_onset": 1'),
+    ("N16", "event-level detector delay at x2", "185.5", EVIDENCE, '"phase1d_delay_a_m2": 185.5'),
+    ("N17", "quarterly detector delay at x2", "48.5", EVIDENCE, '"phase1d_delay_b_m2": 48.5'),
+    ("N18", "event-level power at x2", "0.762", EVIDENCE, '"phase1d_power_a_m2": 0.762'),
+    ("N19", "quarterly power at x2", "0.333", EVIDENCE, '"phase1d_power_b_m2": 0.333'),
+    ("N20", "paired delay difference at x2", "133.9", EVIDENCE, '"phase1d_diff_m2": 133.9'),
+    ("N21", "paired delay difference lower bound", "71.5", EVIDENCE,
+     '"phase1d_diff_m2_interval"'),
+    ("N22", "paired delay difference at x3", "32.7", EVIDENCE, '"phase1d_diff_m3": 32.7'),
+    ("N23", "event-level realised false-alarm rate", "0.095", EVIDENCE, '"phase1d_far_a": 0.095'),
+    ("N24", "quarterly realised false-alarm rate", "0.029", EVIDENCE, '"phase1d_far_b": 0.029'),
 ]
 
 

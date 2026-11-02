@@ -112,10 +112,33 @@ Zero onsets does not make the corpus useless. Three things are still estimated, 
 - **Coverage**, cell by cell: 5 firms × 42 touched tracks, of which 2 tracks support cross-firm comparison at the
   pre-declared floors.
 
-## 5. Why this is a result and not a failure
+## 5. We tested the obvious next step, and it also fails
+
+The natural remedy for an empty positive class at quarterly resolution is to change the unit: model each cell's
+**event sequence** instead of its quarterly counts, where a rate change is a property of inter-event intervals. We ran
+that as a controlled-truth experiment (real sequences, synthetic rate multipliers of 2 and 3 injected at 60 % of each
+cell, 200 replications per cell, 16 cells), comparing an interval likelihood-ratio detector against the deployed
+quarterly detector at the same nominal false-alarm budget.
+
+| multiplier | interval detector delay | quarterly detector delay | power (interval) | power (quarterly) | paired median difference |
+|---|---|---:|---:|---:|---|
+| ×2 | **220 → 185.5 d** | **45.3 → 48.5 d** | 0.762 | 0.333 | +133.9 [71.5, 165.2] |
+| ×3 | **100.3 → 88.7 d** | **56.0 d** | 0.906 | 0.466 | +32.7 [23.9, 60.9] |
+
+Both intervals exclude zero and both point estimates are positive: **the finer unit detects more injections but later.**
+The likelihood ratio needs several post-change events to accumulate evidence, while a quarterly bin boundary converts a
+rate jump into an immediate anomaly. The unit change therefore buys **power, not latency** — and the question that
+motivated the study was about latency.
+
+Two caveats travel with those numbers. Delays are conditional on detection, so a conservative detector looks fast on
+the cases it catches; power is reported beside every delay for that reason. And the two detectors could not be matched
+exactly on realised false alarms — the interval detector realised 0.095 while the quarterly detector realised 0.029,
+so the coarser detector was **stricter** and still earlier.
+
+## 6. Why this is a result and not a failure
 
 A study that reports only the cells where its definition happened to fire would have produced a number — for example a
-recall of 1.0 from a single onset — and that number would have been worthless. Three pre-registered gates, all
+recall of 1.0 from a single onset — and that number would have been worthless. Four pre-registered gates, all
 negative, now bound the question:
 
 | gate | criterion (frozen) | result | verdict |
@@ -123,12 +146,13 @@ negative, now bound the question:
 | G1 lead time | ≥10 eligible pairs, ≥2 firms | 3 pairs, 2 firms | **NO-GO** |
 | O1 two-track fusion | ≥10 onsets | 1 onset | **underpowered** |
 | O1 expanded fusion | ≥10 onsets | 0 onsets | **underpowered** |
+| 1D event-level unit | earlier detection at equal budget | coarser detector earlier by 32.7–133.9 days | **not supported** |
 
 The transferable statement is: **at firm × technology-track × quarterly resolution, public regulatory recording of
-medical devices does not exhibit sustained changes to detect; the detectable signal is continuous activity.** Any
-future study of early warning in this domain must either change the unit (firm-level, all tracks, or event-level
-sequences), change the target (a milestone with an independently recorded confirmation date), or obtain data with
-higher temporal resolution than quarterly filings.
+medical devices does not exhibit sustained changes to detect; the detectable signal is continuous activity**, and
+moving to the event level does not recover earlier detection. What remains untested in this study is not a method but
+an input: a target with an independently recorded confirmation date, or a source whose availability precedes the
+filing itself (regulatory pre-submission, patents, standards activity, procurement with usable dates).
 
 ## 6. Limitations, including the ones that limit us
 

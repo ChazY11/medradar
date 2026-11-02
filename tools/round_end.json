@@ -1,20 +1,17 @@
 {
   "schema": "round_end_v1",
-  "checked_at_utc": "2026-11-02T18:01:45+00:00",
+  "checked_at_utc": "2026-11-02T19:19:35+00:00",
   "branch": "research/early-signal-5firms",
-  "head": "cebe0d9569e6738632bd6f1c7b725c38eb84c5d9",
+  "head": "ba507b79b6736c5bb27441143f0b5c4348d8560c",
   "remote_synced": true,
   "uncommitted_paths": [
-    "M papers/CLAIMS.json",
-    " M papers/README.md",
-    " M papers/build_claims.py",
+    "M papers/CLAIMS_NEGATIVE.json",
+    " M papers/PAPER_NEGATIVE_v1.md",
+    " M papers/build_claims_negative.py",
     " M research/AUDIT.json",
     " M research/AUDIT.md",
-    " M tools/round_end.json",
-    " M tools/round_end.log",
-    " M tools/round_end.py",
-    " M tools/round_end_console.log",
-    "?? tools/fix_claim_p2.py"
+    " M research/studies/early_signal_5firms/CLAIMS_EVIDENCE.json",
+    " M tools/round_end_console.log"
   ],
   "results": [
     {
@@ -38,7 +35,7 @@
     {
       "step": "negative claim map",
       "status": "PASS",
-      "detail": "claims checked: 15; failures: 0",
+      "detail": "claims checked: 24; failures: 0",
       "exit": 0
     },
     {
@@ -86,7 +83,7 @@
     {
       "step": "repository state",
       "status": "PASS",
-      "detail": "HEAD cebe0d9569e6, remote synced, 10 uncommitted path(s)"
+      "detail": "HEAD ba507b79b673, remote synced, 7 uncommitted path(s)"
     }
   ],
   "summary": {
