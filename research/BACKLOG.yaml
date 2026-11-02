@@ -587,4 +587,19 @@ tasks:
       a 0.794 base rate, interval width 0.128 below the declared underpowered threshold. Verdict:
       CONSISTENT. Not a second confirmation and no portability beyond this one domain.
 
+  - id: B-060
+    layer: understand
+    priority: P1
+    title: Promotion ledger with enforced attribution
+    status: done
+    owner: lead
+    depends_on: [B-057]
+    acceptance: >
+      research/RESULTS/PROMOTIONS.md is an append-only ledger separate from the findings ledger; rows
+      carry signer, timestamp, justification and policy version. build_promotion_record raises on an empty
+      signer, missing justification, missing timestamp or a non-promotable verdict, so an unattributed
+      promotion cannot be written. freeze_snapshot hashes the ledger as an input source so every future
+      manifest ties profiles to the exact ledger. The Medtronic insulin_delivery alert is recorded
+      PENDING_SIGNOFF because the programme cannot sign for a human.
+
 

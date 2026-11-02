@@ -7,10 +7,13 @@ import unittest
 from medradar.intelligence.promotion import (
     DEFAULT_POLICY,
     POLICY_VERSION,
+    PROMOTION_COLUMNS,
     STATEMENT,
+    build_promotion_record,
     classify_shape,
     decide_promotion,
     render_policy,
+    render_promotion_row,
 )
 
 
@@ -89,6 +92,61 @@ class DecidePromotionTest(unittest.TestCase):
             verdicts = {decide_promotion(alert(), following)["verdict"]}
             self.assertNotIn("promote", verdicts)
             self.assertNotIn("auto_promote", verdicts)
+
+
+class PromotionLedgerTest(unittest.TestCase):
+    """A promotion must be attributable, or it must not be written at all."""
+
+    @staticmethod
+    def decision(**overrides):
+        base = {"verdict": "promote_pending_signoff", "track": "insulin_delivery",
+                "quarter": "2025-Q3", "shape": "ramp", "relative_post_rate": 6.0,
+                "policy_version": "promotion_policy_v1"}
+        base.update(overrides)
+        return base
+
+    def build(self, **overrides):
+        kwargs = {"company": "medtronic", "signer": "Dr Example",
+                  "justification": "two quarters elevated and rising",
+                  "signed_at_utc": "2026-11-03T12:00:00+00:00"}
+        kwargs.update(overrides)
+        return build_promotion_record(self.decision(), **kwargs)
+
+    def test_record_carries_signer_and_statement(self):
+        record = self.build()
+        self.assertEqual(record["signer"], "Dr Example")
+        self.assertEqual(record["verdict"], "promoted")
+        self.assertIn("PUBLIC FILING RATE", record["statement"])
+
+    def test_missing_signer_is_refused(self):
+        with self.assertRaises(ValueError):
+            self.build(signer="  ")
+
+    def test_missing_justification_is_refused(self):
+        with self.assertRaises(ValueError):
+            self.build(justification="")
+
+    def test_missing_timestamp_is_refused(self):
+        with self.assertRaises(ValueError):
+            self.build(signed_at_utc="")
+
+    def test_non_promotable_decision_is_refused(self):
+        with self.assertRaises(ValueError):
+            build_promotion_record(self.decision(verdict="reject"), company="medtronic",
+                                   signer="Dr Example", justification="x",
+                                   signed_at_utc="2026-11-03T12:00:00+00:00")
+
+    def test_row_has_every_column_in_order(self):
+        record = self.build()
+        row = render_promotion_row(record)
+        cells = [cell.strip() for cell in row.strip("|").split("|")]
+        self.assertEqual(len(cells), len(PROMOTION_COLUMNS))
+        self.assertEqual(cells[0], record["id"])
+
+    def test_column_order_is_stable(self):
+        self.assertEqual(PROMOTION_COLUMNS[0], "id")
+        self.assertIn("signer", PROMOTION_COLUMNS)
+        self.assertEqual(PROMOTION_COLUMNS[-1], "justification")
 
 
 class PolicyDocumentTest(unittest.TestCase):

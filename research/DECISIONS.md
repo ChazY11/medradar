@@ -2063,3 +2063,40 @@ policy's error rates remain the registry-measured ones.
 **A detail worth recording.** The trial lane was inspected first and rejected on measured grounds — only
 **5** of its cells met the eligibility floors — so the domain choice was made by feasibility data, not by
 picking the flattering option. Both probe scripts are committed.
+
+---
+
+## D-054 — B-060: promotions get their own append-only ledger, and a promotion is not a finding
+
+**Date:** 2026-11-03. **Status:** accepted. Closes B-060.
+
+**The accounting problem.** The results ledger (`research/RESULTS/README.md`, R1–R105) records findings. A
+promoted alert is **not** a finding: it is an operational decision that one alert's change persisted under a
+measured rule. Mixing the two would let the programme inflate its record with its own outputs — the failure
+mode every retraction in this project was about, one level up.
+
+**What was built.**
+
+1. **A separate append-only ledger**, `research/RESULTS/PROMOTIONS.md`, written only by
+   `experiments/b027/log_promotion.py`. Each row records: promotion id, company, track, alert quarter, the
+   confirmation-window evidence, the classifier shape, the policy version, the **signer identity**, the
+   justification and the UTC timestamp. The header states in one line that these are promotion decisions, not
+   findings.
+2. **Sign-off is enforced, not requested.** `build_promotion_record` rejects an empty signer, rejects any
+   verdict other than `promote_pending_signoff`, and requires a non-empty justification. The logger refuses to
+   write a record that fails those checks, so an unattributed promotion cannot enter the ledger.
+3. **Attribution reaches the snapshot.** `freeze_snapshot.py` now hashes `research/RESULTS/PROMOTIONS.md` as an
+   input source, so every future snapshot manifest ties the prompts to the exact promotion ledger it was built
+   with. A promotion recorded after a snapshot is therefore visibly absent from that snapshot's manifest hash.
+
+**Why an append-only markdown file rather than a database.** The ledger has to be reviewable by a human who is
+not running code, diffable in the repository, and cheap to audit. A markdown table with a fixed column order
+satisfies all three; a database would hide the same information behind a query language.
+
+**What this does not do.** It does not make promotions correct — the signer can still be wrong, and the
+measured precision (0.914–0.929) means roughly one promotion in twelve is expected to be a miss. It makes them
+**attributable and separable from findings**, which is what the objective's auditing requirement needs.
+
+**First entry.** The Medtronic `insulin_delivery` 2025-Q3 alert is recorded as **pending sign-off**, not
+promoted: the programme has no human signer in this session, and inventing one would defeat the mechanism. The
+ledger shows the row as awaiting signature with all evidence attached.

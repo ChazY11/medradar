@@ -1,7 +1,11 @@
 # Results
 
 Each result is a committed artifact plus a plain-language statement of what it does
-and does not show. Results are never edited to look better; a superseded result gets
+and does not show.
+
+**Promotions are not results.** A promoted alert is an operational decision, not a finding, and is recorded
+only in PROMOTIONS.md (append-only, signer-named). Nothing in this table may cite a promotion as evidence.
+ Results are never edited to look better; a superseded result gets
 a new entry and a pointer, not a rewrite.
 
 | # | Result | Direction | Evidence |
@@ -155,3 +159,6 @@ split was degenerate. Details and all numbers: `cycle2_2026-11-02.md` and
 | R103 | **Second-domain validation CONSISTENT**: identical rule on archived job-posting series (8 of 13 series eligible, 43 alerts) gives balanced accuracy **0.593** (0.503–0.806) and sustained precision **0.929** (0.872–1.000) vs a **0.794** base rate | **positive (scoped)** | `experiments/b026/validate_hiring_domain.json` |
 | R104 | Domain chosen by **measured feasibility**: the trial lane was inspected first and rejected (5 eligible cells) before the hiring lane (8 series) was used | method | `experiments/b026/inspect_{trial,hiring}_lane.py` |
 | R105 | Not a second confirmation: 43 alerts vs 494/1,196 in the registry runs; no portability beyond this one domain; registry error rates remain the policy numbers | limitation | `research/DECISIONS.md` D-053 |
+| R106 | **Promotions have their own append-only ledger** with enforced attribution: signer, timestamp, justification and policy version are required, and the logger refuses an unsigned promotion | deliverable | `research/RESULTS/PROMOTIONS.md`, `experiments/b027/log_promotion.py` |
+| R107 | **A promotion is explicitly not a finding**: the findings ledger may not cite one as evidence; the promotion ledger is hashed into snapshot manifests so attribution is auditable | accounting rule | `research/RESULTS/README.md`, `research/DECISIONS.md` D-054 |
+| R108 | The one candidate promotion (Medtronic `insulin_delivery` 2025-Q3) is left **PENDING_SIGNOFF** — the programme can prepare a promotion but cannot sign for a human | behaviour | `research/RESULTS/PROMOTIONS.md` |

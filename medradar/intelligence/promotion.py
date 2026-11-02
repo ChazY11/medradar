@@ -129,6 +129,55 @@ DEFAULT_POLICY: dict[str, Any] = {
     "automated_promotion_allowed": False,
 }
 
+PROMOTION_LOG_SCHEMA = "promotion_log_row_v1"
+
+PROMOTION_COLUMNS = ("id", "company", "track", "alert_quarter", "shape", "relative_post_rate",
+                     "policy_version", "verdict", "signer", "signed_at_utc", "justification")
+
+
+def build_promotion_record(decision: Mapping[str, Any], *, company: str, signer: str,
+                           justification: str, signed_at_utc: str,
+                           record_id: str | None = None) -> dict[str, Any]:
+    """Turn a decision into a ledger row. Refuses anything unattributable or not promotable.
+
+    A promotion without a named signer is worse than no promotion: it cannot be audited and it silently
+    converts a measured rule into an anonymous default. This function therefore raises rather than warns.
+    """
+    problems: list[str] = []
+    if decision.get("verdict") != "promote_pending_signoff":
+        problems.append(f"decision verdict is {decision.get('verdict')!r}, not promotable")
+    if not str(signer or "").strip():
+        problems.append("a named signer is required")
+    if not str(justification or "").strip():
+        problems.append("a justification is required")
+    if not str(signed_at_utc or "").strip():
+        problems.append("a sign-off timestamp is required")
+    if not str(company or "").strip():
+        problems.append("a company is required")
+    if problems:
+        raise ValueError("; ".join(problems))
+    return {
+        "schema": PROMOTION_LOG_SCHEMA,
+        "id": record_id or f"{company}:{decision.get('track')}:{decision.get('quarter')}",
+        "company": company,
+        "track": decision.get("track"),
+        "alert_quarter": decision.get("quarter"),
+        "shape": decision.get("shape"),
+        "relative_post_rate": decision.get("relative_post_rate"),
+        "policy_version": decision.get("policy_version"),
+        "verdict": "promoted",
+        "signer": str(signer).strip(),
+        "signed_at_utc": str(signed_at_utc).strip(),
+        "justification": str(justification).strip(),
+        "statement": STATEMENT,
+    }
+
+
+def render_promotion_row(record: Mapping[str, Any]) -> str:
+    """Markdown table row, in the fixed column order of PROMOTION_COLUMNS."""
+    return "| " + " | ".join(str(record.get(column) if record.get(column) is not None else "—")
+                            for column in PROMOTION_COLUMNS) + " |"
+
 
 def render_policy(policy: Mapping[str, Any] | None = None) -> str:
     active = dict(policy or DEFAULT_POLICY)

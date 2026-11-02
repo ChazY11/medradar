@@ -43,6 +43,9 @@ SOURCES = (
     Path("config/universe_v1.json"),
     Path("config/product_code_tracks.json"),
     Path("config/tracks_v1.json"),
+    # the promotion ledger is an input to any snapshot that reports promotions: hashing it ties the
+    # snapshot to the exact signed decisions it was built with (D-054)
+    Path("research/RESULTS/PROMOTIONS.md"),
 )
 
 
