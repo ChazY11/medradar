@@ -1,0 +1,1782 @@
+{
+  "schema": "case_candidates_v1",
+  "seed": 8080,
+  "selection_rule": {
+    "unit": "regulatory event in a study track for one of the five firms",
+    "strata": {
+      "novel_entry": ">= 12 months since previous event in the same track",
+      "ambiguous": "4..11 months",
+      "routine": "<= 3 months (control)"
+    },
+    "stratified_by": [
+      "era",
+      "track"
+    ],
+    "outcome_blind": true,
+    "excluded_raw_strings": [
+      "SURGE MEDICAL"
+    ]
+  },
+  "counts": {
+    "total": 60,
+    "novel_entry": 20,
+    "ambiguous": 20,
+    "routine": 20,
+    "by_track": {
+      "imaging_mr_ct": 11,
+      "patient_monitoring": 13,
+      "medical_ai": 12,
+      "imaging_us": 12,
+      "respiratory": 7,
+      "cardiac_rhythm": 5
+    },
+    "by_company": {
+      "philips": 19,
+      "mindray": 9,
+      "medtronic": 17,
+      "ge_healthcare": 15
+    }
+  },
+  "cases": [
+    {
+      "case_id": "ES5-001",
+      "company": "philips",
+      "technology_track": "imaging_mr_ct",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2018-Q4",
+        "event_date": "2018-12-06",
+        "days_since_previous_same_track": 111
+      },
+      "evidence": {
+        "event_id": "c087f85eab65ddc8bffa64f6a3e166c2",
+        "kind": "510k",
+        "product_code": "OWB",
+        "applicant_raw": "Philips Medical Systems Nederland B.V.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K183040",
+        "declared_available_at": "2019-01-05",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-002",
+      "company": "mindray",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2019-Q3",
+        "event_date": "2019-07-10",
+        "days_since_previous_same_track": 105
+      },
+      "evidence": {
+        "event_id": "23605cca5c9e54c8d5e7ee6c45a9be2c",
+        "kind": "510k",
+        "product_code": "MHX",
+        "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K190011",
+        "declared_available_at": "2019-08-09",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-003",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2019-Q3",
+        "event_date": "2019-07-31",
+        "days_since_previous_same_track": 265
+      },
+      "evidence": {
+        "event_id": "c62711d3650d48e7dc2337f09cf2e64e",
+        "kind": "510k",
+        "product_code": "HAW",
+        "applicant_raw": "Medtronic Navigation, Inc.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K190672",
+        "declared_available_at": "2019-08-30",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-004",
+      "company": "philips",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2019-Q3",
+        "event_date": "2019-08-06",
+        "days_since_previous_same_track": 264
+      },
+      "evidence": {
+        "event_id": "ab017650be8eed3a7a49b2c5a5ff8a27",
+        "kind": "510k",
+        "product_code": "MHX",
+        "applicant_raw": "Philips Medical Systems",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K183387",
+        "declared_available_at": "2019-09-05",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-005",
+      "company": "philips",
+      "technology_track": "imaging_us",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2019-Q3",
+        "event_date": "2019-09-06",
+        "days_since_previous_same_track": 301
+      },
+      "evidence": {
+        "event_id": "da4de4a126f0a3de67190d751f930d47",
+        "kind": "510k",
+        "product_code": "IYN",
+        "applicant_raw": "Philips Health Care",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K192226",
+        "declared_available_at": "2019-10-06",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-006",
+      "company": "philips",
+      "technology_track": "imaging_mr_ct",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2020-Q1",
+        "event_date": "2020-01-24",
+        "days_since_previous_same_track": 179
+      },
+      "evidence": {
+        "event_id": "6b67e1ed92367451ccf727f2943e6054",
+        "kind": "510k",
+        "product_code": "JAK",
+        "applicant_raw": "Philips Medical Systems Nederland B.V.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K193454",
+        "declared_available_at": "2020-02-23",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-007",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_mr_ct",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2020-Q3",
+        "event_date": "2020-09-04",
+        "days_since_previous_same_track": 112
+      },
+      "evidence": {
+        "event_id": "0139897ec98d7fe0d92941ad600b5136",
+        "kind": "510k",
+        "product_code": "LNH",
+        "applicant_raw": "Ge Healthcare (Tianjin) Company Limited",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K202238",
+        "declared_available_at": "2020-10-04",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-008",
+      "company": "philips",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2020-Q3",
+        "event_date": "2020-09-11",
+        "days_since_previous_same_track": 297
+      },
+      "evidence": {
+        "event_id": "4980bbef91777db0224e020b05bf7e5e",
+        "kind": "510k",
+        "product_code": "MHX",
+        "applicant_raw": "Philips Medizin Systeme Boeblingen GmbH",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K192137",
+        "declared_available_at": "2020-10-11",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-009",
+      "company": "mindray",
+      "technology_track": "imaging_us",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2021-Q1",
+        "event_date": "2021-03-23",
+        "days_since_previous_same_track": 134
+      },
+      "evidence": {
+        "event_id": "4d8bd6b0ce7e9870e748bb9560ea568e",
+        "kind": "510k",
+        "product_code": "IYN",
+        "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K203391",
+        "declared_available_at": "2021-04-22",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-010",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2021-Q3",
+        "event_date": "2021-08-23",
+        "days_since_previous_same_track": 222
+      },
+      "evidence": {
+        "event_id": "afa19bb68a45fe2d95a6b30a08dd6ac8",
+        "kind": "510k",
+        "product_code": "QQC",
+        "applicant_raw": "Medtronic Neuromodulation",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=DEN210003",
+        "declared_available_at": "2021-09-22",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-011",
+      "company": "mindray",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2022-Q4",
+        "event_date": "2022-12-02",
+        "days_since_previous_same_track": 143
+      },
+      "evidence": {
+        "event_id": "fb604cd2a29713e64f2d1cf47bb2d4af",
+        "kind": "510k",
+        "product_code": "MWI",
+        "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K221113",
+        "declared_available_at": "2023-01-01",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-012",
+      "company": "philips",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2023-Q1",
+        "event_date": "2023-02-03",
+        "days_since_previous_same_track": 336
+      },
+      "evidence": {
+        "event_id": "ef25f960b04275c44b2fd9e965cc328a",
+        "kind": "510k",
+        "product_code": "MHX",
+        "applicant_raw": "Philips Medizin Systeme Böblingen GmbH",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K221348",
+        "declared_available_at": "2023-03-05",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-013",
+      "company": "mindray",
+      "technology_track": "imaging_us",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2023-Q2",
+        "event_date": "2023-06-09",
+        "days_since_previous_same_track": 122
+      },
+      "evidence": {
+        "event_id": "49226d63b75eddd714f1b32e9c27e76b",
+        "kind": "510k",
+        "product_code": "IYN",
+        "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K230768",
+        "declared_available_at": "2023-07-09",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-014",
+      "company": "philips",
+      "technology_track": "imaging_mr_ct",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2023-Q3",
+        "event_date": "2023-08-02",
+        "days_since_previous_same_track": 96
+      },
+      "evidence": {
+        "event_id": "00bcd66f68167f00118b211836ba8c47",
+        "kind": "510k",
+        "product_code": "LNH",
+        "applicant_raw": "Philips Medical Systems Nederland B.V.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K232030",
+        "declared_available_at": "2023-09-01",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-015",
+      "company": "mindray",
+      "technology_track": "imaging_us",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2023-Q4",
+        "event_date": "2023-10-26",
+        "days_since_previous_same_track": 139
+      },
+      "evidence": {
+        "event_id": "7da211d9e9fe1aa109f689bdac40e28e",
+        "kind": "510k",
+        "product_code": "IYN",
+        "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K231685",
+        "declared_available_at": "2023-11-25",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-016",
+      "company": "philips",
+      "technology_track": "medical_ai",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2024-Q1",
+        "event_date": "2024-03-14",
+        "days_since_previous_same_track": 280
+      },
+      "evidence": {
+        "event_id": "f911f253c3fdd7c2b6b625f720521155",
+        "kind": "510k",
+        "product_code": "DQK",
+        "applicant_raw": "Philips Medical Systems Nederland B.V.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K233853",
+        "declared_available_at": "2024-04-13",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-017",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2024-Q3",
+        "event_date": "2024-09-12",
+        "days_since_previous_same_track": 146
+      },
+      "evidence": {
+        "event_id": "9b91c7e2658b3c4dafd0eb222c607c3f",
+        "kind": "510k",
+        "product_code": "QJZ",
+        "applicant_raw": "Medtronic, Inc.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K240880",
+        "declared_available_at": "2024-10-12",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-018",
+      "company": "philips",
+      "technology_track": "imaging_mr_ct",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2025-Q2",
+        "event_date": "2025-05-16",
+        "days_since_previous_same_track": 179
+      },
+      "evidence": {
+        "event_id": "e63ed3204434b551a13e16c75347e973",
+        "kind": "510k",
+        "product_code": "JAK",
+        "applicant_raw": "Philips Medical Systems Technologies , Ltd.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K244008",
+        "declared_available_at": "2025-06-15",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-019",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2025-Q2",
+        "event_date": "2025-05-20",
+        "days_since_previous_same_track": 250
+      },
+      "evidence": {
+        "event_id": "746e969dacd3086a4c35688e22503c1d",
+        "kind": "510k",
+        "product_code": "QNR",
+        "applicant_raw": "Medtronic, Inc.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K250199",
+        "declared_available_at": "2025-06-19",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-020",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "ambiguous",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2025-Q3",
+        "event_date": "2025-08-07",
+        "days_since_previous_same_track": 202
+      },
+      "evidence": {
+        "event_id": "cf6a54bacc9c6723e418b324cedda911",
+        "kind": "510k",
+        "product_code": "QIH",
+        "applicant_raw": "Medicrea International S.A.S. (Medtronic)",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K251629",
+        "declared_available_at": "2025-09-06",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-021",
+      "company": "mindray",
+      "technology_track": "imaging_us",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2018-Q1",
+        "event_date": "2018-01-02",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "a32b797529a36319a2b9a99fbfc21b93",
+        "kind": "510k",
+        "product_code": "IYN",
+        "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K172860",
+        "declared_available_at": "2018-02-01",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-022",
+      "company": "medtronic",
+      "technology_track": "cardiac_rhythm",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2018-Q1",
+        "event_date": "2018-01-03",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "64869a10720e609126062eada1b73848",
+        "kind": "pma",
+        "product_code": "NIK",
+        "applicant_raw": "Medtronic Cardiac Rhythm Disease Management",
+        "source": "openfda_device_pma",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P010031",
+        "declared_available_at": "2018-02-02",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-023",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_mr_ct",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2018-Q1",
+        "event_date": "2018-01-05",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "e4e37796c9e2bedc7e80d900ac4c77c6",
+        "kind": "510k",
+        "product_code": "LLZ",
+        "applicant_raw": "Ge Medical Systems Ultrasound and Primary",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K173456",
+        "declared_available_at": "2018-02-04",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-024",
+      "company": "philips",
+      "technology_track": "imaging_mr_ct",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2018-Q1",
+        "event_date": "2018-01-12",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "da519711d1e95dbf4f31c1fef84d9fcd",
+        "kind": "510k",
+        "product_code": "LLZ",
+        "applicant_raw": "Philips Medical Systems Technologies , Ltd.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K173588",
+        "declared_available_at": "2018-02-11",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-025",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_us",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2018-Q1",
+        "event_date": "2018-03-13",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "0adf7f04aa8502c6b19d4a63646cd3b8",
+        "kind": "510k",
+        "product_code": "IYN",
+        "applicant_raw": "GE Healthcare",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K180374",
+        "declared_available_at": "2018-04-12",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-026",
+      "company": "philips",
+      "technology_track": "imaging_us",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2018-Q3",
+        "event_date": "2018-07-27",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "29099bce809e1272343fa9bf730923ff",
+        "kind": "510k",
+        "product_code": "IYN",
+        "applicant_raw": "Philips Ultrasound, Inc.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K181485",
+        "declared_available_at": "2018-08-26",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-027",
+      "company": "philips",
+      "technology_track": "medical_ai",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2018-Q4",
+        "event_date": "2018-10-24",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "2aa1370b3ca522c67b4d12e9095bac99",
+        "kind": "510k",
+        "product_code": "DQK",
+        "applicant_raw": "Philips Medical Systems Nederland B.V.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K180940",
+        "declared_available_at": "2018-11-23",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-028",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2018-Q4",
+        "event_date": "2018-11-08",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "7a3db1d5cf59ede46a4bb1f5b2d90a46",
+        "kind": "510k",
+        "product_code": "DQK",
+        "applicant_raw": "Medtronic, Inc.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K181918",
+        "declared_available_at": "2018-12-08",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-029",
+      "company": "ge_healthcare",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2018-Q4",
+        "event_date": "2018-12-06",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "b13cf9559e7823a4c94539d7810f7e03",
+        "kind": "510k",
+        "product_code": "MWI",
+        "applicant_raw": "GE Healthcare",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K183116",
+        "declared_available_at": "2019-01-05",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-030",
+      "company": "mindray",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2018-Q4",
+        "event_date": "2018-12-10",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "20d1ba5432cafeb1c1df668286ae66a3",
+        "kind": "510k",
+        "product_code": "MHX",
+        "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K182075",
+        "declared_available_at": "2019-01-09",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-031",
+      "company": "ge_healthcare",
+      "technology_track": "respiratory",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2019-Q2",
+        "event_date": "2019-05-01",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "c6bd759ae6a08c1740aac00dd7cfe213",
+        "kind": "510k",
+        "product_code": "CCK",
+        "applicant_raw": "GE Healthcare Finland Oy",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K183394",
+        "declared_available_at": "2019-05-31",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-032",
+      "company": "ge_healthcare",
+      "technology_track": "respiratory",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2021-Q4",
+        "event_date": "2021-10-21",
+        "days_since_previous_same_track": 904
+      },
+      "evidence": {
+        "event_id": "e4ddb73567b43ca7d95067542d8270ec",
+        "kind": "510k",
+        "product_code": "CCK",
+        "applicant_raw": "GE Healthcare Finland Oy",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K211171",
+        "declared_available_at": "2021-11-20",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-033",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2022-Q1",
+        "event_date": "2022-01-14",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "a68fa7e4ccb048b3e24fe5c1c4641083",
+        "kind": "510k",
+        "product_code": "QHW",
+        "applicant_raw": "Medtronic, Inc.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K201057",
+        "declared_available_at": "2022-02-13",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-034",
+      "company": "ge_healthcare",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2022-Q2",
+        "event_date": "2022-04-01",
+        "days_since_previous_same_track": 513
+      },
+      "evidence": {
+        "event_id": "c57e50686c10fafa46237972c4e3a229",
+        "kind": "510k",
+        "product_code": "MHX",
+        "applicant_raw": "Ge Medical Systems Information Technologies, Inc.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K213490",
+        "declared_available_at": "2022-05-01",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-035",
+      "company": "philips",
+      "technology_track": "imaging_us",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2022-Q3",
+        "event_date": "2022-09-27",
+        "days_since_previous_same_track": 368
+      },
+      "evidence": {
+        "event_id": "3eb3bc19032c0452fe3573c4278533e6",
+        "kind": "510k",
+        "product_code": "IYN",
+        "applicant_raw": "Philips Ultrasound, LLC",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K222648",
+        "declared_available_at": "2022-10-27",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-036",
+      "company": "philips",
+      "technology_track": "medical_ai",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2022-Q4",
+        "event_date": "2022-10-24",
+        "days_since_previous_same_track": 676
+      },
+      "evidence": {
+        "event_id": "1a8c780a9e04148ae6a91f7be147aae3",
+        "kind": "510k",
+        "product_code": "DQK",
+        "applicant_raw": "Philips Medical Systems Nederland, B.V. (Pmsn)",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K212493",
+        "declared_available_at": "2022-11-23",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-037",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2023-Q2",
+        "event_date": "2023-06-30",
+        "days_since_previous_same_track": 672
+      },
+      "evidence": {
+        "event_id": "faf8f00c0fa435ba7ef42c01d4f27ae5",
+        "kind": "510k",
+        "product_code": "NEZ",
+        "applicant_raw": "Given Imaging Ltd. (Medtronic)",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K230991",
+        "declared_available_at": "2023-07-30",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-038",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2024-Q2",
+        "event_date": "2024-04-19",
+        "days_since_previous_same_track": 826
+      },
+      "evidence": {
+        "event_id": "7bd5ecd973b90256298d20928a0a3ccc",
+        "kind": "510k",
+        "product_code": "QHW",
+        "applicant_raw": "Medtronic, Inc.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K240534",
+        "declared_available_at": "2024-05-19",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-039",
+      "company": "philips",
+      "technology_track": "respiratory",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2024-Q3",
+        "event_date": "2024-07-31",
+        "days_since_previous_same_track": null
+      },
+      "evidence": {
+        "event_id": "4317764df35a7138021a7fec6a32c2e7",
+        "kind": "510k",
+        "product_code": "BZD",
+        "applicant_raw": "Philips Respironics",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K233555",
+        "declared_available_at": "2024-08-30",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-040",
+      "company": "philips",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "novel_entry",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2025-Q2",
+        "event_date": "2025-05-05",
+        "days_since_previous_same_track": 503
+      },
+      "evidence": {
+        "event_id": "1be06af7a2223067cc0de57c4e3003ea",
+        "kind": "510k",
+        "product_code": "MHX",
+        "applicant_raw": "Philips Medizin Systeme Böblingen GmbH",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K242962",
+        "declared_available_at": "2025-06-04",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-041",
+      "company": "philips",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2018-Q4",
+        "event_date": "2018-11-15",
+        "days_since_previous_same_track": 69
+      },
+      "evidence": {
+        "event_id": "6dc5af31daa7f5ff825ce75b4e6e9f97",
+        "kind": "510k",
+        "product_code": "MHX",
+        "applicant_raw": "Philips Medizin Systeme Boeblingen GmbH",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K181831",
+        "declared_available_at": "2018-12-15",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-042",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_mr_ct",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2019-Q4",
+        "event_date": "2019-12-13",
+        "days_since_previous_same_track": 57
+      },
+      "evidence": {
+        "event_id": "68c22ed21871f3657bf570b0a6ccbf5e",
+        "kind": "510k",
+        "product_code": "JAK",
+        "applicant_raw": "Ge Healthcare Japan Corporation",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K193170",
+        "declared_available_at": "2020-01-12",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-043",
+      "company": "ge_healthcare",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2020-Q1",
+        "event_date": "2020-01-29",
+        "days_since_previous_same_track": 5
+      },
+      "evidence": {
+        "event_id": "053db343d14fc38c89ccee8a3f8bd611",
+        "kind": "510k",
+        "product_code": "MHX",
+        "applicant_raw": "GE Healthcare Finland Oy",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K191323",
+        "declared_available_at": "2020-02-28",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-044",
+      "company": "medtronic",
+      "technology_track": "cardiac_rhythm",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2020-Q2",
+        "event_date": "2020-04-16",
+        "days_since_previous_same_track": 1
+      },
+      "evidence": {
+        "event_id": "a285e3ce1853e3b54871083725ce534d",
+        "kind": "pma",
+        "product_code": "PNJ",
+        "applicant_raw": "Medtronic, Inc.",
+        "source": "openfda_device_pma",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P150033",
+        "declared_available_at": "2020-05-16",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-045",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_mr_ct",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2021-Q2",
+        "event_date": "2021-04-28",
+        "days_since_previous_same_track": 30
+      },
+      "evidence": {
+        "event_id": "3660cf5ab7671bd524d09e459814e4cc",
+        "kind": "510k",
+        "product_code": "IZL",
+        "applicant_raw": "Ge Medical Systems, LLC",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K210982",
+        "declared_available_at": "2021-05-28",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-046",
+      "company": "medtronic",
+      "technology_track": "cardiac_rhythm",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2021-Q2",
+        "event_date": "2021-05-27",
+        "days_since_previous_same_track": 0
+      },
+      "evidence": {
+        "event_id": "05b6907c42c7bff3dcd83b9b7bfd0c1c",
+        "kind": "pma",
+        "product_code": "PNJ",
+        "applicant_raw": "Medtronic, Inc.",
+        "source": "openfda_device_pma",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P150033",
+        "declared_available_at": "2021-06-26",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-047",
+      "company": "mindray",
+      "technology_track": "imaging_us",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2021-Q2",
+        "event_date": "2021-06-10",
+        "days_since_previous_same_track": 0
+      },
+      "evidence": {
+        "event_id": "94a37c1ebd9442d9ba827456dd3e0659",
+        "kind": "510k",
+        "product_code": "IYN",
+        "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K210416",
+        "declared_available_at": "2021-07-10",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-048",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2021-Q3",
+        "event_date": "2021-08-27",
+        "days_since_previous_same_track": 4
+      },
+      "evidence": {
+        "event_id": "7bd21bfcb3933b72c81cdf23f413cc68",
+        "kind": "510k",
+        "product_code": "NEZ",
+        "applicant_raw": "Given Imaging Ltd. (Medtronic)",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K211684",
+        "declared_available_at": "2021-09-26",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-049",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_us",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2021-Q3",
+        "event_date": "2021-09-10",
+        "days_since_previous_same_track": 14
+      },
+      "evidence": {
+        "event_id": "a57326588009b0af515bfc9055096472",
+        "kind": "510k",
+        "product_code": "IYN",
+        "applicant_raw": "GE Medical Systems Ultrasound and Primary Care Diagnostics",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K210438",
+        "declared_available_at": "2021-10-10",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-050",
+      "company": "ge_healthcare",
+      "technology_track": "medical_ai",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2018-2021",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2021-Q4",
+        "event_date": "2021-10-29",
+        "days_since_previous_same_track": 101
+      },
+      "evidence": {
+        "event_id": "de9fdb5f40a22cd727130313d5bb05bc",
+        "kind": "510k",
+        "product_code": "QIH",
+        "applicant_raw": "Ge Medical Systems, LLC",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K211161",
+        "declared_available_at": "2021-11-28",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-051",
+      "company": "ge_healthcare",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2022-Q2",
+        "event_date": "2022-04-13",
+        "days_since_previous_same_track": 1
+      },
+      "evidence": {
+        "event_id": "d0d9278cd1cb3ae27450d8517632a110",
+        "kind": "510k",
+        "product_code": "MHX",
+        "applicant_raw": "GE Healthcare Finland Oy",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K213181",
+        "declared_available_at": "2022-05-13",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-052",
+      "company": "medtronic",
+      "technology_track": "cardiac_rhythm",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2022-Q2",
+        "event_date": "2022-05-20",
+        "days_since_previous_same_track": 0
+      },
+      "evidence": {
+        "event_id": "98ec7c22ef92bbdf6b68dcdd3e7ca608",
+        "kind": "pma",
+        "product_code": "LWS",
+        "applicant_raw": "Medtronic Cardiac Rhythm Disease Management",
+        "source": "openfda_device_pma",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P980016",
+        "declared_available_at": "2022-06-19",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-053",
+      "company": "medtronic",
+      "technology_track": "cardiac_rhythm",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2022-Q2",
+        "event_date": "2022-05-26",
+        "days_since_previous_same_track": 1
+      },
+      "evidence": {
+        "event_id": "2682cd17c1bc0f8b605fe27d2208d938",
+        "kind": "pma",
+        "product_code": "NIK",
+        "applicant_raw": "Medtronic Cardiac Rhythm Disease Management",
+        "source": "openfda_device_pma",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P010031",
+        "declared_available_at": "2022-06-25",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-054",
+      "company": "philips",
+      "technology_track": "imaging_mr_ct",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2022-Q4",
+        "event_date": "2022-12-23",
+        "days_since_previous_same_track": 1
+      },
+      "evidence": {
+        "event_id": "c433e5a1ad30a628e9306313de148a03",
+        "kind": "510k",
+        "product_code": "LNH",
+        "applicant_raw": "Philips Medical Systems Nederlands B.V.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K223442",
+        "declared_available_at": "2023-01-22",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-055",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_us",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2023-Q1",
+        "event_date": "2023-02-16",
+        "days_since_previous_same_track": 1
+      },
+      "evidence": {
+        "event_id": "f8fbf8235ebf9f0643c730a73f377759",
+        "kind": "510k",
+        "product_code": "IYN",
+        "applicant_raw": "Ge Medical System Ultrasound and Primary Care Diagnostics",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K223832",
+        "declared_available_at": "2023-03-18",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-056",
+      "company": "philips",
+      "technology_track": "patient_monitoring",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2023-Q4",
+        "event_date": "2023-11-22",
+        "days_since_previous_same_track": 92
+      },
+      "evidence": {
+        "event_id": "fb2265cad1c40bbcbbcbf1ee536d1180",
+        "kind": "510k",
+        "product_code": "MHX",
+        "applicant_raw": "Philips Medizin Systeme Boeblingen GmbH",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K230604",
+        "declared_available_at": "2023-12-22",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-057",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2024-Q2",
+        "event_date": "2024-06-05",
+        "days_since_previous_same_track": 26
+      },
+      "evidence": {
+        "event_id": "f3179c63b3d6e9bbf77965f1039020be",
+        "kind": "pma",
+        "product_code": null,
+        "applicant_raw": "Medtronic, Inc.",
+        "source": "openfda_device_pma",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P980035",
+        "declared_available_at": "2024-07-05",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-058",
+      "company": "medtronic",
+      "technology_track": "medical_ai",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2025-Q1",
+        "event_date": "2025-01-17",
+        "days_since_previous_same_track": 43
+      },
+      "evidence": {
+        "event_id": "0e2002bae20479e1399883a61649ae61",
+        "kind": "510k",
+        "product_code": "DQK",
+        "applicant_raw": "Medtronic, Inc.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K243892",
+        "declared_available_at": "2025-02-16",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-059",
+      "company": "ge_healthcare",
+      "technology_track": "imaging_mr_ct",
+      "track_role": "exploratory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2025-Q2",
+        "event_date": "2025-06-18",
+        "days_since_previous_same_track": 6
+      },
+      "evidence": {
+        "event_id": "10dff15f47c91486899fe33e0bfc256f",
+        "kind": "510k",
+        "product_code": "JAK",
+        "applicant_raw": "GE Medical Systems SCS",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K243672",
+        "declared_available_at": "2025-07-18",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    },
+    {
+      "case_id": "ES5-060",
+      "company": "mindray",
+      "technology_track": "imaging_us",
+      "track_role": "confirmatory",
+      "stratum_by_gap_rule": "routine",
+      "era": "2022-2025",
+      "candidate_alert": {
+        "rule": "regulatory event in a study track, classified by gap to the firm's previous event in that track",
+        "alert_quarter": "2025-Q4",
+        "event_date": "2025-11-07",
+        "days_since_previous_same_track": 56
+      },
+      "evidence": {
+        "event_id": "f1081af88221d1e0513a3382c36e63d6",
+        "kind": "510k",
+        "product_code": "IYN",
+        "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+        "source": "openfda_device_510k",
+        "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K251853",
+        "declared_available_at": "2025-12-07",
+        "availability_basis": "Tier B: event date plus a declared 30-day lag; not a recorded publication time"
+      },
+      "counter_evidence": null,
+      "independent_outcome": null,
+      "human_review_status": "PENDING_HUMAN_REVIEW",
+      "final_label": null,
+      "review_note": null
+    }
+  ]
+}
