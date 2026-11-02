@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T00:50:00+08:00",
+  "updated_at": "2026-11-03T01:40:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "understand_calibrated_momentum",
-  "cycle": 15,
+  "phase": "point_in_time_snapshots",
+  "cycle": 16,
   "last_completed_cycle": {
-    "cycle": 13,
-    "name": "calibrated_momentum",
+    "cycle": 14,
+    "name": "full_roster_and_frozen_snapshot",
     "branch": "research/change-detection-v1",
-    "report": "experiments/b027/profiles.json",
-    "summary": "research/RESULTS/cycle13_momentum_2026-11-02.md",
-    "verdict": "momentum is now an exact binomial rate-ratio test at alpha=0.05 with a reported MDE; THREE of five cycle-12 momentum readings did not survive (Medtronic 90v66 p=0.065 MDE 1.57x, Mindray 18v12 p=0.362, GE HealthCare 57v48 p=0.435); only Philips' doubling survives (73v36 p=0.001)"
+    "report": "experiments/b027/snapshots/2026-11-02/manifest.json",
+    "summary": "research/RESULTS/cycle14_snapshot_2026-11-03.md",
+    "verdict": "53 full-roster profiles and a hash-verified frozen snapshot (2026-11-02) shipped; a naive ratio rule would have flagged 35 of 53 companies while the exact binomial test supports 4 (Olympus, Philips, Steris, Medline) - 31 would have been unsupported claims"
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\integration-v2",
@@ -126,7 +126,10 @@
     "UNDERSTAND: seven-field company technology profiles are now generated for all five mandated deep cases from holdings alone (no new data), with contradictory evidence as a required field",
     "UNDERSTAND: automated self-check re-derives every number the Markdown states from the JSON; 5/5 profiles pass and rendering is deterministic",
     "UNDERSTAND: momentum is a calibrated test (exact binomial, alpha=0.05) with a reported minimum detectable ratio; 3 of 5 cycle-12 momentum readings were noise and were overturned inside the product by design",
-    "UNDERSTAND: only Philips' activity increase survives (73 vs 36, p=0.001); Medtronic's +36% has p=0.065 and an MDE of 1.57x, so the data cannot distinguish it from a constant rate"
+    "UNDERSTAND: only Philips' activity increase survives (73 vs 36, p=0.001); Medtronic's +36% has p=0.065 and an MDE of 1.57x, so the data cannot distinguish it from a constant rate",
+    "POINT-IN-TIME: a dated, source-hashed, self-verifying profile snapshot now exists (snapshots/2026-11-02, 53 companies, manifest 31af25c9); later cycles can prove what this one knew",
+    "CALIBRATION: across 53 companies a naive ratio rule flags 35 and the exact binomial test supports 4 - 31 would have been unsupported claims (e.g. iRhythm 4 vs 1, ratio 4.00, p=0.375, MDE 22.9x)",
+    "CALIBRATION: per-company MDEs range from 1.77x to 22.9x, so detected counts cannot be compared as an innovation ranking"
   ],
   "known_measurement_defects": [
     "no independent confirmation source exists in the current data spine",
@@ -144,9 +147,9 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "B-049: extend profiles to the full curated roster and freeze a dated snapshot set (point-in-time artifact prerequisite for any rolling-origin evaluation)",
+    "freeze a second snapshot at the next as-of date and diff the two (first point-in-time comparison)",
+    "wire the cycle-3c detection frontier into the per-track change field so per-track 'change' is calibrated against the controlled-truth benchmark rather than only a rate test",
     "B-039: fix the OBSERVE deployment resolution and re-run the width sweep there",
-    "use the cycle-3c detection frontier, not only the 24-month rate test, for the per-track change field so 'change' is calibrated against the controlled-truth benchmark",
     "do not resume hiring probing (structural limit, D-031); patents only if a route opens"
   ],
   "invariants": [
@@ -545,5 +548,53 @@
       },
       "reading_rule": "a non-detection is never reported as stability: the MDE must accompany it"
     }
+  },
+  "point_in_time": {
+    "status": "FIRST FROZEN SNAPSHOT SHIPPED",
+    "snapshot": "experiments/b027/snapshots/2026-11-02",
+    "manifest_hash": "31af25c989f2650d",
+    "companies": 53,
+    "scope": "roster (51-company device roster + Draeger and Mindray from the universe focus list)",
+    "sources_hashed": [
+      "data/research.sqlite",
+      "data/b040_device_trials.sqlite",
+      "config/companies_device.json",
+      "config/universe_v1.json",
+      "config/product_code_tracks.json"
+    ],
+    "verification": {
+      "library": "medradar/intelligence/snapshot.py (23 unit tests)",
+      "selfcheck": "manifest hashes, summary/profile agreement, markdown reproduction, as-of match",
+      "result": "snapshot OK; markdown reproduces exactly from the JSON"
+    },
+    "calibration": {
+      "naive_ratio_rule_flags": 35,
+      "exact_binomial_detections": 4,
+      "unsupported_naive_claims": 31,
+      "detected": {
+        "olympus": {
+          "ratio": 4.17,
+          "p": 0.0001,
+          "mde": 2.46
+        },
+        "philips": {
+          "ratio": 2.03,
+          "p": 0.0005,
+          "mde": 1.77
+        },
+        "steris": {
+          "ratio": 0.5,
+          "p": 0.0198,
+          "mde": 2.25
+        },
+        "medline": {
+          "ratio": 0.44,
+          "p": 0.0288,
+          "mde": 2.76
+        }
+      },
+      "report": "experiments/b027/momentum_calibration.json"
+    },
+    "next_prerequisite": "freeze a second snapshot at the next as-of date and diff the two - the first genuinely point-in-time comparison available to the programme"
   }
 }

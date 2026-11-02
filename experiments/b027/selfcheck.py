@@ -24,6 +24,7 @@ from medradar.intelligence.profile import (  # noqa: E402
     render_markdown,
     validate_profile,
 )
+from medradar.intelligence.snapshot import verify_manifest  # noqa: E402
 
 BASE = Path("experiments/b027")
 HEADINGS = (
@@ -114,7 +115,54 @@ def main() -> int:
             print(f"{key}: OK ({profile['technology_footprint']['total_events']} events, "
                   f"{len(profile['contradictory_evidence']['found'])} contradictions)")
     print(f"\nchecked {len(payload['profiles'])} profiles; failures={failures}")
-    return 0 if failures == 0 else 1
+    snapshot_failures = check_snapshots()
+    return 0 if failures == 0 and snapshot_failures == 0 else 1
+
+
+def check_snapshots() -> int:
+    """Verify every frozen snapshot: manifest hashes, markdown reproduction, as-of consistency."""
+    snapshot_root = BASE / "snapshots"
+    if not snapshot_root.exists():
+        print("\nno snapshots to verify")
+        return 0
+    failures = 0
+    for directory in sorted(path for path in snapshot_root.iterdir() if path.is_dir()):
+        manifest_path = directory / "manifest.json"
+        profiles_path = directory / "profiles.json"
+        summary_path = directory / "summary.json"
+        if not (manifest_path.exists() and profiles_path.exists() and summary_path.exists()):
+            print(f"snapshot {directory.name}: missing manifest/profiles/summary")
+            failures += 1
+            continue
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        profiles = json.loads(profiles_path.read_text(encoding="utf-8"))
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+        problems = verify_manifest(manifest, artifacts={"profiles": profiles,
+                                                        "summary": summary})
+        if manifest.get("as_of") != directory.name:
+            problems.append("manifest as_of does not match the snapshot directory name")
+        if summary.get("companies") != len(profiles["profiles"]):
+            problems.append("summary company count does not match profiles.json")
+        markdown_dir = directory / "markdown"
+        missing = [key for key in profiles["profiles"]
+                   if not (markdown_dir / f"{key}.md").exists()]
+        if missing:
+            problems.append(f"{len(missing)} profiles have no frozen markdown")
+        mismatched = [key for key, profile in profiles["profiles"].items()
+                      if (markdown_dir / f"{key}.md").exists()
+                      and (markdown_dir / f"{key}.md").read_text(encoding="utf-8")
+                      != render_markdown(profile)]
+        if mismatched:
+            problems.append(f"{len(mismatched)} frozen markdown files do not reproduce from JSON")
+        if problems:
+            failures += 1
+            print(f"snapshot {directory.name}: {len(problems)} problem(s)")
+            for problem in problems:
+                print(f"   - {problem}")
+        else:
+            print(f"snapshot {directory.name}: OK ({summary['companies']} companies, "
+                  f"manifest {manifest['manifest_hash'][:12]}...)")
+    return failures
 
 
 if __name__ == "__main__":

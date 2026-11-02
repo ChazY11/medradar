@@ -1,4 +1,4 @@
-﻿"""B-027: build company technology profiles from the frozen evidence.
+"""B-027: build company technology profiles from the frozen evidence.
 
 Library logic lives in `medradar/intelligence/profile.py` (pure, unit-tested). This script does the
 I/O: it reads the regulatory lane, the device-trial lane and the curated company roster, resolves
@@ -132,7 +132,16 @@ def hiring_status(company_key: str) -> str:
     return f"{postings} archived postings across {months} months (posting-flow proxy, not headcount)"
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Build company technology profiles.")
+    parser.add_argument("--scope", choices=("focus", "roster"), default="roster",
+                        help="focus = the five mandated deep cases; roster = every curated company")
+    parser.add_argument("--out", default=str(OUT_DIR))
+    args = parser.parse_args(argv)
+    out_dir = Path(args.out)
+
     if not LANE.exists():
         print(f"lane database missing: {LANE}")
         return 1
@@ -146,11 +155,14 @@ def main() -> int:
     first_seen = code_first_seen(events, codes)
     trials = resolve_trials(families)
 
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    (OUT_DIR / "profiles").mkdir(exist_ok=True)
+    targets = sorted(FOCUS) if args.scope == "focus" else sorted(
+        set(families) | set(FOCUS))
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "profiles").mkdir(exist_ok=True)
     payload = {"schema": "profiles_v1", "as_of": AS_OF, "window": list(WINDOW),
+               "scope": args.scope,
                "focus_companies": list(FOCUS), "profiles": {}}
-    for company_key in FOCUS:
+    for company_key in targets:
         family = families.get(company_key)
         if not family:
             print(f"{company_key}: not in roster")
@@ -171,14 +183,16 @@ def main() -> int:
         )
         payload["profiles"][company_key] = profile
         markdown = render_markdown(profile)
-        (OUT_DIR / "profiles" / f"{company_key}.md").write_text(
+        (out_dir / "profiles" / f"{company_key}.md").write_text(
             markdown, encoding="utf-8", newline="\n")
+        momentum_label = (profile["momentum"].get("direction")
+                          or profile["momentum"].get("status") or "unknown")
         print(f"{company_key:16s} events={profile['technology_footprint']['total_events']:4d} "
               f"tracks={profile['technology_footprint']['tracks']:3d} "
-              f"momentum={profile['momentum']['direction']:12s} "
+              f"momentum={momentum_label:12s} "
               f"contradictions={len(profile['contradictory_evidence']['found'])}")
-    write_json(OUT_DIR / "profiles.json", payload)
-    print(f"wrote {OUT_DIR / 'profiles.json'} and {len(payload['profiles'])} markdown profiles")
+    write_json(out_dir / "profiles.json", payload)
+    print(f"wrote {out_dir / 'profiles.json'} and {len(payload['profiles'])} markdown profiles")
     return 0
 
 
