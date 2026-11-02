@@ -1,0 +1,454 @@
+{
+  "schema": "case_packets_small_sample_v2+final_adjudication",
+  "count": 9,
+  "note": "original fields preserved; third_source added; all PENDING_HUMAN_REVIEW, no labels",
+  "packets": [
+    {
+      "event_id": "LT-01",
+      "company": "ge_healthcare",
+      "technology_track": "patient_monitoring",
+      "later_clearance": {
+        "id": "510k:2022-04-01",
+        "date": "2022-04-01",
+        "kind": "510k/pma"
+      },
+      "representative_trial": {
+        "id": "99729fd0628c1960e22810ff72769cef",
+        "date": "2021-05-06",
+        "matched_keywords": []
+      },
+      "lead_quarters": 3.3,
+      "lead_days": 300,
+      "candidate_trials": 1,
+      "candidate_leads": [
+        3.3
+      ],
+      "upper_bound_lead_quarters": 3.3,
+      "human_review_status": "WAIVED_BY_OWNER_2026-11-03",
+      "review_questions": [
+        "is the trial genuinely device-relevant for this track (not a drug trial matched by keyword accident)?",
+        "does the clearance belong to the same firm and track as the trial?",
+        "could the lead be an artefact of the post-hoc keyword crosswalk?",
+        "does a third source (publication, 8-K) independently place the programme before the clearance?"
+      ],
+      "final_label": "Uncertain",
+      "third_source": {
+        "source": "Europe PMC",
+        "query": "(AFF:\"GE HealthCare\" OR AFF:\"GE Medical\") AND (\"PATIENT MONITOR\" OR \"PULSE OXIMETER\" OR \"BLOOD PRESSURE\")",
+        "status": "AFTER_CLEARANCE",
+        "earliest_date": "2023-06-02",
+        "lead_days": -427,
+        "lead_quarters": -4.68,
+        "earliest_record": {
+          "title": "Comparative analysis of signal accuracy of three SpO&lt;sub&gt;2&lt;/sub&gt; monitors during motion and low perfusion conditions.",
+          "pmid": "37266709"
+        },
+        "hits_total": 227,
+        "protocol": "THIRD_SOURCE_PROTOCOL.md"
+      },
+      "final_label_source": "AI_REVIEW_2026-11-03",
+      "final_label_human_truth": false
+    },
+    {
+      "event_id": "LT-02",
+      "company": "medtronic",
+      "technology_track": "imaging_mr_ct",
+      "later_clearance": {
+        "id": "510k:2019-03-06",
+        "date": "2019-03-06",
+        "kind": "510k/pma"
+      },
+      "representative_trial": {
+        "id": "6cd572d81d0ef8cd8f3d1498fbce116c",
+        "date": "2018-07-13",
+        "matched_keywords": []
+      },
+      "lead_quarters": 2.26,
+      "lead_days": 206,
+      "candidate_trials": 1,
+      "candidate_leads": [
+        2.26
+      ],
+      "upper_bound_lead_quarters": 2.26,
+      "human_review_status": "WAIVED_BY_OWNER_2026-11-03",
+      "review_questions": [
+        "is the trial genuinely device-relevant for this track (not a drug trial matched by keyword accident)?",
+        "does the clearance belong to the same firm and track as the trial?",
+        "could the lead be an artefact of the post-hoc keyword crosswalk?",
+        "does a third source (publication, 8-K) independently place the programme before the clearance?"
+      ],
+      "final_label": "False Signal / No Confirmed Shift",
+      "third_source": {
+        "source": "Europe PMC",
+        "query": "(AFF:\"Medtronic\") AND (\"X RAY SYSTEM\" OR \"COMPUTED TOMOGRAPHY\" OR \"MAGNETIC RESONANCE\")",
+        "status": "AFTER_CLEARANCE",
+        "earliest_date": "2024-10-25",
+        "lead_days": -2060,
+        "lead_quarters": -22.58,
+        "earliest_record": {
+          "title": "Global Results of Implantable Loop Recorder for Detection of Atrial Fibrillation After Stroke: Reveal LINQ Registry.",
+          "pmid": "39450720"
+        },
+        "hits_total": 418,
+        "protocol": "THIRD_SOURCE_PROTOCOL.md"
+      },
+      "final_label_source": "AI_REVIEW_2026-11-03",
+      "final_label_human_truth": false
+    },
+    {
+      "event_id": "LT-03",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "later_clearance": {
+        "id": "510k:2020-11-20",
+        "date": "2020-11-20",
+        "kind": "510k/pma"
+      },
+      "representative_trial": {
+        "id": "a1a4e56656b1737ad0a26f00e3b1cbb8",
+        "date": "2018-06-27",
+        "matched_keywords": []
+      },
+      "lead_quarters": 9.31,
+      "lead_days": 847,
+      "candidate_trials": 1,
+      "candidate_leads": [
+        9.31
+      ],
+      "upper_bound_lead_quarters": 9.31,
+      "human_review_status": "WAIVED_BY_OWNER_2026-11-03",
+      "review_questions": [
+        "is the trial genuinely device-relevant for this track (not a drug trial matched by keyword accident)?",
+        "does the clearance belong to the same firm and track as the trial?",
+        "could the lead be an artefact of the post-hoc keyword crosswalk?",
+        "does a third source (publication, 8-K) independently place the programme before the clearance?"
+      ],
+      "final_label": "False Signal / No Confirmed Shift",
+      "third_source": {
+        "source": "Europe PMC",
+        "query": "(AFF:\"Medtronic\") AND (\"RESPIRATORY\" OR \"VENTILATOR\" OR \"ANESTHESIA\")",
+        "status": "AFTER_CLEARANCE",
+        "earliest_date": "2022-09-01",
+        "lead_days": -650,
+        "lead_quarters": -7.12,
+        "earliest_record": {
+          "title": "Evaluation of Common Nasal Cannulas in Neonatal Noninvasive Ventilation (NIV) Using a Novel Neonatal Nasal Model.",
+          "pmid": "36072575"
+        },
+        "hits_total": 518,
+        "protocol": "THIRD_SOURCE_PROTOCOL.md"
+      },
+      "final_label_source": "AI_REVIEW_2026-11-03",
+      "final_label_human_truth": false
+    },
+    {
+      "event_id": "LT-04",
+      "company": "medtronic",
+      "technology_track": "respiratory",
+      "later_clearance": {
+        "id": "510k:2022-01-14",
+        "date": "2022-01-14",
+        "kind": "510k/pma"
+      },
+      "representative_trial": {
+        "id": "4dd4990d474768df01e19bf9dd5486d0",
+        "date": "2021-03-23",
+        "matched_keywords": []
+      },
+      "lead_quarters": 2.93,
+      "lead_days": 267,
+      "candidate_trials": 3,
+      "candidate_leads": [
+        2.93,
+        3.26,
+        4.56
+      ],
+      "upper_bound_lead_quarters": 4.56,
+      "human_review_status": "WAIVED_BY_OWNER_2026-11-03",
+      "review_questions": [
+        "is the trial genuinely device-relevant for this track (not a drug trial matched by keyword accident)?",
+        "does the clearance belong to the same firm and track as the trial?",
+        "could the lead be an artefact of the post-hoc keyword crosswalk?",
+        "does a third source (publication, 8-K) independently place the programme before the clearance?"
+      ],
+      "final_label": "False Signal / No Confirmed Shift",
+      "third_source": {
+        "source": "Europe PMC",
+        "query": "(AFF:\"Medtronic\") AND (\"RESPIRATORY\" OR \"VENTILATOR\" OR \"ANESTHESIA\")",
+        "status": "AFTER_CLEARANCE",
+        "earliest_date": "2022-09-01",
+        "lead_days": -230,
+        "lead_quarters": -2.52,
+        "earliest_record": {
+          "title": "Evaluation of Common Nasal Cannulas in Neonatal Noninvasive Ventilation (NIV) Using a Novel Neonatal Nasal Model.",
+          "pmid": "36072575"
+        },
+        "hits_total": 518,
+        "protocol": "THIRD_SOURCE_PROTOCOL.md"
+      },
+      "final_label_source": "AI_REVIEW_2026-11-03",
+      "final_label_human_truth": false
+    },
+    {
+      "event_id": "LT-05",
+      "company": "medtronic",
+      "technology_track": "vascular_access",
+      "later_clearance": {
+        "id": "510k:2021-07-15",
+        "date": "2021-07-15",
+        "kind": "510k/pma"
+      },
+      "representative_trial": {
+        "id": "8172ead9237536e78af31a89449ed19a",
+        "date": "2020-07-23",
+        "matched_keywords": []
+      },
+      "lead_quarters": 3.59,
+      "lead_days": 327,
+      "candidate_trials": 2,
+      "candidate_leads": [
+        3.59,
+        6.82
+      ],
+      "upper_bound_lead_quarters": 6.82,
+      "human_review_status": "WAIVED_BY_OWNER_2026-11-03",
+      "review_questions": [
+        "is the trial genuinely device-relevant for this track (not a drug trial matched by keyword accident)?",
+        "does the clearance belong to the same firm and track as the trial?",
+        "could the lead be an artefact of the post-hoc keyword crosswalk?",
+        "does a third source (publication, 8-K) independently place the programme before the clearance?"
+      ],
+      "final_label": "False Signal / No Confirmed Shift",
+      "third_source": {
+        "source": "Europe PMC",
+        "query": "(AFF:\"Medtronic\") AND (\"CATHETER INTRODUCER\" OR \"ADMINISTRATION SET\" OR \"VASCULAR ACCESS\")",
+        "status": "SUPPORTED_BEFORE",
+        "earliest_date": "1998-04-10",
+        "lead_days": 8497,
+        "lead_quarters": 93.12,
+        "earliest_record": {
+          "title": "Catheter introducer with thin walled sheath",
+          "authors": "NORDSTROM JON W, CULHANE JAMES P.",
+          "journal": null,
+          "pmid": null,
+          "doi": null
+        },
+        "hits_total": 95,
+        "protocol": "THIRD_SOURCE_PROTOCOL.md"
+      },
+      "final_label_source": "AI_REVIEW_2026-11-03",
+      "final_label_human_truth": false
+    },
+    {
+      "event_id": "LT-06",
+      "company": "philips",
+      "technology_track": "imaging_us",
+      "later_clearance": {
+        "id": "510k:2019-09-06",
+        "date": "2019-09-06",
+        "kind": "510k/pma"
+      },
+      "representative_trial": {
+        "id": "5130282779bb5c6f7fc8dec3183b3fe9",
+        "date": "2019-01-23",
+        "matched_keywords": []
+      },
+      "lead_quarters": 2.15,
+      "lead_days": 196,
+      "candidate_trials": 1,
+      "candidate_leads": [
+        2.15
+      ],
+      "upper_bound_lead_quarters": 2.15,
+      "human_review_status": "WAIVED_BY_OWNER_2026-11-03",
+      "review_questions": [
+        "is the trial genuinely device-relevant for this track (not a drug trial matched by keyword accident)?",
+        "does the clearance belong to the same firm and track as the trial?",
+        "could the lead be an artefact of the post-hoc keyword crosswalk?",
+        "does a third source (publication, 8-K) independently place the programme before the clearance?"
+      ],
+      "final_label": "False Signal / No Confirmed Shift",
+      "third_source": {
+        "source": "Europe PMC",
+        "query": "(AFF:\"Philips\") AND (\"ECHOCARDIOGRAPHY\" OR \"ULTRASOUND\" OR \"SONOGRAPH\")",
+        "status": "AFTER_CLEARANCE",
+        "earliest_date": "2025-01-01",
+        "lead_days": -1944,
+        "lead_quarters": -21.3,
+        "earliest_record": {
+          "title": "A Retrospective Analysis: CCTA vs. TTE in Diagnosing Coronary Artery Fistula",
+          "pmid": "40248941"
+        },
+        "hits_total": 1934,
+        "protocol": "THIRD_SOURCE_PROTOCOL.md"
+      },
+      "final_label_source": "AI_REVIEW_2026-11-03",
+      "final_label_human_truth": false
+    },
+    {
+      "event_id": "LT-07",
+      "company": "philips",
+      "technology_track": "respiratory",
+      "later_clearance": {
+        "id": "510k:2024-07-31",
+        "date": "2024-07-31",
+        "kind": "510k/pma"
+      },
+      "representative_trial": {
+        "id": "5510904212a842c43191330a82c6c0d9",
+        "date": "2021-06-14",
+        "matched_keywords": []
+      },
+      "lead_quarters": 12.23,
+      "lead_days": 1113,
+      "candidate_trials": 6,
+      "candidate_leads": [
+        12.23,
+        14.44,
+        14.54,
+        20.75,
+        22.53,
+        23.73
+      ],
+      "upper_bound_lead_quarters": 23.73,
+      "human_review_status": "WAIVED_BY_OWNER_2026-11-03",
+      "review_questions": [
+        "is the trial genuinely device-relevant for this track (not a drug trial matched by keyword accident)?",
+        "does the clearance belong to the same firm and track as the trial?",
+        "could the lead be an artefact of the post-hoc keyword crosswalk?",
+        "does a third source (publication, 8-K) independently place the programme before the clearance?"
+      ],
+      "final_label": "False Signal / No Confirmed Shift",
+      "third_source": {
+        "source": "Europe PMC",
+        "query": "(AFF:\"Philips\") AND (\"RESPIRATORY\" OR \"VENTILATOR\" OR \"ANESTHESIA\")",
+        "status": "SUPPORTED_BEFORE",
+        "earliest_date": "2024-05-16",
+        "lead_days": 76,
+        "lead_quarters": 0.83,
+        "earliest_record": {
+          "title": "Development and performance evaluation of a solenoid valve assisted low-cost ventilator on gas exchange and respiratory mechanics in a porcine model.",
+          "authors": "Shyu D, Bliss P, Adams A, Cho RJ.",
+          "journal": "PloS one",
+          "pmid": "38753734",
+          "doi": "10.1371/journal.pone.0303443"
+        },
+        "hits_total": 1631,
+        "protocol": "THIRD_SOURCE_PROTOCOL.md"
+      },
+      "final_label_source": "AI_REVIEW_2026-11-03",
+      "final_label_human_truth": false
+    },
+    {
+      "event_id": "LT-08",
+      "company": "philips",
+      "technology_track": "vascular_access",
+      "later_clearance": {
+        "id": "510k:2025-06-24",
+        "date": "2025-06-24",
+        "kind": "510k/pma"
+      },
+      "representative_trial": {
+        "id": "b733adae536daa01777d4e98bf6d22d8",
+        "date": "2020-06-30",
+        "matched_keywords": []
+      },
+      "lead_quarters": 19.67,
+      "lead_days": 1790,
+      "candidate_trials": 1,
+      "candidate_leads": [
+        19.67
+      ],
+      "upper_bound_lead_quarters": 19.67,
+      "human_review_status": "WAIVED_BY_OWNER_2026-11-03",
+      "review_questions": [
+        "is the trial genuinely device-relevant for this track (not a drug trial matched by keyword accident)?",
+        "does the clearance belong to the same firm and track as the trial?",
+        "could the lead be an artefact of the post-hoc keyword crosswalk?",
+        "does a third source (publication, 8-K) independently place the programme before the clearance?"
+      ],
+      "final_label": "False Signal / No Confirmed Shift",
+      "third_source": {
+        "source": "Europe PMC",
+        "query": "(AFF:\"Philips\") AND (\"CATHETER INTRODUCER\" OR \"ADMINISTRATION SET\" OR \"VASCULAR ACCESS\")",
+        "status": "SUPPORTED_BEFORE",
+        "earliest_date": "2011-01-05",
+        "lead_days": 5284,
+        "lead_quarters": 57.91,
+        "earliest_record": {
+          "title": "Effects of attenuation and thrombus age on the success of ultrasound and microbubble-mediated thrombus dissolution.",
+          "authors": "Xie F, Everbach EC, Gao S, Drvol LK, Shi WT, Vignon F, Powers JE, Lof J, Porter TR.",
+          "journal": "Ultrasound in medicine & biology",
+          "pmid": "21208727",
+          "doi": "10.1016/j.ultrasmedbio.2010.10.022"
+        },
+        "hits_total": 32,
+        "protocol": "THIRD_SOURCE_PROTOCOL.md"
+      },
+      "final_label_source": "AI_REVIEW_2026-11-03",
+      "final_label_human_truth": false
+    },
+    {
+      "event_id": "LT-09",
+      "company": "philips",
+      "technology_track": "wearable_remote",
+      "later_clearance": {
+        "id": "pma:2023-04-03",
+        "date": "2023-04-03",
+        "kind": "510k/pma"
+      },
+      "representative_trial": {
+        "id": "4a0887acb4649c1d6d01bda094a9424c",
+        "date": "2022-08-26",
+        "matched_keywords": []
+      },
+      "lead_quarters": 2.09,
+      "lead_days": 190,
+      "candidate_trials": 1,
+      "candidate_leads": [
+        2.09
+      ],
+      "upper_bound_lead_quarters": 2.09,
+      "human_review_status": "WAIVED_BY_OWNER_2026-11-03",
+      "review_questions": [
+        "is the trial genuinely device-relevant for this track (not a drug trial matched by keyword accident)?",
+        "does the clearance belong to the same firm and track as the trial?",
+        "could the lead be an artefact of the post-hoc keyword crosswalk?",
+        "does a third source (publication, 8-K) independently place the programme before the clearance?"
+      ],
+      "final_label": "False Signal / No Confirmed Shift",
+      "third_source": {
+        "source": "Europe PMC",
+        "query": "(AFF:\"Philips\") AND (\"REMOTE MONITORING\" OR \"AMBULATORY\" OR \"WEARABLE\")",
+        "status": "SUPPORTED_BEFORE",
+        "earliest_date": "2016-08-01",
+        "lead_days": 2436,
+        "lead_quarters": 26.7,
+        "earliest_record": {
+          "title": "Technology-Enabled Remote Monitoring and Self-Management - Vision for Patient Empowerment Following Cardiac and Vascular Surgery: User Testing and Randomized Controlled Trial Protocol.",
+          "authors": "McGillion M, Yost J, Turner A, Bender D, Scott T, Carroll S, Ritvo P, Peter E, Lamy A, Furze G, Krull K, Dunlop V, Good A, Dvirnik N, Bedini D, Naus F, Pettit S, Henry S, Probst C, Mills J, Gossage E, Travale I, Duquette J, Taberner C, Bhavnani S, Khan JS, Cowan D, Romeril E, Lee J, Colella T, Choinière M, Busse J, Katz J, Victor JC, Hoch J, Isaranuwatchai W, Kaasalainen S, Ladak S, O'Keefe-McCarthy S, Parry M, Sessler DI, Stacey M, Stevens B, Stremler R, Thabane L, Watt-Watson J, Whitlock R, MacDermid JC, Leegaard M, McKelvie R, Hillmer M, Cooper L, Arthur G, Sider K, Oliver S, Boyajian K, Farrow M, Lawton C, Gamble D, Walsh J, Field M, LeFort S, Clyne W, Ricupero M, Poole L, Russell-Wood K, Weber M, McNeil J, Alpert R, Sharpe S, Bhella S, Mohajer D, Ponnambalam S, Lakhani N, Khan R, Liu P, Devereaux PJ.",
+          "journal": "JMIR research protocols",
+          "pmid": "27480247",
+          "doi": "10.2196/resprot.5763"
+        },
+        "hits_total": 451,
+        "protocol": "THIRD_SOURCE_PROTOCOL.md"
+      },
+      "final_label_source": "AI_REVIEW_2026-11-03",
+      "final_label_human_truth": false
+    }
+  ],
+  "final_adjudication": {
+    "artifact": "ADJUDICATION_FINAL_V1.json",
+    "tier": "FINAL_ADJUDICATION_AI_OWNER_AUTHORISED",
+    "human_truth": false,
+    "owner_authorised": true,
+    "n_packets": 69,
+    "label_distribution": {
+      "False Signal / No Confirmed Shift": 8,
+      "Routine Iteration": 52,
+      "Uncertain": 9
+    }
+  },
+  "packets_with_final_label": 9
+}

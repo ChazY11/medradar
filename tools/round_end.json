@@ -1,9 +1,9 @@
 {
   "schema": "round_end_v1",
-  "checked_at_utc": "2026-11-02T23:48:04+00:00",
+  "checked_at_utc": "2026-11-02T23:58:21+00:00",
   "branch": "research/early-signal-ai-review",
-  "head": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
-  "remote_synced": false,
+  "head": "37d626e53b57c07d4279b8dcdc525d0be25bb61e",
+  "remote_synced": true,
   "uncommitted_paths": [
     "M research/AUDIT.json",
     " M research/AUDIT.md",
@@ -12,19 +12,23 @@
     " M research/RESEARCH_STATE.md",
     " M research/RESULTS/README.md",
     " M research/STATE.json",
-    " M research/studies/early_signal_5firms/LEAD_TIME_SMALL_SAMPLE.md",
+    " M research/studies/early_signal_5firms/HUMAN_REVIEW_WORKSHEET.md",
+    " M research/studies/early_signal_5firms/LABELING_PROTOCOL.md",
+    " M research/studies/early_signal_5firms/PROTOCOL.md",
     " M research/studies/early_signal_5firms/STUDY_DECISIONS.md",
-    "?? experiments/b099/",
-    "?? research/studies/early_signal_5firms/AI_REVIEW_ADJUDICATION_V1.json",
-    "?? research/studies/early_signal_5firms/AI_REVIEW_DECISION_2026-11-03.md",
-    "?? research/studies/early_signal_5firms/external_ai_review_2026-11-03/",
-    "?? tests/test_ai_review_ingest.py"
+    "?? experiments/b100/",
+    "?? research/studies/early_signal_5firms/ADJUDICATION_FINAL_V1.json",
+    "?? research/studies/early_signal_5firms/CASE_CANDIDATES_FINAL_V1.json",
+    "?? research/studies/early_signal_5firms/CASE_PACKETS_FINAL_V1.json",
+    "?? research/studies/early_signal_5firms/OWNER_AUTHORISATION_2026-11-03.md",
+    "?? research/studies/early_signal_5firms/TARGET_B_RESULTS_V1.md",
+    "?? tests/test_ai_final_adjudication.py"
   ],
   "results": [
     {
       "step": "test suite",
       "status": "PASS",
-      "detail": "Ran 1124 tests in 40.398s",
+      "detail": "Ran 1131 tests in 43.778s",
       "exit": 0
     },
     {
@@ -89,14 +93,14 @@
     },
     {
       "step": "repository state",
-      "status": "N/A",
-      "detail": "HEAD 969fd0cc4fea, remote unknown, 14 uncommitted path(s)"
+      "status": "PASS",
+      "detail": "HEAD 37d626e53b57, remote synced, 18 uncommitted path(s)"
     }
   ],
   "summary": {
-    "passed": 11,
+    "passed": 12,
     "failed": 0,
     "skipped": 0,
-    "not_applicable": 1
+    "not_applicable": 0
   }
 }

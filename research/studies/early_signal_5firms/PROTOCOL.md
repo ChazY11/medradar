@@ -1,4 +1,4 @@
-# PROTOCOL — Early detection of corporate technology shifts in medical devices
+﻿# PROTOCOL — Early detection of corporate technology shifts in medical devices
 
 **Study:** `early_signal_5firms` · **Directive:** RESEARCH DIRECTIVE 001, Phase 0 · **Status:** DRAFT, frozen on
 human sign-off · **Branch:** `research/early-signal-5firms`
@@ -105,3 +105,19 @@ evaluability decisions and at least one real historical replay exist as committe
 - Fewer than six firm-domain cells reach the pre-declared floors → cross-company validation impossible (RQ4).
 - No source reaches Tier A or B for availability time → lead time cannot be measured, only described.
 - Confirmation evidence exists only in the same source as the alert → recall would be circular.
+---
+
+## AMENDMENT 001 — 2026-11-03: Target B authority changed by owner instruction
+
+The banner above ("PENDING_HUMAN_REVIEW … does not sign for a person") is preserved as the pre-amendment record. On
+2026-11-03 the project owner authorised the owner-commissioned external AI review to serve as the study's **final**
+Target B adjudication and waived the human sign-off for this study (`OWNER_AUTHORISATION_2026-11-03.md`,
+`LABELING_PROTOCOL.md` AMENDMENT 001, `ADJUDICATION_FINAL_V1.json`). The labels remain `human_truth = false`.
+
+**Effect on §9 (completion and feasibility verdict).** Phase 1's Target B is now closed as a **negative result**:
+0 of 69 candidate packets are `Confirmed Shift` (one-sided 95 % Wilson upper bound 5.3 %), 8 are
+`False Signal / No Confirmed Shift`, 52 are `Routine Iteration`, 9 are `Uncertain`. The confirmatory aim of the study
+(cross-company early detection of adjudicated technology shifts) is **not met**; the descriptive coverage and
+failure-analysis results stand. H1 (fusion) and H2 (lead time) are `NOT_EVALUABLE` for lack of positives; the prior
+nine-event lead-time description is withdrawn (S-034).
+

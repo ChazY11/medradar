@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T08:30:00+08:00",
+  "updated_at": "2026-11-03T09:30:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "external_ai_review_ingested_target_b_still_unlabelled",
-  "cycle": 46,
+  "phase": "early_signal_target_b_closed_negative_owner_authorised_ai_adjudication",
+  "cycle": 47,
   "last_completed_cycle": {
-    "cycle": 46,
-    "name": "external_ai_review_ingest",
+    "cycle": 47,
+    "name": "target_b_final_adjudication",
     "branch": "research/early-signal-ai-review",
-    "report": "research/studies/early_signal_5firms/AI_REVIEW_DECISION_2026-11-03.md",
-    "summary": "research/RESULTS/README.md R168-R171",
-    "verdict": "the owner-commissioned external AI review of the 69 five-firm packets was ingested as an explicit non-human tier (EXTERNAL_AI_REVIEW, can_count_as_human_truth=false); labels Routine 52 / Uncertain 9 / False Signal 8 / Confirmed Shift 0; the pre-registered halt rule fires (Target B stays unlabelled); the 9-event lead-time description is withdrawn because 8/9 pairs are device/project mismatches; 13 novel-entry packets are left-censored, 5 are manufacturing notices, 1 is a De Novo misrecorded as 510(k); the human-adjudication requirement remains open"
+    "report": "research/studies/early_signal_5firms/TARGET_B_RESULTS_V1.md",
+    "summary": "research/RESULTS/README.md R172-R175",
+    "verdict": "the project owner authorised the external AI review as the study's final Target B adjudication and waived human sign-off for this study; new tier FINAL_ADJUDICATION_AI_OWNER_AUTHORISED (human_truth false, owner-authorised, validating script + 7 boundary tests). Target B closes NEGATIVE: 0/69 confirmed shifts (0.0%, Wilson-upper 5.3%), 8 false signals (all 8 small-sample pairs), 52 routine, 9 uncertain; H1/H2 NOT_EVALUABLE, H3 descriptive, H4 untestable. The nine-event lead-time description stays withdrawn. The promotion policy's human sign-off is untouched."
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\hist-v1",
@@ -1699,7 +1699,7 @@
   },
   "early_signal_5firms": {
     "study": "research/studies/early_signal_5firms/",
-    "phase": "phase1_blocked_on_human_but_descriptive_design_forced_by_external_review",
+    "phase": "target_b_closed_negative_owner_authorised_ai_adjudication",
     "external_ai_review": {
       "artifact": "research/studies/early_signal_5firms/AI_REVIEW_ADJUDICATION_V1.json",
       "ingester": "experiments/b099/ingest_external_ai_review.py",
@@ -1737,17 +1737,48 @@
       "dr_absent_note": "packet set is Philips 23 / Medtronic 21 / GE HealthCare 16 / Mindray 9 / Draeger 0"
     },
     "human_review": {
-      "state": "PENDING_HUMAN_REVIEW",
+      "state": "WAIVED_BY_OWNER_2026-11-03",
       "worksheet_rows": 69,
       "human_fields_filled": 0,
       "adjudication_human_artifact_exists": false,
-      "requirement": "a named human reviewer must sign; the external AI review is not human truth and the b098 ingester still refuses anything less"
+      "requirement": "waived for this study by owner instruction; the AI labels are final for this study but are not human truth and may not be cited as expert adjudication"
     },
     "withdrawn": {
       "result": "nine-event lead-time description (3.3-quarter median lead)",
       "reason": "8/9 pairs are device/project mismatches under the external review; LT-01 Uncertain",
       "decision": "S-034",
       "result_row": "R170"
+    },
+    "final_adjudication": {
+      "artifact": "research/studies/early_signal_5firms/ADJUDICATION_FINAL_V1.json",
+      "script": "experiments/b100/finalise_ai_adjudication.py",
+      "authorisation": "research/studies/early_signal_5firms/OWNER_AUTHORISATION_2026-11-03.md",
+      "tier": "FINAL_ADJUDICATION_AI_OWNER_AUTHORISED",
+      "is_final_for_this_study": true,
+      "human_truth": false,
+      "human_signoff_waived": true,
+      "waived_by": "project owner",
+      "waived_on": "2026-11-03",
+      "eligible_for_target_b_scoring": true,
+      "adjudicator": "Codex AI (not a human reviewer)",
+      "target_b_result": {
+        "confirmed_shift": 0,
+        "n": 69,
+        "rate": 0.0,
+        "wilson_upper_95": 0.0527,
+        "false_signal": 8,
+        "routine": 52,
+        "uncertain": 9,
+        "insufficient_observation": 0,
+        "verdict": "NEGATIVE: the candidate-generation design produced no confirmed technology shift in this set"
+      },
+      "hypotheses": {
+        "H1_fusion": "NOT_EVALUABLE",
+        "H2_lead_time": "NOT_EVALUABLE (prior description withdrawn)",
+        "H3_heterogeneity": "DESCRIPTIVE_ONLY",
+        "H4_density": "NOT_TESTABLE"
+      },
+      "scope_limit": "early_signal_5firms Target B only; the promotion policy's mandatory named-human sign-off is unchanged"
     }
   }
 }

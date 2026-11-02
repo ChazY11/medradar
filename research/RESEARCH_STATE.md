@@ -1,4 +1,4 @@
-﻿# RESEARCH_STATE — the live state of the MedRadar research programme
+# RESEARCH_STATE — the live state of the MedRadar research programme
 
 **Last updated:** 2026-11-03 · **Branch:** `research/full-history-v1` · **Worktree:** `D:/DEPPSKK/worktrees/hist-v1`
 **Supersedes as "current state":** `research/STATE.json` remains the machine-readable record; this file is the
@@ -40,6 +40,8 @@ from `research/studies/early_signal_5firms/AI_REVIEW_ADJUDICATION_V1.json` and i
 | H-14 | external AI review of the 69 five-firm packets ingested | 69/69 labelled with evidence locators; human fields empty; reviewer "Codex AI (not a human reviewer)"; authority `AI_ONLY_NOT_HUMAN_GOLD_STANDARD`, `blind_review=false`; registered as tier `EXTERNAL_AI_REVIEW` with `can_count_as_human_truth=false` by a validating ingester | **deliverable (non-human tier, D-078)** |
 | H-15 | the five-firm halt rule fires | labels Routine 52 / Uncertain 9 / False Signal 8 / **Confirmed Shift 0**; pre-registered rule (<10 confirmed ⇒ descriptive design) triggers; **Target B stays unlabelled** and no Target B metric may be computed from this tier | **decision (negative for Target B)** |
 | H-16 | the nine-event lead-time description is withdrawn | 8/9 small-sample pairs (`LT-02…LT-09`) are device/project mismatches and `LT-01` is Uncertain, so the 3.3-quarter median lead is not a lead-time estimate of anything; 13 novel-entry packets are left-censored, 5 are manufacturing notices, 1 is a De Novo misrecorded as a 510(k); packet set is Philips 23 / Medtronic 21 / GEHC 16 / Mindray 9 / Dräger 0 | **retraction + packet-defect failure analysis (R170/R171)** |
+| H-17 | **owner authorises the AI review as final; human sign-off waived for this study** | new tier `FINAL_ADJUDICATION_AI_OWNER_AUTHORISED` (dated authorisation required; fabricated `Confirmed Shift` refused; no overwrite of existing human/final labels; human columns stay empty; `human_truth = false`); scope limited to this study — the promotion policy's human gate is untouched | **protocol amendment (D-079, S-035, R172)** |
+| H-18 | **Target B closes as a negative** | **0/69** confirmed shifts (0.0 %; one-sided 95 % Wilson upper bound **5.3 %**), 8 false signals (all 8 in the 9 small-sample pairs), 52 routine iterations, 9 uncertain; H1 fusion and H2 lead time `NOT_EVALUABLE`, H3 descriptive only, H4 untestable | **final negative result (R173/R174)** |
 
 ## 3. Hypotheses and their current status
 
@@ -87,7 +89,7 @@ from `research/studies/early_signal_5firms/AI_REVIEW_ADJUDICATION_V1.json` and i
 | item | status | why |
 |---|---|---|
 | prospective calibration | **blocked on wall clock** | corrected set matures 2027-Q3…2028-Q1; zero matured |
-| human adjudication of the 69 five-firm packets | **still blocked on a human** | the owner-commissioned external **AI** review is now ingested as `EXTERNAL_AI_REVIEW` (R168); it is not human truth, its labels are 0 `Confirmed Shift` and the halt rule fires; `HUMAN_REVIEW_WORKSHEET.csv` human columns remain empty and `ADJUDICATION_HUMAN_V1.json` still does not exist |
+| human adjudication of the 69 five-firm packets | **resolved by owner waiver (2026-11-03)** | the owner authorised the external AI review as the study's **final** Target B adjudication and waived human sign-off for this study (D-079/S-035). The labels remain `human_truth = false`; the human worksheet columns stay empty by decision, not by omission |
 | patents lane | **blocked on access** | PatentsView 403; USPTO ODP needs a key |
 | broad hiring lane | **structurally unavailable** for Dräger/Mindray/GEHC | archive coverage; see D-031 |
 | a design that can beat B3 / new-category entries | **open work** | needs a coarser taxonomy, larger roster, or a new pre-registration |
@@ -99,9 +101,9 @@ from `research/studies/early_signal_5firms/AI_REVIEW_ADJUDICATION_V1.json` and i
 1. **Pre-register a design that can beat B3 and cover new-category entries**: coarser technology domains, a larger
    company roster, and origins concentrated in 1995–2015 where entries occur. This is a new pre-registration, not a
    reinterpretation of hist_v1.
-2. **Turn the external AI review into human labels**: the AI review is done and ingested (R168, D-078), but Target B
-   needs a named human. Work through `HUMAN_DECISION_QUEUE.md` first (9 high-uncertainty packets + 8 evidence
-   mismatches), then the rest; `experiments/b098/ingest_human_review.py` still refuses anything less.
+2. **Move to the powered successor design**: Target B is closed by owner authorisation (R173); the next scientific step
+   is the pre-registered hist_v2 (coarser domains for new-category entries, larger roster, origins concentrated in
+   1995-2015). The study's failure analysis feeds its taxonomy and candidate-generation rules.
 3. **Resolve the entity-mapping limitation** for the 48 roster companies (current-group attribution; unaudited).
 4. **Fix the remaining audit defects** (summary-number drift, round-end-writes-its-own-dirt, momentum multiplicity,
    taxonomy stamp, dead evidence pointers).

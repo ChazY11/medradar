@@ -1,4 +1,4 @@
-# HUMAN REVIEW WORKSHEET — 69 packets, 69 decisions
+﻿# HUMAN REVIEW WORKSHEET — 69 packets, 69 decisions
 
 Fill `HUMAN_REVIEW_WORKSHEET.csv` (one row per packet), then run:
 
@@ -95,3 +95,12 @@ Every row needs a reviewer name and a reason; the ingest script refuses to write
 
 Evidence columns are pre-filled so no database query is needed; the five human columns are empty.
 The agent's preliminary label is **not** a label — it is a rubric output shown for contrast only.
+---
+
+> **AMENDMENT 2026-11-03 (S-035/D-079).** The project owner authorised the external AI review as this study's **final**
+> Target B adjudication and waived the human sign-off for this study. The five human columns will therefore stay empty
+> permanently — they are not filled retroactively, because the labels are not human work. The final labels are in
+> `ADJUDICATION_FINAL_V1.json` (tier `FINAL_ADJUDICATION_AI_OWNER_AUTHORISED`, `human_truth = false`). This worksheet
+> and its guide are kept so that anyone who wants to *check* the AI labels can still do so; the result is already
+> closed as a negative (0/69 confirmed shifts).
+

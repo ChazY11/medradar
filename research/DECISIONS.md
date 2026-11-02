@@ -3070,3 +3070,31 @@ evidence chains support a technology shift, not whether the companies innovate.
 (`HUMAN_DECISION_QUEUE.md`), then the remaining rows; a named human must sign. Until then Target B is unlabelled and no
 Target B metric, calibration or detector score may be reported from this tier.
 
+---
+
+## D-079 — The owner-authorised AI adjudication is the five-firm study's final Target B; human sign-off waived for that study
+
+**Date:** 2026-11-03 · **Status:** accepted (owner instruction) · **Study:** `early_signal_5firms` only
+
+**Decision.** On the owner's explicit instruction, the external AI review of the 69 packets becomes the study's
+**final** Target B adjudication under a new tier `FINAL_ADJUDICATION_AI_OWNER_AUTHORISED`, and the human sign-off gate
+for this study is waived. The labels remain `human_truth = false`: they may conclude this study, including a negative
+conclusion, and may be cited with their provenance, but may not be described as expert/human adjudication or pooled
+with human-labelled benchmark sets.
+
+**Why this is safe to record.** The promotion is produced by a script that validates the dated owner-authorisation
+record, the complete 69-label set, the frozen vocabulary, the absence of any independent confirmation for a
+`Confirmed Shift` (there is none, so none is accepted), and the absence of pre-existing human/final labels. It refuses
+on any violation. The human worksheet columns remain empty rather than being back-filled.
+
+**Scope limit (explicit).** This amendments only `early_signal_5firms` Target B. The promotion policy's mandatory
+named-human sign-off is a safety gate for operational claims and is not touched by this decision.
+
+**Result.** Target B closes as a **negative**: 0/69 confirmed shifts (0.0 %; 95 % Wilson upper bound 5.3 %), 8 false
+signals (all in the 9 small-sample pairs), 52 routine iterations, 9 uncertain. H1 (fusion) and H2 (lead time) are
+`NOT_EVALUABLE`; the nine-event lead-time description stays withdrawn (S-034). The study's confirmatory aim is not met;
+its descriptive coverage and failure-analysis results stand.
+
+**Evidence.** `ADJUDICATION_FINAL_V1.json`, `CASE_PACKETS_FINAL_V1.json`, `CASE_CANDIDATES_FINAL_V1.json`,
+`TARGET_B_RESULTS_V1.md`, `OWNER_AUTHORISATION_2026-11-03.md`, `LABELING_PROTOCOL.md` AMENDMENT 001,
+`experiments/b100/finalise_ai_adjudication.py` (+7 boundary tests), result rows R172–R175.

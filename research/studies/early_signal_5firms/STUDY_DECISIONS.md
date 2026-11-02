@@ -637,3 +637,35 @@ whether *these packets' evidence chains* support a technology shift.
 (`HUMAN_DECISION_QUEUE.md`), then the rest; a named human must sign, and `experiments/b098/ingest_human_review.py`
 still refuses anything less. Until then, Target B is unlabelled.
 
+---
+
+## S-035 — Owner authorises the AI review as the study's final adjudication and waives human sign-off
+
+**Date:** 2026-11-03 · **Status:** accepted (owner instruction) · **Evidence:** `OWNER_AUTHORISATION_2026-11-03.md`,
+`ADJUDICATION_FINAL_V1.json`, `TARGET_B_RESULTS_V1.md`, `LABELING_PROTOCOL.md` AMENDMENT 001,
+`experiments/b100/finalise_ai_adjudication.py`
+
+**The instruction.** The project owner directed that this batch of AI labels serve directly as the study's final
+adjudication and that the human sign-off requirement be removed for this study: *"我希望这批 AI 标签直接作为本研究的
+最终裁决，并且修改人工签字，不需要人工签字了"* (2026-11-03, in session).
+
+**How it was implemented.** A new tier `FINAL_ADJUDICATION_AI_OWNER_AUTHORISED` is written by a validating script
+that refuses to run without the dated owner-authorisation record, refuses a fabricated `Confirmed Shift` (the review
+reports none and no packet has an independent confirmation), refuses to overwrite any pre-existing human/final label,
+and refuses unknown packet ids. The five human columns of the worksheet stay empty: they are not filled retroactively,
+because the labels are not human work. `human_truth = false` and `waived_by = project owner` are recorded in the
+artifact, and every downstream citation must carry the tier name.
+
+**Scope.** `early_signal_5firms` Target B only. The separate promotion policy's mandatory named-human sign-off
+(`medradar/intelligence/promotion.py`) is a safety gate for operational technology-change claims and is **unchanged**.
+
+**Target B result (now final).** 0 of 69 candidate packets are `Confirmed Shift` (0.0 %; one-sided 95 % Wilson upper
+bound **5.3 %**), 8 are `False Signal / No Confirmed Shift` (all 8 in the 9 small-sample pairs), 52 are
+`Routine Iteration`, 9 are `Uncertain`, 0 are `Insufficient Observation`. The confirmatory aim of the study is
+therefore **not met**: the candidate-generation design produced no confirmed technology shift in this set. The labels
+judge whether these packets' evidence chains support a shift, not whether the firms innovate.
+
+**Consequences for the hypotheses.** H1 (fusion) and H2 (lead time) are `NOT_EVALUABLE` for lack of positive labels;
+H3 (firm/domain heterogeneity) is descriptive only; H4 (density bound) is not testable. The nine-event lead-time
+description remains withdrawn (S-034). The Phase-0 descriptive results (coverage matrix, evidence-time audit,
+entity/domain audit, concurrent-detection null) stand unchanged.

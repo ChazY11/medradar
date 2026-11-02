@@ -1,4 +1,4 @@
-# LABELING PROTOCOL — what counts as a technology shift, and who is allowed to say so
+﻿# LABELING PROTOCOL — what counts as a technology shift, and who is allowed to say so
 
 **Study:** `early_signal_5firms` · **Status:** draft for human sign-off · **Applies to:** `CASE_CANDIDATES.json`
 
@@ -99,3 +99,34 @@ facts.
 
 They are **candidates**, not a benchmark. Until a human reviewer adjudicates them, no recall, precision, lead time or
 calibration statement may be computed from this set, and none is claimed in Phase 0.
+---
+
+## AMENDMENT 001 — 2026-11-03: owner-authorised AI adjudication is the study's final labels; human sign-off waived
+
+**Authority:** the project owner, in session on 2026-11-03
+(`OWNER_AUTHORISATION_2026-11-03.md`). **Status:** binding for this study; the sections above are preserved as the
+pre-amendment record and are not deleted.
+
+**What changes.** Section 1's division of labour ("a named human reviewer adjudicates every case") and Section 3's
+independence rule as an *authority* rule are amended for `early_signal_5firms` only:
+
+| actor | may now do | may not do |
+|---|---|---|
+| the owner-authorised external AI review (Codex AI, review delivered 2026-11-03) | assign the study's **final** Target B labels | be described as a human reviewer, an expert panel, or human gold standard |
+| the agent | validate, ingest, compute the Target B result, report the evidentiary downgrade | refill the human worksheet columns, sign for a person, or describe the labels as human adjudication |
+
+The new tier is `FINAL_ADJUDICATION_AI_OWNER_AUTHORISED` (`ADJUDICATION_FINAL_V1.json`). It is **final for this study**
+and **human truth = false**. The human sign-off gate is waived by owner instruction; `ADJUDICATION_HUMAN_V1.json`
+will not exist and is no longer expected. The five human columns of `HUMAN_REVIEW_WORKSHEET.csv` stay empty
+permanently — filling them would manufacture human work that did not happen.
+
+**What does not change.** Section 3's independence requirement is still enforced on the *evidence*: a `Confirmed
+Shift` label requires independent confirmation, and since no packet carries one, the final count is 0. Section 2's
+label definitions, Section 5's sampling rules, and Section 6's contamination risks are unchanged. The labels'
+qualitative uncertainty grades remain qualitative, not calibrated probabilities; the review was not blind (it had read
+the earlier agent labels).
+
+**Downstream consequence.** Target B is now **closed as a negative result** under an AI-adjudicated, owner-authorised
+tier: 0/69 confirmed shifts. No claim in this repository may cite the labels as human truth; every citation must carry
+the tier name and `human_truth = false`.
+
