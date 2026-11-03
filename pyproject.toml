@@ -13,8 +13,11 @@ dependencies = []
 [project.optional-dependencies]
 excel = ["openpyxl>=3.1"]
 pdf = ["pypdf>=4.0"]
-dev = ["pytest>=8.0"]
+dev = ["pytest>=8.0", "httpx>=0.27"]
 bulk = ["ijson>=3.3"]
+# MedRadar 2.0 product web layer (read-only product API + SPA).
+# Basic research CLI (`medradar run`, `medradar demo`) does not need these.
+web = ["fastapi>=0.110", "uvicorn>=0.27"]
 
 [project.urls]
 Homepage = "https://chazy11.github.io/medradar/"
@@ -38,6 +41,16 @@ include = ["medradar*"]
 [tool.setuptools.data-files]
 "share/medradar/config" = ["config/*.json", "config/*.csv"]
 "share/medradar/docs" = ["docs/metrics.json"]
+# MedRadar 2.0 SPA. `medradar.web.app` resolves this location for installed
+# wheels; a source checkout serves the repository's `web/` directory instead.
+"share/medradar/web" = [
+    "web/index.html",
+    "web/styles.css",
+    "web/app.js",
+    "web/favicon.svg",
+]
+"share/medradar/web/js" = ["web/js/*.js"]
+"share/medradar/web/js/pages" = ["web/js/pages/*.js"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

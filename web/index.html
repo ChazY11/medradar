@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="MedRadar 2.0 — 证据驱动的医疗技术情报终端：企业画像、技术雷达、证据浏览器与研究实验室。所有数字来自只读研究数据层。">
+  <title>MedRadar · Evidence-Driven MedTech Intelligence</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="header" id="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <a class="brand-link" href="#/overview" aria-label="MedRadar 总览">
+          <img class="brand-mark" src="/favicon.svg" alt="" width="22" height="22">
+          <span class="brand-text">
+            <span class="brand-name">MedRadar</span>
+            <span class="brand-sub">Evidence-Driven MedTech Intelligence</span>
+          </span>
+        </a>
+      </div>
+
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="导航菜单" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav" id="nav" aria-label="主导航">
+        <a class="nav-link" data-nav="overview" data-testid="nav-overview" href="#/overview">总览</a>
+        <a class="nav-link" data-nav="companies" data-testid="nav-companies" href="#/companies">企业情报</a>
+        <a class="nav-link" data-nav="companies" data-testid="nav-compare" href="#/compare">企业对比</a>
+        <a class="nav-link" data-nav="radar" data-testid="nav-radar" href="#/radar">技术雷达</a>
+        <a class="nav-link" data-nav="analyst" data-testid="nav-analyst" href="#/analyst">研究助手</a>
+        <a class="nav-link" data-nav="lab" data-testid="nav-lab" href="#/lab">研究实验室</a>
+        <a class="nav-link" data-nav="evidence" data-testid="nav-evidence" href="#/evidence">证据浏览器</a>
+      </nav>
+
+      <div class="header-right">
+        <span class="cutoff-chip" id="cutoff-chip" title="数据截止日期">数据截止 —</span>
+        <form class="search-form" id="global-search" role="search">
+          <input class="search-input" id="global-search-input" type="search" name="q"
+                 placeholder="全局检索事件（企业/赛道/关键词）" aria-label="全局证据检索" maxlength="120" autocomplete="off">
+          <button class="btn btn-sm" type="submit" data-testid="global-search-submit">检索</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <main class="main" id="main" tabindex="-1"></main>
+
+  <footer class="footer" id="app-footer"></footer>
+
+  <div class="chart-tip" id="chart-tip" hidden></div>
+  <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="事件详情" hidden></aside>
+
+  <script type="module" src="/static/app.js"></script>
+</body>
+</html>

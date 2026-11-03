@@ -10,6 +10,26 @@ MedRadar turns free public FDA data into a weekly, quantified, Chinese-language 
 brief: which technology tracks are heating up, which majors are quietly re-allocating their
 portfolio, what appeared for the first time, and where China still has a gap.
 
+## MedRadar 2.0 — the product (MVP)
+
+`feat/medradar-2.0-mvp` turns the research pipeline into a runnable web product:
+**Company Intelligence · Technology Radar · AI Research Analyst · Evidence Explorer · Research Lab**.
+Every number is computed read-only from the same `data/medradar.sqlite`; every conclusion expands
+to the underlying FDA/ClinicalTrials/8-K records; limitations are printed next to the numbers.
+
+```bash
+# the research store must exist (built by `medradar run`); this checkout already has it
+python -m medradar web --port 8787
+# open http://127.0.0.1:8787
+```
+
+- deterministic analyst, **no API key required**, no fabricated queries;
+- Dräger and Mindray are supported through a reviewed exact-alias mapping (they are absent from the original roster);
+- observed change / detected signal / research hypothesis are labelled separately — there is **no validated forecast** in the product;
+- docs: [vision](docs/PRODUCT_VISION.md) · [architecture](docs/PRODUCT_ARCHITECTURE.md) ·
+  [user guide](docs/PRODUCT_USER_GUIDE.md) · [acceptance](docs/PRODUCT_ACCEPTANCE.md) · [roadmap](docs/PRODUCT_ROADMAP.md)
+
+
 > The stable core through `v0.2.2` was built with DeepSeek Harness using `deepseek-flash`.
 > The research foundation (`medradar/tkg`, `forecast_registry`) and the Market-to-R&D lane were
 > authored in independent Kimi Code sessions; `v0.3.0` consolidates their branches after an

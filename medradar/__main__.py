@@ -953,7 +953,25 @@ def build_parser() -> argparse.ArgumentParser:
 
     selftest = sub.add_parser("selftest", help="run the offline test suite")
     selftest.set_defaults(func=cmd_selftest)
+
+    web = sub.add_parser("web", help="start the MedRadar 2.0 product web server (read-only)")
+    web.add_argument("--host", default="127.0.0.1")
+    web.add_argument("--port", type=int, default=8787)
+    web.add_argument("--no-warm", action="store_true", help="skip cache warm-up")
+    web.add_argument("--reload", action="store_true", help="uvicorn auto-reload (development)")
+    web.set_defaults(func=cmd_web)
     return parser
+
+
+def cmd_web(args: argparse.Namespace) -> int:
+    from .web.__main__ import main as web_main
+
+    forwarded = ["--host", args.host, "--port", str(args.port)]
+    if getattr(args, "no_warm", False):
+        forwarded.append("--no-warm")
+    if getattr(args, "reload", False):
+        forwarded.append("--reload")
+    return web_main(forwarded)
 
 
 def main(argv: list[str] | None = None) -> int:
