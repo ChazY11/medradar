@@ -1,7 +1,7 @@
 /* #/overview — product purpose, data foundation, evidence chain and limits. */
 import { api } from "../api.js";
-import { el, fmtInt, fmtPct, fmtRange, fmtSigned, toneForDelta, buildHash } from "../util.js";
-import { pageHead, panel, kpi, badge, dataTable, notice, list, linkButton, skeletonBlock, errorState, tierBadge } from "../components.js";
+import { el, fmtInt, fmtPct, fmtRange, fmtSigned, fmtDateTime, fmtNum, toneForDelta, buildHash } from "../util.js";
+import { pageHead, panel, kpi, badge, dataTable, notice, list, linkButton, skeletonBlock, errorState, emptyState, tierBadge } from "../components.js";
 
 const KIND_ORDER = ["510k", "device_recall", "pma", "trial", "8k_catalyst", "drug_approval"];
 const KIND_NAMES = {
@@ -96,6 +96,17 @@ export async function mount(root, ctx) {
     title: "从结论到证据：四层可核查链路",
     sub: "结论 → 指标 → 事件 → 原始来源",
     body: explainer,
+  }));
+
+  /* ---------------------------------- newly observed evidence (ledger) */
+  // Driven by the Observation Ledger only. A missing ledger renders an
+  // explicit empty state and never blocks the rest of the overview.
+  const observatoryBody = el("div", null, skeletonBlock(3));
+  root.append(panel({
+    title: "Newly Observed Evidence · 新观察到的证据",
+    sub: "由观察账本驱动：只展示 MedRadar 实际抓取到的记录；轮询采集，不是实时推送",
+    right: linkButton("#/observatory", "打开实时观察站"),
+    body: observatoryBody,
   }));
 
   /* -------------------------------------------------- radar + tier legend */
@@ -229,6 +240,14 @@ export async function mount(root, ctx) {
     radarBody.replaceChildren(errorState(error, () => ctx.refresh(), { title: "雷达数据加载失败" }));
   }
 
+  /* --------------------------------------- newly observed evidence panel */
+  try {
+    const observatory = await api.observatorySummary();
+    observatoryBody.replaceChildren(renderObservatory(observatory));
+  } catch (error) {
+    observatoryBody.replaceChildren(errorState(error, () => ctx.refresh(), { title: "观察账本加载失败" }));
+  }
+
   return { title: "总览" };
 }
 
@@ -247,5 +266,87 @@ function renderTierLegend(meta) {
     node.append(card);
   }
   node.append(el("div", { class: "muted tiny", text: "「Detected Signal」只说明记录数偏离历史基线，不等于因果，也不是预测。" }));
+  return node;
+}
+
+/* ------------------------------------------------ observatory summary */
+function renderObservatory(summary) {
+  const ledger = summary.ledger || {};
+  if (!ledger.exists) {
+    return el("div", null,
+      notice({
+        tone: "amber",
+        title: "尚无观察记录",
+        label: "EMPTY LEDGER",
+        body: ledger.honesty_zh || "观察账本尚未建立，因此没有可展示的新观察证据。空状态不等于「来源没有新事件」。",
+      }),
+      el("div", { class: "mt-8" }, linkButton("#/observatory", "打开实时观察站")));
+  }
+  const node = el("div");
+  const windows = summary.windows || {};
+  const strip = el("div", { class: "kpi-grid" });
+  for (const [id, label] of [["24h", "近 24 小时"], ["7d", "近 7 天"], ["30d", "近 30 天"]]) {
+    const window = windows[id] || {};
+    strip.append(kpi({
+      label,
+      value: `${fmtInt(window.new)} 新增 · ${fmtInt(window.updated)} 修订`,
+      sub: `${fmtInt(window.removed)} 不再提供 · ${fmtInt(window.failed)} 采集失败`,
+      sm: true,
+    }));
+  }
+  node.append(strip);
+  node.append(el("div", {
+    class: "muted tiny mt-8",
+    text: `观察总数 ${fmtInt(ledger.observations)} · 版本 ${fmtInt(ledger.versions)} · 变化 ${fmtInt(ledger.changes)} · 最早 LIVE 观察 ${ledger.first_live_observation_at ? fmtDateTime(ledger.first_live_observation_at) : "—"}`,
+  }));
+
+  const first = summary.first_observation;
+  if (first) {
+    node.append(el("div", { class: "small mt-8" },
+      el("b", { text: "最早观察： " }),
+      el("span", { text: `${first.title || "—"} · ${first.source} · ${fmtDateTime(first.observed_at)}` })));
+  }
+
+  if ((summary.by_source || []).length) {
+    node.append(el("div", { class: "mt-8" }, dataTable({
+      columns: [
+        { key: "label_zh", label: "来源", format: (row) => row.label_zh || row.source },
+        {
+          key: "status_label_zh", label: "状态",
+          format: (row) => badge(
+            row.status_label_zh || row.status,
+            row.status === "OK" ? "green" : row.status === "FAILED" ? "red" : row.status === "DEGRADED" ? "amber" : "muted",
+          ),
+        },
+        { key: "declared_cadence_zh", label: "轮询周期", format: (row) => row.declared_cadence_zh || "未声明轮询周期" },
+        { key: "new_24h", label: "24h 新增", num: true, format: (row) => fmtInt(row.new_24h) },
+        { key: "updated_24h", label: "24h 修订", num: true, format: (row) => fmtInt(row.updated_24h) },
+        {
+          key: "measured_lag", label: "实测观察延迟",
+          format: (row) => {
+            const lag = row.measured_lag || {};
+            if (lag.measurable) {
+              return el("span", { class: "mono", text: `p50 ${fmtNum(lag.p50_hours, 1)} 小时 · n=${fmtInt(lag.n)}` });
+            }
+            return el("span", { class: "lq-na", title: lag.note_zh || "", text: "无法测量" });
+          },
+        },
+      ],
+      rows: summary.by_source,
+      compact: true,
+    })));
+  } else {
+    node.append(emptyState("观察账本里还没有按来源汇总的观察活动。", { title: "暂无来源活动" }));
+  }
+
+  if (summary.empty) {
+    node.append(el("div", { class: "mt-8" }, notice({
+      tone: "muted",
+      title: "观察账本已建立，但还没有任何观察记录",
+      body: "这不表示来源没有活动；只表示本账本里还没有观察证据。",
+    })));
+  }
+
+  node.append(el("div", { class: "mt-8" }, linkButton("#/observatory", "打开实时观察站", { primary: true })));
   return node;
 }

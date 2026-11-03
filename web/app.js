@@ -12,6 +12,7 @@ import * as trackPage from "./js/pages/track.js";
 import * as analystPage from "./js/pages/analyst.js";
 import * as labPage from "./js/pages/lab.js";
 import * as evidencePage from "./js/pages/evidence.js";
+import * as observatoryPage from "./js/pages/observatory.js";
 
 const ROUTES = [
   { id: "overview", pattern: /^\/overview\/?$/, module: overviewPage, nav: "overview" },
@@ -20,6 +21,7 @@ const ROUTES = [
   { id: "compare", pattern: /^\/compare\/?$/, module: comparePage, nav: "companies" },
   { id: "radar", pattern: /^\/radar\/?$/, module: radarPage, nav: "radar" },
   { id: "track", pattern: /^\/radar\/([^/]+)\/?$/, module: trackPage, nav: "radar", params: ["track"] },
+  { id: "observatory", pattern: /^\/observatory\/?$/, module: observatoryPage, nav: "observatory" },
   { id: "analyst", pattern: /^\/analyst\/?$/, module: analystPage, nav: "analyst" },
   { id: "lab", pattern: /^\/lab\/?$/, module: labPage, nav: "lab" },
   { id: "lab", pattern: /^\/lab\/([^/]+)\/?$/, module: labPage, nav: "lab", params: ["studyId"] },

@@ -194,10 +194,11 @@ def create_app() -> FastAPI:
         return store.claim_evidence(payload)
 
     # ------------------------------------------------------- analyst and lab
-    from . import routes_analyst, routes_lab
+    from . import routes_analyst, routes_lab, routes_observatory
 
     app.include_router(routes_analyst.router)
     app.include_router(routes_lab.router)
+    app.include_router(routes_observatory.router)
 
     # ----------------------------------------------------------------- static
     if WEB_DIR.is_dir():
