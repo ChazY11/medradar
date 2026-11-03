@@ -1,0 +1,1700 @@
+{
+  "analysis_window": {
+    "end": "2025-Q4",
+    "first_milestone_quarter_for_k8": "2019-Q1",
+    "lags": [
+      -8,
+      -7,
+      -6,
+      -5,
+      -4,
+      -3,
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "lead_lags": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "n_quarters": 36,
+    "panel_companies": 53,
+    "quarters": [
+      "2017-Q1",
+      "2017-Q2",
+      "2017-Q3",
+      "2017-Q4",
+      "2018-Q1",
+      "2018-Q2",
+      "2018-Q3",
+      "2018-Q4",
+      "2019-Q1",
+      "2019-Q2",
+      "2019-Q3",
+      "2019-Q4",
+      "2020-Q1",
+      "2020-Q2",
+      "2020-Q3",
+      "2020-Q4",
+      "2021-Q1",
+      "2021-Q2",
+      "2021-Q3",
+      "2021-Q4",
+      "2022-Q1",
+      "2022-Q2",
+      "2022-Q3",
+      "2022-Q4",
+      "2023-Q1",
+      "2023-Q2",
+      "2023-Q3",
+      "2023-Q4",
+      "2024-Q1",
+      "2024-Q2",
+      "2024-Q3",
+      "2024-Q4",
+      "2025-Q1",
+      "2025-Q2",
+      "2025-Q3",
+      "2025-Q4"
+    ],
+    "start": "2017-Q1",
+    "window_companies_with_events": 53,
+    "window_events_max_company": 299,
+    "window_events_min_company": 2,
+    "window_material_events": 3550
+  },
+  "backlog_item": "B-021",
+  "decision_order": [
+    "financial_rd",
+    "market_return",
+    "publication",
+    "market_volatility"
+  ],
+  "decision_rule": "A source is said to lead only if all hold: (i) k* > 0; (ii) Holm-adjusted p < 0.05; (iii) the era-split stability rule holds. Otherwise the result is reported as no lead detected with its MDE; a source whose data are insufficient is reported as NOT_EVALUABLE with the measured coverage.",
+  "holm": {
+    "adjusted_p": {
+      "financial_rd": 1.0,
+      "market_return": 1.0,
+      "publication": 1.0
+    },
+    "alpha": 0.05,
+    "descriptive_only_outside_family": [
+      "market_volatility"
+    ],
+    "family": [
+      "financial_rd",
+      "market_return",
+      "publication"
+    ],
+    "method": "Holm step-down across the three primary sources",
+    "raw_p": {
+      "financial_rd": 0.683,
+      "market_return": 0.967,
+      "publication": 0.614
+    }
+  },
+  "inputs": {
+    "panel": {
+      "path": "out/hist_v1/panel.json",
+      "schema": "hist_v1.panel.v1",
+      "sha256": "10f8c00aff51ad061f6aa237449a7dfb571ccf57fe4ea6705623cda0fd350e20"
+    },
+    "research_db": {
+      "path": "data/research.sqlite",
+      "sha256": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d"
+    }
+  },
+  "interpretation_notes": [
+    "The analysis grid is the 36 frozen quarters 2017-Q1..2025-Q4; all series are indexed on that grid, so a lag-k pair exists only when both t and t-k are inside the grid (for k=8 the first usable milestone quarter is 2019-Q1, as the protocol states).",
+    "The event series is a count with zero-filled quarters: the frozen panel monitors every company over the whole grid, so a quarter without an event is a true 0.",
+    "The financial series is a step function: at each quarter end it carries the most recently filed trailing-4-quarter (reported period 300-400 days) R&D fact, which enters at its available_at quarter; log(USD); non-positive values are missing.",
+    "The publication series uses works(y)/4 for the most recent complete year known under the declared 15-February rule; years without a persisted row are missing, not zero.",
+    "The z-score denominator is the sample SD (n-1) over the company's own observed quarters of that series; constant or <3-observation series have no z-score.",
+    "Market volatility is descriptive only and excluded from the Holm family, as the protocol requires.",
+    "The 'underpowered / well-powered negative' label is a reporting convention only: the null is labelled well-powered negative when the measured MDE <= 0.10, otherwise underpowered; it never converts a null into a lead.",
+    "No b103 statistic had been computed before these interpretation decisions were fixed; the frozen protocol file was not edited."
+  ],
+  "limitations": [
+    "Descriptive association only: a leading correlation does not establish that the source causes or predicts a material regulatory event; no causal language is used.",
+    "Publication data are annual; the quarterly series is a step function and cannot resolve within-year timing.",
+    "Market data are auxiliary: the return/volatility lanes only describe co-movement, and volatility is outside the Holm family.",
+    "The financial series is carried forward between annual filings, so its quarterly resolution is coarser than the grid; companies whose filings stop early keep a flat value and are measured, not repaired.",
+    "The event lane inherits the hist_v1 limitations: current-corporate-group entity mapping, current unversioned track taxonomy, FDA-decision-date availability, and a materiality rule that excludes 96.6 % of PMA supplements.",
+    "Procurement is NOT_EVALUABLE: every announcement_date is NULL and every row has pit_usable=0, so no PIT procurement series exists.",
+    "The era split is a descriptive stability check on point estimates, not a separate significance test."
+  ],
+  "methods": {
+    "alpha": 0.05,
+    "bootstrap_rule": "Company-clustered bootstrap: resample companies with replacement 2,000 times, recompute the whole r(k) profile; 95 % percentile intervals (linear interpolation); descriptive and uncorrected.",
+    "era_rule": "Era split (descriptive): 2017-2021 vs 2022-2025. A lead is reported as stable only if the point estimate at k* has the same sign and the absolute value >= 50 % of the full-window value in both eras.",
+    "holm_family": [
+      "financial_rd",
+      "market_return",
+      "publication"
+    ],
+    "mde_factor": 2.8015852181129683,
+    "mde_rule": "MDE at 80 % power (alpha=0.05) = (z_{0.975} + z_{0.80}) * SD_b, with SD_b the bootstrap standard deviation of the max-lead statistic max_{k in 1..8} |r(k)| over the 2,000 company-clustered resamples.",
+    "min_pairs_for_correlation": 3,
+    "min_quarters_per_source": 8,
+    "min_z_observations": 3,
+    "permutation_rule": "Circular-shift permutation null: for each company independently rotate its z-scored source series by a random offset in 1..T-1 (T=36) and recompute max_{k in 1..8} |r(k)|; p = fraction of null maxima >= the observed maximum.",
+    "power": 0.8,
+    "z_80": 0.8416212335729143,
+    "z_975": 1.959963984540054
+  },
+  "procurement": {
+    "announcement_date_null": 3453,
+    "pit_usable_rows": 0,
+    "proxy_substituted": false,
+    "reason": "every announcement_date is NULL and every row has pit_usable=0: the lane cannot be placed in time, so it is reported measured and no proxy series is substituted",
+    "rows": 3453,
+    "status": "NOT_EVALUABLE"
+  },
+  "protocol": {
+    "path": "research/protocols/b103_leadlag_preregistration.md",
+    "sha256": "63189a5e1ce3f8135d10203e06da0955668a8c167dde6894e4927806def6ee3f",
+    "status": "FROZEN 2026-11-03 before any b103 statistic was computed"
+  },
+  "run": {
+    "bootstrap_reps": 2000,
+    "command": "python experiments/b103_leadlag/leadlag.py",
+    "deterministic": true,
+    "library": "standard-library only (no numpy/pandas/scipy)",
+    "network": false,
+    "permutation_reps": 1000,
+    "random_seed": 20261103,
+    "report_command": "python experiments/b103_leadlag/leadlag.py --report-only"
+  },
+  "schema": "b103.leadlag.v1",
+  "source_table": [
+    {
+      "knowledge_time": "available_at (FDA decision date)",
+      "label": "Regulatory events (M)",
+      "resolution": "quarter",
+      "series": "material 510(k)/PMA counts per company-quarter"
+    },
+    {
+      "knowledge_time": "filing available_at quarter",
+      "label": "Financial R&D",
+      "resolution": "quarter (fact available_at)",
+      "series": "trailing-4-quarter ResearchAndDevelopmentExpense (log)"
+    },
+    {
+      "knowledge_time": "quarter end",
+      "label": "Market return",
+      "resolution": "quarter",
+      "series": "quarterly adj_close return"
+    },
+    {
+      "knowledge_time": "quarter end",
+      "label": "Market volatility (descriptive)",
+      "resolution": "quarter",
+      "series": "quarterly SD of daily log returns"
+    },
+    {
+      "knowledge_time": "15 February of year+1",
+      "label": "Publication",
+      "resolution": "annual (declared)",
+      "series": "OpenAlex works per company-year / 4"
+    },
+    {
+      "knowledge_time": "all announcement_date NULL, pit_usable=0",
+      "label": "Procurement",
+      "resolution": "—",
+      "series": "—"
+    }
+  ],
+  "sources": {
+    "financial_rd": {
+      "bootstrap": {
+        "interval_method": "percentile 2.5 / 97.5, linear interpolation",
+        "labelled": "descriptive / uncorrected",
+        "max_lead_mean": 0.06891401542673393,
+        "reps_requested": 2000,
+        "reps_with_max_lead": 2000,
+        "rule": "Company-clustered bootstrap: resample companies with replacement 2,000 times, recompute the whole r(k) profile; 95 % percentile intervals (linear interpolation); descriptive and uncorrected.",
+        "seed": 20261103
+      },
+      "coverage": {
+        "companies_excluded": 26,
+        "companies_excluded_no_source_data": 23,
+        "companies_included": 27,
+        "companies_with_source_data": 30,
+        "company_quarters_max_possible": 1908,
+        "company_quarters_observed": 963,
+        "exclusions": [
+          {
+            "company_key": "alcon",
+            "reason": "constant_source_series"
+          },
+          {
+            "company_key": "ambu",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "bbraun",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "biotronik",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "boston_scientific",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "canon_medical",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "cook_medical",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "draeger",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "fresenius_medical_care",
+            "reason": "constant_source_series"
+          },
+          {
+            "company_key": "fujifilm",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "hologic",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "invacare",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "karl_storz",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "masimo",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "medline",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "medtronic",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "mindray",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "nevro",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "olympus",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "pentax_medical",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "philips",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "siemens_healthineers",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "smith_nephew",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "terumo",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "wl_gore",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "zimmer_biomet",
+            "reason": "constant_source_series"
+          }
+        ],
+        "included_companies": [
+          "abbott",
+          "atricure",
+          "baxter",
+          "bd",
+          "cooper_companies",
+          "dentsply_sirona",
+          "dexcom",
+          "edwards_lifesciences",
+          "envista",
+          "ge_healthcare",
+          "globus_medical",
+          "icu_medical",
+          "inspire_medical",
+          "insulet",
+          "integra_lifesciences",
+          "intuitive_surgical",
+          "irhythm",
+          "johnson_johnson_medtech",
+          "merit_medical",
+          "orthofix",
+          "penumbra",
+          "procept_biorobotics",
+          "resmed",
+          "steris",
+          "stryker",
+          "tandem_diabetes",
+          "teleflex"
+        ],
+        "panel_companies": 53
+      },
+      "data_notes": {
+        "carry_forward": true,
+        "duplicate_period_rule": "earliest available_at wins per (company, period_end)",
+        "duration_rejected_rows": 3315,
+        "fact_period_days_rule": "trailing-4-quarter facts have a reported period of 300-400 days",
+        "non_positive_value_quarters": 0,
+        "rows_read": 4340,
+        "tag": "ResearchAndDevelopmentExpense"
+      },
+      "decision": {
+        "criteria": {
+          "i_k_star_positive": true,
+          "ii_holm_adjusted_p_below_alpha": false,
+          "iii_era_stable": false
+        },
+        "label": "no lead detected",
+        "leads": false,
+        "mde_80": 0.07232946000994461,
+        "power_label": "well-powered negative",
+        "rule": "A source is said to lead only if all hold: (i) k* > 0; (ii) Holm-adjusted p < 0.05; (iii) the era-split stability rule holds. Otherwise the result is reported as no lead detected with its MDE; a source whose data are insufficient is reported as NOT_EVALUABLE with the measured coverage."
+      },
+      "descriptive_only": false,
+      "era": {
+        "era_1": {
+          "label": "2017-Q1..2021-Q4",
+          "n_pairs": 415,
+          "r": -0.09726481853087997
+        },
+        "era_2": {
+          "label": "2022-Q1..2025-Q4",
+          "n_pairs": 413,
+          "r": 0.026491727938539582
+        },
+        "eras": [
+          "2017-Q1..2021-Q4",
+          "2022-Q1..2025-Q4"
+        ],
+        "full_window_r": -0.044124925815044194,
+        "k_used": 1,
+        "rule": "Era split (descriptive): 2017-2021 vs 2022-2025. A lead is reported as stable only if the point estimate at k* has the same sign and the absolute value >= 50 % of the full-window value in both eras.",
+        "signed_and_at_least_half_in_both_eras": false
+      },
+      "evaluable": true,
+      "holm": {
+        "adjusted_p": 1.0,
+        "family": [
+          "financial_rd",
+          "market_return",
+          "publication"
+        ],
+        "family_size": 3,
+        "rank": 2,
+        "raw_p": 0.683
+      },
+      "in_holm_family": true,
+      "label": "Financial R&D",
+      "permutation": {
+        "n_null_ge_observed": 683,
+        "null_max_median": 0.05398918151656397,
+        "null_max_p95": 0.09447823978784022,
+        "observed_max_abs_r": 0.044124925815044194,
+        "p_value": 0.683,
+        "reps_requested": 1000,
+        "reps_valid": 1000,
+        "rule": "Circular-shift permutation null: for each company independently rotate its z-scored source series by a random offset in 1..T-1 (T=36) and recompute max_{k in 1..8} |r(k)|; p = fraction of null maxima >= the observed maximum.",
+        "seed": 20261103
+      },
+      "primary": {
+        "abs_r_k_star": 0.044124925815044194,
+        "bootstrap_ci_high": 0.03664086230210473,
+        "bootstrap_ci_low": -0.11929571842252179,
+        "bootstrap_sd_max_lead": 0.025817333537568682,
+        "bootstrap_sd_r_k_star": 0.04005483430026579,
+        "k_star": 1,
+        "mde_80": 0.07232946000994461,
+        "mde_rule": "MDE at 80 % power (alpha=0.05) = (z_{0.975} + z_{0.80}) * SD_b, with SD_b the bootstrap standard deviation of the max-lead statistic max_{k in 1..8} |r(k)| over the 2,000 company-clustered resamples.",
+        "r_k_star": -0.044124925815044194
+      },
+      "profile": [
+        {
+          "bootstrap_ci_high": 0.07341165625448885,
+          "bootstrap_ci_low": -0.09287015390834563,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.04232496362614272,
+          "k": -8,
+          "n_milestone_quarters": 28,
+          "n_pairs": 695,
+          "r": -0.0034578844743177297
+        },
+        {
+          "bootstrap_ci_high": 0.06619852343296452,
+          "bootstrap_ci_low": -0.09202350844392895,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.04045159149579303,
+          "k": -7,
+          "n_milestone_quarters": 29,
+          "n_pairs": 715,
+          "r": -0.01172813864108884
+        },
+        {
+          "bootstrap_ci_high": 0.05310071557652451,
+          "bootstrap_ci_low": -0.0940902876935035,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.037591901092095224,
+          "k": -6,
+          "n_milestone_quarters": 30,
+          "n_pairs": 735,
+          "r": -0.020674956734695642
+        },
+        {
+          "bootstrap_ci_high": 0.05191626464432887,
+          "bootstrap_ci_low": -0.11306800045404264,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.0424485052924781,
+          "k": -5,
+          "n_milestone_quarters": 31,
+          "n_pairs": 755,
+          "r": -0.03049641170937735
+        },
+        {
+          "bootstrap_ci_high": 0.03873063573496569,
+          "bootstrap_ci_low": -0.11724590474224356,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.04042672596087731,
+          "k": -4,
+          "n_milestone_quarters": 32,
+          "n_pairs": 775,
+          "r": -0.03699575295918022
+        },
+        {
+          "bootstrap_ci_high": 0.05502626085599006,
+          "bootstrap_ci_low": -0.10485713079926218,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.04094708639348156,
+          "k": -3,
+          "n_milestone_quarters": 33,
+          "n_pairs": 795,
+          "r": -0.026036353691074862
+        },
+        {
+          "bootstrap_ci_high": 0.02445398952513286,
+          "bootstrap_ci_low": -0.12146377254525506,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03763658497967756,
+          "k": -2,
+          "n_milestone_quarters": 34,
+          "n_pairs": 815,
+          "r": -0.05011153679848835
+        },
+        {
+          "bootstrap_ci_high": 0.023763747136592926,
+          "bootstrap_ci_low": -0.1280023909511244,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03937677311620212,
+          "k": -1,
+          "n_milestone_quarters": 35,
+          "n_pairs": 835,
+          "r": -0.05503118914560601
+        },
+        {
+          "bootstrap_ci_high": 0.04323738738138044,
+          "bootstrap_ci_low": -0.11332637662164038,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.040829132869195706,
+          "k": 0,
+          "n_milestone_quarters": 36,
+          "n_pairs": 855,
+          "r": -0.036085291733892855
+        },
+        {
+          "bootstrap_ci_high": 0.03664086230210473,
+          "bootstrap_ci_low": -0.11929571842252179,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.04005483430026579,
+          "k": 1,
+          "n_milestone_quarters": 35,
+          "n_pairs": 828,
+          "r": -0.044124925815044194
+        },
+        {
+          "bootstrap_ci_high": 0.048305326761747265,
+          "bootstrap_ci_low": -0.10944666051750274,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.04069261833660289,
+          "k": 2,
+          "n_milestone_quarters": 34,
+          "n_pairs": 801,
+          "r": -0.035694791441143105
+        },
+        {
+          "bootstrap_ci_high": 0.0725042480853722,
+          "bootstrap_ci_low": -0.0838750063947879,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03896728985729682,
+          "k": 3,
+          "n_milestone_quarters": 33,
+          "n_pairs": 774,
+          "r": -0.009273276406759734
+        },
+        {
+          "bootstrap_ci_high": 0.04809227960680577,
+          "bootstrap_ci_low": -0.08844834827189327,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03451249901997726,
+          "k": 4,
+          "n_milestone_quarters": 32,
+          "n_pairs": 747,
+          "r": -0.026225045177342643
+        },
+        {
+          "bootstrap_ci_high": 0.054890787311134025,
+          "bootstrap_ci_low": -0.09553363069462986,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03785563519002335,
+          "k": 5,
+          "n_milestone_quarters": 31,
+          "n_pairs": 720,
+          "r": -0.027593260324627406
+        },
+        {
+          "bootstrap_ci_high": 0.08396533468500005,
+          "bootstrap_ci_low": -0.07745459141972315,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.04171813140945933,
+          "k": 6,
+          "n_milestone_quarters": 30,
+          "n_pairs": 693,
+          "r": 0.0019153835937521229
+        },
+        {
+          "bootstrap_ci_high": 0.07296543832778242,
+          "bootstrap_ci_low": -0.0834247854124666,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.0406839603818369,
+          "k": 7,
+          "n_milestone_quarters": 29,
+          "n_pairs": 666,
+          "r": -0.006374016871338679
+        },
+        {
+          "bootstrap_ci_high": 0.09486379396230989,
+          "bootstrap_ci_low": -0.048140802193331785,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03664093437178669,
+          "k": 8,
+          "n_milestone_quarters": 28,
+          "n_pairs": 639,
+          "r": 0.023167827239838918
+        }
+      ],
+      "series_definition": "trailing-4-quarter ResearchAndDevelopmentExpense (USD, log); the fact enters the quarterly series in its available_at quarter and is carried forward between filings",
+      "source_id": "financial_rd"
+    },
+    "market_return": {
+      "bootstrap": {
+        "interval_method": "percentile 2.5 / 97.5, linear interpolation",
+        "labelled": "descriptive / uncorrected",
+        "max_lead_mean": 0.061918319305364206,
+        "reps_requested": 2000,
+        "reps_with_max_lead": 2000,
+        "rule": "Company-clustered bootstrap: resample companies with replacement 2,000 times, recompute the whole r(k) profile; 95 % percentile intervals (linear interpolation); descriptive and uncorrected.",
+        "seed": 20261103
+      },
+      "coverage": {
+        "companies_excluded": 15,
+        "companies_excluded_no_source_data": 15,
+        "companies_included": 38,
+        "companies_with_source_data": 38,
+        "company_quarters_max_possible": 1908,
+        "company_quarters_observed": 1292,
+        "exclusions": [
+          {
+            "company_key": "bbraun",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "biotronik",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "canon_medical",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "cook_medical",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "draeger",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "hologic",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "invacare",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "karl_storz",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "masimo",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "medline",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "mindray",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "nevro",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "olympus",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "pentax_medical",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "wl_gore",
+            "reason": "no_source_data"
+          }
+        ],
+        "included_companies": [
+          "abbott",
+          "alcon",
+          "ambu",
+          "atricure",
+          "baxter",
+          "bd",
+          "boston_scientific",
+          "cooper_companies",
+          "dentsply_sirona",
+          "dexcom",
+          "edwards_lifesciences",
+          "envista",
+          "fresenius_medical_care",
+          "fujifilm",
+          "ge_healthcare",
+          "globus_medical",
+          "icu_medical",
+          "inspire_medical",
+          "insulet",
+          "integra_lifesciences",
+          "intuitive_surgical",
+          "irhythm",
+          "johnson_johnson_medtech",
+          "medtronic",
+          "merit_medical",
+          "orthofix",
+          "penumbra",
+          "philips",
+          "procept_biorobotics",
+          "resmed",
+          "siemens_healthineers",
+          "smith_nephew",
+          "steris",
+          "stryker",
+          "tandem_diabetes",
+          "teleflex",
+          "terumo",
+          "zimmer_biomet"
+        ],
+        "panel_companies": 53
+      },
+      "data_notes": {
+        "min_daily_returns_for_volatility": 2,
+        "quarter_end_rule": "last bar on or before the quarter-end date",
+        "return_definition": "quarter-end adj_close / previous-quarter-end adj_close - 1",
+        "volatility_definition": "sample SD of daily log returns inside the quarter"
+      },
+      "decision": {
+        "criteria": {
+          "i_k_star_positive": true,
+          "ii_holm_adjusted_p_below_alpha": false,
+          "iii_era_stable": false
+        },
+        "label": "no lead detected",
+        "leads": false,
+        "mde_80": 0.051285567673259605,
+        "power_label": "well-powered negative",
+        "rule": "A source is said to lead only if all hold: (i) k* > 0; (ii) Holm-adjusted p < 0.05; (iii) the era-split stability rule holds. Otherwise the result is reported as no lead detected with its MDE; a source whose data are insufficient is reported as NOT_EVALUABLE with the measured coverage."
+      },
+      "descriptive_only": false,
+      "era": {
+        "era_1": {
+          "label": "2017-Q1..2021-Q4",
+          "n_pairs": 507,
+          "r": 0.007064399684656674
+        },
+        "era_2": {
+          "label": "2022-Q1..2025-Q4",
+          "n_pairs": 595,
+          "r": -0.05389286314192733
+        },
+        "eras": [
+          "2017-Q1..2021-Q4",
+          "2022-Q1..2025-Q4"
+        ],
+        "full_window_r": -0.027793864336316323,
+        "k_used": 5,
+        "rule": "Era split (descriptive): 2017-2021 vs 2022-2025. A lead is reported as stable only if the point estimate at k* has the same sign and the absolute value >= 50 % of the full-window value in both eras.",
+        "signed_and_at_least_half_in_both_eras": false
+      },
+      "evaluable": true,
+      "holm": {
+        "adjusted_p": 1.0,
+        "family": [
+          "financial_rd",
+          "market_return",
+          "publication"
+        ],
+        "family_size": 3,
+        "rank": 3,
+        "raw_p": 0.967
+      },
+      "in_holm_family": true,
+      "label": "Market return",
+      "permutation": {
+        "n_null_ge_observed": 967,
+        "null_max_median": 0.05191096723914286,
+        "null_max_p95": 0.0830672179544993,
+        "observed_max_abs_r": 0.027793864336316323,
+        "p_value": 0.967,
+        "reps_requested": 1000,
+        "reps_valid": 1000,
+        "rule": "Circular-shift permutation null: for each company independently rotate its z-scored source series by a random offset in 1..T-1 (T=36) and recompute max_{k in 1..8} |r(k)|; p = fraction of null maxima >= the observed maximum.",
+        "seed": 20261103
+      },
+      "primary": {
+        "abs_r_k_star": 0.027793864336316323,
+        "bootstrap_ci_high": 0.02880094011824567,
+        "bootstrap_ci_low": -0.08704840313228226,
+        "bootstrap_sd_max_lead": 0.018305910290247546,
+        "bootstrap_sd_r_k_star": 0.02962239084010279,
+        "k_star": 5,
+        "mde_80": 0.051285567673259605,
+        "mde_rule": "MDE at 80 % power (alpha=0.05) = (z_{0.975} + z_{0.80}) * SD_b, with SD_b the bootstrap standard deviation of the max-lead statistic max_{k in 1..8} |r(k)| over the 2,000 company-clustered resamples.",
+        "r_k_star": -0.027793864336316323
+      },
+      "profile": [
+        {
+          "bootstrap_ci_high": 0.0494314054802305,
+          "bootstrap_ci_low": -0.08926649209958866,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03532905296534286,
+          "k": -8,
+          "n_milestone_quarters": 28,
+          "n_pairs": 1032,
+          "r": -0.020843653435579364
+        },
+        {
+          "bootstrap_ci_high": 0.01874565555064778,
+          "bootstrap_ci_low": -0.07281799766989638,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.023273602373773884,
+          "k": -7,
+          "n_milestone_quarters": 29,
+          "n_pairs": 1066,
+          "r": -0.026238730318686558
+        },
+        {
+          "bootstrap_ci_high": 0.04846083362417916,
+          "bootstrap_ci_low": -0.06072261220021794,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.02785561062875657,
+          "k": -6,
+          "n_milestone_quarters": 30,
+          "n_pairs": 1100,
+          "r": -0.006951123546073333
+        },
+        {
+          "bootstrap_ci_high": 0.05130289695657966,
+          "bootstrap_ci_low": -0.05942555694717199,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.02832170528982896,
+          "k": -5,
+          "n_milestone_quarters": 31,
+          "n_pairs": 1132,
+          "r": -0.003432535138898755
+        },
+        {
+          "bootstrap_ci_high": 0.07556278687454784,
+          "bootstrap_ci_low": -0.056158925147993116,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03337259519539454,
+          "k": -4,
+          "n_milestone_quarters": 32,
+          "n_pairs": 1164,
+          "r": 0.010501338468145407
+        },
+        {
+          "bootstrap_ci_high": 0.09417975708921812,
+          "bootstrap_ci_low": -0.017824423092304812,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.02832981883639168,
+          "k": -3,
+          "n_milestone_quarters": 33,
+          "n_pairs": 1196,
+          "r": 0.03854178850659475
+        },
+        {
+          "bootstrap_ci_high": 0.05803235576542972,
+          "bootstrap_ci_low": -0.04000905810110081,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.0252918119240591,
+          "k": -2,
+          "n_milestone_quarters": 34,
+          "n_pairs": 1228,
+          "r": 0.009656770410100593
+        },
+        {
+          "bootstrap_ci_high": 0.0998445340406667,
+          "bootstrap_ci_low": -0.017302808584766512,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.029831453866281287,
+          "k": -1,
+          "n_milestone_quarters": 35,
+          "n_pairs": 1260,
+          "r": 0.03973288840212235
+        },
+        {
+          "bootstrap_ci_high": 0.053839621232590604,
+          "bootstrap_ci_low": -0.06196821391571186,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.029659025591585602,
+          "k": 0,
+          "n_milestone_quarters": 36,
+          "n_pairs": 1292,
+          "r": -0.00349969799453563
+        },
+        {
+          "bootstrap_ci_high": 0.07606600543089317,
+          "bootstrap_ci_low": -0.03963833698891628,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.02926379435589302,
+          "k": 1,
+          "n_milestone_quarters": 35,
+          "n_pairs": 1254,
+          "r": 0.01982240494144812
+        },
+        {
+          "bootstrap_ci_high": 0.043190084624394665,
+          "bootstrap_ci_low": -0.06037891667952973,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.026510254488578057,
+          "k": 2,
+          "n_milestone_quarters": 34,
+          "n_pairs": 1216,
+          "r": -0.008340167634482145
+        },
+        {
+          "bootstrap_ci_high": 0.07204143813933163,
+          "bootstrap_ci_low": -0.07189034481003777,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.036708251373849296,
+          "k": 3,
+          "n_milestone_quarters": 33,
+          "n_pairs": 1178,
+          "r": 0.0003576381331022922
+        },
+        {
+          "bootstrap_ci_high": 0.07805895955664702,
+          "bootstrap_ci_low": -0.02956877628501423,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.027412694413580168,
+          "k": 4,
+          "n_milestone_quarters": 32,
+          "n_pairs": 1140,
+          "r": 0.023010681355255205
+        },
+        {
+          "bootstrap_ci_high": 0.02880094011824567,
+          "bootstrap_ci_low": -0.08704840313228226,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.02962239084010279,
+          "k": 5,
+          "n_milestone_quarters": 31,
+          "n_pairs": 1102,
+          "r": -0.027793864336316323
+        },
+        {
+          "bootstrap_ci_high": 0.06287038995739788,
+          "bootstrap_ci_low": -0.05703555276959121,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.030463585773719687,
+          "k": 6,
+          "n_milestone_quarters": 30,
+          "n_pairs": 1064,
+          "r": 0.005441584152917933
+        },
+        {
+          "bootstrap_ci_high": 0.05082595513583836,
+          "bootstrap_ci_low": -0.0854224846263287,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03517200783234263,
+          "k": 7,
+          "n_milestone_quarters": 29,
+          "n_pairs": 1026,
+          "r": -0.01845903171696302
+        },
+        {
+          "bootstrap_ci_high": 0.038676535305763135,
+          "bootstrap_ci_low": -0.06531567725018686,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.026393826639075767,
+          "k": 8,
+          "n_milestone_quarters": 28,
+          "n_pairs": 988,
+          "r": -0.013767198449515614
+        }
+      ],
+      "series_definition": "quarterly return of adj_close: quarter-end close / previous quarter-end close - 1",
+      "source_id": "market_return"
+    },
+    "market_volatility": {
+      "bootstrap": {
+        "interval_method": "percentile 2.5 / 97.5, linear interpolation",
+        "labelled": "descriptive / uncorrected",
+        "max_lead_mean": 0.0727674489151843,
+        "reps_requested": 2000,
+        "reps_with_max_lead": 2000,
+        "rule": "Company-clustered bootstrap: resample companies with replacement 2,000 times, recompute the whole r(k) profile; 95 % percentile intervals (linear interpolation); descriptive and uncorrected.",
+        "seed": 20261103
+      },
+      "coverage": {
+        "companies_excluded": 15,
+        "companies_excluded_no_source_data": 15,
+        "companies_included": 38,
+        "companies_with_source_data": 38,
+        "company_quarters_max_possible": 1908,
+        "company_quarters_observed": 1298,
+        "exclusions": [
+          {
+            "company_key": "bbraun",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "biotronik",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "canon_medical",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "cook_medical",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "draeger",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "hologic",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "invacare",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "karl_storz",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "masimo",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "medline",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "mindray",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "nevro",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "olympus",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "pentax_medical",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "wl_gore",
+            "reason": "no_source_data"
+          }
+        ],
+        "included_companies": [
+          "abbott",
+          "alcon",
+          "ambu",
+          "atricure",
+          "baxter",
+          "bd",
+          "boston_scientific",
+          "cooper_companies",
+          "dentsply_sirona",
+          "dexcom",
+          "edwards_lifesciences",
+          "envista",
+          "fresenius_medical_care",
+          "fujifilm",
+          "ge_healthcare",
+          "globus_medical",
+          "icu_medical",
+          "inspire_medical",
+          "insulet",
+          "integra_lifesciences",
+          "intuitive_surgical",
+          "irhythm",
+          "johnson_johnson_medtech",
+          "medtronic",
+          "merit_medical",
+          "orthofix",
+          "penumbra",
+          "philips",
+          "procept_biorobotics",
+          "resmed",
+          "siemens_healthineers",
+          "smith_nephew",
+          "steris",
+          "stryker",
+          "tandem_diabetes",
+          "teleflex",
+          "terumo",
+          "zimmer_biomet"
+        ],
+        "panel_companies": 53
+      },
+      "data_notes": {
+        "min_daily_returns_for_volatility": 2,
+        "quarter_end_rule": "last bar on or before the quarter-end date",
+        "return_definition": "quarter-end adj_close / previous-quarter-end adj_close - 1",
+        "volatility_definition": "sample SD of daily log returns inside the quarter"
+      },
+      "decision": {
+        "criteria": {
+          "i_k_star_positive": true,
+          "ii_holm_adjusted_p_below_alpha": null,
+          "iii_era_stable": false
+        },
+        "label": "descriptive only",
+        "leads": false,
+        "mde_80": 0.05678481801621349,
+        "power_label": null,
+        "rule": "A source is said to lead only if all hold: (i) k* > 0; (ii) Holm-adjusted p < 0.05; (iii) the era-split stability rule holds. Otherwise the result is reported as no lead detected with its MDE; a source whose data are insufficient is reported as NOT_EVALUABLE with the measured coverage."
+      },
+      "descriptive_only": true,
+      "era": {
+        "era_1": {
+          "label": "2017-Q1..2021-Q4",
+          "n_pairs": 403,
+          "r": 0.08586972895248651
+        },
+        "era_2": {
+          "label": "2022-Q1..2025-Q4",
+          "n_pairs": 591,
+          "r": 0.01820998892510084
+        },
+        "eras": [
+          "2017-Q1..2021-Q4",
+          "2022-Q1..2025-Q4"
+        ],
+        "full_window_r": 0.041967458275391264,
+        "k_used": 8,
+        "rule": "Era split (descriptive): 2017-2021 vs 2022-2025. A lead is reported as stable only if the point estimate at k* has the same sign and the absolute value >= 50 % of the full-window value in both eras.",
+        "signed_and_at_least_half_in_both_eras": false
+      },
+      "evaluable": true,
+      "holm": {
+        "adjusted_p": null,
+        "family_size": null,
+        "rank": null
+      },
+      "in_holm_family": false,
+      "label": "Market volatility (descriptive)",
+      "permutation": {
+        "n_null_ge_observed": 754,
+        "null_max_median": 0.05155741552673093,
+        "null_max_p95": 0.08498172822527024,
+        "observed_max_abs_r": 0.041967458275391264,
+        "p_value": 0.754,
+        "reps_requested": 1000,
+        "reps_valid": 1000,
+        "rule": "Circular-shift permutation null: for each company independently rotate its z-scored source series by a random offset in 1..T-1 (T=36) and recompute max_{k in 1..8} |r(k)|; p = fraction of null maxima >= the observed maximum.",
+        "seed": 20261103
+      },
+      "primary": {
+        "abs_r_k_star": 0.041967458275391264,
+        "bootstrap_ci_high": 0.11348329386345725,
+        "bootstrap_ci_low": -0.027719926169077525,
+        "bootstrap_sd_max_lead": 0.02026881697157918,
+        "bootstrap_sd_r_k_star": 0.036093366836792824,
+        "k_star": 8,
+        "mde_80": 0.05678481801621349,
+        "mde_rule": "MDE at 80 % power (alpha=0.05) = (z_{0.975} + z_{0.80}) * SD_b, with SD_b the bootstrap standard deviation of the max-lead statistic max_{k in 1..8} |r(k)| over the 2,000 company-clustered resamples.",
+        "r_k_star": 0.041967458275391264
+      },
+      "profile": [
+        {
+          "bootstrap_ci_high": 0.05154050097397843,
+          "bootstrap_ci_low": -0.07824700279672246,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.033372947500056864,
+          "k": -8,
+          "n_milestone_quarters": 28,
+          "n_pairs": 1036,
+          "r": -0.014510963689000025
+        },
+        {
+          "bootstrap_ci_high": 0.04933817594519426,
+          "bootstrap_ci_low": -0.06544703551233311,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.029811643134863702,
+          "k": -7,
+          "n_milestone_quarters": 29,
+          "n_pairs": 1070,
+          "r": -0.010808728321981475
+        },
+        {
+          "bootstrap_ci_high": 0.017890501193469976,
+          "bootstrap_ci_low": -0.08610350944162354,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.026458766023875712,
+          "k": -6,
+          "n_milestone_quarters": 30,
+          "n_pairs": 1104,
+          "r": -0.03342642662580909
+        },
+        {
+          "bootstrap_ci_high": 0.04087656431814316,
+          "bootstrap_ci_low": -0.08279993668697525,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.030856596903448275,
+          "k": -5,
+          "n_milestone_quarters": 31,
+          "n_pairs": 1138,
+          "r": -0.020561613051037906
+        },
+        {
+          "bootstrap_ci_high": -0.012268663237552043,
+          "bootstrap_ci_low": -0.11933021169704142,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.027226022385706053,
+          "k": -4,
+          "n_milestone_quarters": 32,
+          "n_pairs": 1170,
+          "r": -0.06403819639124396
+        },
+        {
+          "bootstrap_ci_high": 0.03770553826763978,
+          "bootstrap_ci_low": -0.08631627770412954,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.031374781205643146,
+          "k": -3,
+          "n_milestone_quarters": 33,
+          "n_pairs": 1202,
+          "r": -0.02319651168083779
+        },
+        {
+          "bootstrap_ci_high": 0.10253376071777776,
+          "bootstrap_ci_low": -0.02808135569783117,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03358382383036166,
+          "k": -2,
+          "n_milestone_quarters": 34,
+          "n_pairs": 1234,
+          "r": 0.03625181844407745
+        },
+        {
+          "bootstrap_ci_high": 0.04004256341023111,
+          "bootstrap_ci_low": -0.08592483944079402,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03239829140516084,
+          "k": -1,
+          "n_milestone_quarters": 35,
+          "n_pairs": 1266,
+          "r": -0.021910128354710876
+        },
+        {
+          "bootstrap_ci_high": 0.03529656630646841,
+          "bootstrap_ci_low": -0.0686618439029379,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.02630642019162785,
+          "k": 0,
+          "n_milestone_quarters": 36,
+          "n_pairs": 1298,
+          "r": -0.016416078583575286
+        },
+        {
+          "bootstrap_ci_high": 0.021989402172669172,
+          "bootstrap_ci_low": -0.07554709549269663,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.025346918980869857,
+          "k": 1,
+          "n_milestone_quarters": 35,
+          "n_pairs": 1260,
+          "r": -0.027217058539324056
+        },
+        {
+          "bootstrap_ci_high": 0.059877081648379384,
+          "bootstrap_ci_low": -0.06415668015460886,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03054098271446744,
+          "k": 2,
+          "n_milestone_quarters": 34,
+          "n_pairs": 1222,
+          "r": -0.006355909746338883
+        },
+        {
+          "bootstrap_ci_high": 0.009514490724153038,
+          "bootstrap_ci_low": -0.08484625733244809,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.024097937749507033,
+          "k": 3,
+          "n_milestone_quarters": 33,
+          "n_pairs": 1184,
+          "r": -0.03767741542950945
+        },
+        {
+          "bootstrap_ci_high": 0.025182592035480407,
+          "bootstrap_ci_low": -0.07779773058439933,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.026802129039744025,
+          "k": 4,
+          "n_milestone_quarters": 32,
+          "n_pairs": 1146,
+          "r": -0.028762684694927248
+        },
+        {
+          "bootstrap_ci_high": 0.1015447452199245,
+          "bootstrap_ci_low": -0.019038433368235602,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03135983847225584,
+          "k": 5,
+          "n_milestone_quarters": 31,
+          "n_pairs": 1108,
+          "r": 0.039449904141477
+        },
+        {
+          "bootstrap_ci_high": 0.05124145441289326,
+          "bootstrap_ci_low": -0.06179285327691949,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.028828208781836145,
+          "k": 6,
+          "n_milestone_quarters": 30,
+          "n_pairs": 1070,
+          "r": -0.006522233091522075
+        },
+        {
+          "bootstrap_ci_high": 0.0407644275525936,
+          "bootstrap_ci_low": -0.04309890386061759,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.02161987401419235,
+          "k": 7,
+          "n_milestone_quarters": 29,
+          "n_pairs": 1032,
+          "r": -0.0019046244108663615
+        },
+        {
+          "bootstrap_ci_high": 0.11348329386345725,
+          "bootstrap_ci_low": -0.027719926169077525,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.036093366836792824,
+          "k": 8,
+          "n_milestone_quarters": 28,
+          "n_pairs": 994,
+          "r": 0.041967458275391264
+        }
+      ],
+      "series_definition": "quarterly sample SD of daily log adj_close returns",
+      "source_id": "market_volatility"
+    },
+    "publication": {
+      "bootstrap": {
+        "interval_method": "percentile 2.5 / 97.5, linear interpolation",
+        "labelled": "descriptive / uncorrected",
+        "max_lead_mean": 0.05755133740229918,
+        "reps_requested": 2000,
+        "reps_with_max_lead": 2000,
+        "rule": "Company-clustered bootstrap: resample companies with replacement 2,000 times, recompute the whole r(k) profile; 95 % percentile intervals (linear interpolation); descriptive and uncorrected.",
+        "seed": 20261103
+      },
+      "coverage": {
+        "companies_excluded": 2,
+        "companies_excluded_no_source_data": 2,
+        "companies_included": 51,
+        "companies_with_source_data": 51,
+        "company_quarters_max_possible": 1908,
+        "company_quarters_observed": 1728,
+        "exclusions": [
+          {
+            "company_key": "draeger",
+            "reason": "no_source_data"
+          },
+          {
+            "company_key": "mindray",
+            "reason": "no_source_data"
+          }
+        ],
+        "included_companies": [
+          "abbott",
+          "alcon",
+          "ambu",
+          "atricure",
+          "baxter",
+          "bbraun",
+          "bd",
+          "biotronik",
+          "boston_scientific",
+          "canon_medical",
+          "cook_medical",
+          "cooper_companies",
+          "dentsply_sirona",
+          "dexcom",
+          "edwards_lifesciences",
+          "envista",
+          "fresenius_medical_care",
+          "fujifilm",
+          "ge_healthcare",
+          "globus_medical",
+          "hologic",
+          "icu_medical",
+          "inspire_medical",
+          "insulet",
+          "integra_lifesciences",
+          "intuitive_surgical",
+          "invacare",
+          "irhythm",
+          "johnson_johnson_medtech",
+          "karl_storz",
+          "masimo",
+          "medline",
+          "medtronic",
+          "merit_medical",
+          "nevro",
+          "olympus",
+          "orthofix",
+          "pentax_medical",
+          "penumbra",
+          "philips",
+          "procept_biorobotics",
+          "resmed",
+          "siemens_healthineers",
+          "smith_nephew",
+          "steris",
+          "stryker",
+          "tandem_diabetes",
+          "teleflex",
+          "terumo",
+          "wl_gore",
+          "zimmer_biomet"
+        ],
+        "panel_companies": 53
+      },
+      "data_notes": {
+        "knowledge_rule": "year y usable from 15 February of y+1",
+        "missing_year_policy": "missing, never zero-filled",
+        "quarter_value": "works(y) / 4 where y is the most recent complete known year",
+        "resolution": "annual (step function on the quarterly grid)",
+        "source": "publication_counts.works (OpenAlex group_by_publication_year)"
+      },
+      "decision": {
+        "criteria": {
+          "i_k_star_positive": true,
+          "ii_holm_adjusted_p_below_alpha": false,
+          "iii_era_stable": true
+        },
+        "label": "no lead detected",
+        "leads": false,
+        "mde_80": 0.05695026627611427,
+        "power_label": "well-powered negative",
+        "rule": "A source is said to lead only if all hold: (i) k* > 0; (ii) Holm-adjusted p < 0.05; (iii) the era-split stability rule holds. Otherwise the result is reported as no lead detected with its MDE; a source whose data are insufficient is reported as NOT_EVALUABLE with the measured coverage."
+      },
+      "descriptive_only": false,
+      "era": {
+        "era_1": {
+          "label": "2017-Q1..2021-Q4",
+          "n_pairs": 902,
+          "r": -0.026439169546628248
+        },
+        "era_2": {
+          "label": "2022-Q1..2025-Q4",
+          "n_pairs": 776,
+          "r": -0.028007034024260084
+        },
+        "eras": [
+          "2017-Q1..2021-Q4",
+          "2022-Q1..2025-Q4"
+        ],
+        "full_window_r": -0.038696894491277875,
+        "k_used": 1,
+        "rule": "Era split (descriptive): 2017-2021 vs 2022-2025. A lead is reported as stable only if the point estimate at k* has the same sign and the absolute value >= 50 % of the full-window value in both eras.",
+        "signed_and_at_least_half_in_both_eras": true
+      },
+      "evaluable": true,
+      "holm": {
+        "adjusted_p": 1.0,
+        "family": [
+          "financial_rd",
+          "market_return",
+          "publication"
+        ],
+        "family_size": 3,
+        "rank": 1,
+        "raw_p": 0.614
+      },
+      "in_holm_family": true,
+      "label": "Publication",
+      "permutation": {
+        "n_null_ge_observed": 614,
+        "null_max_median": 0.0427399921878725,
+        "null_max_p95": 0.0732434237433695,
+        "observed_max_abs_r": 0.038696894491277875,
+        "p_value": 0.614,
+        "reps_requested": 1000,
+        "reps_valid": 1000,
+        "rule": "Circular-shift permutation null: for each company independently rotate its z-scored source series by a random offset in 1..T-1 (T=36) and recompute max_{k in 1..8} |r(k)|; p = fraction of null maxima >= the observed maximum.",
+        "seed": 20261103
+      },
+      "primary": {
+        "abs_r_k_star": 0.038696894491277875,
+        "bootstrap_ci_high": 0.023906855262501303,
+        "bootstrap_ci_low": -0.1033099613006373,
+        "bootstrap_sd_max_lead": 0.020327872201750696,
+        "bootstrap_sd_r_k_star": 0.03259167197080628,
+        "k_star": 1,
+        "mde_80": 0.05695026627611427,
+        "mde_rule": "MDE at 80 % power (alpha=0.05) = (z_{0.975} + z_{0.80}) * SD_b, with SD_b the bootstrap standard deviation of the max-lead statistic max_{k in 1..8} |r(k)| over the 2,000 company-clustered resamples.",
+        "r_k_star": -0.038696894491277875
+      },
+      "profile": [
+        {
+          "bootstrap_ci_high": 0.07703635668953607,
+          "bootstrap_ci_low": -0.042945098477082826,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.030238301173110705,
+          "k": -8,
+          "n_milestone_quarters": 28,
+          "n_pairs": 1352,
+          "r": 0.018220358709576442
+        },
+        {
+          "bootstrap_ci_high": 0.07424723593733458,
+          "bootstrap_ci_low": -0.05725062994432123,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.033700610431693555,
+          "k": -7,
+          "n_milestone_quarters": 29,
+          "n_pairs": 1400,
+          "r": 0.010553180996941141
+        },
+        {
+          "bootstrap_ci_high": 0.05487732877645841,
+          "bootstrap_ci_low": -0.08125659045586539,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03481812229414121,
+          "k": -6,
+          "n_milestone_quarters": 30,
+          "n_pairs": 1448,
+          "r": -0.013341657971552769
+        },
+        {
+          "bootstrap_ci_high": 0.04416689335373088,
+          "bootstrap_ci_low": -0.07868693490340399,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03151598796940486,
+          "k": -5,
+          "n_milestone_quarters": 31,
+          "n_pairs": 1496,
+          "r": -0.01636736022545984
+        },
+        {
+          "bootstrap_ci_high": 0.04886583206102653,
+          "bootstrap_ci_low": -0.06530354011846168,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.028884320487762946,
+          "k": -4,
+          "n_milestone_quarters": 32,
+          "n_pairs": 1544,
+          "r": -0.007912739444249943
+        },
+        {
+          "bootstrap_ci_high": 0.025327005328800337,
+          "bootstrap_ci_low": -0.09079578160762974,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.029222279028974993,
+          "k": -3,
+          "n_milestone_quarters": 33,
+          "n_pairs": 1590,
+          "r": -0.030338658927193014
+        },
+        {
+          "bootstrap_ci_high": 0.01333414100996066,
+          "bootstrap_ci_low": -0.09313808691032902,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.026779936711998218,
+          "k": -2,
+          "n_milestone_quarters": 34,
+          "n_pairs": 1636,
+          "r": -0.03721465489410177
+        },
+        {
+          "bootstrap_ci_high": 0.02791702483084135,
+          "bootstrap_ci_low": -0.08052838551259103,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.027480044437996128,
+          "k": -1,
+          "n_milestone_quarters": 35,
+          "n_pairs": 1682,
+          "r": -0.023032640234364285
+        },
+        {
+          "bootstrap_ci_high": 0.01783606488843664,
+          "bootstrap_ci_low": -0.09558439262288859,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.028863159162743818,
+          "k": 0,
+          "n_milestone_quarters": 36,
+          "n_pairs": 1728,
+          "r": -0.03649936063510896
+        },
+        {
+          "bootstrap_ci_high": 0.023906855262501303,
+          "bootstrap_ci_low": -0.1033099613006373,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03259167197080628,
+          "k": 1,
+          "n_milestone_quarters": 35,
+          "n_pairs": 1678,
+          "r": -0.038696894491277875
+        },
+        {
+          "bootstrap_ci_high": 0.06634992854691424,
+          "bootstrap_ci_low": -0.06420705058672847,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.03340753987655324,
+          "k": 2,
+          "n_milestone_quarters": 34,
+          "n_pairs": 1628,
+          "r": 0.00276079731584492
+        },
+        {
+          "bootstrap_ci_high": 0.058190917856507485,
+          "bootstrap_ci_low": -0.06334938877333995,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.031213890670104192,
+          "k": 3,
+          "n_milestone_quarters": 33,
+          "n_pairs": 1578,
+          "r": -0.0009960913649801572
+        },
+        {
+          "bootstrap_ci_high": 0.06559145241345507,
+          "bootstrap_ci_low": -0.0423912301706335,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.027103536419865622,
+          "k": 4,
+          "n_milestone_quarters": 32,
+          "n_pairs": 1528,
+          "r": 0.012514786611050986
+        },
+        {
+          "bootstrap_ci_high": 0.07142163931787071,
+          "bootstrap_ci_low": -0.039760840271670365,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.0279122162896582,
+          "k": 5,
+          "n_milestone_quarters": 31,
+          "n_pairs": 1480,
+          "r": 0.014171609081763528
+        },
+        {
+          "bootstrap_ci_high": 0.07427633106675138,
+          "bootstrap_ci_low": -0.03320290186849667,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.027282659496013134,
+          "k": 6,
+          "n_milestone_quarters": 30,
+          "n_pairs": 1432,
+          "r": 0.01800225911226934
+        },
+        {
+          "bootstrap_ci_high": 0.044031562386451936,
+          "bootstrap_ci_low": -0.05990270210366644,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.027129905255185997,
+          "k": 7,
+          "n_milestone_quarters": 29,
+          "n_pairs": 1384,
+          "r": -0.010166380861919242
+        },
+        {
+          "bootstrap_ci_high": 0.04658641913797958,
+          "bootstrap_ci_low": -0.053730248033153405,
+          "bootstrap_n_valid": 2000,
+          "bootstrap_sd": 0.026656975379751525,
+          "k": 8,
+          "n_milestone_quarters": 28,
+          "n_pairs": 1336,
+          "r": -0.005282551172250136
+        }
+      ],
+      "series_definition": "OpenAlex works per company-year divided equally across the year's quarters (works/4), usable from 15 February of the following year",
+      "source_id": "publication"
+    }
+  },
+  "title": "b103 cross-source lead/lag at the company level"
+}

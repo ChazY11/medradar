@@ -3098,3 +3098,65 @@ its descriptive coverage and failure-analysis results stand.
 **Evidence.** `ADJUDICATION_FINAL_V1.json`, `CASE_PACKETS_FINAL_V1.json`, `CASE_CANDIDATES_FINAL_V1.json`,
 `TARGET_B_RESULTS_V1.md`, `OWNER_AUTHORISATION_2026-11-03.md`, `LABELING_PROTOCOL.md` AMENDMENT 001,
 `experiments/b100/finalise_ai_adjudication.py` (+7 boundary tests), result rows R172–R175.
+
+---
+
+## D-080 — B-029: the CIK join is real but finds nothing to link; the backlog premise is falsified by measurement
+
+**Date:** 2026-11-03 · **Status:** accepted · **Artifact:** `experiments/b101_cik_link/` (R178)
+
+**Decision.** B-029 is closed as a **measurement**, not as a completed linking task. The acceptance premise — "19,616
+unlinked 8-K events carrying a resolvable CIK become linked" — is false: all 20,976 8-K events carry a payload CIK, but
+only **826** equal exactly one curated-company CIK, and **all 826 are already linked**. The remaining 19,616 events
+belong to **1,530 non-roster registrants** (top: Tonix 264, Aerie 193, Axsome 133). No new link can be produced by CIK
+without first deciding to expand the curated roster. Existing links were audited: 826 CIK-corroborated, 0
+contradicted, 499 unverifiable, 35 excluded as ambiguous (CIK 200406 maps to `jnj_pharma` and
+`johnson_johnson_medtech`).
+
+**Data-quality findings that matter beyond B-029.** (a) `companies.cik` is empty in every store — the column the
+backlog pointed at is dead; the usable identifier is `company_identifiers` under scheme `SEC_CIK` plus SEC-reported
+tickers. (b) A CIK can denote successive registrants (e.g. 1492658 = Tornier then Wright Medical). (c) The corpus's
+ticker field is name-resolved, not CIK-authoritative: using it as CIK→ticker evidence would have emitted **58 bogus
+confidence-1.0 links** (Seattle Genetics→Pfizer, Horizon→Amgen, Aduro/Chinook→Novartis, Tornier/Wright→Stryker); it was
+excluded and the exclusion documented. This is the programme's third "count before concluding unavailable" lesson.
+
+**Consequence.** B-029 becomes a roster-coverage question for the owner, not an engineering task. The 57 unambiguous
+curated CIKs are a reusable registry (`cik_registry.json`); any future roster expansion reuses it through the same
+exact-match rule.
+
+---
+
+## D-081 — B-021: no cross-source lead is detectable at company level; the three negatives are well powered
+
+**Date:** 2026-11-03 · **Status:** accepted · **Protocol:** `research/protocols/b103_leadlag_preregistration.md` ·
+**Artifact:** `experiments/b103_leadlag/` (R179)
+
+**Decision.** The frozen b103 design was executed exactly. Over 2017-Q1…2025-Q4 (36 quarters), with per-company
+z-scores, lags −8…+8, a 2,000-rep company-clustered bootstrap, a 1,000-rep circular-shift permutation null, and Holm
+across three sources, **no source shows a stable lead** over material regulatory events:
+
+| source | k* | r | 95 % CI | permutation p | Holm p | era stable | MDE | verdict |
+|---|---:|---:|---|---:|---:|---|---:|---|
+| financial R&D | 1 | −0.0441 | [−0.1193, 0.0366] | 0.683 | 1.000 | no | 0.0723 | no lead (well-powered negative) |
+| market return | 5 | −0.0278 | [−0.0870, 0.0288] | 0.967 | 1.000 | no | 0.0513 | no lead (well-powered negative) |
+| publications | 1 | −0.0387 | [−0.1033, 0.0239] | 0.614 | 1.000 | yes | 0.0570 | no lead (well-powered negative) |
+| market volatility | 8 | +0.0420 | [−0.0277, 0.1135] | 0.754 | — | no | 0.0568 | descriptive only |
+
+Procurement is `NOT_EVALUABLE` (3,453 rows, every `announcement_date` NULL, `pit_usable=0`); no proxy was substituted.
+The conclusion is a **well-powered negative**, not "no effect": MDEs are 0.05–0.07 in |r|, and the pre-declared decision
+rule was applied verbatim. No causal language is licensed. Together with the hist_v1 fusion result (no cross-source
+gain) this closes mission question 3 for the current corpus: the sources do not lead the milestones at company level.
+
+---
+
+## D-082 — B-041: the fusion conclusion is invariant to the tested publication knowledge lags
+
+**Date:** 2026-11-03 · **Status:** accepted · **Protocol:** `research/protocols/b104_publag_preregistration.md` ·
+**Artifact:** `experiments/b104_publag/` (R180)
+
+**Decision.** The hist_v1 fusion comparison (C vs D on the 2016-Q1+ origins) was re-run with publication knowledge lags
+of 0, 14, 30 and 90 days. At 0/14/30 days the run **reproduces hist_v1 exactly** (publication join 0.786, AP(C) 0.0401,
+AP(D) 0.0348, Δ −0.0053); at 90 days the lag removes `year−1` at first-quarter origins in non-leap years (join falls to
+0.200) and Δ becomes −0.0017 — still negative. The hist_v1 conclusion ("fusion does not improve ranking") is therefore
+**robust to the tested lags**; at 90 days it rests on only 20 % join coverage, which is reported with the result. No
+positive Δ was observed at any lag, so the frozen decision rule returns "unchanged" and no upgrade is licensed.

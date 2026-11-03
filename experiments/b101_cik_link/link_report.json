@@ -1,0 +1,264 @@
+{
+  "ambiguity": {
+    "ciks": 1,
+    "companies": {
+      "0000200406": [
+        "jnj_pharma",
+        "johnson_johnson_medtech"
+      ]
+    },
+    "linked_events_excluded_from_precision": 35,
+    "unlinked_events_excluded_from_linking": 0
+  },
+  "artifacts": {
+    "cik_registry.json": {
+      "committed": true,
+      "note": "committed input; rebuild needs the local EDGAR candidate dump, which data/ does not track",
+      "regenerable": true
+    },
+    "events_linked.jsonl": {
+      "committed": false,
+      "new_links": 0,
+      "note": "generated deterministically by link_cik.py; intended for the Lead to commit. Contains every CIK-anchored link at confidence 1.0 (existing links are marked link_status=existing_corroborated; new links would be link_status=new).",
+      "regenerable": true,
+      "rows": 826
+    }
+  },
+  "backlog_item": "B-029",
+  "data_quality": {
+    "research": {
+      "companies": 51,
+      "companies_with_nonempty_cik": 0,
+      "company_identifier_rows": 34,
+      "company_identifier_schemes": {
+        "SEC_CIK": 34
+      },
+      "path": "D:\\DEPPSKK\\worktrees\\es-ai-review\\data\\research.sqlite"
+    },
+    "store": {
+      "companies": 89,
+      "companies_with_nonempty_cik": 0,
+      "path": "D:\\DEPPSKK\\worktrees\\es-ai-review\\data\\medradar.sqlite",
+      "sec_8k_events": 20976,
+      "sec_8k_unlinked": 19616
+    }
+  },
+  "existing_links_audit": {
+    "already_linked_events": 1360,
+    "cik_ambiguous_excluded": 35,
+    "cik_contradicted": 0,
+    "cik_corroborated": 826,
+    "cik_unverifiable": 499,
+    "contradictions": []
+  },
+  "funnel": {
+    "already_linked_events": 1360,
+    "distinct_payload_ciks": 1613,
+    "events_cik_ambiguous": 35,
+    "events_cik_equals_exactly_one_curated_cik": 826,
+    "events_cik_not_in_curated_registry": 20115,
+    "events_with_payload_cik": 20976,
+    "linked_now": 0,
+    "sec_8k_events": 20976,
+    "unlinked_events": 19616,
+    "unlinked_with_payload_cik": 19616
+  },
+  "inputs": {
+    "registry": "D:\\DEPPSKK\\worktrees\\es-ai-review\\experiments\\b101_cik_link\\cik_registry.json",
+    "registry_provenance": {
+      "candidate_sources": [
+        {
+          "path": "D:\\DEPPSKK\\medradar\\data\\edgar_corpus\\candidates.jsonl",
+          "present": true,
+          "rows": 10201,
+          "sha256": "e393156e5a9032ccdb7439c0cdff88679e8817e13cd49c2a228a646bb7f8493c",
+          "ticker_source": "SEC EDGAR full-text search candidate dump (registrant ticker as reported by SEC)"
+        },
+        {
+          "path": "D:\\DEPPSKK\\medradar\\data\\edgar_corpus\\candidates_v2.jsonl",
+          "present": true,
+          "rows": 17784,
+          "sha256": "9c84cb74fe7ae1c5067f246a9af213de02d5ea7dc15667a2b44a9df64f0fb26f",
+          "ticker_source": "SEC EDGAR full-text search candidate dump (registrant ticker as reported by SEC)"
+        }
+      ],
+      "candidates_rows_total": 27985,
+      "company_configs": [
+        {
+          "path": "D:\\DEPPSKK\\worktrees\\es-ai-review\\config\\companies_device.json",
+          "sha256": "7fd5750abcab1080a21426fe60a7f827f3f015feaa038ea6edfeaf43dbab4820"
+        },
+        {
+          "path": "D:\\DEPPSKK\\worktrees\\es-ai-review\\config\\companies_drug.json",
+          "sha256": "26116336d7cf9a685b4d41dae81c55188b6b16c926218b1127ca4b0e72887a07"
+        }
+      ],
+      "generated_at": "deterministic: no wall-clock timestamp is recorded",
+      "identifier_table": {
+        "companies": 34,
+        "path": "D:\\DEPPSKK\\worktrees\\es-ai-review\\data\\research.sqlite",
+        "rows": 34,
+        "schemes": [
+          "SEC_CIK",
+          "CIK"
+        ],
+        "table": "company_identifiers"
+      },
+      "ticker_rule": "curated roster ticker must exactly equal the SEC-reported registrant ticker"
+    },
+    "registry_schema": "b101.cik_registry.v1",
+    "research": "D:\\DEPPSKK\\worktrees\\es-ai-review\\data\\research.sqlite",
+    "store": "D:\\DEPPSKK\\worktrees\\es-ai-review\\data\\medradar.sqlite"
+  },
+  "per_company_linked_counts": {
+    "abbott": 3,
+    "abbvie": 37,
+    "alnylam": 40,
+    "amgen": 43,
+    "ark": 8,
+    "atricure": 13,
+    "baxter": 14,
+    "bd": 4,
+    "biogen": 15,
+    "biomarin": 26,
+    "blueprint": 49,
+    "boston_scientific": 6,
+    "cooper_companies": 6,
+    "dentsply_sirona": 4,
+    "dexcom": 2,
+    "edwards_lifesciences": 3,
+    "envista": 1,
+    "exelixis": 45,
+    "ge_healthcare": 5,
+    "gilead": 15,
+    "globus_medical": 2,
+    "hologic": 9,
+    "incyte": 43,
+    "inspire_medical": 33,
+    "insulet": 6,
+    "integra_lifesciences": 11,
+    "ionis": 52,
+    "irhythm": 1,
+    "lilly": 18,
+    "masimo": 4,
+    "medtronic": 5,
+    "merck": 33,
+    "merit_medical": 11,
+    "moderna": 27,
+    "neurocrine": 42,
+    "nevro": 4,
+    "orthofix": 8,
+    "penumbra": 2,
+    "pfizer": 20,
+    "regeneron": 23,
+    "resmed": 3,
+    "sarepta": 37,
+    "steris": 3,
+    "stryker": 3,
+    "tandem_diabetes": 16,
+    "teleflex": 5,
+    "united_therapeutics": 38,
+    "vertex": 20,
+    "viatris": 3,
+    "zimmer_biomet": 5
+  },
+  "per_company_new_link_counts": {},
+  "precision_check": {
+    "checks": {
+      "cik_in_curated_registry": 60,
+      "cik_maps_to_exactly_one_company": 60,
+      "cik_not_ambiguous": 60,
+      "company_key_matches_registry": 60,
+      "independent_identifier_agrees": 17,
+      "independent_identifier_checked": 17,
+      "name_token_overlap_descriptive": 60,
+      "sampled": 60
+    },
+    "failures": [],
+    "requested_sample_size": 60,
+    "seed": 20261103,
+    "verdict": "PASS"
+  },
+  "registry": {
+    "ambiguous_ciks": 1,
+    "curated_ciks": 57,
+    "curated_companies": 57
+  },
+  "rule": "exact integer CIK equality against a curated company CIK that maps to exactly one curated company_key; ambiguous CIKs refused; names/aliases/similarity never used",
+  "run": {
+    "deterministic": true,
+    "sample_size": 60,
+    "seed": 20261103
+  },
+  "schema": "b101.cik_link_report.v1",
+  "top_unlinked_registrants": [
+    {
+      "applicant_raw": "Tonix Pharmaceuticals Holding Corp.",
+      "cik": 1430306,
+      "cik_10": "0001430306",
+      "events": 264
+    },
+    {
+      "applicant_raw": "AERIE PHARMACEUTICALS INC",
+      "cik": 1337553,
+      "cik_10": "0001337553",
+      "events": 193
+    },
+    {
+      "applicant_raw": "Axsome Therapeutics, Inc.",
+      "cik": 1579428,
+      "cik_10": "0001579428",
+      "events": 133
+    },
+    {
+      "applicant_raw": "Lipocine Inc.",
+      "cik": 1535955,
+      "cik_10": "0001535955",
+      "events": 128
+    },
+    {
+      "applicant_raw": "Aquestive Therapeutics, Inc.",
+      "cik": 1398733,
+      "cik_10": "0001398733",
+      "events": 123
+    },
+    {
+      "applicant_raw": "ACURA PHARMACEUTICALS, INC",
+      "cik": 786947,
+      "cik_10": "0000786947",
+      "events": 100
+    },
+    {
+      "applicant_raw": "BeiGene, Ltd. (BGNE, BEIGF)",
+      "cik": 1651308,
+      "cik_10": "0001651308",
+      "events": 99
+    },
+    {
+      "applicant_raw": "Ocugen, Inc.",
+      "cik": 1372299,
+      "cik_10": "0001372299",
+      "events": 98
+    },
+    {
+      "applicant_raw": "Sesen Bio, Inc.",
+      "cik": 1485003,
+      "cik_10": "0001485003",
+      "events": 95
+    },
+    {
+      "applicant_raw": "HERON THERAPEUTICS, INC. /DE/",
+      "cik": 818033,
+      "cik_10": "0000818033",
+      "events": 90
+    }
+  ],
+  "unlinked_distinct_applicants": 1888,
+  "unlinked_distinct_uncurated_ciks": 1530,
+  "unresolved_reasons": {
+    "cik_ambiguous": 0,
+    "cik_not_in_curated_registry": 19616,
+    "no_cik": 0,
+    "payload_unparseable": 0
+  }
+}

@@ -45,9 +45,39 @@ def main() -> int:
                       key=lambda item: -(abs((item["ratio"] or 1) - 1)))[:8]:
         print(f"  {row['company']:20s} {row['recent']:4d} vs {row['prior']:4d} "
               f"ratio {row['ratio']:.2f} p={row['p']:.3f} mde {row['mde']:.2f}")
+    # multiplicity control (independent-audit defect 9): 53 two-sided exact binomial tests at alpha=0.05
+    # are expected to yield ~2.65 false detections.  Report both corrections next to the raw count.
+    alpha = 0.05
+    m = len(rows)
+    bonferroni_alpha = alpha / m if m else None
+    known = sorted((row for row in rows if row["p"] is not None), key=lambda item: item["p"])
+    holm_adjusted = {}
+    running = 0.0
+    for index, row in enumerate(known):
+        step = min(1.0, (len(known) - index) * row["p"])
+        running = max(running, step)
+        holm_adjusted[row["company"]] = running
+    survivors_bonferroni = [row["company"] for row in known
+                            if bonferroni_alpha is not None and row["p"] < bonferroni_alpha]
+    survivors_holm = [name for name, adjusted in holm_adjusted.items() if adjusted <= alpha]
+    multiplicity = {
+        "tests": m,
+        "alpha": alpha,
+        "bonferroni_alpha": bonferroni_alpha,
+        "expected_false_positives_at_alpha": alpha * m,
+        "raw_detections": len(detected),
+        "survivors_bonferroni": survivors_bonferroni,
+        "survivors_holm": survivors_holm,
+        "holm_adjusted_p": dict(sorted(holm_adjusted.items())),
+        "note": ("audit defect 9: the raw calibrated count must not be read as a family-wise result; only the "
+                 "Holm/Bonferroni survivors support a per-company claim"),
+    }
+    print(f"multiplicity: {m} tests, alpha {alpha}, Bonferroni {bonferroni_alpha:.6f}, "
+          f"expected false positives {alpha * m:.2f}; survivors Holm {survivors_holm}")
+
     payload = {"naive_ratio_threshold": NAIVE_RATIO, "companies": len(rows),
                "naive_flags": len(naive), "calibrated_detections": len(detected),
-               "rows": rows}
+               "multiplicity": multiplicity, "rows": rows}
     out = Path("experiments/b027/momentum_calibration.json")
     out.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n",
                    encoding="utf-8", newline="\n")

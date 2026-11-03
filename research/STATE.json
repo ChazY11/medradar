@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T10:00:00+08:00",
+  "updated_at": "2026-11-03T10:30:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,15 +8,14 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "hist_v2_preregistered_feasibility_measured",
-  "cycle": 48,
+  "phase": "backlog_execution_round",
+  "cycle": 49,
   "last_completed_cycle": {
-    "cycle": 47,
-    "name": "target_b_final_adjudication",
+    "cycle": 49,
+    "name": "backlog_b021_b029_b041",
     "branch": "research/early-signal-ai-review",
-    "report": "research/studies/early_signal_5firms/TARGET_B_RESULTS_V1.md",
-    "summary": "research/RESULTS/README.md R172-R175",
-    "verdict": "the project owner authorised the external AI review as the study's final Target B adjudication and waived human sign-off for this study; new tier FINAL_ADJUDICATION_AI_OWNER_AUTHORISED (human_truth false, owner-authorised, validating script + 7 boundary tests). Target B closes NEGATIVE: 0/69 confirmed shifts (0.0%, Wilson-upper 5.3%), 8 false signals (all 8 small-sample pairs), 52 routine, 9 uncertain; H1/H2 NOT_EVALUABLE, H3 descriptive, H4 untestable. The nine-event lead-time description stays withdrawn. The promotion policy's human sign-off is untouched."
+    "report": "research/RESULTS/README.md R178-R180",
+    "summary": "three backlog designs executed to a final state. B-029: 0 new CIK links possible (all 826 curated-CIK events already linked; 19,616 unlinked are non-roster registrants). B-021: no cross-source lead detected, three well-powered negatives (MDE 0.05-0.07), procurement NOT_EVALUABLE. B-041: fusion conclusion unchanged at publication lags 0/14/30/90 days (reproduces hist_v1 exactly at 0/14/30)."
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\hist-v1",
@@ -1797,5 +1796,33 @@
     },
     "primary_comparison": "M1-B1 with M1-B3 decisive secondary; pre-declared power target MDE <= 0.05",
     "next": "write experiments/hist_v2/build_domain_panel.py + eval.py and run the frozen design; report M1-B1 and M1-B3 with the reliability gate"
+  },
+  "backlog_execution_2026_11_03": {
+    "B-029": {
+      "status": "done",
+      "result_row": "R178",
+      "decision": "D-080",
+      "outcome": "premise falsified: 0 new links; 826/826 curated-CIK events already linked; 19,616 unlinked are 1,530 non-roster registrants"
+    },
+    "B-021": {
+      "status": "done",
+      "result_row": "R179",
+      "decision": "D-081",
+      "outcome": "no source leads; well-powered negatives (financial R&D MDE 0.072, market return 0.051, publication 0.057); procurement NOT_EVALUABLE"
+    },
+    "B-041": {
+      "status": "done",
+      "result_row": "R180",
+      "decision": "D-082",
+      "outcome": "fusion conclusion unchanged at lags 0/14/30/90; reproduces hist_v1 exactly at 0/14/30; 90-day join 0.200"
+    },
+    "B-017": {
+      "status": "in_progress",
+      "task": "task-6"
+    },
+    "B-074": {
+      "status": "done",
+      "outcome": "schedule executed: B-029/B-021/B-041 done; B-017 in progress; B-018 remains open"
+    }
   }
 }

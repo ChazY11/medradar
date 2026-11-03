@@ -178,7 +178,7 @@ tasks:
     layer: anticipate
     priority: P3
     title: Lead/lag program between source classes and milestones (mission question 3)
-    status: todo
+    status: done
     owner: unassigned
     acceptance: Pre-registered lag windows; cluster-robust CIs; Holm correction; negatives published; no causal language.
     notes: "data present - financial_facts=43420, market_bars=95725, publication_counts=616, procurement_awards=3453"
@@ -196,7 +196,7 @@ tasks:
     layer: observe
     priority: P1
     title: CIK-based deterministic linking for the 8-K lane
-    status: todo
+    status: done
     owner: unassigned
     acceptance: 19,616 unlinked 8-K events carrying a resolvable CIK become linked at confidence 1.0 with stored evidence; precision spot-checked; no fuzzy matching.
     notes: "data present - events=55090, company_identifiers=34 (unlinked CIK-bearing 8-K events are in the store)"
@@ -233,7 +233,7 @@ tasks:
     layer: observe
     priority: P2
     title: Publication-lag sensitivity analysis
-    status: todo
+    status: done
     owner: unassigned
     acceptance: Headline analyses re-run at assumed lags of 0/14/30/90 days; conclusions either survive or the sensitivity is published.
     notes: "publication_counts=616 present; the lag question is about publication timing, which the store records at monthly resolution"
@@ -809,7 +809,7 @@ tasks:
     layer: predict
     priority: P1
     title: 重新点检剩余六项开放任务的数据可得性并排期
-    status: todo
+    status: done
     owner: lead
     depends_on: [B-073]
     notes: >
@@ -831,3 +831,9 @@ tasks:
       label set) and what is explicitly not claimed. Record at closure: 73 decisions, 152 result rows (27
       negative/null), 6 auditable snapshots, 2 forecast sets, 113 verified claims across two papers, 43 cycle reports,
       157 commits; main untouched at 7a639f7.
+
+# ------------------------------------------------------------ completions 2026-11-03 (cycle 49)
+# B-029: B-029 CIK linking executed: premise falsified (0 new links; all curated-CIK events already linked); see D-080 / R178
+# B-021: B-021 executed as frozen b103: no cross-source lead detected; three well-powered negatives, procurement NOT_EVALUABLE; see D-081 / R179
+# B-041: B-041 executed as b104: fusion conclusion unchanged at publication knowledge lags 0/14/30/90 days; see D-082 / R180
+# B-074: B-074 scheduling executed: B-029/B-021/B-041 done; B-017 in progress; B-018 remains open with measured reason

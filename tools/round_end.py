@@ -29,6 +29,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT_JSON = ROOT / "tools" / "round_end.json"
 OUT_LOG = ROOT / "tools" / "round_end.log"
+#: Artifacts this routine (and its sibling verifiers) regenerate on every run.  They are reported as
+#: "self-generated" and excluded from the uncommitted-path count, otherwise a clean tree becomes dirty merely
+#: because the gate ran (independent-audit defect 10).  They are still regenerated and expected to be committed
+#: deliberately with the round.
+SELF_OUTPUTS = frozenset({
+    "tools/round_end.json",
+    "tools/round_end.log",
+    "research/AUDIT.json",
+    "research/AUDIT.md",
+    "research/FINAL_AUDIT.json",
+})
 
 STEPS = (
     ("test suite", [sys.executable, "-m", "medradar", "selftest"], ("Ran ", "OK (")),
@@ -66,6 +77,23 @@ def git(*args: str) -> str:
     return (result.stdout or "").strip()
 
 
+def split_dirty(lines: list[str]) -> tuple[list[str], list[str]]:
+    """Split porcelain lines into (real changes, self-generated gate outputs).
+
+    A porcelain line looks like `` M path`` / ``?? path`` / ``A  path``; the path is the last
+    whitespace-separated field (paths with spaces are quoted by git and matched as-is).
+    """
+    real, self_generated = [], []
+    for line in lines:
+        if not line.strip():
+            continue
+        path = line[3:].strip() if len(line) > 3 else ""
+        if path.startswith('"') and path.endswith('"'):
+            path = path[1:-1]
+        (self_generated if path in SELF_OUTPUTS else real).append(line)
+    return real, self_generated
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--skip-selftest", action="store_true",
@@ -87,16 +115,28 @@ def main(argv: list[str] | None = None) -> int:
                         "detail": detail, "exit": result.returncode})
         log_lines.append(f"{results[-1]['status']:7s} {name}: {detail}")
 
-    dirty = [line for line in git("status", "--porcelain").splitlines() if line.strip()]
+    dirty_all = [line for line in git("status", "--porcelain").splitlines() if line.strip()]
+    dirty, self_generated = split_dirty(dirty_all)
     branch = git("rev-parse", "--abbrev-ref", "HEAD")
     head = git("rev-parse", "HEAD")
     remote_line = git("ls-remote", "--heads", "origin", branch)
     remote = remote_line.split()[0] if remote_line else ""
     synced = bool(head and remote and head == remote)
-    state_status = "PASS" if synced else ("N/A" if not remote else "FAIL")
-    results.append({"step": "repository state", "status": state_status,
-                    "detail": f"HEAD {head[:12]}, remote {'synced' if synced else remote[:12] or 'unknown'}, "
-                              f"{len(dirty)} uncommitted path(s)"})
+    if not head:
+        # Outside a git repository the gate cannot prove the record is committed.  That is a failure of the
+        # completion claim, not an N/A (independent-audit defect 3).
+        state_status = "FAIL"
+        state_detail = "not a git repository: the round-end claim requires a committed repository"
+    elif not remote:
+        state_status = "N/A"
+        state_detail = (f"HEAD {head[:12]}, no remote configured, {len(dirty)} uncommitted path(s), "
+                        f"{len(self_generated)} self-generated output(s) excluded")
+    else:
+        state_status = "PASS" if synced else "FAIL"
+        state_detail = (f"HEAD {head[:12]}, remote {'synced' if synced else remote[:12]}, "
+                        f"{len(dirty)} uncommitted path(s), {len(self_generated)} self-generated output(s) excluded")
+    results.append({"step": "repository state", "status": state_status, "detail": state_detail,
+                    "self_generated_outputs": len(self_generated)})
     log_lines.append(f"{state_status:7s} repository state: {results[-1]['detail']}")
 
     failed = [row for row in results if row["status"] == "FAIL"]

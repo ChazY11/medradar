@@ -228,7 +228,7 @@ Thirty-six cycles later, the position has changed in specific ways and not in ot
   The ramp label is withheld below 1.0 event per series-month because measurement there cannot support it (D-061).
 - **UNDERSTAND exists as a working instrument.** Seven-field company profiles for the full curated roster, with a
   schema that **rejects** any profile lacking contradictory evidence, the validated detector embedded with its
-  measured error rates, a promotion policy in code with mandatory human sign-off and no automated path, and five
+  measured error rates, a promotion policy in code with mandatory human sign-off and no automated path, and six
   auditable frozen snapshots (three backdated, two policy-labelled) whose provenance is verifiable to a date.
 - **ANTICIPATE has been tested four times and failed each time, for diagnosed reasons.** Co-movement dissolved under
   a track-growth null; entry waves were an entity-appearance artefact; the surviving candidate failed a clean split
@@ -239,7 +239,7 @@ Thirty-six cycles later, the position has changed in specific ways and not in ot
   then found a further 12 whose outcome windows had already opened inside the lane, because the filter checked
   only the window end. Both groups are excluded and reported, and the set was re-registered under the corrected
   rule (D-075; `FORECAST_SET_2026-11-03_prospective.json`, hash `8ac0b8df…`).
-- **Two papers exist**, each with a machine-verified claim map (82 and 22 claims), and a round-end command whose exit
+- **Two papers exist**, each with a machine-verified claim map (88 and 25 claims), and a round-end command whose exit
   code is the completion claim.
 
 **What has not changed, and should not be papered over.**
