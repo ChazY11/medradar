@@ -1,0 +1,30 @@
+# Artifacts produced by local runs: never committed.
+#
+# This nested .gitignore is deliberately scoped to the experiment so that the
+# repository-wide ignore rules stay untouched by a research branch.
+
+artifacts/
+runs/
+outputs/
+checkpoints/
+*.log
+
+# Model weights and serialised tensors (large, and often licensed separately).
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.gguf
+*.onnx
+
+# Local caches an experimenter may have pointed here.
+.cache/
+hf_cache/
+models/
+.venv/
+venv/
+
+__pycache__/
+*.pyc
+.pytest_cache/
