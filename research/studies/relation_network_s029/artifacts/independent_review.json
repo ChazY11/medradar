@@ -402,7 +402,22 @@
           "severity": "minor documentation; no scientific claim, number or verdict depends on it"
         }
       ],
-      "verifier_and_verdict": "verification.json 13/13; quality_metrics: T1, T2, T5 pass and T3 (10.08% > 10.0), T4 (0 < 100), T6 (0 < 100) fail -> NO-GO FOR PREDICTION unchanged. No claim or verdict number changed by the d37b966 edits.",
+      "closure_at_bb874af": {
+        "reviewed_commit": "bb874af",
+        "tree_clean": true,
+        "all_seven_items_closed": true,
+        "item_2_closure_evidence": "grep of GO_NO_GO_CRITERIA.md for 'is verifiable rather than asserted' returns 0 occurrences. The header now reads: '...and the ordering is documented honestly rather than asserted: this file, the metrics and the recorded hash first entered git in the same commit, so the sequence is evidenced by the artefacts generation timestamps and by the dated amendment log in Appendix A, not by an earlier commit.' prereg_decision.prereg_sha256 = d1bb8339ac0fba75... equals V7's current hash (V7 pass); verification.json is 13/13; claims.jsonl unchanged (D7D9A2A1...); quality_metrics verdict NO-GO FOR PREDICTION, T5 pass, T3 10.08%.",
+        "final_pinned_hashes": {
+          "GO_NO_GO_CRITERIA.md": "0466A34DCC012AE6F2698C3F",
+          "artifacts/prereg_decision.json": "6A2CEC720161BBDDF5329822",
+          "artifacts/verification.json": "1ABE8A1DA2E7B6DB197C1023",
+          "artifacts/quality_metrics.json": "69408AEED4BC50A3034B219F",
+          "data/claims.jsonl": "D7D9A2A1FB07978DBAB580EB"
+        },
+        "still_failing_now": [],
+        "updated_verdict_on_delivery": "READY_WITH_CONCERNS"
+      },
+      "verifier_and_verdict": "verification.json 13/13; quality_metrics: T1, T2, T5 pass and T3 (10.08% > 10.0), T4 (0 < 100), T6 (0 < 100) fail -> NO-GO FOR PREDICTION unchanged. No claim or verdict number changed by the d37b966 or bb874af edits.",
       "updated_verdict_on_delivery": "READY_WITH_CONCERNS"
     },
     "updated_verdict_on_delivery": "READY_WITH_CONCERNS",
