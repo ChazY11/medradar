@@ -47,7 +47,7 @@ export async function mount(root, ctx) {
     kpi({
       label: "赛道映射覆盖",
       value: fmtPct(dataset.track_mapping_coverage, 1),
-      sub: `已映射 ${fmtInt(dataset.track_mapped_events)} / 未映射 ${fmtInt(dataset.unattributed_events)}`,
+      sub: `已映射 ${fmtInt(dataset.track_mapped_events)} / 未映射 ${fmtInt(dataset.track_unmapped_events)}`,
     }),
     kpi({ label: "产品代码", value: fmtInt(counts.product_codes), sub: "FDA 产品代码分类表" }),
     kpi({ label: "数据截止", value: dataset.date_range?.last || "—", sub: `起于 ${dataset.date_range?.first || "—"}`, sm: true }),

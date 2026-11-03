@@ -1981,9 +1981,14 @@ def dataset_meta() -> dict[str, Any]:
             "events_by_kind": by_kind,
             "date_range": date_range,
             "track_mapped_events": int(mapped or 0),
+            "track_unmapped_events": counts["events"] - int(mapped or 0),
             "track_mapping_coverage": (mapped / counts["events"]) if counts["events"] else None,
             "attributed_events": counts["events"] - int(unmapped_companies or 0),
             "unattributed_events": int(unmapped_companies or 0),
+            "attribution_note_zh": (
+                "track_unmapped_events 是未映射到技术赛道的事件数；attributed_events/unattributed_events "
+                "则是未映射到企业的口径，两者不是同一个概念。"
+            ),
             "companies_with_events": int(company_keys or 0),
             "signals": int(signal_rows or 0),
             "recent_runs": runs,

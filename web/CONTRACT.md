@@ -53,6 +53,7 @@ input that routes to `#/evidence?q=...`.
 
 ### GET /api/meta
 Top-level: `product`, `dataset` (`.counts`, `.date_range.last`, `.track_mapping_coverage`,
+`.track_mapped_events`, `.track_unmapped_events`, `.attributed_events`, `.unattributed_events`,
 `.modified_utc`), `sources[]` (`id,label_zh,market,coverage_zh,caveat_zh,observed_count`),
 `tracks[]` (`id,name_zh,name_en,category`), `domains[]` (`id,label_zh,tracks[]`),
 `metrics{name:{label_zh,definition_zh,caveats[]}}`, `featured_companies[]`,

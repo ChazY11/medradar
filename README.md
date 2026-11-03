@@ -29,6 +29,15 @@ python -m medradar web --port 8787
 - docs: [vision](docs/PRODUCT_VISION.md) · [architecture](docs/PRODUCT_ARCHITECTURE.md) ·
   [user guide](docs/PRODUCT_USER_GUIDE.md) · [acceptance](docs/PRODUCT_ACCEPTANCE.md) · [roadmap](docs/PRODUCT_ROADMAP.md)
 
+![MedRadar 2.0 overview](docs/product/overview.png)
+
+| Company intelligence | Claim → evidence trace |
+| --- | --- |
+| ![Mindray](docs/product/company-mindray.png) | ![Evidence](docs/product/evidence-trace.png) |
+| **Technology radar** | **Research analyst** |
+| ![Radar](docs/product/radar-respiratory.png) | ![Analyst](docs/product/analyst.png) |
+
+
 
 > The stable core through `v0.2.2` was built with DeepSeek Harness using `deepseek-flash`.
 > The research foundation (`medradar/tkg`, `forecast_registry`) and the Market-to-R&D lane were

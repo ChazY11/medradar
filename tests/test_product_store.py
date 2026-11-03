@@ -24,6 +24,10 @@ def test_dataset_meta_is_real():
     assert meta["dataset"]["counts"]["events"] > 300_000
     assert meta["dataset"]["counts"]["tracks"] >= 50
     assert meta["dataset"]["date_range"]["last"]
+    dataset = meta["dataset"]
+    assert dataset["track_mapped_events"] + dataset["track_unmapped_events"] == dataset["counts"]["events"]
+    assert dataset["attributed_events"] + dataset["unattributed_events"] == dataset["counts"]["events"]
+    assert dataset["track_unmapped_events"] != dataset["unattributed_events"]
     assert 0 < meta["dataset"]["track_mapping_coverage"] < 1
     assert len(meta["sources"]) >= 5
     assert meta["product"]["version"].startswith("2.0")
