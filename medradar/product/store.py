@@ -2660,7 +2660,15 @@ def company_compare(keys: tuple[str, ...], metric: str = "approvals", years: int
             all_total = mapped_total + unmapped
             prior_mapped_total = sum(priors.values())
             prior_all_total = prior_mapped_total + prior_unmapped
-            pathway_all_time = company_pathway_window(key, "1900-01-01", end) if include_all_time else None
+            if include_all_time:
+                pathway_all_time = dict(company_pathway_window(key, "1900-01-01", end))
+                pathway_all_time["basis"] = "all_time_approvals_only"
+                pathway_all_time["note_zh"] = (
+                    "全历史审批路径结构（1900-01-01 至数据截止），只作为背景，"
+                    "不能解释为当前研究窗口内的结构。"
+                )
+            else:
+                pathway_all_time = None
             companies.append(
                 {
                     "key": key,

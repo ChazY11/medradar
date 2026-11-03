@@ -125,6 +125,7 @@ def test_compare_all_time_pathway_is_opt_in():
     ).json()
     for company in requested["companies"]:
         assert company["pathway_all_time"] is not None
+        assert company["pathway_all_time"]["basis"] == "all_time_approvals_only"
         assert company["pathway_all_time"]["window"]["start"] < requested["analysis_window"]["analysis_start"]
 
 

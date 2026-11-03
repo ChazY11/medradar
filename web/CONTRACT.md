@@ -87,7 +87,7 @@ metrics{recent,prior,delta,pct_change,industry_*,share_*,pma_original_recent,pma
 k510_traditional_recent,low_volume,basis:"complete_quarters"},window{basis:"complete_quarters"},
 evidence_params}],entity_review[],limitations[],flags{pma_mix_note_zh,...}}`
 
-### GET /api/compare?companies=a,b,c&metric=approvals&years=5&granularity=quarter
+### GET /api/compare?companies=a,b,c&metric=approvals&years=5&granularity=quarter&include_all_time=false
 `{companies[{key,name_zh,ticker,featured,roster_present,series[{period,count,partial,complete,source_lag_risk}],
 total,total_all,total_all_window,total_mapped,total_unmapped,mapping_coverage,
 prior_total,prior_total_all,prior_total_mapped,prior_total_unmapped,prior_mapping_coverage,
