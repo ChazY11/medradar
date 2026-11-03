@@ -84,7 +84,8 @@
 | 2026-11-03T14:44:26Z | ClinicalTrials.gov 首次采集（157 条观察，`first_seen_at` 14:44:26Z 起） |
 | 2026-11-03T14:44:29Z | Europe PMC 首次采集（237 条观察，`first_seen_at` 14:44:29Z） |
 | 2026-11-03T14:49:51Z | 增量轮次中发现 1 条**此前不存在的新记录**：`NCT07307300`（ClinicalTrials.gov） |
-| 2026-11-03T14:51:58Z | 最后一轮真实同步完成（三源均 `OK`，0 new / 0 updated / 全 unchanged） |
+| 2026-11-03T14:51:58Z | 一轮真实同步完成（三源均 `OK`，0 new / 0 updated / 全 unchanged） |
+| 2026-11-03T15:09:01Z | 交付前确认轮：三源再次 `OK`，20 次请求，37 条命中全部 `unchanged`，0 new / 0 updated；观察总数保持 400 |
 
 ### 3.2 账本实际内容（`docs/observatory/evidence/09_final_ledger_evidence.json`）
 
@@ -95,7 +96,7 @@
 | 变更记录 | 400（全部 `NEW`；`UPDATED` / `REMOVED_OR_UNAVAILABLE` / `FETCH_FAILED` 各 0） |
 | `observation_origin` | `LIVE` 400 · `BACKFILLED` **0** |
 | 账本大小 | 1.69 MB（SQLite，WAL） |
-| 运行记录 | 19 条（历史中断/结构告警的运行已被后续续跑收尾；所有失败同时保留在 `source_failure`） |
+| 运行记录 | 22 条（历史中断/结构告警的运行已被后续续跑收尾；所有失败同时保留在 `source_failure`） |
 | 结构告警历史 | 6 条 `STRUCTURE_CHANGE`（见 §10 缺陷记录：初版检测器误报，已修正并重建基线） |
 | 企业映射 | `MAPPED` 102 · `PENDING_REVIEW` 237 · `UNMAPPED` 61 |
 
