@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T11:30:00+08:00",
+  "updated_at": "2026-11-03T11:00:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,8 +8,8 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "hist_v2_complete_replicated_persistence_beaten_exposure_not",
-  "cycle": 50,
+  "phase": "all_feasible_backlog_designs_complete",
+  "cycle": 51,
   "last_completed_cycle": {
     "cycle": 50,
     "name": "hist_v2_domain_benchmark",
@@ -1879,7 +1879,33 @@
     },
     "B-074": {
       "status": "done",
-      "outcome": "schedule executed: B-029/B-021/B-041/B-017 done; B-018 in progress; no open item is blocked on data"
+      "outcome": "schedule executed to completion: B-029/B-021/B-041/B-017/B-018 all done; blocked items B-013/B-014/B-015/B-030/B-031 recorded with measured reasons"
+    },
+    "B-018": {
+      "status": "done",
+      "result_row": "R186",
+      "decision": "D-085",
+      "outcome": "entity-panel source groups: reference reproduces committed P2 exactly; financial Δ −0.0151 CI [−0.0361,+0.0003] MDE 0.0264 -> underpowered null; market Δ −0.0132 CI [−0.0335,−0.000002] -> negative association (not a null); publication Δ −0.0104 CI [−0.0306,+0.0029] MDE 0.0241 -> underpowered null; join covers 36.5% of rows; parent marginals: market agrees, financial contradicts, publication not contradicted"
+    }
+  },
+  "sequence_complete": {
+    "completed_designs": [
+      "hist_v1 (R158-R167)",
+      "five-firm Target B (R168-R171)",
+      "hist_v2 (R181-R184)",
+      "B-017 (R185)",
+      "B-018 (R186)",
+      "B-021 (R179)",
+      "B-029 (R178)",
+      "B-041 (R180)",
+      "paper update (papers/PAPER_UPDATE_v1.md, 81 claims)"
+    ],
+    "blocked": {
+      "B-013": "aliases+evidence delivered in config/hist_entity_aliases.json; universe_v1 rebuild deferred (hash chain)",
+      "B-014": "needs human-adjudicated entity-alignment sample; the owner waiver was scoped to the five-firm Target B",
+      "B-015": "matured-forecast calibration blocked on wall clock (2027-10)",
+      "B-030": "lawful hiring source with snapshot history not available",
+      "B-031": "patent access blocked (PatentsView 403 / key required)"
     }
   }
 }

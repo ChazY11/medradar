@@ -3225,3 +3225,36 @@ committed cycle-2 result is therefore **not** an artefact of the recomputation; 
 
 **Consequence.** No change to any cycle-2 claim or paper statement; the sensitivity is recorded beside it. This closes
 the last of the six open backlog items that had proven data (B-017, B-018 pending, B-021, B-029, B-041 done).
+
+---
+
+## D-085 — B-018: on the entity panel the three source groups add nothing detectable, and the nulls are underpowered
+
+**Date:** 2026-11-03 · **Status:** accepted · **Artifact:** `experiments/b105_source_groups/` (R186)
+
+**Decision.** The backlog's last open analysis with proven data was executed as designed. The frozen P2 reference
+(16 `rd_plus_entry_history` features, 12-month horizon, purge, 3 holdouts 2025-04/07/10, `LogisticBaseline(180, 0.15,
+1.0)`) is **reproduced exactly** by the new harness (per-window and pooled AP match the committed cycle-2 artifact), so
+the comparison is controlled. Each source group was then added to the entity panel (company-level features joined to
+entities only when the store's rows for that entity carry one distinct `company_key`; unmapped entities are their own
+cluster; company-clustered bootstrap 2,000 reps, seed 20261103):
+
+| group | ΔAP | 95 % CI | MDE (80 %) | row coverage | positive coverage | verdict |
+|---|---:|---|---:|---:|---:|---|
+| financial | −0.0151 | [−0.0361, +0.0003] | 0.0264 | 23.3 % | 40.0 % | **underpowered** |
+| market | −0.0132 | [−0.0335, −0.000002] | 0.0242 | 29.0 % | 44.3 % | **negative association** (CI excludes zero below) |
+| publication | −0.0104 | [−0.0306, +0.0029] | 0.0241 | 36.3 % | 57.9 % | **underpowered** |
+
+The pre-declared acceptance rule (well-powered negative only if MDE ≤ 0.02 AP) is **not met by any group**. The
+financial and publication results are recorded as **underpowered** (their intervals include zero and their MDEs
+exceed 0.02), while the market group is a **detectable negative association**: its interval excludes zero below
+(ΔAP −0.0132 [−0.0335, −0.000002]), so it is not a null at all — it says the market features made rankings
+*worse* on this panel. All three per-window ΔAPs are negative. The parent-level reverse_rd_v2 marginals are +0.0017
+(financial), −0.0053 (market), +0.0029 (publication): only market agrees in sign; financial and publication flip sign
+between the two panels. That is consistent with the entity panel's much lower source coverage and with the earlier
+finding that these features carry no detectable ranking information.
+
+**Consequence.** B-018 closes as an underpowered null with its MDEs published, which is what its acceptance required.
+The binding constraint is source coverage at the entity level, not the model. No claim in the papers changes; the
+`reverse_rd_v2` statement ("no source adds a statistically detectable ranking improvement") stands, and it is now
+qualified at entity level as underpowered rather than affirmative.

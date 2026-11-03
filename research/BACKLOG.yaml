@@ -169,7 +169,7 @@ tasks:
     layer: anticipate
     priority: P3
     title: Re-test the source nulls on the entity panel (underpowered or true null?)
-    status: todo
+    status: done
     owner: unassigned
     acceptance: Financial/market/publication groups re-evaluated on the P2 panel with each null carrying its MDE; verdict is "well-powered negative" or "underpowered", never an unqualified "no effect".
     notes: "data present - financial_facts=43420, market_bars=95725, publication_counts=616 (b073 inventory)"
@@ -838,3 +838,4 @@ tasks:
 # B-041: B-041 executed as b104: fusion conclusion unchanged at publication knowledge lags 0/14/30/90 days; see D-082 / R180
 # B-074: B-074 scheduling executed: B-029/B-021/B-041 done; B-017 in progress; B-018 remains open with measured reason
 # B-017: fixed-cohort sensitivity executed (b102): conclusion unchanged; pooled dAP +0.095211 vs MDE 0.087630, 3/3 windows exclude zero; see D-084 / R185
+# B-018: entity-panel source-group re-test executed (b105): all three groups underpowered (MDE 0.024-0.026 > 0.02), no detectable gain; reference reproduces the committed P2 windows exactly; see D-085 / R186

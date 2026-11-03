@@ -1,31 +1,25 @@
 {
   "schema": "round_end_v1",
-  "checked_at_utc": "2026-11-03T02:24:31+00:00",
+  "checked_at_utc": "2026-11-03T02:46:56+00:00",
   "branch": "research/early-signal-ai-review",
-  "head": "4a2db747fb56325139d7af205e577a2c8bee4e3c",
-  "remote_synced": true,
+  "head": "7d1cd001954dadee1ac3309255df883c9f70f388",
+  "remote_synced": false,
   "uncommitted_paths": [
-    "M experiments/hist_v2/REPORT.md",
-    " M experiments/hist_v2/verify_report_numbers.py",
-    " M papers/README.md",
+    "M .gitignore",
     " M research/BACKLOG.yaml",
     " M research/DECISIONS.md",
     " M research/EXPERIMENT_REGISTRY.md",
     " M research/RESEARCH_STATE.md",
     " M research/RESULTS/README.md",
     " M research/STATE.json",
-    " M tools/round_end.py",
-    "?? experiments/b102_cohort_sensitivity/",
     "?? experiments/b105_source_groups/",
-    "?? papers/CLAIMS_UPDATE.json",
-    "?? papers/PAPER_UPDATE_v1.md",
-    "?? tests/test_fixed_cohort.py"
+    "?? tests/test_source_groups.py"
   ],
   "results": [
     {
       "step": "test suite",
       "status": "PASS",
-      "detail": "Ran 1265 tests in 45.235s",
+      "detail": "Ran 1289 tests in 46.561s",
       "exit": 0
     },
     {
@@ -108,14 +102,14 @@
     },
     {
       "step": "repository state",
-      "status": "PASS",
-      "detail": "HEAD 4a2db747fb56, remote synced, 15 uncommitted path(s), 4 self-generated output(s) excluded",
-      "self_generated_outputs": 4
+      "status": "FAIL",
+      "detail": "HEAD 7d1cd001954d, remote 3a66d1ff229b, 9 uncommitted path(s), 2 self-generated output(s) excluded",
+      "self_generated_outputs": 2
     }
   ],
   "summary": {
-    "passed": 15,
-    "failed": 0,
+    "passed": 14,
+    "failed": 1,
     "skipped": 0,
     "not_applicable": 0
   }

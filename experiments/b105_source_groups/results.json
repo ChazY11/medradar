@@ -1,0 +1,694 @@
+{
+  "backlog_item": "B-018",
+  "comparison_with_parent_level_ablation": {
+    "available": true,
+    "note": "parent reference D already contains financial, so the parent financial marginal is D - C; the entity reference is the 16-feature panel, so each entity ΔAP is that group added to the 16 features",
+    "table": {
+      "financial": {
+        "delta_of_deltas": -0.016787438634553994,
+        "entity_delta_ap": -0.015058421870530303,
+        "parent_delta_ap": 0.0017290167640236914,
+        "same_sign": false
+      },
+      "market": {
+        "delta_of_deltas": -0.007841829397289043,
+        "entity_delta_ap": -0.013181481455719166,
+        "parent_delta_ap": -0.005339652058430122,
+        "same_sign": true
+      },
+      "publication": {
+        "delta_of_deltas": -0.013316466120816037,
+        "entity_delta_ap": -0.010437846021060779,
+        "parent_delta_ap": 0.002878620099755258,
+        "same_sign": false
+      }
+    }
+  },
+  "design": {
+    "all_origins": [
+      "2020-01-01",
+      "2020-04-01",
+      "2020-07-01",
+      "2020-10-01",
+      "2021-01-01",
+      "2021-04-01",
+      "2021-07-01",
+      "2021-10-01",
+      "2022-01-01",
+      "2022-04-01",
+      "2022-07-01",
+      "2022-10-01",
+      "2023-01-01",
+      "2023-04-01",
+      "2023-07-01",
+      "2023-10-01",
+      "2024-01-01",
+      "2024-04-01",
+      "2024-07-01",
+      "2024-10-01",
+      "2025-01-01",
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "bootstrap": {
+      "confidence_level": 0.95,
+      "implementation": "medradar.intelligence.evalstats.clustered_bootstrap_delta_ap (percentile CI)",
+      "resamples": 2000,
+      "seed": 20261103
+    },
+    "clusters": "parent company (entity -> company exact join); unmapped entities as their own cluster",
+    "entity_join": "entity -> company_key only when the store's 510(k)/PMA rows for that exact entity key carry one distinct company_key",
+    "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "holdouts": 3,
+    "horizon_months": 12,
+    "mde": "evalstats.mde_from_se(clustered_bootstrap se_delta)",
+    "model": "LogisticBaseline(epochs=180, learning_rate=0.15, l2=1.0)",
+    "n_reference_features": 16,
+    "panel": "D:\\DEPPSKK\\worktrees\\es-ai-review\\experiments\\b105_source_groups\\panel_entity_sources.jsonl.gz",
+    "positives": 140,
+    "predeclared_rule": {
+      "coverage_floor_positives": 20,
+      "coverage_floor_rows": 0.2,
+      "no_unqualified_null": true,
+      "verdicts": [
+        "NOT_EVALUABLE",
+        "positive_association",
+        "negative_association",
+        "well-powered negative",
+        "underpowered"
+      ],
+      "well_powered_mde_threshold": 0.02
+    },
+    "purge_rule": "cutoff + 12 months <= origin",
+    "reference_features": [
+      "rd_count_12m",
+      "rd_count_previous_12m",
+      "rd_momentum",
+      "rd_count_36m",
+      "rd_recency_years",
+      "rd_company_count_12m",
+      "rd_track_count_12m",
+      "rd_company_track_share",
+      "rd_pair_active_years",
+      "rd_company_total_36m",
+      "rd_pair_inactive_months",
+      "rd_company_active_tracks_12m",
+      "rd_company_active_tracks_delta",
+      "rd_track_active_companies_12m",
+      "rd_track_active_companies_delta",
+      "rd_company_track_novelty_share"
+    ],
+    "rows": 20671,
+    "source_groups": {
+      "financial": [
+        "fin_revenue_growth",
+        "fin_rd_growth",
+        "fin_rd_intensity",
+        "fin_rd_intensity_delta",
+        "fin_operating_margin",
+        "fin_cash_to_rd",
+        "fin_ocf_to_rd",
+        "fin_capex_intensity",
+        "fin_acquisition_to_revenue",
+        "fin_inventory_growth",
+        "fin_facts_available"
+      ],
+      "market": [
+        "mkt_ret_12m",
+        "mkt_vol_12m",
+        "mkt_max_drawdown_12m",
+        "mkt_rel_spy_12m",
+        "mkt_rel_xbi_12m",
+        "mkt_volume_z_3m",
+        "mkt_regime_spy_above_200d",
+        "mkt_days_since_12m_high"
+      ],
+      "publication": [
+        "pub_count_prev_year",
+        "pub_count_3y",
+        "pub_growth_prev_year",
+        "pub_intensity_vs_company",
+        "pub_missing"
+      ]
+    }
+  },
+  "groups": {
+    "financial": {
+      "clusters": {
+        "distinct_clusters": 161,
+        "parent_company": 7496,
+        "unmapped_entity": 13175
+      },
+      "company_clustered_bootstrap": {
+        "ci_high": 0.0003169422189148452,
+        "ci_low": -0.03606138767036046,
+        "cluster_method": "cluster",
+        "delta": -0.015058421870530303,
+        "n_clusters": 161,
+        "n_positives": 140,
+        "n_rows": 20671,
+        "p_delta_le_zero": 0.971,
+        "resamples": 2000,
+        "se_delta": 0.009408870025506753,
+        "seed": 20261103,
+        "skipped_resamples": 0,
+        "valid_resamples": 2000
+      },
+      "coverage": {
+        "holdout_positive_coverage": 0.4,
+        "holdout_positives": 140,
+        "holdout_positives_with_group": 56,
+        "holdout_row_coverage": 0.23327366842436265,
+        "holdout_rows": 20671,
+        "holdout_rows_with_group": 4822
+      },
+      "delta_ap": -0.015058421870530303,
+      "features_added": [
+        "fin_revenue_growth",
+        "fin_rd_growth",
+        "fin_rd_intensity",
+        "fin_rd_intensity_delta",
+        "fin_operating_margin",
+        "fin_cash_to_rd",
+        "fin_ocf_to_rd",
+        "fin_capex_intensity",
+        "fin_acquisition_to_revenue",
+        "fin_inventory_growth",
+        "fin_facts_available"
+      ],
+      "mde": {
+        "alpha": 0.05,
+        "approximation": "normal_two_sided",
+        "exact": false,
+        "mde_delta_ap": 0.026359751182874865,
+        "notes": [
+          "MDE assumes the bootstrap distribution of the AP difference is roughly normal and symmetric.",
+          "The SE must come from the same clustered resampling model as the interval that is reported."
+        ],
+        "power": 0.8,
+        "se_delta_ap": 0.009408870025506753,
+        "z_alpha": 1.9599639845400816,
+        "z_power": 0.8416212336014723
+      },
+      "n_features_added": 11,
+      "per_window": [
+        {
+          "delta_ap": -0.0025115827851566325,
+          "group_pr_auc": 0.08074081703178798,
+          "origin": "2025-04-01",
+          "positives": 41,
+          "reference_pr_auc": 0.08325239981694461,
+          "rows": 6890
+        },
+        {
+          "delta_ap": -0.01425319570731376,
+          "group_pr_auc": 0.13567506502162185,
+          "origin": "2025-07-01",
+          "positives": 46,
+          "reference_pr_auc": 0.14992826072893561,
+          "rows": 6890
+        },
+        {
+          "delta_ap": -0.03202957125480088,
+          "group_pr_auc": 0.16018225380773365,
+          "origin": "2025-10-01",
+          "positives": 53,
+          "reference_pr_auc": 0.19221182506253454,
+          "rows": 6891
+        }
+      ],
+      "pooled_pr_auc_group": 0.11413065254483301,
+      "pooled_pr_auc_reference": 0.12918907441536331,
+      "verdict": {
+        "evaluable": true,
+        "statement": "no detectable ΔAP (point -0.015058, CI crosses zero), but the MDE 0.026360 > 0.02 ΔAP: effects up to 0.026 AP cannot be excluded; this is not evidence of no effect",
+        "verdict": "underpowered"
+      }
+    },
+    "market": {
+      "clusters": {
+        "distinct_clusters": 161,
+        "parent_company": 7496,
+        "unmapped_entity": 13175
+      },
+      "company_clustered_bootstrap": {
+        "ci_high": -1.8970047695188175e-06,
+        "ci_low": -0.03346140353445026,
+        "cluster_method": "cluster",
+        "delta": -0.013181481455719166,
+        "n_clusters": 161,
+        "n_positives": 140,
+        "n_rows": 20671,
+        "p_delta_le_zero": 0.9755,
+        "resamples": 2000,
+        "se_delta": 0.008620419758993598,
+        "seed": 20261103,
+        "skipped_resamples": 0,
+        "valid_resamples": 2000
+      },
+      "coverage": {
+        "holdout_positive_coverage": 0.44285714285714284,
+        "holdout_positives": 140,
+        "holdout_positives_with_group": 62,
+        "holdout_row_coverage": 0.29001983455082,
+        "holdout_rows": 20671,
+        "holdout_rows_with_group": 5995
+      },
+      "delta_ap": -0.013181481455719166,
+      "features_added": [
+        "mkt_ret_12m",
+        "mkt_vol_12m",
+        "mkt_max_drawdown_12m",
+        "mkt_rel_spy_12m",
+        "mkt_rel_xbi_12m",
+        "mkt_volume_z_3m",
+        "mkt_regime_spy_above_200d",
+        "mkt_days_since_12m_high"
+      ],
+      "mde": {
+        "alpha": 0.05,
+        "approximation": "normal_two_sided",
+        "exact": false,
+        "mde_delta_ap": 0.02415084057097184,
+        "notes": [
+          "MDE assumes the bootstrap distribution of the AP difference is roughly normal and symmetric.",
+          "The SE must come from the same clustered resampling model as the interval that is reported."
+        ],
+        "power": 0.8,
+        "se_delta_ap": 0.008620419758993598,
+        "z_alpha": 1.9599639845400816,
+        "z_power": 0.8416212336014723
+      },
+      "n_features_added": 8,
+      "per_window": [
+        {
+          "delta_ap": -0.001733024984824888,
+          "group_pr_auc": 0.08151937483211973,
+          "origin": "2025-04-01",
+          "positives": 41,
+          "reference_pr_auc": 0.08325239981694461,
+          "rows": 6890
+        },
+        {
+          "delta_ap": -0.006278448706059397,
+          "group_pr_auc": 0.14364981202287622,
+          "origin": "2025-07-01",
+          "positives": 46,
+          "reference_pr_auc": 0.14992826072893561,
+          "rows": 6890
+        },
+        {
+          "delta_ap": -0.024203831442512702,
+          "group_pr_auc": 0.16800799362002183,
+          "origin": "2025-10-01",
+          "positives": 53,
+          "reference_pr_auc": 0.19221182506253454,
+          "rows": 6891
+        }
+      ],
+      "pooled_pr_auc_group": 0.11600759295964415,
+      "pooled_pr_auc_reference": 0.12918907441536331,
+      "verdict": {
+        "evaluable": true,
+        "statement": "ΔAP -0.013181 with company-clustered 95% CI excluding zero on the negative side (high -0.000002): adding the group is associated with worse ranking than the reference; this is not a null",
+        "verdict": "negative_association"
+      }
+    },
+    "publication": {
+      "clusters": {
+        "distinct_clusters": 161,
+        "parent_company": 7496,
+        "unmapped_entity": 13175
+      },
+      "company_clustered_bootstrap": {
+        "ci_high": 0.0028538893573965135,
+        "ci_low": -0.030599530751295234,
+        "cluster_method": "cluster",
+        "delta": -0.010437846021060779,
+        "n_clusters": 161,
+        "n_positives": 140,
+        "n_rows": 20671,
+        "p_delta_le_zero": 0.9175,
+        "resamples": 2000,
+        "se_delta": 0.008613191003384365,
+        "seed": 20261103,
+        "skipped_resamples": 0,
+        "valid_resamples": 2000
+      },
+      "coverage": {
+        "holdout_positive_coverage": 0.5785714285714286,
+        "holdout_positives": 140,
+        "holdout_positives_with_group": 81,
+        "holdout_row_coverage": 0.3626336413332688,
+        "holdout_rows": 20671,
+        "holdout_rows_with_group": 7496
+      },
+      "delta_ap": -0.010437846021060779,
+      "features_added": [
+        "pub_count_prev_year",
+        "pub_count_3y",
+        "pub_growth_prev_year",
+        "pub_intensity_vs_company",
+        "pub_missing"
+      ],
+      "mde": {
+        "alpha": 0.05,
+        "approximation": "normal_two_sided",
+        "exact": false,
+        "mde_delta_ap": 0.024130588596111457,
+        "notes": [
+          "MDE assumes the bootstrap distribution of the AP difference is roughly normal and symmetric.",
+          "The SE must come from the same clustered resampling model as the interval that is reported."
+        ],
+        "power": 0.8,
+        "se_delta_ap": 0.008613191003384365,
+        "z_alpha": 1.9599639845400816,
+        "z_power": 0.8416212336014723
+      },
+      "n_features_added": 5,
+      "per_window": [
+        {
+          "delta_ap": -0.0032541875358685912,
+          "group_pr_auc": 0.07999821228107602,
+          "origin": "2025-04-01",
+          "positives": 41,
+          "reference_pr_auc": 0.08325239981694461,
+          "rows": 6890
+        },
+        {
+          "delta_ap": -0.008091285155466449,
+          "group_pr_auc": 0.14183697557346917,
+          "origin": "2025-07-01",
+          "positives": 46,
+          "reference_pr_auc": 0.14992826072893561,
+          "rows": 6890
+        },
+        {
+          "delta_ap": -0.016751288765808503,
+          "group_pr_auc": 0.17546053629672603,
+          "origin": "2025-10-01",
+          "positives": 53,
+          "reference_pr_auc": 0.19221182506253454,
+          "rows": 6891
+        }
+      ],
+      "pooled_pr_auc_group": 0.11875122839430254,
+      "pooled_pr_auc_reference": 0.12918907441536331,
+      "verdict": {
+        "evaluable": true,
+        "statement": "no detectable ΔAP (point -0.010438, CI crosses zero), but the MDE 0.024131 > 0.02 ΔAP: effects up to 0.024 AP cannot be excluded; this is not evidence of no effect",
+        "verdict": "underpowered"
+      }
+    }
+  },
+  "parent_level": {
+    "available": true,
+    "marginals": {
+      "financial": {
+        "committed_marginal_delta": 0.0017290167640236914,
+        "delta_ap": 0.0017290167640236914,
+        "group_pr_auc": 0.10220480143856071,
+        "group_spec": "D",
+        "note": "D (C + financial) minus C",
+        "reference_pr_auc": 0.10047578467453702,
+        "reference_spec": "C"
+      },
+      "market": {
+        "committed_marginal_delta": -0.005339652058430122,
+        "delta_ap": -0.005339652058430122,
+        "group_pr_auc": 0.09686514938013059,
+        "group_spec": "E",
+        "note": "E (D + market) minus D",
+        "reference_pr_auc": 0.10220480143856071,
+        "reference_spec": "D"
+      },
+      "publication": {
+        "committed_marginal_delta": 0.002878620099755258,
+        "delta_ap": 0.002878620099755258,
+        "group_pr_auc": 0.10508342153831597,
+        "group_spec": "F",
+        "note": "F (D + publication) minus D",
+        "reference_pr_auc": 0.10220480143856071,
+        "reference_spec": "D"
+      }
+    },
+    "path": "D:\\DEPPSKK\\worktrees\\es-ai-review\\experiments\\reverse_rd_v2\\ablation_metrics.json",
+    "protocol": {
+      "evaluation": "purged/embargoed expanding-window rolling origin",
+      "excluded_sources": {
+        "hiring": "no stable legal source evaluated in this phase",
+        "patents": "USPTO Open Data Portal requires an API key; no patent rows were collected or evaluated",
+        "procurement": "USAspending snapshot is not point-in-time usable (pit_usable=0); excluded from historical gain claims"
+      },
+      "feature_selection": "one specification per run; every spec trained on exactly the same examples",
+      "holdouts": 3,
+      "horizon_months": 12,
+      "min_train_origins": 3,
+      "model": "dependency-free logistic regression (fixed hyperparameters), identical rows across specs",
+      "targets": {
+        "continuation": "reverse_rd_v1: any material public FDA 510(k)/original-or-panel-track PMA activity for an already-active company-track pair in the next 12 months",
+        "entry": "first_entry_v1: first material public FDA activity in a track the company had not touched for >= 36 months before the cutoff"
+      }
+    },
+    "reference_spec": "D"
+  },
+  "question": "Do consolidated financial, market and publication features add ranking value on the P2 entity panel, and is each null well-powered or underpowered?",
+  "reference_validation": {
+    "committed_analysis": {
+      "available": true,
+      "holdout_origins": [
+        "2025-04-01",
+        "2025-07-01",
+        "2025-10-01"
+      ],
+      "path": "D:\\DEPPSKK\\worktrees\\es-ai-review\\experiments\\cycle2_coverage\\analysis.json",
+      "pooled_model_pr_auc": 0.12918907441536331,
+      "windows": [
+        {
+          "origin": "2025-04-01",
+          "positives": 41,
+          "pr_auc": 0.08325239981694461,
+          "rows": 6890
+        },
+        {
+          "origin": "2025-07-01",
+          "positives": 46,
+          "pr_auc": 0.14992826072893561,
+          "rows": 6890
+        },
+        {
+          "origin": "2025-10-01",
+          "positives": 53,
+          "pr_auc": 0.19221182506253454,
+          "rows": 6891
+        }
+      ]
+    },
+    "note": "the 16-feature reference is re-fitted on the frozen P2 panel; it should reproduce the committed P2 window and pooled AP exactly if the harness is faithful",
+    "reference_matches_committed_windows_and_pooled": true
+  },
+  "schema": "b105.source_group_retest.v1",
+  "specifications": {
+    "financial": {
+      "features": [
+        "rd_count_12m",
+        "rd_count_previous_12m",
+        "rd_momentum",
+        "rd_count_36m",
+        "rd_recency_years",
+        "rd_company_count_12m",
+        "rd_track_count_12m",
+        "rd_company_track_share",
+        "rd_pair_active_years",
+        "rd_company_total_36m",
+        "rd_pair_inactive_months",
+        "rd_company_active_tracks_12m",
+        "rd_company_active_tracks_delta",
+        "rd_track_active_companies_12m",
+        "rd_track_active_companies_delta",
+        "rd_company_track_novelty_share",
+        "fin_revenue_growth",
+        "fin_rd_growth",
+        "fin_rd_intensity",
+        "fin_rd_intensity_delta",
+        "fin_operating_margin",
+        "fin_cash_to_rd",
+        "fin_ocf_to_rd",
+        "fin_capex_intensity",
+        "fin_acquisition_to_revenue",
+        "fin_inventory_growth",
+        "fin_facts_available"
+      ],
+      "mean_window_pr_auc": 0.1255327119537145,
+      "n_features": 27,
+      "per_window": [
+        {
+          "origin": "2025-04-01",
+          "positives": 41,
+          "pr_auc": 0.08074081703178798,
+          "rows": 6890
+        },
+        {
+          "origin": "2025-07-01",
+          "positives": 46,
+          "pr_auc": 0.13567506502162185,
+          "rows": 6890
+        },
+        {
+          "origin": "2025-10-01",
+          "positives": 53,
+          "pr_auc": 0.16018225380773365,
+          "rows": 6891
+        }
+      ],
+      "pooled_pr_auc": 0.11413065254483301
+    },
+    "market": {
+      "features": [
+        "rd_count_12m",
+        "rd_count_previous_12m",
+        "rd_momentum",
+        "rd_count_36m",
+        "rd_recency_years",
+        "rd_company_count_12m",
+        "rd_track_count_12m",
+        "rd_company_track_share",
+        "rd_pair_active_years",
+        "rd_company_total_36m",
+        "rd_pair_inactive_months",
+        "rd_company_active_tracks_12m",
+        "rd_company_active_tracks_delta",
+        "rd_track_active_companies_12m",
+        "rd_track_active_companies_delta",
+        "rd_company_track_novelty_share",
+        "mkt_ret_12m",
+        "mkt_vol_12m",
+        "mkt_max_drawdown_12m",
+        "mkt_rel_spy_12m",
+        "mkt_rel_xbi_12m",
+        "mkt_volume_z_3m",
+        "mkt_regime_spy_above_200d",
+        "mkt_days_since_12m_high"
+      ],
+      "mean_window_pr_auc": 0.13105906015833926,
+      "n_features": 24,
+      "per_window": [
+        {
+          "origin": "2025-04-01",
+          "positives": 41,
+          "pr_auc": 0.08151937483211973,
+          "rows": 6890
+        },
+        {
+          "origin": "2025-07-01",
+          "positives": 46,
+          "pr_auc": 0.14364981202287622,
+          "rows": 6890
+        },
+        {
+          "origin": "2025-10-01",
+          "positives": 53,
+          "pr_auc": 0.16800799362002183,
+          "rows": 6891
+        }
+      ],
+      "pooled_pr_auc": 0.11600759295964415
+    },
+    "publication": {
+      "features": [
+        "rd_count_12m",
+        "rd_count_previous_12m",
+        "rd_momentum",
+        "rd_count_36m",
+        "rd_recency_years",
+        "rd_company_count_12m",
+        "rd_track_count_12m",
+        "rd_company_track_share",
+        "rd_pair_active_years",
+        "rd_company_total_36m",
+        "rd_pair_inactive_months",
+        "rd_company_active_tracks_12m",
+        "rd_company_active_tracks_delta",
+        "rd_track_active_companies_12m",
+        "rd_track_active_companies_delta",
+        "rd_company_track_novelty_share",
+        "pub_count_prev_year",
+        "pub_count_3y",
+        "pub_growth_prev_year",
+        "pub_intensity_vs_company",
+        "pub_missing"
+      ],
+      "mean_window_pr_auc": 0.13243190805042374,
+      "n_features": 21,
+      "per_window": [
+        {
+          "origin": "2025-04-01",
+          "positives": 41,
+          "pr_auc": 0.07999821228107602,
+          "rows": 6890
+        },
+        {
+          "origin": "2025-07-01",
+          "positives": 46,
+          "pr_auc": 0.14183697557346917,
+          "rows": 6890
+        },
+        {
+          "origin": "2025-10-01",
+          "positives": 53,
+          "pr_auc": 0.17546053629672603,
+          "rows": 6891
+        }
+      ],
+      "pooled_pr_auc": 0.11875122839430254
+    },
+    "reference": {
+      "features": [
+        "rd_count_12m",
+        "rd_count_previous_12m",
+        "rd_momentum",
+        "rd_count_36m",
+        "rd_recency_years",
+        "rd_company_count_12m",
+        "rd_track_count_12m",
+        "rd_company_track_share",
+        "rd_pair_active_years",
+        "rd_company_total_36m",
+        "rd_pair_inactive_months",
+        "rd_company_active_tracks_12m",
+        "rd_company_active_tracks_delta",
+        "rd_track_active_companies_12m",
+        "rd_track_active_companies_delta",
+        "rd_company_track_novelty_share"
+      ],
+      "mean_window_pr_auc": 0.1417974952028049,
+      "n_features": 16,
+      "per_window": [
+        {
+          "origin": "2025-04-01",
+          "positives": 41,
+          "pr_auc": 0.08325239981694461,
+          "rows": 6890
+        },
+        {
+          "origin": "2025-07-01",
+          "positives": 46,
+          "pr_auc": 0.14992826072893561,
+          "rows": 6890
+        },
+        {
+          "origin": "2025-10-01",
+          "positives": 53,
+          "pr_auc": 0.19221182506253454,
+          "rows": 6891
+        }
+      ],
+      "pooled_pr_auc": 0.12918907441536331
+    }
+  }
+}
