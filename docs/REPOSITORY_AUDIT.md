@@ -132,7 +132,7 @@ Reason: the tracked tree on `main` is already clean. Verified checks:
 | File | Change |
 |---|---|
 | `README.md` | Rewritten as the research-first front page: mission/question, honest capability status, data sources, research findings (negative results), architecture, verified getting-started, structure, reproducibility, limitations, one roadmap, licence/provenance. Removed unverifiable numbers and unmerged-capability claims. |
-| `README.zh-CN.md` | Reduced from a 408-line duplicated product manual to a maintained ~70-line summary that points at `README.md` and the three governance documents. |
+| `README.zh-CN.md` | Reduced from a 408-line duplicated product manual to a maintained 94-line summary that points at `README.md` and the three governance documents. |
 | `docs/PROJECT_STATUS.md` | **New** — the single status overview: capability buckets, research index with fixed status vocabulary, PR/branch state, roadmap, open human decisions. |
 | `docs/DATA_ASSET_REGISTER.md` | **New** — data asset table with measured sizes and provenance; explicit answers for operational DB vs historical research dataset vs frozen experimental dataset vs observation ledger vs backup archive; duplicates, large-file governance, licensing, backup/restore status, regeneration honesty. |
 | `docs/REPOSITORY_AUDIT.md` | **New** — this file. |
