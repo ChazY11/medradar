@@ -46,9 +46,10 @@ randomisation that is not a straw man, a temporally purged evaluation, and a neg
 survives all of them.
 
 Two features of this domain matter. First, medical technology is not finance: the canonical
-financial-network literature (e.g. [R42]–[R44]) predicts continuous returns from dense, frequently
+financial-network literature (e.g. [R42]–[R45]) predicts continuous returns from dense, frequently
 observed relations, whereas here the outcome is a **right-censored first event** observed through a
-sparse administrative channel. Second, the diffusion literature ([R20]–[R24]) and the innovation-
+sparse administrative channel. ([R45] = Clayton & Coppola, NBER WP 35227, the paper the Phase 0-3
+draft wrongly reported as nonexistent; corrected in `LITERATURE_CORRECTION_NOTE.md`.) Second, the diffusion literature ([R20]–[R24]) and the innovation-
 network literature ([R25]–[R27]) establish that relations *can* matter for technology adoption and
 invention, but they study patents, alliances or survey adoption — none of which is available here.
 What is available is a bipartite company–technology activity graph. We ask whether that graph is

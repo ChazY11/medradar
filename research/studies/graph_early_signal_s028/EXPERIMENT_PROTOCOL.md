@@ -1,4 +1,4 @@
-﻿# S-028 实验协议 / Experiment Protocol
+# S-028 实验协议 / Experiment Protocol
 
 This is the operational form of `PRE_REGISTRATION.md`. It describes exactly how to
 run, verify and re-derive every number. The protocol was frozen before any model fit.
@@ -53,6 +53,11 @@ harness is wrong and no S-028 result exists.
 （`parity_check` 实测最大绝对差 **3.5e-17**）。这保证特征集差异可归因于特征。
 
 ## 5. 随机化对照（G2）
+
+> **CORRECTED in `S-028-CORRECTION-1`（2026-11-04）。** 本节写的程序（"重建一个保度随机快照"）在
+> Phase 0–3 的**实现**中并未实现：72/72 次不变量检查失败（度序列漂移、边权塌缩、100% 随机边被
+> 当作"新进入"）。协议文本保持不变以保留预注册记录；实际执行以 `code/s028_nullmodels.py` 的
+> N1/N2 为准，见 `RANDOMISATION_DEFECT_ANALYSIS.md` 与 `G2_CORRECTION_RESULTS.md`。
 
 - 每个起点、每个种子（`20261104 + r`, `r = 0..19`）重建一个保度随机快照。
 - 仅 12 个图特征被替换；16 个 B3 特征、标签、样本、训练流程、purge、metric 全部不变。

@@ -23,6 +23,20 @@ by a point estimate alone.
 | **H3** | **未进入提前量分析** | 预注册规定 H1 必须 SUPPORTED 才做 lead-time | 按停止规则降级；且数据无企业↔企业/机构/论文关系，H3 只能以统计关联表述 |
 | **H4** | **不可判定** | H4q 仅 6/38 赛道、5/51 企业达 n≥10/pos≥5 门槛；H2q 仅 1/1 | 不存在"某些赛道有效"的可报告证据；不得做事后赛道挑选 |
 
+> **CORRECTED in `S-028-CORRECTION-1`（2026-11-04）。** 上表的 H1 与 H2 判读按本轮独立复核更正：
+> - **H1**：数值不变（ΔAP −0.00609，CI 跨零，0/3 窗口），但 **"NULL (well-powered)" 标签作废**
+>   （`INVALIDATED_FINDING`）。预注册合取规则的规则级 MDE 为 0.0374 AP（基线 49.8%），该规则在
+>   0.0194 处功效仅 16.3%；pair 聚类 CI 上界 +0.0104 无法排除更小的增益。
+> - **H2**：判读改为 **"不成立（理由：没有证据）"**，而不是 **"方向相反"**。Phase 0–3 的随机化实现
+>   不具备其声明的保度性质（72/72 次不变量失败，见 `RANDOMISATION_DEFECT_ANALYSIS.md`）。修正后
+>   有效零模型 N1/N2 重跑：H4q 仍为 40/40（p=1/41）但集中于单一窗口；H2q 无反转（16/40、20/40）。
+>   见 `G2_CORRECTION_RESULTS.md`。
+> - **H4**：唯一 pair 口径下 0/38 赛道、0/51 企业达标（比"不可判定"更强：无可报告分层）。
+>
+> 另：本文件与 `artifacts/prereg_freeze*.json` 记录的冻结哈希**不一致**（结果表是冻结后填入的），
+> 该溯源限制已在 `CORRECTION_REPORT_ZH.md` §8 记录为 `UNRESOLVED_LIMITATION`。预注册的**期望内容**
+> 可从哈希一致的 `PRE_REGISTRATION.md` 独立核验。
+
 **最终 outcome：B — 网络特征没有超出强非图基线的额外信息。**
 （按 `PRE_REGISTRATION.md` §11 的 A/B/C/D 分类；`statistical_validation.json` 的
 `decision.outcome` 字段同此结论。）

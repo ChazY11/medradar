@@ -100,7 +100,7 @@ python research/studies/graph_early_signal_s028/code/audit_19_verify_report.py
 | `artifacts/predictions_H4q.json.gz`, `predictions_H2q.json.gz` | same | per-row holdout predictions (gzip), enough to re-derive every statistic without refitting |
 | `artifacts/statistical_validation.json` | `s028_stats.py` | bootstrap CIs (both clusterings), MDE, BH, stability, verdicts |
 | `artifacts/entity_time_audit.json` | `code/audit_*.py` | independent provenance audit |
-| `artifacts/literature_refs.json` | literature verifier | 44 references with verification status and fetched URLs |
+| `artifacts/literature_refs.json` | literature verifier | 45 references with verification status and fetched URLs (44 at Phase 0-3; [R45] added in `S-028-CORRECTION-1`, see `LITERATURE_CORRECTION_NOTE.md`) |
 
 ## 5. 计算预算（实测）
 
