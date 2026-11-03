@@ -181,7 +181,7 @@ export async function mount(root, ctx) {
   wrapper.append(el("div", { class: "mt-8" }, notice({
     tone: "amber",
     title: `PMA 拆分：原始 PMA ${fmtInt(headline.pma_original_window)} 条 / PMA 补充申请 ${fmtInt(headline.pma_supplement_window)} 条（完整季度）`,
-    body: `${pmaBreakdown.note_zh || ""} 全时口径：原始 PMA ${fmtInt(headline.pma_original_all_time)} 条、PMA 补充申请 ${fmtInt(headline.pma_supplement_all_time)} 条。PMA 补充申请 ≠ 新器械批准。`,
+    body: `${pmaBreakdown.note_zh || ""} 全时口径：原始 PMA ${fmtInt(headline.pma_original_all_time)} 条、PMA 补充申请 ${fmtInt(headline.pma_supplement_all_time)} 条。PMA 补充申请 ≠ 新器械批准。PMA 拆分与路径结构使用该企业完整窗口内全部审批记录（含未映射赛道记录）；上方“已映射赛道审批”KPI 仅统计已映射记录。`,
     testid: "company-pma-split",
   })));
 

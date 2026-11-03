@@ -293,6 +293,16 @@ def test_fixture_meta_reports_classification_unavailable(fixture):
     assert audit["pma_classification_available"] is False
     assert audit["k510_classification_available"] is True
     assert "supplement_number" in audit["rule_zh"]
+    # SQL breakdown and the Python classifier must agree on missing/ invalid payloads
+    profile = store.company_profile("medtronic", 5)
+    assert profile["headline"]["pma_unknown_all_time"] == fixture["classification_unknown"]
+    search = store.evidence_search(query="Missing supplement_number", limit=2)
+    assert search["total"] == 1
+    item = search["items"][0]
+    assert item["approval_type"] == "pma_unknown"
+    assert item["classification_available"] is False
+    detail = store.event_detail(item["event_id"])
+    assert detail["approval"]["approval_type"] == "pma_unknown"
 
 
 def test_fixture_event_detail_exposes_approval_type(fixture):

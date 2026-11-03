@@ -742,8 +742,11 @@ def _payload_text(alias: str, field: str) -> str:
 
 
 def _pma_original_sql(alias: str = "e") -> str:
+    # A missing ``supplement_number`` key is *not* an original approval; it is
+    # unknown (and must agree with approval_classification() in Python).
     return (
         f"({alias}.kind = 'pma' AND json_valid({alias}.payload) "
+        f"AND json_type({alias}.payload, '$.supplement_number') IS NOT NULL "
         f"AND coalesce({_payload_text(alias, 'supplement_number')}, '') = '')"
     )
 

@@ -169,8 +169,8 @@ vs 新分母 2,396（完整季度已映射）；行业分母均为已映射（�
 
 | 指标 | 旧 | 新 |
 | --- | --- | --- |
-| 本期（近 5 年） | 1,552（请求窗口） | **1,051（完整季度）** |
-| 上期 | 1,111（请求窗口） | **1,480（紧邻 19 季度）** |
+| 本期（近 5 年） | 1,111（请求窗口） | **1,051（完整季度）** |
+| 上期 | 1,552（请求窗口） | **1,480（紧邻 19 季度）** |
 | PMA 原始 / 补充（本期） | 未显示 | **2 / 1,048** |
 
 ### 2.5 雷达（呼吸与麻醉）
@@ -191,8 +191,8 @@ vs 新分母 2,396（完整季度已映射）；行业分母均为已映射（�
 | 层级 | 命令 | 结果 |
 | --- | --- | --- |
 | Tier A + B（无真实 DB） | `python -m pytest tests/test_product_statistics.py` | **21 passed**（纯单元 + 合成 fixture） |
-| Tier C（真实 DB） | `python -m pytest tests/test_product_store.py tests/test_product_api.py tests/test_product_analyst.py` | **74 passed, 0 failed, 0 skipped** |
-| 全量回归 | `python -m pytest` | **1169 passed + 224 subtests, exit 0**（115.4s） |
+| Tier C（真实 DB） | `python -m pytest tests/test_product_store.py tests/test_product_api.py tests/test_product_analyst.py` | **75 passed, 0 failed, 0 skipped** |
+| 全量回归 | `python -m pytest` | **1170 passed + 224 subtests, exit 0**（115.4s） |
 | Tier D（浏览器 E2E） | `node scripts/product_e2e.cjs` | **6/6 passed** |
 | 旧 selftest（unittest discovery） | `python -m medradar selftest` | **1,074 tests OK, exit 0** |
 | CI 分层 | `.github/workflows/ci.yml` `product-statistics` job | 无数据环境运行 Tier A/B；Tier C 显式 skipped |

@@ -1,338 +1,375 @@
-# MedRadar 2.0 MVP — 独立验收报告
+# MedRadar 2.0 — 统计修复后独立验收报告（commit `5a349f4`）
 
-> 验收对象：`D:\DEPPSKK\medradar` · 分支 `feat/medradar-2.0-mvp` · 最终审计 commit `22817c5`
-> 数据截止：**2026-10-30** · 事件总数：**375,378** · 产品版本：`2.0.0-mvp`
-> 验收人：独立验收员（verifier）· 审计时间：**2026-11-03 11:47–12:14（Asia/Shanghai）**
-> 结论：**五个必需场景全部 PASS（真实数据、可复现），属于可交付的 MVP；但仍是"证据型研究终端"，不是预测产品，且覆盖率/时点口径等弱点明确存在。**
-
----
-
-## 1. 结论摘要
-
-- 五个任务场景（研究公司、对比竞品、分析技术趋势、追溯结论、研究助手）都在真实数据上跑通，数字与 `/api/*`、SQLite 只读 SQL 独立复算一致。
-- 反造假、反误导检查通过：没有伪造来源 URL（375,378/375,378 均带 http(s) 链接；294,756 条可用 payload ID 校验的记录 100% 一致）、没有展示"经验证预测"、迈瑞/德尔格补充映射标注 `PENDING_HUMAN_REVIEW`、69 份证据包 0 条人工标签、`research/full-history-v1` 未合并均属实。
-- 五类限制（仅美国、记录≠产品、赛道映射覆盖、召回≠研发、无经验证预测）在总览、企业页、比较页、雷达页、研究助手、研究实验室均有可见声明。
-- 审计期间发现并推动修复了 5 个数字口径/标签缺陷（详见 §8.1）；最终冻结版已复验通过。
-- 残留问题均为低严重度或已知限制（空态重复文案、移动端宽表、point-in-time 不可回放、文档小口径不一致等），不阻塞五场景验收。
+> **验收对象**：`D:\DEPPSKK\medradar` · 分支 `feat/medradar-2.0-mvp` · 审计锚点提交 **`5a349f4e230cbba911d5c623ae83bb173b601c77`**（`fix(product): consistent LQ denominators, complete-quarter windows, PMA classification`）
+> **数据**：`data/medradar.sqlite`（1,368,469,504 bytes，mtime `2026-10-31T05:28:25Z`），data edge **2026-10-30**，events **375,378**
+> **产品**：`2.0.0-mvp`，服务 `http://127.0.0.1:8787`（审计期间未重启）
+> **验收人**：独立验收员 `verifier2`（与实现者、Lead 相互独立）· 审计时间：2026-11-03 21:19–21:38（Asia/Shanghai）
+> **结论**：**五个必需场景在 1440×900 与 390×844 两种视口均 PASS；关键统计口径已与只读 SQL 独立复算一致；旧缺陷具备“若回归则测试会失败”的回归测试。未发现阻断性产品缺陷。** 但发现 **1 个报告级数字错误（Lead 审计 §2.4）**、**1 个潜在分类不一致（当前真实数据 0 例）**、**2 个低严重度披露/API 缺口**，以及交付前需 Lead 处理的工作区未提交文件。本产品仍是“证据型研究终端”，不是预测产品。
 
 ---
 
-## 2. 环境与版本（可复现事实）
+## 0. 结论摘要
 
-| 项目 | 实测值 |
-| --- | --- |
-| 仓库 / 分支 | `D:\DEPPSKK\medradar` / `feat/medradar-2.0-mvp` |
-| 最终审计 commit | `22817c5cee186df9cad60121b73a2bc38ad37ed1`（2026-11-03 12:09:18 +0800，fix(product): distinguish track-mapping from entity-attribution KPIs） |
-| 冻结中间版本 | `838b8543deb129231497e3e36d04bd30c699da84`（12:02:31，五场景与 D1–D4 修复的冻结基线） |
-| 工作区状态 | 除本报告交付文件 `docs/PRODUCT_ACCEPTANCE.md` 外，仅 `research/studies/early_signal_5firms/HUMAN_REVIEW_WORKSHEET.csv` 显示 modified；`git diff --numstat` 无内容差异，属 CRLF/LF 行尾差异，`human_label` 仍为 0 条 |
-| 服务 | `http://127.0.0.1:8787`，`GET /api/health` → `{"status":"ok","product":"2.0.0-mvp"}`；审计期间未重启服务 |
-| 数据文件 | `data/medradar.sqlite`，1,368,469,504 bytes，mtime `2026-10-31T05:28:25Z` |
-| 数据范围 | `1966-12-14` → `2026-10-30`（数据截止 2026-10-30） |
-| 数据规模 | events 375,378；companies（有事件）89；tracks 60；product_codes 7,097 |
-| 来源 | openFDA 510(k) 176,466 / PMA 57,372 / 召回 59,646；ClinicalTrials.gov 55,592；SEC 8-K 20,976；FDA 药品 5,326（六源合计 375,378） |
-| 赛道映射 | 已映射 196,542 / 未映射 178,836 = 375,378，覆盖率 **52.4%**（API `dataset.track_unmapped_events=178,836`，与 `attributed_events=132,293 / unattributed_events=243,085` 明确区分） |
-| 浏览器 | Chrome（Playwright），桌面 1440×900 + 移动 390×844；隔离 headless 上下文独立复跑 |
-
-> 说明：审计开始时（11:47）产品代码仍在被实时编辑；12:02 冻结到 `838b854`，12:09 修复 D5 到 `22817c5`。本报告所有 PASS 结论均在 `22817c5` 上重新执行/复验；未使用冻结前状态作为通过依据。
+1. **五场景全 PASS**：迈瑞企业画像、美敦力 vs 飞利浦比较、呼吸与麻醉雷达、结论→证据→事件→来源链路、研究助手（含 out_of_scope），在 1440×900 与 390×844 各自独立复跑，共 **10/10 PASS**，**0 个控制台错误、0 个横向溢出**；截图见 `out/acceptance2/`。
+2. **统计口径复算一致**：LQ 的旧分母错误可精确复现（旧 3.417/8.114/3.520/0.912/0.021），新口径与 API 完全一致（3.721/9.323/4.042/1.068/不适用）；`/api/compare` 全部 **56 个 LQ 单元格**均可由响应自带的已映射分母复算（34 ok + 22 不适用，0 例外）。
+3. **完整季度窗口成立**：请求窗口 2021-10-31–2026-10-30 → 完整分析窗口 **2022-01-01–2026-09-30（19 个季度）**，对照 **2017-04-01–2021-12-31（19 个季度）**，紧邻无缝隙；不完整季度记录（139 条）被排除并单独披露；`source_lag_risk` 仅 2026-Q3 且与 `partial` 分离。
+4. **PMA 分类可用**：57,372/57,372 条 PMA 有 `supplement_number`（0 条 unknown），176,466/176,466 条 510(k) 有 `clearance_type`；美敦力 5 年完整窗口原始/补充 = **7 / 2,423**，飞利浦 = **1 / 38**；首次进入已排除 Special 510(k)（真实数据示例：飞利浦呼吸赛道首条 2003-07-15 为 **Special** 510(k)，产品正确取 2011-10-04 的 Traditional 510(k)）。
+5. **测试可信**：Tier A/B **21 passed**、Tier C **74 passed**、全量 **1,169 passed + 224 subtests**、仓库 E2E **6/6**、selftest **1,074 OK**，全部 exit 0，**0 skipped**。旧恒真断言 `... or True` 已删除；LQ 分母、起始不完整季度、补充申请误作首次进入三类历史缺陷，若回归均会使现有测试失败（逐项论证见 §5.2）。
+6. **诚实性边界成立**：迈瑞/德尔格为 `PENDING_HUMAN_REVIEW`；研究实验室 69 份证据包 **0 条人工标签**；`research/full-history-v1` 未合入 main；无经验证预测；限制在总览/企业页/雷达页/研究助手/实验室可见；`main` 未被改动（`b2a14c0`）；PR #12 仍为 **Draft / OPEN**，head = `5a349f4`。
+7. **发现的问题**（详见 §7）：
+   - **D1（Major，文档）**：`docs/PRODUCT_STATISTICAL_AUDIT.md` §2.4 的“本期/上期”请求窗口数字**写反**（实际本期请求窗口 1,111、上期请求窗口 1,552；审计写成 1,552/1,111）。产品自身 1,051/1,480 正确。
+   - **D2（Medium，潜在产品缺陷）**：PMA 分类的 SQL 谓词与 Python 分类器对“**合法 JSON 但缺 `supplement_number`**”不一致——SQL 计为原始批准，Python/数据集审计计为 unknown。真实数据当前 **0 例**，不影响已观测数字，但属静默误分类风险，且无测试覆盖该形态（fixture 只覆盖 malformed JSON）。
+   - **D3（Low，API/文档缺口）**：`/api/compare` 路由不接受 `include_all_time` 参数，`pathway_all_time` 经 HTTP 永远为 `null`（store 层支持，但 API 未透传）；审计称“需 `include_all_time=true`”，该能力实际不可经 API 触发。UI 已明确提示未请求，无数值错误。
+   - **D4（Low，标注清晰度）**：企业页 PMA 拆分 KPI（7 + 2,423）与路径结构分母（2,595）包含未映射赛道的审批记录，而 headline“已映射赛道审批”= 2,396；旁侧蓝色提示已给出 2,396 + 199 = 2,595，但 KPI 标签本身未写“含未映射”。
+   - **D5（Info，发布状态）**：审计期间工作区存在未提交的 `README.md`、`docs/PRODUCT_ROADMAP.md`（并行文档编辑，非本审计员写入，未包含在 `5a349f4`）；用户 CSV 仍仅为本地修改。`main`/PR 未受影响，但交付前需 Lead 决定这些文件的去留。
 
 ---
 
-## 3. 方法（实际执行了什么）
+## 1. 审计锚点与环境（可复现事实）
 
-1. **读文档核对口径**：`docs/PRODUCT_VISION.md`、`docs/PRODUCT_ARCHITECTURE.md`、`web/CONTRACT.md`、`docs/PRODUCT_USER_GUIDE.md`、`docs/PRODUCT_ROADMAP.md`。
-2. **官方测试**：`python -m pytest tests/test_product_api.py tests/test_product_store.py tests/test_product_analyst.py -q`（7 + 20 + 44 = 71 项，exit 0）。
-3. **仓库 E2E**：`node scripts/product_e2e.cjs` → 6/6 PASS，报告 `out/product_e2e/report.json`。
-4. **独立浏览器复跑**（自写隔离 Playwright 脚本，不复用仓库 E2E 判定）：1440×900 依次点击 `#/overview`、`#/companies`→迈瑞、`#/compare`（Medtronic+Philips）、`#/radar/respiratory`、企业结论→证据→事件详情、`#/analyst`（两问）、`#/lab`、`#/evidence`；21 个检查步骤，0 pageerror。
-5. **独立数据复算**：只读打开 `data/medradar.sqlite`（`mode=ro`），用自己的 SQL 复算事件数、企业计数、窗口计数、赛道计数、claims 计数；迈瑞/德尔格用 `medradar/product/entity_aliases.json` 的精确别名列表独立匹配，不信任产品层汇总。
-6. **claims 复算**：对 18 条企业结论逐条 `POST /api/evidence/claim`，并用 SQL 按同一窗口/赛道/指标重算，三方（claim.metrics、API recomputed、SQL）比对。
-7. **来源链接审计**：全库 375,378 条 URL 检查空值/协议；对 294,756 条 payload 带 ID 的记录（510(k)/PMA/试验/药品）校验 URL 内 ID 与 payload ID 一致；召回按 `res_event_number`、8-K 按 accession 抽样核对。
-8. **反造假点名检查**：`PENDING_HUMAN_REVIEW`、`merged=false`、负结果、无验证预测、69 包/0 人工标签（API + CSV 双侧核对）。
-9. **交互与状态**：导航、图表点击→证据筛选、结论"查看证据"→事件行→原始链接、研究助手示例 chip/证据事件、比较页非法选择清空旧图、证据分页/搜索/重置、雷达领域卡→赛道页；用路由延迟制造 loading 观察骨架屏、未知企业制造 error 观察重试、无结果搜索观察 empty。
-10. **移动端 390×844**：总览、企业页、雷达赛道页、研究助手 4 个路由 + 折叠菜单展开；检查 `scrollWidth-clientWidth` 横向溢出。
-11. **性能**：对 8 个 API 暖缓存各测 3 次取中位数。
-12. **Git 事实**：`git rev-parse`、`git log -1`、`git status`、`git merge-base --is-ancestor 969fd0c HEAD`（exit 1，证明 hist_v1 未合并）。
-
----
-
-## 4. 五个必需场景逐项验收
-
-> 全部在 `22817c5`、1440×900 实测；截图位于 `out/acceptance/`（gitignored 构建产物，不入库）。仓库内可提交的等价截图见 [`docs/product/`](product/)：企业页、比较页、雷达赛道、证据链、研究助手、移动端、总览与证据空态。
-
-### 4.0 场景验收总表
-
-| # | 场景 | 检查内容 | 关键观测值（真实数据） | 结果 | 截图 |
-| --- | --- | --- | --- | --- | --- |
-| 1 | 研究一家公司（迈瑞医疗） | 企业 KPI、技术分布、历史趋势、里程碑、数据覆盖、结论→证据 | 244 事件 / 已映射审批 38（另未映射 2）/ 3 条结论 / 3 条赛道 + 未映射 2·4 / 2 个来源 / 8 条限制；`PENDING_HUMAN_REVIEW` | **PASS** | `02-companies-1440.png`、`03-company-mindray-1440.png`、`05-claim-evidence-panel.png` |
-| 2 | 比较竞争对手（Medtronic vs Philips） | 同赛道/同指标/同窗口、可比性警告、路径结构、LQ 矩阵、非法选择 | 2,734（仅完整 2,713，partial 21）/ 前窗 3,548 / 未映射 208；飞利浦 166/166/184/18；1 条 pathway_mix 警告；28 条赛道矩阵；旧图清除 | **PASS** | `06-compare-medtronic-philips.png`、`30-compare-totals-1440.png` |
-| 3 | 分析技术趋势（呼吸与麻醉） | 相关企业、历史趋势、重要事件、趋势解释、观察 vs 探测信号 | 570 vs 763（-25.3%）/ 全时 4,091 / 已归属 128·未归属 442（77.5%）/ 14 家企业 / 3 家新进入 / 30 条事件 / 无检出信号 + 方法说明 | **PASS** | `07-radar-respiratory-1440.png`、`23-radar-overview-1440.png` |
-| 4 | 追溯结论到原始证据 | 结论→证据面板→事件→详情→来源链接 | 心脏节律 1,111/1,552 复算、57 行可点击事件、真实 FDA PMA 链接 `pma.cfm?id=P030036`、日期/映射/限制齐全 | **PASS** | `08-event-detail-source.png`、`05-claim-evidence-panel.png`、`33-evidence-drawer.png` |
-| 5 | 使用研究助手 | 确定性问答、数字可核验、证据 id 解析、越界拒绝 | Q1：32→28（-12%）、行业 411→429、3 条证据 3/3 解析；Q2：`out_of_scope` 诚实拒绝、无编造数字 | **PASS** | `09-analyst-q1.png`、`10-analyst-evidence-detail.png`、`11-analyst-out-of-scope.png` |
-
-### 4.1 场景 1 — 研究一家公司：迈瑞医疗（Mindray） — **PASS**
-
-入口：`#/companies` → 点击"迈瑞医疗"卡片 → `#/companies/mindray?years=5`。
-
-| 检查点 | 实测观测 |
-| --- | --- |
-| 企业身份与数据基础 | 迈瑞医疗 / Mindray / 300760 / SZSE；标"重点企业""补充映射 · 待人工复核"；覆盖期 2004-03-03 → 2026-10-16 |
-| KPI | 事件（全时）244；已映射赛道审批（近 5 年）**38**，旁注"另有未映射 **2** 条"；审批（全时）180；召回 64；试验 0 |
-| 技术分布 | 技术赛道结构（近窗 / 前窗）：超声 28 / 32（-13%）、监护与生命体征 5 / 11（-55%）、呼吸与麻醉 5 / 3（+67%）；"未映射赛道：近窗 2 条 / 前窗 4 条，未映射不等于零活动"；全行业对照 18,640 条 |
-| 历史活动 | 季度审批趋势图（1,382px 宽，SVG），3/5/10 年窗口可切换；切到 3 年后结论变为"16→18（+12%）"，URL 变为 `?years=3` |
-| 重要事件 | 里程碑时间线：首个 510(k) 2004-03-03（PM-8000 监护仪）、首次进入监护 2004-03-03、首次进入超声 2006-12-06、首个召回 2008-12-05、首次进入呼吸 2011-02-11；派生项明确标"不可点击" |
-| 数据覆盖 | 2 个来源：FDA 510(k) 180 条（2004-03-03→2026-10-16）、FDA 召回 64 条（2008-12-05→2026-10-07），各带口径说明 |
-| 证据入口 | 3 张结论卡（超声/监护/呼吸），均有"查看证据"，展开后显示"复算结果：近窗 28 条 / 对照窗 32 条"并列出事件行 |
-| 归属与限制 | 页面顶部明确 `PENDING_HUMAN_REVIEW` + 10 条接受匹配字符串；赛道映射说明 2 条未映射；页面限制面板 8 条（仅美国、记录≠产品、无预测、覆盖变化、实体映射、不可排名、赛道映射、召回≠技术） |
-
-证据：`out/acceptance/02-companies-1440.png`、`03-company-mindray-1440.png`（整页）、`04-company-mindray-window3.png`、`05-claim-evidence-panel.png`。
-
-### 4.2 场景 2 — 比较竞争对手：Medtronic vs Philips — **PASS**
-
-入口：`#/compare`（默认已选美敦力+飞利浦）→ 指标"公开审批/许可记录"→ 5 年 → 季度 → "应用对比"。
-
-| 检查点 | 实测观测 |
-| --- | --- |
-| 同赛道/同指标/同窗口 | 头部明确"近 5 年 / 季度 / 公开审批/许可记录"；对比组合标签可增删（2–5 家） |
-| 可比性警告 | 页面首要位置渲染 1 条 medium 警告："所选企业的监管路径结构差异明显（PMA 占比相差 30 个百分点以上），审批记录数不宜直接横比，请优先看赛道内占比与专业化指数。"（`pathway_mix`） |
-| 数字 | 美敦力：窗口内合计 **2,734**、仅完整周期 **2,713**、前窗 3,548、Δ -814、-22.9%、PMA/510(k) 87%/13%、未映射 **208**；飞利浦：166 / 166 / 184、-9.8%、15%/85%、未映射 18 |
-| 可比性解释 | 面板脚注明确："窗口内合计包含数据截止所在的不完整周期（partial_total）；仅完整周期用于趋势比较。未映射记录不进入赛道统计，但也不代表零活动。"；另附 4 条可比性说明（路径差异/美国记录≠全球/源起点不同/因此同时给占比与 LQ） |
-| 赛道矩阵 | 28 条赛道，含记录数、企业内占比、专业化指数 LQ；如美敦力心脏节律 1,111（41% · LQ 3.42）、飞利浦超声 31（19% · LQ 8.11），并声明"LQ 不是创新能力或市场地位" |
-| 防陈旧/防误导 | 取消美敦力后显示"选择无效 / 需要 2–5 家企业"，旧图表 `staleChartVisible=false`，并说明"旧图表与警告已被清除"；"恢复默认"按钮可恢复 |
-
-证据：`out/acceptance/06-compare-medtronic-philips.png`（整页）、`30-compare-totals-1440.png`。
-
-### 4.3 场景 3 — 分析技术趋势：呼吸与通气 / 呼吸与麻醉 — **PASS**
-
-入口：`#/radar/respiratory`（近 10 年）。
-
-| 检查点 | 实测观测 |
-| --- | --- |
-| 相关企业 | 企业构成 14 家（激励医疗 56、瑞思迈 23、麦朗 10、美敦力 9、迈瑞 8、德尔格 6…），副标题"已归属 **128** / 赛道合计 **570** 条" |
-| 归属透明 | 表中追加"未归属企业 **442**（**77.5%**）"行，并注明"企业构成只统计能归到具体企业的记录；未归属记录仍计入赛道总量与份额分母，因此企业份额之和不等于 100%" |
-| 历史/趋势 | 窗口 2016-11-01→2026-10-30（对照 2006-11-04→2016-10-31）；近 10 年 570 vs 前窗 763（-25.3%，Δ -193）；全时 4,091；季度堆叠图 1,382px，41 个季度（完整 40 个） |
-| 重要公开事件 | "最近事件"30 条，逐条带日期/类型/企业/标题，点击开事件详情（如 2026-08-28 Inspire Medical PMA P130008/S123、2026-07-31 Medtronic 510(k)） |
-| 趋势解释 + 观察/探测分离 | 数量面板标"观察到的事实"口径；独立的"统计探测信号"面板明确"检出 ≠ 因果 ≠ 预测"，并明确"该窗口内没有达到阈值的统计探测信号"，附方法（前 8 季度均值 z 分数，\|z\|≥2.5 且计数≥5）；不把未检出信号当作趋势 |
-| 数据截止处理 | 明确标注"未完整周期：2026-Q4（API partial 标记；计数仍显示，勿与完整季度直接比较）" |
-| 首次进入 | 3 家新进入企业（强生医疗科技 2019-04-19、费森尤斯 2020-02-21、麦朗 2023-06-23），注明受数据覆盖起点限制 |
-
-证据：`out/acceptance/07-radar-respiratory-1440.png`（整页）、`23-radar-overview-1440.png`。
-
-### 4.4 场景 4 — 从结论追溯原始证据 — **PASS**
-
-入口：`#/companies/medtronic` → 第一条结论"查看证据" → 证据面板 → 点击事件行 → 事件详情 → 原始来源。
-
-| 检查点 | 实测观测 |
-| --- | --- |
-| 结论→事件 | 证据面板复算"近窗 1,111 / 对照窗 1,552"（心脏节律赛道），并按窗口列出可点击事件行（本次 57 行，UI 列表有展示上限；`recomputed` 为全量计数） |
-| 事件→详情 | 事件详情包含：事件日期/公开日期/数据可用日、来源、产品代码、赛道、企业归属方式（roster / exact_alias）、payload 摘要、限制说明 |
-| 原始链接 | 实际拿到 `https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P030036`（按钮"打开原始来源 ↗"），与 API `links.source_url` 一致；非伪造、非空 |
-| 无链接情形 | 前端代码存在显式分支（`web/js/event.js:196-215`，无 URL 时显示"该记录没有可用的原始链接"）；当前数据 0/375,378 条空 URL，故该分支无法用真实数据触发（见 §9） |
-| 空态/错误态 | 证据浏览器 0 结果时显示"该筛选下没有记录"+"重置筛选"；未知企业显示"企业画像加载失败"+错误详情+"重试" |
-
-证据：`out/acceptance/08-event-detail-source.png`（整页）、`05-claim-evidence-panel.png`、`33-evidence-drawer.png`、`24-evidence-empty.png`、`13-error-state-404.png`。
-
-### 4.5 场景 5 — 使用研究助手 — **PASS**
-
-入口：`#/analyst`；问题 1"过去五年，迈瑞的超声产品发生了什么变化？"，问题 2"Medtronic 的内部研发战略是什么？"。
-
-| 检查点 | 实测观测 |
-| --- | --- |
-| 确定性引擎标识 | 顶部徽标"确定性检索引擎（无 LLM）"；页面明示"不接 LLM、不需要 API Key、所有数字来自本次查询"；解析意图（企业/赛道/时间窗/指标）逐项展示 |
-| 可核验答案 | 回答："近5年，迈瑞医疗在超声赛道的公开审批记录由 **32** 条降至 **28** 条（-12%）；同期该赛道全行业变化 **+4%**，份额 69.6%→73.7%。以上为观察到的记录条数变化，不是因果结论或未来预测。" |
-| 表格数字 | 公开审批/许可记录 28/32；全行业对照 411→429（+4%）；"企业已映射赛道审批记录（条）" 38/46，并在方法与口径中说明"未映射记录不计入分母" |
-| 证据可解析 | 证据事件 3 条，逐条打开事件详情；3/3 个 event_id 均能在 `/api/evidence/{id}` 解析，链接为真实 FDA 510(k)（K261585 / K261617 / K260846） |
-| 超出范围诚实拒绝 | 问题 2 返回 `status=out_of_scope`："这个问题超出了当前数据的可回答范围：企业内部战略 / 研发投入……数据库中没有企业内部经营数据……不能给出该问题的答案。"；无编造数字、无证据事件；并列出"能做/不能做"能力边界 |
-| 限制声明 | 引擎返回 5 条 limitations（仅美国、记录≠产品、赛道映射、无验证预测、实体映射风险）并逐条显示 |
-
-证据：`out/acceptance/09-analyst-q1.png`（整页）、`10-analyst-evidence-detail.png`、`11-analyst-out-of-scope.png`、`32-analyst-example-chip.png`。
-
----
-
-## 5. 独立数据完整性核查（不采信产品自述）
-
-> UI = 浏览器实际渲染文本；API = `GET /api/...`；SQL = 独立只读 SQLite 复算（`mode=ro`）。
-
-| # | 项目 | UI 实测 | API | 独立 SQL / 文件 | 结果 |
-| --- | --- | --- | --- | --- | --- |
-| 1 | 事件总数 | 375,378（总览 KPI） | `meta.dataset.counts.events=375,378` | `COUNT(*) events=375,378` | PASS |
-| 2 | 赛道映射 | "已映射 196,542 / 未映射 **178,836**"，覆盖 52.4% | `track_mapped_events=196,542`、`track_unmapped_events=178,836` | 196,542 + 178,836 = 375,378；196,542/375,378 = 52.36% | PASS |
-| 3 | 迈瑞基础计数 | 事件 244 / 审批 180 / 召回 64 / 试验 0 | `/api/companies/mindray` 一致 | 按 10 条精确申请人字符串 SQL：510(k) 180 + 召回 64 = 244 | PASS |
-| 4 | 迈瑞 5 年窗口 | "已映射赛道审批 38 · 另有未映射 2 条" | `approvals_window=38`、`approvals_window_all=40`、`unmapped_window=2`、前窗 46/50/4 | SQL：已映射 38 / 前窗 46；全量 40 / 50；38+2=40、46+4=50 | PASS |
-| 5 | 迈瑞超声结论 | 32→28（-12%）；份额 69.6%→73.7% | claim metrics 28/32；`/api/evidence/claim` recent=28、prior=32 | SQL：迈瑞×超声 28/32；全行业 429/411 | PASS |
-| 6 | 比较页总量 | 美敦力 2,734 / 仅完整 2,713 / partial 21 / 前窗 3,548 / 未映射 208；飞利浦 166/166/184/18 | `/api/compare` 同值（`total/total_complete/partial_total`） | SQL：美敦力窗口审批 2,734、前窗 3,548；飞利浦 166、184 | PASS |
-| 7 | 呼吸赛道 | 570 vs 763（-25.3%）、全时 4,091；已归属 128 / 赛道合计 570；未归属 442（77.5%） | `totals.recent=570`、`prior=763`、`all_time=4,091`；`attribution.attributed_recent=128`、`unattributed_recent=442` | SQL：recent 570、prior 763、all_time 4,091；roster 归属 114 + 补充精确别名 14（迈瑞 8 / 德尔格 6）= 128，570-128 = 未归属 442 | PASS |
-| 8 | 雷达窗口映射 | "已映射 11,472 / 未映射 4,886（覆盖 70.1%）" | `radar.mapped_records=11,472`、`unmapped_records=4,886` | 11,472/(11,472+4,886)=70.13% | PASS |
-| 9 | claims 证据复算 | 18 条可见结论（3 家抽样页） | `POST /api/evidence/claim` 逐条 `recomputed` | 18/18 与 claim.metrics 及独立 SQL 三方一致；如美敦力心脏节律 1,111/1,552、飞利浦超声 31/15、迈瑞监护 5/11 | PASS |
-| 10 | 来源 URL | 事件详情链接均为真实域（fda.gov / clinicaltrials.gov / sec.gov） | `links.source_url` 与 event.url 一致 | 375,378/375,378 非空且 http(s)；294,756 条 payload ID 与 URL 100% 匹配，0 条不一致；召回 `res_event_number`、8-K accession 抽样一致 | PASS |
-| 11 | 研究实验室 | Lab 5 项研究；S-027「69 份证据包 / 人工真值未完成」，`PENDING_HUMAN_REVIEW`；C43 未合并；预测注册表"无已验证的前瞻校准" | `human_review.packets=69`、`human_labels_recorded=0`、agent 预标注 45/18/6；`provenance.hist_v1.merged=false`；`C43` report artifact 已提供 | CSV `HUMAN_REVIEW_WORKSHEET.csv` 69 行、`human_label` 非空 0 行；`git merge-base --is-ancestor 969fd0c HEAD` exit 1 | PASS |
-| 12 | 研究助手证据 | 3 条证据均可打开事件详情 | Q1 evidence 3 条；Q2 `status=out_of_scope`、evidence=[] | 3/3 event_id 可解析为真实事件，URL 为 K261585/K261617/K260846 | PASS |
-
-补充反造假核对：
-
-- **无伪造 URL**：数据库层面 `url` 为空 0 条、非 http(s) 0 条；产品只渲染 API 返回的链接（`web/js/event.js`），没有拼接/生成 URL 的逻辑证据。
-- **无经验证预测**：全站文本扫描未出现"已验证预测/验证过的预测"的正面展示；研究实验室明确"无已验证的前瞻校准"；总览与各页反复声明"当前没有经过前瞻验证的预测模型"。
-- **Dräger / Mindray 补充映射**：两家企业页均显示"补充映射 · 待人工复核"、`PENDING_HUMAN_REVIEW`、接受字符串清单与置信度；Dräger 另有 `reject_exact: ["Drager Safety"]`。
-- **69 包 / 0 人工标签**：API 与 CSV 双侧一致（45 Uncertain / 18 Routine Iteration / 6 Not Assessable，均 agent-preliminary）。
-- **hist_v1 未合并**：分支 `research/full-history-v1` 存在，commit `969fd0c` 不是 HEAD 祖先（`is-ancestor` exit 1）；Lab provenance 明确 `merged=false` 并注明只读引用。
-- **负结果可见**：C43「未击败双向暴露基线 B3、MDE 大于观测效应、泄漏修复」；R-change-detection「2% 误报下仅回收 0.223、2 倍位移不可检测」；R-forecast-registry「无成熟前瞻样本」。
-
----
-
-## 6. 限制与声明可见性（逐项核对）
-
-| 必需限制 | 是否可见 | 实际位置/原文（抽样） |
+| 项目 | 实测值 | 来源 |
 | --- | --- | --- |
-| 仅美国数据（US-only） | 是 | 总览限制第 1 条"监管数据只覆盖美国 FDA 记录…"；企业页/比较页/研究助手 limitations 同款 |
-| 记录 ≠ 产品（record not product） | 是 | 总览"一条记录不等于一个产品…"；比较页脚注；企业页口径说明；研究助手 limitations |
-| 赛道映射覆盖（track mapping） | 是 | 总览 KPI 52.4%（196,542/178,836）；雷达"覆盖 X%"；企业页"未映射 N 条，未映射不等于零活动"；赛道矩阵排除未映射 |
-| 召回 ≠ 研发（recall not R&D） | 是 | 总览限制"召回记录是安全性事件…"；企业 KPI"安全性事件，不是技术活动" |
-| 无经验证预测（no validated prediction） | 是 | 总览"没有经过前瞻验证的预测模型"；证据分层表"Validated Forecast：当前没有，产品不展示"；研究实验室"无已验证的前瞻校准"；研究助手"经过验证的未来预测（当前没有成熟的前瞻校准）" |
-| 人工标签未完成 | 是 | Lab：69 份证据包 / 人工真值未完成 / `PENDING_HUMAN_REVIEW`；总览限制第 10 条 |
-| 数据源起点不同 | 是 | 总览来源表（召回 2002 起、8-K 2015 起）；比较页可比性说明 |
-| 事件日期/可用日期差异 | 是 | 事件详情 dates 区块；证据浏览器"日期口径"说明 |
+| 仓库 / 分支 | `D:\DEPPSKK\medradar` / `feat/medradar-2.0-mvp` | `git status` / `git branch --show-current` |
+| HEAD | `5a349f4e230cbba911d5c623ae83bb173b601c77` | `git rev-parse HEAD` |
+| `main` / `origin/main` | 均为 `b2a14c0a92332c004445de686daee97754cf94cb`；`5a349f4` **不是** main 祖先（`merge-base --is-ancestor` exit 1） | `git rev-parse` / `git merge-base` |
+| PR | #12 `MedRadar 2.0 MVP: ...`，**OPEN / Draft**，`headRefName=feat/medradar-2.0-mvp`，`headRefOid=5a349f4…`，base=main | `gh pr view 12` |
+| 服务 | `http://127.0.0.1:8787`，`/api/health` → `status=ok`、`product=2.0.0-mvp`；进程 `python -m medradar web --port 8787`（2026-11-03 21:19:21 +0800 启动，cwd=`D:\DEPPSKK\medradar`） | Invoke-RestMethod / `Get-CimInstance Win32_Process` |
+| 数据文件 | `data/medradar.sqlite`，1,368,469,504 bytes，mtime `2026-10-31T05:28:25Z`；只读 `mode=ro` 打开，审计期间未修改（WAL 0 字节） | 文件系统 / `/api/health` |
+| 数据范围 | `1966-12-14` → **`2026-10-30`** | `SELECT MIN/MAX(event_date)` |
+| 事件规模 | **375,378**（event_id 去重后同为 375,378） | 只读 SQL |
+| 来源构成 | 510(k) 176,466 · PMA 57,372 · 器械召回 59,646 · 临床试验 55,592 · 8-K 20,976 · 药品批准 5,326 | 只读 SQL |
+| 分类维度 | 赛道已映射 196,542 / 未映射 178,836（覆盖率 **52.36%**）；企业已归属 132,293 / 未归属 243,085；companies 表 89 家、tracks 60、product_codes 7,097 | `/api/meta` + SQL |
+| 审计时工作区 | `M README.md`、`M docs/PRODUCT_ROADMAP.md`（并行文档编辑，非本审计员）、`M research/studies/early_signal_5firms/HUMAN_REVIEW_WORKSHEET.csv`（用户本地修改）；产品代码/测试/前端均干净 | `git status --short` |
+
+> 说明：服务只暴露产品版本号，**不能字节级证明运行进程的代码 commit**；本报告依据“进程 cwd + 产品代码相对 HEAD 干净 + 行为与 HEAD 测试一致”判定其运行 `5a349f4`，未做进程内存指纹（见 §8）。
 
 ---
 
-## 7. 测试命令、结果与质量观测
+## 2. 方法与独立性声明
 
-### 7.1 自动测试与 E2E
+1. **不信任 Lead 审计**：`docs/PRODUCT_STATISTICAL_AUDIT.md` 只作为“待验证的主张清单”；所有数字用**自写只读 SQL**（`sqlite3` `mode=ro`，不调用 `medradar.product.store` 的聚合函数）重算，再与 API/UI 对照。
+2. **只读数据**：`data/medradar.sqlite` 以 `file:...?mode=ro` 打开；未写入、未迁移、未重启服务、未修改任何产品代码或测试；唯一写入范围是 `docs/PRODUCT_ACCEPTANCE.md`（本文件），截图/脚本在 `out/acceptance2/`（已 gitignore）。
+3. **浏览器独立复跑**：自写 Playwright 脚本 `out/acceptance2/browser_scenarios.cjs`，不复用仓库 E2E 的判定逻辑；1440×900 与 390×844 两个隔离 context，每场景记录 DOM 文本 + 自取 API + 截图，并收集 console error/pageerror。
+4. **API 自身字段复算**：LQ 用 `/api/compare` 响应中的 `n / total_mapped / industry_total / industry_records.mapped_records` 重算，验证“披露字段 ↔ 指标”自洽。
+5. **测试执行**：按 Tier A/B、Tier C、全量、E2E、selftest 分层执行并记录命令、计数、退出码、skip；逐条阅读测试代码，回答“旧缺陷若回归是否会被抓住”。
+6. **Git/产物核验**：`git rev-parse/log/status/diff --cached/merge-base`、`gh pr view`、`git cat-file`；CSV 仅读取与 diff 检查，未 touch/暂存/提交。
+7. **时间边界**：审计于 2026-11-03 21:19 开始；期间工作区出现并行文档修改（README、PRODUCT_ROADMAP），已在 §1/§7-D5 记录，不影响 `5a349f4` 与五场景判定。
 
-| 命令 | 结果 |
-| --- | --- |
-| `python -m pytest tests/test_product_api.py tests/test_product_store.py tests/test_product_analyst.py -q` | **exit 0，71 项通过**（test_product_api 7、test_product_store 20、test_product_analyst 44）；日志 `out/acceptance/pytest_final.log` |
-| `node scripts/product_e2e.cjs` | **6 passed, 0 failed**（五个场景 + 移动 390px，`horizontal overflow=0px`）；报告 `out/product_e2e/report.json`（`console_errors: []`，ran_at 2026-11-03T04:10:17Z） |
-| 独立 Playwright 复跑（自写，隔离上下文） | 21 个检查步骤通过；0 pageerror；仅 1 条 console error，为"故意访问不存在企业"触发的预期 `/api/companies/nope` 404 |
-| 全量 pytest 收集 | `python -m pytest --co -q` exit 0（仓库测试可收集，未发现导入/collect 错误） |
+---
 
-### 7.2 API 暖缓存延迟（本地笔记本，3 次中位数）
+## 3. 五个必需场景验收（1440×900 + 390×844）
 
-| 端点 | ms |
-| --- | --- |
-| `/api/meta` | 16 |
-| `/api/companies?include_all=true` | 16 |
-| `/api/companies/mindray?years=5` | 15 |
-| `/api/compare?...` | 15 |
-| `/api/radar?years=3` | 15 |
-| `/api/radar/respiratory?years=10` | 15 |
-| `/api/evidence?limit=50` | 16 |
-| `/api/lab` | 7 |
+### 3.0 场景总表
 
-架构文档声称"主要页面 < 300ms"，与暖缓存实测一致；"首次冷启动 3–5 秒预热"未验证（未重启 8787 服务）。
+| # | 场景 | 1440×900 | 390×844 | 关键实测数字 | 截图（`out/acceptance2/`） |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 研究一家公司（迈瑞医疗 `#/companies/mindray`） | **PASS** | **PASS** | 全时事件 244；已映射赛道审批（5 年完整季度）**34**；窗口全部 40；完整窗口全部（已映射+未映射）36；结论 3 条；8 条限制；`PENDING_HUMAN_REVIEW` 可见；横向溢出 0 | `s1-company-mindray-desktop.png` / `s1-company-mindray-mobile.png` |
+| 2 | 比较竞争对手（Medtronic vs Philips `#/compare`） | **PASS** | **PASS** | 分析窗口 2022-01-01→2026-09-30（19 季度），对照 2017-04-01→2021-12-31；28 条赛道矩阵 / 56 个 LQ 单元格（34 ok + 22「不适用」）；3 条警告；LQ 3.72 / 9.32 / 4.04 / 不适用 | `s2-compare-desktop.png` / `s2-compare-mobile.png` |
+| 3 | 分析技术趋势（呼吸与麻醉 `#/radar/respiratory`） | **PASS** | **PASS** | 完整周期 560 vs 740（-24.3%）；窗口全部 570；partial 10；全时 4,091；39+2 个季度；3 家新进入；14 家企业；未归属 435/560（77.7%）；无统计探测信号 | `s3-radar-respiratory-desktop.png` / `s3-radar-respiratory-mobile.png` |
+| 4 | 追溯结论到原始证据（结论→查看证据→事件→详情→来源） | **PASS** | **PASS** | 结论复算显示“近窗 **1,051** / 对照窗 **1,480**”；事件 `fdfacf2f…`；`approval_type=pma_supplement`；来源链接与 API 一致（`pma.cfm?id=P980016`） | `s4-evidence-trace-desktop.png` / `s4-evidence-trace-mobile.png`；`s4a-claim-evidence-panel.png` |
+| 5 | 使用研究助手（`#/analyst`，含 out_of_scope） | **PASS** | **PASS** | 迈瑞超声 **24 vs 32（-25%）**、行业 **+6%**、份额 **69.6%→70.6%**；证据 3 条；越界问题返回“超出范围”，无编造数字 | `s5a-analyst-answered-desktop.png` / `...-mobile.png`；`s5b-analyst-outofscope-desktop.png` / `...-mobile.png` |
 
-### 7.3 UI 质量清单
+补充证据：`s6-draeger-pending-desktop.png`（德尔格 PENDING）、`s7-lab-desktop.png`（研究实验室）、`s8-overview-desktop.png`（总览限制）、`s9-mobile-claim-evidence.png`（移动端证据面板）、`s10-mobile-analyst.png`、`s11-lab-s027-detail.png`。
+
+> **截图仓库等价物**：仓库内 `docs/product/` 中 6 张提交截图与本次独立运行的 PNG **SHA256 完全相同**：`company-mindray.png`、`radar-respiratory.png`、`evidence-trace.png`、`analyst.png`、`mobile-company.png`、`overview.png`（证明可提交资产确实对应当前 HEAD 的真实运行）；`compare.png` 因交互状态/滚动位置不同而像素不同，但页面与数字一致。`out/acceptance2/` 为 gitignored 构建产物，不入库。
+
+### 3.1 场景 1 — 迈瑞医疗企业画像
+
+- 入口 `#/companies/mindray`；DOM 显示“迈瑞医疗 / Mindray / 300760 / SZSE”、`PENDING_HUMAN_REVIEW`“实体归属待人工复核”、10 条接受匹配字符串、8 条“该视图的限制”。
+- KPI 实测：**已映射赛道审批（完整季度，近 5 年）34**；窗口全部记录（含起止不完整季度）**40**；完整窗口全部记录 **36（已映射 34 + 未映射 2）**；全时事件 **244**；结论 3 条（超声 24/32、监护 5/11、呼吸 5/3）。
+- 边界：API `headline` 与页面文本逐项核对一致；390px 横向溢出 **0px**；console error **0**。
+
+### 3.2 场景 2 — 美敦力 vs 飞利浦比较
+
+- 页面明确展示“分析窗口 2022-01-01 → 2026-09-30（完整自然季度）”“请求窗口 2021-10-31 → 2026-10-30”“对照窗口 2017-04-01 → 2021-12-31 · 完整周期 19 个”。
+- 企业总量：美敦力 **2,595**（已映射 **2,396** / 未映射 **199**，映射率 92.3%；前窗 3,354；Δ -759 / -22.6%）；飞利浦 **161**（143 / 18，88.8%；前窗 171；Δ -10 / -5.8%）。
+- 赛道矩阵 28 行 / 56 单元格：**34 个 LQ 数值 + 22 个「不适用」**，22 个全部为 `zero_company_track`（标题提示“该企业在本完整窗口内该赛道没有已映射记录，LQ 不适用。”）。关键渲染值：心脏节律-美敦力 `1,051 · LQ 3.72`；超声-飞利浦 `31 · LQ 9.32`；监护-飞利浦 `10 · LQ 4.04`；监护-美敦力 `0 · LQ 不适用`。
+- 3 条可比性警告全部渲染：`complete_quarter_basis`(info)、`pathway_mix`(medium)、`pma_supplement_share`(medium)；路径面板脚注明确“全时结构未返回（`pathway_all_time=null`，默认不请求 `include_all_time`）”。
+
+### 3.3 场景 3 — 呼吸与麻醉雷达
+
+- 窗口：请求 2016-11-01→2026-10-30；完整分析 2017-01-01→2026-09-30（**39 季度**）；对照 2007-04-01→2016-12-31（39 季度）。
+- KPI：**完整周期合计 560**（前窗 740，-24.3%）；窗口全部 **570**；序列 partial 合计 **10**（2016-Q4=8 + 2026-Q4=2）；全时 4,091；`pma_unknown=0`。
+- 归属：attributed 125 / unattributed 435（77.7%），页面明确“企业份额之和不等于 100%”。
+- 新进入 3 家（按“数据覆盖期内首次原始批准”）：强生医疗科技 2019-04-19、费森尤斯医疗 2020-02-21、麦朗 2023-06-23；无达到阈值的统计探测信号（`|z|≥2.5` 且计数≥5），并展示方法与“检出≠因果≠预测”说明。
+
+### 3.4 场景 4 — 从结论追溯原始证据
+
+- `#/companies/medtronic` → 首条结论卡“查看证据”：面板显示 **“复算结果：近窗 1,051 条 / 对照窗 1,480 条”**，窗口 `2022-01-01 → 2026-09-30 vs 2017-04-01 → 2021-12-31`，与 `POST /api/evidence/claim` 返回的 `recomputed.recent=1051 / prior=1480` 一致，也与 SQL 重算一致。
+- 点击事件行 → 事件详情：`event_id=fdfacf2f546e5000bfecbc6c84622456`，`approval_type=pma_supplement`（“PMA 补充申请”），分类区含 `approval_type` / `is_first_entry_candidate=否` / `supplement_type` / `source_fields` / 说明；详情含“企业归属（映射来源）”“日期与时间口径”“限制说明”。
+- 来源链接：`https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P980016`，与 `/api/evidence/{id}.links.source_url` 完全一致（未伪造）。
+
+### 3.5 场景 5 — 研究助手
+
+- 问题 `过去五年，迈瑞的超声产品发生了什么变化？` → `status=answered`，intent `company_track_trend`；答案核心数字：**由 32 条降至 24 条（-25%）**、同期行业 **+6%**、份额 **69.6%→70.6%**；证据 3 条；解析意图面板显示企业=迈瑞医疗、赛道=超声、请求窗口 2021-10-31→2026-10-30。独立 SQL（用 `entity_aliases.json` 的 10 条精确别名匹配，不使用产品归属函数）复算：24/32、行业 414/392（+5.6%）、份额 0.7059/0.6957，**完全一致**。
+- 越界问题 `帮我预测明年迈瑞的营收` → `status=out_of_scope`，页面状态“超出范围”，明确说明无营收数据、无经验证预测模型，不给出编造答案（0 条证据）。
+- 引擎徽标“确定性检索引擎（无 LLM）”可见；所有回答带限制与可打开证据。
+
+---
+
+## 4. 独立复算（只读 SQL + API 自身字段）
+
+### 4.1 Location Quotient：旧公式 vs 一致分母 vs 完整窗口
+
+公式（新口径，企业与行业都用完整窗口内**已映射赛道记录**作分母）：
+
+```
+LQ = (企业该赛道已映射记录 / 企业已映射记录)
+   / (全行业该赛道已映射记录 / 全行业已映射记录)
+```
+
+旧实现（`f3ea1e4:medradar/product/store.py`，`company_compare()`）：企业侧 `share = n / company["total"]`（`total` 为**请求窗口内全部**审批记录，含未映射），行业侧 `industry_share = industry_track / industry_total`（只含已映射）。本表另给“仅统一分母但仍用请求窗口”的中间值，以区分“分母错误”和“窗口口径”两个来源。
+
+| 企业 · 赛道 | 请求窗口企业赛道 / 企业全部 / 行业赛道 / 行业已映射 | 旧 LQ（旧分母 + 请求窗口） | 仅统一分母（请求窗口） | 完整窗口企业赛道 / 企业已映射 / 行业赛道 / 行业已映射 | 新 LQ（完整窗口） | API / UI |
+| --- | --- | --- | --- | --- | --- | --- |
+| Medtronic · 心脏节律 | 1,111 / 2,734 / 2,217 / 18,640 | **3.417** | 3.698 | 1,051 / 2,396 / 2,099 / 17,804 | **3.721** | 3.721 / UI 3.72 |
+| Philips · 超声 | 31 / 166 / 429 / 18,640 | **8.114** | 9.101 | 31 / 143 / 414 / 17,804 | **9.323** | 9.323 / UI 9.32 |
+| Philips · 患者监护 | 10 / 166 / 319 / 18,640 | **3.520** | 3.948 | 10 / 143 / 308 / 17,804 | **4.042** | 4.042 / UI 4.04 |
+| Philips · 心脏节律 | 18 / 166 / 2,217 / 18,640 | **0.912** | 1.023 | 18 / 143 / 2,099 / 17,804 | **1.068** | 1.068 / UI 1.07 |
+| Medtronic · 患者监护 | 1 / 2,734 / 319 / 18,640 | **0.021** | 0.023 | **0** / 2,396 / 308 / 17,804 | **null（`zero_company_track`）** | null / UI“不适用”+原因 |
+
+- **旧/新差异来源**：企业分母从“请求窗口全部审批 2,734（含 208 条未映射）”变为“完整窗口已映射 2,396”；行业分母从 18,640（请求窗口已映射）变为 17,804（完整窗口已映射）。差异由两个变化来源叠加（分母口径 + 窗口口径），新口径内部一致。
+- **API 披露字段复算**：对 `/api/compare?companies=medtronic,philips&metric=approvals&years=5&granularity=quarter` 的 **56 个单元格**，用响应自身 `cell.n / company.total_mapped / (row.industry_total / industry_records.mapped_records)` 重算，**56/56 一致**（34 个 ok 误差 < 0.0015；22 个非 ok 全部 `location_quotient=null`）。
+- **不适用渲染核验**：22 个非 ok 单元格在 UI 中全部显示“不适用”，`data-lq-status=zero_company_track`，tooltip 给出具体原因；无一处以 0 或空值伪装成有效 LQ。
+- 口径提示：LQ 只描述记录分布，UI/API 均声明“不是创新能力、技术实力或市场份额”。
+
+### 4.2 完整季度窗口 vs 请求窗口
+
+| 检查项 | 请求窗口 | 完整窗口 / 结果 |
+| --- | --- | --- |
+| 时间范围 | 2021-10-31 → 2026-10-30（1,825 天） | **2022-01-01 → 2026-09-30（19 个自然季度）** |
+| 对照窗口 | 2016-11-01 → 2021-10-30 | **2017-04-01 → 2021-12-31（19 个季度；与本期紧邻，间隔 0 天）** |
+| Medtronic 审批（全部） | 2,734 | **2,595** |
+| Medtronic 审批（已映射） | 2,526 | **2,396**（映射率 92.33%） |
+| Medtronic 前窗（全部 / 已映射） | 3,548 / 3,224 | **3,354 / 3,050** |
+| Philips 审批（全部 / 已映射） | 166 / 148 | **161 / 143**（88.82%） |
+| 行业已映射审批（LQ 分母） | 18,640 | **17,804**（同窗口行业全部 25,912，映射率 68.7%） |
+| 被排除的不完整周期 | 2021-Q4（2021-11-01..12-31）**118** + 2026-Q4（2026-10-01..10-30）**21** = **139** | 2,734 − 139 = **2,595**（吻合） |
+| 心脏节律赛道的不完整期记录 | 1,111 | 排除 60 条（1,111 − 60 = 1,051） |
+| `partial` 与 `source_lag_risk` | — | 2021-Q4、2026-Q4 标 `partial`；**2026-Q3 日历完整但距 edge 30 天 → 仅 `source_lag_risk=true`**（两者分离，未混算） |
+| 雷达（10 年） | 2016-11-01 → 2026-10-30 | 完整 **2017-01-01 → 2026-09-30（39 季度）**；对照 2007-04-01 → 2016-12-31（39 季度）；partial 2016-Q4=8 + 2026-Q4=2 = **10**；recent 560 / recent_all 570 / prior 740 / prior_all 763 |
+| claims 依据 | — | 8 条美敦力结论的 `recent/prior` 逐条与“完整窗口、已映射赛道”SQL 重算一致（如心脏节律 1,051/1,480）；`claim_evidence` 返回 `recomputed` 同值 |
+
+SQL 侧核对：分析窗口内实际出现的自然季度 = 19，对照窗口 = 19，`prior_end` 与 `analysis_start` 相隔 0 天（`2021-12-31` 的下一日即 `2022-01-01`），无重叠、无缝隙。窗口边界使用闭区间（`>= start AND <= end`）；`2021-12-31` 属于请求窗口但不在完整窗口内，`2022-01-01` 起计入本期完整窗口。
+
+### 4.3 PMA 原始批准 vs 补充申请
+
+**数据集分类可用性（真实数据）**
 
 | 检查项 | 结果 |
 | --- | --- |
-| 加载态 | PASS：路由延迟 2.5s 时页面显示骨架屏（`.skeleton/.sk-line` 9 个节点），截图 `14-loading-state.png` |
-| 空态 | PASS：`#/evidence` 搜索无结果 → "该筛选下没有记录" + "重置筛选"（`24-evidence-empty.png`）；注意见 §8 R1 重复文案 |
-| 错误态 | PASS：未知企业 → "企业画像加载失败 / 接口 404 / unknown company" + "重试"（`13-error-state-404.png`） |
-| 死按钮 | 未发现：导航 7 路由、图表点击→证据筛选、结论"查看证据"、比较非法选择→恢复默认、证据分页/重置/搜索、研究助手示例 chip、雷达领域卡→赛道页均实测有响应 |
-| 全局检索 | 头部输入 `PMA` 回车 → `#/evidence?q=PMA` |
-| 控制台 | 仅预期 404；0 pageerror |
-| 移动端 390×844 | 总览/企业页/雷达赛道/研究助手 4 路由横向溢出均为 0px；折叠菜单可展开（`15–19-mobile-*.png`）；宽表在移动端变为逐字段堆叠，可用但阅读成本高（见 R2） |
-| 桌面 1440×900 | 总览/企业/比较/雷达/助手/Lab 布局正常，无横向溢出，数据密度符合"研究终端"定位 |
+| PMA 总数 | **57,372** |
+| 缺少/无法读取 `supplement_number`（应计 unknown） | **0** |
+| PMA payload 非法 JSON | **0** |
+| PMA payload 为合法 JSON 但非 object | **0** |
+| 510(k) 总数 | **176,466** |
+| 缺少 `clearance_type` | **0** |
+| `/api/meta.dataset.approval_classification` | `pma_classification_available=true`、`k510_classification_available=true`、unknown 均为 0 |
 
----
+**企业分类计数（只读 SQL，`json_extract(payload,'$.supplement_number')` 空=原始、非空=补充）**
 
-## 8. 已知问题 / 缺陷
+| 企业 / 窗口 | 原始 PMA | PMA 补充申请 | unknown | 510(k) Traditional | 510(k) 合计 |
+| --- | --- | --- | --- | --- | --- |
+| Medtronic · 5 年完整窗口（2022-01-01..2026-09-30） | **7** | **2,423** | 0 | 111 | 165 |
+| Medtronic · 全时（..2026-10-30） | **100** | **12,820** | 0 | 1,386 | 1,976 |
+| Philips · 5 年完整窗口 | **1** | **38** | 0 | 84 | 122 |
+| Philips · 全时 | **8** | **161** | 0 | 729 | 994 |
 
-### 8.1 审计期间已发现并修复（最终版复验通过）
+- **首次进入只使用原始 PMA + Traditional 510(k)**：真实数据可判别示例——飞利浦呼吸赛道的首条审批是 **2003-07-15 的 Special 510(k) K030939**，而赛道 `first_approval` 正确显示 **2011-10-04 的 Traditional 510(k) K111378**（`first_any_approval=2003-07-15` 仅作背景展示）；里程碑措辞为“数据覆盖期内首次观察到原始批准”。
+- **雷达 entrants**：3 家新进入的 `first_date` 与 SQL 的“首次原始批准”逐家一致；在本数据集中不存在“若把补充申请/Special 算入会改变 entrant 身份”的企业，因此该修复的判别证据来自合成 fixture（补充申请早于原始批准），而非真实数据。
+- **合成 fixture 的 malformed/unknown 路径**：`tests/product_fixture.py` 写入 1 条 payload=`{not-json` 的 PMA，`build_fixture()` 期望 `classification_unknown=1`；`tests/test_product_statistics.py` 断言 `dataset.approval_classification.pma_unknown==1`、`pma_classification_available=false`，并在事件详情测试中断言出现 `pma_unknown` 且 list/detail 一致——`pytest tests/test_product_statistics.py` **21 passed** 证实该路径被覆盖。真实数据 0 条 unknown，故 unknown 分支只有合成证据。
+- **`/api/evidence` 列表与 `/api/evidence/{id}` 分类一致**：抽样 40 条 PMA（`pma_original`/`pma_supplement`）+ 60 条 510(k)（`510k_traditional`/`510k_special`），`approval_type` 与 `is_first_entry_candidate` **100/100 一致**，无冲突。
 
-| # | 缺陷（审计发现时） | 修复（commit） | 最终版实测 |
+### 4.4 监管路径结构（window vs all-time）
+
+| 指标 | Medtronic（5 年完整窗口） | Philips（5 年完整窗口） |
+| --- | --- | --- |
+| 审批记录分母（510(k)+PMA） | **2,595** | **161** |
+| PMA 合计（原始+补充+unknown） | 2,430 | 39 |
+| PMA 占比 | **93.64%** | **24.22%** |
+| 原始 PMA / 补充申请 | 7 / 2,423 | 1 / 38 |
+| 原始 PMA 占 PMA | **0.29%** | **2.56%** |
+| 510(k) 合计（Traditional/Special/Abbrev/其他） | 165（111/53/0/1） | 122（84/29/9/0） |
+| 全时对照（all-time） | 86.73%（12,920 PMA / 1,976 510(k)） | 14.53%（169 / 994） |
+
+- 比较页 `pathway` 的 `basis="complete_window_approvals_only"`、`window={2022-01-01, 2026-09-30}`，与总量使用**同一完整窗口**（不是全历史）。
+- `pathway_all_time` 默认 **null**；`include_all_time=true` 在 store 层可计算，但 `/api/compare` 路由未透传该参数，故经 HTTP 始终为 null；比较页脚注明确写出这一点，未用全时结构代替窗口结构。
+- 口径说明：路径结构分母为“窗口内全部 510(k)+PMA 记录”（含未映射赛道），而 headline“已映射赛道审批”为 2,396；两者差异 199 条 = 未映射记录，页面蓝色提示已披露 `2,396 + 199 = 2,595`。见 §7-D4（低严重度标注问题）。
+
+### 4.5 重复 / 多计审计
+
+| 检查项 | 结果 | 结论 |
+| --- | --- | --- |
+| events 总行数 vs 去重 event_id | 375,378 vs **375,378** | 无重复主键（且 event_id 为主键） |
+| 重复 `payload + url` 组 | **0 组 / 0 条多余行** | 同一记录未被重复入库 |
+| 重复 payload 组 | **0 组** | 无同 payload 多行 |
+| 重复 url 组 | 8,512 组 | 正常：同一来源页（如召回详情页）服务多条不同产品记录 |
+| 同 `source+kind+event_date+title` 组 | **1,501 组，覆盖 5,072 行** | 与 Lead 声称的 1,501 组一致 |
+| 上述组内不同的 `(payload,url)` 对 | **5,072 个**（= 行数） | 每条 payload+url 都不同 |
+| 组内存在重复 payload+url 的组数 | **0** | 不是重复记录 |
+| 组内 kind 分布 | 召回 992、510(k) 188、药品批准 156、8-K 101、试验 64 | 多为“同一召回事件覆盖多个产品/型号”或同批次公告 |
+| 示例 | 2024-08-28 Beaver Visitec 召回：159 行、159 个不同 payload、1 个 URL | 同一次召回下 159 个产品条目，属于不同记录而非重复 |
+| 企业归属 | `company_key` 单值列；Dräger/Mindray 走精确别名且与主名册不相交（Mindray 244、Dräger 347，主名册键 0） | 未发现同一事件归属两家企业 |
+
+### 4.6 研究助手数字复算
+
+| 回答数字 | API/UI | 独立 SQL（别名精确匹配，不调用产品归属函数） | 一致 |
 | --- | --- | --- | --- |
-| D1 | 企业 KPI「审批记录（近 5 年）」只含已映射赛道却未标注：迈瑞 38 vs 原始 40；美敦力 2,526 vs 2,734；飞利浦 148 vs 166 | `838b854` | 现为"已映射赛道审批（近 5 年）38 · 另有未映射 2 条"，美敦力"2,526 · 另有未映射 208 条"；API 增 `approvals_window_all/unmapped_window/window_basis_zh` |
-| D2 | 比较页「窗口内」总量按粒度静默剔除不完整周期（quarter 2,713 vs 原始 2,734） | `838b854` | 现为「窗口内合计 2,734 / 仅完整周期 2,713」并在表下解释 partial_total 含义 |
-| D3 | 雷达赛道「企业构成」只列 14 家（128/570），页面/API 未披露 442 条未归属 | `838b854` | 副标题"已归属 128 / 赛道合计 570 条"，表内"未归属企业 442（77.5%）"，并注明份额分母仍为全赛道 |
-| D4 | 研究助手表格「企业全部审批记录 38/46」措辞与"不含未映射"矛盾 | `838b854` | 改为「企业已映射赛道审批记录（条）」并在方法与口径说明未映射不计入分母 |
-| D5 | 总览「赛道映射覆盖 52.4%」副标题把 `unattributed_events=243,085`（企业未归属）当作"未映射赛道"，导致 196,542+243,085=439,627 与事件总数矛盾 | `22817c5` | 现为"已映射 196,542 / 未映射 **178,836**"（196,542+178,836=375,378）；`/api/meta` 新增 `track_unmapped_events` 与 `attribution_note_zh`；截图 `34-overview-kpi-mapping.png` |
-
-### 8.2 残留问题（不阻塞五场景，建议后续修）
-
-| # | 严重度 | 问题 | 说明 / 建议 |
-| --- | --- | --- | --- |
-| R1 | 低 | 证据浏览器 0 结果时空态重复渲染：同页出现两处"该筛选下没有记录"，且仍显示"第 1 / 1 页"分页器 | 截图 `24-evidence-empty.png`；建议去重并隐藏无意义分页 |
-| R2 | 低 | 移动端 390px 宽表（最近事件/证据列表）压成逐字段纵向堆叠，可用但阅读成本高 | 截图 `17-mobile-company-390.png`；建议移动端卡片化或横向滚动 + 粘性表头 |
-| R3 | 低 | 文档口径小不一致：`PRODUCT_VISION.md` 写"59 个医疗技术赛道/17 个真实赛道"，实测 tracks 表 60、8 领域引用 18 条赛道 | 建议更新文档或统一口径 |
-| R4 | 低 | 总览 KPI「技术赛道 60 · 8 个技术领域」与雷达实际覆盖 18 条并列，初读易误解（60 含药品/疗法分类） | 建议 caption 区分"事件分类 60（含药品/疗法）/ 器械雷达 18" |
-| R5 | 低 | 证据浏览器关键词 `q` 为英文原文 LIKE（title/applicant_raw/summary），不支持中文语义 | UI 已明示该限制；属已知设计边界 |
-| R6 | 中低 | 无真正 point-in-time/as-of 回放：`first_seen_at` 仅 2 个值（2026-10-30/31），`available_at == published_at` 375,378/375,378 | 事件详情仅给日期提示，未显式说明"不能回放当时可见性"；Roadmap 已列 P0，建议 UI 明示 |
-| R7 | 低 | 旧 `docs/dashboard.html`（3.2MB 单文件）仍在且未接入 2.0 导航，两套界面并存 | 不影响五场景（导航无死链）；建议文档标注或下线 |
-| R8 | 信息 | "该记录没有可用的原始链接"分支存在于 `web/js/event.js:196-215`，但当前 0/375,378 空 URL，无法在真实数据上触发验证 | 该能力**未被真实数据验证**（见 §9） |
-| R9 | 低 | 赛道页 KPI「近 10 年记录 570」含 2 条不完整季度记录，与"完整 40 个季度"并列需读者自行注意 | 图表已显式标注 2026-Q4 partial；可考虑与比较页一致地拆分"合计/完整周期" |
-| R10 | 信息 | 同页出现两个"企业"数字：KPI「收录企业（名册）53」与页脚「企业 89（有事件）」 | 均有标签，可接受；若面向普通读者建议加一句口径说明 |
-
-**交付前追加修复（在本报告审计之后，不改变五场景 PASS 结论）**：R1（证据空态去重、0 结果隐藏分页器）、R3（文档口径统一为 60 条分类 / 18 条雷达赛道）、R4（总览 KPI 标注「全库分类；雷达展示 18 条重点赛道」）、R6（证据浏览器新增「时点回放限制」说明）、R9（赛道 KPI 标注含数据截止所在未完整季度）、R10（页脚区分「有事件企业」与「产品名册」）。R2（移动端宽表可读性）、R5（q 仅英文原文匹配）、R7（旧 dashboard 未接入）、R8（空链接提示未被真实数据触发）保留为已知边界，列入 [`PRODUCT_ROADMAP.md`](PRODUCT_ROADMAP.md)。
-
-> 本报告的 PASS/FAIL 基于 commit `22817c5` 实测；上述追加修复仅涉及标签与空态文案，不改变任何数字口径或五场景结论。
+| 迈瑞超声近窗 / 前窗 | 24 / 32 | 24 / 32 | ✅ |
+| 行业超声近窗 / 前窗 | 414 / 392 | 414 / 392（+5.6%，UI/答案取整 +6%） | ✅ |
+| 迈瑞超声份额 近窗 / 前窗 | 70.6% / 69.6% | 0.7059 / 0.6957 | ✅ |
+| 越界问题 | `out_of_scope`，0 证据 | —（无数据可答） | ✅ |
 
 ---
 
-## 9. 未验证 / 不可用（明确边界）
+## 5. 测试可信度
 
-以下内容本次审计**没有**或**无法**验证，不应被当作已验收能力：
+### 5.1 实际执行（命令、结果、退出码、skipped）
 
-1. **没有经过前瞻验证的预测**：产品不展示预测（已核实其"不展示"）。五家企业早期信号研究 69 份证据包 **0 条人工标签**，研究处于 blocked；C43 为混合结论（H1 边际支持，但 MDE 大于观测效应且未击败强基线 B3），不构成实用预测。任何"预测能力"均不可用。
-2. **没有全球（美国以外）监管数据**：只有美国 FDA 记录 + 部分全球临床试验注册；迈瑞/德尔格的美国记录不代表其全球活动。界面已声明，但产品不能回答"全球注册/销售/市场份额"类问题。
-3. **没有企业内部数据**：研发战略、研发投入、营收、份额均无字段；研究助手对"Medtronic 内部研发战略"正确返回 out_of_scope。
-4. **无人工真值标签**：69 包只有 AI 规则化预标注（45/18/6），不能作为研究结论或检测器评分依据。
-5. **`research/full-history-v1` 未合并**：仅只读引用 commit `969fd0c` 的冻结产物；产品不包含该分支代码/结论。
-6. **point-in-time / as-of 不可用**：见 R6，无法严格回答"当时能看到什么"。
-7. **无空 URL 真实样本**："没有可用原始链接"提示路径存在，但当前数据 0 条空 URL，该分支未被真实数据触发（R8）。
-8. **外部来源可达性未逐条验证**：本次只验证 URL 结构与 payload ID 一致；尝试抓取 FDA/SEC 时分别遇到人机校验/403（自动化访问限制），**未**验证每条链接当前 HTTP 200。
-9. **冷启动性能未验证**：未重启 8787 服务；"首次 3–5 秒预热"只有文档声明。
-10. **未做多浏览器/无障碍/安全/压力测试**：仅 Chrome（Playwright）；未测 Firefox/Safari、屏幕阅读器、并发压力、越权/注入等。
-11. **移动端只覆盖 4 个路由 + 导航**：其余路由未在 390px 逐页验收（桌面 1440×900 覆盖全部主要页面）。
-12. **数据新鲜度/增量采集未验证**：使用 2026-10-30 的冻结快照；未验证定时采集、源更新、失败重试。
-13. **既有 Research Agent CLI 未实际运行**：Lab 中仅核对了研究记录与元数据，未执行其 CLI 模板。
+| 层级 | 命令（工作目录 `D:\DEPPSKK\medradar`） | 实际结果 | skip | 退出码 |
+| --- | --- | --- | --- | --- |
+| Tier A/B（无真实 DB） | `python -m pytest tests/test_product_statistics.py` | **21 passed**（0.67s） | **0** | 0 |
+| Tier C（真实 DB） | `python -m pytest tests/test_product_store.py tests/test_product_api.py tests/test_product_analyst.py` | **74 passed**（44.20s） | **0** | 0 |
+| 全量 | `python -m pytest` | **1,169 passed + 224 subtests passed**（120.13s） | **0** | 0 |
+| Tier D（浏览器 E2E） | `node scripts/product_e2e.cjs` | **6 passed, 0 failed**（18.3s；报告 `out/product_e2e/report.json`） | 0 | 0 |
+| 旧 selftest | `python -m medradar selftest` | **Ran 1,074 tests — OK**（54.13s） | — | 0 |
+| CI 分层 | `.github/workflows/ci.yml` `product-statistics` job | 已静态确认存在：Tier A/B 无数据仓库运行；Tier C 用 `-rs` 显式报告 skip | 未执行（见 §8） | — |
 
----
+> 说明：仓库 `addopts="-q"`；若命令行再传 `-q` 会叠加为 `-qq` 并抑制总结行。本表使用**不额外传 `-q`** 的标准调用（由仓库配置提供单层 `-q`）以取得总结行；Tier C 与全量均确认 **0 skipped**。Tier A/B 使用 `tests/product_fixture.py` 生成的临时合成 SQLite（`use_database()` 指向 tmp），不读取 `data/medradar.sqlite`；本次真实数据存在，故 Tier C 无 skip。
 
-## 10. 最终验收结论
+### 5.2 旧缺陷若回归，现有测试会不会失败？
 
-**是：这是真实可用的 MVP（五个场景均 PASS），但它是"证据驱动的医疗技术研究终端"，不是预测产品。**
+| 历史缺陷 | 会失败的测试（已逐行阅读） | 判定 |
+| --- | --- | --- |
+| **旧 LQ 分母**（企业用全部记录、行业用已映射） | Tier A `test_lq_uses_mapped_denominators_not_all_records`：手算 30/40 ÷ 50/120 = **1.8**，并显式断言 `value != old_wrong`（旧公式 1.44）；Tier B `test_fixture_compare_lq_uses_consistent_denominators`：fixture 中 30/40 ÷ 50/120 = 1.8，且 `!= old_wrong_lq`（1.44）；API `test_compare_lq_matches_its_own_disclosed_denominators`：用响应自带 `total_mapped` 与 `industry.mapped_records` 复算每个 ok 单元格 | **会失败**。若旧公式回归：Tier A 得 1.44≠1.8；Tier B 得 1.44；API 真实数据美敦力心脏节律会得 3.417 vs 复算 3.721，超出 `abs=1e-3`。纯函数 Tier A 保证不依赖“披露字段也被一起改错” |
+| **起始不完整季度未被识别**（旧 `is_period_partial(period, edge)` 只看终点） | Tier A `test_partial_period_at_both_window_edges`（2021-Q4 起端被裁剪必须 `partial=True`）、`test_complete_window_quarter_year_month`、`test_comparison_windows_are_contiguous_and_equal_length`；Tier B `test_fixture_complete_period_totals_exclude_partial_edges`（`2021-Q4.partial=True`、`recent=30` vs `recent_all=32`、`partial_periods=2`、`2026-Q3.source_lag_risk=True`） | **会失败**。旧实现会把 2021-Q4 标为完整 → fixture `recent` 变 32、`partial_periods` 变 1、`2021-Q4.partial=False`，三处断言同时失败 |
+| **PMA 补充申请被当作首次进入** | Tier B `test_fixture_pma_first_entry_ignores_supplements_and_special_510k`：fixture 中呼吸赛道补充申请 2015-05-01 早于原始批准 2016-09-01，断言 `first_approval=2016-09-01` 且 `first_any_approval=2015-05-01`，并断言里程碑标签含“首次观察到原始批准”；`test_fixture_event_detail_exposes_approval_type` 断言 list/detail 分类一致 | **会失败**。旧实现 `_company_track_firsts` 用 `MIN(event_date)` 取任意 510(k)/PMA → fixture 呼吸 `first_approval` 会变成 2015-05-01，直接违反断言。（`test_fixture_radar_uses_complete_windows_and_discloses_attribution` 的 `entrants first_date >= analysis_start` 是补充一致性检查；该 fixture 情境下旧实现更可能表现为“漏报 entrant”而非“误报”，故不等于主要判别依据。） |
 
-- **真实**：375,378 条真实公开记录、6 个真实数据源、18/18 条企业结论可逐条复算到事件、事件可展开到真实 FDA/ClinicalTrials.gov/SEC 链接；UI 数字与 API、SQLite 独立复算一致。
-- **可用**：非工程用户可在无需脚本的情况下完成五个场景；加载/空/错误态完整，无死按钮，桌面与 390px 移动端基本可用；控制台无异常（除故意的 404 测试）。
-- **诚实**：主动暴露赛道映射覆盖（52.4%）、企业归属覆盖、未映射记录、69 包 0 人工标签、hist_v1 未合并、无经验证预测；比较页主动警告路径差异、不诱导排名。
+补充核验：旧恒真断言 `assert all(... or True ...)` 存在于 `f3ea1e4:tests/test_product_store.py`，当前版本已替换为“API 返回总数 == 独立 `SQL LIKE` 计数”且逐条详情复核（`test_evidence_search_filters_are_exact`），`grep -R "or True" tests scripts` 无残留。Tier B fixture 的期望值由手算常量与显式事件计数构造，不通过“调用被测函数再与自身比较”生成。
 
-**仍然偏弱的环节**（决定它还不是"完整产品"）：
+### 5.3 测试剩余盲区（供 Lead 决策，非阻断）
 
-1. **覆盖与归属**：全库赛道映射仅 52.4%（窗口级 70.1%）；企业归属覆盖不足（呼吸赛道仅 22.5% 记录能归到企业），很多企业的"活动"只能看赛道总量，不能看企业构成。
-2. **时点能力**：无法做真正的 point-in-time 复盘（first_seen 不可用），削弱"当时可发现"类研究叙事。
-3. **数据边界**：仅美国监管记录，非美企业（迈瑞/德尔格）覆盖天然偏低，比较时必须依赖现有警告。
-4. **科研闭环**：69 份证据包人工复核未完成、预测注册表无成熟前瞻样本——研究结论不能产品化为预测。
-5. **体验细节**：移动端宽表、证据空态重复文案、文档口径小不一致等低严重度问题仍需打磨。
-
-**验收建议**：按"带明确限制声明的证据研究 MVP"发布/交付；对外表述必须保留"记录数不是产品数、不是创新能力排名、当前没有经验证预测"三条；下一阶段优先级仍是赛道映射覆盖率、实体映射治理、point-in-time 能力与 69 包人工复核。
+1. **D2 的形态无测试**：没有测试覆盖“合法 JSON PMA、但缺少 `supplement_number` 字段”——fixture 只覆盖 malformed JSON；该形态下 SQL 分类（原始）与 Python/数据集审计（unknown）不一致（见 §7-D2）。
+2. API LQ 测试从响应自身字段复算，若“计算与披露字段被同一回归一起改错”则可能漏检；目前由 Tier A 纯函数测试兜底。
+3. 真实数据中不存在“补充申请早于原始批准”的呼吸赛道企业，因此 supplement-as-first-entry 的判别只有合成 fixture 证据；建议保留并在文档中如此说明（本报告已说明）。
+4. 无 HTTP 外链可达性测试（只验证 URL 非空与字段一致）。
 
 ---
 
-## 11. 证据索引
+## 6. 诚实性与边界核验
 
-**截图（`out/acceptance/`，gitignored 构建产物）**
+| 检查项 | 实测结果 | 判定 |
+| --- | --- | --- |
+| Dräger / Mindray 归属状态 | API `entity_review` 与两个企业页均显示 `PENDING_HUMAN_REVIEW`（“实体归属待人工复核”）；Mindray 244 事件 / 10 条精确别名，Dräger 347 事件 / 22 条精确别名；主名册键均为 0 | 属实 |
+| 研究人工标签 | `/api/lab` artifact：`packets=69`、`human_labels_recorded=0`；CSV 69 数据行，`human_label`/`human_reason`/`independent_confirmation`/`reviewer`/`reviewed_at` 非空数均为 **0**；页面显示“受限于人工复核：AI 初审完成，人工真值未完成” | 属实 |
+| hist_v1 未合并 | `research/full-history-v1` 不是 `main` 祖先（`merge-base --is-ancestor` exit 1）；lab provenance `merged=false`、只读引用 commit `969fd0c`（对象存在）；页面显示“未合入 main…（commit 969fd0c）” | 属实 |
+| 无经验证预测 | lab `R-forecast-registry` 状态“**无已验证的前瞻校准**”；meta 限制 `not_prediction`；雷达/助手均声明“不是预测” | 属实 |
+| 限制可见 | 总览限制横幅、企业页“该视图的限制”（8 条）、雷达方法说明、研究助手 limitations、实验室 limits 均实测可见 | 属实 |
+| main 未被改动 | `main=origin/main=b2a14c0`；`5a349f4` 不是 main 祖先；当前分支为 `feat/medradar-2.0-mvp` | 属实 |
+| PR #12 | OPEN、**Draft**、head `5a349f4e230cbba911d5c623ae83bb173b601c77`、base main | 属实 |
+| 用户 CSV | `git status` 为 `M`；`git diff --cached` 为空（未暂存）；HEAD 中 blob 未变（未提交）；本地 diff 只改 `evidence_summary` 字段（`gap-days=…` → 描述性文字），`human_label` 仍全空 | 仅本地修改，属实 |
+| 只读数据 | 全程 `mode=ro`；`medradar.sqlite` mtime 未变；未执行写库操作 | 属实 |
+| point-in-time | `first_seen_at` 仅 2 个值（2026-10-30/31，即抓取日），`available_at` 为 `event_date + 00:00:00` | **不可用作真正的“当时可知”回放**，如实标注 |
 
-| 场景/状态 | 文件 |
-| --- | --- |
-| 总览 + KPI | `01-overview-1440.png`、`34-overview-kpi-mapping.png` |
-| 场景 1 企业列表/迈瑞/窗口切换/证据面板 | `02-companies-1440.png`、`03-company-mindray-1440.png`、`04-company-mindray-window3.png`、`05-claim-evidence-panel.png` |
-| 场景 2 比较 | `06-compare-medtronic-philips.png`、`30-compare-totals-1440.png` |
-| 场景 3 雷达 | `07-radar-respiratory-1440.png`、`23-radar-overview-1440.png` |
-| 场景 4 追溯 | `08-event-detail-source.png`、`33-evidence-drawer.png` |
-| 场景 5 助手 | `09-analyst-q1.png`、`10-analyst-evidence-detail.png`、`11-analyst-out-of-scope.png`、`32-analyst-example-chip.png` |
-| 状态 | `12-evidence-empty-state.png`、`13-error-state-404.png`、`14-loading-state.png`、`24-evidence-empty.png` |
-| 移动端 390 | `15-mobile-overview-390.png`、`16-mobile-nav-390.png`、`17-mobile-company-390.png`、`18-mobile-radar-390.png`、`19-mobile-analyst-390.png` |
-| 研究实验室 | `20-lab-1440.png`、`21-lab-s027.png`、`22-lab-c43.png`、`25-lab.png`、`31-lab-c43-1440.png` |
-| 企业（美敦力/德尔格） | `28-company-medtronic-1440.png`、`29-company-draeger-1440.png` |
+---
 
-**报告与日志**
+## 7. 我在本轮审计中发现的缺陷
 
-- `out/product_e2e/report.json`（E2E 6/6，console_errors 为空）
-- `out/acceptance/pytest_final.log`（71 项通过，exit 0）
-- `out/acceptance/replay_report.json`（独立浏览器复跑 21 步）
-- `out/acceptance/dump_report.json`、`out/acceptance/interact_report.json`、`out/acceptance/profile_frozen_report.json`
-- `%TEMP%\medradar_audit\audit_report.json`（API + SQLite 独立复算原始数据，审计机临时目录）
-- 页面文本快照：`out/acceptance/texts/*.txt`（企业、比较、雷达、研究助手、Lab、证据空态等）
+| ID | 严重度 | 位置 | 现象与证据 | 影响 | 建议 |
+| --- | --- | --- | --- | --- | --- |
+| **D1** | **Major（文档）** | `docs/PRODUCT_STATISTICAL_AUDIT.md` §2.4 表格 | “企业结论数字变化（Medtronic 心脏节律）”中，**本期“请求窗口”写了 1,552，上期写了 1,111**；独立 SQL 实测：本期请求窗口（2021-10-31–2026-10-30）= **1,111**，上期请求窗口（2016-11-01–2021-10-30）= **1,552**。两行数字互换。产品本身 `claim.metrics` 与页面为正确的 **1,051 / 1,480**（完整季度），PMA 2 / 1,048 亦正确 | 审计报告可信度受损；若被引用会把“近期 1,552”误当事实。**不影响产品计算** | 修正 §2.4 两行：本期请求窗口 1,111、上期请求窗口 1,552（或删去“请求窗口”列，只保留完整季度 1,051/1,480 并注明来源） |
+| **D2** | **Medium（潜在产品缺陷）** | `medradar/product/store.py` `_pma_original_sql()` / `_pma_supplement_sql()` vs `approval_classification()` / `classification_audit()` | 对 payload=`{"pma_number":"P900001"}`（**合法 JSON、无 `supplement_number` 字段**）的 PMA：`_pma_original_sql()` 因 `coalesce(json_extract(...),'')=''` 计为**原始批准**；`classification_audit()` 用 `json_type(...,'$.supplement_number') IS NULL` 计为 **unknown**；Python `approval_classification()` 返回 **pma_unknown**。用内存 SQLite 独立复现：original=1、audit unknown=1、python=pma_unknown。真实数据该形态 **0 条**（`pma_missing_supplement_number=0`、`valid_non_object=0`），故当前所有已观测数字不受影响 | 若未来 payload 模式变化/缺字段，unknown 会被静默计为原始批准，污染“首次进入候选”与路径结构；三处口径不一致本身也是维护风险 | 统一为“字段必须存在且为字符串”的谓词（如 `json_type(...,'$.supplement_number') IS NOT NULL AND coalesce(...)=''`），并加 Tier A 测试“合法 JSON 缺字段 → unknown”；当前数据下可安全重跑 |
+| **D3** | **Low（API/文档缺口）** | `medradar/web/app.py` `/api/compare` | 路由签名无 `include_all_time`，调用 `/api/compare?...&include_all_time=true` 返回与默认完全相同（`pathway_all_time=null`）；store `company_compare(..., include_all_time=True)` 与 fixture 测试支持该能力。审计称“需 `include_all_time=true`”，但该参数经 HTTP 无法触发 | 无用户可见数值错误（UI 明确写“未返回，默认不请求”，未以全时冒充窗口）；但“全历史结构单独展示”在 API 层不可达，文档表述不准确 | 在路由透传可选 `include_all_time: bool = False`，或在审计/契约中明确“比较 API 不提供全时结构，仅企业页有 `pathway_mix_all_time`” |
+| **D4** | **Low（标注清晰度）** | `#/companies/{key}` KPI + 路径面板 | PMA 原始/补充 KPI = 7 / 2,423（合计 2,430）、路径分母 = 2,595，包含 134 条未映射 PMA 与 65 条未映射 510(k)；headline“已映射赛道审批”= 2,396。旁侧蓝色提示写有 `2,396 + 199 = 2,595`，但 PMA KPI 与路径子标题只写“完整季度 / 分母为 510(k)+PMA 记录”，未显式说“含未映射” | 用户需跨面板心算才能解释 7+2,423=2,430 ≠ 2,396；属可避免的困惑，不构成错误数字 | KPI 标签加“全部记录（含未映射）”或同时给出已映射口径；路径子标题注明“含未映射 / 已映射 2,396” |
+| **D5** | **Info（发布状态）** | 工作区 | 审计期间出现未提交的 `README.md`、`docs/PRODUCT_ROADMAP.md` 修改（非本审计员写入，未包含在 `5a349f4`）；用户 CSV 仍为本地修改。产品代码/测试/前端无未提交修改 | 若直接交付，PR head `5a349f4` 与工作区内容不完全一致；不影响 HEAD 产物与本次验收 | Lead 决定是否把文档修改纳入新提交；交付前保持 `git status` 透明并说明 CSV 为用户本地修改 |
 
-**关键接口/文件**
+> 另：Lead 审计 §2.1/§2.2/§2.3/§2.5 的数字经独立复算**全部吻合**（旧 LQ、完整 vs 请求窗口、PMA 拆分、雷达 560/740/570/10 等）；§3 测试计数吻合；§5 的重复计数结论吻合。以上 D1 是 §2.4 的局部转录错误。
 
-- `GET /api/health`、`GET /api/meta`、`GET /api/companies/mindray?years=5`、`GET /api/compare?...`、`GET /api/radar/respiratory?years=10`、`POST /api/evidence/claim`、`POST /api/analyst/ask`
-- `data/medradar.sqlite`（只读）、`medradar/product/entity_aliases.json`、`research/studies/early_signal_5firms/HUMAN_REVIEW_WORKSHEET.csv`
+---
+
+## 8. 明确“未验证 / 不可用”
+
+**未验证（本轮无权限/无网络/超出范围，不能宣称通过）**
+
+1. **外部来源链接的 HTTP 可达性**：仅验证了 375,378/375,378 条记录 URL 非空且为 `http(s)`，并抽查事件详情链接与 API 一致；未逐条请求，也未验证失效/重定向/付费墙。
+2. **CI 实际运行**：只静态确认 `.github/workflows/ci.yml` 存在 `product-statistics` job（Tier A/B + Tier C `-rs`）；未触发 GitHub Actions，未验证远端绿/红。
+3. **运行进程的 commit 字节级指纹**：服务只报 `product=2.0.0-mvp`；依据 cwd、产品代码相对 HEAD 干净、行为与 HEAD 测试一致推断其为 `5a349f4`，未做二进制/内存校验。
+4. **浏览器覆盖面**：仅 Chrome（Playwright headless）；未测 Firefox/Safari/Edge、真实移动设备、触屏手势、键盘导航与完整无障碍（a11y）审计。
+5. **其他路由/指标/赛道**：只验收了任务指定的五场景；未穷举 8 条路由、6 个指标、雷达其余 17 个重点赛道（全库共 60 个赛道）、5+ 企业比较、证据分页/搜索完整交互、`recalls`/`trials`/`corporate` 指标、导出/打印等。
+6. **性能**：未做基准测试（不在本轮统计验收范围）。
+7. **API 非 `approvals` 指标下的 LQ/窗口一致性**：逻辑共用，但未逐指标复算。
+
+**不可用（产品如实声明或数据本身不具备）**
+
+1. **真正的 point-in-time 回放**：`first_seen_at` 仅 2026-10-30/31 抓取日，`available_at` 等于事件日，无法还原“当时可知”的信息集；产品按事件日期回看。
+2. **经验证预测**：不存在（lab 明确“无已验证的前瞻校准”），产品不提供预测/因果结论。
+3. **人工真值标签**：69 份证据包 **0 条人工标签**，AI 预标注不可当人工真值；研究结论仍待人工复核。
+4. **人工复核后的企业归属**：Dräger/Mindray 为 `PENDING_HUMAN_REVIEW`，计数可能随复核变化。
+5. **全球/非美国数据**：仅美国 FDA 等公开记录，不代表企业全球活动（尤其迈瑞、德尔格）。
+6. **产品级计数**：记录 ≠ 产品，一次申请可拆多行；产品已在 UI/文档声明。
+7. **未映射赛道的行业份额**：完整窗口审批记录中约 31.3% 未映射赛道（行业映射率 68.7%），LQ/份额只在已映射口径内成立。
+8. **`pathway_all_time`（比较 API）**：默认 null 且 API 无参数可请求（D3），故“全时结构”只能视为不可用/未验证。
+
+---
+
+## 9. 最终判定与剩余阻断项
+
+**最终判定（基于 `5a349f4`、真实数据、独立复算）**
+
+- 五个必需场景：**PASS（1440×900 与 390×844 共 10/10）**。
+- 统计修复核心主张（一致 LQ 分母、完整季度窗口、PMA 原始/补充分类、window-based 路径结构、无重复计数）：**经验证成立**；旧值与新值差异可精确复现，API/UI 与独立 SQL 一致。
+- 测试可信度：**通过**（21 + 74 + 1,169+224 + 6 + 1,074，0 skipped，exit 0）；三类历史缺陷均有会在回归时失败的测试。
+- 未发现**阻断性产品缺陷**；发现 **D1（Major，报告数字写反）**、**D2（Medium，潜在分类不一致，当前 0 例）**、D3/D4（Low，API/标注）、D5（Info，工作区）。
+- 建议：**修复 D1 后可进入最终人工验收**；D2 建议作为下一提交的防守性修复（当前数据可安全重跑）；D3/D4 可作为文档/标签优化。**不应**把本产品描述为预测、因果或企业创新能力排名工具。
+
+**剩余阻断项（应带到下一阶段/人工验收）**
+
+1. 赛道映射覆盖：全库 52.36%；完整窗口审批映射率 68.7%（行业）/ 92.33%（美敦力）/ 88.82%（飞利浦）——未映射记录不能进入赛道份额/LQ，产品已披露，但仍是解释力上限。
+2. Dräger/Mindray 企业归属 `PENDING_HUMAN_REVIEW`（244 / 347 事件），需人工复核后才可作为定论。
+3. 69 份证据包 0 条人工标签：任何研究结论（H1–H4、Target B）仍不可用。
+4. 无真正 point-in-time；当前视图是“按事件日期回看”，不是当时决策视角。
+5. 无经验证预测/因果模型；研究实验室只展示不确定与负面状态。
+6. 外部 URL 可达性未验证；若对外发布需一次外链健康检查。
+7. 交付前处理 D1（审计文档）与 D5（README/PRODUCT_ROADMAP 未提交修改、用户 CSV 的归属说明）。
+
+---
+
+## 10. 复现命令与证据文件索引
+
+```bash
+# 锚点与仓库事实
+git rev-parse HEAD                      # 5a349f4e230cbba911d5c623ae83bb173b601c77
+git rev-parse main origin/main          # b2a14c0a92332c004445de686daee97754cf94cb
+git merge-base --is-ancestor 5a349f4 main; echo $?   # 1 → main 未包含 5a349f4
+git merge-base --is-ancestor research/full-history-v1 main; echo $?  # 1 → hist_v1 未合并
+gh pr view 12 --json number,state,isDraft,headRefOid # OPEN / true / 5a349f4…
+git status --short                      # 审计结束时：README.md、docs/PRODUCT_ROADMAP.md、用户 CSV、本报告（docs/PRODUCT_ACCEPTANCE.md）为 M；产品代码/测试/前端干净
+
+# 服务 / 数据
+curl -s http://127.0.0.1:8787/api/health
+
+# 测试（本报告 §5.1 的实际命令）
+python -m pytest tests/test_product_statistics.py
+python -m pytest tests/test_product_store.py tests/test_product_api.py tests/test_product_analyst.py
+python -m pytest
+node scripts/product_e2e.cjs
+python -m medradar selftest
+
+# 独立复算与浏览器（本审计员自写，均在 out/acceptance2/）
+python out/acceptance2/recompute.py          # 只读 SQL 复算，输出 recompute_result.json
+python out/acceptance2/final_facts.py        # API/SQL 事实汇总，输出 final_facts.json
+node out/acceptance2/browser_scenarios.cjs   # 10 次场景运行 + 截图 + browser_report.json
+node out/acceptance2/extra_checks.cjs        # DOM 细节（不适用单元格、PENDING、移动端溢出）
+node out/acceptance2/claim_panel_check.cjs   # 结论→证据面板复算文本、pathway_all_time=null 提示
+```
+
+**证据文件（`out/acceptance2/`，gitignored）**
+
+- 报告 JSON：`browser_report.json`（10 项、console errors=0）、`extra_report.json`、`recompute_result.json`、`final_facts.json`、`browser_scenarios.log`、`extra_checks.log`。
+- 测试日志：`pytest_statistics2.log`、`pytest_tierC2.log`、`pytest_full.log`、`product_e2e.log`、`selftest.log`。
+- 截图：`s1-company-mindray-{desktop,mobile}.png`、`s2-compare-{desktop,mobile}.png`、`s3-radar-respiratory-{desktop,mobile}.png`、`s4-evidence-trace-{desktop,mobile}.png`、`s4a-claim-evidence-panel.png`、`s5a-analyst-answered-{desktop,mobile}.png`、`s5b-analyst-outofscope-{desktop,mobile}.png`、`s6-draeger-pending-desktop.png`、`s7-lab-desktop.png`、`s8-overview-desktop.png`、`s9-mobile-claim-evidence.png`、`s10-mobile-analyst.png`、`s11-lab-s027-detail.png`。
+- 仓库可提交等价截图：`docs/product/company-mindray.png`、`compare.png`、`radar-respiratory.png`、`evidence-trace.png`、`analyst.png`、`mobile-company.png`、`overview.png`（其中 6 张与本次运行 SHA256 相同）。
+
+---
+
+*本报告只基于 `5a349f4` 与 2026-10-30 数据截止的真实观测；未观测到的不标记为 PASS。审计期间未修改产品代码、测试、数据或服务。*

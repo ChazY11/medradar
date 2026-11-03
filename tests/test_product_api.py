@@ -109,6 +109,25 @@ def test_compare_lq_matches_its_own_disclosed_denominators():
             assert cell["lq_reason_zh"]
 
 
+def test_compare_all_time_pathway_is_opt_in():
+    default = client.get(
+        "/api/compare", params={"companies": "medtronic,philips", "metric": "approvals", "years": 5}
+    ).json()
+    assert all(company["pathway_all_time"] is None for company in default["companies"])
+    requested = client.get(
+        "/api/compare",
+        params={
+            "companies": "medtronic,philips",
+            "metric": "approvals",
+            "years": 5,
+            "include_all_time": "true",
+        },
+    ).json()
+    for company in requested["companies"]:
+        assert company["pathway_all_time"] is not None
+        assert company["pathway_all_time"]["window"]["start"] < requested["analysis_window"]["analysis_start"]
+
+
 def test_company_profile_reports_complete_window_and_pma_split():
     data = client.get("/api/companies/medtronic", params={"years": 5}).json()
     headline = data["headline"]

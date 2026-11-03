@@ -26,8 +26,10 @@ python -m medradar web --port 8787
 - deterministic analyst, **no API key required**, no fabricated queries;
 - Dräger and Mindray are supported through a reviewed exact-alias mapping (they are absent from the original roster);
 - observed change / detected signal / research hypothesis are labelled separately — there is **no validated forecast** in the product;
+- comparisons use **equal-length complete natural quarters**; LQ uses the same track-mapped denominators on both sides and shows "not applicable" for small samples; PMA original approvals are separated from PMA supplements (supplements are not new devices);
 - docs: [vision](docs/PRODUCT_VISION.md) · [architecture](docs/PRODUCT_ARCHITECTURE.md) ·
-  [user guide](docs/PRODUCT_USER_GUIDE.md) · [acceptance](docs/PRODUCT_ACCEPTANCE.md) · [roadmap](docs/PRODUCT_ROADMAP.md)
+  [user guide](docs/PRODUCT_USER_GUIDE.md) · [acceptance](docs/PRODUCT_ACCEPTANCE.md) ·
+  [statistical audit](docs/PRODUCT_STATISTICAL_AUDIT.md) · [roadmap](docs/PRODUCT_ROADMAP.md)
 
 ![MedRadar 2.0 overview](docs/product/overview.png)
 

@@ -262,6 +262,17 @@ def build_fixture(path: Path) -> dict[str, Any]:
         payload_override="{not-json",
     )
 
+    # valid JSON but missing supplement_number -> unknown, never "original"
+    add(
+        "medtronic",
+        None,
+        "pma",
+        "2021-11-21",
+        "",
+        title="Missing supplement_number synthetic PMA payload",
+        payload_override=json.dumps({"pma_number": "P900002"}),
+    )
+
     # ---- other event kinds for company profiles / evidence
     add("medtronic", "cardiac_rhythm", "device_recall", "2023-06-01", title="Synthetic recall")
     add("medtronic", "cardiac_rhythm", "trial", "2022-06-01", title="Synthetic trial", source="ctgov")
@@ -289,7 +300,7 @@ def build_fixture(path: Path) -> dict[str, Any]:
             "medtronic": {
                 "recent_all": 50,
                 "recent_mapped": 40,
-                "prior_all": 19,
+                "prior_all": 20,
                 "prior_mapped": 17,
                 "mapping_coverage": 40 / 50,
                 "tracks": {"cardiac_rhythm": 30, "imaging_us": 10},
@@ -336,7 +347,7 @@ def build_fixture(path: Path) -> dict[str, Any]:
             # unmapped) as the denominator while the industry side used mapped only
             "medtronic_cardiac": (30 / 50) / (50 / 120),
         },
-        "classification_unknown": 1,
+        "classification_unknown": 2,
         "partial": {
             "start_period": "2021-Q4",
             "end_period": "2026-Q4",

@@ -129,13 +129,20 @@ def create_app() -> FastAPI:
         metric: str = Query("approvals"),
         years: int = Query(5, ge=1, le=50),
         granularity: str = Query("quarter"),
+        include_all_time: bool = Query(False, description="also compute the all-time regulatory pathway mix"),
     ) -> dict[str, Any]:
         keys = _parse_company_list(companies)
         if len(keys) < 2:
             raise ValueError("select at least two companies")
         if len(keys) > 5:
             raise ValueError("at most five companies per comparison")
-        return store.company_compare(keys, metric=metric, years=_years(years), granularity=granularity)
+        return store.company_compare(
+            keys,
+            metric=metric,
+            years=_years(years),
+            granularity=granularity,
+            include_all_time=include_all_time,
+        )
 
     # ------------------------------------------------------------------ radar
     @app.get("/api/radar")
