@@ -988,3 +988,32 @@ details.disclosure > .disclosure-body { padding: 8px 11px; font-size: 11.5px; }
   .obs-field-row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .obs-source-meta { flex-direction: column; gap: 2px; }
 }
+
+/* ------------------------------------------- observatory health (additive) */
+/* Rendered above the observation list on #/observatory. The overall badge can
+   say NOT_DEPLOYED / PAUSED / DEGRADED; the per-source table never hides a
+   failing source behind one green dot. */
+.obs-health { display: flex; flex-direction: column; gap: 10px; }
+.obs-health-overall { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; padding: 1px 0 3px; }
+.obs-health-overall .badge { font-size: 12px; padding: 4px 9px; white-space: nowrap; }
+.obs-health-meaning { color: var(--muted); font-size: 11.5px; line-height: 1.55; flex: 1 1 360px; max-width: 980px; }
+.obs-health-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; align-items: start; }
+.obs-health-block { border: 1px solid var(--border); border-radius: 3px; background: var(--panel-2); padding: 8px 10px; }
+.obs-health-block > h4 { margin: 0 0 4px; font-size: 10.5px; color: var(--muted); font-weight: 500; letter-spacing: 0.03em; }
+.obs-health-block .kv-row { font-size: 11px; padding: 2px 0; }
+.obs-health-block .kv-key { flex: 0 0 102px; }
+.obs-health-section { margin-top: 2px; }
+.obs-health-section > h4 { margin: 0 0 5px; font-size: 10.5px; color: var(--muted); font-weight: 500; letter-spacing: 0.03em; }
+.obs-health-checks { display: flex; flex-direction: column; gap: 3px; }
+.obs-health-check { display: grid; grid-template-columns: 52px 132px minmax(0, 1fr); gap: 8px; align-items: baseline; font-size: 11px; }
+.obs-health-check-id { color: var(--muted); overflow-wrap: anywhere; }
+.obs-health-check .badge { justify-self: start; }
+.obs-phase-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 8px; }
+
+@media (max-width: 1280px) {
+  .obs-health-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .obs-health-check { grid-template-columns: 52px minmax(0, 1fr); }
+  .obs-health-check-id { display: none; }
+}

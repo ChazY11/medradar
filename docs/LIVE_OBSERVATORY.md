@@ -130,12 +130,51 @@ python -m medradar observatory resume
 - 失败退避：单个范围（如一家发行人）失败不会终止整轮；连续失败会在 `watch` 中指数退避
   （最多 8 倍间隔），并写入 `source_failure`。
 
-### 4.2 Windows 计划任务示例
+### 4.2 Windows 计划任务（本机已注册，见 docs/DEPLOYMENT.md）
 
 ```powershell
-schtasks /Create /TN "MedRadar Observatory" /SC MINUTE /MO 60 /TR ^
-  "cmd /c cd /d D:\DEPPSKK\medradar && python -m medradar observatory sync --trigger schedule >> out\observatory_sync.log 2>&1"
+# 注册/更新（默认每 360 分钟触发一次单轮采集；-WhatIf 只打印不执行）
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install_windows_task.ps1 -WhatIf
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install_windows_task.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install_windows_task.ps1 -Status
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\install_windows_task.ps1 -Uninstall
 ```
+
+任务名 `MedRadarObservatory`，动作是 `scripts\observatory_watch.ps1`（前台运行
+`observatory watch --trigger schedule`），日志写入 `logs/collector-YYYYMMDD.log`。
+计划任务每 360 分钟触发一次；`StartWhenAvailable` 会让休眠/关机期间错过的轮次在恢复后补跑一次，
+`MultipleInstances IgnoreNew` 与账本单写租约共同保证不会并发写同一账本。
+
+### 4.3 单写租约与并发防护（必须启用）
+
+```bash
+python -m medradar observatory lock status          # 当前租约持有人 / heartbeat 年龄
+python -m medradar observatory lock release --reason "运维确认卡死"   # 强制释放（会留审计记录）
+```
+
+- 采集进程启动时以原子方式创建 `data/observatory/collector.lock`（pid/host/mode/run_id/heartbeat），
+  心跳每 15 秒更新；第二个采集进程会被明确拒绝（`LOCKED_SKIPPED`），不会写同一 SQLite。
+- 持有者崩溃后，下一个进程在心跳过期（默认 90 秒）或 pid 不存在时接管，并把接管原因写入
+  `runtime_state["lock_recovery"]`（可审计）。
+
+### 4.4 Linux 常驻服务（systemd，模板见 deploy/systemd/）
+
+`deploy/systemd/medradar-observatory.service`（`Restart=always`、`MemoryMax=512M`、`CPUQuota=50%`、
+`KillSignal=SIGTERM`、journald 日志）与 `medradar-observatory.timer`（每 6 小时）任选其一，
+详见 `docs/DEPLOYMENT.md`。**Windows 计划任务无法可靠终止长驻子进程，因此本机采用单轮触发模式**
+（每次触发跑完一轮即退出，配合租约与 `IgnoreNew` 防重叠）。
+
+### 4.5 健康、审计与七天验证
+
+```bash
+python -m medradar observatory health --json       # 部署状态 / 新鲜度 / 备份 / 恢复演练 / 验证进度
+python -m medradar observatory audit               # 账本完整性审计（人类可读报告；可 --json）
+python -m medradar observatory validate status     # 七天连续观察验证的真实指标
+python -m medradar observatory deploy-status --status DEPLOYED_LOCAL --supervisor windows_task
+```
+
+健康状态词表：`OPERATIONAL` / `DEGRADED` / `PAUSED` / `NOT_DEPLOYED` / `VALIDATION_IN_PROGRESS`；
+优先级与判定见 `docs/RELIABILITY_DESIGN.md §0`，七天验证协议见 `docs/CONTINUOUS_VALIDATION_PROTOCOL.md`。
 
 ### 4.3 GitHub Actions（低频补充，不是唯一保障）
 

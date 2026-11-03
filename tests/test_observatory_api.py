@@ -76,6 +76,8 @@ ITEM_KEYS = {
     "version",
     "is_revision",
     "evidence_zh",
+    "phase",
+    "phase_label_zh",
 }
 TIME_BASIS_KEYS = {
     "event_to_publish_hours",
@@ -365,6 +367,10 @@ def build_synthetic_ledger(path: Path) -> dict:
             run_id=run_ctgov, http_status=503, retryable=True, attempt=2,
         )
 
+        # Acquisition phases are append-only metadata derived from run history; they
+        # never rewrite the observation rows above.
+        ledger.reconstruct_phases()
+
         return {
             "now": now,
             "ago": ago,
@@ -403,7 +409,8 @@ def test_summary_exact_shape(ledger_env):
     payload = response.json()
     assert set(payload) == {
         "generated_at", "ledger", "windows", "first_observation", "by_source",
-        "by_company", "by_track", "unmapped", "empty", "limitations",
+        "by_company", "by_track", "unmapped", "phases", "validation", "deployment",
+        "empty", "limitations",
     }
     assert set(payload["ledger"]) == {
         "path", "exists", "bytes", "observations", "versions", "changes",
@@ -438,8 +445,9 @@ def test_summary_exact_shape(ledger_env):
         assert set(item) == {
             "source", "label_zh", "status", "status_label_zh", "last_success_at",
             "last_attempt_at", "declared_cadence_zh", "consecutive_failures",
-            "new_24h", "updated_24h", "new_7d", "updated_7d", "measured_lag",
-            "coverage_zh", "limitation_zh",
+            "last_outcome", "last_outcome_label_zh", "last_new_records",
+            "last_updated_records", "new_24h", "updated_24h", "new_7d", "updated_7d",
+            "measured_lag", "coverage_zh", "limitation_zh",
         }
         assert set(item["measured_lag"]) == {
             "measurable", "note_zh", "p50_hours", "p90_hours", "max_hours", "n",
@@ -484,6 +492,35 @@ def test_summary_exact_shape(ledger_env):
     assert set(payload["unmapped"]) == {"company", "track", "note_zh"}
     assert payload["unmapped"]["company"] >= 2
     assert payload["unmapped"]["track"] >= 1
+
+    assert set(payload["phases"]) == {
+        "counts", "initial", "incremental", "backfill", "unlabelled", "note_zh",
+    }
+    assert set(payload["phases"]["counts"]) == {
+        "INITIAL_DISCOVERY", "INCREMENTAL_DISCOVERY", "HISTORICAL_BACKFILL",
+    }
+    # 7 LIVE records are INITIAL_DISCOVERY; the BACKFILLED record is HISTORICAL_BACKFILL
+    assert payload["phases"]["initial"] == 7
+    assert payload["phases"]["incremental"] == 0
+    assert payload["phases"]["backfill"] == 1
+    assert payload["phases"]["unlabelled"] == 0
+    assert "初次发现" in payload["phases"]["note_zh"]
+    assert "不等于" in payload["phases"]["note_zh"]
+
+    assert set(payload["validation"]) == {
+        "status", "status_label_zh", "started_at", "ends_at", "planned_slots",
+        "due_slots", "executed_slots", "missed_slots", "days_elapsed",
+        "days_remaining", "scheduler_success_rate", "note_zh",
+    }
+    assert payload["validation"]["status"] == "VALIDATION_NOT_STARTED"
+    assert payload["validation"]["planned_slots"] == 0
+    assert "通过" not in payload["validation"]["status_label_zh"].lower()
+    assert set(payload["deployment"]) == {
+        "status", "status_label_zh", "installed_at", "supervisor", "host", "note_zh",
+    }
+    assert payload["deployment"]["status"] == "NOT_DEPLOYED"
+    assert payload["deployment"]["supervisor"] == "none"
+
     assert payload["limitations"]
     for item in payload["limitations"]:
         assert set(item) == {"id", "text_zh"}
@@ -502,8 +539,25 @@ def test_events_exact_shape_and_facets(ledger_env):
     assert payload["window"]["start"] < payload["window"]["end"]
     assert payload["filters"] == {
         "change": "all", "source": None, "company": None, "track": None, "q": None,
+        "phase": None,
     }
-    assert set(payload["facets"]) == {"sources", "companies", "tracks", "changes"}
+    assert set(payload["facets"]) == {"sources", "companies", "tracks", "changes", "phases"}
+    for item in payload["facets"]["phases"]:
+        assert set(item) == {"phase", "label_zh", "description_zh", "count"}
+    phase_facets = {item["phase"]: item["count"] for item in payload["facets"]["phases"]}
+    # facet counts are *change* counts within the window (initial 8 changes: the
+    # 20d/10d-old NEW rows are outside 7d; backfill 1 change), not observation counts.
+    assert phase_facets == {
+        "INITIAL_DISCOVERY": 8,
+        "INCREMENTAL_DISCOVERY": 0,
+        "HISTORICAL_BACKFILL": 1,
+    }
+    phase_labels = {item["phase"]: item["label_zh"] for item in payload["facets"]["phases"]}
+    assert phase_labels == {
+        "INITIAL_DISCOVERY": "初次发现",
+        "INCREMENTAL_DISCOVERY": "增量发现",
+        "HISTORICAL_BACKFILL": "历史回填",
+    }
     for item in payload["facets"]["sources"]:
         assert set(item) == {"source", "label_zh", "count"}
     for item in payload["facets"]["companies"]:
@@ -544,6 +598,10 @@ def test_events_exact_shape_and_facets(ledger_env):
         assert item["change_state"] in {
             "NEW", "UPDATED", "REMOVED_OR_UNAVAILABLE", "FETCH_FAILED",
         }
+        # every row carries its acquisition phase and the short Chinese label; the
+        # phase is not the change state and not observation_origin.
+        assert item["phase"] in {"INITIAL_DISCOVERY", "HISTORICAL_BACKFILL"}
+        assert item["phase_label_zh"] in {"初次发现", "历史回填"}
         # the two time statements are never merged
         assert "该事件发生于" in item["time_basis"]["statement_zh"] or "来源未提供事件发生时间" in item["time_basis"]["statement_zh"]
         assert "首次观察到它" in item["time_basis"]["statement_zh"]
@@ -922,6 +980,40 @@ def test_missing_ledger_is_an_honest_empty_state(missing_ledger_env):
     assert events_payload["facets"]["companies"] == []
     assert events_payload["facets"]["tracks"] == []
     assert [item["count"] for item in events_payload["facets"]["changes"]] == [0, 0, 0, 0]
+    assert [item["count"] for item in events_payload["facets"]["phases"]] == [0, 0, 0]
+    assert events_payload["filters"]["phase"] is None
+
+    assert payload["phases"] == {
+        "counts": {
+            "INITIAL_DISCOVERY": 0,
+            "INCREMENTAL_DISCOVERY": 0,
+            "HISTORICAL_BACKFILL": 0,
+        },
+        "initial": 0,
+        "incremental": 0,
+        "backfill": 0,
+        "unlabelled": 0,
+        "note_zh": payload["phases"]["note_zh"],
+    }
+    assert payload["validation"]["status"] == "VALIDATION_NOT_STARTED"
+    assert payload["deployment"]["status"] == "NOT_DEPLOYED"
+
+    # A missing ledger is an honest NOT_DEPLOYED health body, never a green badge
+    # and never a 500.
+    health = client.get("/api/observatory/health")
+    assert health.status_code == 200
+    health_payload = health.json()
+    assert health_payload["overall"] == "NOT_DEPLOYED"
+    assert health_payload["overall_label_zh"] == "未部署"
+    assert health_payload["deployment"]["status"] == "NOT_DEPLOYED"
+    assert health_payload["validation"]["status"] == "VALIDATION_NOT_STARTED"
+    assert health_payload["sources"] == []
+    assert any(
+        check["id"] == "ledger_exists" and check["ok"] is False
+        for check in health_payload["checks"]
+    )
+    assert health_payload["overall_note_zh"]
+    assert not Path(health_payload["persistence"].get("raw_cache_path") or "x").is_absolute()
 
     sources = client.get("/api/observatory/sources")
     assert sources.status_code == 200
@@ -1000,3 +1092,178 @@ def test_contradictory_publish_time_is_reported_as_unmeasurable(tmp_path, monkey
     assert item["time_basis"]["measurable"] is False
     assert item["evidence_zh"].startswith("无法测量")
     assert "矛盾" in item["evidence_zh"]
+
+
+# ----------------------------------------------------------- observatory health
+def test_health_exact_shape_and_honest_overall(ledger_env):
+    """Tier: SYNTHETIC — §6 health shape; data without a deployment is NOT_DEPLOYED."""
+    response = client.get("/api/observatory/health")
+    assert response.status_code == 200
+    payload = response.json()
+    assert {
+        "generated_at", "overall", "overall_label_zh", "overall_note_zh",
+        "deployment", "validation", "collector", "persistence", "sources",
+        "checks", "unresolved_structure_alerts", "limitations_zh",
+    } <= set(payload)
+    assert payload["overall"] in {
+        "OPERATIONAL", "DEGRADED", "PAUSED", "NOT_DEPLOYED", "VALIDATION_IN_PROGRESS",
+    }
+    # data exists, but no deployment was ever recorded: NOT_DEPLOYED is the only
+    # honest answer (§0 precedence).
+    assert payload["overall"] == "NOT_DEPLOYED"
+    assert payload["overall_label_zh"] == "未部署"
+    assert payload["overall_note_zh"]
+    assert payload["deployment"]["status"] == "NOT_DEPLOYED"
+    assert payload["deployment"]["supervisor"] == "none"
+    assert payload["deployment"]["status_label_zh"]
+    assert payload["validation"]["status"] == "VALIDATION_NOT_STARTED"
+    assert payload["validation"]["status_label_zh"]
+    assert payload["collector"]["running"] is False
+    assert {"held", "heartbeat_age_seconds", "holder"} <= set(payload["collector"]["lock"])
+    assert {"ledger_bytes", "raw_cache_bytes", "backup", "restore_drill",
+            "disk_free_bytes"} <= set(payload["persistence"])
+    assert payload["persistence"]["backup"]["status"] == "NEVER"
+    assert payload["persistence"]["restore_drill"]["status"] == "NEVER"
+
+    sources = {item["source"]: item for item in payload["sources"]}
+    assert set(sources) == {"sec_edgar", "ctgov", "europepmc"}
+    for item in payload["sources"]:
+        assert {
+            "status", "status_label_zh", "last_success_at", "last_attempt_at",
+            "last_outcome", "last_outcome_label_zh", "last_outcome_severity",
+            "consecutive_failures", "freshness_hours", "stale",
+            "stale_after_hours", "structure_alert",
+        } <= set(item)
+    assert sources["ctgov"]["status"] == "FAILED"
+    assert sources["ctgov"]["status_label_zh"] == "失败"
+    assert sources["ctgov"]["stale"] is True
+
+    checks = {check["id"]: check for check in payload["checks"]}
+    assert checks["sources_healthy"]["ok"] is False
+    assert checks["backup"]["ok"] is False
+    assert checks["restore_drill"]["ok"] is False
+    # never a green overall while a source is failing and backups are missing
+    assert payload["overall"] != "OPERATIONAL"
+    assert payload["limitations_zh"]
+
+
+def test_health_outcome_labels_keep_normal_and_failure_distinct(ledger_env):
+    """Tier: SYNTHETIC — NO_NEW_RECORDS is normal, FETCH_FAILED is a failure."""
+    path = default_ledger_path()
+    ledger = ObservationLedger(path)
+    try:
+        ledger.record_outcome(
+            "sec_edgar", run_id="outcome-run",
+            outcome="NO_NEW_RECORDS", new=0, updated=0,
+        )
+        ledger.record_outcome(
+            "ctgov", run_id="outcome-run",
+            outcome="FETCH_FAILED", new=0, updated=0,
+        )
+    finally:
+        ledger.close()
+    payload = client.get("/api/observatory/health").json()
+    sources = {item["source"]: item for item in payload["sources"]}
+    assert sources["sec_edgar"]["last_outcome"] == "NO_NEW_RECORDS"
+    assert sources["sec_edgar"]["last_outcome_severity"] == "normal"
+    assert "正常" in sources["sec_edgar"]["last_outcome_label_zh"]
+    assert sources["ctgov"]["last_outcome"] == "FETCH_FAILED"
+    assert sources["ctgov"]["last_outcome_severity"] == "failure"
+    assert sources["ctgov"]["last_outcome_label_zh"] == "采集失败"
+    assert sources["sec_edgar"]["last_outcome_label_zh"] != sources["ctgov"]["last_outcome_label_zh"]
+
+
+def test_events_phase_filter_and_facets(ledger_env):
+    """Tier: SYNTHETIC — phase filter narrows rows; facets carry the phase split."""
+    initial = client.get(
+        "/api/observatory/events",
+        params={"window": "7d", "phase": "INITIAL_DISCOVERY"},
+    ).json()
+    assert initial["total"] == 8
+    assert initial["filters"]["phase"] == "INITIAL_DISCOVERY"
+    assert initial["items"]
+    assert all(item["phase"] == "INITIAL_DISCOVERY" for item in initial["items"])
+    assert all(item["phase_label_zh"] == "初次发现" for item in initial["items"])
+
+    backfill = client.get(
+        "/api/observatory/events",
+        params={"window": "7d", "phase": "HISTORICAL_BACKFILL"},
+    ).json()
+    assert backfill["total"] == 1
+    assert backfill["items"][0]["observation_id"] == ledger_env["obs_g"]
+    assert backfill["items"][0]["phase"] == "HISTORICAL_BACKFILL"
+    assert backfill["items"][0]["phase_label_zh"] == "历史回填"
+
+    incremental = client.get(
+        "/api/observatory/events",
+        params={"window": "7d", "phase": "INCREMENTAL_DISCOVERY"},
+    ).json()
+    assert incremental["total"] == 0
+    assert incremental["items"] == []
+    # an honest empty phase result, not a fabricated row
+    assert incremental["facets"]["phases"]
+
+    # facets ignore the phase filter itself so the chips stay usable
+    phase_facets = {
+        item["phase"]: item["count"] for item in incremental["facets"]["phases"]
+    }
+    assert phase_facets == {
+        "INITIAL_DISCOVERY": 8,
+        "INCREMENTAL_DISCOVERY": 0,
+        "HISTORICAL_BACKFILL": 1,
+    }
+
+    assert client.get(
+        "/api/observatory/events", params={"phase": "BOGUS"}
+    ).status_code == 400
+
+
+def test_events_phase_incremental_filter_works(tmp_path, monkeypatch):
+    """Tier: SYNTHETIC — a later run's record is INCREMENTAL_DISCOVERY, not initial."""
+    path = tmp_path / "phase_ledger.sqlite"
+    monkeypatch.setenv("MEDRADAR_OBSERVATORY_DB", str(path))
+    now = utc_now().replace(microsecond=0)
+    ledger = ObservationLedger(path)
+    try:
+        ledger.ensure_source(
+            "sec_edgar", label_zh="SEC EDGAR 公开披露",
+            adapter_version="test/1.0", declared_cadence_zh="每 6 小时轮询",
+        )
+        first_run = ledger.start_run("sec_edgar", trigger="test", collector_version=COLLECTOR)
+        first = ledger.record_observation(
+            _record("sec_edgar", "PHASE-0001", "sec_8k", "first sweep record"),
+            _mapping(), run_id=first_run, collector_version=COLLECTOR,
+            mapping_version=MAPPING, seen_at=_iso(now - timedelta(hours=5)),
+        )
+        second_run = ledger.start_run("sec_edgar", trigger="test", collector_version=COLLECTOR)
+        second = ledger.record_observation(
+            _record("sec_edgar", "PHASE-0002", "sec_8k", "later sweep record"),
+            _mapping(), run_id=second_run, collector_version=COLLECTOR,
+            mapping_version=MAPPING, seen_at=_iso(now - timedelta(hours=2)),
+        )
+        # explicit collector assignment: deterministic in the synthetic fixture
+        ledger.assign_phase(
+            first.observation_id, "INITIAL_DISCOVERY",
+            method="collector_assigned", assigned_at=_iso(now - timedelta(hours=5)),
+        )
+        ledger.assign_phase(
+            second.observation_id, "INCREMENTAL_DISCOVERY",
+            method="collector_assigned", assigned_at=_iso(now - timedelta(hours=2)),
+        )
+    finally:
+        ledger.close()
+
+    payload = client.get(
+        "/api/observatory/events",
+        params={"window": "7d", "phase": "INCREMENTAL_DISCOVERY"},
+    ).json()
+    assert payload["total"] == 1
+    assert payload["items"][0]["title"] == "later sweep record"
+    assert payload["items"][0]["phase"] == "INCREMENTAL_DISCOVERY"
+    assert payload["items"][0]["phase_label_zh"] == "增量发现"
+
+    summary = client.get("/api/observatory/summary").json()
+    assert summary["phases"]["initial"] == 1
+    assert summary["phases"]["incremental"] == 1
+    assert summary["phases"]["backfill"] == 0
+    assert summary["phases"]["unlabelled"] == 0

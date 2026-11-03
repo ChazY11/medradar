@@ -1,0 +1,2069 @@
+{
+ "ledger": {
+  "observations": 400,
+  "versions": 400,
+  "changes": 400,
+  "live_observations": 400,
+  "backfilled_observations": 0,
+  "removed_observations": 0,
+  "sources": 3,
+  "runs": 31,
+  "failures": 6,
+  "first_observation_at": "2026-11-03T14:39:53Z",
+  "last_observation_at": "2026-11-03T14:49:51Z",
+  "first_run_at": "2026-11-03T14:39:53+00:00",
+  "last_run_at": "2026-11-03T15:50:58+00:00",
+  "schema_version": "obs-ledger-v1",
+  "created_at": "2026-11-03T14:39:53+00:00",
+  "db_bytes": 1937408,
+  "path": "data/observatory/observatory.sqlite"
+ },
+ "observation_stats": {
+  "observations": 400,
+  "first_seen_at": "2026-11-03T14:39:53Z",
+  "last_first_seen_at": "2026-11-03T14:49:51Z",
+  "by_source": {
+   "ctgov": 157,
+   "europepmc": 237,
+   "sec_edgar": 6
+  },
+  "phase": {
+   "INCREMENTAL_DISCOVERY": 1,
+   "INITIAL_DISCOVERY": 399
+  }
+ },
+ "phases": {
+  "counts": {
+   "INCREMENTAL_DISCOVERY": 1,
+   "INITIAL_DISCOVERY": 399
+  },
+  "labels_zh": {
+   "INITIAL_DISCOVERY": "初次上线发现（既有公开记录）",
+   "INCREMENTAL_DISCOVERY": "持续监测新发现（增量）",
+   "HISTORICAL_BACKFILL": "历史回填"
+  },
+  "unlabelled": 0
+ },
+ "source_outcomes": [
+  {
+   "source": "ctgov",
+   "last_outcome": "NO_NEW_RECORDS",
+   "last_new_records": 0,
+   "last_updated_records": 0,
+   "last_success_at": "2026-11-03T15:50:58+00:00"
+  },
+  {
+   "source": "europepmc",
+   "last_outcome": "NO_NEW_RECORDS",
+   "last_new_records": 0,
+   "last_updated_records": 0,
+   "last_success_at": "2026-11-03T15:50:59+00:00"
+  },
+  {
+   "source": "sec_edgar",
+   "last_outcome": "NO_NEW_RECORDS",
+   "last_new_records": 0,
+   "last_updated_records": 0,
+   "last_success_at": "2026-11-03T15:50:56+00:00"
+  }
+ ],
+ "runs_total": 31,
+ "runs_by_source": {
+  "ctgov": 9,
+  "europepmc": 9,
+  "sec_edgar": 13
+ },
+ "health": {
+  "generated_at": "2026-11-03T15:58:28+00:00",
+  "ledger": {
+   "path": "data/observatory/observatory.sqlite",
+   "exists": true,
+   "bytes": 1937408,
+   "observations": 400,
+   "versions": 400,
+   "changes": 400,
+   "runs": 31,
+   "first_observation_at": "2026-11-03T14:39:53Z",
+   "last_run_at": "2026-11-03T15:50:58+00:00"
+  },
+  "overall": "VALIDATION_IN_PROGRESS",
+  "deployment": {
+   "status": "DEPLOYED_LOCAL",
+   "installed_at": "2026-11-03T15:51:28+00:00",
+   "host": "WIN-QBJ1E1UD41B",
+   "supervisor": "windows_task",
+   "note_zh": "Windows Task Scheduler 任务 MedRadarObservatory；每 360 分钟触发一次单轮采集（-MaxCycles 1），trigger=schedule；非服务级部署（生产仍为 NOT_DEPLOYED，待授权主机）",
+   "evidence": "task=MedRadarObservatory State=Ready LastTaskResult=0 LastRun=2026-11-03T23:50:20+08 NextRun=2026-11-04T05:50+08; action=observatory_watch.ps1 -MaxCycles 1; log=logs/collector-20261103.log; one-shot pass OK exit=0; lock released"
+  },
+  "validation": {
+   "ends_at": "2026-11-10T15:35:37+00:00",
+   "interval_hours": 6.0,
+   "note_zh": "七天连续观察验证：按声明周期轮询三个官方来源；只有真实经过的时间与真实运行记录才计入，缺失的轮次记为 missed，不当作成功。",
+   "planned_slots": 28,
+   "protocol_version": "obs-validation-v1",
+   "started_at": "2026-11-03T15:35:37+00:00",
+   "status": "VALIDATION_IN_PROGRESS",
+   "target_days": 7,
+   "computed_at": "2026-11-03T15:58:28+00:00",
+   "days_elapsed": 0.0159,
+   "days_remaining": 6.9841,
+   "window_ended": false,
+   "slots": {
+    "planned_total": 28,
+    "due": 0,
+    "executed": 0,
+    "missed": 0,
+    "detail": []
+   },
+   "runs": {
+    "launched": 9,
+    "ok": 9,
+    "partial": 0,
+    "failed": 0,
+    "scheduler_success_rate": null,
+    "attempt_success_rate": 1.0
+   },
+   "sources": {
+    "sec_edgar": {
+     "attempts": 3,
+     "ok": 3,
+     "partial": 0,
+     "failed": 0,
+     "new": 0,
+     "updated": 0,
+     "success_rate": 1.0
+    },
+    "ctgov": {
+     "attempts": 3,
+     "ok": 3,
+     "partial": 0,
+     "failed": 0,
+     "new": 0,
+     "updated": 0,
+     "success_rate": 1.0
+    },
+    "europepmc": {
+     "attempts": 3,
+     "ok": 3,
+     "partial": 0,
+     "failed": 0,
+     "new": 0,
+     "updated": 0,
+     "success_rate": 1.0
+    }
+   },
+   "freshness": {
+    "sec_edgar": {
+     "last_success_at": "2026-11-03T15:50:56+00:00",
+     "last_attempt_at": "2026-11-03T15:50:21+00:00",
+     "freshness_hours": 0.13
+    },
+    "ctgov": {
+     "last_success_at": "2026-11-03T15:50:58+00:00",
+     "last_attempt_at": "2026-11-03T15:50:56+00:00",
+     "freshness_hours": 0.13
+    },
+    "europepmc": {
+     "last_success_at": "2026-11-03T15:50:59+00:00",
+     "last_attempt_at": "2026-11-03T15:50:58+00:00",
+     "freshness_hours": 0.12
+    }
+   },
+   "latency": {},
+   "duplicates": {
+    "duplicate_observations": 0,
+    "replayed_versions": 0,
+    "observations_in_window": 0,
+    "rate": 0.0,
+    "target": 0
+   },
+   "integrity": {
+    "violations": 0,
+    "issue_kinds": [],
+    "trigger_present": true,
+    "checked_at": "2026-11-03T15:58:28+00:00",
+    "target": 0
+   },
+   "recovery": {
+    "interrupted_runs": 0,
+    "recovered_runs": 0,
+    "success_rate": null,
+    "note_zh": "窗口内没有发生中断运行，无法据此证明恢复能力（恢复能力由合成故障注入测试单独证明）"
+   },
+   "storage": {
+    "ledger_bytes": 1937408,
+    "observations_total": 400,
+    "observations_in_window": 0,
+    "new_observations_per_day": 0.0,
+    "ledger_bytes_per_day": 1937408.0,
+    "daily_snapshots": [
+     {
+      "day": "2026-11-03",
+      "changes": 400,
+      "db_bytes": 1900544,
+      "observations": 400,
+      "runs": 31,
+      "versions": 400
+     }
+    ]
+   },
+   "notes_zh": [
+    "计划轮次按真实经过时间计算；未执行的轮次记为 missed，绝不计为成功。",
+    "只有来源提供可精确到时刻的发布时间时才计算小时级延迟；其余标记为无法测量。",
+    "VALIDATION_PASSED 只能在七天窗口真实结束后由 validate stop 显式写入。"
+   ]
+  },
+  "collector": {
+   "running": false,
+   "lock": {
+    "held": false,
+    "stale": null,
+    "path": "D:\\DEPPSKK\\medradar\\data\\observatory\\collector.lock",
+    "heartbeat_age_seconds": null,
+    "holder": null
+   },
+   "heartbeat": {
+    "at": "2026-11-03T15:50:59+00:00",
+    "checked_at": "2026-11-03T15:50:59+00:00",
+    "cycles": 1,
+    "state": "stopped"
+   },
+   "last_run": {
+    "run_id": "europepmc-20261103T155058Z-8200fe",
+    "source": "europepmc",
+    "status": "OK",
+    "started_at": "2026-11-03T15:50:58+00:00",
+    "finished_at": "2026-11-03T15:50:59+00:00"
+   },
+   "uptime_days": 0.055,
+   "observing_since": "2026-11-03T14:39:53+00:00"
+  },
+  "persistence": {
+   "ledger_bytes": 1937408,
+   "raw_cache_bytes": 4861532,
+   "raw_cache_path": "D:\\DEPPSKK\\medradar\\data\\observatory\\cache",
+   "backup": {
+    "at": "2026-11-03T15:58:27+00:00",
+    "status": "OK",
+    "verified": true,
+    "bundle": "observatory-20261103T155827Z",
+    "age_hours": 0.0,
+    "counts": {
+     "changes": 400,
+     "observations": 400,
+     "runs": 31,
+     "versions": 400
+    },
+    "error": null
+   },
+   "restore_drill": {
+    "at": "2026-11-03T15:58:27+00:00",
+    "status": "OK",
+    "ok": true,
+    "age_hours": 0.0,
+    "bundle": "observatory-20261103T155827Z-drill",
+    "error": null
+   },
+   "newest_backup_bundle": {
+    "bundle": "observatory-20261103T155827Z",
+    "path": "D:\\DEPPSKK\\medradar\\data\\observatory\\backups\\observatory-20261103T155827Z",
+    "manifest_bytes": 6394
+   },
+   "backup_dir": "D:\\DEPPSKK\\medradar\\data\\observatory\\backups",
+   "disk_free_bytes": 644047192064
+  },
+  "sources": [
+   {
+    "source": "ctgov",
+    "label_zh": "ClinicalTrials.gov 注册库",
+    "status": "OK",
+    "last_success_at": "2026-11-03T15:50:58+00:00",
+    "last_attempt_at": "2026-11-03T15:50:56+00:00",
+    "last_failure_at": "2026-11-03T14:51:30+00:00",
+    "consecutive_failures": 0,
+    "last_outcome": "NO_NEW_RECORDS",
+    "last_new_records": 0,
+    "last_updated_records": 0,
+    "declared_cadence_zh": "默认每 12 小时轮询；ClinicalTrials.gov 仅发布日期、不提供时间戳，因此观察时间精度为“天”；申办方名称检索无法覆盖名称不同的登记，不宣称完整",
+    "expected_interval_hours": 12.0,
+    "freshness_hours": 0.13,
+    "stale": false,
+    "stale_after_hours": 36.0,
+    "structure_alert": false,
+    "structure_note_zh": null
+   },
+   {
+    "source": "europepmc",
+    "label_zh": "Europe PMC 文献元数据",
+    "status": "OK",
+    "last_success_at": "2026-11-03T15:50:59+00:00",
+    "last_attempt_at": "2026-11-03T15:50:58+00:00",
+    "last_failure_at": "2026-11-03T14:51:33+00:00",
+    "consecutive_failures": 0,
+    "last_outcome": "NO_NEW_RECORDS",
+    "last_new_records": 0,
+    "last_updated_records": 0,
+    "declared_cadence_zh": "默认每 12 小时轮询；Europe PMC 未提供网页可用时间戳，只能按索引日期与修订日期如实记录；单位署名检索不等于企业归属，也不覆盖全部论文",
+    "expected_interval_hours": 12.0,
+    "freshness_hours": 0.12,
+    "stale": false,
+    "stale_after_hours": 36.0,
+    "structure_alert": false,
+    "structure_note_zh": null
+   },
+   {
+    "source": "sec_edgar",
+    "label_zh": "SEC EDGAR 公开披露",
+    "status": "OK",
+    "last_success_at": "2026-11-03T15:50:56+00:00",
+    "last_attempt_at": "2026-11-03T15:50:21+00:00",
+    "last_failure_at": null,
+    "consecutive_failures": 0,
+    "last_outcome": "NO_NEW_RECORDS",
+    "last_new_records": 0,
+    "last_updated_records": 0,
+    "declared_cadence_zh": "默认每 6 小时轮询；SEC 受理后通常数分钟即可检索",
+    "expected_interval_hours": 6.0,
+    "freshness_hours": 0.13,
+    "stale": false,
+    "stale_after_hours": 18.0,
+    "structure_alert": false,
+    "structure_note_zh": null
+   }
+  ],
+  "unresolved_structure_alerts": [],
+  "checks": [
+   {
+    "id": "ledger_exists",
+    "ok": true,
+    "detail_zh": "账本存在，400 条观察"
+   },
+   {
+    "id": "sources_present",
+    "ok": true,
+    "detail_zh": "已登记来源 3/3：ctgov, europepmc, sec_edgar"
+   },
+   {
+    "id": "sources_healthy",
+    "ok": true,
+    "detail_zh": "全部来源状态 OK"
+   },
+   {
+    "id": "freshness",
+    "ok": true,
+    "detail_zh": "全部来源新鲜度在阈值内"
+   },
+   {
+    "id": "collector_recent",
+    "ok": true,
+    "detail_zh": "最近运行：europepmc-20261103T155058Z-8200fe"
+   },
+   {
+    "id": "backup",
+    "ok": true,
+    "detail_zh": "最近备份已验证"
+   },
+   {
+    "id": "backup_freshness",
+    "ok": true,
+    "detail_zh": "最近备份 0.0 小时前"
+   },
+   {
+    "id": "restore_drill",
+    "ok": true,
+    "detail_zh": "最近恢复演练成功"
+   },
+   {
+    "id": "structure_alerts",
+    "ok": true,
+    "detail_zh": "没有未解决的结构变化告警"
+   },
+   {
+    "id": "disk_space",
+    "ok": true,
+    "detail_zh": "可用磁盘 599.82 GB"
+   },
+   {
+    "id": "integrity",
+    "ok": true,
+    "detail_zh": "一致性检查通过"
+   }
+  ],
+  "limitations_zh": [
+   "健康状态由账本、文件系统与运行记录计算，不代表 HTTP 服务是否 200。",
+   "NOT_DEPLOYED 表示没有经过验证的常驻部署；手动运行与本地验证不等于生产部署。",
+   "VALIDATION_IN_PROGRESS 表示七天连续验证尚未结束：不能宣称已通过。"
+  ]
+ },
+ "validation": {
+  "ends_at": "2026-11-10T15:35:37+00:00",
+  "interval_hours": 6.0,
+  "note_zh": "七天连续观察验证：按声明周期轮询三个官方来源；只有真实经过的时间与真实运行记录才计入，缺失的轮次记为 missed，不当作成功。",
+  "planned_slots": 28,
+  "protocol_version": "obs-validation-v1",
+  "started_at": "2026-11-03T15:35:37+00:00",
+  "status": "VALIDATION_IN_PROGRESS",
+  "target_days": 7,
+  "computed_at": "2026-11-03T15:58:28+00:00",
+  "days_elapsed": 0.0159,
+  "days_remaining": 6.9841,
+  "window_ended": false,
+  "slots": {
+   "planned_total": 28,
+   "due": 0,
+   "executed": 0,
+   "missed": 0,
+   "detail": []
+  },
+  "runs": {
+   "launched": 9,
+   "ok": 9,
+   "partial": 0,
+   "failed": 0,
+   "scheduler_success_rate": null,
+   "attempt_success_rate": 1.0
+  },
+  "sources": {
+   "sec_edgar": {
+    "attempts": 3,
+    "ok": 3,
+    "partial": 0,
+    "failed": 0,
+    "new": 0,
+    "updated": 0,
+    "success_rate": 1.0
+   },
+   "ctgov": {
+    "attempts": 3,
+    "ok": 3,
+    "partial": 0,
+    "failed": 0,
+    "new": 0,
+    "updated": 0,
+    "success_rate": 1.0
+   },
+   "europepmc": {
+    "attempts": 3,
+    "ok": 3,
+    "partial": 0,
+    "failed": 0,
+    "new": 0,
+    "updated": 0,
+    "success_rate": 1.0
+   }
+  },
+  "freshness": {
+   "sec_edgar": {
+    "last_success_at": "2026-11-03T15:50:56+00:00",
+    "last_attempt_at": "2026-11-03T15:50:21+00:00",
+    "freshness_hours": 0.13
+   },
+   "ctgov": {
+    "last_success_at": "2026-11-03T15:50:58+00:00",
+    "last_attempt_at": "2026-11-03T15:50:56+00:00",
+    "freshness_hours": 0.13
+   },
+   "europepmc": {
+    "last_success_at": "2026-11-03T15:50:59+00:00",
+    "last_attempt_at": "2026-11-03T15:50:58+00:00",
+    "freshness_hours": 0.12
+   }
+  },
+  "latency": {},
+  "duplicates": {
+   "duplicate_observations": 0,
+   "replayed_versions": 0,
+   "observations_in_window": 0,
+   "rate": 0.0,
+   "target": 0
+  },
+  "integrity": {
+   "violations": 0,
+   "issue_kinds": [],
+   "trigger_present": true,
+   "checked_at": "2026-11-03T15:58:28+00:00",
+   "target": 0
+  },
+  "recovery": {
+   "interrupted_runs": 0,
+   "recovered_runs": 0,
+   "success_rate": null,
+   "note_zh": "窗口内没有发生中断运行，无法据此证明恢复能力（恢复能力由合成故障注入测试单独证明）"
+  },
+  "storage": {
+   "ledger_bytes": 1937408,
+   "observations_total": 400,
+   "observations_in_window": 0,
+   "new_observations_per_day": 0.0,
+   "ledger_bytes_per_day": 1937408.0,
+   "daily_snapshots": [
+    {
+     "day": "2026-11-03",
+     "changes": 400,
+     "db_bytes": 1900544,
+     "observations": 400,
+     "runs": 31,
+     "versions": 400
+    }
+   ]
+  },
+  "notes_zh": [
+   "计划轮次按真实经过时间计算；未执行的轮次记为 missed，绝不计为成功。",
+   "只有来源提供可精确到时刻的发布时间时才计算小时级延迟；其余标记为无法测量。",
+   "VALIDATION_PASSED 只能在七天窗口真实结束后由 validate stop 显式写入。"
+  ]
+ },
+ "status": {
+  "ledger": {
+   "observations": 400,
+   "versions": 400,
+   "changes": 400,
+   "live_observations": 400,
+   "backfilled_observations": 0,
+   "removed_observations": 0,
+   "sources": 3,
+   "runs": 31,
+   "failures": 6,
+   "first_observation_at": "2026-11-03T14:39:53Z",
+   "last_observation_at": "2026-11-03T14:49:51Z",
+   "first_run_at": "2026-11-03T14:39:53+00:00",
+   "last_run_at": "2026-11-03T15:50:58+00:00",
+   "schema_version": "obs-ledger-v1",
+   "created_at": "2026-11-03T14:39:53+00:00",
+   "db_bytes": 1937408,
+   "path": "data/observatory/observatory.sqlite"
+  },
+  "paused": false,
+  "pause_state": {},
+  "heartbeat": {
+   "at": "2026-11-03T15:50:59+00:00",
+   "checked_at": "2026-11-03T15:50:59+00:00",
+   "cycles": 1,
+   "state": "stopped"
+  },
+  "sources": [
+   {
+    "source": "ctgov",
+    "label_zh": "ClinicalTrials.gov 注册库",
+    "status": "OK",
+    "declared_cadence_zh": "默认每 12 小时轮询；ClinicalTrials.gov 仅发布日期、不提供时间戳，因此观察时间精度为“天”；申办方名称检索无法覆盖名称不同的登记，不宣称完整",
+    "adapter_version": "ctgov/1.0.0",
+    "last_attempt_at": "2026-11-03T15:50:56+00:00",
+    "last_success_at": "2026-11-03T15:50:58+00:00",
+    "last_failure_at": "2026-11-03T14:51:30+00:00",
+    "consecutive_failures": 0,
+    "last_status_message": null,
+    "watermark": {
+     "spons:draeger:Dräger": {
+      "company_key": "draeger",
+      "known_ids": [
+       "NCT07307300"
+      ],
+      "last_update_post_date": "2025-12-29",
+      "sponsor": "Dräger"
+     },
+     "spons:ge_healthcare:GE HealthCare": {
+      "company_key": "ge_healthcare",
+      "known_ids": [
+       "NCT07910474"
+      ],
+      "last_update_post_date": "2026-11-03",
+      "sponsor": "GE HealthCare"
+     },
+     "spons:medtronic:Medtronic": {
+      "company_key": "medtronic",
+      "known_ids": [
+       "NCT06678841",
+       "NCT04450628",
+       "NCT05696444",
+       "NCT07005232",
+       "NCT02701283"
+      ],
+      "last_update_post_date": "2026-11-03",
+      "sponsor": "Medtronic"
+     },
+     "spons:mindray:Mindray": {
+      "company_key": "mindray",
+      "known_ids": [
+       "NCT07128108"
+      ],
+      "last_update_post_date": "2026-08-12",
+      "sponsor": "Mindray"
+     },
+     "spons:philips:Philips": {
+      "company_key": "philips",
+      "known_ids": [
+       "NCT04950192",
+       "NCT04696354",
+       "NCT06239493"
+      ],
+      "last_update_post_date": "2026-11-03",
+      "sponsor": "Philips"
+     }
+    },
+    "watermark_updated_at": "2026-11-03T15:50:58+00:00",
+    "structure": {
+     "signature": "98a9966c864081812bcdebfbdea546f71c7e8636",
+     "changed_at": null,
+     "note_zh": null
+    },
+    "entity_coverage": null,
+    "observations": 157,
+    "windows": {
+     "24h": {
+      "new": 157,
+      "updated": 0,
+      "removed": 0,
+      "failed": 0,
+      "total": 157
+     },
+     "7d": {
+      "new": 157,
+      "updated": 0,
+      "removed": 0,
+      "failed": 0,
+      "total": 157
+     },
+     "30d": {
+      "new": 157,
+      "updated": 0,
+      "removed": 0,
+      "failed": 0,
+      "total": 157
+     }
+    },
+    "measured_lag": {
+     "source": "ctgov",
+     "measurable": false,
+     "note_zh": "来源只提供日期（无时间），无法测量小时级延迟；不推算",
+     "p50_hours": null,
+     "p90_hours": null,
+     "max_hours": null,
+     "n": 0,
+     "precision": "date_only",
+     "approximate_n": 157,
+     "event_to_first_seen": {
+      "measurable": true,
+      "note_zh": "来源提供可用时间戳，按“来源发布 → MedRadar 首次观察”计算",
+      "p50_hours": 15038.741,
+      "p90_hours": 63456.341,
+      "max_hours": 384302.741,
+      "n": 148,
+      "precision": "datetime",
+      "approximate_n": 0
+     }
+    },
+    "last_outcome": "NO_NEW_RECORDS",
+    "last_new_records": 0,
+    "last_updated_records": 0,
+    "last_finished_at": "2026-11-03T15:50:58Z",
+    "recent_runs": [
+     {
+      "run_id": "ctgov-20261103T155056Z-9914d2",
+      "source": "ctgov",
+      "trigger": "schedule",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T15:50:56+00:00",
+      "finished_at": "2026-11-03T15:50:58+00:00",
+      "status": "OK",
+      "collector_version": "ctgov/1.0.0",
+      "requests": 8,
+      "pages": 8,
+      "records_seen": 11,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 11,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "watermark_after": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "ctgov-20261103T154510Z-3c38a1",
+      "source": "ctgov",
+      "trigger": "schedule",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T15:45:10+00:00",
+      "finished_at": "2026-11-03T15:45:12+00:00",
+      "status": "OK",
+      "collector_version": "ctgov/1.0.0",
+      "requests": 8,
+      "pages": 8,
+      "records_seen": 11,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 11,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "watermark_after": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "ctgov-20261103T153822Z-c9a67c",
+      "source": "ctgov",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T15:38:22+00:00",
+      "finished_at": "2026-11-03T15:38:24+00:00",
+      "status": "OK",
+      "collector_version": "ctgov/1.0.0",
+      "requests": 8,
+      "pages": 8,
+      "records_seen": 11,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 11,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "watermark_after": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "ctgov-20261103T150858Z-05ce6c",
+      "source": "ctgov",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T15:08:58+00:00",
+      "finished_at": "2026-11-03T15:09:01+00:00",
+      "status": "OK",
+      "collector_version": "ctgov/1.0.0",
+      "requests": 8,
+      "pages": 8,
+      "records_seen": 11,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 11,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "watermark_after": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "ctgov-20261103T145156Z-ef2b5f",
+      "source": "ctgov",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:51:56+00:00",
+      "finished_at": "2026-11-03T14:51:58+00:00",
+      "status": "OK",
+      "collector_version": "ctgov/1.0.0",
+      "requests": 8,
+      "pages": 8,
+      "records_seen": 11,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 11,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "watermark_after": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "ctgov-20261103T145127Z-858239",
+      "source": "ctgov",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:51:27+00:00",
+      "finished_at": "2026-11-03T14:51:43+00:00",
+      "status": "OK",
+      "collector_version": "ctgov/1.0.0",
+      "requests": 0,
+      "pages": 0,
+      "records_seen": 0,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 0,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "watermark_after": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "error_detail": null,
+      "notes_zh": "本次运行从上次中断的检查点继续"
+     },
+     {
+      "run_id": "ctgov-20261103T145041Z-68f8e5",
+      "source": "ctgov",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:50:41+00:00",
+      "finished_at": "2026-11-03T14:51:25+00:00",
+      "status": "OK",
+      "collector_version": "ctgov/1.0.0",
+      "requests": 0,
+      "pages": 0,
+      "records_seen": 0,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 0,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "watermark_after": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "error_detail": null,
+      "notes_zh": "本次运行从上次中断的检查点继续"
+     },
+     {
+      "run_id": "ctgov-20261103T144951Z-a1aa0c",
+      "source": "ctgov",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:49:51+00:00",
+      "finished_at": "2026-11-03T14:49:59+00:00",
+      "status": "OK",
+      "collector_version": "ctgov/1.0.0",
+      "requests": 0,
+      "pages": 0,
+      "records_seen": 0,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 0,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\",\"NCT06398730\",\"NCT04073797\",\"NCT06072807\",\"NCT07893405\",\"NCT07609225\",\"NCT06630845\",\"NCT07873463\",\"NCT00567684\",\"NCT07857161\",\"NCT05629689\",\"NCT06835647\",\"NCT05878665\",\"NCT06934096\",\"NCT07790458\",\"NCT07661706\",\"NCT06024772\",\"NCT07538544\",\"NCT07725237\",\"NCT06383585\",\"NCT07753954\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\",\"NCT07901049\",\"NCT03242642\",\"NCT05496998\",\"NCT06203054\",\"NCT04929678\",\"NCT06578104\",\"NCT05839730\",\"NCT07585968\",\"NCT06557798\",\"NCT07748962\",\"NCT05227053\",\"NCT05005949\",\"NCT01534299\",\"NCT06604884\",\"NCT07721948\",\"NCT04009512\",\"NCT06535854\",\"NCT07264413\",\"NCT07887256\",\"NCT07884994\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\",\"NCT07901608\",\"NCT07881874\",\"NCT03283384\",\"NCT04701684\",\"NCT06932055\",\"NCT04758403\",\"NCT00810498\",\"NCT05636332\",\"NCT07813546\",\"NCT07636148\",\"NCT07317453\",\"NCT07317427\",\"NCT07317466\",\"NCT05587764\",\"NCT07552272\",\"NCT07767201\",\"NCT03298659\",\"NCT05181111\",\"NCT07625488\",\"NCT07759011\",\"NCT07759050\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "watermark_after": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[\"NCT07307300\"],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "error_detail": null,
+      "notes_zh": "本次运行从上次中断的检查点继续"
+     },
+     {
+      "run_id": "ctgov-20261103T144426Z-350af8",
+      "source": "ctgov",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:44:26+00:00",
+      "finished_at": "2026-11-03T14:44:29+00:00",
+      "status": "OK",
+      "collector_version": "ctgov/1.0.0",
+      "requests": 9,
+      "pages": 9,
+      "records_seen": 156,
+      "records_new": 156,
+      "records_updated": 0,
+      "records_unchanged": 0,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": null,
+      "watermark_after": "{\"spons:draeger:Dräger\":{\"company_key\":\"draeger\",\"known_ids\":[],\"last_update_post_date\":\"2025-12-29\",\"sponsor\":\"Dräger\"},\"spons:ge_healthcare:GE HealthCare\":{\"company_key\":\"ge_healthcare\",\"known_ids\":[\"NCT07910474\",\"NCT06398730\",\"NCT04073797\",\"NCT06072807\",\"NCT07893405\",\"NCT07609225\",\"NCT06630845\",\"NCT07873463\",\"NCT00567684\",\"NCT07857161\",\"NCT05629689\",\"NCT06835647\",\"NCT05878665\",\"NCT06934096\",\"NCT07790458\",\"NCT07661706\",\"NCT06024772\",\"NCT07538544\",\"NCT07725237\",\"NCT06383585\",\"NCT07753954\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"GE HealthCare\"},\"spons:medtronic:Medtronic\":{\"company_key\":\"medtronic\",\"known_ids\":[\"NCT06678841\",\"NCT04450628\",\"NCT05696444\",\"NCT07005232\",\"NCT02701283\",\"NCT07901049\",\"NCT03242642\",\"NCT05496998\",\"NCT06203054\",\"NCT04929678\",\"NCT06578104\",\"NCT05839730\",\"NCT07585968\",\"NCT06557798\",\"NCT07748962\",\"NCT05227053\",\"NCT05005949\",\"NCT01534299\",\"NCT06604884\",\"NCT07721948\",\"NCT04009512\",\"NCT06535854\",\"NCT07264413\",\"NCT07887256\",\"NCT07884994\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Medtronic\"},\"spons:mindray:Mindray\":{\"company_key\":\"mindray\",\"known_ids\":[\"NCT07128108\"],\"last_update_post_date\":\"2026-08-12\",\"sponsor\":\"Mindray\"},\"spons:philips:Philips\":{\"company_key\":\"philips\",\"known_ids\":[\"NCT04950192\",\"NCT04696354\",\"NCT06239493\",\"NCT07901608\",\"NCT07881874\",\"NCT03283384\",\"NCT04701684\",\"NCT06932055\",\"NCT04758403\",\"NCT00810498\",\"NCT05636332\",\"NCT07813546\",\"NCT07636148\",\"NCT07317453\",\"NCT07317427\",\"NCT07317466\",\"NCT05587764\",\"NCT07552272\",\"NCT07767201\",\"NCT03298659\",\"NCT05181111\",\"NCT07625488\",\"NCT07759011\",\"NCT07759050\"],\"last_update_post_date\":\"2026-11-03\",\"sponsor\":\"Philips\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     }
+    ],
+    "recent_failures": [
+     {
+      "failure_id": "5ae5ed9abc35b8e3faa4ea748928ade5ec153acc",
+      "source": "ctgov",
+      "run_id": "ctgov-20261103T145127Z-858239",
+      "occurred_at": "2026-11-03T14:51:27+00:00",
+      "kind": "STRUCTURE_CHANGE",
+      "url": null,
+      "http_status": null,
+      "message": "ctgov 返回结构指纹变化：7b579ba9d7 → 98a9966c86；采集继续，但字段含义需人工复核",
+      "retryable": 0,
+      "attempt": null
+     },
+     {
+      "failure_id": "30ab29aac6810f5c54bd06bdbbbdd3027db46f10",
+      "source": "ctgov",
+      "run_id": "ctgov-20261103T145041Z-68f8e5",
+      "occurred_at": "2026-11-03T14:50:41+00:00",
+      "kind": "STRUCTURE_CHANGE",
+      "url": null,
+      "http_status": null,
+      "message": "ctgov 返回结构指纹变化：e26f34e1be → 7b579ba9d7；采集继续，但字段含义需人工复核",
+      "retryable": 0,
+      "attempt": null
+     },
+     {
+      "failure_id": "f3f03aadce86d2f82b7a3889319f9f5d58d2f2a7",
+      "source": "ctgov",
+      "run_id": "ctgov-20261103T144951Z-a1aa0c",
+      "occurred_at": "2026-11-03T14:49:53+00:00",
+      "kind": "STRUCTURE_CHANGE",
+      "url": null,
+      "http_status": null,
+      "message": "ctgov 返回结构指纹变化：238ce591b1 → e26f34e1be；采集继续，但字段含义需人工复核",
+      "retryable": 0,
+      "attempt": null
+     }
+    ]
+   },
+   {
+    "source": "europepmc",
+    "label_zh": "Europe PMC 文献元数据",
+    "status": "OK",
+    "declared_cadence_zh": "默认每 12 小时轮询；Europe PMC 未提供网页可用时间戳，只能按索引日期与修订日期如实记录；单位署名检索不等于企业归属，也不覆盖全部论文",
+    "adapter_version": "europepmc/1.0.0",
+    "last_attempt_at": "2026-11-03T15:50:58+00:00",
+    "last_success_at": "2026-11-03T15:50:59+00:00",
+    "last_failure_at": "2026-11-03T14:51:33+00:00",
+    "consecutive_failures": 0,
+    "last_status_message": null,
+    "watermark": {
+     "aff:draeger:Dräger": {
+      "affiliation_query": "(AFF:\"Dräger\") AND (SRC:MED OR SRC:PPR)",
+      "affiliation_term": "Dräger",
+      "company_key": "draeger",
+      "known_ids": [],
+      "latest_date": null,
+      "pending_upper": null,
+      "window_lower": "2026-10-04",
+      "window_upper": "2026-11-03"
+     },
+     "aff:ge_healthcare:GE HealthCare": {
+      "affiliation_query": "(AFF:\"GE HealthCare\") AND (SRC:MED OR SRC:PPR)",
+      "affiliation_term": "GE HealthCare",
+      "company_key": "ge_healthcare",
+      "known_ids": [
+       "MED:42839376",
+       "MED:42965522"
+      ],
+      "latest_date": "2026-11-01",
+      "pending_upper": null,
+      "window_lower": "2026-10-25",
+      "window_upper": "2026-11-03"
+     },
+     "aff:medtronic:Medtronic": {
+      "affiliation_query": "(AFF:\"Medtronic\") AND (SRC:MED OR SRC:PPR)",
+      "affiliation_term": "Medtronic",
+      "company_key": "medtronic",
+      "known_ids": [
+       "MED:42963952",
+       "MED:42962495",
+       "MED:42957169",
+       "MED:42945024"
+      ],
+      "latest_date": "2026-11-03",
+      "pending_upper": null,
+      "window_lower": "2026-10-27",
+      "window_upper": "2026-11-03"
+     },
+     "aff:mindray:Mindray": {
+      "affiliation_query": "(AFF:\"Mindray\") AND (SRC:MED OR SRC:PPR)",
+      "affiliation_term": "Mindray",
+      "company_key": "mindray",
+      "known_ids": [
+       "MED:42951790"
+      ],
+      "latest_date": "2026-10-29",
+      "pending_upper": null,
+      "window_lower": "2026-10-22",
+      "window_upper": "2026-11-03"
+     },
+     "aff:philips:Philips": {
+      "affiliation_query": "(AFF:\"Philips\") AND (SRC:MED OR SRC:PPR)",
+      "affiliation_term": "Philips",
+      "company_key": "philips",
+      "known_ids": [
+       "MED:42969276",
+       "MED:42969224",
+       "MED:42969106",
+       "MED:42965658",
+       "MED:42954189",
+       "MED:42764331",
+       "MED:42966510",
+       "MED:42963984",
+       "MED:42961642",
+       "MED:42960671",
+       "MED:42956916",
+       "MED:42956860",
+       "MED:42946532",
+       "MED:42944884",
+       "MED:42887545"
+      ],
+      "latest_date": "2026-11-03",
+      "pending_upper": null,
+      "window_lower": "2026-10-27",
+      "window_upper": "2026-11-03"
+     }
+    },
+    "watermark_updated_at": "2026-11-03T15:50:59+00:00",
+    "structure": {
+     "signature": "949d8b198a09957dd09f0a50ce0020602f67988c",
+     "changed_at": null,
+     "note_zh": null
+    },
+    "entity_coverage": null,
+    "observations": 237,
+    "windows": {
+     "24h": {
+      "new": 237,
+      "updated": 0,
+      "removed": 0,
+      "failed": 0,
+      "total": 237
+     },
+     "7d": {
+      "new": 237,
+      "updated": 0,
+      "removed": 0,
+      "failed": 0,
+      "total": 237
+     },
+     "30d": {
+      "new": 237,
+      "updated": 0,
+      "removed": 0,
+      "failed": 0,
+      "total": 237
+     }
+    },
+    "measured_lag": {
+     "source": "europepmc",
+     "measurable": false,
+     "note_zh": "来源只提供日期（无时间），无法测量小时级延迟；不推算",
+     "p50_hours": null,
+     "p90_hours": null,
+     "max_hours": null,
+     "n": 0,
+     "precision": "date_only",
+     "approximate_n": 237,
+     "event_to_first_seen": {
+      "measurable": true,
+      "note_zh": "来源提供可用时间戳，按“来源发布 → MedRadar 首次观察”计算",
+      "p50_hours": 1166.741,
+      "p90_hours": 1992.341,
+      "max_hours": 2174.741,
+      "n": 237,
+      "precision": "datetime",
+      "approximate_n": 0
+     }
+    },
+    "last_outcome": "NO_NEW_RECORDS",
+    "last_new_records": 0,
+    "last_updated_records": 0,
+    "last_finished_at": "2026-11-03T15:50:59Z",
+    "recent_runs": [
+     {
+      "run_id": "europepmc-20261103T155058Z-8200fe",
+      "source": "europepmc",
+      "trigger": "schedule",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T15:50:58+00:00",
+      "finished_at": "2026-11-03T15:50:59+00:00",
+      "status": "OK",
+      "collector_version": "europepmc/1.0.0",
+      "requests": 5,
+      "pages": 5,
+      "records_seen": 22,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 22,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-10-04\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "watermark_after": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-10-04\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "europepmc-20261103T154512Z-710d6f",
+      "source": "europepmc",
+      "trigger": "schedule",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T15:45:12+00:00",
+      "finished_at": "2026-11-03T15:45:13+00:00",
+      "status": "OK",
+      "collector_version": "europepmc/1.0.0",
+      "requests": 5,
+      "pages": 5,
+      "records_seen": 22,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 22,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "watermark_after": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-10-04\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "europepmc-20261103T153824Z-e0e7d2",
+      "source": "europepmc",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T15:38:24+00:00",
+      "finished_at": "2026-11-03T15:38:25+00:00",
+      "status": "OK",
+      "collector_version": "europepmc/1.0.0",
+      "requests": 5,
+      "pages": 5,
+      "records_seen": 22,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 22,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "watermark_after": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "europepmc-20261103T150901Z-3e6fee",
+      "source": "europepmc",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T15:09:01+00:00",
+      "finished_at": "2026-11-03T15:09:02+00:00",
+      "status": "OK",
+      "collector_version": "europepmc/1.0.0",
+      "requests": 5,
+      "pages": 5,
+      "records_seen": 22,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 22,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "watermark_after": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "europepmc-20261103T145158Z-b80e3f",
+      "source": "europepmc",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:51:58+00:00",
+      "finished_at": "2026-11-03T14:52:00+00:00",
+      "status": "OK",
+      "collector_version": "europepmc/1.0.0",
+      "requests": 5,
+      "pages": 5,
+      "records_seen": 22,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 22,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "watermark_after": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "europepmc-20261103T145130Z-168fcb",
+      "source": "europepmc",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:51:30+00:00",
+      "finished_at": "2026-11-03T14:51:43+00:00",
+      "status": "OK",
+      "collector_version": "europepmc/1.0.0",
+      "requests": 0,
+      "pages": 0,
+      "records_seen": 0,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 0,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "watermark_after": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "error_detail": null,
+      "notes_zh": "本次运行从上次中断的检查点继续"
+     },
+     {
+      "run_id": "europepmc-20261103T145043Z-5901f9",
+      "source": "europepmc",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:50:43+00:00",
+      "finished_at": "2026-11-03T14:51:25+00:00",
+      "status": "OK",
+      "collector_version": "europepmc/1.0.0",
+      "requests": 0,
+      "pages": 0,
+      "records_seen": 0,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 0,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "watermark_after": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "error_detail": null,
+      "notes_zh": "本次运行从上次中断的检查点继续"
+     },
+     {
+      "run_id": "europepmc-20261103T144953Z-074919",
+      "source": "europepmc",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:49:53+00:00",
+      "finished_at": "2026-11-03T14:49:59+00:00",
+      "status": "OK",
+      "collector_version": "europepmc/1.0.0",
+      "requests": 0,
+      "pages": 0,
+      "records_seen": 0,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 0,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42790712\",\"MED:42778031\",\"MED:42728197\",\"MED:42679868\",\"MED:42679414\",\"MED:42667860\",\"MED:42557923\",\"MED:42839376\",\"MED:42803706\",\"MED:42748585\",\"MED:42727627\",\"MED:42965522\",\"MED:42956425\",\"MED:42945597\",\"MED:42933252\",\"MED:42914528\",\"MED:42905151\",\"MED:42901441\",\"MED:42899810\",\"MED:42898008\",\"MED:42892405\",\"MED:42886112\",\"MED:42882389\",\"MED:42876368\",\"MED:42874222\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42715718\",\"MED:42893069\",\"MED:42664694\",\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\",\"MED:42930910\",\"MED:42924745\",\"MED:42924249\",\"MED:42910615\",\"MED:42902709\",\"MED:42896857\",\"MED:42892706\",\"MED:42887713\",\"MED:42887626\",\"MED:42873975\",\"MED:42860180\",\"MED:42843552\",\"MED:42841863\",\"MED:42838317\",\"MED:42834674\",\"MED:42669894\",\"MED:42629478\",\"MED:42608501\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42648524\",\"MED:42612897\",\"MED:42753301\",\"MED:42697166\",\"MED:42674962\",\"MED:42570927\",\"MED:42951790\",\"MED:42951338\",\"MED:42899535\",\"MED:42893706\",\"MED:42849045\",\"MED:42785192\",\"MED:42733329\",\"MED:42731570\",\"MED:42303280\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42858634\",\"MED:42733539\",\"MED:42724531\",\"MED:42676964\",\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42873269\",\"MED:42764331\",\"MED:42557971\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42938922\",\"MED:42932311\",\"MED:42915498\",\"MED:42911244\",\"MED:42907878\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"}}",
+      "watermark_after": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42839376\",\"MED:42965522\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-10-25\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42951790\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-10-22\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42764331\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42887545\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-10-27\",\"window_upper\":\"2026-11-03\"}}",
+      "error_detail": null,
+      "notes_zh": "本次运行从上次中断的检查点继续"
+     },
+     {
+      "run_id": "europepmc-20261103T144429Z-5a0dc4",
+      "source": "europepmc",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:44:29+00:00",
+      "finished_at": "2026-11-03T14:44:35+00:00",
+      "status": "OK",
+      "collector_version": "europepmc/1.0.0",
+      "requests": 13,
+      "pages": 13,
+      "records_seen": 238,
+      "records_new": 237,
+      "records_updated": 0,
+      "records_unchanged": 1,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": null,
+      "watermark_after": "{\"aff:draeger:Dräger\":{\"affiliation_query\":\"(AFF:\\\"Dräger\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Dräger\",\"company_key\":\"draeger\",\"known_ids\":[],\"latest_date\":null,\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:ge_healthcare:GE HealthCare\":{\"affiliation_query\":\"(AFF:\\\"GE HealthCare\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"GE HealthCare\",\"company_key\":\"ge_healthcare\",\"known_ids\":[\"MED:42790712\",\"MED:42778031\",\"MED:42728197\",\"MED:42679868\",\"MED:42679414\",\"MED:42667860\",\"MED:42557923\",\"MED:42839376\",\"MED:42803706\",\"MED:42748585\",\"MED:42727627\",\"MED:42965522\",\"MED:42956425\",\"MED:42945597\",\"MED:42933252\",\"MED:42914528\",\"MED:42905151\",\"MED:42901441\",\"MED:42899810\",\"MED:42898008\",\"MED:42892405\",\"MED:42886112\",\"MED:42882389\",\"MED:42876368\",\"MED:42874222\"],\"latest_date\":\"2026-11-01\",\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:medtronic:Medtronic\":{\"affiliation_query\":\"(AFF:\\\"Medtronic\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Medtronic\",\"company_key\":\"medtronic\",\"known_ids\":[\"MED:42715718\",\"MED:42893069\",\"MED:42664694\",\"MED:42963952\",\"MED:42962495\",\"MED:42957169\",\"MED:42945024\",\"MED:42930910\",\"MED:42924745\",\"MED:42924249\",\"MED:42910615\",\"MED:42902709\",\"MED:42896857\",\"MED:42892706\",\"MED:42887713\",\"MED:42887626\",\"MED:42873975\",\"MED:42860180\",\"MED:42843552\",\"MED:42841863\",\"MED:42838317\",\"MED:42834674\",\"MED:42669894\",\"MED:42629478\",\"MED:42608501\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:mindray:Mindray\":{\"affiliation_query\":\"(AFF:\\\"Mindray\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Mindray\",\"company_key\":\"mindray\",\"known_ids\":[\"MED:42648524\",\"MED:42612897\",\"MED:42753301\",\"MED:42697166\",\"MED:42674962\",\"MED:42570927\",\"MED:42951790\",\"MED:42951338\",\"MED:42899535\",\"MED:42893706\",\"MED:42849045\",\"MED:42785192\",\"MED:42733329\",\"MED:42731570\",\"MED:42303280\"],\"latest_date\":\"2026-10-29\",\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"},\"aff:philips:Philips\":{\"affiliation_query\":\"(AFF:\\\"Philips\\\") AND (SRC:MED OR SRC:PPR)\",\"affiliation_term\":\"Philips\",\"company_key\":\"philips\",\"known_ids\":[\"MED:42858634\",\"MED:42733539\",\"MED:42724531\",\"MED:42676964\",\"MED:42969276\",\"MED:42969224\",\"MED:42969106\",\"MED:42965658\",\"MED:42954189\",\"MED:42873269\",\"MED:42764331\",\"MED:42557971\",\"MED:42966510\",\"MED:42963984\",\"MED:42961642\",\"MED:42960671\",\"MED:42956916\",\"MED:42956860\",\"MED:42946532\",\"MED:42944884\",\"MED:42938922\",\"MED:42932311\",\"MED:42915498\",\"MED:42911244\",\"MED:42907878\"],\"latest_date\":\"2026-11-03\",\"pending_upper\":null,\"window_lower\":\"2026-08-05\",\"window_upper\":\"2026-11-03\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     }
+    ],
+    "recent_failures": [
+     {
+      "failure_id": "ad61b362563cf53fa8202c2e3d504e2142456dc3",
+      "source": "europepmc",
+      "run_id": "europepmc-20261103T145130Z-168fcb",
+      "occurred_at": "2026-11-03T14:51:32+00:00",
+      "kind": "STRUCTURE_CHANGE",
+      "url": null,
+      "http_status": null,
+      "message": "europepmc 返回结构指纹变化：43e59f7d75 → 949d8b198a；采集继续，但字段含义需人工复核",
+      "retryable": 0,
+      "attempt": null
+     },
+     {
+      "failure_id": "df6ff1d3124e7df00ab5c7c8b01afd997f010696",
+      "source": "europepmc",
+      "run_id": "europepmc-20261103T145043Z-5901f9",
+      "occurred_at": "2026-11-03T14:50:44+00:00",
+      "kind": "STRUCTURE_CHANGE",
+      "url": null,
+      "http_status": null,
+      "message": "europepmc 返回结构指纹变化：8b6cf5a358 → 43e59f7d75；采集继续，但字段含义需人工复核",
+      "retryable": 0,
+      "attempt": null
+     },
+     {
+      "failure_id": "aa21d14cdeeba73b6032178c03f80abe04a5e781",
+      "source": "europepmc",
+      "run_id": "europepmc-20261103T144953Z-074919",
+      "occurred_at": "2026-11-03T14:49:56+00:00",
+      "kind": "STRUCTURE_CHANGE",
+      "url": null,
+      "http_status": null,
+      "message": "europepmc 返回结构指纹变化：aac7a107ed → 8b6cf5a358；采集继续，但字段含义需人工复核",
+      "retryable": 0,
+      "attempt": null
+     }
+    ]
+   },
+   {
+    "source": "sec_edgar",
+    "label_zh": "SEC EDGAR 公开披露",
+    "status": "OK",
+    "declared_cadence_zh": "默认每 6 小时轮询；SEC 受理后通常数分钟即可检索",
+    "adapter_version": "sec-edgar/1.0.0",
+    "last_attempt_at": "2026-11-03T15:50:21+00:00",
+    "last_success_at": "2026-11-03T15:50:56+00:00",
+    "last_failure_at": null,
+    "consecutive_failures": 0,
+    "last_status_message": null,
+    "watermark": {
+     "cik:0000313216": {
+      "acceptance": "2026-11-03T13:11:19+00:00",
+      "known_ids": [
+       "0001628280-26-069119"
+      ],
+      "ticker": "PHG"
+     },
+     "cik:0001613103": {
+      "acceptance": "2026-10-19T20:23:27+00:00",
+      "known_ids": [
+       "0001628280-26-066291"
+      ],
+      "ticker": "MDT"
+     },
+     "cik:0001932393": {
+      "acceptance": "2026-10-28T10:26:29+00:00",
+      "known_ids": [
+       "0001932393-26-000059",
+       "0001932393-26-000058"
+      ],
+      "ticker": "GEHC"
+     }
+    },
+    "watermark_updated_at": "2026-11-03T15:50:56+00:00",
+    "structure": {
+     "signature": "96564f3c201ec2a953bc1cb1263a70af4ee55d25",
+     "changed_at": null,
+     "note_zh": null
+    },
+    "entity_coverage": [
+     {
+      "cik": "0001613103",
+      "entity_id": "medtronic",
+      "evidence_zh": "SEC 官方 company_tickers.json 中 MDT → CIK 0001613103（Medtronic plc），并在该 CIK 的官方 submissions 文件中复核了 ticker 列表",
+      "identifier": "CIK 0001613103",
+      "name": "Medtronic",
+      "status": "COVERED",
+      "ticker": "MDT",
+      "truthful_zero_zh": null
+     },
+     {
+      "cik": "0001932393",
+      "entity_id": "ge_healthcare",
+      "evidence_zh": "SEC 官方 company_tickers.json 中 GEHC → CIK 0001932393（GE HealthCare Technologies Inc.），并在该 CIK 的官方 submissions 文件中复核了 ticker 列表",
+      "identifier": "CIK 0001932393",
+      "name": "GE HealthCare",
+      "status": "COVERED",
+      "ticker": "GEHC",
+      "truthful_zero_zh": null
+     },
+     {
+      "cik": "0000313216",
+      "entity_id": "philips",
+      "evidence_zh": "SEC 官方 company_tickers.json 中 PHG → CIK 0000313216（KONINKLIJKE PHILIPS NV），并在该 CIK 的官方 submissions 文件中复核了 ticker 列表",
+      "identifier": "CIK 0000313216",
+      "name": "Philips",
+      "status": "COVERED",
+      "ticker": "PHG",
+      "truthful_zero_zh": null
+     },
+     {
+      "cik": null,
+      "entity_id": "draeger",
+      "evidence_zh": "EDGAR 公司检索匹配到的申报主体为 DRAEGER DENNIS M（CIK 0001111174），最近申报日期 2003-07-01，且官方 ticker 列表中没有 DRW3；该企业目前没有持续的 SEC 披露，历史记录不在本轮实时观察范围内。样例：4  - Statement of changes in beneficial ownership of securities；4  - Statement of changes in beneficial ownership of securities；DRAEGER DENNIS M  (0001111174)",
+      "identifier": null,
+      "latest_historical_filing": "2003-07-01",
+      "name": "Dräger",
+      "search_sample": [
+       "4  - Statement of changes in beneficial ownership of securities",
+       "4  - Statement of changes in beneficial ownership of securities",
+       "DRAEGER DENNIS M  (0001111174)"
+      ],
+      "status": "NOT_CURRENT_REGISTRANT",
+      "ticker": "DRW3",
+      "truthful_zero_zh": "此状态表示 SEC 渠道没有该企业的当前披露，不代表该企业没有产品、销售或研发活动；其他数据源（ClinicalTrials.gov / Europe PMC）独立观察"
+     },
+     {
+      "cik": null,
+      "entity_id": "mindray",
+      "evidence_zh": "EDGAR 公司检索匹配到的申报主体为 Mindray Medical International LTD（CIK 0001373060），最近申报日期 2016-03-15，且官方 ticker 列表中没有 300760；该企业目前没有持续的 SEC 披露，历史记录不在本轮实时观察范围内。样例：15-12B  - Securities registration termination [Section 12(b)]；SC 13G/A [Amend]  - Statement of Beneficial Ownership by Certain Investors；25-NSE  - Notification filed by national security exchange to report the removal from listing and registration of matured, redeemed or retired securities",
+      "identifier": null,
+      "latest_historical_filing": "2016-03-15",
+      "name": "Mindray",
+      "search_sample": [
+       "15-12B  - Securities registration termination [Section 12(b)]",
+       "SC 13G/A [Amend]  - Statement of Beneficial Ownership by Certain Investors",
+       "25-NSE  - Notification filed by national security exchange to report the removal from listing and registration of matured, redeemed or retired securities",
+       "SC 13D/A [Amend]  - General Statement of Acquisition of Beneficial Ownership",
+       "S-8 POS  - Securities to be offered to employees in employee benefit plans, post-effective amendments"
+      ],
+      "status": "NOT_CURRENT_REGISTRANT",
+      "ticker": "300760",
+      "truthful_zero_zh": "此状态表示 SEC 渠道没有该企业的当前披露，不代表该企业没有产品、销售或研发活动；其他数据源（ClinicalTrials.gov / Europe PMC）独立观察"
+     }
+    ],
+    "observations": 6,
+    "windows": {
+     "24h": {
+      "new": 6,
+      "updated": 0,
+      "removed": 0,
+      "failed": 0,
+      "total": 6
+     },
+     "7d": {
+      "new": 6,
+      "updated": 0,
+      "removed": 0,
+      "failed": 0,
+      "total": 6
+     },
+     "30d": {
+      "new": 6,
+      "updated": 0,
+      "removed": 0,
+      "failed": 0,
+      "total": 6
+     }
+    },
+    "measured_lag": {
+     "source": "sec_edgar",
+     "measurable": true,
+     "note_zh": "来源提供可用时间戳，按“来源发布 → MedRadar 首次观察”计算",
+     "p50_hours": 251.258,
+     "p90_hours": 1062.44,
+     "max_hours": 1122.341,
+     "n": 6,
+     "precision": "datetime",
+     "approximate_n": 0,
+     "event_to_first_seen": {
+      "measurable": true,
+      "note_zh": "来源提供可用时间戳，按“来源发布 → MedRadar 首次观察”计算",
+      "p50_hours": 266.665,
+      "p90_hours": 1082.665,
+      "max_hours": 1142.665,
+      "n": 6,
+      "precision": "datetime",
+      "approximate_n": 0
+     }
+    },
+    "last_outcome": "NO_NEW_RECORDS",
+    "last_new_records": 0,
+    "last_updated_records": 0,
+    "last_finished_at": "2026-11-03T15:50:56Z",
+    "recent_runs": [
+     {
+      "run_id": "sec_edgar-20261103T155021Z-a278cc",
+      "source": "sec_edgar",
+      "trigger": "schedule",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T15:50:21+00:00",
+      "finished_at": "2026-11-03T15:50:56+00:00",
+      "status": "OK",
+      "collector_version": "sec-edgar/1.0.0",
+      "requests": 7,
+      "pages": 3,
+      "records_seen": 4,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 4,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "watermark_after": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "sec_edgar-20261103T154508Z-084389",
+      "source": "sec_edgar",
+      "trigger": "schedule",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T15:45:08+00:00",
+      "finished_at": "2026-11-03T15:45:10+00:00",
+      "status": "OK",
+      "collector_version": "sec-edgar/1.0.0",
+      "requests": 7,
+      "pages": 3,
+      "records_seen": 4,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 4,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "watermark_after": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "sec_edgar-20261103T153820Z-7ca857",
+      "source": "sec_edgar",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T15:38:20+00:00",
+      "finished_at": "2026-11-03T15:38:22+00:00",
+      "status": "OK",
+      "collector_version": "sec-edgar/1.0.0",
+      "requests": 7,
+      "pages": 3,
+      "records_seen": 4,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 4,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "watermark_after": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "sec_edgar-20261103T150857Z-2d6264",
+      "source": "sec_edgar",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T15:08:57+00:00",
+      "finished_at": "2026-11-03T15:08:58+00:00",
+      "status": "OK",
+      "collector_version": "sec-edgar/1.0.0",
+      "requests": 7,
+      "pages": 3,
+      "records_seen": 4,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 4,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "watermark_after": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "sec_edgar-20261103T145141Z-01decb",
+      "source": "sec_edgar",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:51:41+00:00",
+      "finished_at": "2026-11-03T14:51:43+00:00",
+      "status": "OK",
+      "collector_version": "sec-edgar/1.0.0",
+      "requests": 7,
+      "pages": 3,
+      "records_seen": 4,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 4,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "watermark_after": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "sec_edgar-20261103T145125Z-84fbf0",
+      "source": "sec_edgar",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:51:25+00:00",
+      "finished_at": "2026-11-03T14:51:27+00:00",
+      "status": "OK",
+      "collector_version": "sec-edgar/1.0.0",
+      "requests": 7,
+      "pages": 3,
+      "records_seen": 4,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 4,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "watermark_after": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "sec_edgar-20261103T145123Z-e8844b",
+      "source": "sec_edgar",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:51:23+00:00",
+      "finished_at": "2026-11-03T14:51:25+00:00",
+      "status": "OK",
+      "collector_version": "sec-edgar/1.0.0",
+      "requests": 7,
+      "pages": 3,
+      "records_seen": 4,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 4,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "watermark_after": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "sec_edgar-20261103T145039Z-124e3e",
+      "source": "sec_edgar",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:50:39+00:00",
+      "finished_at": "2026-11-03T14:50:41+00:00",
+      "status": "OK",
+      "collector_version": "sec-edgar/1.0.0",
+      "requests": 7,
+      "pages": 3,
+      "records_seen": 4,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 4,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "watermark_after": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "sec_edgar-20261103T144957Z-dad0b5",
+      "source": "sec_edgar",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:49:57+00:00",
+      "finished_at": "2026-11-03T14:49:59+00:00",
+      "status": "OK",
+      "collector_version": "sec-edgar/1.0.0",
+      "requests": 7,
+      "pages": 3,
+      "records_seen": 4,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 4,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "watermark_after": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     },
+     {
+      "run_id": "sec_edgar-20261103T144949Z-2226ad",
+      "source": "sec_edgar",
+      "trigger": "manual",
+      "host": "WIN-QBJ1E1UD41B",
+      "started_at": "2026-11-03T14:49:49+00:00",
+      "finished_at": "2026-11-03T14:49:51+00:00",
+      "status": "OK",
+      "collector_version": "sec-edgar/1.0.0",
+      "requests": 7,
+      "pages": 3,
+      "records_seen": 4,
+      "records_new": 0,
+      "records_updated": 0,
+      "records_unchanged": 4,
+      "records_removed": 0,
+      "records_failed": 0,
+      "watermark_before": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "watermark_after": "{\"cik:0000313216\":{\"acceptance\":\"2026-11-03T13:11:19+00:00\",\"known_ids\":[\"0001628280-26-069119\"],\"ticker\":\"PHG\"},\"cik:0001613103\":{\"acceptance\":\"2026-10-19T20:23:27+00:00\",\"known_ids\":[\"0001628280-26-066291\"],\"ticker\":\"MDT\"},\"cik:0001932393\":{\"acceptance\":\"2026-10-28T10:26:29+00:00\",\"known_ids\":[\"0001932393-26-000059\",\"0001932393-26-000058\"],\"ticker\":\"GEHC\"}}",
+      "error_detail": null,
+      "notes_zh": null
+     }
+    ],
+    "recent_failures": []
+   }
+  ],
+  "phases": {
+   "counts": {
+    "INCREMENTAL_DISCOVERY": 1,
+    "INITIAL_DISCOVERY": 399
+   },
+   "labels_zh": {
+    "INITIAL_DISCOVERY": "初次上线发现（既有公开记录）",
+    "INCREMENTAL_DISCOVERY": "持续监测新发现（增量）",
+    "HISTORICAL_BACKFILL": "历史回填"
+   },
+   "unlabelled": 0
+  },
+  "deployment": {
+   "evidence": "task=MedRadarObservatory State=Ready LastTaskResult=0 LastRun=2026-11-03T23:50:20+08 NextRun=2026-11-04T05:50+08; action=observatory_watch.ps1 -MaxCycles 1; log=logs/collector-20261103.log; one-shot pass OK exit=0; lock released",
+   "host": "WIN-QBJ1E1UD41B",
+   "installed_at": "2026-11-03T15:51:28+00:00",
+   "note_zh": "Windows Task Scheduler 任务 MedRadarObservatory；每 360 分钟触发一次单轮采集（-MaxCycles 1），trigger=schedule；非服务级部署（生产仍为 NOT_DEPLOYED，待授权主机）",
+   "status": "DEPLOYED_LOCAL",
+   "supervisor": "windows_task"
+  },
+  "validation": {
+   "ends_at": "2026-11-10T15:35:37+00:00",
+   "interval_hours": 6.0,
+   "note_zh": "七天连续观察验证：按声明周期轮询三个官方来源；只有真实经过的时间与真实运行记录才计入，缺失的轮次记为 missed，不当作成功。",
+   "planned_slots": 28,
+   "protocol_version": "obs-validation-v1",
+   "started_at": "2026-11-03T15:35:37+00:00",
+   "status": "VALIDATION_IN_PROGRESS",
+   "target_days": 7
+  },
+  "checked_at": "2026-11-03T15:58:28+00:00",
+  "consistency": {
+   "ok": true,
+   "issues": {},
+   "issue_count": 0,
+   "checked_at": "2026-11-03T15:58:28+00:00"
+  }
+ },
+ "deployment": {
+  "evidence": "task=MedRadarObservatory State=Ready LastTaskResult=0 LastRun=2026-11-03T23:50:20+08 NextRun=2026-11-04T05:50+08; action=observatory_watch.ps1 -MaxCycles 1; log=logs/collector-20261103.log; one-shot pass OK exit=0; lock released",
+  "host": "WIN-QBJ1E1UD41B",
+  "installed_at": "2026-11-03T15:51:28+00:00",
+  "note_zh": "Windows Task Scheduler 任务 MedRadarObservatory；每 360 分钟触发一次单轮采集（-MaxCycles 1），trigger=schedule；非服务级部署（生产仍为 NOT_DEPLOYED，待授权主机）",
+  "status": "DEPLOYED_LOCAL",
+  "supervisor": "windows_task"
+ },
+ "lock": {
+  "held": false,
+  "path": "D:\\DEPPSKK\\medradar\\data\\observatory\\collector.lock",
+  "stale": null,
+  "holder": null,
+  "heartbeat_age_seconds": null
+ },
+ "lock_recovery": {
+  "at": "2026-11-03T15:50:21+00:00",
+  "reason": "stale collector lease taken over",
+  "previous": {
+   "command": "observatory watch",
+   "heartbeat_at": "2026-11-03T15:49:08+00:00",
+   "host": "WIN-QBJ1E1UD41B",
+   "mode": "watch",
+   "pid": 48600,
+   "run_id": null,
+   "source": "",
+   "started_at": "2026-11-03T15:45:08+00:00"
+  },
+  "by": {
+   "pid": 52200,
+   "host": "WIN-QBJ1E1UD41B"
+  }
+ },
+ "concurrency_probe": {
+  "attempted": true,
+  "probe": "temporary ledger",
+  "locked": true,
+  "sources": {
+   "sec_edgar": {
+    "source": "sec_edgar",
+    "status": "LOCKED_SKIPPED",
+    "reason": "another collector holds the lease"
+   }
+  }
+ },
+ "audit": {
+  "schema": "medradar-ledger-audit-1",
+  "audit_version": "obs-audit-v1",
+  "generated_at": "2026-11-03T15:58:28+00:00",
+  "ledger": {
+   "present": true,
+   "path": "data/observatory/observatory.sqlite",
+   "bytes": 1937408,
+   "read_only": true,
+   "schema_version": "obs-ledger-v1",
+   "created_at": "2026-11-03T14:39:53+00:00",
+   "counts": {
+    "observations": 400,
+    "versions": 400,
+    "changes": 400,
+    "live_observations": 400,
+    "backfilled_observations": 0,
+    "removed_observations": 0,
+    "sources": 3,
+    "runs": 31,
+    "failures": 6
+   },
+   "first_observation_at": "2026-11-03T14:39:53Z",
+   "last_observation_at": "2026-11-03T14:49:51Z",
+   "first_run_at": "2026-11-03T14:39:53+00:00",
+   "last_run_at": "2026-11-03T15:50:58+00:00"
+  },
+  "overall": "REQUIRES_MANUAL_REVIEW",
+  "checks": [
+   {
+    "id": "duplicate_observations",
+    "title_zh": "重复观察：同一 (source, source_record_id) 只能有一条观察记录",
+    "verdict": "PASS",
+    "detail_zh": "共 400 条观察，按 (source, source_record_id) 分组没有重复组；每条来源记录恰好对应一条观察。",
+    "evidence": {
+     "rule": "GROUP BY source, source_record_id HAVING COUNT(*) > 1 必须为 0",
+     "observations": 400,
+     "duplicate_groups": 0,
+     "duplicates": [],
+     "duplicates_truncated": false
+    }
+   },
+   {
+    "id": "first_seen_integrity",
+    "title_zh": "first_seen_at 完整性：首次观察时间写入后不可被追溯修改",
+    "verdict": "PASS",
+    "detail_zh": "400 条观察的首个版本采集时间与状态历史首行均等于 first_seen_at，last_checked_at 均不早于 first_seen_at；13 个 append-only 触发器全部存在（写入层拒绝改写/删除）。",
+    "evidence": {
+     "rule": "首个版本 captured_at == first_seen_at；状态历史首行 changed_at == first_seen_at；last_checked_at >= first_seen_at；不可变触发器必须存在",
+     "observations_checked": 400,
+     "required_triggers": {
+      "observation": [
+       "trg_observation_first_seen_immutable",
+       "trg_observation_identity_immutable",
+       "trg_observation_no_delete"
+      ],
+      "observation_version": [
+       "trg_version_no_update",
+       "trg_version_no_delete"
+      ],
+      "observation_change": [
+       "trg_change_no_update",
+       "trg_change_no_delete"
+      ],
+      "observation_status_history": [
+       "trg_status_no_update",
+       "trg_status_no_delete"
+      ],
+      "observation_mapping": [
+       "trg_mapping_no_update",
+       "trg_mapping_no_delete"
+      ],
+      "sync_run": [
+       "trg_run_no_delete",
+       "trg_run_identity_immutable"
+      ]
+     },
+     "triggers_present": [
+      "trg_change_no_delete",
+      "trg_change_no_update",
+      "trg_mapping_no_delete",
+      "trg_mapping_no_update",
+      "trg_observation_first_seen_immutable",
+      "trg_observation_identity_immutable",
+      "trg_observation_no_delete",
+      "trg_run_identity_immutable",
+      "trg_run_no_delete",
+      "trg_status_no_delete",
+      "trg_status_no_update",
+      "trg_version_no_delete",
+      "trg_version_no_update"
+     ],
+     "missing_triggers": [],
+     "missing_first_version": [],
+     "missing_first_version_total": 0,
+     "bad_first_version": [],
+     "bad_first_version_total": 0,
+     "bad_status_history": [],
+     "bad_status_history_total": 0,
+     "bad_last_checked": [],
+     "bad_last_checked_total": 0
+    }
+   },
+   {
+    "id": "payload_version_chain",
+    "title_zh": "载荷版本链：版本序号连续、哈希可复算、最新版本指针一致",
+    "verdict": "PASS",
+    "detail_zh": "400 个版本的序号连续、哈希全部可由存储载荷复算、version_id 可由 (observation_id, payload_hash) 复算，400 条观察的 latest_version_id / source_payload_hash / version_count 与版本表一致。",
+    "evidence": {
+     "rule": "version_seq 从 1 连续；payload_hash 可由 payload 复算；version_id = sha1(observation_id|payload_hash)；observation.latest_version_id/ source_payload_hash / version_count 指向最新版本",
+     "observations_checked": 400,
+     "versions_checked": 400,
+     "payloads_rehashed": 400,
+     "problem_count": 0,
+     "chain_problems": [],
+     "chain_problems_total": 0,
+     "rehash_mismatches": [],
+     "rehash_mismatches_total": 0,
+     "version_id_mismatches": [],
+     "version_id_mismatches_total": 0,
+     "payload_bytes_mismatches": [],
+     "payload_bytes_mismatches_total": 0,
+     "unparseable_payloads": [],
+     "unparseable_payloads_total": 0
+    }
+   },
+   {
+    "id": "version_change_consistency",
+    "title_zh": "版本与变更记录一致性：每个版本对应正确的变更状态与真实字段差异",
+    "verdict": "PASS",
+    "detail_zh": "400 个版本各自有唯一正确状态的变更行，0 条多版本观察的 changed_fields 与两版载荷的真实差异完全一致；400 条变更记录没有引用不存在的版本，REMOVED_OR_UNAVAILABLE / FETCH_FAILED 均为无版本的状态历史。",
+    "evidence": {
+     "rule": "版本 seq=1 的变更行必须 NEW；seq>1 必须 UPDATED；同一版本的额外变更行只允许是 changed_fields == [\"status\"] 的恢复行；REMOVED_OR_UNAVAILABLE/FETCH_FAILED 允许 version_id IS NULL 的历史；seq>1 的 changed_fields 必须等于前后两个存档载荷的真实差异",
+     "versions_checked": 400,
+     "changes_checked": 400,
+     "multi_version_observations": 0,
+     "problem_count": 0,
+     "problems": [],
+     "problems_truncated": false
+    }
+   },
+   {
+    "id": "timestamp_ordering",
+    "title_zh": "时间戳顺序：版本采集时间单调、不早于首次观察时间",
+    "verdict": "PASS",
+    "detail_zh": "已检查 400 个版本的 captured_at 单调性、400 条变更的 observed_at 与 first_seen_at、400 条状态历史；没有任何时间倒挂。",
+    "evidence": {
+     "rule": "同一观察的 captured_at 随 version_seq 单调不减且 >= first_seen_at；change.observed_at >= first_seen_at 且 change.first_seen_at == observation.first_seen_at；状态历史 changed_at >= first_seen_at",
+     "versions_checked": 400,
+     "changes_checked": 400,
+     "status_rows_checked": 400,
+     "problem_count": 0,
+     "problems": [],
+     "problems_truncated": false
+    }
+   },
+   {
+    "id": "watermark_safety",
+    "title_zh": "水位安全性：水位可解析、只能由成功运行推进、失败运行不得被静默当作完成",
+    "verdict": "PASS",
+    "detail_zh": "3 个来源的水位 JSON 均可解析；watermark_updated_at 均不晚于 last_success_at；31 次运行中没有 FAILED/PARTIAL 运行推进过水位。",
+    "evidence": {
+     "rule": "source_state.watermark 必须是可解析 JSON；watermark_updated_at <= last_success_at；FAILED/PARTIAL 运行推进过水位时，本次运行实际完成的范围不可证明 -> 人工复核",
+     "sources_checked": 3,
+     "runs_checked": 31,
+     "watermark_parse_failures": 0,
+     "manual_review_triggers": 0,
+     "failures": [],
+     "manual_review": [],
+     "flagged_run_ids": []
+    }
+   },
+   {
+    "id": "replay_correctness",
+    "title_zh": "时点回放正确性：snapshot 在历史时点返回当时已知的版本",
+    "verdict": "REQUIRES_MANUAL_REVIEW",
+    "detail_zh": "账本中没有任何 version_count>1 的观察，因此无法抽样验证多版本回放；按诚实规则本项标记为人工复核，而不是默认通过。 补充诊断：抽样 20 条单版本观察，snapshot(first_seen_at) 均能返回该记录（Z / +00:00 拼写不影响回放边界）。",
+    "evidence": {
+     "rule": "sample_size 内确定性抽样 version_count>1 的观察：snapshot(v1.captured_at) 必须返回 v1；snapshot(first_seen_at - 1s) 必须排除该记录；每个不同 captured_at 必须回放当时最新的版本；回放出的 payload 必须能用 records.payload_hash 复算出该版本的 payload_hash",
+     "boundary_policy": "所有 snapshot(as_of) 边界都由解析后的 UTC 时间生成（…+00:00），从不直接使用存储字符串的 'Z' / '+00:00' 拼写做比较",
+     "sample_size": 20,
+     "multi_version_observations": 0,
+     "sampled_observation_ids": [],
+     "problems": [],
+     "problem_count": 0,
+     "boundary_probe": {
+      "sampled": 20,
+      "missing_first_seen_boundary": [],
+      "missing_total": 0,
+      "rule": "补充诊断（不属于本检查的判定规则）：对单版本观察执行 snapshot(first_seen_at) 时，该记录是否仍然出现在结果中"
+     }
+    }
+   },
+   {
+    "id": "prospective_freeze_integrity",
+    "title_zh": "前瞻登记器冻结完整性：每条冻结文档的哈希可复验且未被改写",
+    "verdict": "REQUIRES_MANUAL_REVIEW",
+    "detail_zh": "前瞻登记器目录不存在：没有任何冻结的研究输入可供验证。缺少证据不是 PASS。",
+    "evidence": {
+     "rule": "对登记器里的每个条目调用 verify_frozen()；空登记器 -> 人工复核；哈希不一致 -> FAIL",
+     "included": true,
+     "registry_path": "data/prospective",
+     "registry_exists": false
+    }
+   },
+   {
+    "id": "mapping_history_preservation",
+    "title_zh": "映射历史留存：每条观察都有映射历史，且最新映射与观察接口一致",
+    "verdict": "PASS",
+    "detail_zh": "400 条观察都有映射历史（共 401 行，append-only），最新映射行与观察接口返回的映射字段完全一致，状态词表合法。",
+    "evidence": {
+     "rule": "每条观察至少有 1 条 observation_mapping；映射状态必须属于封闭词表；MAPPED 必须有 id；最新映射行（MAX(mapped_at)）必须与观察接口返回的映射字段完全一致",
+     "observations_checked": 400,
+     "mapping_rows": 401,
+     "observations_without_mapping": [],
+     "observations_without_mapping_total": 0,
+     "vocabulary_problems": [],
+     "vocabulary_problems_total": 0,
+     "endpoint_mismatches": [],
+     "endpoint_mismatches_total": 0
+    }
+   },
+   {
+    "id": "backup_restore_reproducibility",
+    "title_zh": "备份/恢复可复现性：备份清单与实时账本的计数、首次观察范围、来源分布一致",
+    "verdict": "PASS",
+    "detail_zh": "备份清单与实时账本一致：observations=400、versions=400、changes=400、runs=31；first_seen_at 范围 [2026-11-03T14:39:53Z, 2026-11-03T14:49:51Z]，来源分布 ctgov=157，europepmc=237，sec_edgar=6 全部吻合。清单只证明该时刻存在一致快照，恢复演练仍需单独留证。",
+    "evidence": {
+     "rule": "备份清单必须来自本账本的备份：当清单创建时间不早于账本最后一次写入时，计数、first_seen_at 最小/最大值、来源分布必须逐项一致（不一致 = FAIL）；清单早于最新写入时只能验证一致前缀（人工复核）；没有清单/演练证据 -> 人工复核",
+     "manifest_origin": "discovered",
+     "manifest_path": "data/observatory/backups/observatory-20261103T155827Z/MANIFEST.json",
+     "notes": [],
+     "live": {
+      "counts": {
+       "observations": 400,
+       "versions": 400,
+       "changes": 400,
+       "runs": 31
+      },
+      "first_seen_min": "2026-11-03T14:39:53Z",
+      "first_seen_max": "2026-11-03T14:49:51Z",
+      "source_counts": {
+       "ctgov": 157,
+       "europepmc": 237,
+       "sec_edgar": 6
+      }
+     },
+     "manifest_created_at": "2026-11-03T15:58:27+00:00",
+     "manifest_integrity_check": "ok",
+     "manifest_consistency_ok": true,
+     "compared_dimensions": [
+      "counts.observations",
+      "counts.versions",
+      "counts.changes",
+      "counts.runs",
+      "first_seen_at.min",
+      "first_seen_at.max",
+      "sources.observations",
+      "watermarks",
+      "version_chain"
+     ],
+     "mismatches": [],
+     "mismatch_total": 0,
+     "version_chain_mismatches": [],
+     "version_chain_mismatch_total": 0,
+     "watermark_mismatches": [],
+     "watermark_mismatch_total": 0,
+     "bundle_ledger_problems": [],
+     "bundle_ledger_problem_total": 0,
+     "strict_identity_expected": true
+    }
+   },
+   {
+    "id": "observation_phase_completeness",
+    "title_zh": "采集阶段标注完整性：每条观察都有 phase 行（可选，依赖 observation_phase 表）",
+    "verdict": "PASS",
+    "detail_zh": "observation_phase 表存在，400 条观察全部有至少一条 append-only phase 行，且没有孤儿 phase 行。",
+    "evidence": {
+     "table_present": true,
+     "observations": 400,
+     "phase_observations": 400,
+     "missing_phase_rows": [],
+     "missing_phase_rows_total": 0,
+     "orphan_phase_rows": [],
+     "orphan_phase_rows_total": 0,
+     "rule": "每条 observation 必须至少有一条 observation_phase 行；phase 行不得指向不存在的观察"
+    }
+   }
+  ],
+  "summary": {
+   "total": 11,
+   "pass": 9,
+   "fail": 0,
+   "manual_review": 2,
+   "fail_ids": [],
+   "manual_review_ids": [
+    "replay_correctness",
+    "prospective_freeze_integrity"
+   ]
+  },
+  "manual_review": [
+   {
+    "id": "replay_correctness",
+    "title_zh": "时点回放正确性：snapshot 在历史时点返回当时已知的版本",
+    "reason_zh": "账本中没有任何 version_count>1 的观察，因此无法抽样验证多版本回放；按诚实规则本项标记为人工复核，而不是默认通过。 补充诊断：抽样 20 条单版本观察，snapshot(first_seen_at) 均能返回该记录（Z / +00:00 拼写不影响回放边界）。"
+   },
+   {
+    "id": "prospective_freeze_integrity",
+    "title_zh": "前瞻登记器冻结完整性：每条冻结文档的哈希可复验且未被改写",
+    "reason_zh": "前瞻登记器目录不存在：没有任何冻结的研究输入可供验证。缺少证据不是 PASS。"
+   }
+  ],
+  "limitations_zh": [
+   "本审计只读：账本以 SQLite mode=ro 打开并设置 query_only，不写入、不改结构、不获取采集锁。",
+   "PASS 仅表示本报告的规则在本次运行时刻被真实数据证明；它不等于研究结论已被验证，也不代表观测覆盖完整。",
+   "无法被证明的检查项一律标记 REQUIRES_MANUAL_REVIEW，绝不因证据缺失而默认通过。",
+   "备份清单只能证明“该时刻存在一份可复现的快照”，不能证明磁盘/对象存储的真实冗余或异地可用性；恢复演练需单独留证。",
+   "审计样本量有限（回放样本由 sample_size 控制）；未抽中的记录未被逐条回放验证。"
+  ]
+ },
+ "backup_verified": true,
+ "restore_drill_ok": true
+}

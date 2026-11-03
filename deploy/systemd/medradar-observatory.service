@@ -1,0 +1,142 @@
+# MedRadar Observatory — production long-running collector (systemd).
+#
+# WHAT THIS IS
+#   One supervised `python -m medradar observatory watch` process that polls the
+#   public sources on a fixed interval, appends to the observation ledger and
+#   keeps a heartbeat. This is the "Linux production" service mode described in
+#   docs/RELIABILITY_DESIGN.md §3 (Supervised continuous operation) and
+#   docs/LIVE_OBSERVATORY.md §4 (持续运行).
+#
+# WHAT THIS IS NOT
+#   Copying this template deploys NOTHING and changes no status. Until the unit
+#   is actually installed, started and verified, the honest deployment status is
+#   NOT_DEPLOYED (docs/RELIABILITY_DESIGN.md §0). The installation is recorded
+#   explicitly, after verification, with
+#       python -m medradar observatory deploy-status --status DEPLOYED_SERVICE --supervisor systemd
+#   which timestamps the evidence in the ledger.
+#
+# SINGLE WRITER
+#   `observatory watch` holds <ledger-dir>/collector.lock (medradar/observatory/
+#   lock.py) for the duration of a pass, with a heartbeat every ~15 s. Two
+#   collectors therefore cannot write the same ledger: the second one refuses
+#   with a clear "lock held" message instead of corrupting evidence. Do NOT run
+#   this long-running service and the 6-hourly timer against the same ledger —
+#   choose ONE mode (see deploy/systemd/README.md).
+#
+# INSTALLATION (short form; full runbook: docs/DEPLOYMENT.md)
+#   1. Dedicated user + persistent layout:
+#        sudo useradd --system --home-dir /srv/medradar --shell /usr/sbin/nologin medradar
+#        sudo mkdir -p /srv/medradar/{data/observatory,backups,logs}
+#        sudo chown -R medradar:medradar /srv/medradar
+#   2. Install the package for the interpreter named in ExecStart:
+#        sudo /usr/bin/python3 -m pip install /srv/medradar
+#      (a virtualenv is fine too — override ExecStart with a drop-in; see README)
+#   3. Environment file, mode 0640 root:medradar, OUTSIDE the repo:
+#        sudo install -d -m 0750 -o root -g medradar /etc/medradar
+#        sudo install -m 0640 -o root -g medradar /dev/null /etc/medradar/observatory.env
+#      fill it in (see ENVIRONMENT FILE below)
+#   4. sudo cp medradar-observatory.service /etc/systemd/system/
+#      sudo systemctl daemon-reload
+#      sudo systemctl enable --now medradar-observatory.service
+#   5. Verify: systemctl status + journalctl + `observatory status --json` and
+#      `observatory health --json` (see docs/DEPLOYMENT.md "first-run verification")
+#
+# ENVIRONMENT FILE (/etc/medradar/observatory.env)
+#   Read only if present: `EnvironmentFile=-...` — the leading dash means the unit
+#   still starts before the operator creates the file. Never commit the env file
+#   and never put a credential in this unit.
+#
+#   Minimum content (the operator supplies the values; nothing below is a secret):
+#     * One line that sets MEDRADAR_SEC_UA to a User-Agent carrying a REAL contact
+#       address your team monitors, e.g. the shape
+#           MedRadar observatory (<contact address your team monitors>)
+#       SEC's published access policy requires both an identifying client name and
+#       a contact; generic/placeholder values get HTTP 403. The address must be
+#       authorised for this deployment — it is never committed to Git.
+#     * Optional: one line that sets MEDRADAR_DEPLOYMENT_INSTALLED_AT to the REAL
+#       installation instant (ISO-8601 UTC); tools that read the environment use
+#       it, and it must never be back-dated. The authoritative record is the
+#       `observatory deploy-status` command mentioned above, which timestamps the
+#       moment it is run - run it right after verification.
+#     * Optional: MEDRADAR_OBSERVATORY_DB to point at an alternate ledger path
+#       (default: $MEDRADAR_HOME/data/observatory/observatory.sqlite).
+#
+#   `medradar.observatory.runner` reads MEDRADAR_SEC_UA at import time. With no
+#   value it falls back to a bundled example contact, which SEC may reject; a
+#   real contact is the operator's responsibility. There is deliberately NO
+#   production credential/contact committed in this repository.
+#
+# STOP / GRACEFUL SHUTDOWN
+#   `systemctl stop` sends SIGTERM (KillSignal=SIGTERM). The scheduler notices the
+#   signal between sleeps, finishes or cleanly abandons the current pass, records
+#   the interrupted run, releases the lock and exits 0. TimeoutStopSec=120 gives
+#   it two minutes before SIGKILL. Never `kill -9` the collector while it writes.
+#   Prefer `observatory pause` (ledger-level, works for every supervisor) for a
+#   planned maintenance window; SIGTERM is for stopping the process itself.
+#
+# RESOURCE LIMITS
+#   MemoryMax=512M / CPUQuota=50% are deliberately cheap: the workload is polite
+#   HTTP polling plus SQLite writes. If either limit is hit repeatedly, investigate
+#   (source page explosion, runaway page loop) instead of raising the ceiling.
+#
+# MODE CHOICE
+#   This unit is the long-running mode. Operators who prefer stateless one-shot
+#   syncs use medradar-observatory.timer with the documented drop-in instead.
+#   Full tree: docs/DEPLOYMENT.md, deploy/systemd/README.md.
+
+[Unit]
+Description=MedRadar Observatory long-running collector
+Documentation=file:///srv/medradar/docs/DEPLOYMENT.md
+Documentation=file:///srv/medradar/deploy/systemd/README.md
+After=network-online.target
+Wants=network-online.target
+# A crash loop must never hammer the public sources: systemd gives up after five
+# starts in five minutes and leaves the unit failed for a human to inspect.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=medradar
+Group=medradar
+WorkingDirectory=/srv/medradar
+# MEDRADAR_HOME relocates every write (data/, out/, cache/) below /srv/medradar.
+Environment=MEDRADAR_HOME=/srv/medradar
+Environment=PYTHONUNBUFFERED=1
+# Supervisor contract for this branch: the process identifies itself as running
+# under a service manager. The ledger evidence is recorded explicitly after
+# verification (`observatory deploy-status --status DEPLOYED_SERVICE
+# --supervisor systemd`), which timestamps it.
+Environment=MEDRADAR_DEPLOYMENT_STATUS=DEPLOYED_SERVICE
+# Secrets and the operator's contact address live here, never in Git. Optional
+# file (leading '-') so the unit can be tested before the file exists.
+EnvironmentFile=-/etc/medradar/observatory.env
+ExecStartPre=/usr/bin/mkdir -p /srv/medradar/logs
+# Readiness preflight: logs ledger/source status before the loop starts. The
+# leading '-' marks it non-fatal so a DEGRADED ledger is still collectable and
+# can be reported honestly instead of blocking the service forever.
+ExecStartPre=-/usr/bin/python3 -m medradar observatory status --json
+ExecStart=/usr/bin/python3 -m medradar observatory watch --interval-minutes 60 --trigger schedule --log-file /srv/medradar/logs/collector.log
+Restart=always
+RestartSec=30
+TimeoutStopSec=120
+KillSignal=SIGTERM
+# SIGTERM from `systemctl stop` is a graceful stop, not a crash.
+SuccessExitStatus=143
+MemoryMax=512M
+CPUQuota=50%
+# Hardening appropriate for a single-purpose collector that only needs the
+# network, /srv/medradar and its own temporary files.
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/medradar
+UMask=0027
+SyslogIdentifier=medradar-observatory
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

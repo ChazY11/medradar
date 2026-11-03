@@ -185,6 +185,10 @@ CREATE TABLE IF NOT EXISTS source_state (
     watermark_updated_at TEXT,
     last_run_id TEXT,
     last_status_message TEXT,
+    last_outcome TEXT,
+    last_new_records INTEGER,
+    last_updated_records INTEGER,
+    last_finished_at TEXT,
     structure_signature TEXT,
     structure_changed_at TEXT,
     structure_note_zh TEXT,
@@ -243,6 +247,26 @@ CREATE TABLE IF NOT EXISTS runtime_state (
     updated_at TEXT
 );
 
+-- Acquisition phase history: append-only metadata, never a rewrite of the ledger.
+CREATE TABLE IF NOT EXISTS observation_phase (
+    observation_id TEXT NOT NULL,
+    phase TEXT NOT NULL,
+    assigned_at TEXT NOT NULL,
+    run_id TEXT,
+    method TEXT NOT NULL,
+    note_zh TEXT,
+    PRIMARY KEY (observation_id, assigned_at)
+);
+
+-- Operational metrics (storage growth, daily snapshots). Not research evidence.
+CREATE TABLE IF NOT EXISTS ops_metric (
+    metric TEXT NOT NULL,
+    day TEXT NOT NULL,
+    value TEXT NOT NULL,
+    recorded_at TEXT NOT NULL,
+    PRIMARY KEY (metric, day)
+);
+
 CREATE INDEX IF NOT EXISTS ix_obs_source ON observation(source);
 CREATE INDEX IF NOT EXISTS ix_obs_first_seen ON observation(first_seen_at);
 CREATE INDEX IF NOT EXISTS ix_change_observed ON observation_change(observed_at);
@@ -252,6 +276,8 @@ CREATE INDEX IF NOT EXISTS ix_version_obs ON observation_version(observation_id)
 CREATE INDEX IF NOT EXISTS ix_mapping_obs ON observation_mapping(observation_id);
 CREATE INDEX IF NOT EXISTS ix_status_obs ON observation_status_history(observation_id);
 CREATE INDEX IF NOT EXISTS ix_run_source ON sync_run(source, started_at);
+CREATE INDEX IF NOT EXISTS ix_phase_obs ON observation_phase(observation_id);
+CREATE INDEX IF NOT EXISTS ix_phase_phase ON observation_phase(phase);
 
 -- 1. first_seen_at is immutable ------------------------------------------------
 CREATE TRIGGER IF NOT EXISTS trg_observation_first_seen_immutable
@@ -309,6 +335,14 @@ CREATE TRIGGER IF NOT EXISTS trg_mapping_no_delete
 BEFORE DELETE ON observation_mapping
 BEGIN SELECT RAISE(ABORT, 'observation_mapping is append-only'); END;
 
+CREATE TRIGGER IF NOT EXISTS trg_phase_no_update
+BEFORE UPDATE ON observation_phase
+BEGIN SELECT RAISE(ABORT, 'observation_phase is append-only'); END;
+
+CREATE TRIGGER IF NOT EXISTS trg_phase_no_delete
+BEFORE DELETE ON observation_phase
+BEGIN SELECT RAISE(ABORT, 'observation_phase is append-only'); END;
+
 CREATE TRIGGER IF NOT EXISTS trg_failure_no_update
 BEFORE UPDATE ON source_failure
 BEGIN SELECT RAISE(ABORT, 'source_failure is append-only'); END;
@@ -352,6 +386,30 @@ def _json(value: Any) -> str | None:
     if value is None:
         return None
     return canonical_json(value)
+
+
+def _canonical_moment(value: str | None) -> str | None:
+    """Store instants in one lexicographically comparable form (``+00:00``).
+
+    The ledger historically received ``…Z`` values from one code path and
+    ``…+00:00`` from another; both are valid ISO-8601 UTC, but SQLite compares
+    text lexicographically and ``Z`` sorts after ``+``. Normalising on write and
+    comparing through ``_norm_expr`` keeps "same instant" equal regardless of the
+    original spelling (the immutable rows are never rewritten).
+    """
+    if value is None:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    if text.endswith("Z"):
+        return text[:-1] + "+00:00"
+    return text
+
+
+def _norm_expr(expression: str) -> str:
+    """SQL expression: normalise a stored timestamp for text comparison."""
+    return f"replace({expression}, 'Z', '+00:00')"
 
 
 class ObservationLedger:
@@ -403,10 +461,36 @@ class ObservationLedger:
 
     def _ensure_schema(self) -> None:
         self.con.executescript(SCHEMA)
+        self._migrate()
         self.created_schema = self._meta("schema_version") is None
         self._set_meta("schema_version", SCHEMA_VERSION)
         self._set_meta("created_at", self._meta("created_at") or utc_now_iso())
         self._set_meta("path", str(self.path))
+
+    #: Columns added after the first release. They are operational state (not
+    #: research evidence), so an additive migration is safe and honest.
+    _SOURCE_STATE_COLUMNS = {
+        "last_outcome": "TEXT",
+        "last_new_records": "INTEGER",
+        "last_updated_records": "INTEGER",
+        "last_finished_at": "TEXT",
+    }
+
+    def _migrate(self) -> None:
+        if getattr(self, "read_only", False):
+            return
+        existing = {
+            row["name"]
+            for row in self.con.execute("PRAGMA table_info(source_state)").fetchall()
+        }
+        for column, sql_type in self._SOURCE_STATE_COLUMNS.items():
+            if column not in existing:
+                self.con.execute(f"ALTER TABLE source_state ADD COLUMN {column} {sql_type}")
+        self.con.execute(
+            "INSERT INTO meta(key, value) VALUES('schema_epoch', '2026-11-reliability')"
+            " ON CONFLICT(key) DO UPDATE SET value=excluded.value"
+        )
+        self.con.commit()
 
     def close(self) -> None:
         if self._con is not None:
@@ -477,7 +561,7 @@ class ObservationLedger:
     def start_run(self, source: str, *, trigger: str = "manual", collector_version: str | None = None,
                   run_id: str | None = None, host: str | None = None) -> str:
         run_id = run_id or f"{source}-{utc_now().strftime('%Y%m%dT%H%M%SZ')}-{os.urandom(3).hex()}"
-        started = utc_now_iso()
+        started = _canonical_moment(utc_now_iso())
         state = self.get_source_state(source)
         watermark_before = state.get("watermark") if state else None
         self.con.execute(
@@ -675,7 +759,7 @@ class ObservationLedger:
             raise ValueError(f"bad observation origin: {origin}")
         if origin == ORIGIN_BACKFILLED and not backfill_reason:
             raise ValueError("BACKFILLED observations require a reason; do not fake first_seen_at")
-        seen_at = seen_at or utc_now_iso()
+        seen_at = _canonical_moment(seen_at or utc_now_iso())
         obs_id = make_observation_id(record.source, record.source_record_id)
         digest = payload_hash(record.payload)
         payload_text = canonical_json(record.payload)
@@ -821,7 +905,7 @@ class ObservationLedger:
     def mark_removed(self, obs_id: str, *, run_id: str, note_zh: str,
                      seen_at: str | None = None) -> bool:
         """Record that the source no longer serves this record (not that it vanished)."""
-        seen_at = seen_at or utc_now_iso()
+        seen_at = _canonical_moment(seen_at or utc_now_iso())
         row = self.con.execute(
             "SELECT * FROM observation WHERE observation_id=?", (obs_id,)
         ).fetchone()
@@ -865,7 +949,7 @@ class ObservationLedger:
     def mark_fetch_failed(self, obs_id: str, *, run_id: str, message: str,
                           seen_at: str | None = None) -> None:
         """A failed re-check is not evidence of no change; it is its own state."""
-        seen_at = seen_at or utc_now_iso()
+        seen_at = _canonical_moment(seen_at or utc_now_iso())
         row = self.con.execute(
             "SELECT * FROM observation WHERE observation_id=?", (obs_id,)
         ).fetchone()
@@ -888,7 +972,7 @@ class ObservationLedger:
             )
 
     def touch_checked(self, obs_id: str, *, run_id: str, checked_at: str | None = None) -> None:
-        checked_at = checked_at or utc_now_iso()
+        checked_at = _canonical_moment(checked_at or utc_now_iso())
         self.con.execute(
             "UPDATE observation SET last_checked_at=?, last_checked_run_id=? WHERE observation_id=?",
             (checked_at, run_id, obs_id),
@@ -1000,7 +1084,8 @@ class ObservationLedger:
 
     def changes_for(self, obs_id: str) -> list[dict[str, Any]]:
         rows = self.con.execute(
-            "SELECT * FROM observation_change WHERE observation_id=? ORDER BY observed_at, change_id",
+            "SELECT * FROM observation_change WHERE observation_id=?"
+            " ORDER BY replace(observed_at,'Z','+00:00'), change_id",
             (obs_id,),
         ).fetchall()
         return [dict(row) for row in rows]
@@ -1057,7 +1142,7 @@ class ObservationLedger:
             "SELECT c.change_state AS state, COUNT(*) AS n FROM observation_change c"
             " JOIN observation o ON o.observation_id=c.observation_id"
             + self.current_mapping_sql("o")[0]
-            + " WHERE c.observed_at >= ?" + where + " GROUP BY c.change_state"
+            + " WHERE replace(c.observed_at,'Z','+00:00') >= ?" + where + " GROUP BY c.change_state"
         )
         rows = self.con.execute(sql, [since, *params]).fetchall()
         found = {row["state"]: int(row["n"]) for row in rows}
@@ -1108,7 +1193,7 @@ class ObservationLedger:
         params: list[Any] = []
         if hours is not None:
             since = (utc_now() - timedelta(hours=hours)).replace(microsecond=0).isoformat()
-            clauses.append("c.observed_at >= ?")
+            clauses.append("replace(c.observed_at,'Z','+00:00') >= ?")
             params.append(since)
         if states:
             clauses.append("c.change_state IN (" + ",".join("?" for _ in states) + ")")
@@ -1150,7 +1235,7 @@ class ObservationLedger:
         params: list[Any] = []
         if hours is not None:
             since = (utc_now() - timedelta(hours=hours)).replace(microsecond=0).isoformat()
-            clauses.append("c.observed_at >= ?")
+            clauses.append("replace(c.observed_at,'Z','+00:00') >= ?")
             params.append(since)
         suffix, extra = self._change_filters(source, entity_id, track_id, query)
         where = (" WHERE " + " AND ".join(clauses)) if clauses else ""
@@ -1188,7 +1273,7 @@ class ObservationLedger:
         since = (utc_now() - timedelta(hours=hours)).replace(microsecond=0).isoformat()
         rows = self.con.execute(
             "SELECT source, change_state, COUNT(*) AS n FROM observation_change"
-            " WHERE observed_at >= ? GROUP BY source, change_state",
+            " WHERE replace(observed_at,'Z','+00:00') >= ? GROUP BY source, change_state",
             (since,),
         ).fetchall()
         return [dict(row) for row in rows]
@@ -1200,7 +1285,7 @@ class ObservationLedger:
             "SELECT COALESCE(m.entity_id,'__unmapped__') AS entity_id, m.entity_status,"
             " c.change_state, COUNT(*) AS n FROM observation_change c"
             " JOIN observation o ON o.observation_id=c.observation_id" + join +
-            " WHERE c.observed_at >= ? GROUP BY entity_id, m.entity_status, c.change_state",
+            " WHERE replace(c.observed_at,'Z','+00:00') >= ? GROUP BY entity_id, m.entity_status, c.change_state",
             (since,),
         ).fetchall()
         return [dict(row) for row in rows]
@@ -1212,7 +1297,7 @@ class ObservationLedger:
             "SELECT COALESCE(m.track_id,'__unmapped__') AS track_id, m.track_status,"
             " c.change_state, COUNT(*) AS n FROM observation_change c"
             " JOIN observation o ON o.observation_id=c.observation_id" + join +
-            " WHERE c.observed_at >= ? GROUP BY track_id, m.track_status, c.change_state",
+            " WHERE replace(c.observed_at,'Z','+00:00') >= ? GROUP BY track_id, m.track_status, c.change_state",
             (since,),
         ).fetchall()
         return [dict(row) for row in rows]
@@ -1264,14 +1349,15 @@ class ObservationLedger:
         which MedRadar discovered later must not appear in a historical replay.
         """
         moment = _normalize_as_of(as_of)
-        clauses = ["o.first_seen_at <= ?"]
+        clauses = ["replace(o.first_seen_at,'Z','+00:00') <= ?"]
         params: list[Any] = [moment]
         if source:
             clauses.append("o.source = ?")
             params.append(source)
         where = " WHERE " + " AND ".join(clauses)
         discovered_later = self.con.execute(
-            "SELECT COUNT(*) FROM observation o WHERE o.first_seen_at > ?" + (" AND o.source = ?" if source else ""),
+            "SELECT COUNT(*) FROM observation o WHERE replace(o.first_seen_at,'Z','+00:00') > ?"
+            + (" AND o.source = ?" if source else ""),
             [moment, *([source] if source else [])],
         ).fetchone()[0]
         sql = (
@@ -1280,15 +1366,18 @@ class ObservationLedger:
             " o.published_at_precision, o.observation_origin,"
             " v.version_id, v.version_seq, v.captured_at, v.payload_hash, v.payload,"
             " (SELECT sh.status FROM observation_status_history sh"
-            "  WHERE sh.observation_id=o.observation_id AND sh.changed_at <= ?"
+            "  WHERE sh.observation_id=o.observation_id"
+            "    AND replace(sh.changed_at,'Z','+00:00') <= ?"
             "  ORDER BY sh.changed_at DESC LIMIT 1) AS status_at,"
             " (SELECT COUNT(*) FROM observation_version v2"
-            "  WHERE v2.observation_id=o.observation_id AND v2.captured_at <= ?) AS versions_at"
+            "  WHERE v2.observation_id=o.observation_id"
+            "    AND replace(v2.captured_at,'Z','+00:00') <= ?) AS versions_at"
             f" FROM observation o JOIN observation_version v ON v.observation_id=o.observation_id"
             " AND v.version_seq = (SELECT MAX(v3.version_seq) FROM observation_version v3"
-            "   WHERE v3.observation_id=o.observation_id AND v3.captured_at <= ?)"
+            "   WHERE v3.observation_id=o.observation_id"
+            "     AND replace(v3.captured_at,'Z','+00:00') <= ?)"
             + where +
-            " ORDER BY o.first_seen_at DESC, o.observation_id"
+            " ORDER BY replace(o.first_seen_at,'Z','+00:00') DESC, o.observation_id"
         )
         args: list[Any] = [moment, moment, moment, *params]
         if limit:
@@ -1339,7 +1428,8 @@ class ObservationLedger:
             "first_seen_after_first_version",
             "SELECT o.observation_id, o.first_seen_at, v.captured_at FROM observation o"
             " JOIN observation_version v ON v.observation_id=o.observation_id AND v.version_seq=1"
-            " WHERE o.first_seen_at > v.captured_at",
+            " WHERE replace(o.first_seen_at,'Z','+00:00')"
+            "     > replace(v.captured_at,'Z','+00:00')",
         )
         collect(
             "version_seq_gap",
@@ -1359,7 +1449,8 @@ class ObservationLedger:
         collect(
             "changes_after_first_seen",
             "SELECT c.change_id, c.observed_at, c.first_seen_at FROM observation_change c"
-            " WHERE c.observed_at < c.first_seen_at",
+            " WHERE replace(c.observed_at,'Z','+00:00')"
+            "     < replace(c.first_seen_at,'Z','+00:00')",
         )
         collect(
             "running_runs_stale",
@@ -1385,6 +1476,230 @@ class ObservationLedger:
             "issues": issues,
             "issue_count": sum(len(v) for v in issues.values()),
             "checked_at": utc_now_iso(),
+        }
+
+    # --------------------------------------------------- acquisition phase history
+    def table_exists(self, name: str) -> bool:
+        row = self.con.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name=?", (name,)
+        ).fetchone()
+        return row is not None
+
+    def assign_phase(self, observation_id: str, phase: str, *, run_id: str | None = None,
+                     method: str = "collector_assigned", note_zh: str | None = None,
+                     assigned_at: str | None = None) -> bool:
+        """Append an acquisition-phase label. Never updates an existing label."""
+        from .records import PHASES
+
+        if phase not in PHASES:
+            raise ValueError(f"bad acquisition phase: {phase}")
+        stamp = datetime.now(timezone.utc).isoformat()
+        if assigned_at is not None:
+            stamp = assigned_at
+        current = self.con.execute(
+            "SELECT phase, method FROM observation_phase WHERE observation_id=?"
+            " ORDER BY assigned_at DESC LIMIT 1",
+            (observation_id,),
+        ).fetchone()
+        if current is not None and current["phase"] == phase and current["method"] == method:
+            return False
+        with self._transaction():
+            self.con.execute(
+                "INSERT OR IGNORE INTO observation_phase(observation_id, phase, assigned_at,"
+                " run_id, method, note_zh) VALUES(?,?,?,?,?,?)",
+                (observation_id, phase, stamp, run_id, method, note_zh),
+            )
+        return True
+
+    def latest_phase_sql(self, alias: str = "o") -> str:
+        return (
+            f" LEFT JOIN observation_phase p ON p.observation_id = {alias}.observation_id"
+            f" AND p.assigned_at = (SELECT MAX(p2.assigned_at) FROM observation_phase p2"
+            f" WHERE p2.observation_id = {alias}.observation_id)"
+        )
+
+    def phases_for(self, observation_ids: Iterable[str]) -> dict[str, str]:
+        ids = [str(item) for item in observation_ids if item]
+        found: dict[str, str] = {}
+        for start in range(0, len(ids), 400):
+            chunk = ids[start : start + 400]
+            placeholders = ",".join("?" for _ in chunk)
+            rows = self.con.execute(
+                f"SELECT observation_id, phase FROM observation_phase WHERE observation_id IN ({placeholders})"
+                " AND assigned_at = (SELECT MAX(p2.assigned_at) FROM observation_phase p2"
+                "  WHERE p2.observation_id = observation_phase.observation_id)",
+                chunk,
+            ).fetchall()
+            for row in rows:
+                found[row["observation_id"]] = row["phase"]
+        return found
+
+    def phase_counts(self) -> dict[str, int]:
+        if not self.table_exists("observation_phase"):
+            return {}
+        join = self.latest_phase_sql("o")
+        rows = self.con.execute(
+            "SELECT COALESCE(p.phase, '__unlabelled__') AS phase, COUNT(*) AS n"
+            " FROM observation o" + join + " GROUP BY phase"
+        ).fetchall()
+        return {row["phase"]: int(row["n"]) for row in rows}
+
+    def source_has_observations(self, source: str) -> bool:
+        row = self.con.execute(
+            "SELECT 1 FROM observation WHERE source=? LIMIT 1", (source,)
+        ).fetchone()
+        return row is not None
+
+    def first_observation_run(self, source: str) -> str | None:
+        """Run id of the source's first run that actually recorded observations."""
+        row = self.con.execute(
+            "SELECT first_seen_run_id FROM observation WHERE source=?"
+            " ORDER BY first_seen_at, observation_id LIMIT 1",
+            (source,),
+        ).fetchone()
+        if row is None:
+            return None
+        return str(row["first_seen_run_id"]) if row["first_seen_run_id"] else None
+
+    def reconstruct_phases(self, *, assigned_at: str | None = None) -> dict[str, Any]:
+        """Label pre-existing observations from run history (append-only metadata).
+
+        A record is INITIAL_DISCOVERY when it was first observed by its source's
+        first observation-producing run, INCREMENTAL_DISCOVERY when a later run
+        observed it, and HISTORICAL_BACKFILL when it was ingested as a backfill.
+        This never rewrites the immutable observation rows.
+        """
+        from .records import PHASE_BACKFILL, PHASE_INCREMENTAL, PHASE_INITIAL, ORIGIN_BACKFILLED
+
+        stamp = assigned_at or datetime.now(timezone.utc).isoformat()
+        rows = self.con.execute(
+            "SELECT o.observation_id, o.source, o.first_seen_run_id, o.observation_origin"
+            " FROM observation o WHERE NOT EXISTS ("
+            "  SELECT 1 FROM observation_phase p WHERE p.observation_id=o.observation_id)"
+        ).fetchall()
+        first_runs = {
+            row["source"]: row["run_id"]
+            for row in self.con.execute(
+                "SELECT source, first_seen_run_id AS run_id FROM observation"
+                " GROUP BY source"
+            ).fetchall()
+        }
+        counts = {PHASE_INITIAL: 0, PHASE_INCREMENTAL: 0, PHASE_BACKFILL: 0}
+        for row in rows:
+            obs_id = row["observation_id"]
+            if row["observation_origin"] == ORIGIN_BACKFILLED:
+                phase = PHASE_BACKFILL
+                note = "由 observation_origin=BACKFILLED 推导"
+            elif row["first_seen_run_id"] and row["first_seen_run_id"] == first_runs.get(row["source"]):
+                phase = PHASE_INITIAL
+                note = "首次观察所属运行即该来源的首个观察产岀运行"
+            else:
+                phase = PHASE_INCREMENTAL
+                note = "首次观察发生在该来源首轮之后的运行"
+            self.assign_phase(
+                obs_id,
+                phase,
+                run_id=row["first_seen_run_id"],
+                method="reconstructed_from_run_history",
+                note_zh=note,
+                assigned_at=stamp,
+            )
+            counts[phase] = counts.get(phase, 0) + 1
+        return {"labelled": len(rows), "counts": counts, "assigned_at": stamp}
+
+    def phase_summary(self) -> dict[str, Any]:
+        counts = self.phase_counts()
+        return {
+            "counts": counts,
+            "labels_zh": {
+                "INITIAL_DISCOVERY": "初次上线发现（既有公开记录）",
+                "INCREMENTAL_DISCOVERY": "持续监测新发现（增量）",
+                "HISTORICAL_BACKFILL": "历史回填",
+            },
+            "unlabelled": counts.get("__unlabelled__", 0),
+        }
+
+    # ------------------------------------------------------------- run outcomes
+    def record_outcome(self, source: str, run_id: str, outcome: str, *,
+                       new: int = 0, updated: int = 0,
+                       finished_at: str | None = None) -> None:
+        """Store what the last run actually produced for this source.
+
+        ``NO_NEW_RECORDS`` is a normal result and is reported as such; it is never
+        conflated with ``FETCH_FAILED``.
+        """
+        from .records import OUTCOMES
+
+        if outcome not in OUTCOMES:
+            raise ValueError(f"bad run outcome: {outcome}")
+        self.con.execute(
+            "UPDATE source_state SET last_outcome=?, last_new_records=?,"
+            " last_updated_records=?, last_finished_at=?, last_run_id=? WHERE source=?",
+            (outcome, int(new), int(updated), finished_at or utc_now_iso(), run_id, source),
+        )
+        self.con.commit()
+
+    # ------------------------------------------------- deployment / validation state
+    def set_deployment(self, payload: Mapping[str, Any]) -> None:
+        self.set_runtime("deployment", dict(payload))
+
+    def get_deployment(self) -> dict[str, Any]:
+        value = self.get_runtime("deployment", {})
+        return value if isinstance(value, dict) else {}
+
+    def set_validation(self, payload: Mapping[str, Any]) -> None:
+        self.set_runtime("validation", dict(payload))
+
+    def get_validation(self) -> dict[str, Any]:
+        value = self.get_runtime("validation", {})
+        return value if isinstance(value, dict) else {}
+
+    def record_ops_metric(self, metric: str, value: Any, *, day: str | None = None) -> None:
+        import hashlib
+
+        stamp = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+        day_key = day or stamp[:10]
+        self.con.execute(
+            "INSERT INTO ops_metric(metric, day, value, recorded_at) VALUES(?,?,?,?)"
+            " ON CONFLICT(metric, day) DO UPDATE SET value=excluded.value,"
+            " recorded_at=excluded.recorded_at",
+            (metric, day_key, _json(value), stamp),
+        )
+        self.con.commit()
+
+    def ops_metric_series(self, metric: str, *, days: int = 30) -> list[dict[str, Any]]:
+        rows = self.con.execute(
+            "SELECT metric, day, value, recorded_at FROM ops_metric WHERE metric=?"
+            " ORDER BY day DESC LIMIT ?",
+            (metric, max(1, int(days))),
+        ).fetchall()
+        result = []
+        for row in rows:
+            item = dict(row)
+            try:
+                item["value"] = json.loads(item["value"])
+            except (TypeError, ValueError):
+                pass
+            result.append(item)
+        return result
+
+    def observation_stats(self) -> dict[str, Any]:
+        row = self.con.execute(
+            "SELECT COUNT(*) AS n, MIN(first_seen_at) AS first, MAX(first_seen_at) AS last"
+            " FROM observation"
+        ).fetchone()
+        by_source = {
+            r["source"]: int(r["n"])
+            for r in self.con.execute(
+                "SELECT source, COUNT(*) AS n FROM observation GROUP BY source"
+            ).fetchall()
+        }
+        return {
+            "observations": int(row["n"]),
+            "first_seen_at": row["first"],
+            "last_first_seen_at": row["last"],
+            "by_source": by_source,
+            "phase": self.phase_counts(),
         }
 
     # -------------------------------------------------------------- runtime state

@@ -68,6 +68,7 @@ class CollectContext:
     companies: tuple[str, ...] = ()
     origin: str = ORIGIN_LIVE
     backfill_reason: str | None = None
+    phase: str | None = None
     now: str = field(default_factory=utc_now_iso)
     log: Any = print
 
@@ -315,6 +316,15 @@ def run_source(adapter: SourceAdapter, ctx: CollectContext, *, resume: bool = Tr
                                    "error": _short_error(exc)})
                     continue
                 _tally(counters, outcome.state)
+                if outcome.is_new and ctx.phase:
+                    try:
+                        ledger.assign_phase(
+                            outcome.observation_id, ctx.phase, run_id=run_id,
+                            method="collector_assigned",
+                            note_zh="由采集运行阶段直接记录（初次上线 / 持续监测 / 历史回填）",
+                        )
+                    except Exception:  # noqa: BLE001 - phase labelling must not lose the record
+                        pass
             for obs_id in page.removed_ids:
                 try:
                     if ledger.mark_removed(obs_id, run_id=run_id, seen_at=ctx.now,
@@ -384,6 +394,19 @@ def run_source(adapter: SourceAdapter, ctx: CollectContext, *, resume: bool = Tr
                       watermark_after=watermarks_dumped, notes_zh="；".join(notes) or None)
     if watermarks:
         ledger.set_watermark(source, watermarks)
+    # Record what the run actually produced. NO_NEW_RECORDS is a normal result;
+    # FETCH_FAILED is a failure — the two are never merged.
+    try:
+        ledger.record_outcome(
+            source,
+            run_id,
+            _outcome_for(status, counters),
+            new=counters["records_new"],
+            updated=counters["records_updated"],
+            finished_at=utc_now_iso(),
+        )
+    except Exception:  # noqa: BLE001 - operational bookkeeping must not kill the run
+        pass
     if status == RUN_OK:
         if counters["requests"] > 0 or counters["records_seen"] > 0:
             ledger.note_source_success(source, run_id=run_id, status=SOURCE_STATUS_OK)
@@ -406,6 +429,27 @@ def run_source(adapter: SourceAdapter, ctx: CollectContext, *, resume: bool = Tr
     return _result(adapter, run_id, status, counters, scopes_total, scopes_completed,
                    scopes_failed, watermarks, errors, structure_changed, structure_note,
                    resumed, started_perf, limited)
+
+
+def _outcome_for(status: str, counters: Mapping[str, int]) -> str:
+    """Map a finished run to the vocabulary the sync-status surfaces use."""
+    from .records import (
+        OUTCOME_FETCH_FAILED,
+        OUTCOME_NEW_RECORDS,
+        OUTCOME_NO_NEW_RECORDS,
+        OUTCOME_PARTIAL,
+        OUTCOME_UPDATED_RECORDS,
+    )
+
+    if status == RUN_FAILED:
+        return OUTCOME_FETCH_FAILED
+    if status == RUN_PARTIAL:
+        return OUTCOME_PARTIAL
+    if int(counters.get("records_new") or 0) > 0:
+        return OUTCOME_NEW_RECORDS
+    if int(counters.get("records_updated") or 0) > 0:
+        return OUTCOME_UPDATED_RECORDS
+    return OUTCOME_NO_NEW_RECORDS
 
 
 def _tally(counters: dict[str, int], state: str) -> None:

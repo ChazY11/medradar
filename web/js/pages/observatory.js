@@ -8,7 +8,7 @@
    * a polled source is described as 轮询 + declared cadence, never "实时";
    * with no ledger the page shows an explicit empty state, never fake events. */
 import { api } from "../api.js";
-import { el, fmtInt, fmtDateTime, fmtNum } from "../util.js";
+import { el, fmtInt, fmtDateTime, fmtNum, fmtPct } from "../util.js";
 import {
   pageHead, panel, badge, dataTable, notice, errorState, skeletonBlock, emptyState,
   codeBlock, kvList, textButton, chip, linkButton, openDrawer, disclosure,
@@ -65,6 +65,58 @@ const COVERAGE_TONES = {
   NOT_CURRENT_REGISTRANT: "amber",
   UNVERIFIED: "red",
 };
+/* ------------------------------------------------- observatory health words */
+/* The five words are a closed vocabulary (docs/RELIABILITY_DESIGN.md §0). The UI
+   never invents a sixth word and never shows a green badge while a component is
+   failing: the per-source table below carries its own FAILED / stale / alert
+   badges even when the overall word is NOT_DEPLOYED. */
+const HEALTH_WORDS = {
+  OPERATIONAL: {
+    label: "运行正常",
+    tone: "green",
+    meaning: "已记录经过验证的部署，全部来源健康且新鲜，最近备份已验证、最近恢复演练成功，七天验证已完成并通过。",
+  },
+  DEGRADED: {
+    label: "降级运行",
+    tone: "amber",
+    meaning: "至少一个组件不健康：来源失败或过期、存在未解决结构告警、备份或恢复演练缺失、账本一致性异常。必须逐项查看检查列表，不能只看一个徽标。",
+  },
+  PAUSED: {
+    label: "已暂停",
+    tone: "amber",
+    meaning: "采集被显式暂停：暂停期间不会产生新的观察。暂停不是健康状态，也不代表七天验证在继续。",
+  },
+  NOT_DEPLOYED: {
+    label: "未部署",
+    tone: "muted",
+    meaning: "没有经过验证的常驻部署（supervisor / 服务）。手动运行、本地验证与本地备份都不等于生产部署；即使账本里已有数据，也必须这样显示。",
+  },
+  VALIDATION_IN_PROGRESS: {
+    label: "验证进行中",
+    tone: "teal",
+    meaning: "七天连续观察验证尚未结束，其余组件当前健康。只能报告进行中，绝不能宣称已通过；剩余天数按真实经过时间计算。",
+  },
+};
+const PHASE_OPTIONS = [
+  { id: "", label: "全部阶段" },
+  { id: "INITIAL_DISCOVERY", label: "初次发现" },
+  { id: "INCREMENTAL_DISCOVERY", label: "增量发现" },
+  { id: "HISTORICAL_BACKFILL", label: "历史回填" },
+];
+const PHASE_TONES = {
+  INITIAL_DISCOVERY: "blue",
+  INCREMENTAL_DISCOVERY: "teal",
+  HISTORICAL_BACKFILL: "violet",
+};
+const PHASE_SHORT = {
+  INITIAL_DISCOVERY: "初次发现",
+  INCREMENTAL_DISCOVERY: "增量发现",
+  HISTORICAL_BACKFILL: "历史回填",
+  __unlabelled__: "未标注阶段",
+};
+const PHASE_SENTENCE =
+  "阶段只说明「系统何时第一次观察到这条记录」：初次发现＝系统首次上线时抓到的既有公开记录（不是历史回填）；"
+  + "增量发现＝持续监测期间新发现的记录；历史回填＝有意导入的历史归档（需要理由）。「事件发生在过去」不等于「回填」。";
 const PRECISION_SUFFIX = {
   date: "（日期精度）",
   datetime: "",
@@ -118,6 +170,18 @@ function changeBadge(item) {
     item.change_label_zh || CHANGE_LABELS[item.change_state] || item.change_state || "—",
     CHANGE_TONES[item.change_state] || "muted",
     `change_state: ${item.change_state}`,
+  );
+}
+
+function phaseBadge(item) {
+  const phase = item.phase;
+  if (!phase) {
+    return el("span", { class: "muted tiny", text: "阶段未标注", title: "该记录尚无采集阶段标签（旧账本或尚未重建）；未标注不等于任何阶段" });
+  }
+  return badge(
+    PHASE_SHORT[phase] || phase,
+    PHASE_TONES[phase] || "muted",
+    `phase: ${phase}（采集阶段，不是 observation_origin，也不是事件发生时间）`,
   );
 }
 
@@ -420,10 +484,383 @@ function sourcePanel(source) {
   return node;
 }
 
+/* ----------------------------------------------------- observatory health */
+function fmtBytes(value) {
+  const n = Number(value);
+  if (value == null || !Number.isFinite(n) || n < 0) return "—";
+  if (n < 1024) return `${fmtInt(n)} B`;
+  if (n < 1024 * 1024) return `${fmtNum(n / 1024, 1)} KB`;
+  if (n < 1024 * 1024 * 1024) return `${fmtNum(n / (1024 * 1024), 2)} MB`;
+  return `${fmtNum(n / (1024 * 1024 * 1024), 2)} GB`;
+}
+
+function healthBadge(word) {
+  const meta = HEALTH_WORDS[word] || { label: word || "未知", tone: "muted", meaning: "健康状态未知。" };
+  return badge(`${meta.label} · ${word || "UNKNOWN"}`, meta.tone, meta.meaning);
+}
+
+function deploymentTone(status) {
+  if (status === "DEPLOYED_SERVICE") return "green";
+  if (status === "DEPLOYED_LOCAL") return "teal";
+  return "muted";
+}
+
+function validationTone(status) {
+  if (status === "VALIDATION_PASSED") return "green";
+  if (status === "VALIDATION_FAILED") return "red";
+  if (status === "VALIDATION_IN_PROGRESS") return "teal";
+  return "muted";
+}
+
+function healthBlock(title, rows) {
+  return el("div", { class: "obs-health-block" },
+    el("h4", { text: title }),
+    kvList(rows));
+}
+
+function deploymentRows(health) {
+  const d = health.deployment || {};
+  return [
+    { key: "状态", value: badge(d.status_label_zh || d.status || "未部署", deploymentTone(d.status)) },
+    { key: "supervisor", value: d.supervisor || "none" },
+    { key: "安装时间", value: d.installed_at ? fmtDateTime(d.installed_at) : "—" },
+    { key: "主机", value: d.host || "—" },
+    { key: "说明", value: d.note_zh || "—" },
+  ];
+}
+
+function validationRows(health) {
+  const v = health.validation || {};
+  const slots = v.slots || {};
+  const runs = v.runs || {};
+  const planned = slots.planned_total != null ? slots.planned_total : v.planned_slots;
+  const rate = runs.scheduler_success_rate != null ? runs.scheduler_success_rate : v.scheduler_success_rate;
+  const rows = [
+    { key: "状态", value: badge(v.status_label_zh || v.status || "未开始", validationTone(v.status)) },
+    {
+      key: "开始 → 结束",
+      value: `${v.started_at ? fmtDateTime(v.started_at) : "—"} → ${v.ends_at ? fmtDateTime(v.ends_at) : "—"}`,
+    },
+  ];
+  if (v.days_elapsed != null || v.days_remaining != null) {
+    rows.push({
+      key: "已过 / 剩余",
+      value: `${v.days_elapsed != null ? fmtNum(v.days_elapsed, 2) : "—"} / ${v.days_remaining != null ? fmtNum(v.days_remaining, 2) : "—"} 天`,
+    });
+  }
+  rows.push({
+    key: "计划 / 到期 / 已执行 / 缺失",
+    value: `${fmtInt(planned)} / ${fmtInt(slots.due)} / ${fmtInt(slots.executed)} / ${fmtInt(slots.missed)}`,
+  });
+  rows.push({ key: "调度成功率（ok/到期轮次）", value: fmtPct(rate, 1) });
+  if (v.status === "VALIDATION_IN_PROGRESS") {
+    rows.push({ key: "口径", value: "验证尚未结束：只能报告进行中，不能宣称已通过" });
+  }
+  if (v.note_zh) rows.push({ key: "说明", value: v.note_zh });
+  return rows;
+}
+
+function collectorRows(health) {
+  const c = health.collector || {};
+  const lock = c.lock || {};
+  const lastRun = c.last_run || null;
+  let lockText;
+  if (lock.held) {
+    const holder = lock.holder || {};
+    lockText = `持有中 · pid ${holder.pid != null ? holder.pid : "—"} · ${holder.host || "—"} · mode ${holder.mode || "—"}`;
+    if (lock.heartbeat_age_seconds != null) {
+      lockText += ` · 心跳 ${fmtNum(lock.heartbeat_age_seconds, 0)} 秒前`;
+    }
+  } else if (lock.stale) {
+    lockText = "锁文件存在但已过期（当前没有存活的采集进程）";
+  } else {
+    lockText = "未持有锁（当前没有采集进程）";
+  }
+  return [
+    { key: "当前是否运行", value: c.running ? badge("运行中", "green") : badge("未运行", "muted") },
+    { key: "单写锁", value: lockText },
+    {
+      key: "最近运行",
+      value: lastRun
+        ? `${lastRun.run_id || "—"} · ${lastRun.source || "—"} · ${RUN_LABELS[lastRun.status] || lastRun.status || "—"} · ${lastRun.started_at ? fmtDateTime(lastRun.started_at) : "—"}`
+        : "—",
+    },
+    { key: "已观察时长", value: c.uptime_days != null ? `${fmtNum(c.uptime_days, 2)} 天` : "—" },
+  ];
+}
+
+function persistenceRows(health) {
+  const p = health.persistence || {};
+  const backup = p.backup || {};
+  const drill = p.restore_drill || {};
+  const backupOk = backup.status === "OK" && Boolean(backup.verified);
+  const drillOk = drill.status === "OK";
+  return [
+    { key: "账本大小", value: fmtBytes(p.ledger_bytes) },
+    { key: "原始响应缓存", value: p.raw_cache_bytes != null ? `${fmtBytes(p.raw_cache_bytes)}（可再生成）` : "—" },
+    {
+      key: "最近备份",
+      value: el("div", { class: "obs-cell-stack" },
+        badge(backup.status || "NEVER", backupOk ? "green" : "red", "只有 status=OK 且已验证（verified=true）才算通过"),
+        el("span", {
+          class: "muted tiny",
+          text: `${backup.at ? fmtDateTime(backup.at) : "从未记录"}`
+            + `${backup.age_hours != null ? ` · ${fmtNum(backup.age_hours, 1)} 小时前` : ""}`
+            + ` · verified=${backup.verified ? "true" : "false"}`,
+        })),
+    },
+    {
+      key: "最近恢复演练",
+      value: el("div", { class: "obs-cell-stack" },
+        badge(drill.status || "NEVER", drillOk ? "green" : "red", "未做恢复演练不等于可恢复"),
+        el("span", {
+          class: "muted tiny",
+          text: `${drill.at ? fmtDateTime(drill.at) : "从未记录"}`
+            + `${drill.ok != null ? ` · ok=${drill.ok}` : ""}`,
+        })),
+    },
+    { key: "磁盘可用", value: fmtBytes(p.disk_free_bytes) },
+  ];
+}
+
+function outcomeCell(row) {
+  if (!row.last_outcome) {
+    return el("span", { class: "muted", text: "尚未记录", title: "该来源还没有记录最近一次采集结果" });
+  }
+  const severity = row.last_outcome_severity || "unknown";
+  const tone = severity === "failure" ? "red"
+    : severity === "partial" ? "amber"
+      : severity === "normal" ? "green" : "muted";
+  const bits = [];
+  if (row.last_new_records != null) bits.push(`新 ${fmtInt(row.last_new_records)}`);
+  if (row.last_updated_records != null) bits.push(`改 ${fmtInt(row.last_updated_records)}`);
+  return el("div", { class: "obs-cell-stack" },
+    el("span", null, badge(
+      row.last_outcome_label_zh || row.last_outcome,
+      tone,
+      `last_outcome: ${row.last_outcome}（NO_NEW_RECORDS 是正常结果；FETCH_FAILED 是失败，二者不同）`,
+    )),
+    el("span", { class: "muted tiny", text: bits.join(" · ") }));
+}
+
+function freshnessCell(row) {
+  if (row.freshness_hours == null) {
+    return el("span", { class: "muted", text: "无成功记录", title: "该来源还没有任何真实成功记录；新鲜度无法计算" });
+  }
+  const expected = row.expected_interval_hours != null ? `${fmtNum(row.expected_interval_hours, 1)}h` : "—";
+  const threshold = row.stale_after_hours != null ? `${fmtNum(row.stale_after_hours, 1)}h` : "—";
+  return el("span", {
+    class: row.stale ? "tone-down mono" : "mono",
+    text: `${fmtNum(row.freshness_hours, 1)}h / 周期 ${expected} / 阈值 ${threshold}`,
+    title: "距该来源最近一次真实成功的时间；阈值 = max(3 × 声明周期, 12 小时)；声明周期 ≠ 实测新鲜度",
+  });
+}
+
+function healthSourceTable(sources) {
+  return dataTable({
+    columns: [
+      {
+        key: "source",
+        label: "来源",
+        format: (row) => el("div", { class: "obs-cell-stack" },
+          el("span", { text: row.label_zh || row.source || "—" }),
+          el("span", { class: "muted tiny mono", text: row.source || "" })),
+      },
+      {
+        key: "status",
+        label: "状态",
+        format: (row) => badge(row.status_label_zh || row.status || "—", SOURCE_STATUS_TONES[row.status] || "muted", `status: ${row.status}`),
+      },
+      { key: "last_success_at", label: "最近成功", format: (row) => el("span", { class: "mono", text: fmtDateTime(row.last_success_at) }) },
+      { key: "last_attempt_at", label: "最近尝试", format: (row) => el("span", { class: "mono", text: fmtDateTime(row.last_attempt_at) }) },
+      { key: "last_outcome", label: "最近结果（正常 / 失败分开）", format: (row) => outcomeCell(row) },
+      {
+        key: "consecutive_failures",
+        label: "连续失败",
+        num: true,
+        format: (row) => (Number(row.consecutive_failures || 0) > 0
+          ? el("b", { class: "tone-down", text: fmtInt(row.consecutive_failures) })
+          : el("span", { class: "muted", text: "0" })),
+      },
+      { key: "freshness", label: "新鲜度 / 周期 / 阈值", format: (row) => freshnessCell(row) },
+      {
+        key: "stale",
+        label: "新鲜度",
+        format: (row) => (row.stale
+          ? badge("已过期", "red", `超过阈值 ${row.stale_after_hours}h 未成功`)
+          : badge("新鲜", "green", "在阈值内")),
+      },
+      {
+        key: "structure_alert",
+        label: "结构告警",
+        format: (row) => (row.structure_alert
+          ? badge("结构变化", "red", row.structure_note_zh || "来源结构发生变化，尚未人工解决")
+          : el("span", { class: "muted", text: "—" })),
+      },
+    ],
+    rows: sources,
+    compact: true,
+    empty: "账本里还没有来源状态记录。",
+  });
+}
+
+function healthCheckRow(check) {
+  const ok = Boolean(check.ok);
+  return el("div", {
+    class: "obs-health-check",
+    dataset: { checkId: check.id || "", checkOk: ok ? "true" : "false" },
+  },
+  badge(ok ? "OK" : "FAIL", ok ? "green" : "red", `check: ${check.id}`),
+  el("span", { class: "mono tiny obs-health-check-id", text: check.id || "—" }),
+  el("span", { class: "small", text: check.detail_zh || "—" }));
+}
+
+function renderHealthPanel(health) {
+  if (!health) {
+    return panel({
+      title: "观察站健康 / Observatory Health",
+      sub: "健康状态无法获取时不展示任何绿色徽标",
+      body: notice({
+        tone: "amber",
+        title: "健康状态加载失败",
+        body: "无法获取 /api/observatory/health。这里没有可展示的健康结论；下方数据源行仍然逐项显示各自状态。",
+      }),
+    });
+  }
+  const word = health.overall || "NOT_DEPLOYED";
+  const meta = HEALTH_WORDS[word] || { label: word, tone: "muted", meaning: "健康状态未知。" };
+  const sources = health.sources || [];
+  const checks = health.checks || [];
+  const alerts = health.unresolved_structure_alerts || [];
+  const failingSources = sources.filter((source) => source.status && source.status !== "OK");
+  const failedChecks = checks.filter((check) => !check.ok);
+
+  const body = el("div", { class: "obs-health" });
+  const overallBadge = healthBadge(word);
+  overallBadge.dataset.testid = "observatory-health-overall";
+  overallBadge.dataset.healthWord = word;
+  body.append(el("div", { class: "obs-health-overall" },
+    overallBadge,
+    el("div", { class: "obs-health-meaning", text: health.overall_note_zh || meta.meaning })));
+
+  const reasons = [];
+  const deployment = health.deployment || {};
+  if (deployment.status === "NOT_DEPLOYED") reasons.push("没有经过验证的常驻部署（数据存在也不等于已部署）");
+  if (deployment.status === "DEPLOYED_LOCAL") reasons.push("仅本地部署：不是生产常驻服务");
+  if (failingSources.length) {
+    reasons.push(`${failingSources.length} 个来源异常：${failingSources.map((source) => source.source).join("、")}`);
+  }
+  const staleSources = sources.filter((source) => source.stale);
+  if (staleSources.length) reasons.push(`${staleSources.length} 个来源超过新鲜度阈值：${staleSources.map((source) => source.source).join("、")}`);
+  if (alerts.length) reasons.push(`${alerts.length} 条未解决的结构变化告警`);
+  for (const check of failedChecks) {
+    if (check.id === "backup" || check.id === "backup_freshness") reasons.push("最近备份未通过 / 已过期");
+    if (check.id === "restore_drill") reasons.push("最近恢复演练未成功或未执行");
+    if (check.id === "integrity") reasons.push("账本一致性检查未通过");
+    if (check.id === "collector_recent") reasons.push("没有任何采集运行记录");
+  }
+  if (reasons.length) {
+    const alarming = Boolean(
+      failingSources.length || staleSources.length || alerts.length || failedChecks.length
+      || deployment.status === "NOT_DEPLOYED",
+    );
+    body.append(notice({
+      tone: alarming ? "amber" : "muted",
+      title: `必须与「${meta.label}」一起阅读的降级/限制原因`,
+      items: Array.from(new Set(reasons)),
+      testid: "observatory-health-reasons",
+    }));
+  }
+
+  const grid = el("div", { class: "obs-health-grid" });
+  grid.append(
+    healthBlock("部署 / Deployment", deploymentRows(health)),
+    healthBlock("七天连续验证 / Validation", validationRows(health)),
+    healthBlock("采集器 / Collector", collectorRows(health)),
+    healthBlock("持久化 / Persistence", persistenceRows(health)),
+  );
+  body.append(grid);
+
+  body.append(el("div", { class: "obs-health-section" },
+    el("h4", { text: `数据源健康（${sources.length} 个）` }),
+    healthSourceTable(sources)));
+
+  if (alerts.length) {
+    body.append(notice({
+      tone: "amber",
+      title: `未解决的结构变化告警 ${alerts.length} 条`,
+      items: alerts.map((item) => `${item.source || "未知来源"} · ${item.changed_at ? fmtDateTime(item.changed_at) : "时间未知"} · ${item.note_zh || "来源结构发生变化，需人工确认"}`),
+    }));
+  }
+
+  const passed = checks.length - failedChecks.length;
+  body.append(disclosure(
+    `检查项 ${passed}/${checks.length} 通过${failedChecks.length ? ` · ${failedChecks.length} 项 FAIL` : ""}`,
+    el("div", { class: "obs-health-checks", testid: "observatory-health-checks" }, ...checks.map((check) => healthCheckRow(check))),
+    { open: failedChecks.length > 0 },
+  ));
+
+  if ((health.limitations_zh || []).length) {
+    body.append(notice({ tone: "muted", title: "健康面板不声称的内容", items: health.limitations_zh }));
+  }
+
+  const node = panel({
+    title: "观察站健康 / Observatory Health",
+    sub: "由账本、文件系统与运行记录计算，不是 HTTP 200 的另一种写法；降级必须能在下方来源行中看到",
+    right: el("span", { class: "muted small", text: `${fmtInt(sources.length)} 个来源 · 检查 ${fmtInt(passed)}/${fmtInt(checks.length)}` }),
+    body,
+  });
+  node.dataset.testid = "observatory-health";
+  return node;
+}
+
+/* ------------------------------------------------------------- phase chips */
+function phaseChipRow(eventsFacets, phasesSummary, filters, goFilters) {
+  const facets = (eventsFacets && eventsFacets.phases) || [];
+  const counts = {};
+  let total = 0;
+  for (const item of facets) {
+    counts[item.phase] = Number(item.count || 0);
+    total += Number(item.count || 0);
+  }
+  const summary = phasesSummary || {};
+  const options = [{ id: "", label: "全部阶段", count: total }];
+  for (const option of PHASE_OPTIONS.slice(1)) {
+    const facet = facets.find((item) => item.phase === option.id) || {};
+    options.push({
+      id: option.id,
+      label: option.label,
+      count: counts[option.id] || 0,
+      description: facet.description_zh,
+    });
+  }
+  const row = el("div", { class: "obs-chip-row" },
+    el("span", { class: "obs-chip-label", text: "采集阶段" }),
+    ...options.map((option) => chip(
+      `${option.label} · ${fmtInt(option.count)}`,
+      {
+        active: (filters.phase || "") === option.id,
+        testid: `observatory-phase-${option.id || "all"}`,
+        title: option.description || "按「系统何时第一次观察到该记录」过滤；不是 observation_origin，也不是事件发生时间",
+        onClick: () => goFilters({ phase: option.id, offset: 0 }),
+      },
+    )));
+  row.append(el("span", {
+    class: "muted tiny",
+    text: `当前时间窗口径：全部 ${fmtInt(total)}`
+      + ` · 初次发现 ${fmtInt(summary.initial)} · 增量发现 ${fmtInt(summary.incremental)}`
+      + ` · 历史回填 ${fmtInt(summary.backfill)}`
+      + (Number(summary.unlabelled || 0) > 0 ? ` · 未标注 ${fmtInt(summary.unlabelled)}` : ""),
+    title: "「全部/初次发现/…」前一列是当前时间窗内的变化数；账本口径为全账本观察数，两者口径不同",
+  }));
+  return row;
+}
+
 /* ---------------------------------------------------------------- mounting */
 export async function mount(root, ctx) {
   const allowedWindows = WINDOW_OPTIONS.map((option) => option.id);
   const allowedChanges = CHANGE_OPTIONS.map((option) => option.id);
+  const allowedPhases = PHASE_OPTIONS.map((option) => option.id).filter(Boolean);
   const filters = {
     window: allowedWindows.includes(ctx.query.get("window")) ? ctx.query.get("window") : "7d",
     change: allowedChanges.includes(ctx.query.get("change")) ? ctx.query.get("change") : "all",
@@ -431,6 +868,7 @@ export async function mount(root, ctx) {
     company: ctx.query.get("company") || "",
     track: ctx.query.get("track") || "",
     q: ctx.query.get("q") || "",
+    phase: allowedPhases.includes(ctx.query.get("phase")) ? ctx.query.get("phase") : "",
     limit: PAGE_LIMITS.includes(Number(ctx.query.get("limit"))) ? Number(ctx.query.get("limit")) : 50,
     offset: Math.max(0, Number(ctx.query.get("offset")) || 0),
   };
@@ -439,8 +877,9 @@ export async function mount(root, ctx) {
   let summary;
   let events;
   let sourcesPayload;
+  let healthPayload;
   try {
-    [summary, events, sourcesPayload] = await Promise.all([
+    [summary, events, sourcesPayload, healthPayload] = await Promise.all([
       api.observatorySummary(),
       api.observatoryEvents({
         window: filters.window,
@@ -449,10 +888,14 @@ export async function mount(root, ctx) {
         company: filters.company || undefined,
         track: filters.track || undefined,
         q: filters.q || undefined,
+        phase: filters.phase || undefined,
         limit: filters.limit,
         offset: filters.offset,
       }),
       api.observatorySources(),
+      // A health failure must not block the observation list; the panel then states
+      // honestly that no health conclusion is available.
+      api.request("/api/observatory/health").catch(() => null),
     ]);
   } catch (error) {
     root.replaceChildren(errorState(error, () => ctx.refresh(), { title: "实时观察站加载失败" }));
@@ -478,6 +921,7 @@ export async function mount(root, ctx) {
       company: next.company || undefined,
       track: next.track || undefined,
       q: next.q || undefined,
+      phase: next.phase || undefined,
       limit: next.limit,
       offset: next.offset || undefined,
     });
@@ -495,6 +939,9 @@ export async function mount(root, ctx) {
     ],
     actions: [linkButton("#/evidence", "证据浏览器"), linkButton("#/overview", "回到总览")],
   }));
+
+  /* ------------------------------------------------ health (top of page) */
+  root.append(renderHealthPanel(healthPayload));
 
   if (!ledgerExists) {
     root.append(notice({
@@ -541,6 +988,10 @@ export async function mount(root, ctx) {
         onClick: () => goFilters({ change: option.id }),
       },
     )));
+
+  /* Acquisition phase is a *different* claim from change type: it says when in
+     MedRadar's life a record was first observed, not what happened to it. */
+  const phaseChips = phaseChipRow(events.facets, summary.phases, filters, goFilters);
 
   const sourceSelect = el("select", { "aria-label": "数据源" });
   sourceSelect.dataset.testid = "observatory-filter-source";
@@ -610,10 +1061,12 @@ export async function mount(root, ctx) {
 
   root.append(panel({
     title: "观察筛选",
-    sub: "时间窗按 MedRadar 的 observed_at 过滤；企业/赛道来自当前时间窗的 facet，包含「未映射」选项（如果存在）",
+    sub: "时间窗按 MedRadar 的 observed_at 过滤；企业/赛道来自当前时间窗的 facet，包含「未映射」选项（如果存在）；采集阶段是另一条独立口径，不是变化类型",
     body: el("div", { class: "obs-filter-rows" },
       windowChips,
       changeChips,
+      phaseChips,
+      el("div", { class: "muted tiny", text: PHASE_SENTENCE }),
       el("div", { class: "filter-bar" },
         el("div", { class: "filter-field" }, el("span", { class: "filter-label", text: "数据源" }), sourceSelect),
         el("div", { class: "filter-field" }, el("span", { class: "filter-label", text: "企业" }), companySelect),
@@ -652,7 +1105,11 @@ export async function mount(root, ctx) {
       { key: "title", label: "记录与时间口径", format: (row) => el("div", null, el("div", { class: "obs-title", text: row.title || "—" }), timeBlock(row)) },
       { key: "company", label: "企业（映射状态）", format: (row) => companyCell(row) },
       { key: "track", label: "技术赛道", format: (row) => trackCell(row) },
-      { key: "change", label: "变化", format: (row) => changeBadge(row) },
+      {
+        key: "change",
+        label: "变化 / 采集阶段",
+        format: (row) => el("div", { class: "obs-cell-stack" }, changeBadge(row), phaseBadge(row)),
+      },
       { key: "observed_at", label: "观察时间", format: (row) => el("div", { class: "obs-cell-stack" }, el("span", { class: "mono", text: fmtDateTime(row.observed_at) }), el("span", { class: "muted tiny", text: `首次观察 ${fmtDateTime(row.first_seen_at)}` })) },
       { key: "event_at", label: "事件时间", format: (row) => el("div", { class: "obs-cell-stack" }, el("span", { class: "mono", text: row.event_at || "来源未提供" }), el("span", { class: "muted tiny", text: row.event_at_precision || "unknown" })) },
       { key: "url", label: "原始来源", format: (row) => sourceLink(row, { small: true }) },
@@ -671,7 +1128,9 @@ export async function mount(root, ctx) {
     )));
   } else if (!items.length) {
     eventBody.append(el("div", { class: "panel-body" }, emptyState(
-      "当前时间窗 / 变化类型 / 筛选条件下没有观察记录。请调整筛选，或查看更大的时间窗。",
+      filters.phase
+        ? `当前时间窗内没有「${PHASE_SHORT[filters.phase] || filters.phase}」的记录。没有该阶段的记录是诚实的空结果，不等于系统没有观察过任何记录；可切换阶段或查看更大的时间窗。`
+        : "当前时间窗 / 变化类型 / 筛选条件下没有观察记录。请调整筛选，或查看更大的时间窗。",
       { title: "该筛选下没有观察记录", actionLabel: "重置筛选", onAction: reset },
     )));
   } else {
@@ -679,12 +1138,13 @@ export async function mount(root, ctx) {
   }
   root.append(panel({
     title: "观察到的变化",
-    sub: `窗口 ${filters.window} · 每行同时给出「事件发生于」「首次观察于」「来源发布时间」三个独立时间口径；点击行打开版本链与映射历史`,
+    sub: `窗口 ${filters.window} · 每行同时给出「事件发生于」「首次观察于」「来源发布时间」三个独立时间口径，以及该记录的采集阶段；点击行打开版本链与映射历史`,
     right: items.length ? pager() : null,
     dense: true,
     body: eventBody,
     foot: items.length
       ? `共 ${fmtInt(total)} 条变化 · change=${filters.change}` +
+        (filters.phase ? ` · phase=${filters.phase}` : "") +
         (filters.source ? ` · source=${filters.source}` : "") +
         (filters.company ? ` · company=${filters.company}` : "") +
         (filters.track ? ` · track=${filters.track}` : "") +

@@ -86,6 +86,24 @@ def _load(source: str, options: Mapping[str, Any]) -> Any:
     return load_adapter(source, **_adapter_kwargs(source, options))
 
 
+def _phase_for_source_run(ledger: ObservationLedger, source: str, resume: bool,
+                          origin: str) -> str:
+    """Acquisition phase of *this* run (initial sweep vs incremental vs backfill)."""
+    from .records import ORIGIN_BACKFILLED, PHASE_BACKFILL, PHASE_INCREMENTAL, PHASE_INITIAL
+
+    if origin == ORIGIN_BACKFILLED:
+        return PHASE_BACKFILL
+    first_run = ledger.first_observation_run(source)
+    if not first_run:
+        return PHASE_INITIAL
+    if resume:
+        resumable = ledger.last_resumable_run(source)
+        if resumable and resumable.get("run_id") == first_run:
+            # Resuming the go-live sweep: its records remain INITIAL_DISCOVERY.
+            return PHASE_INITIAL
+    return PHASE_INCREMENTAL
+
+
 def sync(
     *,
     sources: Sequence[str] | None = None,
@@ -108,9 +126,15 @@ def sync(
     max_requests: int = 600,
     timeout: float = 45.0,
     max_pages_per_scope: int | None = None,
+    acquire_lock: bool = True,
+    lock_stale_seconds: float = 90.0,
     log: Any = None,
 ) -> dict[str, Any]:
-    """Run an incremental collection pass and return a machine-readable report."""
+    """Run an incremental collection pass and return a machine-readable report.
+
+    A sync always takes the single-writer collector lease first: two processes must
+    never write the same observation ledger. Read-only commands never take it.
+    """
     emit = log or (lambda message: None)
     owns_ledger = ledger is None
     ledger = ledger or ObservationLedger(ledger_path)
@@ -128,6 +152,38 @@ def sync(
         "paused": False,
         "dry_run": bool(dry_run),
     }
+    lock = None
+    if acquire_lock and not dry_run:
+        from .lock import CollectorLock, LedgerLocked
+
+        lock = CollectorLock(ledger.path, stale_seconds=lock_stale_seconds)
+        try:
+            lock.acquire(mode="sync", command="observatory sync")
+        except LedgerLocked as exc:
+            report.update(
+                {
+                    "locked": True,
+                    "lock_holder": exc.holder,
+                    "ok": False,
+                    "finished_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+                    "sources": {
+                        source: {"source": source, "status": "LOCKED_SKIPPED",
+                                 "reason": "another collector holds the lease"}
+                        for source in selected
+                    },
+                }
+            )
+            try:
+                ledger.set_runtime(
+                    "lock_conflict",
+                    {"at": report["finished_at"], "holder": exc.holder,
+                     "by": {"pid": os.getpid(), "mode": "sync"}},
+                )
+            except Exception:  # noqa: BLE001 - reporting must not mask the refusal
+                pass
+            if owns_ledger:
+                ledger.close()
+            return report
     try:
         if not dry_run:
             recovered = ledger.recover_interrupted_runs()
@@ -139,6 +195,8 @@ def sync(
                 report["sources"] = {source: {"status": "SKIPPED", "reason": "collector paused"}
                                      for source in selected}
                 report["finished_at"] = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+                # A paused skip is not a collection attempt: leave source_state's
+                # last_outcome/last_success untouched (the pause itself is recorded).
                 return report
         fetcher = build_fetcher(
             offline=offline,
@@ -187,6 +245,7 @@ def sync(
                 companies=tuple(companies or ()),
                 origin=origin,
                 backfill_reason=backfill_reason,
+                phase=_phase_for_source_run(ledger, source, resume, origin),
                 log=emit,
             )
             try:
@@ -210,12 +269,15 @@ def sync(
         report["totals"] = totals
         report["fetcher_stats"] = dict(fetcher.stats)
         report["counts"] = ledger.counts()
+        report["phase"] = ledger.phase_counts()
         report["finished_at"] = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
         report["ok"] = all(
             (item.get("status") in ("OK", "SKIPPED")) for item in report["sources"].values()
         )
         return report
     finally:
+        if lock is not None:
+            lock.release()
         if owns_ledger:
             ledger.close()
 
@@ -267,6 +329,10 @@ def status_report(*, ledger: ObservationLedger | None = None,
                     "observations": int(observations),
                     "windows": windows,
                     "measured_lag": lag,
+                    "last_outcome": state.get("last_outcome"),
+                    "last_new_records": state.get("last_new_records"),
+                    "last_updated_records": state.get("last_updated_records"),
+                    "last_finished_at": state.get("last_finished_at"),
                     "recent_runs": runs,
                     "recent_failures": failures,
                 }
@@ -277,6 +343,9 @@ def status_report(*, ledger: ObservationLedger | None = None,
             "pause_state": paused_state,
             "heartbeat": heartbeat,
             "sources": sources,
+            "phases": ledger.phase_summary(),
+            "deployment": ledger.get_deployment(),
+            "validation": ledger.get_validation(),
             "checked_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         }
         if include_consistency:

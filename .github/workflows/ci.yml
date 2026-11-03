@@ -113,3 +113,17 @@ jobs:
           python -m pytest tests/test_observatory_core.py tests/test_observatory_ctgov.py
           tests/test_observatory_europepmc.py tests/test_observatory_api.py
           tests/test_observatory_prospective.py -q
+      - name: Observatory reliability suite (lease, phases, health, validation)
+        # Single-writer lease, acquisition-phase classification, run outcomes,
+        # health precedence, seven-day validation accounting and the scheduler.
+        run: python -m pytest tests/test_observatory_reliability.py tests/test_observatory_health.py -q
+      - name: Observatory persistence suite (backup / restore / retention / drill)
+        # Real SQLite online-backup API, hash manifests, tamper refusal, isolated
+        # restore drill, prune policy. No network; throwaway ledgers only.
+        run: python -m pytest tests/test_observatory_backup.py -q
+      - name: Ledger integrity audit suite (verdicts + injected corruption)
+        run: python -m pytest tests/test_observatory_audit.py -q
+      - name: Deployment templates suite (systemd units, Windows scripts, -WhatIf)
+        # PowerShell/schtasks checks skip cleanly on Linux CI; the template content
+        # and required directives are always asserted.
+        run: python -m pytest tests/test_observatory_deploy.py -q -rs

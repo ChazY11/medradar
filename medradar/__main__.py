@@ -936,6 +936,10 @@ def cmd_observatory(args: argparse.Namespace) -> int:
             ledger_path=ledger_path,
             max_requests=int(getattr(args, "budget", 600)),
             min_interval=float(getattr(args, "min_interval", 0.25)),
+            log_file=getattr(args, "log_file", None),
+            trigger=getattr(args, "trigger", "schedule") or "schedule",
+            lock_stale_seconds=float(getattr(args, "lock_stale_seconds", 90.0)),
+            acquire_lock=not bool(getattr(args, "no_lock", False)),
             log=(lambda message: print(message, file=sys.stderr)),
         )
         if as_json:
@@ -943,9 +947,11 @@ def cmd_observatory(args: argparse.Namespace) -> int:
         else:
             print(f"watch finished: cycles={summary['cycles']} status={summary['status']} "
                   f"failures={summary['failures']} ledger={summary['ledger']}")
+            if summary.get("locked"):
+                print("another collector holds the ledger lease; this watcher did not start")
             for item in summary["passes"]:
                 print(f"  pass {item['cycle']}: {item['status']} {item.get('totals')}")
-        return 0 if summary["status"] == "OK" else 1
+        return 0 if summary["status"] in ("OK", "LOCKED") else 1
 
     if action == "pause":
         _emit(runner.pause(reason=getattr(args, "reason", "manual pause") or "manual pause",
@@ -975,14 +981,202 @@ def cmd_observatory(args: argparse.Namespace) -> int:
         return 0 if result["ok"] else 1
 
     if action == "backup":
-        _emit(
-            runner.backup(
+        from .observatory import backup as backup_mod
+
+        include_raw = not bool(getattr(args, "no_raw_cache", False))
+        try:
+            result = backup_mod.create_backup(
+                ledger_path=ledger_path,
+                dest_dir=args.dest,
+                include_raw_cache=include_raw,
+                prune_on_create=bool(getattr(args, "prune", False)),
+            )
+            bundle = result.get("bundle_path") or result.get("path")
+            if bundle and getattr(args, "verify", False):
+                result["verification"] = backup_mod.verify_backup(bundle)
+        except (ImportError, AttributeError, TypeError):
+            # older/partial install: fall back to the v1 consistent backup
+            result = runner.backup(
                 dest_dir=args.dest,
                 ledger_path=ledger_path,
-                include_raw_cache=not bool(getattr(args, "no_raw_cache", False)),
+                include_raw_cache=include_raw,
             )
+        _emit(result)
+        status = result.get("status") or ("OK" if result.get("ok") else None)
+        if getattr(args, "verify", False) and result.get("verification"):
+            return 0 if result["verification"].get("ok") else 1
+        return 0 if status in (None, "OK") else 1
+
+    if action == "restore":
+        try:
+            from .observatory import restore as restore_mod
+        except ImportError:
+            print("restore subsystem is not installed in this build", file=sys.stderr)
+            return 2
+
+        result = restore_mod.restore_backup(
+            args.source_bundle,
+            args.target_dir,
+            overwrite=bool(getattr(args, "overwrite", False)),
         )
+        _emit(result)
+        return 0 if result.get("ok") else 1
+
+    if action == "audit":
+        try:
+            from .observatory import audit as audit_mod
+        except ImportError:
+            print("audit subsystem is not installed in this build", file=sys.stderr)
+            return 2
+
+        code, report = audit_mod.run_audit(
+            verbose=bool(getattr(args, "verbose", False)),
+            backup_manifest_path=getattr(args, "backup_manifest", None),
+        ) if ledger_path is None else (
+            1 if (report := audit_mod.audit_ledger(
+                ledger_path=ledger_path,
+                backup_manifest_path=getattr(args, "backup_manifest", None),
+            )).get("overall") == "FAIL" else 0,
+            report,
+        )
+        if as_json:
+            _emit(report)
+        else:
+            print(audit_mod.render_report(report, style="text"))
+        return int(code)
+
+    if action == "health":
+        from .observatory import health as health_mod
+
+        report = health_mod.health(ledger_path=ledger_path)
+        if as_json:
+            _emit(report)
+            return 0
+        print(f"overall: {report['overall']}")
+        print(f"  deployment={report['deployment']['status']} "
+              f"validation={report['validation']['status']}")
+        print(f"  ledger={report['ledger']['path']} "
+              f"observations={report['ledger']['observations']} bytes={report['ledger']['bytes']}")
+        for source in report["sources"]:
+            print(f"  [{source['source']}] {source['status']} last_outcome={source.get('last_outcome')} "
+                  f"freshness_h={source['freshness_hours']} stale={source['stale']} "
+                  f"structure_alert={source['structure_alert']}")
+        persistence = report["persistence"]
+        print(f"  backup={persistence['backup']['status']} verified={persistence['backup']['verified']} "
+              f"restore_drill={persistence['restore_drill']['status']}")
+        for check in report["checks"]:
+            print(f"  [{'ok' if check['ok'] else 'FAIL'}] {check['id']}: {check['detail_zh']}")
+        return 0 if report["overall"] not in ("DEGRADED",) else 1
+
+    if action == "validate":
+        from .observatory import validation as validation_mod
+        from .observatory.ledger import ObservationLedger
+
+        ledger = ObservationLedger(ledger_path)
+        try:
+            if args.validate_action == "start":
+                result = validation_mod.start_validation(
+                    ledger,
+                    days=int(getattr(args, "days", 7)),
+                    interval_hours=float(getattr(args, "interval_hours", 6)),
+                )
+                if as_json:
+                    _emit(result)
+                else:
+                    print(f"validation status: {result.get('status')}")
+                    print(f"  started_at={result.get('started_at')} ends_at={result.get('ends_at')} "
+                          f"planned_slots={result.get('planned_slots')} "
+                          f"interval_hours={result.get('interval_hours')}")
+                    print("  七天窗口尚未结束：只能报告 VALIDATION_IN_PROGRESS，不能宣称通过。")
+                return 0
+            if args.validate_action == "status":
+                result = validation_mod.validation_status(ledger)
+                if as_json:
+                    _emit(result)
+                    return 0
+                slots = result.get("slots") or {}
+                runs = result.get("runs") or {}
+                print(f"validation: {result.get('status')} "
+                      f"started={result.get('started_at')} ends={result.get('ends_at')}")
+                print(f"  days_elapsed={result.get('days_elapsed')} "
+                      f"days_remaining={result.get('days_remaining')}")
+                print(f"  slots planned={slots.get('planned_total')} due={slots.get('due')} "
+                      f"executed={slots.get('executed')} missed={slots.get('missed')}")
+                print(f"  runs launched={runs.get('launched')} ok={runs.get('ok')} "
+                      f"partial={runs.get('partial')} failed={runs.get('failed')} "
+                      f"scheduler_success_rate={runs.get('scheduler_success_rate')}")
+                print(f"  duplicates rate={result.get('duplicates', {}).get('rate')} "
+                      f"integrity_violations={result.get('integrity', {}).get('violations')}")
+                for source, bucket in (result.get("sources") or {}).items():
+                    print(f"  [{source}] attempts={bucket.get('attempts')} ok={bucket.get('ok')} "
+                          f"success_rate={bucket.get('success_rate')} new={bucket.get('new')}")
+                return 0
+            if args.validate_action == "stop":
+                result = validation_mod.stop_validation(
+                    ledger, outcome=str(getattr(args, "outcome", "failed")).upper()
+                    if str(getattr(args, "outcome", "failed")).upper() in
+                    ("VALIDATION_PASSED", "VALIDATION_FAILED")
+                    else "VALIDATION_FAILED",
+                )
+                _emit(result)
+                return 0
+            raise SystemExit(f"unknown validate action: {args.validate_action}")
+        finally:
+            ledger.close()
+
+    if action == "deploy-status":
+        import socket
+        from datetime import datetime, timezone
+
+        from .observatory.ledger import ObservationLedger
+
+        ledger = ObservationLedger(ledger_path)
+        try:
+            status = str(getattr(args, "status", "NOT_DEPLOYED"))
+            if status not in ("NOT_DEPLOYED", "DEPLOYED_LOCAL", "DEPLOYED_SERVICE"):
+                raise SystemExit(f"bad deployment status: {status}")
+            payload = {
+                "status": status,
+                "installed_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+                "host": socket.gethostname(),
+                "supervisor": getattr(args, "supervisor", "none") or "none",
+                "note_zh": getattr(args, "note", None),
+                "evidence": getattr(args, "evidence", None),
+            }
+            ledger.set_deployment(payload)
+            _emit(payload)
+            return 0
+        finally:
+            ledger.close()
+
+    if action == "lock":
+        from .observatory import lock as lock_mod
+        from .observatory.ledger import default_ledger_path
+
+        target = ledger_path or default_ledger_path()
+        if args.lock_action == "release":
+            _emit(
+                lock_mod.force_release(
+                    target,
+                    reason=getattr(args, "reason", "operator force release")
+                    or "operator force release",
+                )
+            )
+            return 0
+        _emit(lock_mod.CollectorLock(target).status())
         return 0
+
+    if action == "phase":
+        from .observatory.ledger import ObservationLedger
+
+        ledger = ObservationLedger(ledger_path)
+        try:
+            if getattr(args, "reconstruct", False):
+                _emit(ledger.reconstruct_phases())
+            _emit(ledger.phase_summary())
+            return 0
+        finally:
+            ledger.close()
 
     raise SystemExit(f"unknown observatory action: {action}")
 
@@ -1252,6 +1446,14 @@ def build_parser() -> argparse.ArgumentParser:
     obs_watch.add_argument("--since-days", type=int, default=30)
     obs_watch.add_argument("--min-interval", type=float, default=0.25)
     obs_watch.add_argument("--budget", type=int, default=600)
+    obs_watch.add_argument("--trigger", default="schedule", choices=["manual", "schedule", "ci"],
+                           help="recorded on every sync_run this watcher creates")
+    obs_watch.add_argument("--log-file", default=None,
+                           help="append structured pass logs to this file (rotated by date)")
+    obs_watch.add_argument("--lock-stale-seconds", type=float, default=90.0,
+                           help="take over a lease whose heartbeat is older than this")
+    obs_watch.add_argument("--no-lock", action="store_true",
+                           help="do not take the single-writer lease (unsafe; tests only)")
     obs_watch.set_defaults(func=cmd_observatory)
 
     obs_pause = obs_sub.add_parser("pause", help="pause scheduled/manual collection")
@@ -1280,7 +1482,72 @@ def build_parser() -> argparse.ArgumentParser:
     obs_backup.add_argument("--dest", required=True, help="destination directory")
     obs_backup.add_argument("--no-raw-cache", action="store_true",
                             help="skip copying the raw HTTP response archive")
+    obs_backup.add_argument("--verify", action="store_true",
+                            help="re-verify hashes and ledger integrity after writing (default: on)")
+    obs_backup.add_argument("--prune", action="store_true",
+                            help="apply the retention policy (7 daily / 4 weekly / 6 monthly)")
     obs_backup.set_defaults(func=cmd_observatory)
+
+    obs_restore = obs_sub.add_parser("restore", help="verified restore from a backup bundle")
+    _obs_common(obs_restore)
+    obs_restore.add_argument("--from", dest="source_bundle", required=True,
+                             help="backup bundle directory")
+    obs_restore.add_argument("--to", dest="target_dir", required=True,
+                             help="target directory (isolated restore location)")
+    obs_restore.add_argument("--overwrite", action="store_true")
+    obs_restore.set_defaults(func=cmd_observatory)
+
+    obs_audit = obs_sub.add_parser("audit", help="Observation Ledger integrity audit (human reviewable)")
+    _obs_common(obs_audit)
+    obs_audit.add_argument("--verbose", action="store_true")
+    obs_audit.add_argument("--backup-manifest", default=None,
+                           help="path to a MANIFEST.json to verify backup/restore reproducibility")
+    obs_audit.set_defaults(func=cmd_observatory)
+
+    obs_health = obs_sub.add_parser("health", help="observatory health (deployment, freshness, backup, validation)")
+    _obs_common(obs_health)
+    obs_health.set_defaults(func=cmd_observatory)
+
+    obs_validate = obs_sub.add_parser("validate", help="seven-day continuous observation validation")
+    _obs_common(obs_validate)
+    validate_sub = obs_validate.add_subparsers(dest="validate_action", required=True)
+    validate_start = validate_sub.add_parser("start", help="start the validation window (real wall clock)")
+    validate_start.add_argument("--days", type=int, default=7)
+    validate_start.add_argument("--interval-hours", type=float, default=6.0)
+    validate_start.set_defaults(func=cmd_observatory)
+    validate_status = validate_sub.add_parser("status", help="live validation metrics")
+    validate_status.set_defaults(func=cmd_observatory)
+    validate_stop = validate_sub.add_parser(
+        "stop", help="close the window (PASSED only after the window really ended)")
+    validate_stop.add_argument("--outcome", default="failed",
+                               choices=["passed", "failed", "VALIDATION_PASSED", "VALIDATION_FAILED"])
+    validate_stop.set_defaults(func=cmd_observatory)
+
+    obs_deploy = obs_sub.add_parser("deploy-status",
+                                    help="record/read whether a supervised deployment exists")
+    _obs_common(obs_deploy)
+    obs_deploy.add_argument("--status", default="NOT_DEPLOYED",
+                            choices=["NOT_DEPLOYED", "DEPLOYED_LOCAL", "DEPLOYED_SERVICE"])
+    obs_deploy.add_argument("--supervisor", default="none",
+                            choices=["none", "systemd", "windows_task", "manual"])
+    obs_deploy.add_argument("--note", default=None)
+    obs_deploy.add_argument("--evidence", default=None)
+    obs_deploy.set_defaults(func=cmd_observatory)
+
+    obs_lock = obs_sub.add_parser("lock", help="inspect or force-release the single-writer lease")
+    _obs_common(obs_lock)
+    lock_sub = obs_lock.add_subparsers(dest="lock_action", required=True)
+    lock_status = lock_sub.add_parser("status", help="show the current lease")
+    lock_status.set_defaults(func=cmd_observatory)
+    lock_release = lock_sub.add_parser("release", help="force-release a stuck lease (recorded)")
+    lock_release.add_argument("--reason", required=True)
+    lock_release.set_defaults(func=cmd_observatory)
+
+    obs_phase = obs_sub.add_parser("phase", help="acquisition-phase labels (initial / incremental / backfill)")
+    _obs_common(obs_phase)
+    obs_phase.add_argument("--reconstruct", action="store_true",
+                           help="append labels for observations that predate the phase table")
+    obs_phase.set_defaults(func=cmd_observatory)
 
     selftest = sub.add_parser("selftest", help="run the offline test suite")
     selftest.set_defaults(func=cmd_selftest)

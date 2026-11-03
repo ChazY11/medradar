@@ -73,6 +73,50 @@ python -m medradar web --port 8787             # then #/observatory
   [design & interface contract](docs/LIVE_OBSERVATORY_DESIGN.md) ·
   [prospective observation registry](docs/PROSPECTIVE_OBSERVATION_REGISTRY.md)
 
+## MedRadar Observatory Reliability — built to preserve evidence for years
+
+`feat/observatory-reliability-v1` is the answer to "if this runs for five years, can it
+still prove what it observed on a given day?" It adds persistence, supervision, audit
+and validation around the same append-only ledger — no new predictors, no rewritten product.
+
+- **Single-writer lease** (`data/observatory/collector.lock`): a second collector is
+  refused, stale leases are taken over with an audit record, SIGTERM/exit releases it.
+- **Consistent backups** via the SQLite online-backup API, SHA-256 manifests, integrity +
+  consistency recorded per snapshot, retention (7 daily / 4 weekly / 6 monthly), quarantine
+  instead of deletion for unverifiable bundles, and cache pruning that never touches the
+  ledger or frozen research files.
+- **Restore drills** into an isolated directory, verifying observation counts,
+  `first_seen_at` identity (400/400 in the real drill), version chains and watermarks,
+  then proving a post-restore write gets a *fresh* `first_seen_at` while old rows keep theirs.
+- **Integrity audit** (`observatory audit`): 11 checks with `PASS / FAIL /
+  REQUIRES_MANUAL_REVIEW` verdicts and concrete evidence — missing evidence is never a PASS.
+- **Honest health** (`observatory health`): `OPERATIONAL / DEGRADED / PAUSED /
+  NOT_DEPLOYED / VALIDATION_IN_PROGRESS` computed from freshness, runs, backups, drills,
+  structure alerts and the lease — never from an HTTP 200. `NO_NEW_RECORDS` is normal;
+  `FETCH_FAILED` is a failure and is shown as one.
+- **Supervised operation**: systemd service/timer templates for Linux; a Windows Task
+  Scheduler installer that runs **one pass per trigger** (`-MaxCycles 1`) because a forced
+  task end cannot cleanly stop a long-running child; ledger lease + `IgnoreNew` prevent overlap.
+- **Seven-day continuous validation** (`observatory validate status`): planned vs executed
+  vs missed slots, scheduler/source success rates, freshness, measured latency, duplicate
+  rate, integrity violations, recovery and storage growth — computed only from real
+  `sync_run` rows. It is currently **VALIDATION_IN_PROGRESS** (started 2026-11-03,
+  window ends 2026-11-10); it will not report PASSED before that instant.
+- **Acquisition phase** is append-only metadata: `INITIAL_DISCOVERY` (first go-live sweep)
+  vs `INCREMENTAL_DISCOVERY` vs `HISTORICAL_BACKFILL`; "event older than observation" is
+  not backfill, and the existing immutable rows were labelled without being rewritten.
+- docs: [reliability architecture & decision](docs/RELIABILITY_DESIGN.md) ·
+  [deployment runbook](docs/DEPLOYMENT.md) ·
+  [backup & recovery](docs/BACKUP_AND_RECOVERY.md) ·
+  [seven-day validation protocol](docs/CONTINUOUS_VALIDATION_PROTOCOL.md) ·
+  [health & validation semantics](docs/HEALTH_AND_VALIDATION.md) ·
+  [acceptance report](docs/RELIABILITY_ACCEPTANCE.md)
+
+> Deployment status on this workstation is **DEPLOYED_LOCAL** (Windows Task Scheduler,
+> one pass per trigger, verified `LastTaskResult=0`). Production remains **NOT_DEPLOYED**:
+> a durable host, offsite backup target and an authorised SEC contact are required before
+> any `DEPLOYED_SERVICE` claim, and none of them were purchased or assumed.
+
 
 
 > The stable core through `v0.2.2` was built with DeepSeek Harness using `deepseek-flash`.

@@ -300,6 +300,29 @@ function renderObservatory(summary) {
     text: `观察总数 ${fmtInt(ledger.observations)} · 版本 ${fmtInt(ledger.versions)} · 变化 ${fmtInt(ledger.changes)} · 最早 LIVE 观察 ${ledger.first_live_observation_at ? fmtDateTime(ledger.first_live_observation_at) : "—"}`,
   }));
 
+  // Acquisition-phase split: "first observed when?" is a different claim from
+  // "what changed?" and from observation_origin. Never fabricated; the counts come
+  // from the ledger's append-only observation_phase rows.
+  const phases = summary.phases || {};
+  if (Number(ledger.observations || 0) > 0) {
+    const initial = Number(phases.initial || 0);
+    const incremental = Number(phases.incremental || 0);
+    const backfill = Number(phases.backfill || 0);
+    const unlabelled = Number(phases.unlabelled || 0);
+    node.append(el("div", { class: "obs-phase-strip mt-8", dataset: { testid: "overview-phase-split" } },
+      el("span", { class: "muted small", text: "全账本采集阶段：" }),
+      badge(`初次发现 ${fmtInt(initial)}`, "blue", "系统首次上线时抓到的既有公开记录（不是历史回填）"),
+      badge(`增量发现 ${fmtInt(incremental)}`, "teal", "持续监测期间新观察到的公开记录"),
+      backfill ? badge(`历史回填 ${fmtInt(backfill)}`, "violet", "有意导入的历史归档（需要理由）") : null,
+      unlabelled ? badge(`未标注 ${fmtInt(unlabelled)}`, "muted", "旧记录尚未归入任何采集阶段") : null,
+      el("div", {
+        class: "muted tiny mt-4",
+        text: "「初次发现」＝系统首次上线时发现的既有公开记录；「增量发现」＝持续监测期间新发现的记录。"
+          + (backfill ? "「历史回填」＝有意导入的历史归档。" : "本轮没有历史回填。")
+          + "「事件发生在过去」不等于「回填」。",
+      })));
+  }
+
   const first = summary.first_observation;
   if (first) {
     node.append(el("div", { class: "small mt-8" },

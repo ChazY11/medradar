@@ -337,6 +337,38 @@ async function main() {
           throw new Error("non-covered SEC issuers are not disclosed on the page");
         }
       }
+      // (h) health panel states one of the five honest words and is backed by the API
+      const healthNode = await page.$('[data-testid="observatory-health-overall"]');
+      if (!healthNode) throw new Error("Observatory Health panel is missing");
+      const healthText = (await healthNode.innerText()).trim();
+      const allowed = ["OPERATIONAL", "DEGRADED", "PAUSED", "NOT_DEPLOYED", "VALIDATION_IN_PROGRESS"];
+      if (!allowed.some((word) => healthText.includes(word))) {
+        throw new Error(`health badge shows an unknown state: ${healthText}`);
+      }
+      const healthApi = await page.evaluate(async () => {
+        const response = await fetch("/api/observatory/health");
+        return response.json();
+      });
+      if (!healthApi.overall || !allowed.includes(healthApi.overall)) {
+        throw new Error("health API overall is missing or unknown");
+      }
+      if (!Array.isArray(healthApi.checks) || healthApi.checks.length < 5) {
+        throw new Error("health API does not expose its checks");
+      }
+      // (i) acquisition phase is visible and filterable (initial vs incremental)
+      if (!text.includes("初次发现") && !text.includes("增量发现")) {
+        throw new Error("acquisition-phase distinction is missing from the page");
+      }
+      const phaseChips = await page.$$('[data-testid^="observatory-phase-"]');
+      if (phaseChips.length < 2) {
+        throw new Error("acquisition-phase filter chips are missing");
+      }
+      const phaseSummary = summary.phases || {};
+      const phaseCounts = phaseSummary.counts || {};
+      if (typeof phaseCounts.INITIAL_DISCOVERY !== "number"
+          && typeof phaseCounts.INCREMENTAL_DISCOVERY !== "number") {
+        throw new Error("summary.phases counts are missing");
+      }
       await rows[0].click();
       await page.waitForTimeout(900);
       text = await body();
@@ -346,7 +378,8 @@ async function main() {
       const screenshot = await shot(page, "s6-observatory");
       record("Scenario 6 实时观察站", true,
         `observations=${summary.ledger.observations} sources=${sources.sources.length} ` +
-        `rows=${rows.length} events_24h=${events.total}`, screenshot);
+        `rows=${rows.length} events_24h=${events.total} health=${healthApi.overall} ` +
+        `phases=${JSON.stringify(phaseCounts)}`, screenshot);
     }
   } catch (error) {
     record("Scenario 6 实时观察站", false, String(error.message));

@@ -1,0 +1,320 @@
+{
+ "schema": "medradar-ledger-audit-1",
+ "audit_version": "obs-audit-v1",
+ "generated_at": "2026-11-03T16:00:18+00:00",
+ "ledger": {
+  "present": true,
+  "path": "data/observatory/observatory.sqlite",
+  "bytes": 1945600,
+  "read_only": true,
+  "schema_version": "obs-ledger-v1",
+  "created_at": "2026-11-03T14:39:53+00:00",
+  "counts": {
+   "observations": 400,
+   "versions": 400,
+   "changes": 400,
+   "live_observations": 400,
+   "backfilled_observations": 0,
+   "removed_observations": 0,
+   "sources": 3,
+   "runs": 34,
+   "failures": 6
+  },
+  "first_observation_at": "2026-11-03T14:39:53Z",
+  "last_observation_at": "2026-11-03T14:49:51Z",
+  "first_run_at": "2026-11-03T14:39:53+00:00",
+  "last_run_at": "2026-11-03T15:58:45+00:00"
+ },
+ "overall": "REQUIRES_MANUAL_REVIEW",
+ "checks": [
+  {
+   "id": "duplicate_observations",
+   "title_zh": "重复观察：同一 (source, source_record_id) 只能有一条观察记录",
+   "verdict": "PASS",
+   "detail_zh": "共 400 条观察，按 (source, source_record_id) 分组没有重复组；每条来源记录恰好对应一条观察。",
+   "evidence": {
+    "rule": "GROUP BY source, source_record_id HAVING COUNT(*) > 1 必须为 0",
+    "observations": 400,
+    "duplicate_groups": 0,
+    "duplicates": [],
+    "duplicates_truncated": false
+   }
+  },
+  {
+   "id": "first_seen_integrity",
+   "title_zh": "first_seen_at 完整性：首次观察时间写入后不可被追溯修改",
+   "verdict": "PASS",
+   "detail_zh": "400 条观察的首个版本采集时间与状态历史首行均等于 first_seen_at，last_checked_at 均不早于 first_seen_at；13 个 append-only 触发器全部存在（写入层拒绝改写/删除）。",
+   "evidence": {
+    "rule": "首个版本 captured_at == first_seen_at；状态历史首行 changed_at == first_seen_at；last_checked_at >= first_seen_at；不可变触发器必须存在",
+    "observations_checked": 400,
+    "required_triggers": {
+     "observation": [
+      "trg_observation_first_seen_immutable",
+      "trg_observation_identity_immutable",
+      "trg_observation_no_delete"
+     ],
+     "observation_version": [
+      "trg_version_no_update",
+      "trg_version_no_delete"
+     ],
+     "observation_change": [
+      "trg_change_no_update",
+      "trg_change_no_delete"
+     ],
+     "observation_status_history": [
+      "trg_status_no_update",
+      "trg_status_no_delete"
+     ],
+     "observation_mapping": [
+      "trg_mapping_no_update",
+      "trg_mapping_no_delete"
+     ],
+     "sync_run": [
+      "trg_run_no_delete",
+      "trg_run_identity_immutable"
+     ]
+    },
+    "triggers_present": [
+     "trg_change_no_delete",
+     "trg_change_no_update",
+     "trg_mapping_no_delete",
+     "trg_mapping_no_update",
+     "trg_observation_first_seen_immutable",
+     "trg_observation_identity_immutable",
+     "trg_observation_no_delete",
+     "trg_run_identity_immutable",
+     "trg_run_no_delete",
+     "trg_status_no_delete",
+     "trg_status_no_update",
+     "trg_version_no_delete",
+     "trg_version_no_update"
+    ],
+    "missing_triggers": [],
+    "missing_first_version": [],
+    "missing_first_version_total": 0,
+    "bad_first_version": [],
+    "bad_first_version_total": 0,
+    "bad_status_history": [],
+    "bad_status_history_total": 0,
+    "bad_last_checked": [],
+    "bad_last_checked_total": 0
+   }
+  },
+  {
+   "id": "payload_version_chain",
+   "title_zh": "载荷版本链：版本序号连续、哈希可复算、最新版本指针一致",
+   "verdict": "PASS",
+   "detail_zh": "400 个版本的序号连续、哈希全部可由存储载荷复算、version_id 可由 (observation_id, payload_hash) 复算，400 条观察的 latest_version_id / source_payload_hash / version_count 与版本表一致。",
+   "evidence": {
+    "rule": "version_seq 从 1 连续；payload_hash 可由 payload 复算；version_id = sha1(observation_id|payload_hash)；observation.latest_version_id/ source_payload_hash / version_count 指向最新版本",
+    "observations_checked": 400,
+    "versions_checked": 400,
+    "payloads_rehashed": 400,
+    "problem_count": 0,
+    "chain_problems": [],
+    "chain_problems_total": 0,
+    "rehash_mismatches": [],
+    "rehash_mismatches_total": 0,
+    "version_id_mismatches": [],
+    "version_id_mismatches_total": 0,
+    "payload_bytes_mismatches": [],
+    "payload_bytes_mismatches_total": 0,
+    "unparseable_payloads": [],
+    "unparseable_payloads_total": 0
+   }
+  },
+  {
+   "id": "version_change_consistency",
+   "title_zh": "版本与变更记录一致性：每个版本对应正确的变更状态与真实字段差异",
+   "verdict": "PASS",
+   "detail_zh": "400 个版本各自有唯一正确状态的变更行，0 条多版本观察的 changed_fields 与两版载荷的真实差异完全一致；400 条变更记录没有引用不存在的版本，REMOVED_OR_UNAVAILABLE / FETCH_FAILED 均为无版本的状态历史。",
+   "evidence": {
+    "rule": "版本 seq=1 的变更行必须 NEW；seq>1 必须 UPDATED；同一版本的额外变更行只允许是 changed_fields == [\"status\"] 的恢复行；REMOVED_OR_UNAVAILABLE/FETCH_FAILED 允许 version_id IS NULL 的历史；seq>1 的 changed_fields 必须等于前后两个存档载荷的真实差异",
+    "versions_checked": 400,
+    "changes_checked": 400,
+    "multi_version_observations": 0,
+    "problem_count": 0,
+    "problems": [],
+    "problems_truncated": false
+   }
+  },
+  {
+   "id": "timestamp_ordering",
+   "title_zh": "时间戳顺序：版本采集时间单调、不早于首次观察时间",
+   "verdict": "PASS",
+   "detail_zh": "已检查 400 个版本的 captured_at 单调性、400 条变更的 observed_at 与 first_seen_at、400 条状态历史；没有任何时间倒挂。",
+   "evidence": {
+    "rule": "同一观察的 captured_at 随 version_seq 单调不减且 >= first_seen_at；change.observed_at >= first_seen_at 且 change.first_seen_at == observation.first_seen_at；状态历史 changed_at >= first_seen_at",
+    "versions_checked": 400,
+    "changes_checked": 400,
+    "status_rows_checked": 400,
+    "problem_count": 0,
+    "problems": [],
+    "problems_truncated": false
+   }
+  },
+  {
+   "id": "watermark_safety",
+   "title_zh": "水位安全性：水位可解析、只能由成功运行推进、失败运行不得被静默当作完成",
+   "verdict": "PASS",
+   "detail_zh": "3 个来源的水位 JSON 均可解析；watermark_updated_at 均不晚于 last_success_at；34 次运行中没有 FAILED/PARTIAL 运行推进过水位。",
+   "evidence": {
+    "rule": "source_state.watermark 必须是可解析 JSON；watermark_updated_at <= last_success_at；FAILED/PARTIAL 运行推进过水位时，本次运行实际完成的范围不可证明 -> 人工复核",
+    "sources_checked": 3,
+    "runs_checked": 34,
+    "watermark_parse_failures": 0,
+    "manual_review_triggers": 0,
+    "failures": [],
+    "manual_review": [],
+    "flagged_run_ids": []
+   }
+  },
+  {
+   "id": "replay_correctness",
+   "title_zh": "时点回放正确性：snapshot 在历史时点返回当时已知的版本",
+   "verdict": "REQUIRES_MANUAL_REVIEW",
+   "detail_zh": "账本中没有任何 version_count>1 的观察，因此无法抽样验证多版本回放；按诚实规则本项标记为人工复核，而不是默认通过。 补充诊断：抽样 20 条单版本观察，snapshot(first_seen_at) 均能返回该记录（Z / +00:00 拼写不影响回放边界）。",
+   "evidence": {
+    "rule": "sample_size 内确定性抽样 version_count>1 的观察：snapshot(v1.captured_at) 必须返回 v1；snapshot(first_seen_at - 1s) 必须排除该记录；每个不同 captured_at 必须回放当时最新的版本；回放出的 payload 必须能用 records.payload_hash 复算出该版本的 payload_hash",
+    "boundary_policy": "所有 snapshot(as_of) 边界都由解析后的 UTC 时间生成（…+00:00），从不直接使用存储字符串的 'Z' / '+00:00' 拼写做比较",
+    "sample_size": 20,
+    "multi_version_observations": 0,
+    "sampled_observation_ids": [],
+    "problems": [],
+    "problem_count": 0,
+    "boundary_probe": {
+     "sampled": 20,
+     "missing_first_seen_boundary": [],
+     "missing_total": 0,
+     "rule": "补充诊断（不属于本检查的判定规则）：对单版本观察执行 snapshot(first_seen_at) 时，该记录是否仍然出现在结果中"
+    }
+   }
+  },
+  {
+   "id": "prospective_freeze_integrity",
+   "title_zh": "前瞻登记器冻结完整性：每条冻结文档的哈希可复验且未被改写",
+   "verdict": "REQUIRES_MANUAL_REVIEW",
+   "detail_zh": "前瞻登记器目录不存在：没有任何冻结的研究输入可供验证。缺少证据不是 PASS。",
+   "evidence": {
+    "rule": "对登记器里的每个条目调用 verify_frozen()；空登记器 -> 人工复核；哈希不一致 -> FAIL",
+    "included": true,
+    "registry_path": "data/prospective",
+    "registry_exists": false
+   }
+  },
+  {
+   "id": "mapping_history_preservation",
+   "title_zh": "映射历史留存：每条观察都有映射历史，且最新映射与观察接口一致",
+   "verdict": "PASS",
+   "detail_zh": "400 条观察都有映射历史（共 401 行，append-only），最新映射行与观察接口返回的映射字段完全一致，状态词表合法。",
+   "evidence": {
+    "rule": "每条观察至少有 1 条 observation_mapping；映射状态必须属于封闭词表；MAPPED 必须有 id；最新映射行（MAX(mapped_at)）必须与观察接口返回的映射字段完全一致",
+    "observations_checked": 400,
+    "mapping_rows": 401,
+    "observations_without_mapping": [],
+    "observations_without_mapping_total": 0,
+    "vocabulary_problems": [],
+    "vocabulary_problems_total": 0,
+    "endpoint_mismatches": [],
+    "endpoint_mismatches_total": 0
+   }
+  },
+  {
+   "id": "backup_restore_reproducibility",
+   "title_zh": "备份/恢复可复现性：备份清单与实时账本的计数、首次观察范围、来源分布一致",
+   "verdict": "PASS",
+   "detail_zh": "备份清单与实时账本一致：observations=400、versions=400、changes=400、runs=34；first_seen_at 范围 [2026-11-03T14:39:53Z, 2026-11-03T14:49:51Z]，来源分布 ctgov=157，europepmc=237，sec_edgar=6 全部吻合。清单只证明该时刻存在一致快照，恢复演练仍需单独留证。",
+   "evidence": {
+    "rule": "备份清单必须来自本账本的备份：当清单创建时间不早于账本最后一次写入时，计数、first_seen_at 最小/最大值、来源分布必须逐项一致（不一致 = FAIL）；清单早于最新写入时只能验证一致前缀（人工复核）；没有清单/演练证据 -> 人工复核",
+    "manifest_origin": "discovered",
+    "manifest_path": "data/observatory/backups/observatory-20261103T160001Z/MANIFEST.json",
+    "notes": [],
+    "live": {
+     "counts": {
+      "observations": 400,
+      "versions": 400,
+      "changes": 400,
+      "runs": 34
+     },
+     "first_seen_min": "2026-11-03T14:39:53Z",
+     "first_seen_max": "2026-11-03T14:49:51Z",
+     "source_counts": {
+      "ctgov": 157,
+      "europepmc": 237,
+      "sec_edgar": 6
+     }
+    },
+    "manifest_created_at": "2026-11-03T16:00:01+00:00",
+    "manifest_integrity_check": "ok",
+    "manifest_consistency_ok": true,
+    "compared_dimensions": [
+     "counts.observations",
+     "counts.versions",
+     "counts.changes",
+     "counts.runs",
+     "first_seen_at.min",
+     "first_seen_at.max",
+     "sources.observations",
+     "watermarks",
+     "version_chain"
+    ],
+    "mismatches": [],
+    "mismatch_total": 0,
+    "version_chain_mismatches": [],
+    "version_chain_mismatch_total": 0,
+    "watermark_mismatches": [],
+    "watermark_mismatch_total": 0,
+    "bundle_ledger_problems": [],
+    "bundle_ledger_problem_total": 0,
+    "strict_identity_expected": true
+   }
+  },
+  {
+   "id": "observation_phase_completeness",
+   "title_zh": "采集阶段标注完整性：每条观察都有 phase 行（可选，依赖 observation_phase 表）",
+   "verdict": "PASS",
+   "detail_zh": "observation_phase 表存在，400 条观察全部有至少一条 append-only phase 行，且没有孤儿 phase 行。",
+   "evidence": {
+    "table_present": true,
+    "observations": 400,
+    "phase_observations": 400,
+    "missing_phase_rows": [],
+    "missing_phase_rows_total": 0,
+    "orphan_phase_rows": [],
+    "orphan_phase_rows_total": 0,
+    "rule": "每条 observation 必须至少有一条 observation_phase 行；phase 行不得指向不存在的观察"
+   }
+  }
+ ],
+ "summary": {
+  "total": 11,
+  "pass": 9,
+  "fail": 0,
+  "manual_review": 2,
+  "fail_ids": [],
+  "manual_review_ids": [
+   "replay_correctness",
+   "prospective_freeze_integrity"
+  ]
+ },
+ "manual_review": [
+  {
+   "id": "replay_correctness",
+   "title_zh": "时点回放正确性：snapshot 在历史时点返回当时已知的版本",
+   "reason_zh": "账本中没有任何 version_count>1 的观察，因此无法抽样验证多版本回放；按诚实规则本项标记为人工复核，而不是默认通过。 补充诊断：抽样 20 条单版本观察，snapshot(first_seen_at) 均能返回该记录（Z / +00:00 拼写不影响回放边界）。"
+  },
+  {
+   "id": "prospective_freeze_integrity",
+   "title_zh": "前瞻登记器冻结完整性：每条冻结文档的哈希可复验且未被改写",
+   "reason_zh": "前瞻登记器目录不存在：没有任何冻结的研究输入可供验证。缺少证据不是 PASS。"
+  }
+ ],
+ "limitations_zh": [
+  "本审计只读：账本以 SQLite mode=ro 打开并设置 query_only，不写入、不改结构、不获取采集锁。",
+  "PASS 仅表示本报告的规则在本次运行时刻被真实数据证明；它不等于研究结论已被验证，也不代表观测覆盖完整。",
+  "无法被证明的检查项一律标记 REQUIRES_MANUAL_REVIEW，绝不因证据缺失而默认通过。",
+  "备份清单只能证明“该时刻存在一份可复现的快照”，不能证明磁盘/对象存储的真实冗余或异地可用性；恢复演练需单独留证。",
+  "审计样本量有限（回放样本由 sample_size 控制）；未抽中的记录未被逐条回放验证。"
+ ]
+}
