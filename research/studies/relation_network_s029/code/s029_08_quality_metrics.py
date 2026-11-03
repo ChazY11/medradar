@@ -20,7 +20,7 @@ from __future__ import annotations
 import json
 import sys
 from collections import Counter, defaultdict, defaultdict as _dd
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -32,12 +32,23 @@ PREREG = STUDY = ARTIFACT_DIR.parent
 
 
 def _d(s):
+    """Parse a source date at whatever precision it has.
+
+    Month-only dates are extremely common in ClinicalTrials.gov start dates (2,618 claims).
+    Treating them as unparseable silently removed them from contradiction counts, which the
+    independent temporal audit caught (it reported 2,775 vs our 1,979). A month resolves to
+    the first day of that month and the precision is reported separately.
+    """
     if not s:
         return None
-    try:
-        return date.fromisoformat(str(s)[:10])
-    except ValueError:
-        return None
+    v = str(s).strip()
+    for fmt, cut in (("%Y-%m-%d", 10), ("%Y-%m", 7), ("%Y", 4)):
+        try:
+            return date.fromisoformat(v[:cut]) if fmt != "%Y-%m" and fmt != "%Y" else \
+                datetime.strptime(v[:cut], fmt).date()
+        except ValueError:
+            continue
+    return None
 
 
 def pct(a, b):
@@ -173,10 +184,16 @@ def main() -> None:
     lenient_records = {c["source_record_id"] for c in lenient}
     lenient_le1 = [c for c in lenient if c["observed_lag_days"] <= 1]
     pub_before_event = []
+    pub_before_event_trial = []
+    pub_before_event_other = []
     for c in claims:
         pa, ea = _d(c.get("published_at")), _d(c.get("event_at"))
         if pa and ea and pa < ea:
             pub_before_event.append(c)
+            if c["predicate"] in ("SPONSORS_TRIAL", "HOSTS_TRIAL_SITE", "RESPONSIBLE_FOR_TRIAL"):
+                pub_before_event_trial.append(c)
+            else:
+                pub_before_event_other.append(c)
     # registry references whose cited paper is published after the trial's first post
     future_refs = []
     for c in claims:
@@ -209,9 +226,12 @@ def main() -> None:
         "contradiction_published_before_event": {
             "count": len(pub_before_event),
             "share": pct(len(pub_before_event), len(claims)),
-            "note": "a registration may lawfully be posted before the study start; this is a "
-                    "data feature, not an error, and is reported per relation family in "
-                    "TEMPORAL_PROVENANCE.md"},
+            "trial_registration_families": len(pub_before_event_trial),
+            "non_trial_families": len(pub_before_event_other),
+            "note": "a registration may lawfully be posted before the study start (pre-registration); "
+                    "the non-trial cases are index-date vs issue-date artefacts. Month-precision "
+                    "event dates are compared at first-of-month and reported separately. These two "
+                    "classes must not be merged into one 'error' count."},
         "contradiction_trial_references_future_paper": len(future_refs),
         "claims_without_any_publication_time": sum(1 for c in claims if not c.get("published_at")),
         "claims_without_any_event_time": sum(1 for c in claims if not c.get("event_at")),

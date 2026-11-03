@@ -3528,8 +3528,8 @@ def compute_stage2_report(register: dict, claims: list[dict], mentions: list[dic
                 if str(c.get("subject_id", "")).startswith("ent:company:")
                 or str(c.get("object_id", "")).startswith("ent:company:")),
             "mapping_status": _count_by(
-                [c for c in claims if c.get("subject_id", "").startswith("ent:company:")
-                 or c.get("object_id", "").startswith("ent:company:")],
+                [c for c in claims if str(c.get("subject_id")).startswith("ent:company:")
+                 or str(c.get("object_id")).startswith("ent:company:")],
                 lambda c: c.get("mapping_status") or "UNKNOWN"),
         })
 

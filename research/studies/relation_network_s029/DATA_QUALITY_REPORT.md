@@ -18,7 +18,7 @@ headline counts (12/12 checks pass).
 | site-facility rows from the 209-study location sub-sample | **1,126** |
 | institution candidates extracted | **4,395** |
 | relation claims built | **20,563** |
-| — `VERIFIED_BY_SOURCE` / `CANDIDATE` | 10,407 / 10,156 |
+| — `VERIFIED_BY_SOURCE` / `CANDIDATE` | 10,412 / 10,151 |
 | records kept as explicit rejects (not discarded) | **158** |
 | claims with a stable external identifier on ≥1 side | **100%** |
 | claims with a `published_at` | **100%** |
@@ -138,10 +138,11 @@ after. Before 2014 the index hit frequently cannot be verified from the record a
 only first-author affiliations). **Any "relations per year" trend crossing 2014 is measurably a
 metadata artefact.**
 
-**C.5 Contradictions, separated by kind.** 1,979 claims (9.62%) have `published_at` < `event_at`. This
-must not be reported as one error class (temporal auditor): 2,169 trial relations are legitimate
-pre-registration (posted before start), while 606 non-trial cases are index-date-before-issue-date
-artefacts. 24 `REFERENCES_PUBLICATION` claims cite a paper published after the trial's first-post date —
+**C.5 Contradictions, separated by kind.** **2,775 claims (13.5%)** have `published_at` < `event_at`
+(month-precision dates compared at first-of-month). This must not be reported as one error class:
+**2,169** are trial-registration relations where the registration lawfully precedes the study start
+(pre-registration), and **606** are non-trial cases where the index date precedes the issue date
+(an artefact). Both are counted separately in `quality_metrics.json`. 24 `REFERENCES_PUBLICATION` claims cite a paper published after the trial's first-post date —
 not a contradiction but proof that the registry's reference list is **current-state**, not as-of
 (a 2012 trial citing a 2026 paper means the reference was added later).
 
@@ -155,7 +156,7 @@ not a contradiction but proof that the registry's reference list is **current-st
 | claims whose evidence is `PRIMARY_TEXT` | **54.96%** | an affiliation string states it |
 | claims derived rather than directly stated | **7.62%** | co-affiliation (1,567) is the only derived predicate |
 | claims resting on alias/fuzzy identity | **17.59%** | group-member or fuzzy mapping |
-| claims resting on fuzzy identity only | **10.1%** | institution ROR token-overlap matches |
+| claims resting on fuzzy identity only | **10.08%** | institution ROR token-overlap matches |
 | conflicted claims | **0** | no source pair in this round disagreed about the same relation |
 | co-affiliation share of company relations | **32.56%** | this is why the prohibition matters |
 

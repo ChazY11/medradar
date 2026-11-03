@@ -11,7 +11,7 @@
 | gate | value | threshold | result |
 |---|---:|---|---|
 | G1 claims with a stable external id on ≥1 side | **100.0%** | ≥60% | pass |
-| G2 claims resting on fuzzy/undated identity | **10.1%** | ≤15% | pass |
+| G2 claims resting on fuzzy/undated identity | **10.08%** | ≤15% | pass |
 | G3 anachronism-flagged claims | **1.37%** | ≤5% | pass |
 | G4 companies with ≥20 authoritative claims | **5 / 5** | ≥3 | pass |
 

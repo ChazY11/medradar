@@ -188,9 +188,11 @@
     "claims_without_any_event_time": 4365,
     "claims_without_any_publication_time": 0,
     "contradiction_published_before_event": {
-      "count": 1979,
-      "note": "a registration may lawfully be posted before the study start; this is a data feature, not an error, and is reported per relation family in TEMPORAL_PROVENANCE.md",
-      "share": 9.62
+      "count": 2775,
+      "non_trial_families": 606,
+      "note": "a registration may lawfully be posted before the study start (pre-registration); the non-trial cases are index-date vs issue-date artefacts. Month-precision event dates are compared at first-of-month and reported separately. These two classes must not be merged into one 'error' count.",
+      "share": 13.5,
+      "trial_registration_families": 2169
     },
     "contradiction_trial_references_future_paper": 24,
     "lenient_breakdown": {
@@ -954,7 +956,7 @@
     "trial_reference_resolution_rate": 0.6,
     "trial_reference_resolved_to_collected_publication": 26
   },
-  "generated_at": "2026-11-03T20:47:23.295Z",
+  "generated_at": "2026-11-03T20:48:29.503Z",
   "human_validation": "HUMAN_VALIDATION_PENDING",
   "prereg_sha256": "f1ab0629f3c73393925af239538ff5e8adb0c08b9e0f8238ac0d3242c06e4742",
   "verdict": "NO-GO FOR PREDICTION"
