@@ -335,6 +335,76 @@
         "severity": "minor stale figure; the correction table on the same document already discloses it"
       }
     ],
+    "final_recheck": {
+      "generated_at": "2026-11-04T05:14:00+08:00",
+      "reviewed_commit": "d37b966",
+      "tree_clean": true,
+      "note": "Second targeted re-check after the Lead's claim that all seven prior STILL_FAILING items were closed. Six of seven are verified closed. Item 2 is NOT closed: GO_NO_GO_CRITERIA.md is absent from the d37b966 file list (git show --stat d37b966: DATA_QUALITY_REPORT, NEGATIVE_FINDINGS, PHASE_REPORT_ZH, RELATION_ONTOLOGY, RELATION_PILOT, SOURCE_AUDIT, independent_review.json, verification.json) and its hash is unchanged (C4EEBE855A1F013B168C3298).",
+      "pinned_hashes": {
+        "data/claims.jsonl": "D7D9A2A1FB07978DBAB580EB",
+        "data/evidence.jsonl": "BEFFF436D7D976F6A375EF2B",
+        "artifacts/quality_metrics.json": "E3F9641941D3DD5E05FA0825",
+        "artifacts/prereg_decision.json": "FCF9EA769FB6B28A2BA5E32D",
+        "artifacts/verification.json": "CC98030CCB391D7AB2BEB0B1",
+        "GO_NO_GO_CRITERIA.md": "C4EEBE855A1F013B168C3298",
+        "RELATION_ONTOLOGY.md": "975C1CC087E5EC727E14CF0B",
+        "DATA_QUALITY_REPORT.md": "571C9D550BF6F613A88D0271",
+        "NEGATIVE_FINDINGS.md": "63FCB95B22D3FECFDFDDD85C",
+        "SOURCE_AUDIT.md": "66A09C785314FD0E649FF0C2",
+        "PHASE_REPORT_ZH.md": "8C923681132A5CA7A06CB75D",
+        "RELATION_PILOT.md": "3C9C6EB9E664B76358003FE1",
+        "NETWORK_FEASIBILITY.md": "EFC3754B797313D8777417F9",
+        "ENTITY_RESOLUTION.md": "909BD61BAE93732C7C65C589"
+      },
+      "status_of_previous_still_failing": [
+        {
+          "item": 1,
+          "status": "RESOLVED",
+          "evidence": "SOURCE_AUDIT section 1 now says 184 Medtronic / 232 Philips studies were reached WITH a non-canonical string, and separately that the number a canonical-only search would have missed entirely is 22 (Medtronic) / 6 (Philips), both labelled. Matches entity_resolution_metrics.recall (with_non_canonical 184/232; only_via 22/6)."
+        },
+        {
+          "item": 2,
+          "status": "STILL_FAILING",
+          "evidence": "GO_NO_GO_CRITERIA.md unchanged in d37b966 (not in git show --stat; hash C4EEBE85 same as at ae2f43e). Header lines 5-6 still read '... so the order of events is verifiable rather than asserted.' Appendix A lines 110-113 admit this is an overstatement and state ordering is evidenced by artefact timestamps plus the amendment log, so the header still contradicts the appendix."
+        },
+        {
+          "item": 3,
+          "status": "RESOLVED",
+          "evidence": "RELATION_ONTOLOGY A5 rewritten as a data limitation: CT.gov flat StartDate drops the ACTUAL/ESTIMATED qualifier, so event_at_type is null on all 20,563 claims and is explicitly treated as unknown. Recompute: key present on all claims, value null on all, 0 trial claims typed; matches the new wording."
+        },
+        {
+          "item": 4,
+          "status": "RESOLVED",
+          "evidence": "RELATION_ONTOLOGY A2 corrected: the 282 anachronism-flagged claims are NOT confidence-capped; measured 1.0 (280) and 0.9 (2), anachronism is a separate flag. Recompute matches exactly."
+        },
+        {
+          "item": 5,
+          "status": "RESOLVED",
+          "evidence": "NEGATIVE_FINDINGS line 109 now '0.08 percentage points (10.08% vs a 10.0% ceiling)'; matches quality_metrics fuzzy_only_claim_pct = 10.08."
+        },
+        {
+          "item": 6,
+          "status": "RESOLVED",
+          "evidence": "13/13 appears in DATA_QUALITY_REPORT line 6, PHASE_REPORT_ZH lines 21 and 174, RELATION_PILOT line 115; no 12/12 or 12-item text remains; verification.json is 13/13 (V1a, V1b, V1c, V2, V3a, V3b, V4, V5, V6, V7, V8, V9, V10)."
+        },
+        {
+          "item": 7,
+          "status": "RESOLVED",
+          "evidence": "PHASE_REPORT_ZH line 94 now states 24 at day precision, 23 by year (labelled), 0.55% of the family; matches quality_metrics future refs 24 and clock_audit year-level 23."
+        }
+      ],
+      "still_failing_final": [
+        {
+          "item": "GO_NO_GO_CRITERIA.md header still claims the order of events is verifiable",
+          "file": "GO_NO_GO_CRITERIA.md lines 5-6",
+          "sentence": "Written and committed before the quality metrics script (code/s029_08_quality_metrics.py) was first executed. Its sha256 is recorded in artifacts/prereg_decision.json and re-checked by code/s029_12_verify_report.py, so the order of events is verifiable rather than asserted.",
+          "correct_value": "Replace with the Appendix A wording: this file, quality_metrics and prereg_decision first entered git in the same commit, so ordering is evidenced by the artefacts' generation timestamps and the dated amendment log, not by an earlier commit. The Appendix already says the sentence was deleted, but the header still carries it.",
+          "severity": "minor documentation; no scientific claim, number or verdict depends on it"
+        }
+      ],
+      "verifier_and_verdict": "verification.json 13/13; quality_metrics: T1, T2, T5 pass and T3 (10.08% > 10.0), T4 (0 < 100), T6 (0 < 100) fail -> NO-GO FOR PREDICTION unchanged. No claim or verdict number changed by the d37b966 edits.",
+      "updated_verdict_on_delivery": "READY_WITH_CONCERNS"
+    },
     "updated_verdict_on_delivery": "READY_WITH_CONCERNS",
     "verdict_reasoning": "All five substantive blocking issues are resolved: T5 now passes on the pre-registered conditional (300/300=100%) with the population share reported separately; the ontology closed lists are formally amended and HAS_TOPIC declared_at is fixed; the dated GO_NO_GO amendments and the honest ordering correction are present; the headline numbers and cross-document contradictions are corrected; the verifier is 13/13 with record-level V1c. NO-GO FOR PREDICTION remains the correct verdict (T1,T2,T5 pass; T3 10.08%>10.0, T4 0<100, T6 0<100 fail). The seven still_failing items above are documentation/editorial residuals (two stale figures, one stale verifier count, one unedited recall sentence, two ontology text-vs-data mismatches, one unqualified count); none changes a scientific claim or the verdict. Delivery can proceed with these copy-edit fixes; if the tree is truly frozen, they should be recorded as known errata rather than left silent."
   },
