@@ -1,0 +1,1162 @@
+{
+  "schema": "s029_entity_resolution_metrics_v1",
+  "generated_at": "2026-11-03T20:16:14Z",
+  "inputs": {
+    "claims": {
+      "claims_total": 0,
+      "status": "PENDING"
+    },
+    "mentions": 6940,
+    "claim_rejects": 0,
+    "trials": 2498,
+    "institutions": 4395
+  },
+  "register_authority": {
+    "path": "artifacts/company_entity_register.json",
+    "hash_sha256": "08b2b7253fb70269b993493e680e22bf2ab815f49de934a1b8c42479f66692ba",
+    "unknown_entities": [
+      "datascope_corp",
+      "draeger_medical_gmbh",
+      "draegerwerk_ag_co_kgaa",
+      "ge_healthcare_division",
+      "ge_medical_systems_division",
+      "general_electric",
+      "medtronic_minimed_inc",
+      "medtronic_sofamor_danek_usa_inc",
+      "medtronic_vascular_inc",
+      "mindray_ds_usa_inc",
+      "mindray_medical_international_ltd",
+      "minimed_inc",
+      "philips_medical_systems_division",
+      "shenzhen_mindray",
+      "tyco_healthcare"
+    ]
+  },
+  "per_company": {
+    "medtronic": {
+      "mentions": 2160,
+      "mapping_status": {
+        "ALIAS": 1087,
+        "EXACT": 669,
+        "ORG_TEXT": 356,
+        "ORG_EMAIL": 25,
+        "NOT_MAPPED": 17,
+        "AMBIGUOUS": 5,
+        "WEAK_TEXT": 1
+      },
+      "claim_producing": 2137,
+      "claim_producing_rate": 0.9894,
+      "non_claim_producing": 23,
+      "non_claim_producing_rate": 0.0106,
+      "other_status": 0,
+      "operating_unit_reality": {
+        "sponsor_role_mentions": 1775,
+        "accepted_sponsor_mentions": 1753,
+        "exact_parent_name": 670,
+        "operating_unit_or_subsidiary": 1083,
+        "operating_unit_share_of_accepted": 0.6178,
+        "distinct_unit_strings": 46,
+        "top_unit_strings": [
+          {
+            "string": "Medtronic Cardiac Rhythm and Heart Failure",
+            "mentions": 280
+          },
+          {
+            "string": "Medtronic - MITG",
+            "mentions": 270
+          },
+          {
+            "string": "Medtronic MiniMed, Inc.",
+            "mentions": 79
+          },
+          {
+            "string": "Medtronic Cardiovascular",
+            "mentions": 73
+          },
+          {
+            "string": "Medtronic Vascular",
+            "mentions": 72
+          },
+          {
+            "string": "Medtronic Spinal and Biologics",
+            "mentions": 57
+          },
+          {
+            "string": "Medtronic Endovascular",
+            "mentions": 52
+          },
+          {
+            "string": "Medtronic Cardiac Ablation Solutions",
+            "mentions": 37
+          }
+        ],
+        "exact_parent_strings": {
+          "Medtronic": 669,
+          "Medtronic, PLC": 1
+        }
+      }
+    },
+    "ge_healthcare": {
+      "mentions": 675,
+      "mapping_status": {
+        "EXACT": 347,
+        "ORG_TEXT": 268,
+        "NOT_MAPPED": 48,
+        "REJECTED": 7,
+        "ALIAS": 5
+      },
+      "claim_producing": 620,
+      "claim_producing_rate": 0.9185,
+      "non_claim_producing": 55,
+      "non_claim_producing_rate": 0.0815,
+      "other_status": 0,
+      "operating_unit_reality": {
+        "sponsor_role_mentions": 399,
+        "accepted_sponsor_mentions": 345,
+        "exact_parent_name": 341,
+        "operating_unit_or_subsidiary": 4,
+        "operating_unit_share_of_accepted": 0.0116,
+        "distinct_unit_strings": 4,
+        "top_unit_strings": [
+          {
+            "string": "Canadian Heads of Academic Radiology-GE Healthcare Development Award",
+            "mentions": 1
+          },
+          {
+            "string": "GE Healthcare Finland Ltd",
+            "mentions": 1
+          },
+          {
+            "string": "GE Medical Systems ultrasound (only technical support)",
+            "mentions": 1
+          },
+          {
+            "string": "general electric healthcare Finland",
+            "mentions": 1
+          }
+        ],
+        "exact_parent_strings": {
+          "GE Healthcare": 341
+        }
+      }
+    },
+    "philips": {
+      "mentions": 690,
+      "mapping_status": {
+        "ALIAS": 403,
+        "ORG_TEXT": 259,
+        "ORG_EMAIL": 13,
+        "WEAK_TEXT": 10,
+        "REJECTED": 4,
+        "AMBIGUOUS": 1
+      },
+      "claim_producing": 675,
+      "claim_producing_rate": 0.9783,
+      "non_claim_producing": 15,
+      "non_claim_producing_rate": 0.0217,
+      "other_status": 0,
+      "operating_unit_reality": {
+        "sponsor_role_mentions": 402,
+        "accepted_sponsor_mentions": 401,
+        "exact_parent_name": 2,
+        "operating_unit_or_subsidiary": 399,
+        "operating_unit_share_of_accepted": 0.995,
+        "distinct_unit_strings": 29,
+        "top_unit_strings": [
+          {
+            "string": "Philips Healthcare",
+            "mentions": 121
+          },
+          {
+            "string": "Philips Clinical & Medical Affairs Global",
+            "mentions": 114
+          },
+          {
+            "string": "Philips Respironics",
+            "mentions": 68
+          },
+          {
+            "string": "Philips Medical Systems",
+            "mentions": 25
+          },
+          {
+            "string": "Philips Electronics Nederland BV",
+            "mentions": 11
+          },
+          {
+            "string": "Philips Healthcare (Suzhou) Co., Ltd.",
+            "mentions": 9
+          },
+          {
+            "string": "EPD Solutions, A Philips Company",
+            "mentions": 8
+          },
+          {
+            "string": "Philips Oral Healthcare",
+            "mentions": 6
+          }
+        ],
+        "exact_parent_strings": {
+          "Philips Health Care": 2
+        }
+      }
+    },
+    "draeger": {
+      "mentions": 113,
+      "mapping_status": {
+        "REJECTED": 62,
+        "ORG_TEXT": 30,
+        "ALIAS": 16,
+        "ORG_EMAIL": 3,
+        "EXACT": 2
+      },
+      "claim_producing": 51,
+      "claim_producing_rate": 0.4513,
+      "non_claim_producing": 62,
+      "non_claim_producing_rate": 0.5487,
+      "other_status": 0,
+      "operating_unit_reality": {
+        "sponsor_role_mentions": 18,
+        "accepted_sponsor_mentions": 18,
+        "exact_parent_name": 10,
+        "operating_unit_or_subsidiary": 8,
+        "operating_unit_share_of_accepted": 0.4444,
+        "distinct_unit_strings": 5,
+        "top_unit_strings": [
+          {
+            "string": "Draeger Medical, Inc",
+            "mentions": 3
+          },
+          {
+            "string": "Draeger Medical Systems, Inc.",
+            "mentions": 2
+          },
+          {
+            "string": "Draeger and Hanse BKK",
+            "mentions": 1
+          },
+          {
+            "string": "Dräger Médical S.A",
+            "mentions": 1
+          },
+          {
+            "string": "Prof. Dr. med. Bernd Schmitz-Dräger",
+            "mentions": 1
+          }
+        ],
+        "exact_parent_strings": {
+          "Drägerwerk AG & Co. KGaA": 8,
+          "Draeger": 2
+        }
+      }
+    },
+    "mindray": {
+      "mentions": 251,
+      "mapping_status": {
+        "ORG_TEXT": 224,
+        "ORG_EMAIL": 16,
+        "ALIAS": 5,
+        "NOT_MAPPED": 4,
+        "EXACT": 2
+      },
+      "claim_producing": 247,
+      "claim_producing_rate": 0.9841,
+      "non_claim_producing": 4,
+      "non_claim_producing_rate": 0.0159,
+      "other_status": 0,
+      "operating_unit_reality": {
+        "sponsor_role_mentions": 11,
+        "accepted_sponsor_mentions": 7,
+        "exact_parent_name": 6,
+        "operating_unit_or_subsidiary": 1,
+        "operating_unit_share_of_accepted": 0.1429,
+        "distinct_unit_strings": 1,
+        "top_unit_strings": [
+          {
+            "string": "Datascope Patient Monitoring",
+            "mentions": 1
+          }
+        ],
+        "exact_parent_strings": {
+          "Shenzhen Mindray Bio-Medical Electronics Co., Ltd": 3,
+          "MINDRAY": 2,
+          "Mindray Bio-Medical Electronics Co., Ltd.": 1
+        }
+      }
+    }
+  },
+  "anachronisms": {
+    "rule_subsidiary_not_yet_owned": {
+      "n": 6,
+      "examples": [
+        {
+          "company": "philips",
+          "raw": "Respironics Sleep and Respiratory Foundation",
+          "claim_date": "2004-08-16",
+          "ownership_from": "2008-03-17",
+          "entity_key": "respironics_inc",
+          "mapping_status": "AMBIGUOUS",
+          "source": "clinicaltrials_gov_api_v2",
+          "record_id": "NCT00089752"
+        },
+        {
+          "company": "medtronic",
+          "raw": "VNUS Medical Technologies, A Covidien Company",
+          "claim_date": "2007-07-31",
+          "ownership_from": "2015-01-26",
+          "entity_key": "covidien_plc",
+          "mapping_status": "AMBIGUOUS",
+          "source": "clinicaltrials_gov_api_v2",
+          "record_id": "NCT00509392"
+        },
+        {
+          "company": "medtronic",
+          "raw": "Covidien, GI Solutions",
+          "claim_date": "2010-04-14",
+          "ownership_from": "2015-01-26",
+          "entity_key": "covidien_plc",
+          "mapping_status": "AMBIGUOUS",
+          "source": "clinicaltrials_gov_api_v2",
+          "record_id": "NCT01103492"
+        },
+        {
+          "company": "medtronic",
+          "raw": "Tyco Healthcare Group LP (d/b/a Covidien)",
+          "claim_date": "2010-09-06",
+          "ownership_from": "2015-01-26",
+          "entity_key": "covidien_plc",
+          "mapping_status": "AMBIGUOUS",
+          "source": "clinicaltrials_gov_api_v2",
+          "record_id": "NCT01195285"
+        },
+        {
+          "company": "medtronic",
+          "raw": "Covidien, GI Solutions",
+          "claim_date": "2007-06-21",
+          "ownership_from": "2015-01-26",
+          "entity_key": "covidien_plc",
+          "mapping_status": "AMBIGUOUS",
+          "source": "clinicaltrials_gov_api_v2",
+          "record_id": "NCT00489268"
+        },
+        {
+          "company": "medtronic",
+          "raw": "Covidien, GI Solutions",
+          "claim_date": "2014-01-28",
+          "ownership_from": "2015-01-26",
+          "entity_key": "covidien_plc",
+          "mapping_status": "AMBIGUOUS",
+          "source": "clinicaltrials_gov_api_v2",
+          "record_id": "NCT02047305"
+        }
+      ]
+    },
+    "register_valid_from_violations": {
+      "count": 0,
+      "examples": []
+    },
+    "division_start_unknown": {
+      "n": 7,
+      "examples": [
+        {
+          "company": "ge_healthcare",
+          "raw": "GE Medical Systems Italia SpA, via Galeno 36, 20126, Milan, Italy.",
+          "entity_key": "ge_medical_systems_division",
+          "entity_type": "division",
+          "claim_date": "2017-08-23",
+          "mapping_status": "ORG_TEXT",
+          "rule": "organisational_affiliation_segment",
+          "record_id": "doi:10.1007/s00330-017-5015-5",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "GE Medical Systems (Schweiz) AG, Europa-Strasse 31, 8152 Glattbrugg, Switzerland.",
+          "entity_key": "ge_medical_systems_division",
+          "entity_type": "division",
+          "claim_date": "2021-06-03",
+          "mapping_status": "ORG_TEXT",
+          "rule": "organisational_affiliation_segment",
+          "record_id": "doi:10.1016/j.ejrad.2021.109808",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "GE Medical Systems Israel, Haifa, Israel.",
+          "entity_key": "ge_medical_systems_division",
+          "entity_type": "division",
+          "claim_date": "2017-07-24",
+          "mapping_status": "ORG_TEXT",
+          "rule": "organisational_affiliation_segment",
+          "record_id": "doi:10.1186/s40349-017-0098-7",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "GE Medical Systems (Schweiz) AG, Glattbrugg, Switzerland.",
+          "entity_key": "ge_medical_systems_division",
+          "entity_type": "division",
+          "claim_date": "2018-09-26",
+          "mapping_status": "ORG_TEXT",
+          "rule": "organisational_affiliation_segment",
+          "record_id": "doi:10.1186/s40658-018-0223-x",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "GE Medical Systems, Buc, France.",
+          "entity_key": "ge_medical_systems_division",
+          "entity_type": "division",
+          "claim_date": "2021-08-10",
+          "mapping_status": "ORG_TEXT",
+          "rule": "organisational_affiliation_segment",
+          "record_id": "doi:10.1186/s42155-021-00249-z",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "GE Medical Systems Trade & Development (Shanghai) Co., Ltd., Shanghai, China.",
+          "entity_key": "ge_medical_systems_division",
+          "entity_type": "division",
+          "claim_date": "2026-02-26",
+          "mapping_status": "ORG_TEXT",
+          "rule": "organisational_affiliation_segment",
+          "record_id": "doi:10.21037/qims-2025-1982",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "Customer Service Department, GE Medical Systems Trading Development(Shanghai) Co. Ltd., Shanghai, 201203.",
+          "entity_key": "ge_medical_systems_division",
+          "entity_type": "division",
+          "claim_date": "2023-07-01",
+          "mapping_status": "ORG_TEXT",
+          "rule": "organisational_affiliation_segment",
+          "record_id": "doi:10.3969/j.issn.1671-7104.2023.04.023",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        }
+      ]
+    },
+    "dates_unknown_flag_from_mapping_layer": {
+      "n": 0,
+      "examples": []
+    },
+    "ownership_date_unknown": {
+      "n": 86,
+      "by_entity": {
+        "medtronic_minimed_inc": 79,
+        "medtronic_vascular_inc": 4,
+        "draeger_medical_gmbh": 3
+      },
+      "examples": [
+        {
+          "company": "draeger",
+          "raw": "Dräger Médical S.A",
+          "entity_key": "draeger_medical_gmbh",
+          "entity_type": "former_subsidiary",
+          "claim_date": "2007-05-14",
+          "mapping_status": "ALIAS",
+          "rule": "operating_unit_of_parent",
+          "record_id": "NCT00473148",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        },
+        {
+          "company": "medtronic",
+          "raw": "Medtronic MiniMed, Inc.",
+          "entity_key": "medtronic_minimed_inc",
+          "entity_type": "operating_subsidiary",
+          "claim_date": "2013-09-18",
+          "mapping_status": "ALIAS",
+          "rule": "operating_unit_of_parent",
+          "record_id": "NCT01945138",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:canonical_name_exact"
+        },
+        {
+          "company": "medtronic",
+          "raw": "Medtronic MiniMed, Inc.",
+          "entity_key": "medtronic_minimed_inc",
+          "entity_type": "operating_subsidiary",
+          "claim_date": "2015-08-21",
+          "mapping_status": "ALIAS",
+          "rule": "operating_unit_of_parent",
+          "record_id": "NCT02530450",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:canonical_name_exact"
+        },
+        {
+          "company": "medtronic",
+          "raw": "Medtronic MiniMed, Inc.",
+          "entity_key": "medtronic_minimed_inc",
+          "entity_type": "operating_subsidiary",
+          "claim_date": "2020-03-12",
+          "mapping_status": "ALIAS",
+          "rule": "operating_unit_of_parent",
+          "record_id": "NCT04304963",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:canonical_name_exact"
+        },
+        {
+          "company": "medtronic",
+          "raw": "Medtronic Vascular, Santa Rosa, CA, 95403, USA.",
+          "entity_key": "medtronic_vascular_inc",
+          "entity_type": "operating_subsidiary",
+          "claim_date": "2004-12-08",
+          "mapping_status": "ORG_TEXT",
+          "rule": "organisational_affiliation_segment",
+          "record_id": "doi:10.1007/s00262-004-0624-7",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        },
+        {
+          "company": "medtronic",
+          "raw": "Medtronic Vascular, Santa Rosa, CA-95403, USA.",
+          "entity_key": "medtronic_vascular_inc",
+          "entity_type": "operating_subsidiary",
+          "claim_date": "2006-11-01",
+          "mapping_status": "ORG_TEXT",
+          "rule": "organisational_affiliation_segment",
+          "record_id": "doi:10.1016/j.jconrel.2006.09.067",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        },
+        {
+          "company": "medtronic",
+          "raw": "Office of Medical Affairs, Medtronic Vascular, Santa Rosa, California.",
+          "entity_key": "medtronic_vascular_inc",
+          "entity_type": "operating_subsidiary",
+          "claim_date": "2014-02-12",
+          "mapping_status": "ORG_TEXT",
+          "rule": "organisational_affiliation_segment",
+          "record_id": "doi:10.1016/j.jvir.2013.12.012",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        },
+        {
+          "company": "draeger",
+          "raw": "Dräger Medical GmbH, Lübeck, Germany.",
+          "entity_key": "draeger_medical_gmbh",
+          "entity_type": "former_subsidiary",
+          "claim_date": "2021-01-01",
+          "mapping_status": "ORG_TEXT",
+          "rule": "organisational_affiliation_segment",
+          "record_id": "doi:10.23812/20-527-a",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        },
+        {
+          "company": "draeger",
+          "raw": "Dräger Medical Inc., Telford, PA, United States.",
+          "entity_key": "draeger_medical_gmbh",
+          "entity_type": "former_subsidiary",
+          "claim_date": "2021-09-28",
+          "mapping_status": "ORG_TEXT",
+          "rule": "organisational_affiliation_segment",
+          "record_id": "doi:10.3389/fped.2021.722497",
+          "register_valid_from": null,
+          "resolved_by": "register_alias_fallback:alias_token_in_text"
+        }
+      ],
+      "policy": "mapping downgraded: the entity is in the register but its group-ownership/validity date is UNKNOWN, so the claim cannot be placed in time"
+    }
+  },
+  "collisions": {
+    "rejected_mentions": 73,
+    "by_company_and_rule": {
+      "draeger|ambiguous_surname_or_email_only": 62,
+      "ge_healthcare|register_not_company_string": 6,
+      "philips|personal_surname_only": 4,
+      "ge_healthcare|not_group_member": 1
+    },
+    "register_not_company_hits": {
+      "n": 22,
+      "examples": [
+        {
+          "company": "ge_healthcare",
+          "raw": "Imperial College Healthcare NHS Trust",
+          "not_company_string": "Imperial College Healthcare NHS Trust",
+          "reason": "measured substring false positive: an NHS hospital trust, not GE HealthCare",
+          "rule": "register_not_company_string",
+          "source": "clinicaltrials_gov_api_v2"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "Orange healthcare",
+          "not_company_string": "Orange healthcare",
+          "reason": "measured substring false positive: telehealth brand, not GE HealthCare",
+          "rule": "register_not_company_string",
+          "source": "clinicaltrials_gov_api_v2"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "General Electric Research",
+          "not_company_string": "General Electric Research",
+          "reason": "measured sponsor string: GE's corporate research organisation, not a distinct company",
+          "rule": "register_not_company_string",
+          "source": "clinicaltrials_gov_api_v2"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "General Electric Research",
+          "not_company_string": "General Electric Research",
+          "reason": "measured sponsor string: GE's corporate research organisation, not a distinct company",
+          "rule": "register_not_company_string",
+          "source": "clinicaltrials_gov_api_v2"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "General Electric Research",
+          "not_company_string": "General Electric Research",
+          "reason": "measured sponsor string: GE's corporate research organisation, not a distinct company",
+          "rule": "register_not_company_string",
+          "source": "clinicaltrials_gov_api_v2"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "Imperial College Healthcare NHS Trust",
+          "not_company_string": "Imperial College Healthcare NHS Trust",
+          "reason": "measured substring false positive: an NHS hospital trust, not GE HealthCare",
+          "rule": "register_not_company_string",
+          "source": "clinicaltrials_gov_api_v2"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "LEADR & LEADR LBBAP: Imperial College Healthcare NHS Trust - Hammersmith Hospital",
+          "not_company_string": "Imperial College Healthcare NHS Trust",
+          "reason": "measured substring false positive: an NHS hospital trust, not GE HealthCare",
+          "rule": "not_group_member",
+          "source": "clinicaltrials_gov_api_v2"
+        },
+        {
+          "company": "draeger",
+          "raw": "Department of Cell Biology, University of Bern, Bern, Switzerland. draeger@ana.unibe.ch",
+          "not_company_string": "draeger@ana.unibe.ch",
+          "reason": "measured false positive: an institutional e-mail address of a Dräger-named researcher",
+          "rule": "ambiguous_surname_or_email_only",
+          "source": "europepmc"
+        },
+        {
+          "company": "draeger",
+          "raw": "Klinik für Endokrinologie, Diabetologie und Angiologie, Klinikum Bogenhausen, Städtisches Klinikum München GmbH, München. petra-maria.schumm-draeger@klinikum-muenchen.de",
+          "not_company_string": "schumm-draeger@klinikum-muenchen.de",
+          "reason": "measured false positive: personal e-mail address containing the surname",
+          "rule": "ambiguous_surname_or_email_only",
+          "source": "europepmc"
+        },
+        {
+          "company": "draeger",
+          "raw": "Department of Cell Biology, Institute of Anatomy, University of Bern Baltzerstr, 2 3012, Bern, Switzerland. draeger@ana.unibe.ch",
+          "not_company_string": "draeger@ana.unibe.ch",
+          "reason": "measured false positive: an institutional e-mail address of a Dräger-named researcher",
+          "rule": "ambiguous_surname_or_email_only",
+          "source": "europepmc"
+        },
+        {
+          "company": "draeger",
+          "raw": "Department of Cell Biology, Institute of Anatomy, University of Bern, Baltzerstr. 2, 3012 Bern, Switzerland. Electronic address: draeger@ana.unibe.ch.",
+          "not_company_string": "draeger@ana.unibe.ch",
+          "reason": "measured false positive: an institutional e-mail address of a Dräger-named researcher",
+          "rule": "ambiguous_surname_or_email_only",
+          "source": "europepmc"
+        },
+        {
+          "company": "draeger",
+          "raw": "Institute of Anatomy, University of Bern, Switzerland. Electronic address: draeger@ana.unibe.ch.",
+          "not_company_string": "draeger@ana.unibe.ch",
+          "reason": "measured false positive: an institutional e-mail address of a Dräger-named researcher",
+          "rule": "ambiguous_surname_or_email_only",
+          "source": "europepmc"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "company": "ge_healthcare",
+        "raw": "Imperial College Healthcare NHS Trust",
+        "rule": "register_not_company_string",
+        "reason": "measured substring false positive: an NHS hospital trust, not GE HealthCare",
+        "source": "clinicaltrials_gov_api_v2"
+      },
+      {
+        "company": "ge_healthcare",
+        "raw": "Orange healthcare",
+        "rule": "register_not_company_string",
+        "reason": "measured substring false positive: telehealth brand, not GE HealthCare",
+        "source": "clinicaltrials_gov_api_v2"
+      },
+      {
+        "company": "ge_healthcare",
+        "raw": "General Electric Research",
+        "rule": "register_not_company_string",
+        "reason": "measured sponsor string: GE's corporate research organisation, not a distinct company",
+        "source": "clinicaltrials_gov_api_v2"
+      },
+      {
+        "company": "ge_healthcare",
+        "raw": "LEADR & LEADR LBBAP: Imperial College Healthcare NHS Trust - Hammersmith Hospital",
+        "rule": "not_group_member",
+        "reason": "substring collision: 'Colle(ge Healthcare)' / 'Oran(ge healthcare)' is not GE HealthCare",
+        "source": "clinicaltrials_gov_api_v2"
+      },
+      {
+        "company": "philips",
+        "raw": "Philips R. Lee Institute for Health Policy Studies, University of California, San Francisco, CA",
+        "rule": "personal_surname_only",
+        "reason": "surname occurrence only (['SURNAME'])",
+        "source": "europepmc"
+      },
+      {
+        "company": "draeger",
+        "raw": "Department of Cell Biology, University of Bern, Bern, Switzerland. draeger@ana.unibe.ch",
+        "rule": "ambiguous_surname_or_email_only",
+        "reason": "token is a personal surname / company name collision (classes=['EMAIL_LOCALPART']); no organisational evidence",
+        "source": "europepmc"
+      },
+      {
+        "company": "draeger",
+        "raw": ", Beim Andreasbrunnen 7, 20249, Hamburg, Deutschland. draeger@daego.de.",
+        "rule": "ambiguous_surname_or_email_only",
+        "reason": "token is a personal surname / company name collision (classes=['EMAIL_LOCALPART']); no organisational evidence",
+        "source": "europepmc"
+      },
+      {
+        "company": "draeger",
+        "raw": "Zentrum/Innere Medizin/Fünf Höfe, Theatinerstr. 15, 80333, München, Deutschland. schumm-draeger@zim-fuenf-hoefe.de.",
+        "rule": "ambiguous_surname_or_email_only",
+        "reason": "token is a personal surname / company name collision (classes=['EMAIL_LOCALPART']); no organisational evidence",
+        "source": "europepmc"
+      },
+      {
+        "company": "philips",
+        "raw": "Raymond C. Philips Unit, Division of Genetics and Metabolism, Department of Pediatrics, University of Florida, Gainesville, FL 32605, USA. willicx@peds.ufl.edu",
+        "rule": "personal_surname_only",
+        "reason": "surname occurrence only (['SURNAME'])",
+        "source": "europepmc"
+      },
+      {
+        "company": "philips",
+        "raw": "Raymond C. Philips Unit, Division of Genetics and Metabolism, Department of Pediatrics, University of Florida, Gainesville, Fla., USA.",
+        "rule": "personal_surname_only",
+        "reason": "surname occurrence only (['SURNAME'])",
+        "source": "europepmc"
+      }
+    ]
+  },
+  "recall": {
+    "medtronic": {
+      "studies_discovered": 1697,
+      "canonical_query_values": [
+        "Medtronic"
+      ],
+      "non_canonical_query_values": [
+        "Covidien",
+        "Medtronic MiniMed",
+        "Medtronic Sofamor Danek",
+        "Medtronic Vascular",
+        "MiniMed",
+        "Tyco Healthcare"
+      ],
+      "studies_with_non_canonical_query": 184,
+      "studies_reached_only_via_non_canonical_query": 22,
+      "examples": [
+        {
+          "nct_id": "NCT00096408",
+          "query_values": [
+            "Tyco Healthcare"
+          ],
+          "canonical_query_present": false
+        },
+        {
+          "nct_id": "NCT00111228",
+          "query_values": [
+            "Medtronic MiniMed",
+            "MiniMed"
+          ],
+          "canonical_query_present": true
+        },
+        {
+          "nct_id": "NCT00203489",
+          "query_values": [
+            "Tyco Healthcare"
+          ],
+          "canonical_query_present": false
+        },
+        {
+          "nct_id": "NCT00203515",
+          "query_values": [
+            "Tyco Healthcare"
+          ],
+          "canonical_query_present": false
+        },
+        {
+          "nct_id": "NCT00203541",
+          "query_values": [
+            "Tyco Healthcare"
+          ],
+          "canonical_query_present": false
+        },
+        {
+          "nct_id": "NCT00211510",
+          "query_values": [
+            "Medtronic MiniMed",
+            "MiniMed"
+          ],
+          "canonical_query_present": true
+        },
+        {
+          "nct_id": "NCT00211536",
+          "query_values": [
+            "Medtronic MiniMed",
+            "MiniMed"
+          ],
+          "canonical_query_present": true
+        },
+        {
+          "nct_id": "NCT00217256",
+          "query_values": [
+            "Medtronic Vascular"
+          ],
+          "canonical_query_present": true
+        }
+      ],
+      "studies_reached_only_via_non_canonical_mention": 997,
+      "mentions_trial_link_examples": [
+        "NCT00095095",
+        "NCT00111228",
+        "NCT00139542",
+        "NCT00145119",
+        "NCT00147277",
+        "NCT00147290",
+        "NCT00153257",
+        "NCT00156728"
+      ]
+    },
+    "ge_healthcare": {
+      "studies_discovered": 398,
+      "canonical_query_values": [
+        "GE HealthCare"
+      ],
+      "non_canonical_query_values": [
+        "GE Medical Systems",
+        "General Electric"
+      ],
+      "studies_with_non_canonical_query": 1,
+      "studies_reached_only_via_non_canonical_query": 1,
+      "examples": [
+        {
+          "nct_id": "NCT00930397",
+          "query_values": [
+            "GE Medical Systems"
+          ],
+          "canonical_query_present": false
+        }
+      ],
+      "studies_reached_only_via_non_canonical_mention": 4,
+      "mentions_trial_link_examples": [
+        "NCT00930397",
+        "NCT01399645",
+        "NCT03231826",
+        "NCT04519203"
+      ]
+    },
+    "philips": {
+      "studies_discovered": 382,
+      "canonical_query_values": [
+        "Philips"
+      ],
+      "non_canonical_query_values": [
+        "Philips Healthcare",
+        "Philips Medical Systems",
+        "Philips Respironics",
+        "Respironics"
+      ],
+      "studies_with_non_canonical_query": 232,
+      "studies_reached_only_via_non_canonical_query": 6,
+      "examples": [
+        {
+          "nct_id": "NCT00047411",
+          "query_values": [
+            "Philips Medical Systems"
+          ],
+          "canonical_query_present": true
+        },
+        {
+          "nct_id": "NCT00089752",
+          "query_values": [
+            "Respironics"
+          ],
+          "canonical_query_present": false
+        },
+        {
+          "nct_id": "NCT00247624",
+          "query_values": [
+            "Philips Healthcare"
+          ],
+          "canonical_query_present": true
+        },
+        {
+          "nct_id": "NCT00285064",
+          "query_values": [
+            "Philips Medical Systems"
+          ],
+          "canonical_query_present": true
+        },
+        {
+          "nct_id": "NCT00417638",
+          "query_values": [
+            "Philips Healthcare"
+          ],
+          "canonical_query_present": true
+        },
+        {
+          "nct_id": "NCT00429156",
+          "query_values": [
+            "Philips Respironics",
+            "Respironics"
+          ],
+          "canonical_query_present": true
+        },
+        {
+          "nct_id": "NCT00458406",
+          "query_values": [
+            "Philips Respironics",
+            "Respironics"
+          ],
+          "canonical_query_present": true
+        },
+        {
+          "nct_id": "NCT00466011",
+          "query_values": [
+            "Philips Respironics",
+            "Respironics"
+          ],
+          "canonical_query_present": true
+        }
+      ],
+      "studies_reached_only_via_non_canonical_mention": 379,
+      "mentions_trial_link_examples": [
+        "NCT00047411",
+        "NCT00247624",
+        "NCT00285064",
+        "NCT00417638",
+        "NCT00429156",
+        "NCT00458406",
+        "NCT00466011",
+        "NCT00482651"
+      ]
+    },
+    "draeger": {
+      "studies_discovered": 18,
+      "canonical_query_values": [
+        "Draeger",
+        "Drägerwerk"
+      ],
+      "non_canonical_query_values": [
+        "Dräger"
+      ],
+      "studies_with_non_canonical_query": 2,
+      "studies_reached_only_via_non_canonical_query": 2,
+      "examples": [
+        {
+          "nct_id": "NCT00473148",
+          "query_values": [
+            "Dräger"
+          ],
+          "canonical_query_present": false
+        },
+        {
+          "nct_id": "NCT07307300",
+          "query_values": [
+            "Dräger"
+          ],
+          "canonical_query_present": false
+        }
+      ],
+      "studies_reached_only_via_non_canonical_mention": 8,
+      "mentions_trial_link_examples": [
+        "NCT00229541",
+        "NCT00473148",
+        "NCT02247700",
+        "NCT02445040",
+        "NCT02774434",
+        "NCT02892773",
+        "NCT03083379",
+        "NCT07307300"
+      ]
+    },
+    "mindray": {
+      "studies_discovered": 11,
+      "canonical_query_values": [
+        "Mindray"
+      ],
+      "non_canonical_query_values": [
+        "Datascope",
+        "Mindray Medical",
+        "Shenzhen Mindray"
+      ],
+      "studies_with_non_canonical_query": 9,
+      "studies_reached_only_via_non_canonical_query": 5,
+      "examples": [
+        {
+          "nct_id": "NCT00007657",
+          "query_values": [
+            "Datascope"
+          ],
+          "canonical_query_present": false
+        },
+        {
+          "nct_id": "NCT00750958",
+          "query_values": [
+            "Datascope"
+          ],
+          "canonical_query_present": false
+        },
+        {
+          "nct_id": "NCT00824109",
+          "query_values": [
+            "Datascope"
+          ],
+          "canonical_query_present": false
+        },
+        {
+          "nct_id": "NCT00833612",
+          "query_values": [
+            "Datascope"
+          ],
+          "canonical_query_present": false
+        },
+        {
+          "nct_id": "NCT01253356",
+          "query_values": [
+            "Datascope"
+          ],
+          "canonical_query_present": false
+        },
+        {
+          "nct_id": "NCT05853042",
+          "query_values": [
+            "Mindray Medical"
+          ],
+          "canonical_query_present": true
+        },
+        {
+          "nct_id": "NCT06739746",
+          "query_values": [
+            "Mindray Medical",
+            "Shenzhen Mindray"
+          ],
+          "canonical_query_present": true
+        },
+        {
+          "nct_id": "NCT07128108",
+          "query_values": [
+            "Mindray Medical",
+            "Shenzhen Mindray"
+          ],
+          "canonical_query_present": true
+        }
+      ],
+      "studies_reached_only_via_non_canonical_mention": 1,
+      "mentions_trial_link_examples": [
+        "NCT00750958"
+      ]
+    }
+  },
+  "tiers": {
+    "definition": {
+      "exact_identifier": "matched through a resolved identifier (company e-mail domain)",
+      "normalized_name": "folded equality with a registered canonical name",
+      "alias": "registered alias, operating-unit prefix, or registered brand token inside the string",
+      "fuzzy": "similarity >= 0.88 without an exact name/alias hit",
+      "conflict": "the string matches entities of two or more companies",
+      "unmapped": "no register match, or a match to a registered not_company string"
+    },
+    "counts": {
+      "exact_identifier": 60,
+      "normalized_name": 97,
+      "alias": 3518,
+      "fuzzy": 0,
+      "conflict": 48,
+      "unmapped": 166
+    },
+    "rates": {
+      "exact_identifier": 0.0154,
+      "normalized_name": 0.0249,
+      "alias": 0.9046,
+      "fuzzy": 0.0,
+      "conflict": 0.0123,
+      "unmapped": 0.0427
+    },
+    "by_company": {
+      "medtronic": {
+        "exact_identifier": 25,
+        "normalized_name": 80,
+        "alias": 2051,
+        "fuzzy": 0,
+        "conflict": 0,
+        "unmapped": 4
+      },
+      "ge_healthcare": {
+        "exact_identifier": 3,
+        "normalized_name": 0,
+        "alias": 640,
+        "fuzzy": 0,
+        "conflict": 24,
+        "unmapped": 8
+      },
+      "philips": {
+        "exact_identifier": 13,
+        "normalized_name": 0,
+        "alias": 540,
+        "fuzzy": 0,
+        "conflict": 0,
+        "unmapped": 137
+      },
+      "draeger": {
+        "exact_identifier": 3,
+        "normalized_name": 10,
+        "alias": 60,
+        "fuzzy": 0,
+        "conflict": 24,
+        "unmapped": 16
+      },
+      "mindray": {
+        "exact_identifier": 16,
+        "normalized_name": 7,
+        "alias": 227,
+        "fuzzy": 0,
+        "conflict": 0,
+        "unmapped": 1
+      }
+    },
+    "not_company_collisions": 164
+  },
+  "verdict": {
+    "claim_producing_rate": 0.5375,
+    "accepted_mentions": 3730,
+    "mentions": 6940,
+    "ownership_date_unknown_share": 0.0231,
+    "anachronism_share": 0.0,
+    "rejected_mentions": 73,
+    "statement": "The identity layer is usable for a temporal study only with the documented caveats: 53.8% of 6940 company strings resolve to a company, but 2.31% of accepted mappings have an UNKNOWN ownership date and 0.00% are measured anachronisms. Claims resting on the UNKNOWN entities must be excluded from any time-sensitive test rather than silently accepted.",
+    "min_company_claim_producing_rate": 0.4513,
+    "weakest_companies": [
+      {
+        "company": "draeger",
+        "rate": 0.4513
+      },
+      {
+        "company": "ge_healthcare",
+        "rate": 0.9185
+      }
+    ]
+  }
+}

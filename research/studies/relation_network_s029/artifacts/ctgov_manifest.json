@@ -1,0 +1,295 @@
+{
+  "collected_at": "2026-11-03T19:39:49.191Z",
+  "dedup_counts": {
+    "draeger": 18,
+    "ge_healthcare": 398,
+    "medtronic": 1697,
+    "mindray": 11,
+    "philips": 382
+  },
+  "fields": "NCTId,BriefTitle,OfficialTitle,Acronym,OrgStudyId,SecondaryId,OverallStatus,StartDate,PrimaryCompletionDate,CompletionDate,StudyFirstPostDate,LastUpdatePostDate,ResultsFirstPostDate,StudyFirstSubmitDate,LastUpdateSubmitDate,StatusVerifiedDate,LeadSponsorName,LeadSponsorClass,CollaboratorName,CollaboratorClass,ResponsiblePartyType,ResponsiblePartyInvestigatorAffiliation,Condition,ConditionMeshTerm,InterventionName,InterventionType,DesignPrimaryPurpose,Phase,EnrollmentCount,StudyType,HasResults,ReferencePMID,ReferenceType,ReferenceCitation",
+  "location_subsample": [
+    {
+      "company": "medtronic",
+      "n_failures": 0,
+      "n_records": 60,
+      "n_requested": 60,
+      "raw_file": "data/raw/ctgov_locations_medtronic.json.gz"
+    },
+    {
+      "company": "ge_healthcare",
+      "n_failures": 0,
+      "n_records": 60,
+      "n_requested": 60,
+      "raw_file": "data/raw/ctgov_locations_ge_healthcare.json.gz"
+    },
+    {
+      "company": "philips",
+      "n_failures": 0,
+      "n_records": 60,
+      "n_requested": 60,
+      "raw_file": "data/raw/ctgov_locations_philips.json.gz"
+    },
+    {
+      "company": "draeger",
+      "n_failures": 0,
+      "n_records": 18,
+      "n_requested": 18,
+      "raw_file": "data/raw/ctgov_locations_draeger.json.gz"
+    },
+    {
+      "company": "mindray",
+      "n_failures": 0,
+      "n_records": 11,
+      "n_requested": 11,
+      "raw_file": "data/raw/ctgov_locations_mindray.json.gz"
+    }
+  ],
+  "n_http_calls": 246,
+  "queries": [
+    {
+      "n_records": 1675,
+      "pages": 9,
+      "raw_file": "data/raw/ctgov_medtronic_medtronic.json.gz",
+      "retrieved_at": "2026-11-03T19:39:49.778Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Medtronic"
+    },
+    {
+      "n_records": 1,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_medtronic_medtronic_sofamor_danek.json.gz",
+      "retrieved_at": "2026-11-03T19:39:55.630Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Medtronic Sofamor Danek"
+    },
+    {
+      "n_records": 78,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_medtronic_medtronic_vascular.json.gz",
+      "retrieved_at": "2026-11-03T19:39:56.136Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Medtronic Vascular"
+    },
+    {
+      "n_records": 80,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_medtronic_medtronic_minimed.json.gz",
+      "retrieved_at": "2026-11-03T19:39:56.657Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Medtronic MiniMed"
+    },
+    {
+      "n_records": 81,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_medtronic_minimed.json.gz",
+      "retrieved_at": "2026-11-03T19:39:57.170Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "MiniMed"
+    },
+    {
+      "n_records": 7,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_medtronic_covidien.json.gz",
+      "retrieved_at": "2026-11-03T19:39:57.641Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Covidien"
+    },
+    {
+      "n_records": 18,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_medtronic_tyco_healthcare.json.gz",
+      "retrieved_at": "2026-11-03T19:39:58.101Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Tyco Healthcare"
+    },
+    {
+      "n_records": 343,
+      "pages": 2,
+      "raw_file": "data/raw/ctgov_ge_healthcare_ge_healthcare.json.gz",
+      "retrieved_at": "2026-11-03T19:39:58.662Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "GE HealthCare"
+    },
+    {
+      "n_records": 1,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_ge_healthcare_ge_medical_systems.json.gz",
+      "retrieved_at": "2026-11-03T19:39:59.736Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "GE Medical Systems"
+    },
+    {
+      "n_records": 54,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_ge_healthcare_general_electric.json.gz",
+      "retrieved_at": "2026-11-03T19:40:00.227Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "General Electric"
+    },
+    {
+      "n_records": 0,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_ge_healthcare_ge_healthcare_technologies.json.gz",
+      "retrieved_at": "2026-11-03T19:40:00.692Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "GE Healthcare Technologies"
+    },
+    {
+      "n_records": 376,
+      "pages": 2,
+      "raw_file": "data/raw/ctgov_philips_philips.json.gz",
+      "retrieved_at": "2026-11-03T19:40:01.402Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Philips"
+    },
+    {
+      "n_records": 0,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_philips_koninklijke_philips.json.gz",
+      "retrieved_at": "2026-11-03T19:40:02.501Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Koninklijke Philips"
+    },
+    {
+      "n_records": 138,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_philips_philips_healthcare.json.gz",
+      "retrieved_at": "2026-11-03T19:40:03.125Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Philips Healthcare"
+    },
+    {
+      "n_records": 28,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_philips_philips_medical_systems.json.gz",
+      "retrieved_at": "2026-11-03T19:40:03.627Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Philips Medical Systems"
+    },
+    {
+      "n_records": 68,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_philips_philips_respironics.json.gz",
+      "retrieved_at": "2026-11-03T19:40:04.152Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Philips Respironics"
+    },
+    {
+      "n_records": 74,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_philips_respironics.json.gz",
+      "retrieved_at": "2026-11-03T19:40:04.689Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Respironics"
+    },
+    {
+      "n_records": 2,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_draeger_dräger.json.gz",
+      "retrieved_at": "2026-11-03T19:40:05.155Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Dräger"
+    },
+    {
+      "n_records": 8,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_draeger_draeger.json.gz",
+      "retrieved_at": "2026-11-03T19:40:05.617Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Draeger"
+    },
+    {
+      "n_records": 0,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_draeger_draegerwerk.json.gz",
+      "retrieved_at": "2026-11-03T19:40:06.072Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Draegerwerk"
+    },
+    {
+      "n_records": 8,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_draeger_drägerwerk.json.gz",
+      "retrieved_at": "2026-11-03T19:40:06.532Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Drägerwerk"
+    },
+    {
+      "n_records": 0,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_draeger_dräger_medical.json.gz",
+      "retrieved_at": "2026-11-03T19:40:06.985Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Dräger Medical"
+    },
+    {
+      "n_records": 6,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_mindray_mindray.json.gz",
+      "retrieved_at": "2026-11-03T19:40:07.442Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Mindray"
+    },
+    {
+      "n_records": 3,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_mindray_shenzhen_mindray.json.gz",
+      "retrieved_at": "2026-11-03T19:40:07.895Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Shenzhen Mindray"
+    },
+    {
+      "n_records": 4,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_mindray_mindray_medical.json.gz",
+      "retrieved_at": "2026-11-03T19:40:08.348Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Mindray Medical"
+    },
+    {
+      "n_records": 5,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_mindray_datascope.json.gz",
+      "retrieved_at": "2026-11-03T19:40:08.805Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Datascope"
+    },
+    {
+      "n_records": 0,
+      "pages": 1,
+      "raw_file": "data/raw/ctgov_mindray_zonare.json.gz",
+      "retrieved_at": "2026-11-03T19:40:09.256Z",
+      "stop_reason": "exhausted",
+      "total_count_reported": null,
+      "variant": "Zonare"
+    }
+  ],
+  "source": "clinicaltrials_gov_api_v2"
+}

@@ -1,0 +1,950 @@
+{
+  "A_coverage": {
+    "claims_authoritative": 20563,
+    "claims_by_family": {
+      "A_company_trial_responsible": 3,
+      "A_company_trial_sponsor": 2514,
+      "A_institution_trial": 2393,
+      "A_trial_references_pub": 4351,
+      "B_company_funded_publication": 105,
+      "B_company_institution_coaffiliation": 1567,
+      "B_company_publication": 623,
+      "B_institution_publication": 1552,
+      "B_publication_topic": 7455,
+      "C_confirmed_cooperation": 0
+    },
+    "claims_by_predicate": {
+      "AFFILIATED_WITH": 2175,
+      "CO_AFFILIATED_ON": 1567,
+      "FUNDED_BY": 105,
+      "HAS_TOPIC": 7455,
+      "HOSTS_TRIAL_SITE": 598,
+      "REFERENCES_PUBLICATION": 4351,
+      "RESPONSIBLE_FOR_TRIAL": 3,
+      "SPONSORS_TRIAL": 4309
+    },
+    "claims_by_publication_year": {
+      "2001": 65,
+      "2002": 5,
+      "2003": 11,
+      "2004": 60,
+      "2005": 507,
+      "2006": 284,
+      "2007": 372,
+      "2008": 671,
+      "2009": 512,
+      "2010": 839,
+      "2011": 823,
+      "2012": 991,
+      "2013": 908,
+      "2014": 1053,
+      "2015": 1267,
+      "2016": 1161,
+      "2017": 1302,
+      "2018": 1130,
+      "2019": 1128,
+      "2020": 993,
+      "2021": 942,
+      "2022": 1017,
+      "2023": 922,
+      "2024": 1016,
+      "2025": 1110,
+      "2026": 1474
+    },
+    "claims_per_company_all": {
+      "draeger": 114,
+      "ge_healthcare": 886,
+      "medtronic": 2487,
+      "mindray": 362,
+      "philips": 963
+    },
+    "claims_per_company_authoritative": {
+      "draeger": 114,
+      "ge_healthcare": 886,
+      "medtronic": 2487,
+      "mindray": 362,
+      "philips": 963
+    },
+    "claims_total": 20563,
+    "records_collected": {
+      "clinical_trials": 2498,
+      "institutions_candidates": 4395,
+      "publications": 770
+    },
+    "records_rejected_or_ambiguous": 158,
+    "rejects_by_rule": {
+      "ambiguous_surname_or_email_only": 62,
+      "award_or_programme_title": 11,
+      "historical_name_pre_ownership": 17,
+      "not_group_member": 52,
+      "personal_surname_only": 4,
+      "register_not_company_string": 6,
+      "subsidiary_not_yet_owned": 6
+    },
+    "share_claims_with_event_or_valid_from": 100.0,
+    "share_claims_with_published_at": 100.0,
+    "share_claims_with_stable_external_id": 100.0
+  },
+  "B_entity_resolution": {
+    "anachronistic_mentions_examples": [
+      {
+        "claim_date": "2004-08-16",
+        "ownership_from": "2008-03-17",
+        "raw_string": "Respironics Sleep and Respiratory Foundation",
+        "reason": "string names an entity before the group owned it (claim date 2004-08-16 < ownership 2008-03-17); Respironics became a Philips company on 2008-03-17 (register valid_from)"
+      },
+      {
+        "claim_date": "2007-07-31",
+        "ownership_from": "2015-01-26",
+        "raw_string": "VNUS Medical Technologies, A Covidien Company",
+        "reason": "string names an entity before the group owned it (claim date 2007-07-31 < ownership 2015-01-26); Medtronic completed the acquisition of Covidien plc on January 26, 2015 (MDT FY2015 10-K, verbatim excerpt in the register)"
+      },
+      {
+        "claim_date": "2010-04-14",
+        "ownership_from": "2015-01-26",
+        "raw_string": "Covidien, GI Solutions",
+        "reason": "string names an entity before the group owned it (claim date 2010-04-14 < ownership 2015-01-26); Medtronic completed the acquisition of Covidien plc on January 26, 2015 (MDT FY2015 10-K, verbatim excerpt in the register)"
+      },
+      {
+        "claim_date": "2010-09-06",
+        "ownership_from": "2015-01-26",
+        "raw_string": "Tyco Healthcare Group LP (d/b/a Covidien)",
+        "reason": "string names an entity before the group owned it (claim date 2010-09-06 < ownership 2015-01-26); Medtronic completed the acquisition of Covidien plc on January 26, 2015 (MDT FY2015 10-K, verbatim excerpt in the register)"
+      },
+      {
+        "claim_date": "2007-06-21",
+        "ownership_from": "2015-01-26",
+        "raw_string": "Covidien, GI Solutions",
+        "reason": "string names an entity before the group owned it (claim date 2007-06-21 < ownership 2015-01-26); Medtronic completed the acquisition of Covidien plc on January 26, 2015 (MDT FY2015 10-K, verbatim excerpt in the register)"
+      },
+      {
+        "claim_date": "2014-01-28",
+        "ownership_from": "2015-01-26",
+        "raw_string": "Covidien, GI Solutions",
+        "reason": "string names an entity before the group owned it (claim date 2014-01-28 < ownership 2015-01-26); Medtronic completed the acquisition of Covidien plc on January 26, 2015 (MDT FY2015 10-K, verbatim excerpt in the register)"
+      }
+    ],
+    "anachronistic_mentions_subsidiary_not_yet_owned": 6,
+    "claim_reject_outcomes": {
+      "AMBIGUOUS": 6,
+      "NOT_MAPPED": 69,
+      "REJECTED": 72,
+      "WEAK_TEXT": 11
+    },
+    "claims_with_anachronism_flag": 282,
+    "company_mention_outcomes": {
+      "ALIAS": 1516,
+      "AMBIGUOUS": 6,
+      "EXACT": 1020,
+      "NOT_MAPPED": 69,
+      "ORG_EMAIL": 57,
+      "ORG_TEXT": 1137,
+      "REJECTED": 73,
+      "WEAK_TEXT": 11
+    },
+    "company_mention_outcomes_pct": {
+      "ALIAS": 38.98,
+      "AMBIGUOUS": 0.15,
+      "EXACT": 26.23,
+      "NOT_MAPPED": 1.77,
+      "ORG_EMAIL": 1.47,
+      "ORG_TEXT": 29.24,
+      "REJECTED": 1.88,
+      "WEAK_TEXT": 0.28
+    },
+    "company_strings_that_were_not_entities": 158,
+    "institution_ror_by_family": {
+      "publication_affiliation": {
+        "EXACT": 339,
+        "FUZZY": 1167,
+        "UNMAPPED": 642
+      },
+      "trial_organisation": {
+        "EXACT": 582,
+        "FUZZY": 341,
+        "UNMAPPED": 512
+      },
+      "trial_site_facility": {
+        "EXACT": 272,
+        "FUZZY": 270,
+        "UNMAPPED": 270
+      }
+    },
+    "institution_ror_overall": {
+      "EXACT": 1193,
+      "FUZZY": 1778,
+      "UNMAPPED": 1424
+    },
+    "mapping_date_sources": {
+      "NONE": 6922,
+      "REGISTER_NO_DATE": 2,
+      "REGISTER_OWNERSHIP_EVENT": 16
+    },
+    "mentions_with_unestablished_ownership_dates": 0
+  },
+  "C_temporal_quality": {
+    "actual_observation_claims_lenient_this_study": 60,
+    "actual_observation_claims_strict": 0,
+    "claims_without_any_event_time": 4365,
+    "claims_without_any_publication_time": 0,
+    "contradiction_published_before_event": {
+      "count": 1979,
+      "note": "a registration may lawfully be posted before the study start; this is a data feature, not an error, and is reported per relation family in TEMPORAL_PROVENANCE.md",
+      "share": 9.62
+    },
+    "contradiction_trial_references_future_paper": 24,
+    "observation_definition": "STRICT = observed by the Live Observatory ledger (adopted); LENIENT = published within 7 days of this study's own fetch (reported but not used for any claim of point-in-time capability)",
+    "observed_lag_days": {
+      "max": 9434,
+      "median": 3486,
+      "min": 0,
+      "n": 13108,
+      "p25": 1762,
+      "p75": 5402
+    },
+    "precision_distribution": {
+      "DAY": 20563
+    },
+    "share_actual_observation_strict": 0.0,
+    "share_declared_at_day_or_month": 100.0,
+    "time_basis_counts": {
+      "ACTUAL_OBSERVATION": 60,
+      "HISTORICAL_PROXY": 13048,
+      "SOURCE_PUBLISHED": 7455
+    },
+    "valid_to_populated": 0,
+    "valid_to_populated_pct": 0.0
+  },
+  "D_relation_quality": {
+    "claims": 20563,
+    "claims_with_multiple_evidence": 0,
+    "co_affiliation_share_of_company_relations": 32.56,
+    "conflicted_claims": 0,
+    "derived_claims_predicates": {
+      "CO_AFFILIATED_ON": 1567
+    },
+    "evidence_per_claim": 0.166,
+    "evidence_provenance_quality": {
+      "PRIMARY_STRUCTURED": 2648,
+      "PRIMARY_TEXT": 770
+    },
+    "evidence_rows": 3418,
+    "explicit_non_relation": "co-affiliation is not cooperation and not knowledge transfer; no claim in this study asserts either",
+    "share_claims_derived_not_directly_stated": 7.62,
+    "share_claims_fuzzy_identity_only": 10.08,
+    "share_claims_primary_structured": 45.04,
+    "share_claims_primary_text": 54.96,
+    "share_claims_resting_on_alias_or_fuzzy_identity": 17.57
+  },
+  "affiliation_retrievability": {
+    "by_company_year": {
+      "draeger|year:2010": {
+        "n": 10,
+        "pct": 10.0,
+        "retrievable": 1
+      },
+      "draeger|year:2011": {
+        "n": 10,
+        "pct": 30.0,
+        "retrievable": 3
+      },
+      "draeger|year:2012": {
+        "n": 1,
+        "pct": 100.0,
+        "retrievable": 1
+      },
+      "draeger|year:2013": {
+        "n": 2,
+        "pct": 100.0,
+        "retrievable": 2
+      },
+      "draeger|year:2014": {
+        "n": 3,
+        "pct": 100.0,
+        "retrievable": 3
+      },
+      "draeger|year:2015": {
+        "n": 1,
+        "pct": 100.0,
+        "retrievable": 1
+      },
+      "draeger|year:2016": {
+        "n": 2,
+        "pct": 100.0,
+        "retrievable": 2
+      },
+      "draeger|year:2017": {
+        "n": 2,
+        "pct": 100.0,
+        "retrievable": 2
+      },
+      "draeger|year:2018": {
+        "n": 2,
+        "pct": 100.0,
+        "retrievable": 2
+      },
+      "draeger|year:2019": {
+        "n": 1,
+        "pct": 100.0,
+        "retrievable": 1
+      },
+      "draeger|year:2020": {
+        "n": 2,
+        "pct": 100.0,
+        "retrievable": 2
+      },
+      "draeger|year:2021": {
+        "n": 1,
+        "pct": 100.0,
+        "retrievable": 1
+      },
+      "draeger|year:2023": {
+        "n": 1,
+        "pct": 100.0,
+        "retrievable": 1
+      },
+      "draeger|year:2025": {
+        "n": 1,
+        "pct": 100.0,
+        "retrievable": 1
+      },
+      "draeger|year:2026": {
+        "n": 2,
+        "pct": 100.0,
+        "retrievable": 2
+      },
+      "ge_healthcare|year:2010": {
+        "n": 10,
+        "pct": 30.0,
+        "retrievable": 3
+      },
+      "ge_healthcare|year:2011": {
+        "n": 10,
+        "pct": 20.0,
+        "retrievable": 2
+      },
+      "ge_healthcare|year:2012": {
+        "n": 10,
+        "pct": 40.0,
+        "retrievable": 4
+      },
+      "ge_healthcare|year:2013": {
+        "n": 10,
+        "pct": 50.0,
+        "retrievable": 5
+      },
+      "ge_healthcare|year:2014": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "ge_healthcare|year:2015": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "ge_healthcare|year:2016": {
+        "n": 10,
+        "pct": 90.0,
+        "retrievable": 9
+      },
+      "ge_healthcare|year:2017": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "ge_healthcare|year:2018": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "ge_healthcare|year:2019": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "ge_healthcare|year:2020": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "ge_healthcare|year:2021": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "ge_healthcare|year:2022": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "ge_healthcare|year:2023": {
+        "n": 9,
+        "pct": 100.0,
+        "retrievable": 9
+      },
+      "ge_healthcare|year:2024": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "ge_healthcare|year:2025": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "ge_healthcare|year:2026": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "medtronic|year:2010": {
+        "n": 10,
+        "pct": 50.0,
+        "retrievable": 5
+      },
+      "medtronic|year:2011": {
+        "n": 10,
+        "pct": 80.0,
+        "retrievable": 8
+      },
+      "medtronic|year:2012": {
+        "n": 10,
+        "pct": 60.0,
+        "retrievable": 6
+      },
+      "medtronic|year:2013": {
+        "n": 10,
+        "pct": 50.0,
+        "retrievable": 5
+      },
+      "medtronic|year:2014": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "medtronic|year:2015": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "medtronic|year:2016": {
+        "n": 10,
+        "pct": 90.0,
+        "retrievable": 9
+      },
+      "medtronic|year:2017": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "medtronic|year:2018": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "medtronic|year:2019": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "medtronic|year:2020": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "medtronic|year:2021": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "medtronic|year:2022": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "medtronic|year:2023": {
+        "n": 10,
+        "pct": 90.0,
+        "retrievable": 9
+      },
+      "medtronic|year:2024": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "medtronic|year:2025": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "medtronic|year:2026": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "mindray|year:2010": {
+        "n": 10,
+        "pct": 0.0,
+        "retrievable": 0
+      },
+      "mindray|year:2011": {
+        "n": 10,
+        "pct": 20.0,
+        "retrievable": 2
+      },
+      "mindray|year:2014": {
+        "n": 1,
+        "pct": 100.0,
+        "retrievable": 1
+      },
+      "mindray|year:2015": {
+        "n": 1,
+        "pct": 100.0,
+        "retrievable": 1
+      },
+      "mindray|year:2016": {
+        "n": 5,
+        "pct": 100.0,
+        "retrievable": 5
+      },
+      "mindray|year:2017": {
+        "n": 4,
+        "pct": 100.0,
+        "retrievable": 4
+      },
+      "mindray|year:2018": {
+        "n": 4,
+        "pct": 100.0,
+        "retrievable": 4
+      },
+      "mindray|year:2019": {
+        "n": 6,
+        "pct": 100.0,
+        "retrievable": 6
+      },
+      "mindray|year:2020": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "mindray|year:2021": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "mindray|year:2022": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "mindray|year:2023": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "mindray|year:2024": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "mindray|year:2025": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "mindray|year:2026": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "philips|year:2010": {
+        "n": 10,
+        "pct": 50.0,
+        "retrievable": 5
+      },
+      "philips|year:2011": {
+        "n": 10,
+        "pct": 70.0,
+        "retrievable": 7
+      },
+      "philips|year:2012": {
+        "n": 10,
+        "pct": 50.0,
+        "retrievable": 5
+      },
+      "philips|year:2013": {
+        "n": 10,
+        "pct": 80.0,
+        "retrievable": 8
+      },
+      "philips|year:2014": {
+        "n": 10,
+        "pct": 90.0,
+        "retrievable": 9
+      },
+      "philips|year:2015": {
+        "n": 10,
+        "pct": 90.0,
+        "retrievable": 9
+      },
+      "philips|year:2016": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "philips|year:2017": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "philips|year:2018": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "philips|year:2019": {
+        "n": 10,
+        "pct": 90.0,
+        "retrievable": 9
+      },
+      "philips|year:2020": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "philips|year:2021": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "philips|year:2022": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "philips|year:2023": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "philips|year:2024": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "philips|year:2025": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      },
+      "philips|year:2026": {
+        "n": 10,
+        "pct": 100.0,
+        "retrievable": 10
+      }
+    },
+    "by_year_all_companies": {
+      "year:2010": {
+        "n": 50,
+        "pct": 28.0,
+        "retrievable": 14
+      },
+      "year:2011": {
+        "n": 50,
+        "pct": 44.0,
+        "retrievable": 22
+      },
+      "year:2012": {
+        "n": 31,
+        "pct": 51.61,
+        "retrievable": 16
+      },
+      "year:2013": {
+        "n": 32,
+        "pct": 62.5,
+        "retrievable": 20
+      },
+      "year:2014": {
+        "n": 34,
+        "pct": 97.06,
+        "retrievable": 33
+      },
+      "year:2015": {
+        "n": 32,
+        "pct": 96.88,
+        "retrievable": 31
+      },
+      "year:2016": {
+        "n": 37,
+        "pct": 94.59,
+        "retrievable": 35
+      },
+      "year:2017": {
+        "n": 36,
+        "pct": 100.0,
+        "retrievable": 36
+      },
+      "year:2018": {
+        "n": 36,
+        "pct": 100.0,
+        "retrievable": 36
+      },
+      "year:2019": {
+        "n": 37,
+        "pct": 97.3,
+        "retrievable": 36
+      },
+      "year:2020": {
+        "n": 42,
+        "pct": 100.0,
+        "retrievable": 42
+      },
+      "year:2021": {
+        "n": 41,
+        "pct": 100.0,
+        "retrievable": 41
+      },
+      "year:2022": {
+        "n": 40,
+        "pct": 100.0,
+        "retrievable": 40
+      },
+      "year:2023": {
+        "n": 40,
+        "pct": 97.5,
+        "retrievable": 39
+      },
+      "year:2024": {
+        "n": 40,
+        "pct": 100.0,
+        "retrievable": 40
+      },
+      "year:2025": {
+        "n": 41,
+        "pct": 100.0,
+        "retrievable": 41
+      },
+      "year:2026": {
+        "n": 42,
+        "pct": 100.0,
+        "retrievable": 42
+      }
+    },
+    "definition": "share of year-stratified Europe PMC samples whose returned record contains an affiliation string matching the query token",
+    "interpretation": "a low value in a year means the index hit could not be verified from the record text in that year; this is an indexing artefact, not a statement about companies"
+  },
+  "conditions": {
+    "T1_relation_volume_and_diversity": {
+      "authoritative_claims": 20563,
+      "companies_with_at_least_40_claims": 5,
+      "families_with_claims": 9,
+      "pass": true,
+      "per_company": {
+        "draeger": 114,
+        "ge_healthcare": 886,
+        "medtronic": 2487,
+        "mindray": 362,
+        "philips": 963
+      },
+      "threshold": ">=250 claims, >=2 families, >=40 per company for >=4 companies"
+    },
+    "T2_evidence_traceability": {
+      "expected_resolvable_share": null,
+      "note": "re-resolved by s029_12_verify_report.py against committed raw payloads",
+      "pass": true
+    },
+    "T3_entity_resolution": {
+      "company_ambiguous_or_not_mapped_pct": 1.93,
+      "fuzzy_only_claim_pct": 10.08,
+      "institution_unmapped_pct": 18.2,
+      "pass": false,
+      "threshold": "unmapped<=20%, ambiguous<=10%, fuzzy<=10%"
+    },
+    "T4_temporal_point_in_time": {
+      "actual_observation_claims": 0,
+      "lenient_near_realtime_claims_this_study": 60,
+      "pass": false,
+      "shared_declared_at_day_or_month_pct": 100.0,
+      "threshold": ">=100 ACTUAL_OBSERVATION and >=50% DAY/MONTH"
+    },
+    "T5_cross_source_linkage": {
+      "clause_a_pass": true,
+      "clause_a_pmid_resolvable_pct": 100.0,
+      "clause_b_pass": false,
+      "clause_b_shared_ror_institutions_pct": 15.08,
+      "institutions_in_two_sources": 300,
+      "institutions_total": 1990,
+      "note": "clause (b) conditions on an institution appearing in BOTH sources inside this small sample, which the sampling makes rare; the independent OpenAlex check (452 of 454 institution-bearing papers corroborated) is reported alongside and is the stronger cross-source statement",
+      "pass": false,
+      "threshold": ">=25% trial-referenced PMIDs resolvable AND >=30% of institutions appearing in >=2 sources sharing a verified ROR id"
+    },
+    "T6_human_adjudication": {
+      "adjudicated_rows": 0,
+      "pass": false,
+      "threshold": ">=100 rows with human_label+reviewer_id"
+    }
+  },
+  "cross_source": {
+    "crossref": {
+      "n_verified": 60,
+      "n_with_funders": 22,
+      "title_agreement_rate": 0.9
+    },
+    "institution_agreement_rates": {
+      "disjoint": 0.0783,
+      "openalex_only": 0.2749,
+      "ours_only": 0.0028,
+      "overlap": 0.6439
+    },
+    "institutions_in_two_sources": 300,
+    "institutions_total": 1990,
+    "note": "the reference resolution rate is bounded by the fact that only publications returned by our own affiliation sample can be matched; a cited paper outside the sample counts as unresolved even if it exists",
+    "openalex": {
+      "doi_match_rate": 1.0,
+      "found": 724,
+      "note": "OpenAlex is queried on the shared unauthenticated budget; request count is capped and reported",
+      "requests": [
+        {
+          "batch": 0,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "e9b736046dad2ff77f10c0869b26d85dcf95bd67700b1ce2da6caf669a085a25",
+          "retrieved_at": "2026-11-03T20:37:50.637Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1002%2Fbab.70100%7C10.1002%2Fbrb3.70150%7C10.1002%2Fccd.27322%7C10.1002%2Fdta.2178%7C10.1002%2Fdta.2229%7C10.1002%2Fejhf.1117%7C10.1002%2Fjbm.b.33298%7C10.1002%2Fjbm.b.33661%7C10.1002%2Fjbm.b.33767%7C10.1002%2Fjcla.23609%7C10.1002%2Fjcu.22519%7C10.1002%2Fjmri.22890%7C10.1002%2Fjmri.23512%7C10.1002%2Fjmri.23515%7C10.1002%2Fjmri.23976%7C10.1002%2Fjmri.24333%7C10.1002%2Fjmri.24430%7C10.1002%2Fjmri.24479%7C10.1002%2Fjmri.24490%7C10.1002%2Fjmri.24757%7C10.1002%2Fjmri.24763%7C10.1002%2Fjmri.24802%7C10.1002%2Fjmri.25090%7C10.1002%2Fjmri.25106%7C10.1002%2Fjmri.25132%7C10.1002%2Fjmri.25559%7C10.1002%2Fjmri.25896%7C10.1002%2Fjmri.25898%7C10.1002%2Fjmri.25903%7C10.1002%2Fjmri.25931%7C10.1002%2Fjmri.26559%7C10.1002%2Fjmri.26564%7C10.1002%2Fjmri.26610%7C10.1002%2Fjmri.26977%7C10.1002%2Fjmri.27004%7C10.1002%2Fjmri.27024%7C10.1002%2Fjmri.27338%7C10.1002%2Fjmri.27996%7C10.1002%2Fjmri.28023%7C10.1002%2Fjmri.28490%7C10.1002%2Fjmri.28506%7C10.1002%2Fjmri.28507%7C10.1002%2Fjmri.28522%7C10.1002%2Fjmri.28537%7C10.1002%2Fjmri.28582%7C10.1002%2Fjmri.28914%7C10.1002%2Fjmri.28983%7C10.1002%2Fjmri.29081%7C10.1002%2Fjmri.29099%7C10.1002%2Fjmri.29119&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 1,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "0dc9fe263a456a2e7b103909c9507944d4f7f6641a30833f6a7c59ceebd38b52",
+          "retrieved_at": "2026-11-03T20:37:52.647Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1002%2Fjmri.29143%7C10.1002%2Fjmri.29163%7C10.1002%2Fjum.15070%7C10.1002%2Fjum.15935%7C10.1002%2Fjum.16039%7C10.1002%2Fjum.70029%7C10.1002%2Fjum.70143%7C10.1002%2Flary.23583%7C10.1002%2Flsm.23161%7C10.1002%2Flsm.23196%7C10.1002%2Fmrd.22385%7C10.1002%2Fmrm.22670%7C10.1002%2Fmrm.22687%7C10.1002%2Fmrm.22697%7C10.1002%2Fmrm.22707%7C10.1002%2Fmrm.23103%7C10.1002%2Fmrm.23127%7C10.1002%2Fmrm.23135%7C10.1002%2Fmrm.23216%7C10.1002%2Fmrm.23271%7C10.1002%2Fmrm.23293%7C10.1002%2Fmrm.23306%7C10.1002%2Fmrm.24400%7C10.1002%2Fmrm.24437%7C10.1002%2Fmrm.24458%7C10.1002%2Fmrm.24507%7C10.1002%2Fmrm.24532%7C10.1002%2Fmrm.24544%7C10.1002%2Fmrm.24558%7C10.1002%2Fmrm.24852%7C10.1002%2Fmrm.24868%7C10.1002%2Fmrm.24902%7C10.1002%2Fmrm.24982%7C10.1002%2Fmrm.24989%7C10.1002%2Fmrm.25024%7C10.1002%2Fmrm.25071%7C10.1002%2Fmrm.25417%7C10.1002%2Fmrm.25440%7C10.1002%2Fmrm.25458%7C10.1002%2Fmrm.25469%7C10.1002%2Fmrm.25492%7C10.1002%2Fmrm.25518%7C10.1002%2Fmrm.25556%7C10.1002%2Fmrm.25557%7C10.1002%2Fmrm.25823%7C10.1002%2Fmrm.25981%7C10.1002%2Fmrm.25999%7C10.1002%2Fmrm.26012%7C10.1002%2Fmrm.26070%7C10.1002%2Fmrm.26382&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 2,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "beb327b55c5a70dbbe37a71ac83fc13f7e78ac4a46ea60d33f515b9574d485fa",
+          "retrieved_at": "2026-11-03T20:37:54.589Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1002%2Fmrm.26478%7C10.1002%2Fmrm.26485%7C10.1002%2Fmrm.26514%7C10.1002%2Fmrm.26524%7C10.1002%2Fmrm.26540%7C10.1002%2Fmrm.26542%7C10.1002%2Fmrm.26543%7C10.1002%2Fmrm.26550%7C10.1002%2Fmrm.26559%7C10.1002%2Fmrm.26974%7C10.1002%2Fmrm.27000%7C10.1002%2Fmrm.27007%7C10.1002%2Fmrm.27041%7C10.1002%2Fmrm.27628%7C10.1002%2Fmrm.28102%7C10.1002%2Fmrm.28114%7C10.1002%2Fmrm.28634%7C10.1002%2Fmrm.70528%7C10.1002%2Fmrm.70546%7C10.1002%2Fnau.22506%7C10.1002%2Fnau.22707%7C10.1002%2Fnau.22876%7C10.1002%2Fnbm.1616%7C10.1002%2Fnbm.1618%7C10.1002%2Fnbm.1791%7C10.1002%2Fnbm.2893%7C10.1002%2Fnbm.2897%7C10.1002%2Fnbm.2902%7C10.1002%2Fnbm.4185%7C10.1002%2Fnbm.4218%7C10.1007%2F978-0-387-73657-0_257%7C10.1007%2F978-3-7091-1511-4_17%7C10.1007%2Fbf02345959%7C10.1007%2Fs00062-014-0353-z%7C10.1007%2Fs00062-018-0662-8%7C10.1007%2Fs00062-018-0705-1%7C10.1007%2Fs00062-020-00963-6%7C10.1007%2Fs00062-021-01062-w%7C10.1007%2Fs00062-024-01478-0%7C10.1007%2Fs00066-024-02289-5%7C10.1007%2Fs00103-020-03126-7%7C10.1007%2Fs00108-017-0216-1%7C10.1007%2Fs00167-019-05811-w%7C10.1007%2Fs00194-022-00574-0%7C10.1007%2Fs00198-012-1965-2%7C10.1007%2Fs00198-012-2102-y%7C10.1007%2Fs00198-021-06163-3%7C10.1007%2Fs00216-026-06471-9%7C10.1007%2Fs00234-010-0774-6%7C10.1007%2Fs00246-024-03635-1&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 3,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "c2c63192c8f18d281dbbcda6013171ed7977a51b5a2da06c45d2af5f181debaa",
+          "retrieved_at": "2026-11-03T20:37:56.549Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1007%2Fs00246-025-03993-4%7C10.1007%2Fs00247-025-06510-0%7C10.1007%2Fs00247-026-06686-z%7C10.1007%2Fs00256-020-03659-7%7C10.1007%2Fs00256-023-04507-0%7C10.1007%2Fs00256-024-04830-0%7C10.1007%2Fs00259-007-0668-y%7C10.1007%2Fs00261-024-04768-w%7C10.1007%2Fs00261-025-05263-6%7C10.1007%2Fs00261-025-05312-0%7C10.1007%2Fs00261-025-05338-4%7C10.1007%2Fs00261-026-05533-x%7C10.1007%2Fs00262-004-0624-7%7C10.1007%2Fs00270-014-1026-7%7C10.1007%2Fs00330-015-3954-2%7C10.1007%2Fs00330-015-4149-6%7C10.1007%2Fs00330-016-4693-8%7C10.1007%2Fs00330-017-5015-5%7C10.1007%2Fs00330-018-5693-7%7C10.1007%2Fs00330-018-5802-7%7C10.1007%2Fs00330-018-5832-1%7C10.1007%2Fs00330-020-07353-z%7C10.1007%2Fs00330-022-09263-8%7C10.1007%2Fs00330-022-09358-2%7C10.1007%2Fs00330-023-10023-5%7C10.1007%2Fs00330-024-11222-4%7C10.1007%2Fs00330-024-11237-x%7C10.1007%2Fs00330-024-11294-2%7C10.1007%2Fs00330-026-12738-7%7C10.1007%2Fs00392-022-02027-w%7C10.1007%2Fs00392-024-02553-9%7C10.1007%2Fs00404-023-07253-9%7C10.1007%2Fs00405-014-3467-7%7C10.1007%2Fs00405-020-06464-z%7C10.1007%2Fs00415-020-09981-3%7C10.1007%2Fs00432-022-04467-3%7C10.1007%2Fs00464-016-5339-2%7C10.1007%2Fs00464-018-6557-6%7C10.1007%2Fs00586-012-2581-8%7C10.1007%2Fs00701-010-0882-4%7C10.1007%2Fs00784-011-0616-x%7C10.1007%2Fs00784-012-0834-x%7C10.1007%2Fs00784-019-03097-3%7C10.1007%2Fs00787-022-02072-w%7C10.1007%2Fs10029-018-1852-7%7C10.1007%2Fs10198-011-0326-y%7C10.1007%2Fs10198-024-01739-2%7C10.1007%2Fs10237-019-01267-6%7C10.1007%2Fs10278-024-01325-1%7C10.1007%2Fs10278-024-01345-x&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 4,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "670a46b5161286e92a93f6ffd531a3fb8e1d037329d9196b2718524722f6ce7d",
+          "retrieved_at": "2026-11-03T20:37:58.415Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1007%2Fs10278-025-01715-z%7C10.1007%2Fs10278-025-01743-9%7C10.1007%2Fs10278-025-01782-2%7C10.1007%2Fs10334-013-0410-7%7C10.1007%2Fs10334-015-0509-0%7C10.1007%2Fs10334-018-0725-5%7C10.1007%2Fs10334-021-00957-6%7C10.1007%2Fs10334-021-00981-6%7C10.1007%2Fs10334-023-01129-4%7C10.1007%2Fs10439-011-0475-2%7C10.1007%2Fs10557-021-07258-z%7C10.1007%2Fs10557-022-07410-3%7C10.1007%2Fs10840-011-9619-4%7C10.1007%2Fs10840-020-00869-w%7C10.1007%2Fs10840-020-00877-w%7C10.1007%2Fs10840-022-01315-9%7C10.1007%2Fs10840-023-01582-0%7C10.1007%2Fs10840-023-01680-z%7C10.1007%2Fs10840-024-01857-0%7C10.1007%2Fs10840-025-02124-6%7C10.1007%2Fs10877-014-9649-4%7C10.1007%2Fs10877-015-9763-y%7C10.1007%2Fs10877-015-9774-8%7C10.1007%2Fs10877-016-9913-x%7C10.1007%2Fs10877-016-9952-3%7C10.1007%2Fs10877-017-0076-1%7C10.1007%2Fs10877-018-0162-z%7C10.1007%2Fs10877-018-0222-4%7C10.1007%2Fs10877-018-0230-4%7C10.1007%2Fs10877-019-00333-9%7C10.1007%2Fs10877-019-00417-6%7C10.1007%2Fs10877-021-00691-3%7C10.1007%2Fs10877-025-01381-0%7C10.1007%2Fs11307-010-0433-7%7C10.1007%2Fs11325-020-02186-y%7C10.1007%2Fs11357-025-02054-1%7C10.1007%2Fs11548-010-0518-4%7C10.1007%2Fs11695-017-2719-1%7C10.1007%2Fs11739-019-02182-5%7C10.1007%2Fs12250-021-00360-4%7C10.1007%2Fs12265-023-10455-w%7C10.1007%2Fs12350-017-1156-9%7C10.1007%2Fs12350-019-01810-z%7C10.1007%2Fs12350-019-01859-w%7C10.1007%2Fs12350-019-01939-x%7C10.1007%2Fs12350-020-02204-2%7C10.1007%2Fs12350-020-02214-0%7C10.1007%2Fs13139-024-00896-9%7C10.1007%2Fs13300-026-01878-0%7C10.1007%2Fs13300-026-01883-3&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 5,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "e03aeb7561c8d12ea6fd3d25229e3890f0f7f18e7dcf1c66e3a597f8117a9a37",
+          "retrieved_at": "2026-11-03T20:38:00.189Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1007%2Fs15006-012-0753-4%7C10.1007%2Fs15006-026-5965-0%7C10.1016%2Fj.ab.2019.113462%7C10.1016%2Fj.acra.2011.11.003%7C10.1016%2Fj.acra.2020.05.033%7C10.1016%2Fj.acra.2020.05.040%7C10.1016%2Fj.acra.2020.08.003%7C10.1016%2Fj.acra.2020.10.012%7C10.1016%2Fj.acra.2020.10.029%7C10.1016%2Fj.acra.2020.12.011%7C10.1016%2Fj.acra.2021.11.024%7C10.1016%2Fj.acra.2022.11.005%7C10.1016%2Fj.acra.2022.12.002%7C10.1016%2Fj.acra.2022.12.019%7C10.1016%2Fj.acra.2022.12.033%7C10.1016%2Fj.addr.2016.10.003%7C10.1016%2Fj.ahj.2013.10.007%7C10.1016%2Fj.ahj.2017.12.001%7C10.1016%2Fj.ajpc.2026.101746%7C10.1016%2Fj.anndiagpath.2026.152684%7C10.1016%2Fj.anndiagpath.2026.152711%7C10.1016%2Fj.apergo.2013.03.010%7C10.1016%2Fj.athoracsur.2020.09.031%7C10.1016%2Fj.athoracsur.2020.09.040%7C10.1016%2Fj.athoracsur.2021.12.057%7C10.1016%2Fj.bcp.2010.12.027%7C10.1016%2Fj.biochi.2014.08.008%7C10.1016%2Fj.biopsych.2014.11.023%7C10.1016%2Fj.cca.2025.120760%7C10.1016%2Fj.cca.2026.121229%7C10.1016%2Fj.cca.2026.121250%7C10.1016%2Fj.cca.2026.121286%7C10.1016%2Fj.cca.2026.121307%7C10.1016%2Fj.cjca.2023.11.019%7C10.1016%2Fj.cjca.2025.10.032%7C10.1016%2Fj.clbc.2021.10.014%7C10.1016%2Fj.clinph.2013.11.018%7C10.1016%2Fj.clnu.2021.05.031%7C10.1016%2Fj.cmpb.2010.06.007%7C10.1016%2Fj.cmpb.2010.08.014%7C10.1016%2Fj.cmpb.2014.09.002%7C10.1016%2Fj.cmpb.2016.08.020%7C10.1016%2Fj.cmpb.2021.106568%7C10.1016%2Fj.cnc.2023.11.005%7C10.1016%2Fj.compbiomed.2016.06.025%7C10.1016%2Fj.compbiomed.2016.10.008%7C10.1016%2Fj.compmedimag.2023.102318%7C10.1016%2Fj.diii.2026.06.003%7C10.1016%2Fj.ejrad.2010.02.008%7C10.1016%2Fj.ejrad.2021.109808&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 6,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "9e50f6e502ceaee798762a95437b23ff172d80bbefec1eca68ee71565b887fce",
+          "retrieved_at": "2026-11-03T20:38:02.107Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1016%2Fj.ejrad.2026.113074%7C10.1016%2Fj.ejrad.2026.113178%7C10.1016%2Fj.ejrad.2026.113283%7C10.1016%2Fj.ejro.2023.100534%7C10.1016%2Fj.ejro.2026.100790%7C10.1016%2Fj.ejro.2026.100813%7C10.1016%2Fj.ejro.2026.100816%7C10.1016%2Fj.etp.2012.06.003%7C10.1016%2Fj.euf.2020.06.026%7C10.1016%2Fj.euf.2021.06.013%7C10.1016%2Fj.expneurol.2011.11.020%7C10.1016%2Fj.expneurol.2011.12.001%7C10.1016%2Fj.heliyon.2023.e23788%7C10.1016%2Fj.hlc.2017.06.717%7C10.1016%2Fj.hlc.2018.11.015%7C10.1016%2Fj.hrthm.2011.11.023%7C10.1016%2Fj.hrthm.2013.10.056%7C10.1016%2Fj.hrthm.2014.12.012%7C10.1016%2Fj.hrthm.2014.12.019%7C10.1016%2Fj.hrthm.2014.12.035%7C10.1016%2Fj.hrthm.2017.12.026%7C10.1016%2Fj.hrthm.2021.11.030%7C10.1016%2Fj.hrthm.2024.11.038%7C10.1016%2Fj.hrthm.2024.12.014%7C10.1016%2Fj.hrthm.2024.12.039%7C10.1016%2Fj.hrthm.2025.06.050%7C10.1016%2Fj.hrthm.2025.10.028%7C10.1016%2Fj.hrthm.2025.10.059%7C10.1016%2Fj.hrthm.2026.07.021%7C10.1016%2Fj.hrtlng.2014.07.007%7C10.1016%2Fj.ijcard.2013.12.005%7C10.1016%2Fj.ijregi.2024.100561%7C10.1016%2Fj.isci.2025.114230%7C10.1016%2Fj.jad.2026.122249%7C10.1016%2Fj.jad.2026.122537%7C10.1016%2Fj.jalz.2012.01.006%7C10.1016%2Fj.jalz.2014.09.004%7C10.1016%2Fj.jclinane.2026.112351%7C10.1016%2Fj.jclinepi.2014.11.019%7C10.1016%2Fj.jcmg.2017.09.016%7C10.1016%2Fj.jcmg.2018.07.013%7C10.1016%2Fj.jconrel.2006.09.067%7C10.1016%2Fj.jelectrocard.2010.09.008%7C10.1016%2Fj.jelectrocard.2017.12.004%7C10.1016%2Fj.jfma.2024.10.017%7C10.1016%2Fj.jmbbm.2012.09.016%7C10.1016%2Fj.jmbbm.2026.107574%7C10.1016%2Fj.jneumeth.2026.110916%7C10.1016%2Fj.joa.2014.08.003%7C10.1016%2Fj.joa.2015.09.006&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 7,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "5ed8be308fbdf17b6b85d399ccba193f7af2cb767a9d89f63b2186cce52263e7",
+          "retrieved_at": "2026-11-03T20:38:03.899Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1016%2Fj.jocmr.2025.101986%7C10.1016%2Fj.jocmr.2025.101993%7C10.1016%2Fj.jocmr.2025.102017%7C10.1016%2Fj.jocmr.2025.102675%7C10.1016%2Fj.jpba.2025.117326%7C10.1016%2Fj.jscai.2025.104040%7C10.1016%2Fj.jsmc.2022.07.001%7C10.1016%2Fj.jss.2011.11.1034%7C10.1016%2Fj.jss.2018.11.054%7C10.1016%2Fj.jtcvs.2019.07.132%7C10.1016%2Fj.jtcvs.2019.10.095%7C10.1016%2Fj.jtcvs.2020.10.123%7C10.1016%2Fj.jtho.2021.12.008%7C10.1016%2Fj.jval.2016.04.012%7C10.1016%2Fj.jvir.2013.12.012%7C10.1016%2Fj.media.2010.07.011%7C10.1016%2Fj.media.2023.102887%7C10.1016%2Fj.media.2023.103072%7C10.1016%2Fj.media.2026.104290%7C10.1016%2Fj.media.2026.104292%7C10.1016%2Fj.mex.2026.104137%7C10.1016%2Fj.mri.2011.09.026%7C10.1016%2Fj.mri.2012.10.019%7C10.1016%2Fj.mri.2012.10.020%7C10.1016%2Fj.mri.2015.12.030%7C10.1016%2Fj.mri.2024.110316%7C10.1016%2Fj.mri.2026.110739%7C10.1016%2Fj.mri.2026.110762%7C10.1016%2Fj.mri.2026.110764%7C10.1016%2Fj.mri.2026.110785%7C10.1016%2Fj.mrl.2024.200157%7C10.1016%2Fj.nbt.2012.11.006%7C10.1016%2Fj.nepr.2012.09.014%7C10.1016%2Fj.neucie.2021.12.001%7C10.1016%2Fj.neucir.2021.08.004%7C10.1016%2Fj.neuroimage.2017.06.059%7C10.1016%2Fj.neuroimage.2017.09.019%7C10.1016%2Fj.neurom.2021.12.004%7C10.1016%2Fj.neurom.2022.05.007%7C10.1016%2Fj.omtn.2017.10.020%7C10.1016%2Fj.pacs.2020.100222%7C10.1016%2Fj.pacs.2021.100302%7C10.1016%2Fj.pacs.2024.100653%7C10.1016%2Fj.pain.2011.06.008%7C10.1016%2Fj.pcd.2010.07.004%7C10.1016%2Fj.prosdent.2022.11.004%7C10.1016%2Fj.radi.2025.103291%7C10.1016%2Fj.rx.2012.07.006%7C10.1016%2Fj.semcdb.2015.10.016%7C10.1016%2Fj.shj.2026.101126&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 8,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "baf506ef63c53cee280c7a1d9f3548543361ef0a0f5f4802d00c79d98a7240e7",
+          "retrieved_at": "2026-11-03T20:38:05.912Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1016%2Fj.sleep.2026.109237%7C10.1016%2Fj.soard.2023.10.016%7C10.1016%2Fj.soard.2024.12.008%7C10.1016%2Fj.spinee.2006.04.019%7C10.1016%2Fj.tcm.2018.11.009%7C10.1016%2Fj.tcm.2022.02.002%7C10.1016%2Fj.tvr.2024.200302%7C10.1016%2Fj.ultras.2016.03.015%7C10.1016%2Fj.ultras.2021.106576%7C10.1016%2Fj.ultras.2022.106860%7C10.1016%2Fj.ultras.2026.108273%7C10.1016%2Fj.ultrasmedbio.2019.03.019%7C10.1016%2Fj.ultrasmedbio.2025.11.668%7C10.1016%2Fj.ultrasmedbio.2026.07.002%7C10.1016%2Fj.ultrasmedbio.2026.08.003%7C10.1016%2Fj.ultrasmedbio.2026.09.020%7C10.1016%2Fj.vaccine.2023.12.021%7C10.1016%2Fj.zemedi.2014.08.001%7C10.1016%2Fs0899-5885%2818%2930302-2%7C10.1021%2Facsbiomaterials.0c00889%7C10.1021%2Facsbiomaterials.5b00563%7C10.1021%2Facsbiomaterials.6b00167%7C10.1021%2Facsnano.0c04864%7C10.1021%2Facssensors.0c00712%7C10.1038%2Fijo.2013.195%7C10.1038%2Fki.2013.504%7C10.1038%2Fmp.2016.170%7C10.1038%2Fnature09040%7C10.1038%2Fnpp.2012.255%7C10.1038%2Fs41380-019-0562-6%7C10.1038%2Fs41390-025-04558-0%7C10.1038%2Fs41540-021-00188-4%7C10.1038%2Fs41551-025-01506-5%7C10.1038%2Fs41598-024-78271-z%7C10.1038%2Fsrep39085%7C10.1039%2Fd1tb01685g%7C10.1053%2Fj.semtcvs.2020.11.014%7C10.1055%2Fa-0972-1098%7C10.1055%2Fa-1978-5575%7C10.1055%2Fa-2135-2163%7C10.1055%2Fs-0032-1332975%7C10.1055%2Fs-0036-1593958%7C10.1055%2Fs-0038-1629922%7C10.1055%2Fs-0038-1673665%7C10.1055%2Fs-0042-1743593%7C10.1080%2F01616412.2021.2018122%7C10.1080%2F02688697.2023.2228916%7C10.1080%2F02770903.2017.1362701%7C10.1080%2F09593330.2018.1444098%7C10.1080%2F09638288.2020.1775900&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 9,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "2f7401e06b7bde759d804060ae6719ced3d60f20c2620ae57c384d2137db1eff",
+          "retrieved_at": "2026-11-03T20:38:08.025Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1080%2F13696998.2024.2441072%7C10.1080%2F13696998.2025.2602364%7C10.1080%2F13696998.2026.2667706%7C10.1080%2F13854046.2021.1974565%7C10.1080%2F15402002.2017.1376205%7C10.1080%2F15402002.2018.1491850%7C10.1080%2F17434440.2025.2561918%7C10.1080%2F17434440.2025.2576140%7C10.1080%2F17461391.2018.1436196%7C10.1080%2F17474124.2023.2264783%7C10.1080%2F2162402x.2025.2605741%7C10.1088%2F1361-6579%2Fae8b55%7C10.1089%2Fadt.2010.0342%7C10.1089%2Fdia.2011.0199%7C10.1089%2Fjamp.2021.0054%7C10.1089%2Ften.tec.2013.0216%7C10.1093%2Fannalsats%2Faaoag187%7C10.1093%2Fckj%2Fsfz123%7C10.1093%2Fehjci%2Fjev197%7C10.1093%2Fehjci%2Fjev326%7C10.1093%2Fejcts%2Fezs502%7C10.1093%2Feurheartj%2Feht491%7C10.1093%2Feurheartj%2Fehu304%7C10.1093%2Feuropace%2Feuq302%7C10.1093%2Feuropace%2Feuq418%7C10.1093%2Feuropace%2Feur241%7C10.1093%2Feuropace%2Feuv217%7C10.1093%2Feuropace%2Feuv350%7C10.1093%2Feuropace%2Feuv393%7C10.1093%2Feuropace%2Feuv396%7C10.1093%2Fgerona%2Fglu138%7C10.1093%2Fjtm%2Ftaac130%7C10.1093%2Flabmed%2Flmag081%7C10.1097%2F00000542-200612000-00010%7C10.1097%2F00005082-199401000-00005%7C10.1097%2F01.brs.0000161005.31398.58%7C10.1097%2Feja.0000000000001808%7C10.1097%2Fhjh.0000000000001634%7C10.1097%2Fhjh.0000000000004219%7C10.1097%2Fjom.0000000000003678%7C10.1097%2Fjom.0000000000003851%7C10.1097%2Fjom.0000000000003875%7C10.1097%2Fju.0000000000002393%7C10.1097%2Fphh.0000000000002321%7C10.1097%2Fpts.0000000000001550%7C10.1097%2Frct.0000000000001566%7C10.1097%2Frct.0000000000001921%7C10.1097%2Frli.0000000000001047%7C10.1098%2Frspb.2012.2901%7C10.1109%2Fiembs.2011.6090643&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 10,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "447eb86332093bd5162199f8ee060499723702fcebf028adfc6f689f8f0b4901",
+          "retrieved_at": "2026-11-03T20:38:10.065Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1109%2Ftasc.2025.3619470%7C10.1109%2Ftbme.2012.2209646%7C10.1109%2Ftrpms.2018.2878978%7C10.1109%2Ftrpms.2021.3118325%7C10.1111%2Fases.70099%7C10.1111%2Fbiom.12115%7C10.1111%2Fcpf.12303%7C10.1111%2Fcrj.12481%7C10.1111%2Fdme.15259%7C10.1111%2Fdom.14737%7C10.1111%2Fejh.14160%7C10.1111%2Fijlh.13291%7C10.1111%2Fijlh.14193%7C10.1111%2Fj.1540-8159.2010.02801.x%7C10.1111%2Fj.1540-8167.2010.01824.x%7C10.1111%2Fjdi.70459%7C10.1111%2Fjnp.12403%7C10.1111%2Fjoa.70082%7C10.1111%2Fjvim.12235%7C10.1111%2Fner.12779%7C10.1111%2Fner.12784%7C10.1111%2Fner.13053%7C10.1111%2Fner.13231%7C10.1111%2Fpace.12043%7C10.1111%2Fpace.12303%7C10.1111%2Fpedi.12399%7C10.1111%2Fsrt.12263%7C10.11152%2Fmu-4394%7C10.1136%2Fbmj.d3245%7C10.1136%2Fbmjopen-2022-064581%7C10.1136%2Fjnis-2021-018201%7C10.1136%2Fneurintsurg-2015-011856%7C10.1136%2Fneurintsurg-2015-012038%7C10.1136%2Fneurintsurg-2016-012612%7C10.1136%2Fneurintsurg-2017-013502%7C10.1148%2Fradiol.13130342%7C10.1148%2Fradiol.212257%7C10.1152%2Fajplung.00173.2014%7C10.1152%2Fajpregu.00164.2006%7C10.1152%2Fajprenal.00515.2011%7C10.1159%2F000328837%7C10.1159%2F000534738%7C10.1159%2F000542204%7C10.1161%2Fcircep.109.910125%7C10.1161%2Fhypertensionaha.117.10237%7C10.1164%2Frccm.202009-3685oc%7C10.1164%2Frccm.202104-1030le%7C10.1164%2Frccm.202507-1706rl%7C10.1172%2Fjci205579%7C10.1177%2F0004867417731819&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 11,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "4e3617fe0175c6eae172affe80a6f19bd72fad7b13c12723fd0e6224439a1599",
+          "retrieved_at": "2026-11-03T20:38:11.960Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1177%2F0022034511423665%7C10.1177%2F0148607117713479%7C10.1177%2F0161734617692017%7C10.1177%2F026765919400900202%7C10.1177%2F0268355518810259%7C10.1177%2F0271678x17713434%7C10.1177%2F0271678x17714179%7C10.1177%2F0271678x17730654%7C10.1177%2F0284185113501493%7C10.1177%2F0284185113505277%7C10.1177%2F0284185113509264%7C10.1177%2F0284185114561038%7C10.1177%2F0284185117733777%7C10.1177%2F0284185118813599%7C10.1177%2F0284185120951964%7C10.1177%2F0284185120966684%7C10.1177%2F02841851211025857%7C10.1177%2F02841851211043834%7C10.1177%2F02841851211054194%7C10.1177%2F02841851211065144%7C10.1177%2F0333102410381142%7C10.1177%2F0885066618762746%7C10.1177%2F0890117116674666%7C10.1177%2F08971900211004840%7C10.1177%2F0962280215579476%7C10.1177%2F10732748221132528%7C10.1177%2F11297298221129898%7C10.1177%2F1352458517723717%7C10.1177%2F1352458519885107%7C10.1177%2F1358863x221117608%7C10.1177%2F1359105314567207%7C10.1177%2F1359105315624748%7C10.1177%2F1359105317690599%7C10.1177%2F1457496919863942%7C10.1177%2F15209156251395010%7C10.1177%2F15209156261444994%7C10.1177%2F15209156261486558%7C10.1177%2F1533034616658576%7C10.1177%2F1550059417742232%7C10.1177%2F15910199231193469%7C10.1177%2F17085381231162128%7C10.1177%2F1740774512464725%7C10.1177%2F1751143718771261%7C10.1177%2F1753944715622919%7C10.1177%2F193229681100500621%7C10.1177%2F1932296819859334%7C10.1177%2F1932296820947100%7C10.1177%2F19322968221088608%7C10.1177%2F19322968221112120%7C10.1177%2F19322968221123083&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 12,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "f3ada8dcfd11f350007ab7a28ab4aad295565916f1c783decce928c7e13b98ed",
+          "retrieved_at": "2026-11-03T20:38:13.906Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1177%2F19322968231161320%7C10.1177%2F19322968231202803%7C10.1177%2F19322968241290259%7C10.1177%2F19322968251318373%7C10.1177%2F1947603519870853%7C10.1177%2F2048872619853959%7C10.1177%2F20552076231165972%7C10.1186%2F1743-8977-7-29%7C10.1186%2Fs12859-020-3415-z%7C10.1186%2Fs12866-026-05312-0%7C10.1186%2Fs12874-021-01407-6%7C10.1186%2Fs12880-024-01333-1%7C10.1186%2Fs12931-021-01913-7%7C10.1186%2Fs12933-015-0320-2%7C10.1186%2Fs12936-019-2890-z%7C10.1186%2Fs13019-020-01096-0%7C10.1186%2Fs13047-018-0283-0%7C10.1186%2Fs13054-015-1161-9%7C10.1186%2Fs13054-017-1751-9%7C10.1186%2Fs40349-017-0098-7%7C10.1186%2Fs40644-019-0268-7%7C10.1186%2Fs40658-018-0223-x%7C10.1186%2Fs42155-021-00249-z%7C10.1213%2F01.ane.0000269522.84942.54%7C10.1213%2Fane.0000000000006789%7C10.1213%2Fane.0000000000007514%7C10.1214%2F20-ba1229%7C10.1227%2Fneu.0000000000003958%7C10.12455%2Fj.issn.1671-7104.240137%7C10.12455%2Fj.issn.1671-7104.240143%7C10.12455%2Fj.issn.1671-7104.240183%7C10.1259%2Fbjr.20170658%7C10.1259%2Fbjr.20210354%7C10.1259%2Fbjr%2F16555263%7C10.1259%2Fbjr%2F26769569%7C10.13075%2Fmp.5893.00519%7C10.1364%2Fboe.8.003449%7C10.1371%2Fjournal.pone.0023378%7C10.1371%2Fjournal.pone.0049642%7C10.1371%2Fjournal.pone.0139707%7C10.1371%2Fjournal.pone.0217298%7C10.1371%2Fjournal.pone.0303443%7C10.14218%2Fjcth.2020.00172%7C10.1513%2Fannalsats.202204-310oc%7C10.1515%2Falmed-2023-0124%7C10.1515%2Fbmt-2024-0378%7C10.1515%2Fcclm-2024-0788%7C10.1515%2Fcclm-2025-0378%7C10.1515%2Fcclm-2025-0385%7C10.1515%2Fcclm-2025-1314&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 13,
+          "n_dois": 50,
+          "n_results": 50,
+          "payload_sha256": "fa061c6c3b0b340c1f23d39e936365c88f1d9fd5c125aca1dbdbfb55beddb8a0",
+          "retrieved_at": "2026-11-03T20:38:15.710Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1515%2Fcclm-2026-0903%7C10.1586%2F14779072.2013.867807%7C10.1902%2Fjop.1995.66.12.1074%7C10.21037%2Fatm-20-6001%7C10.21037%2Fatm-20-7047%7C10.21037%2Fatm-21-5639%7C10.21037%2Fjtd-24-1148%7C10.21037%2Fqims-2025-1982%7C10.21037%2Ftcr-20-3204%7C10.21037%2Ftp-21-389%7C10.2106%2Fjbjs.m.01188%7C10.2147%2Fmder.s145651%7C10.2186%2Fjpr.jpr_d_22_00317%7C10.2196%2F43905%7C10.2307%2F3463897%7C10.2345%2F0899-8205-45.6.435%7C10.2353%2Fajpath.2010.091140%7C10.23736%2Fs1824-4785.18.03036-4%7C10.23812%2F20-527-a%7C10.2463%2Fmrms.mp.2015-0057%7C10.2463%2Fmrms.mp.2016-0016%7C10.2463%2Fmrms.mp.2018-0085%7C10.2463%2Fmrms.mp.2020-0009%7C10.2463%2Fmrms.mp.2020-0064%7C10.2463%2Fmrms.mp.2021-0067%7C10.2463%2Fmrms.mp.2021-0087%7C10.2463%2Fmrms.mp.2022-0051%7C10.2463%2Fmrms.mp.2022-0082%7C10.2463%2Fmrms.mp.2023-0151%7C10.2463%2Fmrms.mp.2024-0017%7C10.2463%2Fmrms.mp.2024-0025%7C10.2463%2Fmrms.mp.2024-0082%7C10.2463%2Fmrms.tn.2019-0172%7C10.2463%2Fmrms.tn.2022-0053%7C10.2967%2Fjnumed.116.182139%7C10.3109%2F13645706.2010.536243%7C10.3171%2F2019.5.jns19803%7C10.3171%2F2021.6.jns21923%7C10.3174%2Fajnr.a2152%7C10.3174%2Fajnr.a2305%7C10.3174%2Fajnr.a2308%7C10.3174%2Fajnr.a2826%7C10.3174%2Fajnr.a3363%7C10.3233%2Fshti230500%7C10.3233%2Fshti240661%7C10.3389%2Ffmedt.2026.1750006%7C10.3389%2Ffnagi.2021.717037%7C10.3389%2Ffneur.2026.1937804%7C10.3389%2Ffonc.2026.1789478%7C10.3389%2Ffonc.2026.1871556&per-page=50&mailto=medradar.research%40proton.me"
+        },
+        {
+          "batch": 14,
+          "n_dois": 24,
+          "n_results": 24,
+          "payload_sha256": "2b92137647dc205d8d6ff5c86ff3f779a24b1f66f54f8881b9462490a10e4b7b",
+          "retrieved_at": "2026-11-03T20:38:17.259Z",
+          "url": "https://api.openalex.org/works?filter=doi%3A10.3389%2Ffped.2021.722497%7C10.3390%2Fbioengineering13080881%7C10.3390%2Fbiology15120930%7C10.3390%2Fdiagnostics12040862%7C10.3390%2Fnano13233066%7C10.3390%2Fpolym12051033%7C10.3390%2Fs25175603%7C10.3899%2Fjrheum.180093%7C10.3969%2Fj.issn.1671-7104.2018.03.001%7C10.3969%2Fj.issn.1671-7104.2020.06.003%7C10.3969%2Fj.issn.1671-7104.2021.05.024%7C10.3969%2Fj.issn.1671-7104.2021.06.015%7C10.3969%2Fj.issn.1671-7104.2022.06.001%7C10.3969%2Fj.issn.1671-7104.2022.06.003%7C10.3969%2Fj.issn.1671-7104.2023.04.023%7C10.3969%2Fj.issn.1671-7104.2023.06.003%7C10.4103%2Fjcrt.jcrt_1705_25%7C10.4103%2Fnrr.nrr-d-24-01607%7C10.4187%2Frespcare.06176%7C10.5301%2Fjva.5000721%7C10.5435%2Fjaaos-d-25-01167%7C10.5688%2Faj7406109%7C10.5830%2Fcvja-2023-021%7C10.7507%2F1001-5515.201712046&per-page=50&mailto=medradar.research%40proton.me"
+        }
+      ]
+    },
+    "pmid_probe": {
+      "carries_doi": 147,
+      "distinct_pmids_in_registry_references": 4030,
+      "doi_agreement_with_citation": {
+        "agree": 135,
+        "compared": 145
+      },
+      "resolvable_in_europepmc": 150,
+      "sample_size": 150
+    },
+    "pmid_resolvable_in_europepmc": 100.0,
+    "trial_reference_claims": 4351,
+    "trial_reference_resolution_definition": "resolved to a publication inside this study's own 770-record sample only; NOT the T5 measure",
+    "trial_reference_resolution_rate": 0.6,
+    "trial_reference_resolved_to_collected_publication": 26
+  },
+  "generated_at": "2026-11-03T20:46:36.658Z",
+  "human_validation": "HUMAN_VALIDATION_PENDING",
+  "prereg_sha256": "f1ab0629f3c73393925af239538ff5e8adb0c08b9e0f8238ac0d3242c06e4742",
+  "verdict": "NO-GO FOR PREDICTION"
+}

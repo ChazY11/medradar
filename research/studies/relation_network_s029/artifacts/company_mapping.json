@@ -1,0 +1,92 @@
+{
+  "accepted_statuses": [
+    "EXACT",
+    "ALIAS",
+    "ORG_TEXT",
+    "ORG_EMAIL"
+  ],
+  "by_company": {
+    "draeger": {
+      "ALIAS": 16,
+      "EXACT": 2,
+      "ORG_EMAIL": 3,
+      "ORG_TEXT": 30,
+      "REJECTED": 62
+    },
+    "ge_healthcare": {
+      "ALIAS": 5,
+      "EXACT": 347,
+      "NOT_MAPPED": 48,
+      "ORG_TEXT": 268,
+      "REJECTED": 7
+    },
+    "medtronic": {
+      "ALIAS": 1087,
+      "AMBIGUOUS": 5,
+      "EXACT": 669,
+      "NOT_MAPPED": 17,
+      "ORG_EMAIL": 25,
+      "ORG_TEXT": 356,
+      "WEAK_TEXT": 1
+    },
+    "mindray": {
+      "ALIAS": 5,
+      "EXACT": 2,
+      "NOT_MAPPED": 4,
+      "ORG_EMAIL": 16,
+      "ORG_TEXT": 224
+    },
+    "philips": {
+      "ALIAS": 403,
+      "AMBIGUOUS": 1,
+      "ORG_EMAIL": 13,
+      "ORG_TEXT": 259,
+      "REJECTED": 4,
+      "WEAK_TEXT": 10
+    }
+  },
+  "by_role_and_status": {
+    "author_affiliation": {
+      "ORG_EMAIL": 57,
+      "ORG_TEXT": 1137,
+      "REJECTED": 66,
+      "WEAK_TEXT": 11
+    },
+    "collaborator": {
+      "ALIAS": 384,
+      "AMBIGUOUS": 4,
+      "EXACT": 796,
+      "NOT_MAPPED": 58,
+      "REJECTED": 3,
+      "UNMAPPED": 1353
+    },
+    "lead_sponsor": {
+      "ALIAS": 1126,
+      "AMBIGUOUS": 2,
+      "EXACT": 218,
+      "NOT_MAPPED": 11,
+      "REJECTED": 3,
+      "UNMAPPED": 1138
+    },
+    "responsible_party": {
+      "ALIAS": 3,
+      "UNMAPPED": 560
+    },
+    "site_facility": {
+      "ALIAS": 3,
+      "EXACT": 6,
+      "REJECTED": 1
+    }
+  },
+  "date_source_counts": {
+    "NONE": 6922,
+    "REGISTER_NO_DATE": 2,
+    "REGISTER_OWNERSHIP_EVENT": 16
+  },
+  "extraction_version": "s029-1.0.0",
+  "generated_at": "2026-11-03T19:53:37.824Z",
+  "mentions": 6940,
+  "note": "REJECTED/WEAK_TEXT/AMBIGUOUS mentions are retained in data/company_mentions.jsonl; they are the false-positive measurement, not discarded rows.",
+  "register_entities": 28,
+  "register_loaded": true
+}

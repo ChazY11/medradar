@@ -1,0 +1,3532 @@
+{
+  "schema": "s029_company_entity_register_v1",
+  "study": "S-029 / relation_network_s029",
+  "generated_at": "2026-11-03T20:02:56Z",
+  "generator": "research/studies/relation_network_s029/code/s029_company_register.py",
+  "confidence_rule": "identity_confidence is assigned by rule, not per-case taste: 0.95 = canonical identity confirmed by >=2 independent official documents AND a resolved stable registry id; 0.90 = one official document plus a resolved stable registry id, or >=2 independent official documents without an id; 0.80 = one official document or one registry record that names the entity and its role but no second source; 0.60 = the entity is attested only by corpus/observed strings with parentage inferred from observed naming context (explicitly flagged as inferred); 0.40 = the string is attested but the underlying legal entity could not be pinned down.",
+  "company_keys": [
+    "medtronic",
+    "ge_healthcare",
+    "philips",
+    "draeger",
+    "mindray"
+  ],
+  "companies": {
+    "medtronic": {
+      "canonical_company": "Medtronic plc",
+      "entities": [
+        {
+          "entity_key": "medtronic_plc",
+          "entity_type": "public_parent",
+          "canonical_name": "Medtronic plc",
+          "valid_from": "2014-06-12",
+          "valid_to": null,
+          "parent_entity_key": null,
+          "date_event": "incorporated in Ireland on 2014-06-12 as a private limited company; re-registered as a public limited company effective 2015-01-26",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": "1613103",
+            "lei": "549300GX3ZBSQWUXY261",
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": "Q642189"
+          },
+          "identity_confidence": 0.95,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310315000028/mdt-2015424x10k.htm",
+              "excerpt": "Medtronic plc (Medtronic plc, Medtronic or the Company), the successor registrant to Medtronic, Inc., a Minnesota corporation, was incorporated in Ireland on June 12, 2014 as a private limited company, and was re-registered effective January 26, 2015 as a public limited company.",
+              "retrieved_at": "2026-11-03T19:49:55Z",
+              "source_key": "mdt_10k_fy2015",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310315000028/mdt-2015424x10k.htm",
+              "excerpt": "In connection with the transaction, Medtronic, Inc., a Minnesota corporation (Medtronic, Inc.), and Covidien were combined under and became subsidiaries of Medtronic plc.",
+              "retrieved_at": "2026-11-03T19:49:55Z",
+              "source_key": "mdt_10k_fy2015",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1613103/000119312515020681/d859999dex991.htm",
+              "excerpt": "MEDTRONIC COMPLETES ACQUISITION OF COVIDIEN",
+              "retrieved_at": "2026-11-03T19:49:55Z",
+              "source_key": "mdt_8k_20150126_ex991",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://api.gleif.org/api/v1/lei-records/549300GX3ZBSQWUXY261",
+              "excerpt": "data.attributes.entity.legalName.name = \"MEDTRONIC PUBLIC LIMITED COMPANY\"; data.attributes.entity.legalAddress.city = \"Galway\"",
+              "retrieved_at": "2026-11-03T19:49:55Z",
+              "source_key": "gleif_medtronic_plc",
+              "verification": "api_field_assertion"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Medtronic Public Limited Company",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310315000028/mdt-2015424x10k.htm",
+                  "excerpt": "MEDTRONIC PUBLIC LIMITED COMPANY (Exact name of registrant as specified in its charter)",
+                  "retrieved_at": "2026-11-03T19:49:55Z",
+                  "source_key": "mdt_10k_fy2015",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "MEDTRONIC PUBLIC LIMITED COMPANY",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://api.gleif.org/api/v1/lei-records/549300GX3ZBSQWUXY261",
+                  "excerpt": "data.attributes.entity.legalName.name = \"MEDTRONIC PUBLIC LIMITED COMPANY\"",
+                  "retrieved_at": "2026-11-03T19:49:55Z",
+                  "source_key": "gleif_medtronic_plc",
+                  "verification": "api_field_assertion"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic Holdings Limited",
+              "kind": "former_name",
+              "valid_from": "2014-06-12",
+              "valid_to": "2015-01-26",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/64670/000119312514271779/d761416d8k.htm",
+                  "excerpt": "On July 14, 2014, Medtronic Holdings Limited, a private limited company organized under the laws of Ireland",
+                  "retrieved_at": "2026-11-03T19:49:56Z",
+                  "source_key": "mdt_8k_20140717",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1613103/000119312515020681/d859999dex991.htm",
+                  "excerpt": "Medtronic plc (NYSE: MDT), a global leader in medical technology, services and solutions",
+                  "retrieved_at": "2026-11-03T19:49:55Z",
+                  "source_key": "mdt_8k_20150126_ex991",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic - MITG",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 270x: \"Medtronic - MITG\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic Cardiac Rhythm and Heart Failure",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 280x: \"Medtronic Cardiac Rhythm and Heart Failure\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic Vascular",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 72x: \"Medtronic Vascular\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic Spinal and Biologics",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 57x: \"Medtronic Spinal and Biologics\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic BRC",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 29x: \"Medtronic BRC\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Covidien AG",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "Covidien-branded legal entity that survives inside Medtronic plc",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+                  "excerpt": "Covidien AG Switzerland",
+                  "retrieved_at": "2026-11-03T19:49:59Z",
+                  "source_key": "mdt_ex21_fy2025",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Covidien Limited",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+                  "excerpt": "Covidien Limited Ireland",
+                  "retrieved_at": "2026-11-03T19:49:59Z",
+                  "source_key": "mdt_ex21_fy2025",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Covidien (China) Medical Devices Technology Co., Ltd.",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+                  "excerpt": "Covidien (China) Medical Devices Technology Co., Ltd. China",
+                  "retrieved_at": "2026-11-03T19:49:59Z",
+                  "source_key": "mdt_ex21_fy2025",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic, PLC",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"Medtronic, PLC\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Physio-Control, Inc",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured string 'Physio-Control, Inc, A division of Medtronic'; Physio-Control was a Medtronic business unit, but its divestiture date is NOT verified in any fetched document, so no date is asserted and the string must be time-scoped before 2016 use",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"Physio-Control, Inc, A division of Medtronic\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic Xomed, Inc.",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+                  "excerpt": "Medtronic Xomed, Inc. Delaware",
+                  "retrieved_at": "2026-11-03T19:49:59Z",
+                  "source_key": "mdt_ex21_fy2025",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "MEDTRONIC labs provide the aquamantys® probes for the study.",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured sponsor field containing free text, not an entity name",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"MEDTRONIC labs provide the aquamantys® probes for the study.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic General Research Grant",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured: a grant programme, not an entity",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"Medtronic General Research Grant\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic Foundation",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured sponsor string; a separate non-profit legal entity, not a Medtronic operating company",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 2x: \"Medtronic Foundation\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "stable_id_evidence": {
+            "cik": [
+              {
+                "url": "https://data.sec.gov/submissions/CIK0001613103.json",
+                "excerpt": "name = \"Medtronic plc\"; cik = \"0001613103\"",
+                "retrieved_at": "2026-11-03T19:52:16Z"
+              }
+            ],
+            "lei": [
+              {
+                "url": "https://api.gleif.org/api/v1/lei-records/549300GX3ZBSQWUXY261",
+                "excerpt": "data.attributes.entity.legalName.name = \"MEDTRONIC PUBLIC LIMITED COMPANY\"; data.attributes.entity.legalAddress.country = \"IE\"; data.attributes.entity.creationDate = \"2014-06-12T00:00:00Z\"; data.attributes.entity.status = \"ACTIVE\"",
+                "retrieved_at": "2026-11-03T19:49:55Z"
+              }
+            ],
+            "wikidata": [
+              {
+                "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q642189&props=labels|descriptions&languages=en&format=json",
+                "excerpt": "entities.Q642189.labels.en.value = \"Medtronic plc\"",
+                "retrieved_at": "2026-11-03T19:49:55Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "medtronic_inc",
+          "entity_type": "former_parent",
+          "canonical_name": "Medtronic, Inc.",
+          "valid_from": "1957-04-23",
+          "valid_to": "2015-01-26",
+          "parent_entity_key": "medtronic_plc",
+          "date_event": "registry creation date reported by the GLEIF LEI record for 'Medtronic, Inc.' (Minnesota); the business itself traces to 1949, which no fetched primary document states, so 1949 is NOT used",
+          "valid_to_event": "ceased to be the public parent on 2015-01-26, when Medtronic, Inc. and Covidien 'became subsidiaries of Medtronic plc' (the entity continues as a Minnesota subsidiary: it is listed in the FY2025 Exhibit 21)",
+          "stable_ids": {
+            "cik": "64670",
+            "lei": "D56MRZY2INAN94ZONZ37",
+            "ror": "00grd1h17",
+            "funder_doi": "10.13039/100004374",
+            "wikidata": null
+          },
+          "identity_confidence": 0.95,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/64670/000119312514271779/d761416d8k.htm",
+              "excerpt": "Medtronic, Inc. (Exact name of registrant as specified in its charter) Minnesota 1-7707",
+              "retrieved_at": "2026-11-03T19:49:56Z",
+              "source_key": "mdt_8k_20140717",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310315000028/mdt-2015424x10k.htm",
+              "excerpt": "In connection with the transaction, Medtronic, Inc., a Minnesota corporation (Medtronic, Inc.), and Covidien were combined under and became subsidiaries of Medtronic plc.",
+              "retrieved_at": "2026-11-03T19:49:55Z",
+              "source_key": "mdt_10k_fy2015",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+              "excerpt": "Medtronic, Inc. Minnesota",
+              "retrieved_at": "2026-11-03T19:49:59Z",
+              "source_key": "mdt_ex21_fy2025",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310315000028/mdt-2015424x10k.htm",
+              "excerpt": "MergerSub merged with and into Medtronic Inc., with Medtronic Inc. as the surviving corporation in the merger",
+              "retrieved_at": "2026-11-03T19:49:55Z",
+              "source_key": "mdt_10k_fy2015",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://api.gleif.org/api/v1/lei-records/D56MRZY2INAN94ZONZ37",
+              "excerpt": "data.attributes.entity.legalName.name = \"Medtronic, Inc.\"; data.attributes.entity.status = \"ACTIVE\"",
+              "retrieved_at": "2026-11-03T19:50:00Z",
+              "source_key": "gleif_medtronic_inc",
+              "verification": "api_field_assertion"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Medtronic Inc.",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 5x: \"Medtronic Inc., Minneapolis, MN, USA.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic, Inc",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 9x: \"Medtronic, Inc, Minneapolis, Minnesota.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "MEDTRONIC INC",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/64670/000091205701531399/a2058671z8-k.htm",
+                  "excerpt": "Medtronic, Inc. (Exact Name of Registrant as Specified in Its Charter)",
+                  "retrieved_at": "2026-11-03T19:50:49Z",
+                  "source_key": "mdt_8k_20010905",
+                  "verification": "verbatim"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "parent_note": "the 2015-01-26 acquisition made Medtronic, Inc. a subsidiary of Medtronic plc; before that date Medtronic, Inc. was itself the listed parent (no parent)",
+          "stable_id_evidence": {
+            "cik": [
+              {
+                "url": "https://data.sec.gov/submissions/CIK0000064670.json",
+                "excerpt": "name = \"MEDTRONIC INC\"; cik = \"0000064670\"",
+                "retrieved_at": "2026-11-03T19:52:16Z"
+              }
+            ],
+            "lei": [
+              {
+                "url": "https://api.gleif.org/api/v1/lei-records/D56MRZY2INAN94ZONZ37",
+                "excerpt": "data.attributes.entity.legalName.name = \"Medtronic, Inc.\"; data.attributes.entity.legalAddress.country = \"US\"; data.attributes.entity.creationDate = \"1957-04-23T00:00:00Z\"",
+                "retrieved_at": "2026-11-03T19:50:00Z"
+              }
+            ],
+            "ror": [
+              {
+                "url": "https://api.ror.org/organizations/00grd1h17",
+                "excerpt": "id = \"https://ror.org/00grd1h17\"",
+                "retrieved_at": "2026-11-03T19:50:01Z"
+              }
+            ],
+            "funder_doi": [
+              {
+                "url": "https://api.crossref.org/funders/10.13039/100004374",
+                "excerpt": "message.name = \"Medtronic\"",
+                "retrieved_at": "2026-11-03T19:49:59Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "covidien_plc",
+          "entity_type": "former_parent",
+          "canonical_name": "Covidien plc",
+          "valid_from": "2009-06-04",
+          "valid_to": "2015-01-26",
+          "parent_entity_key": null,
+          "date_event": "reorganisation completed 2009-06-04: 'Covidien plc replaced Covidien Ltd. as the ultimate parent company' (first NYSE trade of the new Irish shares 2009-06-05)",
+          "valid_to_event": "acquired by Medtronic plc on completion 2015-01-26. Covidien plc does not appear in Medtronic's FY2025 Exhibit 21 (which lists Covidien AG and Covidien Limited), i.e. there is no evidence that it survives as a separate legal person; the brand 'Covidien' does continue inside the Medtronic group",
+          "stable_ids": {
+            "cik": "1385187",
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": "Q908172"
+          },
+          "identity_confidence": 0.95,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1385187/000138518714000041/cov-201492614x10k.htm",
+              "excerpt": "The reorganization transaction was completed on June 4, 2009, following approval from the Supreme Court of Bermuda, at which time Covidien plc replaced Covidien Ltd. as the ultimate parent company.",
+              "retrieved_at": "2026-11-03T19:50:49Z",
+              "source_key": "cov_10k_fy2014",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1385187/000138518714000041/cov-201492614x10k.htm",
+              "excerpt": "Shares of the Irish company, Covidien plc, began trading on the New York Stock Exchange on June 5, 2009, under the symbol",
+              "retrieved_at": "2026-11-03T19:50:49Z",
+              "source_key": "cov_10k_fy2014",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310315000028/mdt-2015424x10k.htm",
+              "excerpt": "Medtronic and IrSub acquired Covidien (the Acquisition) pursuant to the Irish Scheme of Arrangement under Section 201",
+              "retrieved_at": "2026-11-03T19:49:55Z",
+              "source_key": "mdt_10k_fy2015",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310315000028/mdt-2015424x10k.htm",
+              "excerpt": "On January 26, 2015 (Acquisition Date), Medtronic completed the acquisition of Covidien plc, a public limited company organized under the laws of Ireland (Covidien) in a cash and stock transaction valued at approximately $50 billion.",
+              "retrieved_at": "2026-11-03T19:49:55Z",
+              "source_key": "mdt_10k_fy2015",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Covidien",
+              "kind": "brand",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "the company name ended 2015-01-26; the brand continues as a product brand inside the Medtronic group, so the string must be time-scoped before being treated as Medtronic",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310315000028/mdt-2015424x10k.htm",
+                  "excerpt": "On January 26, 2015 (Acquisition Date), Medtronic completed the acquisition of Covidien plc, a public limited company organized under the laws of Ireland (Covidien)",
+                  "retrieved_at": "2026-11-03T19:49:55Z",
+                  "source_key": "mdt_10k_fy2015",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Covidien plc",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1385187/000138518714000041/cov-201492614x10k.htm",
+                  "excerpt": "Covidien plc, a company incorporated in Ireland",
+                  "retrieved_at": "2026-11-03T19:50:49Z",
+                  "source_key": "cov_10k_fy2014",
+                  "verification": "verbatim"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "parent_note": "independent public parent until 2015-01-26; owned by Medtronic plc only during the closing period, hence no parent link is asserted",
+          "stable_id_evidence": {
+            "cik": [
+              {
+                "url": "https://data.sec.gov/submissions/CIK0001385187.json",
+                "excerpt": "name = \"Covidien plc\"; cik = \"0001385187\"",
+                "retrieved_at": "2026-11-03T19:52:17Z"
+              }
+            ],
+            "wikidata": [
+              {
+                "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q908172&props=labels|descriptions&languages=en&format=json",
+                "excerpt": "entities.Q908172.labels.en.value = \"Covidien\"",
+                "retrieved_at": "2026-11-03T19:50:50Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "covidien_ltd",
+          "entity_type": "former_parent",
+          "canonical_name": "Covidien Ltd.",
+          "valid_from": "2007-06-29",
+          "valid_to": "2009-06-04",
+          "parent_entity_key": null,
+          "date_event": "became an independent public parent on 2007-06-29 when Tyco International distributed all of its shares to Tyco shareholders (before that date it 'did not engage in any significant business activities'; it was incorporated in Bermuda in 2000, day UNKNOWN)",
+          "valid_to_event": "replaced as ultimate parent by Covidien plc on completion of the 2009 reorganisation",
+          "stable_ids": {
+            "cik": "1385187",
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.9,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1385187/000119312507264586/d10k.htm",
+              "excerpt": "Covidien Ltd. was incorporated in Bermuda in 2000 as a wholly-owned subsidiary of Tyco International Ltd.",
+              "retrieved_at": "2026-11-03T19:50:50Z",
+              "source_key": "cov_10k_fy2007",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1385187/000119312507264586/d10k.htm",
+              "excerpt": "As part of a plan to separate Tyco International into three independent companies, Tyco International transferred the equity interests of the entities that held all of the assets and liabilities of its healthcare businesses to Covidien and, on June 29, 2007, distributed all of its shares of Covidien to its shareholders.",
+              "retrieved_at": "2026-11-03T19:50:50Z",
+              "source_key": "cov_10k_fy2007",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1385187/000138518714000041/cov-201492614x10k.htm",
+              "excerpt": "at which time Covidien plc replaced Covidien Ltd. as the ultimate parent company",
+              "retrieved_at": "2026-11-03T19:50:49Z",
+              "source_key": "cov_10k_fy2014",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Covidien Ltd.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "shares the SEC CIK 1385187 with Covidien plc: the registrant was reorganised in 2009, so the CIK identifies the registrant lineage, not a single legal person",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1385187/000119312507264586/d10k.htm",
+                  "excerpt": "COVIDIEN LTD. (Exact name of registrant as specified in its charter)",
+                  "retrieved_at": "2026-11-03T19:50:50Z",
+                  "source_key": "cov_10k_fy2007",
+                  "verification": "verbatim"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "stable_id_evidence": {
+            "cik": [
+              {
+                "url": "https://www.sec.gov/Archives/edgar/data/1385187/000119312507264586/d10k.htm",
+                "excerpt": "COVIDIEN LTD. (Exact name of registrant as specified in its charter) Bermuda",
+                "retrieved_at": "2026-11-03T19:50:50Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "tyco_healthcare",
+          "entity_type": "division",
+          "canonical_name": "Tyco Healthcare (Tyco International healthcare business)",
+          "valid_from": null,
+          "valid_to": "2007-06-29",
+          "parent_entity_key": null,
+          "date_event": "UNKNOWN: the division is attested only as the healthcare business of Tyco International Ltd.; no fetched document gives its start date",
+          "valid_to_event": "Tyco International distributed the healthcare entities' shares to Covidien shareholders on 2007-06-29 (the '2007 separation')",
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.8,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1385187/000119312507264586/d10k.htm",
+              "excerpt": "for all periods prior to June 29, 2007, a combined reporting entity comprised of the assets and liabilities used in managing Tyco International Ltd.",
+              "retrieved_at": "2026-11-03T19:50:50Z",
+              "source_key": "cov_10k_fy2007",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1385187/000119312507264586/d10k.htm",
+              "excerpt": "on June 29, 2007, distributed all of its shares of Covidien to its shareholders",
+              "retrieved_at": "2026-11-03T19:50:50Z",
+              "source_key": "cov_10k_fy2007",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Tyco Healthcare",
+              "kind": "former_name",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "the name survives in Covidien's legal entities and in litigation captions; the division itself was not separately incorporated",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1385187/000119312507264586/d10k.htm",
+                  "excerpt": "Tyco Healthcare Group LP v. Applied Medical Resources Corp",
+                  "retrieved_at": "2026-11-03T19:50:50Z",
+                  "source_key": "cov_10k_fy2007",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Tyco Healthcare Group LP",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "Delaware legal entity, listed in the FY2007 Covidien Exhibit 21; the corporate string 'Tyco Healthcare' is the division name, the LP is a legal entity",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1385187/000119312507264586/dex211.htm",
+                  "excerpt": "Tyco Healthcare Group LP DE",
+                  "retrieved_at": "2026-11-03T19:51:03Z",
+                  "source_key": "cov_ex21_fy2007",
+                  "verification": "verbatim"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {}
+        },
+        {
+          "entity_key": "minimed_inc",
+          "entity_type": "former_subsidiary",
+          "canonical_name": "MiniMed Inc.",
+          "valid_from": null,
+          "valid_to": "2001-08-28",
+          "parent_entity_key": "medtronic_inc",
+          "date_event": "UNKNOWN: no fetched document states when MiniMed Inc. was incorporated",
+          "valid_to_event": "acquired 2001-08-28 through a merger of a newly created Medtronic subsidiary into MiniMed; ceased to be an independent company",
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.9,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/64670/000091205701531399/a2058671z8-k.htm",
+              "excerpt": "On August 28, 2001, Medtronic, Inc. (the \"Registrant\") acquired all of the outstanding stock of MiniMed Inc. (\"MiniMed\") through a merger of a newly-created subsidiary of the Registrant into MiniMed.",
+              "retrieved_at": "2026-11-03T19:50:49Z",
+              "source_key": "mdt_8k_20010905",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/64670/000091205702027975/a2083896z10-k.htm",
+              "excerpt": "In August 2001, we acquired MiniMed Inc. and a related company, Medical Research Group, Inc., for a total of approximately $3.8 billion in cash.",
+              "retrieved_at": "2026-11-03T19:51:03Z",
+              "source_key": "mdt_10k_fy2002",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/64670/000089710101500449/medtronic012520_10k.txt",
+              "excerpt": "In May 2001, the company announced that it had signed an agreement to purchase MiniMed Inc.",
+              "retrieved_at": "2026-11-03T19:51:03Z",
+              "source_key": "mdt_10k_fy2001",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "MiniMed Inc.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/64670/000091205701531399/a2058671z8-k.htm",
+                  "excerpt": "acquired all of the outstanding stock of MiniMed Inc.",
+                  "retrieved_at": "2026-11-03T19:50:49Z",
+                  "source_key": "mdt_8k_20010905",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "MiniMed",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 79x: \"Medtronic MiniMed, Inc.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {}
+        },
+        {
+          "entity_key": "medtronic_minimed_inc",
+          "entity_type": "operating_subsidiary",
+          "canonical_name": "Medtronic MiniMed, Inc.",
+          "valid_from": null,
+          "valid_to": null,
+          "parent_entity_key": "medtronic_plc",
+          "date_event": "UNKNOWN: the entity appears in the FY2025 Exhibit 21 as a Delaware subsidiary; no fetched document states when it was incorporated or when it was renamed",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": null,
+            "lei": "254900IAZPP0LN8FNH78",
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.8,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+              "excerpt": "Medtronic MiniMed, Inc. Delaware",
+              "retrieved_at": "2026-11-03T19:49:59Z",
+              "source_key": "mdt_ex21_fy2025",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://api.gleif.org/api/v1/lei-records/254900IAZPP0LN8FNH78",
+              "excerpt": "data.attributes.entity.legalName.name = \"MEDTRONIC MINIMED, INC.\"; data.attributes.entity.legalAddress.city = \"WILMINGTON\"",
+              "retrieved_at": "2026-11-03T19:51:04Z",
+              "source_key": "gleif_medtronic_minimed",
+              "verification": "api_field_assertion"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Medtronic MiniMed, Inc.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+                  "excerpt": "Medtronic MiniMed, Inc. Delaware",
+                  "retrieved_at": "2026-11-03T19:49:59Z",
+                  "source_key": "mdt_ex21_fy2025",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic MiniMed",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 79x: \"Medtronic MiniMed, Inc.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {
+            "lei": [
+              {
+                "url": "https://api.gleif.org/api/v1/lei-records/254900IAZPP0LN8FNH78",
+                "excerpt": "data.attributes.entity.legalName.name = \"MEDTRONIC MINIMED, INC.\"; data.attributes.entity.legalAddress.country = \"US\"; data.attributes.entity.status = \"ACTIVE\"",
+                "retrieved_at": "2026-11-03T19:51:04Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "medtronic_vascular_inc",
+          "entity_type": "operating_subsidiary",
+          "canonical_name": "Medtronic Vascular, Inc.",
+          "valid_from": null,
+          "valid_to": null,
+          "parent_entity_key": "medtronic_plc",
+          "date_event": "UNKNOWN: listed in the FY2025 Exhibit 21 as a Delaware subsidiary; no fetched document gives its incorporation or acquisition date",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.85,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+              "excerpt": "Medtronic Vascular, Inc. Delaware",
+              "retrieved_at": "2026-11-03T19:49:59Z",
+              "source_key": "mdt_ex21_fy2025",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Medtronic Vascular, Inc.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+                  "excerpt": "Medtronic Vascular, Inc. Delaware",
+                  "retrieved_at": "2026-11-03T19:49:59Z",
+                  "source_key": "mdt_ex21_fy2025",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic Vascular",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 72x: \"Medtronic Vascular\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic Endovascular",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 52x: \"Medtronic Endovascular\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {}
+        },
+        {
+          "entity_key": "medtronic_sofamor_danek_usa_inc",
+          "entity_type": "operating_subsidiary",
+          "canonical_name": "Medtronic Sofamor Danek USA, Inc.",
+          "valid_from": null,
+          "valid_to": null,
+          "parent_entity_key": "medtronic_plc",
+          "date_event": "UNKNOWN: listed in the FY2025 Exhibit 21 as a Tennessee subsidiary; no fetched document gives its incorporation date or the Sofamor Danek acquisition date",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.85,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+              "excerpt": "Medtronic Sofamor Danek USA, Inc. Tennessee",
+              "retrieved_at": "2026-11-03T19:49:59Z",
+              "source_key": "mdt_ex21_fy2025",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Medtronic Sofamor Danek USA, Inc.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+                  "excerpt": "Medtronic Sofamor Danek USA, Inc. Tennessee",
+                  "retrieved_at": "2026-11-03T19:49:59Z",
+                  "source_key": "mdt_ex21_fy2025",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic Sofamor Danek",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"Medtronic Sofamor Danek\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Medtronic Spine LLC",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured sponsor string; it does NOT appear in the FY2025 Exhibit 21, so no legal-entity status is asserted and it is treated as a business-unit name",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 14x: \"Medtronic Spine LLC\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {}
+        }
+      ]
+    },
+    "ge_healthcare": {
+      "canonical_company": "GE HealthCare Technologies Inc.",
+      "entities": [
+        {
+          "entity_key": "ge_healthcare_technologies_inc",
+          "entity_type": "public_parent",
+          "canonical_name": "GE HealthCare Technologies Inc.",
+          "valid_from": "2022-05-16",
+          "valid_to": null,
+          "parent_entity_key": null,
+          "date_event": "Delaware incorporation date reported by its GLEIF LEI record (2022-05-16); the spin-off from General Electric completed 2023-01-03 and regular-way trading began 2023-01-04",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": "1932393",
+            "lei": "549300OI9J7XOWZMUN85",
+            "ror": "01bwa4v12",
+            "funder_doi": "10.13039/100006775",
+            "wikidata": "Q1152374"
+          },
+          "identity_confidence": 0.95,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239323000025/gehc-20221231.htm",
+              "excerpt": "GE HealthCare Technologies Inc., a Delaware corporation, completed i ts spin off (the",
+              "retrieved_at": "2026-11-03T19:51:04Z",
+              "source_key": "gehc_10k_fy2022",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239323000025/gehc-20221231.htm",
+              "excerpt": "on January 3, 2023. On January 4, 2023, our common stock began regular-way trading on The Nasdaq Stock Market LLC",
+              "retrieved_at": "2026-11-03T19:51:04Z",
+              "source_key": "gehc_10k_fy2022",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239323000025/gehc-20221231.htm",
+              "excerpt": "A \"when issued\" trading market for GE HealthCare's common stock began on Nasdaq on December 16, 2022, and \"regular way\" trading of GE HealthCare's common stock began on January 4, 2023.",
+              "retrieved_at": "2026-11-03T19:51:04Z",
+              "source_key": "gehc_10k_fy2022",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://api.gleif.org/api/v1/lei-records/549300OI9J7XOWZMUN85",
+              "excerpt": "data.attributes.entity.legalName.name = \"GE HEALTHCARE TECHNOLOGIES INC.\"; data.attributes.entity.status = \"ACTIVE\"",
+              "retrieved_at": "2026-11-03T19:51:05Z",
+              "source_key": "gleif_gehc",
+              "verification": "api_field_assertion"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "GE HealthCare Technologies Inc.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239323000025/gehc-20221231.htm",
+                  "excerpt": "GE HEALTHCARE TECHNOLOGIES INC. (Exact name of registrant as specified in its charter)",
+                  "retrieved_at": "2026-11-03T19:51:04Z",
+                  "source_key": "gehc_10k_fy2022",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "GE HealthCare",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239323000025/gehc-20221231.htm",
+                  "excerpt": "GE HealthCare Technologies Inc. (\"GE HealthCare,\" the \"Company,\" \"our,\" or \"we\")",
+                  "retrieved_at": "2026-11-03T19:51:04Z",
+                  "source_key": "gehc_10k_fy2022",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "GE Healthcare",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 341x: \"GE Healthcare\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "GE HealthCare MR Research",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 3x: \"GE HealthCare MR Research, Beijing, China.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "General Electric",
+              "kind": "former_name",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "the former parent, not the spun-off issuer",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239323000025/gehc-20221231.htm",
+                  "excerpt": "spin off (the",
+                  "retrieved_at": "2026-11-03T19:51:04Z",
+                  "source_key": "gehc_10k_fy2022",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Imperial College Healthcare NHS Trust",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured substring false positive: an NHS hospital trust, not GE HealthCare",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 2x: \"Imperial College Healthcare NHS Trust\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Orange healthcare",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured substring false positive: telehealth brand, not GE HealthCare",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"Orange healthcare\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Canadian Heads of Academic Radiology-GE Healthcare Development Award",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "a named research award, not a legal entity",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"Canadian Heads of Academic Radiology-GE Healthcare Development Award\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "stable_id_evidence": {
+            "cik": [
+              {
+                "url": "https://data.sec.gov/submissions/CIK0001932393.json",
+                "excerpt": "name = \"GE HealthCare Technologies Inc.\"; cik = \"0001932393\"",
+                "retrieved_at": "2026-11-03T19:52:17Z"
+              }
+            ],
+            "lei": [
+              {
+                "url": "https://api.gleif.org/api/v1/lei-records/549300OI9J7XOWZMUN85",
+                "excerpt": "data.attributes.entity.legalName.name = \"GE HEALTHCARE TECHNOLOGIES INC.\"; data.attributes.entity.legalAddress.country = \"US\"; data.attributes.entity.creationDate = \"2022-05-16T00:00:00Z\"; data.attributes.entity.registeredAs = \"6772877\"",
+                "retrieved_at": "2026-11-03T19:51:05Z"
+              }
+            ],
+            "ror": [
+              {
+                "url": "https://api.ror.org/organizations/01bwa4v12",
+                "excerpt": "id = \"https://ror.org/01bwa4v12\"; names.0.value = \"GE HealthCare\"",
+                "retrieved_at": "2026-11-03T19:51:05Z"
+              }
+            ],
+            "funder_doi": [
+              {
+                "url": "https://api.crossref.org/funders/10.13039/100006775",
+                "excerpt": "message.name = \"GE Healthcare\"",
+                "retrieved_at": "2026-11-03T19:51:08Z"
+              }
+            ],
+            "wikidata": [
+              {
+                "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q1152374&props=labels|descriptions&languages=en&format=json",
+                "excerpt": "entities.Q1152374.labels.en.value = \"GE HealthCare\"",
+                "retrieved_at": "2026-11-03T19:51:09Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "general_electric",
+          "entity_type": "former_parent",
+          "canonical_name": "General Electric Company",
+          "valid_from": null,
+          "valid_to": "2023-01-03",
+          "parent_entity_key": null,
+          "date_event": "UNKNOWN: no fetched document states the incorporation date of General Electric Company",
+          "valid_to_event": "GE HealthCare spin-off completed 2023-01-03; GE ceased to be the parent",
+          "stable_ids": {
+            "cik": "40545",
+            "lei": null,
+            "ror": "013msgt25",
+            "funder_doi": null,
+            "wikidata": "Q54173"
+          },
+          "identity_confidence": 0.85,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239323000025/gehc-20221231.htm",
+              "excerpt": "from General Electric Company",
+              "retrieved_at": "2026-11-03T19:51:04Z",
+              "source_key": "gehc_10k_fy2022",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/40545/000004054522000008/ge-20211231.htm",
+              "excerpt": "Peter J. Arduini Senior Vice President of General Electric Company",
+              "retrieved_at": "2026-11-03T19:51:09Z",
+              "source_key": "ge_10k_fy2021",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "General Electric",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 48x: \"General Electric\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "GE",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "ticker/short name; ambiguous on its own, resolved to the former parent in this corpus",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239323000025/gehc-20221231.htm",
+                  "excerpt": "from General Electric Company",
+                  "retrieved_at": "2026-11-03T19:51:04Z",
+                  "source_key": "gehc_10k_fy2022",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "General Electric Research",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured sponsor string: GE's corporate research organisation, not a distinct company",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 3x: \"General Electric Research\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {
+            "cik": [
+              {
+                "url": "https://data.sec.gov/submissions/CIK0000040545.json",
+                "excerpt": "name = \"GENERAL ELECTRIC CO\"; cik = \"0000040545\"",
+                "retrieved_at": "2026-11-03T19:52:17Z"
+              }
+            ],
+            "ror": [
+              {
+                "url": "https://api.ror.org/organizations/013msgt25",
+                "excerpt": "id = \"https://ror.org/013msgt25\"",
+                "retrieved_at": "2026-11-03T19:51:10Z"
+              }
+            ],
+            "wikidata": [
+              {
+                "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q54173&props=labels|descriptions&languages=en&format=json",
+                "excerpt": "entities.Q54173.labels.en.value = \"General Electric\"",
+                "retrieved_at": "2026-11-03T19:51:10Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "ge_healthcare_division",
+          "entity_type": "division",
+          "canonical_name": "GE Healthcare (division of General Electric)",
+          "valid_from": null,
+          "valid_to": "2023-01-03",
+          "parent_entity_key": "general_electric",
+          "date_event": "UNKNOWN: no fetched document states the day the division was named 'GE Healthcare'; GE's FY2003 10-K reports the segment as 'Medical Systems' and its FY2004 10-K reports it as 'Healthcare', so the change falls between the two filings",
+          "valid_to_event": "the business left General Electric when the spin-off completed 2023-01-03",
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.8,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/40545/000004054505000020/gefrm10k.htm",
+              "excerpt": "Healthcare Healthcare (8.8%, 7.6% and 6.8% of consolidated revenues in 2004, 2003 and 2002, respectively)",
+              "retrieved_at": "2026-11-03T19:51:10Z",
+              "source_key": "ge_10k_fy2004",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/40545/000004054522000008/ge-20211231.htm",
+              "excerpt": "President & CEO, GE Healthcare",
+              "retrieved_at": "2026-11-03T19:51:09Z",
+              "source_key": "ge_10k_fy2021",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239323000025/gehc-20221231.htm",
+              "excerpt": "spin off (the",
+              "retrieved_at": "2026-11-03T19:51:04Z",
+              "source_key": "gehc_10k_fy2022",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "GE Healthcare",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 341x: \"GE Healthcare\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "GE Healthcare Technologies",
+              "kind": "former_name",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "officer title 'Senior Vice President, GE Healthcare Technologies' in the FY2004 10-K",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/40545/000004054505000020/gefrm10k.htm",
+                  "excerpt": "Senior Vice President, GE Healthcare Technologies",
+                  "retrieved_at": "2026-11-03T19:51:10Z",
+                  "source_key": "ge_10k_fy2004",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "general electric healthcare Finland",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"general electric healthcare Finland\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "General Electric Healthcare",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured affiliation form ('General Electric Healthcare, Aurora, OH'); the division-era spelling of the GE Healthcare business, not the spun-off issuer",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 8x: \"General Electric Healthcare, Aurora, OH 44202, USA.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "GE Healthcare China",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 6x: \"GE Healthcare China, Beijing, China.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "GE Healthcare Finland Ltd",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured sponsor string; a local legal entity, no stable id verified",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"GE Healthcare Finland Ltd\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {}
+        },
+        {
+          "entity_key": "ge_medical_systems_division",
+          "entity_type": "division",
+          "canonical_name": "GE Medical Systems (division of General Electric)",
+          "valid_from": null,
+          "valid_to": null,
+          "parent_entity_key": "general_electric",
+          "date_event": "UNKNOWN: attested as a GE reportable segment in the FY2003 10-K; no fetched document gives a start date",
+          "valid_to_event": "UNKNOWN: last attested as a segment name in the FY2003 10-K; by the FY2004 10-K the segment is called 'Healthcare'. A third-party 2006 10-K (CVD Equipment, CIK 1049521) already calls the successor 'GE Healthcare (formerly GE Medical Systems)'.",
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.8,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/40545/000004054504000013/frm10k.htm",
+              "excerpt": "Medical Systems Medical Systems (7.6%, 6.8% and 6.7% of consolidated revenues in 2003, 2002 and 2001, respectively)",
+              "retrieved_at": "2026-11-03T19:51:10Z",
+              "source_key": "ge_10k_fy2003",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/40545/000004054505000020/gefrm10k.htm",
+              "excerpt": "Healthcare Healthcare (8.8%, 7.6% and 6.8% of consolidated revenues in 2004, 2003 and 2002, respectively)",
+              "retrieved_at": "2026-11-03T19:51:10Z",
+              "source_key": "ge_10k_fy2004",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "GE Medical Systems",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"GE Medical Systems ultrasound (only technical support)\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "GE Medical Systems ultrasound (only technical support)",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"GE Medical Systems ultrasound (only technical support)\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {}
+        }
+      ]
+    },
+    "philips": {
+      "canonical_company": "Koninklijke Philips N.V.",
+      "entities": [
+        {
+          "entity_key": "koninklijke_philips_nv",
+          "entity_type": "public_parent",
+          "canonical_name": "Koninklijke Philips N.V.",
+          "valid_from": "1912-09-11",
+          "valid_to": null,
+          "parent_entity_key": null,
+          "date_event": "converted into the limited company N.V. Philips' Gloeilampenfabrieken on 1912-09-11; renamed Philips Electronics N.V. (1994-05-06), Koninklijke Philips Electronics N.V. (1998-04-01) and Koninklijke Philips N.V. (2013-05-03)",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": "313216",
+            "lei": "H1FJE8H61JGM1JSGM897",
+            "ror": "02p2bgp27",
+            "funder_doi": "10.13039/100004320",
+            "wikidata": "Q170416"
+          },
+          "identity_confidence": 0.95,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312514067281/d672413d20f.htm",
+              "excerpt": "was converted into the company with limited liability N.V. Philips’ Gloeilampenfabrieken on September 11, 1912.",
+              "retrieved_at": "2026-11-03T19:51:12Z",
+              "source_key": "phg_20f_fy2013",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312514067281/d672413d20f.htm",
+              "excerpt": "The Company’s name was changed to Philips Electronics N.V. on May 6, 1994, to Koninklijke Philips Electronics N.V. on April 1, 1998, and to Koninklijke Philips N.V. on May 3, 2013.",
+              "retrieved_at": "2026-11-03T19:51:12Z",
+              "source_key": "phg_20f_fy2013",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321625000009/phg-20241231.htm",
+              "excerpt": "References to the Company or company, to Philips or the (Philips) Group or group, relate to Koninklijke Philips N.V. and its subsidiaries, as the context requires. Royal Philips refers to Koninklijke Philips N.V.",
+              "retrieved_at": "2026-11-03T19:51:13Z",
+              "source_key": "phg_20f_fy2024",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Koninklijke Philips N.V.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312514067281/d672413d20f.htm",
+                  "excerpt": "KONINKLIJKE PHILIPS N.V. (Exact name of Registrant as specified in charter)",
+                  "retrieved_at": "2026-11-03T19:51:12Z",
+                  "source_key": "phg_20f_fy2013",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Royal Philips",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "brand name / English translation, not a separate legal entity",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321625000009/phg-20241231.htm",
+                  "excerpt": "Royal Philips refers to Koninklijke Philips N.V.",
+                  "retrieved_at": "2026-11-03T19:51:13Z",
+                  "source_key": "phg_20f_fy2024",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Philips",
+              "kind": "brand",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "group brand; the 20-F defines group references as referring to Koninklijke Philips N.V.",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321625000009/phg-20241231.htm",
+                  "excerpt": "References to the Company or company, to Philips or the (Philips) Group or group, relate to Koninklijke Philips N.V. and its subsidiaries, as the context requires.",
+                  "retrieved_at": "2026-11-03T19:51:13Z",
+                  "source_key": "phg_20f_fy2024",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Koninklijke Philips Electronics N.V.",
+              "kind": "former_name",
+              "valid_from": "1998-04-01",
+              "valid_to": "2013-05-03",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312514067281/d672413d20f.htm",
+                  "excerpt": "to Koninklijke Philips Electronics N.V. on April 1, 1998",
+                  "retrieved_at": "2026-11-03T19:51:12Z",
+                  "source_key": "phg_20f_fy2013",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Philips Electronics N.V.",
+              "kind": "former_name",
+              "valid_from": "1994-05-06",
+              "valid_to": "1998-04-01",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312514067281/d672413d20f.htm",
+                  "excerpt": "The Company’s name was changed to Philips Electronics N.V. on May 6, 1994",
+                  "retrieved_at": "2026-11-03T19:51:12Z",
+                  "source_key": "phg_20f_fy2013",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "N.V. Philips' Gloeilampenfabrieken",
+              "kind": "former_name",
+              "valid_from": "1912-09-11",
+              "valid_to": "1994-05-06",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312514067281/d672413d20f.htm",
+                  "excerpt": "N.V. Philips’ Gloeilampenfabrieken",
+                  "retrieved_at": "2026-11-03T19:51:12Z",
+                  "source_key": "phg_20f_fy2013",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Philips Electronics Nederland BV",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "operating company, distinct from the listed parent",
+              "evidence": [
+                {
+                  "url": "https://api.gleif.org/api/v1/lei-records/549300VGHFJJ58HE2B54",
+                  "excerpt": "data.attributes.entity.legalName.name = \"PHILIPS ELECTRONICS NEDERLAND B.V.\"; data.attributes.entity.legalAddress.city = \"EINDHOVEN\"",
+                  "retrieved_at": "2026-11-03T19:51:18Z",
+                  "source_key": "gleif_philips_electronics_nederland",
+                  "verification": "api_field_assertion"
+                }
+              ]
+            },
+            {
+              "string": "Philips GmbH",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321625000009/phg-20241231.htm",
+                  "excerpt": "Philips GmbH, Hamburg",
+                  "retrieved_at": "2026-11-03T19:51:13Z",
+                  "source_key": "phg_20f_fy2024",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Philips Health Care",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured two-word variant of the sector name",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 2x: \"Philips Health Care\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "EPD Solutions",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured string 'EPD Solutions, A Philips Company'",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 8x: \"EPD Solutions, A Philips Company\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Philips Oral Healthcare, LLC",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312516473594/d145196d20f.htm",
+                  "excerpt": "Philips Oral Healthcare, LLC United States",
+                  "retrieved_at": "2026-11-03T19:52:19Z",
+                  "source_key": "phg_ar2015",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Philips Intellectual Property & Standards",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "corporate department, not a legal entity",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"Philips Intellectual Property & Standards\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Philips Research Eindhoven",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "corporate research site, not a legal entity",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 3x: \"Philips Research Eindhoven\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Björn Philips",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "COLLISION: measured sponsor string that is a person's name (surname Philips), not the company",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"Björn Philips\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "stable_id_evidence": {
+            "cik": [
+              {
+                "url": "https://data.sec.gov/submissions/CIK0000313216.json",
+                "excerpt": "name = \"KONINKLIJKE PHILIPS NV\"; cik = \"0000313216\"",
+                "retrieved_at": "2026-11-03T19:52:18Z"
+              }
+            ],
+            "lei": [
+              {
+                "url": "https://api.gleif.org/api/v1/lei-records/H1FJE8H61JGM1JSGM897",
+                "excerpt": "data.attributes.entity.legalName.name = \"Koninklijke Philips N.V.\"; data.attributes.entity.legalAddress.country = \"NL\"; data.attributes.entity.registeredAs = \"17001910\"",
+                "retrieved_at": "2026-11-03T19:51:13Z"
+              }
+            ],
+            "ror": [
+              {
+                "url": "https://api.ror.org/organizations/02p2bgp27",
+                "excerpt": "id = \"https://ror.org/02p2bgp27\"; names.0.value = \"Koninklijke Philips\"",
+                "retrieved_at": "2026-11-03T19:51:14Z"
+              }
+            ],
+            "funder_doi": [
+              {
+                "url": "https://api.crossref.org/funders/10.13039/100004320",
+                "excerpt": "message.name = \"Philips\"",
+                "retrieved_at": "2026-11-03T19:51:17Z"
+              }
+            ],
+            "wikidata": [
+              {
+                "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q170416&props=labels|descriptions&languages=en&format=json",
+                "excerpt": "entities.Q170416.labels.en.value = \"Koninklijke Philips NV\"",
+                "retrieved_at": "2026-11-03T19:51:18Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "philips_medical_systems_division",
+          "entity_type": "division",
+          "canonical_name": "Philips Medical Systems (division of Philips)",
+          "valid_from": null,
+          "valid_to": "2008-01-01",
+          "parent_entity_key": "koninklijke_philips_nv",
+          "date_event": "UNKNOWN: attested as the 'former Medical Systems division' in the FY2008 20-F; no fetched document gives the day the division was created or named",
+          "valid_to_event": "from 2008-01-01 Philips organised activities into sectors and the Healthcare sector absorbed the 'former Medical Systems division'",
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.85,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000115697309000099/u06127e20vf.htm",
+              "excerpt": "As of January 1, 2008, Philips’ activities are organized on a sector basis, with each operating sector",
+              "retrieved_at": "2026-11-03T19:51:19Z",
+              "source_key": "phg_20f_fy2008",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000115697309000099/u06127e20vf.htm",
+              "excerpt": "The Healthcare sector brings together the former Medical Systems division and Home Healthcare Solutions (formerly Consumer Healthcare Solutions)",
+              "retrieved_at": "2026-11-03T19:51:19Z",
+              "source_key": "phg_20f_fy2008",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000115697309000099/u06127e20vf.htm",
+              "excerpt": "Our new Healthcare sector brings together our former Medical Systems division and our growing Home Healthcare Solutions business.",
+              "retrieved_at": "2026-11-03T19:51:19Z",
+              "source_key": "phg_20f_fy2008",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Philips Medical Systems",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 25x: \"Philips Medical Systems\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Philips Medizin Systeme Böblingen GmbH",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "the legal-entity form of the name (Germany), listed in the FY2024 20-F",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321625000009/phg-20241231.htm",
+                  "excerpt": "Philips Medizin Systeme Böblingen GmbH Germany",
+                  "retrieved_at": "2026-11-03T19:51:13Z",
+                  "source_key": "phg_20f_fy2024",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Philips Medical Systems (Cleveland), Inc.",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321625000009/phg-20241231.htm",
+                  "excerpt": "Philips Medical Systems (Cleveland), Inc. United States",
+                  "retrieved_at": "2026-11-03T19:51:13Z",
+                  "source_key": "phg_20f_fy2024",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Philips Medical Systems Nederland B.V.",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321625000009/phg-20241231.htm",
+                  "excerpt": "Philips Medical Systems DMC GmbH, Hamburg",
+                  "retrieved_at": "2026-11-03T19:51:13Z",
+                  "source_key": "phg_20f_fy2024",
+                  "verification": "verbatim"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {}
+        },
+        {
+          "entity_key": "philips_healthcare_division",
+          "entity_type": "division",
+          "canonical_name": "Philips Healthcare (sector/brand of Koninklijke Philips N.V.)",
+          "valid_from": "2008-01-01",
+          "valid_to": null,
+          "parent_entity_key": "koninklijke_philips_nv",
+          "date_event": "Philips reorganised into sectors on 2008-01-01 and the Healthcare sector replaced the former Medical Systems division",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.9,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000115697309000099/u06127e20vf.htm",
+              "excerpt": "About Philips Healthcare Philips is one of the top-tier players in the healthcare technology market (based on sales) alongside General Electric (GE) and Siemens.",
+              "retrieved_at": "2026-11-03T19:51:19Z",
+              "source_key": "phg_20f_fy2008",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000115697309000099/u06127e20vf.htm",
+              "excerpt": "Our new Healthcare sector brings together our former Medical Systems division and our growing Home Healthcare Solutions business.",
+              "retrieved_at": "2026-11-03T19:51:19Z",
+              "source_key": "phg_20f_fy2008",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000115697309000099/u06127e20vf.htm",
+              "excerpt": "As of January 1, 2008, Philips’ activities are organized on a sector basis",
+              "retrieved_at": "2026-11-03T19:51:19Z",
+              "source_key": "phg_20f_fy2008",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Philips Healthcare",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 121x: \"Philips Healthcare\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Philips Healthcare (Suzhou) Co., Ltd.",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 9x: \"Philips Healthcare (Suzhou) Co., Ltd.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Philips Clinical & Medical Affairs Global",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured: a functional department inside Philips, not a legal entity; 114 sponsor records",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 114x: \"Philips Clinical & Medical Affairs Global\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Philips Chair for Medical Information Technology",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured: an endowed university chair (RWTH Aachen), not a Philips entity",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 6x: \"Philips Chair for Medical Information Technology, Helmholtz-Institute for Biomedical Engineering, RWTH Aachen University, Aachen, Germany.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Philips Institute for Oral Health Research",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured: a university research institute (Virginia Commonwealth University), not a Philips entity",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 5x: \"Philips Institute for Oral Health Research, School of Dentistry, Virginia Commonwealth University (VCU), Richmond, VA, USA.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "stable_id_evidence": {}
+        },
+        {
+          "entity_key": "respironics_inc",
+          "entity_type": "operating_subsidiary",
+          "canonical_name": "Respironics, Inc.",
+          "valid_from": "2008-03-17",
+          "valid_to": null,
+          "parent_entity_key": "koninklijke_philips_nv",
+          "date_event": "acquisition completed: Philips press release dated 2008-03-17 states 'Philips has completed the acquisition of Respironics through the merger of its indirect wholly owned subsidiary with and into Respironics' (the tender offer expired 2008-03-13)",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": "780434",
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.9,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000130901408000155/exhibit12.htm",
+              "excerpt": "PHILIPS ANNOUNCES COMPLETION OF RESPIRONICS ACQUISITION",
+              "retrieved_at": "2026-11-03T19:51:19Z",
+              "source_key": "phg_6k_20080321",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000130901408000155/exhibit12.htm",
+              "excerpt": "Philips has completed the acquisition of Respironics through the merger of its indirect wholly owned subsidiary with and into Respironics. As a result of the merger, Respironics has become an indirect wholly owned subsidiary of Philips.",
+              "retrieved_at": "2026-11-03T19:51:19Z",
+              "source_key": "phg_6k_20080321",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000130901408000155/exhibit12.htm",
+              "excerpt": "As of March 10, 2008, Respironics’ financial results will be accounted for in the financial results of Philips Healthcare.",
+              "retrieved_at": "2026-11-03T19:51:19Z",
+              "source_key": "phg_6k_20080321",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Respironics, Inc.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000130901408000155/exhibit12.htm",
+                  "excerpt": "Respironics, Inc. (NASDAQ:RESP)",
+                  "retrieved_at": "2026-11-03T19:51:19Z",
+                  "source_key": "phg_6k_20080321",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Philips Respironics",
+              "kind": "brand",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 68x: \"Philips Respironics\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Philips RS North America LLC Formerly Known as Respironics, Inc.",
+              "kind": "former_name",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured affiliation string; the legal renaming date to Philips RS North America LLC is not verified in any fetched official document, so no date is asserted",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 6x: \"Philips RS North America LLC Formerly Known as Respironics, Inc., a Delaware Limited Liability Company (\"Philips\"), Pittsburgh, Pennsylvania, USA.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Respironics, California, Inc.",
+              "kind": "subsidiary",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 4x: \"Respironics, California, Inc.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "stable_id_evidence": {
+            "cik": [
+              {
+                "url": "https://data.sec.gov/submissions/CIK0000780434.json",
+                "excerpt": "name = \"RESPIRONICS INC\"; cik = \"0000780434\"",
+                "retrieved_at": "2026-11-03T19:52:19Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "philips_lighting_nv",
+          "entity_type": "former_subsidiary",
+          "canonical_name": "Philips Lighting N.V.",
+          "valid_from": "2016-05-27",
+          "valid_to": null,
+          "parent_entity_key": null,
+          "date_event": "listed and began trading on Euronext Amsterdam 2016-05-27; Philips retained 71.225% at listing and deconsolidated it at the end of November 2017",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.9,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312517050359/d330553d20f.htm",
+              "excerpt": "a stand-alone structure was established for Philips Lighting within the Philips Group, effective February 1, 2016.",
+              "retrieved_at": "2026-11-03T19:51:21Z",
+              "source_key": "phg_ar2016",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312517050359/d330553d20f.htm",
+              "excerpt": "Then, on May 27, 2016, Philips Lighting was listed and started trading on Euronext in Amsterdam under the symbol",
+              "retrieved_at": "2026-11-03T19:51:21Z",
+              "source_key": "phg_ar2016",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312517050359/d330553d20f.htm",
+              "excerpt": "Following the listing of Philips Lighting, Philips retained a 71.225% stake",
+              "retrieved_at": "2026-11-03T19:51:21Z",
+              "source_key": "phg_ar2016",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321625000009/phg-20241231.htm",
+              "excerpt": "prior to deconsolidation as from the end of November 2017",
+              "retrieved_at": "2026-11-03T19:51:13Z",
+              "source_key": "phg_20f_fy2024",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Philips Lighting",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312517050359/d330553d20f.htm",
+                  "excerpt": "Philips Lighting was listed and started trading on Euronext in Amsterdam",
+                  "retrieved_at": "2026-11-03T19:51:21Z",
+                  "source_key": "phg_ar2016",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Signify N.V.",
+              "kind": "former_name",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "renamed in May 2018 (month precision only; no day-level date is asserted)",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321625000009/phg-20241231.htm",
+                  "excerpt": "Signify N.V. (after its renaming in May 2018)",
+                  "retrieved_at": "2026-11-03T19:51:13Z",
+                  "source_key": "phg_20f_fy2024",
+                  "verification": "verbatim"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "parent_note": "Philips held 71.225% at the 2016-05-27 listing and deconsolidated Philips Lighting at the end of November 2017, so no current parent link is asserted",
+          "stable_id_evidence": {}
+        }
+      ]
+    },
+    "draeger": {
+      "canonical_company": "Drägerwerk AG & Co. KGaA",
+      "entities": [
+        {
+          "entity_key": "draegerwerk_ag_co_kgaa",
+          "entity_type": "public_parent",
+          "canonical_name": "Drägerwerk AG & Co. KGaA",
+          "valid_from": null,
+          "valid_to": null,
+          "parent_entity_key": null,
+          "date_event": "UNKNOWN: no fetched official document states the incorporation date of the KGaA. The GLEIF record reports a registry creation date of 1970-06-29, which is not used here because its legal meaning (formation vs. conversion) was not verified",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": null,
+            "lei": "5493005UFVHY0PPNKD75",
+            "ror": "0415p9s42",
+            "funder_doi": null,
+            "wikidata": "Q605908"
+          },
+          "identity_confidence": 0.9,
+          "identity_evidence": [
+            {
+              "url": "https://api.gleif.org/api/v1/lei-records/5493005UFVHY0PPNKD75",
+              "excerpt": "data.attributes.entity.legalName.name = \"Drägerwerk AG & Co. KGaA\"; data.attributes.entity.legalAddress.city = \"Lübeck\"; data.attributes.entity.legalForm.id = \"T0YJ\"; data.attributes.registration.status = \"ISSUED\"",
+              "retrieved_at": "2026-11-03T19:51:22Z",
+              "source_key": "gleif_draegerwerk",
+              "verification": "api_field_assertion"
+            },
+            {
+              "url": "https://api.gleif.org/api/v1/lei-records/5493005UFVHY0PPNKD75",
+              "excerpt": "data.attributes.entity.creationDate = \"1970-06-29T23:00:00Z\"",
+              "retrieved_at": "2026-11-03T19:51:22Z",
+              "source_key": "gleif_draegerwerk",
+              "verification": "api_field_assertion"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Drägerwerk AG & Co. KGaA",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://api.gleif.org/api/v1/lei-records/5493005UFVHY0PPNKD75",
+                  "excerpt": "data.attributes.entity.legalName.name = \"Drägerwerk AG & Co. KGaA\"",
+                  "retrieved_at": "2026-11-03T19:51:22Z",
+                  "source_key": "gleif_draegerwerk",
+                  "verification": "api_field_assertion"
+                }
+              ]
+            },
+            {
+              "string": "Draegerwerk AG & Co KGaA",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured ASCII transliteration in the corpus; GLEIF has no record under the ASCII spelling",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 1x: \"Drägerwerk AG & Co KGaA, Lübeck, Germany. hansulrich.schueler@draeger.com.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Drägerwerk",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 2x: \"Draeger\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Draeger",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "ASCII string that collides with the German surname; see the not_company aliases",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 2x: \"Draeger\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "(Ms Draeger)",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured false positive: the string is the surname of a paper author, not the company",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 1x: \"Author Affiliations: School of Nursing, Center for Health Promotion and Disease Prevention, University of North Carolina, Chapel Hill, North Carolina (Dr Leeman); Center for Health Promotion and Disease Prevention, University of North Carolina, Chapel Hill, North Carolina (Ms Draeger); and Gillings School of Global ...\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "draeger@ana.unibe.ch",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured false positive: an institutional e-mail address of a Dräger-named researcher",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 1x: \"Department of Cell Biology, Institute of Anatomy, University of Bern Baltzerstr, 2 3012, Bern, Switzerland. draeger@ana.unibe.ch\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "draeger@informatik.uni-tuebingen.de",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured false positive: an institutional e-mail address of a Dräger-named researcher",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 1x: \"Cluster of Excellence 'Controlling Microbes to Fight Infections', University of Tübingen, Tübingen, Germany. draeger@informatik.uni-tuebingen.de.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "schumm-draeger@klinikum-muenchen.de",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured false positive: personal e-mail address containing the surname",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 1x: \"Clinic for Endocrinology, Diabetes and Vascular Medicine, Klinikum Bogenhausen, Städt. Klinikum München GmbH, Munich, Germany. petra-maria.schumm-draeger@klinikum-muenchen.de.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {
+            "lei": [
+              {
+                "url": "https://api.gleif.org/api/v1/lei-records/5493005UFVHY0PPNKD75",
+                "excerpt": "data.attributes.entity.legalName.name = \"Drägerwerk AG & Co. KGaA\"; data.attributes.entity.legalAddress.city = \"Lübeck\"; data.attributes.entity.registeredAs = \"HRB 7903 HL\"; data.attributes.entity.status = \"ACTIVE\"",
+                "retrieved_at": "2026-11-03T19:51:22Z"
+              }
+            ],
+            "ror": [
+              {
+                "url": "https://api.ror.org/organizations/0415p9s42",
+                "excerpt": "id = \"https://ror.org/0415p9s42\"; names.0.value = \"Dräger (Germany)\"",
+                "retrieved_at": "2026-11-03T19:51:22Z"
+              }
+            ],
+            "wikidata": [
+              {
+                "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q605908&props=labels|descriptions&languages=en&format=json",
+                "excerpt": "entities.Q605908.labels.en.value = \"Drägerwerk\"",
+                "retrieved_at": "2026-11-03T19:51:22Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "draeger_medical_gmbh",
+          "entity_type": "former_subsidiary",
+          "canonical_name": "Dräger Medical GmbH",
+          "valid_from": null,
+          "valid_to": null,
+          "parent_entity_key": "draegerwerk_ag_co_kgaa",
+          "date_event": "UNKNOWN: no fetched official document states its incorporation date",
+          "valid_to_event": "UNKNOWN exact date: the LEI record's entity status is INACTIVE and its successorEntities list points to Drägerwerk AG & Co. KGaA (i.e. the company was merged into the parent). The LEI registration is RETIRED with last update 2022-03-29, which bounds but does not date the merger.",
+          "stable_ids": {
+            "cik": null,
+            "lei": "529900PCM8FAO280F764",
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.85,
+          "identity_evidence": [
+            {
+              "url": "https://api.gleif.org/api/v1/lei-records/529900PCM8FAO280F764",
+              "excerpt": "data.attributes.entity.legalName.name = \"Dräger Medical GmbH\"; data.attributes.entity.legalAddress.city = \"Lübeck\"; data.attributes.entity.registeredAs = \"HRB 4358 HL\"",
+              "retrieved_at": "2026-11-03T19:51:22Z",
+              "source_key": "gleif_draeger_medical",
+              "verification": "api_field_assertion"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Dräger Medical GmbH",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://api.gleif.org/api/v1/lei-records/529900PCM8FAO280F764",
+                  "excerpt": "data.attributes.entity.legalName.name = \"Dräger Medical GmbH\"",
+                  "retrieved_at": "2026-11-03T19:51:22Z",
+                  "source_key": "gleif_draeger_medical",
+                  "verification": "api_field_assertion"
+                }
+              ]
+            },
+            {
+              "string": "Draeger Medical GmbH",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured ASCII spelling used in affiliation strings",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 1x: \"Draeger Medical GmbH, Moislinger Allee 53, 23558, Lübeck, Germany. eckhard.teschner@draeger.com.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Dräger Medical",
+              "kind": "brand",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "business-unit brand used both for the legal entity and for the medical division",
+              "evidence": [
+                {
+                  "url": "https://api.gleif.org/api/v1/lei-records/529900PCM8FAO280F764",
+                  "excerpt": "data.attributes.entity.legalName.name = \"Dräger Medical GmbH\"",
+                  "retrieved_at": "2026-11-03T19:51:22Z",
+                  "source_key": "gleif_draeger_medical",
+                  "verification": "api_field_assertion"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {
+            "lei": [
+              {
+                "url": "https://api.gleif.org/api/v1/lei-records/529900PCM8FAO280F764",
+                "excerpt": "data.attributes.entity.legalName.name = \"Dräger Medical GmbH\"; data.attributes.entity.status = \"INACTIVE\"; data.attributes.entity.successorEntities.0.lei = \"5493005UFVHY0PPNKD75\"",
+                "retrieved_at": "2026-11-03T19:51:22Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "draeger_safety_ag_co_kgaa",
+          "entity_type": "operating_subsidiary",
+          "canonical_name": "Dräger Safety AG & Co. KGaA",
+          "valid_from": "2001-05-21",
+          "valid_to": null,
+          "parent_entity_key": "draegerwerk_ag_co_kgaa",
+          "date_event": "registry creation date 2001-05-21 reported by its GLEIF LEI record",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": null,
+            "lei": "549300T8IDCFNHN29E62",
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.9,
+          "identity_evidence": [
+            {
+              "url": "https://api.gleif.org/api/v1/lei-records/549300T8IDCFNHN29E62",
+              "excerpt": "data.attributes.entity.legalName.name = \"Dräger Safety AG & Co. KGaA\"; data.attributes.entity.legalAddress.city = \"Lübeck\"; data.attributes.entity.status = \"ACTIVE\"",
+              "retrieved_at": "2026-11-03T19:51:23Z",
+              "source_key": "gleif_draeger_safety",
+              "verification": "api_field_assertion"
+            },
+            {
+              "url": "https://api.gleif.org/api/v1/lei-records/549300T8IDCFNHN29E62/direct-parent-relationship",
+              "excerpt": "data.attributes.relationship.endNode.id = \"5493005UFVHY0PPNKD75\"; data.attributes.relationship.startNode.type = \"LEI\"",
+              "retrieved_at": "2026-11-03T19:51:23Z",
+              "source_key": "gleif_draeger_safety_parent_rel",
+              "verification": "api_field_assertion"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Dräger Safety AG & Co. KGaA",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://api.gleif.org/api/v1/lei-records/549300T8IDCFNHN29E62",
+                  "excerpt": "data.attributes.entity.legalName.name = \"Dräger Safety AG & Co. KGaA\"",
+                  "retrieved_at": "2026-11-03T19:51:23Z",
+                  "source_key": "gleif_draeger_safety",
+                  "verification": "api_field_assertion"
+                }
+              ]
+            },
+            {
+              "string": "Draeger Safety",
+              "kind": "operating_unit_prefix",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 2x: \"Draeger\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "stable_id_evidence": {
+            "lei": [
+              {
+                "url": "https://api.gleif.org/api/v1/lei-records/549300T8IDCFNHN29E62",
+                "excerpt": "data.attributes.entity.legalName.name = \"Dräger Safety AG & Co. KGaA\"; data.attributes.entity.creationDate = \"2001-05-21T22:00:00Z\"; data.attributes.entity.registeredAs = \"HRB 4097 HL\"",
+                "retrieved_at": "2026-11-03T19:51:23Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "draeger_medical_systems_inc",
+          "entity_type": "operating_subsidiary",
+          "canonical_name": "Draeger Medical Systems, Inc.",
+          "valid_from": "2003-04-03",
+          "valid_to": null,
+          "parent_entity_key": null,
+          "date_event": "registry creation date 2003-04-03 reported by its GLEIF LEI record (Delaware/Wilmington)",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": null,
+            "lei": "549300R77YDRH6WZPY39",
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.8,
+          "identity_evidence": [
+            {
+              "url": "https://api.gleif.org/api/v1/lei-records/549300R77YDRH6WZPY39",
+              "excerpt": "data.attributes.entity.legalName.name = \"Draeger Medical Systems, Inc.\"; data.attributes.entity.legalAddress.city = \"Wilmington\"; data.attributes.entity.status = \"ACTIVE\"",
+              "retrieved_at": "2026-11-03T19:51:23Z",
+              "source_key": "gleif_draeger_medical_systems",
+              "verification": "api_field_assertion"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Draeger Medical Systems, Inc.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 2x: \"Draeger Medical Systems, Inc.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Draeger Medical, Inc",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured sponsor string; the exact US legal entity (Telford PA) could not be pinned to an LEI record, so this row maps to the US subsidiary family, confidence only 0.40",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 3x: \"Draeger Medical, Inc\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "stable_id_evidence": {
+            "lei": [
+              {
+                "url": "https://api.gleif.org/api/v1/lei-records/549300R77YDRH6WZPY39",
+                "excerpt": "data.attributes.entity.legalName.name = \"Draeger Medical Systems, Inc.\"; data.attributes.entity.legalAddress.country = \"US\"; data.attributes.entity.creationDate = \"2003-04-03T22:00:00Z\"",
+                "retrieved_at": "2026-11-03T19:51:23Z"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "mindray": {
+      "canonical_company": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+      "entities": [
+        {
+          "entity_key": "shenzhen_mindray",
+          "entity_type": "public_parent",
+          "canonical_name": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+          "valid_from": null,
+          "valid_to": null,
+          "parent_entity_key": null,
+          "date_event": "UNKNOWN: the company states 'Established in 1991' (year only); no fetched official document gives an incorporation day. Its ChiNext listing ceremony was 2018-10-16.",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": "04yfe8169",
+            "funder_doi": null,
+            "wikidata": "Q15138136",
+            "szse_code": "300760"
+          },
+          "identity_confidence": 0.9,
+          "identity_evidence": [
+            {
+              "url": "http://www.szse.cn/English/about/news/listings/English/t20181016_559469.html",
+              "excerpt": "On October 16, 2018, Shenzhen Mindray Bio-Medical Electronics Co., Ltd. (stock code: 300760",
+              "retrieved_at": "2026-11-03T19:51:24Z",
+              "source_key": "szse_mindray_listing_20181016",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312514163316/d646003d20f.htm",
+              "excerpt": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd., or Shenzhen Mindray",
+              "retrieved_at": "2026-11-03T19:51:25Z",
+              "source_key": "mry_20f_fy2013",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000114554908000881/h02114exv99w1.htm",
+              "excerpt": "Mindray Medical International Limited (NYSE: MR), a leading China-based developer, manufacturer and marketer of medical devices worldwide",
+              "retrieved_at": "2026-11-03T19:51:26Z",
+              "source_key": "mry_6k_20080515_datascope",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 3x: \"Shenzhen Mindray Bio-Medical Electronics Co., Ltd\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Shenzhen Mindray Bio-Medical Electronics Co. Ltd.",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 24x: \"Shenzhen Mindray Bio-Medical Electronics Co. Ltd., Shenzhen, 518057.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Mindray Bio-Medical Electronics Co., Ltd.",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"Mindray Bio-Medical Electronics Co., Ltd.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "MINDRAY",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 2x: \"MINDRAY\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Mindray Medical International Limited",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "COLLISION: this is the Cayman holding company (former NYSE issuer), a different legal entity from the SZSE-listed Shenzhen company; mapping the string to the A-share issuer is exactly the anachronism this register exists to prevent",
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312514163316/d646003d20f.htm",
+                  "excerpt": "Mindray Medical International Limited",
+                  "retrieved_at": "2026-11-03T19:51:25Z",
+                  "source_key": "mry_20f_fy2013",
+                  "verification": "verbatim"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {
+            "ror": [
+              {
+                "url": "https://api.ror.org/organizations/04yfe8169",
+                "excerpt": "id = \"https://ror.org/04yfe8169\"; names.0.value = \"Mindray (China)\"",
+                "retrieved_at": "2026-11-03T19:51:26Z"
+              }
+            ],
+            "wikidata": [
+              {
+                "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q15138136&props=labels|descriptions&languages=en&format=json",
+                "excerpt": "entities.Q15138136.labels.en.value = \"Mindray\"",
+                "retrieved_at": "2026-11-03T19:51:26Z"
+              }
+            ],
+            "szse_code": [
+              {
+                "url": "http://www.szse.cn/English/about/news/listings/English/t20181016_559469.html",
+                "excerpt": "On October 16, 2018, Shenzhen Mindray Bio-Medical Electronics Co., Ltd. (stock code: 300760",
+                "retrieved_at": "2026-11-03T19:51:24Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "mindray_medical_international_ltd",
+          "entity_type": "former_parent",
+          "canonical_name": "Mindray Medical International Limited",
+          "valid_from": null,
+          "valid_to": "2016-03-03",
+          "parent_entity_key": null,
+          "date_event": "UNKNOWN: the Cayman holding company's incorporation date is not stated in any fetched document; it renamed itself 'Mindray Medical International Limited' in May 2006 and listed ADSs on the NYSE on 2006-09-26",
+          "valid_to_event": "going-private merger became effective 2016-03-03; the company 'ceased to be a publicly traded company' (NYSE notified removal from listing on 2016-03-15)",
+          "stable_ids": {
+            "cik": "1373060",
+            "lei": "213800L7HSJE2P72PZ24",
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.95,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312514163316/d646003d20f.htm",
+              "excerpt": "Cayman Islands (Jurisdiction of incorporation or organization)",
+              "retrieved_at": "2026-11-03T19:51:25Z",
+              "source_key": "mry_20f_fy2013",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000114554908001185/h02233e20vf.htm",
+              "excerpt": "We and certain of our shareholders completed the initial public offering of 23,000,000 ADSs, each representing one Class A ordinary share, on September 29, 2006. On September 26, 2006, we listed our ADSs on the New York Stock Exchange under the symbol",
+              "retrieved_at": "2026-11-03T19:54:29Z",
+              "source_key": "mry_20f_fy2007",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000114420416085800/v433228_ex99-1.htm",
+              "excerpt": "today announced the completion of its merger (the",
+              "retrieved_at": "2026-11-03T19:51:26Z",
+              "source_key": "mry_6k_20160303_takeprivate",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000114420416085800/v433228_ex99-1.htm",
+              "excerpt": "As a result of the merger, the Company has ceased to be a publicly traded company and became a wholly owned subsidiary of Parent.",
+              "retrieved_at": "2026-11-03T19:51:26Z",
+              "source_key": "mry_6k_20160303_takeprivate",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000087666116000851/ruleprovisionnotice.htm",
+              "excerpt": "The merger between Mindray Medical International Limited and Solid Union Limited, a wholly owned subsidiary of Excelsior Union Limited became effective on March 3, 2016.",
+              "retrieved_at": "2026-11-03T19:51:27Z",
+              "source_key": "mry_25nse_20160304",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://api.gleif.org/api/v1/lei-records/213800L7HSJE2P72PZ24",
+              "excerpt": "data.attributes.entity.legalName.name = \"MINDRAY MEDICAL INTERNATIONAL LIMITED\"; data.attributes.entity.status = \"ACTIVE\"",
+              "retrieved_at": "2026-11-03T19:51:27Z",
+              "source_key": "gleif_mindray_international",
+              "verification": "api_field_assertion"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Mindray Medical International Limited",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312514163316/d646003d20f.htm",
+                  "excerpt": "Mindray Medical International Limited (Exact name of Registrant as specified in its charter)",
+                  "retrieved_at": "2026-11-03T19:51:25Z",
+                  "source_key": "mry_20f_fy2013",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Mindray Medical International LTD",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://data.sec.gov/submissions/CIK0001373060.json",
+                  "excerpt": "name = \"Mindray Medical International LTD\"",
+                  "retrieved_at": "2026-11-03T19:52:20Z",
+                  "source_key": "sec_sub_mindray",
+                  "verification": "api_field_assertion"
+                }
+              ]
+            },
+            {
+              "string": "Mindray",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1373060/000114554908000881/h02114exv99w1.htm",
+                  "excerpt": "Mindray Medical International Limited (NYSE: MR)",
+                  "retrieved_at": "2026-11-03T19:51:26Z",
+                  "source_key": "mry_6k_20080515_datascope",
+                  "verification": "verbatim"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {
+            "cik": [
+              {
+                "url": "https://data.sec.gov/submissions/CIK0001373060.json",
+                "excerpt": "name = \"Mindray Medical International LTD\"; cik = \"0001373060\"",
+                "retrieved_at": "2026-11-03T19:52:20Z"
+              }
+            ],
+            "lei": [
+              {
+                "url": "https://api.gleif.org/api/v1/lei-records/213800L7HSJE2P72PZ24",
+                "excerpt": "data.attributes.entity.legalName.name = \"MINDRAY MEDICAL INTERNATIONAL LIMITED\"; data.attributes.entity.legalAddress.country = \"KY\"; data.attributes.entity.status = \"ACTIVE\"",
+                "retrieved_at": "2026-11-03T19:51:27Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "mindray_ds_usa_inc",
+          "entity_type": "operating_subsidiary",
+          "canonical_name": "Mindray DS USA, Inc.",
+          "valid_from": null,
+          "valid_to": null,
+          "parent_entity_key": "mindray_medical_international_ltd",
+          "date_event": "UNKNOWN: named as a consolidated subsidiary in the FY2013 20-F; no fetched document gives its incorporation date",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.8,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312514163316/d646003d20f.htm",
+              "excerpt": "Mindray DS USA Inc., or Mindray DS USA",
+              "retrieved_at": "2026-11-03T19:51:25Z",
+              "source_key": "mry_20f_fy2013",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Mindray DS USA, Inc.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312514163316/d646003d20f.htm",
+                  "excerpt": "Mindray DS USA Inc., or Mindray DS USA",
+                  "retrieved_at": "2026-11-03T19:51:25Z",
+                  "source_key": "mry_20f_fy2013",
+                  "verification": "verbatim"
+                }
+              ]
+            },
+            {
+              "string": "Mindray DS USA Inc.",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312514163316/d646003d20f.htm",
+                  "excerpt": "Mindray DS USA Inc., or Mindray DS USA",
+                  "retrieved_at": "2026-11-03T19:51:25Z",
+                  "source_key": "mry_20f_fy2013",
+                  "verification": "verbatim"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "parent_note": "listed as a consolidated subsidiary in MMIL's FY2013 20-F; the ownership chain after the 2016 take-private is not verified, so the 20-F reporting parent is used",
+          "stable_id_evidence": {}
+        },
+        {
+          "entity_key": "datascope_corp",
+          "entity_type": "former_parent",
+          "canonical_name": "Datascope Corp.",
+          "valid_from": null,
+          "valid_to": "2008-05-14",
+          "parent_entity_key": null,
+          "date_event": "UNKNOWN: no fetched document states its incorporation date (Delaware, CIK 27096)",
+          "valid_to_event": "sold its Patient Monitoring business to Mindray Medical International Limited; the sale closed 2008-05-14 (effective 2008-05-01). Datascope Corp. was NOT acquired by Mindray and continued as an independent company.",
+          "stable_ids": {
+            "cik": "27096",
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.9,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/27096/000095012308005728/y58644e8vk.htm",
+              "excerpt": "DATASCOPE CORP. (Exact name of registrant as specified in its charter) Delaware",
+              "retrieved_at": "2026-11-03T19:51:35Z",
+              "source_key": "datascope_8k_20080515",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/27096/000095012308005728/y58644e8vk.htm",
+              "excerpt": "completed the sale of the assets (excluding receivables), operations and certain liabilities of its Patient Monitoring business",
+              "retrieved_at": "2026-11-03T19:51:35Z",
+              "source_key": "datascope_8k_20080515",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/27096/000095012308005728/y58644e8vk.htm",
+              "excerpt": "The sale was completed pursuant to the Asset Purchase Agreement",
+              "retrieved_at": "2026-11-03T19:51:35Z",
+              "source_key": "datascope_8k_20080515",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/27096/000095012308005728/y58644e8vk.htm",
+              "excerpt": "and is effective as of May 1, 2008.",
+              "retrieved_at": "2026-11-03T19:51:35Z",
+              "source_key": "datascope_8k_20080515",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Datascope Corp.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 4x: \"Datascope Corp.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Getinge Datascope Corp",
+              "kind": "alias",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "measured affiliation string; it shows Datascope Corp. inside the Getinge group, but the Getinge acquisition date is NOT verified in any fetched official document, so no date is asserted and the string is not treated as a Mindray entity",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "affiliation_strings_sample entry observed 3x: \"Getinge Datascope Corp, Fairfield, USA.\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            },
+            {
+              "string": "Datascope Patient Monitoring",
+              "kind": "not_company",
+              "valid_from": null,
+              "valid_to": null,
+              "note": "COLLISION: this is the acquired business unit, not the seller legal entity; sponsor string 'Datascope Corp.' can refer either to the pre-2008 independent company or, loosely, to the acquired business",
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"Datascope Patient Monitoring\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "unknown",
+          "stable_id_evidence": {
+            "cik": [
+              {
+                "url": "https://data.sec.gov/submissions/CIK0000027096.json",
+                "excerpt": "name = \"DATASCOPE CORP\"; cik = \"0000027096\"",
+                "retrieved_at": "2026-11-03T19:52:20Z"
+              }
+            ]
+          }
+        },
+        {
+          "entity_key": "datascope_patient_monitoring_business",
+          "entity_type": "division",
+          "canonical_name": "Datascope Patient Monitoring business (acquired by Mindray)",
+          "valid_from": "2008-05-14",
+          "valid_to": null,
+          "parent_entity_key": "mindray_medical_international_ltd",
+          "date_event": "acquisition completed 2008-05-14 (sale closed per the seller's 8-K; effective 2008-05-01); Mindray announced completion on 2008-05-15",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.85,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000114554908000881/h02114exv99w1.htm",
+              "excerpt": "Mindray Medical Completes Acquisition of Datascope’s Patient Monitoring Business",
+              "retrieved_at": "2026-11-03T19:51:26Z",
+              "source_key": "mry_6k_20080515_datascope",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000114554908000881/h02114exv99w1.htm",
+              "excerpt": "today announced the completion of its acquisition of Datascope Corporation’s patient monitoring device business",
+              "retrieved_at": "2026-11-03T19:51:26Z",
+              "source_key": "mry_6k_20080515_datascope",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/27096/000095012308005728/y58644e8vk.htm",
+              "excerpt": "On May 14, 2008, Datascope Corp.",
+              "retrieved_at": "2026-11-03T19:51:35Z",
+              "source_key": "datascope_8k_20080515",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "Datascope Patient Monitoring",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+                  "excerpt": "sponsor_strings entry observed 1x: \"Datascope Patient Monitoring\"",
+                  "retrieved_at": "2026-11-03T19:43:55Z",
+                  "evidence_kind": "corpus_observed_string"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "stable_id_evidence": {}
+        },
+        {
+          "entity_key": "zonare_medical_systems_inc",
+          "entity_type": "operating_subsidiary",
+          "canonical_name": "ZONARE Medical Systems, Inc.",
+          "valid_from": "2013-07-17",
+          "valid_to": null,
+          "parent_entity_key": "mindray_medical_international_ltd",
+          "date_event": "acquisition completed and announced 2013-07-17",
+          "valid_to_event": null,
+          "stable_ids": {
+            "cik": null,
+            "lei": null,
+            "ror": null,
+            "funder_doi": null,
+            "wikidata": null
+          },
+          "identity_confidence": 0.9,
+          "identity_evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312513292410/d570219dex991.htm",
+              "excerpt": "Mindray Medical Completes Acquisition of ZONARE Medical Systems",
+              "retrieved_at": "2026-11-03T19:51:35Z",
+              "source_key": "mry_6k_20130717_zonare",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312513292410/d570219dex991.htm",
+              "excerpt": "announced today that it has completed the acquisition of ZONARE Medical Systems, Inc.",
+              "retrieved_at": "2026-11-03T19:51:35Z",
+              "source_key": "mry_6k_20130717_zonare",
+              "verification": "verbatim"
+            },
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312514163316/d646003d20f.htm",
+              "excerpt": "In 2013, we acquired ZONARE, a U.S. ultrasound technology company",
+              "retrieved_at": "2026-11-03T19:51:25Z",
+              "source_key": "mry_20f_fy2013",
+              "verification": "verbatim"
+            }
+          ],
+          "aliases": [
+            {
+              "string": "ZONARE Medical Systems, Inc.",
+              "kind": "canonical",
+              "valid_from": null,
+              "valid_to": null,
+              "evidence": [
+                {
+                  "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312513292410/d570219dex991.htm",
+                  "excerpt": "the acquisition of ZONARE Medical Systems, Inc.",
+                  "retrieved_at": "2026-11-03T19:51:35Z",
+                  "source_key": "mry_6k_20130717_zonare",
+                  "verification": "verbatim"
+                }
+              ]
+            }
+          ],
+          "date_precision": "day",
+          "stable_id_evidence": {}
+        }
+      ]
+    }
+  },
+  "notes": {
+    "validity_semantics": "valid_from/valid_to delimit the period in which the entity existed IN THE ROLE named by entity_type, not necessarily the lifetime of the legal person. Example: medtronic_inc is a former_parent with valid_to 2015-01-26; the legal entity 'Medtronic, Inc.' continues to exist as a Minnesota subsidiary (FY2025 Exhibit 21). Anachronism testing uses valid_from only, as instructed.",
+    "operating_unit_rule": "Rule (stated once, not re-derived per string): every string of the form 'Medtronic <unit>' (e.g. 'Medtronic - MITG', 'Medtronic Cardiac Rhythm and Heart Failure', 'Medtronic BRC') is an operating unit or department of the Medtronic group, not a separate legal entity; it maps to the group parent medtronic_plc unless the string names one of the registered subsidiaries. Rationale: the FY2025 Exhibit 21 lists the group's legal entities; a few observed strings do match legal persons (Medtronic MiniMed, Inc., Medtronic Xomed, Inc., and 'Medtronic Vascular' which is the prefix of Medtronic Vascular, Inc.) and are registered as subsidiaries or as aliases of them, while the remaining 'Medtronic <unit>' strings (MITG, Cardiac Rhythm and Heart Failure, BRC, Spinal and Biologics, ...) are divisional/portfolio names used in trial sponsorship. The same rule is applied to 'GE Healthcare <place>' (site/affiliate), 'Philips Healthcare <place>' and 'Shenzhen Mindray Bio-Medical Electronics Co., Ltd.' (registered parent).",
+    "corpus_strings_source": "data/observed_company_strings.json"
+  },
+  "not_company_registry": [
+    {
+      "company": "medtronic",
+      "strings": [
+        {
+          "string": "MEDTRONIC labs provide the aquamantys® probes for the study.",
+          "note": "measured sponsor field containing free text, not an entity name",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "sponsor_strings entry observed 1x: \"MEDTRONIC labs provide the aquamantys® probes for the study.\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        },
+        {
+          "string": "Medtronic General Research Grant",
+          "note": "measured: a grant programme, not an entity",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "sponsor_strings entry observed 1x: \"Medtronic General Research Grant\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        },
+        {
+          "string": "Medtronic Foundation",
+          "note": "measured sponsor string; a separate non-profit legal entity, not a Medtronic operating company",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "sponsor_strings entry observed 2x: \"Medtronic Foundation\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "company": "ge_healthcare",
+      "strings": [
+        {
+          "string": "Imperial College Healthcare NHS Trust",
+          "note": "measured substring false positive: an NHS hospital trust, not GE HealthCare",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "sponsor_strings entry observed 2x: \"Imperial College Healthcare NHS Trust\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        },
+        {
+          "string": "Orange healthcare",
+          "note": "measured substring false positive: telehealth brand, not GE HealthCare",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "sponsor_strings entry observed 1x: \"Orange healthcare\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        },
+        {
+          "string": "Canadian Heads of Academic Radiology-GE Healthcare Development Award",
+          "note": "a named research award, not a legal entity",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "sponsor_strings entry observed 1x: \"Canadian Heads of Academic Radiology-GE Healthcare Development Award\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        },
+        {
+          "string": "General Electric Research",
+          "note": "measured sponsor string: GE's corporate research organisation, not a distinct company",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "sponsor_strings entry observed 3x: \"General Electric Research\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "company": "philips",
+      "strings": [
+        {
+          "string": "Björn Philips",
+          "note": "COLLISION: measured sponsor string that is a person's name (surname Philips), not the company",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "sponsor_strings entry observed 1x: \"Björn Philips\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        },
+        {
+          "string": "Philips Clinical & Medical Affairs Global",
+          "note": "measured: a functional department inside Philips, not a legal entity; 114 sponsor records",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "sponsor_strings entry observed 114x: \"Philips Clinical & Medical Affairs Global\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        },
+        {
+          "string": "Philips Chair for Medical Information Technology",
+          "note": "measured: an endowed university chair (RWTH Aachen), not a Philips entity",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "affiliation_strings_sample entry observed 6x: \"Philips Chair for Medical Information Technology, Helmholtz-Institute for Biomedical Engineering, RWTH Aachen University, Aachen, Germany.\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        },
+        {
+          "string": "Philips Institute for Oral Health Research",
+          "note": "measured: a university research institute (Virginia Commonwealth University), not a Philips entity",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "affiliation_strings_sample entry observed 5x: \"Philips Institute for Oral Health Research, School of Dentistry, Virginia Commonwealth University (VCU), Richmond, VA, USA.\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "company": "draeger",
+      "strings": [
+        {
+          "string": "(Ms Draeger)",
+          "note": "measured false positive: the string is the surname of a paper author, not the company",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "affiliation_strings_sample entry observed 1x: \"Author Affiliations: School of Nursing, Center for Health Promotion and Disease Prevention, University of North Carolina, Chapel Hill, North Carolina (Dr Leeman); Center for Health Promotion and Disease Prevention, University of North Carolina, Chapel Hill, North Carolina (Ms Draeger); and Gillings School of Global ...\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        },
+        {
+          "string": "draeger@ana.unibe.ch",
+          "note": "measured false positive: an institutional e-mail address of a Dräger-named researcher",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "affiliation_strings_sample entry observed 1x: \"Department of Cell Biology, Institute of Anatomy, University of Bern Baltzerstr, 2 3012, Bern, Switzerland. draeger@ana.unibe.ch\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        },
+        {
+          "string": "draeger@informatik.uni-tuebingen.de",
+          "note": "measured false positive: an institutional e-mail address of a Dräger-named researcher",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "affiliation_strings_sample entry observed 1x: \"Cluster of Excellence 'Controlling Microbes to Fight Infections', University of Tübingen, Tübingen, Germany. draeger@informatik.uni-tuebingen.de.\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        },
+        {
+          "string": "schumm-draeger@klinikum-muenchen.de",
+          "note": "measured false positive: personal e-mail address containing the surname",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "affiliation_strings_sample entry observed 1x: \"Clinic for Endocrinology, Diabetes and Vascular Medicine, Klinikum Bogenhausen, Städt. Klinikum München GmbH, Munich, Germany. petra-maria.schumm-draeger@klinikum-muenchen.de.\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "company": "mindray",
+      "strings": [
+        {
+          "string": "Mindray Medical International Limited",
+          "note": "COLLISION: this is the Cayman holding company (former NYSE issuer), a different legal entity from the SZSE-listed Shenzhen company; mapping the string to the A-share issuer is exactly the anachronism this register exists to prevent",
+          "evidence": [
+            {
+              "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312514163316/d646003d20f.htm",
+              "excerpt": "Mindray Medical International Limited",
+              "retrieved_at": "2026-11-03T19:51:25Z",
+              "source_key": "mry_20f_fy2013",
+              "verification": "verbatim"
+            }
+          ]
+        },
+        {
+          "string": "Datascope Patient Monitoring",
+          "note": "COLLISION: this is the acquired business unit, not the seller legal entity; sponsor string 'Datascope Corp.' can refer either to the pre-2008 independent company or, loosely, to the acquired business",
+          "evidence": [
+            {
+              "url": "file:///D:/DEPPSKK/worktrees/s029-relations/research/studies/relation_network_s029/data/observed_company_strings.json",
+              "excerpt": "sponsor_strings entry observed 1x: \"Datascope Patient Monitoring\"",
+              "retrieved_at": "2026-11-03T19:43:55Z",
+              "evidence_kind": "corpus_observed_string"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "unknown_ids": [
+    {
+      "entity_key": "covidien_plc",
+      "id": "lei",
+      "attempts": [
+        "GLEIF legal-name search 'Covidien plc' returned 0 records (negative search gleif_search_covidien_plc in entity_provenance.json)"
+      ],
+      "status": "UNKNOWN"
+    },
+    {
+      "entity_key": "shenzhen_mindray",
+      "id": "lei",
+      "attempts": [
+        "GLEIF legal-name search 'Shenzhen Mindray Bio-Medical' returned 0 records (negative search gleif_search_shenzhen_mindray)"
+      ],
+      "status": "UNKNOWN"
+    },
+    {
+      "entity_key": "shenzhen_mindray",
+      "id": "cik",
+      "attempts": [
+        "the name does not appear in SEC company_tickers.json (negative search sec_company_tickers_no_draeger_mindray); the company is not an SEC registrant"
+      ],
+      "status": "UNKNOWN"
+    },
+    {
+      "entity_key": "draegerwerk_ag_co_kgaa",
+      "id": "cik",
+      "attempts": [
+        "the name does not appear in SEC company_tickers.json (negative search sec_company_tickers_no_draeger_mindray); no 10-K/20-F is filed by it"
+      ],
+      "status": "UNKNOWN"
+    },
+    {
+      "entity_key": "draegerwerk_ag_co_kgaa",
+      "id": "funder_doi",
+      "attempts": [
+        "Crossref Funder Registry query 'Draegerwerk' returned 0 matches (negative search crossref_search_draeger)"
+      ],
+      "status": "UNKNOWN"
+    },
+    {
+      "entity_key": "shenzhen_mindray",
+      "id": "funder_doi",
+      "attempts": [
+        "Crossref Funder Registry query 'Shenzhen Mindray' returned 0 matches (negative search crossref_search_mindray)"
+      ],
+      "status": "UNKNOWN"
+    },
+    {
+      "entity_key": "zonare_medical_systems_inc",
+      "id": "lei",
+      "attempts": [
+        "GLEIF legal-name search 'ZONARE' returned 0 records (negative search gleif_search_zonare)"
+      ],
+      "status": "UNKNOWN"
+    },
+    {
+      "entity_key": "*",
+      "id": "cik|lei|ror|funder_doi",
+      "attempts": [
+        "For subsidiary/division/brand entities, a null identifier means that no identifier for that legal person was found in the registry searches executed by this build; identifiers are only written when a registry record naming the entity was retrieved"
+      ],
+      "status": "NOT_APPLICABLE_OR_UNKNOWN"
+    }
+  ]
+}

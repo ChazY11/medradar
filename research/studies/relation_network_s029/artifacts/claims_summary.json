@@ -1,0 +1,113 @@
+{
+  "claim_rows_per_company_excluding_institution_side": {
+    "ent:company:draeger": 114,
+    "ent:company:ge_healthcare": 886,
+    "ent:company:medtronic": 2487,
+    "ent:company:mindray": 362,
+    "ent:company:philips": 963
+  },
+  "claims_by_company": {
+    "ent:company:draeger": 114,
+    "ent:company:ge_healthcare": 886,
+    "ent:company:medtronic": 2487,
+    "ent:company:mindray": 362,
+    "ent:company:philips": 963
+  },
+  "claims_by_predicate": {
+    "AFFILIATED_WITH": 2175,
+    "CO_AFFILIATED_ON": 1567,
+    "FUNDED_BY": 105,
+    "HAS_TOPIC": 7455,
+    "HOSTS_TRIAL_SITE": 598,
+    "REFERENCES_PUBLICATION": 4351,
+    "RESPONSIBLE_FOR_TRIAL": 3,
+    "SPONSORS_TRIAL": 4309
+  },
+  "claims_by_status": {
+    "CANDIDATE": 10151,
+    "VERIFIED_BY_SOURCE": 10412
+  },
+  "claims_by_subject_type": {
+    "clinical_trial": 4351,
+    "company_legal": 4812,
+    "publication": 7455,
+    "research_institution": 3945
+  },
+  "claims_by_time_basis": {
+    "ACTUAL_OBSERVATION": 60,
+    "HISTORICAL_PROXY": 13048,
+    "SOURCE_PUBLISHED": 7455
+  },
+  "claims_strict_observed_asof": 0,
+  "claims_this_study_near_realtime": 60,
+  "counters": {
+    "co_affiliation_claims": {
+      "derived": 1567
+    },
+    "funder_claims": {
+      "ge_healthcare:ALIAS": 1,
+      "ge_healthcare:EXACT": 15,
+      "medtronic:ALIAS": 29,
+      "medtronic:EXACT": 52,
+      "mindray:ALIAS": 1,
+      "philips:ALIAS": 12,
+      "philips:EXACT": 4
+    },
+    "pub_company_claims": {
+      "ORG_EMAIL": 57,
+      "ORG_TEXT": 1137
+    },
+    "pub_company_rejects": {
+      "draeger:ambiguous_surname_or_email_only": 62,
+      "medtronic:award_or_programme_title": 1,
+      "philips:award_or_programme_title": 10,
+      "philips:personal_surname_only": 4
+    },
+    "pub_institution_claims": {
+      "EXACT": 632,
+      "FUZZY": 2070
+    },
+    "pub_institution_rejects": {
+      "UNMAPPED": 642
+    },
+    "reference_claims": {
+      "mapped": 26,
+      "unmapped": 4341
+    },
+    "site_claims": {
+      "EXACT": 330,
+      "FUZZY": 309
+    },
+    "trial_company_claims": {
+      "collaborator:ALIAS": 384,
+      "collaborator:EXACT": 796,
+      "lead_sponsor:ALIAS": 1126,
+      "lead_sponsor:EXACT": 218,
+      "responsible_party:ALIAS": 3
+    },
+    "trial_company_rejects": {
+      "AMBIGUOUS": 6,
+      "NOT_MAPPED": 69,
+      "REJECTED": 6
+    },
+    "trial_institution_claims": {
+      "collaborator:EXACT": 553,
+      "collaborator:FUZZY": 353,
+      "lead_sponsor:EXACT": 656,
+      "lead_sponsor:FUZZY": 240
+    },
+    "trial_institution_rejects": {
+      "UNMAPPED": 689
+    }
+  },
+  "counts": {
+    "claims": 20563,
+    "entities": 7059,
+    "evidence": 3418,
+    "rejects": 158
+  },
+  "extraction_version": "s029-1.0.0",
+  "generated_at": "2026-11-03T20:46:35.573Z",
+  "human_confirmed_rows": 0,
+  "note": "no claim is HUMAN_CONFIRMED; machine labels only"
+}

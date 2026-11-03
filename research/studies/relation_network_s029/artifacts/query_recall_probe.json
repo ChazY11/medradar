@@ -1,0 +1,779 @@
+{
+  "companies": {
+    "Dräger": {
+      "ctgov_canonical_by_mode": {
+        "query.lead": {
+          "error": null,
+          "hits": 0,
+          "payload_sha256": "b54968c05ff881a1ef7ce604b6a340248f8e2aee8637bef06da0f5693f520df8",
+          "query": "https://clinicaltrials.gov/api/v2/studies?query.lead=Dr%C3%A4ger&pageSize=1&countTotal=true&format=json",
+          "retrieved_at": "2026-11-03T19:39:12.402Z",
+          "status": 200
+        },
+        "query.spons": {
+          "error": null,
+          "hits": 2,
+          "payload_sha256": "9c83984b22cdb098ec36d77ab0bb1d41e35dc0502c059a3ceb05883ab5ab9669",
+          "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Dr%C3%A4ger&pageSize=1&countTotal=true&format=json",
+          "retrieved_at": "2026-11-03T19:39:11.896Z",
+          "status": 200
+        }
+      },
+      "recall_gap_ctgov": {
+        "canonical_hits": 2,
+        "note": "sum of per-variant hit counts is an UPPER bound: variants overlap, so the true increment after de-duplication is measured in step 04",
+        "ratio_variants_over_canonical": 9.0,
+        "sum_of_variant_hits": 18,
+        "upper_bound_extra_hits_from_variants": 16
+      },
+      "recall_gap_europepmc": {
+        "canonical_hits": 45,
+        "note": "sum of per-variant hit counts is an UPPER bound: variants overlap, so the true increment after de-duplication is measured in step 04",
+        "ratio_variants_over_canonical": 35.93333333333333,
+        "sum_of_variant_hits": 1617,
+        "upper_bound_extra_hits_from_variants": 1572
+      },
+      "variants": [
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 2,
+            "payload_sha256": "9c83984b22cdb098ec36d77ab0bb1d41e35dc0502c059a3ceb05883ab5ab9669",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Dr%C3%A4ger&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:12.913Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 45,
+            "payload_sha256": "99169cd261a3ce540fce7e56560cea74dda3dc4cb068ac101465312b9c920bf4",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Dr%C3%A4ger%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Dräger\"",
+            "retrieved_at": "2026-11-03T19:39:13.356Z",
+            "status": 200
+          },
+          "is_canonical": true,
+          "variant": "Dräger"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 8,
+            "payload_sha256": "2b98b990c6928206366a0c20249629a15463232cb01ef122b42f8d46ff0eca1a",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Draeger&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:13.878Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 975,
+            "payload_sha256": "22cccc234f651d95c792ac70137ba432e151a7bfd043fbecd549d8b7641d919a",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Draeger%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Draeger\"",
+            "retrieved_at": "2026-11-03T19:39:14.310Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Draeger"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 0,
+            "payload_sha256": "b54968c05ff881a1ef7ce604b6a340248f8e2aee8637bef06da0f5693f520df8",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Draegerwerk&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:14.816Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 397,
+            "payload_sha256": "68ba5d7f63b20282fcb7ad20318ef58fdfcf78117f8a9fafaecec8b5121c2ab2",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Draegerwerk%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Draegerwerk\"",
+            "retrieved_at": "2026-11-03T19:39:15.241Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Draegerwerk"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 8,
+            "payload_sha256": "cba5ba5de6d4e54a18052625644ad7ecfce21680f0140a9623eb4363c6856bd7",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Dr%C3%A4gerwerk&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:15.748Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 179,
+            "payload_sha256": "4d45870c91babc0d9a283419f58d6ba9d225be34099ea24aeb19790fa20804d6",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Dr%C3%A4gerwerk%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Drägerwerk\"",
+            "retrieved_at": "2026-11-03T19:39:16.201Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Drägerwerk"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 0,
+            "payload_sha256": "b54968c05ff881a1ef7ce604b6a340248f8e2aee8637bef06da0f5693f520df8",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Dr%C3%A4ger+Medical&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:16.713Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 21,
+            "payload_sha256": "3a094fda0ac1a7e0e5f9a41ab52f856a0ed820c664dff3d21b19148c1e041a92",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Dr%C3%A4ger+Medical%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Dräger Medical\"",
+            "retrieved_at": "2026-11-03T19:39:17.182Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Dräger Medical"
+        }
+      ]
+    },
+    "GE HealthCare": {
+      "ctgov_canonical_by_mode": {
+        "query.lead": {
+          "error": null,
+          "hits": 176,
+          "payload_sha256": "80bdc7b7204adbb396476c61e36f372cfe456d435c9f778dcf40de8041985f70",
+          "query": "https://clinicaltrials.gov/api/v2/studies?query.lead=GE+HealthCare&pageSize=1&countTotal=true&format=json",
+          "retrieved_at": "2026-11-03T19:38:59.868Z",
+          "status": 200
+        },
+        "query.spons": {
+          "error": null,
+          "hits": 343,
+          "payload_sha256": "318c6cb3905592ee120320c22bee85b20ade3251fafb7ffcd0ba79dbc5ac14bc",
+          "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=GE+HealthCare&pageSize=1&countTotal=true&format=json",
+          "retrieved_at": "2026-11-03T19:38:59.356Z",
+          "status": 200
+        }
+      },
+      "recall_gap_ctgov": {
+        "canonical_hits": 343,
+        "note": "sum of per-variant hit counts is an UPPER bound: variants overlap, so the true increment after de-duplication is measured in step 04",
+        "ratio_variants_over_canonical": 2.1603498542274053,
+        "sum_of_variant_hits": 741,
+        "upper_bound_extra_hits_from_variants": 398
+      },
+      "recall_gap_europepmc": {
+        "canonical_hits": 6900,
+        "note": "sum of per-variant hit counts is an UPPER bound: variants overlap, so the true increment after de-duplication is measured in step 04",
+        "ratio_variants_over_canonical": 2.5959420289855073,
+        "sum_of_variant_hits": 17912,
+        "upper_bound_extra_hits_from_variants": 11012
+      },
+      "variants": [
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 343,
+            "payload_sha256": "318c6cb3905592ee120320c22bee85b20ade3251fafb7ffcd0ba79dbc5ac14bc",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=GE+HealthCare&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:00.378Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 6900,
+            "payload_sha256": "2523e7ad3d9a52b68918a07fd27f6cc68f9b4df0682e62090f645d9df9a500f7",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22GE+HealthCare%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"GE HealthCare\"",
+            "retrieved_at": "2026-11-03T19:39:00.812Z",
+            "status": 200
+          },
+          "is_canonical": true,
+          "variant": "GE HealthCare"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 343,
+            "payload_sha256": "318c6cb3905592ee120320c22bee85b20ade3251fafb7ffcd0ba79dbc5ac14bc",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=GE+Healthcare&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:01.326Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 6900,
+            "payload_sha256": "6ecdc2ef3b8a25bab33318ab8ff1a75f568bcb9b80c5312c19610d4bbf730bc1",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22GE+Healthcare%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"GE Healthcare\"",
+            "retrieved_at": "2026-11-03T19:39:01.756Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "GE Healthcare"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 1,
+            "payload_sha256": "e6ee28e896aa0fcbd8e17bbf5cc0e0e33ec2a5fc821e2b31b307532eee1ebaa1",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=GE+Medical+Systems&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:02.263Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 790,
+            "payload_sha256": "a45be273b44eda21f6cf11820bda84eeeb7bc1be72be425c6390416f71b4bca9",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22GE+Medical+Systems%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"GE Medical Systems\"",
+            "retrieved_at": "2026-11-03T19:39:02.708Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "GE Medical Systems"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 54,
+            "payload_sha256": "7f6358fe2089f5fad2110c0b5cc7b746d55d45178816a0ce11b97ce6f98e7b10",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=General+Electric&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:03.222Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 3286,
+            "payload_sha256": "4c116d9d33dc57953f2ec745caa84562b2fc505f889d42a66f2bd22738c69508",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22General+Electric%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"General Electric\"",
+            "retrieved_at": "2026-11-03T19:39:03.677Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "General Electric"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 0,
+            "payload_sha256": "b54968c05ff881a1ef7ce604b6a340248f8e2aee8637bef06da0f5693f520df8",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=GE+Healthcare+Technologies&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:04.185Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 36,
+            "payload_sha256": "075b231570d272221cfee61113fdb7febe00d5281c7f3708552a6f97d66d9d95",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22GE+Healthcare+Technologies%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"GE Healthcare Technologies\"",
+            "retrieved_at": "2026-11-03T19:39:04.625Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "GE Healthcare Technologies"
+        }
+      ]
+    },
+    "Medtronic": {
+      "ctgov_canonical_by_mode": {
+        "query.lead": {
+          "error": null,
+          "hits": 946,
+          "payload_sha256": "69c0638501053bc772a6f6a2a0d403cffc06aad83131cf09c75ec53d5981d643",
+          "query": "https://clinicaltrials.gov/api/v2/studies?query.lead=Medtronic&pageSize=1&countTotal=true&format=json",
+          "retrieved_at": "2026-11-03T19:38:52.336Z",
+          "status": 200
+        },
+        "query.spons": {
+          "error": null,
+          "hits": 1675,
+          "payload_sha256": "9043c92996aab6d70d7858064eba47c18d2f713f4fd20f0248f60889895b1277",
+          "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic&pageSize=1&countTotal=true&format=json",
+          "retrieved_at": "2026-11-03T19:38:51.820Z",
+          "status": 200
+        }
+      },
+      "recall_gap_ctgov": {
+        "canonical_hits": 1675,
+        "note": "sum of per-variant hit counts is an UPPER bound: variants overlap, so the true increment after de-duplication is measured in step 04",
+        "ratio_variants_over_canonical": 1.1582089552238806,
+        "sum_of_variant_hits": 1940,
+        "upper_bound_extra_hits_from_variants": 265
+      },
+      "recall_gap_europepmc": {
+        "canonical_hits": 17345,
+        "note": "sum of per-variant hit counts is an UPPER bound: variants overlap, so the true increment after de-duplication is measured in step 04",
+        "ratio_variants_over_canonical": 1.6325742288844047,
+        "sum_of_variant_hits": 28317,
+        "upper_bound_extra_hits_from_variants": 10972
+      },
+      "variants": [
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 1675,
+            "payload_sha256": "9043c92996aab6d70d7858064eba47c18d2f713f4fd20f0248f60889895b1277",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:38:52.843Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 17345,
+            "payload_sha256": "629c407d07dbe8ea789c99c6c61ad83d98e369ee0cfa832b9f11040320bf6d2d",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Medtronic%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Medtronic\"",
+            "retrieved_at": "2026-11-03T19:38:53.087Z",
+            "status": 200
+          },
+          "is_canonical": true,
+          "variant": "Medtronic"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 1,
+            "payload_sha256": "bb57a20b2398e33aebcaa3c53b91c95fe76945e32dfb592229c7131d242a3d96",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic+Sofamor+Danek&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:38:53.594Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 35,
+            "payload_sha256": "59f81877efd522b1a2073cd3bd8748777f0e3be7ab9a75387c4386b18e825766",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Medtronic+Sofamor+Danek%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Medtronic Sofamor Danek\"",
+            "retrieved_at": "2026-11-03T19:38:54.050Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Medtronic Sofamor Danek"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 78,
+            "payload_sha256": "66f7917171126c707c9ea919961b086bc7985f80d8c48437e5090cdf96340390",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic+Vascular&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:38:54.568Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 1465,
+            "payload_sha256": "6f97b34b2129de484749dfe2462405af530dacb129a2c5ab97b5cb537202e307",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Medtronic+Vascular%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Medtronic Vascular\"",
+            "retrieved_at": "2026-11-03T19:38:55.018Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Medtronic Vascular"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 80,
+            "payload_sha256": "78cda8c941289ec6dc558f78644a8b39ac46209335fd8275b19954946712f799",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic+MiniMed&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:38:55.523Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 878,
+            "payload_sha256": "103cc01ea3ff7f051c1419ef1f1c4bb34107caeac884d37e63bdb067ceb67630",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Medtronic+MiniMed%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Medtronic MiniMed\"",
+            "retrieved_at": "2026-11-03T19:38:55.961Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Medtronic MiniMed"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 81,
+            "payload_sha256": "ad47a34753e06cd7d3f8349098ec00dd55b2aa10084c47b44db3a39652080ddc",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=MiniMed&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:38:56.470Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 1096,
+            "payload_sha256": "1bd6abe5e38b7d8011b7b9337bbbddb513600df60fc8ea89b28b60490a16bf32",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22MiniMed%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"MiniMed\"",
+            "retrieved_at": "2026-11-03T19:38:56.906Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "MiniMed"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 7,
+            "payload_sha256": "16321b00c49d4930dee0fd9a95cc46a41f272c03c2d3247a49503fd87a2c9803",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Covidien&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:38:57.413Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 1035,
+            "payload_sha256": "5edcb9bd430a63ea023e682af500fe373ceb43b1a1b8b07752461b90c8e1af26",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Covidien%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Covidien\"",
+            "retrieved_at": "2026-11-03T19:38:57.860Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Covidien"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 18,
+            "payload_sha256": "9bf85180a6ce0d1ab39cd3de60b847c5054ec662a041e4fe8fcff82e7b86a700",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Tyco+Healthcare&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:38:58.378Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 6463,
+            "payload_sha256": "51d4e6e1b8cca31f2936debb483737b169bc7a2fb6d07b0488e2e82c76d527d8",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Tyco+Healthcare%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Tyco Healthcare\"",
+            "retrieved_at": "2026-11-03T19:38:58.848Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Tyco Healthcare"
+        }
+      ]
+    },
+    "Mindray": {
+      "ctgov_canonical_by_mode": {
+        "query.lead": {
+          "error": null,
+          "hits": 0,
+          "payload_sha256": "b54968c05ff881a1ef7ce604b6a340248f8e2aee8637bef06da0f5693f520df8",
+          "query": "https://clinicaltrials.gov/api/v2/studies?query.lead=Mindray&pageSize=1&countTotal=true&format=json",
+          "retrieved_at": "2026-11-03T19:39:18.198Z",
+          "status": 200
+        },
+        "query.spons": {
+          "error": null,
+          "hits": 6,
+          "payload_sha256": "04a865690da7dec26c36051663436aa514395050f590cda85cea2cff73b7bd3f",
+          "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Mindray&pageSize=1&countTotal=true&format=json",
+          "retrieved_at": "2026-11-03T19:39:17.692Z",
+          "status": 200
+        }
+      },
+      "recall_gap_ctgov": {
+        "canonical_hits": 6,
+        "note": "sum of per-variant hit counts is an UPPER bound: variants overlap, so the true increment after de-duplication is measured in step 04",
+        "ratio_variants_over_canonical": 3.0,
+        "sum_of_variant_hits": 18,
+        "upper_bound_extra_hits_from_variants": 12
+      },
+      "recall_gap_europepmc": {
+        "canonical_hits": 555,
+        "note": "sum of per-variant hit counts is an UPPER bound: variants overlap, so the true increment after de-duplication is measured in step 04",
+        "ratio_variants_over_canonical": 2.4162162162162164,
+        "sum_of_variant_hits": 1341,
+        "upper_bound_extra_hits_from_variants": 786
+      },
+      "variants": [
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 6,
+            "payload_sha256": "04a865690da7dec26c36051663436aa514395050f590cda85cea2cff73b7bd3f",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Mindray&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:18.721Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 555,
+            "payload_sha256": "da292846b2fe7d6b5ec39850746c7aa845a1ba7800480eb958ff3e23c1fa7dd0",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Mindray%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Mindray\"",
+            "retrieved_at": "2026-11-03T19:39:19.164Z",
+            "status": 200
+          },
+          "is_canonical": true,
+          "variant": "Mindray"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 3,
+            "payload_sha256": "81c7474b0a5b8c6e03d6556ca4cd432bce8b7c204d1f6d2b5b237231ba1c8baf",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Shenzhen+Mindray&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:19.677Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 469,
+            "payload_sha256": "cb023c20b62f7d11f41e23749764a0bb29a81fc9b83c6b1d360c229a4712e93a",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Shenzhen+Mindray%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Shenzhen Mindray\"",
+            "retrieved_at": "2026-11-03T19:39:20.124Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Shenzhen Mindray"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 4,
+            "payload_sha256": "00ccdc4e64f54a704ab5074bc217ffa93574ede7580fba2cb4b93b8a82c73b34",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Mindray+Medical&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:20.638Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 25,
+            "payload_sha256": "834eaf12cb7dde4a89039f7b57c6706efe620b3cb06cd7f2941933a613174c46",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Mindray+Medical%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Mindray Medical\"",
+            "retrieved_at": "2026-11-03T19:39:21.080Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Mindray Medical"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 5,
+            "payload_sha256": "0ba2664c9b0954f0681ad7fe6d18c3b7b17fe36a15a222ea2e9fadd44adcfcad",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Datascope&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:21.587Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 274,
+            "payload_sha256": "72166e83611dd8c3188aa0d6ee6c986c103396a5017a6af5d81bfd650edb515d",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Datascope%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Datascope\"",
+            "retrieved_at": "2026-11-03T19:39:22.051Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Datascope"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 0,
+            "payload_sha256": "b54968c05ff881a1ef7ce604b6a340248f8e2aee8637bef06da0f5693f520df8",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Zonare&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:22.562Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 18,
+            "payload_sha256": "3ba5ce9832c30a599438447ccd508ed5d06b167308c34f703359745bd69be200",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Zonare%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Zonare\"",
+            "retrieved_at": "2026-11-03T19:39:23.001Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Zonare"
+        }
+      ]
+    },
+    "Philips": {
+      "ctgov_canonical_by_mode": {
+        "query.lead": {
+          "error": null,
+          "hits": 210,
+          "payload_sha256": "ea9acba241c80318a94097fc3635fe503ea39a0ea203e5d8c8a02b594a5d7185",
+          "query": "https://clinicaltrials.gov/api/v2/studies?query.lead=Philips&pageSize=1&countTotal=true&format=json",
+          "retrieved_at": "2026-11-03T19:39:05.644Z",
+          "status": 200
+        },
+        "query.spons": {
+          "error": null,
+          "hits": 376,
+          "payload_sha256": "a14238ea4d10894db97cc593b89c8cdef1069184690597ac013747b8c66b953f",
+          "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips&pageSize=1&countTotal=true&format=json",
+          "retrieved_at": "2026-11-03T19:39:05.136Z",
+          "status": 200
+        }
+      },
+      "recall_gap_ctgov": {
+        "canonical_hits": 376,
+        "note": "sum of per-variant hit counts is an UPPER bound: variants overlap, so the true increment after de-duplication is measured in step 04",
+        "ratio_variants_over_canonical": 1.8191489361702127,
+        "sum_of_variant_hits": 684,
+        "upper_bound_extra_hits_from_variants": 308
+      },
+      "recall_gap_europepmc": {
+        "canonical_hits": 18636,
+        "note": "sum of per-variant hit counts is an UPPER bound: variants overlap, so the true increment after de-duplication is measured in step 04",
+        "ratio_variants_over_canonical": 1.4112470487229019,
+        "sum_of_variant_hits": 26300,
+        "upper_bound_extra_hits_from_variants": 7664
+      },
+      "variants": [
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 376,
+            "payload_sha256": "a14238ea4d10894db97cc593b89c8cdef1069184690597ac013747b8c66b953f",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:06.158Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 18636,
+            "payload_sha256": "e7dfd7c4f6f188f70902919bf37747af47a32cd0cefcf6120b12b64d1ded9052",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Philips%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Philips\"",
+            "retrieved_at": "2026-11-03T19:39:06.583Z",
+            "status": 200
+          },
+          "is_canonical": true,
+          "variant": "Philips"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 0,
+            "payload_sha256": "b54968c05ff881a1ef7ce604b6a340248f8e2aee8637bef06da0f5693f520df8",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Koninklijke+Philips&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:07.102Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 3732,
+            "payload_sha256": "f553f683a788b0cf576986611d729aa7c19f914b11c27d09671ed6e055f90ebb",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Koninklijke+Philips%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Koninklijke Philips\"",
+            "retrieved_at": "2026-11-03T19:39:07.587Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Koninklijke Philips"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 138,
+            "payload_sha256": "686280b86f3cab6aec2223fcd4f6a4c3a9714bf87af4711097ed54380ccd0f5b",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips+Healthcare&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:08.094Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 3080,
+            "payload_sha256": "771605280c399361e2024a99462ea02e01f0789b2db237c55ea58a90507436cc",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Philips+Healthcare%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Philips Healthcare\"",
+            "retrieved_at": "2026-11-03T19:39:08.535Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Philips Healthcare"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 28,
+            "payload_sha256": "aa0a273993f1dfb7ed0555f973fa44f2800ae9b3a48015c354ca3a0607217cc3",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips+Medical+Systems&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:09.047Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 395,
+            "payload_sha256": "48ce69d88cafad91c07b0b9db093fe841a0b6462ccf642366fb4482305e40fe9",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Philips+Medical+Systems%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Philips Medical Systems\"",
+            "retrieved_at": "2026-11-03T19:39:09.495Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Philips Medical Systems"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 68,
+            "payload_sha256": "3d937a795275f825f7132b1bf82421abe5252446aa20fb49d24babbba1bd7943",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips+Respironics&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:10.002Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 43,
+            "payload_sha256": "df5cece8990524bc7c6350842cefde4efb67e112e859622be267efeb4ded98ea",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Philips+Respironics%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Philips Respironics\"",
+            "retrieved_at": "2026-11-03T19:39:10.446Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Philips Respironics"
+        },
+        {
+          "ctgov_query_spons": {
+            "error": null,
+            "hits": 74,
+            "payload_sha256": "072d3691a2e3db6e869d8a090e22b4dcc57c3a08f22ce414b994c50534f79a51",
+            "query": "https://clinicaltrials.gov/api/v2/studies?query.spons=Respironics&pageSize=1&countTotal=true&format=json",
+            "retrieved_at": "2026-11-03T19:39:10.955Z",
+            "status": 200
+          },
+          "europepmc_aff": {
+            "error": null,
+            "hits": 414,
+            "payload_sha256": "982d38ad69243fc4450084919f43f28ad7d4a3d5d4f45a1a85c3726c95a96005",
+            "query": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Respironics%22&format=json&pageSize=1&resultType=idlist",
+            "query_string": "AFF:\"Respironics\"",
+            "retrieved_at": "2026-11-03T19:39:11.384Z",
+            "status": 200
+          },
+          "is_canonical": false,
+          "variant": "Respironics"
+        }
+      ]
+    }
+  },
+  "ctgov_query_parameter_semantics": {
+    "query.lead": "lead-sponsor name token match",
+    "query.spons": "sponsor OR collaborator name token match (verified by probe: 'Medtronic Vascular' is found by 'Medtronic')"
+  },
+  "generated_at": "2026-11-03T19:38:51.440Z",
+  "probe_name": "s029_query_recall_probe",
+  "purpose": "RQ1 search-recall measurement; hit counts only, no identity claim"
+}

@@ -1,0 +1,4593 @@
+{
+  "meta": {
+    "study": "S-029 relation_network_s029",
+    "task": "task-3",
+    "role": "Temporal Provenance Auditor",
+    "script": "code/s029_clock_audit.py",
+    "generated_at_utc": "2026-11-03T20:46:05Z",
+    "stage": "stage1+stage2",
+    "python": "3.12.10",
+    "study_dir": "D:\\DEPPSKK\\worktrees\\s029-relations\\research\\studies\\relation_network_s029",
+    "request_delay_s": 0.4,
+    "caps": {
+      "per_source": 60,
+      "total": 250
+    },
+    "ledger_path": "D:\\DEPPSKK\\medradar\\data\\observatory\\observatory.sqlite",
+    "ledger_access": "sqlite3 uri mode=ro",
+    "sources_probed": [
+      "clinicaltrials_gov",
+      "europe_pmc",
+      "openalex",
+      "crossref",
+      "medradar_observation_ledger"
+    ],
+    "clock_labels": [
+      "HISTORICAL_PROXY",
+      "SOURCE_PUBLISHED",
+      "ACTUAL_OBSERVATION",
+      "DATE_ONLY",
+      "TIME_UNKNOWN"
+    ],
+    "no_manufactured_pit": "No historical point-in-time observation can be manufactured. Every ACTUAL_OBSERVATION claim in this study must name a concrete sync_run/observation row; where none exists the time basis is HISTORICAL_PROXY, SOURCE_PUBLISHED, DATE_ONLY or TIME_UNKNOWN.",
+    "refreshed_at_utc": "2026-11-03T20:00:24Z",
+    "network_calls_during_refresh": 0,
+    "report_verified": true,
+    "report_unverified_count": 0
+  },
+  "four_clocks": {
+    "event_at": {
+      "meaning": "when the underlying event actually happened",
+      "example_fields": [
+        "ctgov protocolSection.statusModule.startDateStruct.date",
+        "epmc firstPublicationDate",
+        "openalex publication_date",
+        "crossref issued / published-online / published-print"
+      ],
+      "never": "never evidence of when anyone could know about it"
+    },
+    "published_at": {
+      "meaning": "when the source made the record public",
+      "example_fields": [
+        "ctgov studyFirstPostDateStruct.date",
+        "epmc firstIndexDate",
+        "openalex created_date",
+        "crossref created (deposit)"
+      ],
+      "never": "never the event itself, never MedRadar's observation"
+    },
+    "first_seen_at": {
+      "meaning": "when MedRadar actually observed the record (real wall clock)",
+      "example_fields": [
+        "observatory.observation.first_seen_at"
+      ],
+      "never": "never derivable from any of the above; must be observed"
+    },
+    "valid_from_valid_to": {
+      "meaning": "period during which a relation is supported by evidence",
+      "example_fields": [
+        "NONE - not returned by any source API"
+      ],
+      "never": "never a copy of event_at or published_at without a stated rule"
+    }
+  },
+  "budget": {
+    "per_source": {
+      "ctgov": {
+        "n_requests": 39,
+        "cap": 60,
+        "within_cap": true,
+        "http_ok": 24,
+        "http_4xx": 15,
+        "http_5xx": 0,
+        "network_errors": 0
+      },
+      "epmc": {
+        "n_requests": 15,
+        "cap": 60,
+        "within_cap": true,
+        "http_ok": 15,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "network_errors": 0
+      },
+      "openalex": {
+        "n_requests": 9,
+        "cap": 60,
+        "within_cap": true,
+        "http_ok": 9,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "network_errors": 0
+      },
+      "crossref": {
+        "n_requests": 6,
+        "cap": 60,
+        "within_cap": true,
+        "http_ok": 6,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "network_errors": 0
+      }
+    },
+    "requests_per_audit_pass": {
+      "1": 23,
+      "2": 23,
+      "3": 23
+    },
+    "requests_per_pass_source": {
+      "1:ctgov": 13,
+      "1:epmc": 5,
+      "1:openalex": 3,
+      "1:crossref": 2,
+      "2:ctgov": 13,
+      "2:epmc": 5,
+      "2:openalex": 3,
+      "2:crossref": 2,
+      "3:ctgov": 13,
+      "3:epmc": 5,
+      "3:openalex": 3,
+      "3:crossref": 2
+    },
+    "n_total_requests": 69,
+    "total_cap": 250,
+    "total_within_cap": true,
+    "min_delay_between_requests_s": 0.4,
+    "ledger_readonly": true
+  },
+  "request_ledger": [
+    {
+      "seq": 1,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT06678841?format=json",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:40:50Z",
+      "response_sha256": "e1e31412991ccade8cfabdc9ca228ed21d33dc6980df6b936cdc9a9adceaf773",
+      "response_bytes": 23697,
+      "elapsed_ms": 375,
+      "note": "field enumeration: full record for one Medtronic trial",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 2,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=Medtronic&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:40:51Z",
+      "response_sha256": "17f416b64859943f52b9c6bb9bf5eb4921dadc18a18ebb2d273555460967ac09",
+      "response_bytes": 640490,
+      "elapsed_ms": 453,
+      "note": "stratified sample: sponsor='Medtronic' (medtronic)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 3,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=GE+HealthCare&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:40:51Z",
+      "response_sha256": "70e7c92bd400cec65679b1342a6d6d00165ef1ab3d137d56bd10af50c408143b",
+      "response_bytes": 539597,
+      "elapsed_ms": 343,
+      "note": "stratified sample: sponsor='GE HealthCare' (ge_healthcare)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 4,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=Philips&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:40:52Z",
+      "response_sha256": "ffdfbdb3cfa17a0f86a7d6fae1e6d154afad86edbde7d78f6d66c69e750b7973",
+      "response_bytes": 709722,
+      "elapsed_ms": 421,
+      "note": "stratified sample: sponsor='Philips' (philips)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 5,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=Dr%C3%A4ger&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:40:53Z",
+      "response_sha256": "d502cb6bb043f627c7958bbe5c8948c40151306b83a5b81f42b51fe322f019e6",
+      "response_bytes": 19877,
+      "elapsed_ms": 342,
+      "note": "stratified sample: sponsor='Dräger' (draeger)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 6,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=Mindray&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:40:54Z",
+      "response_sha256": "cd61b55a4c7d6f4b8d0ab5b6fa136b637bf965832cfcb0c507c81bb785b1f43f",
+      "response_bytes": 78631,
+      "elapsed_ms": 389,
+      "note": "stratified sample: sponsor='Mindray' (mindray)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 7,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:40:54Z",
+      "response_sha256": "378ece4bb4ee531c51f52f3acfc73fa6f525a397617c8bbd984ea0c419b63f7a",
+      "response_bytes": 37198,
+      "elapsed_ms": 375,
+      "note": "as-of test baseline (current state) NCT00617175",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 8,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json&asOf=2019-06-01",
+      "method": "GET",
+      "http_status": 400,
+      "retrieved_at_utc": "2026-11-03T19:40:55Z",
+      "response_sha256": "ba07129d92a023c2dad5620c47a1942b289f30239589392b93f165dfa57630c6",
+      "response_bytes": 27,
+      "elapsed_ms": 391,
+      "note": "probe unknown param asOf=2019-06-01",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 9,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json&date=2019-06-01",
+      "method": "GET",
+      "http_status": 400,
+      "retrieved_at_utc": "2026-11-03T19:40:56Z",
+      "response_sha256": "6d12c6c52b756a96bfbb6e7b8fe27a514e24214859b0666c83c470a4ae6b835e",
+      "response_bytes": 27,
+      "elapsed_ms": 359,
+      "note": "probe unknown param date=2019-06-01",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 10,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json&studyVersion=1",
+      "method": "GET",
+      "http_status": 400,
+      "retrieved_at_utc": "2026-11-03T19:40:57Z",
+      "response_sha256": "ba90048c1127fdfe7051483403b8959e886e800e120639682fde3b0b41171a62",
+      "response_bytes": 35,
+      "elapsed_ms": 312,
+      "note": "probe unknown param studyVersion=1",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 11,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175/history?format=json",
+      "method": "GET",
+      "http_status": 404,
+      "retrieved_at_utc": "2026-11-03T19:40:57Z",
+      "response_sha256": null,
+      "response_bytes": 0,
+      "elapsed_ms": 327,
+      "note": "probe historical-state endpoint /history",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 12,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175/versions?format=json",
+      "method": "GET",
+      "http_status": 404,
+      "retrieved_at_utc": "2026-11-03T19:40:58Z",
+      "response_sha256": null,
+      "response_bytes": 0,
+      "elapsed_ms": 343,
+      "note": "probe historical-state endpoint /versions",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 13,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&pageSize=3&countTotal=true&filter.advanced=AREA%5BLastUpdatePostDate%5DRANGE%5B2019-01-01%2C2019-12-31%5D",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:40:59Z",
+      "response_sha256": "8e2cdb7457aa166e0ba7da313e75a61b22a621e9ba9a2344cae072a61e96ca3a",
+      "response_bytes": 41494,
+      "elapsed_ms": 327,
+      "note": "probe: only lastUpdatePostDate is time-filterable; returns current state",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 14,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22Medtronic%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:41:00Z",
+      "response_sha256": "9edfe74c33c6c7324e434975f2676f77888917a77a380a45827aa05c7eec9449",
+      "response_bytes": 122731,
+      "elapsed_ms": 389,
+      "note": "affiliation sample: AFF='Medtronic' (medtronic)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 15,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22GE+HealthCare%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:41:01Z",
+      "response_sha256": "bbeebf3eb979010df7e24d2c165cf89101c69a3665778f4e26afaff2ee2ddf07",
+      "response_bytes": 126167,
+      "elapsed_ms": 421,
+      "note": "affiliation sample: AFF='GE HealthCare' (ge_healthcare)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 16,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22Philips%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:41:01Z",
+      "response_sha256": "53e97f2a3b7e42d35014ea8a78cd994729782baa22334804ac9b4bf43dd9cb16",
+      "response_bytes": 158917,
+      "elapsed_ms": 389,
+      "note": "affiliation sample: AFF='Philips' (philips)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 17,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22Dr%C3%A4ger%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:41:02Z",
+      "response_sha256": "8f89d6e2eda66e4b48502dfe14120c39a6d616fa3f690236506e49f5494e81c2",
+      "response_bytes": 86226,
+      "elapsed_ms": 406,
+      "note": "affiliation sample: AFF='Dräger' (draeger)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 18,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22Mindray%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:41:03Z",
+      "response_sha256": "ea4c1de72f34661eb39a0d71fd5ae07e5eb6adc1c6524e57d8ec2792530d890f",
+      "response_bytes": 139545,
+      "elapsed_ms": 391,
+      "note": "affiliation sample: AFF='Mindray' (mindray)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 19,
+      "source": "openalex",
+      "url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3AMedtronic&per-page=12&select=id%2Cdoi%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Cpublication_year%2Ctype&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:41:05Z",
+      "response_sha256": "d8a64e4913f98c2c1662829eb108bbf872a4f32d8d92a8b2997440e0b5805a24",
+      "response_bytes": 4188,
+      "elapsed_ms": 1171,
+      "note": "works sample: raw_affiliation_strings.search='Medtronic' (medtronic)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 20,
+      "source": "openalex",
+      "url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3APhilips&per-page=6&select=id%2Cdoi%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Cpublication_year%2Ctype&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:41:06Z",
+      "response_sha256": "655288fa46247623ff9050cb2ac9dd9ff82dfb0124dddf9fa421e736b28c2278",
+      "response_bytes": 2624,
+      "elapsed_ms": 735,
+      "note": "works sample: raw_affiliation_strings.search='Philips' (philips)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 21,
+      "source": "openalex",
+      "url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3AGE+HealthCare&per-page=6&select=id%2Cdoi%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Cpublication_year%2Ctype&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:41:07Z",
+      "response_sha256": "7b94a0228687c7741c6bf0c424c4d6f5bce889b10bee1d3df3aa6045ff6c9630",
+      "response_bytes": 2627,
+      "elapsed_ms": 1078,
+      "note": "works sample: raw_affiliation_strings.search='GE HealthCare' (ge_healthcare)",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 22,
+      "source": "crossref",
+      "url": "https://api.crossref.org/works?query.affiliation=Medtronic&rows=15&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:41:10Z",
+      "response_sha256": "832c68184cbefadfa89a2f2583d1c8b0e156936558486b8b33f8c7a07c24d119",
+      "response_bytes": 81215,
+      "elapsed_ms": 2280,
+      "note": "affiliation query sample: 'Medtronic' (medtronic), rows=15",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 23,
+      "source": "crossref",
+      "url": "https://api.crossref.org/works?query.affiliation=Philips&rows=15&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:41:15Z",
+      "response_sha256": "18e0c287db1803a5044e72abab19d1e33989fe39f77c8242989db033045fdcf6",
+      "response_bytes": 102993,
+      "elapsed_ms": 5202,
+      "note": "affiliation query sample: 'Philips' (philips), rows=15",
+      "attempt": 1,
+      "error": null
+    },
+    {
+      "seq": 24,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT06678841?format=json",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:41:59Z",
+      "response_sha256": "e1e31412991ccade8cfabdc9ca228ed21d33dc6980df6b936cdc9a9adceaf773",
+      "response_bytes": 23697,
+      "elapsed_ms": 327,
+      "note": "field enumeration: full record for one Medtronic trial",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 25,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=Medtronic&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:00Z",
+      "response_sha256": "17f416b64859943f52b9c6bb9bf5eb4921dadc18a18ebb2d273555460967ac09",
+      "response_bytes": 640490,
+      "elapsed_ms": 562,
+      "note": "stratified sample: sponsor='Medtronic' (medtronic)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 26,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=GE+HealthCare&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:01Z",
+      "response_sha256": "70e7c92bd400cec65679b1342a6d6d00165ef1ab3d137d56bd10af50c408143b",
+      "response_bytes": 539597,
+      "elapsed_ms": 500,
+      "note": "stratified sample: sponsor='GE HealthCare' (ge_healthcare)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 27,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=Philips&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:02Z",
+      "response_sha256": "ffdfbdb3cfa17a0f86a7d6fae1e6d154afad86edbde7d78f6d66c69e750b7973",
+      "response_bytes": 709722,
+      "elapsed_ms": 578,
+      "note": "stratified sample: sponsor='Philips' (philips)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 28,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=Dr%C3%A4ger&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:03Z",
+      "response_sha256": "d502cb6bb043f627c7958bbe5c8948c40151306b83a5b81f42b51fe322f019e6",
+      "response_bytes": 19877,
+      "elapsed_ms": 296,
+      "note": "stratified sample: sponsor='Dräger' (draeger)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 29,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=Mindray&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:04Z",
+      "response_sha256": "cd61b55a4c7d6f4b8d0ab5b6fa136b637bf965832cfcb0c507c81bb785b1f43f",
+      "response_bytes": 78631,
+      "elapsed_ms": 375,
+      "note": "stratified sample: sponsor='Mindray' (mindray)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 30,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:04Z",
+      "response_sha256": "378ece4bb4ee531c51f52f3acfc73fa6f525a397617c8bbd984ea0c419b63f7a",
+      "response_bytes": 37198,
+      "elapsed_ms": 343,
+      "note": "as-of test baseline (current state) NCT00617175",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 31,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json&asOf=2019-06-01",
+      "method": "GET",
+      "http_status": 400,
+      "retrieved_at_utc": "2026-11-03T19:42:05Z",
+      "response_sha256": "ba07129d92a023c2dad5620c47a1942b289f30239589392b93f165dfa57630c6",
+      "response_bytes": 27,
+      "elapsed_ms": 358,
+      "note": "probe unknown param asOf=2019-06-01",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 32,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json&date=2019-06-01",
+      "method": "GET",
+      "http_status": 400,
+      "retrieved_at_utc": "2026-11-03T19:42:06Z",
+      "response_sha256": "6d12c6c52b756a96bfbb6e7b8fe27a514e24214859b0666c83c470a4ae6b835e",
+      "response_bytes": 27,
+      "elapsed_ms": 358,
+      "note": "probe unknown param date=2019-06-01",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 33,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json&studyVersion=1",
+      "method": "GET",
+      "http_status": 400,
+      "retrieved_at_utc": "2026-11-03T19:42:07Z",
+      "response_sha256": "ba90048c1127fdfe7051483403b8959e886e800e120639682fde3b0b41171a62",
+      "response_bytes": 35,
+      "elapsed_ms": 312,
+      "note": "probe unknown param studyVersion=1",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 34,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175/history?format=json",
+      "method": "GET",
+      "http_status": 404,
+      "retrieved_at_utc": "2026-11-03T19:42:07Z",
+      "response_sha256": null,
+      "response_bytes": 0,
+      "elapsed_ms": 343,
+      "note": "probe historical-state endpoint /history",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 35,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175/versions?format=json",
+      "method": "GET",
+      "http_status": 404,
+      "retrieved_at_utc": "2026-11-03T19:42:08Z",
+      "response_sha256": null,
+      "response_bytes": 0,
+      "elapsed_ms": 312,
+      "note": "probe historical-state endpoint /versions",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 36,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&pageSize=3&countTotal=true&filter.advanced=AREA%5BLastUpdatePostDate%5DRANGE%5B2019-01-01%2C2019-12-31%5D",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:09Z",
+      "response_sha256": "8e2cdb7457aa166e0ba7da313e75a61b22a621e9ba9a2344cae072a61e96ca3a",
+      "response_bytes": 41494,
+      "elapsed_ms": 327,
+      "note": "probe: only lastUpdatePostDate is time-filterable; returns current state",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 37,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22Medtronic%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:09Z",
+      "response_sha256": "e0723629311edd51f80a9743bb3b7bc1cb7e4dd53ee6cd849fb504f670f9b72c",
+      "response_bytes": 122731,
+      "elapsed_ms": 264,
+      "note": "affiliation sample: AFF='Medtronic' (medtronic)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 38,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22GE+HealthCare%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:10Z",
+      "response_sha256": "1d0e00a3ba82ccdc89878e6dea096c70ad876390c58a0385125d06cdce2da886",
+      "response_bytes": 126167,
+      "elapsed_ms": 422,
+      "note": "affiliation sample: AFF='GE HealthCare' (ge_healthcare)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 39,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22Philips%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:11Z",
+      "response_sha256": "ad6e01a2801edd02e66aa937851b9cad5499c7c95e1c08d8b509ae6594649985",
+      "response_bytes": 158917,
+      "elapsed_ms": 483,
+      "note": "affiliation sample: AFF='Philips' (philips)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 40,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22Dr%C3%A4ger%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:12Z",
+      "response_sha256": "2775c48fd5de69836802612d77ed758808cf05999ce8cee21a9bfa2f2fb70bd0",
+      "response_bytes": 86226,
+      "elapsed_ms": 233,
+      "note": "affiliation sample: AFF='Dräger' (draeger)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 41,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22Mindray%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:12Z",
+      "response_sha256": "2f04b5acdbbceffc9a3fc31681d31e51e7acd91128be9d3096ff3432eac58bfa",
+      "response_bytes": 139545,
+      "elapsed_ms": 343,
+      "note": "affiliation sample: AFF='Mindray' (mindray)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 42,
+      "source": "openalex",
+      "url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3AMedtronic&per-page=12&select=id%2Cdoi%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Cpublication_year%2Ctype&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:13Z",
+      "response_sha256": "d14f0e4caba6c7d4e31dad72258487d63944d2d22e64f1ab98ca8e29f04b912a",
+      "response_bytes": 4188,
+      "elapsed_ms": 578,
+      "note": "works sample: raw_affiliation_strings.search='Medtronic' (medtronic)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 43,
+      "source": "openalex",
+      "url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3APhilips&per-page=6&select=id%2Cdoi%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Cpublication_year%2Ctype&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:14Z",
+      "response_sha256": "8940ee0c1df6d542b75549e6fd333104edfb81a716cc050c5326a085fb54af6f",
+      "response_bytes": 2624,
+      "elapsed_ms": 531,
+      "note": "works sample: raw_affiliation_strings.search='Philips' (philips)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 44,
+      "source": "openalex",
+      "url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3AGE+HealthCare&per-page=6&select=id%2Cdoi%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Cpublication_year%2Ctype&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:15Z",
+      "response_sha256": "8151c55104edb6186e8f989562d88492da2d0ada385262bb84c6c68a4c585c4b",
+      "response_bytes": 2628,
+      "elapsed_ms": 672,
+      "note": "works sample: raw_affiliation_strings.search='GE HealthCare' (ge_healthcare)",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 45,
+      "source": "crossref",
+      "url": "https://api.crossref.org/works?query.affiliation=Medtronic&rows=15&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:19Z",
+      "response_sha256": "2b06746ef07f056313dba76232adf85332c5f5512bbf99c572a770427c4d365b",
+      "response_bytes": 81211,
+      "elapsed_ms": 2625,
+      "note": "affiliation query sample: 'Medtronic' (medtronic), rows=15",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 46,
+      "source": "crossref",
+      "url": "https://api.crossref.org/works?query.affiliation=Philips&rows=15&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:42:21Z",
+      "response_sha256": "7dbeffeb48c43cbb4225b868cfc3c4ece2e9f3c6c30d75cbbbc0b64067bd376c",
+      "response_bytes": 95506,
+      "elapsed_ms": 2483,
+      "note": "affiliation query sample: 'Philips' (philips), rows=15",
+      "attempt": 1,
+      "audit_pass": 2,
+      "error": null
+    },
+    {
+      "seq": 47,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT06678841?format=json",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:35Z",
+      "response_sha256": "e1e31412991ccade8cfabdc9ca228ed21d33dc6980df6b936cdc9a9adceaf773",
+      "response_bytes": 23697,
+      "elapsed_ms": 328,
+      "note": "field enumeration: full record for one Medtronic trial",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 48,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=Medtronic&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:36Z",
+      "response_sha256": "17f416b64859943f52b9c6bb9bf5eb4921dadc18a18ebb2d273555460967ac09",
+      "response_bytes": 640490,
+      "elapsed_ms": 500,
+      "note": "stratified sample: sponsor='Medtronic' (medtronic)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 49,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=GE+HealthCare&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:37Z",
+      "response_sha256": "70e7c92bd400cec65679b1342a6d6d00165ef1ab3d137d56bd10af50c408143b",
+      "response_bytes": 539597,
+      "elapsed_ms": 468,
+      "note": "stratified sample: sponsor='GE HealthCare' (ge_healthcare)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 50,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=Philips&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:38Z",
+      "response_sha256": "ffdfbdb3cfa17a0f86a7d6fae1e6d154afad86edbde7d78f6d66c69e750b7973",
+      "response_bytes": 709722,
+      "elapsed_ms": 453,
+      "note": "stratified sample: sponsor='Philips' (philips)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 51,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=Dr%C3%A4ger&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:38Z",
+      "response_sha256": "d502cb6bb043f627c7958bbe5c8948c40151306b83a5b81f42b51fe322f019e6",
+      "response_bytes": 19877,
+      "elapsed_ms": 438,
+      "note": "stratified sample: sponsor='Dräger' (draeger)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 52,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&query.spons=Mindray&pageSize=40&countTotal=true",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:39Z",
+      "response_sha256": "cd61b55a4c7d6f4b8d0ab5b6fa136b637bf965832cfcb0c507c81bb785b1f43f",
+      "response_bytes": 78631,
+      "elapsed_ms": 406,
+      "note": "stratified sample: sponsor='Mindray' (mindray)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 53,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:40Z",
+      "response_sha256": "378ece4bb4ee531c51f52f3acfc73fa6f525a397617c8bbd984ea0c419b63f7a",
+      "response_bytes": 37198,
+      "elapsed_ms": 391,
+      "note": "as-of test baseline (current state) NCT00617175",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 54,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json&asOf=2019-06-01",
+      "method": "GET",
+      "http_status": 400,
+      "retrieved_at_utc": "2026-11-03T19:43:41Z",
+      "response_sha256": "ba07129d92a023c2dad5620c47a1942b289f30239589392b93f165dfa57630c6",
+      "response_bytes": 27,
+      "elapsed_ms": 360,
+      "note": "probe unknown param asOf=2019-06-01",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 55,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json&date=2019-06-01",
+      "method": "GET",
+      "http_status": 400,
+      "retrieved_at_utc": "2026-11-03T19:43:42Z",
+      "response_sha256": "6d12c6c52b756a96bfbb6e7b8fe27a514e24214859b0666c83c470a4ae6b835e",
+      "response_bytes": 27,
+      "elapsed_ms": 421,
+      "note": "probe unknown param date=2019-06-01",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 56,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json&studyVersion=1",
+      "method": "GET",
+      "http_status": 400,
+      "retrieved_at_utc": "2026-11-03T19:43:42Z",
+      "response_sha256": "ba90048c1127fdfe7051483403b8959e886e800e120639682fde3b0b41171a62",
+      "response_bytes": 35,
+      "elapsed_ms": 422,
+      "note": "probe unknown param studyVersion=1",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 57,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175/history?format=json",
+      "method": "GET",
+      "http_status": 404,
+      "retrieved_at_utc": "2026-11-03T19:43:43Z",
+      "response_sha256": null,
+      "response_bytes": 0,
+      "elapsed_ms": 375,
+      "note": "probe historical-state endpoint /history",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 58,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175/versions?format=json",
+      "method": "GET",
+      "http_status": 404,
+      "retrieved_at_utc": "2026-11-03T19:43:44Z",
+      "response_sha256": null,
+      "response_bytes": 0,
+      "elapsed_ms": 375,
+      "note": "probe historical-state endpoint /versions",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 59,
+      "source": "ctgov",
+      "url": "https://clinicaltrials.gov/api/v2/studies?format=json&pageSize=3&countTotal=true&filter.advanced=AREA%5BLastUpdatePostDate%5DRANGE%5B2019-01-01%2C2019-12-31%5D",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:45Z",
+      "response_sha256": "8e2cdb7457aa166e0ba7da313e75a61b22a621e9ba9a2344cae072a61e96ca3a",
+      "response_bytes": 41494,
+      "elapsed_ms": 391,
+      "note": "probe: only lastUpdatePostDate is time-filterable; returns current state",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 60,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22Medtronic%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:45Z",
+      "response_sha256": "422beb616c74e7d922e1864c273b67baa0fd2231958f0f53574b2b33d0be9589",
+      "response_bytes": 122731,
+      "elapsed_ms": 297,
+      "note": "affiliation sample: AFF='Medtronic' (medtronic)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 61,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22GE+HealthCare%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:46Z",
+      "response_sha256": "1720cded5e6c53c8ac3fec7caef44189c525743c97a0ed0eba5594e9fef5c7ca",
+      "response_bytes": 126167,
+      "elapsed_ms": 375,
+      "note": "affiliation sample: AFF='GE HealthCare' (ge_healthcare)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 62,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22Philips%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:47Z",
+      "response_sha256": "e7329d542f7c9b5d903d2f86517fa21a7ffe08d57f83b47e39317c7fa4b8b47e",
+      "response_bytes": 158917,
+      "elapsed_ms": 312,
+      "note": "affiliation sample: AFF='Philips' (philips)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 63,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22Dr%C3%A4ger%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:48Z",
+      "response_sha256": "72909549ccee4ee7582cce6aef40aa1cade0c7001b521b265d7dfe9d152685c1",
+      "response_bytes": 86226,
+      "elapsed_ms": 281,
+      "note": "affiliation sample: AFF='Dräger' (draeger)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 64,
+      "source": "epmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28AFF%3A%22Mindray%22%29+AND+%28SRC%3AMED+OR+SRC%3APPR%29&format=json&resultType=core&pageSize=20",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:48Z",
+      "response_sha256": "50116bdd50065a1c839ce8fd4c9e54d602bf0d05cb5db78eae620c896f16a3d8",
+      "response_bytes": 139545,
+      "elapsed_ms": 281,
+      "note": "affiliation sample: AFF='Mindray' (mindray)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 65,
+      "source": "openalex",
+      "url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3AMedtronic&per-page=12&select=id%2Cdoi%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Cpublication_year%2Ctype&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:49Z",
+      "response_sha256": "fe18bd002cde216a9df4767288c97616cd449f54d818d5f29e5c828e45d28b6b",
+      "response_bytes": 4187,
+      "elapsed_ms": 703,
+      "note": "works sample: raw_affiliation_strings.search='Medtronic' (medtronic)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 66,
+      "source": "openalex",
+      "url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3APhilips&per-page=6&select=id%2Cdoi%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Cpublication_year%2Ctype&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:51Z",
+      "response_sha256": "e4a3c6bc6682a8125714e19e87950ea6c04c02cd2820f9ca3022dc3dbef1b1bb",
+      "response_bytes": 2624,
+      "elapsed_ms": 718,
+      "note": "works sample: raw_affiliation_strings.search='Philips' (philips)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 67,
+      "source": "openalex",
+      "url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3AGE+HealthCare&per-page=6&select=id%2Cdoi%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Cpublication_year%2Ctype&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:51Z",
+      "response_sha256": "7b94a0228687c7741c6bf0c424c4d6f5bce889b10bee1d3df3aa6045ff6c9630",
+      "response_bytes": 2627,
+      "elapsed_ms": 515,
+      "note": "works sample: raw_affiliation_strings.search='GE HealthCare' (ge_healthcare)",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 68,
+      "source": "crossref",
+      "url": "https://api.crossref.org/works?query.affiliation=Medtronic&rows=15&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:55Z",
+      "response_sha256": "158bac023604863255dc3fe115638107ba34ca644e43d5a4f0e596d57e7e5b64",
+      "response_bytes": 81215,
+      "elapsed_ms": 3000,
+      "note": "affiliation query sample: 'Medtronic' (medtronic), rows=15",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    },
+    {
+      "seq": 69,
+      "source": "crossref",
+      "url": "https://api.crossref.org/works?query.affiliation=Philips&rows=15&mailto=medradar.research%40proton.me",
+      "method": "GET",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:43:58Z",
+      "response_sha256": "e3e4c2a9c6b085bf0e5710647e03f20c3ff8b6b852b561a71ea4e449389da766",
+      "response_bytes": 102989,
+      "elapsed_ms": 3235,
+      "note": "affiliation query sample: 'Philips' (philips), rows=15",
+      "attempt": 1,
+      "audit_pass": 3,
+      "error": null
+    }
+  ],
+  "sources": {
+    "clinicaltrials_gov": {
+      "source": "clinicaltrials_gov",
+      "api": "API v2 (https://clinicaltrials.gov/api/v2)",
+      "field_enumeration": {
+        "record": "NCT06678841",
+        "http_status": 200,
+        "date_field_inventory": {
+          "protocolSection.statusModule.completionDateStruct.date": {
+            "n_present": 1,
+            "precision": {
+              "year": 0,
+              "month": 1,
+              "day": 0,
+              "datetime": 0,
+              "other": 0
+            }
+          },
+          "protocolSection.statusModule.lastUpdatePostDateStruct.date": {
+            "n_present": 1,
+            "precision": {
+              "year": 0,
+              "month": 0,
+              "day": 1,
+              "datetime": 0,
+              "other": 0
+            }
+          },
+          "protocolSection.statusModule.lastUpdateSubmitDate": {
+            "n_present": 1,
+            "precision": {
+              "year": 0,
+              "month": 0,
+              "day": 1,
+              "datetime": 0,
+              "other": 0
+            }
+          },
+          "protocolSection.statusModule.primaryCompletionDateStruct.date": {
+            "n_present": 1,
+            "precision": {
+              "year": 0,
+              "month": 1,
+              "day": 0,
+              "datetime": 0,
+              "other": 0
+            }
+          },
+          "protocolSection.statusModule.startDateStruct.date": {
+            "n_present": 1,
+            "precision": {
+              "year": 0,
+              "month": 0,
+              "day": 1,
+              "datetime": 0,
+              "other": 0
+            }
+          },
+          "protocolSection.statusModule.statusVerifiedDate": {
+            "n_present": 1,
+            "precision": {
+              "year": 0,
+              "month": 1,
+              "day": 0,
+              "datetime": 0,
+              "other": 0
+            }
+          },
+          "protocolSection.statusModule.studyFirstPostDateStruct.date": {
+            "n_present": 1,
+            "precision": {
+              "year": 0,
+              "month": 0,
+              "day": 1,
+              "datetime": 0,
+              "other": 0
+            }
+          },
+          "protocolSection.statusModule.studyFirstSubmitDate": {
+            "n_present": 1,
+            "precision": {
+              "year": 0,
+              "month": 0,
+              "day": 1,
+              "datetime": 0,
+              "other": 0
+            }
+          },
+          "protocolSection.statusModule.studyFirstSubmitQcDate": {
+            "n_present": 1,
+            "precision": {
+              "year": 0,
+              "month": 0,
+              "day": 1,
+              "datetime": 0,
+              "other": 0
+            }
+          }
+        },
+        "n_date_fields": 9
+      },
+      "sponsor_queries": [
+        {
+          "company_key": "medtronic",
+          "sponsor_term": "Medtronic",
+          "http_status": 200,
+          "total_count": 1675,
+          "returned": 40
+        },
+        {
+          "company_key": "ge_healthcare",
+          "sponsor_term": "GE HealthCare",
+          "http_status": 200,
+          "total_count": 343,
+          "returned": 40
+        },
+        {
+          "company_key": "philips",
+          "sponsor_term": "Philips",
+          "http_status": 200,
+          "total_count": 376,
+          "returned": 40
+        },
+        {
+          "company_key": "draeger",
+          "sponsor_term": "Dräger",
+          "http_status": 200,
+          "total_count": 2,
+          "returned": 2
+        },
+        {
+          "company_key": "mindray",
+          "sponsor_term": "Mindray",
+          "http_status": 200,
+          "total_count": 6,
+          "returned": 6
+        }
+      ],
+      "n_studies_sampled": 128,
+      "companies_sampled": [
+        "draeger",
+        "ge_healthcare",
+        "medtronic",
+        "mindray",
+        "philips"
+      ],
+      "fields": {
+        "startDateStruct": {
+          "n_records": 128,
+          "n_present": 128,
+          "n_missing": 0,
+          "pct_missing": 0.0,
+          "precision": {
+            "year": 0,
+            "month": 57,
+            "day": 71,
+            "datetime": 0
+          },
+          "pct_month_of_present": 44.53,
+          "pct_day_of_present": 55.47,
+          "date_type_counts": {
+            "ACTUAL": 66,
+            "ESTIMATED": 11
+          },
+          "per_company": {
+            "draeger": {
+              "n": 2,
+              "n_present": 2,
+              "n_month": 2,
+              "n_day": 0,
+              "pct_month_of_present": 100.0
+            },
+            "ge_healthcare": {
+              "n": 40,
+              "n_present": 40,
+              "n_month": 22,
+              "n_day": 18,
+              "pct_month_of_present": 55.0
+            },
+            "medtronic": {
+              "n": 40,
+              "n_present": 40,
+              "n_month": 23,
+              "n_day": 17,
+              "pct_month_of_present": 57.5
+            },
+            "mindray": {
+              "n": 6,
+              "n_present": 6,
+              "n_month": 0,
+              "n_day": 6,
+              "pct_month_of_present": 0.0
+            },
+            "philips": {
+              "n": 40,
+              "n_present": 40,
+              "n_month": 10,
+              "n_day": 30,
+              "pct_month_of_present": 25.0
+            }
+          }
+        },
+        "studyFirstPostDateStruct": {
+          "n_records": 128,
+          "n_present": 128,
+          "n_missing": 0,
+          "pct_missing": 0.0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 128,
+            "datetime": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0,
+          "date_type_counts": {
+            "ACTUAL": 69,
+            "ESTIMATED": 59
+          },
+          "per_company": {
+            "draeger": {
+              "n": 2,
+              "n_present": 2,
+              "n_month": 0,
+              "n_day": 2,
+              "pct_month_of_present": 0.0
+            },
+            "ge_healthcare": {
+              "n": 40,
+              "n_present": 40,
+              "n_month": 0,
+              "n_day": 40,
+              "pct_month_of_present": 0.0
+            },
+            "medtronic": {
+              "n": 40,
+              "n_present": 40,
+              "n_month": 0,
+              "n_day": 40,
+              "pct_month_of_present": 0.0
+            },
+            "mindray": {
+              "n": 6,
+              "n_present": 6,
+              "n_month": 0,
+              "n_day": 6,
+              "pct_month_of_present": 0.0
+            },
+            "philips": {
+              "n": 40,
+              "n_present": 40,
+              "n_month": 0,
+              "n_day": 40,
+              "pct_month_of_present": 0.0
+            }
+          }
+        },
+        "lastUpdatePostDateStruct": {
+          "n_records": 128,
+          "n_present": 128,
+          "n_missing": 0,
+          "pct_missing": 0.0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 128,
+            "datetime": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0,
+          "date_type_counts": {
+            "ACTUAL": 102,
+            "ESTIMATED": 26
+          },
+          "per_company": {
+            "draeger": {
+              "n": 2,
+              "n_present": 2,
+              "n_month": 0,
+              "n_day": 2,
+              "pct_month_of_present": 0.0
+            },
+            "ge_healthcare": {
+              "n": 40,
+              "n_present": 40,
+              "n_month": 0,
+              "n_day": 40,
+              "pct_month_of_present": 0.0
+            },
+            "medtronic": {
+              "n": 40,
+              "n_present": 40,
+              "n_month": 0,
+              "n_day": 40,
+              "pct_month_of_present": 0.0
+            },
+            "mindray": {
+              "n": 6,
+              "n_present": 6,
+              "n_month": 0,
+              "n_day": 6,
+              "pct_month_of_present": 0.0
+            },
+            "philips": {
+              "n": 40,
+              "n_present": 40,
+              "n_month": 0,
+              "n_day": 40,
+              "pct_month_of_present": 0.0
+            }
+          }
+        },
+        "primaryCompletionDateStruct": {
+          "n_records": 128,
+          "n_present": 127,
+          "n_missing": 1,
+          "pct_missing": 0.78,
+          "precision": {
+            "year": 0,
+            "month": 58,
+            "day": 69,
+            "datetime": 0
+          },
+          "pct_month_of_present": 45.67,
+          "pct_day_of_present": 54.33,
+          "date_type_counts": {
+            "ACTUAL": 96,
+            "ESTIMATED": 31
+          },
+          "per_company": {
+            "draeger": {
+              "n": 2,
+              "n_present": 2,
+              "n_month": 2,
+              "n_day": 0,
+              "pct_month_of_present": 100.0
+            },
+            "ge_healthcare": {
+              "n": 40,
+              "n_present": 40,
+              "n_month": 21,
+              "n_day": 19,
+              "pct_month_of_present": 52.5
+            },
+            "medtronic": {
+              "n": 40,
+              "n_present": 39,
+              "n_month": 24,
+              "n_day": 15,
+              "pct_month_of_present": 61.54
+            },
+            "mindray": {
+              "n": 6,
+              "n_present": 6,
+              "n_month": 2,
+              "n_day": 4,
+              "pct_month_of_present": 33.33
+            },
+            "philips": {
+              "n": 40,
+              "n_present": 40,
+              "n_month": 9,
+              "n_day": 31,
+              "pct_month_of_present": 22.5
+            }
+          }
+        },
+        "resultsFirstPostDateStruct": {
+          "n_records": 128,
+          "n_present": 42,
+          "n_missing": 86,
+          "pct_missing": 67.19,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 42,
+            "datetime": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0,
+          "date_type_counts": {
+            "ESTIMATED": 13,
+            "ACTUAL": 29
+          },
+          "per_company": {
+            "draeger": {
+              "n": 2,
+              "n_present": 0,
+              "n_month": 0,
+              "n_day": 0,
+              "pct_month_of_present": null
+            },
+            "ge_healthcare": {
+              "n": 40,
+              "n_present": 13,
+              "n_month": 0,
+              "n_day": 13,
+              "pct_month_of_present": 0.0
+            },
+            "medtronic": {
+              "n": 40,
+              "n_present": 14,
+              "n_month": 0,
+              "n_day": 14,
+              "pct_month_of_present": 0.0
+            },
+            "mindray": {
+              "n": 6,
+              "n_present": 0,
+              "n_month": 0,
+              "n_day": 0,
+              "pct_month_of_present": null
+            },
+            "philips": {
+              "n": 40,
+              "n_present": 15,
+              "n_month": 0,
+              "n_day": 15,
+              "pct_month_of_present": 0.0
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "nct_id": "NCT03437382",
+          "company": "medtronic",
+          "startDateStruct": [
+            "2018-07-01",
+            "ACTUAL"
+          ],
+          "studyFirstPostDateStruct": [
+            "2018-02-19",
+            "ACTUAL"
+          ],
+          "lastUpdatePostDateStruct": [
+            "2021-03-18",
+            "ACTUAL"
+          ],
+          "primaryCompletionDateStruct": [
+            "2021-03-17",
+            "ACTUAL"
+          ],
+          "resultsFirstPostDateStruct": [
+            null,
+            null
+          ]
+        },
+        {
+          "nct_id": "NCT03546374",
+          "company": "medtronic",
+          "startDateStruct": [
+            "2018-11-15",
+            "ACTUAL"
+          ],
+          "studyFirstPostDateStruct": [
+            "2018-06-06",
+            "ACTUAL"
+          ],
+          "lastUpdatePostDateStruct": [
+            "2026-05-14",
+            "ACTUAL"
+          ],
+          "primaryCompletionDateStruct": [
+            "2024-10-01",
+            "ACTUAL"
+          ],
+          "resultsFirstPostDateStruct": [
+            null,
+            null
+          ]
+        },
+        {
+          "nct_id": "NCT07115953",
+          "company": "medtronic",
+          "startDateStruct": [
+            "2025-09-22",
+            "ACTUAL"
+          ],
+          "studyFirstPostDateStruct": [
+            "2025-08-11",
+            "ACTUAL"
+          ],
+          "lastUpdatePostDateStruct": [
+            "2026-10-16",
+            "ACTUAL"
+          ],
+          "primaryCompletionDateStruct": [
+            "2027-10-30",
+            "ESTIMATED"
+          ],
+          "resultsFirstPostDateStruct": [
+            null,
+            null
+          ]
+        }
+      ],
+      "month_precision_examples": [
+        {
+          "nct_id": "NCT00885339",
+          "company": "medtronic",
+          "startDateStruct": "2008-02",
+          "startDate_type": null,
+          "studyFirstPostDateStruct": "2009-04-21"
+        },
+        {
+          "nct_id": "NCT01763567",
+          "company": "medtronic",
+          "startDateStruct": "2012-03",
+          "startDate_type": null,
+          "studyFirstPostDateStruct": "2013-01-09"
+        },
+        {
+          "nct_id": "NCT00865345",
+          "company": "medtronic",
+          "startDateStruct": "2009-03",
+          "startDate_type": null,
+          "studyFirstPostDateStruct": "2009-03-19"
+        }
+      ],
+      "event_vs_publication": {
+        "n_pairs": 128,
+        "first_post_minus_start_days": {
+          "n": 128,
+          "min": -1168,
+          "p25": -83,
+          "median": 0.5,
+          "p75": 46,
+          "max": 5010,
+          "mean": 57.16
+        },
+        "n_post_before_start": 64,
+        "pct_post_before_start": 50.0,
+        "n_post_after_start": 64,
+        "examples_pre_registered": [
+          {
+            "company": "philips",
+            "start": "2014-04",
+            "first_post": "2011-01-19",
+            "first_post_minus_start_days": -1168
+          },
+          {
+            "company": "medtronic",
+            "start": "2018-07",
+            "first_post": "2015-05-29",
+            "first_post_minus_start_days": -1129
+          },
+          {
+            "company": "ge_healthcare",
+            "start": "2026-10",
+            "first_post": "2023-09-06",
+            "first_post_minus_start_days": -1121
+          },
+          {
+            "company": "ge_healthcare",
+            "start": "2020-12-01",
+            "first_post": "2018-11-14",
+            "first_post_minus_start_days": -748
+          },
+          {
+            "company": "ge_healthcare",
+            "start": "2013-05",
+            "first_post": "2011-12-14",
+            "first_post_minus_start_days": -504
+          }
+        ]
+      },
+      "asof_candidate": {
+        "nct_id": "NCT00617175",
+        "company": "medtronic",
+        "study_first_post_date": "2008-02-15",
+        "last_update_post_date": "2025-07-02",
+        "update_minus_first_post_days": 6347,
+        "current_overall_status": "COMPLETED",
+        "has_version_history_in_payload": false
+      },
+      "asof_tests": [
+        {
+          "test": "baseline_current_state",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json",
+          "http_status": 200,
+          "sha256": "378ece4bb4ee531c51f52f3acfc73fa6f525a397617c8bbd984ea0c419b63f7a",
+          "nct_id": "NCT00617175"
+        },
+        {
+          "test": "asOf_param",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json&asOf=2019-06-01",
+          "http_status": 400,
+          "sha256": "ba07129d92a023c2dad5620c47a1942b289f30239589392b93f165dfa57630c6",
+          "identical_to_baseline": false
+        },
+        {
+          "test": "date_param",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json&date=2019-06-01",
+          "http_status": 400,
+          "sha256": "6d12c6c52b756a96bfbb6e7b8fe27a514e24214859b0666c83c470a4ae6b835e",
+          "identical_to_baseline": false
+        },
+        {
+          "test": "studyVersion_param",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175?format=json&studyVersion=1",
+          "http_status": 400,
+          "sha256": "ba90048c1127fdfe7051483403b8959e886e800e120639682fde3b0b41171a62",
+          "identical_to_baseline": false
+        },
+        {
+          "test": "history_endpoint",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175/history?format=json",
+          "http_status": 404,
+          "response_excerpt": null,
+          "is_json_study": false
+        },
+        {
+          "test": "versions_endpoint",
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT00617175/versions?format=json",
+          "http_status": 404,
+          "response_excerpt": null,
+          "is_json_study": false
+        },
+        {
+          "test": "lastUpdatePostDate_range_filter",
+          "url": "https://clinicaltrials.gov/api/v2/studies?format=json&pageSize=3&countTotal=true&filter.advanced=AREA%5BLastUpdatePostDate%5DRANGE%5B2019-01-01%2C2019-12-31%5D",
+          "http_status": 200,
+          "returned": 3,
+          "total_count": 31734,
+          "first_last_update_post": "2019-01-22",
+          "first_study_first_post": "2010-04-05"
+        }
+      ],
+      "historical_state_retrievable": false,
+      "historical_state_conclusion": "API v2 exposes exactly one registry state per study: the current one. There is no version/history endpoint; unknown as-of parameters are either rejected or silently ignored (byte-identical response). Only lastUpdatePostDate is offered as a time filter, and it is a stamp on the current record, not a pointer into a retrievable past state. Therefore no historical point-in-time registry state can be recovered from this source."
+    },
+    "europe_pmc": {
+      "source": "europe_pmc",
+      "api": "REST search, resultType=core",
+      "queries": [
+        {
+          "company_key": "medtronic",
+          "term": "Medtronic",
+          "query": "(AFF:\"Medtronic\") AND (SRC:MED OR SRC:PPR)",
+          "http_status": 200,
+          "hit_count": 3556,
+          "returned": 20
+        },
+        {
+          "company_key": "ge_healthcare",
+          "term": "GE HealthCare",
+          "query": "(AFF:\"GE HealthCare\") AND (SRC:MED OR SRC:PPR)",
+          "http_status": 200,
+          "hit_count": 5107,
+          "returned": 20
+        },
+        {
+          "company_key": "philips",
+          "term": "Philips",
+          "query": "(AFF:\"Philips\") AND (SRC:MED OR SRC:PPR)",
+          "http_status": 200,
+          "hit_count": 8272,
+          "returned": 20
+        },
+        {
+          "company_key": "draeger",
+          "term": "Dräger",
+          "query": "(AFF:\"Dräger\") AND (SRC:MED OR SRC:PPR)",
+          "http_status": 200,
+          "hit_count": 36,
+          "returned": 20
+        },
+        {
+          "company_key": "mindray",
+          "term": "Mindray",
+          "query": "(AFF:\"Mindray\") AND (SRC:MED OR SRC:PPR)",
+          "http_status": 200,
+          "hit_count": 286,
+          "returned": 20
+        }
+      ],
+      "n_papers_sampled": 100,
+      "date_field_inventory": {
+        "dateOfCompletion": {
+          "n_present": 77,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 77,
+            "datetime": 0,
+            "other": 0
+          }
+        },
+        "dateOfCreation": {
+          "n_present": 100,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 100,
+            "datetime": 0,
+            "other": 0
+          }
+        },
+        "dateOfRevision": {
+          "n_present": 100,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 100,
+            "datetime": 0,
+            "other": 0
+          }
+        },
+        "electronicPublicationDate": {
+          "n_present": 75,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 75,
+            "datetime": 0,
+            "other": 0
+          }
+        },
+        "firstIndexDate": {
+          "n_present": 100,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 100,
+            "datetime": 0,
+            "other": 0
+          }
+        },
+        "firstPublicationDate": {
+          "n_present": 100,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 100,
+            "datetime": 0,
+            "other": 0
+          }
+        },
+        "fullTextReceivedDate": {
+          "n_present": 52,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 52,
+            "datetime": 0,
+            "other": 0
+          }
+        },
+        "journalInfo.dateOfPublication": {
+          "n_present": 100,
+          "precision": {
+            "year": 13,
+            "month": 0,
+            "day": 0,
+            "datetime": 0,
+            "other": 87
+          }
+        },
+        "journalInfo.printPublicationDate": {
+          "n_present": 100,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 100,
+            "datetime": 0,
+            "other": 0
+          }
+        }
+      },
+      "n_date_fields": 9,
+      "fields": {
+        "firstPublicationDate": {
+          "n": 100,
+          "n_present": 100,
+          "n_missing": 0,
+          "pct_missing": 0.0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 100,
+            "datetime": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        },
+        "firstIndexDate": {
+          "n": 100,
+          "n_present": 100,
+          "n_missing": 0,
+          "pct_missing": 0.0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 100,
+            "datetime": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        },
+        "dateOfCreation": {
+          "n": 100,
+          "n_present": 100,
+          "n_missing": 0,
+          "pct_missing": 0.0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 100,
+            "datetime": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        },
+        "dateOfRevision": {
+          "n": 100,
+          "n_present": 100,
+          "n_missing": 0,
+          "pct_missing": 0.0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 100,
+            "datetime": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        },
+        "electronicPublicationDate": {
+          "n": 100,
+          "n_present": 75,
+          "n_missing": 25,
+          "pct_missing": 25.0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 75,
+            "datetime": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        },
+        "journalInfo.printPublicationDate": {
+          "n": 100,
+          "n_present": 100,
+          "n_missing": 0,
+          "pct_missing": 0.0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 100,
+            "datetime": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        },
+        "journalInfo.dateOfPublication": {
+          "n": 100,
+          "n_present": 100,
+          "n_missing": 0,
+          "pct_missing": 0.0,
+          "precision": {
+            "year": 13,
+            "month": 0,
+            "day": 0,
+            "datetime": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 0.0
+        }
+      },
+      "first_index_minus_first_publication_days": {
+        "stats": {
+          "n": 100,
+          "min": -121,
+          "p25": 1,
+          "median": 4.0,
+          "p75": 19,
+          "max": 1245,
+          "mean": 47.83
+        },
+        "buckets": {
+          "negative": 7,
+          "0d": 4,
+          "1d": 25,
+          "2-7d": 22,
+          "8-30d": 29,
+          "31-365d": 9,
+          ">365d": 4,
+          "unknown": 0,
+          "total": 100
+        },
+        "n_negative": 7,
+        "n_zero": 4,
+        "per_company_median": {
+          "medtronic": 1.5,
+          "ge_healthcare": 2.0,
+          "philips": 1.0,
+          "draeger": 21.5,
+          "mindray": 12.0
+        }
+      },
+      "creation_minus_first_index_days": {
+        "stats": {
+          "n": 100,
+          "min": -1197,
+          "p25": -2,
+          "median": -1.0,
+          "p75": -1,
+          "max": 1,
+          "mean": -34.66
+        },
+        "buckets": {
+          "negative": 76,
+          "0d": 22,
+          "1d": 2,
+          "2-7d": 0,
+          "8-30d": 0,
+          "31-365d": 0,
+          ">365d": 0,
+          "unknown": 0,
+          "total": 100
+        }
+      },
+      "revision_minus_first_index_days": {
+        "stats": {
+          "n": 100,
+          "min": -543,
+          "p25": 0,
+          "median": 35.5,
+          "p75": 132,
+          "max": 5289,
+          "mean": 229.39
+        },
+        "buckets": {
+          "negative": 22,
+          "0d": 11,
+          "1d": 3,
+          "2-7d": 5,
+          "8-30d": 6,
+          "31-365d": 46,
+          ">365d": 7,
+          "unknown": 0,
+          "total": 100
+        }
+      },
+      "first_publication_minus_electronic_days": {
+        "stats": {
+          "n": 75,
+          "min": 0,
+          "p25": 0,
+          "median": 0,
+          "p75": 0,
+          "max": 0,
+          "mean": 0.0
+        },
+        "n_pairs": 75
+      },
+      "examples": [
+        {
+          "id": "42427266",
+          "source": "MED",
+          "company": "medtronic",
+          "firstPublicationDate": "2026-07-01",
+          "firstIndexDate": "2026-07-10",
+          "dateOfCreation": "2026-07-10",
+          "dateOfRevision": "2026-08-13",
+          "electronicPublicationDate": null,
+          "printPublicationDate": "2026-07-01",
+          "index_minus_pub_days": 9
+        },
+        {
+          "id": "42517528",
+          "source": "MED",
+          "company": "medtronic",
+          "firstPublicationDate": "2026-07-01",
+          "firstIndexDate": "2026-07-30",
+          "dateOfCreation": "2026-07-28",
+          "dateOfRevision": "2026-07-29",
+          "electronicPublicationDate": null,
+          "printPublicationDate": "2026-07-01",
+          "index_minus_pub_days": 29
+        },
+        {
+          "id": "42945024",
+          "source": "MED",
+          "company": "medtronic",
+          "firstPublicationDate": "2026-10-27",
+          "firstIndexDate": "2026-10-28",
+          "dateOfCreation": "2026-10-27",
+          "dateOfRevision": "2026-10-27",
+          "electronicPublicationDate": "2026-10-27",
+          "printPublicationDate": "2026-10-01",
+          "index_minus_pub_days": 1
+        }
+      ],
+      "negative_lag_examples": [
+        {
+          "id": "41498529",
+          "company": "medtronic",
+          "firstPublicationDate": "2026-03-01",
+          "firstIndexDate": "2026-01-08",
+          "printPublicationDate": "2026-03-01",
+          "electronicPublicationDate": null,
+          "index_minus_pub_days": -52
+        },
+        {
+          "id": "42629478",
+          "company": "medtronic",
+          "firstPublicationDate": "2026-10-01",
+          "firstIndexDate": "2026-08-22",
+          "printPublicationDate": "2026-10-01",
+          "electronicPublicationDate": null,
+          "index_minus_pub_days": -40
+        },
+        {
+          "id": "42532648",
+          "company": "ge_healthcare",
+          "firstPublicationDate": "2026-10-01",
+          "firstIndexDate": "2026-07-31",
+          "printPublicationDate": "2026-10-01",
+          "electronicPublicationDate": "2026-10-01",
+          "index_minus_pub_days": -62
+        },
+        {
+          "id": "42613818",
+          "company": "philips",
+          "firstPublicationDate": "2026-09-01",
+          "firstIndexDate": "2026-08-22",
+          "printPublicationDate": "2026-09-01",
+          "electronicPublicationDate": null,
+          "index_minus_pub_days": -10
+        }
+      ],
+      "historical_state_retrievable": false,
+      "historical_state_conclusion": "Europe PMC search returns the CURRENT indexed record only. dateOfCreation and dateOfRevision describe the metadata record's own history, not a retrievable snapshot; there is no as-of query parameter. firstIndexDate is the best available SOURCE_PUBLISHED proxy for 'available in this index', and it is measured to lag the journal publication date by the amount tabulated."
+    },
+    "openalex": {
+      "source": "openalex",
+      "api": "https://api.openalex.org/works",
+      "budget_note": "hard cap: <=8 requests total for this source",
+      "queries": [
+        {
+          "company_key": "medtronic",
+          "term": "Medtronic",
+          "http_status": 200,
+          "total_count": 9666,
+          "returned": 12
+        },
+        {
+          "company_key": "philips",
+          "term": "Philips",
+          "http_status": 200,
+          "total_count": 50914,
+          "returned": 6
+        },
+        {
+          "company_key": "ge_healthcare",
+          "term": "GE HealthCare",
+          "http_status": 200,
+          "total_count": 9767,
+          "returned": 6
+        }
+      ],
+      "n_works_sampled": 24,
+      "fields_requested": [
+        "publication_date",
+        "created_date",
+        "updated_date"
+      ],
+      "field_precision": {
+        "publication_date": {
+          "year": 0,
+          "month": 0,
+          "day": 24,
+          "datetime": 0,
+          "missing": 0,
+          "other": 0,
+          "n": 24
+        },
+        "created_date": {
+          "year": 0,
+          "month": 0,
+          "day": 0,
+          "datetime": 24,
+          "missing": 0,
+          "other": 0,
+          "n": 24
+        },
+        "updated_date": {
+          "year": 0,
+          "month": 0,
+          "day": 0,
+          "datetime": 24,
+          "missing": 0,
+          "other": 0,
+          "n": 24
+        }
+      },
+      "created_minus_publication_days": {
+        "stats": {
+          "n": 24,
+          "min": 8,
+          "p25": 2598,
+          "median": 3567.5,
+          "p75": 4673,
+          "max": 24222,
+          "mean": 5578.25
+        },
+        "buckets": {
+          "negative": 0,
+          "0d": 0,
+          "1d": 0,
+          "2-7d": 0,
+          "8-30d": 2,
+          "31-365d": 0,
+          ">365d": 22,
+          "unknown": 0,
+          "total": 24
+        },
+        "n_zero": 0,
+        "pct_zero": 0.0,
+        "n_negative": 0
+      },
+      "updated_minus_created_days": {
+        "stats": {
+          "n": 24,
+          "min": 2976,
+          "p25": 3781,
+          "median": 3781.0,
+          "p75": 3784,
+          "max": 3784,
+          "mean": 3737.67
+        },
+        "buckets": {
+          "negative": 0,
+          "0d": 0,
+          "1d": 0,
+          "2-7d": 0,
+          "8-30d": 0,
+          "31-365d": 0,
+          ">365d": 24,
+          "unknown": 0,
+          "total": 24
+        },
+        "n_negative": 0
+      },
+      "percent_missing": {
+        "publication_date": 0.0,
+        "created_date": 0.0,
+        "updated_date": 0.0
+      },
+      "examples": [
+        {
+          "id": "https://openalex.org/W2008881670",
+          "doi": "https://doi.org/10.1021/bm070313n",
+          "publication_date": "2007-06-19",
+          "created_date": "2016-06-24T00:00:00",
+          "updated_date": "2026-10-31T12:09:11.096373",
+          "created_minus_publication_days": 3293,
+          "updated_minus_created_days": 3781
+        },
+        {
+          "id": "https://openalex.org/W2060583550",
+          "doi": "https://doi.org/10.1109/tnsre.2012.2183617",
+          "publication_date": "2012-01-31",
+          "created_date": "2016-06-24T00:00:00",
+          "updated_date": "2026-11-03T10:50:19.383937",
+          "created_minus_publication_days": 1606,
+          "updated_minus_created_days": 3784
+        },
+        {
+          "id": "https://openalex.org/W2063142742",
+          "doi": "https://doi.org/10.1007/s00264-007-0418-6",
+          "publication_date": "2007-07-16",
+          "created_date": "2016-06-24T00:00:00",
+          "updated_date": "2026-11-03T10:50:19.383937",
+          "created_minus_publication_days": 3266,
+          "updated_minus_created_days": 3784
+        },
+        {
+          "id": "https://openalex.org/W2587843318",
+          "doi": "https://doi.org/10.1089/dia.2016.0421",
+          "publication_date": "2017-01-30",
+          "created_date": "2017-02-24T00:00:00",
+          "updated_date": "2026-10-31T12:09:11.096373",
+          "created_minus_publication_days": 25,
+          "updated_minus_created_days": 3536
+        }
+      ],
+      "historical_state_retrievable": false,
+      "historical_state_conclusion": "OpenAlex returns a single current version of each work: publication_date (science), created_date (when the OpenAlex record was inserted) and updated_date (last index refresh). updated_date overwrites, it does not preserve history, and no as-of/versioned query exists. Under the shared daily budget this was only probed at the record level."
+    },
+    "crossref": {
+      "source": "crossref",
+      "api": "https://api.crossref.org/works",
+      "queries": [
+        {
+          "company_key": "medtronic",
+          "term": "Medtronic",
+          "http_status": 200,
+          "total_results": 2510,
+          "returned": 15
+        },
+        {
+          "company_key": "philips",
+          "term": "Philips",
+          "http_status": 200,
+          "total_results": 9619,
+          "returned": 15
+        }
+      ],
+      "n_works_sampled": 30,
+      "fields": {
+        "issued": {
+          "n": 30,
+          "n_present": 30,
+          "n_missing": 0,
+          "pct_present": 100.0,
+          "precision": {
+            "year": 1,
+            "month": 12,
+            "day": 17,
+            "datetime": 0
+          }
+        },
+        "published_online": {
+          "n": 30,
+          "n_present": 15,
+          "n_missing": 15,
+          "pct_present": 50.0,
+          "precision": {
+            "year": 0,
+            "month": 1,
+            "day": 14,
+            "datetime": 0
+          }
+        },
+        "published_print": {
+          "n": 30,
+          "n_present": 27,
+          "n_missing": 3,
+          "pct_present": 90.0,
+          "precision": {
+            "year": 1,
+            "month": 13,
+            "day": 13,
+            "datetime": 0
+          }
+        },
+        "created": {
+          "n": 30,
+          "n_present": 30,
+          "n_missing": 0,
+          "pct_present": 100.0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 0,
+            "datetime": 30
+          }
+        },
+        "deposited": {
+          "n": 30,
+          "n_present": 30,
+          "n_missing": 0,
+          "pct_present": 100.0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 0,
+            "datetime": 30
+          }
+        },
+        "indexed": {
+          "n": 30,
+          "n_present": 30,
+          "n_missing": 0,
+          "pct_present": 100.0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 0,
+            "datetime": 30
+          }
+        }
+      },
+      "n_with_issued": 30,
+      "n_with_published_online": 15,
+      "n_with_published_print": 27,
+      "n_with_created": 30,
+      "n_print_only": 14,
+      "created_minus_issued_days": {
+        "stats": {
+          "n": 30,
+          "min": -115,
+          "p25": 0,
+          "median": 13.5,
+          "p75": 1354,
+          "max": 12598,
+          "mean": 1763.0
+        },
+        "buckets": {
+          "negative": 6,
+          "0d": 3,
+          "1d": 2,
+          "2-7d": 3,
+          "8-30d": 3,
+          "31-365d": 3,
+          ">365d": 10,
+          "unknown": 0,
+          "total": 30
+        },
+        "n_negative": 6,
+        "n_zero": 3
+      },
+      "created_minus_first_publication_days": {
+        "stats": {
+          "n": 30,
+          "min": -131,
+          "p25": 0,
+          "median": 6.0,
+          "p75": 1342,
+          "max": 12598,
+          "mean": 1755.83
+        },
+        "buckets": {
+          "negative": 6,
+          "0d": 5,
+          "1d": 3,
+          "2-7d": 2,
+          "8-30d": 2,
+          "31-365d": 2,
+          ">365d": 10,
+          "unknown": 0,
+          "total": 30
+        },
+        "n_negative": 6
+      },
+      "deposited_minus_created_days": {
+        "stats": {
+          "n": 30,
+          "min": 0,
+          "p25": 17,
+          "median": 1167.5,
+          "p75": 3741,
+          "max": 6572,
+          "mean": 2040.3
+        },
+        "n_negative": 0
+      },
+      "created_meaning": "'created' is the moment Crossref registered the DOI record (the publisher's deposit / metadata registration time). It is an infrastructure timestamp: it is neither the scientific event, nor the journal publication date, and it is most certainly not an observation by MedRadar. 'deposited' is the last metadata deposit and therefore moves forward; it does not preserve history.",
+      "examples": [
+        {
+          "doi": "10.37665/mexoota54470",
+          "type": "journal-article",
+          "company": "medtronic",
+          "issued": "2009-09",
+          "published_online": null,
+          "published_print": "2009-09",
+          "created": "2025-12-01T20:24:19Z",
+          "deposited": "2025-12-01T20:24:19Z",
+          "created_minus_issued_days": 5935
+        },
+        {
+          "doi": "10.1210/jendso/bvae163.906",
+          "type": "journal-article",
+          "company": "medtronic",
+          "issued": "2024-10",
+          "published_online": "2024-10-05",
+          "published_print": "2024-10-05",
+          "created": "2024-10-05T19:06:51Z",
+          "deposited": "2025-03-06T19:50:55Z",
+          "created_minus_issued_days": 4
+        },
+        {
+          "doi": "10.69554/jjmx9594",
+          "type": "journal-article",
+          "company": "medtronic",
+          "issued": "2022-03-01",
+          "published_online": "2022-03-01",
+          "published_print": null,
+          "created": "2024-07-25T07:32:24Z",
+          "deposited": "2024-08-11T08:03:00Z",
+          "created_minus_issued_days": 877
+        },
+        {
+          "doi": "10.37665/mehxjas91810",
+          "type": "journal-article",
+          "company": "medtronic",
+          "issued": "2010-09",
+          "published_online": null,
+          "published_print": "2010-09",
+          "created": "2025-12-01T20:22:02Z",
+          "deposited": "2025-12-01T20:22:02Z",
+          "created_minus_issued_days": 5570
+        }
+      ],
+      "negative_created_examples": [
+        {
+          "doi": "10.1089/dia.2018.0202",
+          "type": "journal-article",
+          "issued": "2018-09-26",
+          "published_online": "2018-09-26",
+          "created": "2018-08-30T11:05:31Z",
+          "created_minus_issued_days": -27
+        },
+        {
+          "doi": "10.18553/jmcp.2023.22283",
+          "type": "journal-article",
+          "issued": "2023-03",
+          "published_online": null,
+          "created": "2023-01-24T16:50:40Z",
+          "created_minus_issued_days": -36
+        },
+        {
+          "doi": "10.1051/ject/2025043",
+          "type": "journal-article",
+          "issued": "2025-12",
+          "published_online": "2025-12-17",
+          "created": "2025-08-08T18:44:36Z",
+          "created_minus_issued_days": -115
+        },
+        {
+          "doi": "10.1161/circulationaha.105.609420",
+          "type": "journal-article",
+          "issued": "2006-05-23",
+          "published_online": null,
+          "created": "2006-05-16T00:53:47Z",
+          "created_minus_issued_days": -7
+        }
+      ],
+      "historical_state_retrievable": false,
+      "historical_state_conclusion": "Crossref /works/<doi> returns the latest deposit for the DOI. There is no as-of parameter that reconstructs an earlier metadata state; 'created' is immutable per DOI but carries no scientific-event semantics."
+    },
+    "medradar_observation_ledger": {
+      "source": "medradar_observation_ledger",
+      "path": "D:\\DEPPSKK\\medradar\\data\\observatory\\observatory.sqlite",
+      "access_mode": "sqlite3 uri mode=ro (read-only, never written)",
+      "exists": true,
+      "file_bytes": 1945600,
+      "file_mtime_before": "2026-11-03T16:00:02Z",
+      "file_sha256_before": "3534b4c5cbd45f5d5974b8c18d4a21454e462a30c31e8271866e56cabd6d0e86",
+      "readonly_probe": {
+        "connection_uri": "file:D:/DEPPSKK/medradar/data/observatory/observatory.sqlite?mode=ro",
+        "query_only_after_set": 1,
+        "write_probe": "refused: OperationalError: attempt to write a readonly database",
+        "file_sha256_method": "sha256 of the database file is computed immediately before the first query and immediately after the last query; equality proves the audit did not write to the ledger"
+      },
+      "tables": [
+        "meta",
+        "observation",
+        "observation_change",
+        "observation_mapping",
+        "observation_phase",
+        "observation_status_history",
+        "observation_version",
+        "ops_metric",
+        "runtime_state",
+        "source_failure",
+        "source_state",
+        "sync_checkpoint",
+        "sync_run"
+      ],
+      "table_row_counts": {
+        "meta": 4,
+        "observation": 400,
+        "observation_change": 400,
+        "observation_mapping": 401,
+        "observation_phase": 400,
+        "observation_status_history": 400,
+        "observation_version": 400,
+        "ops_metric": 2,
+        "runtime_state": 8,
+        "source_failure": 6,
+        "source_state": 3,
+        "sync_checkpoint": 142,
+        "sync_run": 34
+      },
+      "meta": {
+        "schema_version": "obs-ledger-v1",
+        "created_at": "2026-11-03T14:39:53+00:00",
+        "path": "D:\\DEPPSKK\\medradar\\data\\observatory\\observatory.sqlite",
+        "schema_epoch": "2026-11-reliability"
+      },
+      "n_observations": 400,
+      "run_anchor_tolerance_s": 120,
+      "observation_origin_counts": {
+        "LIVE": 400
+      },
+      "backfill_reason_counts": {
+        "None": 400
+      },
+      "phase_method_counts": {
+        "INITIAL_DISCOVERY|reconstructed_from_run_history": 399,
+        "INCREMENTAL_DISCOVERY|reconstructed_from_run_history": 1
+      },
+      "tier_counts": {
+        "RUN_ANCHORED_RECONSTRUCTION": 400
+      },
+      "observation_status_counts": {
+        "ACTIVE": 400
+      },
+      "change_state_counts": {
+        "NEW": 400
+      },
+      "version_count_values": {
+        "1": 400
+      },
+      "first_seen_distinct_values": 4,
+      "first_seen_values": [
+        {
+          "value": "2026-11-03T14:39:53Z",
+          "n": 6
+        },
+        {
+          "value": "2026-11-03T14:44:26Z",
+          "n": 156
+        },
+        {
+          "value": "2026-11-03T14:44:29Z",
+          "n": 237
+        },
+        {
+          "value": "2026-11-03T14:49:51Z",
+          "n": 1
+        }
+      ],
+      "first_seen_calendar_days": 1,
+      "first_seen_min": "2026-11-03T14:39:53Z",
+      "first_seen_max": "2026-11-03T14:49:51Z",
+      "n_sync_runs": 34,
+      "sync_run_dates": {
+        "2026-11-03": 34
+      },
+      "sync_run_status": {
+        "OK": 34
+      },
+      "sync_run_triggers": {
+        "manual": 25,
+        "schedule": 9
+      },
+      "sync_run_requests_total": 198,
+      "sync_run_pages_total": 142,
+      "sync_run_records_new_total": 399,
+      "sync_run_first_started": "2026-11-03T14:39:53+00:00",
+      "sync_run_last_finished": "2026-11-03T15:58:46+00:00",
+      "observation_coverage_days": 1,
+      "per_source_record_type": {
+        "ctgov/trial": {
+          "n": 157,
+          "n_first_seen_nonnull": 157,
+          "n_run_anchored": 157,
+          "n_origin_live": 157,
+          "tiers": {
+            "RUN_ANCHORED_RECONSTRUCTION": 157
+          },
+          "lag_first_seen_minus_published_days": {
+            "n": 157,
+            "min": 1,
+            "p25": 172,
+            "median": 683,
+            "p75": 1793,
+            "max": 7613,
+            "mean": 1189.13
+          },
+          "lag_buckets": {
+            "negative": 0,
+            "0d": 0,
+            "1d": 1,
+            "2-7d": 2,
+            "8-30d": 9,
+            "31-365d": 50,
+            ">365d": 95,
+            "unknown": 0,
+            "total": 157
+          },
+          "n_prospective_le_1d": 1,
+          "pct_prospective_le_1d": 0.64,
+          "pct_lag_gt_7d": 98.09
+        },
+        "europepmc/publication": {
+          "n": 237,
+          "n_first_seen_nonnull": 237,
+          "n_run_anchored": 237,
+          "n_origin_live": 237,
+          "tiers": {
+            "RUN_ANCHORED_RECONSTRUCTION": 237
+          },
+          "lag_first_seen_minus_published_days": {
+            "n": 237,
+            "min": 0,
+            "p25": 15,
+            "median": 45,
+            "p75": 65,
+            "max": 320,
+            "mean": 46.85
+          },
+          "lag_buckets": {
+            "negative": 0,
+            "0d": 4,
+            "1d": 0,
+            "2-7d": 25,
+            "8-30d": 58,
+            "31-365d": 150,
+            ">365d": 0,
+            "unknown": 0,
+            "total": 237
+          },
+          "n_prospective_le_1d": 4,
+          "pct_prospective_le_1d": 1.69,
+          "pct_lag_gt_7d": 87.76
+        },
+        "sec_edgar/sec_10q": {
+          "n": 1,
+          "n_first_seen_nonnull": 1,
+          "n_run_anchored": 1,
+          "n_origin_live": 1,
+          "tiers": {
+            "RUN_ANCHORED_RECONSTRUCTION": 1
+          },
+          "lag_first_seen_minus_published_days": {
+            "n": 1,
+            "min": 6,
+            "p25": 6,
+            "median": 6,
+            "p75": 6,
+            "max": 6,
+            "mean": 6.0
+          },
+          "lag_buckets": {
+            "negative": 0,
+            "0d": 0,
+            "1d": 0,
+            "2-7d": 1,
+            "8-30d": 0,
+            "31-365d": 0,
+            ">365d": 0,
+            "unknown": 0,
+            "total": 1
+          },
+          "n_prospective_le_1d": 0,
+          "pct_prospective_le_1d": 0.0,
+          "pct_lag_gt_7d": 0.0
+        },
+        "sec_edgar/sec_6k": {
+          "n": 1,
+          "n_first_seen_nonnull": 1,
+          "n_run_anchored": 1,
+          "n_origin_live": 1,
+          "tiers": {
+            "RUN_ANCHORED_RECONSTRUCTION": 1
+          },
+          "lag_first_seen_minus_published_days": {
+            "n": 1,
+            "min": 0,
+            "p25": 0,
+            "median": 0,
+            "p75": 0,
+            "max": 0,
+            "mean": 0.0
+          },
+          "lag_buckets": {
+            "negative": 0,
+            "0d": 1,
+            "1d": 0,
+            "2-7d": 0,
+            "8-30d": 0,
+            "31-365d": 0,
+            ">365d": 0,
+            "unknown": 0,
+            "total": 1
+          },
+          "n_prospective_le_1d": 1,
+          "pct_prospective_le_1d": 100.0,
+          "pct_lag_gt_7d": 0.0
+        },
+        "sec_edgar/sec_8k": {
+          "n": 4,
+          "n_first_seen_nonnull": 4,
+          "n_run_anchored": 4,
+          "n_origin_live": 4,
+          "tiers": {
+            "RUN_ANCHORED_RECONSTRUCTION": 4
+          },
+          "lag_first_seen_minus_published_days": {
+            "n": 4,
+            "min": 6,
+            "p25": 8,
+            "median": 27.5,
+            "p75": 44,
+            "max": 46,
+            "mean": 26.75
+          },
+          "lag_buckets": {
+            "negative": 0,
+            "0d": 0,
+            "1d": 0,
+            "2-7d": 1,
+            "8-30d": 1,
+            "31-365d": 2,
+            ">365d": 0,
+            "unknown": 0,
+            "total": 4
+          },
+          "n_prospective_le_1d": 0,
+          "pct_prospective_le_1d": 0.0,
+          "pct_lag_gt_7d": 75.0
+        }
+      },
+      "lag_first_seen_minus_published_days": {
+        "stats": {
+          "n": 400,
+          "min": 0,
+          "p25": 19,
+          "median": 65.0,
+          "p75": 320,
+          "max": 7613,
+          "mean": 494.77
+        },
+        "buckets": {
+          "negative": 0,
+          "0d": 5,
+          "1d": 1,
+          "2-7d": 29,
+          "8-30d": 68,
+          "31-365d": 202,
+          ">365d": 95,
+          "unknown": 0,
+          "total": 400
+        },
+        "n_prospective_le_1d": 6,
+        "pct_prospective_le_1d": 1.5,
+        "n_lag_gt_7d": 365,
+        "pct_lag_gt_7d": 91.25,
+        "n_nonpositive": 5,
+        "pct_nonpositive": 1.25
+      },
+      "precision": {
+        "event_at": {
+          "date": 383,
+          "year": 17
+        },
+        "published_at": {
+          "datetime": 6,
+          "date": 394
+        },
+        "source_updated_at": {
+          "unknown": 6,
+          "date": 394
+        }
+      },
+      "contradictions": {
+        "published_before_event_all": 124,
+        "published_before_event_ctgov": 106,
+        "published_before_event_ctgov_note": "For a trial, event_at=startDate and published_at=studyFirstPostDate. A negative value means the trial was registered BEFORE it started, which is pre-registration and legitimate, not an anachronism.",
+        "published_before_event_europepmc": 18,
+        "published_before_event_europepmc_note": "For a publication, published_at=firstIndexDate and event_at=firstPublicationDate; a negative value would mean the record was indexed before the paper was published (a real contradiction).",
+        "first_seen_before_published": 0,
+        "first_seen_before_event": 9,
+        "first_seen_equals_published": 5,
+        "pct_published_before_event_ctgov": 67.52,
+        "pct_published_before_event_europepmc": 7.59
+      },
+      "event_at_after_audit_date": {
+        "audit_date": "2026-11-03",
+        "n": 9,
+        "pct": 2.25,
+        "examples": [
+          {
+            "source": "ctgov",
+            "event_at": "2027-02-23",
+            "event_at_precision": "date",
+            "published_at": "2026-10-28"
+          },
+          {
+            "source": "ctgov",
+            "event_at": "2026-12-09",
+            "event_at_precision": "date",
+            "published_at": "2026-08-06"
+          },
+          {
+            "source": "ctgov",
+            "event_at": "2026-12-01",
+            "event_at_precision": "date",
+            "published_at": "2026-07-23"
+          }
+        ],
+        "note": "event_at later than the audit date is a planned start / estimated completion. It cannot be evidence that anything happened yet."
+      },
+      "observation_mapping": {
+        "n_rows": 401,
+        "n_distinct_observation_id": 400,
+        "entity_status": {
+          "MAPPED": 102,
+          "UNMAPPED": 61,
+          "PENDING_REVIEW": 238
+        }
+      },
+      "observation_version": {
+        "n_rows": 400,
+        "n_distinct_captured_at": 4,
+        "min_captured_at": "2026-11-03T14:39:53Z",
+        "max_captured_at": "2026-11-03T14:49:51Z"
+      },
+      "observation_change": {
+        "n_rows": 400,
+        "change_state": {
+          "NEW": 400
+        }
+      },
+      "source_state": [
+        {
+          "source": "sec_edgar",
+          "status": "OK",
+          "consecutive_failures": 0,
+          "last_success_at": "2026-11-03T15:58:43+00:00",
+          "watermark_updated_at": "2026-11-03T15:58:43+00:00",
+          "last_new_records": 0
+        },
+        {
+          "source": "ctgov",
+          "status": "OK",
+          "consecutive_failures": 0,
+          "last_success_at": "2026-11-03T15:58:45+00:00",
+          "watermark_updated_at": "2026-11-03T15:58:45+00:00",
+          "last_new_records": 0
+        },
+        {
+          "source": "europepmc",
+          "status": "OK",
+          "consecutive_failures": 0,
+          "last_success_at": "2026-11-03T15:58:46+00:00",
+          "watermark_updated_at": "2026-11-03T15:58:46+00:00",
+          "last_new_records": 0
+        }
+      ],
+      "source_failure": {
+        "n_rows": 6,
+        "kinds": {
+          "STRUCTURE_CHANGE": 6
+        }
+      },
+      "genuine_actual_observation": {
+        "n_rows_total": 400,
+        "definition": "A row carries ACTUAL_OBSERVATION evidence iff its first_seen_at is anchored to a real sync_run row that has a start timestamp (proof a collection actually happened), the observation is not a backfill, and the lag first_seen_at - published_at is small enough to be prospective (<=1 day).",
+        "n_first_seen_nonnull": 400,
+        "n_run_anchored": 400,
+        "n_run_anchored_reconstructed": 400,
+        "n_direct_capture": 0,
+        "n_prospective_le_1d": 6,
+        "pct_prospective_le_1d": 1.5,
+        "n_prospective_le_1d_run_anchored": 6,
+        "coverage_days": 1,
+        "n_observations": 400,
+        "warning": "first_seen_at for all 400 rows was built by observation_phase.method='reconstructed_from_run_history', i.e. it is assigned from the sync_run start timestamp AFTER the run, not stamped at the instant the record was written. Resolution is therefore the run start second, and the value is an honest reconstruction of a real collection, not an independently captured per-record timestamp."
+      },
+      "file_sha256_after": "3534b4c5cbd45f5d5974b8c18d4a21454e462a30c31e8271866e56cabd6d0e86",
+      "file_mtime_after": "2026-11-03T16:00:02Z",
+      "file_unchanged": true
+    }
+  },
+  "frozen_input_s028_recheck": {
+    "path": "D:\\DEPPSKK\\worktrees\\integration-v2\\data\\research.sqlite",
+    "access_mode": "sqlite3 uri mode=ro (read-only recheck for S-028 comparison)",
+    "exists": true,
+    "file_bytes": 289443840,
+    "events_rows": 55090,
+    "distinct_first_seen_at": 1,
+    "first_seen_values": [
+      {
+        "value": "2026-11-01",
+        "n": 55090
+      }
+    ],
+    "distinct_available_minus_event_days": 1,
+    "available_minus_event_days_values": [
+      14
+    ],
+    "available_eq_published": 55090,
+    "timestamp_quality": {
+      "estimated": 55090
+    },
+    "event_date_range": [
+      "2016-11-01",
+      "2026-10-18"
+    ],
+    "lag_first_seen_minus_published_days": {
+      "stats": {
+        "n": 55090,
+        "min": 0,
+        "p25": 905,
+        "median": 1844.0,
+        "p75": 2770,
+        "max": 3638,
+        "mean": 1834.96
+      },
+      "buckets": {
+        "negative": 0,
+        "0d": 1,
+        "1d": 0,
+        "2-7d": 101,
+        "8-30d": 356,
+        "31-365d": 5093,
+        ">365d": 49539,
+        "unknown": 0,
+        "total": 55090
+      },
+      "n_le_1d": 1,
+      "pct_le_1d": 0.0,
+      "n_gt_365d": 49539,
+      "pct_gt_365d": 89.92
+    },
+    "n_temporal_edges": 5580,
+    "status": "READ_OK"
+  },
+  "field_clock_map": [
+    {
+      "source": "clinicaltrials_gov",
+      "field": "protocolSection.statusModule.startDateStruct.date",
+      "measured_precision": "mixed (day 71, month 57, year 0, datetime 0)",
+      "clock": [
+        "event_at"
+      ],
+      "labels": [
+        "DATE_ONLY"
+      ],
+      "allowed_use": "event_at (trial start). With truncated precision, use month-level inequalities only.",
+      "forbidden": "Never substitute for published_at (a trial can start long after or before it is posted); never use as first_seen_at; never use as valid_from directly.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "clinicaltrials_gov",
+      "field": "protocolSection.statusModule.studyFirstPostDateStruct.date",
+      "measured_precision": "YYYY-MM-DD",
+      "clock": [
+        "published_at"
+      ],
+      "labels": [
+        "SOURCE_PUBLISHED",
+        "DATE_ONLY"
+      ],
+      "allowed_use": "published_at: the earliest registry-public date. At YYYY-MM precision it can only bound, not pinpoint.",
+      "forbidden": "Never use as event_at (start date is a different field); never use as first_seen_at (MedRadar did not observe it when CT.gov posted it).",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "clinicaltrials_gov",
+      "field": "protocolSection.statusModule.lastUpdatePostDateStruct.date",
+      "measured_precision": "YYYY-MM-DD",
+      "clock": [],
+      "labels": [
+        "TIME_UNKNOWN"
+      ],
+      "allowed_use": "Only a freshness stamp of the CURRENT record; usable as an upper bound for 'this content existed by then'.",
+      "forbidden": "Never use as published_at, event_at, first_seen_at, or valid_from. It is not when the record first became public and it is not a retrievable historical state.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "clinicaltrials_gov",
+      "field": "protocolSection.statusModule.primaryCompletionDateStruct.date",
+      "measured_precision": "mixed (day 69, month 58, year 0, datetime 0)",
+      "clock": [
+        "event_at"
+      ],
+      "labels": [
+        "DATE_ONLY",
+        "TIME_UNKNOWN"
+      ],
+      "allowed_use": "event_at for a PLANNED/ESTIMATED future milestone only; its type field (ACTUAL vs ESTIMATED) must be carried.",
+      "forbidden": "Never use as published_at, first_seen_at or valid_from; never treat ESTIMATED as an observed date.",
+      "measured_presence_pct": 99.22
+    },
+    {
+      "source": "clinicaltrials_gov",
+      "field": "protocolSection.statusModule.resultsFirstPostDateStruct.date",
+      "measured_precision": "YYYY-MM-DD",
+      "clock": [
+        "published_at"
+      ],
+      "labels": [
+        "SOURCE_PUBLISHED",
+        "DATE_ONLY"
+      ],
+      "allowed_use": "published_at of the RESULTS disclosure event - a SECOND, later publication event distinct from registration.",
+      "forbidden": "Never conflate with studyFirstPostDateStruct; never use as event_at or first_seen_at.",
+      "measured_presence_pct": 32.81
+    },
+    {
+      "source": "clinicaltrials_gov",
+      "field": "protocolSection.statusModule.studyFirstSubmitDate / lastUpdateSubmitDate",
+      "measured_precision": "internal submission dates (not time filters)",
+      "clock": [],
+      "labels": [
+        "TIME_UNKNOWN"
+      ],
+      "allowed_use": "Provenance of the registry workflow only.",
+      "forbidden": "Never use as published_at or first_seen_at: submission to the registry is not public availability.",
+      "measured_presence_pct": null
+    },
+    {
+      "source": "europe_pmc",
+      "field": "firstPublicationDate",
+      "measured_precision": "YYYY-MM-DD",
+      "clock": [
+        "event_at"
+      ],
+      "labels": [
+        "SOURCE_PUBLISHED",
+        "DATE_ONLY"
+      ],
+      "allowed_use": "event_at of the publication event (date precision).",
+      "forbidden": "Never use as published_at when firstIndexDate is available: journal publication is not the same event as index availability.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "europe_pmc",
+      "field": "firstIndexDate",
+      "measured_precision": "YYYY-MM-DD",
+      "clock": [
+        "published_at"
+      ],
+      "labels": [
+        "SOURCE_PUBLISHED",
+        "DATE_ONLY"
+      ],
+      "allowed_use": "published_at proxy: when the record became available in this index. Measured to lag firstPublicationDate.",
+      "forbidden": "Never use as event_at (the science happened earlier); never use as first_seen_at (our collection is a separate clock).",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "europe_pmc",
+      "field": "dateOfCreation",
+      "measured_precision": "YYYY-MM-DD",
+      "clock": [],
+      "labels": [
+        "TIME_UNKNOWN"
+      ],
+      "allowed_use": "Age of the EPMC metadata record only.",
+      "forbidden": "Never use as event_at, published_at, first_seen_at or valid_from.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "europe_pmc",
+      "field": "dateOfRevision",
+      "measured_precision": "YYYY-MM-DD",
+      "clock": [],
+      "labels": [
+        "TIME_UNKNOWN"
+      ],
+      "allowed_use": "Metadata maintenance timestamp only.",
+      "forbidden": "Never use as any of the four clocks; it moves forward on every re-index and preserves no history.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "europe_pmc",
+      "field": "electronicPublicationDate / journalInfo.printPublicationDate",
+      "measured_precision": "YYYY-MM-DD",
+      "clock": [
+        "event_at"
+      ],
+      "labels": [
+        "DATE_ONLY"
+      ],
+      "allowed_use": "event_at variants; capture which version of record a date refers to.",
+      "forbidden": "Never merge e-pub and print dates into one column without a version label.",
+      "measured_presence_pct": 75.0
+    },
+    {
+      "source": "openalex",
+      "field": "publication_date",
+      "measured_precision": "YYYY-MM-DD",
+      "clock": [
+        "event_at"
+      ],
+      "labels": [
+        "DATE_ONLY"
+      ],
+      "allowed_use": "event_at of the work at day granularity.",
+      "forbidden": "Never use as published_at (that is Crossref/EPMC territory) and never as first_seen_at.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "openalex",
+      "field": "created_date",
+      "measured_precision": "datetime (second)",
+      "clock": [],
+      "labels": [
+        "TIME_UNKNOWN"
+      ],
+      "allowed_use": "Measured to be a bulk-ingest stamp (legacy works all share one created_date), so it is at best a loose upper bound on when the record entered the OpenAlex index.",
+      "forbidden": "Never use as published_at: measured created_date - publication_date has median 3567.5 days and max 24222 days. Never use as event_at or first_seen_at.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "openalex",
+      "field": "updated_date",
+      "measured_precision": "datetime (second)",
+      "clock": [],
+      "labels": [
+        "TIME_UNKNOWN"
+      ],
+      "allowed_use": "Freshness of the current index row only.",
+      "forbidden": "Never use as any of the four clocks: it is overwritten on refresh and destroys history.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "crossref",
+      "field": "issued",
+      "measured_precision": "mixed (day 17, month 12, year 1, datetime 0)",
+      "clock": [
+        "event_at"
+      ],
+      "labels": [
+        "DATE_ONLY"
+      ],
+      "allowed_use": "event_at of publication. Measured precision is mixed, so year- and month-only values support no sub-annual claim.",
+      "forbidden": "Never use as published_at (use published-online for that); never as first_seen_at.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "crossref",
+      "field": "published-print",
+      "measured_precision": "mixed (day 13, month 13, year 1, datetime 0)",
+      "clock": [
+        "event_at"
+      ],
+      "labels": [
+        "DATE_ONLY"
+      ],
+      "allowed_use": "event_at of the PRINT version of record; a different event from the online release.",
+      "forbidden": "Never conflate with published-online; never use as first_seen_at or published_at without a version label.",
+      "measured_presence_pct": 90.0
+    },
+    {
+      "source": "crossref",
+      "field": "published-online",
+      "measured_precision": "mixed (day 14, month 1, year 0, datetime 0)",
+      "clock": [
+        "published_at"
+      ],
+      "labels": [
+        "SOURCE_PUBLISHED",
+        "DATE_ONLY"
+      ],
+      "allowed_use": "published_at: the earliest public release of the article (online publication).",
+      "forbidden": "Never use as event_at for print-only venues; never as first_seen_at (the publisher published, we did not observe).",
+      "measured_presence_pct": 50.0
+    },
+    {
+      "source": "crossref",
+      "field": "created",
+      "measured_precision": "datetime (second)",
+      "clock": [],
+      "labels": [
+        "TIME_UNKNOWN"
+      ],
+      "allowed_use": "DOI registration / metadata deposit time. Infrastructure audit only.",
+      "forbidden": "Never use as event_at (it is not the science), never as published_at (deposit can precede or follow the article date), never as first_seen_at (the publisher deposited it, we did not see it).",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "crossref",
+      "field": "deposited / indexed",
+      "measured_precision": "datetime (second)",
+      "clock": [],
+      "labels": [
+        "TIME_UNKNOWN"
+      ],
+      "allowed_use": "Metadata maintenance / index freshness only.",
+      "forbidden": "Never use as any of the four clocks; both move forward and keep no history.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "medradar_observation_ledger",
+      "field": "observation.first_seen_at",
+      "measured_precision": "datetime (second), reconstructed from sync_run start",
+      "clock": [
+        "first_seen_at"
+      ],
+      "labels": [
+        "ACTUAL_OBSERVATION"
+      ],
+      "allowed_use": "The only legitimate ACTUAL_OBSERVATION evidence in the project. Usable for prospective claims only when the lag to published_at is <= 1 day.",
+      "forbidden": "Never propagate this field to records the ledger never saw; never impute it from published_at; never treat observation_origin='LIVE' alone as proof of prospective knowledge.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "medradar_observation_ledger",
+      "field": "observation.published_at",
+      "measured_precision": "date (394/400) or datetime (6/400)",
+      "clock": [
+        "published_at"
+      ],
+      "labels": [
+        "SOURCE_PUBLISHED",
+        "DATE_ONLY"
+      ],
+      "allowed_use": "published_at per source (EPMC firstIndexDate / CT.gov studyFirstPostDate).",
+      "forbidden": "Never use as event_at or first_seen_at.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "medradar_observation_ledger",
+      "field": "observation.event_at",
+      "measured_precision": "date (383/400) or year (17/400)",
+      "clock": [
+        "event_at"
+      ],
+      "labels": [
+        "HISTORICAL_PROXY",
+        "DATE_ONLY"
+      ],
+      "allowed_use": "event_at. At year precision it cannot support any sub-annual claim.",
+      "forbidden": "Never use as published_at or first_seen_at.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "medradar_observation_ledger",
+      "field": "observation_phase.method",
+      "measured_precision": "categorical",
+      "clock": [
+        "first_seen_at"
+      ],
+      "labels": [
+        "ACTUAL_OBSERVATION"
+      ],
+      "allowed_use": "Provenance of first_seen_at. 'reconstructed_from_run_history' means the timestamp was assigned after the run from sync_run.started_at.",
+      "forbidden": "Never ignore this field when claiming prospective knowledge; a reconstructed timestamp is a reconstruction, not a capture.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "medradar_observation_ledger",
+      "field": "observation.source_updated_at",
+      "measured_precision": "date (394/400) or unknown (6/400)",
+      "clock": [],
+      "labels": [
+        "TIME_UNKNOWN"
+      ],
+      "allowed_use": "Source-side freshness only.",
+      "forbidden": "Never use as published_at or first_seen_at.",
+      "measured_presence_pct": 100.0
+    },
+    {
+      "source": "all_sources",
+      "field": "valid_from / valid_to (relation support period)",
+      "measured_precision": "NOT PRESENT IN ANY SOURCE API",
+      "clock": [
+        "valid_from"
+      ],
+      "labels": [
+        "HISTORICAL_PROXY"
+      ],
+      "allowed_use": "Must be DERIVED and declared as derived, e.g. valid_from = date the evidence became public (published_at) with the derivation rule written down.",
+      "forbidden": "Never copy event_at, published_at, created_date, lastUpdatePostDate or first_seen_at into valid_from without an explicit stated rule. No API returns it.",
+      "measured_presence_pct": 0.0
+    }
+  ],
+  "s028_comparison": {
+    "generated_at_utc": "2026-11-03T20:00:24Z",
+    "s028_reported": {
+      "ledger_observations": 400,
+      "ledger_origin_live": 400,
+      "ledger_origin_backfill": 0,
+      "ledger_first_seen_distinct_values": 4,
+      "ledger_first_seen_calendar_days": 1,
+      "ledger_sync_runs": 34,
+      "ledger_phase_method_reconstructed": 400,
+      "ledger_lag_median_days": 65,
+      "ledger_lag_min_days": 0,
+      "ledger_lag_max_days": 7613,
+      "ledger_prospective_le_1d": 6,
+      "ledger_pct_prospective_le_1d": 1.5,
+      "ledger_lag_le_0d": 5,
+      "ledger_pct_lag_le_0d": 1.25,
+      "ledger_lag_le_7d": 35,
+      "ledger_pct_lag_le_7d": 8.75,
+      "ledger_lag_gt_7d": 365,
+      "ledger_pct_lag_gt_7d": 91.25,
+      "ledger_version_count_all_1": 400,
+      "ledger_mapping_rows": 401,
+      "ledger_source_failure": 6,
+      "frozen_events_rows": 55090,
+      "frozen_distinct_first_seen_at": 1,
+      "frozen_first_seen_value": "2026-11-01",
+      "frozen_available_minus_event_days": 14,
+      "frozen_available_eq_published": 55090,
+      "frozen_pct_lag_gt_365d": 89.92,
+      "frozen_n_lag_le_1d": 1,
+      "frozen_timestamp_quality_estimated": 55090,
+      "source_note": "Values quoted from D:/DEPPSKK/medradar/research/studies/graph_early_signal_s028/RELATION_AND_TIME_EVIDENCE_AUDIT.md sections 1.1, 2.2-2.4, 3.1 (read-only). They are the S-028 baseline this audit compares against; they are NOT recomputed by this script except where the frozen input recheck re-derives them."
+    },
+    "s029_measured": {
+      "ledger_observations": 400,
+      "ledger_origin_live": 400,
+      "ledger_origin_backfill": 0,
+      "ledger_first_seen_distinct_values": 4,
+      "ledger_first_seen_calendar_days": 1,
+      "ledger_sync_runs": 34,
+      "ledger_phase_method_reconstructed": 400,
+      "ledger_lag_median_days": 65.0,
+      "ledger_lag_min_days": 0,
+      "ledger_lag_max_days": 7613,
+      "ledger_prospective_le_1d": 6,
+      "ledger_pct_prospective_le_1d": 1.5,
+      "ledger_lag_le_0d": 5,
+      "ledger_pct_lag_le_0d": 1.25,
+      "ledger_lag_le_7d": 35,
+      "ledger_pct_lag_le_7d": 8.75,
+      "ledger_lag_gt_7d": 365,
+      "ledger_pct_lag_gt_7d": 91.25,
+      "ledger_version_count_all_1": 400,
+      "ledger_mapping_rows": 401,
+      "ledger_source_failure": 6,
+      "frozen_events_rows": 55090,
+      "frozen_distinct_first_seen_at": 1,
+      "frozen_first_seen_value": "2026-11-01",
+      "frozen_available_minus_event_days": 14,
+      "frozen_available_eq_published": 55090,
+      "frozen_pct_lag_gt_365d": 89.92,
+      "frozen_n_lag_le_1d": 1,
+      "frozen_timestamp_quality_estimated": 55090
+    },
+    "deltas": {
+      "ledger_observations": {
+        "s028": 400,
+        "s029": 400,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_origin_live": {
+        "s028": 400,
+        "s029": 400,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_origin_backfill": {
+        "s028": 0,
+        "s029": 0,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_first_seen_distinct_values": {
+        "s028": 4,
+        "s029": 4,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_first_seen_calendar_days": {
+        "s028": 1,
+        "s029": 1,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_sync_runs": {
+        "s028": 34,
+        "s029": 34,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_phase_method_reconstructed": {
+        "s028": 400,
+        "s029": 400,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_lag_median_days": {
+        "s028": 65,
+        "s029": 65.0,
+        "delta": 0.0,
+        "same": true
+      },
+      "ledger_lag_min_days": {
+        "s028": 0,
+        "s029": 0,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_lag_max_days": {
+        "s028": 7613,
+        "s029": 7613,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_prospective_le_1d": {
+        "s028": 6,
+        "s029": 6,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_pct_prospective_le_1d": {
+        "s028": 1.5,
+        "s029": 1.5,
+        "delta": 0.0,
+        "same": true
+      },
+      "ledger_lag_le_0d": {
+        "s028": 5,
+        "s029": 5,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_pct_lag_le_0d": {
+        "s028": 1.25,
+        "s029": 1.25,
+        "delta": 0.0,
+        "same": true
+      },
+      "ledger_lag_le_7d": {
+        "s028": 35,
+        "s029": 35,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_pct_lag_le_7d": {
+        "s028": 8.75,
+        "s029": 8.75,
+        "delta": 0.0,
+        "same": true
+      },
+      "ledger_lag_gt_7d": {
+        "s028": 365,
+        "s029": 365,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_pct_lag_gt_7d": {
+        "s028": 91.25,
+        "s029": 91.25,
+        "delta": 0.0,
+        "same": true
+      },
+      "ledger_version_count_all_1": {
+        "s028": 400,
+        "s029": 400,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_mapping_rows": {
+        "s028": 401,
+        "s029": 401,
+        "delta": 0,
+        "same": true
+      },
+      "ledger_source_failure": {
+        "s028": 6,
+        "s029": 6,
+        "delta": 0,
+        "same": true
+      },
+      "frozen_events_rows": {
+        "s028": 55090,
+        "s029": 55090,
+        "delta": 0,
+        "same": true
+      },
+      "frozen_distinct_first_seen_at": {
+        "s028": 1,
+        "s029": 1,
+        "delta": 0,
+        "same": true
+      },
+      "frozen_first_seen_value": {
+        "s028": "2026-11-01",
+        "s029": "2026-11-01",
+        "same": true
+      },
+      "frozen_available_minus_event_days": {
+        "s028": 14,
+        "s029": 14,
+        "delta": 0,
+        "same": true
+      },
+      "frozen_available_eq_published": {
+        "s028": 55090,
+        "s029": 55090,
+        "delta": 0,
+        "same": true
+      },
+      "frozen_pct_lag_gt_365d": {
+        "s028": 89.92,
+        "s029": 89.92,
+        "delta": 0.0,
+        "same": true
+      },
+      "frozen_n_lag_le_1d": {
+        "s028": 1,
+        "s029": 1,
+        "delta": 0,
+        "same": true
+      },
+      "frozen_timestamp_quality_estimated": {
+        "s028": 55090,
+        "s029": 55090,
+        "delta": 0,
+        "same": true
+      }
+    },
+    "n_metrics_compared": 29,
+    "n_changed": 0,
+    "changed_metrics": [],
+    "n_ledger_metrics_changed": 0,
+    "verdict": "STAYED_THE_SAME",
+    "verdict_sentence": "The observation ledger is byte-for-byte the same situation S-028 reported: the same 400 observations, the same single day of collection history, the same 6 prospective observations. Nothing improved and nothing regressed - because no new collection cycle has happened.",
+    "ledger_verdict": "UNCHANGED",
+    "frozen_input_verdict": "UNCHANGED"
+  },
+  "claims_clock_completeness": {
+    "claims_paths_considered": [
+      "D:\\DEPPSKK\\worktrees\\s029-relations\\research\\studies\\relation_network_s029\\artifacts\\claims.jsonl",
+      "D:\\DEPPSKK\\worktrees\\s029-relations\\research\\studies\\relation_network_s029\\data\\claims.jsonl"
+    ],
+    "claims_path": "D:\\DEPPSKK\\worktrees\\s029-relations\\research\\studies\\relation_network_s029\\data\\claims.jsonl",
+    "exists": true,
+    "strict_definition": "first_seen_at value present in the observation ledger AND lag(first_seen_at - published_at) <= 1 day",
+    "n_lines": 20563,
+    "n_claims": 20563,
+    "n_parse_errors": 0,
+    "claims_file_bytes": 18433356,
+    "claims_file_sha256": "39705e32aa8f84f9b60e22816d11d173c172449cbf92ab88e34ff45c3289cc8a",
+    "top_level_keys": {
+      "claim_status": 20563,
+      "confidence": 20563,
+      "declared_at": 20563,
+      "event_at": 20563,
+      "evidence_id": 20563,
+      "extraction_version": 20563,
+      "first_seen_at": 20563,
+      "mapping_method": 20563,
+      "mapping_status": 20563,
+      "object_id": 20563,
+      "observed_lag_days": 13108,
+      "predicate": 20563,
+      "published_at": 20563,
+      "relation_id": 20563,
+      "relation_role": 20563,
+      "relation_temporal_type": 20563,
+      "source_record_id": 20563,
+      "statement_status": 20563,
+      "subject_id": 20563,
+      "time_basis": 20563,
+      "timestamp_precision": 20563,
+      "valid_from": 20563,
+      "valid_to": 20563,
+      "interpretation_limit": 2893,
+      "funder_string": 105,
+      "object_external_id": 4351,
+      "anachronism": 2517,
+      "event_at_type": 2517,
+      "observation_system": 2517
+    },
+    "completeness": {
+      "published_at": {
+        "n": 20563,
+        "n_present": 20563,
+        "pct_present": 100.0,
+        "n_missing": 0,
+        "pct_missing": 0.0,
+        "precision": {
+          "year": 0,
+          "month": 0,
+          "day": 20563,
+          "datetime": 0,
+          "other": 0
+        },
+        "n_distinct_values": 2276
+      },
+      "event_at": {
+        "n": 20563,
+        "n_present": 16198,
+        "pct_present": 78.77,
+        "n_missing": 4365,
+        "pct_missing": 21.23,
+        "precision": {
+          "year": 0,
+          "month": 2618,
+          "day": 13580,
+          "datetime": 0,
+          "other": 0
+        },
+        "n_distinct_values": 1631
+      },
+      "valid_from": {
+        "n": 20563,
+        "n_present": 20563,
+        "pct_present": 100.0,
+        "n_missing": 0,
+        "pct_missing": 0.0,
+        "precision": {
+          "year": 0,
+          "month": 0,
+          "day": 20563,
+          "datetime": 0,
+          "other": 0
+        },
+        "n_distinct_values": 2285
+      },
+      "valid_to": {
+        "n": 20563,
+        "n_present": 0,
+        "pct_present": 0.0,
+        "n_missing": 20563,
+        "pct_missing": 100.0,
+        "precision": {
+          "year": 0,
+          "month": 0,
+          "day": 0,
+          "datetime": 0,
+          "other": 0
+        },
+        "n_distinct_values": 0
+      },
+      "first_seen_at": {
+        "n": 20563,
+        "n_present": 20563,
+        "pct_present": 100.0,
+        "n_missing": 0,
+        "pct_missing": 0.0,
+        "precision": {
+          "year": 0,
+          "month": 0,
+          "day": 0,
+          "datetime": 20563,
+          "other": 0
+        },
+        "n_distinct_values": 107
+      },
+      "declared_at": {
+        "n": 20563,
+        "n_present": 20563,
+        "pct_present": 100.0,
+        "n_missing": 0,
+        "pct_missing": 0.0,
+        "precision": {
+          "year": 0,
+          "month": 0,
+          "day": 20563,
+          "datetime": 0,
+          "other": 0
+        },
+        "n_distinct_values": 2557
+      }
+    },
+    "precision_declared_by_builder": {
+      "DAY": 20563
+    },
+    "precision_measured": {
+      "published_at": {
+        "year": 0,
+        "month": 0,
+        "day": 20563,
+        "datetime": 0,
+        "missing": 0,
+        "other": 0
+      },
+      "event_at": {
+        "year": 0,
+        "month": 2618,
+        "day": 13580,
+        "datetime": 0,
+        "missing": 4365,
+        "other": 0
+      },
+      "first_seen_at": {
+        "year": 0,
+        "month": 0,
+        "day": 0,
+        "datetime": 20563,
+        "missing": 0,
+        "other": 0
+      }
+    },
+    "timestamp_precision_distribution": {
+      "day": 20563
+    },
+    "precision_shares_of_present": {
+      "n_event_at_present": 16198,
+      "n_event_at_month": 2618,
+      "n_event_at_day": 13580,
+      "pct_event_at_month_of_present": 16.16,
+      "pct_event_at_day_of_present": 83.84,
+      "n_valid_from_present": 20563,
+      "n_valid_from_day": 20563,
+      "pct_valid_from_day_of_present": 100.0
+    },
+    "time_basis_declared": {
+      "HISTORICAL_PROXY": 13048,
+      "ACTUAL_OBSERVATION": 60,
+      "SOURCE_PUBLISHED": 7455
+    },
+    "time_basis_n_missing": 0,
+    "ledger_run_bounds": {
+      "n_sync_runs": 34,
+      "first_run_started": "2026-11-03T14:39:53+00:00",
+      "last_run_finished": "2026-11-03T15:58:46+00:00"
+    },
+    "ledger_first_seen_distinct": 4,
+    "ledger_first_seen_values": [
+      "2026-11-03T14:39:53Z",
+      "2026-11-03T14:44:26Z",
+      "2026-11-03T14:44:29Z",
+      "2026-11-03T14:49:51Z"
+    ],
+    "first_seen_clock_family": {
+      "n_claims_with_first_seen": 20563,
+      "n_distinct_values": 107,
+      "span_seconds": 200,
+      "n_in_ledger": 0,
+      "n_not_in_ledger": 20563,
+      "min": "2026-11-03T19:39:54.982Z",
+      "max": "2026-11-03T19:43:15.598Z",
+      "ledger_distinct_values": 4,
+      "ledger_last_run_finished": "2026-11-03T15:58:46+00:00",
+      "n_first_seen_after_ledger_last_run": 20563,
+      "pct_first_seen_after_ledger_last_run": 100.0,
+      "reading": "the ledger holds a handful of run-anchored timestamps and stopped at its last sync_run; the claims carry many more distinct, later values. So claim-level first_seen_at is the extraction-run write time, not an observation recorded by the observation ledger. Those are two different clock families and must not be presented as the same evidence."
+    },
+    "actual_observation_support": {
+      "n_with_first_seen": 20563,
+      "n_in_ledger": 0,
+      "n_not_in_ledger": 20563,
+      "n_lag_le_1": 34,
+      "n_strict_genuine": 0,
+      "n_declared_actual_observation": 60,
+      "n_declared_actual_but_strict": 0,
+      "n_declared_actual_but_not_in_ledger": 60,
+      "n_declared_actual_but_lag_gt_1": 38,
+      "n_declared_actual_but_not_in_ledger_or_lag_gt_1": 60,
+      "n_strict_genuine_but_not_declared": 0,
+      "max_lag_among_declared_actual": 6,
+      "n_strict_flag_present": 0,
+      "n_strict_flag_true": 0,
+      "n_strict_flag_true_but_not_strict": 0,
+      "n_strict_flag_false_but_strict": 0,
+      "n_observation_system_present": 2517,
+      "pct_with_first_seen": 100.0,
+      "pct_strict_genuine": 0.0,
+      "pct_declared_actual_observation": 0.29,
+      "lag_stats": {
+        "n": 20563,
+        "min": 0,
+        "p25": 1615,
+        "median": 3327,
+        "p75": 5052,
+        "max": 9434,
+        "mean": 3406.6
+      },
+      "lag_buckets": {
+        "negative": 0,
+        "0d": 32,
+        "1d": 2,
+        "2-7d": 42,
+        "8-30d": 61,
+        "31-365d": 1815,
+        ">365d": 18611,
+        "unknown": 0,
+        "total": 20563
+      }
+    },
+    "strict_vs_lenient": {
+      "strict_definition": "first_seen_at value exists in the observation ledger AND lag(first_seen_at - published_at) <= 1 day",
+      "n_strict": 0,
+      "pct_strict": 0.0,
+      "lenient_definition": "0 <= lag(first_seen_at - published_at) <= 7 days, using whatever first_seen_at the extract stored; it does NOT require the timestamp to come from the observation ledger",
+      "n_lenient": 76,
+      "pct_lenient": 0.37,
+      "n_lenient_distinct_source_records": 10,
+      "n_lenient_distinct_evidence_records": 10,
+      "n_lenient_labelled_ACTUAL_OBSERVATION": 60,
+      "n_lenient_labelled_SOURCE_PUBLISHED": 16,
+      "n_declared_actual_observation": 60,
+      "n_lenient_but_not_declared_ACTUAL": 16,
+      "n_lag_le_1d_but_not_an_observation": 34,
+      "reading": "The strict number is the STUDY'S VERDICT and is 0: no claim carries a point-in-time observation. The lenient number counts claims whose extraction stamp happens to fall within a week of the published date; that is a statement about this study's own fetch, not about knowledge available at the time. Reporting both is correct only if the lenient label is never called an observation."
+    },
+    "pipeline_fields_audit": {
+      "strict_observed_asof": {
+        "n_present": 0,
+        "values": {},
+        "n_true": 0,
+        "flag_true_but_audit_strict_false": 0,
+        "flag_false_but_audit_strict_true": 0
+      },
+      "observation_system": {
+        "n_present": 2517,
+        "values": {
+          "NONE": 2514,
+          "THIS_STUDY_COLLECTION": 3
+        },
+        "values_by_audit_strictness": {
+          "NONE|strict=False": 2514,
+          "THIS_STUDY_COLLECTION|strict=False": 3
+        }
+      },
+      "reading": "The pipeline's own strict flag is audited, not trusted: this audit re-derives strictness from the observation ledger for every claim and reports any disagreement in both directions."
+    },
+    "contradictions": {
+      "n_published_before_event": 2775,
+      "n_published_before_event_trial_relations": 2169,
+      "n_published_before_event_non_trial_relations": 606,
+      "n_first_seen_before_published": 0,
+      "n_valid_to_before_valid_from": 0,
+      "n_declared_before_valid_from": 284,
+      "n_anachronism_flag_true": 282,
+      "n_anachronism_flag_and_computed": 0,
+      "n_anachronism_computed_only": 284,
+      "n_anachronism_flag_mismatch": 282,
+      "pct_published_before_event": 13.5,
+      "pct_declared_before_valid_from": 1.38
+    },
+    "contradiction_examples": [
+      {
+        "kind": "published_before_event",
+        "predicate": "AFFILIATED_WITH",
+        "published_at": "2026-07-16",
+        "event_at": "2026-08-19"
+      },
+      {
+        "kind": "declared_before_valid_from",
+        "predicate": "AFFILIATED_WITH",
+        "declared_at": "2026-07-16",
+        "valid_from": "2026-08-19"
+      },
+      {
+        "kind": "published_before_event",
+        "predicate": "AFFILIATED_WITH",
+        "published_at": "2017-06-28",
+        "event_at": "2017-10-27"
+      },
+      {
+        "kind": "declared_before_valid_from",
+        "predicate": "AFFILIATED_WITH",
+        "declared_at": "2017-06-28",
+        "valid_from": "2017-10-27"
+      },
+      {
+        "kind": "declared_before_valid_from",
+        "predicate": "AFFILIATED_WITH",
+        "declared_at": "2022-12-23",
+        "valid_from": "2023-01-23"
+      },
+      {
+        "kind": "declared_before_valid_from",
+        "predicate": "AFFILIATED_WITH",
+        "declared_at": "2022-12-23",
+        "valid_from": "2023-01-23"
+      },
+      {
+        "kind": "declared_before_valid_from",
+        "predicate": "AFFILIATED_WITH",
+        "declared_at": "2026-07-24",
+        "valid_from": "2026-07-27"
+      },
+      {
+        "kind": "declared_before_valid_from",
+        "predicate": "AFFILIATED_WITH",
+        "declared_at": "2017-09-21",
+        "valid_from": "2017-10-12"
+      }
+    ],
+    "per_source_family": {
+      "clinicaltrials_gov": {
+        "n": 9235,
+        "pct_published_at": 100.0,
+        "pct_event_at": 53.02,
+        "pct_valid_from": 100.0,
+        "pct_first_seen_at": 100.0,
+        "lag_median_days": 4327,
+        "time_basis": {
+          "HISTORICAL_PROXY": 9231,
+          "ACTUAL_OBSERVATION": 4
+        }
+      },
+      "europepmc": {
+        "n": 9761,
+        "pct_published_at": 100.0,
+        "pct_event_at": 99.73,
+        "pct_valid_from": 100.0,
+        "pct_first_seen_at": 100.0,
+        "lag_median_days": 2874,
+        "time_basis": {
+          "HISTORICAL_PROXY": 2274,
+          "ACTUAL_OBSERVATION": 32,
+          "SOURCE_PUBLISHED": 7455
+        }
+      },
+      "institution": {
+        "n": 1567,
+        "pct_published_at": 100.0,
+        "pct_event_at": 100.0,
+        "pct_valid_from": 100.0,
+        "pct_first_seen_at": 100.0,
+        "lag_median_days": 1766,
+        "time_basis": {
+          "HISTORICAL_PROXY": 1543,
+          "ACTUAL_OBSERVATION": 24
+        }
+      }
+    },
+    "per_predicate": {
+      "AFFILIATED_WITH": {
+        "n": 2175,
+        "pct_published_at": 100.0,
+        "pct_event_at": 100.0,
+        "pct_valid_from": 100.0,
+        "pct_first_seen_at": 100.0,
+        "declared_at_precision": {
+          "day": 2175
+        },
+        "pct_declared_at_day": 100.0,
+        "pct_declared_at_month_or_year": 0.0,
+        "pct_declared_at_missing": 0.0,
+        "event_at_precision": {
+          "day": 2175
+        },
+        "pct_event_at_day": 100.0,
+        "pct_event_at_month_or_year": 0.0,
+        "pct_event_at_missing": 0.0,
+        "valid_from_precision": {
+          "day": 2175
+        },
+        "time_basis": {
+          "HISTORICAL_PROXY": 2144,
+          "ACTUAL_OBSERVATION": 31
+        }
+      },
+      "CO_AFFILIATED_ON": {
+        "n": 1567,
+        "pct_published_at": 100.0,
+        "pct_event_at": 100.0,
+        "pct_valid_from": 100.0,
+        "pct_first_seen_at": 100.0,
+        "declared_at_precision": {
+          "day": 1567
+        },
+        "pct_declared_at_day": 100.0,
+        "pct_declared_at_month_or_year": 0.0,
+        "pct_declared_at_missing": 0.0,
+        "event_at_precision": {
+          "day": 1567
+        },
+        "pct_event_at_day": 100.0,
+        "pct_event_at_month_or_year": 0.0,
+        "pct_event_at_missing": 0.0,
+        "valid_from_precision": {
+          "day": 1567
+        },
+        "time_basis": {
+          "HISTORICAL_PROXY": 1543,
+          "ACTUAL_OBSERVATION": 24
+        }
+      },
+      "FUNDED_BY": {
+        "n": 105,
+        "pct_published_at": 100.0,
+        "pct_event_at": 100.0,
+        "pct_valid_from": 100.0,
+        "pct_first_seen_at": 100.0,
+        "declared_at_precision": {
+          "day": 105
+        },
+        "pct_declared_at_day": 100.0,
+        "pct_declared_at_month_or_year": 0.0,
+        "pct_declared_at_missing": 0.0,
+        "event_at_precision": {
+          "day": 105
+        },
+        "pct_event_at_day": 100.0,
+        "pct_event_at_month_or_year": 0.0,
+        "pct_event_at_missing": 0.0,
+        "valid_from_precision": {
+          "day": 105
+        },
+        "time_basis": {
+          "HISTORICAL_PROXY": 104,
+          "ACTUAL_OBSERVATION": 1
+        }
+      },
+      "HAS_TOPIC": {
+        "n": 7455,
+        "pct_published_at": 100.0,
+        "pct_event_at": 100.0,
+        "pct_valid_from": 100.0,
+        "pct_first_seen_at": 100.0,
+        "declared_at_precision": {
+          "day": 7455
+        },
+        "pct_declared_at_day": 100.0,
+        "pct_declared_at_month_or_year": 0.0,
+        "pct_declared_at_missing": 0.0,
+        "event_at_precision": {
+          "day": 7455
+        },
+        "pct_event_at_day": 100.0,
+        "pct_event_at_month_or_year": 0.0,
+        "pct_event_at_missing": 0.0,
+        "valid_from_precision": {
+          "day": 7455
+        },
+        "time_basis": {
+          "SOURCE_PUBLISHED": 7455
+        }
+      },
+      "HOSTS_TRIAL_SITE": {
+        "n": 598,
+        "pct_published_at": 100.0,
+        "pct_event_at": 100.0,
+        "pct_valid_from": 100.0,
+        "pct_first_seen_at": 100.0,
+        "declared_at_precision": {
+          "day": 598
+        },
+        "pct_declared_at_day": 100.0,
+        "pct_declared_at_month_or_year": 0.0,
+        "pct_declared_at_missing": 0.0,
+        "event_at_precision": {
+          "month": 342,
+          "day": 256
+        },
+        "pct_event_at_day": 42.81,
+        "pct_event_at_month_or_year": 57.19,
+        "pct_event_at_missing": 0.0,
+        "valid_from_precision": {
+          "day": 598
+        },
+        "time_basis": {
+          "HISTORICAL_PROXY": 598
+        }
+      },
+      "REFERENCES_PUBLICATION": {
+        "n": 4351,
+        "pct_published_at": 100.0,
+        "pct_event_at": 0.0,
+        "pct_valid_from": 100.0,
+        "pct_first_seen_at": 100.0,
+        "declared_at_precision": {
+          "day": 4351
+        },
+        "pct_declared_at_day": 100.0,
+        "pct_declared_at_month_or_year": 0.0,
+        "pct_declared_at_missing": 0.0,
+        "event_at_precision": {
+          "missing": 4351
+        },
+        "pct_event_at_day": 0.0,
+        "pct_event_at_month_or_year": 0.0,
+        "pct_event_at_missing": 100.0,
+        "valid_from_precision": {
+          "day": 4351
+        },
+        "time_basis": {
+          "HISTORICAL_PROXY": 4351
+        }
+      },
+      "RESPONSIBLE_FOR_TRIAL": {
+        "n": 3,
+        "pct_published_at": 100.0,
+        "pct_event_at": 100.0,
+        "pct_valid_from": 100.0,
+        "pct_first_seen_at": 100.0,
+        "declared_at_precision": {
+          "day": 3
+        },
+        "pct_declared_at_day": 100.0,
+        "pct_declared_at_month_or_year": 0.0,
+        "pct_declared_at_missing": 0.0,
+        "event_at_precision": {
+          "day": 1,
+          "month": 2
+        },
+        "pct_event_at_day": 33.33,
+        "pct_event_at_month_or_year": 66.67,
+        "pct_event_at_missing": 0.0,
+        "valid_from_precision": {
+          "day": 3
+        },
+        "time_basis": {
+          "HISTORICAL_PROXY": 3
+        }
+      },
+      "SPONSORS_TRIAL": {
+        "n": 4309,
+        "pct_published_at": 100.0,
+        "pct_event_at": 99.68,
+        "pct_valid_from": 100.0,
+        "pct_first_seen_at": 100.0,
+        "declared_at_precision": {
+          "day": 4309
+        },
+        "pct_declared_at_day": 100.0,
+        "pct_declared_at_month_or_year": 0.0,
+        "pct_declared_at_missing": 0.0,
+        "event_at_precision": {
+          "month": 2274,
+          "day": 2021,
+          "missing": 14
+        },
+        "pct_event_at_day": 46.9,
+        "pct_event_at_month_or_year": 52.77,
+        "pct_event_at_missing": 0.32,
+        "valid_from_precision": {
+          "day": 4309
+        },
+        "time_basis": {
+          "HISTORICAL_PROXY": 4305,
+          "ACTUAL_OBSERVATION": 4
+        }
+      }
+    },
+    "references_publication_temporal_audit": {
+      "n_reference_claims": 4351,
+      "n_resolved_to_publication_year": 26,
+      "n_unresolved": 4325,
+      "n_pub_year_after_trial_year_IMPOSSIBLE": 23,
+      "n_pub_year_equals_trial_year": 2,
+      "n_pub_year_before_trial_year_LEGITIMATE": 1,
+      "max_pub_year_after_gap": 14,
+      "max_pub_year_before_gap": 5,
+      "examples_impossible": [
+        {
+          "trial": "NCT01534299",
+          "trial_first_post": "2012-02-16",
+          "publication_year": 2026,
+          "publication_date": "2025-12-10",
+          "trial_last_update_post": "2026-10-23",
+          "gap_years": 14,
+          "reference_added_later_explains_it": true,
+          "object_id": "ent:publication:doi:10.1097/hjh.0000000000004219"
+        },
+        {
+          "trial": "NCT03933462",
+          "trial_first_post": "2019-05-01",
+          "publication_year": 2022,
+          "publication_date": "2022-02-23",
+          "trial_last_update_post": "2020-12-17",
+          "gap_years": 3,
+          "reference_added_later_explains_it": false,
+          "object_id": "ent:publication:doi:10.1089/jamp.2021.0054"
+        },
+        {
+          "trial": "NCT02752737",
+          "trial_first_post": "2016-04-27",
+          "publication_year": 2024,
+          "publication_date": "2023-12-12",
+          "trial_last_update_post": "2025-07-30",
+          "gap_years": 8,
+          "reference_added_later_explains_it": true,
+          "object_id": "ent:publication:doi:10.1007/s10840-023-01680-z"
+        },
+        {
+          "trial": "NCT01970501",
+          "trial_first_post": "2013-10-28",
+          "publication_year": 2018,
+          "publication_date": "2017-12-06",
+          "trial_last_update_post": "2022-09-26",
+          "gap_years": 5,
+          "reference_added_later_explains_it": true,
+          "object_id": "ent:publication:doi:10.1016/j.ahj.2017.12.001"
+        }
+      ],
+      "examples_legitimate_long_before": [
+        {
+          "trial": "NCT07856238",
+          "trial_first_post": "2026-10-02",
+          "publication_year": 2021,
+          "gap_years": -5
+        }
+      ],
+      "n_impossible_explained_by_later_registry_update": 16,
+      "n_impossible_unexplained": 7,
+      "reading": "The ClinicalTrials.gov reference list is CURRENT-STATE: the registry keeps no history of when a reference was added, and the only stamp is lastUpdatePostDate. A trial first posted in 2012 that lists a 2026 paper therefore means the reference was added at a later registry update - it is back-dating of the relation, not a contradiction. The claim dates the citation by the TRIAL's first-post date, which is the defect. A cited paper published in an EARLIER year is legitimate, but the relation must then be dated by the paper's date, not by the trial's.",
+      "publication_year_index_size": 2223,
+      "trial_index_size": 2498,
+      "pct_n_pub_year_after_trial_year_IMPOSSIBLE": 0.53,
+      "pct_n_pub_year_equals_trial_year": 0.05,
+      "pct_n_pub_year_before_trial_year_LEGITIMATE": 0.02,
+      "pct_n_resolved_to_publication_year": 0.6,
+      "pct_n_unresolved": 99.4,
+      "pct_impossible_of_resolved": 88.46
+    },
+    "observed_lag_crosscheck": {
+      "n_checked": 13108,
+      "n_mismatch": 0
+    },
+    "downstream_statement": "Edges built from these claims are SOURCE_PUBLISHED or HISTORICAL_PROXY unless the claim carries a first_seen_at that the observation ledger actually contains with lag <= 1 day; the measured count is in actual_observation_support.n_strict_genuine.",
+    "status": "OK"
+  },
+  "verified_claims": {
+    "report": "D:\\DEPPSKK\\worktrees\\s029-relations\\research\\studies\\relation_network_s029\\TEMPORAL_PROVENANCE.md",
+    "n_number_tokens": 936,
+    "n_distinct_tokens": 241,
+    "n_unverified": 0,
+    "unverified_tokens": [],
+    "verified": true
+  },
+  "clock_availability": {
+    "clinicaltrials_gov": {
+      "event_at_available": true,
+      "published_at_available": true,
+      "first_seen_at_available": false,
+      "valid_from_available": false,
+      "n_fields_mapped": 6,
+      "n_fields_that_are_no_clock_at_all": 2,
+      "clock_labels_used": [
+        "DATE_ONLY",
+        "SOURCE_PUBLISHED",
+        "TIME_UNKNOWN"
+      ]
+    },
+    "europe_pmc": {
+      "event_at_available": true,
+      "published_at_available": true,
+      "first_seen_at_available": false,
+      "valid_from_available": false,
+      "n_fields_mapped": 5,
+      "n_fields_that_are_no_clock_at_all": 2,
+      "clock_labels_used": [
+        "DATE_ONLY",
+        "SOURCE_PUBLISHED",
+        "TIME_UNKNOWN"
+      ]
+    },
+    "openalex": {
+      "event_at_available": true,
+      "published_at_available": false,
+      "first_seen_at_available": false,
+      "valid_from_available": false,
+      "n_fields_mapped": 3,
+      "n_fields_that_are_no_clock_at_all": 2,
+      "clock_labels_used": [
+        "DATE_ONLY",
+        "TIME_UNKNOWN"
+      ]
+    },
+    "crossref": {
+      "event_at_available": true,
+      "published_at_available": true,
+      "first_seen_at_available": false,
+      "valid_from_available": false,
+      "n_fields_mapped": 5,
+      "n_fields_that_are_no_clock_at_all": 2,
+      "clock_labels_used": [
+        "DATE_ONLY",
+        "SOURCE_PUBLISHED",
+        "TIME_UNKNOWN"
+      ]
+    },
+    "medradar_observation_ledger": {
+      "event_at_available": true,
+      "published_at_available": true,
+      "first_seen_at_available": true,
+      "valid_from_available": false,
+      "n_fields_mapped": 5,
+      "n_fields_that_are_no_clock_at_all": 1,
+      "clock_labels_used": [
+        "ACTUAL_OBSERVATION",
+        "DATE_ONLY",
+        "HISTORICAL_PROXY",
+        "SOURCE_PUBLISHED",
+        "TIME_UNKNOWN"
+      ]
+    },
+    "any_source": {
+      "valid_from_available": false,
+      "note": "valid_from / valid_to is present in NO source API; only the all_sources row reserves it, marked HISTORICAL_PROXY and derived."
+    }
+  },
+  "study_corpus_precision_audit": {
+    "note": "reads the study's own extract files read-only; nothing is written to them and no network call is made",
+    "ctgov_trials.jsonl": {
+      "exists": true,
+      "n_records": 2498,
+      "n_parse_errors": 0,
+      "fields": {
+        "start_date": {
+          "n": 2498,
+          "n_present": 2490,
+          "n_missing": 8,
+          "precision": {
+            "year": 0,
+            "month": 1400,
+            "day": 1090,
+            "datetime": 0,
+            "other": 0
+          },
+          "pct_month_of_present": 56.22,
+          "pct_day_of_present": 43.78
+        },
+        "study_first_post_date": {
+          "n": 2498,
+          "n_present": 2498,
+          "n_missing": 0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 2498,
+            "datetime": 0,
+            "other": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        },
+        "primary_completion_date": {
+          "n": 2498,
+          "n_present": 2412,
+          "n_missing": 86,
+          "precision": {
+            "year": 0,
+            "month": 1323,
+            "day": 1089,
+            "datetime": 0,
+            "other": 0
+          },
+          "pct_month_of_present": 54.85,
+          "pct_day_of_present": 45.15
+        },
+        "last_update_post_date": {
+          "n": 2498,
+          "n_present": 2498,
+          "n_missing": 0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 2498,
+            "datetime": 0,
+            "other": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        },
+        "results_first_post_date": {
+          "n": 2498,
+          "n_present": 789,
+          "n_missing": 1709,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 789,
+            "datetime": 0,
+            "other": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        }
+      },
+      "first_seen_at": {
+        "n_records_with_value": 2498,
+        "n_distinct_values": 14,
+        "min": "2026-11-03T19:39:54.982Z",
+        "max": "2026-11-03T19:40:08.805Z",
+        "span_seconds": 13,
+        "distinct_per_record": 0.0056
+      }
+    },
+    "epmc_pubs.jsonl": {
+      "exists": true,
+      "n_records": 770,
+      "n_parse_errors": 0,
+      "fields": {
+        "first_publication_date": {
+          "n": 770,
+          "n_present": 770,
+          "n_missing": 0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 770,
+            "datetime": 0,
+            "other": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        },
+        "first_index_date": {
+          "n": 770,
+          "n_present": 770,
+          "n_missing": 0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 770,
+            "datetime": 0,
+            "other": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        },
+        "electronic_publication_date": {
+          "n": 770,
+          "n_present": 671,
+          "n_missing": 99,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 671,
+            "datetime": 0,
+            "other": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        },
+        "date_of_creation": {
+          "n": 770,
+          "n_present": 770,
+          "n_missing": 0,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 770,
+            "datetime": 0,
+            "other": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        },
+        "date_of_revision": {
+          "n": 770,
+          "n_present": 732,
+          "n_missing": 38,
+          "precision": {
+            "year": 0,
+            "month": 0,
+            "day": 732,
+            "datetime": 0,
+            "other": 0
+          },
+          "pct_month_of_present": 0.0,
+          "pct_day_of_present": 100.0
+        }
+      },
+      "first_seen_at": {
+        "n_records_with_value": 770,
+        "n_distinct_values": 94,
+        "min": "2026-11-03T19:41:50.058Z",
+        "max": "2026-11-03T19:43:15.598Z",
+        "span_seconds": 85,
+        "distinct_per_record": 0.1221
+      }
+    },
+    "reading": "The extractor preserves source precision (month-only source values stay month-only; nothing is silently promoted to a day). But the per-record first_seen_at in these files is a near-unique sub-second value inside a few-second window - the ETL write clock - not an observation recorded by the observation ledger, whose clock stopped earlier and has only a handful of distinct values. These are two different clock families."
+  }
+}

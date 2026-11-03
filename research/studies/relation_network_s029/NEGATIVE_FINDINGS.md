@@ -1,0 +1,167 @@
+# S-029 负结果与自我更正登记 / Negative Findings and Self-Corrections
+
+**Rule of this document:** every negative result and every correction of the study's own work is
+recorded with the measurement that produced it and what it does *not* license. Nothing is deleted
+because it weakened a claim. This file is a primary scientific output, not an appendix.
+
+Each entry is labelled:
+`OBSERVED_FACT` (measured in this study) · `SOURCE_SUPPORTED_CLAIM` (a source states it) ·
+`MACHINE_INFERENCE` (our pipeline decided it) · `HYPOTHESIS` · `UNKNOWN`.
+
+---
+
+## NF-1 — Relation C (confirmed organisational cooperation) has **zero** admissible rows `OBSERVED_FACT`
+
+The ontology reserved `COOPERATES_WITH` with roles (research agreement / joint development / consortium /
+licence) and an evidential bar: primary document, quotable clause, declaration date, start date if
+stated. No source in this round meets it. Trial co-participation is not a cooperation statement,
+co-authorship is not a cooperation statement, and press-release mining was out of scope.
+**Consequence:** the study has **no** company↔company edge and no confirmed company↔institution
+partnership edge. Do not describe the network as a collaboration network. **Does not license:** "these
+companies do not cooperate" — it licenses "this study did not establish any cooperation claim".
+
+## NF-2 — One third of company relations are co-authorship, not cooperation `OBSERVED_FACT`
+
+1,567 `CO_AFFILIATED_ON` claims = **32.56%** of all company relations. They are stored with
+`interpretation_limit = "co-authorship is not collaboration, not knowledge transfer, and has no
+direction"`. In the network feasibility inventory they form a **single 1,056-node component**, which is
+an artefact of publication co-authorship, not evidence of a research community. **This is the S-028
+error in its most tempting form and the study refuses it explicitly.**
+
+## NF-3 — The Dräger ASCII query is 76.5% name collisions `OBSERVED_FACT`
+
+`AFF:"Draeger"` returns papers by authors **surnamed** Draeger (email `draeger@ana.unibe.ch`, name forms
+like "H.T. Draeger, MD"). Of 81 Draeger affiliation mentions, **62 were rejected**; the accepted 17 came
+from organisational strings or `@draeger.com` addresses. Canonical "Dräger" spelling was worse in a
+different way: ClinicalTrials.gov returned **2** studies for "Dräger" and **18** for variant spellings.
+**Does not license:** "Dräger has no clinical research". It licenses: "a name-based search for this
+company is unusable without a collision classifier."
+
+## NF-4 — Corporate history: four corrections to the study's own assumptions `OBSERVED_FACT`
+
+1. **Datascope was never acquired by Mindray.** The verified 2008 8-K shows only the Patient Monitoring
+   *business* was sold (closed 2008-05-14); Datascope Corp. continued independently. My provisional rule
+   had treated the company as Mindray. Now 4 sponsor strings are correctly `NOT_MAPPED`.
+2. **There was no 2018 "relisting" of the Cayman issuer.** The 2018 ChiNext listing is a *different
+   legal person* (Shenzhen Mindray). The study brief's premise was corrected by the register.
+3. **"Covidien" before 2015-01-26 is not Medtronic.** 6 mentions are `AMBIGUOUS` for this reason
+   (e.g. "Covidien, GI Solutions" in a 2010 trial); 17 further strings are historical names
+   ("Tyco Healthcare") that never existed under Medtronic ownership.
+4. **GE "Healthcare" before 2023-01-03 is a division, not the legal entity.** 282 claims carry an
+   anachronism flag. The business is the same; the legal person is not. **Does not license:** attributing
+   pre-spin GE Healthcare activity to GE HealthCare Technologies Inc. as a legal fact.
+
+## NF-5 — Europe PMC affiliation retrievability breaks in 2014 `OBSERVED_FACT`
+
+Share of year-stratified samples whose returned record actually contains the query token: **2010 28.0%**,
+2011 44.0%, 2012 51.6%, 2013 62.5%, **2014 97.1%**, then ≥94.6% every year after. Before 2014 the index
+hit frequently cannot be verified from the record at all. **Consequence:** any "relations per year"
+curve crossing 2014 is measurably a metadata artefact. **Does not license:** "company–academic
+collaboration grew after 2014."
+
+## NF-6 — Patent records contaminate a publication search `OBSERVED_FACT`
+
+38 of 770 Europe PMC records returned by affiliation queries are **patent records** (`source=PAT`), not
+publications. They are excluded and counted. A pipeline that trusts the hit type would add patents to a
+publication graph.
+
+## NF-7 — Zero genuine point-in-time evidence; the pipeline's own labels were wrong and were corrected `SELF-CORRECTION`
+
+The claims builder labelled 60 claims (0.29%) `ACTUAL_OBSERVATION` under a rule "published within 7 days
+of our fetch". The independent temporal audit showed that none of the 20,563 claims has a `first_seen_at`
+recorded by the Live Observatory, and all 107 distinct `first_seen_at` values fall inside a 200-second
+ETL window. **Correction applied:** every claim now carries `strict_observed_asof=false` plus an explicit
+`observation_system` field; the verdict uses the strict count (**0**), and the lenient 60 are reported
+alongside with the definitional difference stated (`DATA_QUALITY_REPORT.md` §C.2).
+**Does not license:** any point-in-time, prospective or as-of reconstruction claim.
+
+## NF-8 — No human adjudication exists; therefore no precision, recall or accuracy may be quoted `MACHINE_INFERENCE`
+
+The worksheet has 102 stratified rows with `human_label`, `reviewer_id`, `review_date`,
+`review_reason`, `adjudication_status` **empty by construction** (verified by `s029_12` check V6).
+No claim is `HUMAN_CONFIRMED`. Status: **`HUMAN_VALIDATION_PENDING`**.
+**Does not license:** "the relations are 9x% accurate", "machine–human agreement", "validated dataset".
+
+## NF-9 — Registry reference lists are current-state, so trial→publication dates cannot be trusted `OBSERVED_FACT`
+
+Of 4,351 reference claims, only 26 resolve inside this study's publication sample; of those, **23 (88%)**
+cite a paper published *after* the trial's first-post date (up to 14 years). The mechanism is not a
+temporal contradiction: the registry's reference list is updated over time, so its current state cannot
+date when the citation was added. The relation exists; its date basis must be re-based on the publication
+or marked unknown. A 150-PMID external probe shows **150/150 resolvable in Europe PMC** — so the low
+in-sample rate is a sampling artefact, not a linkage failure.
+
+## NF-10 — Two pre-registered conditions fail marginally or by denominator choice `OBSERVED_FACT` + `MACHINE_INFERENCE`
+
+* **T3**: the institution-unmapped clause passes under the class-correct denominator (18.2% ≤ 20%) but
+  the *fuzzy-identity* clause fails by **0.1 percentage points** (10.1% vs a 10.0% ceiling). The naive
+  all-candidate unmapped rate is 32.4% and is also reported.
+* **T5**: clause (a) passes (100% of sampled trial-referenced PMIDs resolvable); clause (b) fails
+  (15.1% of institutions appear in both sources inside this sample, against 30%). An independent
+  OpenAlex check finds **452 of 454 institution-bearing papers corroborated** (99.6%), which is the
+  stronger cross-source statement and is reported next to the failing clause.
+
+Neither marginal condition changes the verdict: **T4 (0 point-in-time) and T6 (no human review) are
+decisive on their own**, and a verdict of `REVISE` would still be required even if T3 and T5 both passed.
+Both denominators and both pass/fail values are stored in `artifacts/quality_metrics.json`.
+
+## NF-11 — ROR does not cover a large minority of the institutions we found `OBSERVED_FACT`
+
+Among 3,143 institution-classified candidates, **18.2% (572) are unmapped**; including non-institution
+strings the rate is 32.4%. A second resolution pass that tries alternative organisation spans recovered
+564 candidates, so part of the gap was my parser. What remains is a genuine registry gap (small hospitals,
+company-adjacent organisations). **Does not license:** treating an unmapped institution as absent.
+
+## NF-12 — Canonical-name-only reconstruction would lose two thirds of the evidence `OBSERVED_FACT`
+
+Of 3,134 records carrying a company mention, only 1,013 are reachable by the exact parent name:
+**67.68% lost**. The loss is not random — it concentrates in companies with divisional structure
+(Philips: 99.5% of accepted sponsor strings are units; Medtronic: 61.8%).
+
+## NF-13 — Two "time" fields that look like clocks are infrastructure stamps `SOURCE_SUPPORTED_CLAIM`
+
+OpenAlex `created_date` is a bulk-ingest stamp (median **3,567.5 days** after `publication_date`; legacy
+records all 2016-06-24). Crossref `created` is a DOI deposit (median 13.5 days after `issued`, max
+12,598, and 6/30 negative). Neither may be used to date an event. The temporal auditor verified that no
+`asOf`/`date`/`studyVersion` parameter exists at ClinicalTrials.gov (HTTP 400) and no `/history` endpoint
+(404): **historical as-of retrieval is impossible, not merely unimplemented here.**
+
+## NF-14 — S-028's data situation has not improved `OBSERVED_FACT`
+
+The temporal audit re-measured **29 metrics** of the frozen S-028 input and observatory ledger:
+**0 changed** (`STAYED_THE_SAME`). The ledger still holds 400 observations from one day, 6 with lag ≤1
+day; the frozen input still has one `first_seen_at` value for 55,090 rows. No new collection cycle has
+run. Any S-030 plan that assumes "the observatory has been accumulating history since S-028" is wrong.
+
+## NF-15 — A provenance defect in this study was found and fixed `SELF-CORRECTION`
+
+Evidence rows were initially keyed by the *query payload* (which holds up to 200 studies), so a claim's
+`original_text_reference` could point at a different record from the same payload. Detected while
+building the pilot examples. **Correction:** evidence ids are now
+`ev:<payload_sha256>:<source_record_id>` (3,418 rows), the verifier resolves them per record, and check
+V1b passes for all 20,563 claims. Recorded because a traceability claim that is subtly false is worse
+than no claim.
+
+## NF-16 — ClinicalTrials.gov sponsor fields can contain free text, not entities `OBSERVED_FACT`
+
+Observed strings: `"MEDTRONIC labs provide the aquamantys® probes for the study."` and
+`"GE Medical Systems ultrasound (only technical support)"`. Registered in the entity register's
+`not_company_registry` and rejected by rule. A field that usually holds an organisation does not always
+hold one.
+
+## NF-17 — The verdict is `NO-GO FOR PREDICTION` `MACHINE_INFERENCE` (from pre-registered rules)
+
+T1, T2 pass; T3, T4, T5, T6 fail. The relation layer is reconstructable and traceable, but it is neither
+point-in-time nor human-validated, and the institution identity layer is incomplete. The next round must
+**either** run a live forward-collection to accumulate genuine observed-as-of history **or** complete the
+human adjudication — before any temporal prediction is attempted. Thresholds were not relaxed; the
+marginal failures are documented above rather than renegotiated.
+
+---
+
+## What is *not* in this file, deliberately
+
+No claim that a missing relation does not exist. Every zero in this study is a statement about **what the
+sources and the search could reach**, never about the world. Searches that returned nothing (e.g.
+"Draegerwerk" at ClinicalTrials.gov, funder registry entries for Dräger and Mindray) are recorded in
+`artifacts/query_recall_probe.json` and `artifacts/crosssource.json` with the exact query strings.
