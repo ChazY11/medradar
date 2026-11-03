@@ -39,6 +39,40 @@ python -m medradar web --port 8787
 | **Technology radar** | **Research analyst** |
 | ![Radar](docs/product/radar-respiratory.png) | ![Analyst](docs/product/analyst.png) |
 
+## MedRadar Live Observatory — continuous, auditable observation
+
+`feat/live-observatory-v1` adds the piece the snapshot pipeline could never answer:
+**what did we actually observe, and when did we first observe it?**
+
+A separate, append-only Observation Ledger (`data/observatory/observatory.sqlite`)
+records every public record from official APIs with a real `first_seen_at` written
+once by the collector, an immutable payload-version chain, and an explicit
+`NEW / UPDATED / UNCHANGED / REMOVED_OR_UNAVAILABLE / FETCH_FAILED` state. The
+existing 1.37 GB research store is only read; existing statistics are untouched.
+
+```bash
+# incremental observation of the official sources (default: sec_edgar,ctgov,europepmc)
+python -m medradar observatory sync
+python -m medradar observatory status          # sync state, failures, measured lag
+python -m medradar observatory watch --interval-minutes 60   # local continuous polling
+python -m medradar observatory replay --as-of 2026-11-03T10:00:00Z   # point-in-time replay
+python -m medradar web --port 8787             # then #/observatory
+```
+
+- official sources only: **SEC EDGAR**, **ClinicalTrials.gov API v2**, **Europe PMC**;
+  FDA 510(k)/PMA reuse the existing collectors and are **not** claimed to be real-time;
+- issuer coverage is **verified per company**, not assumed: Medtronic / GE HealthCare /
+  Philips have SEC CIKs; Dräger has none (the EDGAR name match is an individual filer);
+  Mindray stopped filing in 2016 — each with the evidence that was checked;
+- two different claims are never merged in the UI: *"the event happened on X"* vs
+  *"MedRadar first observed it on Y"*; measured latency is shown only where the source
+  publishes a real availability timestamp, otherwise "not measurable" with the reason;
+- every acceptance scenario (A–G) has a synthetic tier, a real-API tier and a real
+  incremental tier: `python scripts/observatory_acceptance.py --live`;
+- docs: [user & operations guide](docs/LIVE_OBSERVATORY.md) ·
+  [design & interface contract](docs/LIVE_OBSERVATORY_DESIGN.md) ·
+  [prospective observation registry](docs/PROSPECTIVE_OBSERVATION_REGISTRY.md)
+
 
 
 > The stable core through `v0.2.2` was built with DeepSeek Harness using `deepseek-flash`.
