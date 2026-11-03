@@ -1,9 +1,11 @@
 # S-029 预注册决策门槛 / Pre-Registered GO-NO-GO Criteria
 
-**Fixed before any quality metric was computed.** Written and committed before the quality
-metrics script (`code/s029_08_quality_metrics.py`) was first executed. Its sha256 is recorded in
-`artifacts/prereg_decision.json` and re-checked by `code/s029_12_verify_report.py`, so the order of events
-is verifiable rather than asserted.
+**Fixed before any quality metric was computed**, and the ordering is documented honestly rather than
+asserted: this file, the metrics and the recorded hash first entered git in the same commit, so the
+sequence is evidenced by the artefacts' generation timestamps and by the dated amendment log in
+Appendix A, not by an earlier commit. Its sha256 is recorded in `artifacts/prereg_decision.json` and
+re-checked by `code/s029_12_verify_report.py`; Appendix A records every later measurement-definition
+change with the old and new values side by side.
 
 This file defines what would count as success *before* looking at the numbers, because the temptation
 after S-028 is to lower the bar until the project can continue.
