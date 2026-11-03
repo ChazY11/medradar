@@ -22,6 +22,16 @@ def summary() -> dict[str, Any]:
     return observatory.summary()
 
 
+@router.get("/health")
+def health() -> dict[str, Any]:
+    """Observatory health (§6): overall verdict, deployment, validation, sources, checks.
+
+    Computed from the ledger, filesystem and runtime state — never from the fact that
+    this endpoint answered 200. A missing ledger is an honest ``NOT_DEPLOYED`` body.
+    """
+    return observatory.health()
+
+
 @router.get("/events")
 def events(
     window: str = Query("7d", description="24h | 7d | 30d"),
@@ -30,6 +40,10 @@ def events(
     company: str | None = Query(None, max_length=120, description="entity_id or __unmapped__"),
     track: str | None = Query(None, max_length=120, description="track_id or __unmapped__"),
     q: str | None = Query(None, max_length=120),
+    phase: str | None = Query(
+        None,
+        description="INITIAL_DISCOVERY | INCREMENTAL_DISCOVERY | HISTORICAL_BACKFILL",
+    ),
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
 ) -> dict[str, Any]:
@@ -41,6 +55,7 @@ def events(
         company=company,
         track=track,
         q=q,
+        phase=phase,
         limit=limit,
         offset=offset,
     )

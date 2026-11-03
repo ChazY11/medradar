@@ -37,6 +37,7 @@ from typing import Any, Callable, Iterable, Mapping, Sequence
 
 from ..config import DATA_DIR
 from ..observatory import mapping as mapping_layer
+from ..observatory.health import health as compute_health
 from ..observatory.lag import measure_lag, observation_lag
 from ..observatory.ledger import ObservationLedger, default_ledger_path, open_ledger_readonly
 from ..observatory.records import (
@@ -44,18 +45,45 @@ from ..observatory.records import (
     CHANGE_NEW,
     CHANGE_REMOVED,
     CHANGE_UPDATED,
+    DEPLOYMENT_LOCAL,
+    DEPLOYMENT_NOT_DEPLOYED,
+    DEPLOYMENT_SERVICE,
     ENTITY_AMBIGUOUS,
     ENTITY_MAPPED,
     ENTITY_PENDING_REVIEW,
     ENTITY_UNMAPPED,
     FIELD_LABELS_ZH,
+    HEALTH_DEGRADED,
+    HEALTH_NOT_DEPLOYED,
+    HEALTH_OPERATIONAL,
+    HEALTH_PAUSED,
+    HEALTH_VALIDATION,
     ORIGIN_BACKFILLED,
+    OUTCOME_FETCH_FAILED,
+    OUTCOME_LABELS_ZH,
+    OUTCOME_LOCKED,
+    OUTCOME_NEW_RECORDS,
+    OUTCOME_NO_NEW_RECORDS,
+    OUTCOME_PARTIAL,
+    OUTCOME_PAUSED,
+    OUTCOME_UPDATED_RECORDS,
+    PHASE_BACKFILL,
+    PHASE_INCREMENTAL,
+    PHASE_INITIAL,
+    PHASE_LABELS_ZH,
+    PHASE_SHORT_ZH,
+    PHASES,
     SOURCE_STATUS_LABELS_ZH,
     STATUS_REMOVED,
     TRACK_UNMAPPED,
+    VALIDATION_FAILED,
+    VALIDATION_IN_PROGRESS,
+    VALIDATION_NOT_STARTED,
+    VALIDATION_PASSED,
     short_preview,
     utc_now_iso,
 )
+from ..observatory.validation import validation_status
 
 # --------------------------------------------------------------------- vocabulary
 WINDOWS: dict[str, int] = {"24h": 24, "7d": 24 * 7, "30d": 24 * 30}
@@ -147,6 +175,83 @@ LIMITATIONS: list[dict[str, str]] = [
         "id": "not_interpretation",
         "text_zh": "本页只陈述观察到的事实与时间口径，不对新出现的公开活动做排名、评分或战略解读。",
     },
+]
+
+#: Display vocabulary for the Observatory Health panel (docs/RELIABILITY_DESIGN.md §6).
+#: The words themselves come from the health computation; this layer only adds the
+#: Chinese label and the one-line meaning so the UI cannot invent either.
+HEALTH_LABELS_ZH = {
+    HEALTH_OPERATIONAL: "运行正常",
+    HEALTH_DEGRADED: "降级运行",
+    HEALTH_PAUSED: "已暂停",
+    HEALTH_NOT_DEPLOYED: "未部署",
+    HEALTH_VALIDATION: "验证进行中",
+}
+
+HEALTH_MEANINGS_ZH = {
+    HEALTH_OPERATIONAL: (
+        "已记录经过验证的部署，全部来源健康且新鲜，最近备份已验证、最近恢复演练成功，"
+        "七天验证已完成并通过。"
+    ),
+    HEALTH_DEGRADED: (
+        "至少一个组件不健康：来源失败或过期、存在未解决的结构告警、备份或恢复演练缺失、"
+        "账本一致性检查异常。必须逐项查看下面的检查列表，不能只看一个绿色徽标。"
+    ),
+    HEALTH_PAUSED: "采集被显式暂停：暂停期间不会产生新的观察。暂停不是健康状态，也不代表七天验证在继续。",
+    HEALTH_NOT_DEPLOYED: (
+        "没有经过验证的常驻部署（supervisor / 服务）。手动运行、本地演练与本地备份"
+        "都不等于生产部署；即使账本里已有数据，也必须显示「未部署」。"
+    ),
+    HEALTH_VALIDATION: (
+        "七天连续观察验证尚未结束，其余组件当前健康。只能报告「进行中」，"
+        "绝不能宣称「已通过」；剩余天数按真实经过时间计算。"
+    ),
+}
+
+DEPLOYMENT_LABELS_ZH = {
+    DEPLOYMENT_NOT_DEPLOYED: "未部署（NOT_DEPLOYED）",
+    DEPLOYMENT_LOCAL: "本地部署（DEPLOYED_LOCAL）",
+    DEPLOYMENT_SERVICE: "常驻服务部署（DEPLOYED_SERVICE）",
+}
+
+DEPLOYMENT_NOTES_ZH = {
+    DEPLOYMENT_NOT_DEPLOYED: "没有经过验证的常驻部署记录；手动运行与本地验证不等于部署。",
+    DEPLOYMENT_LOCAL: "本地已验证部署；不是生产常驻服务，重启后不会自动恢复采集。",
+    DEPLOYMENT_SERVICE: "已由 supervisor 安装并验证的常驻服务部署。",
+}
+
+VALIDATION_LABELS_ZH = {
+    VALIDATION_NOT_STARTED: "未开始（VALIDATION_NOT_STARTED）",
+    VALIDATION_IN_PROGRESS: "进行中（VALIDATION_IN_PROGRESS）",
+    VALIDATION_PASSED: "已通过（VALIDATION_PASSED）",
+    VALIDATION_FAILED: "失败（VALIDATION_FAILED）",
+}
+
+VALIDATION_NOTES_ZH = {
+    VALIDATION_NOT_STARTED: "七天连续观察验证尚未开始；不会把未开始的任务报告为通过。",
+    VALIDATION_IN_PROGRESS: "七天验证尚未结束：只能报告进行中，并按真实经过时间给出已完成/缺失轮次。",
+    VALIDATION_PASSED: "验证窗口真实结束后，由 validate stop 依据记录的运行与指标显式写入。",
+    VALIDATION_FAILED: "验证以失败结束；失败原因见该验证记录的指标与说明。",
+}
+
+#: NO_NEW_RECORDS is a normal outcome; FETCH_FAILED is a failure. They are never
+#: collapsed into the same word (docs/RELIABILITY_DESIGN.md §0 / §6).
+OUTCOME_NORMAL = frozenset((OUTCOME_NEW_RECORDS, OUTCOME_UPDATED_RECORDS, OUTCOME_NO_NEW_RECORDS))
+
+#: Acquisition phase is *when in MedRadar's life* a record was first observed. It is
+#: not `observation_origin` and it is not "the event happened long ago".
+PHASE_NOTE_ZH = (
+    "阶段按「系统何时第一次观察到这条记录」划分，与 observation_origin、事件发生时间无关："
+    "初次发现＝系统首次上线时抓到的既有公开记录（不是历史回填）；"
+    "增量发现＝持续监测期间新观察到的记录；历史回填＝有意导入的历史归档（需理由）。"
+    "「事件发生在过去」不等于「回填」。"
+)
+
+_HEALTH_LIMITATIONS_ZH = [
+    "NO_NEW_RECORDS（正常：无新记录）与 FETCH_FAILED（采集失败）是两件不同的事实：前者是正常结果，后者是失败。",
+    "任一来源失败/过期、存在未解决结构告警、备份或恢复演练缺失时，整体状态不会是 OPERATIONAL。",
+    "「最近一次备份/恢复演练」来自 runtime_state 的真实记录；从未执行时显示 NEVER，不代表可恢复。",
+    "健康状态由账本、文件系统与运行记录计算，不是 HTTP 200 的另一种写法。",
 ]
 
 _ENTITY_STATUS_PRIORITY = {
@@ -266,6 +371,274 @@ def _source_limit_zh(source: str | None) -> str:
 
 def _mapping_status_label(status: str | None) -> str:
     return _MAPPING_STATUS_LABELS_ZH.get(status or ENTITY_UNMAPPED, status or "未映射")
+
+
+# ------------------------------------------------------- phase / outcome display
+def _outcome_severity(outcome: Any) -> str:
+    """Classify a stored run outcome for the UI (never collapses normal into failure)."""
+    value = str(outcome or "").strip()
+    if not value:
+        return "unknown"
+    if value in OUTCOME_NORMAL:
+        return "normal"
+    if value == OUTCOME_FETCH_FAILED:
+        return "failure"
+    if value == OUTCOME_PARTIAL:
+        return "partial"
+    if value in (OUTCOME_PAUSED, OUTCOME_LOCKED):
+        return "skipped"
+    return "unknown"
+
+
+def _outcome_display(outcome: Any) -> tuple[str, str]:
+    value = str(outcome or "").strip()
+    severity = _outcome_severity(value)
+    return OUTCOME_LABELS_ZH.get(value, value or "尚未记录"), severity
+
+
+def _validated_phase(phase: str | None) -> str | None:
+    value = str(phase or "").strip()
+    if not value:
+        return None
+    if value not in PHASES:
+        raise ValueError(f"phase must be one of {', '.join(PHASES)}; got {value!r}")
+    return value
+
+
+def _phase_counts(ledger: ObservationLedger | None) -> dict[str, int]:
+    if ledger is None:
+        return {}
+    try:
+        return ledger.phase_counts()
+    except sqlite3.Error:
+        return {}
+
+
+def _phases_block(ledger: ObservationLedger | None) -> dict[str, Any]:
+    """Summary block: acquisition-phase split with an honest one-line note."""
+    counts = _phase_counts(ledger)
+    return {
+        "counts": {
+            PHASE_INITIAL: int(counts.get(PHASE_INITIAL) or 0),
+            PHASE_INCREMENTAL: int(counts.get(PHASE_INCREMENTAL) or 0),
+            PHASE_BACKFILL: int(counts.get(PHASE_BACKFILL) or 0),
+        },
+        "initial": int(counts.get(PHASE_INITIAL) or 0),
+        "incremental": int(counts.get(PHASE_INCREMENTAL) or 0),
+        "backfill": int(counts.get(PHASE_BACKFILL) or 0),
+        "unlabelled": int(counts.get("__unlabelled__") or 0),
+        "note_zh": PHASE_NOTE_ZH,
+    }
+
+
+def _deployment_block(ledger: ObservationLedger | None) -> dict[str, Any]:
+    stored: Mapping[str, Any] = {}
+    if ledger is not None:
+        try:
+            stored = ledger.get_deployment() or {}
+        except sqlite3.Error:
+            stored = {}
+        if not isinstance(stored, Mapping):
+            stored = {}
+    status = str(stored.get("status") or DEPLOYMENT_NOT_DEPLOYED)
+    if status not in DEPLOYMENT_LABELS_ZH:
+        status = DEPLOYMENT_NOT_DEPLOYED
+    return {
+        "status": status,
+        "status_label_zh": DEPLOYMENT_LABELS_ZH[status],
+        "installed_at": stored.get("installed_at"),
+        "supervisor": stored.get("supervisor") or "none",
+        "host": stored.get("host"),
+        "note_zh": stored.get("note_zh") or DEPLOYMENT_NOTES_ZH[status],
+    }
+
+
+def _validation_block(ledger: ObservationLedger | None) -> dict[str, Any]:
+    """Cheap projection of the seven-day validation state for the dashboard."""
+    if ledger is None:
+        return {
+            "status": VALIDATION_NOT_STARTED,
+            "status_label_zh": VALIDATION_LABELS_ZH[VALIDATION_NOT_STARTED],
+            "started_at": None,
+            "ends_at": None,
+            "planned_slots": 0,
+            "due_slots": 0,
+            "executed_slots": 0,
+            "missed_slots": 0,
+            "days_elapsed": 0.0,
+            "days_remaining": 0.0,
+            "scheduler_success_rate": None,
+            "note_zh": "没有观察账本，因此没有可证明的七天连续验证。",
+        }
+    try:
+        status = validation_status(ledger)
+    except sqlite3.Error:
+        status = {}
+    word = str(status.get("status") or VALIDATION_NOT_STARTED)
+    if word not in VALIDATION_LABELS_ZH:
+        word = VALIDATION_NOT_STARTED
+    slots = status.get("slots") or {}
+    runs = status.get("runs") or {}
+    return {
+        "status": word,
+        "status_label_zh": VALIDATION_LABELS_ZH[word],
+        "started_at": status.get("started_at"),
+        "ends_at": status.get("ends_at"),
+        "planned_slots": int(slots.get("planned_total") or status.get("planned_slots") or 0),
+        "due_slots": int(slots.get("due") or 0),
+        "executed_slots": int(slots.get("executed") or 0),
+        "missed_slots": int(slots.get("missed") or 0),
+        "days_elapsed": status.get("days_elapsed"),
+        "days_remaining": status.get("days_remaining"),
+        "scheduler_success_rate": runs.get("scheduler_success_rate"),
+        "note_zh": status.get("note_zh") or VALIDATION_NOTES_ZH[word],
+    }
+
+
+def _change_filter_sql(source: str | None, company: str | None,
+                       track: str | None, query: str | None) -> tuple[str, list[Any]]:
+    """Same filter semantics as ``ObservationLedger._change_filters`` (read-only)."""
+    clauses: list[str] = []
+    params: list[Any] = []
+    if source:
+        clauses.append("c.source = ?")
+        params.append(source)
+    if company:
+        if company == "__unmapped__":
+            clauses.append("(m.entity_id IS NULL OR m.entity_status != 'MAPPED')")
+        else:
+            clauses.append("m.entity_id = ?")
+            params.append(company)
+    if track:
+        if track == "__unmapped__":
+            clauses.append("(m.track_id IS NULL OR m.track_status != 'MAPPED')")
+        else:
+            clauses.append("m.track_id = ?")
+            params.append(track)
+    if query:
+        clauses.append("(o.title LIKE ? OR c.title LIKE ?)")
+        like = f"%{query}%"
+        params.extend([like, like])
+    return ((" AND " + " AND ".join(clauses)) if clauses else ""), params
+
+
+_PHASE_CHANGE_SELECT = (
+    "SELECT c.*, o.observation_id AS oid, o.source_record_id, o.first_seen_at AS o_first_seen_at,"
+    " o.version_count, o.observation_status, o.observation_origin, o.ingested_at,"
+    " o.event_at AS o_event_at, o.event_at_precision AS o_event_precision,"
+    " o.published_at AS o_published_at,"
+    " o.published_at_precision AS o_published_precision,"
+    " o.source_updated_at AS o_source_updated_at, o.last_checked_at,"
+    " m.entity_id, m.entity_status, m.entity_method, m.track_id, m.track_status,"
+    " m.track_method, m.note_zh AS mapping_note_zh"
+)
+
+
+def _change_rows_with_phase(ledger: ObservationLedger, *, hours: int,
+                            states: Sequence[str] | None, source: str | None,
+                            company: str | None, track: str | None, query: str | None,
+                            phase: str, limit: int, offset: int
+                            ) -> tuple[list[dict[str, Any]], int]:
+    """Change rows filtered by the *latest* acquisition phase of their observation.
+
+    ``ObservationLedger.change_rows`` predates the phase table and is Lead-owned, so
+    the join is built here with the ledger's own ``latest_phase_sql`` fragment; the
+    ledger is opened read-only and nothing is written.
+    """
+    if not ledger.table_exists("observation_phase"):
+        return [], 0
+    since = (datetime.now(timezone.utc) - timedelta(hours=hours)).replace(microsecond=0).isoformat()
+    clauses = ["c.observed_at >= ?"]
+    params: list[Any] = [since]
+    if states:
+        clauses.append("c.change_state IN (" + ",".join("?" for _ in states) + ")")
+        params.extend(states)
+    suffix, extra = _change_filter_sql(source, company, track, query)
+    params.extend(extra)
+    join, _ = ledger.current_mapping_sql("o")
+    phase_join = ledger.latest_phase_sql("o")
+    base_from = (
+        " FROM observation_change c JOIN observation o ON o.observation_id=c.observation_id"
+        + join + phase_join
+        + " WHERE " + " AND ".join(clauses) + suffix + " AND p.phase = ?"
+    )
+    total = ledger.con.execute("SELECT COUNT(*)" + base_from, [*params, phase]).fetchone()[0]
+    rows = ledger.con.execute(
+        _PHASE_CHANGE_SELECT + base_from
+        + " ORDER BY c.observed_at DESC, c.change_id DESC LIMIT ? OFFSET ?",
+        [*params, phase, int(limit), int(offset)],
+    ).fetchall()
+    return [dict(row) for row in rows], int(total)
+
+
+def _observation_phases(ledger: ObservationLedger,
+                        observation_ids: Sequence[str | None]) -> dict[str, str]:
+    """Latest phase per observation, joined through ``ledger.latest_phase_sql``."""
+    ids = [str(item) for item in observation_ids if item]
+    if not ids or not ledger.table_exists("observation_phase"):
+        return {}
+    found: dict[str, str] = {}
+    join = ledger.latest_phase_sql("o")
+    for start in range(0, len(ids), 400):
+        chunk = ids[start:start + 400]
+        placeholders = ",".join("?" for _ in chunk)
+        rows = ledger.con.execute(
+            "SELECT o.observation_id AS observation_id, p.phase AS phase FROM observation o"
+            + join + f" WHERE o.observation_id IN ({placeholders})",
+            chunk,
+        ).fetchall()
+        for row in rows:
+            if row["phase"]:
+                found[str(row["observation_id"])] = str(row["phase"])
+    return found
+
+
+def _annotate_phases(items: list[dict[str, Any]], phase_map: Mapping[str, str]) -> None:
+    for item in items:
+        phase = phase_map.get(str(item.get("observation_id") or ""))
+        item["phase"] = phase
+        item["phase_label_zh"] = PHASE_SHORT_ZH.get(phase) if phase else None
+
+
+def _phase_facet_entries(ledger: ObservationLedger, hours: int, source: str | None,
+                         company: str | None, track: str | None,
+                         query: str | None) -> list[dict[str, Any]]:
+    counts = {phase: 0 for phase in (PHASE_INITIAL, PHASE_INCREMENTAL, PHASE_BACKFILL)}
+    if ledger.table_exists("observation_phase"):
+        since = (datetime.now(timezone.utc) - timedelta(hours=hours)).replace(microsecond=0).isoformat()
+        suffix, params = _change_filter_sql(source, company, track, query)
+        join, _ = ledger.current_mapping_sql("o")
+        phase_join = ledger.latest_phase_sql("o")
+        rows = ledger.con.execute(
+            "SELECT p.phase AS phase, COUNT(*) AS n FROM observation_change c"
+            " JOIN observation o ON o.observation_id=c.observation_id" + join + phase_join
+            + " WHERE c.observed_at >= ?" + suffix + " GROUP BY p.phase",
+            [since, *params],
+        ).fetchall()
+        found = {str(row["phase"]): int(row["n"] or 0) for row in rows if row["phase"]}
+        for phase in counts:
+            counts[phase] = found.get(phase, 0)
+    return [
+        {
+            "phase": phase,
+            "label_zh": PHASE_SHORT_ZH[phase],
+            "description_zh": PHASE_LABELS_ZH[phase],
+            "count": counts[phase],
+        }
+        for phase in (PHASE_INITIAL, PHASE_INCREMENTAL, PHASE_BACKFILL)
+    ]
+
+
+def _relative_path_display(value: Any) -> str | None:
+    if value is None:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        return _relative_display_path(Path(text))
+    except (OSError, ValueError):
+        return Path(text).name
 
 
 # ----------------------------------------------------------------- ledger object
@@ -707,6 +1080,8 @@ def _summary_by_source(ledger: ObservationLedger, source_labels: Mapping[str, st
         state = ledger.get_source_state(source) or {}
         entry_24 = windows_24.get(source)
         entry_7d = windows_7d.get(source)
+        outcome = state.get("last_outcome")
+        outcome_label, _severity = _outcome_display(outcome)
         by_source.append(
             {
                 "source": source,
@@ -719,6 +1094,16 @@ def _summary_by_source(ledger: ObservationLedger, source_labels: Mapping[str, st
                 "last_attempt_at": state.get("last_attempt_at"),
                 "declared_cadence_zh": state.get("declared_cadence_zh") or "未声明轮询周期",
                 "consecutive_failures": int(state.get("consecutive_failures") or 0),
+                "last_outcome": outcome,
+                "last_outcome_label_zh": outcome_label,
+                "last_new_records": (
+                    int(state["last_new_records"])
+                    if state.get("last_new_records") is not None else None
+                ),
+                "last_updated_records": (
+                    int(state["last_updated_records"])
+                    if state.get("last_updated_records") is not None else None
+                ),
                 "new_24h": _state_count(entry_24, CHANGE_NEW),
                 "updated_24h": _state_count(entry_24, CHANGE_UPDATED),
                 "new_7d": _state_count(entry_7d, CHANGE_NEW),
@@ -796,6 +1181,9 @@ def _summary(ledger: ObservationLedger | None) -> dict[str, Any]:
                 "track": 0,
                 "note_zh": "账本尚不存在，因此没有未映射记录。",
             },
+            "phases": _phases_block(None),
+            "validation": _validation_block(None),
+            "deployment": _deployment_block(None),
             "empty": True,
             "limitations": [{"id": "ledger_missing", "text_zh": LEDGER_MISSING_NOTE_ZH}, *LIMITATIONS],
         }
@@ -836,6 +1224,9 @@ def _summary(ledger: ObservationLedger | None) -> dict[str, Any]:
             "track": int(unmapped_counts.get("track") or 0),
             "note_zh": "未映射记录单独计数并保留展示；未映射不等于零活动，也不等于来源没有该企业记录。",
         },
+        "phases": _phases_block(ledger),
+        "validation": _validation_block(ledger),
+        "deployment": _deployment_block(ledger),
         "empty": observations == 0,
         "limitations": limitations,
     }
@@ -843,7 +1234,8 @@ def _summary(ledger: ObservationLedger | None) -> dict[str, Any]:
 
 # ---------------------------------------------------------------------- events
 def _empty_events(window: str, change: str, source: str | None, company: str | None,
-                  track: str | None, q: str | None, limit: int, offset: int) -> dict[str, Any]:
+                  track: str | None, q: str | None, limit: int, offset: int,
+                  phase: str | None = None) -> dict[str, Any]:
     hours = WINDOWS[window]
     now = datetime.now(timezone.utc).replace(microsecond=0)
     start = now - timedelta(hours=hours)
@@ -863,6 +1255,7 @@ def _empty_events(window: str, change: str, source: str | None, company: str | N
             "company": company or None,
             "track": track or None,
             "q": q or None,
+            "phase": phase or None,
         },
         "facets": {
             "sources": [],
@@ -871,6 +1264,11 @@ def _empty_events(window: str, change: str, source: str | None, company: str | N
             "changes": [
                 {"change_state": state, "label_zh": CHANGE_LABELS_ZH[state], "count": 0}
                 for state in CHANGE_ORDER
+            ],
+            "phases": [
+                {"phase": item, "label_zh": PHASE_SHORT_ZH[item],
+                 "description_zh": PHASE_LABELS_ZH[item], "count": 0}
+                for item in (PHASE_INITIAL, PHASE_INCREMENTAL, PHASE_BACKFILL)
             ],
         },
         "items": [],
@@ -923,23 +1321,45 @@ def _normalise_facets(ledger: ObservationLedger, raw: Mapping[str, Any],
 
 def _events(ledger: ObservationLedger | None, *, window: str, change: str,
             source: str | None, company: str | None, track: str | None,
-            q: str | None, limit: int, offset: int) -> dict[str, Any]:
+            q: str | None, limit: int, offset: int,
+            phase: str | None = None) -> dict[str, Any]:
     if ledger is None:
-        return _empty_events(window, change, source, company, track, q, limit, offset)
+        return _empty_events(window, change, source, company, track, q, limit, offset, phase)
     hours = WINDOWS[window]
     states = CHANGE_STATES_FOR_FILTER[change]
-    rows, total = ledger.change_rows(
-        hours=hours,
-        states=states,
-        source=source or None,
-        entity_id=company or None,
-        track_id=track or None,
-        query=q or None,
-        limit=limit,
-        offset=offset,
-    )
+    if phase:
+        rows, total = _change_rows_with_phase(
+            ledger,
+            hours=hours,
+            states=states,
+            source=source or None,
+            company=company or None,
+            track=track or None,
+            query=q or None,
+            phase=phase,
+            limit=limit,
+            offset=offset,
+        )
+    else:
+        rows, total = ledger.change_rows(
+            hours=hours,
+            states=states,
+            source=source or None,
+            entity_id=company or None,
+            track_id=track or None,
+            query=q or None,
+            limit=limit,
+            offset=offset,
+        )
     source_labels = _source_labels(ledger)
     facets = _normalise_facets(ledger, ledger.change_facets(hours=hours), source_labels)
+    facets["phases"] = _phase_facet_entries(
+        ledger, hours, source or None, company or None, track or None, q or None
+    )
+    items = [_change_item(ledger, row, source_labels) for row in rows]
+    _annotate_phases(items, _observation_phases(
+        ledger, [row.get("observation_id") for row in rows]
+    ))
     span = ledger.window_span(hours)
     return {
         "total": int(total),
@@ -952,9 +1372,10 @@ def _events(ledger: ObservationLedger | None, *, window: str, change: str,
             "company": company or None,
             "track": track or None,
             "q": q or None,
+            "phase": phase or None,
         },
         "facets": facets,
-        "items": [_change_item(ledger, row, source_labels) for row in rows],
+        "items": items,
     }
 
 
@@ -972,6 +1393,7 @@ def _event_detail(ledger: ObservationLedger | None, observation_id: str) -> dict
     # event as the row-shaped "observation" (the change log below still lists all).
     chosen: Mapping[str, Any] | None = changes[-1] if changes else None
     item = _observation_item(ledger, observation, chosen, source_labels)
+    _annotate_phases([item], _observation_phases(ledger, [observation_id]))
     limitations = [
         {"id": "event_vs_observed", "text_zh": LIMITED_EVENT_VS_OBSERVED},
         {"id": "failed_not_absence", "text_zh": LIMITED_FAILED},
@@ -1226,10 +1648,11 @@ def summary() -> dict[str, Any]:
 
 def events(*, window: str = "7d", change: str = "all", source: str | None = None,
            company: str | None = None, track: str | None = None, q: str | None = None,
-           limit: int = 50, offset: int = 0) -> dict[str, Any]:
+           phase: str | None = None, limit: int = 50, offset: int = 0) -> dict[str, Any]:
     """Observed changes in a time window, with window-scoped facets."""
     window = _validated_window(window)
     change = _validated_change(change)
+    phase = _validated_phase(phase)
     rows_limit = max(1, min(int(limit or 50), 200))
     rows_offset = max(0, int(offset or 0))
     return _run(
@@ -1241,6 +1664,7 @@ def events(*, window: str = "7d", change: str = "all", source: str | None = None
             company=company or None,
             track=track or None,
             q=q or None,
+            phase=phase,
             limit=rows_limit,
             offset=rows_offset,
         )
@@ -1265,4 +1689,135 @@ def replay(*, as_of: str, source: str | None = None, limit: int = 100) -> dict[s
     return _run(lambda ledger: _replay(ledger, as_of, source or None, rows_limit))
 
 
-__all__ = ["summary", "events", "event_detail", "sources", "replay"]
+# ------------------------------------------------------------------- health
+def _empty_health_report(note_zh: str) -> dict[str, Any]:
+    """Last-resort honest shape when the ledger exists but cannot be read."""
+    moment = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+    return {
+        "generated_at": moment,
+        "overall": HEALTH_NOT_DEPLOYED,
+        "deployment": {
+            "status": DEPLOYMENT_NOT_DEPLOYED,
+            "installed_at": None,
+            "host": None,
+            "supervisor": "none",
+            "note_zh": note_zh,
+        },
+        "validation": {
+            "status": VALIDATION_NOT_STARTED,
+            "started_at": None,
+            "ends_at": None,
+            "planned_slots": 0,
+            "completed_slots": 0,
+            "days_elapsed": 0.0,
+            "days_remaining": 0.0,
+            "note_zh": note_zh,
+        },
+        "collector": {
+            "running": False,
+            "lock": {"held": False, "mode": None, "pid": None, "heartbeat_age_seconds": None},
+            "last_run_at": None,
+            "uptime_days": 0.0,
+        },
+        "persistence": {
+            "ledger_bytes": 0,
+            "raw_cache_bytes": 0,
+            "backup": {"at": None, "status": "NEVER", "verified": False, "age_hours": None},
+            "restore_drill": {"at": None, "status": "NEVER", "ok": None},
+            "disk_free_bytes": None,
+        },
+        "sources": [],
+        "checks": [{"id": "ledger_readable", "ok": False, "detail_zh": note_zh}],
+        "unresolved_structure_alerts": [],
+        "limitations_zh": [note_zh, *_HEALTH_LIMITATIONS_ZH],
+    }
+
+
+def _decorate_health(report: Mapping[str, Any]) -> dict[str, Any]:
+    """Add display labels/limitations to the computed health report (no new claims)."""
+    decorated = dict(report)
+    overall = str(decorated.get("overall") or HEALTH_NOT_DEPLOYED)
+    decorated["overall_label_zh"] = HEALTH_LABELS_ZH.get(overall, overall)
+    decorated["overall_note_zh"] = HEALTH_MEANINGS_ZH.get(
+        overall, "健康状态未知：请查看下面的检查列表。"
+    )
+
+    deployment = dict(decorated.get("deployment") or {})
+    deployment_status = str(deployment.get("status") or DEPLOYMENT_NOT_DEPLOYED)
+    if deployment_status not in DEPLOYMENT_LABELS_ZH:
+        deployment_status = DEPLOYMENT_NOT_DEPLOYED
+    deployment["status"] = deployment_status
+    deployment["status_label_zh"] = DEPLOYMENT_LABELS_ZH[deployment_status]
+    if not deployment.get("note_zh"):
+        deployment["note_zh"] = DEPLOYMENT_NOTES_ZH[deployment_status]
+    decorated["deployment"] = deployment
+
+    validation = dict(decorated.get("validation") or {})
+    validation_status_word = str(validation.get("status") or VALIDATION_NOT_STARTED)
+    if validation_status_word not in VALIDATION_LABELS_ZH:
+        validation_status_word = VALIDATION_NOT_STARTED
+    validation["status"] = validation_status_word
+    validation["status_label_zh"] = VALIDATION_LABELS_ZH[validation_status_word]
+    if not validation.get("note_zh"):
+        validation["note_zh"] = VALIDATION_NOTES_ZH[validation_status_word]
+    decorated["validation"] = validation
+
+    collector = dict(decorated.get("collector") or {})
+    lock = dict(collector.get("lock") or {})
+    lock["path"] = _relative_path_display(lock.get("path"))
+    collector["lock"] = lock
+    collector["running_label_zh"] = "运行中" if collector.get("running") else "未运行"
+    decorated["collector"] = collector
+
+    persistence = dict(decorated.get("persistence") or {})
+    for path_key in ("raw_cache_path", "backup_dir"):
+        if persistence.get(path_key):
+            persistence[path_key] = _relative_path_display(persistence[path_key])
+    newest = persistence.get("newest_backup_bundle")
+    if isinstance(newest, Mapping) and newest.get("path"):
+        newest_block = dict(newest)
+        newest_block["path"] = _relative_path_display(newest_block["path"])
+        persistence["newest_backup_bundle"] = newest_block
+    decorated["persistence"] = persistence
+
+    sources: list[dict[str, Any]] = []
+    for source in decorated.get("sources") or []:
+        item = dict(source)
+        source_status = str(item.get("status") or "NEVER_RUN")
+        item["status_label_zh"] = SOURCE_STATUS_LABELS_ZH.get(source_status, source_status)
+        outcome_label, outcome_severity = _outcome_display(item.get("last_outcome"))
+        item["last_outcome_label_zh"] = outcome_label
+        item["last_outcome_severity"] = outcome_severity
+        sources.append(item)
+    decorated["sources"] = sources
+
+    ledger_block = decorated.get("ledger")
+    if isinstance(ledger_block, Mapping):
+        ledger_copy = dict(ledger_block)
+        ledger_copy["path"] = _relative_path_display(ledger_copy.get("path"))
+        decorated["ledger"] = ledger_copy
+
+    limitations = list(decorated.get("limitations_zh") or [])
+    for item in _HEALTH_LIMITATIONS_ZH:
+        if item not in limitations:
+            limitations.append(item)
+    decorated["limitations_zh"] = limitations
+    return decorated
+
+
+def health() -> dict[str, Any]:
+    """§6 Observatory Health: computed from evidence, then labelled for display.
+
+    A missing ledger is an honest ``NOT_DEPLOYED`` empty state (HTTP 200), never an
+    exception and never a green badge.
+    """
+    try:
+        report = compute_health(default_ledger_path())
+    except (OSError, sqlite3.Error) as exc:
+        return _decorate_health(_empty_health_report(
+            f"观察账本存在但无法读取（{type(exc).__name__}）：无法计算健康状态，按未部署处理。"
+        ))
+    return _decorate_health(report)
+
+
+__all__ = ["summary", "events", "event_detail", "sources", "replay", "health"]
