@@ -245,5 +245,6 @@ vs 新分母 2,396（完整季度已映射）；行业分母均为已映射（�
 | D2 | SQL 谓词把“合法 JSON 但缺 `supplement_number`”当作原始 PMA，而 Python 分类器/审计计为 unknown（真实数据 0 例） | SQL 增加 `json_type(...) IS NOT NULL`，与 Python 一致；合成 fixture 增加缺键记录，Tier B 断言 SQL/列表/详情三处一致 |
 | D3 | `/api/compare` 未透传 `include_all_time`，经 HTTP 无法取得全历史路径结构 | 路由新增参数并透传；API 测试覆盖默认 null / 请求后非空 |
 | D4 | 企业页 PMA 拆分/路径结构含未映射记录，而“已映射赛道审批”KPI 仅含已映射，标签未说明 | PMA 拆分说明明确“全部窗口审批记录（含未映射）”，并指向上方已映射 KPI |
+| R1 | `pathway_all_time.basis` 仍为窗口口径标签（独立复验发现，Low） | `01ba4aa` 改为 `all_time_approvals_only`，新增 API 断言；数值不变 |
 
-复验：D1–D4 全部通过；产品测试 **96 passed**，全量 **1170 passed + 224 subtests**，E2E 6/6，selftest 1,074 OK；五场景数字与 `5a349f4` 一致（修复不改变测量值）。完整独立验收见 [`PRODUCT_ACCEPTANCE.md`](PRODUCT_ACCEPTANCE.md)。
+复验：D1–D4 与 R1 全部通过；产品测试 **96 passed**，全量 **1170 passed + 224 subtests**，E2E 6/6，selftest 1,074 OK；五场景数字与 `5a349f4` 一致（修复不改变测量值）。完整独立验收见 [`PRODUCT_ACCEPTANCE.md`](PRODUCT_ACCEPTANCE.md)。
