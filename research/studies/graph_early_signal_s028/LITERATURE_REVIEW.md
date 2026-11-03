@@ -3,7 +3,7 @@
 **研究**：S-028 *Relational Early Signals in Medical Technology Development: A Temporal Network Study*
 **分支**：`research/s028-temporal-graph-early-signal`｜**作者**：`literature-verifier`（独立文献核验）
 **检索与核验日期**：2026-11-04（Asia/Shanghai）
-**配套文件**：`research/studies/graph_early_signal_s028/artifacts/literature_refs.json`（44 条，逐条含核验状态与所抓取 URL）
+**配套文件**：`research/studies/graph_early_signal_s028/artifacts/literature_refs.json`（45 条，逐条含核验状态与所抓取 URL；其中 R45 为全文核验）；**更正记录**：`LITERATURE_CORRECTION_NOTE.md`（S-028-CORRECTION-1）
 
 > 写作规则：关于某篇论文的陈述必须能在 `literature_refs.json` 按 [Rxx] 追溯；只核到题录者仅作题录级陈述并在 §10 标 †；未核实的字段（会议归属、出版年）不写成确定事实。
 
@@ -11,9 +11,9 @@
 
 ## §0 检索与核验方法
 
-检索于 2026-11-04 完成，核验只用一手/近一手记录：**arXiv 官方 API**与 abs 页（标题、完整作者、摘要、`arxiv:comment` 中的会议、`journal_ref`、DOI）；**Crossref REST API**（DOI 注册记录：按 `filter=doi:` 批量解析，或按题名 `query.bibliographic=` 反查）；**出版社页面**（ACM DL 的 R43、Simon & Schuster 的 R20）。**OpenAlex** 仅用于发现（含机构 ROR 过滤的"耶鲁"排查），不作为核验依据。检索主线：`temporal graph neural network`、`dynamic graph representation learning`、`heterogeneous graph neural network`、`link prediction evaluation negative sampling`、`temporal link prediction survey`、`technology diffusion networks`、`innovation networks co-patent alliance`、`scientific knowledge graph`、`weak signal early warning`、`data leakage backtest overfitting`、`rare events AUPRC calibration`。
+检索于 2026-11-04 完成，核验只用一手/近一手记录：**arXiv 官方 API**与 abs 页（标题、完整作者、摘要、`arxiv:comment` 中的会议、`journal_ref`、DOI）；**Crossref REST API**（DOI 注册记录：按 `filter=doi:` 批量解析，或按题名 `query.bibliographic=` 反查）；**出版社页面**（ACM DL 的 R43、Simon & Schuster 的 R20）；**NBER 官方 working paper 页 + NBER 托管全文 PDF**（R45，2026-11-04 补正时新增；该条以官方页、Crossref DOI 记录与 67 页全文为准）。**OpenAlex** 仅用于发现（含机构 ROR 过滤的"耶鲁"排查），不作为核验依据。检索主线：`temporal graph neural network`、`dynamic graph representation learning`、`heterogeneous graph neural network`、`link prediction evaluation negative sampling`、`temporal link prediction survey`、`technology diffusion networks`、`innovation networks co-patent alliance`、`scientific knowledge graph`、`weak signal early warning`、`data leakage backtest overfitting`、`rare events AUPRC calibration`。
 
-**结果分布。** 44 条全部标识已核对到实抓记录：`verified_primary` 44、`verified_secondary` 0、`unverified` 0。其中 23 条读到摘要（正文实质陈述转述摘要原文），21 条仅题录（Crossref 对 JSTOR/ACM/OUP/Wiley 普遍无摘要），仅作题录级陈述并标 †。10 条的**会议归属未核验**（R01、R02、R04、R06、R10、R12、R17、R18、R35、R44）：arXiv 记录无 venue 字段，而 dblp 返回反爬页、OpenReview 端点跨域重定向、Semantic Scholar 返回 429——故一律写"arXiv 预印本"，**不写** ICLR/WSDM/ESWC 等未证实归属。1 条出版年未核验（R20：出版社页面确认题名、作者、版次、ISBN，但片段未显示 2003 年）。
+**结果分布。** 45 条全部标识已核对到实抓记录：`verified_primary` 45、`verified_secondary` 0、`unverified` 0。其中 **1 条读到全文（R45，67 页 NBER PDF）**、23 条读摘要（正文实质陈述转述摘要原文）、21 条仅题录（Crossref 对 JSTOR/ACM/OUP/Wiley 普遍无摘要），仅作题录级陈述并标 †。10 条的**会议归属未核验**（R01、R02、R04、R06、R10、R12、R17、R18、R35、R44）：arXiv 记录无 venue 字段，而 dblp 返回反爬页、OpenReview 端点跨域重定向、Semantic Scholar 返回 429——故一律写"arXiv 预印本"，**不写** ICLR/WSDM/ESWC 等未证实归属。1 条出版年未核验（R20：出版社页面确认题名、作者、版次、ISBN，但片段未显示 2003 年）。
 
 **一个必须写下的教训：我记忆中的 DOI 有六处是错的。**
 
@@ -28,7 +28,9 @@
 
 每一条都"读起来很顺"，正是综述最典型的污染源。**因此宁可少一条，也不补一条。**
 
-**局限。**（a）无 Web of Science / Scopus / Google Scholar，故为定向检索而非系统综述，知名文献偏置明显；（b）21 条只能题录级引用；（c）10 条会议归属留白；（d）未覆盖非英文文献与学位论文，工作论文仅涉一处（R27 的 NBER 版本）；（e）文献中系统性缺少"图结构无增量信息"的负结果——这正是本研究要自己回答的问题（§9）。
+**局限。**（a）无 Web of Science / Scopus / Google Scholar，故为定向检索而非系统综述，知名文献偏置明显；（b）21 条只能题录级引用；（c）10 条会议归属留白；（d）未覆盖非英文文献与学位论文，工作论文涉两处（R27 的 NBER 版本、R45 的 NBER 全文）；（e）文献中系统性缺少"图结构无增量信息"的负结果——这正是本研究要自己回答的问题（§9）；（f）**"已验证"的口径**：原 44 条的 `verified_primary` 只表示"书目身份已对上实抓记录"，不表示读过全文或方法；0/44 读过全文（R45 是本轮唯一全文核验条目，见 R45 的 `method_level_claims`）。因此本综述只允许"在本文检索范围内未发现 X"，不允许"文献中不存在 X"；§8.1 的旧结论正是把前者写成了后者（S-028-CORRECTION-1）。
+
+**§0.4 更正记录（S-028-CORRECTION-1，2026-11-04）。** 本轮补正推翻了 §8.1 的旧结论"耶鲁金融关系网络论文不存在"。真实工作为 **Clayton & Coppola (2026), *The Optimal Use of AI in Financial Regulation*, NBER WP 35227, DOI 10.3386/w35227**（May 2026；67 页 NBER 全文，含 Online Appendix），其中含一个显式声明**保留 degree distributions** 的 "Shuffled edges" 消融（Figure 6）。原文错误、成因、一手证据、方法级区分与对 S-028 论证的影响，逐条记录在 **`LITERATURE_CORRECTION_NOTE.md`**；本文件采用原位标注，不删除历史。要点：(i) 存在性主张撤回；(ii) "打乱边/删结构在金融关系网络无先例"的推论撤回，[R45] 即最近先例；(iii) 但该文的 shuffle 是**单次消融**，无零分布/分位数/p 值/种子数，不保时序，其"保度"的具体实现算法未说明，故 S-028 的"重复约束随机化 + 配对 ΔAP/MDE"仍属方法扩展，不能写成"使用了同一方法"；(iv) "44 条全部核验"按上段 (f) 收紧为"书目身份核验；原 44 条中 0 条读过全文"。
 
 ---
 
@@ -98,27 +100,33 @@ OpenAlex 作为 MAG 的开放替代，自述覆盖 2.09 亿著作、20.13 亿消
 
 ---
 
-## §8 金融关系网络的方法论启发（含对"耶鲁论文"的核验结论）
+## §8 金融关系网络的方法论启发（含对"耶鲁论文"的核验结论；**已更正：S-028-CORRECTION-1**）
 
-### 8.1 核验结论：找不到这样一篇论文
+### 8.1 核验结论【**已更正：S-028-CORRECTION-1**】
 
-前提是："有耶鲁的金融关系网络论文，在金融实体动态关系图上学习，并用**打乱图链接**或**删除网络结构**作对照，检验关系是否带来额外信息。"
+> **原文（错误，保留记录）：** 标题"核验结论：找不到这样一篇论文"；正文"**没有任何一篇同时满足'耶鲁 + 金融实体动态关系图 + 边置换或删结构对照'**"；以及"不能引一个并不存在的'方法先例'"。原文位置：本文件 §8.1（更正前 L105–L115）与 `PHASE_REPORT_ZH.md` §3（更正前 L128–L136）；完整原文、错误成因与一手证据见 **`LITERATURE_CORRECTION_NOTE.md` §2–§4**。
 
-按机构 × 主题交叉检索（Yale 的 ROR `03v76x132` × `graph neural` 100 条、× `financial`+`graph` 11 条、× `temporal graph` 10 条；OpenAlex 全文检索 `"shuffled graph"`+`financial` 仅 1 条无关结果；另加三组针对 edge-shuffling / degree-preserving rewiring / placebo edges 的网络检索），**没有任何一篇同时满足"耶鲁 + 金融实体动态关系图 + 边置换或删结构对照"**。完整记录见 JSON 的 `premise_checks.PC-01`。三篇最接近的工作各只满足前提的一部分：
+**更正后的事实。** 该文存在：**Christopher Clayton & Antonio Coppola, *The Optimal Use of AI in Financial Regulation*, NBER Working Paper 35227, May 2026, DOI 10.3386/w35227**（NBER 官方页与 67 页全文 PDF，2026-11-04 抓取；PDF 第 2 页载 **JEL No. C4, G1, G2**；第 1 页脚注说明此前以 *"Financial Regulation and AI: A Faustian Bargain?"* 为题流传）。Clayton 为 Yale University / NBER（论文第 2 页、NBER 作者页、其个人主页均载 Yale / Yale School of Management）；Coppola 的现职单位在 PDF（Stanford）与 NBER/OpenAlex（Chicago）之间不一致，记录为未核实，但"该文有耶鲁作者"这一条由论文自身与 NBER 页面即可确证。它不是"不存在的先例"：它建的是**投资者—资产二部持仓图**（节点=非银金融中介与证券，边=持仓，含市值与数量），用 graph transformer 做**季度横截面 + 逐年 walk-forward** 的持仓变动预测，并在 Figure 6 的消融中报告一个 **"Shuffled edges"（打乱边）** 对照；图注原文为 *"randomly permutes edge indices to destroy network topology while preserving node features and degree distributions"*（printed p.19），正文称该对照把 walk-forward R² 由 **6.6% 降到 2.3%**（§3.2, printed p.20）。详见 `LITERATURE_CORRECTION_NOTE.md` §5–§6。
+
+**但"存在"≠"用了与 S-028 相同的随机化方法"。**（a）该文是**单次消融**：每个 walk-forward 窗口重训一次、报一个 R² 点；全文**没有**随机化分布、分位数、p 值，也没有报告种子数（全文检索 "seed" 0 次）。（b）**保度机制未说明**：只声明保留 "degree distributions"，未给出 configuration-model / stub-matching / 边交换等具体算法（Appendix B 亦未说明），故实现层面的"保度交换"标为 **UNVERIFIED**。（c）该文不保活跃度/时间分布，也不做按赛道日期池的分块约束；其边是**持仓**、单位是投资者—资产交易量变化，S-028 的边是"公司在某赛道有过一次监管事件"、目标是稀有首次事件。故 S-028 的"重复约束随机化 + 零分布 + 配对 ΔAP/MDE"设计仍是**方法扩展**，不是对 w35227 的复制。
+
+**旧检索中列出的三篇"最接近"工作仍然各自只满足前提的一部分**（保留供追溯；它们不再是"最接近"）：
 
 - **[R42] Gu, Kelly & Xiu (2020), RFS 33:2223–2273**：真正的"耶鲁金融机器学习"论文——Crossref 作者机构字段载明 Bryan Kelly 隶属 Yale University（兼 AQR、NBER）。但它做的是**用机器学习对公司特征做资产定价预测**：没有关系图、没有动态图学习、没有边置换对照。"耶鲁 + 金融 + ML"这一半是真的，"关系图 + 打乱链接"那一半不在其中。
 - **[R43] Niu, Lu, Dolphin, Potì & Dong (2024), ICAIF '24, 564–572**：方法论主张上最接近——摘要指出既有方法把关系图评估**绑在下游模型性能上**"导致混乱与不精确"，故提出**不依赖下游任务**的关系图评估，并发布基于 S&P 500 的 SPNews 数据集。但（a）五位作者单位均为 University College Dublin，**与耶鲁无关**；（b）装置是图级解释性任务，**不是打乱链接或删结构**。
 - **[R44] Xu 等 (2021), HIST**：把"股票—概念"共享信息建图、并用预定义与隐藏概念的金融图模型，摘要批评此前工作假设股票—概念连接是静态的。它是"金融图模型会做图消融"的例子，但**非耶鲁、无打乱链接对照**，图本质是成员矩阵。
 
-**正确表述**：用户描述的"打乱边 / 删结构"，正当来源是**网络科学的零模型传统与约束随机化**（保度、保活跃度、保时间分布的 rewiring），而非某篇耶鲁论文。S-028 若要引金融界先例，只能引其**评估哲学**（R43：图的有效性应与模型性能解耦检验），不能引一个并不存在的"方法先例"。把记忆中的、读起来很顺的引用当作方法论依据，正是 §0.3 所记错误的放大版。
+**真正的最近邻是 [R45] Clayton & Coppola (2026)**：它同时满足"耶鲁作者 + 金融实体关系图 + 打乱边对照"，但**不满足** S-028 的方法要件（重复随机化、零分布、保时序、ΔAP/MDE）。
+
+**正确表述（更正后）**：打乱边/删结构的零模型传统确实源自**网络科学的零模型与约束随机化**；但"在金融关系网络上做保度打乱并观察性能坍塌"已有金融学先例 [R45]（NBER working paper，未经同行评审）。S-028 应引其**应用先例**（拓扑在金融关系中承载信息）并引网络科学文献说明**零模型方法**；不可再写"不存在先例"。S-028 的差异化主张须写成检索范围内的表述："**在本文所检索的文献中**，未见将**保度 + 保活跃度 + 保时间**的分块约束随机化与**配对 ΔAP / 零分布分位 / MDE 判据**同时用于**稀疏、稀有事件的二部监管事件图**的研究"——是"未检索到"，不是"不存在"。把"检索未命中"写成"文献中不存在"，正是 §0 所记六处 DOI 记忆错误的结构同类项（本次错误的成因已记录在 `LITERATURE_CORRECTION_NOTE.md` §3）。
 
 ### 8.2 许可迁移什么
 
-① **对照设计的逻辑**：模型 vs 非图基线 vs 结构被破坏的对照，三者并列报告 Δ，而非只报相对基线的提升。② **把"图是否有效"与"模型是否准"分开**（R43 的核心主张）：S-028 应先回答"公司—技术二部图的关联结构是否超出保度零模型"，再回答"它是否提升 AP"；混在一起会把"图有结构"误读为"图有预测力"。③ **评估纪律**：purge/embargo、PBO 式搜索空间披露 [R35][R36]、以及"简单基线可能极强"的预期 [R07][R08]——与领域无关，可直接迁移。
+① **对照设计的逻辑**：模型 vs 非图基线 vs 结构被破坏的对照，三者并列报告 Δ，而非只报相对基线的提升（[R45] 的 Figure 6 即此逻辑的金融实例：基线 / 去 FSI / 去 attention / 单层 / 打乱边五种设定并列报 walk-forward R²）。② **把"图是否有效"与"模型是否准"分开**（R43 的核心主张）：S-028 应先回答"公司—技术二部图的关联结构是否超出保度零模型"，再回答"它是否提升 AP"；混在一起会把"图有结构"误读为"图有预测力"。③ **评估纪律**：purge/embargo、PBO 式搜索空间披露 [R35][R36]、以及"简单基线可能极强"的预期 [R07][R08]——与领域无关，可直接迁移。
 
 ### 8.3 不许可迁移什么
 
-① **数据形态**：金融关系图稠密、近似全覆盖、高频（全部上市公司 × 日频收益/持仓/供应链），缺失可当噪声。S-028 是**极稀疏二部事件图**：全期 51×38=1,938 个可能对中仅 322 对（16.6%）被观测到，单个 12 个月快照只有 135–148 条边、图密度 0.093–0.101（`DATA_FEASIBILITY.md` §4），事件密度约 0.2 次/单元-月。此密度下"打乱边"会把图打散成近乎全空的图，功效极低；必须用**保度**约束随机化才可能得到有意义的零分布——这也是本研究 `GRAPH_SCHEMA.md` §8 已冻结的设计（块级保度交换 + 每赛道日期池 + R=20 种子）。② **结果变量**：金融侧是连续、稠密、同期的收益/波动/违约，指标（Sharpe、IC、R²）在 S-028 完全不适用；S-028 是**稀有、离散、右删失的首次事件**（12 个月窗、主口径基率 1.019%），只能走 AP / precision@k / 校准（§7）。③ **因果语义**：金融的边对应可解释经济渠道（供应链、共同分析师覆盖、行业），删边 = 切断渠道，"删边掉性能"有经济学解释；S-028 的边"该申请人在这条赛道申报过"与标签**同源**，主要风险是**重言与泄漏**，而非渠道缺失。这条最致命：金融里"图有用"是好消息，MedRadar 里"图有用"首先得排除"图就是标签的影子"。④ **零模型的问题不同**：金融打乱边问"经济渠道是否承载信息"；S-028 若保持度、活跃度与时间分布，剩下的只是"**边的排列顺序**是否承载信息"——明显更弱，必须在论文里写清，否则读者会把"显著"误读为"关系有信息"。⑤ **制度语境**：医疗器械首次申报经由 FDA 510(k)/PMA 一类**守门机制**，并有分类、召回、支付与采购制度，扩散受融资与报销驱动 [R24]；金融侧无对应守门人与申报队列。故 S-028 的"首次进入"机制上更接近"制度性事件的时间"，而非"市场参与者逐步采纳"。
+① **数据形态**：金融关系图常被笼统描述为"稠密、近似全覆盖、高频（全部上市公司 × 日频收益/持仓/供应链），缺失可当噪声"——但最近的同类先例 [R45] 并不支持这一笼统化：其持仓图为**季度频**、每季度约 **231 万条边**、**二部图密度仅 0.406%**、只覆盖非银中介（见 JSON R45 与 PDF Table 1）；与本研究的二部图观测覆盖率 16.6% 相比并不更稠密，只是绝对边数更大。故"稠密"只能指**信息在边上足够充分**，不能默认节点覆盖率近全覆盖，引用时必须给出定义。S-028 是**极稀疏二部事件图**：全期 51×38=1,938 个可能对中仅 322 对（16.6%）被观测到，单个 12 个月快照只有 135–148 条边、51 节点投影图密度 0.093–0.101（`DATA_FEASIBILITY.md` §4；注意这是投影图密度，不是二部图密度），事件密度约 0.2 次/单元-月。此密度下"打乱边"会把图打散成近乎全空的图，功效极低；必须用**保度**约束随机化才可能得到有意义的零分布——这也是本研究 `GRAPH_SCHEMA.md` §8 已冻结的设计（块级保度交换 + 每赛道日期池 + R=20 种子）。② **结果变量**：金融侧是连续、稠密、同期的收益/波动/违约，指标（Sharpe、IC、R²）在 S-028 完全不适用；S-028 是**稀有、离散、右删失的首次事件**（12 个月窗、主口径基率 1.019%），只能走 AP / precision@k / 校准（§7）。③ **因果语义**：金融的边对应可解释经济渠道（供应链、共同分析师覆盖、行业），删边 = 切断渠道，"删边掉性能"有经济学解释；S-028 的边"该申请人在这条赛道申报过"与标签**同源**，主要风险是**重言与泄漏**，而非渠道缺失。这条最致命：金融里"图有用"是好消息，MedRadar 里"图有用"首先得排除"图就是标签的影子"。④ **零模型的问题不同**：金融打乱边问"经济渠道是否承载信息"；S-028 若保持度、活跃度与时间分布，剩下的只是"**边的排列顺序**是否承载信息"——明显更弱，必须在论文里写清，否则读者会把"显著"误读为"关系有信息"。（[R45] 的 shuffle 只声明保 degree distributions，未声明保时间/活跃度，也未构造零分布；S-028 的约束更强、推断更正式，两者不可混同——此处"S-028 的约束"指修正后的 N1/N2 设计，原 Phase 0–3 实现被同一轮修正的随机化审计判定未真正保度，见 `RANDOMISATION_DEFECT_ANALYSIS.md`。另：R45 的边是持仓，"删边=改变谁持有谁"确有经济渠道含义；S-028 的边与标签同源，④ 的核心风险因此仍然成立。）⑤ **制度语境**：医疗器械首次申报经由 FDA 510(k)/PMA 一类**守门机制**，并有分类、召回、支付与采购制度，扩散受融资与报销驱动 [R24]；金融侧无对应守门人与申报队列。故 S-028 的"首次进入"机制上更接近"制度性事件的时间"，而非"市场参与者逐步采纳"。
 
 ---
 
@@ -129,7 +137,7 @@ OpenAlex 作为 MAG 的开放替代，自述覆盖 2.09 亿著作、20.13 亿消
 **不可以声称**：① **因果机制**——无识别设计，任何"因处于网络中心所以更可能进入"均不成立；② **"更早预警"**——AP 提升不等于提前期优势，匹配虚警率下的提前期检验（仓库 H-C2-4 框架）通过前不能写 earlier warning；③ **GNN 优越性**——单窗 25–27、pooled 78 个正例的规模上，GNN 与提升树/正则化模型的差异远超可分辨范围，R07/R08/R09 亦说明该差距在不同数据上不稳；④ **跨域外推**——金融图模型的成功不构成对医械二部事件图的先验（§8.3）；⑤ **意图与内部 R&D**——语料只能看到公开申报行为，不因引入图模型而改变。
 
 **方法空白（本文献综述最有价值的部分）：**
-- **B1｜保度保时序零模型在医械二部事件图上无先例。** 文献只给通用随机化思想与 TGB 式评估协议 [R07][R08]，**没有任何一篇**给出"公司—技术二部图、按年切片、保度保活跃度保时间、并同时报告图统计与预测 ΔAP"的具体设计。本研究已在 `GRAPH_SCHEMA.md` §8 与 `EXPERIMENT_PROTOCOL.md` §5 冻结该对照（块级保度交换、每赛道日期池、R=20、报告 ΔAP(real−randomised) 与真实 AP 的分位），故文献综述不再重复其定义，只指出两点必须写进报告的风险：(i) **问题被弱化**——保持度、活跃度与时间分布之后，零模型所检验的只是"边的排列是否携带信息"，不能升级为"关系是否携带信息"；(ii) **分辨力**——R=20 时所谓 97.5% 分位实际是 20 个次序统计量中的最末一个，单侧最小可达 p 约为 1/21≈0.048，需在报告中说明该分辨力，或提高种子数以支撑更细的尾部判断。
+- **B1｜保度保时序零模型在医械二部事件图上未见先例（检索范围内）。** 文献给出通用随机化思想与 TGB 式评估协议 [R07][R08]；最近的金融先例 [R45] 在持仓图上做了**单次**保度打乱消融（walk-forward R² 6.6%→2.3%），但无零分布/分位数/p 值、不保时序、不报 ΔAP。**在本文检索范围内未见**"公司—技术二部图、按年切片、保度保活跃度保时间、并同时报告图统计与预测 ΔAP"的具体设计（此为检索结论，不是"文献中不存在"）。本研究已在 `GRAPH_SCHEMA.md` §8 与 `EXPERIMENT_PROTOCOL.md` §5 冻结该对照（块级保度交换、每赛道日期池、R=20、报告 ΔAP(real−randomised) 与真实 AP 的分位；原 Phase 0–3 实现未达到该不变量，已由同一轮修正的随机化审计 `RANDOMISATION_DEFECT_ANALYSIS.md` 判定并代之以 N1/N2 修正零模型——故上一句的"更强的约束"指修正版设计），故文献综述不再重复其定义，只指出两点必须写进报告的风险：(i) **问题被弱化**——保持度、活跃度与时间分布之后，零模型所检验的只是"边的排列是否携带信息"，不能升级为"关系是否携带信息"；(ii) **分辨力**——R=20 时所谓 97.5% 分位实际是 20 个次序统计量中的最末一个，单侧最小可达 p 约为 1/21≈0.048，需在报告中说明该分辨力，或提高种子数以支撑更细的尾部判断。
 - **B2｜时间负采样在极稀疏二部图上无标准做法。** R18 的结论只在知识图谱上得到；"负样本须来自 τ 时刻可观测候选集"的原则清楚，但如何在 16.6% 覆盖率的稀疏图上构造同分布负样本，文献未答。
 - **B3｜异质性不可估。** pooled 78 个正例分散在 51 家企业 × 38 个赛道，按企业/赛道分层后多数单元正例为 0–2；协议要求分层最小 n=10 且正例 ≥5、否则标 `insufficient`（`EXPERIMENT_PROTOCOL.md` §7），故"关系结构对哪类公司有效"本轮多为**不可估**。
 - **B4｜低基率下校准几乎不可估** [R40]，概率输出只能作排序分数，不能作决策概率。
@@ -141,7 +149,7 @@ OpenAlex 作为 MAG 的开放替代，自述覆盖 2.09 亿著作、20.13 亿消
 
 ## §10 参考文献（编号，含核验状态）
 
-**标记**：`P` = `verified_primary`；† = 仅题录级（未读摘要）；‡ = 会议归属未核验（arXiv 记录无 venue 字段）。记录类型：`arxiv` / `crossref`（DOI 注册记录）/ `publisher` / `acm`。逐条的抓取 URL 与字段标记见 `literature_refs.json`。
+**标记**：`P` = `verified_primary`；`F` = 已读全文（仅 R45）；† = 仅题录级（未读摘要）；‡ = 会议归属未核验（arXiv 记录无 venue 字段）。记录类型：`arxiv` / `crossref`（DOI 注册记录）/ `publisher` / `acm` / `nber`。逐条的抓取 URL 与字段标记见 `literature_refs.json`；R45 的方法级核验（保度打乱=已声明、具体算法=UNVERIFIED）见该条目的 `method_level_claims`。
 
 **[R01]** Xu, D., Ruan, C., Korpeoglu, E., Kumar, S., Achan, K. (2020). *Inductive Representation Learning on Temporal Graphs.* arXiv:2002.07962v1. — P, arxiv, ‡
 **[R02]** Rossi, E., Chamberlain, B., Frasca, F., Eynard, D., Monti, F., Bronstein, M. (2020). *Temporal Graph Networks for Deep Learning on Dynamic Graphs.* arXiv:2006.10637v3. — P, arxiv, ‡
@@ -187,5 +195,6 @@ OpenAlex 作为 MAG 的开放替代，自述覆盖 2.09 亿著作、20.13 亿消
 **[R42]** Gu, S., Kelly, B., Xiu, D. (2020). *Empirical Asset Pricing via Machine Learning.* Review of Financial Studies 33:2223–2273；DOI 10.1093/rfs/hhaa009. — P, crossref, †（作者机构字段载明 Kelly 隶属 Yale University）
 **[R43]** Niu, Y., Lu, L., Dolphin, R., Potì, V., Dong, R. (2024). *Evaluating Financial Relational Graphs: Interpretation Before Prediction.* ICAIF '24, 564–572；DOI 10.1145/3677052.3698644. — P, acm（含摘要；作者单位 University College Dublin）
 **[R44]** Xu, W., Liu, W., Wang, L., Xia, Y., Bian, J., Yin, J., Liu, T.-Y. (2021). *HIST: A Graph-based Framework for Stock Trend Forecasting via Mining Concept-Oriented Shared Information.* arXiv:2110.13716v2. — P, arxiv, ‡
+**[R45]** Clayton, C., Coppola, A. (2026). *The Optimal Use of AI in Financial Regulation.* NBER Working Paper 35227, May 2026；DOI 10.3386/w35227；67 页 NBER 全文（含 Online Appendix）。— P（NBER 官方页 + 全文 PDF）, F, crossref, nber。方法级：**"Shuffled edges" 保 degree distributions 的打乱边消融 = 已声明（verified）**；具体保度算法、随机化次数/种子、零分布/分位数/p 值 = **UNVERIFIED**（论文未报告）；见 `LITERATURE_CORRECTION_NOTE.md` §6–§7 与 JSON R45 的 `method_level_claims`。此前以 *"Financial Regulation and AI: A Faustian Bargain?"* 为题流传。
 
-**合计 44 条：`verified_primary` 44 / `verified_secondary` 0 / `unverified` 0；含摘要 23 条、仅题录 21 条、会议归属未核验 10 条、出版年未核验 1 条。** 未核验项已在 §0 与本节逐条标明，不进入正文的确定陈述。
+**合计 45 条：`verified_primary` 45 / `verified_secondary` 0 / `unverified` 0；含全文 1 条（R45）、摘要 23 条、仅题录 21 条、会议归属未核验 10 条、出版年未核验 1 条。** 未核验项已在 §0 与本节逐条标明，不进入正文的确定陈述；`verified_primary` 只表示书目身份已对上实抓记录，不表示读过全文（§0 局限 f）。

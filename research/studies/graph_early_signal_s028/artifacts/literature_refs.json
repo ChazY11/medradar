@@ -32,13 +32,21 @@
     "acm_dl_page": {
       "description": "ACM Digital Library article page (publisher).",
       "counts_as": "verified_primary"
+    },
+    "nber_working_paper_page": {
+      "description": "https://www.nber.org/papers/w<number> official NBER working-paper landing page; authoritative for title, author list, working-paper number, issue date, DOI (10.3386/...) and abstract.",
+      "counts_as": "verified_primary"
+    },
+    "nber_full_text_pdf": {
+      "description": "https://www.nber.org/system/files/working_papers/w<number>/w<number>.pdf NBER-hosted full text (main text + references + Online Appendix). Used for R45 (67 pages, SHA-256 E99446FD922B78C219F58DC89A63A3F40399407BF6F86FC996F64E1B91C74398, PDF internal CreationDate 2026-05-12). This is the only reference in this file checked against a full text.",
+      "counts_as": "verified_primary"
     }
   },
   "verification_status_counts": {
-    "verified_primary": 44,
+    "verified_primary": 45,
     "verified_secondary": 0,
     "unverified": 0,
-    "note": "Several references carry field-level flags (venue_verified=false / year_verified=false / abstract_checked=false) even though their identity is confirmed. Field-level flags are listed per reference and repeated in research/studies/graph_early_signal_s028/LITERATURE_REVIEW.md section 10."
+    "note": "Several references carry field-level flags (venue_verified=false / year_verified=false / abstract_checked=false) even though their identity is confirmed. Field-level flags are listed per reference and repeated in research/studies/graph_early_signal_s028/LITERATURE_REVIEW.md section 10. S-028-CORRECTION-1 (2026-11-04) added R45 (NBER w35227) after a full-text check; R45 is the only entry with full_text_checked=true and the only entry whose method-level claims are itemised (see its method_level_claims). 'verified_primary' means the record identity was checked against a fetched record, NOT that the full text or the substantive/method claims were read."
   },
   "sources_attempted_and_blocked": [
     {
@@ -1207,6 +1215,86 @@
         "year_verified": true,
         "notes": "Microsoft-affiliated work; used only as an example of a financial graph model with graph ablations, NOT as the 'Yale paper'."
       }
+    },
+    {
+      "id": "R45",
+      "topic": "financial_relational_graph_yale",
+      "title": "The Optimal Use of AI in Financial Regulation",
+      "authors": ["Christopher Clayton", "Antonio Coppola"],
+      "author_count": 2,
+      "venue": "NBER Working Paper 35227 (National Bureau of Economic Research), May 2026; 67-page full text including Online Appendix; not peer-reviewed",
+      "venue_type": "working_paper",
+      "year": 2026,
+      "doi": "10.3386/w35227",
+      "arxiv_id": null,
+      "version": "NBER working paper, May 2026 (PDF internal CreationDate 2026-05-12, ModDate 2026-05-21); previously circulated as 'Financial Regulation and AI: A Faustian Bargain?'",
+      "url_fetched": "https://www.nber.org/papers/w35227 ; https://www.nber.org/system/files/working_papers/w35227/w35227.pdf ; https://api.crossref.org/works/10.3386/w35227 ; https://api.openalex.org/works?search=%22optimal%20use%20of%20ai%20in%20financial%20regulation%22",
+      "canonical_url": "https://doi.org/10.3386/w35227",
+      "claim_scope": "full_text",
+      "jel_codes": ["C4", "G1", "G2"],
+      "one_line_zh": "Yale（Clayton，Yale SOM/NBER）与 Coppola 的 NBER 工作论文：在非银中介的季度持仓二部图（投资者—资产，边=持仓）上用 graph transformer 做持仓变动预测，含静态随机切分与 2015–2020 逐年 walk-forward；Figure 6 消融含 'Shuffled edges'（声明保留 node features 与 degree distributions），walk-forward R² 6.6%→2.3%。这是 S-028 旧稿所说'耶鲁金融关系网络论文'的真实对应物；但不含重复随机化零分布/分位数/种子，且保度算法未说明。",
+      "verification": {
+        "status": "verified_primary",
+        "record_type": "nber_working_paper_page_and_full_text_pdf",
+        "checked_at": "2026-11-04",
+        "abstract_checked": true,
+        "venue_verified": true,
+        "year_verified": true,
+        "full_text_checked": true,
+        "notes": "S-028-CORRECTION-1. NBER landing page: title, both authors, 'Working Paper 35227', 'DOI 10.3386/w35227', 'Issue Date May 2026'. PDF p.1: 'May 2026', previous-circulation title footnote. PDF p.2: 'JEL No. C4, G1, G2'; author blocks 'Yale University and NBER' / 'Stanford University'. Crossref: issued 2026-05, type report, created 2026-05-25. OpenAlex W7162290176: publication_date 2026-05-01, Clayton raw affiliation 'Yale School of Management, 165 Whitney Ave, New Haven, CT 06511' (Yale ROR 03v76x132), keyword 'graph-based deep learning'. Affiliations are recorded exactly as each source states them; Coppola's current affiliation conflicts across sources (PDF: Stanford; NBER: The University of Chicago; OpenAlex: University of Chicago Booth + NBER) and is left unverified. The paper was missing from the original 44 references because the Yale-ROR x 'financial' x 'graph' OpenAlex result set already contained it but it was screened out at title level; see premise_checks PC-01 correction."
+      },
+      "method_level_claims": [
+        {
+          "claim": "Graph model is a bipartite investor-asset holdings graph with positions as edges",
+          "status": "verified",
+          "evidence": "Section 2 (printed p.9 / PDF p.11): 'The holdings graph G_t is bipartite: it has two distinct types of nodes, and edges only connect nodes of different types, with investors connecting to assets via position edges.'"
+        },
+        {
+          "claim": "Network constructed from Factset + Morningstar quarterly holdings, 2004Q1-2021Q4, 72 quarters, about 37,000 unique investors and 85,000 unique assets, about 2.31M edges per quarter, density 0.406%",
+          "status": "verified",
+          "evidence": "Section 3.1 (printed pp.13-14); Table 1 (printed p.12); data-construction filters beyond 'non-bank intermediaries' and exclusion of new positions are NOT documented (unverified)"
+        },
+        {
+          "claim": "Out-of-sample design includes a static random split and a walk-forward test retrained each year on an expanding window, tested strictly on future quarters, 2015-2020",
+          "status": "verified",
+          "evidence": "Section 3.1 (printed p.14 / PDF p.16); Table 3 (printed p.16)"
+        },
+        {
+          "claim": "A 'Shuffled edges' ablation destroys network topology while preserving node features and degree distributions",
+          "status": "verified_as_stated",
+          "evidence": "Figure 6 notes (printed p.19 / PDF p.21): 'randomly permutes edge indices to destroy network topology while preserving node features and degree distributions'; Section 3.2 (printed p.20): 'randomly shuffling edges, while preserving node features and degree distributions, reduces walk-forward R2 from 6.6% to 2.3%'"
+        },
+        {
+          "claim": "The edge-shuffle is a degree-preserving rewiring / configuration-model / edge-swap construction",
+          "status": "unverified",
+          "evidence": "No algorithm is specified anywhere in the 67-page PDF. Appendix B (printed A.6 / PDF p.52) documents attention, losses, MAE masking and parameters but not the shuffle. The strings 'configuration model', 'rewiring' and 'edge swap' do not occur in the full text."
+        },
+        {
+          "claim": "The shuffle is repeated and summarised as a null distribution / quantiles / p-value",
+          "status": "not_reported",
+          "evidence": "Figure 6 reports one walk-forward R2 value per variant (6.6%, 4.3%, 3.2%, 2.5%, 2.3%); no randomisation distribution, quantiles or p-values are reported; the string 'seed' does not occur in the extracted text of the 67-page PDF."
+        },
+        {
+          "claim": "The shuffle preserves time/activity distributions or block structure (as S-028's null does)",
+          "status": "not_reported",
+          "evidence": "The stated preservation property covers node features and degree distributions only; no time or block constraint is described."
+        },
+        {
+          "claim": "The paper is Yale-affiliated",
+          "status": "verified",
+          "evidence": "PDF p.2 author block 'Christopher Clayton / Yale University / and NBER'; NBER author page 'Yale University'; personal site 'Associate Professor of Finance, Yale School of Management'; OpenAlex raw affiliation 'Yale School of Management, 165 Whitney Ave, New Haven, CT 06511' (ROR 03v76x132)."
+        },
+        {
+          "claim": "The paper is peer-reviewed or journal-published",
+          "status": "verified_false",
+          "evidence": "PDF p.1: 'NBER working papers are circulated for discussion and comment purposes. They have not been peer-reviewed...'; the fetched NBER page lists no published version as of 2026-11-04."
+        },
+        {
+          "claim": "The random static split is leakage-free",
+          "status": "verified_false",
+          "evidence": "The authors themselves flag it, printed p.15 / PDF p.17: 'the random static split creates potential information leakage through the persistence of the holdings graph.'"
+        }
+      ]
     }
   ],
   "premise_checks": [
@@ -1236,13 +1324,26 @@
           "why": "An example of a financial graph model that compares graph-derived shared information against individual information. Not Yale, no shuffled-link null, and the 'graph' is a stock-concept membership matrix."
         }
       ],
-      "conclusion": "The premise should not be accepted as stated: I could not verify the existence of a Yale paper with this design. The specific methodological device (rewiring links while preserving degree/activity/time as a null) is standard network-science practice (configuration-model-style randomisation), not a Yale finance contribution. S-028 should cite it as a null-model design choice and cite R42/R43 for what they actually do, rather than attributing the design to a Yale precedent."
+      "conclusion": "The premise should not be accepted as stated: I could not verify the existence of a Yale paper with this design. The specific methodological device (rewiring links while preserving degree/activity/time as a null) is standard network-science practice (configuration-model-style randomisation), not a Yale finance contribution. S-028 should cite it as a null-model design choice and cite R42/R43 for what they actually do, rather than attributing the design to a Yale precedent.",
+      "correction": {
+        "id": "S-028-CORRECTION-1",
+        "corrected_at": "2026-11-04",
+        "status": "original conclusion withdrawn",
+        "why_wrong": "The matching paper exists and was already inside this record's own search results: searches_performed[1] lists 'two AI-in-financial-regulation papers (Clayton/Coppola)' among the 11 hits of the Yale-ROR x 'financial' x 'graph' query, and they were then excluded at title level without opening the record. The title contains no graph/network vocabulary, so a title-only screen classifies it as an AI-in-financial-regulation paper. Timing is not the cause: the OpenAlex record was created 2026-05-26, the NBER issue date is May 2026, and this check is dated 2026-11-04.",
+        "actual_paper": "Christopher Clayton & Antonio Coppola, 'The Optimal Use of AI in Financial Regulation', NBER Working Paper 35227, May 2026, DOI 10.3386/w35227 (67-page NBER full text).",
+        "replacement_ref": "R45",
+        "verified_method_fact": "The paper does contain a topology-destroying edge-shuffle ablation whose figure notes state that it preserves 'node features and degree distributions'; it reduces walk-forward R2 from 6.6% to 2.3% (Figure 6 and Section 3.2, printed pp.19-20).",
+        "remaining_distinction": "R45 is a single ablation per walk-forward window with no randomisation distribution, quantiles, p-values or seed count, no stated time/activity-preservation constraint, and no specification of the degree-preserving algorithm (all UNVERIFIED, see R45.method_level_claims). S-028's repeated block-level degree/activity/time-preserving randomisation with paired dAP null quantiles and MDE is therefore a methodological extension, not a replication. The novelty claim may only be stated as 'not found in the reviewed literature', never as 'does not exist'.",
+        "original_text_preserved": "The original premise, searches_performed, finding, closest_matches and conclusion fields above are retained unchanged as the historical record."
+      }
     }
   ],
   "gaps_not_verified": [
     "Venue for R01 (TGAT), R02 (TGN), R04 (DySAT), R06 (DyRep), R10 (GraphMixer), R12 (R-GCN), R17, R18, R35, R44: the arXiv records carry no venue/journal_ref field and dblp/OpenReview were blocked, so the commonly cited venues (ICLR 2020, ICML 2020 workshop, WSDM 2020, ICLR 2019, ICLR 2023, ESWC 2018, ICLR 2024) are deliberately NOT asserted.",
     "Year of publication for R20 (Rogers, Diffusion of Innovations, 5th ed.): the publisher page confirmed title, author, edition and ISBN, but 2003 is not visible in the fetched excerpt.",
-    "No abstract could be obtained for 21 of the 44 references (Crossref records carry no abstract for JSTOR/ACM/OUP/Wiley deposits). Those references are used at title/metadata level only, and are marked claim_scope='title_record'; the remaining 23 are marked claim_scope='abstract' and their substantive claims are quoted or closely paraphrased from the fetched abstract.",
+    "No abstract could be obtained for 21 of the original 44 references (Crossref records carry no abstract for JSTOR/ACM/OUP/Wiley deposits). Those references are used at title/metadata level only, and are marked claim_scope='title_record'; the remaining 23 are marked claim_scope='abstract' and their substantive claims are quoted or closely paraphrased from the fetched abstract. R45 (added by S-028-CORRECTION-1) is the only entry checked against a full text (claim_scope='full_text').",
+    "None of the original 44 references was checked against a full text: 'verified_primary' means the record identity was matched to a fetched record, not that substantive or method-level claims were read at source. This is why the earlier method-level negatives in PC-01 ('no edge-shuffling control') could not have been supported at the evidence level used.",
+    "R45 (NBER w35227) method details not reported by the paper and therefore UNVERIFIED: the exact degree-preserving algorithm (configuration-model stub matching vs. edge swaps); whether both node-side degree sequences are preserved; whether the shuffle preserves time/block structure or position weights; the number of random draws/seeds; whether any null distribution, quantile or p-value was computed. The paper's holdings-universe cleaning filters beyond 'non-bank intermediaries' and the exclusion of new positions are also not documented.",
     "Volume/issue/pages for R36 (Bailey et al., JCF) were absent from the Crossref record and are omitted rather than guessed.",
     "A journal version of R35 (Kapoor & Narayanan) is known to exist in Patterns 2023 but was not fetched, so only the arXiv v1 record is cited.",
     "No systematic database search (Web of Science/Scopus/Google Scholar) was possible: Scholar is not fetchable and the other two need subscriptions. Coverage is therefore targeted, not exhaustive, and a publication bias toward well-known work is likely."
