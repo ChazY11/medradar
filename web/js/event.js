@@ -1,10 +1,10 @@
 /* Event detail drawer: the terminal node of the evidence chain.
    Every field shown comes from GET /api/evidence/{event_id}. */
 import { api } from "./api.js";
-import { el, fmtDate, fmtDateTime, kindLabel, buildHash } from "./util.js";
+import { el, fmtDate, fmtDateTime, kindLabel, buildHash, isApprovalKind } from "./util.js";
 import {
   openDrawer, skeletonBlock, errorState, badge, kvList, valueTable,
-  notice, list, disclosure, tierBadge,
+  notice, list, disclosure, tierBadge, approvalBadges,
 } from "./components.js";
 
 const MATCH_LABELS = {
@@ -74,6 +74,7 @@ export async function openEvent(eventId, { replaceUrl = null } = {}) {
 
 function renderDetail(detail) {
   const event = detail.event || {};
+  const approval = detail.approval || {};
   const body = el("div");
   body.dataset.testid = "event-detail";
 
@@ -84,6 +85,7 @@ function renderDetail(detail) {
     event.company_name_zh ? badge(event.company_name_zh, "teal") : badge("企业未映射", "muted"),
     matchBadge(event.company_match),
     badge(event.track_name_zh || "未映射赛道", event.track_mapped ? "violet" : "muted"),
+    isApprovalKind(event.kind) || approval.approval_type ? approvalBadges(approval, { firstEntry: true }) : null,
     event.as_of ? badge(`数据 as-of ${event.as_of}`, "muted") : null,
   );
   body.append(flagRow);
@@ -93,6 +95,41 @@ function renderDetail(detail) {
     el("div", { style: "font-size:12.5px;line-height:1.6", text: event.title || "—" }),
     event.summary ? el("div", { class: "muted small mt-8", text: event.summary }) : null,
   ));
+
+  if (approval.approval_type && (isApprovalKind(event.kind) || approval.approval_type !== event.kind)) {
+    const classification = el("div", { class: "drawer-section" });
+    classification.dataset.testid = "event-approval-classification";
+    classification.append(el("h4", { text: "审批类型分类（PMA 原始 vs 补充申请 / 510(k) 类型）" }));
+    classification.append(el("div", { class: "row wrap mb-8" }, approvalBadges(approval, { firstEntry: true })));
+    if (approval.classification_available === false) {
+      classification.append(notice({
+        tone: "red",
+        title: "类型不可判定",
+        body: "原始 payload 缺少 supplement_number / clearance_type，无法判定是原始 PMA、PMA 补充申请还是 510(k) 类型；不猜测类型。",
+      }));
+    }
+    classification.append(kvList([
+      { key: "approval_type", value: approval.approval_type || "—" },
+      { key: "approval_type_label_zh", value: approval.approval_type_label_zh || "—" },
+      {
+        key: event.kind === "pma" ? "补充类型（supplement_type）" : "clearance_type",
+        value: approval.classification_detail || "—",
+      },
+      {
+        key: "is_first_entry_candidate",
+        value: approval.is_first_entry_candidate
+          ? "是（原始 PMA / Traditional 510(k)，可作为首次进入候选）"
+          : "否（补充申请或 Special/Abbreviated 510(k) 不计入首次进入）",
+      },
+      {
+        key: "classification_available",
+        value: approval.classification_available === false ? "false（类型不可判定）" : "true",
+      },
+      { key: "source_fields", value: (approval.source_fields || []).join("、") || "—" },
+      { key: "note_zh", value: approval.note_zh || "—" },
+    ]));
+    body.append(classification);
+  }
 
   body.append(el("div", { class: "drawer-section" },
     el("h4", { text: "日期与时间口径" }),

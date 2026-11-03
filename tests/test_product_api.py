@@ -74,6 +74,62 @@ def test_compare_validates_and_returns_warnings():
     assert bad_metric.status_code == 400
 
 
+def test_compare_lq_matches_its_own_disclosed_denominators():
+    response = client.get(
+        "/api/compare",
+        params={"companies": "medtronic,philips,draeger", "metric": "approvals", "years": 5},
+    )
+    assert response.status_code == 200
+    data = response.json()
+    analysis = data["analysis_window"]
+    assert analysis["comparable"] is True
+    assert analysis["periods"] > 0
+    industry = data["comparability"]["industry_records"]
+    companies = {company["key"]: company for company in data["companies"]}
+    # every company's coverage must equal mapped / all, and all = mapped + unmapped
+    for company in data["companies"]:
+        assert company["total_all"] == company["total_mapped"] + company["total_unmapped"]
+        assert company["mapping_coverage"] == pytest.approx(
+            company["total_mapped"] / company["total_all"]
+        )
+        assert company["pathway"]["window"]["start"] == analysis["analysis_start"]
+    for row in data["track_table"]:
+        assert row["industry_mapping_coverage"] == pytest.approx(
+            industry["mapping_coverage"]
+        )
+        for cell in row["companies"]:
+            if cell["lq_status"] != "ok":
+                assert cell["location_quotient"] is None
+                continue
+            company = companies[cell["key"]]
+            expected = (cell["n"] / company["total_mapped"]) / (
+                row["industry_total"] / industry["mapped_records"]
+            )
+            assert cell["location_quotient"] == pytest.approx(expected, abs=1e-3)
+            assert cell["lq_reason_zh"]
+
+
+def test_company_profile_reports_complete_window_and_pma_split():
+    data = client.get("/api/companies/medtronic", params={"years": 5}).json()
+    headline = data["headline"]
+    assert data["window"]["completeness"]["comparable"] is True
+    assert headline["approvals_window"] <= headline["approvals_window_all"]
+    assert headline["pma_original_window"] + headline["pma_supplement_window"] > 0
+    assert headline["pma_supplement_window"] > headline["pma_original_window"]
+    assert headline["pathway_mix"]["basis"] == "window_approvals_only"
+    assert headline["pathway_mix_all_time"]["basis"] == "all_time_approvals_only"
+    assert data["tracks"]["analysis_window"]["start"] == data["window"]["completeness"]["analysis_start"]
+
+
+def test_meta_reports_approval_classification_availability():
+    dataset = client.get("/api/meta").json()["dataset"]
+    audit = dataset["approval_classification"]
+    assert audit["pma_total"] > 0
+    assert audit["k510_total"] > 0
+    assert isinstance(audit["pma_classification_available"], bool)
+    assert "supplement_number" in audit["rule_zh"]
+
+
 def test_radar_endpoints():
     radar = client.get("/api/radar", params={"years": 3})
     assert radar.status_code == 200

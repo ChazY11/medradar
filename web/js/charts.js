@@ -143,6 +143,93 @@ function yAxis(svg, { left, top, plotW, plotH, ticks, topValue, format }) {
   svg.append(g);
 }
 
+/* ------------------------------------------------------- period flags */
+let patternSeq = 0;
+
+function lagHatch(svg) {
+  const id = `lag-hatch-${++patternSeq}`;
+  const defs = svgEl("defs");
+  const pattern = svgEl("pattern", {
+    id, width: 6, height: 6, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)",
+  });
+  pattern.append(svgEl("line", { x1: 0, y1: 0, x2: 0, y2: 6, stroke: "#d29922", "stroke-width": 1.3, "stroke-opacity": 0.55 }));
+  defs.append(pattern);
+  svg.append(defs);
+  return `url(#${id})`;
+}
+
+/** Shade partial and source-lag periods behind the plotted series. */
+function renderPeriodBands(svg, { pad, plotH, bands, partialFlags = [], lagFlags = [] }) {
+  const hasPartial = partialFlags.some(Boolean);
+  const hasLag = lagFlags.some(Boolean);
+  if (!hasPartial && !hasLag) return;
+  const pattern = hasLag ? lagHatch(svg) : null;
+  for (const band of bands) {
+    const { index, x, width } = band;
+    const partial = Boolean(partialFlags[index]);
+    const lag = Boolean(lagFlags[index]);
+    if (partial) {
+      const rect = svgEl("rect", {
+        class: "period-partial", x, y: pad.top, width, height: plotH,
+        fill: "rgba(210, 153, 34, 0.07)",
+      });
+      rect.append(svgEl("title"));
+      rect.lastChild.textContent = "不完整周期：窗口边界截断，仅展示，不参与同比/份额/LQ";
+      svg.append(rect);
+    } else if (lag) {
+      const rect = svgEl("rect", {
+        class: "period-lag", x, y: pad.top, width, height: plotH, fill: pattern,
+      });
+      rect.append(svgEl("title"));
+      rect.lastChild.textContent = "日历周期完整，但临近数据截止，源数据可能仍会修订/补录";
+      svg.append(rect);
+    }
+  }
+}
+
+function periodFlagNoteHtml(index, partialFlags, lagFlags) {
+  let html = "";
+  if (partialFlags && partialFlags[index]) {
+    html += `<div class="tip-row tip-flag"><span>周期状态</span><b>不完整（仅展示）</b></div>`;
+  }
+  if (lagFlags && lagFlags[index]) {
+    html += `<div class="tip-row tip-flag"><span>周期状态</span><b>临近数据截止 · 源可能修订</b></div>`;
+  }
+  return html;
+}
+
+function flagLegendNode(partialFlags = [], lagFlags = []) {
+  const hasPartial = partialFlags.some(Boolean);
+  const hasLag = lagFlags.some(Boolean);
+  if (!hasPartial && !hasLag) return null;
+  const node = el("div", { class: "chart-note chart-flags" });
+  if (hasPartial) {
+    node.append(el("span", { class: "flag-item" },
+      el("span", { class: "flag-swatch flag-partial", "aria-hidden": "true" }),
+      el("span", { text: "浅色底/空心点 = 不完整周期（仅展示，不参与比较）" }),
+    ));
+  }
+  if (hasLag) {
+    node.append(el("span", { class: "flag-item" },
+      el("span", { class: "flag-swatch flag-lag", "aria-hidden": "true" }),
+      el("span", { text: "斜线底/琥珀点 = 日历完整但临近数据截止，源数据可能修订" }),
+    ));
+  }
+  return node;
+}
+
+function lineBands(categories, x, plotW) {
+  const count = categories.length;
+  if (!count) return [];
+  if (count === 1) return [{ index: 0, x: x(0), width: plotW }];
+  const step = plotW / (count - 1);
+  return categories.map((_, index) => {
+    const left = Math.max(x(0), x(index) - step / 2);
+    const right = Math.min(x(count - 1), x(index) + step / 2);
+    return { index, x: left, width: Math.max(1, right - left) };
+  });
+}
+
 /* --------------------------------------------------------- line chart */
 export function lineChart(host, cfg) {
   host.classList.add("chart");
@@ -156,6 +243,8 @@ export function lineChart(host, cfg) {
     showLegend = true,
     legendNote = null,
   } = cfg;
+  const partialFlags = cfg.partialFlags || [];
+  const lagFlags = cfg.lagFlags || [];
 
   if (!categories.length || !series.length) {
     host.append(el("div", { class: "empty", text: "该窗口内没有可绘制的数据" }));
@@ -167,6 +256,8 @@ export function lineChart(host, cfg) {
   const svgWrap = el("div");
   host.append(legend, svgWrap);
   if (legendNote) host.append(el("div", { class: "chart-note" }, legendNote));
+  const lineFlags = flagLegendNode(partialFlags, lagFlags);
+  if (lineFlags) host.append(lineFlags);
 
   function renderLegend() {
     legend.replaceChildren();
@@ -210,6 +301,11 @@ export function lineChart(host, cfg) {
     if (cfg.svgTestid) svg.dataset.testid = cfg.svgTestid;
     svg.style.height = `${height}px`;
     yAxis(svg, { left: pad.left, top: pad.top, plotW, plotH, ticks, topValue: top, format: valueFormat });
+    renderPeriodBands(svg, {
+      pad, plotH,
+      bands: lineBands(categories, x, plotW),
+      partialFlags, lagFlags,
+    });
 
     for (const index of xLabelIndices(count, width)) {
       const text = svgEl("text", { class: "axis-label", x: x(index), y: height - 8, "text-anchor": "middle" });
@@ -237,27 +333,41 @@ export function lineChart(host, cfg) {
       }
       flush();
       points.forEach((part, partIndex) => {
-        const isLast = partIndex === points.length - 1;
-        const partial = isLast && cfg.partialFlags && cfg.partialFlags[part[part.length - 1][2]];
+        const dashed = partialFlags[part[0][2]] || partialFlags[part[part.length - 1][2]];
         const d = part.map((point, index) => `${index === 0 ? "M" : "L"}${point[0].toFixed(1)},${point[1].toFixed(1)}`).join(" ");
         const path = svgEl("path", {
           class: "series-line", d,
           stroke: item.color || "#2f81f7",
           "stroke-linejoin": "round", "stroke-linecap": "round",
         });
-        if (partial) path.setAttribute("stroke-dasharray", "3 3");
+        if (dashed) path.setAttribute("stroke-dasharray", "3 3");
         svg.append(path);
       });
       if (count <= 60) {
         for (let index = 0; index < count; index += 1) {
           const value = values[index];
           if (value == null || !Number.isFinite(Number(value))) continue;
-          const partial = cfg.partialFlags && cfg.partialFlags[index];
-          svg.append(svgEl("circle", {
-            class: "series-dot", cx: x(index), cy: y(value), r: 2.4,
-            fill: partial ? "#0a0f16" : (item.color || "#2f81f7"),
-            stroke: item.color || "#2f81f7",
-          }));
+          const partial = partialFlags[index];
+          const lag = lagFlags[index];
+          const cx = x(index);
+          const cy = y(value);
+          if (lag && !partial) {
+            const size = 3.1;
+            const diamond = svgEl("path", {
+              class: "series-dot series-lag",
+              d: `M${cx} ${cy - size}L${cx + size} ${cy}L${cx} ${cy + size}L${cx - size} ${cy}Z`,
+              fill: "#0a0f16", stroke: "#d29922", "stroke-width": 1.2,
+            });
+            diamond.append(svgEl("title"));
+            diamond.lastChild.textContent = "日历周期完整，但临近数据截止，源数据可能修订";
+            svg.append(diamond);
+          } else {
+            svg.append(svgEl("circle", {
+              class: "series-dot", cx, cy, r: 2.4,
+              fill: partial ? "#0a0f16" : (item.color || "#2f81f7"),
+              stroke: item.color || "#2f81f7",
+            }));
+          }
         }
       }
     }
@@ -291,6 +401,7 @@ export function lineChart(host, cfg) {
         if (visible.length > 1) {
           html += `<div class="tip-row" style="border-top:1px solid #1e2a3a;margin-top:3px;padding-top:3px"><span>合计</span><b>${esc(valueFormat(total))}</b></div>`;
         }
+        html += periodFlagNoteHtml(index, partialFlags, lagFlags);
         showTip(html, event.clientX, event.clientY);
       });
       rect.addEventListener("mouseleave", () => {
@@ -332,7 +443,10 @@ export function barChart(host, cfg) {
     onSelect = null,
     stacked = false,
     ariaLabel = "柱状图",
+    legendNote = null,
   } = cfg;
+  const partialFlags = cfg.partialFlags || [];
+  const lagFlags = cfg.lagFlags || [];
 
   if (!categories.length || !series.length) {
     host.append(el("div", { class: "empty", text: "该窗口内没有可绘制的数据" }));
@@ -343,6 +457,9 @@ export function barChart(host, cfg) {
   const legend = el("div", { class: "chart-legend" });
   const svgWrap = el("div");
   host.append(legend, svgWrap);
+  if (legendNote) host.append(el("div", { class: "chart-note" }, legendNote));
+  const barFlags = flagLegendNode(partialFlags, lagFlags);
+  if (barFlags) host.append(barFlags);
 
   function renderLegend() {
     legend.replaceChildren();
@@ -393,13 +510,26 @@ export function barChart(host, cfg) {
     if (cfg.svgTestid) svg.dataset.testid = cfg.svgTestid;
     svg.style.height = `${height}px`;
     yAxis(svg, { left: pad.left, top: pad.top, plotW, plotH, ticks, topValue: top, format: valueFormat });
+    renderPeriodBands(svg, {
+      pad, plotH,
+      bands: categories.map((_, index) => ({ index, x: pad.left + index * band, width: band })),
+      partialFlags, lagFlags,
+    });
 
     const y = (value) => pad.top + plotH - (Number(value) / top) * plotH;
     for (const index of xLabelIndices(count, width)) {
       const text = svgEl("text", {
         class: "axis-label", x: band * index + band / 2, y: height - 8, "text-anchor": "middle",
       });
-      text.textContent = categories[index];
+      const partial = partialFlags[index];
+      const lag = lagFlags[index];
+      text.textContent = partial ? `${categories[index]} *` : lag ? `${categories[index]} †` : categories[index];
+      if (partial || lag) {
+        text.append(svgEl("title"));
+        text.lastChild.textContent = partial
+          ? "不完整周期：窗口边界截断，仅展示，不参与同比/份额/LQ"
+          : "日历周期完整，但临近数据截止，源数据可能修订";
+      }
       svg.append(text);
     }
 
@@ -431,7 +561,7 @@ export function barChart(host, cfg) {
             const total = visible.reduce((acc, other) => acc + (Number(other.values?.[index]) || 0), 0);
             rows.push(`<div class="tip-row" style="border-top:1px solid #1e2a3a;margin-top:3px;padding-top:3px"><span>合计</span><b>${esc(valueFormat(total))}</b></div>`);
           }
-          showTip(`<div class="tip-title">${esc(categories[index])}</div>${rows.join("")}`, event.clientX, event.clientY);
+          showTip(`<div class="tip-title">${esc(categories[index])}</div>${rows.join("")}${periodFlagNoteHtml(index, partialFlags, lagFlags)}`, event.clientX, event.clientY);
         });
         rect.addEventListener("mouseleave", hideTip);
         rect.addEventListener("click", () => {
@@ -449,7 +579,7 @@ export function barChart(host, cfg) {
         if (visible.length > 1 && !stacked) {
           rows.push(`<div class="tip-row" style="border-top:1px solid #1e2a3a;margin-top:3px;padding-top:3px"><span>合计</span><b>${esc(valueFormat(total))}</b></div>`);
         }
-        showTip(`<div class="tip-title">${esc(categories[index])}</div>${rows.join("")}`, event.clientX, event.clientY);
+        showTip(`<div class="tip-title">${esc(categories[index])}</div>${rows.join("")}${periodFlagNoteHtml(index, partialFlags, lagFlags)}`, event.clientX, event.clientY);
       });
       hit.addEventListener("mouseleave", hideTip);
       hit.addEventListener("click", () => {

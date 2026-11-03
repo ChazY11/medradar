@@ -172,8 +172,11 @@ def test_trend_numbers_match_company_claims_query():
     claim = next(item for item in claims["claims"] if item["track"] == "imaging_us")
     recent = claim["metrics"]["recent"]
     prior = claim["metrics"]["prior"]
-    assert parsed["window"]["start"] == claims["window"]["start"]
-    assert parsed["window"]["end"] == claims["window"]["end"]
+    expected = store.comparison_windows(parsed["window"]["start"], parsed["window"]["end"], "quarter")
+    assert claims["window"]["start"] == expected["analysis_start"]
+    assert claims["window"]["end"] == expected["analysis_end"]
+    assert claims["window"]["requested_start"] == parsed["window"]["start"]
+    assert claims["window"]["requested_end"] == parsed["window"]["end"]
 
     # the claim itself is recomputable to exactly the same event set
     evidence = store.evidence_search(

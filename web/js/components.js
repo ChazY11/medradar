@@ -1,6 +1,6 @@
 /* Reusable presentation components: page headers, panels, tables, badges,
    states, notices, chips, segmented switches and the event drawer shell. */
-import { el, esc, fmtInt, keyValueText } from "./util.js";
+import { el, esc, fmtInt, fmtPct, fmtNum, approvalTypeTone, keyValueText } from "./util.js";
 import { friendlyError } from "./api.js";
 
 /* ------------------------------------------------------------- headers */
@@ -100,6 +100,65 @@ export function tierBadge(tier, label) {
 export function toneBadge(tone) {
   const map = { blocked: ["badge-red", "blocked"], mixed: ["badge-amber", "mixed"], negative: ["badge-red", "negative"], positive: ["badge-green", "positive"] };
   return map[tone] || map.negative;
+}
+
+/** Approval subtype badges (original PMA / PMA supplement / Traditional 510(k) / unknown). */
+export function approvalBadges(approval, { firstEntry = true, includeUnknown = true } = {}) {
+  const node = el("span", { class: "badge-row" });
+  if (!approval || !approval.approval_type) return node;
+  const available = approval.classification_available !== false;
+  node.append(badge(
+    approval.approval_type_label_zh || approval.approval_type,
+    available ? approvalTypeTone(approval.approval_type) : "red",
+    `approval_type: ${approval.approval_type}`,
+  ));
+  if (firstEntry && approval.is_first_entry_candidate) {
+    node.append(badge(
+      "首次进入候选（原始批准）",
+      "green",
+      "只有原始 PMA 或 Traditional 510(k) 才计入首次进入候选；PMA 补充申请与 Special/Abbreviated 510(k) 不计入。",
+    ));
+  }
+  if (includeUnknown && !available) {
+    node.append(badge("类型不可判定", "red", "原始 payload 缺少 supplement_number / clearance_type；不猜测类型。"));
+  }
+  return node;
+}
+
+/** LQ cell: a number only when lq_status === "ok", otherwise 不适用 + reason tooltip. */
+export function lqValue(cell, { digits = 2 } = {}) {
+  if (!cell) return el("span", { class: "muted", text: "—" });
+  const reason = cell.lq_reason_zh || "LQ 不适用。";
+  if (cell.lq_status !== "ok" || cell.location_quotient == null) {
+    const node = el("span", { class: "lq-na", title: reason, text: "不适用" });
+    node.dataset.testid = "lq-not-applicable";
+    if (cell.lq_status) node.dataset.lqStatus = cell.lq_status;
+    return node;
+  }
+  const tone = cell.location_quotient >= 1 ? "tone-up" : "tone-down";
+  return el("span", { class: tone, title: reason, text: fmtNum(cell.location_quotient, digits) });
+}
+
+/** Horizontal 100%-stacked path segment bar with per-segment tooltips. */
+export function shareBar(segments, { ariaLabel = "结构占比" } = {}) {
+  const list = (segments || []).filter((segment) => Number(segment.value) > 0);
+  const total = list.reduce((sum, segment) => sum + Number(segment.value), 0);
+  const bar = el("div", { class: "pathway-bar", role: "img", "aria-label": ariaLabel });
+  if (!total) {
+    bar.append(el("span", { class: "muted tiny", text: "没有审批记录" }));
+    return bar;
+  }
+  for (const segment of list) {
+    const pct = Number(segment.value) / total;
+    const node = el("span", {
+      class: "pathway-seg",
+      style: `width:${Math.max(0.6, pct * 100)}%;background:${segment.color || "#2f81f7"}`,
+      title: `${segment.label}：${fmtInt(segment.value)} 条（${fmtPct(pct, 1)}）`,
+    });
+    if (segment.testid) node.dataset.testid = segment.testid;
+    bar.append(node);
+  }
+  return bar;
 }
 
 /* --------------------------------------------------------------- tables */

@@ -895,3 +895,42 @@ details.disclosure > .disclosure-body { padding: 8px 11px; font-size: 11.5px; }
   .cc-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .page-head { gap: 8px; }
 }
+
+/* ------------------------------------------------ approval classification */
+.badge-row { display: inline-flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.pathway-label { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; font-size: 12px; }
+.pathway-bar { display: flex; height: 12px; border-radius: 2px; overflow: hidden; border: 1px solid var(--border-2); background: var(--panel-3); }
+.pathway-seg { height: 100%; min-width: 1px; }
+.pathway-seg + .pathway-seg { box-shadow: inset 1px 0 0 rgba(10, 15, 22, 0.55); }
+.lq-na { color: var(--amber); font-family: var(--mono); font-size: 11px; cursor: help; white-space: nowrap; }
+.lq-cell { display: inline-flex; align-items: baseline; gap: 2px; }
+.claim-window { margin-top: 5px; }
+
+/* ------------------------------------------------------- chart period flags */
+.chart-flags { gap: 6px 14px; }
+.flag-item { display: inline-flex; align-items: center; gap: 5px; }
+.flag-swatch { width: 13px; height: 9px; border: 1px solid var(--border-2); display: inline-block; border-radius: 1px; }
+.flag-partial { background: rgba(210, 153, 34, 0.16); border-color: rgba(210, 153, 34, 0.5); }
+.flag-lag { background: repeating-linear-gradient(45deg, rgba(210, 153, 34, 0.55) 0 1px, transparent 1px 4px); border-color: rgba(210, 153, 34, 0.5); }
+.chart-tip .tip-flag { color: var(--amber); }
+
+/* --------------------------------------------------------- data quality line */
+.data-quality {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--teal);
+  border-radius: 3px;
+  background: var(--panel-2);
+  padding: 7px 11px;
+  font-size: 11.5px;
+  color: var(--muted);
+  display: flex;
+  gap: 5px 14px;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.data-quality .data-quality-title { color: var(--text); font-weight: 600; white-space: nowrap; }
+.data-quality b { color: var(--text); font-family: var(--mono); font-weight: 500; }
+
+@media (max-width: 760px) {
+  .data-quality { flex-direction: column; gap: 4px; }
+}

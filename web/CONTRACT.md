@@ -54,6 +54,7 @@ input that routes to `#/evidence?q=...`.
 ### GET /api/meta
 Top-level: `product`, `dataset` (`.counts`, `.date_range.last`, `.track_mapping_coverage`,
 `.track_mapped_events`, `.track_unmapped_events`, `.attributed_events`, `.unattributed_events`,
+`.approval_classification{pma_total,pma_unknown,pma_classification_available,k510_total,k510_unknown,k510_classification_available,rule_zh,source_fields}`,
 `.modified_utc`), `sources[]` (`id,label_zh,market,coverage_zh,caveat_zh,observed_count`),
 `tracks[]` (`id,name_zh,name_en,category`), `domains[]` (`id,label_zh,tracks[]`),
 `metrics{name:{label_zh,definition_zh,caveats[]}}`, `featured_companies[]`,
@@ -65,46 +66,65 @@ Top-level: `product`, `dataset` (`.counts`, `.date_range.last`, `.track_mapping_
 corporate,tracks,first_event,last_event}], featured:[...], total}`
 
 ### GET /api/companies/{key}?years=5
-`{key,info{name_zh,name_en,ticker,exchange,hq_zh,profile_zh,featured},window{years,start,end},
-headline{events_all_time,approvals_all_time,approvals_window,approvals_window_mapped,approvals_window_all,
-approvals_prior,approvals_prior_all,unmapped_window,unmapped_prior,window_basis_zh,delta,pct_change,
-tracks_active,first_event,last_event,recalls_all_time,trials_all_time,pathway_mix{pma,510k,basis,note_zh},
-pathway_mix_counts},
-coverage[{source,kind,n,first,last,label_zh,coverage_zh,caveat_zh}],
-tracks{rows[{track,name_zh,recent,prior,delta,pct_change,share_recent,share_prior,
-industry_recent,industry_prior,industry_pct_change,first_approval,new_in_window,z}],window},
-series{approvals{points[{period,count,partial}],granularity},by_kind_year{periods,series}},
-milestones[{event_date,label_zh,title,url,track_name_zh,kind,event_id|null}],
-recent_events[{event_id,event_date,kind,title,url,company_name_zh,track_name_zh,company_match}],
-claims[{claim_id,tier,tier_label_zh,statement_zh,direction,confidence,caveats[],
-metrics{recent,prior,delta,pct_change,industry_*,share_*,low_volume},window,
-evidence_params{company,track,metric,recent_start,recent_end,prior_start,prior_end}}],
-entity_review[],limitations[{id,text_zh}],flags}`
+`{key,info{...},window{years,start,end,data_edge,completeness{analysis_start,analysis_end,comparable,partial_start,partial_end,reason_zh}},
+headline{events_all_time,approvals_all_time,approvals_window(=已映射完整季度),approvals_window_mapped,
+approvals_window_all(=请求窗口全部),approvals_window_complete(=完整窗口含未映射),approvals_prior,approvals_prior_all,
+unmapped_window,unmapped_window_complete,window_basis_zh,delta,pct_change,tracks_active,first_event,last_event,
+recalls_all_time,trials_all_time,pma_original_all_time,pma_supplement_all_time,pma_unknown_all_time,
+pma_original_window,pma_supplement_window,pma_unknown_window,
+pathway_mix{pma,510k,basis:"window_approvals_only",window,note_zh},pathway_mix_counts{...window breakdown},
+pathway_mix_all_time{pma,510k,basis:"all_time_approvals_only",note_zh},pma_breakdown{window,all_time,note_zh},
+pma_original_share_of_pma_all_time,evidence_mix_of_all,industry_coverage{...}},
+coverage[],tracks{rows[{track,name_zh,recent,prior,recent_all,prior_all,delta,pct_change,share_recent,share_prior,
+industry_recent,industry_prior,industry_pct_change,first_approval(first ORIGINAL approval),first_any_approval,
+first_entry_candidate_count,new_in_window,pma_original_recent,pma_supplement_recent,k510_traditional_recent,z}],
+analysis_window{start,end,prior_start,prior_end,comparable,periods,reason_zh}},
+series{approvals{points[{period,count,partial,complete,source_lag_risk,reason_zh}],total,total_complete,
+complete_periods,partial_periods,partial_total,completeness},by_kind_year{...}},
+milestones[{event_date,label_zh,title,url,track_name_zh,kind,event_id|null,approval_type,approval_type_label_zh}],
+recent_events[...],claims[{claim_id,tier,tier_label_zh,statement_zh,direction,confidence,caveats[],
+metrics{recent,prior,delta,pct_change,industry_*,share_*,pma_original_recent,pma_supplement_recent,
+k510_traditional_recent,low_volume,basis:"complete_quarters"},window{basis:"complete_quarters"},
+evidence_params}],entity_review[],limitations[],flags{pma_mix_note_zh,...}}`
 
 ### GET /api/compare?companies=a,b,c&metric=approvals&years=5&granularity=quarter
-`{companies[{key,name_zh,total,total_complete,partial_total,prior_total,series[{period,count,partial}],
-tracks{},unmapped,coverage[],pathway{pma,510k,pma_share,510k_share}}],metric,window{start,end,years},
-granularity,track_table[{track,name_zh,domain,industry_total,industry_share,
-companies[{key,n,share,location_quotient}]}],warnings[{code,severity,text_zh}],notes[]}`
+`{companies[{key,name_zh,ticker,featured,roster_present,series[{period,count,partial,complete,source_lag_risk}],
+total,total_all,total_all_window,total_mapped,total_unmapped,mapping_coverage,
+prior_total,prior_total_all,prior_total_mapped,prior_total_unmapped,prior_mapping_coverage,
+delta|null(not comparable),pct_change|null,tracks{},unmapped,coverage[],
+pathway{pma,pma_total,510k,k510_total,pma_original,pma_supplement,pma_unknown,pma_share,510k_share,
+pma_original_share,pma_supplement_share,pma_original_share_of_pma,approvals_total,basis,
+window{start,end},note_zh},pathway_all_time|null}],
+metric,window{start,end,prior_start,prior_end,years},
+analysis_window{analysis_start,analysis_end,prior_analysis_start,prior_analysis_end,periods,partial_start,partial_end,comparable,reason_zh},
+comparability{comparable,reason_zh,company_mapping_coverage{},industry_mapping_coverage,industry_records{...}},
+granularity,track_table[{track,name_zh,domain,industry_total,industry_all_total,industry_unmapped,
+industry_mapping_coverage,industry_share,companies[{key,n,share,location_quotient|null,
+lq_status:"ok"|"zero_denominator"|"zero_company_track"|"low_company_mapped_sample"|"low_industry_track_sample"|"not_comparable",
+lq_reason_zh}]}],warnings[{code,severity,text_zh}],notes[]}`
 
-`total` is the full window (including the partial period at the data edge);
-`total_complete` excludes partial periods; `partial_total` is the difference.
+`total` = complete-window all records (mapped+unmapped); `total_mapped` uses track-mapped records only;
+`total_all_window` = requested window incl. clipped periods. LQ is only shown when `lq_status==="ok"`;
+otherwise render "不适用" with `lq_reason_zh`. LQ denominators are both track-mapped records.
 
 Metrics: `approvals` (510(k)+PMA), `510k`, `pma`, `recalls`, `trials`, `corporate`.
+`approvals` includes PMA supplements; use `pathway.pma_original` for new-device approvals.
 
 ### GET /api/radar?years=3
-`{window,domains[{id,label_zh,recent,prior,delta,pct_change,companies_active,
-signal_tracks[],tracks[{track,id,name_zh,recent,prior,delta,pct_change,spark[],
-signal{z,flagged}|null,companies_active,top_companies[]}]}],mapped_records,
-unmapped_records,track_mapping_coverage,method{caveat}}`
+`{window{start,end,analysis_start,analysis_end,prior_analysis_start,prior_analysis_end,periods,completeness},
+domains[{id,label_zh,recent,prior,delta,pct_change,companies_active,signal_tracks[],
+tracks[{track,id,name_zh,recent,prior,delta,pct_change,spark[],signal{z,flagged}|null,companies_active,top_companies[]}]}],
+mapped_records,unmapped_records,track_mapping_coverage,mapping_coverage{recent,prior},method{signal,comparison,caveat}}`
 
 ### GET /api/radar/{track}?years=10
-`{track{id,name_zh,name_en,category,domain},domain,totals{recent,prior,delta,pct_change,all_time},
-attribution{attributed_recent,unattributed_recent,attributed_share,note_zh},
-series{periods[],approvals[{period,count,partial}],by_kind{510k[],pma[]}},
-companies[{company,name_zh,n,share,first,last,featured}],entrants[{company,name_zh,first_date,n}],
-signals[{period,z,current,baseline_mean,direction}],events[{event_id,event_date,title,url,
-track_name_zh,company_name_zh}],method}`
+`{track{...},domain,window{start,end,analysis_start,analysis_end,prior_analysis_start,prior_analysis_end,completeness},
+totals{recent,prior(=complete quarters),delta,pct_change,recent_all,prior_all,series_total,series_total_complete,
+partial_total,all_time,pma_unknown},
+attribution{attributed_recent,unattributed_recent,attributed_share,track_total_records_recent,note_zh},
+series{periods[],approvals[{period,count,partial,complete,source_lag_risk}],by_kind{510k[],pma[]}},
+companies[{company,name_zh,n,share,first,last,featured}],entrants[{company,name_zh,first_date,n}]
+（entrants = 数据覆盖期内首次“原始批准”：Traditional 510k 或原始 PMA；不含补充申请/Special 510k）,
+signals[...],events[...],method{signal,entrant,comparison}}`
 
 ### GET /api/evidence?companies=&track=&metric=&source=&start=&end=&q=&limit=&offset=
 `{total,limit,offset,items[{event_id,event_date,kind,source,title,url,company_name_zh,
@@ -113,7 +133,9 @@ track_name_zh,company_match,product_code,published_at}]}`
 ### GET /api/evidence/{event_id}
 `{event{...all fields, company_key,company_name_zh,company_match,track_name_zh,track_mapped},
 product_code{product_code,device_name,definition,specialty}|null,source{...},
-track,payload,mapping{company_method,company_note_zh,track_method,track_note_zh},
+track,payload,approval{approval_type,approval_type_label_zh,classification_detail,
+is_first_entry_candidate,classification_available,source_fields,note_zh},
+mapping{company_method,company_note_zh,track_method,track_note_zh},
 dates{event_date,published_at,available_at,note_zh},links{source_url},limitations[]}`
 
 ### POST /api/evidence/claim (body = claim.evidence_params)

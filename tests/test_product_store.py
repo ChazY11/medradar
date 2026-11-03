@@ -59,7 +59,9 @@ def test_company_profile_claims_are_evidence_linked_and_recomputable(key: str):
     assert profile["headline"]["events_all_time"] > 0
     assert profile["headline"]["approvals_window_all"] >= profile["headline"]["approvals_window"]
     assert profile["headline"]["unmapped_window"] >= 0
-    assert profile["headline"]["pathway_mix"]["basis"] == "approvals_only"
+    assert profile["headline"]["pathway_mix"]["basis"] == "window_approvals_only"
+    assert profile["headline"]["pathway_mix_all_time"]["basis"] == "all_time_approvals_only"
+    assert profile["headline"]["pma_original_window"] + profile["headline"]["pma_supplement_window"] <= profile["headline"]["approvals_window_all"]
     assert profile["coverage"], key
     assert profile["tracks"]["rows"], key
     assert profile["claims"], f"no claims for {key}"
@@ -104,12 +106,17 @@ def test_track_tables_carry_industry_comparison():
 def test_compare_returns_warnings_not_a_ranking():
     result = store.company_compare(("medtronic", "philips", "draeger"), "approvals", 5, "year")
     assert len(result["companies"]) == 3
+    assert result["analysis_window"]["comparable"] is True
     for company in result["companies"]:
-        assert company["total"] >= company["total_complete"]
-        assert company["partial_total"] == company["total"] - company["total_complete"]
+        assert company["total_all"] >= company["total_mapped"] >= 0
+        assert company["total_unmapped"] == company["total_all"] - company["total_mapped"]
+        assert company["mapping_coverage"] is not None
+        assert company["pathway"]["basis"] == "complete_window_approvals_only"
+        assert company["pathway_all_time"] is None
     assert result["track_table"]
     assert result["warnings"]
     codes = {warning["code"] for warning in result["warnings"]}
+    assert "complete_quarter_basis" in codes or "incomplete_window" in codes
     assert "pathway_mix" in codes or "low_count" in codes or "entity_mapping" in codes
     assert any("不是创新能力" in note for note in result["notes"])
 
@@ -180,9 +187,22 @@ def test_evidence_search_filters_are_exact():
     assert all(item["track_id"] == "respiratory" for item in all_rows["items"])
     window = store.evidence_search(track="respiratory", start="2020-01-01", end="2020-12-31", limit=200)
     assert all("2020-01-01" <= item["event_date"] <= "2020-12-31" for item in window["items"])
-    keyword = store.evidence_search(query="Infinity", limit=20)
-    assert keyword["items"]
-    assert all("Infinity" in (item["title"] or "") or "Infinity" in (item.get("applicant_raw") or "") or True for item in keyword["items"])
+    keyword = store.evidence_search(query="Infinity", limit=5)
+    assert keyword["total"] > 0
+    # independent count: the API must return exactly the SQL LIKE matches, not "anything"
+    with store.read() as con:
+        expected_total = con.execute(
+            "SELECT COUNT(*) FROM events WHERE title LIKE ? OR applicant_raw LIKE ? OR summary LIKE ?",
+            ("%Infinity%", "%Infinity%", "%Infinity%"),
+        ).fetchone()[0]
+    assert keyword["total"] == expected_total
+    for item in keyword["items"]:
+        detail = store.event_detail(item["event_id"])
+        haystack = " ".join(
+            str(detail["event"].get(field) or "")
+            for field in ("title", "applicant_raw", "summary")
+        )
+        assert "Infinity" in haystack
 
 
 def test_metric_definitions_cover_all_kinds():

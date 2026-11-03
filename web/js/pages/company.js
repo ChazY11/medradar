@@ -3,11 +3,13 @@
 import { api } from "../api.js";
 import {
   el, fmtInt, fmtPct, fmtPctSigned, fmtSigned, fmtRange, fmtDate, fmtNum,
-  toneForDelta, kindLabel, buildHash, periodRange,
+  toneForDelta, kindLabel, buildHash, periodRange, analysisWindow, analysisRange,
+  priorAnalysisRange, periodFlags, approvalTypeTone,
 } from "../util.js";
 import {
   pageHead, panel, kpi, badge, tierBadge, dataTable, notice, list,
   disclosure, segmented, linkButton, errorState, skeletonBlock, emptyState, textButton,
+  approvalBadges, shareBar, kvList,
 } from "../components.js";
 import { lineChart, barChart } from "../charts.js";
 import { openEvent, eventRowAttrs, eventRowButton, matchBadge } from "../event.js";
@@ -48,6 +50,21 @@ export async function mount(root, ctx) {
   const headline = data.headline || {};
   const windowInfo = data.window || {};
   const tracks = data.tracks || { rows: [] };
+  const completeness = windowInfo.completeness || {};
+  const analysis = analysisWindow({ ...windowInfo, ...(tracks.analysis_window || {}) });
+  const pmaBreakdown = headline.pma_breakdown || {};
+  const windowBreakdown = pmaBreakdown.window || headline.pathway_mix_counts || {};
+  const allTimeBreakdown = pmaBreakdown.all_time || {};
+  const pathwayAllTime = headline.pathway_mix_all_time || {};
+  const industry = headline.industry_coverage || {};
+  const pmaWindowTotal = Number(windowBreakdown.pma_total ?? windowBreakdown.pma) || 0;
+  const k510WindowTotal = Number(windowBreakdown.k510_total ?? windowBreakdown["510k"]) || 0;
+  const approvalsWindowTotal = Number(windowBreakdown.approvals_total) || pmaWindowTotal + k510WindowTotal;
+  const windowShareOfApprovals = (value) => (approvalsWindowTotal ? fmtPct((Number(value) || 0) / approvalsWindowTotal, 1) : "—");
+  const windowShareOfPma = (value) => (pmaWindowTotal ? fmtPct((Number(value) || 0) / pmaWindowTotal, 1) : "—");
+  const approvalsWindowAll = headline.approvals_window_all ?? headline.approvals_window_complete;
+  const unmappedWindowComplete = headline.unmapped_window_complete ?? tracks.unmapped_recent;
+  const unmappedWindowAll = headline.unmapped_window ?? tracks.unmapped_recent_all;
 
   /* ------------------------------------------------------------- header */
   wrapper.append(pageHead({
@@ -62,13 +79,15 @@ export async function mount(root, ctx) {
       info.ticker ? badge(info.ticker, "blue") : null,
       info.featured ? badge("重点企业", "blue") : null,
       data.flags && data.flags.roster_absent ? badge("补充映射 · 待人工复核", "amber") : null,
+      badge("完整季度口径", "teal", "近窗/前窗比较、份额与 PMA 拆分均使用完整自然季度"),
     ].filter(Boolean),
-    subtitle: info.profile_zh ? `${info.profile_zh}${info.curated_note ? `（${info.curated_note}）` : ""}` : "",
+    subtitle: `${info.profile_zh ? `${info.profile_zh}${info.curated_note ? `（${info.curated_note}）` : ""} ` : ""}同比、份额与监管路径结构按完整自然季度计算；请求窗口起止的不完整季度只展示、不参与比较。`,
     captions: [
       { label: "交易所", value: info.exchange || "—" },
       { label: "总部", value: info.hq_zh || "—" },
-      { label: "窗口", value: `${windowInfo.start || "—"} → ${windowInfo.end || "—"}` },
-      { label: "对照窗口", value: `${windowInfo.prior_start || "—"} → ${windowInfo.prior_end || "—"}` },
+      { label: "请求窗口", value: `${windowInfo.start || "—"} → ${windowInfo.end || "—"}` },
+      { label: "完整季度分析窗口", value: `${analysisRange(analysis)} · 对照 ${priorAnalysisRange(analysis)}` },
+      { label: "完整周期", value: analysis.periods != null ? `${analysis.periods} 个季度` : "—" },
       { label: "覆盖期", value: fmtRange(data.coverage_span?.first, data.coverage_span?.last) },
       { label: "归属方法", value: (data.entity_review && data.entity_review[0] && data.entity_review[0].method_zh) || "仓库名册" },
     ],
@@ -110,36 +129,150 @@ export async function mount(root, ctx) {
   if (data.flags && data.flags.track_mapping_note) {
     wrapper.append(el("div", { class: "mt-8" }, notice({ tone: "muted", title: "赛道映射说明", body: data.flags.track_mapping_note })));
   }
+  wrapper.append(el("div", { class: "mt-8" }, notice({
+    tone: "blue",
+    title: "完整季度口径（起止不完整季度只展示、不参与比较）",
+    body: `${completeness.reason_zh || headline.window_basis_zh || ""} 请求窗口 ${windowInfo.start || "—"} → ${windowInfo.end || "—"}；窗口全部记录 ${fmtInt(approvalsWindowAll)} 条（含起止不完整季度），其中完整窗口全部记录 ${fmtInt(headline.approvals_window_complete)} 条（已映射 ${fmtInt(headline.approvals_window)} + 未映射 ${fmtInt(unmappedWindowComplete)}）；未映射（窗口全部口径）${fmtInt(unmappedWindowAll)} 条。未映射不等于零活动。`,
+    testid: "company-window-basis",
+  })));
 
   /* ---------------------------------------------------------------- KPIs */
-  const kpiGrid = el("div", { class: "kpi-grid mt-12", style: "grid-template-columns:repeat(4,minmax(0,1fr))" });
-  const pathwayCounts = headline.pathway_mix_counts || {};
-  const pathwayTotal = (Number(pathwayCounts["510k"]) || 0) + (Number(pathwayCounts.pma) || 0);
-  const pathwayShare = (value) => (pathwayTotal ? fmtPct((Number(value) || 0) / pathwayTotal, 1) : "—");
+  const kpiGrid = el("div", { class: "kpi-grid mt-12" });
   const approvalsDelta = headline.delta;
   kpiGrid.append(
-    kpi({ label: "事件（全时）", value: fmtInt(headline.events_all_time), sub: `覆盖 ${fmtInt(data.coverage_span?.sources || (data.coverage || []).length)} 个来源` }),
     kpi({
-      label: `已映射赛道审批（近 ${years} 年）`,
+      label: `已映射赛道审批（完整季度，近 ${years} 年）`,
       value: fmtInt(headline.approvals_window),
       sub: el("span", null,
         el("span", { class: toneForDelta(approvalsDelta), text: `${fmtSigned(approvalsDelta)} / ${fmtPctSigned(headline.pct_change)}` }),
-        document.createTextNode(` vs 前窗 · 另有未映射 ${fmtInt(headline.unmapped_window ?? tracks.unmapped_recent)} 条`),
+        document.createTextNode(` vs 前窗 · 窗口全部 ${fmtInt(approvalsWindowAll)} 条（含起止不完整季度）`),
       ),
+      hint: `完整自然季度 ${analysisRange(analysis)} 内，已映射到赛道的 510(k)+PMA 记录；窗口起止不完整季度不参与比较。`,
+      testid: "kpi-approvals-window",
+    }),
+    kpi({
+      label: `窗口全部记录（近 ${years} 年）`,
+      value: fmtInt(approvalsWindowAll),
+      sub: `含起止不完整季度 · 完整窗口全部 ${fmtInt(headline.approvals_window_complete)} 条（已映射+未映射）`,
+      hint: "来自 headline.approvals_window_all；完整窗口全部记录 = headline.approvals_window_complete（已映射 + 未映射）。",
+      testid: "kpi-approvals-window-all",
+    }),
+    kpi({
+      label: `原始 PMA 批准（完整季度，近 ${years} 年）`,
+      value: fmtInt(headline.pma_original_window),
+      sub: `全时 ${fmtInt(headline.pma_original_all_time)} 条 · 新器械进入候选`,
+      hint: "原始 PMA（supplement_number 为空）是新技术/新器械进入市场的候选事件。",
+      testid: "kpi-pma-original-window",
+    }),
+    kpi({
+      label: `PMA 补充申请（完整季度，近 ${years} 年）`,
+      value: fmtInt(headline.pma_supplement_window),
+      sub: `全时 ${fmtInt(headline.pma_supplement_all_time)} 条 · 补充申请 ≠ 新器械批准`,
+      hint: "PMA 补充申请是已批准器械的变更（工艺/标签/适应证扩展），不是新器械进入。",
+      testid: "kpi-pma-supplement-window",
     }),
     kpi({ label: "审批记录（全时）", value: fmtInt(headline.approvals_all_time), sub: "数据覆盖期内全部 510(k)+PMA 记录" }),
-    kpi({ label: "活跃赛道", value: fmtInt(headline.tracks_active), sub: `窗口内 ${fmtInt(tracks.total_recent)} 条审批记录` }),
-    kpi({ label: "召回记录（全时）", value: fmtInt(headline.recalls_all_time), sub: "安全性事件，不是技术活动", tone: null }),
+    kpi({ label: "活跃赛道", value: fmtInt(headline.tracks_active), sub: `完整季度内 ${fmtInt(tracks.total_recent)} 条已映射记录` }),
+    kpi({ label: "召回记录（全时）", value: fmtInt(headline.recalls_all_time), sub: "安全性事件，不是技术活动" }),
     kpi({ label: "临床试验（全时）", value: fmtInt(headline.trials_all_time), sub: "ClinicalTrials.gov 注册" }),
-    kpi({
-      label: "审批路径结构",
-      value: `510(k) ${pathwayShare(pathwayCounts["510k"])} · PMA ${pathwayShare(pathwayCounts.pma)}`,
-      sm: true,
-      sub: `510(k) ${fmtInt(pathwayCounts["510k"])} 条 · PMA ${fmtInt(pathwayCounts.pma)} 条（占审批记录）`,
-    }),
-    kpi({ label: "记录跨度", value: `${fmtDate(headline.first_event)}`, sm: true, sub: `最近 ${fmtDate(headline.last_event)}` }),
   );
   wrapper.append(kpiGrid);
+
+  wrapper.append(el("div", { class: "mt-8" }, notice({
+    tone: "amber",
+    title: `PMA 拆分：原始 PMA ${fmtInt(headline.pma_original_window)} 条 / PMA 补充申请 ${fmtInt(headline.pma_supplement_window)} 条（完整季度）`,
+    body: `${pmaBreakdown.note_zh || ""} 全时口径：原始 PMA ${fmtInt(headline.pma_original_all_time)} 条、PMA 补充申请 ${fmtInt(headline.pma_supplement_all_time)} 条。PMA 补充申请 ≠ 新器械批准。`,
+    testid: "company-pma-split",
+  })));
+
+  if (industry && industry.all_records != null) {
+    wrapper.append(el("div", { class: "mt-8" }, notice({
+      tone: "muted",
+      title: "全行业口径：企业内占比与 LQ 的分母都是已映射赛道记录",
+      body: `完整窗口全行业已映射 ${fmtInt(industry.mapped_records)} / ${fmtInt(industry.all_records)} 条（映射覆盖率 ${fmtPct(industry.mapping_coverage, 1)}），未映射 ${fmtInt(industry.unmapped_records)} 条（${industry.start || "—"} → ${industry.end || "—"}）。未映射记录不进入赛道统计，也不代表零活动。`,
+      testid: "company-industry-coverage",
+    })));
+  }
+
+  /* --------------------------------------------- pathway structure */
+  const pmaOriginalWindow = Number(windowBreakdown.pma_original) || 0;
+  const pmaSupplementWindow = Number(windowBreakdown.pma_supplement) || 0;
+  const pmaUnknownWindow = Number(windowBreakdown.pma_unknown) || 0;
+  const k510TraditionalWindow = Number(windowBreakdown.k510_traditional) || 0;
+  const k510SpecialWindow = Number(windowBreakdown.k510_special) || 0;
+  const k510AbbreviatedWindow = Number(windowBreakdown.k510_abbreviated) || 0;
+  const k510OtherWindow = (Number(windowBreakdown.k510_other) || 0) + (Number(windowBreakdown.k510_unknown) || 0);
+  const windowSegments = [
+    { label: "PMA 补充申请", value: pmaSupplementWindow, color: "#d29922" },
+    { label: "原始 PMA", value: pmaOriginalWindow, color: "#2dd4bf" },
+    { label: "Traditional 510(k)", value: k510TraditionalWindow, color: "#2f81f7" },
+    { label: "Special/Abbreviated 510(k)", value: k510SpecialWindow + k510AbbreviatedWindow, color: "#a371f7" },
+    { label: "其他/不可判定 510(k)", value: k510OtherWindow, color: "#8296ab" },
+  ];
+  const pathwayWindowBody = el("div");
+  pathwayWindowBody.append(
+    el("div", { class: "pathway-label" },
+      el("b", { text: "窗口结构（主口径）" }),
+      el("span", { class: "muted tiny mono", text: `${analysisRange(analysis)} · basis=${headline.pathway_mix?.basis || "window_approvals_only"}` }),
+    ),
+    shareBar(windowSegments, { ariaLabel: "所选窗口的监管路径结构" }),
+    el("div", { class: "mt-8" }, kvList([
+      { key: "PMA 合计", value: `${fmtInt(pmaWindowTotal)} 条 · 占审批记录 ${windowShareOfApprovals(pmaWindowTotal)}` },
+      { key: "· 原始 PMA", value: `${fmtInt(pmaOriginalWindow)} 条 · 占 PMA ${windowShareOfPma(pmaOriginalWindow)} · 新器械进入候选` },
+      { key: "· PMA 补充申请", value: `${fmtInt(pmaSupplementWindow)} 条 · 占 PMA ${windowShareOfPma(pmaSupplementWindow)} · 补充申请 ≠ 新器械批准` },
+      pmaUnknownWindow > 0 ? { key: "· PMA 类型不可判定", value: `${fmtInt(pmaUnknownWindow)} 条` } : null,
+      { key: "510(k) 合计", value: `${fmtInt(k510WindowTotal)} 条 · 占审批记录 ${windowShareOfApprovals(k510WindowTotal)}` },
+      { key: "· Traditional 510(k)", value: `${fmtInt(k510TraditionalWindow)} 条` },
+      { key: "· Special 510(k)", value: `${fmtInt(k510SpecialWindow)} 条` },
+      { key: "· Abbreviated 510(k)", value: `${fmtInt(k510AbbreviatedWindow)} 条` },
+      { key: "· 其他/不可判定 510(k)", value: `${fmtInt(k510OtherWindow)} 条` },
+      { key: "分母", value: `${fmtInt(approvalsWindowTotal)} 条（510(k)+PMA，召回/试验/8-K 不计入）` },
+    ].filter(Boolean))),
+  );
+
+  const allTimePma = Number(allTimeBreakdown.pma_total ?? allTimeBreakdown.pma) || 0;
+  const allTime510k = Number(allTimeBreakdown.k510_total ?? allTimeBreakdown["510k"]) || 0;
+  const allTimeApprovals = Number(allTimeBreakdown.approvals_total) || allTimePma + allTime510k;
+  const allTimeShare = (value) => (allTimeApprovals ? fmtPct((Number(value) || 0) / allTimeApprovals, 1) : "—");
+  const allTimePmaOriginal = Number(allTimeBreakdown.pma_original) || 0;
+  const allTimePmaSupplement = Number(allTimeBreakdown.pma_supplement) || 0;
+  const pathwayAllTimeBody = el("div");
+  pathwayAllTimeBody.append(
+    el("div", { class: "pathway-label" },
+      el("b", { text: "All-time Regulatory Pathway Mix" }),
+      badge("全历史 · 仅背景", "muted", "basis=all_time_approvals_only；不能解释为当前窗口结构"),
+    ),
+    shareBar([
+      { label: "PMA（含补充申请）", value: allTimePma, color: "#d29922" },
+      { label: "510(k)", value: allTime510k, color: "#2f81f7" },
+    ], { ariaLabel: "全历史监管路径结构" }),
+    el("div", { class: "mt-8" }, kvList([
+      { key: "PMA（含补充申请）", value: `${fmtInt(allTimePma)} 条 · 占全时审批记录 ${pathwayAllTime.pma != null ? fmtPct(pathwayAllTime.pma, 1) : allTimeShare(allTimePma)}` },
+      { key: "510(k)", value: `${fmtInt(allTime510k)} 条 · 占全时审批记录 ${pathwayAllTime["510k"] != null ? fmtPct(pathwayAllTime["510k"], 1) : allTimeShare(allTime510k)}` },
+      { key: "· 原始 PMA", value: `${fmtInt(allTimePmaOriginal)} 条 · 占 PMA ${fmtPct(headline.pma_original_share_of_pma_all_time, 2)}` },
+      { key: "· PMA 补充申请", value: `${fmtInt(allTimePmaSupplement)} 条` },
+      { key: "分母", value: `${fmtInt(allTimeApprovals)} 条（全历史 510(k)+PMA）` },
+    ])),
+  );
+
+  const pathwayGrid = el("div", { class: "grid grid-2 mt-12" });
+  pathwayGrid.append(
+    panel({
+      title: "监管路径结构 · 窗口（主口径）",
+      sub: `完整季度 ${analysisRange(analysis)}；分母为 510(k)+PMA 记录，召回/试验/8-K 不计入`,
+      testid: "company-pathway-window",
+      body: pathwayWindowBody,
+      note: "PMA 补充申请 ≠ 新器械批准：补充申请是已批准器械的变更（如工艺、标签、适应证扩展），两者都计入监管活动，但不能都当作“新器械”。",
+    }),
+    panel({
+      title: "All-time Regulatory Pathway Mix",
+      sub: "全历史监管路径结构，仅作背景参考；不能解释为所选窗口内的结构",
+      testid: "company-pathway-alltime",
+      body: pathwayAllTimeBody,
+      note: pathwayAllTime.note_zh || "全历史结构不能解释为当前窗口结构。",
+    }),
+  );
+  wrapper.append(pathwayGrid);
 
   /* -------------------------------------------------------------- claims */
   const claimsHost = el("div");
@@ -165,22 +298,23 @@ export async function mount(root, ctx) {
   const trendBody = el("div");
   const trendPanel = panel({
     title: `审批记录趋势（近 ${years} 年，按季度）`,
-    sub: "点击任意周期 → 在证据浏览器中打开该企业该季度的原始记录",
+    sub: `请求窗口 ${windowInfo.start || "—"} → ${windowInfo.end || "—"} · 完整季度分析窗口 ${analysisRange(analysis)}；点击任意周期 → 打开该企业该季度的原始记录`,
     body: trendBody,
   });
   if (approvalPoints.length) {
-    const partialFlags = approvalPoints.map((point) => Boolean(point.partial));
+    const trendFlags = periodFlags(approvalPoints);
     lineChart(trendBody, {
       categories: approvalPoints.map((point) => point.period),
       series: [{ key: "approvals", label: "审批记录（510(k)+PMA）", color: "#2f81f7", values: approvalPoints.map((point) => point.count) }],
       height: 230,
-      partialFlags,
+      partialFlags: trendFlags.partialFlags,
+      lagFlags: trendFlags.lagFlags,
       svgTestid: "company-chart",
       onSelect: (period) => {
         const range = periodRange(period);
         ctx.go("/evidence", { companies: key, metric: "approvals", start: range?.start, end: range?.end });
       },
-      legendNote: `粒度：${series.approvals.granularity || "quarter"} · 空心点/虚线为不完整周期 · 计数为公开审批记录条数`,
+      legendNote: `粒度：${series.approvals.granularity || "quarter"} · 不完整周期与临近数据截止周期只展示、不参与同比 · 计数为公开审批记录条数`,
     });
   } else {
     trendBody.append(emptyState("该窗口内没有审批记录。", { title: "无趋势数据" }));
@@ -237,14 +371,24 @@ export async function mount(root, ctx) {
             el("span", { text: row.name_zh || row.track }),
             el("span", { class: "muted tiny", text: `  ${row.domain_label_zh || row.domain || ""}` })),
         },
-        { key: "recent", label: "近窗", num: true, format: (row) => fmtInt(row.recent) },
-        { key: "prior", label: "前窗", num: true, format: (row) => fmtInt(row.prior) },
+        { key: "recent", label: "完整季度近窗", num: true, format: (row) => fmtInt(row.recent) },
+        { key: "recent_all", label: "近窗全部", num: true, format: (row) => fmtInt(row.recent_all), cellClass: "td-muted" },
+        { key: "prior", label: "完整季度前窗", num: true, format: (row) => fmtInt(row.prior) },
         { key: "delta", label: "Δ", num: true, format: (row) => el("span", { class: toneForDelta(row.delta), text: fmtSigned(row.delta) }) },
         { key: "pct_change", label: "变化", num: true, format: (row) => el("span", { class: toneForDelta(row.delta), text: fmtPct(row.pct_change, 0) }) },
         { key: "share_recent", label: "企业内占比", num: true, format: (row) => fmtPct(row.share_recent, 1) },
         { key: "industry_pct_change", label: "全行业变化", num: true, format: (row) => el("span", { class: toneForDelta(row.industry_delta), text: fmtPct(row.industry_pct_change, 0) }) },
         { key: "z", label: "前后窗 z", num: true, format: (row) => (row.z == null ? "—" : fmtNum(row.z, 2)) },
-        { key: "first_approval", label: "首次记录", format: (row) => fmtDate(row.first_approval) },
+        { key: "pma_original_recent", label: "原始 PMA", num: true, format: (row) => el("span", { title: "完整季度近窗内的原始 PMA（新器械进入候选）", text: fmtInt(row.pma_original_recent) }) },
+        { key: "pma_supplement_recent", label: "PMA 补充", num: true, format: (row) => el("span", { title: "完整季度近窗内的 PMA 补充申请；补充申请 ≠ 新器械批准", text: fmtInt(row.pma_supplement_recent) }) },
+        { key: "k510_traditional_recent", label: "Traditional 510(k)", num: true, format: (row) => fmtInt(row.k510_traditional_recent) },
+        {
+          key: "first_approval", label: "首个原始批准（Traditional 510k / 原始 PMA）",
+          format: (row) => el("span", {
+            title: `首个原始批准：${fmtDate(row.first_approval)}；首个任一批准（含补充申请）：${fmtDate(row.first_any_approval)}`,
+            text: fmtDate(row.first_approval),
+          }),
+        },
         { key: "new_in_window", label: "新进入", format: (row) => (row.new_in_window ? badge("是", "teal") : el("span", { class: "muted", text: "—" })) },
       ],
       rows,
@@ -253,9 +397,9 @@ export async function mount(root, ctx) {
   }
   wrapper.append(panel({
     title: "技术赛道结构",
-    sub: `近 ${years} 年 vs 前 ${years} 年 · 占比为企业内份额，“前后窗 z”为相对前后等长窗口记录数的泊松近似 z（仅描述性，不是专业化指数）`,
+    sub: `完整自然季度 ${analysisRange(analysis)} vs 对照 ${priorAnalysisRange(analysis)} · 占比为企业内份额（分母为企业已映射赛道记录）；“前后窗 z”为相对前后等长窗口记录数的泊松近似 z（仅描述性，不是专业化指数）`,
     body: techBody,
-    note: `未映射赛道：近窗 ${fmtInt(tracks.unmapped_recent)} 条 / 前窗 ${fmtInt(tracks.unmapped_prior)} 条；全行业近窗 ${fmtInt(tracks.industry_total_recent)} 条。未映射不等于零活动。`,
+    note: `未映射赛道：完整季度近窗 ${fmtInt(tracks.unmapped_recent)} 条 / 前窗 ${fmtInt(tracks.unmapped_prior)} 条；窗口全部口径近窗 ${fmtInt(tracks.unmapped_recent_all)} 条。全行业完整季度近窗 ${fmtInt(tracks.industry_total_recent)} 条已映射记录。PMA 补充申请不等于新器械批准；未映射不等于零活动。`,
   }));
 
   /* ------------------------------------------------ coverage + milestones */
@@ -299,6 +443,7 @@ export async function mount(root, ctx) {
         el("div", { class: "tl-title", text: milestone.title || "—", title: milestone.title || "" }),
         el("div", { class: "tl-meta" },
           badge(milestone.label_zh || kindLabel(milestone.kind), derived ? "violet" : "blue"),
+          milestone.approval_type_label_zh ? approvalBadges(milestone, { firstEntry: false }) : null,
           milestone.track_name_zh ? el("span", { text: milestone.track_name_zh }) : null,
           derived ? el("span", { text: "派生项 · 不可点击" }) : el("span", { text: "点击查看事件" }),
         ),
@@ -309,8 +454,9 @@ export async function mount(root, ctx) {
   }
   bottomGrid.append(panel({
     title: "里程碑时间线",
-    sub: "首次记录 / 首次进入赛道等；派生项没有单条事件",
+    sub: "首次记录 / 首次进入赛道等；审批类里程碑标注子类型（原始 PMA / PMA 补充申请 / Traditional 510(k)），派生项没有单条事件",
     body: milestoneBody,
+    note: "PMA 补充申请是已批准器械的变更，不应读作新器械首次批准；「数据覆盖期内首次观察到原始批准」只统计原始 PMA 与 Traditional 510(k)。",
   }));
   wrapper.append(bottomGrid);
 
@@ -358,6 +504,9 @@ function renderClaim(claim, ctx, years) {
     badge(DIRECTION_LABEL[claim.direction] || claim.direction || "—", DIRECTION_TONE[claim.direction] || "muted"),
     badge(claim.track_name_zh || claim.track || "—", "violet"),
     claim.metrics && claim.metrics.low_volume ? badge("低样本量", "red", "两期合计记录数过少，仅作观察记录") : null,
+    claim.metrics && claim.metrics.basis === "complete_quarters" || claim.window && claim.window.basis === "complete_quarters"
+      ? badge("完整季度口径", "teal", "claim.metrics.basis / claim.window.basis = complete_quarters")
+      : null,
   ].filter(Boolean));
   card.append(head);
 
@@ -366,17 +515,26 @@ function renderClaim(claim, ctx, years) {
   const m = claim.metrics || {};
   const metrics = el("div", { class: "claim-metrics" });
   for (const [label, value, hint] of [
-    ["近窗", fmtInt(m.recent), null],
-    ["前窗", fmtInt(m.prior), null],
+    ["完整季度近窗", fmtInt(m.recent), "完整自然季度口径"],
+    ["完整季度前窗", fmtInt(m.prior), "完整自然季度口径"],
     ["Δ", fmtSigned(m.delta), null],
     ["变化", fmtPctSigned(m.pct_change), null],
     ["全行业变化", fmtPctSigned(m.industry_pct_change), null],
     ["份额", `${fmtPct(m.share_prior, 0)} → ${fmtPct(m.share_recent, 0)}`, null],
+    ["原始 PMA", fmtInt(m.pma_original_recent), "原始 PMA（新器械进入候选）"],
+    ["PMA 补充申请", fmtInt(m.pma_supplement_recent), "补充申请是已上市器械的变更，不是新器械"],
+    ["Traditional 510(k)", fmtInt(m.k510_traditional_recent), null],
     ["前后窗 z", m.z == null ? "—" : fmtNum(m.z, 2), "相对前后等长窗口记录数的泊松近似 z，仅描述性；不是专业化指数。"],
   ]) {
     metrics.append(el("span", { title: hint || null }, `${label} `, el("b", { text: value })));
   }
   card.append(metrics);
+  if (claim.window) {
+    card.append(el("div", {
+      class: "claim-window muted tiny mono",
+      text: `完整季度窗口 ${fmtDate(claim.window.recent_start)} → ${fmtDate(claim.window.recent_end)} · 对照 ${fmtDate(claim.window.prior_start)} → ${fmtDate(claim.window.prior_end)}${claim.window.basis ? ` · basis=${claim.window.basis}` : ""}`,
+    }));
+  }
 
   if (claim.caveats && claim.caveats.length) {
     card.append(el("div", { class: "claim-caveats" },

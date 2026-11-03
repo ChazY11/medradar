@@ -17,7 +17,8 @@ export async function mount(root, ctx) {
     title: "技术雷达",
     subtitle: "八个技术领域、重点赛道的公开活动记录。统计探测信号只表示季度记录数偏离历史基线，不等于因果，也不是预测。",
     captions: [
-      { label: "窗口", value: `${years} 年` },
+      { label: "请求窗口", value: `${years} 年` },
+      { label: "比较口径", value: "完整自然季度（起止不完整季度只展示）" },
       { label: "领域", value: `${(ctx.meta.domains || []).length} 个` },
       { label: "重点赛道", value: curatedValue },
       { label: "全库分类", value: `${(ctx.meta.tracks || []).length} 条` },
@@ -153,15 +154,19 @@ export async function mount(root, ctx) {
   }));
 
   /* ------------------------------------------------------ mapping + method */
+  const mappingCoverage = radar.mapping_coverage || {};
+  const recentCoverage = mappingCoverage.recent || {};
+  const priorCoverage = mappingCoverage.prior || {};
   content.append(panel({
     title: "覆盖与方法",
     sub: "未映射记录不会被当作零活动",
     body: [
       notice({
         tone: "muted",
-        title: "映射覆盖",
-        body: `窗口内已映射 ${fmtInt(radar.mapped_records)} 条 / 未映射 ${fmtInt(radar.unmapped_records)} 条（赛道映射覆盖 ${fmtPct(radar.track_mapping_coverage, 1)}）。未映射记录不计入任何赛道，也不代表该赛道没有活动。`,
+        title: `映射覆盖（完整自然季度 ${radar.window?.analysis_start || "—"} → ${radar.window?.analysis_end || "—"}）`,
+        body: `近窗已映射 ${fmtInt(recentCoverage.mapped_records ?? radar.mapped_records)} 条 / 未映射 ${fmtInt(recentCoverage.unmapped_records ?? radar.unmapped_records)} 条（赛道映射覆盖 ${fmtPct(recentCoverage.mapping_coverage ?? radar.track_mapping_coverage, 1)}）；前窗已映射 ${fmtInt(priorCoverage.mapped_records)} 条 / 未映射 ${fmtInt(priorCoverage.unmapped_records)} 条（覆盖 ${fmtPct(priorCoverage.mapping_coverage, 1)}）。未映射记录不计入任何赛道，也不代表该赛道没有活动。`,
       }),
+      radar.method?.comparison ? notice({ tone: "blue", title: "比较口径", body: radar.method.comparison }) : null,
       radar.method?.signal ? notice({ tone: "blue", title: "信号方法", body: radar.method.signal }) : null,
     ].filter(Boolean),
   }));

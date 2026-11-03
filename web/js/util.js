@@ -208,3 +208,85 @@ export function clamp(value, min, max) {
 export function unique(list) {
   return Array.from(new Set(list));
 }
+
+/* ------------------------------------------------- approval classification */
+/** Tones for the API's approval_type values (PMA original vs supplement, 510(k) classes). */
+export const APPROVAL_TYPE_TONES = {
+  pma_original: "teal",
+  pma_supplement: "amber",
+  pma_unknown: "red",
+  "510k_traditional": "blue",
+  "510k_special": "violet",
+  "510k_abbreviated": "violet",
+  "510k_other": "violet",
+  "510k_unknown": "red",
+  first_entry_candidate: "green",
+  present: "teal",
+  device_recall: "muted",
+  trial: "muted",
+  "8k_catalyst": "muted",
+  drug_approval: "muted",
+};
+
+export function approvalTypeTone(type) {
+  return APPROVAL_TYPE_TONES[type] || "muted";
+}
+
+/** Approval events carry a subtype classification (510k / pma only). */
+export function isApprovalKind(kind) {
+  return kind === "510k" || kind === "pma";
+}
+
+/* ------------------------------------------------------- complete windows */
+/** Normalise the various API window shapes into one analysis-window object. */
+export function analysisWindow(source) {
+  const info = source || {};
+  const completeness = info.completeness || {};
+  const analysis_start = info.analysis_start || completeness.analysis_start || null;
+  const analysis_end = info.analysis_end || completeness.analysis_end || null;
+  const prior_analysis_start =
+    info.prior_analysis_start || completeness.prior_analysis_start || info.prior_start || null;
+  const prior_analysis_end =
+    info.prior_analysis_end || completeness.prior_analysis_end || info.prior_end || null;
+  return {
+    requested_start: info.start || completeness.start || null,
+    requested_end: info.end || completeness.end || null,
+    prior_requested_start: info.prior_start || completeness.prior_start || null,
+    prior_requested_end: info.prior_end || completeness.prior_end || null,
+    analysis_start,
+    analysis_end,
+    prior_analysis_start,
+    prior_analysis_end,
+    periods: info.periods ?? completeness.periods ?? null,
+    partial_start: Boolean(info.partial_start ?? completeness.partial_start ?? false),
+    partial_end: Boolean(info.partial_end ?? completeness.partial_end ?? false),
+    comparable: info.comparable ?? completeness.comparable ?? null,
+    reason_zh: info.reason_zh || completeness.reason_zh || null,
+    granularity: info.granularity || completeness.granularity || "quarter",
+  };
+}
+
+/** Complete-quarter analysis range label, e.g. "2022-01-01 → 2026-09-30". */
+export function analysisRange(source) {
+  const info = analysisWindow(source);
+  if (!info.analysis_start && !info.analysis_end) return "—";
+  return `${fmtDate(info.analysis_start)} → ${fmtDate(info.analysis_end)}`;
+}
+
+/** Prior complete-quarter range label. */
+export function priorAnalysisRange(source) {
+  const info = analysisWindow(source);
+  if (!info.prior_analysis_start && !info.prior_analysis_end) return "—";
+  return `${fmtDate(info.prior_analysis_start)} → ${fmtDate(info.prior_analysis_end)}`;
+}
+
+/** Split a points array into aligned partial / source-lag flag arrays. */
+export function periodFlags(points, periods = null) {
+  const list = periods || (points || []).map((point) => point.period);
+  const byPeriod = new Map((points || []).map((point) => [point.period, point]));
+  return {
+    partialFlags: list.map((period) => Boolean(byPeriod.get(period)?.partial)),
+    lagFlags: list.map((period) => Boolean(byPeriod.get(period)?.source_lag_risk)),
+  };
+}
+

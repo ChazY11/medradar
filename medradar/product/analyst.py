@@ -898,31 +898,34 @@ def _intent_company_track_trend(question: str, parsed: Mapping[str, Any]) -> dic
 
     claims: list[dict[str, Any]] = []
     if explicit_window:
-        window = dict(
-            start=parsed["window"]["start"],
-            end=parsed["window"]["end"],
-            years=int(parsed["years"]),
-            prior_start=parsed["window"]["prior_start"],
-            prior_end=parsed["window"]["prior_end"],
-        )
-        table = store.company_track_table(key, metric, window["start"], window["end"])
+        requested = dict(start=parsed["window"]["start"], end=parsed["window"]["end"], years=int(parsed["years"]))
+        table = store.company_track_table(key, metric, requested["start"], requested["end"])
         rows = list(table["rows"])
         total_recent, total_prior = int(table["total_recent"]), int(table["total_prior"])
         query_description = (
-            f"store.company_track_table('{key}', 'approvals', '{window['start']}', '{window['end']}')"
+            f"store.company_track_table('{key}', 'approvals', '{requested['start']}', '{requested['end']}')"
         )
     else:
         claims_payload = store.company_claims(key, int(parsed["years"] or DEFAULT_YEARS))
-        window = dict(claims_payload["window"])
-        window.update(
-            prior_start=claims_payload["track_table"]["window"]["prior_start"],
-            prior_end=claims_payload["track_table"]["window"]["prior_end"],
-        )
-        rows = list(claims_payload["track_table"]["rows"])
+        table = claims_payload["track_table"]
+        requested = dict(start=table["window"]["start"], end=table["window"]["end"], years=int(parsed["years"]))
+        rows = list(table["rows"])
         claims = [claim for claim in claims_payload["claims"] if claim["track"] in set(track_ids)]
-        total_recent = int(claims_payload["track_table"]["total_recent"])
-        total_prior = int(claims_payload["track_table"]["total_prior"])
-        query_description = f"store.company_claims('{key}', {window['years']})"
+        total_recent = int(table["total_recent"])
+        total_prior = int(table["total_prior"])
+        query_description = f"store.company_claims('{key}', {requested['years']})"
+    analysis = table["analysis_window"]
+    window = {
+        "start": analysis["start"],
+        "end": analysis["end"],
+        "prior_start": analysis["prior_start"],
+        "prior_end": analysis["prior_end"],
+        "years": requested["years"],
+        "basis": "complete_quarters",
+        "requested_start": requested["start"],
+        "requested_end": requested["end"],
+        "completeness": analysis,
+    }
 
     selected = [row for row in rows if row.get("track") in set(track_ids)]
     recent = sum(int(row["recent"]) for row in selected)
@@ -1123,7 +1126,17 @@ def _intent_company_compare(question: str, parsed: Mapping[str, Any]) -> dict[st
     label = _scope_label(scope) if scope else "全部赛道"
 
     result = store.company_compare(keys, metric=metric, years=years, granularity="year")
-    window = dict(result["window"])
+    analysis = result["analysis_window"]
+    window = {
+        "start": analysis["analysis_start"],
+        "end": analysis["analysis_end"],
+        "prior_start": analysis["prior_start"],
+        "prior_end": analysis["prior_end"],
+        "requested_start": result["window"]["start"],
+        "requested_end": result["window"]["end"],
+        "basis": "complete_quarters",
+        "periods": analysis["periods"],
+    }
     company_rows = list(result["companies"])
     warnings = list(result["warnings"])
     track_table = list(result["track_table"])
@@ -1136,11 +1149,16 @@ def _intent_company_compare(question: str, parsed: Mapping[str, Any]) -> dict[st
             "name_zh": current["name_zh"],
             "total": int(current["total"]),
             "prior_total": int(current["prior_total"]),
+            "total_mapped": int(current.get("total_mapped") or 0),
+            "mapping_coverage": current.get("mapping_coverage"),
             "pct_change": ((current["total"] - current["prior_total"]) / current["prior_total"]) if current["prior_total"] else None,
             "pma_share": current["pathway"]["pma_share"],
+            "pma_original": current["pathway"].get("pma_original"),
+            "pma_supplement": current["pathway"].get("pma_supplement"),
             "track_n": 0,
             "track_share": None,
             "track_lq": None,
+            "track_lq_status": None,
         }
 
     summaries = {row["key"]: company_summary(row) for row in company_rows}
@@ -1152,6 +1170,7 @@ def _intent_company_compare(question: str, parsed: Mapping[str, Any]) -> dict[st
             summary["track_n"] += int(matched["n"])
             summary["track_share"] = matched.get("share")
             summary["track_lq"] = matched.get("location_quotient")
+            summary["track_lq_status"] = matched.get("lq_status")
     extra_limitation_keys = ["no_global_rank"] + (["recall_not_tech"] if metric == "recalls" else [])
     limitation_keys = list(_BASE_LIMITATIONS) + extra_limitation_keys + _entity_limitations(keys)
     limitations = _limitation_texts(limitation_keys)
@@ -1169,7 +1188,7 @@ def _intent_company_compare(question: str, parsed: Mapping[str, Any]) -> dict[st
         for summary in sorted(summaries.values(), key=lambda item: item["total"], reverse=True)
     )
     sentence_parts = [
-        f"近 {years} 年（{window['start']} 至 {window['end']}），{totals_text}，"
+        f"近 {years} 年完整季度窗口（{window['start']} 至 {window['end']}；请求窗口 {window['requested_start']} 至 {window['requested_end']} 的起止不完整季度不计入比较），{totals_text}，"
         f"指标为{metric_label}。"
     ]
     if scope and target_rows:
@@ -1204,7 +1223,7 @@ def _intent_company_compare(question: str, parsed: Mapping[str, Any]) -> dict[st
         )
     answer = "".join(sentence_parts)
 
-    columns = ["企业", f"本期{metric_label}", "上期", "变化", "本期份额（占企业自身记录）"]
+    columns = ["企业", f"本期{metric_label}", "上期", "变化", "本期份额（占企业自身记录）", "赛道映射覆盖", "PMA 原始 / 补充"]
     data_rows: list[list[str]] = []
     for summary in sorted(summaries.values(), key=lambda item: item["total"], reverse=True):
         row = [
@@ -1213,13 +1232,16 @@ def _intent_company_compare(question: str, parsed: Mapping[str, Any]) -> dict[st
             str(summary["prior_total"]),
             _fmt_delta_pct(summary["total"] - summary["prior_total"], summary["pct_change"]),
             _fmt_share(summary["track_share"] if scope else _share(summary["total"], sum(item["total"] for item in summaries.values()))),
+            _fmt_share(summary["mapping_coverage"]),
+            f"{summary['pma_original'] or 0} / {summary['pma_supplement'] or 0}",
         ]
         data_rows.append(row)
     sections = [
         _section("结论", answer),
         _section(
             "数据",
-            f"统计窗口 {window['start']} 至 {window['end']}；对照窗口 {window['prior_start']} 至 {window['prior_end']}；"
+            f"统计窗口 {window['start']} 至 {window['end']}（{window['periods']} 个完整自然季度）；"
+            f"对照窗口 {window['prior_start']} 至 {window['prior_end']}；"
             f"指标为{metric_label}（记录条数，不是产品数）。"
             + ("份额列为所选赛道内的记录占比。" if scope else "份额列为所选企业合计内占比。"),
             columns=columns,
@@ -1250,8 +1272,8 @@ def _intent_company_compare(question: str, parsed: Mapping[str, Any]) -> dict[st
         _method_limitation_sections(
             limitation_keys,
             f"查询：store.company_compare({keys}, metric='{metric}', years={years}, granularity='year')。"
-            f"赛道分布来自返回的 track_table；份额 = 该企业该赛道记录 / 所选企业该赛道合计；"
-            f"全行业列为同一窗口该赛道的全部企业记录数。"
+            f"赛道分布来自返回的 track_table；份额 = 该企业该赛道已映射记录 / 该企业已映射记录；"
+            f"LQ 仅在企业与行业分母样本足够时给出，否则为“不适用”；全行业列为同一窗口该赛道的已映射记录数。"
             + (f" {_window_approximation_note(years)}" if approximated else ""),
             [*(f"可比性提示：{note}" for note in result.get("notes") or []), *(warning["text_zh"] for warning in warnings)],
         )

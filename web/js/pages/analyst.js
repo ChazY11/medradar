@@ -4,7 +4,7 @@ import { api } from "../api.js";
 import { el, fmtDate, buildHash } from "../util.js";
 import {
   pageHead, panel, badge, dataTable, notice, list, errorState, skeletonBlock,
-  disclosure, emptyState, textButton, chip,
+  disclosure, emptyState, textButton, chip, staticChip,
 } from "../components.js";
 import { openEvent } from "../event.js";
 
@@ -142,6 +142,10 @@ function renderAnswer(payload, { run }) {
   const status = payload.status || "answered";
   const statusMeta = STATUS_META[status] || { label: status, tone: "muted" };
   const container = el("div");
+  const sections = payload.sections || [];
+  const completeQuarterBasis =
+    /完整自然季度/.test(payload.answer_zh || "") ||
+    sections.some((section) => /完整自然季度/.test(String(section.body_zh || "")));
 
   /* header */
   const head = el("div", { class: "row wrap between" });
@@ -149,6 +153,9 @@ function renderAnswer(payload, { run }) {
     el("div", { class: "row wrap" },
       badge(statusMeta.label, statusMeta.tone),
       badge("确定性检索引擎（无 LLM）", "blue"),
+      completeQuarterBasis
+        ? badge("完整自然季度比较口径", "teal", "引擎按完整自然季度计算同比与份额；请求窗口起止的不完整季度只展示、不参与比较")
+        : null,
     ),
     el("span", { class: "muted tiny mono", text: payload.question || "" }),
   );
@@ -246,7 +253,7 @@ function renderIntent(intent) {
   const entries = [
     ["企业", companyNames.length ? companyNames.join("、") : (companyKeys.length ? companyKeys.join("、") : "—")],
     ["赛道", trackNames.length ? trackNames.join("、") : (trackIds.length ? trackIds.join("、") : "—")],
-    ["时间窗", windowText],
+    ["请求窗口", windowText],
     ["指标", parsed.metric_label_zh || parsed.metric || "—"],
   ];
   for (const [label, value] of entries) {
@@ -256,6 +263,31 @@ function renderIntent(intent) {
     ));
   }
   block.append(grid);
+
+  if (windowInfo && (windowInfo.start || windowInfo.end)) {
+    const windowRow = el("div", { class: "chip-row mt-8" });
+    windowRow.dataset.testid = "analyst-window-chip";
+    windowRow.append(staticChip(
+      `请求窗口：${windowInfo.start || "—"} → ${windowInfo.end || "—"}${parsed.years ? `（近 ${parsed.years} 年）` : ""}`,
+      { title: "intent.parsed.window 是解析出的请求窗口；引擎在答案中按完整自然季度重新对齐分析窗口（见「数据」章节）。" },
+    ));
+    if (windowInfo.prior_start && windowInfo.prior_end) {
+      windowRow.append(staticChip(
+        `请求对照窗口：${windowInfo.prior_start} → ${windowInfo.prior_end}`,
+        { title: "请求窗口的对照期；答案会使用紧邻的等长完整季度窗口，请求窗口起止不完整季度只展示。" },
+      ));
+    }
+    if (windowInfo.completeness || parsed.analysis_window) {
+      const completeness = windowInfo.completeness || parsed.analysis_window || {};
+      if (completeness.analysis_start || completeness.analysis_end) {
+        windowRow.append(staticChip(
+          `完整季度分析窗口：${completeness.analysis_start || "—"} → ${completeness.analysis_end || "—"}`,
+          { title: "引擎实际用于同比与份额的完整自然季度窗口。" },
+        ));
+      }
+    }
+    block.append(windowRow);
+  }
 
   if (Array.isArray(parsed.spans) && parsed.spans.length) {
     const spanRow = el("div", { class: "chip-row mt-8" });
@@ -284,7 +316,12 @@ function renderSections(sections) {
   const wrap = el("div", { class: "section-block" });
   for (const section of sections) {
     const block = el("div", { class: "section-block" });
-    block.append(el("div", { class: "section-title", text: section.title_zh || "章节" }));
+    const completeQuarter = /完整自然季度/.test(String(section.body_zh || ""));
+    const title = el("div", { class: "section-title" }, el("span", { text: section.title_zh || "章节" }));
+    if (completeQuarter) {
+      title.append(badge("完整自然季度口径", "teal", "该章节的统计口径使用完整自然季度"));
+    }
+    block.append(title);
     if (section.body_zh) block.append(el("div", { class: "small", text: section.body_zh }));
     if (section.table && section.table.columns && section.table.rows) {
       const rows = section.table.rows.map((row) => {

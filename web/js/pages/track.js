@@ -1,7 +1,10 @@
 /* #/radar/{track} — track detail: quarterly composition chart, company mix,
    first-time entrants, detected signals, recent events, coverage captions. */
 import { api } from "../api.js";
-import { el, fmtInt, fmtPct, fmtPctSigned, fmtSigned, fmtDate, buildHash, periodRange, toneForDelta } from "../util.js";
+import {
+  el, fmtInt, fmtPct, fmtPctSigned, fmtSigned, fmtDate, buildHash, periodRange, toneForDelta,
+  analysisWindow, analysisRange, priorAnalysisRange, periodFlags,
+} from "../util.js";
 import {
   pageHead, panel, badge, dataTable, notice, list, errorState, skeletonBlock,
   linkButton, emptyState, kpi,
@@ -37,6 +40,7 @@ export async function mount(root, ctx) {
   const totals = data.totals || {};
   const windowInfo = data.window || {};
   const series = data.series || {};
+  const analysis = analysisWindow(windowInfo);
 
   /* --------------------------------------------------------------- header */
   wrapper.append(pageHead({
@@ -51,14 +55,14 @@ export async function mount(root, ctx) {
     badges: [
       track.name_en ? badge(track.name_en, "muted") : null,
       track.domain_label_zh ? badge(track.domain_label_zh, "violet") : null,
-      totals.series_total_complete != null && totals.series_total_complete !== totals.recent
-        ? badge(`序列合计 ${fmtInt(totals.series_total_complete)} ≠ 近窗 ${fmtInt(totals.recent)}`, "amber", "序列为季度粒度；与窗口合计存在边界差异")
-        : null,
+      badge("完整周期口径", "teal", "recent/prior 使用完整自然季度；窗口起止不完整季度只展示"),
+      totals.partial_total > 0 ? badge(`序列含 ${fmtInt(totals.partial_total)} 条不完整周期记录`, "amber") : null,
     ].filter(Boolean),
     subtitle: domain.blurb_zh || `该赛道的公开审批记录（510(k) + PMA）与统计探测信号。`,
     captions: [
-      { label: "窗口", value: `${windowInfo.start || "—"} → ${windowInfo.end || "—"}` },
-      { label: "对照窗口", value: `${windowInfo.prior_start || "—"} → ${windowInfo.prior_end || "—"}` },
+      { label: "请求窗口", value: `${windowInfo.start || "—"} → ${windowInfo.end || "—"}` },
+      { label: "完整季度分析窗口", value: `${analysisRange(analysis)} · 对照 ${priorAnalysisRange(analysis)}` },
+      { label: "完整周期", value: analysis.periods != null ? `${analysis.periods} 个季度` : "—" },
       { label: "全时记录", value: fmtInt(totals.all_time) },
       { label: "粒度", value: "季度" },
     ],
@@ -69,20 +73,53 @@ export async function mount(root, ctx) {
   }));
 
   /* ----------------------------------------------------------------- KPIs */
-  const kpiGrid = el("div", { class: "kpi-grid", style: "grid-template-columns:repeat(6,minmax(0,1fr))" });
-  kpiGrid.append(
-    kpi({ label: `近 ${years} 年记录`, value: fmtInt(totals.recent), sub: `510(k) + PMA · 含数据截止所在未完整季度` }),
-    kpi({ label: "前窗记录", value: fmtInt(totals.prior), sub: `${windowInfo.prior_start || "—"} 起` }),
+  const kpiGrid = el("div", { class: "kpi-grid" });
+  const kpiCards = [
     kpi({
-      label: "变化",
+      label: `完整周期合计（近 ${years} 年）`,
+      value: fmtInt(totals.recent),
+      sub: `完整自然季度 · 窗口全部 ${fmtInt(totals.recent_all)} 条（含起止不完整季度）`,
+      hint: "totals.recent：完整自然季度内的 510(k)+PMA 记录；totals.recent_all：请求窗口全部记录（含起止不完整季度）。",
+      testid: "track-kpi-recent-complete",
+    }),
+    kpi({
+      label: "前窗（完整周期）",
+      value: fmtInt(totals.prior),
+      sub: `窗口全部 ${fmtInt(totals.prior_all)} 条 · ${windowInfo.prior_start || "—"} 起`,
+      hint: "totals.prior / totals.prior_all",
+      testid: "track-kpi-prior-complete",
+    }),
+    kpi({
+      label: "变化（完整周期）",
       value: fmtPctSigned(totals.pct_change),
       tone: toneForDelta(totals.delta),
       sub: `Δ ${fmtSigned(totals.delta)}`,
     }),
-    kpi({ label: "全时记录", value: fmtInt(totals.all_time), sub: "数据覆盖期内" }),
-    kpi({ label: "活跃企业", value: fmtInt((data.companies || []).length), sub: "窗口内有记录的企业" }),
-    kpi({ label: "新进入企业", value: fmtInt((data.entrants || []).length), sub: "窗口内首次出现该赛道" }),
-  );
+    kpi({
+      label: "序列部分周期合计",
+      value: fmtInt(totals.partial_total),
+      sub: `序列合计 ${fmtInt(totals.series_total)} · 完整周期序列合计 ${fmtInt(totals.series_total_complete)}`,
+      hint: "partial_total：季度序列中起止不完整周期的记录数，只展示、不参与同比与信号基线。",
+      testid: "track-kpi-partial",
+    }),
+    kpi({ label: "全时记录", value: fmtInt(totals.all_time), sub: "数据覆盖期内该赛道已映射记录" }),
+    kpi({ label: "活跃企业", value: fmtInt((data.companies || []).length), sub: "完整周期内有记录的企业" }),
+    kpi({
+      label: "新进入企业",
+      value: fmtInt((data.entrants || []).length),
+      sub: "数据覆盖期内首次观察到原始批准",
+      hint: "只统计原始 PMA 与 Traditional 510(k)；PMA 补充申请与 Special/Abbreviated 510(k) 不计入。",
+    }),
+    totals.pma_unknown > 0
+      ? kpi({
+        label: "PMA 类型不可判定",
+        value: fmtInt(totals.pma_unknown),
+        sub: "原始 payload 无法解析，不猜测类型",
+        tone: "tone-down",
+      })
+      : null,
+  ].filter(Boolean);
+  kpiGrid.append(...kpiCards);
   wrapper.append(kpiGrid);
 
   /* ---------------------------------------------------------------- chart */
@@ -91,7 +128,9 @@ export async function mount(root, ctx) {
   const approvalByPeriod = new Map(((series.approvals || [])).map((point) => [point.period, point]));
   const kindSeries = series.by_kind || {};
   const kindKeys = Object.keys(kindSeries);
-  const partialFlags = categories.map((period) => Boolean(approvalByPeriod.get(period)?.partial));
+  const flowFlags = periodFlags(series.approvals || [], categories);
+  const partialFlags = flowFlags.partialFlags;
+  const lagFlags = flowFlags.lagFlags;
 
   if (!categories.length) {
     chartBody.append(emptyState("该窗口内没有季度记录。", { title: "无季度数据" }));
@@ -110,6 +149,8 @@ export async function mount(root, ctx) {
         };
       }),
       height: 250,
+      partialFlags,
+      lagFlags,
       svgTestid: "track-chart",
       ariaLabel: "赛道季度记录构成",
       onSelect: (period) => {
@@ -118,16 +159,21 @@ export async function mount(root, ctx) {
       },
     });
     const partialPeriods = categories.filter((period, index) => partialFlags[index]);
+    const lagPeriods = categories.filter((period, index) => lagFlags[index]);
     const edgePeriod = quarterForDate(windowInfo.end);
     const partialText = partialPeriods.length
-      ? `未完整周期：${partialPeriods.join("、")}（API partial 标记；计数仍显示，勿与完整季度直接比较）`
+      ? `不完整周期（*）：${partialPeriods.join("、")}（API partial 标记；计数仍显示，不参与同比与信号基线）`
       : (edgePeriod && categories.includes(edgePeriod)
         ? `数据截止所在季度 ${edgePeriod} 未标记为完整（API 未返回 partial，比较时请谨慎）`
         : "所有周期均为完整季度");
+    const lagText = lagPeriods.length
+      ? `日历完整但临近数据截止（†，source_lag_risk）：${lagPeriods.join("、")}；源数据可能仍会修订/补录`
+      : "没有临近数据截止的周期";
     chartBody.append(el("div", { class: "chart-note" },
       el("span", { text: "堆叠：510(k) + PMA；点击季度 → 打开该季度的原始记录" }),
       el("span", { text: partialText }),
-      el("span", { text: `${categories.length} 个季度（完整 ${categories.length - partialPeriods.length} 个）` }),
+      el("span", { text: lagText }),
+      el("span", { text: `${categories.length} 个季度（完整 ${categories.length - partialPeriods.length} 个，其中 ${lagPeriods.length} 个临近数据截止）` }),
     ));
   } else {
     const approvals = series.approvals || [];
@@ -135,7 +181,7 @@ export async function mount(root, ctx) {
   }
   wrapper.append(panel({
     title: "季度审批记录构成",
-    sub: `${windowInfo.start || "—"} → ${windowInfo.end || "—"} · 悬停查看精确值，点击打开证据`,
+    sub: `请求窗口 ${windowInfo.start || "—"} → ${windowInfo.end || "—"} · 完整季度分析 ${analysisRange(analysis)} · 悬停查看精确值与周期状态，点击打开证据`,
     body: chartBody,
   }));
 
@@ -215,29 +261,29 @@ export async function mount(root, ctx) {
   });
   wrapper.append(panel({
     title: "企业构成",
-    sub: `点击行 → 该企业在该赛道的原始记录 · 已归属 ${fmtInt(attributed)} / 赛道合计 ${fmtInt(totalRecent)} 条`,
+    sub: `点击行 → 该企业在该赛道的原始记录 · 已归属 ${fmtInt(attributed)} / 赛道合计 ${fmtInt(totalRecent)} 条 · 未归属 ${fmtInt(unattributed)} 条（attributed_share ${fmtPct(data.attribution?.attributed_share, 1)}）`,
     dense: true,
     body: composition,
-    note: data.attribution?.note_zh || "企业构成只统计能归到具体企业的记录；未归属记录仍计入赛道总量与份额分母。",
+    note: `${data.attribution?.note_zh || "企业构成只统计能归到具体企业的记录；未归属记录仍计入赛道总量与份额分母。"} attribution.track_total_records_recent = ${fmtInt(data.attribution?.track_total_records_recent ?? totalRecent)}。`,
   }));
 
   /* ------------------------------------------------------------- entrants */
   const entrants = data.entrants || [];
   wrapper.append(panel({
-    title: "首次进入企业",
-    sub: data.method?.entrant || "企业在窗口内出现该赛道的首条 510(k)/PMA 记录（数据覆盖期内）",
+    title: "首次进入企业（原始批准）",
+    sub: "数据覆盖期内首次观察到原始批准（Traditional 510(k) 或原始 PMA）",
     dense: true,
     body: dataTable({
       columns: [
         { key: "name_zh", label: "企业", format: (row) => row.name_zh || row.company },
-        { key: "first_date", label: "首次记录日", format: (row) => fmtDate(row.first_date) },
-        { key: "n", label: "窗口内记录", num: true, format: (row) => fmtInt(row.n) },
+        { key: "first_date", label: "首次原始批准日", format: (row) => fmtDate(row.first_date) },
+        { key: "n", label: "完整周期内记录", num: true, format: (row) => fmtInt(row.n) },
       ],
       rows: entrants,
       rowClick: (row) => ctx.go("/evidence", { companies: row.company, track: trackId, metric: "approvals" }),
       empty: "该窗口内没有首次进入的企业",
     }),
-    note: "「首次进入」受数据覆盖起点限制：更早的历史记录可能不在语料窗口内。",
+    note: `${data.method?.entrant || "企业在本窗口内出现该赛道数据覆盖期内的首条原始批准（Traditional 510(k) 或原始 PMA）"} PMA 补充申请与 Special/Abbreviated 510(k) 不计入首次进入；「首次进入」受数据覆盖起点限制，更早的历史记录可能不在语料窗口内。`,
   }));
 
   /* -------------------------------------------------------- recent events */
@@ -268,14 +314,14 @@ export async function mount(root, ctx) {
     body: [
       notice({
         tone: "muted",
-        title: "窗口与序列",
-        body: `${windowInfo.start || "—"} → ${windowInfo.end || "—"}（对照 ${windowInfo.prior_start || "—"} → ${windowInfo.prior_end || "—"}）。序列为季度粒度，共 ${categories.length} 个季度；序列合计 ${fmtInt(totals.series_total_complete)} 与窗口合计 ${fmtInt(totals.recent)} 可能因窗口边界存在差异，两者都按 API 实际返回展示。`,
+        title: "窗口与序列（完整季度 vs 窗口全部）",
+        body: `请求窗口 ${windowInfo.start || "—"} → ${windowInfo.end || "—"}（对照 ${windowInfo.prior_start || "—"} → ${windowInfo.prior_end || "—"}）。完整季度分析窗口 ${analysisRange(analysis)}，对照 ${priorAnalysisRange(analysis)}，共 ${analysis.periods ?? categories.length} 个季度。完整周期合计 ${fmtInt(totals.recent)} / 前窗 ${fmtInt(totals.prior)}；窗口全部记录 ${fmtInt(totals.recent_all)} / 前窗 ${fmtInt(totals.prior_all)}；序列部分周期合计 ${fmtInt(totals.partial_total)} 条（序列合计 ${fmtInt(totals.series_total)}，完整周期序列合计 ${fmtInt(totals.series_total_complete)}）。${data.method?.comparison || "recent/prior 使用完整自然季度口径；窗口起止不完整季度仅展示，不参与同比。"}`,
       }),
       data.method?.signal ? notice({ tone: "blue", title: "信号方法", body: data.method.signal }) : null,
       notice({
         tone: "amber",
         title: "映射边界",
-        body: "赛道由 FDA 产品代码映射得到。未映射记录既不计入该赛道，也不表示该赛道没有活动；企业归属存在错配风险，补充映射企业标注为待复核。",
+        body: "赛道由 FDA 产品代码映射得到。未映射记录既不计入该赛道，也不表示该赛道没有活动；企业归属存在错配风险，补充映射企业标注为待复核。首次进入只统计原始批准（原始 PMA / Traditional 510(k)）；PMA 补充申请是已批准器械的变更，不代表新器械或技术首次进入。",
       }),
     ].filter(Boolean),
   }));

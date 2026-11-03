@@ -84,8 +84,20 @@ async function main() {
     const claims = await page.$$eval('[data-testid="claim-card"]', (nodes) => nodes.length);
     if (claims < 1) throw new Error("no evidence-linked claims rendered");
     const coverage = text.includes("数据覆盖") || text.includes("覆盖范围");
+    const profile = await page.evaluate(async () => {
+      const response = await fetch("/api/companies/mindray?years=5");
+      return response.json();
+    });
+    const headline = profile.headline;
+    if (!text.includes(String(headline.approvals_window))) {
+      throw new Error(`profile does not show complete-window approvals ${headline.approvals_window}`);
+    }
+    if (!text.includes("窗口全部") && !text.includes(String(headline.approvals_window_all))) {
+      throw new Error("profile does not disclose the requested-window total");
+    }
+    if (!text.includes("PMA")) throw new Error("profile does not show PMA composition");
     const screenshot = await shot(page, "s1-company-mindray");
-    record("Scenario 1 研究一家公司 (Mindray)", coverage, `claims=${claims}`, screenshot);
+    record("Scenario 1 研究一家公司 (Mindray)", coverage, `claims=${claims}; complete=${headline.approvals_window}`, screenshot);
   } catch (error) {
     record("Scenario 1 研究一家公司 (Mindray)", false, String(error.message));
   }
@@ -114,6 +126,42 @@ async function main() {
     if (!text.includes("飞利浦") && !text.includes("Philips")) throw new Error("philips missing from compare output");
     const warnings = await page.$$eval('[data-testid="compare-warning"]', (nodes) => nodes.length);
     if (warnings < 1) throw new Error("comparability warnings not rendered");
+    const compare = await page.evaluate(async () => {
+      const response = await fetch("/api/compare?companies=medtronic%2Cphilips&metric=approvals&years=5&granularity=quarter");
+      return response.json();
+    });
+    if (!compare.analysis_window || compare.analysis_window.comparable !== true) {
+      throw new Error("compare API did not report a comparable complete-quarter window");
+    }
+    if (!text.includes(compare.analysis_window.analysis_start)) {
+      throw new Error(`compare page does not show analysis window start ${compare.analysis_window.analysis_start}`);
+    }
+    const warningCodes = new Set((compare.warnings || []).map((warning) => warning.code));
+    if (!warningCodes.has("complete_quarter_basis")) {
+      throw new Error("complete-quarter basis warning missing from compare API");
+    }
+    const med = compare.companies.find((company) => company.key === "medtronic");
+    const philips = compare.companies.find((company) => company.key === "philips");
+    if (!med || !philips) throw new Error("compare API missing selected companies");
+    if (med.total_all !== med.total_mapped + med.total_unmapped) {
+      throw new Error("compare company total does not split into mapped + unmapped");
+    }
+    // every reported LQ must reproduce from the disclosed mapped denominators
+    for (const row of compare.track_table) {
+      for (const cell of row.companies) {
+        if (cell.lq_status !== "ok") {
+          if (cell.location_quotient !== null) throw new Error("non-ok LQ still carries a number");
+          continue;
+        }
+        const company = compare.companies.find((item) => item.key === cell.key);
+        const expected = (cell.n / company.total_mapped) /
+          (row.industry_total / compare.comparability.industry_records.mapped_records);
+        if (Math.abs(expected - cell.location_quotient) > 0.002) {
+          throw new Error(`LQ mismatch for ${cell.key}/${row.track}`);
+        }
+      }
+    }
+    if (!(await body()).includes("不适用")) throw new Error("LQ not-applicable state not rendered");
 
     // deselect one company: the page must clear stale results and show the prompt
     const medtronicToggle = await page.$('[data-testid="compare-toggle"][data-company-key="medtronic"]');
@@ -148,8 +196,21 @@ async function main() {
     if (!chart) throw new Error("track chart missing");
     const svgBox = await chart.boundingBox();
     if (!svgBox || svgBox.width < 100) throw new Error("track chart not visible");
+    const track = await page.evaluate(async () => {
+      const response = await fetch("/api/radar/respiratory?years=10");
+      return response.json();
+    });
+    if (!text.includes(String(track.totals.recent))) {
+      throw new Error(`track page does not show complete-window total ${track.totals.recent}`);
+    }
+    if (!text.includes("未归属") && !text.includes("未归属企业")) {
+      throw new Error("track page does not disclose unattributed records");
+    }
+    if (!text.includes("首次") || !text.includes("原始批准")) {
+      throw new Error("track page does not use the first-original-approval wording");
+    }
     const screenshot = await shot(page, "s3-radar-respiratory");
-    record("Scenario 3 分析技术趋势 (Respiratory)", true, `chart=${Math.round(svgBox.width)}px`, screenshot);
+    record("Scenario 3 分析技术趋势 (Respiratory)", true, `complete=${track.totals.recent} windowAll=${track.totals.recent_all}`, screenshot);
   } catch (error) {
     record("Scenario 3 分析技术趋势 (Respiratory)", false, String(error.message));
   }
@@ -171,6 +232,10 @@ async function main() {
     await page.waitForTimeout(800);
     const text = await body();
     if (!text.includes("来源") && !text.includes("原始")) throw new Error("event detail missing provenance");
+    if (!text.includes("PMA") && !text.includes("510(k)")) throw new Error("event detail missing approval type");
+    if (!text.includes("类型") && !text.includes("补充") && !text.includes("原始")) {
+      throw new Error("event detail missing approval subtype disclosure");
+    }
     const screenshot = await shot(page, "s4-evidence-trace");
     record("Scenario 4 追溯研究结论 → 原始证据", true, `events=${rows}`, screenshot);
   } catch (error) {

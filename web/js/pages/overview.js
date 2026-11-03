@@ -54,6 +54,29 @@ export async function mount(root, ctx) {
   );
   root.append(kpiGrid);
 
+  /* ------------------------------------------- approval classification QA */
+  const classification = dataset.approval_classification || null;
+  if (classification) {
+    const quality = el("div", { class: "data-quality mt-8" });
+    quality.dataset.testid = "overview-data-quality";
+    quality.append(
+      el("span", { class: "data-quality-title", text: "数据质量 · 审批类型分类" }),
+      el("span", null,
+        el("b", { text: "PMA " }),
+        document.createTextNode(
+          `${fmtInt(classification.pma_total)} 条，分类${classification.pma_classification_available ? "可用" : "不可用"}，不可判定 ${fmtInt(classification.pma_unknown)} 条；`,
+        ),
+        el("b", { text: " 510(k) " }),
+        document.createTextNode(
+          `${fmtInt(classification.k510_total)} 条，分类${classification.k510_classification_available ? "可用" : "不可用"}，不可判定 ${fmtInt(classification.k510_unknown)} 条。`,
+        ),
+      ),
+      el("span", { text: "PMA 补充申请 ≠ 新器械批准；原始 PMA 与 Traditional 510(k) 才作为首次进入候选。" }),
+      classification.rule_zh ? el("span", { class: "muted tiny", text: classification.rule_zh }) : null,
+    );
+    root.append(quality);
+  }
+
   /* -------------------------------------------------------- explainer */
   const steps = [
     { no: "01", name: "结论", desc: "产品只给两类结论：逐条可核查的「观察到的事实」，以及基于历史基线的「统计探测信号」。没有经过验证的预测。", href: buildHash("/companies/medtronic") },
@@ -80,7 +103,7 @@ export async function mount(root, ctx) {
   const radarBody = el("div", null, skeletonBlock(6));
   const radarPanel = panel({
     title: "技术雷达 · 领域概况",
-    sub: `近 ${windowYears} 年 vs 之前 ${windowYears} 年`,
+    sub: `近 ${windowYears} 年 vs 之前 ${windowYears} 年 · 完整自然季度口径（起止不完整季度只展示）`,
     right: linkButton(buildHash("/radar", { years: windowYears }), "进入技术雷达"),
     body: radarBody,
   });
@@ -198,7 +221,8 @@ export async function mount(root, ctx) {
       rowClick: () => ctx.go("/radar"),
     }));
     radarPanel.append(el("div", { class: "panel-note" },
-      el("span", { text: `已映射 ${fmtInt(radar.mapped_records)} 条 / 未映射 ${fmtInt(radar.unmapped_records)} 条（覆盖 ${fmtPct(radar.track_mapping_coverage, 1)}）` }),
+      el("span", { text: `完整季度分析窗口 ${radar.window?.analysis_start || "—"} → ${radar.window?.analysis_end || "—"}；近窗已映射 ${fmtInt(radar.mapping_coverage?.recent?.mapped_records ?? radar.mapped_records)} / 未映射 ${fmtInt(radar.mapping_coverage?.recent?.unmapped_records ?? radar.unmapped_records)}（覆盖 ${fmtPct(radar.mapping_coverage?.recent?.mapping_coverage ?? radar.track_mapping_coverage, 1)}），前窗覆盖 ${fmtPct(radar.mapping_coverage?.prior?.mapping_coverage, 1)}。` }),
+      el("span", { text: radar.method?.comparison || "" }),
       el("span", { text: radar.method?.caveat || "" }),
     ));
   } catch (error) {
