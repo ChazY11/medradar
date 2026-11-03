@@ -122,9 +122,11 @@ a claim is `ACTUAL_OBSERVATION` only if its `first_seen_at` came from the Live O
 it never does, because the ledger contains 400 observations from one day (2026-11-03) and none of them
 matches a claim in this dataset. Under the looser definition, computed from the clocks themselves (own `first_seen_at` minus
 `published_at` within 0–7 days), there are **76 claims behind 10 source records**, of which 34 have a
-lag of ≤1 day; 60 of the 76 were labelled `ACTUAL_OBSERVATION` by the builder and 16 are `HAS_TOPIC`
-claims whose family label is hard-coded `SOURCE_PUBLISHED` — the label and the clock disagree, which is
-why the lenient window is computed from the clocks. None of the 76 is a ledger observation, so none is
+lag of ≤1 day. Of the 76, 60 carry the explicit flag `near_realtime_this_study=true` (they were
+originally labelled `ACTUAL_OBSERVATION`; that label has been removed and the claims are stored as
+`HISTORICAL_PROXY`, so **0 claims retain the `ACTUAL_OBSERVATION` label**), and 16 are `HAS_TOPIC`
+claims whose family label is `SOURCE_PUBLISHED` — the label and the clock did not agree, which is
+exactly why the lenient window is computed from the clocks rather than from a label. None of the 76 is a ledger observation, so none is
 used for any point-in-time claim. Observed lag over all 20,563 claims: median **3,327 days**, p25 1,615, p75 5,052, max 9,434.
 
 **C.3 Ordering inside a year.** `declared_at` is day-precision in every family, so relations can be

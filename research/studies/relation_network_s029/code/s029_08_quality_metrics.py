@@ -181,6 +181,7 @@ def main() -> None:
     lenient = [c for c in claims
                if isinstance(c.get("observed_lag_days"), int)
                and 0 <= c["observed_lag_days"] <= 7]
+    near_flag = [c for c in claims if c.get("near_realtime_this_study")]
     lenient_records = {c["source_record_id"] for c in lenient}
     lenient_le1 = [c for c in lenient if c["observed_lag_days"] <= 1]
     pub_before_event = []
@@ -209,6 +210,9 @@ def main() -> None:
         "share_actual_observation_strict": pct(len(actual), len(claims)),
         "actual_observation_claims_strict": len(actual),
         "actual_observation_claims_lenient_this_study": len(lenient),
+        "near_realtime_flag_count": len(near_flag),
+        "actuallabel_retained": sum(1 for c in claims
+                                    if c.get("time_basis") == "ACTUAL_OBSERVATION"),
         "lenient_distinct_source_records": len(lenient_records),
         "lenient_lag_le_1_day": len(lenient_le1),
         "lenient_breakdown": dict(Counter(c["predicate"] for c in lenient)),

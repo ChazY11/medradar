@@ -185,6 +185,7 @@
   "C_temporal_quality": {
     "actual_observation_claims_lenient_this_study": 76,
     "actual_observation_claims_strict": 0,
+    "actuallabel_retained": 0,
     "claims_without_any_event_time": 4365,
     "claims_without_any_publication_time": 0,
     "contradiction_published_before_event": {
@@ -204,6 +205,7 @@
     },
     "lenient_distinct_source_records": 10,
     "lenient_lag_le_1_day": 34,
+    "near_realtime_flag_count": 60,
     "observation_definition": "STRICT = observed by the Live Observatory ledger (adopted); LENIENT = published within 7 days of this study's own fetch (reported but not used for any claim of point-in-time capability)",
     "observed_lag_days": {
       "max": 9434,
@@ -219,8 +221,7 @@
     "share_actual_observation_strict": 0.0,
     "share_declared_at_day_or_month": 100.0,
     "time_basis_counts": {
-      "ACTUAL_OBSERVATION": 60,
-      "HISTORICAL_PROXY": 13048,
+      "HISTORICAL_PROXY": 13108,
       "SOURCE_PUBLISHED": 7455
     },
     "valid_to_populated": 0,
@@ -956,7 +957,7 @@
     "trial_reference_resolution_rate": 0.6,
     "trial_reference_resolved_to_collected_publication": 26
   },
-  "generated_at": "2026-11-03T20:48:29.503Z",
+  "generated_at": "2026-11-03T20:49:41.640Z",
   "human_validation": "HUMAN_VALIDATION_PENDING",
   "prereg_sha256": "f1ab0629f3c73393925af239538ff5e8adb0c08b9e0f8238ac0d3242c06e4742",
   "verdict": "NO-GO FOR PREDICTION"

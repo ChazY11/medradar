@@ -1,13 +1,21 @@
 {
   "schema": "s029_entity_resolution_metrics_v1",
-  "generated_at": "2026-11-03T20:16:14Z",
+  "generated_at": "2026-11-03T20:49:49Z",
   "inputs": {
     "claims": {
-      "claims_total": 0,
-      "status": "PENDING"
+      "claims_total": 20563,
+      "status": "LINKED",
+      "claims_with_company_subject": 4812,
+      "mapping_status": {
+        "DERIVED_FROM_EXACT": 1567,
+        "ALIAS": 1541,
+        "EXACT": 1081,
+        "ORG_TEXT": 578,
+        "ORG_EMAIL": 45
+      }
     },
     "mentions": 6940,
-    "claim_rejects": 0,
+    "claim_rejects": 158,
     "trials": 2498,
     "institutions": 4395
   },
@@ -449,11 +457,10 @@
       "examples": []
     },
     "ownership_date_unknown": {
-      "n": 86,
+      "n": 5,
       "by_entity": {
-        "medtronic_minimed_inc": 79,
-        "medtronic_vascular_inc": 4,
-        "draeger_medical_gmbh": 3
+        "draeger_medical_gmbh": 4,
+        "medtronic_vascular_inc": 1
       },
       "examples": [
         {
@@ -461,108 +468,45 @@
           "raw": "Dräger Médical S.A",
           "entity_key": "draeger_medical_gmbh",
           "entity_type": "former_subsidiary",
-          "claim_date": "2007-05-14",
           "mapping_status": "ALIAS",
-          "rule": "operating_unit_of_parent",
           "record_id": "NCT00473148",
-          "register_valid_from": null,
-          "resolved_by": "register_alias_fallback:alias_token_in_text"
+          "rule": "operating_unit_of_parent"
         },
         {
           "company": "medtronic",
-          "raw": "Medtronic MiniMed, Inc.",
-          "entity_key": "medtronic_minimed_inc",
-          "entity_type": "operating_subsidiary",
-          "claim_date": "2013-09-18",
-          "mapping_status": "ALIAS",
-          "rule": "operating_unit_of_parent",
-          "record_id": "NCT01945138",
-          "register_valid_from": null,
-          "resolved_by": "register_alias_fallback:canonical_name_exact"
-        },
-        {
-          "company": "medtronic",
-          "raw": "Medtronic MiniMed, Inc.",
-          "entity_key": "medtronic_minimed_inc",
-          "entity_type": "operating_subsidiary",
-          "claim_date": "2015-08-21",
-          "mapping_status": "ALIAS",
-          "rule": "operating_unit_of_parent",
-          "record_id": "NCT02530450",
-          "register_valid_from": null,
-          "resolved_by": "register_alias_fallback:canonical_name_exact"
-        },
-        {
-          "company": "medtronic",
-          "raw": "Medtronic MiniMed, Inc.",
-          "entity_key": "medtronic_minimed_inc",
-          "entity_type": "operating_subsidiary",
-          "claim_date": "2020-03-12",
-          "mapping_status": "ALIAS",
-          "rule": "operating_unit_of_parent",
-          "record_id": "NCT04304963",
-          "register_valid_from": null,
-          "resolved_by": "register_alias_fallback:canonical_name_exact"
-        },
-        {
-          "company": "medtronic",
-          "raw": "Medtronic Vascular, Santa Rosa, CA, 95403, USA.",
+          "raw": "Medtronic Vascular Inc. New Therapy Development, Jacksonville, Florida, United States.",
           "entity_key": "medtronic_vascular_inc",
           "entity_type": "operating_subsidiary",
-          "claim_date": "2004-12-08",
           "mapping_status": "ORG_TEXT",
-          "rule": "organisational_affiliation_segment",
-          "record_id": "doi:10.1007/s00262-004-0624-7",
-          "register_valid_from": null,
-          "resolved_by": "register_alias_fallback:alias_token_in_text"
+          "record_id": "doi:10.1055/s-0036-1593958",
+          "rule": "organisational_affiliation_segment"
         },
         {
-          "company": "medtronic",
-          "raw": "Medtronic Vascular, Santa Rosa, CA-95403, USA.",
-          "entity_key": "medtronic_vascular_inc",
-          "entity_type": "operating_subsidiary",
-          "claim_date": "2006-11-01",
-          "mapping_status": "ORG_TEXT",
-          "rule": "organisational_affiliation_segment",
-          "record_id": "doi:10.1016/j.jconrel.2006.09.067",
-          "register_valid_from": null,
-          "resolved_by": "register_alias_fallback:alias_token_in_text"
-        },
-        {
-          "company": "medtronic",
-          "raw": "Office of Medical Affairs, Medtronic Vascular, Santa Rosa, California.",
-          "entity_key": "medtronic_vascular_inc",
-          "entity_type": "operating_subsidiary",
-          "claim_date": "2014-02-12",
-          "mapping_status": "ORG_TEXT",
-          "rule": "organisational_affiliation_segment",
-          "record_id": "doi:10.1016/j.jvir.2013.12.012",
-          "register_valid_from": null,
-          "resolved_by": "register_alias_fallback:alias_token_in_text"
+          "company": "draeger",
+          "raw": "Draeger Medical GmbH, Moislinger Allee 53, 23558, Lübeck, Germany. eckhard.teschner@draeger.com.",
+          "entity_key": "draeger_medical_gmbh",
+          "entity_type": "former_subsidiary",
+          "mapping_status": "ORG_EMAIL",
+          "record_id": "doi:10.1186/s13054-015-1161-9",
+          "rule": "corporate_email_domain"
         },
         {
           "company": "draeger",
           "raw": "Dräger Medical GmbH, Lübeck, Germany.",
           "entity_key": "draeger_medical_gmbh",
           "entity_type": "former_subsidiary",
-          "claim_date": "2021-01-01",
           "mapping_status": "ORG_TEXT",
-          "rule": "organisational_affiliation_segment",
           "record_id": "doi:10.23812/20-527-a",
-          "register_valid_from": null,
-          "resolved_by": "register_alias_fallback:alias_token_in_text"
+          "rule": "organisational_affiliation_segment"
         },
         {
           "company": "draeger",
           "raw": "Dräger Medical Inc., Telford, PA, United States.",
           "entity_key": "draeger_medical_gmbh",
           "entity_type": "former_subsidiary",
-          "claim_date": "2021-09-28",
           "mapping_status": "ORG_TEXT",
-          "rule": "organisational_affiliation_segment",
           "record_id": "doi:10.3389/fped.2021.722497",
-          "register_valid_from": null,
-          "resolved_by": "register_alias_fallback:alias_token_in_text"
+          "rule": "organisational_affiliation_segment"
         }
       ],
       "policy": "mapping downgraded: the entity is in the register but its group-ownership/validity date is UNKNOWN, so the claim cannot be placed in time"
@@ -1138,6 +1082,288 @@
       }
     },
     "not_company_collisions": 164
+  },
+  "claims_linkage": {
+    "claims_total": 20563,
+    "claims_involving_company": 4812,
+    "roles": {
+      "author_affiliation": 623,
+      "co_affiliation": 1567,
+      "grant_funder": 105,
+      "responsible_party": 3,
+      "lead_sponsor": 1344,
+      "collaborator": 1170
+    },
+    "mapping_status": {
+      "ORG_TEXT": 578,
+      "ORG_EMAIL": 45,
+      "DERIVED_FROM_EXACT": 1567,
+      "EXACT": 1081,
+      "ALIAS": 1541
+    },
+    "matched_to_mentions": 3140,
+    "matched_by_role": {
+      "author_affiliation": 623,
+      "responsible_party": 3,
+      "lead_sponsor": 1344,
+      "collaborator": 1170
+    },
+    "per_company": {
+      "medtronic": {
+        "claims": 2487,
+        "roles": {
+          "author_affiliation": 183,
+          "co_affiliation": 481,
+          "grant_funder": 72,
+          "responsible_party": 2,
+          "lead_sponsor": 946,
+          "collaborator": 803
+        },
+        "mapping_status": {
+          "ORG_TEXT": 161,
+          "ORG_EMAIL": 22,
+          "DERIVED_FROM_EXACT": 481,
+          "EXACT": 717,
+          "ALIAS": 1106
+        },
+        "matched_to_mention": 1934,
+        "sponsor_claims": 1749,
+        "sponsor_parent_name": 670,
+        "sponsor_operating_unit": 1079,
+        "sponsor_unit_share": 0.6169
+      },
+      "ge_healthcare": {
+        "claims": 886,
+        "roles": {
+          "author_affiliation": 155,
+          "co_affiliation": 370,
+          "grant_funder": 16,
+          "collaborator": 169,
+          "lead_sponsor": 176
+        },
+        "mapping_status": {
+          "ORG_TEXT": 155,
+          "DERIVED_FROM_EXACT": 370,
+          "EXACT": 356,
+          "ALIAS": 5
+        },
+        "matched_to_mention": 500,
+        "sponsor_claims": 345,
+        "sponsor_parent_name": 341,
+        "sponsor_operating_unit": 4,
+        "sponsor_unit_share": 0.0116
+      },
+      "philips": {
+        "claims": 963,
+        "roles": {
+          "author_affiliation": 166,
+          "co_affiliation": 385,
+          "grant_funder": 16,
+          "responsible_party": 1,
+          "lead_sponsor": 213,
+          "collaborator": 182
+        },
+        "mapping_status": {
+          "ORG_EMAIL": 12,
+          "ORG_TEXT": 154,
+          "DERIVED_FROM_EXACT": 385,
+          "EXACT": 4,
+          "ALIAS": 408
+        },
+        "matched_to_mention": 562,
+        "sponsor_claims": 395,
+        "sponsor_parent_name": 2,
+        "sponsor_operating_unit": 393,
+        "sponsor_unit_share": 0.9949
+      },
+      "draeger": {
+        "claims": 114,
+        "roles": {
+          "author_affiliation": 24,
+          "co_affiliation": 72,
+          "lead_sponsor": 8,
+          "collaborator": 10
+        },
+        "mapping_status": {
+          "ORG_EMAIL": 3,
+          "ORG_TEXT": 21,
+          "DERIVED_FROM_EXACT": 72,
+          "ALIAS": 16,
+          "EXACT": 2
+        },
+        "matched_to_mention": 42,
+        "sponsor_claims": 18,
+        "sponsor_parent_name": 10,
+        "sponsor_operating_unit": 8,
+        "sponsor_unit_share": 0.4444
+      },
+      "mindray": {
+        "claims": 362,
+        "roles": {
+          "author_affiliation": 95,
+          "co_affiliation": 259,
+          "grant_funder": 1,
+          "collaborator": 6,
+          "lead_sponsor": 1
+        },
+        "mapping_status": {
+          "ORG_TEXT": 87,
+          "ORG_EMAIL": 8,
+          "DERIVED_FROM_EXACT": 259,
+          "ALIAS": 6,
+          "EXACT": 2
+        },
+        "matched_to_mention": 102,
+        "sponsor_claims": 7,
+        "sponsor_parent_name": 6,
+        "sponsor_operating_unit": 1,
+        "sponsor_unit_share": 0.1429
+      }
+    },
+    "reviewer_statement": {
+      "sponsor_claims": 2514,
+      "operating_unit_string_claims": 1485,
+      "exact_parent_string_claims": 1029,
+      "operating_unit_share": 0.5907,
+      "sentence": "Claims whose subject is a company but whose raw sponsor string was an operating unit or subsidiary rather than the legal parent: 1485 of 2514 company-subject sponsorship claims (59.1%)"
+    },
+    "join_note": "claims are linked to their raw identity decisions on (source_record_id, relation_role, company_key); co-affiliation claims are DERIVED_FROM_EXACT pairs and grant-funder claims have no company mention row, which is why not every company claim has a matched mention"
+  },
+  "ownership_reconciliation": {
+    "definitions": {
+      "A_legal_entity_date_unknown": "the register records no valid_from/valid_to for the subsidiary legal person itself -> 13 mention strings (dominated by medtronic_minimed_inc). This is a legal-entity fact, NOT an ownership problem.",
+      "B_group_ownership_date_unknown": "the family has no verified acquisition/ownership date; MiniMed strings are dated by the 2001-08-28 acquisition and are therefore NOT undated under this definition. This is the operative definition for the study."
+    },
+    "family_ownership_dates": {
+      "minimed_inc": {
+        "date": "2001-08-28",
+        "event": "MiniMed acquisition completed 2001-08-28 (register minimed_inc valid_to; Medtronic 8-K event date 2001-08-28)"
+      },
+      "medtronic_minimed_inc": {
+        "date": "2001-08-28",
+        "event": "MiniMed family; ownership dates from the 2001-08-28 acquisition (accepted attribution of the mapping layer)"
+      },
+      "covidien_plc": {
+        "date": "2015-01-26",
+        "event": "Covidien acquisition completed 2015-01-26"
+      },
+      "covidien_ltd": {
+        "date": "2015-01-26",
+        "event": "Covidien group acquired 2015-01-26"
+      },
+      "tyco_healthcare": {
+        "date": "2015-01-26",
+        "event": "Covidien group acquired 2015-01-26"
+      },
+      "respironics_inc": {
+        "date": "2008-03-17",
+        "event": "Respironics acquisition announced complete 2008-03-17"
+      },
+      "zonare_medical_systems_inc": {
+        "date": "2013-07-17",
+        "event": "ZONARE acquisition completed 2013-07-17"
+      },
+      "datascope_patient_monitoring_business": {
+        "date": "2008-05-14",
+        "event": "Datascope Patient Monitoring closed 2008-05-14"
+      },
+      "philips_lighting_nv": {
+        "date": "2016-05-27",
+        "event": "Philips Lighting listed 2016-05-27"
+      }
+    },
+    "accepted_attribution": "ACCEPTED: 'Medtronic MiniMed, Inc.' strings are date-placed through the MiniMed acquisition of 2001-08-28 (mapping layer ownership_from = 2001-08-28). The register still records the Delaware entity's own incorporation date as UNKNOWN; the reconciliation uses the family ownership date, so the earlier 79-string MiniMed figure is withdrawn as an ownership-date measure and retained only as a legal-entity-date caveat.",
+    "undated_ownership": {
+      "n_strings": 5,
+      "by_entity": {
+        "draeger_medical_gmbh": 4,
+        "medtronic_vascular_inc": 1
+      },
+      "by_mapping_status": {
+        "ORG_TEXT": 3,
+        "ALIAS": 1,
+        "ORG_EMAIL": 1
+      },
+      "examples": [
+        {
+          "company": "draeger",
+          "raw": "Dräger Médical S.A",
+          "entity_key": "draeger_medical_gmbh",
+          "entity_type": "former_subsidiary",
+          "mapping_status": "ALIAS",
+          "record_id": "NCT00473148",
+          "rule": "operating_unit_of_parent"
+        },
+        {
+          "company": "medtronic",
+          "raw": "Medtronic Vascular Inc. New Therapy Development, Jacksonville, Florida, United States.",
+          "entity_key": "medtronic_vascular_inc",
+          "entity_type": "operating_subsidiary",
+          "mapping_status": "ORG_TEXT",
+          "record_id": "doi:10.1055/s-0036-1593958",
+          "rule": "organisational_affiliation_segment"
+        },
+        {
+          "company": "draeger",
+          "raw": "Draeger Medical GmbH, Moislinger Allee 53, 23558, Lübeck, Germany. eckhard.teschner@draeger.com.",
+          "entity_key": "draeger_medical_gmbh",
+          "entity_type": "former_subsidiary",
+          "mapping_status": "ORG_EMAIL",
+          "record_id": "doi:10.1186/s13054-015-1161-9",
+          "rule": "corporate_email_domain"
+        },
+        {
+          "company": "draeger",
+          "raw": "Dräger Medical GmbH, Lübeck, Germany.",
+          "entity_key": "draeger_medical_gmbh",
+          "entity_type": "former_subsidiary",
+          "mapping_status": "ORG_TEXT",
+          "record_id": "doi:10.23812/20-527-a",
+          "rule": "organisational_affiliation_segment"
+        },
+        {
+          "company": "draeger",
+          "raw": "Dräger Medical Inc., Telford, PA, United States.",
+          "entity_key": "draeger_medical_gmbh",
+          "entity_type": "former_subsidiary",
+          "mapping_status": "ORG_TEXT",
+          "record_id": "doi:10.3389/fped.2021.722497",
+          "rule": "organisational_affiliation_segment"
+        }
+      ]
+    },
+    "undated_division": {
+      "n_strings": 7,
+      "examples": [
+        {
+          "company": "ge_healthcare",
+          "raw": "GE Medical Systems Italia SpA, via Galeno 36, 20126, Milan, Italy.",
+          "entity_key": "ge_medical_systems_division",
+          "entity_type": "division",
+          "mapping_status": "ORG_TEXT",
+          "record_id": "doi:10.1007/s00330-017-5015-5",
+          "rule": "organisational_affiliation_segment"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "GE Medical Systems (Schweiz) AG, Europa-Strasse 31, 8152 Glattbrugg, Switzerland.",
+          "entity_key": "ge_medical_systems_division",
+          "entity_type": "division",
+          "mapping_status": "ORG_TEXT",
+          "record_id": "doi:10.1016/j.ejrad.2021.109808",
+          "rule": "organisational_affiliation_segment"
+        },
+        {
+          "company": "ge_healthcare",
+          "raw": "GE Medical Systems Israel, Haifa, Israel.",
+          "entity_key": "ge_medical_systems_division",
+          "entity_type": "division",
+          "mapping_status": "ORG_TEXT",
+          "record_id": "doi:10.1186/s40349-017-0098-7",
+          "rule": "organisational_affiliation_segment"
+        }
+      ]
+    }
   },
   "verdict": {
     "claim_producing_rate": 0.5375,

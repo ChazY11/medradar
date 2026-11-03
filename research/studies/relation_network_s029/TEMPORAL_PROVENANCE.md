@@ -568,7 +568,7 @@ Consequences, stated before any claim is built:
 
 ## 4. Claim-level clock completeness (Stage 2 — measured on 20563 claims)
 
-**Source of truth**: `data/claims.jsonl`, **20563** claims, **0** parse errors, **18433356** bytes.
+**Source of truth**: `data/claims.jsonl`, **20563** claims, **0** parse errors, **19812784** bytes.
 The exact file snapshot audited here is pinned by `sha256` in
 `clock_audit.json → claims_clock_completeness.claims_file_sha256`; **re-run `--stage2` if that file
 is rewritten.** Every number below is in `clock_audit.json → claims_clock_completeness`.
@@ -645,14 +645,15 @@ The rebuilt claims file was meant to carry `strict_observed_asof` on every claim
 
 | Field | Claims carrying it | Values |
 |---|---|---|
-| `strict_observed_asof` | **0** of **20563** | — (absent everywhere) |
-| `observation_system` | **2517** of 20563 | `NONE` **2514**, `THIS_STUDY_COLLECTION` **3** |
+| `strict_observed_asof` | **20563** of **20563** | `False` **20563**, `True` **0** |
+| `observation_system` | **20563** of 20563 | `NONE` **20503**, `THIS_STUDY_COLLECTION` **60** |
 
 This audit re-derives strictness per claim from the ledger, so the verdict does not depend on that
-field. But two things follow for the delivered artifact: the `strict_observed_asof` field is **not
-present on any claim** in this snapshot, and the **3** claims marked `THIS_STUDY_COLLECTION` are
-**all** `strict=False` under the ledger test — marking a record as observed by this study does not
-make its timestamp a ledger observation.
+field — but the flag is consistent with the re-derivation in both directions: **0** claims are
+flagged true, and **0** claims are genuinely strict. Note that the **60** claims marked
+`THIS_STUDY_COLLECTION` are exactly the **60** labelled `ACTUAL_OBSERVATION`, and **all 60** are
+`strict=False` under the ledger test: marking a record as observed by this study does not make its
+timestamp a ledger observation.
 
 Rewriting the declaration table with the audit's verdict:
 
@@ -699,10 +700,9 @@ no event date at all. So:
 * `valid_from` is day-precision on **100.0** of present values — but it is a *derived* clock, so its
   precision is not evidence that the date is right.
 
-### 4.5 The builder's arithmetic is internally consistent — but the lag field is incomplete
+### 4.5 The builder's arithmetic is internally consistent
 
-`observed_lag_days` is present on **13108** of 20563 claims (**the other 7455 — the `HAS_TOPIC`
-family — carry no lag field**). On all **13108** claims where it exists, recomputing
+`observed_lag_days` is now populated on **all 20563** claims. On every one of them, recomputing
 `first_seen_at − published_at` from the stored timestamps gives **0** mismatches. So the lag numbers
 the builder reports are arithmetically correct; the defect is the *semantics* of `first_seen_at`, not
 the subtraction.

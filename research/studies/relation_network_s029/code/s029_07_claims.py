@@ -720,9 +720,15 @@ def main() -> None:
     # already-published record. The lenient label (published within 7 days of our own fetch) is kept
     # in time_basis for transparency but never used for a point-in-time claim.
     for c2 in claim_rows:
-        c2.setdefault("observation_system",
-                      "THIS_STUDY_COLLECTION" if c2.get("time_basis") == "ACTUAL_OBSERVATION"
-                      else "NONE")
+        near = c2.get("time_basis") == "ACTUAL_OBSERVATION"
+        c2["near_realtime_this_study"] = bool(near)
+        c2["observation_system"] = "THIS_STUDY_COLLECTION" if near else "NONE"
+        # The ontology's ACTUAL_OBSERVATION is reserved for a record whose appearance the
+        # observing system actually recorded. A backfill fetch that happens to fall within 7 days
+        # of the record's own publication date is NOT that (independent audit, TEMPORAL_PROVENANCE
+        # §4.3): it is downgraded to HISTORICAL_PROXY and kept visible only as a flag.
+        if near:
+            c2["time_basis"] = "HISTORICAL_PROXY"
         c2["strict_observed_asof"] = False
 
     write_jsonl(DATA_DIR / "entities.jsonl", ent_rows)

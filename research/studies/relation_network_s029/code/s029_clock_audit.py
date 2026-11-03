@@ -2426,6 +2426,7 @@ def claims_clock_completeness(path=None) -> dict:
     n_lenient = sum(1 for d in lag_samples if 0 <= d <= 7)
     lenient_records = set()
     n_lenient_not_declared = 0
+    lenient_by_predicate = Counter()
     for c in claims:
         fs, pub = val(c, "first_seen_at"), val(c, "published_at")
         if fs is None or pub is None:
@@ -2434,6 +2435,8 @@ def claims_clock_completeness(path=None) -> dict:
         if d is not None and 0 <= d <= 7:
             lenient_records.add(str(c.get("source_record_id")
                                     or c.get("relation_id") or ""))
+            lenient_by_predicate[str(pick(c, "predicate", "relation",
+                                          "relation_type") or "MISSING")] += 1
             if str(val(c, "time_basis") or "") != "ACTUAL_OBSERVATION":
                 n_lenient_not_declared += 1
     out["strict_vs_lenient"] = {
@@ -2456,6 +2459,7 @@ def claims_clock_completeness(path=None) -> dict:
                 lag_days_ts(val(c, "first_seen_at"), val(c, "published_at")))}),
         "n_lenient_labelled_ACTUAL_OBSERVATION": n_lenient - n_lenient_not_declared,
         "n_lenient_labelled_SOURCE_PUBLISHED": n_lenient_not_declared,
+        "n_lenient_by_predicate": dict(lenient_by_predicate),
         "n_declared_actual_observation": stats["n_declared_actual_observation"],
         "n_lenient_but_not_declared_ACTUAL": n_lenient_not_declared,
         "n_lag_le_1d_but_not_an_observation": stats["n_lag_le_1"],

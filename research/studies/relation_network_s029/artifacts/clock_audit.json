@@ -4,7 +4,7 @@
     "task": "task-3",
     "role": "Temporal Provenance Auditor",
     "script": "code/s029_clock_audit.py",
-    "generated_at_utc": "2026-11-03T20:46:05Z",
+    "generated_at_utc": "2026-11-03T20:48:56Z",
     "stage": "stage1+stage2",
     "python": "3.12.10",
     "study_dir": "D:\\DEPPSKK\\worktrees\\s029-relations\\research\\studies\\relation_network_s029",
@@ -3667,8 +3667,8 @@
     "n_lines": 20563,
     "n_claims": 20563,
     "n_parse_errors": 0,
-    "claims_file_bytes": 18433356,
-    "claims_file_sha256": "39705e32aa8f84f9b60e22816d11d173c172449cbf92ab88e34ff45c3289cc8a",
+    "claims_file_bytes": 19812784,
+    "claims_file_sha256": "013226151c431f9f5716032dd15c9a68f60593db295fa95d0dda2c6b828a66d4",
     "top_level_keys": {
       "claim_status": 20563,
       "confidence": 20563,
@@ -3680,7 +3680,8 @@
       "mapping_method": 20563,
       "mapping_status": 20563,
       "object_id": 20563,
-      "observed_lag_days": 13108,
+      "observation_system": 20563,
+      "observed_lag_days": 20563,
       "predicate": 20563,
       "published_at": 20563,
       "relation_id": 20563,
@@ -3688,6 +3689,7 @@
       "relation_temporal_type": 20563,
       "source_record_id": 20563,
       "statement_status": 20563,
+      "strict_observed_asof": 20563,
       "subject_id": 20563,
       "time_basis": 20563,
       "timestamp_precision": 20563,
@@ -3697,8 +3699,7 @@
       "funder_string": 105,
       "object_external_id": 4351,
       "anachronism": 2517,
-      "event_at_type": 2517,
-      "observation_system": 2517
+      "event_at_type": 2517
     },
     "completeness": {
       "published_at": {
@@ -3879,11 +3880,11 @@
       "n_declared_actual_but_not_in_ledger_or_lag_gt_1": 60,
       "n_strict_genuine_but_not_declared": 0,
       "max_lag_among_declared_actual": 6,
-      "n_strict_flag_present": 0,
+      "n_strict_flag_present": 20563,
       "n_strict_flag_true": 0,
       "n_strict_flag_true_but_not_strict": 0,
       "n_strict_flag_false_but_strict": 0,
-      "n_observation_system_present": 2517,
+      "n_observation_system_present": 20563,
       "pct_with_first_seen": 100.0,
       "pct_strict_genuine": 0.0,
       "pct_declared_actual_observation": 0.29,
@@ -3919,6 +3920,13 @@
       "n_lenient_distinct_evidence_records": 10,
       "n_lenient_labelled_ACTUAL_OBSERVATION": 60,
       "n_lenient_labelled_SOURCE_PUBLISHED": 16,
+      "n_lenient_by_predicate": {
+        "AFFILIATED_WITH": 31,
+        "CO_AFFILIATED_ON": 24,
+        "FUNDED_BY": 1,
+        "HAS_TOPIC": 16,
+        "SPONSORS_TRIAL": 4
+      },
       "n_declared_actual_observation": 60,
       "n_lenient_but_not_declared_ACTUAL": 16,
       "n_lag_le_1d_but_not_an_observation": 34,
@@ -3926,21 +3934,23 @@
     },
     "pipeline_fields_audit": {
       "strict_observed_asof": {
-        "n_present": 0,
-        "values": {},
+        "n_present": 20563,
+        "values": {
+          "False": 20563
+        },
         "n_true": 0,
         "flag_true_but_audit_strict_false": 0,
         "flag_false_but_audit_strict_true": 0
       },
       "observation_system": {
-        "n_present": 2517,
+        "n_present": 20563,
         "values": {
-          "NONE": 2514,
-          "THIS_STUDY_COLLECTION": 3
+          "NONE": 20503,
+          "THIS_STUDY_COLLECTION": 60
         },
         "values_by_audit_strictness": {
-          "NONE|strict=False": 2514,
-          "THIS_STUDY_COLLECTION|strict=False": 3
+          "NONE|strict=False": 20503,
+          "THIS_STUDY_COLLECTION|strict=False": 60
         }
       },
       "reading": "The pipeline's own strict flag is audited, not trusted: this audit re-derives strictness from the observation ledger for every claim and reports any disagreement in both directions."
@@ -4330,7 +4340,7 @@
       "pct_impossible_of_resolved": 88.46
     },
     "observed_lag_crosscheck": {
-      "n_checked": 13108,
+      "n_checked": 20563,
       "n_mismatch": 0
     },
     "downstream_statement": "Edges built from these claims are SOURCE_PUBLISHED or HISTORICAL_PROXY unless the claim carries a first_seen_at that the observation ledger actually contains with lag <= 1 day; the measured count is in actual_observation_support.n_strict_genuine.",
@@ -4338,8 +4348,8 @@
   },
   "verified_claims": {
     "report": "D:\\DEPPSKK\\worktrees\\s029-relations\\research\\studies\\relation_network_s029\\TEMPORAL_PROVENANCE.md",
-    "n_number_tokens": 972,
-    "n_distinct_tokens": 242,
+    "n_number_tokens": 975,
+    "n_distinct_tokens": 241,
     "n_unverified": 0,
     "unverified_tokens": [],
     "verified": true
