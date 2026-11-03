@@ -3160,3 +3160,44 @@ AP(D) 0.0348, Δ −0.0053); at 90 days the lag removes `year−1` at first-quar
 0.200) and Δ becomes −0.0017 — still negative. The hist_v1 conclusion ("fusion does not improve ranking") is therefore
 **robust to the tested lags**; at 90 days it rests on only 20 % join coverage, which is reported with the result. No
 positive Δ was observed at any lag, so the frozen decision rule returns "unchanged" and no upgrade is licensed.
+
+---
+
+## D-083 — hist_v2: the domain-level replication supports the primary and repeats the B3 failure
+
+**Date:** 2026-11-03 · **Status:** accepted · **Protocol:** `research/protocols/hist_v2_preregistration.md` (frozen,
+no amendments) · **Artifact:** `experiments/hist_v2/` (R181–R184)
+
+**Decision.** The frozen domain-level design was executed to completion. At the coarser 22-domain unit over 1995–2015
+(21 origins, 15,233 candidate cells, 252 positives, mean 12.0 positives/origin), the pre-registered criterion is met
+and the result is **powered**:
+
+* ΔAP(M1C−B1) = **+0.0340**, 95 % CI **[+0.0215, +0.0661]**, MDE **0.0316** (target ≤ 0.05), 85.7 % of origins
+  positive, permutation p = 0.004975 (200 draws, resolution floor);
+* ΔAP(M1C−B2) = +0.0498 [+0.0284, +0.0899];
+* **ΔAP(M1C−B3) = +0.0156, 95 % CI [−0.0107, +0.0445], p 0.212** — the decisive secondary comparison against the
+  two-way exposure baseline is **not significant**. The frozen criterion required only a positive *point* estimate
+  against B3, so it is formally met; the interval does not exclude zero, so **incremental value over firm×domain
+  exposure is not established**.
+
+**What the replication buys.** hist_v1 (track unit, 1995–2024, 6 positives/origin, MDE 0.090, borderline CI) and
+hist_v2 (domain unit, 1995–2015, 12 positives/origin, MDE 0.032) now agree on both parts of the result: **persistence is
+beaten; two-way exposure is not.** A negative that replicates at a different unit and window is a stronger scientific
+statement than either study alone, and it is the main finding of the two designs. The programme can therefore say that
+public regulatory-sequence features carry information about future first clearances beyond firm persistence, but not
+beyond a firm×unit exposure baseline — at least on this corpus and with these 15 features.
+
+**Mechanism is unit-dependent.** At domain level the domain-tempo features carry the signal and adjacency slightly
+hurts (M1B 0.0812 > M1C 0.0775; in 2005–2015 M1B 0.0574 > M1C 0.0496), opposite to hist_v1's track-level result. The
+next design must pre-specify the unit from the question, not search it after seeing results.
+
+**Gaps recorded.** (a) The attribution sensitivity (`pairs_no_acquired`) listed in protocol §9 was not run (a second
+20-minute full evaluation); it is an open robustness pass, not a passed check. (b) The h=4 and post-2015 holdout blocks
+are descriptive only. (c) No fusion lanes exist in hist_v2 and no Target B claim is made. (d) As in hist_v1, the
+taxonomy is applied to history from its current version and the roster covers 13.9 % of material events.
+
+**Consequence.** No product or detector change. The two designs together close the programme's original forward-looking
+question with a bounded answer: a modest, replicated ranking signal over persistence exists; whether it adds value over
+a simple two-way exposure rate is **not** established. The next round should either (i) test the only remaining
+promising direction (cross-company features: competitor-entry and capability-spillover terms, not yet in either
+design) or (ii) stop the forecasting thread and invest in the data constraints.

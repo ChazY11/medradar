@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T10:30:00+08:00",
+  "updated_at": "2026-11-03T11:00:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,14 +8,15 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "backlog_execution_round",
-  "cycle": 49,
+  "phase": "hist_v2_complete_replicated_persistence_beaten_exposure_not",
+  "cycle": 50,
   "last_completed_cycle": {
-    "cycle": 49,
-    "name": "backlog_b021_b029_b041",
+    "cycle": 50,
+    "name": "hist_v2_domain_benchmark",
     "branch": "research/early-signal-ai-review",
-    "report": "research/RESULTS/README.md R178-R180",
-    "summary": "three backlog designs executed to a final state. B-029: 0 new CIK links possible (all 826 curated-CIK events already linked; 19,616 unlinked are non-roster registrants). B-021: no cross-source lead detected, three well-powered negatives (MDE 0.05-0.07), procurement NOT_EVALUABLE. B-041: fusion conclusion unchanged at publication lags 0/14/30/90 days (reproduces hist_v1 exactly at 0/14/30)."
+    "report": "experiments/hist_v2/REPORT.md",
+    "summary": "research/RESULTS/README.md R181-R184",
+    "verdict": "frozen hist_v2 executed: R_dom h=8, 21 origins 1995-2015, 15,233 cells, 252 positives; M1C mean AP 0.0775 vs B1 0.0435, delta +0.0340, CI [+0.0215,+0.0661], MDE 0.0316 (POWERED), 85.7% origins positive, permutation p=0.004975 (200 draws). Decisive M1C-B3 +0.0156, CI [-0.0107,+0.0445], p=0.212 -> incremental value over two-way exposure NOT established, replicating hist_v1. Mechanism unit-dependent: domain tempo carries the signal, adjacency does not."
   },
   "working_tree": {
     "path": "D:\\DEPPSKK\\worktrees\\hist-v1",
@@ -1781,21 +1782,61 @@
     }
   },
   "hist_v2": {
-    "status": "pre-registered; feasibility measured; no model fitted yet",
+    "status": "COMPLETE (frozen design executed; primary supported and powered; decisive B3 secondary not significant)",
     "protocol": "research/protocols/hist_v2_preregistration.md",
-    "feasibility": "experiments/hist_v2/feasibility.json",
-    "unit": "company x technology domain (22 domains) x quarter",
-    "window": "1995-2015 (21 annual origins); 2016-2024 descriptive holdout only",
-    "feasibility_numbers": {
-      "domain_mean_positives_per_origin": 12.0,
-      "domain_total_positives": 252,
-      "domain_mean_candidates_per_origin": 725.4,
-      "domain_base_rate": 0.017,
-      "track_mean_positives_per_origin_hist_v1_primary": 6.0,
-      "why": "domain unit doubles positives and includes the 161 new-category entries hist_v1 excluded"
+    "report": "experiments/hist_v2/REPORT.md",
+    "verifier": "experiments/hist_v2/verify_report_numbers.py (91 checks, 0 failed)",
+    "builder": "experiments/hist_v2/build_domain_panel.py",
+    "eval": "experiments/hist_v2/eval.py",
+    "panel": {
+      "artifact": "out/hist_v2/domain_panel.json",
+      "sha256": "44c115c2022326f6676c753f2d56bb31d2fac60032755f7d82d4768a01d8c7df",
+      "domains": 22,
+      "companies": 53,
+      "pairs": 377,
+      "material_events": 14704
     },
-    "primary_comparison": "M1-B1 with M1-B3 decisive secondary; pre-declared power target MDE <= 0.05",
-    "next": "write experiments/hist_v2/build_domain_panel.py + eval.py and run the frozen design; report M1-B1 and M1-B3 with the reliability gate"
+    "primary_result": {
+      "origins": 21,
+      "candidate_cells": 15233,
+      "positives": 252,
+      "mean_ap": {
+        "B0": 0.017,
+        "B1": 0.0435,
+        "B2": 0.0277,
+        "B3": 0.0619,
+        "M1A": 0.0515,
+        "M1B": 0.0812,
+        "M1C": 0.0775
+      },
+      "delta_M1C_B1": 0.034,
+      "ci95": [
+        0.0215,
+        0.0661
+      ],
+      "mde": 0.0316,
+      "delta_M1C_B2": 0.0498,
+      "ci95_B2": [
+        0.0284,
+        0.0899
+      ],
+      "delta_M1C_B3": 0.0156,
+      "ci95_B3": [
+        -0.0107,
+        0.0445
+      ],
+      "p_B3": 0.212,
+      "permutation_p": 0.004975,
+      "permutations": 200,
+      "status": "SUPPORTED and POWERED; incremental value over B3 NOT established"
+    },
+    "mechanism": "domain-tempo features carry the signal; adjacency slightly hurts at domain level (unit-dependent)",
+    "gaps": [
+      "pairs_no_acquired attribution sensitivity not run (protocol §9 robustness item)",
+      "holdout 2016-2024 descriptive only",
+      "no fusion lanes by design",
+      "taxonomy unversioned; roster covers 13.9% of material events"
+    ]
   },
   "backlog_execution_2026_11_03": {
     "B-029": {

@@ -59,6 +59,8 @@ STEPS = (
     ("figure layout", [sys.executable, "papers/check_layout.py"], ("layout checks",)),
     ("profile self-check", [sys.executable, "experiments/b027/selfcheck.py"], ("checked ", "snapshots")),
     ("snapshot chain", [sys.executable, "experiments/b027/snapshot_diff.py"], ("leakage problems",)),
+    ("hist_v1 report", [sys.executable, "experiments/hist_v1/verify_report_numbers.py"], ("checks:",)),
+    ("hist_v2 report", [sys.executable, "experiments/hist_v2/verify_report_numbers.py"], ("checks:",)),
     ("objective audit", [sys.executable, "tools/audit_objectives.py"], ("audit:",)),
 )
 
