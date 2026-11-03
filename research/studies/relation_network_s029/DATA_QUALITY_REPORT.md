@@ -120,10 +120,12 @@ HealthCare), 17 historical-name strings ("Tyco Healthcare"), 11 award/programme 
 **C.2 Genuine observed-as-of evidence: 0 claims.** Adopting the temporal auditor's stricter standard,
 a claim is `ACTUAL_OBSERVATION` only if its `first_seen_at` came from the Live Observatory ledger — and
 it never does, because the ledger contains 400 observations from one day (2026-11-03) and none of them
-matches a claim in this dataset. Under the looser definition used by the builder (published within 7
-days of *this study's own* fetch) there are 60 claims from 11 records (0.29%); those are reported but
-are **not** used for any point-in-time claim. Observed lag over 13,108 measurable claims: median
-**3,486 days**, p25 1,762, p75 5,402, max 9,434.
+matches a claim in this dataset. Under the looser definition, computed from the clocks themselves (own `first_seen_at` minus
+`published_at` within 0–7 days), there are **76 claims behind 10 source records**, of which 34 have a
+lag of ≤1 day; 60 of the 76 were labelled `ACTUAL_OBSERVATION` by the builder and 16 are `HAS_TOPIC`
+claims whose family label is hard-coded `SOURCE_PUBLISHED` — the label and the clock disagree, which is
+why the lenient window is computed from the clocks. None of the 76 is a ledger observation, so none is
+used for any point-in-time claim. Observed lag over all 20,563 claims: median **3,327 days**, p25 1,615, p75 5,052, max 9,434.
 
 **C.3 Ordering inside a year.** `declared_at` is day-precision in every family, so relations can be
 ordered by declaration. `event_at` cannot: trial families are month/year-only for the majority, and

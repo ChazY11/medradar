@@ -181,8 +181,9 @@ Read-only audit (`artifacts/clock_audit.json`, sha256 unchanged before/after):
 
 Consequence, stated as a binding rule for this study: the historical relation set is
 `HISTORICAL_PROXY`. The only claims that could ever be `ACTUAL_OBSERVATION` are records whose
-publication date falls within a week of our own collection time — this round found **8 publications
-and 3 trials** in that window out of 3,268 collected records. That is not enough to build a
+publication date falls within a week of our own collection time — this round found **76 claims behind 10
+source records** in that window (34 with a lag of ≤1 day) out of 3,268 collected records — and none of
+them is a ledger observation, so none counts as point-in-time evidence. That is not enough to build a
 point-in-time evaluation, and no number in S-029 is presented as if it were.
 
 ---

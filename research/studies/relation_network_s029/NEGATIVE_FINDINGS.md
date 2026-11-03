@@ -70,9 +70,12 @@ publication graph.
 The claims builder labelled 60 claims (0.29%) `ACTUAL_OBSERVATION` under a rule "published within 7 days
 of our fetch". The independent temporal audit showed that none of the 20,563 claims has a `first_seen_at`
 recorded by the Live Observatory, and all 107 distinct `first_seen_at` values fall inside a 200-second
-ETL window. **Correction applied:** every claim now carries `strict_observed_asof=false` plus an explicit
-`observation_system` field; the verdict uses the strict count (**0**), and the lenient 60 are reported
-alongside with the definitional difference stated (`DATA_QUALITY_REPORT.md` §C.2).
+ETL window. **Correction applied (twice — the first patch wrote the field after the file had already been
+persisted, which the auditor correctly caught): every claim now carries `strict_observed_asof=false`
+and an explicit `observation_system` field **in the committed file**; the verdict uses the strict count
+(**0**), and the lenient window computed from the clocks (`first_seen_at − published_at ∈ [0,7] days`)
+is **76 claims behind 10 source records, 34 with lag ≤1 day** — reported alongside with the
+definitional difference stated (`DATA_QUALITY_REPORT.md` §C.2).
 **Does not license:** any point-in-time, prospective or as-of reconstruction claim.
 
 ## NF-8 — No human adjudication exists; therefore no precision, recall or accuracy may be quoted `MACHINE_INFERENCE`
@@ -85,10 +88,18 @@ No claim is `HUMAN_CONFIRMED`. Status: **`HUMAN_VALIDATION_PENDING`**.
 ## NF-9 — Registry reference lists are current-state, so trial→publication dates cannot be trusted `OBSERVED_FACT`
 
 Of 4,351 reference claims, only 26 resolve inside this study's publication sample; of those, **23 (88%)**
-cite a paper published *after* the trial's first-post date (up to 14 years). The mechanism is not a
-temporal contradiction: the registry's reference list is updated over time, so its current state cannot
-date when the citation was added. The relation exists; its date basis must be re-based on the publication
-or marked unknown. A 150-PMID external probe shows **150/150 resolvable in Europe PMC** — so the low
+cite a paper published *after* the trial's first-post date (up to 14 years).
+
+> "23 of the 4351 REFERENCES_PUBLICATION claims (0.53% of the family) cite a paper whose publication
+> date is later than the trial's first-post date, by up to 14 years. The ClinicalTrials.gov reference
+> list is current-state — the registry keeps no history of when a reference was added — so these are
+> references added at a later registry update, not future citations: the relation is back-dated because
+> it is dated by the trial's first-post date instead of the paper's publication date. For 16 of the 23
+> the trial's last-update date is on or after the paper's publication date, which is consistent with
+> that mechanism; for 7 it is not, and those 7 remain unexplained and should be checked individually."
+> — wording from `TEMPORAL_PROVENANCE.md` §5.3 (independent temporal auditor)
+
+The relation exists; its date basis must be re-based on the publication or marked unknown. A 150-PMID external probe shows **150/150 resolvable in Europe PMC** — so the low
 in-sample rate is a sampling artefact, not a linkage failure.
 
 ## NF-10 — Two pre-registered conditions fail marginally or by denominator choice `OBSERVED_FACT` + `MACHINE_INFERENCE`

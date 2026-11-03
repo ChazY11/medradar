@@ -183,7 +183,7 @@
     "mentions_with_unestablished_ownership_dates": 0
   },
   "C_temporal_quality": {
-    "actual_observation_claims_lenient_this_study": 60,
+    "actual_observation_claims_lenient_this_study": 76,
     "actual_observation_claims_strict": 0,
     "claims_without_any_event_time": 4365,
     "claims_without_any_publication_time": 0,
@@ -193,14 +193,23 @@
       "share": 9.62
     },
     "contradiction_trial_references_future_paper": 24,
+    "lenient_breakdown": {
+      "AFFILIATED_WITH": 31,
+      "CO_AFFILIATED_ON": 24,
+      "FUNDED_BY": 1,
+      "HAS_TOPIC": 16,
+      "SPONSORS_TRIAL": 4
+    },
+    "lenient_distinct_source_records": 10,
+    "lenient_lag_le_1_day": 34,
     "observation_definition": "STRICT = observed by the Live Observatory ledger (adopted); LENIENT = published within 7 days of this study's own fetch (reported but not used for any claim of point-in-time capability)",
     "observed_lag_days": {
       "max": 9434,
-      "median": 3486,
+      "median": 3327,
       "min": 0,
-      "n": 13108,
-      "p25": 1762,
-      "p75": 5402
+      "n": 20563,
+      "p25": 1615,
+      "p75": 5052
     },
     "precision_distribution": {
       "DAY": 20563
@@ -763,7 +772,9 @@
     },
     "T4_temporal_point_in_time": {
       "actual_observation_claims": 0,
-      "lenient_near_realtime_claims_this_study": 60,
+      "lenient_distinct_source_records": 10,
+      "lenient_lag_le_1_day": 34,
+      "lenient_near_realtime_claims_this_study": 76,
       "pass": false,
       "shared_declared_at_day_or_month_pct": 100.0,
       "threshold": ">=100 ACTUAL_OBSERVATION and >=50% DAY/MONTH"
@@ -943,7 +954,7 @@
     "trial_reference_resolution_rate": 0.6,
     "trial_reference_resolved_to_collected_publication": 26
   },
-  "generated_at": "2026-11-03T20:46:36.658Z",
+  "generated_at": "2026-11-03T20:47:23.295Z",
   "human_validation": "HUMAN_VALIDATION_PENDING",
   "prereg_sha256": "f1ab0629f3c73393925af239538ff5e8adb0c08b9e0f8238ac0d3242c06e4742",
   "verdict": "NO-GO FOR PREDICTION"

@@ -225,6 +225,8 @@ def main() -> None:
                 "event_at": p.get("first_publication_date"),
                 "published_at": p.get("first_index_date") or p.get("first_publication_date"),
                 "first_seen_at": p.get("first_seen_at"),
+                "observed_lag_days": lag_days(p.get("first_seen_at"),
+                                              p.get("first_index_date") or p.get("first_publication_date")),
                 "time_basis": "SOURCE_PUBLISHED",
                 "timestamp_precision": classify_date_precision(p.get("first_publication_date")),
                 "extraction_version": EXTRACTION_VERSION})
@@ -712,21 +714,21 @@ def main() -> None:
         dedup.setdefault(c["relation_id"], c)
     claim_rows = sorted(dedup.values(), key=lambda c: c["relation_id"])
 
-    write_jsonl(DATA_DIR / "entities.jsonl", ent_rows)
-    write_jsonl(DATA_DIR / "evidence.jsonl", ev_rows)
-    write_jsonl(DATA_DIR / "claims.jsonl", claim_rows)
-    write_jsonl(DATA_DIR / "claim_rejects.jsonl", reject_rows)
-
+    # STRICT standard (adopted from the independent temporal audit): a claim counts as a genuine
+    # observed-as-of record ONLY if its first_seen_at was recorded by the MedRadar Live Observatory
+    # ledger. This study's collection wall clock is not that — it is a backfill fetch of an
+    # already-published record. The lenient label (published within 7 days of our own fetch) is kept
+    # in time_basis for transparency but never used for a point-in-time claim.
     for c2 in claim_rows:
         c2.setdefault("observation_system",
                       "THIS_STUDY_COLLECTION" if c2.get("time_basis") == "ACTUAL_OBSERVATION"
                       else "NONE")
-        # STRICT standard (adopted from the independent temporal audit): a claim counts as a
-        # genuine observed-as-of record ONLY if its first_seen_at is an observation recorded by
-        # the MedRadar Live Observatory ledger. This study's collection wall clock is not that:
-        # it is a backfill fetch of an already-published record. Recorded separately so no
-        # downstream analysis can silently use the weaker definition.
         c2["strict_observed_asof"] = False
+
+    write_jsonl(DATA_DIR / "entities.jsonl", ent_rows)
+    write_jsonl(DATA_DIR / "evidence.jsonl", ev_rows)
+    write_jsonl(DATA_DIR / "claims.jsonl", claim_rows)
+    write_jsonl(DATA_DIR / "claim_rejects.jsonl", reject_rows)
 
     by_pred = Counter(c["predicate"] for c in claim_rows)
     by_status = Counter(c["claim_status"] for c in claim_rows)

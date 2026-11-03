@@ -165,7 +165,13 @@ def main() -> None:
     # observed by the Live Observatory ledger; the lenient one counts records whose own
     # published date fell within 7 days of this study's fetch. The verdict uses the strict one.
     actual = [c for c in claims if c.get("strict_observed_asof")]  # strict: ledger-observed only
-    lenient = [c for c in claims if c.get("time_basis") == "ACTUAL_OBSERVATION"]
+    # lenient definition, computed from the clocks rather than from a label, so a hard-coded
+    # family label cannot hide a near-real-time fetch (the temporal auditor found 16 such claims)
+    lenient = [c for c in claims
+               if isinstance(c.get("observed_lag_days"), int)
+               and 0 <= c["observed_lag_days"] <= 7]
+    lenient_records = {c["source_record_id"] for c in lenient}
+    lenient_le1 = [c for c in lenient if c["observed_lag_days"] <= 1]
     pub_before_event = []
     for c in claims:
         pa, ea = _d(c.get("published_at")), _d(c.get("event_at"))
@@ -186,6 +192,9 @@ def main() -> None:
         "share_actual_observation_strict": pct(len(actual), len(claims)),
         "actual_observation_claims_strict": len(actual),
         "actual_observation_claims_lenient_this_study": len(lenient),
+        "lenient_distinct_source_records": len(lenient_records),
+        "lenient_lag_le_1_day": len(lenient_le1),
+        "lenient_breakdown": dict(Counter(c["predicate"] for c in lenient)),
         "observation_definition": "STRICT = observed by the Live Observatory ledger (adopted); "
                                   "LENIENT = published within 7 days of this study's own fetch "
                                   "(reported but not used for any claim of point-in-time capability)",
@@ -414,6 +423,8 @@ def main() -> None:
         "T4_temporal_point_in_time": {
             "pass": t4, "actual_observation_claims": actual_n,
             "lenient_near_realtime_claims_this_study": len(lenient),
+            "lenient_distinct_source_records": len(lenient_records),
+            "lenient_lag_le_1_day": len(lenient_le1),
             "shared_declared_at_day_or_month_pct": day_or_month,
             "threshold": ">=100 ACTUAL_OBSERVATION and >=50% DAY/MONTH"},
         "T5_cross_source_linkage": {
