@@ -239,6 +239,41 @@ def _study_artifacts(study_id: str) -> dict[str, Any]:
     return {}
 
 
+def _prospective_summary() -> dict[str, Any]:
+    """Compact Prospective Observation Registry block (additive, never raises).
+
+    The registry is an audit instrument frozen before outcomes are observable; it
+    is not a prediction engine. Imported lazily and defensively so the existing
+    Research Lab overview keeps rendering even if the registry is unavailable.
+    """
+    try:
+        from . import prospective as prospective_product
+
+        return prospective_product.prospective_summary()
+    except Exception as exc:  # pragma: no cover - defensive: lab must keep rendering
+        return {
+            "available": False,
+            "registry_path": "prospective",
+            "error_zh": f"前瞻观察登记器不可用：{exc}",
+            "notice_zh": "前瞻观察登记器不是预测引擎；不可用时此处保持空状态。",
+            "entry_count": 0,
+            "status_counts": {
+                "EXPERIMENTAL": 0,
+                "ACTIVE": 0,
+                "DUE": 0,
+                "MATURED": 0,
+                "RETRACTED": 0,
+            },
+            "synthetic_count": 0,
+            "real_entry_count": 0,
+            "matured_count": 0,
+            "due_count": 0,
+            "integrity_issues": 0,
+            "latest_freeze_at": None,
+            "note_zh": "暂无可审计的前瞻登记；本产品不生成示例条目。",
+        }
+
+
 def lab_overview() -> dict[str, Any]:
     studies = []
     for study in STUDIES:
@@ -270,6 +305,7 @@ def lab_overview() -> dict[str, Any]:
             "AI 预标注不是人工真值；未完成人工复核的研究保持 blocked 状态。",
             "未合入 main 的研究分支只做只读引用，并标注来源 commit。",
         ],
+        "prospective": _prospective_summary(),
     }
 
 

@@ -1,7 +1,7 @@
 /* #/lab and #/lab/{study_id} — research lab: honest study statuses,
    findings, negative results, reproduction commands and frozen artifacts. */
 import { api } from "../api.js";
-import { el, fmtInt, fmtDate, buildHash, keyValueText, truncate } from "../util.js";
+import { el, fmtInt, fmtDate, fmtDateTime, buildHash, keyValueText, truncate } from "../util.js";
 import {
   pageHead, panel, badge, dataTable, notice, list, errorState, skeletonBlock,
   linkButton, emptyState, kvList, disclosure, valueTable,
@@ -35,12 +35,20 @@ export async function mount(root, ctx) {
 
   /* ------------------------------------------------------------- lab list */
   let data;
+  let prospective = null;
+  let prospectiveError = null;
   root.replaceChildren(skeletonBlock(8));
   try {
     data = await api.lab();
   } catch (error) {
     root.replaceChildren(errorState(error, () => ctx.refresh(), { title: "研究实验室加载失败" }));
     return { title: "研究实验室" };
+  }
+  /* The prospective registry is additive: its failure must never hide the lab. */
+  try {
+    prospective = await api.labProspective();
+  } catch (error) {
+    prospectiveError = error;
   }
   root.replaceChildren();
 
@@ -107,6 +115,9 @@ export async function mount(root, ctx) {
   if ((data.policy_zh || []).length) {
     root.append(panel({ title: "实验室政策", sub: "研究状态的展示规则", body: list(data.policy_zh) }));
   }
+
+  /* Clearly separated, additive section: frozen prospective observations. */
+  root.append(renderProspectiveRegistry({ data: prospective, error: prospectiveError, ctx }));
 
   return { title: "研究实验室" };
 }
@@ -360,5 +371,234 @@ function artifactValue(value, depth = 0) {
       node.append(disclosure(key, artifactValue(item, depth + 1)));
     }
   }
+  return node;
+}
+
+/* ------------------------------------- prospective observation registry
+   Additive Research Lab section. The registry freezes a hypothesis together with
+   the ledger's point-in-time evidence snapshot BEFORE outcomes are observable and
+   later reports the outcome from append-only appendices. It is NOT a prediction
+   engine: no probability, no score, no calibration. Synthetic fixtures are
+   explicitly labelled 合成测试 and never presented as evidence. */
+const PROSPECTIVE_STATUS_TONES = {
+  EXPERIMENTAL: "violet",
+  ACTIVE: "blue",
+  DUE: "amber",
+  MATURED: "green",
+  RETRACTED: "red",
+};
+
+function prospectiveStatusBadge(entry) {
+  const status = entry.status || "EXPERIMENTAL";
+  return badge(
+    entry.status_label_zh || status,
+    PROSPECTIVE_STATUS_TONES[status] || "muted",
+    `status: ${status}`,
+  );
+}
+
+function prospectiveIdentityBadges(entry) {
+  const row = el("span", { class: "badge-row" });
+  row.append(prospectiveStatusBadge(entry));
+  if (entry.synthetic) {
+    row.append(badge("合成测试", "amber", "该条目由测试构造，不是真实的前瞻观察结果"));
+  }
+  row.append(entry.frozen_verified
+    ? badge("冻结哈希校验通过", "green", entry.content_sha256 || "")
+    : badge("冻结哈希校验失败", "red", "冻结文档可能已被改写；评估会被拒绝"));
+  return row;
+}
+
+function prospectiveCount(value, hint = null) {
+  return el("span", { title: hint || null, text: fmtInt(value) });
+}
+
+function renderProspectiveRegistry({ data, error, ctx }) {
+  const node = el("div", { class: "mt-12" });
+  node.dataset.testid = "prospective-registry";
+  const right = [badge("非预测引擎", "muted"), badge("EXPERIMENTAL", "violet")];
+  const body = el("div");
+
+  if (error) {
+    body.append(notice({
+      tone: "amber",
+      title: "前瞻观察登记器暂不可用",
+      label: "REGISTRY",
+      body: `登记器接口读取失败：${error && error.message ? error.message : String(error)}。研究实验室其余内容不受影响。`,
+    }));
+    body.append(el("div", { class: "mt-8" }, el("button", {
+      type: "button",
+      class: "btn btn-sm",
+      text: "重试",
+      onclick: () => ctx.refresh(),
+    })));
+    node.append(panel({
+      title: "前瞻观察登记 / Prospective Observation Registry",
+      sub: "冻结假设与冻结证据的可审计登记器；不是预测引擎",
+      right,
+      body,
+    }));
+    return node;
+  }
+
+  const registry = (data && data.registry) || {};
+  const entries = (data && data.entries) || [];
+  const statusCounts = registry.status_counts || {};
+
+  body.append(notice({
+    tone: "amber",
+    title: "这是一个可审计的登记器，不是预测引擎",
+    label: "NOT A FORECAST",
+    body: "条目在假设冻结后才报告声明窗口内新观察到的候选证据；不给出概率、评分、校准误差或已验证结论。默认状态 EXPERIMENTAL，合成测试条目只用于测试机制。",
+  }));
+
+  body.append(el("div", { class: "mt-8" }, kvList([
+    { key: "登记目录", value: registry.path || "—" },
+    { key: "冻结条目", value: fmtInt(registry.entry_count) },
+    {
+      key: "状态分布",
+      value: Object.keys(statusCounts).length
+        ? Object.entries(statusCounts).map(([key, count]) => `${key}:${fmtInt(count)}`).join(" · ")
+        : "—",
+    },
+    { key: "合成测试条目", value: fmtInt(registry.synthetic_count) },
+    { key: "已到期并评估", value: fmtInt(registry.matured_count) },
+    { key: "完整性异常", value: fmtInt(registry.integrity_issues) },
+  ])));
+  if (registry.notice_zh) body.append(el("div", { class: "muted tiny mt-8", text: registry.notice_zh }));
+
+  if (!entries.length) {
+    body.append(el("div", { class: "mt-12" }, emptyState(
+      (data && data.empty_zh) || "登记器尚未冻结任何条目；这里不会显示示例或伪造的前瞻结果。",
+      { title: "暂无可审计的前瞻登记" },
+    )));
+  } else {
+    body.append(el("div", { class: "mt-12" }, dataTable({
+      columns: [
+        {
+          key: "entry_id",
+          label: "条目",
+          format: (row) => el("span", null,
+            el("b", { text: row.entry_id }),
+            el("span", { class: "muted tiny", text: `  ${truncate(row.label_zh || "", 60)}` }),
+            el("div", { class: "muted tiny", text: truncate(row.hypothesis_zh || "—", 120) }),
+          ),
+        },
+        { key: "freeze_at", label: "冻结时间", format: (row) => fmtDateTime(row.freeze_at) },
+        {
+          key: "window",
+          label: "声明窗口",
+          format: (row) => el("span", {
+            class: "mono tiny",
+            text: `${row.window_start || "—"} → ${row.window_end || "—"}`,
+          }),
+        },
+        { key: "target_event_definition_zh", label: "目标事件定义", format: (row) => truncate(row.target_event_definition_zh || "—", 90) },
+        { key: "baseline_zh", label: "基线", format: (row) => truncate(row.baseline_zh || "—", 70) },
+        { key: "evaluation_criteria_zh", label: "判据", format: (row) => truncate(row.evaluation_criteria_zh || "—", 70) },
+        { key: "status", label: "状态 / 标识", format: (row) => prospectiveIdentityBadges(row) },
+        {
+          key: "frozen_evidence_count",
+          label: "冻结证据",
+          num: true,
+          format: (row) => prospectiveCount(
+            row.frozen_evidence_count,
+            row.frozen_evidence_as_of ? `as_of ${row.frozen_evidence_as_of}` : null,
+          ),
+        },
+        {
+          key: "evaluation_count",
+          label: "评估",
+          num: true,
+          format: (row) => {
+            const latest = row.latest_evaluation;
+            const suffix = latest ? `（候选结局 ${fmtInt(latest.outcomes_count)}）` : "";
+            return el("span", { text: `${fmtInt(row.evaluation_count)}${suffix}` });
+          },
+        },
+      ],
+      rows: entries,
+      rowAttrs: (row) => ({ testid: "prospective-row", dataset: { entryId: row.entry_id } }),
+      empty: "没有登记条目",
+    })));
+
+    for (const entry of entries) body.append(renderProspectiveHistory(entry));
+  }
+
+  if (((data && data.policy_zh) || []).length) {
+    body.append(el("div", { class: "mt-12" }, list(data.policy_zh)));
+  }
+  const validation = (data && data.validation) || {};
+  body.append(el("div", {
+    class: "muted tiny mt-8",
+    text: validation.note_zh || "本接口不返回概率、评分或校准结论。",
+  }));
+
+  node.append(panel({
+    title: "前瞻观察登记 / Prospective Observation Registry",
+    sub: "冻结假设、冻结证据与声明窗口的可审计登记器；不是预测引擎",
+    right,
+    body,
+  }));
+  return node;
+}
+
+function renderProspectiveHistory(entry) {
+  const history = entry.evaluation_history || [];
+  const node = el("div", { class: "mt-8" });
+  const content = el("div");
+  content.append(kvList([
+    { key: "冻结证据数", value: fmtInt(entry.frozen_evidence_count) },
+    { key: "冻结证据时点（as_of）", value: entry.frozen_evidence_as_of || "—" },
+    { key: "冻结文档哈希", value: entry.content_sha256 ? `${String(entry.content_sha256).slice(0, 24)}…` : "—" },
+    { key: "冻结完整性", value: entry.frozen_verified ? "冻结文档哈希校验通过" : "校验失败：冻结文档可能已被改写" },
+    { key: "状态说明", value: entry.status_note_zh || "—" },
+  ]));
+  if (!history.length) {
+    content.append(notice({
+      tone: "muted",
+      title: "尚无评估附录",
+      body: "窗口结束前不会产生评估结果；窗口结束后按冻结时声明的判据统计候选证据。",
+    }));
+  } else {
+    content.append(el("div", { class: "section-title mt-8", text: "评估历史（append-only 附录）" }));
+    content.append(dataTable({
+      columns: [
+        { key: "evaluation_seq", label: "#", num: true, format: (row) => fmtInt(row.evaluation_seq) },
+        { key: "computed_at", label: "计算时间", format: (row) => fmtDateTime(row.computed_at) },
+        { key: "inputs_count", label: "冻结输入", num: true, format: (row) => fmtInt(row.inputs_count) },
+        { key: "outcomes_count", label: "窗口内新观察", num: true, format: (row) => fmtInt(row.outcomes_count) },
+        { key: "new_version_count", label: "输入修订", num: true, format: (row) => fmtInt(row.new_version_count) },
+        {
+          key: "ledger_counts",
+          label: "评估时账本",
+          format: (row) => {
+            const counts = row.ledger_counts || {};
+            return el("span", {
+              class: "mono tiny",
+              text: `obs ${fmtInt(counts.observations)} · ver ${fmtInt(counts.versions)}`,
+            });
+          },
+        },
+        {
+          key: "classification",
+          label: "判定",
+          format: (row) => (row.human_classification_required
+            ? badge("需人工判定", "muted", "登记器不自动判定目标事件是否发生")
+            : (row.classification || "—")),
+        },
+      ],
+      rows: history,
+      compact: true,
+    }));
+  }
+  if (entry.synthetic) {
+    content.append(notice({
+      tone: "amber",
+      title: "合成测试条目",
+      body: "该条目只用于测试登记器机制，不是真实的前瞻观察结果；不得引用为证据。",
+    }));
+  }
+  node.append(disclosure(`冻结输入与评估历史 · ${entry.entry_id}`, content));
   return node;
 }
