@@ -1,0 +1,785 @@
+{
+  "correction": "S-028-CORRECTION-1",
+  "horizons": {
+    "H2q": {
+      "arms": {
+        "B1_history10": {
+          "per_window_ap": {
+            "2025-10-01": 0.029836300828960893,
+            "2026-01-01": 0.09173114012692282,
+            "2026-04-01": 0.11648076516198122
+          },
+          "pooled_ap": 0.059029684499075905,
+          "role": "weaker non-graph baseline"
+        },
+        "B2_frozen_spec16": {
+          "per_window_ap": {
+            "2025-10-01": 0.032295883166773134,
+            "2026-01-01": 0.1279660520304219,
+            "2026-04-01": 0.12534496108498488
+          },
+          "pooled_ap": 0.06735030880814195,
+          "role": "strong non-graph baseline, frozen control"
+        },
+        "G1_graph": {
+          "per_window_ap": {
+            "2025-10-01": 0.03013263750032039,
+            "2026-01-01": 0.07708092377607971,
+            "2026-04-01": 0.13576095753346834
+          },
+          "pooled_ap": 0.06703627857552347,
+          "role": "real company-technology graph, frozen control"
+        },
+        "G2_N1": {
+          "delta_vs_real_distribution": {
+            "max": 0.010546768703269684,
+            "mean": 0.00022532470484984638,
+            "median": 0.0008896676320111346,
+            "min": -0.015269673257128913,
+            "n": 40,
+            "q025": -0.006751950239178073,
+            "q975": 0.010546768703269684,
+            "sd": 0.004259259353686732
+          },
+          "invariants_ok": {
+            "all_degrees_preserved": true,
+            "all_node_sets_preserved": true,
+            "all_simple": true
+          },
+          "per_window": {
+            "2025-10-01": {
+              "draws": 40,
+              "null_beats_real": 28,
+              "null_max": 0.035954536870795015,
+              "null_median": 0.031175489631576857,
+              "null_min": 0.025054227406140616,
+              "real": 0.03013263750032039
+            },
+            "2026-01-01": {
+              "draws": 40,
+              "null_beats_real": 30,
+              "null_max": 0.09620549220737326,
+              "null_median": 0.08293227029487277,
+              "null_min": 0.06697541012437332,
+              "real": 0.07708092377607971
+            },
+            "2026-04-01": {
+              "draws": 40,
+              "null_beats_real": 14,
+              "null_max": 0.20611639258923703,
+              "null_median": 0.13189686702844078,
+              "null_min": 0.11369404392291382,
+              "real": 0.13576095753346834
+            }
+          },
+          "pooled_ap_distribution": {
+            "max": 0.08230595183265235,
+            "mean": 0.06681095387067361,
+            "median": 0.06614661094351235,
+            "min": 0.056489509872253776,
+            "n": 40,
+            "q025": 0.061442947467936715,
+            "q975": 0.08230595183265235,
+            "sd": 0.0042592593536867306
+          },
+          "randomisation_test": {
+            "n_randomisations": 40,
+            "note": "Exact one-sided randomisation p-values for the composite null 'the observed graph is an exchangeable draw from the null model'. p_real_is_low is the evidence that the real graph scores at or below the null distribution (i.e. the real topology is worse than degree-matched random); p_real_is_high is the evidence that the real graph carries information the null destroys. Neither is a sampling-confidence statement about AP itself, and neither can fall below 1/(R+1).",
+            "p_real_is_high": 0.4146341463414634,
+            "p_real_is_low": 0.6097560975609756,
+            "randomised_above_real": 16,
+            "randomised_at_or_below_real": 24,
+            "real_pooled_ap": 0.06703627857552347,
+            "resolution": "1/41"
+          },
+          "realisation_count": 40,
+          "role": "corrected topology null (degree-preserving simple bipartite swap)",
+          "summary_recorded": {
+            "exact_one_sided_randomisation_p": 0.024390243902439025,
+            "fraction_randomisations_beating_real": 0.4,
+            "interpretation_note": "Under a valid null the randomised graph is expected to score at or below the real graph if the real relational structure carries information, and to score above it if the real graph is worse than chance-conditional-on-margins. A high randomised AP is a statement about the real graph, not evidence that random relations predict.",
+            "invariants_all_degrees_preserved": true,
+            "invariants_all_node_sets_preserved": true,
+            "invariants_all_simple": true,
+            "lowest_achievable_one_sided_p": 0.024390243902439025,
+            "n_randomisations": 40,
+            "null_model": "N1",
+            "randomised_pooled_ap_max": 0.08230595183265235,
+            "randomised_pooled_ap_median": 0.06624309807320426,
+            "randomised_pooled_ap_min": 0.056489509872253776,
+            "real_above_all_randomisations": false,
+            "real_minus_randomised_median": 0.0009861547617030647,
+            "real_minus_randomised_q025": -0.006751950239178073,
+            "real_minus_randomised_q975": 0.010546768703269684,
+            "real_pooled_ap": 0.06703627857552347,
+            "runtime_seconds": 530.1
+          },
+          "test_labels_sha256": {
+            "2025-10-01": "328313d8ae9a9bf91829042f77de94a90f6442c566b4d8451e48d3aa548ace7d",
+            "2026-01-01": "ff52fb30e9c36cd2a0dc3b1b2e7734f5d4d6497ee5b86820c0dd9085e6685a76",
+            "2026-04-01": "a3217db85909b017fecdec9bc069163e8efa4f549daa30908d7caf59893c87c5"
+          }
+        },
+        "G2_N2": {
+          "delta_vs_real_distribution": {
+            "max": 0.005856610590785648,
+            "mean": -7.98999054726789e-05,
+            "median": 0.00020909023741210592,
+            "min": -0.006764506587975089,
+            "n": 40,
+            "q025": -0.00607142730189468,
+            "q975": 0.005856610590785648,
+            "sd": 0.002980658552202287
+          },
+          "invariants_ok": {
+            "all_degrees_preserved": true,
+            "all_node_sets_preserved": true,
+            "all_simple": true
+          },
+          "per_window": {
+            "2025-10-01": {
+              "draws": 40,
+              "null_beats_real": 29,
+              "null_max": 0.038724362621629066,
+              "null_median": 0.030803455402856755,
+              "null_min": 0.02503705552544369,
+              "real": 0.03013263750032039
+            },
+            "2026-01-01": {
+              "draws": 40,
+              "null_beats_real": 27,
+              "null_max": 0.10399094890675713,
+              "null_median": 0.07999098291793033,
+              "null_min": 0.06811249142636283,
+              "real": 0.07708092377607971
+            },
+            "2026-04-01": {
+              "draws": 40,
+              "null_beats_real": 18,
+              "null_max": 0.17323250071478052,
+              "null_median": 0.13396280751708733,
+              "null_min": 0.11498048370835312,
+              "real": 0.13576095753346834
+            }
+          },
+          "pooled_ap_distribution": {
+            "max": 0.07380078516349854,
+            "mean": 0.06711617848099613,
+            "median": 0.06682718833811134,
+            "min": 0.061179667984737805,
+            "n": 40,
+            "q025": 0.06179276949498207,
+            "q975": 0.07380078516349854,
+            "sd": 0.002980658552202287
+          },
+          "randomisation_test": {
+            "n_randomisations": 40,
+            "note": "Exact one-sided randomisation p-values for the composite null 'the observed graph is an exchangeable draw from the null model'. p_real_is_low is the evidence that the real graph scores at or below the null distribution (i.e. the real topology is worse than degree-matched random); p_real_is_high is the evidence that the real graph carries information the null destroys. Neither is a sampling-confidence statement about AP itself, and neither can fall below 1/(R+1).",
+            "p_real_is_high": 0.5121951219512195,
+            "p_real_is_low": 0.5121951219512195,
+            "randomised_above_real": 20,
+            "randomised_at_or_below_real": 20,
+            "real_pooled_ap": 0.06703627857552347,
+            "resolution": "1/41"
+          },
+          "realisation_count": 40,
+          "role": "corrected topology + track-activity + per-track time null",
+          "summary_recorded": {
+            "exact_one_sided_randomisation_p": 0.024390243902439025,
+            "fraction_randomisations_beating_real": 0.5,
+            "interpretation_note": "Under a valid null the randomised graph is expected to score at or below the real graph if the real relational structure carries information, and to score above it if the real graph is worse than chance-conditional-on-margins. A high randomised AP is a statement about the real graph, not evidence that random relations predict.",
+            "invariants_all_degrees_preserved": true,
+            "invariants_all_node_sets_preserved": true,
+            "invariants_all_simple": true,
+            "lowest_achievable_one_sided_p": 0.024390243902439025,
+            "n_randomisations": 40,
+            "null_model": "N2",
+            "randomised_pooled_ap_max": 0.07380078516349854,
+            "randomised_pooled_ap_median": 0.06709373261902447,
+            "randomised_pooled_ap_min": 0.061179667984737805,
+            "real_above_all_randomisations": false,
+            "real_minus_randomised_median": 0.00047563451832521864,
+            "real_minus_randomised_q025": -0.00607142730189468,
+            "real_minus_randomised_q975": 0.005856610590785648,
+            "real_pooled_ap": 0.06703627857552347,
+            "runtime_seconds": 535.3
+          },
+          "test_labels_sha256": {
+            "2025-10-01": "328313d8ae9a9bf91829042f77de94a90f6442c566b4d8451e48d3aa548ace7d",
+            "2026-01-01": "ff52fb30e9c36cd2a0dc3b1b2e7734f5d4d6497ee5b86820c0dd9085e6685a76",
+            "2026-04-01": "a3217db85909b017fecdec9bc069163e8efa4f549daa30908d7caf59893c87c5"
+          }
+        },
+        "G2_original_defective": {
+          "delta_vs_real_distribution": {
+            "max": 0.005700826204809897,
+            "mean": -0.00773206517079122,
+            "median": -0.006017315562866964,
+            "min": -0.03365617404713027,
+            "n": 40,
+            "q025": -0.02737922806110367,
+            "q975": 0.005700826204809897,
+            "sd": 0.009926172349043878
+          },
+          "per_window": {
+            "2025-10-01": {
+              "draws": 40,
+              "null_beats_real": 13,
+              "null_max": 0.03652924812617863,
+              "null_median": 0.029068166889208387,
+              "null_min": 0.024052732775997003,
+              "real": 0.03013263750032039
+            },
+            "2026-01-01": {
+              "draws": 40,
+              "null_beats_real": 20,
+              "null_max": 0.09845613592107523,
+              "null_median": 0.07740498517448424,
+              "null_min": 0.06498306423245248,
+              "real": 0.07708092377607971
+            },
+            "2026-04-01": {
+              "draws": 40,
+              "null_beats_real": 32,
+              "null_max": 0.2350259876245386,
+              "null_median": 0.17492243107879654,
+              "null_min": 0.11916214095831405,
+              "real": 0.13576095753346834
+            }
+          },
+          "pooled_ap_distribution": {
+            "max": 0.10069245262265372,
+            "mean": 0.07476834374631466,
+            "median": 0.07305359413839044,
+            "min": 0.06133545237071354,
+            "n": 40,
+            "q025": 0.06140095181484142,
+            "q975": 0.10069245262265372,
+            "sd": 0.00992617234904388
+          },
+          "randomisation_test": {
+            "n_randomisations": 40,
+            "note": "Exact one-sided randomisation p-values for the composite null 'the observed graph is an exchangeable draw from the null model'. p_real_is_low is the evidence that the real graph scores at or below the null distribution (i.e. the real topology is worse than degree-matched random); p_real_is_high is the evidence that the real graph carries information the null destroys. Neither is a sampling-confidence statement about AP itself, and neither can fall below 1/(R+1).",
+            "p_real_is_high": 0.7560975609756098,
+            "p_real_is_low": 0.2682926829268293,
+            "randomised_above_real": 30,
+            "randomised_at_or_below_real": 10,
+            "real_pooled_ap": 0.06703627857552347,
+            "resolution": "1/41"
+          },
+          "real_pooled_ap_recorded": 0.06703627857552347,
+          "realisation_count": 40,
+          "role": "Phase 0-3 randomised arm as shipped (degree/weight/time defective)"
+        }
+      },
+      "holdouts": [
+        "2025-10-01",
+        "2026-01-01",
+        "2026-04-01"
+      ],
+      "horizon_quarters": 2,
+      "label": "H2q",
+      "label_hash_sets": {
+        "G2_N1": {
+          "2025-10-01": "328313d8ae9a9bf91829042f77de94a90f6442c566b4d8451e48d3aa548ace7d",
+          "2026-01-01": "ff52fb30e9c36cd2a0dc3b1b2e7734f5d4d6497ee5b86820c0dd9085e6685a76",
+          "2026-04-01": "a3217db85909b017fecdec9bc069163e8efa4f549daa30908d7caf59893c87c5"
+        },
+        "G2_N2": {
+          "2025-10-01": "328313d8ae9a9bf91829042f77de94a90f6442c566b4d8451e48d3aa548ace7d",
+          "2026-01-01": "ff52fb30e9c36cd2a0dc3b1b2e7734f5d4d6497ee5b86820c0dd9085e6685a76",
+          "2026-04-01": "a3217db85909b017fecdec9bc069163e8efa4f549daa30908d7caf59893c87c5"
+        }
+      },
+      "panel": {
+        "base_rate": 0.005378885062903698,
+        "candidates_by_origin": {
+          "2020-01-01": 1634,
+          "2020-04-01": 1636,
+          "2020-07-01": 1675,
+          "2020-10-01": 1679,
+          "2021-01-01": 1678,
+          "2021-04-01": 1687,
+          "2021-07-01": 1691,
+          "2021-10-01": 1730,
+          "2022-01-01": 1727,
+          "2022-04-01": 1727,
+          "2022-07-01": 1724,
+          "2022-10-01": 1724,
+          "2023-01-01": 1725,
+          "2023-04-01": 1726,
+          "2023-07-01": 1730,
+          "2023-10-01": 1730,
+          "2024-01-01": 1730,
+          "2024-04-01": 1726,
+          "2024-07-01": 1723,
+          "2024-10-01": 1720,
+          "2025-01-01": 1722,
+          "2025-04-01": 1722,
+          "2025-07-01": 1721,
+          "2025-10-01": 1716,
+          "2026-01-01": 1716,
+          "2026-04-01": 1714
+        },
+        "coverage_end": "2026-10-15",
+        "coverage_start": "2016-11-01",
+        "entity_count": 51,
+        "holdouts": [
+          "2025-10-01",
+          "2026-01-01",
+          "2026-04-01"
+        ],
+        "n_examples": 44433,
+        "n_positives": 239,
+        "observed_pair_count": 322,
+        "origins": 26,
+        "origins_list": [
+          "2020-01-01",
+          "2020-04-01",
+          "2020-07-01",
+          "2020-10-01",
+          "2021-01-01",
+          "2021-04-01",
+          "2021-07-01",
+          "2021-10-01",
+          "2022-01-01",
+          "2022-04-01",
+          "2022-07-01",
+          "2022-10-01",
+          "2023-01-01",
+          "2023-04-01",
+          "2023-07-01",
+          "2023-10-01",
+          "2024-01-01",
+          "2024-04-01",
+          "2024-07-01",
+          "2024-10-01",
+          "2025-01-01",
+          "2025-04-01",
+          "2025-07-01",
+          "2025-10-01",
+          "2026-01-01",
+          "2026-04-01"
+        ],
+        "positives_by_origin": {
+          "2020-01-01": 6,
+          "2020-04-01": 5,
+          "2020-07-01": 9,
+          "2020-10-01": 6,
+          "2021-01-01": 4,
+          "2021-04-01": 4,
+          "2021-07-01": 7,
+          "2021-10-01": 12,
+          "2022-01-01": 14,
+          "2022-04-01": 10,
+          "2022-07-01": 6,
+          "2022-10-01": 7,
+          "2023-01-01": 8,
+          "2023-04-01": 8,
+          "2023-07-01": 12,
+          "2023-10-01": 12,
+          "2024-01-01": 13,
+          "2024-04-01": 10,
+          "2024-07-01": 9,
+          "2024-10-01": 9,
+          "2025-01-01": 10,
+          "2025-04-01": 7,
+          "2025-07-01": 9,
+          "2025-10-01": 12,
+          "2026-01-01": 15,
+          "2026-04-01": 15
+        },
+        "track_count": 38
+      },
+      "same_test_labels": true
+    },
+    "H4q": {
+      "arms": {
+        "B1_history10": {
+          "per_window_ap": {
+            "2025-04-01": 0.09201343826417606,
+            "2025-07-01": 0.05718490529431635,
+            "2025-10-01": 0.08951797038554919
+          },
+          "pooled_ap": 0.06902968435586031,
+          "role": "weaker non-graph baseline"
+        },
+        "B2_frozen_spec16": {
+          "per_window_ap": {
+            "2025-04-01": 0.10222992753463063,
+            "2025-07-01": 0.0650502196325876,
+            "2025-10-01": 0.08966814082228305
+          },
+          "pooled_ap": 0.07509282998134256,
+          "role": "strong non-graph baseline, frozen control"
+        },
+        "G1_graph": {
+          "per_window_ap": {
+            "2025-04-01": 0.09325238861462994,
+            "2025-07-01": 0.06425813464800698,
+            "2025-10-01": 0.07822424159836533
+          },
+          "pooled_ap": 0.06900345683741682,
+          "role": "real company-technology graph, frozen control"
+        },
+        "G2_N1": {
+          "delta_vs_real_distribution": {
+            "max": -0.000726800686414078,
+            "mean": -0.006881412770679112,
+            "median": -0.006504863920478866,
+            "min": -0.012999403186661568,
+            "n": 40,
+            "q025": -0.012872588104606161,
+            "q975": -0.000726800686414078,
+            "sd": 0.003413040503788121
+          },
+          "invariants_ok": {
+            "all_degrees_preserved": true,
+            "all_node_sets_preserved": true,
+            "all_simple": true
+          },
+          "per_window": {
+            "2025-04-01": {
+              "draws": 40,
+              "null_beats_real": 40,
+              "null_max": 0.14051053702810787,
+              "null_median": 0.11607995665995832,
+              "null_min": 0.10041270692232344,
+              "real": 0.09325238861462994
+            },
+            "2025-07-01": {
+              "draws": 40,
+              "null_beats_real": 23,
+              "null_max": 0.08191105194530061,
+              "null_median": 0.06496264548597515,
+              "null_min": 0.05798810401318341,
+              "real": 0.06425813464800698
+            },
+            "2025-10-01": {
+              "draws": 40,
+              "null_beats_real": 31,
+              "null_max": 0.09800252260614735,
+              "null_median": 0.08139871636801775,
+              "null_min": 0.07349300884110378,
+              "real": 0.07822424159836533
+            }
+          },
+          "pooled_ap_distribution": {
+            "max": 0.08200286002407833,
+            "mean": 0.0758848696080959,
+            "median": 0.07550832075789567,
+            "min": 0.06973025752383087,
+            "n": 40,
+            "q025": 0.07061344973060464,
+            "q975": 0.08200286002407833,
+            "sd": 0.0034130405037881223
+          },
+          "randomisation_test": {
+            "n_randomisations": 40,
+            "note": "Exact one-sided randomisation p-values for the composite null 'the observed graph is an exchangeable draw from the null model'. p_real_is_low is the evidence that the real graph scores at or below the null distribution (i.e. the real topology is worse than degree-matched random); p_real_is_high is the evidence that the real graph carries information the null destroys. Neither is a sampling-confidence statement about AP itself, and neither can fall below 1/(R+1).",
+            "p_real_is_high": 1.0,
+            "p_real_is_low": 0.024390243902439025,
+            "randomised_above_real": 40,
+            "randomised_at_or_below_real": 0,
+            "real_pooled_ap": 0.06900345683741682,
+            "resolution": "1/41"
+          },
+          "realisation_count": 40,
+          "role": "corrected topology null (degree-preserving simple bipartite swap)",
+          "summary_recorded": {
+            "exact_one_sided_randomisation_p": 0.024390243902439025,
+            "fraction_randomisations_beating_real": 1.0,
+            "interpretation_note": "Under a valid null the randomised graph is expected to score at or below the real graph if the real relational structure carries information, and to score above it if the real graph is worse than chance-conditional-on-margins. A high randomised AP is a statement about the real graph, not evidence that random relations predict.",
+            "invariants_all_degrees_preserved": true,
+            "invariants_all_node_sets_preserved": true,
+            "invariants_all_simple": true,
+            "lowest_achievable_one_sided_p": 0.024390243902439025,
+            "n_randomisations": 40,
+            "null_model": "N1",
+            "randomised_pooled_ap_max": 0.08200286002407833,
+            "randomised_pooled_ap_median": 0.07572445018992185,
+            "randomised_pooled_ap_min": 0.06973025752383087,
+            "real_above_all_randomisations": false,
+            "real_minus_randomised_median": -0.006288734488452699,
+            "real_minus_randomised_q025": -0.012872588104606161,
+            "real_minus_randomised_q975": -0.000726800686414078,
+            "real_pooled_ap": 0.06900345683741682,
+            "runtime_seconds": 403.5
+          },
+          "test_labels_sha256": {
+            "2025-04-01": "8e926f22f35f88ca93ca7c7d92eb44bd5b8b452c8d1ed35e1dfb7ac1d83be2d0",
+            "2025-07-01": "3aa4f79ef8ea9eb1c5a4addf66f03d02083d49c54702a9616ea63bde53d4017a",
+            "2025-10-01": "8c6701241e3c4c1d83ee2ef18f4e618d3d38f350e4b8c399bfaffe796c51117d"
+          }
+        },
+        "G2_N2": {
+          "delta_vs_real_distribution": {
+            "max": -0.00015690234267343173,
+            "mean": -0.006692742009510514,
+            "median": -0.006180729675631665,
+            "min": -0.014417137715103431,
+            "n": 40,
+            "q025": -0.012798520191718024,
+            "q975": -0.00015690234267343173,
+            "sd": 0.003238849207034767
+          },
+          "invariants_ok": {
+            "all_degrees_preserved": true,
+            "all_node_sets_preserved": true,
+            "all_simple": true
+          },
+          "per_window": {
+            "2025-04-01": {
+              "draws": 40,
+              "null_beats_real": 40,
+              "null_max": 0.16614089630940504,
+              "null_median": 0.1191479709604312,
+              "null_min": 0.0986500670743822,
+              "real": 0.09325238861462994
+            },
+            "2025-07-01": {
+              "draws": 40,
+              "null_beats_real": 18,
+              "null_max": 0.07443844687393116,
+              "null_median": 0.06410211003493277,
+              "null_min": 0.058377706561801704,
+              "real": 0.06425813464800698
+            },
+            "2025-10-01": {
+              "draws": 40,
+              "null_beats_real": 27,
+              "null_max": 0.09622621832033426,
+              "null_median": 0.08226982825190673,
+              "null_min": 0.06731520756829523,
+              "real": 0.07822424159836533
+            }
+          },
+          "pooled_ap_distribution": {
+            "max": 0.08342059455252022,
+            "mean": 0.07569619884692731,
+            "median": 0.07518418651304845,
+            "min": 0.06916035918009025,
+            "n": 40,
+            "q025": 0.07110329508592828,
+            "q975": 0.08342059455252022,
+            "sd": 0.00323884920703477
+          },
+          "randomisation_test": {
+            "n_randomisations": 40,
+            "note": "Exact one-sided randomisation p-values for the composite null 'the observed graph is an exchangeable draw from the null model'. p_real_is_low is the evidence that the real graph scores at or below the null distribution (i.e. the real topology is worse than degree-matched random); p_real_is_high is the evidence that the real graph carries information the null destroys. Neither is a sampling-confidence statement about AP itself, and neither can fall below 1/(R+1).",
+            "p_real_is_high": 1.0,
+            "p_real_is_low": 0.024390243902439025,
+            "randomised_above_real": 40,
+            "randomised_at_or_below_real": 0,
+            "real_pooled_ap": 0.06900345683741682,
+            "resolution": "1/41"
+          },
+          "realisation_count": 40,
+          "role": "corrected topology + track-activity + per-track time null",
+          "summary_recorded": {
+            "exact_one_sided_randomisation_p": 0.024390243902439025,
+            "fraction_randomisations_beating_real": 1.0,
+            "interpretation_note": "Under a valid null the randomised graph is expected to score at or below the real graph if the real relational structure carries information, and to score above it if the real graph is worse than chance-conditional-on-margins. A high randomised AP is a statement about the real graph, not evidence that random relations predict.",
+            "invariants_all_degrees_preserved": true,
+            "invariants_all_node_sets_preserved": true,
+            "invariants_all_simple": true,
+            "lowest_achievable_one_sided_p": 0.024390243902439025,
+            "n_randomisations": 40,
+            "null_model": "N2",
+            "randomised_pooled_ap_max": 0.08342059455252022,
+            "randomised_pooled_ap_median": 0.07535551698545007,
+            "randomised_pooled_ap_min": 0.06916035918009025,
+            "real_above_all_randomisations": false,
+            "real_minus_randomised_median": -0.0060093992032300425,
+            "real_minus_randomised_q025": -0.012798520191718024,
+            "real_minus_randomised_q975": -0.00015690234267343173,
+            "real_pooled_ap": 0.06900345683741682,
+            "runtime_seconds": 410.7
+          },
+          "test_labels_sha256": {
+            "2025-04-01": "8e926f22f35f88ca93ca7c7d92eb44bd5b8b452c8d1ed35e1dfb7ac1d83be2d0",
+            "2025-07-01": "3aa4f79ef8ea9eb1c5a4addf66f03d02083d49c54702a9616ea63bde53d4017a",
+            "2025-10-01": "8c6701241e3c4c1d83ee2ef18f4e618d3d38f350e4b8c399bfaffe796c51117d"
+          }
+        },
+        "G2_original_defective": {
+          "delta_vs_real_distribution": {
+            "max": -0.00018342630430753792,
+            "mean": -0.0056025244486255284,
+            "median": -0.005111118924360697,
+            "min": -0.01297897726860392,
+            "n": 40,
+            "q025": -0.012322878656513547,
+            "q975": -0.00018342630430753792,
+            "sd": 0.0034481756669907005
+          },
+          "per_window": {
+            "2025-04-01": {
+              "draws": 40,
+              "null_beats_real": 40,
+              "null_max": 0.1362151527035488,
+              "null_median": 0.11023009428736835,
+              "null_min": 0.09413842303200566,
+              "real": 0.09325238861462994
+            },
+            "2025-07-01": {
+              "draws": 40,
+              "null_beats_real": 21,
+              "null_max": 0.07953266029606257,
+              "null_median": 0.06455065220798428,
+              "null_min": 0.05518959958871547,
+              "real": 0.06425813464800698
+            },
+            "2025-10-01": {
+              "draws": 40,
+              "null_beats_real": 33,
+              "null_max": 0.10028629911963606,
+              "null_median": 0.08406354470325966,
+              "null_min": 0.07175240478409546,
+              "real": 0.07822424159836533
+            }
+          },
+          "pooled_ap_distribution": {
+            "max": 0.08198243410602074,
+            "mean": 0.07460598128604232,
+            "median": 0.07411457576177746,
+            "min": 0.06918688314172436,
+            "n": 40,
+            "q025": 0.06960768847392544,
+            "q975": 0.08198243410602074,
+            "sd": 0.0034481756669906987
+          },
+          "randomisation_test": {
+            "n_randomisations": 40,
+            "note": "Exact one-sided randomisation p-values for the composite null 'the observed graph is an exchangeable draw from the null model'. p_real_is_low is the evidence that the real graph scores at or below the null distribution (i.e. the real topology is worse than degree-matched random); p_real_is_high is the evidence that the real graph carries information the null destroys. Neither is a sampling-confidence statement about AP itself, and neither can fall below 1/(R+1).",
+            "p_real_is_high": 1.0,
+            "p_real_is_low": 0.024390243902439025,
+            "randomised_above_real": 40,
+            "randomised_at_or_below_real": 0,
+            "real_pooled_ap": 0.06900345683741682,
+            "resolution": "1/41"
+          },
+          "real_pooled_ap_recorded": 0.06900345683741682,
+          "realisation_count": 40,
+          "role": "Phase 0-3 randomised arm as shipped (degree/weight/time defective)"
+        }
+      },
+      "holdouts": [
+        "2025-04-01",
+        "2025-07-01",
+        "2025-10-01"
+      ],
+      "horizon_quarters": 4,
+      "label": "H4q",
+      "label_hash_sets": {
+        "G2_N1": {
+          "2025-04-01": "8e926f22f35f88ca93ca7c7d92eb44bd5b8b452c8d1ed35e1dfb7ac1d83be2d0",
+          "2025-07-01": "3aa4f79ef8ea9eb1c5a4addf66f03d02083d49c54702a9616ea63bde53d4017a",
+          "2025-10-01": "8c6701241e3c4c1d83ee2ef18f4e618d3d38f350e4b8c399bfaffe796c51117d"
+        },
+        "G2_N2": {
+          "2025-04-01": "8e926f22f35f88ca93ca7c7d92eb44bd5b8b452c8d1ed35e1dfb7ac1d83be2d0",
+          "2025-07-01": "3aa4f79ef8ea9eb1c5a4addf66f03d02083d49c54702a9616ea63bde53d4017a",
+          "2025-10-01": "8c6701241e3c4c1d83ee2ef18f4e618d3d38f350e4b8c399bfaffe796c51117d"
+        }
+      },
+      "panel": {
+        "base_rate": 0.010194376021266736,
+        "candidates_by_origin": {
+          "2020-01-01": 1634,
+          "2020-04-01": 1636,
+          "2020-07-01": 1675,
+          "2020-10-01": 1679,
+          "2021-01-01": 1678,
+          "2021-04-01": 1687,
+          "2021-07-01": 1691,
+          "2021-10-01": 1730,
+          "2022-01-01": 1727,
+          "2022-04-01": 1727,
+          "2022-07-01": 1724,
+          "2022-10-01": 1724,
+          "2023-01-01": 1725,
+          "2023-04-01": 1726,
+          "2023-07-01": 1730,
+          "2023-10-01": 1730,
+          "2024-01-01": 1730,
+          "2024-04-01": 1726,
+          "2024-07-01": 1723,
+          "2024-10-01": 1720,
+          "2025-01-01": 1722,
+          "2025-04-01": 1722,
+          "2025-07-01": 1721,
+          "2025-10-01": 1716
+        },
+        "coverage_end": "2026-10-15",
+        "coverage_start": "2016-11-01",
+        "entity_count": 51,
+        "holdouts": [
+          "2025-04-01",
+          "2025-07-01",
+          "2025-10-01"
+        ],
+        "n_examples": 41003,
+        "n_positives": 418,
+        "observed_pair_count": 322,
+        "origins": 24,
+        "origins_list": [
+          "2020-01-01",
+          "2020-04-01",
+          "2020-07-01",
+          "2020-10-01",
+          "2021-01-01",
+          "2021-04-01",
+          "2021-07-01",
+          "2021-10-01",
+          "2022-01-01",
+          "2022-04-01",
+          "2022-07-01",
+          "2022-10-01",
+          "2023-01-01",
+          "2023-04-01",
+          "2023-07-01",
+          "2023-10-01",
+          "2024-01-01",
+          "2024-04-01",
+          "2024-07-01",
+          "2024-10-01",
+          "2025-01-01",
+          "2025-04-01",
+          "2025-07-01",
+          "2025-10-01"
+        ],
+        "positives_by_origin": {
+          "2020-01-01": 12,
+          "2020-04-01": 11,
+          "2020-07-01": 12,
+          "2020-10-01": 9,
+          "2021-01-01": 9,
+          "2021-04-01": 15,
+          "2021-07-01": 21,
+          "2021-10-01": 21,
+          "2022-01-01": 19,
+          "2022-04-01": 17,
+          "2022-07-01": 14,
+          "2022-10-01": 14,
+          "2023-01-01": 17,
+          "2023-04-01": 19,
+          "2023-07-01": 25,
+          "2023-10-01": 22,
+          "2024-01-01": 21,
+          "2024-04-01": 19,
+          "2024-07-01": 18,
+          "2024-10-01": 16,
+          "2025-01-01": 20,
+          "2025-04-01": 20,
+          "2025-07-01": 23,
+          "2025-10-01": 24
+        },
+        "track_count": 38
+      },
+      "same_test_labels": true
+    }
+  },
+  "primary_metric": "pooled AP over pre-registered holdout origins",
+  "study": "S-028"
+}
