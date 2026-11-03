@@ -1,0 +1,3815 @@
+{
+ "schema": "s028-entity-time-audit-v1",
+ "study": "S-028 graph_early_signal_s028",
+ "title_zh": "关系与时间证据审计（RELATION_AND_TIME_EVIDENCE_AUDIT）",
+ "auditor": "independent data-provenance auditor",
+ "generated_at": "2026-11-04T01:13:30+08:00",
+ "cwd_note": "audit ran with read-only sqlite URIs against the three stores named in meta.provenance",
+ "meta": {
+  "stores": {
+   "research_frozen": {
+    "path": "D:\\DEPPSKK\\worktrees\\integration-v2\\data\\research.sqlite",
+    "bytes": 289443840,
+    "sha256": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+    "sha256_verified_against_prompt": true,
+    "size_verified_against_prompt": true
+   },
+   "product": {
+    "path": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
+    "bytes": 1368469504
+   },
+   "observatory": {
+    "path": "D:\\DEPPSKK\\medradar\\data\\observatory\\observatory.sqlite",
+    "bytes": 1945600
+   }
+  },
+  "table_row_counts": {
+   "research": {
+    "companies": 51,
+    "company_identifiers": 34,
+    "events": 55090,
+    "financial_facts": 43420,
+    "forecast_examples": 47704,
+    "horizon_forecasts": 25,
+    "live_alerts": 0,
+    "live_equity": 0,
+    "live_pending": 0,
+    "live_skips": 0,
+    "llm_verdicts": 0,
+    "market_bars": 95725,
+    "meta": 0,
+    "paper_equity": 0,
+    "paper_orders": 0,
+    "paper_trades": 0,
+    "positions": 0,
+    "prices": 0,
+    "procurement_awards": 3453,
+    "product_codes": 0,
+    "publication_counts": 616,
+    "runs": 0,
+    "signals": 0,
+    "sqlite_sequence": 0,
+    "temporal_edges": 5580,
+    "tracks": 38
+   },
+   "product": {
+    "companies": 89,
+    "events": 375378,
+    "live_alerts": 11,
+    "live_equity": 4,
+    "live_pending": 0,
+    "live_skips": 0,
+    "llm_verdicts": 0,
+    "meta": 5,
+    "paper_equity": 236,
+    "paper_orders": 0,
+    "paper_trades": 38,
+    "positions": 0,
+    "prices": 1898409,
+    "product_codes": 7097,
+    "runs": 14,
+    "signals": 127,
+    "sqlite_sequence": 0,
+    "tracks": 60
+   },
+   "observatory": {
+    "meta": 4,
+    "observation": 400,
+    "observation_change": 400,
+    "observation_mapping": 401,
+    "observation_phase": 400,
+    "observation_status_history": 400,
+    "observation_version": 400,
+    "ops_metric": 2,
+    "runtime_state": 8,
+    "source_failure": 6,
+    "source_state": 3,
+    "sync_checkpoint": 142,
+    "sync_run": 34
+   }
+  },
+  "frozen_input_live_state_tables": {
+   "live_alerts": 0,
+   "live_equity": 0,
+   "live_pending": 0,
+   "live_skips": 0,
+   "llm_verdicts": 0,
+   "paper_orders": 0,
+   "paper_trades": 0,
+   "positions": 0,
+   "signals": 0
+  }
+ },
+ "definitions": {
+  "historical_proxy_asof": {
+   "zh": "用事后回填的、合成的或派生的时间戳把历史事件“放回”过去某一时点的做法；只能用于模拟，不能宣称当时已知。",
+   "en": "backfilled/synthesised as-of clock; simulation only"
+  },
+  "observed_asof": {
+   "zh": "在事件公开后很短时间内（本审计取 <=1 个自然日）就被系统真实观察并落库的时点；这才是真正的前瞻观察。",
+   "en": "genuine prospective first observation, first_seen_at - published_at <= 1 day"
+  }
+ },
+ "A_point_in_time": {
+  "research_events": {
+   "rows": 55090,
+   "first_seen_at_distinct_values": 1,
+   "first_seen_at_values": {
+    "2026-11-01": 55090
+   },
+   "lag_first_seen_minus_published_days": {
+    "min": 0,
+    "max": 3638,
+    "median": 1844.0,
+    "buckets_all_sources": {
+     ">365": 49539,
+     "31-365": 5093,
+     "2-7": 101,
+     "8-30": 356,
+     "0": 1
+    }
+   },
+   "available_at_minus_event_date_days": {
+    "min": 14,
+    "max": 14,
+    "distinct_values": [
+     14
+    ],
+    "median": 14.0,
+    "equal_count": 0,
+    "equal_pct": 0.0
+   },
+   "per_source": {
+    "openfda_device_510k_bulk": {
+     "n": 31219,
+     "first_seen_at_distinct": 1,
+     "first_seen_at_values": {
+      "2026-11-01": 31219
+     },
+     "timestamp_quality": {
+      "estimated": 31219
+     },
+     "as_of_values": {
+      "2026-11-01": 31219
+     },
+     "event_date_range": [
+      "2016-11-01",
+      "2026-10-18"
+     ],
+     "published_at_range": [
+      "2016-11-15T00:00:00",
+      "2026-11-01T00:00:00"
+     ],
+     "available_at_range": [
+      "2016-11-15T00:00:00",
+      "2026-11-01T00:00:00"
+     ],
+     "available_at_distinct_days": 2864,
+     "lag_first_seen_minus_published_buckets": {
+      ">365": 27908,
+      "31-365": 3047,
+      "2-7": 51,
+      "8-30": 212,
+      "0": 1
+     },
+     "lag_available_minus_event_buckets": {
+      "8-30": 31219
+     },
+     "lag_available_minus_published_buckets": {
+      "0": 31219
+     },
+     "nulls": {}
+    },
+    "openfda_device_pma_bulk": {
+     "n": 23871,
+     "first_seen_at_distinct": 1,
+     "first_seen_at_values": {
+      "2026-11-01": 23871
+     },
+     "timestamp_quality": {
+      "estimated": 23871
+     },
+     "as_of_values": {
+      "2026-11-01": 23871
+     },
+     "event_date_range": [
+      "2016-11-01",
+      "2026-10-16"
+     ],
+     "published_at_range": [
+      "2016-11-15T00:00:00",
+      "2026-10-30T00:00:00"
+     ],
+     "available_at_range": [
+      "2016-11-15T00:00:00",
+      "2026-10-30T00:00:00"
+     ],
+     "available_at_distinct_days": 2610,
+     "lag_first_seen_minus_published_buckets": {
+      "31-365": 2046,
+      ">365": 21631,
+      "8-30": 144,
+      "2-7": 50
+     },
+     "lag_available_minus_event_buckets": {
+      "8-30": 23871
+     },
+     "lag_available_minus_published_buckets": {
+      "0": 23871
+     },
+     "nulls": {}
+    }
+   },
+   "genuine_pit": {
+    "definition": "first_seen_at - published_at <= N calendar days",
+    "n_le_0d": 1,
+    "pct_le_0d": 0.0018,
+    "n_le_1d": 1,
+    "pct_le_1d": 0.0018,
+    "n_le_7d": 102,
+    "pct_le_7d": 0.1852,
+    "n_gt_365d": 49539,
+    "pct_gt_365d": 89.9238
+   }
+  },
+  "observatory": {
+   "rows": 400,
+   "observation_origin": {
+    "LIVE": 400
+   },
+   "backfill_reason_values": {
+    "null": 400
+   },
+   "origin_x_source_x_record_type": [
+    {
+     "observation_origin": "LIVE",
+     "source": "europepmc",
+     "record_type": "publication",
+     "n": 237
+    },
+    {
+     "observation_origin": "LIVE",
+     "source": "ctgov",
+     "record_type": "trial",
+     "n": 157
+    },
+    {
+     "observation_origin": "LIVE",
+     "source": "sec_edgar",
+     "record_type": "sec_8k",
+     "n": 4
+    },
+    {
+     "observation_origin": "LIVE",
+     "source": "sec_edgar",
+     "record_type": "sec_10q",
+     "n": 1
+    },
+    {
+     "observation_origin": "LIVE",
+     "source": "sec_edgar",
+     "record_type": "sec_6k",
+     "n": 1
+    }
+   ],
+   "first_seen_at_distinct": 4,
+   "first_seen_at_values": {
+    "2026-11-03T14:39:53Z": 6,
+    "2026-11-03T14:44:26Z": 156,
+    "2026-11-03T14:44:29Z": 237,
+    "2026-11-03T14:49:51Z": 1
+   },
+   "ingested_at_distinct_days": 1,
+   "ledger_created_at": "2026-11-03T14:39:53+00:00",
+   "lag_first_seen_minus_published_days": {
+    "min": 0,
+    "median": 65.0,
+    "max": 7613,
+    "buckets": {
+     "8-30": 68,
+     "31-365": 202,
+     "2-7": 29,
+     "0": 5,
+     ">365": 95,
+     "1": 1
+    }
+   },
+   "prospective": {
+    "definition": "first_seen_at - published_at <= N calendar days",
+    "n_le_0d": 5,
+    "pct_le_0d": 1.25,
+    "n_le_1d": 6,
+    "pct_le_1d": 1.5,
+    "n_le_7d": 35,
+    "pct_le_7d": 8.75,
+    "n_gt_7d": 365,
+    "pct_gt_7d": 91.25
+   },
+   "observation_phase": [
+    {
+     "phase": "INCREMENTAL_DISCOVERY",
+     "method": "reconstructed_from_run_history",
+     "n": 1
+    },
+    {
+     "phase": "INITIAL_DISCOVERY",
+     "method": "reconstructed_from_run_history",
+     "n": 399
+    }
+   ],
+   "version_count_values": {
+    "1": 400
+   },
+   "observation_status": {
+    "ACTIVE": 400
+   },
+   "lag_by_source": {
+    "ctgov": {
+     "le_0d": 0,
+     "1d": 1,
+     "2_7d": 2,
+     "8_30d": 9,
+     "31_365d": 50,
+     "gt_365d": 95,
+     "total": 157,
+     "gt_7d": 154,
+     "le_7d": 3
+    },
+    "europepmc": {
+     "le_0d": 4,
+     "1d": 0,
+     "2_7d": 25,
+     "8_30d": 58,
+     "31_365d": 150,
+     "gt_365d": 0,
+     "total": 237,
+     "gt_7d": 208,
+     "le_7d": 29
+    },
+    "sec_edgar": {
+     "le_0d": 1,
+     "1d": 0,
+     "2_7d": 2,
+     "8_30d": 1,
+     "31_365d": 2,
+     "gt_365d": 0,
+     "total": 6,
+     "gt_7d": 3,
+     "le_7d": 3
+    }
+   },
+   "event_at_range_by_source": {
+    "ctgov": [
+     "1983-01",
+     "2027-03"
+    ],
+    "europepmc": [
+     "2026-08-05",
+     "2026-11-02"
+    ],
+    "sec_edgar": [
+     "2026-09-17",
+     "2026-11-03"
+    ]
+   },
+   "published_at_range_by_source": {
+    "ctgov": [
+     "2005-12-30",
+     "2026-11-02"
+    ],
+    "europepmc": [
+     "2025-12-18",
+     "2026-11-03"
+    ],
+    "sec_edgar": [
+     "2026-09-17T20:19:27+00:00",
+     "2026-11-03T13:11:19+00:00"
+    ]
+   },
+   "prospective_examples": [
+    {
+     "source": "ctgov",
+     "record_type": "trial",
+     "observation_id": "f784e971294ab506d42fbb61f1b0d8aab815aa56",
+     "published_at": "2026-11-02",
+     "first_seen_at": "2026-11-03T14:44:26Z",
+     "lag_days": 1
+    },
+    {
+     "source": "europepmc",
+     "record_type": "publication",
+     "observation_id": "7c901c3b25fe8541c55db5737178ce3ffaca47a2",
+     "published_at": "2026-11-03",
+     "first_seen_at": "2026-11-03T14:44:29Z",
+     "lag_days": 0
+    },
+    {
+     "source": "europepmc",
+     "record_type": "publication",
+     "observation_id": "87cde1871400c3fd8e562d389a765f98c87c834e",
+     "published_at": "2026-11-03",
+     "first_seen_at": "2026-11-03T14:44:29Z",
+     "lag_days": 0
+    },
+    {
+     "source": "europepmc",
+     "record_type": "publication",
+     "observation_id": "144e6bcc14857e29b723f3c90b70d1726acd5cba",
+     "published_at": "2026-11-03",
+     "first_seen_at": "2026-11-03T14:44:29Z",
+     "lag_days": 0
+    },
+    {
+     "source": "europepmc",
+     "record_type": "publication",
+     "observation_id": "713373f71073a1eced5cb8b3a5c10407c5f44329",
+     "published_at": "2026-11-03",
+     "first_seen_at": "2026-11-03T14:44:29Z",
+     "lag_days": 0
+    },
+    {
+     "source": "sec_edgar",
+     "record_type": "sec_6k",
+     "observation_id": "1d35f3d92d01e345cd82bf1b1bf899d084e04f86",
+     "published_at": "2026-11-03T13:11:19+00:00",
+     "first_seen_at": "2026-11-03T14:39:53Z",
+     "lag_days": 0
+    }
+   ],
+   "ledger_integrity": {
+    "observation_mapping_rows": 401,
+    "observation_mapping_distinct_observations": 400,
+    "duplicate_observation_ids": [
+     "25f638d0b688a3698629ce02d7e1a3b9ca26772f"
+    ],
+    "sync_runs": 34,
+    "sync_runs_with_status_ok": 34,
+    "source_failures": 6,
+    "observation_phase_total": 400,
+    "phase_reconstructed_rows": 400
+   }
+  },
+  "verdict_zh": "经核验：research.sqlite.events 的 first_seen_at 只有一个值 2026-11-01，覆盖全部 55,090 行；lag(first_seen-published) 中位数 1844.0 天，>=365 天的占 89.9238%。因此“历史点的首次观察”在冻结研究输入里 100% 是 historical_proxy_asof，真正满足 <=1 天的只有 1 行。",
+  "observatory_verdict_zh": "observatory 400 条观察全部标为 observation_origin=LIVE、backfill_reason 全空，但台账创建时间 2026-11-03T14:39:53+00:00 与全部 first_seen_at 都在同一天；扣除同日抓取这一事实后，真正 <=1 天看到新记录的只有 6 条（1.5%），>7 天的有 365 条（91.25%）。所谓 LIVE 是“采集方式”标签，不是前瞻性证据。"
+ },
+ "B_available_at": {
+  "research": {
+   "distinct_deltas_vs_event_date": [
+    14
+   ],
+   "equal_to_event_date": 0,
+   "equals_published_at_rows": 55090,
+   "verdict_zh": "available_at 既不等于 event_date（0 行相等），也没有任何方差：全部 55,090 行都严格等于 event_date + 14 天，且等于 published_at。这 14 天是构建脚本写死的假设，不是观测到的公开延迟。"
+  },
+  "product": {
+   "rows": 375378,
+   "per_source": {
+    "openfda_drug_drugsfda": {
+     "n": 5326,
+     "first_seen_at_values": {
+      "2026-10-30": 5326
+     },
+     "event_date_range": [
+      "1966-12-14",
+      "2026-10-22"
+     ],
+     "available_minus_event_days": {
+      "min": 0,
+      "median": 0.0,
+      "max": 0,
+      "equal_count": 5326,
+      "equal_pct": 100.0,
+      "n": 5326
+     },
+     "timestamp_quality": {
+      "date": 5326
+     }
+    },
+    "ctgov": {
+     "n": 55592,
+     "first_seen_at_values": {
+      "2026-10-30": 55592
+     },
+     "event_date_range": [
+      "1999-10-19",
+      "2026-10-30"
+     ],
+     "available_minus_event_days": {
+      "min": 0,
+      "median": 0.0,
+      "max": 0,
+      "equal_count": 55592,
+      "equal_pct": 100.0,
+      "n": 55592
+     },
+     "timestamp_quality": {
+      "date": 55592
+     }
+    },
+    "openfda_device_510k": {
+     "n": 176466,
+     "first_seen_at_values": {
+      "2026-10-30": 176466
+     },
+     "event_date_range": [
+      "1976-07-15",
+      "2026-10-18"
+     ],
+     "available_minus_event_days": {
+      "min": 0,
+      "median": 0.0,
+      "max": 0,
+      "equal_count": 176466,
+      "equal_pct": 100.0,
+      "n": 176466
+     },
+     "timestamp_quality": {
+      "date": 176466
+     }
+    },
+    "openfda_device_pma": {
+     "n": 57372,
+     "first_seen_at_values": {
+      "2026-10-30": 57372
+     },
+     "event_date_range": [
+      "1968-10-09",
+      "2026-10-16"
+     ],
+     "available_minus_event_days": {
+      "min": 0,
+      "median": 0.0,
+      "max": 0,
+      "equal_count": 57372,
+      "equal_pct": 100.0,
+      "n": 57372
+     },
+     "timestamp_quality": {
+      "date": 57372
+     }
+    },
+    "openfda_device_recall": {
+     "n": 59646,
+     "first_seen_at_values": {
+      "2026-10-30": 59646
+     },
+     "event_date_range": [
+      "2002-11-01",
+      "2026-10-28"
+     ],
+     "available_minus_event_days": {
+      "min": 0,
+      "median": 0.0,
+      "max": 0,
+      "equal_count": 59646,
+      "equal_pct": 100.0,
+      "n": 59646
+     },
+     "timestamp_quality": {
+      "date": 59646
+     }
+    },
+    "sec_edgar_corpus": {
+     "n": 20976,
+     "first_seen_at_values": {
+      "2026-10-31": 20976
+     },
+     "event_date_range": [
+      "2015-01-02",
+      "2026-10-30"
+     ],
+     "available_minus_event_days": {
+      "min": 0,
+      "median": 0.0,
+      "max": 0,
+      "equal_count": 20976,
+      "equal_pct": 100.0,
+      "n": 20976
+     },
+     "timestamp_quality": {
+      "date": 20976
+     }
+    }
+   },
+   "per_source_equal_pct": {
+    "openfda_drug_drugsfda": 100.0,
+    "ctgov": 100.0,
+    "openfda_device_510k": 100.0,
+    "openfda_device_pma": 100.0,
+    "openfda_device_recall": 100.0,
+    "sec_edgar_corpus": 100.0
+   },
+   "verdict_zh": "product DB 里 6 个来源、375,378 行全部 available_at == event_date，即假定“获批当日即可见”，与 research 库的 +14 天假设互相矛盾。"
+  },
+  "conclusion_zh": "两个库对 available_at 的语义不一致且都是合成量（research=event_date+14d，product=event_date+0d）。历史模拟唯一站得住的“知识时钟”是 event_date 本身（监管决定日），可用 available_at 作为保守外扩界，但必须声明它是假设而非观测。"
+ },
+ "C_relations": {
+  "generated_at": "2026-11-04T01:13:12+08:00",
+  "temporal_edges_inventory": [
+   {
+    "relation": "COMPANY_WINS_CONTRACT",
+    "subject_type": "Company",
+    "object_type": "ProcurementContract",
+    "n_edges": 3372,
+    "distinct_subjects": 22,
+    "distinct_objects": 3372,
+    "valid_time_null": 0,
+    "available_at_null": 0,
+    "available_at_min": "2026-11-01T22:48:28Z",
+    "available_at_max": "2026-11-01T22:48:28Z",
+    "confidence_min": 0.951,
+    "confidence_max": 1.0
+   },
+   {
+    "relation": "COMPANY_DEVELOPS_PRODUCT",
+    "subject_type": "Company",
+    "object_type": "Product",
+    "n_edges": 1087,
+    "distinct_subjects": 51,
+    "distinct_objects": 516,
+    "valid_time_null": 0,
+    "available_at_null": 0,
+    "available_at_min": "2016-11-15T00:00:00",
+    "available_at_max": "2026-10-16T00:00:00",
+    "confidence_min": 1.0,
+    "confidence_max": 1.0
+   },
+   {
+    "relation": "PRODUCT_BELONGS_TO_TECHNOLOGY",
+    "subject_type": "Product",
+    "object_type": "Technology",
+    "n_edges": 1087,
+    "distinct_subjects": 516,
+    "distinct_objects": 38,
+    "valid_time_null": 0,
+    "available_at_null": 0,
+    "available_at_min": "2016-11-15T00:00:00",
+    "available_at_max": "2026-10-16T00:00:00",
+    "confidence_min": 1.0,
+    "confidence_max": 1.0
+   },
+   {
+    "relation": "COMPANY_FILES_FINANCIAL_FACT",
+    "subject_type": "Company",
+    "object_type": "FinancialFiling",
+    "n_edges": 34,
+    "distinct_subjects": 34,
+    "distinct_objects": 34,
+    "valid_time_null": 34,
+    "available_at_null": 0,
+    "available_at_min": "2026-11-01T22:48:06Z",
+    "available_at_max": "2026-11-01T22:48:06Z",
+    "confidence_min": 1.0,
+    "confidence_max": 1.0
+   }
+  ],
+  "temporal_edges_total": 5580,
+  "subject_types": [
+   "Company",
+   "Product"
+  ],
+  "object_types": [
+   "FinancialFiling",
+   "ProcurementContract",
+   "Product",
+   "Technology"
+  ],
+  "absence": {
+   "self_typed_edges": 0,
+   "company_to_company_edges": 0,
+   "object_id_matching_a_company_key": 0,
+   "subject_id_matching_a_company_key": 4493,
+   "alias_strings_that_are_another_companys_canonical_key": {},
+   "company_to_technology_direct_edges": 0,
+   "company_to_track_edges": 0,
+   "company_to_trial_edges": 0,
+   "company_to_publication_edges": 0,
+   "company_to_event_edges": 0,
+   "object_types_present": [
+    "FinancialFiling",
+    "ProcurementContract",
+    "Product",
+    "Technology"
+   ]
+  },
+  "edge_coverage": {
+   "events_rows_total": 55090,
+   "events_with_company_key": 21670,
+   "events_with_company_pct": 39.3356,
+   "events_with_company_and_track": 18031,
+   "events_with_company_and_track_pct": 32.7301,
+   "company_develops_product_edges": 1087,
+   "distinct_products_in_edges": 516,
+   "edge_to_event_ratio": 5.0162,
+   "company_track_pairs_from_events": 334
+  },
+  "edge_time_inheritance": {
+   "joined_edges": 1087,
+   "valid_time_equals_event_event_date": 533,
+   "available_at_equals_event_available_at": 533
+  },
+  "edges_per_year": {
+   "COMPANY_FILES_FINANCIAL_FACT": {
+    "NULL": 34
+   },
+   "COMPANY_WINS_CONTRACT": {
+    "2007": 1,
+    "2008": 1,
+    "2009": 1,
+    "2010": 2,
+    "2011": 7,
+    "2012": 14,
+    "2013": 32,
+    "2014": 77,
+    "2015": 69,
+    "2016": 455,
+    "2017": 514,
+    "2018": 378,
+    "2019": 218,
+    "2020": 267,
+    "2021": 237,
+    "2022": 260,
+    "2023": 302,
+    "2024": 203,
+    "2025": 175,
+    "2026": 159
+   },
+   "COMPANY_DEVELOPS_PRODUCT": {
+    "2016": 149,
+    "2017": 270,
+    "2018": 135,
+    "2019": 102,
+    "2020": 85,
+    "2021": 60,
+    "2022": 60,
+    "2023": 61,
+    "2024": 57,
+    "2025": 55,
+    "2026": 53
+   },
+   "PRODUCT_BELONGS_TO_TECHNOLOGY": {
+    "2016": 149,
+    "2017": 270,
+    "2018": 135,
+    "2019": 102,
+    "2020": 85,
+    "2021": 60,
+    "2022": 60,
+    "2023": 61,
+    "2024": 57,
+    "2025": 55,
+    "2026": 53
+   }
+  },
+  "procurement_awards": {
+   "rows": 3453,
+   "company_key_null": 81,
+   "award_date_null": 3453,
+   "announcement_date_null": 3453,
+   "available_at_null": 0,
+   "pit_usable_sum": 0,
+   "available_at_min": "2026-11-01T22:48:28Z",
+   "available_at_max": "2026-11-01T22:48:28Z",
+   "match_confidence_avg": 0.935012,
+   "buyer_null": 0,
+   "supplier_null": 0,
+   "distinct_available_at": 1,
+   "matched_alias_null": 0,
+   "company_keys_with_contracts": 22,
+   "distinct_buyers": 7
+  },
+  "financial_facts": {
+   "rows": 43420,
+   "companies": 32,
+   "valid_time_null": 0,
+   "available_at_null": 0,
+   "valid_time_range": [
+    "2006-09-30",
+    "2026-09-30"
+   ],
+   "available_at_range": [
+    "2009-04-23",
+    "2026-10-30"
+   ],
+   "payload_null": 0,
+   "distinct_available_at": 949,
+   "company_identifiers_schemes": [
+    [
+     "SEC_CIK",
+     34
+    ]
+   ]
+  },
+  "non_edge_company_evidence": {
+   "company_identifiers": 34,
+   "publication_counts": 616,
+   "publication_counts_companies": 51,
+   "publication_counts_year_range": [
+    2014,
+    2026
+   ],
+   "publication_counts_grain": "company_key x year aggregate only (source=openalex_group_by_publication_year)",
+   "companies": 51,
+   "companies_with_alias_list": 51,
+   "mean_aliases_per_company": 3.49,
+   "max_aliases_per_company": 18
+  }
+ },
+ "D_entity_leakage": {
+  "generated_at": "2026-11-04T01:13:13+08:00",
+  "companies": 51,
+  "aliases_total": 178,
+  "aliases_per_company": {
+   "medtronic": 12,
+   "johnson_johnson_medtech": 18,
+   "abbott": 9,
+   "boston_scientific": 5,
+   "stryker": 10,
+   "zimmer_biomet": 7,
+   "edwards_lifesciences": 2,
+   "intuitive_surgical": 2,
+   "siemens_healthineers": 5,
+   "philips": 6,
+   "ge_healthcare": 4,
+   "bd": 7,
+   "baxter": 3,
+   "resmed": 2,
+   "masimo": 2,
+   "dexcom": 2,
+   "insulet": 2,
+   "tandem_diabetes": 2,
+   "penumbra": 2,
+   "globus_medical": 2,
+   "hologic": 2,
+   "teleflex": 2,
+   "cooper_companies": 4,
+   "alcon": 3,
+   "dentsply_sirona": 3,
+   "integra_lifesciences": 2,
+   "irhythm": 2,
+   "inspire_medical": 2,
+   "procept_biorobotics": 2,
+   "atricure": 2,
+   "nevro": 2,
+   "orthofix": 2,
+   "merit_medical": 2,
+   "icu_medical": 2,
+   "ambu": 2,
+   "invacare": 1,
+   "smith_nephew": 3,
+   "terumo": 3,
+   "fresenius_medical_care": 3,
+   "cook_medical": 4,
+   "olympus": 3,
+   "wl_gore": 4,
+   "biotronik": 1,
+   "bbraun": 3,
+   "medline": 2,
+   "karl_storz": 1,
+   "pentax_medical": 2,
+   "fujifilm": 3,
+   "canon_medical": 2,
+   "steris": 2,
+   "envista": 3
+  },
+  "alias_list_carries_no_metadata": "companies.aliases is a bare JSON string array: no parent/child direction, no acquisition date, no evidence id, no confidence, no source for any element",
+  "alias_assignment_validation": {
+   "mapped_applicant_company_pairs": 512,
+   "pairs_matched_by_alias_prefix": 431,
+   "pairs_matched_by_substring_only": 73,
+   "pairs_with_no_alias_substring": 8,
+   "note": "the 8-ish pairs with no alias substring prove the frozen build used an additional rule not stored in the database, e.g. token match on 'BD'"
+  },
+  "alias_event_ranges_top40": [
+   {
+    "company": "medtronic",
+    "alias": "MEDTRONIC",
+    "n_events": 4251,
+    "n_applicant_strings": 28,
+    "first_event_date": "2016-11-02",
+    "last_event_date": "2026-10-16",
+    "acquisition": null
+   },
+   {
+    "company": "boston_scientific",
+    "alias": "BOSTON SCIENTIFIC",
+    "n_events": 2885,
+    "n_applicant_strings": 8,
+    "first_event_date": "2016-11-01",
+    "last_event_date": "2026-10-15",
+    "acquisition": null
+   },
+   {
+    "company": "abbott",
+    "alias": "ABBOTT MEDICAL",
+    "n_events": 1831,
+    "n_applicant_strings": 3,
+    "first_event_date": "2016-11-06",
+    "last_event_date": "2026-10-15",
+    "acquisition": null
+   },
+   {
+    "company": "medtronic",
+    "alias": "MEDTRONIC NEUROMODULATION",
+    "n_events": 762,
+    "n_applicant_strings": 1,
+    "first_event_date": "2016-11-10",
+    "last_event_date": "2026-10-09",
+    "acquisition": null
+   },
+   {
+    "company": "edwards_lifesciences",
+    "alias": "EDWARDS LIFESCIENCES",
+    "n_events": 687,
+    "n_applicant_strings": 2,
+    "first_event_date": "2016-11-10",
+    "last_event_date": "2026-10-01",
+    "acquisition": null
+   },
+   {
+    "company": "biotronik",
+    "alias": "BIOTRONIK",
+    "n_events": 660,
+    "n_applicant_strings": 3,
+    "first_event_date": "2016-12-19",
+    "last_event_date": "2026-10-16",
+    "acquisition": null
+   },
+   {
+    "company": "wl_gore",
+    "alias": "GORE ASSOCIATES",
+    "n_events": 514,
+    "n_applicant_strings": 1,
+    "first_event_date": "2016-11-29",
+    "last_event_date": "2026-10-08",
+    "acquisition": null
+   },
+   {
+    "company": "medtronic",
+    "alias": "MEDTRONIC VASCULAR",
+    "n_events": 466,
+    "n_applicant_strings": 3,
+    "first_event_date": "2016-11-17",
+    "last_event_date": "2026-10-16",
+    "acquisition": null
+   },
+   {
+    "company": "medtronic",
+    "alias": "MEDTRONIC MINIMED",
+    "n_events": 394,
+    "n_applicant_strings": 3,
+    "first_event_date": "2016-11-08",
+    "last_event_date": "2026-09-29",
+    "acquisition": null
+   },
+   {
+    "company": "siemens_healthineers",
+    "alias": "SIEMENS HEALTHCARE",
+    "n_events": 336,
+    "n_applicant_strings": 9,
+    "first_event_date": "2016-11-15",
+    "last_event_date": "2026-09-22",
+    "acquisition": null
+   },
+   {
+    "company": "stryker",
+    "alias": "STRYKER",
+    "n_events": 309,
+    "n_applicant_strings": 21,
+    "first_event_date": "2016-11-01",
+    "last_event_date": "2026-10-09",
+    "acquisition": null
+   },
+   {
+    "company": "johnson_johnson_medtech",
+    "alias": "JOHNSON & JOHNSON",
+    "n_events": 303,
+    "n_applicant_strings": 6,
+    "first_event_date": "2016-11-18",
+    "last_event_date": "2026-10-16",
+    "acquisition": null
+   },
+   {
+    "company": "alcon",
+    "alias": "ALCON LABORATORIES",
+    "n_events": 296,
+    "n_applicant_strings": 3,
+    "first_event_date": "2016-11-16",
+    "last_event_date": "2026-10-01",
+    "acquisition": null
+   },
+   {
+    "company": "johnson_johnson_medtech",
+    "alias": "BIOSENSE WEBSTER",
+    "n_events": 280,
+    "n_applicant_strings": 2,
+    "first_event_date": "2016-11-22",
+    "last_event_date": "2026-09-15",
+    "acquisition": null
+   },
+   {
+    "company": "siemens_healthineers",
+    "alias": "SIEMENS MEDICAL SOLUTIONS",
+    "n_events": 270,
+    "n_applicant_strings": 6,
+    "first_event_date": "2016-11-16",
+    "last_event_date": "2026-09-25",
+    "acquisition": null
+   },
+   {
+    "company": "johnson_johnson_medtech",
+    "alias": "DEPUY",
+    "n_events": 262,
+    "n_applicant_strings": 10,
+    "first_event_date": "2016-11-22",
+    "last_event_date": "2026-10-09",
+    "acquisition": null
+   },
+   {
+    "company": "integra_lifesciences",
+    "alias": "INTEGRA LIFESCIENCES",
+    "n_events": 255,
+    "n_applicant_strings": 4,
+    "first_event_date": "2016-12-06",
+    "last_event_date": "2026-09-18",
+    "acquisition": null
+   },
+   {
+    "company": "cooper_companies",
+    "alias": "COOPERVISION",
+    "n_events": 243,
+    "n_applicant_strings": 1,
+    "first_event_date": "2016-11-03",
+    "last_event_date": "2026-09-02",
+    "acquisition": null
+   },
+   {
+    "company": "abbott",
+    "alias": "ABBOTT VASCULAR",
+    "n_events": 240,
+    "n_applicant_strings": 5,
+    "first_event_date": "2016-11-22",
+    "last_event_date": "2026-10-01",
+    "acquisition": null
+   },
+   {
+    "company": "abbott",
+    "alias": "ABBOTT",
+    "n_events": 232,
+    "n_applicant_strings": 11,
+    "first_event_date": "2016-11-22",
+    "last_event_date": "2026-10-02",
+    "acquisition": null
+   },
+   {
+    "company": "smith_nephew",
+    "alias": "SMITH & NEPHEW",
+    "n_events": 218,
+    "n_applicant_strings": 8,
+    "first_event_date": "2016-11-09",
+    "last_event_date": "2026-09-11",
+    "acquisition": null
+   },
+   {
+    "company": "abbott",
+    "alias": "ABBOTT LABORATORIES",
+    "n_events": 209,
+    "n_applicant_strings": 3,
+    "first_event_date": "2016-11-10",
+    "last_event_date": "2026-09-23",
+    "acquisition": null
+   },
+   {
+    "company": "ge_healthcare",
+    "alias": "GE MEDICAL SYSTEMS",
+    "n_events": 187,
+    "n_applicant_strings": 16,
+    "first_event_date": "2016-11-15",
+    "last_event_date": "2026-10-02",
+    "acquisition": null
+   },
+   {
+    "company": "philips",
+    "alias": "PHILIPS MEDICAL SYSTEMS",
+    "n_events": 178,
+    "n_applicant_strings": 13,
+    "first_event_date": "2016-11-23",
+    "last_event_date": "2026-08-07",
+    "acquisition": null
+   },
+   {
+    "company": "medtronic",
+    "alias": "MEDTRONIC SOFAMOR DANEK",
+    "n_events": 163,
+    "n_applicant_strings": 4,
+    "first_event_date": "2016-11-16",
+    "last_event_date": "2026-08-26",
+    "acquisition": null
+   },
+   {
+    "company": "johnson_johnson_medtech",
+    "alias": "ETHICON INC",
+    "n_events": 159,
+    "n_applicant_strings": 1,
+    "first_event_date": "2017-03-11",
+    "last_event_date": "2026-08-27",
+    "acquisition": null
+   },
+   {
+    "company": "hologic",
+    "alias": "HOLOGIC INC",
+    "n_events": 158,
+    "n_applicant_strings": 1,
+    "first_event_date": "2017-01-10",
+    "last_event_date": "2026-09-02",
+    "acquisition": null
+   },
+   {
+    "company": "bd",
+    "alias": "BECTON DICKINSON",
+    "n_events": 141,
+    "n_applicant_strings": 7,
+    "first_event_date": "2016-12-09",
+    "last_event_date": "2026-10-16",
+    "acquisition": null
+   },
+   {
+    "company": "alcon",
+    "alias": "ALCON RESEARCH",
+    "n_events": 138,
+    "n_applicant_strings": 2,
+    "first_event_date": "2016-11-03",
+    "last_event_date": "2026-10-01",
+    "acquisition": null
+   },
+   {
+    "company": "medtronic",
+    "alias": "MEDTRONIC CRYOCATH",
+    "n_events": 134,
+    "n_applicant_strings": 1,
+    "first_event_date": "2016-11-17",
+    "last_event_date": "2026-09-25",
+    "acquisition": null
+   },
+   {
+    "company": "cook_medical",
+    "alias": "COOK INCORPORATED",
+    "n_events": 130,
+    "n_applicant_strings": 1,
+    "first_event_date": "2016-11-22",
+    "last_event_date": "2024-03-08",
+    "acquisition": null
+   },
+   {
+    "company": "abbott",
+    "alias": "ABBOTT DIABETES CARE",
+    "n_events": 127,
+    "n_applicant_strings": 2,
+    "first_event_date": "2017-01-12",
+    "last_event_date": "2026-09-01",
+    "acquisition": null
+   },
+   {
+    "company": "abbott",
+    "alias": "ST JUDE MEDICAL",
+    "n_events": 126,
+    "n_applicant_strings": 8,
+    "first_event_date": "2016-11-22",
+    "last_event_date": "2026-08-07",
+    "acquisition": {
+     "subsidiary_alias": "ST JUDE MEDICAL",
+     "parent": "abbott",
+     "close": "2017-01",
+     "precision": "month",
+     "url": "https://abbott.mediaroom.com/2017-01-04-Abbott-Completes-the-Acquisition-of-St-Jude-Medical"
+    }
+   },
+   {
+    "company": "baxter",
+    "alias": "BAXTER HEALTHCARE",
+    "n_events": 126,
+    "n_applicant_strings": 7,
+    "first_event_date": "2016-11-14",
+    "last_event_date": "2026-08-07",
+    "acquisition": null
+   },
+   {
+    "company": "steris",
+    "alias": "STERIS CORP",
+    "n_events": 126,
+    "n_applicant_strings": 4,
+    "first_event_date": "2017-01-27",
+    "last_event_date": "2026-06-24",
+    "acquisition": null
+   },
+   {
+    "company": "inspire_medical",
+    "alias": "INSPIRE MEDICAL SYSTEMS",
+    "n_events": 121,
+    "n_applicant_strings": 1,
+    "first_event_date": "2016-12-05",
+    "last_event_date": "2026-10-13",
+    "acquisition": null
+   },
+   {
+    "company": "zimmer_biomet",
+    "alias": "BIOMET",
+    "n_events": 120,
+    "n_applicant_strings": 10,
+    "first_event_date": "2016-11-03",
+    "last_event_date": "2026-10-06",
+    "acquisition": {
+     "subsidiary_alias": "BIOMET",
+     "parent": "zimmer_biomet",
+     "close": "2015-06",
+     "precision": "unverified",
+     "url": null
+    }
+   },
+   {
+    "company": "boston_scientific",
+    "alias": "GUIDANT",
+    "n_events": 118,
+    "n_applicant_strings": 1,
+    "first_event_date": "2016-11-03",
+    "last_event_date": "2026-10-03",
+    "acquisition": null
+   },
+   {
+    "company": "intuitive_surgical",
+    "alias": "INTUITIVE SURGICAL",
+    "n_events": 117,
+    "n_applicant_strings": 2,
+    "first_event_date": "2017-01-19",
+    "last_event_date": "2026-10-14",
+    "acquisition": null
+   },
+   {
+    "company": "zimmer_biomet",
+    "alias": "ZIMMER INC",
+    "n_events": 112,
+    "n_applicant_strings": 1,
+    "first_event_date": "2016-11-16",
+    "last_event_date": "2026-10-16",
+    "acquisition": null
+   }
+  ],
+  "aliases_with_events": 144,
+  "aliases_without_events": 34,
+  "acquisition_lookahead": {
+   "rule": "an event filed by a still-independent subsidiary BEFORE the parent's acquisition close is attributed to the parent by the frozen build",
+   "verified_entries": [
+    {
+     "subsidiary_alias": "COVIDIEN",
+     "parent": "medtronic",
+     "close": "2015-01",
+     "precision": "month",
+     "url": "https://www.sec.gov/Archives/edgar/data/1613103/000119312515020681/d859999dex991.htm",
+     "n_events": 102,
+     "first_event_date": "2016-11-14",
+     "last_event_date": "2026-09-15",
+     "events_before_acquisition_close": 0,
+     "pre_acquisition_product_codes": 0
+    },
+    {
+     "subsidiary_alias": "C R BARD",
+     "parent": "bd",
+     "close": "2017-12",
+     "precision": "month",
+     "url": "https://investors.bd.com/sec-filings/all-sec-filings/content/0001193125-17-383523/d517273dex991.htm",
+     "n_events": 107,
+     "first_event_date": "2016-11-04",
+     "last_event_date": "2026-09-29",
+     "events_before_acquisition_close": 19,
+     "pre_acquisition_product_codes": 16
+    },
+    {
+     "subsidiary_alias": "BARD ACCESS SYSTEMS",
+     "parent": "bd",
+     "close": "2017-12",
+     "precision": "month",
+     "url": "https://investors.bd.com/sec-filings/all-sec-filings/content/0001193125-17-383523/d517273dex991.htm",
+     "n_events": 15,
+     "first_event_date": "2019-11-01",
+     "last_event_date": "2025-09-05",
+     "events_before_acquisition_close": 0,
+     "pre_acquisition_product_codes": 0
+    },
+    {
+     "subsidiary_alias": "CAREFUSION",
+     "parent": "bd",
+     "close": "2015-03",
+     "precision": "month",
+     "url": "https://news.bd.com/2015-03-17-Becton-Dickinson-Completes-Acquisition-Of-CareFusion",
+     "n_events": 9,
+     "first_event_date": "2017-01-18",
+     "last_event_date": "2025-10-30",
+     "events_before_acquisition_close": 0,
+     "pre_acquisition_product_codes": 0
+    },
+    {
+     "subsidiary_alias": "ST JUDE MEDICAL",
+     "parent": "abbott",
+     "close": "2017-01",
+     "precision": "month",
+     "url": "https://abbott.mediaroom.com/2017-01-04-Abbott-Completes-the-Acquisition-of-St-Jude-Medical",
+     "n_events": 126,
+     "first_event_date": "2016-11-22",
+     "last_event_date": "2026-08-07",
+     "events_before_acquisition_close": 6,
+     "pre_acquisition_product_codes": 4
+    },
+    {
+     "subsidiary_alias": "WRIGHT MEDICAL",
+     "parent": "stryker",
+     "close": "2020-11",
+     "precision": "month",
+     "url": "https://www.nasdaq.com/press-release/stryker-completes-acquisition-of-wright-medical-2020-11-11",
+     "n_events": 9,
+     "first_event_date": "2017-03-06",
+     "last_event_date": "2026-06-16",
+     "events_before_acquisition_close": 1,
+     "pre_acquisition_product_codes": 1
+    },
+    {
+     "subsidiary_alias": "MAKO SURGICAL",
+     "parent": "stryker",
+     "close": "2013-12",
+     "precision": "month",
+     "url": "https://investors.stryker.com/press-releases/news-details/2013/Stryker-Completes-Acquisition-of-MAKO-Surgical-Corp/default.aspx",
+     "n_events": 16,
+     "first_event_date": "2017-04-18",
+     "last_event_date": "2026-02-25",
+     "events_before_acquisition_close": 0,
+     "pre_acquisition_product_codes": 0
+    },
+    {
+     "subsidiary_alias": "VARIAN MEDICAL SYSTEMS",
+     "parent": "siemens_healthineers",
+     "close": "2021-04",
+     "precision": "month",
+     "url": "https://www.siemens-healthineers.com/press/releases/varian-closing",
+     "n_events": 92,
+     "first_event_date": "2016-11-17",
+     "last_event_date": "2026-08-03",
+     "events_before_acquisition_close": 36,
+     "pre_acquisition_product_codes": 5
+    },
+    {
+     "subsidiary_alias": "SHOCKWAVE MEDICAL",
+     "parent": "johnson_johnson_medtech",
+     "close": "2024-05",
+     "precision": "month",
+     "url": "https://www.investor.jnj.com/investor-news/news-details/2024/Johnson--Johnson-Completes-Acquisition-of-Shockwave-Medical/",
+     "n_events": 37,
+     "first_event_date": "2016-12-22",
+     "last_event_date": "2026-09-11",
+     "events_before_acquisition_close": 22,
+     "pre_acquisition_product_codes": 2
+    },
+    {
+     "subsidiary_alias": "TOSHIBA MEDICAL",
+     "parent": "canon_medical",
+     "close": "2016-12",
+     "precision": "month",
+     "url": "https://global.canon/en/news/2016/20161219.html",
+     "n_events": 3,
+     "first_event_date": "2017-06-16",
+     "last_event_date": "2017-11-17",
+     "events_before_acquisition_close": 0,
+     "pre_acquisition_product_codes": 0
+    },
+    {
+     "subsidiary_alias": "NUVASIVE",
+     "parent": "globus_medical",
+     "close": null,
+     "precision": "unverified",
+     "url": null,
+     "n_events": 29,
+     "first_event_date": "2017-03-07",
+     "last_event_date": "2026-06-18"
+    },
+    {
+     "subsidiary_alias": "SMITHS MEDICAL",
+     "parent": "icu_medical",
+     "close": "2023-01",
+     "precision": "unverified",
+     "url": null,
+     "n_events": 18,
+     "first_event_date": "2017-05-24",
+     "last_event_date": "2024-05-31"
+    },
+    {
+     "subsidiary_alias": "BIOMET",
+     "parent": "zimmer_biomet",
+     "close": "2015-06",
+     "precision": "unverified",
+     "url": null,
+     "n_events": 120,
+     "first_event_date": "2016-11-03",
+     "last_event_date": "2026-10-06"
+    },
+    {
+     "subsidiary_alias": "AESCULAP",
+     "parent": "bbraun",
+     "close": null,
+     "precision": "unverified",
+     "url": null,
+     "n_events": 39,
+     "first_event_date": "2016-12-14",
+     "last_event_date": "2026-10-02"
+    }
+   ],
+   "total_pre_acquisition_events_attributed_to_parents": 84
+  },
+  "company_alias_composition": {
+   "medtronic": {
+    "total_events": 6282,
+    "events_via_acquired_aliases": 102,
+    "pct_via_acquired_aliases": 1.6237,
+    "acquired_aliases": [
+     {
+      "alias": "COVIDIEN",
+      "n": 102,
+      "close": "2015-01"
+     }
+    ]
+   },
+   "abbott": {
+    "total_events": 2784,
+    "events_via_acquired_aliases": 126,
+    "pct_via_acquired_aliases": 4.5259,
+    "acquired_aliases": [
+     {
+      "alias": "ST JUDE MEDICAL",
+      "n": 126,
+      "close": "2017-01"
+     }
+    ]
+   },
+   "siemens_healthineers": {
+    "total_events": 719,
+    "events_via_acquired_aliases": 92,
+    "pct_via_acquired_aliases": 12.7955,
+    "acquired_aliases": [
+     {
+      "alias": "VARIAN MEDICAL SYSTEMS",
+      "n": 92,
+      "close": "2021-04"
+     }
+    ]
+   },
+   "stryker": {
+    "total_events": 460,
+    "events_via_acquired_aliases": 25,
+    "pct_via_acquired_aliases": 5.4348,
+    "acquired_aliases": [
+     {
+      "alias": "WRIGHT MEDICAL",
+      "n": 9,
+      "close": "2020-11"
+     },
+     {
+      "alias": "MAKO SURGICAL",
+      "n": 16,
+      "close": "2013-12"
+     }
+    ]
+   },
+   "johnson_johnson_medtech": {
+    "total_events": 1326,
+    "events_via_acquired_aliases": 37,
+    "pct_via_acquired_aliases": 2.7903,
+    "acquired_aliases": [
+     {
+      "alias": "SHOCKWAVE MEDICAL",
+      "n": 37,
+      "close": "2024-05"
+     }
+    ]
+   },
+   "bd": {
+    "total_events": 297,
+    "events_via_acquired_aliases": 131,
+    "pct_via_acquired_aliases": 44.1077,
+    "acquired_aliases": [
+     {
+      "alias": "C R BARD",
+      "n": 107,
+      "close": "2017-12"
+     },
+     {
+      "alias": "BARD ACCESS SYSTEMS",
+      "n": 15,
+      "close": "2017-12"
+     },
+     {
+      "alias": "CAREFUSION",
+      "n": 9,
+      "close": "2015-03"
+     }
+    ]
+   },
+   "canon_medical": {
+    "total_events": 106,
+    "events_via_acquired_aliases": 3,
+    "pct_via_acquired_aliases": 2.8302,
+    "acquired_aliases": [
+     {
+      "alias": "TOSHIBA MEDICAL",
+      "n": 3,
+      "close": "2016-12"
+     }
+    ]
+   }
+  },
+  "n_parents_with_verified_acquired_aliases": 7,
+  "applicant_strings_declaring_parentage": {
+   "marker_hits": {
+    "SUBSIDIARY": 35,
+    "WHOLLY OWNED": 1,
+    "PART OF": 26,
+    "A DIVISION OF": 8,
+    "(AKA": 7
+   },
+   "total_events_with_declared_parentage": 77,
+   "pct_of_all_events": 0.1398
+  },
+  "mapping_null_rates": {
+   "openfda_device_510k_bulk": {
+    "rows": 31219,
+    "company_key_null": 25932,
+    "company_key_null_pct": 83.0648,
+    "track_id_null": 12765,
+    "track_id_null_pct": 40.8886,
+    "product_code_null": 13,
+    "product_code_null_pct": 0.0416
+   },
+   "openfda_device_pma_bulk": {
+    "rows": 23871,
+    "company_key_null": 7488,
+    "company_key_null_pct": 31.3686,
+    "track_id_null": 4543,
+    "track_id_null_pct": 19.0315,
+    "product_code_null": 110,
+    "product_code_null_pct": 0.4608
+   }
+  },
+  "applicant_strings": {
+   "distinct_applicant_raw_510k": 10063,
+   "distinct_applicant_raw_pma": 445,
+   "companies_table": 51,
+   "companies_with_ticker": 44,
+   "companies_with_cik_column": 0,
+   "company_identifiers_rows": 34
+  },
+  "ambiguous_applicant_strings": {
+   "n": 0,
+   "examples": []
+  }
+ },
+ "E_track_coverage": {
+  "generated_at": "2026-11-04T01:13:14+08:00",
+  "mapping_artifacts": {
+   "config/product_code_tracks.json": {
+    "entries": 1958,
+    "shape": "dict product_code -> track_id (no dates, no confidence)",
+    "sample": {
+     "BRW": "dental",
+     "BRX": "respiratory",
+     "BRY": "respiratory",
+     "BSD": "ivd_poct",
+     "BST": "endoscopy"
+    }
+   },
+   "config/tracks_device.json": {
+    "tracks": 50,
+    "product_codes_embedded": 0,
+    "keyword_lists": {
+     "surgical_robotics": 9,
+     "ep_pfa": 9,
+     "structural_heart": 7,
+     "cardiac_rhythm": 6,
+     "heart_failure": 4,
+     "coronary": 5
+    },
+    "note": "Hierarchical medical-device registry. Each track has domain/domain_zh and machine-readable frontier_keywords. Existing track ids and generated product-code mappings remain compatible; longest keyword wins."
+   },
+   "research.sqlite.product_codes": {
+    "rows": 0,
+    "meaning": "the frozen input ships an EMPTY product_codes table: code->track is not reproducible in-database"
+   }
+  },
+  "event_track_classification": {
+   "track_null": {
+    "events": 17308,
+    "pct": 31.4177,
+    "distinct_codes": 1241
+   },
+   "track_set_but_code_absent_from_config": {
+    "events": 2089,
+    "pct": 3.792,
+    "distinct_codes": 283
+   },
+   "config_code_to_track_agrees": {
+    "events": 35693,
+    "pct": 64.7903,
+    "distinct_codes": 928
+   }
+  },
+  "keyword_fallback": {
+   "events_without_code_in_config_map": 2089,
+   "events_whose_device_text_contains_an_assigned_track_keyword": 1764,
+   "events_not_explained_by_keywords": 325,
+   "keyword_hit_pct": 84.4423,
+   "counter_examples": [
+    {
+     "product_code": "MRW",
+     "track_id": "spine",
+     "device_name": "AEGIS Anterior Lumbar Plate System, ALC Dynamized Fixation System, Anterior ISOLA Spine Sy"
+    },
+    {
+     "product_code": "FGE",
+     "track_id": "coronary",
+     "device_name": "Reliant Multistage Dilatation Balloon Catheter"
+    },
+    {
+     "product_code": "PSU",
+     "track_id": "ivd_molecular",
+     "device_name": "ipsogen JAK2 RGQ PCR Kit"
+    },
+    {
+     "product_code": "LKF",
+     "track_id": "coronary",
+     "device_name": "Rösch Thurmond Fallopian Tube Catheterization Set, Fallopian Tube Catheterization Set, and"
+    },
+    {
+     "product_code": "DJC",
+     "track_id": "ivd_poct",
+     "device_name": "BIO-VENTURE Rapid Amphetamine Test Cassette for OTC Use, BIO-VENTURE Rapid Oxazepam Test C"
+    },
+    {
+     "product_code": "MQB",
+     "track_id": "imaging_mr_ct",
+     "device_name": "Nexus DR Digital X-ray Imaging System"
+    },
+    {
+     "product_code": "MQB",
+     "track_id": "imaging_mr_ct",
+     "device_name": "Nexus DR Digital X-ray Imaging System (with PaxScan 4343RC and PaxScan 4343Rv3)"
+    },
+    {
+     "product_code": "GMQ",
+     "track_id": "ivd_poct",
+     "device_name": "Gold Standard Diagnostics (GSD) AIX1000 Rapid Plasma Reagin (RPR) Automated Test System"
+    }
+   ],
+   "interpretation": "the residual track assignments cannot be reproduced from either shipped mapping artifact; they look like a keyword/curation fallback whose rule and version are not recorded in the frozen input"
+  },
+  "product_codes": {
+   "distinct_codes_in_events": 2202,
+   "codes_in_config_map": 1958,
+   "codes_used_and_mapped": 928,
+   "codes_used_not_mapped": 1274,
+   "codes_used_not_mapped_pct": 57.8565
+  },
+  "late_appearing_codes": {
+   "2020+": {
+    "codes": 720,
+    "events": 2468,
+    "pct_events": 4.4799
+   },
+   "2022+": {
+    "codes": 487,
+    "events": 1348,
+    "pct_events": 2.4469
+   },
+   "2024+": {
+    "codes": 275,
+    "events": 616,
+    "pct_events": 1.1182
+   }
+  },
+  "codes_last_seen_before_2020": {
+   "codes": 260,
+   "events": 427
+  },
+  "top_late_codes": [
+   {
+    "product_code": "QZI",
+    "first": "2023-12-13",
+    "n": 105,
+    "track": [
+     "ep_pfa"
+    ]
+   },
+   {
+    "product_code": "NPW",
+    "first": "2024-02-01",
+    "n": 31,
+    "track": [
+     "structural_heart"
+    ]
+   },
+   {
+    "product_code": "QYI",
+    "first": "2023-11-07",
+    "n": 29,
+    "track": [
+     "ep_pfa"
+    ]
+   },
+   {
+    "product_code": "QRL",
+    "first": "2022-02-17",
+    "n": 27,
+    "track": []
+   },
+   {
+    "product_code": "QPT",
+    "first": "2022-03-01",
+    "n": 27,
+    "track": [
+     "ortho_joint"
+    ]
+   },
+   {
+    "product_code": "NPS",
+    "first": "2024-04-01",
+    "n": 23,
+    "track": [
+     "structural_heart"
+    ]
+   },
+   {
+    "product_code": "NXW",
+    "first": "2024-04-26",
+    "n": 20,
+    "track": []
+   },
+   {
+    "product_code": "QSK",
+    "first": "2022-04-19",
+    "n": 20,
+    "track": []
+   },
+   {
+    "product_code": "QRK",
+    "first": "2022-07-15",
+    "n": 17,
+    "track": []
+   },
+   {
+    "product_code": "QVG",
+    "first": "2023-04-04",
+    "n": 17,
+    "track": []
+   },
+   {
+    "product_code": "QYT",
+    "first": "2023-11-09",
+    "n": 14,
+    "track": [
+     "ivd_immuno"
+    ]
+   },
+   {
+    "product_code": "SCA",
+    "first": "2024-10-07",
+    "n": 13,
+    "track": [
+     "respiratory"
+    ]
+   }
+  ],
+  "per_year_missingness": [
+   {
+    "year": "2016",
+    "events": 956,
+    "track_id_null": 300,
+    "track_id_null_pct": 31.3808,
+    "company_key_null": 519,
+    "company_key_null_pct": 54.2887,
+    "company_or_track_missing": 590,
+    "company_or_track_missing_pct": 61.7155
+   },
+   {
+    "year": "2017",
+    "events": 5917,
+    "track_id_null": 1820,
+    "track_id_null_pct": 30.7588,
+    "company_key_null": 3311,
+    "company_key_null_pct": 55.9574,
+    "company_or_track_missing": 3756,
+    "company_or_track_missing_pct": 63.4781
+   },
+   {
+    "year": "2018",
+    "events": 5852,
+    "track_id_null": 1787,
+    "track_id_null_pct": 30.5366,
+    "company_key_null": 3303,
+    "company_key_null_pct": 56.4422,
+    "company_or_track_missing": 3763,
+    "company_or_track_missing_pct": 64.3028
+   },
+   {
+    "year": "2019",
+    "events": 5556,
+    "track_id_null": 1778,
+    "track_id_null_pct": 32.0014,
+    "company_key_null": 3207,
+    "company_key_null_pct": 57.7214,
+    "company_or_track_missing": 3666,
+    "company_or_track_missing_pct": 65.9827
+   },
+   {
+    "year": "2020",
+    "events": 5426,
+    "track_id_null": 1647,
+    "track_id_null_pct": 30.3539,
+    "company_key_null": 3105,
+    "company_key_null_pct": 57.2245,
+    "company_or_track_missing": 3475,
+    "company_or_track_missing_pct": 64.0435
+   },
+   {
+    "year": "2021",
+    "events": 5227,
+    "track_id_null": 1797,
+    "track_id_null_pct": 34.3792,
+    "company_key_null": 3213,
+    "company_key_null_pct": 61.4693,
+    "company_or_track_missing": 3528,
+    "company_or_track_missing_pct": 67.4957
+   },
+   {
+    "year": "2022",
+    "events": 5301,
+    "track_id_null": 1826,
+    "track_id_null_pct": 34.4463,
+    "company_key_null": 3378,
+    "company_key_null_pct": 63.7238,
+    "company_or_track_missing": 3664,
+    "company_or_track_missing_pct": 69.119
+   },
+   {
+    "year": "2023",
+    "events": 5531,
+    "track_id_null": 1777,
+    "track_id_null_pct": 32.128,
+    "company_key_null": 3562,
+    "company_key_null_pct": 64.4007,
+    "company_or_track_missing": 3929,
+    "company_or_track_missing_pct": 71.036
+   },
+   {
+    "year": "2024",
+    "events": 5359,
+    "track_id_null": 1629,
+    "track_id_null_pct": 30.3975,
+    "company_key_null": 3397,
+    "company_key_null_pct": 63.3887,
+    "company_or_track_missing": 3712,
+    "company_or_track_missing_pct": 69.2667
+   },
+   {
+    "year": "2025",
+    "events": 5447,
+    "track_id_null": 1625,
+    "track_id_null_pct": 29.8329,
+    "company_key_null": 3517,
+    "company_key_null_pct": 64.5677,
+    "company_or_track_missing": 3830,
+    "company_or_track_missing_pct": 70.3139
+   },
+   {
+    "year": "2026",
+    "events": 4518,
+    "track_id_null": 1322,
+    "track_id_null_pct": 29.2607,
+    "company_key_null": 2908,
+    "company_key_null_pct": 64.3648,
+    "company_or_track_missing": 3146,
+    "company_or_track_missing_pct": 69.6326
+   }
+  ],
+  "tracks": {
+   "n_tracks_in_table": 38,
+   "n_tracks_used": 38,
+   "tracks_unused": 0,
+   "usage": [
+    {
+     "track_id": "cardiac_rhythm",
+     "events": 5270,
+     "companies": 9,
+     "first": "2016-11-01",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "imaging_mr_ct",
+     "events": 2192,
+     "companies": 20,
+     "first": "2016-11-03",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "dental",
+     "events": 1950,
+     "companies": 12,
+     "first": "2016-11-02",
+     "last": "2026-10-13"
+    },
+    {
+     "track_id": "spine",
+     "events": 1860,
+     "companies": 7,
+     "first": "2016-11-01",
+     "last": "2026-10-07"
+    },
+    {
+     "track_id": "ortho_joint",
+     "events": 1825,
+     "companies": 10,
+     "first": "2016-11-01",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "ophthalmology",
+     "events": 1643,
+     "companies": 5,
+     "first": "2016-11-03",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "structural_heart",
+     "events": 1512,
+     "companies": 5,
+     "first": "2016-11-10",
+     "last": "2026-10-13"
+    },
+    {
+     "track_id": "urology",
+     "events": 1263,
+     "companies": 16,
+     "first": "2016-11-01",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "neurostimulation",
+     "events": 1246,
+     "companies": 5,
+     "first": "2016-11-16",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "ep_pfa",
+     "events": 1191,
+     "companies": 6,
+     "first": "2016-11-15",
+     "last": "2026-10-15"
+    },
+    {
+     "track_id": "ivd_molecular",
+     "events": 1177,
+     "companies": 3,
+     "first": "2016-11-07",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "medical_ai",
+     "events": 1164,
+     "companies": 26,
+     "first": "2016-11-04",
+     "last": "2026-10-15"
+    },
+    {
+     "track_id": "peripheral_vascular",
+     "events": 1164,
+     "companies": 13,
+     "first": "2016-11-01",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "coronary",
+     "events": 1098,
+     "companies": 11,
+     "first": "2016-11-18",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "aesthetics",
+     "events": 1078,
+     "companies": 2,
+     "first": "2016-11-01",
+     "last": "2026-10-14"
+    },
+    {
+     "track_id": "trauma",
+     "events": 1062,
+     "companies": 9,
+     "first": "2016-11-03",
+     "last": "2026-10-15"
+    },
+    {
+     "track_id": "endoscopy",
+     "events": 998,
+     "companies": 21,
+     "first": "2016-11-01",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "ivd_immuno",
+     "events": 929,
+     "companies": 3,
+     "first": "2016-11-10",
+     "last": "2026-09-23"
+    },
+    {
+     "track_id": "neurovascular",
+     "events": 923,
+     "companies": 10,
+     "first": "2016-11-10",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "imaging_us",
+     "events": 840,
+     "companies": 13,
+     "first": "2016-11-01",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "wound_care",
+     "events": 804,
+     "companies": 12,
+     "first": "2016-11-03",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "surgical_energy",
+     "events": 765,
+     "companies": 18,
+     "first": "2016-11-02",
+     "last": "2026-09-17"
+    },
+    {
+     "track_id": "heart_failure",
+     "events": 736,
+     "companies": 2,
+     "first": "2016-11-02",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "vascular_access",
+     "events": 707,
+     "companies": 21,
+     "first": "2016-11-03",
+     "last": "2026-10-15"
+    },
+    {
+     "track_id": "patient_monitoring",
+     "events": 641,
+     "companies": 10,
+     "first": "2016-11-03",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "respiratory",
+     "events": 570,
+     "companies": 12,
+     "first": "2016-11-01",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "diabetes_cgm",
+     "events": 526,
+     "companies": 5,
+     "first": "2016-11-05",
+     "last": "2026-10-09"
+    },
+    {
+     "track_id": "wearable_remote",
+     "events": 457,
+     "companies": 8,
+     "first": "2017-01-12",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "rehab_exo",
+     "events": 420,
+     "companies": 5,
+     "first": "2016-11-01",
+     "last": "2026-10-14"
+    },
+    {
+     "track_id": "ent",
+     "events": 400,
+     "companies": 2,
+     "first": "2016-11-22",
+     "last": "2026-10-09"
+    },
+    {
+     "track_id": "insulin_delivery",
+     "events": 378,
+     "companies": 5,
+     "first": "2016-11-08",
+     "last": "2026-09-29"
+    },
+    {
+     "track_id": "dialysis",
+     "events": 256,
+     "companies": 9,
+     "first": "2016-11-03",
+     "last": "2026-09-09"
+    },
+    {
+     "track_id": "general_surgery",
+     "events": 238,
+     "companies": 9,
+     "first": "2016-12-01",
+     "last": "2026-10-15"
+    },
+    {
+     "track_id": "infection_control",
+     "events": 210,
+     "companies": 3,
+     "first": "2016-11-04",
+     "last": "2026-10-16"
+    },
+    {
+     "track_id": "ivd_poct",
+     "events": 113,
+     "companies": 4,
+     "first": "2016-11-04",
+     "last": "2026-09-04"
+    },
+    {
+     "track_id": "surgical_robotics",
+     "events": 112,
+     "companies": 1,
+     "first": "2017-01-19",
+     "last": "2026-09-08"
+    },
+    {
+     "track_id": "womens_health",
+     "events": 43,
+     "companies": 1,
+     "first": "2017-06-15",
+     "last": "2026-08-14"
+    },
+    {
+     "track_id": "cmf",
+     "events": 21,
+     "companies": 1,
+     "first": "2016-12-01",
+     "last": "2026-06-18"
+    }
+   ]
+  },
+  "taxonomy_vintage": {
+   "tracks_table_updated_at": "2026-11-01T22:46:09Z",
+   "config_product_code_tracks_updated": null,
+   "note": "code->track is a single undated mapping shipped with the 2026 product; assigning 2016-2021 filings to today's 38-track taxonomy is an anachronism the study must declare, although it does not leak future event values"
+  }
+ },
+ "F_research_coverage": {
+  "generated_at": "2026-11-04T01:13:15+08:00",
+  "research_input": {
+   "event_sources": [
+    {
+     "source": "openfda_device_510k_bulk",
+     "kind": "510k",
+     "n": 31219
+    },
+    {
+     "source": "openfda_device_pma_bulk",
+     "kind": "pma",
+     "n": 23871
+    }
+   ],
+   "tables_holding_company_level_evidence": [
+    "company_identifiers",
+    "events",
+    "financial_facts",
+    "procurement_awards",
+    "publication_counts",
+    "temporal_edges"
+   ],
+   "has_trial_table": false,
+   "has_publication_record_table": false,
+   "publication_counts": {
+    "rows": 616,
+    "companies": 51,
+    "years": [
+     2014,
+     2026
+    ],
+    "sources": [
+     [
+      "openalex_group_by_publication_year",
+      616
+     ]
+    ],
+    "columns": [
+     "company_key",
+     "year",
+     "works",
+     "source",
+     "retrieved_at"
+    ],
+    "grain": "company_key x year only: works count, no paper id, no author, no institution"
+   }
+  },
+  "product_trials": {
+   "rows": 55592,
+   "distinct_lead_sponsor": 4527,
+   "company_key_nonnull": 38715,
+   "distinct_company_key": 84,
+   "match_confidence_tiers": [
+    {
+     "tier": "0<mc<0.90 (candidate only)",
+     "n": 8311
+    },
+    {
+     "tier": ">=0.90 (accepted)",
+     "n": 38715
+    },
+    {
+     "tier": "mc=0 (no match)",
+     "n": 8566
+    }
+   ],
+   "event_date_equals_first_posted": [
+    55592,
+    55592
+   ],
+   "has_start_date_in_payload": 55143,
+   "event_date_range": [
+    "1999-10-19",
+    "2026-10-30"
+   ],
+   "first_seen_at_values": [
+    [
+     "2026-10-30",
+     55592
+    ]
+   ],
+   "trials_mapped_to_frozen_roster": 4367,
+   "roster_companies_with_trials": 46,
+   "roster_trials_per_company": [
+    {
+     "company": "abbott",
+     "n": 840
+    },
+    {
+     "company": "medtronic",
+     "n": 624
+    },
+    {
+     "company": "alcon",
+     "n": 580
+    },
+    {
+     "company": "boston_scientific",
+     "n": 379
+    },
+    {
+     "company": "cooper_companies",
+     "n": 175
+    },
+    {
+     "company": "philips",
+     "n": 130
+    },
+    {
+     "company": "ge_healthcare",
+     "n": 127
+    },
+    {
+     "company": "zimmer_biomet",
+     "n": 124
+    },
+    {
+     "company": "masimo",
+     "n": 105
+    },
+    {
+     "company": "fresenius_medical_care",
+     "n": 101
+    },
+    {
+     "company": "biotronik",
+     "n": 98
+    },
+    {
+     "company": "stryker",
+     "n": 89
+    },
+    {
+     "company": "edwards_lifesciences",
+     "n": 88
+    },
+    {
+     "company": "bbraun",
+     "n": 84
+    },
+    {
+     "company": "resmed",
+     "n": 80
+    },
+    {
+     "company": "smith_nephew",
+     "n": 76
+    },
+    {
+     "company": "baxter",
+     "n": 58
+    },
+    {
+     "company": "cook_medical",
+     "n": 55
+    },
+    {
+     "company": "terumo",
+     "n": 51
+    },
+    {
+     "company": "integra_lifesciences",
+     "n": 49
+    },
+    {
+     "company": "bd",
+     "n": 41
+    },
+    {
+     "company": "dentsply_sirona",
+     "n": 40
+    },
+    {
+     "company": "medline",
+     "n": 35
+    },
+    {
+     "company": "siemens_healthineers",
+     "n": 34
+    },
+    {
+     "company": "olympus",
+     "n": 28
+    },
+    {
+     "company": "atricure",
+     "n": 27
+    },
+    {
+     "company": "intuitive_surgical",
+     "n": 25
+    },
+    {
+     "company": "fujifilm",
+     "n": 23
+    },
+    {
+     "company": "insulet",
+     "n": 20
+    },
+    {
+     "company": "globus_medical",
+     "n": 19
+    },
+    {
+     "company": "dexcom",
+     "n": 16
+    },
+    {
+     "company": "envista",
+     "n": 16
+    },
+    {
+     "company": "merit_medical",
+     "n": 15
+    },
+    {
+     "company": "penumbra",
+     "n": 15
+    },
+    {
+     "company": "hologic",
+     "n": 14
+    },
+    {
+     "company": "tandem_diabetes",
+     "n": 14
+    },
+    {
+     "company": "procept_biorobotics",
+     "n": 11
+    },
+    {
+     "company": "inspire_medical",
+     "n": 9
+    },
+    {
+     "company": "ambu",
+     "n": 8
+    },
+    {
+     "company": "johnson_johnson_medtech",
+     "n": 8
+    },
+    {
+     "company": "nevro",
+     "n": 8
+    },
+    {
+     "company": "pentax_medical",
+     "n": 8
+    },
+    {
+     "company": "teleflex",
+     "n": 7
+    },
+    {
+     "company": "orthofix",
+     "n": 6
+    },
+    {
+     "company": "icu_medical",
+     "n": 4
+    },
+    {
+     "company": "irhythm",
+     "n": 3
+    }
+   ],
+   "accepted_match_confidence_threshold": 0.9,
+   "company_key_nonnull_pct": 69.6413,
+   "rows_with_match_confidence": 47026
+  },
+  "observatory_research": {
+   "sources": [
+    {
+     "source": "europepmc",
+     "record_type": "publication",
+     "n": 237
+    },
+    {
+     "source": "ctgov",
+     "record_type": "trial",
+     "n": 157
+    },
+    {
+     "source": "sec_edgar",
+     "record_type": "sec_8k",
+     "n": 4
+    },
+    {
+     "source": "sec_edgar",
+     "record_type": "sec_10q",
+     "n": 1
+    },
+    {
+     "source": "sec_edgar",
+     "record_type": "sec_6k",
+     "n": 1
+    }
+   ],
+   "mappings": [
+    {
+     "entity_method": "europepmc_affiliation_query",
+     "entity_status": "PENDING_REVIEW",
+     "track_method": null,
+     "n": 238
+    },
+    {
+     "entity_method": "ctgov_roster_alias",
+     "entity_status": "MAPPED",
+     "track_method": null,
+     "n": 64
+    },
+    {
+     "entity_method": null,
+     "entity_status": "UNMAPPED",
+     "track_method": null,
+     "n": 44
+    },
+    {
+     "entity_method": "ctgov_roster_alias",
+     "entity_status": "MAPPED",
+     "track_method": "ctgov_keyword",
+     "n": 32
+    },
+    {
+     "entity_method": null,
+     "entity_status": "UNMAPPED",
+     "track_method": "ctgov_keyword",
+     "n": 17
+    },
+    {
+     "entity_method": "sec_cik_exact",
+     "entity_status": "MAPPED",
+     "track_method": null,
+     "n": 6
+    }
+   ],
+   "europepmc_payload_keys": [
+    "author_string",
+    "date_of_creation",
+    "date_of_revision",
+    "doi",
+    "electronic_publication_date",
+    "europepmc_id",
+    "first_index_date",
+    "first_publication_date",
+    "journal",
+    "language",
+    "pmcid",
+    "pmid",
+    "pub_types",
+    "pub_year",
+    "publication_status",
+    "published_at_source_field",
+    "source",
+    "source_record_id",
+    "title"
+   ],
+   "institution_field_present": false,
+   "author_field_present": true,
+   "mapped_pending_review": 238,
+   "mapped_accepted": 102,
+   "unmapped": 61
+  },
+  "buildable": {
+   "company_trial_sponsor_relation": {
+    "in_frozen_research_input": false,
+    "in_product_db_only": true,
+    "why": "the frozen 55,090-row event set is 510(k)+PMA only; ctgov exists only in the 1.3 GB product DB, whose 55,592 trials resolve to the frozen roster only 4367 times"
+   },
+   "company_publication_relation": {
+    "paper_level": false,
+    "aggregate_only": true,
+    "why": "frozen input stores openalex works-per-year per company (616 rows, 2014-2026) with no paper identifiers; the only paper-level records are 238 europepmc observations in the observatory, of which 237 are PENDING_REVIEW"
+   },
+   "company_institution_relation": {
+    "buildable": false,
+    "why": "no affiliation/institution field exists in any store; europepmc records keep author_string (names) only, and the affiliation is used as a search predicate (AFF:\"Medtronic\"), never stored as a data attribute"
+   },
+   "paper_author_relation": {
+    "buildable": "partially, 237 records",
+    "why": "author_string is a comma-separated free-text name list; no ORCID/author ids"
+   },
+   "institution_identifier_scheme": {
+    "present": false,
+    "why": "company_identifiers only carries scheme=SEC_CIK (34 rows); no ROR/GRID/LEI/ORCID"
+   }
+  }
+ },
+ "G_positive_sample": {
+  "generated_at": "2026-11-04T01:13:25+08:00",
+  "payload_field_verification": {
+   "n_510k_rows": 31219,
+   "rows_with_clearance_type_field": 31219,
+   "clearance_type_values": {
+    "Traditional": 25603,
+    "Direct": 321,
+    "Special": 4685,
+    "Abbreviated": 527,
+    "Dual Track": 76,
+    "Post-NSE": 7
+   },
+   "n_pma_rows": 23871,
+   "rows_with_supplement_number_field": 23871,
+   "pma_original_flag": {
+    "empty_supplement_number_true": 344,
+    "empty_supplement_number_false": 23527
+   },
+   "supplement_type_of_original_pmas": {
+    "": 344
+   },
+   "conclusion": "both fields exist on 100% of their rows; 'Traditional' is one of 6 clearance_type values; PMA originality must be tested as empty supplement_number (344 rows)"
+  },
+  "qualifying_events": {
+   "rows_total": 55090,
+   "n_510k_traditional": 25603,
+   "n_pma_original": 344,
+   "n_total": 25947,
+   "pct_of_all_events": 47.0993,
+   "definition": "(kind=510k AND payload.clearance_type='Traditional') OR (kind=pma AND payload.supplement_number IS NULL/empty)"
+  },
+  "sensitivity": {
+   "traditional_only_510k": 25603,
+   "all_510k": 31219,
+   "traditional_plus_special_510k": 30288,
+   "pma_original_empty_supplement": 344,
+   "all_pma": 23871
+  },
+  "per_year": {
+   "qualifying_total": {
+    "2016": 419,
+    "2017": 2660,
+    "2018": 2552,
+    "2019": 2381,
+    "2020": 2376,
+    "2021": 2542,
+    "2022": 2747,
+    "2023": 2760,
+    "2024": 2577,
+    "2025": 2695,
+    "2026": 2238
+   },
+   "qualifying_510k_traditional": {
+    "2016": 415,
+    "2017": 2614,
+    "2018": 2521,
+    "2019": 2349,
+    "2020": 2342,
+    "2021": 2511,
+    "2022": 2725,
+    "2023": 2725,
+    "2024": 2544,
+    "2025": 2655,
+    "2026": 2202
+   },
+   "qualifying_pma_original": {
+    "2016": 4,
+    "2017": 46,
+    "2018": 31,
+    "2019": 32,
+    "2020": 34,
+    "2021": 31,
+    "2022": 22,
+    "2023": 35,
+    "2024": 33,
+    "2025": 40,
+    "2026": 36
+   }
+  },
+  "company_track_pairs": {
+   "qualifying_events_with_company_and_track": 2885,
+   "usable_pct_of_qualifying": 11.1188,
+   "qualifying_events_without_company_or_track": 23062,
+   "dropped_pct": 88.8812,
+   "n_pairs_with_at_least_one_qualifying_event": 303,
+   "n_companies": 49,
+   "n_tracks": 38,
+   "first_entry_events_per_year": {
+    "2016": 30,
+    "2017": 101,
+    "2018": 47,
+    "2019": 29,
+    "2020": 15,
+    "2021": 12,
+    "2022": 16,
+    "2023": 15,
+    "2024": 15,
+    "2025": 13,
+    "2026": 10
+   },
+   "pairs_first_entry_left_censored_2016": 30,
+   "pct_pairs_left_censored_2016": 9.901,
+   "median_events_per_pair": 4,
+   "pairs_with_single_event": 82,
+   "pairs_with_single_event_pct": 27.0627
+  },
+  "entry_hazard_by_year": [
+   {
+    "year": "2017",
+    "pairs_already_entered": 131,
+    "new_first_entries": 101,
+    "pairs_still_zero": 172
+   },
+   {
+    "year": "2018",
+    "pairs_already_entered": 178,
+    "new_first_entries": 47,
+    "pairs_still_zero": 125
+   },
+   {
+    "year": "2019",
+    "pairs_already_entered": 207,
+    "new_first_entries": 29,
+    "pairs_still_zero": 96
+   },
+   {
+    "year": "2020",
+    "pairs_already_entered": 222,
+    "new_first_entries": 15,
+    "pairs_still_zero": 81
+   },
+   {
+    "year": "2021",
+    "pairs_already_entered": 234,
+    "new_first_entries": 12,
+    "pairs_still_zero": 69
+   },
+   {
+    "year": "2022",
+    "pairs_already_entered": 250,
+    "new_first_entries": 16,
+    "pairs_still_zero": 53
+   },
+   {
+    "year": "2023",
+    "pairs_already_entered": 265,
+    "new_first_entries": 15,
+    "pairs_still_zero": 38
+   },
+   {
+    "year": "2024",
+    "pairs_already_entered": 280,
+    "new_first_entries": 15,
+    "pairs_still_zero": 23
+   },
+   {
+    "year": "2025",
+    "pairs_already_entered": 293,
+    "new_first_entries": 13,
+    "pairs_still_zero": 10
+   },
+   {
+    "year": "2026",
+    "pairs_already_entered": 303,
+    "new_first_entries": 10,
+    "pairs_still_zero": 0
+   }
+  ],
+  "graph_density": {
+   "distinct_company_track_pairs_from_all_events": 334,
+   "distinct_company_track_pairs_qualifying_only": 303,
+   "share": 90.7186,
+   "companies_with_any_qualifying_pair": 49,
+   "companies_total": 51,
+   "tracks_total": 38
+  },
+  "window": {
+   "min_event_date": "2016-11-01",
+   "max_event_date": "2026-10-18",
+   "min_published_at": "2016-11-15T00:00:00",
+   "max_published_at": "2026-11-01T00:00:00",
+   "note": "the frozen input is a 10-year sliding window ending 2026-10-18/2026-10-16; pairs whose first filing predates 2016-11 cannot be distinguished from new entrants, which is why the 2016 first-entry count is not a hazard estimate"
+  }
+ },
+ "crosschecks": {
+  "generated_at": "2026-11-04T01:13:28+08:00",
+  "event_date_is_decision_date": {
+   "rows_equal": 55090,
+   "rows_differ": 0,
+   "pct_equal": 100.0,
+   "check": "events.event_date == payload.decision_date"
+  },
+  "date_received_before_decision": {
+   "rows": 55079,
+   "pct": 99.98
+  },
+  "fed_reg_notice_date": {
+   "rows_with_field": 461,
+   "equals_published_at": 15,
+   "earlier_than_published_at": 317,
+   "examples": [
+    {
+     "fed_reg_notice_date": "2023-07-14",
+     "decision_date": "2023-06-08",
+     "published_at": "2023-06-22"
+    },
+    {
+     "fed_reg_notice_date": "2017-02-17",
+     "decision_date": "2017-02-14",
+     "published_at": "2017-02-28"
+    },
+    {
+     "fed_reg_notice_date": "2022-03-04",
+     "decision_date": "2022-02-28",
+     "published_at": "2022-03-14"
+    },
+    {
+     "fed_reg_notice_date": "2017-08-28",
+     "decision_date": "2017-08-01",
+     "published_at": "2017-08-15"
+    },
+    {
+     "fed_reg_notice_date": "2019-05-03",
+     "decision_date": "2019-04-26",
+     "published_at": "2019-05-10"
+    }
+   ],
+   "interpretation": "fed_reg_notice_date is the only genuine public-disclosure date in any payload and it exists for 461 PMA rows; the build ignored it and used decision_date+14 everywhere instead"
+  },
+  "published_at_provenance": {
+   "rule_observed": "published_at = event_date + 14 days (100% of 55,090 rows, zero variance)",
+   "real_source_field": null,
+   "payload_date_fields_510k": [
+    "decision_date",
+    "date_received"
+   ],
+   "payload_date_fields_pma": [
+    "decision_date",
+    "date_received",
+    "fed_reg_notice_date"
+   ],
+   "conclusion": "no openFDA device field carries the first-public-availability timestamp; the +14 day offset is an assumption baked in by the builder, not an observed publication latency"
+  },
+  "timestamp_quality": {
+   "research": [
+    {
+     "value": "estimated",
+     "n": 55090
+    }
+   ],
+   "research_distinct": 1
+  },
+  "as_of": {
+   "values": [
+    {
+     "as_of": "2026-11-01",
+     "n": 55090
+    }
+   ],
+   "meaning": "as_of is the pull date (2026-11-01), identical to first_seen_at; it is NOT an as-of clock for each event"
+  },
+  "pairs": {
+   "distinct_company_track_pairs": 334,
+   "companies_with_pairs": 51,
+   "companies_total": 51,
+   "tracks_with_pairs": 38,
+   "tracks_total": 38,
+   "events_with_company_and_track": 18031
+  }
+ },
+ "relation_types": [
+  {
+   "id": "R1_company_track_regulatory_filing",
+   "name_zh": "公司→技术赛道（监管申报事件直连）",
+   "name_en": "Company->Technology(track) via regulatory filing event",
+   "1_relation_definition": {
+    "zh": "若事件 e 的 company_key=c 且 track_id=t，则在 t 所属年份建立 c-(t 赛道) 关系；关系的 valid_time 取该事件的 event_date。这是一条“事件即关系”的隐式边，研究输入里并没有把它物化成一张边表。",
+    "en": "implicit edge: company_key x track_id co-occurrence on one regulatory event; valid_time = event_date"
+   },
+   "2_raw_evidence_source": {
+    "table": "events",
+    "source_column_values": [
+     "openfda_device_510k_bulk",
+     "openfda_device_pma_bulk"
+    ],
+    "fields": [
+     "payload.applicant",
+     "payload.product_code",
+     "track_id (derived)",
+     "config/product_code_tracks.json"
+    ],
+    "kind_values": [
+     "510k",
+     "pma"
+    ],
+    "row_count": 55090
+   },
+   "3_event_time": {
+    "column": "event_date",
+    "equals_payload_decision_date_rows": 55090,
+    "pct": 100.0,
+    "range": "2016-11-01 .. 2026-10-18",
+    "timestamp_quality": "estimated (100% of rows)"
+   },
+   "4_published_time": {
+    "column": "published_at",
+    "rule": "published_at = event_date + 14 days (100% of 55,090 rows, zero variance)",
+    "distinct_offset_days": [
+     14
+    ],
+    "is_real_source_field": false
+   },
+   "5_first_seen_at": {
+    "column": "first_seen_at",
+    "distinct_values": 1,
+    "values": {
+     "2026-11-01": 55090
+    },
+    "verdict": "single bulk-fetch date; carries no per-event information"
+   },
+   "6_entity_assignment_method": {
+    "method_zh": "确定性的 product_code→track 映射 + 模糊的 applicant_raw→company 别名匹配（最长别名子串/前缀命中）",
+    "track_map": "config/product_code_tracks.json, 1,958 entries, deterministic",
+    "company_map": "companies.aliases, fuzzy substring/prefix",
+    "validation": {
+     "mapped_applicant_company_pairs": 512,
+     "pairs_matched_by_alias_prefix": 431,
+     "pairs_matched_by_substring_only": 73,
+     "pairs_with_no_alias_substring": 8,
+     "note": "the 8-ish pairs with no alias substring prove the frozen build used an additional rule not stored in the database, e.g. token match on 'BD'"
+    },
+    "track_validation": {
+     "track_null": {
+      "events": 17308,
+      "pct": 31.4177,
+      "distinct_codes": 1241
+     },
+     "track_set_but_code_absent_from_config": {
+      "events": 2089,
+      "pct": 3.792,
+      "distinct_codes": 283
+     },
+     "config_code_to_track_agrees": {
+      "events": 35693,
+      "pct": 64.7903,
+      "distinct_codes": 928
+     }
+    }
+   },
+   "7_confidence_or_pending_status": {
+    "per_row_confidence_column": null,
+    "per_row_matched_alias_column": null,
+    "zh": "events 表没有 match_confidence / matched_alias 列，映射置信度不可审计；只有 company_key 的有/无。",
+    "track_method_auditability": "the residual track assignments cannot be reproduced from either shipped mapping artifact; they look like a keyword/curation fallback whose rule and version are not recorded in the frozen input"
+   },
+   "8_future_information_risk": {
+    "uses_information_not_knowable_at_event_time": false,
+    "leaks": [
+     "赛道路径是 2026 年的 38 赛道分类学（taxonomy anachronism），不是事件当时的分类",
+     "公司名册是 2026 年的 51 家名册（roster look-ahead）：2016 年就知道这份名单的公司才被记录"
+    ],
+    "verdict": "事件本身不含未来信息；风险在名册与分类学的时点错位"
+   },
+   "9_historical_coverage": {
+    "date_range": "2016-11-01 .. 2026-10-18",
+    "events_total": 55090,
+    "events_with_company": 21670,
+    "events_with_company_and_track": 18031,
+    "distinct_company_track_pairs": 334,
+    "per_year_missingness": [
+     {
+      "year": "2016",
+      "events": 956,
+      "track_id_null": 300,
+      "track_id_null_pct": 31.3808,
+      "company_key_null": 519,
+      "company_key_null_pct": 54.2887,
+      "company_or_track_missing": 590,
+      "company_or_track_missing_pct": 61.7155
+     },
+     {
+      "year": "2017",
+      "events": 5917,
+      "track_id_null": 1820,
+      "track_id_null_pct": 30.7588,
+      "company_key_null": 3311,
+      "company_key_null_pct": 55.9574,
+      "company_or_track_missing": 3756,
+      "company_or_track_missing_pct": 63.4781
+     },
+     {
+      "year": "2018",
+      "events": 5852,
+      "track_id_null": 1787,
+      "track_id_null_pct": 30.5366,
+      "company_key_null": 3303,
+      "company_key_null_pct": 56.4422,
+      "company_or_track_missing": 3763,
+      "company_or_track_missing_pct": 64.3028
+     },
+     {
+      "year": "2019",
+      "events": 5556,
+      "track_id_null": 1778,
+      "track_id_null_pct": 32.0014,
+      "company_key_null": 3207,
+      "company_key_null_pct": 57.7214,
+      "company_or_track_missing": 3666,
+      "company_or_track_missing_pct": 65.9827
+     },
+     {
+      "year": "2020",
+      "events": 5426,
+      "track_id_null": 1647,
+      "track_id_null_pct": 30.3539,
+      "company_key_null": 3105,
+      "company_key_null_pct": 57.2245,
+      "company_or_track_missing": 3475,
+      "company_or_track_missing_pct": 64.0435
+     },
+     {
+      "year": "2021",
+      "events": 5227,
+      "track_id_null": 1797,
+      "track_id_null_pct": 34.3792,
+      "company_key_null": 3213,
+      "company_key_null_pct": 61.4693,
+      "company_or_track_missing": 3528,
+      "company_or_track_missing_pct": 67.4957
+     },
+     {
+      "year": "2022",
+      "events": 5301,
+      "track_id_null": 1826,
+      "track_id_null_pct": 34.4463,
+      "company_key_null": 3378,
+      "company_key_null_pct": 63.7238,
+      "company_or_track_missing": 3664,
+      "company_or_track_missing_pct": 69.119
+     },
+     {
+      "year": "2023",
+      "events": 5531,
+      "track_id_null": 1777,
+      "track_id_null_pct": 32.128,
+      "company_key_null": 3562,
+      "company_key_null_pct": 64.4007,
+      "company_or_track_missing": 3929,
+      "company_or_track_missing_pct": 71.036
+     },
+     {
+      "year": "2024",
+      "events": 5359,
+      "track_id_null": 1629,
+      "track_id_null_pct": 30.3975,
+      "company_key_null": 3397,
+      "company_key_null_pct": 63.3887,
+      "company_or_track_missing": 3712,
+      "company_or_track_missing_pct": 69.2667
+     },
+     {
+      "year": "2025",
+      "events": 5447,
+      "track_id_null": 1625,
+      "track_id_null_pct": 29.8329,
+      "company_key_null": 3517,
+      "company_key_null_pct": 64.5677,
+      "company_or_track_missing": 3830,
+      "company_or_track_missing_pct": 70.3139
+     },
+     {
+      "year": "2026",
+      "events": 4518,
+      "track_id_null": 1322,
+      "track_id_null_pct": 29.2607,
+      "company_key_null": 2908,
+      "company_key_null_pct": 64.3648,
+      "company_or_track_missing": 3146,
+      "company_or_track_missing_pct": 69.6326
+     }
+    ]
+   },
+   "10_missingness": {
+    "per_source": {
+     "openfda_device_510k_bulk": {
+      "rows": 31219,
+      "company_key_null": 25932,
+      "company_key_null_pct": 83.0648,
+      "track_id_null": 12765,
+      "track_id_null_pct": 40.8886,
+      "product_code_null": 13,
+      "product_code_null_pct": 0.0416
+     },
+     "openfda_device_pma_bulk": {
+      "rows": 23871,
+      "company_key_null": 7488,
+      "company_key_null_pct": 31.3686,
+      "track_id_null": 4543,
+      "track_id_null_pct": 19.0315,
+      "product_code_null": 110,
+      "product_code_null_pct": 0.4608
+     }
+    },
+    "company_key_null_overall": 33420,
+    "company_key_null_pct_overall": 60.6644
+   }
+  },
+  {
+   "id": "R2_temporal_edges_company_product_technology",
+   "name_zh": "公司→产品→技术（物化边表）",
+   "name_en": "Company->Product->Technology via temporal_edges",
+   "1_relation_definition": {
+    "zh": "对每个 (company_key, product_code) 组，取该组最早事件建立 COMPANY_DEVELOPS_PRODUCT 边，valid_time=组内最早 event_date；再用 product_code→track 映射建立 PRODUCT_BELONGS_TO_TECHNOLOGY 边。1,698 个 (company, product_code) 组里只有 1,087 个被物化。",
+    "en": "deduplicated first-appearance edge per (company, product_code) pair"
+   },
+   "2_raw_evidence_source": {
+    "table": "temporal_edges",
+    "relation_values": [
+     "COMPANY_DEVELOPS_PRODUCT (1,087)",
+     "PRODUCT_BELONGS_TO_TECHNOLOGY (1,087)"
+    ],
+    "evidence_source_values": [
+     "openfda_regulatory_event",
+     "medradar_product_code_mapping"
+    ],
+    "evidence_id_resolvable_to_events": 1087
+   },
+   "3_event_time": {
+    "column": "valid_time",
+    "null_count": 0,
+    "equals_earliest_event_date_in_group": 1016,
+    "range": "2016-11-15T00:00:00 .. 2026-10-16T00:00:00"
+   },
+   "4_published_time": {
+    "column": "available_at (on the edge)",
+    "rule": "inherits the earliest event's published_at = event_date + 14 days",
+    "inheritance_check": {
+     "joined_edges": 1087,
+     "valid_time_equals_event_event_date": 533,
+     "available_at_equals_event_available_at": 533
+    }
+   },
+   "5_first_seen_at": {
+    "column": null,
+    "zh": "temporal_edges 没有 first_seen_at 列；available_at 就是它唯一的“可知时点”，而该时点是继承来的合成量。"
+   },
+   "6_entity_assignment_method": {
+    "zh": "主体=company_key（模糊别名匹配）；客体=product_code（原样），技术=config 映射（确定性）"
+   },
+   "7_confidence_or_pending_status": {
+    "confidence_column": "temporal_edges.confidence",
+    "confidence_min": 1.0,
+    "confidence_max": 1.0,
+    "assertion_status": "observed (100%)"
+   },
+   "8_future_information_risk": {
+    "uses_information_not_knowable_at_event_time": false,
+    "caveat": "边的 available_at 是从 event_date+14 推出来的合成时点；把它当“可知时点”会把假设当事实"
+   },
+   "9_historical_coverage": {
+    "n_edges_company_product": 1087,
+    "n_edges_product_technology": 1087,
+    "distinct_companies": 51,
+    "distinct_products": 516,
+    "distinct_technologies": 38,
+    "per_year": {
+     "2016": 149,
+     "2017": 270,
+     "2018": 135,
+     "2019": 102,
+     "2020": 85,
+     "2021": 60,
+     "2022": 60,
+     "2023": 61,
+     "2024": 57,
+     "2025": 55,
+     "2026": 53
+    },
+    "edge_coverage_vs_events_pct": 5.0162
+   },
+   "10_missingness": {
+    "valid_time_null": 0,
+    "available_at_null": 0,
+    "company_product_pairs_in_events": 1698,
+    "pairs_materialised": 1087,
+    "pairs_not_materialised": 611
+   }
+  },
+  {
+   "id": "R3_company_procurement_contract",
+   "name_zh": "公司→采购合同",
+   "name_en": "Company->ProcurementContract",
+   "1_relation_definition": {
+    "zh": "USAspending 合同/订单的受方（supplier）经别名匹配到 company_key 后建立 COMPANY_WINS_CONTRACT 边；valid_time 取合同履约期起点 period_start，而不是授予日或首次公开日。"
+   },
+   "2_raw_evidence_source": {
+    "table": "procurement_awards",
+    "source_value": "usaspending_api_v2_spending_by_award",
+    "rows": 3453,
+    "payload_keys": [
+     "award_id",
+     "contract_award_type",
+     "generated_internal_id",
+     "internal_id",
+     "last_modified_date"
+    ]
+   },
+   "3_event_time": {
+    "column": "valid_time == period_start",
+    "award_date_null": 3453,
+    "announcement_date_null": 3453,
+    "range": "2007 .. 2026 (per-year edge counts)",
+    "per_year": {
+     "2007": 1,
+     "2008": 1,
+     "2009": 1,
+     "2010": 2,
+     "2011": 7,
+     "2012": 14,
+     "2013": 32,
+     "2014": 77,
+     "2015": 69,
+     "2016": 455,
+     "2017": 514,
+     "2018": 378,
+     "2019": 218,
+     "2020": 267,
+     "2021": 237,
+     "2022": 260,
+     "2023": 302,
+     "2024": 203,
+     "2025": 175,
+     "2026": 159
+    }
+   },
+   "4_published_time": {
+    "column": "available_at",
+    "distinct_values": 1,
+    "value": "2026-11-01T22:48:28Z",
+    "zh": "3,453 行共享同一个批量抓取时间戳：这是“我们抓取的时刻”，不是“合同公开的时刻”。"
+   },
+   "5_first_seen_at": {
+    "column": null,
+    "zh": "无该列；批量 available_at 即抓取日"
+   },
+   "6_entity_assignment_method": {
+    "zh": "supplier 字符串→别名匹配；逐行带 match_confidence 与 matched_alias",
+    "match_confidence_avg": 0.935012,
+    "company_keys_with_contracts": 22,
+    "buyer_side": "买方只有 7 个联邦机构，不存在第二个公司"
+   },
+   "7_confidence_or_pending_status": {
+    "pit_usable_sum": 0,
+    "data_quality_value": "current_snapshot_obligation_not_revenue_first_publication_unknown",
+    "zh": "全部 3,453 行 pit_usable=0：数据库自己承认这批数据不能用于 point-in-time。"
+   },
+   "8_future_information_risk": {
+    "uses_information_not_knowable_at_event_time": true,
+    "why": "只剩“当前快照”，没有首次公开日；用它可以知道未来金额/存续状态，属于典型未来信息"
+   },
+   "9_historical_coverage": {
+    "n_edges": 3372,
+    "companies": 22,
+    "per_year": {
+     "2007": 1,
+     "2008": 1,
+     "2009": 1,
+     "2010": 2,
+     "2011": 7,
+     "2012": 14,
+     "2013": 32,
+     "2014": 77,
+     "2015": 69,
+     "2016": 455,
+     "2017": 514,
+     "2018": 378,
+     "2019": 218,
+     "2020": 267,
+     "2021": 237,
+     "2022": 260,
+     "2023": 302,
+     "2024": 203,
+     "2025": 175,
+     "2026": 159
+    }
+   },
+   "10_missingness": {
+    "company_key_null": 81,
+    "award_date_null_pct": 100.0,
+    "announcement_date_null_pct": 100.0,
+    "pit_usable_rows": 0
+   }
+  },
+  {
+   "id": "R4_company_financial_filing",
+   "name_zh": "公司→财报事实",
+   "name_en": "Company->FinancialFiling / financial fact",
+   "1_relation_definition": {
+    "zh": "SEC XBRL companyfacts 的每条事实生成 COMPANY_FILES_FINANCIAL_FACT 边（34 条，company→CIK），事实本身 43,420 行带 valid_time（期末/时点）。"
+   },
+   "2_raw_evidence_source": {
+    "table": "financial_facts + company_identifiers",
+    "source_value": "sec_xbrl_companyfacts / sec_company_tickers",
+    "rows": 43420,
+    "n_edges": 34,
+    "identifier_scheme": [
+     [
+      "SEC_CIK",
+      34
+     ]
+    ]
+   },
+   "3_event_time": {
+    "column": "valid_time (facts)",
+    "range": [
+     "2006-09-30",
+     "2026-09-30"
+    ],
+    "edge_valid_time_null": 34,
+    "zh": "边表上 34 条边全部没有 valid_time；时间只在事实行上。"
+   },
+   "4_published_time": {
+    "column": "available_at",
+    "range": [
+     "2009-04-23",
+     "2026-10-30"
+    ],
+    "distinct_values": 949,
+    "edge_available_at": "2026-11-01T22:48:06Z",
+    "zh": "事实行有 949 个不同 available_at（可用）；但边上的 available_at 是单一批量时间戳。"
+   },
+   "5_first_seen_at": {
+    "column": null
+   },
+   "6_entity_assignment_method": {
+    "zh": "CIK 精确匹配（SEC_CIK，34 条），确定性",
+    "companies_with_facts": 32
+   },
+   "7_confidence_or_pending_status": {
+    "confidence": 1.0,
+    "data_quality": "companyfacts_no_segment_dimension"
+   },
+   "8_future_information_risk": {
+    "uses_information_not_knowable_at_event_time": "在事实行层面否；在边上（无时间）无法判定",
+    "caveat": "XBRL 事实的 available_at 是申报可用时间，但公司层面只有 32/51 家有 CIK 事实"
+   },
+   "9_historical_coverage": {
+    "valid_time_range": [
+     "2006-09-30",
+     "2026-09-30"
+    ],
+    "available_at_range": [
+     "2009-04-23",
+     "2026-10-30"
+    ],
+    "rows": 43420,
+    "companies": 32,
+    "companies_total": 51,
+    "per_year": "not aggregated (facts are quarterly)"
+   },
+   "10_missingness": {
+    "valid_time_null": 0,
+    "available_at_null": 0,
+    "payload_null": 0,
+    "companies_without_facts": 19
+   }
+  },
+  {
+   "id": "R5_company_trial_sponsor",
+   "name_zh": "公司→临床试验申办方",
+   "name_en": "Company->Trial sponsor",
+   "1_relation_definition": {
+    "zh": "ctgov 试验的 lead_sponsor 经别名匹配到 company_key；事件时间 = 首次公示日 study_first_post_date。"
+   },
+   "2_raw_evidence_source": {
+    "table": "product DB events (source=ctgov) —— 冻结研究输入中没有这张表",
+    "rows": 55592,
+    "distinct_lead_sponsor": 4527,
+    "in_frozen_research_input": false
+   },
+   "3_event_time": {
+    "column": "event_date == payload.first_posted",
+    "equal_rows": 55592,
+    "range": [
+     "1999-10-19",
+     "2026-10-30"
+    ]
+   },
+   "4_published_time": {
+    "column": "published_at",
+    "zh": "在 product DB 里 published_at 与 available_at 都等于 event_date（100%）"
+   },
+   "5_first_seen_at": {
+    "values": [
+     [
+      "2026-10-30",
+      55592
+     ]
+    ],
+    "zh": "又是单一批量抓取日（2026-10-30），55,592 行同一个值"
+   },
+   "6_entity_assignment_method": {
+    "zh": "agent 侧别名匹配，逐行保留 match_confidence 与 matched_alias",
+    "tiers": [
+     {
+      "tier": "0<mc<0.90 (candidate only)",
+      "n": 8311
+     },
+     {
+      "tier": ">=0.90 (accepted)",
+      "n": 38715
+     },
+     {
+      "tier": "mc=0 (no match)",
+      "n": 8566
+     }
+    ]
+   },
+   "7_confidence_or_pending_status": {
+    "accepted_threshold": ">=0.90",
+    "accepted_rows": 38715
+   },
+   "8_future_information_risk": {
+    "uses_information_not_knowable_at_event_time": false,
+    "caveat": "首次公示日之后的试验状态/结果/完成日期若被使用，则含未来信息；payload 里确有 overall_status / completion_date"
+   },
+   "9_historical_coverage": {
+    "trials_mapped_to_frozen_roster": 4367,
+    "roster_companies_with_trials": 46,
+    "roster_trials_per_company": [
+     {
+      "company": "abbott",
+      "n": 840
+     },
+     {
+      "company": "medtronic",
+      "n": 624
+     },
+     {
+      "company": "alcon",
+      "n": 580
+     },
+     {
+      "company": "boston_scientific",
+      "n": 379
+     },
+     {
+      "company": "cooper_companies",
+      "n": 175
+     },
+     {
+      "company": "philips",
+      "n": 130
+     },
+     {
+      "company": "ge_healthcare",
+      "n": 127
+     },
+     {
+      "company": "zimmer_biomet",
+      "n": 124
+     },
+     {
+      "company": "masimo",
+      "n": 105
+     },
+     {
+      "company": "fresenius_medical_care",
+      "n": 101
+     },
+     {
+      "company": "biotronik",
+      "n": 98
+     },
+     {
+      "company": "stryker",
+      "n": 89
+     },
+     {
+      "company": "edwards_lifesciences",
+      "n": 88
+     },
+     {
+      "company": "bbraun",
+      "n": 84
+     },
+     {
+      "company": "resmed",
+      "n": 80
+     },
+     {
+      "company": "smith_nephew",
+      "n": 76
+     },
+     {
+      "company": "baxter",
+      "n": 58
+     },
+     {
+      "company": "cook_medical",
+      "n": 55
+     },
+     {
+      "company": "terumo",
+      "n": 51
+     },
+     {
+      "company": "integra_lifesciences",
+      "n": 49
+     },
+     {
+      "company": "bd",
+      "n": 41
+     },
+     {
+      "company": "dentsply_sirona",
+      "n": 40
+     },
+     {
+      "company": "medline",
+      "n": 35
+     },
+     {
+      "company": "siemens_healthineers",
+      "n": 34
+     },
+     {
+      "company": "olympus",
+      "n": 28
+     },
+     {
+      "company": "atricure",
+      "n": 27
+     },
+     {
+      "company": "intuitive_surgical",
+      "n": 25
+     },
+     {
+      "company": "fujifilm",
+      "n": 23
+     },
+     {
+      "company": "insulet",
+      "n": 20
+     },
+     {
+      "company": "globus_medical",
+      "n": 19
+     },
+     {
+      "company": "dexcom",
+      "n": 16
+     },
+     {
+      "company": "envista",
+      "n": 16
+     },
+     {
+      "company": "merit_medical",
+      "n": 15
+     },
+     {
+      "company": "penumbra",
+      "n": 15
+     },
+     {
+      "company": "hologic",
+      "n": 14
+     },
+     {
+      "company": "tandem_diabetes",
+      "n": 14
+     },
+     {
+      "company": "procept_biorobotics",
+      "n": 11
+     },
+     {
+      "company": "inspire_medical",
+      "n": 9
+     },
+     {
+      "company": "ambu",
+      "n": 8
+     },
+     {
+      "company": "johnson_johnson_medtech",
+      "n": 8
+     },
+     {
+      "company": "nevro",
+      "n": 8
+     },
+     {
+      "company": "pentax_medical",
+      "n": 8
+     },
+     {
+      "company": "teleflex",
+      "n": 7
+     },
+     {
+      "company": "orthofix",
+      "n": 6
+     },
+     {
+      "company": "icu_medical",
+      "n": 4
+     },
+     {
+      "company": "irhythm",
+      "n": 3
+     }
+    ]
+   },
+   "10_missingness": {
+    "company_key_null": 16877,
+    "company_key_null_pct": 30.3587,
+    "relation_absent_from_frozen_input": true,
+    "why_absent": "the frozen 55,090-row event set contains only 510(k) and PMA rows, so within the research input this relation has 0 edges; it exists only in the 1.3 GB product DB and in 157 observatory trial observations"
+   }
+  },
+  {
+   "id": "R6_company_company_any_kind",
+   "name_zh": "公司↔公司（任何形式）",
+   "name_en": "Company<->Company of any kind",
+   "1_relation_definition": {
+    "zh": "不存在。temporal_edges 的 subject_type/object_type 组合只有 Company→ProcurementContract、Company→Product、Product→Technology、Company→FinancialFiling；没有任何 Company→Company 边，也没有母公司/子公司/竞争对手/合作边表。",
+    "en": "DOES NOT EXIST as an edge table"
+   },
+   "2_raw_evidence_source": {
+    "table": "temporal_edges",
+    "object_types_present": [
+     "FinancialFiling",
+     "ProcurementContract",
+     "Product",
+     "Technology"
+    ],
+    "subject_types_present": [
+     "Company",
+     "Product"
+    ]
+   },
+   "3_event_time": {
+    "column": null
+   },
+   "4_published_time": {
+    "column": null
+   },
+   "5_first_seen_at": {
+    "column": null
+   },
+   "6_entity_assignment_method": {
+    "zh": "唯一近似物是 companies.aliases 这张“别名清单”：它把被并购子公司的名字挂在母公司名下，隐含了母公司→子公司的所有权关系，但没有方向、没有日期、没有证据编号、没有置信度。",
+    "alias_list_carries_no_metadata": "companies.aliases is a bare JSON string array: no parent/child direction, no acquisition date, no evidence id, no confidence, no source for any element"
+   },
+   "7_confidence_or_pending_status": {
+    "column": null,
+    "zh": "别名清单无任何置信度或生效日期字段"
+   },
+   "8_future_information_risk": {
+    "uses_information_not_knowable_at_event_time": true,
+    "why": "名单是 2026 年的并购结果；用它在 t<并购完成时建立“母公司拥有该技术”的边，即使用了当时不可知的信息"
+   },
+   "9_historical_coverage": {
+    "company_to_company_edges": 0,
+    "self_typed_edges": 0,
+    "object_id_matching_a_company_key": 0,
+    "alias_strings_that_are_another_companys_canonical_key": {}
+   },
+   "10_missingness": {
+    "zh": "整个关系类型缺失：100% 不可得"
+   }
+  },
+  {
+   "id": "R7_company_publication_aggregate",
+   "name_zh": "公司→论文产出（年度聚合）",
+   "name_en": "Company->Publication (annual aggregate only)",
+   "1_relation_definition": {
+    "zh": "OpenAlex 按公司名检索，按 (company_key, year) 聚合出 works 计数；不是论文级关系。"
+   },
+   "2_raw_evidence_source": {
+    "table": "publication_counts",
+    "source_value": "openalex_group_by_publication_year",
+    "rows": 616,
+    "columns": [
+     "company_key",
+     "year",
+     "works",
+     "source",
+     "retrieved_at"
+    ]
+   },
+   "3_event_time": {
+    "column": "year (only)",
+    "range": [
+     2014,
+     2026
+    ]
+   },
+   "4_published_time": {
+    "column": "retrieved_at (抓取时间)"
+   },
+   "5_first_seen_at": {
+    "column": null
+   },
+   "6_entity_assignment_method": {
+    "zh": "公司名检索，检索式未落库；无 paper id 可回溯"
+   },
+   "7_confidence_or_pending_status": {
+    "column": null
+   },
+   "8_future_information_risk": {
+    "uses_information_not_knowable_at_event_time": true,
+    "why": "年度计数是事后回填的汇总值，无法在年内任意时点还原“当时已知篇数”"
+   },
+   "9_historical_coverage": {
+    "companies": 51,
+    "rows": 616,
+    "year_range": [
+     2014,
+     2026
+    ]
+   },
+   "10_missingness": {
+    "paper_level_records": 0,
+    "author_records": 0,
+    "institution_records": 0
+   }
+  },
+  {
+   "id": "R8_company_publication_paper_observatory",
+   "name_zh": "公司→单篇论文（观察台）",
+   "name_en": "Company->Paper via observatory europepmc",
+   "1_relation_definition": {
+    "zh": "Europe PMC 单位署名检索（AFF:\"公司名\"）命中后写入观察台账；entity_id 由 affiliation_query 规则给出，状态 PENDING_REVIEW。"
+   },
+   "2_raw_evidence_source": {
+    "table": "observatory.observation + observation_version.payload",
+    "source_value": "europepmc",
+    "observations": 237,
+    "payload_keys": [
+     "author_string",
+     "date_of_creation",
+     "date_of_revision",
+     "doi",
+     "electronic_publication_date",
+     "europepmc_id",
+     "first_index_date",
+     "first_publication_date",
+     "journal",
+     "language",
+     "pmcid",
+     "pmid",
+     "pub_types",
+     "pub_year",
+     "publication_status",
+     "published_at_source_field",
+     "source",
+     "source_record_id",
+     "title"
+    ]
+   },
+   "3_event_time": {
+    "column": "event_at",
+    "precision": "date",
+    "range": [
+     "2026-08-05",
+     "2026-11-02"
+    ]
+   },
+   "4_published_time": {
+    "column": "published_at (= firstIndexDate)",
+    "range": [
+     "2025-12-18",
+     "2026-11-03"
+    ]
+   },
+   "5_first_seen_at": {
+    "values": {
+     "2026-11-03T14:39:53Z": 6,
+     "2026-11-03T14:44:26Z": 156,
+     "2026-11-03T14:44:29Z": 237,
+     "2026-11-03T14:49:51Z": 1
+    },
+    "zh": "全部落在 2026-11-03 单日"
+   },
+   "6_entity_assignment_method": {
+    "method": "europepmc_affiliation_query",
+    "status": "PENDING_REVIEW",
+    "zh": "单位署名不等于企业归属（同一单位名可能对应多家法人实体），因此全部待审"
+   },
+   "7_confidence_or_pending_status": {
+    "pending_review": 238,
+    "accepted": 102
+   },
+   "8_future_information_risk": {
+    "uses_information_not_knowable_at_event_time": true,
+    "why": "237 条中 lag(first_seen-published)>7 天的占 365 条；只有 6 条在 24h 内被看到"
+   },
+   "9_historical_coverage": {
+    "observations": 237,
+    "window": "2025-12-18 .. 2026-11-03"
+   },
+   "10_missingness": {
+    "institution_field_absent": true,
+    "zh": "payload 只有 author_string；没有任何单位/机构字段，无法建立作者-机构关系"
+   }
+  }
+ ],
+ "verdicts": {
+  "first_seen_at_zh": "单一批量抓取日 2026-11-01（55,090/55,090 行），历史首次观察 0% 真实",
+  "available_at_zh": "research=event_date+14d（零方差）；product=event_date（零延迟）；两者皆为合成量",
+  "company_company_zh": "不存在任何公司↔公司边；只有 companies.aliases 这张无日期无证据的别名清单隐含所有权",
+  "prospective_observations": 6,
+  "prospective_observations_le_7d": 35,
+  "qualifying_events": 25947,
+  "usable_company_track_pairs": 303
+ },
+ "top_gaps": [
+  {
+   "rank": 1,
+   "gap_zh": "没有任何真实的历史 point-in-time 覆盖：research 库 first_seen_at 全为单一批量日，publication_counts/edges 亦为回填；observatory 台账只有 1 天历史，真正 <=1 天观察的仅 6/400。",
+   "evidence_keys": [
+    "A_point_in_time",
+    "meta.stores"
+   ]
+  },
+  {
+   "rank": 2,
+   "gap_zh": "正样本被实体映射掐住：25,947 个合格事件里只有 2,885 个（11.12%）同时有公司和技术赛道，最终只剩 303 个 company-track 对；2018 年后每年新增首次进入只有 10~16 个。",
+   "evidence_keys": [
+    "G_positive_sample.company_track_pairs",
+    "E_track_coverage.mapping_null_rates"
+   ]
+  },
+  {
+   "rank": 3,
+   "gap_zh": "关系证据缺失：没有公司↔公司、公司→赛道直连、公司→论文、公司→机构的任何边；采购关系 100% pit_usable=0 且无授予日/公开日；财务边无 valid_time；冻结研究输入根本没有试验与论文级数据。",
+   "evidence_keys": [
+    "C_relations.absence",
+    "F_research_coverage.buildable"
+   ]
+  }
+ ]
+}

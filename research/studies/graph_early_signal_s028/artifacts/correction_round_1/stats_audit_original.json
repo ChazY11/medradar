@@ -1,0 +1,2349 @@
+{
+  "audit": "independent statistical re-derivation (audit_21_statistics.py)",
+  "bugs": [
+    {
+      "consequence": "The label 'NULL (well-powered)' is not supported for the pre-registered H1 rule: a true improvement equal to the reported MDE would be declared SUPPORTED only ~16% of the time. The honest statement is bounded power for small effects, not an absence of effect.",
+      "direction": "overstates power",
+      "evidence": {
+        "reported_mde": 0.01942800955574231,
+        "rule_mde_80": 0.03736465136955758,
+        "rule_power_at_reported_mde": 0.162545,
+        "rule_power_components": {
+          "power_2of3_windows": 0.196055,
+          "power_both_clusterings": 0.41936,
+          "power_point_above_mde": 0.49846
+        }
+      },
+      "id": "BUG-MDE-2",
+      "location": "code/s028_stats.py lines 132-154 (decide), 33 (MDE_Z), s028_lib.py line 854 (mde_80 = mde_z*se)",
+      "severity": "high",
+      "tag": "CORRECTED_RESULT",
+      "title": "The reported MDE is the pooled-test MDE, not the pre-registered decision-rule MDE; 'well-powered' is false for the actual rule"
+    },
+    {
+      "consequence": "No reported significance survives either implementation (all p >= 0.19); but the printed BH table is not interpretable as a BH table and the family is post-hoc (both horizons instead of the pre-registered H1/H2 split).",
+      "direction": "conservative for rejection (reject set is a subset of the correct step-up set), but the reported thresholds are wrong and the tested family is not the pre-registered one",
+      "evidence": {
+        "min_p": 0.1895,
+        "n_rejections_buggy": 0,
+        "n_rejections_correct_stepup": 0,
+        "smallest_threshold": 0.0125
+      },
+      "id": "BUG-BH-1",
+      "location": "code/s028_stats.py lines 117-129 (loop lines 122-126, threshold line 128); family assembled lines 222-229 and reported 282-286",
+      "severity": "medium",
+      "tag": "CORRECTED_RESULT",
+      "title": "Benjamini-Hochberg implemented pointwise instead of step-up, and bh_threshold is assigned with the unsorted original index"
+    },
+    {
+      "consequence": "The exact number 0.01943 is one of several defensible variance estimates (range ~0.011-0.030 for the company unit alone). A bounded statistic cannot support an unqualified normal-theory MDE; report the range and the CI-based exclusion bound instead.",
+      "direction": "overstates power",
+      "evidence": {
+        "H2q_company": {
+          "bootstrap_quantile": 0.014728,
+          "draw_bias": 0.004991,
+          "draw_skew": 2.885,
+          "jackknife_t": 0.02704,
+          "reported": 0.043658
+        },
+        "H4q_company": {
+          "bootstrap_quantile": 0.019712,
+          "jackknife_t": 0.010909,
+          "power_at_reported_quantile_method": 0.784,
+          "reported": 0.019428
+        },
+        "H4q_pair": {
+          "bootstrap_quantile": 0.035071,
+          "jackknife_t": 0.019039,
+          "power_at_reported_quantile_method": 0.6295,
+          "reported": 0.029729
+        }
+      },
+      "id": "BUG-MDE-1",
+      "location": "code/s028_stats.py line 33 (MDE_Z), lines 140-142 and 151-154 (decide), code/s028_lib.py line 803 (mde_z default), line 854 (mde_80 = mde_z * se)",
+      "severity": "high",
+      "tag": "CORRECTED_RESULT",
+      "title": "Normal-theory MDE (z.975+z.80)*SE is applied to a bounded, skewed percentile-bootstrap AP difference; it is not the power of the test actually used and is unstable across variance estimators"
+    },
+    {
+      "consequence": "The pooled AP is not an average of window APs (0.0690 vs mean window AP 0.0786): the same pair can enter both the positive and the negative side with near-identical predictions. The target of inference ('pooled triplicated-row AP') is not the pre-registered 'out-of-sample prediction at a holdout origin'.",
+      "direction": "overstates effective sample size / precision of the pooled estimand",
+      "evidence": {
+        "H2q_distinct_positive_pairs": 28,
+        "H2q_positive_rows": 42,
+        "H4q_conflicting_label_pairs": 13,
+        "H4q_distinct_pairs": 1729,
+        "H4q_distinct_positive_pairs": 32,
+        "H4q_pair_multiplicity": {
+          "1": 8,
+          "2": 12,
+          "3": 1709
+        },
+        "H4q_positive_rows": 67,
+        "H4q_rows": 5159
+      },
+      "id": "BUG-BOOT-1",
+      "location": "code/s028_stats.py collect() lines 55-70; code/s028_lib.py::paired_cluster_bootstrap lines 800-857 (labels concatenated at lines 810-817)",
+      "severity": "high",
+      "tag": "CORRECTED_RESULT",
+      "title": "Pooling the three overlapping 4-quarter holdout windows triplicates rows/positives: 5,159 pooled rows are 1,729 distinct pairs, and 67 positive rows are only 32 distinct positive pairs (13 pairs are positive in one window and negative in another)"
+    },
+    {
+      "consequence": "Report the CI-based decision and, if a p-value is wanted, a null-calibrated one; do not feed these tail probabilities into BH as if they were calibrated p-values, and do not present them as 'p(delta<=0)' posterior probabilities.",
+      "direction": "misleading p-value semantics",
+      "evidence": {
+        "H2q_company_ci": [
+          -0.010664,
+          0.053627
+        ],
+        "H2q_company_normal_p": 0.508,
+        "H2q_company_p": 0.459,
+        "H2q_company_skew": 2.885,
+        "H4q_company_normal_p": 0.8104,
+        "H4q_company_p": 0.8935,
+        "H4q_company_skew": -1.761
+      },
+      "id": "BUG-BOOT-2",
+      "location": "code/s028_lib.py line 855 (p_one_sided), lines 849-850 (percentile CI), line 854 (MDE); used for BH in code/s028_stats.py lines 223-229",
+      "severity": "medium",
+      "tag": "CORRECTED_RESULT",
+      "title": "p_one_sided = mean(bootstrap draws <= 0) is a one-sided percentile-bootstrap tail probability, not the statistic of the pre-registered decision rule, and it is not reliable when the bootstrap distribution is skewed (H2q company: skew +2.89, bias +0.005, CI asymmetry 5.2)"
+    },
+    {
+      "consequence": "The CI includes zero under every variant (conclusion stable), but the interval width, the MDE and the claim of precision are not stable. Report the union of defensible intervals and an explicit finite-cluster caveat.",
+      "direction": "interval/MDE instability",
+      "evidence": {
+        "H4q_company_bootstrap_se": 0.006935,
+        "H4q_company_jackknife_ci": [
+          -0.013758,
+          0.001579
+        ],
+        "H4q_company_jackknife_se": 0.003818,
+        "H4q_pair_bootstrap_se": 0.010612,
+        "H4q_pair_jackknife_ci": [
+          -0.019411,
+          0.007232
+        ],
+        "H4q_pair_jackknife_se": 0.006792,
+        "seed_ci_high_range_H4q": [
+          0.003693,
+          0.005714
+        ],
+        "seed_ci_low_range_H4q": [
+          -0.025219,
+          -0.021319
+        ]
+      },
+      "id": "BUG-BOOT-3",
+      "location": "code/s028_lib.py::paired_cluster_bootstrap lines 826-857 (cluster grouping 826-830, resample loop 833-842, percentile quantiles 849, se 848)",
+      "severity": "high",
+      "tag": "CORRECTED_RESULT",
+      "title": "The percentile cluster bootstrap's uncertainty is estimator- and unit-dependent: bootstrap SE vs delete-one-jackknife SE ratios are 1.82 (H4q company) and 1.56 (H4q pair); only 51 company clusters; resampling concatenates duplicated rows"
+    },
+    {
+      "consequence": "No statement about relational specificity can be made from the original G2 runs. H2 remains UNRESOLVED until corrected-G2 predictions exist.",
+      "direction": "invalidates H2",
+      "evidence": {
+        "H2q_30_of_40": true,
+        "H4q_40_of_40": true,
+        "random_max": 0.081982,
+        "random_min": 0.069187,
+        "real_ap": 0.069003
+      },
+      "id": "BUG-H2-1",
+      "location": "code/s028_lib.py::SnapshotSeries._build_randomised lines 492-551 (block list built at line 507 before rewiring, date re-draw and weight collapse at lines 534-543)",
+      "severity": "critical",
+      "tag": "INVALIDATED_FINDING",
+      "title": "The randomised null model is broken (edge loss, broken bipartite degree sequences, collapsed weights); the 40/40 result is invalid as a method claim (given by the parallel defect report, not re-derived here)"
+    },
+    {
+      "consequence": "The criterion actually tested was real AP > max(40 draws), which happens to be stricter than H2's stated criterion.",
+      "direction": "conservative for SUPPORT (harder to declare H2 supported)",
+      "evidence": {
+        "H2q_code_threshold": 0.100692,
+        "H2q_numpy_q975": 0.094572,
+        "H4q_code_threshold": 0.081982,
+        "H4q_numpy_q975": 0.081343,
+        "H4q_random_max": 0.081982
+      },
+      "id": "BUG-H2-2",
+      "location": "code/s028_stats.py lines 262-265 (real_above_975), line 254 (median uses sorted[len//2], i.e. an upper median)",
+      "severity": "low",
+      "tag": "CORRECTED_RESULT",
+      "title": "The '97.5th percentile' threshold is implemented as the maximum: sorted[int(0.975*n)] with n=40 is index 39"
+    },
+    {
+      "consequence": "Even under a valid null, 'real below all 40 randomisations' is a statement that the real arrangement is atypical (in the opposite direction to H2), not evidence that random relations carry predictive value. The reverse-direction tail is post-hoc and cannot be promoted to a finding.",
+      "direction": "over-interpretation of the null tail",
+      "evidence": {
+        "H4q_p_real_gt_random": 1.0,
+        "H4q_p_real_lt_random": 0.0244,
+        "H4q_per_window_fraction_random_ge_real": {
+          "2025-04-01": 1.0,
+          "2025-07-01": 0.525,
+          "2025-10-01": 0.825
+        },
+        "resolution_one_sided": 0.0244,
+        "resolution_two_sided": 0.0488
+      },
+      "id": "BUG-H2-3",
+      "location": "code/s028_stats.py lines 247-269 (H2 summary); STATISTICAL_VALIDATION.md section 4; PRE_REGISTRATION.md Amendment 1 A1.1",
+      "severity": "high",
+      "tag": "INVALIDATED_FINDING",
+      "title": "Tail claims from 40 draws exceed their resolution: minimum one-sided p = 1/41 = 0.0244, and a 97.5th percentile of 40 draws is the maximum up to interpolation; the pre-registered H2 direction actually has p = 1.0"
+    },
+    {
+      "consequence": "'Well-powered' must be replaced by an explicit statement of the pooled MDE AND the rule-level MDE (and the CI-based exclusion bound); the protocol's UNDERPOWERED branch has no operational threshold, so the NULL/UNDERPOWERED split is not identified.",
+      "direction": "overstates informativeness",
+      "evidence": {
+        "H4q_reported_mde": 0.019428,
+        "H4q_rule_mde": 0.037365,
+        "H4q_rule_power_at_reported_mde": 0.163,
+        "all_satisfy_abs_delta_lt_mde": true,
+        "cases_checked": 10
+      },
+      "id": "BUG-PREREG-1",
+      "location": "code/s028_stats.py lines 151-154; PRE_REGISTRATION.md section 11 (lines 214-215); propagated to HYPOTHESIS_REGISTRY.md line 21, GRAPH_RESULTS.md lines 42-44, PHASE_REPORT_ZH.md lines 163/262",
+      "severity": "high",
+      "tag": "CORRECTED_RESULT",
+      "title": "'NULL (well-powered)' is almost a tautology: when a 95% CI contains 0, |delta| is necessarily below the MDE = 2.80*SE, so non-rejection automatically triggers the 'well-powered' label"
+    },
+    {
+      "consequence": "If such a window had occurred it would have produced a verdict label absent from the protocol. Add it via a dated amendment, not silently.",
+      "direction": "post-hoc label (not triggered here)",
+      "evidence": {
+        "triggered_in_stored_results": false
+      },
+      "id": "BUG-PREREG-2",
+      "location": "code/s028_stats.py lines 147-150",
+      "severity": "low",
+      "tag": "CORRECTED_RESULT",
+      "title": "Post-hoc decision branch 'NULL (G1 significantly worse than baseline)' is not in the pre-registered rule"
+    },
+    {
+      "consequence": "Report the MDE as an observed-data estimate with its range, not as a pre-registered design guarantee.",
+      "direction": "overstates design-stage power guarantee",
+      "evidence": {
+        "exact_formula_in_frozen_protocol": false,
+        "predictions_mtime": "2026-11-04 01:54:49",
+        "prereg_hash_matches_amendment_freeze": true,
+        "statistical_validation_mtime": "2026-11-04 01:57:14"
+      },
+      "id": "BUG-MDE-3",
+      "location": "code/s028_stats.py line 33; PRE_REGISTRATION.md section 10.4 (method only); EXPERIMENT_PROTOCOL.md line 75 (exact constant, not included in artifacts/prereg_freeze*.json)",
+      "severity": "medium",
+      "tag": "CORRECTED_RESULT",
+      "title": "The reported MDE number is post hoc: computed from the realised bootstrap SE after the predictions existed; only the method (not the constant 2.8016 or the number) is covered by the freeze hash"
+    },
+    {
+      "consequence": "On unique pair counts no stratum meets the pre-declared threshold, so H4 is even less identifiable than reported; the correct statement is 'no reportable conditional strata', not '6/38 tracks examined'.",
+      "direction": "overstates H4 identifiability",
+      "evidence": {
+        "H2q_unique_pair_usable": {
+          "companies": 0,
+          "tracks": 0
+        },
+        "H4q_reported_usable_companies": 5,
+        "H4q_reported_usable_tracks": 6,
+        "H4q_unique_pair_usable_companies": 0,
+        "H4q_unique_pair_usable_tracks": 0
+      },
+      "id": "BUG-STRATA-1",
+      "location": "code/s028_stats.py::strata lines 97-114 (threshold at line 107; field lookup fallback at line 101)",
+      "severity": "medium",
+      "tag": "CORRECTED_RESULT",
+      "title": "Stability-stratum thresholds (n>=10, positives>=5) were applied to pooled rows in which each company-track pair appears up to 3 times, inflating the reported number of reportable strata"
+    }
+  ],
+  "calibration": {
+    "company": {
+      "coverage": 0.9533333333333334,
+      "coverage_wilson_95": [
+        0.9068135271280356,
+        0.9772134509633353
+      ],
+      "experiments": 150,
+      "median_ci_width": 0.02811395691462465,
+      "population_delta": -0.006089373143925769,
+      "rejection_rate_h0_true_delta": 0.17333333333333334,
+      "resamples": 150,
+      "unit": "company",
+      "valid_experiments": 150
+    },
+    "pair": {
+      "coverage": 0.9466666666666667,
+      "coverage_wilson_95": [
+        0.8982961211345455,
+        0.9727304602201876
+      ],
+      "experiments": 150,
+      "median_ci_width": 0.045314104942419116,
+      "population_delta": -0.006089373143925769,
+      "rejection_rate_h0_true_delta": 0.13333333333333333,
+      "resamples": 150,
+      "unit": "pair",
+      "valid_experiments": 150
+    }
+  },
+  "claims": [
+    {
+      "claim": "Pooled dAP = -0.00609, company CI [-0.02219,+0.00450], pair CI [-0.03347,+0.01043]",
+      "note": "The intervals are conditional on the 3 realised windows and are for the pooled triplicated-row estimand; calibration simulation gives ~95% coverage of that estimand.",
+      "status": "reproduced exactly (PASS)",
+      "tag": "ORIGINAL_RESULT"
+    },
+    {
+      "claim": "The conclusion 'no evidence of improvement, CIs include 0' is stable",
+      "note": "Company/pair percentile CIs, seed-averaged CIs, jackknife-t CIs, the equal-weight mean-over-windows CI and per-window CIs all include 0.",
+      "status": "UNCHANGED",
+      "tag": "UNCHANGED_FINDING"
+    },
+    {
+      "claim": "Point estimate is negative (G1 worse than B2)",
+      "note": "Deduplicating the overlapping windows flips the sign (first-window subset +0.00062, last-window subset -0.01689); direction is not robust.",
+      "status": "fragile",
+      "tag": "ORIGINAL_RESULT"
+    },
+    {
+      "claim": "MDE(80%) = 0.01943 (26% of baseline AP) and the design is 'well-powered'",
+      "note": "MDE is the wrong-test MDE at 26% of baseline; the pre-registered compound rule has ~16% power at that effect and needs ~0.037 AP (~50% of baseline) for 80% power.",
+      "status": "INVALIDATED (label)",
+      "tag": "INVALIDATED_FINDING"
+    },
+    {
+      "claim": "40/40 randomisations outperform the real graph; H2 reversed",
+      "note": "Randomised null model loses edges / breaks bipartite degrees / collapses weights. Resolution is also limited to 1/41; the pre-registered direction attains p=1.0.",
+      "status": "INVALIDATED (method)",
+      "tag": "INVALIDATED_FINDING"
+    },
+    {
+      "claim": "'Random relations have predictive value'",
+      "note": "Even under a valid null, real AP below the null means the real arrangement is atypical, not that random graphs are informative.",
+      "status": "NOT LICENSED",
+      "tag": "INVALIDATED_FINDING"
+    },
+    {
+      "claim": "BH q=0.10 over the pre-registered family; 0/8 rejections",
+      "note": "Correct step-up also rejects nothing; the implementation is conservative, the thresholds are mis-assigned and the family is not the pre-registered one.",
+      "status": "UNCHANGED (conclusion), BUG (code)",
+      "tag": "UNCHANGED_FINDING"
+    },
+    {
+      "claim": "H4 conditional effects undeterminable; 6/38 tracks and 5/51 companies reportable",
+      "note": "Those counts are inflated by ~3x row duplication; on unique pairs effectively no stratum meets the pre-declared thresholds.",
+      "status": "UNCHANGED and strengthened",
+      "tag": "UNCHANGED_FINDING"
+    },
+    {
+      "claim": "0/3 holdout windows exclude zero",
+      "note": "Verified against the stored per-window CIs.",
+      "status": "PASS",
+      "tag": "UNCHANGED_FINDING"
+    }
+  ],
+  "corrected_numbers": {
+    "H2q": {
+      "dedupe": {
+        "conflicting_label_pairs": 13,
+        "dedupe_first_delta": 0.00505350247199117,
+        "dedupe_last_delta": -0.0017953229878824584,
+        "distinct_pairs": 1727,
+        "distinct_positive_pairs": 28,
+        "multiplicity_hist": {
+          "1": 12,
+          "2": 11,
+          "3": 1704
+        }
+      },
+      "mde": {
+        "bootstrap_bias_company": 0.004990737058186416,
+        "jackknife_mde_company": 0.027040112190120327,
+        "jackknife_mde_pair": 0.0188356509132389,
+        "mde_normal_recomputed": 0.04365763797760765,
+        "mde_quantile_company": 0.014727626173076932,
+        "mde_quantile_pair": 0.03360474102247533,
+        "power_at_reported_mde_company": 1.0,
+        "relative_to_baseline": 0.6482173393142615,
+        "reported_mde": 0.04365763797760765,
+        "skew_company": 2.8850867243462486
+      },
+      "randomisation": {
+        "available": true,
+        "fraction_random_at_or_above_real": 0.75,
+        "n_random_at_or_above_real": 30,
+        "n_random_at_or_below_real": 10,
+        "n_randomisations": 40,
+        "note": "R draws can only resolve tail statements to 1/(R+1); with R=40 the 97.5th percentile is essentially the maximum (linear-interpolated quantile sits between the 39th and 40th order statistics).",
+        "original_code_effective_threshold": 0.10069245262265372,
+        "p_one_sided_real_gt_random": 0.7560975609756098,
+        "p_one_sided_real_lt_random": 0.2682926829268293,
+        "p_two_sided": 0.5365853658536586,
+        "randomised_ap_max": 0.10069245262265372,
+        "randomised_ap_median": 0.07305359413839044,
+        "randomised_ap_min": 0.06133545237071354,
+        "randomised_ap_q025": 0.06139931432873822,
+        "randomised_ap_q975": 0.09457243028627782,
+        "real_above_max": false,
+        "real_above_q975": false,
+        "real_below_min": false,
+        "real_pooled_ap": 0.06703627857552347,
+        "resolution_one_sided": 0.024390243902439025
+      },
+      "reported": {
+        "baseline_ap": 0.06735030880814195,
+        "company_ci": [
+          -0.010664064315248228,
+          0.05362691960298828
+        ],
+        "delta": -0.0003140302326185007,
+        "mde_80": 0.04365763797760765,
+        "pair_ci": [
+          -0.026362549679164828,
+          0.018760996508213747
+        ]
+      },
+      "strata_unique": {
+        "companies": {
+          "note": "Pre-declared thresholds n>=10 / positives>=5 applied after collapsing the triplicated overlapping-window rows to one row per company-track pair (positive if positive in any window).",
+          "strata_total": 51,
+          "usable_names": [],
+          "usable_on_unique_pairs": 0
+        },
+        "tracks": {
+          "note": "Pre-declared thresholds n>=10 / positives>=5 applied after collapsing the triplicated overlapping-window rows to one row per company-track pair (positive if positive in any window).",
+          "strata_total": 38,
+          "usable_names": [],
+          "usable_on_unique_pairs": 0
+        }
+      }
+    },
+    "H4q": {
+      "dedupe": {
+        "conflicting_label_pairs": 13,
+        "dedupe_first_delta": 0.0006231157744989585,
+        "dedupe_last_delta": -0.01689394116104269,
+        "distinct_pairs": 1729,
+        "distinct_positive_pairs": 32,
+        "multiplicity_hist": {
+          "1": 8,
+          "2": 12,
+          "3": 1709
+        }
+      },
+      "mde": {
+        "bootstrap_bias_company": -0.00028041651605621633,
+        "jackknife_mde_company": 0.010908987807892685,
+        "jackknife_mde_pair": 0.019039154671568238,
+        "mde_normal_recomputed": 0.01942800955574231,
+        "mde_quantile_company": 0.01971224606996131,
+        "mde_quantile_pair": 0.035070626337040306,
+        "mde_rule": 0.03736465136955758,
+        "power_at_reported_mde_company": 0.784,
+        "relative_to_baseline": 0.2587199012285109,
+        "reported_mde": 0.01942800955574231,
+        "rule_power_at_reported_mde": {
+          "delta": 0.01942800955574231,
+          "mde_company": 0.01942800955574231,
+          "power": 0.162545,
+          "power_2of3_windows": 0.196055,
+          "power_both_clusterings": 0.41936,
+          "power_point_above_mde": 0.49846,
+          "se_pooled_company": 0.006934649334481127,
+          "se_pooled_pair": 0.01061161525324199,
+          "se_windows": [
+            0.013395936541873264,
+            0.015760334518378948,
+            0.014408486901700407
+          ]
+        },
+        "skew_company": -1.760881269487883
+      },
+      "mde_rule": 0.03736465136955758,
+      "randomisation": {
+        "available": true,
+        "fraction_random_at_or_above_real": 1.0,
+        "n_random_at_or_above_real": 40,
+        "n_random_at_or_below_real": 0,
+        "n_randomisations": 40,
+        "note": "R draws can only resolve tail statements to 1/(R+1); with R=40 the 97.5th percentile is essentially the maximum (linear-interpolated quantile sits between the 39th and 40th order statistics).",
+        "original_code_effective_threshold": 0.08198243410602074,
+        "p_one_sided_real_gt_random": 1.0,
+        "p_one_sided_real_lt_random": 0.024390243902439025,
+        "p_two_sided": 0.04878048780487805,
+        "randomised_ap_max": 0.08198243410602074,
+        "randomised_ap_median": 0.07411457576177746,
+        "randomised_ap_min": 0.06918688314172436,
+        "randomised_ap_q025": 0.06959716834062041,
+        "randomised_ap_q975": 0.08134273795923258,
+        "real_above_max": false,
+        "real_above_q975": false,
+        "real_below_min": true,
+        "real_pooled_ap": 0.06900345683741682,
+        "resolution_one_sided": 0.024390243902439025
+      },
+      "reported": {
+        "baseline_ap": 0.07509282998134256,
+        "company_ci": [
+          -0.022187045108988855,
+          0.0045001499140196405
+        ],
+        "delta": -0.006089373143925769,
+        "mde_80": 0.01942800955574231,
+        "pair_ci": [
+          -0.03346849752867513,
+          0.010428229721777149
+        ]
+      },
+      "rule_power": {
+        "delta": 0.01942800955574231,
+        "mde_company": 0.01942800955574231,
+        "power": 0.162545,
+        "power_2of3_windows": 0.196055,
+        "power_both_clusterings": 0.41936,
+        "power_point_above_mde": 0.49846,
+        "se_pooled_company": 0.006934649334481127,
+        "se_pooled_pair": 0.01061161525324199,
+        "se_windows": [
+          0.013395936541873264,
+          0.015760334518378948,
+          0.014408486901700407
+        ]
+      },
+      "strata_unique": {
+        "companies": {
+          "note": "Pre-declared thresholds n>=10 / positives>=5 applied after collapsing the triplicated overlapping-window rows to one row per company-track pair (positive if positive in any window).",
+          "strata_total": 51,
+          "usable_names": [],
+          "usable_on_unique_pairs": 0
+        },
+        "tracks": {
+          "note": "Pre-declared thresholds n>=10 / positives>=5 applied after collapsing the triplicated overlapping-window rows to one row per company-track pair (positive if positive in any window).",
+          "strata_total": 38,
+          "usable_names": [],
+          "usable_on_unique_pairs": 0
+        }
+      }
+    }
+  },
+  "findings": [
+    {
+      "category": "reproduction",
+      "id": "H4q-AP-B2",
+      "note": "",
+      "original": 0.07509282998134256,
+      "quantity": "pooled AP of B2",
+      "recomputed": 0.07509282998134256,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-AP-G1",
+      "note": "",
+      "original": 0.0690034568374168,
+      "quantity": "pooled AP of G1",
+      "recomputed": 0.0690034568374168,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-delta",
+      "note": "",
+      "original": -0.006089373143925769,
+      "quantity": "pooled dAP = AP(G1)-AP(B2)",
+      "recomputed": -0.006089373143925769,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-company-delta",
+      "note": "",
+      "original": -0.006089373143925769,
+      "quantity": "pooled company-clustered delta",
+      "recomputed": -0.006089373143925769,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-company-ci_low",
+      "note": "",
+      "original": -0.022187045108988855,
+      "quantity": "pooled company-clustered ci_low",
+      "recomputed": -0.022187045108988855,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-company-ci_high",
+      "note": "",
+      "original": 0.0045001499140196405,
+      "quantity": "pooled company-clustered ci_high",
+      "recomputed": 0.0045001499140196405,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-company-se",
+      "note": "",
+      "original": 0.006934649334481127,
+      "quantity": "pooled company-clustered se",
+      "recomputed": 0.006934649334481127,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-company-mde_80",
+      "note": "",
+      "original": 0.01942800955574231,
+      "quantity": "pooled company-clustered mde_80",
+      "recomputed": 0.01942800955574231,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-company-p_one_sided",
+      "note": "",
+      "original": 0.8935,
+      "quantity": "pooled company-clustered p_one_sided",
+      "recomputed": 0.8935,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-pair-delta",
+      "note": "",
+      "original": -0.006089373143925769,
+      "quantity": "pooled pair-clustered delta",
+      "recomputed": -0.006089373143925769,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-pair-ci_low",
+      "note": "",
+      "original": -0.03346849752867513,
+      "quantity": "pooled pair-clustered ci_low",
+      "recomputed": -0.03346849752867513,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-pair-ci_high",
+      "note": "",
+      "original": 0.010428229721777149,
+      "quantity": "pooled pair-clustered ci_high",
+      "recomputed": 0.010428229721777149,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-pair-se",
+      "note": "",
+      "original": 0.01061161525324199,
+      "quantity": "pooled pair-clustered se",
+      "recomputed": 0.01061161525324199,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-pair-mde_80",
+      "note": "",
+      "original": 0.02972934211925396,
+      "quantity": "pooled pair-clustered mde_80",
+      "recomputed": 0.02972934211925396,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-pair-p_one_sided",
+      "note": "",
+      "original": 0.82,
+      "quantity": "pooled pair-clustered p_one_sided",
+      "recomputed": 0.82,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-mde-z",
+      "note": "z_0.975 + z_0.80 = 1.959964 + 0.841621 = 2.801585.",
+      "original": 2.801585,
+      "quantity": "mde_80 / se",
+      "recomputed": 2.801585,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-mde-relative",
+      "note": "Reported MDE as a fraction of the B2 baseline AP (same horizon).",
+      "original": null,
+      "quantity": "MDE(80%) relative to baseline AP",
+      "recomputed": 0.2587199012285109,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-2025-04-01-rows",
+      "note": "",
+      "original": 1722,
+      "quantity": "2025-04-01 rows",
+      "recomputed": 1722,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-2025-04-01-positives",
+      "note": "",
+      "original": 20,
+      "quantity": "2025-04-01 positives",
+      "recomputed": 20,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-2025-04-01-ap",
+      "note": "",
+      "original": 0.09325238861462992,
+      "quantity": "2025-04-01 AP(G1)",
+      "recomputed": 0.09325238861462992,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-2025-04-01-delta",
+      "note": "",
+      "original": -0.00897753892000068,
+      "quantity": "2025-04-01 dAP",
+      "recomputed": -0.00897753892000068,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-2025-07-01-rows",
+      "note": "",
+      "original": 1721,
+      "quantity": "2025-07-01 rows",
+      "recomputed": 1721,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-2025-07-01-positives",
+      "note": "",
+      "original": 23,
+      "quantity": "2025-07-01 positives",
+      "recomputed": 23,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-2025-07-01-ap",
+      "note": "",
+      "original": 0.06425813464800698,
+      "quantity": "2025-07-01 AP(G1)",
+      "recomputed": 0.06425813464800698,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-2025-07-01-delta",
+      "note": "",
+      "original": -0.0007920849845806377,
+      "quantity": "2025-07-01 dAP",
+      "recomputed": -0.0007920849845806377,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-2025-10-01-rows",
+      "note": "",
+      "original": 1716,
+      "quantity": "2025-10-01 rows",
+      "recomputed": 1716,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-2025-10-01-positives",
+      "note": "",
+      "original": 24,
+      "quantity": "2025-10-01 positives",
+      "recomputed": 24,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-2025-10-01-ap",
+      "note": "",
+      "original": 0.07822424159836532,
+      "quantity": "2025-10-01 AP(G1)",
+      "recomputed": 0.07822424159836532,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-2025-10-01-delta",
+      "note": "",
+      "original": -0.011443899223917725,
+      "quantity": "2025-10-01 dAP",
+      "recomputed": -0.011443899223917725,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-windows-excluding-zero",
+      "note": "STATISTICAL_VALIDATION.md section 7 says '0/3 windows exclude zero'.",
+      "original": 0,
+      "quantity": "number of holdout windows whose company CI excludes 0",
+      "recomputed": 0,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H4q-decision",
+      "note": "",
+      "original": "{\"a_2of3_windows_ci_excludes_zero\": false, \"b_pooled_both_clusterings_exclude_zero\": false, \"c_point_at_or_above_mde\": false, \"total_windows\": 3, \"windows_excluding_zero\": 0}",
+      "quantity": "stored literal decision flags",
+      "recomputed": "{\"a_2of3_windows_ci_excludes_zero\": false, \"b_pooled_both_clusterings_exclude_zero\": false, \"c_point_at_or_above_mde\": false, \"total_windows\": 3, \"windows_excluding_zero\": 0}",
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-AP-B2",
+      "note": "",
+      "original": 0.06735030880814195,
+      "quantity": "pooled AP of B2",
+      "recomputed": 0.06735030880814195,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-AP-G1",
+      "note": "",
+      "original": 0.06703627857552345,
+      "quantity": "pooled AP of G1",
+      "recomputed": 0.06703627857552345,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-delta",
+      "note": "",
+      "original": -0.0003140302326185007,
+      "quantity": "pooled dAP = AP(G1)-AP(B2)",
+      "recomputed": -0.0003140302326185007,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-company-delta",
+      "note": "",
+      "original": -0.0003140302326185007,
+      "quantity": "pooled company-clustered delta",
+      "recomputed": -0.0003140302326185007,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-company-ci_low",
+      "note": "",
+      "original": -0.010664064315248228,
+      "quantity": "pooled company-clustered ci_low",
+      "recomputed": -0.010664064315248228,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-company-ci_high",
+      "note": "",
+      "original": 0.05362691960298828,
+      "quantity": "pooled company-clustered ci_high",
+      "recomputed": 0.05362691960298828,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-company-se",
+      "note": "",
+      "original": 0.015583192363468409,
+      "quantity": "pooled company-clustered se",
+      "recomputed": 0.015583192363468409,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-company-mde_80",
+      "note": "",
+      "original": 0.04365763797760765,
+      "quantity": "pooled company-clustered mde_80",
+      "recomputed": 0.04365763797760765,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-company-p_one_sided",
+      "note": "",
+      "original": 0.459,
+      "quantity": "pooled company-clustered p_one_sided",
+      "recomputed": 0.459,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-pair-delta",
+      "note": "",
+      "original": -0.0003140302326185007,
+      "quantity": "pooled pair-clustered delta",
+      "recomputed": -0.0003140302326185007,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-pair-ci_low",
+      "note": "",
+      "original": -0.026362549679164828,
+      "quantity": "pooled pair-clustered ci_low",
+      "recomputed": -0.026362549679164828,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-pair-ci_high",
+      "note": "",
+      "original": 0.018760996508213747,
+      "quantity": "pooled pair-clustered ci_high",
+      "recomputed": 0.018760996508213747,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-pair-se",
+      "note": "",
+      "original": 0.010864100786914226,
+      "quantity": "pooled pair-clustered se",
+      "recomputed": 0.010864100786914226,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-pair-mde_80",
+      "note": "",
+      "original": 0.030436701803107095,
+      "quantity": "pooled pair-clustered mde_80",
+      "recomputed": 0.030436701803107095,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-pair-p_one_sided",
+      "note": "",
+      "original": 0.5355,
+      "quantity": "pooled pair-clustered p_one_sided",
+      "recomputed": 0.5355,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-mde-z",
+      "note": "z_0.975 + z_0.80 = 1.959964 + 0.841621 = 2.801585.",
+      "original": 2.801585,
+      "quantity": "mde_80 / se",
+      "recomputed": 2.801585,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-mde-relative",
+      "note": "Reported MDE as a fraction of the B2 baseline AP (same horizon).",
+      "original": null,
+      "quantity": "MDE(80%) relative to baseline AP",
+      "recomputed": 0.6482173393142615,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-2025-10-01-rows",
+      "note": "",
+      "original": 1716,
+      "quantity": "2025-10-01 rows",
+      "recomputed": 1716,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-2025-10-01-positives",
+      "note": "",
+      "original": 12,
+      "quantity": "2025-10-01 positives",
+      "recomputed": 12,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-2025-10-01-ap",
+      "note": "",
+      "original": 0.03013263750032039,
+      "quantity": "2025-10-01 AP(G1)",
+      "recomputed": 0.03013263750032039,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-2025-10-01-delta",
+      "note": "",
+      "original": -0.0021632456664527518,
+      "quantity": "2025-10-01 dAP",
+      "recomputed": -0.0021632456664527518,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-2026-01-01-rows",
+      "note": "",
+      "original": 1716,
+      "quantity": "2026-01-01 rows",
+      "recomputed": 1716,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-2026-01-01-positives",
+      "note": "",
+      "original": 15,
+      "quantity": "2026-01-01 positives",
+      "recomputed": 15,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-2026-01-01-ap",
+      "note": "",
+      "original": 0.07708092377607972,
+      "quantity": "2026-01-01 AP(G1)",
+      "recomputed": 0.07708092377607972,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-2026-01-01-delta",
+      "note": "",
+      "original": -0.05088512825434219,
+      "quantity": "2026-01-01 dAP",
+      "recomputed": -0.05088512825434219,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-2026-04-01-rows",
+      "note": "",
+      "original": 1714,
+      "quantity": "2026-04-01 rows",
+      "recomputed": 1714,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-2026-04-01-positives",
+      "note": "",
+      "original": 15,
+      "quantity": "2026-04-01 positives",
+      "recomputed": 15,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-2026-04-01-ap",
+      "note": "",
+      "original": 0.13576095753346837,
+      "quantity": "2026-04-01 AP(G1)",
+      "recomputed": 0.13576095753346837,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-2026-04-01-delta",
+      "note": "",
+      "original": 0.010415996448483511,
+      "quantity": "2026-04-01 dAP",
+      "recomputed": 0.010415996448483511,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-windows-excluding-zero",
+      "note": "STATISTICAL_VALIDATION.md section 7 says '0/3 windows exclude zero'.",
+      "original": 0,
+      "quantity": "number of holdout windows whose company CI excludes 0",
+      "recomputed": 0,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "reproduction",
+      "id": "H2q-decision",
+      "note": "",
+      "original": "{\"a_2of3_windows_ci_excludes_zero\": false, \"b_pooled_both_clusterings_exclude_zero\": false, \"c_point_at_or_above_mde\": false, \"total_windows\": 3, \"windows_excluding_zero\": 0}",
+      "quantity": "stored literal decision flags",
+      "recomputed": "{\"a_2of3_windows_ci_excludes_zero\": false, \"b_pooled_both_clusterings_exclude_zero\": false, \"c_point_at_or_above_mde\": false, \"total_windows\": 3, \"windows_excluding_zero\": 0}",
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-rows",
+      "note": "",
+      "original": null,
+      "quantity": "pooled rows (3 overlapping windows)",
+      "recomputed": 5159,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-positives",
+      "note": "",
+      "original": null,
+      "quantity": "pooled positive rows",
+      "recomputed": 67,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-distinct-pairs",
+      "note": "",
+      "original": null,
+      "quantity": "distinct company-track pairs",
+      "recomputed": 1729,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-multiplicity",
+      "note": "Each company-track pair is triplicated by the three overlapping 4-quarter windows, so the pooled sample has ~3x the rows and ~3x the positives of a single-origin sample.",
+      "original": null,
+      "quantity": "rows per pair multiplicity histogram (pooled)",
+      "recomputed": {
+        "1": 8,
+        "2": 12,
+        "3": 1709
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-distinct-positive-pairs",
+      "note": "67 positive rows correspond to only 32 distinct company-track pairs; overlapping windows count the same first-activity event up to 3 times.",
+      "original": null,
+      "quantity": "distinct pairs with at least one positive row (effective positive events)",
+      "recomputed": 32,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-conflicting-pairs",
+      "note": "The pooled AP mixes these contradictory rows into one ranking problem.",
+      "original": null,
+      "quantity": "pairs labelled positive in one window and negative in another",
+      "recomputed": 13,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-company-skew",
+      "note": "Percentile CI and normal-theory MDE assume an approximately symmetric pivotal distribution; skew |value| > 1 means that assumption fails.",
+      "original": null,
+      "quantity": "company-cluster bootstrap draw skewness",
+      "recomputed": -1.760881269487883,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-company-bias",
+      "note": "",
+      "original": null,
+      "quantity": "company-cluster bootstrap mean minus point estimate",
+      "recomputed": -0.00028041651605621633,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-company-ci-asymmetry",
+      "note": "A symmetric interval has ratio 1. Large departures mean the interval is not a normal-theory +/- 1.96 SE statement.",
+      "original": null,
+      "quantity": "company-cluster CI asymmetry: (ci_high-delta)/(delta-ci_low)",
+      "recomputed": 0.6578294725428584,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-company-se-bootstrap-vs-jackknife",
+      "note": "Jackknife-t 95% CI [-0.013758, 0.001579] and jackknife MDE(80%)=0.010909 differ substantially from the percentile bootstrap interval; bootstrap/jackknife SE ratio = 4.08. The uncertainty statement is estimator-dependent.",
+      "original": 0.015583192363468409,
+      "quantity": "company-cluster SE: reported bootstrap vs delete-one jackknife",
+      "recomputed": 0.0038177642433831985,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-company-p-one-sided",
+      "note": "p_one_sided is the one-sided percentile-bootstrap tail probability P*(dAP* <= 0), valid only to first order under an approximately pivotal (symmetric) bootstrap distribution. It is NOT the statistic used by the pre-registered decision rule (a two-sided 95% CI) and it is not calibrated for the H2q company bootstrap, whose draws are strongly right-skewed and biased upward.",
+      "original": 0.459,
+      "quantity": "company p_one_sided = mean(draws<=0) vs normal-theory 1-Phi(delta/se)",
+      "recomputed": {
+        "bootstrap_p": 0.459,
+        "difference": -0.04903888288124231,
+        "normal_p": 0.5080388828812423
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-pair-skew",
+      "note": "Percentile CI and normal-theory MDE assume an approximately symmetric pivotal distribution; skew |value| > 1 means that assumption fails.",
+      "original": null,
+      "quantity": "pair-cluster bootstrap draw skewness",
+      "recomputed": -0.928763194730828,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-pair-bias",
+      "note": "",
+      "original": null,
+      "quantity": "pair-cluster bootstrap mean minus point estimate",
+      "recomputed": -0.0012106319560613336,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-pair-ci-asymmetry",
+      "note": "A symmetric interval has ratio 1. Large departures mean the interval is not a normal-theory +/- 1.96 SE statement.",
+      "original": null,
+      "quantity": "pair-cluster CI asymmetry: (ci_high-delta)/(delta-ci_low)",
+      "recomputed": 0.6032918596514176,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-pair-se-bootstrap-vs-jackknife",
+      "note": "Jackknife-t 95% CI [-0.019411, 0.007232] and jackknife MDE(80%)=0.019039 differ substantially from the percentile bootstrap interval; bootstrap/jackknife SE ratio = 1.60. The uncertainty statement is estimator-dependent.",
+      "original": 0.010864100786914226,
+      "quantity": "pair-cluster SE: reported bootstrap vs delete-one jackknife",
+      "recomputed": 0.006792015683829748,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-pair-p-one-sided",
+      "note": "p_one_sided is the one-sided percentile-bootstrap tail probability P*(dAP* <= 0), valid only to first order under an approximately pivotal (symmetric) bootstrap distribution. It is NOT the statistic used by the pre-registered decision rule (a two-sided 95% CI) and it is not calibrated for the H2q company bootstrap, whose draws are strongly right-skewed and biased upward.",
+      "original": 0.5355,
+      "quantity": "pair p_one_sided = mean(draws<=0) vs normal-theory 1-Phi(delta/se)",
+      "recomputed": {
+        "bootstrap_p": 0.5355,
+        "difference": 0.023970054156317144,
+        "normal_p": 0.5115299458436828
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-seed-stability",
+      "note": "Monte-Carlo error with 2000 resamples is material but does not change the qualitative conclusion; it does show the reported CI has simulation noise.",
+      "original": null,
+      "quantity": "company-cluster 95% CI endpoint range across 5 bootstrap seeds",
+      "recomputed": {
+        "ci_high_range": [
+          0.003693289425513662,
+          0.004838898247427988
+        ],
+        "ci_low_range": [
+          -0.02521872848670051,
+          -0.02131876249401913
+        ],
+        "se_range": [
+          0.006548343196256741,
+          0.007469665664768108
+        ]
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-mean-window-delta",
+      "note": "",
+      "original": null,
+      "quantity": "equal-weight mean over windows of per-window dAP (observed)",
+      "recomputed": -0.007071174376166348,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-mean-window-ci",
+      "note": "Time-aware alternative to the pooled triplicated-row AP; the conclusion (interval includes 0) is unchanged.",
+      "original": null,
+      "quantity": "equal-weight mean-over-windows 95% CI (company-cluster bootstrap)",
+      "recomputed": {
+        "ci_high": 0.007312084643748557,
+        "ci_low": -0.032385879346771576,
+        "p_one_sided": 0.8405
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-dedupe-first",
+      "note": "Removing the overlapping-window duplication moves the point estimate from the pooled value and changes its sign; the negative sign of the pooled estimate is not robust to how duplicated pairs are handled.",
+      "original": null,
+      "quantity": "dAP on one row per pair (first window retained)",
+      "recomputed": 0.0006231157744989585,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-dedupe-last",
+      "note": "Removing the overlapping-window duplication moves the point estimate from the pooled value and changes its sign; the negative sign of the pooled estimate is not robust to how duplicated pairs are handled.",
+      "original": null,
+      "quantity": "dAP on one row per pair (last window retained)",
+      "recomputed": -0.01689394116104269,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-rows",
+      "note": "",
+      "original": null,
+      "quantity": "pooled rows (3 overlapping windows)",
+      "recomputed": 5146,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-positives",
+      "note": "",
+      "original": null,
+      "quantity": "pooled positive rows",
+      "recomputed": 42,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-distinct-pairs",
+      "note": "",
+      "original": null,
+      "quantity": "distinct company-track pairs",
+      "recomputed": 1727,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-multiplicity",
+      "note": "Each company-track pair is triplicated by the three overlapping 4-quarter windows, so the pooled sample has ~3x the rows and ~3x the positives of a single-origin sample.",
+      "original": null,
+      "quantity": "rows per pair multiplicity histogram (pooled)",
+      "recomputed": {
+        "1": 12,
+        "2": 11,
+        "3": 1704
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-distinct-positive-pairs",
+      "note": "42 positive rows correspond to only 28 distinct company-track pairs; overlapping windows count the same first-activity event up to 3 times.",
+      "original": null,
+      "quantity": "distinct pairs with at least one positive row (effective positive events)",
+      "recomputed": 28,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-conflicting-pairs",
+      "note": "The pooled AP mixes these contradictory rows into one ranking problem.",
+      "original": null,
+      "quantity": "pairs labelled positive in one window and negative in another",
+      "recomputed": 13,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-company-skew",
+      "note": "Percentile CI and normal-theory MDE assume an approximately symmetric pivotal distribution; skew |value| > 1 means that assumption fails.",
+      "original": null,
+      "quantity": "company-cluster bootstrap draw skewness",
+      "recomputed": 2.8850867243462486,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-company-bias",
+      "note": "",
+      "original": null,
+      "quantity": "company-cluster bootstrap mean minus point estimate",
+      "recomputed": 0.004990737058186416,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-company-ci-asymmetry",
+      "note": "A symmetric interval has ratio 1. Large departures mean the interval is not a normal-theory +/- 1.96 SE statement.",
+      "original": null,
+      "quantity": "company-cluster CI asymmetry: (ci_high-delta)/(delta-ci_low)",
+      "recomputed": 5.211668812389216,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-company-se-bootstrap-vs-jackknife",
+      "note": "Jackknife-t 95% CI [-0.019321, 0.018693] and jackknife MDE(80%)=0.027040 differ substantially from the percentile bootstrap interval; bootstrap/jackknife SE ratio = 1.65. The uncertainty statement is estimator-dependent.",
+      "original": 0.015583192363468409,
+      "quantity": "company-cluster SE: reported bootstrap vs delete-one jackknife",
+      "recomputed": 0.009463093668674037,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-company-p-one-sided",
+      "note": "p_one_sided is the one-sided percentile-bootstrap tail probability P*(dAP* <= 0), valid only to first order under an approximately pivotal (symmetric) bootstrap distribution. It is NOT the statistic used by the pre-registered decision rule (a two-sided 95% CI) and it is not calibrated for the H2q company bootstrap, whose draws are strongly right-skewed and biased upward.",
+      "original": 0.459,
+      "quantity": "company p_one_sided = mean(draws<=0) vs normal-theory 1-Phi(delta/se)",
+      "recomputed": {
+        "bootstrap_p": 0.459,
+        "difference": -0.04903888288124231,
+        "normal_p": 0.5080388828812423
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-pair-skew",
+      "note": "Percentile CI and normal-theory MDE assume an approximately symmetric pivotal distribution; skew |value| > 1 means that assumption fails.",
+      "original": null,
+      "quantity": "pair-cluster bootstrap draw skewness",
+      "recomputed": -0.5443198998159521,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-pair-bias",
+      "note": "",
+      "original": null,
+      "quantity": "pair-cluster bootstrap mean minus point estimate",
+      "recomputed": -0.001142299400090422,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-pair-ci-asymmetry",
+      "note": "A symmetric interval has ratio 1. Large departures mean the interval is not a normal-theory +/- 1.96 SE statement.",
+      "original": null,
+      "quantity": "pair-cluster CI asymmetry: (ci_high-delta)/(delta-ci_low)",
+      "recomputed": 0.7322883275564183,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-pair-se-bootstrap-vs-jackknife",
+      "note": "Jackknife-t 95% CI [-0.013493, 0.012865] and jackknife MDE(80%)=0.018836 differ substantially from the percentile bootstrap interval; bootstrap/jackknife SE ratio = 1.62. The uncertainty statement is estimator-dependent.",
+      "original": 0.010864100786914226,
+      "quantity": "pair-cluster SE: reported bootstrap vs delete-one jackknife",
+      "recomputed": 0.006719413488602162,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-pair-p-one-sided",
+      "note": "p_one_sided is the one-sided percentile-bootstrap tail probability P*(dAP* <= 0), valid only to first order under an approximately pivotal (symmetric) bootstrap distribution. It is NOT the statistic used by the pre-registered decision rule (a two-sided 95% CI) and it is not calibrated for the H2q company bootstrap, whose draws are strongly right-skewed and biased upward.",
+      "original": 0.5355,
+      "quantity": "pair p_one_sided = mean(draws<=0) vs normal-theory 1-Phi(delta/se)",
+      "recomputed": {
+        "bootstrap_p": 0.5355,
+        "difference": 0.023970054156317144,
+        "normal_p": 0.5115299458436828
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-seed-stability",
+      "note": "Monte-Carlo error with 2000 resamples is material but does not change the qualitative conclusion; it does show the reported CI has simulation noise.",
+      "original": null,
+      "quantity": "company-cluster 95% CI endpoint range across 5 bootstrap seeds",
+      "recomputed": {
+        "ci_high_range": [
+          0.04813738761350333,
+          0.05362691960298828
+        ],
+        "ci_low_range": [
+          -0.01116442754778676,
+          -0.010406248510725968
+        ],
+        "se_range": [
+          0.01471425716614812,
+          0.01563697580435321
+        ]
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-mean-window-delta",
+      "note": "",
+      "original": null,
+      "quantity": "equal-weight mean over windows of per-window dAP (observed)",
+      "recomputed": -0.014210792490770474,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-mean-window-ci",
+      "note": "Time-aware alternative to the pooled triplicated-row AP; the conclusion (interval includes 0) is unchanged.",
+      "original": null,
+      "quantity": "equal-weight mean-over-windows 95% CI (company-cluster bootstrap)",
+      "recomputed": {
+        "ci_high": 0.016136755412403565,
+        "ci_low": -0.04181339487885412,
+        "p_one_sided": 0.7205
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-dedupe-first",
+      "note": "Removing the overlapping-window duplication moves the point estimate from the pooled value and changes its sign; the negative sign of the pooled estimate is not robust to how duplicated pairs are handled.",
+      "original": null,
+      "quantity": "dAP on one row per pair (first window retained)",
+      "recomputed": 0.00505350247199117,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H2q-dedupe-last",
+      "note": "Removing the overlapping-window duplication moves the point estimate from the pooled value and changes its sign; the negative sign of the pooled estimate is not robust to how duplicated pairs are handled.",
+      "original": null,
+      "quantity": "dAP on one row per pair (last window retained)",
+      "recomputed": -0.0017953229878824584,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-company-ci-coverage",
+      "note": "Cluster-resampling simulation of the CI procedure itself (150 experiments x 150 bootstrap resamples). Calibrated coverage supports the interval as a finite-population statement; the interval remains conditional on the realised windows (time is not resampled).",
+      "original": null,
+      "quantity": "company-cluster percentile CI coverage of the finite-population dAP",
+      "recomputed": {
+        "coverage": 0.9533333333333334,
+        "rejection_rate_when_true_delta_is_population_delta": 0.17333333333333334,
+        "wilson_95": [
+          0.9068135271280356,
+          0.9772134509633353
+        ]
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "bootstrap",
+      "id": "H4q-pair-ci-coverage",
+      "note": "Cluster-resampling simulation of the CI procedure itself (150 experiments x 150 bootstrap resamples). Calibrated coverage supports the interval as a finite-population statement; the interval remains conditional on the realised windows (time is not resampled).",
+      "original": null,
+      "quantity": "pair-cluster percentile CI coverage of the finite-population dAP",
+      "recomputed": {
+        "coverage": 0.9466666666666667,
+        "rejection_rate_when_true_delta_is_population_delta": 0.13333333333333333,
+        "wilson_95": [
+          0.8982961211345455,
+          0.9727304602201876
+        ]
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "mde",
+      "id": "H4q-mde-normal",
+      "note": "",
+      "original": 0.01942800955574231,
+      "quantity": "MDE(80%) normal-theory from bootstrap SE",
+      "recomputed": 0.01942800955574231,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "mde",
+      "id": "H4q-mde-quantile",
+      "note": "power(delta)=P(delta+E>-(q025(draws)-point)); solved at 80% power. power at the reported MDE under this method = 0.784.",
+      "original": 0.01942800955574231,
+      "quantity": "MDE(80%) from bootstrap-quantile power (skew-aware, local alternative)",
+      "recomputed": 0.01971224606996131,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "mde",
+      "id": "H4q-mde-jackknife",
+      "note": "Jackknife SE 0.003818 vs bootstrap SE 0.006935; the MDE is not stable across variance estimators.",
+      "original": 0.01942800955574231,
+      "quantity": "MDE(80%) from delete-one-company jackknife t quantiles",
+      "recomputed": 0.010908987807892685,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "mde",
+      "id": "H4q-mde-pair-quantile",
+      "note": "power at the reported pair-clustered MDE = 0.629 under the quantile method.",
+      "original": 0.02972934211925396,
+      "quantity": "pair-clustered MDE(80%) from bootstrap-quantile power",
+      "recomputed": 0.035070626337040306,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "mde",
+      "id": "H4q-mde-relative",
+      "note": "= 25.9% of the B2 baseline AP; a 'minimum detectable effect' of this size is not a well-powered design for small network gains.",
+      "original": 0.2587199012285109,
+      "quantity": "MDE(80%) / baseline AP",
+      "recomputed": 0.2587199012285109,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "mde",
+      "id": "H2q-mde-normal",
+      "note": "",
+      "original": 0.04365763797760765,
+      "quantity": "MDE(80%) normal-theory from bootstrap SE",
+      "recomputed": 0.04365763797760765,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "mde",
+      "id": "H2q-mde-quantile",
+      "note": "power(delta)=P(delta+E>-(q025(draws)-point)); solved at 80% power. power at the reported MDE under this method = 1.000.",
+      "original": 0.04365763797760765,
+      "quantity": "MDE(80%) from bootstrap-quantile power (skew-aware, local alternative)",
+      "recomputed": 0.014727626173076932,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "mde",
+      "id": "H2q-mde-jackknife",
+      "note": "Jackknife SE 0.009463 vs bootstrap SE 0.015583; the MDE is not stable across variance estimators.",
+      "original": 0.04365763797760765,
+      "quantity": "MDE(80%) from delete-one-company jackknife t quantiles",
+      "recomputed": 0.027040112190120327,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "mde",
+      "id": "H2q-mde-pair-quantile",
+      "note": "power at the reported pair-clustered MDE = 0.708 under the quantile method.",
+      "original": 0.030436701803107095,
+      "quantity": "pair-clustered MDE(80%) from bootstrap-quantile power",
+      "recomputed": 0.03360474102247533,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "DISCREPANT"
+    },
+    {
+      "category": "mde",
+      "id": "H2q-mde-relative",
+      "note": "= 64.8% of the B2 baseline AP; a 'minimum detectable effect' of this size is not a well-powered design for small network gains.",
+      "original": 0.6482173393142615,
+      "quantity": "MDE(80%) / baseline AP",
+      "recomputed": 0.6482173393142615,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "mde",
+      "id": "H4q-rule-mde",
+      "note": "Power of the actual decision rule at the reported MDE is only 0.163 (2/3 windows: 0.196; both clusterings: 0.419; point>=MDE: 0.498). MDE_rule / baseline AP = 0.498.",
+      "original": null,
+      "quantity": "MDE(80%) for the pre-registered compound section-11 decision rule",
+      "recomputed": 0.03736465136955758,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "multiplicity",
+      "id": "BH-n-rejections",
+      "note": "Correct step-up and the buggy pointwise version both reject nothing; the multiplicity conclusion (no significant result) is unchanged.",
+      "original": 0,
+      "quantity": "BH q=0.10 rejections over the 8-test family the original script used",
+      "recomputed": 0,
+      "tag": "UNCHANGED_FINDING",
+      "verdict": "PASS"
+    },
+    {
+      "category": "multiplicity",
+      "id": "BH-thresholds",
+      "note": "The original prints q*(original_index+1)/m, i.e. the threshold belonging to a different rank; e.g. the smallest p (0.1895) should be compared with 0.0125, not the largest p. The rejection decision itself is conservative (pointwise).",
+      "original": [
+        0.0125,
+        0.025,
+        0.037500000000000006,
+        0.05,
+        0.0625,
+        0.07500000000000001,
+        0.08750000000000001,
+        0.1
+      ],
+      "quantity": "original bh_threshold vs correct rank threshold",
+      "recomputed": [
+        {
+          "correct_threshold": 0.08750000000000001,
+          "p": 0.8935,
+          "rank": 7,
+          "reject": false,
+          "test": "H4q:H1_G1_minus_B2_pooled_company"
+        },
+        {
+          "correct_threshold": 0.0625,
+          "p": 0.7445,
+          "rank": 5,
+          "reject": false,
+          "test": "H4q:H1_G1_minus_B2_2025-04-01"
+        },
+        {
+          "correct_threshold": 0.05,
+          "p": 0.6325,
+          "rank": 4,
+          "reject": false,
+          "test": "H4q:H1_G1_minus_B2_2025-07-01"
+        },
+        {
+          "correct_threshold": 0.07500000000000001,
+          "p": 0.884,
+          "rank": 6,
+          "reject": false,
+          "test": "H4q:H1_G1_minus_B2_2025-10-01"
+        },
+        {
+          "correct_threshold": 0.025,
+          "p": 0.459,
+          "rank": 2,
+          "reject": false,
+          "test": "H2q:H1_G1_minus_B2_pooled_company"
+        },
+        {
+          "correct_threshold": 0.037500000000000006,
+          "p": 0.5985,
+          "rank": 3,
+          "reject": false,
+          "test": "H2q:H1_G1_minus_B2_2025-10-01"
+        },
+        {
+          "correct_threshold": 0.1,
+          "p": 0.9075,
+          "rank": 8,
+          "reject": false,
+          "test": "H2q:H1_G1_minus_B2_2026-01-01"
+        },
+        {
+          "correct_threshold": 0.0125,
+          "p": 0.1895,
+          "rank": 1,
+          "reject": false,
+          "test": "H2q:H1_G1_minus_B2_2026-04-01"
+        }
+      ],
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "multiplicity",
+      "id": "BH-family",
+      "note": "",
+      "original": {
+        "pre_registered_section_10_5": "H1: 3 holdout windows + pooled, H2: 3 windows",
+        "script_family": [
+          "H4q:H1_G1_minus_B2_pooled_company",
+          "H4q:H1_G1_minus_B2_2025-04-01",
+          "H4q:H1_G1_minus_B2_2025-07-01",
+          "H4q:H1_G1_minus_B2_2025-10-01",
+          "H2q:H1_G1_minus_B2_pooled_company",
+          "H2q:H1_G1_minus_B2_2025-10-01",
+          "H2q:H1_G1_minus_B2_2026-01-01",
+          "H2q:H1_G1_minus_B2_2026-04-01"
+        ]
+      },
+      "quantity": "family definition mismatch",
+      "recomputed": {
+        "pre_registered_family_size": "7 (4 H1 + 3 H2)",
+        "script_family_size": 8,
+        "script_uses": "2 horizons x (pooled + 3 windows) = 8 H1 tests; H2 omitted"
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "randomisation",
+      "id": "H4q-H2-40-displayed",
+      "note": "The original 40/40 statement reproduces numerically but inherits the broken randomised null model (edge loss / broken bipartite degrees / collapsed weights): INVALIDATED as a method claim.",
+      "original": {
+        "delta_q025": -0.012322878656513547,
+        "delta_q975": -0.00018342630430753792,
+        "delta_real_minus_randomised_median": -0.004902902324627131,
+        "fraction_randomisations_beating_real": 1.0,
+        "n_randomisations": 40,
+        "randomised_pooled_ap_max": 0.08198243410602074,
+        "randomised_pooled_ap_median": 0.074322792361511,
+        "randomised_pooled_ap_min": 0.06918688314172436,
+        "real_above_975": false,
+        "real_pooled_ap": 0.06900345683741682
+      },
+      "quantity": "displayed real-vs-randomisation summary",
+      "recomputed": {
+        "fraction_random_at_or_above_real": 1.0,
+        "p_one_sided_real_gt_random": 1.0,
+        "p_one_sided_real_lt_random": 0.024390243902439025,
+        "p_two_sided": 0.04878048780487805,
+        "randomised_ap_max": 0.08198243410602074,
+        "randomised_ap_median": 0.07411457576177746,
+        "randomised_ap_min": 0.06918688314172436,
+        "real_above_max": false,
+        "real_above_q975": false,
+        "real_pooled_ap": 0.06900345683741682,
+        "resolution_one_sided": 0.024390243902439025
+      },
+      "tag": "INVALIDATED_FINDING",
+      "verdict": "PASS"
+    },
+    {
+      "category": "randomisation",
+      "id": "H4q-H2-resolution",
+      "note": "With R=40 the smallest attainable one-sided p is 1/41=0.0244 (two-sided 0.0488); a '97.5th percentile' is between the 39th and 40th order statistics, i.e. essentially the maximum.",
+      "original": null,
+      "quantity": "one-sided randomisation p-value resolution with R=40",
+      "recomputed": 0.024390243902439025,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "randomisation",
+      "id": "H4q-H2-quantile-implementation",
+      "note": "s028_stats.py lines 262-265 use sorted[int(0.975*n)]; for n=40 that is element index 39 = the maximum, i.e. the criterion was real > max, not real > 97.5th percentile. Conservative here, but not the pre-registered criterion.",
+      "original": 0.08198243410602074,
+      "quantity": "original real_above_975 threshold vs numpy 97.5th percentile",
+      "recomputed": {
+        "numpy_q975": 0.08134273795923258,
+        "original_code_threshold": 0.08198243410602074
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "randomisation",
+      "id": "H4q-H2-null-interpretation",
+      "note": "Under a valid randomisation null, real AP being below the null distribution means the REAL company-track arrangement is atypical (worse than a degree- and time-matched rearrangement). It is NOT evidence that 'random relations have predictive value'. The pre-registered H2 direction (real > random) attains p=1.0; the reverse-direction p=1/41 is exploratory and invalid under the broken null model. Per-window: the pooled reversal is driven by the first and third windows, not by all three.",
+      "original": "40/40 randomisations higher than real",
+      "quantity": "correct interpretation of random-graph AP exceeding real-graph AP",
+      "recomputed": {
+        "p_for_H2_direction_real_gt_random": 1.0,
+        "per_window_fraction_random_at_or_above_real": {
+          "2025-04-01": 1.0,
+          "2025-07-01": 0.525,
+          "2025-10-01": 0.825
+        },
+        "reverse_direction_p_exploratory": 0.024390243902439025
+      },
+      "tag": "INVALIDATED_FINDING",
+      "verdict": "PASS"
+    },
+    {
+      "category": "randomisation",
+      "id": "H2q-H2-40-displayed",
+      "note": "The original 40/40 statement reproduces numerically but inherits the broken randomised null model (edge loss / broken bipartite degrees / collapsed weights): INVALIDATED as a method claim.",
+      "original": {
+        "delta_q025": -0.02737922806110367,
+        "delta_q975": 0.005700826204809897,
+        "delta_real_minus_randomised_median": -0.005592020691625038,
+        "fraction_randomisations_beating_real": 0.75,
+        "n_randomisations": 40,
+        "randomised_pooled_ap_max": 0.10069245262265372,
+        "randomised_pooled_ap_median": 0.07347888900963234,
+        "randomised_pooled_ap_min": 0.06133545237071354,
+        "real_above_975": false,
+        "real_pooled_ap": 0.06703627857552347
+      },
+      "quantity": "displayed real-vs-randomisation summary",
+      "recomputed": {
+        "fraction_random_at_or_above_real": 0.75,
+        "p_one_sided_real_gt_random": 0.7560975609756098,
+        "p_one_sided_real_lt_random": 0.2682926829268293,
+        "p_two_sided": 0.5365853658536586,
+        "randomised_ap_max": 0.10069245262265372,
+        "randomised_ap_median": 0.07305359413839044,
+        "randomised_ap_min": 0.06133545237071354,
+        "real_above_max": false,
+        "real_above_q975": false,
+        "real_pooled_ap": 0.06703627857552347,
+        "resolution_one_sided": 0.024390243902439025
+      },
+      "tag": "INVALIDATED_FINDING",
+      "verdict": "PASS"
+    },
+    {
+      "category": "randomisation",
+      "id": "H2q-H2-resolution",
+      "note": "With R=40 the smallest attainable one-sided p is 1/41=0.0244 (two-sided 0.0488); a '97.5th percentile' is between the 39th and 40th order statistics, i.e. essentially the maximum.",
+      "original": null,
+      "quantity": "one-sided randomisation p-value resolution with R=40",
+      "recomputed": 0.024390243902439025,
+      "tag": "CORRECTED_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "randomisation",
+      "id": "H2q-H2-quantile-implementation",
+      "note": "s028_stats.py lines 262-265 use sorted[int(0.975*n)]; for n=40 that is element index 39 = the maximum, i.e. the criterion was real > max, not real > 97.5th percentile. Conservative here, but not the pre-registered criterion.",
+      "original": 0.10069245262265372,
+      "quantity": "original real_above_975 threshold vs numpy 97.5th percentile",
+      "recomputed": {
+        "numpy_q975": 0.09457243028627782,
+        "original_code_threshold": 0.10069245262265372
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "prereg",
+      "id": "PREREG-hashes",
+      "note": "PRE_REGISTRATION.md still matches its amendment freeze hash (no silent edit). HYPOTHESIS_REGISTRY.md no longer matches because results were appended after the freeze (allowed by its own append-only rule).",
+      "original": null,
+      "quantity": "protocol hashes vs freeze records",
+      "recomputed": {
+        "prereg_hash_matches_amendment_freeze": true,
+        "registry_hash_matches_freeze": false
+      },
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "prereg",
+      "id": "PREREG-mde-method",
+      "note": "The *procedure* was fine to pre-register; the exact normal-theory constant and the resulting number were not covered by the freeze hash and were computed from the realised bootstrap SE after the predictions existed, so the number is a post-hoc estimate, not a design-stage power guarantee.",
+      "original": "PRE_REGISTRATION.md section 10.4: '以 bootstrap 的 ΔAP 标准误反推 80% 功效下的最小可检测效应' (method only)",
+      "quantity": "is the MDE method pre-registered?",
+      "recomputed": {
+        "exact_formula_in_frozen_protocol": false,
+        "exact_formula_location": "EXPERIMENT_PROTOCOL.md section 4 table: (z_0.975+z_0.80)*SE = 2.8016*SE; EXPERIMENT_PROTOCOL.md is not included in prereg_freeze.json hashes",
+        "mde_value_computed_after_predictions": "predictions_H4q.json.gz mtime 2026-11-04 01:54:49; statistical_validation json mtime 01:57:14",
+        "method_pre_registered": true
+      },
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "prereg",
+      "id": "H4q-decide-literal",
+      "note": "The criteria (a),(b),(c) and the phrase-level NULL branch are transcribed faithfully from section 11. The extra branch 'NULL (G1 significantly worse than baseline)' (s028_stats.py line 150) is not in the protocol (post-hoc label; not triggered here).",
+      "original": {
+        "criteria": {
+          "a_2of3_windows_ci_excludes_zero": false,
+          "b_pooled_both_clusterings_exclude_zero": false,
+          "c_point_at_or_above_mde": false,
+          "total_windows": 3,
+          "windows_excluding_zero": 0
+        },
+        "h1_status": "NULL (well-powered: |delta| below MDE)"
+      },
+      "quantity": "decide() vs literal section-11 rule",
+      "recomputed": {
+        "criteria": {
+          "a_2of3_windows_ci_excludes_zero": false,
+          "b_pooled_both_clusterings_exclude_zero": false,
+          "c_point_at_or_above_mde": false,
+          "total_windows": 3,
+          "windows_excluding_zero": 0
+        },
+        "h1_status": "NULL (well-powered: |delta| below MDE)"
+      },
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "prereg",
+      "id": "H2q-decide-literal",
+      "note": "The criteria (a),(b),(c) and the phrase-level NULL branch are transcribed faithfully from section 11. The extra branch 'NULL (G1 significantly worse than baseline)' (s028_stats.py line 150) is not in the protocol (post-hoc label; not triggered here).",
+      "original": {
+        "criteria": {
+          "a_2of3_windows_ci_excludes_zero": false,
+          "b_pooled_both_clusterings_exclude_zero": false,
+          "c_point_at_or_above_mde": false,
+          "total_windows": 3,
+          "windows_excluding_zero": 0
+        },
+        "h1_status": "NULL (well-powered: |delta| below MDE)"
+      },
+      "quantity": "decide() vs literal section-11 rule",
+      "recomputed": {
+        "criteria": {
+          "a_2of3_windows_ci_excludes_zero": false,
+          "b_pooled_both_clusterings_exclude_zero": false,
+          "c_point_at_or_above_mde": false,
+          "total_windows": 3,
+          "windows_excluding_zero": 0
+        },
+        "h1_status": "NULL (well-powered: |delta| below MDE)"
+      },
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "prereg",
+      "id": "well-powered-vacuity",
+      "note": "Because MDE = 2.80*SE while a 95% CI containing 0 forces |delta| <= ~1.96*SE (looser still for skewed percentile CIs), the NULL (well-powered) branch is triggered automatically by non-rejection. It cannot by itself be evidence that the study was well powered, and the protocol's alternative UNDERPOWERED branch has no operational threshold ('MDE larger than any reasonable effect').",
+      "original": null,
+      "quantity": "how often 'CI includes 0 => |delta| < MDE' holds in the reported table",
+      "recomputed": {
+        "all_satisfy": true,
+        "cases_checked": 10,
+        "cases_satisfying": 10,
+        "examples": [
+          {
+            "abs_delta": 0.006089373143925769,
+            "abs_delta_lt_mde": true,
+            "ci_includes_zero": true,
+            "mde": 0.01942800955574231,
+            "test": "H4q-company"
+          },
+          {
+            "abs_delta": 0.006089373143925769,
+            "abs_delta_lt_mde": true,
+            "ci_includes_zero": true,
+            "mde": 0.02972934211925396,
+            "test": "H4q-pair"
+          },
+          {
+            "abs_delta": 0.00897753892000068,
+            "abs_delta_lt_mde": true,
+            "ci_includes_zero": true,
+            "mde": 0.037529854876663965,
+            "test": "H4q-2025-04-01"
+          }
+        ]
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "prereg",
+      "id": "well-powered-algebra",
+      "note": "The label is close to a tautology; it must be replaced by an explicit statement of the power bound (pooled MDE and rule-level MDE).",
+      "original": "protocol section 11",
+      "quantity": "pre-registered NULL (well-powered) condition: CI includes 0 AND |delta| < MDE",
+      "recomputed": "implied by non-rejection under MDE = (z.975+z.80)SE",
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "strata",
+      "id": "H4q-strata-tracks",
+      "note": "",
+      "original": 6,
+      "quantity": "number of usable tracks strata (n>=10, positives>=5)",
+      "recomputed": 6,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "strata",
+      "id": "H4q-strata-companies",
+      "note": "",
+      "original": 5,
+      "quantity": "number of usable companies strata (n>=10, positives>=5)",
+      "recomputed": 5,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "strata",
+      "id": "H4q-strata-origins",
+      "note": "",
+      "original": 3,
+      "quantity": "number of usable origins strata (n>=10, positives>=5)",
+      "recomputed": 3,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "strata",
+      "id": "H4q-strata-unique",
+      "note": "The pre-declared n>=10/positives>=5 thresholds were applied to pooled rows in which each pair appears up to 3 times, so the strata counts are inflated: on unique pair counts almost no stratum qualifies (the H4 'conditional effect' question is even less identifiable than reported).",
+      "original": {
+        "companies": 5,
+        "tracks": 6
+      },
+      "quantity": "usable strata after collapsing triplicated overlapping-window rows",
+      "recomputed": {
+        "companies": 0,
+        "tracks": 0
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "strata",
+      "id": "H4q-strata-values",
+      "note": "STATISTICAL_VALIDATION.md section 5 values reproduced",
+      "original": null,
+      "quantity": "best/worst reported stratum dAP",
+      "recomputed": {
+        "by_company_usable": 5,
+        "by_track_usable": 6
+      },
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "strata",
+      "id": "H2q-strata-tracks",
+      "note": "",
+      "original": 1,
+      "quantity": "number of usable tracks strata (n>=10, positives>=5)",
+      "recomputed": 1,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "strata",
+      "id": "H2q-strata-companies",
+      "note": "",
+      "original": 1,
+      "quantity": "number of usable companies strata (n>=10, positives>=5)",
+      "recomputed": 1,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "strata",
+      "id": "H2q-strata-origins",
+      "note": "",
+      "original": 3,
+      "quantity": "number of usable origins strata (n>=10, positives>=5)",
+      "recomputed": 3,
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    {
+      "category": "strata",
+      "id": "H2q-strata-unique",
+      "note": "The pre-declared n>=10/positives>=5 thresholds were applied to pooled rows in which each pair appears up to 3 times, so the strata counts are inflated: on unique pair counts almost no stratum qualifies (the H4 'conditional effect' question is even less identifiable than reported).",
+      "original": {
+        "companies": 1,
+        "tracks": 1
+      },
+      "quantity": "usable strata after collapsing triplicated overlapping-window rows",
+      "recomputed": {
+        "companies": 0,
+        "tracks": 0
+      },
+      "tag": "CORRECTED_RESULT",
+      "verdict": "BUG"
+    },
+    {
+      "category": "strata",
+      "id": "H2q-strata-values",
+      "note": "STATISTICAL_VALIDATION.md section 5 values reproduced",
+      "original": null,
+      "quantity": "best/worst reported stratum dAP",
+      "recomputed": {
+        "by_company_usable": 1,
+        "by_track_usable": 1
+      },
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    }
+  ],
+  "generated_at_utc": "2026-11-03T19:03:08Z",
+  "original_g2_resolution": {
+    "H2q": {
+      "n_randomisations": 40,
+      "p_one_sided_real_gt_random": 0.7560975609756098,
+      "p_two_sided": 0.5365853658536586,
+      "resolution_one_sided": 0.024390243902439025
+    },
+    "H4q": {
+      "n_randomisations": 40,
+      "p_one_sided_real_gt_random": 1.0,
+      "p_two_sided": 0.04878048780487805,
+      "resolution_one_sided": 0.024390243902439025
+    }
+  },
+  "provenance": {
+    "HYPOTHESIS_REGISTRY_sha256": "b43c0319e9cfd3305cbaa7caabb5d64af72044d6c3bdf89d8e4adb2f5c01584c",
+    "PRE_REGISTRATION_sha256": "49785703a5722c8b9fdec2682950620242c599a2369e00e93b070c95058c2521",
+    "predictions_H2q_sha256": "169b105927c960d5416168a88f2243e6860f92ad00513b8cc2cb4d617598cfe9",
+    "predictions_H4q_sha256": "82cc5a7cfa6449b205bbbda30150a6db43fd8c23dc3106983f81cd72d3833bf4",
+    "prereg_freeze": {
+      "files": {
+        "HYPOTHESIS_REGISTRY.md": {
+          "sha256": "27624f1c54568b48106c75d38365af36113bd46077c062a1351535000638ef02",
+          "size_bytes": 3766
+        },
+        "PRE_REGISTRATION.md": {
+          "sha256": "a5f16212f01efa8d8559b7716e99e647aee4a74ed9efad1cb31aa5b36fe303fa",
+          "size_bytes": 15998
+        }
+      },
+      "frozen_at_utc": "2026-11-03T17:07:43+00:00",
+      "input_database": {
+        "path": "D:\\DEPPSKK\\worktrees\\integration-v2\\data\\research.sqlite",
+        "sha256": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+        "size_bytes": 289443840
+      },
+      "note": "Hashes of the protocol documents as frozen BEFORE any S-028 model was fitted. Only label-census and feasibility statistics existed at freeze time.",
+      "study": "S-028"
+    },
+    "prereg_freeze_amendment1": {
+      "files": {
+        "HYPOTHESIS_REGISTRY.md": {
+          "sha256": "27624f1c54568b48106c75d38365af36113bd46077c062a1351535000638ef02",
+          "size_bytes": 3766
+        },
+        "PRE_REGISTRATION.md": {
+          "sha256": "49785703a5722c8b9fdec2682950620242c599a2369e00e93b070c95058c2521",
+          "size_bytes": 18602
+        }
+      },
+      "frozen_at_utc": "2026-11-03T17:12:36+00:00",
+      "input_database": {
+        "path": "D:\\DEPPSKK\\worktrees\\integration-v2\\data\\research.sqlite",
+        "sha256": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+        "size_bytes": 289443840
+      },
+      "note": "Hashes of the protocol documents as frozen BEFORE any S-028 model was fitted. Only label-census and feasibility statistics existed at freeze time.",
+      "study": "S-028"
+    },
+    "s028_lib_py_sha256": "9b9b7f9581e31de3541a811313ae4cdcf68c7601f814204b7d0a67b0c1a585c2",
+    "s028_stats_py_sha256": "f8729b219972ba4fa27f4d893bc9f274aaf94fa5c5c6bce0281f167508bb9cbe",
+    "statistical_validation_sha256": "d364c50c1c50b7fb6a96ddabcdb5e267c053a8061ee0f209e5cd81e214fd1979"
+  },
+  "runtime_seconds": 123.0,
+  "study": "S-028",
+  "summary": {
+    "invalidated_findings": 3,
+    "n_documented_bugs": 13,
+    "n_findings": 143,
+    "unchanged_findings": 4,
+    "unresolved_limitations": [
+      "Exact sampling distribution of the pooled AP difference under a valid relation-randomisation null is unknown (needs the corrected-G2 artifact).",
+      "The estimand is a pooled triplicated-row AP over 3 overlapping windows; its interpretation as an out-of-sample ranking metric is design-dependent, and no window-level generalisation is identified with only 3 windows.",
+      "Bootstrap coverage for the pair-clustered unit with dependent pairs (same company) and triplicated rows is assessed only by simulation of the observed configuration, not by a known-truth generative model.",
+      "Rule-level power uses a multivariate-normal location-shift approximation; alternative constructions with different variance structures can move the rule MDE, so it is a defensible order-of-magnitude statement (~0.04 AP), not an exact design guarantee."
+    ],
+    "verdict_counts": {
+      "BUG": 23,
+      "DISCREPANT": 19,
+      "PASS": 101
+    }
+  },
+  "warnings": [
+    "PRE_REGISTRATION section 11 criterion (c) requires point estimate >= MDE for SUPPORT. This is a power-dependent criterion: a real effect smaller than the study's MDE could never support H1 even if its CI excluded 0. It is applied literally here but should not be read as a scientific decision rule in a future round."
+  ]
+}

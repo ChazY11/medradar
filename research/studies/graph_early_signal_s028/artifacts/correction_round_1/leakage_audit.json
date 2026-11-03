@@ -1,0 +1,2555 @@
+{
+  "audit": "correction_round_1 (independent structural leakage audit)",
+  "audit_date": "2026-11-04",
+  "checks": {
+    "C0_frozen_fidelity": {
+      "0_frozen_reproduction": {
+        "finding": "frozen cycle-2 P1 benchmark re-reproduced by the auditor from the frozen DB; this proves code/panel fidelity only, not the absence of future information",
+        "numbers": {
+          "origins": 24,
+          "panel_positives": 503,
+          "panel_rows": 41003,
+          "per_window": {
+            "2025-04-01": {
+              "ap": 0.137085,
+              "persistence_ap": 0.079463,
+              "positives": 25,
+              "rows": 1722
+            },
+            "2025-07-01": {
+              "ap": 0.095027,
+              "persistence_ap": 0.047244,
+              "positives": 27,
+              "rows": 1721
+            },
+            "2025-10-01": {
+              "ap": 0.100476,
+              "persistence_ap": 0.027826,
+              "positives": 26,
+              "rows": 1716
+            }
+          },
+          "pooled": {
+            "ap": 0.10106,
+            "persistence_ap": 0.044614,
+            "positives": 78,
+            "rows": 5159
+          },
+          "reference_persistence_ap": 0.044614,
+          "reference_pooled_ap": 0.10106
+        },
+        "tag": "ORIGINAL_RESULT",
+        "verdict": "PASS"
+      },
+      "_seconds": 7.5,
+      "_verdict": {
+        "0_frozen_reproduction": "PASS"
+      }
+    },
+    "C1_knowledge_clock": {
+      "1a_internal_consistency": {
+        "finding": "available_at is, for 100% of rows, exactly event_date+14d and is flagged timestamp_quality='estimated'; there are zero missing/garbage/negative-lag rows, so the two-sided filter is internally consistent and conservative by +14d",
+        "numbers": {
+          "as_of_distinct_values": 1,
+          "as_of_values": {
+            "2026-11-01": 55090
+          },
+          "available_after_snapshot": 0,
+          "available_before_event_date": 0,
+          "available_offset_days_distribution": {
+            "14": 55090
+          },
+          "blind_spot_by_origin": {
+            "2020-01-01": {
+              "events_hidden_14d": 99,
+              "events_in_lane": 9869,
+              "hidden_share": 0.010031
+            },
+            "2020-04-01": {
+              "events_hidden_14d": 138,
+              "events_in_lane": 10627,
+              "hidden_share": 0.012986
+            },
+            "2020-07-01": {
+              "events_hidden_14d": 114,
+              "events_in_lane": 11351,
+              "hidden_share": 0.010043
+            },
+            "2020-10-01": {
+              "events_hidden_14d": 109,
+              "events_in_lane": 12097,
+              "hidden_share": 0.00901
+            },
+            "2021-01-01": {
+              "events_hidden_14d": 102,
+              "events_in_lane": 12853,
+              "hidden_share": 0.007936
+            },
+            "2021-04-01": {
+              "events_hidden_14d": 131,
+              "events_in_lane": 13590,
+              "hidden_share": 0.009639
+            },
+            "2021-07-01": {
+              "events_hidden_14d": 109,
+              "events_in_lane": 14264,
+              "hidden_share": 0.007642
+            },
+            "2021-10-01": {
+              "events_hidden_14d": 132,
+              "events_in_lane": 15129,
+              "hidden_share": 0.008725
+            },
+            "2022-01-01": {
+              "events_hidden_14d": 108,
+              "events_in_lane": 15929,
+              "hidden_share": 0.00678
+            },
+            "2022-04-01": {
+              "events_hidden_14d": 128,
+              "events_in_lane": 16691,
+              "hidden_share": 0.007669
+            },
+            "2022-07-01": {
+              "events_hidden_14d": 137,
+              "events_in_lane": 17537,
+              "hidden_share": 0.007812
+            },
+            "2022-10-01": {
+              "events_hidden_14d": 139,
+              "events_in_lane": 18317,
+              "hidden_share": 0.007589
+            },
+            "2023-01-01": {
+              "events_hidden_14d": 126,
+              "events_in_lane": 19182,
+              "hidden_share": 0.006569
+            },
+            "2023-04-01": {
+              "events_hidden_14d": 153,
+              "events_in_lane": 19973,
+              "hidden_share": 0.00766
+            },
+            "2023-07-01": {
+              "events_hidden_14d": 139,
+              "events_in_lane": 20806,
+              "hidden_share": 0.006681
+            },
+            "2023-10-01": {
+              "events_hidden_14d": 157,
+              "events_in_lane": 21697,
+              "hidden_share": 0.007236
+            },
+            "2024-01-01": {
+              "events_hidden_14d": 119,
+              "events_in_lane": 22591,
+              "hidden_share": 0.005268
+            },
+            "2024-04-01": {
+              "events_hidden_14d": 148,
+              "events_in_lane": 23328,
+              "hidden_share": 0.006344
+            },
+            "2024-07-01": {
+              "events_hidden_14d": 139,
+              "events_in_lane": 24140,
+              "hidden_share": 0.005758
+            },
+            "2024-10-01": {
+              "events_hidden_14d": 111,
+              "events_in_lane": 24909,
+              "hidden_share": 0.004456
+            },
+            "2025-01-01": {
+              "events_hidden_14d": 118,
+              "events_in_lane": 25772,
+              "hidden_share": 0.004579
+            },
+            "2025-04-01": {
+              "events_hidden_14d": 127,
+              "events_in_lane": 26527,
+              "hidden_share": 0.004788
+            },
+            "2025-07-01": {
+              "events_hidden_14d": 158,
+              "events_in_lane": 27433,
+              "hidden_share": 0.005759
+            },
+            "2025-10-01": {
+              "events_hidden_14d": 133,
+              "events_in_lane": 28249,
+              "hidden_share": 0.004708
+            }
+          },
+          "date_received_lag": {
+            "max_days": 4521.0,
+            "mean_days": 122.79749500816845,
+            "median_days": 86.0,
+            "min_days": 0.0,
+            "p90_days": 268.0,
+            "rows_with_date_received": 55090,
+            "share_over_180d": 0.24240333998910873,
+            "share_over_30d": 0.6517879833000545,
+            "share_over_90d": 0.44474496278816483
+          },
+          "decision_date_mismatch_examples": [],
+          "distinct_offsets": 1,
+          "event_date_equals_payload_decision_date": 55090,
+          "first_seen_at_distinct_values": 1,
+          "first_seen_at_values": {
+            "2026-11-01": 55090
+          },
+          "lag_sensitivity_if_14d_is_too_short": {
+            "true_lag_180d": {
+              "max_share_of_lane_in_leak_band": 0.142669,
+              "mean_share_of_lane_in_leak_band": 0.083596
+            },
+            "true_lag_30d": {
+              "max_share_of_lane_in_leak_band": 0.016111,
+              "mean_share_of_lane_in_leak_band": 0.008559
+            },
+            "true_lag_60d": {
+              "max_share_of_lane_in_leak_band": 0.041848,
+              "mean_share_of_lane_in_leak_band": 0.023491
+            },
+            "true_lag_90d": {
+              "max_share_of_lane_in_leak_band": 0.068396,
+              "mean_share_of_lane_in_leak_band": 0.038082
+            }
+          },
+          "mean_hidden_share": 0.007319,
+          "meta_table_rows": 0,
+          "missing_available_at": 0,
+          "offset_max_days": 14,
+          "offset_min_days": 14,
+          "payload_decision_date_present": 55090,
+          "rows": 55090,
+          "rows_where_available_equals_published_at": 55090,
+          "timestamp_quality": {
+            "estimated": 55090
+          },
+          "unparseable_available_at": 0
+        },
+        "tag": "ORIGINAL_RESULT",
+        "verdict": "PASS"
+      },
+      "1b_clock_is_a_proxy_not_observed": {
+        "finding": "No row has a measured publication/first-observation time: first_seen_at has one distinct value (the bulk-fetch date), as_of likewise, and available_at is a synthetic +14d estimate.  The +14d value cannot be validated from the payload.  Worse for point-in-time validity, the bulk record also carries payload date_received, which is systematically earlier than the decision date: a real analyst could have seen the submission before the +14d 'availability' clock, so measured lead times are a lower bound.",
+        "numbers": {
+          "as_of_distinct": 1,
+          "date_received_lag": {
+            "max_days": 4521.0,
+            "mean_days": 122.79749500816845,
+            "median_days": 86.0,
+            "min_days": 0.0,
+            "p90_days": 268.0,
+            "rows_with_date_received": 55090,
+            "share_over_180d": 0.24240333998910873,
+            "share_over_30d": 0.6517879833000545,
+            "share_over_90d": 0.44474496278816483
+          },
+          "estimated_rows": 55090,
+          "first_seen_at_distinct": 1,
+          "payload_decision_date_field_is_same_day": "55090/55090",
+          "rows": 55090
+        },
+        "tag": "UNCHANGED_FINDING",
+        "verdict": "UNRESOLVED"
+      },
+      "1c_leak_condition": {
+        "finding": "available_at - event_date > 0 for every row, so no row is knowable *before* its own decision date; the proxy can only delay (hide) information, never grant it. The residual risk is the opposite direction: if the true publication lag exceeds 14 days, the model would use information before the public could.  The 14-day blind spot withholds on average 0.73% of the lane at each origin; if the true lag were 30/60/90/180 days, the extra hypothetical leak band would grow to 0.86%/2.35%/3.81%/8.36% of the lane on average -- small but not zero, and unmeasurable from the frozen data.",
+        "numbers": {
+          "lag_sensitivity": {
+            "true_lag_180d": {
+              "max_share_of_lane_in_leak_band": 0.142669,
+              "mean_share_of_lane_in_leak_band": 0.083596
+            },
+            "true_lag_30d": {
+              "max_share_of_lane_in_leak_band": 0.016111,
+              "mean_share_of_lane_in_leak_band": 0.008559
+            },
+            "true_lag_60d": {
+              "max_share_of_lane_in_leak_band": 0.041848,
+              "mean_share_of_lane_in_leak_band": 0.023491
+            },
+            "true_lag_90d": {
+              "max_share_of_lane_in_leak_band": 0.068396,
+              "mean_share_of_lane_in_leak_band": 0.038082
+            }
+          },
+          "mean_hidden_share_of_lane": 0.007319,
+          "negative_lag_rows": 0,
+          "offset_days": [
+            14
+          ]
+        },
+        "tag": "UNCHANGED_FINDING",
+        "verdict": "PASS"
+      },
+      "_seconds": 2.5,
+      "_verdict": {
+        "1a_internal_consistency": "PASS",
+        "1b_clock_is_a_proxy_not_observed": "UNRESOLVED",
+        "1c_leak_condition": "PASS"
+      }
+    },
+    "C2_feature_lookahead": {
+      "2a_provenance_table": {
+        "details": {
+          "entity_map": "config/companies_device.json aliases (updated 2026-10-31) are used to assign company_key; undated snapshot incl. acquired subsidiaries",
+          "graph_statistics": "NOT global: every snapshot object is built in SnapshotSeries._build(t) from events with day<=t and available<=t; no full-period graph is fitted",
+          "graph_weights": "NOT fitted: cosine/eigenvector/clustering are computed per snapshot, no IDF or embedding weights are estimated across origins",
+          "product_code_map": "config/product_code_tracks.json (1,958 codes, no effective date) maps payload product_code -> track",
+          "scaler_medians": "NOT global: FastLogisticRegression.fit computes medians/means/scales from the rows passed to fit(); run_spec passes only eligible_training_rows",
+          "track_vocabulary": "config/tracks_device.json keywords (updated 2026-10-31) are used at ingestion time to assign track_id; one undated snapshot applied to the whole 2016-2026 history"
+        },
+        "finding": "All 28 features used by B1/B2/B3/G1 are either (i) per-origin history counters from events with day<=t AND available<=t, or (ii) snapshot-local graph statistics built from the same filtered event set. No feature reads a label-window field, the payload, first_target_event_date, or a full-period aggregate.",
+        "numbers": {
+          "feature_available_at": "== cutoff for all panel rows",
+          "features": {
+            "g_coentry_count_12m": [
+              "snapshot",
+              "first-touch entries into track k in (t-12m, t], excluding c; from snapshot first_touch (<=t events)"
+            ],
+            "g_coentry_decay": [
+              "snapshot",
+              "same entrants, exp(-age_months/12)"
+            ],
+            "g_coentry_similarity_weighted": [
+              "snapshot",
+              "sum of c--entrant portfolio cosine (12m window weights), snapshot-local"
+            ],
+            "g_company_clustering": [
+              "snapshot",
+              "local clustering coefficient of c, snapshot"
+            ],
+            "g_company_eigenvector": [
+              "snapshot",
+              "eigenvector centrality of c on the snapshot company-company projection"
+            ],
+            "g_max_entrant_similarity": [
+              "snapshot",
+              "max c--entrant cosine, snapshot-local"
+            ],
+            "g_similarity_to_track_incumbents": [
+              "snapshot",
+              "mean cosine c vs incumbents of k (12m active companies)"
+            ],
+            "g_similarity_to_track_max": [
+              "snapshot",
+              "max cosine c vs incumbents of k"
+            ],
+            "g_track_cooccurrence_pull": [
+              "snapshot",
+              "mean over c's other tracks of membership-overlap with k"
+            ],
+            "g_track_entrant_centrality": [
+              "snapshot",
+              "share of all window first-touches that land in track k"
+            ],
+            "g_twohop_activity_decay": [
+              "snapshot",
+              "decayed first-touch of 2-hop peers through c's tracks"
+            ],
+            "g_twohop_reach": [
+              "snapshot",
+              "distinct peers sharing a track with c in 12m window"
+            ],
+            "rd_company_active_tracks_12m": [
+              "company",
+              "distinct tracks of company in (t-365d, t]"
+            ],
+            "rd_company_active_tracks_delta": [
+              "company",
+              "12m tracks minus previous-12m tracks"
+            ],
+            "rd_company_count_12m": [
+              "company",
+              "company history events in (t-365d, t]"
+            ],
+            "rd_company_total_36m": [
+              "company",
+              "company history events in (t-1095d, t]"
+            ],
+            "rd_company_track_novelty_share": [
+              "company",
+              "share of company's 24m events on pairs first seen inside (t-730d, t]"
+            ],
+            "rd_company_track_share": [
+              "pair/company",
+              "pair 12m count / company 12m count"
+            ],
+            "rd_count_12m": [
+              "pair",
+              "history events of this (company,track) in (t-365d, t]"
+            ],
+            "rd_count_36m": [
+              "pair",
+              "pair history in (t-1095d, t]"
+            ],
+            "rd_count_previous_12m": [
+              "pair",
+              "pair history in (t-730d, t-365d]"
+            ],
+            "rd_momentum": [
+              "pair",
+              "log1p of the two counts above"
+            ],
+            "rd_pair_active_years": [
+              "pair",
+              "(t - first pair history day)/365.25"
+            ],
+            "rd_pair_inactive_months": [
+              "pair",
+              "months since last pair history day, capped 120"
+            ],
+            "rd_recency_years": [
+              "pair",
+              "(t - last pair history day)/365.25, top-coded 20y"
+            ],
+            "rd_track_active_companies_12m": [
+              "track",
+              "distinct companies in track, (t-365d, t]"
+            ],
+            "rd_track_active_companies_delta": [
+              "track",
+              "12m companies minus previous 12m"
+            ],
+            "rd_track_count_12m": [
+              "track",
+              "track history events in (t-365d, t]"
+            ]
+          }
+        },
+        "tag": "ORIGINAL_RESULT",
+        "verdict": "PASS"
+      },
+      "2b_snapshot_truncation_invariance": {
+        "finding": "For each of the 24 origins, the snapshot and every G1 feature at t were rebuilt using only events with day<=t and available<=t: bit-identical (max abs diff 0.0), so no graph statistic can carry across origins.",
+        "numbers": {
+          "graph_feature_max_abs_diff": 0.0,
+          "graph_feature_mismatches": 0,
+          "graph_feature_values_compared": 492036,
+          "origins_checked": 24,
+          "snapshot_max_abs_diff": 0.0,
+          "snapshot_structural_mismatch": 0,
+          "snapshot_structures_compared": 10
+        },
+        "tag": "ORIGINAL_RESULT",
+        "verdict": "PASS"
+      },
+      "2c_panel_feature_truncation_invariance": {
+        "finding": "For each of the 24 origins, the 16 B2/B3 features and the candidate set at t were rebuilt from only events with day<=t and available<=t: bit-identical, so no panel feature uses future events either.",
+        "numbers": {
+          "candidate_set_mismatches": 0,
+          "feature_max_abs_diff": 0.0,
+          "feature_mismatches": 0,
+          "feature_values_compared": 656048,
+          "origins_checked": 24
+        },
+        "tag": "ORIGINAL_RESULT",
+        "verdict": "PASS"
+      },
+      "2d_train_only_scaling": {
+        "details": {
+          "FastLogisticRegression.fit": {
+            "lines": 34,
+            "two_sided_filter": false
+          },
+          "SnapshotSeries._history": {
+            "lines": 5,
+            "two_sided_filter": true
+          },
+          "_pair_history_features": {
+            "lines": 29,
+            "two_sided_filter": false
+          },
+          "matured_by": {
+            "lines": 5,
+            "two_sided_filter": false
+          }
+        },
+        "finding": "FastLogisticRegression.fit derives medians/means/scales only from the rows handed to fit(); run_spec hands it eligible_training_rows (purged).  The fitted per-feature means equal the purged-training means exactly (max abs diff 0), while the purged training means differ from the all-row means (max gap 0.2742): no global standardisation is used.",
+        "numbers": {
+          "max_abs(model_mean - train_mean)": 0.0,
+          "max_abs(train_mean - all_rows_mean)": 0.274184,
+          "max_abs(train_median - all_rows_median)": 0.0,
+          "per_feature": {
+            "rd_company_active_tracks_12m": {
+              "allrows_mean": 2.3949710996756335,
+              "allrows_median": 2.0,
+              "model_mean": 2.3974561866244652,
+              "model_median": 2.0,
+              "train_mean": 2.3974561866244652,
+              "train_median": 2.0,
+              "uses_train_only": true
+            },
+            "rd_company_active_tracks_delta": {
+              "allrows_mean": -0.09401751091383558,
+              "allrows_median": 0.0,
+              "model_mean": -0.0783072504542524,
+              "model_median": 0.0,
+              "train_mean": -0.0783072504542524,
+              "train_median": 0.0,
+              "uses_train_only": true
+            },
+            "rd_company_count_12m": {
+              "allrows_mean": 6.2198619613199035,
+              "allrows_median": 3.0,
+              "model_mean": 6.27852998065764,
+              "model_median": 3.0,
+              "train_mean": 6.27852998065764,
+              "train_median": 3.0,
+              "uses_train_only": true
+            },
+            "rd_company_total_36m": {
+              "allrows_mean": 19.735751042606637,
+              "allrows_median": 10.0,
+              "model_mean": 20.009934939335327,
+              "model_median": 10.0,
+              "train_mean": 20.009934939335327,
+              "train_median": 10.0,
+              "uses_train_only": true
+            },
+            "rd_company_track_novelty_share": {
+              "allrows_mean": 0.11505578501941878,
+              "allrows_median": 0.0,
+              "model_mean": 0.12264568407770723,
+              "model_median": 0.0,
+              "train_mean": 0.12264568407770912,
+              "train_median": 0.0,
+              "uses_train_only": true
+            },
+            "rd_company_track_share": {
+              "allrows_mean": 0.0,
+              "allrows_median": 0.0,
+              "model_mean": 0.0,
+              "model_median": 0.0,
+              "train_mean": 0.0,
+              "train_median": 0.0,
+              "uses_train_only": true
+            },
+            "rd_count_12m": {
+              "allrows_mean": 0.0,
+              "allrows_median": 0.0,
+              "model_mean": 0.0,
+              "model_median": 0.0,
+              "train_mean": 0.0,
+              "train_median": 0.0,
+              "uses_train_only": true
+            },
+            "rd_count_36m": {
+              "allrows_mean": 0.0,
+              "allrows_median": 0.0,
+              "model_mean": 0.0,
+              "model_median": 0.0,
+              "train_mean": 0.0,
+              "train_median": 0.0,
+              "uses_train_only": true
+            },
+            "rd_count_previous_12m": {
+              "allrows_mean": 0.0,
+              "allrows_median": 0.0,
+              "model_mean": 0.0,
+              "model_median": 0.0,
+              "train_mean": 0.0,
+              "train_median": 0.0,
+              "uses_train_only": true
+            },
+            "rd_momentum": {
+              "allrows_mean": 0.0,
+              "allrows_median": 0.0,
+              "model_mean": 0.0,
+              "model_median": 0.0,
+              "train_mean": 0.0,
+              "train_median": 0.0,
+              "uses_train_only": true
+            },
+            "rd_pair_active_years": {
+              "allrows_mean": 0.17379299619868885,
+              "allrows_median": 0.0,
+              "model_mean": 0.1422141856729331,
+              "model_median": 0.0,
+              "train_mean": 0.14221418567293323,
+              "train_median": 0.0,
+              "uses_train_only": true
+            },
+            "rd_pair_inactive_months": {
+              "allrows_mean": 118.00136986020101,
+              "allrows_median": 120.0,
+              "model_mean": 118.12975328170793,
+              "model_median": 120.0,
+              "train_mean": 118.12975328170798,
+              "train_median": 120.0,
+              "uses_train_only": true
+            },
+            "rd_recency_years": {
+              "allrows_mean": 19.51444643964633,
+              "allrows_median": 20.0,
+              "model_mean": 19.5601650974895,
+              "model_median": 20.0,
+              "train_mean": 19.5601650974895,
+              "train_median": 20.0,
+              "uses_train_only": true
+            },
+            "rd_track_active_companies_12m": {
+              "allrows_mean": 3.311294295539351,
+              "allrows_median": 3.0,
+              "model_mean": 3.311470605474474,
+              "model_median": 3.0,
+              "train_mean": 3.311470605474474,
+              "train_median": 3.0,
+              "uses_train_only": true
+            },
+            "rd_track_active_companies_delta": {
+              "allrows_mean": -0.13555105723971417,
+              "allrows_median": 0.0,
+              "model_mean": -0.1161713850301858,
+              "model_median": 0.0,
+              "train_mean": -0.1161713850301858,
+              "train_median": 0.0,
+              "uses_train_only": true
+            },
+            "rd_track_count_12m": {
+              "allrows_mean": 8.376923639733677,
+              "allrows_median": 5.0,
+              "model_mean": 8.420491178711682,
+              "model_median": 5.0,
+              "train_mean": 8.420491178711682,
+              "train_median": 5.0,
+              "uses_train_only": true
+            }
+          },
+          "selected_origin": "2025-10-01",
+          "test_rows": 1716,
+          "train_rows": 34122
+        },
+        "tag": "ORIGINAL_RESULT",
+        "verdict": "PASS"
+      },
+      "2e_cross_origin_global_objects": {
+        "finding": "Only three objects are computed once from full-sample knowledge and reused at every origin: the company alias table, the track vocabulary, and the product_code->track dictionary.  They are time-invariant labels, not event statistics, so they cannot move *event values* across origins; they do embed 2026 taxonomy/ownership knowledge into every historical snapshot (structural look-ahead, direction favours a denser graph).",
+        "numbers": {
+          "date_fields_present": "single 'updated' timestamp only, no effective dates",
+          "global_objects": [
+            "companies.aliases",
+            "tracks.keywords",
+            "config/product_code_tracks.json"
+          ]
+        },
+        "tag": "UNCHANGED_FINDING",
+        "verdict": "UNRESOLVED"
+      },
+      "_seconds": 3.5,
+      "_verdict": {
+        "2a_provenance_table": "PASS",
+        "2b_snapshot_truncation_invariance": "PASS",
+        "2c_panel_feature_truncation_invariance": "PASS",
+        "2d_train_only_scaling": "PASS",
+        "2e_cross_origin_global_objects": "UNRESOLVED"
+      }
+    },
+    "C3_label_isolation": {
+      "3a_purge": {
+        "finding": "The purged expanding window is implemented correctly: for every origin the training cutoff never exceeds t-H, the max label-window end equals t (zero-day clearance), and no training row's label window overlaps the test window.  The 24 origin windows do overlap each other by construction (a 4-quarter horizon), so origins cannot be used as independent test sets -- but training rows are excluded whenever their window reaches the test origin.",
+        "numbers": {
+          "min_clearance_days": 0,
+          "origin_pairs_with_overlapping_label_windows": 66,
+          "origins": 24,
+          "overlap_neighbours_by_origin": {
+            "2020-01-01": 3,
+            "2020-04-01": 4,
+            "2020-07-01": 5,
+            "2020-10-01": 6,
+            "2021-01-01": 6,
+            "2021-04-01": 6,
+            "2021-07-01": 6,
+            "2021-10-01": 6,
+            "2022-01-01": 6,
+            "2022-04-01": 6,
+            "2022-07-01": 6,
+            "2022-10-01": 6,
+            "2023-01-01": 6,
+            "2023-04-01": 6,
+            "2023-07-01": 6,
+            "2023-10-01": 6,
+            "2024-01-01": 6,
+            "2024-04-01": 6,
+            "2024-07-01": 6,
+            "2024-10-01": 6,
+            "2025-01-01": 6,
+            "2025-04-01": 5,
+            "2025-07-01": 4,
+            "2025-10-01": 3
+          },
+          "overlap_pairs_sample": [
+            [
+              "2020-01-01",
+              "2020-04-01",
+              275
+            ],
+            [
+              "2020-01-01",
+              "2020-07-01",
+              184
+            ],
+            [
+              "2020-01-01",
+              "2020-10-01",
+              92
+            ],
+            [
+              "2020-04-01",
+              "2020-07-01",
+              274
+            ],
+            [
+              "2020-04-01",
+              "2020-10-01",
+              182
+            ],
+            [
+              "2020-04-01",
+              "2021-01-01",
+              90
+            ]
+          ],
+          "per_origin": {
+            "2020-01-01": {
+              "evaluable": false,
+              "training_rows": 0
+            },
+            "2020-04-01": {
+              "evaluable": false,
+              "training_rows": 0
+            },
+            "2020-07-01": {
+              "evaluable": false,
+              "training_rows": 0
+            },
+            "2020-10-01": {
+              "evaluable": false,
+              "training_rows": 0
+            },
+            "2021-01-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2021-01-01",
+              "max_training_cutoff": "2020-01-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 1,
+              "training_rows": 1634
+            },
+            "2021-04-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2021-04-01",
+              "max_training_cutoff": "2020-04-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 2,
+              "training_rows": 3270
+            },
+            "2021-07-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2021-07-01",
+              "max_training_cutoff": "2020-07-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 3,
+              "training_rows": 4945
+            },
+            "2021-10-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2021-10-01",
+              "max_training_cutoff": "2020-10-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 4,
+              "training_rows": 6624
+            },
+            "2022-01-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2022-01-01",
+              "max_training_cutoff": "2021-01-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 5,
+              "training_rows": 8302
+            },
+            "2022-04-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2022-04-01",
+              "max_training_cutoff": "2021-04-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 6,
+              "training_rows": 9989
+            },
+            "2022-07-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2022-07-01",
+              "max_training_cutoff": "2021-07-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 7,
+              "training_rows": 11680
+            },
+            "2022-10-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2022-10-01",
+              "max_training_cutoff": "2021-10-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 8,
+              "training_rows": 13410
+            },
+            "2023-01-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2023-01-01",
+              "max_training_cutoff": "2022-01-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 9,
+              "training_rows": 15137
+            },
+            "2023-04-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2023-04-01",
+              "max_training_cutoff": "2022-04-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 10,
+              "training_rows": 16864
+            },
+            "2023-07-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2023-07-01",
+              "max_training_cutoff": "2022-07-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 11,
+              "training_rows": 18588
+            },
+            "2023-10-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2023-10-01",
+              "max_training_cutoff": "2022-10-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 12,
+              "training_rows": 20312
+            },
+            "2024-01-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2024-01-01",
+              "max_training_cutoff": "2023-01-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 13,
+              "training_rows": 22037
+            },
+            "2024-04-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2024-04-01",
+              "max_training_cutoff": "2023-04-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 14,
+              "training_rows": 23763
+            },
+            "2024-07-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2024-07-01",
+              "max_training_cutoff": "2023-07-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 15,
+              "training_rows": 25493
+            },
+            "2024-10-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2024-10-01",
+              "max_training_cutoff": "2023-10-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 16,
+              "training_rows": 27223
+            },
+            "2025-01-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2025-01-01",
+              "max_training_cutoff": "2024-01-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 17,
+              "training_rows": 28953
+            },
+            "2025-04-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2025-04-01",
+              "max_training_cutoff": "2024-04-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 18,
+              "training_rows": 30679
+            },
+            "2025-07-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2025-07-01",
+              "max_training_cutoff": "2024-07-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 19,
+              "training_rows": 32402
+            },
+            "2025-10-01": {
+              "clearance_days": 0,
+              "max_label_window_end": "2025-10-01",
+              "max_training_cutoff": "2024-10-01",
+              "rows_with_overlapping_label_window": 0,
+              "train_cutoffs": 20,
+              "training_rows": 34122
+            }
+          },
+          "violations": 0
+        },
+        "tag": "ORIGINAL_RESULT",
+        "verdict": "PASS"
+      },
+      "3b_event_level_isolation": {
+        "finding": "At the physical-event level, the sets of qualifying events used as training labels and as test labels are disjoint for all three holdout origins.  A 14-day availability band exists at the window boundary (events decided in the last 14 days before t are training labels but not yet public at t); this is a small forward-looking component in training labels only, not in test labels or features.",
+        "numbers": {
+          "boundary_band": {
+            "2025-04-01": {
+              "available_after_origin": "yes (available_at = day+14d > t)",
+              "boundary_training_cutoff": "2024-04-01",
+              "first_dates": [
+                "2025-03-21"
+              ],
+              "training_positive_events_in_last_14d": 1
+            },
+            "2025-07-01": {
+              "available_after_origin": "yes (available_at = day+14d > t)",
+              "boundary_training_cutoff": "2024-07-01",
+              "first_dates": [
+                "2025-06-20",
+                "2025-06-24"
+              ],
+              "training_positive_events_in_last_14d": 2
+            },
+            "2025-10-01": {
+              "available_after_origin": "yes (available_at = day+14d > t)",
+              "boundary_training_cutoff": "2024-10-01",
+              "first_dates": [
+                "2025-09-18",
+                "2025-09-29"
+              ],
+              "training_positive_events_in_last_14d": 2
+            }
+          },
+          "boundary_band_total_events": 5,
+          "per_holdout": {
+            "2025-04-01": {
+              "intersection": 0,
+              "test_label_events": 22,
+              "training_label_events": 120
+            },
+            "2025-07-01": {
+              "intersection": 0,
+              "test_label_events": 27,
+              "training_label_events": 125
+            },
+            "2025-10-01": {
+              "intersection": 0,
+              "test_label_events": 26,
+              "training_label_events": 130
+            }
+          }
+        },
+        "tag": "ORIGINAL_RESULT",
+        "verdict": "PASS"
+      },
+      "3c_holdout_windows_not_independent": {
+        "finding": "The claim that the three holdout origins are disjoint is wrong at the row/pair/event level: their 12-month label windows overlap by 6-9 months (all three share 2025-10-01..2026-04-01), 1721 of 1729 distinct candidate pairs appear in more than one holdout set (max 3 times), and the 37 physical label events in the union of the three windows are counted 75 times (max 3 times each; 25 events counted by more than one window).  'Pooled n=5,159' is therefore not 5,159 independent observations: the pooled AP pools three heavily overlapping cross-sections of the same pairs.",
+        "numbers": {
+          "distinct_pairs": 1729,
+          "distinct_positive_events": 32,
+          "duplicate_positive_rows": 35,
+          "holdout_origins": [
+            "2025-04-01",
+            "2025-07-01",
+            "2025-10-01"
+          ],
+          "label_incidences_across_holdout_windows": 75,
+          "max_pair_multiplicity": 3,
+          "max_positive_multiplicity": 3,
+          "pairs_appearing_in_multiple_holdouts": 1721,
+          "physical_event_multiplicity": {
+            "1": 12,
+            "2": 12,
+            "3": 13
+          },
+          "physical_events_counted_by_multiple_holdouts": 25,
+          "physical_label_events_in_union_of_holdout_windows": 37,
+          "pooled_positive_rows": 67,
+          "pooled_rows": 5159,
+          "positive_rows_sample": [
+            [
+              "2025-04-01",
+              "baxter",
+              "patient_monitoring",
+              "2025-12-16"
+            ],
+            [
+              "2025-04-01",
+              "bd",
+              "dental",
+              "2026-03-17"
+            ],
+            [
+              "2025-04-01",
+              "bd",
+              "medical_ai",
+              "2025-06-20"
+            ],
+            [
+              "2025-04-01",
+              "bd",
+              "urology",
+              "2026-02-23"
+            ],
+            [
+              "2025-04-01",
+              "boston_scientific",
+              "dental",
+              "2025-10-30"
+            ],
+            [
+              "2025-04-01",
+              "boston_scientific",
+              "imaging_mr_ct",
+              "2025-10-28"
+            ],
+            [
+              "2025-04-01",
+              "boston_scientific",
+              "wearable_remote",
+              "2026-01-23"
+            ],
+            [
+              "2025-04-01",
+              "canon_medical",
+              "medical_ai",
+              "2025-04-30"
+            ],
+            [
+              "2025-04-01",
+              "cooper_companies",
+              "urology",
+              "2026-01-20"
+            ],
+            [
+              "2025-04-01",
+              "dentsply_sirona",
+              "medical_ai",
+              "2025-08-12"
+            ],
+            [
+              "2025-04-01",
+              "icu_medical",
+              "vascular_access",
+              "2025-06-05"
+            ],
+            [
+              "2025-04-01",
+              "insulet",
+              "medical_ai",
+              "2025-12-03"
+            ],
+            [
+              "2025-04-01",
+              "medtronic",
+              "ent",
+              "2026-02-19"
+            ],
+            [
+              "2025-04-01",
+              "medtronic",
+              "neurovascular",
+              "2026-01-14"
+            ]
+          ],
+          "qualifying_events_in_holdout_windows_all_pairs": 475,
+          "triple_overlap_end": "2026-04-01",
+          "triple_overlap_start": "2025-10-01",
+          "window_overlaps": {
+            "2025-04-01__2025-07-01": {
+              "overlap_end": "2026-04-01",
+              "overlap_months": 9,
+              "overlap_start": "2025-07-01"
+            },
+            "2025-04-01__2025-10-01": {
+              "overlap_end": "2026-04-01",
+              "overlap_months": 6,
+              "overlap_start": "2025-10-01"
+            },
+            "2025-07-01__2025-10-01": {
+              "overlap_end": "2026-07-01",
+              "overlap_months": 9,
+              "overlap_start": "2025-10-01"
+            }
+          }
+        },
+        "tag": "CORRECTED_RESULT",
+        "verdict": "FAIL"
+      },
+      "_seconds": 1.4,
+      "_verdict": {
+        "3a_purge": "PASS",
+        "3b_event_level_isolation": "PASS",
+        "3c_holdout_windows_not_independent": "FAIL"
+      }
+    },
+    "C4_truncation": {
+      "4a_coverage_boundary": {
+        "finding": "The frozen lane is a hard-cut 2016-11-01..2026-10-18 window; it is not partially ingested (Nov-Dec 2016 run at the normal monthly rate), but everything before 2016-11-01 is absent by construction.",
+        "numbers": {
+          "all_events": 55090,
+          "coverage_all": [
+            "2016-11-01",
+            "2026-10-18"
+          ],
+          "coverage_material": [
+            "2016-11-01",
+            "2026-10-18"
+          ],
+          "coverage_usable": [
+            "2016-11-01",
+            "2026-10-16"
+          ],
+          "events_with_company_and_track_all_lanes": 18031,
+          "first_months_material": {
+            "2016-11": 257,
+            "2016-12": 266,
+            "2017-01": 226,
+            "2017-02": 255
+          },
+          "material_events": 31802,
+          "monthly_counts_material": {
+            "2016-11": 257,
+            "2016-12": 266,
+            "2017-01": 226,
+            "2017-02": 255,
+            "2017-03": 278,
+            "2017-04": 252,
+            "2017-05": 301,
+            "2017-06": 302,
+            "2017-07": 250,
+            "2017-08": 288,
+            "2017-09": 255,
+            "2017-10": 284,
+            "2017-11": 308,
+            "2017-12": 265,
+            "2018-01": 234,
+            "2018-02": 250,
+            "2018-03": 303,
+            "2018-04": 275,
+            "2018-05": 259,
+            "2018-06": 272,
+            "2018-07": 250,
+            "2018-08": 255,
+            "2018-09": 207,
+            "2018-10": 261,
+            "2018-11": 288,
+            "2018-12": 265,
+            "2019-01": 230,
+            "2019-02": 190,
+            "2019-03": 279,
+            "2019-04": 229,
+            "2019-05": 254,
+            "2019-06": 225,
+            "2019-07": 269,
+            "2019-08": 241,
+            "2019-09": 240,
+            "2019-10": 269,
+            "2019-11": 264,
+            "2019-12": 273,
+            "2020-01": 236,
+            "2020-02": 230,
+            "2020-03": 281,
+            "2020-04": 271,
+            "2020-05": 221,
+            "2020-06": 237,
+            "2020-07": 256,
+            "2020-08": 233,
+            "2020-09": 255,
+            "2020-10": 251,
+            "2020-11": 230,
+            "2020-12": 283,
+            "2021-01": 203,
+            "2021-02": 238,
+            "2021-03": 280,
+            "2021-04": 262,
+            "2021-05": 200,
+            "2021-06": 215,
+            "2021-07": 299,
+            "2021-08": 294,
+            "2021-09": 269,
+            "2021-10": 238,
+            "2021-11": 260,
+            "2021-12": 318,
+            "2022-01": 241,
+            "2022-02": 208,
+            "2022-03": 295,
+            "2022-04": 262,
+            "2022-05": 295,
+            "2022-06": 282,
+            "2022-07": 261,
+            "2022-08": 259,
+            "2022-09": 284,
+            "2022-10": 298,
+            "2022-11": 275,
+            "2022-12": 293,
+            "2023-01": 202,
+            "2023-02": 257,
+            "2023-03": 330,
+            "2023-04": 241,
+            "2023-05": 275,
+            "2023-06": 318,
+            "2023-07": 257,
+            "2023-08": 314,
+            "2023-09": 321,
+            "2023-10": 320,
+            "2023-11": 258,
+            "2023-12": 316,
+            "2024-01": 219,
+            "2024-02": 225,
+            "2024-03": 282,
+            "2024-04": 257,
+            "2024-05": 283,
+            "2024-06": 266,
+            "2024-07": 255,
+            "2024-08": 289,
+            "2024-09": 232,
+            "2024-10": 307,
+            "2024-11": 266,
+            "2024-12": 300,
+            "2025-01": 260,
+            "2025-02": 238,
+            "2025-03": 247,
+            "2025-04": 294,
+            "2025-05": 307,
+            "2025-06": 300,
+            "2025-07": 291,
+            "2025-08": 262,
+            "2025-09": 268,
+            "2025-10": 312,
+            "2025-11": 212,
+            "2025-12": 304,
+            "2026-01": 242,
+            "2026-02": 227,
+            "2026-03": 309,
+            "2026-04": 318,
+            "2026-05": 289,
+            "2026-06": 333,
+            "2026-07": 292,
+            "2026-08": 259,
+            "2026-09": 326,
+            "2026-10": 140
+          }
+        },
+        "tag": "ORIGINAL_RESULT",
+        "verdict": "PASS"
+      },
+      "4b_left_truncation": {
+        "finding": "The window is severely left-truncated relative to the upstream regulatory history: the non-frozen product DB holds the full openFDA 510(k)/PMA lane (back to 1976) and the frozen window keeps only a fraction of that history.  Companies/tracks/pairs with pre-window activity therefore carry an unobservable past; 'first observed entry' is a coverage-boundary artefact, not a first industry entry.  For the three holdout windows this means: their own label windows (2025-2026) are not truncated, but many of their positive rows are re-entries of pairs that were already active before 2016-11, and graph first-touch ages are boundary-capped (~49% of snapshot pairs were first touched in the first 12 months of coverage).",
+        "numbers": {
+          "companies_first_seen_within_first_6m": 42,
+          "companies_total": 51,
+          "companies_with_pre_window_activity": 50,
+          "dormancy_window_inside_coverage": true,
+          "first_origin": "2020-01-01",
+          "holdout_first_touch_boundary_share": {
+            "2025-04-01": {
+              "first_touch_within_first_12m_of_coverage": 149,
+              "pairs_first_touched": 302,
+              "share": 0.493377
+            },
+            "2025-07-01": {
+              "first_touch_within_first_12m_of_coverage": 149,
+              "pairs_first_touched": 304,
+              "share": 0.490132
+            },
+            "2025-10-01": {
+              "first_touch_within_first_12m_of_coverage": 149,
+              "pairs_first_touched": 307,
+              "share": 0.485342
+            }
+          },
+          "holdout_positive_distinct_pairs": 32,
+          "holdout_positive_pairs_pre_window_examples": [
+            {
+              "pair": [
+                "baxter",
+                "patient_monitoring"
+              ],
+              "pre_window_events": 4
+            },
+            {
+              "pair": [
+                "bd",
+                "dental"
+              ],
+              "pre_window_events": 3
+            },
+            {
+              "pair": [
+                "bd",
+                "medical_ai"
+              ],
+              "pre_window_events": 17
+            },
+            {
+              "pair": [
+                "bd",
+                "urology"
+              ],
+              "pre_window_events": 29
+            },
+            {
+              "pair": [
+                "boston_scientific",
+                "dental"
+              ],
+              "pre_window_events": 7
+            },
+            {
+              "pair": [
+                "boston_scientific",
+                "imaging_mr_ct"
+              ],
+              "pre_window_events": 1
+            },
+            {
+              "pair": [
+                "boston_scientific",
+                "wearable_remote"
+              ],
+              "pre_window_events": 6
+            },
+            {
+              "pair": [
+                "canon_medical",
+                "medical_ai"
+              ],
+              "pre_window_events": 1
+            },
+            {
+              "pair": [
+                "icu_medical",
+                "vascular_access"
+              ],
+              "pre_window_events": 62
+            },
+            {
+              "pair": [
+                "medtronic",
+                "ent"
+              ],
+              "pre_window_events": 8
+            }
+          ],
+          "holdout_positive_pairs_pre_window_share": 0.625,
+          "holdout_positive_pairs_with_pre_window_activity": 20,
+          "holdout_positive_rows": 67,
+          "min_dormancy_window_start": "2017-01-01",
+          "pairs_active_before_first_origin": 230,
+          "pairs_active_before_first_origin_share": 0.714286,
+          "pairs_first_observed_within_first_12m": 149,
+          "pairs_first_observed_within_first_12m_share": 0.462733,
+          "pairs_first_observed_within_first_6m": 94,
+          "pairs_total": 322,
+          "tracks_first_seen_within_first_6m": 36,
+          "tracks_total": 38,
+          "tracks_with_pre_window_activity": 38,
+          "upstream_reference": {
+            "available": true,
+            "companies_with_pre_window_activity": 50,
+            "db": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
+            "examples": [
+              {
+                "pair": [
+                  "abbott",
+                  "neurostimulation"
+                ],
+                "pre_window_events": 136
+              },
+              {
+                "pair": [
+                  "edwards_lifesciences",
+                  "structural_heart"
+                ],
+                "pre_window_events": 568
+              },
+              {
+                "pair": [
+                  "johnson_johnson_medtech",
+                  "neurovascular"
+                ],
+                "pre_window_events": 5
+              },
+              {
+                "pair": [
+                  "smith_nephew",
+                  "general_surgery"
+                ],
+                "pre_window_events": 10
+              },
+              {
+                "pair": [
+                  "pentax_medical",
+                  "endoscopy"
+                ],
+                "pre_window_events": 24
+              },
+              {
+                "pair": [
+                  "medtronic",
+                  "imaging_mr_ct"
+                ],
+                "pre_window_events": 10
+              },
+              {
+                "pair": [
+                  "orthofix",
+                  "trauma"
+                ],
+                "pre_window_events": 53
+              },
+              {
+                "pair": [
+                  "zimmer_biomet",
+                  "ortho_joint"
+                ],
+                "pre_window_events": 637
+              },
+              {
+                "pair": [
+                  "integra_lifesciences",
+                  "wound_care"
+                ],
+                "pre_window_events": 77
+              },
+              {
+                "pair": [
+                  "bd",
+                  "surgical_energy"
+                ],
+                "pre_window_events": 15
+              },
+              {
+                "pair": [
+                  "philips",
+                  "cardiac_rhythm"
+                ],
+                "pre_window_events": 45
+              },
+              {
+                "pair": [
+                  "olympus",
+                  "imaging_mr_ct"
+                ],
+                "pre_window_events": 4
+              },
+              {
+                "pair": [
+                  "insulet",
+                  "insulin_delivery"
+                ],
+                "pre_window_events": 7
+              },
+              {
+                "pair": [
+                  "abbott",
+                  "vascular_access"
+                ],
+                "pre_window_events": 85
+              },
+              {
+                "pair": [
+                  "abbott",
+                  "ivd_molecular"
+                ],
+                "pre_window_events": 54
+              }
+            ],
+            "frozen_coverage_of_window": 1.0,
+            "frozen_ids_not_in_live": 0,
+            "frozen_pairs_pre_window_share": 0.832298,
+            "frozen_pairs_total": 322,
+            "frozen_pairs_with_pre_window_activity": 268,
+            "frozen_rows": 55090,
+            "lane_510k_pma_total": 233838,
+            "lane_before_2016-11-01": 178748,
+            "lane_inside_frozen_window": 55090,
+            "tracks_with_pre_window_activity": 38,
+            "window_ids_missing_from_frozen": 0
+          }
+        },
+        "tag": "UNCHANGED_FINDING",
+        "verdict": "UNRESOLVED"
+      },
+      "4c_right_censoring": {
+        "finding": "Internally the three holdout windows close 14 days before the frozen lane ends, so the frozen data cannot truncate them by design.  Whether openFDA itself had published all decisions up to 2026-10-01 at fetch time is not verifiable from the frozen DB; the 2026 tail is consistent with prior years but the last month is a partial month and late-2026 positives could be missing.",
+        "numbers": {
+          "coverage_end": "2026-10-15",
+          "holdout_label_margins": {
+            "2025-04-01": {
+              "days_before_coverage_end": 197,
+              "label_window_end": "2026-04-01"
+            },
+            "2025-07-01": {
+              "days_before_coverage_end": 106,
+              "label_window_end": "2026-07-01"
+            },
+            "2025-10-01": {
+              "days_before_coverage_end": 14,
+              "label_window_end": "2026-10-01"
+            }
+          },
+          "last_label_window_H4q": "2026-10-01",
+          "last_origin_H4q": "2025-10-01",
+          "monthly_tail": {
+            "2023": {
+              "10": 320,
+              "7": 257,
+              "8": 314,
+              "9": 321
+            },
+            "2024": {
+              "10": 307,
+              "7": 255,
+              "8": 289,
+              "9": 232
+            },
+            "2025": {
+              "10": 312,
+              "7": 291,
+              "8": 262,
+              "9": 268
+            },
+            "2026": {
+              "10": 140,
+              "7": 292,
+              "8": 259,
+              "9": 326
+            }
+          },
+          "tail_ratio_2026": {
+            "2026-07": {
+              "2026": 292,
+              "baseline_mean_2023_2025": 267.7,
+              "ratio": 1.0909
+            },
+            "2026-08": {
+              "2026": 259,
+              "baseline_mean_2023_2025": 288.3,
+              "ratio": 0.8983
+            },
+            "2026-09": {
+              "2026": 326,
+              "baseline_mean_2023_2025": 273.7,
+              "ratio": 1.1912
+            },
+            "2026-10": {
+              "2026": 140,
+              "baseline_mean_2023_2025": 313.0,
+              "ratio": 0.4473
+            }
+          }
+        },
+        "tag": "UNRESOLVED_LIMITATION",
+        "verdict": "UNRESOLVED"
+      },
+      "_seconds": 6.0,
+      "_verdict": {
+        "4a_coverage_boundary": "PASS",
+        "4b_left_truncation": "UNRESOLVED",
+        "4c_right_censoring": "UNRESOLVED"
+      }
+    },
+    "C5_historical_proxy": {
+      "5a_instrumentation_matches_experiment": {
+        "finding": "The auditor's rebuild of the S-028 panel and graph features reproduces the archived holdout probabilities exactly (max abs diff ~0), so the shared-variance and ablation numbers below are computed on the experiment's own rows/features.",
+        "numbers": {
+          "holdout_origins": [
+            "2025-04-01",
+            "2025-07-01",
+            "2025-10-01"
+          ],
+          "holdout_rows": 5159,
+          "max_abs_prob_diff": {
+            "B2_frozen_spec16": 0.0,
+            "G1_graph": 1.3877787807814457e-16
+          },
+          "panel_positives": 418,
+          "panel_rows": 41003
+        },
+        "tag": "ORIGINAL_RESULT",
+        "verdict": "PASS"
+      },
+      "5b_archived_ap_reverified": {
+        "finding": "Pooled holdout AP re-derived from the archived per-row predictions: B1=0.0690, B2=0.0751, G1=0.0690 (matches experiment_summary.json).",
+        "numbers": {
+          "archived_ap": {
+            "B1_history10": 0.06902968435586035,
+            "B2_frozen_spec16": 0.07509282998134256,
+            "G1_graph": 0.0690034568374168
+          },
+          "b0_ap": {
+            "company_base_rate": 0.03797998489859569,
+            "constant_training_prevalence": 0.013362878836430827,
+            "pair_base_rate": 0.040625976833938746,
+            "track_base_rate": 0.03388895906871929
+          }
+        },
+        "tag": "ORIGINAL_RESULT",
+        "verdict": "PASS"
+      },
+      "5c_historical_restatement": {
+        "finding": "The graph features are not independent structural information.  Predictability from the 16 history features is high for the two 'structural' headline features (g_twohop_reach R2=0.727, g_company_eigenvector R2=0.623; rank correlations 0.891 / 0.870 with rd_company_active_tracks_12m) and moderate for the block (mean R2=0.221, median 0.170; within-origin mean 0.223).  The part that is NOT explained by B3 is not useful out of sample: G1-only pooled AP 0.0196 is close to a 4-count model (AP 0.0228) and far below B3 (AP 0.0751); adding G1 to B3 changes pooled AP by -0.0061; adding the B3-residualised G1 block still gives AP 0.0710 (< B3).  The ORIGINAL Phase 0-3 randomisation arm is DEFECTIVE (72/72 degree/weight/first-touch invariant failures; see RANDOMISATION_DEFECT_ANALYSIS.md and G2_CORRECTION_RESULTS.md) and its numbers are kept only as historical reference.  With the corrected null models the same direction survives at H4q (real 0.06900; N1 draws [0.06973, 0.08200], N2 [0.06916, 0.08342]; 40/40 and 40/40 draws >= real; exploratory reverse-tail p = 1/41 = 0.0244), but it is concentrated in the 2025-04-01 window (40/40 draws) while 2025-07-01 and 2025-10-01 are indistinguishable (N1 23/40, 31/40; N2 18/40, 27/40), and at H2q there is no reversal at all (N1 16/40, N2 20/40).  Honest conclusion: graph features add no incremental information; the real arrangement is not better than a degree-matched null; at H4q it is worse than every draw but only through one window, and no mechanism is established.  Do not claim the real graph is harmful.  Verdict for the scientific crux: the graph block carries no measurable incremental ranking information beyond historical activity.",
+        "numbers": {
+          "ablation_archived": {
+            "archived_ap_B3": 0.07509282998134256,
+            "archived_ap_B3_plus_G1": 0.0690034568374168,
+            "delta": -0.006089373143925769,
+            "my_ap_B3": 0.07509282998134256,
+            "my_ap_B3_plus_G1": 0.0690034568374168,
+            "my_ap_G1_only": 0.01963808495985189,
+            "my_ap_count_only": 0.022823398220016715,
+            "my_ap_residualised": 0.07098680939963085
+          },
+          "ablation_pooled_ap": {
+            "B3_history16": 0.07509282998134256,
+            "B3_plus_G1": 0.0690034568374168,
+            "B3_plus_residualised_G1": 0.07098680939963085,
+            "G1_graph_only": 0.01963808495985189,
+            "count_only4": 0.022823398220016715
+          },
+          "b0_persistence_ap": {
+            "company_base_rate": 0.03797998489859569,
+            "constant_training_prevalence": 0.013362878836430827,
+            "pair_base_rate": 0.040625976833938746,
+            "track_base_rate": 0.03388895906871929
+          },
+          "g2_corrected_null_models": {
+            "H2q_N1": {
+              "draw_pooled_max": 0.08230595183265235,
+              "draw_pooled_median": 0.06614661094351235,
+              "draw_pooled_min": 0.056489509872253776,
+              "draws_ge_real_pooled": 16,
+              "exploratory_reverse_tail_p": 0.024390243902439025,
+              "file": "artifacts\\correction_round_1\\g2_corrected_H2q_N1.json",
+              "fraction_draws_ge_real_pooled": 0.4,
+              "n_draws": 40,
+              "per_window_draws_ge_real": {
+                "2025-10-01": 28,
+                "2026-01-01": 30,
+                "2026-04-01": 14
+              },
+              "present": true,
+              "real_pooled_ap": 0.06703627857552347,
+              "real_worse_than_every_draw": false
+            },
+            "H2q_N2": {
+              "draw_pooled_max": 0.07380078516349854,
+              "draw_pooled_median": 0.06682718833811134,
+              "draw_pooled_min": 0.061179667984737805,
+              "draws_ge_real_pooled": 20,
+              "exploratory_reverse_tail_p": 0.024390243902439025,
+              "file": "artifacts\\correction_round_1\\g2_corrected_H2q_N2.json",
+              "fraction_draws_ge_real_pooled": 0.5,
+              "n_draws": 40,
+              "per_window_draws_ge_real": {
+                "2025-10-01": 29,
+                "2026-01-01": 27,
+                "2026-04-01": 18
+              },
+              "present": true,
+              "real_pooled_ap": 0.06703627857552347,
+              "real_worse_than_every_draw": false
+            },
+            "H4q_N1": {
+              "draw_pooled_max": 0.08200286002407833,
+              "draw_pooled_median": 0.07550832075789567,
+              "draw_pooled_min": 0.06973025752383087,
+              "draws_ge_real_pooled": 40,
+              "exploratory_reverse_tail_p": 0.024390243902439025,
+              "file": "artifacts\\correction_round_1\\g2_corrected_H4q_N1.json",
+              "fraction_draws_ge_real_pooled": 1.0,
+              "n_draws": 40,
+              "per_window_draws_ge_real": {
+                "2025-04-01": 40,
+                "2025-07-01": 23,
+                "2025-10-01": 31
+              },
+              "present": true,
+              "real_pooled_ap": 0.06900345683741682,
+              "real_worse_than_every_draw": true
+            },
+            "H4q_N2": {
+              "draw_pooled_max": 0.08342059455252022,
+              "draw_pooled_median": 0.07518418651304845,
+              "draw_pooled_min": 0.06916035918009025,
+              "draws_ge_real_pooled": 40,
+              "exploratory_reverse_tail_p": 0.024390243902439025,
+              "file": "artifacts\\correction_round_1\\g2_corrected_H4q_N2.json",
+              "fraction_draws_ge_real_pooled": 1.0,
+              "n_draws": 40,
+              "per_window_draws_ge_real": {
+                "2025-04-01": 40,
+                "2025-07-01": 18,
+                "2025-10-01": 27
+              },
+              "present": true,
+              "real_pooled_ap": 0.06900345683741682,
+              "real_worse_than_every_draw": true
+            }
+          },
+          "g2_original_randomised_arm": {
+            "arm_status": "DEFECTIVE_NOT_DEGREE_PRESERVING",
+            "defect": "72/72 invariant failures (degree drift, weight collapse, first_touch semantics); numbers historical reference only",
+            "max": 0.08198243410602074,
+            "mean": 0.07460598128604232,
+            "min": 0.06918688314172436,
+            "n": 40,
+            "real_pooled_ap": 0.06900345683741682,
+            "reference_docs": [
+              "RANDOMISATION_DEFECT_ANALYSIS.md",
+              "G2_CORRECTION_RESULTS.md"
+            ],
+            "share_ge_real": 1.0
+          },
+          "label_persistence_note": "B0 company/track/pair base-rate APs are already 0.038/0.034/0.041; the count-only model reaches AP 0.023 without any pair identity, i.e. the target is substantially company-level activity persistence.",
+          "shared_variance_all_rows": {
+            "per_feature": {
+              "g_coentry_count_12m": {
+                "max_abs_pearson": 0.44488369851101633,
+                "max_abs_spearman": 0.3842013045348396,
+                "max_pearson_with": "rd_track_active_companies_12m",
+                "max_spearman_with": "rd_track_active_companies_12m",
+                "mean_predicted_abs_pearson": 0.07354814710482613,
+                "r2_from_B3_pooled": 0.25920781152391403,
+                "r2_from_B3_within_origin": 0.26634824693177894
+              },
+              "g_coentry_decay": {
+                "max_abs_pearson": 0.43188930400398007,
+                "max_abs_spearman": 0.37966528009350253,
+                "max_pearson_with": "rd_track_active_companies_12m",
+                "max_spearman_with": "rd_track_active_companies_12m",
+                "mean_predicted_abs_pearson": 0.07116243478254766,
+                "r2_from_B3_pooled": 0.2439068530424563,
+                "r2_from_B3_within_origin": 0.248364110434117
+              },
+              "g_coentry_similarity_weighted": {
+                "max_abs_pearson": 0.15298162622249106,
+                "max_abs_spearman": 0.1790452551584876,
+                "max_pearson_with": "rd_track_active_companies_12m",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.04467322381204518,
+                "r2_from_B3_pooled": 0.039704592861344645,
+                "r2_from_B3_within_origin": 0.039761755649214026
+              },
+              "g_company_clustering": {
+                "max_abs_pearson": 0.08911181984567632,
+                "max_abs_spearman": 0.04365153026058331,
+                "max_pearson_with": "rd_company_active_tracks_delta",
+                "max_spearman_with": "rd_company_active_tracks_delta",
+                "mean_predicted_abs_pearson": 0.01440288769971741,
+                "r2_from_B3_pooled": 0.011593215073195218,
+                "r2_from_B3_within_origin": 0.011398846082399494
+              },
+              "g_company_eigenvector": {
+                "max_abs_pearson": 0.7793175805946724,
+                "max_abs_spearman": 0.8697798648509963,
+                "max_pearson_with": "rd_company_active_tracks_12m",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.1760805415541467,
+                "r2_from_B3_pooled": 0.6234991137723089,
+                "r2_from_B3_within_origin": 0.623619707581674
+              },
+              "g_max_entrant_similarity": {
+                "max_abs_pearson": 0.1484422674232506,
+                "max_abs_spearman": 0.17895477266763182,
+                "max_pearson_with": "rd_track_active_companies_12m",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.04430376487549405,
+                "r2_from_B3_pooled": 0.03783532272744383,
+                "r2_from_B3_within_origin": 0.03793106087804743
+              },
+              "g_similarity_to_track_incumbents": {
+                "max_abs_pearson": 0.22361426719435903,
+                "max_abs_spearman": 0.41537676094755427,
+                "max_pearson_with": "rd_company_active_tracks_12m",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.0674045511977805,
+                "r2_from_B3_pooled": 0.07013384706626202,
+                "r2_from_B3_within_origin": 0.07022489674020627
+              },
+              "g_similarity_to_track_max": {
+                "max_abs_pearson": 0.3534420895260134,
+                "max_abs_spearman": 0.4636785160570453,
+                "max_pearson_with": "rd_track_active_companies_12m",
+                "max_spearman_with": "rd_track_active_companies_12m",
+                "mean_predicted_abs_pearson": 0.10195382345479438,
+                "r2_from_B3_pooled": 0.19339692832210653,
+                "r2_from_B3_within_origin": 0.19272508416760947
+              },
+              "g_track_cooccurrence_pull": {
+                "max_abs_pearson": 0.35489709546508924,
+                "max_abs_spearman": 0.4584272097651804,
+                "max_pearson_with": "rd_track_active_companies_12m",
+                "max_spearman_with": "rd_track_active_companies_12m",
+                "mean_predicted_abs_pearson": 0.07756326509433087,
+                "r2_from_B3_pooled": 0.14692865929216803,
+                "r2_from_B3_within_origin": 0.1475957459545587
+              },
+              "g_track_entrant_centrality": {
+                "max_abs_pearson": 0.4363715037820669,
+                "max_abs_spearman": 0.379626493797912,
+                "max_pearson_with": "rd_track_active_companies_12m",
+                "max_spearman_with": "rd_track_active_companies_12m",
+                "mean_predicted_abs_pearson": 0.07603624868786527,
+                "r2_from_B3_pooled": 0.2478400736050277,
+                "r2_from_B3_within_origin": 0.25083968704956905
+              },
+              "g_twohop_activity_decay": {
+                "max_abs_pearson": 0.19312779525633456,
+                "max_abs_spearman": 0.5049489935816959,
+                "max_pearson_with": "rd_company_count_12m",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.048009326743118697,
+                "r2_from_B3_pooled": 0.04975334413877408,
+                "r2_from_B3_within_origin": 0.04857398934625623
+              },
+              "g_twohop_reach": {
+                "max_abs_pearson": 0.8490248195208867,
+                "max_abs_spearman": 0.8905591320015254,
+                "max_pearson_with": "rd_company_active_tracks_12m",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.18698506299120712,
+                "r2_from_B3_pooled": 0.7270030675749743,
+                "r2_from_B3_within_origin": 0.732901425775005
+              }
+            },
+            "summary": {
+              "max_r2_pooled": 0.7270030675749743,
+              "mean_r2_pooled": 0.22090023574999798,
+              "mean_r2_within_origin": 0.22252371304920296,
+              "median_r2_pooled": 0.17016279380713728,
+              "median_r2_within_origin": 0.1701604150610841,
+              "n_features_r2_gt_0.25": 3,
+              "n_features_r2_gt_0.5": 2,
+              "n_rows": 41003
+            }
+          },
+          "shared_variance_holdout_rows": {
+            "per_feature": {
+              "g_coentry_count_12m": {
+                "max_abs_pearson": 0.3953904749603538,
+                "max_abs_spearman": 0.3961166713592132,
+                "max_pearson_with": "rd_track_active_companies_delta",
+                "max_spearman_with": "rd_track_active_companies_delta",
+                "mean_predicted_abs_pearson": 0.07323627261840354,
+                "r2_from_B3_pooled": 0.27952970574304115,
+                "r2_from_B3_within_origin": 0.27991582926457714
+              },
+              "g_coentry_decay": {
+                "max_abs_pearson": 0.37635781725836503,
+                "max_abs_spearman": 0.4079926928493168,
+                "max_pearson_with": "rd_track_active_companies_delta",
+                "max_spearman_with": "rd_track_active_companies_delta",
+                "mean_predicted_abs_pearson": 0.06890790462478663,
+                "r2_from_B3_pooled": 0.24459838932084876,
+                "r2_from_B3_within_origin": 0.2447837900809542
+              },
+              "g_coentry_similarity_weighted": {
+                "max_abs_pearson": 0.14486141200501174,
+                "max_abs_spearman": 0.20927547792409498,
+                "max_pearson_with": "rd_track_active_companies_delta",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.03995790937251803,
+                "r2_from_B3_pooled": 0.03445346145297867,
+                "r2_from_B3_within_origin": 0.03518254937371634
+              },
+              "g_company_clustering": {
+                "max_abs_pearson": 0.13500956435652373,
+                "max_abs_spearman": 0.11939847366140163,
+                "max_pearson_with": "rd_company_track_novelty_share",
+                "max_spearman_with": "rd_company_track_novelty_share",
+                "mean_predicted_abs_pearson": 0.034463360841581726,
+                "r2_from_B3_pooled": 0.037215784198895374,
+                "r2_from_B3_within_origin": 0.037742386979653486
+              },
+              "g_company_eigenvector": {
+                "max_abs_pearson": 0.7954698602982718,
+                "max_abs_spearman": 0.8893654914453536,
+                "max_pearson_with": "rd_company_active_tracks_12m",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.18160427644195096,
+                "r2_from_B3_pooled": 0.6717931351603661,
+                "r2_from_B3_within_origin": 0.6726846970020097
+              },
+              "g_max_entrant_similarity": {
+                "max_abs_pearson": 0.14564281177558216,
+                "max_abs_spearman": 0.20927148431922768,
+                "max_pearson_with": "rd_track_active_companies_delta",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.04005798805276161,
+                "r2_from_B3_pooled": 0.03481487795070537,
+                "r2_from_B3_within_origin": 0.0355858648696159
+              },
+              "g_similarity_to_track_incumbents": {
+                "max_abs_pearson": 0.22832524308887822,
+                "max_abs_spearman": 0.45849653368362336,
+                "max_pearson_with": "rd_company_active_tracks_12m",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.07325388273757193,
+                "r2_from_B3_pooled": 0.08801840190308718,
+                "r2_from_B3_within_origin": 0.09109988323575191
+              },
+              "g_similarity_to_track_max": {
+                "max_abs_pearson": 0.3311188475238819,
+                "max_abs_spearman": 0.42491247181296427,
+                "max_pearson_with": "rd_track_active_companies_12m",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.10470420941637491,
+                "r2_from_B3_pooled": 0.18538607691288966,
+                "r2_from_B3_within_origin": 0.1868224700804093
+              },
+              "g_track_cooccurrence_pull": {
+                "max_abs_pearson": 0.311164703485511,
+                "max_abs_spearman": 0.3999211601449358,
+                "max_pearson_with": "rd_track_active_companies_12m",
+                "max_spearman_with": "rd_track_active_companies_12m",
+                "mean_predicted_abs_pearson": 0.08058972085721547,
+                "r2_from_B3_pooled": 0.13250873823431464,
+                "r2_from_B3_within_origin": 0.1342600911000369
+              },
+              "g_track_entrant_centrality": {
+                "max_abs_pearson": 0.3978778213996987,
+                "max_abs_spearman": 0.38825423001237613,
+                "max_pearson_with": "rd_track_active_companies_delta",
+                "max_spearman_with": "rd_track_active_companies_delta",
+                "mean_predicted_abs_pearson": 0.07387403663639953,
+                "r2_from_B3_pooled": 0.28214035026187445,
+                "r2_from_B3_within_origin": 0.2823816842316017
+              },
+              "g_twohop_activity_decay": {
+                "max_abs_pearson": 0.23351308362554743,
+                "max_abs_spearman": 0.6082484170705493,
+                "max_pearson_with": "rd_company_active_tracks_12m",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.06767321630971491,
+                "r2_from_B3_pooled": 0.09964931088002649,
+                "r2_from_B3_within_origin": 0.11795040169026694
+              },
+              "g_twohop_reach": {
+                "max_abs_pearson": 0.8370520505421455,
+                "max_abs_spearman": 0.8899493623118847,
+                "max_pearson_with": "rd_company_active_tracks_12m",
+                "max_spearman_with": "rd_company_active_tracks_12m",
+                "mean_predicted_abs_pearson": 0.18615102003870349,
+                "r2_from_B3_pooled": 0.7199472597313419,
+                "r2_from_B3_within_origin": 0.743174436002286
+              }
+            },
+            "summary": {
+              "max_r2_pooled": 0.7199472597313419,
+              "mean_r2_pooled": 0.23417129097919745,
+              "mean_r2_within_origin": 0.2384653403259066,
+              "median_r2_pooled": 0.15894740757360215,
+              "median_r2_within_origin": 0.1605412805902231,
+              "n_features_r2_gt_0.25": 4,
+              "n_features_r2_gt_0.5": 2,
+              "n_rows": 5159
+            }
+          },
+          "top_restated_features": [
+            {
+              "feature": "g_twohop_reach",
+              "max_abs_pearson": 0.8490248195208867,
+              "max_abs_spearman": 0.8905591320015254,
+              "max_pearson_with": "rd_company_active_tracks_12m",
+              "max_spearman_with": "rd_company_active_tracks_12m",
+              "mean_predicted_abs_pearson": 0.18698506299120712,
+              "r2_from_B3_pooled": 0.7270030675749743,
+              "r2_from_B3_within_origin": 0.732901425775005
+            },
+            {
+              "feature": "g_company_eigenvector",
+              "max_abs_pearson": 0.7793175805946724,
+              "max_abs_spearman": 0.8697798648509963,
+              "max_pearson_with": "rd_company_active_tracks_12m",
+              "max_spearman_with": "rd_company_active_tracks_12m",
+              "mean_predicted_abs_pearson": 0.1760805415541467,
+              "r2_from_B3_pooled": 0.6234991137723089,
+              "r2_from_B3_within_origin": 0.623619707581674
+            },
+            {
+              "feature": "g_coentry_count_12m",
+              "max_abs_pearson": 0.44488369851101633,
+              "max_abs_spearman": 0.3842013045348396,
+              "max_pearson_with": "rd_track_active_companies_12m",
+              "max_spearman_with": "rd_track_active_companies_12m",
+              "mean_predicted_abs_pearson": 0.07354814710482613,
+              "r2_from_B3_pooled": 0.25920781152391403,
+              "r2_from_B3_within_origin": 0.26634824693177894
+            },
+            {
+              "feature": "g_track_entrant_centrality",
+              "max_abs_pearson": 0.4363715037820669,
+              "max_abs_spearman": 0.379626493797912,
+              "max_pearson_with": "rd_track_active_companies_12m",
+              "max_spearman_with": "rd_track_active_companies_12m",
+              "mean_predicted_abs_pearson": 0.07603624868786527,
+              "r2_from_B3_pooled": 0.2478400736050277,
+              "r2_from_B3_within_origin": 0.25083968704956905
+            },
+            {
+              "feature": "g_coentry_decay",
+              "max_abs_pearson": 0.43188930400398007,
+              "max_abs_spearman": 0.37966528009350253,
+              "max_pearson_with": "rd_track_active_companies_12m",
+              "max_spearman_with": "rd_track_active_companies_12m",
+              "mean_predicted_abs_pearson": 0.07116243478254766,
+              "r2_from_B3_pooled": 0.2439068530424563,
+              "r2_from_B3_within_origin": 0.248364110434117
+            }
+          ]
+        },
+        "tag": "CORRECTED_RESULT",
+        "verdict": "FAIL"
+      },
+      "_seconds": 20.8,
+      "_verdict": {
+        "5a_instrumentation_matches_experiment": "PASS",
+        "5b_archived_ap_reverified": "PASS",
+        "5c_historical_restatement": "FAIL"
+      }
+    },
+    "C6_mapping_reproducibility": {
+      "6a_mapping_rule_reproducibility": {
+        "finding": "The original study's claim that company/track assignment cannot be rebuilt (the '8 unexplained matches' and '325 unreproducible track assignments') is refuted at the rule level.  Applying the production resolver to the frozen DB's own companies table reproduces 55090/55090 company assignments (100.00%).  An aliases-list-only replication cannot explain 12 of 512 (applicant, company) combos, but every one of them is matched by the companies table's own key/name_en columns; the documented token-Jaccard fallback is not even needed (0 fuzzy matches).  The production _event_track with the frozen DB tracks table plus repo product_code_tracks.json reproduces 55090/55090 track assignments (100.00%): of the 2,089 no-code assignments, 1772 are keyword-containment matches and 317 are stemmed token-set matches (_match_candidates) -- the earlier replication counted the keyword route only and mislabelled the token-set route as unreproducible.  The mapping is a code+config function, not an unrecorded black box.",
+        "numbers": {
+          "company_mapping": {
+            "agree": 55090,
+            "combos_by_route": {
+              "key_or_name_en_column": 12,
+              "recorded_alias": 500
+            },
+            "combos_total": 512,
+            "combos_without_recorded_alias": 12,
+            "combos_without_recorded_alias_examples": [
+              {
+                "applicant": "Canon Medical Systems Corporation",
+                "company": "canon_medical",
+                "route": "key_or_name_en_column"
+              },
+              {
+                "applicant": "W. L. Gore & Associates, Inc.",
+                "company": "wl_gore",
+                "route": "key_or_name_en_column"
+              },
+              {
+                "applicant": "Bd",
+                "company": "bd",
+                "route": "key_or_name_en_column"
+              },
+              {
+                "applicant": "Bd Kiestra B.V.",
+                "company": "bd",
+                "route": "key_or_name_en_column"
+              },
+              {
+                "applicant": "Bd Integrated Diagnostic Solutions /",
+                "company": "bd",
+                "route": "key_or_name_en_column"
+              },
+              {
+                "applicant": "Geneohm Sciences Canada, Inc. (Bd Diagnostics)",
+                "company": "bd",
+                "route": "key_or_name_en_column"
+              },
+              {
+                "applicant": "Auris Health, Inc., part of Johnson & Johnson MedTech",
+                "company": "johnson_johnson_medtech",
+                "route": "key_or_name_en_column"
+              },
+              {
+                "applicant": "Canon Medical Systems, USA",
+                "company": "canon_medical",
+                "route": "key_or_name_en_column"
+              },
+              {
+                "applicant": "Geneohm Sciences Canada, Inc. (Bd Life Sciences)",
+                "company": "bd",
+                "route": "key_or_name_en_column"
+              },
+              {
+                "applicant": "BD Diagnostic Systems",
+                "company": "bd",
+                "route": "key_or_name_en_column"
+              },
+              {
+                "applicant": "Bd Diagnostic Systems",
+                "company": "bd",
+                "route": "key_or_name_en_column"
+              },
+              {
+                "applicant": "Bd Diagnostics",
+                "company": "bd",
+                "route": "key_or_name_en_column"
+              }
+            ],
+            "config_aliases_identical_to_frozen_db_aliases": true,
+            "disagree": 0,
+            "disagreement_examples": [],
+            "events": 55090,
+            "events_explained_without_recorded_alias": 637,
+            "route_counts": {
+              "key_or_name_en_column": 637,
+              "recorded_alias": 21033,
+              "unmatched_both": 33420
+            }
+          },
+          "coverage": {
+            "material_events": 31802,
+            "with_both_enter_graph": 3833,
+            "with_both_share": 0.120527,
+            "with_company_key": 5489,
+            "with_company_key_share": 0.172599,
+            "with_track_id": 18889,
+            "with_track_id_share": 0.593956
+          },
+          "live_vs_frozen_drift": {
+            "company_change_examples": [
+              {
+                "applicant_raw": "Ge Oec Medical Systems, Inc.",
+                "event_date": "2017-08-10",
+                "event_id": "37d110eb0409105710977fdabd30dc3a",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Ge Hualun Medical Systems Co. , Ltd.",
+                "event_date": "2017-07-12",
+                "event_id": "6c87d59a5523503936ac0c883c567d22",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Ge Oec Medical Systems, Inc.",
+                "event_date": "2019-11-08",
+                "event_id": "a6bc1983d8608d7f39f7f10058c6afd9",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Cook Biotech Incorporated",
+                "event_date": "2018-03-13",
+                "event_id": "b140d31c4cde776b9b5b0546d98596da",
+                "frozen": null,
+                "live": "cook_medical"
+              },
+              {
+                "applicant_raw": "Ge Hangwei Medical Systems Co., Ltd.",
+                "event_date": "2019-10-24",
+                "event_id": "a495292195ed91f2929e6b097fa4c2d4",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Ge Hualun Medical Systems Co. , Ltd.",
+                "event_date": "2025-11-26",
+                "event_id": "127633ff5fa9b3db50b182eff1b24957",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Ge Hualun Medical Systems Co. , Ltd.",
+                "event_date": "2025-08-28",
+                "event_id": "71eedd4a48a2a34e0218abde1e356c61",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Ge Oec Medical Systems, Inc.",
+                "event_date": "2021-03-05",
+                "event_id": "67ccf7c3c265fb2c63013f4e29418147",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Canon Inc. -Medical Equipment Group",
+                "event_date": "2018-02-23",
+                "event_id": "67e253955ead152b0a24d179449e0a28",
+                "frozen": null,
+                "live": "canon_medical"
+              },
+              {
+                "applicant_raw": "Ge Hualun Medical Systems Co. , Ltd.",
+                "event_date": "2019-07-24",
+                "event_id": "db5377d9701296ac02d8ded5cec51c74",
+                "frozen": null,
+                "live": "ge_healthcare"
+              }
+            ],
+            "company_changed": 30,
+            "frozen_events_present_upstream": 55090,
+            "same_company": 55060,
+            "same_track": 55090,
+            "track_changed": 0,
+            "upstream_lane_events": 233838
+          },
+          "mapping_artifacts": {
+            "companies_device_updated": "2026-10-31",
+            "company_identifiers_available_at_values": [
+              "2026-11-01T22:48:06Z"
+            ],
+            "company_identifiers_rows": 34,
+            "company_identifiers_valid_from_nonnull": 0,
+            "company_identifiers_valid_to_nonnull": 0,
+            "config_companies_device": {
+              "exists": true,
+              "path": "D:\\DEPPSKK\\medradar\\config\\companies_device.json",
+              "sha256": "7fd5750abcab1080a21426fe60a7f827f3f015feaa038ea6edfeaf43dbab4820",
+              "size_bytes": 13786
+            },
+            "config_product_code_tracks": {
+              "exists": true,
+              "path": "D:\\DEPPSKK\\medradar\\config\\product_code_tracks.json",
+              "sha256": "182c403bd1c58f9a89c8261ddfa5f0c1e934faef878dd091a3da7719d7255d2f",
+              "size_bytes": 39234
+            },
+            "config_tracks_device": {
+              "exists": true,
+              "path": "D:\\DEPPSKK\\medradar\\config\\tracks_device.json",
+              "sha256": "074087461f5a6f19246786fc8164cde60b202a39cf8dcaef8fcee6d14f115a3c",
+              "size_bytes": 24668
+            },
+            "frozen_db_product_codes_rows": 0,
+            "tracks_device_updated": "2026-10-31",
+            "tracks_in_frozen_db": 38,
+            "tracks_in_repo_config": 50
+          },
+          "track_mapping": {
+            "agree": 55090,
+            "current_config_drift": {
+              "agree": 54974,
+              "agreement": 0.997894,
+              "by_kind": {
+                "stored_null->rec_set": 114,
+                "stored_set->rec_set": 2
+              },
+              "disagree": 116,
+              "tracks_in_current_config": 50
+            },
+            "disagree": 0,
+            "disagreement_examples": [],
+            "events": 55090,
+            "routes": {
+              "keyword|assigned": 1772,
+              "keyword|null": 178,
+              "product_code|assigned": 35693,
+              "token_set|assigned": 317,
+              "token_set|null": 17130
+            }
+          }
+        },
+        "tag": "INVALIDATED_FINDING",
+        "verdict": "PASS"
+      },
+      "6b_mapping_versioning": {
+        "finding": "The maps are NOT versioned by effective date: companies_device.json / tracks_device.json carry one 'updated' timestamp (2026-10-31), product_code_tracks.json is undated, frozen DB product_codes is EMPTY, and company_identifiers has NULL valid_from/valid_to for all rows.  Consequence quantified: 30/55,090 frozen events have a different company_key in the upstream DB (alias additions after the freeze), and the current 50-track config assigns a track where the frozen 38-track snapshot left NULL for 116 events.  A third party can rebuild the *frozen* mapping only by using the frozen DB's own companies/tracks tables; the bare frozen DB cannot rebuild track_id (product_codes empty) and no effective-dated map exists for any other as-of date.",
+        "numbers": {
+          "current_config_drift": {
+            "agree": 54974,
+            "agreement": 0.997894,
+            "by_kind": {
+              "stored_null->rec_set": 114,
+              "stored_set->rec_set": 2
+            },
+            "disagree": 116,
+            "tracks_in_current_config": 50
+          },
+          "live_vs_frozen_drift": {
+            "company_change_examples": [
+              {
+                "applicant_raw": "Ge Oec Medical Systems, Inc.",
+                "event_date": "2017-08-10",
+                "event_id": "37d110eb0409105710977fdabd30dc3a",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Ge Hualun Medical Systems Co. , Ltd.",
+                "event_date": "2017-07-12",
+                "event_id": "6c87d59a5523503936ac0c883c567d22",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Ge Oec Medical Systems, Inc.",
+                "event_date": "2019-11-08",
+                "event_id": "a6bc1983d8608d7f39f7f10058c6afd9",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Cook Biotech Incorporated",
+                "event_date": "2018-03-13",
+                "event_id": "b140d31c4cde776b9b5b0546d98596da",
+                "frozen": null,
+                "live": "cook_medical"
+              },
+              {
+                "applicant_raw": "Ge Hangwei Medical Systems Co., Ltd.",
+                "event_date": "2019-10-24",
+                "event_id": "a495292195ed91f2929e6b097fa4c2d4",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Ge Hualun Medical Systems Co. , Ltd.",
+                "event_date": "2025-11-26",
+                "event_id": "127633ff5fa9b3db50b182eff1b24957",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Ge Hualun Medical Systems Co. , Ltd.",
+                "event_date": "2025-08-28",
+                "event_id": "71eedd4a48a2a34e0218abde1e356c61",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Ge Oec Medical Systems, Inc.",
+                "event_date": "2021-03-05",
+                "event_id": "67ccf7c3c265fb2c63013f4e29418147",
+                "frozen": null,
+                "live": "ge_healthcare"
+              },
+              {
+                "applicant_raw": "Canon Inc. -Medical Equipment Group",
+                "event_date": "2018-02-23",
+                "event_id": "67e253955ead152b0a24d179449e0a28",
+                "frozen": null,
+                "live": "canon_medical"
+              },
+              {
+                "applicant_raw": "Ge Hualun Medical Systems Co. , Ltd.",
+                "event_date": "2019-07-24",
+                "event_id": "db5377d9701296ac02d8ded5cec51c74",
+                "frozen": null,
+                "live": "ge_healthcare"
+              }
+            ],
+            "company_changed": 30,
+            "frozen_events_present_upstream": 55090,
+            "same_company": 55060,
+            "same_track": 55090,
+            "track_changed": 0,
+            "upstream_lane_events": 233838
+          },
+          "versioning_fields": {
+            "companies_device_updated": "2026-10-31",
+            "company_identifiers_available_at_values": [
+              "2026-11-01T22:48:06Z"
+            ],
+            "company_identifiers_rows": 34,
+            "company_identifiers_valid_from_nonnull": 0,
+            "company_identifiers_valid_to_nonnull": 0,
+            "config_companies_device": {
+              "exists": true,
+              "path": "D:\\DEPPSKK\\medradar\\config\\companies_device.json",
+              "sha256": "7fd5750abcab1080a21426fe60a7f827f3f015feaa038ea6edfeaf43dbab4820",
+              "size_bytes": 13786
+            },
+            "config_product_code_tracks": {
+              "exists": true,
+              "path": "D:\\DEPPSKK\\medradar\\config\\product_code_tracks.json",
+              "sha256": "182c403bd1c58f9a89c8261ddfa5f0c1e934faef878dd091a3da7719d7255d2f",
+              "size_bytes": 39234
+            },
+            "config_tracks_device": {
+              "exists": true,
+              "path": "D:\\DEPPSKK\\medradar\\config\\tracks_device.json",
+              "sha256": "074087461f5a6f19246786fc8164cde60b202a39cf8dcaef8fcee6d14f115a3c",
+              "size_bytes": 24668
+            },
+            "frozen_db_product_codes_rows": 0,
+            "tracks_device_updated": "2026-10-31",
+            "tracks_in_frozen_db": 38,
+            "tracks_in_repo_config": 50
+          }
+        },
+        "tag": "CORRECTED_RESULT",
+        "verdict": "FAIL"
+      },
+      "6c_coverage_arithmetic": {
+        "finding": "The 3,833/31,802 (12.1%) coverage claim is arithmetically correct and reproducible from the frozen DB columns; it is a mapping-coverage number, not a data-loss number.",
+        "numbers": {
+          "material_events": 31802,
+          "with_both_enter_graph": 3833,
+          "with_both_share": 0.120527,
+          "with_company_key": 5489,
+          "with_company_key_share": 0.172599,
+          "with_track_id": 18889,
+          "with_track_id_share": 0.593956
+        },
+        "tag": "ORIGINAL_RESULT",
+        "verdict": "PASS"
+      },
+      "_seconds": 20.0,
+      "_verdict": {
+        "6a_mapping_rule_reproducibility": "PASS",
+        "6b_mapping_versioning": "FAIL",
+        "6c_coverage_arithmetic": "PASS"
+      }
+    }
+  },
+  "elapsed_seconds": 65.9,
+  "frozen_db": {
+    "expected_sha256": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+    "expected_size": 289443840,
+    "path": "D:\\DEPPSKK\\worktrees\\integration-v2\\data\\research.sqlite",
+    "sha256_after": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+    "sha256_before": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+    "size_after": 289443840,
+    "size_before": 289443840,
+    "verified_after": true,
+    "verified_before": true
+  },
+  "generated_by": "code/audit_23_leakage_correction.py",
+  "inputs": {
+    "config_companies_device": {
+      "exists": true,
+      "path": "D:\\DEPPSKK\\medradar\\config\\companies_device.json",
+      "sha256": "7fd5750abcab1080a21426fe60a7f827f3f015feaa038ea6edfeaf43dbab4820",
+      "size_bytes": 13786
+    },
+    "config_product_code_tracks": {
+      "exists": true,
+      "path": "D:\\DEPPSKK\\medradar\\config\\product_code_tracks.json",
+      "sha256": "182c403bd1c58f9a89c8261ddfa5f0c1e934faef878dd091a3da7719d7255d2f",
+      "size_bytes": 39234
+    },
+    "config_tracks_device": {
+      "exists": true,
+      "path": "D:\\DEPPSKK\\medradar\\config\\tracks_device.json",
+      "sha256": "074087461f5a6f19246786fc8164cde60b202a39cf8dcaef8fcee6d14f115a3c",
+      "size_bytes": 24668
+    },
+    "live_product_db": {
+      "exists": true,
+      "path": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
+      "sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92",
+      "size_bytes": 1368469504
+    },
+    "research_features": "D:\\DEPPSKK\\medradar\\medradar\\intelligence\\features\\research_features.py",
+    "s028_experiment": {
+      "exists": true,
+      "path": "D:\\DEPPSKK\\medradar\\research\\studies\\graph_early_signal_s028\\code\\s028_experiment.py",
+      "sha256": "44bd3f5073c3b7e8704d82777063b17cd2e9199a542bd8f905d5ecf836d0b6c6",
+      "size_bytes": 25846
+    },
+    "s028_lib": {
+      "exists": true,
+      "path": "D:\\DEPPSKK\\medradar\\research\\studies\\graph_early_signal_s028\\code\\s028_lib.py",
+      "sha256": "9b9b7f9581e31de3541a811313ae4cdcf68c7601f814204b7d0a67b0c1a585c2",
+      "size_bytes": 40593
+    }
+  },
+  "study": "S-028",
+  "summary": {
+    "C0_frozen_fidelity.0_frozen_reproduction": {
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    "C1_knowledge_clock.1a_internal_consistency": {
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    "C1_knowledge_clock.1b_clock_is_a_proxy_not_observed": {
+      "tag": "UNCHANGED_FINDING",
+      "verdict": "UNRESOLVED"
+    },
+    "C1_knowledge_clock.1c_leak_condition": {
+      "tag": "UNCHANGED_FINDING",
+      "verdict": "PASS"
+    },
+    "C2_feature_lookahead.2a_provenance_table": {
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    "C2_feature_lookahead.2b_snapshot_truncation_invariance": {
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    "C2_feature_lookahead.2c_panel_feature_truncation_invariance": {
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    "C2_feature_lookahead.2d_train_only_scaling": {
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    "C2_feature_lookahead.2e_cross_origin_global_objects": {
+      "tag": "UNCHANGED_FINDING",
+      "verdict": "UNRESOLVED"
+    },
+    "C3_label_isolation.3a_purge": {
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    "C3_label_isolation.3b_event_level_isolation": {
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    "C3_label_isolation.3c_holdout_windows_not_independent": {
+      "tag": "CORRECTED_RESULT",
+      "verdict": "FAIL"
+    },
+    "C4_truncation.4a_coverage_boundary": {
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    "C4_truncation.4b_left_truncation": {
+      "tag": "UNCHANGED_FINDING",
+      "verdict": "UNRESOLVED"
+    },
+    "C4_truncation.4c_right_censoring": {
+      "tag": "UNRESOLVED_LIMITATION",
+      "verdict": "UNRESOLVED"
+    },
+    "C5_historical_proxy.5a_instrumentation_matches_experiment": {
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    "C5_historical_proxy.5b_archived_ap_reverified": {
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    },
+    "C5_historical_proxy.5c_historical_restatement": {
+      "tag": "CORRECTED_RESULT",
+      "verdict": "FAIL"
+    },
+    "C6_mapping_reproducibility.6a_mapping_rule_reproducibility": {
+      "tag": "INVALIDATED_FINDING",
+      "verdict": "PASS"
+    },
+    "C6_mapping_reproducibility.6b_mapping_versioning": {
+      "tag": "CORRECTED_RESULT",
+      "verdict": "FAIL"
+    },
+    "C6_mapping_reproducibility.6c_coverage_arithmetic": {
+      "tag": "ORIGINAL_RESULT",
+      "verdict": "PASS"
+    }
+  },
+  "tag_counts": {
+    "CORRECTED_RESULT": 3,
+    "INVALIDATED_FINDING": 1,
+    "ORIGINAL_RESULT": 12,
+    "UNCHANGED_FINDING": 4,
+    "UNRESOLVED_LIMITATION": 1
+  },
+  "verdict_counts": {
+    "FAIL": 3,
+    "PASS": 14,
+    "UNRESOLVED": 4
+  }
+}

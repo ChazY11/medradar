@@ -1,0 +1,115 @@
+{
+  "audit": "provenance, freeze chain, evidence immutability",
+  "correction": "S-028-CORRECTION-1",
+  "evidence_immutability": {
+    "allowed_artifact_edits": [
+      "artifacts/literature_refs.json"
+    ],
+    "changed_artifacts": [],
+    "changed_documents": [
+      "EXPERIMENT_PROTOCOL.md",
+      "GRAPH_RESULTS.md",
+      "HYPOTHESIS_REGISTRY.md",
+      "LIMITATIONS.md",
+      "LITERATURE_REVIEW.md",
+      "NEGATIVE_RESULTS.md",
+      "PAPER_DRAFT.md",
+      "PHASE_REPORT_ZH.md",
+      "REPRODUCE.md"
+    ],
+    "changed_original_code": [],
+    "files_checked": 50,
+    "missing": [],
+    "unchanged": 40,
+    "unexpected_document_edits": [],
+    "verdict": "PASS"
+  },
+  "frozen_database": {
+    "exists": true,
+    "expected": {
+      "sha256": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+      "size_bytes": 289443840
+    },
+    "expected_sha256": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+    "expected_size_bytes": 289443840,
+    "ok": true,
+    "path": "D:\\DEPPSKK\\worktrees\\integration-v2\\data\\research.sqlite",
+    "sha256": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+    "size_bytes": 289443840
+  },
+  "human_review_worksheet": {
+    "git_status_line": "M research/studies/early_signal_5firms/HUMAN_REVIEW_WORKSHEET.csv",
+    "note": "This file had an unrelated pre-existing uncommitted modification when the correction round started.  It is reported, never staged or committed."
+  },
+  "manifest_baseline_clean": true,
+  "manifest_branch": "research/s028-temporal-graph-early-signal",
+  "manifest_head": "51c7fce5fe97f08015f224ab8d75a80c082b2bd6",
+  "overall": {
+    "evidence_immutability": "PASS",
+    "frozen_database": "PASS",
+    "note": "The original freeze of PRE_REGISTRATION.md legitimately differs because Amendment 1 superseded it; the amendment freeze must verify. HYPOTHESIS_REGISTRY.md misses BOTH freeze hashes - reported as a provenance limitation in the correction report, not silently repaired.",
+    "preregistration_latest_freeze_verifies": false,
+    "verdict": "REVIEW"
+  },
+  "preregistration_freeze_chain": {
+    "all_match": false,
+    "checks": [
+      {
+        "all_match": false,
+        "documents": {
+          "HYPOTHESIS_REGISTRY.md": {
+            "current_sha256": "b43c0319e9cfd3305cbaa7caabb5d64af72044d6c3bdf89d8e4adb2f5c01584c",
+            "current_size_bytes": 6746,
+            "git_blob_sha1": "f44a32683987c123f6bb90e1fc3947340437b9d1",
+            "matches": false,
+            "present_in_git_head": true,
+            "recorded_sha256": "27624f1c54568b48106c75d38365af36113bd46077c062a1351535000638ef02",
+            "recorded_size_bytes": 3766
+          },
+          "PRE_REGISTRATION.md": {
+            "current_sha256": "49785703a5722c8b9fdec2682950620242c599a2369e00e93b070c95058c2521",
+            "current_size_bytes": 18602,
+            "git_blob_sha1": "abedf70f46f9cfcb51db9147a6b4da8a294ab9c4",
+            "matches": false,
+            "present_in_git_head": true,
+            "recorded_sha256": "a5f16212f01efa8d8559b7716e99e647aee4a74ed9efad1cb31aa5b36fe303fa",
+            "recorded_size_bytes": 15998
+          }
+        },
+        "freeze_artifact": "prereg_freeze.json",
+        "frozen_at_utc": "2026-11-03T17:07:43+00:00"
+      },
+      {
+        "all_match": false,
+        "documents": {
+          "HYPOTHESIS_REGISTRY.md": {
+            "current_sha256": "b43c0319e9cfd3305cbaa7caabb5d64af72044d6c3bdf89d8e4adb2f5c01584c",
+            "current_size_bytes": 6746,
+            "git_blob_sha1": "f44a32683987c123f6bb90e1fc3947340437b9d1",
+            "matches": false,
+            "present_in_git_head": true,
+            "recorded_sha256": "27624f1c54568b48106c75d38365af36113bd46077c062a1351535000638ef02",
+            "recorded_size_bytes": 3766
+          },
+          "PRE_REGISTRATION.md": {
+            "current_sha256": "49785703a5722c8b9fdec2682950620242c599a2369e00e93b070c95058c2521",
+            "current_size_bytes": 18602,
+            "git_blob_sha1": "abedf70f46f9cfcb51db9147a6b4da8a294ab9c4",
+            "matches": true,
+            "present_in_git_head": true,
+            "recorded_sha256": "49785703a5722c8b9fdec2682950620242c599a2369e00e93b070c95058c2521",
+            "recorded_size_bytes": 18602
+          }
+        },
+        "freeze_artifact": "prereg_freeze_amendment1.json",
+        "frozen_at_utc": "2026-11-03T17:12:36+00:00"
+      }
+    ],
+    "interpretation": "A mismatch means the document recorded at freeze time is not the document in the repository now; the frozen bytes are then not recoverable from the repo and the pre-registered content cannot be byte-verified.  This is reported, not 'fixed', because rewriting a protocol document after the fact would be worse.",
+    "latest_freeze_matches": {
+      "HYPOTHESIS_REGISTRY.md": false,
+      "PRE_REGISTRATION.md": true
+    }
+  },
+  "study": "S-028"
+}

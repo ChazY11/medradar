@@ -1,0 +1,713 @@
+{
+  "fdr_q": 0.1,
+  "generated_at_utc": "2026-11-03T18:40:19Z",
+  "horizons": {
+    "H2q": {
+      "baseline_ap_b2": 0.06735030880814195,
+      "corrected_g2_artifact": null,
+      "decision": {
+        "corrected_h1_status": "NULL (no detected incremental signal; NOT well-powered)",
+        "criteria": {
+          "a_2of3_windows_ci_excludes_zero": false,
+          "b_pooled_both_clusterings_exclude_zero": false,
+          "c_point_at_or_above_mde": false,
+          "total_windows": 3,
+          "windows_excluding_zero": 0
+        },
+        "literal_h1_status": "NULL (well-powered: |delta| below MDE)",
+        "why_not_well_powered": {
+          "interpretation": "The reported MDE is the pooled-test MDE only; the pre-registered verdict requires >=2/3 windows, both clusterings and point >= MDE, for which power at the reported MDE is far below 80%.",
+          "mde_normal_reported": 0.04365763797760765,
+          "mde_quantile_local_alternative": 0.014727626173076932,
+          "mde_relative_to_baseline_ap": 0.6482173393142615,
+          "mde_rule_pre_registered_compound_rule": 0.05866768228509045,
+          "mde_rule_relative_to_baseline_ap": 0.8710826026383139,
+          "rule_power_at_reported_mde": 0.43692
+        }
+      },
+      "distinct_pairs": 1727,
+      "distinct_positive_pairs": 28,
+      "h2": {
+        "available": true,
+        "fraction_random_at_or_above_real": 0.75,
+        "n_randomisations": 40,
+        "note": "Randomised null model loses edges / breaks degree sequences; these 40 draws cannot support a method claim.",
+        "original_code_effective_threshold": 0.10069245262265372,
+        "p_one_sided_real_gt_random": 0.7560975609756098,
+        "p_one_sided_real_lt_random": 0.2682926829268293,
+        "p_two_sided": 0.5365853658536586,
+        "provenance": "original_buggy_g2",
+        "randomised_ap_max": 0.10069245262265372,
+        "randomised_ap_median": 0.07305359413839044,
+        "randomised_ap_min": 0.06133545237071354,
+        "randomised_ap_q025": 0.06139931432873822,
+        "randomised_ap_q975": 0.09457243028627782,
+        "real_above_max": false,
+        "real_above_q975": false,
+        "real_pooled_ap": 0.06703627857552347,
+        "resolution_one_sided": 0.024390243902439025,
+        "status": "INVALIDATED"
+      },
+      "jackknife": {
+        "company": {
+          "ci_high": 0.018693152784259735,
+          "ci_low": -0.019321213249496736,
+          "clusters": 51,
+          "delta": -0.0003140302326185007,
+          "mde_80": 0.027040112190120327,
+          "se": 0.009463093668674037,
+          "t_80": 0.8488692445086683,
+          "t_975": 2.008559112100759,
+          "theta": -0.00022194523490002066,
+          "unit": "company"
+        },
+        "pair": {
+          "ci_high": 0.01286501995500427,
+          "ci_low": -0.013493080420241272,
+          "clusters": 1727,
+          "delta": -0.0003140302326185007,
+          "mde_80": 0.0188356509132389,
+          "se": 0.006719413488602162,
+          "t_80": 0.8418295339632196,
+          "t_975": 1.9613393654041085,
+          "theta": -0.00031590596076849027,
+          "unit": "pair"
+        }
+      },
+      "label": "H2q",
+      "mde": {
+        "company": {
+          "bootstrap_bias": 0.004990737058186416,
+          "mde_normal": 0.04365763797760765,
+          "mde_quantile": 0.014727626173076932,
+          "power_at_reported_mde": 1.0,
+          "q_025_centred": -0.010350034082629727,
+          "q_20_centred": -0.004377592090447205,
+          "relative_to_baseline_ap": 0.6482173393142615,
+          "se": 0.015583192363468409,
+          "skewness": 2.8850867243462486
+        },
+        "pair": {
+          "bootstrap_bias": -0.001142299400090422,
+          "mde_normal": 0.030436701803107095,
+          "mde_quantile": 0.03360474102247533,
+          "power_at_reported_mde": 0.708,
+          "relative_to_baseline_ap": 0.45191629172497,
+          "se": 0.010864100786914226,
+          "skewness": -0.5443198998159521
+        },
+        "reported_normal_formula": "mde_z * SE_bootstrap, mde_z = z_0.975 + z_0.80 = 2.801585",
+        "rule_level": {
+          "mde_rule": 0.05866768228509045,
+          "note": "Power of the compound section-11 rule; covariance from the joint company-cluster bootstrap, pair-clustered pooled statistic assumed perfectly correlated. This is the power that matters for the pre-registered H1 verdict.",
+          "power_at_reported_mde": 0.43692,
+          "power_components_at_reported_mde": {
+            "delta": 0.04365763797760765,
+            "mde_company": 0.04365763797760765,
+            "power": 0.43692,
+            "power_2of3_windows": 0.765495,
+            "power_both_clusterings": 0.92351,
+            "power_point_above_mde": 0.50102,
+            "se_pooled_company": 0.015583192363468409,
+            "se_pooled_pair": 0.010864100786914226,
+            "se_windows": [
+              0.005205478984108537,
+              0.03814384124576661,
+              0.017234700217980438
+            ]
+          },
+          "relative_to_baseline_ap": 0.8710826026383139
+        }
+      },
+      "mean_over_windows": {
+        "ci_high": 0.016136755412403565,
+        "ci_low": -0.04181339487885412,
+        "draws": 2000,
+        "note": "Equal weight per holdout window; avoids giving a company-track pair with 3 overlapping windows three times the row weight of a pair observed in one window.",
+        "observed_mean_delta": -0.014210792490770474,
+        "p_one_sided": 0.7205
+      },
+      "multiplicity": {
+        "bh_pointwise_original_reproduction": [
+          {
+            "bh_threshold": 0.025,
+            "index": 0,
+            "p": 0.459,
+            "reject": false
+          },
+          {
+            "bh_threshold": 0.05,
+            "index": 1,
+            "p": 0.5985,
+            "reject": false
+          },
+          {
+            "bh_threshold": 0.07500000000000001,
+            "index": 2,
+            "p": 0.9075,
+            "reject": false
+          },
+          {
+            "bh_threshold": 0.1,
+            "index": 3,
+            "p": 0.1895,
+            "reject": false
+          }
+        ],
+        "bh_stepup": [
+          {
+            "bh_threshold": 0.05,
+            "index": 0,
+            "p": 0.459,
+            "rank_ascending": 2,
+            "reject": false
+          },
+          {
+            "bh_threshold": 0.07500000000000001,
+            "index": 1,
+            "p": 0.5985,
+            "rank_ascending": 3,
+            "reject": false
+          },
+          {
+            "bh_threshold": 0.1,
+            "index": 2,
+            "p": 0.9075,
+            "rank_ascending": 4,
+            "reject": false
+          },
+          {
+            "bh_threshold": 0.025,
+            "index": 3,
+            "p": 0.1895,
+            "rank_ascending": 1,
+            "reject": false
+          }
+        ],
+        "family_used_by_this_pipeline": [
+          "H2q:H1_G1_minus_B2_pooled_company",
+          "H2q:H1_G1_minus_B2_2025-10-01",
+          "H2q:H1_G1_minus_B2_2026-01-01",
+          "H2q:H1_G1_minus_B2_2026-04-01"
+        ],
+        "n_rejections_pointwise_original": 0,
+        "n_rejections_stepup": 0,
+        "note": "Pre-registration section 10.5 defines the family as H1 3 windows + pooled and H2 3 windows; the original script instead used 2 horizons x (pooled + 3 windows) = 8 H1 tests. Both families are reported here.",
+        "q": 0.1
+      },
+      "original_artifacts": {
+        "predictions": "D:\\DEPPSKK\\medradar\\research\\studies\\graph_early_signal_s028\\artifacts\\predictions_H2q.json.gz",
+        "predictions_sha256": "169b105927c960d5416168a88f2243e6860f92ad00513b8cc2cb4d617598cfe9"
+      },
+      "per_window": [
+        {
+          "ap_b2": 0.03229588316677314,
+          "ap_g1": 0.03013263750032039,
+          "ci_high": 0.006535766049349089,
+          "ci_low": -0.013801110958159758,
+          "delta": -0.0021632456664527518,
+          "excludes_zero": false,
+          "mde_80": 0.01458359183969371,
+          "p_one_sided": 0.5985,
+          "positives": 12,
+          "rows": 1716,
+          "se": 0.005205478984108535,
+          "window": "2025-10-01"
+        },
+        {
+          "ap_b2": 0.1279660520304219,
+          "ap_g1": 0.07708092377607972,
+          "ci_high": 0.0031824936342294856,
+          "ci_low": -0.12013637110750809,
+          "delta": -0.05088512825434219,
+          "excludes_zero": false,
+          "mde_80": 0.106863213476521,
+          "p_one_sided": 0.9075,
+          "positives": 15,
+          "rows": 1716,
+          "se": 0.03814384124576659,
+          "window": "2026-01-01"
+        },
+        {
+          "ap_b2": 0.12534496108498486,
+          "ap_g1": 0.13576095753346837,
+          "ci_high": 0.048824181723457,
+          "ci_low": -0.017651514369899632,
+          "delta": 0.010415996448483511,
+          "excludes_zero": false,
+          "mde_80": 0.04828447761019076,
+          "p_one_sided": 0.1895,
+          "positives": 15,
+          "rows": 1714,
+          "se": 0.01723470021798045,
+          "window": "2026-04-01"
+        }
+      ],
+      "pooled": {
+        "company": {
+          "ap_a": 0.06703627857552345,
+          "ap_b": 0.06735030880814195,
+          "ci_high": 0.05362691960298828,
+          "ci_low": -0.010664064315248228,
+          "clusters": 51,
+          "delta": -0.0003140302326185007,
+          "excludes_zero": false,
+          "mde_80": 0.04365763797760765,
+          "p_one_sided": 0.459,
+          "positives": 42,
+          "resamples": 2000,
+          "resamples_valid": 2000,
+          "rows": 5146,
+          "se": 0.015583192363468409,
+          "seed": 7,
+          "unit": "company"
+        },
+        "pair": {
+          "ap_a": 0.06703627857552345,
+          "ap_b": 0.06735030880814195,
+          "ci_high": 0.018760996508213747,
+          "ci_low": -0.026362549679164828,
+          "clusters": 1727,
+          "delta": -0.0003140302326185007,
+          "excludes_zero": false,
+          "mde_80": 0.030436701803107095,
+          "p_one_sided": 0.5355,
+          "positives": 42,
+          "resamples": 2000,
+          "resamples_valid": 2000,
+          "rows": 5146,
+          "se": 0.010864100786914226,
+          "seed": 7,
+          "unit": "pair"
+        }
+      },
+      "positives": 42,
+      "rows": 5146,
+      "rule_power": {
+        "mde_rule": 0.05866768228509045,
+        "power_at_reported_mde": {
+          "delta": 0.04365763797760765,
+          "mde_company": 0.04365763797760765,
+          "power": 0.43692,
+          "power_2of3_windows": 0.765495,
+          "power_both_clusterings": 0.92351,
+          "power_point_above_mde": 0.50102,
+          "se_pooled_company": 0.015583192363468409,
+          "se_pooled_pair": 0.010864100786914226,
+          "se_windows": [
+            0.005205478984108537,
+            0.03814384124576661,
+            0.017234700217980438
+          ]
+        },
+        "target_power": 0.8
+      },
+      "seconds": 31.5,
+      "seed_stability": {
+        "company": {
+          "available": true,
+          "ci_high_max": 0.05362691960298828,
+          "ci_high_min": 0.04813738761350333,
+          "ci_low_max": -0.010406248510725968,
+          "ci_low_min": -0.01116442754778676,
+          "combined_ci_high": 0.050918305901636034,
+          "combined_ci_low": -0.010894546890152894,
+          "combined_resamples": 10000,
+          "se_max": 0.01563697580435321,
+          "se_min": 0.01471425716614812,
+          "seeds": [
+            1,
+            2,
+            3,
+            7,
+            11
+          ]
+        },
+        "pair": {
+          "available": true,
+          "ci_high_max": 0.02134121234908715,
+          "ci_high_min": 0.018760996508213747,
+          "ci_low_max": -0.02471970507510681,
+          "ci_low_min": -0.028528754765731523,
+          "combined_ci_high": 0.020110782200927282,
+          "combined_ci_low": -0.025958302283531333,
+          "combined_resamples": 10000,
+          "se_max": 0.011513581496520146,
+          "se_min": 0.010617408020258547,
+          "seeds": [
+            1,
+            2,
+            3,
+            7,
+            11
+          ]
+        }
+      },
+      "tag": "original",
+      "windows": [
+        "2025-10-01",
+        "2026-01-01",
+        "2026-04-01"
+      ]
+    },
+    "H4q": {
+      "baseline_ap_b2": 0.07509282998134256,
+      "corrected_g2_artifact": null,
+      "decision": {
+        "corrected_h1_status": "NULL (no detected incremental signal; NOT well-powered)",
+        "criteria": {
+          "a_2of3_windows_ci_excludes_zero": false,
+          "b_pooled_both_clusterings_exclude_zero": false,
+          "c_point_at_or_above_mde": false,
+          "total_windows": 3,
+          "windows_excluding_zero": 0
+        },
+        "literal_h1_status": "NULL (well-powered: |delta| below MDE)",
+        "why_not_well_powered": {
+          "interpretation": "The reported MDE is the pooled-test MDE only; the pre-registered verdict requires >=2/3 windows, both clusterings and point >= MDE, for which power at the reported MDE is far below 80%.",
+          "mde_normal_reported": 0.01942800955574231,
+          "mde_quantile_local_alternative": 0.01971224606996131,
+          "mde_relative_to_baseline_ap": 0.2587199012285109,
+          "mde_rule_pre_registered_compound_rule": 0.03736465136955758,
+          "mde_rule_relative_to_baseline_ap": 0.49757948100825516,
+          "rule_power_at_reported_mde": 0.162545
+        }
+      },
+      "distinct_pairs": 1729,
+      "distinct_positive_pairs": 32,
+      "h2": {
+        "available": true,
+        "fraction_random_at_or_above_real": 1.0,
+        "n_randomisations": 40,
+        "note": "Randomised null model loses edges / breaks degree sequences; these 40 draws cannot support a method claim.",
+        "original_code_effective_threshold": 0.08198243410602074,
+        "p_one_sided_real_gt_random": 1.0,
+        "p_one_sided_real_lt_random": 0.024390243902439025,
+        "p_two_sided": 0.04878048780487805,
+        "provenance": "original_buggy_g2",
+        "randomised_ap_max": 0.08198243410602074,
+        "randomised_ap_median": 0.07411457576177746,
+        "randomised_ap_min": 0.06918688314172436,
+        "randomised_ap_q025": 0.06959716834062041,
+        "randomised_ap_q975": 0.08134273795923258,
+        "real_above_max": false,
+        "real_above_q975": false,
+        "real_pooled_ap": 0.06900345683741682,
+        "resolution_one_sided": 0.024390243902439025,
+        "status": "INVALIDATED"
+      },
+      "jackknife": {
+        "company": {
+          "ci_high": 0.0015788320149740138,
+          "ci_low": -0.013757578302825552,
+          "clusters": 51,
+          "delta": -0.006089373143925769,
+          "mde_80": 0.010908987807892685,
+          "se": 0.0038177642433831985,
+          "t_80": 0.8488692445086683,
+          "t_975": 2.008559112100759,
+          "theta": -0.006093978664713588,
+          "unit": "company"
+        },
+        "pair": {
+          "ci_high": 0.007232063767716689,
+          "ci_low": -0.019410810055568228,
+          "clusters": 1729,
+          "delta": -0.006089373143925769,
+          "mde_80": 0.019039154671568238,
+          "se": 0.006792015683829748,
+          "t_80": 0.8418292928177964,
+          "t_975": 1.9613377724315013,
+          "theta": -0.006090107750210556,
+          "unit": "pair"
+        }
+      },
+      "label": "H4q",
+      "mde": {
+        "company": {
+          "bootstrap_bias": -0.00028041651605621633,
+          "mde_normal": 0.01942800955574231,
+          "mde_quantile": 0.01971224606996131,
+          "power_at_reported_mde": 0.784,
+          "q_025_centred": -0.016097671965063086,
+          "q_20_centred": -0.003614574104898223,
+          "relative_to_baseline_ap": 0.2587199012285109,
+          "se": 0.006934649334481127,
+          "skewness": -1.760881269487883
+        },
+        "pair": {
+          "bootstrap_bias": -0.0012106319560613336,
+          "mde_normal": 0.02972934211925396,
+          "mde_quantile": 0.035070626337040306,
+          "power_at_reported_mde": 0.6295,
+          "relative_to_baseline_ap": 0.3959012082330691,
+          "se": 0.01061161525324199,
+          "skewness": -0.928763194730828
+        },
+        "reported_normal_formula": "mde_z * SE_bootstrap, mde_z = z_0.975 + z_0.80 = 2.801585",
+        "rule_level": {
+          "mde_rule": 0.03736465136955758,
+          "note": "Power of the compound section-11 rule; covariance from the joint company-cluster bootstrap, pair-clustered pooled statistic assumed perfectly correlated. This is the power that matters for the pre-registered H1 verdict.",
+          "power_at_reported_mde": 0.162545,
+          "power_components_at_reported_mde": {
+            "delta": 0.01942800955574231,
+            "mde_company": 0.01942800955574231,
+            "power": 0.162545,
+            "power_2of3_windows": 0.196055,
+            "power_both_clusterings": 0.41936,
+            "power_point_above_mde": 0.49846,
+            "se_pooled_company": 0.006934649334481127,
+            "se_pooled_pair": 0.01061161525324199,
+            "se_windows": [
+              0.013395936541873264,
+              0.015760334518378948,
+              0.014408486901700407
+            ]
+          },
+          "relative_to_baseline_ap": 0.49757948100825516
+        }
+      },
+      "mean_over_windows": {
+        "ci_high": 0.007312084643748557,
+        "ci_low": -0.032385879346771576,
+        "draws": 2000,
+        "note": "Equal weight per holdout window; avoids giving a company-track pair with 3 overlapping windows three times the row weight of a pair observed in one window.",
+        "observed_mean_delta": -0.007071174376166348,
+        "p_one_sided": 0.8405
+      },
+      "multiplicity": {
+        "bh_pointwise_original_reproduction": [
+          {
+            "bh_threshold": 0.025,
+            "index": 0,
+            "p": 0.8935,
+            "reject": false
+          },
+          {
+            "bh_threshold": 0.05,
+            "index": 1,
+            "p": 0.7445,
+            "reject": false
+          },
+          {
+            "bh_threshold": 0.07500000000000001,
+            "index": 2,
+            "p": 0.6325,
+            "reject": false
+          },
+          {
+            "bh_threshold": 0.1,
+            "index": 3,
+            "p": 0.884,
+            "reject": false
+          }
+        ],
+        "bh_stepup": [
+          {
+            "bh_threshold": 0.1,
+            "index": 0,
+            "p": 0.8935,
+            "rank_ascending": 4,
+            "reject": false
+          },
+          {
+            "bh_threshold": 0.05,
+            "index": 1,
+            "p": 0.7445,
+            "rank_ascending": 2,
+            "reject": false
+          },
+          {
+            "bh_threshold": 0.025,
+            "index": 2,
+            "p": 0.6325,
+            "rank_ascending": 1,
+            "reject": false
+          },
+          {
+            "bh_threshold": 0.07500000000000001,
+            "index": 3,
+            "p": 0.884,
+            "rank_ascending": 3,
+            "reject": false
+          }
+        ],
+        "family_used_by_this_pipeline": [
+          "H4q:H1_G1_minus_B2_pooled_company",
+          "H4q:H1_G1_minus_B2_2025-04-01",
+          "H4q:H1_G1_minus_B2_2025-07-01",
+          "H4q:H1_G1_minus_B2_2025-10-01"
+        ],
+        "n_rejections_pointwise_original": 0,
+        "n_rejections_stepup": 0,
+        "note": "Pre-registration section 10.5 defines the family as H1 3 windows + pooled and H2 3 windows; the original script instead used 2 horizons x (pooled + 3 windows) = 8 H1 tests. Both families are reported here.",
+        "q": 0.1
+      },
+      "original_artifacts": {
+        "predictions": "D:\\DEPPSKK\\medradar\\research\\studies\\graph_early_signal_s028\\artifacts\\predictions_H4q.json.gz",
+        "predictions_sha256": "82cc5a7cfa6449b205bbbda30150a6db43fd8c23dc3106983f81cd72d3833bf4"
+      },
+      "per_window": [
+        {
+          "ap_b2": 0.1022299275346306,
+          "ap_g1": 0.09325238861462992,
+          "ci_high": 0.013552347548426234,
+          "ci_low": -0.04066930965498775,
+          "delta": -0.00897753892000068,
+          "excludes_zero": false,
+          "mde_80": 0.037529854876663965,
+          "p_one_sided": 0.7445,
+          "positives": 20,
+          "rows": 1722,
+          "se": 0.013395936541873248,
+          "window": "2025-04-01"
+        },
+        {
+          "ap_b2": 0.06505021963258761,
+          "ap_g1": 0.06425813464800698,
+          "ci_high": 0.03126234893881962,
+          "ci_low": -0.04249445278703618,
+          "delta": -0.0007920849845806377,
+          "excludes_zero": false,
+          "mde_80": 0.04415391678167267,
+          "p_one_sided": 0.6325,
+          "positives": 23,
+          "rows": 1721,
+          "se": 0.01576033451837894,
+          "window": "2025-07-01"
+        },
+        {
+          "ap_b2": 0.08966814082228304,
+          "ap_g1": 0.07822424159836532,
+          "ci_high": 0.00902627058082236,
+          "ci_low": -0.053349893229257886,
+          "delta": -0.011443899223917725,
+          "excludes_zero": false,
+          "mde_80": 0.04036660077650036,
+          "p_one_sided": 0.884,
+          "positives": 24,
+          "rows": 1716,
+          "se": 0.014408486901700414,
+          "window": "2025-10-01"
+        }
+      ],
+      "pooled": {
+        "company": {
+          "ap_a": 0.0690034568374168,
+          "ap_b": 0.07509282998134256,
+          "ci_high": 0.0045001499140196405,
+          "ci_low": -0.022187045108988855,
+          "clusters": 51,
+          "delta": -0.006089373143925769,
+          "excludes_zero": false,
+          "mde_80": 0.01942800955574231,
+          "p_one_sided": 0.8935,
+          "positives": 67,
+          "resamples": 2000,
+          "resamples_valid": 2000,
+          "rows": 5159,
+          "se": 0.006934649334481127,
+          "seed": 7,
+          "unit": "company"
+        },
+        "pair": {
+          "ap_a": 0.0690034568374168,
+          "ap_b": 0.07509282998134256,
+          "ci_high": 0.010428229721777149,
+          "ci_low": -0.03346849752867513,
+          "clusters": 1729,
+          "delta": -0.006089373143925769,
+          "excludes_zero": false,
+          "mde_80": 0.02972934211925396,
+          "p_one_sided": 0.82,
+          "positives": 67,
+          "resamples": 2000,
+          "resamples_valid": 2000,
+          "rows": 5159,
+          "se": 0.01061161525324199,
+          "seed": 7,
+          "unit": "pair"
+        }
+      },
+      "positives": 67,
+      "rows": 5159,
+      "rule_power": {
+        "mde_rule": 0.03736465136955758,
+        "power_at_reported_mde": {
+          "delta": 0.01942800955574231,
+          "mde_company": 0.01942800955574231,
+          "power": 0.162545,
+          "power_2of3_windows": 0.196055,
+          "power_both_clusterings": 0.41936,
+          "power_point_above_mde": 0.49846,
+          "se_pooled_company": 0.006934649334481127,
+          "se_pooled_pair": 0.01061161525324199,
+          "se_windows": [
+            0.013395936541873264,
+            0.015760334518378948,
+            0.014408486901700407
+          ]
+        },
+        "target_power": 0.8
+      },
+      "seconds": 29.8,
+      "seed_stability": {
+        "company": {
+          "available": true,
+          "ci_high_max": 0.004838898247427988,
+          "ci_high_min": 0.003693289425513662,
+          "ci_low_max": -0.02131876249401913,
+          "ci_low_min": -0.02521872848670051,
+          "combined_ci_high": 0.004170979159088576,
+          "combined_ci_low": -0.02319214740193655,
+          "combined_resamples": 10000,
+          "se_max": 0.007469665664768108,
+          "se_min": 0.006548343196256741,
+          "seeds": [
+            1,
+            2,
+            3,
+            7,
+            11
+          ]
+        },
+        "pair": {
+          "available": true,
+          "ci_high_max": 0.011568269429973589,
+          "ci_high_min": 0.010183621131608641,
+          "ci_low_max": -0.031347290275887764,
+          "ci_low_min": -0.03538536261603113,
+          "combined_ci_high": 0.01106563486313979,
+          "combined_ci_low": -0.03326312438154163,
+          "combined_resamples": 10000,
+          "se_max": 0.011531443791763723,
+          "se_min": 0.01061161525324199,
+          "seeds": [
+            1,
+            2,
+            3,
+            7,
+            11
+          ]
+        }
+      },
+      "tag": "original",
+      "windows": [
+        "2025-04-01",
+        "2025-07-01",
+        "2025-10-01"
+      ]
+    }
+  },
+  "mde_z": 2.801585,
+  "pipeline": "s028_stats_corrected.py",
+  "provenance": {
+    "corrected_g2_artifacts": {},
+    "note": "The original randomised null model is INVALIDATED as a method claim (edge loss / broken bipartite degrees / collapsed weights). Only a corrected-G2 artifact can support an H2 re-test.",
+    "original_g2": "original_buggy_g2"
+  },
+  "resamples": 2000,
+  "seed": 7,
+  "study": "S-028",
+  "tag": "original"
+}
