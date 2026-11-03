@@ -749,11 +749,48 @@ def cmd_status(args: argparse.Namespace) -> int:
 
 # ---------------------------------------------------------------------- selftest
 def cmd_selftest(args: argparse.Namespace) -> int:
+    """Run the offline suite.
+
+    Some test modules are pytest-style (fixtures/parametrisation). In a plain
+    ``pip install .`` environment pytest is not present, and importing those
+    modules through ``unittest`` discovery would turn a missing dev dependency
+    into a test failure. So: use pytest when it is installed, and otherwise skip
+    the pytest-only modules *explicitly* (never count them as passed).
+    """
+    import importlib
     import unittest
 
+    tests_dir = Path(__file__).resolve().parents[1] / "tests"
+    try:
+        import pytest  # noqa: F401
+    except ImportError:
+        pytest = None  # type: ignore[assignment]
+
+    if pytest is not None:
+        return int(pytest.main(["-q", str(tests_dir)]))
+
+    root = str(tests_dir.parent)
+    if root not in sys.path:
+        sys.path.insert(0, root)
     loader = unittest.TestLoader()
-    suite = loader.discover(start_dir=str(Path(__file__).resolve().parents[1] / "tests"), top_level_dir=str(Path(__file__).resolve().parents[1]))
+    suite = unittest.TestSuite()
+    skipped_pytest_only: list[str] = []
+    for path in sorted(tests_dir.glob("test_*.py")):
+        module_name = f"tests.{path.stem}"
+        try:
+            module = importlib.import_module(module_name)
+        except ModuleNotFoundError as exc:
+            if (exc.name or "").split(".")[0] in {"pytest", "_pytest"}:
+                skipped_pytest_only.append(module_name)
+                continue
+            raise
+        suite.addTests(loader.loadTestsFromModule(module))
     result = unittest.TextTestRunner(verbosity=1).run(suite)
+    if skipped_pytest_only:
+        print(
+            "[selftest] pytest is not installed; skipped pytest-only modules "
+            "(not counted as passed): " + ", ".join(skipped_pytest_only)
+        )
     return 0 if result.wasSuccessful() else 1
 
 

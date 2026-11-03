@@ -106,3 +106,10 @@ jobs:
       - name: Product tests (Tier C real-DB tests skip cleanly without data/)
         # Skipped tests must be reported explicitly, never counted as passed.
         run: python -m pytest tests/test_product_store.py tests/test_product_api.py tests/test_product_analyst.py -q -rs
+      - name: Live Observatory offline suite (synthetic tier, no network, no ledger)
+        # The observation ledger is a separate SQLite file; these tests build their
+        # own throwaway ledgers in tmp_path and never touch data/ or the network.
+        run: >-
+          python -m pytest tests/test_observatory_core.py tests/test_observatory_ctgov.py
+          tests/test_observatory_europepmc.py tests/test_observatory_api.py
+          tests/test_observatory_prospective.py -q

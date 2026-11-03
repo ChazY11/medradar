@@ -40,7 +40,7 @@ jobs:
       # SEC access policy requires an identifying User-Agent with a contact
       # address. Set the repository variable MEDRADAR_SEC_UA to your own contact
       # before relying on this workflow.
-      MEDRADAR_SEC_UA: ${{ vars.MEDRADAR_SEC_UA || 'MedRadar research (open-source; contact: medradar@example.com)' }}
+      MEDRADAR_SEC_UA: "${{ vars.MEDRADAR_SEC_UA || 'MedRadar research (open-source; contact: medradar@example.com)' }}"
     steps:
       - uses: actions/checkout@v4
 

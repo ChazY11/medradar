@@ -206,6 +206,15 @@
 8. **Europe PMC 时间语义**：`lite` 结果类型没有 `dateOfRevision`/摘要，无法满足
    `source_updated_at` 与修订检测。修复：默认 `resultType=core`，并在 payload 与文档中
    记录 `published_at` 实际取自 `firstIndexDate`（索引日期，不是网页可用时刻）。
+9. **CI 离线自检在无 pytest 环境把“缺开发依赖”变成失败**：基线分支的
+   `python -m medradar selftest` 用 unittest 发现并导入 pytest 风格测试模块，在只装
+   `pip install .` 的 CI 环境触发 `ModuleNotFoundError: pytest`。修复：`selftest` 优先使用
+   pytest；pytest 缺失时**显式跳过** pytest-only 模块并打印清单（绝不冒充通过），
+   unittest 模块照常运行（实测 1074 个 unittest 全部通过、9 个 pytest-only 模块被明确跳过）。
+   同时在 CI 的 `product-statistics` job 中新增观测站离线测试步骤。
+10. **观测站 workflow 文件无效**：`MEDRADAR_SEC_UA` 默认值里含 `: `（`contact: …`）且未加引号，
+   YAML 解析失败，GitHub 直接标记为 workflow file issue。修复：整段表达式加引号；
+   本地用 YAML 解析验证 9 个步骤结构正确。
 
 ---
 
