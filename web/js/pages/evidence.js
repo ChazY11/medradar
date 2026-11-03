@@ -209,9 +209,10 @@ export async function mount(root, ctx) {
     el("div", { class: "row wrap small" },
       el("span", { text: "共 " }),
       el("b", { class: "mono", text: fmtInt(total) }),
-      el("span", { text: " 条 · 当前 " }),
-      el("b", { class: "mono", text: `${fmtInt(from)}–${fmtInt(to)}` }),
-      el("span", { text: ` · 第 ${page} / ${pageCount} 页` }),
+      el("span", { text: " 条" }),
+      total > 0 ? el("span", { text: " · 当前 " }) : null,
+      total > 0 ? el("b", { class: "mono", text: `${fmtInt(from)}–${fmtInt(to)}` }) : null,
+      total > 0 ? el("span", { text: ` · 第 ${page} / ${pageCount} 页` }) : null,
       payload.params ? el("span", { class: "muted tiny mono", text: ` · offset=${offset} limit=${limit}` }) : null,
     ),
   ].filter(Boolean));
@@ -282,13 +283,11 @@ export async function mount(root, ctx) {
   });
 
   const panelBody = el("div");
-  panelBody.append(
-    el("div", { class: "panel-body tight" }, headerRow),
-    table,
-    el("div", { class: "panel-foot" }, makePager()),
-  );
-  if (!items.length) {
-    panelBody.append(el("div", { class: "panel-body" }, emptyState("该筛选下没有记录。", {
+  panelBody.append(el("div", { class: "panel-body tight" }, headerRow));
+  if (items.length) {
+    panelBody.append(table, el("div", { class: "panel-foot" }, makePager()));
+  } else {
+    panelBody.append(el("div", { class: "panel-body" }, emptyState("没有匹配的记录。请调整筛选条件，或点击下方按钮重置。", {
       title: "该筛选下没有记录",
       actionLabel: "重置筛选",
       onAction: reset,
@@ -297,7 +296,7 @@ export async function mount(root, ctx) {
   results.append(panel({
     title: "检索结果",
     sub: "点击任意行打开事件详情（映射来源 · 日期口径 · 原始链接）",
-    right: pager,
+    right: items.length ? pager : null,
     dense: true,
     body: panelBody,
   }));
@@ -315,6 +314,11 @@ export async function mount(root, ctx) {
         tone: "amber",
         title: "链接与日期",
         body: "原始链接只展示 API 返回的字段，不臆造 URL；没有链接时事件详情会明确标注。event_date 是事件发生日期，published_at 是发布日，available_at 是数据可用日，三者可能不同。",
+      }),
+      notice({
+        tone: "muted",
+        title: "时点回放限制（point-in-time）",
+        body: "当前数据集的 available_at 基本等于 published_at，first_seen_at 不可用，因此无法严格回放“在某个历史时点当时可见”的状态；跨期比较请按事件日期理解，历史数据可能包含事后修订。",
       }),
     ],
   }));

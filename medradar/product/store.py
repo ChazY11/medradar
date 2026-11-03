@@ -2001,6 +2001,7 @@ def dataset_meta() -> dict[str, Any]:
             {**company, "key": company["key"]} for company in FEATURED_COMPANIES
         ],
         "limitations": [{"id": key, "text_zh": text} for key, text in LIMITATIONS.items()],
+        "roster_size": len(entities.roster()),
         "evidence_tiers": EVIDENCE_TIERS,
         "entity_review": entities.company_alias_review(FEATURED_KEYS),
         "generated_at": datetime.now(timezone.utc).isoformat(),

@@ -79,7 +79,7 @@ function renderShellMeta(meta) {
     const counts = meta.dataset?.counts || {};
     footer.replaceChildren(
       el("span", null, el("b", { text: "MedRadar" }), document.createTextNode(` ${meta.product?.version || ""} · ${meta.product?.schema || ""}`)),
-      el("span", { text: `事件 ${fmtInt(counts.events)} · 企业 ${fmtInt(counts.companies)} · 赛道 ${fmtInt(counts.tracks)} · 数据源 ${fmtInt((meta.sources || []).length)}` }),
+      el("span", { text: `事件 ${fmtInt(counts.events)} · 有事件企业 ${fmtInt(meta.dataset?.companies_with_events)} · 产品名册 ${fmtInt(meta.roster_size)} · 赛道 ${fmtInt(counts.tracks)} · 数据源 ${fmtInt((meta.sources || []).length)}` }),
       el("span", { text: `数据截止 ${meta.dataset?.date_range?.last || "—"} · 只读研究数据层 · 不展示经验证的前瞻预测` }),
     );
   }

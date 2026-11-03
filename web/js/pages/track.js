@@ -71,7 +71,7 @@ export async function mount(root, ctx) {
   /* ----------------------------------------------------------------- KPIs */
   const kpiGrid = el("div", { class: "kpi-grid", style: "grid-template-columns:repeat(6,minmax(0,1fr))" });
   kpiGrid.append(
-    kpi({ label: `近 ${years} 年记录`, value: fmtInt(totals.recent), sub: `510(k) + PMA` }),
+    kpi({ label: `近 ${years} 年记录`, value: fmtInt(totals.recent), sub: `510(k) + PMA · 含数据截止所在未完整季度` }),
     kpi({ label: "前窗记录", value: fmtInt(totals.prior), sub: `${windowInfo.prior_start || "—"} 起` }),
     kpi({
       label: "变化",

@@ -43,7 +43,7 @@ export async function mount(root, ctx) {
   kpiGrid.append(
     kpi({ label: "收录企业（名册）", value: fmtInt(companies.total), sub: `其中重点企业 ${fmtInt(featured.length)} 家` }),
     kpi({ label: "事件总数", value: fmtInt(counts.events), sub: `${(meta.sources || []).length} 个来源合并去重口径` }),
-    kpi({ label: "技术赛道", value: fmtInt(counts.tracks), sub: `${(meta.domains || []).length} 个技术领域` }),
+    kpi({ label: "技术赛道", value: fmtInt(counts.tracks), sub: `全库分类；雷达展示 ${(meta.domains || []).reduce((sum, domain) => sum + (domain.tracks || []).length, 0)} 条重点赛道` }),
     kpi({
       label: "赛道映射覆盖",
       value: fmtPct(dataset.track_mapping_coverage, 1),
