@@ -100,7 +100,7 @@ from `research/studies/early_signal_5firms/AI_REVIEW_ADJUDICATION_V1.json` and i
 | broad hiring lane | **structurally unavailable** for Dräger/Mindray/GEHC | archive coverage; see D-031 |
 | a design that can beat B3 / new-category entries | **open work** | needs a coarser taxonomy, larger roster, or a new pre-registration |
 | stale summary numbers in historical documents | **partially fixed** | `COMPLETION_REPORT.md` / `MISSION §10` / R155 are point-in-time records; `RESEARCH_STATE.md` (this file) is the live state of record |
-| remaining audit defects | **open** | summary-number drift, gate self-dirtying, momentum multiplicity, dead evidence pointers (R19/R151), taxonomy stamp in frozen snapshots |
+| remaining audit defects | **3 fixed, 3 documented, 1 open** | fixed: gate self-dirtying + no-repo vacuous pass (round_end 4 tests), momentum multiplicity (artifact now carries 53 tests / 2.65 expected false detections / Holm survivors Olympus+Philips), R19/R148/R151 scope-and-provenance pointers. documented at the boundary: clean-clone reproducibility needs `data/` (README note), claim maps are drift detectors not data proofs, taxonomy stamp applies to live profiles only. Open: summary-number drift in the historical COMPLETION_REPORT/R155 (point-in-time records; `RESEARCH_STATE.md` is the live state of record) |
 
 ## 7. Next tasks (priority order)
 
