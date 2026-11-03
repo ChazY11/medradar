@@ -98,16 +98,11 @@ from `research/studies/early_signal_5firms/AI_REVIEW_ADJUDICATION_V1.json` and i
 
 ## 7. Next tasks (priority order)
 
-1. **Pre-register a design that can beat B3 and cover new-category entries**: coarser technology domains, a larger
-   company roster, and origins concentrated in 1995–2015 where entries occur. This is a new pre-registration, not a
-   reinterpretation of hist_v1.
-2. **Move to the powered successor design**: Target B is closed by owner authorisation (R173); the next scientific step
-   is the pre-registered hist_v2 (coarser domains for new-category entries, larger roster, origins concentrated in
-   1995-2015). The study's failure analysis feeds its taxonomy and candidate-generation rules.
-3. **Resolve the entity-mapping limitation** for the 48 roster companies (current-group attribution; unaudited).
-4. **Fix the remaining audit defects** (summary-number drift, round-end-writes-its-own-dirt, momentum multiplicity,
+1. **Run the frozen hist_v2 design**: the pre-registration is frozen (`research/protocols/hist_v2_preregistration.md`) and feasibility is measured (domain unit: **12.0 positives per origin** vs 6.0 in hist_v1; `experiments/hist_v2/feasibility.json`). Next round writes `build_domain_panel.py` and `eval.py` and reports M1−B1 plus the decisive M1−B3 against the pre-declared MDE ≤ 0.05 target.
+2. **Resolve the entity-mapping limitation** for the 48 roster companies (current-group attribution; unaudited).
+3. **Fix the remaining audit defects** (summary-number drift, round-end-writes-its-own-dirt, momentum multiplicity,
    taxonomy stamp, dead evidence pointers).
-5. **Only then**: revisit advanced methods (this round shows the bottleneck is design/data, not model capacity).
+4. **Only then**: revisit advanced methods (this round shows the bottleneck is design/data, not model capacity).
 
 ## 8. Important commands
 

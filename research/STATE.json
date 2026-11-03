@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T09:30:00+08:00",
+  "updated_at": "2026-11-03T10:00:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -8,8 +8,8 @@
     "decision": "DECISIONS D-011",
     "note": "Scope frozen, no restart, no deletion of prior work; Anticipate Level B preserved at P3."
   },
-  "phase": "early_signal_target_b_closed_negative_owner_authorised_ai_adjudication",
-  "cycle": 47,
+  "phase": "hist_v2_preregistered_feasibility_measured",
+  "cycle": 48,
   "last_completed_cycle": {
     "cycle": 47,
     "name": "target_b_final_adjudication",
@@ -205,10 +205,10 @@
     "B-015 matured-forecast calibration blocked on wall-clock (windows close 2027-10)"
   ],
   "next_actions": [
-    "when the lane advances past 2026-Q4, run experiments/b068/maturate_forecasts.py and report Brier/calibration",
-    "when a human reviewer is available, sign or reject the pending promotion in research/RESULTS/PROMOTIONS.md",
-    "schedule the six scheduled analyses (B-018, B-021, B-029, B-041, cohort re-run) with proven data",
-    "run a rendered figure review before any submission"
+    "run the frozen hist_v2 design (domain-level entry, 1995-2015): build_domain_panel.py + eval.py; report M1-B1 and the decisive M1-B3",
+    "mature the corrected prospective forecast set only when the lane advances past 2027-Q3",
+    "finish the remaining audit repairs (summary-number drift, gate self-dirtying, momentum multiplicity, taxonomy stamp, dead evidence pointers)",
+    "paper integration of hist_v1/hist_v2 when their evidence matures"
   ],
   "invariants": [
     "data/research.sqlite, data/tkg.sqlite, data/registry.sqlite and all experiments/ artifacts are frozen inputs; never mutate in place",
@@ -1780,5 +1780,22 @@
       },
       "scope_limit": "early_signal_5firms Target B only; the promotion policy's mandatory named-human sign-off is unchanged"
     }
+  },
+  "hist_v2": {
+    "status": "pre-registered; feasibility measured; no model fitted yet",
+    "protocol": "research/protocols/hist_v2_preregistration.md",
+    "feasibility": "experiments/hist_v2/feasibility.json",
+    "unit": "company x technology domain (22 domains) x quarter",
+    "window": "1995-2015 (21 annual origins); 2016-2024 descriptive holdout only",
+    "feasibility_numbers": {
+      "domain_mean_positives_per_origin": 12.0,
+      "domain_total_positives": 252,
+      "domain_mean_candidates_per_origin": 725.4,
+      "domain_base_rate": 0.017,
+      "track_mean_positives_per_origin_hist_v1_primary": 6.0,
+      "why": "domain unit doubles positives and includes the 161 new-category entries hist_v1 excluded"
+    },
+    "primary_comparison": "M1-B1 with M1-B3 decisive secondary; pre-declared power target MDE <= 0.05",
+    "next": "write experiments/hist_v2/build_domain_panel.py + eval.py and run the frozen design; report M1-B1 and M1-B3 with the reliability gate"
   }
 }
