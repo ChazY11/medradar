@@ -1,0 +1,67 @@
+{
+ "before_first_observation": {
+  "as_of": "2026-11-03T14:00:00+00:00",
+  "policy_zh": "只包含在 as_of 之前已被 MedRadar 实际观察到的记录（first_seen_at <= as_of）；之后才发现的历史记录一律排除，即使其事件日期更早。",
+  "total": 0,
+  "excluded_discovered_later": 400,
+  "items": []
+ },
+ "after_all_observation": {
+  "as_of": "2026-11-03T23:00:00+00:00",
+  "policy_zh": "只包含在 as_of 之前已被 MedRadar 实际观察到的记录（first_seen_at <= as_of）；之后才发现的历史记录一律排除，即使其事件日期更早。",
+  "total": 400,
+  "excluded_discovered_later": 0,
+  "items": [
+   {
+    "observation_id": "f06a50bc29cb5f96425854769dd8f4fba9ca484b",
+    "source": "ctgov",
+    "title": "Study on Risk Assessment for Patients With Microscopic Hematuria (Non-Visible Blood in Urine) Using a Urine Marker Test｜",
+    "event_at": "2026-03",
+    "first_seen_at": "2026-11-03T14:49:51Z",
+    "version_seq": 1,
+    "captured_at": "2026-11-03T14:49:51Z",
+    "payload_hash": "fa16322092b11c46b434e7b651f972624e1b7dfc"
+   },
+   {
+    "observation_id": "01363a6f26036a6667ca58d8c352a05d3d07fa23",
+    "source": "europepmc",
+    "title": "Segment-resolved assessment of hydration effects on liver water-specific T1 in comparison with T1-MOLLI and transient el",
+    "event_at": "2026-08-17",
+    "first_seen_at": "2026-11-03T14:44:29Z",
+    "version_seq": 1,
+    "captured_at": "2026-11-03T14:44:29Z",
+    "payload_hash": "c275e59e1b07e600a4b2546299282efa13a44ced"
+   },
+   {
+    "observation_id": "0262f343ed234a5c1225c678b7a6ec31339dbcf6",
+    "source": "europepmc",
+    "title": "Application of 80 kVp combined with deep learning reconstruction algorithm in overweight patients coronary CT angiograph",
+    "event_at": "2026-08-10",
+    "first_seen_at": "2026-11-03T14:44:29Z",
+    "version_seq": 1,
+    "captured_at": "2026-11-03T14:44:29Z",
+    "payload_hash": "5e04bbf3fb55a42d9be15555e5a1220e6f9419e5"
+   },
+   {
+    "observation_id": "02d78e2ae83be64d4c223735964579e39ae30c06",
+    "source": "europepmc",
+    "title": "Image Quality of Non-Contrast Neurological Images on Energy-Integrating versus Silicon Photon-Counting Detector CT.",
+    "event_at": "2026-10-22",
+    "first_seen_at": "2026-11-03T14:44:29Z",
+    "version_seq": 1,
+    "captured_at": "2026-11-03T14:44:29Z",
+    "payload_hash": "5022d930d786af17e73325ebecf5fc20fcd5e324"
+   },
+   {
+    "observation_id": "03804320da12349e920dfc35171167b0393115a3",
+    "source": "europepmc",
+    "title": "Application of Deep Learning Algorithm-Based Image Reconstruction in Improving Abdominal CT Image Quality in Adrenal and",
+    "event_at": "2026-08-30",
+    "first_seen_at": "2026-11-03T14:44:29Z",
+    "version_seq": 1,
+    "captured_at": "2026-11-03T14:44:29Z",
+    "payload_hash": "3fa8cc92795adb5f336aacf2de3d49f414fd9275"
+   }
+  ]
+ }
+}

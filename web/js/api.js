@@ -122,6 +122,36 @@ export const api = {
   labStudy(studyId) {
     return request(`/api/lab/${encodeURIComponent(studyId)}`);
   },
+
+  /* Prospective Observation Registry (Research Lab, additive). */
+  labProspective() {
+    return request("/api/lab/prospective", { cacheKey: "lab:prospective" });
+  },
+
+  labProspectiveEntry(entryId) {
+    return request(`/api/lab/prospective/${encodeURIComponent(entryId)}`);
+  },
+
+  /* --------------------------------------------------- live observatory */
+  observatorySummary() {
+    return request("/api/observatory/summary");
+  },
+
+  observatoryEvents(params = {}) {
+    return request("/api/observatory/events", { params });
+  },
+
+  observatoryEvent(observationId) {
+    return request(`/api/observatory/events/${encodeURIComponent(observationId)}`);
+  },
+
+  observatorySources() {
+    return request("/api/observatory/sources");
+  },
+
+  observatoryReplay(params = {}) {
+    return request("/api/observatory/replay", { params });
+  },
 };
 
 export function friendlyError(error) {

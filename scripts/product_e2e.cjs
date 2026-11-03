@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * MedRadar 2.0 — browser end-to-end acceptance (five user scenarios).
+ * MedRadar 2.0 — browser end-to-end acceptance (five MVP user scenarios + Live Observatory).
  *
  * Usage:
  *   node scripts/product_e2e.cjs [baseUrl]
@@ -262,7 +262,97 @@ async function main() {
     record("Scenario 5 使用研究助手", false, String(error.message));
   }
 
-  // ---------------------------------------------------------- responsive check
+  // ---------------------------------------------------------------- scenario 6
+  // Live Observatory: the page must state *both* times separately, prove itself
+  // against the API, and never present a polled source as realtime. It also runs
+  // green with an empty/missing ledger, where the honest empty state is required.
+  try {
+    await goto("#/observatory");
+    await page.waitForSelector('[data-testid="page-observatory"]', { timeout: 30000 });
+    await page.waitForTimeout(1200);
+    const navLink = await page.$('[data-testid="nav-observatory"]');
+    if (!navLink) throw new Error("observatory nav link missing");
+    const summary = await page.evaluate(async () => {
+      const response = await fetch("/api/observatory/summary");
+      return response.json();
+    });
+    let text = await body();
+    const noLedger = Boolean(await page.$('[data-testid="observatory-no-ledger"]'));
+    if (!summary.ledger || typeof summary.ledger.exists !== "boolean") {
+      throw new Error("summary.ledger.exists missing from API");
+    }
+    if (!summary.ledger.exists || noLedger || summary.ledger.observations === 0) {
+      if (!/尚无观察记录|观察账本|没有观察记录|尚未|没有数据源同步状态/.test(text)) {
+        throw new Error("empty-state copy missing when no observations exist");
+      }
+      const screenshot = await shot(page, "s6-observatory-empty");
+      record("Scenario 6 实时观察站 (空账本诚实状态)", true,
+        `ledger.exists=${summary.ledger.exists} observations=${summary.ledger.observations}`, screenshot);
+    } else {
+      if (!text.includes("事件发生于")) throw new Error("event_at statement missing");
+      if (!text.includes("首次观察")) throw new Error("first_seen_at statement missing");
+      if (!text.includes("轮询")) throw new Error("polled cadence copy missing");
+      if (/实时推送/.test(text) && !/不是实时推送|非实时|不做实时|不代表实时/.test(text)) {
+        throw new Error("page claims realtime push");
+      }
+      for (const label of ["新增", "修订", "不再提供", "采集失败"]) {
+        if (!text.includes(label)) throw new Error(`change-state chip ${label} missing`);
+      }
+      const rows = await page.$$('[data-testid="observatory-row"]');
+      if (rows.length < 1) throw new Error("no observation rows rendered");
+      const events = await page.evaluate(async () => {
+        const response = await fetch("/api/observatory/events?window=24h&limit=1");
+        return response.json();
+      });
+      if (typeof events.total !== "number" || events.total < 1) {
+        throw new Error("events API returned no rows for a populated ledger");
+      }
+      if (!Array.isArray(events.items) || !events.items[0].first_seen_at || !events.items[0].observed_at) {
+        throw new Error("event item is missing real observation timestamps");
+      }
+      if (!events.items[0].time_basis || !("measurable" in events.items[0].time_basis)) {
+        throw new Error("event item is missing the measurable-lag contract");
+      }
+      const sources = await page.evaluate(async () => {
+        const response = await fetch("/api/observatory/sources");
+        return response.json();
+      });
+      if (!Array.isArray(sources.sources) || sources.sources.length < 1) {
+        throw new Error("sources API returned no sync state");
+      }
+      if (!text.includes("数据源同步状态")) throw new Error("sync-status panel missing");
+      for (const source of sources.sources) {
+        const node = await page.$(`[data-testid="observatory-source-${source.source}"]`);
+        if (!node) throw new Error(`sync panel for source ${source.source} missing`);
+        if (!source.last_success_at) throw new Error(`source ${source.source} has no last_success_at`);
+      }
+      const sec = sources.sources.find((item) => item.source === "sec_edgar");
+      if (sec && Array.isArray(sec.entity_coverage) && sec.entity_coverage.length) {
+        const statuses = sec.entity_coverage.map((row) => String(row.status));
+        if (!statuses.some((status) => status === "COVERED")) {
+          throw new Error("SEC coverage does not report any verified COVERED issuer");
+        }
+        const nonCovered = sec.entity_coverage.filter((row) => row.status !== "COVERED");
+        if (nonCovered.length && !text.includes("NOT_CURRENT_REGISTRANT") && !text.includes("未覆盖")) {
+          throw new Error("non-covered SEC issuers are not disclosed on the page");
+        }
+      }
+      await rows[0].click();
+      await page.waitForTimeout(900);
+      text = await body();
+      if (!text.includes("版本") && !text.includes("version")) {
+        throw new Error("drawer does not show the payload version chain");
+      }
+      const screenshot = await shot(page, "s6-observatory");
+      record("Scenario 6 实时观察站", true,
+        `observations=${summary.ledger.observations} sources=${sources.sources.length} ` +
+        `rows=${rows.length} events_24h=${events.total}`, screenshot);
+    }
+  } catch (error) {
+    record("Scenario 6 实时观察站", false, String(error.message));
+  }
+
+  // -------------------------------------------------- responsive check (mobile)
   try {
     await page.setViewportSize({ width: 390, height: 844 });
     await goto("#/companies/mindray");
@@ -273,6 +363,18 @@ async function main() {
     record("Mobile 390px company page", overflow <= 4, `horizontal overflow=${overflow}px`, screenshot);
   } catch (error) {
     record("Mobile 390px company page", false, String(error.message));
+  }
+
+  // -------------------------------------------------- responsive check (observatory)
+  try {
+    await goto("#/observatory");
+    await page.waitForSelector('[data-testid="page-observatory"]', { timeout: 30000 });
+    await page.waitForTimeout(1000);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    const screenshot = await shot(page, "s6-mobile-observatory");
+    record("Mobile 390px Live Observatory", overflow <= 4, `horizontal overflow=${overflow}px`, screenshot);
+  } catch (error) {
+    record("Mobile 390px Live Observatory", false, String(error.message));
   }
 
   const report = {
