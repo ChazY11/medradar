@@ -568,7 +568,7 @@ Consequences, stated before any claim is built:
 
 ## 4. Claim-level clock completeness (Stage 2 — measured on 20563 claims)
 
-**Source of truth**: `data/claims.jsonl`, **20563** claims, **0** parse errors, **19812784** bytes.
+**Source of truth**: `data/claims.jsonl`, **20563** claims, **0** parse errors, **20532309** bytes.
 The exact file snapshot audited here is pinned by `sha256` in
 `clock_audit.json → claims_clock_completeness.claims_file_sha256`; **re-run `--stage2` if that file
 is rewritten.** Every number below is in `clock_audit.json → claims_clock_completeness`.
@@ -618,7 +618,7 @@ independently of the claims builder's labels:
 |---|---|---|---|
 | **STRICT** (the verdict) | `first_seen_at` value exists in the observation ledger **and** lag ≤ 1 d | **0** | **0.0** |
 | **LENIENT** | `0 ≤ lag ≤ 7` d, using whatever `first_seen_at` the extract stored — **no** requirement that it came from the ledger | **76** | **0.37** |
-| — of which labelled `ACTUAL_OBSERVATION` | builder's own label | **60** | — |
+| — of which carry `near_realtime_this_study = true` (stored as `HISTORICAL_PROXY`) | flag | **60** | — |
 | — of which labelled `SOURCE_PUBLISHED` (the `HAS_TOPIC` family, hard-coded) | builder's own label | **16** | — |
 | — distinct source records behind the 76 claims | `source_record_id` | **10** | — |
 | — distinct evidence records behind the 76 claims | `evidence_id` | **10** | — |
@@ -633,35 +633,39 @@ Additional splits that matter:
 
 | Measure | Claims |
 |---|---|
-| Declared `ACTUAL_OBSERVATION` but not in the ledger | **60** |
-| Declared `ACTUAL_OBSERVATION` with lag > 1 d | **38** |
-| Max lag among declared `ACTUAL_OBSERVATION` | **6** d |
+| Claims now labelled `ACTUAL_OBSERVATION` | **0** |
+| Near-real-time claims relabelled `HISTORICAL_PROXY` + `near_realtime_this_study = true` | **60** |
+| Those 60 in the ledger / with lag > 1 d | **0** / **38** |
+| Max lag among them | **6** d |
 | Claims with lag ≤ 1 d at all (still not observations) | **34** |
-| Genuinely strict but **not** declared | **0** |
+| Genuinely strict but **not** flagged | **0** |
 
-### 4.3b The pipeline's own strict field — audited, not trusted
+### 4.3b The pipeline's own flags — audited, not trusted
 
-The rebuilt claims file was meant to carry `strict_observed_asof` on every claim. Measured:
+The delivered claims file carries all three new fields on every claim. Measured:
 
 | Field | Claims carrying it | Values |
 |---|---|---|
 | `strict_observed_asof` | **20563** of **20563** | `False` **20563**, `True` **0** |
 | `observation_system` | **20563** of 20563 | `NONE` **20503**, `THIS_STUDY_COLLECTION` **60** |
+| `near_realtime_this_study` | **20563** of 20563 | `False` **20503**, `True` **60** |
 
-This audit re-derives strictness per claim from the ledger, so the verdict does not depend on that
-field — but the flag is consistent with the re-derivation in both directions: **0** claims are
-flagged true, and **0** claims are genuinely strict. Note that the **60** claims marked
-`THIS_STUDY_COLLECTION` are exactly the **60** labelled `ACTUAL_OBSERVATION`, and **all 60** are
-`strict=False` under the ledger test: marking a record as observed by this study does not make its
-timestamp a ledger observation.
+This audit re-derives strictness per claim from the ledger, so the verdict does not depend on any of
+these fields — but they are consistent with the re-derivation in both directions: **0** claims are
+flagged strict, and **0** claims are genuinely strict. Note two things. First, the **60** claims
+marked `THIS_STUDY_COLLECTION` and the **60** flagged `near_realtime_this_study` are the same 60,
+and **all 60** are `strict=False` under the ledger test: marking a record as observed by this study
+does not make its timestamp a ledger observation. Second, that is exactly why the relabelling was
+correct — the 60 now carry `HISTORICAL_PROXY` and a flag that says what they are, instead of a label
+that claimed more than the data supports.
 
 Rewriting the declaration table with the audit's verdict:
 
 | Declared `time_basis` | Claims | After audit |
 |---|---|---|
-| `HISTORICAL_PROXY` | **13048** | unchanged |
+| `HISTORICAL_PROXY` | **13108** | unchanged (includes the 60 near-real-time ones) |
 | `SOURCE_PUBLISHED` | **7455** | unchanged |
-| `ACTUAL_OBSERVATION` | **60** | **must be downgraded to `HISTORICAL_PROXY`** |
+| `ACTUAL_OBSERVATION` | **0** | **none left** — the recommended downgrade is already applied |
 | `DATE_ONLY` | **0** | never used |
 | `TIME_UNKNOWN` | **0** | never used |
 | missing | **0** | — |
@@ -682,11 +686,11 @@ Measured per relation family (all eight present in the dataset):
 |---|---|---|---|---|---|---|---|
 | `HAS_TOPIC` | **7455** | **100.0** | **100.0** | 0.0 | 0.0 | 100.0 | `SOURCE_PUBLISHED` 7455 |
 | `REFERENCES_PUBLICATION` | **4351** | **100.0** | **0.0** | 0.0 | **100.0** | 100.0 | `HISTORICAL_PROXY` 4351 |
-| `SPONSORS_TRIAL` | **4309** | **100.0** | **46.9** | **52.77** | 0.32 | 100.0 | `HISTORICAL_PROXY` 4305, `ACTUAL_OBSERVATION` 4 |
-| `AFFILIATED_WITH` | **2175** | **100.0** | **100.0** | 0.0 | 0.0 | 100.0 | `HISTORICAL_PROXY` 2144, `ACTUAL_OBSERVATION` 31 |
-| `CO_AFFILIATED_ON` | **1567** | **100.0** | **100.0** | 0.0 | 0.0 | 100.0 | `HISTORICAL_PROXY` 1543, `ACTUAL_OBSERVATION` 24 |
+| `SPONSORS_TRIAL` | **4309** | **100.0** | **46.9** | **52.77** | 0.32 | 100.0 | `HISTORICAL_PROXY` 4309 |
+| `AFFILIATED_WITH` | **2175** | **100.0** | **100.0** | 0.0 | 0.0 | 100.0 | `HISTORICAL_PROXY` 2175 |
+| `CO_AFFILIATED_ON` | **1567** | **100.0** | **100.0** | 0.0 | 0.0 | 100.0 | `HISTORICAL_PROXY` 1567 |
 | `HOSTS_TRIAL_SITE` | **598** | **100.0** | **42.81** | **57.19** | 0.0 | 100.0 | `HISTORICAL_PROXY` 598 |
-| `FUNDED_BY` | **105** | **100.0** | **100.0** | 0.0 | 0.0 | 100.0 | `HISTORICAL_PROXY` 104, `ACTUAL_OBSERVATION` 1 |
+| `FUNDED_BY` | **105** | **100.0** | **100.0** | 0.0 | 0.0 | 100.0 | `HISTORICAL_PROXY` 105 |
 | `RESPONSIBLE_FOR_TRIAL` | **3** | **100.0** | **33.33** | **66.67** | 0.0 | 100.0 | `HISTORICAL_PROXY` 3 |
 
 **Direct answer for RQ2.** `declared_at` is **100.0% day-precision in every family**, so *when a
@@ -730,10 +734,11 @@ contradiction check must therefore be **conditioned on record type** — a blank
 ### 5.2 Claim level — measured
 
 **How the two ACTUAL_OBSERVATION numbers relate to this section** (§4.3): the **strict** count is
-**0**; the **lenient** window holds **76** claims, of which **60** are labelled `ACTUAL_OBSERVATION`
-and **16** `SOURCE_PUBLISHED`. Every one of the 76 uses an extraction stamp, never a ledger
-observation, so **no contradiction count below changes** if the lenient set is excluded — the lenient
-label adds no temporal evidence, it only narrows the lag.
+**0**; the **lenient** window holds **76** claims, of which **60** carry
+`near_realtime_this_study = true` (stored as `HISTORICAL_PROXY`) and **16** are labelled
+`SOURCE_PUBLISHED`. No claim carries `ACTUAL_OBSERVATION`. Every one of the 76 uses an extraction
+stamp, never a ledger observation, so **no contradiction count below changes** if the lenient set is
+excluded — the lenient label adds no temporal evidence, it only narrows the lag.
 
 | Contradiction check | Claims | % of 20563 | Reading |
 |---|---|---|---|
@@ -828,9 +833,11 @@ claim-level audit in §4–§5.
 
 1. **No historical PIT observation can be manufactured — and at claim level there is none.** A claim
    may carry `ACTUAL_OBSERVATION` only if its `first_seen_at` appears in the observation ledger and its
-   lag to `published_at` is ≤ 1 d. Measured on the real dataset: **0** of **20563** claims qualify.
-   The ledger's own ceiling is **6** prospective observations out of **400**, over **1** day. Every
-   claim-level `ACTUAL_OBSERVATION` label (**60** of them) must be downgraded to `HISTORICAL_PROXY`.
+   lag to `published_at` is ≤ 1 d. Measured on the real dataset: **0** of **20563** claims qualify, and
+   the delivered file now carries **0** `ACTUAL_OBSERVATION` labels. The ledger's own ceiling is **6**
+   prospective observations out of **400**, over **1** day. The **60** near-real-time claims are stored
+   as `HISTORICAL_PROXY` with `near_realtime_this_study = true` — the downgrade this audit recommended
+   is applied.
 
 2. **An "as-of T" graph for T before 2026-11-03 is a historical-proxy construction, not an
    observation.** The correct sentence is: *"we reconstructed what would have been knowable at T
@@ -871,9 +878,9 @@ claim-level audit in §4–§5.
    `TIME_UNKNOWN`.
 
 8. **Report strict and lenient separately, and never let the lenient one be called an observation.**
-   Strict is **0**; lenient is **76** claims (**60** labelled `ACTUAL_OBSERVATION`, **16**
-   `SOURCE_PUBLISHED`) behind **10** distinct source records. The lenient number measures this study's
-   own fetch latency, not knowledge available at the time.
+   Strict is **0**; lenient is **76** claims (**60** flagged `near_realtime_this_study = true`,
+   **16** `SOURCE_PUBLISHED`) behind **10** distinct source records. The lenient number measures this
+   study's own fetch latency, not knowledge available at the time.
 
 9. **State the clock deficit in the paper.** The honest one-line summary: *this study has real
    observation evidence for 400 records over 1 day, 6 of which are prospective; none of its 20563

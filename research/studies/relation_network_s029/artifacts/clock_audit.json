@@ -4,7 +4,7 @@
     "task": "task-3",
     "role": "Temporal Provenance Auditor",
     "script": "code/s029_clock_audit.py",
-    "generated_at_utc": "2026-11-03T20:48:56Z",
+    "generated_at_utc": "2026-11-03T20:52:22Z",
     "stage": "stage1+stage2",
     "python": "3.12.10",
     "study_dir": "D:\\DEPPSKK\\worktrees\\s029-relations\\research\\studies\\relation_network_s029",
@@ -3667,8 +3667,8 @@
     "n_lines": 20563,
     "n_claims": 20563,
     "n_parse_errors": 0,
-    "claims_file_bytes": 19812784,
-    "claims_file_sha256": "013226151c431f9f5716032dd15c9a68f60593db295fa95d0dda2c6b828a66d4",
+    "claims_file_bytes": 20532309,
+    "claims_file_sha256": "2777b6d673ee651f867efa3c7aa1595cd1700decb40b18c3eee5e02bd4fa0422",
     "top_level_keys": {
       "claim_status": 20563,
       "confidence": 20563,
@@ -3679,6 +3679,7 @@
       "first_seen_at": 20563,
       "mapping_method": 20563,
       "mapping_status": 20563,
+      "near_realtime_this_study": 20563,
       "object_id": 20563,
       "observation_system": 20563,
       "observed_lag_days": 20563,
@@ -3836,8 +3837,7 @@
       "pct_valid_from_day_of_present": 100.0
     },
     "time_basis_declared": {
-      "HISTORICAL_PROXY": 13048,
-      "ACTUAL_OBSERVATION": 60,
+      "HISTORICAL_PROXY": 13108,
       "SOURCE_PUBLISHED": 7455
     },
     "time_basis_n_missing": 0,
@@ -3873,21 +3873,26 @@
       "n_not_in_ledger": 20563,
       "n_lag_le_1": 34,
       "n_strict_genuine": 0,
-      "n_declared_actual_observation": 60,
+      "n_declared_actual_observation": 0,
       "n_declared_actual_but_strict": 0,
-      "n_declared_actual_but_not_in_ledger": 60,
-      "n_declared_actual_but_lag_gt_1": 38,
-      "n_declared_actual_but_not_in_ledger_or_lag_gt_1": 60,
+      "n_declared_actual_but_not_in_ledger": 0,
+      "n_declared_actual_but_lag_gt_1": 0,
+      "n_declared_actual_but_not_in_ledger_or_lag_gt_1": 0,
       "n_strict_genuine_but_not_declared": 0,
-      "max_lag_among_declared_actual": 6,
+      "max_lag_among_declared_actual": null,
       "n_strict_flag_present": 20563,
       "n_strict_flag_true": 0,
       "n_strict_flag_true_but_not_strict": 0,
       "n_strict_flag_false_but_strict": 0,
       "n_observation_system_present": 20563,
+      "n_near_realtime_present": 20563,
+      "n_near_realtime_true": 60,
+      "n_near_realtime_true_lag_gt_1": 38,
+      "n_near_realtime_true_lag_le_1": 22,
+      "n_near_realtime_true_in_ledger": 0,
       "pct_with_first_seen": 100.0,
       "pct_strict_genuine": 0.0,
-      "pct_declared_actual_observation": 0.29,
+      "pct_declared_actual_observation": 0.0,
       "lag_stats": {
         "n": 20563,
         "min": 0,
@@ -3918,8 +3923,14 @@
       "pct_lenient": 0.37,
       "n_lenient_distinct_source_records": 10,
       "n_lenient_distinct_evidence_records": 10,
-      "n_lenient_labelled_ACTUAL_OBSERVATION": 60,
+      "n_lenient_labelled_ACTUAL_OBSERVATION": 0,
       "n_lenient_labelled_SOURCE_PUBLISHED": 16,
+      "n_lenient_labelled_HISTORICAL_PROXY": 60,
+      "n_lenient_by_time_basis": {
+        "HISTORICAL_PROXY": 60,
+        "SOURCE_PUBLISHED": 16
+      },
+      "n_lenient_with_near_realtime_this_study": 60,
       "n_lenient_by_predicate": {
         "AFFILIATED_WITH": 31,
         "CO_AFFILIATED_ON": 24,
@@ -3927,8 +3938,8 @@
         "HAS_TOPIC": 16,
         "SPONSORS_TRIAL": 4
       },
-      "n_declared_actual_observation": 60,
-      "n_lenient_but_not_declared_ACTUAL": 16,
+      "n_declared_actual_observation": 0,
+      "n_lenient_but_not_declared_ACTUAL": 76,
       "n_lag_le_1d_but_not_an_observation": 34,
       "reading": "The strict number is the STUDY'S VERDICT and is 0: no claim carries a point-in-time observation. The lenient number counts claims whose extraction stamp happens to fall within a week of the published date; that is a statement about this study's own fetch, not about knowledge available at the time. Reporting both is correct only if the lenient label is never called an observation."
     },
@@ -3952,6 +3963,22 @@
           "NONE|strict=False": 20503,
           "THIS_STUDY_COLLECTION|strict=False": 60
         }
+      },
+      "near_realtime_this_study": {
+        "n_present": 20563,
+        "values": {
+          "False": 20503,
+          "True": 60
+        },
+        "n_true": 60,
+        "values_by_audit_strictness": {
+          "False|strict=False": 20503,
+          "True|strict=False": 60
+        },
+        "n_true_that_are_audit_strict": 0,
+        "n_true_with_lag_gt_1": 38,
+        "n_true_with_lag_le_1": 22,
+        "n_true_in_ledger": 0
       },
       "reading": "The pipeline's own strict flag is audited, not trusted: this audit re-derives strictness from the observation ledger for every claim and reports any disagreement in both directions."
     },
@@ -4028,8 +4055,7 @@
         "pct_first_seen_at": 100.0,
         "lag_median_days": 4327,
         "time_basis": {
-          "HISTORICAL_PROXY": 9231,
-          "ACTUAL_OBSERVATION": 4
+          "HISTORICAL_PROXY": 9235
         }
       },
       "europepmc": {
@@ -4040,8 +4066,7 @@
         "pct_first_seen_at": 100.0,
         "lag_median_days": 2874,
         "time_basis": {
-          "HISTORICAL_PROXY": 2274,
-          "ACTUAL_OBSERVATION": 32,
+          "HISTORICAL_PROXY": 2306,
           "SOURCE_PUBLISHED": 7455
         }
       },
@@ -4053,8 +4078,7 @@
         "pct_first_seen_at": 100.0,
         "lag_median_days": 1766,
         "time_basis": {
-          "HISTORICAL_PROXY": 1543,
-          "ACTUAL_OBSERVATION": 24
+          "HISTORICAL_PROXY": 1567
         }
       }
     },
@@ -4081,8 +4105,7 @@
           "day": 2175
         },
         "time_basis": {
-          "HISTORICAL_PROXY": 2144,
-          "ACTUAL_OBSERVATION": 31
+          "HISTORICAL_PROXY": 2175
         }
       },
       "CO_AFFILIATED_ON": {
@@ -4107,8 +4130,7 @@
           "day": 1567
         },
         "time_basis": {
-          "HISTORICAL_PROXY": 1543,
-          "ACTUAL_OBSERVATION": 24
+          "HISTORICAL_PROXY": 1567
         }
       },
       "FUNDED_BY": {
@@ -4133,8 +4155,7 @@
           "day": 105
         },
         "time_basis": {
-          "HISTORICAL_PROXY": 104,
-          "ACTUAL_OBSERVATION": 1
+          "HISTORICAL_PROXY": 105
         }
       },
       "HAS_TOPIC": {
@@ -4263,8 +4284,7 @@
           "day": 4309
         },
         "time_basis": {
-          "HISTORICAL_PROXY": 4305,
-          "ACTUAL_OBSERVATION": 4
+          "HISTORICAL_PROXY": 4309
         }
       }
     },
@@ -4348,8 +4368,8 @@
   },
   "verified_claims": {
     "report": "D:\\DEPPSKK\\worktrees\\s029-relations\\research\\studies\\relation_network_s029\\TEMPORAL_PROVENANCE.md",
-    "n_number_tokens": 975,
-    "n_distinct_tokens": 241,
+    "n_number_tokens": 982,
+    "n_distinct_tokens": 237,
     "n_unverified": 0,
     "unverified_tokens": [],
     "verified": true

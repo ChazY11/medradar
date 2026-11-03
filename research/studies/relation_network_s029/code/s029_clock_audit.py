@@ -2201,6 +2201,7 @@ def claims_clock_completeness(path=None) -> dict:
         "precision": ("timestamp_precision", "published_at_precision", "precision"),
         "anachronism": ("anachronism", "is_anachronism", "anachronism_flag"),
         "observed_lag": ("observed_lag_days", "lag_days"),
+        "near_realtime": ("near_realtime_this_study", "near_realtime"),
     }
 
     def pick(row, *names):
@@ -2350,11 +2351,18 @@ def claims_clock_completeness(path=None) -> dict:
         "n_strict_flag_true_but_not_strict": 0,
         "n_strict_flag_false_but_strict": 0,
         "n_observation_system_present": 0,
+        "n_near_realtime_present": 0,
+        "n_near_realtime_true": 0,
+        "n_near_realtime_true_lag_gt_1": 0,
+        "n_near_realtime_true_lag_le_1": 0,
+        "n_near_realtime_true_in_ledger": 0,
     }
     lag_samples = []
     strict_flag_values = Counter()
     observation_system_values = Counter()
     observation_system_strict = Counter()
+    near_realtime_values = Counter()
+    near_realtime_strict = Counter()
     for c in claims:
         fs = val(c, "first_seen_at")
         pub = val(c, "published_at")
@@ -2369,6 +2377,12 @@ def claims_clock_completeness(path=None) -> dict:
         if obsys is not None:
             stats["n_observation_system_present"] += 1
             observation_system_values[str(obsys)] += 1
+        nrt = c.get("near_realtime_this_study")
+        if nrt is not None:
+            stats["n_near_realtime_present"] += 1
+            near_realtime_values[str(nrt)] += 1
+            if nrt is True:
+                stats["n_near_realtime_true"] += 1
         declared_actual = (str(basis) == "ACTUAL_OBSERVATION") if basis else False
         if declared_actual:
             stats["n_declared_actual_observation"] += 1
@@ -2397,6 +2411,15 @@ def claims_clock_completeness(path=None) -> dict:
         if obsys is not None:
             observation_system_strict[
                 f"{obsys}|strict={bool(strict)}"] += 1
+        if nrt is not None:
+            near_realtime_strict[f"{nrt}|strict={bool(strict)}"] += 1
+        if nrt is True:
+            if in_ledger:
+                stats["n_near_realtime_true_in_ledger"] += 1
+            if lag is not None and lag > 1:
+                stats["n_near_realtime_true_lag_gt_1"] += 1
+            elif lag is not None:
+                stats["n_near_realtime_true_lag_le_1"] += 1
         if declared_actual and lag is not None:
             cur = stats["max_lag_among_declared_actual"]
             stats["max_lag_among_declared_actual"] = (lag if cur is None
@@ -2427,6 +2450,8 @@ def claims_clock_completeness(path=None) -> dict:
     lenient_records = set()
     n_lenient_not_declared = 0
     lenient_by_predicate = Counter()
+    lenient_by_basis = Counter()
+    n_lenient_near_realtime = 0
     for c in claims:
         fs, pub = val(c, "first_seen_at"), val(c, "published_at")
         if fs is None or pub is None:
@@ -2437,6 +2462,9 @@ def claims_clock_completeness(path=None) -> dict:
                                     or c.get("relation_id") or ""))
             lenient_by_predicate[str(pick(c, "predicate", "relation",
                                           "relation_type") or "MISSING")] += 1
+            lenient_by_basis[str(val(c, "time_basis") or "MISSING")] += 1
+            if c.get("near_realtime_this_study") is True:
+                n_lenient_near_realtime += 1
             if str(val(c, "time_basis") or "") != "ACTUAL_OBSERVATION":
                 n_lenient_not_declared += 1
     out["strict_vs_lenient"] = {
@@ -2457,8 +2485,14 @@ def claims_clock_completeness(path=None) -> dict:
             if c.get("evidence_id") is not None
             and (lambda d: d is not None and 0 <= d <= 7)(
                 lag_days_ts(val(c, "first_seen_at"), val(c, "published_at")))}),
-        "n_lenient_labelled_ACTUAL_OBSERVATION": n_lenient - n_lenient_not_declared,
-        "n_lenient_labelled_SOURCE_PUBLISHED": n_lenient_not_declared,
+        "n_lenient_labelled_ACTUAL_OBSERVATION": lenient_by_basis.get(
+            "ACTUAL_OBSERVATION", 0),
+        "n_lenient_labelled_SOURCE_PUBLISHED": lenient_by_basis.get(
+            "SOURCE_PUBLISHED", 0),
+        "n_lenient_labelled_HISTORICAL_PROXY": lenient_by_basis.get(
+            "HISTORICAL_PROXY", 0),
+        "n_lenient_by_time_basis": dict(lenient_by_basis),
+        "n_lenient_with_near_realtime_this_study": n_lenient_near_realtime,
         "n_lenient_by_predicate": dict(lenient_by_predicate),
         "n_declared_actual_observation": stats["n_declared_actual_observation"],
         "n_lenient_but_not_declared_ACTUAL": n_lenient_not_declared,
@@ -2485,6 +2519,17 @@ def claims_clock_completeness(path=None) -> dict:
             "n_present": stats["n_observation_system_present"],
             "values": dict(observation_system_values),
             "values_by_audit_strictness": dict(observation_system_strict),
+        },
+        "near_realtime_this_study": {
+            "n_present": stats["n_near_realtime_present"],
+            "values": dict(near_realtime_values),
+            "n_true": stats["n_near_realtime_true"],
+            "values_by_audit_strictness": dict(near_realtime_strict),
+            "n_true_that_are_audit_strict": near_realtime_strict.get(
+                "True|strict=True", 0),
+            "n_true_with_lag_gt_1": stats["n_near_realtime_true_lag_gt_1"],
+            "n_true_with_lag_le_1": stats["n_near_realtime_true_lag_le_1"],
+            "n_true_in_ledger": stats["n_near_realtime_true_in_ledger"],
         },
         "reading": (
             "The pipeline's own strict flag is audited, not trusted: this audit "

@@ -3539,7 +3539,7 @@ def compute_stage2_report(register: dict, claims: list[dict], mentions: list[dic
     # ---------- 6. verdict (derived from the numbers above) ----------------
     total_mentions = len(mentions)
     accepted_total = sum(b["claim_producing"] for b in per_company.values())
-    unknown_share = round(len(unknown_owner) / accepted_total, 4) if accepted_total else 0.0
+    unknown_share = round(reconciliation["undated_ownership"]["n_strings"] / accepted_total, 4) if accepted_total else 0.0
     ana_total = len(ana_register)
     ana_share = round(ana_total / accepted_total, 4) if accepted_total else 0.0
     rejection_total = len(rejected)
@@ -3658,14 +3658,13 @@ def render_entity_resolution_md(metrics: dict, register: dict) -> str:
        f"**{inp['trials']}**; institutions: **{inp['institutions']}**; claim rejects: "
        f"**{inp['claim_rejects']}**")
     cl = inp["claims"]
+    link = metrics["claims_linkage"]
     if cl.get("status") == "PENDING":
-        A_("- claims store: **PENDING** \u2014 `data/claims.jsonl` did not exist when this run was made; "
-           "all identity measurements below are computed from the per-string mention records, which are "
-           "the inputs the claim builder consumes. Re-running `--stage2` after the claim store exists adds "
-           "the claim-level linkage without changing the identity numbers.")
+        A_("- claims store: **PENDING** - `data/claims.jsonl` did not exist when this run was made.")
     else:
-        A_(f"- claims store: **{cl['claims_total']}** claims, **{cl.get('claims_with_company_subject', 0)}** "
-           "with a company as subject/object; status distribution stored in the JSON artifact.")
+        A_(f"- claims store: **{cl['claims_total']}** claims, **{link['claims_involving_company']}** with a "
+           f"company as subject/object, **{link['matched_to_mentions']}** of those linked back to their raw "
+           "identity-decision rows (join on source_record_id + relation_role + company_key); see section 1.1.")
     A_(f"- entities whose register `valid_from` is UNKNOWN (treated as UNKNOWN, never dated): "
        + ", ".join(f"`{e}`" for e in metrics["register_authority"]["unknown_entities"]))
     A_("")
@@ -3680,6 +3679,22 @@ def render_entity_resolution_md(metrics: dict, register: dict) -> str:
         st = ", ".join(f"{k}={v}" for k, v in row["mapping_status"].items())
         A_(f"| {ck} | {row['mentions']} | {row['claim_producing']} | {row['claim_producing_rate']:.1%} | "
            f"{row['non_claim_producing']} | {row['non_claim_producing_rate']:.1%} | {st} |")
+    A_("")
+    A_("### 1.1 Claim-store linkage")
+    A_("")
+    link = metrics["claims_linkage"]
+    A_("| company | claims | roles | claim mapping_status | matched to mention | sponsor claims | parent string | operating-unit string | unit share |")
+    A_("|---|---:|---|---|---:|---:|---:|---:|---:|")
+    for ck, row in link["per_company"].items():
+        roles = ", ".join(f"{k}={v}" for k, v in row["roles"].items())
+        sts = ", ".join(f"{k}={v}" for k, v in row["mapping_status"].items())
+        A_(f"| {ck} | {row['claims']} | {roles} | {sts} | {row['matched_to_mention']} | "
+           f"{row['sponsor_claims']} | {row['sponsor_parent_name']} | {row['sponsor_operating_unit']} | "
+           f"{row['sponsor_unit_share']:.1%} |")
+    A_("")
+    A_("Claim roles present: " + ", ".join(f"{k}={v}" for k, v in link["roles"].items()) + ". "
+       "Claims without a matched mention are co-affiliation claims (derived from two identity rows) and "
+       "grant-funder claims, which carry no company mention row; the join coverage is stated above.")
     A_("")
     A_("## 2. The company as a fiction in registry data (operating units vs exact parent)")
     A_("")
@@ -3699,6 +3714,20 @@ def render_entity_resolution_md(metrics: dict, register: dict) -> str:
         u = row["operating_unit_reality"]
         if u["top_unit_strings"]:
             A_(f"- {ck}: " + "; ".join(f"`{x['string']}` ({x['mentions']})" for x in u["top_unit_strings"][:5]))
+    A_("")
+    A_("**Reviewer-facing sentence (measured, not asserted).** " + link["reviewer_statement"]["sentence"] + ".")
+    A_("")
+    A_("| company | sponsor claims | exact parent string | operating-unit string | unit share |")
+    A_("|---|---:|---:|---:|---:|")
+    for ck, row in link["per_company"].items():
+        A_(f"| {ck} | {row['sponsor_claims']} | {row['sponsor_parent_name']} | "
+           f"{row['sponsor_operating_unit']} | {row['sponsor_unit_share']:.1%} |")
+    A_("")
+    A_("Denominator of the mention-level figure above: mentions with role `lead_sponsor` or "
+       "`collaborator` (ClinicalTrials.gov sponsor fields) whose mapping status is accepted "
+       "(EXACT/ALIAS/ORG_TEXT/ORG_EMAIL). The claim-level figure uses the same roles after joining the "
+       "claim store to the mention rows; the two differ only by mentions that collapse into the same "
+       "claim (section 1.1).")
     A_("")
     A_("## 3. Anachronisms and ownership dates that cannot be established")
     A_("")
@@ -3734,21 +3763,38 @@ def render_entity_resolution_md(metrics: dict, register: dict) -> str:
         A_("_None._")
     A_("")
     A_("### 3.3 Ownership date UNKNOWN \u2014 mapping downgraded")
+    A_("### 3.3 Ownership-date-unknown: reconciled definition")
     A_("")
-    A_(ana["ownership_date_unknown"]["policy"])
+    recon = metrics["ownership_reconciliation"]
+    A_("Two definitions existed between the mapping layer and this audit. They are reconciled here explicitly:")
     A_("")
-    if ana["ownership_date_unknown"]["examples"]:
-        A_("| company | observed string | entity | entity type | claim date | rule | resolved by |")
-        A_("|---|---|---|---|---|---|---|")
-        for ex in ana["ownership_date_unknown"]["examples"]:
-            A_(f"| {ex['company']} | `{str(ex['raw'])[:70]}` | `{ex['entity_key']}` | "
-               f"{ex['entity_type']} | {ex['claim_date']} | {ex['rule']} | "
-               f"{ex.get('resolved_by', 'mapping layer')} |")
+    A_("- **Definition A (legal-entity date):** " + recon["definitions"]["A_legal_entity_date_unknown"])
+    A_("- **Definition B (group-ownership date, operative):** " + recon["definitions"]["B_group_ownership_date_unknown"])
+    A_("")
+    A_(recon["accepted_attribution"])
+    A_("")
+    A_("MiniMed strings are therefore dated by the 2001-08-28 acquisition and are NOT counted as "
+       "undated under the operative definition. Family ownership dates used:")
+    A_("")
+    A_("| entity_key | ownership date | event |")
+    A_("|---|---|---|")
+    for ek, info in sorted(recon["family_ownership_dates"].items()):
+        A_(f"| `{ek}` | {info['date']} | {info['event']} |")
+    A_("")
+    und = recon["undated_ownership"]
+    A_(f"Remaining **undated ownership** cases under definition B: **{und['n_strings']}** strings, "
+       "entities " + ", ".join(f"`{k}`={v}" for k, v in und["by_entity"].items()) + ".")
+    A_("")
+    if und["examples"]:
+        A_("| company | observed string | entity | mapping status | record |")
+        A_("|---|---|---|---|---|")
+        for ex in und["examples"]:
+            A_(f"| {ex['company']} | `{str(ex['raw'])[:75]}` | `{ex['entity_key']}` | "
+               f"{ex['mapping_status']} | `{ex['record_id']}` |")
         A_("")
-        A_("By entity: " + ", ".join(f"`{k}`={v}" for k, v in
-                                     ana["ownership_date_unknown"]["by_entity"].items()))
-    else:
-        A_("_None._")
+    du = recon["undated_division"]
+    A_(f"Divisions with an UNKNOWN start date (not an ownership date): **{du['n_strings']}** strings; "
+       "reported in section 3.4.")
     A_("")
     A_("### 3.4 Division start date UNKNOWN (not an ownership date)")
     A_("")
