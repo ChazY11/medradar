@@ -1,0 +1,2065 @@
+{
+  "artifacts": {
+    "backtest_fixed_cohort.json": {
+      "committed": false,
+      "note": "full run_backtest artefact for the fixed-cohort panel",
+      "regenerable": true
+    },
+    "fixed_cohort_report.json": {
+      "committed": false,
+      "regenerable": true
+    }
+  },
+  "backlog_item": "B-017",
+  "backtest": {
+    "holdout_origins": [
+      "2025-04-01",
+      "2025-07-01",
+      "2025-10-01"
+    ],
+    "note": "Full run_backtest with the frozen P2 specification.",
+    "run": true,
+    "windows": [
+      {
+        "baseline_brier": 0.007514983033376308,
+        "baseline_pr_auc": 0.02527037225051716,
+        "baseline_precision_at_k": 0.011594202898550725,
+        "delta_ap": 0.058064972207422946,
+        "lead_time_days": 187.71428571428572,
+        "model_brier": 0.0059850660997153035,
+        "model_pr_auc": 0.08333534445794011,
+        "origin": "2025-04-01",
+        "positives": 42,
+        "precision_at_k": 0.034782608695652174,
+        "prevalence": 0.0060949063996517195,
+        "rows": 6891,
+        "training_rows": 120049
+      },
+      {
+        "baseline_brier": 0.00823521649121753,
+        "baseline_pr_auc": 0.031248152534081863,
+        "baseline_precision_at_k": 0.014492753623188406,
+        "delta_ap": 0.11758952532332512,
+        "lead_time_days": 209.46808510638297,
+        "model_brier": 0.006394619671482498,
+        "model_pr_auc": 0.14883767785740698,
+        "origin": "2025-07-01",
+        "positives": 47,
+        "precision_at_k": 0.042028985507246375,
+        "prevalence": 0.006820490494848353,
+        "rows": 6891,
+        "training_rows": 126949
+      },
+      {
+        "baseline_brier": 0.009021847401910149,
+        "baseline_pr_auc": 0.042443856181332125,
+        "baseline_precision_at_k": 0.01884057971014493,
+        "delta_ap": 0.14253595340135466,
+        "lead_time_days": 195.55769230769232,
+        "model_brier": 0.00689355197956766,
+        "model_pr_auc": 0.18497980958268678,
+        "origin": "2025-10-01",
+        "positives": 52,
+        "precision_at_k": 0.04492753623188406,
+        "prevalence": 0.0075449796865931515,
+        "rows": 6892,
+        "training_rows": 133848
+      }
+    ]
+  },
+  "cohort_gap": {
+    "artifact_crosscheck": {
+      "artifact": "config/universe_v1.json",
+      "artifact_cohort_size": 200,
+      "identical": false,
+      "only_computed": [
+        "cook-ireland-4fd2deea",
+        "foundation-medicine-e8a2f38b",
+        "medtronic-minimed-4064e4dd",
+        "medtronic-vascular-a716a021",
+        "ventana-medical-systems-0f10151a"
+      ],
+      "only_in_artifact": [
+        "resmed-c6c5d1cf",
+        "si-bone-aac3a36e",
+        "sonoscape-medical-b154c140",
+        "tandem-diabetes-care-c365c570",
+        "zhejiang-innuovo-rehabilitation-devices-c2a04b1b"
+      ],
+      "present": true
+    },
+    "artifact_keys": 200,
+    "computed_keys": 200,
+    "computed_panel_n_examples": 161636,
+    "computed_panel_n_positives": 1082,
+    "examples_by_key": {
+      "3m-6dce1630": {
+        "positives": 4,
+        "rows": 875
+      },
+      "abbott-laboratories-7873aa2c": {
+        "positives": 0,
+        "rows": 481
+      },
+      "abbott-medical-59953a1d": {
+        "positives": 26,
+        "rows": 726
+      },
+      "acutus-medical-e7b8c51f": {
+        "positives": 0,
+        "rows": 842
+      },
+      "aesculap-5d8e8b9d": {
+        "positives": 13,
+        "rows": 840
+      },
+      "aidoc-medical-f641f82c": {
+        "positives": 4,
+        "rows": 880
+      },
+      "alcon-laboratories-1cf7fd61": {
+        "positives": 0,
+        "rows": 879
+      },
+      "alphatec-spine-6d517c61": {
+        "positives": 13,
+        "rows": 851
+      },
+      "ambu-834cc72d": {
+        "positives": 8,
+        "rows": 872
+      },
+      "andon-health-06813e74": {
+        "positives": 0,
+        "rows": 879
+      },
+      "angiodynamics-453d5b0c": {
+        "positives": 8,
+        "rows": 840
+      },
+      "applied-medical-resources-e10bb397": {
+        "positives": 2,
+        "rows": 867
+      },
+      "argon-medical-devices-6e470706": {
+        "positives": 9,
+        "rows": 878
+      },
+      "arthrex-6b0ed5e5": {
+        "positives": 7,
+        "rows": 801
+      },
+      "asahi-intecc-d4985a5d": {
+        "positives": 4,
+        "rows": 860
+      },
+      "astura-medical-de4065df": {
+        "positives": 7,
+        "rows": 875
+      },
+      "atricure-be2d2eea": {
+        "positives": 4,
+        "rows": 876
+      },
+      "b-braun-medical-0561cfe5": {
+        "positives": 1,
+        "rows": 886
+      },
+      "balt-usa-a0f4a414": {
+        "positives": 5,
+        "rows": 862
+      },
+      "bard-peripheral-vascular-0261abc4": {
+        "positives": 22,
+        "rows": 846
+      },
+      "bausch-lomb-bbe30494": {
+        "positives": 0,
+        "rows": 888
+      },
+      "baxter-healthcare-c698d0a1": {
+        "positives": 8,
+        "rows": 844
+      },
+      "beckman-coulter-4ca395b8": {
+        "positives": 4,
+        "rows": 894
+      },
+      "becton-dickinson-and-940728ab": {
+        "positives": 9,
+        "rows": 812
+      },
+      "biofire-diagnostics-7c94a851": {
+        "positives": 0,
+        "rows": 869
+      },
+      "biomerieux-a6aff10a": {
+        "positives": 0,
+        "rows": 911
+      },
+      "biomet-ebf06aef": {
+        "positives": 2,
+        "rows": 873
+      },
+      "biosense-webster-f43ab132": {
+        "positives": 12,
+        "rows": 832
+      },
+      "biotronik-85ac1149": {
+        "positives": 8,
+        "rows": 886
+      },
+      "boston-scientific-bc833359": {
+        "positives": 29,
+        "rows": 624
+      },
+      "brainlab-e1ab22f1": {
+        "positives": 12,
+        "rows": 823
+      },
+      "btl-industries-f2d33300": {
+        "positives": 17,
+        "rows": 843
+      },
+      "c-r-bard-9c3d4535": {
+        "positives": 18,
+        "rows": 816
+      },
+      "camber-spine-technologies-9c5048b8": {
+        "positives": 4,
+        "rows": 876
+      },
+      "canon-79db8d56": {
+        "positives": 10,
+        "rows": 865
+      },
+      "canon-medical-systems-fcd23070": {
+        "positives": 4,
+        "rows": 862
+      },
+      "carbofix-orthopedics-7361db82": {
+        "positives": 3,
+        "rows": 860
+      },
+      "carestream-health-ebae9b5c": {
+        "positives": 0,
+        "rows": 888
+      },
+      "carl-zeiss-meditec-365b9f6c": {
+        "positives": 9,
+        "rows": 855
+      },
+      "carlsmed-86abadcd": {
+        "positives": 8,
+        "rows": 721
+      },
+      "cepheid-c2d9d4f3": {
+        "positives": 4,
+        "rows": 883
+      },
+      "coloplast-2fbf5f74": {
+        "positives": 19,
+        "rows": 838
+      },
+      "conformis-68f18c02": {
+        "positives": 0,
+        "rows": 888
+      },
+      "conmed-e536b450": {
+        "positives": 12,
+        "rows": 844
+      },
+      "cook-10fd0b8f": {
+        "positives": 4,
+        "rows": 847
+      },
+      "cook-ireland-4fd2deea": {
+        "positives": 13,
+        "rows": 867
+      },
+      "corelink-d3435440": {
+        "positives": 0,
+        "rows": 864
+      },
+      "corentec-3794e6b3": {
+        "positives": 0,
+        "rows": 875
+      },
+      "covidien-64e830a8": {
+        "positives": 12,
+        "rows": 734
+      },
+      "dentis-6c6e19f9": {
+        "positives": 0,
+        "rows": 888
+      },
+      "dentsply-sirona-def5c5e3": {
+        "positives": 16,
+        "rows": 833
+      },
+      "depuy-ireland-uc-93959e9d": {
+        "positives": 3,
+        "rows": 888
+      },
+      "dexcom-187c083a": {
+        "positives": 0,
+        "rows": 888
+      },
+      "diadent-group-international-2b58b52a": {
+        "positives": 4,
+        "rows": 777
+      },
+      "diasorin-6d79bb6c": {
+        "positives": 3,
+        "rows": 851
+      },
+      "draeger-medical-systems-18043856": {
+        "positives": 0,
+        "rows": 777
+      },
+      "drtech-7edd01bc": {
+        "positives": 4,
+        "rows": 899
+      },
+      "edan-instruments-01d3e85d": {
+        "positives": 15,
+        "rows": 852
+      },
+      "edwards-lifesciences-9a074605": {
+        "positives": 6,
+        "rows": 808
+      },
+      "eizo-8eb340f5": {
+        "positives": 4,
+        "rows": 880
+      },
+      "encore-medical-738f0f7e": {
+        "positives": 0,
+        "rows": 888
+      },
+      "epic-medical-b48e8f6e": {
+        "positives": 0,
+        "rows": 666
+      },
+      "ethicon-752cb229": {
+        "positives": 2,
+        "rows": 859
+      },
+      "ethicon-endo-surgery-ba9fb6fc": {
+        "positives": 4,
+        "rows": 826
+      },
+      "ewoosoft-d1fc5e8d": {
+        "positives": 4,
+        "rows": 879
+      },
+      "exactech-c9109086": {
+        "positives": 5,
+        "rows": 881
+      },
+      "fisher-paykel-healthcare-e852abe9": {
+        "positives": 4,
+        "rows": 883
+      },
+      "foundation-medicine-e8a2f38b": {
+        "positives": 0,
+        "rows": 888
+      },
+      "fresenius-medical-care-renal-therapies-g-02e6d204": {
+        "positives": 5,
+        "rows": 870
+      },
+      "fujifilm-df7e28b2": {
+        "positives": 5,
+        "rows": 856
+      },
+      "ge-healthcare-06263bf9": {
+        "positives": 4,
+        "rows": 852
+      },
+      "ge-medical-systems-417db4bd": {
+        "positives": 4,
+        "rows": 849
+      },
+      "ge-medical-systems-information-technolog-bb4dd97c": {
+        "positives": 6,
+        "rows": 870
+      },
+      "ge-medical-systems-scs-b2d92616": {
+        "positives": 0,
+        "rows": 888
+      },
+      "ge-medical-systems-ultrasound-and-primar-689e90e9": {
+        "positives": 4,
+        "rows": 860
+      },
+      "geistlich-pharma-f5ff30bf": {
+        "positives": 4,
+        "rows": 868
+      },
+      "globus-medical-bb7cb485": {
+        "positives": 4,
+        "rows": 818
+      },
+      "hologic-ddbf05c1": {
+        "positives": 11,
+        "rows": 841
+      },
+      "howmedica-osteonics-bbe045ac": {
+        "positives": 0,
+        "rows": 888
+      },
+      "implantcast-a179f63f": {
+        "positives": 0,
+        "rows": 888
+      },
+      "in2bones-usa-473d7e56": {
+        "positives": 0,
+        "rows": 888
+      },
+      "inari-medical-1f7b230f": {
+        "positives": 4,
+        "rows": 874
+      },
+      "innovasis-d0379e89": {
+        "positives": 4,
+        "rows": 878
+      },
+      "innovative-health-6384c843": {
+        "positives": 7,
+        "rows": 832
+      },
+      "institut-straumann-b4694f95": {
+        "positives": 4,
+        "rows": 885
+      },
+      "instrumentation-laboratory-7f26e476": {
+        "positives": 3,
+        "rows": 891
+      },
+      "integra-lifesciences-b3d46d8f": {
+        "positives": 8,
+        "rows": 826
+      },
+      "intuitive-surgical-0f89cd09": {
+        "positives": 12,
+        "rows": 836
+      },
+      "iray-technology-taicang-8db8e92f": {
+        "positives": 0,
+        "rows": 666
+      },
+      "ischemaview-700def14": {
+        "positives": 3,
+        "rows": 867
+      },
+      "jeil-medical-c0cf915c": {
+        "positives": 4,
+        "rows": 872
+      },
+      "jjgc-industria-e-comercio-de-materiais-d-2bcdf6bf": {
+        "positives": 0,
+        "rows": 888
+      },
+      "joytech-healthcare-5e87ea41": {
+        "positives": 4,
+        "rows": 887
+      },
+      "k2m-b117177d": {
+        "positives": 6,
+        "rows": 881
+      },
+      "karl-storz-4a3cd312": {
+        "positives": 14,
+        "rows": 828
+      },
+      "karl-storz-endoscopy-america-663e8f1c": {
+        "positives": 6,
+        "rows": 838
+      },
+      "kls-martin-63e3d262": {
+        "positives": 5,
+        "rows": 836
+      },
+      "l-k-biomed-e7e51ac9": {
+        "positives": 4,
+        "rows": 885
+      },
+      "lg-electronics-b60647e9": {
+        "positives": 4,
+        "rows": 872
+      },
+      "life-spine-82992f78": {
+        "positives": 6,
+        "rows": 872
+      },
+      "lima-corporate-8c8b7fa0": {
+        "positives": 0,
+        "rows": 888
+      },
+      "masimo-48695847": {
+        "positives": 8,
+        "rows": 856
+      },
+      "materialise-6268e653": {
+        "positives": 7,
+        "rows": 853
+      },
+      "medacta-international-2cde7e74": {
+        "positives": 19,
+        "rows": 801
+      },
+      "medartis-10bf3c7d": {
+        "positives": 0,
+        "rows": 888
+      },
+      "medicrea-international-98be40f8": {
+        "positives": 6,
+        "rows": 873
+      },
+      "medline-industries-06f5208a": {
+        "positives": 20,
+        "rows": 805
+      },
+      "medos-international-69d83c48": {
+        "positives": 9,
+        "rows": 796
+      },
+      "medtronic-4bdceace": {
+        "positives": 49,
+        "rows": 681
+      },
+      "medtronic-minimed-4064e4dd": {
+        "positives": 4,
+        "rows": 878
+      },
+      "medtronic-navigation-41611192": {
+        "positives": 11,
+        "rows": 829
+      },
+      "medtronic-sofamor-danek-usa-82518551": {
+        "positives": 4,
+        "rows": 837
+      },
+      "medtronic-vascular-a716a021": {
+        "positives": 0,
+        "rows": 860
+      },
+      "megagen-implant-afb4790b": {
+        "positives": 4,
+        "rows": 870
+      },
+      "merit-medical-systems-115df430": {
+        "positives": 7,
+        "rows": 809
+      },
+      "micro-tech-nanjing-dad0cfa1": {
+        "positives": 3,
+        "rows": 863
+      },
+      "micro-therapeutics-10b91046": {
+        "positives": 6,
+        "rows": 872
+      },
+      "microport-orthopedics-ae952a8b": {
+        "positives": 0,
+        "rows": 888
+      },
+      "microvention-c72e1236": {
+        "positives": 8,
+        "rows": 854
+      },
+      "mirus-5c2dbdbf": {
+        "positives": 4,
+        "rows": 855
+      },
+      "nakanishi-ef0945fa": {
+        "positives": 0,
+        "rows": 888
+      },
+      "newclip-technics-5fb932e1": {
+        "positives": 4,
+        "rows": 880
+      },
+      "nobel-biocare-94aa778a": {
+        "positives": 0,
+        "rows": 844
+      },
+      "nova-biomedical-81627b85": {
+        "positives": 9,
+        "rows": 876
+      },
+      "nu-vasive-e3ce3c5c": {
+        "positives": 0,
+        "rows": 844
+      },
+      "nuvasive-specialized-orthopedics-54739888": {
+        "positives": 2,
+        "rows": 866
+      },
+      "nvision-biomedical-technologies-9db2f8e4": {
+        "positives": 0,
+        "rows": 864
+      },
+      "olympus-medical-systems-4fa2f188": {
+        "positives": 19,
+        "rows": 811
+      },
+      "ortho-clinical-diagnostics-5bf6f16d": {
+        "positives": 0,
+        "rows": 629
+      },
+      "orthofix-26effb4e": {
+        "positives": 8,
+        "rows": 844
+      },
+      "orthopediatrics-ab7d5f30": {
+        "positives": 4,
+        "rows": 853
+      },
+      "orthosoft-96531ba1": {
+        "positives": 0,
+        "rows": 864
+      },
+      "ossio-b8c5d123": {
+        "positives": 0,
+        "rows": 777
+      },
+      "osstem-implant-520d8338": {
+        "positives": 4,
+        "rows": 876
+      },
+      "paragon-28-5eea75a6": {
+        "positives": 0,
+        "rows": 888
+      },
+      "pentax-of-america-d99b91f4": {
+        "positives": 4,
+        "rows": 868
+      },
+      "penumbra-d90a65a9": {
+        "positives": 4,
+        "rows": 839
+      },
+      "philips-medical-systems-nederland-2e7cf935": {
+        "positives": 4,
+        "rows": 870
+      },
+      "philips-ultrasound-4aa037a2": {
+        "positives": 4,
+        "rows": 861
+      },
+      "prismatik-dentalcraft-54374ba9": {
+        "positives": 13,
+        "rows": 884
+      },
+      "promisemed-hangzhou-meditech-83ae051a": {
+        "positives": 9,
+        "rows": 874
+      },
+      "qiagen-07992917": {
+        "positives": 0,
+        "rows": 882
+      },
+      "quanta-system-1e809414": {
+        "positives": 0,
+        "rows": 888
+      },
+      "riverpoint-medical-2be1b095": {
+        "positives": 6,
+        "rows": 885
+      },
+      "roche-diagnostics-eec180c1": {
+        "positives": 4,
+        "rows": 869
+      },
+      "roche-molecular-systems-bb3f5913": {
+        "positives": 12,
+        "rows": 878
+      },
+      "samsung-electronics-81bb2303": {
+        "positives": 14,
+        "rows": 845
+      },
+      "samsung-medison-281b823f": {
+        "positives": 4,
+        "rows": 877
+      },
+      "seaspine-orthopedics-b4c8fb55": {
+        "positives": 4,
+        "rows": 865
+      },
+      "shanghai-united-imaging-healthcare-2ab5e736": {
+        "positives": 3,
+        "rows": 867
+      },
+      "shenzhen-kaiyan-medical-equipment-ef33e78a": {
+        "positives": 0,
+        "rows": 296
+      },
+      "shenzhen-mindray-bio-medical-electronics-b4ea0e74": {
+        "positives": 0,
+        "rows": 841
+      },
+      "shenzhen-tph-technology-6b42a824": {
+        "positives": 0,
+        "rows": 555
+      },
+      "shenzhen-ulike-smart-electronics-766c40f1": {
+        "positives": 0,
+        "rows": 518
+      },
+      "siemens-healthcare-843e09eb": {
+        "positives": 4,
+        "rows": 871
+      },
+      "siemens-healthcare-diagnostics-2e61c912": {
+        "positives": 9,
+        "rows": 865
+      },
+      "siemens-medical-solutions-usa-902782aa": {
+        "positives": 0,
+        "rows": 840
+      },
+      "signature-orthopaedics-6c741379": {
+        "positives": 4,
+        "rows": 877
+      },
+      "skeletal-dynamics-0e139fc8": {
+        "positives": 0,
+        "rows": 888
+      },
+      "smith-nephew-f4880c3a": {
+        "positives": 12,
+        "rows": 810
+      },
+      "smith-nephew-medical-063dbb62": {
+        "positives": 0,
+        "rows": 888
+      },
+      "sorin-group-italia-677fd2c8": {
+        "positives": 4,
+        "rows": 907
+      },
+      "spinal-elements-7ff9a31d": {
+        "positives": 0,
+        "rows": 877
+      },
+      "spine-wave-68fceeab": {
+        "positives": 6,
+        "rows": 874
+      },
+      "spineart-5f40da8b": {
+        "positives": 6,
+        "rows": 857
+      },
+      "spineology-c0487074": {
+        "positives": 5,
+        "rows": 869
+      },
+      "steris-73b92d29": {
+        "positives": 8,
+        "rows": 835
+      },
+      "stryker-5ebd7853": {
+        "positives": 8,
+        "rows": 713
+      },
+      "stryker-endoscopy-92fb8323": {
+        "positives": 6,
+        "rows": 548
+      },
+      "stryker-instruments-8aed6f7a": {
+        "positives": 27,
+        "rows": 865
+      },
+      "stryker-neurovascular-222a9687": {
+        "positives": 5,
+        "rows": 855
+      },
+      "stryker-sustainability-solutions-0878460e": {
+        "positives": 11,
+        "rows": 828
+      },
+      "surgical-instrument-service-and-savings-b880d269": {
+        "positives": 15,
+        "rows": 864
+      },
+      "synthes-usa-products-54657124": {
+        "positives": 3,
+        "rows": 866
+      },
+      "teleflex-medical-72161508": {
+        "positives": 14,
+        "rows": 858
+      },
+      "terrats-medical-5eb42bdf": {
+        "positives": 0,
+        "rows": 888
+      },
+      "think-surgical-fdd9a86b": {
+        "positives": 0,
+        "rows": 888
+      },
+      "tornier-358cf0dc": {
+        "positives": 4,
+        "rows": 869
+      },
+      "trimed-b9554da5": {
+        "positives": 0,
+        "rows": 851
+      },
+      "tyber-medical-5fd9988f": {
+        "positives": 6,
+        "rows": 879
+      },
+      "united-orthopedic-2a28be34": {
+        "positives": 0,
+        "rows": 888
+      },
+      "varian-medical-systems-0768b808": {
+        "positives": 12,
+        "rows": 861
+      },
+      "vascular-solutions-a50f9c26": {
+        "positives": 6,
+        "rows": 852
+      },
+      "ventana-medical-systems-0f10151a": {
+        "positives": 5,
+        "rows": 774
+      },
+      "voco-8095d23b": {
+        "positives": 1,
+        "rows": 889
+      },
+      "vy-spine-b5a7d2f2": {
+        "positives": 0,
+        "rows": 592
+      },
+      "waldemar-link-62c7a34b": {
+        "positives": 0,
+        "rows": 888
+      },
+      "wilson-cook-medical-32920349": {
+        "positives": 7,
+        "rows": 867
+      },
+      "wontech-a80556aa": {
+        "positives": 4,
+        "rows": 876
+      },
+      "wrightmedicaltechnologyinc-55a679b1": {
+        "positives": 0,
+        "rows": 889
+      },
+      "zavation-medical-products-f0e33cd2": {
+        "positives": 4,
+        "rows": 879
+      },
+      "zimmer-3f8bb90c": {
+        "positives": 5,
+        "rows": 870
+      }
+    },
+    "intersection": 195,
+    "only_computed": [
+      "cook-ireland-4fd2deea",
+      "foundation-medicine-e8a2f38b",
+      "medtronic-minimed-4064e4dd",
+      "medtronic-vascular-a716a021",
+      "ventana-medical-systems-0f10151a"
+    ],
+    "only_in_artifact": [
+      "resmed-c6c5d1cf",
+      "si-bone-aac3a36e",
+      "sonoscape-medical-b154c140",
+      "tandem-diabetes-care-c365c570",
+      "zhejiang-innuovo-rehabilitation-devices-c2a04b1b"
+    ],
+    "symmetric_difference": 10
+  },
+  "comparison": {
+    "headline_new": {
+      "mde_delta_ap": 0.08762981473135323,
+      "per_window_delta_ap": [
+        0.058065,
+        0.11759,
+        0.142536
+      ],
+      "pooled_delta_ap": 0.09521054064609467,
+      "rule_satisfied": true,
+      "windows_excluding_zero_entity": 3,
+      "windows_excluding_zero_pair": 3
+    },
+    "headline_old": {
+      "mde_delta_ap": 0.08768856488853226,
+      "per_window_delta_ap": [
+        0.058165,
+        0.118931,
+        0.149265
+      ],
+      "pooled_delta_ap": 0.09732061085035523,
+      "rule_satisfied": true,
+      "windows_excluding_zero_entity": 3,
+      "windows_excluding_zero_pair": 3
+    },
+    "per_window": [
+      {
+        "baseline_pr_auc": 0.02527037225051716,
+        "delta_ap": 0.058064972207422946,
+        "delta_ap_change": -0.0001003736691830362,
+        "model_pr_auc": 0.08333534445794011,
+        "new_ci_entity": {
+          "ci_high": 0.15709056060033239,
+          "ci_low": 0.00600603571570308,
+          "delta": 0.058064972207422946,
+          "n_clusters": 192,
+          "p_delta_le_zero": 0.014,
+          "se_delta": 0.03954727559492997
+        },
+        "new_ci_pair": {
+          "ci_high": 0.1389564088092301,
+          "ci_low": 0.007491664406595135,
+          "delta": 0.058064972207422946,
+          "n_clusters": 6891,
+          "p_delta_le_zero": 0.015,
+          "se_delta": 0.0337783344722317
+        },
+        "new_excludes_zero_entity": true,
+        "new_excludes_zero_pair": true,
+        "old_baseline_pr_auc": 0.02508705394033863,
+        "old_ci_entity": {
+          "ci_high": 0.1611610263738822,
+          "ci_low": 0.001482252512136989,
+          "delta": 0.05816534587660598,
+          "n_clusters": 192,
+          "p_delta_le_zero": 0.0225,
+          "se_delta": 0.040028244445745036
+        },
+        "old_ci_pair": {
+          "ci_high": 0.1396940288877547,
+          "ci_low": 0.00941732313652592,
+          "delta": 0.05816534587660598,
+          "n_clusters": 6890,
+          "p_delta_le_zero": 0.012,
+          "se_delta": 0.033281690268119196
+        },
+        "old_delta_ap": 0.05816534587660598,
+        "old_excludes_zero_entity": true,
+        "old_excludes_zero_pair": true,
+        "old_model_pr_auc": 0.08325239981694461,
+        "old_positives": 41,
+        "old_rows": 6890,
+        "origin": "2025-04-01",
+        "positives": 42,
+        "rows": 6891
+      },
+      {
+        "baseline_pr_auc": 0.031248152534081863,
+        "delta_ap": 0.11758952532332512,
+        "delta_ap_change": -0.0013419217394904787,
+        "model_pr_auc": 0.14883767785740698,
+        "new_ci_entity": {
+          "ci_high": 0.21523325950285066,
+          "ci_low": 0.035448070871060416,
+          "delta": 0.11758952532332512,
+          "n_clusters": 192,
+          "p_delta_le_zero": 0.0005,
+          "se_delta": 0.044268647506398834
+        },
+        "new_ci_pair": {
+          "ci_high": 0.20731726510080734,
+          "ci_low": 0.04259412690346445,
+          "delta": 0.11758952532332512,
+          "n_clusters": 6891,
+          "p_delta_le_zero": 0.0005,
+          "se_delta": 0.04273515301228978
+        },
+        "new_excludes_zero_entity": true,
+        "new_excludes_zero_pair": true,
+        "old_baseline_pr_auc": 0.03099681366612002,
+        "old_ci_entity": {
+          "ci_high": 0.20942431494775995,
+          "ci_low": 0.03864479965386208,
+          "delta": 0.1189314470628156,
+          "n_clusters": 192,
+          "p_delta_le_zero": 0.0005,
+          "se_delta": 0.04351978694785093
+        },
+        "old_ci_pair": {
+          "ci_high": 0.20598216754221688,
+          "ci_low": 0.04208233567525347,
+          "delta": 0.1189314470628156,
+          "n_clusters": 6890,
+          "p_delta_le_zero": 0.0005,
+          "se_delta": 0.042161718752913864
+        },
+        "old_delta_ap": 0.1189314470628156,
+        "old_excludes_zero_entity": true,
+        "old_excludes_zero_pair": true,
+        "old_model_pr_auc": 0.14992826072893561,
+        "old_positives": 46,
+        "old_rows": 6890,
+        "origin": "2025-07-01",
+        "positives": 47,
+        "rows": 6891
+      },
+      {
+        "baseline_pr_auc": 0.042443856181332125,
+        "delta_ap": 0.14253595340135466,
+        "delta_ap_change": -0.0067291596367731465,
+        "model_pr_auc": 0.18497980958268678,
+        "new_ci_entity": {
+          "ci_high": 0.23023484215841805,
+          "ci_low": 0.06207449960614189,
+          "delta": 0.14253595340135466,
+          "n_clusters": 192,
+          "p_delta_le_zero": 0.0,
+          "se_delta": 0.04247626654514034
+        },
+        "new_ci_pair": {
+          "ci_high": 0.22636412077545054,
+          "ci_low": 0.06630492646838605,
+          "delta": 0.14253595340135466,
+          "n_clusters": 6892,
+          "p_delta_le_zero": 0.0,
+          "se_delta": 0.04085197184615506
+        },
+        "new_excludes_zero_entity": true,
+        "new_excludes_zero_pair": true,
+        "old_baseline_pr_auc": 0.04294671202440673,
+        "old_ci_entity": {
+          "ci_high": 0.2342514996550591,
+          "ci_low": 0.06972037842851288,
+          "delta": 0.1492651130381278,
+          "n_clusters": 192,
+          "p_delta_le_zero": 0.0,
+          "se_delta": 0.04166026544147954
+        },
+        "old_ci_pair": {
+          "ci_high": 0.23754362981404087,
+          "ci_low": 0.07018055354466257,
+          "delta": 0.1492651130381278,
+          "n_clusters": 6891,
+          "p_delta_le_zero": 0.0,
+          "se_delta": 0.04256035973510142
+        },
+        "old_delta_ap": 0.1492651130381278,
+        "old_excludes_zero_entity": true,
+        "old_excludes_zero_pair": true,
+        "old_model_pr_auc": 0.19221182506253454,
+        "old_positives": 53,
+        "old_rows": 6891,
+        "origin": "2025-10-01",
+        "positives": 52,
+        "rows": 6892
+      }
+    ],
+    "pooled": {
+      "delta_above_mde_new": true,
+      "delta_above_mde_old": true,
+      "delta_change": -0.0021100702042605585,
+      "mde_change": -5.875015717902998e-05,
+      "new_baseline_pr_auc": 0.031776462764873295,
+      "new_entity_ci": {
+        "ci_high": 0.1642437052437801,
+        "ci_low": 0.040998480048191094,
+        "cluster_method": "cluster",
+        "confidence_level": 0.95,
+        "delta": 0.09521054064609467,
+        "interval": "percentile",
+        "mean_delta": 0.09698942770771443,
+        "metric": "average_precision_delta",
+        "n_clusters": 192,
+        "n_positives": 141,
+        "n_rows": 20674,
+        "p_delta_le_zero": 0.0005,
+        "point_delta": 0.09521054064609467,
+        "resamples": 2000,
+        "se_delta": 0.03127865401484482,
+        "seed": 7,
+        "skipped_resamples": 0,
+        "valid_resamples": 2000
+      },
+      "new_model_pr_auc": 0.12698700341096797,
+      "new_pair_ci": {
+        "ci_high": 0.1574350555523965,
+        "ci_low": 0.04647827502019102,
+        "cluster_method": "cluster",
+        "confidence_level": 0.95,
+        "delta": 0.09521054064609467,
+        "interval": "percentile",
+        "mean_delta": 0.09737274913908694,
+        "metric": "average_precision_delta",
+        "n_clusters": 6916,
+        "n_positives": 141,
+        "n_rows": 20674,
+        "p_delta_le_zero": 0.0,
+        "point_delta": 0.09521054064609467,
+        "resamples": 2000,
+        "se_delta": 0.028009194822280023,
+        "seed": 7,
+        "skipped_resamples": 0,
+        "valid_resamples": 2000
+      },
+      "new_positives": 141,
+      "new_rows": 20674,
+      "old_baseline_pr_auc": 0.031868463565008075,
+      "old_entity_ci": {
+        "ci_high": 0.16972161650100834,
+        "ci_low": 0.042609217917385214,
+        "cluster_method": "cluster",
+        "confidence_level": 0.95,
+        "delta": 0.09732061085035523,
+        "interval": "percentile",
+        "mean_delta": 0.09933125292396049,
+        "metric": "average_precision_delta",
+        "n_clusters": 192,
+        "n_positives": 140,
+        "n_rows": 20671,
+        "p_delta_le_zero": 0.0,
+        "point_delta": 0.09732061085035523,
+        "resamples": 2000,
+        "se_delta": 0.03129962434150082,
+        "seed": 7,
+        "skipped_resamples": 0,
+        "valid_resamples": 2000
+      },
+      "old_model_pr_auc": 0.12918907441536331,
+      "old_pair_ci": {
+        "ci_high": 0.15831710891720455,
+        "ci_low": 0.04910569974922681,
+        "cluster_method": "cluster",
+        "confidence_level": 0.95,
+        "delta": 0.09732061085035523,
+        "interval": "percentile",
+        "mean_delta": 0.099279945849747,
+        "metric": "average_precision_delta",
+        "n_clusters": 6914,
+        "n_positives": 140,
+        "n_rows": 20671,
+        "p_delta_le_zero": 0.0,
+        "point_delta": 0.09732061085035523,
+        "resamples": 2000,
+        "se_delta": 0.027715363327186656,
+        "seed": 7,
+        "skipped_resamples": 0,
+        "valid_resamples": 2000
+      },
+      "old_positives": 140,
+      "old_rows": 20671
+    },
+    "verdict": {
+      "conclusion_unchanged": true,
+      "direction_unchanged": true,
+      "magnitude_retained": 0.9783183625151604,
+      "rule_satisfied_unchanged": true,
+      "sign_stable_positive": true,
+      "windows_excluding_zero_unchanged": true
+    }
+  },
+  "gap_impact": {
+    "artifact_only_keys": [
+      "resmed-c6c5d1cf",
+      "si-bone-aac3a36e",
+      "sonoscape-medical-b154c140",
+      "tandem-diabetes-care-c365c570",
+      "zhejiang-innuovo-rehabilitation-devices-c2a04b1b"
+    ],
+    "computed_only_keys": [
+      "cook-ireland-4fd2deea",
+      "foundation-medicine-e8a2f38b",
+      "medtronic-minimed-4064e4dd",
+      "medtronic-vascular-a716a021",
+      "ventana-medical-systems-0f10151a"
+    ],
+    "computed_panel_positives_from_computed_only_keys": 22,
+    "computed_panel_rows_from_computed_only_keys": 4267,
+    "fixed_panel_positives_from_artifact_only_keys": 12,
+    "fixed_panel_rows_from_artifact_only_keys": 4050,
+    "note": "The committed artefact cohort was recomputed at run time; the fixed-cohort panel uses the committed artefact keys. The swapped 5+5 keys change the panel directly and also shift per-origin active-entity/track sets, so the metric deltas below are the measured net effect, not only the rows on the swapped keys."
+  },
+  "inference": {
+    "committed_recomputed_cohort": {
+      "decision_inputs": {
+        "per_window_majority": {
+          "entity": {
+            "deltas": [
+              0.058165,
+              0.118931,
+              0.149265
+            ],
+            "majority": true,
+            "sign_stable_positive": true,
+            "windows_excluding_zero": 3,
+            "windows_total": 3
+          },
+          "pair": {
+            "deltas": [
+              0.058165,
+              0.118931,
+              0.149265
+            ],
+            "majority": true,
+            "sign_stable_positive": true,
+            "windows_excluding_zero": 3,
+            "windows_total": 3
+          }
+        },
+        "pooled_delta": 0.09732061085035523,
+        "pooled_entity_ci_excludes_zero": true,
+        "pooled_pair_ci_excludes_zero": true,
+        "pre_registered_rule": "H2.2: signal is SUPPORTED if the cluster CI on delta-AP excludes zero in the majority of pre-declared windows AND pooled CIs exclude zero under BOTH clustering choices; it is a WELL-POWERED NEGATIVE if the pooled point estimate is inside the MDE but no CI excludes zero; otherwise still underpowered.",
+        "rule_satisfied": true
+      },
+      "inference": {
+        "clustered_bootstrap": {
+          "entity": {
+            "ci_high": 0.16972161650100834,
+            "ci_low": 0.042609217917385214,
+            "cluster_method": "cluster",
+            "confidence_level": 0.95,
+            "delta": 0.09732061085035523,
+            "interval": "percentile",
+            "mean_delta": 0.09933125292396049,
+            "metric": "average_precision_delta",
+            "n_clusters": 192,
+            "n_positives": 140,
+            "n_rows": 20671,
+            "p_delta_le_zero": 0.0,
+            "point_delta": 0.09732061085035523,
+            "resamples": 2000,
+            "se_delta": 0.03129962434150082,
+            "seed": 7,
+            "skipped_resamples": 0,
+            "valid_resamples": 2000
+          },
+          "pair": {
+            "ci_high": 0.15831710891720455,
+            "ci_low": 0.04910569974922681,
+            "cluster_method": "cluster",
+            "confidence_level": 0.95,
+            "delta": 0.09732061085035523,
+            "interval": "percentile",
+            "mean_delta": 0.099279945849747,
+            "metric": "average_precision_delta",
+            "n_clusters": 6914,
+            "n_positives": 140,
+            "n_rows": 20671,
+            "p_delta_le_zero": 0.0,
+            "point_delta": 0.09732061085035523,
+            "resamples": 2000,
+            "se_delta": 0.027715363327186656,
+            "seed": 7,
+            "skipped_resamples": 0,
+            "valid_resamples": 2000
+          }
+        },
+        "evalstats_available": true,
+        "evalstats_error": null,
+        "mde": {
+          "design_stage_cycle1_26_positives": {
+            "alpha": 0.05,
+            "approximation": "plug_in_binomial_ap_variance",
+            "assumed_ap": 0.5,
+            "assumed_ap_is_worst_case": true,
+            "base_rate": 0.0012578007837066422,
+            "conservative": true,
+            "exact": false,
+            "limitations": [
+              "AP is not a binomial proportion; Var(AP) ~= m(1-m)/n_positives is a plug-in approximation, not an exact variance. With m = 0.5 it is a conservative upper bound on m(1-m).",
+              "Real skill usually makes the bootstrap SE larger than the no-skill simulation (reported separately as the optimistic lower bound), which is why the analytic bound defaults to the m = 0.5 worst case.",
+              "The paired correlation is assumed (default 0); positively correlated scorers have a smaller SE.",
+              "The authoritative MDE uses mde_from_se(clustered_bootstrap_delta_ap(...)['se_delta']) on the actual holdout, not this design value."
+            ],
+            "mde": 0.3885099675612053,
+            "mde_delta_ap": 0.3885099675612053,
+            "mde_delta_ap_null_simulation": 0.005705953863371634,
+            "model": "plug_in_binomial_ap_variance",
+            "n_positives": 26,
+            "n_rows": 20671,
+            "null_simulation_resamples": 1000,
+            "null_simulation_seed": 7,
+            "power": 0.8,
+            "power_at_observed_delta": null,
+            "scorer_correlation": 0.0,
+            "se": 0.1386750490563073,
+            "se_delta_ap": 0.1386750490563073,
+            "se_delta_ap_null_simulation": 0.002036687596159116,
+            "variance_ap_approximation": 0.009615384615384616,
+            "variance_delta_approximation": 0.019230769230769232,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          },
+          "design_stage_cycle2_46_positives": {
+            "alpha": 0.05,
+            "approximation": "plug_in_binomial_ap_variance",
+            "assumed_ap": 0.5,
+            "assumed_ap_is_worst_case": true,
+            "base_rate": 0.002225339848096367,
+            "conservative": true,
+            "exact": false,
+            "limitations": [
+              "AP is not a binomial proportion; Var(AP) ~= m(1-m)/n_positives is a plug-in approximation, not an exact variance. With m = 0.5 it is a conservative upper bound on m(1-m).",
+              "Real skill usually makes the bootstrap SE larger than the no-skill simulation (reported separately as the optimistic lower bound), which is why the analytic bound defaults to the m = 0.5 worst case.",
+              "The paired correlation is assumed (default 0); positively correlated scorers have a smaller SE.",
+              "The authoritative MDE uses mde_from_se(clustered_bootstrap_delta_ap(...)['se_delta']) on the actual holdout, not this design value."
+            ],
+            "mde": 0.29208545009587406,
+            "mde_delta_ap": 0.29208545009587406,
+            "mde_delta_ap_null_simulation": 0.005089164528709302,
+            "model": "plug_in_binomial_ap_variance",
+            "n_positives": 46,
+            "n_rows": 20671,
+            "null_simulation_resamples": 1000,
+            "null_simulation_seed": 7,
+            "power": 0.8,
+            "power_at_observed_delta": null,
+            "scorer_correlation": 0.0,
+            "se": 0.10425720702853739,
+            "se_delta_ap": 0.10425720702853739,
+            "se_delta_ap_null_simulation": 0.0018165303328110884,
+            "variance_ap_approximation": 0.005434782608695652,
+            "variance_delta_approximation": 0.010869565217391304,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          },
+          "design_stage_pooled": {
+            "alpha": 0.05,
+            "approximation": "plug_in_binomial_ap_variance",
+            "assumed_ap": 0.5,
+            "assumed_ap_is_worst_case": true,
+            "base_rate": 0.006772773450728073,
+            "conservative": true,
+            "exact": false,
+            "limitations": [
+              "AP is not a binomial proportion; Var(AP) ~= m(1-m)/n_positives is a plug-in approximation, not an exact variance. With m = 0.5 it is a conservative upper bound on m(1-m).",
+              "Real skill usually makes the bootstrap SE larger than the no-skill simulation (reported separately as the optimistic lower bound), which is why the analytic bound defaults to the m = 0.5 worst case.",
+              "The paired correlation is assumed (default 0); positively correlated scorers have a smaller SE.",
+              "The authoritative MDE uses mde_from_se(clustered_bootstrap_delta_ap(...)['se_delta']) on the actual holdout, not this design value."
+            ],
+            "mde": 0.16742674021055617,
+            "mde_delta_ap": 0.16742674021055617,
+            "mde_delta_ap_null_simulation": 0.004322938080909238,
+            "model": "plug_in_binomial_ap_variance",
+            "n_positives": 140,
+            "n_rows": 20671,
+            "null_simulation_resamples": 1000,
+            "null_simulation_seed": 7,
+            "power": 0.8,
+            "power_at_observed_delta": null,
+            "scorer_correlation": 0.0,
+            "se": 0.05976143046671968,
+            "se_delta_ap": 0.05976143046671968,
+            "se_delta_ap_null_simulation": 0.001543032870432148,
+            "variance_ap_approximation": 0.0017857142857142857,
+            "variance_delta_approximation": 0.0035714285714285713,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          },
+          "observed_from_entity_cluster_se": {
+            "alpha": 0.05,
+            "approximation": "normal_two_sided",
+            "exact": false,
+            "mde_delta_ap": 0.08768856488853226,
+            "notes": [
+              "MDE assumes the bootstrap distribution of the AP difference is roughly normal and symmetric.",
+              "The SE must come from the same clustered resampling model as the interval that is reported."
+            ],
+            "power": 0.8,
+            "se_delta_ap": 0.03129962434150082,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          }
+        },
+        "pooled": {
+          "baseline_pr_auc": 0.031868463565008075,
+          "entity_clusters": 192,
+          "model_pr_auc": 0.12918907441536331,
+          "pair_clusters": 6914,
+          "positives": 140,
+          "prevalence": 0.006772773450728073,
+          "rows": 20671
+        }
+      },
+      "per_window_inference": [
+        {
+          "baseline_pr_auc": 0.02508705394033863,
+          "ci_entity": {
+            "ci_high": 0.1611610263738822,
+            "ci_low": 0.001482252512136989,
+            "delta": 0.05816534587660598,
+            "n_clusters": 192,
+            "p_delta_le_zero": 0.0225,
+            "se_delta": 0.040028244445745036
+          },
+          "ci_pair": {
+            "ci_high": 0.1396940288877547,
+            "ci_low": 0.00941732313652592,
+            "delta": 0.05816534587660598,
+            "n_clusters": 6890,
+            "p_delta_le_zero": 0.012,
+            "se_delta": 0.033281690268119196
+          },
+          "delta_ap": 0.05816534587660598,
+          "excludes_zero_entity": true,
+          "excludes_zero_pair": true,
+          "model_pr_auc": 0.08325239981694461,
+          "origin": "2025-04-01",
+          "positives": 41,
+          "rows": 6890
+        },
+        {
+          "baseline_pr_auc": 0.03099681366612002,
+          "ci_entity": {
+            "ci_high": 0.20942431494775995,
+            "ci_low": 0.03864479965386208,
+            "delta": 0.1189314470628156,
+            "n_clusters": 192,
+            "p_delta_le_zero": 0.0005,
+            "se_delta": 0.04351978694785093
+          },
+          "ci_pair": {
+            "ci_high": 0.20598216754221688,
+            "ci_low": 0.04208233567525347,
+            "delta": 0.1189314470628156,
+            "n_clusters": 6890,
+            "p_delta_le_zero": 0.0005,
+            "se_delta": 0.042161718752913864
+          },
+          "delta_ap": 0.1189314470628156,
+          "excludes_zero_entity": true,
+          "excludes_zero_pair": true,
+          "model_pr_auc": 0.14992826072893561,
+          "origin": "2025-07-01",
+          "positives": 46,
+          "rows": 6890
+        },
+        {
+          "baseline_pr_auc": 0.04294671202440673,
+          "ci_entity": {
+            "ci_high": 0.2342514996550591,
+            "ci_low": 0.06972037842851288,
+            "delta": 0.1492651130381278,
+            "n_clusters": 192,
+            "p_delta_le_zero": 0.0,
+            "se_delta": 0.04166026544147954
+          },
+          "ci_pair": {
+            "ci_high": 0.23754362981404087,
+            "ci_low": 0.07018055354466257,
+            "delta": 0.1492651130381278,
+            "n_clusters": 6891,
+            "p_delta_le_zero": 0.0,
+            "se_delta": 0.04256035973510142
+          },
+          "delta_ap": 0.1492651130381278,
+          "excludes_zero_entity": true,
+          "excludes_zero_pair": true,
+          "model_pr_auc": 0.19221182506253454,
+          "origin": "2025-10-01",
+          "positives": 53,
+          "rows": 6891
+        }
+      ],
+      "prediction_rows": 20671
+    },
+    "fixed_cohort": {
+      "decision_inputs": {
+        "per_window_majority": {
+          "entity": {
+            "deltas": [
+              0.058065,
+              0.11759,
+              0.142536
+            ],
+            "majority": true,
+            "sign_stable_positive": true,
+            "windows_excluding_zero": 3,
+            "windows_total": 3
+          },
+          "pair": {
+            "deltas": [
+              0.058065,
+              0.11759,
+              0.142536
+            ],
+            "majority": true,
+            "sign_stable_positive": true,
+            "windows_excluding_zero": 3,
+            "windows_total": 3
+          }
+        },
+        "pooled_delta": 0.09521054064609467,
+        "pooled_entity_ci_excludes_zero": true,
+        "pooled_pair_ci_excludes_zero": true,
+        "rule_satisfied": true
+      },
+      "inference": {
+        "clustered_bootstrap": {
+          "entity": {
+            "ci_high": 0.1642437052437801,
+            "ci_low": 0.040998480048191094,
+            "cluster_method": "cluster",
+            "confidence_level": 0.95,
+            "delta": 0.09521054064609467,
+            "interval": "percentile",
+            "mean_delta": 0.09698942770771443,
+            "metric": "average_precision_delta",
+            "n_clusters": 192,
+            "n_positives": 141,
+            "n_rows": 20674,
+            "p_delta_le_zero": 0.0005,
+            "point_delta": 0.09521054064609467,
+            "resamples": 2000,
+            "se_delta": 0.03127865401484482,
+            "seed": 7,
+            "skipped_resamples": 0,
+            "valid_resamples": 2000
+          },
+          "pair": {
+            "ci_high": 0.1574350555523965,
+            "ci_low": 0.04647827502019102,
+            "cluster_method": "cluster",
+            "confidence_level": 0.95,
+            "delta": 0.09521054064609467,
+            "interval": "percentile",
+            "mean_delta": 0.09737274913908694,
+            "metric": "average_precision_delta",
+            "n_clusters": 6916,
+            "n_positives": 141,
+            "n_rows": 20674,
+            "p_delta_le_zero": 0.0,
+            "point_delta": 0.09521054064609467,
+            "resamples": 2000,
+            "se_delta": 0.028009194822280023,
+            "seed": 7,
+            "skipped_resamples": 0,
+            "valid_resamples": 2000
+          }
+        },
+        "evalstats_available": true,
+        "evalstats_error": null,
+        "mde": {
+          "design_stage_cycle1_26_positives": {
+            "alpha": 0.05,
+            "approximation": "plug_in_binomial_ap_variance",
+            "assumed_ap": 0.5,
+            "assumed_ap_is_worst_case": true,
+            "base_rate": 0.001257618264486795,
+            "conservative": true,
+            "exact": false,
+            "limitations": [
+              "AP is not a binomial proportion; Var(AP) ~= m(1-m)/n_positives is a plug-in approximation, not an exact variance. With m = 0.5 it is a conservative upper bound on m(1-m).",
+              "Real skill usually makes the bootstrap SE larger than the no-skill simulation (reported separately as the optimistic lower bound), which is why the analytic bound defaults to the m = 0.5 worst case.",
+              "The paired correlation is assumed (default 0); positively correlated scorers have a smaller SE.",
+              "The authoritative MDE uses mde_from_se(clustered_bootstrap_delta_ap(...)['se_delta']) on the actual holdout, not this design value."
+            ],
+            "mde": 0.3885099675612053,
+            "mde_delta_ap": 0.3885099675612053,
+            "mde_delta_ap_null_simulation": 0.005678781956810668,
+            "model": "plug_in_binomial_ap_variance",
+            "n_positives": 26,
+            "n_rows": 20674,
+            "null_simulation_resamples": 1000,
+            "null_simulation_seed": 7,
+            "power": 0.8,
+            "power_at_observed_delta": null,
+            "scorer_correlation": 0.0,
+            "se": 0.1386750490563073,
+            "se_delta_ap": 0.1386750490563073,
+            "se_delta_ap_null_simulation": 0.0020269888347632407,
+            "variance_ap_approximation": 0.009615384615384616,
+            "variance_delta_approximation": 0.019230769230769232,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          },
+          "design_stage_cycle2_46_positives": {
+            "alpha": 0.05,
+            "approximation": "plug_in_binomial_ap_variance",
+            "assumed_ap": 0.5,
+            "assumed_ap_is_worst_case": true,
+            "base_rate": 0.0022250169294766374,
+            "conservative": true,
+            "exact": false,
+            "limitations": [
+              "AP is not a binomial proportion; Var(AP) ~= m(1-m)/n_positives is a plug-in approximation, not an exact variance. With m = 0.5 it is a conservative upper bound on m(1-m).",
+              "Real skill usually makes the bootstrap SE larger than the no-skill simulation (reported separately as the optimistic lower bound), which is why the analytic bound defaults to the m = 0.5 worst case.",
+              "The paired correlation is assumed (default 0); positively correlated scorers have a smaller SE.",
+              "The authoritative MDE uses mde_from_se(clustered_bootstrap_delta_ap(...)['se_delta']) on the actual holdout, not this design value."
+            ],
+            "mde": 0.29208545009587406,
+            "mde_delta_ap": 0.29208545009587406,
+            "mde_delta_ap_null_simulation": 0.005226005955853225,
+            "model": "plug_in_binomial_ap_variance",
+            "n_positives": 46,
+            "n_rows": 20674,
+            "null_simulation_resamples": 1000,
+            "null_simulation_seed": 7,
+            "power": 0.8,
+            "power_at_observed_delta": null,
+            "scorer_correlation": 0.0,
+            "se": 0.10425720702853739,
+            "se_delta_ap": 0.10425720702853739,
+            "se_delta_ap_null_simulation": 0.0018653746179171818,
+            "variance_ap_approximation": 0.005434782608695652,
+            "variance_delta_approximation": 0.010869565217391304,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          },
+          "design_stage_pooled": {
+            "alpha": 0.05,
+            "approximation": "plug_in_binomial_ap_variance",
+            "assumed_ap": 0.5,
+            "assumed_ap_is_worst_case": true,
+            "base_rate": 0.006820160588178388,
+            "conservative": true,
+            "exact": false,
+            "limitations": [
+              "AP is not a binomial proportion; Var(AP) ~= m(1-m)/n_positives is a plug-in approximation, not an exact variance. With m = 0.5 it is a conservative upper bound on m(1-m).",
+              "Real skill usually makes the bootstrap SE larger than the no-skill simulation (reported separately as the optimistic lower bound), which is why the analytic bound defaults to the m = 0.5 worst case.",
+              "The paired correlation is assumed (default 0); positively correlated scorers have a smaller SE.",
+              "The authoritative MDE uses mde_from_se(clustered_bootstrap_delta_ap(...)['se_delta']) on the actual holdout, not this design value."
+            ],
+            "mde": 0.16683197193572313,
+            "mde_delta_ap": 0.16683197193572313,
+            "mde_delta_ap_null_simulation": 0.00405631372743597,
+            "model": "plug_in_binomial_ap_variance",
+            "n_positives": 141,
+            "n_rows": 20674,
+            "null_simulation_resamples": 1000,
+            "null_simulation_seed": 7,
+            "power": 0.8,
+            "power_at_observed_delta": null,
+            "scorer_correlation": 0.0,
+            "se": 0.05954913341754137,
+            "se_delta_ap": 0.05954913341754137,
+            "se_delta_ap_null_simulation": 0.0014478637669735946,
+            "variance_ap_approximation": 0.0017730496453900709,
+            "variance_delta_approximation": 0.0035460992907801418,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          },
+          "observed_from_entity_cluster_se": {
+            "alpha": 0.05,
+            "approximation": "normal_two_sided",
+            "exact": false,
+            "mde_delta_ap": 0.08762981473135323,
+            "notes": [
+              "MDE assumes the bootstrap distribution of the AP difference is roughly normal and symmetric.",
+              "The SE must come from the same clustered resampling model as the interval that is reported."
+            ],
+            "power": 0.8,
+            "se_delta_ap": 0.03127865401484482,
+            "z_alpha": 1.9599639845400816,
+            "z_power": 0.8416212336014723
+          }
+        },
+        "pooled": {
+          "baseline_pr_auc": 0.031776462764873295,
+          "entity_clusters": 192,
+          "model_pr_auc": 0.12698700341096797,
+          "pair_clusters": 6916,
+          "positives": 141,
+          "prevalence": 0.006820160588178388,
+          "rows": 20674
+        }
+      },
+      "per_window_inference": [
+        {
+          "baseline_pr_auc": 0.02527037225051716,
+          "ci_entity": {
+            "ci_high": 0.15709056060033239,
+            "ci_low": 0.00600603571570308,
+            "delta": 0.058064972207422946,
+            "n_clusters": 192,
+            "p_delta_le_zero": 0.014,
+            "se_delta": 0.03954727559492997
+          },
+          "ci_pair": {
+            "ci_high": 0.1389564088092301,
+            "ci_low": 0.007491664406595135,
+            "delta": 0.058064972207422946,
+            "n_clusters": 6891,
+            "p_delta_le_zero": 0.015,
+            "se_delta": 0.0337783344722317
+          },
+          "delta_ap": 0.058064972207422946,
+          "excludes_zero_entity": true,
+          "excludes_zero_pair": true,
+          "model_pr_auc": 0.08333534445794011,
+          "origin": "2025-04-01",
+          "positives": 42,
+          "rows": 6891
+        },
+        {
+          "baseline_pr_auc": 0.031248152534081863,
+          "ci_entity": {
+            "ci_high": 0.21523325950285066,
+            "ci_low": 0.035448070871060416,
+            "delta": 0.11758952532332512,
+            "n_clusters": 192,
+            "p_delta_le_zero": 0.0005,
+            "se_delta": 0.044268647506398834
+          },
+          "ci_pair": {
+            "ci_high": 0.20731726510080734,
+            "ci_low": 0.04259412690346445,
+            "delta": 0.11758952532332512,
+            "n_clusters": 6891,
+            "p_delta_le_zero": 0.0005,
+            "se_delta": 0.04273515301228978
+          },
+          "delta_ap": 0.11758952532332512,
+          "excludes_zero_entity": true,
+          "excludes_zero_pair": true,
+          "model_pr_auc": 0.14883767785740698,
+          "origin": "2025-07-01",
+          "positives": 47,
+          "rows": 6891
+        },
+        {
+          "baseline_pr_auc": 0.042443856181332125,
+          "ci_entity": {
+            "ci_high": 0.23023484215841805,
+            "ci_low": 0.06207449960614189,
+            "delta": 0.14253595340135466,
+            "n_clusters": 192,
+            "p_delta_le_zero": 0.0,
+            "se_delta": 0.04247626654514034
+          },
+          "ci_pair": {
+            "ci_high": 0.22636412077545054,
+            "ci_low": 0.06630492646838605,
+            "delta": 0.14253595340135466,
+            "n_clusters": 6892,
+            "p_delta_le_zero": 0.0,
+            "se_delta": 0.04085197184615506
+          },
+          "delta_ap": 0.14253595340135466,
+          "excludes_zero_entity": true,
+          "excludes_zero_pair": true,
+          "model_pr_auc": 0.18497980958268678,
+          "origin": "2025-10-01",
+          "positives": 52,
+          "rows": 6892
+        }
+      ],
+      "prediction_rows": 20674
+    }
+  },
+  "inputs": {
+    "cohort": {
+      "count": 200,
+      "metadata": {
+        "max_entities": 200,
+        "min_active_years": 2,
+        "min_material_events": 3,
+        "required_focus_entity_keys": [
+          "draeger-medical-systems-18043856",
+          "ge-medical-systems-ultrasound-and-primar-689e90e9",
+          "medtronic-4bdceace",
+          "philips-medical-systems-nederland-2e7cf935",
+          "shenzhen-mindray-bio-medical-electronics-b4ea0e74"
+        ],
+        "rule": "select_cohort: eligible entities need n_material >= min_material_events and active_years >= min_active_years; rank by (n_material desc, n_events desc, entity_key asc) and keep the first max_entities"
+      },
+      "path": "D:\\DEPPSKK\\worktrees\\es-ai-review\\config\\universe_v1.json",
+      "sha256": "7dc2b9e8160f68d9ba8c662862aee5d5a555860ac6061598e7550cee36a29302"
+    },
+    "committed_analysis": "D:\\DEPPSKK\\worktrees\\es-ai-review\\experiments\\cycle2_coverage\\analysis.json",
+    "db": {
+      "path": "D:\\DEPPSKK\\worktrees\\es-ai-review\\data\\research.sqlite",
+      "sha256": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d"
+    }
+  },
+  "panel": {
+    "committed_p2": {
+      "base_rate": 0.006694053304956817,
+      "by_origin": {
+        "2020-01-01": {
+          "positives": 49,
+          "rows": 6285
+        },
+        "2020-04-01": {
+          "positives": 41,
+          "rows": 6359
+        },
+        "2020-07-01": {
+          "positives": 44,
+          "rows": 6360
+        },
+        "2020-10-01": {
+          "positives": 31,
+          "rows": 6502
+        },
+        "2021-01-01": {
+          "positives": 29,
+          "rows": 6532
+        },
+        "2021-04-01": {
+          "positives": 37,
+          "rows": 6544
+        },
+        "2021-07-01": {
+          "positives": 46,
+          "rows": 6619
+        },
+        "2021-10-01": {
+          "positives": 50,
+          "rows": 6661
+        },
+        "2022-01-01": {
+          "positives": 54,
+          "rows": 6708
+        },
+        "2022-04-01": {
+          "positives": 47,
+          "rows": 6785
+        },
+        "2022-07-01": {
+          "positives": 39,
+          "rows": 6811
+        },
+        "2022-10-01": {
+          "positives": 43,
+          "rows": 6848
+        },
+        "2023-01-01": {
+          "positives": 43,
+          "rows": 6850
+        },
+        "2023-04-01": {
+          "positives": 52,
+          "rows": 6860
+        },
+        "2023-07-01": {
+          "positives": 49,
+          "rows": 6863
+        },
+        "2023-10-01": {
+          "positives": 49,
+          "rows": 6875
+        },
+        "2024-01-01": {
+          "positives": 47,
+          "rows": 6909
+        },
+        "2024-04-01": {
+          "positives": 49,
+          "rows": 6902
+        },
+        "2024-07-01": {
+          "positives": 50,
+          "rows": 6899
+        },
+        "2024-10-01": {
+          "positives": 48,
+          "rows": 6897
+        },
+        "2025-01-01": {
+          "positives": 45,
+          "rows": 6896
+        },
+        "2025-04-01": {
+          "positives": 41,
+          "rows": 6890
+        },
+        "2025-07-01": {
+          "positives": 46,
+          "rows": 6890
+        },
+        "2025-10-01": {
+          "positives": 53,
+          "rows": 6891
+        }
+      },
+      "candidates_by_origin": {
+        "2020-01-01": 6285,
+        "2020-04-01": 6359,
+        "2020-07-01": 6360,
+        "2020-10-01": 6502,
+        "2021-01-01": 6532,
+        "2021-04-01": 6544,
+        "2021-07-01": 6619,
+        "2021-10-01": 6661,
+        "2022-01-01": 6708,
+        "2022-04-01": 6785,
+        "2022-07-01": 6811,
+        "2022-10-01": 6848,
+        "2023-01-01": 6850,
+        "2023-04-01": 6860,
+        "2023-07-01": 6863,
+        "2023-10-01": 6875,
+        "2024-01-01": 6909,
+        "2024-04-01": 6902,
+        "2024-07-01": 6899,
+        "2024-10-01": 6897,
+        "2025-01-01": 6896,
+        "2025-04-01": 6890,
+        "2025-07-01": 6890,
+        "2025-10-01": 6891
+      },
+      "coverage_end": "2026-10-16",
+      "coverage_start": "2016-11-01",
+      "entity_count": 193,
+      "event_count": 5842,
+      "n_examples": 161636,
+      "n_positives": 1082,
+      "observed_pair_count": 634,
+      "origins": 24,
+      "positives_by_origin": {
+        "2020-01-01": 49,
+        "2020-04-01": 41,
+        "2020-07-01": 44,
+        "2020-10-01": 31,
+        "2021-01-01": 29,
+        "2021-04-01": 37,
+        "2021-07-01": 46,
+        "2021-10-01": 50,
+        "2022-01-01": 54,
+        "2022-04-01": 47,
+        "2022-07-01": 39,
+        "2022-10-01": 43,
+        "2023-01-01": 43,
+        "2023-04-01": 52,
+        "2023-07-01": 49,
+        "2023-10-01": 49,
+        "2024-01-01": 47,
+        "2024-04-01": 49,
+        "2024-07-01": 50,
+        "2024-10-01": 48,
+        "2025-01-01": 45,
+        "2025-04-01": 41,
+        "2025-07-01": 46,
+        "2025-10-01": 53
+      },
+      "skipped_pending_examples": 0,
+      "track_count": 38
+    },
+    "fixed": {
+      "candidates_by_origin": {
+        "2020-01-01": 6288,
+        "2020-04-01": 6362,
+        "2020-07-01": 6363,
+        "2020-10-01": 6469,
+        "2021-01-01": 6499,
+        "2021-04-01": 6509,
+        "2021-07-01": 6584,
+        "2021-10-01": 6627,
+        "2022-01-01": 6673,
+        "2022-04-01": 6750,
+        "2022-07-01": 6812,
+        "2022-10-01": 6849,
+        "2023-01-01": 6851,
+        "2023-04-01": 6861,
+        "2023-07-01": 6865,
+        "2023-10-01": 6876,
+        "2024-01-01": 6909,
+        "2024-04-01": 6902,
+        "2024-07-01": 6900,
+        "2024-10-01": 6899,
+        "2025-01-01": 6897,
+        "2025-04-01": 6891,
+        "2025-07-01": 6891,
+        "2025-10-01": 6892
+      },
+      "coverage_end": "2026-10-16",
+      "coverage_start": "2016-11-01",
+      "cutoffs": [
+        "2020-01-01",
+        "2020-04-01",
+        "2020-07-01",
+        "2020-10-01",
+        "2021-01-01",
+        "2021-04-01",
+        "2021-07-01",
+        "2021-10-01",
+        "2022-01-01",
+        "2022-04-01",
+        "2022-07-01",
+        "2022-10-01",
+        "2023-01-01",
+        "2023-04-01",
+        "2023-07-01",
+        "2023-10-01",
+        "2024-01-01",
+        "2024-04-01",
+        "2024-07-01",
+        "2024-10-01",
+        "2025-01-01",
+        "2025-04-01",
+        "2025-07-01",
+        "2025-10-01"
+      ],
+      "entity_count": 193,
+      "event_count": 5839,
+      "n_examples": 161419,
+      "n_positives": 1072,
+      "observed_pair_count": 629,
+      "origins": 24,
+      "positives_by_origin": {
+        "2020-01-01": 48,
+        "2020-04-01": 40,
+        "2020-07-01": 43,
+        "2020-10-01": 30,
+        "2021-01-01": 29,
+        "2021-04-01": 37,
+        "2021-07-01": 46,
+        "2021-10-01": 50,
+        "2022-01-01": 54,
+        "2022-04-01": 47,
+        "2022-07-01": 37,
+        "2022-10-01": 42,
+        "2023-01-01": 42,
+        "2023-04-01": 51,
+        "2023-07-01": 48,
+        "2023-10-01": 47,
+        "2024-01-01": 46,
+        "2024-04-01": 48,
+        "2024-07-01": 50,
+        "2024-10-01": 50,
+        "2025-01-01": 46,
+        "2025-04-01": 42,
+        "2025-07-01": 47,
+        "2025-10-01": 52
+      },
+      "skipped_pending_examples": 0,
+      "track_count": 38
+    }
+  },
+  "panel_difference": {
+    "committed_entity_count": 193,
+    "committed_n_examples": 161636,
+    "committed_n_positives": 1082,
+    "committed_origins": 24,
+    "fixed_entity_count": 193,
+    "fixed_n_examples": 161419,
+    "fixed_n_positives": 1072,
+    "fixed_origins": 24,
+    "n_examples_change": -217
+  },
+  "question": "Re-run the cycle-2 P2 pipeline on the exact 200 cohort keys of config/universe_v1.json and report whether the conclusion is unchanged.",
+  "schema": "b102.fixed_cohort_report.v1",
+  "spec": {
+    "baseline": "per-pair persistence base rate (cycle-2 committed comparator)",
+    "bootstrap": {
+      "clusters": [
+        "entity",
+        "company x track"
+      ],
+      "confidence_level": 0.95,
+      "resamples": 2000,
+      "seed": 7
+    },
+    "features": "rd_plus_entry_history",
+    "holdouts": 3,
+    "horizon_months": 12,
+    "mde": "evalstats.mde_from_se(entity bootstrap se_delta)",
+    "metric": "average precision (pr_auc)",
+    "model": "LogisticBaseline(epochs=180, learning_rate=0.15, l2=1.0)",
+    "n_features": 16,
+    "purge_rule": "cutoff + 12 months <= origin"
+  }
+}

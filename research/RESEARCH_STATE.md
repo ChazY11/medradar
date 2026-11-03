@@ -47,6 +47,7 @@ from `research/studies/early_signal_5firms/AI_REVIEW_ADJUDICATION_V1.json` and i
 | H-21 | **B-041: the fusion conclusion is lag-invariant** | 0/14/30-day publication lags reproduce hist_v1 exactly (join 0.786, AP(C) 0.0401, AP(D) 0.0348, Δ −0.0053); 90-day lag removes year−1 for non-leap first quarters (join 0.200) and Δ is −0.0017 — still negative | **negative robustness (D-082, R180)** |
 | H-22 | **hist_v2: the domain-level replication** | 22 domains, 21 origins 1995–2015, 15,233 cells, 252 positives (12.0/origin); M1C mean AP **0.0775** vs B1 0.0435, Δ **+0.0340**, CI **[+0.0215, +0.0661]**, MDE **0.0316** (pre-declared ≤0.05), 85.7 % origins positive, permutation p at the 200-draw floor | **positive, powered (D-083, R181)** |
 | H-23 | **but the decisive B3 comparison fails again, and the mechanism is unit-dependent** | Δ(M1C−B3) = +0.0156, CI **[−0.0107, +0.0445]**, p 0.212 — the incremental value over firm×domain exposure is not established, replicating hist_v1; at domain level the domain-tempo features carry the signal (M1B 0.0812) and adjacency slightly hurts (M1C 0.0775), the opposite of hist_v1's track-level result | **replicated partial negative + mechanism finding (D-083, R182/R183)** |
+| H-24 | **B-017: the cycle-2 result survives the 5/200 cohort gap** | fixed-cohort P2 re-run (artefact's exact 200 keys): pooled ΔAP **+0.095211** vs MDE **0.087630** (committed +0.097321 / 0.087689, 97.8 % retained); 3/3 holdout windows exclude zero under both clusterings; the 5/200 gap is universe-code drift, not data | **robustness (D-084, R185)** |
 
 ## 3. Hypotheses and their current status
 
@@ -113,7 +114,7 @@ from `research/studies/early_signal_5firms/AI_REVIEW_ADJUDICATION_V1.json` and i
 
 ```bash
 python -m medradar selftest                        # 1,117+ tests (1,074 base + 43 hist_v1)
-python tools/round_end.py                          # completion gate; exit code is the claim
+python tools/round_end.py                          # 14-step completion gate; exit code is the claim
 python tools/final_audit.py                        # re-derives four artifacts (needs data/)
 python experiments/hist_v1/build_panel.py          # panel (deterministic; out/hist_v1/panel.json)
 python experiments/hist_v1/eval.py --panel out/hist_v1/panel.json --out experiments/hist_v1/results.json --workers 12

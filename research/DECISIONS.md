@@ -3191,13 +3191,37 @@ beyond a firm×unit exposure baseline — at least on this corpus and with these
 hurts (M1B 0.0812 > M1C 0.0775; in 2005–2015 M1B 0.0574 > M1C 0.0496), opposite to hist_v1's track-level result. The
 next design must pre-specify the unit from the question, not search it after seeing results.
 
-**Gaps recorded.** (a) The attribution sensitivity (`pairs_no_acquired`) listed in protocol §9 was not run (a second
-20-minute full evaluation); it is an open robustness pass, not a passed check. (b) The h=4 and post-2015 holdout blocks
-are descriptive only. (c) No fusion lanes exist in hist_v2 and no Target B claim is made. (d) As in hist_v1, the
-taxonomy is applied to history from its current version and the roster covers 13.9 % of material events.
+**Robustness run and recorded.** The protocol §9 `pairs_no_acquired` attribution sensitivity was executed as part of
+the evaluation: 217 acquired-brand deep-case events removed (14,487 of 14,704 retained, 377 pairs unchanged), and the
+primary pattern survives (M1C 0.0791 vs B1 0.0429, B3 0.0656; Δ(M1C−B1) = **+0.0361**, reliable bootstrap, 0 %
+degenerate resamples). It is a descriptive sensitivity, not a second confirmatory test. **Gaps recorded.** (a) The
+h=4 and post-2015 holdout blocks are descriptive only. (b) No fusion lanes exist in hist_v2 and no Target B claim is
+made. (c) As in hist_v1, the taxonomy is applied to history from its current version and the roster covers 13.9 % of
+material events.
 
 **Consequence.** No product or detector change. The two designs together close the programme's original forward-looking
 question with a bounded answer: a modest, replicated ranking signal over persistence exists; whether it adds value over
 a simple two-way exposure rate is **not** established. The next round should either (i) test the only remaining
 promising direction (cross-company features: competitor-entry and capability-spillover terms, not yet in either
 design) or (ii) stop the forecasting thread and invest in the data constraints.
+
+---
+
+## D-084 — B-017: pinning the cohort to the artefact's 200 keys leaves the cycle-2 conclusion unchanged
+
+**Date:** 2026-11-03 · **Status:** accepted · **Artifact:** `experiments/b102_cohort_sensitivity/` (R185)
+
+**Decision.** The 5/200 cohort reproducibility gap (DECISIONS D-008) is closed as a **sensitivity run**, not by
+rewriting history. With the cohort pinned to `config/universe_v1.json["cohort"]["entity_keys"]` (200 exact keys, not
+recomputed) and every other element of the frozen P2 specification unchanged (16 `rd_plus_entry_history` features,
+12-month horizon, 36-month dormancy, purge, 3 holdouts, `LogisticBaseline(epochs=180, lr=0.15, l2=1.0)`, cluster
+bootstrap 2,000 / seed 7), the headline becomes **pooled ΔAP +0.095211 vs MDE 0.087630** (committed: +0.097321 vs
+0.087689). Direction, sign stability, 3/3-window zero exclusion under both clusterings and the pre-registered H2.2 rule
+all hold; the fixed-cohort ΔAP is 97.8 % of the committed value. The largest per-window shift is −0.0067 (2025-10-01).
+
+**Cause.** The gap is universe-code drift, not the five keys: 8 of the 200 artefact keys have no usable tracked panel
+event in the current store, and the panel difference is 161,636→161,419 examples and 1,082→1,072 positives. The
+committed cycle-2 result is therefore **not** an artefact of the recomputation; it is a small, explained sensitivity.
+
+**Consequence.** No change to any cycle-2 claim or paper statement; the sensitivity is recorded beside it. This closes
+the last of the six open backlog items that had proven data (B-017, B-018 pending, B-021, B-029, B-041 done).

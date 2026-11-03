@@ -1,6 +1,6 @@
 {
   "schema": "medradar.foresight.state.v2",
-  "updated_at": "2026-11-03T11:00:00+08:00",
+  "updated_at": "2026-11-03T11:30:00+08:00",
   "mission": {
     "positioning": "MedRadar — Global MedTech Intelligence & Foresight",
     "architecture": "Observe -> Understand -> Anticipate",
@@ -1832,11 +1832,25 @@
     },
     "mechanism": "domain-tempo features carry the signal; adjacency slightly hurts at domain level (unit-dependent)",
     "gaps": [
-      "pairs_no_acquired attribution sensitivity not run (protocol §9 robustness item)",
       "holdout 2016-2024 descriptive only",
       "no fusion lanes by design",
       "taxonomy unversioned; roster covers 13.9% of material events"
-    ]
+    ],
+    "attribution_sensitivity": {
+      "variant": "pairs_no_acquired",
+      "status": "DESCRIPTIVE_SENSITIVITY",
+      "n_events_retained": 14487,
+      "n_events_primary": 14704,
+      "n_pairs_retained": 377,
+      "mean_ap": {
+        "B1": 0.0429,
+        "B3": 0.0656,
+        "M1C": 0.0791
+      },
+      "delta_M1C_B1": 0.0361,
+      "bootstrap": "OK (0% degenerate resamples)",
+      "reading": "the primary result is not driven by retroactive acquisition attribution"
+    }
   },
   "backlog_execution_2026_11_03": {
     "B-029": {
@@ -1858,12 +1872,14 @@
       "outcome": "fusion conclusion unchanged at lags 0/14/30/90; reproduces hist_v1 exactly at 0/14/30; 90-day join 0.200"
     },
     "B-017": {
-      "status": "in_progress",
-      "task": "task-6"
+      "status": "done",
+      "result_row": "R185",
+      "decision": "D-084",
+      "outcome": "fixed-cohort P2 re-run: pooled dAP +0.095211 vs MDE 0.087630 (committed +0.097321/0.087689); 3/3 windows exclude zero under both clusterings; conclusion unchanged; 5/200 gap is universe-code drift"
     },
     "B-074": {
       "status": "done",
-      "outcome": "schedule executed: B-029/B-021/B-041 done; B-017 in progress; B-018 remains open"
+      "outcome": "schedule executed: B-029/B-021/B-041/B-017 done; B-018 in progress; no open item is blocked on data"
     }
   }
 }

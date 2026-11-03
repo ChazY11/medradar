@@ -112,9 +112,11 @@ quantitative trade-off between lead time and reliability remains the same shape:
 2. **`domain_share`** (the analog of hist_v1 `cat_share`) is the share of the firm's ever-events in the candidate
    domain's sibling domains; the literal own-domain share is identically zero on candidate cells.
 3. **No fusion lanes** in hist_v2 (the protocol defines none); no Target B claims.
-4. **Attribution sensitivity not run:** the protocol's §9 listed the `pairs_no_acquired` attribution sensitivity; the
-   domain panel carries the array, but the full evaluation was not re-run with it (a full 20-minute re-run). It is
-   recorded as an open robustness pass, not as passed.
+4. **Attribution sensitivity (run, descriptive):** the `pairs_no_acquired` variant removes 217 deep-case events whose
+   applicant string is neither a registry-accepted alias nor parent-branded (14,487 of 14,704 events retained, 377
+   pairs unchanged). The primary pattern survives: M1C 0.0791 vs B1 0.0429, B3 0.0656; Δ(M1C−B1) = **+0.0361** with a
+   reliable bootstrap (0 % degenerate resamples). The result is therefore not driven by retroactive acquisition
+   attribution. It is a descriptive sensitivity, not a second confirmatory test.
 5. The h=4 origins are the same 21 annual Q1 origins as h=8 (both mature inside 2026-Q2).
 
 ## 7. What this establishes, and what it does not
@@ -127,6 +129,8 @@ quantitative trade-off between lead time and reliability remains the same shape:
   floor — a **replication of the hist_v1 result at a second unit and window**.
 - The incremental value over the **two-way exposure baseline is not established** at either unit (here Δ +0.0156,
   CI including 0). This is now a replicated negative, which is the stronger scientific statement.
+- The attribution sensitivity is stable: removing the 217 acquired-brand events gives Δ(M1C−B1) = +0.0361 with a
+  reliable bootstrap (descriptive robustness, not confirmation).
 - Domain-tempo features carry the signal at domain level; adjacency does not (unit-dependent mechanism result).
 - A quantified lead-time frontier (10 % budget: 39.7 % recall, median lead 6 quarters, 75/133 missed).
 

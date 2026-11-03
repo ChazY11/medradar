@@ -161,7 +161,7 @@ tasks:
     layer: anticipate
     priority: P3
     title: Sensitivity run on the committed artifact cohort
-    status: todo
+    status: done
     owner: lead
     acceptance: Re-run the P2 pipeline on the exact 200 cohort keys in config/universe_v1.json and report whether the conclusion is unchanged; closes the 5/200 reproducibility gap (DECISIONS D-008).
 
@@ -837,3 +837,4 @@ tasks:
 # B-021: B-021 executed as frozen b103: no cross-source lead detected; three well-powered negatives, procurement NOT_EVALUABLE; see D-081 / R179
 # B-041: B-041 executed as b104: fusion conclusion unchanged at publication knowledge lags 0/14/30/90 days; see D-082 / R180
 # B-074: B-074 scheduling executed: B-029/B-021/B-041 done; B-017 in progress; B-018 remains open with measured reason
+# B-017: fixed-cohort sensitivity executed (b102): conclusion unchanged; pooled dAP +0.095211 vs MDE 0.087630, 3/3 windows exclude zero; see D-084 / R185

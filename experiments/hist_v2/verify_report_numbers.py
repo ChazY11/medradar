@@ -117,6 +117,17 @@ leak = r['leakage_controls']
 exact('purge violations', leak['label_purge']['violations'], 0)
 exact('replay mismatches', leak['independent_replay']['mismatches'], 0)
 exact('replay cells', leak['independent_replay']['cells_sampled'], 300)
+attr = (r.get('robustness') or {}).get('attribution_sensitivity_no_acquired') or {}
+exact('sensitivity status', attr.get('status'), 'DESCRIPTIVE_SENSITIVITY')
+exact('sensitivity events retained', attr.get('n_events_retained'), 14487)
+exact('sensitivity events primary', attr.get('n_events_primary'), 14704)
+exact('sensitivity pairs', attr.get('n_pairs_retained'), 377)
+chk('sensitivity M1C', attr['mean_per_origin_ap']['M1C']['mean'], 0.0791)
+chk('sensitivity B1', attr['mean_per_origin_ap']['B1']['mean'], 0.0429)
+chk('sensitivity B3', attr['mean_per_origin_ap']['B3']['mean'], 0.0656)
+chk('sensitivity delta', attr.get('delta_ap_M1C_minus_B1'), 0.0361)
+exact('sensitivity bootstrap ok', attr['bootstrap'].get('status'), 'OK')
+
 power = r['power']
 exact('power status', power['status'], 'POWERED')
 chk('power mde', power['primary_M1C_minus_B1']['mde_80pct_power_alpha_0.05'], 0.0316)

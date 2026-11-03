@@ -1,0 +1,571 @@
+{
+  "claims": [
+    {
+      "id": "H1",
+      "statement": "hist_v1 primary: mean per-origin AP, M1C, R_adj, h=8",
+      "value": "0.1137",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "0.1137"
+    },
+    {
+      "id": "H2",
+      "statement": "hist_v1 primary: mean per-origin AP, company base rate B1",
+      "value": "0.0553",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "0.0553"
+    },
+    {
+      "id": "H3",
+      "statement": "hist_v1 primary: point delta AP, M1C minus B1",
+      "value": "+0.0584",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "+0.0584"
+    },
+    {
+      "id": "H4",
+      "statement": "hist_v1 primary: company-clustered 95 % CI of delta AP, M1C minus B1",
+      "value": "[+0.0020, +0.1213]",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "+0.0020, +0.1213"
+    },
+    {
+      "id": "H5",
+      "statement": "hist_v1 primary: bootstrap p-value",
+      "value": "0.045",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "| 0.045 |"
+    },
+    {
+      "id": "H6",
+      "statement": "hist_v1 primary: minimum detectable effect at 80 % power",
+      "value": "0.0896",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0.0896"
+    },
+    {
+      "id": "H7",
+      "statement": "hist_v1 primary: permutation p over 200 permutations",
+      "value": "0.0299",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "0.0299"
+    },
+    {
+      "id": "H8",
+      "statement": "hist_v1: annual evaluation origins",
+      "value": "30 origins",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "30 origins"
+    },
+    {
+      "id": "H9",
+      "statement": "hist_v1 primary: candidate cells on R_adj at h=8",
+      "value": "8,415",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "8,415"
+    },
+    {
+      "id": "H10",
+      "statement": "hist_v1 primary: positive cell-rows",
+      "value": "181 positive cell-rows",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "181 positive cell-rows"
+    },
+    {
+      "id": "H11",
+      "statement": "hist_v1 decisive secondary: delta AP, M1C minus B3",
+      "value": "+0.0438",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "+0.0438"
+    },
+    {
+      "id": "H12",
+      "statement": "hist_v1 decisive secondary: 95 % CI of delta AP, M1C minus B3",
+      "value": "[−0.0184, +0.0957]",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "−0.0184, +0.0957"
+    },
+    {
+      "id": "H13",
+      "statement": "hist_v1 decisive secondary: bootstrap p-value, M1C minus B3",
+      "value": "0.198",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "0.198"
+    },
+    {
+      "id": "H14",
+      "statement": "hist_v1 panel: material events entering the panel",
+      "value": "14,704",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "14,704"
+    },
+    {
+      "id": "H15",
+      "statement": "hist_v1 panel: observed company-track pairs",
+      "value": "528",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "528"
+    },
+    {
+      "id": "H16",
+      "statement": "hist_v1 funnel: share of material device events with no track mapping",
+      "value": "55.1 %",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "55.1 %"
+    },
+    {
+      "id": "H17",
+      "statement": "hist_v1 funnel: share of material device events outside the company roster",
+      "value": "86.1 %",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "86.1 %"
+    },
+    {
+      "id": "H18",
+      "statement": "hist_v1 unrestricted risk set: delta AP M1C minus B1 and its CI",
+      "value": "[+0.0128, +0.0699]",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "+0.0128, +0.0699"
+    },
+    {
+      "id": "H19",
+      "statement": "hist_v1 unrestricted risk set: point delta AP M1C minus B1",
+      "value": "+0.0300",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "+0.0300"
+    },
+    {
+      "id": "H20",
+      "statement": "hist_v1 unrestricted risk set: point delta AP M1C minus B3 and its CI",
+      "value": "[−0.0087, +0.0565]",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "−0.0087, +0.0565"
+    },
+    {
+      "id": "H21",
+      "statement": "hist_v1 unrestricted risk set: point delta AP M1C minus B3",
+      "value": "+0.0210",
+      "source": "experiments/hist_v1/REPORT.md",
+      "source_needle": "+0.0210"
+    },
+    {
+      "id": "TB1",
+      "statement": "Target B final adjudication: confirmed shifts out of packets",
+      "value": "0/69",
+      "source": "research/studies/early_signal_5firms/ADJUDICATION_FINAL_V1.json",
+      "source_needle": "0/69 candidate packets"
+    },
+    {
+      "id": "TB2",
+      "statement": "Target B final adjudication: confirmed rate",
+      "value": "0.0 %",
+      "source": "research/studies/early_signal_5firms/ADJUDICATION_FINAL_V1.json",
+      "source_needle": "0.0%"
+    },
+    {
+      "id": "TB3",
+      "statement": "Target B final adjudication: one-sided 95 % Wilson upper bound",
+      "value": "5.3 %",
+      "source": "research/studies/early_signal_5firms/ADJUDICATION_FINAL_V1.json",
+      "source_needle": "5.3%"
+    },
+    {
+      "id": "TB4",
+      "statement": "Target B final adjudication: false-signal packets",
+      "value": "8 false signals",
+      "source": "research/studies/early_signal_5firms/ADJUDICATION_FINAL_V1.json",
+      "source_needle": "8 are `False Signal / No Confirmed Shift`"
+    },
+    {
+      "id": "TB5",
+      "statement": "Target B final adjudication: routine-iteration packets",
+      "value": "52 routine iterations",
+      "source": "research/studies/early_signal_5firms/ADJUDICATION_FINAL_V1.json",
+      "source_needle": "52 are `Routine Iteration`"
+    },
+    {
+      "id": "TB6",
+      "statement": "Target B final adjudication: uncertain packets",
+      "value": "9 uncertain",
+      "source": "research/studies/early_signal_5firms/ADJUDICATION_FINAL_V1.json",
+      "source_needle": "9 are `Uncertain`"
+    },
+    {
+      "id": "TB7",
+      "statement": "Target B labels are not human truth",
+      "value": "human_truth",
+      "source": "research/studies/early_signal_5firms/ADJUDICATION_FINAL_V1.json",
+      "source_needle": "\"human_truth\": false"
+    },
+    {
+      "id": "TB8",
+      "statement": "small-sample lead-time pairs that are device/project mismatches",
+      "value": "8/9",
+      "source": "research/studies/early_signal_5firms/TARGET_B_RESULTS_V1.md",
+      "source_needle": "8/9 pairs are device/project mismatches"
+    },
+    {
+      "id": "LL1",
+      "statement": "b103 financial R&D: minimum detectable effect in |r|",
+      "value": "0.0723",
+      "source": "experiments/b103_leadlag/REPORT.md",
+      "source_needle": "0.0723"
+    },
+    {
+      "id": "LL2",
+      "statement": "b103 market return: minimum detectable effect in |r|",
+      "value": "0.0513",
+      "source": "experiments/b103_leadlag/REPORT.md",
+      "source_needle": "0.0513"
+    },
+    {
+      "id": "LL3",
+      "statement": "b103 publication: minimum detectable effect in |r|",
+      "value": "0.0570",
+      "source": "experiments/b103_leadlag/REPORT.md",
+      "source_needle": "0.0570"
+    },
+    {
+      "id": "LL4",
+      "statement": "b103 financial R&D: primary correlation at k*=1",
+      "value": "−0.0441",
+      "source": "experiments/b103_leadlag/REPORT.md",
+      "source_needle": "-0.0441"
+    },
+    {
+      "id": "LL5",
+      "statement": "b103 financial R&D: permutation p",
+      "value": "0.683",
+      "source": "experiments/b103_leadlag/REPORT.md",
+      "source_needle": "0.6830"
+    },
+    {
+      "id": "LL6",
+      "statement": "b103 market return: permutation p",
+      "value": "0.967",
+      "source": "experiments/b103_leadlag/REPORT.md",
+      "source_needle": "0.9670"
+    },
+    {
+      "id": "LL7",
+      "statement": "b103 publication: permutation p",
+      "value": "0.614",
+      "source": "experiments/b103_leadlag/REPORT.md",
+      "source_needle": "0.6140"
+    },
+    {
+      "id": "LL8",
+      "statement": "b103 analysis window",
+      "value": "36 quarters",
+      "source": "experiments/b103_leadlag/REPORT.md",
+      "source_needle": "36 quarters"
+    },
+    {
+      "id": "LL9",
+      "statement": "b103 procurement rows with unusable point-in-time dates",
+      "value": "3,453 rows",
+      "source": "experiments/b103_leadlag/REPORT.md",
+      "source_needle": "3453 rows"
+    },
+    {
+      "id": "LL10",
+      "statement": "b103 market volatility: descriptive correlation",
+      "value": "0.0420",
+      "source": "experiments/b103_leadlag/REPORT.md",
+      "source_needle": "0.0420"
+    },
+    {
+      "id": "LL11",
+      "statement": "b103 market volatility: minimum detectable effect",
+      "value": "0.0568",
+      "source": "experiments/b103_leadlag/REPORT.md",
+      "source_needle": "0.0568"
+    },
+    {
+      "id": "LL12",
+      "statement": "b103 market volatility: permutation p",
+      "value": "0.754",
+      "source": "experiments/b103_leadlag/REPORT.md",
+      "source_needle": "0.7540"
+    },
+    {
+      "id": "LG1",
+      "statement": "b104 publication knowledge lags tested",
+      "value": "0/14/30/90 days",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0, 14, 30 and 90 days"
+    },
+    {
+      "id": "LG2",
+      "statement": "b104 fusion delta at 0/14/30 days, reproducing hist_v1",
+      "value": "−0.0053",
+      "source": "research/DECISIONS.md",
+      "source_needle": "−0.0053"
+    },
+    {
+      "id": "LG3",
+      "statement": "b104 publication join coverage at a 90-day lag",
+      "value": "0.200",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0.200) and Δ becomes −0.0017"
+    },
+    {
+      "id": "LG4",
+      "statement": "b104 fusion delta at a 90-day lag",
+      "value": "−0.0017",
+      "source": "research/DECISIONS.md",
+      "source_needle": "−0.0017"
+    },
+    {
+      "id": "LG5",
+      "statement": "b104 publication join rate at 0/14/30 days",
+      "value": "0.786",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0.786"
+    },
+    {
+      "id": "LG6",
+      "statement": "b104 mean AP of feature set C at 0/14/30 days",
+      "value": "0.0401",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0.0401"
+    },
+    {
+      "id": "LG7",
+      "statement": "b104 mean AP of feature set D at 0/14/30 days",
+      "value": "0.0348",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0.0348"
+    },
+    {
+      "id": "C1",
+      "statement": "D-075: prospective forecasts whose outcome window began before the lane cutoff",
+      "value": "12 of the 25",
+      "source": "research/DECISIONS.md",
+      "source_needle": "12 of the 25"
+    },
+    {
+      "id": "C2",
+      "statement": "D-075: corrected count of entirely prospective forecasts",
+      "value": "13 forecasts",
+      "source": "research/DECISIONS.md",
+      "source_needle": "13 forecasts"
+    },
+    {
+      "id": "C3",
+      "statement": "D-075: earliest maturation of the corrected forecast set",
+      "value": "2027-Q3",
+      "source": "research/DECISIONS.md",
+      "source_needle": "2027-Q3"
+    },
+    {
+      "id": "C4",
+      "statement": "D-077: feature-replay mismatches before the sort fix",
+      "value": "184/300",
+      "source": "research/DECISIONS.md",
+      "source_needle": "184/300"
+    },
+    {
+      "id": "C5",
+      "statement": "D-077: candidate cells under the corrupted risk-set predicate",
+      "value": "7,556",
+      "source": "research/DECISIONS.md",
+      "source_needle": "7,556"
+    },
+    {
+      "id": "C6",
+      "statement": "D-077: feature-replay mismatches after the sort fix",
+      "value": "0/300",
+      "source": "research/DECISIONS.md",
+      "source_needle": "0/300"
+    },
+    {
+      "id": "C7",
+      "statement": "D-077: positive cells produced by the voided first execution",
+      "value": "110 positive cells",
+      "source": "research/DECISIONS.md",
+      "source_needle": "110 positive cells"
+    },
+    {
+      "id": "C8",
+      "statement": "D-076: fixed rolling-origin script reproduces the committed benchmark",
+      "value": "identical",
+      "source": "research/DECISIONS.md",
+      "source_needle": "**identical**"
+    },
+    {
+      "id": "C9",
+      "statement": "D-080: 8-K events whose payload CIK equals exactly one curated-company CIK",
+      "value": "826",
+      "source": "research/DECISIONS.md",
+      "source_needle": "**826**"
+    },
+    {
+      "id": "C10",
+      "statement": "D-080: non-roster registrants in the 8-K lane",
+      "value": "1,530",
+      "source": "research/DECISIONS.md",
+      "source_needle": "1,530 non-roster registrants"
+    },
+    {
+      "id": "C11",
+      "statement": "D-080: unlinked 8-K events in the backlog premise",
+      "value": "19,616",
+      "source": "research/DECISIONS.md",
+      "source_needle": "19,616"
+    },
+    {
+      "id": "A1",
+      "statement": "independent audit: load-bearing rows re-checked",
+      "value": "33 load-bearing rows",
+      "source": "research/audits/initial_research_audit.md",
+      "source_needle": "33 load-bearing rows"
+    },
+    {
+      "id": "A2",
+      "statement": "independent audit: rows verified exactly",
+      "value": "21",
+      "source": "research/audits/initial_research_audit.md",
+      "source_needle": "21 Verified"
+    },
+    {
+      "id": "A3",
+      "statement": "independent audit: share of PAPER_v1 claims citing the decision log",
+      "value": "61/88",
+      "source": "research/audits/initial_research_audit.md",
+      "source_needle": "61/88"
+    },
+    {
+      "id": "V1",
+      "statement": "hist_v2 primary: mean per-origin AP, M1C, R_dom, h=8",
+      "value": "0.0775",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "0.0775 vs 0.0435"
+    },
+    {
+      "id": "V2",
+      "statement": "hist_v2 primary: mean per-origin AP, company base rate B1",
+      "value": "0.0435",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "0.0775 vs 0.0435"
+    },
+    {
+      "id": "V3",
+      "statement": "hist_v2 primary: point delta AP, M1C minus B1",
+      "value": "+0.0340",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "Δ **+0.0340**"
+    },
+    {
+      "id": "V4",
+      "statement": "hist_v2 primary: company-clustered 95 % CI of delta AP, M1C minus B1",
+      "value": "[+0.0215, +0.0661]",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "[+0.0215, +0.0661]"
+    },
+    {
+      "id": "V5",
+      "statement": "hist_v2 primary: minimum detectable effect at 80 % power",
+      "value": "0.0316",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "MDE **0.0316**"
+    },
+    {
+      "id": "V6",
+      "statement": "hist_v2 primary: share of origins with a positive delta",
+      "value": "85.7 %",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "85.7 %"
+    },
+    {
+      "id": "V7",
+      "statement": "hist_v2: candidate cells in the primary evaluation",
+      "value": "15,233",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "**15,233 candidate cells**"
+    },
+    {
+      "id": "V8",
+      "statement": "hist_v2: positive cells in the primary evaluation",
+      "value": "252",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "**252 positive cells**"
+    },
+    {
+      "id": "V9",
+      "statement": "hist_v2: mean candidates per origin",
+      "value": "725.4",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "**725.4 candidates"
+    },
+    {
+      "id": "V10",
+      "statement": "hist_v2: mean positives per origin",
+      "value": "12.0",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "12.0 positives"
+    },
+    {
+      "id": "V11",
+      "statement": "hist_v2 decisive secondary: point delta AP, M1C minus B3",
+      "value": "+0.0156",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "Δ +0.0156"
+    },
+    {
+      "id": "V12",
+      "statement": "hist_v2 decisive secondary: 95 % CI of delta AP, M1C minus B3",
+      "value": "[−0.0107, +0.0445]",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "[−0.0107, +0.0445]"
+    },
+    {
+      "id": "V13",
+      "statement": "hist_v2 decisive secondary: bootstrap p-value, M1C minus B3",
+      "value": "0.212",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "p 0.212"
+    },
+    {
+      "id": "V14",
+      "statement": "hist_v2 permutation null: empirical p at the resolution floor",
+      "value": "0.0050",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "0.004975"
+    },
+    {
+      "id": "V15",
+      "statement": "hist_v2: mean per-origin AP of the two-way exposure baseline B3",
+      "value": "0.0619",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "0.0619"
+    },
+    {
+      "id": "V16",
+      "statement": "hist_v2: mean per-origin AP of the domain-feature set M1B",
+      "value": "0.0812",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "0.0812"
+    },
+    {
+      "id": "V17",
+      "statement": "hist_v2: pre-declared MDE target",
+      "value": "0.05",
+      "source": "experiments/hist_v2/REPORT.md",
+      "source_needle": "MDE ≤ 0.05"
+    },
+    {
+      "id": "U80",
+      "statement": "hist_v2 attribution sensitivity delta AP (descending: acquired-brand events removed)",
+      "value": "+0.0361",
+      "source": "experiments/hist_v2/results.json",
+      "source_needle": "0.03612883960269809"
+    },
+    {
+      "id": "U81",
+      "statement": "hist_v2 attribution sensitivity events retained of primary",
+      "value": "14,487 of 14,704",
+      "source": "experiments/hist_v2/results.json",
+      "source_needle": "14487"
+    }
+  ]
+}
