@@ -1,0 +1,691 @@
+{
+  "schema": "s029_entity_provenance_v1",
+  "study": "S-029 / relation_network_s029",
+  "generated_at": "2026-11-03T20:02:56Z",
+  "description": "Retrieval manifest for artifacts/company_entity_register.json: one entry per HTTP retrieval, with the sha256 of the retrieved bytes, the UTC retrieval timestamp, and the number of evidence assertions verified against that document.",
+  "user_agent": "MedRadar S-029 entity audit (research@medradar.local)",
+  "verification": {
+    "verbatim_excerpts_checked": 111,
+    "api_field_assertions_checked": 105,
+    "negative_searches": 7,
+    "failures": [],
+    "policy": "A build with any failed assertion is aborted; the committed artifacts therefore have zero unverified quotes."
+  },
+  "sources": [
+    {
+      "source_key": "mdt_10k_fy2015",
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310315000028/mdt-2015424x10k.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:49:55Z",
+      "sha256": "c01180a9341b58d8dd2c34a2650ded02e0a8910257bb0683b2ec59eac762146b",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 8
+    },
+    {
+      "source_key": "mdt_8k_20150126_ex991",
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000119312515020681/d859999dex991.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:49:55Z",
+      "sha256": "d9a1b10486202b81004b3fb3b1a32bf1aaa9e45eb704493b63aa5176eeda3d7a",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "gleif_medtronic_plc",
+      "url": "https://api.gleif.org/api/v1/lei-records/549300GX3ZBSQWUXY261",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:49:55Z",
+      "sha256": "13d11885c6b1014a8f19e85586a9ad56fcd91752e1330c3daa3646ab0b32e593",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 7
+    },
+    {
+      "source_key": "sec_sub_medtronic_plc",
+      "url": "https://data.sec.gov/submissions/CIK0001613103.json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:52:16Z",
+      "sha256": "f8b1dda50858e1a363f2a1fd45dedb83a48e408b682cad6a0b2dbd3d11419787",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "wikidata_medtronic",
+      "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q642189&props=labels|descriptions&languages=en&format=json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:49:55Z",
+      "sha256": "c83358ea7f3241fbc5029175fd003de0245178af7dee657052e9228ef5788cdc",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "mdt_8k_20140717",
+      "url": "https://www.sec.gov/Archives/edgar/data/64670/000119312514271779/d761416d8k.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:49:56Z",
+      "sha256": "42f8bc48cbf864ded51f06dd5d667e22a4e449b294e7522f722f6538179eea89",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "mdt_ex21_fy2025",
+      "url": "https://www.sec.gov/Archives/edgar/data/1613103/000161310325000091/mdt-202510kxex21.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:49:59Z",
+      "sha256": "c15e5ac10ccc85992ad4d7e2c67fccba8fd35371c6637bd8d462df6e8d90d2b0",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 11
+    },
+    {
+      "source_key": "gleif_medtronic_inc",
+      "url": "https://api.gleif.org/api/v1/lei-records/D56MRZY2INAN94ZONZ37",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:50:00Z",
+      "sha256": "ec62a9ee24e0010c59a10cfc27afd9a038dcbfdc8ea1d43cbfd0d5624e1d2c10",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 5
+    },
+    {
+      "source_key": "sec_sub_medtronic_inc",
+      "url": "https://data.sec.gov/submissions/CIK0000064670.json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:52:16Z",
+      "sha256": "a9fde7d6faf5f42061db5335a3970a00abd01983812393c90367830f7510625b",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "ror_medtronic_us",
+      "url": "https://api.ror.org/organizations/00grd1h17",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:50:01Z",
+      "sha256": "b5a5f12b5847c35254b5cc56d6f843674ccb5cff1379bef252d59003e035aec2",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "crossref_medtronic",
+      "url": "https://api.crossref.org/funders/10.13039/100004374",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:49:59Z",
+      "sha256": "e379766c084abab024f888145c4bdda7b17640d36e23fb35c8ee742aeee2ed02",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "mdt_8k_20010905",
+      "url": "https://www.sec.gov/Archives/edgar/data/64670/000091205701531399/a2058671z8-k.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:50:49Z",
+      "sha256": "7b36629e81bf121f370d4fbff6c9cb745ee6237e1c7b1a6aa52fd0e9b7319259",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 3
+    },
+    {
+      "source_key": "cov_10k_fy2014",
+      "url": "https://www.sec.gov/Archives/edgar/data/1385187/000138518714000041/cov-201492614x10k.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:50:49Z",
+      "sha256": "1a43d1e4ea193d4ab9e508800598863e6b9a5786b28e2e7f718421a1c744dd7d",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 4
+    },
+    {
+      "source_key": "sec_sub_covidien",
+      "url": "https://data.sec.gov/submissions/CIK0001385187.json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:52:17Z",
+      "sha256": "266de7c019b84d69e5cee59955603d346931daed713ac983b83801340ba7ed10",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "wikidata_covidien",
+      "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q908172&props=labels|descriptions&languages=en&format=json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:50:50Z",
+      "sha256": "460bb405e61ede82bd1c43b1135a834c50332db4ebf60ad25b4c4575d4f425a6",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "cov_10k_fy2007",
+      "url": "https://www.sec.gov/Archives/edgar/data/1385187/000119312507264586/d10k.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:50:50Z",
+      "sha256": "1fb754deaa453d3db8b2ae7ab5ba23a3d930fefc6f39a35f1a4577b53fe4054e",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 7
+    },
+    {
+      "source_key": "cov_ex21_fy2007",
+      "url": "https://www.sec.gov/Archives/edgar/data/1385187/000119312507264586/dex211.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:03Z",
+      "sha256": "0ec17fdb191f65bdb6c35ad39e6e9932bfba6a4aa4c182fcab39c32cdf053c20",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "mdt_10k_fy2002",
+      "url": "https://www.sec.gov/Archives/edgar/data/64670/000091205702027975/a2083896z10-k.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:03Z",
+      "sha256": "f1480a1336ab423eb91608a599c683140d87a0bf1372b222ec3b30e9edeeeeff",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "mdt_10k_fy2001",
+      "url": "https://www.sec.gov/Archives/edgar/data/64670/000089710101500449/medtronic012520_10k.txt",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:03Z",
+      "sha256": "f1ba132bf4ce370babc8f8c945f07e9d4163149be3658b538b03726f59cdd8d5",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "gleif_medtronic_minimed",
+      "url": "https://api.gleif.org/api/v1/lei-records/254900IAZPP0LN8FNH78",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:04Z",
+      "sha256": "882238e568d814c1b2a5fc71e88cb0108b63d676375acaf8d4a9fe230944e249",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 5
+    },
+    {
+      "source_key": "gehc_10k_fy2022",
+      "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239323000025/gehc-20221231.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:04Z",
+      "sha256": "ad2b436b4df8dcb1e88350ee9ce671805170af9c788eaf570ae953b6f943c643",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 9
+    },
+    {
+      "source_key": "gleif_gehc",
+      "url": "https://api.gleif.org/api/v1/lei-records/549300OI9J7XOWZMUN85",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:05Z",
+      "sha256": "358c28f4c98394ff42bf4433b700959ab8259d581b1f0fe9602c527e3ed76079",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 6
+    },
+    {
+      "source_key": "sec_sub_gehc",
+      "url": "https://data.sec.gov/submissions/CIK0001932393.json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:52:17Z",
+      "sha256": "5185f8dabdf06638f131edf580f0f7bdd95d08ee2e23a0f578eb22c824fbe6b9",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "ror_gehc",
+      "url": "https://api.ror.org/organizations/01bwa4v12",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:05Z",
+      "sha256": "fc8fc79805046559cf6f0394de7684528b616908ecbad77220c478990d5612e2",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "crossref_ge_healthcare",
+      "url": "https://api.crossref.org/funders/10.13039/100006775",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:08Z",
+      "sha256": "875002ba9f433f61df3533e5c98bea4a8bd6cf1f0ab54b020cd7d284b2808d2a",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "wikidata_gehc",
+      "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q1152374&props=labels|descriptions&languages=en&format=json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:09Z",
+      "sha256": "0bb1cf5d783ce0c3ed1169230d4ff142a9a85992eebca049cda53eb5534363a0",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "ge_10k_fy2021",
+      "url": "https://www.sec.gov/Archives/edgar/data/40545/000004054522000008/ge-20211231.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:09Z",
+      "sha256": "4ba767c6d68307f21515f901cb1f914612f9efe0e71e813a7f55bfee9c1914ec",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "sec_sub_ge",
+      "url": "https://data.sec.gov/submissions/CIK0000040545.json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:52:17Z",
+      "sha256": "4eecde71e589783bb8ed002dd52a8c77c26d982e6702c346aadb4bbb649c7fa4",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "ror_ge",
+      "url": "https://api.ror.org/organizations/013msgt25",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:10Z",
+      "sha256": "24431a76f71743754fdb0f8c8d99df9feb5466e1a8ed8ee6dcbd20d815c83f5d",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "wikidata_ge",
+      "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q54173&props=labels|descriptions&languages=en&format=json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:10Z",
+      "sha256": "d46351685ccf8749d1bfe2cbc1c822ef9036a4693d26211d482fa7b51de79d8f",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "ge_10k_fy2004",
+      "url": "https://www.sec.gov/Archives/edgar/data/40545/000004054505000020/gefrm10k.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:10Z",
+      "sha256": "e54e3bcd98d4d2a411d0340e13f9ee4fe0dba197b039f5fcdc27c9a7161e660b",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 3
+    },
+    {
+      "source_key": "ge_10k_fy2003",
+      "url": "https://www.sec.gov/Archives/edgar/data/40545/000004054504000013/frm10k.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:10Z",
+      "sha256": "6215a7c34cacee78075d3d2ad2e5d9b652421db00ce638b27b7690b0727e6939",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "phg_20f_fy2013",
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312514067281/d672413d20f.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:12Z",
+      "sha256": "3531b9a0887ab909c495af634a37fbc06aed7490bf8b2d11d909b90093748b1c",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 6
+    },
+    {
+      "source_key": "phg_20f_fy2024",
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000031321625000009/phg-20241231.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:13Z",
+      "sha256": "6d6eabb8f1e2caf07848df5b3f895b0f002cfdb1d28eae7619983534875f3126",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 9
+    },
+    {
+      "source_key": "sec_sub_philips",
+      "url": "https://data.sec.gov/submissions/CIK0000313216.json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:52:18Z",
+      "sha256": "828f8e35dcc1944b714bae8a56d57fd7fe5720a07192054dcbe213826bab9e60",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "gleif_philips_nv",
+      "url": "https://api.gleif.org/api/v1/lei-records/H1FJE8H61JGM1JSGM897",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:13Z",
+      "sha256": "a680cb7ed192516defaa5ca9f860dfae66b49f9ba155e49375af693de92364cd",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 3
+    },
+    {
+      "source_key": "ror_philips_nl",
+      "url": "https://api.ror.org/organizations/02p2bgp27",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:14Z",
+      "sha256": "d4f79e39303899405411939b2992a03add66582836383f62af0142dc664865c4",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "crossref_philips",
+      "url": "https://api.crossref.org/funders/10.13039/100004320",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:17Z",
+      "sha256": "5342a1b8494482e85803cdc1ba44a272e241ae872ff100f9cb0e7f89233f0d67",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "wikidata_philips",
+      "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q170416&props=labels|descriptions&languages=en&format=json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:18Z",
+      "sha256": "c4bfae40d663b30561f0b61b671304346730df45f6e20d04f21db4fa7c6acc91",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "gleif_philips_electronics_nederland",
+      "url": "https://api.gleif.org/api/v1/lei-records/549300VGHFJJ58HE2B54",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:18Z",
+      "sha256": "cf1288592eb7cf9b556f9928468b3872cbcf673504b5d8a82f3f2deb6e9e9b1a",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "phg_ar2015",
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312516473594/d145196d20f.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:52:19Z",
+      "sha256": "f26fd664d785ddb700bca3855e215d3451c9f97295d8e618a05948f8679138d2",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "phg_20f_fy2008",
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000115697309000099/u06127e20vf.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:19Z",
+      "sha256": "49900a38c05c1592aa67aae85f800f34cefcb726476cfa2814dab4048f5d46b4",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 6
+    },
+    {
+      "source_key": "phg_6k_20080321",
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000130901408000155/exhibit12.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:19Z",
+      "sha256": "280bcd23e99e5df3b5b44fa66ef3d243891d7d6d77356024486a63b0e0b2fb49",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 4
+    },
+    {
+      "source_key": "sec_sub_respironics",
+      "url": "https://data.sec.gov/submissions/CIK0000780434.json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:52:19Z",
+      "sha256": "57ee9c52ccda4cc46a6ff3cf6137cb1aa77ed0ddc18408e643b1d72fedc47538",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "phg_ar2016",
+      "url": "https://www.sec.gov/Archives/edgar/data/313216/000119312517050359/d330553d20f.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:21Z",
+      "sha256": "09e41dcb173ffef21814162f135a16aeb9a8219743b0b5768f1f169f818a84dd",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 4
+    },
+    {
+      "source_key": "gleif_draegerwerk",
+      "url": "https://api.gleif.org/api/v1/lei-records/5493005UFVHY0PPNKD75",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:22Z",
+      "sha256": "b976892b22db659e06aeaf864a5d9b2ebb2c4ad6e933ea54a59dd0704d0c97ca",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 10
+    },
+    {
+      "source_key": "ror_draeger",
+      "url": "https://api.ror.org/organizations/0415p9s42",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:22Z",
+      "sha256": "cd395d108d9761c0089e587001ebf420b28f47d76d2f3a26239862cfd7754e5a",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "wikidata_draeger",
+      "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q605908&props=labels|descriptions&languages=en&format=json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:22Z",
+      "sha256": "57636bb210cbae297a8ec5cb7e937dece8b4b479095933b3c3a898b1d051639c",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "gleif_draeger_medical",
+      "url": "https://api.gleif.org/api/v1/lei-records/529900PCM8FAO280F764",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:22Z",
+      "sha256": "cb24d2ea330196c4266783668333fd349e976383912cb4f96636b3eec0663b74",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 8
+    },
+    {
+      "source_key": "gleif_draeger_safety",
+      "url": "https://api.gleif.org/api/v1/lei-records/549300T8IDCFNHN29E62",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:23Z",
+      "sha256": "1a91d6d6a766e3dede82c993c40fbc764c38ef3e601c7b2f93392aaf2a44041a",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 7
+    },
+    {
+      "source_key": "gleif_draeger_safety_parent_rel",
+      "url": "https://api.gleif.org/api/v1/lei-records/549300T8IDCFNHN29E62/direct-parent-relationship",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:23Z",
+      "sha256": "03563b73cb79ff770ce73288c08676cf51bbfcda2fe704d9177d5fe5a8eeaa64",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "gleif_draeger_medical_systems",
+      "url": "https://api.gleif.org/api/v1/lei-records/549300R77YDRH6WZPY39",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:23Z",
+      "sha256": "47736f1bc8dcf7e3f9dad85df6d4278c6bd559b91651813b4576752e142bbb75",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 6
+    },
+    {
+      "source_key": "szse_mindray_listing_20181016",
+      "url": "http://www.szse.cn/English/about/news/listings/English/t20181016_559469.html",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:24Z",
+      "sha256": "7a638f9102d5a2dddf025905e8dc74d75631f2d1eb8a1cba494653c60a6ab757",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "mry_20f_fy2013",
+      "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312514163316/d646003d20f.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:25Z",
+      "sha256": "633171cdf154295f9478c39898181394ad95797ac24c7121683105daed8921e3",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 8
+    },
+    {
+      "source_key": "mry_6k_20080515_datascope",
+      "url": "https://www.sec.gov/Archives/edgar/data/1373060/000114554908000881/h02114exv99w1.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:26Z",
+      "sha256": "67397c96986dada8642b2ecdc88118dd8e7beb0dca348169f43b0e445551501f",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 4
+    },
+    {
+      "source_key": "ror_mindray",
+      "url": "https://api.ror.org/organizations/04yfe8169",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:26Z",
+      "sha256": "4815731fd0f00dd72af2611d1673ff1ff4d682178953c6d6de286f8c560bcfa7",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "wikidata_mindray",
+      "url": "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q15138136&props=labels|descriptions&languages=en&format=json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:26Z",
+      "sha256": "510db05e184146e1fdcd13fd3e0f28441f6293cf6d378826283f8f7e77e4c373",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "mry_20f_fy2007",
+      "url": "https://www.sec.gov/Archives/edgar/data/1373060/000114554908001185/h02233e20vf.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:54:29Z",
+      "sha256": "4e52c5e0df29d166b745b58302f244241363778d0fa798a2d72f9fa410cb15b7",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "mry_6k_20160303_takeprivate",
+      "url": "https://www.sec.gov/Archives/edgar/data/1373060/000114420416085800/v433228_ex99-1.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:26Z",
+      "sha256": "553306df920295037c9b388221121aa7f639ac0bfd4f0b21425159edb95d7720",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "mry_25nse_20160304",
+      "url": "https://www.sec.gov/Archives/edgar/data/1373060/000087666116000851/ruleprovisionnotice.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:27Z",
+      "sha256": "e648f35d75e32382db1067467839dc27163b6153720bdf4b048bd3a16ae35866",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 1
+    },
+    {
+      "source_key": "gleif_mindray_international",
+      "url": "https://api.gleif.org/api/v1/lei-records/213800L7HSJE2P72PZ24",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:27Z",
+      "sha256": "7353d4b12f54f86b3e4e66031d7af81cb3a88f0dc4e9a5491642d9c01d9eb461",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 5
+    },
+    {
+      "source_key": "sec_sub_mindray",
+      "url": "https://data.sec.gov/submissions/CIK0001373060.json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:52:20Z",
+      "sha256": "079b5a283dba0d0a90e061a6849707f27649761a62f6a56df4268cc5972e7430",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 3
+    },
+    {
+      "source_key": "datascope_8k_20080515",
+      "url": "https://www.sec.gov/Archives/edgar/data/27096/000095012308005728/y58644e8vk.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:35Z",
+      "sha256": "e69d533f7e2079912874828235e6a263b03ccc345d22f53858134b508364a78b",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 5
+    },
+    {
+      "source_key": "sec_sub_datascope",
+      "url": "https://data.sec.gov/submissions/CIK0000027096.json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:52:20Z",
+      "sha256": "2577c4b515b1d27b9809f52be59299d89dd0bc087fc5916701406fb10fa1ab35",
+      "evidence_kind": "api_field_assertion",
+      "n_assertions": 2
+    },
+    {
+      "source_key": "mry_6k_20130717_zonare",
+      "url": "https://www.sec.gov/Archives/edgar/data/1373060/000119312513292410/d570219dex991.htm",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:35Z",
+      "sha256": "8f5e8094fd1612f9d816ab00d13035838ed71c858109698e0e91594be9781332",
+      "evidence_kind": "verbatim_excerpt",
+      "n_assertions": 3
+    }
+  ],
+  "negative_searches": [
+    {
+      "search_key": "gleif_search_covidien_plc",
+      "url": "https://api.gleif.org/api/v1/lei-records?filter[entity.legalName]=Covidien%20plc&page[size]=5",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:35Z",
+      "sha256": "718a60b9486b7ec79b065b452311b6489b66f66d7f1621096ac12d4299d891cf",
+      "why_unknown": "Covidien plc (Ireland, 2009-2015) has no LEI record in GLEIF",
+      "kind": "expected_total",
+      "observed_total": 0,
+      "expected_total": 0,
+      "assertion_passed": true
+    },
+    {
+      "search_key": "gleif_search_shenzhen_mindray",
+      "url": "https://api.gleif.org/api/v1/lei-records?filter[entity.legalName]=Shenzhen%20Mindray%20Bio-Medical&page[size]=5",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:35Z",
+      "sha256": "c7170238809a37ca84688cbe11298479d8c2379c9aa4c9706f3dc567ec7546a6",
+      "why_unknown": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd. has no LEI record in GLEIF",
+      "kind": "expected_total",
+      "observed_total": 0,
+      "expected_total": 0,
+      "assertion_passed": true
+    },
+    {
+      "search_key": "gleif_search_zonare",
+      "url": "https://api.gleif.org/api/v1/lei-records?filter[entity.legalName]=ZONARE&page[size]=5",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:36Z",
+      "sha256": "5c240f553fe2ef02b0f1cf667d6e4eb539e4e99ff34864514dbd112b2f8a51a1",
+      "why_unknown": "ZONARE Medical Systems, Inc. has no LEI record in GLEIF",
+      "kind": "expected_total",
+      "observed_total": 0,
+      "expected_total": 0,
+      "assertion_passed": true
+    },
+    {
+      "search_key": "ror_search_draegerwerk",
+      "url": "https://api.ror.org/organizations?query=Draegerwerk",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:36Z",
+      "sha256": "ac29940a8f7d464fe60013962fafec34770aa5468fe27908974b2d411e5d0472",
+      "why_unknown": "ASCII spelling 'Draegerwerk' returns no ROR match; the accented query 'Dräger' does",
+      "kind": "expected_total",
+      "observed_total": 0,
+      "expected_total": 0,
+      "assertion_passed": true
+    },
+    {
+      "search_key": "crossref_search_draeger",
+      "url": "https://api.crossref.org/funders?query=Draegerwerk&rows=5",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:37Z",
+      "sha256": "d3bf6771b624686609c416b3adf4b413663d8f96f4e0e8249eb9860fecd632ca",
+      "why_unknown": "no Crossref Funder Registry record for Draegerwerk AG & Co. KGaA",
+      "kind": "expected_total",
+      "observed_total": 0,
+      "expected_total": 0,
+      "assertion_passed": true
+    },
+    {
+      "search_key": "sec_company_tickers_no_draeger_mindray",
+      "url": "https://www.sec.gov/files/company_tickers.json",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:55:07Z",
+      "sha256": "de59c00edabfb8b540c61ea4805446763bc9ba6aa8b42fa2955f5439556558d2",
+      "why_unknown": "no SEC CIK exists for Draegerwerk AG & Co. KGaA or Shenzhen Mindray Bio-Medical Electronics Co., Ltd.: neither name appears in SEC's registrant ticker list",
+      "kind": "absent_substring",
+      "forbidden_tokens": [
+        "DRAGER",
+        "DRAEGER",
+        "MINDRAY"
+      ],
+      "tokens_found": [],
+      "assertion_passed": true
+    },
+    {
+      "search_key": "crossref_search_mindray",
+      "url": "https://api.crossref.org/funders?query=Shenzhen%20Mindray&rows=5",
+      "http_status": 200,
+      "retrieved_at_utc": "2026-11-03T19:51:39Z",
+      "sha256": "28b5f53d77a4d50bd8b341bf2fe1649c69e18a1fba10fcc2937c830c7966a716",
+      "why_unknown": "no Crossref Funder Registry record for Shenzhen Mindray",
+      "kind": "expected_total",
+      "observed_total": 0,
+      "expected_total": 0,
+      "assertion_passed": true
+    }
+  ]
+}

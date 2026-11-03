@@ -1,0 +1,221 @@
+{
+  "all_passed": true,
+  "checks_passed": 13,
+  "checks_total": 13,
+  "claim_counts": {
+    "claims": 20563,
+    "entities": 7059,
+    "evidence": 3418,
+    "raw_payloads": 130
+  },
+  "generated_at": "2026-11-03T21:08:38.520Z",
+  "results": [
+    {
+      "check": "V1a evidence rows resolvable to committed raw payload",
+      "detail": {
+        "evidence_rows": 3418,
+        "resolved": 3418,
+        "unresolved_examples": []
+      },
+      "pass": true
+    },
+    {
+      "check": "V1b every claim's evidence_id resolves",
+      "detail": {
+        "claims": 20563
+      },
+      "pass": true
+    },
+    {
+      "check": "V1c evidence id resolves to the claim's own source record",
+      "detail": {
+        "claims": 20563,
+        "examples": [],
+        "mismatched": 0
+      },
+      "pass": true
+    },
+    {
+      "check": "V2 claim store integrity",
+      "detail": {
+        "bad_predicate": 0,
+        "bad_status": 0,
+        "missing_object_entity": 0,
+        "missing_subject_entity": 0
+      },
+      "pass": true
+    },
+    {
+      "check": "V3a claim count in summary equals claims.jsonl",
+      "detail": {
+        "file": 20563,
+        "summary": 20563
+      },
+      "pass": true
+    },
+    {
+      "check": "V3b claims_by_predicate equals recomputation",
+      "detail": {
+        "recomputed": {
+          "AFFILIATED_WITH": 2175,
+          "CO_AFFILIATED_ON": 1567,
+          "FUNDED_BY": 105,
+          "HAS_TOPIC": 7455,
+          "HOSTS_TRIAL_SITE": 598,
+          "REFERENCES_PUBLICATION": 4351,
+          "RESPONSIBLE_FOR_TRIAL": 3,
+          "SPONSORS_TRIAL": 4309
+        },
+        "summary": {
+          "AFFILIATED_WITH": 2175,
+          "CO_AFFILIATED_ON": 1567,
+          "FUNDED_BY": 105,
+          "HAS_TOPIC": 7455,
+          "HOSTS_TRIAL_SITE": 598,
+          "REFERENCES_PUBLICATION": 4351,
+          "RESPONSIBLE_FOR_TRIAL": 3,
+          "SPONSORS_TRIAL": 4309
+        }
+      },
+      "pass": true
+    },
+    {
+      "check": "V4 per-company authoritative counts agree",
+      "detail": {
+        "recomputed": {
+          "draeger": 114,
+          "ge_healthcare": 886,
+          "medtronic": 2487,
+          "mindray": 362,
+          "philips": 963
+        },
+        "reported": {
+          "draeger": 114,
+          "ge_healthcare": 886,
+          "medtronic": 2487,
+          "mindray": 362,
+          "philips": 963
+        }
+      },
+      "pass": true
+    },
+    {
+      "check": "V5 first_seen_at is a real per-request clock (not one constant)",
+      "detail": {
+        "clinicaltrials_gov_api_v2": {
+          "distinct": 37,
+          "max": "2026-11-03T19:40:09.256Z",
+          "min": "2026-11-03T19:39:49.778Z",
+          "n": 37
+        },
+        "europepmc": {
+          "distinct": 94,
+          "max": "2026-11-03T19:43:15.598Z",
+          "min": "2026-11-03T19:41:50.058Z",
+          "n": 94
+        }
+      },
+      "pass": true
+    },
+    {
+      "check": "V6 no machine claim is presented as human-confirmed",
+      "detail": {
+        "human_confirmed_claims": 0,
+        "worksheet_rows": 102,
+        "worksheet_rows_with_human_data": 0
+      },
+      "pass": true
+    },
+    {
+      "check": "V7 pre-registration hash matches the one recorded at verdict time",
+      "detail": {
+        "current": "d1bb8339ac0fba75bb6ac177e9efdfea20887f27d84e67a2b6349233bed097a3",
+        "recorded": "d1bb8339ac0fba75bb6ac177e9efdfea20887f27d84e67a2b6349233bed097a3"
+      },
+      "pass": true
+    },
+    {
+      "check": "V8 literature references carry verification URL + payload hash",
+      "detail": {
+        "counts_reported": {
+          "abstract_relevance_flags": {
+            "low": 4,
+            "ok": 28
+          },
+          "abstract_sources": {
+            "europepmc": 12,
+            "openalex": 20
+          },
+          "api_calls": {
+            "crossref": 75,
+            "europepmc": 45,
+            "openalex": 4
+          },
+          "by_category": {
+            "clinical_networks": 4,
+            "collaboration_networks": 5,
+            "entity_resolution": 5,
+            "knowledge_diffusion": 5,
+            "measurement_error": 3,
+            "medical_device": 4,
+            "science_of_science": 4,
+            "technology_transfer": 3,
+            "temporal_kg_provenance": 4,
+            "temporal_networks": 1,
+            "translational_lag": 3,
+            "university_industry": 4
+          },
+          "candidates_considered": 45,
+          "coverage_queries": 6,
+          "cross_check_hits": {
+            "europepmc": 18,
+            "openalex": 45
+          },
+          "metadata_only": 13,
+          "openalex_batch_requests": 2,
+          "references_verified": 45,
+          "resolver_stages": {
+            "crossref_search": 26,
+            "doi_hint_verified": 17,
+            "openalex_doi": 2
+          },
+          "unresolved_candidates": 0,
+          "verification_sources": {
+            "crossref": 43,
+            "openalex": 2
+          },
+          "with_abstract": 32,
+          "with_any_cross_check": 45,
+          "with_pmid": 18
+        },
+        "references": 45,
+        "with_verification_url_and_hash": 45
+      },
+      "pass": true
+    },
+    {
+      "check": "V9 frozen S-028 artefacts untouched",
+      "detail": {
+        "dirty_entries_in_main_checkout": [
+          " M research/studies/early_signal_5firms/HUMAN_REVIEW_WORKSHEET.csv"
+        ],
+        "note": "S-029 works in a separate worktree; this checkout must show no S-028 or S-029 modifications",
+        "s028_entries_modified": [],
+        "s029_entries_in_main_checkout": []
+      },
+      "pass": true
+    },
+    {
+      "check": "V10 raw row counts equal the extraction report",
+      "detail": {
+        "pubs": 770,
+        "reported": {
+          "pubs": 770,
+          "trials": 2498
+        },
+        "trials": 2498
+      },
+      "pass": true
+    }
+  ]
+}

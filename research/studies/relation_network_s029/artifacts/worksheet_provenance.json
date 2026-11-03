@@ -1,0 +1,42 @@
+{
+  "company_counts": {
+    "": 34,
+    "draeger": 14,
+    "ge_healthcare": 16,
+    "medtronic": 17,
+    "mindray": 10,
+    "philips": 11
+  },
+  "csv": "S029_HUMAN_REVIEW_WORKSHEET.csv",
+  "generated_at": "2026-11-03T21:03:15.385Z",
+  "human_fields_blank_verified": true,
+  "human_fields_written": [],
+  "machine_label_counts": {
+    "CANDIDATE": 53,
+    "REJECTED": 11,
+    "VERIFIED_BY_SOURCE": 38
+  },
+  "note": "human_label / reviewer_id / review_date / review_reason / adjudication_status are EMPTY BY CONSTRUCTION. No precision, recall or human-truth statistic may be computed from this file until a real reviewer fills them.",
+  "rows": 102,
+  "seed": 180977425540846,
+  "strata_counts": {
+    "company_funded_publication": 8,
+    "company_institution_coaffiliation": 12,
+    "company_publication": 14,
+    "company_trial_collab": 10,
+    "company_trial_lead": 14,
+    "company_trial_responsible": 2,
+    "expected_negative:company_trial_collab": 1,
+    "expected_negative:company_trial_lead": 2,
+    "expected_negative:publication": 5,
+    "expected_negative:trial": 6,
+    "institution_publication": 10,
+    "institution_trial_site": 10,
+    "trial_references_publication": 8
+  },
+  "stratum_expected_counts": {
+    "expect_machine_mapping_wrong_or_uncertain": 3,
+    "expect_relation_absent": 11,
+    "expect_relation_present": 88
+  }
+}

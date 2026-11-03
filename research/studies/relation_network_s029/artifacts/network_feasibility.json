@@ -1,0 +1,187 @@
+{
+  "gate": {
+    "G1_stable_identifier_share": {
+      "pass": true,
+      "threshold": ">=60%",
+      "value": 100.0
+    },
+    "G2_fuzzy_or_undated_share": {
+      "pass": true,
+      "threshold": "<=15%",
+      "value": 10.08
+    },
+    "G3_anachronism_share": {
+      "pass": true,
+      "threshold": "<=5%",
+      "value": 1.37
+    },
+    "G4_companies_with_20_claims": {
+      "pass": true,
+      "threshold": ">=3 of 5",
+      "value": 5
+    }
+  },
+  "gate_passed": true,
+  "generated_at": "2026-11-03T21:03:14.703Z",
+  "interpretable": true,
+  "inventory": {
+    "claims_authoritative": 20563,
+    "edges_by_predicate": {
+      "AFFILIATED_WITH": 2175,
+      "CO_AFFILIATED_ON": 1225,
+      "FUNDED_BY": 105,
+      "HAS_TOPIC": 7455,
+      "HOSTS_TRIAL_SITE": 598,
+      "REFERENCES_PUBLICATION": 26,
+      "RESPONSIBLE_FOR_TRIAL": 3,
+      "SPONSORS_TRIAL": 4209
+    },
+    "edges_by_publication_year": {
+      "2001": 43,
+      "2002": 3,
+      "2003": 11,
+      "2004": 37,
+      "2005": 149,
+      "2006": 130,
+      "2007": 187,
+      "2008": 405,
+      "2009": 292,
+      "2010": 602,
+      "2011": 642,
+      "2012": 744,
+      "2013": 675,
+      "2014": 826,
+      "2015": 1008,
+      "2016": 895,
+      "2017": 1107,
+      "2018": 928,
+      "2019": 898,
+      "2020": 785,
+      "2021": 796,
+      "2022": 887,
+      "2023": 817,
+      "2024": 897,
+      "2025": 1004,
+      "2026": 1282
+    },
+    "entities_total": 7059,
+    "entities_with_stable_ids": 5220,
+    "object_node_types": {
+      "clinical_trial": 4810,
+      "publication": 2306,
+      "research_institution": 1225,
+      "topic": 7455
+    },
+    "subject_node_types": {
+      "clinical_trial": 26,
+      "company_legal": 4373,
+      "publication": 7455,
+      "research_institution": 3942
+    },
+    "unique_edges": 15796
+  },
+  "not_computed_and_why": [
+    "centrality / community detection: a node's rank would be driven by how many papers happen to list it, which section D shows is a text-parsing artefact",
+    "temporal edge prediction: requires point-in-time observations, see T4",
+    "knowledge-flow direction: no source in this round states a direction"
+  ],
+  "sensitivity": {
+    "interpretation": "the network a canonical-name-only study would see is a subset whose size is stated here; the missing part is not random (it is dominated by operating units and former names)",
+    "records_reachable_by_exact_parent_name_only": 1013,
+    "records_with_a_company_mention": 3134,
+    "share_lost_if_only_exact_parent_name_used_pct": 67.68
+  },
+  "structure": {
+    "company_institution_coaffiliation": {
+      "company_degree": {
+        "distribution_top10": [
+          382,
+          302,
+          287,
+          190,
+          64
+        ],
+        "max": 382,
+        "mean": 245.0,
+        "median": 287,
+        "n_nodes": 5
+      },
+      "components_sizes": [
+        1056
+      ],
+      "institution_degree": {
+        "distribution_top10": [
+          4,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "max": 4,
+        "mean": 1.17,
+        "median": 1,
+        "n_nodes": 1051
+      },
+      "n_edges": 1225
+    },
+    "company_trial": {
+      "company_degree": {
+        "distribution_top10": [
+          1667,
+          381,
+          345,
+          18,
+          7
+        ],
+        "max": 1667,
+        "mean": 483.6,
+        "median": 345,
+        "n_nodes": 5
+      },
+      "components_sizes": [
+        2392,
+        19,
+        8
+      ],
+      "n_edges": 2420
+    },
+    "institution_trial": {
+      "components_sizes": [
+        1636,
+        19,
+        11,
+        11,
+        9,
+        9,
+        9,
+        9,
+        7,
+        7
+      ],
+      "institution_degree": {
+        "distribution_top10": [
+          31,
+          25,
+          22,
+          22,
+          22,
+          15,
+          14,
+          13,
+          13,
+          13
+        ],
+        "max": 31,
+        "mean": 1.89,
+        "median": 1,
+        "n_nodes": 1239
+      },
+      "n_edges": 2390
+    }
+  }
+}
