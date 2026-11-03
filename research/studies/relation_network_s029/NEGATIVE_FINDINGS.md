@@ -28,7 +28,7 @@ direction"`. In the network feasibility inventory they form a **single 1,056-nod
 an artefact of publication co-authorship, not evidence of a research community. **This is the S-028
 error in its most tempting form and the study refuses it explicitly.**
 
-## NF-3 — The Dräger ASCII query is 76.5% name collisions `OBSERVED_FACT`
+## NF-3 — The Dräger ASCII query is 65.26% name collisions `OBSERVED_FACT`
 
 `AFF:"Draeger"` returns papers by authors **surnamed** Draeger (email `draeger@ana.unibe.ch`, name forms
 like "H.T. Draeger, MD"). Of 95 Draeger affiliation mentions, **62 (65.26%) were rejected**; the 33 accepted came
