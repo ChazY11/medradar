@@ -66,9 +66,12 @@ left part of any such curve is an indexing artefact.
 | `AMBIGUOUS` (ownership date precedes group ownership) | 6 | e.g. "Covidien, GI Solutions" 2010 |
 
 **B.2 The company is largely a fiction in registry data.** Measured by the entity auditor
-(`artifacts/entity_resolution_metrics.json`): **61.8%** of Medtronic's accepted sponsor strings are
-operating units rather than the parent name ("Medtronic Cardiac Rhythm and Heart Failure" alone appears
-280 times), and **99.5%** of Philips's are units/divisions. Consequently, **67.68%** of records carrying a
+(`artifacts/entity_resolution_metrics.json`, §2): denominator = mentions whose role is `lead_sponsor` or
+`collaborator` (ClinicalTrials.gov sponsor fields) and whose mapping is accepted
+(`EXACT/ALIAS/ORG_TEXT/ORG_EMAIL`). **61.8%** of Medtronic's such strings (1,083/1,753) are operating
+units rather than the parent name ("Medtronic Cardiac Rhythm and Heart Failure" alone appears 280
+times), and **99.5%** of Philips's (399/401) are units/divisions. The claim-level equivalent after the
+claim-store join is 61.7% (1,079/1,749) and 99.5% (393/395). Consequently, **67.68%** of records carrying a
 company mention would be invisible to a study that queried only the exact parent name
 (`artifacts/network_feasibility.json` → `sensitivity`). This is the quantified version of the S-028
 lessons about entity identity; it is not a rounding detail.
@@ -93,9 +96,13 @@ holding delisted 2016-03-03, Datascope's Patient Monitoring business sold 2008-0
 itself was **not** acquired), ZONARE 2013-07-17. These dates are enforced in code: **6** mentions are
 `AMBIGUOUS` because the string names an entity before the group owned it (e.g. a 2010 trial sponsored by
 "Covidien"), and **282** claims carry an anachronism flag (GE "GE Healthcare" strings dated before the
-legal entity existed — the same business, a different legal person). The auditor also flagged that
-**2.31%** of accepted mappings rest on group membership whose start date the register cannot establish;
-those must be excluded from any time-sensitive test rather than accepted silently.
+legal entity existed — the same business, a different legal person). On ownership dating, the auditor's first pass reported 86 mentions whose group-ownership start was
+unestablished; after reconciliation it **accepted** the study's MiniMed attribution (dated by the
+2001-08-28 acquisition) and withdrew that figure. The reconciled residual is **5 claims (0.13%)** whose
+entity's own start date the register could not establish (4 Dräger Medical GmbH/Inc strings and 1
+Medtronic Vascular unit string); their `relation_id`s are listed in
+`entity_resolution_metrics.json` → `ownership_reconciliation.undated_ownership.claims_affected_ids` and
+they must be excluded from any time-sensitive test rather than accepted silently.
 
 **B.5 Collisions that a naive pipeline would have counted as relations** (`data/claim_rejects.jsonl`):
 Dräger-A author with email `draeger@ana.unibe.ch` (62 rejects; **76.5%** of all Dräger affiliation

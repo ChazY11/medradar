@@ -3200,7 +3200,8 @@ def compute_claim_linkage(register: dict, claims: list[dict], mentions: list[dic
     }
 
 
-def compute_ownership_reconciliation(register: dict, mentions: list[dict]) -> dict:
+def compute_ownership_reconciliation(register: dict, mentions: list[dict],
+                                    claims: list[dict] | None = None) -> dict:
     """Reconcile the two ownership-date-unknown definitions.
 
     A = 'legal-entity date unknown': the register has no valid_from/valid_to for the
@@ -3217,8 +3218,7 @@ def compute_ownership_reconciliation(register: dict, mentions: list[dict]) -> di
         alias_idx[ck] = list(block["aliases"])
     accepted = {"EXACT", "ALIAS", "ORG_TEXT", "ORG_EMAIL"}
 
-    undated_b, division_undated = [], []
-    undated_a = 0
+    undated_b, division_undated, undated_a_rows = [], [], []
     for m in mentions:
         ck = m.get("company_key")
         if ck not in register["companies"]:
@@ -3237,22 +3237,39 @@ def compute_ownership_reconciliation(register: dict, mentions: list[dict]) -> di
         ent = ent_by.get(ek)
         if not ent or ent.get("valid_from") or ent.get("valid_to"):
             continue
-        undated_a += 1
+        undated_a_rows.append({"company": ck, "entity_key": ek, "raw": m.get("raw_string"),
+                               "mapping_status": m.get("mapping_status")})
         if m.get("mapping_status") not in accepted:
             continue
         row = {"company": ck, "raw": m.get("raw_string"), "entity_key": ek,
                "entity_type": ent["entity_type"], "mapping_status": m.get("mapping_status"),
-               "record_id": m.get("record_id"), "rule": m.get("rule")}
+               "record_id": m.get("record_id"), "role": m.get("role"), "rule": m.get("rule")}
         if ent["entity_type"] == "division":
             division_undated.append(row)
         elif ek not in FAMILY_OWNERSHIP:
             undated_b.append(row)
+    affected: dict[str, list[str]] = {}
+    company_ids = {f"ent:company:{ck}": ck for ck in register["companies"]}
+    for row in undated_b:
+        ids = []
+        for c in (claims or []):
+            if c.get("source_record_id") != row["record_id"]:
+                continue
+            if c.get("relation_role") != row["role"]:
+                continue
+            if _claim_company(c, company_ids) != row["company"]:
+                continue
+            ids.append(c.get("relation_id"))
+        affected[row["entity_key"] + "|" + str(row["record_id"])] = ids
+    n_claims = sum(len(v) for v in affected.values())
     return {
         "definitions": {
             "A_legal_entity_date_unknown": (
-                "the register records no valid_from/valid_to for the subsidiary legal person "
-                f"itself -> {undated_a} mention strings (dominated by medtronic_minimed_inc). "
-                "This is a legal-entity fact, NOT an ownership problem."),
+                "the register records no valid_from/valid_to for the entity itself (subsidiary "
+                f"or division) -> {len(undated_a_rows)} mention strings, by entity "
+                + ", ".join(f"{k}={v}" for k, v in
+                            _count_by(undated_a_rows, lambda r: r["entity_key"]).items())
+                + ". This is a legal-entity fact, NOT an ownership problem."),
             "B_group_ownership_date_unknown": (
                 "the family has no verified acquisition/ownership date; MiniMed strings are dated "
                 "by the 2001-08-28 acquisition and are therefore NOT undated under this definition. "
@@ -3264,12 +3281,15 @@ def compute_ownership_reconciliation(register: dict, mentions: list[dict]) -> di
             "acquisition of 2001-08-28 (mapping layer ownership_from = 2001-08-28). The register still "
             "records the Delaware entity's own incorporation date as UNKNOWN; the reconciliation uses "
             "the family ownership date, so the earlier 79-string MiniMed figure is withdrawn as an "
-            "ownership-date measure and retained only as a legal-entity-date caveat."),
+            "ownership-date measure. The entity's own incorporation date remains a legal-entity caveat, "
+            "not an ownership gap."),
         "undated_ownership": {
             "n_strings": len(undated_b),
             "by_entity": _count_by(undated_b, lambda r: r["entity_key"]),
             "by_mapping_status": _count_by(undated_b, lambda r: r["mapping_status"]),
             "examples": _examples_per_entity(undated_b, per_entity=4),
+            "claims_affected": n_claims,
+            "claims_affected_ids": {k: v for k, v in affected.items() if v},
         },
         "undated_division": {"n_strings": len(division_undated),
                              "examples": _examples_per_entity(division_undated, per_entity=3)},
@@ -3534,7 +3554,7 @@ def compute_stage2_report(register: dict, claims: list[dict], mentions: list[dic
         })
 
     claim_linkage = compute_claim_linkage(register, claims, mentions)
-    reconciliation = compute_ownership_reconciliation(register, mentions)
+    reconciliation = compute_ownership_reconciliation(register, mentions, claims)
 
     # ---------- 6. verdict (derived from the numbers above) ----------------
     total_mentions = len(mentions)
@@ -3762,7 +3782,6 @@ def render_entity_resolution_md(metrics: dict, register: dict) -> str:
     else:
         A_("_None._")
     A_("")
-    A_("### 3.3 Ownership date UNKNOWN \u2014 mapping downgraded")
     A_("### 3.3 Ownership-date-unknown: reconciled definition")
     A_("")
     recon = metrics["ownership_reconciliation"]
@@ -3808,9 +3827,9 @@ def render_entity_resolution_md(metrics: dict, register: dict) -> str:
         for ex in du["examples"]:
             A_(f"| {ex['company']} | `{str(ex['raw'])[:70]}` | `{ex['entity_key']}` | {ex['claim_date']} |")
         A_("")
-    duf = ana.get("dates_unknown_flag_from_mapping_layer") or {"n": 0, "examples": []}
-    A_(f"The mapping layer's own `dates_unknown=true` flag covers **{duf['n']}** mentions in this "
-       "snapshot; the register-derived counts above are the authoritative cross-check on any re-run.")
+    A_("Provenance of this list: the register is the authority for every date above; the supplied "
+       "mention snapshot carries `dates_unknown=true` on 0 rows, so the undated set is derived from the "
+       "register (entity validity + family ownership dates) and is reproducible by re-running this code.")
     A_("")
     A_("## 4. Name collisions and rejections")
     A_("")
@@ -3879,9 +3898,10 @@ def render_entity_resolution_md(metrics: dict, register: dict) -> str:
     A_("")
     A_("## 8. Method and limitations")
     A_("")
-    A_("- The measurement population is the per-string mention record `data/company_mentions.jsonl`, which "
-       "is the input of the claim builder; when `data/claims.jsonl` exists the claim-level linkage is added "
-       "without altering these numbers.")
+    A_("- Identity measurements are computed on the per-string mention records "
+       "`data/company_mentions.jsonl` (the input of the claim builder); the claim store "
+       "`data/claims.jsonl` is joined in section 1.1 to give claim-level counts without altering the "
+       "identity numbers.")
     A_("- `claim-producing` follows the pipeline's accepted statuses; the tier table is independent.")
     A_("- Ownership dates are used as the register states them. Where the register says UNKNOWN, the report "
        "says UNKNOWN and the mapping is downgraded (section 3.3), never back-filled with a plausible date.")

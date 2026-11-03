@@ -1,6 +1,6 @@
 {
   "schema": "s029_entity_resolution_metrics_v1",
-  "generated_at": "2026-11-03T20:51:02Z",
+  "generated_at": "2026-11-03T20:57:29Z",
   "inputs": {
     "claims": {
       "claims_total": 20563,
@@ -470,6 +470,7 @@
           "entity_type": "former_subsidiary",
           "mapping_status": "ALIAS",
           "record_id": "NCT00473148",
+          "role": "collaborator",
           "rule": "operating_unit_of_parent"
         },
         {
@@ -479,6 +480,7 @@
           "entity_type": "operating_subsidiary",
           "mapping_status": "ORG_TEXT",
           "record_id": "doi:10.1055/s-0036-1593958",
+          "role": "author_affiliation",
           "rule": "organisational_affiliation_segment"
         },
         {
@@ -488,6 +490,7 @@
           "entity_type": "former_subsidiary",
           "mapping_status": "ORG_EMAIL",
           "record_id": "doi:10.1186/s13054-015-1161-9",
+          "role": "author_affiliation",
           "rule": "corporate_email_domain"
         },
         {
@@ -497,6 +500,7 @@
           "entity_type": "former_subsidiary",
           "mapping_status": "ORG_TEXT",
           "record_id": "doi:10.23812/20-527-a",
+          "role": "author_affiliation",
           "rule": "organisational_affiliation_segment"
         },
         {
@@ -506,6 +510,7 @@
           "entity_type": "former_subsidiary",
           "mapping_status": "ORG_TEXT",
           "record_id": "doi:10.3389/fped.2021.722497",
+          "role": "author_affiliation",
           "rule": "organisational_affiliation_segment"
         }
       ],
@@ -1231,7 +1236,7 @@
   },
   "ownership_reconciliation": {
     "definitions": {
-      "A_legal_entity_date_unknown": "the register records no valid_from/valid_to for the subsidiary legal person itself -> 13 mention strings (dominated by medtronic_minimed_inc). This is a legal-entity fact, NOT an ownership problem.",
+      "A_legal_entity_date_unknown": "the register records no valid_from/valid_to for the entity itself (subsidiary or division) -> 13 mention strings, by entity ge_medical_systems_division=7, draeger_medical_gmbh=5, medtronic_vascular_inc=1. This is a legal-entity fact, NOT an ownership problem.",
       "B_group_ownership_date_unknown": "the family has no verified acquisition/ownership date; MiniMed strings are dated by the 2001-08-28 acquisition and are therefore NOT undated under this definition. This is the operative definition for the study."
     },
     "family_ownership_dates": {
@@ -1272,7 +1277,7 @@
         "event": "Philips Lighting listed 2016-05-27"
       }
     },
-    "accepted_attribution": "ACCEPTED: 'Medtronic MiniMed, Inc.' strings are date-placed through the MiniMed acquisition of 2001-08-28 (mapping layer ownership_from = 2001-08-28). The register still records the Delaware entity's own incorporation date as UNKNOWN; the reconciliation uses the family ownership date, so the earlier 79-string MiniMed figure is withdrawn as an ownership-date measure and retained only as a legal-entity-date caveat.",
+    "accepted_attribution": "ACCEPTED: 'Medtronic MiniMed, Inc.' strings are date-placed through the MiniMed acquisition of 2001-08-28 (mapping layer ownership_from = 2001-08-28). The register still records the Delaware entity's own incorporation date as UNKNOWN; the reconciliation uses the family ownership date, so the earlier 79-string MiniMed figure is withdrawn as an ownership-date measure. The entity's own incorporation date remains a legal-entity caveat, not an ownership gap.",
     "undated_ownership": {
       "n_strings": 5,
       "by_entity": {
@@ -1292,6 +1297,7 @@
           "entity_type": "former_subsidiary",
           "mapping_status": "ALIAS",
           "record_id": "NCT00473148",
+          "role": "collaborator",
           "rule": "operating_unit_of_parent"
         },
         {
@@ -1301,6 +1307,7 @@
           "entity_type": "operating_subsidiary",
           "mapping_status": "ORG_TEXT",
           "record_id": "doi:10.1055/s-0036-1593958",
+          "role": "author_affiliation",
           "rule": "organisational_affiliation_segment"
         },
         {
@@ -1310,6 +1317,7 @@
           "entity_type": "former_subsidiary",
           "mapping_status": "ORG_EMAIL",
           "record_id": "doi:10.1186/s13054-015-1161-9",
+          "role": "author_affiliation",
           "rule": "corporate_email_domain"
         },
         {
@@ -1319,6 +1327,7 @@
           "entity_type": "former_subsidiary",
           "mapping_status": "ORG_TEXT",
           "record_id": "doi:10.23812/20-527-a",
+          "role": "author_affiliation",
           "rule": "organisational_affiliation_segment"
         },
         {
@@ -1328,9 +1337,28 @@
           "entity_type": "former_subsidiary",
           "mapping_status": "ORG_TEXT",
           "record_id": "doi:10.3389/fped.2021.722497",
+          "role": "author_affiliation",
           "rule": "organisational_affiliation_segment"
         }
-      ]
+      ],
+      "claims_affected": 5,
+      "claims_affected_ids": {
+        "draeger_medical_gmbh|NCT00473148": [
+          "rel:SPONSORS_TRIAL:a2926535933f45f8f493"
+        ],
+        "medtronic_vascular_inc|doi:10.1055/s-0036-1593958": [
+          "rel:AFFILIATED_WITH:47a6503f3a718c8ab27f"
+        ],
+        "draeger_medical_gmbh|doi:10.1186/s13054-015-1161-9": [
+          "rel:AFFILIATED_WITH:0226e572f2c679c37968"
+        ],
+        "draeger_medical_gmbh|doi:10.23812/20-527-a": [
+          "rel:AFFILIATED_WITH:ffed75ab224236f4241a"
+        ],
+        "draeger_medical_gmbh|doi:10.3389/fped.2021.722497": [
+          "rel:AFFILIATED_WITH:c992f1d1e909407ce94c"
+        ]
+      }
     },
     "undated_division": {
       "n_strings": 7,
@@ -1342,6 +1370,7 @@
           "entity_type": "division",
           "mapping_status": "ORG_TEXT",
           "record_id": "doi:10.1007/s00330-017-5015-5",
+          "role": "author_affiliation",
           "rule": "organisational_affiliation_segment"
         },
         {
@@ -1351,6 +1380,7 @@
           "entity_type": "division",
           "mapping_status": "ORG_TEXT",
           "record_id": "doi:10.1016/j.ejrad.2021.109808",
+          "role": "author_affiliation",
           "rule": "organisational_affiliation_segment"
         },
         {
@@ -1360,6 +1390,7 @@
           "entity_type": "division",
           "mapping_status": "ORG_TEXT",
           "record_id": "doi:10.1186/s40349-017-0098-7",
+          "role": "author_affiliation",
           "rule": "organisational_affiliation_segment"
         }
       ]
@@ -1369,10 +1400,10 @@
     "claim_producing_rate": 0.5375,
     "accepted_mentions": 3730,
     "mentions": 6940,
-    "ownership_date_unknown_share": 0.0231,
+    "ownership_date_unknown_share": 0.0013,
     "anachronism_share": 0.0,
     "rejected_mentions": 73,
-    "statement": "The identity layer is usable for a temporal study only with the documented caveats: 53.8% of 6940 company strings resolve to a company, but 2.31% of accepted mappings have an UNKNOWN ownership date and 0.00% are measured anachronisms. Claims resting on the UNKNOWN entities must be excluded from any time-sensitive test rather than silently accepted.",
+    "statement": "The identity layer is usable for a temporal study only with the documented caveats: 53.8% of 6940 company strings resolve to a company, but 0.13% of accepted mappings have an UNKNOWN ownership date and 0.00% are measured anachronisms. Claims resting on the UNKNOWN entities must be excluded from any time-sensitive test rather than silently accepted.",
     "min_company_claim_producing_rate": 0.4513,
     "weakest_companies": [
       {

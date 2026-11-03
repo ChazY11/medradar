@@ -144,6 +144,16 @@ The temporal audit re-measured **29 metrics** of the frozen S-028 input and obse
 day; the frozen input still has one `first_seen_at` value for 55,090 rows. No new collection cycle has
 run. Any S-030 plan that assumes "the observatory has been accumulating history since S-028" is wrong.
 
+## NF-14b — An ownership-date statistic of this study was withdrawn after reconciliation `SELF-CORRECTION`
+
+The entity auditor first reported **86 mentions** (2.31% of accepted mappings) whose group-ownership
+start was unestablished, dominated by 79 "Medtronic MiniMed, Inc." strings. Reconciliation showed the
+mapper dates those strings through the MiniMed acquisition event (2001-08-28, verified in the register),
+and the auditor **withdrew** the 86/2.31% figure. The residual is **5 claims (0.13%)** — 4 Dräger
+Medical GmbH/Inc strings whose LEI is inactive with a merge date the register cannot establish, and 1
+Medtronic Vascular unit string — listed by `relation_id` in the metrics artefact. Both the withdrawn and
+the reconciled numbers are recorded here rather than only the favourable one.
+
 ## NF-15 — A provenance defect in this study was found and fixed `SELF-CORRECTION`
 
 Evidence rows were initially keyed by the *query payload* (which holds up to 200 studies), so a claim's
