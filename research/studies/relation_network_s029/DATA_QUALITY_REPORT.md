@@ -3,7 +3,7 @@
 **Machine-readable source for every number here:** `artifacts/quality_metrics.json`
 (sections A–D and the verdict), plus the per-source artefacts named inline.
 **No number in this document is hand-entered**; `code/s029_12_verify_report.py` re-derives the
-headline counts (12/12 checks pass).
+headline counts (**13/13 checks pass**, including a check that each claim's evidence id resolves to its own source record).
 
 ---
 

@@ -112,5 +112,5 @@ Without these rows the pilot would look cleaner and be less true.
 
 Rebuild with `python code/s029_07_claims.py` after the collection and mapping steps; the evidence
 counts, per-family counts and per-company counts are re-derived by `code/s029_12_verify_report.py`
-(12/12 checks pass). Every claim's evidence id is `ev:<sha256 of the committed payload>:<source record
+(13/13 checks pass). Every claim's evidence id is `ev:<sha256 of the committed payload>:<source record
 id>`, so any claim can be walked back to bytes.

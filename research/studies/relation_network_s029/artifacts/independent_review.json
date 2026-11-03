@@ -218,5 +218,125 @@
     "V1b/V2 never check that a claim's declared_at equals its evidence.published_at or that anachronism-flagged claims are AMBIGUOUS, so the 12/12 verification does not test the ontology's own hard rules.",
     "The study tree was still being rewritten during this review; all findings are pinned to the sha256 snapshot above."
   ],
-  "verdict_on_delivery": "NOT_READY"
+  "recheck": {
+    "generated_at": "2026-11-04T05:07:00+08:00",
+    "requested_target_commit": "1e69e13",
+    "reviewed_commit": "ae2f43e",
+    "note": "The Lead asked for a re-check of 1e69e13, but HEAD advanced to ae2f43e during the re-check (commit message: correct the last two stale figures, NF-3 heading Drager rate and the T3 fuzzy margin in the Chinese verdict table). The working tree is clean. Findings below are pinned to ae2f43e; the 1e69e13-to-ae2f43e diff touched only those two figures plus a re-run timestamp in verification.json.",
+    "pinned_hashes": {
+      "data/claims.jsonl": "D7D9A2A1FB07978DBAB580EB",
+      "data/evidence.jsonl": "BEFFF436D7D976F6A375EF2B",
+      "artifacts/quality_metrics.json": "E3F9641941D3DD5E05FA0825",
+      "artifacts/prereg_decision.json": "FCF9EA769FB6B28A2BA5E32D",
+      "artifacts/verification.json": "943F05092CD2A67DF472EBBE",
+      "artifacts/entity_resolution_metrics.json": "E42E1B5D27E1122631A17032",
+      "GO_NO_GO_CRITERIA.md": "C4EEBE855A1F013B168C3298",
+      "RELATION_ONTOLOGY.md": "23DD0BA38D68E61CE4545CEE",
+      "DATA_QUALITY_REPORT.md": "BA3D76A5C2F92DCA4756EC4C",
+      "NEGATIVE_FINDINGS.md": "401D81F89A167087A86DB79B",
+      "SOURCE_AUDIT.md": "0255DED34023B927E2F07F38",
+      "NETWORK_FEASIBILITY.md": "EFC3754B797313D8777417F9",
+      "PHASE_REPORT_ZH.md": "38D2347A0D12A9E95C608676",
+      "ENTITY_RESOLUTION.md": "909BD61BAE93732C7C65C589",
+      "RELATION_PILOT.md": "51A5C4FBDEA20773E7604B21"
+    },
+    "original_blocking_items": [
+      {
+        "lead_item": 1,
+        "issue": "number traceability (evidence 113, both-side ids 100%, Drager 81/76.5/17, MEDLINE 751, only-via 184/232, GE/Philips degrees + 90x, 17.59, future refs 23)",
+        "status": "RESOLVED_WITH_RESIDUAL",
+        "evidence": "DATA_QUALITY_REPORT now: evidence rows 3,418 with 113 payload envelopes; both-side ids 19.31% strict / 40.34% allowing object_external_id; Drager 95 mentions / 62 (65.26%) / 33 accepted; MEDLINE 729 unique (751 = records seen, 792 seen / 770 unique); 17.57%; future refs 24 at day precision with 23 year-level labelled in NEGATIVE_FINDINGS NF-9. NETWORK_FEASIBILITY: Philips 381, GE HealthCare 345, 238x spread; the HAS_TOPIC/REFERENCES publication sentence is corrected. Recomputed independently: 19.31%/40.34% (3,971 / 8,296 of 20,563), 62/95=65.26%, 729/38/3=770, medtronic 1667 / philips 381 / ge 345 / draeger 18 / mindray 7, 1667/7=238x, 17.57%, quality_metrics future refs 24. Residual: SOURCE_AUDIT line 46-47 still says reached only through a non-canonical string (see still_failing).",
+        "verdict_impact": "none"
+      },
+      {
+        "lead_item": 2,
+        "issue": "T5 clause (b) denominator; T1 family count",
+        "status": "RESOLVED",
+        "evidence": "quality_metrics.conditions.T5 now pass=true, clause_b 300/300=100% conditional, population share 15.08% reported separately; prereg_decision.conditions.T5=true; NO-GO unchanged (T3/T4/T6 fail). T1 now exposes relation_families_with_claims=2 (A,B; C=0) alongside the 9 predicate subfamilies, and PHASE_REPORT_ZH states 2 relation families (A, B; C=0). Amendments 1 and 2 are dated in GO_NO_GO Appendix A and keep both T3 denominators and both T5 values.",
+        "verdict_impact": "NO-GO FOR PREDICTION remains correct: T1,T2,T5 pass; T3 10.08%>10.0, T4 0<100, T6 0<100 fail."
+      },
+      {
+        "lead_item": 3,
+        "issue": "ontology vs implementation (mapping_status closure, anachronism rule, reference roles, HAS_TOPIC declared_at, event_at_type)",
+        "status": "RESOLVED_WITH_RESIDUAL",
+        "evidence": "RELATION_ONTOLOGY Appendix A amends A1 (ORG_TEXT/ORG_EMAIL/DERIVED_FROM_EXACT formally admitted to the closed list), A2 (actual two-case anachronism implementation documented: 282 division-era claims flagged with status retained, 6 pre-ownership strings downgraded to AMBIGUOUS), A3 (background/derived/result accepted), A4 (HAS_TOPIC declared_at fixed: recomputed 20,563/20,563 claims now have declared_at==published_at, was 7,007 mismatches), A5 (event_at_type). mapping_status values recomputed exactly as documented: EXACT 10,435, UNMAPPED 4,325, FUZZY 2,072, DERIVED_FROM_EXACT 1,567, ALIAS 1,541, ORG_TEXT 578, ORG_EMAIL 45. Residuals: A5 and A2 statements not fully implemented (see still_failing).",
+        "verdict_impact": "none"
+      },
+      {
+        "lead_item": 4,
+        "issue": "pre-registration discipline / order-of-events claim",
+        "status": "RESOLVED_WITH_RESIDUAL",
+        "evidence": "GO_NO_GO Appendix A adds dated Amendment 1 (T3: 32.4% all-candidate FAIL vs 18.2% class-correct pass, both retained, verdict impact none) and Amendment 2 (T5: conditional 300/300=100% PASS, population share 15.08% descriptive), plus an explicit correction admitting that GO_NO_GO, quality_metrics and prereg_decision first enter git in one commit. V7 recomputed independently: prereg_decision.prereg_sha256 69ba53a9 equals sha256 of the LF-normalised current GO_NO_GO text, so the hash check is consistent. Residual: the original header sentence claiming verifiability is still present (see still_failing).",
+        "verdict_impact": "none"
+      },
+      {
+        "lead_item": 5,
+        "issue": "cross-document contradictions (0.00% anachronism vs 282; 23 vs 24; MEDLINE; thresholds-not-relaxed)",
+        "status": "RESOLVED_WITH_RESIDUAL",
+        "evidence": "DATA_QUALITY_REPORT B.4 now reconciles the two anachronism notions explicitly (register valid_from violations = 0 for mapped entities vs 282 division-era mapped claims; sets disjoint; 1.37% is the mapper's notion). NEGATIVE_FINDINGS NF-9 states 24 at day precision / 23 at year level (auditor's figure) and attributes the 23 quote. MEDLINE 729 vs 751 explained in SOURCE_AUDIT. NF-18 records the full review and every correction. Residual: PHASE_REPORT_ZH line 94 body still quotes 23 without the day/year qualifier (its own correction table at lines 166-168 lists 24), and NF-10/T3 still quotes 10.1%/0.1pp (see still_failing).",
+        "verdict_impact": "none"
+      },
+      {
+        "lead_item": 6,
+        "issue": "verifier strengthening",
+        "status": "RESOLVED",
+        "evidence": "verification.json is now 13/13; new V1c passes with mismatched=0 over 20,563 claims (claim evidence_id resolves to the claim's own source_record_id); V1a still resolves 3,418/3,418 evidence rows to 130 committed raw payloads; V7 still consistent. Independent record-in-payload test from the previous review still holds at 20,563/20,563.",
+        "verdict_impact": "none"
+      }
+    ],
+    "still_failing": [
+      {
+        "item": "SOURCE_AUDIT.md line 46-47 still states the wrong only claim",
+        "file": "SOURCE_AUDIT.md",
+        "sentence": "Every one of the 2,498 collected studies was reached by *some* company-named query; 184 Medtronic studies and 232 Philips studies were reached only through a non-canonical string (measured by the entity auditor in artifacts/entity_resolution_metrics.json, section 5).",
+        "correct_value": "184/232 are studies reached WITH a non-canonical query; studies reached ONLY via a non-canonical query are 22 (Medtronic) and 6 (Philips) per entity_resolution_metrics.recall. DQR and NF-18 state the correction, but the SOURCE_AUDIT body was not edited.",
+        "severity": "minor documentation; one sentence; does not affect any verdict number"
+      },
+      {
+        "item": "GO_NO_GO_CRITERIA.md header still claims the order of events is verifiable, while Appendix A says that sentence was deleted",
+        "file": "GO_NO_GO_CRITERIA.md",
+        "sentence": "Written and committed before the quality metrics script (code/s029_08_quality_metrics.py) was first executed. Its sha256 is recorded in artifacts/prereg_decision.json and re-checked by code/s029_12_verify_report.py, so the order of events is verifiable rather than asserted.",
+        "correct_value": "Appendix A states the claim is an overstatement and that the sentence has been removed, but it is still in the header. Delete the header sentence or replace it with the Appendix wording so the document does not contradict itself.",
+        "severity": "minor documentation; the Appendix correction is honest, but the unsupported sentence remains"
+      },
+      {
+        "item": "Ontology A5 event_at_type is documented but not implemented",
+        "file": "RELATION_ONTOLOGY.md Appendix A5 + data/claims.jsonl",
+        "sentence": "A5: trial-family claims carry event_at_type (ACTUAL / ESTIMATED); other families explicitly write null.",
+        "correct_value": "The field is present on all 20,563 claims but is null on all of them; 0 trial claims carry ACTUAL/ESTIMATED (clock_audit found 66 ACTUAL / 11 ESTIMATED in its 128-study sample). Either populate the field for trial claims or amend A5 to say the type is not transferred to claims.",
+        "severity": "minor documentation/data mismatch; no numerical result depends on it"
+      },
+      {
+        "item": "Ontology A2 misdescribes the confidence of the 282 anachronism-flagged claims",
+        "file": "RELATION_ONTOLOGY.md Appendix A2 + data/claims.jsonl",
+        "sentence": "A2: division-era strings keep anachronism=true (282 claims) and the confidence is limited to 0.80.",
+        "correct_value": "The 282 flagged claims have confidence 1.0 (280) and 0.9 (2), not 0.80. Amend A2 or apply the intended cap in the rebuild.",
+        "severity": "minor documentation/data mismatch"
+      },
+      {
+        "item": "NEGATIVE_FINDINGS NF-10 still quotes the stale T3 margin (10.1% / 0.1pp)",
+        "file": "NEGATIVE_FINDINGS.md lines 108-109",
+        "sentence": "The fuzzy-identity clause fails by 0.1 percentage points (10.1% vs a 10.0% ceiling).",
+        "correct_value": "quality_metrics and PHASE_REPORT_ZH (fixed in ae2f43e) say 10.08% and 0.08pp. Use 10.08% / 0.08pp in NF-10.",
+        "severity": "minor stale figure; same defect the latest commit fixed in the ZH verdict table but not in NF-10"
+      },
+      {
+        "item": "Stale self-check count: documents say 12/12 while the verifier now reports 13/13",
+        "file": "DATA_QUALITY_REPORT.md line 6; PHASE_REPORT_ZH.md lines 21 and 174; RELATION_PILOT.md line 115",
+        "sentence": "headline counts (12/12 checks pass) / 12 self-check items / (12/12 checks pass)",
+        "correct_value": "verification.json is 13/13 (V1a, V1b, V1c, V2, V3a, V3b, V4, V5, V6, V7, V8, V9, V10). Update 12/12 to 13/13 and 12 items to 13 items.",
+        "severity": "minor documentation inconsistency"
+      },
+      {
+        "item": "PHASE_REPORT_ZH main body quotes the future-reference count 23 without the day/year qualifier",
+        "file": "PHASE_REPORT_ZH.md line 94",
+        "sentence": "23 REFERENCES_PUBLICATION claims (0.53% of the 4,351 family) cite a paper published later than the trial first post date.",
+        "correct_value": "DQR and NF-9 use 24 at day precision, 23 at year level. The report's own correction table (lines 166-168) says 24; state 24 or qualify 23 in the body.",
+        "severity": "minor stale figure; the correction table on the same document already discloses it"
+      }
+    ],
+    "updated_verdict_on_delivery": "READY_WITH_CONCERNS",
+    "verdict_reasoning": "All five substantive blocking issues are resolved: T5 now passes on the pre-registered conditional (300/300=100%) with the population share reported separately; the ontology closed lists are formally amended and HAS_TOPIC declared_at is fixed; the dated GO_NO_GO amendments and the honest ordering correction are present; the headline numbers and cross-document contradictions are corrected; the verifier is 13/13 with record-level V1c. NO-GO FOR PREDICTION remains the correct verdict (T1,T2,T5 pass; T3 10.08%>10.0, T4 0<100, T6 0<100 fail). The seven still_failing items above are documentation/editorial residuals (two stale figures, one stale verifier count, one unedited recall sentence, two ontology text-vs-data mismatches, one unqualified count); none changes a scientific claim or the verdict. Delivery can proceed with these copy-edit fixes; if the tree is truly frozen, they should be recorded as known errata rather than left silent."
+  },
+  "verdict_on_delivery": "READY_WITH_CONCERNS"
 }

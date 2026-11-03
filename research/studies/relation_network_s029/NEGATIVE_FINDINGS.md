@@ -106,7 +106,7 @@ in-sample rate is a sampling artefact, not a linkage failure.
 ## NF-10 — Two pre-registered conditions fail marginally or by denominator choice `OBSERVED_FACT` + `MACHINE_INFERENCE`
 
 * **T3**: the institution-unmapped clause passes under the class-correct denominator (18.2% ≤ 20%) but
-  the *fuzzy-identity* clause fails by **0.1 percentage points** (10.1% vs a 10.0% ceiling). The naive
+  the *fuzzy-identity* clause fails by **0.08 percentage points** (10.08% vs a 10.0% ceiling). The naive
   all-candidate unmapped rate is 32.4% and is also reported.
 * **T5**: clause (a) passes (100% of sampled trial-referenced PMIDs resolvable); clause (b) passes
   on its conditional denominator (300/300 = 100% of institutions that appear in ≥2 sources carry a

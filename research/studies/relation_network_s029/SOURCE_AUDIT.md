@@ -43,9 +43,10 @@ token-wise. Measured hit counts (`artifacts/query_recall_probe.json`):
 The Dräger row is the clearest measurement in this section: the diacritic canonical spelling returns
 2 studies, while the ASCII/compound spellings return 18 distinct studies. **A study that searched only
 the canonical name would have concluded that Dräger has almost no clinical research activity.** Every
-one of the 2,498 collected studies was reached by *some* company-named query; 184 Medtronic studies and
-232 Philips studies were reached only through a non-canonical string (measured by the entity auditor in
-`artifacts/entity_resolution_metrics.json`, §5).
+one of the 2,498 collected studies was reached by *some* company-named query. **184 Medtronic studies
+and 232 Philips studies were reached with a non-canonical string**; the number that a canonical-only
+search would have *missed entirely* is **22 (Medtronic) and 6 (Philips)**. The two figures answer
+different questions, so both are reported (entity auditor, `artifacts/entity_resolution_metrics.json` §5).
 
 **What the fields can and cannot state:**
 

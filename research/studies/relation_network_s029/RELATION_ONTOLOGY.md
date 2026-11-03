@@ -235,9 +235,12 @@ alongside any positive count:
 ### A2. 时代错位规则的实际实现
 
 原 §5 写"若 `declared_at < entity.valid_from` 则降级为 `AMBIGUOUS` 并标记"。
-实现对**部门期字符串（divison-era）**采取的是：保留映射、`claim_status` 不变、置
-`anachronism=true`（282 条），并把置信度限制在 0.80；只有**子公司尚未被集团拥有的字符串**
-才降级为 `AMBIGUOUS`（6 条）。理由：前者（如 2013 年的 "GE Healthcare"）指向的是**同一业务**、
+对**部门期字符串（division-era）**的实际实现是：保留映射、`claim_status` 不变、置
+`anachronism=true`（282 条）。**置信度不因此被压低**（实测 1.0 有 280 条、0.9 有 2 条），因为
+这些字符串本身以精确/别名方式映射到了集团，问题只在于"那个年代的该名称属于前母公司的部门"；
+置信度表达的是映射的可核验性，时代错位由独立标志表达，两者不混用。只有**子公司尚未被集团
+拥有的字符串**才降级为 `AMBIGUOUS`（6 条）。独立评审指出本节初稿写成"置信度限制在 0.80"，
+与实现不符，现已按实测更正。理由：前者（如 2013 年的 "GE Healthcare"）指向的是**同一业务**、
 不同法人，映射到公司仍有信息价值，但必须被标记；后者指向的是**完全不同的公司**，不能映射。
 两种情形在数据中互不重叠。该差异由独立评审指出，现记录为修正。
 
@@ -251,6 +254,10 @@ alongside any positive count:
 原 §1.2 规定 `declared_at` = 该记录的 `published_at`。实现最初对 `HAS_TOPIC` 误用了论文发表日，
 导致 7,007 条 `declared_at != published_at`；已修正为 `published_at`（`firstIndexDate` 优先）。
 
-### A5. `event_at_type` 字段
+### A5. `event_at_type` 字段 —— 实测为**全部不可得**（限制，不是实现细节）
 
-试验类声明携带 `event_at_type`（ACTUAL / ESTIMATED）；其他族显式写 `null`，不再缺字段。
+CT.gov 的扁平字段 `StartDate` **只返回日期字符串，丢失了结构体中的 `type`**（ACTUAL / ESTIMATED），
+因此抽取表与全部 20,563 条声明的 `event_at_type` 均为 `null`。这不是可以随手补上的字段，而是
+本轮的**数据限制**：我们无法区分"实际开始日期"与"预计开始日期"，任何把开始日期当作已发生事实的
+推断都必须先解决这一点。字段仍然显式存在于每条声明中（不再缺字段），但值为 `null` 表示未知，
+不是默认值。
