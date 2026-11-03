@@ -36,18 +36,30 @@ class VersionTests(unittest.TestCase):
         self.assertNotIn("<REPO_URL>", readme)
 
     def test_readme_test_count_is_not_stale(self) -> None:
-        """README must not advertise a test count that no longer exists.
+        """README must advertise a test count that still resembles the real suite.
 
-        Keeping this a range check (not an exact count) avoids a circular test
-        that has to be edited every time a test is added, while still catching
-        the "402 vs 427" class of release-note drift.
+        The check is deliberately a tolerance band rather than an exact count, so
+        adding a test does not force a README edit, while a stale release-note
+        count (the "402 vs 427" class of drift) still fails. The reference is the
+        static number of ``def test_`` functions in ``tests/`` — cheap, offline,
+        and close enough to the runtime count for a drift guard.
+
+        History: the band used to be 400–900, which stopped being satisfiable once
+        the suite passed 900 checks; the README then advertised 678 and this test
+        kept passing a stale number. Both the band and the reference are now
+        relative to the tree instead of to a snapshot.
         """
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
-        match = re.search(r"(\d{3})\s*offline tests", readme)
-        self.assertIsNotNone(match)
-        advertised = int(match.group(1))
-        self.assertGreaterEqual(advertised, 400)
-        self.assertLessEqual(advertised, 900)
+        match = re.search(r"([\d,]+)\s+(?:offline\s+)?(?:unittest\s+)?(?:tests|checks)", readme)
+        self.assertIsNotNone(match, "README must state the offline test count")
+        advertised = int(match.group(1).replace(",", ""))
+        defined = sum(
+            len(re.findall(r"^\s+def test_", path.read_text(encoding="utf-8", errors="replace"), re.M))
+            for path in sorted((ROOT / "tests").glob("test_*.py"))
+        )
+        self.assertGreaterEqual(defined, 400)
+        self.assertGreaterEqual(advertised, int(defined * 0.75), "README test count looks stale (too low)")
+        self.assertLessEqual(advertised, int(defined * 1.25) + 10, "README test count looks stale (too high)")
 
     def test_docs_do_not_link_missing_local_pages(self) -> None:
         index = ROOT / "docs" / "index.html"
