@@ -1,0 +1,108 @@
+{
+  "schema": "hist_entity_aliases.v1",
+  "created_at": "2026-11-03T21:30:00+08:00",
+  "purpose": "Exact-string applicant aliases for the five mandated deep-case companies in the full-history panel (hist_v1). Roster companies are taken from the store's own company_key mapping and are audited separately; only the two roster-absent companies are resolved here.",
+  "source": "data/medradar.sqlite, table events, column applicant_raw (queried 2026-11-03; openFDA device 510(k)/PMA/recall + ctgov records as stored)",
+  "matching_rule": "exact applicant_raw string match only; no fuzzy matching, no prefix matching, no substring matching. A string may belong to exactly one company. Unlisted strings never map.",
+  "review_status": "PENDING_HUMAN_REVIEW (agent-proposed aliases; every accepted string is a legal name or known trade name of the company or one of its subsidiaries; a human reviewer may remove a string but not add one without evidence)",
+  "companies": {
+    "draeger": {
+      "display_name": "Dräger",
+      "roster_company_key": null,
+      "store_company_key": null,
+      "reason_unmapped_in_store": "not present in config/companies_device.json or config/companies_drug.json, so the store's applicant->company_key mapping leaves every Dräger event with company_key = NULL",
+      "accept_exact": [
+        "Draeger Medical, Inc.",
+        "Draeger Medical Systems, Inc.",
+        "Draeger Medical Sytems, Inc.",
+        "Draeger Medical AG & Co. KG",
+        "Draeger Medical AG & Co. Kgaa",
+        "Draegerwerk AG & CO Kgaa",
+        "Draegerwerk Ag & Co. Kgaa",
+        "Draeget Medical AG & Co. Kgaa",
+        "Draeger Medical GmbH",
+        "Draeger Medical B.V.",
+        "Draeger Medical Infant Care, Inc.",
+        "Draeger, Inc.",
+        "Draegerwerk AG",
+        "Drager, Inc.",
+        "Drager Medizintechnik GmbH",
+        "Drager Medical AG & Co. Kgaa",
+        "Dragerwerk AG",
+        "Dragerwerk AG & CO Kgaa",
+        "Drager Medical GmbH",
+        "Drager Medical B.V.",
+        "National Draeger, Inc.",
+        "Shanghai Draeger Medical Instrument Co., Ltd."
+      ],
+      "reject_exact": [
+        "Drager Safety"
+      ],
+      "decision_notes": [
+        "Drager Safety (1 record, 2008) is NOT accepted: the safety division's gas-detection products are not unambiguously the medical business, and the single record cannot move a result. The rejection is now recorded explicitly in reject_exact (was only in this note); no mapping decision changed.",
+        "Draegerwerk AG & CO Kgaa is the listed parent; its 510(k) filings are the medical business.",
+        "National Draeger, Inc. is the historical US subsidiary name (1991 record)."
+      ],
+      "confidence": "high",
+      "expected_regulatory_events": "approximately 160 510(k) records 1977-2026, 0 PMA (pre-audit estimate)",
+      "measured_for_hist_v1": {
+        "measured_at": "2026-11-03",
+        "device_source_events_matched_exactly": 200,
+        "n_510k": 200,
+        "n_pma": 0,
+        "first_event_date": "1977-02-28",
+        "last_event_date": "2026-08-20",
+        "note": "pre-audit estimate of ~160 was low by ~40 records; the alias list above is the audited exact-string set"
+      },
+      "refinement_history": [
+        {
+          "date": "2026-11-03",
+          "by": "panel-eng",
+          "change": "added \"Draeget Medical AG & Co. Kgaa\" to accept_exact; recorded \"Drager Safety\" explicitly in reject_exact (it was already rejected only in decision_notes)",
+          "reason": "demonstrable exact-string defect: the registry omitted an FDA transcription typo of the Dräger legal name. The string is unique to Dräger and its 2 openFDA 510(k) device records (2004-06-02 and 2004-08-09; product codes CBK/CCK) had company_key = NULL, so they were silently dropped. Adding it is exact-string matching only (same treatment as the already-accepted Mindray typo \"Bio-Meidcal\"), not fuzzy or substring matching.",
+          "evidence": "data/medradar.sqlite events: applicant_raw = 'Draeget Medical AG & Co. Kgaa', source = openfda_device_510k, n = 2, kind = 510k; no other applicant_raw contains 'DRAEG'",
+          "panel_impact": "+2 candidate events; +1 panel material event after track mapping (the CCK record has no track and is excluded); +0 or +1 pair (see experiments/hist_v1/audits.json)",
+          "result_inspected_before_change": false,
+          "considered_but_not_added": [
+            {
+              "string": "Draegar Medical Systems, Inc.",
+              "store_rows": 13,
+              "reason": "all 13 rows are openfda_device_recall only, i.e. outside the panel's device-approval sources; adding it cannot change the panel and is left for human review"
+            }
+          ]
+        }
+      ]
+    },
+    "mindray": {
+      "display_name": "Mindray",
+      "roster_company_key": null,
+      "store_company_key": null,
+      "reason_unmapped_in_store": "not present in config/companies_device.json or config/companies_drug.json, so the store's applicant->company_key mapping leaves every Mindray event with company_key = NULL",
+      "accept_exact": [
+        "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+        "Shenzhen Mindray Bio-Meidcal Electronics Co., Ltd.",
+        "Shenzhen Mindray Biomedical Electronics Co., Ltd.",
+        "Shenzhen Mindray Bio-Medical Electronics Co.",
+        "Mindray Bio-Medical Electronics Co., Ltd.",
+        "Mindray DS USA, Inc.",
+        "Mindray DS USA, Inc. dba Mindray North America",
+        "Mindray DS USA, Inc. d.b.a. Mindray North America",
+        "Mindray DS USA, Inc., dba Datascope Patient Monitoring",
+        "Mindray North America"
+      ],
+      "reject_exact": [],
+      "decision_notes": [
+        "Shenzhen Mindray Bio-Meidcal Electronics Co., Ltd. is a typo in the FDA record; accepted because the string is unique to Mindray.",
+        "Mindray DS USA subsidiaries are the US sales/manufacturing arm."
+      ],
+      "confidence": "high",
+      "expected_regulatory_events": "approximately 180 510(k) records 2004-2026, 0 PMA"
+    }
+  },
+  "roster_company_audit_required": [
+    "medtronic",
+    "ge_healthcare",
+    "philips"
+  ],
+  "roster_company_note": "These three deep cases are in the store's roster mapping. Their assigned applicant_raw strings must be listed and inspected for false positives before the panel is frozen; strings judged wrong must be placed in experiments/hist_v1/audits.json as a deny list applied at panel build time."
+}
