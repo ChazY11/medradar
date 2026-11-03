@@ -31,7 +31,7 @@ error in its most tempting form and the study refuses it explicitly.**
 ## NF-3 — The Dräger ASCII query is 76.5% name collisions `OBSERVED_FACT`
 
 `AFF:"Draeger"` returns papers by authors **surnamed** Draeger (email `draeger@ana.unibe.ch`, name forms
-like "H.T. Draeger, MD"). Of 81 Draeger affiliation mentions, **62 were rejected**; the accepted 17 came
+like "H.T. Draeger, MD"). Of 95 Draeger affiliation mentions, **62 (65.26%) were rejected**; the 33 accepted came
 from organisational strings or `@draeger.com` addresses. Canonical "Dräger" spelling was worse in a
 different way: ClinicalTrials.gov returned **2** studies for "Dräger" and **18** for variant spellings.
 **Does not license:** "Dräger has no clinical research". It licenses: "a name-based search for this
@@ -87,7 +87,8 @@ No claim is `HUMAN_CONFIRMED`. Status: **`HUMAN_VALIDATION_PENDING`**.
 
 ## NF-9 — Registry reference lists are current-state, so trial→publication dates cannot be trusted `OBSERVED_FACT`
 
-Of 4,351 reference claims, only 26 resolve inside this study's publication sample; of those, **23 (88%)**
+Of 4,351 reference claims, only 26 resolve inside this study's publication sample; of those, **24 (at day precision; 23 when
+compared at year level, which is the auditor's figure)**
 cite a paper published *after* the trial's first-post date (up to 14 years).
 
 > "23 of the 4351 REFERENCES_PUBLICATION claims (0.53% of the family) cite a paper whose publication
@@ -107,10 +108,14 @@ in-sample rate is a sampling artefact, not a linkage failure.
 * **T3**: the institution-unmapped clause passes under the class-correct denominator (18.2% ≤ 20%) but
   the *fuzzy-identity* clause fails by **0.1 percentage points** (10.1% vs a 10.0% ceiling). The naive
   all-candidate unmapped rate is 32.4% and is also reported.
-* **T5**: clause (a) passes (100% of sampled trial-referenced PMIDs resolvable); clause (b) fails
-  (15.1% of institutions appear in both sources inside this sample, against 30%). An independent
-  OpenAlex check finds **452 of 454 institution-bearing papers corroborated** (99.6%), which is the
-  stronger cross-source statement and is reported next to the failing clause.
+* **T5**: clause (a) passes (100% of sampled trial-referenced PMIDs resolvable); clause (b) passes
+  on its conditional denominator (300/300 = 100% of institutions that appear in ≥2 sources carry a
+  verified ROR id — true by construction once an entity is a ROR institution). The *population* share,
+  15.08% of all 1,990 institution entities appearing in both sources, is reported separately as a
+  descriptive statistic and is not the threshold quantity. The first version of the code divided by the
+  wrong denominator and emitted FAIL; corrected as `GO_NO_GO_CRITERIA.md` Appendix A Amendment 2, with
+  both numbers retained. An independent OpenAlex check finds **452 of 454** institution-bearing papers
+  corroborated (99.6%).
 
 Neither marginal condition changes the verdict: **T4 (0 point-in-time) and T6 (no human review) are
 decisive on their own**, and a verdict of `REVISE` would still be required even if T3 and T5 both passed.
@@ -172,7 +177,7 @@ hold one.
 
 ## NF-17 — The verdict is `NO-GO FOR PREDICTION` `MACHINE_INFERENCE` (from pre-registered rules)
 
-T1, T2 pass; T3, T4, T5, T6 fail. The relation layer is reconstructable and traceable, but it is neither
+T1, T2, T5 pass; T3, T4, T6 fail. The relation layer is reconstructable and traceable, but it is neither
 point-in-time nor human-validated, and the institution identity layer is incomplete. The next round must
 **either** run a live forward-collection to accumulate genuine observed-as-of history **or** complete the
 human adjudication — before any temporal prediction is attempted. Thresholds were not relaxed; the
@@ -186,3 +191,35 @@ No claim that a missing relation does not exist. Every zero in this study is a s
 sources and the search could reach**, never about the world. Searches that returned nothing (e.g.
 "Draegerwerk" at ClinicalTrials.gov, funder registry entries for Dräger and Mindray) are recorded in
 `artifacts/query_recall_probe.json` and `artifacts/crosssource.json` with the exact query strings.
+
+
+## NF-18 — An independent adversarial review found 9 unreproducible numbers and 5 ontology divergences; all were corrected `SELF-CORRECTION`
+
+Before delivery, an independent reviewer (not the author) recomputed 24 numbers and audited the claim
+store against the frozen ontology. Result: **NOT_READY**, with these defects, all now fixed:
+
+| defect | correction |
+|---|---|
+| "evidence rows 113" | 113 is the number of *payload envelopes*; evidence rows are **3,418** (one per payload+record) |
+| "stable identifier on both sides 100%" | **19.31%** strict (3,971/20,563), **40.34%** allowing `object_external_id` |
+| Dräger "81 mentions / 76.5% / 17 accepted" | **95 mentions / 62 rejected (65.26%) / 33 accepted** |
+| "MEDLINE 751" | 751 is *records seen*; **729 unique** MEDLINE records (770 unique total) |
+| "184 / 232 studies reached **only** via non-canonical string" | they were reached **with** one; **only-via** is 22 (Medtronic) / 6 (Philips) |
+| GE and Philips degrees swapped; "90× spread" | Philips 381, GE HealthCare 345; spread is **238×** |
+| "alias/fuzzy 17.59%" | **17.57%** |
+| "23 future-dated references" | **24** at day precision, 23 at year level |
+| T5 clause (b) divided by all institutions | corrected to the conditional denominator (100%, PASS); population share reported separately (15.08%) |
+| `mapping_status` outside the closed list (2,190 claims) | the three extra values are now formally in the ontology (Appendix A1) |
+| anachronism rule not implemented as written | the actual two-case implementation is now documented (Appendix A2), not merely implied |
+| `HAS_TOPIC` `declared_at != published_at` (7,007 claims) | fixed in code; `declared_at` is the record's `published_at` |
+| reference roles not in the ontology | actual roles (`background/derived/result`) documented (Appendix A3) |
+| "the order of events is verifiable" | **removed**: the pre-registration, the metrics and the hash first entered git in one commit, so ordering is documented by timestamps and the amendment log, not by an earlier commit |
+| "0.00% anachronisms" (entity audit) vs 282 flagged claims | two different notions (register `valid_from` violations vs mapped division-era strings); reconciled in `DATA_QUALITY_REPORT.md` §B.4 |
+
+The reviewer also confirmed the prohibitions passed (no claim treated co-authorship as collaboration or
+knowledge transfer; no precision/recall; no prediction claim; 45/45 citations resolve) and that the
+worksheet is genuinely stratified with human fields empty.
+
+**What this correction does not change:** the verdict remains `NO-GO FOR PREDICTION` (T3/T4/T6 fail),
+T5 now passes, and no threshold was altered — the two measurement-definition changes are recorded as
+dated amendments with the old and new values side by side.

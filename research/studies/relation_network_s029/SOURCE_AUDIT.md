@@ -79,7 +79,7 @@ what it said in 2015.**
 ## 2. Europe PMC — an index whose query semantics are wider than its returned text
 
 **Composition of what an affiliation query actually returns** (`artifacts/extract_report.json`,
-770 unique records): MEDLINE 751, **PAT 38 (patent records)**, PMC 3.
+770 **unique** records; 792 records were seen in total): MEDLINE 729, **PAT 38 (patent records)**, PMC 3. (The 751 sometimes quoted elsewhere is the *records-seen* figure and counted duplicates.)
 
 The 38 patent records are not publications. A pipeline that treats every Europe PMC hit as a paper
 would silently add patent records to a publication graph. They are excluded and counted
@@ -88,8 +88,8 @@ would silently add patent records to a publication graph. They are excluded and 
 **The query does not always hit the field you think.** `AFF:"Draeger"` returned papers by authors
 **surnamed** Draeger, matched through the email address inside the affiliation field
 (`draeger@ana.unibe.ch`) and through name forms such as `"H.T. Draeger, MD, University Health System"`.
-Measured on the collected sample: of 81 Draeger affiliation mentions, **62 (76.5%) were rejected** as
-surname/email collisions; the accepted 17 came from strings such as `Dräger Safety AG & Co. KGaA` or a
+Measured on the collected sample: of 95 Draeger affiliation mentions, **62 (65.26%) were rejected** as
+surname/email collisions; the 33 accepted came from strings such as `Dräger Safety AG & Co. KGaA` or a
 `@draeger.com` corporate email. This is the name-collision failure mode in its purest form, and it is
 why the ASCII spelling of Dräger cannot be used as a company query without a classifier.
 

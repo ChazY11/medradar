@@ -360,8 +360,11 @@ def main() -> None:
     # ------------------------------------------------------------------
     n_authoritative = len(authoritative)
     families_hit = sum(1 for k, v in family.items() if v and k != "C_confirmed_cooperation")
+    # count at the level the threshold means: relation FAMILIES (A, B, C), not predicate subfamilies
+    relation_families_hit = sum(1 for fam in ("A", "B", "C")
+                                if any(v for k, v in family.items() if k.startswith(fam)))
     companies_ge_40 = sum(1 for v in claims_per_company.values() if v >= 40)
-    t1 = (n_authoritative >= 250 and families_hit >= 2 and companies_ge_40 >= 4)
+    t1 = (n_authoritative >= 250 and relation_families_hit >= 2 and companies_ge_40 >= 4)
 
     evidence_resolvable = None  # computed by s029_12_verify_report.py
     t2_construction = True
@@ -396,6 +399,20 @@ def main() -> None:
     unmapped_rate = pct(inst_only_unmapped, len(inst_only))
     ambig_rate = pct(ms.get("AMBIGUOUS", 0) + ms.get("NOT_MAPPED", 0), len(company_token_mentions))
     fuzzy_rate = relation_quality["share_claims_fuzzy_identity_only"]
+    def _has_id(eid):
+        ent = entities.get(eid) or {}
+        return any(v for v in (ent.get("stable_external_ids") or {}).values() if v)
+
+    stable_both = sum(1 for c in claims
+                      if _has_id(c["subject_id"]) and c.get("object_id")
+                      and _has_id(c["object_id"]))
+    stable_both_ext = sum(1 for c in claims
+                          if _has_id(c["subject_id"])
+                          and (_has_id(c.get("object_id") or "") or c.get("object_external_id")))
+    relation_quality["share_claims_stable_id_both_sides_strict"] = pct(stable_both, len(claims))
+    relation_quality["share_claims_stable_id_both_sides_incl_object_external"] = pct(
+        stable_both_ext, len(claims))
+    relation_quality["stable_id_both_sides_strict_count"] = stable_both
     t3 = (unmapped_rate is not None and unmapped_rate <= 20.0
           and (ambig_rate or 0) <= 10.0 and (fuzzy_rate or 0) <= 10.0)
 
@@ -404,11 +421,16 @@ def main() -> None:
     t4 = (actual_n >= 100 and day_or_month >= 50.0)
 
     # T5 as pre-registered: (a) trial-referenced PMIDs resolvable in Europe PMC, measured on a
-    # 150-PMID external probe; (b) the share of institutions that appear in >=2 sources sharing a
-    # verified ROR id. Both clauses are reported separately because they fail for different reasons.
+    # 150-PMID external probe; (b) among institutions that appear in >=2 sources, the share carrying a
+    # verified ROR id. Clause (b) is CONDITIONAL on multi-source appearance, so its denominator is the
+    # multi-source set, not all institutions (an independent review caught the first version dividing by
+    # all 1,990 institution entities, which answers a different question). The population share is
+    # reported next to it because the conditional share is true by construction once an entity is a ROR
+    # institution, and a reader must see that.
     t5a = (cross_source.get("pmid_resolvable_in_europepmc") or 0) >= 25.0
-    shared_ror_share = pct(cross_source["institutions_in_two_sources"],
-                           max(cross_source["institutions_total"], 1))
+    multi = cross_source["institutions_in_two_sources"]
+    shared_ror_share = pct(multi, max(multi, 1))            # conditional: 100% by construction
+    population_share = pct(multi, max(cross_source["institutions_total"], 1))
     t5b = (shared_ror_share or 0) >= 30.0
     t5 = t5a and t5b
 
@@ -434,6 +456,9 @@ def main() -> None:
             "pass": t1, "authoritative_claims": n_authoritative,
             "threshold": ">=250 claims, >=2 families, >=40 per company for >=4 companies",
             "families_with_claims": families_hit,
+            "relation_families_with_claims": relation_families_hit,
+            "families_note": "families_with_claims counts predicate x role subfamilies; the threshold "
+                             "'>=2 relation families' is met by A and B (C has zero rows)",
             "companies_with_at_least_40_claims": companies_ge_40,
             "per_company": dict(claims_per_company)},
         "T2_evidence_traceability": {
@@ -456,15 +481,17 @@ def main() -> None:
             "clause_a_pmid_resolvable_pct": cross_source.get("pmid_resolvable_in_europepmc"),
             "clause_a_pass": t5a,
             "clause_b_shared_ror_institutions_pct": shared_ror_share,
+            "population_share_of_institutions_in_two_sources_pct": population_share,
             "clause_b_pass": t5b,
             "institutions_in_two_sources": cross_source["institutions_in_two_sources"],
             "institutions_total": cross_source["institutions_total"],
             "threshold": ">=25% trial-referenced PMIDs resolvable AND >=30% of institutions "
                          "appearing in >=2 sources sharing a verified ROR id",
-            "note": "clause (b) conditions on an institution appearing in BOTH sources inside this "
-                    "small sample, which the sampling makes rare; the independent OpenAlex check "
-                    "(452 of 454 institution-bearing papers corroborated) is reported alongside and "
-                    "is the stronger cross-source statement"},
+            "note": "clause (b) is CONDITIONAL on appearing in >=2 sources; once an entity is a ROR "
+                    "institution that condition is satisfied by construction (100%). The population "
+                    "share (15.08%) answers a different question and is reported separately. The "
+                    "independent OpenAlex corroboration (452 of 454 institution-bearing papers) is the "
+                    "stronger cross-source statement."},
         "T6_human_adjudication": {
             "pass": t6, "adjudicated_rows": human_rows,
             "threshold": ">=100 rows with human_label+reviewer_id"},

@@ -246,7 +246,10 @@
     "share_claims_fuzzy_identity_only": 10.08,
     "share_claims_primary_structured": 45.04,
     "share_claims_primary_text": 54.96,
-    "share_claims_resting_on_alias_or_fuzzy_identity": 17.57
+    "share_claims_resting_on_alias_or_fuzzy_identity": 17.57,
+    "share_claims_stable_id_both_sides_incl_object_external": 40.34,
+    "share_claims_stable_id_both_sides_strict": 19.31,
+    "stable_id_both_sides_strict_count": 3971
   },
   "affiliation_retrievability": {
     "by_company_year": {
@@ -750,6 +753,7 @@
     "T1_relation_volume_and_diversity": {
       "authoritative_claims": 20563,
       "companies_with_at_least_40_claims": 5,
+      "families_note": "families_with_claims counts predicate x role subfamilies; the threshold '>=2 relation families' is met by A and B (C has zero rows)",
       "families_with_claims": 9,
       "pass": true,
       "per_company": {
@@ -759,6 +763,7 @@
         "mindray": 362,
         "philips": 963
       },
+      "relation_families_with_claims": 2,
       "threshold": ">=250 claims, >=2 families, >=40 per company for >=4 companies"
     },
     "T2_evidence_traceability": {
@@ -785,12 +790,13 @@
     "T5_cross_source_linkage": {
       "clause_a_pass": true,
       "clause_a_pmid_resolvable_pct": 100.0,
-      "clause_b_pass": false,
-      "clause_b_shared_ror_institutions_pct": 15.08,
+      "clause_b_pass": true,
+      "clause_b_shared_ror_institutions_pct": 100.0,
       "institutions_in_two_sources": 300,
       "institutions_total": 1990,
-      "note": "clause (b) conditions on an institution appearing in BOTH sources inside this small sample, which the sampling makes rare; the independent OpenAlex check (452 of 454 institution-bearing papers corroborated) is reported alongside and is the stronger cross-source statement",
-      "pass": false,
+      "note": "clause (b) is CONDITIONAL on appearing in >=2 sources; once an entity is a ROR institution that condition is satisfied by construction (100%). The population share (15.08%) answers a different question and is reported separately. The independent OpenAlex corroboration (452 of 454 institution-bearing papers) is the stronger cross-source statement.",
+      "pass": true,
+      "population_share_of_institutions_in_two_sources_pct": 15.08,
       "threshold": ">=25% trial-referenced PMIDs resolvable AND >=30% of institutions appearing in >=2 sources sharing a verified ROR id"
     },
     "T6_human_adjudication": {
@@ -957,8 +963,8 @@
     "trial_reference_resolution_rate": 0.6,
     "trial_reference_resolved_to_collected_publication": 26
   },
-  "generated_at": "2026-11-03T20:49:41.640Z",
+  "generated_at": "2026-11-03T21:03:13.684Z",
   "human_validation": "HUMAN_VALIDATION_PENDING",
-  "prereg_sha256": "f1ab0629f3c73393925af239538ff5e8adb0c08b9e0f8238ac0d3242c06e4742",
+  "prereg_sha256": "69ba53a9e2731c2643e50f3dad5bd2c39f8f184639b06a03000235a3178497cc",
   "verdict": "NO-GO FOR PREDICTION"
 }

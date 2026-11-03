@@ -20,9 +20,9 @@ headline counts (12/12 checks pass).
 | relation claims built | **20,563** |
 | — `VERIFIED_BY_SOURCE` / `CANDIDATE` | 10,412 / 10,151 |
 | records kept as explicit rejects (not discarded) | **158** |
-| claims with a stable external identifier on ≥1 side | **100%** |
+| claims with a stable external identifier on ≥1 side | **100%** (subject side) |
 | claims with a `published_at` | **100%** |
-| claims with a stable identifier on **both** sides | 100% (all objects resolved or carried as `object_external_id`) |
+| claims with a stable identifier on **both** sides | **19.31%** strict (3,971/20,563); **40.34%** if `object_external_id` is allowed (8,296) |
 
 **Claims per relation family** (`quality_metrics.json` → `A_coverage.claims_by_family`):
 
@@ -103,10 +103,13 @@ entity's own start date the register could not establish (4 Dräger Medical GmbH
 Medtronic Vascular unit string); their `relation_id`s are listed in
 `entity_resolution_metrics.json` → `ownership_reconciliation.undated_ownership.claims_affected_ids` and
 they must be excluded from any time-sensitive test rather than accepted silently.
+Two different notions of "anachronism" coexist and must not be merged: the mapper flags **282 claims**
+whose string names a division of a former parent (`division-era`), while the entity auditor's own check
+counts **0** violations of a register `valid_from`; the auditor verified the two sets are **disjoint**.
+The 1.37% anachronism rate in the network gate is the mapper's notion, not the register's.
 
 **B.5 Collisions that a naive pipeline would have counted as relations** (`data/claim_rejects.jsonl`):
-Dräger-A author with email `draeger@ana.unibe.ch` (62 rejects; **76.5%** of all Dräger affiliation
-mentions), "Raymond C. Philips Unit" / "Philips R. Lee Institute" (4), "Imperial College Healthcare" /
+Dräger-A author with email `draeger@ana.unibe.ch` (62 rejects of **95** Draäger affiliation mentions = **65.26%**; 33 accepted), "Raymond C. Philips Unit" / "Philips R. Lee Institute" (4), "Imperial College Healthcare" /
 "Orange healthcare" substring matches (6), 52 "General Electric" strings (former parent, not GE
 HealthCare), 17 historical-name strings ("Tyco Healthcare"), 11 award/programme titles.
 
@@ -159,12 +162,12 @@ not a contradiction but proof that the registry's reference list is **current-st
 
 | quantity | value | comment |
 |---|---:|---|
-| evidence rows | 113 | one per retrieved payload envelope (hash-addressed) |
-| claims per evidence envelope | ~182 | many claims come from one query payload; the record id + JSON path pinpoint each claim |
+| evidence rows | **3,418** | one per (retrieved payload, source record), hash-addressed; 113 distinct payload envelopes |
+| claims per evidence row / per envelope | ~6 / ~182 | many claims come from one query payload; the record id + JSON path pinpoint each claim |
 | claims whose evidence is `PRIMARY_STRUCTURED` | **45.04%** | a structured source field states it |
 | claims whose evidence is `PRIMARY_TEXT` | **54.96%** | an affiliation string states it |
 | claims derived rather than directly stated | **7.62%** | co-affiliation (1,567) is the only derived predicate |
-| claims resting on alias/fuzzy identity | **17.59%** | group-member or fuzzy mapping |
+| claims resting on alias/fuzzy identity | **17.57%** | group-member or fuzzy mapping |
 | claims resting on fuzzy identity only | **10.08%** | institution ROR token-overlap matches |
 | conflicted claims | **0** | no source pair in this round disagreed about the same relation |
 | co-affiliation share of company relations | **32.56%** | this is why the prohibition matters |

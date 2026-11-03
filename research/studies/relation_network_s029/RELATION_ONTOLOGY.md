@@ -211,3 +211,46 @@ alongside any positive count:
 * the number of claims whose only support is a text affiliation string (`PRIMARY_TEXT`) rather than a
   structured field (`PRIMARY_STRUCTURED`);
 * the share of claims whose time is `HISTORICAL_PROXY` and therefore unusable for point-in-time work.
+
+
+---
+
+## 附录 A — 实现修正 / Amendments (2026-11-04)
+
+本体在实现后被独立评审发现五处不一致。**阈值与谓词语义未变**，以下为逐条修正，供审计：
+
+### A1. `mapping_status` 的封闭集合扩充
+
+原 §5 只列出 `EXACT / ALIAS / FUZZY / AMBIGUOUS / UNMAPPED / REJECTED`。实现中还产生了三个
+在语义上必要、但原表未列出的取值，现正式纳入封闭集合：
+
+| 取值 | 含义 | 用于 |
+|---|---|---|
+| `ORG_TEXT` | 论文署名机构文本把该公司作为作者单位陈述（非精确名、非别名表） | Relation B |
+| `ORG_EMAIL` | 作者邮箱域名为该公司企业域名（比文本更强） | Relation B |
+| `DERIVED_FROM_EXACT` | 由同一论文的两条精确署名派生（仅 `CO_AFFILIATED_ON`） | Relation B' |
+
+它们的分值规则与 §5 一致（0.80 / 0.95 / 0.70），仍然由确定性规则产生。
+
+### A2. 时代错位规则的实际实现
+
+原 §5 写"若 `declared_at < entity.valid_from` 则降级为 `AMBIGUOUS` 并标记"。
+实现对**部门期字符串（divison-era）**采取的是：保留映射、`claim_status` 不变、置
+`anachronism=true`（282 条），并把置信度限制在 0.80；只有**子公司尚未被集团拥有的字符串**
+才降级为 `AMBIGUOUS`（6 条）。理由：前者（如 2013 年的 "GE Healthcare"）指向的是**同一业务**、
+不同法人，映射到公司仍有信息价值，但必须被标记；后者指向的是**完全不同的公司**，不能映射。
+两种情形在数据中互不重叠。该差异由独立评审指出，现记录为修正。
+
+### A3. 引用关系的角色取值
+
+`REFERENCES_PUBLICATION` 的 `relation_role` 取自登记库的引用类型，实测值为
+`background / derived / result`，而非原文档举例的单一 `derived_reference`。本体接受这三种角色。
+
+### A4. `HAS_TOPIC` 的 `declared_at`
+
+原 §1.2 规定 `declared_at` = 该记录的 `published_at`。实现最初对 `HAS_TOPIC` 误用了论文发表日，
+导致 7,007 条 `declared_at != published_at`；已修正为 `published_at`（`firstIndexDate` 优先）。
+
+### A5. `event_at_type` 字段
+
+试验类声明携带 `event_at_type`（ACTUAL / ESTIMATED）；其他族显式写 `null`，不再缺字段。

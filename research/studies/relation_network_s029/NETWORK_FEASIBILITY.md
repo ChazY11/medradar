@@ -17,7 +17,7 @@
 
 **Gate passed → the structural inventory below is reported as interpretable description.** This is
 deliberately narrower than "usable for prediction": the gate certifies that the relation layer is
-traceable enough to *describe*, while the pre-registered conditions T3–T6 (which include point-in-time
+traceable enough to *describe*, while the pre-registered conditions T3, T4 and T6 (institution identity, point-in-time
 evidence and human adjudication) are what forbid a *time-ordered prediction experiment*.
 
 ## 2. Inventory
@@ -31,8 +31,9 @@ evidence and human adjudication) are what forbid a *time-ordered prediction expe
 | edges by predicate | `HAS_TOPIC` 7,455 · `SPONSORS_TRIAL` 4,209 · `AFFILIATED_WITH` 2,175 · `CO_AFFILIATED_ON` 1,225 · `HOSTS_TRIAL_SITE` 598 · `FUNDED_BY` 105 · `REFERENCES_PUBLICATION` 26 · `RESPONSIBLE_FOR_TRIAL` 3 |
 
 The edge count is dominated by two things that are **not** company networks: MeSH topic assignment and
-trial registration. Of 15,796 edges, only `CO_AFFILIATED_ON` (1,225) and `AFFILIATED_WITH` (2,175)
-involve a publication, and only 105 involve declared funding. **A reader who equates "15,796 edges"
+trial registration. Of 15,796 edges the organisation↔organisation subset is only `CO_AFFILIATED_ON`
+(1,225) plus the trial-participation families; `AFFILIATED_WITH` (2,175), `HAS_TOPIC` (7,455) and
+`REFERENCES_PUBLICATION` (26) also involve a publication, and only 105 involve declared funding. **A reader who equates "15,796 edges"
 with "15,796 relationships between organisations" has been misled by the count.** The
 organisation↔organisation part of this graph is small (see §3) and is either co-authorship or trial
 participation, never confirmed cooperation.
@@ -46,7 +47,7 @@ company-employed author and any hospital creates an edge, and hospitals publish 
 evidence of a cohesive research community, and no centrality or community result is computed from it.
 
 **Company ↔ trial graph:** 4,209 sponsor/collaborator edges. Company degree: Medtronic 1,667,
-GE HealthCare 381, Philips 345, Dräger 18, Mindray 7. The 90× spread between Medtronic and Mindray is a
+Philips 381, GE HealthCare 345, Dräger 18, Mindray 7. The **238×** spread between Medtronic and Mindray is a
 **registry-naming and company-size** effect (Medtronic registers under dozens of unit names), not a
 measurement of research intensity.
 

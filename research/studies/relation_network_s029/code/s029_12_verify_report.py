@@ -87,6 +87,18 @@ def main() -> int:
     c.check("V1b every claim's evidence_id resolves", claim_ev_ok,
             {"claims": len(claims)})
 
+    # ---- V1c: the evidence id's record component equals the claim's source_record_id ----
+    bad_rec = []
+    for c2 in claims:
+        parts = str(c2["evidence_id"]).split(":")
+        if len(parts) >= 3 and parts[2] != str(c2["source_record_id"]):
+            # publication record ids may contain ':' (e.g. doi:...) -> compare the tail
+            if not str(c2["evidence_id"]).endswith(str(c2["source_record_id"])):
+                bad_rec.append(c2["relation_id"])
+    c.check("V1c evidence id resolves to the claim's own source record",
+            not bad_rec, {"claims": len(claims), "mismatched": len(bad_rec),
+                          "examples": bad_rec[:5]})
+
     # ---- V2: claim store integrity ----
     bad_pred = [c2["relation_id"] for c2 in claims if c2["predicate"] not in ALLOWED_PREDICATES]
     bad_status = [c2["relation_id"] for c2 in claims if c2["claim_status"] not in ALLOWED_STATUS]

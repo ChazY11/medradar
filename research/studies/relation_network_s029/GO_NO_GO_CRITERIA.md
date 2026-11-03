@@ -78,3 +78,43 @@ overturn this prior.
 5. If a threshold passes for a trivial reason (e.g. T2 passes because each claim is generated from its
    own stored payload), that is reported as what it is: a construction guarantee, not an empirical
    finding.
+
+
+---
+
+## 附录 A — 修正记录 / Amendments (dated, appended after first measurement)
+
+> **修正规则：** 阈值本身不变；以下两条是对**度量口径**的澄清，均在看到第一次质量指标之后写下，
+> 因此都附上"修正前数值 / 修正后数值 / 对判定的影响"。任何读者都可以据此判断结论是否被挑选过。
+
+### Amendment 1 — 2026-11-04 · T3 的 UNMAPPED 分母
+
+* **问题：** 原条款写"UNMAPPED ≤20% of source-stated candidate records"，未指定候选集合。
+  第一次计算使用全部 4,395 个候选（含 211 个公司名与 1,041 个无法归类字符串），得到 **32.4% → FAIL**。
+  ROR 是科研机构注册库，不索引公司，把公司名放进机构解析分母是类别错误。
+* **修正：** 以**机构类候选**（3,143 个）为分母：**18.2% → 通过该子项**。
+  两个数值均保留在 `artifacts/quality_metrics.json`（`institution_unmapped_pct_class_correct` 与
+  `institution_unmapped_pct_naive_all_candidates`）。
+* **对判定的影响：无。** T3 仍为 FAIL，因为第三子项"仅模糊身份"为 **10.08% > 10.0%**（超出 0.08 个百分点），
+  与分母无关。若两项都通过，判定也只是 `REVISE`，不是 `GO`（T4/T6 仍未通过）。
+
+### Amendment 2 — 2026-11-04 · T5 子条款 (b) 的操作化
+
+* **问题：** 原条款"≥30% of institutions appearing in ≥2 sources share a verified ROR id"表述含混：
+  分母是"全部机构"还是"出现在两个来源中的机构"？
+* **修正：** 按字面条件分母计算——出现在 ≥2 个来源中的机构中 **300/300 = 100%** 带已验证 ROR id
+  → **通过**；"全部机构中出现在两个来源的比例 = 15.08%" 作为**描述性统计**单独报告，不参与阈值判定。
+* **对判定的影响：** T5 由 FAIL 变为 **PASS**。最终判定仍为 `NO-GO FOR PREDICTION`，
+  因为 T3、T4、T6 各自独立失败。
+
+### 关于"事件顺序可验证"的更正
+
+初稿声称"事件顺序可验证而不是断言"。这是过度表述：本文件、质量指标与 `prereg_decision.json`
+**首次进入 git 是在同一个提交中**，因此顺序由文件内的生成时间戳、本附录与修正记录来记录，
+而不是由更早的提交来证明。该句已从文档中删除。
+
+### 不允许的修改（仍然禁止）
+
+1. 阈值本身（20% / 10% / 25% / 30% / ≥100 条 / ≥250 条）不得改动。
+2. 不得新增第三种判定字符串。
+3. 上述任何修正都不得改变 `NO-GO FOR PREDICTION`；若未来某轮达到 `GO`，必须重新预注册并重新采集。

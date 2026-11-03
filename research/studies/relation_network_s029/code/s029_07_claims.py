@@ -221,8 +221,9 @@ def main() -> None:
                 "evidence_id": f"{p['evidence_id']}:{pk}",
                 "relation_temporal_type": "POINT",
                 "valid_from": p.get("first_publication_date"), "valid_to": None,
-                "declared_at": p.get("first_publication_date"),
+                "declared_at": p.get("first_index_date") or p.get("first_publication_date"),
                 "event_at": p.get("first_publication_date"),
+                "event_at_type": None,
                 "published_at": p.get("first_index_date") or p.get("first_publication_date"),
                 "first_seen_at": p.get("first_seen_at"),
                 "observed_lag_days": lag_days(p.get("first_seen_at"),
@@ -720,6 +721,7 @@ def main() -> None:
     # already-published record. The lenient label (published within 7 days of our own fetch) is kept
     # in time_basis for transparency but never used for a point-in-time claim.
     for c2 in claim_rows:
+        c2.setdefault("event_at_type", None)
         near = c2.get("time_basis") == "ACTUAL_OBSERVATION"
         c2["near_realtime_this_study"] = bool(near)
         c2["observation_system"] = "THIS_STUDY_COLLECTION" if near else "NONE"

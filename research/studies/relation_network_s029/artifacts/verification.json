@@ -1,14 +1,14 @@
 {
   "all_passed": true,
-  "checks_passed": 12,
-  "checks_total": 12,
+  "checks_passed": 13,
+  "checks_total": 13,
   "claim_counts": {
     "claims": 20563,
     "entities": 7059,
     "evidence": 3418,
     "raw_payloads": 130
   },
-  "generated_at": "2026-11-03T20:57:50.222Z",
+  "generated_at": "2026-11-03T21:03:16.653Z",
   "results": [
     {
       "check": "V1a evidence rows resolvable to committed raw payload",
@@ -23,6 +23,15 @@
       "check": "V1b every claim's evidence_id resolves",
       "detail": {
         "claims": 20563
+      },
+      "pass": true
+    },
+    {
+      "check": "V1c evidence id resolves to the claim's own source record",
+      "detail": {
+        "claims": 20563,
+        "examples": [],
+        "mismatched": 0
       },
       "pass": true
     },
@@ -120,8 +129,8 @@
     {
       "check": "V7 pre-registration hash matches the one recorded at verdict time",
       "detail": {
-        "current": "f1ab0629f3c73393925af239538ff5e8adb0c08b9e0f8238ac0d3242c06e4742",
-        "recorded": "f1ab0629f3c73393925af239538ff5e8adb0c08b9e0f8238ac0d3242c06e4742"
+        "current": "69ba53a9e2731c2643e50f3dad5bd2c39f8f184639b06a03000235a3178497cc",
+        "recorded": "69ba53a9e2731c2643e50f3dad5bd2c39f8f184639b06a03000235a3178497cc"
       },
       "pass": true
     },
