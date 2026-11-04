@@ -1,0 +1,147 @@
+{
+  "check": "recruitment_collection_stability",
+  "company": "medtronic",
+  "limit": 200,
+  "min_interval_s": 0.8,
+  "run1": {
+    "n": 200,
+    "listing_total_reported": 994,
+    "details_ok": 200,
+    "details_failed": 0,
+    "duplicate_listing_rows": 0,
+    "requests": {
+      "requests": 212,
+      "cache_hits": 0,
+      "retries": 0,
+      "errors": 0
+    },
+    "started_at": "2026-11-04T13:09:49+00:00",
+    "finished_at": "2026-11-04T13:13:31+00:00",
+    "id_shapes": {
+      "opaque_hex": 200,
+      "slug_with_req": 0,
+      "bare_req": 0,
+      "other": 0
+    },
+    "availability": {
+      "posting_id": 1.0,
+      "source_url": 1.0,
+      "job_title": 1.0,
+      "description_nonempty": 1.0,
+      "location": 1.0,
+      "source_date": 1.0,
+      "relative_only": 0.0,
+      "no_time": 0.0,
+      "first_seen": 1.0,
+      "legal_entity": 0.0
+    }
+  },
+  "run2": {
+    "n": 200,
+    "listing_total_reported": 994,
+    "details_ok": 200,
+    "details_failed": 0,
+    "duplicate_listing_rows": 0,
+    "requests": {
+      "requests": 213,
+      "cache_hits": 0,
+      "retries": 1,
+      "errors": 0
+    },
+    "started_at": "2026-11-04T13:13:31+00:00",
+    "finished_at": "2026-11-04T13:16:42+00:00",
+    "id_shapes": {
+      "opaque_hex": 200,
+      "slug_with_req": 0,
+      "bare_req": 0,
+      "other": 0
+    },
+    "availability": {
+      "posting_id": 1.0,
+      "source_url": 1.0,
+      "job_title": 1.0,
+      "description_nonempty": 1.0,
+      "location": 1.0,
+      "source_date": 1.0,
+      "relative_only": 0.0,
+      "no_time": 0.0,
+      "first_seen": 1.0,
+      "legal_entity": 0.0
+    }
+  },
+  "comparison": {
+    "n_ids_run1": 200,
+    "n_ids_run2": 200,
+    "n_common": 200,
+    "identity_overlap_run1": 1.0,
+    "identity_overlap_run2": 1.0,
+    "content_hash_stable_among_common": 1.0,
+    "first_seen_preserved_after_second_run": 200,
+    "first_seen_preserved_fraction": 1.0,
+    "only_in_run1": [],
+    "only_in_run2": [],
+    "note": "The two runs observe the same ordered listing with the same limit, so a materially lower overlap than 1.0 would mean the listing order is unstable or the site changed between runs; a lower content-hash stability would mean descriptions are being edited between runs. first_seen_at is read back from the append-only store after the second ingest, which is the only place it can be proven not to have moved."
+  },
+  "store": {
+    "summary": {
+      "n_current": 200,
+      "by_status": {
+        "UNCHANGED": 200
+      },
+      "by_company": {
+        "medtronic": 200
+      },
+      "n_change_events": 400,
+      "change_events_by_state": {
+        "NEW_POSTING": 200,
+        "UNCHANGED": 200
+      },
+      "runs": 2
+    },
+    "run1": {
+      "run_id": "run-2026-11-04T13:13:31+00:00",
+      "started_at": "2026-11-04T13:13:31+00:00",
+      "finished_at": "2026-11-04T13:13:31+00:00",
+      "complete_snapshot": false,
+      "n_observations_ingested": 200,
+      "n_events": 200,
+      "counts": {
+        "NEW_POSTING": 200,
+        "UNCHANGED": 0,
+        "REVISION": 0,
+        "REMOVED": 0,
+        "REAPPEARED": 0,
+        "UNREADABLE": 0
+      },
+      "meta": {
+        "phase": "stability_run1",
+        "limit": 200
+      },
+      "note": "UNCHANGED/REVISION are re-observations of a known posting; REMOVED means 'not seen in a complete snapshot', never 'the role was filled'"
+    },
+    "run2": {
+      "run_id": "run-2026-11-04T13:16:42+00:00",
+      "started_at": "2026-11-04T13:16:42+00:00",
+      "finished_at": "2026-11-04T13:16:42+00:00",
+      "complete_snapshot": false,
+      "n_observations_ingested": 200,
+      "n_events": 200,
+      "counts": {
+        "NEW_POSTING": 0,
+        "UNCHANGED": 200,
+        "REVISION": 0,
+        "REMOVED": 0,
+        "REAPPEARED": 0,
+        "UNREADABLE": 0
+      },
+      "meta": {
+        "phase": "stability_run2",
+        "limit": 200
+      },
+      "note": "UNCHANGED/REVISION are re-observations of a known posting; REMOVED means 'not seen in a complete snapshot', never 'the role was filled'"
+    }
+  },
+  "caps": {
+    "max_requests_per_run": 3000
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "comparison": "two full-population observations of the same career site",
+  "content_hash_comparable": false,
+  "hash_rule_versions": {
+    "a": [
+      "None"
+    ],
+    "b": [
+      "None"
+    ]
+  },
+  "run_a": {
+    "file": "run1_identity.jsonl",
+    "n_rows": 994,
+    "n_distinct_ids": 992
+  },
+  "run_b": {
+    "file": "run2_identity.jsonl",
+    "n_rows": 994,
+    "n_distinct_ids": 994
+  },
+  "identity_overlap_a": 1.0,
+  "identity_overlap_b": 0.998,
+  "content_hash_stable_among_common": null,
+  "n_content_changed": null,
+  "n_content_changed_ignored_due_to_rule_change": 992,
+  "content_changed_examples": [
+    {
+      "posting_id": "a817339b4ba1103d2f6476fd210b0001",
+      "title_a": "CAPA Manager",
+      "title_b": "CAPA Manager"
+    },
+    {
+      "posting_id": "9d115f47ba161012f95c919301b70001",
+      "title_a": "PD Project Management Specialist - Onsite",
+      "title_b": "PD Project Management Specialist - Onsite"
+    },
+    {
+      "posting_id": "48e3878be672103b02add1dc164a0002",
+      "title_a": "Sales Representative I , Spine -\tTallahassee, FL",
+      "title_b": "Sales Representative I , Spine -\tTallahassee, FL"
+    },
+    {
+      "posting_id": "122732526734103cf8002fc1d7280002",
+      "title_a": "Sales Representative III, Pain Therapies - Philadelphia, PA",
+      "title_b": "Sales Representative III, Pain Therapies - Philadelphia, PA"
+    },
+    {
+      "posting_id": "b968d27c521f10366bc409d23fe40001",
+      "title_a": "Senior Software Engineer",
+      "title_b": "Senior Software Engineer"
+    },
+    {
+      "posting_id": "c11b1678232e104ca7a7983783fc0001",
+      "title_a": "Sr Principal Electrical Engineer",
+      "title_b": "Sr Principal Electrical Engineer"
+    },
+    {
+      "posting_id": "a0a8fe61c08d102dd43c75d61fd20001",
+      "title_a": "Technical Consultant- Robot assisted surgery",
+      "title_b": "Technical Consultant- Robot assisted surgery"
+    },
+    {
+      "posting_id": "2dc4f258c73a10104f8d063a37a60002",
+      "title_a": "Senior IT Developer",
+      "title_b": "Senior IT Developer"
+    },
+    {
+      "posting_id": "b968d27c521f1037557efc61feae0000",
+      "title_a": "Global Mobility Analyst",
+      "title_b": "Global Mobility Analyst"
+    },
+    {
+      "posting_id": "6e581deda778103bfa9a53a873af0000",
+      "title_a": "Senior Monitoring Sales Representative, Acute Care and Monitoring (Birmingham, AL)",
+      "title_b": "Senior Monitoring Sales Representative, Acute Care and Monitoring (Birmingham, AL)"
+    }
+  ],
+  "only_in_a": [],
+  "only_in_b": [
+    "122732526734103d755b640fac740001",
+    "bd44f52e84a2102ff7a72bea8d450001"
+  ],
+  "n_only_in_a": 0,
+  "n_only_in_b": 2,
+  "note": "Two consecutive full reads of the same listing. Overlap < 1 means the site's listing is not a stable snapshot (postings added/closed between runs, or offset pagination drift); content changes mean descriptions are being edited. Both are collection properties, not hiring-strategy evidence.",
+  "store_summary": {
+    "n_current": 994,
+    "by_status": {
+      "NEW_POSTING": 994
+    },
+    "by_company": {
+      "medtronic": 994
+    },
+    "n_change_events": 994,
+    "change_events_by_state": {
+      "NEW_POSTING": 994
+    },
+    "runs": 1
+  },
+  "first_seen": {
+    "measured": false,
+    "reason": "the store was not seeded from run A, so run A's first_seen_at values were never stored; write-once preservation is therefore NOT measured here. The measured evidence for it is stability_check.json (two runs, 200/200 rows preserved)."
+  }
+}

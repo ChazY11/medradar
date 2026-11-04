@@ -1,0 +1,224 @@
+{
+  "schema": 1,
+  "map_version": "recruitment_function_classes_2026-11-04",
+  "effective_from": "2026-11-04",
+  "notes": [
+    "Data, not code: the job-function vocabulary and every cue phrase live here so a cue change is a map-version change, not a silent remap.",
+    "The vocabulary is the mission's job-function vocabulary and must not be extended here. UNCLASSIFIED is a legitimate output, not a bug.",
+    "These classes describe the FUNCTION a posting performs (research, engineering, commercial...), not seniority and not the hiring company.",
+    "Matching is deterministic and lexical: title and description text only, whole phrases, case-insensitive, whitespace-tolerant. No model, no network, no learned weights.",
+    "A title cue names the occupation, which is why a title hit outranks any number of description hits; a long description contains almost every phrase eventually.",
+    "This map, together with medradar/recruitment/taxonomy.py, is the deterministic A arm of the Phase-4 job-text extraction experiment; the local-model B arm (Qwen3-4B) is compared against it on the same postings. The baseline is deliberately simple, lexical and reproducible; it is not a language model.",
+    "Longest/most specific title evidence wins: title_score for a class is the summed length (in characters) of the distinct title phrases that matched. This mirrors the existing device taxonomy's 'longest keyword wins' discipline.",
+    "Description cues are a fallback used only when no title cue matched. They require at least min_description_hits distinct phrases and a strict lead over the runner-up; otherwise the posting is UNCLASSIFIED rather than guessed."
+  ],
+  "matching": {
+    "text_fields": ["job_title", "job_description"],
+    "case_insensitive": true,
+    "word_boundary": true,
+    "whitespace_tolerant": true,
+    "title_rule": "per class, take the first occurrence of each matched title phrase and greedily keep non-overlapping phrases longest-first (nested phrases such as 'research' inside 'research scientist' are not double counted); title_score = summed character length of those kept phrases; highest title_score wins; tie -> the class whose matched title phrase starts earliest in the title (the head of the occupation phrase); remaining tie -> class precedence (lower number first); still tied -> UNCLASSIFIED ambiguous_title_tie",
+    "description_rule": "only when title_score is zero for every class; use description cues with distinct-phrase counts; a class must reach min_description_hits and lead every other class strictly; otherwise UNCLASSIFIED",
+    "min_description_hits": 3,
+    "description_tie_result": "UNCLASSIFIED",
+    "rationale_zh": "标题决定职业身份；描述只作兜底，且证据不足时弃权而不是硬分。"
+  },
+  "classes": {
+    "CORE_R&D": {
+      "name_en": "Core research and development",
+      "name_zh": "核心研发",
+      "precedence": 10,
+      "definition_en": "Discovers or develops technology: research scientists and R&D engineers working on new concepts, prototypes, materials, algorithms or processes rather than on an existing product line's incremental support.",
+      "title_phrases": [
+        "r&d engineer", "r&d scientist", "r&d manager", "r&d director", "r&d",
+        "research and development", "research & development",
+        "research engineer", "research scientist", "research manager", "research director",
+        "research fellow", "principal scientist", "senior scientist", "staff scientist",
+        "scientist", "discovery scientist", "preclinical scientist", "research"
+      ],
+      "description_phrases": [
+        "research and development", "design and development", "proof of concept",
+        "prototype", "scientific literature", "experimental design", "discovery research",
+        "technology development", "research activities", "scientific research", "innovation pipeline"
+      ],
+      "notes": "Bare 'research' is a title cue because a title names the occupation; in descriptions only multi-word research phrases are used."
+    },
+    "CLINICAL_R&D": {
+      "name_en": "Clinical research and evidence",
+      "name_zh": "临床研发与证据",
+      "precedence": 20,
+      "definition_en": "Generates clinical evidence: trial design and operations, clinical science, biostatistics, medical affairs and clinical evidence strategy. Not the field clinical specialist who supports sales (that is SALES_ADMIN_OTHER).",
+      "title_phrases": [
+        "clinical research scientist", "clinical research manager",
+        "clinical research engineer", "clinical research associate", "clinical research specialist",
+        "clinical research", "clinical scientist", "clinical science", "clinical affairs",
+        "clinical evidence", "clinical trial", "clinical study", "clinical data",
+        "medical affairs", "medical science liaison", "biostatistician", "biostatistics",
+        "clinical development", "clinical strategy", "clinical data management"
+      ],
+      "description_phrases": [
+        "clinical trial", "clinical study", "clinical research", "clinical evidence",
+        "clinical protocol", "institutional review board", "biostatistics", "clinical data",
+        "clinical evaluation", "clinical development"
+      ],
+      "notes": "The field 'Clinical Specialist' / 'EP Mapping Specialist' support commercial procedures; those phrases are deliberately assigned to SALES_ADMIN_OTHER and are not clinical-research cues."
+    },
+    "PRODUCT_ENGINEERING": {
+      "name_en": "Product engineering",
+      "name_zh": "产品工程",
+      "precedence": 30,
+      "definition_en": "Turns a technology into a released product: product/design/development, systems, test and verification engineering, design assurance, mechanical design.",
+      "title_phrases": [
+        "product development", "product engineer", "design engineer", "design assurance",
+        "development engineer", "systems engineer", "system engineer", "test engineer",
+        "verification engineer", "validation engineer", "mechanical engineer",
+        "mechanical design", "project engineer", "packaging engineer", "design quality engineer"
+      ],
+      "description_phrases": [
+        "product development", "design verification", "design validation", "test method",
+        "mechanical design", "engineering drawings", "tolerance analysis", "product design",
+        "design control", "engineering change", "verification and validation"
+      ],
+      "notes": "Mechanical design is product engineering; electrical/electronics/systems hardware is HARDWARE_SYSTEMS."
+    },
+    "ALGORITHM_SOFTWARE": {
+      "name_en": "Algorithm and software engineering",
+      "name_zh": "算法与软件工程",
+      "precedence": 40,
+      "definition_en": "Writes and ships software: application, platform, cloud and DevOps engineering, embedded software/firmware, data and machine-learning engineering, algorithm implementation.",
+      "title_phrases": [
+        "software engineer", "software developer", "software", "algorithm engineer",
+        "algorithm", "machine learning", "ml ops", "devops", "data scientist",
+        "data engineer", "platform engineer", "cloud engineer", "embedded software",
+        "firmware", "computer vision", "artificial intelligence", "test automation",
+        "automation engineer", "application engineer", "information technology",
+        "cybersecurity", "full stack", "backend engineer", "frontend engineer"
+      ],
+      "description_phrases": [
+        "software development", "software engineering", "machine learning", "algorithm development",
+        "python", "java", "cloud", "microservices", "unit test", "ci/cd", "data pipeline",
+        "embedded software", "application development", "automation framework", "rest api"
+      ],
+      "notes": "Firmware/embedded software is treated as software function; the device taxonomy owns the technology track, this class owns the job function."
+    },
+    "HARDWARE_SYSTEMS": {
+      "name_en": "Hardware and systems engineering",
+      "name_zh": "硬件与系统",
+      "precedence": 50,
+      "definition_en": "Designs physical electronics and system hardware: electrical/electronic, PCB, sensors, power, optics, reliability engineering, systems hardware integration.",
+      "title_phrases": [
+        "hardware engineer", "electrical engineer", "electronics engineer", "electronic engineer",
+        "reliability engineer", "systems engineer", "system engineer", "sensor engineer",
+        "optics engineer", "power electronics", "electromechanical engineer"
+      ],
+      "description_phrases": [
+        "electrical engineering", "electronic", "circuit", "pcb", "hardware design",
+        "firmware", "embedded systems", "systems engineering", "signal processing",
+        "sensor design", "power supply", "battery cell", "optics"
+      ],
+      "notes": "'systems engineer' appears in both PRODUCT_ENGINEERING and HARDWARE_SYSTEMS; per-class title_score ties are broken by precedence, and the class list keeps the more specific system-hardware phrases here."
+    },
+    "MANUFACTURING_PROCESS": {
+      "name_en": "Manufacturing and process engineering",
+      "name_zh": "制造与工艺",
+      "precedence": 60,
+      "definition_en": "Runs and improves production: manufacturing/process/production engineering, equipment and maintenance engineering, lean/six-sigma, tooling, assembly processes.",
+      "title_phrases": [
+        "manufacturing engineer", "process engineer", "production engineer", "operations engineer",
+        "maintenance technician", "maintenance engineer", "maintenance", "equipment engineer",
+        "lean engineer", "six sigma", "industrial engineer", "machining engineer",
+        "tooling engineer", "assembly engineer", "automation technician"
+      ],
+      "description_phrases": [
+        "manufacturing process", "assembly", "production line", "lean", "six sigma",
+        "maintenance", "equipment", "repair", "machining", "tooling",
+        "manufacturing operations", "production operations", "work instructions",
+        "assembly instructions", "rework", "plant equipment"
+      ],
+      "notes": "Maintenance/repair of plant equipment is a manufacturing-process function, not an R&D function."
+    },
+    "QUALITY_REGULATORY": {
+      "name_en": "Quality and regulatory",
+      "name_zh": "质量与法规",
+      "precedence": 70,
+      "definition_en": "Assures product quality and regulatory compliance: quality engineering and systems, regulatory affairs and submissions, audits, CAPA, post-market surveillance, validation.",
+      "title_phrases": [
+        "quality engineer", "quality systems", "quality specialist", "quality assurance",
+        "quality manager", "quality technician", "quality", "regulatory affairs",
+        "regulatory", "compliance", "validation engineer", "post-market",
+        "post market", "capa", "audit"
+      ],
+      "description_phrases": [
+        "quality system", "quality management system", "regulatory", "compliance",
+        "iso 13485", "fda", "audit", "capa", "validation", "quality engineering",
+        "post-market", "risk management", "quality assurance", "regulatory submission",
+        "design history file"
+      ],
+      "notes": "Quality/regulatory roles support products; the track gate still lets them carry the product-area track, but analysis must not read that as an R&D direction."
+    },
+    "SALES_ADMIN_OTHER": {
+      "name_en": "Commercial, field-service, administrative and other non-R&D",
+      "name_zh": "销售、现场服务、行政及其他非研发",
+      "precedence": 80,
+      "definition_en": "Commercial, field clinical/technical support, marketing, training & education, finance, supply chain, administration, production operators and other professional roles that are not research, engineering, manufacturing-process or quality/regulatory work.",
+      "title_phrases": [
+        "sales representative", "sales rep", "sales specialist", "sales manager", "sales",
+        "territory manager", "account manager", "account supervisor", "key account",
+        "business manager", "business process", "business process improvement",
+        "marketing", "product specialist", "clinical specialist", "mapping specialist",
+        "applications specialist", "field clinical", "field service", "clinical support",
+        "training & education", "training and education", "education manager",
+        "financial analyst", "financial", "finance", "accountant", "executive assistant",
+        "assistant", "administrative", "admin", "buyer", "planner", "warehouse",
+        "warehouse assistant", "supply chain", "supply chain planning", "logistics",
+        "operations", "operator", "customer service", "channel partner"
+      ],
+      "description_phrases": [
+        "sales", "quota", "customer", "marketing", "account management", "administrative",
+        "inventory", "procurement", "supply chain", "budget", "financial", "territory",
+        "business development", "commercial", "office support", "clerical", "warehouse",
+        "logistics", "customer service"
+      ],
+      "notes": "Deliberately broad because the mission's vocabulary folds every non-R&D job into one class; the definition is 'not research/engineering/manufacturing/quality', so field clinical specialists and mapping specialists belong here, and the technology-track gate refuses to attach a device track to them."
+    },
+    "UNCLASSIFIED": {
+      "name_en": "Unclassified / abstain",
+      "name_zh": "未分类（弃权）",
+      "precedence": 99,
+      "definition_en": "No rule fired, or the rules conflict/are too weak to decide. This is an accepted research outcome and must be counted, never silently filled with the company's most common class.",
+      "title_phrases": [],
+      "description_phrases": [],
+      "notes": "Reachable when (a) no cue matches title or description, (b) a title tie survives precedence, (c) the description fallback has no class with the required distinct hits, or (d) two description classes tie."
+    }
+  },
+  "non_technical_function_classes": ["SALES_ADMIN_OTHER", "UNCLASSIFIED"],
+  "track_gate": {
+    "eligible_function_classes": [
+      "CORE_R&D", "CLINICAL_R&D", "PRODUCT_ENGINEERING", "ALGORITHM_SOFTWARE",
+      "HARDWARE_SYSTEMS", "MANUFACTURING_PROCESS", "QUALITY_REGULATORY"
+    ],
+    "keyword_source": "config/tracks_device.json",
+    "keyword_fields": ["keywords", "frontier_keywords"],
+    "min_distinct_description_keywords": 2,
+    "title_hit_alone_is_sufficient": true,
+    "frontier_keyword_hit_alone_is_sufficient": true,
+    "single_description_hit_is_ambient_only": true,
+    "longest_keyword_wins": true,
+    "plural_suffix_tolerated": true,
+    "tie_break": "track_id_lexicographic",
+    "generic_keywords": [
+      "SOFTWARE",
+      "ALGORITHM",
+      "MACHINE LEARNING",
+      "COMPUTER AIDED",
+      "NEXT GENERATION",
+      "DENTAL",
+      "PORT",
+      "PATCH",
+      "MRD"
+    ],
+    "generic_keywords_reason_en": "The device taxonomy was built for product-code text, where these phrases are specific. In job adverts they occur in ordinary engineering prose ('next generation of CRM software') and in benefits boilerplate ('dental, vision'). They never assign a track on their own; a match is retained as ambient evidence with generic=true for audit.",
+    "ineligible_reason_en": "A commercial/administrative/abstained posting must not carry a technology track: a device keyword in a sales advert is the product being sold, not a technology signal. The candidate evidence is retained for audit, the track is not assigned.",
+    "eligible_note_en": "A track is a product-technology area. For QUALITY_REGULATORY / MANUFACTURING_PROCESS postings the track describes the product area the role supports, which is not by itself an R&D direction; downstream analysis must gate on function class."
+  }
+}

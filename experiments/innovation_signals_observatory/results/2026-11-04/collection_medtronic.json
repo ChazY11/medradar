@@ -1,0 +1,113 @@
+{
+  "company_key": "medtronic",
+  "source_label": "Medtronic",
+  "source_platform": "workday",
+  "collector_version": "recruitment/1.0.0",
+  "schema_version": "recruitment-obs-v1",
+  "policy": {
+    "min_interval_s": 0.8,
+    "max_requests": 3000,
+    "max_postings": 1000,
+    "timeout_s": 45.0,
+    "robots_evidence": {
+      "medtronic.wd1.myworkdayjobs.com": {
+        "robots_url": "https://medtronic.wd1.myworkdayjobs.com/robots.txt",
+        "status": 200,
+        "n_groups": 1,
+        "raw_head": "Sitemap: https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/siteMap.xml\n\nUser-agent: *\nAllow: /MedtronicCareers/\nDisallow: /RedeploymentMedtronicCareers/\nDisallow: /refreshFacet/",
+        "groups": [
+          {
+            "agents": [
+              "*"
+            ],
+            "allow": [
+              "/MedtronicCareers/"
+            ],
+            "disallow": [
+              "/RedeploymentMedtronicCareers/",
+              "/refreshFacet/"
+            ]
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "report": {
+    "company_key": "medtronic",
+    "source_label": "Medtronic",
+    "started_at": "2026-11-04T13:11:27+00:00",
+    "finished_at": "2026-11-04T13:28:38+00:00",
+    "listing_total_reported": 994,
+    "listing_pages": 50,
+    "listings_seen": 994,
+    "details_requested": 994,
+    "details_ok": 994,
+    "details_failed": 0,
+    "detail_failures": [],
+    "truncated_at_ceiling": false,
+    "duplicate_listing_rows": 0,
+    "robots": {
+      "medtronic.wd1.myworkdayjobs.com": {
+        "robots_url": "https://medtronic.wd1.myworkdayjobs.com/robots.txt",
+        "status": 200,
+        "n_groups": 1
+      }
+    },
+    "request_stats": {
+      "requests": 1044,
+      "cache_hits": 1,
+      "retries": 0,
+      "errors": 0
+    },
+    "collector_version": "recruitment/1.0.0"
+  },
+  "availability": {
+    "n": 994,
+    "rates": {
+      "posting_id": 1.0,
+      "source_url": 1.0,
+      "job_title": 1.0,
+      "description_nonempty": 1.0,
+      "location": 1.0,
+      "source_date": 1.0,
+      "relative_only": 0.0,
+      "no_time": 0.0,
+      "first_seen": 1.0,
+      "legal_entity": 0.0
+    },
+    "by_quality": {
+      "SOURCE_DATE": 994
+    },
+    "by_status": {
+      "COMPLETE": 994
+    },
+    "by_platform": {
+      "workday": 994
+    },
+    "distinct_postings": 994
+  },
+  "store": {
+    "run_id": "run-2026-11-04T13:28:38+00:00",
+    "started_at": "2026-11-04T13:28:38+00:00",
+    "finished_at": "2026-11-04T13:28:38+00:00",
+    "complete_snapshot": true,
+    "n_observations_ingested": 994,
+    "n_events": 994,
+    "counts": {
+      "NEW_POSTING": 2,
+      "UNCHANGED": 0,
+      "REVISION": 992,
+      "REMOVED": 0,
+      "REAPPEARED": 0,
+      "UNREADABLE": 0
+    },
+    "meta": {
+      "company_key": "medtronic",
+      "limit": 1000,
+      "truncated_at_ceiling": false,
+      "collector_version": "recruitment/1.0.0"
+    },
+    "note": "UNCHANGED/REVISION are re-observations of a known posting; REMOVED means 'not seen in a complete snapshot', never 'the role was filled'"
+  }
+}

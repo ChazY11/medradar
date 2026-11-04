@@ -1,0 +1,164 @@
+{
+  "company_key": "ge_healthcare",
+  "source_label": "GE HealthCare",
+  "source_platform": "phenom",
+  "source_urls": {
+    "sitemap_index": "https://careers.gehealthcare.com/global/en/sitemap_index.xml",
+    "robots": "https://careers.gehealthcare.com/robots.txt",
+    "listing": "https://careers.gehealthcare.com/global/en/search-results"
+  },
+  "collector_version": "recruitment/1.0.0",
+  "schema_version": "recruitment-obs-v1",
+  "policy": {
+    "min_interval_s": 1.0,
+    "max_requests": 1500,
+    "max_postings": 80,
+    "timeout_s": 45.0,
+    "robots_evidence": {
+      "careers.gehealthcare.com": {
+        "robots_url": "https://careers.gehealthcare.com/robots.txt",
+        "status": 200,
+        "n_groups": 1,
+        "raw_head": "User-agent: *\nDisallow: */phenomtrack.min.js\nDisallow: */socialAut\nDisallow: */iauth  \nDisallow: */chatbot\nDisallow: */jobcart\nDisallow: */apply\nDisallow: */applythankyou\nDisallow: */px-widgets\nDisallow: */lifeatphenom\nDisallow: */workingatphenom\nDisallow: */chatbot\nDisallow: */pxhomelead\nDisallow: */pxhomeapplicant\nDisallow: */pxhomequalifiedlead\nDisallow: */pxhomevisitor\nDisallow: */pxhomestranger\nDisallow: */glassdoor\n\nSitemap: https://careers.gehealthcare.com/global/en/sitemap_index.xml\nSitemap: https://careers.gehealthcare.com/fr/fr/sitemap_index.xml\nSitemap: https://careers.gehealthcare.com/de/de/sitemap_index.xml",
+        "groups": [
+          {
+            "agents": [
+              "*"
+            ],
+            "allow": [],
+            "disallow": [
+              "*/phenomtrack.min.js",
+              "*/socialAut",
+              "*/iauth",
+              "*/chatbot",
+              "*/jobcart",
+              "*/apply",
+              "*/applythankyou",
+              "*/px-widgets",
+              "*/lifeatphenom",
+              "*/workingatphenom",
+              "*/chatbot",
+              "*/pxhomelead",
+              "*/pxhomeapplicant",
+              "*/pxhomequalifiedlead",
+              "*/pxhomevisitor",
+              "*/pxhomestranger",
+              "*/glassdoor"
+            ]
+          }
+        ],
+        "is_robots_file": true,
+        "content_type_checked": true
+      }
+    },
+    "notes": [
+      "robots: robots.txt rule (longest match)"
+    ]
+  },
+  "report": {
+    "company_key": "ge_healthcare",
+    "source_label": "GE HealthCare",
+    "started_at": "2026-11-04T13:21:52+00:00",
+    "finished_at": "2026-11-04T13:24:08+00:00",
+    "listing_total_reported": null,
+    "sitemaps_read": 4,
+    "sitemap_urls_seen": 1159,
+    "job_urls_seen": 1035,
+    "details_requested": 80,
+    "details_ok": 73,
+    "details_failed": 7,
+    "detail_failures": [
+      {
+        "url": "https://careers.gehealthcare.com/global/en/job/GEVGHLGLOBALR4047431EXTERNALENGLOBAL/Applikationsspezialist-in-Mammographie-und-Röntgensysteme-DACH-w-m-d-remote-Homeoffice-Raum-München",
+        "http_status": null,
+        "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xf6' in position 100: ordinal not in range(128)"
+      },
+      {
+        "url": "https://careers.gehealthcare.com/global/en/job/GEVGHLGLOBALR4041822EXTERNALENGLOBAL/Surgical-Visualization-Segment-Specialist（大阪）",
+        "http_status": null,
+        "error": "UnicodeEncodeError: 'ascii' codec can't encode characters in position 97-100: ordinal not in range(128)"
+      },
+      {
+        "url": "https://careers.gehealthcare.com/global/en/job/GEVGHLGLOBALR4047772EXTERNALENGLOBAL/Medical-Director-Clinical-Development-Directeur-trice-médicale-du-développement-clinique",
+        "http_status": null,
+        "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 111: ordinal not in range(128)"
+      },
+      {
+        "url": "https://careers.gehealthcare.com/global/en/job/GEVGHLGLOBALR4045934EXTERNALENGLOBAL/Strategic-Account-Manager-f-m-d-Süddeutschland",
+        "http_status": null,
+        "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xfc' in position 89: ordinal not in range(128)"
+      },
+      {
+        "url": "https://careers.gehealthcare.com/global/en/job/GEVGHLGLOBALR4045891EXTERNALENGLOBAL/Responsable-International-de-la-Formation-Clinique-et-de-la-Stratégie-CVUS-F-H-International-CVUS-Clinical-Education-Manager",
+        "http_status": null,
+        "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe9' in position 121: ordinal not in range(128)"
+      },
+      {
+        "url": "https://careers.gehealthcare.com/global/en/job/GEVGHLGLOBALR4046703EXTERNALENGLOBAL/Trainee-Product-Management-Maternal-Infant-Care-MIC-w-m-d",
+        "http_status": 410,
+        "error": "HttpError: HTTP 410 for https://careers.gehealthcare.com/global/en/job/GEVGHLGLOBALR4046703EXTERNALENGLOBAL/Trainee-Product-Management-Maternal-Infant-Care-MIC-w-m-d"
+      },
+      {
+        "url": "https://careers.gehealthcare.com/global/en/job/GEVGHLGLOBALR4045233EXTERNALENGLOBAL/Junior-Applikationsspezialist-in-Molekulare-Bildgebung-DACH-w-m-d-remote-Home-office-Raum-München-Rosenheim-Open",
+        "http_status": null,
+        "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xfc' in position 147: ordinal not in range(128)"
+      }
+    ],
+    "skipped_robots_disallowed": 0,
+    "truncated_at_ceiling": true,
+    "robots": {
+      "careers.gehealthcare.com": {
+        "robots_url": "https://careers.gehealthcare.com/robots.txt",
+        "status": 200,
+        "n_groups": 1,
+        "is_robots_file": true
+      }
+    },
+    "robots_interpretation": {
+      "robots_url": "https://careers.gehealthcare.com/robots.txt",
+      "status": 200,
+      "published": true,
+      "mode": "required",
+      "listing_path_decision": {
+        "allowed": true,
+        "rule": null,
+        "reason": "no matching rule"
+      },
+      "basis": "robots.txt rule (longest match)"
+    },
+    "request_stats": {
+      "requests": 85,
+      "cache_hits": 0,
+      "retries": 0,
+      "errors": 1
+    },
+    "collector_version": "recruitment/1.0.0"
+  },
+  "availability": {
+    "n": 80,
+    "rates": {
+      "posting_id": 1.0,
+      "source_url": 1.0,
+      "job_title": 0.9125,
+      "description_nonempty": 0.9125,
+      "location": 0.9125,
+      "source_date": 0.9125,
+      "relative_only": 0.0,
+      "no_time": 0.0875,
+      "first_seen": 1.0,
+      "legal_entity": 0.0
+    },
+    "by_quality": {
+      "SOURCE_DATE": 73,
+      "NONE": 7
+    },
+    "by_status": {
+      "COMPLETE": 73,
+      "DETAIL_FAILED": 7
+    },
+    "by_platform": {
+      "phenom": 80
+    },
+    "distinct_postings": 80
+  }
+}
