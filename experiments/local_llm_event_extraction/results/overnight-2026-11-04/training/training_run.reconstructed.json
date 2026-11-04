@@ -1,0 +1,195 @@
+{
+  "status_tier": "EXPLORATORY_WEAK_SUPERVISION",
+  "research_status": "RESEARCH_TRAINING_BLOCKED",
+  "record_provenance": {
+    "kind": "reconstructed_after_trainer_crash",
+    "why": "The trainer crashed in its finalisation step (ResourceSampler stopped a threading.Thread by assigning self._stop, shadowing Thread._stop). Training itself completed its wall-clock budget and saved the best adapter; only the final adapter write and this record were lost. The bug is fixed in training/train_overnight.py; this file is rebuilt from the run's own artifacts by scripts/reconstruct_training_record.py.",
+    "measured": "step losses and step times (stdout, every 10 steps), validation loss at step 50 (stdout and best_checkpoint.json), GPU temperature / VRAM / RAM (5-minute resource log), best adapter files and their presence",
+    "derived": "steps_completed (max observed step), wall_time_s (last resource sample), median step time and tokens/second (stdout samples), loss trend",
+    "not_recoverable": "the final (step-60+) adapter, the optimiser state, and the exact stop reason string (wall-clock is inferred from a 1200 s budget and the last sample at 1200.1 s)"
+  },
+  "claim": "Exploratory QLoRA domain adaptation of Qwen3-4B-Instruct-2507 on SOURCE_DERIVED_SILVER labels. NOT research grade: labels are machine-derived from source records, not human annotations, so no precision/recall/F1 may be quoted from any model trained here. Formal research training remains blocked.",
+  "config": {
+    "steps_requested": 150,
+    "max_wall_seconds": 1200,
+    "max_seq_len": 2432,
+    "grad_accum": 4,
+    "learning_rate": 0.0001,
+    "seed": 20261104,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "eval_every": 50,
+    "checkpoint_every": 75,
+    "patience": 3,
+    "resource_interval_s": 300,
+    "max_temp_c": 87,
+    "source": "command line recorded in the run's stdout log"
+  },
+  "model": {
+    "weights_path": "D:\\DEPPSKK\\ml-models\\Qwen3-4B-Instruct-2507",
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "quantization": "nf4"
+  },
+  "prompt_version": "extract-v2",
+  "data": {
+    "note": "70 training / 14 validation cases, 104-document frozen corpus (ovn-2026-11-04); see runs/dataset/dataset_audit.json for the split plan and leakage audit"
+  },
+  "measurements": {
+    "steps_completed": 60,
+    "wall_time_s": 1200.1,
+    "step_log": [
+      {
+        "step": 0,
+        "loss": 0.9207,
+        "step_time_s": 3.95,
+        "vram_allocated_mib": 3602.0,
+        "source": "stdout (printed every 10 steps)"
+      },
+      {
+        "step": 10,
+        "loss": 0.392,
+        "step_time_s": 9.63,
+        "vram_allocated_mib": 3854.0,
+        "source": "stdout (printed every 10 steps)"
+      },
+      {
+        "step": 20,
+        "loss": 0.1776,
+        "step_time_s": 35.45,
+        "vram_allocated_mib": 3856.0,
+        "source": "stdout (printed every 10 steps)"
+      },
+      {
+        "step": 30,
+        "loss": 0.0588,
+        "step_time_s": 29.29,
+        "vram_allocated_mib": 3855.0,
+        "source": "stdout (printed every 10 steps)"
+      },
+      {
+        "step": 40,
+        "loss": 0.0077,
+        "step_time_s": 3.73,
+        "vram_allocated_mib": 3856.0,
+        "source": "stdout (printed every 10 steps)"
+      },
+      {
+        "step": 50,
+        "loss": 0.0141,
+        "step_time_s": 3.62,
+        "vram_allocated_mib": 3855.0,
+        "source": "stdout (printed every 10 steps)"
+      },
+      {
+        "step": 60,
+        "loss": 0.0012,
+        "step_time_s": 205.55,
+        "vram_allocated_mib": 3855.0,
+        "source": "stdout (printed every 10 steps)"
+      }
+    ],
+    "evaluations": [
+      {
+        "step": 50,
+        "validation_loss": 0.0052,
+        "source": "stdout"
+      }
+    ],
+    "median_step_time_s": 9.63,
+    "resource_samples": 4,
+    "gpu_temp_max_c": 72,
+    "gpu_temp_median_c": 66.0,
+    "system_vram_max_mib": 16195.8,
+    "vram_free_min_mib": 107.2,
+    "ram_max_percent": 98.4,
+    "resource_log": [
+      {
+        "ts": "2026-11-04T10:41:36+0800",
+        "elapsed_s": 300.0,
+        "step": 21,
+        "loss": 0.177562,
+        "steps_total": 150,
+        "tokens_per_s": 52.61,
+        "gpu_temp_c": 67,
+        "gpu_power_w": 81.7,
+        "gpu_clock_mhz": 2775,
+        "gpu_throttle_reasons": 0,
+        "vram_used_mib": 16158.9,
+        "vram_free_mib": 144.1,
+        "cpu_percent": 0.0,
+        "ram_used_gb": 24.53,
+        "ram_percent": 72.7
+      },
+      {
+        "ts": "2026-11-04T10:46:36+0800",
+        "elapsed_s": 600.1,
+        "step": 28,
+        "loss": 0.133985,
+        "steps_total": 150,
+        "tokens_per_s": 46.35,
+        "gpu_temp_c": 65,
+        "gpu_power_w": 69.1,
+        "gpu_clock_mhz": 2820,
+        "gpu_throttle_reasons": 0,
+        "vram_used_mib": 16165.7,
+        "vram_free_mib": 137.3,
+        "cpu_percent": 31.6,
+        "ram_used_gb": 33.21,
+        "ram_percent": 98.4
+      },
+      {
+        "ts": "2026-11-04T10:51:36+0800",
+        "elapsed_s": 900.1,
+        "step": 59,
+        "loss": 0.001687,
+        "steps_total": 150,
+        "tokens_per_s": 495.86,
+        "gpu_temp_c": 72,
+        "gpu_power_w": 73.6,
+        "gpu_clock_mhz": 2805,
+        "gpu_throttle_reasons": 0,
+        "vram_used_mib": 16195.8,
+        "vram_free_mib": 107.2,
+        "cpu_percent": 33.3,
+        "ram_used_gb": 15.33,
+        "ram_percent": 45.4
+      },
+      {
+        "ts": "2026-11-04T10:56:36+0800",
+        "elapsed_s": 1200.1,
+        "step": 60,
+        "loss": 0.001442,
+        "steps_total": 150,
+        "tokens_per_s": 13.76,
+        "gpu_temp_c": 65,
+        "gpu_power_w": 74.0,
+        "gpu_clock_mhz": 2812,
+        "gpu_throttle_reasons": 0,
+        "vram_used_mib": 16184.2,
+        "vram_free_mib": 118.8,
+        "cpu_percent": 28.6,
+        "ram_used_gb": 16.96,
+        "ram_percent": 50.2
+      }
+    ]
+  },
+  "stop": {
+    "reason": "wall_clock_budget_exhausted",
+    "inference_note": "inferred: the last resource sample is elapsed_s=1200.1, exactly the --max-wall-seconds value, and the step log ends at step 60",
+    "completed_all_steps": false
+  },
+  "checkpoints": {
+    "best_adapter": "D:\\DEPPSKK\\ml-work\\overnight\\training\\ovn-qlora\\adapter-best",
+    "best_step": 50,
+    "best_validation_loss": 0.00522,
+    "best_adapter_files": [
+      "README.md",
+      "adapter_config.json",
+      "adapter_model.safetensors"
+    ],
+    "final_adapter": null,
+    "final_adapter_note": "lost to the finalisation crash; arm C uses best_adapter",
+    "trainer_state": null
+  }
+}

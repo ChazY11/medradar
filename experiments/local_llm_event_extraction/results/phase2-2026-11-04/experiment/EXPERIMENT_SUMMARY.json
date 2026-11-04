@@ -1,0 +1,568 @@
+{
+  "run_dir": "D:\\DEPPSKK\\ml-work\\runs\\phase2-2026-11-04",
+  "run_status": "REAL_DOCUMENT_UNLABELLED",
+  "corpus": {
+    "dataset": "real-medtech-documents-5firms",
+    "version": "2026-11-04",
+    "corpus_dir": "D:\\DEPPSKK\\worktrees\\local-llm-research\\experiments\\local_llm_event_extraction\\datasets\\real\\corpus\\2026-11-04",
+    "document_count": 19,
+    "silver_labelled_count": 19,
+    "companies": [
+      "draeger",
+      "ge-healthcare",
+      "medtronic",
+      "philips",
+      "siemens-healthineers"
+    ],
+    "documents_per_company": {
+      "draeger": 3,
+      "ge-healthcare": 4,
+      "medtronic": 4,
+      "philips": 4,
+      "siemens-healthineers": 4
+    },
+    "documents_per_source_type": {
+      "clinical_trial_registration": 5,
+      "recall": 5,
+      "regulatory_approval": 4,
+      "regulatory_clearance": 5
+    },
+    "documents_per_text_style": {
+      "field_value_rendering": 9,
+      "prose": 10
+    },
+    "splits": {
+      "test": 19
+    },
+    "label_tiers": [
+      "source_record_derived"
+    ]
+  },
+  "dataset": {
+    "name": "real-medtech-documents-5firms",
+    "version": "2026-11-04",
+    "cases": 19,
+    "label_tiers": [
+      "source_record_derived"
+    ],
+    "default_run_status": "REAL_DOCUMENT_UNLABELLED",
+    "source_sha256": "92a41a66ccb121b06be0cf344e97f75ce988f571b2740e3c82bc27463e81af07"
+  },
+  "arms": {
+    "rules-baseline": {
+      "adapter_id": "rules-baseline",
+      "display_name": "ARM A - deterministic rules baseline",
+      "backend": "rule_based",
+      "model_id": null,
+      "model_revision": null,
+      "quantization": null,
+      "device": "cpu",
+      "max_input_chars": 12000,
+      "max_new_tokens": 0,
+      "prompt_version": null,
+      "requires_network": false,
+      "requires_gpu": false,
+      "deterministic": true,
+      "load_gate": null,
+      "enabled_by_default": true,
+      "notes": "No model, no network, no dependency. Alias map and keyword rules are injected; abstains with an explicit reason instead of guessing."
+    },
+    "hf-qwen3-4b-instruct": {
+      "adapter_id": "hf-qwen3-4b-instruct",
+      "display_name": "ARM B - Qwen/Qwen3-4B-Instruct-2507 (nf4) local",
+      "backend": "hf_local",
+      "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "quantization": "nf4",
+      "device": "cuda",
+      "max_input_chars": 12000,
+      "max_new_tokens": 512,
+      "prompt_version": "extract-v1",
+      "requires_network": false,
+      "requires_gpu": true,
+      "deterministic": true,
+      "load_gate": "model_load",
+      "enabled_by_default": false,
+      "notes": "Instruction-tuned Qwen3-4B (2507) loaded 4-bit NF4 from a pinned local snapshot; greedy decoding; thinking disabled when the template supports it."
+    }
+  },
+  "per_arm": {
+    "hf-qwen3-4b-instruct": {
+      "status": "RUN",
+      "counts": {
+        "documents": 19,
+        "parse_status": {
+          "ok": 19
+        },
+        "document_verdict": {
+          "accepted": 12,
+          "quarantined": 7
+        },
+        "event_verdict": {
+          "accepted": 12,
+          "quarantined": 8
+        },
+        "issue_codes": {
+          "DOMAIN_UNKNOWN": 8,
+          "DATE_ORDER_VIOLATION": 5,
+          "DATE_NOT_IN_EVIDENCE": 5
+        },
+        "abstained_events": 0,
+        "extracted_events": 20,
+        "documents_with_any_event": 19,
+        "documents_with_located_quote": 19
+      },
+      "latency_s": {
+        "count": 19,
+        "mean": 27.5177,
+        "median": 25.901,
+        "min": 22.9588,
+        "max": 52.3262,
+        "total": 522.8358
+      },
+      "tokens_in": {
+        "count": 19,
+        "mean": 1619.3684,
+        "median": 1625.0,
+        "min": 1311.0,
+        "max": 2578.0,
+        "total": 30768.0
+      },
+      "tokens_out": {
+        "count": 19,
+        "mean": 275.2632,
+        "median": 253.0,
+        "min": 238.0,
+        "max": 512.0,
+        "total": 5230.0
+      },
+      "peak_vram_mb": {
+        "count": 19,
+        "mean": 3699.5907,
+        "median": 3682.7271,
+        "min": 3348.6865,
+        "max": 5020.2085,
+        "total": 70292.2241
+      },
+      "silver_agreement": {
+        "label": "EXPLORATORY",
+        "tier": "source_record_derived (silver, not human)",
+        "documents_compared": 19,
+        "category_agreement": 0.8947,
+        "event_date_agreement": 0.8947,
+        "company_agreement": 1.0,
+        "product_exact_agreement": null,
+        "product_comparisons": 0,
+        "agreement_counts": {
+          "category": 17,
+          "event_date": 17,
+          "company": 19,
+          "product": 0
+        },
+        "caveat": "Silver labels are copied from the same source record the document text was rendered from, so agreement measures reading fidelity of a record rendering, NOT extraction from prose and NOT accuracy against human annotation. Product agreement is None when the source record supplies no product string.",
+        "misses": [
+          {
+            "case_id": "fdapma-p060005-s027",
+            "reason": "field mismatch",
+            "category": [
+              "manufacturing_change",
+              "regulatory_approval"
+            ],
+            "event_date": [
+              "2026-08-25",
+              "2026-09-22"
+            ],
+            "company": [
+              "siemens_healthineers",
+              "siemens_healthineers"
+            ],
+            "product": [
+              "IMMULITE Systems Free PSA",
+              null
+            ]
+          },
+          {
+            "case_id": "fdapma-p980035-s848",
+            "reason": "field mismatch",
+            "category": [
+              "manufacturing_change",
+              "regulatory_approval"
+            ],
+            "event_date": [
+              "2026-09-24",
+              "2026-10-23"
+            ],
+            "company": [
+              "medtronic",
+              "medtronic"
+            ],
+            "product": [
+              "Pulse generator, permanent, implantable",
+              null
+            ]
+          }
+        ]
+      },
+      "tokens_per_second": {
+        "count": 19,
+        "median": 9.951
+      }
+    },
+    "rules-baseline": {
+      "status": "RUN",
+      "counts": {
+        "documents": 19,
+        "parse_status": {
+          "ok": 19
+        },
+        "document_verdict": {
+          "accepted": 18,
+          "quarantined": 1
+        },
+        "event_verdict": {
+          "accepted": 18,
+          "quarantined": 1
+        },
+        "issue_codes": {
+          "DATE_NOT_IN_EVIDENCE": 1
+        },
+        "abstained_events": 14,
+        "extracted_events": 5,
+        "documents_with_any_event": 5,
+        "documents_with_located_quote": 5
+      },
+      "latency_s": {
+        "count": 19,
+        "mean": 0.0139,
+        "median": 0.01,
+        "min": 0.0038,
+        "max": 0.0663,
+        "total": 0.2641
+      },
+      "tokens_in": {
+        "count": 0
+      },
+      "tokens_out": {
+        "count": 0
+      },
+      "peak_vram_mb": {
+        "count": 0
+      },
+      "silver_agreement": {
+        "label": "EXPLORATORY",
+        "tier": "source_record_derived (silver, not human)",
+        "documents_compared": 19,
+        "category_agreement": 0.1053,
+        "event_date_agreement": 0.0526,
+        "company_agreement": 0.2632,
+        "product_exact_agreement": null,
+        "product_comparisons": 0,
+        "agreement_counts": {
+          "category": 2,
+          "event_date": 1,
+          "company": 5,
+          "product": 0
+        },
+        "caveat": "Silver labels are copied from the same source record the document text was rendered from, so agreement measures reading fidelity of a record rendering, NOT extraction from prose and NOT accuracy against human annotation. Product agreement is None when the source record supplies no product string.",
+        "misses": [
+          {
+            "case_id": "ctgov-NCT02445040",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "ctgov-NCT04950192",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "ctgov-NCT05634538",
+            "reason": "field mismatch",
+            "category": [
+              "clinical_trial_result",
+              "clinical_trial_start"
+            ],
+            "event_date": [
+              null,
+              "2023-03-30"
+            ],
+            "company": [
+              "siemens_healthineers",
+              "siemens_healthineers"
+            ],
+            "product": [
+              null,
+              null
+            ]
+          },
+          {
+            "case_id": "ctgov-NCT06398730",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "ctgov-NCT06678841",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "fda510k-k260579",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "fda510k-k260656",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "fda510k-k262548",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "fda510k-k262913",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "fda510k-k263048",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "fdapma-p060005-s027",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "fdapma-p130020-s005",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "fdapma-p230021-s003",
+            "reason": "field mismatch",
+            "category": [
+              "clinical_trial_result",
+              "regulatory_approval"
+            ],
+            "event_date": [
+              null,
+              "2026-02-12"
+            ],
+            "company": [
+              "philips",
+              "philips"
+            ],
+            "product": [
+              null,
+              null
+            ]
+          },
+          {
+            "case_id": "fdapma-p980035-s848",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "fdarecall-z-0292-2027",
+            "reason": "field mismatch",
+            "category": [
+              "m_and_a",
+              "safety_recall"
+            ],
+            "event_date": [
+              null,
+              "2026-10-06"
+            ],
+            "company": [
+              "philips",
+              "philips"
+            ],
+            "product": [
+              null,
+              null
+            ]
+          },
+          {
+            "case_id": "fdarecall-z-0302-2027",
+            "reason": "no extracted event"
+          },
+          {
+            "case_id": "fdarecall-z-3166-2026",
+            "reason": "field mismatch",
+            "category": [
+              "safety_recall",
+              "safety_recall"
+            ],
+            "event_date": [
+              null,
+              "2026-07-31"
+            ],
+            "company": [
+              "ge_healthcare",
+              "ge_healthcare"
+            ],
+            "product": [
+              null,
+              null
+            ]
+          },
+          {
+            "case_id": "fdarecall-z-3335-2026",
+            "reason": "no extracted event"
+          }
+        ]
+      }
+    }
+  },
+  "model_manifest": {
+    "repo_id": "Qwen/Qwen3-4B-Instruct-2507",
+    "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "local_dir": "D:\\DEPPSKK\\ml-models\\Qwen3-4B-Instruct-2507",
+    "tree_api": "https://huggingface.co/api/models/Qwen/Qwen3-4B-Instruct-2507/tree/cdbee75f17c01a7cc42f958dc650907174af0554?recursive=true",
+    "verified_at": "2026-11-04T08:46:19+0800",
+    "files": [
+      {
+        "path": ".gitattributes",
+        "present": true,
+        "bytes": 1570,
+        "expected_bytes": 1570,
+        "sha256": "34448b82c17d60fec9b65b1f093c115ddbaadc04beb1b0140b6bfed2e012a930",
+        "expected_sha256": null,
+        "size_ok": true,
+        "sha256_ok": null,
+        "verified": true
+      },
+      {
+        "path": "LICENSE",
+        "present": true,
+        "bytes": 11343,
+        "expected_bytes": 11343,
+        "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+        "expected_sha256": null,
+        "size_ok": true,
+        "sha256_ok": null,
+        "verified": true
+      },
+      {
+        "path": "README.md",
+        "present": true,
+        "bytes": 8168,
+        "expected_bytes": 8168,
+        "sha256": "8e3dd0c3b5b11897cc71092ccfe517bb7a9783479baa3665aad73c8d1a2041cd",
+        "expected_sha256": null,
+        "size_ok": true,
+        "sha256_ok": null,
+        "verified": true
+      },
+      {
+        "path": "config.json",
+        "present": true,
+        "bytes": 727,
+        "expected_bytes": 727,
+        "sha256": "5beea1a4a34c62782bfb2f911c606741a3bab8f92d80a118fa053c28af12e8ba",
+        "expected_sha256": null,
+        "size_ok": true,
+        "sha256_ok": null,
+        "verified": true
+      },
+      {
+        "path": "generation_config.json",
+        "present": true,
+        "bytes": 238,
+        "expected_bytes": 238,
+        "sha256": "835fffe355c9438e7a25be099b3fccaa98350b83451f9fd2d99512e74f1ade48",
+        "expected_sha256": null,
+        "size_ok": true,
+        "sha256_ok": null,
+        "verified": true
+      },
+      {
+        "path": "merges.txt",
+        "present": true,
+        "bytes": 1671839,
+        "expected_bytes": 1671839,
+        "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+        "expected_sha256": null,
+        "size_ok": true,
+        "sha256_ok": null,
+        "verified": true
+      },
+      {
+        "path": "model-00001-of-00003.safetensors",
+        "present": true,
+        "bytes": 3957900840,
+        "expected_bytes": 3957900840,
+        "sha256": "75311d91bb08cf0b882913da464a1e722a31fb44db35208663487efb7a3d8ed6",
+        "expected_sha256": "75311d91bb08cf0b882913da464a1e722a31fb44db35208663487efb7a3d8ed6",
+        "size_ok": true,
+        "sha256_ok": true,
+        "verified": true
+      },
+      {
+        "path": "model-00002-of-00003.safetensors",
+        "present": true,
+        "bytes": 3987450520,
+        "expected_bytes": 3987450520,
+        "sha256": "0b48adbb1f60e901153d91907ba11ce63bd4b8b584482e730f48808d055dfba1",
+        "expected_sha256": "0b48adbb1f60e901153d91907ba11ce63bd4b8b584482e730f48808d055dfba1",
+        "size_ok": true,
+        "sha256_ok": true,
+        "verified": true
+      },
+      {
+        "path": "model-00003-of-00003.safetensors",
+        "present": true,
+        "bytes": 99630640,
+        "expected_bytes": 99630640,
+        "sha256": "7dd39ccca5e4de123c74c14af44c9bf2eb75df33b4614382af0134528e060d5d",
+        "expected_sha256": "7dd39ccca5e4de123c74c14af44c9bf2eb75df33b4614382af0134528e060d5d",
+        "size_ok": true,
+        "sha256_ok": true,
+        "verified": true
+      },
+      {
+        "path": "model.safetensors.index.json",
+        "present": true,
+        "bytes": 32819,
+        "expected_bytes": 32819,
+        "sha256": "d6c42883a895dfef5b0080ed2116a1bcd764f558406b98923d675978a1abf29c",
+        "expected_sha256": null,
+        "size_ok": true,
+        "sha256_ok": null,
+        "verified": true
+      },
+      {
+        "path": "tokenizer.json",
+        "present": true,
+        "bytes": 11422654,
+        "expected_bytes": 11422654,
+        "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+        "expected_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+        "size_ok": true,
+        "sha256_ok": true,
+        "verified": true
+      },
+      {
+        "path": "tokenizer_config.json",
+        "present": true,
+        "bytes": 9377,
+        "expected_bytes": 9377,
+        "sha256": "a62ff0a2472a0fa1b8eaabcb57c59b58afa42a22831dc141400b6e0cf2b65ce3",
+        "expected_sha256": null,
+        "size_ok": true,
+        "sha256_ok": null,
+        "verified": true
+      },
+      {
+        "path": "vocab.json",
+        "present": true,
+        "bytes": 2776833,
+        "expected_bytes": 2776833,
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+        "expected_sha256": null,
+        "size_ok": true,
+        "sha256_ok": null,
+        "verified": true
+      }
+    ],
+    "all_verified": true,
+    "method": "full-file SHA-256 compared with the HF tree API LFS oid; sizes compared for every file",
+    "verified_seconds": 6.9
+  },
+  "notes": [
+    "Harness-level measurements (parse status, validation verdict, latency, tokens, VRAM) are VERIFIED: they were measured in this run.",
+    "Silver-label agreement is EXPLORATORY and not accuracy against human annotation.",
+    "No precision/recall/F1 is reported for prose documents: no labels exist for them."
+  ]
+}

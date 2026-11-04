@@ -1,0 +1,2749 @@
+{
+  "dataset": {
+    "corpus_sha256": "7f4e7d815c6cece32f5a20ea9b78fe23602de6771bd95b7f5852897e568d07df",
+    "label_tier": "source_record_derived",
+    "splits_evaluated": [
+      "test"
+    ],
+    "leakage_audit": {
+      "status": "ok",
+      "detail": null
+    },
+    "counts": {
+      "test": 20,
+      "train": 70,
+      "validation": 14
+    }
+  },
+  "runs": {
+    "ovn-test-prompt-v2": {
+      "run_dir": "D:\\DEPPSKK\\ml-work\\overnight\\runs\\eval\\ovn-test-prompt-v2",
+      "prompt": "extract-v2",
+      "arms": {
+        "hf-qwen3-4b-instruct": {
+          "documents": 20,
+          "ledger": {
+            "harness_level": "MEASURED",
+            "precision_recall_f1": "NOT_EVALUABLE",
+            "precision_recall_f1_reason": "gold events are SOURCE_DERIVED_SILVER labels copied from the same records the documents were rendered from; they are not human annotations, so precision, recall and F1 are not defined as research metrics here",
+            "agreement": "EXPLORATORY"
+          },
+          "parse_status": {
+            "invalid_json": 5,
+            "ok": 15
+          },
+          "json_valid_rate": 0.75,
+          "schema_accepted_rate": 0.65,
+          "verbatim_quote_located_rate": 0.75,
+          "extracted_events": 12,
+          "abstained_documents": 8,
+          "abstention_rate": 0.4,
+          "documents_with_silver_gold": 17,
+          "wrong_abstention_rate": 0.2941,
+          "negative_control_documents": 3,
+          "false_assertion_rate": 0.0,
+          "error_taxonomy": {
+            "DATE_ORDER_VIOLATION": 4,
+            "DATE_QUALITY_MISMATCH": 1,
+            "DOMAIN_UNKNOWN": 1
+          },
+          "latency_s": {
+            "median": 28.627,
+            "mean": 26.781,
+            "max": 32.287
+          },
+          "peak_vram_mb": 3834.4,
+          "tokens_per_s_median": 10.03,
+          "agreement": {
+            "documents_compared": 17,
+            "category_agreement": 0.7059,
+            "event_date_agreement": 0.7059,
+            "company_agreement": 0.7059,
+            "product_exact_agreement": 0.75,
+            "product_comparisons": 12,
+            "category_date_company_joint_agreement": 0.7059,
+            "misses": [
+              {
+                "case_id": "ovn-ctgov-NCT03267264-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-95215-b62d01d9",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P160037-S027-e7f2135a",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K252506-466f37aa",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K260331-7cc18103",
+                "reason": "no extracted event"
+              }
+            ]
+          },
+          "strata": {
+            "text_origin": {
+              "structural_rendering": {
+                "documents": 12,
+                "json_valid_rate": 0.75,
+                "schema_accepted_rate": 0.5833,
+                "abstention_rate": 0.5,
+                "documents_compared": 9,
+                "category_agreement": 0.6667,
+                "event_date_agreement": 0.6667,
+                "company_agreement": 0.6667,
+                "product_exact_agreement": 0.8333,
+                "product_comparisons": 6,
+                "category_date_company_joint_agreement": 0.6667
+              },
+              "synthetic_narrative": {
+                "documents": 8,
+                "json_valid_rate": 0.75,
+                "schema_accepted_rate": 0.75,
+                "abstention_rate": 0.25,
+                "documents_compared": 8,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.75,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 0.6667,
+                "product_comparisons": 6,
+                "category_date_company_joint_agreement": 0.75
+              }
+            },
+            "source_type": {
+              "clinical_trial_record": {
+                "documents": 5,
+                "json_valid_rate": 0.8,
+                "schema_accepted_rate": 0.6,
+                "abstention_rate": 0.2,
+                "documents_compared": 5,
+                "category_agreement": 0.8,
+                "event_date_agreement": 0.8,
+                "company_agreement": 0.8,
+                "product_exact_agreement": 0.75,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.8
+              },
+              "fda_510k": {
+                "documents": 4,
+                "json_valid_rate": 0.5,
+                "schema_accepted_rate": 0.5,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.5
+              },
+              "fda_pma": {
+                "documents": 4,
+                "json_valid_rate": 0.75,
+                "schema_accepted_rate": 0.5,
+                "abstention_rate": 0.25,
+                "documents_compared": 4,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.75,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 3,
+                "category_date_company_joint_agreement": 0.75
+              },
+              "fda_recall": {
+                "documents": 4,
+                "json_valid_rate": 0.75,
+                "schema_accepted_rate": 0.75,
+                "abstention_rate": 0.25,
+                "documents_compared": 4,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.75,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 0.3333,
+                "product_comparisons": 3,
+                "category_date_company_joint_agreement": 0.75
+              },
+              "regulatory_notice": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              }
+            },
+            "event_date_kind": {
+              "decision": {
+                "documents": 8,
+                "json_valid_rate": 0.625,
+                "schema_accepted_rate": 0.5,
+                "abstention_rate": 0.375,
+                "documents_compared": 8,
+                "category_agreement": 0.625,
+                "event_date_agreement": 0.625,
+                "company_agreement": 0.625,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 5,
+                "category_date_company_joint_agreement": 0.625
+              },
+              "none": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              },
+              "recall_initiation": {
+                "documents": 4,
+                "json_valid_rate": 0.75,
+                "schema_accepted_rate": 0.75,
+                "abstention_rate": 0.25,
+                "documents_compared": 4,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.75,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 0.3333,
+                "product_comparisons": 3,
+                "category_date_company_joint_agreement": 0.75
+              },
+              "results_posting": {
+                "documents": 1,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 1,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 1,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "trial_completion": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 2,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.5,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "trial_start_actual": {
+                "documents": 2,
+                "json_valid_rate": 0.5,
+                "schema_accepted_rate": 0.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 2,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 1,
+                "category_date_company_joint_agreement": 0.5
+              }
+            }
+          }
+        },
+        "qlora-overnight": {
+          "documents": 20,
+          "ledger": {
+            "harness_level": "MEASURED",
+            "precision_recall_f1": "NOT_EVALUABLE",
+            "precision_recall_f1_reason": "gold events are SOURCE_DERIVED_SILVER labels copied from the same records the documents were rendered from; they are not human annotations, so precision, recall and F1 are not defined as research metrics here",
+            "agreement": "EXPLORATORY"
+          },
+          "parse_status": {
+            "invalid_json": 1,
+            "ok": 19
+          },
+          "json_valid_rate": 0.95,
+          "schema_accepted_rate": 0.85,
+          "verbatim_quote_located_rate": 0.95,
+          "extracted_events": 19,
+          "abstained_documents": 1,
+          "abstention_rate": 0.05,
+          "documents_with_silver_gold": 17,
+          "wrong_abstention_rate": 0.0,
+          "negative_control_documents": 3,
+          "false_assertion_rate": 0.6667,
+          "error_taxonomy": {
+            "DATE_ORDER_VIOLATION": 2,
+            "ENTITY_UNRESOLVED": 2
+          },
+          "latency_s": {
+            "median": 37.713,
+            "mean": 37.586,
+            "max": 44.601
+          },
+          "peak_vram_mb": 3962.6,
+          "tokens_per_s_median": 5.44,
+          "agreement": {
+            "documents_compared": 17,
+            "category_agreement": 1.0,
+            "event_date_agreement": 1.0,
+            "company_agreement": 1.0,
+            "product_exact_agreement": 0.8235,
+            "product_comparisons": 17,
+            "category_date_company_joint_agreement": 1.0,
+            "misses": []
+          },
+          "strata": {
+            "text_origin": {
+              "structural_rendering": {
+                "documents": 12,
+                "json_valid_rate": 0.9167,
+                "schema_accepted_rate": 0.75,
+                "abstention_rate": 0.0833,
+                "documents_compared": 9,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 9,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "synthetic_narrative": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 8,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.625,
+                "product_comparisons": 8,
+                "category_date_company_joint_agreement": 1.0
+              }
+            },
+            "source_type": {
+              "clinical_trial_record": {
+                "documents": 5,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 5,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.6,
+                "product_comparisons": 5,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "fda_510k": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 4,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "fda_pma": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 4,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "fda_recall": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 4,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.75,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "regulatory_notice": {
+                "documents": 3,
+                "json_valid_rate": 0.6667,
+                "schema_accepted_rate": 0.0,
+                "abstention_rate": 0.3333,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              }
+            },
+            "event_date_kind": {
+              "decision": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 8,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 8,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "none": {
+                "documents": 3,
+                "json_valid_rate": 0.6667,
+                "schema_accepted_rate": 0.0,
+                "abstention_rate": 0.3333,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              },
+              "recall_initiation": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 4,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.75,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "results_posting": {
+                "documents": 1,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 1,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 1,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "trial_completion": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 2,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "trial_start_actual": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 2,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 1.0
+              }
+            }
+          }
+        },
+        "rules-baseline": {
+          "documents": 20,
+          "ledger": {
+            "harness_level": "MEASURED",
+            "precision_recall_f1": "NOT_EVALUABLE",
+            "precision_recall_f1_reason": "gold events are SOURCE_DERIVED_SILVER labels copied from the same records the documents were rendered from; they are not human annotations, so precision, recall and F1 are not defined as research metrics here",
+            "agreement": "EXPLORATORY"
+          },
+          "parse_status": {
+            "ok": 20
+          },
+          "json_valid_rate": 1.0,
+          "schema_accepted_rate": 1.0,
+          "verbatim_quote_located_rate": 1.0,
+          "extracted_events": 8,
+          "abstained_documents": 12,
+          "abstention_rate": 0.6,
+          "documents_with_silver_gold": 17,
+          "wrong_abstention_rate": 0.5294,
+          "negative_control_documents": 3,
+          "false_assertion_rate": 0.0,
+          "error_taxonomy": {},
+          "latency_s": {
+            "median": 0.005,
+            "mean": 0.007,
+            "max": 0.046
+          },
+          "peak_vram_mb": null,
+          "tokens_per_s_median": null,
+          "agreement": {
+            "documents_compared": 17,
+            "category_agreement": 0.4706,
+            "event_date_agreement": 0.0,
+            "company_agreement": 0.4706,
+            "product_exact_agreement": 0.0,
+            "product_comparisons": 8,
+            "category_date_company_joint_agreement": 0.0,
+            "misses": [
+              {
+                "case_id": "ovn-ctgov-NCT03267264-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT03267264-results",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT03267264-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT05524064-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT05524064-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-49436-59e8d85a",
+                "reason": "field mismatch",
+                "category": [
+                  "safety_recall",
+                  "safety_recall"
+                ],
+                "event_date": [
+                  null,
+                  "2008-09-15"
+                ],
+                "company": [
+                  "bd",
+                  "bd"
+                ],
+                "product": [
+                  null,
+                  "BD Visitec High Viscosity Injector, 4mm Ref: 585173. The product is intended for Vitroretinal Surgery."
+                ]
+              },
+              {
+                "case_id": "ovn-recall-69258-8bddc341",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-69258-ad3df2f5",
+                "reason": "field mismatch",
+                "category": [
+                  "safety_recall",
+                  "safety_recall"
+                ],
+                "event_date": [
+                  null,
+                  "2014-09-02"
+                ],
+                "company": [
+                  "siemens_healthineers",
+                  "siemens_healthineers"
+                ],
+                "product": [
+                  null,
+                  "Siemens Luminos Agile Max system The Luminos Agile is intended to be used as a universal imaging system for radiographic and fluoroscopic st"
+                ]
+              },
+              {
+                "case_id": "ovn-recall-95215-b62d01d9",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P060005-S027-2c30c136",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_approval",
+                  "regulatory_approval"
+                ],
+                "event_date": [
+                  null,
+                  "2026-09-22"
+                ],
+                "company": [
+                  "siemens_healthineers",
+                  "siemens_healthineers"
+                ],
+                "product": [
+                  null,
+                  "IMMULITE Systems Free PSA"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P160037-S024-0c583f5a",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_approval",
+                  "regulatory_approval"
+                ],
+                "event_date": [
+                  null,
+                  "2026-04-02"
+                ],
+                "company": [
+                  "bd",
+                  "bd"
+                ],
+                "product": [
+                  null,
+                  "BD Onclarity HPV Assay"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P160037-S027-e7f2135a",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_approval",
+                  "regulatory_approval"
+                ],
+                "event_date": [
+                  null,
+                  "2026-08-19"
+                ],
+                "company": [
+                  "bd",
+                  "bd"
+                ],
+                "product": [
+                  null,
+                  "BD Onclarity HPV Assay Reagent Pack (SKU 444075) and BD COR HPV Extraction Trough (SKU 444074)"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P240021-S001-bcff9454",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_approval",
+                  "regulatory_approval"
+                ],
+                "event_date": [
+                  null,
+                  "2026-08-26"
+                ],
+                "company": [
+                  "siemens_healthineers",
+                  "siemens_healthineers"
+                ],
+                "product": [
+                  null,
+                  "Atellica IM Total PSA II (tPSAII)"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K252344-d49c362c",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_clearance",
+                  "regulatory_clearance"
+                ],
+                "event_date": [
+                  null,
+                  "2026-10-16"
+                ],
+                "company": [
+                  "bd",
+                  "bd"
+                ],
+                "product": [
+                  null,
+                  "BD Vacutainer® Serum Blood Collection Tubes; BD Vacutainer® Rapid Serum Tubes (RST)"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K252506-466f37aa",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K260331-7cc18103",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K263048-a5fdc2bb",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_clearance",
+                  "regulatory_clearance"
+                ],
+                "event_date": [
+                  null,
+                  "2026-09-29"
+                ],
+                "company": [
+                  "siemens_healthineers",
+                  "siemens_healthineers"
+                ],
+                "product": [
+                  null,
+                  "Syngo Carbon Space (VA4)"
+                ]
+              }
+            ]
+          },
+          "strata": {
+            "text_origin": {
+              "structural_rendering": {
+                "documents": 12,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.6667,
+                "documents_compared": 9,
+                "category_agreement": 0.4444,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.4444,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "synthetic_narrative": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 8,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.0
+              }
+            },
+            "source_type": {
+              "clinical_trial_record": {
+                "documents": 5,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 5,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "fda_510k": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "fda_pma": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 4,
+                "category_agreement": 1.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "fda_recall": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "regulatory_notice": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              }
+            },
+            "event_date_kind": {
+              "decision": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.25,
+                "documents_compared": 8,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 6,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "none": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              },
+              "recall_initiation": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "results_posting": {
+                "documents": 1,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 1,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "trial_completion": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 2,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "trial_start_actual": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 2,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              }
+            }
+          }
+        },
+        "rules-baseline-a1": {
+          "documents": 20,
+          "ledger": {
+            "harness_level": "MEASURED",
+            "precision_recall_f1": "NOT_EVALUABLE",
+            "precision_recall_f1_reason": "gold events are SOURCE_DERIVED_SILVER labels copied from the same records the documents were rendered from; they are not human annotations, so precision, recall and F1 are not defined as research metrics here",
+            "agreement": "EXPLORATORY"
+          },
+          "parse_status": {
+            "ok": 20
+          },
+          "json_valid_rate": 1.0,
+          "schema_accepted_rate": 0.8,
+          "verbatim_quote_located_rate": 0.8,
+          "extracted_events": 8,
+          "abstained_documents": 12,
+          "abstention_rate": 0.6,
+          "documents_with_silver_gold": 17,
+          "wrong_abstention_rate": 0.5294,
+          "negative_control_documents": 3,
+          "false_assertion_rate": 0.0,
+          "error_taxonomy": {
+            "QUOTE_NOT_VERBATIM": 4
+          },
+          "latency_s": {
+            "median": 0.005,
+            "mean": 0.005,
+            "max": 0.01
+          },
+          "peak_vram_mb": null,
+          "tokens_per_s_median": null,
+          "agreement": {
+            "documents_compared": 17,
+            "category_agreement": 0.4706,
+            "event_date_agreement": 0.4706,
+            "company_agreement": 0.4706,
+            "product_exact_agreement": 0.0,
+            "product_comparisons": 8,
+            "category_date_company_joint_agreement": 0.4706,
+            "misses": [
+              {
+                "case_id": "ovn-ctgov-NCT03267264-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT03267264-results",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT03267264-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT05524064-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT05524064-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-69258-8bddc341",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-95215-b62d01d9",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K252506-466f37aa",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K260331-7cc18103",
+                "reason": "no extracted event"
+              }
+            ]
+          },
+          "strata": {
+            "text_origin": {
+              "structural_rendering": {
+                "documents": 12,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 0.6667,
+                "abstention_rate": 0.6667,
+                "documents_compared": 9,
+                "category_agreement": 0.4444,
+                "event_date_agreement": 0.4444,
+                "company_agreement": 0.4444,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.4444
+              },
+              "synthetic_narrative": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 8,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.5
+              }
+            },
+            "source_type": {
+              "clinical_trial_record": {
+                "documents": 5,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 5,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "fda_510k": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.5
+              },
+              "fda_pma": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 0.5,
+                "abstention_rate": 0.0,
+                "documents_compared": 4,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "fda_recall": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 0.5,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.5
+              },
+              "regulatory_notice": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              }
+            },
+            "event_date_kind": {
+              "decision": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 0.75,
+                "abstention_rate": 0.25,
+                "documents_compared": 8,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.75,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 6,
+                "category_date_company_joint_agreement": 0.75
+              },
+              "none": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              },
+              "recall_initiation": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 0.5,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.5
+              },
+              "results_posting": {
+                "documents": 1,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 1,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "trial_completion": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 2,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "trial_start_actual": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 2,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    "ovn-test-prompt-v1": {
+      "run_dir": "D:\\DEPPSKK\\ml-work\\overnight\\runs\\eval\\ovn-test-prompt-v1",
+      "prompt": "extract-v1",
+      "arms": {
+        "hf-qwen3-4b-instruct": {
+          "documents": 20,
+          "ledger": {
+            "harness_level": "MEASURED",
+            "precision_recall_f1": "NOT_EVALUABLE",
+            "precision_recall_f1_reason": "gold events are SOURCE_DERIVED_SILVER labels copied from the same records the documents were rendered from; they are not human annotations, so precision, recall and F1 are not defined as research metrics here",
+            "agreement": "EXPLORATORY"
+          },
+          "parse_status": {
+            "invalid_json": 4,
+            "ok": 16
+          },
+          "json_valid_rate": 0.8,
+          "schema_accepted_rate": 0.7,
+          "verbatim_quote_located_rate": 0.8,
+          "extracted_events": 13,
+          "abstained_documents": 7,
+          "abstention_rate": 0.35,
+          "documents_with_silver_gold": 17,
+          "wrong_abstention_rate": 0.2353,
+          "negative_control_documents": 3,
+          "false_assertion_rate": 0.0,
+          "error_taxonomy": {
+            "DATE_ORDER_VIOLATION": 4,
+            "DOMAIN_UNKNOWN": 1,
+            "DATE_NOT_IN_EVIDENCE": 1
+          },
+          "latency_s": {
+            "median": 25.535,
+            "mean": 24.144,
+            "max": 32.973
+          },
+          "peak_vram_mb": 3438.2,
+          "tokens_per_s_median": 10.08,
+          "agreement": {
+            "documents_compared": 17,
+            "category_agreement": 0.7647,
+            "event_date_agreement": 0.7647,
+            "company_agreement": 0.7647,
+            "product_exact_agreement": 0.6923,
+            "product_comparisons": 13,
+            "category_date_company_joint_agreement": 0.7647,
+            "misses": [
+              {
+                "case_id": "ovn-ctgov-NCT05524064-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-95215-b62d01d9",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P160037-S027-e7f2135a",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K252344-d49c362c",
+                "reason": "no extracted event"
+              }
+            ]
+          },
+          "strata": {
+            "text_origin": {
+              "structural_rendering": {
+                "documents": 12,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 0.9167,
+                "abstention_rate": 0.25,
+                "documents_compared": 9,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.7778,
+                "product_comparisons": 9,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "synthetic_narrative": {
+                "documents": 8,
+                "json_valid_rate": 0.5,
+                "schema_accepted_rate": 0.375,
+                "abstention_rate": 0.5,
+                "documents_compared": 8,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.5,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.5
+              }
+            },
+            "source_type": {
+              "clinical_trial_record": {
+                "documents": 5,
+                "json_valid_rate": 0.8,
+                "schema_accepted_rate": 0.6,
+                "abstention_rate": 0.2,
+                "documents_compared": 5,
+                "category_agreement": 0.8,
+                "event_date_agreement": 0.8,
+                "company_agreement": 0.8,
+                "product_exact_agreement": 0.75,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.8
+              },
+              "fda_510k": {
+                "documents": 4,
+                "json_valid_rate": 0.75,
+                "schema_accepted_rate": 0.5,
+                "abstention_rate": 0.25,
+                "documents_compared": 4,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.75,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 3,
+                "category_date_company_joint_agreement": 0.75
+              },
+              "fda_pma": {
+                "documents": 4,
+                "json_valid_rate": 0.75,
+                "schema_accepted_rate": 0.75,
+                "abstention_rate": 0.25,
+                "documents_compared": 4,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.75,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 3,
+                "category_date_company_joint_agreement": 0.75
+              },
+              "fda_recall": {
+                "documents": 4,
+                "json_valid_rate": 0.75,
+                "schema_accepted_rate": 0.75,
+                "abstention_rate": 0.25,
+                "documents_compared": 4,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.75,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 3,
+                "category_date_company_joint_agreement": 0.75
+              },
+              "regulatory_notice": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              }
+            },
+            "event_date_kind": {
+              "decision": {
+                "documents": 8,
+                "json_valid_rate": 0.75,
+                "schema_accepted_rate": 0.625,
+                "abstention_rate": 0.25,
+                "documents_compared": 8,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.75,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 6,
+                "category_date_company_joint_agreement": 0.75
+              },
+              "none": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              },
+              "recall_initiation": {
+                "documents": 4,
+                "json_valid_rate": 0.75,
+                "schema_accepted_rate": 0.75,
+                "abstention_rate": 0.25,
+                "documents_compared": 4,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.75,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 3,
+                "category_date_company_joint_agreement": 0.75
+              },
+              "results_posting": {
+                "documents": 1,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 1,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 1,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "trial_completion": {
+                "documents": 2,
+                "json_valid_rate": 0.5,
+                "schema_accepted_rate": 0.5,
+                "abstention_rate": 0.5,
+                "documents_compared": 2,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 1,
+                "category_date_company_joint_agreement": 0.5
+              },
+              "trial_start_actual": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 0.5,
+                "abstention_rate": 0.0,
+                "documents_compared": 2,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 1.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 1.0
+              }
+            }
+          }
+        },
+        "rules-baseline": {
+          "documents": 20,
+          "ledger": {
+            "harness_level": "MEASURED",
+            "precision_recall_f1": "NOT_EVALUABLE",
+            "precision_recall_f1_reason": "gold events are SOURCE_DERIVED_SILVER labels copied from the same records the documents were rendered from; they are not human annotations, so precision, recall and F1 are not defined as research metrics here",
+            "agreement": "EXPLORATORY"
+          },
+          "parse_status": {
+            "ok": 20
+          },
+          "json_valid_rate": 1.0,
+          "schema_accepted_rate": 1.0,
+          "verbatim_quote_located_rate": 1.0,
+          "extracted_events": 8,
+          "abstained_documents": 12,
+          "abstention_rate": 0.6,
+          "documents_with_silver_gold": 17,
+          "wrong_abstention_rate": 0.5294,
+          "negative_control_documents": 3,
+          "false_assertion_rate": 0.0,
+          "error_taxonomy": {},
+          "latency_s": {
+            "median": 0.004,
+            "mean": 0.007,
+            "max": 0.055
+          },
+          "peak_vram_mb": null,
+          "tokens_per_s_median": null,
+          "agreement": {
+            "documents_compared": 17,
+            "category_agreement": 0.4706,
+            "event_date_agreement": 0.0,
+            "company_agreement": 0.4706,
+            "product_exact_agreement": 0.0,
+            "product_comparisons": 8,
+            "category_date_company_joint_agreement": 0.0,
+            "misses": [
+              {
+                "case_id": "ovn-ctgov-NCT03267264-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT03267264-results",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT03267264-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT05524064-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT05524064-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-49436-59e8d85a",
+                "reason": "field mismatch",
+                "category": [
+                  "safety_recall",
+                  "safety_recall"
+                ],
+                "event_date": [
+                  null,
+                  "2008-09-15"
+                ],
+                "company": [
+                  "bd",
+                  "bd"
+                ],
+                "product": [
+                  null,
+                  "BD Visitec High Viscosity Injector, 4mm Ref: 585173. The product is intended for Vitroretinal Surgery."
+                ]
+              },
+              {
+                "case_id": "ovn-recall-69258-8bddc341",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-69258-ad3df2f5",
+                "reason": "field mismatch",
+                "category": [
+                  "safety_recall",
+                  "safety_recall"
+                ],
+                "event_date": [
+                  null,
+                  "2014-09-02"
+                ],
+                "company": [
+                  "siemens_healthineers",
+                  "siemens_healthineers"
+                ],
+                "product": [
+                  null,
+                  "Siemens Luminos Agile Max system The Luminos Agile is intended to be used as a universal imaging system for radiographic and fluoroscopic st"
+                ]
+              },
+              {
+                "case_id": "ovn-recall-95215-b62d01d9",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P060005-S027-2c30c136",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_approval",
+                  "regulatory_approval"
+                ],
+                "event_date": [
+                  null,
+                  "2026-09-22"
+                ],
+                "company": [
+                  "siemens_healthineers",
+                  "siemens_healthineers"
+                ],
+                "product": [
+                  null,
+                  "IMMULITE Systems Free PSA"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P160037-S024-0c583f5a",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_approval",
+                  "regulatory_approval"
+                ],
+                "event_date": [
+                  null,
+                  "2026-04-02"
+                ],
+                "company": [
+                  "bd",
+                  "bd"
+                ],
+                "product": [
+                  null,
+                  "BD Onclarity HPV Assay"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P160037-S027-e7f2135a",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_approval",
+                  "regulatory_approval"
+                ],
+                "event_date": [
+                  null,
+                  "2026-08-19"
+                ],
+                "company": [
+                  "bd",
+                  "bd"
+                ],
+                "product": [
+                  null,
+                  "BD Onclarity HPV Assay Reagent Pack (SKU 444075) and BD COR HPV Extraction Trough (SKU 444074)"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P240021-S001-bcff9454",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_approval",
+                  "regulatory_approval"
+                ],
+                "event_date": [
+                  null,
+                  "2026-08-26"
+                ],
+                "company": [
+                  "siemens_healthineers",
+                  "siemens_healthineers"
+                ],
+                "product": [
+                  null,
+                  "Atellica IM Total PSA II (tPSAII)"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K252344-d49c362c",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_clearance",
+                  "regulatory_clearance"
+                ],
+                "event_date": [
+                  null,
+                  "2026-10-16"
+                ],
+                "company": [
+                  "bd",
+                  "bd"
+                ],
+                "product": [
+                  null,
+                  "BD Vacutainer® Serum Blood Collection Tubes; BD Vacutainer® Rapid Serum Tubes (RST)"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K252506-466f37aa",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K260331-7cc18103",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K263048-a5fdc2bb",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_clearance",
+                  "regulatory_clearance"
+                ],
+                "event_date": [
+                  null,
+                  "2026-09-29"
+                ],
+                "company": [
+                  "siemens_healthineers",
+                  "siemens_healthineers"
+                ],
+                "product": [
+                  null,
+                  "Syngo Carbon Space (VA4)"
+                ]
+              }
+            ]
+          },
+          "strata": {
+            "text_origin": {
+              "structural_rendering": {
+                "documents": 12,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.6667,
+                "documents_compared": 9,
+                "category_agreement": 0.4444,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.4444,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "synthetic_narrative": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 8,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.0
+              }
+            },
+            "source_type": {
+              "clinical_trial_record": {
+                "documents": 5,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 5,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "fda_510k": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "fda_pma": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 4,
+                "category_agreement": 1.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "fda_recall": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "regulatory_notice": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              }
+            },
+            "event_date_kind": {
+              "decision": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.25,
+                "documents_compared": 8,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 6,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "none": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              },
+              "recall_initiation": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "results_posting": {
+                "documents": 1,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 1,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "trial_completion": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 2,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "trial_start_actual": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 2,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              }
+            }
+          }
+        },
+        "rules-baseline-a1": {
+          "documents": 20,
+          "ledger": {
+            "harness_level": "MEASURED",
+            "precision_recall_f1": "NOT_EVALUABLE",
+            "precision_recall_f1_reason": "gold events are SOURCE_DERIVED_SILVER labels copied from the same records the documents were rendered from; they are not human annotations, so precision, recall and F1 are not defined as research metrics here",
+            "agreement": "EXPLORATORY"
+          },
+          "parse_status": {
+            "ok": 20
+          },
+          "json_valid_rate": 1.0,
+          "schema_accepted_rate": 0.8,
+          "verbatim_quote_located_rate": 0.8,
+          "extracted_events": 8,
+          "abstained_documents": 12,
+          "abstention_rate": 0.6,
+          "documents_with_silver_gold": 17,
+          "wrong_abstention_rate": 0.5294,
+          "negative_control_documents": 3,
+          "false_assertion_rate": 0.0,
+          "error_taxonomy": {
+            "QUOTE_NOT_VERBATIM": 4
+          },
+          "latency_s": {
+            "median": 0.005,
+            "mean": 0.005,
+            "max": 0.009
+          },
+          "peak_vram_mb": null,
+          "tokens_per_s_median": null,
+          "agreement": {
+            "documents_compared": 17,
+            "category_agreement": 0.4706,
+            "event_date_agreement": 0.4706,
+            "company_agreement": 0.4706,
+            "product_exact_agreement": 0.0,
+            "product_comparisons": 8,
+            "category_date_company_joint_agreement": 0.4706,
+            "misses": [
+              {
+                "case_id": "ovn-ctgov-NCT03267264-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT03267264-results",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT03267264-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT05524064-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT05524064-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-69258-8bddc341",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-95215-b62d01d9",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K252506-466f37aa",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K260331-7cc18103",
+                "reason": "no extracted event"
+              }
+            ]
+          },
+          "strata": {
+            "text_origin": {
+              "structural_rendering": {
+                "documents": 12,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 0.6667,
+                "abstention_rate": 0.6667,
+                "documents_compared": 9,
+                "category_agreement": 0.4444,
+                "event_date_agreement": 0.4444,
+                "company_agreement": 0.4444,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.4444
+              },
+              "synthetic_narrative": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 8,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.5
+              }
+            },
+            "source_type": {
+              "clinical_trial_record": {
+                "documents": 5,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 5,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "fda_510k": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.5
+              },
+              "fda_pma": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 0.5,
+                "abstention_rate": 0.0,
+                "documents_compared": 4,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "fda_recall": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 0.5,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.5
+              },
+              "regulatory_notice": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              }
+            },
+            "event_date_kind": {
+              "decision": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 0.75,
+                "abstention_rate": 0.25,
+                "documents_compared": 8,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.75,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 6,
+                "category_date_company_joint_agreement": 0.75
+              },
+              "none": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              },
+              "recall_initiation": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 0.5,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.5
+              },
+              "results_posting": {
+                "documents": 1,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 1,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "trial_completion": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 2,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "trial_start_actual": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 2,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    "ovn-test-rules-fixed": {
+      "run_dir": "D:\\DEPPSKK\\ml-work\\overnight\\runs\\eval\\ovn-test-rules-fixed",
+      "prompt": "extract-v2",
+      "arms": {
+        "rules-baseline": {
+          "documents": 20,
+          "ledger": {
+            "harness_level": "MEASURED",
+            "precision_recall_f1": "NOT_EVALUABLE",
+            "precision_recall_f1_reason": "gold events are SOURCE_DERIVED_SILVER labels copied from the same records the documents were rendered from; they are not human annotations, so precision, recall and F1 are not defined as research metrics here",
+            "agreement": "EXPLORATORY"
+          },
+          "parse_status": {
+            "ok": 20
+          },
+          "json_valid_rate": 1.0,
+          "schema_accepted_rate": 1.0,
+          "verbatim_quote_located_rate": 1.0,
+          "extracted_events": 8,
+          "abstained_documents": 12,
+          "abstention_rate": 0.6,
+          "documents_with_silver_gold": 17,
+          "wrong_abstention_rate": 0.5294,
+          "negative_control_documents": 3,
+          "false_assertion_rate": 0.0,
+          "error_taxonomy": {},
+          "latency_s": {
+            "median": 0.004,
+            "mean": 0.006,
+            "max": 0.046
+          },
+          "peak_vram_mb": null,
+          "tokens_per_s_median": null,
+          "agreement": {
+            "documents_compared": 17,
+            "category_agreement": 0.4706,
+            "event_date_agreement": 0.0,
+            "company_agreement": 0.4706,
+            "product_exact_agreement": 0.0,
+            "product_comparisons": 8,
+            "category_date_company_joint_agreement": 0.0,
+            "misses": [
+              {
+                "case_id": "ovn-ctgov-NCT03267264-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT03267264-results",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT03267264-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT05524064-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT05524064-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-49436-59e8d85a",
+                "reason": "field mismatch",
+                "category": [
+                  "safety_recall",
+                  "safety_recall"
+                ],
+                "event_date": [
+                  null,
+                  "2008-09-15"
+                ],
+                "company": [
+                  "bd",
+                  "bd"
+                ],
+                "product": [
+                  null,
+                  "BD Visitec High Viscosity Injector, 4mm Ref: 585173. The product is intended for Vitroretinal Surgery."
+                ]
+              },
+              {
+                "case_id": "ovn-recall-69258-8bddc341",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-69258-ad3df2f5",
+                "reason": "field mismatch",
+                "category": [
+                  "safety_recall",
+                  "safety_recall"
+                ],
+                "event_date": [
+                  null,
+                  "2014-09-02"
+                ],
+                "company": [
+                  "siemens_healthineers",
+                  "siemens_healthineers"
+                ],
+                "product": [
+                  null,
+                  "Siemens Luminos Agile Max system The Luminos Agile is intended to be used as a universal imaging system for radiographic and fluoroscopic st"
+                ]
+              },
+              {
+                "case_id": "ovn-recall-95215-b62d01d9",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P060005-S027-2c30c136",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_approval",
+                  "regulatory_approval"
+                ],
+                "event_date": [
+                  null,
+                  "2026-09-22"
+                ],
+                "company": [
+                  "siemens_healthineers",
+                  "siemens_healthineers"
+                ],
+                "product": [
+                  null,
+                  "IMMULITE Systems Free PSA"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P160037-S024-0c583f5a",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_approval",
+                  "regulatory_approval"
+                ],
+                "event_date": [
+                  null,
+                  "2026-04-02"
+                ],
+                "company": [
+                  "bd",
+                  "bd"
+                ],
+                "product": [
+                  null,
+                  "BD Onclarity HPV Assay"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P160037-S027-e7f2135a",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_approval",
+                  "regulatory_approval"
+                ],
+                "event_date": [
+                  null,
+                  "2026-08-19"
+                ],
+                "company": [
+                  "bd",
+                  "bd"
+                ],
+                "product": [
+                  null,
+                  "BD Onclarity HPV Assay Reagent Pack (SKU 444075) and BD COR HPV Extraction Trough (SKU 444074)"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryapproval-P240021-S001-bcff9454",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_approval",
+                  "regulatory_approval"
+                ],
+                "event_date": [
+                  null,
+                  "2026-08-26"
+                ],
+                "company": [
+                  "siemens_healthineers",
+                  "siemens_healthineers"
+                ],
+                "product": [
+                  null,
+                  "Atellica IM Total PSA II (tPSAII)"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K252344-d49c362c",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_clearance",
+                  "regulatory_clearance"
+                ],
+                "event_date": [
+                  null,
+                  "2026-10-16"
+                ],
+                "company": [
+                  "bd",
+                  "bd"
+                ],
+                "product": [
+                  null,
+                  "BD Vacutainer® Serum Blood Collection Tubes; BD Vacutainer® Rapid Serum Tubes (RST)"
+                ]
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K252506-466f37aa",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K260331-7cc18103",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K263048-a5fdc2bb",
+                "reason": "field mismatch",
+                "category": [
+                  "regulatory_clearance",
+                  "regulatory_clearance"
+                ],
+                "event_date": [
+                  null,
+                  "2026-09-29"
+                ],
+                "company": [
+                  "siemens_healthineers",
+                  "siemens_healthineers"
+                ],
+                "product": [
+                  null,
+                  "Syngo Carbon Space (VA4)"
+                ]
+              }
+            ]
+          },
+          "strata": {
+            "text_origin": {
+              "structural_rendering": {
+                "documents": 12,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.6667,
+                "documents_compared": 9,
+                "category_agreement": 0.4444,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.4444,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "synthetic_narrative": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 8,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.0
+              }
+            },
+            "source_type": {
+              "clinical_trial_record": {
+                "documents": 5,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 5,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "fda_510k": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "fda_pma": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 4,
+                "category_agreement": 1.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "fda_recall": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "regulatory_notice": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              }
+            },
+            "event_date_kind": {
+              "decision": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.25,
+                "documents_compared": 8,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 6,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "none": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              },
+              "recall_initiation": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "results_posting": {
+                "documents": 1,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 1,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "trial_completion": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 2,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "trial_start_actual": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 2,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              }
+            }
+          }
+        },
+        "rules-baseline-a1": {
+          "documents": 20,
+          "ledger": {
+            "harness_level": "MEASURED",
+            "precision_recall_f1": "NOT_EVALUABLE",
+            "precision_recall_f1_reason": "gold events are SOURCE_DERIVED_SILVER labels copied from the same records the documents were rendered from; they are not human annotations, so precision, recall and F1 are not defined as research metrics here",
+            "agreement": "EXPLORATORY"
+          },
+          "parse_status": {
+            "ok": 20
+          },
+          "json_valid_rate": 1.0,
+          "schema_accepted_rate": 1.0,
+          "verbatim_quote_located_rate": 1.0,
+          "extracted_events": 8,
+          "abstained_documents": 12,
+          "abstention_rate": 0.6,
+          "documents_with_silver_gold": 17,
+          "wrong_abstention_rate": 0.5294,
+          "negative_control_documents": 3,
+          "false_assertion_rate": 0.0,
+          "error_taxonomy": {},
+          "latency_s": {
+            "median": 0.005,
+            "mean": 0.005,
+            "max": 0.009
+          },
+          "peak_vram_mb": null,
+          "tokens_per_s_median": null,
+          "agreement": {
+            "documents_compared": 17,
+            "category_agreement": 0.4706,
+            "event_date_agreement": 0.4706,
+            "company_agreement": 0.4706,
+            "product_exact_agreement": 0.0,
+            "product_comparisons": 8,
+            "category_date_company_joint_agreement": 0.4706,
+            "misses": [
+              {
+                "case_id": "ovn-ctgov-NCT03267264-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT03267264-results",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT03267264-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT05524064-completion",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-ctgov-NCT05524064-start",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-69258-8bddc341",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-recall-95215-b62d01d9",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K252506-466f37aa",
+                "reason": "no extracted event"
+              },
+              {
+                "case_id": "ovn-regulatoryclearance-K260331-7cc18103",
+                "reason": "no extracted event"
+              }
+            ]
+          },
+          "strata": {
+            "text_origin": {
+              "structural_rendering": {
+                "documents": 12,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.6667,
+                "documents_compared": 9,
+                "category_agreement": 0.4444,
+                "event_date_agreement": 0.4444,
+                "company_agreement": 0.4444,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.4444
+              },
+              "synthetic_narrative": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 8,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 0.5
+              }
+            },
+            "source_type": {
+              "clinical_trial_record": {
+                "documents": 5,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 5,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "fda_510k": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.5
+              },
+              "fda_pma": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.0,
+                "documents_compared": 4,
+                "category_agreement": 1.0,
+                "event_date_agreement": 1.0,
+                "company_agreement": 1.0,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 4,
+                "category_date_company_joint_agreement": 1.0
+              },
+              "fda_recall": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.5
+              },
+              "regulatory_notice": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              }
+            },
+            "event_date_kind": {
+              "decision": {
+                "documents": 8,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.25,
+                "documents_compared": 8,
+                "category_agreement": 0.75,
+                "event_date_agreement": 0.75,
+                "company_agreement": 0.75,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 6,
+                "category_date_company_joint_agreement": 0.75
+              },
+              "none": {
+                "documents": 3,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 0,
+                "category_agreement": null,
+                "event_date_agreement": null,
+                "company_agreement": null,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": null
+              },
+              "recall_initiation": {
+                "documents": 4,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 0.5,
+                "documents_compared": 4,
+                "category_agreement": 0.5,
+                "event_date_agreement": 0.5,
+                "company_agreement": 0.5,
+                "product_exact_agreement": 0.0,
+                "product_comparisons": 2,
+                "category_date_company_joint_agreement": 0.5
+              },
+              "results_posting": {
+                "documents": 1,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 1,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "trial_completion": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 2,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              },
+              "trial_start_actual": {
+                "documents": 2,
+                "json_valid_rate": 1.0,
+                "schema_accepted_rate": 1.0,
+                "abstention_rate": 1.0,
+                "documents_compared": 2,
+                "category_agreement": 0.0,
+                "event_date_agreement": 0.0,
+                "company_agreement": 0.0,
+                "product_exact_agreement": null,
+                "product_comparisons": 0,
+                "category_date_company_joint_agreement": 0.0
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
