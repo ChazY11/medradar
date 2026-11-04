@@ -1,4 +1,4 @@
-# Phase 2 — the first real local-model extraction run (Qwen3-4B on an RTX 5080 Laptop)
+﻿# Phase 2 — the first real local-model extraction run (Qwen3-4B on an RTX 5080 Laptop)
 
 **Research question this phase serves**
 
@@ -287,7 +287,7 @@ Run in two processes (the first single-process version was killed at 15.8 GB of 
 | Optimisation | AdamW lr 2e-4, batch 1, grad-accum 2, clip 1.0, gradient checkpointing |
 | Steps | 6 (3 in process 1, 3 in process 2) |
 | Loss | 1.967, 1.897, 2.849 → **1.246, 0.867, 0.546** |
-| Step time | 1.82–3.41 s (median ≈ 2.7 s), 2,048 tokens/step |
+| Step time | 1.82–3.41 s (median ≈ 2.7 s), 1,124–1,531 tokens per step |
 | Peak VRAM — train phase | **6,425 MiB** |
 | Peak VRAM — resume phase | **7,036 MiB** |
 | Peak VRAM — inference from reloaded adapter | 6,248 MiB |
