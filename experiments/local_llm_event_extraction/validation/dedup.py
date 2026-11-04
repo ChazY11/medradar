@@ -77,8 +77,23 @@ def _normalised_date(value: Any) -> str:
     return value.strip()
 
 
+def _normalised_product(event_payload: Mapping[str, Any]) -> str:
+    """Casefolded, whitespace-collapsed product string (may be empty)."""
+    product = event_payload.get("product_or_technology")
+    if not isinstance(product, str):
+        return ""
+    return " ".join(product.split()).casefold()
+
+
 def dedup_key(event_payload: Mapping[str, Any]) -> str:
-    """``canonical_id|event_category|normalised_event_date`` for one event."""
+    """``canonical_id|category|normalised_date|normalised_product``.
+
+    v2 fix: the product is part of the key.  In v1 two genuinely different
+    products cleared by the same company on the same day collapsed into one
+    ``DUPLICATE_EVENT`` and the second was quarantined -- a same-day
+    different-product false duplicate.  Two *assertions of the same product* on
+    the same day still collapse, which is what the duplicate rule is for.
+    """
     company = event_payload.get("company")
     canonical_id = ""
     if isinstance(company, Mapping) and isinstance(company.get("canonical_id"), str):
@@ -86,7 +101,8 @@ def dedup_key(event_payload: Mapping[str, Any]) -> str:
     category = event_payload.get("event_category")
     category = category.strip() if isinstance(category, str) else ""
     date = _normalised_date(event_payload.get("event_date"))
-    return f"{canonical_id}|{category}|{date}"
+    product = _normalised_product(event_payload)
+    return f"{canonical_id}|{category}|{date}|{product}"
 
 
 def _key_is_complete(event_payload: Mapping[str, Any]) -> bool:

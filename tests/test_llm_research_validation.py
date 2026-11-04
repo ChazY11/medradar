@@ -543,7 +543,9 @@ def test_second_identical_event_is_a_duplicate() -> None:
     assert first.verdict is Verdict.ACCEPTED
     assert second.verdict is Verdict.QUARANTINED
     assert "DUPLICATE_EVENT" in second.reason_codes
-    assert second.dedup_key is not None and second.dedup_key.count("|") == 2
+    # schema v2: the product is part of the key, so the key has four segments.
+    assert second.dedup_key is not None and second.dedup_key.count("|") == 3
+    assert second.dedup_key.split("|")[3] == "minimed 780g"
     assert validation.verdict is Verdict.QUARANTINED
 
 

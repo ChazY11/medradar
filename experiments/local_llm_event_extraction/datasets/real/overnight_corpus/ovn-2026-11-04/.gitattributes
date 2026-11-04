@@ -1,0 +1,7 @@
+# The frozen corpus is byte-exact research data, not source code.
+#
+# Every document record and the manifest are linked to experiment artifacts by
+# SHA-256 (content_sha256, raw_sha256, and the run's dataset/source hashes).  Git's
+# end-of-line normalisation would rewrite those bytes on checkout and silently break
+# every recorded hash, so normalisation is disabled for everything under this tree.
+* -text

@@ -1,6 +1,6 @@
 {
   "$comment": "Generated from experiments/local_llm_event_extraction/schema.py -- do not edit by hand. A drift check in the offline test suite compares this document to the generator.",
-  "schema_version": "medradar.event_extraction.v1",
+  "schema_version": "medradar.event_extraction.v2",
   "event": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "medradar/event_extraction/v1/event",
@@ -118,6 +118,19 @@
           "null"
         ],
         "pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+      },
+      "event_date_kind": {
+        "enum": [
+          "decision",
+          "submission",
+          "trial_start_actual",
+          "trial_start_planned",
+          "trial_completion",
+          "results_posting",
+          "recall_initiation",
+          "publication",
+          "unspecified"
+        ]
       },
       "published_at": {
         "type": [
@@ -294,11 +307,12 @@
           "ok",
           "invalid_json",
           "refused",
-          "empty"
+          "empty",
+          "truncated"
         ]
       },
       "schema_version": {
-        "const": "medradar.event_extraction.v1"
+        "const": "medradar.event_extraction.v2"
       },
       "extractor": {
         "type": "object",
