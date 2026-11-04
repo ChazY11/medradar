@@ -37,6 +37,9 @@ source field            role                why
 (``jobReqId``)          (not identity)      postings: multi-city, re-advertisement
 ``content_hash``        **VERSION SIGNATURE** title+location+description; changes mean
                                             REVISION on the same identity
+``hash_rule_version``   version-signature   the ``records.content_hash`` rule the artifact
+                        provenance          was hashed under; a stored-hash comparison
+                                            across a rule change is refused (HASH_RULE_REBASELINED)
 title+description       duplicate key       same role advertised again under a new id
 ``job_location``        version component   parts of one posting's version signature and
                         + city discriminator the multi-city discriminator
@@ -85,7 +88,10 @@ from . import records as rec
 
 SCHEMA_VERSION = "recruitment-identity-v1"
 #: Version of the identity/versioning logic. Bump when a *rule* changes.
-RULES_VERSION = "recruitment_identity_rules_2026-11-04"
+#: v2 (2026-11-04): hash-rule version carried through the version signature and
+#: cross-rule comparisons are explicitly refused for stored hashes; duplicate
+#: clusters carry same_requisition/ambiguity evidence.
+RULES_VERSION = "recruitment_identity_rules_2026-11-04b"
 
 #: The one field that constitutes identity. Everything else is a duplicate key.
 IDENTITY_FIELD = "posting_id"
@@ -251,6 +257,15 @@ IDENTITY_RULE_TABLE = (
         "source": "records.content_hash(title, location, description)",
         "why": "a whitespace-only re-render is not a revision while a changed requirement sentence is; "
                "the version signature decides REVISION vs UNCHANGED on a stable identity",
+        "is_identity": False,
+    },
+    {
+        "field": "hash_rule_version",
+        "role": "VERSION_SIGNATURE_PROVENANCE",
+        "source": "records.HASH_RULE_VERSION recorded on the observation",
+        "why": "a stored content_sha256 is only comparable to another stored hash if both were produced "
+               "under the same records.content_hash rule; a rule change must be a recorded re-baseline, "
+               "never 994 simultaneous description revisions",
         "is_identity": False,
     },
     {

@@ -353,6 +353,23 @@ class TestTracks:
         # baseline is deliberately conservative, so it must not assign a track to
         # every posting.
         assert summary["track_assigned_rate"] < 1.0
+        # Every assignment is rule-strength labelled and its evidence strength is
+        # reported, so a reader can gate on WEAK rather than being forced to trust it.
+        assert sum(summary["track_rule_strength_counts"].values()) == summary["track_assigned_count"]
+        assert sum(summary["track_assignment_basis"].values()) == summary["track_assigned_count"]
+        for out in real_classifications():
+            if not out["track_id"]:
+                continue
+            candidate = out["track_evidence"]["candidate"]
+            assert candidate is not None
+            strength = out["confidence_basis"]["track"]["rule_strength"]
+            if candidate["title_specific_keywords"]:
+                # a title keyword is the strong basis; it is never labelled WEAK
+                assert strength in {taxonomy.STRENGTH_MODERATE, taxonomy.STRENGTH_STRONG}
+            else:
+                # description-only assignments are allowed but must be visible as
+                # weaker evidence, not presented as a confident classification
+                assert strength in {taxonomy.STRENGTH_WEAK, taxonomy.STRENGTH_MODERATE}
 
 
 # --------------------------------------------------------- confidence and versions

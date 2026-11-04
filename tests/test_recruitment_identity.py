@@ -36,8 +36,12 @@ def make_obs(
     platform: str = rec.PLATFORM_WORKDAY,
     additional_locations: list[str] | None = None,
     content_sha256: str | None = None,
+    hash_rule_version: str | None = None,
 ) -> rec.JobObservation:
     """A valid ``JobObservation`` built through the real contract (not a loose dict)."""
+    extra: dict = {}
+    if hash_rule_version is not None:
+        extra["hash_rule_version"] = hash_rule_version
     obs = rec.JobObservation(
         company_key="medtronic",
         posting_id=posting_id,
@@ -58,6 +62,7 @@ def make_obs(
             "opaque_posting_id": posting_id,
             "posting_id_kind": "id",
         },
+        **extra,
     )
     return obs.finalise(fetched_at=first_seen_at, first_seen_at=first_seen_at)
 
@@ -436,6 +441,49 @@ class TestContentHashIntegrity:
         assert result["content_hash_integrity"]["disagree"] >= 1
         assert result["content_hash_integrity"]["uniform"] is False
 
+    def test_hash_rule_version_is_carried_through_the_version_signature(self):
+        obs = make_obs("p1", hash_rule_version=rec.HASH_RULE_VERSION)
+        evidence = identity.version_evidence(obs)
+        assert evidence["hash_rule_version"] == rec.HASH_RULE_VERSION
+        assert evidence["hash_rule_matches_current"] is True
+        assert evidence["hash_rule_inferred"] == "current"
+        assert identity.version_signature_rule()["hash_rule_version"] == rec.HASH_RULE_VERSION
+        # An artifact produced before the field existed reports it as unstated, and the
+        # effective rule is reconstructed from the stored hash rather than assumed.
+        row = {**obs.to_dict(), "hash_rule_version": None}
+        unstated = identity.version_evidence(row)
+        assert unstated["hash_rule_version"] is None
+        assert unstated["hash_rule_matches_current"] is None
+        assert unstated["hash_rule_inferred"] == "current"
+
+    def test_stored_hashes_are_not_compared_across_a_hash_rule_change(self):
+        legacy_rule = "content_sha256_normalise_text_v1"
+        # Paragraph breaks make the superseded normalise_text rule and the current
+        # canonical_ws rule produce different hashes for identical text.
+        description = "Design and development\n\nof surgical instruments."
+        before = make_obs("p1", description=description, hash_rule_version=legacy_rule)
+        # Simulate the legacy artifact: its stored hash was produced under the old rule.
+        before.content_sha256 = legacy_content_hash(
+            title=before.job_title, location=before.job_location, description=before.job_description
+        )
+        after = make_obs("p1", description=description, first_seen_at="2026-02-01T00:00:00+00:00",
+                         hash_rule_version=rec.HASH_RULE_VERSION)
+        assert before.content_sha256 != rec.content_hash(
+            title=after.job_title, location=after.job_location, description=after.job_description
+        )
+        result = identity.diff_snapshots([before], [after], observed_at="2026-02-01T00:00:00+00:00")
+
+        # Content is comparable because signatures are recomputed from the fields ...
+        assert states(result) == [identity.STATE_UNCHANGED]
+        assert result["hash_rule"]["recomputed_signatures_comparable"] is True
+        # ... but the stored hashes are explicitly refused as a comparison basis.
+        assert result["hash_rule"]["stored_hash_comparable"] is False
+        assert "superseded rule" in result["hash_rule"]["reason"]
+        assert result["content_hash_integrity"]["inferred_rule"] == "mixed"
+        event = result["events"][0]
+        assert event["hash_rule_version"] == rec.HASH_RULE_VERSION
+        assert event["current_hash_rule_version"] == rec.HASH_RULE_VERSION
+
 
 # ------------------------------------------------------------------ real sample
 class TestRealSample:
@@ -524,6 +572,16 @@ class TestRealSample:
         assert report["missing"] == 0
         assert report["uniform"] is True
         assert report["agreement_rate"] in (0.0, 1.0)
+        # The recorded hash-rule version must be uniform and, when present, current.
+        recorded = report["recorded_hash_rule_versions"]
+        if recorded != ["unstated"]:
+            assert recorded == [identity.current_hash_rule_version()]
+        if all(current_flags):
+            assert report["inferred_rule"] == "current"
+            assert identity.hash_rule_comparability(rows, rows)["stored_hash_comparable"] is True
+        else:
+            assert report["inferred_rule"] == "superseded"
+            assert identity.hash_rule_comparability(rows, rows)["stored_hash_comparable"] is False
 
     def test_real_sample_dedup_is_deterministic_and_json_serialisable(self):
         rows = real_rows()

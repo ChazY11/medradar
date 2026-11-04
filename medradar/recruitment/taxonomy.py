@@ -84,7 +84,9 @@ from . import records as rec
 # --------------------------------------------------------------------- versions
 #: Version of the *matching logic*. Bump when the algorithm changes, not when a
 #: cue phrase changes (that changes the map fingerprint and ``map_version``).
-RULES_VERSION = "recruitment_taxonomy_rules_2026-11-04"
+#: v2 (2026-11-04): non-overlapping phrase scoring + earliest-phrase tie-break +
+#: description floor; v1 was a simpler summed-length keyword baseline.
+RULES_VERSION = "recruitment_taxonomy_rules_2026-11-04b"
 #: A-arm identity recorded in every output, for the A/B comparison.
 ARM = "rules_A"
 SCHEMA_VERSION = "recruitment-classification-v1"
@@ -818,6 +820,8 @@ def summarise_classifications(rows: Iterable[Mapping[str, Any]]) -> dict[str, An
     fn_counts = {cls: 0 for cls in FUNCTION_CLASSES}
     track_status_counts = {status: 0 for status in TRACK_STATUSES}
     track_counts: dict[str, int] = {}
+    track_rule_strength: dict[str, int] = {}
+    track_assignment_basis: dict[str, int] = {}
     by_basis: dict[str, int] = {}
     unclassified_reasons: dict[str, int] = {}
     for row in rows:
@@ -827,6 +831,11 @@ def summarise_classifications(rows: Iterable[Mapping[str, Any]]) -> dict[str, An
         by_basis[basis] = by_basis.get(basis, 0) + 1
         if row["track_id"]:
             track_counts[row["track_id"]] = track_counts.get(row["track_id"], 0) + 1
+            strength = row["confidence_basis"]["track"]["rule_strength"]
+            track_rule_strength[strength] = track_rule_strength.get(strength, 0) + 1
+            candidate = row["track_evidence"].get("candidate") or {}
+            assignment = "title_keyword" if candidate.get("title_specific_keywords") else "description_only"
+            track_assignment_basis[assignment] = track_assignment_basis.get(assignment, 0) + 1
         if row["unclassified_reason"]:
             unclassified_reasons[row["unclassified_reason"]] = unclassified_reasons.get(row["unclassified_reason"], 0) + 1
 
@@ -845,6 +854,11 @@ def summarise_classifications(rows: Iterable[Mapping[str, Any]]) -> dict[str, An
         "track_assigned_count": sum(track_counts.values()),
         "track_assigned_rate": rate(sum(track_counts.values())),
         "track_counts": dict(sorted(track_counts.items())),
+        # A track assignment is rule strength-labelled, not a probability; a WEAK
+        # description-only assignment is exactly the kind of ambient evidence the
+        # report must expose rather than hide.
+        "track_rule_strength_counts": dict(sorted(track_rule_strength.items())),
+        "track_assignment_basis": dict(sorted(track_assignment_basis.items())),
         "versions": {
             "arm": ARM,
             "rules_version": RULES_VERSION,
