@@ -32,9 +32,20 @@ Dates in free text
 ------------------
 :func:`dates_in_text` recognises unambiguous date tokens: ISO ``YYYY-MM-DD`` /
 ``YYYY-MM`` / ``YYYY``, English month-name forms (``May 12, 2023``,
-``12 March 2024``, ``May 2023``).  Numeric slash formats (``05/12/2023``) are
-deliberately **not** recognised: day-first and month-first are indistinguishable
-without a locale, and guessing would make the date metric depend on the guess.
+``12 March 2024``, ``May 2023``).
+
+Numeric formats (``05/12/2023``, ``05.12.2023``) are parsed **only** when the
+document's own source metadata declares a locale (``metadata["date_locale"]`` of
+``"us"`` or ``"uk"``).  Without that declaration they are still not recognised:
+day-first and month-first are indistinguishable from the string alone, and
+guessing would make the date metric depend on the guess rather than on the
+source.  When the locale *is* declared the parse is unambiguous -- a US Federal
+register never writes day-first -- so the conversion is deterministic and
+auditable, which is what the Phase 2 defect report asked for.
+
+The declared locale is a property of the *source*, recorded during collection,
+not a property of a sentence.  A document that mixes locales is out of scope and
+its numeric dates stay unparsed rather than being half-guessed.
 """
 
 from __future__ import annotations
@@ -45,13 +56,15 @@ from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
 from ..contracts import Severity, ValidationConfig, ValidationIssue
-from ..schema import TIMESTAMP_FIELDS, TIMESTAMP_QUALITIES
+from ..schema import PUBLICATION_FREE_KINDS, TIMESTAMP_FIELDS, TIMESTAMP_QUALITIES
 
 __all__ = [
     "ParsedDate",
     "DateToken",
+    "DATE_LOCALES",
     "PRECISION_ORDER",
     "parse_date_value",
+    "resolve_date_locale",
     "dates_in_text",
     "date_supports",
     "supporting_tokens",
@@ -113,6 +126,59 @@ _MONTH_YEAR = re.compile(
     rf"(?<!\w)({_MONTH_ALTERNATION})\.?,?\s+(\d{{4}})(?!\d)",
     re.IGNORECASE,
 )
+
+#: Locales that make a numeric month/day order unambiguous.  ``iso`` is the
+#: declared value for sources that only ever use ISO dates; it deliberately does
+#: not enable numeric parsing.
+DATE_LOCALES: tuple[str, ...] = ("iso", "us", "uk")
+
+_NUMERIC_SLASH = re.compile(r"(?<![\d/])(\d{1,2})/(\d{1,2})/(\d{4})(?![\d/])")
+_NUMERIC_DOT = re.compile(r"(?<![\d.])(\d{1,2})\.(\d{1,2})\.(\d{4})(?![\d.])")
+
+
+def resolve_date_locale(document: Any) -> str | None:
+    """The source's declared numeric-date locale, or ``None`` when undeclared.
+
+    Read from ``document.metadata["date_locale"]``.  An unknown value is an
+    error rather than a silent fallback: a typo in the corpus metadata would
+    otherwise disable numeric parsing for that source with nobody noticing.
+    """
+    metadata = getattr(document, "metadata", None) or {}
+    if not isinstance(metadata, Mapping):
+        return None
+    raw = metadata.get("date_locale")
+    if raw is None or raw == "":
+        return None
+    locale = str(raw).strip().lower()
+    if locale not in DATE_LOCALES:
+        raise ValueError(
+            f"unknown date_locale {raw!r}; declared locales are {list(DATE_LOCALES)}"
+        )
+    return locale
+
+
+def _numeric_tokens(text: str, locale: str) -> list[DateToken]:
+    """Numeric date tokens under a *declared* locale (never guessed)."""
+    tokens: list[DateToken] = []
+    for pattern in (_NUMERIC_SLASH, _NUMERIC_DOT):
+        for match in pattern.finditer(text):
+            first, second, year = (int(part) for part in match.groups())
+            if locale == "us":
+                month, day = first, second
+            elif locale == "uk":
+                day, month = first, second
+            else:  # pragma: no cover - guarded by resolve_date_locale
+                continue
+            if _is_valid_date(year, month, day):
+                tokens.append(
+                    DateToken(
+                        text=text[match.start():match.end()],
+                        start=match.start(),
+                        end=match.end(),
+                        date=ParsedDate(year, month, day, "day"),
+                    )
+                )
+    return tokens
 
 
 # ------------------------------------------------------------------ date values
@@ -245,8 +311,10 @@ class DateToken:
         }
 
 
-def _candidate_tokens(text: str) -> list[DateToken]:
+def _candidate_tokens(text: str, locale: str | None = None) -> list[DateToken]:
     candidates: list[DateToken] = []
+    if locale in ("us", "uk"):
+        candidates.extend(_numeric_tokens(text, locale))
 
     def add(start: int, end: int, parsed: ParsedDate | None) -> None:
         if parsed is not None:
@@ -283,15 +351,17 @@ def _candidate_tokens(text: str) -> list[DateToken]:
     return candidates
 
 
-def dates_in_text(text: str) -> tuple[DateToken, ...]:
+def dates_in_text(text: str, locale: str | None = None) -> tuple[DateToken, ...]:
     """Every recognisable date token in ``text``, in source order.
 
     Overlapping matches are resolved in favour of the longest token, so
     ``2023-05-12`` yields one day-precision token, not a day token plus its year.
+    ``locale`` enables the numeric formats of :data:`DATE_LOCALES`; pass ``None``
+    to keep the locale-free (ISO + month-name only) behaviour.
     """
     if not isinstance(text, str) or not text:
         return ()
-    candidates = _candidate_tokens(text)
+    candidates = _candidate_tokens(text, locale)
     # Longest first, then leftmost; drop anything overlapping an accepted token.
     ordered = sorted(candidates, key=lambda token: (token.start, -(token.end - token.start), token.end))
     accepted: list[DateToken] = []
@@ -318,11 +388,15 @@ def date_supports(known: ParsedDate, claimed: ParsedDate) -> bool:
     )
 
 
-def supporting_tokens(claimed: ParsedDate, texts: Sequence[str]) -> tuple[DateToken, ...]:
+def supporting_tokens(
+    claimed: ParsedDate,
+    texts: Sequence[str],
+    locale: str | None = None,
+) -> tuple[DateToken, ...]:
     """Every token across ``texts`` that supports the claimed date."""
     found: list[DateToken] = []
     for text in texts:
-        for token in dates_in_text(text):
+        for token in dates_in_text(text, locale):
             if date_supports(token.date, claimed):
                 found.append(token)
     return tuple(found)
@@ -451,11 +525,12 @@ def check_event_timestamps(
         for span in (event.get("evidence") or ())
         if isinstance(span, Mapping) and isinstance(span.get("quote"), str)
     )
+    locale = resolve_date_locale(document)
 
     # 2. an asserted event_date must be traceable to an evidence quote.
     event_date = parsed.get("event_date")
     if event_date is not None and config.require_date_supported_by_quote:
-        if not supporting_tokens(event_date, evidence_texts):
+        if not supporting_tokens(event_date, evidence_texts, locale):
             issues.append(
                 _issue(
                     "DATE_NOT_IN_EVIDENCE",
@@ -469,7 +544,7 @@ def check_event_timestamps(
     #    property of the document, not of the quote.
     published = parsed.get("published_at")
     if published is not None and config.require_date_supported_by_quote:
-        quoted = supporting_tokens(published, evidence_texts)
+        quoted = supporting_tokens(published, evidence_texts, locale)
         metadata_match = False
         document_published = getattr(document, "published_at", None)
         document_parsed = parse_date_value(document_published) if isinstance(document_published, str) else None
@@ -485,18 +560,45 @@ def check_event_timestamps(
                 )
             )
 
-    # 4. event_date <= published_at unless the extractor declares uncertainty or
-    #    the (extended) config explicitly allows an event after its publication.
-    if event_date is not None and published is not None:
+    # 4. event_date <= published_at unless the extractor declares *which date it
+    #    means* and that kind may legitimately follow the document, declares
+    #    uncertainty, or the (extended) config explicitly allows it.
+    #
+    #    v2 fix: the ordering rule is about the semantic class of the date, not
+    #    about documents.  A trial record published when the trial was registered
+    #    states a planned completion date years in the future; that is a true,
+    #    evidence-supported fact, and flagging it as a contradiction (the Phase 2
+    #    defect) made the validator reject honest clinical-trial output.
+    date_kind = event.get("event_date_kind") or "unspecified"
+    ordering_applies = date_kind not in PUBLICATION_FREE_KINDS
+    # The reference point is the *document's* publication date when the record
+    # supplies one: that is collection metadata about the source, not a model
+    # claim, so an extractor cannot escape the ordering rule by omitting its own
+    # ``published_at`` field.  The event's own value is used when the document
+    # has none.
+    reference_published = published
+    if reference_published is None:
+        document_published_raw = getattr(document, "published_at", None)
+        reference_published = (
+            parse_date_value(document_published_raw)
+            if isinstance(document_published_raw, str)
+            else None
+        )
+    if event_date is not None and reference_published is not None and ordering_applies:
         allow_after = bool(getattr(config, "allow_event_after_published", False))
         declared_uncertain = qualities.get("event_date") in ("approximate", "conflicting")
-        if not allow_after and not declared_uncertain and event_date.earliest() > published.latest():
+        if (
+            not allow_after
+            and not declared_uncertain
+            and event_date.earliest() > reference_published.latest()
+        ):
             fatal = bool(getattr(config, "date_order_violation_fatal", False))
             issues.append(
                 _issue(
                     "DATE_ORDER_VIOLATION",
                     "event_date",
-                    f"event_date {event_date.iso!r} is after published_at {published.iso!r}; "
+                    f"event_date {event_date.iso!r} is after published_at "
+                    f"{reference_published.iso!r}; "
                     "a document cannot publish an event before it happened",
                     severity=Severity.ERROR if fatal else Severity.WARNING,
                 )

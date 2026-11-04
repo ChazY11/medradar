@@ -51,8 +51,27 @@ from dataclasses import dataclass, field
 from datetime import date, timedelta
 from typing import Any, Mapping
 
-SCHEMA_VERSION = "medradar.event_extraction.v1"
-"""Bump only with a documented migration; benchmarks record it per run."""
+SCHEMA_VERSION = "medradar.event_extraction.v2"
+"""Bump only with a documented migration; benchmarks record it per run.
+
+v1 -> v2 migration (recorded here because it is a protocol amendment made before
+any v2 measurement was taken):
+
+``EventExtraction.event_date_kind`` is added.  In v1 the contract had one
+``event_date`` and one meaning ("when the real-world event happened"), so the
+validator could not tell a *decision date* (which cannot postdate the document
+that announces it) from a *planned trial start* or a *results-posting date*
+(which routinely do).  That forced the v1 validator either to flag a legitimate
+planned start as a time-ordering violation or to disable the ordering check for
+every event.  v2 keeps ``event_date`` and adds an explicit, closed
+``event_date_kind`` so the ordering rule can be applied per semantic class
+instead of per document.  Absent in a payload means ``"unspecified"``, and
+``"unspecified"`` keeps the v1 strict behaviour, so a model cannot escape the
+rule by omitting the field.
+
+``PARSE_STATUSES`` gains ``"truncated"``: a completion cut off at the token
+budget is a different failure from malformed JSON, and conflating them hid the
+512-token truncation defect in the Phase 2 report."""
 
 # --------------------------------------------------------------------- vocabulary
 EVENT_CATEGORIES: tuple[str, ...] = (
@@ -138,7 +157,48 @@ source states more than one incompatible date and the extractor refuses to pick.
 
 TIMESTAMP_FIELDS: tuple[str, ...] = ("event_date", "published_at", "first_seen_at")
 
-PARSE_STATUSES: tuple[str, ...] = ("ok", "invalid_json", "refused", "empty")
+EVENT_DATE_KINDS: tuple[str, ...] = (
+    "decision",
+    "submission",
+    "trial_start_actual",
+    "trial_start_planned",
+    "trial_completion",
+    "results_posting",
+    "recall_initiation",
+    "publication",
+    "unspecified",
+)
+"""What the ``event_date`` actually denotes.  Closed list, fixed before v2 ran.
+
+The distinction exists because the *evidence-time* question ("could an analyst
+have known this on date X?") depends on which date is being asserted, not only
+on its value.  A 510(k) decision date must precede the document that reports it;
+a trial's *planned* primary-completion date is routinely years after the record
+that states it, and treating that as a contradiction would delete true facts.
+
+``unspecified`` is the default and is validated exactly as strictly as v1: an
+extractor must *declare* a future-tolerant kind to be exempt from the ordering
+rule, so silence is never rewarded.
+"""
+
+#: Kinds whose asserted date must not postdate the publishing document.
+PUBLICATION_ORDERED_KINDS: tuple[str, ...] = (
+    "decision",
+    "submission",
+    "trial_start_actual",
+    "recall_initiation",
+    "publication",
+    "unspecified",
+)
+
+#: Kinds whose asserted date legitimately may postdate the publishing document.
+PUBLICATION_FREE_KINDS: tuple[str, ...] = (
+    "trial_start_planned",
+    "trial_completion",
+    "results_posting",
+)
+
+PARSE_STATUSES: tuple[str, ...] = ("ok", "invalid_json", "refused", "empty", "truncated")
 
 MAX_QUOTE_CHARS = 600
 MAX_RATIONALE_CHARS = 400
@@ -344,6 +404,7 @@ class EventExtraction:
     technology_domains: tuple[str, ...] = ()
     product_or_technology: str | None = None
     event_date: str | None = None
+    event_date_kind: str = "unspecified"
     published_at: str | None = None
     first_seen_at: str | None = None
     timestamp_quality: TimestampQuality = field(default_factory=TimestampQuality)
@@ -359,6 +420,8 @@ class EventExtraction:
             raise ContractError(f"unknown event_category {self.event_category!r}")
         if self.abstain_reason is not None and self.abstain_reason not in ABSTAIN_REASONS:
             raise ContractError(f"unknown abstain_reason {self.abstain_reason!r}")
+        if self.event_date_kind not in EVENT_DATE_KINDS:
+            raise ContractError(f"unknown event_date_kind {self.event_date_kind!r}")
         if self.rationale is not None and len(self.rationale) > MAX_RATIONALE_CHARS:
             raise ContractError(f"rationale exceeds {MAX_RATIONALE_CHARS} characters")
         if self.status == "extracted" and not self.evidence:
@@ -378,6 +441,7 @@ class EventExtraction:
             "technology_domains": list(self.technology_domains),
             "product_or_technology": self.product_or_technology,
             "event_date": self.event_date,
+            "event_date_kind": self.event_date_kind,
             "published_at": self.published_at,
             "first_seen_at": self.first_seen_at,
             "timestamp_quality": self.timestamp_quality.to_dict(),
@@ -423,6 +487,7 @@ _EVENT_KEYS = (
     "technology_domains",
     "product_or_technology",
     "event_date",
+    "event_date_kind",
     "published_at",
     "first_seen_at",
     "timestamp_quality",
@@ -509,6 +574,7 @@ def event_from_dict(payload: Any) -> EventExtraction:
                 data.get("product_or_technology"), "product_or_technology"
             ),
             event_date=_optional_str(data.get("event_date"), "event_date"),
+            event_date_kind=data.get("event_date_kind") or "unspecified",
             published_at=_optional_str(data.get("published_at"), "published_at"),
             first_seen_at=_optional_str(data.get("first_seen_at"), "first_seen_at"),
             timestamp_quality=quality,
@@ -580,6 +646,7 @@ EVENT_JSON_SCHEMA: dict[str, Any] = {
         "technology_domains": {"type": "array", "items": {"type": "string"}, "maxItems": 6},
         "product_or_technology": {"type": ["string", "null"]},
         "event_date": {"type": ["string", "null"], "pattern": _DATE_PATTERN},
+        "event_date_kind": {"enum": list(EVENT_DATE_KINDS)},
         "published_at": {"type": ["string", "null"], "pattern": _DATE_PATTERN},
         "first_seen_at": {"type": ["string", "null"], "pattern": _DATE_PATTERN},
         "timestamp_quality": {

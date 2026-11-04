@@ -1,24 +1,48 @@
-"""One versioned prompt, shared by arms B (untuned) and C (QLoRA-tuned).
+"""One versioned prompt family, shared by arms B (untuned) and C (QLoRA-tuned).
 
 Why one prompt
 --------------
 Arms B and C are meant to differ in one declared way: the checkpoint.  If they
 also used different prompts, a difference in score could be a difference in
 wording rather than a difference in the model, and the comparison would be
-uninterpretable.  So the prompt is built here, from the frozen schema
-vocabularies, and both model arms call :func:`build_prompt`.
+uninterpretable.  So the prompt is built here from the frozen schema
+vocabularies, and every model arm calls :func:`build_prompt` with the same
+``prompt_version`` and the same vocabulary arguments.
+
+Version history
+---------------
+``extract-v1``
+    The Phase 2 prompt.  It rendered the closed ``event_category`` list and the
+    closed ``abstain_reason`` list, but **not** the closed technology-domain
+    vocabulary, even though the validator rejects any domain outside the
+    configured taxonomy.  That is the Phase 2 defect recorded as A1: the model
+    was told ``technology_domains`` was free text and was then failed for
+    filling it in.  Measured consequence in ``phase2-2026-11-04``: 8
+    ``DOMAIN_UNKNOWN`` errors over the clinical-trial records.
+
+``extract-v2``
+    Adds (a) the closed technology-domain vocabulary **and** the
+    track -> domain mapping, both rendered from the taxonomy configuration
+    rather than retyped; (b) the closed ``event_date_kind`` vocabulary, so the
+    model can say *which* date it means and the validator can apply the temporal
+    ordering rule per semantic class (A3); (c) an explicit statement that numeric
+    dates may appear in a source-declared locale and must be normalised to ISO,
+    with no guessing (A2); (d) an explicit rule that output cut short by the
+    token budget is a failure, not a licence to invent the rest (A4).
 
 Why a sha256
 ------------
 Prompt text is an experimental input.  ``TEMPLATE_SHA256`` is recorded alongside
 every run so a reader can tell whether two runs that claim to be comparable
-really used the same wording.  Editing the template is a protocol amendment and
-changes the hash -- which is exactly the point.
+really used the same wording.  Because v2's wording depends on the vocabulary it
+is given, the *rendered* template hash is a function of the version and the
+vocabulary; ``prompt_fingerprint()`` records the components separately.
 
 Design rules encoded in the prompt
 ----------------------------------
-* the event-category list is closed and comes from ``schema.EVENT_CATEGORIES``
-  (it is rendered, not retyped, so it cannot drift from the schema);
+* the event-category, abstain-reason, event-date-kind and technology-domain
+  lists are closed and come from code/configuration (rendered, not retyped), so
+  they cannot drift from the schema;
 * the three timestamps are named separately and the rule "a missing date is
   ``null`` with quality ``"absent"``, never copied from the publication date" is
   stated in so many words (``research/DATA_PROVENANCE.md`` §1);
@@ -33,11 +57,12 @@ deterministic and unit-testable.
 from __future__ import annotations
 
 import hashlib
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Mapping, Sequence
 
 from .schema import (
     ABSTAIN_REASONS,
     EVENT_CATEGORIES,
+    EVENT_DATE_KINDS,
     TIMESTAMP_FIELDS,
     TIMESTAMP_QUALITIES,
 )
@@ -46,7 +71,8 @@ if TYPE_CHECKING:  # pragma: no cover - typing only
     from .adapters.base import Prompt
     from .schema import SourceDocument
 
-PROMPT_VERSION = "extract-v1"
+PROMPT_VERSION = "extract-v2"
+PROMPT_VERSIONS: tuple[str, ...] = ("extract-v1", "extract-v2")
 DEFAULT_MAX_INPUT_CHARS = 12_000
 
 _TRUNCATION_TEMPLATE = (
@@ -58,8 +84,9 @@ _TRUNCATION_TEMPLATE = (
 _CATEGORY_BLOCK = "\n".join(f"  - {category}" for category in EVENT_CATEGORIES)
 _ABSTAIN_BLOCK = "\n".join(f"  - {reason}" for reason in ABSTAIN_REASONS)
 _QUALITY_BLOCK = ", ".join(TIMESTAMP_QUALITIES)
+_DATE_KIND_BLOCK = "\n".join(f"  - {kind}" for kind in EVENT_DATE_KINDS)
 
-SYSTEM_PROMPT = f"""You extract medtech technical-development events from public documents.
+_BASE_SYSTEM = f"""You extract medtech technical-development events from public documents.
 
 Return a single JSON object and nothing else: no prose, no markdown fences, no commentary.
 
@@ -123,6 +150,83 @@ rejected rather than ignored):
 }}
 """
 
+_V2_EXTRA = f"""Allowed technology domains (this is a closed list; any other value is invalid):
+{{DOMAIN_BLOCK}}
+Use an empty list when the document does not clearly indicate a domain. Never invent a
+domain id, never translate it, and never use a human-readable label in its place.
+{{TRACK_BLOCK}}
+Allowed "event_date_kind" values (closed list) -- state WHICH date "event_date" is:
+{_DATE_KIND_BLOCK}
+Choose the kind the source actually supports. "trial_start_planned" is a start date the
+record says is planned or expected; "trial_start_actual" is one the record says began or
+has begun; "trial_completion" is an end date; "results_posting" is when results were or
+are to be published; "decision" is a regulator's decision date; "submission" is when an
+application was submitted; "recall_initiation" is when a recall started; "publication" is
+when a document was published. If the source does not let you decide, use "unspecified" --
+do not guess a kind to avoid a check.
+
+Date text:
+- A document may write a date as "March 3, 2025", "3 March 2025", "2025-03-03", or, for a
+  source whose locale is declared in the metadata, as "03/03/2025" or "3.3.2025".
+  Convert what the text says to ISO ("YYYY-MM-DD") only when the text determines it
+  unambiguously. Never reorder a numeric date unless the metadata declares the locale.
+
+Completeness:
+- Your answer is cut off if it runs past the token budget. If you cannot finish, emit
+  fewer events with complete, valid objects rather than a truncated object. A truncated
+  answer is counted as a failure, not as a partial success.
+"""
+
+#: v1 system prompt, kept byte-identical for the A1 ablation (prompt version is a
+#: factor under test, not a background detail).
+SYSTEM_PROMPT_V1 = _BASE_SYSTEM
+
+
+def _render_domain_block(domains: Sequence[str]) -> str:
+    if not domains:
+        return ("  (the technology-domain vocabulary is unavailable in this run: always "
+                "return an empty technology_domains list)")
+    return "\n".join(f"  - {domain}" for domain in domains)
+
+
+def _render_track_block(
+    domain_track_map: Mapping[str, str] | None,
+    domains: Sequence[str],
+) -> str:
+    """Map each declared domain to its declared tracks, when tracks are declared."""
+    if not domain_track_map:
+        return ""
+    lines = ["Finer-grained track ids are accepted too; each belongs to the domain shown:"]
+    declared = set(domains)
+    for track_id in sorted(domain_track_map):
+        parent = domain_track_map[track_id]
+        if parent and parent not in declared:
+            continue
+        lines.append(f"  - {track_id}" + (f" (domain: {parent})" if parent else ""))
+    return "\n".join(lines) + "\n"
+
+
+def _system_prompt(
+    *,
+    prompt_version: str,
+    domains: Sequence[str] | None,
+    domain_track_map: Mapping[str, str] | None,
+) -> str:
+    if prompt_version == "extract-v1":
+        return SYSTEM_PROMPT_V1
+    if prompt_version != "extract-v2":
+        raise ValueError(
+            f"unknown prompt_version {prompt_version!r}; declared versions are "
+            f"{list(PROMPT_VERSIONS)}"
+        )
+    domain_block = _render_domain_block(tuple(domains or ()))
+    track_block = _render_track_block(domain_track_map, tuple(domains or ()))
+    extra = _V2_EXTRA.replace("{DOMAIN_BLOCK}", domain_block).replace(
+        "{TRACK_BLOCK}", track_block
+    )
+    return _BASE_SYSTEM + "\n" + extra
+
+
 USER_TEMPLATE = """DOCUMENT METADATA
 doc_id: {{DOC_ID}}
 source_type: {{SOURCE_TYPE}}
@@ -140,9 +244,41 @@ DOCUMENT TEXT
 Extract the target events from the document text above. JSON only.
 """
 
-TEMPLATE_SHA256 = hashlib.sha256(
-    (SYSTEM_PROMPT + "\x00" + USER_TEMPLATE).encode("utf-8")
-).hexdigest()
+
+def _hash(*parts: str) -> str:
+    return hashlib.sha256("\x00".join(parts).encode("utf-8")).hexdigest()
+
+
+SYSTEM_PROMPT = _system_prompt(
+    prompt_version=PROMPT_VERSION, domains=(), domain_track_map=None
+)
+"""The v2 template with an empty vocabulary; a run supplies the real one."""
+
+
+
+def render_template_sha256(
+    *,
+    prompt_version: str = PROMPT_VERSION,
+    domains: Sequence[str] | None = None,
+    domain_track_map: Mapping[str, str] | None = None,
+    include_canonical_id_hint: bool = True,
+) -> str:
+    """Hash of the exact rendered template a run would use.
+
+    Two runs may only be compared on prompt wording when this value matches.
+    """
+    system = _system_prompt(
+        prompt_version=prompt_version, domains=domains, domain_track_map=domain_track_map
+    )
+    return _hash(prompt_version, system, USER_TEMPLATE, str(bool(include_canonical_id_hint)))
+
+
+TEMPLATE_SHA256 = render_template_sha256()
+"""Hash of the default (v2, no vocabulary supplied) template.
+
+Kept as a module constant because every manifest records it; a *run* records the
+hash of the template it actually rendered, which for v2 includes the vocabulary.
+"""
 
 
 def truncate_text(text: str, max_input_chars: int = DEFAULT_MAX_INPUT_CHARS) -> tuple[str, bool, int]:
@@ -173,13 +309,22 @@ def build_prompt(
     *,
     max_input_chars: int = DEFAULT_MAX_INPUT_CHARS,
     company_hint: str | None = None,
-) -> Prompt:
+    technology_domains: Sequence[str] | None = None,
+    domain_track_map: Mapping[str, str] | None = None,
+    prompt_version: str = PROMPT_VERSION,
+    include_canonical_id_hint: bool = True,
+) -> "Prompt":
     """Render the one prompt both model arms use, for one document.
 
-    Deterministic: the same document and budget always produce the same Prompt.
-    ``max_input_chars`` bounds the *document text*; the truncation marker makes
-    the prompt slightly longer than the budget, which is recorded in the
-    manifest rather than hidden.
+    Deterministic: the same document, vocabulary and budget always produce the
+    same Prompt.  ``max_input_chars`` bounds the *document text*; the truncation
+    marker makes the prompt slightly longer than the budget, which is recorded in
+    the manifest rather than hidden.
+
+    ``include_canonical_id_hint=False`` is the A4 *entity-hint* condition: the
+    hint carries only the company's display name, so the canonical id is no
+    longer handed to the model and entity accuracy can be measured as entity
+    linking rather than as transcription.
     """
     # Imported here, not at module scope: ``adapters`` imports this module for the
     # prompt version, so a top-level import would be circular.
@@ -187,6 +332,10 @@ def build_prompt(
 
     text, truncated, _omitted = truncate_text(document.text, max_input_chars)
     metadata = dict(document.metadata or {})
+    raw_hint = company_hint or metadata.get("company_hint")
+    hint = str(raw_hint) if raw_hint else None
+    if not include_canonical_id_hint and hint:
+        hint = hint.split("[canonical_id")[0].strip() or None
     user = (
         USER_TEMPLATE.replace("{{DOC_ID}}", _show(document.doc_id))
         .replace("{{SOURCE_TYPE}}", _show(document.source_type))
@@ -196,27 +345,39 @@ def build_prompt(
         .replace("{{PUBLISHED_AT}}", _show(document.published_at))
         .replace("{{FIRST_SEEN_AT}}", _show(document.first_seen_at))
         .replace("{{RETRIEVED_AT}}", _show(document.retrieved_at))
-        .replace("{{COMPANY_HINT}}", _show(company_hint or metadata.get("company_hint")))
+        .replace("{{COMPANY_HINT}}", _show(hint))
         .replace("{{TEXT}}", text)
     )
     return Prompt(
-        system=SYSTEM_PROMPT,
+        system=_system_prompt(
+            prompt_version=prompt_version,
+            domains=technology_domains,
+            domain_track_map=domain_track_map,
+        ),
         user=user,
-        prompt_version=PROMPT_VERSION,
-        template_sha256=TEMPLATE_SHA256,
+        prompt_version=prompt_version,
+        template_sha256=render_template_sha256(
+            prompt_version=prompt_version,
+            domains=technology_domains,
+            domain_track_map=domain_track_map,
+            include_canonical_id_hint=include_canonical_id_hint,
+        ),
     )
 
 
 def prompt_fingerprint() -> dict[str, object]:
-    """Identity of this prompt, for manifests and reports."""
+    """Identity of this prompt *family*, for manifests and reports."""
     return {
         "prompt_version": PROMPT_VERSION,
+        "declared_versions": list(PROMPT_VERSIONS),
         "template_sha256": TEMPLATE_SHA256,
         "system_chars": len(SYSTEM_PROMPT),
         "categories": list(EVENT_CATEGORIES),
         "abstain_reasons": list(ABSTAIN_REASONS),
+        "event_date_kinds": list(EVENT_DATE_KINDS),
         "timestamp_fields": list(TIMESTAMP_FIELDS),
         "truncation_marker": True,
+        "domain_vocabulary_rendered": True,
     }
 
 
@@ -229,11 +390,14 @@ build_extraction_prompt = build_prompt
 __all__ = [
     "DEFAULT_MAX_INPUT_CHARS",
     "PROMPT_VERSION",
+    "PROMPT_VERSIONS",
     "SYSTEM_PROMPT",
+    "SYSTEM_PROMPT_V1",
     "TEMPLATE_SHA256",
     "USER_TEMPLATE",
     "build_extraction_prompt",
     "build_prompt",
     "prompt_fingerprint",
+    "render_template_sha256",
     "truncate_text",
 ]

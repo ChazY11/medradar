@@ -69,7 +69,10 @@ from experiments.local_llm_event_extraction.schema import (
     SourceDocument,
 )
 
-PROMPT_SHA256_PINNED = "12d9ba346185a3e102b36c18f5b69368abf30ec652f7868854ff2752636d747e"
+#: Pin of the *extract-v1* template hash, kept so the Phase 2 comparison stays
+#: reproducible: a v1 prompt built today must hash exactly as it did in
+#: phase2-2026-11-04.
+PROMPT_SHA256_PINNED_V1 = "12d9ba346185a3e102b36c18f5b69368abf30ec652f7868854ff2752636d747e"
 
 REQUIRED_ADAPTERS = {
     "rules-baseline": dict(backend="rule_based", enabled=True, gate=None),
@@ -500,11 +503,20 @@ def test_rule_date_and_sentence_helpers() -> None:
 def test_prompt_version_and_template_hash_are_stable() -> None:
     import hashlib
 
-    assert PROMPT_VERSION == "extract-v1"
+    from experiments.local_llm_event_extraction.prompting import (
+        SYSTEM_PROMPT_V1,
+        render_template_sha256,
+    )
+
+    assert PROMPT_VERSION == "extract-v2"
     assert SYSTEM_PROMPT and USER_TEMPLATE
-    assert TEMPLATE_SHA256 == PROMPT_SHA256_PINNED
-    recomputed = hashlib.sha256((SYSTEM_PROMPT + "\x00" + USER_TEMPLATE).encode("utf-8")).hexdigest()
-    assert recomputed == TEMPLATE_SHA256
+    assert TEMPLATE_SHA256 == render_template_sha256()
+    v1_system = SYSTEM_PROMPT_V1
+    recomputed_v1 = hashlib.sha256(
+        (v1_system + "\x00" + USER_TEMPLATE).encode("utf-8")
+    ).hexdigest()
+    assert recomputed_v1 == PROMPT_SHA256_PINNED_V1
+    assert render_template_sha256(prompt_version="extract-v1") != TEMPLATE_SHA256
 
 
 def test_prompt_is_deterministic_and_contains_the_closed_vocabularies() -> None:
@@ -516,6 +528,11 @@ def test_prompt_is_deterministic_and_contains_the_closed_vocabularies() -> None:
     assert first.template_sha256 == TEMPLATE_SHA256
     for category in EVENT_CATEGORIES:
         assert category in first.system
+    # v2 also renders the closed event-date-kind vocabulary (defect A3).
+    from experiments.local_llm_event_extraction.schema import EVENT_DATE_KINDS
+
+    for kind in EVENT_DATE_KINDS:
+        assert f"  - {kind}" in first.system
     assert '"absent"' in first.system or "absent" in first.system
     assert "null" in first.system
     assert "verbatim" in first.system.lower()

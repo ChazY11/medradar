@@ -248,11 +248,20 @@ def parse_response(
     doc_id: str,
     extractor: ExtractorProvenance | Mapping[str, object],
     schema_version: str = SCHEMA_VERSION,
+    finish_reason: str | None = None,
 ) -> ParsedExtraction:
     """Decode one backend response into an :class:`ExtractionResult`.
 
     Never raises for malformed model output: all failures become a result with
-    ``parse_status`` in ``{"invalid_json", "refused", "empty"}`` and zero events.
+    ``parse_status`` in ``{"invalid_json", "refused", "empty", "truncated"}`` and
+    zero events.
+
+    ``finish_reason`` comes from the backend.  When a generation stopped at the
+    token limit (``"length"``) and no balanced JSON object was produced, the
+    failure is recorded as ``"truncated"`` rather than ``"invalid_json"``.  Those
+    are different defects with different fixes -- an output-budget problem versus
+    a conformance problem -- and the Phase 2 report conflated them, which is why
+    the 512-token truncation of a multi-event document looked like a JSON bug.
     """
     provenance = _coerce_extractor(extractor)
     if provenance.schema_version != schema_version:
@@ -275,6 +284,15 @@ def parse_response(
     stripped = strip_code_fences(text.strip()).strip()
     candidate = first_balanced_json(stripped)
     if candidate is None:
+        if finish_reason == "length":
+            return _failure(
+                raw,
+                "truncated",
+                "generation stopped at the token limit before a balanced JSON object was "
+                "produced; this is an output-budget failure, not a conformance failure",
+                doc_id=doc_id,
+                extractor=provenance,
+            )
         status = "refused" if _looks_like_refusal(text) else "invalid_json"
         detail = "refusal text without JSON payload" if status == "refused" else "no balanced JSON object/array in output"
         return _failure(raw, status, detail, doc_id=doc_id, extractor=provenance)

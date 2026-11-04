@@ -1,4 +1,4 @@
-﻿"""Arm-agnostic, resumable benchmark runner that never invents a result.
+"""Arm-agnostic, resumable benchmark runner that never invents a result.
 
 One call to :func:`run_benchmark` writes four artifacts into
 ``output_dir/<run_id>/``:
@@ -253,6 +253,9 @@ def run_benchmark(
     adapter_ids: Sequence[str] | None = None,
     roster: Any = None,
     taxonomy: Any = None,
+    splits: Sequence[str] | None = None,
+    prompt_options: Mapping[str, Any] | None = None,
+    audit_leakage: bool = True,
 ) -> BenchmarkRun:
     """Run every adapter over every case and write the four artifacts.
 
@@ -260,16 +263,54 @@ def run_benchmark(
     all registered) or a sequence of already-built adapters.  Gated adapters are
     given one ``load()`` attempt; a closed gate records ``NOT_RUN`` with the reason
     and never produces a metric row.
+
+    ``splits`` restricts evaluation to the named splits.  The Phase 2 runner had
+    no such filter, so an evaluation "on the test set" was only true if the caller
+    happened to hand it a test-only manifest -- a split the runner could not
+    verify.  Now the filter is explicit, recorded in the config hash, and an
+    unknown split name is an error.
+
+    ``audit_leakage`` runs :func:`..datasets.splits.assert_no_leakage` before any
+    adapter is loaded and records the outcome in the run notes.  The Phase 2
+    audit function existed but was never called by the runner (defect A4).
+
+    ``prompt_options`` is forwarded to :func:`..prompting.build_prompt` unchanged
+    (prompt version, domain vocabulary, entity-hint mode), so two runs can differ
+    in exactly one declared prompt factor.
     """
     if not isinstance(dataset, DatasetManifest):
         raise TypeError("dataset must be a DatasetManifest")
     materialised_cases = tuple(dataset.cases)
     if not materialised_cases:
         raise ValueError("dataset has no cases")
+    if splits is not None:
+        requested = tuple(str(name) for name in splits)
+        known = {case.split for case in materialised_cases}
+        unknown = sorted(set(requested) - set(known))
+        if unknown:
+            raise ValueError(
+                f"requested split(s) {unknown} do not occur in this dataset; it has "
+                f"{sorted(known)}"
+            )
+        materialised_cases = tuple(
+            case for case in materialised_cases if case.split in set(requested)
+        )
+        if not materialised_cases:
+            raise ValueError(f"split filter {requested} selected no cases")
     if limit is not None:
         if limit <= 0:
             raise ValueError("limit must be positive")
         materialised_cases = materialised_cases[:limit]
+    leakage_audit: dict[str, Any] = {"requested": bool(audit_leakage)}
+    if audit_leakage:
+        from ..datasets.splits import assert_no_leakage
+
+        try:
+            assert_no_leakage(dataset)
+        except ValueError as exc:
+            leakage_audit.update({"status": "FAILED", "detail": str(exc)})
+            raise ValueError(f"dataset failed the leakage audit: {exc}") from exc
+        leakage_audit.update({"status": "ok"})
     seed_tuple = tuple(int(seed) for seed in seeds) or (0,)
     primary_seed = seed_tuple[0]
     user_config = dict(config or {})
@@ -299,6 +340,9 @@ def run_benchmark(
         "dataset_sha256": dataset_sha,
         "adapters": adapter_config,
         "limit": limit,
+        "splits": list(splits) if splits is not None else None,
+        "prompt_options": dict(prompt_options or {}),
+        "leakage_audit": leakage_audit,
     }
     config_sha = sha256_json(config_payload)
     resolved_run_id = run_id or f"run-{dataset_sha[:12]}-{config_sha[:12]}"
@@ -423,6 +467,7 @@ def run_benchmark(
                         validation_config=validation_config,
                         roster=roster,
                         taxonomy=taxonomy,
+                        prompt_options=prompt_options,
                     )
                     # Stamp the run-level label tier on every record: a single
                     # prediction line must be readable in isolation and must not be
@@ -649,6 +694,7 @@ def _run_one_case(
     validation_config: Any,
     roster: Any,
     taxonomy: Any,
+    prompt_options: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     from ..adapters.base import AdapterError, AdapterResponse, ExtractionRequest
     from ..prompting import build_prompt
@@ -658,10 +704,14 @@ def _run_one_case(
     prompt = None
     prompt_truncated = False
     if needs_prompt:
+        options = dict(prompt_options or {})
+        options.pop("max_input_chars", None)
+        options.pop("company_hint", None)
         prompt = build_prompt(
             case.document,
             max_input_chars=descriptor.max_input_chars,
             company_hint=metadata.get("company_hint"),
+            **options,
         )
         prompt_truncated = len(case.document.text) > descriptor.max_input_chars
     request = ExtractionRequest(
@@ -711,6 +761,7 @@ def _run_one_case(
         doc_id=case.document.doc_id,
         extractor=provenance,
         schema_version=SCHEMA_VERSION,
+        finish_reason=response.finish_reason,
     )
     validation_payload: Mapping[str, Any] | None = None
     validation_status = "not_run"
