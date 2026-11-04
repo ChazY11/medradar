@@ -1,4 +1,4 @@
-"""Cross-module contracts: validation, datasets, run manifests and metrics.
+﻿"""Cross-module contracts: validation, datasets, run manifests and metrics.
 
 ``schema.py`` defines *what an extraction looks like*.  This module defines *how
 the experiment talks about it*: what counts as a valid label, what a validation
@@ -54,6 +54,7 @@ LABEL_TIERS: tuple[str, ...] = (
     "ai_preliminary",
     "synthetic_fixture",
     "unlabelled",
+    "source_record_derived",
 )
 RESEARCH_GRADE_TIERS: tuple[str, ...] = ("human_confirmed", "expert_adjudicated")
 
@@ -63,14 +64,27 @@ TIER_MEANING: Mapping[str, str] = {
     "ai_preliminary": "machine pre-annotation; useful as a weak prior, never as ground truth",
     "synthetic_fixture": "hand-built fixture for exercising the harness; never an empirical result",
     "unlabelled": "no label yet; excluded from any scored metric",
+    "source_record_derived": "value copied from the source's own structured record; independent of any model, not independent of the document, and never a human label",
 }
 
 RUN_STATUSES: tuple[str, ...] = (
     "SYNTHETIC_FIXTURE_ONLY",
+    "REAL_DOCUMENT_UNLABELLED",
     "RESEARCH_GRADE",
     "NOT_RUN",
     "FAILED",
 )
+
+"""Why ``REAL_DOCUMENT_UNLABELLED`` exists.
+
+The two original statuses could not describe the middle case that this project
+actually reached: **real public documents, no human event labels**.  Stamping such a
+run ``SYNTHETIC_FIXTURE_ONLY`` is false (the documents are real) and calling it
+``RESEARCH_GRADE`` is worse (there is nothing to score accuracy against).  The third
+status means exactly: the extraction pipeline ran on real documents, harness-level
+facts (parse rate, schema pass rate, verbatim-quote location, abstention, latency,
+resources) are measurable, and **no accuracy claim is possible**.
+"""
 
 
 def is_research_grade(tiers: Any) -> bool:
@@ -79,18 +93,40 @@ def is_research_grade(tiers: Any) -> bool:
     return bool(tiers) and all(tier in RESEARCH_GRADE_TIERS for tier in tiers)
 
 
+def is_synthetic(tiers: Any) -> bool:
+    """True when any tier present is the hand-built fixture tier."""
+    return "synthetic_fixture" in tuple(tiers)
+
+
+def default_run_status(tiers: Any) -> str:
+    """The most favourable status a dataset's label tiers can honestly support."""
+    tiers = tuple(tiers)
+    if is_research_grade(tiers):
+        return "RESEARCH_GRADE"
+    if is_synthetic(tiers) or not tiers:
+        return "SYNTHETIC_FIXTURE_ONLY"
+    return "REAL_DOCUMENT_UNLABELLED"
+
+
 def require_consistent_run_status(status: str, tiers: Any) -> str:
-    """Refuse to let a synthetic or AI-labelled run claim research grade.
+    """Refuse to let a run claim a status its labels cannot support.
 
     Returns the status to record (``status`` when consistent) and raises
-    ``ValueError`` when asked to label fixture output as an empirical result.
+    ``ValueError`` when asked to label fixture output as an empirical result or to
+    describe synthetic fixtures as real documents.
     """
     if status not in RUN_STATUSES:
         raise ValueError(f"unknown run status {status!r}")
+    tiers = tuple(tiers)
     if status == "RESEARCH_GRADE" and not is_research_grade(tiers):
         raise ValueError(
             "refusing to mark a run RESEARCH_GRADE: dataset label tiers "
             f"{sorted(set(tiers))} are not all in {sorted(RESEARCH_GRADE_TIERS)}"
+        )
+    if status == "REAL_DOCUMENT_UNLABELLED" and is_synthetic(tiers):
+        raise ValueError(
+            "refusing to mark a run REAL_DOCUMENT_UNLABELLED: dataset label tiers "
+            f"{sorted(set(tiers))} include synthetic fixture data"
         )
     return status
 
@@ -482,7 +518,9 @@ __all__ = [
     "ResourceMeasurement",
     "MetricReport",
     "RunManifest",
+    "default_run_status",
     "is_research_grade",
+    "is_synthetic",
     "require_consistent_run_status",
     "ExtractionResult",
     "SourceDocument",

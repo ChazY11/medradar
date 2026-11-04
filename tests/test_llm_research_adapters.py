@@ -1,4 +1,4 @@
-"""Offline tests for the adapter layer: registry, gates, prompts, strict parsing.
+﻿"""Offline tests for the adapter layer: registry, gates, prompts, strict parsing.
 
 Everything here runs on CPU with no model, no network and no optional dependency.
 The two model-backed arms are tested for *refusal*, which is the only behaviour
@@ -200,7 +200,10 @@ def test_hf_with_open_gate_and_no_weights_refuses_without_torch(
     monkeypatch.setenv(ENV_MODEL_LOAD, "1")
     registry = build_registry(environ={})
     adapter = HFLocalAdapter(
-        registry.descriptor("hf-qwen3-4b"),
+        dataclasses.replace(
+            registry.descriptor("hf-qwen3-4b"),
+            model_revision="cdbee75f17c01a7cc42f958dc650907174af0554",
+        ),
         weights_path=str(tmp_path / "definitely-not-here"),
     )
     with pytest.raises(AdapterUnavailable) as excinfo:

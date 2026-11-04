@@ -1,4 +1,4 @@
-"""Write ``REPORT.md`` for a benchmark run -- with the banner the data deserves.
+﻿"""Write ``REPORT.md`` for a benchmark run -- with the banner the data deserves.
 
 A score produced on hand-written synthetic fixtures is a *harness* result.  The
 report says so at the top, lists gated arms as ``NOT RUN: <reason>`` instead of
@@ -24,6 +24,10 @@ from typing import Any, Mapping
 from ..contracts import RUN_STATUSES, is_research_grade
 
 SYNTHETIC_BANNER = "SYNTHETIC_FIXTURE_ONLY — harness validation, not an empirical result"
+REAL_DOCUMENT_BANNER = (
+    "REAL_DOCUMENT_UNLABELLED — real public documents, no human event labels; "
+    "harness-level measurements only, no accuracy claim"
+)
 NOT_MEASURED = "not measured"
 
 
@@ -335,6 +339,7 @@ def write_report(
             "are research grade"
         )
     research_grade = status == "RESEARCH_GRADE" and is_research_grade(tiers)
+    real_unlabelled = status == "REAL_DOCUMENT_UNLABELLED"
 
     metrics: dict[str, dict[str, Any]] = {}
     for adapter_id, report in metrics_by_adapter.items():
@@ -358,15 +363,28 @@ def write_report(
     lines.append("# Local small-LM event extraction - benchmark report")
     lines.append("")
     if not research_grade:
-        lines.append(f"> **{SYNTHETIC_BANNER}.**")
-        lines.append(">")
-        lines.append(
-            "> Every number in this report was computed on hand-written synthetic fixtures or "
-            "on a scripted test double. The fixtures exist to prove that the harness runs, can "
-            "be resumed and cannot lie about what it measured. They are not a sample of real "
-            "documents, they are not human labels, and none of these numbers may be quoted as "
-            "an empirical result about any model."
-        )
+        if real_unlabelled:
+            lines.append(f"> **{REAL_DOCUMENT_BANNER}.**")
+            lines.append(">")
+            lines.append(
+                "> The documents in this run are real, publicly retrievable records; their "
+                "provenance, hashes and retrieval dates are in the run manifest. Every "
+                "harness-level number below (JSON validity, schema pass rate, verbatim quote "
+                "location, abstention, latency, resources) was measured on those documents. "
+                "No precision, recall or F1 is reported, because no human event labels "
+                "exist for them: the corpus has not been annotated, so **nothing here "
+                "measures extraction accuracy** and nothing here may be quoted as if it did."
+            )
+        else:
+            lines.append(f"> **{SYNTHETIC_BANNER}.**")
+            lines.append(">")
+            lines.append(
+                "> Every number in this report was computed on hand-written synthetic fixtures or "
+                "on a scripted test double. The fixtures exist to prove that the harness runs, can "
+                "be resumed and cannot lie about what it measured. They are not a sample of real "
+                "documents, they are not human labels, and none of these numbers may be quoted as "
+                "an empirical result about any model."
+            )
         lines.append("")
     lines.append(f"Run `{_md(manifest_dict.get('run_id'))}` - status: **{_md(status)}**")
     lines.append("")
@@ -474,4 +492,4 @@ def write_report(
     return report_path
 
 
-__all__ = ["NOT_MEASURED", "SYNTHETIC_BANNER", "write_report"]
+__all__ = ["NOT_MEASURED", "REAL_DOCUMENT_BANNER", "SYNTHETIC_BANNER", "write_report"]

@@ -1,4 +1,4 @@
-"""Local small-language-model research harness for medtech event extraction.
+﻿"""Local small-language-model research harness for medtech event extraction.
 
 Status: **experimental, offline, not yet executed on a model.**  This package is
 the engineering substrate for a research question that has *not* been answered:
@@ -49,7 +49,9 @@ from .contracts import (  # noqa: E402,F401  (re-exported for convenience)
     ValidationConfig,
     ValidationResult,
     Verdict,
+    default_run_status,
     is_research_grade,
+    is_synthetic,
     require_consistent_run_status,
 )
 from .safety import (  # noqa: E402,F401
@@ -110,7 +112,9 @@ __all__ = [
     "ValidationConfig",
     "ValidationResult",
     "Verdict",
+    "default_run_status",
     "is_research_grade",
+    "is_synthetic",
     "require_consistent_run_status",
     "ENV_MODEL_LOAD",
     "ENV_NETWORK",

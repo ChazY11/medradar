@@ -387,14 +387,20 @@ class EntityRoster:
         *,
         raw_text: str | None = None,
     ) -> bool:
-        """True when the document names the company, via its alias or the claim.
+        """True when the document names the company by an alias that resolves to it.
 
-        ``raw_text`` is the text the extractor says it saw; when supplied, a
-        verbatim appearance of it also proves the document named the company.
+        ``raw_text`` is what the extractor claims it saw.  It does **not** self-certify:
+        it counts only when the roster resolves that text to the *same* canonical id.
+        Without that rule a model could assert ``canonical_id='medtronic'`` while quoting
+        text that names a completely different company, and the validator would accept
+        the model's own claim as proof of identity -- circular validation.
         """
         if raw_text and self.alias_in_text(raw_text, document_text):
-            return True
-        return any(self.alias_in_text(alias, document_text) for alias in self.aliases_for(canonical_id))
+            if self.resolve_alias(raw_text) == canonical_id:
+                return True
+        return any(
+            self.alias_in_text(alias, document_text) for alias in self.aliases_for(canonical_id)
+        )
 
 
 # --------------------------------------------------------------------- taxonomy

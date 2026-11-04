@@ -1,4 +1,4 @@
-"""Arm-agnostic, resumable benchmark runner that never invents a result.
+﻿"""Arm-agnostic, resumable benchmark runner that never invents a result.
 
 One call to :func:`run_benchmark` writes four artifacts into
 ``output_dir/<run_id>/``:
@@ -53,7 +53,9 @@ from ..contracts import (
     ResourceMeasurement,
     RunManifest,
     ValidationConfig as _ValidationConfig,
+    default_run_status,
     is_research_grade,
+    is_synthetic,
     require_consistent_run_status,
 )
 from ..parsing import ParsedExtraction, parse_response
@@ -68,6 +70,18 @@ from .report import write_report
 
 RUNNER_VERSION = "v1"
 SYNTHETIC_BANNER = "SYNTHETIC_FIXTURE_ONLY — harness validation, not an empirical result"
+REAL_DOCUMENT_BANNER = (
+    "REAL_DOCUMENT_UNLABELLED — real public documents, no human event labels; "
+    "harness-level measurements only, no accuracy claim"
+)
+
+
+def status_banner(tiers: Any) -> str | None:
+    """The honest banner for a dataset's label tiers (``None`` when research grade)."""
+    tiers = tuple(tiers)
+    if is_research_grade(tiers):
+        return None
+    return SYNTHETIC_BANNER if is_synthetic(tiers) or not tiers else REAL_DOCUMENT_BANNER
 
 
 def canonical_json(payload: Any) -> str:
@@ -265,9 +279,7 @@ def run_benchmark(
     # asking for RESEARCH_GRADE on synthetic labels must leave no artifacts behind.
     requested_status = str(user_config.get("run_status") or "")
     if not requested_status:
-        requested_status = (
-            "RESEARCH_GRADE" if is_research_grade(dataset.label_tiers) else "SYNTHETIC_FIXTURE_ONLY"
-        )
+        requested_status = default_run_status(dataset.label_tiers)
     requested_status = require_consistent_run_status(requested_status, dataset.label_tiers)
 
     resolved_adapters = _resolve_adapters(adapters, adapter_ids)
@@ -339,8 +351,9 @@ def run_benchmark(
         adapter_id: [record for (aid, _case), record in existing.items() if aid == adapter_id]
         for adapter_id in valid_adapters
     }
-    if not is_research_grade(dataset.label_tiers):
-        notes.append(SYNTHETIC_BANNER)
+    banner = status_banner(dataset.label_tiers)
+    if banner:
+        notes.append(banner)
     if validator_fn is None and validator_source.startswith("not available"):
         notes.append(
             "validation did not run: no validator injected and the real validator "
@@ -864,7 +877,7 @@ def _build_manifest(
         "platform": sys.platform,
         "executable": sys.executable,
         "cwd": str(Path.cwd()),
-        "status_banner": SYNTHETIC_BANNER if not is_research_grade(dataset.label_tiers) else None,
+        "status_banner": status_banner(dataset.label_tiers),
     }
     return RunManifest(
         run_id=run_id,
@@ -905,7 +918,7 @@ def _write_artifacts(
         "created_at": manifest.created_at,
         "seeds": list(seeds),
         "label_tiers": list(dataset.label_tiers),
-        "banner": SYNTHETIC_BANNER if not is_research_grade(dataset.label_tiers) else None,
+        "banner": status_banner(dataset.label_tiers),
         "metrics": {
             adapter_id: report.to_dict() for adapter_id, report in metrics_by_adapter.items()
         },
@@ -920,7 +933,9 @@ def _write_artifacts(
 __all__ = [
     "BenchmarkRun",
     "RUNNER_VERSION",
+    "REAL_DOCUMENT_BANNER",
     "SYNTHETIC_BANNER",
+    "status_banner",
     "canonical_json",
     "peak_rss_mb",
     "run_benchmark",

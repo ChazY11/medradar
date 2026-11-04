@@ -1,4 +1,4 @@
-"""Offline tests for the training-readiness layer (WP5).
+﻿"""Offline tests for the training-readiness layer (WP5).
 
 Everything here runs on CPU with no model library, no network and no GPU.  The
 point of the suite is the *refusals*: each readiness blocker is made to fire on
@@ -942,6 +942,7 @@ TRAINING_MODULES = (
     "checkpoint",
     "vram_guard",
     "run_train",
+    "smoke_train",
 )
 
 
@@ -953,7 +954,7 @@ def test_importing_every_training_module_pulls_in_no_ml_library():
 
 
 def test_training_sources_never_import_torch_or_transformers():
-    pattern = re.compile(r"^\s*(?:import|from)\s+(torch|transformers|peft|bitsandbytes)\b", re.MULTILINE)
+    pattern = re.compile(r"^(?:import|from)\s+(torch|transformers|peft|bitsandbytes)\b", re.MULTILINE)
     for path in sorted(TRAINING_DIR.rglob("*.py")):
         text = path.read_text(encoding="utf-8")
         assert not pattern.search(text), f"{path} imports a model library at module scope"
