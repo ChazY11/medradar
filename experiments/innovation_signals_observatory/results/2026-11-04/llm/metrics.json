@@ -1,0 +1,132 @@
+{
+  "schema_version": "medradar.job_text_extraction.v1",
+  "generated_at": "2026-11-04T13:18:09.386877+00:00",
+  "prompt_version": null,
+  "data_path": "experiments\\innovation_signals_observatory\\results\\2026-11-04\\jobs_medtronic.jsonl",
+  "arms": {
+    "A": {
+      "arm": "A",
+      "n": 42,
+      "n_primary": 32,
+      "n_negative": 10,
+      "schema_pass_rate": 1.0,
+      "json_valid_rate": 1.0,
+      "parse_status_counts": {
+        "ok": 42
+      },
+      "evidence": {
+        "claim_quotes_total": 192,
+        "claim_quotes_located": 192,
+        "claim_locatability_rate": 1.0,
+        "records_with_at_least_one_claim_quote": 37,
+        "records_all_claim_quotes_located": 37,
+        "by_field": {
+          "function_class": {
+            "total": 162,
+            "located": 162
+          },
+          "technology_track": {
+            "total": 30,
+            "located": 30
+          }
+        },
+        "audit_spans_total": 108,
+        "audit_spans_located": 108,
+        "audit_locatability_rate": 1.0,
+        "method": "existing harness locate_quote: NFC + whitespace collapse only, no fuzzy matching"
+      },
+      "support": {
+        "function_claims": 37,
+        "function_checked": 37,
+        "function_supported": 37,
+        "function_support_rate": 1.0,
+        "function_supported_any_quote": 37,
+        "function_support_any_quote_rate": 1.0,
+        "track_claims": 5,
+        "track_checked": 5,
+        "track_supported": 5,
+        "track_support_rate": 1.0,
+        "track_supported_any_quote": 5,
+        "track_support_any_quote_rate": 1.0,
+        "method": "deterministic conservative check: located claim quote must contain the assigned track's keyword family / the assigned function class's cue phrase (committed config files). False means 'cue absent from the quote', NOT 'label wrong'.",
+        "arm_a_circularity_note": "Arm A's evidence spans are the rule match that produced its label, so its support rate is circular by construction and is NOT independent evidence."
+      },
+      "abstention": {
+        "abstain_count": 5,
+        "abstain_rate": 0.11904761904761904,
+        "abstain_rate_primary": 0.125,
+        "abstain_rate_negative": 0.1,
+        "unclassified_function_rate": 0.11904761904761904,
+        "unclassified_track_rate": 0.8809523809523809,
+        "abstain_reasons": {
+          "null": 5
+        },
+        "note": "Arm A has no abstain field: 'abstained' is derived by the evaluator as function_class==UNCLASSIFIED and track_id==UNCLASSIFIED."
+      },
+      "negative_control": {
+        "n": 10,
+        "false_positive_count": 0,
+        "false_positive_rate": 0.0,
+        "track_false_positive_count": 0,
+        "track_false_positive_rate": 0.0,
+        "rnd_function_claim_count": 0,
+        "rnd_function_claim_rate": 0.0,
+        "abstained_count": 1,
+        "abstained_rate": 0.1,
+        "unclassified_both_count": 1,
+        "correct_rejection_count": 10,
+        "correct_rejection_rate": 1.0,
+        "track_gate_violation_count": 0,
+        "false_positive_postings": [],
+        "definition": "false positive = the arm asserted a technology track OR an R&D function class (CORE_R&D, CLINICAL_R&D, PRODUCT_ENGINEERING, ALGORITHM_SOFTWARE, HARDWARE_SYSTEMS) for a title-declared non-technical posting"
+      },
+      "function_class_distribution": {
+        "ALGORITHM_SOFTWARE": 4,
+        "SALES_ADMIN_OTHER": 25,
+        "QUALITY_REGULATORY": 4,
+        "PRODUCT_ENGINEERING": 1,
+        "UNCLASSIFIED": 5,
+        "MANUFACTURING_PROCESS": 1,
+        "CLINICAL_R&D": 1,
+        "CORE_R&D": 1
+      },
+      "track_distribution": {
+        "UNCLASSIFIED": 37,
+        "neurostimulation": 2,
+        "wearable_remote": 1,
+        "medical_ai": 2
+      },
+      "r_and_d_true_rate": 0.0,
+      "input_truncated_count": 0,
+      "latency": {
+        "n_measured": 42,
+        "median_s": 0.006,
+        "mean_s": 0.007,
+        "p95_s": 0.011,
+        "max_s": 0.016,
+        "min_s": 0.002
+      },
+      "peak_vram_mb_max": null,
+      "error_taxonomy": {},
+      "precision_recall_f1": "NOT_EVALUABLE: no human gold standard exists for this corpus",
+      "confidence_calibration": "NOT_AVAILABLE: rule-derived strength / qualitative note, not a calibrated probability"
+    },
+    "C": {
+      "arm": "C",
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN: the only existing QLoRA adapter (PR #20, overnight-2026-11-04) was trained on regulatory-event text under the frozen event schema (event category, three timestamps, company entity, product). Job text is a different task with a different output contract, and the adapter was never trained on job postings. Running it would measure schema/task incompatibility, not job-text extraction capability, so arm C produces no number here. This is a statement about the experiment design, not about the model."
+    }
+  },
+  "comparison": {
+    "available": false,
+    "reason": "need both arm A and arm B predictions on the same items"
+  },
+  "caveats": [
+    "NOT_EVALUABLE: no human gold standard exists for this corpus",
+    "NOT_AVAILABLE: rule-derived strength / qualitative note, not a calibrated probability",
+    "Negative controls are selected by a declared title pattern; the set is small and is not a representative sample of all non-technical postings.",
+    "Cue-support is a lower-bound deterministic check, not human adjudication; the manual adjudication table in this directory is the only human judgement in this experiment.",
+    "Arm A's evidence support is circular (the evidence span is the rule that fired).",
+    "Single snapshot (T0): no trend, no lag test, no claim about the company's R&D direction."
+  ]
+}
