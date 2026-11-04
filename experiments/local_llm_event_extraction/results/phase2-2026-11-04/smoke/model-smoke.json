@@ -1,0 +1,112 @@
+{
+  "purpose": "FIRST_REAL_INFERENCE",
+  "doc_id": "fda510k-k260579",
+  "document": {
+    "source_type": "fda_510k",
+    "text_style": "field_value_rendering",
+    "company_hint": "Drägerwerk / Draeger [canonical_id: draeger]",
+    "text_chars": 902,
+    "content_sha256": "2f6af9b7bb657d3a01c931a1d754f0627ffaec46107252b027c69d7551796af2"
+  },
+  "model": {
+    "adapter_id": "hf-qwen3-4b-instruct",
+    "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "quantization": "nf4",
+    "weights_path": "D:\\DEPPSKK\\ml-models\\Qwen3-4B-Instruct-2507",
+    "describe": {
+      "adapter_id": "hf-qwen3-4b-instruct",
+      "display_name": "ARM B - Qwen/Qwen3-4B-Instruct-2507 (nf4)",
+      "backend": "hf_local",
+      "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "quantization": "nf4",
+      "device": "cuda",
+      "max_input_chars": 12000,
+      "max_new_tokens": 384,
+      "prompt_version": "extract-v1",
+      "requires_network": false,
+      "requires_gpu": true,
+      "deterministic": true,
+      "load_gate": "model_load",
+      "enabled_by_default": false,
+      "notes": "",
+      "loaded": false,
+      "quantization_effective": "bnb-4bit",
+      "weights_source": "D:\\DEPPSKK\\ml-models\\Qwen3-4B-Instruct-2507",
+      "peft_adapter_path": null,
+      "seed": 0,
+      "decoding": {
+        "temperature": 0,
+        "do_sample": false,
+        "seed": 0,
+        "max_new_tokens": 384
+      }
+    }
+  },
+  "load_seconds": 26.39,
+  "generation": {
+    "tokens_in": 1434,
+    "tokens_out": 248,
+    "wall_time_s": 23.905903499995475,
+    "finish_reason": "stop",
+    "peak_vram_mb": 3474.572265625,
+    "metadata": {
+      "backend": "hf_local",
+      "model_id": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "quantization": "bnb-4bit",
+      "decoding": {
+        "temperature": 0,
+        "do_sample": false,
+        "seed": 0
+      },
+      "chat_template": {
+        "thinking_supported": false,
+        "enable_thinking": null,
+        "template_sha256": "64f85b198065d0fba2a81f37e10ed68161ce2c19a754c7100e67e0ca2ee9c326"
+      },
+      "revision_resolved": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "unpinned_override": false,
+      "weights_fingerprint": "6e200db34e5751f45c117e42b9ab0695e87525ee2b418f41c3dac225de8f49fe",
+      "peak_vram_measurement_method": "torch.cuda.max_memory_allocated()/MiB, reset before every generate() call",
+      "peak_vram_reserved_mib": 3602.0,
+      "tokens_per_second": 10.374006571224005,
+      "prompt_chars": 5160,
+      "weights_source": "D:\\DEPPSKK\\ml-models\\Qwen3-4B-Instruct-2507",
+      "load": {
+        "transformers_version": "5.22.1",
+        "torch_version": "2.9.1+cu128",
+        "torch_cuda_version": "12.8",
+        "device": "cuda",
+        "quantization_effective": "bnb-4bit",
+        "dtype_kwarg": null,
+        "cuda_device_name": "NVIDIA GeForce RTX 5080 Laptop GPU",
+        "cuda_compute_capability": [
+          12,
+          0
+        ],
+        "vram_allocated_after_load_mib": 2554.4052734375,
+        "vram_reserved_after_load_mib": 2594.0,
+        "vram_total_mib": 16302.5625
+      }
+    },
+    "raw_text": "{\n  \"events\": [\n    {\n      \"client_ref\": null,\n      \"status\": \"extracted\",\n      \"abstain_reason\": null,\n      \"company\": {\n        \"raw_text\": \"Draeger Medical Systems, Inc.\",\n        \"canonical_id\": \"draeger\",\n        \"match_basis\": \"roster_alias_verbatim\"\n      },\n      \"event_category\": \"regulatory_clearance\",\n      \"technology_domains\": [],\n      \"product_or_technology\": \"Infinity® Acute Care System (IACS)  VG8.1\",\n      \"event_date\": \"2026-08-20\",\n      \"published_at\": \"2026-08-20\",\n      \"first_seen_at\": null,\n      \"timestamp_quality\": {\n        \"event_date\": \"exact_day\",\n        \"published_at\": \"exact_day\",\n        \"first_seen_at\": \"absent\"\n      },\n      \"evidence\": [\n        {\n          \"quote\": \"decision_date: 2026-08-20\",\n          \"field\": \"event_date\"\n        }\n      ],\n      \"rationale\": null\n    }\n  ]\n}"
+  },
+  "parse": {
+    "parse_status": "ok",
+    "parse_error": null,
+    "events": 1
+  },
+  "validation": {
+    "verdict": "accepted",
+    "judgements": [
+      {
+        "index": 0,
+        "verdict": "accepted",
+        "issues": []
+      }
+    ]
+  },
+  "factual_correctness": "NOT_DETERMINED — requires an independent label; not implied by parse/validation success"
+}

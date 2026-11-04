@@ -15,6 +15,26 @@ excel = ["openpyxl>=3.1"]
 pdf = ["pypdf>=4.0"]
 dev = ["pytest>=8.0"]
 bulk = ["ijson>=3.3"]
+# Local small-language-model research (experiments/local_llm_event_extraction).
+#
+# Deliberately a separate, optional group: the default `medradar` install stays
+# dependency-free and nothing outside the experiment imports these.  The offline
+# test suite must keep passing WITHOUT this group installed -- if a test needs
+# torch, that is a test bug, not a packaging requirement.
+#
+# The GPU wheel is not a plain PyPI install: Blackwell (RTX 50-series, sm_120)
+# needs a CUDA 12.8+ build.  See
+# experiments/local_llm_event_extraction/docs/INSTALL_WSL2_RTX5080.md for the
+# exact index URL and the versions the compatibility report was written against.
+# These lower bounds are the minimum that can address sm_120 at all.
+local-llm = [
+    "torch>=2.7,<3",
+    "transformers>=4.51,<6",
+    "accelerate>=1.4,<2",
+    "peft>=0.14,<1",
+    "bitsandbytes>=0.45,<1",
+    "datasets>=3.2,<6",
+]
 
 [project.urls]
 Homepage = "https://chazy11.github.io/medradar/"
