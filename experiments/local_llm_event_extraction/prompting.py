@@ -150,32 +150,23 @@ rejected rather than ignored):
 }}
 """
 
-_V2_EXTRA = f"""Allowed technology domains (this is a closed list; any other value is invalid):
+_V2_EXTRA = f"""Closed technology-engine domains (use only these ids; an empty list is valid):
 {{DOMAIN_BLOCK}}
-Use an empty list when the document does not clearly indicate a domain. Never invent a
-domain id, never translate it, and never use a human-readable label in its place.
-{{TRACK_BLOCK}}
-Allowed "event_date_kind" values (closed list) -- state WHICH date "event_date" is:
-{_DATE_KIND_BLOCK}
-Choose the kind the source actually supports. "trial_start_planned" is a start date the
-record says is planned or expected; "trial_start_actual" is one the record says began or
-has begun; "trial_completion" is an end date; "results_posting" is when results were or
-are to be published; "decision" is a regulator's decision date; "submission" is when an
-application was submitted; "recall_initiation" is when a recall started; "publication" is
-when a document was published. If the source does not let you decide, use "unspecified" --
-do not guess a kind to avoid a check.
 
-Date text:
-- A document may write a date as "March 3, 2025", "3 March 2025", "2025-03-03", or, for a
-  source whose locale is declared in the metadata, as "03/03/2025" or "3.3.2025".
-  Convert what the text says to ISO ("YYYY-MM-DD") only when the text determines it
-  unambiguously. Never reorder a numeric date unless the metadata declares the locale.
+Closed "event_date_kind" values: {", ".join(EVENT_DATE_KINDS)}.
+State which date "event_date" is. Use "trial_start_planned" for a start the record calls
+planned, "trial_completion" for an end date, "results_posting" for a results-publication
+date, "decision" for a regulator decision, "recall_initiation" for a recall start. If the
+source does not determine it, use "unspecified" rather than guessing to avoid a check.
 
-Completeness:
-- Your answer is cut off if it runs past the token budget. If you cannot finish, emit
-  fewer events with complete, valid objects rather than a truncated object. A truncated
-  answer is counted as a failure, not as a partial success.
+Dates may be written "March 3, 2025", "3 March 2025", "2025-03-03", or -- when the source
+metadata declares a U.S. locale -- "03/03/2025". Convert to ISO only when unambiguous;
+never reorder a numeric date.
+
+If the answer would exceed the token budget, emit fewer complete event objects; a
+truncated answer counts as a failure, not a partial success.
 """
+
 
 #: v1 system prompt, kept byte-identical for the A1 ablation (prompt version is a
 #: factor under test, not a background detail).

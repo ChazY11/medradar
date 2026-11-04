@@ -531,8 +531,10 @@ def test_prompt_is_deterministic_and_contains_the_closed_vocabularies() -> None:
     # v2 also renders the closed event-date-kind vocabulary (defect A3).
     from experiments.local_llm_event_extraction.schema import EVENT_DATE_KINDS
 
+    # v2 renders the closing date-kind list inline (compact prompt), so membership
+    # is the contract rather than a bullet format.
     for kind in EVENT_DATE_KINDS:
-        assert f"  - {kind}" in first.system
+        assert kind in first.system
     assert '"absent"' in first.system or "absent" in first.system
     assert "null" in first.system
     assert "verbatim" in first.system.lower()

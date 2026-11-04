@@ -164,7 +164,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     manifest, audit = build_dataset(args.corpus)
     roster = EntityRoster.from_config()
     taxonomy = Taxonomy.from_config()
-    domain_track_map = {track.track_id: track.domain for track in taxonomy.tracks}
+    # The 50-track list is not rendered (see training/train_overnight.py): it costs
+    # ~560 tokens per sample and this run's prompt budget cannot afford it.  The
+    # 23-domain closed vocabulary is rendered, which is the factor under test.
+    domain_track_map: dict[str, str] = {}
     splits = [part.strip() for part in args.splits.split(",") if part.strip()]
     prompt_options = {
         "prompt_version": args.prompt_version,

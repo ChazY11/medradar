@@ -73,7 +73,7 @@ class ResourceSampler(threading.Thread):
         self.path = path
         self.interval = max(15.0, float(interval))
         self.state = state
-        self._stop = threading.Event()
+        self._stop_event = threading.Event()
         self.samples: list[dict[str, Any]] = []
 
     def run(self) -> None:  # pragma: no cover - thread body
@@ -87,7 +87,7 @@ class ResourceSampler(threading.Thread):
         except Exception:  # noqa: BLE001 - sampling must never kill a run
             has_nvml = False
             psutil = None
-        while not self._stop.wait(self.interval):
+        while not self._stop_event.wait(self.interval):
             row: dict[str, Any] = {
                 "ts": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
                 "elapsed_s": round(time.time() - self.state.get("started", time.time()), 1),
@@ -134,7 +134,7 @@ class ResourceSampler(threading.Thread):
             pass
 
     def stop(self) -> None:
-        self._stop.set()
+        self._stop_event.set()
         self.join(timeout=10)
 
 
@@ -194,6 +194,9 @@ def evaluate_loss(model: Any, samples: Sequence[dict[str, Any]], torch: Any, *, 
             if math.isfinite(loss):
                 losses.append(loss)
     model.train()
+    # Release the eval batch's block before training resumes: at the sequence limit
+    # this single no-grad batch was enough to push the card into WDDM paging.
+    torch.cuda.empty_cache()
     return round(sum(losses) / len(losses), 6) if losses else float("nan")
 
 
@@ -271,6 +274,9 @@ def attach_lora(model: Any, args: argparse.Namespace) -> tuple[Any, dict[str, An
     from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 
     model = prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
+    # Explicit reentrant checkpointing: see the note in `train()` about the first
+    # attempt's 16 GB footprint on a 16 GB device.
+    model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": True})
     lora = LoraConfig(
         r=args.lora_r,
         lora_alpha=args.lora_alpha,
@@ -317,13 +323,21 @@ def train(args: argparse.Namespace) -> int:
     manifest, dataset_audit = build_dataset(
         args.corpus, max_docs_per_split=None
     )
-    bundle = build_sft_records(manifest)
+    # The 50-track taxonomy list is deliberately not rendered in this run: it is
+    # ~560 tokens on every sample and it pushed the 16 GiB card into paging.  The
+    # 23-domain closed vocabulary -- the actual A1 defect -- is still rendered.
+    bundle = build_sft_records(manifest, domain_track_map={})
     del manifest
 
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed_all(args.seed)
     model, tokenizer = load_base(args, torch, transformers)
     model, lora_info = attach_lora(model, args)
+    # Re-entrant checkpointing recomputes from inputs and drops the saved graph; the
+    # non-reentrant default kept the graph and is what pushed VRAM to the device
+    # limit in the first attempt of this run.
+    model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": True})
+    model.enable_input_require_grads()
     model.train()
 
     max_seq_len = args.max_seq_len
