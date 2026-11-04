@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from datetime import datetime, timezone
 
 import pytest
 
@@ -302,8 +303,14 @@ def test_filtered_change_queries_bind_every_parameter(ledger):
     second = make_record("rec-2", title="另一家企业的记录")
     other = MappingResult(entity_id="philips", entity_status=ENTITY_MAPPED,
                           entity_method="test_exact", entity_confidence=1.0)
-    _collect(ledger, first, run_id="run-1", seen_at="2026-11-03T10:00:00+00:00")
-    _collect(ledger, second, run_id="run-1", seen_at="2026-11-03T10:00:00+00:00",
+    # `change_rows(hours=...)` is a *relative* window measured from the wall clock,
+    # so this fixture must be relative too. A hard-coded 2026-11-03 timestamp made
+    # the test pass only on the day it was written and fail silently later
+    # (Phase 4 audit, 2026-11-04: it had already started failing). The test is about
+    # parameter binding, not about dates.
+    seen_at = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+    _collect(ledger, first, run_id="run-1", seen_at=seen_at)
+    _collect(ledger, second, run_id="run-1", seen_at=seen_at,
              mapping=other)
     rows, total = ledger.change_rows(hours=24, states=[CHANGE_NEW], source="fake")
     assert total == 2
