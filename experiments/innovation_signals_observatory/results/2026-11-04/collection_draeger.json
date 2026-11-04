@@ -1,0 +1,141 @@
+{
+  "company_key": "draeger",
+  "source_label": "Dräger",
+  "source_platform": "beesite",
+  "source_urls": {
+    "search_api": "https://draeger-beesite-production-gjb.app.beesite.de/search/",
+    "search_url_masked": "https://draeger-beesite-production-gjb.app.beesite.de/search/?data=<json>",
+    "jobad_page": "https://erecruitment.draeger.com/index.php?ac=jobad&id=<id>",
+    "robots": [
+      "https://draeger-beesite-production-gjb.app.beesite.de/robots.txt",
+      "https://erecruitment.draeger.com/robots.txt"
+    ]
+  },
+  "collector_version": "recruitment/1.0.0",
+  "schema_version": "recruitment-obs-v1",
+  "policy": {
+    "min_interval_s": 1.0,
+    "max_requests": 400,
+    "max_postings": 80,
+    "timeout_s": 45.0,
+    "robots_evidence": {
+      "draeger-beesite-production-gjb.app.beesite.de": {
+        "robots_url": "https://draeger-beesite-production-gjb.app.beesite.de/robots.txt",
+        "status": 404,
+        "n_groups": 0,
+        "raw_head": "{\"error\":{\"code\":404,\"message\":\"Not Found\"}}",
+        "groups": [],
+        "is_robots_file": false
+      },
+      "erecruitment.draeger.com": {
+        "robots_url": "https://erecruitment.draeger.com/robots.txt",
+        "status": 200,
+        "n_groups": 0,
+        "raw_head": "Sitemap: https://erecruitment.draeger.com/sitemap.xml",
+        "groups": [],
+        "is_robots_file": true
+      }
+    },
+    "notes": []
+  },
+  "report": {
+    "company_key": "draeger",
+    "source_label": "Dräger",
+    "started_at": "2026-11-04T13:28:10+00:00",
+    "finished_at": "2026-11-04T13:29:40+00:00",
+    "search_result_count": 80,
+    "search_result_count_all": 171,
+    "items_returned": 80,
+    "details_requested": 80,
+    "details_ok": 77,
+    "details_failed": 3,
+    "detail_failures": [
+      {
+        "posting_id": "19698",
+        "url": "https://erecruitment.draeger.com/index.php?ac=jobad&id=19698",
+        "http_status": null,
+        "error": "ValueError: job-ad page carried no schema.org JobPosting JSON-LD"
+      },
+      {
+        "posting_id": "19672",
+        "url": "https://erecruitment.draeger.com/index.php?ac=jobad&id=19672",
+        "http_status": null,
+        "error": "ValueError: job-ad page carried no schema.org JobPosting JSON-LD"
+      },
+      {
+        "posting_id": "19317",
+        "url": "https://erecruitment.draeger.com/index.php?ac=jobad&id=19317",
+        "http_status": null,
+        "error": "ValueError: job-ad page carried no schema.org JobPosting JSON-LD"
+      }
+    ],
+    "truncated_at_ceiling": true,
+    "robots": {
+      "draeger-beesite-production-gjb.app.beesite.de": {
+        "robots_url": "https://draeger-beesite-production-gjb.app.beesite.de/robots.txt",
+        "status": 404,
+        "is_robots_file": false,
+        "n_groups": null
+      },
+      "erecruitment.draeger.com": {
+        "robots_url": "https://erecruitment.draeger.com/robots.txt",
+        "status": 200,
+        "is_robots_file": true,
+        "n_groups": null
+      }
+    },
+    "robots_interpretation": {
+      "draeger-beesite-production-gjb.app.beesite.de": {
+        "published": false,
+        "status": 404,
+        "basis": "no robots.txt is published (GET returned a non-REP response); RFC 9309 treats an unavailable robots.txt as unrestricted",
+        "decision": {
+          "allowed": true,
+          "rule": null,
+          "reason": "no group applies; robots leaves the path unrestricted"
+        }
+      },
+      "erecruitment.draeger.com": {
+        "published": true,
+        "decision": {
+          "allowed": true,
+          "rule": null,
+          "reason": "no group applies; robots leaves the path unrestricted"
+        }
+      }
+    },
+    "request_stats": {
+      "requests": 83,
+      "cache_hits": 0,
+      "retries": 0,
+      "errors": 0
+    },
+    "collector_version": "recruitment/1.0.0"
+  },
+  "availability": {
+    "n": 80,
+    "rates": {
+      "posting_id": 1.0,
+      "source_url": 1.0,
+      "job_title": 1.0,
+      "description_nonempty": 0.9625,
+      "location": 1.0,
+      "source_date": 1.0,
+      "relative_only": 0.0,
+      "no_time": 0.0,
+      "first_seen": 1.0,
+      "legal_entity": 1.0
+    },
+    "by_quality": {
+      "SOURCE_DATE": 80
+    },
+    "by_status": {
+      "COMPLETE": 77,
+      "DETAIL_FAILED": 3
+    },
+    "by_platform": {
+      "beesite": 80
+    },
+    "distinct_postings": 80
+  }
+}

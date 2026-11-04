@@ -1,0 +1,597 @@
+{
+  "diagnostic": "rules-baseline track coverage on job adverts",
+  "jobs_file": "jobs_medtronic.jsonl",
+  "n_postings": 994,
+  "note": "probe terms are independent plain-language phrasings, not the taxonomy keywords; a large gap between 'mentioning' and 'assigned' is the measured transfer failure of a taxonomy built for product-code/regulatory text, and is reported rather than fixed by loosening the gate",
+  "tracks": {
+    "surgical_robotics": {
+      "n_postings_mentioning": 80,
+      "n_assigned_to_this_track": 0,
+      "n_mentioned_but_no_track": 78,
+      "function_classes_among_mentions": {
+        "SALES_ADMIN_OTHER": 49,
+        "UNCLASSIFIED": 18,
+        "PRODUCT_ENGINEERING": 6,
+        "QUALITY_REGULATORY": 2,
+        "ALGORITHM_SOFTWARE": 5
+      },
+      "track_statuses_among_mentions": {
+        "None": 80
+      },
+      "examples_assigned": [],
+      "examples_mentioned_but_unassigned": [
+        {
+          "posting_id": "14d3b7e8de54104ca328d8e0f8c60000",
+          "title": "Training & Education Manager - Robotics",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "c11b1678232e104ce446b5a0453c0001",
+          "title": "Principal Business Process Improvement Analyst – Cranial & Spinal Technologies",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "62cbbafaa709104ae3cc69d088d90001",
+          "title": "Sales Representative II, Spine - Sacramento, CA",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "a817339b4ba1103d56efa1cae2d00001",
+          "title": "Prin Marketing Specialist",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "3393e994d4b710376d165fac81310001",
+          "title": "Principal Environmental Specialist - North Haven, CT",
+          "function_class": "UNCLASSIFIED",
+          "track_id": null,
+          "track_status": null
+        }
+      ]
+    },
+    "medical_ai": {
+      "n_postings_mentioning": 141,
+      "n_assigned_to_this_track": 25,
+      "n_mentioned_but_no_track": 108,
+      "function_classes_among_mentions": {
+        "ALGORITHM_SOFTWARE": 37,
+        "SALES_ADMIN_OTHER": 48,
+        "QUALITY_REGULATORY": 17,
+        "UNCLASSIFIED": 26,
+        "CORE_R&D": 3,
+        "PRODUCT_ENGINEERING": 7,
+        "HARDWARE_SYSTEMS": 1,
+        "MANUFACTURING_PROCESS": 2
+      },
+      "track_statuses_among_mentions": {
+        "None": 141
+      },
+      "examples_assigned": [
+        {
+          "posting_id": "14d3b7e8de54104cbb608a507cbd0000",
+          "title": "Engineer I",
+          "function_class": "QUALITY_REGULATORY",
+          "track_id": "medical_ai",
+          "track_status": null
+        },
+        {
+          "posting_id": "6da5f8cc8b55103233071941d37b0001",
+          "title": "Quality Engineer II- BH",
+          "function_class": "QUALITY_REGULATORY",
+          "track_id": "medical_ai",
+          "track_status": null
+        },
+        {
+          "posting_id": "b968d27c521f103747bf2444d4ce0001",
+          "title": "Senior IT Supervisor - Data Engineering",
+          "function_class": "ALGORITHM_SOFTWARE",
+          "track_id": "medical_ai",
+          "track_status": null
+        },
+        {
+          "posting_id": "77e6867d91af1038f03e8e2573a60001",
+          "title": "Software QA Automation Engineer",
+          "function_class": "ALGORITHM_SOFTWARE",
+          "track_id": "medical_ai",
+          "track_status": null
+        },
+        {
+          "posting_id": "d2836d4abd1d1029788fa9bfda5b0000",
+          "title": "Software QA Automation Engineer",
+          "function_class": "ALGORITHM_SOFTWARE",
+          "track_id": "medical_ai",
+          "track_status": null
+        }
+      ],
+      "examples_mentioned_but_unassigned": [
+        {
+          "posting_id": "a0a8fe61c08d102ef9a76385d5310001",
+          "title": "Principal Platform Engineer - ML Ops",
+          "function_class": "ALGORITHM_SOFTWARE",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "a0a8fe61c08d102efaec948515620000",
+          "title": "Senior Platform Engineer - ML Ops",
+          "function_class": "ALGORITHM_SOFTWARE",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "c11b1678232e104ce446b5a0453c0001",
+          "title": "Principal Business Process Improvement Analyst – Cranial & Spinal Technologies",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "122732526734103d6a771d9127820000",
+          "title": "Senior Enterprise Software Engineer",
+          "function_class": "ALGORITHM_SOFTWARE",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "122732526734103d39b0abd0453d0000",
+          "title": "Executive Assistant to the President - Endoscopy",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        }
+      ]
+    },
+    "ep_pfa": {
+      "n_postings_mentioning": 117,
+      "n_assigned_to_this_track": 8,
+      "n_mentioned_but_no_track": 106,
+      "function_classes_among_mentions": {
+        "SALES_ADMIN_OTHER": 86,
+        "HARDWARE_SYSTEMS": 3,
+        "QUALITY_REGULATORY": 4,
+        "ALGORITHM_SOFTWARE": 9,
+        "PRODUCT_ENGINEERING": 8,
+        "UNCLASSIFIED": 5,
+        "MANUFACTURING_PROCESS": 1,
+        "CLINICAL_R&D": 1
+      },
+      "track_statuses_among_mentions": {
+        "None": 117
+      },
+      "examples_assigned": [
+        {
+          "posting_id": "122732526734103cfe00b6e47feb0002",
+          "title": "Senior Medical Safety Specialist",
+          "function_class": "QUALITY_REGULATORY",
+          "track_id": "ep_pfa",
+          "track_status": null
+        },
+        {
+          "posting_id": "6ecf0680c83f10305359c438588e0000",
+          "title": "Software Engineering Program Manager - Cardiac Ablation Solutions",
+          "function_class": "ALGORITHM_SOFTWARE",
+          "track_id": "ep_pfa",
+          "track_status": null
+        },
+        {
+          "posting_id": "58053233949c103bc4587ed3cb1c0002",
+          "title": "Principal Systems Engineer (CAS)",
+          "function_class": "PRODUCT_ENGINEERING",
+          "track_id": "ep_pfa",
+          "track_status": null
+        },
+        {
+          "posting_id": "6a5e0227b519102e345a957f96cd0001",
+          "title": "Sr. Principal Systems Engineer - Medical Device",
+          "function_class": "PRODUCT_ENGINEERING",
+          "track_id": "ep_pfa",
+          "track_status": null
+        },
+        {
+          "posting_id": "a2978683a3e9101bc263418791910000",
+          "title": "Principal Systems Engineer - Cardiac Ablation Solutions",
+          "function_class": "PRODUCT_ENGINEERING",
+          "track_id": "ep_pfa",
+          "track_status": null
+        }
+      ],
+      "examples_mentioned_but_unassigned": [
+        {
+          "posting_id": "122732526734103d755b640fac740001",
+          "title": "Clinical Specialist, CRM- NJ",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "2013b11ab98c103d751f8e3b504f0001",
+          "title": "Principal EP Mapping Specialist, CAS-Philly",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "c11b1678232e104cd2a8a44b15da0001",
+          "title": "Territory Manager - CRM",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "a817339b4ba1103d4eb4ef4964d50001",
+          "title": "Principal Affera Mapping Specialist - CAS",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "a817339b4ba1103d4e77d828160e0000",
+          "title": "Senior EP Mapping Specialist - CAS",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        }
+      ]
+    },
+    "neurostimulation": {
+      "n_postings_mentioning": 57,
+      "n_assigned_to_this_track": 14,
+      "n_mentioned_but_no_track": 43,
+      "function_classes_among_mentions": {
+        "SALES_ADMIN_OTHER": 40,
+        "ALGORITHM_SOFTWARE": 1,
+        "QUALITY_REGULATORY": 6,
+        "UNCLASSIFIED": 3,
+        "PRODUCT_ENGINEERING": 2,
+        "CORE_R&D": 1,
+        "MANUFACTURING_PROCESS": 2,
+        "CLINICAL_R&D": 2
+      },
+      "track_statuses_among_mentions": {
+        "None": 57
+      },
+      "examples_assigned": [
+        {
+          "posting_id": "d2836d4abd1d102a88bde4e41e330001",
+          "title": "Sr. Principal Embedded Software Engineer",
+          "function_class": "ALGORITHM_SOFTWARE",
+          "track_id": "neurostimulation",
+          "track_status": null
+        },
+        {
+          "posting_id": "b7fd2a1e7c5b103a018a5b89c90c0000",
+          "title": "Principal Quality Engineer, Neuromodulation/Pelvic Health Minneapolis, MN  (On-Site)",
+          "function_class": "QUALITY_REGULATORY",
+          "track_id": "neurostimulation",
+          "track_status": null
+        },
+        {
+          "posting_id": "8e5a383db9e0103931cdae751c300002",
+          "title": "Mechanical Design Engineer II",
+          "function_class": "PRODUCT_ENGINEERING",
+          "track_id": "neurostimulation",
+          "track_status": null
+        },
+        {
+          "posting_id": "3df5600c638510284a6850aea9130001",
+          "title": "Mechanical Engineering Manager - Released Products",
+          "function_class": "QUALITY_REGULATORY",
+          "track_id": "neurostimulation",
+          "track_status": null
+        },
+        {
+          "posting_id": "d15f631c147b1038b65c01dd7bb50000",
+          "title": "Senior Scientist, Pain Interventions - Onsite",
+          "function_class": "CORE_R&D",
+          "track_id": "neurostimulation",
+          "track_status": null
+        }
+      ],
+      "examples_mentioned_but_unassigned": [
+        {
+          "posting_id": "bd44f52e84a2102ff7a72bea8d450001",
+          "title": "Therapy Development Specialist, Pelvic Health - Dallas, TX",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "d15f631c147b1039d8175130d0e40000",
+          "title": "Sales Rep, Peripheral Nervous System (PNS) –Grand Rapids, MI",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "bfc0e6e6ebe610210e315a5ee7d30001",
+          "title": "Principal Financial Analyst  - Brain Modulation",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "c11b1678232e104cb42b4c1ed7de0001",
+          "title": "Sales Support Representative I, Pain Interventions - Rockville, MD / Fairfax, VA / Annapolis, MD",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "a817339b4ba1103d3b159e6938610001",
+          "title": "Associate Clinical Specialist, Pain Interventions - Washington DC",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        }
+      ]
+    },
+    "structural_heart": {
+      "n_postings_mentioning": 34,
+      "n_assigned_to_this_track": 2,
+      "n_mentioned_but_no_track": 32,
+      "function_classes_among_mentions": {
+        "SALES_ADMIN_OTHER": 31,
+        "CORE_R&D": 2,
+        "UNCLASSIFIED": 1
+      },
+      "track_statuses_among_mentions": {
+        "None": 34
+      },
+      "examples_assigned": [
+        {
+          "posting_id": "8e5a383db9e0103906afdd859dce0001",
+          "title": "Senior R&D Engineer",
+          "function_class": "CORE_R&D",
+          "track_id": "structural_heart",
+          "track_status": null
+        },
+        {
+          "posting_id": "70591926cba810390699467e176b0000",
+          "title": "Principal R&D Engineer",
+          "function_class": "CORE_R&D",
+          "track_id": "structural_heart",
+          "track_status": null
+        }
+      ],
+      "examples_mentioned_but_unassigned": [
+        {
+          "posting_id": "c11b1678232e104cd2a8a44b15da0001",
+          "title": "Territory Manager - CRM",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "a817339b4ba1103d3db9864c93340000",
+          "title": "Field Clinical Lead - TAVR (New Jersey; Connecticut; New York)",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "0fa321cff9c61034a88deeb977a40000",
+          "title": "Senior Technical Field Consultant (CathWorks) - Phoenix",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "2e1ef6324d181034a90f22e931da0001",
+          "title": "Senior Technical Field Consultant (CathWorks) - Orlando",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "6e581deda778103b170aaff81c380000",
+          "title": "Senior CoreValve Therapy Development Specialist - (Bakersfield, CA / San Luis Obispo, CA / Fresno, CA / Visalia, CA)",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        }
+      ]
+    },
+    "cardiac_rhythm": {
+      "n_postings_mentioning": 56,
+      "n_assigned_to_this_track": 2,
+      "n_mentioned_but_no_track": 53,
+      "function_classes_among_mentions": {
+        "SALES_ADMIN_OTHER": 43,
+        "HARDWARE_SYSTEMS": 3,
+        "QUALITY_REGULATORY": 2,
+        "PRODUCT_ENGINEERING": 2,
+        "UNCLASSIFIED": 3,
+        "CORE_R&D": 1,
+        "ALGORITHM_SOFTWARE": 1,
+        "CLINICAL_R&D": 1
+      },
+      "track_statuses_among_mentions": {
+        "None": 56
+      },
+      "examples_assigned": [
+        {
+          "posting_id": "122732526734103d4364de2669b30001",
+          "title": "Senior Reliability Engineer",
+          "function_class": "HARDWARE_SYSTEMS",
+          "track_id": "cardiac_rhythm",
+          "track_status": null
+        },
+        {
+          "posting_id": "263538b340e510179d1d7c1452480001",
+          "title": "Principal Electrical Engineer, CRM",
+          "function_class": "HARDWARE_SYSTEMS",
+          "track_id": "cardiac_rhythm",
+          "track_status": null
+        }
+      ],
+      "examples_mentioned_but_unassigned": [
+        {
+          "posting_id": "122732526734103d755b640fac740001",
+          "title": "Clinical Specialist, CRM- NJ",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "c11b1678232e104cd2a8a44b15da0001",
+          "title": "Territory Manager - CRM",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "8e5a383db9e010397c63e145e9530001",
+          "title": "Quality Systems Program Manager",
+          "function_class": "QUALITY_REGULATORY",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "14d3b7e8de54104cb20b10cac7170001",
+          "title": "Clinical Specialist - Cardiac Rhythm Management - Ann Arbor",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "122732526734103d39840c4081cf0000",
+          "title": "Principal Marketing Specialist - DS",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        }
+      ]
+    },
+    "imaging_us": {
+      "n_postings_mentioning": 8,
+      "n_assigned_to_this_track": 1,
+      "n_mentioned_but_no_track": 5,
+      "function_classes_among_mentions": {
+        "SALES_ADMIN_OTHER": 5,
+        "ALGORITHM_SOFTWARE": 1,
+        "CORE_R&D": 2
+      },
+      "track_statuses_among_mentions": {
+        "None": 8
+      },
+      "examples_assigned": [
+        {
+          "posting_id": "aa89d21dee97101c9ef3824c056f0000",
+          "title": "Principal Algorithm Engineer – Imaging / Ultrasound (ML)",
+          "function_class": "ALGORITHM_SOFTWARE",
+          "track_id": "imaging_us",
+          "track_status": null
+        }
+      ],
+      "examples_mentioned_but_unassigned": [
+        {
+          "posting_id": "6e581deda778103b170aaff81c380000",
+          "title": "Senior CoreValve Therapy Development Specialist - (Bakersfield, CA / San Luis Obispo, CA / Fresno, CA / Visalia, CA)",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "7c69252818701023632b34297b3f0000",
+          "title": "Senior CoreValve Therapy Consultant - Utah/Idaho",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "91a67527aabe10485bbf26bda3b20001",
+          "title": "Principal CoreValve Therapy Consultant - San Jose, CA; Redwood City, CA; San Francisco, CA; Honolulu, HI",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "e28d0f5e004610201420aa7f7f5f0002",
+          "title": "Prin. Clinical Specialist - Superficial Venous Interventions (SVI) - Miami / Boca Raton / Ft. Lauderdale",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "58053233949c103bad984d18720c0001",
+          "title": "Principal Field Clinical Specialist - Mitral & Tricuspid - West",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        }
+      ]
+    },
+    "diabetes": {
+      "n_postings_mentioning": 8,
+      "n_assigned_to_this_track": 0,
+      "n_mentioned_but_no_track": 8,
+      "function_classes_among_mentions": {
+        "SALES_ADMIN_OTHER": 7,
+        "PRODUCT_ENGINEERING": 1
+      },
+      "track_statuses_among_mentions": {
+        "None": 8
+      },
+      "examples_assigned": [],
+      "examples_mentioned_but_unassigned": [
+        {
+          "posting_id": "62cbbafaa709104b4fd6e000a33b0001",
+          "title": "Territory Manager - Diabetes",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "62cbbafaa709104b3858f690edcc0000",
+          "title": "Senior Electronic Component Development Engineer (Supplier Quality)",
+          "function_class": "PRODUCT_ENGINEERING",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "7855805f1fb5104b1b725417778a0000",
+          "title": "Training and Education Intern - Madinah",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "ae179884d030101f5d63172a61ac0000",
+          "title": "Sales Representative II Diabetes (Małopolskie)",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        },
+        {
+          "posting_id": "f8066f25276f102846e1242a54450000",
+          "title": "Associate Customer Service Specialist with Spanish",
+          "function_class": "SALES_ADMIN_OTHER",
+          "track_id": null,
+          "track_status": null
+        }
+      ]
+    }
+  },
+  "versions": {
+    "schema_version": "recruitment-classification-v1",
+    "arm": "rules_A",
+    "rules_version": "recruitment_taxonomy_rules_2026-11-04",
+    "function_map_version": "recruitment_function_classes_2026-11-04",
+    "function_map_fingerprint": "42c754422a2181e5c25b8e38b11e40fc7dd0afb90a67942f71457db3d8be941f",
+    "taxonomy": {
+      "version": "tracks_device_2026-11",
+      "effective_from": "2026-11-03",
+      "code_map_fingerprint": "97c9499636703ce6a002966d97a2fa4d1471c941800e4e5385d74e486fbf2587",
+      "track_list_fingerprint": "074087461f5a6f19246786fc8164cde60b202a39cf8dcaef8fcee6d14f115a3c",
+      "note": "a change in either fingerprint without a version bump is a taxonomy remap; artifacts produced under different fingerprints are not directly comparable"
+    }
+  }
+}

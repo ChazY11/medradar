@@ -1,0 +1,510 @@
+{
+  "company_key": "draeger",
+  "company_name": "Dräger",
+  "corporate_home": "https://www.draeger.com/",
+  "platform_hypothesis": "beesite (Dräger e-recruitment portal) + Teamtailor (UK & Ireland)",
+  "requests": [
+    {
+      "url": "https://www.draeger.com/robots.txt",
+      "method": "GET",
+      "status": 200,
+      "final_url": "https://www.draeger.com/robots.txt",
+      "content_type": "text/plain",
+      "error": null,
+      "elapsed_ms": 125,
+      "body_bytes": 1258,
+      "body_head": "﻿#updated 05.01.2026\r\n\r\nUser-agent: *\r\nSitemap: https://www.draeger.com/Sitemap.xml\r\n\r\n#System\r\nDisallow: /*api/\r\nDisallow: */api/hubspot/*\r\n \r\n#content\r\nDisallow: /en_tes*\r\nDisallow: /lo_wor*\r\nDisallow: /*Partner*\r\nDisallow: /*partner*\r\nDisallow: /*SearchResults*\r\n\r\nDisallow: /Products/Content/*-ifu-9027*\r\nDisallow: /Products/Content/*-ifu-9028*\r\nDisallow: /Products/Content/*-ifu-90291*\r\nDisallow"
+    },
+    {
+      "url": "https://www.draeger.com/en/careers",
+      "method": "GET",
+      "status": null,
+      "final_url": null,
+      "content_type": null,
+      "error": "RemoteDisconnected: Remote end closed connection without response",
+      "elapsed_ms": 19203
+    },
+    {
+      "url": "https://erecruitment.draeger.com/robots.txt",
+      "method": "GET",
+      "status": 200,
+      "final_url": "https://erecruitment.draeger.com/robots.txt",
+      "content_type": "text/html; charset=UTF-8",
+      "error": null,
+      "elapsed_ms": 108,
+      "body_bytes": 53,
+      "body_head": "Sitemap: https://erecruitment.draeger.com/sitemap.xml"
+    },
+    {
+      "url": "https://erecruitment.draeger.com/sitemap.xml",
+      "method": "GET",
+      "status": 200,
+      "final_url": "https://erecruitment.draeger.com/sitemap.xml",
+      "content_type": "application/xml; charset=utf-8",
+      "error": null,
+      "elapsed_ms": 343,
+      "body_bytes": 41821,
+      "body_head": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"https://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"https://www.w3.org/1999/xhtml\">\n <url>\n  <loc>https://erecruitment.draeger.com/index.php?ac=jobad&amp;id=18293</loc>\n  <lastmod>2026-02-13</lastmod>\n </url>\n <url>\n  <loc>https://erecruit"
+    },
+    {
+      "url": "https://erecruitment.draeger.com/index.php?ac=jobad&amp;id=18293",
+      "method": "GET",
+      "status": 200,
+      "final_url": "https://erecruitment.draeger.com/index.php?ac=jobad&amp;id=18293",
+      "content_type": "text/html; charset=UTF-8",
+      "error": null,
+      "elapsed_ms": 1030,
+      "body_bytes": 120439,
+      "body_head": "<!DOCTYPE html>\n\n<!--[if IE 7]>         <html class=\"no-js lt-ie10 lt-ie9 lt-ie8\" lang=\"de\"> <![endif]-->\n<!--[if IE 8]>"
+    },
+    {
+      "url": "https://erecruitment.draeger.com/index.php?ac=jobad&amp;id=12374",
+      "method": "GET",
+      "status": 200,
+      "final_url": "https://erecruitment.draeger.com/index.php?ac=jobad&amp;id=12374",
+      "content_type": "text/html; charset=UTF-8",
+      "error": null,
+      "elapsed_ms": 983,
+      "body_bytes": 119580,
+      "body_head": "<!DOCTYPE html>\n\n<!--[if IE 7]>         <html class=\"no-js lt-ie10 lt-ie9 lt-ie8\" lang=\"de\"> <![endif]-->\n<!--[if IE 8]>"
+    },
+    {
+      "url": "https://draeger-beesite-production-gjb.app.beesite.de/robots.txt",
+      "method": "GET",
+      "status": 404,
+      "final_url": "https://draeger-beesite-production-gjb.app.beesite.de/robots.txt",
+      "content_type": "text/plain;charset=UTF-8",
+      "error": "HTTPError 404",
+      "elapsed_ms": 93,
+      "body_bytes": 44,
+      "body_head": "{\"error\":{\"code\":404,\"message\":\"Not Found\"}}"
+    },
+    {
+      "url": "https://draeger-beesite-production-gjb.app.beesite.de/search/?data=%7B%22LanguageCode%22%3A%22DE%22%2C%22SearchParameters%22%3A%7B%22CountItem%22%3A10%2C%22Sort%22%3A%5B%7B%22Criterion%22%3A%22PublicationStartDate%22%2C%22Direction%22%3A%22DESC%22%7D%5D%2C%22MatchedObjectDescriptor%22%3A%5B%22ID%22%2C%22PositionTitle%22%2C%22PositionURI%22%2C%22PositionLocation.CountryName%22%2C%22PositionLocation.CityName%22%2C%22JobCategory.Name%22%2C%22PublicationStartDate%22%2C%22ParentOrganizationName%22%2C%22CareerLevel.Name%22%2C%22PositionSchedule.Name%22%5D%7D%2C%22SearchCriteria%22%3A%5B%7B%22CriterionName%22%3A%22PublicationChannel.Code%22%2C%22CriterionValue%22%3A%5B%2212%22%5D%7D%5D%7D",
+      "method": "GET",
+      "status": 200,
+      "final_url": "https://draeger-beesite-production-gjb.app.beesite.de/search/?data=%7B%22LanguageCode%22%3A%22DE%22%2C%22SearchParameters%22%3A%7B%22CountItem%22%3A10%2C%22Sort%22%3A%5B%7B%22Criterion%22%3A%22PublicationStartDate%22%2C%22Direction%22%3A%22DESC%22%7D%5D%2C%22MatchedObjectDescriptor%22%3A%5B%22ID%22%2C%22PositionTitle%22%2C%22PositionURI%22%2C%22PositionLocation.CountryName%22%2C%22PositionLocation.CityName%22%2C%22JobCategory.Name%22%2C%22PublicationStartDate%22%2C%22ParentOrganizationName%22%2C%22CareerLevel.Name%22%2C%22PositionSchedule.Name%22%5D%7D%2C%22SearchCriteria%22%3A%5B%7B%22CriterionName%22%3A%22PublicationChannel.Code%22%2C%22CriterionValue%22%3A%5B%2212%22%5D%7D%5D%7D",
+      "content_type": "application/json",
+      "error": null,
+      "elapsed_ms": 109,
+      "body_bytes": 6662,
+      "body_head": "{\"LanguageCode\":\"DE\",\"SearchParameters\":{\"Sort\":[{\"Criterion\":\"PublicationStartDate\",\"Direction\":\"DESC\"}]},\"SearchResult\":{\"SearchResultCount\":10,\"SearchResultCountAll\":171,\"SearchResultItems\":[{\"Matc"
+    },
+    {
+      "url": "https://ukjobs.draeger.com/robots.txt",
+      "method": "GET",
+      "status": 200,
+      "final_url": "https://ukjobs.draeger.com/robots.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "error": null,
+      "elapsed_ms": 108,
+      "body_bytes": 262,
+      "body_head": "User-Agent: aihitdata\nDisallow: /\n\nUser-Agent: *\nDisallow: /app/\nDisallow: /messages/\nDisallow: /messenger/\nDisallow: /facebook/tab/\nDisallow: /jobs/internal/\nContent-Signal: search=yes, ai-train=no, ai-input=yes\n\nSitemap: https://ukjobs.draeger.com/sitemap.xml\n"
+    },
+    {
+      "url": "https://ukjobs.draeger.com/sitemap.xml",
+      "method": "GET",
+      "status": 200,
+      "final_url": "https://ukjobs.draeger.com/sitemap.xml",
+      "content_type": "application/xml; charset=utf-8",
+      "error": null,
+      "elapsed_ms": 437,
+      "body_bytes": 3033,
+      "body_head": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url>\n    <loc>https://ukjobs.draeger.com/</loc>\n    <lastmod>2026-05-11T12:01:38+01:00</lastmod>\n  </url>\n\n  <url>\n    <loc>https://ukjobs.draeger.com/privacy-policy</loc>\n  </url>\n\n  <url>\n    <lo"
+    },
+    {
+      "url": "https://ukjobs.draeger.com/jobs/8636814-events-campaigns-specialist",
+      "method": "GET",
+      "status": 200,
+      "final_url": "https://ukjobs.draeger.com/jobs/8636814-events-campaigns-specialist",
+      "content_type": "text/html; charset=utf-8",
+      "error": null,
+      "elapsed_ms": 406,
+      "body_bytes": 67870,
+      "body_head": "<!DOCTYPE html>\n\n<html\n  lang=\"en-GB\"\n  dir=\"ltr\"\n  class=\"h-screen\"\n>\n  <head>\n\n    <script src=\"https://assets-aws.tea"
+    }
+  ],
+  "routes": {
+    "corporate_robots": {
+      "robots_url": "https://www.draeger.com/robots.txt",
+      "status": 200,
+      "content_type": "text/plain",
+      "error": null,
+      "is_robots_file": true,
+      "n_groups": 1,
+      "groups": [
+        {
+          "agents": [
+            "*"
+          ],
+          "allow": [],
+          "disallow": [
+            "/*api/",
+            "*/api/hubspot/*",
+            "/en_tes*",
+            "/lo_wor*",
+            "/*Partner*",
+            "/*partner*",
+            "/*SearchResults*",
+            "/Products/Content/*-ifu-9027*",
+            "/Products/Content/*-ifu-9028*",
+            "/Products/Content/*-ifu-90291*",
+            "/Products/Content/*-ifu-90292*",
+            "/Products/Content/*-ifu-90293*",
+            "/Products/Content/*-ifu-90294*",
+            "/Products/Content/*-ifu-90295*",
+            "/Products/Content/*-ifu-9037*",
+            "/Products/Content/*-ifu-9038*",
+            "/Products/Content/*-ifu-9039*",
+            "/Products/Content/*-ifu-90401*",
+            "/Products/Content/*-ifu-9052*",
+            "/Products/Content/*-ifu-9053*",
+            "/Products/Content/*-ifu-9054*",
+            "/Products/Content/*-ifu-9055*",
+            "/Products/Content/*-ifu-9056*",
+            "/Products/Content/*-ifu-9057*",
+            "/Products/Content/*-ifu-9058*",
+            "/Products/Content/*-ifu-9059*"
+          ]
+        }
+      ],
+      "raw_head": "﻿#updated 05.01.2026\r\n\r\nUser-agent: *\r\nSitemap: https://www.draeger.com/Sitemap.xml\r\n\r\n#System\r\nDisallow: /*api/\r\nDisallow: */api/hubspot/*\r\n \r\n#content\r\nDisallow: /en_tes*\r\nDisallow: /lo_wor*\r\nDisallow: /*Partner*\r\nDisallow: /*partner*\r\nDisallow: /*SearchResults*\r\n\r\nDisallow: /Products/Content/*-ifu-9027*\r\nDisallow: /Products/Content/*-ifu-9028*\r\nDisallow: /Products/Content/*-ifu-90291*\r\nDisallow: /Products/Content/*-ifu-90292*\r\nDisallow: /Products/Content/*-ifu-90293*\r\nDisallow: /Products/Content/*-ifu-90294*\r\nDisallow: /Products/Content/*-ifu-90295*\r\nDisallow: /Products/Content/*-ifu-9037*\r\nDisallow: /Products/Content/*-ifu-9038*\r\nDisallow: /Products/Content/*-ifu-9039*\r\nDisallow: /Products/Content/*-ifu-90401*\r\nDisallow: /Products/Content/*-ifu-9052*\r\nDisallow: /Products/Content/*-ifu-9053*\r\nDisallow: /Products/Content/*-ifu-9054*\r\nDisallow: /Products/Content/*-ifu-9055*\r\nDisallow: /",
+      "path_decisions": {
+        "/en/careers": {
+          "allowed": true,
+          "rule": null,
+          "reason": "no matching rule"
+        },
+        "/en_uk/Career": {
+          "allowed": true,
+          "rule": null,
+          "reason": "no matching rule"
+        }
+      },
+      "sitemaps_advertised": []
+    },
+    "corporate_careers_page": {
+      "url": "https://www.draeger.com/en/careers",
+      "status": null,
+      "content_type": null,
+      "error": "RemoteDisconnected: Remote end closed connection without response",
+      "elapsed_ms": 19203,
+      "note": "scripted GET does not get an HTML response from the Akamai-fronted CMS; a real browser in this session reached the same URL and got its 404 page (recorded in SOURCE_DISCOVERY_EXTRAS.md, not reproducible by this script). The corporate CMS is the marketing site, not the job board."
+    },
+    "portal_robots": {
+      "robots_url": "https://erecruitment.draeger.com/robots.txt",
+      "status": 200,
+      "content_type": "text/html; charset=UTF-8",
+      "error": null,
+      "is_robots_file": true,
+      "n_groups": 0,
+      "groups": [],
+      "raw_head": "Sitemap: https://erecruitment.draeger.com/sitemap.xml",
+      "path_decisions": {
+        "/index.php?ac=jobad": {
+          "allowed": true,
+          "rule": null,
+          "reason": "no group applies; robots leaves the path unrestricted"
+        },
+        "/sitemap.xml": {
+          "allowed": true,
+          "rule": null,
+          "reason": "no group applies; robots leaves the path unrestricted"
+        }
+      },
+      "sitemaps_advertised": []
+    },
+    "portal_sitemap": {
+      "url": "https://erecruitment.draeger.com/sitemap.xml",
+      "status": 200,
+      "content_type": "application/xml; charset=utf-8",
+      "n_urls": 213,
+      "n_jobad_urls": 171,
+      "sample": [
+        "https://erecruitment.draeger.com/index.php?ac=jobad&amp;id=18293",
+        "https://erecruitment.draeger.com/index.php?ac=jobad&amp;id=12374",
+        "https://erecruitment.draeger.com/index.php?ac=jobad&amp;id=12372",
+        "https://erecruitment.draeger.com/index.php?ac=jobad&amp;id=12371"
+      ]
+    },
+    "portal_jobad_samples": [
+      {
+        "jsonld_blocks": 1,
+        "jobposting_present": true,
+        "keys": [
+          "@context",
+          "@type",
+          "datePosted",
+          "description",
+          "directApply",
+          "employmentType",
+          "hiringOrganization",
+          "identifier",
+          "jobLocation",
+          "title",
+          "validThrough"
+        ],
+        "identifier_value": "J000018293",
+        "identifier_name": "Drägerwerk AG &amp; Co. KGaA",
+        "title": "Abschlussarbeit in der Forschung und Entwicklung – Data Engineering und UX für Medizinproduktdokumentation - Drägerwerk AG &amp; Co. KGaA - Job-ID V000010573",
+        "datePosted": "2026-02-13",
+        "validThrough": "2029-12-31",
+        "employmentType": "FULL_TIME",
+        "hiring_organization_name": "Drägerwerk AG &amp; Co. KGaA",
+        "addresses": [
+          {
+            "streetAddress": "Moislinger Allee 53",
+            "addressLocality": "Lübeck",
+            "addressRegion": "Schleswig-Holstein",
+            "postalCode": 23558,
+            "addressCountry": "DE",
+            "@type": "PostalAddress"
+          }
+        ],
+        "description_chars": 4610,
+        "description_head": "&lt;h2&gt;Dafür suchen wir Sie&lt;/h2&gt;&lt;p&gt;Studieren macht Spaß – noch mehr, wenn du die Theorie auch in der Praxis erleben kannst. Bei Dräger bringst du vom ersten Tag an deine Ideen ein und ü",
+        "url": "https://erecruitment.draeger.com/index.php?ac=jobad&amp;id=18293",
+        "status": 200,
+        "error": null
+      },
+      {
+        "jsonld_blocks": 1,
+        "jobposting_present": true,
+        "keys": [
+          "@context",
+          "@type",
+          "datePosted",
+          "description",
+          "directApply",
+          "employmentType",
+          "hiringOrganization",
+          "identifier",
+          "jobLocation",
+          "title",
+          "validThrough"
+        ],
+        "identifier_value": "J000012374",
+        "identifier_name": "Dräger Safety AG &amp; Co. KGaA",
+        "title": "Praktikum / Abschlussarbeit in der Forschung und Entwicklung - Softwareentwicklung - Dräger Safety AG &amp; Co. KGaA - Job-ID P0051V017",
+        "datePosted": "2025-02-05",
+        "validThrough": "2029-12-31",
+        "employmentType": "FULL_TIME",
+        "hiring_organization_name": "Dräger Safety AG &amp; Co. KGaA",
+        "addresses": [
+          {
+            "streetAddress": "Revalstraße 1",
+            "addressLocality": "Lübeck",
+            "addressRegion": "Schleswig-Holstein",
+            "postalCode": 23560,
+            "addressCountry": "DE",
+            "@type": "PostalAddress"
+          }
+        ],
+        "description_chars": 4753,
+        "description_head": "&lt;h2&gt;Dafür suchen wir Dich&lt;/h2&gt;&lt;p&gt;Studieren macht Spaß – noch mehr, wenn du die Theorie auch in der Praxis erleben kannst. Bei Dräger bringst du vom ersten Tag an deine Ideen ein und ",
+        "url": "https://erecruitment.draeger.com/index.php?ac=jobad&amp;id=12374",
+        "status": 200,
+        "error": null
+      }
+    ],
+    "beesite_robots": {
+      "robots_url": "https://draeger-beesite-production-gjb.app.beesite.de/robots.txt",
+      "status": 404,
+      "content_type": "text/plain;charset=UTF-8",
+      "error": "HTTPError 404",
+      "is_robots_file": false,
+      "n_groups": 0,
+      "groups": [],
+      "raw_head": "{\"error\":{\"code\":404,\"message\":\"Not Found\"}}",
+      "path_decisions": {
+        "/search/": {
+          "allowed": true,
+          "rule": null,
+          "reason": "no group applies; robots leaves the path unrestricted"
+        }
+      },
+      "sitemaps_advertised": []
+    },
+    "beesite_search": {
+      "url_masked": "https://draeger-beesite-production-gjb.app.beesite.de/search/?data=<json>",
+      "data_payload": {
+        "LanguageCode": "DE",
+        "SearchParameters": {
+          "CountItem": 10,
+          "Sort": [
+            {
+              "Criterion": "PublicationStartDate",
+              "Direction": "DESC"
+            }
+          ],
+          "MatchedObjectDescriptor": [
+            "ID",
+            "PositionTitle",
+            "PositionURI",
+            "PositionLocation.CountryName",
+            "PositionLocation.CityName",
+            "JobCategory.Name",
+            "PublicationStartDate",
+            "ParentOrganizationName",
+            "CareerLevel.Name",
+            "PositionSchedule.Name"
+          ]
+        },
+        "SearchCriteria": [
+          {
+            "CriterionName": "PublicationChannel.Code",
+            "CriterionValue": [
+              "12"
+            ]
+          }
+        ]
+      },
+      "status": 200,
+      "content_type": "application/json",
+      "error": null,
+      "search_result_count": 10,
+      "search_result_count_all": 171,
+      "items_returned": 10,
+      "sample_items": [
+        {
+          "ID": "19717",
+          "PositionTitle": "Systemingenieur Sensorik (m/w/d) Flow-Sensor-Integration Beatmung & Anästhesie",
+          "PublicationStartDate": "2026-11-03",
+          "ParentOrganizationName": "Drägerwerk AG & Co. KGaA",
+          "PositionURI": "https://erecruitment.draeger.com/index.php?ac=jobad&id=19717",
+          "location": "Lübeck"
+        },
+        {
+          "ID": "19713",
+          "PositionTitle": "Werkstudent (m/w/d) im Einkauf der Medizintechnik",
+          "PublicationStartDate": "2026-11-03",
+          "ParentOrganizationName": "Drägerwerk AG & Co. KGaA",
+          "PositionURI": "https://erecruitment.draeger.com/index.php?ac=jobad&id=19713",
+          "location": "Lübeck"
+        },
+        {
+          "ID": "19711",
+          "PositionTitle": "Werkstudent technisches Projektmanagement & Reporting (m/w/d)",
+          "PublicationStartDate": "2026-11-02",
+          "ParentOrganizationName": "Dräger Medical ANSY GmbH",
+          "PositionURI": "https://erecruitment.draeger.com/index.php?ac=jobad&id=19711",
+          "location": "Lübeck"
+        }
+      ]
+    },
+    "uk_teamtailor_robots": {
+      "robots_url": "https://ukjobs.draeger.com/robots.txt",
+      "status": 200,
+      "content_type": "text/plain; charset=utf-8",
+      "error": null,
+      "is_robots_file": true,
+      "n_groups": 2,
+      "groups": [
+        {
+          "agents": [
+            "aihitdata"
+          ],
+          "allow": [],
+          "disallow": [
+            "/"
+          ]
+        },
+        {
+          "agents": [
+            "*"
+          ],
+          "allow": [],
+          "disallow": [
+            "/app/",
+            "/messages/",
+            "/messenger/",
+            "/facebook/tab/",
+            "/jobs/internal/"
+          ]
+        }
+      ],
+      "raw_head": "User-Agent: aihitdata\nDisallow: /\n\nUser-Agent: *\nDisallow: /app/\nDisallow: /messages/\nDisallow: /messenger/\nDisallow: /facebook/tab/\nDisallow: /jobs/internal/\nContent-Signal: search=yes, ai-train=no, ai-input=yes\n\nSitemap: https://ukjobs.draeger.com/sitemap.xml\n",
+      "path_decisions": {
+        "/jobs": {
+          "allowed": true,
+          "rule": null,
+          "reason": "no matching rule"
+        },
+        "/jobs/1234-x": {
+          "allowed": true,
+          "rule": null,
+          "reason": "no matching rule"
+        }
+      },
+      "sitemaps_advertised": []
+    },
+    "uk_teamtailor_sitemap": {
+      "url": "https://ukjobs.draeger.com/sitemap.xml",
+      "status": 200,
+      "content_type": "application/xml; charset=utf-8",
+      "n_urls": 21,
+      "n_job_urls": 8,
+      "sample": [
+        "https://ukjobs.draeger.com/jobs/8636814-events-campaigns-specialist",
+        "https://ukjobs.draeger.com/jobs/8608268-technical-product-manager-tpm",
+        "https://ukjobs.draeger.com/jobs/8582279-maintenance-supervisor",
+        "https://ukjobs.draeger.com/jobs/8536311-rss-service-operations-engineer"
+      ]
+    },
+    "uk_teamtailor_job_sample": {
+      "jsonld_blocks": 1,
+      "jobposting_present": true,
+      "keys": [
+        "@context",
+        "@type",
+        "datePosted",
+        "description",
+        "directApply",
+        "employmentType",
+        "hiringOrganization",
+        "identifier",
+        "jobLocation",
+        "title",
+        "validThrough"
+      ],
+      "identifier_value": "8636814",
+      "identifier_name": "Dräger UK & Ireland",
+      "title": "Events & Campaigns Specialist",
+      "datePosted": "2026-10-29T13:21:56+00:00",
+      "validThrough": "2026-11-13T23:59:59+00:00",
+      "employmentType": "FULL_TIME",
+      "hiring_organization_name": "Dräger UK & Ireland",
+      "addresses": [
+        {
+          "streetAddress": "Mark Road",
+          "addressLocality": "Hemel Hempstead",
+          "postalCode": "HP2 7BW",
+          "addressCountry": "GB",
+          "addressRegion": null,
+          "@type": "PostalAddress"
+        }
+      ],
+      "description_chars": 9919,
+      "description_head": "<h6><span><strong>Who we are</strong></span></h6><p><span>Every life is unique and so are you! At Dräger we protect, support and rescue lives day in and day out. We are interested in you if you have t",
+      "url": "https://ukjobs.draeger.com/jobs/8636814-events-campaigns-specialist",
+      "status": 200,
+      "error": null
+    }
+  },
+  "contract": {
+    "posting_id_field": "sitemap id (index.php?ac=jobad&id=N) / Beesite MatchedObjectDescriptor.ID",
+    "date_field": "schema.org JobPosting datePosted (date) on the job-ad page; Beesite PublicationStartDate (date) in the list API",
+    "date_precision": "SOURCE_DATE",
+    "description": "full HTML description in the job-ad page's JSON-LD; the search API carries no description, so a collector must pair list + page",
+    "employing_entity": "the Beesite list names ParentOrganizationName per posting (e.g. Drägerwerk AG & Co. KGaA, Dräger Safety AG & Co. KGaA) — this is a source claim, not a guessed subsidiary"
+  },
+  "automated_access_statement": "The corporate marketing host (www.draeger.com) is fronted by Akamai bot management: scripted requests are stalled/refused while robots.txt is served statically. No attempt was made to defeat that. The job data, however, is served by the official public e-recruitment portal (Beesite front end) and its public search API, both of which answer scripted unauthenticated requests normally; no login, captcha or access control was encountered there. The corporate CMS is NOT the job board.",
+  "verdict": {
+    "verdict": "VERIFIED",
+    "reason": "the official portal sitemap lists 171 job-ad URLs and the public Beesite search API reports 171 current postings (10 sampled, agreeing with the sitemap job-ad count); 2/2 sampled job-ad pages carried schema.org JobPosting JSON-LD with datePosted and a description. The corporate /en/careers page is still 404 (real browser) and the CMS itself resists scripted clients.",
+    "definition": "a lawful, stable public route to current postings was confirmed by request, with a stable id field, a verifiable source date and a usable description"
+  },
+  "started_at": "2026-11-04T13:26:57+00:00",
+  "finished_at": "2026-11-04T13:27:26+00:00",
+  "requests_made": 11
+}

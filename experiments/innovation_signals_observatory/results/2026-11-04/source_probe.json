@@ -1,0 +1,1019 @@
+{
+  "probe": "careers_source_discovery",
+  "phase": "phase4",
+  "started_at": "2026-11-04T12:44:48+00:00",
+  "client": {
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "from": "MedRadar research (academic; contact: repository owner)",
+    "max_requests": 120,
+    "min_interval_s": 1.2
+  },
+  "focus_companies": {
+    "medtronic": "Medtronic",
+    "ge_healthcare": "GE HealthCare",
+    "philips": "Philips",
+    "draeger": "Dräger",
+    "mindray": "Mindray"
+  },
+  "companies": {
+    "draeger": {
+      "company_key": "draeger",
+      "company_name": "Dräger",
+      "corporate_home": "https://www.draeger.com/",
+      "candidates": [
+        {
+          "url": "https://www.draeger.com/en/careers",
+          "status": null,
+          "final_url": null,
+          "content_type": null,
+          "error": "TimeoutError: The read operation timed out",
+          "elapsed_ms": 30109,
+          "redirect_chain": [],
+          "ats_hits": []
+        },
+        {
+          "url": "https://career.draeger.com/",
+          "status": null,
+          "final_url": null,
+          "content_type": null,
+          "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+          "elapsed_ms": 531,
+          "redirect_chain": [],
+          "ats_hits": []
+        },
+        {
+          "url": "https://draeger.taleo.net/careersection/2/moresearch.ftl",
+          "status": null,
+          "final_url": null,
+          "content_type": null,
+          "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+          "elapsed_ms": 1000,
+          "redirect_chain": [],
+          "ats_hits": []
+        }
+      ],
+      "ats_hypotheses": [],
+      "robots": {
+        "career.draeger.com": {
+          "url": "https://career.draeger.com/robots.txt",
+          "status": null,
+          "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+          "groups": [],
+          "verdicts": {
+            "/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/wday/cxs/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/careersection/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/global/en": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/api/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            }
+          },
+          "raw_head": ""
+        },
+        "draeger.taleo.net": {
+          "url": "https://draeger.taleo.net/robots.txt",
+          "status": null,
+          "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+          "groups": [],
+          "verdicts": {
+            "/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/wday/cxs/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/careersection/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/global/en": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/api/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            }
+          },
+          "raw_head": ""
+        },
+        "www.draeger.com": {
+          "url": "https://www.draeger.com/robots.txt",
+          "status": 200,
+          "error": null,
+          "groups": [
+            {
+              "agents": [
+                "*"
+              ],
+              "allow": [],
+              "disallow": [
+                "/*api/",
+                "*/api/hubspot/*",
+                "/en_tes*",
+                "/lo_wor*",
+                "/*Partner*",
+                "/*partner*",
+                "/*SearchResults*",
+                "/Products/Content/*-ifu-9027*",
+                "/Products/Content/*-ifu-9028*",
+                "/Products/Content/*-ifu-90291*",
+                "/Products/Content/*-ifu-90292*",
+                "/Products/Content/*-ifu-90293*",
+                "/Products/Content/*-ifu-90294*",
+                "/Products/Content/*-ifu-90295*",
+                "/Products/Content/*-ifu-9037*",
+                "/Products/Content/*-ifu-9038*",
+                "/Products/Content/*-ifu-9039*",
+                "/Products/Content/*-ifu-90401*",
+                "/Products/Content/*-ifu-9052*",
+                "/Products/Content/*-ifu-9053*",
+                "/Products/Content/*-ifu-9054*",
+                "/Products/Content/*-ifu-9055*",
+                "/Products/Content/*-ifu-9056*",
+                "/Products/Content/*-ifu-9057*",
+                "/Products/Content/*-ifu-9058*",
+                "/Products/Content/*-ifu-9059*"
+              ]
+            }
+          ],
+          "verdicts": {
+            "/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/wday/cxs/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/careersection/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/global/en": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/api/": {
+              "verdict": "disallow",
+              "rule": "/*api/",
+              "matched": "/api/",
+              "wildcard": true,
+              "certain": false
+            }
+          },
+          "raw_head": "﻿#updated 05.01.2026\r\n\r\nUser-agent: *\r\nSitemap: https://www.draeger.com/Sitemap.xml\r\n\r\n#System\r\nDisallow: /*api/\r\nDisallow: */api/hubspot/*\r\n \r\n#content\r\nDisallow: /en_tes*\r\nDisallow: /lo_wor*\r\nDisallow: /*Partner*\r\nDisallow: /*partner*\r\nDisallow: /*SearchResults*\r\n\r\nDisallow: /Products/Content/*-ifu-9027*\r\nDisallow: /Products/Content/*-ifu-9028*\r\nDisallow: /Products/Content/*-ifu-90291*\r\nDisallow: /Products/Content/*-ifu-90292*\r\nDisallow: /Products/Content/*-ifu-90293*\r\nDisallow: /Products/Content/*-ifu-90294*\r\nDisallow: /Products/Content/*-ifu-90295*\r\nDisallow: /Products/Content/*-ifu-9037*\r\nDisallow: /Products/Content/*-ifu-9038*\r\nDisallow: /Products/Content/*-ifu-9039*\r\nDisallow: /Products/Content/*-ifu-90401*\r\nDisallow: /Products/Content/*-ifu-9052*\r\nDisallow: /Products/Content/*-ifu-9053*\r\nDisallow: /Products/Content/*-ifu-9054*\r\nDisallow: /Products/Content/*-ifu-9055*\r\nDisallow: /Products/Content/*-ifu-9056*\r\nDisallow: /Products/Content/*-ifu-9057*\r\nDisallow: /Products/Content/*-ifu-9058*\r\nDisallow: /Products/Content/*-ifu-9059*\r\n\r\n#Parameters\r\n\r\n#parameters-yandex\r\nClean-param: s */Products/*\r\nClean-param: sp_product */Request-Quote*\r\nClean-param: imwidth */Products/*\r\nClea"
+        }
+      }
+    },
+    "ge_healthcare": {
+      "company_key": "ge_healthcare",
+      "company_name": "GE HealthCare",
+      "corporate_home": "https://www.gehealthcare.com/",
+      "candidates": [
+        {
+          "url": "https://careers.gehealthcare.com/global/en",
+          "status": 200,
+          "final_url": "https://careers.gehealthcare.com/global/en",
+          "content_type": "text/html; charset=UTF-8",
+          "error": null,
+          "elapsed_ms": 890,
+          "redirect_chain": [],
+          "body_bytes": 223475,
+          "body_head": "<!doctype html> \n<html lang=\"en\" data-ph-id=\"ph-page-element-page1-dNlfWx\" class=\"desktop en_global external\" id=\"_PCM\"> \n <!--<![endif]--> \n <head data-ph-id=\"ph-page-element-page1-Tnmi8S\"><link type",
+          "ats_hits": [
+            "phenom"
+          ],
+          "jsonld_scripts": 3,
+          "link_sample": [
+            "https://cdn.phenompeople.com/CareerConnectResources/common/js/globalplatform/1781270809227_globalstyles.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/en_global/desktop/assets/images/favicon.ico?v=1677487531680",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/en_global/desktop/assets/images/h/apple-touch-icon.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/en_global/desktop/assets/images/m/apple-touch-icon.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/en_global/desktop/assets/images/l/apple-touch-icon-precomposed.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/en_global/desktop/assets/images/l/apple-touch-icon.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/en_global/desktop/assets/images/l/splash.png",
+            "https://careers.gehealthcare.com/global/en/home",
+            "https://careers.gehealthcare.com/global/en/",
+            "https://pp-cdn.phenompeople.com/CareerConnectResources/prod/GEVGHLGLOBAL/canvas/dstenantcss/main1774437750187.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/platform/css/ph-ui-platform-1786344368936.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/master/canvas/css/master-theme-1773647481905.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/canvas/common/fontfaces/fontface-1773234054137.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/canvas/assets/css/default/canvas-site-custom-styles-1787729231359.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/canvas/common/canvas-global-branding1786698037211.css",
+            "https://careers.gehealthcare.com/global/search-results",
+            "https://careers.gehealthcare.com/global/en",
+            "https://careers.gehealthcare.com/global/en/",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/documents/GEHCcareerssitelinksAccessabilityChangesAccepted-1697726115291-1710334424544.pdf",
+            "https://careers.gehealthcare.com/global/thyTyy-Uomi6U-ph-media-cc-view1-option1-savedView-1696504436542-savedView-1688028794263-primary-link-href",
+            "https://careers.gehealthcare.com/global/culture",
+            "https://careers.gehealthcare.com/global/en/culture",
+            "https://careers.gehealthcare.com/global/thyTyy-HCcPOn-ph-media-cc-view1-option1-savedView-1696504436542-savedView-1688028794263-primary-link-href",
+            "https://careers.gehealthcare.com/global/en/blog",
+            "https://careers.gehealthcare.com/global/en/blog",
+            "https://careers.gehealthcare.com/global/thyTyy-jfrMzS-ph-media-cc-view1-option1-savedView-1696504436542-savedView-1688028794263-primary-link-href",
+            "https://careers.gehealthcare.com/global/business-areas",
+            "https://careers.gehealthcare.com/global/en/business-areas",
+            "https://careers.gehealthcare.com/global/Gra287-dU5gYw-ph-jtc-card-cc-view1-option1-savedView-1696504457867-savedView-1687960026433-BZ1jTV",
+            "https://careers.gehealthcare.com/global/locations",
+            "https://careers.gehealthcare.com/global/en/locations",
+            "https://careers.gehealthcare.com/global/OMWyuj-5LHBSv-ph-media-cc-view1-option1-savedView-1738903152916-savedView-1696504414391-primary-link-href",
+            "https://careers.gehealthcare.com/global/students-graduates",
+            "https://careers.gehealthcare.com/global/en/students-graduates",
+            "https://careers.gehealthcare.com/global/OMWyuj-trZMyP-ph-media-cc-view1-option1-savedView-1738903152916-savedView-1696504414391-primary-link-href",
+            "https://careers.gehealthcare.com/global/gehc-professional",
+            "https://careers.gehealthcare.com/global/en/professionals",
+            "https://careers.gehealthcare.com/global/baIZJ3-7MCk4P-ph-hero-content-cc-view1-option1-savedView-1696504594514-savedView-1687955921129-primary-link-href",
+            "https://careers.gehealthcare.com/global/search-results",
+            "https://careers.gehealthcare.com/global/en/search-results"
+          ]
+        },
+        {
+          "url": "https://careers.gehealthcare.com/",
+          "status": 200,
+          "final_url": "https://careers.gehealthcare.com/global/en",
+          "content_type": "text/html; charset=UTF-8",
+          "error": null,
+          "elapsed_ms": 3342,
+          "redirect_chain": [],
+          "body_bytes": 223304,
+          "body_head": "<!doctype html> \n<html lang=\"en\" data-ph-id=\"ph-page-element-page1-dNlfWx\" class=\"desktop en_global external\" id=\"_PCM\"> \n <!--<![endif]--> \n <head data-ph-id=\"ph-page-element-page1-Tnmi8S\"><link type",
+          "ats_hits": [
+            "phenom"
+          ],
+          "jsonld_scripts": 3,
+          "link_sample": [
+            "https://cdn.phenompeople.com/CareerConnectResources/common/js/globalplatform/1781270809227_globalstyles.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/en_global/desktop/assets/images/favicon.ico?v=1677487531680",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/en_global/desktop/assets/images/h/apple-touch-icon.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/en_global/desktop/assets/images/m/apple-touch-icon.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/en_global/desktop/assets/images/l/apple-touch-icon-precomposed.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/en_global/desktop/assets/images/l/apple-touch-icon.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/en_global/desktop/assets/images/l/splash.png",
+            "https://careers.gehealthcare.com/global/en/home",
+            "https://careers.gehealthcare.com/global/en/",
+            "https://pp-cdn.phenompeople.com/CareerConnectResources/prod/GEVGHLGLOBAL/canvas/dstenantcss/main1774437750187.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/platform/css/ph-ui-platform-1786344368936.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/master/canvas/css/master-theme-1773647481905.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/canvas/common/fontfaces/fontface-1773234054137.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/canvas/assets/css/default/canvas-site-custom-styles-1787729231359.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/canvas/common/canvas-global-branding1786698037211.css",
+            "https://careers.gehealthcare.com/global/search-results",
+            "https://careers.gehealthcare.com/global/en",
+            "https://careers.gehealthcare.com/global/en/",
+            "https://cdn.phenompeople.com/CareerConnectResources/GEVGHLGLOBAL/documents/GEHCcareerssitelinksAccessabilityChangesAccepted-1697726115291-1710334424544.pdf",
+            "https://careers.gehealthcare.com/global/thyTyy-Uomi6U-ph-media-cc-view1-option1-savedView-1696504436542-savedView-1688028794263-primary-link-href",
+            "https://careers.gehealthcare.com/global/culture",
+            "https://careers.gehealthcare.com/global/en/culture",
+            "https://careers.gehealthcare.com/global/thyTyy-HCcPOn-ph-media-cc-view1-option1-savedView-1696504436542-savedView-1688028794263-primary-link-href",
+            "https://careers.gehealthcare.com/global/en/blog",
+            "https://careers.gehealthcare.com/global/en/blog",
+            "https://careers.gehealthcare.com/global/thyTyy-jfrMzS-ph-media-cc-view1-option1-savedView-1696504436542-savedView-1688028794263-primary-link-href",
+            "https://careers.gehealthcare.com/global/business-areas",
+            "https://careers.gehealthcare.com/global/en/business-areas",
+            "https://careers.gehealthcare.com/global/Gra287-dU5gYw-ph-jtc-card-cc-view1-option1-savedView-1696504457867-savedView-1687960026433-BZ1jTV",
+            "https://careers.gehealthcare.com/global/locations",
+            "https://careers.gehealthcare.com/global/en/locations",
+            "https://careers.gehealthcare.com/global/OMWyuj-5LHBSv-ph-media-cc-view1-option1-savedView-1738903152916-savedView-1696504414391-primary-link-href",
+            "https://careers.gehealthcare.com/global/students-graduates",
+            "https://careers.gehealthcare.com/global/en/students-graduates",
+            "https://careers.gehealthcare.com/global/OMWyuj-trZMyP-ph-media-cc-view1-option1-savedView-1738903152916-savedView-1696504414391-primary-link-href",
+            "https://careers.gehealthcare.com/global/gehc-professional",
+            "https://careers.gehealthcare.com/global/en/professionals",
+            "https://careers.gehealthcare.com/global/baIZJ3-7MCk4P-ph-hero-content-cc-view1-option1-savedView-1696504594514-savedView-1687955921129-primary-link-href",
+            "https://careers.gehealthcare.com/global/search-results",
+            "https://careers.gehealthcare.com/global/en/search-results"
+          ]
+        }
+      ],
+      "ats_hypotheses": [
+        "phenom"
+      ],
+      "robots": {
+        "careers.gehealthcare.com": {
+          "url": "https://careers.gehealthcare.com/robots.txt",
+          "status": 200,
+          "error": null,
+          "groups": [
+            {
+              "agents": [
+                "*"
+              ],
+              "allow": [],
+              "disallow": [
+                "*/phenomtrack.min.js",
+                "*/socialAut",
+                "*/iauth",
+                "*/chatbot",
+                "*/jobcart",
+                "*/apply",
+                "*/applythankyou",
+                "*/px-widgets",
+                "*/lifeatphenom",
+                "*/workingatphenom",
+                "*/chatbot",
+                "*/pxhomelead",
+                "*/pxhomeapplicant",
+                "*/pxhomequalifiedlead",
+                "*/pxhomevisitor",
+                "*/pxhomestranger",
+                "*/glassdoor"
+              ]
+            }
+          ],
+          "verdicts": {
+            "/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/wday/cxs/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/careersection/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/global/en": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/api/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            }
+          },
+          "raw_head": "User-agent: *\nDisallow: */phenomtrack.min.js\nDisallow: */socialAut\nDisallow: */iauth  \nDisallow: */chatbot\nDisallow: */jobcart\nDisallow: */apply\nDisallow: */applythankyou\nDisallow: */px-widgets\nDisallow: */lifeatphenom\nDisallow: */workingatphenom\nDisallow: */chatbot\nDisallow: */pxhomelead\nDisallow: */pxhomeapplicant\nDisallow: */pxhomequalifiedlead\nDisallow: */pxhomevisitor\nDisallow: */pxhomestranger\nDisallow: */glassdoor\n\nSitemap: https://careers.gehealthcare.com/global/en/sitemap_index.xml\nSitemap: https://careers.gehealthcare.com/fr/fr/sitemap_index.xml\nSitemap: https://careers.gehealthcare.com/de/de/sitemap_index.xml"
+        }
+      }
+    },
+    "medtronic": {
+      "company_key": "medtronic",
+      "company_name": "Medtronic",
+      "corporate_home": "https://www.medtronic.com/",
+      "candidates": [
+        {
+          "url": "https://jobs.medtronic.com/",
+          "status": null,
+          "final_url": null,
+          "content_type": null,
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'jobs.medtronic.com'. (_ssl.c:1010)>",
+          "elapsed_ms": 235,
+          "redirect_chain": [],
+          "ats_hits": []
+        },
+        {
+          "url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers",
+          "status": 200,
+          "final_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers",
+          "content_type": "application/json",
+          "error": null,
+          "elapsed_ms": 280,
+          "redirect_chain": [],
+          "body_bytes": 66,
+          "body_head": "{\"widget\":\"redirect\",\"url\":\"/MedtronicCareers\",\"externalSpa\":true}",
+          "ats_hits": [],
+          "jsonld_scripts": 0,
+          "link_sample": []
+        }
+      ],
+      "ats_hypotheses": [],
+      "robots": {
+        "jobs.medtronic.com": {
+          "url": "https://jobs.medtronic.com/robots.txt",
+          "status": null,
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'jobs.medtronic.com'. (_ssl.c:1010)>",
+          "groups": [],
+          "verdicts": {
+            "/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/wday/cxs/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/careersection/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/global/en": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/api/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            }
+          },
+          "raw_head": ""
+        },
+        "medtronic.wd1.myworkdayjobs.com": {
+          "url": "https://medtronic.wd1.myworkdayjobs.com/robots.txt",
+          "status": 200,
+          "error": null,
+          "groups": [
+            {
+              "agents": [
+                "*"
+              ],
+              "allow": [
+                "/MedtronicCareers/"
+              ],
+              "disallow": [
+                "/RedeploymentMedtronicCareers/",
+                "/refreshFacet/"
+              ]
+            }
+          ],
+          "verdicts": {
+            "/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/wday/cxs/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/careersection/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/global/en": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/api/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            }
+          },
+          "raw_head": "Sitemap: https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/siteMap.xml\n\nUser-agent: *\nAllow: /MedtronicCareers/\nDisallow: /RedeploymentMedtronicCareers/\nDisallow: /refreshFacet/"
+        }
+      }
+    },
+    "mindray": {
+      "company_key": "mindray",
+      "company_name": "Mindray",
+      "corporate_home": "https://www.mindray.com/",
+      "candidates": [
+        {
+          "url": "https://www.mindray.com/en/careers",
+          "status": 404,
+          "final_url": "https://www.mindray.com/en/careers",
+          "content_type": "text/html;charset=utf-8",
+          "error": "HTTPError 404",
+          "elapsed_ms": 1391,
+          "redirect_chain": [],
+          "body_bytes": 219839,
+          "body_head": "\n<!DOCTYPE HTML>\n<html lang=\"en\">\n    <head>\r\n  <meta charset=\"UTF-8\"/>\r\n  \r\n  \r\n  <title>Not Found - Mindray</title>\r\n  <meta name=\"language\" content=\"en\"/>\r\n  <meta name=\"country\"/>\r\n  <meta name=\"k",
+          "ats_hits": [],
+          "jsonld_scripts": 0,
+          "link_sample": [
+            "https://www.mindray.com/en/not-found",
+            "https://www.mindray.com/content/dam/xpace/en/site/common/favicon.ico",
+            "https://www.mindray.com/content/dam/xpace/en/site/common/favicon.ico",
+            "https://www.mindray.com/content/dam/xpace/en/site/common/favicon-zh.ico",
+            "https://www.mindray.com/content/dam/xpace/en/site/common/favicon-zh.ico",
+            "https://www.mindray.com/static/img/favicon-en.ico",
+            "https://www.mindray.com/static/img/favicon-en.ico",
+            "https://www.mindray.com/content/dam/xpace/en/site/common/favicon.ico",
+            "https://www.mindray.com/content/dam/xpace/en/site/common/favicon.ico",
+            "https://www.mindray.com/static/img/favicon-en.ico",
+            "https://www.mindray.com/static/img/favicon-en.ico",
+            "https://www.mindray.com/etc.clientlibs/xpace/clientlibs/clientlib-site/resources/css/fonts-en.css",
+            "https://www.mindray.com/en/not-found",
+            "https://www.mindray.com/au/not-found",
+            "https://www.mindray.com/cn/not-found",
+            "https://www.mindray.com/br/not-found",
+            "https://www.mindray.com/es/not-found",
+            "https://www.mindray.com/ru/not-found",
+            "https://www.mindray.com/latam/not-found",
+            "https://www.mindray.com/ar/not-found",
+            "https://www.mindray.com/cl/not-found",
+            "https://www.mindray.com/co/not-found",
+            "https://www.mindray.com/mx/not-found",
+            "https://www.mindray.com/pe/not-found",
+            "https://www.mindray.com/id/not-found",
+            "https://www.mindray.com/fr/not-found",
+            "https://www.mindray.com/it/not-found",
+            "https://www.mindray.com/kr/not-found",
+            "https://www.mindray.com/nl/not-found",
+            "https://www.mindray.com/pl/not-found",
+            "https://www.mindray.com/tr/not-found",
+            "https://www.mindray.com/in/not-found/",
+            "https://www.mindray.com/uk/not-found",
+            "https://www.mindray.com/de/not-found",
+            "https://www.mindray.com/na/not-found/",
+            "https://www.mindray.com/na/not-found/",
+            "https://www.mindray.com/etc.clientlibs/xpace/clientlibs/clientlib-site.lc-4ab4f2781bd2757538ae34f3e42832b0173891751054420261012-lc.min.css",
+            "https://www.mindray.com/etc.clientlibs/xpace/clientlibs/clientlib-third-party-consent.lc-4ab4f2781bd2757538ae34f3e42832b01738917510544202610221-lc.min.css",
+            "https://www.mindray.com/etc.clientlibs/xpace/clientlibs/clientlib-not-found.lc-4ab4f2781bd2757538ae34f3e42832b0173891751054420261012-lc.min.css",
+            "https://www.mindray.com/en/chineseDesign.css"
+          ]
+        },
+        {
+          "url": "https://mindray.zhiye.com/",
+          "status": 200,
+          "final_url": "https://mindray.zhiye.com/",
+          "content_type": "text/html; charset=utf-8",
+          "error": null,
+          "elapsed_ms": 2375,
+          "redirect_chain": [],
+          "body_bytes": 21992,
+          "body_head": "﻿<!DOCTYPE html>\r\n<html>\r\n<head>\r\n    <title>迈瑞医疗</title>\r\n    \r\n        <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"//stcms.beisen.com/image/106239/b7d2263ec8f045f6b50c56c6fc1130e6_o.png\">\r\n ",
+          "ats_hits": [
+            "beisen"
+          ],
+          "jsonld_scripts": 0,
+          "link_sample": [
+            "https://stcms.beisen.com/image/106239/b7d2263ec8f045f6b50c56c6fc1130e6_o.png",
+            "https://acdn.bstatics.com/ux/beisen-common/ux-outdated-browser/ie-blocker-1488188331743.css"
+          ]
+        }
+      ],
+      "ats_hypotheses": [
+        "beisen"
+      ],
+      "robots": {
+        "mindray.zhiye.com": {
+          "url": "https://mindray.zhiye.com/robots.txt",
+          "status": 200,
+          "error": null,
+          "groups": [
+            {
+              "agents": [
+                "*"
+              ],
+              "allow": [
+                "/"
+              ],
+              "disallow": []
+            }
+          ],
+          "verdicts": {
+            "/": {
+              "verdict": "allow",
+              "rule": "/",
+              "matched": "/",
+              "wildcard": false,
+              "certain": true
+            },
+            "/wday/cxs/": {
+              "verdict": "allow",
+              "rule": "/",
+              "matched": "/wday/cxs/",
+              "wildcard": false,
+              "certain": true
+            },
+            "/careersection/": {
+              "verdict": "allow",
+              "rule": "/",
+              "matched": "/careersection/",
+              "wildcard": false,
+              "certain": true
+            },
+            "/global/en": {
+              "verdict": "allow",
+              "rule": "/",
+              "matched": "/global/en",
+              "wildcard": false,
+              "certain": true
+            },
+            "/api/": {
+              "verdict": "allow",
+              "rule": "/",
+              "matched": "/api/",
+              "wildcard": false,
+              "certain": true
+            }
+          },
+          "raw_head": "User-agent: *\r\nAllow: /"
+        },
+        "www.mindray.com": {
+          "url": "https://www.mindray.com/robots.txt",
+          "status": 200,
+          "error": null,
+          "groups": [
+            {
+              "agents": [
+                "*"
+              ],
+              "allow": [],
+              "disallow": [
+                "/*/auth/sign-in",
+                "/*/auth/sign-up",
+                "/*/auth/user-account",
+                "/*/auth/user-forgot-password",
+                "/*/auth/user-reset-password",
+                "/*/search-result",
+                "/*/preview"
+              ]
+            },
+            {
+              "agents": [
+                "ahrefsbot"
+              ],
+              "allow": [],
+              "disallow": [
+                "/"
+              ]
+            }
+          ],
+          "verdicts": {
+            "/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/wday/cxs/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/careersection/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/global/en": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/api/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            }
+          },
+          "raw_head": "User-agent: *\r\r\nDisallow: /*/auth/sign-in\r\r\nDisallow: /*/auth/sign-up\r\r\nDisallow: /*/auth/user-account\r\r\nDisallow: /*/auth/user-forgot-password\r\r\nDisallow: /*/auth/user-reset-password\r\r\nDisallow: /*/search-result\r\rDisallow:/*/preview\r\r\n\r\r\nUser-agent: AhrefsBot\r\r\nDisallow: /\r\r\n\r\r\nSitemap: https://www.mindray.com/sitemap-www.xml\r\r\n"
+        }
+      }
+    },
+    "philips": {
+      "company_key": "philips",
+      "company_name": "Philips",
+      "corporate_home": "https://www.philips.com/",
+      "candidates": [
+        {
+          "url": "https://www.careers.philips.com/global/en",
+          "status": 200,
+          "final_url": "https://www.careers.philips.com/global/en",
+          "content_type": "text/html; charset=UTF-8",
+          "error": null,
+          "elapsed_ms": 484,
+          "redirect_chain": [],
+          "body_bytes": 309731,
+          "body_head": "<!doctype html> \n<html lang=\"en\" data-ph-id=\"ph-page-element-page6-kVTvUc\" class=\"desktop en_global external\" id=\"_PCM\"> \n <!--<![endif]--> \n <head data-ph-id=\"ph-page-element-page6-68q1jU\"><link type",
+          "ats_hits": [
+            "phenom"
+          ],
+          "jsonld_scripts": 3,
+          "link_sample": [
+            "https://cdn.phenompeople.com/CareerConnectResources/common/js/globalplatform/1781270809227_globalstyles.css",
+            "https://cdn.phenompeople.com",
+            "https://assets.phenompeople.com",
+            "https://cdn.phenompeople.com/CareerConnectResources/prod/PHILUS/images/Global-Home-Page-Header-Brand-Campaign-1-2025-1763535163541.jpg",
+            "https://www.careers.philips.com/global/en",
+            "https://cdn.phenompeople.com/CareerConnectResources/pp/PHILUS/en_global/desktop/assets/images/favicon.ico",
+            "https://cdn.phenompeople.com/CareerConnectResources/pp/PHILUS/en_global/desktop/assets/images/h/apple-touch-icon.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/pp/PHILUS/en_global/desktop/assets/images/m/apple-touch-icon.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/pp/PHILUS/en_global/desktop/assets/images/l/apple-touch-icon-precomposed.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/pp/PHILUS/en_global/desktop/assets/images/l/apple-touch-icon.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/pp/PHILUS/en_global/desktop/assets/images/l/splash.png",
+            "https://www.careers.philips.com/global/en/",
+            "https://www.careers.philips.com/global/en/",
+            "https://cdn.phenompeople.com/CareerConnectResources/PHILUS/canvas/dstenantcss/main1784100975390.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/platform/css/ph-ui-platform-1786344368936.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/master/canvas/css/master-theme-1773647481905.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/PHILUS/canvas/common/fontfaces/fontface-1783950085612.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/PHILUS/canvas/common/canvas-global-branding1792507043289.css",
+            "https://www.careers.philips.com/global/search-results",
+            "https://www.careers.philips.com/global/en/home",
+            "https://www.careers.philips.com/global/en/home",
+            "https://www.careers.philips.com/global/en/philips-recruitment-fraud-notice",
+            "https://www.careers.philips.com/global/XJu9Be-4PQyrA-44nzHb-ph-hero-content-cc-view1-option1-primary-link-href",
+            "https://www.careers.philips.com/global/en/search-results",
+            "https://www.careers.philips.com/global/desXUi-VK0Fov-ph-media-cc-slider-view1-option1-graduate-careers",
+            "https://www.careers.philips.com/student/global/en/search-results",
+            "https://www.careers.philips.com/global/search-results",
+            "https://www.careers.philips.com/global/desXUi-kzJtd9-ph-media-cc-slider-view1-option1-search-results",
+            "https://www.careers.philips.com/global/en/search-results",
+            "https://www.careers.philips.com/global/DsiyAS-nvbVbU-suKfcL-ph-media-large-img-left-cc-view1-option3-primary-link-href",
+            "https://www.careers.philips.com/global/en/life-at-philips",
+            "https://www.careers.philips.com/global/2fYDoq-uqcf0Y-2WJNKI-ph-media-large-img-right-cc-view1-option2-primary-link-href",
+            "https://www.careers.philips.com/global/en/our-culture",
+            "cHELTc-kGFcVl-MidKYw-ph-media-cc-slider-view1-option1-https://www.philips.com/a-w/about/awards-and-recognition",
+            "https://www.philips.com/a-w/about/news/archive/standard/news/press/2025/philips-highest-ranked-medical-technology-company-among-clarivate-top-100-global-innovators.html",
+            "kGFcVl-MidKYw-ph-media-cc-slider-view1-option1-https://www.philips.com/a-w/about/awards-and-recognition",
+            "https://www.philips.com/a-w/about/news/archive/standard/news/articles/2025/philips-ranks-4th-in-fortune-s-2025-europe-s-most-innovative-companies-list.html",
+            "kGFcVl-rQAmnR-ph-media-cc-slider-view1-option1-https://www.philips.com/a-w/about/awards-and-recognition",
+            "https://www.philips.com/a-w/about/news/archive/standard/news/articles/2024/philips-recognized-as-one-of-the-worlds-best-employers-by-forbes-for-sixth-consecutive-year.html#:~:text=The%202024%20ranking%20identifies%20Philips,Chief%20People%20Officer%20at%20Philips.",
+            "https://www.careers.philips.com/global/NgTfua-MMuEQR-DmhhwQ-ph-media-large-img-left-cc-view1-option3-primary-link-href"
+          ]
+        },
+        {
+          "url": "https://jobs.philips.com/",
+          "status": 404,
+          "final_url": "https://www.careers.philips.com/emea/en/united-kingdom-jobs",
+          "content_type": "text/html; charset=UTF-8",
+          "error": "HTTPError 404",
+          "elapsed_ms": 875,
+          "redirect_chain": [],
+          "body_bytes": 84085,
+          "body_head": "<!DOCTYPE html> \n<!--[if lt IE 7]>      <html class=\"lt-ie7\" lang=\"en\"> <![endif]--> \n<!--[if IE 7]>         <html class=\"ie7\" lang=\"en\"> <![endif]--> \n<!--[if IE 8]>         <html class=\"ie8\" lang=\"e",
+          "ats_hits": [
+            "phenom"
+          ],
+          "jsonld_scripts": 1,
+          "link_sample": [
+            "https://cdn.phenompeople.com",
+            "https://assets.phenompeople.com",
+            "https://cdn.phenompeople.com/CareerConnectResources/TTOUUS/en_us/mobile/assets/images/v-1607751748575-404_bg.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/PHILUS/tenantcss/page/en_emea/external/desktop/page15/main-critical-css-1778559863799.css",
+            "https://cdn.phenompeople.com/CareerConnectResources/PHILUS/en_emea/desktop/assets/images/favicon.ico",
+            "https://cdn.phenompeople.com/CareerConnectResources/PHILUS/en_emea/desktop/assets/images/h/apple-touch-icon.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/PHILUS/en_emea/desktop/assets/images/m/apple-touch-icon.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/PHILUS/en_emea/desktop/assets/images/l/apple-touch-icon-precomposed.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/PHILUS/en_emea/desktop/assets/images/l/apple-touch-icon.png",
+            "https://cdn.phenompeople.com/CareerConnectResources/PHILUS/en_emea/desktop/assets/images/l/splash.png",
+            "https://www.careers.philips.com/emea/assets/css/bootstrap.css",
+            "https://www.careers.philips.com/emea/en/cookiesettings",
+            "https://www.careers.philips.com/emea/en/gdpr-careerSiteCookieSettingsHrefText",
+            "https://www.careers.philips.com/emea/en/jobcart",
+            "https://www.careers.philips.com/emea/en/jobcart",
+            "https://www.careers.philips.com/emea/en/${each.locationUrl}",
+            "https://www.careers.philips.com/emea/en/${each.locationUrl}",
+            "https://www.careers.philips.com/emea/en/${getUrl(linkEle, ",
+            "https://www.careers.philips.com/emea/en/${getUrl(linkEle, ",
+            "https://cdn.phenompeople.com/CareerConnectResources/PHILUS/tenantcss/page/en_emea/external/desktop/page15/main-critical-css-1778559858521.css",
+            "https://www.careers.philips.com/professional/emea/en/search-results",
+            "https://philips-canvas-editor.phenompro.com/professional/emea/en/search-results",
+            "https://www.careers.philips.com/professional/emea/en/search-results",
+            "https://www.careers.philips.com/professional/emea/en/search-results",
+            "https://www.careers.philips.com/emea/en/search-results",
+            "https://www.careers.philips.com/emea/en/searchResultsUrlPath"
+          ]
+        },
+        {
+          "url": "https://philips.taleo.net/careersection/2/moresearch.ftl",
+          "status": null,
+          "final_url": null,
+          "content_type": null,
+          "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+          "elapsed_ms": 375,
+          "redirect_chain": [],
+          "ats_hits": []
+        }
+      ],
+      "ats_hypotheses": [
+        "phenom"
+      ],
+      "robots": {
+        "jobs.philips.com": {
+          "url": "https://jobs.philips.com/robots.txt",
+          "status": 200,
+          "error": null,
+          "groups": [],
+          "verdicts": {
+            "/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/wday/cxs/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/careersection/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/global/en": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/api/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            }
+          },
+          "raw_head": "<!DOCTYPE html><html  lang=\"en\"><head>\n                <style nonce=\"f7a0d2f030b334ba97715e26645a732e\"></style>\n            <meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Welcome | DE Jobs</title><script nonce=\"f7a0d2f030b334ba97715e26645a732e\" type=\"importmap\">{\"imports\":{\"#entry\":\"/_nuxt/CH-vRXZA.js\"}}</script><style nonce=\"f7a0d2f030b334ba97715e26645a732e\"> @font-face { font-family: \"Roboto Slab fallback\"; src: local(\"Noto Sans\"); size-adjust: 100.1286%; ascent-override: 104.6506%; descent-override: 27.0648%; line-gap-override: 0%; } @font-face { font-family: \"Roboto Slab fallback\"; src: local(\"Arial\"); size-adjust: 106.4622%; ascent-override: 98.4247%; descent-override: 25.4547%; line-gap-override: 0%; } @font-face { font-family: \"Roboto Slab fallback\"; src: local(\"Helvetica Neue\"); size-adjust: 105.4688%; ascent-override: 99.3519%; descent-override: 25.6944%; line-gap-override: 0%; } @font-face { font-family: \"Roboto Slab fallback\"; src: local(\"Roboto\"); size-adjust: 106.6959%; ascent-override: 98.2091%; descent-override: 25.3989%; line-gap-override: 0%; } @font-face { font-family: \"Roboto Slab fallback\"; src: local(\"Segoe UI\")"
+        },
+        "philips.taleo.net": {
+          "url": "https://philips.taleo.net/robots.txt",
+          "status": null,
+          "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+          "groups": [],
+          "verdicts": {
+            "/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/wday/cxs/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/careersection/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/global/en": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/api/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            }
+          },
+          "raw_head": ""
+        },
+        "www.careers.philips.com": {
+          "url": "https://www.careers.philips.com/robots.txt",
+          "status": 200,
+          "error": null,
+          "groups": [],
+          "verdicts": {
+            "/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/wday/cxs/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/careersection/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/global/en": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            },
+            "/api/": {
+              "verdict": "unlisted",
+              "rule": null,
+              "matched": null
+            }
+          },
+          "raw_head": "<!doctype html> \n<html lang=\"en\" data-ph-id=\"ph-page-element-page6-kVTvUc\" class=\"desktop en_global external\" id=\"_PCM\"> \n <!--<![endif]--> \n <head data-ph-id=\"ph-page-element-page6-68q1jU\"><link type=\"text/css\" rel=\"stylesheet\" id=\"platform_globalStyles\" href=\"https://cdn.phenompeople.com/CareerConnectResources/common/js/globalplatform/1781270809227_globalstyles.css\"><link rel=\"preconnect\" href=\"https://cdn.phenompeople.com\" /><link rel=\"preconnect\" href=\"https://assets.phenompeople.com\" /><link rel=\"preload\" as=\"image\" importance=\"high\" href=\"https://cdn.phenompeople.com/CareerConnectResources/prod/PHILUS/images/Global-Home-Page-Header-Brand-Campaign-1-2025-1763535163541.jpg\" id=\"ph_image_preload\" /><meta name=\"robots\" content=\"index\" /><meta property=\"og:image:height\" content=\"200\" /><meta property=\"og:image:width\" content=\"200\" /><meta property=\"og:description\" content=\"Do the work of your life to help the lives of others. Innovate the future of healthcare with a career at Phili\" /><meta property=\"og:title\" content=\"Home | Philips Careers\" /><meta property=\"og:url\" content=\"https://www.careers.philips.com/global/en\" /><meta property=\"og:site_name\" content=\"philips\" /><meta prop"
+        }
+      }
+    }
+  },
+  "finished_at": "2026-11-04T12:45:38+00:00",
+  "requests_made": 23,
+  "request_log": [
+    {
+      "url": "https://www.draeger.com/en/careers",
+      "at": "2026-11-04T12:44:48+00:00"
+    },
+    {
+      "url": "https://career.draeger.com/",
+      "at": "2026-11-04T12:45:18+00:00"
+    },
+    {
+      "url": "https://draeger.taleo.net/careersection/2/moresearch.ftl",
+      "at": "2026-11-04T12:45:19+00:00"
+    },
+    {
+      "url": "https://career.draeger.com/robots.txt",
+      "at": "2026-11-04T12:45:20+00:00"
+    },
+    {
+      "url": "https://draeger.taleo.net/robots.txt",
+      "at": "2026-11-04T12:45:21+00:00"
+    },
+    {
+      "url": "https://www.draeger.com/robots.txt",
+      "at": "2026-11-04T12:45:22+00:00"
+    },
+    {
+      "url": "https://careers.gehealthcare.com/global/en",
+      "at": "2026-11-04T12:45:22+00:00"
+    },
+    {
+      "url": "https://careers.gehealthcare.com/",
+      "at": "2026-11-04T12:45:23+00:00"
+    },
+    {
+      "url": "https://careers.gehealthcare.com/robots.txt",
+      "at": "2026-11-04T12:45:26+00:00"
+    },
+    {
+      "url": "https://jobs.medtronic.com/",
+      "at": "2026-11-04T12:45:27+00:00"
+    },
+    {
+      "url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers",
+      "at": "2026-11-04T12:45:27+00:00"
+    },
+    {
+      "url": "https://jobs.medtronic.com/robots.txt",
+      "at": "2026-11-04T12:45:28+00:00"
+    },
+    {
+      "url": "https://medtronic.wd1.myworkdayjobs.com/robots.txt",
+      "at": "2026-11-04T12:45:28+00:00"
+    },
+    {
+      "url": "https://www.mindray.com/en/careers",
+      "at": "2026-11-04T12:45:28+00:00"
+    },
+    {
+      "url": "https://mindray.zhiye.com/",
+      "at": "2026-11-04T12:45:30+00:00"
+    },
+    {
+      "url": "https://mindray.zhiye.com/robots.txt",
+      "at": "2026-11-04T12:45:32+00:00"
+    },
+    {
+      "url": "https://www.mindray.com/robots.txt",
+      "at": "2026-11-04T12:45:33+00:00"
+    },
+    {
+      "url": "https://www.careers.philips.com/global/en",
+      "at": "2026-11-04T12:45:34+00:00"
+    },
+    {
+      "url": "https://jobs.philips.com/",
+      "at": "2026-11-04T12:45:34+00:00"
+    },
+    {
+      "url": "https://philips.taleo.net/careersection/2/moresearch.ftl",
+      "at": "2026-11-04T12:45:35+00:00"
+    },
+    {
+      "url": "https://jobs.philips.com/robots.txt",
+      "at": "2026-11-04T12:45:36+00:00"
+    },
+    {
+      "url": "https://philips.taleo.net/robots.txt",
+      "at": "2026-11-04T12:45:37+00:00"
+    },
+    {
+      "url": "https://www.careers.philips.com/robots.txt",
+      "at": "2026-11-04T12:45:38+00:00"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "comparison": "two full-population observations of the same career site",
+  "content_hash_comparable": false,
+  "hash_rule_versions": {
+    "a": [
+      "None"
+    ],
+    "b": [
+      "None"
+    ]
+  },
+  "run_a": {
+    "file": "run1_identity.jsonl",
+    "n_rows": 994,
+    "n_distinct_ids": 992
+  },
+  "run_b": {
+    "file": "run2_identity.jsonl",
+    "n_rows": 994,
+    "n_distinct_ids": 994
+  },
+  "identity_overlap_a": 1.0,
+  "identity_overlap_b": 0.998,
+  "content_hash_stable_among_common": null,
+  "n_content_changed": null,
+  "n_content_changed_ignored_due_to_rule_change": 992,
+  "content_changed_examples": [
+    {
+      "posting_id": "7855805f1fb5104ac3b1440693f00000",
+      "title_a": "HR Support IV – ELR Operations (Dutch Speaking)",
+      "title_b": "HR Support IV – ELR Operations (Dutch Speaking)"
+    },
+    {
+      "posting_id": "bc6fa33a6b771036f388b11d79380001",
+      "title_a": "数控操作工",
+      "title_b": "数控操作工"
+    },
+    {
+      "posting_id": "2ffc68d044c8103bc889ded9c66f0000",
+      "title_a": "Engineering Manager",
+      "title_b": "Engineering Manager"
+    },
+    {
+      "posting_id": "ec02c9693861103143d6e5f0b5f00000",
+      "title_a": "Estagiário de Departamento Pessoal",
+      "title_b": "Estagiário de Departamento Pessoal"
+    },
+    {
+      "posting_id": "432819393fa11036c01a1b7df9080001",
+      "title_a": "Senior Compensation Operations Analyst",
+      "title_b": "Senior Compensation Operations Analyst"
+    },
+    {
+      "posting_id": "f8066f25276f10287ce93da4b1520001",
+      "title_a": "Sales Representative II, Surgical and Medical",
+      "title_b": "Sales Representative II, Surgical and Medical"
+    },
+    {
+      "posting_id": "6e581deda778103baad42839a5a60001",
+      "title_a": "Sales Rep, Peripheral Nervous System (PNS) – Palm Springs/Inland Empire, CA",
+      "title_b": "Sales Rep, Peripheral Nervous System (PNS) – Palm Springs/Inland Empire, CA"
+    },
+    {
+      "posting_id": "70591926cba810389761290992c70000",
+      "title_a": "OR Sales Representative - Acute Care and Monitoring (Phoenix)",
+      "title_b": "OR Sales Representative - Acute Care and Monitoring (Phoenix)"
+    },
+    {
+      "posting_id": "d2836d4abd1d102a563b72116d210001",
+      "title_a": "Windows DevOps Engineer",
+      "title_b": "Windows DevOps Engineer"
+    },
+    {
+      "posting_id": "ec02c9693861102ff0e815413ed70001",
+      "title_a": "Sr. Design Quality Engineer",
+      "title_b": "Sr. Design Quality Engineer"
+    }
+  ],
+  "only_in_a": [],
+  "only_in_b": [
+    "122732526734103d755b640fac740001",
+    "bd44f52e84a2102ff7a72bea8d450001"
+  ],
+  "n_only_in_a": 0,
+  "n_only_in_b": 2,
+  "note": "Two consecutive full reads of the same listing. Overlap < 1 means the site's listing is not a stable snapshot (postings added/closed between runs, or offset pagination drift); content changes mean descriptions are being edited. Both are collection properties, not hiring-strategy evidence.",
+  "store_summary": {
+    "n_current": 994,
+    "by_status": {
+      "NEW_POSTING": 994
+    },
+    "by_company": {
+      "medtronic": 994
+    },
+    "n_change_events": 994,
+    "change_events_by_state": {
+      "NEW_POSTING": 994
+    },
+    "runs": 1
+  },
+  "first_seen_preserved_for_run_a_rows": 0,
+  "first_seen_checked": 992
+}

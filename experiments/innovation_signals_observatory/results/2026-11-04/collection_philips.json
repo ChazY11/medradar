@@ -1,0 +1,124 @@
+{
+  "company_key": "philips",
+  "source_label": "Philips",
+  "source_platform": "phenom",
+  "source_urls": {
+    "sitemap_index": "https://www.careers.philips.com/global/en/sitemap_index.xml",
+    "robots": "https://www.careers.philips.com/robots.txt",
+    "listing": "https://www.careers.philips.com/global/en/search-results"
+  },
+  "collector_version": "recruitment/1.0.0",
+  "schema_version": "recruitment-obs-v1",
+  "policy": {
+    "min_interval_s": 1.0,
+    "max_requests": 1500,
+    "max_postings": 80,
+    "timeout_s": 45.0,
+    "robots_evidence": {
+      "www.careers.philips.com": {
+        "robots_url": "https://www.careers.philips.com/robots.txt",
+        "status": 200,
+        "n_groups": 0,
+        "raw_head": "<!doctype html> \n<html lang=\"en\" data-ph-id=\"ph-page-element-page6-kVTvUc\" class=\"desktop en_global external\" id=\"_PCM\"> \n <!--<![endif]--> \n <head data-ph-id=\"ph-page-element-page6-68q1jU\"><link type=\"text/css\" rel=\"stylesheet\" id=\"platform_globalStyles\" href=\"https://cdn.phenompeople.com/CareerConnectResources/common/js/globalplatform/1781270809227_globalstyles.css\"><link rel=\"preconnect\" href=\"https://cdn.phenompeople.com\" /><link rel=\"preconnect\" href=\"https://assets.phenompeople.com\" /><link rel=\"preload\" as=\"image\" importance=\"high\" href=\"https://cdn.phenompeople.com/CareerConnectResources/prod/PHILUS/images/Global-Home-Page-Header-Brand-Campaign-1-2025-1763535163541.jpg\" id=\"ph_image_preload\" /><meta name=\"robots\" content=\"index\" /><meta property=\"og:image:height\" content=\"200\" /><m",
+        "groups": [],
+        "is_robots_file": false,
+        "content_type_checked": true
+      }
+    },
+    "notes": [
+      "robots: robots.txt is not published (GET returned the SPA HTML shell, no REP directives); RFC 9309 treats an unavailable robots.txt as unrestricted, and none of the published site's own meta robots directives forbid indexing"
+    ]
+  },
+  "report": {
+    "company_key": "philips",
+    "source_label": "Philips",
+    "started_at": "2026-11-04T13:21:52+00:00",
+    "finished_at": "2026-11-04T13:23:26+00:00",
+    "listing_total_reported": null,
+    "sitemaps_read": 3,
+    "sitemap_urls_seen": 1018,
+    "job_urls_seen": 805,
+    "details_requested": 80,
+    "details_ok": 76,
+    "details_failed": 4,
+    "detail_failures": [
+      {
+        "url": "https://www.careers.philips.com/global/en/job/589309/Field-Specialist-IGT-all-genders-Region-Köln-Bonn",
+        "http_status": null,
+        "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xf6' in position 67: ordinal not in range(128)"
+      },
+      {
+        "url": "https://www.careers.philips.com/global/en/job/592943/2027校园招聘-临床应用培训生-Clinical-Application-Specialist",
+        "http_status": null,
+        "error": "UnicodeEncodeError: 'ascii' codec can't encode characters in position 30-33: ordinal not in range(128)"
+      },
+      {
+        "url": "https://www.careers.philips.com/global/en/job/589673/Werkstudent-Praktikum-Projektmanagement-Produktivität-all-genders",
+        "http_status": null,
+        "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe4' in position 77: ordinal not in range(128)"
+      },
+      {
+        "url": "https://www.careers.philips.com/global/en/job/592983/Stagiaire-HSE-Hygiène-Sécurité-Environnement-Janvier-2027",
+        "http_status": null,
+        "error": "UnicodeEncodeError: 'ascii' codec can't encode character '\\xe8' in position 44: ordinal not in range(128)"
+      }
+    ],
+    "skipped_robots_disallowed": 0,
+    "truncated_at_ceiling": true,
+    "robots": {
+      "www.careers.philips.com": {
+        "robots_url": "https://www.careers.philips.com/robots.txt",
+        "status": 200,
+        "n_groups": 0,
+        "is_robots_file": false
+      }
+    },
+    "robots_interpretation": {
+      "robots_url": "https://www.careers.philips.com/robots.txt",
+      "status": 200,
+      "published": false,
+      "mode": "unavailable_allowed",
+      "listing_path_decision": {
+        "allowed": true,
+        "rule": null,
+        "reason": "no group applies; robots leaves the path unrestricted"
+      },
+      "basis": "robots.txt is not published (GET returned the SPA HTML shell, no REP directives); RFC 9309 treats an unavailable robots.txt as unrestricted, and none of the published site's own meta robots directives forbid indexing"
+    },
+    "request_stats": {
+      "requests": 84,
+      "cache_hits": 0,
+      "retries": 0,
+      "errors": 0
+    },
+    "collector_version": "recruitment/1.0.0"
+  },
+  "availability": {
+    "n": 80,
+    "rates": {
+      "posting_id": 1.0,
+      "source_url": 1.0,
+      "job_title": 0.95,
+      "description_nonempty": 0.95,
+      "location": 0.95,
+      "source_date": 0.95,
+      "relative_only": 0.0,
+      "no_time": 0.05,
+      "first_seen": 1.0,
+      "legal_entity": 0.0
+    },
+    "by_quality": {
+      "SOURCE_DATETIME": 33,
+      "SOURCE_DATE": 43,
+      "NONE": 4
+    },
+    "by_status": {
+      "COMPLETE": 76,
+      "DETAIL_FAILED": 4
+    },
+    "by_platform": {
+      "phenom": 80
+    },
+    "distinct_postings": 80
+  }
+}
