@@ -16,7 +16,7 @@
 | `docs/LLM_EXPERIMENT.md` | 真实岗位文本上的规则臂 vs 本地 4B 模型臂实验（协议、结果、限制） |
 | `docs/EVIDENCE_REPORT.zh-CN.md` | **中文可读的证据样例报告**：候选方向 + 独立证据 + 反证 + 未知 |
 | `docs/NINETY_DAY_PLAN.zh-CN.md` | 90 天前瞻观察方案与启动条件（本轮不部署） |
-| `docs/PHASE4_SUMMARY.zh-CN.md` | 本轮中文科研总结（直接回答五个科研问题） |
+| `../../PHASE4_RESEARCH_REPORT.zh-CN.md` | 本轮中文科研总结（直接回答六个科研问题，含「不允许被读成什么」） |
 | `sources/` | 来源探测与分页行为测量脚本（可重跑，带请求数上限） |
 | `llm/` | 岗位文本抽取实验（schema、prompt、运行、评价） |
 | `evidence/` | 候选信号与独立证据的关联流水线 |

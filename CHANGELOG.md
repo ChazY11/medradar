@@ -3,6 +3,38 @@
 All notable changes to MedRadar. Format loosely follows Keep a Changelog.
 This is a research tool; "fixed" means a documented behaviour changed.
 
+## [Unreleased] — Phase 4: Innovation Signals Observatory (recruitment lane)
+
+### Added
+- **`medradar/recruitment/`**: the first auditable recruitment-observation lane.
+  `records.py` (observation contract: source date + its precision, write-once
+  `first_seen_at`, fetched-at, versioned content hash), `politeness.py` (robots.txt
+  longest-match decision plus request/posting/interval ceilings, asserted before a
+  run), `workday.py`/`phenom.py`/`beisen.py`/`beesite.py` (four public career-site
+  platforms), `store.py` (append-only store with NEW/UNCHANGED/REVISION/REMOVED/
+  REAPPEARED/UNREADABLE/HASH_RULE_REBASELINED), `identity.py` (posting identity,
+  duplicate clusters, cross-snapshot diff), `taxonomy.py` (deterministic function-class
+  and technology-track baseline reusing the existing device taxonomy).
+- **Real data**: Medtronic 994 postings (full population, 1,045 requests, 0 failures,
+  field availability 1.00) and bounded 80-posting samples for GE HealthCare, Philips,
+  Dräger and Mindray, each with its source denominator recorded.
+- **`experiments/innovation_signals_observatory/`**: source discovery and feasibility
+  matrix, pre-registered protocol, existing-capability audit, local-model job-text
+  experiment, candidate-signal x independent-evidence linking, Chinese review report,
+  90-day prospective design, and an artifact manifest pinning every data file by SHA-256.
+- **`PHASE4_RESEARCH_REPORT.zh-CN.md`**: the round's research summary, answering the six
+  questions directly and listing what it explicitly does not claim.
+
+### Fixed
+- `tests/test_observatory_core.py::test_filtered_change_queries_bind_every_parameter`
+  hard-coded a timestamp while querying a wall-clock-relative window, so it passed only
+  on the day it was written; found failing during the Phase 4 baseline audit and fixed
+  by making the fixture relative.
+
+### Not merged / not deployed
+- No change to `main`; no persistent service; no model training; no frozen Phase 2/3
+  artifact modified.
+
 ## [0.5.0] — 2026-11-02 (Phase 3: unified forecast cycle, temporal graph, evidence-grounded research agent)
 
 ### Added
