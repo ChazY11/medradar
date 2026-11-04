@@ -70,21 +70,15 @@ SOURCE_TYPE_MAP: Mapping[str, str] = {
     "device_technical_document": "other",
 }
 
-#: Corpus source type -> the event category a silver label asserts.
-SOURCE_TYPE_CATEGORY: Mapping[str, str] = {
-    "regulatory_clearance": "regulatory_clearance",
-    "regulatory_approval": "regulatory_approval",
-    "recall": "safety_recall",
-    "clinical_trial_registration": "clinical_trial_start",
-}
-
-#: Source types whose ``source_publication_date`` is the event date itself.
-#: (For a 510(k) or PMA record, the record's date *is* the decision date; for a
-#: trial registration it is the registration publication date, not the trial start,
-#: so it is deliberately absent from this map.)
-_DATE_IS_EVENT_DATE: Mapping[str, str] = {
-    "regulatory_clearance": "source_publication_date == decision_date",
-    "regulatory_approval": "source_publication_date == decision_date",
+#: Corpus source type -> (event category, corpus field holding the *event* date).
+#: The collector stores which API field the date came from in ``decision_date_field``,
+#: and that name is carried into the label's ``label_source`` so the derivation is
+#: auditable per document instead of assumed here.
+SILVER_SPEC: Mapping[str, tuple[str, str]] = {
+    "regulatory_clearance": ("regulatory_clearance", "decision_date"),
+    "regulatory_approval": ("regulatory_approval", "decision_date"),
+    "recall": ("safety_recall", "decision_date"),
+    "clinical_trial_registration": ("clinical_trial_start", "decision_date"),
 }
 
 
@@ -167,29 +161,34 @@ def load_corpus(corpus_dir: str | Path) -> tuple[dict[str, Any], ...]:
 
 
 def _silver_event(record: Mapping[str, Any]) -> GoldEvent | None:
-    """The one event the document's own source record can support, if any."""
+    """The one event the document's own source record can support, if any.
+
+    A silver label is copied from the record; it is never inferred from the text.
+    The record's ``decision_date_field`` names which API field the date came from, and
+    is carried into ``label_source`` so a reader can audit the derivation per document.
+    """
     source_type = str(record["source_type"])
-    category = SOURCE_TYPE_CATEGORY.get(source_type)
-    if category is None:
+    spec = SILVER_SPEC.get(source_type)
+    if spec is None:
         return None
-    date_basis = _DATE_IS_EVENT_DATE.get(source_type)
-    if date_basis is None:
-        return None
-    event_date = record.get("event_date") or record.get("decision_date") or record.get("source_publication_date")
+    category, date_field = spec
+    event_date = record.get(date_field)
     if not event_date:
         return None
-    product = record.get("product_or_technology") or None
     return GoldEvent(
         event_id=f"{record['doc_id']}-silver",
         company_canonical_id=COMPANY_CANONICAL_IDS[str(record["company_canonical_id"])],
         event_category=category,
         event_date=str(event_date),
         published_at=record.get("source_publication_date"),
-        product_or_technology=product,
+        product_or_technology=record.get("product_or_technology") or None,
         technology_domains=(),
         evidence_quote=None,
         label_tier=SILVER_TIER,
-        label_source=f"source record field ({date_basis})",
+        label_source=(
+            f"source record field {date_field!r}"
+            + (f" (API field {record.get('decision_date_field')!r})" if record.get("decision_date_field") else "")
+        ),
     )
 
 
@@ -334,7 +333,7 @@ __all__ = [
     "DATASET_NAME",
     "DATASET_VERSION",
     "SILVER_TIER",
-    "SOURCE_TYPE_CATEGORY",
+    "SILVER_SPEC",
     "SOURCE_TYPE_MAP",
     "build_real_document_dataset",
     "corpus_document_paths",

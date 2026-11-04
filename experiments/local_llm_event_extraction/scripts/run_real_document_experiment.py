@@ -1,4 +1,4 @@
-﻿"""Run the real-document extraction experiment, arms A (rules) and B (local LLM).
+"""Run the real-document extraction experiment, arms A (rules) and B (local LLM).
 
 This script is the entry point for Phase 2 of the local small-LM research programme.
 It wires four pieces that were previously only separately testable:
@@ -218,6 +218,7 @@ def _silver_agreement(records: Sequence[Mapping[str, Any]], dataset: DatasetMani
     company_hits = 0
     product_hits = 0
     misses: list[dict[str, Any]] = []
+    product_comparisons = 0
     for record in records:
         case = by_case.get(str(record.get("case_id")))
         if case is None or not case.gold_events:
@@ -234,16 +235,25 @@ def _silver_agreement(records: Sequence[Mapping[str, Any]], dataset: DatasetMani
             (e for e in events if e.get("event_category") == gold.event_category),
             events[0],
         )
-        if match.get("event_category") == gold.event_category:
-            category_hits += 1
-        if str(match.get("event_date")) == str(gold.event_date):
-            date_hits += 1
+        category_ok = match.get("event_category") == gold.event_category
+        date_ok = str(match.get("event_date")) == str(gold.event_date)
         company = (match.get("company") or {}).get("canonical_id")
-        if company == gold.company_canonical_id:
+        company_ok = company == gold.company_canonical_id
+        if category_ok:
+            category_hits += 1
+        if date_ok:
+            date_hits += 1
+        if company_ok:
             company_hits += 1
-        if gold.product_or_technology and match.get("product_or_technology") == gold.product_or_technology:
-            product_hits += 1
-        else:
+        # Product is only comparable when the source record supplies one.  A missing
+        # gold product is "not measured", never a mismatch (the project's own rule).
+        product_ok: bool | None = None
+        if gold.product_or_technology:
+            product_comparisons += 1
+            product_ok = match.get("product_or_technology") == gold.product_or_technology
+            if product_ok:
+                product_hits += 1
+        if not (category_ok and date_ok and company_ok) or product_ok is False:
             misses.append(
                 {
                     "case_id": case.case_id,
@@ -251,6 +261,7 @@ def _silver_agreement(records: Sequence[Mapping[str, Any]], dataset: DatasetMani
                     "category": [match.get("event_category"), gold.event_category],
                     "event_date": [match.get("event_date"), gold.event_date],
                     "company": [company, gold.company_canonical_id],
+                    "product": [match.get("product_or_technology"), gold.product_or_technology],
                 }
             )
     denominator = max(compared, 1)
@@ -261,7 +272,10 @@ def _silver_agreement(records: Sequence[Mapping[str, Any]], dataset: DatasetMani
         "category_agreement": round(category_hits / denominator, 4),
         "event_date_agreement": round(date_hits / denominator, 4),
         "company_agreement": round(company_hits / denominator, 4),
-        "product_exact_agreement": round(product_hits / denominator, 4),
+        "product_exact_agreement": (
+            round(product_hits / product_comparisons, 4) if product_comparisons else None
+        ),
+        "product_comparisons": product_comparisons,
         "agreement_counts": {
             "category": category_hits,
             "event_date": date_hits,
@@ -271,7 +285,8 @@ def _silver_agreement(records: Sequence[Mapping[str, Any]], dataset: DatasetMani
         "caveat": (
             "Silver labels are copied from the same source record the document text was "
             "rendered from, so agreement measures reading fidelity of a record rendering, "
-            "NOT extraction from prose and NOT accuracy against human annotation."
+            "NOT extraction from prose and NOT accuracy against human annotation. "
+            "Product agreement is None when the source record supplies no product string."
         ),
         "misses": misses,
     }
@@ -351,9 +366,21 @@ def summarise(
     }
 
 
+def _arm_info(args: argparse.Namespace) -> dict[str, Any]:
+    """Descriptor records for the summary, without instantiating any adapter."""
+    info: dict[str, Any] = {"rules-baseline": rules_descriptor().to_dict()}
+    if not args.rules_only:
+        info["hf-qwen3-4b-instruct"] = _hf_descriptor(args).to_dict()
+    return info
+
+
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--corpus", default=r"D:\DEPPSKK\ml-work\corpus")
+    parser.add_argument(
+        "--corpus",
+        default=str(Path(__file__).resolve().parents[1] / "datasets" / "real" / "corpus" / "2026-11-04"),
+        help="frozen corpus directory (default: the copy committed with this module)",
+    )
     parser.add_argument("--out", default=r"D:\DEPPSKK\ml-work\runs")
     parser.add_argument("--run-id", default=None)
     parser.add_argument("--model-id", default=DEFAULT_MODEL_ID)
@@ -368,6 +395,12 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--rules-only", action="store_true", help="skip the model arm")
     parser.add_argument("--model-manifest", default=r"D:\DEPPSKK\ml-work\model_download.json")
     parser.add_argument("--resume", action="store_true", default=True)
+    parser.add_argument(
+        "--summarize-only",
+        action="store_true",
+        help="rebuild EXPERIMENT_SUMMARY.json from an existing run directory (no model load)",
+    )
+    parser.add_argument("--run-dir", default=None, help="existing run directory for --summarize-only")
     return parser.parse_args(argv)
 
 
@@ -387,6 +420,23 @@ def main(argv: Sequence[str] | None = None) -> int:
     taxonomy = Taxonomy.from_config()
     aliases = _alias_map(roster)
     include_model = not args.rules_only
+    if args.summarize_only:
+        run_dir = Path(args.run_dir) if args.run_dir else Path(args.out) / str(args.run_id)
+        if not (run_dir / "predictions.jsonl").is_file():
+            print(f"REFUSED: no predictions.jsonl in {run_dir}", file=sys.stderr)
+            return 2
+        summary = summarise(
+            run_dir=run_dir,
+            dataset=dataset,
+            arms=_arm_info(args),
+            corpus_dir=str(corpus_dir),
+            model_manifest_path=Path(args.model_manifest) if args.model_manifest else None,
+        )
+        summary_path = run_dir / "EXPERIMENT_SUMMARY.json"
+        summary_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(json.dumps(summary, indent=2, ensure_ascii=False))
+        print(f"\nsummary rewritten -> {summary_path}")
+        return 0
     if include_model:
         if not Path(args.weights_path).is_dir():
             print(f"REFUSED: weights directory not found: {args.weights_path}", file=sys.stderr)

@@ -1,0 +1,122 @@
+{
+  "purpose": "TECHNICAL_SMOKE_TEST_ONLY",
+  "claim": "Proves the QLoRA pipeline executes on this GPU: real forward and backward passes, LoRA parameter updates, checkpoint save, reload across a process boundary, resume, and adapter inference. It is NOT evidence that training improves extraction: the data is synthetic and there is no evaluation.",
+  "created_at": "2026-11-04T09:13:10+0800",
+  "phase": "train",
+  "gate_env": {
+    "MEDRADAR_LOCAL_LLM_ALLOW_TRAINING": "1"
+  },
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.9.1+cu128",
+    "torch_cuda": "12.8",
+    "transformers": "5.22.1",
+    "peft": "0.21.2",
+    "bitsandbytes": "0.50.2",
+    "gpu": "NVIDIA GeForce RTX 5080 Laptop GPU",
+    "compute_capability": [
+      12,
+      0
+    ],
+    "vram_total_mib": 16303.0,
+    "vram_free_at_start_mib": 14957.0
+  },
+  "model": {
+    "weights_path": "D:\\DEPPSKK\\ml-models\\Qwen3-4B-Instruct-2507",
+    "weights_fingerprint": "6e200db34e5751f45c117e42b9ab0695e87525ee2b418f41c3dac225de8f49fe",
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "quantization": "nf4"
+  },
+  "config": {
+    "steps": 6,
+    "max_seq_len": 2048,
+    "grad_accum": 2,
+    "learning_rate": 0.0002,
+    "seed": 0,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05
+  },
+  "lora": {
+    "trainable_parameters": 33030144,
+    "total_parameters": 2238840320,
+    "trainable_fraction": 0.01475324,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "data": {
+    "dataset": "synthetic_event_extraction_v0",
+    "label_tier": "synthetic_fixture",
+    "records": 12,
+    "splits_used": [
+      "train",
+      "validation"
+    ],
+    "bundle_sha256": "0a50ea9978628d13ce652c1189b4b90199978fc7a87fe4ac3af82335347f546e",
+    "prompt_version_note": "prompt rendered by training.dataset_builder via prompting.build_prompt",
+    "targets_are": "hand-authored synthetic gold events, never real documents",
+    "prompt_tokens_min": 1029,
+    "prompt_tokens_max": 1118,
+    "supervised_tokens_min": 75,
+    "supervised_tokens_max": 469
+  },
+  "measurements": {
+    "load_seconds": 12.99,
+    "steps": [
+      {
+        "step": 0,
+        "loss": 1.96669,
+        "grad_norm": null,
+        "step_time_s": 3.4071,
+        "tokens": 1399,
+        "tokens_per_s": 410.61,
+        "vram_allocated_mib": 3593.9
+      },
+      {
+        "step": 1,
+        "loss": 1.896693,
+        "grad_norm": 3.913544,
+        "step_time_s": 2.5947,
+        "tokens": 1361,
+        "tokens_per_s": 524.54,
+        "vram_allocated_mib": 3719.1
+      },
+      {
+        "step": 2,
+        "loss": 2.848693,
+        "grad_norm": null,
+        "step_time_s": 1.8181,
+        "tokens": 1124,
+        "tokens_per_s": 618.23,
+        "vram_allocated_mib": 3840.2
+      }
+    ],
+    "peak_vram_train_mib": 6424.7,
+    "vram_measurement_method": "torch.cuda.max_memory_allocated()/MiB, reset at phase start"
+  },
+  "checkpoint": {
+    "checkpoint_dir": "D:\\DEPPSKK\\ml-work\\training\\smoke-qwen3-4b-qlora\\checkpoint-step-3",
+    "trainer_state": "D:\\DEPPSKK\\ml-work\\training\\smoke-qwen3-4b-qlora\\trainer-state-step-3.pt",
+    "trainer_state_bytes": 264683205,
+    "adapter_files": [
+      "README.md",
+      "adapter_config.json",
+      "adapter_model.safetensors"
+    ],
+    "adapter_sha256": {
+      "adapter_model.safetensors": "0dc5152887ac9de563b5b4e69e2dbbc19b0ceaff69f172eb3c703c5718c8b1a0"
+    }
+  },
+  "next_phase": "--phase resume --checkpoint D:\\DEPPSKK\\ml-work\\training\\smoke-qwen3-4b-qlora\\checkpoint-step-3 --steps 6 --max-seq-len 2048 --grad-accum 2",
+  "wall_time_s": 1793659007.7
+}

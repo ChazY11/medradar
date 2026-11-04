@@ -1,0 +1,124 @@
+{
+  "purpose": "TECHNICAL_SMOKE_TEST_ONLY",
+  "claim": "Proves the QLoRA pipeline executes on this GPU: real forward and backward passes, LoRA parameter updates, checkpoint save, reload across a process boundary, resume, and adapter inference. It is NOT evidence that training improves extraction: the data is synthetic and there is no evaluation.",
+  "created_at": "2026-11-04T09:21:25+0800",
+  "phase": "resume",
+  "gate_env": {
+    "MEDRADAR_LOCAL_LLM_ALLOW_TRAINING": "1"
+  },
+  "environment": {
+    "python": "3.12.10",
+    "torch": "2.9.1+cu128",
+    "torch_cuda": "12.8",
+    "transformers": "5.22.1",
+    "peft": "0.21.2",
+    "bitsandbytes": "0.50.2",
+    "gpu": "NVIDIA GeForce RTX 5080 Laptop GPU",
+    "compute_capability": [
+      12,
+      0
+    ],
+    "vram_total_mib": 16303.0,
+    "vram_free_at_start_mib": 14957.0
+  },
+  "model": {
+    "weights_path": "D:\\DEPPSKK\\ml-models\\Qwen3-4B-Instruct-2507",
+    "weights_fingerprint": "6e200db34e5751f45c117e42b9ab0695e87525ee2b418f41c3dac225de8f49fe",
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "quantization": "nf4"
+  },
+  "config": {
+    "steps": 6,
+    "max_seq_len": 2048,
+    "grad_accum": 2,
+    "learning_rate": 0.0002,
+    "seed": 0,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05
+  },
+  "data": {
+    "dataset": "synthetic_event_extraction_v0",
+    "label_tier": "synthetic_fixture",
+    "records": 12,
+    "splits_used": [
+      "train",
+      "validation"
+    ],
+    "bundle_sha256": "0a50ea9978628d13ce652c1189b4b90199978fc7a87fe4ac3af82335347f546e",
+    "prompt_version_note": "prompt rendered by training.dataset_builder via prompting.build_prompt",
+    "targets_are": "hand-authored synthetic gold events, never real documents",
+    "prompt_tokens_min": 1029,
+    "prompt_tokens_max": 1118,
+    "supervised_tokens_min": 75,
+    "supervised_tokens_max": 469
+  },
+  "measurements": {
+    "vram_after_adapter_reload_mib": 3422.9,
+    "trainable_parameters_after_reload": 33030144,
+    "steps": [
+      {
+        "step": 3,
+        "loss": 1.246281,
+        "grad_norm": 0.909828,
+        "step_time_s": 3.0789,
+        "tokens": 1312,
+        "tokens_per_s": 426.13,
+        "vram_allocated_mib": 3716.8
+      },
+      {
+        "step": 4,
+        "loss": 0.867119,
+        "grad_norm": null,
+        "step_time_s": 2.2937,
+        "tokens": 1323,
+        "tokens_per_s": 576.79,
+        "vram_allocated_mib": 3843.0
+      },
+      {
+        "step": 5,
+        "loss": 0.546256,
+        "grad_norm": 0.93922,
+        "step_time_s": 2.7282,
+        "tokens": 1531,
+        "tokens_per_s": 561.18,
+        "vram_allocated_mib": 3721.1
+      }
+    ],
+    "peak_vram_resume_train_mib": 7035.9,
+    "release_after_train": {
+      "vram_allocated_after_free_mib": 3439.1,
+      "vram_reserved_after_free_mib": 4258.0
+    },
+    "peak_vram_inference_mib": 6247.8,
+    "vram_measurement_method": "torch.cuda.max_memory_allocated()/MiB, reset per phase segment"
+  },
+  "resume": {
+    "performed": true,
+    "process_boundary": true,
+    "resumed_from_step": 3,
+    "checkpoint": "D:\\DEPPSKK\\ml-work\\training\\smoke-qwen3-4b-qlora\\checkpoint-step-3",
+    "optimizer_state_restored": true,
+    "adapter_reloaded_into_fresh_base": true
+  },
+  "checkpoint": {
+    "final_adapter_dir": "D:\\DEPPSKK\\ml-work\\training\\smoke-qwen3-4b-qlora\\adapter-final",
+    "final_adapter_files": [
+      "README.md",
+      "adapter_config.json",
+      "adapter_model.safetensors",
+      "chat_template.jinja",
+      "tokenizer.json",
+      "tokenizer_config.json"
+    ],
+    "final_adapter_sha256": {
+      "adapter_model.safetensors": "ceb450d87e3c157a682ed9ec3d18b61903c8a6bcaa3ba860c486e7d15fc8443e"
+    }
+  },
+  "inference_after_reload": {
+    "prompt_chars": 242,
+    "completion_chars": 114,
+    "completion": "{\"event\": \"FDA 510(k) clearance\", \"product\": \"TestGuard monitor\", \"company\": \"ACME Medical\", \"date\": \"2025-03-03\"}"
+  },
+  "wall_time_s": 1793659024.7
+}

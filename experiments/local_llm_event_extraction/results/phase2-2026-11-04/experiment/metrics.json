@@ -1,0 +1,315 @@
+{
+  "run_id": "phase2-2026-11-04",
+  "status": "REAL_DOCUMENT_UNLABELLED",
+  "created_at": "2026-11-04T00:56:24.442560+00:00",
+  "seeds": [
+    0
+  ],
+  "label_tiers": [
+    "source_record_derived"
+  ],
+  "banner": "REAL_DOCUMENT_UNLABELLED — real public documents, no human event labels; harness-level measurements only, no accuracy claim",
+  "metrics": {
+    "rules-baseline": {
+      "matching_protocol": {
+        "version": "v1",
+        "unit": "events, micro-averaged over documents that have a prediction record",
+        "matching": "greedy 1:1 within each document: gold events in dataset order, predicted events in output order, first compatible unused pair wins",
+        "match_requires": [
+          "predicted.company.canonical_id == gold.company_canonical_id",
+          "predicted.event_category == gold.event_category",
+          "dates compatible: exact equality when gold.event_date is present; date-agnostic when gold.event_date is null"
+        ],
+        "field_protocol": "entity/date/published-at/citation metrics use a second greedy pairing that requires only event_category, so a wrong entity or date is reported as such instead of collapsing into fp+fn",
+        "date_rule": "exact string equality on YYYY / YYYY-MM / YYYY-MM-DD when the gold date is present; a null gold date is date-agnostic",
+        "citation_rule": "correct when at least one predicted evidence quote is a verbatim substring of the document (whitespace/case-normalised fallback) and overlaps the gold evidence quote (containment, or longest common substring >= max(24, half the gold quote length))",
+        "abstention_rule": "a document abstains when it asserts zero extracted events (no events, all abstained, or a parse failure); wrong_abstention is an abstention on a document that has gold events",
+        "negative_control_rule": "a case with expected_abstain=True and no gold events; asserting any event on it is a false assertion",
+        "duplicate_rule": "identical asserted events within one document are counted in the error taxonomy",
+        "zero_denominator": "null (not measured), never 0.0",
+        "support": "documents that have a prediction record",
+        "seeds": [
+          0
+        ]
+      },
+      "support": 19,
+      "tp": 1,
+      "fp": 4,
+      "fn": 18,
+      "precision": 0.2,
+      "recall": 0.05263157894736842,
+      "f1": 0.08333333333333333,
+      "entity_match_accuracy": 1.0,
+      "event_date_accuracy": 0.5,
+      "published_at_accuracy": 1.0,
+      "citation_correctness_rate": null,
+      "abstention_rate": 0.7368421052631579,
+      "wrong_abstention_rate": 0.7368421052631579,
+      "false_assertion_rate": null,
+      "parse_failure_rate": 0.0,
+      "per_category": {
+        "clinical_trial_result": {
+          "gold": 0,
+          "predicted": 2,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "precision": 0.0,
+          "recall": null
+        },
+        "clinical_trial_start": {
+          "gold": 5,
+          "predicted": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 5,
+          "precision": null,
+          "recall": 0.0
+        },
+        "m_and_a": {
+          "gold": 0,
+          "predicted": 1,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.0,
+          "recall": null
+        },
+        "regulatory_approval": {
+          "gold": 4,
+          "predicted": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 4,
+          "precision": null,
+          "recall": 0.0
+        },
+        "regulatory_clearance": {
+          "gold": 5,
+          "predicted": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 5,
+          "precision": null,
+          "recall": 0.0
+        },
+        "safety_recall": {
+          "gold": 5,
+          "predicted": 2,
+          "tp": 1,
+          "fp": 1,
+          "fn": 4,
+          "precision": 0.5,
+          "recall": 0.2
+        }
+      },
+      "per_source_type": {
+        "clinical_trial_record": {
+          "gold": 5,
+          "predicted": 1,
+          "tp": 0,
+          "fp": 1,
+          "fn": 5,
+          "precision": 0.0,
+          "recall": 0.0
+        },
+        "fda_510k": {
+          "gold": 5,
+          "predicted": 0,
+          "tp": 0,
+          "fp": 0,
+          "fn": 5,
+          "precision": null,
+          "recall": 0.0
+        },
+        "fda_pma": {
+          "gold": 4,
+          "predicted": 1,
+          "tp": 0,
+          "fp": 1,
+          "fn": 4,
+          "precision": 0.0,
+          "recall": 0.0
+        },
+        "fda_recall": {
+          "gold": 5,
+          "predicted": 3,
+          "tp": 1,
+          "fp": 2,
+          "fn": 4,
+          "precision": 0.3333333333333333,
+          "recall": 0.2
+        }
+      },
+      "error_taxonomy": {
+        "false_positive": 4,
+        "false_negative": 18,
+        "entity_mismatch": 0,
+        "date_mismatch": 1,
+        "published_at_mismatch": 0,
+        "citation_not_verbatim": 0,
+        "citation_not_overlapping": 0,
+        "parse_invalid_json": 0,
+        "parse_refused": 0,
+        "parse_empty": 0,
+        "adapter_error": 0,
+        "missing_prediction": 0,
+        "prediction_decode_error": 0,
+        "wrong_abstention": 14,
+        "false_assertion": 0,
+        "duplicate_event": 0
+      }
+    },
+    "hf-qwen3-4b-instruct": {
+      "matching_protocol": {
+        "version": "v1",
+        "unit": "events, micro-averaged over documents that have a prediction record",
+        "matching": "greedy 1:1 within each document: gold events in dataset order, predicted events in output order, first compatible unused pair wins",
+        "match_requires": [
+          "predicted.company.canonical_id == gold.company_canonical_id",
+          "predicted.event_category == gold.event_category",
+          "dates compatible: exact equality when gold.event_date is present; date-agnostic when gold.event_date is null"
+        ],
+        "field_protocol": "entity/date/published-at/citation metrics use a second greedy pairing that requires only event_category, so a wrong entity or date is reported as such instead of collapsing into fp+fn",
+        "date_rule": "exact string equality on YYYY / YYYY-MM / YYYY-MM-DD when the gold date is present; a null gold date is date-agnostic",
+        "citation_rule": "correct when at least one predicted evidence quote is a verbatim substring of the document (whitespace/case-normalised fallback) and overlaps the gold evidence quote (containment, or longest common substring >= max(24, half the gold quote length))",
+        "abstention_rule": "a document abstains when it asserts zero extracted events (no events, all abstained, or a parse failure); wrong_abstention is an abstention on a document that has gold events",
+        "negative_control_rule": "a case with expected_abstain=True and no gold events; asserting any event on it is a false assertion",
+        "duplicate_rule": "identical asserted events within one document are counted in the error taxonomy",
+        "zero_denominator": "null (not measured), never 0.0",
+        "support": "documents that have a prediction record",
+        "seeds": [
+          0
+        ]
+      },
+      "support": 19,
+      "tp": 17,
+      "fp": 3,
+      "fn": 2,
+      "precision": 0.85,
+      "recall": 0.8947368421052632,
+      "f1": 0.8717948717948718,
+      "entity_match_accuracy": 1.0,
+      "event_date_accuracy": 1.0,
+      "published_at_accuracy": 1.0,
+      "citation_correctness_rate": null,
+      "abstention_rate": 0.0,
+      "wrong_abstention_rate": 0.0,
+      "false_assertion_rate": null,
+      "parse_failure_rate": 0.0,
+      "per_category": {
+        "clinical_trial_result": {
+          "gold": 0,
+          "predicted": 1,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.0,
+          "recall": null
+        },
+        "clinical_trial_start": {
+          "gold": 5,
+          "predicted": 5,
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "manufacturing_change": {
+          "gold": 0,
+          "predicted": 2,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "precision": 0.0,
+          "recall": null
+        },
+        "regulatory_approval": {
+          "gold": 4,
+          "predicted": 2,
+          "tp": 2,
+          "fp": 0,
+          "fn": 2,
+          "precision": 1.0,
+          "recall": 0.5
+        },
+        "regulatory_clearance": {
+          "gold": 5,
+          "predicted": 5,
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "safety_recall": {
+          "gold": 5,
+          "predicted": 5,
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        }
+      },
+      "per_source_type": {
+        "clinical_trial_record": {
+          "gold": 5,
+          "predicted": 6,
+          "tp": 5,
+          "fp": 1,
+          "fn": 0,
+          "precision": 0.8333333333333334,
+          "recall": 1.0
+        },
+        "fda_510k": {
+          "gold": 5,
+          "predicted": 5,
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        },
+        "fda_pma": {
+          "gold": 4,
+          "predicted": 4,
+          "tp": 2,
+          "fp": 2,
+          "fn": 2,
+          "precision": 0.5,
+          "recall": 0.5
+        },
+        "fda_recall": {
+          "gold": 5,
+          "predicted": 5,
+          "tp": 5,
+          "fp": 0,
+          "fn": 0,
+          "precision": 1.0,
+          "recall": 1.0
+        }
+      },
+      "error_taxonomy": {
+        "false_positive": 3,
+        "false_negative": 2,
+        "entity_mismatch": 0,
+        "date_mismatch": 0,
+        "published_at_mismatch": 0,
+        "citation_not_verbatim": 0,
+        "citation_not_overlapping": 0,
+        "parse_invalid_json": 0,
+        "parse_refused": 0,
+        "parse_empty": 0,
+        "adapter_error": 0,
+        "missing_prediction": 0,
+        "prediction_decode_error": 0,
+        "wrong_abstention": 0,
+        "false_assertion": 0,
+        "duplicate_event": 0
+      }
+    }
+  },
+  "not_run": {}
+}

@@ -1,4 +1,4 @@
-"""Offline tests for the real-document corpus bridge and the third run status.
+﻿"""Offline tests for the real-document corpus bridge and the third run status.
 
 Two things are covered:
 
@@ -99,7 +99,7 @@ def test_loader_maps_company_and_source_type_and_marks_every_case_as_test(tmp_pa
     assert by_id["fda510k-T1"].document.metadata["company_canonical_id"] == "ge_healthcare"
 
 
-def test_silver_label_only_where_the_source_record_carries_the_value(tmp_path) -> None:
+def test_silver_label_uses_the_record_decision_date_and_names_its_source(tmp_path) -> None:
     corpus = _write_corpus(
         tmp_path,
         [
@@ -110,21 +110,30 @@ def test_silver_label_only_where_the_source_record_carries_the_value(tmp_path) -
                 "regulatory_clearance",
                 LONG_PROSE,
                 decision_date="2026-09-17",
+                decision_date_field="decision_date",
             ),
+            _document("ctgov-T2", "philips", "clinical_trial_registration", LONG_PROSE, decision_date="2021-10-25", decision_date_field="protocolSection.statusModule.startDateStruct.date"),
         ],
     )
     dataset = build_real_document_dataset(corpus)
     by_id = {case.case_id: case for case in dataset.cases}
-    # A trial registration's publication date is not the trial-start date, so no silver label.
-    assert by_id["ctgov-T1"].gold_events == ()
-    assert by_id["ctgov-T1"].label_tier == "unlabelled"
-    # A 510(k) record's decision date IS the event date, so it gets a silver label.
     silver = by_id["fda510k-T1"]
     assert silver.label_tier == "source_record_derived"
     assert len(silver.gold_events) == 1
     assert silver.gold_events[0].event_category == "regulatory_clearance"
     assert silver.gold_events[0].event_date == "2026-09-17"
     assert silver.gold_events[0].label_tier == "source_record_derived"
+    assert "decision_date" in (silver.gold_events[0].label_source or "")
+    # A trial registration's event is the study start, taken from the record's own
+    # start-date field -- not the publication date.
+    trial = by_id["ctgov-T2"]
+    assert trial.gold_events[0].event_category == "clinical_trial_start"
+    assert trial.gold_events[0].event_date == "2021-10-25"
+    assert "startDateStruct" in (trial.gold_events[0].label_source or "")
+    # With silver disabled, nothing is labelled.
+    unlabelled = build_real_document_dataset(corpus, silver=False)
+    assert all(case.gold_events == () for case in unlabelled.cases)
+    assert sorted(set(unlabelled.label_tiers)) == ["unlabelled"]
 
 
 def test_edited_text_is_rejected_by_the_hash_check(tmp_path) -> None:

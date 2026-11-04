@@ -1,7 +1,17 @@
 # Local small-language-model research foundation
 
-**Status: infrastructure only. No model has been run, no training has been started, and this
-directory contains no scientific result.**
+**Status: Phase 1 (infrastructure) is complete. Phase 2 ran the first real local GPU
+experiment on 2026-11-04.** A Qwen3-4B-Instruct checkpoint ran 4-bit NF4 on the RTX 5080
+Laptop over 19 real public documents, the rule baseline was compared on the same corpus,
+and the QLoRA training pipeline was technically verified. **Formal research fine-tuning
+remains blocked** for lack of human labels (`RESEARCH_TRAINING_BLOCKED`).
+
+Read the results:
+
+- [`docs/PHASE2_REAL_RUN.md`](docs/PHASE2_REAL_RUN.md) — the technical report (what ran, measured numbers, error analysis, failures)
+- [`docs/PHASE2_ENVIRONMENT.md`](docs/PHASE2_ENVIRONMENT.md) — the verified environment and pinned versions
+- [`docs/PHASE2_SUMMARY.zh-CN.md`](docs/PHASE2_SUMMARY.zh-CN.md) — 中文阶段总结与下一步建议
+- [`results/phase2-2026-11-04/`](results/phase2-2026-11-04/) — raw artifacts: GPU verification, model provenance, per-document predictions, QLoRA smoke records
 
 This is the isolated experimental module for one question:
 
