@@ -1,69 +1,40 @@
 {
-  "run_id": "A-20261104T131807Z",
+  "run_id": "A-20261104T143638Z",
   "arm": "A",
   "status": "COMPLETED",
-  "started_at": "2026-11-04T13:18:07.929365+00:00",
-  "finished_at": "2026-11-04T13:18:08.367183+00:00",
+  "completion": {
+    "n_selected": 20,
+    "n_run": 20,
+    "n_not_run": 0,
+    "not_run_ids": [],
+    "stopped_early_wall_clock": false,
+    "resumed_from_previous_predictions": false,
+    "wall_clock_budget_s": null,
+    "item_timeout_s": 90.0,
+    "items_timed_out": 0,
+    "note": "A TIMEOUT item exceeded the declared per-item wall-clock budget but its output was still parsed and scored; it is a measured deployment limit, not a dropped item."
+  },
+  "started_at": "2026-11-04T14:36:38.675959+00:00",
+  "finished_at": "2026-11-04T14:36:38.929406+00:00",
   "data": {
     "path": "experiments\\innovation_signals_observatory\\results\\2026-11-04\\jobs_medtronic.jsonl",
-    "sha256": "165dce8e8c6b8127ba445d3a668117d614ad47193daf74b250d8b67c51f80217",
-    "n_postings_loaded": 992,
+    "sha256": "2ca362ee758407d11ba23c52eba5c031802a1628bd35a402d9d01ca58470dd82",
+    "n_postings_loaded": 994,
     "n_lines_in_file": 994
   },
   "collection_reports": [
     {
-      "file": "collection_draeger.json",
-      "sha256": "a7259c447ba755f3238025af9d6fb0593468f4744f27bb5e58b67ae854e57dc2",
-      "collection_started_at": null,
-      "collection_finished_at": null,
-      "listings_seen": null,
-      "details_ok": null,
-      "details_failed": null,
-      "truncated_at_ceiling": null,
-      "policy_max_postings": null,
-      "n_distinct_postings": null,
-      "collector_version": null,
-      "schema_version": "draeger-source-row-v1"
-    },
-    {
-      "file": "collection_ge_healthcare.json",
-      "sha256": "d90079ce1bb2f1f455fe4e9e3ea6e1b77dcd7875f7312c61dfc384fef6a05dec",
-      "collection_started_at": "2026-11-04T13:15:48+00:00",
-      "collection_finished_at": "2026-11-04T13:18:04+00:00",
-      "listings_seen": null,
-      "details_ok": 73,
-      "details_failed": 7,
-      "truncated_at_ceiling": true,
-      "policy_max_postings": 80,
-      "n_distinct_postings": 80,
-      "collector_version": "recruitment/1.0.0",
-      "schema_version": "recruitment-obs-v1"
-    },
-    {
       "file": "collection_medtronic.json",
-      "sha256": "aca7f5722c88c5af0db76a384e8d2af7ea3ffb724d76aea284091f4a9e56798c",
-      "collection_started_at": "2026-11-04T12:53:05+00:00",
-      "collection_finished_at": "2026-11-04T13:09:28+00:00",
+      "sha256": "6269cebc5c95582ac8571ca1768380b4d7d09eb7bd978ca02e70ab4d9d8f2dd8",
+      "company_key": "medtronic",
+      "collection_started_at": "2026-11-04T13:11:27+00:00",
+      "collection_finished_at": "2026-11-04T13:28:38+00:00",
       "listings_seen": 994,
       "details_ok": 994,
       "details_failed": 0,
       "truncated_at_ceiling": false,
       "policy_max_postings": 1000,
-      "n_distinct_postings": 992,
-      "collector_version": "recruitment/1.0.0",
-      "schema_version": "recruitment-obs-v1"
-    },
-    {
-      "file": "collection_mindray.json",
-      "sha256": "dab585e76b549bff225ac32583670b470bceb0b5818839ad8439e4cc90a4b5d9",
-      "collection_started_at": "2026-11-04T13:13:17+00:00",
-      "collection_finished_at": "2026-11-04T13:13:24+00:00",
-      "listings_seen": 5,
-      "details_ok": 0,
-      "details_failed": 0,
-      "truncated_at_ceiling": true,
-      "policy_max_postings": 5,
-      "n_distinct_postings": 5,
+      "n_distinct_postings": 994,
       "collector_version": "recruitment/1.0.0",
       "schema_version": "recruitment-obs-v1"
     }
@@ -74,8 +45,8 @@
       "hash": "sha256",
       "order": "ascending sha256(salt \\x00 posting_id)",
       "salt": "phase4-jobsplit-v1",
-      "n_primary_requested": 32,
-      "n_negative_requested": 10,
+      "n_primary_requested": 12,
+      "n_negative_requested": 8,
       "primary_filter": "job_title does NOT match negative_title_pattern",
       "negative_filter": "job_title DOES match negative_title_pattern",
       "disjoint": true,
@@ -87,7 +58,7 @@
       }
     },
     "n_available": {
-      "total": 992,
+      "total": 994,
       "negative_titles": 53
     },
     "primary_ids": [
@@ -102,27 +73,7 @@
       "032f142d5d2f102219790ba890ee0000",
       "b968d27c521f10369ab2448163240002",
       "70591926cba810389761290992c70000",
-      "d4784440efb810276d7deda3ee790001",
-      "d2836d4abd1d102a5eb8f95eb6b60000",
-      "4b9baeaa7b4a1015457e0a76d80b0001",
-      "9f671118c231103b9a2467c274720001",
-      "8e5a383db9e010392fa07864b85d0001",
-      "792314f58717101428a546a437b50001",
-      "6e581deda778103b188e7f1e375f0000",
-      "6e581deda778103b5bc336ee3c700001",
-      "9b65e53bec3e102578955726cf0a0001",
-      "41c07ef5017b100b0c02675877340001",
-      "263538b340e51017223647cc55ec0001",
-      "7855805f1fb5104b8830a1b446a70000",
-      "2b117b4172191037423a2f5514200000",
-      "a817339b4ba1103ccfc32246fd6f0002",
-      "a817339b4ba1103d4eb4ef4964d50001",
-      "14d3b7e8de54104cb20b10cac7170001",
-      "6ecf0680c83f10303834d30482540001",
-      "6a5e0227b519102e794cf24290a10000",
-      "14d3b7e8de54104c6a0fb730b5b10001",
-      "032f142d5d2f1021397af774c68d0000",
-      "b968d27c521f103747bf2444d4ce0001"
+      "d4784440efb810276d7deda3ee790001"
     ],
     "negative_ids": [
       "44592d8ebc0c100b91fbdb5b94630000",
@@ -132,12 +83,11 @@
       "bf8f5ca312e110332dbb1a132d210002",
       "ae2b9a49c998101301c7e1a3e6c10001",
       "2e1ef6324d1810343465ff43a2230000",
-      "41c07ef5017b100bb5a77fb095370001",
-      "bd44f52e84a2102fd69d604a9c1f0000",
-      "70591926cba81039321b074f60780001"
+      "41c07ef5017b100bb5a77fb095370001"
     ],
     "max_items_applied": null,
-    "n_run": 42,
+    "n_run": 20,
+    "not_run_ids": [],
     "items": [
       {
         "posting_id": "e7c298c178cb10018da5c0f808170000",
@@ -224,146 +174,6 @@
         "description_chars": 4547
       },
       {
-        "posting_id": "d2836d4abd1d102a5eb8f95eb6b60000",
-        "sample": "primary",
-        "job_title": "Regulatory Affairs Operations Specialist – Korean Bilingual",
-        "hash_key": "02f36ae98e28b26270495334c3e00456fc7180a51fecd5d40c9e17847a2272c2",
-        "description_chars": 5481
-      },
-      {
-        "posting_id": "4b9baeaa7b4a1015457e0a76d80b0001",
-        "sample": "primary",
-        "job_title": "Principal Medical Science Liaison",
-        "hash_key": "03c6a223e8d5481b4af89ef38b345bb240ce9c629cbf9d8d7a860c09a2e62116",
-        "description_chars": 5322
-      },
-      {
-        "posting_id": "9f671118c231103b9a2467c274720001",
-        "sample": "primary",
-        "job_title": "Sales Data Enablement Manager (EET @ Tokyo)",
-        "hash_key": "03cb4db017207884bffad7649a3a593baddb8203f249b5a54d5fea5db6c8bc54",
-        "description_chars": 4815
-      },
-      {
-        "posting_id": "8e5a383db9e010392fa07864b85d0001",
-        "sample": "primary",
-        "job_title": "Sr. Business Manager, ICT EMEA Region-led markets",
-        "hash_key": "03db4143709c66ffa78706b145292db7870438d442456a15684c449ea724a7f4",
-        "description_chars": 6812
-      },
-      {
-        "posting_id": "792314f58717101428a546a437b50001",
-        "sample": "primary",
-        "job_title": "Principal Consultant, Integrated Health Solutions (m/f/d)",
-        "hash_key": "045152637a1428953feef4d10165dfeb55b39421bdaa4cfb7651f266747186a5",
-        "description_chars": 5147
-      },
-      {
-        "posting_id": "6e581deda778103b188e7f1e375f0000",
-        "sample": "primary",
-        "job_title": "Global Downstream Product Manager, Connectivity - Acute Care and Monitoring",
-        "hash_key": "0462eb07946dfeb0bea51240617fdfe666864198bfd768ad29c3712921bc6b81",
-        "description_chars": 12418
-      },
-      {
-        "posting_id": "6e581deda778103b5bc336ee3c700001",
-        "sample": "primary",
-        "job_title": "Sr. Principal Vascular Sales Representative - Sacramento, CA / Reno, NV",
-        "hash_key": "04747fd4e3ac2db90d2e6ff5238d2d6a72e0a554bc8546830b42477737deefd5",
-        "description_chars": 10871
-      },
-      {
-        "posting_id": "9b65e53bec3e102578955726cf0a0001",
-        "sample": "primary",
-        "job_title": "Senior Software Engineer - Eagle Eye",
-        "hash_key": "04b3a1917715f1e8be96cbcbd775b1b005c52f65289652a4c42213bd8aa43197",
-        "description_chars": 9001
-      },
-      {
-        "posting_id": "41c07ef5017b100b0c02675877340001",
-        "sample": "primary",
-        "job_title": "Israel Country Director EA & IHS Leader",
-        "hash_key": "04e565bb6cfa88d78f3207abbe0f86eb8834b8cf247a2bb3136204556f739c44",
-        "description_chars": 6571
-      },
-      {
-        "posting_id": "263538b340e51017223647cc55ec0001",
-        "sample": "primary",
-        "job_title": "IT Intern: Undergrad (Tech)",
-        "hash_key": "04f6209a7f139ec1c7aec281a329cbc36c54b508a1660ae00c7eb0ef109dbee7",
-        "description_chars": 4017
-      },
-      {
-        "posting_id": "7855805f1fb5104b8830a1b446a70000",
-        "sample": "primary",
-        "job_title": "Manager Clinical Databases & Integrations",
-        "hash_key": "052da6908893f1335902c1296aeaef393f02d66a1c6625ce8a7f4dadebaf324a",
-        "description_chars": 10285
-      },
-      {
-        "posting_id": "2b117b4172191037423a2f5514200000",
-        "sample": "primary",
-        "job_title": "Associate Process Excellence Specialist with English",
-        "hash_key": "058c62be9b81cc3673ebfec483eeb383dc7ec0d72943d7dbb769042765b03836",
-        "description_chars": 8779
-      },
-      {
-        "posting_id": "a817339b4ba1103ccfc32246fd6f0002",
-        "sample": "primary",
-        "job_title": "R&D Engineer II",
-        "hash_key": "06005edc5ad05e57556a822424b77cad90f9642412b6f1f8d66418ae1b3d5df2",
-        "description_chars": 5598
-      },
-      {
-        "posting_id": "a817339b4ba1103d4eb4ef4964d50001",
-        "sample": "primary",
-        "job_title": "Principal Affera Mapping Specialist - CAS",
-        "hash_key": "064ffe615512209103336fc1f83e719edd9389a5c36889f1f3e294d74c283ac3",
-        "description_chars": 11744
-      },
-      {
-        "posting_id": "14d3b7e8de54104cb20b10cac7170001",
-        "sample": "primary",
-        "job_title": "Clinical Specialist - Cardiac Rhythm Management - Ann Arbor",
-        "hash_key": "0672c98747e6a20f9f27744252a5025cd49ab8f3f149f89516df53e7fa74dab7",
-        "description_chars": 11117
-      },
-      {
-        "posting_id": "6ecf0680c83f10303834d30482540001",
-        "sample": "primary",
-        "job_title": "Territory Manager – Ear, Nose & Throat",
-        "hash_key": "07366246915021cfa8070615a61113dee73f06b303241f3cbba79979ca5857f9",
-        "description_chars": 5220
-      },
-      {
-        "posting_id": "6a5e0227b519102e794cf24290a10000",
-        "sample": "primary",
-        "job_title": "Product Specialist, Head & Neck",
-        "hash_key": "0745f90ecb5ee040c3c5741b95ae57a67fb7283453be14983230337dc163aa82",
-        "description_chars": 4810
-      },
-      {
-        "posting_id": "14d3b7e8de54104c6a0fb730b5b10001",
-        "sample": "primary",
-        "job_title": "Senior EHS Specialist - Manufacturing Safety",
-        "hash_key": "0763fe211718f600713b54bd081cf09da32df502ecac031703efd6888f22f039",
-        "description_chars": 10541
-      },
-      {
-        "posting_id": "032f142d5d2f1021397af774c68d0000",
-        "sample": "primary",
-        "job_title": "Regulatory Affairs Specialist (1 year contract)",
-        "hash_key": "07b3f61a542c44efbbda92196f6ff75e237abdbfc0ff81f36a4947c4a079be4b",
-        "description_chars": 6100
-      },
-      {
-        "posting_id": "b968d27c521f103747bf2444d4ce0001",
-        "sample": "primary",
-        "job_title": "Senior IT Supervisor - Data Engineering",
-        "hash_key": "07e3d35305ec08ac201be893f0890f989187f6024b6fdaea074849497900937a",
-        "description_chars": 5780
-      },
-      {
         "posting_id": "44592d8ebc0c100b91fbdb5b94630000",
         "sample": "negative",
         "job_title": "Customer Service Rep II",
@@ -418,20 +228,6 @@
         "job_title": "Group Purchasing Organization (GPOs) Commercial Enablement",
         "hash_key": "194a989a2c196b2438c0ea789b4a6e96831136145bec69bef8e15619c3aac2ad",
         "description_chars": 6211
-      },
-      {
-        "posting_id": "bd44f52e84a2102fd69d604a9c1f0000",
-        "sample": "negative",
-        "job_title": "Warehouse Assistant",
-        "hash_key": "19ed0849c5fcef6377b14f8159e5a533809dbcd6f3dd3d950ffa51a1f6a18221",
-        "description_chars": 4662
-      },
-      {
-        "posting_id": "70591926cba81039321b074f60780001",
-        "sample": "negative",
-        "job_title": "Customer Service Specialist",
-        "hash_key": "1d0a7aa509eb6587c71b522f2d6d7d2a7901512ee2722968dd3473751956e4f7",
-        "description_chars": 6883
       }
     ]
   },
@@ -440,7 +236,8 @@
   "prompt": null,
   "decoding": null,
   "inputs": {
-    "max_input_chars": null,
+    "max_input_chars": 3000,
+    "applied_to": "both arms (arm A receives the same truncated description text and marker)",
     "description_truncation": "in-band [TRUNCATED: ...] marker; counted per item"
   },
   "model": {
@@ -458,12 +255,12 @@
     "transformers_offline": null
   },
   "latency": {
-    "n_measured": 42,
-    "median_s": 0.006,
-    "mean_s": 0.007,
-    "p95_s": 0.011,
-    "max_s": 0.016,
-    "min_s": 0.002
+    "n_measured": 20,
+    "median_s": 0.005,
+    "mean_s": 0.005,
+    "p95_s": 0.008,
+    "max_s": 0.013,
+    "min_s": 0.003
   },
   "peak_vram_mb_max": null,
   "items": [
@@ -474,11 +271,12 @@
       "function_class": "ALGORITHM_SOFTWARE",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.016244,
+      "latency_s": 0.012641,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "332333b1059c102f0e353d24e11f0000",
@@ -487,11 +285,12 @@
       "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.006116,
+      "latency_s": 0.005019,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "b7fd2a1e7c5b103a018a5b89c90c0000",
@@ -500,11 +299,12 @@
       "function_class": "QUALITY_REGULATORY",
       "technology_track": "neurostimulation",
       "abstain": false,
-      "latency_s": 0.015131,
+      "latency_s": 0.00606,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "0b2e3ccd74e81032e3673866b37a0001",
@@ -513,11 +313,12 @@
       "function_class": "PRODUCT_ENGINEERING",
       "technology_track": "wearable_remote",
       "abstain": false,
-      "latency_s": 0.007379,
+      "latency_s": 0.006134,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "91a67527aabe1049428b96bcad050000",
@@ -526,11 +327,12 @@
       "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.007098,
+      "latency_s": 0.00698,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "ec02c9693861103143d6e5f0b5f00000",
@@ -539,11 +341,12 @@
       "function_class": "UNCLASSIFIED",
       "technology_track": "UNCLASSIFIED",
       "abstain": true,
-      "latency_s": 0.003893,
+      "latency_s": 0.003415,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "524923b993151014d51288b88b5a0001",
@@ -552,11 +355,12 @@
       "function_class": "UNCLASSIFIED",
       "technology_track": "UNCLASSIFIED",
       "abstain": true,
-      "latency_s": 0.002406,
+      "latency_s": 0.004164,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "571f03758bae1018a52945f77ac50001",
@@ -565,11 +369,12 @@
       "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.009655,
+      "latency_s": 0.004601,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "032f142d5d2f102219790ba890ee0000",
@@ -578,11 +383,12 @@
       "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.006734,
+      "latency_s": 0.00465,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "b968d27c521f10369ab2448163240002",
@@ -591,11 +397,12 @@
       "function_class": "ALGORITHM_SOFTWARE",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.007642,
+      "latency_s": 0.006818,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "70591926cba810389761290992c70000",
@@ -604,11 +411,12 @@
       "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.010087,
+      "latency_s": 0.004822,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "d4784440efb810276d7deda3ee790001",
@@ -617,271 +425,12 @@
       "function_class": "MANUFACTURING_PROCESS",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.00467,
+      "latency_s": 0.008185,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "d2836d4abd1d102a5eb8f95eb6b60000",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "QUALITY_REGULATORY",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.005366,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "4b9baeaa7b4a1015457e0a76d80b0001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "CLINICAL_R&D",
-      "technology_track": "neurostimulation",
-      "abstain": false,
-      "latency_s": 0.0044,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "9f671118c231103b9a2467c274720001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.003724,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "8e5a383db9e010392fa07864b85d0001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.005423,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "792314f58717101428a546a437b50001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "UNCLASSIFIED",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": true,
-      "latency_s": 0.005292,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "6e581deda778103b188e7f1e375f0000",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.010864,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "6e581deda778103b5bc336ee3c700001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.010606,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "9b65e53bec3e102578955726cf0a0001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "ALGORITHM_SOFTWARE",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.010727,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "41c07ef5017b100b0c02675877340001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.006746,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "263538b340e51017223647cc55ec0001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.004715,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "7855805f1fb5104b8830a1b446a70000",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "UNCLASSIFIED",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": true,
-      "latency_s": 0.010065,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "2b117b4172191037423a2f5514200000",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.006942,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "a817339b4ba1103ccfc32246fd6f0002",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "CORE_R&D",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.009109,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "a817339b4ba1103d4eb4ef4964d50001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.009828,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "14d3b7e8de54104cb20b10cac7170001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.010095,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "6ecf0680c83f10303834d30482540001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.004827,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "6a5e0227b519102e794cf24290a10000",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.003832,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "14d3b7e8de54104c6a0fb730b5b10001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "QUALITY_REGULATORY",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.010256,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "032f142d5d2f1021397af774c68d0000",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "QUALITY_REGULATORY",
-      "technology_track": "medical_ai",
-      "abstain": false,
-      "latency_s": 0.007436,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "b968d27c521f103747bf2444d4ce0001",
-      "sample": "primary",
-      "parse_status": "ok",
-      "function_class": "ALGORITHM_SOFTWARE",
-      "technology_track": "medical_ai",
-      "abstain": false,
-      "latency_s": 0.00612,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "44592d8ebc0c100b91fbdb5b94630000",
@@ -890,24 +439,26 @@
       "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.002636,
+      "latency_s": 0.003649,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "6e581deda778103b9fb75ccdd43f0001",
       "sample": "negative",
       "parse_status": "ok",
-      "function_class": "UNCLASSIFIED",
+      "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
-      "abstain": true,
-      "latency_s": 0.005493,
+      "abstain": false,
+      "latency_s": 0.005557,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "f8066f25276f102846e1242a54450000",
@@ -916,11 +467,12 @@
       "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.006083,
+      "latency_s": 0.005263,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "dde5ac4d025f101d32ccce55cec30001",
@@ -929,11 +481,12 @@
       "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.003789,
+      "latency_s": 0.003934,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "bf8f5ca312e110332dbb1a132d210002",
@@ -942,11 +495,12 @@
       "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.003175,
+      "latency_s": 0.002832,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "ae2b9a49c998101301c7e1a3e6c10001",
@@ -955,11 +509,12 @@
       "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.004882,
+      "latency_s": 0.005227,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "2e1ef6324d1810343465ff43a2230000",
@@ -968,11 +523,12 @@
       "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.00634,
+      "latency_s": 0.0058,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     },
     {
       "posting_id": "41c07ef5017b100bb5a77fb095370001",
@@ -981,37 +537,12 @@
       "function_class": "SALES_ADMIN_OTHER",
       "technology_track": "UNCLASSIFIED",
       "abstain": false,
-      "latency_s": 0.00672,
+      "latency_s": 0.003937,
+      "timed_out": false,
       "tokens_in": null,
       "tokens_out": null,
       "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "bd44f52e84a2102fd69d604a9c1f0000",
-      "sample": "negative",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.006064,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
-    },
-    {
-      "posting_id": "70591926cba81039321b074f60780001",
-      "sample": "negative",
-      "parse_status": "ok",
-      "function_class": "SALES_ADMIN_OTHER",
-      "technology_track": "UNCLASSIFIED",
-      "abstain": false,
-      "latency_s": 0.006222,
-      "tokens_in": null,
-      "tokens_out": null,
-      "finish_reason": "rule_engine",
-      "input_truncated": false
+      "input_truncated": true
     }
   ],
   "artifacts": {
