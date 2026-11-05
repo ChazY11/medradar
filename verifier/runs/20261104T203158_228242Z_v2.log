@@ -1,0 +1,33 @@
+timestamp_utc=2026-11-04T20:31:58.228242+00:00
+command=python3 verifier/v2/verify.py
+exit_code=0
+result=PASS
+
+PASS [1] PR heads/bases recorded; main unchanged main=b2a14c0a92332c004445de686daee97754cf94cb
+PASS [2] 100 distinct real sample identities and required fields rows=100
+PASS [3] Deterministic difficult-strata sampler with explicit deficits seed=31031; backfill=9
+PASS [4] Four-axis ontology with primary/secondary functions 
+PASS [5] 100 AI preliminary labels with closed evidence vocabulary labels=100
+PASS [6] 97 source quotes declared; three unavailable texts remain empty quotes=97; source matching tested below
+PASS [7] No gold-status misuse or unsupported performance claim 
+PASS [8] 994/992/983 and 20/80/47/54 audits reconciled 994 ids; 983 clusters; earlier 992 unverified source
+PASS [9] At least 15 complete real disagreement cases cases=24
+PASS [10] H1/H2/H3 support, qualifications, limits and falsification 
+PASS [11] All eight requested deliverables exist and are non-empty files=8
+PASS [12] Deterministic offline tests and preserved verifier index unittest_exit=0
+
+unittest_output:
+test_01_fixed_seed_rank (test_s031.S031Tests.test_01_fixed_seed_rank) ... ok
+test_02_sample_identities_and_source_hashes (test_s031.S031Tests.test_02_sample_identities_and_source_hashes) ... ok
+test_03_prelabels_schema_and_closed_vocabularies (test_s031.S031Tests.test_03_prelabels_schema_and_closed_vocabularies) ... ok
+test_04_every_quote_is_verbatim_in_frozen_source (test_s031.S031Tests.test_04_every_quote_is_verbatim_in_frozen_source) ... ok
+test_05_comparison_is_descriptive_not_truth (test_s031.S031Tests.test_05_comparison_is_descriptive_not_truth) ... ok
+test_06_pr21_count_audit (test_s031.S031Tests.test_06_pr21_count_audit) ... ok
+test_07_case_studies_complete (test_s031.S031Tests.test_07_case_studies_complete) ... ok
+test_08_hypotheses_and_deliverables (test_s031.S031Tests.test_08_hypotheses_and_deliverables) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.410s
+
+OK
+
