@@ -1,0 +1,567 @@
+{
+ "generated_at": "2026-11-03T16:00:18+00:00",
+ "ledger": {
+  "observations": 400,
+  "versions": 400,
+  "changes": 400,
+  "live_observations": 400,
+  "backfilled_observations": 0,
+  "removed_observations": 0,
+  "sources": 3,
+  "runs": 34,
+  "failures": 6,
+  "first_observation_at": "2026-11-03T14:39:53Z",
+  "last_observation_at": "2026-11-03T14:49:51Z",
+  "first_run_at": "2026-11-03T14:39:53+00:00",
+  "last_run_at": "2026-11-03T15:58:45+00:00",
+  "schema_version": "obs-ledger-v1",
+  "created_at": "2026-11-03T14:39:53+00:00",
+  "db_bytes": 1945600,
+  "path": "data/observatory/observatory.sqlite"
+ },
+ "phases": {
+  "counts": {
+   "INCREMENTAL_DISCOVERY": 1,
+   "INITIAL_DISCOVERY": 399
+  },
+  "labels_zh": {
+   "INITIAL_DISCOVERY": "初次上线发现（既有公开记录）",
+   "INCREMENTAL_DISCOVERY": "持续监测新发现（增量）",
+   "HISTORICAL_BACKFILL": "历史回填"
+  },
+  "unlabelled": 0
+ },
+ "source_outcomes": [
+  {
+   "source": "ctgov",
+   "last_outcome": "NO_NEW_RECORDS",
+   "last_new_records": 0,
+   "last_updated_records": 0,
+   "last_success_at": "2026-11-03T15:58:45+00:00",
+   "last_attempt_at": "2026-11-03T15:58:43+00:00",
+   "consecutive_failures": 0,
+   "status": "OK"
+  },
+  {
+   "source": "europepmc",
+   "last_outcome": "NO_NEW_RECORDS",
+   "last_new_records": 0,
+   "last_updated_records": 0,
+   "last_success_at": "2026-11-03T15:58:46+00:00",
+   "last_attempt_at": "2026-11-03T15:58:45+00:00",
+   "consecutive_failures": 0,
+   "status": "OK"
+  },
+  {
+   "source": "sec_edgar",
+   "last_outcome": "NO_NEW_RECORDS",
+   "last_new_records": 0,
+   "last_updated_records": 0,
+   "last_success_at": "2026-11-03T15:58:43+00:00",
+   "last_attempt_at": "2026-11-03T15:58:41+00:00",
+   "consecutive_failures": 0,
+   "status": "OK"
+  }
+ ],
+ "health": {
+  "generated_at": "2026-11-03T16:00:18+00:00",
+  "ledger": {
+   "path": "data/observatory/observatory.sqlite",
+   "exists": true,
+   "bytes": 1945600,
+   "observations": 400,
+   "versions": 400,
+   "changes": 400,
+   "runs": 34,
+   "first_observation_at": "2026-11-03T14:39:53Z",
+   "last_run_at": "2026-11-03T15:58:45+00:00"
+  },
+  "overall": "VALIDATION_IN_PROGRESS",
+  "deployment": {
+   "status": "DEPLOYED_LOCAL",
+   "installed_at": "2026-11-03T15:51:28+00:00",
+   "host": "WIN-QBJ1E1UD41B",
+   "supervisor": "windows_task",
+   "note_zh": "Windows Task Scheduler 任务 MedRadarObservatory；每 360 分钟触发一次单轮采集（-MaxCycles 1），trigger=schedule；非服务级部署（生产仍为 NOT_DEPLOYED，待授权主机）",
+   "evidence": "task=MedRadarObservatory State=Ready LastTaskResult=0 LastRun=2026-11-03T23:50:20+08 NextRun=2026-11-04T05:50+08; action=observatory_watch.ps1 -MaxCycles 1; log=logs/collector-20261103.log; one-shot pass OK exit=0; lock released"
+  },
+  "validation": {
+   "ends_at": "2026-11-10T15:35:37+00:00",
+   "interval_hours": 6.0,
+   "note_zh": "七天连续观察验证：按声明周期轮询三个官方来源；只有真实经过的时间与真实运行记录才计入，缺失的轮次记为 missed，不当作成功。",
+   "planned_slots": 28,
+   "protocol_version": "obs-validation-v1",
+   "started_at": "2026-11-03T15:35:37+00:00",
+   "status": "VALIDATION_IN_PROGRESS",
+   "target_days": 7,
+   "computed_at": "2026-11-03T16:00:18+00:00",
+   "days_elapsed": 0.0171,
+   "days_remaining": 6.9829,
+   "window_ended": false,
+   "slots": {
+    "planned_total": 28,
+    "due": 0,
+    "executed": 0,
+    "missed": 0,
+    "detail": []
+   },
+   "runs": {
+    "launched": 12,
+    "ok": 12,
+    "partial": 0,
+    "failed": 0,
+    "scheduler_success_rate": null,
+    "attempt_success_rate": 1.0
+   },
+   "sources": {
+    "sec_edgar": {
+     "attempts": 4,
+     "ok": 4,
+     "partial": 0,
+     "failed": 0,
+     "new": 0,
+     "updated": 0,
+     "success_rate": 1.0
+    },
+    "ctgov": {
+     "attempts": 4,
+     "ok": 4,
+     "partial": 0,
+     "failed": 0,
+     "new": 0,
+     "updated": 0,
+     "success_rate": 1.0
+    },
+    "europepmc": {
+     "attempts": 4,
+     "ok": 4,
+     "partial": 0,
+     "failed": 0,
+     "new": 0,
+     "updated": 0,
+     "success_rate": 1.0
+    }
+   },
+   "freshness": {
+    "sec_edgar": {
+     "last_success_at": "2026-11-03T15:58:43+00:00",
+     "last_attempt_at": "2026-11-03T15:58:41+00:00",
+     "freshness_hours": 0.03
+    },
+    "ctgov": {
+     "last_success_at": "2026-11-03T15:58:45+00:00",
+     "last_attempt_at": "2026-11-03T15:58:43+00:00",
+     "freshness_hours": 0.03
+    },
+    "europepmc": {
+     "last_success_at": "2026-11-03T15:58:46+00:00",
+     "last_attempt_at": "2026-11-03T15:58:45+00:00",
+     "freshness_hours": 0.03
+    }
+   },
+   "latency": {},
+   "duplicates": {
+    "duplicate_observations": 0,
+    "replayed_versions": 0,
+    "observations_in_window": 0,
+    "rate": 0.0,
+    "target": 0
+   },
+   "integrity": {
+    "violations": 0,
+    "issue_kinds": [],
+    "trigger_present": true,
+    "checked_at": "2026-11-03T16:00:18+00:00",
+    "target": 0
+   },
+   "recovery": {
+    "interrupted_runs": 0,
+    "recovered_runs": 0,
+    "success_rate": null,
+    "note_zh": "窗口内没有发生中断运行，无法据此证明恢复能力（恢复能力由合成故障注入测试单独证明）"
+   },
+   "storage": {
+    "ledger_bytes": 1945600,
+    "observations_total": 400,
+    "observations_in_window": 0,
+    "new_observations_per_day": 0.0,
+    "ledger_bytes_per_day": 1945600.0,
+    "daily_snapshots": [
+     {
+      "day": "2026-11-03",
+      "changes": 400,
+      "db_bytes": 1937408,
+      "observations": 400,
+      "runs": 34,
+      "versions": 400
+     }
+    ]
+   },
+   "notes_zh": [
+    "计划轮次按真实经过时间计算；未执行的轮次记为 missed，绝不计为成功。",
+    "只有来源提供可精确到时刻的发布时间时才计算小时级延迟；其余标记为无法测量。",
+    "VALIDATION_PASSED 只能在七天窗口真实结束后由 validate stop 显式写入。"
+   ]
+  },
+  "collector": {
+   "running": false,
+   "lock": {
+    "held": false,
+    "stale": null,
+    "path": "D:\\DEPPSKK\\medradar\\data\\observatory\\collector.lock",
+    "heartbeat_age_seconds": null,
+    "holder": null
+   },
+   "heartbeat": {
+    "at": "2026-11-03T15:58:46+00:00",
+    "checked_at": "2026-11-03T15:58:46+00:00",
+    "cycles": 1,
+    "state": "stopped"
+   },
+   "last_run": {
+    "run_id": "europepmc-20261103T155845Z-b19364",
+    "source": "europepmc",
+    "status": "OK",
+    "started_at": "2026-11-03T15:58:45+00:00",
+    "finished_at": "2026-11-03T15:58:46+00:00"
+   },
+   "uptime_days": 0.056,
+   "observing_since": "2026-11-03T14:39:53+00:00"
+  },
+  "persistence": {
+   "ledger_bytes": 1945600,
+   "raw_cache_bytes": 4861532,
+   "raw_cache_path": "D:\\DEPPSKK\\medradar\\data\\observatory\\cache",
+   "backup": {
+    "at": "2026-11-03T16:00:02+00:00",
+    "status": "OK",
+    "verified": true,
+    "bundle": "observatory-20261103T160001Z",
+    "age_hours": 0.0,
+    "counts": {
+     "changes": 400,
+     "observations": 400,
+     "runs": 34,
+     "versions": 400
+    },
+    "error": null
+   },
+   "restore_drill": {
+    "at": "2026-11-03T15:58:27+00:00",
+    "status": "OK",
+    "ok": true,
+    "age_hours": 0.03,
+    "bundle": "observatory-20261103T155827Z-drill",
+    "error": null
+   },
+   "newest_backup_bundle": {
+    "bundle": "observatory-20261103T160001Z",
+    "path": "D:\\DEPPSKK\\medradar\\data\\observatory\\backups\\observatory-20261103T160001Z",
+    "manifest_bytes": 13892
+   },
+   "backup_dir": "D:\\DEPPSKK\\medradar\\data\\observatory\\backups",
+   "disk_free_bytes": 644042141696
+  },
+  "sources": [
+   {
+    "source": "ctgov",
+    "label_zh": "ClinicalTrials.gov 注册库",
+    "status": "OK",
+    "last_success_at": "2026-11-03T15:58:45+00:00",
+    "last_attempt_at": "2026-11-03T15:58:43+00:00",
+    "last_failure_at": "2026-11-03T14:51:30+00:00",
+    "consecutive_failures": 0,
+    "last_outcome": "NO_NEW_RECORDS",
+    "last_new_records": 0,
+    "last_updated_records": 0,
+    "declared_cadence_zh": "默认每 12 小时轮询；ClinicalTrials.gov 仅发布日期、不提供时间戳，因此观察时间精度为“天”；申办方名称检索无法覆盖名称不同的登记，不宣称完整",
+    "expected_interval_hours": 12.0,
+    "freshness_hours": 0.03,
+    "stale": false,
+    "stale_after_hours": 36.0,
+    "structure_alert": false,
+    "structure_note_zh": null
+   },
+   {
+    "source": "europepmc",
+    "label_zh": "Europe PMC 文献元数据",
+    "status": "OK",
+    "last_success_at": "2026-11-03T15:58:46+00:00",
+    "last_attempt_at": "2026-11-03T15:58:45+00:00",
+    "last_failure_at": "2026-11-03T14:51:33+00:00",
+    "consecutive_failures": 0,
+    "last_outcome": "NO_NEW_RECORDS",
+    "last_new_records": 0,
+    "last_updated_records": 0,
+    "declared_cadence_zh": "默认每 12 小时轮询；Europe PMC 未提供网页可用时间戳，只能按索引日期与修订日期如实记录；单位署名检索不等于企业归属，也不覆盖全部论文",
+    "expected_interval_hours": 12.0,
+    "freshness_hours": 0.03,
+    "stale": false,
+    "stale_after_hours": 36.0,
+    "structure_alert": false,
+    "structure_note_zh": null
+   },
+   {
+    "source": "sec_edgar",
+    "label_zh": "SEC EDGAR 公开披露",
+    "status": "OK",
+    "last_success_at": "2026-11-03T15:58:43+00:00",
+    "last_attempt_at": "2026-11-03T15:58:41+00:00",
+    "last_failure_at": null,
+    "consecutive_failures": 0,
+    "last_outcome": "NO_NEW_RECORDS",
+    "last_new_records": 0,
+    "last_updated_records": 0,
+    "declared_cadence_zh": "默认每 6 小时轮询；SEC 受理后通常数分钟即可检索",
+    "expected_interval_hours": 6.0,
+    "freshness_hours": 0.03,
+    "stale": false,
+    "stale_after_hours": 18.0,
+    "structure_alert": false,
+    "structure_note_zh": null
+   }
+  ],
+  "unresolved_structure_alerts": [],
+  "checks": [
+   {
+    "id": "ledger_exists",
+    "ok": true,
+    "detail_zh": "账本存在，400 条观察"
+   },
+   {
+    "id": "sources_present",
+    "ok": true,
+    "detail_zh": "已登记来源 3/3：ctgov, europepmc, sec_edgar"
+   },
+   {
+    "id": "sources_healthy",
+    "ok": true,
+    "detail_zh": "全部来源状态 OK"
+   },
+   {
+    "id": "freshness",
+    "ok": true,
+    "detail_zh": "全部来源新鲜度在阈值内"
+   },
+   {
+    "id": "collector_recent",
+    "ok": true,
+    "detail_zh": "最近运行：europepmc-20261103T155845Z-b19364"
+   },
+   {
+    "id": "backup",
+    "ok": true,
+    "detail_zh": "最近备份已验证"
+   },
+   {
+    "id": "backup_freshness",
+    "ok": true,
+    "detail_zh": "最近备份 0.0 小时前"
+   },
+   {
+    "id": "restore_drill",
+    "ok": true,
+    "detail_zh": "最近恢复演练成功"
+   },
+   {
+    "id": "structure_alerts",
+    "ok": true,
+    "detail_zh": "没有未解决的结构变化告警"
+   },
+   {
+    "id": "disk_space",
+    "ok": true,
+    "detail_zh": "可用磁盘 599.81 GB"
+   },
+   {
+    "id": "integrity",
+    "ok": true,
+    "detail_zh": "一致性检查通过"
+   }
+  ],
+  "limitations_zh": [
+   "健康状态由账本、文件系统与运行记录计算，不代表 HTTP 服务是否 200。",
+   "NOT_DEPLOYED 表示没有经过验证的常驻部署；手动运行与本地验证不等于生产部署。",
+   "VALIDATION_IN_PROGRESS 表示七天连续验证尚未结束：不能宣称已通过。"
+  ]
+ },
+ "validation": {
+  "ends_at": "2026-11-10T15:35:37+00:00",
+  "interval_hours": 6.0,
+  "note_zh": "七天连续观察验证：按声明周期轮询三个官方来源；只有真实经过的时间与真实运行记录才计入，缺失的轮次记为 missed，不当作成功。",
+  "planned_slots": 28,
+  "protocol_version": "obs-validation-v1",
+  "started_at": "2026-11-03T15:35:37+00:00",
+  "status": "VALIDATION_IN_PROGRESS",
+  "target_days": 7,
+  "computed_at": "2026-11-03T16:00:18+00:00",
+  "days_elapsed": 0.0171,
+  "days_remaining": 6.9829,
+  "window_ended": false,
+  "slots": {
+   "planned_total": 28,
+   "due": 0,
+   "executed": 0,
+   "missed": 0,
+   "detail": []
+  },
+  "runs": {
+   "launched": 12,
+   "ok": 12,
+   "partial": 0,
+   "failed": 0,
+   "scheduler_success_rate": null,
+   "attempt_success_rate": 1.0
+  },
+  "sources": {
+   "sec_edgar": {
+    "attempts": 4,
+    "ok": 4,
+    "partial": 0,
+    "failed": 0,
+    "new": 0,
+    "updated": 0,
+    "success_rate": 1.0
+   },
+   "ctgov": {
+    "attempts": 4,
+    "ok": 4,
+    "partial": 0,
+    "failed": 0,
+    "new": 0,
+    "updated": 0,
+    "success_rate": 1.0
+   },
+   "europepmc": {
+    "attempts": 4,
+    "ok": 4,
+    "partial": 0,
+    "failed": 0,
+    "new": 0,
+    "updated": 0,
+    "success_rate": 1.0
+   }
+  },
+  "freshness": {
+   "sec_edgar": {
+    "last_success_at": "2026-11-03T15:58:43+00:00",
+    "last_attempt_at": "2026-11-03T15:58:41+00:00",
+    "freshness_hours": 0.03
+   },
+   "ctgov": {
+    "last_success_at": "2026-11-03T15:58:45+00:00",
+    "last_attempt_at": "2026-11-03T15:58:43+00:00",
+    "freshness_hours": 0.03
+   },
+   "europepmc": {
+    "last_success_at": "2026-11-03T15:58:46+00:00",
+    "last_attempt_at": "2026-11-03T15:58:45+00:00",
+    "freshness_hours": 0.03
+   }
+  },
+  "latency": {},
+  "duplicates": {
+   "duplicate_observations": 0,
+   "replayed_versions": 0,
+   "observations_in_window": 0,
+   "rate": 0.0,
+   "target": 0
+  },
+  "integrity": {
+   "violations": 0,
+   "issue_kinds": [],
+   "trigger_present": true,
+   "checked_at": "2026-11-03T16:00:18+00:00",
+   "target": 0
+  },
+  "recovery": {
+   "interrupted_runs": 0,
+   "recovered_runs": 0,
+   "success_rate": null,
+   "note_zh": "窗口内没有发生中断运行，无法据此证明恢复能力（恢复能力由合成故障注入测试单独证明）"
+  },
+  "storage": {
+   "ledger_bytes": 1945600,
+   "observations_total": 400,
+   "observations_in_window": 0,
+   "new_observations_per_day": 0.0,
+   "ledger_bytes_per_day": 1945600.0,
+   "daily_snapshots": [
+    {
+     "day": "2026-11-03",
+     "changes": 400,
+     "db_bytes": 1937408,
+     "observations": 400,
+     "runs": 34,
+     "versions": 400
+    }
+   ]
+  },
+  "notes_zh": [
+   "计划轮次按真实经过时间计算；未执行的轮次记为 missed，绝不计为成功。",
+   "只有来源提供可精确到时刻的发布时间时才计算小时级延迟；其余标记为无法测量。",
+   "VALIDATION_PASSED 只能在七天窗口真实结束后由 validate stop 显式写入。"
+  ]
+ },
+ "deployment": {
+  "evidence": "task=MedRadarObservatory State=Ready LastTaskResult=0 LastRun=2026-11-03T23:50:20+08 NextRun=2026-11-04T05:50+08; action=observatory_watch.ps1 -MaxCycles 1; log=logs/collector-20261103.log; one-shot pass OK exit=0; lock released",
+  "host": "WIN-QBJ1E1UD41B",
+  "installed_at": "2026-11-03T15:51:28+00:00",
+  "note_zh": "Windows Task Scheduler 任务 MedRadarObservatory；每 360 分钟触发一次单轮采集（-MaxCycles 1），trigger=schedule；非服务级部署（生产仍为 NOT_DEPLOYED，待授权主机）",
+  "status": "DEPLOYED_LOCAL",
+  "supervisor": "windows_task"
+ },
+ "lock": {
+  "held": false,
+  "path": "D:\\DEPPSKK\\medradar\\data\\observatory\\collector.lock",
+  "stale": null,
+  "holder": null,
+  "heartbeat_age_seconds": null
+ },
+ "lock_recovery": {
+  "at": "2026-11-03T15:50:21+00:00",
+  "reason": "stale collector lease taken over",
+  "previous": {
+   "command": "observatory watch",
+   "heartbeat_at": "2026-11-03T15:49:08+00:00",
+   "host": "WIN-QBJ1E1UD41B",
+   "mode": "watch",
+   "pid": 48600,
+   "run_id": null,
+   "source": "",
+   "started_at": "2026-11-03T15:45:08+00:00"
+  },
+  "by": {
+   "pid": 52200,
+   "host": "WIN-QBJ1E1UD41B"
+  }
+ },
+ "concurrency_probe": {
+  "attempted": true,
+  "probe": "temporary ledger with a held lease (live supervisor not running)",
+  "expected": "LOCKED_SKIPPED",
+  "locked": true,
+  "ok": false,
+  "sources": {
+   "sec_edgar": {
+    "source": "sec_edgar",
+    "status": "LOCKED_SKIPPED",
+    "reason": "another collector holds the lease"
+   }
+  }
+ },
+ "supervisor_task": {
+  "available": true,
+  "returncode": 0,
+  "summary": {
+   "TaskName": "\\MedRadarObservatory",
+   "Next Run Time": "4/11/2026 上午 5:50:20",
+   "Status": "Ready",
+   "Last Run Time": "3/11/2026 下午 11:58:40",
+   "Last Result": "0",
+   "Task To Run": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"D:\\DEPPSKK\\medradar\\scripts\\observatory_watch.ps1\" -IntervalMinutes 360 -MaxCycles 1 -Python \"python\"",
+   "Scheduled Task State": "Enabled"
+  },
+  "raw_excerpt": "\nFolder: \\\nHostName:                             YJX\nTaskName:                             \\MedRadarObservatory\nNext Run Time:                        4/11/2026 上午 5:50:20\nStatus:                               Ready\nLogon Mode:                           Interactive only\nLast Run Time:                        3/11/2026 下午 11:58:40\nLast Result:                          0\nAuthor:                               N/A\nTask To Run:                          powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"D:\\DEPPSKK\\medradar\\scripts\\observatory_watch.ps1\" -IntervalMinutes 360 -MaxCycles 1 -Python \"python\"\nStart In:                             N/A\nComment:                              MedRadarObservatory collector managed by scripts/install_windows_task.ps1 - do not edit by hand; use scripts/install_windows_task.ps1 -Uninstall.\nScheduled Task State:                 Enabled\nIdle Time:                            Disabled\nPower Management:                     \nRun As User:                          yjx0\nDelete Task If Not Rescheduled:       Disabled\nStop Task If Runs X Hours and X Mins: Disabled\nSchedule:                             Scheduling data is not available in this format.\nSchedule Type:                        One Time Only, Hourly \nStart Time:                           下午 11:50:20\nStart Date:                           3/11/2026\nEnd Date:                             N/A\nDays:                                 N/A\nMonths:                               N/A\nRepeat: Every:                        6 Hour(s), 0 Minute(s)\nRepeat: Until: Time:                  None\nRepeat: Until: Duration:              Disabled\nRepeat: Stop If Still Running:        Disabled"
+ }
+}

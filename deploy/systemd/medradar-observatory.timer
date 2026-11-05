@@ -1,0 +1,68 @@
+# MedRadar Observatory — 6-hourly one-shot collection timer (systemd).
+#
+# PICK EXACTLY ONE MODE PER LEDGER (rationale + commands: deploy/systemd/README.md)
+#
+#   A. LONG-RUNNING (default, recommended for a single small VM)
+#      Install and enable medradar-observatory.service only. Do NOT enable this
+#      timer. One supervised process, heartbeat in the ledger, exponential
+#      backoff inside the loop.
+#
+#   B. ONE-SHOT EVERY 6 h (stateless process; no process to supervise between
+#      passes; useful when the host is shared or frequently rebooted)
+#      Install medradar-observatory.service, add the drop-in below, then:
+#          sudo systemctl daemon-reload
+#          sudo systemctl enable --now medradar-observatory.timer
+#
+#      /etc/systemd/system/medradar-observatory.service.d/oneshot.conf
+#          [Unit]
+#          Description=MedRadar Observatory one-shot collector (timer-driven)
+#          [Service]
+#          Type=oneshot
+#          Restart=no
+#          ExecStart=
+#          ExecStart=/usr/bin/python3 -m medradar observatory sync --trigger schedule
+#
+#      Why a drop-in instead of a second service file: it keeps ONE collector
+#      identity (unit name, SyslogIdentifier, sandbox, resource limits), so
+#      `systemctl status medradar-observatory` and
+#      `journalctl -u medradar-observatory` work identically in both modes.
+#      Create the drop-in BEFORE enabling the timer: the timer activates the unit
+#      `medradar-observatory.service`, and without the drop-in that unit is the
+#      long-running waiter (starting an already-active unit is a no-op, but the
+#      timer then does nothing useful).
+#
+# WHY 00/6:17
+#    6-hour cadence, offset to :17 past the hour so many hosts do not hit the
+#    public APIs simultaneously; matches the documented GitHub Actions schedule
+#    ("17 */6 * * *") so operators recognise the cadence.
+#
+# Persistent=true
+#   A slot missed while the host was off/rebooting is executed once on the next
+#   boot. That is a scheduling convenience, NOT a data-recovery claim: a missed
+#   slot is visible as missing in the run history and is never counted as a
+#   success (docs/CONTINUOUS_VALIDATION_PROTOCOL.md). The source watermark makes
+#   the next pass catch up, so exact timer firing is not a correctness dependency.
+#
+# RandomizedDelaySec=120
+#   De-synchronises many hosts and keeps the collection jitter inside the
+#   documented ±interval tolerance. It does not change the 6-hour cadence.
+#
+# SAFETY
+#   Never enable this timer while mode A is active for the same ledger: the timer
+#   is redundant at best and a competing trigger at worst. The ledger single-
+#   writer lock still prevents concurrent writes, but the schedule would lie.
+
+[Unit]
+Description=MedRadar Observatory 6-hourly collection timer
+Documentation=file:///srv/medradar/docs/DEPLOYMENT.md
+Documentation=file:///srv/medradar/deploy/systemd/README.md
+
+[Timer]
+OnCalendar=*-*-* 00/6:17:00
+Persistent=true
+RandomizedDelaySec=120
+AccuracySec=1min
+Unit=medradar-observatory.service
+
+[Install]
+WantedBy=timers.target

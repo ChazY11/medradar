@@ -1,0 +1,123 @@
+"""Bounded, re-enterable collection of public R&D job postings (Phase 4).
+
+Usage
+-----
+    python scripts/collect_recruitment.py --company medtronic --limit 40 \
+        --out experiments/innovation_signals_observatory/results/2026-11-04
+
+What it writes (all inside ``--out``):
+
+  ``jobs_<company>.jsonl``        one JobObservation per line (append-only snapshot)
+  ``collection_<company>.json``   run report: totals, robots evidence, request stats,
+                                  per-field availability rates, failures
+  ``_httpcache/``                 raw HTTP responses (audit trail; not the dataset)
+
+Safety properties, each of which is a test elsewhere:
+
+  * refuses to run if robots.txt is unreadable or disallows the path it needs;
+  * bounded by ``--limit`` postings and ``--max-requests`` HTTP calls;
+  * a detail-fetch failure becomes a recorded ``DETAIL_FAILED`` observation, never a
+    silent drop and never "the posting has no description";
+  * the source's own date field is kept with its precision; the relative
+    "Posted N Days Ago" string is never converted into a date;
+  * re-running writes a new snapshot; nothing is overwritten in place.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from medradar.http import Fetcher  # noqa: E402
+from medradar.recruitment import records as rec  # noqa: E402
+from medradar.recruitment.politeness import CollectionPolicy, DEFAULT_UA  # noqa: E402
+from medradar.recruitment.store import ObservationStore  # noqa: E402
+from medradar.recruitment.workday import SOURCES, collect  # noqa: E402
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--company", required=True, choices=sorted(SOURCES))
+    ap.add_argument("--out", required=True, help="results directory for this snapshot")
+    ap.add_argument("--limit", type=int, default=40, help="max postings this run (hard ceiling)")
+    ap.add_argument("--min-interval", type=float, default=1.0, help="seconds between requests per host")
+    ap.add_argument("--max-requests", type=int, default=1500)
+    ap.add_argument("--timeout", type=float, default=45.0)
+    ap.add_argument("--no-cache", action="store_true", help="do not write the raw-response cache")
+    ap.add_argument("--store-dir", default=None,
+                    help="ingest the snapshot into an append-only observation store here; "
+                         "re-observation keeps the original first_seen_at and records revisions/removals")
+    ap.add_argument("--partial", action="store_true",
+                    help="declare this snapshot partial (do not evaluate removals)")
+    args = ap.parse_args(argv)
+
+    out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+    cache_dir = None if args.no_cache else out / "_httpcache"
+
+    policy = CollectionPolicy(min_interval_s=args.min_interval, max_requests=args.max_requests,
+                              max_postings=args.limit, timeout_s=args.timeout)
+    fetcher = Fetcher(cache_dir=cache_dir, min_interval=args.min_interval, timeout=args.timeout,
+                      max_requests=args.max_requests, ua=DEFAULT_UA)
+    source = SOURCES[args.company]
+
+    try:
+        # refresh=True: a snapshot must reflect the source *now*; the cache is kept
+        # only as an audit trail of the exact responses this run consumed.
+        observations, report = collect(source, policy, fetcher, limit_postings=args.limit,
+                                       refresh=True)
+    except PermissionError as exc:
+        payload = {"company_key": args.company, "status": "BLOCKED_BY_ROBOTS", "error": str(exc),
+                   "collection_status": "BLOCKED", "policy": policy.as_dict()}
+        (out / f"collection_{args.company}.json").write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"BLOCKED: {exc}")
+        return 2
+
+    jobs_path = out / f"jobs_{args.company}.jsonl"
+    with jobs_path.open("w", encoding="utf-8") as fh:
+        for obs in observations:
+            fh.write(json.dumps(obs.to_dict(), ensure_ascii=False) + "\n")
+
+    availability = rec.availability_counts(observations)
+    store_summary = None
+    if args.store_dir:
+        observation_store = ObservationStore(args.store_dir)
+        unreadable = [o.obs_id for o in observations if o.collection_status == rec.STATUS_DETAIL_FAILED]
+        store_summary = observation_store.ingest(
+            observations,
+            complete_snapshot=not args.partial,
+            unreadable_ids=unreadable,
+            run_meta={"company_key": args.company, "limit": args.limit,
+                      "truncated_at_ceiling": report.truncated_at_ceiling,
+                      "collector_version": rec.COLLECTOR_VERSION},
+        )
+    payload = {
+        "company_key": args.company,
+        "source_label": source.label,
+        "source_platform": rec.PLATFORM_WORKDAY,
+        "collector_version": rec.COLLECTOR_VERSION,
+        "schema_version": rec.SCHEMA_VERSION,
+        "policy": policy.as_dict(),
+        "report": report.as_dict(),
+        "availability": availability,
+        "store": store_summary,
+    }
+    (out / f"collection_{args.company}.json").write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    r = availability["rates"]
+    print(f"{source.label}: {availability['n']} postings written to {jobs_path.name}")
+    print(f"  ids={r['posting_id']:.2f} desc={r['description_nonempty']:.2f} "
+          f"source_date={r['source_date']:.2f} relative_only={r['relative_only']:.2f} "
+          f"location={r['location']:.2f}")
+    print(f"  details ok/failed = {report.details_ok}/{report.details_failed}; "
+          f"listing pages={report.listing_pages}; total reported={report.listing_total_reported}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

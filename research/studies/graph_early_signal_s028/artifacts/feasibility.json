@@ -1,0 +1,902 @@
+{
+  "coverage": {
+    "date_max": "2026-10-18",
+    "date_min": "2016-11-01",
+    "distinct_companies": 51,
+    "distinct_tracks": 38,
+    "events_with_both": 3833,
+    "events_with_company_key": 5489,
+    "events_with_track_id": 18889,
+    "share_with_both": 0.12052701087981887
+  },
+  "event_counts": {
+    "by_kind_material": {
+      "510k": 31219,
+      "pma": 583
+    },
+    "by_kind_qualifying": {
+      "510k": 25603,
+      "pma": 344
+    },
+    "material_events_total": 31802,
+    "qualifying_events_total": 25947,
+    "qualifying_share": 0.8158920822589775
+  },
+  "fidelity_self_check": {
+    "candidates_by_origin": {
+      "2020-01-01": 1634,
+      "2020-04-01": 1636,
+      "2020-07-01": 1675,
+      "2020-10-01": 1679,
+      "2021-01-01": 1678,
+      "2021-04-01": 1687,
+      "2021-07-01": 1691,
+      "2021-10-01": 1730,
+      "2022-01-01": 1727,
+      "2022-04-01": 1727,
+      "2022-07-01": 1724,
+      "2022-10-01": 1724,
+      "2023-01-01": 1725,
+      "2023-04-01": 1726,
+      "2023-07-01": 1730,
+      "2023-10-01": 1730,
+      "2024-01-01": 1730,
+      "2024-04-01": 1726,
+      "2024-07-01": 1723,
+      "2024-10-01": 1720,
+      "2025-01-01": 1722,
+      "2025-04-01": 1722,
+      "2025-07-01": 1721,
+      "2025-10-01": 1716
+    },
+    "checks": {
+      "coverage_end": {
+        "expected": "2026-10-15",
+        "observed": "2026-10-15",
+        "ok": true
+      },
+      "coverage_start": {
+        "expected": "2016-11-01",
+        "observed": "2016-11-01",
+        "ok": true
+      },
+      "n_examples": {
+        "expected": 41003,
+        "observed": 41003,
+        "ok": true
+      },
+      "n_positives": {
+        "expected": 503,
+        "observed": 503,
+        "ok": true
+      },
+      "origins": {
+        "expected": 24,
+        "observed": 24,
+        "ok": true
+      }
+    },
+    "frozen_candidates_by_origin": {
+      "2020-01-01": 1634,
+      "2020-04-01": 1636,
+      "2020-07-01": 1675,
+      "2020-10-01": 1679,
+      "2021-01-01": 1678,
+      "2021-04-01": 1687,
+      "2021-07-01": 1691,
+      "2021-10-01": 1730,
+      "2022-01-01": 1727,
+      "2022-04-01": 1727,
+      "2022-07-01": 1724,
+      "2022-10-01": 1724,
+      "2023-01-01": 1725,
+      "2023-04-01": 1726,
+      "2023-07-01": 1730,
+      "2023-10-01": 1730,
+      "2024-01-01": 1730,
+      "2024-04-01": 1726,
+      "2024-07-01": 1723,
+      "2024-10-01": 1720,
+      "2025-01-01": 1722,
+      "2025-04-01": 1722,
+      "2025-07-01": 1721,
+      "2025-10-01": 1716
+    },
+    "ok": true,
+    "positives_by_origin": {
+      "2020-01-01": 16,
+      "2020-04-01": 13,
+      "2020-07-01": 14,
+      "2020-10-01": 10,
+      "2021-01-01": 10,
+      "2021-04-01": 18,
+      "2021-07-01": 25,
+      "2021-10-01": 26,
+      "2022-01-01": 24,
+      "2022-04-01": 21,
+      "2022-07-01": 17,
+      "2022-10-01": 17,
+      "2023-01-01": 19,
+      "2023-04-01": 22,
+      "2023-07-01": 28,
+      "2023-10-01": 26,
+      "2024-01-01": 26,
+      "2024-04-01": 24,
+      "2024-07-01": 23,
+      "2024-10-01": 22,
+      "2025-01-01": 24,
+      "2025-04-01": 25,
+      "2025-07-01": 27,
+      "2025-10-01": 26
+    },
+    "rule": "label=material, horizon=12m, entity=company_key must equal frozen cycle-2 P1"
+  },
+  "first_qualifying_entry_census": {
+    "bipartite_density_observed": 0.16615067079463364,
+    "distinct_company_track_pairs_with_qualifying_event": 303,
+    "entries_by_year": {
+      "2016": 30,
+      "2017": 101,
+      "2018": 47,
+      "2019": 29,
+      "2020": 15,
+      "2021": 12,
+      "2022": 16,
+      "2023": 15,
+      "2024": 15,
+      "2025": 13,
+      "2026": 10
+    },
+    "entries_in_coverage_window_2016on": 303,
+    "left_truncation_note": "a pair's first qualifying event inside 2016-11..2026-10 is a first *observed* activity, not a first-ever activity",
+    "observed_pairs_material": 322,
+    "possible_pairs": 1938
+  },
+  "graph_feature_redundancy": {
+    "max_over_features": 0.8490248195208866,
+    "method": "Pearson correlation of each G1 feature with each of the 16 B3 features",
+    "n_rows": 41003,
+    "novelty": {
+      "g_coentry_count_12m": {
+        "max_abs_corr_with_B3": 0.44488369851101633,
+        "std": 0.6253815917100038,
+        "top_correlated": [
+          {
+            "feature": "rd_track_active_companies_12m",
+            "r": 0.44488369851101633
+          },
+          {
+            "feature": "rd_track_active_companies_delta",
+            "r": 0.30201679795951997
+          },
+          {
+            "feature": "rd_track_count_12m",
+            "r": 0.22852858592632067
+          }
+        ]
+      },
+      "g_coentry_decay": {
+        "max_abs_corr_with_B3": 0.43188930400398007,
+        "std": 0.3943716510432487,
+        "top_correlated": [
+          {
+            "feature": "rd_track_active_companies_12m",
+            "r": 0.43188930400398007
+          },
+          {
+            "feature": "rd_track_active_companies_delta",
+            "r": 0.2879337636551125
+          },
+          {
+            "feature": "rd_track_count_12m",
+            "r": 0.2167498428531295
+          }
+        ]
+      },
+      "g_coentry_similarity_weighted": {
+        "max_abs_corr_with_B3": 0.15298162622249106,
+        "std": 0.11389605510755993,
+        "top_correlated": [
+          {
+            "feature": "rd_track_active_companies_12m",
+            "r": 0.15298162622249106
+          },
+          {
+            "feature": "rd_track_active_companies_delta",
+            "r": 0.11088637403928146
+          },
+          {
+            "feature": "rd_track_count_12m",
+            "r": 0.09270455451332553
+          }
+        ]
+      },
+      "g_company_clustering": {
+        "max_abs_corr_with_B3": 0.08911181984567632,
+        "std": 0.36147500150182926,
+        "top_correlated": [
+          {
+            "feature": "rd_company_active_tracks_delta",
+            "r": 0.08911181984567632
+          },
+          {
+            "feature": "rd_company_count_12m",
+            "r": 0.03163387592532899
+          },
+          {
+            "feature": "rd_company_track_novelty_share",
+            "r": 0.02970776985081737
+          }
+        ]
+      },
+      "g_company_eigenvector": {
+        "max_abs_corr_with_B3": 0.779317580594672,
+        "std": 0.08370371461048755,
+        "top_correlated": [
+          {
+            "feature": "rd_company_active_tracks_12m",
+            "r": 0.779317580594672
+          },
+          {
+            "feature": "rd_company_count_12m",
+            "r": 0.6748117843825726
+          },
+          {
+            "feature": "rd_company_total_36m",
+            "r": 0.6677245315832971
+          }
+        ]
+      },
+      "g_max_entrant_similarity": {
+        "max_abs_corr_with_B3": 0.14844226742325062,
+        "std": 0.10834768960561775,
+        "top_correlated": [
+          {
+            "feature": "rd_track_active_companies_12m",
+            "r": 0.14844226742325062
+          },
+          {
+            "feature": "rd_track_active_companies_delta",
+            "r": 0.1068598662007302
+          },
+          {
+            "feature": "rd_track_count_12m",
+            "r": 0.08849383397349447
+          }
+        ]
+      },
+      "g_similarity_to_track_incumbents": {
+        "max_abs_corr_with_B3": 0.22361426719435903,
+        "std": 0.10934678698643108,
+        "top_correlated": [
+          {
+            "feature": "rd_company_active_tracks_12m",
+            "r": 0.22361426719435903
+          },
+          {
+            "feature": "rd_company_total_36m",
+            "r": 0.19654330640892237
+          },
+          {
+            "feature": "rd_company_count_12m",
+            "r": 0.19120896372429366
+          }
+        ]
+      },
+      "g_similarity_to_track_max": {
+        "max_abs_corr_with_B3": 0.3534420895260134,
+        "std": 0.2255100936350958,
+        "top_correlated": [
+          {
+            "feature": "rd_track_active_companies_12m",
+            "r": 0.3534420895260134
+          },
+          {
+            "feature": "rd_track_count_12m",
+            "r": 0.20893115072952534
+          },
+          {
+            "feature": "rd_company_active_tracks_12m",
+            "r": 0.19994667535966146
+          }
+        ]
+      },
+      "g_track_cooccurrence_pull": {
+        "max_abs_corr_with_B3": 0.3548970954650892,
+        "std": 0.12607829001908563,
+        "top_correlated": [
+          {
+            "feature": "rd_track_active_companies_12m",
+            "r": 0.3548970954650892
+          },
+          {
+            "feature": "rd_track_count_12m",
+            "r": 0.2348799165747223
+          },
+          {
+            "feature": "rd_track_active_companies_delta",
+            "r": 0.09693882444155476
+          }
+        ]
+      },
+      "g_track_entrant_centrality": {
+        "max_abs_corr_with_B3": 0.4363715037820669,
+        "std": 0.0450500199269976,
+        "top_correlated": [
+          {
+            "feature": "rd_track_active_companies_12m",
+            "r": 0.4363715037820669
+          },
+          {
+            "feature": "rd_track_active_companies_delta",
+            "r": 0.30200261677632056
+          },
+          {
+            "feature": "rd_track_count_12m",
+            "r": 0.23477274921461874
+          }
+        ]
+      },
+      "g_twohop_activity_decay": {
+        "max_abs_corr_with_B3": 0.1931277952563346,
+        "std": 0.42607578454417366,
+        "top_correlated": [
+          {
+            "feature": "rd_company_count_12m",
+            "r": 0.1931277952563346
+          },
+          {
+            "feature": "rd_company_total_36m",
+            "r": 0.1817995088412318
+          },
+          {
+            "feature": "rd_company_active_tracks_12m",
+            "r": 0.17837280284846313
+          }
+        ]
+      },
+      "g_twohop_reach": {
+        "max_abs_corr_with_B3": 0.8490248195208866,
+        "std": 8.056957922029552,
+        "top_correlated": [
+          {
+            "feature": "rd_company_active_tracks_12m",
+            "r": 0.8490248195208866
+          },
+          {
+            "feature": "rd_company_count_12m",
+            "r": 0.7073203734912842
+          },
+          {
+            "feature": "rd_company_total_36m",
+            "r": 0.6951125293781969
+          }
+        ]
+      }
+    },
+    "warning": "correlation is not a leakage test; a feature can be uncorrelated and still encode the same information non-linearly"
+  },
+  "graph_scale": {
+    "2020-01-01": {
+      "companies_active_12m": 43,
+      "density": 0.1012311901504788,
+      "edges_12m": 148,
+      "max_company_degree": 11,
+      "max_track_degree": 15,
+      "mean_company_degree": 3.441860465116279,
+      "mean_track_degree": 4.352941176470588,
+      "tracks_active_12m": 34
+    },
+    "2025-10-01": {
+      "companies_active_12m": 44,
+      "density": 0.09297520661157024,
+      "edges_12m": 135,
+      "max_company_degree": 13,
+      "max_track_degree": 17,
+      "mean_company_degree": 3.0681818181818183,
+      "mean_track_degree": 4.090909090909091,
+      "tracks_active_12m": 33
+    }
+  },
+  "input": {
+    "exists": true,
+    "expected_sha256": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+    "expected_size_bytes": 289443840,
+    "ok": true,
+    "path": "D:\\DEPPSKK\\worktrees\\integration-v2\\data\\research.sqlite",
+    "sha256": "dd241bfec138d7977d7eb8f4c1db25119d59b6fe7ff573060b24d14eeeb71e0d",
+    "size_bytes": 289443840
+  },
+  "knowledge_clock": {
+    "available_at_equals_event_date": 0,
+    "available_at_minus_event_date_days": {
+      "14": 31802
+    },
+    "interpretation": "available_at is event_date/decision_date + 14 days for every row: a documented ESTIMATE of the bulk-lane publication lag, not a measured first-publication time. It is a historical_proxy_asof. first_seen_at and as_of are single bulk-fetch dates (2026-11-01) for all historical rows and therefore carry no point-in-time information.",
+    "share": 0.0
+  },
+  "lane_composition": {
+    "510k:Abbreviated": 527,
+    "510k:Direct": 321,
+    "510k:Dual Track": 76,
+    "510k:Post-NSE": 7,
+    "510k:QUALIFYING(traditional)": 25603,
+    "510k:Special": 4685,
+    "510k:Traditional": 25603,
+    "pma:QUALIFYING(original)": 344,
+    "pma:original(PMA)": 344,
+    "pma:supplement": 239
+  },
+  "left_truncation": {
+    "distinct_pairs_ever_observed": 322,
+    "first_origin": "2020-01-01",
+    "pairs_with_any_material_activity_by_first_origin": 230,
+    "share_already_active_at_first_origin": 0.7142857142857143
+  },
+  "panels": {
+    "primary_H4q_material": {
+      "base_rate": 0.012267395068653514,
+      "by_origin": {
+        "2020-01-01": {
+          "positives": 16,
+          "rows": 1634
+        },
+        "2020-04-01": {
+          "positives": 13,
+          "rows": 1636
+        },
+        "2020-07-01": {
+          "positives": 14,
+          "rows": 1675
+        },
+        "2020-10-01": {
+          "positives": 10,
+          "rows": 1679
+        },
+        "2021-01-01": {
+          "positives": 10,
+          "rows": 1678
+        },
+        "2021-04-01": {
+          "positives": 18,
+          "rows": 1687
+        },
+        "2021-07-01": {
+          "positives": 25,
+          "rows": 1691
+        },
+        "2021-10-01": {
+          "positives": 26,
+          "rows": 1730
+        },
+        "2022-01-01": {
+          "positives": 24,
+          "rows": 1727
+        },
+        "2022-04-01": {
+          "positives": 21,
+          "rows": 1727
+        },
+        "2022-07-01": {
+          "positives": 17,
+          "rows": 1724
+        },
+        "2022-10-01": {
+          "positives": 17,
+          "rows": 1724
+        },
+        "2023-01-01": {
+          "positives": 19,
+          "rows": 1725
+        },
+        "2023-04-01": {
+          "positives": 22,
+          "rows": 1726
+        },
+        "2023-07-01": {
+          "positives": 28,
+          "rows": 1730
+        },
+        "2023-10-01": {
+          "positives": 26,
+          "rows": 1730
+        },
+        "2024-01-01": {
+          "positives": 26,
+          "rows": 1730
+        },
+        "2024-04-01": {
+          "positives": 24,
+          "rows": 1726
+        },
+        "2024-07-01": {
+          "positives": 23,
+          "rows": 1723
+        },
+        "2024-10-01": {
+          "positives": 22,
+          "rows": 1720
+        },
+        "2025-01-01": {
+          "positives": 24,
+          "rows": 1722
+        },
+        "2025-04-01": {
+          "positives": 25,
+          "rows": 1722
+        },
+        "2025-07-01": {
+          "positives": 27,
+          "rows": 1721
+        },
+        "2025-10-01": {
+          "positives": 26,
+          "rows": 1716
+        }
+      },
+      "coverage_end": "2026-10-15",
+      "coverage_start": "2016-11-01",
+      "first_origin": "2020-01-01",
+      "horizon_months": 12,
+      "label_kind": "material",
+      "last_origin": "2025-10-01",
+      "mean_candidates_per_origin": 1708.4583333333333,
+      "mean_positives_per_origin": 20.958333333333332,
+      "n_examples": 41003,
+      "n_positives": 503,
+      "origins": 24
+    },
+    "primary_H4q_qualifying": {
+      "base_rate": 0.010194376021266736,
+      "by_origin": {
+        "2020-01-01": {
+          "positives": 12,
+          "rows": 1634
+        },
+        "2020-04-01": {
+          "positives": 11,
+          "rows": 1636
+        },
+        "2020-07-01": {
+          "positives": 12,
+          "rows": 1675
+        },
+        "2020-10-01": {
+          "positives": 9,
+          "rows": 1679
+        },
+        "2021-01-01": {
+          "positives": 9,
+          "rows": 1678
+        },
+        "2021-04-01": {
+          "positives": 15,
+          "rows": 1687
+        },
+        "2021-07-01": {
+          "positives": 21,
+          "rows": 1691
+        },
+        "2021-10-01": {
+          "positives": 21,
+          "rows": 1730
+        },
+        "2022-01-01": {
+          "positives": 19,
+          "rows": 1727
+        },
+        "2022-04-01": {
+          "positives": 17,
+          "rows": 1727
+        },
+        "2022-07-01": {
+          "positives": 14,
+          "rows": 1724
+        },
+        "2022-10-01": {
+          "positives": 14,
+          "rows": 1724
+        },
+        "2023-01-01": {
+          "positives": 17,
+          "rows": 1725
+        },
+        "2023-04-01": {
+          "positives": 19,
+          "rows": 1726
+        },
+        "2023-07-01": {
+          "positives": 25,
+          "rows": 1730
+        },
+        "2023-10-01": {
+          "positives": 22,
+          "rows": 1730
+        },
+        "2024-01-01": {
+          "positives": 21,
+          "rows": 1730
+        },
+        "2024-04-01": {
+          "positives": 19,
+          "rows": 1726
+        },
+        "2024-07-01": {
+          "positives": 18,
+          "rows": 1723
+        },
+        "2024-10-01": {
+          "positives": 16,
+          "rows": 1720
+        },
+        "2025-01-01": {
+          "positives": 20,
+          "rows": 1722
+        },
+        "2025-04-01": {
+          "positives": 20,
+          "rows": 1722
+        },
+        "2025-07-01": {
+          "positives": 23,
+          "rows": 1721
+        },
+        "2025-10-01": {
+          "positives": 24,
+          "rows": 1716
+        }
+      },
+      "coverage_end": "2026-10-15",
+      "coverage_start": "2016-11-01",
+      "first_origin": "2020-01-01",
+      "horizon_months": 12,
+      "label_kind": "qualifying",
+      "last_origin": "2025-10-01",
+      "mean_candidates_per_origin": 1708.4583333333333,
+      "mean_positives_per_origin": 17.416666666666668,
+      "n_examples": 41003,
+      "n_positives": 418,
+      "origins": 24
+    },
+    "secondary_H2q_material": {
+      "base_rate": 0.006459163234532893,
+      "by_origin": {
+        "2020-01-01": {
+          "positives": 8,
+          "rows": 1634
+        },
+        "2020-04-01": {
+          "positives": 6,
+          "rows": 1636
+        },
+        "2020-07-01": {
+          "positives": 11,
+          "rows": 1675
+        },
+        "2020-10-01": {
+          "positives": 7,
+          "rows": 1679
+        },
+        "2021-01-01": {
+          "positives": 4,
+          "rows": 1678
+        },
+        "2021-04-01": {
+          "positives": 5,
+          "rows": 1687
+        },
+        "2021-07-01": {
+          "positives": 8,
+          "rows": 1691
+        },
+        "2021-10-01": {
+          "positives": 14,
+          "rows": 1730
+        },
+        "2022-01-01": {
+          "positives": 17,
+          "rows": 1727
+        },
+        "2022-04-01": {
+          "positives": 13,
+          "rows": 1727
+        },
+        "2022-07-01": {
+          "positives": 8,
+          "rows": 1724
+        },
+        "2022-10-01": {
+          "positives": 8,
+          "rows": 1724
+        },
+        "2023-01-01": {
+          "positives": 9,
+          "rows": 1725
+        },
+        "2023-04-01": {
+          "positives": 10,
+          "rows": 1726
+        },
+        "2023-07-01": {
+          "positives": 13,
+          "rows": 1730
+        },
+        "2023-10-01": {
+          "positives": 13,
+          "rows": 1730
+        },
+        "2024-01-01": {
+          "positives": 15,
+          "rows": 1730
+        },
+        "2024-04-01": {
+          "positives": 13,
+          "rows": 1726
+        },
+        "2024-07-01": {
+          "positives": 12,
+          "rows": 1723
+        },
+        "2024-10-01": {
+          "positives": 11,
+          "rows": 1720
+        },
+        "2025-01-01": {
+          "positives": 12,
+          "rows": 1722
+        },
+        "2025-04-01": {
+          "positives": 13,
+          "rows": 1722
+        },
+        "2025-07-01": {
+          "positives": 12,
+          "rows": 1721
+        },
+        "2025-10-01": {
+          "positives": 12,
+          "rows": 1716
+        },
+        "2026-01-01": {
+          "positives": 16,
+          "rows": 1716
+        },
+        "2026-04-01": {
+          "positives": 17,
+          "rows": 1714
+        }
+      },
+      "coverage_end": "2026-10-15",
+      "coverage_start": "2016-11-01",
+      "first_origin": "2020-01-01",
+      "horizon_months": 6,
+      "label_kind": "material",
+      "last_origin": "2026-04-01",
+      "mean_candidates_per_origin": 1708.9615384615386,
+      "mean_positives_per_origin": 11.038461538461538,
+      "n_examples": 44433,
+      "n_positives": 287,
+      "origins": 26
+    },
+    "secondary_H2q_qualifying": {
+      "base_rate": 0.005378885062903698,
+      "by_origin": {
+        "2020-01-01": {
+          "positives": 6,
+          "rows": 1634
+        },
+        "2020-04-01": {
+          "positives": 5,
+          "rows": 1636
+        },
+        "2020-07-01": {
+          "positives": 9,
+          "rows": 1675
+        },
+        "2020-10-01": {
+          "positives": 6,
+          "rows": 1679
+        },
+        "2021-01-01": {
+          "positives": 4,
+          "rows": 1678
+        },
+        "2021-04-01": {
+          "positives": 4,
+          "rows": 1687
+        },
+        "2021-07-01": {
+          "positives": 7,
+          "rows": 1691
+        },
+        "2021-10-01": {
+          "positives": 12,
+          "rows": 1730
+        },
+        "2022-01-01": {
+          "positives": 14,
+          "rows": 1727
+        },
+        "2022-04-01": {
+          "positives": 10,
+          "rows": 1727
+        },
+        "2022-07-01": {
+          "positives": 6,
+          "rows": 1724
+        },
+        "2022-10-01": {
+          "positives": 7,
+          "rows": 1724
+        },
+        "2023-01-01": {
+          "positives": 8,
+          "rows": 1725
+        },
+        "2023-04-01": {
+          "positives": 8,
+          "rows": 1726
+        },
+        "2023-07-01": {
+          "positives": 12,
+          "rows": 1730
+        },
+        "2023-10-01": {
+          "positives": 12,
+          "rows": 1730
+        },
+        "2024-01-01": {
+          "positives": 13,
+          "rows": 1730
+        },
+        "2024-04-01": {
+          "positives": 10,
+          "rows": 1726
+        },
+        "2024-07-01": {
+          "positives": 9,
+          "rows": 1723
+        },
+        "2024-10-01": {
+          "positives": 9,
+          "rows": 1720
+        },
+        "2025-01-01": {
+          "positives": 10,
+          "rows": 1722
+        },
+        "2025-04-01": {
+          "positives": 7,
+          "rows": 1722
+        },
+        "2025-07-01": {
+          "positives": 9,
+          "rows": 1721
+        },
+        "2025-10-01": {
+          "positives": 12,
+          "rows": 1716
+        },
+        "2026-01-01": {
+          "positives": 15,
+          "rows": 1716
+        },
+        "2026-04-01": {
+          "positives": 15,
+          "rows": 1714
+        }
+      },
+      "coverage_end": "2026-10-15",
+      "coverage_start": "2016-11-01",
+      "first_origin": "2020-01-01",
+      "horizon_months": 6,
+      "label_kind": "qualifying",
+      "last_origin": "2026-04-01",
+      "mean_candidates_per_origin": 1708.9615384615386,
+      "mean_positives_per_origin": 9.192307692307692,
+      "n_examples": 44433,
+      "n_positives": 239,
+      "origins": 26
+    }
+  }
+}

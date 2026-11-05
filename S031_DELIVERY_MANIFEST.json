@@ -1,0 +1,141 @@
+{
+  "study_id": "S-031",
+  "created_utc": "2026-11-04T20:32:33.024531+00:00",
+  "source_pr21_head": "c4327ce44c6aafe0e4af5a73df7f356dfffcb438",
+  "research_branch_on_github": "research/s031-hiring-capability-study",
+  "github_delivery_status": "delivered: pushed to ChazY11/medradar branch research/s031-hiring-capability-study; draft PR #22 opened 2026-11-05; 31-file package complete (20 files under research/s031 + 11 verifier files); stalled .assemble staging directory removed",
+  "github_delivery_status_at_packaging": "branch_created; research_files_not_pushed; no_draft_pr; local_git_push_credentials_unavailable",
+  "label_status": "AI_PRELIMINARY_LABEL",
+  "sample_n": 100,
+  "case_studies": 24,
+  "offline_tests": "8/8 passed",
+  "verifier": "12/12 criteria passed",
+  "final_verifier_log": "verifier/runs/20261104T203158_228242Z_v2.log",
+  "contains_full_recruitment_text": false,
+  "files": {
+    "research/s031/.gitignore": {
+      "sha256": "c5966529b3e934c4705fb0eb0b1e9d9b27dfe443a7469abab405dfa277b073e9",
+      "bytes": 108
+    },
+    "research/s031/README.md": {
+      "sha256": "4e8038bbd34dc549af7f4d8a5f1434dd3840d5d8d78246dfa7514f75093dff31",
+      "bytes": 2981
+    },
+    "research/s031/audit/legacy_rule_comparison.jsonl": {
+      "sha256": "5e6ecae76298a4f65752588b18e53e1b2af3544819897d823b720c6f9a1f6be1",
+      "bytes": 282888
+    },
+    "research/s031/audit/legacy_rule_comparison_summary.json": {
+      "sha256": "580e2f56386357ccd4a99ed2abd33aaf7bb764763e5817c032e6ac8e1fecf0b7",
+      "bytes": 3008
+    },
+    "research/s031/audit/pr21_count_audit.json": {
+      "sha256": "8fa8ea58902d234c5507a0c4ff5c96b56a40e06d841c7dafdcd7b022cce8e771",
+      "bytes": 17139
+    },
+    "research/s031/audit/selection_summary.json": {
+      "sha256": "0dce7e05463cad42d2b5710393887e162e90c63dc4681252dffaaff341f4f044",
+      "bytes": 2236
+    },
+    "research/s031/deliverables/JOB_CAPABILITY_ONTOLOGY.md": {
+      "sha256": "e4022f43c1ff3949c4dac96e3be83c7540a18976eb8d4228c46159aa1752963c",
+      "bytes": 12593
+    },
+    "research/s031/deliverables/NEXT_STEPS.md": {
+      "sha256": "927c6817a526f33c8ab63957751eac3f47079d80c271122feed748e00ea34d5f",
+      "bytes": 9244
+    },
+    "research/s031/deliverables/S031_AI_PRELABELS.jsonl": {
+      "sha256": "fd98314172085dcdc5db3941659d54fe7b2fc0c5ad97ec6561ae1a8f7c34e708",
+      "bytes": 192812
+    },
+    "research/s031/deliverables/S031_CASE_STUDIES.zh-CN.md": {
+      "sha256": "be3d1b602268c7bcbd5207b326cdf03f5db9a6bad2c89a0229a93281da5c631d",
+      "bytes": 35892
+    },
+    "research/s031/deliverables/S031_DISAGREEMENT_AUDIT.md": {
+      "sha256": "cdebdfee8a1e16e9ada6be433808433d1ade19a09b01806183ebfd6a2b12e886",
+      "bytes": 14112
+    },
+    "research/s031/deliverables/S031_RESEARCH_PROTOCOL.md": {
+      "sha256": "20c62cedd68b8d8edbe5c100e9c33fd11df40112de527f4d453cb721ae2e73d4",
+      "bytes": 10373
+    },
+    "research/s031/deliverables/S031_RESEARCH_REPORT.zh-CN.md": {
+      "sha256": "171008e7a9c0a057a226c2f12f8a4a2472091ad450c266d976fd049abe993f02",
+      "bytes": 17232
+    },
+    "research/s031/deliverables/S031_SAMPLE_100.csv": {
+      "sha256": "1cf1d9c220161926e3cedb87c76dc9daea8e872e31b6a37c4d200d66d51a55b7",
+      "bytes": 57459
+    },
+    "research/s031/scripts/audit_pr21_counts.py": {
+      "sha256": "7f748766374f7934757945133f557e45c2dee1a56071d38608a37f8c846f60e8",
+      "bytes": 12851
+    },
+    "research/s031/scripts/build_case_studies.py": {
+      "sha256": "43aca781957a1488ffc247dfcde8950b2b85ef3b114a256575f16c588c9765f8",
+      "bytes": 13753
+    },
+    "research/s031/scripts/build_prelabels.py": {
+      "sha256": "ada1a9a7f8b05ec23983c1f185fd90518fe196b9e7d00b8c115cfc524960b44b",
+      "bytes": 37711
+    },
+    "research/s031/scripts/compare_legacy_rules.py": {
+      "sha256": "51570583c36950d338291c4e1745b98d78f4c7c20d41fc5f1a165270333a9dcb",
+      "bytes": 7904
+    },
+    "research/s031/scripts/select_sample.py": {
+      "sha256": "cad3aa1ee6e65d4e28d115c426dd47c223898d35c719c68d6a37be50f8cdaf7c",
+      "bytes": 9088
+    },
+    "research/s031/tests/test_s031.py": {
+      "sha256": "13b0801c5b6a7dfe20da8da3f2d906526214d22ae3c1db732d7d896d0239b067",
+      "bytes": 9968
+    },
+    "verifier/README.md": {
+      "sha256": "8629dce50da421f55f0d18acb1233b428e448f202db30b87ea13108b7978abff",
+      "bytes": 678
+    },
+    "verifier/runs/20261104T201754_268854Z_v2.log": {
+      "sha256": "e6133cb463e6712418108482dd7763dad38dc7c1bac9c19a2ebe8083274a7c9c",
+      "bytes": 233
+    },
+    "verifier/runs/20261104T201811_587455Z_v2.log": {
+      "sha256": "d72c521d828ee91d05f47dc81be011e13c260cb375e4a8736b173a6383862358",
+      "bytes": 240
+    },
+    "verifier/runs/20261104T201850_973571Z_v2.log": {
+      "sha256": "0b854eadd4b9a8bcacda30d1fcef7d5abcdf0f15e35b46c4986a8779a00d4e3c",
+      "bytes": 2041
+    },
+    "verifier/runs/20261104T202311_072655Z_v2.log": {
+      "sha256": "6234c633fd8d29cf33b22d98956418f7afbbd764c658d9bb5b052c5a014a732d",
+      "bytes": 2041
+    },
+    "verifier/runs/20261104T202311_128949Z_v2.log": {
+      "sha256": "0d12af100ea7ad953a1ba7bc4892289337c798cc37da06096351cb49b89fbac2",
+      "bytes": 276
+    },
+    "verifier/runs/20261104T202511_680669Z_v2.log": {
+      "sha256": "f2502e123696c94437e1fba1dc172a0a1d3befca32c57cea0ada1ba98d387be4",
+      "bytes": 2041
+    },
+    "verifier/runs/20261104T202512_076173Z_v2.log": {
+      "sha256": "39da205f43970b7aef78d4c74106b550fcfd542afcbd867e933b5aaa9720713c",
+      "bytes": 2041
+    },
+    "verifier/runs/20261104T203158_228242Z_v2.log": {
+      "sha256": "cfa0a5c0c3eaebaf9201b3af93f728c2aba1bee4f6d713aec7e9225f32758ce6",
+      "bytes": 2041
+    },
+    "verifier/v2/criteria.md": {
+      "sha256": "622ae46bc151978e08c4c11a37df9e17b30a03f6f854740d8923fa25e3fb988a",
+      "bytes": 2232
+    },
+    "verifier/v2/verify.py": {
+      "sha256": "a7a4d1f8d12f7de3ab5f52937fc99597ac5c4ae85523696ddd2c217159d8ed94",
+      "bytes": 10164
+    }
+  }
+}

@@ -10,6 +10,115 @@ MedRadar turns free public FDA data into a weekly, quantified, Chinese-language 
 brief: which technology tracks are heating up, which majors are quietly re-allocating their
 portfolio, what appeared for the first time, and where China still has a gap.
 
+## MedRadar 2.0 — the product (MVP)
+
+`feat/medradar-2.0-mvp` turns the research pipeline into a runnable web product:
+**Company Intelligence · Technology Radar · AI Research Analyst · Evidence Explorer · Research Lab**.
+Every number is computed read-only from the same `data/medradar.sqlite`; every conclusion expands
+to the underlying FDA/ClinicalTrials/8-K records; limitations are printed next to the numbers.
+
+```bash
+# the research store must exist (built by `medradar run`); this checkout already has it
+python -m medradar web --port 8787
+# open http://127.0.0.1:8787
+```
+
+- deterministic analyst, **no API key required**, no fabricated queries;
+- Dräger and Mindray are supported through a reviewed exact-alias mapping (they are absent from the original roster);
+- observed change / detected signal / research hypothesis are labelled separately — there is **no validated forecast** in the product;
+- comparisons use **equal-length complete natural quarters**; LQ uses the same track-mapped denominators on both sides and shows "not applicable" for small samples; PMA original approvals are separated from PMA supplements (supplements are not new devices);
+- docs: [vision](docs/PRODUCT_VISION.md) · [architecture](docs/PRODUCT_ARCHITECTURE.md) ·
+  [user guide](docs/PRODUCT_USER_GUIDE.md) · [acceptance](docs/PRODUCT_ACCEPTANCE.md) ·
+  [statistical audit](docs/PRODUCT_STATISTICAL_AUDIT.md) · [roadmap](docs/PRODUCT_ROADMAP.md)
+
+![MedRadar 2.0 overview](docs/product/overview.png)
+
+| Company intelligence | Claim → evidence trace |
+| --- | --- |
+| ![Mindray](docs/product/company-mindray.png) | ![Evidence](docs/product/evidence-trace.png) |
+| **Technology radar** | **Research analyst** |
+| ![Radar](docs/product/radar-respiratory.png) | ![Analyst](docs/product/analyst.png) |
+
+## MedRadar Live Observatory — continuous, auditable observation
+
+`feat/live-observatory-v1` adds the piece the snapshot pipeline could never answer:
+**what did we actually observe, and when did we first observe it?**
+
+A separate, append-only Observation Ledger (`data/observatory/observatory.sqlite`)
+records every public record from official APIs with a real `first_seen_at` written
+once by the collector, an immutable payload-version chain, and an explicit
+`NEW / UPDATED / UNCHANGED / REMOVED_OR_UNAVAILABLE / FETCH_FAILED` state. The
+existing 1.37 GB research store is only read; existing statistics are untouched.
+
+```bash
+# incremental observation of the official sources (default: sec_edgar,ctgov,europepmc)
+python -m medradar observatory sync
+python -m medradar observatory status          # sync state, failures, measured lag
+python -m medradar observatory watch --interval-minutes 60   # local continuous polling
+python -m medradar observatory replay --as-of 2026-11-03T10:00:00Z   # point-in-time replay
+python -m medradar web --port 8787             # then #/observatory
+```
+
+- official sources only: **SEC EDGAR**, **ClinicalTrials.gov API v2**, **Europe PMC**;
+  FDA 510(k)/PMA reuse the existing collectors and are **not** claimed to be real-time;
+- issuer coverage is **verified per company**, not assumed: Medtronic / GE HealthCare /
+  Philips have SEC CIKs; Dräger has none (the EDGAR name match is an individual filer);
+  Mindray stopped filing in 2016 — each with the evidence that was checked;
+- two different claims are never merged in the UI: *"the event happened on X"* vs
+  *"MedRadar first observed it on Y"*; measured latency is shown only where the source
+  publishes a real availability timestamp, otherwise "not measurable" with the reason;
+- every acceptance scenario (A–G) has a synthetic tier, a real-API tier and a real
+  incremental tier: `python scripts/observatory_acceptance.py --live`;
+- docs: [user & operations guide](docs/LIVE_OBSERVATORY.md) ·
+  [design & interface contract](docs/LIVE_OBSERVATORY_DESIGN.md) ·
+  [prospective observation registry](docs/PROSPECTIVE_OBSERVATION_REGISTRY.md)
+
+## MedRadar Observatory Reliability — built to preserve evidence for years
+
+`feat/observatory-reliability-v1` is the answer to "if this runs for five years, can it
+still prove what it observed on a given day?" It adds persistence, supervision, audit
+and validation around the same append-only ledger — no new predictors, no rewritten product.
+
+- **Single-writer lease** (`data/observatory/collector.lock`): a second collector is
+  refused, stale leases are taken over with an audit record, SIGTERM/exit releases it.
+- **Consistent backups** via the SQLite online-backup API, SHA-256 manifests, integrity +
+  consistency recorded per snapshot, retention (7 daily / 4 weekly / 6 monthly), quarantine
+  instead of deletion for unverifiable bundles, and cache pruning that never touches the
+  ledger or frozen research files.
+- **Restore drills** into an isolated directory, verifying observation counts,
+  `first_seen_at` identity (400/400 in the real drill), version chains and watermarks,
+  then proving a post-restore write gets a *fresh* `first_seen_at` while old rows keep theirs.
+- **Integrity audit** (`observatory audit`): 11 checks with `PASS / FAIL /
+  REQUIRES_MANUAL_REVIEW` verdicts and concrete evidence — missing evidence is never a PASS.
+- **Honest health** (`observatory health`): `OPERATIONAL / DEGRADED / PAUSED /
+  NOT_DEPLOYED / VALIDATION_IN_PROGRESS` computed from freshness, runs, backups, drills,
+  structure alerts and the lease — never from an HTTP 200. `NO_NEW_RECORDS` is normal;
+  `FETCH_FAILED` is a failure and is shown as one.
+- **Supervised operation**: systemd service/timer templates for Linux; a Windows Task
+  Scheduler installer that runs **one pass per trigger** (`-MaxCycles 1`) because a forced
+  task end cannot cleanly stop a long-running child; ledger lease + `IgnoreNew` prevent overlap.
+- **Seven-day continuous validation** (`observatory validate status`): planned vs executed
+  vs missed slots, scheduler/source success rates, freshness, measured latency, duplicate
+  rate, integrity violations, recovery and storage growth — computed only from real
+  `sync_run` rows. It is currently **VALIDATION_IN_PROGRESS** (started 2026-11-03,
+  window ends 2026-11-10); it will not report PASSED before that instant.
+- **Acquisition phase** is append-only metadata: `INITIAL_DISCOVERY` (first go-live sweep)
+  vs `INCREMENTAL_DISCOVERY` vs `HISTORICAL_BACKFILL`; "event older than observation" is
+  not backfill, and the existing immutable rows were labelled without being rewritten.
+- docs: [reliability architecture & decision](docs/RELIABILITY_DESIGN.md) ·
+  [deployment runbook](docs/DEPLOYMENT.md) ·
+  [backup & recovery](docs/BACKUP_AND_RECOVERY.md) ·
+  [seven-day validation protocol](docs/CONTINUOUS_VALIDATION_PROTOCOL.md) ·
+  [health & validation semantics](docs/HEALTH_AND_VALIDATION.md) ·
+  [acceptance report](docs/RELIABILITY_ACCEPTANCE.md)
+
+> Deployment status on this workstation is **DEPLOYED_LOCAL** (Windows Task Scheduler,
+> one pass per trigger, verified `LastTaskResult=0`). Production remains **NOT_DEPLOYED**:
+> a durable host, offsite backup target and an authorised SEC contact are required before
+> any `DEPLOYED_SERVICE` claim, and none of them were purchased or assumed.
+
+
+
 > The stable core through `v0.2.2` was built with DeepSeek Harness using `deepseek-flash`.
 > The research foundation (`medradar/tkg`, `forecast_registry`) and the Market-to-R&D lane were
 > authored in independent Kimi Code sessions; `v0.3.0` consolidates their branches after an

@@ -1,0 +1,270 @@
+[
+  {
+    "experiment_id": "OVN-TRAIN-01",
+    "kind": "qlora_training",
+    "hypothesis": "QLoRA adaptation on SOURCE_DERIVED_SILVER labels reduces teacher-forced loss on held-out companies and produces schema-valid extractions without destroying the instruction-following behaviour of the base model.",
+    "data_version": {
+      "corpus_sha256": "7f4e7d815c6cece32f5a20ea9b78fe23602de6771bd95b7f5852897e568d07df",
+      "corpus_version": "ovn-2026-11-04",
+      "counts": {
+        "test": 20,
+        "train": 70,
+        "validation": 14
+      },
+      "leakage_audit": "ok",
+      "label_tier": "source_record_derived"
+    },
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "prompt_version": "extract-v2",
+    "config": {
+      "steps_requested": 150,
+      "max_wall_seconds": 1200,
+      "max_seq_len": 2432,
+      "grad_accum": 4,
+      "learning_rate": 0.0001,
+      "seed": 20261104,
+      "lora_r": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.05,
+      "eval_every": 50,
+      "checkpoint_every": 75,
+      "patience": 3,
+      "resource_interval_s": 300,
+      "max_temp_c": 87,
+      "source": "command line recorded in the run's stdout log"
+    },
+    "seed": 20261104,
+    "gpu_seconds": 1200.1,
+    "result": {
+      "stop_reason": "wall_clock_budget_exhausted",
+      "best_validation_loss": 0.00522,
+      "best_step": 50,
+      "evaluations": [
+        {
+          "step": 50,
+          "validation_loss": 0.00522,
+          "train_loss_last": 0.005111
+        }
+      ],
+      "peak_vram_mib": null,
+      "gpu_temp_max_c": 72
+    },
+    "failure_reason": "wall_clock_budget_exhausted",
+    "exploratory": true,
+    "status_tier": "EXPLORATORY_WEAK_SUPERVISION",
+    "research_status": "RESEARCH_TRAINING_BLOCKED"
+  },
+  {
+    "experiment_id": "OVN-EVAL-01",
+    "kind": "evaluation",
+    "hypothesis": "The repaired system (prompt v2 + schema v2) plus the exploratory adapter changes agreement with silver labels relative to the untuned model and to the deterministic rules, on companies never used in training.",
+    "data_version": {
+      "corpus_sha256": "7f4e7d815c6cece32f5a20ea9b78fe23602de6771bd95b7f5852897e568d07df",
+      "label_tier": "source_record_derived",
+      "splits_evaluated": [
+        "test"
+      ],
+      "leakage_audit": {
+        "status": "ok",
+        "detail": null
+      },
+      "counts": {
+        "test": 20,
+        "train": 70,
+        "validation": 14
+      }
+    },
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "prompt_version": "extract-v1",
+    "config": {
+      "run_dir": "D:\\DEPPSKK\\ml-work\\overnight\\runs\\eval\\ovn-test-prompt-v1",
+      "arms": [
+        "hf-qwen3-4b-instruct",
+        "rules-baseline",
+        "rules-baseline-a1"
+      ]
+    },
+    "seed": 20261104,
+    "gpu_seconds": null,
+    "result": {
+      "hf-qwen3-4b-instruct": {
+        "json_valid_rate": 0.8,
+        "schema_accepted_rate": 0.7,
+        "category_agreement": 0.7647,
+        "event_date_agreement": 0.7647,
+        "company_agreement": 0.7647,
+        "abstention_rate": 0.35,
+        "false_assertion_rate": 0.0,
+        "median_latency_s": 25.535,
+        "peak_vram_mb": 3438.2
+      },
+      "rules-baseline": {
+        "json_valid_rate": 1.0,
+        "schema_accepted_rate": 1.0,
+        "category_agreement": 0.4706,
+        "event_date_agreement": 0.0,
+        "company_agreement": 0.4706,
+        "abstention_rate": 0.6,
+        "false_assertion_rate": 0.0,
+        "median_latency_s": 0.004,
+        "peak_vram_mb": null
+      },
+      "rules-baseline-a1": {
+        "json_valid_rate": 1.0,
+        "schema_accepted_rate": 0.8,
+        "category_agreement": 0.4706,
+        "event_date_agreement": 0.4706,
+        "company_agreement": 0.4706,
+        "abstention_rate": 0.6,
+        "false_assertion_rate": 0.0,
+        "median_latency_s": 0.005,
+        "peak_vram_mb": null
+      }
+    },
+    "failure_reason": null,
+    "exploratory": true,
+    "precision_recall_f1": "NOT_EVALUABLE"
+  },
+  {
+    "experiment_id": "OVN-EVAL-02",
+    "kind": "evaluation",
+    "hypothesis": "The repaired system (prompt v2 + schema v2) plus the exploratory adapter changes agreement with silver labels relative to the untuned model and to the deterministic rules, on companies never used in training.",
+    "data_version": {
+      "corpus_sha256": "7f4e7d815c6cece32f5a20ea9b78fe23602de6771bd95b7f5852897e568d07df",
+      "label_tier": "source_record_derived",
+      "splits_evaluated": [
+        "test"
+      ],
+      "leakage_audit": {
+        "status": "ok",
+        "detail": null
+      },
+      "counts": {
+        "test": 20,
+        "train": 70,
+        "validation": 14
+      }
+    },
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "prompt_version": "extract-v2",
+    "config": {
+      "run_dir": "D:\\DEPPSKK\\ml-work\\overnight\\runs\\eval\\ovn-test-prompt-v2",
+      "arms": [
+        "hf-qwen3-4b-instruct",
+        "qlora-overnight",
+        "rules-baseline",
+        "rules-baseline-a1"
+      ]
+    },
+    "seed": 20261104,
+    "gpu_seconds": null,
+    "result": {
+      "hf-qwen3-4b-instruct": {
+        "json_valid_rate": 0.75,
+        "schema_accepted_rate": 0.65,
+        "category_agreement": 0.7059,
+        "event_date_agreement": 0.7059,
+        "company_agreement": 0.7059,
+        "abstention_rate": 0.4,
+        "false_assertion_rate": 0.0,
+        "median_latency_s": 28.627,
+        "peak_vram_mb": 3834.4
+      },
+      "qlora-overnight": {
+        "json_valid_rate": 0.95,
+        "schema_accepted_rate": 0.85,
+        "category_agreement": 1.0,
+        "event_date_agreement": 1.0,
+        "company_agreement": 1.0,
+        "abstention_rate": 0.05,
+        "false_assertion_rate": 0.6667,
+        "median_latency_s": 37.713,
+        "peak_vram_mb": 3962.6
+      },
+      "rules-baseline": {
+        "json_valid_rate": 1.0,
+        "schema_accepted_rate": 1.0,
+        "category_agreement": 0.4706,
+        "event_date_agreement": 0.0,
+        "company_agreement": 0.4706,
+        "abstention_rate": 0.6,
+        "false_assertion_rate": 0.0,
+        "median_latency_s": 0.005,
+        "peak_vram_mb": null
+      },
+      "rules-baseline-a1": {
+        "json_valid_rate": 1.0,
+        "schema_accepted_rate": 0.8,
+        "category_agreement": 0.4706,
+        "event_date_agreement": 0.4706,
+        "company_agreement": 0.4706,
+        "abstention_rate": 0.6,
+        "false_assertion_rate": 0.0,
+        "median_latency_s": 0.005,
+        "peak_vram_mb": null
+      }
+    },
+    "failure_reason": null,
+    "exploratory": true,
+    "precision_recall_f1": "NOT_EVALUABLE"
+  },
+  {
+    "experiment_id": "OVN-EVAL-03",
+    "kind": "evaluation",
+    "hypothesis": "The repaired system (prompt v2 + schema v2) plus the exploratory adapter changes agreement with silver labels relative to the untuned model and to the deterministic rules, on companies never used in training.",
+    "data_version": {
+      "corpus_sha256": "7f4e7d815c6cece32f5a20ea9b78fe23602de6771bd95b7f5852897e568d07df",
+      "label_tier": "source_record_derived",
+      "splits_evaluated": [
+        "test"
+      ],
+      "leakage_audit": {
+        "status": "ok",
+        "detail": null
+      },
+      "counts": {
+        "test": 20,
+        "train": 70,
+        "validation": 14
+      }
+    },
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "prompt_version": "extract-v2",
+    "config": {
+      "run_dir": "D:\\DEPPSKK\\ml-work\\overnight\\runs\\eval\\ovn-test-rules-fixed",
+      "arms": [
+        "rules-baseline",
+        "rules-baseline-a1"
+      ]
+    },
+    "seed": 20261104,
+    "gpu_seconds": null,
+    "result": {
+      "rules-baseline": {
+        "json_valid_rate": 1.0,
+        "schema_accepted_rate": 1.0,
+        "category_agreement": 0.4706,
+        "event_date_agreement": 0.0,
+        "company_agreement": 0.4706,
+        "abstention_rate": 0.6,
+        "false_assertion_rate": 0.0,
+        "median_latency_s": 0.004,
+        "peak_vram_mb": null
+      },
+      "rules-baseline-a1": {
+        "json_valid_rate": 1.0,
+        "schema_accepted_rate": 1.0,
+        "category_agreement": 0.4706,
+        "event_date_agreement": 0.4706,
+        "company_agreement": 0.4706,
+        "abstention_rate": 0.6,
+        "false_assertion_rate": 0.0,
+        "median_latency_s": 0.005,
+        "peak_vram_mb": null
+      }
+    },
+    "failure_reason": null,
+    "exploratory": true,
+    "precision_recall_f1": "NOT_EVALUABLE"
+  }
+]

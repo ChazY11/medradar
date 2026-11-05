@@ -1,0 +1,89 @@
+{
+  "company_key": "medtronic",
+  "source_label": "Medtronic",
+  "source_platform": "workday",
+  "collector_version": "recruitment/1.0.0",
+  "schema_version": "recruitment-obs-v1",
+  "policy": {
+    "min_interval_s": 0.8,
+    "max_requests": 1500,
+    "max_postings": 240,
+    "timeout_s": 45.0,
+    "robots_evidence": {
+      "medtronic.wd1.myworkdayjobs.com": {
+        "robots_url": "https://medtronic.wd1.myworkdayjobs.com/robots.txt",
+        "status": 200,
+        "n_groups": 1,
+        "raw_head": "Sitemap: https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/siteMap.xml\n\nUser-agent: *\nAllow: /MedtronicCareers/\nDisallow: /RedeploymentMedtronicCareers/\nDisallow: /refreshFacet/",
+        "groups": [
+          {
+            "agents": [
+              "*"
+            ],
+            "allow": [
+              "/MedtronicCareers/"
+            ],
+            "disallow": [
+              "/RedeploymentMedtronicCareers/",
+              "/refreshFacet/"
+            ]
+          }
+        ]
+      }
+    },
+    "notes": []
+  },
+  "report": {
+    "company_key": "medtronic",
+    "source_label": "Medtronic",
+    "started_at": "2026-11-04T12:50:41+00:00",
+    "finished_at": "2026-11-04T12:51:18+00:00",
+    "listing_total_reported": 0,
+    "listing_pages": 2,
+    "listings_seen": 40,
+    "details_requested": 40,
+    "details_ok": 40,
+    "details_failed": 0,
+    "detail_failures": [],
+    "truncated_at_ceiling": false,
+    "robots": {
+      "medtronic.wd1.myworkdayjobs.com": {
+        "robots_url": "https://medtronic.wd1.myworkdayjobs.com/robots.txt",
+        "status": 200,
+        "n_groups": 1
+      }
+    },
+    "request_stats": {
+      "requests": 43,
+      "cache_hits": 0,
+      "retries": 0,
+      "errors": 0
+    },
+    "collector_version": "recruitment/1.0.0"
+  },
+  "availability": {
+    "n": 40,
+    "rates": {
+      "posting_id": 1.0,
+      "source_url": 1.0,
+      "job_title": 1.0,
+      "description_nonempty": 1.0,
+      "location": 1.0,
+      "source_date": 1.0,
+      "relative_only": 0.0,
+      "no_time": 0.0,
+      "first_seen": 1.0,
+      "legal_entity": 0.0
+    },
+    "by_quality": {
+      "SOURCE_DATE": 40
+    },
+    "by_status": {
+      "COMPLETE": 40
+    },
+    "by_platform": {
+      "workday": 40
+    },
+    "distinct_postings": 40
+  }
+}

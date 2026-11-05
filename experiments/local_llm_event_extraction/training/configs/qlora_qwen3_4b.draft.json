@@ -1,0 +1,130 @@
+{
+  "base_adapter_id": "hf-qwen3-4b",
+  "model_id": "Qwen/Qwen3-4B",
+  "revision": "PENDING-A-PIN",
+  "quantization": "nf4",
+  "double_quant": true,
+  "compute_dtype": "bfloat16",
+  "r": 16,
+  "alpha": 32,
+  "dropout": 0.05,
+  "target_modules": "all-linear",
+  "bias": "none",
+  "learning_rate": 0.0002,
+  "lr_scheduler": "cosine",
+  "warmup_ratio": 0.03,
+  "num_epochs": 1,
+  "max_seq_len": 2048,
+  "per_device_batch_size": 1,
+  "gradient_accumulation_steps": 16,
+  "gradient_checkpointing": true,
+  "paged_optimizer": true,
+  "seed": 20261104,
+  "vram_budget_mb": 14336,
+  "abort_at_vram_mb": 15360,
+  "save_steps": 50,
+  "eval_steps": 50,
+  "resume_from": null,
+  "enabled": false,
+  "executed": false,
+  "notes": [
+    "DRAFT: not authorised, not executed, and not signed off by a named human.",
+    "peak memory: assumed/estimated (arithmetic from a ~4B-parameter base at 4-bit plus LoRA and an unknown activation peak); NOT measured on this machine.",
+    "hardware report: docs/HARDWARE_COMPATIBILITY.md (WP2) and the Team Lead's measured values recorded in _notes.measured_by_the_team_lead; this config does not re-measure anything.",
+    "the estimate above must be replaced by a measured dry run before any training is authorised."
+  ],
+  "_notes": {
+    "status": "DRAFT - requires a named human sign-off; not a registered study; no study number has been assigned.",
+    "read_this_first": [
+      "Every number in this file is either MEASURED on this machine (and attributed below), ASSUMED/ESTIMATED (and labelled as such), or a PRE-REGISTERED protocol choice (fixed before any result was seen).",
+      "No value here is a measurement of training behaviour: training has never been executed in this phase. The VRAM estimate is a calculation, not an observation.",
+      "The file is disabled (enabled=false, executed=false). The readiness guard refuses to proceed while it stays a draft, and run_train.py exits 4 with PHASE_GUARD even when every other check passes."
+    ],
+    "measured_by_the_team_lead": {
+      "measured_on": "2026-11-04",
+      "measured_by": "Team Lead (values supplied to this work package; not re-measured by the agent that wrote this file)",
+      "method": "nvidia-smi and system queries on the target laptop; see docs/HARDWARE_COMPATIBILITY.md for the support-matrix research",
+      "gpu_name": "NVIDIA GeForce RTX 5080 Laptop GPU (Blackwell, sm_120)",
+      "vram_total_mb": 16384,
+      "vram_already_used_by_desktop_apps_mb": 3994,
+      "vram_free_before_any_model_mb_approx": 12390,
+      "driver_version": "581.42",
+      "system_ram_gb": 32,
+      "wsl2_installed": false,
+      "cuda_path_verified": false,
+      "consequence": "The CUDA/WSL2 software path is unverified on this machine. Nothing in this config asserts that a 4-bit QLoRA run will fit or succeed; that is the hypothesis the first GPU phase must test."
+    },
+    "assumed_or_estimated": {
+      "peak_process_vram_mb": {
+        "low": 7168,
+        "high": 12288,
+        "provenance": "ASSUMED - arithmetic estimate only, never measured",
+        "basis": "~4B-parameter base quantised to 4-bit NF4 with double quantisation (weights ~2.0-2.5 GiB) + LoRA adapter/optimiser state (tens of MB) + an unknown activation peak for max_seq_len 2048, micro-batch 1 and gradient checkpointing + CUDA context/fragmentation. Activation peak and allocator fragmentation dominate the uncertainty."
+      },
+      "quantized_weight_footprint_mb": {
+        "value_range": [2048, 2560],
+        "provenance": "ASSUMED - parameter-count arithmetic, not measured"
+      },
+      "throughput": {
+        "tokens_per_second": null,
+        "steps_per_hour": null,
+        "provenance": "NOT MEASURED - deliberately left null rather than guessed; the dry run must record it"
+      },
+      "wall_time_for_one_epoch": {
+        "value": null,
+        "provenance": "NOT MEASURED - depends on throughput, dataset size and sequence packing; unknown today"
+      },
+      "cuda_kernel_support_for_sm_120": {
+        "verified": false,
+        "provenance": "NOT VERIFIED - Blackwell support depends on the PyTorch/CUDA/bitsandbytes versions installed in WSL2, which is not installed. See docs/HARDWARE_COMPATIBILITY.md."
+      }
+    },
+    "budget_interpretation": {
+      "vram_budget_mb": 14336,
+      "abort_at_vram_mb": 15360,
+      "why": "14336 MB (14 GiB) is the process budget that still leaves ~2 GiB of the measured 16 GiB under the abort threshold at 15360 MB (15 GiB).",
+      "caveat": "The measured desktop usage of ~3.9 GB means the process cannot actually reach 14 GiB while that usage persists: measured free VRAM is ~12390 MB. This is precisely why the budgets are a hypothesis. Before any training authorisation, either the desktop GPU consumers are closed (and free VRAM is re-measured) or vram_budget_mb/abort_at_vram_mb are lowered to at most the measured free VRAM minus 1 GiB. Lowering them is a documented amendment, not a silent edit.",
+      "fail_safe": "vram_guard.VramBudget treats projected >= abort_at_mb as an abort, so reaching the threshold is already fatal rather than 'almost'."
+    },
+    "field_provenance": {
+      "base_adapter_id": "PRE-REGISTERED - the adapter id that models/adapters must register; a training config that pointed at a filesystem path instead would not be reproducible.",
+      "model_id": "PRE-REGISTERED - candidate base model named in the phase brief. Choosing a different base model is an arm change and a protocol amendment.",
+      "revision": "PENDING - placeholder on purpose. The readiness guard refuses with MODEL_NOT_PINNED until a concrete commit sha or immutable tag is pinned. A floating ref (main/latest) would be an error, not a draft state.",
+      "quantization": "PRE-REGISTERED - 4-bit NF4 is the only realistic path for a 16 GiB laptop budget; that is a hypothesis about fit, not a measured certainty.",
+      "double_quant": "PRE-REGISTERED - double quantisation reduces the quantisation constants, bought at a small speed cost; expected to help at this tight budget.",
+      "compute_dtype": "PRE-REGISTERED - bfloat16 is supported by the measured Blackwell GPU generation; fp16 would be the fallback if bf16 kernels are missing in the eventual software stack.",
+      "r": "PRE-REGISTERED - LoRA rank 16 is a standard small-data default. It was not chosen by tuning on the evaluation set (there is no evaluation set with human labels yet).",
+      "alpha": "PRE-REGISTERED - alpha = 2r, the common effective-learning-rate convention.",
+      "dropout": "PRE-REGISTERED - small LoRA dropout for a small dataset.",
+      "target_modules": "PRE-REGISTERED - all-linear is the standard PEFT choice; it is a fixed choice, not searched.",
+      "bias": "PRE-REGISTERED - no bias terms are trained (keeps the adapter small).",
+      "learning_rate": "PRE-REGISTERED - 2e-4 is the usual QLoRA learning rate; it is a protocol choice and must not be re-tuned on the test set.",
+      "lr_scheduler": "PRE-REGISTERED - cosine decay.",
+      "warmup_ratio": "PRE-REGISTERED - 3% warmup.",
+      "num_epochs": "PRE-REGISTERED - a single epoch: with fewer than ~100 human-labelled documents, more epochs overfit.",
+      "max_seq_len": "PRE-REGISTERED - 2048 tokens; longer documents must be truncated with a recorded flag, never silently summarised.",
+      "per_device_batch_size": "PRE-REGISTERED - micro-batch 1 is forced by the measured 16 GiB ceiling and by gradient checkpointing.",
+      "gradient_accumulation_steps": "PRE-REGISTERED - 16 micro-batches gives an effective batch of 16 without the activation memory of a larger micro-batch.",
+      "gradient_checkpointing": "PRE-REGISTERED - required at this memory budget; it trades compute for memory.",
+      "paged_optimizer": "PRE-REGISTERED - paged optimiser state is the standard mitigation for allocator spikes on a small card.",
+      "seed": "PRE-REGISTERED - fixed seed 20261104 for reproducibility; the benchmark protocol reruns with multiple seeds and reports dispersion.",
+      "vram_budget_mb": "BUDGET, NOT A MEASUREMENT - see budget_interpretation; derived from the measured 16 GiB card and a 2 GiB headroom policy.",
+      "abort_at_vram_mb": "BUDGET, NOT A MEASUREMENT - fail-closed abort threshold, 1 GiB under the measured card size.",
+      "save_steps": "PRE-REGISTERED - checkpoint every 50 steps so a crash does not lose the session; also the resume granularity.",
+      "eval_steps": "PRE-REGISTERED - evaluate every 50 steps; the evaluation set is the *validation* split only, never the test split.",
+      "resume_from": "PRE-REGISTERED - null: nothing exists to resume in this phase.",
+      "enabled": "PHASE POLICY - false. A draft must never be sufficient to start a run; enabling it is a separate, signed act.",
+      "executed": "PHASE POLICY - false, and validation refuses true. This phase produces infrastructure and a protocol draft, nothing else.",
+      "notes": "PROVENANCE MARKERS - these strings are what the readiness guard reads to emit W_PEAK_MEMORY_UNVERIFIED / W_HARDWARE_REPORT_MISSING. Editing them changes what a run manifest records, so edit them only to record a real measurement."
+    },
+    "preconditions_before_any_execution": [
+      "A named human signs the protocol draft (docs/PROTOCOL.md) and the amendment that enables a run.",
+      "DATA_NOT_READY is cleared: at least 84 human-confirmed cases (48/12/24 grouped splits), zero AI-pre-annotation labels used as truth.",
+      "PIT_NOT_READY is handled: event_date, published_at and first_seen_at are recorded separately with their qualities.",
+      "A real model revision is pinned (revision != PENDING-A-PIN) and the adapter id is registered in adapters/.",
+      "A measured dry run replaces the ASSUMED peak-VRAM estimate above and confirms the CUDA/sm_120 software path inside WSL2.",
+      "A checkpoint root exists outside the repository with >= 20 GiB free, and the disk measurement is recorded.",
+      "The environment training gate is opened deliberately for that session (MEDRADAR_LOCAL_LLM_ALLOW_TRAINING=1) and both CLI intent flags are passed."
+    ]
+  }
+}

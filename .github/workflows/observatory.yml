@@ -1,0 +1,116 @@
+name: observatory
+
+# Low-frequency continuous observation (every 6 hours) + manual trigger.
+#
+# Honest framing: GitHub Actions cron can be delayed or silently dropped, and its
+# workspace is ephemeral. The observation ledger is therefore (a) restored/saved
+# via actions/cache, and (b) uploaded as a retained artifact. This workflow is a
+# *convenience* runner, never the system of record: a durable deployment should
+# run `python -m medradar observatory watch` on a persistent host (see
+# docs/LIVE_OBSERVATORY.md §4). Because every adapter keeps a watermark and the
+# ledger commits page by page, a missed schedule is caught up on the next run.
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      sources:
+        description: "comma separated sources (sec_edgar,ctgov,europepmc)"
+        required: false
+        default: "sec_edgar,ctgov,europepmc"
+      since_days:
+        description: "first-run look-back window in days"
+        required: false
+        default: "30"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: observatory
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    name: incremental observation pass
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # SEC access policy requires an identifying User-Agent with a contact
+      # address. Set the repository variable MEDRADAR_SEC_UA to your own contact
+      # before relying on this workflow.
+      MEDRADAR_SEC_UA: "${{ vars.MEDRADAR_SEC_UA || 'MedRadar research (open-source; contact: medradar@example.com)' }}"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install .
+
+      - name: Restore observation ledger (cache)
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            data/observatory/observatory.sqlite
+            data/observatory/cache
+          key: observatory-ledger-${{ github.run_id }}
+          restore-keys: |
+            observatory-ledger-
+
+      - name: Collect (incremental, resumable)
+        run: |
+          mkdir -p out
+          python -m medradar observatory sync \
+            --trigger ci \
+            --source "${{ inputs.sources || 'sec_edgar,ctgov,europepmc' }}" \
+            --since-days "${{ inputs.since_days || 30 }}" \
+            --json > out/observatory_run.json || true
+          python -m medradar observatory status --json > out/observatory_status.json || true
+          python -m medradar observatory reconcile > out/observatory_reconcile.json || true
+          echo "--- collection report ---"
+          cat out/observatory_run.json || true
+          echo "--- sync status ---"
+          cat out/observatory_status.json || true
+
+      - name: Consistent ledger backup
+        run: |
+          python -m medradar observatory backup --dest out/observatory_backup --json \
+            > out/observatory_backup.json || true
+          cat out/observatory_backup.json || true
+
+      - name: Upload observation evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: observatory-${{ github.run_id }}
+          path: |
+            out/observatory_run.json
+            out/observatory_status.json
+            out/observatory_reconcile.json
+            out/observatory_backup/
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Save observation ledger (cache)
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            data/observatory/observatory.sqlite
+            data/observatory/cache
+          key: observatory-ledger-${{ github.run_id }}
+
+      - name: Fail the job if the collection pass reported a hard failure
+        run: |
+          python - <<'PY'
+          import json, sys
+          report = json.load(open("out/observatory_run.json"))
+          if not report.get("ok"):
+              print("collection pass reported failure:", json.dumps(report.get("sources"), ensure_ascii=False)[:2000])
+              sys.exit(1)
+          print("collection pass ok:", json.dumps(report.get("totals"), ensure_ascii=False))
+          PY

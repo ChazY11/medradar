@@ -1,0 +1,296 @@
+{
+ "ledger": "D:\\DEPPSKK\\medradar\\data\\observatory\\observatory.sqlite",
+ "trigger": "manual",
+ "started_at": "2026-11-03T14:49:57+00:00",
+ "sources": {
+  "sec_edgar": {
+   "source": "sec_edgar",
+   "label_zh": "SEC EDGAR 公开披露",
+   "run_id": "sec_edgar-20261103T144957Z-dad0b5",
+   "status": "OK",
+   "trigger": null,
+   "collector_version": "sec-edgar/1.0.0",
+   "declared_cadence_zh": "默认每 6 小时轮询；SEC 受理后通常数分钟即可检索",
+   "counters": {
+    "requests": 7,
+    "pages": 3,
+    "records_seen": 4,
+    "records_new": 0,
+    "records_updated": 0,
+    "records_unchanged": 4,
+    "records_removed": 0,
+    "records_failed": 0
+   },
+   "scopes": {
+    "total": 3,
+    "completed": 3,
+    "failed": 0
+   },
+   "watermark": {
+    "cik:0000313216": {
+     "acceptance": "2026-11-03T13:11:19+00:00",
+     "known_ids": [
+      "0001628280-26-069119"
+     ],
+     "ticker": "PHG"
+    },
+    "cik:0001613103": {
+     "acceptance": "2026-10-19T20:23:27+00:00",
+     "known_ids": [
+      "0001628280-26-066291"
+     ],
+     "ticker": "MDT"
+    },
+    "cik:0001932393": {
+     "acceptance": "2026-10-28T10:26:29+00:00",
+     "known_ids": [
+      "0001932393-26-000059",
+      "0001932393-26-000058"
+     ],
+     "ticker": "GEHC"
+    }
+   },
+   "structure": {
+    "changed": false,
+    "note_zh": null
+   },
+   "errors": [],
+   "resumed": false,
+   "limited": false,
+   "duration_ms": 1824,
+   "finished_at": "2026-11-03T14:49:59Z"
+  },
+  "ctgov": {
+   "source": "ctgov",
+   "label_zh": "ClinicalTrials.gov 注册库",
+   "run_id": "ctgov-20261103T144951Z-a1aa0c",
+   "status": "OK",
+   "trigger": null,
+   "collector_version": "ctgov/1.0.0",
+   "declared_cadence_zh": "默认每 12 小时轮询；ClinicalTrials.gov 仅发布日期、不提供时间戳，因此观察时间精度为“天”；申办方名称检索无法覆盖名称不同的登记，不宣称完整",
+   "counters": {
+    "requests": 0,
+    "pages": 0,
+    "records_seen": 0,
+    "records_new": 0,
+    "records_updated": 0,
+    "records_unchanged": 0,
+    "records_removed": 0,
+    "records_failed": 0
+   },
+   "scopes": {
+    "total": 5,
+    "completed": 5,
+    "failed": 0
+   },
+   "watermark": {
+    "spons:draeger:Dräger": {
+     "company_key": "draeger",
+     "known_ids": [
+      "NCT07307300"
+     ],
+     "last_update_post_date": "2025-12-29",
+     "sponsor": "Dräger"
+    },
+    "spons:ge_healthcare:GE HealthCare": {
+     "company_key": "ge_healthcare",
+     "known_ids": [
+      "NCT07910474"
+     ],
+     "last_update_post_date": "2026-11-03",
+     "sponsor": "GE HealthCare"
+    },
+    "spons:medtronic:Medtronic": {
+     "company_key": "medtronic",
+     "known_ids": [
+      "NCT06678841",
+      "NCT04450628",
+      "NCT05696444",
+      "NCT07005232",
+      "NCT02701283"
+     ],
+     "last_update_post_date": "2026-11-03",
+     "sponsor": "Medtronic"
+    },
+    "spons:mindray:Mindray": {
+     "company_key": "mindray",
+     "known_ids": [
+      "NCT07128108"
+     ],
+     "last_update_post_date": "2026-08-12",
+     "sponsor": "Mindray"
+    },
+    "spons:philips:Philips": {
+     "company_key": "philips",
+     "known_ids": [
+      "NCT04950192",
+      "NCT04696354",
+      "NCT06239493"
+     ],
+     "last_update_post_date": "2026-11-03",
+     "sponsor": "Philips"
+    }
+   },
+   "structure": {
+    "changed": false,
+    "note_zh": null
+   },
+   "errors": [],
+   "resumed": true,
+   "limited": false,
+   "duration_ms": 6,
+   "finished_at": "2026-11-03T14:49:59Z"
+  },
+  "europepmc": {
+   "source": "europepmc",
+   "label_zh": "Europe PMC 文献元数据",
+   "run_id": "europepmc-20261103T144953Z-074919",
+   "status": "OK",
+   "trigger": null,
+   "collector_version": "europepmc/1.0.0",
+   "declared_cadence_zh": "默认每 12 小时轮询；Europe PMC 未提供网页可用时间戳，只能按索引日期与修订日期如实记录；单位署名检索不等于企业归属，也不覆盖全部论文",
+   "counters": {
+    "requests": 0,
+    "pages": 0,
+    "records_seen": 0,
+    "records_new": 0,
+    "records_updated": 0,
+    "records_unchanged": 0,
+    "records_removed": 0,
+    "records_failed": 0
+   },
+   "scopes": {
+    "total": 5,
+    "completed": 5,
+    "failed": 0
+   },
+   "watermark": {
+    "aff:draeger:Dräger": {
+     "affiliation_query": "(AFF:\"Dräger\") AND (SRC:MED OR SRC:PPR)",
+     "affiliation_term": "Dräger",
+     "company_key": "draeger",
+     "known_ids": [],
+     "latest_date": null,
+     "pending_upper": null,
+     "window_lower": "2026-08-05",
+     "window_upper": "2026-11-03"
+    },
+    "aff:ge_healthcare:GE HealthCare": {
+     "affiliation_query": "(AFF:\"GE HealthCare\") AND (SRC:MED OR SRC:PPR)",
+     "affiliation_term": "GE HealthCare",
+     "company_key": "ge_healthcare",
+     "known_ids": [
+      "MED:42839376",
+      "MED:42965522"
+     ],
+     "latest_date": "2026-11-01",
+     "pending_upper": null,
+     "window_lower": "2026-10-25",
+     "window_upper": "2026-11-03"
+    },
+    "aff:medtronic:Medtronic": {
+     "affiliation_query": "(AFF:\"Medtronic\") AND (SRC:MED OR SRC:PPR)",
+     "affiliation_term": "Medtronic",
+     "company_key": "medtronic",
+     "known_ids": [
+      "MED:42963952",
+      "MED:42962495",
+      "MED:42957169",
+      "MED:42945024"
+     ],
+     "latest_date": "2026-11-03",
+     "pending_upper": null,
+     "window_lower": "2026-10-27",
+     "window_upper": "2026-11-03"
+    },
+    "aff:mindray:Mindray": {
+     "affiliation_query": "(AFF:\"Mindray\") AND (SRC:MED OR SRC:PPR)",
+     "affiliation_term": "Mindray",
+     "company_key": "mindray",
+     "known_ids": [
+      "MED:42951790"
+     ],
+     "latest_date": "2026-10-29",
+     "pending_upper": null,
+     "window_lower": "2026-10-22",
+     "window_upper": "2026-11-03"
+    },
+    "aff:philips:Philips": {
+     "affiliation_query": "(AFF:\"Philips\") AND (SRC:MED OR SRC:PPR)",
+     "affiliation_term": "Philips",
+     "company_key": "philips",
+     "known_ids": [
+      "MED:42969276",
+      "MED:42969224",
+      "MED:42969106",
+      "MED:42965658",
+      "MED:42954189",
+      "MED:42764331",
+      "MED:42966510",
+      "MED:42963984",
+      "MED:42961642",
+      "MED:42960671",
+      "MED:42956916",
+      "MED:42956860",
+      "MED:42946532",
+      "MED:42944884",
+      "MED:42887545"
+     ],
+     "latest_date": "2026-11-03",
+     "pending_upper": null,
+     "window_lower": "2026-10-27",
+     "window_upper": "2026-11-03"
+    }
+   },
+   "structure": {
+    "changed": false,
+    "note_zh": null
+   },
+   "errors": [],
+   "resumed": true,
+   "limited": false,
+   "duration_ms": 7,
+   "finished_at": "2026-11-03T14:49:59Z"
+  }
+ },
+ "paused": false,
+ "dry_run": false,
+ "recovered_runs": 0,
+ "totals": {
+  "records_seen": 4,
+  "records_new": 0,
+  "records_updated": 0,
+  "records_unchanged": 4,
+  "records_removed": 0,
+  "records_failed": 0,
+  "requests": 7,
+  "pages": 3
+ },
+ "fetcher_stats": {
+  "requests": 7,
+  "cache_hits": 0,
+  "retries": 0,
+  "errors": 0
+ },
+ "counts": {
+  "observations": 400,
+  "versions": 400,
+  "changes": 400,
+  "live_observations": 400,
+  "backfilled_observations": 0,
+  "removed_observations": 0,
+  "sources": 3,
+  "runs": 9,
+  "failures": 2,
+  "first_observation_at": "2026-11-03T14:39:53Z",
+  "last_observation_at": "2026-11-03T14:49:51Z",
+  "first_run_at": "2026-11-03T14:39:53+00:00",
+  "last_run_at": "2026-11-03T14:49:57+00:00",
+  "schema_version": "obs-ledger-v1",
+  "created_at": "2026-11-03T14:39:53+00:00",
+  "db_bytes": 1646592,
+  "path": "data/observatory/observatory.sqlite"
+ },
+ "finished_at": "2026-11-03T14:49:59+00:00",
+ "ok": true
+}

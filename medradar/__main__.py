@@ -749,12 +749,445 @@ def cmd_status(args: argparse.Namespace) -> int:
 
 # ---------------------------------------------------------------------- selftest
 def cmd_selftest(args: argparse.Namespace) -> int:
+    """Run the offline suite.
+
+    Some test modules are pytest-style (fixtures/parametrisation). In a plain
+    ``pip install .`` environment pytest is not present, and importing those
+    modules through ``unittest`` discovery would turn a missing dev dependency
+    into a test failure. So: use pytest when it is installed, and otherwise skip
+    the pytest-only modules *explicitly* (never count them as passed).
+    """
+    import importlib
     import unittest
 
+    tests_dir = Path(__file__).resolve().parents[1] / "tests"
+    try:
+        import pytest  # noqa: F401
+    except ImportError:
+        pytest = None  # type: ignore[assignment]
+
+    if pytest is not None:
+        return int(pytest.main(["-q", str(tests_dir)]))
+
+    root = str(tests_dir.parent)
+    if root not in sys.path:
+        sys.path.insert(0, root)
     loader = unittest.TestLoader()
-    suite = loader.discover(start_dir=str(Path(__file__).resolve().parents[1] / "tests"), top_level_dir=str(Path(__file__).resolve().parents[1]))
+    suite = unittest.TestSuite()
+    skipped_pytest_only: list[str] = []
+    for path in sorted(tests_dir.glob("test_*.py")):
+        module_name = f"tests.{path.stem}"
+        try:
+            module = importlib.import_module(module_name)
+        except ModuleNotFoundError as exc:
+            if (exc.name or "").split(".")[0] in {"pytest", "_pytest"}:
+                skipped_pytest_only.append(module_name)
+                continue
+            raise
+        suite.addTests(loader.loadTestsFromModule(module))
     result = unittest.TextTestRunner(verbosity=1).run(suite)
+    if skipped_pytest_only:
+        print(
+            "[selftest] pytest is not installed; skipped pytest-only modules "
+            "(not counted as passed): " + ", ".join(skipped_pytest_only)
+        )
     return 0 if result.wasSuccessful() else 1
+
+
+# ----------------------------------------------------------------- live observatory
+def _obs_sources(args: argparse.Namespace) -> list[str] | None:
+    raw = getattr(args, "source", None)
+    if not raw:
+        return None
+    return [part.strip() for part in str(raw).split(",") if part.strip()]
+
+
+def _obs_common(target: argparse.ArgumentParser) -> None:
+    target.add_argument("--ledger", default=None, help="observation ledger path (default: data/observatory/observatory.sqlite)")
+    target.add_argument("--json", action="store_true", help="machine-readable output")
+
+
+def cmd_observatory(args: argparse.Namespace) -> int:
+    """Live Observatory CLI: observe, inspect, pause, replay, verify, back up."""
+    from .observatory import runner, scheduler
+
+    action = args.obs_action
+    ledger_path = getattr(args, "ledger", None)
+    as_json = bool(getattr(args, "json", False))
+
+    if action == "status":
+        report = runner.status_report(ledger_path=ledger_path)
+        if as_json:
+            _emit(report)
+            return 0
+        ledger = report["ledger"]
+        print(f"observation ledger: {ledger.get('path')}")
+        print(f"  observations={ledger['observations']} versions={ledger['versions']} "
+              f"changes={ledger['changes']} live={ledger['live_observations']} "
+              f"backfilled={ledger['backfilled_observations']}")
+        print(f"  first_observation={ledger['first_observation_at']} last_run={ledger['last_run_at']}")
+        print(f"  paused={report['paused']} heartbeat={report.get('heartbeat')}")
+        for source in report["sources"]:
+            lag = source.get("measured_lag") or {}
+            print(f"  [{source['source']}] {source['label_zh']} status={source['status']} "
+                  f"last_success={source['last_success_at']} cadence={source['declared_cadence_zh']}")
+            print(f"    observations={source['observations']} consecutive_failures="
+                  f"{source['consecutive_failures']} lag_measurable={lag.get('measurable')} "
+                  f"p50_hours={lag.get('p50_hours')} n={lag.get('n')}")
+            for coverage in (source.get("entity_coverage") or []):
+                print(f"    coverage {coverage.get('entity_id')}: {coverage.get('status')} "
+                      f"({coverage.get('evidence_zh')})")
+        consistency = report.get("consistency") or {}
+        print(f"  consistency_ok={consistency.get('ok')} issues={consistency.get('issue_count')}")
+        return 0 if consistency.get("ok", True) else 1
+
+    if action == "sources":
+        report = runner.status_report(ledger_path=ledger_path, include_consistency=False)
+        payload = [
+            {
+                "source": source["source"],
+                "label_zh": source["label_zh"],
+                "status": source["status"],
+                "declared_cadence_zh": source["declared_cadence_zh"],
+                "entity_coverage": source["entity_coverage"],
+                "measured_lag": source["measured_lag"],
+                "structure": source["structure"],
+                "watermark": source["watermark"],
+            }
+            for source in report["sources"]
+        ]
+        if as_json:
+            _emit({"sources": payload})
+            return 0
+        for source in payload:
+            print(f"[{source['source']}] {source['label_zh']} status={source['status']} "
+                  f"cadence={source['declared_cadence_zh']}")
+            for coverage in (source.get("entity_coverage") or []):
+                print(f"   - {coverage.get('entity_id')}: {coverage.get('status')} "
+                      f"{coverage.get('identifier') or ''}")
+                print(f"     {coverage.get('evidence_zh')}")
+            structure = source.get("structure") or {}
+            print(f"   structure_changed={bool(structure.get('changed_at'))} "
+                  f"note={structure.get('note_zh')}")
+        return 0
+
+    if action in ("sync", "backfill"):
+        companies = list(getattr(args, "company", None) or [])
+        report = runner.sync(
+            sources=_obs_sources(args),
+            ledger_path=ledger_path,
+            companies=companies,
+            all_companies=bool(getattr(args, "all_companies", False)),
+            since_days=int(getattr(args, "since_days", 30)),
+            limit=int(getattr(args, "limit", 0) or 0),
+            offline=bool(getattr(args, "offline", False)),
+            fixtures_dir=getattr(args, "fixtures", None),
+            no_cache=bool(getattr(args, "no_cache", False)),
+            resume=not bool(getattr(args, "no_resume", False)),
+            dry_run=bool(getattr(args, "dry_run", False)),
+            trigger=getattr(args, "trigger", "manual") or "manual",
+            force=bool(getattr(args, "force", False)),
+            min_interval=float(getattr(args, "min_interval", 0.25)),
+            max_requests=int(getattr(args, "budget", 600)),
+            max_pages_per_scope=getattr(args, "max_pages", None),
+            origin="BACKFILLED" if action == "backfill" else "LIVE",
+            backfill_reason=getattr(args, "reason", None),
+        )
+        if as_json:
+            _emit(report)
+        else:
+            print(f"ledger: {report['ledger']}")
+            if report.get("paused"):
+                print("collector is paused; nothing collected (use `observatory resume`)")
+                return 0
+            for name, result in report["sources"].items():
+                if result.get("status") == "SKIPPED":
+                    print(f"[{name}] skipped: {result.get('reason')}")
+                    continue
+                if result.get("dry_run"):
+                    print(f"[{name}] dry-run scopes={result.get('scopes')} "
+                          f"first_page_records={result.get('records_on_first_page')}")
+                    for item in result.get("preview", []):
+                        print(f"   would observe: {item['title']}")
+                    continue
+                counters = result.get("counters") or {}
+                print(f"[{name}] {result.get('status')} run={result.get('run_id')} "
+                      f"new={counters.get('records_new')} updated={counters.get('records_updated')} "
+                      f"unchanged={counters.get('records_unchanged')} "
+                      f"failed={counters.get('records_failed')} "
+                      f"pages={counters.get('pages')} requests={counters.get('requests')} "
+                      f"scopes={result.get('scopes')}")
+                for error in (result.get("errors") or [])[:3]:
+                    print(f"   ! {error.get('scope')}: {str(error.get('error'))[:200]}")
+            counts = report.get("counts") or {}
+            print(f"ledger now: observations={counts.get('observations')} "
+                  f"versions={counts.get('versions')} changes={counts.get('changes')}")
+        return 0 if report.get("ok", True) else 1
+
+    if action == "watch":
+        companies = list(getattr(args, "company", None) or [])
+        summary = scheduler.watch(
+            interval_minutes=float(getattr(args, "interval_minutes", 60)),
+            cycles=int(getattr(args, "max_cycles", 0) or 0) or None,
+            sources=_obs_sources(args),
+            companies=companies,
+            all_companies=bool(getattr(args, "all_companies", False)),
+            since_days=int(getattr(args, "since_days", 30)),
+            ledger_path=ledger_path,
+            max_requests=int(getattr(args, "budget", 600)),
+            min_interval=float(getattr(args, "min_interval", 0.25)),
+            log_file=getattr(args, "log_file", None),
+            trigger=getattr(args, "trigger", "schedule") or "schedule",
+            lock_stale_seconds=float(getattr(args, "lock_stale_seconds", 90.0)),
+            acquire_lock=not bool(getattr(args, "no_lock", False)),
+            log=(lambda message: print(message, file=sys.stderr)),
+        )
+        if as_json:
+            _emit(summary)
+        else:
+            print(f"watch finished: cycles={summary['cycles']} status={summary['status']} "
+                  f"failures={summary['failures']} ledger={summary['ledger']}")
+            if summary.get("locked"):
+                print("another collector holds the ledger lease; this watcher did not start")
+            for item in summary["passes"]:
+                print(f"  pass {item['cycle']}: {item['status']} {item.get('totals')}")
+        return 0 if summary["status"] in ("OK", "LOCKED") else 1
+
+    if action == "pause":
+        _emit(runner.pause(reason=getattr(args, "reason", "manual pause") or "manual pause",
+                           ledger_path=ledger_path))
+        return 0
+
+    if action == "resume":
+        _emit(runner.resume(ledger_path=ledger_path))
+        return 0
+
+    if action == "replay":
+        result = runner.replay(
+            as_of=args.as_of,
+            ledger_path=ledger_path,
+            source=getattr(args, "source", None),
+            limit=getattr(args, "limit", None) or None,
+        )
+        if as_json:
+            _emit(result)
+        else:
+            _print_replay(result)
+        return 0
+
+    if action == "reconcile":
+        result = runner.reconcile(ledger_path=ledger_path)
+        _emit(result)
+        return 0 if result["ok"] else 1
+
+    if action == "backup":
+        from .observatory import backup as backup_mod
+
+        include_raw = not bool(getattr(args, "no_raw_cache", False))
+        try:
+            result = backup_mod.create_backup(
+                ledger_path=ledger_path,
+                dest_dir=args.dest,
+                include_raw_cache=include_raw,
+                prune_on_create=bool(getattr(args, "prune", False)),
+            )
+            bundle = result.get("bundle_path") or result.get("path")
+            if bundle and getattr(args, "verify", False):
+                result["verification"] = backup_mod.verify_backup(bundle)
+        except (ImportError, AttributeError, TypeError):
+            # older/partial install: fall back to the v1 consistent backup
+            result = runner.backup(
+                dest_dir=args.dest,
+                ledger_path=ledger_path,
+                include_raw_cache=include_raw,
+            )
+        _emit(result)
+        status = result.get("status") or ("OK" if result.get("ok") else None)
+        if getattr(args, "verify", False) and result.get("verification"):
+            return 0 if result["verification"].get("ok") else 1
+        return 0 if status in (None, "OK") else 1
+
+    if action == "restore":
+        try:
+            from .observatory import restore as restore_mod
+        except ImportError:
+            print("restore subsystem is not installed in this build", file=sys.stderr)
+            return 2
+
+        result = restore_mod.restore_backup(
+            args.source_bundle,
+            args.target_dir,
+            overwrite=bool(getattr(args, "overwrite", False)),
+        )
+        _emit(result)
+        return 0 if result.get("ok") else 1
+
+    if action == "audit":
+        try:
+            from .observatory import audit as audit_mod
+        except ImportError:
+            print("audit subsystem is not installed in this build", file=sys.stderr)
+            return 2
+
+        code, report = audit_mod.run_audit(
+            verbose=bool(getattr(args, "verbose", False)),
+            backup_manifest_path=getattr(args, "backup_manifest", None),
+        ) if ledger_path is None else (
+            1 if (report := audit_mod.audit_ledger(
+                ledger_path=ledger_path,
+                backup_manifest_path=getattr(args, "backup_manifest", None),
+            )).get("overall") == "FAIL" else 0,
+            report,
+        )
+        if as_json:
+            _emit(report)
+        else:
+            print(audit_mod.render_report(report, style="text"))
+        return int(code)
+
+    if action == "health":
+        from .observatory import health as health_mod
+
+        report = health_mod.health(ledger_path=ledger_path)
+        if as_json:
+            _emit(report)
+            return 0
+        print(f"overall: {report['overall']}")
+        print(f"  deployment={report['deployment']['status']} "
+              f"validation={report['validation']['status']}")
+        print(f"  ledger={report['ledger']['path']} "
+              f"observations={report['ledger']['observations']} bytes={report['ledger']['bytes']}")
+        for source in report["sources"]:
+            print(f"  [{source['source']}] {source['status']} last_outcome={source.get('last_outcome')} "
+                  f"freshness_h={source['freshness_hours']} stale={source['stale']} "
+                  f"structure_alert={source['structure_alert']}")
+        persistence = report["persistence"]
+        print(f"  backup={persistence['backup']['status']} verified={persistence['backup']['verified']} "
+              f"restore_drill={persistence['restore_drill']['status']}")
+        for check in report["checks"]:
+            print(f"  [{'ok' if check['ok'] else 'FAIL'}] {check['id']}: {check['detail_zh']}")
+        return 0 if report["overall"] not in ("DEGRADED",) else 1
+
+    if action == "validate":
+        from .observatory import validation as validation_mod
+        from .observatory.ledger import ObservationLedger
+
+        ledger = ObservationLedger(ledger_path)
+        try:
+            if args.validate_action == "start":
+                result = validation_mod.start_validation(
+                    ledger,
+                    days=int(getattr(args, "days", 7)),
+                    interval_hours=float(getattr(args, "interval_hours", 6)),
+                )
+                if as_json:
+                    _emit(result)
+                else:
+                    print(f"validation status: {result.get('status')}")
+                    print(f"  started_at={result.get('started_at')} ends_at={result.get('ends_at')} "
+                          f"planned_slots={result.get('planned_slots')} "
+                          f"interval_hours={result.get('interval_hours')}")
+                    print("  七天窗口尚未结束：只能报告 VALIDATION_IN_PROGRESS，不能宣称通过。")
+                return 0
+            if args.validate_action == "status":
+                result = validation_mod.validation_status(ledger)
+                if as_json:
+                    _emit(result)
+                    return 0
+                slots = result.get("slots") or {}
+                runs = result.get("runs") or {}
+                print(f"validation: {result.get('status')} "
+                      f"started={result.get('started_at')} ends={result.get('ends_at')}")
+                print(f"  days_elapsed={result.get('days_elapsed')} "
+                      f"days_remaining={result.get('days_remaining')}")
+                print(f"  slots planned={slots.get('planned_total')} due={slots.get('due')} "
+                      f"executed={slots.get('executed')} missed={slots.get('missed')}")
+                print(f"  runs launched={runs.get('launched')} ok={runs.get('ok')} "
+                      f"partial={runs.get('partial')} failed={runs.get('failed')} "
+                      f"scheduler_success_rate={runs.get('scheduler_success_rate')}")
+                print(f"  duplicates rate={result.get('duplicates', {}).get('rate')} "
+                      f"integrity_violations={result.get('integrity', {}).get('violations')}")
+                for source, bucket in (result.get("sources") or {}).items():
+                    print(f"  [{source}] attempts={bucket.get('attempts')} ok={bucket.get('ok')} "
+                          f"success_rate={bucket.get('success_rate')} new={bucket.get('new')}")
+                return 0
+            if args.validate_action == "stop":
+                result = validation_mod.stop_validation(
+                    ledger, outcome=str(getattr(args, "outcome", "failed")).upper()
+                    if str(getattr(args, "outcome", "failed")).upper() in
+                    ("VALIDATION_PASSED", "VALIDATION_FAILED")
+                    else "VALIDATION_FAILED",
+                )
+                _emit(result)
+                return 0
+            raise SystemExit(f"unknown validate action: {args.validate_action}")
+        finally:
+            ledger.close()
+
+    if action == "deploy-status":
+        import socket
+        from datetime import datetime, timezone
+
+        from .observatory.ledger import ObservationLedger
+
+        ledger = ObservationLedger(ledger_path)
+        try:
+            status = str(getattr(args, "status", "NOT_DEPLOYED"))
+            if status not in ("NOT_DEPLOYED", "DEPLOYED_LOCAL", "DEPLOYED_SERVICE"):
+                raise SystemExit(f"bad deployment status: {status}")
+            payload = {
+                "status": status,
+                "installed_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+                "host": socket.gethostname(),
+                "supervisor": getattr(args, "supervisor", "none") or "none",
+                "note_zh": getattr(args, "note", None),
+                "evidence": getattr(args, "evidence", None),
+            }
+            ledger.set_deployment(payload)
+            _emit(payload)
+            return 0
+        finally:
+            ledger.close()
+
+    if action == "lock":
+        from .observatory import lock as lock_mod
+        from .observatory.ledger import default_ledger_path
+
+        target = ledger_path or default_ledger_path()
+        if args.lock_action == "release":
+            _emit(
+                lock_mod.force_release(
+                    target,
+                    reason=getattr(args, "reason", "operator force release")
+                    or "operator force release",
+                )
+            )
+            return 0
+        _emit(lock_mod.CollectorLock(target).status())
+        return 0
+
+    if action == "phase":
+        from .observatory.ledger import ObservationLedger
+
+        ledger = ObservationLedger(ledger_path)
+        try:
+            if getattr(args, "reconstruct", False):
+                _emit(ledger.reconstruct_phases())
+            _emit(ledger.phase_summary())
+            return 0
+        finally:
+            ledger.close()
+
+    raise SystemExit(f"unknown observatory action: {action}")
+
+
+def _print_replay(result: dict) -> None:
+    print(f"as_of={result['as_of']} total={result['total']} "
+          f"excluded_discovered_later={result['excluded_discovered_later']}")
+    print(result["policy_zh"])
+    for item in result["items"][:50]:
+        print(f"  {item['source']} {item['event_at']} first_seen={item['first_seen_at']} "
+              f"v{item['version_seq']} {item['title']}")
 
 
 # ---------------------------------------------------------------------- argparse
@@ -951,9 +1384,192 @@ def build_parser() -> argparse.ArgumentParser:
     stats.add_argument("--markdown", default=None, help="update the generated block in this Markdown file")
     stats.set_defaults(func=cmd_stats)
 
+    observatory = sub.add_parser(
+        "observatory",
+        help="Live Observatory: continuous, auditable observation of public medical-technology evidence",
+    )
+    obs_sub = observatory.add_subparsers(dest="obs_action", required=True)
+
+    def _obs_sync_options(target: argparse.ArgumentParser) -> None:
+        target.add_argument("--source", default=None,
+                            help="comma separated sources: sec_edgar,ctgov,europepmc")
+        target.add_argument("--company", action="append", default=None,
+                            help="restrict to a company key (repeatable)")
+        target.add_argument("--all-companies", action="store_true",
+                            help="include the whole device roster, not only the featured five")
+        target.add_argument("--since-days", type=int, default=30,
+                            help="first-run look-back window in days")
+        target.add_argument("--limit", type=int, default=0, help="max records this run (0 = no cap)")
+        target.add_argument("--offline", action="store_true", help="replay cached/fixture responses only")
+        target.add_argument("--fixtures", default=None, help="fixture directory for offline replays")
+        target.add_argument("--no-cache", action="store_true", help="do not read/write the raw response cache")
+        target.add_argument("--no-resume", action="store_true", help="start a new run instead of resuming")
+        target.add_argument("--dry-run", action="store_true", help="fetch a preview, write nothing")
+        target.add_argument("--trigger", default="manual", help="manual | schedule | ci")
+        target.add_argument("--force", action="store_true", help="run even while the collector is paused")
+        target.add_argument("--min-interval", type=float, default=0.25,
+                            help="seconds between HTTP requests")
+        target.add_argument("--budget", type=int, default=600, help="max HTTP requests for this run")
+        target.add_argument("--max-pages", type=int, default=None, help="page ceiling per scope")
+
+    obs_status = obs_sub.add_parser("status", help="observation ledger + per-source sync status")
+    _obs_common(obs_status)
+    obs_status.set_defaults(func=cmd_observatory)
+
+    obs_sources = obs_sub.add_parser("sources", help="per-source sync state and verified entity coverage")
+    _obs_common(obs_sources)
+    obs_sources.set_defaults(func=cmd_observatory)
+
+    obs_sync = obs_sub.add_parser("sync", help="run one incremental collection pass")
+    _obs_common(obs_sync)
+    _obs_sync_options(obs_sync)
+    obs_sync.set_defaults(func=cmd_observatory)
+
+    obs_backfill = obs_sub.add_parser(
+        "backfill", help="ingest historical material, explicitly labelled BACKFILLED"
+    )
+    _obs_common(obs_backfill)
+    _obs_sync_options(obs_backfill)
+    obs_backfill.add_argument("--reason", required=True,
+                              help="why this historical material is ingested now (stored with every record)")
+    obs_backfill.set_defaults(func=cmd_observatory)
+
+    obs_watch = obs_sub.add_parser("watch", help="local continuous polling loop")
+    _obs_common(obs_watch)
+    obs_watch.add_argument("--interval-minutes", type=float, default=60,
+                           help="minutes between passes")
+    obs_watch.add_argument("--max-cycles", type=int, default=0,
+                           help="stop after N passes (0 = run until interrupted)")
+    obs_watch.add_argument("--source", default=None)
+    obs_watch.add_argument("--company", action="append", default=None)
+    obs_watch.add_argument("--all-companies", action="store_true")
+    obs_watch.add_argument("--since-days", type=int, default=30)
+    obs_watch.add_argument("--min-interval", type=float, default=0.25)
+    obs_watch.add_argument("--budget", type=int, default=600)
+    obs_watch.add_argument("--trigger", default="schedule", choices=["manual", "schedule", "ci"],
+                           help="recorded on every sync_run this watcher creates")
+    obs_watch.add_argument("--log-file", default=None,
+                           help="append structured pass logs to this file (rotated by date)")
+    obs_watch.add_argument("--lock-stale-seconds", type=float, default=90.0,
+                           help="take over a lease whose heartbeat is older than this")
+    obs_watch.add_argument("--no-lock", action="store_true",
+                           help="do not take the single-writer lease (unsafe; tests only)")
+    obs_watch.set_defaults(func=cmd_observatory)
+
+    obs_pause = obs_sub.add_parser("pause", help="pause scheduled/manual collection")
+    _obs_common(obs_pause)
+    obs_pause.add_argument("--reason", default="manual pause")
+    obs_pause.set_defaults(func=cmd_observatory)
+
+    obs_resume = obs_sub.add_parser("resume", help="resume collection")
+    _obs_common(obs_resume)
+    obs_resume.set_defaults(func=cmd_observatory)
+
+    obs_replay = obs_sub.add_parser("replay", help="what the ledger knew at a past instant")
+    _obs_common(obs_replay)
+    obs_replay.add_argument("--as-of", required=True,
+                            help="ISO 8601 instant, e.g. 2026-11-03T10:00:00Z")
+    obs_replay.add_argument("--source", default=None)
+    obs_replay.add_argument("--limit", type=int, default=0)
+    obs_replay.set_defaults(func=cmd_observatory)
+
+    obs_reconcile = obs_sub.add_parser("reconcile", help="data-consistency + SQLite integrity audit")
+    _obs_common(obs_reconcile)
+    obs_reconcile.set_defaults(func=cmd_observatory)
+
+    obs_backup = obs_sub.add_parser("backup", help="consistent ledger backup (+ raw response archive)")
+    _obs_common(obs_backup)
+    obs_backup.add_argument("--dest", required=True, help="destination directory")
+    obs_backup.add_argument("--no-raw-cache", action="store_true",
+                            help="skip copying the raw HTTP response archive")
+    obs_backup.add_argument("--verify", action="store_true",
+                            help="re-verify hashes and ledger integrity after writing (default: on)")
+    obs_backup.add_argument("--prune", action="store_true",
+                            help="apply the retention policy (7 daily / 4 weekly / 6 monthly)")
+    obs_backup.set_defaults(func=cmd_observatory)
+
+    obs_restore = obs_sub.add_parser("restore", help="verified restore from a backup bundle")
+    _obs_common(obs_restore)
+    obs_restore.add_argument("--from", dest="source_bundle", required=True,
+                             help="backup bundle directory")
+    obs_restore.add_argument("--to", dest="target_dir", required=True,
+                             help="target directory (isolated restore location)")
+    obs_restore.add_argument("--overwrite", action="store_true")
+    obs_restore.set_defaults(func=cmd_observatory)
+
+    obs_audit = obs_sub.add_parser("audit", help="Observation Ledger integrity audit (human reviewable)")
+    _obs_common(obs_audit)
+    obs_audit.add_argument("--verbose", action="store_true")
+    obs_audit.add_argument("--backup-manifest", default=None,
+                           help="path to a MANIFEST.json to verify backup/restore reproducibility")
+    obs_audit.set_defaults(func=cmd_observatory)
+
+    obs_health = obs_sub.add_parser("health", help="observatory health (deployment, freshness, backup, validation)")
+    _obs_common(obs_health)
+    obs_health.set_defaults(func=cmd_observatory)
+
+    obs_validate = obs_sub.add_parser("validate", help="seven-day continuous observation validation")
+    _obs_common(obs_validate)
+    validate_sub = obs_validate.add_subparsers(dest="validate_action", required=True)
+    validate_start = validate_sub.add_parser("start", help="start the validation window (real wall clock)")
+    validate_start.add_argument("--days", type=int, default=7)
+    validate_start.add_argument("--interval-hours", type=float, default=6.0)
+    validate_start.set_defaults(func=cmd_observatory)
+    validate_status = validate_sub.add_parser("status", help="live validation metrics")
+    validate_status.set_defaults(func=cmd_observatory)
+    validate_stop = validate_sub.add_parser(
+        "stop", help="close the window (PASSED only after the window really ended)")
+    validate_stop.add_argument("--outcome", default="failed",
+                               choices=["passed", "failed", "VALIDATION_PASSED", "VALIDATION_FAILED"])
+    validate_stop.set_defaults(func=cmd_observatory)
+
+    obs_deploy = obs_sub.add_parser("deploy-status",
+                                    help="record/read whether a supervised deployment exists")
+    _obs_common(obs_deploy)
+    obs_deploy.add_argument("--status", default="NOT_DEPLOYED",
+                            choices=["NOT_DEPLOYED", "DEPLOYED_LOCAL", "DEPLOYED_SERVICE"])
+    obs_deploy.add_argument("--supervisor", default="none",
+                            choices=["none", "systemd", "windows_task", "manual"])
+    obs_deploy.add_argument("--note", default=None)
+    obs_deploy.add_argument("--evidence", default=None)
+    obs_deploy.set_defaults(func=cmd_observatory)
+
+    obs_lock = obs_sub.add_parser("lock", help="inspect or force-release the single-writer lease")
+    _obs_common(obs_lock)
+    lock_sub = obs_lock.add_subparsers(dest="lock_action", required=True)
+    lock_status = lock_sub.add_parser("status", help="show the current lease")
+    lock_status.set_defaults(func=cmd_observatory)
+    lock_release = lock_sub.add_parser("release", help="force-release a stuck lease (recorded)")
+    lock_release.add_argument("--reason", required=True)
+    lock_release.set_defaults(func=cmd_observatory)
+
+    obs_phase = obs_sub.add_parser("phase", help="acquisition-phase labels (initial / incremental / backfill)")
+    _obs_common(obs_phase)
+    obs_phase.add_argument("--reconstruct", action="store_true",
+                           help="append labels for observations that predate the phase table")
+    obs_phase.set_defaults(func=cmd_observatory)
+
     selftest = sub.add_parser("selftest", help="run the offline test suite")
     selftest.set_defaults(func=cmd_selftest)
+
+    web = sub.add_parser("web", help="start the MedRadar 2.0 product web server (read-only)")
+    web.add_argument("--host", default="127.0.0.1")
+    web.add_argument("--port", type=int, default=8787)
+    web.add_argument("--no-warm", action="store_true", help="skip cache warm-up")
+    web.add_argument("--reload", action="store_true", help="uvicorn auto-reload (development)")
+    web.set_defaults(func=cmd_web)
     return parser
+
+
+def cmd_web(args: argparse.Namespace) -> int:
+    from .web.__main__ import main as web_main
+
+    forwarded = ["--host", args.host, "--port", str(args.port)]
+    if getattr(args, "no_warm", False):
+        forwarded.append("--no-warm")
+    if getattr(args, "reload", False):
+        forwarded.append("--reload")
+    return web_main(forwarded)
 
 
 def main(argv: list[str] | None = None) -> int:

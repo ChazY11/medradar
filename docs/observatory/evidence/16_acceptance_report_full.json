@@ -1,0 +1,252 @@
+{
+ "generated_at": "2026-11-03T14:54:37+00:00",
+ "ledger_touched": "D:\\DEPPSKK\\medradar\\out\\observatory_acceptance\\20261103T145255Z",
+ "live": true,
+ "with_e2e": true,
+ "tiers": {
+  "synthetic": {
+   "passed": 9,
+   "failed": 0
+  },
+  "operations": {
+   "passed": 3,
+   "failed": 0
+  },
+  "product_compatibility": {
+   "passed": 2,
+   "failed": 0
+  },
+  "real_api_connectivity": {
+   "passed": 5,
+   "failed": 0
+  },
+  "real_incremental": {
+   "passed": 4,
+   "failed": 0
+  },
+  "real_scheduled": {
+   "passed": 1,
+   "failed": 0
+  }
+ },
+ "passed": 24,
+ "failed": 0,
+ "checks": [
+  {
+   "scenario": "A",
+   "tier": "synthetic",
+   "name": "first observation stores the real collection moment",
+   "ok": true,
+   "detail": "new=2 first_seen_at=2026-11-03T10:00:00+00:00",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\A_synthetic_first_observation.json",
+   "at": "2026-11-03T14:52:55+00:00"
+  },
+  {
+   "scenario": "B",
+   "tier": "synthetic",
+   "name": "re-collection adds no duplicate and keeps first_seen_at",
+   "ok": true,
+   "detail": "new=0 unchanged=2 first_seen_at=2026-11-03T10:00:00+00:00",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\B_synthetic_idempotent.json",
+   "at": "2026-11-03T14:52:55+00:00"
+  },
+  {
+   "scenario": "C",
+   "tier": "synthetic",
+   "name": "revision recorded with both versions and changed fields",
+   "ok": true,
+   "detail": "updated=1 versions=2 changed_fields=[\"status\"]",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\C_synthetic_revision.json",
+   "at": "2026-11-03T14:52:55+00:00"
+  },
+  {
+   "scenario": "D",
+   "tier": "synthetic",
+   "name": "failed page resumes without loss or duplication",
+   "ok": true,
+   "detail": "first_status=PARTIAL records_after_failure=1 records_after_resume=3 NEW_changes=3 failure_kinds=['TIMEOUT']",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\D_synthetic_recovery.json",
+   "at": "2026-11-03T14:52:56+00:00"
+  },
+  {
+   "scenario": "F",
+   "tier": "synthetic",
+   "name": "replay at a past instant excludes records found later",
+   "ok": true,
+   "detail": "as_of_early=['new'] excluded=1 as_of_late=['new', 'old']",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\F_synthetic_replay.json",
+   "at": "2026-11-03T14:52:56+00:00"
+  },
+  {
+   "scenario": "C",
+   "tier": "synthetic",
+   "name": "removed / fetch-failed are separate states, never inferred",
+   "ok": true,
+   "detail": "states=['NEW', 'REMOVED_OR_UNAVAILABLE', 'FETCH_FAILED'] status=REMOVED_OR_UNAVAILABLE",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\C_synthetic_states.json",
+   "at": "2026-11-03T14:52:56+00:00"
+  },
+  {
+   "scenario": "B",
+   "tier": "synthetic",
+   "name": "historical backfill must be labelled BACKFILLED with a reason",
+   "ok": true,
+   "detail": "refused_without_reason=True origin=BACKFILLED reason=导入历史归档",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\B_synthetic_backfill.json",
+   "at": "2026-11-03T14:52:56+00:00"
+  },
+  {
+   "scenario": "E",
+   "tier": "synthetic",
+   "name": "source structure drift is recorded, not silently ignored",
+   "ok": true,
+   "detail": "changed=True note=synthetic 返回结构指纹变化：96cb47edc6 → 390fca092c；采集继续，但字段含义需人工复核",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\E_synthetic_structure.json",
+   "at": "2026-11-03T14:52:56+00:00"
+  },
+  {
+   "scenario": "D",
+   "tier": "synthetic",
+   "name": "consistency check passes on the synthetic ledgers",
+   "ok": true,
+   "detail": "synthetic=0 structure=0 issues",
+   "evidence": null,
+   "at": "2026-11-03T14:52:56+00:00"
+  },
+  {
+   "scenario": "D",
+   "tier": "operations",
+   "name": "pause/resume is enforced and visible in status",
+   "ok": true,
+   "detail": "paused=True skipped=SKIPPED resumed=True",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\D_operations_pause.json",
+   "at": "2026-11-03T14:52:56+00:00"
+  },
+  {
+   "scenario": "D",
+   "tier": "operations",
+   "name": "reconcile returns SQLite integrity + consistency",
+   "ok": true,
+   "detail": "integrity=ok ok=True",
+   "evidence": null,
+   "at": "2026-11-03T14:52:56+00:00"
+  },
+  {
+   "scenario": "D",
+   "tier": "operations",
+   "name": "consistent ledger backup can be taken",
+   "ok": true,
+   "detail": "backup=observatory-20261103T145256Z.sqlite bytes=155648",
+   "evidence": null,
+   "at": "2026-11-03T14:52:56+00:00"
+  },
+  {
+   "scenario": "G",
+   "tier": "product_compatibility",
+   "name": "product + observatory API pytest suites",
+   "ok": true,
+   "detail": "exit=0 ...................................................................      [100%]",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\G_product_pytest.json",
+   "at": "2026-11-03T14:53:44+00:00"
+  },
+  {
+   "scenario": "G",
+   "tier": "product_compatibility",
+   "name": "browser e2e (five MVP scenarios still pass)",
+   "ok": true,
+   "detail": "exit=0 passed=8 failed=0",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\G_product_e2e.json",
+   "at": "2026-11-03T14:54:24+00:00"
+  },
+  {
+   "scenario": "A",
+   "tier": "real_api_connectivity",
+   "name": "sec_edgar https://www.sec.gov/files/company_tickers.json",
+   "ok": true,
+   "detail": "{\"ok\": true, \"rows\": 10410}",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\connectivity_sec_edgar_company_tickers.json.json",
+   "at": "2026-11-03T14:54:25+00:00"
+  },
+  {
+   "scenario": "A",
+   "tier": "real_api_connectivity",
+   "name": "sec_edgar submissions CIK0001613103",
+   "ok": true,
+   "detail": "{\"ok\": true, \"name\": \"Medtronic plc\", \"recent_fields\": [\"acceptanceDateTime\", \"accessionNumber\", \"act\", \"core_type\", \"fileNumber\", \"filingDate\", \"filmNumber\", \"form\"]}",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\connectivity_sec_edgar_submissions CIK00016.json",
+   "at": "2026-11-03T14:54:25+00:00"
+  },
+  {
+   "scenario": "A",
+   "tier": "real_api_connectivity",
+   "name": "ctgov api/v2/studies",
+   "ok": true,
+   "detail": "{\"ok\": true, \"keys\": [\"nextPageToken\", \"studies\"]}",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\connectivity_ctgov_studies.json",
+   "at": "2026-11-03T14:54:25+00:00"
+  },
+  {
+   "scenario": "A",
+   "tier": "real_api_connectivity",
+   "name": "europepmc rest/search",
+   "ok": true,
+   "detail": "{\"ok\": true, \"hitCount\": 17345}",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\connectivity_europepmc_search.json",
+   "at": "2026-11-03T14:54:25+00:00"
+  },
+  {
+   "scenario": "A",
+   "tier": "real_api_connectivity",
+   "name": "dry-run previews a live source and writes nothing",
+   "ok": true,
+   "detail": "observations_before=0 after=0 scopes=3 first_page=1",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\A_real_dry_run.json",
+   "at": "2026-11-03T14:54:27+00:00"
+  },
+  {
+   "scenario": "A",
+   "tier": "real_incremental",
+   "name": "real SEC records collected with a real first_seen_at",
+   "ok": true,
+   "detail": "new=6 requests=7 earliest_first_seen=2026-11-03T14:54:27Z collection_started=2026-11-03T14:54:27+00:00",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\A_real_sec_first_run.json",
+   "at": "2026-11-03T14:54:29+00:00"
+  },
+  {
+   "scenario": "B",
+   "tier": "real_incremental",
+   "name": "real re-collection does not duplicate or rewrite first_seen_at",
+   "ok": true,
+   "detail": "new=0 unchanged=4 observations=6→6",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\B_real_sec_second_run.json",
+   "at": "2026-11-03T14:54:30+00:00"
+  },
+  {
+   "scenario": "E",
+   "tier": "real_incremental",
+   "name": "two official sources collected with independent sync state",
+   "ok": true,
+   "detail": "per_source={'ctgov': 109, 'sec_edgar': 6} statuses={'sec_edgar': 'OK', 'ctgov': 'OK'}",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\E_real_two_sources.json",
+   "at": "2026-11-03T14:54:33+00:00"
+  },
+  {
+   "scenario": "C",
+   "tier": "real_incremental",
+   "name": "real revision/removal/failure counts reported (0 is an honest result)",
+   "ok": true,
+   "detail": "real_updates=0 real_removed=0 real_fetch_failed=0; revision mechanism itself is proven in the synthetic tier (scenario C)",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\C_real_revision_counts.json",
+   "at": "2026-11-03T14:54:33+00:00"
+  },
+  {
+   "scenario": "D",
+   "tier": "real_scheduled",
+   "name": "local scheduler ran two real cycles and persisted its state",
+   "ok": true,
+   "detail": "cycles=2 runs=2 heartbeat=ok",
+   "evidence": "out\\observatory_acceptance\\20261103T145255Z\\D_real_scheduled.json",
+   "at": "2026-11-03T14:54:37+00:00"
+  }
+ ]
+}

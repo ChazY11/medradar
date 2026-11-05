@@ -1,0 +1,386 @@
+{
+  "study_id": "S-031",
+  "source": "experiments/innovation_signals_observatory/results/2026-11-04/jobs_medtronic.jsonl",
+  "source_sha256": "2ca362ee758407d11ba23c52eba5c031802a1628bd35a402d9d01ca58470dd82",
+  "method": "independent streaming recomputation; not copied from PR #21 summary counts",
+  "identity": {
+    "raw_rows": 994,
+    "distinct_posting_ids": 994,
+    "same_posting_id_duplicate_rows": 0,
+    "title_robot_substring_rows": 20,
+    "title_robotic_or_robotics_only_rows_note": "The broader title probe is /robot/i. Restricting to robotic|robotics misses titles such as “Technical Consultant- Robot assisted surgery”."
+  },
+  "content_hash_audit": {
+    "stored_hash_matches_current_records_content_hash": 994,
+    "stored_hash_mismatches": 0,
+    "hash_rule_version_field_present": 0,
+    "hash_rule_version_field_absent": 994,
+    "limitation": "A matching recomputation supports consistency with the current rule, but the absent hash_rule_version field remains a real provenance gap and is not retroactively repaired."
+  },
+  "classification": {
+    "rules_version": "recruitment_taxonomy_rules_2026-11-04b",
+    "function_counts": {
+      "ALGORITHM_SOFTWARE": 70,
+      "CLINICAL_R&D": 13,
+      "CORE_R&D": 14,
+      "HARDWARE_SYSTEMS": 11,
+      "MANUFACTURING_PROCESS": 47,
+      "PRODUCT_ENGINEERING": 34,
+      "QUALITY_REGULATORY": 88,
+      "SALES_ADMIN_OTHER": 585,
+      "UNCLASSIFIED": 132
+    },
+    "track_status_counts": {
+      "AMBIENT_ONLY": 147,
+      "MAPPED": 61,
+      "NO_EVIDENCE": 69,
+      "SUPPRESSED_BY_FUNCTION_CLASS": 717
+    },
+    "mapped_track_counts": {
+      "cardiac_rhythm": 2,
+      "ep_pfa": 8,
+      "imaging_us": 1,
+      "medical_ai": 25,
+      "neurostimulation": 14,
+      "neurovascular": 4,
+      "respiratory": 2,
+      "resuscitation": 1,
+      "structural_heart": 2,
+      "wearable_remote": 2
+    },
+    "mapped_rule_strength_counts": {
+      "MODERATE": 11,
+      "WEAK": 50
+    },
+    "function_gate_audit": {
+      "any_specific_candidate": 275,
+      "would_pass_same_track_threshold_without_function_gate": 168,
+      "interpretation": "168 is the subset that would pass the existing track threshold if the function gate were removed; 275 merely have a best specific candidate. Neither count is a verified false-positive count without semantic review."
+    }
+  },
+  "description_only_definitions": {
+    "mapped_postings": 61,
+    "assigned_track_has_any_title_keyword": 14,
+    "description_only_any_title_keyword_definition": 47,
+    "assigned_track_has_non_generic_title_keyword": 7,
+    "description_only_non_generic_title_keyword_definition": 54,
+    "interpretation": "47 and 54 are different measurements, not interchangeable error metrics. The first counts generic title words such as software as title evidence; the second does not."
+  },
+  "robotics_and_probe_audit": {
+    "surgical_robotics": {
+      "plain_language_mentions": 80,
+      "assigned_to_same_track": 0,
+      "probe_patterns": [
+        "\\brobot",
+        "\\bhugo\\b",
+        "robotic"
+      ]
+    },
+    "medical_ai": {
+      "plain_language_mentions": 141,
+      "assigned_to_same_track": 25,
+      "probe_patterns": [
+        "\\bai\\b",
+        "artificial intelligence",
+        "machine learning",
+        "\\bml\\b",
+        "deep learning"
+      ]
+    },
+    "ep_pfa": {
+      "plain_language_mentions": 117,
+      "assigned_to_same_track": 8,
+      "probe_patterns": [
+        "pulsed field",
+        "electroporation",
+        "\\bpfa\\b",
+        "electrophysiolog",
+        "ablation"
+      ]
+    },
+    "neurostimulation": {
+      "plain_language_mentions": 57,
+      "assigned_to_same_track": 14,
+      "probe_patterns": [
+        "neurostimulat",
+        "deep brain",
+        "\\bdbs\\b",
+        "spinal cord stimulat",
+        "neuromodulat"
+      ]
+    },
+    "structural_heart": {
+      "plain_language_mentions": 34,
+      "assigned_to_same_track": 2,
+      "probe_patterns": [
+        "transcatheter",
+        "\\btavr\\b",
+        "mitral",
+        "tricuspid",
+        "structural heart"
+      ]
+    },
+    "cardiac_rhythm": {
+      "plain_language_mentions": 56,
+      "assigned_to_same_track": 2,
+      "probe_patterns": [
+        "pacemaker",
+        "defibrillat",
+        "\\bicd\\b",
+        "cardiac rhythm",
+        "bradycardia"
+      ]
+    },
+    "imaging_us": {
+      "plain_language_mentions": 8,
+      "assigned_to_same_track": 1,
+      "probe_patterns": [
+        "ultrasound",
+        "echocardiograph",
+        "sonograph"
+      ]
+    },
+    "diabetes": {
+      "plain_language_mentions": 8,
+      "assigned_to_same_track": 0,
+      "probe_patterns": [
+        "insulin pump",
+        "continuous glucose",
+        "\\bcgm\\b",
+        "diabetes"
+      ]
+    }
+  },
+  "conservative_deduplication": {
+    "starting_distinct_posting_ids": 994,
+    "same_content_cluster_count": 5,
+    "same_content_rows_collapsed": 6,
+    "multi_city_cluster_count": 3,
+    "multi_city_rows_collapsed_after_exact_copy_collapse": 5,
+    "total_rows_collapsed": 11,
+    "conservative_cluster_count": 983,
+    "expected_reconciliation": "994 - 6 - 5 = 983",
+    "exact_clusters": [
+      {
+        "kind": "SAME_TITLE_LOCATION_DESCRIPTION",
+        "size": 2,
+        "ambiguity": "Different opaque ids may be duplicate republications or simultaneous hires for multiple people. Conservative collapse is a counting choice, not a fact that only one vacancy existed.",
+        "members": [
+          {
+            "posting_id": "14d3b7e8de54104c4b29b00f3cf40002",
+            "job_title": "Intern: MBA/Graduate",
+            "job_location": "Mumbai, Maharashtra, India",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Mumbai-Maharashtra-India/Intern--MBA-Graduate_R78653-2",
+            "source_jsonl_line": 200
+          },
+          {
+            "posting_id": "c11b1678232e104c4a19807a52110001",
+            "job_title": "Intern: MBA/Graduate",
+            "job_location": "Mumbai, Maharashtra, India",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Mumbai-Maharashtra-India/Intern--MBA-Graduate_R79383-1",
+            "source_jsonl_line": 202
+          }
+        ]
+      },
+      {
+        "kind": "SAME_TITLE_LOCATION_DESCRIPTION",
+        "size": 2,
+        "ambiguity": "Different opaque ids may be duplicate republications or simultaneous hires for multiple people. Conservative collapse is a counting choice, not a fact that only one vacancy existed.",
+        "members": [
+          {
+            "posting_id": "cee2c7b5172510348f43c6b154630001",
+            "job_title": "Agent de production II",
+            "job_location": "Trevoux, Rhône Alpes, France",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Trevoux-Rhne-Alpes-France/Agent-de-production-II_R78962-1",
+            "source_jsonl_line": 556
+          },
+          {
+            "posting_id": "0fa321cff9c61034909674c12abe0001",
+            "job_title": "Agent de production II",
+            "job_location": "Trevoux, Rhône Alpes, France",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Trevoux-Rhne-Alpes-France/Agent-de-production-II_R79198-1",
+            "source_jsonl_line": 713
+          }
+        ]
+      },
+      {
+        "kind": "SAME_TITLE_LOCATION_DESCRIPTION",
+        "size": 2,
+        "ambiguity": "Different opaque ids may be duplicate republications or simultaneous hires for multiple people. Conservative collapse is a counting choice, not a fact that only one vacancy existed.",
+        "members": [
+          {
+            "posting_id": "61874c4986ba102e22673bcd6caa0001",
+            "job_title": "EP Mapping Specialist, CAS - Boston MA",
+            "job_location": "Boston, Massachusetts, United States of America",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Boston-Massachusetts-United-States-of-America/EP-Mapping-Specialist--CAS---Boston-MA_R77573-1",
+            "source_jsonl_line": 573
+          },
+          {
+            "posting_id": "6a5e0227b519102e213c3a5f935f0000",
+            "job_title": "EP Mapping Specialist, CAS - Boston MA",
+            "job_location": "Boston, Massachusetts, United States of America",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Boston-Massachusetts-United-States-of-America/EP-Mapping-Specialist--CAS---Boston-MA_R77572-1",
+            "source_jsonl_line": 575
+          }
+        ]
+      },
+      {
+        "kind": "SAME_TITLE_LOCATION_DESCRIPTION",
+        "size": 2,
+        "ambiguity": "Different opaque ids may be duplicate republications or simultaneous hires for multiple people. Conservative collapse is a counting choice, not a fact that only one vacancy existed.",
+        "members": [
+          {
+            "posting_id": "459ce17f65a2103256e8b4dc24e70000",
+            "job_title": "Packaging Engineer II",
+            "job_location": "Nanakramguda, Hyderabad, India",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Nanakramguda-Hyderabad-India/Packaging-Engineer-II_R76911-2",
+            "source_jsonl_line": 754
+          },
+          {
+            "posting_id": "6ecf0680c83f1030db620edc180c0001",
+            "job_title": "Packaging Engineer II",
+            "job_location": "Nanakramguda, Hyderabad, India",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Nanakramguda-Hyderabad-India/Packaging-Engineer-II_R76912-1",
+            "source_jsonl_line": 780
+          }
+        ]
+      },
+      {
+        "kind": "SAME_TITLE_LOCATION_DESCRIPTION",
+        "size": 3,
+        "ambiguity": "Different opaque ids may be duplicate republications or simultaneous hires for multiple people. Conservative collapse is a counting choice, not a fact that only one vacancy existed.",
+        "members": [
+          {
+            "posting_id": "332333b1059c102e6191702a99be0000",
+            "job_title": "Assembler I",
+            "job_location": "Ho Chi Minh City, Ho Chi Minh City, Vietnam",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Ho-Chi-Minh-City-Ho-Chi-Minh-City-Vietnam/Assembler-I_R77741-1",
+            "source_jsonl_line": 828
+          },
+          {
+            "posting_id": "6a5e0227b519102e6190d8c46a200001",
+            "job_title": "Assembler I",
+            "job_location": "Ho Chi Minh City, Ho Chi Minh City, Vietnam",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Ho-Chi-Minh-City-Ho-Chi-Minh-City-Vietnam/Assembler-I_R77742-1",
+            "source_jsonl_line": 829
+          },
+          {
+            "posting_id": "a0a8fe61c08d102e61561e4c71410000",
+            "job_title": "Assembler I",
+            "job_location": "Ho Chi Minh City, Ho Chi Minh City, Vietnam",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Ho-Chi-Minh-City-Ho-Chi-Minh-City-Vietnam/Assembler-I_R77735",
+            "source_jsonl_line": 830
+          }
+        ]
+      }
+    ],
+    "multi_city_clusters": [
+      {
+        "kind": "SAME_TITLE_DESCRIPTION_MULTIPLE_CITIES",
+        "size_after_exact_copy_collapse": 2,
+        "ambiguity": "One multi-city vacancy and several city-specific vacancies are both plausible. Different requisition numbers do not resolve that organizational question.",
+        "members": [
+          {
+            "posting_id": "a817339b4ba1103d4e77d828160e0000",
+            "job_title": "Senior EP Mapping Specialist - CAS",
+            "job_location": "Phoenix, Arizona, United States of America",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Phoenix-Arizona-United-States-of-America/Senior-EP-Mapping-Specialist---CAS_R81366",
+            "source_jsonl_line": 26
+          },
+          {
+            "posting_id": "a817339b4ba1103d4e40346ed1ae0000",
+            "job_title": "Senior EP Mapping Specialist - CAS",
+            "job_location": "Santa Barbara, California, United States of America",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Santa-Barbara-California-United-States-of-America/Senior-EP-Mapping-Specialist---CAS_R81365-1",
+            "source_jsonl_line": 27
+          }
+        ]
+      },
+      {
+        "kind": "SAME_TITLE_DESCRIPTION_MULTIPLE_CITIES",
+        "size_after_exact_copy_collapse": 3,
+        "ambiguity": "One multi-city vacancy and several city-specific vacancies are both plausible. Different requisition numbers do not resolve that organizational question.",
+        "members": [
+          {
+            "posting_id": "122732526734103cd446322df46b0001",
+            "job_title": "Intern: MBA/Graduate",
+            "job_location": "Chennai Kilpaak, Tamil Nadu, India",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Chennai-Kilpaak-Tamil-Nadu-India/Intern--MBA-Graduate_R78478-1",
+            "source_jsonl_line": 196
+          },
+          {
+            "posting_id": "14d3b7e8de54104c4b29b00f3cf40002",
+            "job_title": "Intern: MBA/Graduate",
+            "job_location": "Mumbai, Maharashtra, India",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Mumbai-Maharashtra-India/Intern--MBA-Graduate_R78653-2",
+            "source_jsonl_line": 200
+          },
+          {
+            "posting_id": "a817339b4ba1103cd1f27fdd73390001",
+            "job_title": "Intern: MBA/Graduate",
+            "job_location": "Kochi, Kerala, India",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Kochi-Kerala-India/Intern--MBA-Graduate_R79178-1",
+            "source_jsonl_line": 203
+          }
+        ]
+      },
+      {
+        "kind": "SAME_TITLE_DESCRIPTION_MULTIPLE_CITIES",
+        "size_after_exact_copy_collapse": 3,
+        "ambiguity": "One multi-city vacancy and several city-specific vacancies are both plausible. Different requisition numbers do not resolve that organizational question.",
+        "members": [
+          {
+            "posting_id": "70591926cba8103963249026696c0001",
+            "job_title": "Sr. Business Manager, ICT EMEA Region-led markets",
+            "job_location": "Dubai, Dubai, United Arab Emirates",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Dubai-Dubai-United-Arab-Emirates/Sr-Business-Manager--ICT-EMEA-Region-led-markets_R78773-2",
+            "source_jsonl_line": 517
+          },
+          {
+            "posting_id": "8e5a383db9e010392fa07864b85d0001",
+            "job_title": "Sr. Business Manager, ICT EMEA Region-led markets",
+            "job_location": "Riyadh, Riyadh, Saudi Arabia",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Riyadh-Riyadh-Saudi-Arabia/Sr-Business-Manager--ICT-EMEA-Region-led-markets_R78772-1",
+            "source_jsonl_line": 528
+          },
+          {
+            "posting_id": "d15f631c147b10392ef5e93e47e80000",
+            "job_title": "Sr. Business Manager, ICT EMEA Region-led markets",
+            "job_location": "Cairo, Cairo, Egypt",
+            "requisition_id": null,
+            "source_url": "https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers/job/Cairo-Cairo-Egypt/Sr-Business-Manager--ICT-EMEA-Region-led-markets_R78770",
+            "source_jsonl_line": 530
+          }
+        ]
+      }
+    ],
+    "warning": "983 is a conservative analytical cluster count under an explicit ambiguity-preserving rule, not a verified count of unique human vacancies or new hiring demand."
+  },
+  "earlier_992_denominator": {
+    "status": "DOCUMENTED_BUT_SOURCE_FILE_NOT_AVAILABLE_FOR_INDEPENDENT_HASH_VERIFICATION",
+    "documented_raw_rows": 994,
+    "documented_unique_posting_ids": 992,
+    "documented_dropped_same_id_rows": 2,
+    "documented_sha256": "165dce8e8c6b8127ba445d3a668117d614ad47193daf74b250d8b67c51f80217",
+    "source_document": "experiments/innovation_signals_observatory/docs/EVIDENCE_REPORT.zh-CN.md §2.1–2.2",
+    "current_branch_history_check": "The two Git versions of jobs_medtronic.jsonl visible on this branch contain 994 distinct ids each (SHA cff61741… and 2ca362ee…). Neither is the documented 165dce8e… file. Therefore 992 is an earlier documented denominator, not a count to mix into the current 994-unique-id snapshot."
+  }
+}

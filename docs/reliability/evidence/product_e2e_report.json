@@ -1,0 +1,57 @@
+{
+  "base": "http://127.0.0.1:8801",
+  "ran_at": "2026-11-03T16:04:25.672Z",
+  "results": [
+    {
+      "name": "Scenario 1 研究一家公司 (Mindray)",
+      "ok": true,
+      "detail": "claims=3; complete=34",
+      "screenshot": "D:\\DEPPSKK\\medradar\\out\\product_e2e\\s1-company-mindray.png"
+    },
+    {
+      "name": "Scenario 2 比较竞争对手 (Medtronic vs Philips)",
+      "ok": true,
+      "detail": "warnings=3; invalid-selection cleared",
+      "screenshot": "D:\\DEPPSKK\\medradar\\out\\product_e2e\\s2-compare.png"
+    },
+    {
+      "name": "Scenario 3 分析技术趋势 (Respiratory)",
+      "ok": true,
+      "detail": "complete=560 windowAll=570",
+      "screenshot": "D:\\DEPPSKK\\medradar\\out\\product_e2e\\s3-radar-respiratory.png"
+    },
+    {
+      "name": "Scenario 4 追溯研究结论 → 原始证据",
+      "ok": true,
+      "detail": "events=58",
+      "screenshot": "D:\\DEPPSKK\\medradar\\out\\product_e2e\\s4-evidence-trace.png"
+    },
+    {
+      "name": "Scenario 5 使用研究助手",
+      "ok": true,
+      "detail": "evidence=3",
+      "screenshot": "D:\\DEPPSKK\\medradar\\out\\product_e2e\\s5-analyst.png"
+    },
+    {
+      "name": "Scenario 6 实时观察站",
+      "ok": true,
+      "detail": "observations=400 sources=3 rows=50 events_24h=400 health=VALIDATION_IN_PROGRESS phases={\"INITIAL_DISCOVERY\":399,\"INCREMENTAL_DISCOVERY\":1,\"HISTORICAL_BACKFILL\":0}",
+      "screenshot": "D:\\DEPPSKK\\medradar\\out\\product_e2e\\s6-observatory.png"
+    },
+    {
+      "name": "Mobile 390px company page",
+      "ok": true,
+      "detail": "horizontal overflow=0px",
+      "screenshot": "D:\\DEPPSKK\\medradar\\out\\product_e2e\\s6-mobile-company.png"
+    },
+    {
+      "name": "Mobile 390px Live Observatory",
+      "ok": true,
+      "detail": "horizontal overflow=0px",
+      "screenshot": "D:\\DEPPSKK\\medradar\\out\\product_e2e\\s6-mobile-observatory.png"
+    }
+  ],
+  "console_errors": [],
+  "passed": 8,
+  "failed": 0
+}

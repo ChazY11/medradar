@@ -1,0 +1,367 @@
+{
+  "$comment": "Generated from experiments/local_llm_event_extraction/schema.py -- do not edit by hand. A drift check in the offline test suite compares this document to the generator.",
+  "schema_version": "medradar.event_extraction.v2",
+  "event": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "medradar/event_extraction/v1/event",
+    "title": "MedRadar extracted medtech event",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "status",
+      "company",
+      "event_category",
+      "technology_domains",
+      "product_or_technology",
+      "event_date",
+      "published_at",
+      "first_seen_at",
+      "timestamp_quality",
+      "evidence"
+    ],
+    "properties": {
+      "client_ref": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "status": {
+        "enum": [
+          "extracted",
+          "abstained"
+        ]
+      },
+      "abstain_reason": {
+        "enum": [
+          "no_event",
+          "not_an_event",
+          "ambiguous_company",
+          "ambiguous_date",
+          "ambiguous_category",
+          "unsupported_by_text",
+          "out_of_scope",
+          "insufficient_context",
+          "other",
+          null
+        ]
+      },
+      "company": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "raw_text",
+          "canonical_id",
+          "match_basis"
+        ],
+        "properties": {
+          "raw_text": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "canonical_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "match_basis": {
+            "enum": [
+              "document_metadata",
+              "roster_alias_verbatim",
+              "roster_alias_in_document",
+              "model_inference",
+              "none"
+            ]
+          }
+        }
+      },
+      "event_category": {
+        "enum": [
+          "regulatory_clearance",
+          "regulatory_approval",
+          "regulatory_submission",
+          "regulatory_negative",
+          "safety_recall",
+          "clinical_trial_start",
+          "clinical_trial_result",
+          "product_launch",
+          "product_discontinuation",
+          "rd_collaboration",
+          "m_and_a",
+          "partnership",
+          "manufacturing_change",
+          "patent_grant",
+          "scientific_publication",
+          "other",
+          null
+        ]
+      },
+      "technology_domains": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "maxItems": 6
+      },
+      "product_or_technology": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "event_date": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+      },
+      "event_date_kind": {
+        "enum": [
+          "decision",
+          "submission",
+          "trial_start_actual",
+          "trial_start_planned",
+          "trial_completion",
+          "results_posting",
+          "recall_initiation",
+          "publication",
+          "unspecified"
+        ]
+      },
+      "published_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+      },
+      "first_seen_at": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "pattern": "^\\d{4}(-\\d{2}(-\\d{2})?)?$"
+      },
+      "timestamp_quality": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "event_date",
+          "published_at",
+          "first_seen_at"
+        ],
+        "properties": {
+          "event_date": {
+            "enum": [
+              "exact_day",
+              "exact_month",
+              "exact_year",
+              "approximate",
+              "absent",
+              "conflicting"
+            ]
+          },
+          "published_at": {
+            "enum": [
+              "exact_day",
+              "exact_month",
+              "exact_year",
+              "approximate",
+              "absent",
+              "conflicting"
+            ]
+          },
+          "first_seen_at": {
+            "enum": [
+              "exact_day",
+              "exact_month",
+              "exact_year",
+              "approximate",
+              "absent",
+              "conflicting"
+            ]
+          }
+        }
+      },
+      "evidence": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "quote",
+            "field"
+          ],
+          "properties": {
+            "quote": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            "field": {
+              "type": "string",
+              "minLength": 1
+            },
+            "char_start": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "char_end": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "locator": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "rationale": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "maxLength": 400
+      }
+    },
+    "allOf": [
+      {
+        "description": "an extracted event must carry evidence and a category",
+        "if": {
+          "properties": {
+            "status": {
+              "const": "extracted"
+            }
+          },
+          "required": [
+            "status"
+          ]
+        },
+        "then": {
+          "properties": {
+            "evidence": {
+              "type": "array",
+              "minItems": 1
+            },
+            "event_category": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      {
+        "description": "an abstained event must state a reason",
+        "if": {
+          "properties": {
+            "status": {
+              "const": "abstained"
+            }
+          },
+          "required": [
+            "status"
+          ]
+        },
+        "then": {
+          "properties": {
+            "abstain_reason": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "result": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "medradar/event_extraction/v1/result",
+    "title": "MedRadar extraction result for one document",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "doc_id",
+      "parse_status",
+      "schema_version",
+      "extractor",
+      "events"
+    ],
+    "properties": {
+      "doc_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "parse_status": {
+        "enum": [
+          "ok",
+          "invalid_json",
+          "refused",
+          "empty",
+          "truncated"
+        ]
+      },
+      "schema_version": {
+        "const": "medradar.event_extraction.v2"
+      },
+      "extractor": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "system",
+          "adapter_id"
+        ],
+        "properties": {
+          "system": {
+            "type": "string",
+            "minLength": 1
+          },
+          "adapter_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "model_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "model_revision": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "prompt_version": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decoding": {
+            "type": "object"
+          },
+          "schema_version": {
+            "type": "string"
+          }
+        }
+      },
+      "events": {
+        "type": "array",
+        "items": {
+          "$ref": "medradar/event_extraction/v1/event"
+        }
+      }
+    }
+  }
+}
