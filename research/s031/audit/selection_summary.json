@@ -1,0 +1,75 @@
+{
+  "seed": 31031,
+  "quotas": {
+    "unavailable_text": 1,
+    "difficult_product_context": 2,
+    "explicit_rd_title": 2,
+    "software_algorithm_title": 2,
+    "product_engineering_title": 2,
+    "manufacturing_title": 2,
+    "quality_regulatory_title": 2,
+    "clinical_application_title": 2,
+    "field_service_title": 1,
+    "sales_marketing_title": 2,
+    "business_operations_title": 1,
+    "ambiguous_function_title": 1
+  },
+  "companies": {
+    "medtronic": {
+      "frame_rows": 994,
+      "selected": 20,
+      "unmet_quotas": {
+        "unavailable_text": 1
+      },
+      "raw_file_sha256": "2ca362ee758407d11ba23c52eba5c031802a1628bd35a402d9d01ca58470dd82"
+    },
+    "ge_healthcare": {
+      "frame_rows": 80,
+      "selected": 20,
+      "unmet_quotas": {},
+      "raw_file_sha256": "a8a92b2eddd44ba4e7d82f2fa1b51aa89e71fd3465b64b6fe7d0d5fe08515380"
+    },
+    "philips": {
+      "frame_rows": 80,
+      "selected": 20,
+      "unmet_quotas": {
+        "difficult_product_context": 1
+      },
+      "raw_file_sha256": "0974a0b051870695f4945e6f4cf0053b5b83053a220d191bd3b95cbc3b92fca3"
+    },
+    "draeger": {
+      "frame_rows": 80,
+      "selected": 20,
+      "unmet_quotas": {
+        "difficult_product_context": 2
+      },
+      "raw_file_sha256": "ed77827c57f5b393d7c7948090d59ca929d3c06f1339c84bdf8592e92777b04c"
+    },
+    "mindray": {
+      "frame_rows": 80,
+      "selected": 20,
+      "unmet_quotas": {
+        "unavailable_text": 1,
+        "difficult_product_context": 2,
+        "quality_regulatory_title": 2
+      },
+      "raw_file_sha256": "e9388fa90887d675fdd106747da1143959012b2264863f1b9cf99971f1bf6cc7"
+    }
+  },
+  "sampling_frame": "PR21 saved 2026-11-04 JSONL; stratified difficulty sample, NOT representative random sample",
+  "selected_strata": {
+    "difficult_product_context": 5,
+    "explicit_rd_title": 10,
+    "software_algorithm_title": 10,
+    "product_engineering_title": 10,
+    "manufacturing_title": 10,
+    "quality_regulatory_title": 8,
+    "clinical_application_title": 10,
+    "field_service_title": 5,
+    "sales_marketing_title": 10,
+    "business_operations_title": 5,
+    "ambiguous_function_title": 5,
+    "backfill_after_stratum_shortage": 9,
+    "unavailable_text": 3
+  }
+}
