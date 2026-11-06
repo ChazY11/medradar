@@ -1,0 +1,1072 @@
+{
+  "dataset": {
+    "continuation": {
+      "company_count": 51,
+      "material_event_rows": 3833,
+      "matured_examples": 6701,
+      "pair_count": 322,
+      "positive_examples": 3154
+    },
+    "entry": {
+      "company_count": 51,
+      "material_event_rows": 3833,
+      "matured_examples": 41003,
+      "positive_examples": 503,
+      "track_count": 38
+    },
+    "independence_note": "Raw identifiers are unavailable in this environment, so independent device/application/trial counts and cross-partition duplicates cannot be recomputed. Material event rows are not relabelled as independent devices.",
+    "independent_device_application_or_trial_count": null
+  },
+  "detector_comparison": {
+    "cells": 104,
+    "conclusion": "No positive novelty evidence supports a claim that change-point detection is superior.",
+    "detectors": {
+      "naive_multiplier": {
+        "alert_rate_per_cell": 0.0,
+        "alerts": 0,
+        "alerts_surviving_bh": 0,
+        "chosen_false_alarm_rate": 0.0,
+        "novelty_comparison": {
+          "alerted_cells_with_post_activity": 0,
+          "control_cells": 90,
+          "difference": null,
+          "mean_novelty_share_alerted": null,
+          "mean_novelty_share_control": 0.0
+        }
+      },
+      "poisson_bayes_factor": {
+        "alert_rate_per_cell": 0.019230769230769232,
+        "alerts": 2,
+        "alerts_surviving_bh": 2,
+        "chosen_false_alarm_rate": 0.0,
+        "novelty_comparison": {
+          "alerted_cells_with_post_activity": 2,
+          "control_cells": 88,
+          "difference": 0.0,
+          "mean_novelty_share_alerted": 0.0,
+          "mean_novelty_share_control": 0.0
+        }
+      },
+      "poisson_cusum": {
+        "alert_rate_per_cell": 0.0,
+        "alerts": 0,
+        "alerts_surviving_bh": 0,
+        "chosen_false_alarm_rate": 0.0,
+        "novelty_comparison": {
+          "alerted_cells_with_post_activity": 0,
+          "control_cells": 90,
+          "difference": null,
+          "mean_novelty_share_alerted": null,
+          "mean_novelty_share_control": 0.0
+        }
+      },
+      "rolling_zscore": {
+        "alert_rate_per_cell": 0.009615384615384616,
+        "alerts": 1,
+        "alerts_surviving_bh": 1,
+        "chosen_false_alarm_rate": 0.0,
+        "novelty_comparison": {
+          "alerted_cells_with_post_activity": 1,
+          "control_cells": 89,
+          "difference": 0.0,
+          "mean_novelty_share_alerted": 0.0,
+          "mean_novelty_share_control": 0.0
+        }
+      }
+    },
+    "evidence_category": 2
+  },
+  "evidence_category": 3,
+  "evidence_category_label": "Conservative simulated prediction using historical backfills and an estimated decision_date+14d knowledge proxy",
+  "generated_at": "2026-11-06T00:48:49.128967+00:00",
+  "holdout_origins": [
+    "2025-04-01",
+    "2025-07-01",
+    "2025-10-01"
+  ],
+  "independent_prospective_validation": false,
+  "interpretation_guardrails": [
+    "Regulatory activity is not innovation, internal R&D, adoption or revenue.",
+    "Pair persistence is the key continuation baseline; a full model is not automatically an improvement.",
+    "Fusion H9 is rejected only for these sources, targets and windows, not universally.",
+    "No GNN was run in S-028. No prospective forecast is validated in PHOENIX."
+  ],
+  "leakage_audit": {
+    "cross_source_linkage": {
+      "action": "H5 is blocked. Procurement and patents remain excluded from predictive gain.",
+      "evidence": "No trial-to-FDA target; OpenAlex aliases are noisy; procurement lacks first-publication time; USPTO has zero rows.",
+      "status": "limited_and_partly_blocked"
+    },
+    "duplicate_samples": {
+      "action": "Report this explicitly; do not claim an independent duplicate audit. Restored-data runs must deduplicate by source IDs and derived lineage before splitting.",
+      "evidence": "The raw stores are absent and only frozen aggregates are available. Device/application/trial IDs cannot be replayed across partitions.",
+      "status": "not_independently_recomputable_here"
+    },
+    "entity_mapping": {
+      "action": "Do not infer legal-entity or causal innovation histories. Any new module must persist alias, rule, confidence and ownership dates.",
+      "evidence": "S-028: events lack matched alias/confidence; 84 pre-acquisition events are assigned to parents. S-029: 67.68% of company-mention records would be missed by exact-parent matching; collisions are explicitly rejected.",
+      "status": "material_unresolved_risk"
+    },
+    "left_censoring": {
+      "action": "Targets are first observed entry/re-entry, never first innovation or first market entry.",
+      "evidence": "Bulk history begins 2016-11-01. S-028 reports 230/322 final pairs active before the first origin; 'first' means first observed inside the window.",
+      "status": "present"
+    },
+    "semantic_mapping": {
+      "action": "Treat unversioned track/alias mappings as residual leakage even though the stored as-of replay has zero mismatches.",
+      "evidence": "As-of replay/consistency audit, not a proof of absence of semantic leakage: unversioned current product-code mappings, company aliases or target-definition choices applied to history cannot be detected this way. It also cannot re-verify provenance of dates themselves.",
+      "status": "not_detectable_by_asof_replay"
+    },
+    "stored_replay": {
+      "checked_cutoffs": 25,
+      "checked_examples": 6701,
+      "checked_feature_values": 140721,
+      "dataset_version": "reverse_rd_v1",
+      "entry_target": false,
+      "limitations": "As-of replay/consistency audit, not a proof of absence of semantic leakage: unversioned current product-code mappings, company aliases or target-definition choices applied to history cannot be detected this way. It also cannot re-verify provenance of dates themselves.",
+      "method": "independent_as_of_replay",
+      "mismatch_count": 0,
+      "ok": true,
+      "per_feature_mismatches": {},
+      "unreplayable_examples": 0,
+      "violation_count": 0
+    },
+    "time_proxy": {
+      "action": "All results are category 3 simulation, not category 4 prospective validation.",
+      "evidence": "All historical material events use decision_date+14d. S-028 finds one batch first_seen date and only 6/400 ledger observations with lag<=1d.",
+      "status": "estimated_not_observed"
+    }
+  },
+  "methods": [
+    {
+      "final_origin_metrics": {
+        "average_precision": 0.4201954397394137,
+        "brier": 0.24764104019651076,
+        "ece": 0.06332304505388442,
+        "false_positive_rate_at_0_5": 0.0,
+        "k": 31,
+        "mean_lead_time_days": 139.03875968992247,
+        "n": 307,
+        "per_window_average_precision": {
+          "max": 0.4201954397394137,
+          "mean": 0.41179890979579153,
+          "min": 0.40460526315789475,
+          "std": 0.006421245862817695,
+          "windows": 3
+        },
+        "positives": 129,
+        "precision_at_k": 0.3870967741935484,
+        "prevalence": 0.4201954397394137,
+        "recall_at_k": 0.09302325581395349,
+        "true_positives_at_k": 12
+      },
+      "method": "constant_training_prevalence",
+      "method_family": "statistical_baseline",
+      "source": "experiments/reverse_rd_v2/continuation_metrics.json",
+      "target": "continuation",
+      "uncertainty": {
+        "note": "Population std across three origins, not a confidence interval",
+        "three_window_std": 0.006421245862817695
+      }
+    },
+    {
+      "final_origin_metrics": {
+        "average_precision": 0.5706893058230107,
+        "brier": 0.230846615532163,
+        "ece": 0.067133305427701,
+        "false_positive_rate_at_0_5": 0.4438202247191011,
+        "k": 31,
+        "mean_lead_time_days": 139.03875968992247,
+        "n": 307,
+        "per_window_average_precision": {
+          "max": 0.5706893058230107,
+          "mean": 0.553458680737316,
+          "min": 0.5406090712809494,
+          "std": 0.012664914817049169,
+          "windows": 3
+        },
+        "positives": 129,
+        "precision_at_k": 0.6129032258064516,
+        "prevalence": 0.4201954397394137,
+        "recall_at_k": 0.14728682170542637,
+        "true_positives_at_k": 19
+      },
+      "method": "company_base_rate",
+      "method_family": "statistical_baseline",
+      "source": "experiments/reverse_rd_v2/continuation_metrics.json",
+      "target": "continuation",
+      "uncertainty": {
+        "note": "Population std across three origins, not a confidence interval",
+        "three_window_std": 0.012664914817049169
+      }
+    },
+    {
+      "final_origin_metrics": {
+        "average_precision": 0.5068324186145513,
+        "brier": 0.24611186559008988,
+        "ece": 0.10030374097453781,
+        "false_positive_rate_at_0_5": 0.4101123595505618,
+        "k": 31,
+        "mean_lead_time_days": 139.03875968992247,
+        "n": 307,
+        "per_window_average_precision": {
+          "max": 0.5075946135721301,
+          "mean": 0.5046601168635125,
+          "min": 0.49955331840385614,
+          "std": 0.003624433580483178,
+          "windows": 3
+        },
+        "positives": 129,
+        "precision_at_k": 0.45161290322580644,
+        "prevalence": 0.4201954397394137,
+        "recall_at_k": 0.10852713178294573,
+        "true_positives_at_k": 14
+      },
+      "method": "track_base_rate",
+      "method_family": "statistical_baseline",
+      "source": "experiments/reverse_rd_v2/continuation_metrics.json",
+      "target": "continuation",
+      "uncertainty": {
+        "note": "Population std across three origins, not a confidence interval",
+        "three_window_std": 0.003624433580483178
+      }
+    },
+    {
+      "final_origin_metrics": {
+        "average_precision": 0.7912589226819778,
+        "brier": 0.17328983052360156,
+        "ece": 0.11046660583011003,
+        "false_positive_rate_at_0_5": 0.24719101123595505,
+        "k": 31,
+        "mean_lead_time_days": 139.03875968992247,
+        "n": 307,
+        "per_window_average_precision": {
+          "max": 0.7912589226819778,
+          "mean": 0.755469838917389,
+          "min": 0.7364607328838956,
+          "std": 0.025323061173282504,
+          "windows": 3
+        },
+        "positives": 129,
+        "precision_at_k": 0.967741935483871,
+        "prevalence": 0.4201954397394137,
+        "recall_at_k": 0.23255813953488372,
+        "true_positives_at_k": 30
+      },
+      "method": "pair_base_rate",
+      "method_family": "statistical_baseline",
+      "source": "experiments/reverse_rd_v2/continuation_metrics.json",
+      "target": "continuation",
+      "uncertainty": {
+        "note": "Population std across three origins, not a confidence interval",
+        "three_window_std": 0.025323061173282504
+      }
+    },
+    {
+      "final_origin_metrics": {
+        "average_precision": 0.015151515151515152,
+        "brier": 0.014933503790899888,
+        "ece": 0.003399566262235509,
+        "false_positive_rate_at_0_5": 0.0,
+        "k": 172,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "per_window_average_precision": {
+          "max": 0.01568855316676351,
+          "mean": 0.015119356880386346,
+          "min": 0.014518002322880372,
+          "std": 0.00047841609179344926,
+          "windows": 3
+        },
+        "positives": 26,
+        "precision_at_k": 0.011627906976744186,
+        "prevalence": 0.015151515151515152,
+        "recall_at_k": 0.07692307692307693,
+        "true_positives_at_k": 2
+      },
+      "method": "constant_training_prevalence",
+      "method_family": "statistical_baseline",
+      "source": "experiments/reverse_rd_v2/entry_metrics.json",
+      "target": "entry",
+      "uncertainty": {
+        "note": "Population std across three origins, not a confidence interval",
+        "three_window_std": 0.00047841609179344926
+      }
+    },
+    {
+      "final_origin_metrics": {
+        "average_precision": 0.04173558937284826,
+        "brier": 0.014756224134432255,
+        "ece": 0.00359997608313381,
+        "false_positive_rate_at_0_5": 0.0,
+        "k": 172,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "per_window_average_precision": {
+          "max": 0.0655337356878378,
+          "mean": 0.052127758357348876,
+          "min": 0.04173558937284826,
+          "std": 0.009946531139620957,
+          "windows": 3
+        },
+        "positives": 26,
+        "precision_at_k": 0.046511627906976744,
+        "prevalence": 0.015151515151515152,
+        "recall_at_k": 0.3076923076923077,
+        "true_positives_at_k": 8
+      },
+      "method": "company_base_rate",
+      "method_family": "statistical_baseline",
+      "source": "experiments/reverse_rd_v2/entry_metrics.json",
+      "target": "entry",
+      "uncertainty": {
+        "note": "Population std across three origins, not a confidence interval",
+        "three_window_std": 0.009946531139620957
+      }
+    },
+    {
+      "final_origin_metrics": {
+        "average_precision": 0.03231157119210804,
+        "brier": 0.014848755253557201,
+        "ece": 0.003592866386164035,
+        "false_positive_rate_at_0_5": 0.0,
+        "k": 172,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "per_window_average_precision": {
+          "max": 0.04792583148092744,
+          "mean": 0.0371364108596765,
+          "min": 0.031171829905994018,
+          "std": 0.00764344819901439,
+          "windows": 3
+        },
+        "positives": 26,
+        "precision_at_k": 0.03488372093023256,
+        "prevalence": 0.015151515151515152,
+        "recall_at_k": 0.23076923076923078,
+        "true_positives_at_k": 6
+      },
+      "method": "track_base_rate",
+      "method_family": "statistical_baseline",
+      "source": "experiments/reverse_rd_v2/entry_metrics.json",
+      "target": "entry",
+      "uncertainty": {
+        "note": "Population std across three origins, not a confidence interval",
+        "three_window_std": 0.00764344819901439
+      }
+    },
+    {
+      "final_origin_metrics": {
+        "average_precision": 0.027826340326340328,
+        "brier": 0.01721061831157665,
+        "ece": 0.018100462748343878,
+        "false_positive_rate_at_0_5": 0.004142011834319527,
+        "k": 172,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "per_window_average_precision": {
+          "max": 0.07946333453482318,
+          "mean": 0.05151116651686145,
+          "min": 0.027826340326340328,
+          "std": 0.02129557774790956,
+          "windows": 3
+        },
+        "positives": 26,
+        "precision_at_k": 0.023255813953488372,
+        "prevalence": 0.015151515151515152,
+        "recall_at_k": 0.15384615384615385,
+        "true_positives_at_k": 4
+      },
+      "method": "pair_base_rate",
+      "method_family": "statistical_baseline",
+      "source": "experiments/reverse_rd_v2/entry_metrics.json",
+      "target": "entry",
+      "uncertainty": {
+        "note": "Population std across three origins, not a confidence interval",
+        "three_window_std": 0.02129557774790956
+      }
+    },
+    {
+      "feature_count": 10,
+      "final_origin_metrics": {
+        "average_precision": 0.793476494625078,
+        "brier": 0.17213399933774418,
+        "ece": 0.08112028344071491,
+        "false_positive_rate_at_0_5": 0.2752808988764045,
+        "k": 31,
+        "mean_lead_time_days": 139.03875968992247,
+        "n": 307,
+        "per_window_average_precision": {
+          "mean": 0.7737180954517645,
+          "std": 0.02315589932136742,
+          "values": [
+            0.7864552120251936,
+            0.7412225797050219,
+            0.793476494625078
+          ]
+        },
+        "positives": 129,
+        "precision_at_k": 0.9354838709677419,
+        "prevalence": 0.4201954397394137,
+        "recall_at_k": 0.2248062015503876,
+        "true_positives_at_k": 29
+      },
+      "method": "regulatory_only",
+      "method_family": "lightweight_logistic_regression",
+      "source": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "target": "continuation",
+      "uncertainty": {
+        "note": "Bootstrap interval is for the final origin; per-window values expose instability.",
+        "three_window_std": 0.02315589932136742,
+        "versus_pair_baseline": {
+          "ci_high": 0.036773758559445424,
+          "ci_low": -0.031599292588537664,
+          "confidence_level": 0.95,
+          "delta": 0.0022175719431001273,
+          "mean_delta": 0.0029450480963300095,
+          "model_pr_auc": 0.793476494625078,
+          "p_delta_le_zero": 0.431,
+          "pair_baseline_pr_auc": 0.7912589226819778,
+          "persistence_share_of_lift_over_constant_prevalence": 0.9940592432589986,
+          "resamples": 2000,
+          "seed": 7,
+          "valid_resamples": 2000
+        }
+      }
+    },
+    {
+      "feature_count": 21,
+      "final_origin_metrics": {
+        "average_precision": 0.7921988470383661,
+        "brier": 0.1721035586735966,
+        "ece": 0.0737371499308207,
+        "false_positive_rate_at_0_5": 0.2640449438202247,
+        "k": 31,
+        "mean_lead_time_days": 139.03875968992247,
+        "n": 307,
+        "per_window_average_precision": {
+          "mean": 0.7726885860781794,
+          "std": 0.023819955632584534,
+          "values": [
+            0.7867157540037596,
+            0.7391511571924124,
+            0.7921988470383661
+          ]
+        },
+        "positives": 129,
+        "precision_at_k": 0.9354838709677419,
+        "prevalence": 0.4201954397394137,
+        "recall_at_k": 0.2248062015503876,
+        "true_positives_at_k": 29
+      },
+      "method": "regulatory_financial",
+      "method_family": "lightweight_logistic_regression",
+      "source": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "target": "continuation",
+      "uncertainty": {
+        "note": "Bootstrap interval is for the final origin; per-window values expose instability.",
+        "three_window_std": 0.023819955632584534,
+        "versus_pair_baseline": {
+          "ci_high": 0.035645377077036744,
+          "ci_low": -0.03264208621191311,
+          "confidence_level": 0.95,
+          "delta": 0.0009399243563882331,
+          "mean_delta": 0.0016944864799580963,
+          "model_pr_auc": 0.7921988470383661,
+          "p_delta_le_zero": 0.465,
+          "pair_baseline_pr_auc": 0.7912589226819778,
+          "persistence_share_of_lift_over_constant_prevalence": 0.9974733447652728,
+          "resamples": 2000,
+          "seed": 7,
+          "valid_resamples": 2000
+        }
+      }
+    },
+    {
+      "feature_count": 18,
+      "final_origin_metrics": {
+        "average_precision": 0.7920201542197304,
+        "brier": 0.17195468588007107,
+        "ece": 0.08043260870747038,
+        "false_positive_rate_at_0_5": 0.2696629213483146,
+        "k": 31,
+        "mean_lead_time_days": 139.03875968992247,
+        "n": 307,
+        "per_window_average_precision": {
+          "mean": 0.7712470148746973,
+          "std": 0.023441174600768052,
+          "values": [
+            0.7832343253151476,
+            0.7384865650892137,
+            0.7920201542197304
+          ]
+        },
+        "positives": 129,
+        "precision_at_k": 0.9354838709677419,
+        "prevalence": 0.4201954397394137,
+        "recall_at_k": 0.2248062015503876,
+        "true_positives_at_k": 29
+      },
+      "method": "regulatory_market",
+      "method_family": "lightweight_logistic_regression",
+      "source": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "target": "continuation",
+      "uncertainty": {
+        "note": "Bootstrap interval is for the final origin; per-window values expose instability.",
+        "three_window_std": 0.023441174600768052,
+        "versus_pair_baseline": {
+          "ci_high": 0.03604256930842242,
+          "ci_low": -0.0337643069594501,
+          "confidence_level": 0.95,
+          "delta": 0.000761231537752538,
+          "mean_delta": 0.0014415978075905218,
+          "model_pr_auc": 0.7920201542197304,
+          "p_delta_le_zero": 0.467,
+          "pair_baseline_pr_auc": 0.7912589226819778,
+          "persistence_share_of_lift_over_constant_prevalence": 0.9979527139856303,
+          "resamples": 2000,
+          "seed": 7,
+          "valid_resamples": 2000
+        }
+      }
+    },
+    {
+      "feature_count": 15,
+      "final_origin_metrics": {
+        "average_precision": 0.7933485818937521,
+        "brier": 0.17204675441633754,
+        "ece": 0.08667669020856054,
+        "false_positive_rate_at_0_5": 0.28651685393258425,
+        "k": 31,
+        "mean_lead_time_days": 139.03875968992247,
+        "n": 307,
+        "per_window_average_precision": {
+          "mean": 0.7715934834887609,
+          "std": 0.02413084719787361,
+          "values": [
+            0.7834861659445633,
+            0.7379457026279675,
+            0.7933485818937521
+          ]
+        },
+        "positives": 129,
+        "precision_at_k": 0.9354838709677419,
+        "prevalence": 0.4201954397394137,
+        "recall_at_k": 0.2248062015503876,
+        "true_positives_at_k": 29
+      },
+      "method": "regulatory_publication",
+      "method_family": "lightweight_logistic_regression",
+      "source": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "target": "continuation",
+      "uncertainty": {
+        "note": "Bootstrap interval is for the final origin; per-window values expose instability.",
+        "three_window_std": 0.02413084719787361,
+        "versus_pair_baseline": {
+          "ci_high": 0.03635381609181343,
+          "ci_low": -0.03170656374982128,
+          "confidence_level": 0.95,
+          "delta": 0.0020896592117742863,
+          "mean_delta": 0.0027984935305725815,
+          "model_pr_auc": 0.7933485818937521,
+          "p_delta_le_zero": 0.432,
+          "pair_baseline_pr_auc": 0.7912589226819778,
+          "persistence_share_of_lift_over_constant_prevalence": 0.9943999956701155,
+          "resamples": 2000,
+          "seed": 7,
+          "valid_resamples": 2000
+        }
+      }
+    },
+    {
+      "feature_count": 34,
+      "final_origin_metrics": {
+        "average_precision": 0.7866961085637085,
+        "brier": 0.17234137798220292,
+        "ece": 0.06277679122379393,
+        "false_positive_rate_at_0_5": 0.24719101123595505,
+        "k": 31,
+        "mean_lead_time_days": 139.03875968992247,
+        "n": 307,
+        "per_window_average_precision": {
+          "mean": 0.7681617320249511,
+          "std": 0.024794988833081007,
+          "values": [
+            0.7846733116002268,
+            0.733115775910918,
+            0.7866961085637085
+          ]
+        },
+        "positives": 129,
+        "precision_at_k": 0.9354838709677419,
+        "prevalence": 0.4201954397394137,
+        "recall_at_k": 0.2248062015503876,
+        "true_positives_at_k": 29
+      },
+      "method": "all_available_fusion",
+      "method_family": "lightweight_logistic_regression",
+      "source": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "target": "continuation",
+      "uncertainty": {
+        "note": "Bootstrap interval is for the final origin; per-window values expose instability.",
+        "three_window_std": 0.024794988833081007,
+        "versus_pair_baseline": {
+          "ci_high": 0.030832666159155697,
+          "ci_low": -0.03986183897518358,
+          "confidence_level": 0.95,
+          "delta": -0.004562814118269309,
+          "mean_delta": -0.003742707743617278,
+          "model_pr_auc": 0.7866961085637085,
+          "p_delta_le_zero": 0.5875,
+          "pair_baseline_pr_auc": 0.7912589226819778,
+          "persistence_share_of_lift_over_constant_prevalence": 1.0124496747384022,
+          "resamples": 2000,
+          "seed": 7,
+          "valid_resamples": 2000
+        }
+      }
+    },
+    {
+      "feature_count": 10,
+      "final_origin_metrics": {
+        "average_precision": 0.11392697072426704,
+        "brier": 0.014298044456379066,
+        "ece": 0.004060177686823418,
+        "false_positive_rate_at_0_5": 0.0,
+        "k": 172,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "per_window_average_precision": {
+          "mean": 0.10679226867930976,
+          "std": 0.013675486663349912,
+          "values": [
+            0.11879252579894639,
+            0.08765730951471584,
+            0.11392697072426704
+          ]
+        },
+        "positives": 26,
+        "precision_at_k": 0.06395348837209303,
+        "prevalence": 0.015151515151515152,
+        "recall_at_k": 0.4230769230769231,
+        "true_positives_at_k": 11
+      },
+      "method": "shared_regulatory_only",
+      "method_family": "lightweight_logistic_regression",
+      "source": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "target": "entry",
+      "uncertainty": {
+        "note": "Bootstrap interval is for the final origin; per-window values expose instability.",
+        "three_window_std": 0.013675486663349912,
+        "versus_pair_baseline": {
+          "ci_high": 0.21938887630378195,
+          "ci_low": 0.008276134342114383,
+          "confidence_level": 0.95,
+          "delta": 0.0861006303979267,
+          "mean_delta": 0.09568016132191005,
+          "model_pr_auc": 0.11392697072426704,
+          "p_delta_le_zero": 0.014,
+          "pair_baseline_pr_auc": 0.027826340326340328,
+          "persistence_share_of_lift_over_constant_prevalence": 0.12831958203918062,
+          "resamples": 2000,
+          "seed": 7,
+          "valid_resamples": 2000
+        }
+      }
+    },
+    {
+      "feature_count": 21,
+      "final_origin_metrics": {
+        "average_precision": 0.11634672055344537,
+        "brier": 0.014330359964299313,
+        "ece": 0.004585365469570737,
+        "false_positive_rate_at_0_5": 0.0,
+        "k": 172,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "per_window_average_precision": {
+          "mean": 0.11486920168282355,
+          "std": 0.014715098677099104,
+          "values": [
+            0.1321072021642875,
+            0.0961536823307378,
+            0.11634672055344537
+          ]
+        },
+        "positives": 26,
+        "precision_at_k": 0.08139534883720931,
+        "prevalence": 0.015151515151515152,
+        "recall_at_k": 0.5384615384615384,
+        "true_positives_at_k": 14
+      },
+      "method": "shared_financial",
+      "method_family": "lightweight_logistic_regression",
+      "source": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "target": "entry",
+      "uncertainty": {
+        "note": "Bootstrap interval is for the final origin; per-window values expose instability.",
+        "three_window_std": 0.014715098677099104,
+        "versus_pair_baseline": {
+          "ci_high": 0.21949094791168505,
+          "ci_low": 0.01625466687193526,
+          "confidence_level": 0.95,
+          "delta": 0.08852038022710504,
+          "mean_delta": 0.09866385046452186,
+          "model_pr_auc": 0.11634672055344537,
+          "p_delta_le_zero": 0.011,
+          "pair_baseline_pr_auc": 0.027826340326340328,
+          "persistence_share_of_lift_over_constant_prevalence": 0.12525124213625455,
+          "resamples": 2000,
+          "seed": 7,
+          "valid_resamples": 2000
+        }
+      }
+    },
+    {
+      "feature_count": 16,
+      "final_origin_metrics": {
+        "average_precision": 0.10047578467453702,
+        "brier": 0.014314809225001036,
+        "ece": 0.0031835164304270603,
+        "false_positive_rate_at_0_5": 0.0,
+        "k": 172,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "per_window_average_precision": {
+          "mean": 0.11086249458843579,
+          "std": 0.018675043935853897,
+          "values": [
+            0.13708495061705483,
+            0.09502674847371553,
+            0.10047578467453702
+          ]
+        },
+        "positives": 26,
+        "precision_at_k": 0.06976744186046512,
+        "prevalence": 0.015151515151515152,
+        "recall_at_k": 0.46153846153846156,
+        "true_positives_at_k": 12
+      },
+      "method": "entry_specific_features",
+      "method_family": "lightweight_logistic_regression",
+      "source": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "target": "entry",
+      "uncertainty": {
+        "note": "Bootstrap interval is for the final origin; per-window values expose instability.",
+        "three_window_std": 0.018675043935853897,
+        "versus_pair_baseline": {
+          "ci_high": 0.1801981564343706,
+          "ci_low": 0.013423717849043445,
+          "confidence_level": 0.95,
+          "delta": 0.0726494443481967,
+          "mean_delta": 0.0813130412941975,
+          "model_pr_auc": 0.10047578467453702,
+          "p_delta_le_zero": 0.009,
+          "pair_baseline_pr_auc": 0.027826340326340328,
+          "persistence_share_of_lift_over_constant_prevalence": 0.14854888586424175,
+          "resamples": 2000,
+          "seed": 7,
+          "valid_resamples": 2000
+        }
+      }
+    },
+    {
+      "feature_count": 27,
+      "final_origin_metrics": {
+        "average_precision": 0.10220480143856071,
+        "brier": 0.01436083014005574,
+        "ece": 0.0032319694778947623,
+        "false_positive_rate_at_0_5": 0.0,
+        "k": 172,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "per_window_average_precision": {
+          "mean": 0.11818023968949844,
+          "std": 0.022482944005210975,
+          "values": [
+            0.14997579757093243,
+            0.10236012005900219,
+            0.10220480143856071
+          ]
+        },
+        "positives": 26,
+        "precision_at_k": 0.06976744186046512,
+        "prevalence": 0.015151515151515152,
+        "recall_at_k": 0.46153846153846156,
+        "true_positives_at_k": 12
+      },
+      "method": "entry_financial",
+      "method_family": "lightweight_logistic_regression",
+      "source": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "target": "entry",
+      "uncertainty": {
+        "note": "Bootstrap interval is for the final origin; per-window values expose instability.",
+        "three_window_std": 0.022482944005210975,
+        "versus_pair_baseline": {
+          "ci_high": 0.1668094428696264,
+          "ci_low": 0.01771553986777745,
+          "confidence_level": 0.95,
+          "delta": 0.07437846111222038,
+          "mean_delta": 0.08082946275155083,
+          "model_pr_auc": 0.10220480143856071,
+          "p_delta_le_zero": 0.0095,
+          "pair_baseline_pr_auc": 0.027826340326340328,
+          "persistence_share_of_lift_over_constant_prevalence": 0.14559846865552878,
+          "resamples": 2000,
+          "seed": 7,
+          "valid_resamples": 2000
+        }
+      }
+    },
+    {
+      "feature_count": 35,
+      "final_origin_metrics": {
+        "average_precision": 0.09686514938013059,
+        "brier": 0.014458503664979604,
+        "ece": 0.0033465689086281288,
+        "false_positive_rate_at_0_5": 0.000591715976331361,
+        "k": 172,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "per_window_average_precision": {
+          "mean": 0.11942572460559309,
+          "std": 0.026395517908115382,
+          "values": [
+            0.1564616015646904,
+            0.10495042287195827,
+            0.09686514938013059
+          ]
+        },
+        "positives": 26,
+        "precision_at_k": 0.0755813953488372,
+        "prevalence": 0.015151515151515152,
+        "recall_at_k": 0.5,
+        "true_positives_at_k": 13
+      },
+      "method": "entry_market",
+      "method_family": "lightweight_logistic_regression",
+      "source": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "target": "entry",
+      "uncertainty": {
+        "note": "Bootstrap interval is for the final origin; per-window values expose instability.",
+        "three_window_std": 0.026395517908115382,
+        "versus_pair_baseline": {
+          "ci_high": 0.16006764863294895,
+          "ci_low": 0.01586221155134948,
+          "confidence_level": 0.95,
+          "delta": 0.06903880905379026,
+          "mean_delta": 0.07513178952754708,
+          "model_pr_auc": 0.09686514938013059,
+          "p_delta_le_zero": 0.0095,
+          "pair_baseline_pr_auc": 0.027826340326340328,
+          "persistence_share_of_lift_over_constant_prevalence": 0.1551127335661514,
+          "resamples": 2000,
+          "seed": 7,
+          "valid_resamples": 2000
+        }
+      }
+    },
+    {
+      "feature_count": 32,
+      "final_origin_metrics": {
+        "average_precision": 0.10508342153831597,
+        "brier": 0.01435059792308126,
+        "ece": 0.0025682647737198605,
+        "false_positive_rate_at_0_5": 0.0,
+        "k": 172,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "per_window_average_precision": {
+          "mean": 0.1191350523657169,
+          "std": 0.02188990822422,
+          "values": [
+            0.15004948172863988,
+            0.10227225383019486,
+            0.10508342153831597
+          ]
+        },
+        "positives": 26,
+        "precision_at_k": 0.0755813953488372,
+        "prevalence": 0.015151515151515152,
+        "recall_at_k": 0.5,
+        "true_positives_at_k": 13
+      },
+      "method": "entry_publication",
+      "method_family": "lightweight_logistic_regression",
+      "source": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "target": "entry",
+      "uncertainty": {
+        "note": "Bootstrap interval is for the final origin; per-window values expose instability.",
+        "three_window_std": 0.02188990822422,
+        "versus_pair_baseline": {
+          "ci_high": 0.17564872086639916,
+          "ci_low": 0.018833711416291844,
+          "confidence_level": 0.95,
+          "delta": 0.07725708121197564,
+          "mean_delta": 0.08436850628665125,
+          "model_pr_auc": 0.10508342153831597,
+          "p_delta_le_zero": 0.008,
+          "pair_baseline_pr_auc": 0.027826340326340328,
+          "persistence_share_of_lift_over_constant_prevalence": 0.14093802393457816,
+          "resamples": 2000,
+          "seed": 7,
+          "valid_resamples": 2000
+        }
+      }
+    },
+    {
+      "feature_count": 40,
+      "final_origin_metrics": {
+        "average_precision": 0.09786330745130628,
+        "brier": 0.014450496525981354,
+        "ece": 0.00325420617018153,
+        "false_positive_rate_at_0_5": 0.000591715976331361,
+        "k": 172,
+        "mean_lead_time_days": 189.19230769230768,
+        "n": 1716,
+        "per_window_average_precision": {
+          "mean": 0.11965803809563347,
+          "std": 0.02599847895172709,
+          "values": [
+            0.1561995771968646,
+            0.10491122963872956,
+            0.09786330745130628
+          ]
+        },
+        "positives": 26,
+        "precision_at_k": 0.0755813953488372,
+        "prevalence": 0.015151515151515152,
+        "recall_at_k": 0.5,
+        "true_positives_at_k": 13
+      },
+      "method": "all_available_fusion",
+      "method_family": "lightweight_logistic_regression",
+      "source": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "target": "entry",
+      "uncertainty": {
+        "note": "Bootstrap interval is for the final origin; per-window values expose instability.",
+        "three_window_std": 0.02599847895172709,
+        "versus_pair_baseline": {
+          "ci_high": 0.16280733099360345,
+          "ci_low": 0.016521064507507503,
+          "confidence_level": 0.95,
+          "delta": 0.07003696712496596,
+          "mean_delta": 0.07631739534308656,
+          "model_pr_auc": 0.09786330745130628,
+          "p_delta_le_zero": 0.0095,
+          "pair_baseline_pr_auc": 0.027826340326340328,
+          "persistence_share_of_lift_over_constant_prevalence": 0.1532408477969493,
+          "resamples": 2000,
+          "seed": 7,
+          "valid_resamples": 2000
+        }
+      }
+    }
+  ],
+  "protocol": "experiments/phoenix_001/hypotheses.json",
+  "source_artifacts": [
+    {
+      "path": "experiments/reverse_rd_v2/continuation_metrics.json",
+      "sha256": "7c73013859136143b08ce0806f3cfd74985a3444d437d748d98cc9cc4b0e5306"
+    },
+    {
+      "path": "experiments/reverse_rd_v2/entry_metrics.json",
+      "sha256": "1c0c4c3863902acf1a3128537c3b57b3f4a132556f8fda44431ed166141872c2"
+    },
+    {
+      "path": "experiments/reverse_rd_v2/ablation_metrics.json",
+      "sha256": "33b1e67c035c16dbdd817ad0a3640475800f21d0f414b74d5e59bed5ef5d3715"
+    },
+    {
+      "path": "experiments/reverse_rd_v2/publication_metrics.json",
+      "sha256": "528233dcbe9705532dbddabaec63d8e713eb529c4b2bdf748ba94ed75534bb38"
+    },
+    {
+      "path": "experiments/reverse_rd_v2/market_metrics.json",
+      "sha256": "b0b2917f329f259bc7784488b29644abca1e891c9c979bbd63299615daa4d2a7"
+    },
+    {
+      "path": "experiments/detect_v1/realdetect.json",
+      "sha256": "38c941b3f92fac8d4bba131c106109d4d7b6aecca81120ae48e09d56e04fe273"
+    }
+  ],
+  "source_policy": "Read-only frozen artefacts; no raw store, model or prior result was modified or regenerated.",
+  "subgroup_stability": {
+    "continuation": {
+      "rd_financial": {
+        "company": {
+          "ap_max": 1.0,
+          "ap_min": 0.3333333333333333,
+          "groups_with_ap": 10,
+          "positive_count_max": 14,
+          "positive_count_min": 1,
+          "warning": "Subgroup AP is unstable when positives are sparse; ranges are descriptive, not rankings."
+        },
+        "track": {
+          "ap_max": 1.0,
+          "ap_min": 0.6071164946164946,
+          "groups_with_ap": 12,
+          "positive_count_max": 16,
+          "positive_count_min": 3,
+          "warning": "Subgroup AP is unstable when positives are sparse; ranges are descriptive, not rankings."
+        }
+      },
+      "rd_only": {
+        "company": {
+          "ap_max": 1.0,
+          "ap_min": 0.3333333333333333,
+          "groups_with_ap": 10,
+          "positive_count_max": 14,
+          "positive_count_min": 1,
+          "warning": "Subgroup AP is unstable when positives are sparse; ranges are descriptive, not rankings."
+        },
+        "track": {
+          "ap_max": 1.0,
+          "ap_min": 0.6160450660450661,
+          "groups_with_ap": 12,
+          "positive_count_max": 16,
+          "positive_count_min": 3,
+          "warning": "Subgroup AP is unstable when positives are sparse; ranges are descriptive, not rankings."
+        }
+      }
+    },
+    "entry": {
+      "rd_financial": {
+        "company": {
+          "ap_max": 1.0,
+          "ap_min": 0.038461538461538464,
+          "groups_with_ap": 20,
+          "positive_count_max": 2,
+          "positive_count_min": 1,
+          "warning": "Subgroup AP is unstable when positives are sparse; ranges are descriptive, not rankings."
+        },
+        "track": {
+          "ap_max": 1.0,
+          "ap_min": 0.02631578947368421,
+          "groups_with_ap": 17,
+          "positive_count_max": 3,
+          "positive_count_min": 1,
+          "warning": "Subgroup AP is unstable when positives are sparse; ranges are descriptive, not rankings."
+        }
+      },
+      "rd_only": {
+        "company": {
+          "ap_max": 1.0,
+          "ap_min": 0.038461538461538464,
+          "groups_with_ap": 20,
+          "positive_count_max": 2,
+          "positive_count_min": 1,
+          "warning": "Subgroup AP is unstable when positives are sparse; ranges are descriptive, not rankings."
+        },
+        "track": {
+          "ap_max": 1.0,
+          "ap_min": 0.025,
+          "groups_with_ap": 17,
+          "positive_count_max": 3,
+          "positive_count_min": 1,
+          "warning": "Subgroup AP is unstable when positives are sparse; ranges are descriptive, not rankings."
+        }
+      }
+    }
+  }
+}
