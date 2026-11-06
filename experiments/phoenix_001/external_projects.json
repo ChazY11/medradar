@@ -1,0 +1,676 @@
+[
+  {
+    "name": "SciTrends",
+    "official_url": "https://github.com/ddofer/Trends",
+    "type": "open_source",
+    "license": "No licence file and GitHub API license=null at commit 81711b9; paper is open access, which does not license the code.",
+    "permitted_use": "Public source was inspected and executed in an isolated audit directory. No code or upstream data were copied into MedRadar. Only independently described methods and numerical audit findings are candidates for adaptation.",
+    "core_methods": [
+      "Topic-year publication counts and five-year-ahead differenced targets",
+      "Lag, growth, review/original-research ratio and patent features",
+      "Ridge historical baselines and CatBoost regression with row-wise TimeSeriesSplit",
+      "Topic text embeddings in a separate lane",
+      "CRISPR patent/publication lag correlations"
+    ],
+    "data_dependencies": "Bundled trends_v6.csv.gz and derived context; PubMed yearly counts, review flags, patents and optional topic embeddings. MedRadar currently has zero collected USPTO patent rows.",
+    "accessibility": "Official repository and bundled data accessible; no dependency lock or licence file; no release tags observed.",
+    "local_run": {
+      "status": "partial_reproduction_completed",
+      "commit": "81711b94181bb8d1f5bd93379670bf3250dfc343",
+      "core_no_dl": "4,020 evaluation rows, 123 topics, 30 folds. CatBoost R2=0.845321, RMSE=153.694052; single-feature Ridge R2=0.196297. All 30 folds shared at least one calendar year between train and test.",
+      "crispr": "19 annual rows reproduced: same-year r=0.938010, future-patents shift(-1) r=0.887012; descriptive only.",
+      "logs": [
+        "experiments/phoenix_001/logs/017-scitreands-core-final.json",
+        "experiments/phoenix_001/logs/018-scitreands-crispr-lag-reproduction.json"
+      ]
+    },
+    "resource_requirements": "No GPU for the reproduced no-DL core. About 88 MB checkout, 97.1 MB CatBoost wheel, 4 CPU cap, 177 s wall time and 324,012 KiB maximum RSS reported by the logger. Embedding lane not run.",
+    "medradar_overlap": "High for historical activity growth, lag/momentum and baseline comparison; no direct patent capability in the current frozen research lane.",
+    "transferable_methods": [
+      "Five-year/lag growth features as candidates, not assumed predictors",
+      "Review-to-original ratio analogue only if a defensible regulatory event subtype exists",
+      "Compare nonlinear gains against persistence and simple linear models on identical cutoffs",
+      "Use publication and patent timings only when their knowledge times are defensible"
+    ],
+    "limitations_and_leakage_risks": [
+      "All 30 reproduced row-wise folds have train/test calendar-year overlap, so they are not clean public-time cutoffs.",
+      "Cell 34 mean-imputes using all X before CV; this leaks distributional information.",
+      "Stored notebook outputs differ for some Ridge lanes, indicating configuration/version drift; exact full-paper reproduction is not claimed.",
+      "CRISPR N=19 correlations are retrospective and do not establish patent lead time or forecasting skill.",
+      "No code licence; no upstream code or bundled data redistribution into MedRadar."
+    ],
+    "reproduction_status": "author_core_no_dl_reproduced_with_documented_compatibility_fixes; embeddings and full-paper tables not reproduced",
+    "evidence": [
+      {
+        "url": "https://github.com/ddofer/Trends",
+        "accessed_at": "2026-11-05",
+        "locator": "README replication notebooks and official commit 81711b9"
+      },
+      {
+        "url": "https://api.github.com/repos/ddofer/Trends",
+        "accessed_at": "2026-11-05",
+        "locator": "license=null, default_branch=main, size=32440 KiB"
+      },
+      {
+        "url": "https://www.sciencedirect.com/science/article/pii/S2405844023109893",
+        "accessed_at": "2026-11-05",
+        "locator": "abstract and open-access article page"
+      },
+      {
+        "url": "https://github.com/ChazY11/medradar/blob/research/phoenix-001-external-methods/experiments/phoenix_001/scitreands_results.json",
+        "accessed_at": "2026-11-05",
+        "locator": "actual rerun metrics, data hashes and 30-fold temporal audit"
+      },
+      {
+        "url": "https://github.com/ChazY11/medradar/blob/research/phoenix-001-external-methods/experiments/phoenix_001/scitreands_crispr_lags.json",
+        "accessed_at": "2026-11-05",
+        "locator": "actual 19-row lag recomputation"
+      }
+    ],
+    "decision": "ADAPT",
+    "decision_reason": "Growth and review-ratio ideas are testable on event histories, but only through an independent implementation with year-purged rolling origins, training-only preprocessing and explicit knowledge times. Upstream code cannot be integrated without a licence."
+  },
+  {
+    "name": "PubTrends",
+    "official_url": "https://github.com/JetBrains-Research/pubtrends",
+    "type": "open_source",
+    "license": "Apache-2.0, copyright 2022 JetBrains Research, LICENSE.txt at official master commit 8520f2a.",
+    "permitted_use": "Source execution, modification and redistribution are allowed with licence, notice, attribution and modified-file notices. Upstream was executed in isolation; no wholesale project import was made.",
+    "core_methods": [
+      "Citation and co-citation network construction",
+      "Graph/topic clustering and topic descriptions",
+      "Frequency-vector cosine weighting for distinctive topic terms",
+      "Semantic embeddings, citation-year gains and temporal exploration"
+    ],
+    "data_dependencies": "Large PubMed or Semantic Scholar paper/citation corpora; full service uses PostgreSQL/pgvector, Redis, Kotlin/Java, NLP models and optional embedding services.",
+    "accessibility": "Official source, tests and licence accessible. Full corpus and configured database are absent locally; heavyweight stack was intentionally not deployed.",
+    "local_run": {
+      "status": "isolated_algorithm_smoke_passed",
+      "commit": "8520f2a19493baa776d929cb3d31a0ae9498132a",
+      "result": "Upstream topics.py reproduced the official fixture: component 0=frequent (2.604346), component 1=rare-1 (2.772589), component 2=rare-2 (2.772589), plus ignore-component case.",
+      "not_run": "Full analyzer, corpus loader, PostgreSQL, Redis, web service, embeddings and end-to-end topic evolution.",
+      "logs": [
+        "experiments/phoenix_001/logs/014-pubtrends-topic-smoke.json"
+      ]
+    },
+    "resource_requirements": "Smoke test used existing NumPy, 0.59 s wall time and 36,220 KiB maximum RSS; no GPU, database or network at runtime. Full pyproject has many NLP, web, database and optional GPU dependencies and was not installed.",
+    "medradar_overlap": "Moderate for future publication/topic evidence organization, low for the present company-track regulatory continuation task. Existing MedRadar track mappings should not be replaced by retrospective clusters.",
+    "transferable_methods": [
+      "Distinctive-term weighting as an explainable cluster-labeling method",
+      "Citation-year gain features only with point-in-time citation snapshots",
+      "Small algorithm tests isolated from service infrastructure"
+    ],
+    "limitations_and_leakage_risks": [
+      "Current citation databases are backfilled snapshots, not historical knowledge states.",
+      "Clusters built on full-history citations cannot be treated as features available at an earlier cutoff.",
+      "A smoke fixture does not validate clustering quality, topic emergence or forecasting.",
+      "No MedRadar publication/citation corpus was available for migration testing."
+    ],
+    "reproduction_status": "upstream_single_algorithm_executed; full_system_not_reproduced_by_design",
+    "evidence": [
+      {
+        "url": "https://github.com/JetBrains-Research/pubtrends",
+        "accessed_at": "2026-11-05",
+        "locator": "README architecture, datasets and official commit 8520f2a"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/JetBrains-Research/pubtrends/master/LICENSE.txt",
+        "accessed_at": "2026-11-05",
+        "locator": "Apache License 2.0 and copyright notice"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/JetBrains-Research/pubtrends/master/pyproject.toml",
+        "accessed_at": "2026-11-05",
+        "locator": "Python 3.12 requirement and full dependency list"
+      },
+      {
+        "url": "https://github.com/ChazY11/medradar/blob/research/phoenix-001-external-methods/experiments/phoenix_001/pubtrends_smoke_results.json",
+        "accessed_at": "2026-11-05",
+        "locator": "actual isolated fixture output"
+      }
+    ],
+    "decision": "STUDY_ONLY",
+    "decision_reason": "The isolated algorithm is real and licensed, but MedRadar lacks the point-in-time paper/citation corpus needed to test its main scientific value. Keep the labeling method as a future adaptation; do not deploy the stack or claim topic-forecast validation."
+  },
+  {
+    "name": "NIH iSearch Analytics",
+    "official_url": "https://support.analytics.nih.gov/hc/en-us/articles/16798095205531-Predicted-breakthroughs-in-biomedicine",
+    "type": "public_research_method",
+    "license": "Public NIH documentation; no project-specific open-source licence or downloadable implementation was located.",
+    "permitted_use": "Study public algorithm descriptions and historical cases only. Do not infer unpublished scoring details or claim access to NIH's internal model/data.",
+    "core_methods": [
+      "Recursive MultiLevel Clustering (rMLC) for predicted breakthrough topics",
+      "Historical backtesting narratives for CAR-T, mRNA vaccines and PrEP behavioral research",
+      "Linked publications, grants, patents, trials and approved drugs in iSearch"
+    ],
+    "data_dependencies": "NIH states that the method scans more than 35 million publications; iSearch links multiple research-output sources. Exact training snapshots, features, thresholds and model artefacts are not public in the reviewed documentation.",
+    "accessibility": "Search-indexed NIH documentation is accessible in excerpts. Direct HTTPS retrieval failed in this environment with an SSL handshake error. Historical case titles and the 2–12 year prediction claim are corroborated by NIH sources; full scoring detail remains unavailable.",
+    "local_run": {
+      "status": "not_reproduced_public_method_only",
+      "reason": "No NIH-specific implementation, training snapshot or sufficiently detailed scoring specification was available. The unrelated sequence-clustering rMLC literature was not substituted for NIH's method."
+    },
+    "resource_requirements": "Unknown for NIH's full pipeline; likely substantial corpus processing. No local GPU, paid resource or new crawl was used.",
+    "medradar_overlap": "Moderate for cross-source topic emergence and historical case validation; low until MedRadar has point-in-time publication, patent and grant data.",
+    "transferable_methods": [
+      "Define breakthroughs operationally before modelling",
+      "Evaluate predictions against dated historical cases rather than displaying current clusters",
+      "Preserve links to seminal papers and supporting evidence"
+    ],
+    "limitations_and_leakage_risks": [
+      "The public page names rMLC but the reviewed evidence does not disclose enough to implement NIH's scoring unambiguously",
+      "Historical showcase cases can suffer selection and hindsight bias",
+      "Current full-corpus clusters are not historical knowledge states",
+      "A 2–12 year claim requires frozen forecast registries and matured windows, not retrospective narratives"
+    ],
+    "reproduction_status": "blocked_by_unpublished_implementation_and_data; theoretical_audit_only",
+    "evidence": [
+      {
+        "url": "https://support.analytics.nih.gov/hc/en-us/articles/16798095205531-Predicted-breakthroughs-in-biomedicine",
+        "accessed_at": "2026-11-06",
+        "locator": "NIH search-indexed description naming Recursive MultiLevel Clustering"
+      },
+      {
+        "url": "https://officeofbudget.od.nih.gov/pdfs/FY25/insti_center_subs/27-OD_FY25_CJ_Chapter.pdf",
+        "accessed_at": "2026-11-06",
+        "locator": "NIH FY2025 congressional justification: more than 35 million publications and 2–12 year prediction claim"
+      },
+      {
+        "url": "https://support.analytics.nih.gov/hc/en-us/articles/18037300403099-Historical-Predicted-Breakthroughs",
+        "accessed_at": "2026-11-06",
+        "locator": "Historical case index: CAR-T, mRNA vaccines and PrEP behavioral research"
+      }
+    ],
+    "decision": "STUDY_ONLY",
+    "decision_reason": "The historical evaluation concept is valuable, but NIH-specific scoring and data are not reproducible from the public evidence reviewed. Do not build an rMLC lookalike and label it the NIH algorithm."
+  },
+  {
+    "name": "The Lens",
+    "official_url": "https://www.lens.org/",
+    "type": "public_research_method",
+    "license": "Lens Terms of Use v2026.06.01 and API-specific terms. Regular/API data use is non-commercial unless separately agreed; trial API access is approval-based and time-limited, while custom/member access may be paid.",
+    "permitted_use": "Use the public website and study public documentation within the terms. No bulk download, token circumvention or commercial redistribution was attempted.",
+    "core_methods": [
+      "Patent and scholarly MetaRecord normalisation with LensID",
+      "Paper–patent citation joins and influence mapping",
+      "Collections, portfolios and collaboration networks",
+      "Structured patent and scholarly search APIs"
+    ],
+    "data_dependencies": "Aggregated global patent and scholarly metadata from multiple sources, including PubMed, Crossref, OpenAlex and other providers; API token required for programmatic use.",
+    "accessibility": "Public search and documentation accessible. No API token was requested or used. The reviewed API documentation describes a 14-day approved trial for non-commercial/limited academic use and custom paid access for broader use.",
+    "local_run": {
+      "status": "public_documentation_review_only",
+      "reason": "No Lens data were downloaded and no API calls were made. MedRadar has no collected patent rows for a migration experiment."
+    },
+    "resource_requirements": "Public web search needs network but no GPU. Programmatic/bulk access requires approval and possibly a paid plan; neither was acquired.",
+    "medradar_overlap": "High for future patent–publication linkage and entity resolution; no overlap with the current frozen patent feature set because it is empty.",
+    "transferable_methods": [
+      "Persistent identifiers and MetaRecord-style provenance across variants",
+      "Separate patent application, publication and citation knowledge times",
+      "Trace paper-to-patent links as evidence relations rather than assumed commercialisation"
+    ],
+    "limitations_and_leakage_risks": [
+      "Patent applications generally become visible only after publication delays; filing date is not public knowledge time",
+      "Current citation joins are backfilled and can leak future information into historical features",
+      "Provider normalisation can change over time and needs versioning",
+      "Data licence is not a blanket CC0 or commercial-use grant"
+    ],
+    "reproduction_status": "not_reproduced_api_and_data_access_not_requested",
+    "evidence": [
+      {
+        "url": "https://www.lens.org/",
+        "accessed_at": "2026-11-06",
+        "locator": "Public feature, MetaRecord/LensID and scholarly–patent influence descriptions"
+      },
+      {
+        "url": "https://about.lens.org/policies/",
+        "accessed_at": "2026-11-06",
+        "locator": "Terms of Use v2026.06.01 and source-specific acknowledgements"
+      },
+      {
+        "url": "https://support.lens.org/knowledge-base/lens-patent-and-scholar-api/",
+        "accessed_at": "2026-11-06",
+        "locator": "Trial/custom API access and bearer-token requirements"
+      }
+    ],
+    "decision": "STUDY_ONLY",
+    "decision_reason": "MetaRecord and provenance ideas are worth adapting, but current licensing and absent patent data prevent a MedRadar reproduction. No bulk collection should begin before a point-in-time and licence review."
+  },
+  {
+    "name": "PTNS",
+    "official_url": "https://www.nature.com/articles/s41598-024-75913-0",
+    "type": "public_research_method",
+    "license": "Open-access paper. No public implementation licence or code repository was located; the underlying Incopat patent dataset is not included.",
+    "permitted_use": "Report the published architecture and evaluation only. Do not claim reproduction from the paper's reported metrics or redistribute restricted patent data.",
+    "core_methods": [
+      "Yearly temporal patent-network snapshots with publication, IPC, applicant, country and citation relations",
+      "R-GCN relational embeddings and BiLSTM snapshot aggregation",
+      "PCA plus MLP parameterisation of a Richards/generalised logistic citation curve",
+      "New, grown and random patent subtasks with MALE/RMSLE and ablations"
+    ],
+    "data_dependencies": "133,857 polyurethane patents from Incopat, publication years 2004–2023, plus citation histories. Data availability says available on request from the authors, not bundled publicly.",
+    "accessibility": "Full paper and figures accessible through PMC/Nature. Public source code and the raw dataset were not found in the article or associated-data record.",
+    "local_run": {
+      "status": "not_reproduced_no_public_code_or_data",
+      "reason": "There is no official implementation or dataset to run, and MedRadar has zero patent rows. The paper's scores are reported as external claims only."
+    },
+    "resource_requirements": "Authors used PyTorch 2.2.1+cu12.1 and an RTX 4060 laptop GPU; PTNS runtime was 46.49 minutes. No local GPU training was started.",
+    "medradar_overlap": "Conceptually high for temporal company–track–event graphs, but no direct data compatibility with citation trajectories or the absent patent lane.",
+    "transferable_methods": [
+      "Build graph snapshots strictly from information available at each cutoff",
+      "Compare new, growing and random entities separately",
+      "Use ablations against simpler temporal and non-graph models",
+      "Evaluate error as a function of forecast horizon"
+    ],
+    "limitations_and_leakage_risks": [
+      "No code or raw data prevents verification of splits, baselines and reported gains",
+      "A single polyurethane corpus does not establish transportability to medical-device regulation",
+      "Backward-looking BiLSTM encoding must only receive the historical snapshot sequence at prediction time",
+      "Patent citations are not regulatory milestones and cannot be substituted for them"
+    ],
+    "reproduction_status": "blocked_no_public_code_and_data_on_request_only",
+    "evidence": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11473824/",
+        "accessed_at": "2026-11-06",
+        "locator": "Methods, dataset construction, Table 4 baselines, ablations and data-on-request statement"
+      },
+      {
+        "url": "https://www.nature.com/articles/s41598-024-75913-0.pdf",
+        "accessed_at": "2026-11-06",
+        "locator": "Official paper PDF and experimental environment"
+      },
+      {
+        "url": "https://pubmed.ncbi.nlm.nih.gov/39402175/",
+        "accessed_at": "2026-11-06",
+        "locator": "Bibliographic confirmation and abstract"
+      }
+    ],
+    "decision": "BLOCKED",
+    "decision_reason": "The method is relevant to H10, but direct reproduction is impossible from the public package: no official code, no raw Incopat data and no MedRadar patent graph. Only the snapshot/evaluation design can inform future work."
+  },
+  {
+    "name": "FDA AI 医疗器械纵向研究",
+    "official_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13505343/",
+    "type": "public_research_method",
+    "license": "Public JMIR/PMC article and supplementary tables. FDA registry and underlying device records are documented as publicly available at no cost; no special code licence is needed for independent statistics.",
+    "permitted_use": "Independently compute statistics from public aggregate counts and cite the paper. Do not imply that manufacturer-level or device-level analyses were rerun without their rows.",
+    "core_methods": [
+      "Four-era specialty distribution and annual authorisation rates",
+      "Specialty Herfindahl–Hirschman Index with 2000 bootstrap resamples",
+      "Cochran–Armitage trends with 17-test Bonferroni correction",
+      "Chi-square/Cramér's V with 10,000-replicate permutation check",
+      "Manufacturer-type logistic, cluster-robust and Firth sensitivity analyses"
+    ],
+    "data_dependencies": "1,430 authorisations from the FDA AI-Enabled Medical Devices List downloaded 2026-03-01, decisions through 2025-12-31; 17 specialty panels and 576 manufacturers. Public supplement supplies complete 17×4 aggregate counts.",
+    "accessibility": "Article, public FDA source documentation and Europe PMC supplementary DOCX accessible. The original PMC download returned a CAPTCHA HTML page, so the official Europe PMC supplementaryFiles API was used instead without bypassing access controls.",
+    "local_run": {
+      "status": "independent_aggregate_reproduction_completed",
+      "result": "HHI=[0.181406,0.427424,0.738128,0.611688], chi-square=328.013095, Cramér V=0.276514, 51 expected cells<5, permutation p=0.00009999, radiology Z=5.300241, cardiovascular Z=-3.435419. Era4–Era3 HHI=-0.126439; this seed gives two-sided bootstrap p=0.001.",
+      "not_run": "Manufacturer regressions, device-level duplicate audit and MedRadar migration were not run from aggregate data.",
+      "logs": [
+        "experiments/phoenix_001/logs/024-fda-ai-final.json"
+      ]
+    },
+    "resource_requirements": "Existing Python/pandas/SciPy/python-docx only; about 5.81 s wall time and 128,144 KiB max RSS; no GPU or paid resource.",
+    "medradar_overlap": "High for descriptive concentration, specialty diffusion and small-sample robustness. It can inform H6, but current missing MedRadar event/specialty tables prevent migration claims.",
+    "transferable_methods": [
+      "Report HHI with bootstrap intervals rather than a point alone",
+      "Separate recent era-specific increases from significant monotonic trends across all eras",
+      "Use permutation checks for sparse contingency tables",
+      "Apply cluster-robust/small-sample sensitivity when firms contribute repeated devices"
+    ],
+    "limitations_and_leakage_risks": [
+      "Descriptive evidence category 1, not evidence that HHI predicts later diffusion",
+      "Four eras are unequal and ordinal trend scores are not annual causal effects",
+      "Updated submissions are distinct authorisations, not necessarily unique products",
+      "Lower-volume manufacturer classification partly uses founding year/naming conventions; technology-company OR rests on only 13 devices/5 firms",
+      "Aggregate supplement cannot validate entity resolution or manufacturer regression"
+    ],
+    "reproduction_status": "independent_implementation_reproduced_aggregate_results; manufacturer_and_medradar_layers_not_reproduced",
+    "evidence": [
+      {
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13505343/",
+        "accessed_at": "2026-11-06",
+        "locator": "Methods, Table 1, statistical analysis, limitations and public data statement"
+      },
+      {
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC13505343/supplementaryFiles",
+        "accessed_at": "2026-11-06",
+        "locator": "Public DOCX Tables S1–S8 used for independent recomputation"
+      },
+      {
+        "url": "https://github.com/ChazY11/medradar/blob/research/phoenix-001-external-methods/experiments/phoenix_001/fda_ai_longitudinal_results.json",
+        "accessed_at": "2026-11-06",
+        "locator": "Actual independent HHI, bootstrap, trend, chi-square and permutation results"
+      }
+    ],
+    "decision": "ADAPT",
+    "decision_reason": "The aggregate methods are transparent and independently reproduced. Adapt HHI/uncertainty/sparse-table robustness to versioned MedRadar specialty panels once raw mappings are available; do not convert descriptive diversification into a forecast."
+  },
+  {
+    "name": "Clarivate DRG Medtech",
+    "official_url": "https://clarivate.com/life-sciences-healthcare/medtech/drg-medtech-competitive-intelligence/",
+    "type": "commercial_platform",
+    "license": "Proprietary commercial platform; public marketing pages only. No code, schema or bulk-data reuse licence was granted.",
+    "permitted_use": "Benchmark publicly described fields, workflow and evidence presentation. Do not copy proprietary content or treat forecast language as validation.",
+    "core_methods": [
+      "Company/device-series/geography competitor taxonomy",
+      "Pipeline brand, product type, indication, timeline and estimated launch fields",
+      "Segment sales, market share, news and analyst insights",
+      "Financial and pipeline forecasting claims"
+    ],
+    "data_dependencies": "Proprietary curated medtech pipeline, financial, market and news data, including Cortellis/BioWorld and analyst input; full source coverage and historical versioning are not public on the reviewed page.",
+    "accessibility": "Public product page accessible; detailed data and platform require commercial engagement. No demo or paid account was accessed.",
+    "local_run": {
+      "status": "public_page_audit_only",
+      "result": "No platform execution or forecast backtest. Public page provides field categories but no accuracy, calibration, backtest or independent evaluation metrics."
+    },
+    "resource_requirements": "Network for public page; commercial subscription for full product. No GPU or purchase used.",
+    "medradar_overlap": "High for company/track/geography competitor views and launch timelines; lower for scientific early-signal validation because its forecast evidence is not public.",
+    "transferable_methods": [
+      "Separate company, device series, geography and indication dimensions",
+      "Distinguish observed pipeline dates from estimated launch dates",
+      "Keep analyst interpretation attached to, but distinct from, source records"
+    ],
+    "limitations_and_leakage_risks": [
+      "No public forecast evaluation or historical frozen snapshots",
+      "Estimated launch dates may be analyst judgements rather than source facts",
+      "Market share/financial measures have different denominators from regulatory activity",
+      "Proprietary taxonomy and data cannot be copied"
+    ],
+    "reproduction_status": "not_reproduced_closed_commercial_platform",
+    "evidence": [
+      {
+        "url": "https://clarivate.com/life-sciences-healthcare/medtech/drg-medtech-competitive-intelligence/",
+        "accessed_at": "2026-11-06",
+        "locator": "Competitor summary, pipeline, financial, news and forecast feature descriptions"
+      },
+      {
+        "url": "https://clarivate.com/life-sciences-healthcare/research-reports/medtech-insights/",
+        "accessed_at": "2026-11-06",
+        "locator": "Public claim of five-plus historical years and ten-year forecasts; no backtest metrics supplied"
+      }
+    ],
+    "decision": "STUDY_ONLY",
+    "decision_reason": "Field design is useful for benchmarking, but there is no reproducible forecast method or public validation evidence to adopt. Observed and estimated dates must remain separate in MedRadar."
+  },
+  {
+    "name": "MedVantage",
+    "official_url": "https://medvantage.ai/",
+    "type": "commercial_platform",
+    "license": "Proprietary pre-launch platform; public product descriptions and illustrative interfaces only. No code or bulk-data licence was granted.",
+    "permitted_use": "Study its public source-linking and entity-resolution design. Do not treat illustrative figures or vendor claims as an independent accuracy audit.",
+    "core_methods": [
+      "Source-linked device/company/product-code/submission profiles",
+      "Nine connected FDA source systems",
+      "Applicant, owner-operator, brand and subsidiary entity resolution",
+      "Predicate-chain extraction from 510(k) PDFs",
+      "Portfolio, competitor and market-entry maps with monitoring"
+    ],
+    "data_dependencies": "Public FDA 510(k), PMA, De Novo, classification, GUDID/UDI, registration, recalls, MAUDE and warning-letter records; extraction and entity-resolution quality are not independently evaluated on the page.",
+    "accessibility": "Public page accessible and explicitly says pre-launch/design partners. Sample views are available on request, not independently tested here.",
+    "local_run": {
+      "status": "public_page_audit_only",
+      "result": "No pre-launch platform access. The page itself labels interfaces illustrative; no public precision/recall for entity resolution, predicate extraction or alerts."
+    },
+    "resource_requirements": "Network for public page; design-partner access for product. No paid resource or GPU used.",
+    "medradar_overlap": "Very high for FDA evidence linking, company identity, product-code history and predicate lineage; overlaps directly with known MedRadar entity-resolution weaknesses.",
+    "transferable_methods": [
+      "Every aggregate should link back to the exact filing and source wording",
+      "Store matched alias/rule/confidence with company identity",
+      "Represent predicates as evidence-bearing lineage edges",
+      "Separate source text from generated summaries"
+    ],
+    "limitations_and_leakage_risks": [
+      "Pre-launch claims have no public independent evaluation",
+      "Subsidiary-to-parent resolution can create false merges and parent/subsidiary granularity drift",
+      "Current predicate chains are backfilled and need first-publication times",
+      "Monitoring is out of scope for PHOENIX and was not enabled"
+    ],
+    "reproduction_status": "not_reproduced_prelaunch_closed_platform",
+    "evidence": [
+      {
+        "url": "https://medvantage.ai/",
+        "accessed_at": "2026-11-06",
+        "locator": "Nine FDA sources, source-linked profiles, entity resolution, predicate reconstruction and pre-launch notice"
+      }
+    ],
+    "decision": "ADAPT",
+    "decision_reason": "The source-linked evidence contract and auditable entity-resolution metadata directly address MedRadar defects. Adapt the design independently; do not import the closed platform or assume its claimed resolution accuracy."
+  },
+  {
+    "name": "CMOP",
+    "official_url": "https://www.cmoinyourpocket.com/",
+    "type": "commercial_platform",
+    "license": "Proprietary commercial service with free and paid tiers; public marketing content only. No code, model or data reuse licence was granted.",
+    "permitted_use": "Review public feature claims only. Do not rely on unnamed testimonials, illustrative query results or absolute accuracy/security statements as scientific evidence.",
+    "core_methods": [
+      "Claimed 15+ real-time source integrations and 24-hour collection",
+      "Semantic search and cited AI chat",
+      "Competitor/subsidiary/brand discovery",
+      "Patent, trial, FDA and publication alerts"
+    ],
+    "data_dependencies": "Vendor lists USPTO, EPO OPS, ClinicalTrials.gov, FDA, PubMed, SEC, CMS, NICE and HAS. Normalisation, entity-resolution rules, historical knowledge times and evaluation datasets are not public.",
+    "accessibility": "Public page accessible with free/Pro/Ultra tiers. No account or paid tokens used.",
+    "local_run": {
+      "status": "public_page_audit_only",
+      "result": "No platform run. Public page provides no reproducible evaluation for 'not hallucinations', enrichment accuracy, subsidiary resolution or 99.9% uptime. Testimonials are unnamed."
+    },
+    "resource_requirements": "Public page needs network; full alerts/AI require account/tokens. No purchase or continuous monitoring used.",
+    "medradar_overlap": "High for cross-source integration but mostly duplicative of existing sources; no clear validated scientific method beyond marketing claims.",
+    "transferable_methods": [
+      "Citations should accompany generated answers",
+      "Source-specific ingestion schedules should be explicit"
+    ],
+    "limitations_and_leakage_risks": [
+      "Absolute 'cited, accurate—not hallucinations' claim has no public benchmark",
+      "'Pending' regulatory display is undefined and must not imply access to confidential FDA reviews",
+      "Real-time collection is outside PHOENIX scope",
+      "Security/uptime/testimonial statements are not scientific validation",
+      "Current AI-enriched relations can contaminate historical features"
+    ],
+    "reproduction_status": "not_reproduced_closed_platform_and_unvalidated_claims",
+    "evidence": [
+      {
+        "url": "https://www.cmoinyourpocket.com/",
+        "accessed_at": "2026-11-06",
+        "locator": "Data-source, AI-chat, alert, pricing, testimonial and compliance claims"
+      }
+    ],
+    "decision": "REJECT",
+    "decision_reason": "No distinctive reproducible method or credible public evaluation was found, and several absolute claims are unverified. Keep generic citation discipline but reject this page as a basis for PHOENIX model or pipeline adoption."
+  },
+  {
+    "name": "NextDevice",
+    "official_url": "https://www.medicube.cn/product/nextdevice/index",
+    "type": "commercial_platform",
+    "license": "Proprietary commercial database; public product pages and reports only. No code, taxonomy or bulk-data reuse licence was granted.",
+    "permitted_use": "Benchmark public classification, technology-generation and lifecycle fields. Do not copy the proprietary label system or infer predictive validity from market reports.",
+    "core_methods": [
+      "Product/sales/R&D/investment lifecycle data",
+      "AI monitoring plus analyst cleaning",
+      "Product classification, technology generation, service item, indication, hot track and performance labels",
+      "Registration, tender, clinical-evaluation and investment links"
+    ],
+    "data_dependencies": "NMPA, procurement platforms, public investment news, patents and clinical-trial sources; current official page lists 5,500+ device classes and other coverage counts. Full historical versions are not public.",
+    "accessibility": "The supplied medicube.cn URL failed in this environment; the current official pharmcube.com/product/nextdevice/index page and indexed medcube.cn description were accessible. No product login used.",
+    "local_run": {
+      "status": "public_page_and_report_audit_only",
+      "result": "No platform execution. Public reports demonstrate descriptive registration/tender analyses, not backtested prediction or entity-resolution accuracy."
+    },
+    "resource_requirements": "Network for public pages; subscription/trial for full database. No purchase used.",
+    "medradar_overlap": "High for technology-track taxonomy, product generations and China registration/procurement context; current MedRadar lacks equivalent versioned Chinese lifecycle mappings.",
+    "transferable_methods": [
+      "Version technology-generation labels independently of event dates",
+      "Separate product, sales, R&D and investment evidence domains",
+      "Retain both current and historical registration status",
+      "Evaluate any label mapping on a dated sample before using it as a feature"
+    ],
+    "limitations_and_leakage_risks": [
+      "Current global label system can leak present-day taxonomy into historical tracks",
+      "Public reports are descriptive and do not validate forecasts",
+      "Vendor coverage counts are not independent completeness audits",
+      "Old URL accessibility changed; source locator must record the current official domain"
+    ],
+    "reproduction_status": "not_reproduced_closed_commercial_platform",
+    "evidence": [
+      {
+        "url": "https://www.pharmcube.com/product/nextdevice/index",
+        "accessed_at": "2026-11-06",
+        "locator": "Current official classification, technology-generation, lifecycle and coverage descriptions"
+      },
+      {
+        "url": "https://www.medcube.cn/product/nextdevice/index",
+        "accessed_at": "2026-11-06",
+        "locator": "Public source monitoring and T+1 update description"
+      },
+      {
+        "url": "https://bydrug.pharmcube.com/news/detail/2ce1affc324850219e2b6f52b952360f",
+        "accessed_at": "2026-11-06",
+        "locator": "Example descriptive use of standardised device labels"
+      }
+    ],
+    "decision": "ADAPT",
+    "decision_reason": "Technology-generation and lifecycle field separation is directly relevant to MedRadar, but labels need versioned independent implementation and temporal audit. No predictive claim is adopted."
+  },
+  {
+    "name": "GBI DEVINT",
+    "official_url": "https://www.gbihealth.com.cn/products/gbi-devint",
+    "type": "commercial_platform",
+    "license": "Proprietary commercial platform; public marketing page only. No code, data or schema reuse licence was granted.",
+    "permitted_use": "Benchmark public lifecycle coverage and traceability claims only.",
+    "core_methods": [
+      "Product R&D, clinical, registration, market-access and commercial lifecycle data",
+      "Registration, clinical trial, tender, marketed-product, policy and news aggregation",
+      "AI-driven data governance and association analysis",
+      "Predefined/custom product categories and analysis tools"
+    ],
+    "data_dependencies": "Proprietary global regulatory, clinical, procurement, product and news collection. Public page gives no field-level provenance model, historical snapshots or validation metrics.",
+    "accessibility": "Public product page accessible; detailed platform requires commercial contact. No account used.",
+    "local_run": {
+      "status": "public_page_audit_only",
+      "result": "No platform run and no public accuracy, lead-time, entity-resolution or forecast evaluation found."
+    },
+    "resource_requirements": "Network for public page; subscription for platform. No paid resource used.",
+    "medradar_overlap": "High for lifecycle and competitive-intelligence presentation; low for novel reproducible research methods.",
+    "transferable_methods": [
+      "Present regulatory activity within a broader lifecycle rather than as isolated approvals",
+      "Keep source traceability visible in competitive comparisons"
+    ],
+    "limitations_and_leakage_risks": [
+      "Lifecycle coverage and AI governance are vendor claims without public quality metrics",
+      "Real-time monitoring is out of scope",
+      "Current commercial taxonomy cannot be assumed historically stable",
+      "No independent prediction evaluation"
+    ],
+    "reproduction_status": "not_reproduced_closed_commercial_platform",
+    "evidence": [
+      {
+        "url": "https://www.gbihealth.com.cn/products/gbi-devint",
+        "accessed_at": "2026-11-06",
+        "locator": "Lifecycle data, AI governance, competitive analysis and traceability claims"
+      },
+      {
+        "url": "https://m.36kr.com/p/2130281558322436",
+        "accessed_at": "2026-11-06",
+        "locator": "Independent report confirming DEVINT product existence and broad positioning, not performance"
+      }
+    ],
+    "decision": "STUDY_ONLY",
+    "decision_reason": "Useful as a lifecycle presentation benchmark, but no distinctive reproducible algorithm or public validation evidence justifies adaptation."
+  },
+  {
+    "name": "DevicePro",
+    "official_url": "https://pharmacodia.com/devicepro.html",
+    "type": "commercial_platform",
+    "license": "Proprietary commercial database; public product page only. No code, data or taxonomy reuse licence was granted.",
+    "permitted_use": "Study public standardisation principles and flag inconsistent coverage reporting. Do not copy the database or treat scale claims as accuracy evidence.",
+    "core_methods": [
+      "Five boards/20+ sub-databases linking product, company, registration, standards, clinical and policy",
+      "AI plus manual same-product/entity normalisation",
+      "Device, IVD, high/low-value consumable and innovation labels",
+      "Track, company, geography, registration and competitor analysis"
+    ],
+    "data_dependencies": "Chinese and US registration, product, company, clinical, standards and policy records. The page gives no public versioning or accuracy evaluation for AI+manual resolution.",
+    "accessibility": "Public page accessible. It simultaneously reports 120k products/78k companies and 2.85M products/110k organisations, plus 1.30M versus 1.43M registration records; these are unreconciled口径 differences.",
+    "local_run": {
+      "status": "public_page_audit_only",
+      "result": "No platform run. Public page supports only feature/scale claims, not entity-resolution precision, historical coverage or prediction quality."
+    },
+    "resource_requirements": "Network for public page; commercial account for full product. No purchase used.",
+    "medradar_overlap": "High for entity/product normalisation and China–US linkage; directly relevant to MedRadar's alias-evidence gaps.",
+    "transferable_methods": [
+      "Use AI+human review for aliases while storing reviewer/rule provenance",
+      "Separate product, company and geographic normalisation",
+      "Publish a single dated coverage dictionary with explicit denominators"
+    ],
+    "limitations_and_leakage_risks": [
+      "Two unreconciled sets of coverage counts on one page undermine direct reuse of headline metrics",
+      "Same-name/same-product merging can be wrong without persistent source IDs",
+      "Current labels applied to history create semantic leakage",
+      "No public forecast or resolution benchmark"
+    ],
+    "reproduction_status": "not_reproduced_closed_commercial_platform",
+    "evidence": [
+      {
+        "url": "https://pharmacodia.com/devicepro.html",
+        "accessed_at": "2026-11-06",
+        "locator": "Standardisation, product/company linkage and conflicting coverage-count sections"
+      }
+    ],
+    "decision": "ADAPT",
+    "decision_reason": "Adopt the principle of AI+manual normalisation with provenance and explicit coverage denominators, not the unverified counts or closed taxonomy. The page's internal inconsistency makes a dated metric dictionary mandatory."
+  },
+  {
+    "name": "众成医械大数据",
+    "official_url": "https://www.joinchain.cn/",
+    "type": "commercial_platform",
+    "license": "Proprietary commercial data platform; public website and sample reports only. No code, schema or bulk-data reuse licence was granted.",
+    "permitted_use": "Benchmark public data domains and report structure. Do not reuse proprietary figures without permission or infer prediction validity.",
+    "core_methods": [
+      "MDCLOUD industry data services, MDCER clinical evaluation and MDBIDS tender services",
+      "Structured tender fields such as project, buyer, supplier, amount, product line and identifiers",
+      "Basic, market, regulatory and research data domains",
+      "Industry/company monitoring and descriptive market reports"
+    ],
+    "data_dependencies": "Public reports describe large product, procurement, regulatory, literature and patent collections with daily updates. Exact entity resolution, historical first-publication times and completeness audits are not public.",
+    "accessibility": "Public site accessible mainly as report/product showcase; detailed platform and sample data require further access. No login or bulk download used.",
+    "local_run": {
+      "status": "public_page_and_report_audit_only",
+      "result": "No platform execution. Public reports show descriptive procurement analysis, not validated forecasting or independent coverage evaluation."
+    },
+    "resource_requirements": "Network for public pages; commercial access for full data. No purchase used.",
+    "medradar_overlap": "High for China procurement and product/company context, but USAspending in MedRadar is already excluded from predictive gain because first-publication time is unknown.",
+    "transferable_methods": [
+      "Structure tender project, buyer, supplier, amount and product identifiers separately",
+      "Compare vendor records with an independent tender sample before estimating coverage",
+      "Keep descriptive market-share analysis distinct from early-signal prediction"
+    ],
+    "limitations_and_leakage_risks": [
+      "Procurement snapshots may lack first-publication time and cannot automatically support backtests",
+      "Public report scale claims are not completeness/accuracy audits",
+      "Tender amount is not company revenue or R&D",
+      "No public predictive-performance evidence"
+    ],
+    "reproduction_status": "not_reproduced_closed_commercial_platform",
+    "evidence": [
+      {
+        "url": "https://www.joinchain.cn/",
+        "accessed_at": "2026-11-06",
+        "locator": "Public product and industry-report showcase"
+      },
+      {
+        "url": "https://pdf.dfcfw.com/pdf/H3_AP202403251628069075_1.pdf",
+        "accessed_at": "2026-11-06",
+        "locator": "Public company/report description of data domains, MDCLOUD, MDCER and MDBIDS"
+      },
+      {
+        "url": "https://pdf.dfcfw.com/pdf/H3_AP202403251628069072_1.pdf",
+        "accessed_at": "2026-11-06",
+        "locator": "Example descriptive life-support procurement analysis"
+      }
+    ],
+    "decision": "STUDY_ONLY",
+    "decision_reason": "The tender schema is a useful benchmark, but the known first-publication-time defect is unresolved and no predictive validation is public. Do not add another procurement source before solving that clock."
+  }
+]
