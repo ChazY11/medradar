@@ -1,0 +1,36 @@
+{
+  "license": "Apache-2.0",
+  "observed": {
+    "ignore_component_two_word": {
+      "0": [],
+      "1": [
+        "frequent",
+        "rare-1"
+      ],
+      "2": [
+        "frequent",
+        "rare-2"
+      ]
+    },
+    "single_word_topics": {
+      "0": "frequent",
+      "1": "rare-1",
+      "2": "rare-2"
+    },
+    "single_word_weights": {
+      "0": 2.604345893761888,
+      "1": 2.7725887298583984,
+      "2": 2.7725887298583984
+    }
+  },
+  "scope": "Topic-description cosine weighting only; no PostgreSQL, Redis, web service, corpus crawler, SpaCy model or GPU.",
+  "source_commit": "8520f2a19493baa776d929cb3d31a0ae9498132a",
+  "source_file": "pysrc/papers/analysis/topics.py",
+  "source_repository": "https://github.com/JetBrains-Research/pubtrends",
+  "status": "passed",
+  "deviation": "Unused text.py import was stubbed to avoid heavyweight model loading; upstream topics.py executed unchanged.",
+  "versions": {
+    "numpy": "2.2.5",
+    "python": "3.12.12 (main, Oct  9 2025, 22:40:06) [GCC 12.2.0]"
+  }
+}
