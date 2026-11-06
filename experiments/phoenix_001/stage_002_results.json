@@ -1,0 +1,49 @@
+{
+  "stage": "002-open-source-reproduction",
+  "scitreands": {
+    "commit": "81711b94181bb8d1f5bd93379670bf3250dfc343",
+    "status": "completed_author_no_dl_core",
+    "evaluation_rows": 4020,
+    "topics": 123,
+    "folds": 30,
+    "folds_with_shared_train_test_years": 30,
+    "metrics": {
+      "ridge_y_raw": {"r2": 0.19629651983632013, "mae": 180.44474406123356, "rmse": 350.33966414338045},
+      "ridge_full_mean_imputed": {"r2": 0.49488946980126747, "mae": 143.11599204568222, "rmse": 277.73754740078346},
+      "ridge_complete_columns": {"r2": 0.46448640560299215, "mae": 148.7251642621143, "rmse": 285.97405591879755},
+      "catboost_all_features": {"r2": 0.8453210017563243, "mae": 68.08433416696998, "rmse": 153.69405189863394}
+    },
+    "decline_f1": 0.7916337805840569,
+    "success_log": "017-scitreands-core-final",
+    "success_exit_code": 0,
+    "wall_seconds": 177.22753774299963,
+    "max_rss_kib": 324012,
+    "prior_failures": [
+      {"log": "013-scitreands-author-no-dl-core", "exit_code": 1, "reason": "NumPy 2 removed np.NaN"},
+      {"log": "015-scitreands-numpy2-compatible-core", "exit_code": 1, "reason": "NumPy integer JSON serialization after models completed"},
+      {"log": "016-scitreands-core-results-serialization-fix", "exit_code": 1, "reason": "relative output path after notebook working-directory change"}
+    ]
+  },
+  "crispr": {
+    "status": "completed_descriptive_reproduction",
+    "rows": 19,
+    "same_year_correlation": 0.9380097605252311,
+    "future_patents_shift_minus_1_correlation": 0.88701163912019,
+    "evidence_category": 2,
+    "log": "018-scitreands-crispr-lag-reproduction",
+    "exit_code": 0
+  },
+  "pubtrends": {
+    "commit": "8520f2a19493baa776d929cb3d31a0ae9498132a",
+    "status": "isolated_algorithm_smoke_passed",
+    "license": "Apache-2.0",
+    "topic_weights": {"0": 2.604345893761888, "1": 2.7725887298583984, "2": 2.7725887298583984},
+    "log": "014-pubtrends-topic-smoke",
+    "exit_code": 0,
+    "wall_seconds": 0.5919035770002265,
+    "max_rss_kib": 36220,
+    "full_stack_deployed": false
+  },
+  "phoenix_tests": {"log": "019-external-methods-tests", "exit_code": 0, "passed": 5},
+  "complete_log_index": "experiments/phoenix_001/logs/index.json"
+}

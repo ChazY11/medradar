@@ -1,0 +1,33 @@
+{
+  "stage": "003-public-research-methods",
+  "projects": {
+    "NIH iSearch Analytics": {"decision": "STUDY_ONLY", "reproduced": false, "reason": "NIH-specific implementation and training snapshot unavailable"},
+    "The Lens": {"decision": "STUDY_ONLY", "reproduced": false, "reason": "API/data not requested; patent lane absent"},
+    "PTNS": {"decision": "BLOCKED", "reproduced": false, "reason": "No public code; Incopat data on request only"},
+    "FDA AI 医疗器械纵向研究": {"decision": "ADAPT", "reproduced": "aggregate_statistics_only"}
+  },
+  "fda_independent_results": {
+    "hhi": [0.18140589569161, 0.42742382271468143, 0.7381275934868596, 0.6116882205897357],
+    "era4_minus_era3": -0.12643937289712393,
+    "bootstrap_two_sided_p": 0.001,
+    "chi_square": 328.01309511847984,
+    "cramers_v": 0.2765138856044061,
+    "expected_cells_below_5": 51,
+    "permutation_p": 9.999000099990002e-05,
+    "radiology_z": 5.300240938614455,
+    "cardiovascular_z": -3.4354187277110966,
+    "success_log": "024-fda-ai-final",
+    "exit_code": 0,
+    "wall_seconds": 5.8079326810002385,
+    "max_rss_kib": 128144,
+    "evidence_category": 1,
+    "manufacturer_regression_reproduced": false,
+    "medradar_migration_reproduced": false
+  },
+  "download_audit": {
+    "pmc_direct": "CAPTCHA HTML, not DOCX; not bypassed",
+    "europepmc": "Valid ZIP and DOCX from official supplementaryFiles API",
+    "log": "021-fda-supplement-europepmc",
+    "exit_code": 0
+  }
+}
