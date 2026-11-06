@@ -1,0 +1,26 @@
+{
+  "stage": "004-commercial-platform-audit",
+  "execution_scope": "Public pages and reports only; no logins, paid accounts, bulk downloads or closed-platform execution.",
+  "scientifically_validated_platforms": [],
+  "decisions": {
+    "Clarivate DRG Medtech": {"decision": "STUDY_ONLY", "reason": "Useful fields; no public forecast backtest"},
+    "MedVantage": {"decision": "ADAPT", "reason": "Source-linked evidence and auditable entity-resolution design addresses MedRadar defects; pre-launch accuracy unvalidated"},
+    "CMOP": {"decision": "REJECT", "reason": "No distinctive reproducible method or credible public evaluation; absolute claims unverified"},
+    "NextDevice": {"decision": "ADAPT", "reason": "Technology-generation and lifecycle fields useful if independently versioned; no prediction claim adopted"},
+    "GBI DEVINT": {"decision": "STUDY_ONLY", "reason": "Lifecycle benchmark only; no distinctive reproducible method"},
+    "DevicePro": {"decision": "ADAPT", "reason": "AI+manual normalisation useful with provenance; conflicting coverage counts rejected as benchmarks"},
+    "众成医械大数据": {"decision": "STUDY_ONLY", "reason": "Tender schema useful, but first-publication-time and coverage defects remain"}
+  },
+  "notable_evidence": {
+    "medvantage": "Nine public FDA source systems, filing-level links and pre-launch/illustrative disclosure",
+    "nextdevice": "Current official pharmcube.com page accessible; supplied medicube.cn URL failed",
+    "devicepro_conflicting_counts": {
+      "products": ["120k+", "2.85M+"],
+      "companies": ["78k", "110k+"],
+      "registration_records": ["1.30M+", "1.43M+"],
+      "interpretation": "Unreconciled vendor reporting; not used as MedRadar benchmarks"
+    },
+    "procurement_clock": "No public evidence that first-publication time can be reconstructed; no historical predictive gain claimed"
+  },
+  "project_register_count_after_stage": 13
+}
