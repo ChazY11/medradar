@@ -1,6 +1,6 @@
 # PHOENIX-001 — 外部方法复现报告
 
-状态：持续追加。所有命令、退出码和日志位于 `experiments/phoenix_001/logs/`。
+状态：全部外部项目已完成复现或阻断判定。所有命令、退出码和日志位于 `experiments/phoenix_001/logs/`。
 
 ## 复现状态定义
 
@@ -79,3 +79,53 @@ python3 experiments/phoenix_001/pubtrends_smoke.py \
 ## MedRadar 数据迁移状态
 
 本轮两个项目的复现均使用其公开外部数据或人工小 fixture，没有使用 MedRadar SQLite 伪装迁移结果。当前两份 MedRadar 数据库缺失，后续迁移实验只能使用已冻结且粒度足够的研究产物；不能满足时间边界和实体去重要求的假设会标为阻断。
+
+
+## NIH iSearch Analytics
+
+**理论研究，未复现。** NIH 公开资料确认 rMLC、历史案例和预测窗口，但没有获得 NIH 特定实现、训练快照或完整评分定义。直接 HTTPS 读取在本环境出现 SSL 握手失败，检索索引与 NIH 预算文件用于交叉确认。未用同名算法或公开案例拼装“复现结果”。决策：STUDY_ONLY。
+
+## The Lens
+
+**公开功能与条款研究，未调用数据接口。** 已审查 MetaRecord/LensID、论文—专利关联、API 试用和商业使用边界。没有 token 请求、批量下载或数据迁移实验。决策：STUDY_ONLY。
+
+## PTNS
+
+**论文方法研究，复现阻断。** 完整论文可访问，但无公开代码，原始 Incopat 数据仅应作者请求提供。未运行 R-GCN/BiLSTM，也未把论文 Table 4 的分数写成本地结果。决策：BLOCKED。
+
+## FDA AI 医疗器械纵向研究
+
+### 已跑通：独立实现聚合统计
+
+先尝试 PMC 补充表链接，返回的是 CAPTCHA HTML 而非 DOCX；随后使用 Europe PMC 官方 `supplementaryFiles` 接口取得真实 DOCX。未绕过访问控制。
+
+```bash
+python3 experiments/phoenix_001/fda_ai_longitudinal.py \
+  /mnt/agents/output/phoenix_external/fda-ai-supplement-europepmc/jmir-v28-e103040-s001.docx \
+  --output experiments/phoenix_001/fda_ai_longitudinal_results.json
+```
+
+最终日志 `024-fda-ai-final.json`，退出码 0，墙钟 5.81 秒，最大 RSS 128,144 KiB。点估计与论文四舍五入值一致；Radiology 和 Cardiovascular 趋势统计也一致。完整结果含 2,000 次 bootstrap 和 10,000 次置换。
+
+`022` 首次实现将 HHI 双侧尾概率方向写反，已保留失败语义审查记录；`023` 修正为双侧尾部，`024` 进一步明确非正/非负重采样计数。两次 p 值计算不涉及点估计、趋势或卡方结果变化。
+
+### 未运行
+
+设备级重复与实体审计、企业类型 logistic/Firth/cluster-robust 回归、MedRadar 迁移均缺少所需行级数据。决策：ADAPT，仅限透明聚合方法，不把描述性多样化升级为预测结论。
+
+
+## 七个商业平台
+
+全部为**公开页面与公开报告研究**，没有登录、绕过付费、购买账户、调用商业 API 或执行闭源软件。没有一项被标记为 `scientifically_validated`。
+
+| 项目 | 公开证据支持的结论 | 未验证事项 | 决策 |
+|---|---|---|---|
+| Clarivate DRG | 公司/赛道/地域和管线字段可对标 | 预测回测、准确率和历史快照 | STUDY_ONLY |
+| MedVantage | 九类 FDA 来源、源文件回溯、实体解析和 predicate 设计 | 预发布产品的实体解析/预警准确率 | ADAPT |
+| CMOP | 通用跨源与引用回答概念 | AI 准确性、子公司解析、uptime、pending 定义 | REJECT |
+| NextDevice | 技术代际与生命周期标签体系 | 标签历史版本、预测性能和覆盖完整性 | ADAPT |
+| GBI DEVINT | 全生命周期竞争情报展示 | AI 治理质量、独特算法和预测评价 | STUDY_ONLY |
+| DevicePro | AI+人工归一和跨库链接原则 | 两套规模口径、实体归一准确率 | ADAPT |
+| 众成医械大数据 | 标讯结构和描述性行业报告 | 首次公开时间、覆盖审计和预测性能 | STUDY_ONLY |
+
+商业平台没有“本地复现成功”记录。ADAPT 仅指独立吸收可验证的数据设计原则，不表示采用其闭源系统、数据库、分类体系或预测宣传。
