@@ -1,0 +1,40 @@
+{
+  "stage": "005-frozen-hypotheses-and-method-comparison",
+  "hypotheses": {
+    "supported": ["H1"],
+    "refuted_within_protocol": ["H9"],
+    "blocked": ["H5", "H6"],
+    "inconclusive": ["H2", "H3", "H4", "H7", "H8", "H10"]
+  },
+  "evidence_category": 3,
+  "independent_prospective_validation": false,
+  "holdout_origins": ["2025-04-01", "2025-07-01", "2025-10-01"],
+  "method_count": 20,
+  "continuation_final_origin": {
+    "n": 307, "positives": 129, "prevalence": 0.4201954397394137,
+    "pair_persistence": {"ap": 0.7912589226819778, "precision_at_k": 0.967741935483871, "recall_at_k": 0.23255813953488372, "fpr": 0.24719101123595505},
+    "regulatory_only": {"ap": 0.793476494625078, "delta_vs_pair": 0.0022175719431001273, "delta_ci_95": [-0.031599292588537664, 0.036773758559445424], "precision_at_k": 0.9354838709677419, "recall_at_k": 0.2248062015503876, "fpr": 0.2752808988764045},
+    "all_available_fusion_ap": 0.7866961085637085,
+    "mean_lead_time_days": 139.03875968992247
+  },
+  "entry_final_origin": {
+    "n": 1716, "positives": 26, "prevalence": 0.015151515151515152,
+    "pair_persistence": {"ap": 0.027826340326340328, "recall_at_k": 0.15384615384615385, "fpr": 0.004142011834319527},
+    "shared_financial": {"ap": 0.11634672055344537, "precision_at_k": 0.08139534883720931, "recall_at_k": 0.5384615384615384, "fpr": 0.0},
+    "all_available_fusion": {"ap": 0.09786330745130628, "three_window_ap_mean": 0.11965803809563347, "precision_at_k": 0.0755813953488372, "recall_at_k": 0.5, "fpr": 0.000591715976331361},
+    "mean_lead_time_days": 189.19230769230768
+  },
+  "change_detection": {
+    "cells": 104,
+    "alerts": {"naive_multiplier": 0, "poisson_cusum": 0, "rolling_zscore": 1, "poisson_bayes_factor": 2},
+    "post_alert_novelty_all_zero": true,
+    "conclusion": "H7 inconclusive"
+  },
+  "data_limits": {
+    "material_event_rows": 3833,
+    "independent_device_application_trial_count": null,
+    "duplicate_audit": "not independently recomputable from frozen aggregates",
+    "time_proxy": "decision_date+14d estimated; no category-4 claim"
+  },
+  "tests": {"log": "030-hypothesis-comparison-tests", "exit_code": 0, "passed": 8}
+}
