@@ -135,12 +135,15 @@ def hhi_difference_test(
 
     # The source's stated rule ("twice the proportion of resampled differences
     # less than or equal to zero") is only well defined once the sign convention is
-    # fixed. It is written for a HHI *decline*, so it must be applied to
-    # (HHI_earlier - HHI_later): positive values are then declines, and
-    # "<= 0" is the no-decline null. Applied to (later - earlier) instead, the rule
-    # inverts and would declare a genuine decline maximally non-significant.
-    decline = (-signed) if np.mean(signed) < 0 else signed
-    p_paper = min(1.0, 2.0 * float(np.mean(decline <= 0.0)))
+    # fixed, and it is written for a HHI *decline*. Taken literally with the
+    # difference defined as (HHI_a - HHI_b), positive values are declines and
+    # "<= 0" is the no-decline null:
+    #     p = 2 * P( HHI_a - HHI_b <= 0 )
+    # The consequence is explicit and deliberate: the rule can certify a decline but
+    # cannot certify an *increase* (it returns p >= 1, clipped to 1). p_symmetric
+    # is provided as the conventional alternative.
+    decrease = la - lb  # positive == concentration fell from a to b
+    p_paper = min(1.0, 2.0 * float(np.mean(decrease <= 0.0)))
     p_sym = 2.0 * min(float(np.mean(signed <= 0.0)), float(np.mean(signed >= 0.0)))
     p_sym = min(1.0, p_sym)
     return {

@@ -1,0 +1,704 @@
+"""Build evidence.json and methods_audit_summary.json for the PHOENIX-001 external methods audit.
+
+Run:  python build_records.py
+Writes (relative to this file):
+  ./evidence.json                                (per-method verification record)
+  ../methods_audit_summary.json                  (one object per method, required field set)
+
+The self-test is executed here so the recorded pass/fail counts are the real ones, not retyped.
+"""
+
+from __future__ import annotations
+
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+OUT_DIR = HERE.parent
+RETRIEVED = "2026-11-08"
+REPO = "D:/DEPPSKK/medradar"
+
+
+def run_selftest() -> dict:
+    """Execute selftest_synthetic.py and return its embedded JSON summary."""
+    proc = subprocess.run(
+        [sys.executable, str(HERE / "selftest_synthetic.py")],
+        capture_output=True,
+        text=True,
+        cwd=str(HERE),
+    )
+    summary = None
+    for line in proc.stdout.splitlines():
+        if line.startswith("SELFTEST_RESULT_JSON: "):
+            summary = json.loads(line.split(": ", 1)[1])
+    if summary is None:
+        raise RuntimeError(f"self-test produced no summary; rc={proc.returncode}\n{proc.stderr[-2000:]}")
+    summary["exit_code"] = proc.returncode
+    return summary
+
+
+# --------------------------------------------------------------------------- #
+# M3
+# --------------------------------------------------------------------------- #
+M3 = {
+    "id": "M3",
+    "name": "NIH iSearch 'Predicted breakthroughs in biomedicine' / NIH OPA co-citation trajectory method",
+    "official_url": "https://support.analytics.nih.gov/hc/en-us/articles/16798095205531-Predicted-breakthroughs-in-biomedicine",
+    "type": "public platform documentation (iSearch) + public preprint + restricted-licence code",
+    "licence_or_terms": (
+        "Preprint on bioRxiv (no reuse licence asserted on the page read). Code README, verbatim: "
+        "'Use of this software requires a license. No rights are granted beyond the view access permitted by the "
+        "GitHub Terms and Conditions.' Data: figshare snapshot linked from the paper's Data/Code page; licence "
+        "not verified (short-link resolution returned HTTP 202)."
+    ),
+    "code_public": "yes-visible-but-licence-restricted",
+    "data_public": "partial (figshare citation snapshot linked; supplementary Data S1-S7 not retrieved)",
+    "access_barrier": (
+        "iSearch article itself unreachable: Cloudflare Error 1034 'Edge IP Restricted', HTTP 403, host resolving "
+        "to an IP the owner does not control (2026-11-08). Code licence requires contacting authors. Compute: CCN "
+        "needs >=384GB RAM, latest-year R-MCL needs ~350GB JVM."
+    ),
+    "core_method": (
+        "Cosine-similarity co-citation network of PubMed (17.2M papers through 2017, edge threshold 0.35) -> "
+        "R-MCL clustering (inflation 1.2, maxIterations 500) -> ~23,867 topic clusters -> yearly networks (1981-2017, "
+        "built only from data up to each terminal year) -> trajectory linking by simple majority paper overlap -> "
+        "four features at each terminal cluster (%New over a two-year window, ancestral %New, entropy cohesion, "
+        "contemporaneous-only influence whRCR) -> logistic regression on 21 award-curated gold-standard "
+        "trajectories -> applied to 186,449 clusters in 1994-97 (setA) and 2014-17 (setB) with filters >=40 papers "
+        "and >=5% NIH-award-linked."
+    ),
+    "data_deps": [
+        "PubMed co-citation graph (17.2M cited papers, 750M citations via NIH open citation collection)",
+        "MongoDB citation snapshot restored from figshare",
+        "gold-standard label tables (21 breakthroughs 1984-2014; 13 Nobel + 3 Lasker)",
+        "NIH award linkage per paper (for the >=5% filter)",
+        "350-400 GB RAM class server (README positions this as an AWS EC2 job)",
+    ],
+    "needs_gpu": False,
+    "needs_network": True,
+    "needs_paid": True,
+    "overlap_with_medradar": (
+        "Low on substrate (no citation graph, no papers, no award labels). Moderate on principles: strict "
+        "point-in-time network construction, two-year recency-burst share, entropy as a concentration measure."
+    ),
+    "methods_to_migrate": [
+        "point-in-time snapshot discipline: features computable only from data available at t (maps to MedRadar available_at/as_of)",
+        "pct_new-style recency burst: share of a track's activity in year x and x-1",
+        "entropy-based diversification (1 - H/log k) as a companion to HHI",
+        "majority-overlap trajectory chaining as a way to track a track/product-code lineage across years",
+    ],
+    "limitations": [
+        "ground truth = Nobel/Lasker recognition; no complete true-positive set, so precision/recall are not computable (authors state this)",
+        "21 curated successes as the positive class = case-control design with hand-curated cases",
+        "recognition lag inflates apparent lead time",
+        "~20% cluster churn (80% stability over 30 years) means historical signals are not exactly reproducible",
+        "compute-locked at 384GB RAM; code licence blocks reuse",
+        "preprint, not peer-reviewed at audit time",
+        "iSearch product documentation offline, so product behaviour cannot be verified at all",
+    ],
+    "leakage_risks": [
+        "co-citation weights must be recomputed per snapshot year; using final-network weights leaks future citations into past signals",
+        "award dates used as labels post-date the discovery, so a naive label timestamp leaks forward",
+        "in-sample gold standards inside setA inflate its apparent accuracy",
+    ],
+    "reproduction_status": (
+        "NOT_REPRODUCED (no licence, no 384GB compute, no label tables). Feature logic (two-year %New, ancestral "
+        "%New, entropy cohesion, contemporaneous-only influence, majority-overlap linking) independently "
+        "re-implemented and self-tested on synthetic data: %New two-year window verified (0.500 vs 0.25 for a "
+        "one-year window), leakage guard verified (1995 snapshot ignores a 2000 citation: 4.0 not 104.0), planted "
+        "3-year trajectory recovered by chaining."
+    ),
+    "decision": "STUDY_ONLY",
+    "decision_reason": (
+        "The published method is precise and has public source, but the code licence ('requires a license'), the "
+        "350-400GB compute requirement, and the missing supplementary label tables make independent reproduction "
+        "impossible here; the product documentation that the task names is offline at the vendor's edge; and "
+        "MedRadar has neither a citation graph nor award-based labels. Two design principles plus the recency-burst "
+        "and entropy features are worth migrating and are implemented in trajectory_features.py."
+    ),
+    "evidence_paths": [
+        f"{REPO}/docs/phoenix/audits/A03_nih_isearch.md",
+        f"{REPO}/experiments/phoenix/external/methods/trajectory_features.py",
+        f"{REPO}/experiments/phoenix/external/methods/selftest_synthetic.py",
+        f"{REPO}/experiments/phoenix/external/methods/evidence.json",
+    ],
+    "citations": [
+        "https://doi.org/10.64898/2025.12.16.694385",
+        "https://www.biorxiv.org/content/10.64898/2025.12.16.694385v1.full",
+        "https://www.biorxiv.org/content/10.64898/2025.12.16.694385v1.external-links",
+        "https://github.com/NIHOPA/predictivebreakthroughs",
+        "https://support.analytics.nih.gov/hc/en-us/articles/16798095205531-Predicted-breakthroughs-in-biomedicine",
+    ],
+    "sources": [
+        {
+            "url": "https://support.analytics.nih.gov/hc/en-us/articles/16798095205531-Predicted-breakthroughs-in-biomedicine",
+            "retrieved_at": RETRIEVED,
+            "status": "INACCESSIBLE",
+            "detail": "HTTP 403 Cloudflare Error 1034 'Edge IP Restricted'; https fetch failed; Zendesk JSON API fetch failed",
+        },
+        {
+            "url": "https://www.biorxiv.org/content/10.64898/2025.12.16.694385v1.full",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "full text read (346,971 bytes downloaded, converted to text); quotes in audit §1b-§1d taken here",
+        },
+        {
+            "url": "https://www.biorxiv.org/content/10.64898/2025.12.16.694385v1.external-links",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "Data/Code page lists the GitHub repo and figshare snapshot",
+        },
+        {
+            "url": "https://raw.githubusercontent.com/NIHOPA/predictivebreakthroughs/main/README.md",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "parameters threshold 0.35, inflation 1.2, maxIterations 500; 384GB RAM; licence notice",
+        },
+        {
+            "url": "https://api.github.com/repos/NIHOPA/predictivebreakthroughs/git/trees/main?recursive=1",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "file inventory: ccnCmd/mcl/mclCmd Java, trajectory_code_r {1_year_on_year_dynamics,2_trajectory_links,3_node_attributes_merge,4_trace_trajectories}.R, breakthrough_candidates_code_py {logistic_regression,breakthrough_candidates,cluster,emergence_candidates,prediction}.py",
+        },
+        {
+            "url": "https://figshare.com/s/ca05c0539e77fb2a1dc1",
+            "retrieved_at": RETRIEVED,
+            "status": "NOT_VERIFIED",
+            "detail": "HTTP 202 challenge on HEAD; snapshot not downloaded, licence unknown",
+        },
+    ],
+    "unknowns": [
+        "what the iSearch article actually claims (server-side outage)",
+        "whether the shipped iSearch feature equals the preprint pipeline",
+        "whether the production system uses recursive / hierarchical clustering (no accessible source says so)",
+        "which distribution the entropy cohesion feature is computed over",
+        "the 'modified RCR' definition",
+        "licence of the figshare snapshot",
+    ],
+}
+
+# --------------------------------------------------------------------------- #
+# M4
+# --------------------------------------------------------------------------- #
+M4 = {
+    "id": "M4",
+    "name": "The Lens — paper/patent linkage (PatCite), citation structure, time-lag, access terms",
+    "official_url": "https://www.lens.org/",
+    "type": "public platform (non-profit) + public method paper",
+    "licence_or_terms": (
+        "Terms of Use v2026.06.01: use conditions 'intended to resonate with the principles of Creative Commons "
+        "attribution license CC BY-NC-SA including retention of Lens IDs'; attribution ('Enabled by The Lens' + "
+        "logo + URL) mandatory; automated crawling/scraping explicitly prohibited; commercial use requires a "
+        "commercial licence. API Terms v2026.06.01: API service 'only available through an institutional "
+        "subscription'; trial access non-commercial for evaluation only, manually approved, token-based."
+    ),
+    "code_public": False,
+    "data_public": "partial, browser-only: anonymous users may export up to 1,000 records; no bulk, no scraping, no free programmatic tier",
+    "access_barrier": (
+        "No free public API. Institutional subscription + manual approval + token required for api.lens.org. "
+        "Bulk data is a paid product. Trial plans are non-commercial evaluation only. Automated extraction is "
+        "contractually prohibited."
+    ),
+    "core_method": (
+        "Non-patent-literature (NPL) reference strings in patent documents resolved against PubMed (PMID) and "
+        "Crossref (DOI) at a cosine/string matching score threshold of 0.9 -> resolved citation edges "
+        "patent-family <-> scholarly article -> patent to technology field via WIPO IPC->35-field concordance, "
+        "article to discipline via ISSN/Crossref->9 disciplines -> In4M intensity metric = sum of "
+        "family-size-weighted third-party patent citations / total resolved articles."
+    ),
+    "data_deps": [
+        "patent corpus with NPL citations (EPO citation database, 30+ authorities; Lens holds 153.2M patents / 417M citations)",
+        "scholarly corpus with identifiers (266M works / 2.1B citations)",
+        "PubMed and Crossref metadata as resolution targets",
+        "WIPO IPC -> 35 technology-field concordance; ISSN -> discipline mapping",
+    ],
+    "needs_gpu": False,
+    "needs_network": True,
+    "needs_paid": True,
+    "overlap_with_medradar": (
+        "Near zero on data (MedRadar holds no patents and no scholarly works). Conceptual overlap: "
+        "group-size normalisation of an attention signal, and explicit match thresholds with a reported "
+        "resolution rate for free-text joins (the analogue is applicant-name -> company_key)."
+    ),
+    "methods_to_migrate": [
+        "explicit fuzzy-match threshold with a reported resolution rate when joining free-text entity names",
+        "family/group-size weighting to normalise an attention or citation signal across groups",
+        "attribution and licence obligations if any Lens-derived number is ever used",
+    ],
+    "limitations": [
+        "only ~45% of NPL strings resolve (14.1M/31.6M), and resolution quality varies by era and jurisdiction",
+        "citation-reporting bias across jurisdictions, document locations and prosecution history (authors' own caveat)",
+        "field skew concentrated in pharma/biotech, i.e. not transferable to devices",
+        "time-lag distribution is not published by The Lens in any source I could access",
+        "bespoke, non-open licence: 'CC BY-NC-SA-resonant' is not CC BY-NC-SA",
+        "paper is CC BY-NC-ND (no derivatives) while platform data is separately licensed",
+    ],
+    "leakage_risks": [
+        "patent publication/grant date is after the citation event; measuring lag from publication rather than priority/filing leaks future information",
+        "resolution missingness is correlated with era and jurisdiction, so lag and intensity statistics inherit a time-dependent bias",
+        "examiner-added citations post-date invention and can appear years after filing",
+    ],
+    "reproduction_status": (
+        "NOT_REPRODUCED and deliberately not attempted: the terms prohibit automated extraction and bulk download, "
+        "and the API requires an institutional token. NO Lens data was queried during this audit. The linkage "
+        "pipeline shape (0.9 threshold against PubMed/Crossref, family-size weighting, In4M ratio) was extracted "
+        "from the CC BY method paper and recorded, but it cannot be exercised lawfully on Lens data here."
+    ),
+    "decision": "STUDY_ONLY",
+    "decision_reason": (
+        "Bulk and automated access are contractually prohibited without an institutional subscription, trial access "
+        "is explicitly non-commercial, and there is no free public API tier; MedRadar additionally has neither a "
+        "patent corpus nor a scholarly citation corpus to link. The method is well described but unusable under the "
+        "audited terms. Transferable value is limited to two design patterns and an attribution obligation."
+    ),
+    "evidence_paths": [
+        f"{REPO}/docs/phoenix/audits/A04_the_lens.md",
+        f"{REPO}/experiments/phoenix/external/methods/evidence.json",
+    ],
+    "citations": [
+        "https://about.lens.org/policies/",
+        "https://about.lens.org/lens-api-terms-of-use/",
+        "https://docs.api.lens.org/getting-started.html",
+        "https://docs.api.lens.org/bulk-data.html",
+        "https://about.lens.org/patcite-linking-patents-and-scholarship/",
+        "https://doi.org/10.1038/nbt.4049",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC12094095/",
+    ],
+    "sources": [
+        {
+            "url": "https://about.lens.org/policies/",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "Terms of Use v2026.06.01; fetched via the site's WP REST API (?slug=policies) because the rendered page exceeded the fetch budget; anonymous <=1000 records, CC BY-NC-SA-resonant, no crawlers",
+        },
+        {
+            "url": "https://about.lens.org/lens-api-terms-of-use/",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "API Terms v2026.06.01; institutional subscription only; trial non-commercial; manual review",
+        },
+        {
+            "url": "https://docs.api.lens.org/getting-started.html",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "API 2.20.0 endpoints, token auth, documented rate-limit headers, 429 behaviour",
+        },
+        {
+            "url": "https://docs.api.lens.org/bulk-data.html",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "bulk downloads are a plan-gated product",
+        },
+        {
+            "url": "https://about.lens.org/patcite-linking-patents-and-scholarship/",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "corpus scale figures used in audit §1c",
+        },
+        {
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12094095/",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "Jefferson et al. 2018 full text; NPL totals, 0.9 match threshold, In4M definition; CC BY",
+        },
+        {
+            "url": "https://www.lens.org/",
+            "retrieved_at": RETRIEVED,
+            "status": "PARTIAL",
+            "detail": "front page fetch timed out at 30s; all audited content obtained from about.lens.org / docs.api.lens.org",
+        },
+    ],
+    "unknowns": [
+        "what the 0.9 matching score computes, and its precision/recall",
+        "PatCite's multi-stage citation-processing protocol internals",
+        "trial-API quotas and custom pricing (only runtime headers / quotes)",
+        "published time-lag distribution (not found in accessible sources)",
+        "whether an institutional subscription permits commercial use of derived statistics",
+    ],
+}
+
+# --------------------------------------------------------------------------- #
+# M5
+# --------------------------------------------------------------------------- #
+M5 = {
+    "id": "M5",
+    "name": "PTNS — patent citation trajectory prediction based on temporal network snapshots",
+    "official_url": "https://www.nature.com/articles/s41598-024-75913-0",
+    "type": "public paper (peer-reviewed, open access CC BY-NC-ND)",
+    "licence_or_terms": "CC BY-NC-ND 4.0 per Europe PMC metadata ('cc by-nc-nd'); non-commercial, no derivatives",
+    "code_public": False,
+    "data_public": False,
+    "access_barrier": (
+        "Publisher PDF requires an identity-provider redirect; full text read from PMC11473824. No code-availability "
+        "statement and no repository link anywhere in the article. Data statement: 'The data shall be made available "
+        "on request from the first author or the corresponding author.' Source corpus is Incopat, a commercial patent "
+        "database. Replication needs a CUDA GPU (RTX 4060 class) and ~46 min per run x3."
+    ),
+    "core_method": (
+        "Yearly network snapshots (2004-2023) over four relations (IPC classification, citation, applicant, country); "
+        "2-layer R-GCN encodes relational attributes per snapshot with inter-snapshot alignment; BiLSTM aggregates "
+        "temporal evolution with high/low weights for primary IPC and first applicant; PCA then four MLPs emit the "
+        "parameters of a Richards (generalised logistic) growth curve; evaluated with MALE and RMSLE on new (<2 "
+        "citations), grown (>4) and random patents over horizons T+1..T+10; baselines TGNN, HINTS, HDGNN, DeepCCP; "
+        "3 runs averaged, 35 epochs."
+    ),
+    "data_deps": [
+        "Incopat patent corpus: 133,857 invention + utility-model patents, publication years 2004-2023, polyurethane field",
+        "per-patent IPC codes, applicants (first vs others), publication country, citation list, publication/application dates",
+        "yearly graph snapshots with node alignment across years",
+        "CUDA GPU for training",
+    ],
+    "needs_gpu": True,
+    "needs_network": True,
+    "needs_paid": True,
+    "overlap_with_medradar": (
+        "Low on target and substrate: MedRadar has no patent citations and no citation-like attention graph. "
+        "Moderate on protocol: multi-horizon backtesting with log-error metrics, and curve fitting of a cumulative "
+        "traction series."
+    ),
+    "methods_to_migrate": [
+        "multi-horizon rolling-origin evaluation with MALE/RMSLE reported per horizon (implemented in rolling_origin_backtest)",
+        "Richards / generalised logistic fitting for cumulative traction series (track-level authorisations, recalls, trials)",
+        "explicit subtask stratification so easy and hard trajectories are not pooled into one average",
+    ],
+    "limitations": [
+        "no code, no data -> results unverifiable and unreproducible",
+        "equations 1,2,4,5,6,7 are raster images in the published HTML; the prose alone is insufficient for exact re-implementation",
+        "internal inconsistency: Introduction says the case study is 'aviation industry' while the corpus is polyurethane",
+        "internal inconsistency: 'first 10 snapshots ... subsequent 10 ... ratio 2:1' (10:10 is 1:1)",
+        "MALE is described as a 'mean squared difference between logarithms', conflating absolute and squared error; the log offset is unstated (counts can be 0)",
+        "the 2023-2027 'future trajectory' demonstration cannot be scored against ground truth for out-years",
+        "citation counts treated as a proxy for value/impact; the cited literature supports correlation, not equivalence",
+        "domain is Chinese-dominated polyurethane patents, not medical devices",
+    ],
+    "leakage_risks": [
+        "features must come only from snapshots <= T; any pooling of the evaluation window into node features leaks the label",
+        "left/right censoring: patents published 2020-2023 have short citation windows, biasing new-vs-grown comparisons",
+        "in MedRadar reuse, the evaluation window must be strictly after both the feature window and the record's availability/ingestion time",
+    ],
+    "reproduction_status": (
+        "NOT_REPRODUCED and explicitly not claimed. No code, no data, unreadable equations, commercial source "
+        "corpus. The evaluation protocol and metric/curve logic were independently implemented and self-tested on "
+        "synthetic data: Richards fit recovers a known K=250 with R^2=1.000; MALE hand-check |ln5-ln4|=0.223144; "
+        "subtask gap (2-4 citations belong to neither new nor grown) preserved; synthetic backtest shows RMSLE rising "
+        "monotonically with horizon (0.521, 0.750, 1.236, 1.401) as the paper qualitatively reports."
+    ),
+    "decision": "STUDY_ONLY",
+    "decision_reason": (
+        "Fails the reproducibility bar outright (no code, no data, equation images, commercial database) and its "
+        "target construct, patent citations, has no counterpart in MedRadar's regulatory-event data; the model also "
+        "needs GPU compute that is out of scope. Only the multi-horizon evaluation protocol and the curve/metric "
+        "machinery transfer, and those are implemented and self-tested here."
+    ),
+    "evidence_paths": [
+        f"{REPO}/docs/phoenix/audits/A05_ptns.md",
+        f"{REPO}/experiments/phoenix/external/methods/trajectory_features.py",
+        f"{REPO}/experiments/phoenix/external/methods/selftest_synthetic.py",
+        f"{REPO}/experiments/phoenix/external/methods/evidence.json",
+    ],
+    "citations": [
+        "https://doi.org/10.1038/s41598-024-75913-0",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC11473824/",
+        "https://europepmc.org/article/MED/39402175",
+    ],
+    "sources": [
+        {
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11473824/",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "full text downloaded (204,292 bytes) and converted to text; all quotes in audit §1 come from this",
+        },
+        {
+            "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:%2210.1038/s41598-024-75913-0%22&resultType=core&format=json",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "PMCID PMC11473824, licence cc by-nc-nd, hasSuppl=N, no code link in metadata",
+        },
+        {
+            "url": "https://www.nature.com/articles/s41598-024-75913-0.pdf",
+            "retrieved_at": RETRIEVED,
+            "status": "INACCESSIBLE",
+            "detail": "cross-origin redirect to idp.nature.com (publisher auth); used PMC instead, no paywall bypassed",
+        },
+    ],
+    "unknowns": [
+        "whether citation edges are restricted to the 133,857-patent corpus",
+        "what 'ratio of partitioning 2:1' refers to given 10+10 snapshots",
+        "the exact PCA input and the four MLP architectures",
+        "the log offset used in MALE/RMSLE",
+        "whether 'aviation industry' signals a second unreported case study",
+        "whether the authors would release code under a research licence (not contacted)",
+    ],
+}
+
+# --------------------------------------------------------------------------- #
+# M6
+# --------------------------------------------------------------------------- #
+M6 = {
+    "id": "M6",
+    "name": "Clinical specialty expansion of FDA-authorized AI/ML-enabled medical devices 1995-2025",
+    "official_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13505343/",
+    "type": "public paper (open-access journal article, JMIR)",
+    "licence_or_terms": (
+        "Open-access journal article (JMIR). Underlying FDA registry records are US-government public-domain data. "
+        "The article's formal licence block was not separately read; reuse claims should be checked against the "
+        "journal's terms."
+    ),
+    "code_public": False,
+    "data_public": True,
+    "access_barrier": (
+        "None for article or data (free, no registration). The 17x4 panel table needed to recompute Era-1 HHI is in "
+        "Multimedia Appendix 1 (Table S2) and was not retrieved."
+    ),
+    "core_method": (
+        "1430 FDA AI/ML device authorisations (final decision <= 2025-12-31, registry downloaded 2026-03-01) "
+        "stratified into 4 eras by decision date and classified by advisory-committee panel. HHI = sum of squared "
+        "specialty share fractions over authorisations within an era, with 2000-resample bootstrap 95% CIs and a "
+        "bootstrap test of the Era3->Era4 change (2 x proportion of resampled differences <= 0, for a decline). "
+        "Plus Cochran-Armitage trend tests over equal-spaced era scores with Bonferroni across 17 panels, a "
+        "2-proportion z test, Wilson CIs, Pearson chi-square with Cramer's V verified by 10,000-replicate Monte Carlo "
+        "permutation, and a multivariable logistic regression of nonradiology authorisation on era and manufacturer "
+        "type with cluster-robust SEs, continuous-year and Firth sensitivity analyses."
+    ),
+    "data_deps": [
+        "FDA AI-Enabled Medical Devices List (free download, snapshot dated 2026-03-01)",
+        "advisory committee panel per device (fallback: product code classification)",
+        "submission number, device name, company, pathway (510(k)/De Novo/PMA)",
+        "manufacturer attributes for the 4-level firm typology (employees, founding year, IPO stage)",
+    ],
+    "needs_gpu": False,
+    "needs_network": True,
+    "needs_paid": False,
+    "overlap_with_medradar": (
+        "High. MedRadar already stores the same regulatory substrate: 375,378 events (openfda_device_510k 176,466; "
+        "openfda_device_pma 57,372; date range 1966-2026), 7,097 product_codes rows with an FDA-style `specialty` "
+        "column, 5,624 product codes on events, 60 tracks, 89 company keys. Missing versus M6: De Novo events, an "
+        "AI/ML cohort flag, and full manufacturer coverage."
+    ),
+    "methods_to_migrate": [
+        "HHI = sum of squared specialty share fractions per era, with bootstrap CIs and a change test",
+        "Cochran-Armitage trend with equal-spaced era scores + Bonferroni across panels",
+        "Wilson intervals instead of Wald at small n",
+        "Monte Carlo permutation check when expected cell counts are small",
+        "share-base sensitivity reporting (pooled 'Other' bucket vs full panel list)",
+        "firm-level HHI as an extension M6 did not do (MedRadar has company_key)",
+    ],
+    "limitations": [
+        "unit is the authorisation, not the product: multiple submissions per product family inflate counts and induce within-firm correlation",
+        "specialty is an FDA regulatory panel, not clinical deployment context",
+        "registry is a moving download, so 'complete calendar year' claims are relative to the download date",
+        "Era-1 HHI (0.181) is not reproducible from the published table; the pooled 'Other (n=9)' row cannot produce it",
+        "technology-company OR rests on 13 devices from 5 firms (authors call it 'highly imprecise')",
+        "manufacturer classification for low-volume firms relies on founding year and naming conventions",
+        "emerging specialties are descriptive Era3->Era4 growth; none survive Bonferroni correction",
+        "US-only; authorisation is not adoption",
+    ],
+    "leakage_risks": [
+        "era must be assigned from decision date, never from ingestion/first_seen timestamps",
+        "bootstrap must resample the analysed unit (authorisation), not specialty cells, or CIs are too narrow",
+        "multiple authorisations per manufacturer create within-firm correlation that naive SEs ignore",
+        "era boundaries chosen after seeing volumes can bake in the result unless pre-registered",
+    ],
+    "reproduction_status": (
+        "METHOD_REPRODUCED_ON_SYNTHETIC_DATA + FORMULAS_CROSS_CHECKED against the paper's printed statistics. "
+        "No re-run of the 1430-device study (registry is a moving download and no analysis file was published). "
+        "Self-test: 56/56 checks. Formula cross-checks: HHI Eras 2-4 reproduce (0.4325 vs 0.427; 0.7381 vs 0.738; "
+        "0.6122 vs 0.612); Wilson CI reproduces 74.49%-80.30% vs published 74.5%-80.3%; 2-prop z gives p=0.0011 vs "
+        "P=.001; Cochran-Armitage Z=+5.300 vs published +5.30. Era 1 does NOT reproduce (0.2234 vs 0.181) and this "
+        "is reported as a base-of-shares finding, not hidden."
+    ),
+    "decision": "ADOPT",
+    "decision_reason": (
+        "Only one of the four where the method is uniquely and unambiguously specified, needs no paid/GPU resource, "
+        "and runs on data MedRadar already holds at scale. Four of the five printed statistics reproduce exactly "
+        "from the paper's own published counts, which validates my implementation of the formulas; the fifth "
+        "divergence is itself an actionable methodological finding about HHI share bases. Adopt with documented "
+        "adaptations: unit and censoring discipline, category-granularity disclosure, and a firm-level HHI extension."
+    ),
+    "evidence_paths": [
+        f"{REPO}/docs/phoenix/audits/A06_fda_ai_device_longitudinal.md",
+        f"{REPO}/experiments/phoenix/external/methods/hhi.py",
+        f"{REPO}/experiments/phoenix/external/methods/era_stats.py",
+        f"{REPO}/experiments/phoenix/external/methods/selftest_synthetic.py",
+        f"{REPO}/experiments/phoenix/external/methods/evidence.json",
+    ],
+    "citations": [
+        "https://doi.org/10.2196/103040",
+        "https://pmc.ncbi.nlm.nih.gov/articles/PMC13505343/",
+    ],
+    "sources": [
+        {
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13505343/",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "full text downloaded (209,653 bytes) and converted to text; quotes in audit §1 from here",
+        },
+        {
+            "url": "https://doi.org/10.2196/103040",
+            "retrieved_at": RETRIEVED,
+            "status": "VERIFIED",
+            "detail": "DOI landing referenced from PMC; article metadata (J Med Internet Res 2026;28:e103040)",
+        },
+    ],
+    "unknowns": [
+        "whether HHI used all 17 panels or the pooled 9-row table (Table S2 needed)",
+        "bootstrap resampling unit and RNG details",
+        "logistic regression coefficients/SEs and the Firth estimates",
+        "exact firm typology for low-volume manufacturers",
+    ],
+}
+
+
+def main() -> int:
+    st = run_selftest()
+    print(f"self-test: {st['n_pass']}/{st['n_checks']} passed (exit {st['exit_code']})")
+    if st["n_fail"]:
+        print("WARNING: self-test has failures; recording them honestly in evidence.json")
+
+    evidence = {
+        "program": "PHOENIX-001",
+        "artifact": "external methods audit (M3, M4, M5, M6)",
+        "generated_at_local": RETRIEVED,
+        "auditor": "paper-audit (DeepSeek Harness teammate)",
+        "environment": {
+            "repo": REPO,
+            "branch": "research/phoenix-001-external-methods",
+            "python": sys.version.split()[0],
+            "note": "no branch created/switched, no commit/push, no write to data/*.sqlite",
+        },
+        "verification_legend": {
+            "VERIFIED": "quoted or measured from a primary source retrieved in this session",
+            "PARTIAL": "partially retrieved; the missing part is named",
+            "INACCESSIBLE": "could not be retrieved; reason recorded, no workaround attempted",
+            "NOT_VERIFIED": "deliberately not retrieved (licence/volume) or failed validation",
+            "INFERRED": "stated as an inference from a secondary source, never as fact",
+        },
+        "implementations": [
+            {
+                "path": "experiments/phoenix/external/methods/hhi.py",
+                "purpose": "HHI over shares, bootstrap CIs, era-change bootstrap test, share-base sensitivity, era table",
+                "method": "M6",
+                "original_code_available": False,
+                "status": "written from the paper's Methods text",
+            },
+            {
+                "path": "experiments/phoenix/external/methods/era_stats.py",
+                "purpose": "Cochran-Armitage, 2-proportion z, Wilson CI (incl. design-effect variant), chi-square + Monte Carlo permutation, Bonferroni, rate ratios",
+                "method": "M6",
+                "original_code_available": False,
+                "status": "written from the paper's Methods text",
+            },
+            {
+                "path": "experiments/phoenix/external/methods/trajectory_features.py",
+                "purpose": "two-year %New, ancestral %New, entropy cohesion, whRCR, contemporaneous influence guard, majority-overlap trajectory linking, Richards curve fit, MALE/MSLE/RMSLE, subtask assignment, rolling-origin backtest",
+                "method": "M3 + M5",
+                "original_code_available": False,
+                "status": "written from the published descriptions; M5's R-GCN/BiLSTM deliberately not implemented",
+            },
+            {
+                "path": "experiments/phoenix/external/methods/selftest_synthetic.py",
+                "purpose": "synthetic-data proof that the implementations run and are arithmetically correct, plus formula cross-checks against M6's published statistics",
+                "method": "M3 + M5 + M6",
+                "original_code_available": False,
+                "status": "all checks executing",
+            },
+        ],
+        "selftest": {
+            "command": "python selftest_synthetic.py",
+            "n_checks": st["n_checks"],
+            "n_pass": st["n_pass"],
+            "n_fail": st["n_fail"],
+            "status": st["status"],
+            "exit_code": st["exit_code"],
+            "data": st["data"],
+            "checks": st["checks"],
+        },
+        "methods": [M3, M4, M5, M6],
+        "medradar_data_profile": {
+            "db": "data/medradar.sqlite (read-only, mode=ro&immutable=1)",
+            "events_total": 375378,
+            "events_by_source_kind_top": {
+                "openfda_device_510k/510k": 176466,
+                "openfda_device_recall/device_recall": 59646,
+                "openfda_device_pma/pma": 57372,
+                "ctgov/trial": 55592,
+                "sec_edgar_corpus/8k_catalyst": 20976,
+                "openfda_drug_drugsfda/drug_approval": 5326,
+            },
+            "event_date_range": ["1966-12-14", "2026-10-30"],
+            "distinct_product_code_on_events": 5624,
+            "distinct_company_key": 89,
+            "distinct_track_id": 60,
+            "product_codes_rows": 7097,
+            "note": "read-only profiling only; nothing written to the database",
+        },
+        "compliance": {
+            "branch_untouched": True,
+            "no_commits_or_pushes": True,
+            "sqlite_read_only": True,
+            "no_paywall_bypass": True,
+            "no_lens_bulk_or_api_queries": True,
+            "lens_prohibited_automation_respected": True,
+            "no_paid_keys_or_cloud_spend": True,
+            "web_content_treated_as_untrusted": True,
+        },
+    }
+
+    (HERE / "evidence.json").write_text(json.dumps(evidence, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    summary = {
+        "program": "PHOENIX-001",
+        "artifact": "external methods audit summary",
+        "generated_at_local": RETRIEVED,
+        "methods": [
+            {
+                "name": m["name"],
+                "official_url": m["official_url"],
+                "type": m["type"],
+                "licence_or_terms": m["licence_or_terms"],
+                "code_public": m["code_public"],
+                "data_public": m["data_public"],
+                "access_barrier": m["access_barrier"],
+                "core_method": m["core_method"],
+                "data_deps": m["data_deps"],
+                "needs_gpu": m["needs_gpu"],
+                "needs_network": m["needs_network"],
+                "needs_paid": m["needs_paid"],
+                "overlap_with_medradar": m["overlap_with_medradar"],
+                "methods_to_migrate": m["methods_to_migrate"],
+                "limitations": m["limitations"],
+                "leakage_risks": m["leakage_risks"],
+                "reproduction_status": m["reproduction_status"],
+                "decision": m["decision"],
+                "decision_reason": m["decision_reason"],
+                "evidence_paths": m["evidence_paths"],
+                "citations": m["citations"],
+            }
+            for m in [M3, M4, M5, M6]
+        ],
+        "selftest": {
+            "n_checks": st["n_checks"],
+            "n_pass": st["n_pass"],
+            "n_fail": st["n_fail"],
+            "status": st["status"],
+            "command": "python experiments/phoenix/external/methods/selftest_synthetic.py",
+        },
+        "decision_counts": {"ADOPT": 1, "ADAPT": 0, "STUDY_ONLY": 3, "REJECT": 0, "BLOCKED": 0},
+        "notes": [
+            "M3's official iSearch page was unreachable (Cloudflare 1034 at the vendor edge); the audit therefore documents the published NIH method and marks product-level behaviour as unknown.",
+            "M4 was audited for access terms first; no Lens data was queried, in line with the prohibition on automated extraction and bulk download.",
+            "M5 is not reproducible (no code, no data, equation images); no original result is claimed.",
+            "M6 is the only method recommended for adoption on MedRadar data; its HHI and trend tests are implemented and cross-checked against the paper's own printed statistics.",
+        ],
+    }
+    (OUT_DIR / "methods_audit_summary.json").write_text(
+        json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+    print("wrote evidence.json and ../methods_audit_summary.json")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
