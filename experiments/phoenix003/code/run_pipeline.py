@@ -23,6 +23,7 @@ import phoenix003_common as pc
 
 STAGES = [
     ("freeze_vocab", "freeze_vocab.py"),
+    ("freeze_epmc_df", "freeze_epmc_df.py"),
     ("a1_anchors", "a1_anchors.py"),
     ("b_links", "b_links.py"),
     ("b2_novelty", "b2_novelty.py"),
@@ -71,6 +72,8 @@ def main(argv=None) -> int:
         pc.DATASET / "firm_lineage.json",
         pc.DATASET / "frozen_vocab.json",
         pc.DATASET / "name_stoplist_extra.txt",
+        pc.DATASET / "epmc_rare_tokens.txt",
+        pc.DATASET / "epmc_df_meta.json",
         pc.EXPERIMENT_DIR / "REGULATORY_ANCHORS.jsonl",
         pc.EXPERIMENT_DIR / "EVIDENCE_LINKS.jsonl",
     ]

@@ -4,12 +4,12 @@
       "medtronic",
       "philips"
     ],
-    "distinct_product_codes": 248,
+    "distinct_product_codes": 246,
     "extension_rule_triggered": true,
     "median_prior_milestones_in_code": null,
-    "n": 268,
+    "n": 266,
     "name_source": {
-      "510k.device_name": 219,
+      "510k.device_name": 217,
       "pma.trade_name": 49
     },
     "per_firm": {
@@ -18,43 +18,43 @@
       "bd": 13,
       "boston_scientific": 41,
       "draeger": 1,
-      "edwards_lifesciences": 15,
+      "edwards_lifesciences": 14,
       "ge_healthcare": 4,
       "medtronic": 40,
       "mindray": 3,
       "philips": 11,
       "siemens_healthineers": 34,
-      "stryker": 38,
-      "zimmer_biomet": 15
+      "stryker": 40,
+      "zimmer_biomet": 12
     },
     "per_kind": {
-      "510k": 219,
+      "510k": 217,
       "pma": 49
     },
     "per_stratum": {
       "core": 59,
-      "extension": 209
+      "extension": 207
     },
     "per_year": {
       "2015": 39,
-      "2016": 29,
+      "2016": 27,
       "2017": 31,
-      "2018": 18,
-      "2019": 34,
+      "2018": 19,
+      "2019": 33,
       "2020": 25,
       "2021": 18,
       "2022": 26,
       "2023": 22,
       "2024": 26
     },
-    "strict_attribution_share": 0.906716
+    "strict_attribution_share": 0.906015
   },
   "attribution": {
-    "attributed_strict": 11603,
-    "attributed_to_core_firm": 12230,
+    "attributed_strict": 11590,
+    "attributed_to_core_firm": 12217,
     "by_stratum": {
       "core": 4447,
-      "extension": 7783
+      "extension": 7770
     },
     "milestones": 177948,
     "note": "UNKNOWN is retained, never imputed. The sampling frame is the five core firms plus the eight pre-registered extension firms, all attributed by the same brand rule; every other applicant in the store is outside the frame and counted here.",
@@ -71,7 +71,7 @@
       "philips": 1002,
       "siemens_healthineers": 1618,
       "stryker": 891,
-      "zimmer_biomet": 639
+      "zimmer_biomet": 626
     },
     "per_firm_strict": {
       "abbott": 1308,
@@ -86,10 +86,10 @@
       "philips": 758,
       "siemens_healthineers": 1608,
       "stryker": 824,
-      "zimmer_biomet": 598
+      "zimmer_biomet": 585
     },
-    "unknown": 165718,
-    "unknown_rate": 0.931272
+    "unknown": 165731,
+    "unknown_rate": 0.931345
   },
   "db": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
   "duplicate_milestone_keys": {
@@ -99,19 +99,19 @@
     "keys_appearing_more_than_once": 0
   },
   "funnel": {
-    "after_decision_code": 11837,
-    "after_distinctive_token": 10982,
-    "after_product_code": 11778,
-    "anchors": 268,
-    "attributed_to_core_firm": 12230,
+    "after_decision_code": 11824,
+    "after_distinctive_token": 10878,
+    "after_product_code": 11765,
+    "anchors": 266,
+    "attributed_to_core_firm": 12217,
     "excluded_decision_code": 393,
     "excluded_missing_product_code": 59,
-    "excluded_no_distinctive_token": 796,
-    "firm_product_code_pairs": 2249,
-    "first_in_code_inside_window": 268,
+    "excluded_no_distinctive_token": 887,
+    "firm_product_code_pairs": 2230,
+    "first_in_code_inside_window": 266,
     "milestones_loaded": 177948
   },
-  "generated_at": "2026-11-08T20:16:44+00:00",
+  "generated_at": "2026-11-08T21:13:28+00:00",
   "milestones_loaded": 177948,
   "natural_key_collisions": {
     "count": 162,
@@ -140,9 +140,9 @@
   },
   "outputs": {
     "anchors_jsonl": {
-      "lines": 268,
+      "lines": 266,
       "path": "experiments\\phoenix003\\REGULATORY_ANCHORS.jsonl",
-      "sha256": "3733be387a6c211920841cc3006b0752256a115c166113c69c4c50440c3f7063"
+      "sha256": "715f75066058574e276dbde2c89bdb4b0d33b80291e1ad677f9a2935c5b05f2c"
     }
   },
   "pma_supplement_rows_not_milestones": 55890,
@@ -162,7 +162,7 @@
     "note": "the store has one snapshot; decision_date is the FDA decision date and is the public date of the milestone. The store's available_at equals the event date for every row and is not an observation timestamp, so this study never uses it.",
     "received_to_decision_days": {
       "median": 81.0,
-      "n": 12230,
+      "n": 12217,
       "negative": 0,
       "p10": 22.0,
       "p90": 252.0

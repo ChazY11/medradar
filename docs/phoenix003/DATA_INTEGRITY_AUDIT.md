@@ -59,17 +59,22 @@ acquisition close date — they are counted as a coverage loss instead of being 
 
 | | count | share of milestones |
 |---|---:|---:|
-| attributed to one of the 13 frame firms | 12,230 | 6.87 % |
-| UNKNOWN (any other applicant) | 165,718 | 93.13 % |
+| attributed to one of the 13 frame firms | 12,217 | 6.87 % |
+| UNKNOWN (any other applicant) | 165,731 | 93.13 % |
 
 The 93 % is **not** an attribution failure rate in the sense of lost data: the store contains
 the whole US device market, and the sampling frame is 13 firms. Reported as a rate anyway
 because a reader must be able to see it. Inside the frame, strict attribution (brand token in
 the first two tokens, no parenthetical re-branding) covers **90.7 %** of anchors, and the
-lineage-inclusive vs strict counts differ by 627 milestones (5.1 % of attributed milestones) —
+lineage-inclusive vs strict counts differ by ~614 milestones (5.0 % of attributed milestones) —
 that difference is the part of the sample that depends on the lineage rule.
 
-Known lineage hazards, all measured rather than hidden:
+Known lineage hazards, all measured rather than hidden. Two were found by independent
+verification and are now explicit rules rather than accidents: `Zimmer Medizinsysteme GmbH` is an
+independent German physical-therapy firm and is excluded from the Zimmer Biomet token
+(`exclude_if_contains`), which removed three anchors; and pre-acquisition applicants are refused.
+
+
 
 * `Melmedtronics, Inc.` is a different company and is **not** attributed (token equality).
 * `Spectranetics Corporation` before 2017 is **not** a Philips record; `Spectranetics (Philips)`
@@ -125,7 +130,7 @@ milestones loaded                        177,948
   excluded: missing product code              59
   excluded: no distinctive token             796
   (firm, product code) pairs               2,249
-  first-in-code inside 2015-2024             268   <- anchor sample
+  first-in-code inside 2015-2024             266   <- anchor sample
 ```
 
 Anchor sample composition:
@@ -133,24 +138,24 @@ Anchor sample composition:
 | | anchors |
 |---|---:|
 | core stratum (Medtronic, GE HealthCare, Philips, Dräger, Mindray) | **59** |
-| extension stratum (8 other registered device firms, protocol §10 rule) | **209** |
-| total | 268 |
-| 510(k) / PMA-original | 219 / 49 |
-| distinct product codes | 248 |
+| extension stratum (8 other registered device firms, protocol §10 rule) | **207** |
+| total | 266 |
+| 510(k) / PMA-original | 217 / 49 |
+| distinct product codes | 246 |
 | strict attribution share | 90.7 % |
 
-Per firm: medtronic 40, abbott 45, boston_scientific 41, stryker 38, siemens_healthineers 34,
-edwards_lifesciences 15, zimmer_biomet 15, bd 13, philips 11, baxter 8, ge_healthcare 4,
+Per firm: abbott 45, boston_scientific 41, stryker 40, medtronic 40, siemens_healthineers 34,
+edwards_lifesciences 14, bd 13, zimmer_biomet 12, philips 11, baxter 8, ge_healthcare 4,
 mindray 3, draeger 1.
 
 **Finding 5 — the extension rule fired.** Only **two** core firms reach the pre-registered
 5-anchor floor (Medtronic 40, Philips 11). GE HealthCare has 4, Mindray 3, Dräger 1. The
 pre-registered extension to eight further registered device firms was therefore triggered, and
-the 209 extension anchors are reported **separately** everywhere; they are never pooled with the
+the 207 extension anchors are reported **separately** everywhere; they are never pooled with the
 core five in a headline number.
 
 **Finding 6 — first-in-code is a genuinely different construct from "a lot of clearances".**
-The 268 anchors are, by construction, *new* product codes for their firm. Medtronic has 1,707
+The 266 anchors are, by construction, *new* product codes for their firm. Medtronic has 1,707
 attributed milestones but only 40 new codes in the window; the remaining 1,667 are repeat
 activity in codes the firm already occupied. This is the sampling frame PHOENIX-002 lacked: every
 anchor can in principle have earlier evidence, and none of them is a structurally impossible
@@ -187,8 +192,37 @@ existed, so no retrieval choice can be influenced by which milestones look inter
 
 ### 6.2 Europe PMC
 
-*(populated from `fetch/EPMC_FETCH_MANIFEST.json` after the harvest completes — see
-`EXPERIMENT_RESULTS.md` §2 for the final counts; the numbers are not typed by hand.)*
+| firm | retained records | note |
+|---|---:|---|
+| medtronic | 2,892 | |
+| ge_healthcare | 4,286 | |
+| philips | 6,615 | includes non-medical Philips (lighting/semiconductors) — measured, not removed |
+| draeger | **42** | see below |
+| mindray | **234** | |
+| **core total** | **13,980** | after de-duplicating 78 records returned by more than one query |
+| extension 8 firms | 22,664 | separate stratum; BD 9,292 and Abbott 5,356 dominate |
+
+Record sources: MED 35,947 / PMC 506 / PPR 168 / PAT 23 across the two strata. The 23 patent
+records are excluded from the evidence pool (a patent is not the independent publication the
+protocol describes); they remain in the corpus and their exclusion is counted. `first_publication_date`
+is null for 0 records; the fallback chain never fired because the server-side `FIRST_PDATE` filter
+entails that field. 3.7 % of records carry no firm affiliation string matching the firm and are
+excluded from candidacy rather than assigned.
+
+**Finding 7 — a major European device firm and a major Chinese device firm are almost absent from
+the publication index.** `AFF:"Draeger"` returns 975 records without a date window, but a top-100
+sample of those is 86 % EPMC *patent* records and personal surnames ("Schumm-Draeger"); inside the
+2012–2025 window a single spelling returns 19 records and the frozen three-spelling union returns
+**42**. Mindray in-window: **234**. Their anchors are 1 and 3 respectively, and neither firm
+produces a single verified link. This is not "no signal found" — it is "no instrument": the source
+cannot speak about them. Any future round that keeps these firms must add a non-publication source
+(regulatory registers, procurement notices, hiring) or drop them explicitly.
+
+**Finding 8 — the affiliation query is not the same as the paper being about the firm's device.**
+521 core records (3.7 %) were returned by an `AFF:` hit that is not present in the shipped record —
+Europe PMC's affiliation index can match a name the article record does not display. Such records
+cannot pass the record-level firm check and are excluded; the count is reported rather than guessed.
+
 
 ## 7. Defects this audit closes, and the ones it does not
 

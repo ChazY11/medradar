@@ -1,0 +1,143 @@
+{
+  "generated_at": "2026-11-08T20:22:38+00:00",
+  "endpoint": "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+  "queries": [
+    {
+      "firm": "medtronic",
+      "api_query": "AFF:\"Medtronic\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 4,
+      "pages": 4,
+      "reported_hit_count": 2892,
+      "records_returned": 2892,
+      "records_retained": 2892,
+      "started_at": "2026-11-08T20:22:38+00:00",
+      "finished_at": "2026-11-08T20:34:02+00:00"
+    },
+    {
+      "firm": "ge_healthcare",
+      "api_query": "(AFF:\"GE HealthCare\" OR AFF:\"GE Healthcare\" OR AFF:\"GE Medical Systems\" OR AFF:\"General Electric Medical Systems\") AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 6,
+      "pages": 6,
+      "reported_hit_count": 4286,
+      "records_returned": 4286,
+      "records_retained": 4286,
+      "started_at": "2026-11-08T20:34:03+00:00",
+      "finished_at": "2026-11-08T20:42:26+00:00"
+    },
+    {
+      "firm": "philips",
+      "api_query": "(AFF:\"Philips\" OR AFF:\"Philips Healthcare\" OR AFF:\"Philips Medical Systems\") AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 8,
+      "pages": 8,
+      "reported_hit_count": 6615,
+      "records_returned": 6615,
+      "records_retained": 6615,
+      "started_at": "2026-11-08T20:42:27+00:00",
+      "finished_at": "2026-11-08T20:49:43+00:00"
+    },
+    {
+      "firm": "draeger",
+      "api_query": "(AFF:\"Draeger\" OR AFF:\"Dräger\" OR AFF:\"Draegerwerk\") AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 42,
+      "records_returned": 42,
+      "records_retained": 42,
+      "started_at": "2026-11-08T20:49:44+00:00",
+      "finished_at": "2026-11-08T20:49:50+00:00"
+    },
+    {
+      "firm": "mindray",
+      "api_query": "(AFF:\"Mindray\" OR AFF:\"Shenzhen Mindray\") AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 234,
+      "records_returned": 234,
+      "records_retained": 234,
+      "started_at": "2026-11-08T20:49:50+00:00",
+      "finished_at": "2026-11-08T20:50:07+00:00"
+    }
+  ],
+  "counts": {
+    "records_total": 14069,
+    "records_retained": 13980,
+    "per_field_nulls": {
+      "pmid": 319,
+      "pmcid": 6576,
+      "doi": 241,
+      "title": 0,
+      "author_string": 6,
+      "journal_title": 39,
+      "pub_year": 3,
+      "first_publication_date": 0,
+      "electronic_publication_date": 1984,
+      "first_index_date": 0,
+      "abstract": 861,
+      "is_open_access": 0,
+      "cited_by_count": 0
+    },
+    "records_returned_by_multiple_firm_queries": 78,
+    "records_with_empty_firm_affiliations": 521,
+    "records_first_publication_date_outside_window": 1,
+    "first_publication_date_outside_window_examples": [
+      "2005-08-30"
+    ],
+    "per_firm_retained": {
+      "medtronic": 2892,
+      "ge_healthcare": 4286,
+      "philips": 6615,
+      "draeger": 42,
+      "mindray": 234
+    },
+    "date_basis_counts": {
+      "firstPublicationDate": 13980
+    },
+    "source_counts": {
+      "MED": 13661,
+      "PAT": 5,
+      "PMC": 282,
+      "PPR": 32
+    },
+    "abstract": {
+      "records_with_abstract": 13119,
+      "records_without_abstract": 861,
+      "mean_length_chars": 1681.49,
+      "truncated_to_2000": 3811
+    },
+    "is_open_access_counts": {
+      "true": 5597,
+      "false": 8383,
+      "null": 0
+    },
+    "records_with_empty_keywords": 3786,
+    "records_with_empty_mesh_terms": 3206,
+    "records_with_empty_pub_types": 0
+  },
+  "files": [
+    {
+      "path": "experiments/phoenix003/dataset/epmc_compact.jsonl.gz",
+      "bytes": 11804771,
+      "sha256": "e1ef5841bcfc9c64eb1d524efc83a78f040827b77d0cf695ea803d6118baeac8",
+      "lines": 13980
+    }
+  ],
+  "limitations": [
+    "Query is the frozen FETCH_SPEC.md query executed verbatim (AFF clause AND FIRST_PDATE window). HAS_ABS:Y and SRC:MED were deliberately NOT added: HAS_ABS:Y returns 0 hits for this corpus and SRC:MED would drop preprint (PPR), patent (PAT) and PMC-only records.",
+    "Pagination: resultType=core&pageSize=1000, cursorMark; each query stops when nextCursorMark is absent or repeats. reported_hit_count is the hitCount of the first page of that query.",
+    "firm_affiliations is a case-insensitive substring test of the frozen firm AFF terms against (a) authorList[].authorAffiliationDetailsList[].authorAffiliation[].affiliation and (b) the record-level affiliation field only. Strings are kept verbatim, de-duplicated, in upstream order. Titles/abstracts are never scanned. Matching normalises whitespace only (upstream uses U+00A0 inside names such as \"GE\\xa0Healthcare\"); retained strings are not altered.",
+    "Records returned by more than one firm query: 78 (source_firm is the sorted '+'-joined list). The per-firm retained counts therefore sum to 14069 > records_retained 13980.",
+    "Records with empty firm_affiliations: 521 of 13980 - retrieved by the AFF query but no shipped affiliation string matches the firm's own terms; kept in the corpus per spec and counted here rather than silently dropped. All such records are source MED and they are concentrated in 2012-2015. Cause probed on one 2013 example (source MED, id 23295444): the shipped core record carries only unrelated affiliations (a Cape Town hospital), so Europe PMC's AFF index can match an affiliation that is not present in the shipped record; the affiliation data available to the harvester is what is stored, verbatim.",
+    "first_publication_date null: 0; date_basis breakdown: {\"firstPublicationDate\": 13980} (frozen fallback order firstPublicationDate -> electronicPublicationDate -> firstIndexDate -> pubYear + '-01-01'). Upstream date strings are kept verbatim (YYYY-MM-DD or YYYY-MM).",
+    "abstract present: 13119 of 13980 (mean collapsed length 1681.49 chars); truncated to 2000 chars: 3811.",
+    "source distribution: {\"MED\": 13661, \"PAT\": 5, \"PMC\": 282, \"PPR\": 32} - no SRC:MED filter was applied, so preprints/patents/PMC-only records are retained.",
+    "first_publication_date outside the frozen window despite the server-side FIRST_PDATE filter: 1 record(s), examples ['2005-08-30']. The frozen window is server-side only and no client-side date filter is specified for Europe PMC, so these records are retained and counted. Cause observed: Europe PMC's FIRST_PDATE index is not exactly the shipped firstPublicationDate for every source type (the smoke sample showed a patent record, id WO2006028934, with firstPublicationDate 2005-08-30).",
+    "gz verification on write: line count equals records_retained; every line parses as JSON; every record carries exactly the frozen key set; 0 records have abstract_truncated=true with an abstract length != 2000.",
+    "Observed hit counts (this run): medtronic reported_hit_count=2892 (returned 2892, retained 2892); ge_healthcare reported_hit_count=4286 (returned 4286, retained 4286); philips reported_hit_count=6615 (returned 6615, retained 6615); draeger reported_hit_count=42 (returned 42, retained 42); mindray reported_hit_count=234 (returned 234, retained 234). After the frozen window is applied, draeger and mindray are far below the informal pre-run estimates (~600 and ~400): AFF:\"Draeger\" without the window returns 975 records whose top-100 sample is 86% PAT records matching personal surnames (e.g. 'Schumm-Draeger'), inside the frozen window it returns 19, and the frozen three-spelling union returns the value above. The frozen query was not altered to chase the estimate.",
+    "AFF:\"Philips\" also retrieves non-medical Philips (lighting, semiconductors in early years); that contamination is measured later in DATA_INTEGRITY_AUDIT.md, not repaired here."
+  ]
+}

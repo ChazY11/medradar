@@ -33,7 +33,8 @@ Contract (frozen in FETCH_SPEC.md, not to be changed here):
     pagination, query suffix `` AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])``.
   * User-Agent ``MedRadar-PHOENIX003/1.0 (research; contact ...)``, >= 0.35 s between
     request starts, 3 retries with 1/2/4 s backoff, abort loudly instead of writing a
-    partial file.
+    partial file.  ``Accept-Encoding: gzip`` is used as a transport-only optimisation and
+    decoded before parsing; record content is unchanged.
   * CT.gov: client-side ``first_posted`` window [2010-01-01, 2025-12-31], null retained.
   * EPMC: date fallback ``firstPublicationDate`` -> ``electronicPublicationDate`` ->
     ``firstIndexDate`` -> ``pubYear + "-01-01"`` recorded in ``date_basis``; abstract
@@ -173,9 +174,11 @@ FIRMS = (
 FIRM_BY_KEY = {firm["key"]: firm for firm in FIRMS}
 FIRM_ORDER = tuple(firm["key"] for firm in FIRMS)
 
-# EPMC affiliation filter: word-token equality, never a bare substring, so that ``BD``
-# does not match French "Bd" (boulevard) or fragments inside other words.  Matching
-# affiliation strings are kept verbatim in ``firm_affiliations``.
+# EPMC affiliation filter: case-insensitive word-token equality on the frozen AFF terms,
+# never a bare substring, so 'BD' does not match inside a longer word (e.g. 'ABD').
+# A standalone non-English 'Bd' token (the French boulevard abbreviation) still matches
+# and is retained rather than guessed away; matching strings are kept verbatim in
+# ``firm_affiliations``.
 AFF_REGEX = {
     firm["key"]: tuple(
         re.compile(
@@ -276,15 +279,23 @@ def http_get_json(
     timeout_s: float,
     limiter: RateLimiter,
     label: str,
-) -> tuple[int, dict, float, int]:
-    """GET ``url`` with ``params``; return ``(http_status, parsed_json, elapsed_s, attempts)``.
+) -> tuple[int, dict, float, int, int]:
+    """GET ``url`` with ``params``; return ``(http_status, parsed_json, elapsed_s, attempts, wire_bytes)``.
 
     Retries up to 3 times with 1/2/4 s backoff on transient HTTP/network failures and
     raises :class:`HarvestError` on permanent failure.  ``attempts`` counts HTTP attempts
     including retries, which is what the manifest's ``requests`` field means.
+
+    ``Accept-Encoding: gzip`` is a transport-only optimisation: the server's JSON is
+    decoded back to the exact same bytes before parsing, so record content and the frozen
+    query semantics are unchanged (and the wire footprint is much smaller).
     """
     full_url = url + "?" + urllib.parse.urlencode(params)
-    headers = {"User-Agent": USER_AGENT, "Accept": "application/json"}
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+    }
     attempts = 0
     while True:
         attempts += 1
@@ -294,8 +305,23 @@ def http_get_json(
         try:
             with urllib.request.urlopen(request, timeout=timeout_s) as response:
                 status = int(getattr(response, "status", 200))
+                content_encoding = (
+                    response.headers.get("Content-Encoding") or ""
+                ).strip().lower()
                 payload = response.read()
             elapsed = time.monotonic() - started
+            wire_bytes = len(payload)
+            if content_encoding in ("gzip", "x-gzip"):
+                try:
+                    payload = gzip.decompress(payload)
+                except OSError as exc:
+                    raise HarvestError(
+                        f"{label}: invalid gzip response body ({wire_bytes} bytes)"
+                    ) from exc
+            elif content_encoding not in ("", "identity"):
+                raise HarvestError(
+                    f"{label}: unsupported Content-Encoding {content_encoding!r}"
+                )
             try:
                 data = json.loads(payload.decode("utf-8"))
             except (UnicodeDecodeError, json.JSONDecodeError) as exc:
@@ -303,7 +329,7 @@ def http_get_json(
                     f"{label}: unparseable JSON response "
                     f"(HTTP {status}, {len(payload)} bytes)"
                 ) from exc
-            return status, data, elapsed, attempts
+            return status, data, elapsed, attempts, wire_bytes
         except urllib.error.HTTPError as exc:
             try:
                 detail = exc.read()[:400].decode("utf-8", "replace")
@@ -492,7 +518,7 @@ def harvest_ctgov(firms, limiter: RateLimiter, limit_pages: int | None):
                 if token:
                     params["pageToken"] = token
 
-                status, data, elapsed, attempts = http_get_json(
+                status, data, elapsed, attempts, wire_bytes = http_get_json(
                     CT_ENDPOINT, params, CT_TIMEOUT_S, limiter, f"{label} page={page}"
                 )
                 requests_total += attempts
@@ -536,7 +562,8 @@ def harvest_ctgov(firms, limiter: RateLimiter, limit_pages: int | None):
                 returned += len(studies)
                 next_token = data.get("nextPageToken")
                 log(f"  page={page} http={status} got={len(studies)} "
-                    f"total={reported_total} cum={returned} t={elapsed:.1f}s")
+                    f"total={reported_total} cum={returned} wire={wire_bytes}B "
+                    f"t={elapsed:.1f}s")
                 if limit_pages is not None and page >= limit_pages:
                     if next_token:
                         log(f"  --limit-pages={limit_pages} reached; more pages exist (smoke)")
@@ -838,7 +865,7 @@ def harvest_epmc(firms, limiter: RateLimiter, limit_pages: int | None):
                 "pageSize": str(EPMC_PAGE_SIZE),
                 "cursorMark": cursor,
             }
-            status, data, elapsed, attempts = http_get_json(
+            status, data, elapsed, attempts, wire_bytes = http_get_json(
                 EPMC_ENDPOINT, params, EPMC_TIMEOUT_S, limiter, f"{label} page={page}"
             )
             requests_total += attempts
@@ -882,7 +909,7 @@ def harvest_epmc(firms, limiter: RateLimiter, limit_pages: int | None):
             returned += len(results)
             next_cursor = data.get("nextCursorMark")
             log(f"  page={page} http={status} got={len(results)} hit={reported_hit} "
-                f"cum={returned} t={elapsed:.1f}s")
+                f"cum={returned} wire={wire_bytes}B t={elapsed:.1f}s")
             if limit_pages is not None and page >= limit_pages:
                 if next_cursor and next_cursor != cursor:
                     log(f"  --limit-pages={limit_pages} reached; more pages exist (smoke)")
@@ -1147,11 +1174,14 @@ def build_manifest(
         "joined with ' | ' and '+' respectively. firm_affiliations comes from the first "
         "record and is filtered with the first owning firm's terms only; the (rare) "
         "multi-firm rows are counted in counts.by_source.epmc.per_firm_membership.",
-        "firm_affiliations matching is word-token equality (case-insensitive), not a bare "
-        "substring: this is what keeps 'BD' from matching French 'Bd' (boulevard) or "
-        "fragments inside other words. Matching affiliation strings are kept verbatim and "
-        "de-duplicated in first-seen order. An empty list means the retrieved record's "
-        "affiliations did not carry a frozen firm term (counted).",
+        "firm_affiliations matching is case-insensitive word-token equality on the frozen "
+        "AFF terms, never a bare substring: 'BD' therefore does not match inside a longer "
+        "word (e.g. 'ABD'), and matching affiliation strings are kept verbatim and "
+        "de-duplicated in first-seen order. A standalone 'Bd' token in a non-English "
+        "affiliation string (the French boulevard abbreviation) still matches the 'BD' "
+        "term; such strings are retained by the frozen matching rule rather than guessed "
+        "away. An empty list means no affiliation on the retrieved record carried a frozen "
+        "firm term (counted).",
         "abstract is whitespace-collapsed (no day/HTML invention, HTML entities left as "
         "upstream) and truncated to 2000 characters; abstract_truncated marks truncation.",
         "date basis for Europe PMC follows the frozen order firstPublicationDate -> "
@@ -1163,6 +1193,10 @@ def build_manifest(
         "chazy11@users.noreply.github.com)', >= 0.35 s between request starts, 3 retries "
         "with (1.0, 2.0, 4.0)s backoff; the harvest aborts loudly instead of writing a "
         "partial file.",
+        "Transport only: responses were requested with Accept-Encoding: gzip and decoded "
+        "before parsing; server-side query semantics, pagination and record content are "
+        "identical to an uncompressed request (the smaller wire footprint also reduces "
+        "load on the shared endpoint).",
         "fetched_at is wall-clock time at page retrieval and is the only non-deterministic "
         "field; everything else is deterministic given identical upstream bytes. Gzip is "
         "written with mtime=0.",

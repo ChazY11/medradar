@@ -132,7 +132,7 @@ def main(argv=None) -> int:
     # ---------------------------------------------------------------- stratum split
     stratum_of = {a["anchor_id"]: a["stratum"] for a in anchors}
     strata = {}
-    for st in sorted({stratum_of.values()}):
+    for st in sorted(set(stratum_of.values())):
         sub = {k: v for k, v in primary.items() if stratum_of.get(k) == st}
         strata[st] = summarise(sub, st)
 
@@ -244,7 +244,12 @@ def main(argv=None) -> int:
          "no regulatory record of that product name existed before the evidence date"),
         ("L2_product_specific_pre_regulatory",
          lambda r: bool(r.get("product_specific")) and r.get("regulatory_status") == "PRE_REGULATORY",
-         "the strict conjunction: product-specific token AND no prior regulatory record"),
+         "product-specific token AND no prior regulatory record"),
+        ("L2_strict_literature_rare",
+         lambda r: bool(r.get("product_specific")) and r.get("literature_rare")
+         and r.get("regulatory_status") == "PRE_REGULATORY",
+         "the strictest conjunction: product-specific AND literature-rare token (not an ordinary "
+         "word of the field) AND no prior regulatory record (Amendment 5)"),
     ]
     ladder = {}
     for name, pred, desc in ladder_defs:

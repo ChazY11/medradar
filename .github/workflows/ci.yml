@@ -43,6 +43,29 @@ jobs:
       - name: Offline demo smoke test (must not touch the network)
         run: medradar demo
 
+  phoenix003:
+    name: phoenix-003 offline selftests (no network, no database)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      # The PHOENIX-003 experiment is self-contained: it reads only the committed frozen
+      # artefacts (FROZEN_RULES.json, firm_lineage.json, frozen_vocab.json,
+      # REGULATORY_ANCHORS.jsonl). These tests encode the arithmetic the headline numbers
+      # depend on, so they run without the 1.3 GB store and without the network.
+      - name: PHOENIX-003 offline selftests
+        run: python experiments/phoenix003/code/selftest_offline.py
+      - name: PHOENIX-003 committed artefacts are internally consistent
+        run: |
+          python -c "import json, pathlib; root = pathlib.Path('experiments/phoenix003'); rules = json.loads((root/'FROZEN_RULES.json').read_text(encoding='utf-8')); anchors = [json.loads(l) for l in (root/'REGULATORY_ANCHORS.jsonl').read_text(encoding='utf-8').splitlines() if l.strip()]; assert rules['experiment'] == 'PHOENIX-003', rules.get('experiment'); assert anchors, 'no anchors committed'; ids = [a['anchor_id'] for a in anchors]; assert len(ids) == len(set(ids)), 'duplicate anchor ids'; assert all(len(i) == 64 for i in ids); assert all(a['milestone_key'][0] in 'KP' for a in anchors); print(json.dumps({'anchors': len(anchors), 'protocol_version': rules['protocol_version']}))"
+
+
   data-stats:
     name: offline data stats (fixture mini DB)
     runs-on: ubuntu-latest

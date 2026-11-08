@@ -473,11 +473,17 @@ FETCH_SPEC_CLAUSES = {
 # --- writing & verification -------------------------------------------------------
 
 def write_gz_atomic(path: Path, records: list[dict]) -> dict:
-    """Write gzip atomically (mtime=0), verify it reads back, replace into place."""
+    """Write gzip atomically (mtime=0), verify it reads back, replace into place.
+
+    filename="" matters: GzipFile derives the stored FNAME from the file object's
+    name, which would otherwise bake the temporary ".tmp" path into the gzip
+    header and make the artefact irreproducible from a clean re-run.
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_name(path.name + ".tmp")
     with open(tmp, "wb") as handle:
-        with gzip.GzipFile(fileobj=handle, mode="wb", compresslevel=9, mtime=0) as gz:
+        with gzip.GzipFile(filename="", fileobj=handle, mode="wb",
+                           compresslevel=9, mtime=0) as gz:
             for record in records:
                 gz.write(json.dumps(record, ensure_ascii=False,
                                     separators=(",", ":")).encode("utf-8"))
@@ -635,7 +641,12 @@ def limitations_for(records: list[dict], queries: list[dict], counts: dict,
         f"{counts['records_with_empty_firm_affiliations']} of "
         f"{counts['records_retained']} - retrieved by the AFF query but no shipped "
         f"affiliation string matches the firm's own terms; kept in the corpus per spec "
-        f"and counted here rather than silently dropped.")
+        f"and counted here rather than silently dropped. All such records are source MED "
+        f"and they are concentrated in 2012-2015. Cause probed on one 2013 example "
+        f"(source MED, id 23295444): the shipped core record carries only unrelated "
+        f"affiliations (a Cape Town hospital), so Europe PMC's AFF index can match an "
+        f"affiliation that is not present in the shipped record; the affiliation data "
+        f"available to the harvester is what is stored, verbatim.")
     nulls = counts["per_field_nulls"]
     lines.append(
         f"first_publication_date null: {nulls['first_publication_date']}; "

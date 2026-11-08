@@ -37,6 +37,13 @@ import phoenix003_common as pc
 NCT_RE = re.compile(r"NCT\d{8}")
 MAX_LINKS_PER_ANCHOR = 100
 
+# Emission order for the per-anchor cap. The cap must never drop a verified link in favour of a
+# rejected one, so the ordering is explicit rather than alphabetical (an earlier version sorted
+# tier strings, which put AMBIGUOUS_L4 and REJECTED_L5 ahead of VERIFIED_L2 and silently truncated
+# verified rows for anchors with many rejects).
+TIER_ORDER = {"VERIFIED_L1": 0, "VERIFIED_L2": 1, "CANDIDATE_L3": 2,
+              "AMBIGUOUS_L4": 3, "REJECTED_L5": 4}
+
 CTGOV_FILES = ["ctgov_compact.jsonl.gz", "ctgov_ext_compact.jsonl.gz"]
 EPMC_FILES = ["epmc_compact.jsonl.gz", "epmc_ext_compact.jsonl.gz"]
 
@@ -95,17 +102,26 @@ def load_ctgov(resolver) -> tuple[list[dict], dict]:
                 "text_raw": " ".join([title, official] + iv_names + [str(c) for c in cond]),
                 "name_tokens": _text_tokens(title, iv_names),
                 "title_tokens": _text_tokens(title, iv_names),
+                "match_tokens": _text_tokens(title, iv_names),
                 "all_tokens": _text_tokens(title, official, iv_names, cond, rec.get("acronym"),
                                           sponsor_fields),
                 "date": rec.get("first_posted"),
                 "date_sens": rec.get("last_update_posted"),
                 "date_basis": "first_posted" if rec.get("first_posted") else "none",
                 "lead_sponsor": rec.get("lead_sponsor"),
+                "text_excerpt": " ".join([title, official])[:600],
                 "file": name,
             })
             stats["records"] += 1
         stats[f"file::{name}"] = n
     return records, dict(stats)
+
+
+# Europe PMC indexes patent records (source=PAT) alongside journal literature. A patent is not
+# the "independent academic publication" the protocol names, so PAT rows are retained in the
+# corpus but excluded from the evidence pool, and the exclusion is counted (it can only remove
+# matches). Decided before any EPMC link was computed; reported in the results.
+EPMC_EXCLUDED_SOURCES = {"PAT"}
 
 
 def load_epmc(resolver) -> tuple[list[dict], dict]:
@@ -130,22 +146,30 @@ def load_epmc(resolver) -> tuple[list[dict], dict]:
             abstract = rec.get("abstract") or ""
             keywords = rec.get("keywords") or []
             mesh = rec.get("mesh_terms") or []
+            src_type = str(rec.get("source") or "UNKNOWN").upper()
+            stats[f"epmc_source::{src_type}"] += 1
+            if src_type in EPMC_EXCLUDED_SOURCES:
+                stats["records_excluded_patent"] += 1
+                continue
             records.append({
                 "source": "epmc",
+                "epmc_source_type": src_type,
                 "id": rec.get("pmid") or rec.get("doi") or rec.get("id"),
                 "firms": firms,
                 "firm_verified": firm_ok,
                 "title": title,
                 "abstract": abstract,
                 "text_raw": " ".join([title, abstract, " ".join(str(k) for k in keywords)]),
-                "name_tokens": _text_tokens(title),
+                "name_tokens": _text_tokens(title, abstract),
                 "title_tokens": _text_tokens(title),
                 "abstract_tokens": _text_tokens(abstract),
+                "match_tokens": _text_tokens(title, abstract),
                 "all_tokens": _text_tokens(title, abstract, keywords, mesh),
                 "date": rec.get("first_publication_date"),
                 "date_sens": rec.get("first_index_date") or rec.get("electronic_publication_date"),
                 "date_basis": rec.get("date_basis"),
                 "nct_ids": sorted(set(NCT_RE.findall(title + " " + abstract))),
+                "text_excerpt": " ".join([title, abstract])[:600],
                 "pmid": rec.get("pmid"),
                 "doi": rec.get("doi"),
                 "journal": rec.get("journal_title"),
@@ -202,12 +226,12 @@ def main(argv=None) -> int:
 
     # NCT ids that belong to the firm's own registered trials (for the L1 chain)
     firm_ncts = collections.defaultdict(set)
-    ct_index = build_index(ctgov, "name_tokens")
+    ct_index = build_index(ctgov, "match_tokens")
     for f, idxs in by_firm_ct.items():
         for i in idxs:
             firm_ncts[f].add(ctgov[i]["id"])
 
-    ep_index = build_index(epmc, "all_tokens")
+    ep_index = build_index(epmc, "match_tokens")
 
     window_years = rules["evidence"]["window_years_before_anchor"]
     max_links = min(int(rules["evidence"]["max_evidence_per_anchor"]), MAX_LINKS_PER_ANCHOR)
@@ -254,6 +278,7 @@ def main(argv=None) -> int:
         best_tier = None
         best_lead = None
         best_specific = None
+        best_rare_specific = None
         per_anchor_tiers = collections.Counter()
         seen = set()
         for src, i, tok, field in matched:
@@ -274,6 +299,11 @@ def main(argv=None) -> int:
                 tier, reason = "AMBIGUOUS_L4", "firm_not_verifiable_from_record"
             elif d >= adate:
                 tier, reason = "REJECTED_L5", "evidence_not_before_milestone"
+            elif d < w_start:
+                # protocol §5: nothing published before the 5-year window is admissible evidence,
+                # whatever tier it would otherwise reach. Independent verification found 28 L1 rows
+                # that had escaped this test.
+                tier, reason = "REJECTED_L5", "outside_5y_window"
             else:
                 # L1: identifier chain through an NCT id present in the firm's own trial set
                 nct_hit = None
@@ -289,11 +319,9 @@ def main(argv=None) -> int:
                             break
                 if nct_hit:
                     tier, reason = "VERIFIED_L1", f"nct_chain:{nct_hit}"
-                elif d >= w_start:
+                else:
                     tier = "VERIFIED_L2"
                     reason = f"token:{tok}"
-                else:
-                    tier, reason = "REJECTED_L5", "outside_5y_window"
             lead = (adate - d).days if d else None
             per_anchor_tiers[tier] += 1
             link_rows_anchor.append({
@@ -310,12 +338,14 @@ def main(argv=None) -> int:
                 "evidence_date_sensitivity": rec.get("date_sens"),
                 "evidence_date_basis": rec.get("date_basis"),
                 "evidence_title": (rec.get("title") or "")[:400],
+                "evidence_text": (rec.get("text_excerpt") or "")[:600],
                 "evidence_journal": rec.get("journal"),
                 "evidence_url_id": rec.get("doi") or rec.get("pmid") or rec.get("id"),
                 "matched_token": tok,
                 "token_band": bands.get(tok),
                 "token_applicant_df": tokenizer.applicant_df_of(tok),
                 "product_specific": tokenizer.is_product_specific(tok),
+                "literature_rare": tokenizer.is_literature_rare(tok),
                 "match_field": field,
                 "firm_verified": firm_verified,
                 "tier": tier,
@@ -325,6 +355,8 @@ def main(argv=None) -> int:
             if tier in ("VERIFIED_L1", "VERIFIED_L2"):
                 if tokenizer.is_product_specific(tok):
                     best_specific = True
+                    if tokenizer.is_literature_rare(tok):
+                        best_rare_specific = True
                 if best_tier is None or (tier == "VERIFIED_L1" and best_tier != "VERIFIED_L1"):
                     best_tier = tier
                 if lead is not None and (best_lead is None or lead > best_lead):
@@ -352,11 +384,14 @@ def main(argv=None) -> int:
                         "evidence_date_sensitivity": rec.get("date_sens"),
                         "evidence_date_basis": rec.get("date_basis"),
                         "evidence_title": (rec.get("title") or "")[:400],
+                        "evidence_text": (rec.get("text_excerpt") or "")[:600],
+                "evidence_text": (rec.get("text_excerpt") or "")[:600],
                         "evidence_journal": rec.get("journal"),
                         "evidence_url_id": rec.get("doi") or rec.get("pmid"),
                         "matched_token": tok, "token_band": "generic",
                         "token_applicant_df": tokenizer.applicant_df_of(tok),
                         "product_specific": False,
+                        "literature_rare": tokenizer.is_literature_rare(tok),
                         "match_field": "all_tokens", "firm_verified": True,
                         "tier": "CANDIDATE_L3", "reason": f"generic_token:{tok}",
                         "lead_days": (adate - d).days,
@@ -366,8 +401,23 @@ def main(argv=None) -> int:
                 if per_anchor_tiers["CANDIDATE_L3"]:
                     break
 
-        link_rows_anchor.sort(key=lambda r: (r["tier"], r["evidence_date"] or ""))
-        link_rows.extend(link_rows_anchor[:max_links])
+        link_rows_anchor.sort(key=lambda r: (TIER_ORDER.get(r["tier"], 9),
+                                             r["evidence_date"] or ""))
+        # verified rows are always emitted; only refused/ambiguous rows are capped, so the
+        # deliverable never omits a link the analysis counted (independent verification flagged
+        # the earlier 25 % omission).
+        kept, n_non_verified = [], 0
+        for r in link_rows_anchor:
+            if r["tier"] in ("VERIFIED_L1", "VERIFIED_L2"):
+                kept.append(r)
+            else:
+                n_non_verified += 1
+                if n_non_verified <= max_links:
+                    kept.append(r)
+        dropped = len(link_rows_anchor) - len(kept)
+        if dropped:
+            tier_counts["__emission_capped_rows"] += dropped
+        link_rows.extend(kept)
         for t in ("VERIFIED_L1", "VERIFIED_L2", "CANDIDATE_L3", "AMBIGUOUS_L4", "REJECTED_L5"):
             tier_counts[t] += per_anchor_tiers.get(t, 0)
 
@@ -388,6 +438,7 @@ def main(argv=None) -> int:
             "lead_days_max": best_lead,
             "has_verified_link": best_tier in ("VERIFIED_L1", "VERIFIED_L2"),
             "has_product_specific_link": bool(best_specific),
+            "has_literature_rare_link": bool(best_rare_specific),
         })
 
     summary = {
@@ -407,6 +458,8 @@ def main(argv=None) -> int:
         "anchors_with_verified_link": sum(1 for s in anchor_summaries if s["has_verified_link"]),
         "anchors_with_product_specific_link": sum(
             1 for s in anchor_summaries if s["has_product_specific_link"]),
+        "anchors_with_literature_rare_link": sum(
+            1 for s in anchor_summaries if s["has_literature_rare_link"]),
         "anchors_with_no_candidate": sum(
             1 for s in anchor_summaries if not s["tier_counts"]),
         "per_stratum": {

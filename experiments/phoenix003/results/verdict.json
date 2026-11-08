@@ -1,0 +1,131 @@
+{
+  "gates": {
+    "coverage_rate": 1.0,
+    "firms_represented": [
+      "abbott",
+      "baxter",
+      "bd",
+      "boston_scientific",
+      "edwards_lifesciences",
+      "ge_healthcare",
+      "medtronic",
+      "philips",
+      "siemens_healthineers",
+      "stryker",
+      "zimmer_biomet"
+    ],
+    "go_checks": {
+      "firms>=": [
+        11,
+        4,
+        true
+      ],
+      "k>=": [
+        186,
+        20,
+        true
+      ],
+      "placebo_p<": [
+        0.881059,
+        0.05,
+        false
+      ],
+      "share_ge_90>=": [
+        0.989247,
+        0.6,
+        true
+      ],
+      "specificity>=": [
+        1.3672,
+        5.0,
+        false
+      ],
+      "years>=": [
+        10,
+        3,
+        true
+      ]
+    },
+    "k_verified_links": 186,
+    "limited_go_checks": {
+      "k>=": [
+        186,
+        5,
+        true
+      ],
+      "placebo_p<": [
+        0.881059,
+        0.1,
+        false
+      ],
+      "share_ge_90>=": [
+        0.989247,
+        0.6,
+        true
+      ],
+      "specificity>=": [
+        1.3672,
+        3.0,
+        false
+      ]
+    },
+    "n_anchors": 266,
+    "p_placebo_median_lead": 0.881059,
+    "share_ge_90_days": 0.989247,
+    "specificity": 1.3672,
+    "specificity_effective": 1.3672,
+    "years_represented": [
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ]
+  },
+  "generated_at": "2026-11-08T21:16:10+00:00",
+  "pilot": {
+    "anchors_with_firm_evidence": 50,
+    "coverage_rate": 1.0,
+    "n": 50,
+    "selection": "first N by ascending sha256(anchor_id) hex",
+    "verified": 36,
+    "verified_rate": 0.72
+  },
+  "rules_used": {
+    "pilot": {
+      "max_anchors": 50,
+      "scaling_conditions": {
+        "min_anchor_coverage": 0.8,
+        "min_resolved_evidence_date_rate": 0.9
+      },
+      "selection": "first N by ascending sha256(anchor_id) hex"
+    },
+    "verdict": {
+      "blocked": {
+        "max_unresolved_evidence_date_rate": 0.3,
+        "min_anchors": 5
+      },
+      "go": {
+        "max_placebo_p": 0.05,
+        "min_firms": 4,
+        "min_k": 20,
+        "min_p90_share_ge_90d": 0.6,
+        "min_specificity": 5.0,
+        "min_years": 3
+      },
+      "limited_go": {
+        "max_placebo_p": 0.1,
+        "min_k": 5,
+        "min_p90_share_ge_90d": 0.6,
+        "min_specificity": 3.0
+      }
+    }
+  },
+  "verdict": "NO-GO",
+  "why": []
+}

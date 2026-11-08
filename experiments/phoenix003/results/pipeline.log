@@ -1,0 +1,251 @@
+=== freeze_vocab (15.0s) rc=0
+product codes read: 7097
+regulatory names read: 233838
+generic vocabulary (df >= 20): 747 tokens
+brand tokens excluded from distinctiveness: ['ABBOTT', 'BAXTER', 'BD', 'BECTON', 'BOSTON', 'DICKINSON', 'DRAEGER', 'DRAEGERWERK', 'DRAGER', 'DRAGERWERK', 'DRÄGER', 'EDWARDS', 'GE', 'GENERAL', 'MEDTRONIC', 'MEDTRONICS', 'MEDTRONIK', 'MINDRAY', 'PHILIPS', 'SIEMENS', 'STRYKER', 'ZIMMER']
+distinct name tokens: 64662; applicant df computed: 64662; bands: high=41705 medium=22352 low=605
+wrote D:\DEPPSKK\worktrees\phoenix003\experiments\phoenix003\dataset\frozen_vocab.json sha256=e0628f60fbf90bad0fa31e688abb170928a1cc8d390bfce8e674f095641608d8
+=== freeze_epmc_df (11.1s) rc=0
+documents: 36621 (patent records skipped: 23)
+distinct tokens: 82793; literature-rare (<= 200 docs): 79877
+wrote D:\DEPPSKK\worktrees\phoenix003\experiments\phoenix003\dataset\epmc_rare_tokens.txt sha256=8dc5e28f1daf4168f20620aebe6722a764c2624043bb969de1b8b029bdf46cc4
+=== a1_anchors (10.9s) rc=0
+{
+  "milestones_loaded": 177948,
+  "attributed": 12217,
+  "unknown_rate": 0.931345,
+  "anchors": 266,
+  "per_stratum": {
+    "extension": 207,
+    "core": 59
+  },
+  "per_firm": {
+    "abbott": 45,
+    "baxter": 8,
+    "bd": 13,
+    "boston_scientific": 41,
+    "draeger": 1,
+    "edwards_lifesciences": 14,
+    "ge_healthcare": 4,
+    "medtronic": 40,
+    "mindray": 3,
+    "philips": 11,
+    "siemens_healthineers": 34,
+    "stryker": 40,
+    "zimmer_biomet": 12
+  },
+  "per_year": {
+    "2015": 39,
+    "2016": 27,
+    "2017": 31,
+    "2018": 19,
+    "2019": 33,
+    "2020": 25,
+    "2021": 18,
+    "2022": 26,
+    "2023": 22,
+    "2024": 26
+  },
+  "duplicate_keys": {
+    "keys": 177948,
+    "keys_appearing_more_than_once": 0,
+    "extra_rows": 0,
+    "examples": []
+  },
+  "pma_supplements_excluded": 55890
+}
+=== b_links (46.1s) rc=0
+ctgov records: 4856  epmc records: 36621
+{
+  "anchors": 266,
+  "tier_counts": {
+    "VERIFIED_L1": 76,
+    "VERIFIED_L2": 5684,
+    "CANDIDATE_L3": 2,
+    "AMBIGUOUS_L4": 552,
+    "REJECTED_L5": 12625,
+    "__emission_capped_rows": 5104
+  },
+  "anchors_with_verified_link": 186,
+  "anchors_with_product_specific_link": 60,
+  "anchors_with_no_candidate": 29,
+  "per_stratum": {
+    "core": {
+      "anchors": 59,
+      "verified": 45,
+      "verified_product_specific": 14
+    },
+    "extension": {
+      "anchors": 207,
+      "verified": 141,
+      "verified_product_specific": 46
+    }
+  },
+  "link_rows": 13835
+}
+=== b2_novelty (8.1s) rc=0
+canonical milestones used for token history: 177948; tokens: 56780
+{
+  "link_status_counts": {
+    "PRE_EXISTING_PRODUCT": 5312,
+    "PRE_REGULATORY": 448
+  },
+  "anchors_target_b_novel": 18,
+  "anchors_target_b_novel_with_verified_link": 7,
+  "anchors_with_pre_regulatory_link": 34,
+  "anchors_with_product_specific_pre_regulatory_link": 31,
+  "per_stratum": {
+    "core": {
+      "anchors": 59,
+      "target_b_novel": 4,
+      "pre_regulatory_link": 8,
+      "product_specific_pre_regulatory_link": 7
+    },
+    "extension": {
+      "anchors": 207,
+      "target_b_novel": 14,
+      "pre_regulatory_link": 26,
+      "product_specific_pre_regulatory_link": 24
+    }
+  }
+}
+=== c_controls (59.7s) rc=0
+corpus: ctgov=4856 epmc=36621
+{
+  "c1_link_rate": 0.992481,
+  "c2_link_rate": 0.699248,
+  "c3_decoy_rate": 0.514056,
+  "specificity": 1.3672,
+  "specificity_ps": 2.24,
+  "specificity_ps_pre": 1.8125,
+  "c4a": {
+    "p_link_rate": 0.509745,
+    "null_link_rate_mean": 0.689883,
+    "observed_median_lead_days": 1620.0,
+    "p_median_lead": 0.529735
+  },
+  "c4b": {
+    "p_link_rate": 0.723138,
+    "p_median_lead": 0.881059
+  },
+  "per_firm": {
+    "abbott": {
+      "anchors": 45,
+      "verified": 41,
+      "rate": 0.911111
+    },
+    "baxter": {
+      "anchors": 8,
+      "verified": 4,
+      "rate": 0.5
+    },
+    "bd": {
+      "anchors": 13,
+      "verified": 12,
+      "rate": 0.923077
+    },
+    "boston_scientific": {
+      "anchors": 41,
+      "verified": 30,
+      "rate": 0.731707
+    },
+    "draeger": {
+      "anchors": 1,
+      "verified": 0,
+      "rate": 0.0
+    },
+    "edwards_lifesciences": {
+      "anchors": 14,
+      "verified": 12,
+      "rate": 0.857143
+    },
+    "ge_healthcare": {
+      "anchors": 4,
+      "verified": 4,
+      "rate": 1.0
+    },
+    "medtronic": {
+      "anchors": 40,
+      "verified": 34,
+      "rate": 0.85
+    },
+    "mindray": {
+      "anchors": 3,
+      "verified": 0,
+      "rate": 0.0
+    },
+    "philips": {
+      "anchors": 11,
+      "verified": 7,
+      "rate": 0.636364
+    },
+    "siemens_healthineers": {
+      "anchors": 34,
+      "verified": 9,
+      "rate": 0.264706
+    },
+    "stryker": {
+      "anchors": 40,
+      "verified": 25,
+      "rate": 0.625
+    },
+    "zimmer_biomet": {
+      "anchors": 12,
+      "verified": 8,
+      "rate": 0.666667
+    }
+  }
+}
+=== d_leadtime (44.9s) rc=0
+{
+  "verdict": "NO-GO",
+  "k": 186,
+  "share_ge_90": 0.989247,
+  "median_lead": 1620.0,
+  "specificity": 1.3672,
+  "p_placebo": 0.881059,
+  "firms": [
+    "abbott",
+    "baxter",
+    "bd",
+    "boston_scientific",
+    "edwards_lifesciences",
+    "ge_healthcare",
+    "medtronic",
+    "philips",
+    "siemens_healthineers",
+    "stryker",
+    "zimmer_biomet"
+  ],
+  "anchors": 266,
+  "coverage_rate": 1.0,
+  "hf_recall_rate": 0.822581,
+  "hf_median_burden": 124.5,
+  "ladder": {
+    "L2_any_distinctive_token": {
+      "anchors": 186,
+      "share_ge_90": 0.989247,
+      "median": 1620.0
+    },
+    "L2_product_specific_token": {
+      "anchors": 60,
+      "share_ge_90": 0.966667,
+      "median": 1351.0
+    },
+    "L2_pre_regulatory": {
+      "anchors": 34,
+      "share_ge_90": 0.970588,
+      "median": 1340.5
+    },
+    "L2_product_specific_pre_regulatory": {
+      "anchors": 31,
+      "share_ge_90": 0.967742,
+      "median": 1311.0
+    },
+    "L2_strict_literature_rare": {
+      "anchors": 28,
+      "share_ge_90": 0.964286,
+      "median": 1316.5
+    }
+  }
+}

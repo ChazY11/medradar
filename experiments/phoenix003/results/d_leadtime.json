@@ -1,0 +1,3129 @@
+{
+  "corpus": {
+    "ctgov": {
+      "file::ctgov_compact.jsonl.gz": 1802,
+      "file::ctgov_ext_compact.jsonl.gz": 3054,
+      "records": 4856,
+      "records_firm_unverified": 36,
+      "records_firm_verified": 4841
+    },
+    "epmc": {
+      "epmc_source::MED": 35947,
+      "epmc_source::PAT": 23,
+      "epmc_source::PMC": 506,
+      "epmc_source::PPR": 168,
+      "file::epmc_compact.jsonl.gz": 13980,
+      "file::epmc_ext_compact.jsonl.gz": 22664,
+      "records": 36621,
+      "records_excluded_patent": 23,
+      "records_firm_unverified": 1416
+    }
+  },
+  "coverage": {
+    "ambiguous_records": 552,
+    "anchor_coverage_rate": 1.0,
+    "anchors": 266,
+    "anchors_with_any_firm_evidence_in_window": 266,
+    "anchors_with_no_candidate_link": 29,
+    "anchors_with_no_firm_evidence": 0,
+    "per_firm": {
+      "abbott": {
+        "anchors": 45,
+        "verified": 41
+      },
+      "baxter": {
+        "anchors": 8,
+        "verified": 4
+      },
+      "bd": {
+        "anchors": 13,
+        "verified": 12
+      },
+      "boston_scientific": {
+        "anchors": 41,
+        "verified": 30
+      },
+      "draeger": {
+        "anchors": 1,
+        "verified": 0
+      },
+      "edwards_lifesciences": {
+        "anchors": 14,
+        "verified": 12
+      },
+      "ge_healthcare": {
+        "anchors": 4,
+        "verified": 4
+      },
+      "medtronic": {
+        "anchors": 40,
+        "verified": 34
+      },
+      "mindray": {
+        "anchors": 3,
+        "verified": 0
+      },
+      "philips": {
+        "anchors": 11,
+        "verified": 7
+      },
+      "siemens_healthineers": {
+        "anchors": 34,
+        "verified": 9
+      },
+      "stryker": {
+        "anchors": 40,
+        "verified": 25
+      },
+      "zimmer_biomet": {
+        "anchors": 12,
+        "verified": 8
+      }
+    },
+    "source_mix": {
+      "ctgov": 20,
+      "ctgov+epmc": 112,
+      "epmc": 54
+    },
+    "verified_per_year": {
+      "2015": 17,
+      "2016": 19,
+      "2017": 21,
+      "2018": 10,
+      "2019": 25,
+      "2020": 19,
+      "2021": 13,
+      "2022": 22,
+      "2023": 21,
+      "2024": 19
+    }
+  },
+  "generated_at": "2026-11-08T21:16:10+00:00",
+  "identifiability": {
+    "anchors": 186,
+    "burden_q1": 54.0,
+    "burden_q3": 356.75,
+    "definition": "frozen hindsight-free rule (protocol §7): firm + the product code's official generic device name, records published before the milestone",
+    "hf_recall_1": 153,
+    "hf_recall_rate": 0.822581,
+    "hindsight_only_anchors": 33,
+    "median_burden": 124.5
+  },
+  "identifiability_rows": [
+    {
+      "anchor_id": "0281adfa0e7a3c9fcf15338858b82416748cd721eb89343d0efa3241fc06e853",
+      "firm": "bd",
+      "hf_burden": 985,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CULTURE",
+        "PLATE",
+        "IMAGING",
+        "SYSTEM",
+        "QUALITATIVE",
+        "ASSESSMENT",
+        "RESISTANT",
+        "ORGANISMS"
+      ],
+      "lead_days": 1821,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "0572567b2c9f53eed1f5600543266cc326f8d19e32ff6a261e23ea2bea639030",
+      "firm": "bd",
+      "hf_burden": 82,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "FLOW",
+        "CYTOMETRIC",
+        "REAGENTS",
+        "ACCESSORIES"
+      ],
+      "lead_days": 1030,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "0645a0980b22a9bd1539cdc26a730f175089e09fa66a72e0e7e913402be97096",
+      "firm": "edwards_lifesciences",
+      "hf_burden": 76,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PERCUTANEOUSLY",
+        "DELIVERED",
+        "PROSTHESES",
+        "TRICUSPID",
+        "VALVES"
+      ],
+      "lead_days": 1826,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "065900045568c50c87788138a66ae26bd9cc72dc91ad1247a867c2094293e6f3",
+      "firm": "philips",
+      "hf_burden": 1030,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "AUTOMATED",
+        "RADIOLOGICAL",
+        "IMAGE",
+        "PROCESSING",
+        "SOFTWARE"
+      ],
+      "lead_days": 1799,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "0710e5c6cbe8793dcea4e59c1ff4c38e8dc75e3b6c3ad6f7cca1841c3417dc96",
+      "firm": "stryker",
+      "hf_burden": 0,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "NOSE",
+        "THROAT"
+      ],
+      "lead_days": 518,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "0843f7042e480aab316edc6d9596c1c4ece6cd9ed49c734ccad862f2cb63db1b",
+      "firm": "stryker",
+      "hf_burden": 11,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "CATHETER",
+        "PERCUTANEOUS",
+        "NEUROVASCULATURE"
+      ],
+      "lead_days": 636,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "085ee6c0d7922370fb6f677bddbc23e5c8703ca8b4e663490fef56b254000b88",
+      "firm": "medtronic",
+      "hf_burden": 48,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "LEADLESS",
+        "PACEMAKER"
+      ],
+      "lead_days": 1798,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "09005aaf4b8350b6803430a114c6b8d320fbe8807b74a8224c22f1eccb92c70f",
+      "firm": "abbott",
+      "hf_burden": 11,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "FOLDERS",
+        "INJECTORS",
+        "INTRAOCULAR",
+        "LENS"
+      ],
+      "lead_days": 828,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "0b0f70cbb3a87cd8375f71e22c7bdf4b282a4efd29894483b5371358cdc39a84",
+      "firm": "siemens_healthineers",
+      "hf_burden": 251,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "RADIOLOGICAL",
+        "IMAGE",
+        "PROCESSING",
+        "SOFTWARE",
+        "RADIATION",
+        "THERAPY"
+      ],
+      "lead_days": 1166,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "0d2747ec899a329d37a3356504a0a1b038d1e16d2e476b976c7260237c9e0046",
+      "firm": "medtronic",
+      "hf_burden": 563,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "MONITOR",
+        "PHYSIOLOGICAL",
+        "PATIENT",
+        "WITH",
+        "ARRHYTHMIA",
+        "DETECTION",
+        "ALARMS"
+      ],
+      "lead_days": 554,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "140580978a1af586ab2f976a061e11f28c500bfe00824e485d1c4a8b2bf39273",
+      "firm": "abbott",
+      "hf_burden": 398,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SYSTEM",
+        "IMAGING",
+        "OPTICAL",
+        "COHERENCE",
+        "TOMOGRAPHY"
+      ],
+      "lead_days": 1407,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "14ac19a261693f2f7e88e1d3742c9d856071fe987c78d287fe7c683d92eb9817",
+      "firm": "abbott",
+      "hf_burden": 827,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "INTEGRATED",
+        "CONTINUOUS",
+        "GLUCOSE",
+        "MONITOR",
+        "INTENSIVE",
+        "GLUCOSE",
+        "MANAGEMENT",
+        "OVER"
+      ],
+      "lead_days": 1681,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "16fc3415e62407d47895677e4e1a17b044f55f3f6920639c2bbb219af48b5e08",
+      "firm": "baxter",
+      "hf_burden": 37,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "MESH",
+        "SURGICAL"
+      ],
+      "lead_days": 1660,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "176bd2eb78ea3def440475c06a4cb268db49d9225290dbfa6befe90537181ea2",
+      "firm": "abbott",
+      "hf_burden": 223,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "REPROCESSED",
+        "INTRAVASCULAR",
+        "ULTRASOUND",
+        "CATHETER"
+      ],
+      "lead_days": 619,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "183c601af219277c92ffaeb43aebc33190c231efc49f836532eaff247385af85",
+      "firm": "medtronic",
+      "hf_burden": 179,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "STAPLER",
+        "SURGICAL"
+      ],
+      "lead_days": 1667,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "1c1598d474581321dd208ad40ac0dabd9b30f0e626f865d6bb5cafb4a3e7740c",
+      "firm": "abbott",
+      "hf_burden": 308,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "ELECTRODE",
+        "MEASUREMENT",
+        "BLOOD",
+        "GASES",
+        "BLOOD"
+      ],
+      "lead_days": 1400,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "2145a3ca3da937d0452a7b2fa4eb5e48b0cbbab65b434c66d0722c941c406555",
+      "firm": "abbott",
+      "hf_burden": 298,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "DETECTION",
+        "HUMAN",
+        "PAPILLOMAVIRUS"
+      ],
+      "lead_days": 1625,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "22945317c68c979903b094d92685425d628c947adba45c7c1ca707f4439395f4",
+      "firm": "stryker",
+      "hf_burden": 10,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "CATHETER",
+        "THROMBUS",
+        "RETRIEVER"
+      ],
+      "lead_days": 1478,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "22d3a35b3a9c3069a975f8fa5a11411d832e60fbe0ffefb51806e871a318dc04",
+      "firm": "boston_scientific",
+      "hf_burden": 40,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "INSTRUMENTATION",
+        "SURGICAL",
+        "MESH",
+        "UROGYNECOLOGIC",
+        "STRESS",
+        "URINARY",
+        "INCONTINENCE"
+      ],
+      "lead_days": 1778,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "24a24ed0ff3f1f424744e3b24a7ecda4768751cf0eab0948de445eeed704a32a",
+      "firm": "edwards_lifesciences",
+      "hf_burden": 104,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "HEART",
+        "VALVE",
+        "ALLOGRAFT",
+        "TISSUE"
+      ],
+      "lead_days": 1775,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "24f8938b3b38087ee23f51c1008c48a5ce1013bccfa58f075a0f336e5d170c37",
+      "firm": "abbott",
+      "hf_burden": 493,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "DEVICE",
+        "PERCUTANEOUS",
+        "RETRIEVAL"
+      ],
+      "lead_days": 1796,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "259fd5fb5096bb16ab223dd5c7902ca513d2c452b1e4dc855105ef766c85bf3f",
+      "firm": "abbott",
+      "hf_burden": 97,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "COMPUTER",
+        "DIAGNOSTIC",
+        "PROGRAMMABLE"
+      ],
+      "lead_days": 1562,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "263664280080e65bc260add66fb202e05fc391f85f9c14cc2e6c860de850e832",
+      "firm": "boston_scientific",
+      "hf_burden": 152,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "DRUG",
+        "ELUTING",
+        "PERIPHERAL",
+        "TRANSLUMINAL",
+        "ANGIOPLASTY",
+        "CATHETER"
+      ],
+      "lead_days": 1626,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "2a3f57590f9f316e6c303325c4c4237a6cde5475cf9656e7619f6cf8d9275dd8",
+      "firm": "abbott",
+      "hf_burden": 40,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "IMPLANTABLE",
+        "PULSE",
+        "GENERATOR",
+        "PACEMAKER"
+      ],
+      "lead_days": 1820,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "2b6a5cb45b575d334a89f0a40cad69553c3e9447b3f870af31c214ca4b8050a1",
+      "firm": "edwards_lifesciences",
+      "hf_burden": 100,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "MEDIUM",
+        "TERM",
+        "ADJUNCTIVE",
+        "PREDICTIVE",
+        "CARDIOVASCULAR",
+        "INDICATOR"
+      ],
+      "lead_days": 1759,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "2c7248113d0f7e31b4f35089246dba12deff659073d5f7eb8b9bb6bed06d0b7a",
+      "firm": "stryker",
+      "hf_burden": 5,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "OXIMETER",
+        "REPROCESSED"
+      ],
+      "lead_days": 522,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "2e548f62120433b6c8699ad0b7fcd06baf154f2984092a4d201a7bd3692c647c",
+      "firm": "abbott",
+      "hf_burden": 118,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SENSOR",
+        "GLUCOSE",
+        "INVASIVE",
+        "ADJUNCTIVE",
+        "FACTORY",
+        "CALIBRATED",
+        "USER",
+        "INITIATED"
+      ],
+      "lead_days": 1799,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "30d77ac4d13b31ee1b869e9ff6b08aba85cc1f9f257a80f35cf9fcd3188c42e7",
+      "firm": "abbott",
+      "hf_burden": 525,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "BRAIN",
+        "TRAUMA",
+        "ASSESSMENT",
+        "TEST"
+      ],
+      "lead_days": 1674,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "32dd76ed67953a17d04f74431b055f6e5825bded84833d2a651626beaf449841",
+      "firm": "bd",
+      "hf_burden": 744,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "AUTOMATED",
+        "MULTICOLOR",
+        "FLUORESCENT",
+        "IMAGING",
+        "CYTOMETRIC",
+        "ANALYSIS",
+        "SYSTEM"
+      ],
+      "lead_days": 268,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "332defe1fd12dd3877f62a3dede867f130b7148a58007889cd96b3c6fb2977b0",
+      "firm": "boston_scientific",
+      "hf_burden": 318,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "IMPLANTED",
+        "ELECTRICAL",
+        "DEVICE",
+        "INTENDED",
+        "TREATMENT",
+        "FECAL",
+        "INCONTINENCE"
+      ],
+      "lead_days": 1250,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "33a41821cbf4579ebf1bc170bc574d668f2c95a089e7c184f9080a11d4a898c3",
+      "firm": "boston_scientific",
+      "hf_burden": 55,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "ACCELERATOR",
+        "LINEAR",
+        "MEDICAL"
+      ],
+      "lead_days": 1603,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "3485da928bd83f0cfccc870cf71628bbf9dc2b69bdc3ddbeb6623c41d23f7fed",
+      "firm": "abbott",
+      "hf_burden": 240,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "INFLUENZA",
+        "INFLUENZA",
+        "MULTIPLEX",
+        "NUCLEIC",
+        "ACID",
+        "ASSAY"
+      ],
+      "lead_days": 1795,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "3565627d85a2edcb675ed6db0cde34c8f16418d93e8e5f9b9e304e9dec3b1ab6",
+      "firm": "abbott",
+      "hf_burden": 67,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SENSOR",
+        "GLUCOSE",
+        "INVASIVE"
+      ],
+      "lead_days": 1801,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "35ad607a18189a9668c541a2eabb24158184544b0beb6fc21fa570dc7fdb160b",
+      "firm": "abbott",
+      "hf_burden": 115,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CATHETER",
+        "ELECTRODE",
+        "RECORDING",
+        "PROBE",
+        "ELECTRODE",
+        "RECORDING"
+      ],
+      "lead_days": 1593,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "360cb0d161132284cfc5995c263ca8aa074a344880a3f58042fa1b6a3c3751c0",
+      "firm": "medtronic",
+      "hf_burden": 204,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "ABLATION",
+        "CATHETER",
+        "RENAL",
+        "DENERVATION"
+      ],
+      "lead_days": 1738,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "3698619f6b68835a9e089312356fa52e686a5514b15ff080a9b028a0219aa1f4",
+      "firm": "boston_scientific",
+      "hf_burden": 23,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "TRANSDUCER",
+        "PRESSURE",
+        "CATHETER"
+      ],
+      "lead_days": 431,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "36fb8ac94e6403161a96d265ab95b21a6bf2dd8036d51466ba2eb44ad4ba8304",
+      "firm": "medtronic",
+      "hf_burden": 107,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "STENT",
+        "ILIAC",
+        "VEIN"
+      ],
+      "lead_days": 1822,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "3874c54f3ce51fb621411ea243dbf525d2465c0542e2149cd2b38ae1bfb0c2e5",
+      "firm": "medtronic",
+      "hf_burden": 156,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CORONARY",
+        "DRUG",
+        "ELUTING",
+        "STENT"
+      ],
+      "lead_days": 1793,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "3b3d4e2a159ea4502f530ec6b39be422c9df345d1602d76736c4a38b931e2172",
+      "firm": "abbott",
+      "hf_burden": 602,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SYSTEM",
+        "APPENDAGE",
+        "CLOSURE",
+        "LEFT",
+        "ATRIAL"
+      ],
+      "lead_days": 1817,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "3b867c16594927779bb7576e65d2efc0de791d1f8e52004cfd50ebaa113eb83c",
+      "firm": "bd",
+      "hf_burden": 2088,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "AUTOMATED",
+        "SYSTEM",
+        "SAMPLE",
+        "PREPARATION",
+        "IDENTIFICATION",
+        "MICROORGANISMS",
+        "FROM",
+        "CULTURED"
+      ],
+      "lead_days": 1767,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "3c085c7c8ea592f4ca0fdce1669dcbe8a243a8eded2a0663de83a955cdc1641f",
+      "firm": "abbott",
+      "hf_burden": 1209,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CATHETER",
+        "PERCUTANEOUS",
+        "CARDIAC",
+        "ABLATION",
+        "TREATMENT",
+        "ATRIAL",
+        "FIBRILLATION"
+      ],
+      "lead_days": 1821,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "3e11f284e1b2b4defe9092fa4baaea8bb9b4b19dc69aa4c964a8bb49c3f739df",
+      "firm": "abbott",
+      "hf_burden": 280,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "RATE",
+        "MEASUREMENT",
+        "CARBON",
+        "DIOXIDE"
+      ],
+      "lead_days": 1338,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "3f0396351c7ad2e6da61c424994d7d2666dc1fe104e83cead9ea53fda004eb39",
+      "firm": "medtronic",
+      "hf_burden": 152,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PROSTHESIS",
+        "SEMI",
+        "CONSTRAINED",
+        "METAL",
+        "POLYMER",
+        "POROUS",
+        "UNCEMENTED"
+      ],
+      "lead_days": 1747,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "40f74d4376480496410821e28215e123d10f2bfbd38471a34093c971b3b2bfed",
+      "firm": "stryker",
+      "hf_burden": 29,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SCREW",
+        "FIXATION",
+        "INTRAOSSEOUS"
+      ],
+      "lead_days": 1727,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "4109a7f1dc9103a68582b46e63411dbc7e12b4335493c9a5b678196d9ef4852c",
+      "firm": "siemens_healthineers",
+      "hf_burden": 458,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SYSTEM",
+        "TEST",
+        "DENSITY",
+        "LIPOPROTEIN"
+      ],
+      "lead_days": 1424,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "411d4cb314c60628826965c29d15036cba96c87c79e71cdfcc819eb3cd5603a6",
+      "firm": "philips",
+      "hf_burden": 53,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "PUMP",
+        "BREAST",
+        "POWERED"
+      ],
+      "lead_days": 1207,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "4463ad7da97db8bfd43b67359004c10bd41b454b49c3f146ea40acdb34ec6736",
+      "firm": "zimmer_biomet",
+      "hf_burden": 91,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PROSTHESIS",
+        "TOTAL",
+        "ANATOMIC",
+        "SHOULDER",
+        "UNCEMENTED",
+        "METAPHYSEAL",
+        "HUMERAL",
+        "STEM"
+      ],
+      "lead_days": 1725,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "44727b1c053dc614d9bcc7cdc1e428e62aa07350134de6d8bf938ef9bcc266be",
+      "firm": "abbott",
+      "hf_burden": 335,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SOMATIC",
+        "GENE",
+        "MUTATION",
+        "DETECTION",
+        "SYSTEM"
+      ],
+      "lead_days": 1651,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "461c054ddb843a173fcd444d583c01fc346ac846b98f177c7364b9a3e33abf68",
+      "firm": "boston_scientific",
+      "hf_burden": 8,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "MICROSPHERES",
+        "RADIONUCLIDE"
+      ],
+      "lead_days": 1267,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "4620d63f3729ba1f93bbd7c2d7fe6701e95a2c63fe379f582607ccb2af3b7c3c",
+      "firm": "boston_scientific",
+      "hf_burden": 137,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SYSTEM",
+        "APPENDAGE",
+        "CLOSURE",
+        "LEFT",
+        "ATRIAL"
+      ],
+      "lead_days": 1670,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "46550e9dc4b5318bee9e77d188e0a1f1604e5d2b29dfa1b6f8e6253f7c10e32b",
+      "firm": "boston_scientific",
+      "hf_burden": 212,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "AGENTS",
+        "EMBOLIC",
+        "TREATMENT",
+        "BENIGN",
+        "PROSTATIC",
+        "HYPERPLASIA"
+      ],
+      "lead_days": 1451,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "4724e0e68ea99a56cf989851b16a0e58a8ba8a0193e1c2e54da37fb738657ca5",
+      "firm": "bd",
+      "hf_burden": 455,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "DETECTION",
+        "HUMAN",
+        "PAPILLOMAVIRUS"
+      ],
+      "lead_days": 1322,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "4a27a027e037ab0f6181ba431ea55f560e6251947bc93d7af980de6f23e635f5",
+      "firm": "stryker",
+      "hf_burden": 17,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "ENDOSCOPE",
+        "NEUROLOGICAL"
+      ],
+      "lead_days": 1193,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "4b0199c4ef170988a0a37d04cf9dc3d14ceccbd81146bd667fa61fca586e9639",
+      "firm": "boston_scientific",
+      "hf_burden": 146,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "TEMPORARY",
+        "CATHETER",
+        "EMBOLIC",
+        "PROTECTION",
+        "TRANSCATHETER",
+        "INTRACARDIAC",
+        "PROCEDURES"
+      ],
+      "lead_days": 1554,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "4b4081346a3e08637ca259f366131cab6fd156978b26d5c34259a446d9505dec",
+      "firm": "stryker",
+      "hf_burden": 160,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SPINAL",
+        "VERTEBRAL",
+        "BODY",
+        "REPLACEMENT",
+        "DEVICE",
+        "CERVICAL"
+      ],
+      "lead_days": 468,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "4bb78fae001e420599d1d0d13e4c497b8aa8add0bef690921e40ddf7e4bb4f69",
+      "firm": "bd",
+      "hf_burden": 854,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "VAGINITIS",
+        "BACTERIAL",
+        "VAGINOSIS",
+        "NUCLEIC",
+        "ACID",
+        "DETECTION",
+        "SYSTEM"
+      ],
+      "lead_days": 1570,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "4d1c2fc6833aa864c772a814b04d577131f4c09978bf1b0a9180be68ac75a11c",
+      "firm": "abbott",
+      "hf_burden": 364,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "NUCLEIC",
+        "ACID",
+        "AMPLIFICATION",
+        "TEST",
+        "QUANTITATION",
+        "EPSTEIN",
+        "BARR",
+        "VIRUS"
+      ],
+      "lead_days": 1765,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "4eff863118e7a9a80c4a158750277d864235b55fd369b052a1d116e9c5f42309",
+      "firm": "medtronic",
+      "hf_burden": 83,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PULMONARY",
+        "VALVE",
+        "PROSTHESIS",
+        "PERCUTANEOUSLY",
+        "DELIVERED"
+      ],
+      "lead_days": 1618,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "5046c83e0d98266418ba78f5248740876cb619c1bfe3b951b54ab0c43bb13c4b",
+      "firm": "medtronic",
+      "hf_burden": 708,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "EXTRACORPOREAL",
+        "SYSTEM",
+        "LONG",
+        "TERM",
+        "RESPIRATORY",
+        "CARDIOPULMONARY",
+        "FAILURE"
+      ],
+      "lead_days": 1622,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "5068c39141193d266bfed7582c46bee46f58dd9b5a42ebfc6d97ba185a7437e8",
+      "firm": "ge_healthcare",
+      "hf_burden": 675,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "AUTOMATED",
+        "RADIOLOGICAL",
+        "IMAGE",
+        "PROCESSING",
+        "SOFTWARE"
+      ],
+      "lead_days": 1790,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "523511693a0d84c066ac8eb9dc6cd3d7440bfa661bd4a3e3310f70d082713627",
+      "firm": "boston_scientific",
+      "hf_burden": 226,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "MESH",
+        "SURGICAL",
+        "STRESS",
+        "URINARY",
+        "INCONTINENCE",
+        "MALE"
+      ],
+      "lead_days": 1707,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "533d9c168ada4000bbc9d1a3aeb89a84edcc8a836ac60d0d4849d815fe51e87e",
+      "firm": "medtronic",
+      "hf_burden": 380,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "EUSTACHIAN",
+        "TUBE",
+        "BALLOON",
+        "DILATION",
+        "DEVICE"
+      ],
+      "lead_days": 1810,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "555e49764914f930e8160c2fea61bf6ad024507f236a775f929d918a0369247e",
+      "firm": "bd",
+      "hf_burden": 34,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "NEEDLE",
+        "INTEROSSEOUS"
+      ],
+      "lead_days": 793,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "562b8fe74ccd5b5cc70055b57cf6a37d901e0a0bb9f19368000518324ba630cb",
+      "firm": "medtronic",
+      "hf_burden": 102,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CONTINUOUS",
+        "GLUCOSE",
+        "MONITOR",
+        "SECONDARY",
+        "DISPLAY"
+      ],
+      "lead_days": 1792,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "570fbd163827e342bab30c576e0486827fd6aa5dfef3ad587c842905e7bc1533",
+      "firm": "boston_scientific",
+      "hf_burden": 79,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "STENT",
+        "SUPERFICIAL",
+        "FEMORAL",
+        "ARTERY"
+      ],
+      "lead_days": 1558,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "596e257d4f3bfd47679d55ff4e2a82a550fdca9dd383a8ec9f81ce4a0ba7ce7f",
+      "firm": "philips",
+      "hf_burden": 207,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CATHETER",
+        "ULTRASOUND",
+        "INTRAVASCULAR"
+      ],
+      "lead_days": 234,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "59bb1c3c3dc71d9de29e477624fb60ca2602577addc40599ab742d394a704f69",
+      "firm": "philips",
+      "hf_burden": 1194,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "WHOLE",
+        "SLIDE",
+        "IMAGING",
+        "SYSTEM"
+      ],
+      "lead_days": 1575,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "5a5010335b5d003e58229feaa5f34d09441f8857f936f4dcc0506fafcda04ff5",
+      "firm": "boston_scientific",
+      "hf_burden": 207,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CATHETER",
+        "PERCUTANEOUS",
+        "CARDIAC",
+        "ABLATION",
+        "TREATMENT",
+        "ATRIAL",
+        "FLUTTER"
+      ],
+      "lead_days": 1254,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "5b1ef2f8f2b79177803dd97673ccb526bb494d64c12065cd2a2453d1a27187f4",
+      "firm": "abbott",
+      "hf_burden": 448,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "RESPIRATORY",
+        "SPECIMEN",
+        "NUCLEIC",
+        "ACID",
+        "SARS",
+        "TEST"
+      ],
+      "lead_days": 1732,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "5b61f5fe5d6e3dbe68f0c7f761e390597e5acd33f455ff202f08af78a179595a",
+      "firm": "medtronic",
+      "hf_burden": 172,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "TESTER",
+        "PACEMAKER",
+        "ELECTRODE",
+        "FUNCTION"
+      ],
+      "lead_days": 1733,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "5becb685a20e2329d8cd9ff996208a0069db0ba0c37220c6060ca70cc20e5cfb",
+      "firm": "medtronic",
+      "hf_burden": 1151,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "NEUROSURGICAL",
+        "LASER",
+        "WITH",
+        "THERMOGRAPHY"
+      ],
+      "lead_days": 1732,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "5df3f47bc60cd3ef1ac599dac34797db5d937ec6e0ee4752b132989464282839",
+      "firm": "stryker",
+      "hf_burden": 31,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "INTRACRANIAL",
+        "COIL",
+        "ASSIST",
+        "STENT"
+      ],
+      "lead_days": 1581,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "5eaa8557e76881a87ae300875d2c48785f7d424a68d8ea14734478bb561019fe",
+      "firm": "medtronic",
+      "hf_burden": 86,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "CONTINUOUS",
+        "MEASUREMENT",
+        "THERMOMETER"
+      ],
+      "lead_days": 16,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "5ebe5fd016825c9831a059d2f234d2a77f09b3eb92757afa8c6a2c149c4b52a9",
+      "firm": "medtronic",
+      "hf_burden": 414,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CATHETER",
+        "INTRACARDIAC",
+        "MAPPING",
+        "HIGH",
+        "DENSITY",
+        "ARRAY"
+      ],
+      "lead_days": 1686,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "5efcf693695656b38ba8d83d5432166a8797e134fc33d3cad08f714951db27c0",
+      "firm": "boston_scientific",
+      "hf_burden": 95,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "STIMULATOR",
+        "SPINAL",
+        "CORD",
+        "IMPLANTED",
+        "PAIN",
+        "RELIEF"
+      ],
+      "lead_days": 912,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "5fd849a7cdcd401a56981cff963f6b390fb4c3520d0cc4228093ccc0548aa649",
+      "firm": "abbott",
+      "hf_burden": 101,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "DEVICE",
+        "HEMATOCRIT",
+        "MEASURING"
+      ],
+      "lead_days": 1350,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "5ffce561fc47fb4c426741dc7f25248344ed8344ed03d24d647df81f2f6e17ca",
+      "firm": "boston_scientific",
+      "hf_burden": 110,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "MECHANICAL",
+        "THROMBOLYSIS",
+        "CATHETER"
+      ],
+      "lead_days": 1710,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "604ebbcc500298e3e2c7aa45210631ec186425ab187216058fe5dcfe9b80f4f9",
+      "firm": "edwards_lifesciences",
+      "hf_burden": 29,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "OXIMETER",
+        "TISSUE",
+        "SATURATION"
+      ],
+      "lead_days": 688,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "65f362c4deba15dc87e15d52c51e86577750f056411fb800af1c6cc998a4c086",
+      "firm": "boston_scientific",
+      "hf_burden": 7,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "AGENT",
+        "BULKING",
+        "INJECTABLE",
+        "GASTRO",
+        "UROLOGY"
+      ],
+      "lead_days": 1679,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "671c8261cdfce8d874a8fd45ac43c655aa0b64844f78c1d9382dc79338cb76e5",
+      "firm": "baxter",
+      "hf_burden": 110,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "INFUSION",
+        "SAFETY",
+        "MANAGEMENT",
+        "SOFTWARE"
+      ],
+      "lead_days": 1824,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "685c079c316e7b354154c385b7bc6b36fba3208d43aee301b7eb12f5046668ef",
+      "firm": "edwards_lifesciences",
+      "hf_burden": 166,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PULMONARY",
+        "VALVE",
+        "PROSTHESIS",
+        "PERCUTANEOUSLY",
+        "DELIVERED"
+      ],
+      "lead_days": 1826,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "6917663888f7e8cb7f1f4d3d25e40a62e5459ea6f769240567c98650a0e4f18d",
+      "firm": "boston_scientific",
+      "hf_burden": 78,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "STIMULATOR",
+        "ELECTRICAL",
+        "IMPLANTED",
+        "PARKINSONIAN",
+        "SYMPTOMS"
+      ],
+      "lead_days": 1689,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "6b9acf8d401e4a0b70327e9ebe3cbbfb8caca04ee5856326c2a06417e0269ffa",
+      "firm": "abbott",
+      "hf_burden": 312,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "AORTIC",
+        "VALVE",
+        "PROSTHESIS",
+        "PERCUTANEOUSLY",
+        "DELIVERED"
+      ],
+      "lead_days": 1814,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "6cb969d831be2dac35fb2701dd5923811ee6c2c837df71030f76e6040c0f9af0",
+      "firm": "boston_scientific",
+      "hf_burden": 65,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PROSTHESIS",
+        "PENILE"
+      ],
+      "lead_days": 54,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "6dab0260277c242791a647a7adcb0ce29b2db75817d658a0a86a7af22cdc3415",
+      "firm": "bd",
+      "hf_burden": 654,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "GASTROINTESTINAL",
+        "PATHOGEN",
+        "PANEL",
+        "MULTIPLEX",
+        "NUCLEIC",
+        "ACID",
+        "BASED",
+        "ASSAY"
+      ],
+      "lead_days": 1288,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "70a3327718f67128d9d672494f1fe1b20a033a0936bdbcf1b048aeefb2e7b5aa",
+      "firm": "abbott",
+      "hf_burden": 46,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "LEADLESS",
+        "PACEMAKER"
+      ],
+      "lead_days": 1369,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "70bd2cb11ec55eabc0c967dff18833db129a0c2d44376772300845977bf1bc05",
+      "firm": "boston_scientific",
+      "hf_burden": 142,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "STIMULATOR",
+        "ELECTRICAL",
+        "IMPLANTABLE",
+        "INCONTINENCE"
+      ],
+      "lead_days": 1318,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "72aeb15d3e8c1147507ad2d038dfedc2b9612875fe607ecfb86cc455b9d8eebb",
+      "firm": "medtronic",
+      "hf_burden": 269,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "DRUG",
+        "COATED",
+        "PERIPHERAL",
+        "TRANSLUMINAL",
+        "ANGIOPLASTY",
+        "CATHETER"
+      ],
+      "lead_days": 1814,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "741162c16d9ab06143673ed31fa2d6da31f13185d100d8eb27be43cdea4b8712",
+      "firm": "bd",
+      "hf_burden": 110,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "FILTER",
+        "INTRAVASCULAR",
+        "CARDIOVASCULAR"
+      ],
+      "lead_days": 1450,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "759dfc5a3ff0d5d5337de43f69579c3b17cccdac99a7fa7302df1e1fa12c902e",
+      "firm": "stryker",
+      "hf_burden": 79,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PROSTHESIS",
+        "FEMORAL",
+        "COMPONENT",
+        "CEMENTED",
+        "METAL"
+      ],
+      "lead_days": 1685,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "75d16e6928fe3e07bb3939b699cbc4ab7ca155e03e88d9b3f6237b2afad1acdc",
+      "firm": "medtronic",
+      "hf_burden": 580,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "TUBING",
+        "LONG",
+        "TERM",
+        "SUPPORT",
+        "GREATER",
+        "THAN",
+        "HOURS"
+      ],
+      "lead_days": 1738,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "7605f3e4b65308fbf162faca841c169c2f792425786d70d1b024dd889d3cff49",
+      "firm": "stryker",
+      "hf_burden": 104,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "INSTRUMENT",
+        "MANUAL",
+        "SURGICAL"
+      ],
+      "lead_days": 1324,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "76ce1faf00555b03331f4317413465f4dc3bab09333c4ba28e520090abf3053e",
+      "firm": "zimmer_biomet",
+      "hf_burden": 26,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PROSTHESIS",
+        "SHOULDER",
+        "HEMI",
+        "HUMERAL",
+        "METALLIC",
+        "UNCEMENTED"
+      ],
+      "lead_days": 1800,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "7c9076a397931cda85eee95b71f8a207a2b5c7f323ed098e7b901166b41f2771",
+      "firm": "medtronic",
+      "hf_burden": 32,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "BONE",
+        "CEMENT",
+        "POSTERIOR",
+        "SCREW",
+        "AUGMENTATION"
+      ],
+      "lead_days": 1484,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "804dac2fe3bb8781112ce152d2e4ce11763fecf17a220cd61a3856e3355cb421",
+      "firm": "abbott",
+      "hf_burden": 130,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "ENZYME",
+        "LINKED",
+        "IMMUNOABSORPTION",
+        "ASSAY",
+        "TREPONEMA",
+        "PALLIDUM"
+      ],
+      "lead_days": 1627,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "8362b08055e0b7482b6d14049fbb9b1be93e7ecf2fae2cbc52119a59e445ee70",
+      "firm": "abbott",
+      "hf_burden": 537,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "TRICUSPID",
+        "VALVE",
+        "REPAIR",
+        "DEVICE",
+        "PERCUTANEOUSLY",
+        "DELIVERED"
+      ],
+      "lead_days": 1607,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "83887cd60e12f78a35c4f7e750baed1bf32bd647824d0931d70fd524a34a0020",
+      "firm": "zimmer_biomet",
+      "hf_burden": 29,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "FILLER",
+        "BONE",
+        "VOID",
+        "CALCIUM",
+        "COMPOUND"
+      ],
+      "lead_days": 789,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "84c9ba21589d682962807410cb72fe0d559175fd5de1ece96e16accffb73b974",
+      "firm": "boston_scientific",
+      "hf_burden": 109,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CATHETER",
+        "STEERABLE"
+      ],
+      "lead_days": 1816,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "84ea39374e48f4e88b195464bff72235915b8800bd8c7de86651f7c6a61849d2",
+      "firm": "zimmer_biomet",
+      "hf_burden": 45,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "INTERVERTEBRAL",
+        "FUSION",
+        "DEVICE",
+        "WITH",
+        "INTEGRATED",
+        "FIXATION",
+        "LUMBAR"
+      ],
+      "lead_days": 1534,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "86f6085002701961f0874addd3b2529f63379f144bbeb08c22303a85b923125e",
+      "firm": "ge_healthcare",
+      "hf_burden": 745,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "RADIOLOGICAL",
+        "COMPUTER",
+        "ASSISTED",
+        "DETECTION",
+        "DIAGNOSIS",
+        "SOFTWARE",
+        "FRACTURE"
+      ],
+      "lead_days": 1814,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "87cb63034ae2f8d7da90b94e5ed97f42fd7627377ca90a8f586092b72ff1c2b3",
+      "firm": "boston_scientific",
+      "hf_burden": 174,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PERIPHERAL",
+        "MECHANICAL",
+        "THROMBECTOMY",
+        "WITH",
+        "ASPIRATION"
+      ],
+      "lead_days": 1167,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "8846e0ad73c990994ab38f696c96df106849a80cae0c34af1e8c1fe01ac0c0d1",
+      "firm": "boston_scientific",
+      "hf_burden": 520,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CATHETER",
+        "PERCUTANEOUS",
+        "CARDIAC",
+        "ABLATION",
+        "TREATMENT",
+        "ATRIAL",
+        "FIBRILLATION"
+      ],
+      "lead_days": 1748,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "884853768bae67d8beb0e75721abd1a3e87916eb6e885e30a553013c1a3b56de",
+      "firm": "baxter",
+      "hf_burden": 142,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "AGENT",
+        "ABSORBABLE",
+        "HEMOSTATIC",
+        "COLLAGEN",
+        "BASED"
+      ],
+      "lead_days": 1822,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "890d83e113c372e7fd5731cbd2e63ccbe9e3d8e7550a8ff4f077c727529fc407",
+      "firm": "abbott",
+      "hf_burden": 551,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "RECORDER",
+        "EVENT",
+        "IMPLANTABLE",
+        "CARDIAC",
+        "WITHOUT",
+        "ARRHYTHMIA",
+        "DETECTION"
+      ],
+      "lead_days": 1811,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "89f9c189197fa82a0b07bb57e8797adb84f4bf8553791381da32fe5c08fbbead",
+      "firm": "medtronic",
+      "hf_burden": 54,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "AGENT",
+        "OCCLUDING",
+        "VASCULAR",
+        "PERMANENT"
+      ],
+      "lead_days": 714,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "8a0f88ce71dfc4cb1e9cee63c30f64f66fc78f5d1e2e301b5a10915338174fb0",
+      "firm": "boston_scientific",
+      "hf_burden": 3,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "CHOLEDOCHOSCOPE",
+        "ACCESSORIES",
+        "FLEXIBLE",
+        "RIGID"
+      ],
+      "lead_days": 1254,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "8a138333c0c2b9c3a77723f8f3d26b94cfc4448c4d8caee725f04b9e905ce5e0",
+      "firm": "medtronic",
+      "hf_burden": 185,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SINGLE",
+        "LUMEN",
+        "ECMO",
+        "CANNULA"
+      ],
+      "lead_days": 1808,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "8a79acbb31e8df4c1dd95492dfabb26558e55c4f5699f6775b46d89fff63f761",
+      "firm": "abbott",
+      "hf_burden": 241,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CONTROL",
+        "PUMP",
+        "SPEED",
+        "CARDIOPULMONARY",
+        "BYPASS"
+      ],
+      "lead_days": 1317,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "8a821be42a4d5a4d390b004fb88b8eeee9df05232d9443ab82ae506cba54fc98",
+      "firm": "abbott",
+      "hf_burden": 15,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "OPHTHALMIC",
+        "FEMTOSECOND",
+        "LASER"
+      ],
+      "lead_days": 1783,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "8ba20b335744d1111a9d676068b23109f3d4367251244d01e8b479073d76ea0e",
+      "firm": "philips",
+      "hf_burden": 22,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "VENTILATOR",
+        "CONTINUOUS",
+        "RESPIRATOR"
+      ],
+      "lead_days": 349,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "8df027b82e25614a79b58e354d90936ad2ec638ffb80df5f333a2ace6e9eee03",
+      "firm": "stryker",
+      "hf_burden": 4,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "OXIMETER"
+      ],
+      "lead_days": 1730,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "8e533d55e2714be71cde4084aee85f9d0c9902bdaf9cd08e69f9d896f7d5769c",
+      "firm": "stryker",
+      "hf_burden": 80,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PROSTHESIS",
+        "ANKLE",
+        "SEMI",
+        "CONSTRAINED",
+        "CEMENTED",
+        "METAL",
+        "POLYMER"
+      ],
+      "lead_days": 1754,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "908e89cf41168caa8275780759f8749147bdcc36a0875d7225f41a50b3289535",
+      "firm": "zimmer_biomet",
+      "hf_burden": 54,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SYSTEM",
+        "IMAGE",
+        "PROCESSING",
+        "RADIOLOGICAL"
+      ],
+      "lead_days": 569,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "92853b352f3c344d3d8a64bbd7569801ef69f906f151ed518135f376d7d32be7",
+      "firm": "stryker",
+      "hf_burden": 83,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SYSTEM",
+        "ANGIOGRAPHIC"
+      ],
+      "lead_days": 1812,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "95e7455a5df9088a337975053e830e4767f73ec2033b4d037b1a09294d04e0fb",
+      "firm": "medtronic",
+      "hf_burden": 175,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "POSTERIOR",
+        "CERVICAL",
+        "SCREW",
+        "SYSTEM"
+      ],
+      "lead_days": 283,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "97074846d941bf1040ebe9d14ae500154baac5bb99c435b981945ef7b6931140",
+      "firm": "siemens_healthineers",
+      "hf_burden": 203,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "AUTOMATED",
+        "RADIOLOGICAL",
+        "IMAGE",
+        "PROCESSING",
+        "SOFTWARE"
+      ],
+      "lead_days": 448,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "9a5aaecbf2eb9ee322c871adcfc59aa49f3da0bc76212c916db15ff8a3399f8c",
+      "firm": "medtronic",
+      "hf_burden": 164,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CALCULATOR",
+        "DRUG",
+        "DOSE"
+      ],
+      "lead_days": 1365,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "9b3a9779e8526eb1cf13b70cf8c76b3c24dad10141af6da80e933ece8669196b",
+      "firm": "boston_scientific",
+      "hf_burden": 59,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "PANCREATIC",
+        "STENT",
+        "COVERED",
+        "METALLIC",
+        "REMOVABLE"
+      ],
+      "lead_days": 1216,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "9e6f992140875a0c2a57e4186e156b1c79ba9bbc59fe35a9ebfe6f01ef72f860",
+      "firm": "edwards_lifesciences",
+      "hf_burden": 59,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "ADJUNCTIVE",
+        "OPEN",
+        "LOOP",
+        "FLUID",
+        "THERAPY",
+        "RECOMMENDER"
+      ],
+      "lead_days": 1606,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "9e91f5b590238353420b9e211a308c18816cdcc06e47f0240d7d805e1d68c3d0",
+      "firm": "medtronic",
+      "hf_burden": 1296,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PERCUTANEOUS",
+        "CARDIAC",
+        "ABLATION",
+        "CATHETER",
+        "TREATMENT",
+        "ATRIAL",
+        "FIBRILLATION",
+        "WITH"
+      ],
+      "lead_days": 1461,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "9fbcca5863d4657afed3e9b71c73b6522bd85d96c77a13a6d9a9d3966a4fe1d7",
+      "firm": "stryker",
+      "hf_burden": 106,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PROSTHESIS",
+        "KNEE",
+        "FEMOROTIBIAL",
+        "CONSTRAINED",
+        "CEMENTED",
+        "METAL",
+        "POLYMER"
+      ],
+      "lead_days": 1567,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "a2b948c1ab4cf5f2916e696ba5d90deca0d23a3eb0e83d615121b2b5331eef31",
+      "firm": "edwards_lifesciences",
+      "hf_burden": 7,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CATHETER",
+        "CONTINUOUS",
+        "FLUSH"
+      ],
+      "lead_days": 1109,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "a46f279a551aee256820ce996a08089fa8ee70631b5229e5c22499da40c15f16",
+      "firm": "zimmer_biomet",
+      "hf_burden": 45,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PROSTHESIS",
+        "CONSTRAINED",
+        "CEMENTED",
+        "UNCEMENTED",
+        "METAL",
+        "POLYMER",
+        "ADDITIVE"
+      ],
+      "lead_days": 1739,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "a5b73db6c5c62bef5a4d17448679e91e2eea641238178d87af9394e081e49c4a",
+      "firm": "siemens_healthineers",
+      "hf_burden": 8,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PROCALCITONIN",
+        "ASSAY"
+      ],
+      "lead_days": 1328,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "a73c67dcd11138590932f62ac99737485985489380e1bb86b66cdc6d6145d0d8",
+      "firm": "zimmer_biomet",
+      "hf_burden": 9,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "ORTHOPEDIC",
+        "AUGMENTED",
+        "REALITY"
+      ],
+      "lead_days": 1155,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "ab50bb575e0ee393a2f207d97ea770d10724a3c626c1cd490b8f905d7d0f3cad",
+      "firm": "medtronic",
+      "hf_burden": 373,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "DEVICE",
+        "PERCUTANEOUS",
+        "RETRIEVAL"
+      ],
+      "lead_days": 1531,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "ad01fc93bc27e17c79a593f855418110afd84ef8f1c946819ac7ec8ac7d3cad2",
+      "firm": "ge_healthcare",
+      "hf_burden": 435,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "RADIOLOGICAL",
+        "COMPUTER",
+        "ASSISTED",
+        "PRIORITIZATION",
+        "SOFTWARE",
+        "LESIONS"
+      ],
+      "lead_days": 1801,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "ad054d3d6783a544ac3f66585c06fb3b41fd42163a7141781af829dcf28fb985",
+      "firm": "baxter",
+      "hf_burden": 28,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "MONITOR",
+        "BREATHING",
+        "FREQUENCY"
+      ],
+      "lead_days": 1379,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "aeb985e7278632e4f820ca8238797f5bd30cf59349d26109aaad5c9e5cc74b85",
+      "firm": "siemens_healthineers",
+      "hf_burden": 225,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "RADIOLOGICAL",
+        "COMPUTER",
+        "ASSISTED",
+        "TRIAGE",
+        "NOTIFICATION",
+        "SOFTWARE"
+      ],
+      "lead_days": 1603,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "b039516b03eaf2a0a1fd233cce1e0908a180b58d824c1973ebce6bddeada4c2f",
+      "firm": "boston_scientific",
+      "hf_burden": 37,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "PROBE",
+        "RADIOFREQUENCY",
+        "LESION"
+      ],
+      "lead_days": 1353,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "b08d051ae6d37087aa7abed7ac0395d55598f3160d4964be515322ee2243082f",
+      "firm": "boston_scientific",
+      "hf_burden": 35,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "INSTRUMENTATION",
+        "SURGICAL",
+        "MESH",
+        "UROGYNECOLOGIC",
+        "TRANSVAGINAL",
+        "REPAIR",
+        "PELVIC",
+        "ORGAN"
+      ],
+      "lead_days": 1674,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "b119435e21fa946ed048835e63c2f474d4b86cbe1c7827a8f984dfd4add1c95f",
+      "firm": "stryker",
+      "hf_burden": 68,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "INSTRUMENT",
+        "ULTRASONIC",
+        "SURGICAL"
+      ],
+      "lead_days": 961,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "b3ef102a1360b99a47d2944ad054825add8a5cce997369371db56528f7d95edc",
+      "firm": "stryker",
+      "hf_burden": 35,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "INTRACRANIAL",
+        "ANEURYSM",
+        "FLOW",
+        "DIVERTER"
+      ],
+      "lead_days": 1429,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "b46cd2f7724f313033093a2ac5164ea215ea35f306ed66302bb65124efb845ab",
+      "firm": "edwards_lifesciences",
+      "hf_burden": 12,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "CATHETER",
+        "SEPTOSTOMY"
+      ],
+      "lead_days": 1755,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "b69b752683bd78bdf7aded83adb0611479e14b6cbc0b6167b8f745ce8d7577d6",
+      "firm": "edwards_lifesciences",
+      "hf_burden": 202,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "MITRAL",
+        "VALVE",
+        "REPAIR",
+        "DEVICES"
+      ],
+      "lead_days": 1800,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "b7fa1a4c2bd5407abf7fe9af3dccb840d4347f8e5c43369b4da51578eee77ae5",
+      "firm": "medtronic",
+      "hf_burden": 504,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "AUTOMATED",
+        "INSULIN",
+        "DOSING",
+        "DEVICE",
+        "SYSTEM",
+        "SINGLE",
+        "HORMONAL",
+        "CONTROL"
+      ],
+      "lead_days": 1413,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "bad65667ead74a1a3233a1a9cefc389b83a993d20a4b6465cb6f295da4f260bb",
+      "firm": "stryker",
+      "hf_burden": 265,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "TRANSPORT",
+        "PATIENT",
+        "POWERED"
+      ],
+      "lead_days": 1499,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "bc8e60ce4b9dbbb76b9a51cedead6a37045b9381dec48866f85f4acec80a2100",
+      "firm": "abbott",
+      "hf_burden": 304,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SYSTEM",
+        "TEST",
+        "VITAMIN"
+      ],
+      "lead_days": 1685,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "bfacb5de0b26ea0b0d881ccdf09d401b7c698869b0d5aad3d877fae5b4aed533",
+      "firm": "siemens_healthineers",
+      "hf_burden": 312,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "ANTI",
+        "MULLERIAN",
+        "HORMONE",
+        "TEST",
+        "SYSTEM"
+      ],
+      "lead_days": 511,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "c229ea81e0b392c6af81e7f40a042a98dcbecd0ecac0957af1c6eed60e06ab8d",
+      "firm": "bd",
+      "hf_burden": 2498,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PISTON",
+        "SYRINGE",
+        "WITH",
+        "NEURAXIAL",
+        "CONNECTOR",
+        "EPIDURAL",
+        "PERIPHERAL",
+        "INDIRECT"
+      ],
+      "lead_days": 1456,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "c2938bdc3515584e773f029378506b28974d6e1551403d180194ed1eb275681a",
+      "firm": "abbott",
+      "hf_burden": 497,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "HERPES",
+        "VIRUS",
+        "DETECTION",
+        "ASSAY",
+        "CUTANEOUS",
+        "MUCOCUTANEOUS",
+        "LESION",
+        "SAMPLES"
+      ],
+      "lead_days": 1809,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "c3bbdbf1f6d96e67f8682dfdbff99b40364cafa7d150072300f6a1bb147084d4",
+      "firm": "ge_healthcare",
+      "hf_burden": 832,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "RADIOLOGICAL",
+        "IMAGE",
+        "PROCESSING",
+        "SOFTWARE",
+        "RADIATION",
+        "THERAPY"
+      ],
+      "lead_days": 1809,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "c4b544b479bf617ad824a6357b9fbb35f7423b2233d67fd8b9b03fd572abd382",
+      "firm": "medtronic",
+      "hf_burden": 8,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "TUBES",
+        "GASTROINTESTINAL",
+        "ACCESSORIES"
+      ],
+      "lead_days": 747,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "c52bc7b93d3d0597d91bf0b52615a515de1266a61f43d2cd513c0cbdbf05439b",
+      "firm": "boston_scientific",
+      "hf_burden": 0,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "ECHOCARDIOGRAPH"
+      ],
+      "lead_days": 702,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "c6d1411159794c476fdbcc68fc54d870e8b1b36f59b6531268a6252ab5b53d55",
+      "firm": "abbott",
+      "hf_burden": 169,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "ASPIRATION",
+        "THROMBECTOMY",
+        "CATHETER"
+      ],
+      "lead_days": 1754,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "cab696f19be696cd2b661cc13b3b2c4644b5825e07337bfacb6059ded7ac8c0e",
+      "firm": "zimmer_biomet",
+      "hf_burden": 56,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PROSTHESIS",
+        "SHOULDER",
+        "SEMI",
+        "CONSTRAINED",
+        "METAL",
+        "POLYMER",
+        "UNCEMENTED"
+      ],
+      "lead_days": 1794,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "cabdd416bff01a460e41dd607c9c68c89d3766279a6a3292502313dddf86ad23",
+      "firm": "abbott",
+      "hf_burden": 1855,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SIMPLE",
+        "POINT",
+        "CARE",
+        "DEVICE",
+        "DETECT",
+        "NUCLEIC",
+        "ACID",
+        "TARGETS"
+      ],
+      "lead_days": 1248,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "cc197bf6edca0dff3bd690410b2aa3a817d49a0a9b6da9f059ad7ab265336e64",
+      "firm": "abbott",
+      "hf_burden": 194,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "ELECTRODE",
+        "SPECIFIC",
+        "CALCIUM"
+      ],
+      "lead_days": 1345,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "ccb030b640838f453a49f3aacee68e97c20d9f6ab48a0fe3e5caf0f3d630a412",
+      "firm": "bd",
+      "hf_burden": 67,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "DEVICE",
+        "DISINFECTANT"
+      ],
+      "lead_days": 788,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "cdd4f286d3452553c944e0a3fe80c113a5300202b279cf5622af04df29009677",
+      "firm": "abbott",
+      "hf_burden": 15,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SCAFFOLD",
+        "INFRAPOPLITEAL",
+        "ABSORBABLE"
+      ],
+      "lead_days": 1824,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "d0e1bce42f3d7582792fde6cf83d99997d8d09007f5f222c1c9d0e983d4212bb",
+      "firm": "medtronic",
+      "hf_burden": 292,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "ENDOVASCULAR",
+        "SUTURING",
+        "SYSTEM"
+      ],
+      "lead_days": 221,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "d2ba7c5cc810b870e136dfd999fcc8f8e797b6acc4ade7ea9bb68a71e6db6550",
+      "firm": "stryker",
+      "hf_burden": 58,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SYSTEM",
+        "THERMAL",
+        "REGULATING"
+      ],
+      "lead_days": 472,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "d87979eef2f45d28de837a92125e5de0b7bd4f2b7846066e093a4833e8aabc2b",
+      "firm": "siemens_healthineers",
+      "hf_burden": 1,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "ENZYME",
+        "IMMUNOASSAY",
+        "COCAINE",
+        "COCAINE",
+        "METABOLITES"
+      ],
+      "lead_days": 166,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "d87cbb915062f9667b072518cbb910c58202d2624ce5542c61460620813d18dd",
+      "firm": "stryker",
+      "hf_burden": 26,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "CATHETER",
+        "INTRAVASCULAR",
+        "DIAGNOSTIC"
+      ],
+      "lead_days": 1704,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "dd4faa81b19562420250eb83d4e976255e9bba43c08b9327b1446e8d3bad4cb9",
+      "firm": "philips",
+      "hf_burden": 517,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "MONITOR",
+        "CARDIAC",
+        "INCL",
+        "CARDIOTACHOMETER",
+        "RATE",
+        "ALARM"
+      ],
+      "lead_days": 1675,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "ddc27b97009228874ca835b78db858815b3e1345542cdac6ff27969deac8592d",
+      "firm": "abbott",
+      "hf_burden": 1625,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "INTEGRATED",
+        "CONTINUOUS",
+        "GLUCOSE",
+        "MONITORING",
+        "SYSTEM",
+        "FACTORY",
+        "CALIBRATED",
+        "WITH"
+      ],
+      "lead_days": 1795,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "dfbadab706ede68b61b556f83fa27f3537548b554e9d85af9137c9e9d06f79d6",
+      "firm": "edwards_lifesciences",
+      "hf_burden": 10,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "INTRACARDIAC",
+        "PATCH",
+        "PLEDGET",
+        "BIOLOGICALLY",
+        "DERIVED"
+      ],
+      "lead_days": 1822,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "e2e3daac7c7ab9608605974c92c2b80d346de5fe59a5010e4cef3704778e7536",
+      "firm": "edwards_lifesciences",
+      "hf_burden": 0,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "SUTURE",
+        "NONABSORBABLE",
+        "SYNTHETIC",
+        "POLYPROPYLENE"
+      ],
+      "lead_days": 107,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "e36d96c4f0bcf884b6bb59b5d7e6c71b5dc4e992016d1e1117d8b4426c9cef52",
+      "firm": "medtronic",
+      "hf_burden": 439,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SYSTEM",
+        "ABLATION",
+        "MICROWAVE",
+        "ACCESSORIES"
+      ],
+      "lead_days": 1823,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "e42055beb719588087d53fa5ddb6e1a5f37d93d338b23281834f417c57d06216",
+      "firm": "medtronic",
+      "hf_burden": 101,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SENSOR",
+        "GLUCOSE",
+        "INVASIVE"
+      ],
+      "lead_days": 1805,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "e4352a130daf66d74d5ba69780035bfa662d16ed2fe21f5687d350c296c7977f",
+      "firm": "stryker",
+      "hf_burden": 84,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "BONE",
+        "CEMENT",
+        "POSTERIOR",
+        "SCREW",
+        "AUGMENTATION"
+      ],
+      "lead_days": 1520,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "e588a07798e20b20f89ac96d57bff22c47db15f14f7dc2962cc00c00a2bd5a65",
+      "firm": "medtronic",
+      "hf_burden": 96,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "CATHETER",
+        "PERIPHERAL",
+        "ATHERECTOMY"
+      ],
+      "lead_days": 844,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "e63a27b95f1f3ded10ba9624cf6591d2361953fda287c7f1ae297f9ad4dd35de",
+      "firm": "edwards_lifesciences",
+      "hf_burden": 42,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "ADJUNCTIVE",
+        "PREDICTIVE",
+        "CARDIOVASCULAR",
+        "INDICATOR"
+      ],
+      "lead_days": 1754,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "e8e56ef1d35078c87c2bde417460d61f4d5941de1a385696c3dba127dc3d7c5d",
+      "firm": "boston_scientific",
+      "hf_burden": 119,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "STIMULATOR",
+        "PERIPHERAL",
+        "NERVE",
+        "IMPLANTED",
+        "PAIN",
+        "RELIEF"
+      ],
+      "lead_days": 1821,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "e92ed7831518b462df0ec5754b43dacafe381c745a78679ec5d9df56736a97c9",
+      "firm": "abbott",
+      "hf_burden": 593,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "INTEGRATED",
+        "CONTINUOUS",
+        "GLUCOSE",
+        "MONITORING",
+        "SYSTEM",
+        "FACTORY",
+        "CALIBRATED"
+      ],
+      "lead_days": 1780,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "e9a4ac256093c3bbbe8f585e7fb71d011ed9be09a78fcd49f3dc4d0b5dfb2dd1",
+      "firm": "abbott",
+      "hf_burden": 584,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "BLOOD",
+        "PUMP",
+        "ECMO",
+        "LONG",
+        "TERM",
+        "HOURS"
+      ],
+      "lead_days": 1771,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "eb94076015e062fa2479d6ec1ee41c82bb14067e5b5ab05f488cf2930b88e78e",
+      "firm": "boston_scientific",
+      "hf_burden": 452,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "RECORDER",
+        "EVENT",
+        "IMPLANTABLE",
+        "CARDIAC",
+        "WITH",
+        "ARRHYTHMIA",
+        "DETECTION"
+      ],
+      "lead_days": 1677,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "ec8d64527a08ca8f535b84fa7efb6b5b5541bd0b7ca1a21e5516f50bfd25c012",
+      "firm": "stryker",
+      "hf_burden": 115,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PROSTHESIS",
+        "KNEE",
+        "FEMOROTIBIAL",
+        "CONSTRAINED",
+        "CEMENTED",
+        "METAL",
+        "POLYMER"
+      ],
+      "lead_days": 1001,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "ecf994f09019e29584877b03ffb4e9a000593f308455650708209d8d6b3b9200",
+      "firm": "medtronic",
+      "hf_burden": 37,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "BONE",
+        "FIXATION",
+        "CERCLAGE",
+        "SUBLAMINAR"
+      ],
+      "lead_days": 127,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "f0b80b21cda7f36cb1e011a5b3871e60713f33f4ed0a5c73471fcf1d060e13d3",
+      "firm": "stryker",
+      "hf_burden": 63,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SHOULDER",
+        "PROSTHESIS",
+        "REVERSE",
+        "CONFIGURATION"
+      ],
+      "lead_days": 1546,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "f1086a6b47116caa27a402b199c6eb73235fdb9ac62283567dee5e40d6fa5740",
+      "firm": "abbott",
+      "hf_burden": 717,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "NUCLEIC",
+        "ACID",
+        "DETECTION",
+        "SYSTEM",
+        "VIRAL",
+        "MICROORGANISM",
+        "CAUSING",
+        "SEXUALLY"
+      ],
+      "lead_days": 1688,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "f12633387c347d68a42234727824ea9f158cf0ab3cac738a9ca19d943d4b4da8",
+      "firm": "boston_scientific",
+      "hf_burden": 139,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "STENT",
+        "SUPERFICIAL",
+        "FEMORAL",
+        "ARTERY",
+        "DRUG",
+        "ELUTING"
+      ],
+      "lead_days": 1798,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "f2261fac0797a0a7aaadcf4dc86e877a561275442e91f66bcf78a4a5e7bf7955",
+      "firm": "boston_scientific",
+      "hf_burden": 225,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "DRUG",
+        "ELUTING",
+        "PERCUTANEOUS",
+        "TRANSLUMINAL",
+        "CORONARY",
+        "ANGIOPLASTY",
+        "CATHETER"
+      ],
+      "lead_days": 1658,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "f2bd85c865e5799584dbae8c3e8a294d860832058248b86ad36d3dd65a05fddd",
+      "firm": "stryker",
+      "hf_burden": 58,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "PROSTHESIS",
+        "SHOULDER",
+        "SEMI",
+        "CONSTRAINED",
+        "METAL",
+        "POLYMER",
+        "CEMENTED"
+      ],
+      "lead_days": 1758,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "f4fc4fafe9e15e5025151912a2e881b385b8e349c796aebdf7c37027821b66e7",
+      "firm": "medtronic",
+      "hf_burden": 677,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "NEUROVASCULAR",
+        "MECHANICAL",
+        "THROMBECTOMY",
+        "DEVICE",
+        "ACUTE",
+        "ISCHEMIC",
+        "STROKE",
+        "TREATMENT"
+      ],
+      "lead_days": 1727,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "f56c78d3f84ff3600946809e3812e20a46f8e57f637295f90932e1a610a6cba9",
+      "firm": "abbott",
+      "hf_burden": 110,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "TRANSDUCER",
+        "PRESSURE",
+        "CATHETER"
+      ],
+      "lead_days": 1189,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "f69f9c56f9e4df6efb667ca13650e792c807597203f9917f90119736b9dc407b",
+      "firm": "siemens_healthineers",
+      "hf_burden": 2,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "DIAZO",
+        "COLORIMETRY",
+        "BILIRUBIN"
+      ],
+      "lead_days": 665,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "f887b5c60acac7af47fed24a8a5d43206af1cc83f382375192da172240139769",
+      "firm": "medtronic",
+      "hf_burden": 455,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SYSTEM",
+        "IMAGING",
+        "GASTROINTESTINAL",
+        "WIRELESS",
+        "CAPSULE"
+      ],
+      "lead_days": 1800,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "f8886a80974e6ea2a049ff5e34fe898d67561e1783a7d5646e7630268e27a816",
+      "firm": "bd",
+      "hf_burden": 2669,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "SALINE",
+        "VASCULAR",
+        "ACCESS",
+        "FLUSH",
+        "WITH",
+        "INTEGRATED",
+        "ALCOHOL",
+        "DISINFECTANT"
+      ],
+      "lead_days": 1769,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "f9c7f875aa221bab984963a5b5c0c18a9d023ed4074e99c7f1485a9bde7fdae6",
+      "firm": "abbott",
+      "hf_burden": 93,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "DORSAL",
+        "ROOT",
+        "GANGLION",
+        "STIMULATOR",
+        "PAIN",
+        "RELIEF"
+      ],
+      "lead_days": 910,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "fc0ce30e5b8f955eae9415cf8ec54a6354bbaa6b5efa404d2e3a1a1aff8c256d",
+      "firm": "abbott",
+      "hf_burden": 83,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "OXYGENATOR",
+        "CARDIOPULMONARY",
+        "BYPASS"
+      ],
+      "lead_days": 1803,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "fc467d2abe4b4bf78b48835ce379cd0212206ff4cd96c8530b4d79e02c0c6610",
+      "firm": "stryker",
+      "hf_burden": 196,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "NEUROVASCULAR",
+        "MECHANICAL",
+        "THROMBECTOMY",
+        "DEVICE",
+        "ACUTE",
+        "ISCHEMIC",
+        "STROKE",
+        "TREATMENT"
+      ],
+      "lead_days": 1697,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "fcce5468650af9ebf2797a14a98da2be9d733817e2f5f9c3c67407503ad7c671",
+      "firm": "stryker",
+      "hf_burden": 60,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "AUTOMATED",
+        "RADIOLOGICAL",
+        "IMAGE",
+        "PROCESSING",
+        "SOFTWARE"
+      ],
+      "lead_days": 1326,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "fd6e5a85b8cfe3e05bd35a7238d1e34eefb1b8db351b0bd9f521cb5ce94b28f1",
+      "firm": "philips",
+      "hf_burden": 174,
+      "hf_recall": 0,
+      "hf_tokens": [
+        "ANALYZER",
+        "CARBON",
+        "DIOXIDE",
+        "GASEOUS",
+        "PHASE"
+      ],
+      "lead_days": 1761,
+      "stratum": "core"
+    },
+    {
+      "anchor_id": "fdd1828860dd58fe5f78166aaf78c4a550e5d2352e1a6cee4c35cb42c41db500",
+      "firm": "siemens_healthineers",
+      "hf_burden": 500,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "ANTI",
+        "FACTOR",
+        "ACTIVITY",
+        "TEST",
+        "SYSTEM",
+        "APIXABAN"
+      ],
+      "lead_days": 1332,
+      "stratum": "extension"
+    },
+    {
+      "anchor_id": "ff89860033054ecc6c6d06306dbfcdccf81b92dd8f5a7e496cd4cba3d89696cb",
+      "firm": "medtronic",
+      "hf_burden": 185,
+      "hf_recall": 1,
+      "hf_tokens": [
+        "STIMULATOR",
+        "ELECTRICAL",
+        "EVOKED",
+        "RESPONSE"
+      ],
+      "lead_days": 1732,
+      "stratum": "core"
+    }
+  ],
+  "note": "lead_days = milestone decision date minus the earliest verified evidence date. The publication clock uses first_posted / firstPublicationDate; the latest-plausible clock uses the largest available date field per evidence record.",
+  "overall_latest_plausible_clock": {
+    "anchors_with_verified_link": 186,
+    "ge_180_days": 158,
+    "ge_365_days": 154,
+    "ge_90_days": 163,
+    "label": "earliest verified evidence, latest-plausible clock",
+    "max": 1826,
+    "median": 1421.0,
+    "median_ci95": [
+      1340.5,
+      1552.0
+    ],
+    "min": -3086,
+    "negative_lead": 21,
+    "q1": 685.0,
+    "q3": 1727.0,
+    "share_ge_90_days": 0.876344,
+    "share_ge_90_days_ci95": [
+      0.8202516845526588,
+      0.9199730885270583
+    ]
+  },
+  "overall_publication_clock": {
+    "anchors_with_verified_link": 186,
+    "ge_180_days": 181,
+    "ge_365_days": 176,
+    "ge_90_days": 184,
+    "label": "earliest verified evidence, publication clock",
+    "max": 1826,
+    "median": 1620.0,
+    "median_ci95": [
+      1550.0,
+      1679.0
+    ],
+    "min": 16,
+    "negative_lead": 0,
+    "q1": 1254.0,
+    "q3": 1768.5,
+    "share_ge_90_days": 0.989247,
+    "share_ge_90_days_ci95": [
+      0.9616993211661793,
+      0.998695136553124
+    ]
+  },
+  "per_stratum": {
+    "core": {
+      "anchors_with_verified_link": 45,
+      "ge_180_days": 43,
+      "ge_365_days": 39,
+      "ge_90_days": 44,
+      "label": "core",
+      "max": 1823,
+      "median": 1727.0,
+      "median_ci95": [
+        1575.0,
+        1747.0
+      ],
+      "min": 16,
+      "negative_lead": 0,
+      "q1": 1365.0,
+      "q3": 1798.0,
+      "share_ge_90_days": 0.977778,
+      "share_ge_90_days_ci95": [
+        0.8822956685812642,
+        0.9994375402843616
+      ]
+    },
+    "extension": {
+      "anchors_with_verified_link": 141,
+      "ge_180_days": 138,
+      "ge_365_days": 137,
+      "ge_90_days": 140,
+      "label": "extension",
+      "max": 1826,
+      "median": 1593.0,
+      "median_ci95": [
+        1478.0,
+        1670.0
+      ],
+      "min": 54,
+      "negative_lead": 0,
+      "q1": 1254.0,
+      "q3": 1758.0,
+      "share_ge_90_days": 0.992908,
+      "share_ge_90_days_ci95": [
+        0.9611194863286983,
+        0.9998204571979841
+      ]
+    }
+  },
+  "target_b": {
+    "anchors_globally_novel_name": 18,
+    "anchors_globally_novel_with_verified_link": 7
+  },
+  "tier_counts": {
+    "AMBIGUOUS_L4": 552,
+    "CANDIDATE_L3": 2,
+    "REJECTED_L5": 12625,
+    "VERIFIED_L1": 76,
+    "VERIFIED_L2": 5684,
+    "__emission_capped_rows": 5104
+  },
+  "validity_ladder": {
+    "L2_any_distinctive_token": {
+      "anchors": 186,
+      "definition": "pooled rule as frozen: any distinctive token identity",
+      "ge_180_days": 181,
+      "ge_365_days": 176,
+      "ge_90_days": 184,
+      "median": 1620.0,
+      "median_ci95": [
+        1550.0,
+        1679.0
+      ],
+      "per_firm": {
+        "abbott": 41,
+        "baxter": 4,
+        "bd": 12,
+        "boston_scientific": 30,
+        "draeger": 0,
+        "edwards_lifesciences": 12,
+        "ge_healthcare": 4,
+        "medtronic": 34,
+        "mindray": 0,
+        "philips": 7,
+        "siemens_healthineers": 9,
+        "stryker": 25,
+        "zimmer_biomet": 8
+      },
+      "per_stratum": {
+        "core": 45,
+        "extension": 141
+      },
+      "share_ge_90_days": 0.989247
+    },
+    "L2_pre_regulatory": {
+      "anchors": 34,
+      "definition": "no regulatory record of that product name existed before the evidence date",
+      "ge_180_days": 31,
+      "ge_365_days": 30,
+      "ge_90_days": 33,
+      "median": 1340.5,
+      "median_ci95": [
+        1166.0,
+        1611.0
+      ],
+      "per_firm": {
+        "abbott": 8,
+        "baxter": 1,
+        "bd": 4,
+        "boston_scientific": 6,
+        "draeger": 0,
+        "edwards_lifesciences": 2,
+        "ge_healthcare": 0,
+        "medtronic": 8,
+        "mindray": 0,
+        "philips": 0,
+        "siemens_healthineers": 1,
+        "stryker": 1,
+        "zimmer_biomet": 3
+      },
+      "per_stratum": {
+        "core": 8,
+        "extension": 26
+      },
+      "share_ge_90_days": 0.970588
+    },
+    "L2_product_specific_pre_regulatory": {
+      "anchors": 31,
+      "definition": "product-specific token AND no prior regulatory record",
+      "ge_180_days": 28,
+      "ge_365_days": 27,
+      "ge_90_days": 30,
+      "median": 1311.0,
+      "median_ci95": [
+        1070.0,
+        1607.0
+      ],
+      "per_firm": {
+        "abbott": 6,
+        "baxter": 1,
+        "bd": 4,
+        "boston_scientific": 6,
+        "draeger": 0,
+        "edwards_lifesciences": 2,
+        "ge_healthcare": 0,
+        "medtronic": 7,
+        "mindray": 0,
+        "philips": 0,
+        "siemens_healthineers": 1,
+        "stryker": 1,
+        "zimmer_biomet": 3
+      },
+      "per_stratum": {
+        "core": 7,
+        "extension": 24
+      },
+      "share_ge_90_days": 0.967742
+    },
+    "L2_product_specific_token": {
+      "anchors": 60,
+      "definition": "token used by at most 3 distinct applicants in device names (Amendment 2)",
+      "ge_180_days": 56,
+      "ge_365_days": 53,
+      "ge_90_days": 58,
+      "median": 1351.0,
+      "median_ci95": [
+        1216.5,
+        1609.5374999999995
+      ],
+      "per_firm": {
+        "abbott": 14,
+        "baxter": 1,
+        "bd": 5,
+        "boston_scientific": 8,
+        "draeger": 0,
+        "edwards_lifesciences": 5,
+        "ge_healthcare": 0,
+        "medtronic": 13,
+        "mindray": 0,
+        "philips": 1,
+        "siemens_healthineers": 4,
+        "stryker": 5,
+        "zimmer_biomet": 4
+      },
+      "per_stratum": {
+        "core": 14,
+        "extension": 46
+      },
+      "share_ge_90_days": 0.966667
+    },
+    "L2_strict_literature_rare": {
+      "anchors": 28,
+      "definition": "the strictest conjunction: product-specific AND literature-rare token (not an ordinary word of the field) AND no prior regulatory record (Amendment 5)",
+      "ge_180_days": 25,
+      "ge_365_days": 24,
+      "ge_90_days": 27,
+      "median": 1316.5,
+      "median_ci95": [
+        929.5,
+        1609.0
+      ],
+      "per_firm": {
+        "abbott": 6,
+        "baxter": 1,
+        "bd": 4,
+        "boston_scientific": 6,
+        "draeger": 0,
+        "edwards_lifesciences": 2,
+        "ge_healthcare": 0,
+        "medtronic": 6,
+        "mindray": 0,
+        "philips": 0,
+        "siemens_healthineers": 0,
+        "stryker": 1,
+        "zimmer_biomet": 2
+      },
+      "per_stratum": {
+        "core": 6,
+        "extension": 22
+      },
+      "share_ge_90_days": 0.964286
+    }
+  }
+}

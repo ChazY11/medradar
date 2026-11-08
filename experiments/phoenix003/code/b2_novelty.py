@@ -81,6 +81,10 @@ def main(argv=None) -> int:
     first_global, first_firm, n_milestones = load_token_history(args.db)
     print(f"canonical milestones used for token history: {n_milestones}; tokens: {len(first_global)}")
 
+    rules = pc.load_rules()
+    post_markers = [m.lower() for m in
+                    rules.get("novelty", {}).get("post_approval_markers", [])]
+
     rows = [json.loads(line) for line in
             open(pc.EXPERIMENT_DIR / "EVIDENCE_LINKS.jsonl", encoding="utf-8")]
     anchors = [json.loads(line) for line in
@@ -97,13 +101,21 @@ def main(argv=None) -> int:
         fg = first_global.get(tok)
         ed = pc.parse_date(r["evidence_date"])
         r["token_first_reg_date_global"] = pc.iso(fg)
-        if fg is None or ed is None:
+        text = (r.get("evidence_text") or r.get("evidence_title") or "").lower()
+        marker = next((m for m in post_markers if m in text), None)
+        if marker:
+            # the record says in its own words that the device was already approved
+            r["regulatory_status"] = "PRE_EXISTING_PRODUCT"
+            r["status_reason"] = f"self_declared_post_approval:{marker}"
+        elif fg is None or ed is None:
             r["regulatory_status"] = "unknown"
+            r["status_reason"] = "no_token_history_or_date"
         elif fg <= ed:
             r["regulatory_status"] = "PRE_EXISTING_PRODUCT"
-            r["token_first_reg_date_global"] = pc.iso(fg)
+            r["status_reason"] = "earlier_regulatory_record_of_token"
         else:
             r["regulatory_status"] = "PRE_REGULATORY"
+            r["status_reason"] = "no_earlier_regulatory_record_of_token"
         status_counts[r["regulatory_status"]] += 1
 
     pc.write_jsonl(pc.EXPERIMENT_DIR / "EVIDENCE_LINKS.jsonl", rows)

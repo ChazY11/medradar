@@ -20,6 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import phoenix003_common as pc
 import b_links as bl
+import b2_novelty as b2
 
 
 def load_corpora(resolver):
@@ -99,6 +100,8 @@ def main(argv=None) -> int:
 
     ctgov, epmc, by_firm, corpus_stats = load_corpora(resolver)
     print(f"corpus: ctgov={len(ctgov)} epmc={len(epmc)}")
+    # token -> first regulatory date of any applicant, for the strict-level decoy control
+    first_global, _first_firm, _n_ms = b2.load_token_history(args.db)
 
     # pre-compute match dates per anchor for its own tokens (cheap binary-search placebo)
     own = {}
@@ -155,6 +158,8 @@ def main(argv=None) -> int:
         by_firm_anchors[a["firm"]].append(a)
     decoy_rows = []
     decoy_linked = 0
+    decoy_linked_ps = 0
+    decoy_linked_ps_pre = 0
     decoy_used = 0
     for a in anchors:
         adate = pc.parse_date(a["anchor_date"])
@@ -176,15 +181,51 @@ def main(argv=None) -> int:
         date = earliest_in_window(mdates, w0, adate)
         if date is not None:
             decoy_linked += 1
+        # strict-level decoy: is the decoy token product specific, and was the product
+        # already regulated when the decoy evidence was published?
+        dspec = tokenizer.is_product_specific(dtok)
+        fg = first_global.get(dtok)
+        dpre = (fg is not None and date is not None and fg > date)
+        if date is not None and dspec:
+            decoy_linked_ps += 1
+        if date is not None and dspec and dpre:
+            decoy_linked_ps_pre += 1
         decoy_rows.append({
             "anchor_id": a["anchor_id"], "firm": a["firm"],
             "decoy_token": dtok, "donor_anchor_id": donor["anchor_id"],
             "donor_product_code": donor["product_code"],
+            "decoy_token_applicant_df": tokenizer.applicant_df_of(dtok),
+            "decoy_product_specific": dspec,
+            "decoy_token_first_reg_date": pc.iso(fg),
+            "decoy_pre_regulatory": dpre,
             "decoy_linked": date is not None,
             "decoy_lead_days": (adate - date).days if date else None,
         })
     decoy_rate = decoy_linked / max(decoy_used, 1)
-    specificity = (real_rate / decoy_rate) if decoy_rate > 0 else None
+    # match the denominator: the real rate must be computed on the anchors that received a decoy
+    decoy_anchor_ids = {r["anchor_id"] for r in decoy_rows}
+    real_linked_matched = sum(1 for aid, s_ in summary_by_id.items()
+                              if aid in decoy_anchor_ids and s_["has_verified_link"])
+    real_rate_matched = real_linked_matched / max(len(decoy_anchor_ids), 1)
+    specificity = (real_rate_matched / decoy_rate) if decoy_rate > 0 else None
+    decoy_rate_ps = decoy_linked_ps / max(decoy_used, 1)
+    decoy_rate_ps_pre = decoy_linked_ps_pre / max(decoy_used, 1)
+    # real strict-level rates, computed directly from the committed link rows so this stage has
+    # no dependency on d_leadtime having run
+    verified_rows = [r for r in
+                     (json.loads(line) for line in
+                      open(pc.EXPERIMENT_DIR / "EVIDENCE_LINKS.jsonl", encoding="utf-8"))
+                     if r["tier"] in ("VERIFIED_L1", "VERIFIED_L2")]
+    real_ps_ids = {r["anchor_id"] for r in verified_rows if r.get("product_specific")}
+    real_ps_pre_ids = {r["anchor_id"] for r in verified_rows
+                       if r.get("product_specific")
+                       and r.get("regulatory_status") == "PRE_REGULATORY"}
+    real_ps = len(real_ps_ids) / max(len(anchors), 1)
+    real_ps_pre = len(real_ps_pre_ids) / max(len(anchors), 1)
+    real_ps_matched = len(real_ps_ids & decoy_anchor_ids) / max(len(decoy_anchor_ids), 1)
+    real_ps_pre_matched = len(real_ps_pre_ids & decoy_anchor_ids) / max(len(decoy_anchor_ids), 1)
+    spec_ps = (real_ps_matched / decoy_rate_ps) if decoy_rate_ps > 0 else None
+    spec_ps_pre = (real_ps_pre_matched / decoy_rate_ps_pre) if decoy_rate_ps_pre > 0 else None
     c3_out = {
         "definition": "same firm, different product code, anchor date within the frozen window: "
                       "the donor's distinctive token replaces the milestone's token",
@@ -193,10 +234,20 @@ def main(argv=None) -> int:
         "decoy_link_rate": round(decoy_rate, 6),
         "real_link_rate": round(real_rate, 6),
         "specificity": round(specificity, 4) if specificity is not None else None,
+        "real_link_rate_product_specific": real_ps,
+        "decoy_link_rate_product_specific": round(decoy_rate_ps, 6),
+        "specificity_product_specific": round(spec_ps, 4) if spec_ps is not None else None,
+        "real_link_rate_product_specific_pre_regulatory": real_ps_pre,
+        "decoy_link_rate_product_specific_pre_regulatory": round(decoy_rate_ps_pre, 6),
+        "specificity_product_specific_pre_regulatory": (
+            round(spec_ps_pre, 4) if spec_ps_pre is not None else None),
         "specificity_note": (
-            "decoy link rate is zero, so specificity is unbounded above (reported as null); "
-            "this is the strongest possible specificity result and is capped at the GO threshold "
-            "in the verdict rule"), 
+            "specificity = real rate / decoy rate, both on the same denominator (anchors that "
+            "received a decoy). A null value means the decoy rate was zero, which is unbounded "
+            "above rather than a pass."),
+        "specificity_matched_denominator": (
+            round(real_linked_matched / decoy_used / (decoy_linked / decoy_used), 4)
+            if decoy_linked > 0 and decoy_used > 0 else None),
         "rows": decoy_rows,
     }
 
@@ -254,7 +305,8 @@ def main(argv=None) -> int:
     rng_perm = random.Random(int(rules["stats"]["seed"]) + 2)
     perm_medians = []
     perm_rates = []
-    for _ in range(max(200, R_shift // 4)):
+    # the frozen rule fixes 2000 permutations for C4; both halves of C4 use it
+    for _ in range(R_shift):
         linked = 0
         leads = []
         for gid, items in groups.items():
@@ -334,6 +386,8 @@ def main(argv=None) -> int:
         "c2_link_rate": out["c2_anchored"]["link_rate"],
         "c3_decoy_rate": c3_out["decoy_link_rate"],
         "specificity": c3_out["specificity"],
+        "specificity_ps": c3_out["specificity_product_specific"],
+        "specificity_ps_pre": c3_out["specificity_product_specific_pre_regulatory"],
         "c4a": {k: c4a_out[k] for k in ("p_link_rate", "null_link_rate_mean", "observed_median_lead_days", "p_median_lead")},
         "c4b": {k: c4b_out[k] for k in ("p_link_rate", "p_median_lead")},
         "per_firm": c5_out["per_firm"],

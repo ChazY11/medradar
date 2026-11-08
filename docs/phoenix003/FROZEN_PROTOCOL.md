@@ -342,3 +342,81 @@ both pooled and restricted to the `high` band, decided in advance of any link be
 *Effect:* both changes **tighten** the rule (they can only remove token matches), and both
 were fixed before the link step existed.
 
+**Amendment 2 — 2026-11-09T04:5x +08:00 — token specificity is measured by applicant document
+frequency, not by name document frequency.**
+
+*Observed before the amendment:* the first linker run (ClinicalTrials.gov corpus only, no Europe
+PMC yet) produced links such as "Micra" ← a CoreValve transcatheter-valve trial, joined by the
+token `TRANSCATHETER`. The token was banded `low` by name frequency (>100 device names) — and
+so was `MICRA`, because Medtronic's own supplements repeat the product name more than 100 times.
+Name frequency therefore measures *how often a product line is re-filed*, not whether a token
+discriminates one firm's product from another's clinical vocabulary. The wrong quantity.
+
+*Change:* the specificity band is recomputed on **distinct-applicant document frequency** — how
+many different applicants use the token in a device name. A token used by one applicant cannot
+distinguish two firms' vocabularies; a token used by very many applicants distinguishes nothing.
+A second, stricter flag `product_specific` is pre-registered at `applicant_df ≤ 3`
+(`FROZEN_RULES.json → name_vocab.product_specific_max_applicant_df`) and both the pooled and the
+product-specific counts are reported.
+
+*What was and was not observed:* only the pooled link list and its tokens had been looked at.
+No lead-time statistic, no control, no verdict had been computed. The amendment can only remove
+matches (`TRANSCATHETER` survives the token rule either way; it merely stops counting as
+evidence of the same product). It is a **tightening**.
+
+**Amendment 3 — 2026-11-09T05:1x +08:00 — split earlier evidence by whether the product was
+already regulated.**
+
+*Observed before the amendment:* of 213 `VERIFIED_L2` links produced by the ClinicalTrials.gov
+corpus alone, the great majority were trials of a device that **already had an FDA record** at
+the time of the trial — the Melody post-approval study, the Resolute Integrate registry, a
+PillCam performance study. Calling those "early evidence of a technology" would repeat exactly
+the error this study is meant to avoid: a trial can precede a *later* milestone while the
+product itself is already public.
+
+*Change:* every verified link is classified by a computed, non-judgemental question: at the
+evidence record's publication date, did **any** canonical regulatory record of **any** applicant
+already carry this distinctive token?
+
+* `PRE_EXISTING_PRODUCT` — yes. The evidence is follow-up/surveillance/extension of an already
+  regulated device. **Not** early evidence.
+* `PRE_REGULATORY` — no. The information existed before the product had any regulatory
+  footprint. The only class that may be called early evidence.
+
+The pooled class remains fully reported. The verdict keeps its frozen definition (`k` = anchors
+with any L1/L2 link, §10) and is *not* recomputed on the stricter class; the stricter class is
+reported as an additional, more demanding descriptive level ("validity ladder") with its own
+counts and intervals.
+
+*Why this is not a threshold change:* no gate, window, seed or threshold in §10 is altered. The
+new classification adds a **descriptive** split that can only reduce what may be claimed.
+
+**Amendment 4 — 2026-11-09T05:1x +08:00 — extension stratum triggered.**
+
+The pre-registered rule in §10 fired: only two of the five core firms reach 5 anchors
+(Medtronic 40, Philips 11; GE HealthCare 4, Mindray 3, Dräger 1). The eight listed extension
+firms were added as a **separate stratum**, harvested with the identical query template, and are
+never pooled with the core five in a headline number.
+
+**Amendment 5 — 2026-11-09T05:4x +08:00 — a product token must also be rare in the literature.**
+
+*Observed before the amendment:* the strict class (product-specific ∧ pre-regulatory) contained
+links carried by ordinary English words that happen to be used by only one applicant —
+`OVERALL` (from a 510(k) device name that is a multi-product laundry list), `EFFICIENT`, `ORGANS`,
+`CAPTURING`. A token used by one applicant is not necessarily a product name.
+
+*Change:* a frozen **literature-rarity** test: a token is literature-rare iff it appears in at most
+`literature_rare_max_epmc_df = 200` of the 36,621 firm-anchored Europe PMC documents (title +
+abstract + keywords, patent records excluded). The threshold is 0.55 % of the corpus. This is a
+vocabulary property computed from the frozen corpus only, before any link is formed — the same kind
+of object as a stopword list. The strictest reported level becomes
+`product-specific ∧ literature-rare ∧ pre-regulatory`; all looser levels remain reported.
+
+*Effect:* removing 4 of 32 strict cases (`OVERALL`, `EFFICIENT`, `ORGANS`, and a `BULK`-token
+variant of the same long device name). It can only remove matches; the pooled and product-specific
+counts are unchanged. Known residual weakness, stated in the results: rare ordinary words
+(`TETHERING` 13 documents, `CAPTURING` 83, `POLYSACCHARIDE` 81) survive the filter and are handled
+by human adjudication rather than by another automatic rule.
+
+
+

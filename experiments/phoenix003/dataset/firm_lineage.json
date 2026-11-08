@@ -72,13 +72,15 @@
       "any_token": [
         "ABBOTT"
       ],
-      "segment_notes": "Abbott Laboratories, Abbott Vascular, Abbott Medical Optics, Abbott Diabetes Care, Abbott Point of Care, St. Jude Medical only where the applicant string itself carries the Abbott brand."
+      "segment_notes": "Abbott Laboratories, Abbott Vascular, Abbott Medical Optics, Abbott Diabetes Care, Abbott Point of Care, St. Jude Medical only where the applicant string itself carries the Abbott brand.",
+      "exclude_if_contains": []
     },
     "baxter": {
       "any_token": [
         "BAXTER"
       ],
-      "segment_notes": "Baxter Healthcare, Baxter International, Baxter BioScience, Gambro only where the applicant string carries the Baxter brand."
+      "segment_notes": "Baxter Healthcare, Baxter International, Baxter BioScience, Gambro only where the applicant string carries the Baxter brand.",
+      "exclude_if_contains": []
     },
     "bd": {
       "any_token": [
@@ -119,7 +121,10 @@
       "any_token": [
         "ZIMMER"
       ],
-      "segment_notes": "Zimmer, Zimmer Biomet and Zimmer-named subsidiaries only. BIOMET is deliberately NOT a brand token: pre-merger Biomet submissions belong to an independent company, and the store carries no acquisition close date, so including them would be exactly the back-projection this study forbids. Biomet-branded rows are counted as a coverage loss instead."
+      "segment_notes": "Zimmer, Zimmer Biomet and Zimmer-named subsidiaries only. BIOMET is deliberately NOT a brand token: pre-merger Biomet submissions belong to an independent company, and the store carries no acquisition close date, so including them would be exactly the back-projection this study forbids. Biomet-branded rows are counted as a coverage loss instead. 'Zimmer Medizinsysteme GmbH' is an independent German physical-therapy manufacturer and is excluded explicitly (found by independent verification: three anchors had been misattributed).",
+      "exclude_if_contains": [
+        "MEDIZINSYSTEME"
+      ]
     }
   },
   "token_rule_note": "boston_scientific requires BOSTON together with SCIENTIFIC; ge_healthcare requires GE together with a qualifier token or the GENERAL ELECTRIC phrase. All other firms match on their single brand token.",

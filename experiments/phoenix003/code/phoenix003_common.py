@@ -191,6 +191,10 @@ class FirmResolver:
             hits = tokens & set(spec.get("any_token", []))
             if not hits:
                 continue
+            excludes = spec.get("exclude_if_contains") or []
+            if excludes and any(pc_excl in text for pc_excl in
+                                [normalise_text(x) for x in excludes]):
+                continue
             qualifiers = spec.get("qualifier_tokens")
             if qualifiers:
                 # a weak brand word needs a domain qualifier (GE + HEALTHCARE, BOSTON + SCIENTIFIC)
@@ -238,6 +242,9 @@ class DistinctiveTokenizer:
         self.product_specific_max = int(
             rules["name_vocab"].get("product_specific_max_applicant_df", 3))
         self.vocab_meta = vocab
+        self._rare = None
+        self.literature_rare_max = int(
+            rules["name_vocab"].get("literature_rare_max_epmc_df", 200))
 
     def candidates(self, name: str) -> list[str]:
         out = []
@@ -277,6 +284,20 @@ class DistinctiveTokenizer:
         another's clinical vocabulary (Amendment 2)."""
         df = self.applicant_df_of(token)
         return 0 < df <= self.product_specific_max
+
+    def _load_rare(self) -> set:
+        if self._rare is None:
+            path = DATASET / "epmc_rare_tokens.txt"
+            if path.exists():
+                self._rare = {ln.strip() for ln in path.read_text(encoding="utf-8").splitlines()
+                              if ln.strip()}
+            else:  # fail open in the sense of "unknown", never silently rare
+                self._rare = set()
+        return self._rare
+
+    def is_literature_rare(self, token: str) -> bool:
+        """Amendment 5: the token must not be an ordinary word of the field's literature."""
+        return token in self._load_rare()
 
     def all_tokens(self, name: str) -> list[str]:
         return token_list(name)
