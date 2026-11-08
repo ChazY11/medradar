@@ -1,0 +1,100 @@
+{
+  "experiment": "EXP3_PREDICTABLE_RISK_SET",
+  "question": "What happens when tracks that can never carry a device label are removed and the universe is redefined?",
+  "configs": {
+    "attr59_v1like_purged": {
+      "brief": {
+        "n": 2443,
+        "n_pos": 155,
+        "prevalence": 0.0634465820712239,
+        "n_tracks": 59,
+        "ap_a": 0.15660903708920268,
+        "ap_b": 0.11978583571243599,
+        "dap": 0.03682320137676669,
+        "ci95": [
+          0.0169281273499959,
+          0.06477562245243192
+        ],
+        "p": 0.0,
+        "ci_width": 0.047847495102436015,
+        "folds_ok": 11,
+        "maturity_violating_share": 0.0
+      },
+      "n_tracks": 59,
+      "prevalence": 0.0634465820712239
+    },
+    "attr38_v2_purged": {
+      "brief": {
+        "n": 1723,
+        "n_pos": 176,
+        "prevalence": 0.10214741729541497,
+        "n_tracks": 38,
+        "ap_a": 0.1588592660008153,
+        "ap_b": 0.12950319386315878,
+        "dap": 0.029356072137656508,
+        "ci95": [
+          0.0081664631722597,
+          0.05730700440028901
+        ],
+        "p": 0.004,
+        "ci_width": 0.049140541228029314,
+        "folds_ok": 12,
+        "maturity_violating_share": 0.0
+      },
+      "n_tracks": 38,
+      "prevalence": 0.10214741729541497
+    },
+    "track38_v2_purged": {
+      "brief": {
+        "n": 1748,
+        "n_pos": 119,
+        "prevalence": 0.06807780320366133,
+        "n_tracks": 38,
+        "ap_a": 0.2419180722526601,
+        "ap_b": 0.22965024903856038,
+        "dap": 0.012267823214099721,
+        "ci95": [
+          -0.078774368314436,
+          0.11066883573444233
+        ],
+        "p": 0.678,
+        "ci_width": 0.18944320404887832,
+        "folds_ok": 12,
+        "maturity_violating_share": 0.0
+      },
+      "n_tracks": 38,
+      "prevalence": 0.06807780320366133
+    }
+  },
+  "universe_composition": {
+    "attr59_tracks": 59,
+    "tracks_with_zero_device_events": 21,
+    "zero_device_tracks": [
+      "t_addiction",
+      "t_cardiometabolic",
+      "t_cell_therapy",
+      "t_dermatology",
+      "t_gene_therapy",
+      "t_hematology",
+      "t_hepatology",
+      "t_immunology",
+      "t_infectious",
+      "t_musculoskeletal",
+      "t_nephrology",
+      "t_neuroscience",
+      "t_oncology",
+      "t_ophthalmology",
+      "t_pain",
+      "t_rare_disease",
+      "t_respiratory",
+      "t_transplant",
+      "t_urology",
+      "t_vaccines",
+      "t_womens_health"
+    ],
+    "rows_total": 4904,
+    "rows_from_zero_device_tracks": 1700,
+    "labelled_rows_from_zero_device_tracks": 1469,
+    "labels_from_zero_device_tracks": 0
+  }
+}

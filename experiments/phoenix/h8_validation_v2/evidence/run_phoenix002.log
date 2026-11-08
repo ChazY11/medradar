@@ -1,0 +1,73 @@
+# PHOENIX-002 experiment log: run_phoenix002
+# start: 2026-11-09T03:28:38+08:00
+# protocol: phoenix-002/v1  seed: 20261109
+[    0.01s] protocol phoenix-002/v1; seed 20261109
+[   17.63s] events=253836 tracked_device_events=77749 attribution_rate=0.4767 tracks_below_50pct=24
+[   17.63s] duplicates={'tracked_device_events': 77749, 'exact_duplicate_rows_incl_first': 20251, 'exact_duplicate_groups': 8270, 'same_track_day_product_rows_incl_first': 20245, 'product_same_day_both_510k_and_pma': 1}
+[   20.75s] panel attr38 L000 built in 3.1s rows=3313
+[   24.28s] panel attr38 L090 built in 3.5s rows=3275
+[   28.04s] panel attr38 L180 built in 3.8s rows=3237
+[   31.72s] panel attr38 L270 built in 3.7s rows=3199
+[   35.78s] panel track38 L090 rows=3379
+[   40.24s] panel attr59 v1like L090 rows=4904
+[   40.25s] EXP2 maturity isolation
+[   50.93s]   attr59_v1like_L90_labelL000_v1_naive: n=2443 pos=155 dAP=+0.0379 CI=[0.011669192510462091, 0.06305224062851733] viol=2671/36887
+[   61.92s]   attr59_v1like_L90_labelL000_purged: n=2443 pos=155 dAP=+0.0360 CI=[0.014201556267375192, 0.06249140897387636] viol=0/34216
+[   72.31s]   attr59_v1like_L90_labelL090_v1_naive: n=2443 pos=155 dAP=+0.0379 CI=[0.011669192510462091, 0.06305224062851733] viol=3367/36887
+[   84.34s]   attr59_v1like_L90_labelL090_purged: n=2443 pos=155 dAP=+0.0368 CI=[0.0169281273499959, 0.06477562245243192] viol=0/33520
+[   95.69s]   attr59_v1like_L90_labelL180_v1_naive: n=2443 pos=155 dAP=+0.0379 CI=[0.011669192510462091, 0.06305224062851733] viol=4062/36887
+[  105.18s]   attr59_v1like_L90_labelL180_purged: n=2443 pos=155 dAP=+0.0398 CI=[0.019543067676538673, 0.06933693930221893] viol=0/32825
+[  114.92s]   attr38_v2_L90_labelL090_v1_naive: n=1723 pos=176 dAP=+0.0347 CI=[0.00813428224168061, 0.06184126589659729]
+[  124.57s]   attr38_v2_L90_labelL090_purged: n=1723 pos=176 dAP=+0.0294 CI=[0.0081664631722597, 0.05730700440028901]
+[  124.57s] EXP3 risk set / universe
+[  133.87s]   attr59_v1like_purged: tracks=59 n=2443 pos=155 dAP=+0.0368 CI=[0.0169281273499959, 0.06477562245243192]
+[  143.47s]   attr38_v2_purged: tracks=38 n=1723 pos=176 dAP=+0.0294 CI=[0.0081664631722597, 0.05730700440028901]
+[  153.01s]   track38_v2_purged: tracks=38 n=1748 pos=119 dAP=+0.0123 CI=[-0.078774368314436, 0.11066883573444233]
+[  153.02s] EXP4 alternative targets
+[  161.80s]   Y1_growth_ratio: n=1723 pos=176 prev=0.1021 dAP=+0.0294 CI=[0.009484674938284672, 0.054305935251539116] p=0.0
+[  170.45s]   Y2_abs_increase: n=1723 pos=762 prev=0.4423 dAP=+0.0341 CI=[0.015082402086490459, 0.05821369295219234] p=0.0
+[  179.38s]   Y3_new_plateau: n=1567 pos=116 prev=0.0740 dAP=+0.0099 CI=[-0.00979090717871681, 0.04345676638558339] p=0.38
+[  184.09s]   Y4_dormant_emergence: n=304 pos=3 prev=0.0099 dAP=+0.0000 CI=[0.0, 0.0] p=1.0
+[  194.31s]   stratum all: n=1723 pos=176 dAP=0.029356072137656508 p=0.004
+[  194.32s]   stratum active_trail8_ge_1: n=1617 pos=173 dAP=0.022733872739621158 p=0.022
+[  194.32s]   stratum low_base_trail8_le_2: n=214 pos=8 dAP=0.008807762405517734 p=0.022044088176352707
+[  194.32s]   stratum excl_low_base_trail8_gt_2: n=1509 pos=168 dAP=0.016380441353059716 p=0.18
+[  194.32s]   stratum dormant_trail8_eq_0: n=106 pos=3 dAP=0.012256906899568473 p=0.0
+[  194.32s] EXP5 lag scenarios
+[  196.53s]   feature L000: dAP=+0.0294 CI=[0.008956907522643045, 0.04738747951070797] pos=176
+[  198.85s]   feature L090: dAP=+0.0294 CI=[0.009484674938284672, 0.054305935251539116] pos=176
+[  201.99s]   feature L180: dAP=+0.0309 CI=[0.008734601701668392, 0.05946652739281559] pos=176
+[  205.68s]   feature L270: dAP=+0.0245 CI=[0.0028952622798223576, 0.04722490778929209] pos=176
+[  208.75s]   label L000: dAP=+0.0295 CI=[0.008029341858220547, 0.05534228631565194]
+[  212.15s]   label L090: dAP=+0.0294 CI=[0.009484674938284672, 0.054305935251539116]
+[  215.59s]   label L180: dAP=+0.0288 CI=[0.008567258026722003, 0.056437607001267626]
+[  215.59s] EXP6 baselines
+[  275.16s]   M0_prevalence          AP=0.1114 CI=[0.0814, 0.1483]
+[  275.16s]   M1_persistence         AP=0.1295 CI=[0.0947, 0.1715]
+[  275.16s]   M2_ma_level            AP=0.1393 CI=[0.0993, 0.1871]
+[  275.16s]   M3_trend               AP=0.1766 CI=[0.1193, 0.2454]
+[  275.17s]   M4_h8_growth           AP=0.1589 CI=[0.1193, 0.2066]
+[  275.17s]   M5_full_regularised    AP=0.1555 CI=[0.118, 0.1985]
+[  275.17s]   M6_hgb                 AP=0.1677 CI=[0.1305, 0.2117]
+[  275.17s]   M7_mean_reversion      AP=0.1281 CI=[0.0938, 0.1721]
+[  275.21s] ADV counter-evidence battery
+[  276.00s]   observed dAP=+0.0294
+[  294.28s]     within-track shuffle perm 50/200 null_mean=+0.0172
+[  312.68s]     within-track shuffle perm 100/200 null_mean=+0.0174
+[  331.54s]     within-track shuffle perm 150/200 null_mean=+0.0170
+[  350.28s]     within-track shuffle perm 200/200 null_mean=+0.0171
+[  350.28s]   A1 within-track shuffle: p=0.0846 null_mean=+0.0171 null_sd=0.0077
+[  388.75s]   A2 cross-track shuffle: null_mean=+0.0012
+[  389.12s]   A3 shift-8: dAP=+0.0017 (observed +0.0294)
+[  398.69s]   A6 duplicate-record dedupe sensitivity (rebuilding panel)
+[  427.34s]   A6 dedupe: dAP=+0.0048 CI=[-0.02207482390119378, 0.0346771753618098]
+[  430.79s]   A7 first2012_expanding: n=2019 pos=230 dAP=+0.0314 CI=[0.0027428390791857087, 0.07588709100241672]
+[  434.04s]   A7 first2014_expanding: n=1723 pos=176 dAP=+0.0294 CI=[0.009484674938284672, 0.054305935251539116]
+[  436.76s]   A7 first2016_expanding: n=1427 pos=145 dAP=+0.0385 CI=[-0.013473235448174877, 0.0687158314724197]
+[  439.59s]   A7 first2014_rolling8: n=1723 pos=176 dAP=+0.0188 CI=[0.0015575741764534622, 0.04301574444544262]
+[  439.59s]   A8 negative-control target (growth of n_device_recall with device growth features)
+[  442.33s]   A8 trial-growth target: dAP=+0.0050 CI=[-0.016636776986223064, 0.018259587769594608]
+[  442.35s] VERDICT: NO-GO — point estimate is positive but below the pre-registered practical threshold tau=0.03
+[  442.35s] wrote summary.json and per-experiment JSONs
+# end: 2026-11-09T03:36:01+08:00
+# elapsed_sec: 442.35

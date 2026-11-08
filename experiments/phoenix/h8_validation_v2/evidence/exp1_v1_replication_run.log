@@ -1,0 +1,59 @@
+# PHOENIX-001 track experiment log: 03_run_track
+# start: 2026-11-09T02:43:43+08:00
+# command: python run_track.py
+# protocol: phoenix-001/v1  harness: 1.0.0  seed: 20261108
+[   16.79s] panel L000 <- cache experiments/phoenix/hypotheses/track/cache/track_panel_L000.pkl
+[   34.59s] L000: OOF rows=2443 folds=11 positives=155
+[   34.63s] L000 B0_prevalence   AP=0.0728
+[   34.70s] L000 B1_persistence  AP=0.1395
+[   34.76s] L000 B2_trend        AP=0.1405
+[   34.82s] L000 B5_full         AP=0.1656
+[   34.90s] L000 H3_entrants     AP=0.1578
+[   34.95s] L000 H6_hhi          AP=0.1701
+[   35.02s] L000 H8_growth       AP=0.1745
+[   35.08s] L000 H9_dev          AP=0.1551
+[   35.12s] L000 H9_trial        AP=0.0925
+[   35.18s] L000 H9_recall       AP=0.1057
+[   35.25s] L000 H9_fusion       AP=0.1626
+[   46.36s] L000 contrasts: H3 d=+0.0183 [-0.0117,+0.0441] p=0.194; H6 d=+0.0045 [-0.0230,+0.0194] p=0.690; H8 d=+0.0349 [+0.0111,+0.0650] p=0.010; H9 d=+0.0074 [-0.0333,+0.0352] p=0.846
+[   46.40s] computing H3 lead-correlation and H6 descriptive tests ...
+[   96.91s] wrote h3h6_descriptive.json
+[   96.91s] panel L090 <- cache experiments/phoenix/hypotheses/track/cache/track_panel_L090.pkl
+[  101.24s] L090: OOF rows=2443 folds=11 positives=155
+[  102.40s] L090 B0_prevalence   AP=0.0728 CI=[0.047630664254519554, 0.10315349413195564]
+[  103.90s] L090 B1_persistence  AP=0.1234 CI=[0.08334932068631234, 0.17949410988572384]
+[  105.24s] L090 B2_trend        AP=0.1237 CI=[0.0721179851630325, 0.19830302382080447]
+[  106.37s] L090 B5_full         AP=0.1434 CI=[0.10036650611349791, 0.21679702834630213]
+[  107.70s] L090 H3_entrants     AP=0.1411 CI=[0.08686875672355371, 0.2083358431903634]
+[  108.94s] L090 H6_hhi          AP=0.1567 CI=[0.10572692252255074, 0.2320988153029032]
+[  110.12s] L090 H8_growth       AP=0.1613 CI=[0.11866755548332557, 0.20953573546484555]
+[  111.11s] L090 H9_dev          AP=0.1454 CI=[0.09359790822758175, 0.23197298470396205]
+[  112.27s] L090 H9_trial        AP=0.0927 CI=[0.061500619941933184, 0.12930142983277176]
+[  113.81s] L090 H9_recall       AP=0.0970 CI=[0.06123575816364782, 0.1534904786277346]
+[  115.24s] L090 H9_fusion       AP=0.1404 CI=[0.09123058193485603, 0.22182301488846295]
+[  125.85s] L090 contrasts: H3 d=+0.0177 [-0.0150,+0.0462] p=0.246; H6 d=+0.0133 [-0.0014,+0.0329] p=0.082; H8 d=+0.0379 [+0.0115,+0.0618] p=0.004; H9 d=-0.0050 [-0.0360,+0.0172] p=0.628
+[  125.87s] panel L180 <- cache experiments/phoenix/hypotheses/track/cache/track_panel_L180.pkl
+[  130.61s] L180: OOF rows=2443 folds=11 positives=155
+[  130.70s] L180 B0_prevalence   AP=0.0728
+[  130.78s] L180 B1_persistence  AP=0.1275
+[  130.86s] L180 B2_trend        AP=0.1024
+[  130.95s] L180 B5_full         AP=0.1367
+[  131.01s] L180 H3_entrants     AP=0.1510
+[  131.07s] L180 H6_hhi          AP=0.1498
+[  131.17s] L180 H8_growth       AP=0.1632
+[  131.26s] L180 H9_dev          AP=0.1353
+[  131.31s] L180 H9_trial        AP=0.0931
+[  131.40s] L180 H9_recall       AP=0.0969
+[  131.48s] L180 H9_fusion       AP=0.1318
+[  141.45s] L180 contrasts: H3 d=+0.0234 [-0.0113,+0.0524] p=0.180; H6 d=+0.0130 [-0.0005,+0.0299] p=0.066; H8 d=+0.0357 [+0.0037,+0.0664] p=0.036; H9 d=-0.0035 [-0.0397,+0.0174] p=0.734
+[  141.47s] panel L090 <- cache experiments/phoenix/hypotheses/track/cache/track_panel_L090.pkl
+[  141.50s] leakage_audit suspected_leaks=[] high_corr=[]
+[  141.51s] wrote track_all_metrics.json
+[  141.53s] wrote primary_tests.json
+[  141.54s] wrote h3_entrants.json
+[  141.54s] wrote h6_hhi.json
+[  141.54s] wrote h8_scitrends.json
+[  141.54s] wrote h9_fusion.json
+[  141.54s] verdicts: H3=NOT SUPPORTED H6=NOT SUPPORTED H8=SUPPORTED H9=NOT SUPPORTED (total 141.5s)
+# end: 2026-11-09T02:46:04+08:00
+# elapsed_sec: 141.57  exit_code: 0

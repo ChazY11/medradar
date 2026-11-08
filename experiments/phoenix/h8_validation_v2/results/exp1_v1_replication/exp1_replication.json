@@ -1,0 +1,94 @@
+{
+  "experiment": "EXP1_V1_FULL_REPRODUCTION_CLEAN_CACHE",
+  "protocol_version": "phoenix-002/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "v1_code": {
+    "track_common": "D:\\DEPPSKK\\worktrees\\phoenix002\\experiments\\phoenix\\hypotheses\\track\\track_common.py",
+    "harness_protocol": "phoenix-001/v1"
+  },
+  "exit_codes": {
+    "build_panel": 0,
+    "entrants_hhi": 0,
+    "run_track": 0
+  },
+  "elapsed_sec": 143.1,
+  "panel": {
+    "n": 4255,
+    "n_pos": 406,
+    "prevalence": 0.09541715628672151,
+    "frozen_reference_match": true
+  },
+  "walk_forward": {
+    "n": 2443,
+    "n_pos": 155,
+    "prevalence": 0.0634465820712239
+  },
+  "H8_contrast_reproduced": {
+    "dap": 0.03790403705158382,
+    "ci95": [
+      0.011495324431466496,
+      0.061831264972149635
+    ],
+    "p": 0.004,
+    "ap_a": 0.1613143599731521,
+    "ap_b": 0.12341032292156828
+  },
+  "arms_reproduced": {
+    "B1_persistence_ap": 0.12341032292156828,
+    "H8_growth_ap": 0.1613143599731521
+  },
+  "by_lag": {
+    "L000": {
+      "dap": 0.0349080021563139,
+      "ci95": [
+        0.011085528689130828,
+        0.06503058915842129
+      ],
+      "p": 0.01
+    },
+    "L090": {
+      "dap": 0.03790403705158382,
+      "ci95": [
+        0.011495324431466496,
+        0.061831264972149635
+      ],
+      "p": 0.004
+    },
+    "L180": {
+      "dap": 0.03565744795931128,
+      "ci95": [
+        0.0037279341258196746,
+        0.06640794375863951
+      ],
+      "p": 0.036
+    }
+  },
+  "published": {
+    "B1_ap": 0.1234,
+    "H8_ap": 0.1613,
+    "dap": 0.0379,
+    "ci95": [
+      0.0115,
+      0.0618
+    ],
+    "p": 0.004,
+    "n": 2443,
+    "n_pos": 155,
+    "prevalence": 0.0634465820712239,
+    "holdout_2022_n": 590,
+    "holdout_2022_n_pos": 31
+  },
+  "deltas_vs_published": {
+    "dap": 4.037051583818951e-06,
+    "ap_b": 1.0322921568287069e-05,
+    "ap_a": 1.435997315210602e-05,
+    "p": 0.0,
+    "n": 0,
+    "n_pos": 0
+  },
+  "reproduction_verdict": "WITHIN_TOLERANCE",
+  "notes": [
+    "The frozen PHOENIX-001 code was executed unmodified; only its output directories were redirected to a temporary workspace, which was deleted.",
+    "Cache was empty at start, so this is a clean-cache end-to-end reproduction."
+  ]
+}
