@@ -29,14 +29,21 @@ SKIP_KEYS = {"elapsed_sec", "elapsed_sec_run_cell", "written_at", "timestamp",
              "command", "fit_predict_sec", "build_elapsed_sec", "cache_bytes",
              "cache_path", "git_head", "db_path"}
 VOLATILE = {"per_lag_elapsed_sec"}
+# top-level provenance fields that were hoisted out of `meta.provenance` after the
+# first snapshot was taken; a missing one on the old side is not a value change
+HOISTED = {"protocol_version", "db_sha256", "lag_scenario", "command",
+           "n", "n_pos", "prevalence", "elapsed_sec"}
 
 
 def walk(a, b, path, diffs, n_cmp):
     if isinstance(a, dict) and isinstance(b, dict):
+        depth = path.count(".")
         for k in sorted(set(a) | set(b)):
             if k in SKIP_KEYS or k in VOLATILE:
                 continue
             if k not in a or k not in b:
+                if depth == 1 and k in HOISTED:
+                    continue
                 diffs.append(f"{path}.{k}: missing on one side")
                 continue
             walk(a[k], b[k], f"{path}.{k}", diffs, n_cmp)

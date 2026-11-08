@@ -217,7 +217,7 @@ def main() -> int:
     )
     rep["elapsed_sec"] = round(time.time() - t0, 2)
     out = cc.RESULTS / "leakage_investigation.json"
-    pc.save_json(rep, out)
+    cc.save_result_json(rep, out)
     cc.log(f"written {out} in {rep['elapsed_sec']}s")
     cc.log("conclusion: " + rep["conclusion"])
     return 0
@@ -225,3 +225,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

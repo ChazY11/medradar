@@ -331,11 +331,20 @@ def main() -> int:
     check("D_model_smoke_and_seed_determinism", test_models)
 
     failed = [c["check"] for c in checks if c["status"] != "PASS"]
+    cached = cc._cached_provenance()
     rep = {
         "protocol_version": pc.PROTOCOL_VERSION,
+        "db_sha256": cached.get("db_sha256"),
+        "lag_scenario": cc.LAG_SCENARIO[cc.HEADLINE_LAG],
+        "command": "python selftest.py",
         "kind": "self-test",
         "seed": cc.SEED,
         "checks": checks,
+        # for this artefact only: n = number of checks, n_pos = number that passed
+        "n": len(checks),
+        "n_pos": len(checks) - len(failed),
+        "prevalence": (len(checks) - len(failed)) / len(checks) if checks else None,
+        "n_note": "self-test artefact: n = number of checks, n_pos = checks that passed",
         "n_checks": len(checks),
         "n_failed": len(failed),
         "verdict": "PASS" if not failed else "FAIL",

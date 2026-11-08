@@ -23,7 +23,7 @@
     "pandas": "3.0.3",
     "numpy": "2.5.1",
     "git_head": "ref: refs/heads/research/phoenix-001-external-methods",
-    "written_at": "2026-11-09T00:02:18+0800"
+    "written_at": "2026-11-09T01:00:31+0800"
   },
   "lag_scenario": "L090",
   "trigger": "single-model AP reached ~0.90 on a 17.6% prevalence task",
@@ -191,8 +191,11 @@
     }
   },
   "conclusion": "No label-encoding feature was found: the strongest single-feature Pearson |r| against y is 0.705 (harness screen flags >0.80 as a warning and >0.95 as a probable leak), the labels are reproducible from raw events, and every feature-visible event is at least 91 days older than the label window. The high AP is therefore persistence, not leakage: 11.8% of cell-quarters are active in the origin quarter and those rows carry 51.9% of the positives, with P(y)= 0.865 vs 0.107.",
-  "elapsed_sec": 25.69,
+  "elapsed_sec": 22.81,
   "n": 67084,
   "n_pos": 13205,
-  "prevalence": 0.196843
+  "prevalence": 0.196843,
+  "protocol_version": "phoenix-001/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "command": "python investigate_leakage.py"
 }

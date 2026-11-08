@@ -23,7 +23,7 @@
     "pandas": "3.0.3",
     "numpy": "2.5.1",
     "git_head": "ref: refs/heads/research/phoenix-001-external-methods",
-    "written_at": "2026-11-09T00:09:28+0800"
+    "written_at": "2026-11-09T01:00:01+0800"
   },
   "lag_scenario": "L090",
   "panel": {
@@ -369,8 +369,11 @@
     "note": "there is no public device-level trial-to-approval key, so this is a within-cell co-movement lead time, not a causal chain",
     "definition": "signal := a cell-quarter with any trial event on the lagged feature clock; target := next quarter with a device (510k/pma) event on the event clock"
   },
-  "elapsed_sec": 22.65,
+  "elapsed_sec": 25.95,
   "n": 67084,
   "n_pos": 13205,
-  "prevalence": 0.196843
+  "prevalence": 0.196843,
+  "protocol_version": "phoenix-001/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "command": "python audit_cell.py"
 }

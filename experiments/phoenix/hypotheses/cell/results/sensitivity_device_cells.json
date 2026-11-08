@@ -23,7 +23,7 @@
     "pandas": "3.0.3",
     "numpy": "2.5.1",
     "git_head": "ref: refs/heads/research/phoenix-001-external-methods",
-    "written_at": "2026-11-09T00:11:32+0800"
+    "written_at": "2026-11-09T01:00:54+0800"
   },
   "structural_facts": {
     "n_trial_tracks": 21,
@@ -1585,8 +1585,12 @@
     }
   },
   "interpretation_hint": "The frozen task keeps all cells, so these numbers are sensitivities only; they answer 'does the conclusion survive on the cells that can actually be positive?'. H5 is different: its added features are identically zero on every device-capable cell, so H5 has zero within-cell identifiability regardless of the sample.",
-  "elapsed_sec": 295.68,
+  "elapsed_sec": 403.95,
   "n": 67084,
   "n_pos": 13205,
-  "prevalence": 0.196843
+  "prevalence": 0.196843,
+  "protocol_version": "phoenix-001/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "lag_scenario": "L090",
+  "command": "python sensitivity.py"
 }

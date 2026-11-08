@@ -154,10 +154,11 @@ def main() -> int:
     rep["n_pos"] = int(lab["y"].sum())
     rep["prevalence"] = cc.r6(lab["y"].mean())
     out_p = cc.RESULTS / "sensitivity_device_cells.json"
-    pc.save_json(rep, out_p)
+    cc.save_result_json(rep, out_p)
     cc.log(f"written {out_p} in {rep['elapsed_sec']}s")
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
