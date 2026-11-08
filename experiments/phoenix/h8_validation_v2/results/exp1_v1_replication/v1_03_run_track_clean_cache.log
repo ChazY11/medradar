@@ -1,0 +1,59 @@
+# PHOENIX-001 track experiment log: v1_03_run_track_clean_cache
+# start: 2026-11-09T02:55:44+08:00
+# command: python exp1_v1_replication.py
+# protocol: phoenix-001/v1  harness: 1.0.0  seed: 20261108
+[   12.16s] panel L000 <- cache C:\Users\yjx0\AppData\Local\Temp\phoenix002_exp1_zbry53at\cache\track_panel_L000.pkl
+[   16.22s] L000: OOF rows=2443 folds=11 positives=155
+[   16.27s] L000 B0_prevalence   AP=0.0728
+[   16.31s] L000 B1_persistence  AP=0.1395
+[   16.35s] L000 B2_trend        AP=0.1405
+[   16.39s] L000 B5_full         AP=0.1656
+[   16.43s] L000 H3_entrants     AP=0.1578
+[   16.46s] L000 H6_hhi          AP=0.1701
+[   16.50s] L000 H8_growth       AP=0.1745
+[   16.54s] L000 H9_dev          AP=0.1551
+[   16.58s] L000 H9_trial        AP=0.0925
+[   16.62s] L000 H9_recall       AP=0.1057
+[   16.66s] L000 H9_fusion       AP=0.1626
+[   23.59s] L000 contrasts: H3 d=+0.0183 [-0.0117,+0.0441] p=0.194; H6 d=+0.0045 [-0.0230,+0.0194] p=0.690; H8 d=+0.0349 [+0.0111,+0.0650] p=0.010; H9 d=+0.0074 [-0.0333,+0.0352] p=0.846
+[   23.61s] computing H3 lead-correlation and H6 descriptive tests ...
+[   60.44s] wrote h3h6_descriptive.json
+[   60.44s] panel L090 <- cache C:\Users\yjx0\AppData\Local\Temp\phoenix002_exp1_zbry53at\cache\track_panel_L090.pkl
+[   63.82s] L090: OOF rows=2443 folds=11 positives=155
+[   64.67s] L090 B0_prevalence   AP=0.0728 CI=[0.047630664254519554, 0.10315349413195564]
+[   65.71s] L090 B1_persistence  AP=0.1234 CI=[0.08334932068631234, 0.17949410988572384]
+[   66.55s] L090 B2_trend        AP=0.1237 CI=[0.0721179851630325, 0.19830302382080447]
+[   67.56s] L090 B5_full         AP=0.1434 CI=[0.10036650611349791, 0.21679702834630213]
+[   68.70s] L090 H3_entrants     AP=0.1411 CI=[0.08686875672355371, 0.2083358431903634]
+[   69.62s] L090 H6_hhi          AP=0.1567 CI=[0.10572692252255074, 0.2320988153029032]
+[   70.59s] L090 H8_growth       AP=0.1613 CI=[0.11866755548332557, 0.20953573546484555]
+[   71.59s] L090 H9_dev          AP=0.1454 CI=[0.09359790822758175, 0.23197298470396205]
+[   72.40s] L090 H9_trial        AP=0.0927 CI=[0.061500619941933184, 0.12930142983277176]
+[   73.33s] L090 H9_recall       AP=0.0970 CI=[0.06123575816364782, 0.1534904786277346]
+[   74.36s] L090 H9_fusion       AP=0.1404 CI=[0.09123058193485603, 0.22182301488846295]
+[   80.69s] L090 contrasts: H3 d=+0.0177 [-0.0150,+0.0462] p=0.246; H6 d=+0.0133 [-0.0014,+0.0329] p=0.082; H8 d=+0.0379 [+0.0115,+0.0618] p=0.004; H9 d=-0.0050 [-0.0360,+0.0172] p=0.628
+[   80.70s] panel L180 <- cache C:\Users\yjx0\AppData\Local\Temp\phoenix002_exp1_zbry53at\cache\track_panel_L180.pkl
+[   83.21s] L180: OOF rows=2443 folds=11 positives=155
+[   83.26s] L180 B0_prevalence   AP=0.0728
+[   83.30s] L180 B1_persistence  AP=0.1275
+[   83.34s] L180 B2_trend        AP=0.1024
+[   83.39s] L180 B5_full         AP=0.1367
+[   83.42s] L180 H3_entrants     AP=0.1510
+[   83.47s] L180 H6_hhi          AP=0.1498
+[   83.51s] L180 H8_growth       AP=0.1632
+[   83.56s] L180 H9_dev          AP=0.1353
+[   83.60s] L180 H9_trial        AP=0.0931
+[   83.63s] L180 H9_recall       AP=0.0969
+[   83.67s] L180 H9_fusion       AP=0.1318
+[   91.84s] L180 contrasts: H3 d=+0.0234 [-0.0113,+0.0524] p=0.180; H6 d=+0.0130 [-0.0005,+0.0299] p=0.066; H8 d=+0.0357 [+0.0037,+0.0664] p=0.036; H9 d=-0.0035 [-0.0397,+0.0174] p=0.734
+[   91.87s] panel L090 <- cache C:\Users\yjx0\AppData\Local\Temp\phoenix002_exp1_zbry53at\cache\track_panel_L090.pkl
+[   91.89s] leakage_audit suspected_leaks=[] high_corr=[]
+[   91.91s] wrote track_all_metrics.json
+[   91.92s] wrote primary_tests.json
+[   91.93s] wrote h3_entrants.json
+[   91.93s] wrote h6_hhi.json
+[   91.93s] wrote h8_scitrends.json
+[   91.93s] wrote h9_fusion.json
+[   91.93s] verdicts: H3=NOT SUPPORTED H6=NOT SUPPORTED H8=SUPPORTED H9=NOT SUPPORTED (total 91.9s)
+# end: 2026-11-09T02:57:16+08:00
+# elapsed_sec: 91.94  exit_code: 0

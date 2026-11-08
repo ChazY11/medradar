@@ -1,0 +1,297 @@
+{
+  "protocol_version": "phoenix-001/v1",
+  "harness_version": "1.0.0",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "db_sha256_matches_frozen": true,
+  "lag_scenario": "L090",
+  "lag_days": 90,
+  "command": "python exp1_v1_replication.py",
+  "elapsed_sec": 91.91,
+  "seed": 20261108,
+  "n": 2443,
+  "n_pos": 155,
+  "prevalence": 0.0634465820712239,
+  "p_value_note": "RAW, unadjusted paired-bootstrap p values (two-sided, cluster bootstrap over track_id, B=1000). The Lead Holm-combines these across the whole program.",
+  "headline_lag": "L090",
+  "primary": {
+    "H3": {
+      "diff": 0.01772016465033882,
+      "lo": -0.015045628094915798,
+      "hi": 0.04617471449979005,
+      "p": 0.246,
+      "n_boot": 1000,
+      "ap_a": 0.1411304875719071,
+      "ap_b": 0.12341032292156828,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.02,
+      "definition": "AP(B1 + entrant features) - AP(B1 persistence), holdout",
+      "verdict": "NOT SUPPORTED"
+    },
+    "H6": {
+      "diff": 0.013254125747672485,
+      "lo": -0.0013804369182506598,
+      "hi": 0.03293566531048868,
+      "p": 0.082,
+      "n_boot": 1000,
+      "ap_a": 0.15669339400725124,
+      "ap_b": 0.14343926825957876,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.02,
+      "definition": "AP(B5 + HHI features) - AP(B5 full), holdout",
+      "verdict": "NOT SUPPORTED"
+    },
+    "H8": {
+      "diff": 0.03790403705158382,
+      "lo": 0.011495324431466496,
+      "hi": 0.061831264972149635,
+      "p": 0.004,
+      "n_boot": 1000,
+      "ap_a": 0.1613143599731521,
+      "ap_b": 0.12341032292156828,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.03,
+      "definition": "AP(B1 + SciTrends-style growth features) - AP(B1 persistence), holdout",
+      "verdict": "SUPPORTED"
+    },
+    "H9": {
+      "diff": -0.005030179794120876,
+      "lo": -0.03602181432145405,
+      "hi": 0.017187359231410234,
+      "p": 0.628,
+      "n_boot": 1000,
+      "ap_a": 0.14041583970153634,
+      "ap_b": 0.14544601949565722,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.02,
+      "best_single_arm": "H9_dev",
+      "definition": "AP(F_fusion) - AP(H9_dev), strongest constructible single source",
+      "verdict": "NOT SUPPORTED",
+      "fusion_over_best_single_ratio": 0.965415486710717,
+      "no_material_gain_flag": true
+    }
+  },
+  "by_lag": {
+    "L000": {
+      "H3": {
+        "diff": 0.01827631808378627,
+        "lo": -0.011708399966194534,
+        "hi": 0.04410356934497671,
+        "p": 0.194,
+        "n_boot": 1000,
+        "ap_a": 0.15781996048626837,
+        "ap_b": 0.1395436424024821,
+        "n": 2443,
+        "n_pos": 155,
+        "tau": 0.02,
+        "definition": "AP(B1 + entrant features) - AP(B1 persistence), holdout",
+        "verdict": "NOT SUPPORTED"
+      },
+      "H6": {
+        "diff": 0.004488213392702889,
+        "lo": -0.02297464054176969,
+        "hi": 0.019391151483519706,
+        "p": 0.69,
+        "n_boot": 1000,
+        "ap_a": 0.17011250327135366,
+        "ap_b": 0.16562428987865077,
+        "n": 2443,
+        "n_pos": 155,
+        "tau": 0.02,
+        "definition": "AP(B5 + HHI features) - AP(B5 full), holdout",
+        "verdict": "NOT SUPPORTED"
+      },
+      "H8": {
+        "diff": 0.0349080021563139,
+        "lo": 0.011085528689130828,
+        "hi": 0.06503058915842129,
+        "p": 0.01,
+        "n_boot": 1000,
+        "ap_a": 0.174451644558796,
+        "ap_b": 0.1395436424024821,
+        "n": 2443,
+        "n_pos": 155,
+        "tau": 0.03,
+        "definition": "AP(B1 + SciTrends-style growth features) - AP(B1 persistence), holdout",
+        "verdict": "SUPPORTED"
+      },
+      "H9": {
+        "diff": 0.0074381065202807906,
+        "lo": -0.033291224581273614,
+        "hi": 0.03524881005490559,
+        "p": 0.846,
+        "n_boot": 1000,
+        "ap_a": 0.16256280379017157,
+        "ap_b": 0.15512469726989078,
+        "n": 2443,
+        "n_pos": 155,
+        "tau": 0.02,
+        "best_single_arm": "H9_dev",
+        "definition": "AP(F_fusion) - AP(H9_dev), strongest constructible single source",
+        "verdict": "NOT SUPPORTED",
+        "fusion_over_best_single_ratio": 1.047949208934408,
+        "no_material_gain_flag": true
+      }
+    },
+    "L090": {
+      "H3": {
+        "diff": 0.01772016465033882,
+        "lo": -0.015045628094915798,
+        "hi": 0.04617471449979005,
+        "p": 0.246,
+        "n_boot": 1000,
+        "ap_a": 0.1411304875719071,
+        "ap_b": 0.12341032292156828,
+        "n": 2443,
+        "n_pos": 155,
+        "tau": 0.02,
+        "definition": "AP(B1 + entrant features) - AP(B1 persistence), holdout",
+        "verdict": "NOT SUPPORTED"
+      },
+      "H6": {
+        "diff": 0.013254125747672485,
+        "lo": -0.0013804369182506598,
+        "hi": 0.03293566531048868,
+        "p": 0.082,
+        "n_boot": 1000,
+        "ap_a": 0.15669339400725124,
+        "ap_b": 0.14343926825957876,
+        "n": 2443,
+        "n_pos": 155,
+        "tau": 0.02,
+        "definition": "AP(B5 + HHI features) - AP(B5 full), holdout",
+        "verdict": "NOT SUPPORTED"
+      },
+      "H8": {
+        "diff": 0.03790403705158382,
+        "lo": 0.011495324431466496,
+        "hi": 0.061831264972149635,
+        "p": 0.004,
+        "n_boot": 1000,
+        "ap_a": 0.1613143599731521,
+        "ap_b": 0.12341032292156828,
+        "n": 2443,
+        "n_pos": 155,
+        "tau": 0.03,
+        "definition": "AP(B1 + SciTrends-style growth features) - AP(B1 persistence), holdout",
+        "verdict": "SUPPORTED"
+      },
+      "H9": {
+        "diff": -0.005030179794120876,
+        "lo": -0.03602181432145405,
+        "hi": 0.017187359231410234,
+        "p": 0.628,
+        "n_boot": 1000,
+        "ap_a": 0.14041583970153634,
+        "ap_b": 0.14544601949565722,
+        "n": 2443,
+        "n_pos": 155,
+        "tau": 0.02,
+        "best_single_arm": "H9_dev",
+        "definition": "AP(F_fusion) - AP(H9_dev), strongest constructible single source",
+        "verdict": "NOT SUPPORTED",
+        "fusion_over_best_single_ratio": 0.965415486710717,
+        "no_material_gain_flag": true
+      }
+    },
+    "L180": {
+      "H3": {
+        "diff": 0.023432366111354186,
+        "lo": -0.011345256592758425,
+        "hi": 0.05239279541046355,
+        "p": 0.18,
+        "n_boot": 1000,
+        "ap_a": 0.1509661043860329,
+        "ap_b": 0.1275337382746787,
+        "n": 2443,
+        "n_pos": 155,
+        "tau": 0.02,
+        "definition": "AP(B1 + entrant features) - AP(B1 persistence), holdout",
+        "verdict": "INCONCLUSIVE"
+      },
+      "H6": {
+        "diff": 0.013044041225682618,
+        "lo": -0.00047851197371958493,
+        "hi": 0.029857543480607512,
+        "p": 0.066,
+        "n_boot": 1000,
+        "ap_a": 0.1497595721728034,
+        "ap_b": 0.13671553094712077,
+        "n": 2443,
+        "n_pos": 155,
+        "tau": 0.02,
+        "definition": "AP(B5 + HHI features) - AP(B5 full), holdout",
+        "verdict": "NOT SUPPORTED"
+      },
+      "H8": {
+        "diff": 0.03565744795931128,
+        "lo": 0.0037279341258196746,
+        "hi": 0.06640794375863951,
+        "p": 0.036,
+        "n_boot": 1000,
+        "ap_a": 0.16319118623398998,
+        "ap_b": 0.1275337382746787,
+        "n": 2443,
+        "n_pos": 155,
+        "tau": 0.03,
+        "definition": "AP(B1 + SciTrends-style growth features) - AP(B1 persistence), holdout",
+        "verdict": "SUPPORTED"
+      },
+      "H9": {
+        "diff": -0.003480061816006713,
+        "lo": -0.039664003273505194,
+        "hi": 0.017431382219535555,
+        "p": 0.734,
+        "n_boot": 1000,
+        "ap_a": 0.13183418285770748,
+        "ap_b": 0.1353142446737142,
+        "n": 2443,
+        "n_pos": 155,
+        "tau": 0.02,
+        "best_single_arm": "H9_dev",
+        "definition": "AP(F_fusion) - AP(H9_dev), strongest constructible single source",
+        "verdict": "NOT SUPPORTED",
+        "fusion_over_best_single_ratio": 0.9742816299614409,
+        "no_material_gain_flag": true
+      }
+    }
+  },
+  "descriptive": {
+    "H3_k1_fwd4_spearman": {
+      "spearman": -0.1136393891888775,
+      "ci95": [
+        -0.1667718540645071,
+        -0.05760302975930243
+      ],
+      "p_boot": 0.0,
+      "p_perm": 0.004,
+      "null_sd": 0.0034248587161926822,
+      "n": 4609,
+      "n_clusters": 59
+    },
+    "H3_k0_single_spearman": {
+      "spearman": -0.07297573943592665,
+      "ci95": [
+        -0.1271366609172102,
+        -0.015403351918205913
+      ],
+      "p_boot": 0.018,
+      "p_perm": 1.0,
+      "null_sd": 0.004601580097784544,
+      "n": 4845,
+      "n_clusters": 59
+    },
+    "H6_spearman": {
+      "spearman": -0.44186733192809097,
+      "ci95": [
+        -0.47755807857101845,
+        -0.41097339950199363
+      ],
+      "p_boot": 0.0,
+      "ci_excludes_zero": true
+    }
+  }
+}

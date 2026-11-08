@@ -1,0 +1,1356 @@
+{
+  "audit": "C — T-TRACK target definition and mathematical coupling",
+  "protocol_version": "phoenix-001/v1",
+  "db": {
+    "db_path": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
+    "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+    "db_sha256_matches_frozen": true,
+    "db_size_bytes": 1368469504,
+    "db_integrity_check": "ok"
+  },
+  "command": "python D:/DEPPSKK/worktrees/phoenix002/experiments/phoenix/h8_validation_v2/audits/c_target.py",
+  "elapsed_sec": 83.66,
+  "seed": 20261108,
+  "part1_label_decomposition": {
+    "full_panel": {
+      "n": 4255,
+      "n_pos": 406,
+      "prevalence": 0.09541715628672151,
+      "vacuous_and_floor": {
+        "pos_t8_eq_0": 4,
+        "pos_t8_mean_lt_0.5": 53,
+        "pos_fwd_sum_eq_3": 40,
+        "pos_fwd_sum_eq_3_and_t8_le_4": 40,
+        "pos_fwd_sum_eq_3_and_t8_eq_0": 2,
+        "min_events_floor_rule": "for fwd_sum==3 the ratio test is automatically satisfied iff trailing8_mean <= 0.5, i.e. t8 <= 4; such positives are created by the >=3 floor alone",
+        "share_pos_t8_eq_0": 0.009852216748768473,
+        "share_pos_t8_mean_lt_0.5": 0.13054187192118227,
+        "share_pos_fwd3": 0.09852216748768473,
+        "share_pos_floor_only": 0.09852216748768473
+      }
+    },
+    "buckets": {
+      "0": {
+        "t8_gt": null,
+        "t8_le": 0,
+        "n": 1604,
+        "n_pos": 4,
+        "trigger_rate": 0.0024937655860349127,
+        "share_of_all_positives": 0.009852216748768473
+      },
+      "1-2": {
+        "t8_gt": 0,
+        "t8_le": 2,
+        "n": 180,
+        "n_pos": 17,
+        "trigger_rate": 0.09444444444444444,
+        "share_of_all_positives": 0.04187192118226601
+      },
+      "3-5": {
+        "t8_gt": 2,
+        "t8_le": 5,
+        "n": 205,
+        "n_pos": 77,
+        "trigger_rate": 0.375609756097561,
+        "share_of_all_positives": 0.1896551724137931
+      },
+      "6-12": {
+        "t8_gt": 5,
+        "t8_le": 12,
+        "n": 206,
+        "n_pos": 59,
+        "trigger_rate": 0.28640776699029125,
+        "share_of_all_positives": 0.14532019704433496
+      },
+      "13+": {
+        "t8_gt": 12,
+        "t8_le": null,
+        "n": 2060,
+        "n_pos": 249,
+        "trigger_rate": 0.12087378640776698,
+        "share_of_all_positives": 0.6133004926108374
+      }
+    },
+    "v1_evaluable": {
+      "n": 2443,
+      "n_pos": 155,
+      "prevalence": 0.0634465820712239,
+      "ap_b1": 0.12341032292156828,
+      "ap_h8": 0.1613143599731521,
+      "dap": 0.03790403705158382,
+      "folds": 11,
+      "pos_t8_eq_0": 3,
+      "pos_t8_mean_lt_0.5": 23,
+      "pos_fwd_sum_eq_3": 13,
+      "pos_fwd_sum_eq_3_and_t8_le_4": 13,
+      "t_track_rows": 858,
+      "t_track_positives": 0,
+      "share_pos_t8_eq_0": 0.01935483870967742,
+      "share_pos_t8_mean_lt_0.5": 0.14838709677419354,
+      "share_pos_fwd_sum_eq_3": 0.08387096774193549,
+      "share_pos_fwd_sum_eq_3_and_t8_le_4": 0.08387096774193549,
+      "buckets": {
+        "0": {
+          "n": 956,
+          "n_pos": 3,
+          "trigger_rate": 0.0031380753138075313,
+          "ap_b1": 0.002328969153339437,
+          "ap_h8": 0.0026359004325073715,
+          "dap": 0.00030693127916793473
+        },
+        "1-2": {
+          "n": 110,
+          "n_pos": 5,
+          "trigger_rate": 0.045454545454545456,
+          "ap_b1": 0.040894797026872494,
+          "ap_h8": 0.0434260639178672,
+          "dap": 0.002531266890994706
+        },
+        "3-5": {
+          "n": 85,
+          "n_pos": 22,
+          "trigger_rate": 0.25882352941176473,
+          "ap_b1": 0.22493355704468543,
+          "ap_h8": 0.2568310024454181,
+          "dap": 0.031897445400732694
+        },
+        "6-12": {
+          "n": 54,
+          "n_pos": 19,
+          "trigger_rate": 0.35185185185185186,
+          "ap_b1": 0.3467553358745139,
+          "ap_h8": 0.27908815617554245,
+          "dap": -0.06766717969897146
+        },
+        "13+": {
+          "n": 1238,
+          "n_pos": 106,
+          "trigger_rate": 0.08562197092084006,
+          "ap_b1": 0.12427961741405949,
+          "ap_h8": 0.16267174233783877,
+          "dap": 0.038392124923779275
+        }
+      }
+    },
+    "reproduction": {
+      "ap_b1": 0.12341032292156828,
+      "ap_h8": 0.1613143599731521,
+      "dap": 0.03790403705158382,
+      "published_ap_b1": 0.12341032292156828,
+      "published_ap_h8": 0.1613143599731521,
+      "published_dap": 0.03790403705158382,
+      "n": 2443,
+      "n_pos": 155,
+      "folds": 11
+    }
+  },
+  "part2_mechanical_coupling": {
+    "clock_identity": {
+      "L000": {
+        "pearson_f_vs_n": 1.0,
+        "frac_rows_exactly_equal": 1.0,
+        "mean_abs_diff_events_per_quarter": 0.0,
+        "sum_f_n_device": 34885.0,
+        "sum_n_device": 34885.0
+      },
+      "L090": {
+        "pearson_f_vs_n": 0.9164983013594495,
+        "frac_rows_exactly_equal": 0.4893964110929853,
+        "mean_abs_diff_events_per_quarter": 2.7504078303425774,
+        "sum_f_n_device": 34475.0,
+        "sum_n_device": 34885.0
+      }
+    },
+    "label_denominator_vs_feature": {
+      "pearson_feat_sum8_vs_t8": 0.9983405109339881,
+      "spearman_feat_sum8_vs_t8": 0.9977324026590294,
+      "frac_rows_equal_sum8_vs_t8": 0.4827262044653349,
+      "mean_abs_diff_sum8_vs_t8_events": 3.1421856639247943,
+      "mean_abs_diff_mean8_vs_tmean8": 0.3927732079905993,
+      "pearson_mean4_vs_tmean8": 0.9942575137193431,
+      "spearman_mean4_vs_tmean8": 0.9910078621323458
+    },
+    "algebra": {
+      "max_abs_diff_growth8_vs_(sum8-prev8)/(prev8+1)": 0.0,
+      "pma_share4_identity_max_abs_diff": 0.0,
+      "note": "sct_growth{w} = (trailing w sum - prior w sum)/(prior w sum + 1) on f_n_device; sct_volatility8 = f_n_device_std8/(f_n_device_mean4+1); sct_pma_share4 = f_n_pma_sum4/(f_n_device_sum4+1); sct_slope12 = OLS slope of log1p(trailing 12 f_n_device). Every H8 feature is an algebraic function of the SAME device-count series whose trailing mean is the label denominator. sct_growth8's numerator is the trailing-8Q sum itself (== 8 x label denominator at L000)."
+    },
+    "growth_vs_level_corr": {
+      "sct_growth1": {
+        "pearson_vs_label_denominator": -0.004991248244897176,
+        "spearman_vs_label_denominator": 0.018220996037696544,
+        "pearson_vs_feature_level": -0.005715728159072329,
+        "spearman_vs_feature_level": 0.016562459797162345
+      },
+      "sct_growth2": {
+        "pearson_vs_label_denominator": -0.017042085142992158,
+        "spearman_vs_label_denominator": 0.017505580409680643,
+        "pearson_vs_feature_level": -0.019768933484921213,
+        "spearman_vs_feature_level": 0.015476519874523677
+      },
+      "sct_growth4": {
+        "pearson_vs_label_denominator": -0.007259588847786958,
+        "spearman_vs_label_denominator": 0.05049604993889818,
+        "pearson_vs_feature_level": -0.01544291344748233,
+        "spearman_vs_feature_level": 0.03577522459943953
+      },
+      "sct_growth8": {
+        "pearson_vs_label_denominator": 0.04180692591341604,
+        "spearman_vs_label_denominator": 0.21337426575018012,
+        "pearson_vs_feature_level": 0.033755016756676526,
+        "spearman_vs_feature_level": 0.21263399788405088
+      },
+      "sct_slope12": {
+        "pearson_vs_label_denominator": 0.07825222966415821,
+        "spearman_vs_label_denominator": 0.16934210977895647,
+        "pearson_vs_feature_level": 0.06817690678865973,
+        "spearman_vs_feature_level": 0.1599788069030011
+      },
+      "sct_pma_share4": {
+        "pearson_vs_label_denominator": 0.526514671957995,
+        "spearman_vs_label_denominator": 0.8057183842367504,
+        "pearson_vs_feature_level": 0.5234407399905849,
+        "spearman_vs_feature_level": 0.8040468385715632
+      },
+      "sct_volatility8": {
+        "pearson_vs_label_denominator": 0.09491047525202329,
+        "spearman_vs_label_denominator": 0.623717061604017,
+        "pearson_vs_feature_level": 0.09558744042094366,
+        "spearman_vs_feature_level": 0.6280570768539266
+      }
+    }
+  },
+  "part3_mean_reversion_noise": {
+    "assumptions": {
+      "universes": 20,
+      "tracks": 59,
+      "quarters": 86,
+      "per_track_mean_sampling": "lambda_track drawn with replacement from the 59 observed per-track device events/quarter (38 non-zero + 21 zero tracks) -> heterogeneity matched, zero-inflation matched",
+      "poisson": "X_t ~ Poisson(lambda_track), iid across quarters",
+      "negative_binomial": "X_t ~ NB2(mean=lambda_track, Var=mu+mu^2/r), r=1.4265 chosen so the median within-track dispersion index (1.7010) matches the observed panel",
+      "pma_split": "per track pma probability drawn with replacement from the observed per-track PMA shares; f_n_pma ~ Binomial(X_t, p_track), f_n_510k = f_n_device - f_n_pma (only affects sct_pma_share4)",
+      "feature_clock": "f_n_device[q] = n_device[q-1] (single-quarter lag; L090 analogue)",
+      "panel": "dense 59 x 86 (2004Q1..2025Q2), exposure_q = t index, log_exposure = log1p(exposure_q)",
+      "target": "identical call to pc.add_forward_target(target='growth') (>=3 and >=1.5x)",
+      "features": "identical v1 builders (pc.add_history_features + add_growth_features)",
+      "model": "identical pc.LogisticModel (median impute, standardise, L2 C=1)",
+      "folds": "identical pc.walk_forward_folds(2014, 2025); OOF AP pooled over folds",
+      "no_signal_guarantee": "no trend, no change point, no cross-track dynamics, no calendar effect; only cross-sectional level heterogeneity"
+    },
+    "universes": {
+      "negative_binomial": {
+        "n_universes": 20,
+        "ap_b1_mean": 0.26118784071020235,
+        "ap_b1_median": 0.2583255168281601,
+        "ap_h8_mean": 0.2985189210208446,
+        "ap_h8_median": 0.3037401400890223,
+        "dap_mean": 0.03733108031064227,
+        "dap_median": 0.04180999217008262,
+        "dap_sd": 0.022351837694314834,
+        "dap_min": 0.003274610587232607,
+        "dap_max": 0.08177805959237683,
+        "dap_q025": 0.004908598086914339,
+        "dap_q975": 0.07732936665669947,
+        "share_universes_dap_positive": 1.0,
+        "prevalence_mean": 0.1306900726392252,
+        "n_pos_mean": 323.85,
+        "real_dap_percentile": 0.45
+      },
+      "poisson": {
+        "n_universes": 20,
+        "ap_b1_mean": 0.1374950331213463,
+        "ap_b1_median": 0.1348757024353241,
+        "ap_h8_mean": 0.220834530843136,
+        "ap_h8_median": 0.21865569844267316,
+        "dap_mean": 0.0833394977217897,
+        "dap_median": 0.07662851585997119,
+        "dap_sd": 0.037202757310648704,
+        "dap_min": 0.02174999736473575,
+        "dap_max": 0.15977520964704944,
+        "dap_q025": 0.031225807177524916,
+        "dap_q975": 0.15864090918417514,
+        "share_universes_dap_positive": 1.0,
+        "prevalence_mean": 0.04346246973365617,
+        "n_pos_mean": 107.7,
+        "real_dap_percentile": 0.05
+      }
+    },
+    "ablations": {
+      "B1+growth1248": {
+        "dap_mean_poisson": 0.001641969259510729,
+        "dap_mean_nb": 0.002397156618273572
+      },
+      "B1+slope12": {
+        "dap_mean_poisson": 0.06664071163322399,
+        "dap_mean_nb": 0.03889379712526275
+      },
+      "B1+pma_share4": {
+        "dap_mean_poisson": 0.00032461690994846533,
+        "dap_mean_nb": -0.0002956245193599487
+      },
+      "B1+volatility8": {
+        "dap_mean_poisson": 0.05713328713882522,
+        "dap_mean_nb": 0.021682137289369987
+      },
+      "H8_all": {
+        "dap_mean_poisson": 0.09668014565591354,
+        "dap_mean_nb": 0.04648180481215644
+      },
+      "ratio_free_target": {
+        "dap_mean_poisson": 0.0007274553068151862,
+        "dap_mean_nb": 0.0009853972477355394,
+        "note": "same features/models, target = any_activity (>=1 event, no 1.5x ratio, no >=3 floor)"
+      }
+    },
+    "trigger_profile": {
+      "real": {
+        "0": {
+          "n": 1604,
+          "n_pos": 4,
+          "trigger_rate": 0.0024937655860349127
+        },
+        "1-2": {
+          "n": 180,
+          "n_pos": 17,
+          "trigger_rate": 0.09444444444444444
+        },
+        "3-5": {
+          "n": 205,
+          "n_pos": 77,
+          "trigger_rate": 0.375609756097561
+        },
+        "6-12": {
+          "n": 206,
+          "n_pos": 59,
+          "trigger_rate": 0.28640776699029125
+        },
+        "13+": {
+          "n": 2060,
+          "n_pos": 249,
+          "trigger_rate": 0.12087378640776698
+        }
+      },
+      "poisson": {
+        "0": {
+          "n": 8770,
+          "n_pos": 20,
+          "trigger_rate": 0.002280501710376283
+        },
+        "1-2": {
+          "n": 921,
+          "n_pos": 92,
+          "trigger_rate": 0.0998914223669924
+        },
+        "3-5": {
+          "n": 630,
+          "n_pos": 97,
+          "trigger_rate": 0.15396825396825398
+        },
+        "6-12": {
+          "n": 409,
+          "n_pos": 114,
+          "trigger_rate": 0.2787286063569682
+        },
+        "13+": {
+          "n": 11395,
+          "n_pos": 494,
+          "trigger_rate": 0.04335234752084247
+        }
+      },
+      "negative_binomial": {
+        "0": {
+          "n": 8321,
+          "n_pos": 37,
+          "trigger_rate": 0.00444658093979089
+        },
+        "1-2": {
+          "n": 1256,
+          "n_pos": 160,
+          "trigger_rate": 0.12738853503184713
+        },
+        "3-5": {
+          "n": 1018,
+          "n_pos": 226,
+          "trigger_rate": 0.2220039292730845
+        },
+        "6-12": {
+          "n": 923,
+          "n_pos": 289,
+          "trigger_rate": 0.3131094257854821
+        },
+        "13+": {
+          "n": 10607,
+          "n_pos": 2166,
+          "trigger_rate": 0.20420477043461865
+        }
+      }
+    },
+    "r_nb": 1.4265471291046052,
+    "dispersion_index_median": 1.700993314274633,
+    "real_dap": 0.03790403705158382
+  },
+  "part4_v1_dap_decomposition": {
+    "pooled": {
+      "ap_b1": 0.12341032292156828,
+      "ap_h8": 0.1613143599731521,
+      "dap": 0.03790403705158382
+    },
+    "by_stratum": {
+      "0": {
+        "n": 956,
+        "n_pos": 3,
+        "prevalence": 0.0031380753138075313,
+        "ap_b1": 0.002328969153339437,
+        "ap_h8": 0.0026359004325073715,
+        "dap": 0.00030693127916793473
+      },
+      "1-2": {
+        "n": 110,
+        "n_pos": 5,
+        "prevalence": 0.045454545454545456,
+        "ap_b1": 0.040894797026872494,
+        "ap_h8": 0.0434260639178672,
+        "dap": 0.002531266890994706
+      },
+      "3-5": {
+        "n": 85,
+        "n_pos": 22,
+        "prevalence": 0.25882352941176473,
+        "ap_b1": 0.22493355704468543,
+        "ap_h8": 0.2568310024454181,
+        "dap": 0.031897445400732694
+      },
+      "6-12": {
+        "n": 54,
+        "n_pos": 19,
+        "prevalence": 0.35185185185185186,
+        "ap_b1": 0.3467553358745139,
+        "ap_h8": 0.27908815617554245,
+        "dap": -0.06766717969897146
+      },
+      "13+": {
+        "n": 1238,
+        "n_pos": 106,
+        "prevalence": 0.08562197092084006,
+        "ap_b1": 0.12427961741405949,
+        "ap_h8": 0.16267174233783877,
+        "dap": 0.038392124923779275
+      }
+    },
+    "by_year": {
+      "2014": {
+        "n": 228,
+        "n_pos": 12,
+        "ap_b1": 0.1745800086598689,
+        "ap_h8": 0.21241848573688651,
+        "dap": 0.037838477077017624
+      },
+      "2015": {
+        "n": 228,
+        "n_pos": 19,
+        "ap_b1": 0.1713319651926863,
+        "ap_h8": 0.20533962987150073,
+        "dap": 0.03400766467881444
+      },
+      "2016": {
+        "n": 229,
+        "n_pos": 24,
+        "ap_b1": 0.15946218289918118,
+        "ap_h8": 0.27000875105898314,
+        "dap": 0.11054656815980196
+      },
+      "2017": {
+        "n": 232,
+        "n_pos": 23,
+        "ap_b1": 0.17785344543379422,
+        "ap_h8": 0.29470027482501693,
+        "dap": 0.1168468293912227
+      },
+      "2018": {
+        "n": 232,
+        "n_pos": 14,
+        "ap_b1": 0.1606897226938816,
+        "ap_h8": 0.24034256319257613,
+        "dap": 0.07965284049869453
+      },
+      "2019": {
+        "n": 232,
+        "n_pos": 13,
+        "ap_b1": 0.2099620136990772,
+        "ap_h8": 0.12635267421209984,
+        "dap": -0.08360933948697735
+      },
+      "2020": {
+        "n": 236,
+        "n_pos": 16,
+        "ap_b1": 0.12473443382301724,
+        "ap_h8": 0.2068585298119295,
+        "dap": 0.08212409598891227
+      },
+      "2021": {
+        "n": 236,
+        "n_pos": 3,
+        "ap_b1": 0.03977414629865879,
+        "ap_h8": 0.08041342232109751,
+        "dap": 0.04063927602243872
+      },
+      "2022": {
+        "n": 236,
+        "n_pos": 9,
+        "ap_b1": 0.09203555714272563,
+        "ap_h8": 0.11681520373746691,
+        "dap": 0.024779646594741286
+      },
+      "2023": {
+        "n": 236,
+        "n_pos": 14,
+        "ap_b1": 0.09312755673082762,
+        "ap_h8": 0.17773795068549572,
+        "dap": 0.0846103939546681
+      },
+      "2024": {
+        "n": 118,
+        "n_pos": 8,
+        "ap_b1": 0.09701686625582322,
+        "ap_h8": 0.4325854700854701,
+        "dap": 0.33556860382964687
+      }
+    },
+    "by_track": {
+      "n_tracks_evaluable": 59,
+      "n_tracks_with_positive": 30,
+      "top5_positive_dap": [
+        {
+          "track": "trauma",
+          "n": 42,
+          "n_pos": 5,
+          "is_t_track": false,
+          "ap_b1": 0.2587301587301587,
+          "ap_h8": 0.9028571428571428,
+          "dap": 0.6441269841269841
+        },
+        {
+          "track": "endoscopy",
+          "n": 42,
+          "n_pos": 4,
+          "is_t_track": false,
+          "ap_b1": 0.2513888888888889,
+          "ap_h8": 0.8928571428571428,
+          "dap": 0.6414682539682539
+        },
+        {
+          "track": "heart_failure",
+          "n": 42,
+          "n_pos": 5,
+          "is_t_track": false,
+          "ap_b1": 0.10517550393711385,
+          "ap_h8": 0.3993055555555556,
+          "dap": 0.29413005161844175
+        },
+        {
+          "track": "imaging_us",
+          "n": 42,
+          "n_pos": 2,
+          "is_t_track": false,
+          "ap_b1": 0.059027777777777776,
+          "ap_h8": 0.3333333333333333,
+          "dap": 0.2743055555555555
+        },
+        {
+          "track": "patient_monitoring",
+          "n": 42,
+          "n_pos": 6,
+          "is_t_track": false,
+          "ap_b1": 0.10795745648686825,
+          "ap_h8": 0.31179226475279104,
+          "dap": 0.2038348082659228
+        }
+      ],
+      "top5_negative_dap": [
+        {
+          "track": "diabetes_cgm",
+          "n": 42,
+          "n_pos": 6,
+          "is_t_track": false,
+          "ap_b1": 0.16806238056238054,
+          "ap_h8": 0.1510923366513165,
+          "dap": -0.016970043911064048
+        },
+        {
+          "track": "wound_care",
+          "n": 42,
+          "n_pos": 2,
+          "is_t_track": false,
+          "ap_b1": 0.0900735294117647,
+          "ap_h8": 0.04643206256109482,
+          "dap": -0.043641466850669886
+        },
+        {
+          "track": "ophthalmology",
+          "n": 42,
+          "n_pos": 8,
+          "is_t_track": false,
+          "ap_b1": 0.5954101454101454,
+          "ap_h8": 0.5388850732600732,
+          "dap": -0.056525072150072186
+        },
+        {
+          "track": "insulin_delivery",
+          "n": 42,
+          "n_pos": 8,
+          "is_t_track": false,
+          "ap_b1": 0.5235489081996435,
+          "ap_h8": 0.4246685606060606,
+          "dap": -0.09888034759358288
+        },
+        {
+          "track": "neurovascular",
+          "n": 42,
+          "n_pos": 2,
+          "is_t_track": false,
+          "ap_b1": 0.3611111111111111,
+          "ap_h8": 0.12142857142857143,
+          "dap": -0.23968253968253966
+        }
+      ],
+      "top5_positive_jackknife": [
+        {
+          "track": "ivd_immuno",
+          "jackknife_contrib": 0.004750286665789832,
+          "n": 42,
+          "n_pos": 8,
+          "is_t_track": false,
+          "ap_b1": 0.16445106304985335,
+          "ap_h8": 0.22004790744800334,
+          "dap": 0.05559684439814999
+        },
+        {
+          "track": "patient_monitoring",
+          "jackknife_contrib": 0.004229975655324708,
+          "n": 42,
+          "n_pos": 6,
+          "is_t_track": false,
+          "ap_b1": 0.10795745648686825,
+          "ap_h8": 0.31179226475279104,
+          "dap": 0.2038348082659228
+        },
+        {
+          "track": "wearable_remote",
+          "jackknife_contrib": 0.0037072558710738446,
+          "n": 42,
+          "n_pos": 10,
+          "is_t_track": false,
+          "ap_b1": 0.17528806223818227,
+          "ap_h8": 0.21082058949706006,
+          "dap": 0.03553252725887779
+        },
+        {
+          "track": "imaging_us",
+          "jackknife_contrib": 0.0034836258713131785,
+          "n": 42,
+          "n_pos": 2,
+          "is_t_track": false,
+          "ap_b1": 0.059027777777777776,
+          "ap_h8": 0.3333333333333333,
+          "dap": 0.2743055555555555
+        },
+        {
+          "track": "trauma",
+          "jackknife_contrib": 0.0027561537788183543,
+          "n": 42,
+          "n_pos": 5,
+          "is_t_track": false,
+          "ap_b1": 0.2587301587301587,
+          "ap_h8": 0.9028571428571428,
+          "dap": 0.6441269841269841
+        }
+      ],
+      "top5_negative_jackknife": [
+        {
+          "track": "diabetes_cgm",
+          "jackknife_contrib": -0.0020025479597235857,
+          "n": 42,
+          "n_pos": 6,
+          "is_t_track": false,
+          "ap_b1": 0.16806238056238054,
+          "ap_h8": 0.1510923366513165,
+          "dap": -0.016970043911064048
+        },
+        {
+          "track": "wound_care",
+          "jackknife_contrib": -0.0024454123124814098,
+          "n": 42,
+          "n_pos": 2,
+          "is_t_track": false,
+          "ap_b1": 0.0900735294117647,
+          "ap_h8": 0.04643206256109482,
+          "dap": -0.043641466850669886
+        },
+        {
+          "track": "dialysis",
+          "jackknife_contrib": -0.0026388770713529908,
+          "n": 42,
+          "n_pos": 6,
+          "is_t_track": false,
+          "ap_b1": 0.2637562628941939,
+          "ap_h8": 0.295014245014245,
+          "dap": 0.0312579821200511
+        },
+        {
+          "track": "insulin_delivery",
+          "jackknife_contrib": -0.0030595480147927456,
+          "n": 42,
+          "n_pos": 8,
+          "is_t_track": false,
+          "ap_b1": 0.5235489081996435,
+          "ap_h8": 0.4246685606060606,
+          "dap": -0.09888034759358288
+        },
+        {
+          "track": "infection_control",
+          "jackknife_contrib": -0.004469082135714814,
+          "n": 42,
+          "n_pos": 9,
+          "is_t_track": false,
+          "ap_b1": 0.16783574466967152,
+          "ap_h8": 0.15291188537254627,
+          "dap": -0.014923859297125253
+        }
+      ],
+      "sum_abs_jackknife": 0.06567787402629065
+    },
+    "subsets": {
+      "all": {
+        "n": 2443,
+        "n_pos": 155,
+        "ap_b1": 0.12341032292156828,
+        "ap_h8": 0.1613143599731521,
+        "dap": 0.03790403705158382
+      },
+      "drop t8<=2": {
+        "n": 1377,
+        "n_pos": 147,
+        "ap_b1": 0.1349097661499248,
+        "ap_h8": 0.17454511300851794,
+        "dap": 0.03963534685859313
+      },
+      "drop t8<=0": {
+        "n": 1487,
+        "n_pos": 152,
+        "ap_b1": 0.13150823126034086,
+        "ap_h8": 0.1643859562300865,
+        "dap": 0.03287772496974564
+      },
+      "drop t8<=3": {
+        "n": 1328,
+        "n_pos": 132,
+        "ap_b1": 0.13427690557791697,
+        "ap_h8": 0.17057534646905181,
+        "dap": 0.03629844089113485
+      },
+      "device tracks only (drop t_*)": {
+        "n": 1585,
+        "n_pos": 155,
+        "ap_b1": 0.13024973725153732,
+        "ap_h8": 0.16251868397423058,
+        "dap": 0.03226894672269326
+      }
+    },
+    "t_track_share_of_dap": 0.14866728631627646
+  },
+  "part5_pma_share": {
+    "definition": "sct_pma_share4 = f_n_pma_sum4 / (f_n_device_sum4 + 1)",
+    "pooled": {
+      "mean": 0.24226756171371078,
+      "std": 0.37762490389593517,
+      "median": 0.0,
+      "q90": 0.9349802371541501,
+      "q99": 0.9950117188232426,
+      "min": 0.0,
+      "max": 0.9985611510791367,
+      "n_unique": 773,
+      "frac_exactly_zero": 0.6343800978792822,
+      "frac_lt_0.01": 0.6343800978792822,
+      "frac_gt_0.99": 0.026916802610114192
+    },
+    "tracks": {
+      "n_tracks": 59,
+      "n_device_tracks": 38,
+      "n_tracks_with_pma": 30,
+      "n_tracks_zero_pma": 29,
+      "n_tracks_constant_value": 29,
+      "n_tracks_all_zero": 29,
+      "overall_pma_fraction_of_device_events": 0.7717643686398166
+    },
+    "corr_with_track_size": {
+      "pearson_mean_share_vs_dev_events": 0.5140356578713451,
+      "spearman_mean_share_vs_dev_events": 0.8407256802271562,
+      "pearson_share_of_dev_events_vs_dev_events": 0.455227877360672
+    },
+    "variance_decomposition": {
+      "total_var": 0.14260056804241428,
+      "between_track_var": 0.12391848816044194,
+      "within_track_var": 0.016481150484419133,
+      "icc_between_over_total": 0.868990144019513
+    },
+    "corr_with_calendar_time": {
+      "pooled_pearson": 0.08423337831084846,
+      "pooled_spearman": 0.07284842622857404,
+      "within_track_demeaned_pearson": 0.3122602725762743
+    },
+    "corr_with_own_activity_level": {
+      "pearson_vs_f_n_device_sum4": 0.5270134377734452,
+      "spearman_vs_f_n_device_sum4": 0.8039976589126916
+    },
+    "per_track_table": [
+      {
+        "track_id": "aesthetics",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 3.0,
+        "pma_events": 0.0,
+        "rows": 42,
+        "share_of_device_events": 0.0
+      },
+      {
+        "track_id": "cardiac_rhythm",
+        "mean_share": 0.9817044319912642,
+        "std_share": 0.10743109469708607,
+        "dev_events": 10719.0,
+        "pma_events": 10683.0,
+        "rows": 86,
+        "share_of_device_events": 0.9966414777497901
+      },
+      {
+        "track_id": "cmf",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 12.0,
+        "pma_events": 0.0,
+        "rows": 81,
+        "share_of_device_events": 0.0
+      },
+      {
+        "track_id": "coronary",
+        "mean_share": 0.8953582448828636,
+        "std_share": 0.11297944426054124,
+        "dev_events": 2191.0,
+        "pma_events": 2034.0,
+        "rows": 86,
+        "share_of_device_events": 0.9283432222729348
+      },
+      {
+        "track_id": "dental",
+        "mean_share": 0.25103994545530967,
+        "std_share": 0.17460985197902673,
+        "dev_events": 391.0,
+        "pma_events": 104.0,
+        "rows": 86,
+        "share_of_device_events": 0.2659846547314578
+      },
+      {
+        "track_id": "diabetes_cgm",
+        "mean_share": 0.7589911218461792,
+        "std_share": 0.26641293039688657,
+        "dev_events": 695.0,
+        "pma_events": 631.0,
+        "rows": 86,
+        "share_of_device_events": 0.9079136690647482
+      },
+      {
+        "track_id": "dialysis",
+        "mean_share": 0.3175794512898555,
+        "std_share": 0.31530641673841786,
+        "dev_events": 240.0,
+        "pma_events": 122.0,
+        "rows": 86,
+        "share_of_device_events": 0.5083333333333333
+      },
+      {
+        "track_id": "endoscopy",
+        "mean_share": 0.0518430264582906,
+        "std_share": 0.04796475057739774,
+        "dev_events": 587.0,
+        "pma_events": 37.0,
+        "rows": 86,
+        "share_of_device_events": 0.06303236797274275
+      },
+      {
+        "track_id": "ent",
+        "mean_share": 0.01488095238095238,
+        "std_share": 0.06741635985865806,
+        "dev_events": 25.0,
+        "pma_events": 1.0,
+        "rows": 84,
+        "share_of_device_events": 0.04
+      },
+      {
+        "track_id": "ep_pfa",
+        "mean_share": 0.9133054648812857,
+        "std_share": 0.11104080180502109,
+        "dev_events": 1675.0,
+        "pma_events": 1602.0,
+        "rows": 86,
+        "share_of_device_events": 0.9564179104477611
+      },
+      {
+        "track_id": "general_surgery",
+        "mean_share": 0.018743917581126885,
+        "std_share": 0.06443715881234041,
+        "dev_events": 134.0,
+        "pma_events": 3.0,
+        "rows": 86,
+        "share_of_device_events": 0.022388059701492536
+      },
+      {
+        "track_id": "heart_failure",
+        "mean_share": 0.7363498388740517,
+        "std_share": 0.37633346363823983,
+        "dev_events": 541.0,
+        "pma_events": 540.0,
+        "rows": 84,
+        "share_of_device_events": 0.9981515711645101
+      },
+      {
+        "track_id": "imaging_mr_ct",
+        "mean_share": 0.05399641188727466,
+        "std_share": 0.07541785322620351,
+        "dev_events": 1281.0,
+        "pma_events": 55.0,
+        "rows": 86,
+        "share_of_device_events": 0.0429352068696331
+      },
+      {
+        "track_id": "imaging_us",
+        "mean_share": 0.02031893098008205,
+        "std_share": 0.034016429539586036,
+        "dev_events": 469.0,
+        "pma_events": 12.0,
+        "rows": 86,
+        "share_of_device_events": 0.0255863539445629
+      },
+      {
+        "track_id": "infection_control",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 41.0,
+        "pma_events": 0.0,
+        "rows": 85,
+        "share_of_device_events": 0.0
+      },
+      {
+        "track_id": "insulin_delivery",
+        "mean_share": 0.44157201045666167,
+        "std_share": 0.42286681602899484,
+        "dev_events": 407.0,
+        "pma_events": 348.0,
+        "rows": 86,
+        "share_of_device_events": 0.855036855036855
+      },
+      {
+        "track_id": "ivd_immuno",
+        "mean_share": 0.8533281675226202,
+        "std_share": 0.13935559525683358,
+        "dev_events": 619.0,
+        "pma_events": 580.0,
+        "rows": 86,
+        "share_of_device_events": 0.9369951534733441
+      },
+      {
+        "track_id": "ivd_molecular",
+        "mean_share": 0.6058900918334633,
+        "std_share": 0.211346986708602,
+        "dev_events": 261.0,
+        "pma_events": 189.0,
+        "rows": 83,
+        "share_of_device_events": 0.7241379310344828
+      },
+      {
+        "track_id": "ivd_poct",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 19.0,
+        "pma_events": 0.0,
+        "rows": 83,
+        "share_of_device_events": 0.0
+      },
+      {
+        "track_id": "medical_ai",
+        "mean_share": 0.018482609565030908,
+        "std_share": 0.04613872524015344,
+        "dev_events": 267.0,
+        "pma_events": 4.0,
+        "rows": 86,
+        "share_of_device_events": 0.0149812734082397
+      },
+      {
+        "track_id": "neurostimulation",
+        "mean_share": 0.9500909276097322,
+        "std_share": 0.12106896970597485,
+        "dev_events": 1835.0,
+        "pma_events": 1819.0,
+        "rows": 86,
+        "share_of_device_events": 0.9912806539509537
+      },
+      {
+        "track_id": "neurovascular",
+        "mean_share": 0.8402087739295975,
+        "std_share": 0.13295171847948933,
+        "dev_events": 1076.0,
+        "pma_events": 961.0,
+        "rows": 86,
+        "share_of_device_events": 0.8931226765799256
+      },
+      {
+        "track_id": "ophthalmology",
+        "mean_share": 0.910603592457975,
+        "std_share": 0.10861390060673438,
+        "dev_events": 1540.0,
+        "pma_events": 1456.0,
+        "rows": 86,
+        "share_of_device_events": 0.9454545454545454
+      },
+      {
+        "track_id": "ortho_joint",
+        "mean_share": 0.4333795865987423,
+        "std_share": 0.17054062378828644,
+        "dev_events": 1694.0,
+        "pma_events": 775.0,
+        "rows": 86,
+        "share_of_device_events": 0.4574970484061393
+      },
+      {
+        "track_id": "patient_monitoring",
+        "mean_share": 0.006260587277939139,
+        "std_share": 0.02709872814980405,
+        "dev_events": 255.0,
+        "pma_events": 2.0,
+        "rows": 86,
+        "share_of_device_events": 0.00784313725490196
+      },
+      {
+        "track_id": "peripheral_vascular",
+        "mean_share": 0.8106745827678107,
+        "std_share": 0.11563583572753632,
+        "dev_events": 989.0,
+        "pma_events": 850.0,
+        "rows": 86,
+        "share_of_device_events": 0.8594539939332659
+      },
+      {
+        "track_id": "rehab_exo",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 28.0,
+        "pma_events": 0.0,
+        "rows": 86,
+        "share_of_device_events": 0.0
+      },
+      {
+        "track_id": "respiratory",
+        "mean_share": 0.2041176310154302,
+        "std_share": 0.24955209696382677,
+        "dev_events": 285.0,
+        "pma_events": 61.0,
+        "rows": 86,
+        "share_of_device_events": 0.21403508771929824
+      },
+      {
+        "track_id": "spine",
+        "mean_share": 0.1061738553494962,
+        "std_share": 0.09066943605378253,
+        "dev_events": 878.0,
+        "pma_events": 77.0,
+        "rows": 86,
+        "share_of_device_events": 0.08769931662870159
+      },
+      {
+        "track_id": "structural_heart",
+        "mean_share": 0.9573590421892547,
+        "std_share": 0.11269999364805978,
+        "dev_events": 2300.0,
+        "pma_events": 2283.0,
+        "rows": 86,
+        "share_of_device_events": 0.9926086956521739
+      },
+      {
+        "track_id": "surgical_energy",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 302.0,
+        "pma_events": 0.0,
+        "rows": 86,
+        "share_of_device_events": 0.0
+      },
+      {
+        "track_id": "surgical_robotics",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 124.0,
+        "pma_events": 0.0,
+        "rows": 85,
+        "share_of_device_events": 0.0
+      },
+      {
+        "track_id": "t_addiction",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 80,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_cardiometabolic",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 86,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_cell_therapy",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 75,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_dermatology",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 80,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_gene_therapy",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 29,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_hematology",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 86,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_hepatology",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 86,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_immunology",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 86,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_infectious",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 86,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_musculoskeletal",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 86,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_nephrology",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 83,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_neuroscience",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 86,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_oncology",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 86,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_ophthalmology",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 84,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_pain",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 80,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_rare_disease",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 85,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_respiratory",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 86,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_transplant",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 85,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_urology",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 85,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_vaccines",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 79,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "t_womens_health",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 0.0,
+        "pma_events": 0.0,
+        "rows": 81,
+        "share_of_device_events": null
+      },
+      {
+        "track_id": "trauma",
+        "mean_share": 0.0660305898759743,
+        "std_share": 0.06754282983899784,
+        "dev_events": 503.0,
+        "pma_events": 39.0,
+        "rows": 86,
+        "share_of_device_events": 0.0775347912524851
+      },
+      {
+        "track_id": "urology",
+        "mean_share": 0.8865492852818482,
+        "std_share": 0.12777618820876524,
+        "dev_events": 1426.0,
+        "pma_events": 1331.0,
+        "rows": 86,
+        "share_of_device_events": 0.9333800841514727
+      },
+      {
+        "track_id": "vascular_access",
+        "mean_share": 0.03467314128155329,
+        "std_share": 0.0527831004416482,
+        "dev_events": 521.0,
+        "pma_events": 17.0,
+        "rows": 86,
+        "share_of_device_events": 0.03262955854126679
+      },
+      {
+        "track_id": "wearable_remote",
+        "mean_share": 0.14913168227121715,
+        "std_share": 0.29546934778238015,
+        "dev_events": 83.0,
+        "pma_events": 25.0,
+        "rows": 86,
+        "share_of_device_events": 0.30120481927710846
+      },
+      {
+        "track_id": "womens_health",
+        "mean_share": 0.0,
+        "std_share": 0.0,
+        "dev_events": 26.0,
+        "pma_events": 0.0,
+        "rows": 83,
+        "share_of_device_events": 0.0
+      },
+      {
+        "track_id": "wound_care",
+        "mean_share": 0.5648534356262798,
+        "std_share": 0.17990055701695862,
+        "dev_events": 443.0,
+        "pma_events": 282.0,
+        "rows": 86,
+        "share_of_device_events": 0.636568848758465
+      }
+    ]
+  },
+  "conclusion": {
+    "published_v1_dap": 0.03790403705158382,
+    "reproduced_exactly": true,
+    "noise_dap_mean_poisson": 0.0833394977217897,
+    "noise_dap_mean_negative_binomial": 0.03733108031064227,
+    "noise_dap_sd_poisson": 0.037202757310648704,
+    "noise_dap_sd_negative_binomial": 0.022351837694314834,
+    "published_dap_percentile_in_noise_poisson": 0.05,
+    "published_dap_percentile_in_noise_negative_binomial": 0.45,
+    "ratio_free_target_dap_poisson": 0.0007274553068151862,
+    "ratio_free_target_dap_nb": 0.0009853972477355394,
+    "vacuous_positive_share_full_panel": 0.009852216748768473,
+    "vacuous_positive_share_evaluable": 0.01935483870967742,
+    "floor_only_positive_share_evaluable": 0.08387096774193549,
+    "t_track_share_of_dap": 0.14866728631627646,
+    "pma_share_icc_between": 0.868990144019513
+  }
+}

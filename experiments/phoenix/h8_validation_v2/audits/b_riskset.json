@@ -1,0 +1,1976 @@
+{
+  "audit": "B_riskset",
+  "generated_at_utc": "2026-11-08T19:04:47.905372+00:00",
+  "provenance": {
+    "path": "D:\\DEPPSKK\\worktrees\\phoenix002\\data\\medradar.sqlite",
+    "size_bytes": 1368469504,
+    "sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+    "matches_frozen": true,
+    "integrity_check": "ok"
+  },
+  "db_event_kinds": {
+    "510k": 176466,
+    "device_recall": 59646,
+    "pma": 57372,
+    "trial": 55592,
+    "8k_catalyst": 20976,
+    "drug_approval": 5326
+  },
+  "v1_keep": {
+    "all_db_events": 375378,
+    "raw_window_events": 253836,
+    "v1_kept": 78074,
+    "v1_share_of_all_db": 0.20798768175012922,
+    "v1_share_of_window": 0.3075765454860619
+  },
+  "available_at_equals_event_date": {
+    "window_rows": 253836,
+    "mismatch_rows": 20976,
+    "mismatch_rows_by_kind": {
+      "8k_catalyst": 20976
+    },
+    "mismatch_available_after_event": 0,
+    "mismatch_available_before_event": 0,
+    "mismatch_available_median_lag_days": 0.0,
+    "v1_loaded_mismatch_rows": 0
+  },
+  "taxonomy_table": {
+    "tracks_rows": 60,
+    "tracks_updated_at_distinct": {
+      "2026-10-30T19:56:45Z": 38,
+      "2026-10-30T19:19:19Z": 22
+    },
+    "product_codes_rows": 7097,
+    "product_codes_updated_at_distinct": {
+      "2026-10-30T19:02:40Z": 7097
+    }
+  },
+  "t_track_composition": [
+    {
+      "group": "device_tracks_>=1_device_event_ever",
+      "tracks": 38,
+      "panel_rows": 3204,
+      "labeled_rows": 2786,
+      "positives_growth_y": 406,
+      "negatives_growth_y": 2380,
+      "mean_y": 0.1457286432160804
+    },
+    {
+      "group": "t_star_trial_only_tracks_zero_device_ever",
+      "tracks": 21,
+      "panel_rows": 1700,
+      "labeled_rows": 1469,
+      "positives_growth_y": 0,
+      "negatives_growth_y": 1469,
+      "mean_y": 0.0
+    },
+    {
+      "group": "ALL_PANEL",
+      "tracks": 59,
+      "panel_rows": 4904,
+      "labeled_rows": 4255,
+      "positives_growth_y": 406,
+      "negatives_growth_y": 3849,
+      "mean_y": 0.09541715628672151
+    }
+  ],
+  "t_track_tables": {
+    "tracks_table_rows": 60,
+    "panel_tracks": 59,
+    "device_tracks": 38,
+    "t_star_trial_only": 21,
+    "tracks_in_table_absent_from_panel": [
+      "t_radiopharma"
+    ],
+    "t_star_ids_in_panel": [
+      "t_addiction",
+      "t_cardiometabolic",
+      "t_cell_therapy",
+      "t_dermatology",
+      "t_gene_therapy",
+      "t_hematology",
+      "t_hepatology",
+      "t_immunology",
+      "t_infectious",
+      "t_musculoskeletal",
+      "t_nephrology",
+      "t_neuroscience",
+      "t_oncology",
+      "t_ophthalmology",
+      "t_pain",
+      "t_rare_disease",
+      "t_respiratory",
+      "t_transplant",
+      "t_urology",
+      "t_vaccines",
+      "t_womens_health"
+    ],
+    "device_track_ids": [
+      "aesthetics",
+      "cardiac_rhythm",
+      "cmf",
+      "coronary",
+      "dental",
+      "diabetes_cgm",
+      "dialysis",
+      "endoscopy",
+      "ent",
+      "ep_pfa",
+      "general_surgery",
+      "heart_failure",
+      "imaging_mr_ct",
+      "imaging_us",
+      "infection_control",
+      "insulin_delivery",
+      "ivd_immuno",
+      "ivd_molecular",
+      "ivd_poct",
+      "medical_ai",
+      "neurostimulation",
+      "neurovascular",
+      "ophthalmology",
+      "ortho_joint",
+      "patient_monitoring",
+      "peripheral_vascular",
+      "rehab_exo",
+      "respiratory",
+      "spine",
+      "structural_heart",
+      "surgical_energy",
+      "surgical_robotics",
+      "trauma",
+      "urology",
+      "vascular_access",
+      "wearable_remote",
+      "womens_health",
+      "wound_care"
+    ]
+  },
+  "t_track_cannot_hit_growth_min_events": {
+    "definition": "tracks whose max trailing/forward 4Q device count < 3 (growth label requires forward total >= 3)",
+    "n_tracks": 22,
+    "tracks": [
+      "aesthetics",
+      "t_addiction",
+      "t_cardiometabolic",
+      "t_cell_therapy",
+      "t_dermatology",
+      "t_gene_therapy",
+      "t_hematology",
+      "t_hepatology",
+      "t_immunology",
+      "t_infectious",
+      "t_musculoskeletal",
+      "t_nephrology",
+      "t_neuroscience",
+      "t_oncology",
+      "t_ophthalmology",
+      "t_pain",
+      "t_rare_disease",
+      "t_respiratory",
+      "t_transplant",
+      "t_urology",
+      "t_vaccines",
+      "t_womens_health"
+    ],
+    "panel_rows": 1742,
+    "labeled_rows": 1500,
+    "positives": 0
+  },
+  "t_track_positive_support": {
+    "tracks_with_at_least_one_positive": 36,
+    "tracks_with_zero_positives": 23,
+    "tracks_with_zero_positives_ids": [
+      "aesthetics",
+      "ortho_joint",
+      "t_addiction",
+      "t_cardiometabolic",
+      "t_cell_therapy",
+      "t_dermatology",
+      "t_gene_therapy",
+      "t_hematology",
+      "t_hepatology",
+      "t_immunology",
+      "t_infectious",
+      "t_musculoskeletal",
+      "t_nephrology",
+      "t_neuroscience",
+      "t_oncology",
+      "t_ophthalmology",
+      "t_pain",
+      "t_rare_disease",
+      "t_respiratory",
+      "t_transplant",
+      "t_urology",
+      "t_vaccines",
+      "t_womens_health"
+    ],
+    "labelled_rows_on_positive_tracks": 2680,
+    "positives_on_positive_tracks": 406,
+    "prevalence_on_positive_tracks": 0.15149253731343285
+  },
+  "t_cell_panel_meta": {
+    "recomputed": {
+      "rows": 67084,
+      "labeled_rows": 67084,
+      "n_pos": 13205,
+      "prevalence": 0.19684276429551012,
+      "n_cells": 1096,
+      "n_companies": 89,
+      "n_tracks": 59
+    },
+    "cached_L090": {
+      "rows": 67084,
+      "labeled_rows": 67084,
+      "n_pos": 13205,
+      "prevalence": 0.19684276429551012,
+      "n_cells": 1096,
+      "n_companies": 89,
+      "n_tracks": 59
+    },
+    "matches_cached_meta": true
+  },
+  "t_cell_composition": [
+    {
+      "group": "cells_ever_device_>=1_device_event_(panel_label_range)",
+      "cells": 414,
+      "panel_rows": 27771,
+      "labeled_rows": 27771,
+      "positives": 13205,
+      "negatives": 14566,
+      "mean_y": 0.47549602102913113
+    },
+    {
+      "group": "cells_never_device_in_panel_range",
+      "cells": 682,
+      "panel_rows": 39313,
+      "labeled_rows": 39313,
+      "positives": 0,
+      "negatives": 39313,
+      "mean_y": 0.0
+    },
+    {
+      "group": "cells_in_t_star_tracks",
+      "cells": 552,
+      "panel_rows": 33647,
+      "labeled_rows": 33647,
+      "positives": 0,
+      "negatives": 33647,
+      "mean_y": 0.0
+    },
+    {
+      "group": "ALL_PANEL",
+      "cells": 1096,
+      "panel_rows": 67084,
+      "labeled_rows": 67084,
+      "positives": 13205,
+      "negatives": 53879,
+      "mean_y": 0.19684276429551012
+    }
+  ],
+  "t_cell_tables": {
+    "raw_attributed_cell_pairs_in_events": 1116,
+    "cells_in_joint_label_panel": 1114,
+    "cells_in_trimmed_panel": 1096,
+    "cells_ever_device_panel_label_range": 414,
+    "cells_ever_device_at_an_origin_quarter": 411,
+    "cells_ever_device_any_window_incl_2026H2": 414,
+    "cells_ever_device_dbwide": 445,
+    "cells_never_device_panel_range": 682,
+    "cells_never_device_raw_universe": 695,
+    "cells_in_t_star_tracks": 552
+  },
+  "structurally_impossible": {
+    "t_track": {
+      "units_zero_device_ever": 21,
+      "panel_rows": 1700,
+      "share_panel_rows": 0.3466557911908646,
+      "labeled_rows": 1469,
+      "positives": 0,
+      "negatives": 1469,
+      "share_of_negative_pool": 0.3816575733956872,
+      "negative_pool": 3849
+    },
+    "t_cell": {
+      "units_zero_device_ever": 682,
+      "panel_rows": 39313,
+      "share_panel_rows": 0.5860264742710631,
+      "labeled_rows": 39313,
+      "positives": 0,
+      "negatives": 39313,
+      "share_of_negative_pool": 0.729653482804061,
+      "negative_pool": 53879,
+      "cells_in_t_star_tracks": 552,
+      "rows_in_t_star_tracks": 33647,
+      "negatives_in_t_star_tracks": 33647
+    },
+    "t_cell_device_naive_negatives": {
+      "definition": "panel row whose unit has had zero device events up to and including origin q (label-clock cumulative count)",
+      "labeled_negative_rows": 40441,
+      "share_of_negative_pool": 0.7505892833942723
+    }
+  },
+  "pit_universe": {
+    "rule": "unit eligible at origin q iff min(feature-clock quarter) <= q; feature clock = available_at + 90 days; origin decided at end of q",
+    "t_track": {
+      "n_origins": 86,
+      "units_total_in_panel": 59,
+      "pit_units_min": 0,
+      "pit_units_median": 57.0,
+      "pit_units_max": 59,
+      "v1_rows_total": 4904,
+      "rows_not_pit_eligible": 59,
+      "rows_not_pit_share": 0.01203099510603589,
+      "by_origin": {
+        "2004Q1": {
+          "v1_rows": 38,
+          "v1_units": 38,
+          "pit_units": 0
+        },
+        "2004Q2": {
+          "v1_rows": 43,
+          "v1_units": 43,
+          "pit_units": 38
+        },
+        "2004Q3": {
+          "v1_rows": 46,
+          "v1_units": 46,
+          "pit_units": 43
+        },
+        "2004Q4": {
+          "v1_rows": 50,
+          "v1_units": 50,
+          "pit_units": 46
+        },
+        "2005Q1": {
+          "v1_rows": 50,
+          "v1_units": 50,
+          "pit_units": 50
+        },
+        "2005Q2": {
+          "v1_rows": 52,
+          "v1_units": 52,
+          "pit_units": 50
+        },
+        "2005Q3": {
+          "v1_rows": 55,
+          "v1_units": 55,
+          "pit_units": 52
+        },
+        "2005Q4": {
+          "v1_rows": 56,
+          "v1_units": 56,
+          "pit_units": 55
+        },
+        "2006Q1": {
+          "v1_rows": 56,
+          "v1_units": 56,
+          "pit_units": 56
+        },
+        "2006Q2": {
+          "v1_rows": 56,
+          "v1_units": 56,
+          "pit_units": 56
+        },
+        "2006Q3": {
+          "v1_rows": 56,
+          "v1_units": 56,
+          "pit_units": 56
+        },
+        "2006Q4": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 56
+        },
+        "2007Q1": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2007Q2": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2007Q3": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2007Q4": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2008Q1": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2008Q2": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2008Q3": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2008Q4": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2009Q1": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2009Q2": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2009Q3": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2009Q4": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2010Q1": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2010Q2": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2010Q3": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2010Q4": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2011Q1": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2011Q2": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2011Q3": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2011Q4": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2012Q1": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2012Q2": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2012Q3": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2012Q4": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2013Q1": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2013Q2": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2013Q3": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2013Q4": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2014Q1": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2014Q2": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2014Q3": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2014Q4": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2015Q1": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 57
+        },
+        "2015Q2": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 58
+        },
+        "2015Q3": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 58
+        },
+        "2015Q4": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 58
+        },
+        "2016Q1": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 58
+        },
+        "2016Q2": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 58
+        },
+        "2016Q3": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 58
+        },
+        "2016Q4": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 58
+        },
+        "2017Q1": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 58
+        },
+        "2017Q2": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 58
+        },
+        "2017Q3": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 58
+        },
+        "2017Q4": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 58
+        },
+        "2018Q1": {
+          "v1_rows": 58,
+          "v1_units": 58,
+          "pit_units": 58
+        },
+        "2018Q2": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 58
+        },
+        "2018Q3": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2018Q4": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2019Q1": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2019Q2": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2019Q3": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2019Q4": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2020Q1": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2020Q2": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2020Q3": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2020Q4": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2021Q1": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2021Q2": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2021Q3": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2021Q4": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2022Q1": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2022Q2": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2022Q3": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2022Q4": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2023Q1": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2023Q2": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2023Q3": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2023Q4": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2024Q1": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2024Q2": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2024Q3": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2024Q4": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2025Q1": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2025Q2": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        }
+      },
+      "requested_origins": {
+        "2004Q1": {
+          "v1_rows": 38,
+          "v1_units": 38,
+          "pit_units": 0
+        },
+        "2010Q1": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2014Q1": {
+          "v1_rows": 57,
+          "v1_units": 57,
+          "pit_units": 57
+        },
+        "2020Q1": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        },
+        "2024Q2": {
+          "v1_rows": 59,
+          "v1_units": 59,
+          "pit_units": 59
+        }
+      },
+      "first_lag_delay_quarters": {
+        "row_level_min": 1,
+        "row_level_median": 1.0,
+        "row_level_max": 1,
+        "row_counts": {
+          "1": 4904
+        },
+        "unit_counts": {
+          "1": 59
+        }
+      }
+    },
+    "t_cell": {
+      "n_origins": 86,
+      "units_total_in_panel": 1096,
+      "pit_units_min": 0,
+      "pit_units_median": 841.5,
+      "pit_units_max": 1093,
+      "v1_rows_total": 67084,
+      "rows_not_pit_eligible": 1086,
+      "rows_not_pit_share": 0.016188658994693222,
+      "by_origin": {
+        "2004Q1": {
+          "v1_rows": 109,
+          "v1_units": 109,
+          "pit_units": 0
+        },
+        "2004Q2": {
+          "v1_rows": 157,
+          "v1_units": 157,
+          "pit_units": 109
+        },
+        "2004Q3": {
+          "v1_rows": 210,
+          "v1_units": 210,
+          "pit_units": 158
+        },
+        "2004Q4": {
+          "v1_rows": 244,
+          "v1_units": 244,
+          "pit_units": 210
+        },
+        "2005Q1": {
+          "v1_rows": 271,
+          "v1_units": 271,
+          "pit_units": 244
+        },
+        "2005Q2": {
+          "v1_rows": 292,
+          "v1_units": 292,
+          "pit_units": 271
+        },
+        "2005Q3": {
+          "v1_rows": 366,
+          "v1_units": 366,
+          "pit_units": 294
+        },
+        "2005Q4": {
+          "v1_rows": 394,
+          "v1_units": 394,
+          "pit_units": 366
+        },
+        "2006Q1": {
+          "v1_rows": 407,
+          "v1_units": 407,
+          "pit_units": 394
+        },
+        "2006Q2": {
+          "v1_rows": 425,
+          "v1_units": 425,
+          "pit_units": 407
+        },
+        "2006Q3": {
+          "v1_rows": 440,
+          "v1_units": 440,
+          "pit_units": 425
+        },
+        "2006Q4": {
+          "v1_rows": 455,
+          "v1_units": 455,
+          "pit_units": 440
+        },
+        "2007Q1": {
+          "v1_rows": 466,
+          "v1_units": 466,
+          "pit_units": 455
+        },
+        "2007Q2": {
+          "v1_rows": 477,
+          "v1_units": 477,
+          "pit_units": 466
+        },
+        "2007Q3": {
+          "v1_rows": 492,
+          "v1_units": 492,
+          "pit_units": 478
+        },
+        "2007Q4": {
+          "v1_rows": 509,
+          "v1_units": 509,
+          "pit_units": 492
+        },
+        "2008Q1": {
+          "v1_rows": 526,
+          "v1_units": 526,
+          "pit_units": 509
+        },
+        "2008Q2": {
+          "v1_rows": 542,
+          "v1_units": 542,
+          "pit_units": 526
+        },
+        "2008Q3": {
+          "v1_rows": 567,
+          "v1_units": 567,
+          "pit_units": 542
+        },
+        "2008Q4": {
+          "v1_rows": 585,
+          "v1_units": 585,
+          "pit_units": 567
+        },
+        "2009Q1": {
+          "v1_rows": 606,
+          "v1_units": 606,
+          "pit_units": 585
+        },
+        "2009Q2": {
+          "v1_rows": 622,
+          "v1_units": 622,
+          "pit_units": 607
+        },
+        "2009Q3": {
+          "v1_rows": 637,
+          "v1_units": 637,
+          "pit_units": 623
+        },
+        "2009Q4": {
+          "v1_rows": 651,
+          "v1_units": 651,
+          "pit_units": 637
+        },
+        "2010Q1": {
+          "v1_rows": 663,
+          "v1_units": 663,
+          "pit_units": 651
+        },
+        "2010Q2": {
+          "v1_rows": 672,
+          "v1_units": 672,
+          "pit_units": 663
+        },
+        "2010Q3": {
+          "v1_rows": 682,
+          "v1_units": 682,
+          "pit_units": 672
+        },
+        "2010Q4": {
+          "v1_rows": 696,
+          "v1_units": 696,
+          "pit_units": 682
+        },
+        "2011Q1": {
+          "v1_rows": 715,
+          "v1_units": 715,
+          "pit_units": 696
+        },
+        "2011Q2": {
+          "v1_rows": 729,
+          "v1_units": 729,
+          "pit_units": 715
+        },
+        "2011Q3": {
+          "v1_rows": 740,
+          "v1_units": 740,
+          "pit_units": 729
+        },
+        "2011Q4": {
+          "v1_rows": 751,
+          "v1_units": 751,
+          "pit_units": 740
+        },
+        "2012Q1": {
+          "v1_rows": 763,
+          "v1_units": 763,
+          "pit_units": 751
+        },
+        "2012Q2": {
+          "v1_rows": 768,
+          "v1_units": 768,
+          "pit_units": 763
+        },
+        "2012Q3": {
+          "v1_rows": 778,
+          "v1_units": 778,
+          "pit_units": 768
+        },
+        "2012Q4": {
+          "v1_rows": 784,
+          "v1_units": 784,
+          "pit_units": 778
+        },
+        "2013Q1": {
+          "v1_rows": 796,
+          "v1_units": 796,
+          "pit_units": 784
+        },
+        "2013Q2": {
+          "v1_rows": 805,
+          "v1_units": 805,
+          "pit_units": 796
+        },
+        "2013Q3": {
+          "v1_rows": 808,
+          "v1_units": 808,
+          "pit_units": 805
+        },
+        "2013Q4": {
+          "v1_rows": 818,
+          "v1_units": 818,
+          "pit_units": 808
+        },
+        "2014Q1": {
+          "v1_rows": 827,
+          "v1_units": 827,
+          "pit_units": 818
+        },
+        "2014Q2": {
+          "v1_rows": 838,
+          "v1_units": 838,
+          "pit_units": 828
+        },
+        "2014Q3": {
+          "v1_rows": 844,
+          "v1_units": 844,
+          "pit_units": 839
+        },
+        "2014Q4": {
+          "v1_rows": 855,
+          "v1_units": 855,
+          "pit_units": 844
+        },
+        "2015Q1": {
+          "v1_rows": 862,
+          "v1_units": 862,
+          "pit_units": 855
+        },
+        "2015Q2": {
+          "v1_rows": 870,
+          "v1_units": 870,
+          "pit_units": 862
+        },
+        "2015Q3": {
+          "v1_rows": 881,
+          "v1_units": 881,
+          "pit_units": 870
+        },
+        "2015Q4": {
+          "v1_rows": 885,
+          "v1_units": 885,
+          "pit_units": 881
+        },
+        "2016Q1": {
+          "v1_rows": 892,
+          "v1_units": 892,
+          "pit_units": 885
+        },
+        "2016Q2": {
+          "v1_rows": 902,
+          "v1_units": 902,
+          "pit_units": 892
+        },
+        "2016Q3": {
+          "v1_rows": 910,
+          "v1_units": 910,
+          "pit_units": 902
+        },
+        "2016Q4": {
+          "v1_rows": 914,
+          "v1_units": 914,
+          "pit_units": 910
+        },
+        "2017Q1": {
+          "v1_rows": 926,
+          "v1_units": 926,
+          "pit_units": 914
+        },
+        "2017Q2": {
+          "v1_rows": 931,
+          "v1_units": 931,
+          "pit_units": 926
+        },
+        "2017Q3": {
+          "v1_rows": 934,
+          "v1_units": 934,
+          "pit_units": 931
+        },
+        "2017Q4": {
+          "v1_rows": 936,
+          "v1_units": 936,
+          "pit_units": 934
+        },
+        "2018Q1": {
+          "v1_rows": 943,
+          "v1_units": 943,
+          "pit_units": 936
+        },
+        "2018Q2": {
+          "v1_rows": 948,
+          "v1_units": 948,
+          "pit_units": 943
+        },
+        "2018Q3": {
+          "v1_rows": 954,
+          "v1_units": 954,
+          "pit_units": 948
+        },
+        "2018Q4": {
+          "v1_rows": 956,
+          "v1_units": 956,
+          "pit_units": 954
+        },
+        "2019Q1": {
+          "v1_rows": 961,
+          "v1_units": 961,
+          "pit_units": 956
+        },
+        "2019Q2": {
+          "v1_rows": 964,
+          "v1_units": 964,
+          "pit_units": 961
+        },
+        "2019Q3": {
+          "v1_rows": 970,
+          "v1_units": 970,
+          "pit_units": 965
+        },
+        "2019Q4": {
+          "v1_rows": 973,
+          "v1_units": 973,
+          "pit_units": 970
+        },
+        "2020Q1": {
+          "v1_rows": 978,
+          "v1_units": 978,
+          "pit_units": 973
+        },
+        "2020Q2": {
+          "v1_rows": 985,
+          "v1_units": 985,
+          "pit_units": 978
+        },
+        "2020Q3": {
+          "v1_rows": 990,
+          "v1_units": 990,
+          "pit_units": 985
+        },
+        "2020Q4": {
+          "v1_rows": 997,
+          "v1_units": 997,
+          "pit_units": 990
+        },
+        "2021Q1": {
+          "v1_rows": 1003,
+          "v1_units": 1003,
+          "pit_units": 997
+        },
+        "2021Q2": {
+          "v1_rows": 1006,
+          "v1_units": 1006,
+          "pit_units": 1003
+        },
+        "2021Q3": {
+          "v1_rows": 1011,
+          "v1_units": 1011,
+          "pit_units": 1006
+        },
+        "2021Q4": {
+          "v1_rows": 1017,
+          "v1_units": 1017,
+          "pit_units": 1011
+        },
+        "2022Q1": {
+          "v1_rows": 1022,
+          "v1_units": 1022,
+          "pit_units": 1017
+        },
+        "2022Q2": {
+          "v1_rows": 1030,
+          "v1_units": 1030,
+          "pit_units": 1022
+        },
+        "2022Q3": {
+          "v1_rows": 1032,
+          "v1_units": 1032,
+          "pit_units": 1030
+        },
+        "2022Q4": {
+          "v1_rows": 1037,
+          "v1_units": 1037,
+          "pit_units": 1032
+        },
+        "2023Q1": {
+          "v1_rows": 1045,
+          "v1_units": 1045,
+          "pit_units": 1037
+        },
+        "2023Q2": {
+          "v1_rows": 1049,
+          "v1_units": 1049,
+          "pit_units": 1045
+        },
+        "2023Q3": {
+          "v1_rows": 1052,
+          "v1_units": 1052,
+          "pit_units": 1049
+        },
+        "2023Q4": {
+          "v1_rows": 1056,
+          "v1_units": 1056,
+          "pit_units": 1052
+        },
+        "2024Q1": {
+          "v1_rows": 1061,
+          "v1_units": 1061,
+          "pit_units": 1056
+        },
+        "2024Q2": {
+          "v1_rows": 1067,
+          "v1_units": 1067,
+          "pit_units": 1061
+        },
+        "2024Q3": {
+          "v1_rows": 1076,
+          "v1_units": 1076,
+          "pit_units": 1067
+        },
+        "2024Q4": {
+          "v1_rows": 1087,
+          "v1_units": 1087,
+          "pit_units": 1077
+        },
+        "2025Q1": {
+          "v1_rows": 1093,
+          "v1_units": 1093,
+          "pit_units": 1087
+        },
+        "2025Q2": {
+          "v1_rows": 1096,
+          "v1_units": 1096,
+          "pit_units": 1093
+        }
+      },
+      "requested_origins": {
+        "2004Q1": {
+          "v1_rows": 109,
+          "v1_units": 109,
+          "pit_units": 0
+        },
+        "2010Q1": {
+          "v1_rows": 663,
+          "v1_units": 663,
+          "pit_units": 651
+        },
+        "2014Q1": {
+          "v1_rows": 827,
+          "v1_units": 827,
+          "pit_units": 818
+        },
+        "2020Q1": {
+          "v1_rows": 978,
+          "v1_units": 978,
+          "pit_units": 973
+        },
+        "2024Q2": {
+          "v1_rows": 1067,
+          "v1_units": 1067,
+          "pit_units": 1061
+        }
+      },
+      "first_lag_delay_quarters": {
+        "row_level_min": 0,
+        "row_level_median": 1.0,
+        "row_level_max": 1,
+        "row_counts": {
+          "0": 561,
+          "1": 66523
+        },
+        "unit_counts": {
+          "0": 10,
+          "1": 1086
+        }
+      }
+    }
+  },
+  "future_first": {
+    "panel_cells": 1096,
+    "cells_first_appear_after_2014Q1_any_event": 269,
+    "cells_first_device_event_after_2014Q1": 98,
+    "cells_with_no_device_event_ever": 682,
+    "v1_rows_before_cell_first_event": 0,
+    "v1_negative_rows_at_origins_before_first_event": 0,
+    "v1_rows_at_origins_before_first_device_event (device-naive)": 1352,
+    "v1_negative_rows_at_origins_before_first_device_event": 1128,
+    "late_cells_negatives_before_own_first_device": 931,
+    "interpretation": "v1 already excludes rows before a cell's first EVENT quarter, so a PIT rule adds no exclusions there (count 0 by construction). Rows before a cell's first DEVICE event are included as negatives by v1; excluding them would need future knowledge (hindsight rule, not PIT)."
+  },
+  "zero_history_tracks": {
+    "definition": "panel row with f_n_device_sum8 == 0 (feature-clock trailing 8 quarters including current); dormant = had earlier device activity (cum - sum8 > 0); never = cum == 0",
+    "all_panel_rows": 4904,
+    "rows_trailing8_zero": 1907,
+    "rows_trailing8_zero_share": 0.38886623164763456,
+    "labeled_rows_trailing8_zero": 1602,
+    "dormant": {
+      "rows": 126,
+      "labeled_rows": 110,
+      "positives": 3,
+      "mean_y": 0.02727272727272727,
+      "tracks": 7
+    },
+    "never_yet_active": {
+      "rows": 1781,
+      "labeled_rows": 1492,
+      "positives": 2,
+      "mean_y": 0.0013404825737265416,
+      "tracks": 59,
+      "rows_device_tracks": 81,
+      "rows_t_star_tracks": 1700,
+      "labeled_rows_device_tracks": 23,
+      "labeled_rows_t_star_tracks": 1469
+    },
+    "all_zero_history_label_rate": 0.003121098626716604,
+    "non_zero_history_label_rate": 0.15114964191481342,
+    "zero_history_share_of_negative_pool": 0.4149129644063393,
+    "tracks_with_labeled_rows_in_never_yet_active_stratum": [
+      "aesthetics",
+      "heart_failure",
+      "ivd_poct",
+      "t_addiction",
+      "t_cardiometabolic",
+      "t_cell_therapy",
+      "t_dermatology",
+      "t_gene_therapy",
+      "t_hematology",
+      "t_hepatology",
+      "t_immunology",
+      "t_infectious",
+      "t_musculoskeletal",
+      "t_nephrology",
+      "t_neuroscience",
+      "t_oncology",
+      "t_ophthalmology",
+      "t_pain",
+      "t_rare_disease",
+      "t_respiratory",
+      "t_transplant",
+      "t_urology",
+      "t_vaccines",
+      "t_womens_health"
+    ],
+    "n_tracks_with_labeled_rows_in_never_yet_active_stratum": 24,
+    "tracks_with_zero_device_events_ever": [
+      "t_addiction",
+      "t_cardiometabolic",
+      "t_cell_therapy",
+      "t_dermatology",
+      "t_gene_therapy",
+      "t_hematology",
+      "t_hepatology",
+      "t_immunology",
+      "t_infectious",
+      "t_musculoskeletal",
+      "t_nephrology",
+      "t_neuroscience",
+      "t_oncology",
+      "t_ophthalmology",
+      "t_pain",
+      "t_rare_disease",
+      "t_respiratory",
+      "t_transplant",
+      "t_urology",
+      "t_vaccines",
+      "t_womens_health"
+    ],
+    "warmup_note": "every device track starts with a run of never-yet-active rows: the first event is at best observable one quarter later and the trailing-8Q sum needs 8 more quarters; 21 t_* tracks are never-yet-active for their entire panel life"
+  },
+  "attribution_by_year": [
+    {
+      "year": 2004,
+      "device_events": 3997,
+      "tracked_device_events": 2209,
+      "attributed_device_events": 740,
+      "attributed_over_all_device": 0.18513885414060546,
+      "attributed_over_tracked": 0.33499320959710277
+    },
+    {
+      "year": 2005,
+      "device_events": 3899,
+      "tracked_device_events": 2227,
+      "attributed_device_events": 848,
+      "attributed_over_all_device": 0.2174916645293665,
+      "attributed_over_tracked": 0.38078132016165245
+    },
+    {
+      "year": 2006,
+      "device_events": 4291,
+      "tracked_device_events": 2510,
+      "attributed_device_events": 1117,
+      "attributed_over_all_device": 0.26031228151945934,
+      "attributed_over_tracked": 0.4450199203187251
+    },
+    {
+      "year": 2007,
+      "device_events": 4103,
+      "tracked_device_events": 2476,
+      "attributed_device_events": 1044,
+      "attributed_over_all_device": 0.25444796490372895,
+      "attributed_over_tracked": 0.42164781906300486
+    },
+    {
+      "year": 2008,
+      "device_events": 4544,
+      "tracked_device_events": 3012,
+      "attributed_device_events": 1324,
+      "attributed_over_all_device": 0.2913732394366197,
+      "attributed_over_tracked": 0.4395750332005312
+    },
+    {
+      "year": 2009,
+      "device_events": 4500,
+      "tracked_device_events": 2845,
+      "attributed_device_events": 1311,
+      "attributed_over_all_device": 0.29133333333333333,
+      "attributed_over_tracked": 0.4608084358523726
+    },
+    {
+      "year": 2010,
+      "device_events": 4652,
+      "tracked_device_events": 3038,
+      "attributed_device_events": 1534,
+      "attributed_over_all_device": 0.3297506448839209,
+      "attributed_over_tracked": 0.5049374588545096
+    },
+    {
+      "year": 2011,
+      "device_events": 5348,
+      "tracked_device_events": 3615,
+      "attributed_device_events": 1918,
+      "attributed_over_all_device": 0.3586387434554974,
+      "attributed_over_tracked": 0.530567081604426
+    },
+    {
+      "year": 2012,
+      "device_events": 5546,
+      "tracked_device_events": 3825,
+      "attributed_device_events": 2000,
+      "attributed_over_all_device": 0.36062026685899745,
+      "attributed_over_tracked": 0.5228758169934641
+    },
+    {
+      "year": 2013,
+      "device_events": 5394,
+      "tracked_device_events": 3651,
+      "attributed_device_events": 1911,
+      "attributed_over_all_device": 0.3542825361512792,
+      "attributed_over_tracked": 0.5234182415776499
+    },
+    {
+      "year": 2014,
+      "device_events": 5687,
+      "tracked_device_events": 3832,
+      "attributed_device_events": 1976,
+      "attributed_over_all_device": 0.34745911728503603,
+      "attributed_over_tracked": 0.5156576200417536
+    },
+    {
+      "year": 2015,
+      "device_events": 5189,
+      "tracked_device_events": 3514,
+      "attributed_device_events": 1643,
+      "attributed_over_all_device": 0.3166313355174407,
+      "attributed_over_tracked": 0.46755833807626634
+    },
+    {
+      "year": 2016,
+      "device_events": 5520,
+      "tracked_device_events": 3869,
+      "attributed_device_events": 2009,
+      "attributed_over_all_device": 0.36394927536231886,
+      "attributed_over_tracked": 0.5192556216076506
+    },
+    {
+      "year": 2017,
+      "device_events": 5917,
+      "tracked_device_events": 4097,
+      "attributed_device_events": 2169,
+      "attributed_over_all_device": 0.36657089741423016,
+      "attributed_over_tracked": 0.5294117647058824
+    },
+    {
+      "year": 2018,
+      "device_events": 5852,
+      "tracked_device_events": 4065,
+      "attributed_device_events": 2091,
+      "attributed_over_all_device": 0.35731373889268625,
+      "attributed_over_tracked": 0.5143911439114391
+    },
+    {
+      "year": 2019,
+      "device_events": 5556,
+      "tracked_device_events": 3778,
+      "attributed_device_events": 1893,
+      "attributed_over_all_device": 0.34071274298056153,
+      "attributed_over_tracked": 0.5010587612493382
+    },
+    {
+      "year": 2020,
+      "device_events": 5426,
+      "tracked_device_events": 3779,
+      "attributed_device_events": 1952,
+      "attributed_over_all_device": 0.3597493549576115,
+      "attributed_over_tracked": 0.5165387668695423
+    },
+    {
+      "year": 2021,
+      "device_events": 5227,
+      "tracked_device_events": 3430,
+      "attributed_device_events": 1700,
+      "attributed_over_all_device": 0.32523436005356804,
+      "attributed_over_tracked": 0.4956268221574344
+    },
+    {
+      "year": 2022,
+      "device_events": 5301,
+      "tracked_device_events": 3475,
+      "attributed_device_events": 1637,
+      "attributed_over_all_device": 0.30880965855498965,
+      "attributed_over_tracked": 0.4710791366906475
+    },
+    {
+      "year": 2023,
+      "device_events": 5531,
+      "tracked_device_events": 3754,
+      "attributed_device_events": 1603,
+      "attributed_over_all_device": 0.28982100885915746,
+      "attributed_over_tracked": 0.42701118806606286
+    },
+    {
+      "year": 2024,
+      "device_events": 5359,
+      "tracked_device_events": 3730,
+      "attributed_device_events": 1651,
+      "attributed_over_all_device": 0.30807986564657586,
+      "attributed_over_tracked": 0.442627345844504
+    },
+    {
+      "year": 2025,
+      "device_events": 5447,
+      "tracked_device_events": 3822,
+      "attributed_device_events": 1619,
+      "attributed_over_all_device": 0.29722783183403706,
+      "attributed_over_tracked": 0.42360020931449505
+    }
+  ],
+  "attribution_trend": {
+    "window": [
+      2004,
+      2025
+    ],
+    "rate_definition_A": "attributed device events / device events WITH track_id",
+    "rate_definition_B": "attributed device events / ALL device events",
+    "spearman_year_vs_rate_A": {
+      "rho": 0.18802936194240544,
+      "p": 0.4020487985281267
+    },
+    "spearman_year_vs_rate_B": {
+      "rho": 0.3574251835121401,
+      "p": 0.10245166957794666
+    },
+    "ols_slope_pp_per_year_A": 0.2618183201680682,
+    "ols_slope_pp_per_year_B": 0.37844146627848063,
+    "mean_2004_2008_A": 0.40440346046820325,
+    "mean_2019_2025_A": 0.46822031859886065,
+    "ratio_late_over_early_A": 1.157804925943939,
+    "mean_2004_2008_B": 0.24175280090595602,
+    "mean_2019_2025_B": 0.3185192604123573,
+    "ratio_late_over_early_B": 1.3175411379670596,
+    "min_year_B": 2004,
+    "max_year_B": 2017,
+    "min_rate_B": 0.18513885414060546,
+    "max_rate_B": 0.36657089741423016
+  },
+  "attribution_by_track": {
+    "aesthetics": {
+      "tracked": 1635,
+      "attributed": 4,
+      "rate": 0.0024464831804281344
+    },
+    "ent": {
+      "tracked": 800,
+      "attributed": 27,
+      "rate": 0.03375
+    },
+    "rehab_exo": {
+      "tracked": 790,
+      "attributed": 31,
+      "rate": 0.039240506329113925
+    },
+    "ivd_poct": {
+      "tracked": 200,
+      "attributed": 19,
+      "rate": 0.095
+    },
+    "dental": {
+      "tracked": 4326,
+      "attributed": 414,
+      "rate": 0.0957004160887656
+    },
+    "infection_control": {
+      "tracked": 401,
+      "attributed": 43,
+      "rate": 0.10723192019950124
+    },
+    "wearable_remote": {
+      "tracked": 739,
+      "attributed": 96,
+      "rate": 0.12990527740189445
+    },
+    "cmf": {
+      "tracked": 85,
+      "attributed": 12,
+      "rate": 0.1411764705882353
+    },
+    "ivd_molecular": {
+      "tracked": 1853,
+      "attributed": 276,
+      "rate": 0.1489476524554776
+    },
+    "patient_monitoring": {
+      "tracked": 1750,
+      "attributed": 269,
+      "rate": 0.15371428571428572
+    },
+    "womens_health": {
+      "tracked": 167,
+      "attributed": 26,
+      "rate": 0.15568862275449102
+    },
+    "respiratory": {
+      "tracked": 1606,
+      "attributed": 302,
+      "rate": 0.18804483188044832
+    },
+    "surgical_energy": {
+      "tracked": 1605,
+      "attributed": 319,
+      "rate": 0.1987538940809969
+    },
+    "trauma": {
+      "tracked": 2463,
+      "attributed": 518,
+      "rate": 0.21031262687779131
+    },
+    "medical_ai": {
+      "tracked": 1538,
+      "attributed": 324,
+      "rate": 0.2106631989596879
+    },
+    "spine": {
+      "tracked": 4221,
+      "attributed": 891,
+      "rate": 0.21108742004264391
+    },
+    "wound_care": {
+      "tracked": 1913,
+      "attributed": 471,
+      "rate": 0.24621014113957135
+    },
+    "ivd_immuno": {
+      "tracked": 2474,
+      "attributed": 636,
+      "rate": 0.2570735650767987
+    },
+    "imaging_mr_ct": {
+      "tracked": 4854,
+      "attributed": 1359,
+      "rate": 0.2799752781211372
+    },
+    "general_surgery": {
+      "tracked": 498,
+      "attributed": 140,
+      "rate": 0.28112449799196787
+    },
+    "imaging_us": {
+      "tracked": 1712,
+      "attributed": 514,
+      "rate": 0.3002336448598131
+    },
+    "vascular_access": {
+      "tracked": 1783,
+      "attributed": 543,
+      "rate": 0.3045429052159282
+    },
+    "endoscopy": {
+      "tracked": 1837,
+      "attributed": 635,
+      "rate": 0.3456722917800762
+    },
+    "dialysis": {
+      "tracked": 562,
+      "attributed": 249,
+      "rate": 0.4430604982206406
+    },
+    "ortho_joint": {
+      "tracked": 3561,
+      "attributed": 1822,
+      "rate": 0.5116540297669194
+    },
+    "ophthalmology": {
+      "tracked": 3178,
+      "attributed": 1650,
+      "rate": 0.5191944619257395
+    },
+    "peripheral_vascular": {
+      "tracked": 2046,
+      "attributed": 1097,
+      "rate": 0.5361681329423265
+    },
+    "diabetes_cgm": {
+      "tracked": 1332,
+      "attributed": 729,
+      "rate": 0.5472972972972973
+    },
+    "neurovascular": {
+      "tracked": 1903,
+      "attributed": 1144,
+      "rate": 0.6011560693641619
+    },
+    "heart_failure": {
+      "tracked": 956,
+      "attributed": 611,
+      "rate": 0.6391213389121339
+    },
+    "urology": {
+      "tracked": 2168,
+      "attributed": 1572,
+      "rate": 0.7250922509225092
+    },
+    "coronary": {
+      "tracked": 3007,
+      "attributed": 2249,
+      "rate": 0.7479215164615897
+    },
+    "insulin_delivery": {
+      "tracked": 564,
+      "attributed": 434,
+      "rate": 0.7695035460992907
+    },
+    "ep_pfa": {
+      "tracked": 2185,
+      "attributed": 1790,
+      "rate": 0.8192219679633868
+    },
+    "surgical_robotics": {
+      "tracked": 166,
+      "attributed": 140,
+      "rate": 0.8433734939759037
+    },
+    "structural_heart": {
+      "tracked": 2735,
+      "attributed": 2486,
+      "rate": 0.9089579524680073
+    },
+    "neurostimulation": {
+      "tracked": 2167,
+      "attributed": 1988,
+      "rate": 0.9173973234886941
+    },
+    "cardiac_rhythm": {
+      "tracked": 11969,
+      "attributed": 11232,
+      "rate": 0.9384242626785864
+    }
+  },
+  "attribution_aggregate": {
+    "dbwide_device_events": 233838,
+    "dbwide_tracked": 124628,
+    "dbwide_attributed": 46509,
+    "dbwide_attributed_over_all": 0.19889410617607062,
+    "dbwide_attributed_over_tracked": 0.37318259139198257,
+    "window_device_events": 116804,
+    "window_tracked": 77749,
+    "window_attributed": 37062,
+    "window_attributed_over_all": 0.317300777370638,
+    "window_attributed_over_tracked": 0.47668780305856023,
+    "v1_kept_events_over_all_db_events": 0.20798768175012922,
+    "pre2004_device_events": 117034,
+    "pre2004_tracked": 46879,
+    "pre2004_attributed": 9447
+  },
+  "cell_panel_rows_by_year": {
+    "2004": {
+      "rows": 720,
+      "pos": 375
+    },
+    "2005": {
+      "rows": 1323,
+      "pos": 473
+    },
+    "2006": {
+      "rows": 1727,
+      "pos": 493
+    },
+    "2007": {
+      "rows": 1944,
+      "pos": 528
+    },
+    "2008": {
+      "rows": 2220,
+      "pos": 531
+    },
+    "2009": {
+      "rows": 2516,
+      "pos": 556
+    },
+    "2010": {
+      "rows": 2713,
+      "pos": 565
+    },
+    "2011": {
+      "rows": 2935,
+      "pos": 589
+    },
+    "2012": {
+      "rows": 3093,
+      "pos": 621
+    },
+    "2013": {
+      "rows": 3227,
+      "pos": 630
+    },
+    "2014": {
+      "rows": 3364,
+      "pos": 627
+    },
+    "2015": {
+      "rows": 3498,
+      "pos": 665
+    },
+    "2016": {
+      "rows": 3618,
+      "pos": 665
+    },
+    "2017": {
+      "rows": 3727,
+      "pos": 695
+    },
+    "2018": {
+      "rows": 3801,
+      "pos": 718
+    },
+    "2019": {
+      "rows": 3868,
+      "pos": 682
+    },
+    "2020": {
+      "rows": 3950,
+      "pos": 673
+    },
+    "2021": {
+      "rows": 4037,
+      "pos": 676
+    },
+    "2022": {
+      "rows": 4121,
+      "pos": 693
+    },
+    "2023": {
+      "rows": 4202,
+      "pos": 721
+    },
+    "2024": {
+      "rows": 4291,
+      "pos": 683
+    },
+    "2025": {
+      "rows": 2189,
+      "pos": 346
+    }
+  },
+  "taxonomy_backfill": {
+    "tracks_table_updated_at": {
+      "2026-10-30T19:56:45Z": 38,
+      "2026-10-30T19:19:19Z": 22
+    },
+    "product_codes_rows": 7097,
+    "product_codes_null_track_id": 5139,
+    "product_codes_updated_at": {
+      "2026-10-30T19:02:40Z": 7097
+    },
+    "product_code_to_track_rule": {
+      "device_events_with_product_code": 231622,
+      "product_code_found_in_product_codes": 231393,
+      "events_with_track_id_and_pc_track": 115329,
+      "pc_track_equals_event_track": 115329,
+      "agreement_rate": 1.0,
+      "tracked_events_with_pc_row_but_pc_track_null": 9022,
+      "device_events_with_track_id_but_no_pc_row": 277
+    },
+    "first_tracked_device_quarter_per_track": {
+      "aesthetics": "1977Q2",
+      "cardiac_rhythm": "1976Q3",
+      "cmf": "1976Q4",
+      "coronary": "1976Q4",
+      "dental": "1976Q3",
+      "diabetes_cgm": "1980Q3",
+      "dialysis": "1976Q3",
+      "endoscopy": "1976Q3",
+      "ent": "1976Q3",
+      "ep_pfa": "1981Q2",
+      "general_surgery": "1976Q3",
+      "heart_failure": "1980Q3",
+      "imaging_mr_ct": "1976Q3",
+      "imaging_us": "1976Q3",
+      "infection_control": "1976Q3",
+      "insulin_delivery": "1982Q1",
+      "ivd_immuno": "1976Q2",
+      "ivd_molecular": "1988Q4",
+      "ivd_poct": "1976Q3",
+      "medical_ai": "1976Q4",
+      "neurostimulation": "1978Q1",
+      "neurovascular": "1976Q4",
+      "ophthalmology": "1971Q1",
+      "ortho_joint": "1976Q3",
+      "patient_monitoring": "1976Q3",
+      "peripheral_vascular": "1980Q3",
+      "rehab_exo": "1976Q3",
+      "respiratory": "1976Q3",
+      "spine": "1976Q4",
+      "structural_heart": "1977Q4",
+      "surgical_energy": "1976Q3",
+      "surgical_robotics": "2000Q3",
+      "trauma": "1976Q4",
+      "urology": "1976Q3",
+      "vascular_access": "1976Q3",
+      "wearable_remote": "1977Q1",
+      "womens_health": "1976Q4",
+      "wound_care": "1976Q3"
+    },
+    "n_tracks_first_device_q_1976Q3": 18,
+    "n_tracks_first_device_q_before_1977": 27,
+    "n_tracks_first_device_q_before_2004": 38,
+    "n_device_tracks": 38,
+    "share_tracked_device_events_pre2004": 0.3761514266456976,
+    "distinct_device_tracks_active_at": {
+      "2004Q1": 35,
+      "2010Q1": 37,
+      "2020Q1": 37,
+      "2025Q2": 37
+    },
+    "t_star_tracks_first_panel_quarter": {
+      "t_addiction": "2005Q3",
+      "t_cardiometabolic": "2004Q1",
+      "t_cell_therapy": "2006Q4",
+      "t_dermatology": "2005Q3",
+      "t_gene_therapy": "2018Q2",
+      "t_hematology": "2004Q1",
+      "t_hepatology": "2004Q1",
+      "t_immunology": "2004Q1",
+      "t_infectious": "2004Q1",
+      "t_musculoskeletal": "2004Q1",
+      "t_nephrology": "2004Q4",
+      "t_neuroscience": "2004Q1",
+      "t_oncology": "2004Q1",
+      "t_ophthalmology": "2004Q3",
+      "t_pain": "2005Q3",
+      "t_rare_disease": "2004Q2",
+      "t_respiratory": "2004Q1",
+      "t_transplant": "2004Q2",
+      "t_urology": "2004Q2",
+      "t_vaccines": "2005Q4",
+      "t_womens_health": "2005Q2"
+    },
+    "pre2004_device_events_with_track_id": 46879,
+    "pre2004_device_events_total": 117034,
+    "unknown": [
+      "no historical taxonomy snapshot / version history exists in the DB (tracks has one row per track and one updated_at; product_codes likewise)",
+      "the assignment timestamp per event is not stored; only tracks.updated_at and product_codes.updated_at (both 2026-10-30) bound it",
+      "the keyword/product rules that produced track_id for events without a product_codes row are not stored, so their counterfactual historical assignment cannot be reconstructed or falsified",
+      "it is therefore NOT measurable whether a given 2004-2013 event would have been assigned to the same track by an analyst in 2004-2013"
+    ]
+  },
+  "elapsed_sec": 30.7
+}

@@ -1,0 +1,261 @@
+{
+  "experiment": "EXPLORATORY_MECHANISM_PROBES",
+  "status": "EXPLORATORY — added after Audit C; not in the frozen primary family",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "targets": [
+    {
+      "name": "Y1 frozen ratio target",
+      "target": "y_Y1_growth_ratio",
+      "n": 1723,
+      "n_pos": 176,
+      "prevalence": 0.10214741729541497,
+      "ap_M1": 0.12950319386315878,
+      "ap_M4": 0.1588592660008153,
+      "dap": 0.029356072137656508,
+      "ci95": [
+        0.009484674938284672,
+        0.054305935251539116
+      ],
+      "p": 0.0
+    },
+    {
+      "name": "Y2 additive increase",
+      "target": "y_Y2_abs_increase",
+      "n": 1723,
+      "n_pos": 762,
+      "prevalence": 0.4422518862449216,
+      "ap_M1": 0.4347441978434594,
+      "ap_M4": 0.4687991950822844,
+      "dap": 0.03405499723882499,
+      "ci95": [
+        0.015082402086490459,
+        0.05821369295219234
+      ],
+      "p": 0.0
+    },
+    {
+      "name": "Y3 new plateau",
+      "target": "y_Y3_new_plateau",
+      "n": 1567,
+      "n_pos": 116,
+      "prevalence": 0.07402680280791321,
+      "ap_M1": 0.09850865537151589,
+      "ap_M4": 0.10838930809516095,
+      "dap": 0.009880652723645064,
+      "ci95": [
+        -0.00979090717871681,
+        0.04345676638558339
+      ],
+      "p": 0.38
+    },
+    {
+      "name": "Y5 absolute level (fwd>=3)",
+      "target": "y_Y5_abs_level",
+      "n": 1723,
+      "n_pos": 1430,
+      "prevalence": 0.8299477655252466,
+      "ap_M1": 0.9975324906987179,
+      "ap_M4": 0.9975008205223075,
+      "dap": -3.1670176410369955e-05,
+      "ci95": [
+        -0.0005450551261284686,
+        0.0004462660449068331
+      ],
+      "p": 0.732
+    },
+    {
+      "name": "Y6 any activity (fwd>=1)",
+      "target": "y_Y6_any_activity",
+      "n": 1723,
+      "n_pos": 1557,
+      "prevalence": 0.9036564132327336,
+      "ap_M1": 0.9957817117131913,
+      "ap_M4": 0.9958004539553913,
+      "dap": 1.8742242199998316e-05,
+      "ci95": [
+        -0.0005816813938589571,
+        0.0004981914929610391
+      ],
+      "p": 0.92
+    }
+  ],
+  "feature_blocks": [
+    {
+      "name": "B1_only",
+      "features": [
+        "f_n_device_sum1",
+        "f_n_device_sum2",
+        "f_n_device_sum4",
+        "f_n_device_sum8",
+        "f_n_device_sum12",
+        "f_n_device_cum",
+        "f_n_device_mean4",
+        "f_n_device_std8",
+        "f_n_device_accel",
+        "f_n_device_log4",
+        "exposure_q",
+        "log_exposure"
+      ],
+      "n": 1723,
+      "n_pos": 176,
+      "ap_block": 0.12950319386315878,
+      "ap_M1": 0.12950319386315878,
+      "dap": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "p": 1.0
+    },
+    {
+      "name": "B1+growth_ratios(4)",
+      "features": [
+        "f_n_device_sum1",
+        "f_n_device_sum2",
+        "f_n_device_sum4",
+        "f_n_device_sum8",
+        "f_n_device_sum12",
+        "f_n_device_cum",
+        "f_n_device_mean4",
+        "f_n_device_std8",
+        "f_n_device_accel",
+        "f_n_device_log4",
+        "exposure_q",
+        "log_exposure",
+        "sct_growth1",
+        "sct_growth2",
+        "sct_growth4",
+        "sct_growth8"
+      ],
+      "n": 1723,
+      "n_pos": 176,
+      "ap_block": 0.13220459504466536,
+      "ap_M1": 0.12950319386315878,
+      "dap": 0.0027014011815065797,
+      "ci95": [
+        -0.004209216685989116,
+        0.007708569638607534
+      ],
+      "p": 0.476
+    },
+    {
+      "name": "B1+slope12",
+      "features": [
+        "f_n_device_sum1",
+        "f_n_device_sum2",
+        "f_n_device_sum4",
+        "f_n_device_sum8",
+        "f_n_device_sum12",
+        "f_n_device_cum",
+        "f_n_device_mean4",
+        "f_n_device_std8",
+        "f_n_device_accel",
+        "f_n_device_log4",
+        "exposure_q",
+        "log_exposure",
+        "sct_slope12"
+      ],
+      "n": 1723,
+      "n_pos": 176,
+      "ap_block": 0.1390089736231599,
+      "ap_M1": 0.12950319386315878,
+      "dap": 0.00950577976000111,
+      "ci95": [
+        0.002817057433170965,
+        0.018263387738716812
+      ],
+      "p": 0.0
+    },
+    {
+      "name": "B1+volatility8",
+      "features": [
+        "f_n_device_sum1",
+        "f_n_device_sum2",
+        "f_n_device_sum4",
+        "f_n_device_sum8",
+        "f_n_device_sum12",
+        "f_n_device_cum",
+        "f_n_device_mean4",
+        "f_n_device_std8",
+        "f_n_device_accel",
+        "f_n_device_log4",
+        "exposure_q",
+        "log_exposure",
+        "sct_volatility8"
+      ],
+      "n": 1723,
+      "n_pos": 176,
+      "ap_block": 0.14562793863848367,
+      "ap_M1": 0.12950319386315878,
+      "dap": 0.016124744775324884,
+      "ci95": [
+        0.0007569047155956325,
+        0.035433426356935575
+      ],
+      "p": 0.044
+    },
+    {
+      "name": "B1+pma_share4",
+      "features": [
+        "f_n_device_sum1",
+        "f_n_device_sum2",
+        "f_n_device_sum4",
+        "f_n_device_sum8",
+        "f_n_device_sum12",
+        "f_n_device_cum",
+        "f_n_device_mean4",
+        "f_n_device_std8",
+        "f_n_device_accel",
+        "f_n_device_log4",
+        "exposure_q",
+        "log_exposure",
+        "sct_pma_share4"
+      ],
+      "n": 1723,
+      "n_pos": 176,
+      "ap_block": 0.14269628749483398,
+      "ap_M1": 0.12950319386315878,
+      "dap": 0.013193093631675201,
+      "ci95": [
+        -0.007001941193548337,
+        0.0477710613713635
+      ],
+      "p": 0.176
+    },
+    {
+      "name": "B1+H8_full(7)",
+      "features": [
+        "f_n_device_sum1",
+        "f_n_device_sum2",
+        "f_n_device_sum4",
+        "f_n_device_sum8",
+        "f_n_device_sum12",
+        "f_n_device_cum",
+        "f_n_device_mean4",
+        "f_n_device_std8",
+        "f_n_device_accel",
+        "f_n_device_log4",
+        "exposure_q",
+        "log_exposure",
+        "sct_growth1",
+        "sct_growth2",
+        "sct_growth4",
+        "sct_growth8",
+        "sct_slope12",
+        "sct_pma_share4",
+        "sct_volatility8"
+      ],
+      "n": 1723,
+      "n_pos": 176,
+      "ap_block": 0.1588592660008153,
+      "ap_M1": 0.12950319386315878,
+      "dap": 0.029356072137656508,
+      "ci95": [
+        0.009484674938284672,
+        0.054305935251539116
+      ],
+      "p": 0.0
+    }
+  ],
+  "elapsed_sec": 45.0
+}

@@ -1,0 +1,46 @@
+{
+  "verdict": "NO-GO",
+  "reason": "point estimate is positive but below the pre-registered practical threshold tau=0.03",
+  "gates": {
+    "G1_primary_dap_ge_tau": false,
+    "G1b_primary_ci_low_positive": true,
+    "G2_cross_universe_track38_dap_ge_0.02": false,
+    "G3_placebo_p_lt_0.05": false,
+    "G4_active_stratum_dap_ge_0.02": true,
+    "G5_enough_positives": true,
+    "G6_ci_resolves_tau": true
+  },
+  "artifact_flags": {
+    "vacuous_ratio_positive_share": 0.017045454545454544,
+    "low_base_positive_share": 0.045454545454545456,
+    "majority_of_positives_are_low_base": false,
+    "placebo_collapses_effect": true
+  },
+  "primary_contrast": {
+    "n": 1723,
+    "n_pos": 176,
+    "prevalence": 0.10214741729541497,
+    "n_tracks": 38,
+    "ap_a": 0.1588592660008153,
+    "ap_b": 0.12950319386315878,
+    "dap": 0.029356072137656508,
+    "ci95": [
+      0.0081664631722597,
+      0.05730700440028901
+    ],
+    "p": 0.004,
+    "ci_width": 0.049140541228029314,
+    "folds_ok": 12,
+    "maturity_violating_share": 0.0
+  },
+  "tau": 0.03,
+  "gate_definitions": {
+    "G1": "primary dAP >= 0.03",
+    "G1b": "primary 95% CI lower bound > 0",
+    "G2": "track38 universe dAP >= 0.02",
+    "G3": "within-track time-shuffle placebo p < 0.05",
+    "G4": "active stratum (trail8_total>=1) dAP >= 0.02",
+    "G5": "evaluable positives >= 100",
+    "G6": "95% CI upper bound >= tau=0.03 (otherwise tau is ruled out)"
+  }
+}

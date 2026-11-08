@@ -1,0 +1,916 @@
+{
+  "experiment": "EXP2_MATURITY_ISOLATION",
+  "question": "Does excluding training labels not yet observable at the test decision time change AP / dAP / evaluable sample?",
+  "configs": {
+    "attr59_v1like_L90_labelL000_v1_naive": {
+      "brief": {
+        "n": 2443,
+        "n_pos": 155,
+        "prevalence": 0.0634465820712239,
+        "n_tracks": 59,
+        "ap_a": 0.1613143599731521,
+        "ap_b": 0.12341032292156828,
+        "dap": 0.03790403705158382,
+        "ci95": [
+          0.011669192510462091,
+          0.06305224062851733
+        ],
+        "p": 0.004,
+        "ci_width": 0.05138304811805524,
+        "folds_ok": 11,
+        "maturity_violating_share": 0.07241033426410388
+      },
+      "maturity": {
+        "purge_quarters_required": 5,
+        "violating_rows": 2671,
+        "violating_share": 0.07241033426410388,
+        "rows_depending_on_test_period": 2671,
+        "leak_channel_share": 0.07241033426410388
+      },
+      "arms": {
+        "M0_prevalence": {
+          "model": "M0_prevalence",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.07277284639397505,
+          "ap_ci95": [
+            0.04934180498441794,
+            0.10213537583461753
+          ]
+        },
+        "M1_persistence": {
+          "model": "M1_persistence",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.12341032292156828,
+          "ap_ci95": [
+            0.08858498584312675,
+            0.1742304998640561
+          ]
+        },
+        "M4_h8_growth": {
+          "model": "M4_h8_growth",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.1613143599731521,
+          "ap_ci95": [
+            0.1258771534105149,
+            0.20665364057599217
+          ]
+        }
+      }
+    },
+    "attr59_v1like_L90_labelL000_purged": {
+      "brief": {
+        "n": 2443,
+        "n_pos": 155,
+        "prevalence": 0.0634465820712239,
+        "n_tracks": 59,
+        "ap_a": 0.15669507953291562,
+        "ap_b": 0.12066612930246326,
+        "dap": 0.036028950230452356,
+        "ci95": [
+          0.014201556267375192,
+          0.06249140897387636
+        ],
+        "p": 0.0,
+        "ci_width": 0.04828985270650117,
+        "folds_ok": 11,
+        "maturity_violating_share": 0.0
+      },
+      "maturity": {
+        "purge_quarters_required": 5,
+        "violating_rows": 0,
+        "violating_share": 0.0,
+        "rows_depending_on_test_period": 0,
+        "leak_channel_share": 0.0
+      },
+      "arms": {
+        "M0_prevalence": {
+          "model": "M0_prevalence",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.07277284639397505,
+          "ap_ci95": [
+            0.04934180498441794,
+            0.10213537583461753
+          ]
+        },
+        "M1_persistence": {
+          "model": "M1_persistence",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.12066612930246326,
+          "ap_ci95": [
+            0.08949968750195776,
+            0.1676859883548658
+          ]
+        },
+        "M4_h8_growth": {
+          "model": "M4_h8_growth",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.15669507953291562,
+          "ap_ci95": [
+            0.12122201950028409,
+            0.20465678642657573
+          ]
+        }
+      }
+    },
+    "attr59_v1like_L90_labelL090_v1_naive": {
+      "brief": {
+        "n": 2443,
+        "n_pos": 155,
+        "prevalence": 0.0634465820712239,
+        "n_tracks": 59,
+        "ap_a": 0.1613143599731521,
+        "ap_b": 0.12341032292156828,
+        "dap": 0.03790403705158382,
+        "ci95": [
+          0.011669192510462091,
+          0.06305224062851733
+        ],
+        "p": 0.004,
+        "ci_width": 0.05138304811805524,
+        "folds_ok": 11,
+        "maturity_violating_share": 0.09127877029847914
+      },
+      "maturity": {
+        "purge_quarters_required": 6,
+        "violating_rows": 3367,
+        "violating_share": 0.09127877029847914,
+        "rows_depending_on_test_period": 2671,
+        "leak_channel_share": 0.07241033426410388
+      },
+      "arms": {
+        "M0_prevalence": {
+          "model": "M0_prevalence",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.07277284639397505,
+          "ap_ci95": [
+            0.04934180498441794,
+            0.10213537583461753
+          ]
+        },
+        "M1_persistence": {
+          "model": "M1_persistence",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.12341032292156828,
+          "ap_ci95": [
+            0.08858498584312675,
+            0.1742304998640561
+          ]
+        },
+        "M4_h8_growth": {
+          "model": "M4_h8_growth",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.1613143599731521,
+          "ap_ci95": [
+            0.1258771534105149,
+            0.20665364057599217
+          ]
+        }
+      }
+    },
+    "attr59_v1like_L90_labelL090_purged": {
+      "brief": {
+        "n": 2443,
+        "n_pos": 155,
+        "prevalence": 0.0634465820712239,
+        "n_tracks": 59,
+        "ap_a": 0.15660903708920268,
+        "ap_b": 0.11978583571243599,
+        "dap": 0.03682320137676669,
+        "ci95": [
+          0.0169281273499959,
+          0.06477562245243192
+        ],
+        "p": 0.0,
+        "ci_width": 0.047847495102436015,
+        "folds_ok": 11,
+        "maturity_violating_share": 0.0
+      },
+      "maturity": {
+        "purge_quarters_required": 6,
+        "violating_rows": 0,
+        "violating_share": 0.0,
+        "rows_depending_on_test_period": 0,
+        "leak_channel_share": 0.0
+      },
+      "arms": {
+        "M0_prevalence": {
+          "model": "M0_prevalence",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.07277284639397505,
+          "ap_ci95": [
+            0.04934180498441794,
+            0.10213537583461753
+          ]
+        },
+        "M1_persistence": {
+          "model": "M1_persistence",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.11978583571243599,
+          "ap_ci95": [
+            0.08958563067506084,
+            0.1663241669903949
+          ]
+        },
+        "M4_h8_growth": {
+          "model": "M4_h8_growth",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.15660903708920268,
+          "ap_ci95": [
+            0.12159256589904092,
+            0.20760755298631067
+          ]
+        }
+      }
+    },
+    "attr59_v1like_L90_labelL180_v1_naive": {
+      "brief": {
+        "n": 2443,
+        "n_pos": 155,
+        "prevalence": 0.0634465820712239,
+        "n_tracks": 59,
+        "ap_a": 0.1613143599731521,
+        "ap_b": 0.12341032292156828,
+        "dap": 0.03790403705158382,
+        "ci95": [
+          0.011669192510462091,
+          0.06305224062851733
+        ],
+        "p": 0.004,
+        "ci_width": 0.05138304811805524,
+        "folds_ok": 11,
+        "maturity_violating_share": 0.11012009651096592
+      },
+      "maturity": {
+        "purge_quarters_required": 7,
+        "violating_rows": 4062,
+        "violating_share": 0.11012009651096592,
+        "rows_depending_on_test_period": 2671,
+        "leak_channel_share": 0.07241033426410388
+      },
+      "arms": {
+        "M0_prevalence": {
+          "model": "M0_prevalence",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.07277284639397505,
+          "ap_ci95": [
+            0.04934180498441794,
+            0.10213537583461753
+          ]
+        },
+        "M1_persistence": {
+          "model": "M1_persistence",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.12341032292156828,
+          "ap_ci95": [
+            0.08858498584312675,
+            0.1742304998640561
+          ]
+        },
+        "M4_h8_growth": {
+          "model": "M4_h8_growth",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.1613143599731521,
+          "ap_ci95": [
+            0.1258771534105149,
+            0.20665364057599217
+          ]
+        }
+      }
+    },
+    "attr59_v1like_L90_labelL180_purged": {
+      "brief": {
+        "n": 2443,
+        "n_pos": 155,
+        "prevalence": 0.0634465820712239,
+        "n_tracks": 59,
+        "ap_a": 0.15646227407106889,
+        "ap_b": 0.11670099183387463,
+        "dap": 0.03976128223719426,
+        "ci95": [
+          0.019543067676538673,
+          0.06933693930221893
+        ],
+        "p": 0.0,
+        "ci_width": 0.04979387162568026,
+        "folds_ok": 11,
+        "maturity_violating_share": 0.0
+      },
+      "maturity": {
+        "purge_quarters_required": 7,
+        "violating_rows": 0,
+        "violating_share": 0.0,
+        "rows_depending_on_test_period": 0,
+        "leak_channel_share": 0.0
+      },
+      "arms": {
+        "M0_prevalence": {
+          "model": "M0_prevalence",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.07277284639397505,
+          "ap_ci95": [
+            0.04934180498441794,
+            0.10213537583461753
+          ]
+        },
+        "M1_persistence": {
+          "model": "M1_persistence",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.11670099183387463,
+          "ap_ci95": [
+            0.08871055091637774,
+            0.16298987277479024
+          ]
+        },
+        "M4_h8_growth": {
+          "model": "M4_h8_growth",
+          "n": 2443,
+          "n_pos": 155,
+          "prevalence": 0.0634465820712239,
+          "ap": 0.15646227407106889,
+          "ap_ci95": [
+            0.12015775947338951,
+            0.2089774917529475
+          ]
+        }
+      }
+    },
+    "attr38_v2_L90_labelL090_v1_naive": {
+      "brief": {
+        "n": 1723,
+        "n_pos": 176,
+        "prevalence": 0.10214741729541497,
+        "n_tracks": 38,
+        "ap_a": 0.16671087128259338,
+        "ap_b": 0.13201541988174087,
+        "dap": 0.034695451400852506,
+        "ci95": [
+          0.00813428224168061,
+          0.06184126589659729
+        ],
+        "p": 0.004,
+        "ci_width": 0.053706983654916676,
+        "folds_ok": 12,
+        "maturity_violating_share": 0.09572788186590414
+      },
+      "maturity": {
+        "label_lag_days": 90,
+        "label_lag_quarters_rounded": 1,
+        "purge_quarters_required": 6,
+        "definition": "label_observable_q = q_train + HORIZON_Q + ceil(L/91); permissible <= test_first - 1 (prediction decided at end of test_first quarter)",
+        "total_training_rows": 23431,
+        "total_violating_training_rows": 2243,
+        "total_violating_share": 0.09572788186590414,
+        "total_rows_depending_on_test_period_events": 1795,
+        "total_leak_channel_share": 0.07660791259442619,
+        "per_fold": [
+          {
+            "test_year": 2014,
+            "test_first_qnum": 40,
+            "test_last_qnum": 43,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 39,
+            "rule": "v1_naive",
+            "label_lag_days": 90,
+            "test_first_origin": "2014Q1",
+            "test_last_origin": "2014Q4",
+            "train_latest_origin": "2013Q4",
+            "purge_quarters_used": 1,
+            "n_training_rows": 1134,
+            "max_label_observable_qnum": 44,
+            "latest_permitted_label_observable_qnum": 39,
+            "violating_training_rows": 185,
+            "violating_share": 0.16313932980599646,
+            "training_rows_whose_label_depends_on_test_period_events": 148,
+            "leak_channel_share": 0.13051146384479717
+          },
+          {
+            "test_year": 2015,
+            "test_first_qnum": 44,
+            "test_last_qnum": 47,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 43,
+            "rule": "v1_naive",
+            "label_lag_days": 90,
+            "test_first_origin": "2015Q1",
+            "test_last_origin": "2015Q4",
+            "train_latest_origin": "2014Q4",
+            "purge_quarters_used": 1,
+            "n_training_rows": 1282,
+            "max_label_observable_qnum": 48,
+            "latest_permitted_label_observable_qnum": 43,
+            "violating_training_rows": 185,
+            "violating_share": 0.14430577223088922,
+            "training_rows_whose_label_depends_on_test_period_events": 148,
+            "leak_channel_share": 0.11544461778471139
+          },
+          {
+            "test_year": 2016,
+            "test_first_qnum": 48,
+            "test_last_qnum": 51,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 47,
+            "rule": "v1_naive",
+            "label_lag_days": 90,
+            "test_first_origin": "2016Q1",
+            "test_last_origin": "2016Q4",
+            "train_latest_origin": "2015Q4",
+            "purge_quarters_used": 1,
+            "n_training_rows": 1430,
+            "max_label_observable_qnum": 52,
+            "latest_permitted_label_observable_qnum": 47,
+            "violating_training_rows": 185,
+            "violating_share": 0.12937062937062938,
+            "training_rows_whose_label_depends_on_test_period_events": 148,
+            "leak_channel_share": 0.1034965034965035
+          },
+          {
+            "test_year": 2017,
+            "test_first_qnum": 52,
+            "test_last_qnum": 55,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 51,
+            "rule": "v1_naive",
+            "label_lag_days": 90,
+            "test_first_origin": "2017Q1",
+            "test_last_origin": "2017Q4",
+            "train_latest_origin": "2016Q4",
+            "purge_quarters_used": 1,
+            "n_training_rows": 1578,
+            "max_label_observable_qnum": 56,
+            "latest_permitted_label_observable_qnum": 51,
+            "violating_training_rows": 185,
+            "violating_share": 0.11723700887198986,
+            "training_rows_whose_label_depends_on_test_period_events": 148,
+            "leak_channel_share": 0.09378960709759189
+          },
+          {
+            "test_year": 2018,
+            "test_first_qnum": 56,
+            "test_last_qnum": 59,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 55,
+            "rule": "v1_naive",
+            "label_lag_days": 90,
+            "test_first_origin": "2018Q1",
+            "test_last_origin": "2018Q4",
+            "train_latest_origin": "2017Q4",
+            "purge_quarters_used": 1,
+            "n_training_rows": 1726,
+            "max_label_observable_qnum": 60,
+            "latest_permitted_label_observable_qnum": 55,
+            "violating_training_rows": 185,
+            "violating_share": 0.10718424101969873,
+            "training_rows_whose_label_depends_on_test_period_events": 148,
+            "leak_channel_share": 0.08574739281575898
+          },
+          {
+            "test_year": 2019,
+            "test_first_qnum": 60,
+            "test_last_qnum": 63,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 59,
+            "rule": "v1_naive",
+            "label_lag_days": 90,
+            "test_first_origin": "2019Q1",
+            "test_last_origin": "2019Q4",
+            "train_latest_origin": "2018Q4",
+            "purge_quarters_used": 1,
+            "n_training_rows": 1874,
+            "max_label_observable_qnum": 64,
+            "latest_permitted_label_observable_qnum": 59,
+            "violating_training_rows": 185,
+            "violating_share": 0.09871931696905016,
+            "training_rows_whose_label_depends_on_test_period_events": 148,
+            "leak_channel_share": 0.07897545357524013
+          },
+          {
+            "test_year": 2020,
+            "test_first_qnum": 64,
+            "test_last_qnum": 67,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 63,
+            "rule": "v1_naive",
+            "label_lag_days": 90,
+            "test_first_origin": "2020Q1",
+            "test_last_origin": "2020Q4",
+            "train_latest_origin": "2019Q4",
+            "purge_quarters_used": 1,
+            "n_training_rows": 2022,
+            "max_label_observable_qnum": 68,
+            "latest_permitted_label_observable_qnum": 63,
+            "violating_training_rows": 185,
+            "violating_share": 0.09149357072205737,
+            "training_rows_whose_label_depends_on_test_period_events": 148,
+            "leak_channel_share": 0.07319485657764589
+          },
+          {
+            "test_year": 2021,
+            "test_first_qnum": 68,
+            "test_last_qnum": 71,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 67,
+            "rule": "v1_naive",
+            "label_lag_days": 90,
+            "test_first_origin": "2021Q1",
+            "test_last_origin": "2021Q4",
+            "train_latest_origin": "2020Q4",
+            "purge_quarters_used": 1,
+            "n_training_rows": 2173,
+            "max_label_observable_qnum": 72,
+            "latest_permitted_label_observable_qnum": 67,
+            "violating_training_rows": 188,
+            "violating_share": 0.08651633686148182,
+            "training_rows_whose_label_depends_on_test_period_events": 151,
+            "leak_channel_share": 0.06948918545789232
+          },
+          {
+            "test_year": 2022,
+            "test_first_qnum": 72,
+            "test_last_qnum": 75,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 71,
+            "rule": "v1_naive",
+            "label_lag_days": 90,
+            "test_first_origin": "2022Q1",
+            "test_last_origin": "2022Q4",
+            "train_latest_origin": "2021Q4",
+            "purge_quarters_used": 1,
+            "n_training_rows": 2325,
+            "max_label_observable_qnum": 76,
+            "latest_permitted_label_observable_qnum": 71,
+            "violating_training_rows": 190,
+            "violating_share": 0.08172043010752689,
+            "training_rows_whose_label_depends_on_test_period_events": 152,
+            "leak_channel_share": 0.06537634408602151
+          },
+          {
+            "test_year": 2023,
+            "test_first_qnum": 76,
+            "test_last_qnum": 79,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 75,
+            "rule": "v1_naive",
+            "label_lag_days": 90,
+            "test_first_origin": "2023Q1",
+            "test_last_origin": "2023Q4",
+            "train_latest_origin": "2022Q4",
+            "purge_quarters_used": 1,
+            "n_training_rows": 2477,
+            "max_label_observable_qnum": 80,
+            "latest_permitted_label_observable_qnum": 75,
+            "violating_training_rows": 190,
+            "violating_share": 0.07670569236980218,
+            "training_rows_whose_label_depends_on_test_period_events": 152,
+            "leak_channel_share": 0.06136455389584174
+          },
+          {
+            "test_year": 2024,
+            "test_first_qnum": 80,
+            "test_last_qnum": 83,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 79,
+            "rule": "v1_naive",
+            "label_lag_days": 90,
+            "test_first_origin": "2024Q1",
+            "test_last_origin": "2024Q4",
+            "train_latest_origin": "2023Q4",
+            "purge_quarters_used": 1,
+            "n_training_rows": 2629,
+            "max_label_observable_qnum": 84,
+            "latest_permitted_label_observable_qnum": 79,
+            "violating_training_rows": 190,
+            "violating_share": 0.07227082540890073,
+            "training_rows_whose_label_depends_on_test_period_events": 152,
+            "leak_channel_share": 0.05781666032712058
+          },
+          {
+            "test_year": 2025,
+            "test_first_qnum": 84,
+            "test_last_qnum": 85,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 83,
+            "rule": "v1_naive",
+            "label_lag_days": 90,
+            "test_first_origin": "2025Q1",
+            "test_last_origin": "2025Q2",
+            "train_latest_origin": "2024Q4",
+            "purge_quarters_used": 1,
+            "n_training_rows": 2781,
+            "max_label_observable_qnum": 88,
+            "latest_permitted_label_observable_qnum": 83,
+            "violating_training_rows": 190,
+            "violating_share": 0.06832074793239842,
+            "training_rows_whose_label_depends_on_test_period_events": 152,
+            "leak_channel_share": 0.05465659834591873
+          }
+        ]
+      }
+    },
+    "attr38_v2_L90_labelL090_purged": {
+      "brief": {
+        "n": 1723,
+        "n_pos": 176,
+        "prevalence": 0.10214741729541497,
+        "n_tracks": 38,
+        "ap_a": 0.1588592660008153,
+        "ap_b": 0.12950319386315878,
+        "dap": 0.029356072137656508,
+        "ci95": [
+          0.0081664631722597,
+          0.05730700440028901
+        ],
+        "p": 0.004,
+        "ci_width": 0.049140541228029314,
+        "folds_ok": 12,
+        "maturity_violating_share": 0.0
+      },
+      "maturity": {
+        "label_lag_days": 90,
+        "label_lag_quarters_rounded": 1,
+        "purge_quarters_required": 6,
+        "definition": "label_observable_q = q_train + HORIZON_Q + ceil(L/91); permissible <= test_first - 1 (prediction decided at end of test_first quarter)",
+        "total_training_rows": 21188,
+        "total_violating_training_rows": 0,
+        "total_violating_share": 0.0,
+        "total_rows_depending_on_test_period_events": 0,
+        "total_leak_channel_share": 0.0,
+        "per_fold": [
+          {
+            "test_year": 2014,
+            "test_first_qnum": 40,
+            "test_last_qnum": 43,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 34,
+            "rule": "purged",
+            "label_lag_days": 90,
+            "test_first_origin": "2014Q1",
+            "test_last_origin": "2014Q4",
+            "train_latest_origin": "2012Q3",
+            "purge_quarters_used": 6,
+            "n_training_rows": 949,
+            "max_label_observable_qnum": 39,
+            "latest_permitted_label_observable_qnum": 39,
+            "violating_training_rows": 0,
+            "violating_share": 0.0,
+            "training_rows_whose_label_depends_on_test_period_events": 0,
+            "leak_channel_share": 0.0
+          },
+          {
+            "test_year": 2015,
+            "test_first_qnum": 44,
+            "test_last_qnum": 47,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 38,
+            "rule": "purged",
+            "label_lag_days": 90,
+            "test_first_origin": "2015Q1",
+            "test_last_origin": "2015Q4",
+            "train_latest_origin": "2013Q3",
+            "purge_quarters_used": 6,
+            "n_training_rows": 1097,
+            "max_label_observable_qnum": 43,
+            "latest_permitted_label_observable_qnum": 43,
+            "violating_training_rows": 0,
+            "violating_share": 0.0,
+            "training_rows_whose_label_depends_on_test_period_events": 0,
+            "leak_channel_share": 0.0
+          },
+          {
+            "test_year": 2016,
+            "test_first_qnum": 48,
+            "test_last_qnum": 51,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 42,
+            "rule": "purged",
+            "label_lag_days": 90,
+            "test_first_origin": "2016Q1",
+            "test_last_origin": "2016Q4",
+            "train_latest_origin": "2014Q3",
+            "purge_quarters_used": 6,
+            "n_training_rows": 1245,
+            "max_label_observable_qnum": 47,
+            "latest_permitted_label_observable_qnum": 47,
+            "violating_training_rows": 0,
+            "violating_share": 0.0,
+            "training_rows_whose_label_depends_on_test_period_events": 0,
+            "leak_channel_share": 0.0
+          },
+          {
+            "test_year": 2017,
+            "test_first_qnum": 52,
+            "test_last_qnum": 55,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 46,
+            "rule": "purged",
+            "label_lag_days": 90,
+            "test_first_origin": "2017Q1",
+            "test_last_origin": "2017Q4",
+            "train_latest_origin": "2015Q3",
+            "purge_quarters_used": 6,
+            "n_training_rows": 1393,
+            "max_label_observable_qnum": 51,
+            "latest_permitted_label_observable_qnum": 51,
+            "violating_training_rows": 0,
+            "violating_share": 0.0,
+            "training_rows_whose_label_depends_on_test_period_events": 0,
+            "leak_channel_share": 0.0
+          },
+          {
+            "test_year": 2018,
+            "test_first_qnum": 56,
+            "test_last_qnum": 59,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 50,
+            "rule": "purged",
+            "label_lag_days": 90,
+            "test_first_origin": "2018Q1",
+            "test_last_origin": "2018Q4",
+            "train_latest_origin": "2016Q3",
+            "purge_quarters_used": 6,
+            "n_training_rows": 1541,
+            "max_label_observable_qnum": 55,
+            "latest_permitted_label_observable_qnum": 55,
+            "violating_training_rows": 0,
+            "violating_share": 0.0,
+            "training_rows_whose_label_depends_on_test_period_events": 0,
+            "leak_channel_share": 0.0
+          },
+          {
+            "test_year": 2019,
+            "test_first_qnum": 60,
+            "test_last_qnum": 63,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 54,
+            "rule": "purged",
+            "label_lag_days": 90,
+            "test_first_origin": "2019Q1",
+            "test_last_origin": "2019Q4",
+            "train_latest_origin": "2017Q3",
+            "purge_quarters_used": 6,
+            "n_training_rows": 1689,
+            "max_label_observable_qnum": 59,
+            "latest_permitted_label_observable_qnum": 59,
+            "violating_training_rows": 0,
+            "violating_share": 0.0,
+            "training_rows_whose_label_depends_on_test_period_events": 0,
+            "leak_channel_share": 0.0
+          },
+          {
+            "test_year": 2020,
+            "test_first_qnum": 64,
+            "test_last_qnum": 67,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 58,
+            "rule": "purged",
+            "label_lag_days": 90,
+            "test_first_origin": "2020Q1",
+            "test_last_origin": "2020Q4",
+            "train_latest_origin": "2018Q3",
+            "purge_quarters_used": 6,
+            "n_training_rows": 1837,
+            "max_label_observable_qnum": 63,
+            "latest_permitted_label_observable_qnum": 63,
+            "violating_training_rows": 0,
+            "violating_share": 0.0,
+            "training_rows_whose_label_depends_on_test_period_events": 0,
+            "leak_channel_share": 0.0
+          },
+          {
+            "test_year": 2021,
+            "test_first_qnum": 68,
+            "test_last_qnum": 71,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 62,
+            "rule": "purged",
+            "label_lag_days": 90,
+            "test_first_origin": "2021Q1",
+            "test_last_origin": "2021Q4",
+            "train_latest_origin": "2019Q3",
+            "purge_quarters_used": 6,
+            "n_training_rows": 1985,
+            "max_label_observable_qnum": 67,
+            "latest_permitted_label_observable_qnum": 67,
+            "violating_training_rows": 0,
+            "violating_share": 0.0,
+            "training_rows_whose_label_depends_on_test_period_events": 0,
+            "leak_channel_share": 0.0
+          },
+          {
+            "test_year": 2022,
+            "test_first_qnum": 72,
+            "test_last_qnum": 75,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 66,
+            "rule": "purged",
+            "label_lag_days": 90,
+            "test_first_origin": "2022Q1",
+            "test_last_origin": "2022Q4",
+            "train_latest_origin": "2020Q3",
+            "purge_quarters_used": 6,
+            "n_training_rows": 2135,
+            "max_label_observable_qnum": 71,
+            "latest_permitted_label_observable_qnum": 71,
+            "violating_training_rows": 0,
+            "violating_share": 0.0,
+            "training_rows_whose_label_depends_on_test_period_events": 0,
+            "leak_channel_share": 0.0
+          },
+          {
+            "test_year": 2023,
+            "test_first_qnum": 76,
+            "test_last_qnum": 79,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 70,
+            "rule": "purged",
+            "label_lag_days": 90,
+            "test_first_origin": "2023Q1",
+            "test_last_origin": "2023Q4",
+            "train_latest_origin": "2021Q3",
+            "purge_quarters_used": 6,
+            "n_training_rows": 2287,
+            "max_label_observable_qnum": 75,
+            "latest_permitted_label_observable_qnum": 75,
+            "violating_training_rows": 0,
+            "violating_share": 0.0,
+            "training_rows_whose_label_depends_on_test_period_events": 0,
+            "leak_channel_share": 0.0
+          },
+          {
+            "test_year": 2024,
+            "test_first_qnum": 80,
+            "test_last_qnum": 83,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 74,
+            "rule": "purged",
+            "label_lag_days": 90,
+            "test_first_origin": "2024Q1",
+            "test_last_origin": "2024Q4",
+            "train_latest_origin": "2022Q3",
+            "purge_quarters_used": 6,
+            "n_training_rows": 2439,
+            "max_label_observable_qnum": 79,
+            "latest_permitted_label_observable_qnum": 79,
+            "violating_training_rows": 0,
+            "violating_share": 0.0,
+            "training_rows_whose_label_depends_on_test_period_events": 0,
+            "leak_channel_share": 0.0
+          },
+          {
+            "test_year": 2025,
+            "test_first_qnum": 84,
+            "test_last_qnum": 85,
+            "train_start_qnum": 0,
+            "train_latest_qnum": 78,
+            "rule": "purged",
+            "label_lag_days": 90,
+            "test_first_origin": "2025Q1",
+            "test_last_origin": "2025Q2",
+            "train_latest_origin": "2023Q3",
+            "purge_quarters_used": 6,
+            "n_training_rows": 2591,
+            "max_label_observable_qnum": 83,
+            "latest_permitted_label_observable_qnum": 83,
+            "violating_training_rows": 0,
+            "violating_share": 0.0,
+            "training_rows_whose_label_depends_on_test_period_events": 0,
+            "leak_channel_share": 0.0
+          }
+        ]
+      }
+    }
+  }
+}

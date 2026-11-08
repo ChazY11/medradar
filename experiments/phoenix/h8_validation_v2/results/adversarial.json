@@ -1,0 +1,206 @@
+{
+  "experiment": "ADVERSARIAL",
+  "target": "Y1_growth_ratio",
+  "panel": "attr38 v2, feature L090, label L090, purged folds",
+  "observed_dap": 0.029356072137656508,
+  "A1_within_track_time_shuffle": {
+    "n_perm": 200,
+    "observed_dap": 0.029356072137656508,
+    "null_mean": 0.017111873223565575,
+    "null_sd": 0.0076532799933159545,
+    "null_p05": 0.005919058978998667,
+    "null_p95": 0.03092577776294894,
+    "p_one_sided": 0.0845771144278607,
+    "interpretation": "destroying the within-track time alignment of the growth features should remove the gain if it is time-aligned information"
+  },
+  "A2_cross_track_shuffle": {
+    "n_perm": 100,
+    "observed_dap": 0.029356072137656508,
+    "null_mean": 0.0012128734888255386,
+    "null_sd": 0.0032150618699885963,
+    "p_one_sided": 0.009900990099009901
+  },
+  "A3_time_shifted_growth_t_minus_8": {
+    "shift_quarters": 8,
+    "dap": 0.0016547514676311381,
+    "delta_vs_observed": -0.02770132067002537,
+    "interpretation": "a generic activity signal would survive a lag-8 shift; a recent-growth signal should not"
+  },
+  "A4_strata": {
+    "excl_low_base_trail8_le_2": {
+      "n": 1509,
+      "n_pos": 168,
+      "diff": 0.016380441353059716,
+      "lo": -0.0073998641759993765,
+      "hi": 0.043090963385423814,
+      "p": 0.18,
+      "ap_a": 0.18197940103779675,
+      "ap_b": 0.16559895968473703,
+      "n_boot": 1000,
+      "ci_width": 0.05049082756142319,
+      "a": "M4_h8_growth",
+      "b": "M1_persistence"
+    },
+    "low_base_trail8_le_2": {
+      "n": 214,
+      "n_pos": 8,
+      "diff": 0.008807762405517734,
+      "lo": 0.001139729773639897,
+      "hi": 0.047447122829128094,
+      "p": 0.022044088176352707,
+      "ap_a": 0.041565556877150286,
+      "ap_b": 0.03275779447163255,
+      "n_boot": 998,
+      "ci_width": 0.0463073930554882,
+      "a": "M4_h8_growth",
+      "b": "M1_persistence"
+    },
+    "active": {
+      "n": 1617,
+      "n_pos": 173,
+      "diff": 0.022733872739621158,
+      "lo": 0.0024320008231864033,
+      "hi": 0.04991491781834277,
+      "p": 0.022,
+      "ap_a": 0.16396560912214217,
+      "ap_b": 0.141231736382521,
+      "n_boot": 1000,
+      "ci_width": 0.04748291699515637,
+      "a": "M4_h8_growth",
+      "b": "M1_persistence"
+    }
+  },
+  "A5_attribution_strata": {
+    "high_ge_50pct": {
+      "n": 644,
+      "n_pos": 57,
+      "ap_M1": 0.2654487546882189,
+      "ap_M4": 0.2459364904467196,
+      "delta_ap": -0.019512264241499266
+    },
+    "low_lt_50pct": {
+      "n": 1079,
+      "n_pos": 119,
+      "ap_M1": 0.11496413352748962,
+      "ap_M4": 0.14492465881786415,
+      "delta_ap": 0.02996052529037453
+    }
+  },
+  "A6_deduplicated_records": {
+    "brief": {
+      "n": 1723,
+      "n_pos": 160,
+      "prevalence": 0.09286128845037725,
+      "n_tracks": 38,
+      "ap_a": 0.14920039731486975,
+      "ap_b": 0.14438764440080942,
+      "dap": 0.004812752914060331,
+      "ci95": [
+        -0.02207482390119378,
+        0.0346771753618098
+      ],
+      "p": 0.508,
+      "ci_width": 0.05675199926300358,
+      "folds_ok": 12,
+      "maturity_violating_share": 0.0
+    },
+    "duplicates": {
+      "tracked_device_events": 37062,
+      "exact_duplicate_rows_incl_first": 12688,
+      "exact_duplicate_groups": 4972,
+      "same_track_day_product_rows_incl_first": 12680,
+      "product_same_day_both_510k_and_pma": 0
+    },
+    "interpretation": "if the effect depends on duplicate regulatory rows, removing them should shrink it"
+  },
+  "A7_fold_sensitivity": {
+    "first2012_expanding": {
+      "n": 2019,
+      "n_pos": 230,
+      "prevalence": 0.11391778107974244,
+      "n_tracks": 38,
+      "ap_a": 0.20153117345751045,
+      "ap_b": 0.17016343759863656,
+      "dap": 0.031367735858873896,
+      "ci95": [
+        0.0027428390791857087,
+        0.07588709100241672
+      ],
+      "p": 0.032,
+      "ci_width": 0.07314425192323101,
+      "folds_ok": 14,
+      "maturity_violating_share": 0.0
+    },
+    "first2014_expanding": {
+      "n": 1723,
+      "n_pos": 176,
+      "prevalence": 0.10214741729541497,
+      "n_tracks": 38,
+      "ap_a": 0.1588592660008153,
+      "ap_b": 0.12950319386315878,
+      "dap": 0.029356072137656508,
+      "ci95": [
+        0.009484674938284672,
+        0.054305935251539116
+      ],
+      "p": 0.0,
+      "ci_width": 0.044821260313254445,
+      "folds_ok": 12,
+      "maturity_violating_share": 0.0
+    },
+    "first2016_expanding": {
+      "n": 1427,
+      "n_pos": 145,
+      "prevalence": 0.10161177295024527,
+      "n_tracks": 38,
+      "ap_a": 0.17081741053958588,
+      "ap_b": 0.132344302465579,
+      "dap": 0.03847310807400689,
+      "ci95": [
+        -0.013473235448174877,
+        0.0687158314724197
+      ],
+      "p": 0.104,
+      "ci_width": 0.08218906692059458,
+      "folds_ok": 10,
+      "maturity_violating_share": 0.0
+    },
+    "first2014_rolling8": {
+      "n": 1723,
+      "n_pos": 176,
+      "prevalence": 0.10214741729541497,
+      "n_tracks": 38,
+      "ap_a": 0.14461615268831066,
+      "ap_b": 0.12583051286651026,
+      "dap": 0.0187856398218004,
+      "ci95": [
+        0.0015575741764534622,
+        0.04301574444544262
+      ],
+      "p": 0.036,
+      "ci_width": 0.04145817026898916,
+      "folds_ok": 12,
+      "maturity_violating_share": 0.0
+    }
+  },
+  "A8_negative_control_trial_growth": {
+    "brief": {
+      "n": 1723,
+      "n_pos": 460,
+      "prevalence": 0.2669762042948346,
+      "n_tracks": 38,
+      "ap_a": 0.2838975427855909,
+      "ap_b": 0.27885862123965804,
+      "dap": 0.0050389215459328285,
+      "ci95": [
+        -0.016636776986223064,
+        0.018259587769594608
+      ],
+      "p": 0.62,
+      "ci_width": 0.03489636475581767,
+      "folds_ok": 12,
+      "maturity_violating_share": 0.0
+    },
+    "interpretation": "device growth features predicting trial growth is a generic activity signal; the contrast is device persistence vs device growth on a trial-event target"
+  }
+}
