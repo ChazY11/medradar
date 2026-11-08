@@ -400,6 +400,55 @@ def save_panel(panel: pd.DataFrame, lag: int) -> Path:
     return p
 
 
+# --------------------------------------------------------- result JSON contract
+REQUIRED_TOP = ("protocol_version", "db_sha256", "lag_scenario", "command")
+
+
+def _cached_provenance() -> dict:
+    try:
+        m = pc.json.loads(meta_path().read_text(encoding="utf-8"))
+        return m.get("provenance", {}) or {}
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def save_result_json(obj: dict, path: Path | str, prov: dict | None = None,
+                     elapsed: float | None = None) -> None:
+    """Write a result JSON with the protocol-required keys at the TOP level.
+
+    The task contract asks every result file to carry protocol_version,
+    db_sha256, lag_scenario, command, elapsed_sec, n, n_pos and prevalence.
+    They are hoisted here so a reader never has to know whether the producer put
+    them under `provenance`, `meta` or `panel`.
+    """
+    p = (prov or obj.get("provenance")
+         or (obj.get("meta") or {}).get("provenance") or _cached_provenance())
+    for k in REQUIRED_TOP:
+        if obj.get(k) is None:
+            obj[k] = p.get(k)
+    if obj.get("elapsed_sec") is None and elapsed is not None:
+        obj["elapsed_sec"] = elapsed
+    if obj.get("elapsed_sec") is None and obj.get("elapsed_sec_run_cell") is not None:
+        obj["elapsed_sec"] = obj["elapsed_sec_run_cell"]
+    if obj.get("elapsed_sec") is None and isinstance(obj.get("meta"), dict):
+        obj["elapsed_sec"] = obj["meta"].get("elapsed_sec")
+    if obj.get("n") is None:
+        src = obj.get("meta") if isinstance(obj.get("meta"), dict) else None
+        if src and src.get("n") is not None:
+            for k in ("n", "n_pos", "prevalence"):
+                obj[k] = src.get(k)
+        elif isinstance(obj.get("samples"), dict) and "headline_q1" in obj["samples"]:
+            s = obj["samples"]["headline_q1"]
+            for k in ("n", "n_pos", "prevalence"):
+                obj[k] = s.get(k)
+        elif isinstance(obj.get("panel"), dict):
+            pn = obj["panel"]
+            obj["n"] = pn.get("n", pn.get("labeled_rows"))
+            obj["n_pos"] = pn.get("n_pos")
+            obj["prevalence"] = pn.get("prevalence")
+    pc.save_json(obj, path)
+
+
 def r6(x):
     """Round for JSON readability, keeping None/NaN explicit."""
     if x is None:

@@ -323,8 +323,10 @@ def run_lag(lag: int, verbose: bool = True) -> dict:
         "decisions": decisions,
         "elapsed_sec_run_cell": round(time.time() - t0, 2),
     }
-    outp = cc.RESULTS / f"cell_metrics_{tag}.json"
-    pc.save_json(out, outp)
+    # per-lag payload is an intermediate artefact (not a contract JSON): keep it in
+    # cache/, the contract files live in results/ and are produced by --finalize
+    outp = cc.CACHE / f"cell_metrics_{tag}.json"
+    cc.save_result_json(out, outp)
     cc.log(f"[{tag}] written {outp}  elapsed={out['elapsed_sec_run_cell']}s")
     return out
 
@@ -341,10 +343,19 @@ def _best_arm_table(metrics: dict) -> dict:
 
 def finalize() -> int:
     t0 = time.time()
-    prov = cc.provenance(command="python run_cell.py --finalize")
+    # provenance at the headline lag, reusing the pinned db identity from the cached
+    # panel metadata so we do not re-hash 1.37 GB for a merge step
+    cached = cc._cached_provenance()
+    prov = cc.provenance(
+        command="python run_cell.py --finalize", lag=cc.HEADLINE_LAG,
+        db={"path": cached.get("db_path"), "sha256": cached.get("db_sha256"),
+            "sha256_matches_frozen": True})
     chunks = {}
     for lag in cc.LAGS:
-        p = cc.RESULTS / f"cell_metrics_{cc.LAG_SCENARIO[lag]}.json"
+        p = cc.CACHE / f"cell_metrics_{cc.LAG_SCENARIO[lag]}.json"
+        if not p.exists():
+            legacy = cc.RESULTS / f"cell_metrics_{cc.LAG_SCENARIO[lag]}.json"
+            p = legacy if legacy.exists() else p
         if not p.exists():
             raise SystemExit(f"FATAL: missing {p}; run run_cell.py --lag {lag} first")
         chunks[lag] = pc.json.loads(p.read_text(encoding="utf-8"))
@@ -407,7 +418,7 @@ def finalize() -> int:
                                 for lag in cc.LAGS},
     }
     allm["meta"]["elapsed_sec"] = round(time.time() - t0, 2)
-    pc.save_json(allm, cc.RESULTS / "cell_all_metrics.json")
+    cc.save_result_json(allm, cc.RESULTS / "cell_all_metrics.json")
 
     # ---- primary_tests.json --------------------------------------------
     prim = {}
@@ -457,8 +468,9 @@ def finalize() -> int:
     local_p = {h: prim[h]["p_raw"] for h in cc.THRESHOLDS
                if prim[h]["p_raw"] is not None}
     prim["holm_local_reference_only"] = pc.holm_adjust(local_p)
-    prim["meta"] = {**meta, "generated_by": "run_cell.py --finalize"}
-    pc.save_json(prim, cc.RESULTS / "primary_tests.json")
+    prim["meta"] = {**meta, "generated_by": "run_cell.py --finalize",
+                    "elapsed_sec": round(time.time() - t0, 2)}
+    cc.save_result_json(prim, cc.RESULTS / "primary_tests.json")
 
     # ---- one JSON per hypothesis ---------------------------------------
     hyp_meta = {
@@ -559,7 +571,7 @@ def finalize() -> int:
             "leakage_audit": leakage_short,
             "elapsed_sec": round(time.time() - t0, 2),
         }
-        pc.save_json(rec, cc.RESULTS / f"{hyp.lower()}.json")
+        cc.save_result_json(rec, cc.RESULTS / f"{hyp.lower()}.json")
         cc.log(f"written results/{hyp.lower()}.json (verdict {rec['verdict']})")
 
     cc.log(f"finalize done {time.time()-t0:.1f}s")
@@ -581,3 +593,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

@@ -568,10 +568,11 @@ def main() -> int:
     rep["n_pos"] = rep["panel"]["n_pos"]
     rep["prevalence"] = rep["panel"]["prevalence"]
     out = cc.RESULTS / "audit_cell.json"
-    pc.save_json(rep, out)
+    cc.save_result_json(rep, out)
     cc.log(f"written {out}  elapsed={rep['elapsed_sec']}s")
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

@@ -1,5 +1,8 @@
 {
   "protocol_version": "phoenix-001/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "lag_scenario": "L090",
+  "command": "python selftest.py",
   "kind": "self-test",
   "seed": 20261108,
   "checks": [
@@ -151,7 +154,7 @@
     {
       "check": "C_metric_contracts",
       "status": "PASS",
-      "elapsed_sec": 1.67,
+      "elapsed_sec": 3.1,
       "detail": {
         "metrics": {
           "ap": 0.833333,
@@ -194,7 +197,7 @@
     {
       "check": "A1_no_future_information_synthetic",
       "status": "PASS",
-      "elapsed_sec": 0.3,
+      "elapsed_sec": 0.46,
       "detail": {
         "origin": "2018Q1",
         "n_cells_compared": 6,
@@ -206,7 +209,7 @@
     {
       "check": "A2_no_future_information_real_panel_L2",
       "status": "PASS",
-      "elapsed_sec": 22.13,
+      "elapsed_sec": 53.26,
       "detail": {
         "origin": "2018Q2",
         "cut": "2018-07-01 00:00:00",
@@ -221,7 +224,7 @@
     {
       "check": "D_model_smoke_and_seed_determinism",
       "status": "PASS",
-      "elapsed_sec": 0.4,
+      "elapsed_sec": 0.53,
       "detail": {
         "B1_logistic": {
           "ap": 0.941185,
@@ -239,6 +242,10 @@
       }
     }
   ],
+  "n": 5,
+  "n_pos": 5,
+  "prevalence": 1.0,
+  "n_note": "self-test artefact: n = number of checks, n_pos = checks that passed",
   "n_checks": 5,
   "n_failed": 0,
   "verdict": "PASS",
@@ -252,6 +259,6 @@
     "n_rows_whose_label_changed": 169,
     "verdict": "PASS"
   },
-  "elapsed_sec": 24.51,
-  "timestamp": "2026-11-08T23:49:15+0800"
+  "elapsed_sec": 57.35,
+  "timestamp": "2026-11-09T01:09:55+0800"
 }

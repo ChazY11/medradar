@@ -15,8 +15,8 @@
       "db_path": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
       "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
       "db_sha256_matches_frozen": true,
-      "lag_days": null,
-      "lag_scenario": null,
+      "lag_days": 90,
+      "lag_scenario": "L090",
       "command": "python run_cell.py --finalize",
       "seed": 20261108,
       "bootstrap_B": 1000,
@@ -24,7 +24,7 @@
       "pandas": "3.0.3",
       "numpy": "2.5.1",
       "git_head": "ref: refs/heads/research/phoenix-001-external-methods",
-      "written_at": "2026-11-09T00:17:20+0800"
+      "written_at": "2026-11-09T01:09:56+0800"
     },
     "headline_lag": "L090",
     "hypotheses": [
@@ -2395,7 +2395,7 @@
           }
         ]
       },
-      "elapsed_sec": 523.7
+      "elapsed_sec": 581.47
     },
     "L090": {
       "lag_days": 90,
@@ -4394,7 +4394,7 @@
           }
         ]
       },
-      "elapsed_sec": 526.39
+      "elapsed_sec": 566.05
     },
     "L180": {
       "lag_days": 180,
@@ -6393,7 +6393,7 @@
           }
         ]
       },
-      "elapsed_sec": 508.78
+      "elapsed_sec": 624.22
     }
   },
   "leakage_audit": {
@@ -6403,5 +6403,12 @@
     "high_correlation_features_gt_0.80": {},
     "suspected_label_leak": []
   },
-  "elapsed_sec": 11.57
+  "elapsed_sec": 0.22,
+  "protocol_version": "phoenix-001/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "lag_scenario": "L090",
+  "command": "python run_cell.py --finalize",
+  "n": 11613,
+  "n_pos": 2045,
+  "prevalence": 0.176096
 }
