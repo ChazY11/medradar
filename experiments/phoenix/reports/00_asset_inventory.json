@@ -1,0 +1,1325 @@
+{
+  "generated_at": "2026-11-08T15:10:06.583043+00:00",
+  "repo": "D:\\DEPPSKK\\medradar",
+  "db": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
+  "db_exists": true,
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "os": "nt",
+  "db_size_bytes": 1368469504,
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "db_mtime_utc": "2026-10-31T05:28:25.704931+00:00",
+  "schema": {
+    "tables": [
+      {
+        "name": "companies",
+        "columns": [
+          {
+            "name": "key",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "name_en",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "name_zh",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "ticker",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "cik",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "sector",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "country",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "is_major",
+            "type": "INTEGER",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "aliases",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "updated_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 89
+      },
+      {
+        "name": "events",
+        "columns": [
+          {
+            "name": "event_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "source",
+            "type": "TEXT",
+            "notnull": 1,
+            "pk": 0
+          },
+          {
+            "name": "kind",
+            "type": "TEXT",
+            "notnull": 1,
+            "pk": 0
+          },
+          {
+            "name": "event_date",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "as_of",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "company_key",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "applicant_raw",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "country",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "track_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "product_code",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "title",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "summary",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "url",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "payload",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "fetched_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "published_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "first_seen_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "available_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "timestamp_quality",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 375378
+      },
+      {
+        "name": "live_alerts",
+        "columns": [
+          {
+            "name": "alert_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "source",
+            "type": "TEXT",
+            "notnull": 1,
+            "pk": 0
+          },
+          {
+            "name": "kind",
+            "type": "TEXT",
+            "notnull": 1,
+            "pk": 0
+          },
+          {
+            "name": "ticker",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "company_key",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "direction",
+            "type": "INTEGER",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "score",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "headline",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "url",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "event_time",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "detected_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "payload",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 11
+      },
+      {
+        "name": "live_equity",
+        "columns": [
+          {
+            "name": "ts",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "cash",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "market_value",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "equity",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "n_positions",
+            "type": "INTEGER",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "note",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 4
+      },
+      {
+        "name": "live_pending",
+        "columns": [
+          {
+            "name": "alert_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "ticker",
+            "type": "TEXT",
+            "notnull": 1,
+            "pk": 0
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "attempts",
+            "type": "INTEGER",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "last_attempt_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "last_reason",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 0
+      },
+      {
+        "name": "live_skips",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "ts",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "alert_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "ticker",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 0
+      },
+      {
+        "name": "llm_verdicts",
+        "columns": [
+          {
+            "name": "content_hash",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "model",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "verdict",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 0
+      },
+      {
+        "name": "meta",
+        "columns": [
+          {
+            "name": "key",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "value",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 5
+      },
+      {
+        "name": "paper_equity",
+        "columns": [
+          {
+            "name": "date",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "equity",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "cash",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "exposure",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "drawdown",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 236
+      },
+      {
+        "name": "paper_orders",
+        "columns": [
+          {
+            "name": "order_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "alert_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "ticker",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "side",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "qty",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "fill_price",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "fill_time",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "quote_time",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "slippage_bps",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "note",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 0
+      },
+      {
+        "name": "paper_trades",
+        "columns": [
+          {
+            "name": "trade_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "signal_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "ticker",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "side",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "entry_date",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "entry_price",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "exit_date",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "exit_price",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "shares",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "pnl",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "ret",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "reason",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 38
+      },
+      {
+        "name": "positions",
+        "columns": [
+          {
+            "name": "ticker",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "qty",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "avg_price",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "opened_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "track_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "last_price",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "last_quote_time",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "market_value",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "unrealized_pnl",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 0
+      },
+      {
+        "name": "prices",
+        "columns": [
+          {
+            "name": "ticker",
+            "type": "TEXT",
+            "notnull": 1,
+            "pk": 1
+          },
+          {
+            "name": "date",
+            "type": "TEXT",
+            "notnull": 1,
+            "pk": 2
+          },
+          {
+            "name": "open",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "high",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "low",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "close",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "adj_close",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "volume",
+            "type": "INTEGER",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 1898409
+      },
+      {
+        "name": "product_codes",
+        "columns": [
+          {
+            "name": "product_code",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "track_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "device_name",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "definition",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "specialty",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "regulation_number",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "updated_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 7097
+      },
+      {
+        "name": "runs",
+        "columns": [
+          {
+            "name": "run_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "started_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "finished_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "stage",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "stats",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 14
+      },
+      {
+        "name": "signals",
+        "columns": [
+          {
+            "name": "signal_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "event_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "company_key",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "ticker",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "signal_date",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "kind",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "direction",
+            "type": "INTEGER",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "score",
+            "type": "REAL",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "track_id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "reason_zh",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "available_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "timestamp_quality",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 127
+      },
+      {
+        "name": "sqlite_sequence",
+        "columns": [
+          {
+            "name": "name",
+            "type": "",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "seq",
+            "type": "",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 0
+      },
+      {
+        "name": "tracks",
+        "columns": [
+          {
+            "name": "id",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 1
+          },
+          {
+            "name": "name_zh",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "name_en",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "category",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "keywords",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          },
+          {
+            "name": "updated_at",
+            "type": "TEXT",
+            "notnull": 0,
+            "pk": 0
+          }
+        ],
+        "rows": 60
+      }
+    ],
+    "views": []
+  },
+  "integrity_check": "ok",
+  "page_count": 334099,
+  "freelist_count": 0,
+  "events_kind": [
+    {
+      "kind": "510k",
+      "n": 176466
+    },
+    {
+      "kind": "device_recall",
+      "n": 59646
+    },
+    {
+      "kind": "pma",
+      "n": 57372
+    },
+    {
+      "kind": "trial",
+      "n": 55592
+    },
+    {
+      "kind": "8k_catalyst",
+      "n": 20976
+    },
+    {
+      "kind": "drug_approval",
+      "n": 5326
+    }
+  ],
+  "events_source": [
+    {
+      "source": "openfda_device_510k",
+      "n": 176466
+    },
+    {
+      "source": "openfda_device_recall",
+      "n": 59646
+    },
+    {
+      "source": "openfda_device_pma",
+      "n": 57372
+    },
+    {
+      "source": "ctgov",
+      "n": 55592
+    },
+    {
+      "source": "sec_edgar_corpus",
+      "n": 20976
+    },
+    {
+      "source": "openfda_drug_drugsfda",
+      "n": 5326
+    }
+  ],
+  "events_year": [
+    {
+      "year": "1966",
+      "n": 2
+    },
+    {
+      "year": "1967",
+      "n": 32
+    },
+    {
+      "year": "1968",
+      "n": 23
+    },
+    {
+      "year": "1969",
+      "n": 30
+    },
+    {
+      "year": "1970",
+      "n": 42
+    },
+    {
+      "year": "1971",
+      "n": 52
+    },
+    {
+      "year": "1972",
+      "n": 31
+    },
+    {
+      "year": "1973",
+      "n": 47
+    },
+    {
+      "year": "1974",
+      "n": 73
+    },
+    {
+      "year": "1975",
+      "n": 41
+    },
+    {
+      "year": "1976",
+      "n": 1173
+    },
+    {
+      "year": "1977",
+      "n": 2160
+    },
+    {
+      "year": "1978",
+      "n": 2045
+    },
+    {
+      "year": "1979",
+      "n": 2571
+    },
+    {
+      "year": "1980",
+      "n": 3069
+    },
+    {
+      "year": "1981",
+      "n": 3606
+    },
+    {
+      "year": "1982",
+      "n": 3785
+    },
+    {
+      "year": "1983",
+      "n": 3893
+    },
+    {
+      "year": "1984",
+      "n": 4766
+    },
+    {
+      "year": "1985",
+      "n": 5029
+    },
+    {
+      "year": "1986",
+      "n": 4963
+    },
+    {
+      "year": "1987",
+      "n": 4766
+    },
+    {
+      "year": "1988",
+      "n": 4998
+    },
+    {
+      "year": "1989",
+      "n": 5743
+    },
+    {
+      "year": "1990",
+      "n": 5437
+    },
+    {
+      "year": "1991",
+      "n": 4780
+    },
+    {
+      "year": "1992",
+      "n": 4097
+    },
+    {
+      "year": "1993",
+      "n": 4603
+    },
+    {
+      "year": "1994",
+      "n": 6257
+    },
+    {
+      "year": "1995",
+      "n": 6072
+    },
+    {
+      "year": "1996",
+      "n": 5035
+    },
+    {
+      "year": "1997",
+      "n": 4873
+    },
+    {
+      "year": "1998",
+      "n": 4382
+    },
+    {
+      "year": "1999",
+      "n": 4188
+    },
+    {
+      "year": "2000",
+      "n": 4134
+    },
+    {
+      "year": "2001",
+      "n": 4477
+    },
+    {
+      "year": "2002",
+      "n": 4726
+    },
+    {
+      "year": "2003",
+      "n": 5541
+    },
+    {
+      "year": "2004",
+      "n": 6113
+    },
+    {
+      "year": "2005",
+      "n": 8104
+    },
+    {
+      "year": "2006",
+      "n": 7820
+    },
+    {
+      "year": "2007",
+      "n": 7571
+    },
+    {
+      "year": "2008",
+      "n": 10258
+    },
+    {
+      "year": "2009",
+      "n": 10184
+    },
+    {
+      "year": "2010",
+      "n": 10914
+    },
+    {
+      "year": "2011",
+      "n": 11498
+    },
+    {
+      "year": "2012",
+      "n": 11431
+    },
+    {
+      "year": "2013",
+      "n": 10579
+    },
+    {
+      "year": "2014",
+      "n": 12255
+    },
+    {
+      "year": "2015",
+      "n": 12225
+    },
+    {
+      "year": "2016",
+      "n": 12902
+    },
+    {
+      "year": "2017",
+      "n": 13308
+    },
+    {
+      "year": "2018",
+      "n": 12991
+    },
+    {
+      "year": "2019",
+      "n": 12778
+    },
+    {
+      "year": "2020",
+      "n": 12494
+    },
+    {
+      "year": "2021",
+      "n": 11706
+    },
+    {
+      "year": "2022",
+      "n": 11349
+    },
+    {
+      "year": "2023",
+      "n": 11895
+    },
+    {
+      "year": "2024",
+      "n": 12787
+    },
+    {
+      "year": "2025",
+      "n": 12170
+    },
+    {
+      "year": "2026",
+      "n": 10504
+    }
+  ],
+  "timestamp_quality": [
+    {
+      "timestamp_quality": "date",
+      "n": 375378
+    }
+  ],
+  "events_columns_present": [
+    "event_id",
+    "source",
+    "kind",
+    "event_date",
+    "as_of",
+    "company_key",
+    "applicant_raw",
+    "country",
+    "track_id",
+    "product_code",
+    "title",
+    "summary",
+    "url",
+    "payload",
+    "fetched_at",
+    "published_at",
+    "first_seen_at",
+    "available_at",
+    "timestamp_quality"
+  ],
+  "events_nonnull_company_key": 132293,
+  "events_nonnull_track_id": 196542,
+  "events_nonnull_product_code": 290909
+}

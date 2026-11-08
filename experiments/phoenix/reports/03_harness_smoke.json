@@ -1,0 +1,266 @@
+{
+  "harness": "1.0.0",
+  "protocol": "phoenix-001/v1",
+  "db": {
+    "path": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
+    "exists": true,
+    "size_bytes": 1368469504,
+    "sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+    "sha256_matches_frozen": true,
+    "integrity_check": "ok"
+  },
+  "events_loaded": 78074,
+  "events_by_kind": {
+    "pma": 28599,
+    "device_recall": 21128,
+    "trial": 19884,
+    "510k": 8463
+  },
+  "events_date_range": [
+    "2004-01-06",
+    "2026-10-29"
+  ],
+  "availability_lag_days": {
+    "mean": 0.0,
+    "min": 0.0,
+    "50%": 0.0,
+    "max": 0.0
+  },
+  "n_companies": 89,
+  "n_tracks": 59,
+  "n_cells": 1116,
+  "ref_tables": {
+    "tracks": 60,
+    "companies": 89,
+    "product_codes": 7097
+  },
+  "cell_panel": {
+    "rows": 67084,
+    "entities": 1096,
+    "quarters": 86,
+    "pos_rate_any_activity_4q": 0.19953133966715553,
+    "n_labeled": 62732,
+    "n_pos": 12517,
+    "device_events_per_cell_quarter_mean": 0.5200196768230875,
+    "share_cell_quarters_with_device_event": 0.11953670025639497
+  },
+  "track_panel": {
+    "rows": 4904,
+    "entities": 59,
+    "pos_rate_growth_4q": 0.09541715628672151,
+    "n_labeled": 4255,
+    "n_pos": 406,
+    "device_events_per_track_quarter_mean": 7.113580750407831
+  },
+  "cell_quarters_with_trial": 0.12029694114841094,
+  "cell_quarters_with_recall": 0.06262298014429671,
+  "folds": [
+    {
+      "year": 2010,
+      "train": [
+        "2004Q1",
+        "2009Q4"
+      ],
+      "test": [
+        "2010Q1",
+        "2010Q4"
+      ]
+    },
+    {
+      "year": 2011,
+      "train": [
+        "2004Q1",
+        "2010Q4"
+      ],
+      "test": [
+        "2011Q1",
+        "2011Q4"
+      ]
+    },
+    {
+      "year": 2012,
+      "train": [
+        "2004Q1",
+        "2011Q4"
+      ],
+      "test": [
+        "2012Q1",
+        "2012Q4"
+      ]
+    },
+    {
+      "year": 2013,
+      "train": [
+        "2004Q1",
+        "2012Q4"
+      ],
+      "test": [
+        "2013Q1",
+        "2013Q4"
+      ]
+    },
+    {
+      "year": 2014,
+      "train": [
+        "2004Q1",
+        "2013Q4"
+      ],
+      "test": [
+        "2014Q1",
+        "2014Q4"
+      ]
+    },
+    {
+      "year": 2015,
+      "train": [
+        "2004Q1",
+        "2014Q4"
+      ],
+      "test": [
+        "2015Q1",
+        "2015Q4"
+      ]
+    },
+    {
+      "year": 2016,
+      "train": [
+        "2004Q1",
+        "2015Q4"
+      ],
+      "test": [
+        "2016Q1",
+        "2016Q4"
+      ]
+    },
+    {
+      "year": 2017,
+      "train": [
+        "2004Q1",
+        "2016Q4"
+      ],
+      "test": [
+        "2017Q1",
+        "2017Q4"
+      ]
+    },
+    {
+      "year": 2018,
+      "train": [
+        "2004Q1",
+        "2017Q4"
+      ],
+      "test": [
+        "2018Q1",
+        "2018Q4"
+      ]
+    },
+    {
+      "year": 2019,
+      "train": [
+        "2004Q1",
+        "2018Q4"
+      ],
+      "test": [
+        "2019Q1",
+        "2019Q4"
+      ]
+    },
+    {
+      "year": 2020,
+      "train": [
+        "2004Q1",
+        "2019Q4"
+      ],
+      "test": [
+        "2020Q1",
+        "2020Q4"
+      ]
+    },
+    {
+      "year": 2021,
+      "train": [
+        "2004Q1",
+        "2020Q4"
+      ],
+      "test": [
+        "2021Q1",
+        "2021Q4"
+      ]
+    },
+    {
+      "year": 2022,
+      "train": [
+        "2004Q1",
+        "2021Q4"
+      ],
+      "test": [
+        "2022Q1",
+        "2022Q4"
+      ]
+    },
+    {
+      "year": 2023,
+      "train": [
+        "2004Q1",
+        "2022Q4"
+      ],
+      "test": [
+        "2023Q1",
+        "2023Q4"
+      ]
+    },
+    {
+      "year": 2024,
+      "train": [
+        "2004Q1",
+        "2023Q4"
+      ],
+      "test": [
+        "2024Q1",
+        "2024Q4"
+      ]
+    },
+    {
+      "year": 2025,
+      "train": [
+        "2004Q1",
+        "2024Q4"
+      ],
+      "test": [
+        "2025Q1",
+        "2025Q2"
+      ]
+    }
+  ],
+  "holdout_policy": {
+    "dev": [
+      "2004Q1",
+      "2013Q4"
+    ],
+    "validation": [
+      "2014Q1",
+      "2021Q4"
+    ],
+    "holdout": [
+      "2022Q1",
+      "2025Q2"
+    ],
+    "rule": "Model and feature selection may use dev+validation only. The holdout block is evaluated once per hypothesis, with the pre-registered model, and reported regardless of outcome. Any peek at the holdout during development retroactively downgrades the study to exploratory and must be stated in the report."
+  },
+  "metric_smoke": {
+    "ap": 0.7826868954858643,
+    "roc_auc": 0.8857691442655016,
+    "precision_at_10pct": 0.9633349274669217,
+    "recall_at_10pct": 0.48278341455620355,
+    "lift_at_10pct": 4.827988069813448,
+    "brier": 166.68288911560288
+  },
+  "bootstrap_smoke": {
+    "ap": 0.7826868954858643,
+    "lo95": 0.7237634404157239,
+    "hi95": 0.8324274950401823,
+    "B": 300
+  },
+  "elapsed_sec": 46.65,
+  "status": "OK"
+}
