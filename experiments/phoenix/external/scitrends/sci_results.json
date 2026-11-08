@@ -1,0 +1,265 @@
+{
+  "data_dir": "D:\\DEPPSKK\\phoenix-external\\scitrends",
+  "input": {
+    "file": "trends_v6.csv.gz",
+    "sha256": "fbd32b59d9c9da2fb39e3d72a67eef101b5734f0fb8ed9c5034a6c236206baf4",
+    "bytes": 533335,
+    "source_repo": "https://github.com/ddofer/Trends",
+    "raw_inputs_used": false
+  },
+  "environment": {
+    "python": "3.12.10",
+    "pandas": "3.0.3",
+    "numpy": "2.5.1",
+    "sklearn": "1.9.1",
+    "catboost": "NOT INSTALLED (substituted HistGradientBoostingRegressor)",
+    "sentence_transformers": "NOT INSTALLED (embedding-augmented variant not run)"
+  },
+  "frames": {
+    "level": {
+      "rows": 4175,
+      "topics": 123,
+      "years": [
+        1979,
+        2015
+      ]
+    },
+    "diff": {
+      "rows": 4175,
+      "topics": 123,
+      "years": [
+        1979,
+        2015
+      ]
+    },
+    "pct": {
+      "rows": 4172,
+      "topics": 123,
+      "years": [
+        1979,
+        2015
+      ]
+    }
+  },
+  "persistence": {
+    "level": {
+      "level_persistence_(y_t)": {
+        "n": 4175,
+        "r2": 0.969445,
+        "mae": 104.5051,
+        "median_ae": 33.6254,
+        "rmse": 242.6
+      }
+    },
+    "diff": {
+      "delta_zero_change": {
+        "n": 4175,
+        "r2": -0.092027,
+        "mae": 182.0677,
+        "median_ae": 58.4563,
+        "rmse": 403.2186
+      },
+      "delta_persistence_5y_(y_t-y_tm5)": {
+        "n": 4175,
+        "r2": 0.604694,
+        "mae": 104.5051,
+        "median_ae": 33.6254,
+        "rmse": 242.6
+      }
+    },
+    "pct": {
+      "pct_zero_change": {
+        "n": 4172,
+        "r2": -0.063152,
+        "mae": 97.5619,
+        "median_ae": 40.5514,
+        "rmse": 312.5709
+      }
+    }
+  },
+  "ablation_topic_block_order": {
+    "target": "pct",
+    "model": "hist_gbm",
+    "order": "topic_block",
+    "result": {
+      "n": 4020,
+      "r2": -0.011981,
+      "mae": 102.1367,
+      "median_ae": 28.3576,
+      "rmse": 304.7077,
+      "test_years": [
+        1979,
+        2015
+      ],
+      "n_total_rows": 4172
+    },
+    "interpretation": "folds become TOPIC groups, not time windows; the reported metric is no longer a temporal generalisation estimate. Compare with the year_sorted run of the same target/model."
+  },
+  "leakage_positive_control": {
+    "n": 4020,
+    "r2": 1.0,
+    "mae": 0.0,
+    "median_ae": 0.0,
+    "rmse": 0.0,
+    "control": "y(t+5) appended as a feature",
+    "expected": "R2 ~ 1.0 (proves the harness would detect real leakage)",
+    "detected": true
+  },
+  "stages": [
+    {
+      "target": "Y - popularity y(t+5)",
+      "target_key": "level",
+      "model": "ridge_lag",
+      "result": {
+        "n": 4020,
+        "r2": 0.973238,
+        "mae": 113.8062,
+        "median_ae": 44.378,
+        "rmse": 229.1281,
+        "test_years": [
+          1980,
+          2015
+        ],
+        "n_total_rows": 4175
+      }
+    },
+    {
+      "target": "Y - popularity y(t+5)",
+      "target_key": "level",
+      "model": "ridge_all",
+      "result": {
+        "n": 4020,
+        "r2": 0.976433,
+        "mae": 101.2904,
+        "median_ae": 45.1974,
+        "rmse": 215.019,
+        "test_years": [
+          1980,
+          2015
+        ],
+        "n_total_rows": 4175
+      }
+    },
+    {
+      "target": "Y - popularity y(t+5)",
+      "target_key": "level",
+      "model": "hist_gbm",
+      "result": {
+        "n": 4020,
+        "r2": 0.97704,
+        "mae": 93.843,
+        "median_ae": 32.7686,
+        "rmse": 212.2292,
+        "test_years": [
+          1980,
+          2015
+        ],
+        "n_total_rows": 4175
+      }
+    },
+    {
+      "target": "dY absolute y(t+5)-y(t-5)  [DIFF_TARGET=True]",
+      "target_key": "diff",
+      "model": "ridge_lag",
+      "result": {
+        "n": 4020,
+        "r2": 0.196296,
+        "mae": 180.4448,
+        "median_ae": 65.3408,
+        "rmse": 350.3397,
+        "test_years": [
+          1980,
+          2015
+        ],
+        "n_total_rows": 4175
+      }
+    },
+    {
+      "target": "dY absolute y(t+5)-y(t-5)  [DIFF_TARGET=True]",
+      "target_key": "diff",
+      "model": "ridge_all",
+      "result": {
+        "n": 4020,
+        "r2": 0.494797,
+        "mae": 143.2826,
+        "median_ae": 68.9424,
+        "rmse": 277.763,
+        "test_years": [
+          1980,
+          2015
+        ],
+        "n_total_rows": 4175
+      }
+    },
+    {
+      "target": "dY absolute y(t+5)-y(t-5)  [DIFF_TARGET=True]",
+      "target_key": "diff",
+      "model": "hist_gbm",
+      "result": {
+        "n": 4020,
+        "r2": 0.778576,
+        "mae": 85.914,
+        "median_ae": 31.8907,
+        "rmse": 183.8879,
+        "test_years": [
+          1980,
+          2015
+        ],
+        "n_total_rows": 4175
+      }
+    },
+    {
+      "target": "dY percent 100*(y(t+5)-y(t-5))/y(t)  [DIFF_TARGET_PCT=True]",
+      "target_key": "pct",
+      "model": "ridge_lag",
+      "result": {
+        "n": 4020,
+        "r2": 0.003869,
+        "mae": 115.4195,
+        "median_ae": 83.3767,
+        "rmse": 289.98,
+        "test_years": [
+          1980,
+          2015
+        ],
+        "n_total_rows": 4172
+      }
+    },
+    {
+      "target": "dY percent 100*(y(t+5)-y(t-5))/y(t)  [DIFF_TARGET_PCT=True]",
+      "target_key": "pct",
+      "model": "ridge_all",
+      "result": {
+        "n": 4020,
+        "r2": -0.039016,
+        "mae": 95.7204,
+        "median_ae": 51.1799,
+        "rmse": 296.1562,
+        "test_years": [
+          1980,
+          2015
+        ],
+        "n_total_rows": 4172
+      }
+    },
+    {
+      "target": "dY percent 100*(y(t+5)-y(t-5))/y(t)  [DIFF_TARGET_PCT=True]",
+      "target_key": "pct",
+      "model": "hist_gbm",
+      "result": {
+        "n": 4020,
+        "r2": 0.105809,
+        "mae": 83.8277,
+        "median_ae": 22.3904,
+        "rmse": 274.7419,
+        "test_years": [
+          1980,
+          2015
+        ],
+        "n_total_rows": 4172
+      }
+    }
+  ],
+  "elapsed_s": 274.3,
+  "status": "ok"
+}

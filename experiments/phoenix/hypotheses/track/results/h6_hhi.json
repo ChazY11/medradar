@@ -1,0 +1,124 @@
+{
+  "protocol_version": "phoenix-001/v1",
+  "harness_version": "1.0.0",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "db_sha256_matches_frozen": true,
+  "lag_scenario": "L090",
+  "lag_days": 90,
+  "command": "python run_track.py",
+  "elapsed_sec": 97.84,
+  "seed": 20261108,
+  "n": 2443,
+  "n_pos": 155,
+  "prevalence": 0.0634465820712239,
+  "hypothesis": "H6",
+  "title": "Does track concentration (HHI) explain / predict subsequent diffusion?",
+  "pre_registered_definition": "Test 1 (descriptive): Spearman(dHHI_{t-4->t}, dHHI_{t->t+4}) with cluster bootstrap CI. Test 2 (incremental prediction): AP(B5 + HHI) - AP(B5) on the walk-forward holdout. Supported iff test2 dAP >= 0.02 and p < 0.05 AND test1 CI excludes 0.",
+  "arms_ap": {
+    "B5_full": 0.14343926825957876,
+    "H6_hhi": 0.15669339400725124
+  },
+  "primary_contrast_test2": {
+    "diff": 0.013254125747672485,
+    "lo": -0.0013804369182506598,
+    "hi": 0.03293566531048868,
+    "p": 0.082,
+    "n_boot": 1000,
+    "ap_a": 0.15669339400725124,
+    "ap_b": 0.14343926825957876,
+    "n": 2443,
+    "n_pos": 155,
+    "tau": 0.02,
+    "definition": "AP(B5 + HHI features) - AP(B5 full), holdout",
+    "verdict": "NOT SUPPORTED"
+  },
+  "descriptive_test1": {
+    "test": "H6 test 1 (descriptive association)",
+    "spearman": -0.44186733192809097,
+    "ci95": [
+      -0.47755807857101845,
+      -0.41097339950199363
+    ],
+    "p_boot": 0.0,
+    "n_pairs": 3380,
+    "n_clusters": 56,
+    "ci_excludes_zero": true,
+    "definition": "dHHI_{t-4->t} vs dHHI_{t->t+4}, single-quarter event-share HHI, company_key non-null events, within track",
+    "sensitivity_w8_spearman": -0.4042141451484255,
+    "sensitivity_w8_n": 3051
+  },
+  "test1_ci_excludes_zero": true,
+  "by_lag": {
+    "L000": {
+      "diff": 0.004488213392702889,
+      "lo": -0.02297464054176969,
+      "hi": 0.019391151483519706,
+      "p": 0.69,
+      "n_boot": 1000,
+      "ap_a": 0.17011250327135366,
+      "ap_b": 0.16562428987865077,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.02,
+      "definition": "AP(B5 + HHI features) - AP(B5 full), holdout",
+      "verdict": "NOT SUPPORTED"
+    },
+    "L090": {
+      "diff": 0.013254125747672485,
+      "lo": -0.0013804369182506598,
+      "hi": 0.03293566531048868,
+      "p": 0.082,
+      "n_boot": 1000,
+      "ap_a": 0.15669339400725124,
+      "ap_b": 0.14343926825957876,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.02,
+      "definition": "AP(B5 + HHI features) - AP(B5 full), holdout",
+      "verdict": "NOT SUPPORTED"
+    },
+    "L180": {
+      "diff": 0.013044041225682618,
+      "lo": -0.00047851197371958493,
+      "hi": 0.029857543480607512,
+      "p": 0.066,
+      "n_boot": 1000,
+      "ap_a": 0.1497595721728034,
+      "ap_b": 0.13671553094712077,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.02,
+      "definition": "AP(B5 + HHI features) - AP(B5 full), holdout",
+      "verdict": "NOT SUPPORTED"
+    }
+  },
+  "stability_block_ap_H6_arm": {
+    "2014-2016": {
+      "n": 685,
+      "n_pos": 55,
+      "ap": 0.19164380616134727
+    },
+    "2017-2019": {
+      "n": 696,
+      "n_pos": 50,
+      "ap": 0.15407014925202073
+    },
+    "2020-2022": {
+      "n": 708,
+      "n_pos": 28,
+      "ap": 0.14631115750954904
+    },
+    "2023-2025": {
+      "n": 354,
+      "n_pos": 22,
+      "ap": 0.16138309025825553
+    }
+  },
+  "verdict_test2_alone": "NOT SUPPORTED",
+  "verdict": "NOT SUPPORTED",
+  "evidence_class": "S for the predictive arm; R for the association test",
+  "caveats": [
+    "Single-quarter HHI on small event counts is very noisy; a pooled trailing-4Q HHI is also supplied to the model as a stabilised variant.",
+    "Share base is company shares of ALL events with company_key in that track quarter; a device-only HHI sensitivity is in results/audit_track.json."
+  ]
+}

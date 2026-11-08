@@ -1,0 +1,147 @@
+{
+  "program": "PHOENIX-001",
+  "artifact": "external OSS audit summary (licence / dependency / supply-chain / reproducibility)",
+  "generated_at_local": "2026-11-08",
+  "auditor": "oss-audit",
+  "audits": ["medradar/docs/phoenix/audits/A01_scitrends.md", "medradar/docs/phoenix/audits/A02_pubtrends.md"],
+  "constraints_observed": {
+    "repos_cloned_outside_medradar_tree": true,
+    "external_root": "D:\\DEPPSKK\\phoenix-external",
+    "no_git_operations_in_medradar": true,
+    "no_commit_no_push": true,
+    "sqlite_untouched": true,
+    "pubtrends_full_stack_not_deployed": true,
+    "third_party_code_executed": false,
+    "datasets_over_200mb_not_downloaded": true
+  },
+  "decision_counts": {"ADOPT": 0, "ADAPT": 1, "STUDY_ONLY": 1, "REJECT": 0, "BLOCKED": 0},
+  "projects": [
+    {
+      "name": "SciTrends",
+      "official_url": "https://github.com/ddofer/Trends",
+      "type": "research artefact: Jupyter notebooks + committed derived CSV/Parquet features; no package, service or CLI",
+      "licence": "NO LICENCE FILE - repository, companion webapp repo and committed data are all unlicensed. Paper is CC BY-NC-ND.",
+      "spdx": null,
+      "licence_confirmed": false,
+      "licence_verdict": "no confirmed code licence - method-only borrowing allowed, code reuse forbidden",
+      "paper_licence": "CC BY-NC-ND (Heliyon 2023;10(1):e23781, doi:10.1016/j.heliyon.2023.e23781)",
+      "core_tech": "Python/Jupyter; CatBoost + RidgeCV + sentence-transformers; sklearn TimeSeriesSplit(30); pandas",
+      "core_method": "topic popularity = 100000 * topic_pubs(year) / total_medline_pubs(year); target = popularity(t+5) or 100*(popularity(t+5)-popularity(t-5))/popularity(t); features include review:research ratios, patent counts/fracs, lags; CatBoost with topic categorical + topic-name embeddings; step-forward 30-fold CV over year-sorted rows",
+      "stars": 8,
+      "forks": 1,
+      "commits": 26,
+      "releases": [],
+      "last_commit": "2023-10-09",
+      "archived": false,
+      "language": "Jupyter Notebook (Python)",
+      "loc": 3962,
+      "declared_dependencies": 0,
+      "install_method": "none exists",
+      "data_deps": "in-repo derived tables (trends_v6.csv.gz 533 KB et al, all <1 MB); upstream PubMed-by-Year scrape (unpinned hobby site) and USPTO PatentsView (API-key gated; released call contains a masked 'secret_url')",
+      "accessible_now": true,
+      "accessible_now_detail": "code and all modelling data are public and were fetched; raw data regeneration is not possible (patents gated behind key, PubMed series comes from an unpinned third-party scrape)",
+      "local_run_result": "method-logic reproduction SUCCEEDED: independent 274 s run, exit 0, on the authors' released 533,335-byte trends_v6.csv.gz (sha256 fbd32b59...). 4,175 rows / 123 topics / 1979-2015. Lag baseline reproduces Table 1 EXACTLY on four metrics for two target definitions: level R2 0.9732 / MAE 113.806 / medAE 44.378 / RMSE 229.128 vs paper 0.973 / 113.80 / 44.37 / 229.12; percent-delta R2 0.0039 / MAE 115.419 / medAE 83.377 / RMSE 289.980 vs paper 0.004 / 115.42 / 83.38 / 289.98. CatBoost and sentence-transformers unavailable, so boosting rows were run with a substituted sklearn HistGradientBoostingRegressor (level R2 0.9770, pct R2 0.1058) and embedding rows were not run.",
+      "needs_gpu": false,
+      "needs_network": false,
+      "needs_paid": false,
+      "overlap_with_medradar": "LOW-to-MODERATE and feature-level only: MedRadar already has OpenAlex annual publication counts and growth features (medradar/intelligence/features/publication_features.py) but explicitly normalises within-company only ('not a share of industry output', line 26) and collects NO review/research split. SciTrends supplies exactly those two definitions. Its validation protocol is weaker than MedRadar's own point-in-time/purged machinery and must not be adopted.",
+      "methods_to_migrate": [
+        "normalised popularity: popularity(company, year) = 100000 * pubs(company, year) / total_pubs(field, year) - repairs the documented within-company-only limitation of publication_features.py",
+        "review : research decomposition of publication counts (ratio and difference as a directional feature) - currently entirely absent from MedRadar",
+        "patent share of annual patent output as a leading indicator (definition only; cannot be evaluated until the USPTO key exists)"
+      ],
+      "reproduction_status": "METHOD_ONLY",
+      "limitations": [
+        "notebooks only: no package, CLI, tests, CI, versioning",
+        "no licence on code or committed data",
+        "no pinned environment; released notebooks no longer run on current pandas (infer_datetime_format and mode.use_inf_as_na both removed)",
+        "data generation not reproducible: PatentsView key-gated with the released URL masked, PubMed-by-Year is an unpinned scrape",
+        "125 hand-picked biomedical topics, not a device/drug taxonomy",
+        "level-target skill is dominated by autocorrelation (persistence R2 0.969 with no model)"
+      ],
+      "leakage_risks": [
+        "topic survivorship: topics were selected in 2022 for present-day activity, so backtests condition on survival",
+        "level-target illusion: popularity(t+5) approx popularity(t); R2 0.97+ is autocorrelation, not forecast skill",
+        "label mislabelling: the delta target spans t-5 to t+5 (10 years) normalised by popularity(t), not a 5-year change as the paper prose suggests",
+        "committed feature table was computed once over full history and is not point-in-time",
+        "known-topic advantage disappears under topic-level splits (paper Table 2: R2 0.86 vs 0.98)",
+        "popularity normaliser itself drifts with NLM indexing policy"
+      ],
+      "decision": "ADAPT",
+      "decision_reason": "The licence forbids reusing any code or data file (no la licence file exists anywhere, and the paper is NC-ND), but an independent implementation of the method is permitted and the reproduction shows it is trustworthy: my rebuild of the lag baseline matches Table 1 to the last reported digit on four metrics for two independent target definitions. The two feature definitions (output-normalised popularity, review:research ratio) target weaknesses MedRadar's own source documents, so the method is worth adapting under attribution - while its validation protocol, models, embeddings and published effect sizes should not be imported.",
+      "evidence_paths": [
+        "medradar/docs/phoenix/audits/A01_scitrends.md",
+        "medradar/experiments/phoenix/external/scitrends/sci_repro.py",
+        "medradar/experiments/phoenix/external/scitrends/sci_results.json",
+        "medradar/experiments/phoenix/external/scitrends/evidence.json",
+        "D:\\DEPPSKK\\phoenix-external\\scitrends"
+      ]
+    },
+    {
+      "name": "PubTrends",
+      "official_url": "https://github.com/JetBrains-Research/pubtrends",
+      "type": "production web service: Flask + Celery + PostgreSQL/pgvector + Redis + Faiss + Kotlin loader + Bokeh/HoloViews UI",
+      "licence": "Apache License 2.0 - LICENSE.txt, 11316 bytes, canonical text, 'Copyright 2022 JetBrains Research.'",
+      "spdx": "Apache-2.0",
+      "licence_confirmed": true,
+      "vendored_third_party_code": false,
+      "core_tech": "Python 3.12 + Kotlin; Flask, Celery, PostgreSQL 17 + pgvector, Redis 7.4.2, gensim Word2Vec (node2vec), scikit-learn, transformers/ONNX, faiss-cpu, bokeh/holoviews",
+      "core_method": "bibliometric graph (co-citation + bibliographic coupling + citation + hybrid text similarity) with composite weight 10*co + 3*bc + 1*cit + 20*text; 50-NN sparsification; node2vec (p=5, q=2, walk 30, 50 walks, dim 64); PCA at 0.9 variance; AgglomerativeClustering under 5000 papers else KMeans; clusters described by cosine of cluster frequency vectors to one-hot weighted by log1p(total); citation analytics (top cited, per-year absolute max gain, per-year relative gain)",
+      "stars": 50,
+      "forks": 5,
+      "commits": 2027,
+      "releases": ["v0.21", "v1.0", "v1.1", "v1.2", "v1.3", "v1.4", "v1.6"],
+      "last_commit": "2026-10-27",
+      "archived": false,
+      "language": "Python + Kotlin + JavaScript",
+      "loc": 12755,
+      "declared_dependencies": 52,
+      "install_method": "uv sync from pyproject.toml inside Dockerfile (python:3.10-slim) or docker-compose (4 variants); requires a populated PostgreSQL 17 + pgvector",
+      "data_deps": "PubMed XML baseline/update packs via NCBI FTP (~40M papers / 450M citations) or Semantic Scholar Open Corpus (170M papers / 600M citations); PostgreSQL 17 + pgvector + Redis + Faiss; docs recommend 8 GB effective_cache_size and -m 32G for pgvector",
+      "accessible_now": true,
+      "accessible_now_detail": "all 267 source blobs are public and were fetched; the DATA is not accessible here - terabyte-class corpora plus a forbidden service stack",
+      "local_run_result": "algorithm reimplementation SUCCEEDED: independent pure-Python port, exit 0, 0.04 s, 9/9 checks passed, no database and no service. Verified node2vec p/q transition probabilities analytically and against 200k sampled walks, the 10/3/1/20 similarity formula, k-NN invariants, cluster relabelling, one-hot-cosine topic description, and citation-gain analytics. Two upstream defects measured: sparse_graph exceeds its k degree cap (18 nodes over k=5, max degree 7), and the relative 'hot paper' gain exceeds 1.0 in a paper's first citation year (measured 10.0).",
+      "needs_gpu": false,
+      "needs_network": true,
+      "needs_paid": false,
+      "overlap_with_medradar": "LOW: overlaps MedRadar's bibliographic INPUTS (OpenAlex publication counts via medradar/intelligence/sources/publications.py, graph_context, tkg bitemporal store) but not its purpose. PubTrends has no train/test split, no future target and no accuracy metric, so it cannot contribute to the forecasting lane. MedRadar's point-in-time discipline is materially stricter. Genuine gap it could fill: clustering/labelling a paper set into named topics - not currently needed because MedRadar uses a curated track taxonomy.",
+      "methods_to_migrate": [
+        "topic description by cosine of cluster frequency vector to one-hot, weighted by log1p(total) - ~40 lines, useful only if a literature-clustering feature is ever built",
+        "composite multi-source paper-similarity weighting (10/3/1/20) as a reference schema - ~10 lines",
+        "greedy k-NN graph sparsification - ~20 lines, but fix the degree-cap defect rather than replicate it"
+      ],
+      "reproduction_status": "METHOD_ONLY",
+      "limitations": [
+        "an exploration/dashboard product, not a predictive method: no target, no split, no score anywhere in ~12.8k LOC",
+        "requires PostgreSQL + pgvector + Redis + Celery + Faiss; full stack deployment forbidden by the audit brief",
+        "datasets are terabyte-scale and were not downloaded",
+        "48 of 52 Python dependencies unpinned, so the analysis stack is not reproducible in detail",
+        "all algorithm constants are hardcoded with no calibration or sensitivity evidence in the repo",
+        "internal metadata inconsistency: version.py 'development' vs pyproject 1.0.0; python:3.10 image vs requires-python ==3.12.*"
+      ],
+      "leakage_risks": [
+        "no point-in-time discipline: a result set is clustered using all returned papers, including papers published after the reasoning date, so historical 'emerging area' claims leak the future",
+        "cumulative citation counts are contemporaneous and are not leading indicators",
+        "the relative-gain 'hot paper' metric is biased toward papers in their first citation year (denominator guard 0->1; measured value 10.0 for a 10-citation first year)",
+        "cluster identity is not stable across queries or years, so 'topic X grew' is not a defined statement",
+        "KMeans is called without random_state (unlike node2vec's seed=42), so clusters are non-deterministic above 5000 papers"
+      ],
+      "decision": "STUDY_ONLY",
+      "decision_reason": "Licence is genuinely clean (Apache-2.0, no vendored code, no sublicensing conflict), so reuse would be legally easy - but there is nothing to adopt for a forecasting pipeline: PubTrends is a snapshot literature explorer with no temporal model, no train/test protocol and no predictive metric, and its predict_analyzer is a random-sample demo. Reuse would mean standing up Postgres + pgvector + Redis + Celery + Faiss and loading terabyte-scale corpora to obtain ~150 lines of clustering utility, which the brief explicitly forbids and which MedRadar's curated track taxonomy does not currently need. The clean licence and good engineering are recorded so a future clustering feature can start from a known reference.",
+      "evidence_paths": [
+        "medradar/docs/phoenix/audits/A02_pubtrends.md",
+        "medradar/experiments/phoenix/external/pubtrends/pt_repro.py",
+        "medradar/experiments/phoenix/external/pubtrends/pt_results.json",
+        "medradar/experiments/phoenix/external/pubtrends/evidence.json",
+        "D:\\DEPPSKK\\phoenix-external\\pubtrends"
+      ]
+    }
+  ],
+  "program_level_findings": [
+    "Neither repository vendors third-party code, so neither carries a sublicensing conflict.",
+    "The two projects are licence opposites: SciTrends has no licence at all (code reuse forbidden), PubTrends has a clean Apache-2.0 (reuse permitted). Decision must not be driven by licence alone.",
+    "Only PubTrends has supply-chain hazards worth registering: a pip dependency installed from a GitHub release URL with no hash, a third-party torch index, a Docker build that pipes a remote script to sh, a pickle cache without integrity checks, a hardcoded default SECURITY_PASSWORD_SALT, committed default database/admin credentials, and an empty .env.example.",
+    "Neither repository contains a requirements.txt that installs from a git+ URL; the closest analogue is PubTrends' direct wheel URL for en-core-web-sm.",
+    "Only SciTrends' method was numerically verifiable, and it verified exactly - but only on the authors' pre-derived table, which is derived data with no licence."
+  ]
+}

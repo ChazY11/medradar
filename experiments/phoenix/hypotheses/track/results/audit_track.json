@@ -1,0 +1,1353 @@
+{
+  "protocol_version": "phoenix-001/v1",
+  "harness_version": "1.0.0",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "db_sha256_matches_frozen": true,
+  "lag_scenario": "L090",
+  "lag_days": 90,
+  "command": "python audit_track.py",
+  "elapsed_sec": 23.16,
+  "seed": 20261108,
+  "n": 4255,
+  "n_pos": 406,
+  "prevalence": 0.09541715628672151,
+  "task": "T-TRACK",
+  "L1_label_leak_screen": {
+    "protocol_version": "phoenix-001/v1",
+    "n_rows": 4904,
+    "n_entities": 59,
+    "feature_count": 79,
+    "n_missing_target": 649,
+    "high_correlation_features_gt_0.80": {},
+    "suspected_label_leak": [],
+    "quarters": [
+      "2004Q1",
+      "2025Q2"
+    ]
+  },
+  "L1_top_abs_correlations": {
+    "sct_volatility8": 0.272854723468653,
+    "f_n_trial_log4": -0.19876934507561644,
+    "hhi4": 0.14878247144217882,
+    "ent_cum": -0.14624143612645485,
+    "f_n_trial_std8": -0.1209283934817048,
+    "sct_pma_share4": 0.11945399209686987,
+    "sct_growth2": 0.11198291261735208,
+    "exposure_q": -0.11104420468136265,
+    "f_n_trial_sum8": -0.10953271066122997,
+    "f_n_trial_sum12": -0.1092593987189994
+  },
+  "L1_max_abs_corr": 0.272854723468653,
+  "L2_future_information": {
+    "test": "L2 future information (track level)",
+    "origins": {
+      "2012Q3": {
+        "entities_compared": 57,
+        "max_abs_diff_over_all_features": 0.0,
+        "columns_that_differ": [],
+        "per_column": {
+          "f_n_510k": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_recall": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_pma": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_trial": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_total": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_510k_sum1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_510k_sum2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_510k_sum4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_510k_sum8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_510k_sum12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_510k_cum": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_510k_mean4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_510k_std8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_510k_accel": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_510k_log4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_pma_sum1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_pma_sum2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_pma_sum4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_pma_sum8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_pma_sum12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_pma_cum": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_pma_mean4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_pma_std8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_pma_accel": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_pma_log4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_trial_sum1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_trial_sum2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_trial_sum4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_trial_sum8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_trial_sum12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_trial_cum": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_trial_mean4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_trial_std8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_trial_accel": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_trial_log4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_recall_sum1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_recall_sum2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_recall_sum4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_recall_sum8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_recall_sum12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_recall_cum": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_recall_mean4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_recall_std8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_recall_accel": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_recall_log4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_sum1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_sum2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_sum4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_sum8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_sum12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_cum": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_mean4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_std8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_accel": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_device_log4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_total_sum1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_total_sum2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_total_sum4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_total_sum8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_total_sum12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_total_cum": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_total_mean4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_total_std8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_total_accel": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "f_n_total_log4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "sct_growth1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "sct_growth2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "sct_growth4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "sct_growth8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "sct_slope12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "sct_pma_share4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "sct_volatility8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          },
+          "b2_trend_score": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 57
+          }
+        }
+      },
+      "2018Q2": {
+        "entities_compared": 58,
+        "max_abs_diff_over_all_features": 0.0,
+        "columns_that_differ": [],
+        "per_column": {
+          "f_n_510k": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_recall": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_pma": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_trial": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_total": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_510k_sum1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_510k_sum2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_510k_sum4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_510k_sum8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_510k_sum12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_510k_cum": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_510k_mean4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_510k_std8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_510k_accel": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_510k_log4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_pma_sum1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_pma_sum2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_pma_sum4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_pma_sum8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_pma_sum12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_pma_cum": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_pma_mean4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_pma_std8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_pma_accel": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_pma_log4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_trial_sum1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_trial_sum2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_trial_sum4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_trial_sum8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_trial_sum12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_trial_cum": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_trial_mean4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_trial_std8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_trial_accel": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_trial_log4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_recall_sum1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_recall_sum2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_recall_sum4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_recall_sum8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_recall_sum12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_recall_cum": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_recall_mean4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_recall_std8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_recall_accel": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_recall_log4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_sum1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_sum2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_sum4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_sum8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_sum12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_cum": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_mean4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_std8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_accel": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_device_log4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_total_sum1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_total_sum2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_total_sum4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_total_sum8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_total_sum12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_total_cum": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_total_mean4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_total_std8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_total_accel": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "f_n_total_log4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "sct_growth1": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "sct_growth2": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "sct_growth4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "sct_growth8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "sct_slope12": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "sct_pma_share4": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "sct_volatility8": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          },
+          "b2_trend_score": {
+            "max_abs_diff": 0.0,
+            "nan_mismatch": 0,
+            "n_compared": 58
+          }
+        }
+      }
+    },
+    "verdict": "PASS"
+  },
+  "L3_entity_mapping": {
+    "applicant_raw_mapping_conflict_groups": 2,
+    "examples": [
+      {
+        "applicant_raw": "Johnson & Johnson Surgical Vision, Inc.",
+        "k": 2,
+        "n": 473
+      },
+      {
+        "applicant_raw": "Johnson & Johnson Vision Care, Inc.",
+        "k": 2,
+        "n": 236
+      }
+    ],
+    "company_key_unmapped_share_by_kind": {
+      "510k": 0.8196508277303802,
+      "8k_catalyst": 0.935163996948894,
+      "device_recall": 0.5126607133710109,
+      "drug_approval": 0.6672890216579537,
+      "pma": 0.2924926099808729,
+      "trial": 0.3049570341719728
+    },
+    "note": "the frozen entity universe already requires company_key AND track_id, so unmapped events are excluded from BOTH features and labels; this is a coverage restriction, not a leak."
+  },
+  "L4_left_truncation": {
+    "exposure_q_quantiles": {
+      "count": 4904.0,
+      "mean": 41.576876019575856,
+      "std": 24.55671453567402,
+      "min": 0.0,
+      "25%": 20.0,
+      "50%": 41.0,
+      "75%": 63.0,
+      "max": 85.0
+    },
+    "share_rows_exposure_lt_8_all": 0.09624796084828711,
+    "share_labeled_rows_exposure_lt_8": 0.013866039952996475,
+    "n_labeled_rows": 4255,
+    "note": "a 4Q-forward growth label additionally needs a complete 8Q trailing window, so every labeled row already has exposure_q >= 7; the rows with exposure_q<8 are dropped by the label construction, not by a post-hoc filter."
+  },
+  "L5_overlap": {
+    "n_all_origins": 4255,
+    "n_pos_all_origins": 406,
+    "n_evaluable_walk_forward_origins": 2443,
+    "n_pos_evaluable_walk_forward": 155,
+    "prevalence_all": 0.09541715628672151,
+    "prevalence_evaluable": 0.0634465820712239,
+    "note": "consecutive origins share 3 of their 4 forward quarters. Headline numbers use every origin (as in protocol §2.2); a non-overlapping Q1-only sensitivity is reported for every arm in results/track_all_metrics.json.",
+    "n_q1_only": 640,
+    "n_pos_q1_only": 46,
+    "last_labelable_origin": "2024Q2",
+    "note_on_evaluable_window": "the growth label needs 4 forward quarters inside the frozen panel, and build_joint_panel trims at 2025Q2, so origins after 2024Q2 carry y=NaN. The 2025 walk-forward fold is therefore empty and 11 of the 12 folds are evaluable."
+  },
+  "L6_duplicates": {
+    "same_company_track_product_day_duplicate_groups": 7572,
+    "note": "counted, not removed: most are legitimate distinct submissions. 510k and a later PMA for the same device would both count as device events; the label only asks whether ANY device event occurred in the forward window, so this inflates counts but not the label definition."
+  },
+  "L7_track_anachronism": {
+    "n_tracks": 59,
+    "n_tracks_first_seen_2014_or_later": 2,
+    "tracks_first_seen_2014_or_later": {
+      "aesthetics": "2015-03-30",
+      "t_gene_therapy": "2018-05-11"
+    },
+    "tracks_first_seen": {
+      "neurostimulation": "2004-01-06",
+      "cardiac_rhythm": "2004-01-06",
+      "coronary": "2004-01-07",
+      "diabetes_cgm": "2004-01-07",
+      "peripheral_vascular": "2004-01-07",
+      "ep_pfa": "2004-01-07",
+      "surgical_energy": "2004-01-07",
+      "ortho_joint": "2004-01-08",
+      "t_infectious": "2004-01-08",
+      "imaging_us": "2004-01-08",
+      "imaging_mr_ct": "2004-01-09",
+      "ophthalmology": "2004-01-14",
+      "rehab_exo": "2004-01-14",
+      "patient_monitoring": "2004-01-15",
+      "wound_care": "2004-01-15",
+      "t_oncology": "2004-01-15",
+      "trauma": "2004-01-15",
+      "vascular_access": "2004-01-15",
+      "medical_ai": "2004-01-15",
+      "t_immunology": "2004-01-19",
+      "endoscopy": "2004-01-20",
+      "structural_heart": "2004-01-23",
+      "urology": "2004-01-28",
+      "spine": "2004-01-29",
+      "neurovascular": "2004-01-30",
+      "ivd_immuno": "2004-02-02",
+      "general_surgery": "2004-02-04",
+      "respiratory": "2004-02-04",
+      "dental": "2004-02-06",
+      "insulin_delivery": "2004-02-10",
+      "t_hematology": "2004-02-12",
+      "t_hepatology": "2004-02-13",
+      "t_neuroscience": "2004-02-16",
+      "t_cardiometabolic": "2004-02-18",
+      "t_musculoskeletal": "2004-02-19",
+      "wearable_remote": "2004-02-27",
+      "dialysis": "2004-03-03",
+      "t_respiratory": "2004-03-16",
+      "t_urology": "2004-04-05",
+      "t_rare_disease": "2004-04-16",
+      "surgical_robotics": "2004-05-05",
+      "t_transplant": "2004-05-24",
+      "infection_control": "2004-06-24",
+      "ent": "2004-07-20",
+      "t_ophthalmology": "2004-09-01",
+      "heart_failure": "2004-09-29",
+      "t_nephrology": "2004-10-11",
+      "ivd_poct": "2004-11-24",
+      "ivd_molecular": "2004-12-14",
+      "womens_health": "2004-12-22",
+      "cmf": "2005-04-15",
+      "t_womens_health": "2005-04-20",
+      "t_dermatology": "2005-09-09",
+      "t_addiction": "2005-09-21",
+      "t_pain": "2005-09-21",
+      "t_vaccines": "2005-12-23",
+      "t_cell_therapy": "2006-11-06",
+      "aesthetics": "2015-03-30",
+      "t_gene_therapy": "2018-05-11"
+    },
+    "sensitivity": "all walk-forward test origins are 2014Q1 or later, so no evaluable row can predate a track's first observed event; the anachronism risk is confined to the track-labelling of pre-2014 events, which only enter through the training folds and the trailing windows."
+  },
+  "H3_lead_correlation": {
+    "single": {
+      "k0": {
+        "spearman": -0.07297573943592665,
+        "ci95": [
+          -0.1271366609172102,
+          -0.015403351918205913
+        ],
+        "p_boot": 0.018,
+        "p_perm": 1.0,
+        "null_sd": 0.004601580097784544,
+        "n": 4845,
+        "n_clusters": 59
+      },
+      "k1": {
+        "spearman": -0.1034525507609208,
+        "ci95": [
+          -0.15247286228055526,
+          -0.0531227916611399
+        ],
+        "p_boot": 0.0,
+        "p_perm": 0.008,
+        "null_sd": 0.004670928237629247,
+        "n": 4786,
+        "n_clusters": 59
+      },
+      "k2": {
+        "spearman": -0.09936043253312925,
+        "ci95": [
+          -0.14968817533884193,
+          -0.04879641358304395
+        ],
+        "p_boot": 0.0,
+        "p_perm": 0.044,
+        "null_sd": 0.004667903078572043,
+        "n": 4727,
+        "n_clusters": 59
+      },
+      "k3": {
+        "spearman": -0.10206620685314811,
+        "ci95": [
+          -0.15298781289704944,
+          -0.04968863515713238
+        ],
+        "p_boot": 0.0,
+        "p_perm": 0.004,
+        "null_sd": 0.0046316831218326665,
+        "n": 4668,
+        "n_clusters": 59
+      },
+      "k4": {
+        "spearman": -0.09775275274561433,
+        "ci95": [
+          -0.14841855335331677,
+          -0.0467186218682445
+        ],
+        "p_boot": 0.0,
+        "p_perm": 0.091,
+        "null_sd": 0.004775167756927454,
+        "n": 4609,
+        "n_clusters": 59
+      }
+    },
+    "fwd4": {
+      "k0": {
+        "spearman": -0.10516076438464855,
+        "ci95": [
+          -0.1587145280941137,
+          -0.049035869735481234
+        ],
+        "p_boot": 0.0,
+        "p_perm": 0.115,
+        "null_sd": 0.0034721967432381515,
+        "n": 4668,
+        "n_clusters": 59
+      },
+      "k1": {
+        "spearman": -0.1136393891888775,
+        "ci95": [
+          -0.1667718540645071,
+          -0.05760302975930243
+        ],
+        "p_boot": 0.0,
+        "p_perm": 0.004,
+        "null_sd": 0.0034248587161926822,
+        "n": 4609,
+        "n_clusters": 59
+      },
+      "k2": {
+        "spearman": -0.1176491430813839,
+        "ci95": [
+          -0.1708535772020123,
+          -0.061845490711005514
+        ],
+        "p_boot": 0.0,
+        "p_perm": 0.001,
+        "null_sd": 0.003420282300846375,
+        "n": 4550,
+        "n_clusters": 59
+      },
+      "k3": {
+        "spearman": -0.11749992049873514,
+        "ci95": [
+          -0.17229324362947368,
+          -0.06280837368742324
+        ],
+        "p_boot": 0.0,
+        "p_perm": 0.001,
+        "null_sd": 0.0033890024563157186,
+        "n": 4491,
+        "n_clusters": 59
+      },
+      "k4": {
+        "spearman": -0.12071669404489462,
+        "ci95": [
+          -0.1754735752038661,
+          -0.06541095194434692
+        ],
+        "p_boot": 0.0,
+        "p_perm": 0.0,
+        "null_sd": 0.0033967200769082326,
+        "n": 4432,
+        "n_clusters": 59
+      }
+    },
+    "sensitivity_including_first_quarter": {
+      "single": {
+        "k0": {
+          "spearman": -0.07205671986377733,
+          "ci95": [
+            -0.12541609066465675,
+            -0.01642693069432781
+          ],
+          "p_boot": 0.018,
+          "n": 4904
+        },
+        "k1": {
+          "spearman": -0.10222396062792645,
+          "ci95": [
+            -0.14969329665638362,
+            -0.053623375709774525
+          ],
+          "p_boot": 0.0,
+          "n": 4845
+        },
+        "k2": {
+          "spearman": -0.10068732573462723,
+          "ci95": [
+            -0.1491866775194263,
+            -0.05021124052212088
+          ],
+          "p_boot": 0.0,
+          "n": 4786
+        },
+        "k3": {
+          "spearman": -0.1039251673340496,
+          "ci95": [
+            -0.15279584423895143,
+            -0.05446744780809232
+          ],
+          "p_boot": 0.0,
+          "n": 4727
+        },
+        "k4": {
+          "spearman": -0.09923283221466932,
+          "ci95": [
+            -0.14847353700480947,
+            -0.05020827436508355
+          ],
+          "p_boot": 0.0,
+          "n": 4668
+        }
+      },
+      "fwd4": {
+        "k0": {
+          "spearman": -0.10476059932841615,
+          "ci95": [
+            -0.15824275157950007,
+            -0.04991661300173312
+          ],
+          "p_boot": 0.0,
+          "n": 4727
+        },
+        "k1": {
+          "spearman": -0.114259374496608,
+          "ci95": [
+            -0.1661014640737291,
+            -0.06069934443767271
+          ],
+          "p_boot": 0.0,
+          "n": 4668
+        },
+        "k2": {
+          "spearman": -0.1185304779037793,
+          "ci95": [
+            -0.16967744329979087,
+            -0.06438000455913924
+          ],
+          "p_boot": 0.0,
+          "n": 4609
+        },
+        "k3": {
+          "spearman": -0.1179891422691467,
+          "ci95": [
+            -0.1695736182215895,
+            -0.06391765844777113
+          ],
+          "p_boot": 0.0,
+          "n": 4550
+        },
+        "k4": {
+          "spearman": -0.12033737570346864,
+          "ci95": [
+            -0.1727256052928069,
+            -0.06698648348253476
+          ],
+          "p_boot": 0.0,
+          "n": 4491
+        }
+      }
+    },
+    "sensitivity_within_track_highpass": {
+      "single": {
+        "k0": {
+          "spearman": 0.046942124126752444,
+          "ci95": [
+            0.0035605218012486474,
+            0.08801886807444943
+          ],
+          "p_boot": 0.034,
+          "n": 4845
+        },
+        "k1": {
+          "spearman": -0.009567984946668731,
+          "ci95": [
+            -0.03737624821067184,
+            0.01905900664988213
+          ],
+          "p_boot": 0.498,
+          "n": 4786
+        },
+        "k2": {
+          "spearman": 6.387947797716108e-05,
+          "ci95": [
+            -0.028808413791478166,
+            0.028586210924724086
+          ],
+          "p_boot": 0.976,
+          "n": 4727
+        },
+        "k3": {
+          "spearman": -0.012880473535912328,
+          "ci95": [
+            -0.042987621297853426,
+            0.01768882863023077
+          ],
+          "p_boot": 0.426,
+          "n": 4668
+        },
+        "k4": {
+          "spearman": -0.009439556481340483,
+          "ci95": [
+            -0.03866491024948696,
+            0.019661786680289842
+          ],
+          "p_boot": 0.582,
+          "n": 4609
+        }
+      },
+      "fwd4": {
+        "k0": {
+          "spearman": 0.03490208622282324,
+          "ci95": [
+            -0.012399405813660253,
+            0.0824958128847771
+          ],
+          "p_boot": 0.154,
+          "n": 4668
+        },
+        "k1": {
+          "spearman": -0.003140308918717301,
+          "ci95": [
+            -0.04631158718296536,
+            0.040306349186755186
+          ],
+          "p_boot": 0.902,
+          "n": 4609
+        },
+        "k2": {
+          "spearman": -0.006083559522548377,
+          "ci95": [
+            -0.042831252138766124,
+            0.032310733297595706
+          ],
+          "p_boot": 0.786,
+          "n": 4550
+        },
+        "k3": {
+          "spearman": -0.014336812338054514,
+          "ci95": [
+            -0.05403248610802267,
+            0.02677459362369315
+          ],
+          "p_boot": 0.504,
+          "n": 4491
+        },
+        "k4": {
+          "spearman": -0.02039630764159636,
+          "ci95": [
+            -0.0572054997012717,
+            0.01464077587933377
+          ],
+          "p_boot": 0.288,
+          "n": 4432
+        }
+      }
+    },
+    "definition": {
+      "entrants_t": "companies whose first-ever event in the track is in quarter t",
+      "rate": "device (510k+pma) events per quarter; single = quarter t+k, fwd4 = mean over t+k..t+k+3",
+      "permutation": "circular shift of each track's entrant series by 8..n-8 quarters"
+    }
+  },
+  "H6_descriptive": {
+    "test": "H6 test 1 (descriptive association)",
+    "spearman": -0.44186733192809097,
+    "ci95": [
+      -0.47755807857101845,
+      -0.41097339950199363
+    ],
+    "p_boot": 0.0,
+    "n_pairs": 3380,
+    "n_clusters": 56,
+    "ci_excludes_zero": true,
+    "definition": "dHHI_{t-4->t} vs dHHI_{t->t+4}, single-quarter event-share HHI, company_key non-null events, within track",
+    "sensitivity_w8_spearman": -0.4042141451484255,
+    "sensitivity_w8_n": 3051
+  },
+  "H3_H6_descriptive_source": "reused results/h3h6_descriptive.json (identical code path)",
+  "H3_calendar_confound": {
+    "question": "company entry is front-loaded in the 89-company registry snapshot while device volume rises over calendar time; a raw pooled correlation would then be negative even with no lead relationship",
+    "raw_fwd4_k1_spearman": -0.1136393891888775,
+    "within_track_highpass_fwd4_k1_spearman": -0.003140308918717301,
+    "raw_fwd4_all_k": {
+      "k0": -0.10516076438464855,
+      "k1": -0.1136393891888775,
+      "k2": -0.1176491430813839,
+      "k3": -0.11749992049873514,
+      "k4": -0.12071669404489462
+    },
+    "within_track_highpass_fwd4_all_k": {
+      "k0": 0.03490208622282324,
+      "k1": -0.003140308918717301,
+      "k2": -0.006083559522548377,
+      "k3": -0.014336812338054514,
+      "k4": -0.02039630764159636
+    },
+    "conclusion": "the raw negative association vanishes once each track's own trailing-8Q level is removed, so the H3 descriptive evidence is a calendar/level confound and NOT a demonstrated lead relationship"
+  },
+  "calendar_confound_table": {
+    "mean_entrants_per_track_quarter_by_year": {
+      "2004": 1.0339,
+      "2005": 0.6356,
+      "2006": 0.2585,
+      "2007": 0.2288,
+      "2008": 0.322,
+      "2009": 0.2797,
+      "2010": 0.1907,
+      "2011": 0.2331,
+      "2012": 0.1398,
+      "2013": 0.1441,
+      "2014": 0.1568,
+      "2015": 0.1271,
+      "2016": 0.1229,
+      "2017": 0.0932,
+      "2018": 0.0847,
+      "2019": 0.072,
+      "2020": 0.1017,
+      "2021": 0.0847,
+      "2022": 0.0847,
+      "2023": 0.0805,
+      "2024": 0.1314,
+      "2025": 0.0763
+    },
+    "mean_device_events_per_track_quarter_by_year": {
+      "2004": 3.1356,
+      "2005": 3.5932,
+      "2006": 4.7331,
+      "2007": 4.4237,
+      "2008": 5.6102,
+      "2009": 5.5551,
+      "2010": 6.5,
+      "2011": 8.1271,
+      "2012": 8.4746,
+      "2013": 8.0975,
+      "2014": 8.3729,
+      "2015": 6.9619,
+      "2016": 8.5127,
+      "2017": 9.1907,
+      "2018": 8.8602,
+      "2019": 8.0212,
+      "2020": 8.2712,
+      "2021": 7.2034,
+      "2022": 6.9364,
+      "2023": 6.7924,
+      "2024": 6.9958,
+      "2025": 6.8983
+    }
+  },
+  "H8_placebo": {
+    "control": "the 7 sct_* growth features are shuffled across tracks within each quarter (track alignment destroyed, marginal distributions kept), then the identical H8 arm is refitted on the identical folds",
+    "ap_H8_arm_real": 0.1613143599731521,
+    "ap_H8_arm_placebo": 0.1190615773659325,
+    "ap_B1_arm_real": 0.12341032292156828,
+    "ap_B1_arm_placebo": 0.12341032292156828,
+    "interpretation": "if the real H8 advantage came from track-specific information, shuffling the growth features across tracks must collapse the arm back to about the B1 level",
+    "collapsed": true
+  },
+  "verdicts": {
+    "L1": "PASS",
+    "L2": "PASS",
+    "L4": "PASS (labeled rows have complete trailing windows by construction)",
+    "L5": "REPORTED (overlap quantified; Q1-only sensitivity provided)",
+    "L7": "REPORTED (no evaluable row predates its track's first event)"
+  }
+}

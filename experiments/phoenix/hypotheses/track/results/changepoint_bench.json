@@ -1,0 +1,1600 @@
+{
+  "protocol_version": "phoenix-001/v1",
+  "harness_version": "1.0.0",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "db_sha256_matches_frozen": true,
+  "lag_scenario": "L090",
+  "lag_days": 90,
+  "command": "python changepoint_bench.py",
+  "elapsed_sec": 66.68,
+  "seed": 20261108,
+  "n": 24000,
+  "n_pos": 18000,
+  "prevalence": 0.75,
+  "hypothesis": "H7",
+  "design": {
+    "n_tracks": 30,
+    "tracks": [
+      "cardiac_rhythm",
+      "structural_heart",
+      "coronary",
+      "neurostimulation",
+      "ortho_joint",
+      "ep_pfa",
+      "ophthalmology",
+      "urology",
+      "imaging_mr_ct",
+      "neurovascular",
+      "peripheral_vascular",
+      "spine",
+      "diabetes_cgm",
+      "ivd_immuno",
+      "endoscopy",
+      "heart_failure",
+      "vascular_access",
+      "trauma",
+      "imaging_us",
+      "wound_care",
+      "insulin_delivery",
+      "dental",
+      "surgical_energy",
+      "respiratory",
+      "medical_ai",
+      "ivd_molecular",
+      "patient_monitoring",
+      "dialysis",
+      "general_surgery",
+      "surgical_robotics"
+    ],
+    "quarters": [
+      "2004Q1",
+      "2025Q2"
+    ],
+    "n_quarters": 86,
+    "multipliers": [
+      1.5,
+      2.0,
+      3.0
+    ],
+    "reps_per_track_per_multiplier": 200,
+    "tau_range": [
+      12,
+      74
+    ],
+    "detection_window_q": 2,
+    "eval_quarters": [
+      8,
+      85
+    ],
+    "n_eval_quarters_per_series": 78,
+    "noise_model": "negative binomial with per-track MLE-ish size r from 4Q-MA residuals; Poisson fallback when unstable",
+    "n_negbin_tracks": 16,
+    "n_poisson_tracks": 14,
+    "baseline": "4-quarter centred moving average of the real series; the step multiplier multiplies that baseline",
+    "seeded": true
+  },
+  "per_track_inputs": {
+    "cardiac_rhythm": {
+      "r": 26.670686254370906,
+      "noise": "negbin",
+      "excess": 626.6015826873385,
+      "mu2_mean": 16711.894218346253,
+      "reason": "method of moments",
+      "mean_per_quarter": 124.63953488372093,
+      "total_device_events": 10719
+    },
+    "structural_heart": {
+      "r": 34.0582049529418,
+      "noise": "negbin",
+      "excess": 24.57235142118863,
+      "mu2_mean": 836.890180878553,
+      "reason": "method of moments",
+      "mean_per_quarter": 26.74418604651163,
+      "total_device_events": 2300
+    },
+    "coronary": {
+      "r": 28.59112270517338,
+      "noise": "negbin",
+      "excess": 28.849402454780364,
+      "mu2_mean": 824.8368055555555,
+      "reason": "method of moments",
+      "mean_per_quarter": 25.476744186046513,
+      "total_device_events": 2191
+    },
+    "neurostimulation": {
+      "r": 88.98260500636401,
+      "noise": "negbin",
+      "excess": 6.090439276485789,
+      "mu2_mean": 541.9431524547804,
+      "reason": "method of moments",
+      "mean_per_quarter": 21.337209302325583,
+      "total_device_events": 1835
+    },
+    "ortho_joint": {
+      "r": 187.14862448156464,
+      "noise": "negbin",
+      "excess": 2.122173772609819,
+      "mu2_mean": 397.1619024547803,
+      "reason": "method of moments",
+      "mean_per_quarter": 19.697674418604652,
+      "total_device_events": 1694
+    },
+    "ep_pfa": {
+      "r": 33.25872233095186,
+      "noise": "negbin",
+      "excess": 13.574208656330748,
+      "mu2_mean": 451.4608365633075,
+      "reason": "method of moments",
+      "mean_per_quarter": 19.476744186046513,
+      "total_device_events": 1675
+    },
+    "ophthalmology": {
+      "r": 38.391573875983354,
+      "noise": "negbin",
+      "excess": 9.58704780361757,
+      "mu2_mean": 368.06185400516796,
+      "reason": "method of moments",
+      "mean_per_quarter": 17.906976744186046,
+      "total_device_events": 1540
+    },
+    "urology": {
+      "r": 24.732727175355393,
+      "noise": "negbin",
+      "excess": 13.570171188630491,
+      "mu2_mean": 335.62734173126614,
+      "reason": "method of moments",
+      "mean_per_quarter": 16.58139534883721,
+      "total_device_events": 1426
+    },
+    "imaging_mr_ct": {
+      "r": 86.54216284833463,
+      "noise": "negbin",
+      "excess": 2.671673126614987,
+      "mu2_mean": 231.21237080103356,
+      "reason": "method of moments",
+      "mean_per_quarter": 14.895348837209303,
+      "total_device_events": 1281
+    },
+    "neurovascular": {
+      "r": 142.4944874340889,
+      "noise": "negbin",
+      "excess": 1.1791828165374676,
+      "mu2_mean": 168.02705103359173,
+      "reason": "method of moments",
+      "mean_per_quarter": 12.511627906976743,
+      "total_device_events": 1076
+    },
+    "peripheral_vascular": {
+      "r": null,
+      "noise": "poisson",
+      "excess": 0.6476905684754521,
+      "mu2_mean": 152.39284560723516,
+      "reason": "estimated r=235.3 > 200 (near-Poisson)",
+      "mean_per_quarter": 11.5,
+      "total_device_events": 989
+    },
+    "spine": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -2.6780523255813953,
+      "mu2_mean": 123.56904069767442,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 10.209302325581396,
+      "total_device_events": 878
+    },
+    "diabetes_cgm": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -0.4208656330749354,
+      "mu2_mean": 99.12370801033592,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 8.081395348837209,
+      "total_device_events": 695
+    },
+    "ivd_immuno": {
+      "r": 3.498747549762361,
+      "noise": "negbin",
+      "excess": 21.05046834625323,
+      "mu2_mean": 73.65027454780362,
+      "reason": "method of moments",
+      "mean_per_quarter": 7.1976744186046515,
+      "total_device_events": 619
+    },
+    "endoscopy": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -2.4337855297157622,
+      "mu2_mean": 52.781330749354005,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 6.825581395348837,
+      "total_device_events": 587
+    },
+    "heart_failure": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -0.9696382428940568,
+      "mu2_mean": 64.1466408268734,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 6.290697674418604,
+      "total_device_events": 541
+    },
+    "vascular_access": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -0.07986111111111112,
+      "mu2_mean": 39.02575904392765,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 6.058139534883721,
+      "total_device_events": 521
+    },
+    "trauma": {
+      "r": 27.190572430600962,
+      "noise": "negbin",
+      "excess": 1.3584463824289406,
+      "mu2_mean": 36.936934754521964,
+      "reason": "method of moments",
+      "mean_per_quarter": 5.848837209302325,
+      "total_device_events": 503
+    },
+    "imaging_us": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -0.656169250645995,
+      "mu2_mean": 31.9484819121447,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 5.453488372093023,
+      "total_device_events": 469
+    },
+    "wound_care": {
+      "r": 158.6704845814978,
+      "noise": "negbin",
+      "excess": 0.18330103359173128,
+      "mu2_mean": 29.084463824289404,
+      "reason": "method of moments",
+      "mean_per_quarter": 5.151162790697675,
+      "total_device_events": 443
+    },
+    "insulin_delivery": {
+      "r": 8.54802384632369,
+      "noise": "negbin",
+      "excess": 5.85142118863049,
+      "mu2_mean": 50.018087855297146,
+      "reason": "method of moments",
+      "mean_per_quarter": 4.732558139534884,
+      "total_device_events": 407
+    },
+    "dental": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -0.5599967700258398,
+      "mu2_mean": 22.346010981912144,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 4.546511627906977,
+      "total_device_events": 391
+    },
+    "surgical_energy": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -0.8867086563307494,
+      "mu2_mean": 14.342942506459947,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 3.511627906976744,
+      "total_device_events": 302
+    },
+    "respiratory": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -1.1833010335917313,
+      "mu2_mean": 12.033753229974161,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 3.313953488372093,
+      "total_device_events": 285
+    },
+    "medical_ai": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -0.9002745478036175,
+      "mu2_mean": 11.916585917312661,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 3.104651162790698,
+      "total_device_events": 267
+    },
+    "ivd_molecular": {
+      "r": 10.63550567529652,
+      "noise": "negbin",
+      "excess": 1.2663113695090438,
+      "mu2_mean": 13.467861757105943,
+      "reason": "method of moments",
+      "mean_per_quarter": 3.0348837209302326,
+      "total_device_events": 261
+    },
+    "patient_monitoring": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -1.113452842377261,
+      "mu2_mean": 9.912709948320414,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 2.9651162790697674,
+      "total_device_events": 255
+    },
+    "dialysis": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -0.48328488372093026,
+      "mu2_mean": 10.071947674418604,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 2.7906976744186047,
+      "total_device_events": 240
+    },
+    "general_surgery": {
+      "r": 32.292066259808195,
+      "noise": "negbin",
+      "excess": 0.09261950904392764,
+      "mu2_mean": 2.990875322997416,
+      "reason": "method of moments",
+      "mean_per_quarter": 1.558139534883721,
+      "total_device_events": 134
+    },
+    "surgical_robotics": {
+      "r": null,
+      "noise": "poisson",
+      "excess": -0.13073320413436693,
+      "mu2_mean": 2.6977551679586567,
+      "reason": "non-positive or unstable excess variance",
+      "mean_per_quarter": 1.441860465116279,
+      "total_device_events": 124
+    }
+  },
+  "false_alarm_budget": 0.05,
+  "tuning": {
+    "fixed_threshold": {
+      "grid": [
+        {
+          "k": 1.2,
+          "fa_rate_per_quarter": 0.4169380341880342,
+          "null_detection_within_2q": 0.893
+        },
+        {
+          "k": 1.25,
+          "fa_rate_per_quarter": 0.3873376068376068,
+          "null_detection_within_2q": 0.868
+        },
+        {
+          "k": 1.3,
+          "fa_rate_per_quarter": 0.3543846153846154,
+          "null_detection_within_2q": 0.8356666666666667
+        },
+        {
+          "k": 1.35,
+          "fa_rate_per_quarter": 0.3253803418803419,
+          "null_detection_within_2q": 0.806
+        },
+        {
+          "k": 1.4,
+          "fa_rate_per_quarter": 0.2998226495726496,
+          "null_detection_within_2q": 0.7728333333333334
+        },
+        {
+          "k": 1.45,
+          "fa_rate_per_quarter": 0.2760961538461538,
+          "null_detection_within_2q": 0.7375
+        },
+        {
+          "k": 1.5,
+          "fa_rate_per_quarter": 0.24456410256410258,
+          "null_detection_within_2q": 0.695
+        },
+        {
+          "k": 1.55,
+          "fa_rate_per_quarter": 0.23102350427350427,
+          "null_detection_within_2q": 0.6685
+        },
+        {
+          "k": 1.6,
+          "fa_rate_per_quarter": 0.2108974358974359,
+          "null_detection_within_2q": 0.6308333333333334
+        },
+        {
+          "k": 1.65,
+          "fa_rate_per_quarter": 0.19329700854700854,
+          "null_detection_within_2q": 0.5943333333333334
+        },
+        {
+          "k": 1.7,
+          "fa_rate_per_quarter": 0.17790811965811965,
+          "null_detection_within_2q": 0.5578333333333333
+        },
+        {
+          "k": 1.75,
+          "fa_rate_per_quarter": 0.16367521367521368,
+          "null_detection_within_2q": 0.5203333333333333
+        },
+        {
+          "k": 1.8,
+          "fa_rate_per_quarter": 0.14420299145299145,
+          "null_detection_within_2q": 0.4751666666666667
+        },
+        {
+          "k": 1.85,
+          "fa_rate_per_quarter": 0.13808119658119658,
+          "null_detection_within_2q": 0.4578333333333333
+        },
+        {
+          "k": 1.9,
+          "fa_rate_per_quarter": 0.12720299145299147,
+          "null_detection_within_2q": 0.4305
+        },
+        {
+          "k": 1.95,
+          "fa_rate_per_quarter": 0.11755128205128205,
+          "null_detection_within_2q": 0.4056666666666667
+        },
+        {
+          "k": 2.0,
+          "fa_rate_per_quarter": 0.1061602564102564,
+          "null_detection_within_2q": 0.37733333333333335
+        },
+        {
+          "k": 2.05,
+          "fa_rate_per_quarter": 0.1005897435897436,
+          "null_detection_within_2q": 0.3601666666666667
+        },
+        {
+          "k": 2.1,
+          "fa_rate_per_quarter": 0.09295940170940171,
+          "null_detection_within_2q": 0.33616666666666667
+        },
+        {
+          "k": 2.15,
+          "fa_rate_per_quarter": 0.08689957264957265,
+          "null_detection_within_2q": 0.32
+        },
+        {
+          "k": 2.2,
+          "fa_rate_per_quarter": 0.08172649572649572,
+          "null_detection_within_2q": 0.30216666666666664
+        },
+        {
+          "k": 2.25,
+          "fa_rate_per_quarter": 0.06994017094017094,
+          "null_detection_within_2q": 0.2693333333333333
+        },
+        {
+          "k": 2.3,
+          "fa_rate_per_quarter": 0.06839957264957265,
+          "null_detection_within_2q": 0.2645
+        },
+        {
+          "k": 2.35,
+          "fa_rate_per_quarter": 0.06442094017094017,
+          "null_detection_within_2q": 0.2495
+        },
+        {
+          "k": 2.4,
+          "fa_rate_per_quarter": 0.05978846153846154,
+          "null_detection_within_2q": 0.23516666666666666
+        },
+        {
+          "k": 2.45,
+          "fa_rate_per_quarter": 0.057777777777777775,
+          "null_detection_within_2q": 0.22816666666666666
+        },
+        {
+          "k": 2.5,
+          "fa_rate_per_quarter": 0.052925213675213675,
+          "null_detection_within_2q": 0.21066666666666667
+        },
+        {
+          "k": 2.55,
+          "fa_rate_per_quarter": 0.05096794871794872,
+          "null_detection_within_2q": 0.20333333333333334
+        },
+        {
+          "k": 2.6,
+          "fa_rate_per_quarter": 0.0468034188034188,
+          "null_detection_within_2q": 0.18866666666666668
+        },
+        {
+          "k": 2.65,
+          "fa_rate_per_quarter": 0.04416880341880342,
+          "null_detection_within_2q": 0.1785
+        },
+        {
+          "k": 2.7,
+          "fa_rate_per_quarter": 0.040985042735042734,
+          "null_detection_within_2q": 0.16666666666666666
+        },
+        {
+          "k": 2.75,
+          "fa_rate_per_quarter": 0.03971367521367521,
+          "null_detection_within_2q": 0.16083333333333333
+        },
+        {
+          "k": 2.8,
+          "fa_rate_per_quarter": 0.03755982905982906,
+          "null_detection_within_2q": 0.1535
+        },
+        {
+          "k": 2.85,
+          "fa_rate_per_quarter": 0.03563675213675214,
+          "null_detection_within_2q": 0.146
+        },
+        {
+          "k": 2.9,
+          "fa_rate_per_quarter": 0.03432905982905983,
+          "null_detection_within_2q": 0.141
+        },
+        {
+          "k": 2.95,
+          "fa_rate_per_quarter": 0.03343376068376069,
+          "null_detection_within_2q": 0.1355
+        },
+        {
+          "k": 3.0,
+          "fa_rate_per_quarter": 0.0269017094017094,
+          "null_detection_within_2q": 0.1115
+        },
+        {
+          "k": 3.05,
+          "fa_rate_per_quarter": 0.02679059829059829,
+          "null_detection_within_2q": 0.111
+        },
+        {
+          "k": 3.1,
+          "fa_rate_per_quarter": 0.0261517094017094,
+          "null_detection_within_2q": 0.10816666666666666
+        },
+        {
+          "k": 3.15,
+          "fa_rate_per_quarter": 0.02507051282051282,
+          "null_detection_within_2q": 0.10383333333333333
+        },
+        {
+          "k": 3.2,
+          "fa_rate_per_quarter": 0.024254273504273505,
+          "null_detection_within_2q": 0.10116666666666667
+        },
+        {
+          "k": 3.25,
+          "fa_rate_per_quarter": 0.02328846153846154,
+          "null_detection_within_2q": 0.0975
+        },
+        {
+          "k": 3.3,
+          "fa_rate_per_quarter": 0.022126068376068377,
+          "null_detection_within_2q": 0.09333333333333334
+        },
+        {
+          "k": 3.35,
+          "fa_rate_per_quarter": 0.021564102564102565,
+          "null_detection_within_2q": 0.092
+        },
+        {
+          "k": 3.4,
+          "fa_rate_per_quarter": 0.020042735042735044,
+          "null_detection_within_2q": 0.08766666666666667
+        },
+        {
+          "k": 3.45,
+          "fa_rate_per_quarter": 0.0195982905982906,
+          "null_detection_within_2q": 0.08616666666666667
+        },
+        {
+          "k": 3.5,
+          "fa_rate_per_quarter": 0.01858119658119658,
+          "null_detection_within_2q": 0.08233333333333333
+        },
+        {
+          "k": 3.55,
+          "fa_rate_per_quarter": 0.018245726495726495,
+          "null_detection_within_2q": 0.08083333333333333
+        },
+        {
+          "k": 3.6,
+          "fa_rate_per_quarter": 0.01610897435897436,
+          "null_detection_within_2q": 0.07066666666666667
+        },
+        {
+          "k": 3.65,
+          "fa_rate_per_quarter": 0.016023504273504272,
+          "null_detection_within_2q": 0.0705
+        },
+        {
+          "k": 3.7,
+          "fa_rate_per_quarter": 0.01572008547008547,
+          "null_detection_within_2q": 0.0695
+        },
+        {
+          "k": 3.75,
+          "fa_rate_per_quarter": 0.01486965811965812,
+          "null_detection_within_2q": 0.0655
+        },
+        {
+          "k": 3.8,
+          "fa_rate_per_quarter": 0.014675213675213674,
+          "null_detection_within_2q": 0.06416666666666666
+        },
+        {
+          "k": 3.85,
+          "fa_rate_per_quarter": 0.014527777777777778,
+          "null_detection_within_2q": 0.06366666666666666
+        },
+        {
+          "k": 3.9,
+          "fa_rate_per_quarter": 0.013431623931623931,
+          "null_detection_within_2q": 0.059166666666666666
+        },
+        {
+          "k": 3.95,
+          "fa_rate_per_quarter": 0.013113247863247864,
+          "null_detection_within_2q": 0.058
+        },
+        {
+          "k": 4.0,
+          "fa_rate_per_quarter": 0.012427350427350428,
+          "null_detection_within_2q": 0.05516666666666667
+        }
+      ],
+      "chosen": {
+        "k": 2.6,
+        "fa_rate_per_quarter": 0.0468034188034188,
+        "null_detection_within_2q": 0.18866666666666668
+      }
+    },
+    "growth_threshold": {
+      "grid": [
+        {
+          "threshold": 0.15,
+          "fa_rate_per_quarter": 0.37962179487179487,
+          "null_detection_within_2q": 0.7605
+        },
+        {
+          "threshold": 0.2,
+          "fa_rate_per_quarter": 0.33624145299145297,
+          "null_detection_within_2q": 0.7058333333333333
+        },
+        {
+          "threshold": 0.25,
+          "fa_rate_per_quarter": 0.2988931623931624,
+          "null_detection_within_2q": 0.6565
+        },
+        {
+          "threshold": 0.3,
+          "fa_rate_per_quarter": 0.2720192307692308,
+          "null_detection_within_2q": 0.612
+        },
+        {
+          "threshold": 0.35,
+          "fa_rate_per_quarter": 0.24140811965811965,
+          "null_detection_within_2q": 0.5631666666666667
+        },
+        {
+          "threshold": 0.4,
+          "fa_rate_per_quarter": 0.21346581196581196,
+          "null_detection_within_2q": 0.512
+        },
+        {
+          "threshold": 0.45,
+          "fa_rate_per_quarter": 0.19374145299145298,
+          "null_detection_within_2q": 0.4755
+        },
+        {
+          "threshold": 0.5,
+          "fa_rate_per_quarter": 0.16779700854700855,
+          "null_detection_within_2q": 0.4275
+        },
+        {
+          "threshold": 0.55,
+          "fa_rate_per_quarter": 0.15616666666666668,
+          "null_detection_within_2q": 0.3995
+        },
+        {
+          "threshold": 0.6,
+          "fa_rate_per_quarter": 0.14380555555555555,
+          "null_detection_within_2q": 0.37133333333333335
+        },
+        {
+          "threshold": 0.65,
+          "fa_rate_per_quarter": 0.1295534188034188,
+          "null_detection_within_2q": 0.3451666666666667
+        },
+        {
+          "threshold": 0.7,
+          "fa_rate_per_quarter": 0.11689957264957265,
+          "null_detection_within_2q": 0.31716666666666665
+        },
+        {
+          "threshold": 0.75,
+          "fa_rate_per_quarter": 0.10556196581196581,
+          "null_detection_within_2q": 0.2931666666666667
+        },
+        {
+          "threshold": 0.8,
+          "fa_rate_per_quarter": 0.09741880341880342,
+          "null_detection_within_2q": 0.27416666666666667
+        },
+        {
+          "threshold": 0.85,
+          "fa_rate_per_quarter": 0.0910534188034188,
+          "null_detection_within_2q": 0.25816666666666666
+        },
+        {
+          "threshold": 0.9,
+          "fa_rate_per_quarter": 0.08382905982905983,
+          "null_detection_within_2q": 0.23883333333333334
+        },
+        {
+          "threshold": 0.95,
+          "fa_rate_per_quarter": 0.07917948717948718,
+          "null_detection_within_2q": 0.22766666666666666
+        },
+        {
+          "threshold": 1.0,
+          "fa_rate_per_quarter": 0.06442307692307692,
+          "null_detection_within_2q": 0.19683333333333333
+        },
+        {
+          "threshold": 1.05,
+          "fa_rate_per_quarter": 0.06326068376068376,
+          "null_detection_within_2q": 0.19333333333333333
+        },
+        {
+          "threshold": 1.1,
+          "fa_rate_per_quarter": 0.05963888888888889,
+          "null_detection_within_2q": 0.18133333333333335
+        },
+        {
+          "threshold": 1.15,
+          "fa_rate_per_quarter": 0.05616239316239316,
+          "null_detection_within_2q": 0.17183333333333334
+        },
+        {
+          "threshold": 1.2,
+          "fa_rate_per_quarter": 0.05342948717948718,
+          "null_detection_within_2q": 0.16316666666666665
+        },
+        {
+          "threshold": 1.25,
+          "fa_rate_per_quarter": 0.04852350427350428,
+          "null_detection_within_2q": 0.14816666666666667
+        },
+        {
+          "threshold": 1.3,
+          "fa_rate_per_quarter": 0.04652136752136752,
+          "null_detection_within_2q": 0.14383333333333334
+        },
+        {
+          "threshold": 1.35,
+          "fa_rate_per_quarter": 0.043264957264957264,
+          "null_detection_within_2q": 0.13483333333333333
+        },
+        {
+          "threshold": 1.4,
+          "fa_rate_per_quarter": 0.04076495726495726,
+          "null_detection_within_2q": 0.12833333333333333
+        },
+        {
+          "threshold": 1.45,
+          "fa_rate_per_quarter": 0.03938247863247863,
+          "null_detection_within_2q": 0.12366666666666666
+        },
+        {
+          "threshold": 1.5,
+          "fa_rate_per_quarter": 0.03512179487179487,
+          "null_detection_within_2q": 0.11316666666666667
+        },
+        {
+          "threshold": 1.55,
+          "fa_rate_per_quarter": 0.03448076923076923,
+          "null_detection_within_2q": 0.11083333333333334
+        },
+        {
+          "threshold": 1.6,
+          "fa_rate_per_quarter": 0.03254059829059829,
+          "null_detection_within_2q": 0.10516666666666667
+        },
+        {
+          "threshold": 1.65,
+          "fa_rate_per_quarter": 0.03169017094017094,
+          "null_detection_within_2q": 0.10283333333333333
+        },
+        {
+          "threshold": 1.7,
+          "fa_rate_per_quarter": 0.02962820512820513,
+          "null_detection_within_2q": 0.09683333333333333
+        },
+        {
+          "threshold": 1.75,
+          "fa_rate_per_quarter": 0.027764957264957264,
+          "null_detection_within_2q": 0.09066666666666667
+        },
+        {
+          "threshold": 1.8,
+          "fa_rate_per_quarter": 0.026702991452991452,
+          "null_detection_within_2q": 0.088
+        },
+        {
+          "threshold": 1.85,
+          "fa_rate_per_quarter": 0.025972222222222223,
+          "null_detection_within_2q": 0.08616666666666667
+        },
+        {
+          "threshold": 1.9,
+          "fa_rate_per_quarter": 0.025222222222222222,
+          "null_detection_within_2q": 0.083
+        },
+        {
+          "threshold": 1.95,
+          "fa_rate_per_quarter": 0.024846153846153848,
+          "null_detection_within_2q": 0.08183333333333333
+        },
+        {
+          "threshold": 2.0,
+          "fa_rate_per_quarter": 0.019724358974358973,
+          "null_detection_within_2q": 0.06683333333333333
+        },
+        {
+          "threshold": 2.05,
+          "fa_rate_per_quarter": 0.019675213675213674,
+          "null_detection_within_2q": 0.06683333333333333
+        },
+        {
+          "threshold": 2.1,
+          "fa_rate_per_quarter": 0.019305555555555555,
+          "null_detection_within_2q": 0.06566666666666666
+        },
+        {
+          "threshold": 2.15,
+          "fa_rate_per_quarter": 0.018814102564102562,
+          "null_detection_within_2q": 0.06366666666666666
+        },
+        {
+          "threshold": 2.2,
+          "fa_rate_per_quarter": 0.018123931623931624,
+          "null_detection_within_2q": 0.0615
+        },
+        {
+          "threshold": 2.25,
+          "fa_rate_per_quarter": 0.01731837606837607,
+          "null_detection_within_2q": 0.060333333333333336
+        },
+        {
+          "threshold": 2.3,
+          "fa_rate_per_quarter": 0.01700854700854701,
+          "null_detection_within_2q": 0.059166666666666666
+        },
+        {
+          "threshold": 2.35,
+          "fa_rate_per_quarter": 0.016141025641025642,
+          "null_detection_within_2q": 0.0555
+        },
+        {
+          "threshold": 2.4,
+          "fa_rate_per_quarter": 0.01561111111111111,
+          "null_detection_within_2q": 0.05433333333333333
+        },
+        {
+          "threshold": 2.45,
+          "fa_rate_per_quarter": 0.015371794871794872,
+          "null_detection_within_2q": 0.05316666666666667
+        },
+        {
+          "threshold": 2.5,
+          "fa_rate_per_quarter": 0.01388034188034188,
+          "null_detection_within_2q": 0.04833333333333333
+        },
+        {
+          "threshold": 2.55,
+          "fa_rate_per_quarter": 0.013771367521367522,
+          "null_detection_within_2q": 0.048
+        },
+        {
+          "threshold": 2.6,
+          "fa_rate_per_quarter": 0.013410256410256411,
+          "null_detection_within_2q": 0.04733333333333333
+        },
+        {
+          "threshold": 2.65,
+          "fa_rate_per_quarter": 0.01327991452991453,
+          "null_detection_within_2q": 0.047
+        },
+        {
+          "threshold": 2.7,
+          "fa_rate_per_quarter": 0.012566239316239316,
+          "null_detection_within_2q": 0.044833333333333336
+        },
+        {
+          "threshold": 2.75,
+          "fa_rate_per_quarter": 0.012121794871794872,
+          "null_detection_within_2q": 0.043166666666666666
+        },
+        {
+          "threshold": 2.8,
+          "fa_rate_per_quarter": 0.011878205128205128,
+          "null_detection_within_2q": 0.0425
+        },
+        {
+          "threshold": 2.85,
+          "fa_rate_per_quarter": 0.011737179487179486,
+          "null_detection_within_2q": 0.042166666666666665
+        },
+        {
+          "threshold": 2.9,
+          "fa_rate_per_quarter": 0.011536324786324787,
+          "null_detection_within_2q": 0.041166666666666664
+        },
+        {
+          "threshold": 2.95,
+          "fa_rate_per_quarter": 0.011452991452991453,
+          "null_detection_within_2q": 0.04066666666666666
+        },
+        {
+          "threshold": 3.0,
+          "fa_rate_per_quarter": 0.008905982905982907,
+          "null_detection_within_2q": 0.03383333333333333
+        }
+      ],
+      "chosen": {
+        "threshold": 1.25,
+        "fa_rate_per_quarter": 0.04852350427350428,
+        "null_detection_within_2q": 0.14816666666666667
+      }
+    },
+    "cusum": {
+      "grid": [
+        {
+          "h": 1.0,
+          "fa_rate_per_quarter": 0.16675213675213676,
+          "null_detection_within_2q": 0.5643333333333334
+        },
+        {
+          "h": 1.5,
+          "fa_rate_per_quarter": 0.12017307692307692,
+          "null_detection_within_2q": 0.4535
+        },
+        {
+          "h": 2.0,
+          "fa_rate_per_quarter": 0.09018803418803419,
+          "null_detection_within_2q": 0.36516666666666664
+        },
+        {
+          "h": 2.5,
+          "fa_rate_per_quarter": 0.07010683760683761,
+          "null_detection_within_2q": 0.305
+        },
+        {
+          "h": 3.0,
+          "fa_rate_per_quarter": 0.055532051282051284,
+          "null_detection_within_2q": 0.25616666666666665
+        },
+        {
+          "h": 3.5,
+          "fa_rate_per_quarter": 0.04491666666666667,
+          "null_detection_within_2q": 0.21633333333333332
+        },
+        {
+          "h": 4.0,
+          "fa_rate_per_quarter": 0.03671367521367521,
+          "null_detection_within_2q": 0.181
+        },
+        {
+          "h": 4.5,
+          "fa_rate_per_quarter": 0.030386752136752137,
+          "null_detection_within_2q": 0.15
+        },
+        {
+          "h": 5.0,
+          "fa_rate_per_quarter": 0.025553418803418805,
+          "null_detection_within_2q": 0.127
+        },
+        {
+          "h": 5.5,
+          "fa_rate_per_quarter": 0.021487179487179486,
+          "null_detection_within_2q": 0.10483333333333333
+        },
+        {
+          "h": 6.0,
+          "fa_rate_per_quarter": 0.018213675213675215,
+          "null_detection_within_2q": 0.09166666666666666
+        },
+        {
+          "h": 6.5,
+          "fa_rate_per_quarter": 0.015536324786324785,
+          "null_detection_within_2q": 0.08116666666666666
+        },
+        {
+          "h": 7.0,
+          "fa_rate_per_quarter": 0.013282051282051281,
+          "null_detection_within_2q": 0.0685
+        },
+        {
+          "h": 7.5,
+          "fa_rate_per_quarter": 0.011476495726495726,
+          "null_detection_within_2q": 0.06016666666666667
+        },
+        {
+          "h": 8.0,
+          "fa_rate_per_quarter": 0.009993589743589744,
+          "null_detection_within_2q": 0.05366666666666667
+        },
+        {
+          "h": 8.5,
+          "fa_rate_per_quarter": 0.008818376068376068,
+          "null_detection_within_2q": 0.04816666666666667
+        },
+        {
+          "h": 9.0,
+          "fa_rate_per_quarter": 0.007794871794871795,
+          "null_detection_within_2q": 0.04533333333333334
+        },
+        {
+          "h": 9.5,
+          "fa_rate_per_quarter": 0.006967948717948718,
+          "null_detection_within_2q": 0.0405
+        },
+        {
+          "h": 10.0,
+          "fa_rate_per_quarter": 0.006367521367521368,
+          "null_detection_within_2q": 0.03866666666666667
+        },
+        {
+          "h": 10.5,
+          "fa_rate_per_quarter": 0.0057799145299145295,
+          "null_detection_within_2q": 0.036333333333333336
+        },
+        {
+          "h": 11.0,
+          "fa_rate_per_quarter": 0.005326923076923077,
+          "null_detection_within_2q": 0.032
+        },
+        {
+          "h": 11.5,
+          "fa_rate_per_quarter": 0.004895299145299146,
+          "null_detection_within_2q": 0.0305
+        },
+        {
+          "h": 12.0,
+          "fa_rate_per_quarter": 0.004517094017094017,
+          "null_detection_within_2q": 0.02666666666666667
+        }
+      ],
+      "chosen": {
+        "h": 3.5,
+        "fa_rate_per_quarter": 0.04491666666666667,
+        "null_detection_within_2q": 0.21633333333333332
+      },
+      "k": 0.5
+    },
+    "pelt": {
+      "grid": [
+        {
+          "lam": 0.005,
+          "penalty": 0.022271736481267537,
+          "fa_rate_per_quarter": 0.4150854700854701,
+          "null_detection_within_2q": 0.9945
+        },
+        {
+          "lam": 0.01,
+          "penalty": 0.04454347296253507,
+          "fa_rate_per_quarter": 0.40374786324786327,
+          "null_detection_within_2q": 0.9936666666666667
+        },
+        {
+          "lam": 0.02,
+          "penalty": 0.08908694592507015,
+          "fa_rate_per_quarter": 0.38499358974358977,
+          "null_detection_within_2q": 0.9896666666666667
+        },
+        {
+          "lam": 0.03,
+          "penalty": 0.1336304188876052,
+          "fa_rate_per_quarter": 0.3679465811965812,
+          "null_detection_within_2q": 0.9818333333333333
+        },
+        {
+          "lam": 0.05,
+          "penalty": 0.22271736481267537,
+          "fa_rate_per_quarter": 0.33864102564102566,
+          "null_detection_within_2q": 0.9616666666666667
+        },
+        {
+          "lam": 0.08,
+          "penalty": 0.3563477837002806,
+          "fa_rate_per_quarter": 0.30306837606837606,
+          "null_detection_within_2q": 0.9255
+        },
+        {
+          "lam": 0.12,
+          "penalty": 0.5345216755504208,
+          "fa_rate_per_quarter": 0.2641474358974359,
+          "null_detection_within_2q": 0.8668333333333333
+        },
+        {
+          "lam": 0.2,
+          "penalty": 0.8908694592507015,
+          "fa_rate_per_quarter": 0.20622222222222222,
+          "null_detection_within_2q": 0.7358333333333333
+        },
+        {
+          "lam": 0.3,
+          "penalty": 1.336304188876052,
+          "fa_rate_per_quarter": 0.15647008547008548,
+          "null_detection_within_2q": 0.6111666666666666
+        },
+        {
+          "lam": 0.5,
+          "penalty": 2.2271736481267537,
+          "fa_rate_per_quarter": 0.09990384615384615,
+          "null_detection_within_2q": 0.42683333333333334
+        },
+        {
+          "lam": 0.8,
+          "penalty": 3.563477837002806,
+          "fa_rate_per_quarter": 0.06061752136752137,
+          "null_detection_within_2q": 0.2803333333333333
+        },
+        {
+          "lam": 1.0,
+          "penalty": 4.454347296253507,
+          "fa_rate_per_quarter": 0.04806196581196581,
+          "null_detection_within_2q": 0.22716666666666666
+        },
+        {
+          "lam": 1.2,
+          "penalty": 5.345216755504208,
+          "fa_rate_per_quarter": 0.03998931623931624,
+          "null_detection_within_2q": 0.19583333333333333
+        },
+        {
+          "lam": 2.0,
+          "penalty": 8.908694592507015,
+          "fa_rate_per_quarter": 0.0247991452991453,
+          "null_detection_within_2q": 0.137
+        }
+      ],
+      "chosen": {
+        "lam": 1.0,
+        "penalty": 4.454347296253507,
+        "fa_rate_per_quarter": 0.04806196581196581,
+        "null_detection_within_2q": 0.22716666666666666
+      }
+    }
+  },
+  "tuned_parameters": {
+    "fixed": 2.6,
+    "growth": 1.25,
+    "cusum": 3.5,
+    "pelt": 1.0
+  },
+  "protocol_literal_parameters": {
+    "fixed": 2.0,
+    "growth": 0.5,
+    "cusum": 5.0,
+    "pelt": 1.0
+  },
+  "literal_operating_points": {
+    "fixed": {
+      "parameter": 2.0,
+      "fa_rate_per_quarter": 0.1061602564102564,
+      "null_detection_within_2q": 0.37733333333333335,
+      "detection_rate_pooled": 0.8096111111111111,
+      "over_budget": true
+    },
+    "growth": {
+      "parameter": 0.5,
+      "fa_rate_per_quarter": 0.16779700854700855,
+      "null_detection_within_2q": 0.4275,
+      "detection_rate_pooled": 0.7867222222222222,
+      "over_budget": true
+    },
+    "cusum": {
+      "parameter": 5.0,
+      "fa_rate_per_quarter": 0.025553418803418805,
+      "null_detection_within_2q": 0.127,
+      "detection_rate_pooled": 0.6147777777777778,
+      "over_budget": false
+    },
+    "pelt": {
+      "parameter": 1.0,
+      "fa_rate_per_quarter": 0.04806196581196581,
+      "null_detection_within_2q": 0.22716666666666666,
+      "detection_rate_pooled": 0.7138333333333333,
+      "over_budget": false
+    }
+  },
+  "results": {
+    "matched_false_alarm_budget": {
+      "m=1.5": {
+        "fixed": {
+          "detection_rate": 0.32466666666666666,
+          "n_detected": 1948,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            -1.0,
+            1.0
+          ],
+          "mean_alarms_per_series": 3.6755
+        },
+        "growth": {
+          "detection_rate": 0.22016666666666668,
+          "n_detected": 1321,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            -1.0,
+            2.0
+          ],
+          "mean_alarms_per_series": 3.9705
+        },
+        "cusum": {
+          "detection_rate": 0.5013333333333333,
+          "n_detected": 3008,
+          "median_delay_q": 1.0,
+          "iqr_delay_q": [
+            0.0,
+            1.0
+          ],
+          "mean_alarms_per_series": 4.4615
+        },
+        "pelt": {
+          "detection_rate": 0.501,
+          "n_detected": 3006,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            -1.0,
+            1.0
+          ],
+          "mean_alarms_per_series": 4.833666666666667
+        }
+      },
+      "m=2.0": {
+        "fixed": {
+          "detection_rate": 0.5591666666666667,
+          "n_detected": 3355,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            0.0,
+            1.0
+          ],
+          "mean_alarms_per_series": 3.992166666666667
+        },
+        "growth": {
+          "detection_rate": 0.3585,
+          "n_detected": 2151,
+          "median_delay_q": 1.0,
+          "iqr_delay_q": [
+            0.0,
+            2.0
+          ],
+          "mean_alarms_per_series": 4.377166666666667
+        },
+        "cusum": {
+          "detection_rate": 0.7325,
+          "n_detected": 4395,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            0.0,
+            1.0
+          ],
+          "mean_alarms_per_series": 5.419833333333333
+        },
+        "pelt": {
+          "detection_rate": 0.7363333333333333,
+          "n_detected": 4418,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            0.0,
+            0.0
+          ],
+          "mean_alarms_per_series": 5.550166666666667
+        }
+      },
+      "m=3.0": {
+        "fixed": {
+          "detection_rate": 0.8805,
+          "n_detected": 5283,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            0.0,
+            0.0
+          ],
+          "mean_alarms_per_series": 4.782166666666667
+        },
+        "growth": {
+          "detection_rate": 0.6801666666666667,
+          "n_detected": 4081,
+          "median_delay_q": 1.0,
+          "iqr_delay_q": [
+            0.0,
+            2.0
+          ],
+          "mean_alarms_per_series": 5.6081666666666665
+        },
+        "cusum": {
+          "detection_rate": 0.9068333333333334,
+          "n_detected": 5441,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            0.0,
+            0.0
+          ],
+          "mean_alarms_per_series": 6.870666666666667
+        },
+        "pelt": {
+          "detection_rate": 0.9041666666666667,
+          "n_detected": 5425,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            0.0,
+            0.0
+          ],
+          "mean_alarms_per_series": 6.534
+        }
+      },
+      "pooled": {
+        "fixed": {
+          "detection_rate": 0.5881111111111111,
+          "n_series": 18000,
+          "n_detected": 10586
+        },
+        "growth": {
+          "detection_rate": 0.4196111111111111,
+          "n_series": 18000,
+          "n_detected": 7553
+        },
+        "cusum": {
+          "detection_rate": 0.7135555555555556,
+          "n_series": 18000,
+          "n_detected": 12844
+        },
+        "pelt": {
+          "detection_rate": 0.7138333333333333,
+          "n_series": 18000,
+          "n_detected": 12849
+        },
+        "contrasts_vs_fixed": {
+          "cusum": {
+            "diff": 0.12544444444444447,
+            "lo": 0.05838472222222227,
+            "hi": 0.19412361111111112,
+            "p": 0.0,
+            "B": 1000,
+            "n_series": 18000,
+            "n_clusters": 30
+          },
+          "pelt": {
+            "diff": 0.12572222222222218,
+            "lo": 0.05231527777777779,
+            "hi": 0.2020597222222222,
+            "p": 0.002,
+            "B": 1000,
+            "n_series": 18000,
+            "n_clusters": 30
+          },
+          "growth": {
+            "diff": -0.16850000000000004,
+            "lo": -0.17883333333333334,
+            "hi": -0.1577194444444445,
+            "p": 0.0,
+            "B": 1000,
+            "n_series": 18000,
+            "n_clusters": 30
+          }
+        }
+      }
+    },
+    "protocol_literal": {
+      "m=1.5": {
+        "fixed": {
+          "detection_rate": 0.6251666666666666,
+          "n_detected": 3751,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            -1.0,
+            1.0
+          ],
+          "mean_alarms_per_series": 8.483833333333333
+        },
+        "growth": {
+          "detection_rate": 0.6175,
+          "n_detected": 3705,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            -2.0,
+            1.0
+          ],
+          "mean_alarms_per_series": 13.786166666666666
+        },
+        "cusum": {
+          "detection_rate": 0.3655,
+          "n_detected": 2193,
+          "median_delay_q": 1.0,
+          "iqr_delay_q": [
+            0.0,
+            2.0
+          ],
+          "mean_alarms_per_series": 2.7115
+        },
+        "pelt": {
+          "detection_rate": 0.501,
+          "n_detected": 3006,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            -1.0,
+            1.0
+          ],
+          "mean_alarms_per_series": 4.833666666666667
+        }
+      },
+      "m=2.0": {
+        "fixed": {
+          "detection_rate": 0.8355,
+          "n_detected": 5013,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            0.0,
+            0.0
+          ],
+          "mean_alarms_per_series": 9.001166666666666
+        },
+        "growth": {
+          "detection_rate": 0.7956666666666666,
+          "n_detected": 4774,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            -1.0,
+            1.0
+          ],
+          "mean_alarms_per_series": 14.722
+        },
+        "cusum": {
+          "detection_rate": 0.6223333333333333,
+          "n_detected": 3734,
+          "median_delay_q": 1.0,
+          "iqr_delay_q": [
+            0.0,
+            1.0
+          ],
+          "mean_alarms_per_series": 3.4661666666666666
+        },
+        "pelt": {
+          "detection_rate": 0.7363333333333333,
+          "n_detected": 4418,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            0.0,
+            0.0
+          ],
+          "mean_alarms_per_series": 5.550166666666667
+        }
+      },
+      "m=3.0": {
+        "fixed": {
+          "detection_rate": 0.9681666666666666,
+          "n_detected": 5809,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            0.0,
+            0.0
+          ],
+          "mean_alarms_per_series": 9.737166666666667
+        },
+        "growth": {
+          "detection_rate": 0.947,
+          "n_detected": 5682,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            -1.0,
+            1.0
+          ],
+          "mean_alarms_per_series": 15.685
+        },
+        "cusum": {
+          "detection_rate": 0.8565,
+          "n_detected": 5139,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            0.0,
+            1.0
+          ],
+          "mean_alarms_per_series": 4.7085
+        },
+        "pelt": {
+          "detection_rate": 0.9041666666666667,
+          "n_detected": 5425,
+          "median_delay_q": 0.0,
+          "iqr_delay_q": [
+            0.0,
+            0.0
+          ],
+          "mean_alarms_per_series": 6.534
+        }
+      },
+      "pooled": {
+        "fixed": {
+          "detection_rate": 0.8096111111111111,
+          "n_series": 18000,
+          "n_detected": 14573
+        },
+        "growth": {
+          "detection_rate": 0.7867222222222222,
+          "n_series": 18000,
+          "n_detected": 14161
+        },
+        "cusum": {
+          "detection_rate": 0.6147777777777778,
+          "n_series": 18000,
+          "n_detected": 11066
+        },
+        "pelt": {
+          "detection_rate": 0.7138333333333333,
+          "n_series": 18000,
+          "n_detected": 12849
+        },
+        "contrasts_vs_fixed": {
+          "cusum": {
+            "diff": -0.1948333333333333,
+            "lo": -0.2572374999999999,
+            "hi": -0.13083194444444446,
+            "p": 0.0,
+            "B": 1000,
+            "n_series": 18000,
+            "n_clusters": 30
+          },
+          "pelt": {
+            "diff": -0.09577777777777774,
+            "lo": -0.15816805555555558,
+            "hi": -0.03349861111111108,
+            "p": 0.0,
+            "B": 1000,
+            "n_series": 18000,
+            "n_clusters": 30
+          },
+          "growth": {
+            "diff": -0.022888888888888848,
+            "lo": -0.029334722222222213,
+            "hi": -0.016388888888888897,
+            "p": 0.0,
+            "B": 1000,
+            "n_series": 18000,
+            "n_clusters": 30
+          }
+        }
+      }
+    }
+  },
+  "detection_by_track_size_tercile_matched": {
+    "small": {
+      "fixed": 0.6523333333333333,
+      "growth": 0.49833333333333335,
+      "cusum": 0.5603333333333333,
+      "pelt": 0.5326666666666666
+    },
+    "medium": {
+      "fixed": 0.58,
+      "growth": 0.4045,
+      "cusum": 0.7211666666666666,
+      "pelt": 0.738
+    },
+    "large": {
+      "fixed": 0.532,
+      "growth": 0.356,
+      "cusum": 0.8591666666666666,
+      "pelt": 0.8708333333333333
+    }
+  },
+  "null_floor_note": "At a 5%/quarter false-alarm budget, a detector fires somewhere inside a 5-quarter window by chance about 1-(1-0.05)^5 = 22.6% of the time. The measured 'null_detection_within_2q' of every tuned detector is therefore the correct floor against which detection rates must be read.",
+  "verdict_rule": "at least one change-point detector beats the fixed threshold by >= 10 percentage points at the matched false-alarm budget, with a cluster-bootstrap (by track) 95% CI excluding 0",
+  "verdict": "SUPPORTED",
+  "best_cp_detector": "pelt",
+  "best_cp_gain_vs_fixed": 0.12572222222222218,
+  "best_cp_contrast": {
+    "diff": 0.12572222222222218,
+    "lo": 0.05231527777777779,
+    "hi": 0.2020597222222222,
+    "p": 0.002,
+    "B": 1000,
+    "n_series": 18000,
+    "n_clusters": 30
+  },
+  "honest_label": "CONTROLLED SIMULATION. This proves detector properties under a known ground truth. It is NOT evidence that real medical-technology history contains detectable change points."
+}

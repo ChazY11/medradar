@@ -1,0 +1,389 @@
+{
+  "protocol_version": "phoenix-001/v1",
+  "harness_version": "1.0.0",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "db_sha256_matches_frozen": true,
+  "lag_scenario": "L090",
+  "lag_days": 90,
+  "command": "python run_track.py",
+  "elapsed_sec": 65.58,
+  "seed": 20261108,
+  "n": 0,
+  "n_pos": 0,
+  "prevalence": 0.0,
+  "content": "H3 lead-correlation and H6 descriptive association tests (event clock, descriptive only)",
+  "h3": {
+    "protocol_version": "phoenix-001/v1",
+    "harness_version": "1.0.0",
+    "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+    "db_sha256_matches_frozen": true,
+    "lag_scenario": "L090",
+    "lag_days": 90,
+    "command": "python run_track.py",
+    "elapsed_sec": 26.47,
+    "seed": 20261108,
+    "n": 5074,
+    "n_pos": 817,
+    "prevalence": 0.16101694915254236,
+    "hypothesis": "H3",
+    "test": "lead correlation, event clock (descriptive, class R)",
+    "lag_correlations": {
+      "single": {
+        "k0": {
+          "spearman": -0.07297573943592665,
+          "ci95": [
+            -0.1271366609172102,
+            -0.015403351918205913
+          ],
+          "p_boot": 0.018,
+          "p_perm": 1.0,
+          "null_sd": 0.004601580097784544,
+          "n": 4845,
+          "n_clusters": 59
+        },
+        "k1": {
+          "spearman": -0.1034525507609208,
+          "ci95": [
+            -0.15247286228055526,
+            -0.0531227916611399
+          ],
+          "p_boot": 0.0,
+          "p_perm": 0.008,
+          "null_sd": 0.004670928237629247,
+          "n": 4786,
+          "n_clusters": 59
+        },
+        "k2": {
+          "spearman": -0.09936043253312925,
+          "ci95": [
+            -0.14968817533884193,
+            -0.04879641358304395
+          ],
+          "p_boot": 0.0,
+          "p_perm": 0.044,
+          "null_sd": 0.004667903078572043,
+          "n": 4727,
+          "n_clusters": 59
+        },
+        "k3": {
+          "spearman": -0.10206620685314811,
+          "ci95": [
+            -0.15298781289704944,
+            -0.04968863515713238
+          ],
+          "p_boot": 0.0,
+          "p_perm": 0.004,
+          "null_sd": 0.0046316831218326665,
+          "n": 4668,
+          "n_clusters": 59
+        },
+        "k4": {
+          "spearman": -0.09775275274561433,
+          "ci95": [
+            -0.14841855335331677,
+            -0.0467186218682445
+          ],
+          "p_boot": 0.0,
+          "p_perm": 0.091,
+          "null_sd": 0.004775167756927454,
+          "n": 4609,
+          "n_clusters": 59
+        }
+      },
+      "fwd4": {
+        "k0": {
+          "spearman": -0.10516076438464855,
+          "ci95": [
+            -0.1587145280941137,
+            -0.049035869735481234
+          ],
+          "p_boot": 0.0,
+          "p_perm": 0.115,
+          "null_sd": 0.0034721967432381515,
+          "n": 4668,
+          "n_clusters": 59
+        },
+        "k1": {
+          "spearman": -0.1136393891888775,
+          "ci95": [
+            -0.1667718540645071,
+            -0.05760302975930243
+          ],
+          "p_boot": 0.0,
+          "p_perm": 0.004,
+          "null_sd": 0.0034248587161926822,
+          "n": 4609,
+          "n_clusters": 59
+        },
+        "k2": {
+          "spearman": -0.1176491430813839,
+          "ci95": [
+            -0.1708535772020123,
+            -0.061845490711005514
+          ],
+          "p_boot": 0.0,
+          "p_perm": 0.001,
+          "null_sd": 0.003420282300846375,
+          "n": 4550,
+          "n_clusters": 59
+        },
+        "k3": {
+          "spearman": -0.11749992049873514,
+          "ci95": [
+            -0.17229324362947368,
+            -0.06280837368742324
+          ],
+          "p_boot": 0.0,
+          "p_perm": 0.001,
+          "null_sd": 0.0033890024563157186,
+          "n": 4491,
+          "n_clusters": 59
+        },
+        "k4": {
+          "spearman": -0.12071669404489462,
+          "ci95": [
+            -0.1754735752038661,
+            -0.06541095194434692
+          ],
+          "p_boot": 0.0,
+          "p_perm": 0.0,
+          "null_sd": 0.0033967200769082326,
+          "n": 4432,
+          "n_clusters": 59
+        }
+      },
+      "sensitivity_including_first_quarter": {
+        "single": {
+          "k0": {
+            "spearman": -0.07205671986377733,
+            "ci95": [
+              -0.12541609066465675,
+              -0.01642693069432781
+            ],
+            "p_boot": 0.018,
+            "n": 4904
+          },
+          "k1": {
+            "spearman": -0.10222396062792645,
+            "ci95": [
+              -0.14969329665638362,
+              -0.053623375709774525
+            ],
+            "p_boot": 0.0,
+            "n": 4845
+          },
+          "k2": {
+            "spearman": -0.10068732573462723,
+            "ci95": [
+              -0.1491866775194263,
+              -0.05021124052212088
+            ],
+            "p_boot": 0.0,
+            "n": 4786
+          },
+          "k3": {
+            "spearman": -0.1039251673340496,
+            "ci95": [
+              -0.15279584423895143,
+              -0.05446744780809232
+            ],
+            "p_boot": 0.0,
+            "n": 4727
+          },
+          "k4": {
+            "spearman": -0.09923283221466932,
+            "ci95": [
+              -0.14847353700480947,
+              -0.05020827436508355
+            ],
+            "p_boot": 0.0,
+            "n": 4668
+          }
+        },
+        "fwd4": {
+          "k0": {
+            "spearman": -0.10476059932841615,
+            "ci95": [
+              -0.15824275157950007,
+              -0.04991661300173312
+            ],
+            "p_boot": 0.0,
+            "n": 4727
+          },
+          "k1": {
+            "spearman": -0.114259374496608,
+            "ci95": [
+              -0.1661014640737291,
+              -0.06069934443767271
+            ],
+            "p_boot": 0.0,
+            "n": 4668
+          },
+          "k2": {
+            "spearman": -0.1185304779037793,
+            "ci95": [
+              -0.16967744329979087,
+              -0.06438000455913924
+            ],
+            "p_boot": 0.0,
+            "n": 4609
+          },
+          "k3": {
+            "spearman": -0.1179891422691467,
+            "ci95": [
+              -0.1695736182215895,
+              -0.06391765844777113
+            ],
+            "p_boot": 0.0,
+            "n": 4550
+          },
+          "k4": {
+            "spearman": -0.12033737570346864,
+            "ci95": [
+              -0.1727256052928069,
+              -0.06698648348253476
+            ],
+            "p_boot": 0.0,
+            "n": 4491
+          }
+        }
+      },
+      "sensitivity_within_track_highpass": {
+        "single": {
+          "k0": {
+            "spearman": 0.046942124126752444,
+            "ci95": [
+              0.0035605218012486474,
+              0.08801886807444943
+            ],
+            "p_boot": 0.034,
+            "n": 4845
+          },
+          "k1": {
+            "spearman": -0.009567984946668731,
+            "ci95": [
+              -0.03737624821067184,
+              0.01905900664988213
+            ],
+            "p_boot": 0.498,
+            "n": 4786
+          },
+          "k2": {
+            "spearman": 6.387947797716108e-05,
+            "ci95": [
+              -0.028808413791478166,
+              0.028586210924724086
+            ],
+            "p_boot": 0.976,
+            "n": 4727
+          },
+          "k3": {
+            "spearman": -0.012880473535912328,
+            "ci95": [
+              -0.042987621297853426,
+              0.01768882863023077
+            ],
+            "p_boot": 0.426,
+            "n": 4668
+          },
+          "k4": {
+            "spearman": -0.009439556481340483,
+            "ci95": [
+              -0.03866491024948696,
+              0.019661786680289842
+            ],
+            "p_boot": 0.582,
+            "n": 4609
+          }
+        },
+        "fwd4": {
+          "k0": {
+            "spearman": 0.03490208622282324,
+            "ci95": [
+              -0.012399405813660253,
+              0.0824958128847771
+            ],
+            "p_boot": 0.154,
+            "n": 4668
+          },
+          "k1": {
+            "spearman": -0.003140308918717301,
+            "ci95": [
+              -0.04631158718296536,
+              0.040306349186755186
+            ],
+            "p_boot": 0.902,
+            "n": 4609
+          },
+          "k2": {
+            "spearman": -0.006083559522548377,
+            "ci95": [
+              -0.042831252138766124,
+              0.032310733297595706
+            ],
+            "p_boot": 0.786,
+            "n": 4550
+          },
+          "k3": {
+            "spearman": -0.014336812338054514,
+            "ci95": [
+              -0.05403248610802267,
+              0.02677459362369315
+            ],
+            "p_boot": 0.504,
+            "n": 4491
+          },
+          "k4": {
+            "spearman": -0.02039630764159636,
+            "ci95": [
+              -0.0572054997012717,
+              0.01464077587933377
+            ],
+            "p_boot": 0.288,
+            "n": 4432
+          }
+        }
+      },
+      "definition": {
+        "entrants_t": "companies whose first-ever event in the track is in quarter t",
+        "rate": "device (510k+pma) events per quarter; single = quarter t+k, fwd4 = mean over t+k..t+k+3",
+        "permutation": "circular shift of each track's entrant series by 8..n-8 quarters"
+      }
+    },
+    "n_tracks": 59,
+    "n_quarters": 86
+  },
+  "h6": {
+    "protocol_version": "phoenix-001/v1",
+    "harness_version": "1.0.0",
+    "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+    "db_sha256_matches_frozen": true,
+    "lag_scenario": "L090",
+    "lag_days": 90,
+    "command": "python run_track.py",
+    "elapsed_sec": 64.62,
+    "seed": 20261108,
+    "n": 4210,
+    "n_pos": 4210,
+    "prevalence": 0.8297201418998817,
+    "hypothesis": "H6",
+    "test": "concentration-change association, event clock (descriptive, class R)",
+    "descriptive": {
+      "test": "H6 test 1 (descriptive association)",
+      "spearman": -0.44186733192809097,
+      "ci95": [
+        -0.47755807857101845,
+        -0.41097339950199363
+      ],
+      "p_boot": 0.0,
+      "n_pairs": 3380,
+      "n_clusters": 56,
+      "ci_excludes_zero": true,
+      "definition": "dHHI_{t-4->t} vs dHHI_{t->t+4}, single-quarter event-share HHI, company_key non-null events, within track",
+      "sensitivity_w8_spearman": -0.4042141451484255,
+      "sensitivity_w8_n": 3051
+    },
+    "hhi_definition_note": "single-quarter HHI of company event shares within the track; quarters without events are undefined and skipped in the test",
+    "n_tracks": 59
+  }
+}

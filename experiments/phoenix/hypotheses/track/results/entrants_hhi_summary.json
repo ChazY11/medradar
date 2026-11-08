@@ -1,0 +1,114 @@
+{
+  "protocol_version": "phoenix-001/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "db_sha256_matches_frozen": true,
+  "command": "python entrants_hhi.py",
+  "lag_scenario": "L000+L090+L180 (feature-clock columns per lag; event-clock descriptive columns identical across lags)",
+  "seed": 20261108,
+  "n_tracks": 59,
+  "n_quarters": 86,
+  "quarters": [
+    "2004Q1",
+    "2025Q2"
+  ],
+  "source_coverage": [
+    {
+      "kind": "510k",
+      "n": 70796,
+      "n_with_track": 40196,
+      "n_with_company": 12768,
+      "n_with_both": 8463
+    },
+    {
+      "kind": "8k_catalyst",
+      "n": 20976,
+      "n_with_track": 0,
+      "n_with_company": 1360,
+      "n_with_both": 0
+    },
+    {
+      "kind": "device_recall",
+      "n": 58567,
+      "n_with_track": 39656,
+      "n_with_company": 28542,
+      "n_with_both": 21128
+    },
+    {
+      "kind": "drug_approval",
+      "n": 2678,
+      "n_with_track": 0,
+      "n_with_company": 891,
+      "n_with_both": 0
+    },
+    {
+      "kind": "pma",
+      "n": 46008,
+      "n_with_track": 37553,
+      "n_with_company": 32551,
+      "n_with_both": 28599
+    },
+    {
+      "kind": "trial",
+      "n": 54811,
+      "n_with_track": 30983,
+      "n_with_company": 38096,
+      "n_with_both": 19884
+    }
+  ],
+  "t_entrant_definition": "new entrant = company whose first-ever event in the track (on the feature clock, i.e. available_at + lag) falls in the quarter; forward variant ent_fwd4 uses the event clock and is descriptive only",
+  "t_hhi_definition": "sum of squared company shares of that quarter's events inside the track; company_key non-null events only (frozen track event set); dev_hhi_* restricts to 510k+pma as a sensitivity",
+  "lags": {
+    "L000": {
+      "lag_scenario": "L000",
+      "lag_days": 0,
+      "rows": 5074,
+      "csv": "experiments/phoenix/hypotheses/track/cache/entrants_hhi_L000.csv",
+      "n_quarters_hhi_defined": 4210,
+      "share_quarters_hhi_defined": 0.8297201418998817,
+      "hhi_q_mean": 0.47958137727125105,
+      "hhi_q_median": 0.3877551020408163,
+      "hhi4_mean": 0.37678510932708653,
+      "n_active4_mean": 4.111549073709106,
+      "ent_new4_mean": 0.8577059519117067,
+      "ent_q_ev_mean": 0.21600315333070555,
+      "share_track_quarters_with_entrant": 0.16101694915254236,
+      "share_track_quarters_with_entrant_featclock": 0.16101694915254236
+    },
+    "L090": {
+      "lag_scenario": "L090",
+      "lag_days": 90,
+      "rows": 5074,
+      "csv": "experiments/phoenix/hypotheses/track/cache/entrants_hhi_L090.csv",
+      "n_quarters_hhi_defined": 4163,
+      "share_quarters_hhi_defined": 0.8204572329523059,
+      "hhi_q_mean": 0.4791929164469898,
+      "hhi_q_median": 0.3877551020408163,
+      "hhi4_mean": 0.37737164597880585,
+      "n_active4_mean": 3.906582577847852,
+      "ent_new4_mean": 0.8521876231769807,
+      "ent_q_ev_mean": 0.21600315333070555,
+      "share_track_quarters_with_entrant": 0.16101694915254236,
+      "share_track_quarters_with_entrant_featclock": 0.1604256996452503
+    },
+    "L180": {
+      "lag_scenario": "L180",
+      "lag_days": 180,
+      "rows": 5074,
+      "csv": "experiments/phoenix/hypotheses/track/cache/entrants_hhi_L180.csv",
+      "n_quarters_hhi_defined": 4112,
+      "share_quarters_hhi_defined": 0.8104059913283406,
+      "hhi_q_mean": 0.47912790394775784,
+      "hhi_q_median": 0.3877551020408163,
+      "hhi4_mean": 0.3772871241332102,
+      "n_active4_mean": 3.7163973196689004,
+      "ent_new4_mean": 0.8460780449349625,
+      "ent_q_ev_mean": 0.21600315333070555,
+      "share_track_quarters_with_entrant": 0.16101694915254236,
+      "share_track_quarters_with_entrant_featclock": 0.15884903429247144
+    }
+  },
+  "elapsed_sec": 43.99,
+  "n": 5074,
+  "n_pos": 4163,
+  "prevalence": 0.8204572329523059
+}

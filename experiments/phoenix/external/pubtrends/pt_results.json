@@ -1,0 +1,190 @@
+{
+  "upstream": {
+    "repo": "https://github.com/JetBrains-Research/pubtrends",
+    "licence": "Apache-2.0 (LICENSE.txt, Copyright 2022 JetBrains Research)",
+    "constants_used": {
+      "SIMILARITY_COCITATION": 10,
+      "SIMILARITY_BIBLIOGRAPHIC_COUPLING": 3,
+      "SIMILARITY_CITATION": 1,
+      "SIMILARITY_TEXT": 20,
+      "NODE2VEC_P": 5.0,
+      "NODE2VEC_Q": 2.0,
+      "NODE2VEC_WALK_LENGTH": 30,
+      "NODE2VEC_WALKS_PER_NODE": 50,
+      "NODE2VEC_EMBEDDINGS_VECTOR_LENGTH": 64,
+      "NODE2VEC_GRAPH_EDGES": 50,
+      "MAX_AGGLOMERATIVE_CLUSTERING": 5000
+    },
+    "full_stack_deployed": false,
+    "database_used": false
+  },
+  "numpy": "2.5.1",
+  "checks": [
+    {
+      "id": "A",
+      "title": "composite similarity formula 10*co + 3*bc + 1*cit + 20*txt",
+      "pass": true,
+      "detail": {
+        "expected": 47.0,
+        "got": 47.0
+      },
+      "note": ""
+    },
+    {
+      "id": "B1",
+      "title": "node2vec p/q transition probabilities match 1/p, 1, 1/q rule",
+      "pass": true,
+      "detail": {
+        "analytic": {
+          "B": 0.1176,
+          "C": 0.5882,
+          "D": 0.2941
+        },
+        "empirical_200k": {
+          "B": 0.1173,
+          "C": 0.5888,
+          "D": 0.294
+        },
+        "max_abs_error": 0.00052
+      },
+      "note": "p=5 (return penalty), q=2 (outward penalty), matching config.py defaults"
+    },
+    {
+      "id": "B2",
+      "title": "node2vec first hop is weight-proportional",
+      "pass": true,
+      "detail": {
+        "Y_prob": 0.75,
+        "expected": 0.75
+      },
+      "note": ""
+    },
+    {
+      "id": "B3",
+      "title": "heavier edge gets proportionally higher walk probability",
+      "pass": true,
+      "detail": {
+        "P->Q": 0.9,
+        "P->R": 0.1
+      },
+      "note": ""
+    },
+    {
+      "id": "C",
+      "title": "k-NN: edges are top-k for >=1 endpoint, but the degree cap is NOT strict",
+      "pass": true,
+      "detail": {
+        "k": 5,
+        "edges": 268,
+        "max_observed_degree": 7,
+        "nodes_over_k": 18,
+        "isolated_nodes": 0,
+        "topk_violations": 0,
+        "invariant_topk_holds": true,
+        "invariant_degree_cap_holds": false
+      },
+      "note": "measured upstream defect: with NODE2VEC_GRAPH_EDGES=50 the same logic can yield degree up to ~2k-1; upstream source gates on the peer's degree (len(result.neighbors(x)) < k) but never on the node's own degree"
+    },
+    {
+      "id": "D",
+      "title": "topic description recovers cluster-specific tokens over a shared token",
+      "pass": true,
+      "detail": {
+        "0": [
+          "c0a",
+          "c0b",
+          "c0c"
+        ],
+        "1": [
+          "c1a",
+          "c1c",
+          "c1b"
+        ],
+        "2": [
+          "c2a",
+          "c2b",
+          "c2c"
+        ]
+      },
+      "note": "rank = cosine(freq vector, one-hot) weighted by log1p(total); the shared high-frequency token is correctly demoted"
+    },
+    {
+      "id": "E",
+      "title": "clusters relabelled by descending size (0 = largest)",
+      "pass": true,
+      "detail": {
+        "in": [
+          7,
+          7,
+          7,
+          3,
+          3,
+          9
+        ],
+        "out": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2
+        ]
+      },
+      "note": ""
+    },
+    {
+      "id": "F",
+      "title": "citation gain analytics: absolute max-gain OK; relative 'hot paper' exceeds 1.0 in first citation year (denominator guard artefact)",
+      "pass": true,
+      "detail": {
+        "max_gain": {
+          "2001": {
+            "paper_index": 0,
+            "count": 10
+          },
+          "2002": {
+            "paper_index": 0,
+            "count": 20
+          },
+          "2003": {
+            "paper_index": 0,
+            "count": 5
+          }
+        },
+        "max_relative_gain": {
+          "2001": {
+            "paper_index": 0,
+            "rel_gain": 10.0
+          },
+          "2002": {
+            "paper_index": 0,
+            "rel_gain": 2.0
+          },
+          "2003": {
+            "paper_index": 0,
+            "rel_gain": 0.1667
+          }
+        },
+        "rel_gain_2001_paper0": 10.0,
+        "rel_gain_gt_1": true
+      },
+      "note": "upstream formula: df[year] / (current_sum + (current_sum == 0)); current_sum is cumulative BEFORE the year, so a paper first cited in year Y gets denominator 1 and rel_gain = raw count. Upstream threshold >=0.01 then always admits such papers, biasing 'hot paper per year' to newly-cited works."
+    },
+    {
+      "id": "G",
+      "title": "no held-out predictive evaluation exists in the repository",
+      "pass": true,
+      "detail": {
+        "temporal_target": false,
+        "train_test_split": false,
+        "accuracy_metric": false,
+        "cluster_ids_stable_over_time": false
+      },
+      "note": "verified by reading analyzer.py / predict_analyzer.py / all analysis modules and by grepping the repo for forecast/accuracy evaluation; predict_analyzer.py searches a RANDOM sample of PubMed papers, it does not forecast"
+    }
+  ],
+  "passed": 9,
+  "failed": 0,
+  "elapsed_s": 0.04,
+  "status": "ok"
+}
