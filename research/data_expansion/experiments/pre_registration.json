@@ -1,0 +1,23 @@
+{
+  "amendment_policy": "append-only; corrections must be recorded in SOURCE_INCREMENT_EXPERIMENT.md section '\u504f\u79bb\u9884\u6ce8\u518c'",
+  "files": {
+    "EXPERIMENT_DESIGN.md": {
+      "bytes": 10812,
+      "sha256": "06fd25767a1bbbaea6fc303b8994819cd5943ff610dee561265495cc5ffa17d5"
+    },
+    "registry/SOURCE_SCORING_RUBRIC.json": {
+      "bytes": 6241,
+      "sha256": "e95add3119a3f89c8826192616c19494b648177f82dacc0cd82271c9d962a244"
+    }
+  },
+  "frozen_at": "2026-11-09T05:40:00Z",
+  "frozen_by": "DATA-EXPANSION-001 lead, before any experiment number existed",
+  "rules": {
+    "anchor_rule": "per firm, per calendar year 2017-2024, first openFDA 510(k)/PMA decision by (decision_date, official number)",
+    "exp_a_decision": "INCREMENTAL iff coverage_any >= 0.10 and duplicate_rate <= 0.50; INSUFFICIENT_EVIDENCE below 20 real records",
+    "exp_b_scope": "no population precision/recall/F1; only error rate on the authoritative-identifier subset, refusal rate, candidate volume, decoy control",
+    "exp_c_decision": "detectable lead iff T1 median lead vs placebo one-sided permutation p < 0.05 AND confirmed_link_rate >= 0.7",
+    "lead_time_quality_gate": "only source_public_at_quality in {exact, day} may enter lead-time statistics"
+  },
+  "schema": "medradar.external.pre_registration.v1"
+}
