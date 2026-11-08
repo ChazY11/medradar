@@ -1,0 +1,22 @@
+# PHOENIX-001 / REA 6.7.0 MCP registration for DeepSeek Harness.
+#
+# DSH composes its plugin tree as: bundle patches -> profile cordis.patch.yml
+# -> THIS home-level patch (applies to every profile) -> --patch overlays.
+# This file is the registration target REA 6.7.0's own `dsh` client adapter
+# names (C:\Users\yjx0\.dsh\cordis.patch.yml), and DSH's app-boot does read it
+# (dsh-app-boot: loadOptionalPatches(binName, join(home, "cordis.patch.yml"))).
+#
+# Added by: rea-ops (PHOENIX-001 Section 3). Reversible: delete this file.
+- insert:
+    - id: rea-mcp
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: rea
+        transport: stdio
+        command: 'C:\Program Files\nodejs\node.exe'
+        args:
+          - 'D:\DEPPSKK\.rea\node_modules\rea-agents\scripts\rea.mjs'
+          - mcp
+        # Default is false; stated explicitly so a broken REA server can never
+        # block DSH startup.
+        failOnStartupError: false

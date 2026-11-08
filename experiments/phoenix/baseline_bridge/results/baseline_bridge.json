@@ -1,0 +1,162 @@
+{
+  "protocol_version": "phoenix-001/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "command": "python experiments/phoenix/baseline_bridge/run_bridge.py",
+  "panel": {
+    "rows_total": 26419,
+    "rows_observable": 26419,
+    "rows_after_quiescence": 7091,
+    "quiescence_years": 3
+  },
+  "lag_scenario": "L090",
+  "entities": [
+    "company_key",
+    "track_id"
+  ],
+  "model_family": "logistic C=1.0 L2",
+  "folds": [
+    {
+      "year": 2020,
+      "n_train": 3797,
+      "n_test": 502,
+      "prev_train": 0.11403739794574665,
+      "prev_test": 0.03386454183266932,
+      "n_pos_test": 17,
+      "ap_constant": 0.03386454183266932,
+      "ap_company_base_rate": 0.06301719541431308,
+      "ap_track_base_rate": 0.0475319652123482,
+      "ap_pair_base_rate": 0.08098345234656315,
+      "ap_B1_history11": 0.05459686381315153,
+      "ap_B2_spec16": 0.05292354223765831,
+      "ap_B2g_hgb": 0.10342182165508618,
+      "status": "ok"
+    },
+    {
+      "year": 2021,
+      "n_train": 4299,
+      "n_test": 572,
+      "prev_train": 0.104675505931612,
+      "prev_test": 0.055944055944055944,
+      "n_pos_test": 32,
+      "ap_constant": 0.055944055944055944,
+      "ap_company_base_rate": 0.05260651998937123,
+      "ap_track_base_rate": 0.08532230549502798,
+      "ap_pair_base_rate": 0.1125404927908288,
+      "ap_B1_history11": 0.10035254989444511,
+      "ap_B2_spec16": 0.09874010287282875,
+      "ap_B2g_hgb": 0.13024331158651134,
+      "status": "ok"
+    },
+    {
+      "year": 2022,
+      "n_train": 4871,
+      "n_test": 610,
+      "prev_train": 0.09895298706631082,
+      "prev_test": 0.07213114754098361,
+      "n_pos_test": 44,
+      "ap_constant": 0.07213114754098361,
+      "ap_company_base_rate": 0.08980500036486225,
+      "ap_track_base_rate": 0.09973411571855798,
+      "ap_pair_base_rate": 0.11753363066333597,
+      "ap_B1_history11": 0.13605440103038807,
+      "ap_B2_spec16": 0.09594982247153472,
+      "ap_B2g_hgb": 0.11510841315155163,
+      "status": "ok"
+    },
+    {
+      "year": 2023,
+      "n_train": 5481,
+      "n_test": 640,
+      "prev_train": 0.09596788907133735,
+      "prev_test": 0.09375,
+      "n_pos_test": 60,
+      "ap_constant": 0.09375,
+      "ap_company_base_rate": 0.08370311641923969,
+      "ap_track_base_rate": 0.13298636181728027,
+      "ap_pair_base_rate": 0.10448236894825204,
+      "ap_B1_history11": 0.1203767628777468,
+      "ap_B2_spec16": 0.11625598658533699,
+      "ap_B2g_hgb": 0.14882646779279,
+      "status": "ok"
+    },
+    {
+      "year": 2024,
+      "n_train": 6121,
+      "n_test": 324,
+      "prev_train": 0.09573599085116812,
+      "prev_test": 0.08024691358024691,
+      "n_pos_test": 26,
+      "ap_constant": 0.08024691358024691,
+      "ap_company_base_rate": 0.07221650374981739,
+      "ap_track_base_rate": 0.10512425132388083,
+      "ap_pair_base_rate": 0.17079787779361638,
+      "ap_B1_history11": 0.22587663203519442,
+      "ap_B2_spec16": 0.15337201179958865,
+      "ap_B2g_hgb": 0.2631433237654844,
+      "status": "ok"
+    },
+    {
+      "year": 2025,
+      "status": "insufficient"
+    }
+  ],
+  "pooled": {
+    "ap_constant": 0.06759818731117825,
+    "ap_company_base_rate": 0.07306448394173931,
+    "ap_track_base_rate": 0.09542097615561629,
+    "ap_pair_base_rate": 0.11288882106909998,
+    "ap_B1_history11": 0.12010106715389816,
+    "ap_B2_spec16": 0.10032957401506083,
+    "ap_B2g_hgb": 0.14242463633239683
+  },
+  "pooled_prev": 0.06759818731117825,
+  "n_test_total": 2648,
+  "n_pos_total": 179,
+  "published_s028_reference": {
+    "constant_training_prevalence": 0.0134,
+    "company_base_rate": 0.038,
+    "track_base_rate": 0.0339,
+    "pair_base_rate": 0.0406,
+    "B1_history10_logistic": 0.069,
+    "B2_spec16_logistic": 0.0751,
+    "B2g_hgb_spec16": 0.0567
+  },
+  "comparison_vs_published": {
+    "constant_training_prevalence": {
+      "phoenix_bridge": 0.06759818731117825,
+      "s028_published": 0.0134,
+      "delta": 0.05419818731117825
+    },
+    "company_base_rate": {
+      "phoenix_bridge": 0.07306448394173931,
+      "s028_published": 0.038,
+      "delta": 0.03506448394173931
+    },
+    "track_base_rate": {
+      "phoenix_bridge": 0.09542097615561629,
+      "s028_published": 0.0339,
+      "delta": 0.06152097615561629
+    },
+    "pair_base_rate": {
+      "phoenix_bridge": 0.11288882106909998,
+      "s028_published": 0.0406,
+      "delta": 0.07228882106909998
+    },
+    "B1_history10_logistic": {
+      "phoenix_bridge": 0.12010106715389816,
+      "s028_published": 0.069,
+      "delta": 0.05110106715389816
+    },
+    "B2_spec16_logistic": {
+      "phoenix_bridge": 0.10032957401506083,
+      "s028_published": 0.0751,
+      "delta": 0.025229574015060832
+    },
+    "B2g_hgb_spec16": {
+      "phoenix_bridge": 0.14242463633239683,
+      "s028_published": 0.0567,
+      "delta": 0.08572463633239683
+    }
+  },
+  "elapsed_sec": 21.9
+}
