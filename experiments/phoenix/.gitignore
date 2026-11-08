@@ -1,0 +1,15 @@
+# PHOENIX-001 research workspace: caches and large regenerable artefacts.
+# The sha256-pinned database in data/ is the system of record, never committed.
+__pycache__/
+*.pyc
+
+# per-lag panel caches (regenerable from medradar.sqlite by build_panel.py)
+experiments/phoenix/hypotheses/*/cache/*.pkl
+experiments/phoenix/hypotheses/*/cache/*.parquet
+
+# REA fixture binaries built by the validation harness (regenerable)
+experiments/phoenix/rea/fixtures/*.exe
+experiments/phoenix/rea/fixtures/*.sqlite
+
+# raw logs are kept, but the noisy console dumps are not
+experiments/phoenix/**/_run_*console*.log
