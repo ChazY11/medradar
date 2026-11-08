@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+from datetime import date
 from html.parser import HTMLParser
 from typing import Any, Iterable, Mapping, Sequence
 
@@ -101,6 +102,34 @@ def year_of(value: Any) -> str:
     """Four-digit year string of a parsed date, or ``""``."""
     day = ev_timeq.parse_date(value)
     return f"{day.year:04d}" if day else ""
+
+
+_US_DATE_RE = re.compile(r"^(\d{1,2})/(\d{1,2})/(\d{4})$")
+
+
+def us_date_iso(value: Any) -> str:
+    """Parse an FDA-page date as **MM/DD/YYYY** and return ISO ``YYYY-MM-DD``.
+
+    ``timeq.parse_date`` tries ``%d/%m/%Y`` before ``%m/%d/%Y``, so an ambiguous
+    US date such as ``11/06/2026`` would silently become 11 June instead of
+    6 November.  FDA pages are US-formatted, so slash dates are disambiguated
+    here first; unambiguous ``YYYY/MM/DD`` values still go through ``timeq``.
+    """
+    text = str(value or "").strip()
+    match = _US_DATE_RE.match(text)
+    if match:
+        month, day, year = (int(part) for part in match.groups())
+        try:
+            return date(year, month, day).isoformat()
+        except ValueError:
+            return ""
+    parsed = ev_timeq.parse_date(text)
+    return parsed.isoformat() if parsed else ""
+
+
+def date_quality(value: Any) -> str:
+    """``day`` when a real calendar day was parsed, else ``unknown`` (never inflated)."""
+    return "day" if us_date_iso(value) else "unknown"
 
 
 def clock_block(
