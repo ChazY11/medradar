@@ -152,9 +152,9 @@ rates 44 %–91 % with no monotone trend. The result is **stable and negative**.
 | + both | 31 | 96.8 % | 1,311 d |
 | + literature-rare token (not an ordinary word of the field, Amendment 5) | **28** | 96.4 % | **1,317 d** |
 
-The collapse from 186 to 28 has one dominant cause: **5,312 of 5,760 verified rows (92.2 %) are
+The collapse from 186 to 28 has one dominant cause: **5,315 of 5,760 verified rows (92.3 %) are
 about a product that already had an FDA record when the evidence was published**
-(`PRE_EXISTING_PRODUCT`), against 448 genuinely pre-regulatory rows. That includes **203 rows
+(`PRE_EXISTING_PRODUCT`), against 445 genuinely pre-regulatory rows. That includes **211 rows
 reclassified because the record itself says it is a post-approval / post-market / continued-access
 study** (Amendment 6). A trial published before a *later* milestone is usually a trial of a device
 already on the market — the exact trap this protocol was built to avoid.
@@ -225,7 +225,7 @@ says nothing about whether a reader would have known which record mattered.
    shifted date. A firm with 2,892 indexed papers and 1,215 registered trials will have something
    product-named before any date chosen for it.
 2. **Trials before approval are the norm.** 92 % of verified links are follow-up studies of
-   already-regulated devices; 203 rows declare it in their own title. Removing them is the most
+   already-regulated devices; 211 rows declare it in their own title. Removing them is the most
    important methodological step of the round.
 3. **Good evidence lives where firms publish.** Medtronic, Abbott, Boston Scientific, Edwards and BD
    dominate the strict cases. Dräger (1 anchor, 42 EPMC records, 8 trials) and Mindray (3 anchors,
@@ -265,7 +265,7 @@ All are fixed in the numbers above; `INDEPENDENT_VERIFICATION.md` keeps the orig
 |---|---|---|
 | 1 | `VERIFIED_L1` was assigned before the 5-year window test; 28 L1 rows lay outside the window and the max lead (3,512 d) was not protocol-legal | window test moved before tier assignment; max lead is now 1,826 d |
 | 2 | EPMC matching used keywords + MeSH, not title + abstract (§6.1) | matching now uses `match_tokens` = title + abstract; keywords/MeSH only feed the C1 baseline |
-| 3 | "pre-regulatory" included self-declared post-approval / post-market studies | Amendment 6: marker rule reclassifies them (`PRE_EXISTING_PRODUCT`, 203 rows) |
+| 3 | "pre-regulatory" included self-declared post-approval / post-market studies | Amendment 6: marker rule reclassifies them (`PRE_EXISTING_PRODUCT`, 211 rows) |
 | 4 | ordinary English words (`OVERALL`, `EFFICIENT`, `ORGANS`) were treated as product tokens | Amendment 5: literature-rarity test (EPMC df ≤ 200 of 36,621); 4 strict cases removed |
 | 5 | `Zimmer Medizinsysteme GmbH` (an independent company) was attributed to Zimmer Biomet | explicit `exclude_if_contains`; 3 anchors removed (269 → 266) |
 | 6 | the deliverable omitted 1,606 of 6,532 verified rows | verified rows are never capped; only refused/ambiguous rows are |

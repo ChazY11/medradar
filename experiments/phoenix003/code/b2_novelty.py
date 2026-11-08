@@ -101,8 +101,10 @@ def main(argv=None) -> int:
         fg = first_global.get(tok)
         ed = pc.parse_date(r["evidence_date"])
         r["token_first_reg_date_global"] = pc.iso(fg)
-        text = (r.get("evidence_text") or r.get("evidence_title") or "").lower()
-        marker = next((m for m in post_markers if m in text), None)
+        marker = r.get("post_approval_marker")
+        if marker is None:  # fallback for a link file produced before the flag existed
+            text = (r.get("evidence_text") or r.get("evidence_title") or "").lower()
+            marker = next((m for m in post_markers if m in text), None)
         if marker:
             # the record says in its own words that the device was already approved
             r["regulatory_status"] = "PRE_EXISTING_PRODUCT"

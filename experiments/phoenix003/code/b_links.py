@@ -48,6 +48,26 @@ CTGOV_FILES = ["ctgov_compact.jsonl.gz", "ctgov_ext_compact.jsonl.gz"]
 EPMC_FILES = ["epmc_compact.jsonl.gz", "epmc_ext_compact.jsonl.gz"]
 
 
+_POST_MARKERS = None
+
+
+def _post_markers() -> list[str]:
+    global _POST_MARKERS
+    if _POST_MARKERS is None:
+        _POST_MARKERS = [m.lower() for m in
+                         pc.load_rules().get("novelty", {}).get("post_approval_markers", [])]
+    return _POST_MARKERS
+
+
+def post_approval_marker(*texts) -> str | None:
+    """Frozen marker scan over the FULL corpus text of the record (Amendment 6)."""
+    markers = _post_markers()
+    if not markers:
+        return None
+    blob = " ".join(str(x) for x in texts if x).lower()
+    return next((m for m in markers if m in blob), None)
+
+
 def _text_tokens(*chunks) -> set[str]:
     out = set()
     for c in chunks:
@@ -110,6 +130,7 @@ def load_ctgov(resolver) -> tuple[list[dict], dict]:
                 "date_basis": "first_posted" if rec.get("first_posted") else "none",
                 "lead_sponsor": rec.get("lead_sponsor"),
                 "text_excerpt": " ".join([title, official])[:600],
+                "pa_marker": post_approval_marker(title, official),
                 "file": name,
             })
             stats["records"] += 1
@@ -170,6 +191,7 @@ def load_epmc(resolver) -> tuple[list[dict], dict]:
                 "date_basis": rec.get("date_basis"),
                 "nct_ids": sorted(set(NCT_RE.findall(title + " " + abstract))),
                 "text_excerpt": " ".join([title, abstract])[:600],
+                "pa_marker": post_approval_marker(title, abstract),
                 "pmid": rec.get("pmid"),
                 "doi": rec.get("doi"),
                 "journal": rec.get("journal_title"),
@@ -339,6 +361,7 @@ def main(argv=None) -> int:
                 "evidence_date_basis": rec.get("date_basis"),
                 "evidence_title": (rec.get("title") or "")[:400],
                 "evidence_text": (rec.get("text_excerpt") or "")[:600],
+                "post_approval_marker": rec.get("pa_marker"),
                 "evidence_journal": rec.get("journal"),
                 "evidence_url_id": rec.get("doi") or rec.get("pmid") or rec.get("id"),
                 "matched_token": tok,
@@ -385,7 +408,10 @@ def main(argv=None) -> int:
                         "evidence_date_basis": rec.get("date_basis"),
                         "evidence_title": (rec.get("title") or "")[:400],
                         "evidence_text": (rec.get("text_excerpt") or "")[:600],
+                        "post_approval_marker": rec.get("pa_marker"),
+                "post_approval_marker": rec.get("pa_marker"),
                 "evidence_text": (rec.get("text_excerpt") or "")[:600],
+                "post_approval_marker": rec.get("pa_marker"),
                         "evidence_journal": rec.get("journal"),
                         "evidence_url_id": rec.get("doi") or rec.get("pmid"),
                         "matched_token": tok, "token_band": "generic",

@@ -336,11 +336,11 @@
       "post marketing",
       "post-marketing",
       "post marketing surveillance",
-      "continued access",
-      "product surveillance registry",
       "post approval study",
-      "long term registry"
+      "product surveillance registry"
     ],
-    "rule": "an evidence record whose own text declares it to be a post-approval, post-market or continued-access study is classified PRE_EXISTING_PRODUCT regardless of the name token history, because it states in its own words that the device was already approved (Amendment 6, motivated by independent verification)"
+    "rule": "an evidence record whose own text declares it to be a post-approval, post-market or continued-access study is classified PRE_EXISTING_PRODUCT regardless of the name token history, because it states in its own words that the device was already approved (Amendment 6, motivated by independent verification)",
+    "excluded_markers_note": "'continued access' is deliberately NOT a marker: in FDA/trial usage it denotes expanded access to an investigational device BEFORE approval (e.g. WATCHMAN CAP2, a continuation of the PREVAIL trial), so it is evidence of pre-approval activity, not of a prior approval. Found by independent verification to be over-broad.",
+    "scan_window": "title + abstract, full text of the corpus record"
   }
 }

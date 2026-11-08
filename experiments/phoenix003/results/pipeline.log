@@ -1,15 +1,15 @@
-=== freeze_vocab (15.0s) rc=0
+=== freeze_vocab (16.4s) rc=0
 product codes read: 7097
 regulatory names read: 233838
 generic vocabulary (df >= 20): 747 tokens
 brand tokens excluded from distinctiveness: ['ABBOTT', 'BAXTER', 'BD', 'BECTON', 'BOSTON', 'DICKINSON', 'DRAEGER', 'DRAEGERWERK', 'DRAGER', 'DRAGERWERK', 'DRÄGER', 'EDWARDS', 'GE', 'GENERAL', 'MEDTRONIC', 'MEDTRONICS', 'MEDTRONIK', 'MINDRAY', 'PHILIPS', 'SIEMENS', 'STRYKER', 'ZIMMER']
 distinct name tokens: 64662; applicant df computed: 64662; bands: high=41705 medium=22352 low=605
-wrote D:\DEPPSKK\worktrees\phoenix003\experiments\phoenix003\dataset\frozen_vocab.json sha256=e0628f60fbf90bad0fa31e688abb170928a1cc8d390bfce8e674f095641608d8
-=== freeze_epmc_df (11.1s) rc=0
+wrote D:\DEPPSKK\worktrees\phoenix003\experiments\phoenix003\dataset\frozen_vocab.json sha256=416125b6e56da83ac6527d11a60044022810c3534e5dc067f98686a4ec3ca55e
+=== freeze_epmc_df (12.4s) rc=0
 documents: 36621 (patent records skipped: 23)
 distinct tokens: 82793; literature-rare (<= 200 docs): 79877
 wrote D:\DEPPSKK\worktrees\phoenix003\experiments\phoenix003\dataset\epmc_rare_tokens.txt sha256=8dc5e28f1daf4168f20620aebe6722a764c2624043bb969de1b8b029bdf46cc4
-=== a1_anchors (10.9s) rc=0
+=== a1_anchors (11.8s) rc=0
 {
   "milestones_loaded": 177948,
   "attributed": 12217,
@@ -54,7 +54,7 @@ wrote D:\DEPPSKK\worktrees\phoenix003\experiments\phoenix003\dataset\epmc_rare_t
   },
   "pma_supplements_excluded": 55890
 }
-=== b_links (46.1s) rc=0
+=== b_links (47.4s) rc=0
 ctgov records: 4856  epmc records: 36621
 {
   "anchors": 266,
@@ -83,12 +83,12 @@ ctgov records: 4856  epmc records: 36621
   },
   "link_rows": 13835
 }
-=== b2_novelty (8.1s) rc=0
+=== b2_novelty (7.3s) rc=0
 canonical milestones used for token history: 177948; tokens: 56780
 {
   "link_status_counts": {
-    "PRE_EXISTING_PRODUCT": 5312,
-    "PRE_REGULATORY": 448
+    "PRE_EXISTING_PRODUCT": 5315,
+    "PRE_REGULATORY": 445
   },
   "anchors_target_b_novel": 18,
   "anchors_target_b_novel_with_verified_link": 7,
@@ -109,7 +109,7 @@ canonical milestones used for token history: 177948; tokens: 56780
     }
   }
 }
-=== c_controls (59.7s) rc=0
+=== c_controls (59.8s) rc=0
 corpus: ctgov=4856 epmc=36621
 {
   "c1_link_rate": 0.992481,
@@ -196,7 +196,7 @@ corpus: ctgov=4856 epmc=36621
     }
   }
 }
-=== d_leadtime (44.9s) rc=0
+=== d_leadtime (54.0s) rc=0
 {
   "verdict": "NO-GO",
   "k": 186,

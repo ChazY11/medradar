@@ -418,5 +418,40 @@ counts are unchanged. Known residual weakness, stated in the results: rare ordin
 (`TETHERING` 13 documents, `CAPTURING` 83, `POLYSACCHARIDE` 81) survive the filter and are handled
 by human adjudication rather than by another automatic rule.
 
+**Amendment 6 — 2026-11-09T05:5x +08:00 — a record that declares a prior approval is not
+pre-regulatory.**
+
+*Observed before the amendment:* independent verification found that several rows in the
+`PRE_REGULATORY` class are *post-approval / post-market / continued-access* studies — the record's
+own title says the device was already approved. The store contains no HDE or IDE event kind, so the
+token-history rule cannot see the earlier approval (the `MELODY` valve's 2006 HDE is the clearest
+example). A record that describes itself as post-approval cannot be evidence that the product was
+unknown.
+
+*Change:* a frozen marker list (`FROZEN_RULES.json → novelty.post_approval_markers`: post-approval,
+post-marketing, post-market, continued access, product surveillance registry, …) is applied to the
+evidence record's own title and abstract. A hit reclassifies the link as `PRE_EXISTING_PRODUCT`
+with reason `self_declared_post_approval:<marker>`. 211 rows were reclassified; with Amendment 5 running in parallel the strict class is 28 and the `MELODY` case dropped from 1,618
+to 393 days on the surviving non-registry record.
+
+*Effect:* a **tightening** that can only move links out of the pre-regulatory class. It does not
+touch any gate, window, seed or threshold in §10.
+
+## 13. Conformance corrections found by independent verification
+
+Recorded for the same reason as the amendments: they changed the numbers, and the reader must be
+able to see that they were corrections to conformance with §5/§6.1, not threshold changes.
+
+| correction | what was wrong | effect |
+|---|---|---|
+| L1 window | `VERIFIED_L1` was assigned before the §5 five-year window test; 28 L1 rows lay outside the window and the maximum lead was 3,512 days | window test moved before tier assignment; max lead is now 1,826 days; L1 matches 108 → 76 |
+| EPMC match field | matching used title + abstract + **keywords + MeSH** where §6.1 says "intervention name or title" | matching uses title + abstract; keywords/MeSH feed only the C1 baseline |
+| emission cap | the deliverable omitted 1,606 of 6,532 verified rows | verified rows are never capped; only refused/ambiguous rows are |
+| specificity denominator | real rate used 269 anchors, decoy rate 256 | both use the anchors that received a decoy; `specificity_matched_denominator` reported |
+| C4b draws | 500 permutations where `FROZEN_RULES` fixes 2,000 | 2,000 |
+| `specificity_note` | claimed "decoy rate is zero" while reporting 0.535 | corrected |
+| `ZIMMER` | `Zimmer Medizinsysteme GmbH` (an independent company) was attributed to Zimmer Biomet | `exclude_if_contains`; three anchors removed (269 → 266) |
+
+
 
 

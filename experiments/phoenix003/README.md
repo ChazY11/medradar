@@ -13,7 +13,8 @@ everything here implements it.
 ```
 FROZEN_RULES.json          machine-readable protocol parameters (code reads only this file)
 REGULATORY_ANCHORS.jsonl   deliverable: de-duplicated regulatory anchors (Target A / Target B flags)
-EVIDENCE_LINKS.jsonl       deliverable: every candidate, verified, ambiguous and rejected link
+EVIDENCE_LINKS.jsonl       deliverable: every VERIFIED link, plus capped candidate/ambiguous/refused
+                           rows (the cap never drops a verified row; it is declared in b_links.json)
 HUMAN_REVIEW_QUEUE.csv/md  deterministic review batch; the human_* columns are empty by design
 
 code/

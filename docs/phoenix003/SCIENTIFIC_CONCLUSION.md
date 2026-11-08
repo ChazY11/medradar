@@ -41,9 +41,9 @@ pairing or a shifted date.** Decoys (same firm, ±2 years, different product cod
 median lead (p = 0.53); date permutation gives p = 0.72 / 0.88. *(F: `results/c_controls.json`,
 `results/verdict.json`)*
 
-**F6. Most "early evidence" is follow-up study of already-regulated devices.** 5,312 of 5,760
-verified rows (92.2 %) are about a product that already had an FDA record when the evidence was
-published; only 448 are pre-regulatory, and **203 rows declare a prior approval in their own
+**F6. Most "early evidence" is follow-up study of already-regulated devices.** 5,315 of 5,760
+verified rows (92.3 %) are about a product that already had an FDA record when the evidence was
+published; only 445 are pre-regulatory, and **211 rows declare a prior approval in their own
 title** (post-approval, post-market, continued-access). Without that distinction the round would
 have over-claimed by a factor of roughly seven in the strict class (186 vs 28).
 *(F: `results/b2_novelty.json`)*
@@ -76,7 +76,7 @@ testable here.** The strict cases are dominated by Medtronic/Abbott/Boston Scien
 GE HealthCare and Philips anchors are too few to compare, and Dräger/Mindray have no measurable
 publication footprint at all (42 and 234 EPMC records respectively).
 
-**H3. *"The 5,312 pre-existing-product links still carry information — they are extension studies
+**H3. *"The 5,315 pre-existing-product links still carry information — they are extension studies
 of products that later grew into new indications."* Plausible, untested, and outside this round's
 question.**
 

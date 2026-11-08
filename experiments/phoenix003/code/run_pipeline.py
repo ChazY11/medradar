@@ -78,7 +78,8 @@ def main(argv=None) -> int:
         pc.EXPERIMENT_DIR / "EVIDENCE_LINKS.jsonl",
     ]
     watched += sorted(pc.DATASET.glob("*_compact.jsonl.gz"))
-    watched += sorted(pc.RESULTS.glob("*.json"))
+    watched += [p for p in sorted(pc.RESULTS.glob("*.json"))
+                if p.name != "manifest.json"]  # never hash itself: the hash would lag the write
     manifest = {
         "generated_at": pc.utc_now_iso(),
         "db": args.db,
