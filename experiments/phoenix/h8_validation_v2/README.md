@@ -31,6 +31,9 @@ python run_phoenix002.py
 
 # 4) exploratory mechanism probes used in the report (not part of the frozen gates)
 python exp_extra_mechanism.py          # ~3 min
+
+# 5) non-overlapping-origin (Q1-only) sensitivity promised by protocol §7.3
+python sensitivity_overlap.py          # ~5 s
 ```
 
 ## Files

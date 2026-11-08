@@ -1,4 +1,4 @@
-# PHOENIX-002 — Independent Verification
+﻿# PHOENIX-002 — Independent Verification
 
 **Verifier:** `verify-phoenix002` (independent of the analysis author)
 **Script:** [`verify_results.py`](verify_results.py) — single command, no imports from `h8_validation_v2`
@@ -20,9 +20,8 @@ where a reported value is quoted it is labelled **reported** and placed next to 
 | frozen sha256 | `445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92` |
 | **match** | **YES** |
 
-`results/*.json` files carrying a frozen DB sha256: **8 of 16**; of those carrying the
-field, **0 mismatches**. The other 8 JSONs (per-experiment detail files under
-`results/exp1_v1_replication/`) simply do not carry the field — see
+`results/**/*.json` files carrying a frozen DB sha256: **8 of 15**; of those carrying the
+field, **0 mismatches**. The other 7 JSONs (per-experiment detail files `adversarial.json`, `exp2.json`–`exp6.json`, `verdict.json`, `_adv_smoke.json`) simply do not carry the field — see
 [§8](#8-things-i-could-not-verify).
 
 ---
@@ -180,30 +179,38 @@ simulated prevalence only slightly, and **exact matching to the real 10.21 % is 
 achieved**. Both the uncalibrated (s = 1, means = observed means) and the best-grid
 simulation are reported.
 
-| variant | null ΔAP mean | sd | p95 | observed ΔAP | z | upper-tail p | percentile of observed |
-|---|---|---|---|---|---|---|---|
-| NB2 (φ matched) | _see json_ | | | 0.029356 | | | |
-| Poisson | _see json_ | | | 0.029356 | | | |
+| variant | null ΔAP mean | sd | p95 | observed ΔAP | z | upper-tail p | percentile of observed | sim prevalence |
+|---|---|---|---|---|---|---|---|---|
+| **NB2 (dispersion-matched)** — primary | **0.046929** | 0.024032 | 0.078962 | 0.029356 | **−0.73** | **0.762** | **25.0** | 12.64 % |
+| sensitivity: same NB2 at scalar 0.05 | 0.030686 | 0.022864 | 0.053400 | 0.029356 | −0.06 | 0.476 | 55.0 | 13.39 % |
+| Poisson variant (not a matched null) | 0.110609 | 0.048333 | 0.204652 | 0.029356 | −1.68 | 1.000 | 0.0 | 4.71 % |
 
-> The null table above is written from the final run; see
-> `verify_results.json → parts.part5_null_calibration` for the authoritative numbers
-> and the per-universe values.
+N = 20 universes per variant. Percentile = share of null universes with ΔAP below the
+observed value; upper-tail p = (1 + #null ≥ observed)/(N + 1).
 
-<!-- FINAL_NULL_TABLE -->
+**Confirmed interpretation: the observed ΔAP of +0.0294 is NOT distinguishable from —
+in fact sits at or below the median of — what the same specification manufactures on
+memoryless data.** Under the dispersion-matched NB2 null the observed value is at the
+**25th percentile** (upper-tail p = 0.76); under the Poisson variant it exceeds every one
+of the 20 null universes (upper-tail p = 1.00); and even the least favourable scalar
+setting puts it at the 55th percentile. The qualitative conclusion is robust to the
+prevalence/scalar choice: **this pipeline can produce a ΔAP of 0.03 on pure noise.**
 
-**Interpretation (to be confirmed against the final run):** in the intermediate run the
-pure-noise null had mean ΔAP ≈ 0.031 (NB) and ≈ 0.036 (Poisson) with sd ≈ 0.023, i.e.
-**the observed ΔAP of +0.0294 sits near the median of what the same pipeline produces on
-memoryless data** (upper-tail p ≈ 0.5). If that holds in the final run, the headline
-contrast is **not distinguishable from pipeline-manufactured noise** on this calibration,
-which is a substantive caution about the point estimate — and it is fully consistent with
-the study's own NO-GO verdict.
+Why the Poisson null is *larger*, and why I do not lean on it: in a Poisson world the
+coefficient of variation of a track is 1/√μ, so the H8 feature `volatility8`
+= std8/(mean4+1) is a genuine proxy for *relative* volatility, which really does predict
+whether the forward/trending ratio will exceed 1.5×. That is a real signal *in that
+simulated world* but it is not the growth signal the study claims — which is precisely the
+artifact class G3/G7 are meant to catch. Because Poisson prevalence (4.7 %) is far from the
+real 10.21 % and Poisson is not dispersion-matched, I report it as a secondary variant and
+rest the headline caveat on the dispersion-matched NB2 null.
 
 Caveats that make this null *conservative against the study* (stated honestly):
-prevalence is 12–13 % vs. real 10.21 %; the dispersion is a derived approximation rather
-than a fit; and my B1/H8 feature builders are re-implementations, not byte-identical to
-the study's. The null therefore bounds the *order of magnitude* of noise-manufactured
-ΔAP, not its exact value.
+prevalence could **not** be matched (12.6 % achieved vs. 10.21 % real — Y1 is scale-invariant,
+see above), the dispersion φ is a derived approximation rather than a fit, and my B1/H8
+feature builders are re-implementations, not byte-identical to the study's. The null
+therefore bounds the *order of magnitude* of pipeline-manufactured ΔAP, not its exact value.
+
 
 ---
 
@@ -249,13 +256,16 @@ partitioned by their track's rate and AP is recomputed within each partition.
 
 | stratum | tracks | n rows | n_pos | prevalence | AP(M4) | AP(M1) | **ΔAP (recomputed)** | ΔAP (reported) | delta |
 |---|---|---|---|---|---|---|---|---|---|
-| high attribution ≥ 50 % | 14 | 644 | 57 | 0.0885 | 0.245936 | 0.265449 | **−0.019512** | −0.0195 | ≈0 |
-| low attribution < 50 % | 24 | 1 079 | 119 | 0.1103 | 0.144925 | 0.114964 | **+0.029961** | +0.0300 | ≈0 |
+| high attribution ≥ 50 % | 14 | 644 | 57 | 0.0885 | 0.245936 | 0.265449 | **−0.019512264241499266** | −0.019512264241499266 | **0.0** |
+| low attribution < 50 % | 24 | 1 079 | 119 | 0.1103 | 0.144925 | 0.114964 | **+0.02996052529037453** | +0.02996052529037453 | **0.0** |
 
 All 38 tracks have DB coverage (0 OOF rows missing a rate); attribution rate median
 = 0.2805. Taxonomy sanity: the 14 high-attribution tracks are the large consolidated
 ones (`cardiac_rhythm` 0.938, `neurostimulation` 0.917, `structural_heart` 0.909),
 the 24 low ones are fragmented/emerging niches (`aesthetics` 0.0024, `ent` 0.034).
+
+**Both strata match the final `summary.json` A5 block bit-for-bit (delta 0.0).**
+The `attribution_rate` column that now ships inside `oof_primary.csv` also agrees with the rate I computed from the DB to **max |diff| = 1.1e-16** over all 1 723 rows (0 rows differing by more than 1e-6) — so that column is neither fabricated nor computed on a different window.
 
 **This is an important, honest nuance:** the headline +0.0294 is carried almost
 entirely by the **low-attribution (fragmented) tracks**; on the high-attribution,
@@ -270,7 +280,7 @@ well-covered tracks the growth arm is actually **worse** than the persistence ar
 |---|---|---|
 | G2 (track38 ΔAP = 0.012268) | **NOT VERIFIED independently** | no track38 OOF artifact was saved; only the threshold arithmetic (0.012268 < 0.02 → fail) is checkable |
 | G3 (placebo p = 0.084577) | **NOT VERIFIED independently** | placebo permutation scores were not saved as data; I checked only p < 0.05 → fail |
-| DB sha256 in 8 of 16 results JSONs | **PARTIAL** | those 8 per-experiment detail files do not carry the field at all |
+| DB sha256 present in only 8 of 15 results JSONs | **PARTIAL** | 7 per-experiment detail files do not carry the field at all; the 8 that do are all correct |
 | exact provenance of `M0/M2/M3/M5/M6/M7` OOF scores | **NOT VERIFIED** | I recomputed only the pre-registered primary contrast (M1 vs M4); the other arms live in `oof_exp6_all_arms.csv` but re-deriving them would require re-running the full pipeline |
 | matched-prevalence null exactly at 10.21 % | **NOT ACHIEVED** | Y1 is scale-invariant in the count level; see §5 |
 | dedupe ΔAP = +0.0048 | **NOT VERIFIED** | dedupe result requires re-running with duplicate regulatory rows removed; no OOF artifact saved |
@@ -291,7 +301,7 @@ well-covered tracks the growth arm is actually **worse** than the persistence ar
 | purged folds violate label maturity 0 times | ✅ 0 / 12 |
 | naive folds violate | ✅ 12 / 12 folds, 2 243 training rows |
 | exp1 reproduces the published PHOENIX-001 numbers | ✅ within tolerance, exact n/n_pos/p |
-| ΔAP distinguishable from pipeline noise | ⚠️ **no** at this calibration — observed ΔAP sits near the median of the pure-noise null |
+| ΔAP distinguishable from pipeline noise | ⚠️ **no** — observed +0.0294 is at the **25th percentile** of the dispersion-matched pure-noise null (mean 0.0469), i.e. *below* the median |
 
 **Bottom line:** the headline arithmetic, the CI, the gate arithmetic and the
 `NO-GO` verdict are all reproducible from the saved artifacts. The one substantive
@@ -299,3 +309,6 @@ caution raised by this verification — fully in line with the study's own NO-GO
 that an identically specified pipeline produces a ΔAP of the same magnitude on
 memoryless simulated data, so the +0.0294 point estimate should not be read as
 evidence of a real growth signal.
+
+
+

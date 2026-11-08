@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-09T03:31:47",
+  "generated_at": "2026-11-09T03:38:39",
   "parts": {
     "part1_headline": {
       "file": "results/oof_primary.csv",
@@ -631,12 +631,6 @@
       "actual_db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
       "per_json": [
         {
-          "file": "results\\_adv_smoke.json",
-          "db_sha256": null,
-          "matches_frozen": false,
-          "has_field": false
-        },
-        {
           "file": "results\\adversarial.json",
           "db_sha256": null,
           "matches_frozen": false,
@@ -727,8 +721,8 @@
           "has_field": false
         }
       ],
-      "n_json": 16,
-      "n_missing_field": 8,
+      "n_json": 15,
+      "n_missing_field": 7,
       "n_mismatch": 0,
       "exp1_replication": {
         "reproduction_verdict": "WITHIN_TOLERANCE",
@@ -780,6 +774,55 @@
         }
       }
     },
+    "part7_attribution_strata": {
+      "definition": "track attribution rate = attributed tracked device events / all tracked device events (510k+pma, 2004-2026); high >= 0.50",
+      "n_tracks_with_data": 38,
+      "n_oof_rows_missing_rate": 0,
+      "rate_median": 0.28054988805655257,
+      "oof_file_carries_attribution_rate_column": true,
+      "strata": {
+        "high_attribution_ge_50pct": {
+          "n": 644,
+          "n_pos": 57,
+          "n_tracks": 14,
+          "prevalence": 0.08850931677018634,
+          "ap_M4": 0.2459364904467196,
+          "ap_M1": 0.2654487546882189,
+          "dap": -0.019512264241499266
+        },
+        "low_attribution_lt_50pct": {
+          "n": 1079,
+          "n_pos": 119,
+          "n_tracks": 24,
+          "prevalence": 0.1102873030583874,
+          "ap_M4": 0.14492465881786415,
+          "ap_M1": 0.11496413352748962,
+          "dap": 0.02996052529037453
+        }
+      },
+      "crosscheck_vs_oof_column": {
+        "max_abs_diff": 1.1102230246251565e-16,
+        "n_rows_over_1e_6": 0,
+        "agrees": true
+      },
+      "reported_in_summary": {
+        "high_ge_50pct": {
+          "n": 644,
+          "n_pos": 57,
+          "ap_M1": 0.2654487546882189,
+          "ap_M4": 0.2459364904467196,
+          "delta_ap": -0.019512264241499266
+        },
+        "low_lt_50pct": {
+          "n": 1079,
+          "n_pos": 119,
+          "ap_M1": 0.11496413352748962,
+          "ap_M4": 0.14492465881786415,
+          "delta_ap": 0.02996052529037453
+        }
+      },
+      "present_in_summary": true
+    },
     "crosscheck_attr59": {
       "n": 2443,
       "n_pos": 155,
@@ -791,37 +834,46 @@
       "target_prevalence_real": 0.10214741729541497,
       "calibration_trace": [
         {
-          "iter": 0,
+          "scalar": 0.6,
+          "sim_prevalence": 0.14159038901601828,
+          "abs_err": 0.039442971720603306
+        },
+        {
+          "scalar": 0.75,
+          "sim_prevalence": 0.14487986270022885,
+          "abs_err": 0.04273244540481387
+        },
+        {
+          "scalar": 0.9,
+          "sim_prevalence": 0.1341533180778032,
+          "abs_err": 0.03200590078238823
+        },
+        {
           "scalar": 1.0,
-          "prevalence": 0.12871853546910755
+          "sim_prevalence": 0.13386727688787187,
+          "abs_err": 0.03171985959245689
         },
         {
-          "iter": 1,
-          "scalar": 0.6878497503640524,
-          "prevalence": 0.12528604118993136
+          "scalar": 1.15,
+          "sim_prevalence": 0.13086384439359267,
+          "abs_err": 0.02871642709817769
         },
         {
-          "iter": 2,
-          "scalar": 0.5008741369885565,
-          "prevalence": 0.14931350114416475
+          "scalar": 1.35,
+          "sim_prevalence": 0.1272883295194508,
+          "abs_err": 0.02514091222403582
         },
         {
-          "iter": 3,
-          "scalar": 0.2233426378860392,
-          "prevalence": 0.15617848970251716
-        },
-        {
-          "iter": 4,
-          "scalar": 0.08157761758036632,
-          "prevalence": 0.15789473684210525
-        },
-        {
-          "iter": 5,
-          "scalar": 0.05,
-          "prevalence": 0.13386727688787187
+          "scalar": 1.6,
+          "sim_prevalence": 0.12643020594965676,
+          "abs_err": 0.024282788654241785
         }
       ],
-      "calibrated_mean_scalar": 0.05,
+      "calibrated_mean_scalar": 1.6,
+      "calibrated_sim_prevalence": 0.12643020594965676,
+      "calibration_abs_error": 0.024282788654241785,
+      "prevalence_matched": false,
+      "scalar_insensitivity_finding": "simulated prevalence varies little with the mean scalar (0.126..0.145 over scalar 0.6..1.6), because Y1 is scale-invariant in the count level; exact matched prevalence is therefore NOT achieved and the null comparison is approximate on this dimension",
       "N_universes": 20,
       "Q_quarters": 90,
       "n_tracks": 38,
@@ -833,87 +885,87 @@
       ],
       "nb": {
         "n_universes": 20,
-        "dap_mean": 0.030686120540401807,
-        "dap_sd": 0.022863877519331194,
-        "dap_min": 0.005925057180748761,
-        "dap_max": 0.10905573085413572,
-        "dap_p50": 0.02535416467419166,
-        "dap_p90": 0.045851307282622926,
-        "dap_p95": 0.05339996929506529,
-        "sim_prevalence_mean": 0.12897597254004578,
+        "dap_mean": 0.046928981871072625,
+        "dap_sd": 0.02403172452866404,
+        "dap_min": 0.012035957638938777,
+        "dap_max": 0.08141985239701927,
+        "dap_p50": 0.04670558828581263,
+        "dap_p90": 0.07866818685157001,
+        "dap_p95": 0.07896195169078758,
+        "sim_prevalence_mean": 0.13243707093821513,
         "sim_n_mean": 1748.0,
-        "sim_n_pos_mean": 225.45,
+        "sim_n_pos_mean": 231.5,
         "observed_dap": 0.029356072137656508,
-        "z_vs_null": -0.058172477595751455,
-        "n_null_ge_observed": 9,
-        "upper_tail_p": 0.47619047619047616,
-        "percentile_of_observed": 55.00000000000001,
+        "z_vs_null": -0.7312379813798165,
+        "n_null_ge_observed": 15,
+        "upper_tail_p": 0.7619047619047619,
+        "percentile_of_observed": 25.0,
         "null_dap_values": [
-          0.03564183008976196,
-          0.011079627909713646,
-          0.018491396148223316,
-          0.008658928429633839,
-          0.04043662155775857,
-          0.023807854578677734,
-          0.022943533284318696,
-          0.038626973063129566,
-          0.03846624926186626,
-          0.026900474769705585,
-          0.01972836683498458,
-          0.045338039348837345,
-          0.015094413962107839,
-          0.10905573085413572,
-          0.035267127467610404,
-          0.018966222739632527,
-          0.04155776889382201,
-          0.005925057180748761,
-          0.05047071868669312,
-          0.007265475746674521
+          0.06841538304766343,
+          0.07860965818587087,
+          0.016451224405055725,
+          0.07530422373096712,
+          0.055519411995577195,
+          0.050837116123688936,
+          0.08141985239701927,
+          0.033886731878976284,
+          0.012035957638938777,
+          0.07883258849572275,
+          0.027115296992543947,
+          0.03093792727930683,
+          0.057115090202742524,
+          0.034862620610449147,
+          0.051351735758033146,
+          0.042574060447936324,
+          0.013558862489953,
+          0.01782361710713501,
+          0.0332783586316526,
+          0.07864992000221971
         ]
       },
       "poisson": {
         "n_universes": 20,
-        "dap_mean": 0.03564999051839205,
-        "dap_sd": 0.023307462096933323,
-        "dap_min": -0.027036462779324588,
-        "dap_max": 0.07885011398309372,
-        "dap_p50": 0.038455297446899184,
-        "dap_p90": 0.05918767417717305,
-        "dap_p95": 0.06584961428335845,
-        "sim_prevalence_mean": 0.11641876430205951,
+        "dap_mean": 0.11060920223923676,
+        "dap_sd": 0.048332849341421964,
+        "dap_min": 0.0497938693560068,
+        "dap_max": 0.21946299661647087,
+        "dap_p50": 0.09428237204666969,
+        "dap_p90": 0.16679910373338935,
+        "dap_p95": 0.20465182933389245,
+        "sim_prevalence_mean": 0.047053775743707095,
         "sim_n_mean": 1748.0,
-        "sim_n_pos_mean": 203.5,
+        "sim_n_pos_mean": 82.25,
         "observed_dap": 0.029356072137656508,
-        "z_vs_null": -0.27003876932459603,
-        "n_null_ge_observed": 12,
-        "upper_tail_p": 0.6190476190476191,
-        "percentile_of_observed": 40.0,
+        "z_vs_null": -1.6811160775482177,
+        "n_null_ge_observed": 20,
+        "upper_tail_p": 1.0,
+        "percentile_of_observed": 0.0,
         "null_dap_values": [
-          0.04655424762888222,
-          0.021939623843735073,
-          0.05824241105067007,
-          0.022734229874970563,
-          0.054181243873817814,
-          0.020175093368025643,
-          -0.027036462779324588,
-          0.04348778289949384,
-          0.06516537745705658,
-          0.07885011398309372,
-          0.05852348492385265,
-          0.03962739070708271,
-          0.007057813607513896,
-          0.03728320418671566,
-          0.024653956823588286,
-          0.04401377774958104,
-          0.032872482029569994,
-          0.027726247325566528,
-          0.016174694860914968,
-          0.04077309695303438
+          0.11693801221059547,
+          0.09339211711347481,
+          0.1626798603466818,
+          0.13024501260935276,
+          0.20387229421375674,
+          0.14780583963135221,
+          0.09517262697986456,
+          0.09193195078626958,
+          0.0784939970012692,
+          0.0497938693560068,
+          0.05038461005662104,
+          0.1441715995226276,
+          0.08065518540291856,
+          0.06059855167318283,
+          0.13272218744025668,
+          0.13451836792667005,
+          0.08384901040673322,
+          0.074868610128637,
+          0.21946299661647087,
+          0.0606273453619936
         ]
       }
     }
   },
-  "summary_json_sha256": "8C0D16582B15E87A3F435C2D0259FB0E7CA094822A29420162DE894A7AF9E32E",
+  "summary_json_sha256": "D68E540D3D03BAB3E2CD23E5FB7AEF085B7C1B352F655D56D34C2DBBD84F2113",
   "verifier": "verify-phoenix002 (independent)",
   "script": "experiments/phoenix/h8_validation_v2/verify/verify_results.py"
 }

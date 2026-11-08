@@ -1,0 +1,66 @@
+{
+  "analysis": "OVERLAP_SENSITIVITY",
+  "protocol_version": "phoenix-002/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "note": "Q1-only origins are non-overlapping (4-quarter forward windows). This is a sensitivity check; the headline uses all origins with a track-clustered bootstrap.",
+  "primary_attr38": {
+    "all_origins": {
+      "n": 1723,
+      "n_pos": 176,
+      "prevalence": 0.10214741729541497,
+      "ap_M1": 0.12950319386315878,
+      "ap_M4": 0.1588592660008153,
+      "dap": 0.029356072137656508,
+      "ci95": [
+        0.0081664631722597,
+        0.05730700440028901
+      ],
+      "p": 0.004,
+      "n_tracks": 38
+    },
+    "q1_only_non_overlapping": {
+      "n": 449,
+      "n_pos": 52,
+      "prevalence": 0.11581291759465479,
+      "ap_M1": 0.15383536489620225,
+      "ap_M4": 0.16978664047674985,
+      "dap": 0.015951275580547597,
+      "ci95": [
+        -0.01673483975030928,
+        0.05508312263102143
+      ],
+      "p": 0.356,
+      "n_tracks": 38
+    }
+  },
+  "published_attr59": {
+    "all_origins": {
+      "n": 2443,
+      "n_pos": 155,
+      "prevalence": 0.0634465820712239,
+      "ap_M1": 0.11978583571243599,
+      "ap_M4": 0.15660903708920268,
+      "dap": 0.03682320137676669,
+      "ci95": [
+        0.0169281273499959,
+        0.06477562245243192
+      ],
+      "p": 0.0,
+      "n_tracks": 59
+    },
+    "q1_only_non_overlapping": {
+      "n": 640,
+      "n_pos": 46,
+      "prevalence": 0.071875,
+      "ap_M1": 0.1400358294182139,
+      "ap_M4": 0.17245043337664026,
+      "dap": 0.03241460395842635,
+      "ci95": [
+        -0.009558747997499385,
+        0.07575356177634808
+      ],
+      "p": 0.11,
+      "n_tracks": 59
+    }
+  }
+}
