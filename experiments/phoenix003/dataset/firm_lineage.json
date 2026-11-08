@@ -1,0 +1,145 @@
+{
+  "lineage_version": 2,
+  "frozen_at": "2026-11-09T04:30:00+08:00",
+  "amendment": "v2 adds the eight pre-registered extension firms (protocol §10 extension rule, triggered because only two core firms had >=5 anchors). Extension firms are a separate stratum and are never pooled with the core five in the headline numbers.",
+  "rule_summary": "A regulatory record is attributed to a firm only if the applicant's normalised token sequence carries the firm's brand token (word-token equality, never a bare substring), which captures the firm and its divisions, subsidiaries and joint ventures. Non-brand acquired entities are NOT attributed, because attribution would require an acquisition close date that is not present in the store; they are counted as an explicit coverage loss instead of being guessed. No record is attributed by today's corporate ownership (no back-projection).",
+  "why_not_substring": "substring matching would attribute 'Melmedtronics, Inc.' to Medtronic; token equality does not.",
+  "stratum": {
+    "medtronic": "core",
+    "ge_healthcare": "core",
+    "philips": "core",
+    "draeger": "core",
+    "mindray": "core",
+    "abbott": "extension",
+    "baxter": "extension",
+    "bd": "extension",
+    "boston_scientific": "extension",
+    "edwards_lifesciences": "extension",
+    "stryker": "extension",
+    "siemens_healthineers": "extension",
+    "zimmer_biomet": "extension"
+  },
+  "brand_tokens": {
+    "medtronic": {
+      "any_token": [
+        "MEDTRONIC",
+        "MEDTRONICS",
+        "MEDTRONIK"
+      ],
+      "segment_notes": "all Medtronic-named divisions, subsidiaries and JVs (Sofamor Danek, MiniMed, CryoCath, ATS Medical, Xomed, Navigation, Tyrx, Advanced Energy, CoreValve, Physio-Control, Perfusion, Heart Valves, ...), and records whose applicant string carries a former legal name in parentheses after a Medtronic brand."
+    },
+    "ge_healthcare": {
+      "any_token": [
+        "GENERAL",
+        "GE"
+      ],
+      "qualifier_tokens": [
+        "HEALTHCARE",
+        "MEDICAL",
+        "OEC",
+        "HUALUN",
+        "HANGWEI",
+        "OHMEDA",
+        "ELECTRIC",
+        "ELECTRICAL"
+      ],
+      "matched_by": "GE followed by HEALTHCARE|MEDICAL|OEC|HUALUN|HANGWEI|OHMEDA, or the phrase GENERAL ELECTRIC|GENERAL ELECTRICAL",
+      "segment_notes": "GE's healthcare division before the 2023-01-04 spin-off and GE HealthCare Technologies after it are the same lineage; the lineage record carries division_until=2023-01-04."
+    },
+    "philips": {
+      "any_token": [
+        "PHILIPS"
+      ],
+      "segment_notes": "Philips Medical Systems, Ultrasound, Medizin Systeme, Healthcare Suzhou, Image Guided Therapy, and Volcano/Invivo/Spectranetics/Respironics only when the applicant string itself carries the Philips brand. Known non-medical brand strings (Philips Lighting, Philips Consumer Lifestyle/Electronics, Philips Oral Healthcare, Philips Hearing Instruments) are retained by the frozen rule and flagged in the audit."
+    },
+    "draeger": {
+      "any_token": [
+        "DRAEGER",
+        "DRAGER",
+        "DRÄGER",
+        "DRAEGERWERK",
+        "DRAGERWERK"
+      ],
+      "segment_notes": "includes 'Drager Safety' (the non-medical division of the same group) and National Draeger; retained by the frozen rule and flagged in the audit."
+    },
+    "mindray": {
+      "any_token": [
+        "MINDRAY"
+      ],
+      "segment_notes": "Shenzhen Mindray, Mindray DS USA (the former Datascope patient-monitoring business, acquired 2008), Mindray North America."
+    },
+    "abbott": {
+      "any_token": [
+        "ABBOTT"
+      ],
+      "segment_notes": "Abbott Laboratories, Abbott Vascular, Abbott Medical Optics, Abbott Diabetes Care, Abbott Point of Care, St. Jude Medical only where the applicant string itself carries the Abbott brand."
+    },
+    "baxter": {
+      "any_token": [
+        "BAXTER"
+      ],
+      "segment_notes": "Baxter Healthcare, Baxter International, Baxter BioScience, Gambro only where the applicant string carries the Baxter brand."
+    },
+    "bd": {
+      "any_token": [
+        "BECTON",
+        "DICKINSON",
+        "BD"
+      ],
+      "segment_notes": "Becton Dickinson, BD, CR Bard only where the applicant string carries a Becton/Dickinson/BD brand. The bare two-letter token BD is accepted because it is the firm's own registered short name in the FDA applicant field; the audit reports how many anchors it carries."
+    },
+    "boston_scientific": {
+      "any_token": [
+        "BOSTON"
+      ],
+      "qualifier_tokens": [
+        "SCIENTIFIC"
+      ],
+      "segment_notes": "Boston Scientific and its Guidant/AngioDynamics-branded submissions only where the applicant string carries the Boston Scientific brand."
+    },
+    "edwards_lifesciences": {
+      "any_token": [
+        "EDWARDS"
+      ],
+      "segment_notes": "Edwards Lifesciences, Edwards Laboratories, and its subsidiaries only where the applicant string carries the Edwards brand."
+    },
+    "stryker": {
+      "any_token": [
+        "STRYKER"
+      ],
+      "segment_notes": "Stryker, Stryker Instruments, Stryker Spine, Stryker Endoscopy, Howmedica only where the applicant string carries the Stryker brand."
+    },
+    "siemens_healthineers": {
+      "any_token": [
+        "SIEMENS"
+      ],
+      "segment_notes": "Siemens Medical Solutions, Siemens Healthcare, Siemens Healthineers, and Siemens-named national sales entities. Non-medical Siemens entities are retained by the token rule and flagged in the audit if they appear."
+    },
+    "zimmer_biomet": {
+      "any_token": [
+        "ZIMMER"
+      ],
+      "segment_notes": "Zimmer, Zimmer Biomet and Zimmer-named subsidiaries only. BIOMET is deliberately NOT a brand token: pre-merger Biomet submissions belong to an independent company, and the store carries no acquisition close date, so including them would be exactly the back-projection this study forbids. Biomet-branded rows are counted as a coverage loss instead."
+    }
+  },
+  "token_rule_note": "boston_scientific requires BOSTON together with SCIENTIFIC; ge_healthcare requires GE together with a qualifier token or the GENERAL ELECTRIC phrase. All other firms match on their single brand token.",
+  "explicitly_excluded_examples": {
+    "medtronic": [
+      "Covidien",
+      "Given Imaging",
+      "Bellco"
+    ],
+    "ge_healthcare": [
+      "Wipro standalone (only the joint venture 'Wipro GE Healthcare' is included)"
+    ],
+    "philips": [
+      "Spectranetics Corporation (pre-2017 applicant string carries no Philips brand)",
+      "Volcano Corporation (pre-2015)"
+    ],
+    "draeger": [],
+    "mindray": [
+      "Datascope (pre-2008 applicant string carries no Mindray brand)"
+    ]
+  },
+  "unknown_policy": "Applicants outside every brand rule stay UNKNOWN. They are never imputed, never dropped silently, and their count is reported."
+}

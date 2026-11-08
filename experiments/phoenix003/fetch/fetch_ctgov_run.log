@@ -1,0 +1,35 @@
+PHOENIX-003 CTgov harvest starting: mode=FULL limit_pages=None timeout=120.0s
+  endpoint  https://clinicaltrials.gov/api/v2/studies
+  dataset   experiments/phoenix003/dataset/ctgov_compact.jsonl.gz
+  manifest  experiments/phoenix003/fetch/CTgov_FETCH_MANIFEST.json
+  fields    25 requested: NCTId,BriefTitle,OfficialTitle,Acronym,OverallStatus,StudyType,Phase,Condition,InterventionName,InterventionType,InterventionDescription,LeadSponsorName,CollaboratorName,EnrollmentCount,StartDate,PrimaryCompletionDate,CompletionDate,StudyFirstPostDate,LastUpdatePostDate,StudyFirstSubmitDate,ResultsFirstPostDate,HasResults,LocationCountry,OrgStudyId,SecondaryId
+  politeness min_delay=0.35s retries=3 backoff=(1.0, 2.0, 4.0)s
+[01/08] medtronic    q='Medtronic' page=1 http=200 got=1000 total=1675 cum_fetched=1000 cum_unique=1000 bytes=1633853 t=57.0s
+[01/08] medtronic    q='Medtronic' page=2 http=200 got=675 total=1675 cum_fetched=1675 cum_unique=1675 bytes=1094871 t=65.5s
+[02/08] ge_healthcare q='GE HealthCare' page=1 http=200 got=343 total=343 cum_fetched=343 cum_unique=2017 bytes=492237 t=2.3s
+[03/08] ge_healthcare q='GE Medical Systems' page=1 http=200 got=1 total=1 cum_fetched=1 cum_unique=2018 bytes=1335 t=0.4s
+[04/08] ge_healthcare q='General Electric Medical Systems' page=1 http=200 got=1 total=1 cum_fetched=1 cum_unique=2019 bytes=1374 t=0.7s
+[05/08] philips      q='Philips' page=1 http=200 got=376 total=376 cum_fetched=376 cum_unique=2391 bytes=555552 t=7.1s
+[06/08] draeger      q='Draeger' page=1 http=200 got=8 total=8 cum_fetched=8 cum_unique=2399 bytes=13067 t=0.5s
+[07/08] draeger      q='Dräger' page=1 http=200 got=2 total=2 cum_fetched=2 cum_unique=2401 bytes=2433 t=4.2s
+[08/08] mindray      q='Mindray' page=1 http=200 got=6 total=6 cum_fetched=6 cum_unique=2407 bytes=8147 t=1.6s
+harvest complete: 2407 unique raw records from 8 queries in 82.2s
+verified read-back: 1802 gzip lines == 1802 retained records; all lines parse as JSON
+
+=== harvest summary ===
+retained records      : 1802
+per firm              : {'medtronic': 1215, 'ge_healthcare': 258, 'philips': 316, 'draeger': 8, 'mindray': 5}
+first_posted null     : 0
+DEVICE interventions  : 1073
+multi-query nct_ids   : 3
+dropped out-of-window : 605
+dataset               : D:\DEPPSKK\worktrees\phoenix003\experiments\phoenix003\dataset\ctgov_compact.jsonl.gz (452148 bytes, sha256=19cf58313fa89b3e9903b2d4eb8b9aadc9155e56c37cfc4138e10500ffde0816, lines=1802)
+manifest              : D:\DEPPSKK\worktrees\phoenix003\experiments\phoenix003\fetch\CTgov_FETCH_MANIFEST.json (6474 bytes, sha256=4027c7695717281ff5f79fa98adbfc0c4813118d63afc3f96be10ed1694c8bec)
+  medtronic    'Medtronic'                              http=200 pages=2 returned=1675 retained=1215 reported_total=1675
+  ge_healthcare 'GE HealthCare'                          http=200 pages=1 returned=343 retained=258 reported_total=343
+  ge_healthcare 'GE Medical Systems'                     http=200 pages=1 returned=1 retained=0 reported_total=1
+  ge_healthcare 'General Electric Medical Systems'       http=200 pages=1 returned=1 retained=0 reported_total=1
+  philips      'Philips'                                http=200 pages=1 returned=376 retained=319 reported_total=376
+  draeger      'Draeger'                                http=200 pages=1 returned=8 retained=7 reported_total=8
+  draeger      'Dräger'                                 http=200 pages=1 returned=2 retained=1 reported_total=2
+  mindray      'Mindray'                                http=200 pages=1 returned=6 retained=5 reported_total=6
