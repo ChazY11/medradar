@@ -171,7 +171,7 @@ class HttpClient:
     def remaining(self) -> int:
         return max(0, self.budget - self._requests_made)
 
-    # -------------------------------------------------------------------- GET
+    # ---------------------------------------------------------------- request
     def get(
         self,
         url: str,
@@ -180,14 +180,46 @@ class HttpClient:
         headers: Mapping[str, str] | None = None,
         accept: str = "application/json",
     ) -> HttpResult:
+        return self._request("GET", url, params=params, headers=headers, accept=accept)
+
+    def post_json(
+        self,
+        url: str,
+        payload: Mapping[str, Any] | Sequence[Any],
+        *,
+        params: Mapping[str, Any] | None = None,
+        headers: Mapping[str, str] | None = None,
+        accept: str = "application/json",
+    ) -> HttpResult:
+        """JSON POST, for the few official APIs that only accept POST (NIH RePORTER,
+        USAspending award search).  Same budget, ledger and retry policy as GET."""
+        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        merged = {"Content-Type": "application/json"}
+        if headers:
+            merged.update({str(k): str(v) for k, v in headers.items()})
+        return self._request(
+            "POST", url, params=params, headers=merged, accept=accept, body=body
+        )
+
+    def _request(
+        self,
+        method: str,
+        url: str,
+        *,
+        params: Mapping[str, Any] | None = None,
+        headers: Mapping[str, str] | None = None,
+        accept: str = "application/json",
+        body: bytes | None = None,
+    ) -> HttpResult:
         full_url = _with_params(url, params)
         if self._requests_made >= self.budget:
             raise BudgetExceeded(
                 f"{self.source_id}: request budget {self.budget} exhausted (url={url})"
             )
         if not self.allow_network:
+            self._requests_made += 1
             return self._record(
-                HttpResult(full_url, "GET", None, b"", {}, 0, 0, error="network disabled by caller")
+                HttpResult(full_url, method, None, b"", {}, 0, 0, error="network disabled by caller")
             )
 
         request_headers = {
@@ -204,7 +236,9 @@ class HttpClient:
             self._requests_made += 1
             started = time.monotonic()
             try:
-                req = urllib.request.Request(full_url, headers=request_headers, method="GET")
+                req = urllib.request.Request(
+                    full_url, data=body, headers=request_headers, method=method
+                )
                 with urllib.request.urlopen(req, timeout=self.timeout) as resp:
                     raw = resp.read(self.max_body_bytes + 1)
                     if len(raw) > self.max_body_bytes:
@@ -218,7 +252,7 @@ class HttpClient:
                     elapsed = int((time.monotonic() - started) * 1000)
                     result = HttpResult(
                         full_url,
-                        "GET",
+                        method,
                         resp.status,
                         raw,
                         {k.lower(): v for k, v in resp.headers.items()},
@@ -236,7 +270,7 @@ class HttpClient:
                 retry_after = _retry_after_seconds(exc.headers)
                 last = HttpResult(
                     full_url,
-                    "GET",
+                    method,
                     exc.code,
                     body,
                     {k.lower(): v for k, v in (exc.headers or {}).items()},
@@ -253,7 +287,7 @@ class HttpClient:
                 elapsed = int((time.monotonic() - started) * 1000)
                 last = HttpResult(
                     full_url,
-                    "GET",
+                    method,
                     None,
                     b"",
                     {},

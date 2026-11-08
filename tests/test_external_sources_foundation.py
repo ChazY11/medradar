@@ -396,6 +396,24 @@ class BaseTests(unittest.TestCase):
             with self.assertRaises(base.BudgetExceeded):
                 client.get("https://example.test/api")
 
+    def test_post_json_is_bounded_and_logged_offline(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            ledger = base.HttpLedger(Path(tmp) / "requests.jsonl")
+            client = base.HttpClient("x", ledger, allow_network=False, budget=2)
+            result = client.post_json("https://example.test/search", {"q": "stent"})
+            self.assertEqual(result.method, "POST")
+            self.assertIn("network disabled", result.error)
+            self.assertEqual(ledger.count(), 1)
+            self.assertEqual(ledger.entries[0]["method"], "POST")
+
+    def test_post_and_get_share_the_budget(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            ledger = base.HttpLedger(Path(tmp) / "requests.jsonl")
+            client = base.HttpClient("x", ledger, allow_network=False, budget=1)
+            client.get("https://example.test/a")
+            with self.assertRaises(base.BudgetExceeded):
+                client.post_json("https://example.test/b", {})
+
     def test_run_probe_persists_result_even_on_failure(self):
         def boom(client, directory):
             raise RuntimeError("probe bug")
