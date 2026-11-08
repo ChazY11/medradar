@@ -1,0 +1,90 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://data.uspto.gov/bulkdata"
+  ],
+  "notes": "bulkdata.uspto.gov no longer resolves; ODP bulk/dataset API requires X-API-KEY (401). Zero bytes of bulk data downloaded.",
+  "probes": [
+    {
+      "bytes": 0,
+      "content_type": "",
+      "elapsed_ms": 16,
+      "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+      "excerpt": "",
+      "looks_like_html": false,
+      "looks_like_json": false,
+      "name": "legacy_anonymous_host",
+      "ok": false,
+      "sample": null,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": null,
+      "structure": null,
+      "url": "https://bulkdata.uspto.gov/"
+    },
+    {
+      "bytes": 20666,
+      "content_type": "text/html",
+      "elapsed_ms": 719,
+      "error": "",
+      "excerpt": "<!doctype html> <html lang=\"en\" data-beasties-container> <head><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>   <meta charset=\"utf-8\">   <base href=\"/\">   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">   <meta name=\"description\" content=\"The Open Data Port",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "odp_bulkdata_page",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:41:59.536285Z",
+        "http_status": 200,
+        "name": "odp_bulkdata.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uspto_patent_bulk\\odp_bulkdata.html",
+        "request_name": "odp_bulkdata_page",
+        "request_url": "https://data.uspto.gov/bulkdata",
+        "sha256_full": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
+        "sha256_stored": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
+        "stored_bytes": 20666,
+        "total_bytes": 20666,
+        "truncated": false
+      },
+      "sha256": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
+      "status": 200,
+      "structure": null,
+      "url": "https://data.uspto.gov/bulkdata"
+    },
+    {
+      "bytes": 26,
+      "content_type": "application/json",
+      "elapsed_ms": 516,
+      "error": "HTTP 401 Unauthorized",
+      "excerpt": "{\"message\":\"Unauthorized\"}",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "odp_dataset_products_api",
+      "ok": false,
+      "sample": null,
+      "sha256": "3e7db788e384631f8a9f299d1797e6f8af6d16d643a1c91f9e83ae15212de45c",
+      "status": 401,
+      "structure": null,
+      "url": "https://api.uspto.gov/api/v1/datasets/products/applications"
+    },
+    {
+      "bytes": 42,
+      "content_type": "application/json",
+      "elapsed_ms": 10577,
+      "error": "HTTP 403 Forbidden",
+      "excerpt": "{\"message\":\"Missing Authentication Token\"}",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "odp_dataset_products_api_alt",
+      "ok": false,
+      "sample": null,
+      "sha256": "f249b63cb2fcb66b47e86f906c98f8fd912e82dd035b4e53d7e72fc1960cfd16",
+      "status": 403,
+      "structure": null,
+      "url": "https://api.uspto.gov/api/v1/datasets/products"
+    }
+  ],
+  "requests": 6,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "uspto_patent_bulk",
+  "status": "REQUIRES_REGISTRATION",
+  "verified_at": "2026-11-08T21:42:10.996002Z"
+}

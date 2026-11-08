@@ -1,0 +1,954 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.openalex.org/works?search=stent&per-page=2&mailto=medradar.research%40example.org",
+    "https://api.openalex.org/works?search=Medtronic&per-page=2&mailto=medradar.research%40example.org",
+    "https://api.openalex.org/works?filter=doi%3A10.1056%2FNEJMoa2034577&per-page=1&mailto=medradar.research%40example.org",
+    "https://api.openalex.org/works?filter=publication_year%3A2023%2Cis_oa%3Atrue&search=pacemaker&per-page=1&mailto=medradar.research%40example.org",
+    "https://api.openalex.org/institutions?search=Philips&per-page=2&mailto=medradar.research%40example.org",
+    "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amedtronic&per-page=2&mailto=medradar.research%40example.org"
+  ],
+  "notes": "OpenAlex answered every query with 200 and real work objects, no key required. Works carry `publication_date` (first online publication), `created_date` (metadata ingestion - NOT a publication clock), DOI/PMID ids, author institutions and `grants`. Use the polite pool (`mailto=`) and never treat `created_date` as public visibility.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 56207,
+      "counts_as_ok": true,
+      "elapsed_ms": 718,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "works_search",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:12.386207Z",
+        "name": "openalex_works_search.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openalex\\openalex_works_search.json",
+        "sha256_full": "56ff42eff009f26ebeab73be6a8d820d2d562a3f0506a3964e9a2416bdd59286",
+        "sha256_stored": "56ff42eff009f26ebeab73be6a8d820d2d562a3f0506a3964e9a2416bdd59286",
+        "stored_bytes": 56207,
+        "total_bytes": 56207,
+        "truncated": false,
+        "url": "https://api.openalex.org/works?search=stent&per-page=2&mailto=medradar.research%40example.org"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "group_by",
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "group_by": {
+            "__type__": "array",
+            "item": null,
+            "len": 0
+          },
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "cost_usd",
+              "count",
+              "db_response_time_ms",
+              "groups_count",
+              "notice",
+              "page",
+              "per_page",
+              "x_query"
+            ],
+            "sample": {
+              "cost_usd": {
+                "__type__": "float"
+              },
+              "count": {
+                "__type__": "int"
+              },
+              "db_response_time_ms": {
+                "__type__": "int"
+              },
+              "groups_count": {
+                "__type__": "NoneType"
+              },
+              "notice": {
+                "__type__": "string",
+                "max_len": 510
+              },
+              "page": {
+                "__type__": "int"
+              },
+              "per_page": {
+                "__type__": "int"
+              },
+              "x_query": {
+                "__type__": "object",
+                "keys": [
+                  "oql",
+                  "oqo",
+                  "order",
+                  "order_default",
+                  "url",
+                  "x_new_oql"
+                ],
+                "sample": {
+                  "oql": "str",
+                  "oqo": "dict",
+                  "order": "str",
+                  "order_default": "bool",
+                  "url": "str",
+                  "x_new_oql": "str"
+                }
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "abstract_inverted_index",
+                "apc_list",
+                "apc_paid",
+                "authorships",
+                "awards",
+                "best_oa_location",
+                "biblio",
+                "citation_normalized_percentile",
+                "cited_by_count",
+                "cited_by_percentile_year",
+                "concepts",
+                "content_urls",
+                "corresponding_author_ids",
+                "corresponding_institution_ids",
+                "countries_distinct_count",
+                "counts_by_year",
+                "created_date",
+                "display_name",
+                "doi",
+                "funders",
+                "fwci",
+                "has_content",
+                "has_fulltext",
+                "id",
+                "ids",
+                "indexed_in",
+                "institutions",
+                "institutions_distinct_count",
+                "is_paratext",
+                "is_retracted",
+                "is_traditional",
+                "is_xpac",
+                "keywords",
+                "language",
+                "locations",
+                "locations_count",
+                "mesh",
+                "open_access",
+                "primary_location",
+                "primary_topic"
+              ],
+              "sample": {
+                "display_name": "str",
+                "doi": "str",
+                "id": "str",
+                "ids": "dict",
+                "language": "str",
+                "primary_location": "dict",
+                "publication_date": "str",
+                "publication_year": "int",
+                "relevance_score": "float",
+                "title": "str",
+                "type": "str",
+                "volume": "NoneType"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "url": "https://api.openalex.org/works?search=stent&per-page=2&mailto=medradar.research%40example.org"
+    },
+    {
+      "attempts": 1,
+      "bytes": 20995,
+      "counts_as_ok": true,
+      "elapsed_ms": 2453,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "works_company",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:14.912625Z",
+        "name": "openalex_works_company.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openalex\\openalex_works_company.json",
+        "sha256_full": "801b75a2bf22b1b10d2d3b234bf96f837c8d5ba1578f501af73f8984545dc306",
+        "sha256_stored": "801b75a2bf22b1b10d2d3b234bf96f837c8d5ba1578f501af73f8984545dc306",
+        "stored_bytes": 20995,
+        "total_bytes": 20995,
+        "truncated": false,
+        "url": "https://api.openalex.org/works?search=Medtronic&per-page=2&mailto=medradar.research%40example.org"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "group_by",
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "group_by": {
+            "__type__": "array",
+            "item": null,
+            "len": 0
+          },
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "cost_usd",
+              "count",
+              "db_response_time_ms",
+              "groups_count",
+              "notice",
+              "page",
+              "per_page",
+              "x_query"
+            ],
+            "sample": {
+              "cost_usd": {
+                "__type__": "float"
+              },
+              "count": {
+                "__type__": "int"
+              },
+              "db_response_time_ms": {
+                "__type__": "int"
+              },
+              "groups_count": {
+                "__type__": "NoneType"
+              },
+              "notice": {
+                "__type__": "string",
+                "max_len": 510
+              },
+              "page": {
+                "__type__": "int"
+              },
+              "per_page": {
+                "__type__": "int"
+              },
+              "x_query": {
+                "__type__": "object",
+                "keys": [
+                  "oql",
+                  "oqo",
+                  "order",
+                  "order_default",
+                  "url",
+                  "x_new_oql"
+                ],
+                "sample": {
+                  "oql": "str",
+                  "oqo": "dict",
+                  "order": "str",
+                  "order_default": "bool",
+                  "url": "str",
+                  "x_new_oql": "str"
+                }
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "abstract_inverted_index",
+                "apc_list",
+                "apc_paid",
+                "authorships",
+                "awards",
+                "best_oa_location",
+                "biblio",
+                "citation_normalized_percentile",
+                "cited_by_count",
+                "cited_by_percentile_year",
+                "concepts",
+                "content_urls",
+                "corresponding_author_ids",
+                "corresponding_institution_ids",
+                "countries_distinct_count",
+                "counts_by_year",
+                "created_date",
+                "display_name",
+                "doi",
+                "funders",
+                "fwci",
+                "has_content",
+                "has_fulltext",
+                "id",
+                "ids",
+                "indexed_in",
+                "institutions",
+                "institutions_distinct_count",
+                "is_paratext",
+                "is_retracted",
+                "is_traditional",
+                "is_xpac",
+                "keywords",
+                "language",
+                "locations",
+                "locations_count",
+                "mesh",
+                "open_access",
+                "primary_location",
+                "primary_topic"
+              ],
+              "sample": {
+                "display_name": "str",
+                "doi": "NoneType",
+                "id": "str",
+                "ids": "dict",
+                "language": "str",
+                "primary_location": "dict",
+                "publication_date": "str",
+                "publication_year": "int",
+                "relevance_score": "float",
+                "title": "str",
+                "type": "str",
+                "volume": "NoneType"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "url": "https://api.openalex.org/works?search=Medtronic&per-page=2&mailto=medradar.research%40example.org"
+    },
+    {
+      "attempts": 1,
+      "bytes": 227924,
+      "counts_as_ok": true,
+      "elapsed_ms": 3000,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "works_doi",
+      "record_count": 1,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:17.913521Z",
+        "name": "openalex_works_doi.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openalex\\openalex_works_doi.json",
+        "sha256_full": "9021ee1a0632c0fbd2fc76701d935a56bdfa94e836a72e1b8692d41ec8bd98f5",
+        "sha256_stored": "9021ee1a0632c0fbd2fc76701d935a56bdfa94e836a72e1b8692d41ec8bd98f5",
+        "stored_bytes": 227924,
+        "total_bytes": 227924,
+        "truncated": false,
+        "url": "https://api.openalex.org/works?filter=doi%3A10.1056%2FNEJMoa2034577&per-page=1&mailto=medradar.research%40example.org"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "group_by",
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "group_by": {
+            "__type__": "array",
+            "item": null,
+            "len": 0
+          },
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "cost_usd",
+              "count",
+              "db_response_time_ms",
+              "groups_count",
+              "notice",
+              "page",
+              "per_page",
+              "x_query"
+            ],
+            "sample": {
+              "cost_usd": {
+                "__type__": "float"
+              },
+              "count": {
+                "__type__": "int"
+              },
+              "db_response_time_ms": {
+                "__type__": "int"
+              },
+              "groups_count": {
+                "__type__": "NoneType"
+              },
+              "notice": {
+                "__type__": "string",
+                "max_len": 510
+              },
+              "page": {
+                "__type__": "int"
+              },
+              "per_page": {
+                "__type__": "int"
+              },
+              "x_query": {
+                "__type__": "object",
+                "keys": [
+                  "oql",
+                  "oqo",
+                  "order",
+                  "order_default",
+                  "url",
+                  "x_new_oql"
+                ],
+                "sample": {
+                  "oql": "str",
+                  "oqo": "dict",
+                  "order": "str",
+                  "order_default": "bool",
+                  "url": "str",
+                  "x_new_oql": "str"
+                }
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "abstract_inverted_index",
+                "apc_list",
+                "apc_paid",
+                "authorships",
+                "awards",
+                "best_oa_location",
+                "biblio",
+                "citation_normalized_percentile",
+                "cited_by_count",
+                "cited_by_percentile_year",
+                "concepts",
+                "content_urls",
+                "corresponding_author_ids",
+                "corresponding_institution_ids",
+                "countries_distinct_count",
+                "counts_by_year",
+                "created_date",
+                "display_name",
+                "doi",
+                "funders",
+                "fwci",
+                "has_content",
+                "has_fulltext",
+                "id",
+                "ids",
+                "indexed_in",
+                "institutions",
+                "institutions_distinct_count",
+                "is_paratext",
+                "is_retracted",
+                "is_traditional",
+                "is_xpac",
+                "keywords",
+                "language",
+                "locations",
+                "locations_count",
+                "mesh",
+                "open_access",
+                "primary_location",
+                "primary_topic"
+              ],
+              "sample": {
+                "display_name": "str",
+                "doi": "str",
+                "id": "str",
+                "ids": "dict",
+                "is_traditional": "bool",
+                "language": "str",
+                "primary_location": "dict",
+                "publication_date": "str",
+                "publication_year": "int",
+                "title": "str",
+                "type": "str",
+                "volume": "NoneType"
+              }
+            },
+            "len": 1
+          }
+        }
+      },
+      "url": "https://api.openalex.org/works?filter=doi%3A10.1056%2FNEJMoa2034577&per-page=1&mailto=medradar.research%40example.org"
+    },
+    {
+      "attempts": 1,
+      "bytes": 87001,
+      "counts_as_ok": true,
+      "elapsed_ms": 561,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "works_year_filter",
+      "record_count": 1,
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "group_by",
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "group_by": {
+            "__type__": "array",
+            "item": null,
+            "len": 0
+          },
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "cost_usd",
+              "count",
+              "db_response_time_ms",
+              "groups_count",
+              "notice",
+              "page",
+              "per_page",
+              "x_query"
+            ],
+            "sample": {
+              "cost_usd": {
+                "__type__": "float"
+              },
+              "count": {
+                "__type__": "int"
+              },
+              "db_response_time_ms": {
+                "__type__": "int"
+              },
+              "groups_count": {
+                "__type__": "NoneType"
+              },
+              "notice": {
+                "__type__": "string",
+                "max_len": 510
+              },
+              "page": {
+                "__type__": "int"
+              },
+              "per_page": {
+                "__type__": "int"
+              },
+              "x_query": {
+                "__type__": "object",
+                "keys": [
+                  "oql",
+                  "oqo",
+                  "order",
+                  "order_default",
+                  "url",
+                  "x_new_oql"
+                ],
+                "sample": {
+                  "oql": "str",
+                  "oqo": "dict",
+                  "order": "str",
+                  "order_default": "bool",
+                  "url": "str",
+                  "x_new_oql": "str"
+                }
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "abstract_inverted_index",
+                "apc_list",
+                "apc_paid",
+                "authorships",
+                "awards",
+                "best_oa_location",
+                "biblio",
+                "citation_normalized_percentile",
+                "cited_by_count",
+                "cited_by_percentile_year",
+                "concepts",
+                "content_urls",
+                "corresponding_author_ids",
+                "corresponding_institution_ids",
+                "countries_distinct_count",
+                "counts_by_year",
+                "created_date",
+                "display_name",
+                "doi",
+                "funders",
+                "fwci",
+                "has_content",
+                "has_fulltext",
+                "id",
+                "ids",
+                "indexed_in",
+                "institutions",
+                "institutions_distinct_count",
+                "is_paratext",
+                "is_retracted",
+                "is_traditional",
+                "is_xpac",
+                "keywords",
+                "language",
+                "locations",
+                "locations_count",
+                "mesh",
+                "open_access",
+                "primary_location",
+                "primary_topic"
+              ],
+              "sample": {
+                "display_name": "str",
+                "doi": "str",
+                "id": "str",
+                "ids": "dict",
+                "language": "str",
+                "primary_location": "dict",
+                "publication_date": "str",
+                "publication_year": "int",
+                "relevance_score": "float",
+                "title": "str",
+                "type": "str",
+                "volume": "NoneType"
+              }
+            },
+            "len": 1
+          }
+        }
+      },
+      "url": "https://api.openalex.org/works?filter=publication_year%3A2023%2Cis_oa%3Atrue&search=pacemaker&per-page=1&mailto=medradar.research%40example.org"
+    },
+    {
+      "attempts": 1,
+      "bytes": 50605,
+      "counts_as_ok": true,
+      "elapsed_ms": 2265,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "institutions_search",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:20.973372Z",
+        "name": "openalex_institutions.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openalex\\openalex_institutions.json",
+        "sha256_full": "d7df176dfa085db6b9126b8eeff231cebca448912d6a4047e285e7541999e085",
+        "sha256_stored": "d7df176dfa085db6b9126b8eeff231cebca448912d6a4047e285e7541999e085",
+        "stored_bytes": 50605,
+        "total_bytes": 50605,
+        "truncated": false,
+        "url": "https://api.openalex.org/institutions?search=Philips&per-page=2&mailto=medradar.research%40example.org"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "group_by",
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "group_by": {
+            "__type__": "array",
+            "item": null,
+            "len": 0
+          },
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "cost_usd",
+              "count",
+              "db_response_time_ms",
+              "groups_count",
+              "notice",
+              "page",
+              "per_page",
+              "x_query"
+            ],
+            "sample": {
+              "cost_usd": {
+                "__type__": "float"
+              },
+              "count": {
+                "__type__": "int"
+              },
+              "db_response_time_ms": {
+                "__type__": "int"
+              },
+              "groups_count": {
+                "__type__": "NoneType"
+              },
+              "notice": {
+                "__type__": "string",
+                "max_len": 510
+              },
+              "page": {
+                "__type__": "int"
+              },
+              "per_page": {
+                "__type__": "int"
+              },
+              "x_query": {
+                "__type__": "object",
+                "keys": [
+                  "oql",
+                  "oqo",
+                  "order",
+                  "order_default",
+                  "url",
+                  "x_new_oql"
+                ],
+                "sample": {
+                  "oql": "str",
+                  "oqo": "dict",
+                  "order": "str",
+                  "order_default": "bool",
+                  "url": "str",
+                  "x_new_oql": "str"
+                }
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "associated_institutions",
+                "cited_by_count",
+                "country_code",
+                "counts_by_year",
+                "created_date",
+                "display_name",
+                "display_name_acronyms",
+                "display_name_alternatives",
+                "geo",
+                "homepage_url",
+                "id",
+                "ids",
+                "image_thumbnail_url",
+                "image_url",
+                "international",
+                "is_super_system",
+                "lineage",
+                "relevance_score",
+                "repositories",
+                "roles",
+                "ror",
+                "status",
+                "summary_stats",
+                "topic_share",
+                "topics",
+                "type",
+                "type_id",
+                "updated_date",
+                "works_api_url",
+                "works_count",
+                "works_count_with_children",
+                "works_count_with_children_and_predecessors"
+              ],
+              "sample": {
+                "country_code": "str",
+                "display_name": "str",
+                "display_name_acronyms": "list",
+                "homepage_url": "str",
+                "id": "str",
+                "image_thumbnail_url": "NoneType",
+                "image_url": "NoneType",
+                "lineage": "list",
+                "relevance_score": "float",
+                "ror": "str",
+                "type": "str",
+                "type_id": "str"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "url": "https://api.openalex.org/institutions?search=Philips&per-page=2&mailto=medradar.research%40example.org"
+    },
+    {
+      "attempts": 1,
+      "bytes": 44885,
+      "counts_as_ok": true,
+      "elapsed_ms": 4593,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "works_affiliation_filter",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:25.572717Z",
+        "name": "openalex_affiliation_medtronic.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openalex\\openalex_affiliation_medtronic.json",
+        "sha256_full": "d000a1f32cc5a0e6a30841c545785de02cdd19459efd9c7b92bf10a8de082fc6",
+        "sha256_stored": "d000a1f32cc5a0e6a30841c545785de02cdd19459efd9c7b92bf10a8de082fc6",
+        "stored_bytes": 44885,
+        "total_bytes": 44885,
+        "truncated": false,
+        "url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amedtronic&per-page=2&mailto=medradar.research%40example.org"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "group_by",
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "group_by": {
+            "__type__": "array",
+            "item": null,
+            "len": 0
+          },
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "cost_usd",
+              "count",
+              "db_response_time_ms",
+              "groups_count",
+              "notice",
+              "page",
+              "per_page",
+              "x_query"
+            ],
+            "sample": {
+              "cost_usd": {
+                "__type__": "float"
+              },
+              "count": {
+                "__type__": "int"
+              },
+              "db_response_time_ms": {
+                "__type__": "int"
+              },
+              "groups_count": {
+                "__type__": "NoneType"
+              },
+              "notice": {
+                "__type__": "string",
+                "max_len": 510
+              },
+              "page": {
+                "__type__": "int"
+              },
+              "per_page": {
+                "__type__": "int"
+              },
+              "x_query": {
+                "__type__": "object",
+                "keys": [
+                  "oql",
+                  "oqo",
+                  "order",
+                  "order_default",
+                  "url",
+                  "x_new_oql"
+                ],
+                "sample": {
+                  "oql": "str",
+                  "oqo": "dict",
+                  "order": "str",
+                  "order_default": "bool",
+                  "url": "str",
+                  "x_new_oql": "str"
+                }
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "abstract_inverted_index",
+                "apc_list",
+                "apc_paid",
+                "authorships",
+                "awards",
+                "best_oa_location",
+                "biblio",
+                "citation_normalized_percentile",
+                "cited_by_count",
+                "cited_by_percentile_year",
+                "concepts",
+                "content_urls",
+                "corresponding_author_ids",
+                "corresponding_institution_ids",
+                "countries_distinct_count",
+                "counts_by_year",
+                "created_date",
+                "display_name",
+                "doi",
+                "funders",
+                "fwci",
+                "has_content",
+                "has_fulltext",
+                "id",
+                "ids",
+                "indexed_in",
+                "institutions",
+                "institutions_distinct_count",
+                "is_paratext",
+                "is_retracted",
+                "is_traditional",
+                "is_xpac",
+                "keywords",
+                "language",
+                "locations",
+                "locations_count",
+                "mesh",
+                "open_access",
+                "primary_location",
+                "primary_topic"
+              ],
+              "sample": {
+                "display_name": "str",
+                "doi": "str",
+                "id": "str",
+                "ids": "dict",
+                "language": "str",
+                "primary_location": "dict",
+                "publication_date": "str",
+                "publication_year": "int",
+                "relevance_score": "float",
+                "title": "str",
+                "type": "str",
+                "volume": "NoneType"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amedtronic&per-page=2&mailto=medradar.research%40example.org"
+    }
+  ],
+  "requests": 6,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "openalex",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:42:25.575713Z"
+}

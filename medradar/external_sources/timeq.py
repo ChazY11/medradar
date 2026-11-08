@@ -54,6 +54,11 @@ def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
 
+def utc_iso() -> str:
+    """Current UTC time as an ISO-8601 string with a ``Z`` suffix."""
+    return iso(utc_now())
+
+
 def iso(dt: datetime | date | None) -> str:
     """ISO-8601 UTC string, or ``""`` for a missing value (never ``None``)."""
     if dt is None:

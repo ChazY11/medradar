@@ -1,0 +1,320 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Medtronic%5BAffiliation%5D+AND+stent&retmode=json&retmax=3&tool=medradar_research&email=medradar.research%40example.org",
+    "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=42830997&tool=medradar_research&email=medradar.research%40example.org",
+    "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=10.1056%2FNEJMoa2034577%5BDOI%5D&retmode=json&retmax=2&tool=medradar_research&email=medradar.research%40example.org"
+  ],
+  "notes": "E-utilities esearch/esummary returned 200 JSON.  No key is needed at 3 req/s; the connector declares `tool`/`email` for a better politeness tier and stays below the limit with a 1.2 s minimum interval.  esummary gives `pubdate`/`epubdate` (coarse when only a year/month is published), DOI and PMC id for de-duplication.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 617,
+      "counts_as_ok": true,
+      "elapsed_ms": 1015,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "esearch",
+      "record_count": 136,
+      "sample": {
+        "fetched_at": "2026-11-08T21:43:47.483687Z",
+        "name": "pubmed_esearch.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\pubmed_eutils\\pubmed_esearch.json",
+        "sha256_full": "a25dfdaf9a2a4b0d8028985850a847243d1bc4bc2d733a3596b9fe53a56d077a",
+        "sha256_stored": "a25dfdaf9a2a4b0d8028985850a847243d1bc4bc2d733a3596b9fe53a56d077a",
+        "stored_bytes": 617,
+        "total_bytes": 617,
+        "truncated": false,
+        "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Medtronic%5BAffiliation%5D+AND+stent&retmode=json&retmax=3&tool=medradar_research&email=medradar.research%40example.org"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "esearchresult",
+          "header"
+        ],
+        "sample": {
+          "esearchresult": {
+            "__type__": "object",
+            "keys": [
+              "count",
+              "idlist",
+              "querytranslation",
+              "retmax",
+              "retstart",
+              "translationset"
+            ],
+            "sample": {
+              "count": {
+                "__type__": "string",
+                "max_len": 3
+              },
+              "idlist": {
+                "__type__": "array",
+                "item": "str",
+                "len": 3
+              },
+              "querytranslation": {
+                "__type__": "string",
+                "max_len": 201
+              },
+              "retmax": {
+                "__type__": "string",
+                "max_len": 1
+              },
+              "retstart": {
+                "__type__": "string",
+                "max_len": 1
+              },
+              "translationset": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 1
+              }
+            }
+          },
+          "header": {
+            "__type__": "object",
+            "keys": [
+              "type",
+              "version"
+            ],
+            "sample": {
+              "type": {
+                "__type__": "string",
+                "max_len": 7
+              },
+              "version": {
+                "__type__": "string",
+                "max_len": 3
+              }
+            }
+          }
+        }
+      },
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Medtronic%5BAffiliation%5D+AND+stent&retmode=json&retmax=3&tool=medradar_research&email=medradar.research%40example.org"
+    },
+    {
+      "attempts": 1,
+      "bytes": 2198,
+      "counts_as_ok": true,
+      "elapsed_ms": 733,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "esummary",
+      "record_count": 1,
+      "sample": {
+        "fetched_at": "2026-11-08T21:43:48.394022Z",
+        "name": "pubmed_esummary.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\pubmed_eutils\\pubmed_esummary.json",
+        "sha256_full": "91ffd94772edae9675d8e68818c5f36c13863ddef02f6bef41617ad19ebae918",
+        "sha256_stored": "91ffd94772edae9675d8e68818c5f36c13863ddef02f6bef41617ad19ebae918",
+        "stored_bytes": 2198,
+        "total_bytes": 2198,
+        "truncated": false,
+        "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=42830997&tool=medradar_research&email=medradar.research%40example.org"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "header",
+          "result"
+        ],
+        "sample": {
+          "header": {
+            "__type__": "object",
+            "keys": [
+              "type",
+              "version"
+            ],
+            "sample": {
+              "type": {
+                "__type__": "string",
+                "max_len": 8
+              },
+              "version": {
+                "__type__": "string",
+                "max_len": 3
+              }
+            }
+          },
+          "result": {
+            "__type__": "object",
+            "keys": [
+              "42830997",
+              "uids"
+            ],
+            "sample": {
+              "42830997": {
+                "__type__": "object",
+                "keys": [
+                  "articleids",
+                  "attributes",
+                  "authors",
+                  "availablefromurl",
+                  "bookname",
+                  "booktitle",
+                  "chapter",
+                  "doccontriblist",
+                  "docdate",
+                  "doctype",
+                  "edition",
+                  "elocationid",
+                  "epubdate",
+                  "essn",
+                  "fulljournalname",
+                  "history",
+                  "issn",
+                  "issue",
+                  "lang",
+                  "lastauthor",
+                  "locationlabel",
+                  "medium",
+                  "nlmuniqueid",
+                  "pages",
+                  "pmcrefcount",
+                  "pubdate",
+                  "publisherlocation",
+                  "publishername",
+                  "pubstatus",
+                  "pubtype",
+                  "recordstatus",
+                  "references",
+                  "reportnumber",
+                  "sortfirstauthor",
+                  "sortpubdate",
+                  "sorttitle",
+                  "source",
+                  "srccontriblist",
+                  "srcdate",
+                  "title"
+                ],
+                "sample": {
+                  "authors": "list",
+                  "epubdate": "str",
+                  "issue": "str",
+                  "lang": "list",
+                  "lastauthor": "str",
+                  "pages": "str",
+                  "pubdate": "str",
+                  "sorttitle": "str",
+                  "source": "str",
+                  "title": "str",
+                  "uid": "str",
+                  "volume": "str"
+                }
+              },
+              "uids": {
+                "__type__": "array",
+                "item": "str",
+                "len": 1
+              }
+            }
+          }
+        }
+      },
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=42830997&tool=medradar_research&email=medradar.research%40example.org"
+    },
+    {
+      "attempts": 1,
+      "bytes": 207,
+      "counts_as_ok": true,
+      "elapsed_ms": 391,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "esearch_doi",
+      "record_count": 1,
+      "sample": {
+        "fetched_at": "2026-11-08T21:43:49.264206Z",
+        "name": "pubmed_esearch_doi.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\pubmed_eutils\\pubmed_esearch_doi.json",
+        "sha256_full": "1670c05afc8726afd5fe5dbe74fb4fea44aa63e97a6778bf5877cb133d54d6fc",
+        "sha256_stored": "1670c05afc8726afd5fe5dbe74fb4fea44aa63e97a6778bf5877cb133d54d6fc",
+        "stored_bytes": 207,
+        "total_bytes": 207,
+        "truncated": false,
+        "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=10.1056%2FNEJMoa2034577%5BDOI%5D&retmode=json&retmax=2&tool=medradar_research&email=medradar.research%40example.org"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "esearchresult",
+          "header"
+        ],
+        "sample": {
+          "esearchresult": {
+            "__type__": "object",
+            "keys": [
+              "count",
+              "idlist",
+              "querytranslation",
+              "retmax",
+              "retstart",
+              "translationset"
+            ],
+            "sample": {
+              "count": {
+                "__type__": "string",
+                "max_len": 1
+              },
+              "idlist": {
+                "__type__": "array",
+                "item": "str",
+                "len": 1
+              },
+              "querytranslation": {
+                "__type__": "string",
+                "max_len": 37
+              },
+              "retmax": {
+                "__type__": "string",
+                "max_len": 1
+              },
+              "retstart": {
+                "__type__": "string",
+                "max_len": 1
+              },
+              "translationset": {
+                "__type__": "array",
+                "item": null,
+                "len": 0
+              }
+            }
+          },
+          "header": {
+            "__type__": "object",
+            "keys": [
+              "type",
+              "version"
+            ],
+            "sample": {
+              "type": {
+                "__type__": "string",
+                "max_len": 7
+              },
+              "version": {
+                "__type__": "string",
+                "max_len": 3
+              }
+            }
+          }
+        }
+      },
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=10.1056%2FNEJMoa2034577%5BDOI%5D&retmode=json&retmax=2&tool=medradar_research&email=medradar.research%40example.org"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "pubmed_eutils",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:43:49.265718Z"
+}

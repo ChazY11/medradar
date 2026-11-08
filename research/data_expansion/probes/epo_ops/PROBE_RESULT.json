@@ -1,0 +1,90 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://www.epo.org/en/searching-for-patents/data/web-services/ops"
+  ],
+  "notes": "OPS 3.2 rejects unauthenticated calls (403 Fair Use policy); OAuth2 free registration, 4GB/month.",
+  "probes": [
+    {
+      "bytes": 644525,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 938,
+      "error": "",
+      "excerpt": " <!DOCTYPE html> <html lang=\"en\" dir=\"ltr\" class=\"h-100\">   <head>     <meta charset=\"utf-8\" /> <script>var _paq = _paq || [];(function(){function getCookie(cookieName) {     let cookie = {};     document.cookie.split(';').forEach(function(el) {       let [key,value] = el.split('=');       cookie[ke",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "official_docs_page",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:41:37.916822Z",
+        "http_status": 200,
+        "name": "official_docs.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\epo_ops\\official_docs.html",
+        "request_name": "official_docs_page",
+        "request_url": "https://www.epo.org/en/searching-for-patents/data/web-services/ops",
+        "sha256_full": "fb69448a06b6ec565872164d5ccd4d87c4a3c191d8fed0101872b4f80ea40051",
+        "sha256_stored": "fb0326bb43ee3023d3642d8c02ded406e2fdebc55510edea9af227baa4d91dbb",
+        "stored_bytes": 524288,
+        "total_bytes": 644525,
+        "truncated": true
+      },
+      "sha256": "fb69448a06b6ec565872164d5ccd4d87c4a3c191d8fed0101872b4f80ea40051",
+      "status": 200,
+      "structure": null,
+      "url": "https://www.epo.org/en/searching-for-patents/data/web-services/ops"
+    },
+    {
+      "bytes": 208,
+      "content_type": "application/xml",
+      "elapsed_ms": 233,
+      "error": "HTTP 403 Forbidden",
+      "excerpt": "<error><code>403</code><message>This request has been rejected due to the violation of Fair Use policy</message><moreInfo>https://www.epo.org/service-support/ordering/fair-use.html</moreInfo> \t\t\t\t</error> \t\t\t",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "unauthenticated_search",
+      "ok": false,
+      "sample": null,
+      "sha256": "f612f5525f28323ab87368c6288198ef2fc44a66aa46fa07870e877b3ab3a7ab",
+      "status": 403,
+      "structure": null,
+      "url": "https://ops.epo.org/3.2/rest-services/published-data/search?q=ti%3D%22stent%22"
+    },
+    {
+      "bytes": 208,
+      "content_type": "application/xml",
+      "elapsed_ms": 467,
+      "error": "HTTP 403 Forbidden",
+      "excerpt": "<error><code>403</code><message>This request has been rejected due to the violation of Fair Use policy</message><moreInfo>https://www.epo.org/service-support/ordering/fair-use.html</moreInfo> \t\t\t\t</error> \t\t\t",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "unauthenticated_family_lookup",
+      "ok": false,
+      "sample": null,
+      "sha256": "f612f5525f28323ab87368c6288198ef2fc44a66aa46fa07870e877b3ab3a7ab",
+      "status": 403,
+      "structure": null,
+      "url": "https://ops.epo.org/3.2/rest-services/family/publication/docdb/EP.1000000.A1"
+    },
+    {
+      "bytes": 86,
+      "content_type": "application/xml",
+      "elapsed_ms": 202,
+      "error": "HTTP 401 Unauthorized",
+      "excerpt": "<error><code>401</code><message>Client identifier is required</message> \t\t\t</error> \t\t",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "auth_token_endpoint_no_credentials",
+      "ok": false,
+      "sample": null,
+      "sha256": "8cbe680fe38b4351b00a4c52720b817e4c8447796bbf51051ec2cb5f656d9e38",
+      "status": 401,
+      "structure": null,
+      "url": "https://ops.epo.org/3.2/auth/accesstoken"
+    }
+  ],
+  "requests": 4,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "epo_ops",
+  "status": "REQUIRES_REGISTRATION",
+  "verified_at": "2026-11-08T21:41:39.711992Z"
+}

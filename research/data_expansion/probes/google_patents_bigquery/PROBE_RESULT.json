@@ -1,0 +1,75 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://cloud.google.com/bigquery/public-data",
+    "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data"
+  ],
+  "notes": "GCP project + OAuth + billing account required (401 anonymous); 1TB/month free query allowance but not free of setup.",
+  "probes": [
+    {
+      "bytes": 141451,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 1641,
+      "error": "",
+      "excerpt": "         <!doctype html> <html        lang=\"en\"       dir=\"ltr\">   <head>     <meta name=\"google-signin-client-id\" content=\"721724668570-nbkv1cfusk7kk4eni4pjvepaus73b13t.apps.googleusercontent.com\"><meta name=\"google-signin-scope\"           content=\"profile email https://www.googleapis.com/auth/deve",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "bigquery_public_data_index",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:16.389561Z",
+        "http_status": 200,
+        "name": "bigquery_public_data.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\google_patents_bigquery\\bigquery_public_data.html",
+        "request_name": "bigquery_public_data_index",
+        "request_url": "https://cloud.google.com/bigquery/public-data",
+        "sha256_full": "8fe86f2b7d7684fd5a2dec5f68252dedacf7a416dbc695368c0eab53049ff580",
+        "sha256_stored": "8fe86f2b7d7684fd5a2dec5f68252dedacf7a416dbc695368c0eab53049ff580",
+        "stored_bytes": 141451,
+        "total_bytes": 141451,
+        "truncated": false
+      },
+      "sha256": "8fe86f2b7d7684fd5a2dec5f68252dedacf7a416dbc695368c0eab53049ff580",
+      "status": 200,
+      "structure": null,
+      "url": "https://cloud.google.com/bigquery/public-data"
+    },
+    {
+      "bytes": 3254121,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 952,
+      "error": "",
+      "excerpt": "<!doctype html><html lang=\"en-US\" dir=\"ltr\"><head><base href=\"https://console.cloud.google.com/\"><link rel=\"preconnect\" href=\"//www.gstatic.com\"><meta name=\"referrer\" content=\"origin\"><link rel=\"canonical\" href=\"https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/goog",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "marketplace_dataset_listing",
+      "ok": true,
+      "sample": null,
+      "sha256": "f1f28efbcc7ec8dd95864c754f0e58319a0857d18acd969464e80a07fba977c3",
+      "status": 200,
+      "structure": null,
+      "url": "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data"
+    },
+    {
+      "bytes": 421,
+      "content_type": "application/json; charset=UTF-8",
+      "elapsed_ms": 531,
+      "error": "HTTP 401 Unauthorized",
+      "excerpt": "{   \"error\": {     \"code\": 401,     \"message\": \"Request is missing required authentication credential. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.\",     \"errors\": [       {         \"m",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "unauthenticated_bigquery_rest",
+      "ok": false,
+      "sample": null,
+      "sha256": "b721a22219840eea12005e5e6f9306fe7683519c1584d552d7d946df84660127",
+      "status": 401,
+      "structure": null,
+      "url": "https://bigquery.googleapis.com/bigquery/v2/projects/bigquery-public-data/datasets/google_patents_public_datasets"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "google_patents_bigquery",
+  "status": "REQUIRES_REGISTRATION",
+  "verified_at": "2026-11-08T21:42:17.874548Z"
+}

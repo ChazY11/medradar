@@ -1,0 +1,220 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&p=1",
+    "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&contenttype=project"
+  ],
+  "notes": "CORDIS publishes no documented, versioned developer API.  Its public search front end calls an unauthenticated JSON endpoint (`https://cordis.europa.eu/search/en?format=json`). Probed it directly; if it returns JSON project records the source is a public-query API (undocumented, so `api_available: PARTIAL`), the data being CC-BY 4.0.  No scraping of rendered HTML and no request amplification.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 56495,
+      "counts_as_ok": true,
+      "elapsed_ms": 1655,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "search_json_free",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:43:36.813329Z",
+        "name": "cordis_search_free.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_cordis\\cordis_search_free.json",
+        "sha256_full": "e9cb4fdd250ae0516e1fcc3d117020a746a0ff36df06c2106701aab247c1580a",
+        "sha256_stored": "e9cb4fdd250ae0516e1fcc3d117020a746a0ff36df06c2106701aab247c1580a",
+        "stored_bytes": 56495,
+        "total_bytes": 56495,
+        "truncated": false,
+        "url": "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&p=1"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "hits",
+          "result"
+        ],
+        "sample": {
+          "hits": {
+            "__type__": "object",
+            "keys": [
+              "hit"
+            ],
+            "sample": {
+              "hit": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 2
+              }
+            }
+          },
+          "result": {
+            "__type__": "object",
+            "keys": [
+              "header"
+            ],
+            "sample": {
+              "header": {
+                "__type__": "object",
+                "keys": [
+                  "languages",
+                  "messages",
+                  "numHits",
+                  "records",
+                  "returnCode",
+                  "search",
+                  "searchAfter",
+                  "sortBy",
+                  "totalHits"
+                ],
+                "sample": {
+                  "languages": "dict",
+                  "messages": "dict",
+                  "numHits": "str",
+                  "records": "str",
+                  "returnCode": "dict",
+                  "search": "dict",
+                  "searchAfter": "str",
+                  "sortBy": "str",
+                  "totalHits": "str"
+                }
+              }
+            }
+          }
+        }
+      },
+      "url": "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&p=1"
+    },
+    {
+      "attempts": 2,
+      "bytes": 37110,
+      "counts_as_ok": false,
+      "elapsed_ms": 3031,
+      "error": "HTTP 500 Internal Server Error",
+      "http_ok": false,
+      "json_parsed": false,
+      "method": "get",
+      "name": "search_project_id",
+      "record_count": null,
+      "status": 500,
+      "structure": null,
+      "url": "https://cordis.europa.eu/search/en?q=101069357&format=json&num=2"
+    },
+    {
+      "attempts": 1,
+      "bytes": 56495,
+      "counts_as_ok": true,
+      "elapsed_ms": 327,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "search_contenttype_param",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:43:42.551123Z",
+        "name": "cordis_search_contenttype.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_cordis\\cordis_search_contenttype.json",
+        "sha256_full": "e9cb4fdd250ae0516e1fcc3d117020a746a0ff36df06c2106701aab247c1580a",
+        "sha256_stored": "e9cb4fdd250ae0516e1fcc3d117020a746a0ff36df06c2106701aab247c1580a",
+        "stored_bytes": 56495,
+        "total_bytes": 56495,
+        "truncated": false,
+        "url": "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&contenttype=project"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "hits",
+          "result"
+        ],
+        "sample": {
+          "hits": {
+            "__type__": "object",
+            "keys": [
+              "hit"
+            ],
+            "sample": {
+              "hit": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 2
+              }
+            }
+          },
+          "result": {
+            "__type__": "object",
+            "keys": [
+              "header"
+            ],
+            "sample": {
+              "header": {
+                "__type__": "object",
+                "keys": [
+                  "languages",
+                  "messages",
+                  "numHits",
+                  "records",
+                  "returnCode",
+                  "search",
+                  "searchAfter",
+                  "sortBy",
+                  "totalHits"
+                ],
+                "sample": {
+                  "languages": "dict",
+                  "messages": "dict",
+                  "numHits": "str",
+                  "records": "str",
+                  "returnCode": "dict",
+                  "search": "dict",
+                  "searchAfter": "str",
+                  "sortBy": "str",
+                  "totalHits": "str"
+                }
+              }
+            }
+          }
+        }
+      },
+      "url": "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&contenttype=project"
+    },
+    {
+      "attempts": 1,
+      "bytes": 173829,
+      "counts_as_ok": false,
+      "elapsed_ms": 360,
+      "error": "JSONDecodeError: json decode failed",
+      "http_ok": true,
+      "json_parsed": false,
+      "method": "get",
+      "name": "project_page",
+      "record_count": null,
+      "status": 200,
+      "structure": null,
+      "url": "https://cordis.europa.eu/project/id/101069357/en"
+    },
+    {
+      "attempts": 2,
+      "bytes": 0,
+      "counts_as_ok": false,
+      "elapsed_ms": 15,
+      "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+      "http_ok": false,
+      "json_parsed": false,
+      "method": "get",
+      "name": "api_root",
+      "record_count": null,
+      "status": null,
+      "structure": null,
+      "url": "https://api.cordis.europa.eu/"
+    }
+  ],
+  "requests": 7,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "eu_cordis",
+  "status": "VERIFIED_PUBLIC_QUERY",
+  "verified_at": "2026-11-08T21:43:46.221624Z"
+}

@@ -1,0 +1,1473 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+    "https://api.usaspending.gov/api/v2/awards/CONT_AWD_75N91024C00033_7529_-NONE-_-NONE-/",
+    "https://api.usaspending.gov/api/v2/references/agency/1/",
+    "https://api.usaspending.gov/api/v2/autocomplete/recipient/",
+    "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+    "https://api.usaspending.gov/api/v2/search/spending_by_award_count/"
+  ],
+  "notes": "USAspending v2 is anonymously readable: award search is POST-only and returned real award rows without an API key; award detail exposes Date Signed and Period of Performance separately, so the publication date and the performance date are not the same field. recipient_search_text is a token search (it returns CHANGE HEALTHCARE for 'GE HealthCare'), so recipient hits are candidates until identity resolution confirms them.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 3444,
+      "elapsed_ms": 1233,
+      "error": "",
+      "method": "POST",
+      "name": "spending_by_award_keyword_stent",
+      "ok": true,
+      "sample": {
+        "name": "spending_by_award_stent.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\spending_by_award_stent.json",
+        "sha256_full": "c8ac296b5cd35aad0ef3d667ab36b11907c541227758d3f1c45e2f6587ddbb2e",
+        "sha256_stored": "c8ac296b5cd35aad0ef3d667ab36b11907c541227758d3f1c45e2f6587ddbb2e",
+        "stored_bytes": 3444,
+        "total_bytes": 3444,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "limit",
+          "messages",
+          "page_metadata",
+          "results",
+          "spending_level"
+        ],
+        "sample": {
+          "limit": {
+            "__type__": "int"
+          },
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 310
+            },
+            "len": 1
+          },
+          "page_metadata": {
+            "__type__": "object",
+            "keys": [
+              "hasNext",
+              "last_record_sort_value",
+              "last_record_unique_id",
+              "page"
+            ],
+            "sample": {
+              "hasNext": {
+                "__type__": "bool"
+              },
+              "last_record_sort_value": {
+                "__type__": "string",
+                "max_len": 9
+              },
+              "last_record_unique_id": {
+                "__type__": "int"
+              },
+              "page": {
+                "__type__": "int"
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "Award Amount",
+                "Award ID",
+                "Awarding Agency",
+                "Awarding Sub Agency",
+                "Contract Award Type",
+                "Description",
+                "End Date",
+                "Recipient Name",
+                "Start Date",
+                "agency_slug",
+                "awarding_agency_id",
+                "generated_internal_id",
+                "internal_id"
+              ],
+              "sample": {
+                "Award Amount": "float",
+                "Award ID": "str",
+                "Awarding Agency": "str",
+                "Awarding Sub Agency": "str",
+                "Contract Award Type": "str",
+                "Description": "str",
+                "End Date": "str",
+                "Recipient Name": "str",
+                "Start Date": "str",
+                "awarding_agency_id": "int",
+                "generated_internal_id": "str",
+                "internal_id": "int"
+              }
+            },
+            "len": 5
+          },
+          "spending_level": {
+            "__type__": "string",
+            "max_len": 6
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/"
+    },
+    {
+      "attempts": 1,
+      "award_id": "CONT_AWD_75N91024C00033_7529_-NONE-_-NONE-",
+      "bytes": 6619,
+      "elapsed_ms": 920,
+      "error": "",
+      "method": "GET",
+      "name": "award_detail_dates",
+      "ok": true,
+      "sample": {
+        "name": "award_detail.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\award_detail.json",
+        "sha256_full": "d0b51280e35b4664ef5ff7f782003ed1a2b113ff9091498a47a96e70b7e9e3c2",
+        "sha256_stored": "d0b51280e35b4664ef5ff7f782003ed1a2b113ff9091498a47a96e70b7e9e3c2",
+        "stored_bytes": 6619,
+        "total_bytes": 6619,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "account_obligations_by_defc",
+          "account_outlays_by_defc",
+          "awarding_agency",
+          "base_and_all_options",
+          "base_exercised_options",
+          "category",
+          "date_signed",
+          "description",
+          "executive_details",
+          "funding_agency",
+          "generated_unique_award_id",
+          "id",
+          "latest_transaction_contract_data",
+          "naics_hierarchy",
+          "parent_award",
+          "period_of_performance",
+          "piid",
+          "place_of_performance",
+          "psc_hierarchy",
+          "recipient",
+          "subaward_count",
+          "total_account_obligation",
+          "total_account_outlay",
+          "total_obligation",
+          "total_outlay",
+          "total_subaward_amount",
+          "type",
+          "type_description"
+        ],
+        "sample": {
+          "base_exercised_options": {
+            "__type__": "float"
+          },
+          "category": {
+            "__type__": "string",
+            "max_len": 8
+          },
+          "date_signed": {
+            "__type__": "string",
+            "max_len": 10
+          },
+          "description": {
+            "__type__": "string",
+            "max_len": 134
+          },
+          "generated_unique_award_id": {
+            "__type__": "string",
+            "max_len": 42
+          },
+          "id": {
+            "__type__": "int"
+          },
+          "piid": {
+            "__type__": "string",
+            "max_len": 14
+          },
+          "subaward_count": {
+            "__type__": "int"
+          },
+          "total_obligation": {
+            "__type__": "float"
+          },
+          "total_subaward_amount": {
+            "__type__": "NoneType"
+          },
+          "type": {
+            "__type__": "string",
+            "max_len": 1
+          },
+          "type_description": {
+            "__type__": "string",
+            "max_len": 19
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/awards/CONT_AWD_75N91024C00033_7529_-NONE-_-NONE-/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 14,
+      "elapsed_ms": 938,
+      "error": "",
+      "method": "GET",
+      "name": "references_agency_1",
+      "ok": true,
+      "sample": {
+        "name": "references_agency.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\references_agency.json",
+        "sha256_full": "03b7df9e792f71647a3f207087e8734dd21031c57048e10f9ced4b5ac04e32f4",
+        "sha256_stored": "03b7df9e792f71647a3f207087e8734dd21031c57048e10f9ced4b5ac04e32f4",
+        "stored_bytes": 14,
+        "total_bytes": 14,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "results"
+        ],
+        "sample": {
+          "results": {
+            "__type__": "object",
+            "keys": [],
+            "sample": {}
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/references/agency/1/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 1168,
+      "elapsed_ms": 2702,
+      "error": "",
+      "firm": "Medtronic",
+      "method": "POST",
+      "name": "recipient_autocomplete_medtronic",
+      "ok": true,
+      "sample": {
+        "name": "recipient_autocomplete_medtronic.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_autocomplete_medtronic.json",
+        "sha256_full": "d9821f2bc6db52b835aeb3d7af77a74e488a873436f6c222d55d950ed1e904d3",
+        "sha256_stored": "d9821f2bc6db52b835aeb3d7af77a74e488a873436f6c222d55d950ed1e904d3",
+        "stored_bytes": 1168,
+        "total_bytes": 1168,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "count",
+          "messages",
+          "results"
+        ],
+        "sample": {
+          "count": {
+            "__type__": "int"
+          },
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 208
+            },
+            "len": 1
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "duns",
+                "recipient_level",
+                "recipient_name",
+                "uei"
+              ],
+              "sample": {
+                "duns": "NoneType",
+                "recipient_level": "NoneType",
+                "recipient_name": "str",
+                "uei": "NoneType"
+              }
+            },
+            "len": 10
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/autocomplete/recipient/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 5960,
+      "elapsed_ms": 2797,
+      "error": "",
+      "firm": "Medtronic",
+      "method": "POST",
+      "name": "recipient_search_medtronic",
+      "ok": true,
+      "sample": {
+        "name": "recipient_medtronic.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_medtronic.json",
+        "sha256_full": "f25f5a45362d92fa870e672a427646a1bc07ab58244a8e3805c54893dda9f48a",
+        "sha256_stored": "f25f5a45362d92fa870e672a427646a1bc07ab58244a8e3805c54893dda9f48a",
+        "stored_bytes": 5960,
+        "total_bytes": 5960,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "limit",
+          "messages",
+          "page_metadata",
+          "results",
+          "spending_level"
+        ],
+        "sample": {
+          "limit": {
+            "__type__": "int"
+          },
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 310
+            },
+            "len": 1
+          },
+          "page_metadata": {
+            "__type__": "object",
+            "keys": [
+              "hasNext",
+              "last_record_sort_value",
+              "last_record_unique_id",
+              "page"
+            ],
+            "sample": {
+              "hasNext": {
+                "__type__": "bool"
+              },
+              "last_record_sort_value": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "last_record_unique_id": {
+                "__type__": "int"
+              },
+              "page": {
+                "__type__": "int"
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "Award Amount",
+                "Award ID",
+                "Awarding Agency",
+                "Awarding Sub Agency",
+                "Contract Award Type",
+                "Description",
+                "End Date",
+                "Recipient Name",
+                "Start Date",
+                "agency_slug",
+                "awarding_agency_id",
+                "generated_internal_id",
+                "internal_id"
+              ],
+              "sample": {
+                "Award Amount": "float",
+                "Award ID": "str",
+                "Awarding Agency": "str",
+                "Awarding Sub Agency": "str",
+                "Contract Award Type": "str",
+                "Description": "str",
+                "End Date": "str",
+                "Recipient Name": "str",
+                "Start Date": "str",
+                "awarding_agency_id": "int",
+                "generated_internal_id": "str",
+                "internal_id": "int"
+              }
+            },
+            "len": 10
+          },
+          "spending_level": {
+            "__type__": "string",
+            "max_len": 6
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 443,
+      "elapsed_ms": 920,
+      "error": "",
+      "firm": "Medtronic",
+      "method": "POST",
+      "name": "recipient_count_medtronic",
+      "ok": true,
+      "sample": {
+        "name": "recipient_count_medtronic.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_count_medtronic.json",
+        "sha256_full": "b815ec3da628d96ff078d08b9fac6f340bd31166e350bbc06a4d0c3acc22a06d",
+        "sha256_stored": "b815ec3da628d96ff078d08b9fac6f340bd31166e350bbc06a4d0c3acc22a06d",
+        "stored_bytes": 443,
+        "total_bytes": 443,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "messages",
+          "results",
+          "spending_level"
+        ],
+        "sample": {
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 310
+            },
+            "len": 1
+          },
+          "results": {
+            "__type__": "object",
+            "keys": [
+              "contracts",
+              "direct_payments",
+              "grants",
+              "idvs",
+              "loans",
+              "other"
+            ],
+            "sample": {
+              "contracts": {
+                "__type__": "int"
+              },
+              "direct_payments": {
+                "__type__": "int"
+              },
+              "grants": {
+                "__type__": "int"
+              },
+              "idvs": {
+                "__type__": "int"
+              },
+              "loans": {
+                "__type__": "int"
+              },
+              "other": {
+                "__type__": "int"
+              }
+            }
+          },
+          "spending_level": {
+            "__type__": "string",
+            "max_len": 6
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award_count/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 1246,
+      "elapsed_ms": 20719,
+      "error": "",
+      "firm": "GE HealthCare",
+      "method": "POST",
+      "name": "recipient_autocomplete_ge_healthcare",
+      "ok": true,
+      "sample": {
+        "name": "recipient_autocomplete_ge_healthcare.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_autocomplete_ge_healthcare.json",
+        "sha256_full": "cdb6b3dee26a61c19f1ed945a2e59895416d0ce01b5b2e32ad8a8704cff9cacd",
+        "sha256_stored": "cdb6b3dee26a61c19f1ed945a2e59895416d0ce01b5b2e32ad8a8704cff9cacd",
+        "stored_bytes": 1246,
+        "total_bytes": 1246,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "count",
+          "messages",
+          "results"
+        ],
+        "sample": {
+          "count": {
+            "__type__": "int"
+          },
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 208
+            },
+            "len": 1
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "duns",
+                "recipient_level",
+                "recipient_name",
+                "uei"
+              ],
+              "sample": {
+                "duns": "NoneType",
+                "recipient_level": "NoneType",
+                "recipient_name": "str",
+                "uei": "NoneType"
+              }
+            },
+            "len": 10
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/autocomplete/recipient/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 5758,
+      "elapsed_ms": 1155,
+      "error": "",
+      "firm": "GE HealthCare",
+      "method": "POST",
+      "name": "recipient_search_ge_healthcare",
+      "ok": true,
+      "sample": {
+        "name": "recipient_ge_healthcare.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_ge_healthcare.json",
+        "sha256_full": "5dfee03b4ba78a66b71f3cf6dfe588386c9b0c56a3483c855101fc29f7c8c219",
+        "sha256_stored": "5dfee03b4ba78a66b71f3cf6dfe588386c9b0c56a3483c855101fc29f7c8c219",
+        "stored_bytes": 5758,
+        "total_bytes": 5758,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "limit",
+          "messages",
+          "page_metadata",
+          "results",
+          "spending_level"
+        ],
+        "sample": {
+          "limit": {
+            "__type__": "int"
+          },
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 310
+            },
+            "len": 1
+          },
+          "page_metadata": {
+            "__type__": "object",
+            "keys": [
+              "hasNext",
+              "last_record_sort_value",
+              "last_record_unique_id",
+              "page"
+            ],
+            "sample": {
+              "hasNext": {
+                "__type__": "bool"
+              },
+              "last_record_sort_value": {
+                "__type__": "string",
+                "max_len": 9
+              },
+              "last_record_unique_id": {
+                "__type__": "int"
+              },
+              "page": {
+                "__type__": "int"
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "Award Amount",
+                "Award ID",
+                "Awarding Agency",
+                "Awarding Sub Agency",
+                "Contract Award Type",
+                "Description",
+                "End Date",
+                "Recipient Name",
+                "Start Date",
+                "agency_slug",
+                "awarding_agency_id",
+                "generated_internal_id",
+                "internal_id"
+              ],
+              "sample": {
+                "Award Amount": "float",
+                "Award ID": "str",
+                "Awarding Agency": "str",
+                "Awarding Sub Agency": "str",
+                "Contract Award Type": "str",
+                "Description": "str",
+                "End Date": "str",
+                "Recipient Name": "str",
+                "Start Date": "str",
+                "awarding_agency_id": "int",
+                "generated_internal_id": "str",
+                "internal_id": "int"
+              }
+            },
+            "len": 10
+          },
+          "spending_level": {
+            "__type__": "string",
+            "max_len": 6
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 442,
+      "elapsed_ms": 938,
+      "error": "",
+      "firm": "GE HealthCare",
+      "method": "POST",
+      "name": "recipient_count_ge_healthcare",
+      "ok": true,
+      "sample": {
+        "name": "recipient_count_ge_healthcare.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_count_ge_healthcare.json",
+        "sha256_full": "2d9249403a0f45f1e616e2595d4326ca4c4a4c2e12f78f87adb2f2c015c97959",
+        "sha256_stored": "2d9249403a0f45f1e616e2595d4326ca4c4a4c2e12f78f87adb2f2c015c97959",
+        "stored_bytes": 442,
+        "total_bytes": 442,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "messages",
+          "results",
+          "spending_level"
+        ],
+        "sample": {
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 310
+            },
+            "len": 1
+          },
+          "results": {
+            "__type__": "object",
+            "keys": [
+              "contracts",
+              "direct_payments",
+              "grants",
+              "idvs",
+              "loans",
+              "other"
+            ],
+            "sample": {
+              "contracts": {
+                "__type__": "int"
+              },
+              "direct_payments": {
+                "__type__": "int"
+              },
+              "grants": {
+                "__type__": "int"
+              },
+              "idvs": {
+                "__type__": "int"
+              },
+              "loans": {
+                "__type__": "int"
+              },
+              "other": {
+                "__type__": "int"
+              }
+            }
+          },
+          "spending_level": {
+            "__type__": "string",
+            "max_len": 6
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award_count/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 1221,
+      "elapsed_ms": 1156,
+      "error": "",
+      "firm": "Philips",
+      "method": "POST",
+      "name": "recipient_autocomplete_philips",
+      "ok": true,
+      "sample": {
+        "name": "recipient_autocomplete_philips.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_autocomplete_philips.json",
+        "sha256_full": "0f864b3411397382ddc07465c2dc805df790d231ebacd00e83bc53ced3cc68b6",
+        "sha256_stored": "0f864b3411397382ddc07465c2dc805df790d231ebacd00e83bc53ced3cc68b6",
+        "stored_bytes": 1221,
+        "total_bytes": 1221,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "count",
+          "messages",
+          "results"
+        ],
+        "sample": {
+          "count": {
+            "__type__": "int"
+          },
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 208
+            },
+            "len": 1
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "duns",
+                "recipient_level",
+                "recipient_name",
+                "uei"
+              ],
+              "sample": {
+                "duns": "NoneType",
+                "recipient_level": "NoneType",
+                "recipient_name": "str",
+                "uei": "NoneType"
+              }
+            },
+            "len": 10
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/autocomplete/recipient/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 6148,
+      "elapsed_ms": 938,
+      "error": "",
+      "firm": "Philips",
+      "method": "POST",
+      "name": "recipient_search_philips",
+      "ok": true,
+      "sample": {
+        "name": "recipient_philips.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_philips.json",
+        "sha256_full": "44000f58f6b92abfbc8db585d9d3e150d60758c9fe490a69be084ae5f43f364e",
+        "sha256_stored": "44000f58f6b92abfbc8db585d9d3e150d60758c9fe490a69be084ae5f43f364e",
+        "stored_bytes": 6148,
+        "total_bytes": 6148,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "limit",
+          "messages",
+          "page_metadata",
+          "results",
+          "spending_level"
+        ],
+        "sample": {
+          "limit": {
+            "__type__": "int"
+          },
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 310
+            },
+            "len": 1
+          },
+          "page_metadata": {
+            "__type__": "object",
+            "keys": [
+              "hasNext",
+              "last_record_sort_value",
+              "last_record_unique_id",
+              "page"
+            ],
+            "sample": {
+              "hasNext": {
+                "__type__": "bool"
+              },
+              "last_record_sort_value": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "last_record_unique_id": {
+                "__type__": "int"
+              },
+              "page": {
+                "__type__": "int"
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "Award Amount",
+                "Award ID",
+                "Awarding Agency",
+                "Awarding Sub Agency",
+                "Contract Award Type",
+                "Description",
+                "End Date",
+                "Recipient Name",
+                "Start Date",
+                "agency_slug",
+                "awarding_agency_id",
+                "generated_internal_id",
+                "internal_id"
+              ],
+              "sample": {
+                "Award Amount": "float",
+                "Award ID": "str",
+                "Awarding Agency": "str",
+                "Awarding Sub Agency": "str",
+                "Contract Award Type": "str",
+                "Description": "str",
+                "End Date": "str",
+                "Recipient Name": "str",
+                "Start Date": "str",
+                "awarding_agency_id": "int",
+                "generated_internal_id": "str",
+                "internal_id": "int"
+              }
+            },
+            "len": 10
+          },
+          "spending_level": {
+            "__type__": "string",
+            "max_len": 6
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 443,
+      "elapsed_ms": 1202,
+      "error": "",
+      "firm": "Philips",
+      "method": "POST",
+      "name": "recipient_count_philips",
+      "ok": true,
+      "sample": {
+        "name": "recipient_count_philips.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_count_philips.json",
+        "sha256_full": "f198de6ec3065f5af1a24c2c8df9909e45663c34aa9d78233e69aa0d688b2fa6",
+        "sha256_stored": "f198de6ec3065f5af1a24c2c8df9909e45663c34aa9d78233e69aa0d688b2fa6",
+        "stored_bytes": 443,
+        "total_bytes": 443,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "messages",
+          "results",
+          "spending_level"
+        ],
+        "sample": {
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 310
+            },
+            "len": 1
+          },
+          "results": {
+            "__type__": "object",
+            "keys": [
+              "contracts",
+              "direct_payments",
+              "grants",
+              "idvs",
+              "loans",
+              "other"
+            ],
+            "sample": {
+              "contracts": {
+                "__type__": "int"
+              },
+              "direct_payments": {
+                "__type__": "int"
+              },
+              "grants": {
+                "__type__": "int"
+              },
+              "idvs": {
+                "__type__": "int"
+              },
+              "loans": {
+                "__type__": "int"
+              },
+              "other": {
+                "__type__": "int"
+              }
+            }
+          },
+          "spending_level": {
+            "__type__": "string",
+            "max_len": 6
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award_count/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 1111,
+      "elapsed_ms": 6188,
+      "error": "",
+      "firm": "Draeger",
+      "method": "POST",
+      "name": "recipient_autocomplete_draeger",
+      "ok": true,
+      "sample": {
+        "name": "recipient_autocomplete_draeger.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_autocomplete_draeger.json",
+        "sha256_full": "c4d3597d05edd679bf7b26197014b220c87220176b73a0e62572888161b220b7",
+        "sha256_stored": "c4d3597d05edd679bf7b26197014b220c87220176b73a0e62572888161b220b7",
+        "stored_bytes": 1111,
+        "total_bytes": 1111,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "count",
+          "messages",
+          "results"
+        ],
+        "sample": {
+          "count": {
+            "__type__": "int"
+          },
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 208
+            },
+            "len": 1
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "duns",
+                "recipient_level",
+                "recipient_name",
+                "uei"
+              ],
+              "sample": {
+                "duns": "NoneType",
+                "recipient_level": "NoneType",
+                "recipient_name": "str",
+                "uei": "NoneType"
+              }
+            },
+            "len": 10
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/autocomplete/recipient/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 5550,
+      "elapsed_ms": 1031,
+      "error": "",
+      "firm": "Draeger",
+      "method": "POST",
+      "name": "recipient_search_draeger",
+      "ok": true,
+      "sample": {
+        "name": "recipient_draeger.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_draeger.json",
+        "sha256_full": "1418c2e7a6646350efd165b2262a2d96dbe72b7f36a79e3771bc3178e9d0f486",
+        "sha256_stored": "1418c2e7a6646350efd165b2262a2d96dbe72b7f36a79e3771bc3178e9d0f486",
+        "stored_bytes": 5550,
+        "total_bytes": 5550,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "limit",
+          "messages",
+          "page_metadata",
+          "results",
+          "spending_level"
+        ],
+        "sample": {
+          "limit": {
+            "__type__": "int"
+          },
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 310
+            },
+            "len": 1
+          },
+          "page_metadata": {
+            "__type__": "object",
+            "keys": [
+              "hasNext",
+              "last_record_sort_value",
+              "last_record_unique_id",
+              "page"
+            ],
+            "sample": {
+              "hasNext": {
+                "__type__": "bool"
+              },
+              "last_record_sort_value": {
+                "__type__": "string",
+                "max_len": 9
+              },
+              "last_record_unique_id": {
+                "__type__": "int"
+              },
+              "page": {
+                "__type__": "int"
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "Award Amount",
+                "Award ID",
+                "Awarding Agency",
+                "Awarding Sub Agency",
+                "Contract Award Type",
+                "Description",
+                "End Date",
+                "Recipient Name",
+                "Start Date",
+                "agency_slug",
+                "awarding_agency_id",
+                "generated_internal_id",
+                "internal_id"
+              ],
+              "sample": {
+                "Award Amount": "float",
+                "Award ID": "str",
+                "Awarding Agency": "str",
+                "Awarding Sub Agency": "str",
+                "Contract Award Type": "str",
+                "Description": "str",
+                "End Date": "str",
+                "Recipient Name": "str",
+                "Start Date": "str",
+                "awarding_agency_id": "int",
+                "generated_internal_id": "str",
+                "internal_id": "int"
+              }
+            },
+            "len": 10
+          },
+          "spending_level": {
+            "__type__": "string",
+            "max_len": 6
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 443,
+      "elapsed_ms": 3000,
+      "error": "",
+      "firm": "Draeger",
+      "method": "POST",
+      "name": "recipient_count_draeger",
+      "ok": true,
+      "sample": {
+        "name": "recipient_count_draeger.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_count_draeger.json",
+        "sha256_full": "7d343403e920f6aab5d44b38a0b6d32cb0e8a4ed05299988d3bc5755e7116b8c",
+        "sha256_stored": "7d343403e920f6aab5d44b38a0b6d32cb0e8a4ed05299988d3bc5755e7116b8c",
+        "stored_bytes": 443,
+        "total_bytes": 443,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "messages",
+          "results",
+          "spending_level"
+        ],
+        "sample": {
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 310
+            },
+            "len": 1
+          },
+          "results": {
+            "__type__": "object",
+            "keys": [
+              "contracts",
+              "direct_payments",
+              "grants",
+              "idvs",
+              "loans",
+              "other"
+            ],
+            "sample": {
+              "contracts": {
+                "__type__": "int"
+              },
+              "direct_payments": {
+                "__type__": "int"
+              },
+              "grants": {
+                "__type__": "int"
+              },
+              "idvs": {
+                "__type__": "int"
+              },
+              "loans": {
+                "__type__": "int"
+              },
+              "other": {
+                "__type__": "int"
+              }
+            }
+          },
+          "spending_level": {
+            "__type__": "string",
+            "max_len": 6
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award_count/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 519,
+      "elapsed_ms": 15952,
+      "error": "",
+      "firm": "Mindray",
+      "method": "POST",
+      "name": "recipient_autocomplete_mindray",
+      "ok": true,
+      "sample": {
+        "name": "recipient_autocomplete_mindray.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_autocomplete_mindray.json",
+        "sha256_full": "7243c0df73a97dda85d077b30946fdacaf88aa01fc162dc2ae3137c3c62d6aea",
+        "sha256_stored": "7243c0df73a97dda85d077b30946fdacaf88aa01fc162dc2ae3137c3c62d6aea",
+        "stored_bytes": 519,
+        "total_bytes": 519,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "count",
+          "messages",
+          "results"
+        ],
+        "sample": {
+          "count": {
+            "__type__": "int"
+          },
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 208
+            },
+            "len": 1
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "duns",
+                "recipient_level",
+                "recipient_name",
+                "uei"
+              ],
+              "sample": {
+                "duns": "NoneType",
+                "recipient_level": "NoneType",
+                "recipient_name": "str",
+                "uei": "NoneType"
+              }
+            },
+            "len": 3
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/autocomplete/recipient/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 5808,
+      "elapsed_ms": 1016,
+      "error": "",
+      "firm": "Mindray",
+      "method": "POST",
+      "name": "recipient_search_mindray",
+      "ok": true,
+      "sample": {
+        "name": "recipient_mindray.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_mindray.json",
+        "sha256_full": "d0c66ac4c47641462f1edf14468dfa706e8b57de159a49424607ca0cd775e324",
+        "sha256_stored": "d0c66ac4c47641462f1edf14468dfa706e8b57de159a49424607ca0cd775e324",
+        "stored_bytes": 5808,
+        "total_bytes": 5808,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "limit",
+          "messages",
+          "page_metadata",
+          "results",
+          "spending_level"
+        ],
+        "sample": {
+          "limit": {
+            "__type__": "int"
+          },
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 310
+            },
+            "len": 1
+          },
+          "page_metadata": {
+            "__type__": "object",
+            "keys": [
+              "hasNext",
+              "last_record_sort_value",
+              "last_record_unique_id",
+              "page"
+            ],
+            "sample": {
+              "hasNext": {
+                "__type__": "bool"
+              },
+              "last_record_sort_value": {
+                "__type__": "string",
+                "max_len": 7
+              },
+              "last_record_unique_id": {
+                "__type__": "int"
+              },
+              "page": {
+                "__type__": "int"
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "Award Amount",
+                "Award ID",
+                "Awarding Agency",
+                "Awarding Sub Agency",
+                "Contract Award Type",
+                "Description",
+                "End Date",
+                "Recipient Name",
+                "Start Date",
+                "agency_slug",
+                "awarding_agency_id",
+                "generated_internal_id",
+                "internal_id"
+              ],
+              "sample": {
+                "Award Amount": "float",
+                "Award ID": "str",
+                "Awarding Agency": "str",
+                "Awarding Sub Agency": "str",
+                "Contract Award Type": "str",
+                "Description": "str",
+                "End Date": "str",
+                "Recipient Name": "str",
+                "Start Date": "str",
+                "awarding_agency_id": "int",
+                "generated_internal_id": "str",
+                "internal_id": "int"
+              }
+            },
+            "len": 10
+          },
+          "spending_level": {
+            "__type__": "string",
+            "max_len": 6
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 440,
+      "elapsed_ms": 936,
+      "error": "",
+      "firm": "Mindray",
+      "method": "POST",
+      "name": "recipient_count_mindray",
+      "ok": true,
+      "sample": {
+        "name": "recipient_count_mindray.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usaspending\\recipient_count_mindray.json",
+        "sha256_full": "d85429b8e31cc4333e2a4401c466c43a9875b414be147daf23dade258f1fa14d",
+        "sha256_stored": "d85429b8e31cc4333e2a4401c466c43a9875b414be147daf23dade258f1fa14d",
+        "stored_bytes": 440,
+        "total_bytes": 440,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "messages",
+          "results",
+          "spending_level"
+        ],
+        "sample": {
+          "messages": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 310
+            },
+            "len": 1
+          },
+          "results": {
+            "__type__": "object",
+            "keys": [
+              "contracts",
+              "direct_payments",
+              "grants",
+              "idvs",
+              "loans",
+              "other"
+            ],
+            "sample": {
+              "contracts": {
+                "__type__": "int"
+              },
+              "direct_payments": {
+                "__type__": "int"
+              },
+              "grants": {
+                "__type__": "int"
+              },
+              "idvs": {
+                "__type__": "int"
+              },
+              "loans": {
+                "__type__": "int"
+              },
+              "other": {
+                "__type__": "int"
+              }
+            }
+          },
+          "spending_level": {
+            "__type__": "string",
+            "max_len": 6
+          }
+        }
+      },
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award_count/"
+    }
+  ],
+  "requests": 18,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "usaspending",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:41:48.699980Z"
+}

@@ -1,0 +1,210 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.openaire.eu/graph/v1/researchProducts?search=stent&pageSize=2",
+    "https://api.openaire.eu/search/publications?title=stent&format=json&size=2"
+  ],
+  "notes": "Probes the Graph v1 `researchProducts` endpoint and the legacy `search/publications` endpoint.  OpenAIRE aggregates repository copies, so the same paper appears many times: only DOI-based canonical keys may be counted as independent evidence.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 10332,
+      "counts_as_ok": true,
+      "elapsed_ms": 2531,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "graph_research_products",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:39:01.667553Z",
+        "name": "openaire_graph_products.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openaire\\openaire_graph_products.json",
+        "sha256_full": "e96e4bbbdca1bc0e35ceb771ab6da6ab69212486ea19c12dd65d33405fa9789c",
+        "sha256_stored": "e96e4bbbdca1bc0e35ceb771ab6da6ab69212486ea19c12dd65d33405fa9789c",
+        "stored_bytes": 10332,
+        "total_bytes": 10332,
+        "truncated": false,
+        "url": "https://api.openaire.eu/graph/v1/researchProducts?search=stent&pageSize=2"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "header",
+          "results"
+        ],
+        "sample": {
+          "header": {
+            "__type__": "object",
+            "keys": [
+              "maxScore",
+              "numFound",
+              "page",
+              "pageSize",
+              "queryTime"
+            ],
+            "sample": {
+              "maxScore": {
+                "__type__": "float"
+              },
+              "numFound": {
+                "__type__": "int"
+              },
+              "page": {
+                "__type__": "int"
+              },
+              "pageSize": {
+                "__type__": "int"
+              },
+              "queryTime": {
+                "__type__": "int"
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "authors",
+                "bestAccessRight",
+                "codeRepositoryUrl",
+                "contactGroups",
+                "contactPeople",
+                "container",
+                "contributors",
+                "countries",
+                "coverages",
+                "dateOfCollection",
+                "descriptions",
+                "documentationUrls",
+                "embargoEndDate",
+                "formats",
+                "geoLocations",
+                "id",
+                "indicators",
+                "instances",
+                "isGreen",
+                "isInDiamondJournal",
+                "language",
+                "lastUpdateTimeStamp",
+                "mainTitle",
+                "openAccessColor",
+                "originalIds",
+                "pids",
+                "programmingLanguage",
+                "publicationDate",
+                "publiclyFunded",
+                "publisher",
+                "size",
+                "sources",
+                "subTitle",
+                "subjects",
+                "tools",
+                "type",
+                "version"
+              ],
+              "sample": {
+                "authors": "list",
+                "countries": "NoneType",
+                "descriptions": "list",
+                "language": "dict",
+                "mainTitle": "str",
+                "openAccessColor": "NoneType",
+                "publicationDate": "str",
+                "publiclyFunded": "bool",
+                "publisher": "str",
+                "subTitle": "NoneType",
+                "subjects": "list",
+                "type": "str"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "url": "https://api.openaire.eu/graph/v1/researchProducts?search=stent&pageSize=2"
+    },
+    {
+      "attempts": 1,
+      "bytes": 24512,
+      "counts_as_ok": true,
+      "elapsed_ms": 500,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "search_publications_legacy",
+      "record_count": 1,
+      "sample": {
+        "fetched_at": "2026-11-08T21:39:02.161629Z",
+        "name": "openaire_search_publications.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openaire\\openaire_search_publications.json",
+        "sha256_full": "be446d573495844283885f485b1334cdf889acec6e1b259a1c4e33b144f8f968",
+        "sha256_stored": "be446d573495844283885f485b1334cdf889acec6e1b259a1c4e33b144f8f968",
+        "stored_bytes": 24512,
+        "total_bytes": 24512,
+        "truncated": false,
+        "url": "https://api.openaire.eu/search/publications?title=stent&format=json&size=2"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "response"
+        ],
+        "sample": {
+          "response": {
+            "__type__": "object",
+            "keys": [
+              "browseResults",
+              "header",
+              "results"
+            ],
+            "sample": {
+              "browseResults": {
+                "__type__": "NoneType"
+              },
+              "header": {
+                "__type__": "object",
+                "keys": [
+                  "fields",
+                  "locale",
+                  "page",
+                  "query",
+                  "size",
+                  "total"
+                ],
+                "sample": {
+                  "fields": "NoneType",
+                  "locale": "dict",
+                  "page": "dict",
+                  "query": "dict",
+                  "size": "dict",
+                  "total": "dict"
+                }
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "result"
+                ],
+                "sample": {
+                  "result": "list"
+                }
+              }
+            }
+          }
+        }
+      },
+      "url": "https://api.openaire.eu/search/publications?title=stent&format=json&size=2"
+    }
+  ],
+  "requests": 2,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "openaire",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:39:02.163629Z"
+}

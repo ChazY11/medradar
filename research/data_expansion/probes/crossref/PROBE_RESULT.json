@@ -1,0 +1,532 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.crossref.org/works?query=stent&rows=2&mailto=medradar.research%40example.org",
+    "https://api.crossref.org/works?query.bibliographic=Medtronic+pacemaker&rows=2&mailto=medradar.research%40example.org",
+    "https://api.crossref.org/works/10.1056/NEJMoa2034577?mailto=medradar.research%40example.org",
+    "https://api.crossref.org/works?filter=from-pub-date%3A2023-01-01%2Ctype%3Ajournal-article&query=stent&rows=1&mailto=medradar.research%40example.org",
+    "https://api.crossref.org/works?filter=has-funder%3Atrue%2Cfrom-pub-date%3A2020-01-01&query=stent&rows=2&mailto=medradar.research%40example.org"
+  ],
+  "notes": "Crossref REST returned 200 JSON with `message.items` for query, bibliographic query and filter calls.  Works give DOI, `published-online`/`published-print` (must be kept apart), `created`/`deposited` (registration clocks, never publication dates), `funder[]` with award numbers and `relation`.  `mailto=` puts us in the polite pool.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 3897,
+      "counts_as_ok": true,
+      "elapsed_ms": 593,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "works_search",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:26.322283Z",
+        "name": "crossref_works_search.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\crossref\\crossref_works_search.json",
+        "sha256_full": "2042f95996372ab8a0d94a021b4e028626f44785d243613502e46ddbf6eb2b8d",
+        "sha256_stored": "2042f95996372ab8a0d94a021b4e028626f44785d243613502e46ddbf6eb2b8d",
+        "stored_bytes": 3897,
+        "total_bytes": 3897,
+        "truncated": false,
+        "url": "https://api.crossref.org/works?query=stent&rows=2&mailto=medradar.research%40example.org"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "message",
+          "message-type",
+          "message-version",
+          "status"
+        ],
+        "sample": {
+          "message": {
+            "__type__": "object",
+            "keys": [
+              "facets",
+              "items",
+              "items-per-page",
+              "query",
+              "total-results"
+            ],
+            "sample": {
+              "facets": {
+                "__type__": "object",
+                "keys": [],
+                "sample": {}
+              },
+              "items": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 2
+              },
+              "items-per-page": {
+                "__type__": "int"
+              },
+              "query": {
+                "__type__": "object",
+                "keys": [
+                  "search-terms",
+                  "start-index"
+                ],
+                "sample": {
+                  "search-terms": "str",
+                  "start-index": "int"
+                }
+              },
+              "total-results": {
+                "__type__": "int"
+              }
+            }
+          },
+          "message-type": {
+            "__type__": "string",
+            "max_len": 9
+          },
+          "message-version": {
+            "__type__": "string",
+            "max_len": 5
+          },
+          "status": {
+            "__type__": "string",
+            "max_len": 2
+          }
+        }
+      },
+      "url": "https://api.crossref.org/works?query=stent&rows=2&mailto=medradar.research%40example.org"
+    },
+    {
+      "attempts": 1,
+      "bytes": 2937,
+      "counts_as_ok": true,
+      "elapsed_ms": 641,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "works_bibliographic",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:27.172208Z",
+        "name": "crossref_works_bibliographic.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\crossref\\crossref_works_bibliographic.json",
+        "sha256_full": "f2641e96ab5675e282a570ade89362429455d72ed533bf3a09800cd668f08004",
+        "sha256_stored": "f2641e96ab5675e282a570ade89362429455d72ed533bf3a09800cd668f08004",
+        "stored_bytes": 2937,
+        "total_bytes": 2937,
+        "truncated": false,
+        "url": "https://api.crossref.org/works?query.bibliographic=Medtronic+pacemaker&rows=2&mailto=medradar.research%40example.org"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "message",
+          "message-type",
+          "message-version",
+          "status"
+        ],
+        "sample": {
+          "message": {
+            "__type__": "object",
+            "keys": [
+              "facets",
+              "items",
+              "items-per-page",
+              "query",
+              "total-results"
+            ],
+            "sample": {
+              "facets": {
+                "__type__": "object",
+                "keys": [],
+                "sample": {}
+              },
+              "items": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 2
+              },
+              "items-per-page": {
+                "__type__": "int"
+              },
+              "query": {
+                "__type__": "object",
+                "keys": [
+                  "search-terms",
+                  "start-index"
+                ],
+                "sample": {
+                  "search-terms": "NoneType",
+                  "start-index": "int"
+                }
+              },
+              "total-results": {
+                "__type__": "int"
+              }
+            }
+          },
+          "message-type": {
+            "__type__": "string",
+            "max_len": 9
+          },
+          "message-version": {
+            "__type__": "string",
+            "max_len": 5
+          },
+          "status": {
+            "__type__": "string",
+            "max_len": 2
+          }
+        }
+      },
+      "url": "https://api.crossref.org/works?query.bibliographic=Medtronic+pacemaker&rows=2&mailto=medradar.research%40example.org"
+    },
+    {
+      "attempts": 1,
+      "bytes": 39930,
+      "counts_as_ok": true,
+      "elapsed_ms": 483,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "work_doi",
+      "record_count": null,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:27.827123Z",
+        "name": "crossref_work_doi.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\crossref\\crossref_work_doi.json",
+        "sha256_full": "feb7a4ff067f839509742c5df86e1500039a0d1aef7ecb9c149eca4ddc4500b6",
+        "sha256_stored": "feb7a4ff067f839509742c5df86e1500039a0d1aef7ecb9c149eca4ddc4500b6",
+        "stored_bytes": 39930,
+        "total_bytes": 39930,
+        "truncated": false,
+        "url": "https://api.crossref.org/works/10.1056/NEJMoa2034577?mailto=medradar.research%40example.org"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "message",
+          "message-type",
+          "message-version",
+          "status"
+        ],
+        "sample": {
+          "message": {
+            "__type__": "object",
+            "keys": [
+              "DOI",
+              "ISSN",
+              "URL",
+              "alternative-id",
+              "author",
+              "container-title",
+              "content-domain",
+              "created",
+              "deposited",
+              "funder",
+              "indexed",
+              "is-referenced-by-count",
+              "issn-type",
+              "issue",
+              "issued",
+              "journal-issue",
+              "language",
+              "license",
+              "link",
+              "member",
+              "original-title",
+              "page",
+              "prefix",
+              "published",
+              "published-print",
+              "publisher",
+              "reference",
+              "reference-count",
+              "references-count",
+              "relation",
+              "resource",
+              "score",
+              "short-container-title",
+              "short-title",
+              "source",
+              "subject",
+              "subtitle",
+              "title",
+              "type",
+              "volume"
+            ],
+            "sample": {
+              "DOI": {
+                "__type__": "string",
+                "max_len": 21
+              },
+              "content-domain": {
+                "__type__": "object",
+                "keys": [
+                  "crossmark-restriction",
+                  "domain"
+                ],
+                "sample": {
+                  "crossmark-restriction": "bool",
+                  "domain": "list"
+                }
+              },
+              "created": {
+                "__type__": "object",
+                "keys": [
+                  "date-parts",
+                  "date-time",
+                  "timestamp"
+                ],
+                "sample": {
+                  "date-parts": "list",
+                  "date-time": "str",
+                  "timestamp": "int"
+                }
+              },
+              "funder": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 1
+              },
+              "indexed": {
+                "__type__": "object",
+                "keys": [
+                  "date-parts",
+                  "date-time",
+                  "timestamp",
+                  "version"
+                ],
+                "sample": {
+                  "date-parts": "list",
+                  "date-time": "str",
+                  "timestamp": "int",
+                  "version": "str"
+                }
+              },
+              "issue": {
+                "__type__": "string",
+                "max_len": 2
+              },
+              "license": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 1
+              },
+              "published-print": {
+                "__type__": "object",
+                "keys": [
+                  "date-parts"
+                ],
+                "sample": {
+                  "date-parts": "list"
+                }
+              },
+              "publisher": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "reference-count": {
+                "__type__": "int"
+              },
+              "short-container-title": {
+                "__type__": "array",
+                "item": "str",
+                "len": 1
+              },
+              "type": {
+                "__type__": "string",
+                "max_len": 15
+              }
+            }
+          },
+          "message-type": {
+            "__type__": "string",
+            "max_len": 4
+          },
+          "message-version": {
+            "__type__": "string",
+            "max_len": 5
+          },
+          "status": {
+            "__type__": "string",
+            "max_len": 2
+          }
+        }
+      },
+      "url": "https://api.crossref.org/works/10.1056/NEJMoa2034577?mailto=medradar.research%40example.org"
+    },
+    {
+      "attempts": 1,
+      "bytes": 5749,
+      "counts_as_ok": true,
+      "elapsed_ms": 484,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "works_filter",
+      "record_count": 1,
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "message",
+          "message-type",
+          "message-version",
+          "status"
+        ],
+        "sample": {
+          "message": {
+            "__type__": "object",
+            "keys": [
+              "facets",
+              "items",
+              "items-per-page",
+              "query",
+              "total-results"
+            ],
+            "sample": {
+              "facets": {
+                "__type__": "object",
+                "keys": [],
+                "sample": {}
+              },
+              "items": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 1
+              },
+              "items-per-page": {
+                "__type__": "int"
+              },
+              "query": {
+                "__type__": "object",
+                "keys": [
+                  "search-terms",
+                  "start-index"
+                ],
+                "sample": {
+                  "search-terms": "str",
+                  "start-index": "int"
+                }
+              },
+              "total-results": {
+                "__type__": "int"
+              }
+            }
+          },
+          "message-type": {
+            "__type__": "string",
+            "max_len": 9
+          },
+          "message-version": {
+            "__type__": "string",
+            "max_len": 5
+          },
+          "status": {
+            "__type__": "string",
+            "max_len": 2
+          }
+        }
+      },
+      "url": "https://api.crossref.org/works?filter=from-pub-date%3A2023-01-01%2Ctype%3Ajournal-article&query=stent&rows=1&mailto=medradar.research%40example.org"
+    },
+    {
+      "attempts": 1,
+      "bytes": 33016,
+      "counts_as_ok": true,
+      "elapsed_ms": 765,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "works_funder",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:29.721239Z",
+        "name": "crossref_works_funder.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\crossref\\crossref_works_funder.json",
+        "sha256_full": "cb4ba031f43a55210e4ad9129bde89537572cb86852336421aaf11839913cc8c",
+        "sha256_stored": "cb4ba031f43a55210e4ad9129bde89537572cb86852336421aaf11839913cc8c",
+        "stored_bytes": 33016,
+        "total_bytes": 33016,
+        "truncated": false,
+        "url": "https://api.crossref.org/works?filter=has-funder%3Atrue%2Cfrom-pub-date%3A2020-01-01&query=stent&rows=2&mailto=medradar.research%40example.org"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "message",
+          "message-type",
+          "message-version",
+          "status"
+        ],
+        "sample": {
+          "message": {
+            "__type__": "object",
+            "keys": [
+              "facets",
+              "items",
+              "items-per-page",
+              "query",
+              "total-results"
+            ],
+            "sample": {
+              "facets": {
+                "__type__": "object",
+                "keys": [],
+                "sample": {}
+              },
+              "items": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 2
+              },
+              "items-per-page": {
+                "__type__": "int"
+              },
+              "query": {
+                "__type__": "object",
+                "keys": [
+                  "search-terms",
+                  "start-index"
+                ],
+                "sample": {
+                  "search-terms": "str",
+                  "start-index": "int"
+                }
+              },
+              "total-results": {
+                "__type__": "int"
+              }
+            }
+          },
+          "message-type": {
+            "__type__": "string",
+            "max_len": 9
+          },
+          "message-version": {
+            "__type__": "string",
+            "max_len": 5
+          },
+          "status": {
+            "__type__": "string",
+            "max_len": 2
+          }
+        }
+      },
+      "url": "https://api.crossref.org/works?filter=has-funder%3Atrue%2Cfrom-pub-date%3A2020-01-01&query=stent&rows=2&mailto=medradar.research%40example.org"
+    }
+  ],
+  "requests": 5,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "crossref",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:42:29.722239Z"
+}

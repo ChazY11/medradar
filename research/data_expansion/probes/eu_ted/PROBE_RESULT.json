@@ -1,0 +1,580 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.ted.europa.eu/v3/notices/search",
+    "https://api.ted.europa.eu/v3/notices/search",
+    "https://api.ted.europa.eu/v3/notices/search",
+    "https://api.ted.europa.eu/v3/notices/search",
+    "https://api.ted.europa.eu/v3/notices/search",
+    "https://api.ted.europa.eu/v3/notices/search"
+  ],
+  "notes": "TED Search API v3 answered anonymous POST queries with real notices (no key). notice-type separates contract notices (cn-standard, 2.95M) from contract award notices (can-standard, 2.86M), so tender publication and award publication are distinguishable. The award winner is NOT in the search index: winner-name / winner-partname come back null even for a 2024 medical award notice, so an award→supplier link cannot be built from the search API; a full-text FT~ query finds notices that merely mention a firm. CPV is a category, not a device ID. The ted.europa.eu web host serves a 'Human Verification' challenge (notice_xml_on_web_host, bulk_downloads_page), so anonymous bulk XML download is NOT verified.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 29901,
+      "elapsed_ms": 359,
+      "error": "",
+      "first_notice_keys": [
+        "buyer-name",
+        "classification-cpv",
+        "links",
+        "notice-title",
+        "notice-type",
+        "publication-date",
+        "publication-number",
+        "total-value"
+      ],
+      "method": "POST",
+      "name": "search_rich_fields",
+      "ok": true,
+      "sample": {
+        "name": "search_rich_fields.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ted\\search_rich_fields.json",
+        "sha256_full": "579e3fdd470b4fa743a02d79c7c9d19681547203e536137db02ee57f79edc3eb",
+        "sha256_stored": "579e3fdd470b4fa743a02d79c7c9d19681547203e536137db02ee57f79edc3eb",
+        "stored_bytes": 29901,
+        "total_bytes": 29901,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "iterationNextToken",
+          "notices",
+          "timedOut",
+          "totalNoticeCount"
+        ],
+        "sample": {
+          "iterationNextToken": {
+            "__type__": "NoneType"
+          },
+          "notices": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "buyer-name",
+                "classification-cpv",
+                "links",
+                "notice-title",
+                "notice-type",
+                "publication-date",
+                "publication-number",
+                "total-value"
+              ],
+              "sample": {
+                "buyer-name": "dict",
+                "classification-cpv": "list",
+                "links": "dict",
+                "notice-title": "dict",
+                "notice-type": "str",
+                "publication-date": "str",
+                "publication-number": "str",
+                "total-value": "int"
+              }
+            },
+            "len": 5
+          },
+          "timedOut": {
+            "__type__": "bool"
+          },
+          "totalNoticeCount": {
+            "__type__": "int"
+          }
+        }
+      },
+      "total_notice_count": 11151,
+      "url": "https://api.ted.europa.eu/v3/notices/search"
+    },
+    {
+      "attempts": 1,
+      "bytes": 43288,
+      "elapsed_ms": 359,
+      "error": "",
+      "first_notice_keys": [
+        "buyer-name",
+        "classification-cpv",
+        "links",
+        "notice-title",
+        "notice-type",
+        "publication-date",
+        "publication-number",
+        "total-value"
+      ],
+      "method": "POST",
+      "name": "search_notice_type_cn_standard",
+      "ok": true,
+      "sample": {
+        "name": "search_notice_type_cn_standard.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ted\\search_notice_type_cn_standard.json",
+        "sha256_full": "4f23edeb4a57e38ecc32c3f21efe1aecdb5df536147a9dca71f595f459ec73aa",
+        "sha256_stored": "4f23edeb4a57e38ecc32c3f21efe1aecdb5df536147a9dca71f595f459ec73aa",
+        "stored_bytes": 43288,
+        "total_bytes": 43288,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "iterationNextToken",
+          "notices",
+          "timedOut",
+          "totalNoticeCount"
+        ],
+        "sample": {
+          "iterationNextToken": {
+            "__type__": "NoneType"
+          },
+          "notices": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "buyer-name",
+                "classification-cpv",
+                "links",
+                "notice-title",
+                "notice-type",
+                "publication-date",
+                "publication-number",
+                "total-value"
+              ],
+              "sample": {
+                "buyer-name": "dict",
+                "classification-cpv": "list",
+                "links": "dict",
+                "notice-title": "dict",
+                "notice-type": "str",
+                "publication-date": "str",
+                "publication-number": "str",
+                "total-value": "int"
+              }
+            },
+            "len": 5
+          },
+          "timedOut": {
+            "__type__": "bool"
+          },
+          "totalNoticeCount": {
+            "__type__": "int"
+          }
+        }
+      },
+      "total_notice_count": 2952676,
+      "url": "https://api.ted.europa.eu/v3/notices/search"
+    },
+    {
+      "attempts": 1,
+      "bytes": 45436,
+      "elapsed_ms": 405,
+      "error": "",
+      "first_notice_keys": [
+        "buyer-name",
+        "classification-cpv",
+        "links",
+        "notice-title",
+        "notice-type",
+        "publication-date",
+        "publication-number",
+        "total-value"
+      ],
+      "method": "POST",
+      "name": "search_notice_type_can_standard",
+      "ok": true,
+      "sample": {
+        "name": "search_notice_type_can_standard.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ted\\search_notice_type_can_standard.json",
+        "sha256_full": "743810e12c4a2ba9350365fcf5ab6546d5797ca5c129a685f2b2eae5dcdf88c7",
+        "sha256_stored": "743810e12c4a2ba9350365fcf5ab6546d5797ca5c129a685f2b2eae5dcdf88c7",
+        "stored_bytes": 45436,
+        "total_bytes": 45436,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "iterationNextToken",
+          "notices",
+          "timedOut",
+          "totalNoticeCount"
+        ],
+        "sample": {
+          "iterationNextToken": {
+            "__type__": "NoneType"
+          },
+          "notices": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "buyer-name",
+                "classification-cpv",
+                "links",
+                "notice-title",
+                "notice-type",
+                "publication-date",
+                "publication-number",
+                "total-value"
+              ],
+              "sample": {
+                "buyer-name": "dict",
+                "classification-cpv": "list",
+                "links": "dict",
+                "notice-title": "dict",
+                "notice-type": "str",
+                "publication-date": "str",
+                "publication-number": "str",
+                "total-value": "float"
+              }
+            },
+            "len": 5
+          },
+          "timedOut": {
+            "__type__": "bool"
+          },
+          "totalNoticeCount": {
+            "__type__": "int"
+          }
+        }
+      },
+      "total_notice_count": 2855759,
+      "url": "https://api.ted.europa.eu/v3/notices/search"
+    },
+    {
+      "attempts": 1,
+      "bytes": 38670,
+      "elapsed_ms": 702,
+      "error": "",
+      "first_notice_keys": [
+        "buyer-name",
+        "classification-cpv",
+        "links",
+        "notice-title",
+        "notice-type",
+        "publication-date",
+        "publication-number",
+        "total-value"
+      ],
+      "method": "POST",
+      "name": "search_recent_award_stent_winner_fields",
+      "ok": true,
+      "sample": {
+        "name": "search_recent_award_stent.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ted\\search_recent_award_stent.json",
+        "sha256_full": "c26e963845ffe854519b087ded94d141d038f2c23b6b01e96e005a7e9b774995",
+        "sha256_stored": "c26e963845ffe854519b087ded94d141d038f2c23b6b01e96e005a7e9b774995",
+        "stored_bytes": 38670,
+        "total_bytes": 38670,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "iterationNextToken",
+          "notices",
+          "timedOut",
+          "totalNoticeCount"
+        ],
+        "sample": {
+          "iterationNextToken": {
+            "__type__": "NoneType"
+          },
+          "notices": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "buyer-name",
+                "classification-cpv",
+                "links",
+                "notice-title",
+                "notice-type",
+                "publication-date",
+                "publication-number",
+                "total-value"
+              ],
+              "sample": {
+                "buyer-name": "dict",
+                "classification-cpv": "list",
+                "links": "dict",
+                "notice-title": "dict",
+                "notice-type": "str",
+                "publication-date": "str",
+                "publication-number": "str",
+                "total-value": "float"
+              }
+            },
+            "len": 5
+          },
+          "timedOut": {
+            "__type__": "bool"
+          },
+          "totalNoticeCount": {
+            "__type__": "int"
+          }
+        }
+      },
+      "total_notice_count": 2125,
+      "url": "https://api.ted.europa.eu/v3/notices/search"
+    },
+    {
+      "attempts": 1,
+      "bytes": 30134,
+      "elapsed_ms": 375,
+      "error": "",
+      "first_notice_keys": [
+        "buyer-name",
+        "classification-cpv",
+        "links",
+        "notice-title",
+        "notice-type",
+        "publication-date",
+        "publication-number",
+        "total-value"
+      ],
+      "method": "POST",
+      "name": "search_fulltext_medtronic_since_2024",
+      "ok": true,
+      "sample": {
+        "name": "search_medtronic_since_2024.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ted\\search_medtronic_since_2024.json",
+        "sha256_full": "ba4d2f2fce0c3b75ad6e17975ae5c6866138206e7b1d137b90c18d7b6be493c5",
+        "sha256_stored": "ba4d2f2fce0c3b75ad6e17975ae5c6866138206e7b1d137b90c18d7b6be493c5",
+        "stored_bytes": 30134,
+        "total_bytes": 30134,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "iterationNextToken",
+          "notices",
+          "timedOut",
+          "totalNoticeCount"
+        ],
+        "sample": {
+          "iterationNextToken": {
+            "__type__": "NoneType"
+          },
+          "notices": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "buyer-name",
+                "classification-cpv",
+                "links",
+                "notice-title",
+                "notice-type",
+                "publication-date",
+                "publication-number",
+                "total-value"
+              ],
+              "sample": {
+                "buyer-name": "dict",
+                "classification-cpv": "list",
+                "links": "dict",
+                "notice-title": "dict",
+                "notice-type": "str",
+                "publication-date": "str",
+                "publication-number": "str",
+                "total-value": "int"
+              }
+            },
+            "len": 5
+          },
+          "timedOut": {
+            "__type__": "bool"
+          },
+          "totalNoticeCount": {
+            "__type__": "int"
+          }
+        }
+      },
+      "total_notice_count": 8122,
+      "url": "https://api.ted.europa.eu/v3/notices/search"
+    },
+    {
+      "attempts": 1,
+      "bytes": 59875,
+      "elapsed_ms": 1218,
+      "error": "",
+      "first_notice_keys": [
+        "buyer-name",
+        "classification-cpv",
+        "links",
+        "notice-title",
+        "notice-type",
+        "publication-date",
+        "publication-number"
+      ],
+      "method": "POST",
+      "name": "search_fulltext_mindray_since_2024",
+      "ok": true,
+      "sample": {
+        "name": "search_mindray_since_2024.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ted\\search_mindray_since_2024.json",
+        "sha256_full": "53f6130bf5cea10ce59511118b31dc65cf7b717c350db86b047fb34665445f2e",
+        "sha256_stored": "53f6130bf5cea10ce59511118b31dc65cf7b717c350db86b047fb34665445f2e",
+        "stored_bytes": 59875,
+        "total_bytes": 59875,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "iterationNextToken",
+          "notices",
+          "timedOut",
+          "totalNoticeCount"
+        ],
+        "sample": {
+          "iterationNextToken": {
+            "__type__": "NoneType"
+          },
+          "notices": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "buyer-name",
+                "classification-cpv",
+                "links",
+                "notice-title",
+                "notice-type",
+                "publication-date",
+                "publication-number"
+              ],
+              "sample": {
+                "buyer-name": "dict",
+                "classification-cpv": "list",
+                "links": "dict",
+                "notice-title": "dict",
+                "notice-type": "str",
+                "publication-date": "str",
+                "publication-number": "str"
+              }
+            },
+            "len": 5
+          },
+          "timedOut": {
+            "__type__": "bool"
+          },
+          "totalNoticeCount": {
+            "__type__": "int"
+          }
+        }
+      },
+      "total_notice_count": 1952,
+      "url": "https://api.ted.europa.eu/v3/notices/search"
+    },
+    {
+      "attempts": 1,
+      "bytes": 22333,
+      "elapsed_ms": 1391,
+      "error": "",
+      "first_notice_keys": [
+        "links",
+        "notice-type",
+        "publication-date",
+        "publication-number"
+      ],
+      "method": "POST",
+      "name": "search_cpv_33100000",
+      "ok": true,
+      "sample": {
+        "name": "search_cpv_33100000.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ted\\search_cpv_33100000.json",
+        "sha256_full": "f0abbeb576696c7cab94e6bb79192ccc95a1278da393278463ec4d9c9e179e16",
+        "sha256_stored": "f0abbeb576696c7cab94e6bb79192ccc95a1278da393278463ec4d9c9e179e16",
+        "stored_bytes": 22333,
+        "total_bytes": 22333,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "iterationNextToken",
+          "notices",
+          "timedOut",
+          "totalNoticeCount"
+        ],
+        "sample": {
+          "iterationNextToken": {
+            "__type__": "NoneType"
+          },
+          "notices": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "links",
+                "notice-type",
+                "publication-date",
+                "publication-number"
+              ],
+              "sample": {
+                "links": "dict",
+                "notice-type": "str",
+                "publication-date": "str",
+                "publication-number": "str"
+              }
+            },
+            "len": 5
+          },
+          "timedOut": {
+            "__type__": "bool"
+          },
+          "totalNoticeCount": {
+            "__type__": "int"
+          }
+        }
+      },
+      "total_notice_count": 488133,
+      "url": "https://api.ted.europa.eu/v3/notices/search"
+    },
+    {
+      "attempts": 1,
+      "body_head": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <title>Human Verification</title>\n    <style>\n        body {\n            font-family: \"Arial\";\n ",
+      "bytes": 2150,
+      "elapsed_ms": 780,
+      "error": "HTTP 405 Not Allowed",
+      "method": "GET",
+      "name": "notice_xml_on_web_host",
+      "ok": false,
+      "sample": null,
+      "status": 405,
+      "structure": null,
+      "target_url": "https://ted.europa.eu/en/notice/391299-2016/xml",
+      "url": "https://ted.europa.eu/en/notice/391299-2016/xml"
+    },
+    {
+      "attempts": 1,
+      "body_head": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <title>Human Verification</title>\n    <style>\n        body {\n            font-family: \"Arial\";\n ",
+      "bytes": 2150,
+      "elapsed_ms": 1889,
+      "error": "HTTP 405 Not Allowed",
+      "method": "GET",
+      "name": "bulk_downloads_page",
+      "ok": false,
+      "sample": null,
+      "status": 405,
+      "structure": null,
+      "target_url": "https://ted.europa.eu/en/bulk-downloads",
+      "url": "https://ted.europa.eu/en/bulk-downloads"
+    }
+  ],
+  "requests": 9,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "eu_ted",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:44:24.930393Z"
+}

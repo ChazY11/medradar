@@ -1,0 +1,79 @@
+{
+  "error": "",
+  "evidence_urls": [],
+  "notes": "SBIR.gov documents an unauthenticated awards API, but on every probe the API host answered 403 Forbidden (also to a plain browser-style fetch) while the official /api page carries a maintenance notice.  This is not a registration requirement: the documented endpoints need no key.  Recorded UNAVAILABLE (documented API temporarily refusing anonymous service) with the evidence preserved, not as a working source.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 24,
+      "counts_as_ok": false,
+      "elapsed_ms": 733,
+      "error": "HTTP 403 Forbidden",
+      "http_ok": false,
+      "json_parsed": true,
+      "method": "get",
+      "name": "awards_keyword",
+      "record_count": 1,
+      "status": 403,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "message"
+        ],
+        "sample": {
+          "message": {
+            "__type__": "string",
+            "max_len": 9
+          }
+        }
+      },
+      "url": "https://api.www.sbir.gov/public/api/awards?keyword=stent&rows=2"
+    },
+    {
+      "attempts": 1,
+      "bytes": 24,
+      "counts_as_ok": false,
+      "elapsed_ms": 592,
+      "error": "HTTP 403 Forbidden",
+      "http_ok": false,
+      "json_parsed": true,
+      "method": "get",
+      "name": "awards_firm",
+      "record_count": 1,
+      "status": 403,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "message"
+        ],
+        "sample": {
+          "message": {
+            "__type__": "string",
+            "max_len": 9
+          }
+        }
+      },
+      "url": "https://api.www.sbir.gov/public/api/awards?firm=Medtronic&rows=2"
+    },
+    {
+      "attempts": 1,
+      "bytes": 38726,
+      "counts_as_ok": false,
+      "elapsed_ms": 906,
+      "error": "JSONDecodeError: json decode failed",
+      "http_ok": true,
+      "json_parsed": false,
+      "method": "get",
+      "name": "api_docs_page",
+      "record_count": null,
+      "status": 200,
+      "structure": null,
+      "url": "https://www.sbir.gov/api"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "sbir_gov",
+  "status": "UNAVAILABLE",
+  "verified_at": "2026-11-08T21:42:59.867335Z"
+}
