@@ -1,0 +1,235 @@
+{
+  "schema": "phoenix-001/oss-audit-evidence/v1",
+  "project": "PubTrends",
+  "repo": "JetBrains-Research/pubtrends",
+  "official_url": "https://github.com/JetBrains-Research/pubtrends",
+  "audit_role": "licence, dependency, supply-chain and reproducibility audit + isolated algorithm reimplementation",
+  "audited_at_local": "2026-11-08",
+  "auditor": "oss-audit",
+  "external_checkout": "D:\\DEPPSKK\\phoenix-external\\pubtrends (outside the MedRadar tree; not a submodule; no upstream code executed)",
+  "acquisition": {
+    "method": "curated per-file fetch from raw.githubusercontent.com via GitHub trees API (parallel connections; the git protocol clone stalled and codeload was too slow on this link)",
+    "files_fetched": 181,
+    "bytes_fetched": 4610485,
+    "excluded_by_design": ["pysrc/app/static/ (PNG assets)", "pysrc/app/templates/ (Jinja HTML)", "gradle/wrapper/gradle-wrapper.jar"],
+    "note": "the complete tree (267 blobs, truncated=false) was enumerated first; licence and vendoring conclusions are drawn from the full inventory, not the fetched subset"
+  },
+  "provenance": {
+    "github_api": "https://api.github.com/repos/JetBrains-Research/pubtrends",
+    "description": "Scientific literature explorer. Runs a Pubmed or Semantic Scholar search and allows user to explore high-level structure of result papers",
+    "stars": 50,
+    "forks": 5,
+    "open_issues": 20,
+    "commit_count": 2027,
+    "default_branch": "master",
+    "language_github": "Jupyter Notebook",
+    "actual_languages": {"python_loc": 10115, "kotlin_loc": 2640, "javascript": "vanilla JS in pysrc/app/static (not counted)", "templates": "Jinja2"},
+    "repo_size_kb": 73626,
+    "created_at": "2018-10-04T15:07:04Z",
+    "updated_at": "2026-10-27T11:42:25Z",
+    "pushed_at": "2026-10-27T11:42:21Z",
+    "archived": false,
+    "releases": [{"tag": "v1.6", "published_at": "2026-01-29"}, {"tag": "v1.4", "published_at": "2025-11-03"}, {"tag": "v1.3", "published_at": "2025-06-01"}, {"tag": "v1.2", "published_at": "2025-04-03"}, {"tag": "v1.1", "published_at": "2025-03-14"}, {"tag": "v1.0", "published_at": "2023-09-04"}, {"tag": "v0.21", "published_at": "2022-01-25"}],
+    "release_note": "v1.5 is absent from the release list; the series jumps v1.4 -> v1.6",
+    "maintenance_status": "actively maintained - 7 tagged releases, last push 2026-10-27, 23 test_*.py files, TeamCity CI badge, Zenodo DOI 10.5281/zenodo.15131474",
+    "authors_and_paper": {
+      "paper": "Shpynov, O. and Kapralov, N., 2021. PubTrends: a scientific literature explorer. ACM BCB 2021, pp.1-1.",
+      "doi": "10.1145/3459930.3469501",
+      "authors_file": "docs/AUTHORS.md"
+    }
+  },
+  "licence_audit": {
+    "licence_file_present": true,
+    "licence_file": "LICENSE.txt",
+    "licence_file_bytes": 11316,
+    "licence_spdx": "Apache-2.0",
+    "licence_confirmed": true,
+    "github_license_field": "Apache-2.0",
+    "copyright_holder_line": "Copyright 2022 JetBrains Research.",
+    "evidence": [
+      "LICENSE.txt is the canonical, unmodified Apache License 2.0 text (11316 bytes) including the APPENDIX boilerplate, with the copyright line filled in as 'Copyright 2022 JetBrains Research.'",
+      "exactly one licence file exists in the complete 267-blob inventory: LICENSE.txt. No NOTICE file, no second licence",
+      "no per-file SPDX-License-Identifier or copyright headers anywhere in the .py/.kt sources (searched); the repository relies on the single root licence, which is normal for Apache-2.0"
+    ],
+    "obligations_for_reuse": [
+      "retain the LICENSE.txt and the copyright notice in any redistribution",
+      "state changes made to files (Apache-2.0 s.4b)",
+      "no trademark grant: the 'PubTrends' / JetBrains names may not be used to endorse a derivative"
+    ],
+    "vendored_third_party_code": {
+      "present": false,
+      "evidence": "no vendor/ directory, no third-party copyright notices in any source file, and the only non-text artefact is gradle/wrapper/gradle-wrapper.jar (the Gradle wrapper bootstrap, not vendored application code)",
+      "implication": "no sublicensing conflict; the whole source is available under Apache-2.0"
+    }
+  },
+  "dependency_supply_chain": {
+    "manifest_present": true,
+    "manifests": ["pyproject.toml", "setup.cfg (flake8 only)", "build.gradle", "gradle/wrapper/gradle-wrapper.properties", "Dockerfile", "Dockerfile-test", "4x docker-compose/*.yml"],
+    "declared_dependency_count": 52,
+    "python_requires": "==3.12.*",
+    "pinned_vs_unpinned": {
+      "pinned": ["bokeh==3.8.2", "werkzeug<3.1 (upper bound only)", "setuptools<70 (upper bound only)"],
+      "direct_url": ["en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/...whl"],
+      "unpinned": "the other 48 of 52 (flask, celery, pandas, scikit-learn, gensim, spacy, transformers, onnxruntime, faiss-cpu, networkx, umap-learn, ...)"
+    },
+    "supply_chain_hazards": [
+      {
+        "severity": "high",
+        "finding": "a pip dependency is installed directly from a GitHub release URL, with no hash pin",
+        "evidence": "pyproject.toml dependencies: \"en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl\"",
+        "why_it_matters": "the artefact is fetched over the network at install time from a mutable release URL with no integrity pin; a compromised or re-uploaded asset would be installed silently"
+      },
+      {
+        "severity": "medium",
+        "finding": "third-party package index configured for torch",
+        "evidence": "pyproject.toml [tool.uv.index] url = https://download.pytorch.org/whl/cpu ; Dockerfile passes --extra-index-url https://download.pytorch.org/whl/cpu",
+        "why_it_matters": "--extra-index-url is the classic dependency-confusion surface: a package name present on both indexes can resolve from the added one"
+      },
+      {
+        "severity": "high",
+        "finding": "Docker build executes a remote install script fetched with curl and piped to sh",
+        "evidence": "Dockerfile: RUN curl -LsSf https://astral.sh/uv/install.sh | sh",
+        "why_it_matters": "no version pin, no checksum; build-time remote code execution. NOT executed during this audit (brief rule 4)."
+      },
+      {
+        "severity": "medium",
+        "finding": "unpinned base images",
+        "evidence": "Dockerfile: FROM python:3.10-slim ; Dockerfile-test: FROM eclipse-temurin:21-jre",
+        "why_it_matters": "python:3.10-slim floats across patch releases; note the image is 3.10 while pyproject requires 3.12.*, an internal inconsistency"
+      },
+      {
+        "severity": "medium",
+        "finding": "committed default credentials and a hardcoded secret salt",
+        "evidence": "config.properties: postgres_password = mysecretpassword, admin_password = password ; pysrc/config.py:62 SECURITY_PASSWORD_SALT default = \"D82CWwxNDzdhB7mbeaAChVd2BjdM9VjR\" ; docs/DATABASE.md uses the same password in docker run examples ; .env.example is an EMPTY file (0 bytes)",
+        "why_it_matters": "deployments that copy the sample config start with known admin credentials and a shared predictable salt"
+      },
+      {
+        "severity": "medium",
+        "finding": "unsafe deserialisation of a cache file",
+        "evidence": "pysrc/papers/compute_or_load.py:136 return pickle.load(f)",
+        "why_it_matters": "loading pickle from a cache path yields code execution if the cache is attacker-writable; no integrity check before load"
+      },
+      {
+        "severity": "low",
+        "finding": "ast.literal_eval on database text columns (not eval)",
+        "evidence": "pysrc/preprocess/embeddings/embeddings_db_connector.py:105 and :122",
+        "why_it_matters": "literal_eval is comparatively safe; noted for completeness, not a real hazard"
+      },
+      {
+        "severity": "low",
+        "finding": "runtime downloads of third-party models",
+        "evidence": "pysrc/endpoints/embeddings/fasttext/fasttext.py:10 FASTTEXT_MODEL_URL = https://ftp.ncbi.nlm.nih.gov/pub/lu/Suppl/BioSentVec/BioWordVec_PubMed_MIMICIII_d200.vec.bin ; pysrc/endpoints/embeddings/sentence_transformer/sentence_transformer.py AutoTokenizer.from_pretrained(...) with config default model thenlper/gte-base",
+        "why_it_matters": "models are pulled at run time from NCBI/Hugging Face with no version or digest pin"
+      }
+    ],
+    "not_found": ["no eval()", "no exec()", "no os.system", "no shell=True", "no telemetry or analytics endpoints", "subprocess only inside two test files that shell out to the Kotlin jar"],
+    "executed_third_party_code": false,
+    "stack_deployed": false,
+    "stack_deployment_forbidden": "per brief rule 5 (PostgreSQL + Redis + Flask + Celery must not be deployed to test an algorithm)"
+  },
+  "data_dependencies": {
+    "required_services": ["PostgreSQL 17", "pgvector extension (separate instance for semantic search)", "Redis 7.4.2", "Celery worker", "Faiss index", "optional sentence-transformer / fasttext embedding services"],
+    "footprint_from_docs": "docs/DATABASE.md recommends effective_cache_size=8GB and, for pgvector, a 32G memory limit",
+    "datasets": [
+      {"name": "PubMed", "size": "~40M papers and ~450M citations (README); FULL baseline is dozens of GB of XML", "how": "Kotlin PubmedLoader pulls NCBI FTP baseline/update packs (pubmed20n*.xml) into Postgres", "gated": false, "accessible_now": false, "reason": "size far exceeds the 200 MB budget; requires a Postgres instance"},
+      {"name": "Semantic Scholar Open Corpus", "size": "170M papers / 600M citations (README)", "how": "S2 datasets API bulk release + Azure/S3 shards", "gated": false, "accessible_now": false, "reason": "tens of GB; API terms apply"}
+    ],
+    "committed_data": "none - only small test fixtures (pysrc/test/test_data/*.csv, 58 KB max; src/test/resources/articlesPubmed.xml 119 KB)",
+    "reproducibility": "BLOCKED for any end-to-end run: datasets are terabytes-scale and the service needs Postgres+Redis. The algorithms were therefore tested in isolation on synthetic graphs/corpora."
+  },
+  "method_extraction": {
+    "entry_points": [
+      {"path": "pysrc/app/pubtrends_app.py", "role": "Flask web app (24 KB)"},
+      {"path": "pysrc/celery/tasks_main.py", "role": "async analysis tasks"},
+      {"path": "pysrc/papers/analyzer.py", "role": "the whole analysis pipeline (314 lines) - the file that matters"},
+      {"path": "src/main/kotlin/org/jetbrains/bio/pubtrends/Main.kt", "role": "Kotlin data loader entry point"},
+      {"path": "pysrc/prediction/predict_analyzer.py", "role": "despite the name, a RANDOM-sample demo harness (ORDER by random() LIMIT n), not a forecaster"}
+    ],
+    "algorithm": [
+      {"step": "graph construction", "file": "pysrc/papers/analysis/graph.py:19-58", "detail": "nodes = papers; edges from co-citation, bibliographic coupling and direct citation, each stored as a separate attribute"},
+      {"step": "text edges", "file": "pysrc/papers/analysis/graph.py:84-156", "detail": "hybrid text similarity = 0.8*cos(embedding) + 0.2*cos(tfidf), each term zeroed below SIMILARITY_TEXT_MIN=0.1, top-(GRAPH_TEXT_SIMILARITY_EDGES=100) neighbours per node"},
+      {"step": "composite edge weight", "file": "pysrc/papers/analysis/graph.py:11-16 + pysrc/config.py", "detail": "similarity = 10*cocitation + 3*bibcoupling + 1*citation + 20*textsimilarity"},
+      {"step": "sparsification", "file": "pysrc/papers/analysis/graph.py:61-81", "detail": "greedy k-nearest-neighbour graph, k=NODE2VEC_GRAPH_EDGES=50, nodes processed by descending degree"},
+      {"step": "graph embedding", "file": "pysrc/papers/analysis/node2vec.py", "detail": "node2vec random walks with p=5.0, q=2.0, walk_length=30, walks_per_node=50, seed=42, then gensim Word2Vec(vector_size=64, window=5, sg=1, epochs=3)"},
+      {"step": "projection", "file": "pysrc/papers/analyzer.py:218-223", "detail": "StandardScaler then PCA(n_components=PCA_VARIANCE=0.9)"},
+      {"step": "clustering", "file": "pysrc/papers/analysis/clustering.py", "detail": "AgglomerativeClustering when n_papers <= MAX_AGGLOMERATIVE_CLUSTERING=5000 else KMeans; labels renumbered by descending cluster size"},
+      {"step": "topic description", "file": "pysrc/papers/analysis/topics.py:41-79", "detail": "per-cluster token frequency vectors normalised to unit length; score = (unit vector entry for that cluster) * log1p(total token count); top n_words taken. Picks words whose frequency profile is closest to one-hot for the cluster."},
+      {"step": "citation analytics", "file": "pysrc/papers/analysis/citations.py", "detail": "top cited; per-year absolute max gain; per-year relative gain = citations_this_year / cumulative_before (guarded at 0 -> 1), reported when >= 0.01"},
+      {"step": "authors/journals", "file": "pysrc/papers/analysis/metadata.py", "detail": "popular author and journal aggregation"}
+    ],
+    "temporal_behaviour": {
+      "forecasting": false,
+      "train_test_split": false,
+      "future_target": false,
+      "accuracy_metric": false,
+      "evidence": "every module in pysrc/papers/analysis operates on a single current result set; there is no holdout, no lagged target and no scored prediction anywhere in the repository. 'predict_analyzer.py' samples a random PMID subset for demo purposes.",
+      "implication": "'topic change and emerging research areas' are rendered as per-cluster paper counts by publication year, not as forecasts."
+    }
+  },
+  "reproduction": {
+    "status": "METHOD_ONLY",
+    "classification_reason": "PubTrends publishes no forecasting accuracy number to reproduce, and its stack is forbidden to deploy. The reproduction therefore reimplements and unit-checks the distinctive algorithms in pure Python on synthetic inputs, and records the two upstream defects that the checks exposed.",
+    "script": "medradar/experiments/phoenix/external/pubtrends/pt_repro.py",
+    "results_file": "medradar/experiments/phoenix/external/pubtrends/pt_results.json",
+    "independent_reimplementation": true,
+    "upstream_code_imported": false,
+    "upstream_code_executed": false,
+    "database_used": false,
+    "command": "python pt_repro.py --out pt_results.json",
+    "exit_code": 0,
+    "runtime_s": 0.04,
+    "checks": [
+      {"id": "A", "what": "composite similarity weights 10/3/1/20", "pass": true},
+      {"id": "B1", "what": "node2vec p/q transition probabilities equal the 1/p, 1, 1/q rule (analytic vs 200k sampled walks)", "pass": true},
+      {"id": "B2", "what": "first hop is weight-proportional", "pass": true},
+      {"id": "B3", "what": "heavier edge gets proportionally higher probability", "pass": true},
+      {"id": "C", "what": "k-NN sparsification: edges are top-k for >=1 endpoint, but the degree cap is NOT strict", "pass": true},
+      {"id": "D", "what": "topic description recovers cluster-specific tokens and demotes a shared high-frequency token", "pass": true},
+      {"id": "E", "what": "clusters relabelled 0=largest by descending size", "pass": true},
+      {"id": "F", "what": "absolute max-gain correct; relative 'hot paper' gain exceeds 1.0 in a paper's first citation year", "pass": true},
+      {"id": "G", "what": "no held-out predictive evaluation exists in the repository", "pass": true}
+    ],
+    "checks_passed": 9,
+    "checks_failed": 0,
+    "upstream_defects_found": [
+      {"area": "graph sparsification", "detail": "with k=5 on a synthetic 120-node graph, 18 nodes ended with degree 6-7 (max 7). The greedy loop gates insertion on the PEER's degree (len(result.neighbors(x)) < k) but never checks the current node's own degree before adding its own k edges, so a node that already received edges as a peer can overshoot up to ~2k-1. In production this runs with k=50.", "evidence": "pt_results.json check C; diagnosed on a 120-node / 1051-edge random weighted graph"},
+      {"area": "relative citation gain", "detail": "the denominator is cumulative citations BEFORE the year with a guard replacing 0 by 1, so in a paper's first citation year the metric equals the raw count and can exceed 1.0 (measured 10.0 for a paper with 10 first-year citations). The >=0.01 reporting threshold therefore always admits newly-cited papers, biasing the 'hot paper per year' view.", "evidence": "pt_results.json check F"}
+    ],
+    "not_attempted": [
+      "full stack (forbidden: Postgres + Redis + Celery + Flask)",
+      "end-to-end analysis on real PubMed/S2 data (terabyte-scale corpora)",
+      "gensim Word2Vec embedding itself (checked only the walk-transition mathematics that feeds it)"
+    ]
+  },
+  "limitations": [
+    "an exploration/dashboard product, not a predictive method: nothing to reproduce against",
+    "requires PostgreSQL + pgvector + Redis + Celery; heavy operational surface for any reuse",
+    "datasets are terabyte-scale and cannot be exercised within the audit budget",
+    "~48 of 52 Python dependencies are unpinned, so the exact analysis stack is not reproducible",
+    "algorithm parameters (p/q, similarity weights, k, thresholds) are hardcoded constants with no calibration evidence in the repo",
+    "cluster labels are recomputed per query and are not comparable across time, which undercuts any 'topic change' reading"
+  ],
+  "leakage_risks": [
+    "no point-in-time discipline: a search result set is clustered using all papers returned, including papers published after whatever date the user is reasoning about. Any 'this area was emerging in year Y' claim built from a present-day query leaks the future.",
+    "cumulative citation counts are contemporaneous; using total citations to rank 'impact' or 'hot' topics is look-ahead if used as a leading indicator",
+    "the relative-gain 'hot paper' metric is biased towards papers in their first citation year (see defect F), so it does not measure acceleration",
+    "cluster identity is not stable over time or across queries, so 'topic X grew' is not a defined statement in this architecture",
+    "KMeans with no fixed seed in cluster_and_sort (unlike node2vec's seed=42) makes cluster membership non-deterministic for >5000-paper result sets"
+  ],
+  "capability_overlap_with_medradar": {
+    "overlaps": ["literature/publication signal intake (MedRadar has pysrc OpenAlex publication counts in medradar/intelligence/sources/publications.py)", "paper-level metadata and graph construction (MedRadar tkg + graph_context)"],
+    "does_not_overlap": ["topic clustering of a downloaded literature set", "citation-network analytics", "semantic search over abstracts"],
+    "medradar_gap_it_could_fill": "no current component clusters a paper set into labelled topics; PubTrends' topic-description trick would be the portable part"
+  },
+  "decision": {
+    "verdict": "STUDY_ONLY",
+    "reason": "licence is clean (Apache-2.0, so reuse is legally unproblematic) and the project is well maintained, but it is an exploration web service with no temporal model, no train/test protocol and no predictive metric - there is no method to adopt for MedRadar's forecasting lane. Its two genuinely reusable pieces (one-hot-cosine topic description, composite-similarity kNN graph) are ~150 lines that would be cheaper to reimplement under our own tests than to integrate, and deploying the Postgres/Redis/Faiss stack is both forbidden here and disproportionate to the value."
+  },
+  "evidence_paths": {
+    "audit": "medradar/docs/phoenix/audits/A02_pubtrends.md",
+    "reimplementation_script": "medradar/experiments/phoenix/external/pubtrends/pt_repro.py",
+    "reimplementation_results": "medradar/experiments/phoenix/external/pubtrends/pt_results.json",
+    "this_file": "medradar/experiments/phoenix/external/pubtrends/evidence.json",
+    "external_checkout": "D:\\DEPPSKK\\phoenix-external\\pubtrends"
+  }
+}

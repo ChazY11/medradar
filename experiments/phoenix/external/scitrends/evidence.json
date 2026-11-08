@@ -1,0 +1,197 @@
+{
+  "schema": "phoenix-001/oss-audit-evidence/v1",
+  "project": "SciTrends",
+  "repo": "ddofer/Trends",
+  "official_url": "https://github.com/ddofer/Trends",
+  "audit_role": "licence, dependency, supply-chain and reproducibility audit + isolated method-logic reproduction",
+  "audited_at_local": "2026-11-08",
+  "auditor": "oss-audit",
+  "external_checkout": "D:\\DEPPSKK\\phoenix-external\\scitrends (outside the MedRadar tree; not a submodule; no upstream code executed)",
+  "acquisition": {
+    "method": "curated per-file fetch from raw.githubusercontent.com (git clone and codeload zipball were both too slow on this link: ~12 KB/s per connection, parallelised to ~50-70 KB/s)",
+    "files_fetched": 48,
+    "bytes_fetched": 11063821,
+    "not_fetched": [
+      "Supplementary/S4-Features_with_target_5Y.csv (20 MB; not needed - trends_v6.csv.gz already contains the modelling features; download abandoned to respect the no-large-downloads rule)",
+      "Figures/ (large PNG/SVG/PPTX assets, not evidence-bearing)",
+      "Supplementary/TRENDS-Table S1..S3.xlsx (listed at 0 bytes upstream)"
+    ],
+    "note": "repo tree was enumerated with the GitHub trees API before fetching, so the absence of a licence file is established over the complete blob inventory, not just the fetched subset"
+  },
+  "provenance": {
+    "github_api": "https://api.github.com/repos/ddofer/Trends",
+    "description": "Code & datasets for \"What's next? Forecasting scientific research trends\"",
+    "stars": 8,
+    "forks": 1,
+    "open_issues": 0,
+    "commit_count": 26,
+    "default_branch": "main",
+    "language_github": "Jupyter Notebook",
+    "repo_size_kb": 32440,
+    "created_at": "2023-05-02T19:11:17Z",
+    "updated_at": "2025-04-02T21:10:38Z",
+    "pushed_at": "2023-10-09T13:57:41Z",
+    "archived": false,
+    "disabled": false,
+    "releases": [],
+    "tags": [],
+    "release_process": "none - no tags, no releases, no CI config; notebooks are the only artefact",
+    "maintenance_status": "dormant since 2023-10-09 (last push); no packaging, no requirements, no tests",
+    "webapp_repo": {
+      "url": "https://github.com/HadasaK1/SciTrends",
+      "stars": 1,
+      "license_spdx": null,
+      "pushed_at": "2023-10-17T21:06:14Z",
+      "note": "separate Gradio app repository named in the paper; also has NO licence"
+    },
+    "live_tool": "https://huggingface.co/spaces/hadasak/SciTrends (not exercised; out of audit scope)"
+  },
+  "paper": {
+    "title": "What's next? Forecasting scientific research trends",
+    "authors": "Dan Ofer, Hadasah Kaufman, Michal Linial",
+    "journal": "Heliyon",
+    "citation": "Heliyon 2023;10(1):e23781",
+    "doi": "10.1016/j.heliyon.2023.e23781",
+    "pmid": "38223716",
+    "pmcid": "PMC10784166",
+    "preprint": "https://arxiv.org/abs/2305.04133",
+    "open_access": "Y",
+    "paper_licence": "cc by-nc-nd",
+    "paper_licence_source": "Europe PMC REST core record for PMC10784166, field 'license'",
+    "fulltext_read": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10784166/"
+  },
+  "licence_audit": {
+    "licence_file_present": false,
+    "licence_spdx": null,
+    "licence_confirmed": false,
+    "github_license_field": null,
+    "verdict": "no confirmed code licence - method-only borrowing allowed, code reuse forbidden",
+    "evidence": [
+      "GitHub trees API for main (complete blob inventory, truncated=false): no LICENSE, LICENSE.md, LICENCE, COPYING, NOTICE or UNLICENSE blob at any path",
+      "local recursive scan of all fetched .md/.ipynb/.py/.txt: zero copyright/licence/SPDX statements (string search hits were base64 PNG payloads inside notebooks)",
+      "no per-file headers anywhere; no NOTICE file",
+      "paper licence is CC BY-NC-ND, which restricts commercial use and derivative works of the paper and grants nothing over the code"
+    ],
+    "implication": "under Berne/TRIPS default, the code is fully reserved by the authors. Ideas, formulas and methods are not copyrightable, so an independent reimplementation of the *method* with attribution is the only permissible route. No code, notebook or data file from this repo may be copied into MedRadar."
+  },
+  "dependency_supply_chain": {
+    "manifest_present": false,
+    "manifests_checked": ["requirements.txt", "setup.py", "pyproject.toml", "environment.yml", "setup.cfg", "Pipfile", "Dockerfile"],
+    "install_path": "none - there is no installable artefact and no declared environment",
+    "declared_dependencies": [],
+    "inferred_dependencies_from_notebook_imports": [
+      "catboost", "torch", "sentence_transformers", "autogluon", "burst_detection", "sklearn",
+      "pandas", "numpy", "matplotlib", "seaborn", "shap", "bs4", "requests"
+    ],
+    "pinning": "none whatsoever",
+    "supply_chain_hazards": [
+      "no pinned environment => the released notebooks cannot be reproduced even in principle without archaeology on the authors' machine",
+      "notebooks execute arbitrary cells by design; no install script exists to review, so the hazard is 'unreproducible', not 'malicious install'",
+      "no eval/exec/subprocess/network-telemetry found in the analysis notebooks"
+    ],
+    "executed_third_party_code": false
+  },
+  "data_dependencies": {
+    "in_repo_derived_data": [
+      {"file": "trends_v6.csv.gz", "bytes": 533335, "rows": 7033, "cols": 29, "topics": 126, "role": "the authors' released modelling feature table; used as the reproduction input"},
+      {"file": "all_trends_matrix_v3.csv.gz", "bytes": 223360, "rows": 8701, "cols": 6, "role": "raw per-topic per-year popularity matrix"},
+      {"file": "trends_context_v6.csv.gz", "bytes": 475427, "rows": 9779, "role": "long-history context features"},
+      {"file": "mesh_majr_v5.csv.gz", "bytes": 332503, "rows": 8475, "role": "MeSH major-term popularity series"},
+      {"file": "medline_total.csv.gz", "bytes": 609, "rows": 75, "cols": 3, "role": "annual Medline total citations + %US, the popularity normaliser"},
+      {"file": "var_text_embeddings.parquet", "bytes": 472982, "role": "all-MiniLM-L12-v2 topic-name embeddings (not read: pyarrow unavailable)"}
+    ],
+    "upstream_raw_sources": [
+      {"source": "PubMed by Year (esperr.github.io/pubmed-by-year)", "how": "scraped by scrape_pubmed_by_year.ipynb using requests+bs4", "gated": false, "reproducible": "fragile - third-party scrape of a hobby site; no snapshot pinned"},
+      {"source": "USPTO PatentsView", "how": "patentsView_api_req.ipynb against api.patentsview.org", "gated": true, "evidence": "patentsview_api_stuff.txt line 11: url = 'secret_url?page={}' - the endpoint/key is masked in the released file; legacy patentsview.org query API now requires a registered API key", "reproducible": "NO without a PatentsView key"},
+      {"source": "Medline annual totals (NLM)", "how": "medline_total.csv.gz committed", "gated": false}
+    ],
+    "gated_or_blocked": ["PatentsView patent counts: gated behind registration/API key and the released call is masked"],
+    "size_check": "all committed data is < 1 MB per file except the 20 MB supplementary CSV; no dataset exceeds the 200 MB limit"
+  },
+  "method_extraction": {
+    "primary_code_evidence": [
+      {"file": "plot trend pred + CV-V2023.ipynb", "role": "the pipeline the README names for 'Modelling results and evaluation'; 106 code cells, 832 code lines", "key_cells": {"1": "FILTER_GROUP_SIZES=True, DIFF_TARGET=True, DIFF_TARGET_PCT=False, NUM_CV_FOLDS=30, GET_DL_EMBEDS=True", "3": "read trends_v6.csv.gz; sort_values(['Year','variable']); target_5 = groupby('variable')['y_raw'].shift(-5); filter Year>start & year_num>=1979", "6": "drop topics with <=6 rows; DIFF_TARGET subtracts lag5; DIFF_TARGET_PCT = 100*(target_5-lag5)/y_raw", "24": "exact 16-feature list; X = variable + numeric features; y = target_5", "25": "CatBoostRegressor(iterations=300, has_time=True) on numeric features, TimeSeriesSplit(30)", "26": "SentenceTransformer('all-MiniLM-L12-v2') on topic names -> PCA(64) -> joined as embed_* features", "27": "naive lag baseline: RidgeCV on X=[y_raw] only", "28": "linear model: RidgeCV on mean-filled numeric features", "30/31": "boosting tree with variable as a CatBoost categorical feature"}},
+      {"file": "trend pred + CV-V2023-GroupWiseCV.ipynb", "role": "topic-level GroupKFold evaluation (paper Table 2)"},
+      {"file": "PrepData_Trends.ipynb", "role": "builds trends_v6.csv.gz: popularity normalisation, lag features, review/research ratios, patent fractions"},
+      {"file": "patentsView_api_req.ipynb", "role": "patent counts per topic-year via PatentsView"},
+      {"file": "orig_burst_detection_validation.ipynb", "role": "Kleinberg burst-detection variant experiment (not in the paper's headline model)"}
+    ],
+    "headline_definitions": {
+      "popularity": "popularity(topic, year) = 100000 * topic_publications(year) / total_medline_publications(year)",
+      "target_level": "target_5 = popularity(topic, year+5)",
+      "target_delta": "DIFF_TARGET=True gives popularity(t+5) - popularity(t-5); DIFF_TARGET_PCT=True gives 100*(popularity(t+5) - popularity(t-5))/popularity(t)",
+      "verified_lag_semantics": "lagK[t] == y_raw[t-K] exactly (verified against released data: lag5 matches y_raw shifted 5 back on 66/66 comparable rows for BLAST; diff_lag5 == y_raw - lag5 to 7e-15)",
+      "features": "y_raw, reviews, research_review_diff, research_review_ratio, review_research_ratio_2, review_research_diff_2, pct_diff, y_diff, y_pct_diff, patent_count, patent_frac, patent_yearly_total, pat_div_research, lag5_pct_new, pct_diff_lag5, year_num",
+      "validation": "sklearn TimeSeriesSplit(n_splits=30) over rows sorted by (Year, variable) - i.e. folds are contiguous year blocks shared across all topics",
+      "baselines": "RidgeCV on y_raw alone ('naive lag model'); RidgeCV on all numeric features ('linear model')",
+      "topic_eligibility": "topic must have >6 rows after filtering; rows require year_num>=1979 and Year>start (start = first 'valid' year with >=4 occurrences in the preceding 5 years)"
+    },
+    "paper_results_for_comparison": {
+      "table1_level": {"Lag baseline": [0.973, 113.80, 44.37, 229.12], "Linear model": [0.974, 101.19, 45.11, 214.82], "Boosting Tree (CatBoost)": [0.981, 75.58, 26.32, 183.67], "Tree & embedding augmented": [0.991, 58.53, 23.22, 132.30]},
+      "table1_delta_pct": {"Lag baseline": [0.004, 115.42, 83.38, 289.98], "Linear model": [0.03, 114.83, 66.19, 286.22], "Boosting Tree (CatBoost)": [0.306, 60.56, 18.47, 241.96], "Tree & embedding augmented": [0.447, 48.29, 15.11, 216.04]},
+      "column_order": ["R2", "MAE", "median_AE", "RMSE"],
+      "binary_claim": "88% accuracy vs 70% majority baseline for up/down direction"
+    }
+  },
+  "reproduction": {
+    "status": "METHOD_ONLY",
+    "classification_reason": "the paper's numbers are not reproduced: CatBoost and sentence-transformers are absent by design in this environment, so the boosting model is a substituted sklearn HistGradientBoostingRegressor and the embedding-augmented rows cannot be run. What IS reproduced is the exact pipeline logic, evidenced by the lag baseline matching Table 1 to the last reported digit for two independent target definitions.",
+    "script": "medradar/experiments/phoenix/external/scitrends/sci_repro.py",
+    "independent_reimplementation": true,
+    "upstream_code_imported": false,
+    "upstream_code_executed": false,
+    "input": {"file": "trends_v6.csv.gz", "sha256": "fbd32b59d9c9da2fb39e3d72a67eef101b5734f0fb8ed9c5034a6c236206baf4", "bytes": 533335, "raw_inputs_used": false},
+    "command": "python sci_repro.py --data-dir D:\\DEPPSKK\\phoenix-external\\scitrends --out sci_results.json",
+    "exit_code": 0,
+    "runtime_s": 274.3,
+    "environment": {"python": "3.12.10", "pandas": "3.0.3", "numpy": "2.5.1", "sklearn": "1.9.1", "catboost": "absent (substituted)", "sentence_transformers": "absent", "gpu": "none", "network": "not used during the run"},
+    "frames": {"level": {"rows": 4175, "topics": 123, "years": [1979, 2015]}, "diff": {"rows": 4175}, "pct": {"rows": 4172}},
+    "results": {
+      "level": {"ridge_lag": {"r2": 0.9732, "mae": 113.806, "median_ae": 44.378, "rmse": 229.128}, "ridge_all": {"r2": 0.9764, "mae": 101.29, "median_ae": 45.197, "rmse": 215.019}, "hist_gbm": {"r2": 0.977, "mae": 93.843, "median_ae": 32.769, "rmse": 212.229}},
+      "pct": {"ridge_lag": {"r2": 0.0039, "mae": 115.419, "median_ae": 83.377, "rmse": 289.98}, "ridge_all": {"r2": -0.039, "mae": 95.72, "median_ae": 51.18, "rmse": 296.156}, "hist_gbm": {"r2": 0.1058, "mae": 83.828, "median_ae": 22.39, "rmse": 274.742}},
+      "diff_absolute": {"ridge_lag": {"r2": 0.1963}, "ridge_all": {"r2": 0.4948}, "hist_gbm": {"r2": 0.7786}}
+    },
+    "exact_match_evidence": {
+      "level_ridge_lag_vs_paper": {"mine": [0.9732, 113.806, 44.378, 229.128], "paper": [0.973, 113.80, 44.37, 229.12], "verdict": "matches to the reported precision"},
+      "pct_ridge_lag_vs_paper": {"mine": [0.0039, 115.419, 83.377, 289.98], "paper": [0.004, 115.42, 83.38, 289.98], "verdict": "matches to the reported precision; resolves the delta-target definition"}
+    },
+    "controls": {
+      "persistence_level": {"r2": 0.969445, "mae": 104.5051, "note": "the no-model forecast y(t+5)=y(t) already reaches R2 0.969, so the level target is dominated by autocorrelation"},
+      "pct_zero_change": {"r2": -0.063152, "mae": 97.5619, "note": "predicting zero change on the pct target has LOWER MAE (97.56) than the paper's learned lag baseline (115.42)"},
+      "leakage_positive_control": {"r2": 1.0, "mae": 0.0, "detected": true, "note": "appending y(t+5) as a feature drives R2 to exactly 1.0, proving the harness would have detected genuine leakage"},
+      "ablation_topic_block_order": {"r2": -0.011981, "note": "running the same model with rows sorted by topic instead of year turns the CV into a topic-transportability test; the metric is then not a temporal estimate. The 2023 notebook's explicit sort_values(['Year','variable']) is load-bearing."}
+    },
+    "what_failed_or_was_not_run": [
+      "CatBoost rows of Table 1 (model unavailable; ~100 MB wheel deliberately not downloaded)",
+      "sentence-transformers embedding-augmented rows (torch + model weights required)",
+      "upstream notebooks themselves: they call pandas with infer_datetime_format, removed in pandas 3.x, and set pd.set_option('mode.use_inf_as_na', True), also removed - the released notebooks do not run on the current stack"
+    ]
+  },
+  "limitations": [
+    "notebooks only - no package, no CLI, no test suite, no CI",
+    "no licence file: code reuse forbidden",
+    "no pinned environment: the authors' exact numbers depend on an unreconstructable stack",
+    "patent counts cannot be regenerated (PatentsView key gated, released call masked)",
+    "PubMed-by-Year is a third-party scrape with no pinned snapshot",
+    "level-target skill is dominated by persistence (R2 0.969 with no model)"
+  ],
+  "leakage_risks": [
+    "topic survivorship: the 125 topics were chosen in 2022 as active/notable, so backtests over 1979-2019 condition on the topic surviving into the present - the paper itself flags this",
+    "level-target illusion: popularity(t+5) ~ popularity(t), so R2 0.97+ is autocorrelation, not forecasting skill; the honest baselines are persistence (R2 0.969) and the delta target",
+    "the delta target is a 10-year span (t-5 to t+5) normalised by popularity(t); describing it as a 5-year change would overstate the horizon actually forecast",
+    "topic-level validation (paper Table 2) is the only test that removes the 'known topic' advantage, and performance drops sharply there (R2 0.86 boosting vs 0.98 temporal)",
+    "cumulative/derived features in trends_v6.csv.gz were computed once over the full history; anyone reusing the file must not treat per-row values as point-in-time known"
+  ],
+  "decision": {
+    "verdict": "ADAPT",
+    "scope": "method-level reimplementation only (popularity normalisation + review:research ratio + temporal validation protocol); zero code reuse",
+    "reason": "the reproduction is strong enough to trust the method (lag baseline matches Table 1 exactly for two target definitions), and MedRadar already has a documented weak publication path that these two transforms directly improve; but the absence of any licence forbids reusing code or data files, so only an independent implementation with attribution is permissible"
+  },
+  "evidence_paths": {
+    "audit": "medradar/docs/phoenix/audits/A01_scitrends.md",
+    "reproduction_script": "medradar/experiments/phoenix/external/scitrends/sci_repro.py",
+    "reproduction_results": "medradar/experiments/phoenix/external/scitrends/sci_results.json",
+    "this_file": "medradar/experiments/phoenix/external/scitrends/evidence.json",
+    "external_checkout": "D:\\DEPPSKK\\phoenix-external\\scitrends"
+  }
+}

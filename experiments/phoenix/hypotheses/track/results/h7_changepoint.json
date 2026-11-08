@@ -1,0 +1,428 @@
+{
+  "protocol_version": "phoenix-001/v1",
+  "harness_version": "1.0.0",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "db_sha256_matches_frozen": true,
+  "lag_scenario": "L090",
+  "lag_days": 90,
+  "command": "python changepoint_bench.py",
+  "elapsed_sec": 66.68,
+  "seed": 20261108,
+  "n": 24000,
+  "n_pos": 18000,
+  "prevalence": 0.75,
+  "hypothesis": "H7",
+  "title": "Is change-point detection better than a fixed threshold?",
+  "pre_registered_definition": "Semi-synthetic benchmark: 30 largest tracks, 86 quarters, step change m in {1.5,2,3} at a random quarter, 200 reps, matched false-alarm budget <= 5%/quarter, detection within +/-2 quarters. Supported iff at least one change-point detector beats the fixed threshold by >= 10pp with a bootstrap CI excluding 0.",
+  "n_series": 24000,
+  "n_null_series": 6000,
+  "n_change_series": 18000,
+  "tuning_table": {
+    "fixed_threshold": {
+      "chosen": {
+        "k": 2.6,
+        "fa_rate_per_quarter": 0.0468034188034188,
+        "null_detection_within_2q": 0.18866666666666668
+      },
+      "n_grid_points": 57,
+      "protocol_literal": {
+        "k": 2.0
+      }
+    },
+    "growth_threshold": {
+      "chosen": {
+        "threshold": 1.25,
+        "fa_rate_per_quarter": 0.04852350427350428,
+        "null_detection_within_2q": 0.14816666666666667
+      },
+      "n_grid_points": 58,
+      "protocol_literal": {
+        "threshold": 0.5
+      }
+    },
+    "cusum": {
+      "chosen": {
+        "h": 3.5,
+        "fa_rate_per_quarter": 0.04491666666666667,
+        "null_detection_within_2q": 0.21633333333333332
+      },
+      "n_grid_points": 23,
+      "protocol_literal": {
+        "h": 5.0
+      }
+    },
+    "pelt": {
+      "chosen": {
+        "lam": 1.0,
+        "penalty": 4.454347296253507,
+        "fa_rate_per_quarter": 0.04806196581196581,
+        "null_detection_within_2q": 0.22716666666666666
+      },
+      "n_grid_points": 14,
+      "protocol_literal": {
+        "lam": 1.0
+      }
+    }
+  },
+  "matched_budget_detection": {
+    "m=1.5": {
+      "fixed": {
+        "detection_rate": 0.32466666666666666,
+        "n_detected": 1948,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          -1.0,
+          1.0
+        ],
+        "mean_alarms_per_series": 3.6755
+      },
+      "growth": {
+        "detection_rate": 0.22016666666666668,
+        "n_detected": 1321,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          -1.0,
+          2.0
+        ],
+        "mean_alarms_per_series": 3.9705
+      },
+      "cusum": {
+        "detection_rate": 0.5013333333333333,
+        "n_detected": 3008,
+        "median_delay_q": 1.0,
+        "iqr_delay_q": [
+          0.0,
+          1.0
+        ],
+        "mean_alarms_per_series": 4.4615
+      },
+      "pelt": {
+        "detection_rate": 0.501,
+        "n_detected": 3006,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          -1.0,
+          1.0
+        ],
+        "mean_alarms_per_series": 4.833666666666667
+      }
+    },
+    "m=2.0": {
+      "fixed": {
+        "detection_rate": 0.5591666666666667,
+        "n_detected": 3355,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          0.0,
+          1.0
+        ],
+        "mean_alarms_per_series": 3.992166666666667
+      },
+      "growth": {
+        "detection_rate": 0.3585,
+        "n_detected": 2151,
+        "median_delay_q": 1.0,
+        "iqr_delay_q": [
+          0.0,
+          2.0
+        ],
+        "mean_alarms_per_series": 4.377166666666667
+      },
+      "cusum": {
+        "detection_rate": 0.7325,
+        "n_detected": 4395,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          0.0,
+          1.0
+        ],
+        "mean_alarms_per_series": 5.419833333333333
+      },
+      "pelt": {
+        "detection_rate": 0.7363333333333333,
+        "n_detected": 4418,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          0.0,
+          0.0
+        ],
+        "mean_alarms_per_series": 5.550166666666667
+      }
+    },
+    "m=3.0": {
+      "fixed": {
+        "detection_rate": 0.8805,
+        "n_detected": 5283,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          0.0,
+          0.0
+        ],
+        "mean_alarms_per_series": 4.782166666666667
+      },
+      "growth": {
+        "detection_rate": 0.6801666666666667,
+        "n_detected": 4081,
+        "median_delay_q": 1.0,
+        "iqr_delay_q": [
+          0.0,
+          2.0
+        ],
+        "mean_alarms_per_series": 5.6081666666666665
+      },
+      "cusum": {
+        "detection_rate": 0.9068333333333334,
+        "n_detected": 5441,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          0.0,
+          0.0
+        ],
+        "mean_alarms_per_series": 6.870666666666667
+      },
+      "pelt": {
+        "detection_rate": 0.9041666666666667,
+        "n_detected": 5425,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          0.0,
+          0.0
+        ],
+        "mean_alarms_per_series": 6.534
+      }
+    },
+    "pooled": {
+      "fixed": {
+        "detection_rate": 0.5881111111111111,
+        "n_series": 18000,
+        "n_detected": 10586
+      },
+      "growth": {
+        "detection_rate": 0.4196111111111111,
+        "n_series": 18000,
+        "n_detected": 7553
+      },
+      "cusum": {
+        "detection_rate": 0.7135555555555556,
+        "n_series": 18000,
+        "n_detected": 12844
+      },
+      "pelt": {
+        "detection_rate": 0.7138333333333333,
+        "n_series": 18000,
+        "n_detected": 12849
+      },
+      "contrasts_vs_fixed": {
+        "cusum": {
+          "diff": 0.12544444444444447,
+          "lo": 0.05838472222222227,
+          "hi": 0.19412361111111112,
+          "p": 0.0,
+          "B": 1000,
+          "n_series": 18000,
+          "n_clusters": 30
+        },
+        "pelt": {
+          "diff": 0.12572222222222218,
+          "lo": 0.05231527777777779,
+          "hi": 0.2020597222222222,
+          "p": 0.002,
+          "B": 1000,
+          "n_series": 18000,
+          "n_clusters": 30
+        },
+        "growth": {
+          "diff": -0.16850000000000004,
+          "lo": -0.17883333333333334,
+          "hi": -0.1577194444444445,
+          "p": 0.0,
+          "B": 1000,
+          "n_series": 18000,
+          "n_clusters": 30
+        }
+      }
+    }
+  },
+  "protocol_literal_detection": {
+    "m=1.5": {
+      "fixed": {
+        "detection_rate": 0.6251666666666666,
+        "n_detected": 3751,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          -1.0,
+          1.0
+        ],
+        "mean_alarms_per_series": 8.483833333333333
+      },
+      "growth": {
+        "detection_rate": 0.6175,
+        "n_detected": 3705,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          -2.0,
+          1.0
+        ],
+        "mean_alarms_per_series": 13.786166666666666
+      },
+      "cusum": {
+        "detection_rate": 0.3655,
+        "n_detected": 2193,
+        "median_delay_q": 1.0,
+        "iqr_delay_q": [
+          0.0,
+          2.0
+        ],
+        "mean_alarms_per_series": 2.7115
+      },
+      "pelt": {
+        "detection_rate": 0.501,
+        "n_detected": 3006,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          -1.0,
+          1.0
+        ],
+        "mean_alarms_per_series": 4.833666666666667
+      }
+    },
+    "m=2.0": {
+      "fixed": {
+        "detection_rate": 0.8355,
+        "n_detected": 5013,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          0.0,
+          0.0
+        ],
+        "mean_alarms_per_series": 9.001166666666666
+      },
+      "growth": {
+        "detection_rate": 0.7956666666666666,
+        "n_detected": 4774,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          -1.0,
+          1.0
+        ],
+        "mean_alarms_per_series": 14.722
+      },
+      "cusum": {
+        "detection_rate": 0.6223333333333333,
+        "n_detected": 3734,
+        "median_delay_q": 1.0,
+        "iqr_delay_q": [
+          0.0,
+          1.0
+        ],
+        "mean_alarms_per_series": 3.4661666666666666
+      },
+      "pelt": {
+        "detection_rate": 0.7363333333333333,
+        "n_detected": 4418,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          0.0,
+          0.0
+        ],
+        "mean_alarms_per_series": 5.550166666666667
+      }
+    },
+    "m=3.0": {
+      "fixed": {
+        "detection_rate": 0.9681666666666666,
+        "n_detected": 5809,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          0.0,
+          0.0
+        ],
+        "mean_alarms_per_series": 9.737166666666667
+      },
+      "growth": {
+        "detection_rate": 0.947,
+        "n_detected": 5682,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          -1.0,
+          1.0
+        ],
+        "mean_alarms_per_series": 15.685
+      },
+      "cusum": {
+        "detection_rate": 0.8565,
+        "n_detected": 5139,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          0.0,
+          1.0
+        ],
+        "mean_alarms_per_series": 4.7085
+      },
+      "pelt": {
+        "detection_rate": 0.9041666666666667,
+        "n_detected": 5425,
+        "median_delay_q": 0.0,
+        "iqr_delay_q": [
+          0.0,
+          0.0
+        ],
+        "mean_alarms_per_series": 6.534
+      }
+    },
+    "pooled": {
+      "fixed": {
+        "detection_rate": 0.8096111111111111,
+        "n_series": 18000,
+        "n_detected": 14573
+      },
+      "growth": {
+        "detection_rate": 0.7867222222222222,
+        "n_series": 18000,
+        "n_detected": 14161
+      },
+      "cusum": {
+        "detection_rate": 0.6147777777777778,
+        "n_series": 18000,
+        "n_detected": 11066
+      },
+      "pelt": {
+        "detection_rate": 0.7138333333333333,
+        "n_series": 18000,
+        "n_detected": 12849
+      },
+      "contrasts_vs_fixed": {
+        "cusum": {
+          "diff": -0.1948333333333333,
+          "lo": -0.2572374999999999,
+          "hi": -0.13083194444444446,
+          "p": 0.0,
+          "B": 1000,
+          "n_series": 18000,
+          "n_clusters": 30
+        },
+        "pelt": {
+          "diff": -0.09577777777777774,
+          "lo": -0.15816805555555558,
+          "hi": -0.03349861111111108,
+          "p": 0.0,
+          "B": 1000,
+          "n_series": 18000,
+          "n_clusters": 30
+        },
+        "growth": {
+          "diff": -0.022888888888888848,
+          "lo": -0.029334722222222213,
+          "hi": -0.016388888888888897,
+          "p": 0.0,
+          "B": 1000,
+          "n_series": 18000,
+          "n_clusters": 30
+        }
+      }
+    }
+  },
+  "null_floor_note": "At a 5%/quarter false-alarm budget, a detector fires somewhere inside a 5-quarter window by chance about 1-(1-0.05)^5 = 22.6% of the time. The measured 'null_detection_within_2q' of every tuned detector is therefore the correct floor against which detection rates must be read.",
+  "verdict": "SUPPORTED",
+  "evidence_class": "method research (controlled simulation) — NOT D/R/S evidence about real historical change points"
+}

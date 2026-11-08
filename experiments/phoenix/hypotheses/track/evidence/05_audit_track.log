@@ -1,0 +1,17 @@
+# PHOENIX-001 track experiment log: 05_audit_track
+# start: 2026-11-08T23:54:48+08:00
+# command: python audit_track.py
+# protocol: phoenix-001/v1  harness: 1.0.0  seed: 20261108
+[   14.99s] events loaded for audit
+[   14.99s] panel L090 <- cache experiments/phoenix/hypotheses/track/cache/track_panel_L090.pkl
+[   15.03s] panel 4904 rows, 59 tracks, 79 model features
+[   15.07s] L1: max |corr(feature, y)| = 0.273 (sct_volatility8); flagged>0.80: []
+[   17.30s] L2: PASS max|diff|=0.00e+00
+[   17.33s] H3 lead corr k=1 fwd4 rho=-0.1136 CI=[-0.1668,-0.0576] p_perm=0.0040
+[   17.33s] H6 descriptive rho=-0.4419 CI=[-0.4776,-0.4110] excl0=True
+[   17.55s] H3 calendar control: raw k1=-0.114 -> highpassed -0.003140308918717301
+[   23.14s] placebo: OOF rows=2443 folds=11 positives=155
+[   23.16s] H8 placebo: real=0.1613 placebo=0.1191 B1=0.1234 collapsed=True
+[   23.16s] wrote audit_track.json in 23.16s
+# end: 2026-11-08T23:55:11+08:00
+# elapsed_sec: 23.18  exit_code: 0

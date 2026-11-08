@@ -1,0 +1,115 @@
+{
+  "protocol_version": "phoenix-001/v1",
+  "harness_version": "1.0.0",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "db_sha256_matches_frozen": true,
+  "lag_scenario": "L090",
+  "lag_days": 90,
+  "command": "python run_track.py",
+  "elapsed_sec": 97.84,
+  "seed": 20261108,
+  "n": 2443,
+  "n_pos": 155,
+  "prevalence": 0.0634465820712239,
+  "hypothesis": "H8",
+  "title": "Do SciTrends-type growth features transfer to medical-device event data?",
+  "pre_registered_definition": "T-TRACK: AP(B1 + growth features) - AP(B1 persistence) on the walk-forward holdout. Supported iff dAP >= 0.03 and paired p < 0.05.",
+  "growth_features": [
+    "sct_growth1",
+    "sct_growth2",
+    "sct_growth4",
+    "sct_growth8",
+    "sct_slope12",
+    "sct_pma_share4",
+    "sct_volatility8"
+  ],
+  "arms_ap": {
+    "B1_persistence": 0.12341032292156828,
+    "H8_growth": 0.1613143599731521
+  },
+  "primary_contrast": {
+    "diff": 0.03790403705158382,
+    "lo": 0.011495324431466496,
+    "hi": 0.061831264972149635,
+    "p": 0.004,
+    "n_boot": 1000,
+    "ap_a": 0.1613143599731521,
+    "ap_b": 0.12341032292156828,
+    "n": 2443,
+    "n_pos": 155,
+    "tau": 0.03,
+    "definition": "AP(B1 + SciTrends-style growth features) - AP(B1 persistence), holdout",
+    "verdict": "SUPPORTED"
+  },
+  "by_lag": {
+    "L000": {
+      "diff": 0.0349080021563139,
+      "lo": 0.011085528689130828,
+      "hi": 0.06503058915842129,
+      "p": 0.01,
+      "n_boot": 1000,
+      "ap_a": 0.174451644558796,
+      "ap_b": 0.1395436424024821,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.03,
+      "definition": "AP(B1 + SciTrends-style growth features) - AP(B1 persistence), holdout",
+      "verdict": "SUPPORTED"
+    },
+    "L090": {
+      "diff": 0.03790403705158382,
+      "lo": 0.011495324431466496,
+      "hi": 0.061831264972149635,
+      "p": 0.004,
+      "n_boot": 1000,
+      "ap_a": 0.1613143599731521,
+      "ap_b": 0.12341032292156828,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.03,
+      "definition": "AP(B1 + SciTrends-style growth features) - AP(B1 persistence), holdout",
+      "verdict": "SUPPORTED"
+    },
+    "L180": {
+      "diff": 0.03565744795931128,
+      "lo": 0.0037279341258196746,
+      "hi": 0.06640794375863951,
+      "p": 0.036,
+      "n_boot": 1000,
+      "ap_a": 0.16319118623398998,
+      "ap_b": 0.1275337382746787,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.03,
+      "definition": "AP(B1 + SciTrends-style growth features) - AP(B1 persistence), holdout",
+      "verdict": "SUPPORTED"
+    }
+  },
+  "stability_block_ap_H8_arm": {
+    "2014-2016": {
+      "n": 685,
+      "n_pos": 55,
+      "ap": 0.1853323910955485
+    },
+    "2017-2019": {
+      "n": 696,
+      "n_pos": 50,
+      "ap": 0.19737224735961717
+    },
+    "2020-2022": {
+      "n": 708,
+      "n_pos": 28,
+      "ap": 0.10054731775096908
+    },
+    "2023-2025": {
+      "n": 354,
+      "n_pos": 22,
+      "ap": 0.22995048088972092
+    }
+  },
+  "verdict": "SUPPORTED",
+  "evidence_class": "S",
+  "caveats": [
+    "This is NOT a reproduction of SciTrends accuracy: different target, domain and frequency. The patent-leading-indicator component is untestable (no patent data)."
+  ]
+}

@@ -1,0 +1,26 @@
+# PHOENIX-001 track experiment log: 04_changepoint_bench
+# start: 2026-11-08T23:53:40+08:00
+# command: python changepoint_bench.py
+# protocol: phoenix-001/v1  harness: 1.0.0  seed: 20261108
+[   16.36s] panel L090 <- cache experiments/phoenix/hypotheses/track/cache/track_panel_L090.pkl
+[   16.37s] top-30 tracks by device events: [10719, 2300, 2191, 1835, 1694, 1675, 1540, 1426] ...
+[   16.37s] noise model: negbin for 16/30 tracks, poisson fallback for 14; r median=32.78
+[   16.54s] simulated 6000 null + 18000 change series in 0.2s
+[   17.69s] fixed tuned: k=2.6 FA=0.0468 null-det=0.189
+[   18.94s] growth tuned: thr=1.25 FA=0.0485
+[   35.08s] cusum tuned: h=3.5 FA=0.0449 (16.1s, 23 h values)
+[   50.43s] pelt tuned: lam=1.0 FA=0.0481 (15.3s, 14 penalties)
+[   53.15s] matched_false_alarm_budget m=1.5: fixed=0.325 growth=0.220 cusum=0.501 pelt=0.501
+[   55.78s] matched_false_alarm_budget m=2.0: fixed=0.559 growth=0.358 cusum=0.733 pelt=0.736
+[   58.29s] matched_false_alarm_budget m=3.0: fixed=0.880 growth=0.680 cusum=0.907 pelt=0.904
+[   58.54s] matched_false_alarm_budget pooled: fixed=0.588, growth=0.420, cusum=0.714, pelt=0.714
+[   58.54s] matched_false_alarm_budget contrasts vs fixed: cusum +0.125 [+0.058,+0.194] p=0.0000; pelt +0.126 [+0.052,+0.202] p=0.0020; growth -0.169 [-0.179,-0.158] p=0.0000
+[   61.42s] protocol_literal m=1.5: fixed=0.625 growth=0.618 cusum=0.365 pelt=0.501
+[   63.98s] protocol_literal m=2.0: fixed=0.836 growth=0.796 cusum=0.622 pelt=0.736
+[   66.42s] protocol_literal m=3.0: fixed=0.968 growth=0.947 cusum=0.857 pelt=0.904
+[   66.66s] protocol_literal pooled: fixed=0.810, growth=0.787, cusum=0.615, pelt=0.714
+[   66.66s] protocol_literal contrasts vs fixed: cusum -0.195 [-0.257,-0.131] p=0.0000; pelt -0.096 [-0.158,-0.033] p=0.0000; growth -0.023 [-0.029,-0.016] p=0.0000
+[   66.68s] wrote changepoint_bench.json
+[   66.68s] wrote h7_changepoint.json; H7 verdict=SUPPORTED (best pelt gain=+0.126 p=0.0020) total=66.68s
+# end: 2026-11-08T23:54:47+08:00
+# elapsed_sec: 66.70  exit_code: 0

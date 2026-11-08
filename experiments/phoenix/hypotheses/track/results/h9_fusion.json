@@ -1,0 +1,198 @@
+{
+  "protocol_version": "phoenix-001/v1",
+  "harness_version": "1.0.0",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "db_sha256_matches_frozen": true,
+  "lag_scenario": "L090",
+  "lag_days": 90,
+  "command": "python run_track.py",
+  "elapsed_sec": 97.84,
+  "seed": 20261108,
+  "n": 2443,
+  "n_pos": 155,
+  "prevalence": 0.0634465820712239,
+  "hypothesis": "H9",
+  "title": "Is multi-source fusion better than the strongest single source?",
+  "pre_registered_definition": "T-TRACK: AP(F_fusion) - max_s AP(F_s) >= 0.02 and paired p < 0.05. Counter-evidence condition: if the strongest single source is already >= 90% of fusion, state 'no material fusion gain'.",
+  "arms_ap": {
+    "H9_dev": 0.14544601949565722,
+    "H9_trial": 0.09267326576986859,
+    "H9_recall": 0.09696646786622501,
+    "H9_8k": null,
+    "H9_fusion": 0.14041583970153634
+  },
+  "primary_contrast": {
+    "diff": -0.005030179794120876,
+    "lo": -0.03602181432145405,
+    "hi": 0.017187359231410234,
+    "p": 0.628,
+    "n_boot": 1000,
+    "ap_a": 0.14041583970153634,
+    "ap_b": 0.14544601949565722,
+    "n": 2443,
+    "n_pos": 155,
+    "tau": 0.02,
+    "best_single_arm": "H9_dev",
+    "definition": "AP(F_fusion) - AP(H9_dev), strongest constructible single source",
+    "verdict": "NOT SUPPORTED",
+    "fusion_over_best_single_ratio": 0.965415486710717,
+    "no_material_gain_flag": true
+  },
+  "by_block": {
+    "2014-2016": {
+      "H9_dev": {
+        "n": 685,
+        "n_pos": 55,
+        "ap": 0.18535643262691492
+      },
+      "H9_trial": {
+        "n": 685,
+        "n_pos": 55,
+        "ap": 0.10406652557331694
+      },
+      "H9_recall": {
+        "n": 685,
+        "n_pos": 55,
+        "ap": 0.10966461639454733
+      },
+      "H9_fusion": {
+        "n": 685,
+        "n_pos": 55,
+        "ap": 0.18201531832347242
+      }
+    },
+    "2017-2019": {
+      "H9_dev": {
+        "n": 696,
+        "n_pos": 50,
+        "ap": 0.15420250215508435
+      },
+      "H9_trial": {
+        "n": 696,
+        "n_pos": 50,
+        "ap": 0.10218393435478895
+      },
+      "H9_recall": {
+        "n": 696,
+        "n_pos": 50,
+        "ap": 0.1181292922167963
+      },
+      "H9_fusion": {
+        "n": 696,
+        "n_pos": 50,
+        "ap": 0.13652109086672368
+      }
+    },
+    "2020-2022": {
+      "H9_dev": {
+        "n": 708,
+        "n_pos": 28,
+        "ap": 0.09385420996531878
+      },
+      "H9_trial": {
+        "n": 708,
+        "n_pos": 28,
+        "ap": 0.06637137956209231
+      },
+      "H9_recall": {
+        "n": 708,
+        "n_pos": 28,
+        "ap": 0.08062468258690958
+      },
+      "H9_fusion": {
+        "n": 708,
+        "n_pos": 28,
+        "ap": 0.12740892647030674
+      }
+    },
+    "2023-2025": {
+      "H9_dev": {
+        "n": 354,
+        "n_pos": 22,
+        "ap": 0.09996068888726338
+      },
+      "H9_trial": {
+        "n": 354,
+        "n_pos": 22,
+        "ap": 0.10217397312459059
+      },
+      "H9_recall": {
+        "n": 354,
+        "n_pos": 22,
+        "ap": 0.08445838380514498
+      },
+      "H9_fusion": {
+        "n": 354,
+        "n_pos": 22,
+        "ap": 0.1318824584376105
+      }
+    }
+  },
+  "source_availability": {
+    "F_dev": "available, full 2004-2025 window",
+    "F_trial": "available, full 2004-2025 window",
+    "F_recall": "available, full 2004-2025 window",
+    "F_8k": "NOT CONSTRUCTIBLE — 0 of 20976 8k_catalyst events carry a track_id",
+    "F_fusion": "available sources only (dev + trial + recall)"
+  },
+  "by_lag": {
+    "L000": {
+      "diff": 0.0074381065202807906,
+      "lo": -0.033291224581273614,
+      "hi": 0.03524881005490559,
+      "p": 0.846,
+      "n_boot": 1000,
+      "ap_a": 0.16256280379017157,
+      "ap_b": 0.15512469726989078,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.02,
+      "best_single_arm": "H9_dev",
+      "definition": "AP(F_fusion) - AP(H9_dev), strongest constructible single source",
+      "verdict": "NOT SUPPORTED",
+      "fusion_over_best_single_ratio": 1.047949208934408,
+      "no_material_gain_flag": true
+    },
+    "L090": {
+      "diff": -0.005030179794120876,
+      "lo": -0.03602181432145405,
+      "hi": 0.017187359231410234,
+      "p": 0.628,
+      "n_boot": 1000,
+      "ap_a": 0.14041583970153634,
+      "ap_b": 0.14544601949565722,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.02,
+      "best_single_arm": "H9_dev",
+      "definition": "AP(F_fusion) - AP(H9_dev), strongest constructible single source",
+      "verdict": "NOT SUPPORTED",
+      "fusion_over_best_single_ratio": 0.965415486710717,
+      "no_material_gain_flag": true
+    },
+    "L180": {
+      "diff": -0.003480061816006713,
+      "lo": -0.039664003273505194,
+      "hi": 0.017431382219535555,
+      "p": 0.734,
+      "n_boot": 1000,
+      "ap_a": 0.13183418285770748,
+      "ap_b": 0.1353142446737142,
+      "n": 2443,
+      "n_pos": 155,
+      "tau": 0.02,
+      "best_single_arm": "H9_dev",
+      "definition": "AP(F_fusion) - AP(H9_dev), strongest constructible single source",
+      "verdict": "NOT SUPPORTED",
+      "fusion_over_best_single_ratio": 0.9742816299614409,
+      "no_material_gain_flag": true
+    }
+  },
+  "verdict": "NOT SUPPORTED",
+  "no_material_gain": true,
+  "evidence_class": "S",
+  "caveats": [
+    "The pre-registered H9 design has five arms including F_8k. F_8k cannot be built at track level from this database, so H9 is evaluated on four arms. This is a data-availability deviation decided before any model was fitted, not a result-driven one.",
+    "Because all constructible sources cover the same 2004-2025 window, there is no source-availability window to stratify on; AP by 3-year block is reported instead so any era-specific source value is visible."
+  ]
+}
