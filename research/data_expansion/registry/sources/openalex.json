@@ -1,0 +1,49 @@
+{
+  "api_available": "YES",
+  "authentication": "none (optional premium key; polite pool via mailto=)",
+  "bulk_download_available": "PARTIAL",
+  "category": "scholarly_literature",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free at research volume; premium/pay-as-you-go tiers are commercial and were not used",
+  "country_or_region": "GLOBAL",
+  "domain": "C",
+  "entity_identifiers": [
+    "OpenAlex ID",
+    "DOI",
+    "PMID",
+    "PMCID",
+    "ORCID",
+    "ROR",
+    "ISSN"
+  ],
+  "evidence_urls": [
+    "https://help.openalex.org/access/",
+    "https://api.openalex.org/works?search=stent&per-page=2&mailto=medradar.research%40example.org",
+    "https://api.openalex.org/institutions?search=Philips&per-page=2&mailto=medradar.research%40example.org"
+  ],
+  "free_tier": "free, no key required; polite pool via mailto; paid premium tiers exist",
+  "historical_coverage": "works from the 1600s; metadata quality strong from ~1900; affiliations improve after 2000",
+  "known_limitations": [
+    "created_date is the metadata-ingestion clock, NOT a publication clock; using it would fabricate look-ahead",
+    "publication_date is frequently the journal issue date, not the first-online date",
+    "author affiliations are free-text strings plus ROR-linked institutions; the ROR entity 'company' type is the reliable hook",
+    "awards/funders are incomplete for industry-authored work, so funder-based company links under-count",
+    "full snapshot exists on S3 but was not probed here, hence bulk = PARTIAL"
+  ],
+  "licence": "CC0 1.0 for the data; OpenAlex terms of use for the service",
+  "official_or_commercial": "official",
+  "official_url": "https://help.openalex.org/",
+  "probe_priority": "P0",
+  "rate_limits": "free API ~10 req/s and 100k/day (help centre); premium keys higher; we paced at 0.8s",
+  "redistribution_allowed": "YES",
+  "research_value": "Largest open scholarly index with DOI/PMID linkage and ROR-linked affiliations; gives MedRadar the author-affiliation signal for the five firms at a scale Crossref/PubMed cannot match, and publication_date is usable as first-public-visibility once issue-date records are discounted.",
+  "source_id": "openalex",
+  "source_name": "OpenAlex",
+  "timestamp_fields": [
+    "publication_date",
+    "created_date",
+    "updated_date"
+  ],
+  "update_frequency": "daily",
+  "verified_at": "2026-11-09"
+}

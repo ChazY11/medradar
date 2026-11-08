@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-11-08T21:59:09.307272Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 2,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 2,
+      "source_id": "ocds_registry",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "release_package_schema.html",
+      "hash_verified": true,
+      "name": "release_package_schema.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\ocds_registry\\release_package_schema.html",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://standard.open-contracting.org/latest/en/schema/release_package/",
+      "sha256_full": "6a8e9480794242c5c9541e6d54d1f8b665fbb54da7efc320b12912ad8f6309d1",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "6a8e9480794242c5c9541e6d54d1f8b665fbb54da7efc320b12912ad8f6309d1",
+      "source": "recovered_from_disk",
+      "stored_bytes": 18283,
+      "total_bytes": 18283,
+      "truncated": false
+    },
+    {
+      "file": "standard_overview.html",
+      "hash_verified": true,
+      "name": "standard_overview.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\ocds_registry\\standard_overview.html",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://standard.open-contracting.org/latest/en/",
+      "sha256_full": "0e63d0c00fb844a97c590833bd732318f6092c0de357c8d4550aacbeaa0e411c",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "0e63d0c00fb844a97c590833bd732318f6092c0de357c8d4550aacbeaa0e411c",
+      "source": "recovered_from_disk",
+      "stored_bytes": 19862,
+      "total_bytes": 19862,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "ocds_registry"
+}

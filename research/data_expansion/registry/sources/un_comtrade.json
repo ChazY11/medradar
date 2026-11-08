@@ -1,0 +1,42 @@
+{
+  "api_available": "YES",
+  "authentication": "none for /public/v1/preview; subscription key for /data/v1",
+  "bulk_download_available": "PARTIAL",
+  "category": "trade_aggregate",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Preview free and keyless; full API free with registration (rate-limited); no SLA or commercial support on the free tier.",
+  "country_or_region": "GLOBAL",
+  "domain": "E",
+  "entity_identifiers": [],
+  "evidence_urls": [
+    "https://comtradeapi.un.org/public/v1/preview/C/A/HS",
+    "https://comtradedeveloper.un.org/",
+    "https://comtradeapi.un.org/data/v1/get/C/A/HS"
+  ],
+  "free_tier": "anonymous public preview (capped; the cap is not published on reachable pages, so treat it as UNKNOWN); free-tier subscription key by registration for the full API",
+  "historical_coverage": "1962 onward (annual), HS classifications H0-H6",
+  "known_limitations": [
+    "PROBED 2026-11-09: the public preview endpoint WORKS keyless - /public/v1/preview/C/A/HS with reporterCode=842, period=2023, cmdCode=9018, flowCode=M returned HTTP 200 and 127 partner-level records (9018+9022+9402 together: 278 records).",
+    "The full data endpoint /data/v1/get/... returned HTTP 401 'Access denied due to missing subscription key' - the complete series needs a (free-tier) subscription key.",
+    "Preview responses are capped and truncated silently for large reporter/partner/period combinations; always reconcile the returned `count`.",
+    "In preview, descriptive fields (reporterDesc, partnerDesc, cmdDesc, reporterISO, partnerISO) come back null; only numeric codes are reliable, so labels need a separate code list.",
+    "No publication timestamp is exposed; annual values are only 'year' known, so the records are coarse-quality and excluded from lead-time claims.",
+    "Country-level HS-code AGGREGATE statistics only: no company, no shipment, no product identity. Must not be substituted for bill-of-lading (company-level) data, and cannot be used to infer any of the five firms' supply chain."
+  ],
+  "licence": "UN Comtrade terms of use; free for non-commercial use with attribution, bulk redistribution restricted",
+  "official_or_commercial": "official",
+  "official_url": "https://comtradeplus.un.org/",
+  "probe_priority": "P0",
+  "rate_limits": "preview not documented; keyed API rate-limited per subscription tier",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "Provides the macro demand/import-volume background for a medical-device HS code (9018, 9019, 9021, 9022, 9402) across nearly all reporters, which is a legitimate descriptive series. It is explicitly NOT evidence about any individual firm: it cannot name an importer, exporter, shipment or product.",
+  "source_id": "un_comtrade",
+  "source_name": "UN Comtrade (Comtrade Plus API)",
+  "timestamp_fields": [
+    "period / refYear = calendar year (coarse) -> source_public_at can only be coarse",
+    "refMonth = Comtrade month code (52 = annual total), not a real publication date",
+    "no published_at field at all -> the API cannot say when a figure became public"
+  ],
+  "update_frequency": "annual (with revisions); monthly for reporting countries",
+  "verified_at": "2026-11-09"
+}

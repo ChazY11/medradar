@@ -1,0 +1,57 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "http://www.ccgp.gov.cn/",
+    "http://search.ccgp.gov.cn/bxsearch?searchtype=1&page_index=1&bidSort=0&pinMu=0&bidType=0&kw=%E5%86%85%E7%AA%A5%E9%95%9C"
+  ],
+  "notes": "Only the two endpoints the public site itself exposes were requested. Whatever the outcome, no anti-bot or login mechanism was bypassed; if the search path is not machine-readable the register records China procurement as unverified rather than as 'available with caveats'.",
+  "probes": [
+    {
+      "attempts": 1,
+      "body_head": "<!doctype html>\n<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n<meta http-equiv=\"pragma\" content=\"no-cache\">\n<meta http-equiv=\"cache-control\" c",
+      "bytes": 69539,
+      "content_type": "text/html",
+      "elapsed_ms": 1795,
+      "error": "",
+      "name": "portal_home",
+      "ok": true,
+      "sample": {
+        "name": "portal_home.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\china_ccgp\\portal_home.html",
+        "sha256_full": "9ca136585c3337155006e4cd545796f1da1cd4296b192308a24c77dfe4f85193",
+        "sha256_stored": "9ca136585c3337155006e4cd545796f1da1cd4296b192308a24c77dfe4f85193",
+        "stored_bytes": 69539,
+        "total_bytes": 69539,
+        "truncated": false
+      },
+      "status": 200,
+      "url": "http://www.ccgp.gov.cn/"
+    },
+    {
+      "attempts": 1,
+      "body_head": "\r\n\r\n\r\n\r\n\r\n\r\n\r\n<!doctype html>\r\n<html>\r\n<head>\r\n\r\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\r\n    <title>采购公告搜索_中国政府采购网</title>\r\n    <link href=\"/stati",
+      "bytes": 58471,
+      "content_type": "text/html; charset=UTF-8",
+      "elapsed_ms": 1454,
+      "error": "",
+      "name": "keyword_search_neijingjing",
+      "ok": true,
+      "sample": {
+        "name": "search.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\china_ccgp\\search.html",
+        "sha256_full": "224b6adfce7c2004e7281133e7470a218ab6447571136fedade58e63c3c0d78f",
+        "sha256_stored": "224b6adfce7c2004e7281133e7470a218ab6447571136fedade58e63c3c0d78f",
+        "stored_bytes": 58471,
+        "total_bytes": 58471,
+        "truncated": false
+      },
+      "status": 200,
+      "url": "http://search.ccgp.gov.cn/bxsearch?searchtype=1&page_index=1&bidSort=0&pinMu=0&bidType=0&kw=%E5%86%85%E7%AA%A5%E9%95%9C"
+    }
+  ],
+  "requests": 2,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "china_ccgp",
+  "status": "VERIFIED_PUBLIC_QUERY",
+  "verified_at": "2026-11-08T21:48:01.017241Z"
+}

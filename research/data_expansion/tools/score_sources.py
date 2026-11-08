@@ -84,6 +84,8 @@ def assign_category(score: float, status: str, exp_a: str | None, rubric: dict) 
         return "REJECT", reasons + ["paid and low value"]
     if status in {"BLOCKED_BY_POLICY", "REQUIRES_REGISTRATION"}:
         return "BLOCKED", reasons
+    if status == "UNAVAILABLE":
+        return "BLOCKED", reasons + ["no working access could be found"]
     if score < cats["REJECT"]["max_score"]:
         return "REJECT", reasons
     return "RESEARCH ONLY", reasons + ["unverified access; treated as research-only until probed"]

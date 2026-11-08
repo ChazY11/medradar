@@ -1,51 +1,81 @@
 {
-  "files": [
+  "generated_at": "2026-11-08T21:59:08.328045Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 4,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 4,
+      "source_id": "clinicaltrials_gov",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
     {
-      "fetched_at": "2026-11-08T21:43:28.053241Z",
+      "file": "ctgov_sponsor_medtronic.json",
+      "hash_verified": true,
       "name": "ctgov_sponsor_medtronic.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
       "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\clinicaltrials_gov\\ctgov_sponsor_medtronic.json",
       "sha256_full": "4b1ad8920d623b0e0b0a2c01424b9935332b9dd9d0c80131a8b42e3cce1e2aa6",
+      "sha256_source": "recomputed_from_disk",
       "sha256_stored": "4b1ad8920d623b0e0b0a2c01424b9935332b9dd9d0c80131a8b42e3cce1e2aa6",
+      "source": "recovered_from_disk",
       "stored_bytes": 39795,
       "total_bytes": 39795,
-      "truncated": false,
-      "url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic&pageSize=2&countTotal=true"
+      "truncated": false
     },
     {
-      "fetched_at": "2026-11-08T21:43:28.443298Z",
-      "name": "ctgov_term_stent.json",
-      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\clinicaltrials_gov\\ctgov_term_stent.json",
-      "sha256_full": "b7a1a5de056813725f17ad5db7d548177d4f8f418caaf62c73a3b998123f2d16",
-      "sha256_stored": "b7a1a5de056813725f17ad5db7d548177d4f8f418caaf62c73a3b998123f2d16",
-      "stored_bytes": 15279,
-      "total_bytes": 15279,
-      "truncated": false,
-      "url": "https://clinicaltrials.gov/api/v2/studies?query.term=stent&pageSize=2&countTotal=true"
-    },
-    {
-      "fetched_at": "2026-11-08T21:43:29.334131Z",
+      "file": "ctgov_sponsor_philips.json",
+      "hash_verified": true,
       "name": "ctgov_sponsor_philips.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
       "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\clinicaltrials_gov\\ctgov_sponsor_philips.json",
       "sha256_full": "55839598a0b1c8d6cabb5a8bfd0573cc1fd15ab32d5751f944213c878ef98984",
+      "sha256_source": "recomputed_from_disk",
       "sha256_stored": "55839598a0b1c8d6cabb5a8bfd0573cc1fd15ab32d5751f944213c878ef98984",
+      "source": "recovered_from_disk",
       "stored_bytes": 15235,
       "total_bytes": 15235,
-      "truncated": false,
-      "url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips&pageSize=2&countTotal=true"
+      "truncated": false
     },
     {
-      "fetched_at": "2026-11-08T21:43:30.564405Z",
+      "file": "ctgov_study_detail.json",
+      "hash_verified": true,
       "name": "ctgov_study_detail.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
       "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\clinicaltrials_gov\\ctgov_study_detail.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://clinicaltrials.gov/api/v2/studies/NCT01693120",
       "sha256_full": "c2efe7a809570f2c7045a843b65af8847c4a040bae758d062f05e67745639ccf",
+      "sha256_source": "recomputed_from_disk",
       "sha256_stored": "c2efe7a809570f2c7045a843b65af8847c4a040bae758d062f05e67745639ccf",
+      "source": "recovered_from_disk",
       "stored_bytes": 31773,
       "total_bytes": 31773,
-      "truncated": false,
-      "url": "https://clinicaltrials.gov/api/v2/studies/NCT01693120"
+      "truncated": false
+    },
+    {
+      "file": "ctgov_term_stent.json",
+      "hash_verified": true,
+      "name": "ctgov_term_stent.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\clinicaltrials_gov\\ctgov_term_stent.json",
+      "sha256_full": "b7a1a5de056813725f17ad5db7d548177d4f8f418caaf62c73a3b998123f2d16",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "b7a1a5de056813725f17ad5db7d548177d4f8f418caaf62c73a3b998123f2d16",
+      "source": "recovered_from_disk",
+      "stored_bytes": 15279,
+      "total_bytes": 15279,
+      "truncated": false
     }
   ],
-  "generated_at": "2026-11-08T21:43:30.565402Z",
-  "note": "Raw response slices captured by the probe.  Must not be hand-edited.",
+  "schema": "medradar.external.samples.v1",
   "source_id": "clinicaltrials_gov"
 }

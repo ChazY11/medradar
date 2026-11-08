@@ -1,0 +1,240 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.fda.gov/device/classification.json?limit=2",
+    "https://api.fda.gov/device/classification.json?search=product_code%3A%22DQA%22&limit=2"
+  ],
+  "notes": "The product-code dictionary is small (~7k codes) and is the join key between a 510(k)/PMA submission and a device family, so it is a cheap full pull (<=8 pages at limit=1000) rather than a windowed collection.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 8324,
+      "elapsed_ms": 1094,
+      "error": "",
+      "name": "page_smoke",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "page_smoke.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_classification\\page_smoke.json",
+        "sha256_full": "bd3d0036ec2c822980cadd6fd1d2a22762207193e73a3060b12c51bf5b1cc6d5",
+        "sha256_stored": "bd3d0036ec2c822980cadd6fd1d2a22762207193e73a3060b12c51bf5b1cc6d5",
+        "stored_bytes": 8324,
+        "total_bytes": 8324,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "definition",
+                "device_class",
+                "device_name",
+                "gmp_exempt_flag",
+                "implant_flag",
+                "life_sustain_support_flag",
+                "medical_specialty",
+                "medical_specialty_description",
+                "openfda",
+                "product_code",
+                "regulation_number",
+                "review_code",
+                "review_panel",
+                "submission_type_id",
+                "summary_malfunction_reporting",
+                "third_party_flag",
+                "unclassified_reason"
+              ],
+              "sample": {
+                "device_name": "str",
+                "gmp_exempt_flag": "str",
+                "life_sustain_support_flag": "str",
+                "medical_specialty": "str",
+                "medical_specialty_description": "str",
+                "openfda": "dict",
+                "product_code": "str",
+                "review_code": "str",
+                "review_panel": "str",
+                "summary_malfunction_reporting": "str",
+                "third_party_flag": "str",
+                "unclassified_reason": "str"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "total": 7097,
+      "url": "https://api.fda.gov/device/classification.json?limit=2"
+    },
+    {
+      "attempts": 1,
+      "bytes": 35212,
+      "device_names": [
+        "Oximeter"
+      ],
+      "elapsed_ms": 1046,
+      "error": "",
+      "name": "product_code_dqa",
+      "note": "",
+      "ok": true,
+      "records": 1,
+      "sample": {
+        "name": "product_code_dqa.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_classification\\product_code_dqa.json",
+        "sha256_full": "e41d3ee159a38bd17f54fea2ed5892fac0c702a82f00cac923e65865d7355e5f",
+        "sha256_stored": "e41d3ee159a38bd17f54fea2ed5892fac0c702a82f00cac923e65865d7355e5f",
+        "stored_bytes": 35212,
+        "total_bytes": 35212,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "definition",
+                "device_class",
+                "device_name",
+                "gmp_exempt_flag",
+                "implant_flag",
+                "life_sustain_support_flag",
+                "medical_specialty",
+                "medical_specialty_description",
+                "openfda",
+                "product_code",
+                "regulation_number",
+                "review_code",
+                "review_panel",
+                "submission_type_id",
+                "summary_malfunction_reporting",
+                "third_party_flag",
+                "unclassified_reason"
+              ],
+              "sample": {
+                "device_name": "str",
+                "gmp_exempt_flag": "str",
+                "life_sustain_support_flag": "str",
+                "medical_specialty": "str",
+                "medical_specialty_description": "str",
+                "openfda": "dict",
+                "product_code": "str",
+                "review_code": "str",
+                "review_panel": "str",
+                "summary_malfunction_reporting": "str",
+                "third_party_flag": "str",
+                "unclassified_reason": "str"
+              }
+            },
+            "len": 1
+          }
+        }
+      },
+      "url": "https://api.fda.gov/device/classification.json?search=product_code%3A%22DQA%22&limit=2"
+    }
+  ],
+  "requests": 2,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "openfda_device_classification",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:52:25.839101Z"
+}

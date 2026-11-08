@@ -1,0 +1,46 @@
+{
+  "source_id": "sam_gov",
+  "source_name": "SAM.gov Get Opportunities Public API",
+  "official_url": "https://open.gsa.gov/api/get-opportunities-public-api/",
+  "country_or_region": "US",
+  "domain": "F",
+  "category": "public_procurement_notices",
+  "official_or_commercial": "official",
+  "api_available": "YES",
+  "bulk_download_available": "NO",
+  "authentication": "api_key query parameter, documented as REQUIRED ('Public Key of users'); a SAM.gov system account is needed to obtain one. No key was registered.",
+  "free_tier": "free after registration; no anonymous access",
+  "rate_limits": "UNKNOWN - the documentation page was read but the quota table was not extracted; the API was not called with a valid key",
+  "licence": "US federal government work, public domain in the US (17 U.S.C. 105)",
+  "redistribution_allowed": "YES",
+  "update_frequency": "near real time for opportunity notices (documented); not verifiable without a key",
+  "historical_coverage": "opportunity notices; the documentation notes date-range windows for public queries. Not verified live.",
+  "entity_identifiers": [
+    "noticeId (opportunity notice identifier)",
+    "solicitationNumber",
+    "organizationId / department hierarchy",
+    "award.number (award notices, if present)"
+  ],
+  "timestamp_fields": [
+    "postedDate (publication of the notice - documented)",
+    "responseDeadLine",
+    "archiveDate",
+    "award.date (award notices)"
+  ],
+  "known_limitations": [
+    "Registration required: the documentation marks api_key as mandatory. No key was created for this task, so no record was retrieved - REQUIRES_REGISTRATION is a documented plus observed-refusal conclusion, not a capability claim.",
+    "The live observation is weak on its own: both the key-less and the bogus-key request were answered by the istio-envoy gateway with HTTP 404 and an empty body, not 401/403. A 404 does not prove 'needs registration' by itself, which is why the register cites the documentation for that claim.",
+    "Opportunity notices are pre-award. They show demand and requirements, not awards or revenue; they must not be merged with award records.",
+    "No device identifier: the description is free text, so linking a notice to a specific product or model is not possible from structured fields.",
+    "The SAM.gov entity/bulk extract files (SAM Entity Management) are a separate, also account-gated mechanism and were not probed."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "Would add the US pre-award stage (solicitations and sources-sought) to complement USAspending's post-award view, which is the missing first step of the procurement chain for the US. It is blocked only by a free registration, so it is a high-value, low-effort follow-up if an account is ever permitted.",
+  "evidence_urls": [
+    "https://open.gsa.gov/api/get-opportunities-public-api/",
+    "https://api.sam.gov/opportunities/v2/search"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free but account-gated; no payment required",
+  "probe_priority": "P1"
+}

@@ -1,0 +1,97 @@
+{
+  "generated_at": "2026-11-08T22:00:18.245669Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 5,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 1,
+      "source_id": "fda_import_alerts",
+      "unlisted_files_added": 0,
+      "verified": 4
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "ialist.html",
+      "hash_verified": true,
+      "name": "ialist.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\fda_import_alerts\\ialist.html",
+      "sha256_full": "f927cb735a8988b8f01556c073e5a94b0191540e4af0ac116d3a774f0672e7b4",
+      "sha256_stored": "f927cb735a8988b8f01556c073e5a94b0191540e4af0ac116d3a774f0672e7b4",
+      "source": "recovered_from_disk",
+      "stored_bytes": 66100,
+      "total_bytes": 66100,
+      "truncated": false
+    },
+    {
+      "fetched_at": "2026-11-08T21:57:35.081874Z",
+      "file": "importalert_1182.html",
+      "hash_verified": true,
+      "name": "importalert_1182.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\fda_import_alerts\\importalert_1182.html",
+      "request_url": "https://www.accessdata.fda.gov/cms_ia/importalert_1182.html",
+      "sha256_full": "2e57c90e932e800dc4632aef0a243f3c0d4522658fe1fa290ec8783242ed9e4d",
+      "sha256_stored": "2e57c90e932e800dc4632aef0a243f3c0d4522658fe1fa290ec8783242ed9e4d",
+      "source": "recovered_from_disk",
+      "stored_bytes": 44684,
+      "total_bytes": 44684,
+      "truncated": false
+    },
+    {
+      "fetched_at": "2026-11-08T21:57:35.081874Z",
+      "file": "importalert_231.html",
+      "hash_verified": true,
+      "name": "importalert_231.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\fda_import_alerts\\importalert_231.html",
+      "request_url": "https://www.accessdata.fda.gov/cms_ia/importalert_231.html",
+      "sha256_full": "2e32e53d1a8bc60983c8b4ede5ca4fe5073fd42fbce3ffd5c608b8562961532b",
+      "sha256_stored": "2e32e53d1a8bc60983c8b4ede5ca4fe5073fd42fbce3ffd5c608b8562961532b",
+      "source": "recovered_from_disk",
+      "stored_bytes": 111767,
+      "total_bytes": 111767,
+      "truncated": false
+    },
+    {
+      "fetched_at": "2026-11-08T21:57:35.081874Z",
+      "file": "importalert_241.html",
+      "hash_verified": true,
+      "name": "importalert_241.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\fda_import_alerts\\importalert_241.html",
+      "request_url": "https://www.accessdata.fda.gov/cms_ia/importalert_241.html",
+      "sha256_full": "1cb70b6a68594aa10bc0059fe0dea43a10781bb2b2f8ac00c57df6c69e95f19c",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "1cb70b6a68594aa10bc0059fe0dea43a10781bb2b2f8ac00c57df6c69e95f19c",
+      "source": "recovered_from_disk",
+      "stored_bytes": 524288,
+      "total_bytes": 524288,
+      "truncated": true
+    },
+    {
+      "fetched_at": "2026-11-08T21:57:35.081874Z",
+      "file": "industrygroup_9_medical_devices.html",
+      "hash_verified": true,
+      "name": "industrygroup_9_medical_devices.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\fda_import_alerts\\industrygroup_9_medical_devices.html",
+      "request_url": "https://www.accessdata.fda.gov/cms_ia/industrygroup_9.html",
+      "sha256_full": "1878ddb4284bf33731ab55fb00fe8c3053cd23ec8b19f24042b04f2a2e7707df",
+      "sha256_stored": "1878ddb4284bf33731ab55fb00fe8c3053cd23ec8b19f24042b04f2a2e7707df",
+      "source": "recovered_from_disk",
+      "stored_bytes": 27514,
+      "total_bytes": 27514,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "fda_import_alerts"
+}

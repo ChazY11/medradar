@@ -22,6 +22,13 @@ Probe: 2026-11-09, 3 requests, no Google Cloud credentials.
   assignment tables. Includes pre-grant publications, so it can serve as a real
   publication-date clock and supports family/citation work.
 
+## Billing nuance (verified on the saved page)
+The BigQuery public-data page states: *"The first 1 TB per month is free ... you can start querying
+public datasets without enabling billing. If you intend to go beyond the free tier, you must also
+enable billing."* So billing is needed only beyond the free allowance — but a **GCP project and
+OAuth credentials are still mandatory**, and the anonymous REST call returned 401. That is why the
+status is REQUIRES_REGISTRATION rather than PAID_ONLY.
+
 ## Cost warning
 An unfiltered `SELECT` over `patents.publications` scans tens of TB (billions of rows) and
 burns the monthly free tier in a couple of queries; partitioning/clustering filters are

@@ -17,11 +17,15 @@
 
 OpenAlex answered every query with 200 and real work objects, no key required. Works carry `publication_date` (first online publication), `created_date` (metadata ingestion - NOT a publication clock), DOI/PMID ids, author institutions and `grants`. Use the polite pool (`mailto=`) and never treat `created_date` as public visibility.
 
-## Documentation checked
+## Documentation references
 
 - https://docs.openalex.org/
 - https://docs.openalex.org/how-to-use-the-api/rate-limits-and-authentication
 - https://docs.openalex.org/api-entities/works/work-object
+
+These are the reference pages recorded in the source register. Only the request
+URLs in the table above were exercised by this probe; a documentation URL is a
+citation, not a claim that the page was fetched during the probe.
 
 ## Reported status rationale
 

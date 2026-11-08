@@ -1,0 +1,46 @@
+{
+  "api_available": "PARTIAL",
+  "authentication": "WIPO account for the registered Web Services (SOAP/XML); subscription for PCT data products",
+  "bulk_download_available": "PARTIAL",
+  "category": "patent",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Search UI free; registered Web Services and PCT data products are account/subscription based; prices not public.",
+  "country_or_region": "GLOBAL",
+  "domain": "B",
+  "entity_identifiers": [
+    "WO publication number",
+    "PCT application number",
+    "applicant name (raw)",
+    "IPC",
+    "CPC (recent)"
+  ],
+  "evidence_urls": [
+    "https://patentscope.wipo.int/search/en/search.jsf",
+    "https://www.wipo.int/patentscope/en/data/",
+    "https://www.wipo.int/en/web/patentscope/data/subscribe-pct-data-products-services"
+  ],
+  "free_tier": "free web search UI; Web Services and PCT data products are registration/subscription based",
+  "historical_coverage": "PCT applications from 1978; national collections vary",
+  "known_limitations": [
+    "PROBED 2026-11-09: no open machine interface exists. The search UI is a JSF application (server-side session state, j_idt view ids); an undocumented /search/api/ path returned 404.",
+    "The data-products page links a subscription route ('subscribe-pct-data-products-services') - PCT data is licensed, not open.",
+    "WIPO does publish registered Web Services (SOAP/XML) and a fee-based bulk data service; neither could be verified without an account, so 'PARTIAL' is a documentation claim, not an observation.",
+    "Scraping the search UI is both brittle and outside the collection policy; it was not attempted beyond one liveness check."
+  ],
+  "licence": "WIPO terms of use; bulk data products licensed separately",
+  "official_or_commercial": "official",
+  "official_url": "https://patentscope.wipo.int/",
+  "probe_priority": "P2",
+  "rate_limits": "UNKNOWN - not observable without an account",
+  "redistribution_allowed": "UNKNOWN",
+  "research_value": "The only practical way to see a device technology's PCT filing 18 months after priority - i.e. BEFORE most national grants and often before any national publication in smaller jurisdictions. For a genuine early public-visibility clock this matters, but it is registration-gated, so it cannot be claimed as available in this round.",
+  "source_id": "wipo_patentscope",
+  "source_name": "WIPO PATENTSCOPE",
+  "timestamp_fields": [
+    "WO publication date = the 18-month public disclosure -> source_public_at",
+    "priority date -> event_at only",
+    "international filing date -> event_at only"
+  ],
+  "update_frequency": "daily (WO publications, weekly publication day)",
+  "verified_at": "2026-11-09"
+}

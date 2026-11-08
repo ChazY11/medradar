@@ -1,0 +1,48 @@
+{
+  "api_available": "YES",
+  "authentication": "Google Cloud service account / OAuth2 inside a GCP project (billing account needed only beyond the free query tier)",
+  "bulk_download_available": "PARTIAL",
+  "category": "patent",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "First 1 TB of query data per month free; beyond that on-demand BigQuery pricing applies (the per-TB price was not captured from the pricing page this round). Requires a GCP project + OAuth.",
+  "country_or_region": "GLOBAL",
+  "domain": "B",
+  "entity_identifiers": [
+    "publication_number with kind code",
+    "family_id",
+    "CPC",
+    "IPC",
+    "assignee name (raw, harmonised)",
+    "inventor name (raw)"
+  ],
+  "evidence_urls": [
+    "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data",
+    "https://cloud.google.com/bigquery/public-data",
+    "https://bigquery.googleapis.com/bigquery/v2/projects/bigquery-public-data/datasets/google_patents_public_datasets"
+  ],
+  "free_tier": "first 1 TB of query data per month is free (stated on the public-data page) and billing is only needed beyond that; a GCP project + OAuth credentials are nevertheless mandatory",
+  "historical_coverage": "worldwide publications, very deep (19th century onward for major offices)",
+  "known_limitations": [
+    "PROBED 2026-11-09: bigquery.googleapis.com returned HTTP 401 for anonymous reads; the marketplace listing is public but the data is not.",
+    "Requires a Google Cloud project and OAuth credentials even to use the free 1 TB/month allowance; a billing account is needed only to exceed it. Both are outside this round's rules.",
+    "Cost control is a real hazard: an unfiltered query over patents.publications scans tens of TB and would consume months of free allowance in one statement; partition/cluster filters are mandatory.",
+    "This is the best available source for family_id plus pre-grant publications plus citations, so it is the natural upgrade path if MedRadar ever gets a GCP project.",
+    "The old documentation URL https://cloud.google.com/bigquery/public-data/google-patents now 404s; the live entry points are the marketplace listing and the BigQuery public-data index."
+  ],
+  "licence": "Google Patents Public Datasets terms; underlying documents come from many offices with varying terms, attribution required",
+  "official_or_commercial": "commercial",
+  "official_url": "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data",
+  "probe_priority": "P3",
+  "rate_limits": "BigQuery quotas; on-demand pricing after the free tier",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "The richest patent corpus with family ids and pre-grant publications, and it would let MedRadar compute true public-visibility cohorts across offices. But 'free' here means a 1 TB/month query allowance, not free access: it needs a billing-enabled GCP project, so it is a procurement decision, not a download.",
+  "source_id": "google_patents_bigquery",
+  "source_name": "Google Patents Public Data (BigQuery public dataset)",
+  "timestamp_fields": [
+    "publication_date -> source_public_at (includes pre-grant publications)",
+    "filing_date -> event_at only",
+    "priority_date -> event_at only"
+  ],
+  "update_frequency": "periodic (dataset refresh)",
+  "verified_at": "2026-11-09"
+}

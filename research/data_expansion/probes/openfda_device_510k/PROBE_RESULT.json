@@ -1,0 +1,1071 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B2024-01-01+TO+2024-12-31%5D&limit=2",
+    "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B2025-01-01+TO+2025-12-31%5D&limit=1",
+    "https://api.fda.gov/device/510k.json?search=applicant%3Amedtronic&limit=3",
+    "https://api.fda.gov/device/510k.json?search=applicant%3A%22ge+healthcare%22&limit=3",
+    "https://api.fda.gov/device/510k.json?search=applicant%3Aphilips&limit=3",
+    "https://api.fda.gov/device/510k.json?search=applicant%3Adraeger&limit=3",
+    "https://api.fda.gov/device/510k.json?search=applicant%3Amindray&limit=3",
+    "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B1990-01-01+TO+2026-12-31%5D&skip=25000&limit=1"
+  ],
+  "notes": "device/510k returns real records (JSON, meta.results.total present). No key needed. `decision_date` is the clearance decision date; FDA publishes no per-record first-publication timestamp, so source_public_at may only be derived from the decision date and must be flagged as coarse evidence, never used as a published-on date.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 20941,
+      "elapsed_ms": 1063,
+      "endpoint_last_updated": "2026-10-26",
+      "error": "",
+      "name": "window_smoke_2024",
+      "note": "",
+      "ok": true,
+      "records": 2,
+      "sample": {
+        "name": "window_smoke_2024.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_510k\\window_smoke_2024.json",
+        "sha256_full": "c24a274321f2906c29ba4e023f28298c9348290fc0057942eb26e433c8c036ff",
+        "sha256_stored": "c24a274321f2906c29ba4e023f28298c9348290fc0057942eb26e433c8c036ff",
+        "stored_bytes": 20941,
+        "total_bytes": 20941,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "address_1",
+                "address_2",
+                "advisory_committee",
+                "advisory_committee_description",
+                "applicant",
+                "city",
+                "clearance_type",
+                "contact",
+                "country_code",
+                "date_received",
+                "decision_code",
+                "decision_date",
+                "decision_description",
+                "device_name",
+                "expedited_review_flag",
+                "k_number",
+                "openfda",
+                "postal_code",
+                "product_code",
+                "review_advisory_committee",
+                "state",
+                "statement_or_summary",
+                "third_party_flag",
+                "zip_code"
+              ],
+              "sample": {
+                "address_1": "str",
+                "address_2": "str",
+                "advisory_committee_description": "str",
+                "applicant": "str",
+                "city": "str",
+                "decision_code": "str",
+                "decision_date": "str",
+                "openfda": "dict",
+                "product_code": "str",
+                "statement_or_summary": "str",
+                "third_party_flag": "str",
+                "zip_code": "str"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "total": 3129,
+      "url": "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B2024-01-01+TO+2024-12-31%5D&limit=2"
+    },
+    {
+      "attempts": 1,
+      "bytes": 17094,
+      "elapsed_ms": 1157,
+      "error": "",
+      "name": "window_2025_count",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "window_2025_count.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_510k\\window_2025_count.json",
+        "sha256_full": "e5d10d122ef9d66d7961a7ae22fcb162d064a0ae5dd6e096c5b9ee213dfe636d",
+        "sha256_stored": "e5d10d122ef9d66d7961a7ae22fcb162d064a0ae5dd6e096c5b9ee213dfe636d",
+        "stored_bytes": 17094,
+        "total_bytes": 17094,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "address_1",
+                "address_2",
+                "advisory_committee",
+                "advisory_committee_description",
+                "applicant",
+                "city",
+                "clearance_type",
+                "contact",
+                "country_code",
+                "date_received",
+                "decision_code",
+                "decision_date",
+                "decision_description",
+                "device_name",
+                "expedited_review_flag",
+                "k_number",
+                "openfda",
+                "postal_code",
+                "product_code",
+                "review_advisory_committee",
+                "state",
+                "statement_or_summary",
+                "third_party_flag",
+                "zip_code"
+              ],
+              "sample": {
+                "address_1": "str",
+                "address_2": "str",
+                "advisory_committee_description": "str",
+                "applicant": "str",
+                "city": "str",
+                "decision_code": "str",
+                "decision_date": "str",
+                "openfda": "dict",
+                "product_code": "str",
+                "statement_or_summary": "str",
+                "third_party_flag": "str",
+                "zip_code": "str"
+              }
+            },
+            "len": 1
+          }
+        }
+      },
+      "total": 3225,
+      "url": "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B2025-01-01+TO+2025-12-31%5D&limit=1"
+    },
+    {
+      "attempts": 1,
+      "bytes": 38299,
+      "company_resolution": [
+        {
+          "applicant_raw": "Medtronic Vascular",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "medtronic"
+        },
+        {
+          "applicant_raw": "Medtronic Sofamor Danek USA",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "medtronic"
+        },
+        {
+          "applicant_raw": "Medtronic Sofamor Danek, Inc.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "medtronic"
+        }
+      ],
+      "elapsed_ms": 1000,
+      "error": "",
+      "name": "search_applicant:medtronic",
+      "note": "",
+      "ok": true,
+      "records": 3,
+      "sample": {
+        "name": "search_applicant:medtronic.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_510k\\search_applicant:medtronic.json",
+        "sha256_full": "3b017f82c516f5fe31113c376029b00ce0130a227c8a99809386a30aea6e4d8a",
+        "sha256_stored": "3b017f82c516f5fe31113c376029b00ce0130a227c8a99809386a30aea6e4d8a",
+        "stored_bytes": 38299,
+        "total_bytes": 38299,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "address_1",
+                "address_2",
+                "advisory_committee",
+                "advisory_committee_description",
+                "applicant",
+                "city",
+                "clearance_type",
+                "contact",
+                "country_code",
+                "date_received",
+                "decision_code",
+                "decision_date",
+                "decision_description",
+                "device_name",
+                "expedited_review_flag",
+                "k_number",
+                "openfda",
+                "postal_code",
+                "product_code",
+                "review_advisory_committee",
+                "state",
+                "statement_or_summary",
+                "third_party_flag",
+                "zip_code"
+              ],
+              "sample": {
+                "address_1": "str",
+                "address_2": "str",
+                "advisory_committee_description": "str",
+                "applicant": "str",
+                "city": "str",
+                "decision_code": "str",
+                "decision_date": "str",
+                "openfda": "dict",
+                "product_code": "str",
+                "statement_or_summary": "str",
+                "third_party_flag": "str",
+                "zip_code": "str"
+              }
+            },
+            "len": 3
+          }
+        }
+      },
+      "total": 1588,
+      "url": "https://api.fda.gov/device/510k.json?search=applicant%3Amedtronic&limit=3"
+    },
+    {
+      "attempts": 1,
+      "bytes": 30079,
+      "company_resolution": [
+        {
+          "applicant_raw": "GE Healthcare",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "ge_healthcare"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Japan Corporation",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "ge_healthcare"
+        },
+        {
+          "applicant_raw": "Ge Healthcare Japan Corporation",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "ge_healthcare"
+        }
+      ],
+      "elapsed_ms": 1500,
+      "error": "",
+      "name": "search_applicant:\"ge healthcare\"",
+      "note": "",
+      "ok": true,
+      "records": 3,
+      "sample": {
+        "name": "search_applicant:\"ge healthcare\".json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_510k\\search_applicant:\"ge healthcare\".json",
+        "sha256_full": "80dd25c8fc477e704e33388d0c15fa7ecb55640af59c0773b8324304639eac3d",
+        "sha256_stored": "80dd25c8fc477e704e33388d0c15fa7ecb55640af59c0773b8324304639eac3d",
+        "stored_bytes": 30079,
+        "total_bytes": 30079,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "address_1",
+                "address_2",
+                "advisory_committee",
+                "advisory_committee_description",
+                "applicant",
+                "city",
+                "clearance_type",
+                "contact",
+                "country_code",
+                "date_received",
+                "decision_code",
+                "decision_date",
+                "decision_description",
+                "device_name",
+                "expedited_review_flag",
+                "k_number",
+                "openfda",
+                "postal_code",
+                "product_code",
+                "review_advisory_committee",
+                "state",
+                "statement_or_summary",
+                "third_party_flag",
+                "zip_code"
+              ],
+              "sample": {
+                "address_1": "str",
+                "address_2": "str",
+                "advisory_committee_description": "str",
+                "applicant": "str",
+                "city": "str",
+                "decision_code": "str",
+                "decision_date": "str",
+                "openfda": "dict",
+                "product_code": "str",
+                "statement_or_summary": "str",
+                "third_party_flag": "str",
+                "zip_code": "str"
+              }
+            },
+            "len": 3
+          }
+        }
+      },
+      "total": 266,
+      "url": "https://api.fda.gov/device/510k.json?search=applicant%3A%22ge+healthcare%22&limit=3"
+    },
+    {
+      "attempts": 1,
+      "bytes": 47938,
+      "company_resolution": [
+        {
+          "applicant_raw": "Philips Medical Systems North America Co.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "philips"
+        },
+        {
+          "applicant_raw": "Philips Medical Systems (Cleveland), Inc.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "philips"
+        },
+        {
+          "applicant_raw": "North American Philips Corp.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "philips"
+        }
+      ],
+      "elapsed_ms": 1281,
+      "error": "",
+      "name": "search_applicant:philips",
+      "note": "",
+      "ok": true,
+      "records": 3,
+      "sample": {
+        "name": "search_applicant:philips.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_510k\\search_applicant:philips.json",
+        "sha256_full": "6881be6035e6a82634de074f6f09184ad7db404f5a95389f00a3132373ce470e",
+        "sha256_stored": "6881be6035e6a82634de074f6f09184ad7db404f5a95389f00a3132373ce470e",
+        "stored_bytes": 47938,
+        "total_bytes": 47938,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "address_1",
+                "address_2",
+                "advisory_committee",
+                "advisory_committee_description",
+                "applicant",
+                "city",
+                "clearance_type",
+                "contact",
+                "country_code",
+                "date_received",
+                "decision_code",
+                "decision_date",
+                "decision_description",
+                "device_name",
+                "expedited_review_flag",
+                "k_number",
+                "openfda",
+                "postal_code",
+                "product_code",
+                "review_advisory_committee",
+                "state",
+                "statement_or_summary",
+                "third_party_flag",
+                "zip_code"
+              ],
+              "sample": {
+                "address_1": "str",
+                "address_2": "str",
+                "advisory_committee_description": "str",
+                "applicant": "str",
+                "city": "str",
+                "decision_code": "str",
+                "decision_date": "str",
+                "openfda": "dict",
+                "product_code": "str",
+                "statement_or_summary": "str",
+                "third_party_flag": "str",
+                "zip_code": "str"
+              }
+            },
+            "len": 3
+          }
+        }
+      },
+      "total": 994,
+      "url": "https://api.fda.gov/device/510k.json?search=applicant%3Aphilips&limit=3"
+    },
+    {
+      "attempts": 1,
+      "bytes": 27185,
+      "company_resolution": [
+        {
+          "applicant_raw": "Draeger Medical, Inc.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "draeger"
+        },
+        {
+          "applicant_raw": "Draeger Medical Systems, Inc.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "draeger"
+        },
+        {
+          "applicant_raw": "Draeger Medical, Inc.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "draeger"
+        }
+      ],
+      "elapsed_ms": 1093,
+      "error": "",
+      "name": "search_applicant:draeger",
+      "note": "",
+      "ok": true,
+      "records": 3,
+      "sample": {
+        "name": "search_applicant:draeger.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_510k\\search_applicant:draeger.json",
+        "sha256_full": "5b93366d429de69f77387bdb35602e3342e3009e1b358722a40b68bf407c30f3",
+        "sha256_stored": "5b93366d429de69f77387bdb35602e3342e3009e1b358722a40b68bf407c30f3",
+        "stored_bytes": 27185,
+        "total_bytes": 27185,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "address_1",
+                "address_2",
+                "advisory_committee",
+                "advisory_committee_description",
+                "applicant",
+                "city",
+                "clearance_type",
+                "contact",
+                "country_code",
+                "date_received",
+                "decision_code",
+                "decision_date",
+                "decision_description",
+                "device_name",
+                "expedited_review_flag",
+                "k_number",
+                "openfda",
+                "postal_code",
+                "product_code",
+                "review_advisory_committee",
+                "state",
+                "statement_or_summary",
+                "third_party_flag",
+                "zip_code"
+              ],
+              "sample": {
+                "address_1": "str",
+                "address_2": "str",
+                "advisory_committee_description": "str",
+                "applicant": "str",
+                "city": "str",
+                "decision_code": "str",
+                "decision_date": "str",
+                "openfda": "dict",
+                "product_code": "str",
+                "statement_or_summary": "str",
+                "third_party_flag": "str",
+                "zip_code": "str"
+              }
+            },
+            "len": 3
+          }
+        }
+      },
+      "total": 152,
+      "url": "https://api.fda.gov/device/510k.json?search=applicant%3Adraeger&limit=3"
+    },
+    {
+      "attempts": 1,
+      "bytes": 41806,
+      "company_resolution": [
+        {
+          "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "mindray"
+        },
+        {
+          "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "mindray"
+        },
+        {
+          "applicant_raw": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "mindray"
+        }
+      ],
+      "elapsed_ms": 1125,
+      "error": "",
+      "name": "search_applicant:mindray",
+      "note": "",
+      "ok": true,
+      "records": 3,
+      "sample": {
+        "name": "search_applicant:mindray.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_510k\\search_applicant:mindray.json",
+        "sha256_full": "6c017e48adb9ad92f2b7eafa5b448301353eaa6eae41eb1f1a5f34d40b8ca346",
+        "sha256_stored": "6c017e48adb9ad92f2b7eafa5b448301353eaa6eae41eb1f1a5f34d40b8ca346",
+        "stored_bytes": 41806,
+        "total_bytes": 41806,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "address_1",
+                "address_2",
+                "advisory_committee",
+                "advisory_committee_description",
+                "applicant",
+                "city",
+                "clearance_type",
+                "contact",
+                "country_code",
+                "date_received",
+                "decision_code",
+                "decision_date",
+                "decision_description",
+                "device_name",
+                "expedited_review_flag",
+                "k_number",
+                "openfda",
+                "postal_code",
+                "product_code",
+                "review_advisory_committee",
+                "state",
+                "statement_or_summary",
+                "third_party_flag",
+                "zip_code"
+              ],
+              "sample": {
+                "address_1": "str",
+                "address_2": "str",
+                "advisory_committee_description": "str",
+                "applicant": "str",
+                "city": "str",
+                "decision_code": "str",
+                "decision_date": "str",
+                "openfda": "dict",
+                "product_code": "str",
+                "statement_or_summary": "str",
+                "third_party_flag": "str",
+                "zip_code": "str"
+              }
+            },
+            "len": 3
+          }
+        }
+      },
+      "total": 180,
+      "url": "https://api.fda.gov/device/510k.json?search=applicant%3Amindray&limit=3"
+    },
+    {
+      "attempts": 1,
+      "bytes": 7749,
+      "elapsed_ms": 1218,
+      "error": "",
+      "name": "skip_25000_behaviour",
+      "note": "documents whether openFDA still serves pages beyond skip=25000",
+      "ok": true,
+      "sample": {
+        "name": "skip_25000_behaviour.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_510k\\skip_25000_behaviour.json",
+        "sha256_full": "f9bcf6fa21a7ac8a27953ab38a577dd6518777b4c1abae50741facdae81ff38d",
+        "sha256_stored": "f9bcf6fa21a7ac8a27953ab38a577dd6518777b4c1abae50741facdae81ff38d",
+        "stored_bytes": 7749,
+        "total_bytes": 7749,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "address_1",
+                "address_2",
+                "advisory_committee",
+                "advisory_committee_description",
+                "applicant",
+                "city",
+                "clearance_type",
+                "contact",
+                "country_code",
+                "date_received",
+                "decision_code",
+                "decision_date",
+                "decision_description",
+                "device_name",
+                "expedited_review_flag",
+                "k_number",
+                "openfda",
+                "postal_code",
+                "product_code",
+                "review_advisory_committee",
+                "state",
+                "statement_or_summary",
+                "third_party_flag",
+                "zip_code"
+              ],
+              "sample": {
+                "address_1": "str",
+                "address_2": "str",
+                "advisory_committee_description": "str",
+                "applicant": "str",
+                "city": "str",
+                "decision_code": "str",
+                "decision_date": "str",
+                "openfda": "dict",
+                "product_code": "str",
+                "statement_or_summary": "str",
+                "third_party_flag": "str",
+                "zip_code": "str"
+              }
+            },
+            "len": 1
+          }
+        }
+      },
+      "url": "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B1990-01-01+TO+2026-12-31%5D&skip=25000&limit=1"
+    }
+  ],
+  "requests": 8,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "openfda_device_510k",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:50:36.768791Z"
+}

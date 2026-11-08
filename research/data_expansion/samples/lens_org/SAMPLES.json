@@ -1,35 +1,22 @@
 {
-  "captured_at": "2026-11-08T21:43:13.062654Z",
-  "conclusion": "PAID_ONLY",
-  "file_count": 2,
-  "files": [
+  "how_to_verify": "re-fetch the request URL recorded in probes/<source_id>/requests.jsonl and compare sha256",
+  "policy": "payload withheld: the source licence does not permit redistribution",
+  "redistribution_allowed": "NO",
+  "source_id": "lens_org",
+  "withheld_samples": [
     {
-      "fetched_at": "2026-11-08T21:43:07.675145Z",
-      "http_status": 200,
-      "name": "api_docs.html",
-      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\lens_org\\api_docs.html",
-      "request_name": "api_docs",
-      "request_url": "https://docs.api.lens.org/",
-      "sha256_full": "d9133d923e881de03ca7bd4ce2b55d42d6d599bc545fbc1b8564d4c2fab48cb4",
-      "sha256_stored": "d9133d923e881de03ca7bd4ce2b55d42d6d599bc545fbc1b8564d4c2fab48cb4",
-      "stored_bytes": 10548,
-      "total_bytes": 10548,
-      "truncated": false
+      "bytes": 10548,
+      "content_withheld": true,
+      "file": "api_docs.html",
+      "reason": "redistribution_allowed = NO for lens_org",
+      "sha256_full": "d9133d923e881de03ca7bd4ce2b55d42d6d599bc545fbc1b8564d4c2fab48cb4"
     },
     {
-      "fetched_at": "2026-11-08T21:43:11.233440Z",
-      "http_status": 200,
-      "name": "subscriptions.html",
-      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\lens_org\\subscriptions.html",
-      "request_name": "subscription_pricing_page",
-      "request_url": "https://www.lens.org/lens/user/subscriptions",
-      "sha256_full": "5f07ddf0671aa2d702887d7a0929a805c0e56bfe340be756cc7bb0a29b789ecb",
-      "sha256_stored": "3beaae1d523191990d6e5f59e2583dba97774e1a9fd3e52a00762d32c3929dda",
-      "stored_bytes": 524288,
-      "total_bytes": 572661,
-      "truncated": true
+      "bytes": 524288,
+      "content_withheld": true,
+      "file": "subscriptions.html",
+      "reason": "redistribution_allowed = NO for lens_org",
+      "sha256_full": "3beaae1d523191990d6e5f59e2583dba97774e1a9fd3e52a00762d32c3929dda"
     }
-  ],
-  "schema": "medradar.external.samples.v1",
-  "source_id": "lens_org"
+  ]
 }

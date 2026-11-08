@@ -1,0 +1,225 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.fda.gov/device/registrationlisting.json?limit=2",
+    "https://api.fda.gov/device/registrationlisting.json?search=registration.name%3A%22Medtronic%22&limit=2"
+  ],
+  "notes": "Registration & listing is establishment-level (who may distribute what), not product-level; it carries k_number/pma_number per establishment which makes it a registrant bridge, but it must not be counted as a second clearance record.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 6803,
+      "elapsed_ms": 2250,
+      "error": "",
+      "name": "page_smoke",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "page_smoke.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_registrationlisting\\page_smoke.json",
+        "sha256_full": "1568cd0c469d5aacc6b1b0349674b65ee1ff950658faefe76c78d1a0fca788b5",
+        "sha256_stored": "1568cd0c469d5aacc6b1b0349674b65ee1ff950658faefe76c78d1a0fca788b5",
+        "stored_bytes": 6803,
+        "total_bytes": 6803,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "establishment_type",
+                "k_number",
+                "pma_number",
+                "products",
+                "proprietary_name",
+                "registration"
+              ],
+              "sample": {
+                "establishment_type": "list",
+                "k_number": "str",
+                "pma_number": "str",
+                "products": "list",
+                "proprietary_name": "list",
+                "registration": "dict"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "total": 337116,
+      "url": "https://api.fda.gov/device/registrationlisting.json?limit=2"
+    },
+    {
+      "attempts": 1,
+      "bytes": 5060,
+      "company_resolution": [
+        {
+          "applicant_raw": "MEDTRONIC B.V. (EOC)",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "medtronic"
+        },
+        {
+          "applicant_raw": "Medtronic Engineering and Innovation Center (MEIC)",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "medtronic"
+        }
+      ],
+      "elapsed_ms": 1141,
+      "error": "",
+      "name": "search_registrant_medtronic",
+      "note": "",
+      "ok": true,
+      "records": 2,
+      "sample": {
+        "name": "search_registrant_medtronic.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_registrationlisting\\search_registrant_medtronic.json",
+        "sha256_full": "28934b1fcb321860af9ef3fc1d1e4ca234f52cb437282cfaae46ed33f1e12910",
+        "sha256_stored": "28934b1fcb321860af9ef3fc1d1e4ca234f52cb437282cfaae46ed33f1e12910",
+        "stored_bytes": 5060,
+        "total_bytes": 5060,
+        "truncated": false
+      },
+      "shape_keys": [
+        "establishment_type",
+        "k_number",
+        "pma_number",
+        "products",
+        "proprietary_name",
+        "registration"
+      ],
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "establishment_type",
+                "k_number",
+                "pma_number",
+                "products",
+                "proprietary_name",
+                "registration"
+              ],
+              "sample": {
+                "establishment_type": "list",
+                "k_number": "str",
+                "pma_number": "str",
+                "products": "list",
+                "proprietary_name": "list",
+                "registration": "dict"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "url": "https://api.fda.gov/device/registrationlisting.json?search=registration.name%3A%22Medtronic%22&limit=2"
+    }
+  ],
+  "requests": 2,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "openfda_device_registrationlisting",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:52:29.258372Z"
+}

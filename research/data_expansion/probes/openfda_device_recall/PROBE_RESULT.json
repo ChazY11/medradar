@@ -1,0 +1,193 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://open.fda.gov/apis/device/recall/",
+    "https://open.fda.gov/apis/authentication/",
+    "https://open.fda.gov/license/"
+  ],
+  "notes": "4/4 checks ok; limit=2 returned real device-recall records; Medtronic phrase search meta.total=1932; date fields are event_date_initiated/posted (report_date absent).",
+  "probes": [
+    {
+      "bytes": 9426,
+      "elapsed_ms": 1532,
+      "error": "",
+      "name": "smoke_limit2",
+      "ok": true,
+      "record_keys": [
+        "action",
+        "additional_info_contact",
+        "address_1",
+        "cfres_id",
+        "city",
+        "code_info",
+        "distribution_pattern",
+        "event_date_initiated",
+        "event_date_posted",
+        "event_date_terminated",
+        "firm_fei_number",
+        "k_numbers",
+        "openfda",
+        "postal_code",
+        "product_code",
+        "product_description",
+        "product_quantity",
+        "product_res_number",
+        "reason_for_recall",
+        "recall_status",
+        "recalling_firm",
+        "res_event_number",
+        "root_cause_description",
+        "state"
+      ],
+      "sample": {
+        "name": "smoke_limit2.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_recall\\smoke_limit2.json",
+        "sha256_full": "68a4df1d984baa3eaf496444a6f42f1b5c4410c5b5f36ebaaa63d38a6f48bd81",
+        "sha256_stored": "68a4df1d984baa3eaf496444a6f42f1b5c4410c5b5f36ebaaa63d38a6f48bd81",
+        "stored_bytes": 9426,
+        "total_bytes": 9426,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "action",
+                "additional_info_contact",
+                "address_1",
+                "cfres_id",
+                "city",
+                "code_info",
+                "distribution_pattern",
+                "event_date_initiated",
+                "event_date_posted",
+                "event_date_terminated",
+                "firm_fei_number",
+                "k_numbers",
+                "openfda",
+                "postal_code",
+                "product_code",
+                "product_description",
+                "product_quantity",
+                "product_res_number",
+                "reason_for_recall",
+                "recall_status",
+                "recalling_firm",
+                "res_event_number",
+                "root_cause_description",
+                "state"
+              ],
+              "sample": {
+                "cfres_id": "str",
+                "code_info": "str",
+                "event_date_initiated": "str",
+                "event_date_posted": "str",
+                "event_date_terminated": "str",
+                "firm_fei_number": "str",
+                "k_numbers": "list",
+                "product_code": "str",
+                "product_description": "str",
+                "product_res_number": "str",
+                "recall_status": "str",
+                "res_event_number": "str"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "url": "https://api.fda.gov/device/recall.json?limit=2"
+    },
+    {
+      "conclusion": "device/recall exposes event_date_initiated (event) and event_date_posted (public); report_date is absent",
+      "detail": {
+        "center_classification_date_present": false,
+        "event_date_created": null,
+        "event_date_initiated": "2003-10-27",
+        "event_date_posted": "2003-10-29",
+        "event_date_terminated": "2004-03-24",
+        "report_date_present": false
+      },
+      "name": "date_field_semantics",
+      "ok": true,
+      "status": 200
+    },
+    {
+      "bytes": 23157,
+      "elapsed_ms": 1092,
+      "error": "",
+      "meta_total": 1932,
+      "name": "search_recalling_firm_medtronic",
+      "note": "quoted value is an analysed phrase match on recalling_firm; 1599 records at probe time",
+      "ok": true,
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%22Medtronic%22&limit=1"
+    },
+    {
+      "bucket_sum": 1599,
+      "buckets": 449,
+      "bytes": 25621,
+      "elapsed_ms": 3532,
+      "error": "",
+      "name": "count_event_date_posted_medtronic",
+      "ok": true,
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%22Medtronic%22&count=event_date_posted"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "openfda_device_recall",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:48:12.629693Z"
+}

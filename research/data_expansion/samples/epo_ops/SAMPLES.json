@@ -1,19 +1,34 @@
 {
-  "captured_at": "2026-11-08T21:41:39.709988Z",
-  "conclusion": "REQUIRES_REGISTRATION",
-  "file_count": 1,
-  "files": [
+  "generated_at": "2026-11-08T21:59:08.379098Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 1,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 1,
+      "source_id": "epo_ops",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
     {
-      "fetched_at": "2026-11-08T21:41:37.916822Z",
-      "http_status": 200,
+      "file": "official_docs.html",
+      "hash_verified": true,
       "name": "official_docs.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
       "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\epo_ops\\official_docs.html",
-      "request_name": "official_docs_page",
-      "request_url": "https://www.epo.org/en/searching-for-patents/data/web-services/ops",
-      "sha256_full": "fb69448a06b6ec565872164d5ccd4d87c4a3c191d8fed0101872b4f80ea40051",
+      "sha256_full": "fb0326bb43ee3023d3642d8c02ded406e2fdebc55510edea9af227baa4d91dbb",
+      "sha256_source": "recomputed_from_disk",
       "sha256_stored": "fb0326bb43ee3023d3642d8c02ded406e2fdebc55510edea9af227baa4d91dbb",
+      "source": "recovered_from_disk",
       "stored_bytes": 524288,
-      "total_bytes": 644525,
+      "total_bytes": 524288,
       "truncated": true
     }
   ],

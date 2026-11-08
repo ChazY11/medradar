@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-11-08T21:59:10.155742Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 1,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 1,
+      "source_id": "sam_gov",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "official_docs.html",
+      "hash_verified": true,
+      "name": "official_docs.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\sam_gov\\official_docs.html",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://open.gsa.gov/api/get-opportunities-public-api/",
+      "sha256_full": "448b85ab4a22e33d139295cb1d6a3a6384b685a936d8c645dd12e69ed938fa62",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "448b85ab4a22e33d139295cb1d6a3a6384b685a936d8c645dd12e69ed938fa62",
+      "source": "recovered_from_disk",
+      "stored_bytes": 46217,
+      "total_bytes": 46217,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "sam_gov"
+}

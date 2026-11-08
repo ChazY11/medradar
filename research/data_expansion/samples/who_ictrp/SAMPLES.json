@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-11-08T21:59:10.226209Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 0,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 0,
+      "source_id": "who_ictrp",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "who_ictrp"
+}

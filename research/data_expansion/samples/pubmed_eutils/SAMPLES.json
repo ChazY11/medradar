@@ -1,40 +1,65 @@
 {
-  "files": [
+  "generated_at": "2026-11-08T21:59:10.153742Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 3,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 3,
+      "source_id": "pubmed_eutils",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
     {
-      "fetched_at": "2026-11-08T21:43:47.483687Z",
+      "file": "pubmed_esearch.json",
+      "hash_verified": true,
       "name": "pubmed_esearch.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
       "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\pubmed_eutils\\pubmed_esearch.json",
       "sha256_full": "a25dfdaf9a2a4b0d8028985850a847243d1bc4bc2d733a3596b9fe53a56d077a",
+      "sha256_source": "recomputed_from_disk",
       "sha256_stored": "a25dfdaf9a2a4b0d8028985850a847243d1bc4bc2d733a3596b9fe53a56d077a",
+      "source": "recovered_from_disk",
       "stored_bytes": 617,
       "total_bytes": 617,
-      "truncated": false,
-      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Medtronic%5BAffiliation%5D+AND+stent&retmode=json&retmax=3&tool=medradar_research&email=medradar.research%40example.org"
+      "truncated": false
     },
     {
-      "fetched_at": "2026-11-08T21:43:48.394022Z",
-      "name": "pubmed_esummary.json",
-      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\pubmed_eutils\\pubmed_esummary.json",
-      "sha256_full": "91ffd94772edae9675d8e68818c5f36c13863ddef02f6bef41617ad19ebae918",
-      "sha256_stored": "91ffd94772edae9675d8e68818c5f36c13863ddef02f6bef41617ad19ebae918",
-      "stored_bytes": 2198,
-      "total_bytes": 2198,
-      "truncated": false,
-      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=42830997&tool=medradar_research&email=medradar.research%40example.org"
-    },
-    {
-      "fetched_at": "2026-11-08T21:43:49.264206Z",
+      "file": "pubmed_esearch_doi.json",
+      "hash_verified": true,
       "name": "pubmed_esearch_doi.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
       "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\pubmed_eutils\\pubmed_esearch_doi.json",
       "sha256_full": "1670c05afc8726afd5fe5dbe74fb4fea44aa63e97a6778bf5877cb133d54d6fc",
+      "sha256_source": "recomputed_from_disk",
       "sha256_stored": "1670c05afc8726afd5fe5dbe74fb4fea44aa63e97a6778bf5877cb133d54d6fc",
+      "source": "recovered_from_disk",
       "stored_bytes": 207,
       "total_bytes": 207,
-      "truncated": false,
-      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=10.1056%2FNEJMoa2034577%5BDOI%5D&retmode=json&retmax=2&tool=medradar_research&email=medradar.research%40example.org"
+      "truncated": false
+    },
+    {
+      "file": "pubmed_esummary.json",
+      "hash_verified": true,
+      "name": "pubmed_esummary.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\pubmed_eutils\\pubmed_esummary.json",
+      "sha256_full": "91ffd94772edae9675d8e68818c5f36c13863ddef02f6bef41617ad19ebae918",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "91ffd94772edae9675d8e68818c5f36c13863ddef02f6bef41617ad19ebae918",
+      "source": "recovered_from_disk",
+      "stored_bytes": 2198,
+      "total_bytes": 2198,
+      "truncated": false
     }
   ],
-  "generated_at": "2026-11-08T21:43:49.265206Z",
-  "note": "Raw response slices captured by the probe.  Must not be hand-edited.",
+  "schema": "medradar.external.samples.v1",
   "source_id": "pubmed_eutils"
 }

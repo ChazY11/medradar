@@ -13,10 +13,14 @@
 
 ICTRP is a search portal over national registries, with no public machine API.  The probe records the portal responses but they are HTML forms, not queryable records, so the source is recorded UNAVAILABLE for programmatic collection.  The registries it indexes (CT.gov, CTIS, ChiCTR, ...) are collected directly instead.
 
-## Documentation checked
+## Documentation references
 
 - https://www.who.int/clinical-trials-registry-platform
 - https://trialsearch.who.int/
+
+These are the reference pages recorded in the source register. Only the request
+URLs in the table above were exercised by this probe; a documentation URL is a
+citation, not a claim that the page was fetched during the probe.
 
 ## Reported status rationale
 

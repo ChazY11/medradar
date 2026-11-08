@@ -1,0 +1,43 @@
+{
+  "api_available": "PARTIAL",
+  "authentication": "public SPA is anonymous, but automated access to it is refused; the official machine interface is the EUDAMED data API on the DG SANTE EU Health Data Lake developer portal, which requires registered credentials",
+  "bulk_download_available": "UNKNOWN",
+  "category": "device_registration",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "UNKNOWN - possible registration/credential cost; public scraping is refused by the operator",
+  "country_or_region": "EU",
+  "domain": "A",
+  "entity_identifiers": [
+    "Basic UDI-DI (the EU-level device-family identifier) - documented, NOT verified from the source",
+    "UDI-DI - documented, NOT verified",
+    "SRN (Single Registration Number) for economic operators - documented, NOT verified",
+    "UNKNOWN - no field-level schema could be observed"
+  ],
+  "evidence_urls": [
+    "https://ec.europa.eu/tools/eudamed/",
+    "https://ec.europa.eu/tools/eudamed/api/devices?page=0&size=2",
+    "https://developer.datalake.sante.service.ec.europa.eu/api-details#api=94b9e658-d721-4b58-8d96-022c490f7a17"
+  ],
+  "free_tier": "UNKNOWN - the official API's quotas/pricing are not stated on the portal page opened",
+  "historical_coverage": "UNKNOWN - EUDAMED was populated in phased rollout, so legacy-device coverage is expected to be partial, but this could not be measured",
+  "known_limitations": [
+    "the public data endpoints answer HTTP 429 with the message 'For automated/machine-to-machine access, please use the official EUDAMED data API instead of scraping the public endpoints' - the operator explicitly prohibits exactly the access this study would need",
+    "the official data API is behind the DG SANTE developer portal and needs registered credentials, so its schema, quotas and latency are all unverified here",
+    "no field-level schema, no record count and no date semantics could be established, so any EUDAMED column in the register beyond the identifiers is UNKNOWN rather than guessed",
+    "EUDAMED is the only EU-wide device register, so this gap cannot be substituted from another official EU source at the same granularity"
+  ],
+  "licence": "UNKNOWN - EUDAMED re-use terms were not opened in this pass; must be checked before redistribution",
+  "official_or_commercial": "official",
+  "official_url": "https://ec.europa.eu/tools/eudamed/",
+  "probe_priority": "P0",
+  "rate_limits": "the public data endpoints actively throttle automated clients and answer HTTP 429 with an explicit policy message; the official API's documented limits were not observable",
+  "redistribution_allowed": "UNKNOWN",
+  "research_value": "The EU-wide device registration backbone and the only official source carrying Basic UDI-DI, which is the EU-side anchor for device families that also hold a US UDI-DI. If credentials can be obtained it would let MedRadar compare EU vs US registration timing for the same device family; without them the EU half of the comparison stays a documented gap.",
+  "source_id": "eudamed",
+  "source_name": "EUDAMED public database",
+  "timestamp_fields": [
+    "UNKNOWN - no record was ever served, so no field semantics are claimed"
+  ],
+  "update_frequency": "UNKNOWN - not observable without API access",
+  "verified_at": "2026-11-09"
+}

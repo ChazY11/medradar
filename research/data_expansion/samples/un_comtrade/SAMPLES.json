@@ -1,0 +1,87 @@
+{
+  "generated_at": "2026-11-08T21:59:10.209197Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 4,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 4,
+      "source_id": "un_comtrade",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "developer_portal.html",
+      "hash_verified": true,
+      "name": "developer_portal.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\un_comtrade\\developer_portal.html",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://comtradedeveloper.un.org/",
+      "sha256_full": "e95e4b94684288433cf6bcc5e77eed6c67ef3d093deb12c36b0b413f7bea04fe",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "e95e4b94684288433cf6bcc5e77eed6c67ef3d093deb12c36b0b413f7bea04fe",
+      "source": "recovered_from_disk",
+      "stored_bytes": 5403,
+      "total_bytes": 5403,
+      "truncated": false
+    },
+    {
+      "file": "preview_9018.json",
+      "hash_verified": true,
+      "name": "preview_9018.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\un_comtrade\\preview_9018.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9018&flowCode=M",
+      "sha256_full": "63ed9c9a49d490532d10354984b6112161ef5fe9b9e8bbb912b88a8441d5750d",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "63ed9c9a49d490532d10354984b6112161ef5fe9b9e8bbb912b88a8441d5750d",
+      "source": "recovered_from_disk",
+      "stored_bytes": 114128,
+      "total_bytes": 114128,
+      "truncated": false
+    },
+    {
+      "file": "preview_9022.json",
+      "hash_verified": true,
+      "name": "preview_9022.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\un_comtrade\\preview_9022.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9022&flowCode=M",
+      "sha256_full": "3de801536a7fb1de98e301fbe78432c8361f56d3ab6dbda40bde0148d9ad895f",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "3de801536a7fb1de98e301fbe78432c8361f56d3ab6dbda40bde0148d9ad895f",
+      "source": "recovered_from_disk",
+      "stored_bytes": 72705,
+      "total_bytes": 72705,
+      "truncated": false
+    },
+    {
+      "file": "preview_9402.json",
+      "hash_verified": true,
+      "name": "preview_9402.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\un_comtrade\\preview_9402.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9402&flowCode=M",
+      "sha256_full": "2e25c159a33f88b2e915cc3ea576c52496af9a7fd212ddf9774dccbca19f24e9",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "2e25c159a33f88b2e915cc3ea576c52496af9a7fd212ddf9774dccbca19f24e9",
+      "source": "recovered_from_disk",
+      "stored_bytes": 63029,
+      "total_bytes": 63029,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "un_comtrade"
+}

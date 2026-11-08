@@ -1,0 +1,46 @@
+{
+  "api_available": "PARTIAL",
+  "authentication": "paid account (subscription); API/exports on higher plans",
+  "bulk_download_available": "PARTIAL",
+  "category": "shipment",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Public pricing observed 2026-11-09: from $229/month (or $183/month billed $2,198/year), higher tiers up to $4,310 listed. Contract price may differ.",
+  "country_or_region": "US",
+  "domain": "E",
+  "entity_identifiers": [
+    "importer name/address",
+    "supplier name/address",
+    "bill-of-lading number",
+    "HS code",
+    "carrier",
+    "port",
+    "arrival date"
+  ],
+  "evidence_urls": [
+    "https://www.importgenius.com/pricing",
+    "https://www.importgenius.com/"
+  ],
+  "free_tier": "no free data tier; paid subscription with a public price list",
+  "historical_coverage": "US sea/air import BoL plus selected other countries, years of history",
+  "known_limitations": [
+    "PROBED 2026-11-09: the public pricing page is readable and lists real prices - observed tokens: $229 (monthly starting price), $183/mo when billed $2,198/yr, $359, $449, $1,999, $2,198, $4,310. The data itself is behind the paywall.",
+    "PAID_ONLY: no free API, no free bulk, no licence for redistribution; use would be internal-analysis only.",
+    "Bill-of-lading data is company-level shipment evidence - the correct counterpart to (and NOT interchangeable with) HS-code aggregate statistics.",
+    "US-centric; supplier/buyer relationship graphs are derived, not authoritative."
+  ],
+  "licence": "proprietary commercial terms; redistribution of raw records not permitted",
+  "official_or_commercial": "commercial",
+  "official_url": "https://www.importgenius.com/",
+  "probe_priority": "P3",
+  "rate_limits": "plan dependent",
+  "redistribution_allowed": "NO",
+  "research_value": "This is the class of source that actually answers firm-level supply-chain questions (which importer ships from which supplier, with HS codes and dates). It is uniformly paid, so MedRadar would have to buy it; no open substitute was found in this round.",
+  "source_id": "importgenius",
+  "source_name": "ImportGenius",
+  "timestamp_fields": [
+    "shipment/arrival date -> event_at (company-level)",
+    "record publication/update date inside the product (UNKNOWN without an account)"
+  ],
+  "update_frequency": "daily to weekly (BoL releases)",
+  "verified_at": "2026-11-09"
+}

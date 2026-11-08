@@ -1,35 +1,22 @@
 {
-  "captured_at": "2026-11-08T21:41:54.206256Z",
-  "conclusion": "UNAVAILABLE",
-  "file_count": 2,
-  "files": [
+  "how_to_verify": "re-fetch the request URL recorded in probes/<source_id>/requests.jsonl and compare sha256",
+  "policy": "payload withheld: the source licence does not permit redistribution",
+  "redistribution_allowed": "UNKNOWN",
+  "source_id": "patentsview",
+  "withheld_samples": [
     {
-      "fetched_at": "2026-11-08T21:41:52.513391Z",
-      "http_status": 200,
-      "name": "legacy_api_host.html",
-      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\patentsview\\legacy_api_host.html",
-      "request_name": "legacy_api_host",
-      "request_url": "https://api.patentsview.org/patents/query?q=%7B%7D&f=%5B%22patent_number%22%5D",
-      "sha256_full": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
-      "sha256_stored": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
-      "stored_bytes": 20666,
-      "total_bytes": 20666,
-      "truncated": false
+      "bytes": 20666,
+      "content_withheld": true,
+      "file": "legacy_api_host.html",
+      "reason": "redistribution_allowed = UNKNOWN for patentsview",
+      "sha256_full": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85"
     },
     {
-      "fetched_at": "2026-11-08T21:41:54.206256Z",
-      "http_status": 200,
-      "name": "project_website.html",
-      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\patentsview\\project_website.html",
-      "request_name": "project_website",
-      "request_url": "https://patentsview.org/apis/api-endpoints",
-      "sha256_full": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
-      "sha256_stored": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
-      "stored_bytes": 20666,
-      "total_bytes": 20666,
-      "truncated": false
+      "bytes": 20666,
+      "content_withheld": true,
+      "file": "project_website.html",
+      "reason": "redistribution_allowed = UNKNOWN for patentsview",
+      "sha256_full": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85"
     }
-  ],
-  "schema": "medradar.external.samples.v1",
-  "source_id": "patentsview"
+  ]
 }

@@ -1,0 +1,358 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.uktradeinfo.com/",
+    "https://api.uktradeinfo.com/Trader?%24filter=contains%28CompanyName%2C%27MEDTRONIC%27%29&%24top=5&%24select=TraderId%2CCompanyName%2CPostCode",
+    "https://api.uktradeinfo.com/YearlyTrade?%24filter=TraderId+eq+213902+and+Year+eq+2023&%24top=5",
+    "https://api.uktradeinfo.com/CommoditySearch?%24filter=startswith%28Hs4Code%2C%279018%27%29&%24top=2",
+    "https://api.uktradeinfo.com/OTS?%24top=2"
+  ],
+  "notes": "Open OData, no key. Publishes named UK traders x CN8 commodity x month (presence only, no values) plus aggregate OTS values.",
+  "probes": [
+    {
+      "bytes": 920,
+      "content_type": "application/json; odata.metadata=minimal",
+      "elapsed_ms": 641,
+      "entity_sets": [
+        "Commodity",
+        "CommoditySearch",
+        "Country",
+        "Date",
+        "Export",
+        "FlowType",
+        "Import",
+        "OTS",
+        "Port",
+        "Region",
+        "RTS",
+        "SITC",
+        "Trade",
+        "Trader",
+        "TradeType",
+        "YearlyTrade"
+      ],
+      "error": "",
+      "excerpt": "{\"@odata.context\":\"https://api.uktradeinfo.com/$metadata\",\"value\":[{\"name\":\"Commodity\",\"kind\":\"EntitySet\",\"url\":\"Commodity\"},{\"name\":\"CommoditySearch\",\"kind\":\"EntitySet\",\"url\":\"CommoditySearch\"},{\"name\":\"Country\",\"kind\":\"EntitySet\",\"url\":\"Country\"},{\"name\":\"Date\",\"kind\":\"EntitySet\",\"url\":\"Date\"},{\"n",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "service_document",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:27.715698Z",
+        "http_status": 200,
+        "name": "service_document.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_hmrc_trade\\service_document.json",
+        "request_name": "service_document",
+        "request_url": "https://api.uktradeinfo.com/",
+        "sha256_full": "cb2158d8b929de3f871a94403042c8a7e06df2a9ab695c11a511b83826639e40",
+        "sha256_stored": "cb2158d8b929de3f871a94403042c8a7e06df2a9ab695c11a511b83826639e40",
+        "stored_bytes": 920,
+        "total_bytes": 920,
+        "truncated": false
+      },
+      "sha256": "cb2158d8b929de3f871a94403042c8a7e06df2a9ab695c11a511b83826639e40",
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "@odata.context",
+          "value"
+        ],
+        "sample": {
+          "@odata.context": {
+            "__type__": "string",
+            "max_len": 37
+          },
+          "value": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "kind",
+                "name",
+                "url"
+              ],
+              "sample": {
+                "kind": "str",
+                "name": "str",
+                "url": "str"
+              }
+            },
+            "len": 16
+          }
+        }
+      },
+      "url": "https://api.uktradeinfo.com/"
+    },
+    {
+      "bytes": 461,
+      "content_type": "application/json; odata.metadata=minimal",
+      "elapsed_ms": 608,
+      "error": "",
+      "excerpt": "{\"@odata.context\":\"https://api.uktradeinfo.com/$metadata#Trader(TraderId,CompanyName,PostCode)\",\"value\":[{\"TraderId\":213902,\"CompanyName\":\"MEDTRONIC VASCULAR GALWAY UNLIMITEDCOMPANY\",\"PostCode\":\"AB10 1ZP\"},{\"TraderId\":243358,\"CompanyName\":\"MEDTRONIC LIMITED\",\"PostCode\":\"WD18 8WW\"},{\"TraderId\":282422",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "trader_search_medtronic",
+      "names": [
+        "MEDTRONIC VASCULAR GALWAY UNLIMITEDCOMPANY",
+        "MEDTRONIC LIMITED",
+        "MEDTRONIC INTERNATIONAL TRADING SARL",
+        "MEDTRONIC BIOPHARMA B.V."
+      ],
+      "ok": true,
+      "row_count": 4,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:28.480983Z",
+        "http_status": 200,
+        "name": "trader_search_medtronic.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_hmrc_trade\\trader_search_medtronic.json",
+        "request_name": "trader_search_medtronic",
+        "request_url": "https://api.uktradeinfo.com/Trader?%24filter=contains%28CompanyName%2C%27MEDTRONIC%27%29&%24top=5&%24select=TraderId%2CCompanyName%2CPostCode",
+        "sha256_full": "9db4837089aa86518468c1273043fcc520973da48d00a92b091364082acac753",
+        "sha256_stored": "9db4837089aa86518468c1273043fcc520973da48d00a92b091364082acac753",
+        "stored_bytes": 461,
+        "total_bytes": 461,
+        "truncated": false
+      },
+      "sha256": "9db4837089aa86518468c1273043fcc520973da48d00a92b091364082acac753",
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "@odata.context",
+          "value"
+        ],
+        "sample": {
+          "@odata.context": {
+            "__type__": "string",
+            "max_len": 75
+          },
+          "value": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "CompanyName",
+                "PostCode",
+                "TraderId"
+              ],
+              "sample": {
+                "CompanyName": "str",
+                "PostCode": "str",
+                "TraderId": "int"
+              }
+            },
+            "len": 4
+          }
+        }
+      },
+      "url": "https://api.uktradeinfo.com/Trader?%24filter=contains%28CompanyName%2C%27MEDTRONIC%27%29&%24top=5&%24select=TraderId%2CCompanyName%2CPostCode"
+    },
+    {
+      "bytes": 1543,
+      "content_type": "application/json; odata.metadata=minimal",
+      "elapsed_ms": 421,
+      "error": "",
+      "excerpt": "{\"@odata.context\":\"https://api.uktradeinfo.com/$metadata#YearlyTrade\",\"value\":[{\"TraderId\":213902,\"CommodityId\":30061010,\"Year\":2023,\"TradeTypeId\":0,\"ImportMonths\":\"December 2023,October 2023,November 2023,May 2023,April 2023,September 2023\",\"ExportMonths\":\"December 2023,November 2023,September 2023",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "yearly_trade_presence",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:29.086242Z",
+        "http_status": 200,
+        "name": "yearly_trade_presence.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_hmrc_trade\\yearly_trade_presence.json",
+        "request_name": "yearly_trade_presence",
+        "request_url": "https://api.uktradeinfo.com/YearlyTrade?%24filter=TraderId+eq+213902+and+Year+eq+2023&%24top=5",
+        "sha256_full": "c5b46b4cfaaa453859ab95fbf286104a99f2fa0220ab8302787530d631be87e3",
+        "sha256_stored": "c5b46b4cfaaa453859ab95fbf286104a99f2fa0220ab8302787530d631be87e3",
+        "stored_bytes": 1543,
+        "total_bytes": 1543,
+        "truncated": false
+      },
+      "sha256": "c5b46b4cfaaa453859ab95fbf286104a99f2fa0220ab8302787530d631be87e3",
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "@odata.context",
+          "value"
+        ],
+        "sample": {
+          "@odata.context": {
+            "__type__": "string",
+            "max_len": 49
+          },
+          "value": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "CommodityId",
+                "ExportMonths",
+                "ImportMonths",
+                "TradeTypeId",
+                "TraderId",
+                "Year"
+              ],
+              "sample": {
+                "CommodityId": "int",
+                "ExportMonths": "str",
+                "ImportMonths": "str",
+                "TradeTypeId": "int",
+                "TraderId": "int",
+                "Year": "int"
+              }
+            },
+            "len": 5
+          }
+        }
+      },
+      "url": "https://api.uktradeinfo.com/YearlyTrade?%24filter=TraderId+eq+213902+and+Year+eq+2023&%24top=5"
+    },
+    {
+      "bytes": 1289,
+      "content_type": "application/json; odata.metadata=minimal",
+      "elapsed_ms": 608,
+      "error": "",
+      "excerpt": "{\"@odata.context\":\"https://api.uktradeinfo.com/$metadata#CommoditySearch\",\"value\":[{\"CommoditySearchId\":\"9018\",\"Description\":\"Instruments and appliances used in medical, surgical, dental or veterinary sciences, incl. scintigraphic apparatus, other electro-medical apparatus and sight-testing instrume",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "commodity_search_hs9018",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:30.074287Z",
+        "http_status": 200,
+        "name": "commodity_search_hs9018.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_hmrc_trade\\commodity_search_hs9018.json",
+        "request_name": "commodity_search_hs9018",
+        "request_url": "https://api.uktradeinfo.com/CommoditySearch?%24filter=startswith%28Hs4Code%2C%279018%27%29&%24top=2",
+        "sha256_full": "46ae87cb0c339f99a080025959c629446e8d419ad0000793f21db7ad20ae78b7",
+        "sha256_stored": "46ae87cb0c339f99a080025959c629446e8d419ad0000793f21db7ad20ae78b7",
+        "stored_bytes": 1289,
+        "total_bytes": 1289,
+        "truncated": false
+      },
+      "sha256": "46ae87cb0c339f99a080025959c629446e8d419ad0000793f21db7ad20ae78b7",
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "@odata.context",
+          "value"
+        ],
+        "sample": {
+          "@odata.context": {
+            "__type__": "string",
+            "max_len": 53
+          },
+          "value": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "CommoditySearchId",
+                "Description",
+                "Hs2Code",
+                "Hs2Description",
+                "Hs4Code",
+                "Hs4Description",
+                "Hs6Code",
+                "Hs6Description"
+              ],
+              "sample": {
+                "CommoditySearchId": "str",
+                "Description": "str",
+                "Hs2Code": "str",
+                "Hs2Description": "str",
+                "Hs4Code": "str",
+                "Hs4Description": "str",
+                "Hs6Code": "NoneType",
+                "Hs6Description": "NoneType"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "url": "https://api.uktradeinfo.com/CommoditySearch?%24filter=startswith%28Hs4Code%2C%279018%27%29&%24top=2"
+    },
+    {
+      "bytes": 420,
+      "content_type": "application/json; odata.metadata=minimal",
+      "elapsed_ms": 592,
+      "error": "",
+      "excerpt": "{\"@odata.context\":\"https://api.uktradeinfo.com/$metadata#OTS\",\"value\":[{\"MonthId\":200001,\"FlowTypeId\":1,\"SuppressionIndex\":0,\"CommodityId\":-990,\"CommoditySitcId\":-1,\"CountryId\":959,\"PortId\":-1,\"Value\":148391144.0,\"NetMass\":null,\"SuppUnit\":null},{\"MonthId\":200002,\"FlowTypeId\":1,\"SuppressionIndex\":0,\"",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "ots_aggregate_sample",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:30.859498Z",
+        "http_status": 200,
+        "name": "ots_aggregate_sample.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_hmrc_trade\\ots_aggregate_sample.json",
+        "request_name": "ots_aggregate_sample",
+        "request_url": "https://api.uktradeinfo.com/OTS?%24top=2",
+        "sha256_full": "e05b0732bd6f1b6d21600393da0f5b33fd10713be08e79c615556ebb6f10ce48",
+        "sha256_stored": "e05b0732bd6f1b6d21600393da0f5b33fd10713be08e79c615556ebb6f10ce48",
+        "stored_bytes": 420,
+        "total_bytes": 420,
+        "truncated": false
+      },
+      "sha256": "e05b0732bd6f1b6d21600393da0f5b33fd10713be08e79c615556ebb6f10ce48",
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "@odata.context",
+          "value"
+        ],
+        "sample": {
+          "@odata.context": {
+            "__type__": "string",
+            "max_len": 41
+          },
+          "value": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "CommodityId",
+                "CommoditySitcId",
+                "CountryId",
+                "FlowTypeId",
+                "MonthId",
+                "NetMass",
+                "PortId",
+                "SuppUnit",
+                "SuppressionIndex",
+                "Value"
+              ],
+              "sample": {
+                "CommodityId": "int",
+                "CommoditySitcId": "int",
+                "CountryId": "int",
+                "FlowTypeId": "int",
+                "MonthId": "int",
+                "NetMass": "NoneType",
+                "PortId": "int",
+                "SuppUnit": "NoneType",
+                "SuppressionIndex": "int",
+                "Value": "float"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "url": "https://api.uktradeinfo.com/OTS?%24top=2"
+    }
+  ],
+  "requests": 5,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "uk_hmrc_trade",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:48:30.861497Z"
+}

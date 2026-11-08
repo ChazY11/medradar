@@ -1,0 +1,43 @@
+{
+  "api_available": "YES",
+  "authentication": "none",
+  "bulk_download_available": "PARTIAL",
+  "category": "scholarly_literature",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free",
+  "country_or_region": "EU",
+  "domain": "C",
+  "entity_identifiers": [
+    "OpenAIRE id",
+    "DOI",
+    "ORCID",
+    "PMCID"
+  ],
+  "evidence_urls": [
+    "https://api.openaire.eu/graph/v1/researchProducts?search=stent&pageSize=2",
+    "https://api.openaire.eu/search/publications?title=stent&format=json&size=2"
+  ],
+  "free_tier": "free, no key required",
+  "historical_coverage": "aggregates repositories worldwide; strongest for EU-funded output from the 2000s",
+  "known_limitations": [
+    "as an aggregator it re-publishes the same paper from many repositories: DOI de-duplication is mandatory before counting",
+    "the graph record id is an internal dedup hash, not an authoritative external id",
+    "dateOfAcceptance is repository acceptance, not publication"
+  ],
+  "licence": "OpenAIRE Graph metadata is CC-BY 4.0; aggregated repository records keep their own rights",
+  "official_or_commercial": "official",
+  "official_url": "https://api.openaire.eu/",
+  "probe_priority": "P2",
+  "rate_limits": "not published as a hard number; fair-use (we paced at 1 req/s)",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "Best coverage of EU-funded and repository-hosted output (Horizon projects), which is where European device manufacturers publish; useful complement to OpenAlex for non-US literature.",
+  "source_id": "openaire",
+  "source_name": "OpenAIRE Graph API",
+  "timestamp_fields": [
+    "publicationDate",
+    "dateOfAcceptance",
+    "lastUpdateTimeStamp"
+  ],
+  "update_frequency": "daily/weekly (graph rebuilds)",
+  "verified_at": "2026-11-09"
+}

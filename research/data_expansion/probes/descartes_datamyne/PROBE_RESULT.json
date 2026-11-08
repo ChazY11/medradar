@@ -1,0 +1,100 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://www.datamyne.com/",
+    "https://www.descartes.com/datamyne",
+    "https://www.descartes.com/solutions/customs-and-regulatory-compliance"
+  ],
+  "notes": "Quote-based commercial BoL data (Descartes); documented URL in SOURCE_ID_INDEX is 404, live page is /datamyne.",
+  "probes": [
+    {
+      "bytes": 352637,
+      "content_type": "text/html; charset=UTF-8",
+      "elapsed_ms": 750,
+      "error": "",
+      "excerpt": "<!DOCTYPE html> <html lang=\"en-US\"> <head> \t<meta charset=\"UTF-8\" /> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"> \t<link rel=\"pingback\" href=\"https://www.datamyne.com/xmlrpc.php\" />  \t<script type=\"text/javascript\"> \t\tdocument.documentElement.className = 'js'; \t</script> \t \t<script id=\"divi",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "datamyne_home",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:43.838734Z",
+        "http_status": 200,
+        "name": "datamyne_home.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\descartes_datamyne\\datamyne_home.html",
+        "request_name": "datamyne_home",
+        "request_url": "https://www.datamyne.com/",
+        "sha256_full": "594da072a95e5ae44872940cef06422b85d3783d4eddc51a2d0a084012292bac",
+        "sha256_stored": "594da072a95e5ae44872940cef06422b85d3783d4eddc51a2d0a084012292bac",
+        "stored_bytes": 352637,
+        "total_bytes": 352637,
+        "truncated": false
+      },
+      "sha256": "594da072a95e5ae44872940cef06422b85d3783d4eddc51a2d0a084012292bac",
+      "status": 200,
+      "structure": null,
+      "url": "https://www.datamyne.com/"
+    },
+    {
+      "bytes": 331767,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 1217,
+      "error": "",
+      "excerpt": "<!DOCTYPE html> <html lang=\"en\" dir=\"ltr\" prefix=\"og: https://ogp.me/ns#\">   <head>         <meta name='be:drupal-theme' content='1.0.0'> <!-- be_ixf, sdk, gho--> <meta name=\"be:sdk\" content=\"php_sdk_1.5.12\" /> <meta name=\"be:timer\" content=\"88ms\" /> <meta name=\"be:norm_url\" content=\"https%3A%2F%2Fw",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "descartes_datamyne_page",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:45.109208Z",
+        "http_status": 200,
+        "name": "descartes_datamyne.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\descartes_datamyne\\descartes_datamyne.html",
+        "request_name": "descartes_datamyne_page",
+        "request_url": "https://www.descartes.com/datamyne",
+        "sha256_full": "c227e4d1ed249e968e36bf55ae03c9e06293ded07b0431b2a0da3ea6204e7395",
+        "sha256_stored": "c227e4d1ed249e968e36bf55ae03c9e06293ded07b0431b2a0da3ea6204e7395",
+        "stored_bytes": 331767,
+        "total_bytes": 331767,
+        "truncated": false
+      },
+      "sha256": "c227e4d1ed249e968e36bf55ae03c9e06293ded07b0431b2a0da3ea6204e7395",
+      "status": 200,
+      "structure": null,
+      "url": "https://www.descartes.com/datamyne"
+    },
+    {
+      "bytes": 369762,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 343,
+      "error": "",
+      "excerpt": "<!DOCTYPE html> <html lang=\"en\" dir=\"ltr\" prefix=\"og: https://ogp.me/ns#\">   <head>         <meta name='be:drupal-theme' content='1.0.0'> <!-- be_ixf, sdk, gho--> <meta name=\"be:sdk\" content=\"php_sdk_1.5.12\" /> <meta name=\"be:timer\" content=\"87ms\" /> <meta name=\"be:norm_url\" content=\"https%3A%2F%2Fw",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "descartes_solutions_page",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:45.449239Z",
+        "http_status": 200,
+        "name": "descartes_solutions.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\descartes_datamyne\\descartes_solutions.html",
+        "request_name": "descartes_solutions_page",
+        "request_url": "https://www.descartes.com/solutions/customs-and-regulatory-compliance",
+        "sha256_full": "c053e1bae0611597b6261c3b05b22469969bdcf9e2e4199d04e5a32b912903b2",
+        "sha256_stored": "c053e1bae0611597b6261c3b05b22469969bdcf9e2e4199d04e5a32b912903b2",
+        "stored_bytes": 369762,
+        "total_bytes": 369762,
+        "truncated": false
+      },
+      "sha256": "c053e1bae0611597b6261c3b05b22469969bdcf9e2e4199d04e5a32b912903b2",
+      "status": 200,
+      "structure": null,
+      "url": "https://www.descartes.com/solutions/customs-and-regulatory-compliance"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "descartes_datamyne",
+  "status": "PAID_ONLY",
+  "verified_at": "2026-11-08T21:48:45.451233Z"
+}

@@ -15,11 +15,15 @@
 
 CT.gov v2 returned 200 JSON with `studies`, `totalCount` and `nextPageToken`.  `statusModule.studyFirstPostDateStruct.date` is the first-public-registration date and is the only defensible `source_public_at`; `startDateStruct.date` is the study start and must not be substituted.  `sponsorCollaboratorsModule.leadSponsor.name` is the deterministic company field (identity.CompanyIndex.resolve).
 
-## Documentation checked
+## Documentation references
 
 - https://clinicaltrials.gov/data-api/api
 - https://clinicaltrials.gov/data-api/about-api
 - https://clinicaltrials.gov/data-api/api#/Studies/getStudies
+
+These are the reference pages recorded in the source register. Only the request
+URLs in the table above were exercised by this probe; a documentation URL is a
+citation, not a claim that the page was fetched during the probe.
 
 ## Reported status rationale
 

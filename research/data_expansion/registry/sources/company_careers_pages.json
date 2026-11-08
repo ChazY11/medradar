@@ -1,0 +1,44 @@
+{
+  "source_id": "company_careers_pages",
+  "source_name": "Company careers pages (direct, per-employer)",
+  "official_url": "https://www.medtronic.com/us-en/about/careers.html",
+  "country_or_region": "GLOBAL",
+  "domain": "G",
+  "category": "job_postings",
+  "official_or_commercial": "official",
+  "api_available": "NO",
+  "bulk_download_available": "NO",
+  "authentication": "none (public web pages)",
+  "free_tier": "free public web access",
+  "rate_limits": "UNKNOWN - no published limit; one request per firm was made",
+  "licence": "corporate website content; no open licence. Redistribution is not permitted for structured reuse.",
+  "redistribution_allowed": "NO",
+  "update_frequency": "continuous, employer-determined",
+  "historical_coverage": "current vacancies only; pages are not archived by the employer",
+  "entity_identifiers": [
+    "no identifier: vacancies are HTML fragments without stable ids",
+    "employer-specific requisition ids appear only inside the JS payloads we did not execute"
+  ],
+  "timestamp_fields": [
+    "generally absent from the HTML shell; posting dates live in client-rendered payloads",
+    "no reliable source_public_at can be obtained from the pages as fetched"
+  ],
+  "known_limitations": [
+    "An HTML careers page is a front door, not a job feed: 2 of 4 firm pages answered HTTP 200, one returned 403, one returned 404, and none of them contained vacancy records in the served HTML.",
+    "The Philips search-results page (200) is client-rendered: it contains no job entries in the HTML, so no records can be extracted without executing JavaScript, which this task does not do.",
+    "The Medtronic careers URL redirects to the corporate homepage; the page is a marketing page, so its many 'job'/'career' words are navigation text, not postings. Text counts are not evidence of hiring.",
+    "Without a publication timestamp in the HTML, first_observed_at would be the only clock - which cannot support any publication-relative analysis.",
+    "Page structure changes without notice and differs per firm per locale; a per-firm scraper is a maintenance burden with no cross-firm comparability.",
+    "Nothing here supports a technology-direction claim: vacancies are operational artefacts."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "Establishes the fallback's real cost: for these five firms the only remaining hiring route is bespoke per-employer scraping of client-rendered pages, with no publication clock and no cross-firm comparability. That is the evidence needed to recommend against using hiring volume as a MedRadar signal for these firms at this stage.",
+  "evidence_urls": [
+    "https://www.medtronic.com/us-en/about/careers.html",
+    "https://www.careers.philips.com/global/en/search-results",
+    "https://www.draeger.com/en-us/Company/Careers"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free but brittle; no API",
+  "probe_priority": "P3"
+}

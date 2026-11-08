@@ -1,0 +1,41 @@
+{
+  "api_available": "YES",
+  "authentication": "none for the manifest and for download.open.fda.gov (static ZIP files)",
+  "bulk_download_available": "YES",
+  "category": "bulk_export_manifest",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free; no SLA and no commercial support; FDA may throttle or restrict access per its terms",
+  "country_or_region": "US",
+  "domain": "A",
+  "entity_identifiers": [
+    "inherits the identifiers of whichever endpoint is exported (510(k) number, PMA number, UDI-DI, product_code, registration number)"
+  ],
+  "evidence_urls": [
+    "https://api.fda.gov/download.json",
+    "https://download.open.fda.gov/device/classification/device-classification-0001-of-0001.json.zip",
+    "https://open.fda.gov/license/"
+  ],
+  "free_tier": "free",
+  "historical_coverage": "full history per endpoint: device/udi 5,182,695 records in 52 parts; device/event 26,557,775 in 375 parts; device/510k 176,529 in 1 part (238.55 MB); device/pma 57,421 (21.23 MB); device/classification 7,097 (3.13 MB)",
+  "known_limitations": [
+    "export_date is a snapshot/refresh clock for the whole export, not a publication date for any individual record; treating it as per-record publication would date everything to the snapshot day",
+    "sizes are hostile to a bounded study: device/510k is one 238.55 MB file and device/udi is 52 parts, so only small partitions (classification, 3.13 MB) were byte-verified in this pass",
+    "the manifest publishes sizes and record counts but no checksum, so integrity has to be established locally (we hash what we download)",
+    "partitions of one endpoint are not independent datasets; concatenating them without keeping the export_date loses the snapshot identity"
+  ],
+  "licence": "public domain: FDA dedicates openFDA content/data to the public domain under a Creative Commons CC0 1.0 Universal dedication (open.fda.gov/license/, verified)",
+  "official_or_commercial": "official",
+  "official_url": "https://api.fda.gov/download.json",
+  "probe_priority": "P0",
+  "rate_limits": "manifest request obeys the openFDA API limits; the export partitions are served as static files with no documented per-file throttle",
+  "redistribution_allowed": "YES",
+  "research_value": "The only route to a reproducible, rate-limit-free snapshot of the US device regulatory corpus: one manifest lists every endpoint's export_date, part count and record count, so a study can pin an exact vintage instead of drifting with a live API. This is what makes a defensible point-in-time backfill possible at all.",
+  "source_id": "openfda_bulk_download",
+  "source_name": "openFDA bulk download manifest",
+  "timestamp_fields": [
+    "export_date (per endpoint, in the manifest - a snapshot clock)",
+    "each partition's records carry their own event dates (e.g. decision_date, publish_date)"
+  ],
+  "update_frequency": "per endpoint; observed export_date 2026-11-02 (510k, pma, classification, registrationlisting), 2026-11-03 (udi), 2026-11-06 (recall)",
+  "verified_at": "2026-11-09"
+}

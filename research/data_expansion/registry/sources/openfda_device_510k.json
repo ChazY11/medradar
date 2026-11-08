@@ -1,0 +1,49 @@
+{
+  "api_available": "YES",
+  "authentication": "none (anonymous calls work); optional free API key only raises the daily quota",
+  "bulk_download_available": "YES",
+  "category": "regulatory_clearance",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free; no SLA and no commercial support; FDA may throttle or restrict access per its terms",
+  "country_or_region": "US",
+  "domain": "A",
+  "entity_identifiers": [
+    "510(k) number (k_number) - the authoritative clearance identifier",
+    "product_code (joins to the classification dictionary)",
+    "applicant (submitter legal entity, free text; subsidiaries appear as separate strings)",
+    "openfda.registration_number (establishment registration numbers, many per record)",
+    "UNKNOWN - a UDI-DI is not on the 510(k) record itself; the link runs the other way via device/udi premarket_submissions"
+  ],
+  "evidence_urls": [
+    "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B2024-01-01+TO+2024-12-31%5D&limit=2",
+    "https://api.fda.gov/device/510k.json?search=applicant%3Amedtronic&limit=3",
+    "https://open.fda.gov/license/",
+    "https://open.fda.gov/terms/",
+    "https://open.fda.gov/apis/authentication/"
+  ],
+  "free_tier": "free; no key needed (1,000 req/day per IP); free key raises it to 120,000/day",
+  "historical_coverage": "510(k) decisions from 1976 onwards; 176,529 records in the 2026-11-02 bulk export, 3,129 of them with a 2024 decision_date",
+  "known_limitations": [
+    "no per-record first-publication timestamp exists: the source publishes decision_date and date_received only, so source_public_at can only be derived from the decision date and must be flagged as derived, never presented as a published-on date",
+    "`applicant` is the filed submitter entity; Medtronic Puerto Rico, Covidien, Philips Ultrasound LLC etc. are separate strings, so company linkage depends on the alias index and stays a candidate where the alias layer is unsure",
+    "`skip` is capped at 25,000: a complete backfill is only possible by splitting decision_date windows",
+    "the device model/UDI is absent, so 510(k) cannot be joined to GUDID from this side",
+    "openFDA is a secondary publication of FDA's CDRH database, not the legal record"
+  ],
+  "licence": "public domain: FDA dedicates openFDA content/data to the public domain under a Creative Commons CC0 1.0 Universal dedication (open.fda.gov/license/, verified)",
+  "official_or_commercial": "official",
+  "official_url": "https://open.fda.gov/apis/device/510k/",
+  "probe_priority": "P0",
+  "rate_limits": "documented: 240 requests/min and 1,000 requests/day per IP without a key; 240/min and 120,000/day with a free key (open.fda.gov/apis/authentication/, verified). `skip` is capped at 25,000, so full history requires splitting by decision_date windows",
+  "redistribution_allowed": "YES",
+  "research_value": "The densest free, machine-readable pre-market clearance stream for the US market, which is the home market of Medtronic, GE HealthCare and (for a large share of portfolio) Philips. decision_date gives a clean event clock for clearance timing and product_code gives the device-family join, so it anchors the US half of any cross-market device launch comparison.",
+  "source_id": "openfda_device_510k",
+  "source_name": "openFDA device 510(k)",
+  "timestamp_fields": [
+    "decision_date (clearance decision = event clock)",
+    "date_received (filing date, earlier than the decision)",
+    "meta.last_updated (endpoint-level refresh stamp, NOT per-record publication)"
+  ],
+  "update_frequency": "continuous; endpoint `meta.last_updated` observed as 2026-10-26 for device/510k",
+  "verified_at": "2026-11-09"
+}

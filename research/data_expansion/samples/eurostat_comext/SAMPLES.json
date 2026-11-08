@@ -1,0 +1,83 @@
+{
+  "generated_at": "2026-11-08T21:59:08.579649Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 4,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 4,
+      "source_id": "eurostat_comext",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "hs9018_de_exports_2023.json",
+      "hash_verified": true,
+      "name": "hs9018_de_exports_2023.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eurostat_comext\\hs9018_de_exports_2023.json",
+      "sha256_full": "7be23c33828bcbbdce7c42b5d3c6ad333ce06867818925f96c8c3e67f8637e21",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "7be23c33828bcbbdce7c42b5d3c6ad333ce06867818925f96c8c3e67f8637e21",
+      "source": "recovered_from_disk",
+      "stored_bytes": 2027,
+      "total_bytes": 2027,
+      "truncated": false
+    },
+    {
+      "file": "hs9018_de_imports_2023.json",
+      "hash_verified": true,
+      "name": "hs9018_de_imports_2023.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eurostat_comext\\hs9018_de_imports_2023.json",
+      "sha256_full": "95f8c5b16c6200f363c291ecd367e0edecdee8637e248c1ad27bbbcec0042d0e",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "95f8c5b16c6200f363c291ecd367e0edecdee8637e248c1ad27bbbcec0042d0e",
+      "source": "recovered_from_disk",
+      "stored_bytes": 2027,
+      "total_bytes": 2027,
+      "truncated": false
+    },
+    {
+      "file": "hs9402_de_imports_2023.json",
+      "hash_verified": true,
+      "name": "hs9402_de_imports_2023.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eurostat_comext\\hs9402_de_imports_2023.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9402&flow=1&time=2023&indicators=VALUE_IN_EUROS",
+      "sha256_full": "4264be87a05ae9d0f9c3c62a7915d179526fca12309d3faa0a961ed226ae6974",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "4264be87a05ae9d0f9c3c62a7915d179526fca12309d3faa0a961ed226ae6974",
+      "source": "recovered_from_disk",
+      "stored_bytes": 2109,
+      "total_bytes": 2109,
+      "truncated": false
+    },
+    {
+      "file": "official_data_page.html",
+      "hash_verified": true,
+      "name": "official_data_page.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eurostat_comext\\official_data_page.html",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://ec.europa.eu/eurostat/web/international-trade-in-goods/database",
+      "sha256_full": "e32b42da72e77ca09cdf66776745720768716e65e8d9b62358449da941f942cc",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "e32b42da72e77ca09cdf66776745720768716e65e8d9b62358449da941f942cc",
+      "source": "recovered_from_disk",
+      "stored_bytes": 195343,
+      "total_bytes": 195343,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "eurostat_comext"
+}

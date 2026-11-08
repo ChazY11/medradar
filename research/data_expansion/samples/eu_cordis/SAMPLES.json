@@ -1,29 +1,95 @@
 {
-  "files": [
+  "generated_at": "2026-11-08T21:59:08.402107Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 5,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 5,
+      "source_id": "eu_cordis",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
     {
-      "fetched_at": "2026-11-08T21:43:36.813329Z",
-      "name": "cordis_search_free.json",
-      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_cordis\\cordis_search_free.json",
-      "sha256_full": "e9cb4fdd250ae0516e1fcc3d117020a746a0ff36df06c2106701aab247c1580a",
-      "sha256_stored": "e9cb4fdd250ae0516e1fcc3d117020a746a0ff36df06c2106701aab247c1580a",
-      "stored_bytes": 56495,
-      "total_bytes": 56495,
-      "truncated": false,
-      "url": "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&p=1"
+      "file": "cordis_project_json.json",
+      "hash_verified": true,
+      "name": "cordis_project_json.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_cordis\\cordis_project_json.json",
+      "sha256_full": "bf2c4e13017b1e180b6149931d746edbaa8af90034764e071a29b7a31fc891a9",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "bf2c4e13017b1e180b6149931d746edbaa8af90034764e071a29b7a31fc891a9",
+      "source": "recovered_from_disk",
+      "stored_bytes": 63815,
+      "total_bytes": 63815,
+      "truncated": false
     },
     {
-      "fetched_at": "2026-11-08T21:43:42.551123Z",
+      "file": "cordis_project_json_en.json",
+      "hash_verified": true,
+      "name": "cordis_project_json_en.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_cordis\\cordis_project_json_en.json",
+      "sha256_full": "bf2c4e13017b1e180b6149931d746edbaa8af90034764e071a29b7a31fc891a9",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "bf2c4e13017b1e180b6149931d746edbaa8af90034764e071a29b7a31fc891a9",
+      "source": "recovered_from_disk",
+      "stored_bytes": 63815,
+      "total_bytes": 63815,
+      "truncated": false
+    },
+    {
+      "file": "cordis_search_contenttype.json",
+      "hash_verified": true,
       "name": "cordis_search_contenttype.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
       "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_cordis\\cordis_search_contenttype.json",
       "sha256_full": "e9cb4fdd250ae0516e1fcc3d117020a746a0ff36df06c2106701aab247c1580a",
+      "sha256_source": "recomputed_from_disk",
       "sha256_stored": "e9cb4fdd250ae0516e1fcc3d117020a746a0ff36df06c2106701aab247c1580a",
+      "source": "recovered_from_disk",
       "stored_bytes": 56495,
       "total_bytes": 56495,
-      "truncated": false,
-      "url": "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&contenttype=project"
+      "truncated": false
+    },
+    {
+      "file": "cordis_search_free.json",
+      "hash_verified": true,
+      "name": "cordis_search_free.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_cordis\\cordis_search_free.json",
+      "sha256_full": "e9cb4fdd250ae0516e1fcc3d117020a746a0ff36df06c2106701aab247c1580a",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "e9cb4fdd250ae0516e1fcc3d117020a746a0ff36df06c2106701aab247c1580a",
+      "source": "recovered_from_disk",
+      "stored_bytes": 56495,
+      "total_bytes": 56495,
+      "truncated": false
+    },
+    {
+      "file": "cordis_search_project.json",
+      "hash_verified": true,
+      "name": "cordis_search_project.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_cordis\\cordis_search_project.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://cordis.europa.eu/search/en?q=contenttype%3Dproject+AND+keyword%3Dstent&format=json&num=2",
+      "sha256_full": "1ec6eef7f686524b8e812eaae5f2eada02184aed41a702f683219a86b4bdf4d3",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "1ec6eef7f686524b8e812eaae5f2eada02184aed41a702f683219a86b4bdf4d3",
+      "source": "recovered_from_disk",
+      "stored_bytes": 789,
+      "total_bytes": 789,
+      "truncated": false
     }
   ],
-  "generated_at": "2026-11-08T21:43:46.221624Z",
-  "note": "Raw response slices captured by the probe.  Must not be hand-edited.",
+  "schema": "medradar.external.samples.v1",
   "source_id": "eu_cordis"
 }

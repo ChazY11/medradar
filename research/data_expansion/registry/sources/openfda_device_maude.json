@@ -1,0 +1,51 @@
+{
+  "source_id": "openfda_device_maude",
+  "source_name": "openFDA device adverse events (MAUDE)",
+  "official_url": "https://open.fda.gov/apis/device/event/",
+  "country_or_region": "US",
+  "domain": "I",
+  "category": "postmarket_adverse_event",
+  "official_or_commercial": "official",
+  "api_available": "YES",
+  "bulk_download_available": "PARTIAL",
+  "authentication": "none in practice; an API key is optional and raises the documented daily limit and the count-bucket cap",
+  "free_tier": "free; unauthenticated requests work, documented limits 240 requests/minute and 1,000 requests/day per IP",
+  "rate_limits": "240 req/min, 1,000 req/day per IP without a key; 240 req/min, 120,000 req/day with a free key. Unauthenticated aggregate count is capped at 100 buckets: count=...&limit=1000 returns HTTP 403 API_KEY_MISSING (verified live).",
+  "licence": "public domain / CC0 1.0 Universal dedication (openFDA device/event data); FDA website content is public domain unless otherwise noted",
+  "redistribution_allowed": "YES",
+  "update_frequency": "weekly (API metadata last_updated observed as 2026-10-20 at probe time)",
+  "historical_coverage": "publicly releasable MDRs from about 1992 to present (openFDA prose); the API key-facts block says 2009 to null, so the exact API floor is UNKNOWN and was not assumed",
+  "entity_identifiers": [
+    "mdr_report_key",
+    "report_number",
+    "pma_pmn_number (per device)"
+  ],
+  "timestamp_fields": [
+    "date_of_event",
+    "date_received",
+    "date_report",
+    "date_report_to_fda",
+    "date_facility_aware",
+    "date_added",
+    "date_changed"
+  ],
+  "known_limitations": [
+    "PASSIVE REPORTING COUNT, NOT A FAILURE RATE. MAUDE only contains reports someone chose to submit; there is no denominator of devices in use. openFDA states that incidence or prevalence cannot be determined from this system alone and that increases in report volume are likely caused by improved reporting.",
+    "Report counts are strongly shaped by reporting incentives, litigation, media attention and FDA collection efforts, so a rising count can mean better reporting rather than worse quality. This source must never be used to infer quality deterioration.",
+    "date_of_event, date_received, date_report, date_report_to_fda and date_added are five different facts. date_received (FDA receipt) is only a proxy for public visibility and is labelled as such in every record.",
+    "The manufacturer identity lives in device[].manufacturer_d_name (an array); the top-level manufacturer_name is empty for historical records and the bare field name is not searchable (HTTP 404).",
+    "Unauthenticated count aggregation on keyword fields returns at most 100 buckets, so an exact-name census is truncated; the residual must be reported as unknown.",
+    "A report may cover several devices and a keyword search matches reports in which at least one device entry matches, so family counts are not mutually exclusive across firms.",
+    "openFDA rejects non-ASCII search terms (e.g. recalling/manufacturer 'dräger' -> HTTP 400 'Search not supported'), so diacritic spellings can only be reached through ASCII variants."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "Provides the largest dated postmarket adverse-event stream for device firms, with an event clock (date_of_event) and a receipt clock (date_received) that MedRadar can keep separate. It is the main source for 'how much postmarket signal existed before a recall/clearance decision' — but only as reporting activity, never as a rate or a quality measure.",
+  "evidence_urls": [
+    "https://open.fda.gov/apis/device/event/",
+    "https://open.fda.gov/apis/authentication/",
+    "https://open.fda.gov/license/"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free; no registration required; polite serial access at >= 0.9 s interval used by this project",
+  "probe_priority": "P0"
+}

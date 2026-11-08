@@ -1,0 +1,209 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://www.gov.uk/api/search.json?q=medical+device+register&filter_organisations=medicines-and-healthcare-products-regulatory-agency&count=5&fields=title%2Clink%2Cdescription%2Cpublic_timestamp",
+    "https://www.gov.uk/api/search.json?q=public+register+medical+devices+searchable&filter_organisations=medicines-and-healthcare-products-regulatory-agency&count=3&fields=title%2Clink%2Cpublic_timestamp"
+  ],
+  "notes": "GOV.UK search for MHRA device material returns only *guidance* (how a manufacturer registers a device), not a public register of licensed products: the UK has no searchable public medical-device register equivalent to MDALL/EUDAMED/GUDID. There is therefore no product-level UK regulatory dataset to collect.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 2396,
+      "elapsed_ms": 375,
+      "error": "",
+      "links": [
+        "/guidance/register-medical-devices-to-place-on-the-market",
+        "/guidance/regulating-medical-devices-in-the-uk",
+        "/guidance/medical-devices-eu-regulations-for-mdr-and-ivdr",
+        "/guidance/export-medical-devices-special-rules",
+        "/guidance/medical-devices-how-to-comply-with-the-legal-requirements"
+      ],
+      "name": "govuk_search_medical_device_register",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "govuk_search_medical_device_register.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_mhra_device\\govuk_search_medical_device_register.json",
+        "sha256_full": "635993fbc98a167b3329f1d60ac646ec209f05536ce26f812edf4b040624320c",
+        "sha256_stored": "635993fbc98a167b3329f1d60ac646ec209f05536ce26f812edf4b040624320c",
+        "stored_bytes": 2396,
+        "total_bytes": 2396,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "aggregates",
+          "es_cluster",
+          "results",
+          "start",
+          "suggested_autocomplete",
+          "suggested_queries",
+          "total"
+        ],
+        "sample": {
+          "aggregates": {
+            "__type__": "object",
+            "keys": [],
+            "sample": {}
+          },
+          "es_cluster": {
+            "__type__": "string",
+            "max_len": 1
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "_id",
+                "description",
+                "document_type",
+                "elasticsearch_type",
+                "es_score",
+                "index",
+                "link",
+                "public_timestamp",
+                "title"
+              ],
+              "sample": {
+                "_id": "str",
+                "description": "str",
+                "document_type": "str",
+                "elasticsearch_type": "str",
+                "es_score": "float",
+                "index": "str",
+                "link": "str",
+                "public_timestamp": "str",
+                "title": "str"
+              }
+            },
+            "len": 5
+          },
+          "start": {
+            "__type__": "int"
+          },
+          "suggested_autocomplete": {
+            "__type__": "array",
+            "item": null,
+            "len": 0
+          },
+          "suggested_queries": {
+            "__type__": "array",
+            "item": null,
+            "len": 0
+          },
+          "total": {
+            "__type__": "int"
+          }
+        }
+      },
+      "titles": [
+        "Register medical devices to place on the market",
+        "Regulating medical devices in the UK",
+        "Regulation of medical devices in Northern Ireland",
+        "Certificate of Free Sale for exporting medical devices",
+        "Medical devices: how to comply with legal requirements in Great Britain"
+      ],
+      "total": 3271,
+      "url": "https://www.gov.uk/api/search.json?q=medical+device+register&filter_organisations=medicines-and-healthcare-products-regulatory-agency&count=5&fields=title%2Clink%2Cdescription%2Cpublic_timestamp"
+    },
+    {
+      "attempts": 1,
+      "bytes": 1549,
+      "elapsed_ms": 297,
+      "error": "",
+      "name": "govuk_search_public_register",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "govuk_search_public_register.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_mhra_device\\govuk_search_public_register.json",
+        "sha256_full": "9862f0f7414a62a9a76680f1f265ca6c803eb1379605c2cc58dccb3e0fe0eae2",
+        "sha256_stored": "9862f0f7414a62a9a76680f1f265ca6c803eb1379605c2cc58dccb3e0fe0eae2",
+        "stored_bytes": 1549,
+        "total_bytes": 1549,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "aggregates",
+          "es_cluster",
+          "results",
+          "start",
+          "suggested_autocomplete",
+          "suggested_queries",
+          "total"
+        ],
+        "sample": {
+          "aggregates": {
+            "__type__": "object",
+            "keys": [],
+            "sample": {}
+          },
+          "es_cluster": {
+            "__type__": "string",
+            "max_len": 1
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "_id",
+                "document_type",
+                "elasticsearch_type",
+                "es_score",
+                "index",
+                "link",
+                "public_timestamp",
+                "title"
+              ],
+              "sample": {
+                "_id": "str",
+                "document_type": "str",
+                "elasticsearch_type": "str",
+                "es_score": "float",
+                "index": "str",
+                "link": "str",
+                "public_timestamp": "str",
+                "title": "str"
+              }
+            },
+            "len": 3
+          },
+          "start": {
+            "__type__": "int"
+          },
+          "suggested_autocomplete": {
+            "__type__": "array",
+            "item": null,
+            "len": 0
+          },
+          "suggested_queries": {
+            "__type__": "array",
+            "item": null,
+            "len": 0
+          },
+          "total": {
+            "__type__": "int"
+          }
+        }
+      },
+      "titles": [
+        "Health Institution Exemption for general medical devices",
+        "Consultation on Medical Devices Regulations: Routes to market and in vitro diagnostic devices",
+        "Public Assessment Report: Recommendations to support the effective and safe use of adrenaline auto-injectors"
+      ],
+      "url": "https://www.gov.uk/api/search.json?q=public+register+medical+devices+searchable&filter_organisations=medicines-and-healthcare-products-regulatory-agency&count=3&fields=title%2Clink%2Cpublic_timestamp"
+    }
+  ],
+  "requests": 2,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "uk_mhra_device",
+  "status": "UNAVAILABLE",
+  "verified_at": "2026-11-08T21:59:18.612348Z"
+}

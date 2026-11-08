@@ -104,6 +104,38 @@ def broken_modules(connectors: Mapping[str, Connector]) -> list[str]:
     return list(entry.module.get("broken", []))
 
 
+def _call_collect(connector: Connector, client: base.HttpClient, limit: int) -> list:
+    """Call a connector's ``collect`` with only the keyword arguments it declares.
+
+    The protocol asks for ``collect(client, *, limit=50)``.  Two connectors in the
+    regulatory domain deliberately take no ``limit`` (their sources return one
+    complete small page), and the ATS connectors require a board token that no
+    target firm has.  Rather than fail the whole collection, the harness adapts
+    and records the deviation in the collection report.
+    """
+    import inspect
+
+    signature = inspect.signature(connector.collect)
+    params = signature.parameters
+    accepts_kwargs = any(p.kind is inspect.Parameter.VAR_KEYWORD for p in params.values())
+    if "limit" in params or accepts_kwargs:
+        return connector.collect(client, limit=limit)
+    return connector.collect(client)
+
+
+def normalise_records(result: Any) -> tuple[list, dict[str, Any]]:
+    """Accept either ``[record, ...]`` or the ``(records, meta)`` shape.
+
+    A connector that also returns fetch metadata is fine; what is not fine is a
+    harness that crashes on it and loses otherwise valid evidence.
+    """
+    if isinstance(result, tuple) and len(result) == 2 and isinstance(result[0], list):
+        return result[0], dict(result[1]) if isinstance(result[1], dict) else {}
+    if isinstance(result, list):
+        return result, {}
+    return [], {"unexpected_return_type": type(result).__name__}
+
+
 def _client(source_id: str, ledger_dir: Path, budget: int, min_interval: float) -> base.HttpClient:
     ledger_dir.mkdir(parents=True, exist_ok=True)
     ledger = base.HttpLedger(ledger_dir / f"requests_{source_id}.jsonl")
@@ -153,7 +185,9 @@ def collect_source(
     with store.StagingStore(store_path) as db:
         db.start_run(run_id, connector.source_id, timeq.utc_iso(), producer=connector.module_name)
         try:
-            records = connector.collect(client, limit=limit) or []
+            records, meta = normalise_records(_call_collect(connector, client, limit))
+            if meta:
+                stats.notes.append(f"connector_meta: {json.dumps(meta, ensure_ascii=False)[:400]}")
             stats.returned = len(records)
             for record in records:
                 problems = schema.validate_evidence(record)

@@ -1,0 +1,3829 @@
+{
+  "generated_at": "2026-11-08T22:15:53.167424Z",
+  "policy": {
+    "failure_logging": "every request, including failures, is in requests.jsonl",
+    "no_access_control_bypass": true,
+    "no_payment": true,
+    "no_registration": true,
+    "per_source_request_budget": "<= 20 requests per source per probe (protocol)",
+    "retries": "bounded (max 2) and only for 429/5xx/transport errors",
+    "single_user_agent": "MedRadar-Research/1.0 (academic, non-commercial)"
+  },
+  "schema": "medradar.external.access_verification.v1",
+  "sources": [
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=00643169718425",
+        "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=04049098054089",
+        "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=06944904092515",
+        "https://api.fda.gov/device/udi.json?search=identifiers.id%3A%2200643169718425%22&limit=1"
+      ],
+      "has_noted_md": false,
+      "notes": "AccessGUDID (NLM) /api/v3/devices/lookup?di= returns the GUDID record as JSON. GUDID is the upstream database that openFDA /device/udi.json re-publishes: the same DI yields the same publicDeviceRecordKey on both interfaces, so they are ONE evidence item, not two. GUDID publish_date is a real per-record first-publication date; public_version_date is a version stamp and must never be used as the first-publication date.",
+      "probe_count": 4,
+      "probe_result": "probes\\accessgudid\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 2987,
+          "elapsed_ms": 797,
+          "error": "",
+          "name": "lookup_medtronic_00643169718425",
+          "ok": true,
+          "status": 200,
+          "url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=00643169718425"
+        },
+        {
+          "bytes": 2867,
+          "elapsed_ms": 922,
+          "error": "",
+          "name": "lookup_draeger_04049098054089",
+          "ok": true,
+          "status": 200,
+          "url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=04049098054089"
+        },
+        {
+          "bytes": 2648,
+          "elapsed_ms": 750,
+          "error": "",
+          "name": "lookup_mindray_06944904092515",
+          "ok": true,
+          "status": 200,
+          "url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=06944904092515"
+        },
+        {
+          "bytes": 3677,
+          "elapsed_ms": 1047,
+          "error": "",
+          "name": "openfda_udi_same_di",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/udi.json?search=identifiers.id%3A%2200643169718425%22&limit=1"
+        }
+      ],
+      "request_log": "probes\\accessgudid\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 4,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1047,
+        "requests": 4,
+        "total_bytes": 12179,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "accessgudid",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:51:09.518902Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://health-products.canada.ca/api/documentation/mdall-documentation-en.html",
+        "https://health-products.canada.ca/api/medical-devices/company/?company_name=MEDTRONIC&type=json",
+        "https://health-products.canada.ca/api/medical-devices/company/?company_name=GE+HEALTHCARE&type=json",
+        "https://health-products.canada.ca/api/medical-devices/company/?company_name=PHILIPS&type=json",
+        "https://health-products.canada.ca/api/medical-devices/company/?company_name=DRAEGER&type=json",
+        "https://health-products.canada.ca/api/medical-devices/company/?company_name=MINDRAY&type=json",
+        "https://health-products.canada.ca/api/medical-devices/licence/?company_id=114663&state=active&lang=en&type=json",
+        "https://health-products.canada.ca/api/medical-devices/deviceidentifier/?device_identifier=00643169718425&state=active&type=json"
+      ],
+      "has_noted_md": false,
+      "notes": "Health Canada publishes a documented JSON/XML API (no key) for MDALL: company / licence / device / deviceidentifier. `first_licence_status_dt` (licence) and `first_licence_dt` (device) are the only real dates; `last_refresh_dt` is a database refresh stamp and `end_date` is a cancellation date, so neither may be used as the first-publication date. The deviceidentifier endpoint takes a real UDI-DI, which is an official bridge to GUDID for devices sold in both markets.",
+      "probe_count": 8,
+      "probe_result": "probes\\canada_mdall\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 72027,
+          "elapsed_ms": 718,
+          "error": "",
+          "name": "api_documentation",
+          "ok": true,
+          "status": 200,
+          "url": "https://health-products.canada.ca/api/documentation/mdall-documentation-en.html"
+        },
+        {
+          "bytes": 6909,
+          "elapsed_ms": 530,
+          "error": "",
+          "name": "company_search_medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=MEDTRONIC&type=json"
+        },
+        {
+          "bytes": 3836,
+          "elapsed_ms": 546,
+          "error": "",
+          "name": "company_search_ge_healthcare",
+          "ok": true,
+          "status": 200,
+          "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=GE+HEALTHCARE&type=json"
+        },
+        {
+          "bytes": 7604,
+          "elapsed_ms": 718,
+          "error": "",
+          "name": "company_search_philips",
+          "ok": true,
+          "status": 200,
+          "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=PHILIPS&type=json"
+        },
+        {
+          "bytes": 928,
+          "elapsed_ms": 1625,
+          "error": "",
+          "name": "company_search_draeger",
+          "ok": true,
+          "status": 200,
+          "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=DRAEGER&type=json"
+        },
+        {
+          "bytes": 532,
+          "elapsed_ms": 594,
+          "error": "",
+          "name": "company_search_mindray",
+          "ok": true,
+          "status": 200,
+          "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=MINDRAY&type=json"
+        },
+        {
+          "bytes": 131018,
+          "elapsed_ms": 67639,
+          "error": "",
+          "name": "licence_by_company",
+          "ok": true,
+          "status": 200,
+          "url": "https://health-products.canada.ca/api/medical-devices/licence/?company_id=114663&state=active&lang=en&type=json"
+        },
+        {
+          "bytes": 2,
+          "elapsed_ms": 1610,
+          "error": "",
+          "name": "device_identifier_00643169718425",
+          "ok": true,
+          "status": 200,
+          "url": "https://health-products.canada.ca/api/medical-devices/deviceidentifier/?device_identifier=00643169718425&state=active&type=json"
+        }
+      ],
+      "request_log": "probes\\canada_mdall\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 8,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 67639,
+        "requests": 8,
+        "total_bytes": 222856,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "canada_mdall",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:53:32.914756Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic&pageSize=2&countTotal=true",
+        "https://clinicaltrials.gov/api/v2/studies?query.term=stent&pageSize=2&countTotal=true",
+        "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips&pageSize=2&countTotal=true",
+        "https://clinicaltrials.gov/api/v2/studies/NCT01693120"
+      ],
+      "has_noted_md": true,
+      "notes": "CT.gov v2 returned 200 JSON with `studies`, `totalCount` and `nextPageToken`.  `statusModule.studyFirstPostDateStruct.date` is the first-public-registration date and is the only defensible `source_public_at`; `startDateStruct.date` is the study start and must not be substituted.  `sponsorCollaboratorsModule.leadSponsor.name` is the deterministic company field (identity.CompanyIndex.resolve).",
+      "probe_count": 4,
+      "probe_result": "probes\\clinicaltrials_gov\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 39795,
+          "elapsed_ms": 889,
+          "error": "",
+          "name": "sponsor_search",
+          "ok": null,
+          "status": 200,
+          "url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic&pageSize=2&countTotal=true"
+        },
+        {
+          "bytes": 15279,
+          "elapsed_ms": 375,
+          "error": "",
+          "name": "term_search",
+          "ok": null,
+          "status": 200,
+          "url": "https://clinicaltrials.gov/api/v2/studies?query.term=stent&pageSize=2&countTotal=true"
+        },
+        {
+          "bytes": 15235,
+          "elapsed_ms": 359,
+          "error": "",
+          "name": "sponsor_philips",
+          "ok": null,
+          "status": 200,
+          "url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips&pageSize=2&countTotal=true"
+        },
+        {
+          "bytes": 31773,
+          "elapsed_ms": 702,
+          "error": "",
+          "name": "study_detail",
+          "ok": null,
+          "status": 200,
+          "url": "https://clinicaltrials.gov/api/v2/studies/NCT01693120"
+        }
+      ],
+      "request_log": "probes\\clinicaltrials_gov\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 10,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1264,
+        "requests": 12,
+        "total_bytes": 242776,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "clinicaltrials_gov",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:43:30.566406Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.crossref.org/works?query=stent&rows=2&mailto=medradar.research%40example.org",
+        "https://api.crossref.org/works?query.bibliographic=Medtronic+pacemaker&rows=2&mailto=medradar.research%40example.org",
+        "https://api.crossref.org/works/10.1056/NEJMoa2034577?mailto=medradar.research%40example.org",
+        "https://api.crossref.org/works?filter=from-pub-date%3A2023-01-01%2Ctype%3Ajournal-article&query=stent&rows=1&mailto=medradar.research%40example.org",
+        "https://api.crossref.org/works?filter=has-funder%3Atrue%2Cfrom-pub-date%3A2020-01-01&query=stent&rows=2&mailto=medradar.research%40example.org"
+      ],
+      "has_noted_md": true,
+      "notes": "Crossref REST returned 200 JSON with `message.items` for query, bibliographic query and filter calls.  Works give DOI, `published-online`/`published-print` (must be kept apart), `created`/`deposited` (registration clocks, never publication dates), `funder[]` with award numbers and `relation`.  `mailto=` puts us in the polite pool.",
+      "probe_count": 5,
+      "probe_result": "probes\\crossref\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 3897,
+          "elapsed_ms": 593,
+          "error": "",
+          "name": "works_search",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.crossref.org/works?query=stent&rows=2&mailto=medradar.research%40example.org"
+        },
+        {
+          "bytes": 2937,
+          "elapsed_ms": 641,
+          "error": "",
+          "name": "works_bibliographic",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.crossref.org/works?query.bibliographic=Medtronic+pacemaker&rows=2&mailto=medradar.research%40example.org"
+        },
+        {
+          "bytes": 39930,
+          "elapsed_ms": 483,
+          "error": "",
+          "name": "work_doi",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.crossref.org/works/10.1056/NEJMoa2034577?mailto=medradar.research%40example.org"
+        },
+        {
+          "bytes": 5749,
+          "elapsed_ms": 484,
+          "error": "",
+          "name": "works_filter",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.crossref.org/works?filter=from-pub-date%3A2023-01-01%2Ctype%3Ajournal-article&query=stent&rows=1&mailto=medradar.research%40example.org"
+        },
+        {
+          "bytes": 33016,
+          "elapsed_ms": 765,
+          "error": "",
+          "name": "works_funder",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.crossref.org/works?filter=has-funder%3Atrue%2Cfrom-pub-date%3A2020-01-01&query=stent&rows=2&mailto=medradar.research%40example.org"
+        }
+      ],
+      "request_log": "probes\\crossref\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 9,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1141,
+        "requests": 9,
+        "total_bytes": 138041,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "crossref",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:42:29.722239Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://euclinicaltrials.eu/ctis-public-api/search",
+        "https://euclinicaltrials.eu/ctis-public-api/search",
+        "https://euclinicaltrials.eu/ctis-public-api/retrieve/2023-507015-35-00"
+      ],
+      "has_noted_md": true,
+      "notes": "CTIS exposes an unauthenticated JSON API at `https://euclinicaltrials.eu/ctis-public-api` (`POST /search`, `GET /retrieve/{ctNumber}`), used by its own public search front end. It is not a formally versioned/documented developer API, so the register records `api_available: PARTIAL`; `ctNumber` is the authoritative identifier and `decisionDate`/`publishDate` are the clock candidates (first public visibility).",
+      "probe_count": 4,
+      "probe_result": "probes\\eu_ctis\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 4487,
+          "elapsed_ms": 641,
+          "error": "",
+          "name": "api_search",
+          "ok": null,
+          "status": 200,
+          "url": "https://euclinicaltrials.eu/ctis-public-api/search"
+        },
+        {
+          "bytes": 5010,
+          "elapsed_ms": 688,
+          "error": "",
+          "name": "api_search_sponsor",
+          "ok": null,
+          "status": 200,
+          "url": "https://euclinicaltrials.eu/ctis-public-api/search"
+        },
+        {
+          "bytes": 137298,
+          "elapsed_ms": 516,
+          "error": "",
+          "name": "api_retrieve",
+          "ok": null,
+          "status": 200,
+          "url": "https://euclinicaltrials.eu/ctis-public-api/retrieve/2023-507015-35-00"
+        },
+        {
+          "bytes": 105219,
+          "elapsed_ms": 547,
+          "error": "JSONDecodeError: json decode failed",
+          "name": "site_home",
+          "ok": null,
+          "status": 200,
+          "url": "https://euclinicaltrials.eu/"
+        }
+      ],
+      "request_log": "probes\\eu_ctis\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 10,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1202,
+        "requests": 12,
+        "total_bytes": 481446,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "eu_ctis",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:43:34.908041Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.ted.europa.eu/v3/notices/search",
+        "https://api.ted.europa.eu/v3/notices/search",
+        "https://api.ted.europa.eu/v3/notices/search",
+        "https://api.ted.europa.eu/v3/notices/search",
+        "https://api.ted.europa.eu/v3/notices/search",
+        "https://api.ted.europa.eu/v3/notices/search"
+      ],
+      "has_noted_md": true,
+      "notes": "TED Search API v3 answered anonymous POST queries with real notices (no key). notice-type separates contract notices (cn-standard, 2.95M) from contract award notices (can-standard, 2.86M), so tender publication and award publication are distinguishable. The award winner is NOT in the search index: winner-name / winner-partname come back null even for a 2024 medical award notice, so an award→supplier link cannot be built from the search API; a full-text FT~ query finds notices that merely mention a firm. CPV is a category, not a device ID. The ted.europa.eu web host serves a 'Human Verification' challenge (notice_xml_on_web_host, bulk_downloads_page), so anonymous bulk XML download is NOT verified.",
+      "probe_count": 9,
+      "probe_result": "probes\\eu_ted\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 29901,
+          "elapsed_ms": 359,
+          "error": "",
+          "name": "search_rich_fields",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.ted.europa.eu/v3/notices/search"
+        },
+        {
+          "bytes": 43288,
+          "elapsed_ms": 359,
+          "error": "",
+          "name": "search_notice_type_cn_standard",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.ted.europa.eu/v3/notices/search"
+        },
+        {
+          "bytes": 45436,
+          "elapsed_ms": 405,
+          "error": "",
+          "name": "search_notice_type_can_standard",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.ted.europa.eu/v3/notices/search"
+        },
+        {
+          "bytes": 38670,
+          "elapsed_ms": 702,
+          "error": "",
+          "name": "search_recent_award_stent_winner_fields",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.ted.europa.eu/v3/notices/search"
+        },
+        {
+          "bytes": 30134,
+          "elapsed_ms": 375,
+          "error": "",
+          "name": "search_fulltext_medtronic_since_2024",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.ted.europa.eu/v3/notices/search"
+        },
+        {
+          "bytes": 59875,
+          "elapsed_ms": 1218,
+          "error": "",
+          "name": "search_fulltext_mindray_since_2024",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.ted.europa.eu/v3/notices/search"
+        },
+        {
+          "bytes": 22333,
+          "elapsed_ms": 1391,
+          "error": "",
+          "name": "search_cpv_33100000",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.ted.europa.eu/v3/notices/search"
+        },
+        {
+          "bytes": 2150,
+          "elapsed_ms": 780,
+          "error": "HTTP 405 Not Allowed",
+          "name": "notice_xml_on_web_host",
+          "ok": false,
+          "status": 405,
+          "url": "https://ted.europa.eu/en/notice/391299-2016/xml"
+        },
+        {
+          "bytes": 2150,
+          "elapsed_ms": 1889,
+          "error": "HTTP 405 Not Allowed",
+          "name": "bulk_downloads_page",
+          "ok": false,
+          "status": 405,
+          "url": "https://ted.europa.eu/en/bulk-downloads"
+        }
+      ],
+      "request_log": "probes\\eu_ted\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 7,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1889,
+        "requests": 9,
+        "total_bytes": 273937,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "eu_ted",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:44:24.930393Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=lite",
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=core",
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Medtronic%22&format=json&pageSize=2&resultType=core",
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1056%2FNEJMoa2034577%22&format=json&pageSize=2&resultType=core"
+      ],
+      "has_noted_md": true,
+      "notes": "Europe PMC REST returned 200 JSON with `resultList.result` and `hitCount`. `resultType=core` supplies `firstPublicationDate`, `firstIndexDate`, DOI/PMID/PMCID, `authorList[].affiliation`, `grantsList` and `dbCrossReferenceList` - enough for DOI-based cross-source de-duplication, author-affiliation company matching and grant-number linking.  `firstIndexDate` is an ingestion clock, not publication.",
+      "probe_count": 4,
+      "probe_result": "probes\\europepmc\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 2289,
+          "elapsed_ms": 1452,
+          "error": "",
+          "name": "search_lite",
+          "ok": null,
+          "status": 200,
+          "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=lite"
+        },
+        {
+          "bytes": 18853,
+          "elapsed_ms": 1766,
+          "error": "",
+          "name": "search_core",
+          "ok": null,
+          "status": 200,
+          "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=core"
+        },
+        {
+          "bytes": 8190,
+          "elapsed_ms": 703,
+          "error": "",
+          "name": "affiliation_company",
+          "ok": null,
+          "status": 200,
+          "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Medtronic%22&format=json&pageSize=2&resultType=core"
+        },
+        {
+          "bytes": 62503,
+          "elapsed_ms": 858,
+          "error": "",
+          "name": "doi_lookup",
+          "ok": null,
+          "status": 200,
+          "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1056%2FNEJMoa2034577%22&format=json&pageSize=2&resultType=core"
+        }
+      ],
+      "request_log": "probes\\europepmc\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 4,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1766,
+        "requests": 4,
+        "total_bytes": 91835,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "europepmc",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:38:26.866884Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9018&flow=1&time=2023&indicators=VALUE_IN_EUROS",
+        "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9018&flow=2&time=2023&indicators=VALUE_IN_EUROS",
+        "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9402&flow=1&time=2023&indicators=VALUE_IN_EUROS",
+        "https://ec.europa.eu/eurostat/web/international-trade-in-goods/database"
+      ],
+      "has_noted_md": true,
+      "notes": "Comext dissemination API is open and keyless; real 2023 DE/US HS9018 values returned. Correct base path is /api/comext/... and dimensions are reporter/partner/product/flow.",
+      "probe_count": 4,
+      "probe_result": "probes\\eurostat_comext\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 2027,
+          "elapsed_ms": 311,
+          "error": "",
+          "name": "hs9018_de_imports_2023",
+          "ok": true,
+          "status": 200,
+          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9018&flow=1&time=2023&indicators=VALUE_IN_EUROS"
+        },
+        {
+          "bytes": 2027,
+          "elapsed_ms": 422,
+          "error": "",
+          "name": "hs9018_de_exports_2023",
+          "ok": true,
+          "status": 200,
+          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9018&flow=2&time=2023&indicators=VALUE_IN_EUROS"
+        },
+        {
+          "bytes": 2109,
+          "elapsed_ms": 422,
+          "error": "",
+          "name": "hs9402_de_imports_2023",
+          "ok": true,
+          "status": 200,
+          "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9402&flow=1&time=2023&indicators=VALUE_IN_EUROS"
+        },
+        {
+          "bytes": 195343,
+          "elapsed_ms": 358,
+          "error": "",
+          "name": "official_data_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://ec.europa.eu/eurostat/web/international-trade-in-goods/database"
+        }
+      ],
+      "request_log": "probes\\eurostat_comext\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 4,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 422,
+        "requests": 4,
+        "total_bytes": 201506,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "eurostat_comext",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:49:16.657945Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://boards-api.greenhouse.io/v1/boards/stripe/jobs?content=false"
+      ],
+      "has_noted_md": true,
+      "notes": "Greenhouse boards-api answers anonymously for a control token, so the endpoint works; the five target firms were tested by their likely board tokens and the ones that resolved are: none. A 404 is the API's answer for 'no such board', not a network failure. Token guessing was capped at 6 requests; absence here means 'not a Greenhouse customer under these tokens', not 'no hiring data exists'.",
+      "probe_count": 6,
+      "probe_result": "probes\\greenhouse\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 477852,
+          "elapsed_ms": 438,
+          "error": "",
+          "name": "control_stripe",
+          "ok": true,
+          "status": 200,
+          "url": "https://boards-api.greenhouse.io/v1/boards/stripe/jobs?content=false"
+        },
+        {
+          "bytes": 64,
+          "elapsed_ms": 468,
+          "error": "HTTP 404 Not Found",
+          "name": "medtronic",
+          "ok": false,
+          "status": 404,
+          "url": "https://boards-api.greenhouse.io/v1/boards/medtronic/jobs?content=false"
+        },
+        {
+          "bytes": 64,
+          "elapsed_ms": 467,
+          "error": "HTTP 404 Not Found",
+          "name": "ge_healthcare",
+          "ok": false,
+          "status": 404,
+          "url": "https://boards-api.greenhouse.io/v1/boards/gehealthcare/jobs?content=false"
+        },
+        {
+          "bytes": 64,
+          "elapsed_ms": 295,
+          "error": "HTTP 404 Not Found",
+          "name": "philips",
+          "ok": false,
+          "status": 404,
+          "url": "https://boards-api.greenhouse.io/v1/boards/philips/jobs?content=false"
+        },
+        {
+          "bytes": 64,
+          "elapsed_ms": 297,
+          "error": "HTTP 404 Not Found",
+          "name": "draeger",
+          "ok": false,
+          "status": 404,
+          "url": "https://boards-api.greenhouse.io/v1/boards/draeger/jobs?content=false"
+        },
+        {
+          "bytes": 64,
+          "elapsed_ms": 313,
+          "error": "HTTP 404 Not Found",
+          "name": "mindray",
+          "ok": false,
+          "status": 404,
+          "url": "https://boards-api.greenhouse.io/v1/boards/mindray/jobs?content=false"
+        }
+      ],
+      "request_log": "probes\\greenhouse\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 1,
+        "http_4xx": 5,
+        "http_5xx": 0,
+        "max_elapsed_ms": 468,
+        "requests": 6,
+        "total_bytes": 478172,
+        "transport_errors": 0,
+        "with_error_text": 5
+      },
+      "source_id": "greenhouse",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:45:36.534451Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.lever.co/v0/postings/leverdemo?mode=json"
+      ],
+      "has_noted_md": true,
+      "notes": "Lever postings API answers anonymously for a control token, so the endpoint works; target-firm tokens that resolved: none. Lever returns createdAt (source publication time) per posting, which is what the hiring evidence needs, but only for companies that actually use Lever.",
+      "probe_count": 6,
+      "probe_result": "probes\\lever\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 83523,
+          "elapsed_ms": 2358,
+          "error": "",
+          "name": "control_leverdemo",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.lever.co/v0/postings/leverdemo?mode=json"
+        },
+        {
+          "bytes": 41,
+          "elapsed_ms": 5016,
+          "error": "HTTP 404 Not Found",
+          "name": "medtronic",
+          "ok": false,
+          "status": 404,
+          "url": "https://api.lever.co/v0/postings/medtronic?mode=json"
+        },
+        {
+          "bytes": 41,
+          "elapsed_ms": 1140,
+          "error": "HTTP 404 Not Found",
+          "name": "ge_healthcare",
+          "ok": false,
+          "status": 404,
+          "url": "https://api.lever.co/v0/postings/gehealthcare?mode=json"
+        },
+        {
+          "bytes": 41,
+          "elapsed_ms": 1016,
+          "error": "HTTP 404 Not Found",
+          "name": "philips",
+          "ok": false,
+          "status": 404,
+          "url": "https://api.lever.co/v0/postings/philips?mode=json"
+        },
+        {
+          "bytes": 41,
+          "elapsed_ms": 1780,
+          "error": "HTTP 404 Not Found",
+          "name": "draeger",
+          "ok": false,
+          "status": 404,
+          "url": "https://api.lever.co/v0/postings/draeger?mode=json"
+        },
+        {
+          "bytes": 41,
+          "elapsed_ms": 1047,
+          "error": "HTTP 404 Not Found",
+          "name": "mindray",
+          "ok": false,
+          "status": 404,
+          "url": "https://api.lever.co/v0/postings/mindray?mode=json"
+        }
+      ],
+      "request_log": "probes\\lever\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 1,
+        "http_4xx": 5,
+        "http_5xx": 0,
+        "max_elapsed_ms": 5016,
+        "requests": 6,
+        "total_bytes": 83728,
+        "transport_errors": 0,
+        "with_error_text": 5
+      },
+      "source_id": "lever",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:45:49.245303Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.reporter.nih.gov/v2/projects/search",
+        "https://api.reporter.nih.gov/v2/projects/search",
+        "https://api.reporter.nih.gov/v2/projects/search"
+      ],
+      "has_noted_md": true,
+      "notes": "NIH RePORTER v2 is POST-only and needs no key: `POST /v2/projects/search` with a `criteria` object returned 200 JSON and `results`.  Grants carry `project_num`, `project_start_date` (event_at), `award_notice_date` (approximate public-visibility clock of the award record), `organization.org_name` (company field) and `agency_ic_*`.  The same grant must not be counted twice when several fiscal-year queries overlap.",
+      "probe_count": 3,
+      "probe_result": "probes\\nih_reporter\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 2310,
+          "elapsed_ms": 828,
+          "error": "",
+          "name": "projects_text",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.reporter.nih.gov/v2/projects/search"
+        },
+        {
+          "bytes": 241,
+          "elapsed_ms": 531,
+          "error": "",
+          "name": "projects_org_fy",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.reporter.nih.gov/v2/projects/search"
+        },
+        {
+          "bytes": 710,
+          "elapsed_ms": 656,
+          "error": "",
+          "name": "projects_org_any_year",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.reporter.nih.gov/v2/projects/search"
+        }
+      ],
+      "request_log": "probes\\nih_reporter\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 6,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1188,
+        "requests": 6,
+        "total_bytes": 6522,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "nih_reporter",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:42:47.101362Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.openaire.eu/graph/v1/researchProducts?search=stent&pageSize=2",
+        "https://api.openaire.eu/search/publications?title=stent&format=json&size=2"
+      ],
+      "has_noted_md": true,
+      "notes": "Probes the Graph v1 `researchProducts` endpoint and the legacy `search/publications` endpoint.  OpenAIRE aggregates repository copies, so the same paper appears many times: only DOI-based canonical keys may be counted as independent evidence.",
+      "probe_count": 2,
+      "probe_result": "probes\\openaire\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 10332,
+          "elapsed_ms": 2531,
+          "error": "",
+          "name": "graph_research_products",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.openaire.eu/graph/v1/researchProducts?search=stent&pageSize=2"
+        },
+        {
+          "bytes": 24512,
+          "elapsed_ms": 500,
+          "error": "",
+          "name": "search_publications_legacy",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.openaire.eu/search/publications?title=stent&format=json&size=2"
+        }
+      ],
+      "request_log": "probes\\openaire\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 2531,
+        "requests": 2,
+        "total_bytes": 34844,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "openaire",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:39:02.163629Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.openalex.org/works?search=stent&per-page=2&mailto=medradar.research%40example.org",
+        "https://api.openalex.org/works?search=Medtronic&per-page=2&mailto=medradar.research%40example.org",
+        "https://api.openalex.org/works?filter=doi%3A10.1056%2FNEJMoa2034577&per-page=1&mailto=medradar.research%40example.org",
+        "https://api.openalex.org/works?filter=publication_year%3A2023%2Cis_oa%3Atrue&search=pacemaker&per-page=1&mailto=medradar.research%40example.org",
+        "https://api.openalex.org/institutions?search=Philips&per-page=2&mailto=medradar.research%40example.org",
+        "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amedtronic&per-page=2&mailto=medradar.research%40example.org"
+      ],
+      "has_noted_md": true,
+      "notes": "OpenAlex answered every query with 200 and real work objects, no key required. Works carry `publication_date` (first online publication), `created_date` (metadata ingestion - NOT a publication clock), DOI/PMID ids, author institutions and `grants`. Use the polite pool (`mailto=`) and never treat `created_date` as public visibility.",
+      "probe_count": 6,
+      "probe_result": "probes\\openalex\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 56207,
+          "elapsed_ms": 718,
+          "error": "",
+          "name": "works_search",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.openalex.org/works?search=stent&per-page=2&mailto=medradar.research%40example.org"
+        },
+        {
+          "bytes": 20995,
+          "elapsed_ms": 2453,
+          "error": "",
+          "name": "works_company",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.openalex.org/works?search=Medtronic&per-page=2&mailto=medradar.research%40example.org"
+        },
+        {
+          "bytes": 227924,
+          "elapsed_ms": 3000,
+          "error": "",
+          "name": "works_doi",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.openalex.org/works?filter=doi%3A10.1056%2FNEJMoa2034577&per-page=1&mailto=medradar.research%40example.org"
+        },
+        {
+          "bytes": 87001,
+          "elapsed_ms": 561,
+          "error": "",
+          "name": "works_year_filter",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.openalex.org/works?filter=publication_year%3A2023%2Cis_oa%3Atrue&search=pacemaker&per-page=1&mailto=medradar.research%40example.org"
+        },
+        {
+          "bytes": 50605,
+          "elapsed_ms": 2265,
+          "error": "",
+          "name": "institutions_search",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.openalex.org/institutions?search=Philips&per-page=2&mailto=medradar.research%40example.org"
+        },
+        {
+          "bytes": 44885,
+          "elapsed_ms": 4593,
+          "error": "",
+          "name": "works_affiliation_filter",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amedtronic&per-page=2&mailto=medradar.research%40example.org"
+        }
+      ],
+      "request_log": "probes\\openalex\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 11,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 4593,
+        "requests": 11,
+        "total_bytes": 930349,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "openalex",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:42:25.575713Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B2024-01-01+TO+2024-12-31%5D&limit=2",
+        "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B2025-01-01+TO+2025-12-31%5D&limit=1",
+        "https://api.fda.gov/device/510k.json?search=applicant%3Amedtronic&limit=3",
+        "https://api.fda.gov/device/510k.json?search=applicant%3A%22ge+healthcare%22&limit=3",
+        "https://api.fda.gov/device/510k.json?search=applicant%3Aphilips&limit=3",
+        "https://api.fda.gov/device/510k.json?search=applicant%3Adraeger&limit=3",
+        "https://api.fda.gov/device/510k.json?search=applicant%3Amindray&limit=3",
+        "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B1990-01-01+TO+2026-12-31%5D&skip=25000&limit=1"
+      ],
+      "has_noted_md": false,
+      "notes": "device/510k returns real records (JSON, meta.results.total present). No key needed. `decision_date` is the clearance decision date; FDA publishes no per-record first-publication timestamp, so source_public_at may only be derived from the decision date and must be flagged as coarse evidence, never used as a published-on date.",
+      "probe_count": 8,
+      "probe_result": "probes\\openfda_device_510k\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 20941,
+          "elapsed_ms": 1063,
+          "error": "",
+          "name": "window_smoke_2024",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B2024-01-01+TO+2024-12-31%5D&limit=2"
+        },
+        {
+          "bytes": 17094,
+          "elapsed_ms": 1157,
+          "error": "",
+          "name": "window_2025_count",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B2025-01-01+TO+2025-12-31%5D&limit=1"
+        },
+        {
+          "bytes": 38299,
+          "elapsed_ms": 1000,
+          "error": "",
+          "name": "search_applicant:medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/510k.json?search=applicant%3Amedtronic&limit=3"
+        },
+        {
+          "bytes": 30079,
+          "elapsed_ms": 1500,
+          "error": "",
+          "name": "search_applicant:\"ge healthcare\"",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/510k.json?search=applicant%3A%22ge+healthcare%22&limit=3"
+        },
+        {
+          "bytes": 47938,
+          "elapsed_ms": 1281,
+          "error": "",
+          "name": "search_applicant:philips",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/510k.json?search=applicant%3Aphilips&limit=3"
+        },
+        {
+          "bytes": 27185,
+          "elapsed_ms": 1093,
+          "error": "",
+          "name": "search_applicant:draeger",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/510k.json?search=applicant%3Adraeger&limit=3"
+        },
+        {
+          "bytes": 41806,
+          "elapsed_ms": 1125,
+          "error": "",
+          "name": "search_applicant:mindray",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/510k.json?search=applicant%3Amindray&limit=3"
+        },
+        {
+          "bytes": 7749,
+          "elapsed_ms": 1218,
+          "error": "",
+          "name": "skip_25000_behaviour",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B1990-01-01+TO+2026-12-31%5D&skip=25000&limit=1"
+        }
+      ],
+      "request_log": "probes\\openfda_device_510k\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 8,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1500,
+        "requests": 8,
+        "total_bytes": 231091,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "openfda_device_510k",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:50:36.768791Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.fda.gov/device/classification.json?limit=2",
+        "https://api.fda.gov/device/classification.json?search=product_code%3A%22DQA%22&limit=2"
+      ],
+      "has_noted_md": false,
+      "notes": "The product-code dictionary is small (~7k codes) and is the join key between a 510(k)/PMA submission and a device family, so it is a cheap full pull (<=8 pages at limit=1000) rather than a windowed collection.",
+      "probe_count": 2,
+      "probe_result": "probes\\openfda_device_classification\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 8324,
+          "elapsed_ms": 1094,
+          "error": "",
+          "name": "page_smoke",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/classification.json?limit=2"
+        },
+        {
+          "bytes": 35212,
+          "elapsed_ms": 1046,
+          "error": "",
+          "name": "product_code_dqa",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/classification.json?search=product_code%3A%22DQA%22&limit=2"
+        }
+      ],
+      "request_log": "probes\\openfda_device_classification\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1094,
+        "requests": 2,
+        "total_bytes": 43536,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "openfda_device_classification",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:52:25.839101Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://open.fda.gov/apis/device/event/",
+        "https://open.fda.gov/apis/authentication/",
+        "https://open.fda.gov/license/",
+        "https://www.fda.gov/medical-devices/medical-device-databases/maude-manufacturer-and-user-facility-device-experience-database"
+      ],
+      "has_noted_md": true,
+      "notes": "5/5 checks ok; MAUDE reports returned; nested device.manufacturer_d_name is required (bare name -> 404); Medtronic family meta.total=3360860; date_received buckets=9619 summing to 3360860. Passive-surveillance caveat recorded.",
+      "probe_count": 5,
+      "probe_result": "probes\\openfda_device_maude\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 12984,
+          "elapsed_ms": 4030,
+          "error": "",
+          "name": "smoke_limit2",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/event.json?limit=2"
+        },
+        {
+          "bytes": 0,
+          "elapsed_ms": 0,
+          "error": "",
+          "name": "record_shape_and_three_dates",
+          "ok": true,
+          "status": 200,
+          "url": ""
+        },
+        {
+          "bytes": 93,
+          "elapsed_ms": 1156,
+          "error": "HTTP 404 Not Found",
+          "name": "bare_field_name_is_not_searchable",
+          "ok": true,
+          "status": 404,
+          "url": "https://api.fda.gov/device/event.json?search=manufacturer_d_name%3A%22Medtronic%22&limit=1"
+        },
+        {
+          "bytes": 9358,
+          "elapsed_ms": 1500,
+          "error": "",
+          "name": "nested_search_device_manufacturer_d_name",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/event.json?search=device.manufacturer_d_name%3Amedtronic&limit=1"
+        },
+        {
+          "bytes": 551499,
+          "elapsed_ms": 2891,
+          "error": "",
+          "name": "count_date_received_medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/event.json?search=device.manufacturer_d_name%3Amedtronic&count=date_received"
+        }
+      ],
+      "request_log": "probes\\openfda_device_maude\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 15,
+        "http_4xx": 6,
+        "http_5xx": 3,
+        "max_elapsed_ms": 5889,
+        "requests": 24,
+        "total_bytes": 1216594,
+        "transport_errors": 0,
+        "with_error_text": 9
+      },
+      "source_id": "openfda_device_maude",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:48:28.753928Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.fda.gov/device/pma.json?search=decision_date%3A%5B2024-01-01+TO+2024-12-31%5D&limit=2",
+        "https://api.fda.gov/device/pma.json?search=decision_date%3A%5B2025-01-01+TO+2025-12-31%5D&limit=1",
+        "https://api.fda.gov/device/pma.json?search=applicant%3Amedtronic&limit=3",
+        "https://api.fda.gov/device/pma.json?search=applicant%3A%22ge+healthcare%22&limit=3",
+        "https://api.fda.gov/device/pma.json?search=applicant%3Aphilips&limit=3",
+        "https://api.fda.gov/device/pma.json?search=decision_date%3A%5B1990-01-01+TO+2026-12-31%5D&skip=25000&limit=1"
+      ],
+      "has_noted_md": false,
+      "notes": "device/pma returns PMA originals and supplements; a supplement is a distinct record (pma_number + supplement_number) under the same approval. Same date caveat as 510(k): decision_date is an event date, not a publication date.",
+      "probe_count": 8,
+      "probe_result": "probes\\openfda_device_pma\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 4419,
+          "elapsed_ms": 1437,
+          "error": "",
+          "name": "window_smoke_2024",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/pma.json?search=decision_date%3A%5B2024-01-01+TO+2024-12-31%5D&limit=2"
+        },
+        {
+          "bytes": 2742,
+          "elapsed_ms": 1000,
+          "error": "",
+          "name": "window_2025_count",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/pma.json?search=decision_date%3A%5B2025-01-01+TO+2025-12-31%5D&limit=1"
+        },
+        {
+          "bytes": 9709,
+          "elapsed_ms": 1031,
+          "error": "",
+          "name": "search_applicant:medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/pma.json?search=applicant%3Amedtronic&limit=3"
+        },
+        {
+          "bytes": 9298,
+          "elapsed_ms": 1217,
+          "error": "",
+          "name": "search_applicant:\"ge healthcare\"",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/pma.json?search=applicant%3A%22ge+healthcare%22&limit=3"
+        },
+        {
+          "bytes": 11589,
+          "elapsed_ms": 1218,
+          "error": "",
+          "name": "search_applicant:philips",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/pma.json?search=applicant%3Aphilips&limit=3"
+        },
+        {
+          "bytes": 93,
+          "elapsed_ms": 1453,
+          "error": "HTTP 404 Not Found",
+          "name": "search_applicant:draeger",
+          "ok": false,
+          "status": 404,
+          "url": "https://api.fda.gov/device/pma.json?search=applicant%3Adraeger&limit=3"
+        },
+        {
+          "bytes": 93,
+          "elapsed_ms": 3516,
+          "error": "HTTP 404 Not Found",
+          "name": "search_applicant:mindray",
+          "ok": false,
+          "status": 404,
+          "url": "https://api.fda.gov/device/pma.json?search=applicant%3Amindray&limit=3"
+        },
+        {
+          "bytes": 2820,
+          "elapsed_ms": 1061,
+          "error": "",
+          "name": "skip_25000_behaviour",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/pma.json?search=decision_date%3A%5B1990-01-01+TO+2026-12-31%5D&skip=25000&limit=1"
+        }
+      ],
+      "request_log": "probes\\openfda_device_pma\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 6,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 3516,
+        "requests": 8,
+        "total_bytes": 40763,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "openfda_device_pma",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:50:48.731550Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://open.fda.gov/apis/device/recall/",
+        "https://open.fda.gov/apis/authentication/",
+        "https://open.fda.gov/license/"
+      ],
+      "has_noted_md": true,
+      "notes": "4/4 checks ok; limit=2 returned real device-recall records; Medtronic phrase search meta.total=1932; date fields are event_date_initiated/posted (report_date absent).",
+      "probe_count": 4,
+      "probe_result": "probes\\openfda_device_recall\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 9426,
+          "elapsed_ms": 1532,
+          "error": "",
+          "name": "smoke_limit2",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/recall.json?limit=2"
+        },
+        {
+          "bytes": 0,
+          "elapsed_ms": 0,
+          "error": "",
+          "name": "date_field_semantics",
+          "ok": true,
+          "status": 200,
+          "url": ""
+        },
+        {
+          "bytes": 23157,
+          "elapsed_ms": 1092,
+          "error": "",
+          "name": "search_recalling_firm_medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%22Medtronic%22&limit=1"
+        },
+        {
+          "bytes": 25621,
+          "elapsed_ms": 3532,
+          "error": "",
+          "name": "count_event_date_posted_medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%22Medtronic%22&count=event_date_posted"
+        }
+      ],
+      "request_log": "probes\\openfda_device_recall\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 13,
+        "http_4xx": 1,
+        "http_5xx": 0,
+        "max_elapsed_ms": 3532,
+        "requests": 14,
+        "total_bytes": 239026,
+        "transport_errors": 0,
+        "with_error_text": 1
+      },
+      "source_id": "openfda_device_recall",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:48:12.629693Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.fda.gov/device/registrationlisting.json?limit=2",
+        "https://api.fda.gov/device/registrationlisting.json?search=registration.name%3A%22Medtronic%22&limit=2"
+      ],
+      "has_noted_md": false,
+      "notes": "Registration & listing is establishment-level (who may distribute what), not product-level; it carries k_number/pma_number per establishment which makes it a registrant bridge, but it must not be counted as a second clearance record.",
+      "probe_count": 2,
+      "probe_result": "probes\\openfda_device_registrationlisting\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 6803,
+          "elapsed_ms": 2250,
+          "error": "",
+          "name": "page_smoke",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/registrationlisting.json?limit=2"
+        },
+        {
+          "bytes": 5060,
+          "elapsed_ms": 1141,
+          "error": "",
+          "name": "search_registrant_medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/device/registrationlisting.json?search=registration.name%3A%22Medtronic%22&limit=2"
+        }
+      ],
+      "request_log": "probes\\openfda_device_registrationlisting\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 2250,
+        "requests": 2,
+        "total_bytes": 11863,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "openfda_device_registrationlisting",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:52:29.258372Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Medtronic%5BAffiliation%5D+AND+stent&retmode=json&retmax=3&tool=medradar_research&email=medradar.research%40example.org",
+        "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=42830997&tool=medradar_research&email=medradar.research%40example.org",
+        "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=10.1056%2FNEJMoa2034577%5BDOI%5D&retmode=json&retmax=2&tool=medradar_research&email=medradar.research%40example.org"
+      ],
+      "has_noted_md": true,
+      "notes": "E-utilities esearch/esummary returned 200 JSON.  No key is needed at 3 req/s; the connector declares `tool`/`email` for a better politeness tier and stays below the limit with a 1.2 s minimum interval.  esummary gives `pubdate`/`epubdate` (coarse when only a year/month is published), DOI and PMC id for de-duplication.",
+      "probe_count": 3,
+      "probe_result": "probes\\pubmed_eutils\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 617,
+          "elapsed_ms": 1015,
+          "error": "",
+          "name": "esearch",
+          "ok": null,
+          "status": 200,
+          "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Medtronic%5BAffiliation%5D+AND+stent&retmode=json&retmax=3&tool=medradar_research&email=medradar.research%40example.org"
+        },
+        {
+          "bytes": 2198,
+          "elapsed_ms": 733,
+          "error": "",
+          "name": "esummary",
+          "ok": null,
+          "status": 200,
+          "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=42830997&tool=medradar_research&email=medradar.research%40example.org"
+        },
+        {
+          "bytes": 207,
+          "elapsed_ms": 391,
+          "error": "",
+          "name": "esearch_doi",
+          "ok": null,
+          "status": 200,
+          "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=10.1056%2FNEJMoa2034577%5BDOI%5D&retmode=json&retmax=2&tool=medradar_research&email=medradar.research%40example.org"
+        }
+      ],
+      "request_log": "probes\\pubmed_eutils\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 6,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 3593,
+        "requests": 6,
+        "total_bytes": 6044,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "pubmed_eutils",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:43:49.265718Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1056/NEJMoa2034577?fields=title%2CexternalIds%2CpublicationDate%2Cyear"
+      ],
+      "has_noted_md": true,
+      "notes": "Probed unauthenticated.  429 responses mean the shared un-keyed pool is exhausted, not that the API is private: a free API key raises the limit.  Recorded honestly as rate-limited (see PROBE_RESULT.json); no connector ships without a verified 2xx record.",
+      "probe_count": 3,
+      "probe_result": "probes\\semantic_scholar\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 174,
+          "elapsed_ms": 907,
+          "error": "HTTP 429 ",
+          "name": "paper_search",
+          "ok": null,
+          "status": 429,
+          "url": "https://api.semanticscholar.org/graph/v1/paper/search?query=stent&limit=2&fields=title%2Cyear%2CexternalIds%2CpublicationDate%2Cvenue"
+        },
+        {
+          "bytes": 174,
+          "elapsed_ms": 625,
+          "error": "HTTP 429 ",
+          "name": "paper_search_retry",
+          "ok": null,
+          "status": 429,
+          "url": "https://api.semanticscholar.org/graph/v1/paper/search?query=Medtronic&limit=2&fields=title%2Cyear%2CexternalIds%2CpublicationDate%2Cvenue"
+        },
+        {
+          "bytes": 316,
+          "elapsed_ms": 360,
+          "error": "",
+          "name": "paper_doi",
+          "ok": null,
+          "status": 200,
+          "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1056/NEJMoa2034577?fields=title%2CexternalIds%2CpublicationDate%2Cyear"
+        }
+      ],
+      "request_log": "probes\\semantic_scholar\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 3,
+        "http_5xx": 0,
+        "max_elapsed_ms": 2031,
+        "requests": 5,
+        "total_bytes": 1154,
+        "transport_errors": 0,
+        "with_error_text": 3
+      },
+      "source_id": "semantic_scholar",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:42:36.291233Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=2",
+        "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&stages=award",
+        "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&stages=tender",
+        "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&updatedFrom=2026-11-02T00%3A00%3A00&updatedTo=2026-11-09T00%3A00%3A00",
+        "https://www.find-tender.service.gov.uk/Search/Results?keywords=Medtronic"
+      ],
+      "has_noted_md": true,
+      "notes": "UK Find a Tender serves anonymous OCDS 1.1 release packages. Releases are tagged/staged, so a tender release and its award release are separate objects with separate publication dates — exactly the layering needed. The feed has no keyword parameter; a company-targeted query only exists as the HTML search page, so firm-level retrieval cannot use the OCDS API alone.",
+      "probe_count": 6,
+      "probe_result": "probes\\uk_find_a_tender\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 20052,
+          "elapsed_ms": 531,
+          "error": "",
+          "name": "release_packages_limit2",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=2"
+        },
+        {
+          "bytes": 9708,
+          "elapsed_ms": 3796,
+          "error": "",
+          "name": "release_packages_stage_award",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&stages=award"
+        },
+        {
+          "bytes": 9979,
+          "elapsed_ms": 2108,
+          "error": "",
+          "name": "release_packages_stage_tender",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&stages=tender"
+        },
+        {
+          "bytes": 9790,
+          "elapsed_ms": 765,
+          "error": "",
+          "name": "release_packages_date_window",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&updatedFrom=2026-11-02T00%3A00%3A00&updatedTo=2026-11-09T00%3A00%3A00"
+        },
+        {
+          "bytes": 317,
+          "elapsed_ms": 656,
+          "error": "HTTP 400 Bad Request",
+          "name": "release_packages_keyword_param_rejected_or_ignored",
+          "ok": false,
+          "status": 400,
+          "url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&keywords=Medtronic"
+        },
+        {
+          "bytes": 173202,
+          "elapsed_ms": 891,
+          "error": "",
+          "name": "html_keyword_search_medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.find-tender.service.gov.uk/Search/Results?keywords=Medtronic"
+        }
+      ],
+      "request_log": "probes\\uk_find_a_tender\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 5,
+        "http_4xx": 1,
+        "http_5xx": 0,
+        "max_elapsed_ms": 3796,
+        "requests": 6,
+        "total_bytes": 223048,
+        "transport_errors": 0,
+        "with_error_text": 1
+      },
+      "source_id": "uk_find_a_tender",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:45:01.966393Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.uktradeinfo.com/",
+        "https://api.uktradeinfo.com/Trader?%24filter=contains%28CompanyName%2C%27MEDTRONIC%27%29&%24top=5&%24select=TraderId%2CCompanyName%2CPostCode",
+        "https://api.uktradeinfo.com/YearlyTrade?%24filter=TraderId+eq+213902+and+Year+eq+2023&%24top=5",
+        "https://api.uktradeinfo.com/CommoditySearch?%24filter=startswith%28Hs4Code%2C%279018%27%29&%24top=2",
+        "https://api.uktradeinfo.com/OTS?%24top=2"
+      ],
+      "has_noted_md": true,
+      "notes": "Open OData, no key. Publishes named UK traders x CN8 commodity x month (presence only, no values) plus aggregate OTS values.",
+      "probe_count": 5,
+      "probe_result": "probes\\uk_hmrc_trade\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 920,
+          "elapsed_ms": 641,
+          "error": "",
+          "name": "service_document",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.uktradeinfo.com/"
+        },
+        {
+          "bytes": 461,
+          "elapsed_ms": 608,
+          "error": "",
+          "name": "trader_search_medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.uktradeinfo.com/Trader?%24filter=contains%28CompanyName%2C%27MEDTRONIC%27%29&%24top=5&%24select=TraderId%2CCompanyName%2CPostCode"
+        },
+        {
+          "bytes": 1543,
+          "elapsed_ms": 421,
+          "error": "",
+          "name": "yearly_trade_presence",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.uktradeinfo.com/YearlyTrade?%24filter=TraderId+eq+213902+and+Year+eq+2023&%24top=5"
+        },
+        {
+          "bytes": 1289,
+          "elapsed_ms": 608,
+          "error": "",
+          "name": "commodity_search_hs9018",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.uktradeinfo.com/CommoditySearch?%24filter=startswith%28Hs4Code%2C%279018%27%29&%24top=2"
+        },
+        {
+          "bytes": 420,
+          "elapsed_ms": 592,
+          "error": "",
+          "name": "ots_aggregate_sample",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.uktradeinfo.com/OTS?%24top=2"
+        }
+      ],
+      "request_log": "probes\\uk_hmrc_trade\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 5,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 641,
+        "requests": 5,
+        "total_bytes": 4633,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "uk_hmrc_trade",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:48:30.861497Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9018&flowCode=M",
+        "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9022&flowCode=M",
+        "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9402&flowCode=M",
+        "https://comtradedeveloper.un.org/"
+      ],
+      "has_noted_md": true,
+      "notes": "Public preview endpoint works keyless (HS9018/9022/9402 all 200, 278 partner rows seen); full /data/v1 endpoint is 401 without a subscription key.",
+      "probe_count": 5,
+      "probe_result": "probes\\un_comtrade\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 114128,
+          "elapsed_ms": 843,
+          "error": "",
+          "name": "hs9018_medical_instruments",
+          "ok": true,
+          "status": 200,
+          "url": "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9018&flowCode=M"
+        },
+        {
+          "bytes": 72705,
+          "elapsed_ms": 2266,
+          "error": "",
+          "name": "hs9022_xray_apparatus",
+          "ok": true,
+          "status": 200,
+          "url": "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9022&flowCode=M"
+        },
+        {
+          "bytes": 63029,
+          "elapsed_ms": 593,
+          "error": "",
+          "name": "hs9402_medical_furniture",
+          "ok": true,
+          "status": 200,
+          "url": "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9402&flowCode=M"
+        },
+        {
+          "bytes": 152,
+          "elapsed_ms": 281,
+          "error": "HTTP 401 Access Denied",
+          "name": "keyed_data_endpoint",
+          "ok": false,
+          "status": 401,
+          "url": "https://comtradeapi.un.org/data/v1/get/C/A/HS?reporterCode=842&period=2023&cmdCode=9018&flowCode=M"
+        },
+        {
+          "bytes": 5403,
+          "elapsed_ms": 1718,
+          "error": "",
+          "name": "developer_portal",
+          "ok": true,
+          "status": 200,
+          "url": "https://comtradedeveloper.un.org/"
+        }
+      ],
+      "request_log": "probes\\un_comtrade\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 4,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 2266,
+        "requests": 6,
+        "total_bytes": 255500,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "un_comtrade",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:48:02.959943Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+        "https://api.usaspending.gov/api/v2/awards/CONT_AWD_75N91024C00033_7529_-NONE-_-NONE-/",
+        "https://api.usaspending.gov/api/v2/references/agency/1/",
+        "https://api.usaspending.gov/api/v2/autocomplete/recipient/",
+        "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+        "https://api.usaspending.gov/api/v2/search/spending_by_award_count/"
+      ],
+      "has_noted_md": true,
+      "notes": "USAspending v2 is anonymously readable: award search is POST-only and returned real award rows without an API key; award detail exposes Date Signed and Period of Performance separately, so the publication date and the performance date are not the same field. recipient_search_text is a token search (it returns CHANGE HEALTHCARE for 'GE HealthCare'), so recipient hits are candidates until identity resolution confirms them.",
+      "probe_count": 18,
+      "probe_result": "probes\\usaspending\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 3444,
+          "elapsed_ms": 1233,
+          "error": "",
+          "name": "spending_by_award_keyword_stent",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/"
+        },
+        {
+          "bytes": 6619,
+          "elapsed_ms": 920,
+          "error": "",
+          "name": "award_detail_dates",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/awards/CONT_AWD_75N91024C00033_7529_-NONE-_-NONE-/"
+        },
+        {
+          "bytes": 14,
+          "elapsed_ms": 938,
+          "error": "",
+          "name": "references_agency_1",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/references/agency/1/"
+        },
+        {
+          "bytes": 1168,
+          "elapsed_ms": 2702,
+          "error": "",
+          "name": "recipient_autocomplete_medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/autocomplete/recipient/"
+        },
+        {
+          "bytes": 5960,
+          "elapsed_ms": 2797,
+          "error": "",
+          "name": "recipient_search_medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/"
+        },
+        {
+          "bytes": 443,
+          "elapsed_ms": 920,
+          "error": "",
+          "name": "recipient_count_medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/search/spending_by_award_count/"
+        },
+        {
+          "bytes": 1246,
+          "elapsed_ms": 20719,
+          "error": "",
+          "name": "recipient_autocomplete_ge_healthcare",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/autocomplete/recipient/"
+        },
+        {
+          "bytes": 5758,
+          "elapsed_ms": 1155,
+          "error": "",
+          "name": "recipient_search_ge_healthcare",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/"
+        },
+        {
+          "bytes": 442,
+          "elapsed_ms": 938,
+          "error": "",
+          "name": "recipient_count_ge_healthcare",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/search/spending_by_award_count/"
+        },
+        {
+          "bytes": 1221,
+          "elapsed_ms": 1156,
+          "error": "",
+          "name": "recipient_autocomplete_philips",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/autocomplete/recipient/"
+        },
+        {
+          "bytes": 6148,
+          "elapsed_ms": 938,
+          "error": "",
+          "name": "recipient_search_philips",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/"
+        },
+        {
+          "bytes": 443,
+          "elapsed_ms": 1202,
+          "error": "",
+          "name": "recipient_count_philips",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/search/spending_by_award_count/"
+        },
+        {
+          "bytes": 1111,
+          "elapsed_ms": 6188,
+          "error": "",
+          "name": "recipient_autocomplete_draeger",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/autocomplete/recipient/"
+        },
+        {
+          "bytes": 5550,
+          "elapsed_ms": 1031,
+          "error": "",
+          "name": "recipient_search_draeger",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/"
+        },
+        {
+          "bytes": 443,
+          "elapsed_ms": 3000,
+          "error": "",
+          "name": "recipient_count_draeger",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/search/spending_by_award_count/"
+        },
+        {
+          "bytes": 519,
+          "elapsed_ms": 15952,
+          "error": "",
+          "name": "recipient_autocomplete_mindray",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/autocomplete/recipient/"
+        },
+        {
+          "bytes": 5808,
+          "elapsed_ms": 1016,
+          "error": "",
+          "name": "recipient_search_mindray",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/"
+        },
+        {
+          "bytes": 440,
+          "elapsed_ms": 936,
+          "error": "",
+          "name": "recipient_count_mindray",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.usaspending.gov/api/v2/search/spending_by_award_count/"
+        }
+      ],
+      "request_log": "probes\\usaspending\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 18,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 20719,
+        "requests": 18,
+        "total_bytes": 46777,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "usaspending",
+      "status": "VERIFIED_API",
+      "verified_at": "2026-11-08T21:41:48.699980Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://accessgudid.nlm.nih.gov/download",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261102.zip"
+      ],
+      "has_noted_md": false,
+      "notes": "NLM publishes GUDID release files: daily / weekly / monthly change sets and a full release. Daily files are small enough to download inside the protocol budget and carry an explicit 'Date Created' + record count + MD5, which gives a true per-batch publication clock. The full release is far above the 8 MB cap.",
+      "probe_count": 2,
+      "probe_result": "probes\\fda_gudid_download\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 46951,
+          "elapsed_ms": 2250,
+          "error": "",
+          "name": "download_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://accessgudid.nlm.nih.gov/download"
+        },
+        {
+          "bytes": 547350,
+          "elapsed_ms": 2843,
+          "error": "",
+          "name": "daily_release_zip",
+          "ok": true,
+          "status": 200,
+          "url": "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261102.zip"
+        }
+      ],
+      "request_log": "probes\\fda_gudid_download\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 2843,
+        "requests": 2,
+        "total_bytes": 594301,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "fda_gudid_download",
+      "status": "VERIFIED_BULK_DOWNLOAD",
+      "verified_at": "2026-11-08T21:52:07.834859Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.fda.gov/download.json",
+        "https://download.open.fda.gov/device/classification/device-classification-0001-of-0001.json.zip"
+      ],
+      "has_noted_md": false,
+      "notes": "api.fda.gov/download.json is the official export manifest: per-endpoint `total_records` and an `export_date` that is a genuine snapshot clock (unlike the API's per-endpoint `last_updated`). One export partition was downloaded and parsed, which is what distinguishes VERIFIED_BULK_DOWNLOAD from a doc claim.",
+      "probe_count": 2,
+      "probe_result": "probes\\openfda_bulk_download\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 601654,
+          "elapsed_ms": 1577,
+          "error": "",
+          "name": "download_manifest",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.fda.gov/download.json"
+        },
+        {
+          "bytes": 3285255,
+          "elapsed_ms": 6468,
+          "error": "",
+          "name": "classification_export_zip",
+          "ok": true,
+          "status": 200,
+          "url": "https://download.open.fda.gov/device/classification/device-classification-0001-of-0001.json.zip"
+        }
+      ],
+      "request_log": "probes\\openfda_bulk_download\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 6468,
+        "requests": 2,
+        "total_bytes": 3886909,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "openfda_bulk_download",
+      "status": "VERIFIED_BULK_DOWNLOAD",
+      "verified_at": "2026-11-08T21:51:05.457635Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "http://www.ccgp.gov.cn/",
+        "http://search.ccgp.gov.cn/bxsearch?searchtype=1&page_index=1&bidSort=0&pinMu=0&bidType=0&kw=%E5%86%85%E7%AA%A5%E9%95%9C"
+      ],
+      "has_noted_md": true,
+      "notes": "Only the two endpoints the public site itself exposes were requested. Whatever the outcome, no anti-bot or login mechanism was bypassed; if the search path is not machine-readable the register records China procurement as unverified rather than as 'available with caveats'.",
+      "probe_count": 2,
+      "probe_result": "probes\\china_ccgp\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 69539,
+          "elapsed_ms": 1795,
+          "error": "",
+          "name": "portal_home",
+          "ok": true,
+          "status": 200,
+          "url": "http://www.ccgp.gov.cn/"
+        },
+        {
+          "bytes": 58471,
+          "elapsed_ms": 1454,
+          "error": "",
+          "name": "keyword_search_neijingjing",
+          "ok": true,
+          "status": 200,
+          "url": "http://search.ccgp.gov.cn/bxsearch?searchtype=1&page_index=1&bidSort=0&pinMu=0&bidType=0&kw=%E5%86%85%E7%AA%A5%E9%95%9C"
+        }
+      ],
+      "request_log": "probes\\china_ccgp\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1795,
+        "requests": 2,
+        "total_bytes": 128010,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "china_ccgp",
+      "status": "VERIFIED_PUBLIC_QUERY",
+      "verified_at": "2026-11-08T21:48:01.017241Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&p=1",
+        "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&contenttype=project",
+        "https://cordis.europa.eu/project/id/101069357?format=json",
+        "https://cordis.europa.eu/project/id/101069357/en?format=json"
+      ],
+      "has_noted_md": true,
+      "notes": "CORDIS publishes no documented, versioned developer API.  Its public search front end calls an unauthenticated JSON endpoint (`https://cordis.europa.eu/search/en?format=json`). Probed it directly; if it returns JSON project records the source is a public-query API (undocumented, so `api_available: PARTIAL`), the data being CC-BY 4.0.  No scraping of rendered HTML and no request amplification.",
+      "probe_count": 7,
+      "probe_result": "probes\\eu_cordis\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 56495,
+          "elapsed_ms": 483,
+          "error": "",
+          "name": "search_json_free",
+          "ok": null,
+          "status": 200,
+          "url": "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&p=1"
+        },
+        {
+          "bytes": 37110,
+          "elapsed_ms": 1406,
+          "error": "HTTP 500 Internal Server Error",
+          "name": "search_project_id",
+          "ok": null,
+          "status": 500,
+          "url": "https://cordis.europa.eu/search/en?q=101069357&format=json&num=2"
+        },
+        {
+          "bytes": 56495,
+          "elapsed_ms": 702,
+          "error": "",
+          "name": "search_contenttype_param",
+          "ok": null,
+          "status": 200,
+          "url": "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&contenttype=project"
+        },
+        {
+          "bytes": 63815,
+          "elapsed_ms": 313,
+          "error": "",
+          "name": "project_json",
+          "ok": null,
+          "status": 200,
+          "url": "https://cordis.europa.eu/project/id/101069357?format=json"
+        },
+        {
+          "bytes": 63815,
+          "elapsed_ms": 514,
+          "error": "",
+          "name": "project_json_en",
+          "ok": null,
+          "status": 200,
+          "url": "https://cordis.europa.eu/project/id/101069357/en?format=json"
+        },
+        {
+          "bytes": 173824,
+          "elapsed_ms": 375,
+          "error": "JSONDecodeError: json decode failed",
+          "name": "project_page",
+          "ok": null,
+          "status": 200,
+          "url": "https://cordis.europa.eu/project/id/101069357/en"
+        },
+        {
+          "bytes": 0,
+          "elapsed_ms": 0,
+          "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+          "name": "api_root",
+          "ok": null,
+          "status": null,
+          "url": "https://api.cordis.europa.eu/"
+        }
+      ],
+      "request_log": "probes\\eu_cordis\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 14,
+        "http_4xx": 0,
+        "http_5xx": 6,
+        "max_elapsed_ms": 3031,
+        "requests": 28,
+        "total_bytes": 1441879,
+        "transport_errors": 8,
+        "with_error_text": 14
+      },
+      "source_id": "eu_cordis",
+      "status": "VERIFIED_PUBLIC_QUERY",
+      "verified_at": "2026-11-08T21:44:33.031167Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://www.fda.gov/medical-devices/medical-device-supply-chain-and-shortages/medical-device-shortages-list",
+        "https://www.fda.gov/about-fda/about-website/website-policies"
+      ],
+      "has_noted_md": true,
+      "notes": "no openFDA shortage endpoint (404 confirmed); HTML list parsed into 6 shortage rows + 236 discontinuance rows, 242 schema-v1 evidence records. Listing date is the only published clock.",
+      "probe_count": 4,
+      "probe_result": "probes\\fda_device_shortages\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 151,
+          "elapsed_ms": 2265,
+          "error": "HTTP 404 Not Found",
+          "name": "openfda_shortage_endpoint_absent",
+          "ok": true,
+          "status": 404,
+          "url": "https://api.fda.gov/device/shortage.json?limit=1"
+        },
+        {
+          "bytes": 128205,
+          "elapsed_ms": 468,
+          "error": "",
+          "name": "shortages_list_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.fda.gov/medical-devices/medical-device-supply-chain-and-shortages/medical-device-shortages-list"
+        },
+        {
+          "bytes": 0,
+          "elapsed_ms": 0,
+          "error": "",
+          "name": "parsed_real_records",
+          "ok": true,
+          "status": 200,
+          "url": ""
+        },
+        {
+          "bytes": 0,
+          "elapsed_ms": 0,
+          "error": "",
+          "name": "schema_validation",
+          "ok": true,
+          "status": 200,
+          "url": ""
+        }
+      ],
+      "request_log": "probes\\fda_device_shortages\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 3,
+        "http_5xx": 0,
+        "max_elapsed_ms": 2265,
+        "requests": 5,
+        "total_bytes": 285551,
+        "transport_errors": 0,
+        "with_error_text": 3
+      },
+      "source_id": "fda_device_shortages",
+      "status": "VERIFIED_PUBLIC_QUERY",
+      "verified_at": "2026-11-08T21:48:39.218563Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://www.accessdata.fda.gov/cms_ia/ialist.html",
+        "https://www.accessdata.fda.gov/cms_ia/industrygroup_9.html",
+        "https://www.fda.gov/about-fda/about-website/website-policies"
+      ],
+      "has_noted_md": true,
+      "notes": "no openFDA endpoint; ialist.html parsed into 154 import alerts with number/type/publish-date/name, 154 schema-v1 evidence records; device industry group lists 19 sub-industries. Index has no company column, so firm-level linkage is UNKNOWN.",
+      "probe_count": 5,
+      "probe_result": "probes\\fda_import_alerts\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 5213,
+          "elapsed_ms": 563,
+          "error": "HTTP 403 Forbidden",
+          "name": "bare_directory_not_usable",
+          "ok": true,
+          "status": 403,
+          "url": "https://www.accessdata.fda.gov/cms_ia/"
+        },
+        {
+          "bytes": 66100,
+          "elapsed_ms": 672,
+          "error": "",
+          "name": "ialist_index_parsed",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.accessdata.fda.gov/cms_ia/ialist.html"
+        },
+        {
+          "bytes": 27514,
+          "elapsed_ms": 391,
+          "error": "",
+          "name": "device_industry_group_parsed",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.accessdata.fda.gov/cms_ia/industrygroup_9.html"
+        },
+        {
+          "bytes": 44684,
+          "elapsed_ms": 437,
+          "error": "",
+          "name": "one_alert_detail_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.accessdata.fda.gov/cms_ia/importalert_1182.html"
+        },
+        {
+          "bytes": 0,
+          "elapsed_ms": 0,
+          "error": "",
+          "name": "schema_validation",
+          "ok": true,
+          "status": 200,
+          "url": ""
+        }
+      ],
+      "request_log": "probes\\fda_import_alerts\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 14,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1202,
+        "requests": 16,
+        "total_bytes": 6444810,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "fda_import_alerts",
+      "status": "VERIFIED_PUBLIC_QUERY",
+      "verified_at": "2026-11-08T21:48:42.878580Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://consultas.anvisa.gov.br/"
+      ],
+      "has_noted_md": false,
+      "notes": "consultas.anvisa.gov.br is an Angular SPA; its JSON API answers 401/403 without a bearer token issued by the ANVISA login flow, so device registrations require a registered account. No anonymous machine interface was found.",
+      "probe_count": 3,
+      "probe_result": "probes\\brazil_anvisa\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 19812,
+          "elapsed_ms": 500,
+          "error": "",
+          "name": "consultas_spa",
+          "ok": true,
+          "status": 200,
+          "url": "https://consultas.anvisa.gov.br/"
+        },
+        {
+          "bytes": 2380,
+          "elapsed_ms": 219,
+          "error": "HTTP 403 Forbidden",
+          "name": "api_produtos_saude_without_token",
+          "ok": false,
+          "status": 403,
+          "url": "https://consultas.anvisa.gov.br/api/consulta/produtos-saude"
+        },
+        {
+          "bytes": 2380,
+          "elapsed_ms": 375,
+          "error": "HTTP 403 Forbidden",
+          "name": "api_medicamentos_without_token",
+          "ok": false,
+          "status": 403,
+          "url": "https://consultas.anvisa.gov.br/api/consulta/medicamentos?page=1"
+        }
+      ],
+      "request_log": "probes\\brazil_anvisa\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 1,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 500,
+        "requests": 3,
+        "total_bytes": 24572,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "brazil_anvisa",
+      "status": "REQUIRES_REGISTRATION",
+      "verified_at": "2026-11-08T21:59:29.256132Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://www.epo.org/en/searching-for-patents/data/web-services/ops"
+      ],
+      "has_noted_md": true,
+      "notes": "OPS 3.2 rejects unauthenticated calls (403 Fair Use policy); OAuth2 free registration, 4GB/month.",
+      "probe_count": 4,
+      "probe_result": "probes\\epo_ops\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 644525,
+          "elapsed_ms": 938,
+          "error": "",
+          "name": "official_docs_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.epo.org/en/searching-for-patents/data/web-services/ops"
+        },
+        {
+          "bytes": 208,
+          "elapsed_ms": 233,
+          "error": "HTTP 403 Forbidden",
+          "name": "unauthenticated_search",
+          "ok": false,
+          "status": 403,
+          "url": "https://ops.epo.org/3.2/rest-services/published-data/search?q=ti%3D%22stent%22"
+        },
+        {
+          "bytes": 208,
+          "elapsed_ms": 467,
+          "error": "HTTP 403 Forbidden",
+          "name": "unauthenticated_family_lookup",
+          "ok": false,
+          "status": 403,
+          "url": "https://ops.epo.org/3.2/rest-services/family/publication/docdb/EP.1000000.A1"
+        },
+        {
+          "bytes": 86,
+          "elapsed_ms": 202,
+          "error": "HTTP 401 Unauthorized",
+          "name": "auth_token_endpoint_no_credentials",
+          "ok": false,
+          "status": 401,
+          "url": "https://ops.epo.org/3.2/auth/accesstoken"
+        }
+      ],
+      "request_log": "probes\\epo_ops\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 1,
+        "http_4xx": 3,
+        "http_5xx": 0,
+        "max_elapsed_ms": 938,
+        "requests": 4,
+        "total_bytes": 645027,
+        "transport_errors": 0,
+        "with_error_text": 3
+      },
+      "source_id": "epo_ops",
+      "status": "REQUIRES_REGISTRATION",
+      "verified_at": "2026-11-08T21:41:39.711992Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://ec.europa.eu/tools/eudamed/",
+        "https://developer.datalake.sante.service.ec.europa.eu/api-details#api=94b9e658-d721-4b58-8d96-022c490f7a17"
+      ],
+      "has_noted_md": false,
+      "notes": "EUDAMED's public SPA loads, but every public data endpoint answers HTTP 429 with an explicit policy message telling automated clients to use the official EUDAMED data API instead of scraping. That machine API lives on the DG SANTE developer portal and needs registered credentials, so the source is reachable only after registration; the public endpoints are off-limits to this study by the operator's own instruction (probe stores the exact message).",
+      "probe_count": 3,
+      "probe_result": "probes\\eudamed\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 48322,
+          "elapsed_ms": 781,
+          "error": "",
+          "name": "public_spa_shell",
+          "ok": true,
+          "status": 200,
+          "url": "https://ec.europa.eu/tools/eudamed/"
+        },
+        {
+          "bytes": 321,
+          "elapsed_ms": 312,
+          "error": "HTTP 429 Unknown",
+          "name": "public_api_devices",
+          "ok": false,
+          "status": 429,
+          "url": "https://ec.europa.eu/tools/eudamed/api/devices?page=0&size=2"
+        },
+        {
+          "bytes": 9981,
+          "elapsed_ms": 405,
+          "error": "",
+          "name": "official_machine_api_portal",
+          "ok": true,
+          "status": 200,
+          "url": "https://developer.datalake.sante.service.ec.europa.eu/api-details#api=94b9e658-d721-4b58-8d96-022c490f7a17"
+        }
+      ],
+      "request_log": "probes\\eudamed\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 781,
+        "requests": 4,
+        "total_bytes": 58945,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "eudamed",
+      "status": "REQUIRES_REGISTRATION",
+      "verified_at": "2026-11-08T21:53:02.327296Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://cloud.google.com/bigquery/public-data",
+        "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data"
+      ],
+      "has_noted_md": true,
+      "notes": "GCP project + OAuth + billing account required (401 anonymous); 1TB/month free query allowance but not free of setup.",
+      "probe_count": 3,
+      "probe_result": "probes\\google_patents_bigquery\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 141451,
+          "elapsed_ms": 1641,
+          "error": "",
+          "name": "bigquery_public_data_index",
+          "ok": true,
+          "status": 200,
+          "url": "https://cloud.google.com/bigquery/public-data"
+        },
+        {
+          "bytes": 3254121,
+          "elapsed_ms": 952,
+          "error": "",
+          "name": "marketplace_dataset_listing",
+          "ok": true,
+          "status": 200,
+          "url": "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data"
+        },
+        {
+          "bytes": 421,
+          "elapsed_ms": 531,
+          "error": "HTTP 401 Unauthorized",
+          "name": "unauthenticated_bigquery_rest",
+          "ok": false,
+          "status": 401,
+          "url": "https://bigquery.googleapis.com/bigquery/v2/projects/bigquery-public-data/datasets/google_patents_public_datasets"
+        }
+      ],
+      "request_log": "probes\\google_patents_bigquery\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 1,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1641,
+        "requests": 3,
+        "total_bytes": 3395993,
+        "transport_errors": 0,
+        "with_error_text": 1
+      },
+      "source_id": "google_patents_bigquery",
+      "status": "REQUIRES_REGISTRATION",
+      "verified_at": "2026-11-08T21:42:17.874548Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://open.gsa.gov/api/get-opportunities-public-api/",
+        "https://open.gsa.gov/api/get-opportunities-public-api/"
+      ],
+      "has_noted_md": true,
+      "notes": "SAM.gov documents api_key as mandatory for /opportunities/v2/search. Unauthenticated requests (with and without a bogus key) were answered by the istio-envoy gateway with 404 and an empty body - not the 401/403 the protocol expects, so the registration requirement is a DOCUMENTED fact while the live observation only proves the endpoint refuses anonymous callers. No key was registered.",
+      "probe_count": 3,
+      "probe_result": "probes\\sam_gov\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 0,
+          "elapsed_ms": 782,
+          "error": "HTTP 404 Not Found",
+          "name": "search_no_key",
+          "ok": false,
+          "status": 404,
+          "url": "https://api.sam.gov/opportunities/v2/search?limit=1"
+        },
+        {
+          "bytes": 0,
+          "elapsed_ms": 483,
+          "error": "HTTP 404 Not Found",
+          "name": "search_invalid_key",
+          "ok": false,
+          "status": 404,
+          "url": "https://api.sam.gov/opportunities/v2/search?limit=1&api_key=0000000000000000000000000000000000000000"
+        },
+        {
+          "bytes": 46217,
+          "elapsed_ms": 1077,
+          "error": "",
+          "name": "official_docs_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://open.gsa.gov/api/get-opportunities-public-api/"
+        }
+      ],
+      "request_log": "probes\\sam_gov\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 1,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1077,
+        "requests": 3,
+        "total_bytes": 46217,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "sam_gov",
+      "status": "REQUIRES_REGISTRATION",
+      "verified_at": "2026-11-08T21:47:51.707231Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.census.gov/data/timeseries/intltrade/imports/hs?get=CTY_CODE%2CI_COMMODITY%2CGEN_VAL_MO&YEAR=2023&MONTH=01&I_COMMODITY=9018",
+        "https://www.census.gov/data/developers/data-sets/international-trade.html",
+        "https://api.census.gov/data/timeseries/intltrade/imports/hs?get=CTY_CODE%2CGEN_VAL_MO&time=2023-01&I_COMMODITY=9018&key=DEMO_KEY"
+      ],
+      "has_noted_md": true,
+      "notes": "Keyless calls return HTTP 200 with an HTML 'Missing Key' page; free API key required. Data is HS-code aggregate only.",
+      "probe_count": 3,
+      "probe_result": "probes\\us_census_trade\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 8764,
+          "elapsed_ms": 3265,
+          "error": "",
+          "name": "keyless_imports_query",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.census.gov/data/timeseries/intltrade/imports/hs?get=CTY_CODE%2CI_COMMODITY%2CGEN_VAL_MO&YEAR=2023&MONTH=01&I_COMMODITY=9018"
+        },
+        {
+          "bytes": 321813,
+          "elapsed_ms": 14452,
+          "error": "",
+          "name": "api_docs_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.census.gov/data/developers/data-sets/international-trade.html"
+        },
+        {
+          "bytes": 8804,
+          "elapsed_ms": 2485,
+          "error": "",
+          "name": "demo_key_attempt",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.census.gov/data/timeseries/intltrade/imports/hs?get=CTY_CODE%2CGEN_VAL_MO&time=2023-01&I_COMMODITY=9018&key=DEMO_KEY"
+        }
+      ],
+      "request_log": "probes\\us_census_trade\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 3,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 14452,
+        "requests": 3,
+        "total_bytes": 339381,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "us_census_trade",
+      "status": "REQUIRES_REGISTRATION",
+      "verified_at": "2026-11-08T21:48:23.171961Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://data.uspto.gov/apis"
+      ],
+      "has_noted_md": true,
+      "notes": "api.uspto.gov returns 401 Unauthorized without X-API-KEY; free key from developer portal.",
+      "probe_count": 3,
+      "probe_result": "probes\\uspto_open_data_portal\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 20666,
+          "elapsed_ms": 890,
+          "error": "",
+          "name": "official_api_docs_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://data.uspto.gov/apis"
+        },
+        {
+          "bytes": 26,
+          "elapsed_ms": 672,
+          "error": "HTTP 401 Unauthorized",
+          "name": "unauthenticated_application_search",
+          "ok": false,
+          "status": 401,
+          "url": "https://api.uspto.gov/api/v1/patent/applications/search?q=stent&limit=2"
+        },
+        {
+          "bytes": 26,
+          "elapsed_ms": 500,
+          "error": "HTTP 401 Unauthorized",
+          "name": "unauthenticated_dataset_product",
+          "ok": false,
+          "status": 401,
+          "url": "https://api.uspto.gov/api/v1/datasets/products/applications"
+        }
+      ],
+      "request_log": "probes\\uspto_open_data_portal\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 1,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 890,
+        "requests": 3,
+        "total_bytes": 20718,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "uspto_open_data_portal",
+      "status": "REQUIRES_REGISTRATION",
+      "verified_at": "2026-11-08T21:41:41.908216Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://data.uspto.gov/bulkdata"
+      ],
+      "has_noted_md": true,
+      "notes": "bulkdata.uspto.gov no longer resolves; ODP bulk/dataset API requires X-API-KEY (401). Zero bytes of bulk data downloaded.",
+      "probe_count": 4,
+      "probe_result": "probes\\uspto_patent_bulk\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 0,
+          "elapsed_ms": 16,
+          "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+          "name": "legacy_anonymous_host",
+          "ok": false,
+          "status": null,
+          "url": "https://bulkdata.uspto.gov/"
+        },
+        {
+          "bytes": 20666,
+          "elapsed_ms": 719,
+          "error": "",
+          "name": "odp_bulkdata_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://data.uspto.gov/bulkdata"
+        },
+        {
+          "bytes": 26,
+          "elapsed_ms": 516,
+          "error": "HTTP 401 Unauthorized",
+          "name": "odp_dataset_products_api",
+          "ok": false,
+          "status": 401,
+          "url": "https://api.uspto.gov/api/v1/datasets/products/applications"
+        },
+        {
+          "bytes": 42,
+          "elapsed_ms": 10577,
+          "error": "HTTP 403 Forbidden",
+          "name": "odp_dataset_products_api_alt",
+          "ok": false,
+          "status": 403,
+          "url": "https://api.uspto.gov/api/v1/datasets/products"
+        }
+      ],
+      "request_log": "probes\\uspto_patent_bulk\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 1,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 10577,
+        "requests": 6,
+        "total_bytes": 20734,
+        "transport_errors": 3,
+        "with_error_text": 5
+      },
+      "source_id": "uspto_patent_bulk",
+      "status": "REQUIRES_REGISTRATION",
+      "verified_at": "2026-11-08T21:42:10.996002Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://patentscope.wipo.int/search/en/search.jsf",
+        "https://www.wipo.int/patentscope/en/data/",
+        "https://www.wipo.int/en/web/patentscope/data/subscribe-pct-data-products-services"
+      ],
+      "has_noted_md": true,
+      "notes": "No open API; PCT data products are subscription-gated; UI not scraped (policy).",
+      "probe_count": 4,
+      "probe_result": "probes\\wipo_patentscope\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 52212,
+          "elapsed_ms": 358,
+          "error": "",
+          "name": "search_ui_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://patentscope.wipo.int/search/en/search.jsf"
+        },
+        {
+          "bytes": 107614,
+          "elapsed_ms": 1702,
+          "error": "",
+          "name": "data_products_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.wipo.int/patentscope/en/data/"
+        },
+        {
+          "bytes": 91176,
+          "elapsed_ms": 295,
+          "error": "",
+          "name": "pct_data_products_subscription_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.wipo.int/en/web/patentscope/data/subscribe-pct-data-products-services"
+        },
+        {
+          "bytes": 5362,
+          "elapsed_ms": 438,
+          "error": "HTTP 404 Not Found",
+          "name": "undocumented_api_guess",
+          "ok": false,
+          "status": 404,
+          "url": "https://patentscope.wipo.int/search/api/search?q=stent"
+        }
+      ],
+      "request_log": "probes\\wipo_patentscope\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 3,
+        "http_4xx": 1,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1702,
+        "requests": 4,
+        "total_bytes": 256364,
+        "transport_errors": 0,
+        "with_error_text": 1
+      },
+      "source_id": "wipo_patentscope",
+      "status": "REQUIRES_REGISTRATION",
+      "verified_at": "2026-11-08T21:42:14.745452Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://www.datamyne.com/",
+        "https://www.descartes.com/datamyne",
+        "https://www.descartes.com/solutions/customs-and-regulatory-compliance"
+      ],
+      "has_noted_md": true,
+      "notes": "Quote-based commercial BoL data (Descartes); documented URL in SOURCE_ID_INDEX is 404, live page is /datamyne.",
+      "probe_count": 3,
+      "probe_result": "probes\\descartes_datamyne\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 352637,
+          "elapsed_ms": 750,
+          "error": "",
+          "name": "datamyne_home",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.datamyne.com/"
+        },
+        {
+          "bytes": 331767,
+          "elapsed_ms": 1217,
+          "error": "",
+          "name": "descartes_datamyne_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.descartes.com/datamyne"
+        },
+        {
+          "bytes": 369762,
+          "elapsed_ms": 343,
+          "error": "",
+          "name": "descartes_solutions_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.descartes.com/solutions/customs-and-regulatory-compliance"
+        }
+      ],
+      "request_log": "probes\\descartes_datamyne\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 3,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1217,
+        "requests": 3,
+        "total_bytes": 1054166,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "descartes_datamyne",
+      "status": "PAID_ONLY",
+      "verified_at": "2026-11-08T21:48:45.451233Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://www.importgenius.com/pricing",
+        "https://www.importgenius.com/"
+      ],
+      "has_noted_md": true,
+      "notes": "Paid-only BoL vendor; public pricing page read ($159, $183, $1999, $2,198, $229, $359).",
+      "probe_count": 2,
+      "probe_result": "probes\\importgenius\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 240657,
+          "elapsed_ms": 406,
+          "error": "",
+          "name": "pricing_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.importgenius.com/pricing"
+        },
+        {
+          "bytes": 233325,
+          "elapsed_ms": 327,
+          "error": "",
+          "name": "homepage",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.importgenius.com/"
+        }
+      ],
+      "request_log": "probes\\importgenius\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 406,
+        "requests": 2,
+        "total_bytes": 473982,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "importgenius",
+      "status": "PAID_ONLY",
+      "verified_at": "2026-11-08T21:48:40.958000Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://docs.api.lens.org/",
+        "https://www.lens.org/lens/user/subscriptions"
+      ],
+      "has_noted_md": true,
+      "notes": "API is institutional-subscription only (terms page quote); 401 without token; redistribution restricted.",
+      "probe_count": 4,
+      "probe_result": "probes\\lens_org\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 10548,
+          "elapsed_ms": 360,
+          "error": "",
+          "name": "api_docs",
+          "ok": true,
+          "status": 200,
+          "url": "https://docs.api.lens.org/"
+        },
+        {
+          "bytes": 66,
+          "elapsed_ms": 1202,
+          "error": "HTTP 403 Forbidden",
+          "name": "patent_api_terms_of_use",
+          "ok": false,
+          "status": 403,
+          "url": "https://about.lens.org/lens-patent-api-terms-of-use/"
+        },
+        {
+          "bytes": 572661,
+          "elapsed_ms": 1922,
+          "error": "",
+          "name": "subscription_pricing_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.lens.org/lens/user/subscriptions"
+        },
+        {
+          "bytes": 114,
+          "elapsed_ms": 1827,
+          "error": "HTTP 401 ",
+          "name": "unauthenticated_api_search",
+          "ok": false,
+          "status": 401,
+          "url": "https://api.lens.org/scholarly/search"
+        }
+      ],
+      "request_log": "probes\\lens_org\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1922,
+        "requests": 4,
+        "total_bytes": 583389,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "lens_org",
+      "status": "PAID_ONLY",
+      "verified_at": "2026-11-08T21:43:13.063655Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://panjiva.com/"
+      ],
+      "has_noted_md": true,
+      "notes": "Sales-negotiated S&P subscription; no public price list; buyer/supplier BoL + corporate hierarchy under contract.",
+      "probe_count": 3,
+      "probe_result": "probes\\panjiva\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 33038,
+          "elapsed_ms": 562,
+          "error": "",
+          "name": "homepage",
+          "ok": true,
+          "status": 200,
+          "url": "https://panjiva.com/"
+        },
+        {
+          "bytes": 8753,
+          "elapsed_ms": 343,
+          "error": "HTTP 404 Not Found",
+          "name": "pricing_route_probable_404",
+          "ok": false,
+          "status": 404,
+          "url": "https://panjiva.com/pricing"
+        },
+        {
+          "bytes": 8754,
+          "elapsed_ms": 500,
+          "error": "HTTP 404 Not Found",
+          "name": "plans_route_probable_404",
+          "ok": false,
+          "status": 404,
+          "url": "https://panjiva.com/plans"
+        }
+      ],
+      "request_log": "probes\\panjiva\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 1,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 562,
+        "requests": 3,
+        "total_bytes": 50545,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "panjiva",
+      "status": "PAID_ONLY",
+      "verified_at": "2026-11-08T21:48:43.079402Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [],
+      "has_noted_md": false,
+      "notes": "NMPA answers HTTP 412 with a JavaScript anti-bot challenge (a dynamic <meta> token that must be solved by running obfuscated script) before any content is served. Solving or replaying that challenge is a WAF bypass, which the collection protocol forbids, so the source is recorded as blocked rather than retried.",
+      "probe_count": 2,
+      "probe_result": "probes\\china_nmpa_device\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 2502,
+          "elapsed_ms": 905,
+          "error": "HTTP 412 Precondition Failed",
+          "name": "portal_home",
+          "ok": false,
+          "status": 412,
+          "url": "https://www.nmpa.gov.cn/"
+        },
+        {
+          "bytes": 2562,
+          "elapsed_ms": 1108,
+          "error": "HTTP 412 Precondition Failed",
+          "name": "datasearch_query",
+          "ok": false,
+          "status": 412,
+          "url": "https://www.nmpa.gov.cn/datasearch/search-result.html?q=Medtronic"
+        }
+      ],
+      "request_log": "probes\\china_nmpa_device\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 0,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1108,
+        "requests": 2,
+        "total_bytes": 5064,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "china_nmpa_device",
+      "status": "BLOCKED_BY_POLICY",
+      "verified_at": "2026-11-08T21:53:08.981675Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://www.importyeti.com/robots.txt",
+        "https://www.importyeti.com/"
+      ],
+      "has_noted_md": true,
+      "notes": "robots.txt disallows /search?q (the only useful query path) and the JSON API paths; no data request made. Policy block.",
+      "probe_count": 3,
+      "probe_result": "probes\\importyeti\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 167,
+          "elapsed_ms": 609,
+          "error": "",
+          "name": "robots_txt",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.importyeti.com/robots.txt"
+        },
+        {
+          "bytes": 53220,
+          "elapsed_ms": 483,
+          "error": "",
+          "name": "homepage",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.importyeti.com/"
+        },
+        {
+          "bytes": 9126,
+          "elapsed_ms": 1906,
+          "error": "HTTP 404 Not Found",
+          "name": "terms_page",
+          "ok": false,
+          "status": 404,
+          "url": "https://www.importyeti.com/terms"
+        }
+      ],
+      "request_log": "probes\\importyeti\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 1,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1906,
+        "requests": 3,
+        "total_bytes": 62513,
+        "transport_errors": 0,
+        "with_error_text": 1
+      },
+      "source_id": "importyeti",
+      "status": "BLOCKED_BY_POLICY",
+      "verified_at": "2026-11-08T21:48:37.273907Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [],
+      "has_noted_md": false,
+      "notes": "Every request to tga.gov.au timed out (90-120 s) or was reset by the remote end from this host, so the ARTG could not be verified either way. During reconnaissance the ARTG path returned an Akamai bot-manager proof-of-work interstitial (`bm-verify` / `/_sec/verify`); that observation is recorded here but was NOT reproduced inside this logged probe, so the probe status is UNAVAILABLE, not BLOCKED_BY_POLICY.",
+      "probe_count": 4,
+      "probe_result": "probes\\australia_tga_artg\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 0,
+          "elapsed_ms": 120233,
+          "error": "TimeoutError: The read operation timed out",
+          "name": "artg_search_attempt1",
+          "ok": false,
+          "status": null,
+          "url": "https://www.tga.gov.au/resources/artg"
+        },
+        {
+          "bytes": 0,
+          "elapsed_ms": 120266,
+          "error": "TimeoutError: The read operation timed out",
+          "name": "artg_search_attempt2",
+          "ok": false,
+          "status": null,
+          "url": "https://www.tga.gov.au/resources/artg"
+        },
+        {
+          "bytes": 0,
+          "elapsed_ms": 120250,
+          "error": "TimeoutError: The read operation timed out",
+          "name": "portal_home",
+          "ok": false,
+          "status": null,
+          "url": "https://www.tga.gov.au/"
+        },
+        {
+          "bytes": 0,
+          "elapsed_ms": 120233,
+          "error": "TimeoutError: The read operation timed out",
+          "name": "artg_query_medtronic",
+          "ok": false,
+          "status": null,
+          "url": "https://www.tga.gov.au/resources/artg?search_api_fulltext=Medtronic"
+        }
+      ],
+      "request_log": "probes\\australia_tga_artg\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 0,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 120266,
+        "requests": 4,
+        "total_bytes": 0,
+        "transport_errors": 4,
+        "with_error_text": 4
+      },
+      "source_id": "australia_tga_artg",
+      "status": "UNAVAILABLE",
+      "verified_at": "2026-11-08T22:11:40.869550Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [],
+      "has_noted_md": true,
+      "notes": "stats.customs.gov.cn returns HTTP 412 anti-automation; no API, no anonymous bulk; portal has no query interface.",
+      "probe_count": 3,
+      "probe_result": "probes\\china_customs_stats\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 2391,
+          "elapsed_ms": 1125,
+          "error": "HTTP 412 Precondition Failed",
+          "name": "stats_portal",
+          "ok": false,
+          "status": 412,
+          "url": "http://stats.customs.gov.cn/"
+        },
+        {
+          "bytes": 1995,
+          "elapsed_ms": 2217,
+          "error": "HTTP 412 Precondition Failed",
+          "name": "customs_website",
+          "ok": false,
+          "status": 412,
+          "url": "http://www.customs.gov.cn/"
+        },
+        {
+          "bytes": 2434,
+          "elapsed_ms": 797,
+          "error": "HTTP 412 Precondition Failed",
+          "name": "query_endpoint_guess",
+          "ok": false,
+          "status": 412,
+          "url": "http://stats.customs.gov.cn/queryData"
+        }
+      ],
+      "request_log": "probes\\china_customs_stats\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 0,
+        "http_4xx": 3,
+        "http_5xx": 0,
+        "max_elapsed_ms": 2217,
+        "requests": 3,
+        "total_bytes": 6820,
+        "transport_errors": 0,
+        "with_error_text": 3
+      },
+      "source_id": "china_customs_stats",
+      "status": "UNAVAILABLE",
+      "verified_at": "2026-11-08T21:58:20.654399Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://udi.nmpa.gov.cn/"
+      ],
+      "has_noted_md": false,
+      "notes": "The NMPA UDI portal serves a JSP/JS shell whose data calls are session-bound and undocumented; no public machine interface was found and the documented paths did not return records. Recorded as unavailable rather than guessed at.",
+      "probe_count": 3,
+      "probe_result": "probes\\china_nmpa_udi\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 49373,
+          "elapsed_ms": 2093,
+          "error": "",
+          "name": "udi_portal_home",
+          "ok": true,
+          "status": 200,
+          "url": "https://udi.nmpa.gov.cn/"
+        },
+        {
+          "bytes": 11664,
+          "elapsed_ms": 1078,
+          "error": "HTTP 404 Not Found",
+          "name": "query_udi_query",
+          "ok": false,
+          "status": 404,
+          "url": "https://udi.nmpa.gov.cn/udi/query?di=00643169718425"
+        },
+        {
+          "bytes": 11664,
+          "elapsed_ms": 891,
+          "error": "HTTP 404 Not Found",
+          "name": "query_api_udi_search",
+          "ok": false,
+          "status": 404,
+          "url": "https://udi.nmpa.gov.cn/api/udi/search?di=00643169718425"
+        }
+      ],
+      "request_log": "probes\\china_nmpa_udi\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 1,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 2093,
+        "requests": 3,
+        "total_bytes": 72701,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "china_nmpa_udi",
+      "status": "UNAVAILABLE",
+      "verified_at": "2026-11-08T21:53:13.162103Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://www.medtronic.com/us-en/about/careers.html",
+        "https://www.careers.philips.com/global/en",
+        "https://www.careers.philips.com/global/en/search-results",
+        "https://www.medtronic.com/robots.txt"
+      ],
+      "has_noted_md": true,
+      "notes": "Corporate careers pages were fetched one request per firm (plus robots.txt where present), no crawling. An HTML page that mentions jobs is not a job feed: the register records how many firms answer HTML and whether any machine-readable vacancy payload is present, and does not claim a hiring dataset from these pages.",
+      "probe_count": 6,
+      "probe_result": "probes\\company_careers_pages\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 773061,
+          "elapsed_ms": 2250,
+          "error": "",
+          "name": "medtronic",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.medtronic.com/us-en/about/careers.html"
+        },
+        {
+          "bytes": 309731,
+          "elapsed_ms": 1421,
+          "error": "",
+          "name": "philips",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.careers.philips.com/global/en"
+        },
+        {
+          "bytes": 402,
+          "elapsed_ms": 453,
+          "error": "HTTP 403 Forbidden",
+          "name": "draeger",
+          "ok": false,
+          "status": 403,
+          "url": "https://www.draeger.com/en-us/Company/Careers"
+        },
+        {
+          "bytes": 26858,
+          "elapsed_ms": 1516,
+          "error": "HTTP 404 Not Found",
+          "name": "mindray",
+          "ok": false,
+          "status": 404,
+          "url": "https://www.mindray.com/en/careers"
+        },
+        {
+          "bytes": 190971,
+          "elapsed_ms": 1092,
+          "error": "",
+          "name": "philips_search_results",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.careers.philips.com/global/en/search-results"
+        },
+        {
+          "bytes": 3874,
+          "elapsed_ms": 483,
+          "error": "",
+          "name": "medtronic_robots",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.medtronic.com/robots.txt"
+        }
+      ],
+      "request_log": "probes\\company_careers_pages\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 4,
+        "http_4xx": 2,
+        "http_5xx": 0,
+        "max_elapsed_ms": 2250,
+        "requests": 6,
+        "total_bytes": 1304897,
+        "transport_errors": 0,
+        "with_error_text": 2
+      },
+      "source_id": "company_careers_pages",
+      "status": "UNAVAILABLE",
+      "verified_at": "2026-11-08T21:48:46.228645Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://www.pmda.go.jp/english/",
+        "https://www.pmda.go.jp/PmdaSearch/kikiSearch/",
+        "https://www.pmda.go.jp/PmdaSearch/kikiSearch/?nameWord=Medtronic"
+      ],
+      "has_noted_md": false,
+      "notes": "PMDA's device database (kikiSearch) is a legacy servlet that renders an HTML form and only answers a form POST; a GET with query parameters returns the empty form again. No documented API and no bulk release exist, so there is no machine-readable path for this study. The pages themselves are reachable, so this is 'no machine interface', not 'no data'.",
+      "probe_count": 3,
+      "probe_result": "probes\\japan_pmda\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 57643,
+          "elapsed_ms": 2608,
+          "error": "",
+          "name": "english_portal",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.pmda.go.jp/english/"
+        },
+        {
+          "bytes": 139894,
+          "elapsed_ms": 2766,
+          "error": "",
+          "name": "device_search_page",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.pmda.go.jp/PmdaSearch/kikiSearch/"
+        },
+        {
+          "bytes": 139903,
+          "elapsed_ms": 2437,
+          "error": "",
+          "name": "get_with_query_rejected",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.pmda.go.jp/PmdaSearch/kikiSearch/?nameWord=Medtronic"
+        }
+      ],
+      "request_log": "probes\\japan_pmda\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 3,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 2766,
+        "requests": 3,
+        "total_bytes": 337440,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "japan_pmda",
+      "status": "UNAVAILABLE",
+      "verified_at": "2026-11-08T21:59:26.473986Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://api.patentsview.org/patents/query?q=%7B%7D&f=%5B%22patent_number%22%5D",
+        "https://patentsview.org/apis/api-endpoints"
+      ],
+      "has_noted_md": true,
+      "notes": "Documented host search.patentsview.org is NXDOMAIN; api host now serves an ODP-branded SPA. Retired/absorbed into uspto_open_data_portal.",
+      "probe_count": 4,
+      "probe_result": "probes\\patentsview\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 0,
+          "elapsed_ms": 0,
+          "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+          "name": "documented_api_host",
+          "ok": false,
+          "status": null,
+          "url": "https://search.patentsview.org/api/v1/patent/?q=%7B%22_text_any%22%3A+%7B%22patent_title%22%3A+%22stent%22%7D%7D&f=%5B%22patent_id%22%2C%22patent_date%22%5D"
+        },
+        {
+          "bytes": 0,
+          "elapsed_ms": 16,
+          "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+          "name": "documented_docs_host",
+          "ok": false,
+          "status": null,
+          "url": "https://search.patentsview.org/docs/"
+        },
+        {
+          "bytes": 20666,
+          "elapsed_ms": 2141,
+          "error": "",
+          "name": "legacy_api_host",
+          "ok": true,
+          "status": 200,
+          "url": "https://api.patentsview.org/patents/query?q=%7B%7D&f=%5B%22patent_number%22%5D"
+        },
+        {
+          "bytes": 20666,
+          "elapsed_ms": 905,
+          "error": "",
+          "name": "project_website",
+          "ok": true,
+          "status": 200,
+          "url": "https://patentsview.org/apis/api-endpoints"
+        }
+      ],
+      "request_log": "probes\\patentsview\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 2141,
+        "requests": 8,
+        "total_bytes": 41332,
+        "transport_errors": 6,
+        "with_error_text": 6
+      },
+      "source_id": "patentsview",
+      "status": "UNAVAILABLE",
+      "verified_at": "2026-11-08T21:41:54.207251Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [],
+      "has_noted_md": true,
+      "notes": "SBIR.gov documents an unauthenticated awards API, but on every probe the API host answered 403 Forbidden (also to a plain browser-style fetch) while the official /api page carries a maintenance notice.  This is not a registration requirement: the documented endpoints need no key.  Recorded UNAVAILABLE (documented API temporarily refusing anonymous service) with the evidence preserved, not as a working source.",
+      "probe_count": 3,
+      "probe_result": "probes\\sbir_gov\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 24,
+          "elapsed_ms": 733,
+          "error": "HTTP 403 Forbidden",
+          "name": "awards_keyword",
+          "ok": null,
+          "status": 403,
+          "url": "https://api.www.sbir.gov/public/api/awards?keyword=stent&rows=2"
+        },
+        {
+          "bytes": 24,
+          "elapsed_ms": 592,
+          "error": "HTTP 403 Forbidden",
+          "name": "awards_firm",
+          "ok": null,
+          "status": 403,
+          "url": "https://api.www.sbir.gov/public/api/awards?firm=Medtronic&rows=2"
+        },
+        {
+          "bytes": 38726,
+          "elapsed_ms": 906,
+          "error": "JSONDecodeError: json decode failed",
+          "name": "api_docs_page",
+          "ok": null,
+          "status": 200,
+          "url": "https://www.sbir.gov/api"
+        }
+      ],
+      "request_log": "probes\\sbir_gov\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 1,
+        "http_4xx": 4,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1187,
+        "requests": 5,
+        "total_bytes": 38822,
+        "transport_errors": 0,
+        "with_error_text": 4
+      },
+      "source_id": "sbir_gov",
+      "status": "UNAVAILABLE",
+      "verified_at": "2026-11-08T21:42:59.867335Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://www.gov.uk/api/search.json?q=medical+device+register&filter_organisations=medicines-and-healthcare-products-regulatory-agency&count=5&fields=title%2Clink%2Cdescription%2Cpublic_timestamp",
+        "https://www.gov.uk/api/search.json?q=public+register+medical+devices+searchable&filter_organisations=medicines-and-healthcare-products-regulatory-agency&count=3&fields=title%2Clink%2Cpublic_timestamp"
+      ],
+      "has_noted_md": false,
+      "notes": "GOV.UK search for MHRA device material returns only *guidance* (how a manufacturer registers a device), not a public register of licensed products: the UK has no searchable public medical-device register equivalent to MDALL/EUDAMED/GUDID. There is therefore no product-level UK regulatory dataset to collect.",
+      "probe_count": 2,
+      "probe_result": "probes\\uk_mhra_device\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 2396,
+          "elapsed_ms": 375,
+          "error": "",
+          "name": "govuk_search_medical_device_register",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.gov.uk/api/search.json?q=medical+device+register&filter_organisations=medicines-and-healthcare-products-regulatory-agency&count=5&fields=title%2Clink%2Cdescription%2Cpublic_timestamp"
+        },
+        {
+          "bytes": 1549,
+          "elapsed_ms": 297,
+          "error": "",
+          "name": "govuk_search_public_register",
+          "ok": true,
+          "status": 200,
+          "url": "https://www.gov.uk/api/search.json?q=public+register+medical+devices+searchable&filter_organisations=medicines-and-healthcare-products-regulatory-agency&count=3&fields=title%2Clink%2Cpublic_timestamp"
+        }
+      ],
+      "request_log": "probes\\uk_mhra_device\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 375,
+        "requests": 2,
+        "total_bytes": 3945,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "uk_mhra_device",
+      "status": "UNAVAILABLE",
+      "verified_at": "2026-11-08T21:59:18.612348Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://dataweb.usitc.gov/",
+        "https://dataweb.usitc.gov/help",
+        "https://dataweb.usitc.gov/api/v1/data"
+      ],
+      "has_noted_md": true,
+      "notes": "SPA-only site, no discoverable API; www.usitc.gov 403. Registered web UI only; redundant with Census for aggregate purposes.",
+      "probe_count": 4,
+      "probe_result": "probes\\usitc_dataweb\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 9514,
+          "elapsed_ms": 936,
+          "error": "",
+          "name": "dataweb_app",
+          "ok": true,
+          "status": 200,
+          "url": "https://dataweb.usitc.gov/"
+        },
+        {
+          "bytes": 374,
+          "elapsed_ms": 485,
+          "error": "HTTP 403 Forbidden",
+          "name": "usitc_dataweb_docs",
+          "ok": false,
+          "status": 403,
+          "url": "https://www.usitc.gov/dataweb"
+        },
+        {
+          "bytes": 9518,
+          "elapsed_ms": 563,
+          "error": "",
+          "name": "dataweb_help_route",
+          "ok": true,
+          "status": 200,
+          "url": "https://dataweb.usitc.gov/help"
+        },
+        {
+          "bytes": 9517,
+          "elapsed_ms": 358,
+          "error": "",
+          "name": "api_route_guess",
+          "ok": true,
+          "status": 200,
+          "url": "https://dataweb.usitc.gov/api/v1/data"
+        }
+      ],
+      "request_log": "probes\\usitc_dataweb\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 3,
+        "http_4xx": 1,
+        "http_5xx": 0,
+        "max_elapsed_ms": 936,
+        "requests": 4,
+        "total_bytes": 28923,
+        "transport_errors": 0,
+        "with_error_text": 1
+      },
+      "source_id": "usitc_dataweb",
+      "status": "UNAVAILABLE",
+      "verified_at": "2026-11-08T21:48:33.773038Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [],
+      "has_noted_md": true,
+      "notes": "ICTRP is a search portal over national registries, with no public machine API.  The probe records the portal responses but they are HTML forms, not queryable records, so the source is recorded UNAVAILABLE for programmatic collection.  The registries it indexes (CT.gov, CTIS, ChiCTR, ...) are collected directly instead.",
+      "probe_count": 2,
+      "probe_result": "probes\\who_ictrp\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 36376,
+          "elapsed_ms": 1140,
+          "error": "JSONDecodeError: json decode failed",
+          "name": "search_portal",
+          "ok": null,
+          "status": 200,
+          "url": "https://trialsearch.who.int/"
+        },
+        {
+          "bytes": 101771,
+          "elapsed_ms": 1422,
+          "error": "JSONDecodeError: json decode failed",
+          "name": "platform_page",
+          "ok": null,
+          "status": 200,
+          "url": "https://www.who.int/clinical-trials-registry-platform"
+        }
+      ],
+      "request_log": "probes\\who_ictrp\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 0,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1422,
+        "requests": 2,
+        "total_bytes": 138147,
+        "transport_errors": 0,
+        "with_error_text": 0
+      },
+      "source_id": "who_ictrp",
+      "status": "UNAVAILABLE",
+      "verified_at": "2026-11-08T21:39:09.627678Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [],
+      "has_noted_md": true,
+      "notes": "No vendor-neutral public API exists; each employer exposes its own tenant. Per-employer JSON endpoints answering: none. TLS hostname-mismatch failures: ['phenom_host_medtronic'] — TLS verification was not disabled to work around them. A working tenant endpoint is site-specific, not a generalisable job-postings API.",
+      "probe_count": 4,
+      "probe_result": "probes\\workday_phenom\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 0,
+          "elapsed_ms": 422,
+          "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'jobs.medtronic.com'. (_ssl.c:1010)>",
+          "name": "phenom_host_medtronic",
+          "ok": false,
+          "status": null,
+          "url": "https://jobs.medtronic.com/"
+        },
+        {
+          "bytes": 155,
+          "elapsed_ms": 391,
+          "error": "HTTP 404 Not Found",
+          "name": "workday_cxs_philips",
+          "ok": false,
+          "status": 404,
+          "url": "https://philips.wd3.myworkdayjobs.com/wday/cxs/philips/Philips_Careers/jobs"
+        },
+        {
+          "bytes": 148,
+          "elapsed_ms": 1000,
+          "error": "HTTP 404 Not Found",
+          "name": "workday_cxs_gehc",
+          "ok": false,
+          "status": 404,
+          "url": "https://gehc.wd5.myworkdayjobs.com/wday/cxs/gehc/GEHC/jobs"
+        },
+        {
+          "bytes": 12050,
+          "elapsed_ms": 467,
+          "error": "HTTP 404 Not Found",
+          "name": "workday_product_page",
+          "ok": false,
+          "status": 404,
+          "url": "https://www.workday.com/en-us/products/talent-acquisition.html"
+        }
+      ],
+      "request_log": "probes\\workday_phenom\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 0,
+        "http_4xx": 3,
+        "http_5xx": 0,
+        "max_elapsed_ms": 1000,
+        "requests": 4,
+        "total_bytes": 12353,
+        "transport_errors": 1,
+        "with_error_text": 4
+      },
+      "source_id": "workday_phenom",
+      "status": "UNAVAILABLE",
+      "verified_at": "2026-11-08T21:46:58.100890Z"
+    },
+    {
+      "error": "",
+      "evidence_urls": [
+        "https://standard.open-contracting.org/latest/en/",
+        "https://standard.open-contracting.org/latest/en/schema/release_package/"
+      ],
+      "has_noted_md": true,
+      "notes": "OCDS is a data standard plus a publisher registry, not a record publisher: the official site documents the release/record model and lists publishers, and has no homogeneous record API of its own. Status is NOT_TESTED on purpose - calling a documentation site 'verified' would be a category error. Actual OCDS records were verified through a real publisher instead (uk_find_a_tender, OCDS 1.1).",
+      "probe_count": 3,
+      "probe_result": "probes\\ocds_registry\\PROBE_RESULT.json",
+      "probes": [
+        {
+          "bytes": 19862,
+          "elapsed_ms": 344,
+          "error": "",
+          "name": "standard_overview",
+          "ok": true,
+          "status": 200,
+          "url": "https://standard.open-contracting.org/latest/en/"
+        },
+        {
+          "bytes": 18283,
+          "elapsed_ms": 233,
+          "error": "",
+          "name": "release_package_schema",
+          "ok": true,
+          "status": 200,
+          "url": "https://standard.open-contracting.org/latest/en/schema/release_package/"
+        },
+        {
+          "bytes": 5153,
+          "elapsed_ms": 3936,
+          "error": "HTTP 404 Not Found",
+          "name": "record_model",
+          "ok": false,
+          "status": 404,
+          "url": "https://standard.open-contracting.org/latest/en/101/"
+        }
+      ],
+      "request_log": "probes\\ocds_registry\\requests.jsonl",
+      "request_summary": {
+        "http_2xx": 2,
+        "http_4xx": 1,
+        "http_5xx": 0,
+        "max_elapsed_ms": 3936,
+        "requests": 3,
+        "total_bytes": 43298,
+        "transport_errors": 0,
+        "with_error_text": 1
+      },
+      "source_id": "ocds_registry",
+      "status": "NOT_TESTED",
+      "verified_at": "2026-11-08T21:47:57.474641Z"
+    }
+  ],
+  "totals": {
+    "by_status": {
+      "BLOCKED_BY_POLICY": 2,
+      "NOT_TESTED": 1,
+      "PAID_ONLY": 4,
+      "REQUIRES_REGISTRATION": 9,
+      "UNAVAILABLE": 11,
+      "VERIFIED_API": 25,
+      "VERIFIED_BULK_DOWNLOAD": 2,
+      "VERIFIED_PUBLIC_QUERY": 4
+    },
+    "bytes": 27365968,
+    "failed_requests": 105,
+    "requests": 349,
+    "sources_with_probe_directory": 58
+  }
+}

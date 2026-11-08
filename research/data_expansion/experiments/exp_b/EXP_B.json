@@ -1,0 +1,92 @@
+{
+  "candidate_policy": "candidate_semantic links never enter the confirmed-link counts",
+  "computed_at": "2026-11-08T22:02:44.976193Z",
+  "control_interpretation": {
+    "specificity_vs_decoy": "tests product-level token discrimination only; disjoint token sets make this a weak test",
+    "specificity_vs_unrelated_evidence": "tests the false-link rate against evidence retrieved for a different anchor; this is the informative control"
+  },
+  "decoy_definition": "same firm, different product code, |decision year difference| <= 2; tested on the real anchor's own hit pool",
+  "decoys_available": 35,
+  "population_metrics_withheld": "No human labels exist this round, so population precision/recall/F1 are NOT computed. Only the authoritative-identifier subset error rate, the refusal rate and the decoy specificity are reported.",
+  "schema": "medradar.external.exp_b.v1",
+  "seed": 20261109,
+  "strategies": {
+    "candidate_semantic": {
+      "anchors_linked": 32,
+      "authoritative_error_rate": null,
+      "authoritative_subset_errors": 0,
+      "authoritative_subset_size": 0,
+      "cross_anchor_false_link_rate": 0.0079,
+      "decoy_anchors_compared": 35,
+      "decoy_link_rate": 0.004,
+      "links": 1200,
+      "real_link_rate": 0.8421,
+      "refusal_rate": 0.0,
+      "requires_firm_confirmation": false,
+      "specificity_vs_decoy": 210.084,
+      "specificity_vs_unrelated_evidence": 106.667
+    },
+    "multi_field": {
+      "anchors_linked": 2,
+      "authoritative_error_rate": null,
+      "authoritative_subset_errors": 0,
+      "authoritative_subset_size": 0,
+      "cross_anchor_false_link_rate": 0.0,
+      "decoy_anchors_compared": 35,
+      "decoy_link_rate": 0.0,
+      "links": 4,
+      "real_link_rate": 0.0526,
+      "refusal_rate": 0.9375,
+      "requires_firm_confirmation": true,
+      "specificity_vs_decoy": null,
+      "specificity_vs_unrelated_evidence": null
+    },
+    "name_only": {
+      "anchors_linked": 32,
+      "authoritative_error_rate": null,
+      "authoritative_subset_errors": 0,
+      "authoritative_subset_size": 0,
+      "cross_anchor_false_link_rate": 0.0026,
+      "decoy_anchors_compared": 35,
+      "decoy_link_rate": 0.004,
+      "links": 1200,
+      "real_link_rate": 0.8421,
+      "refusal_rate": 0.0,
+      "requires_firm_confirmation": false,
+      "specificity_vs_decoy": 210.084,
+      "specificity_vs_unrelated_evidence": 320.0
+    },
+    "name_plus_firm": {
+      "anchors_linked": 7,
+      "authoritative_error_rate": null,
+      "authoritative_subset_errors": 0,
+      "authoritative_subset_size": 0,
+      "cross_anchor_false_link_rate": 0.0,
+      "decoy_anchors_compared": 35,
+      "decoy_link_rate": 0.0,
+      "links": 18,
+      "real_link_rate": 0.1842,
+      "refusal_rate": 0.7812,
+      "requires_firm_confirmation": true,
+      "specificity_vs_decoy": null,
+      "specificity_vs_unrelated_evidence": null
+    },
+    "regulatory_id": {
+      "anchors_linked": 0,
+      "authoritative_error_rate": null,
+      "authoritative_subset_errors": 0,
+      "authoritative_subset_size": 0,
+      "cross_anchor_false_link_rate": 0.0,
+      "decoy_anchors_compared": 35,
+      "decoy_link_rate": 0.0,
+      "links": 0,
+      "real_link_rate": 0.0,
+      "refusal_rate": 1.0,
+      "requires_firm_confirmation": false,
+      "specificity_vs_decoy": null,
+      "specificity_vs_unrelated_evidence": null
+    }
+  },
+  "usable_for_confirmed_links": [],
+  "usable_threshold": "requires firm confirmation AND specificity_vs_decoy >= 1.5 AND specificity_vs_unrelated_evidence >= 1.5 AND authoritative_error_rate < 0.05 AND refusal_rate <= 0.5"
+}

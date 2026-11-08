@@ -1,0 +1,45 @@
+{
+  "api_available": "YES",
+  "authentication": "bearer token from a Lens account on an institutional subscription",
+  "bulk_download_available": "NO",
+  "category": "patent",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Institutional subscription only (quote-based, no public price list). Free 'Lens Scholars' accounts do not include API access.",
+  "country_or_region": "GLOBAL",
+  "domain": "B",
+  "entity_identifiers": [
+    "Lens ID",
+    "publication number",
+    "family id",
+    "applicant name (normalised)",
+    "CPC/IPC"
+  ],
+  "evidence_urls": [
+    "https://docs.api.lens.org/",
+    "https://www.lens.org/lens/user/subscriptions",
+    "https://api.lens.org/scholarly/search"
+  ],
+  "free_tier": "no free API tier; individual 'Lens Scholars' accounts are website-only",
+  "historical_coverage": "very broad (patents + scholarly literature, global)",
+  "known_limitations": [
+    "PROBED 2026-11-09: https://api.lens.org/scholarly/search returned HTTP 401 with {\"message\":\"Missing/Incorrect Authorization Header\"}.",
+    "The Lens Patent API Terms of Use state: 'Lens API service is only available through an institutional subscription. Individuals are encouraged to approach their institutional librarian...' - so this is PAID_ONLY, not merely registration-gated. (Quote captured from the live page at 2026-11-09T05:39Z; a repeat request minutes later was answered 403 by the site's WAF, which is itself in the probe ledger.)",
+    "Redistribution of derived data is restricted by the API terms, which conflicts with MedRadar's need to keep evidence reusable and auditable.",
+    "Prices are quoted per institution, not published as a price list; obtaining a quote is outside this round's rules."
+  ],
+  "licence": "Lens Patent/Scholarly API terms of use; redistribution of derived data restricted",
+  "official_or_commercial": "commercial",
+  "official_url": "https://www.lens.org/",
+  "probe_priority": "P3",
+  "rate_limits": "subscription-dependent (documented in the API docs)",
+  "redistribution_allowed": "NO",
+  "research_value": "Would provide patent and scholarly records in one normalised index with family and citation links, useful for linking device technology to the scientific literature. Because it is institutional-subscription-only and restricts redistribution, it is not usable here and should not be planned for without a licence review.",
+  "source_id": "lens_org",
+  "source_name": "Lens.org (patent + scholarly API)",
+  "timestamp_fields": [
+    "publication date -> source_public_at",
+    "filing/priority date -> event_at only"
+  ],
+  "update_frequency": "daily to weekly (subscription dependent)",
+  "verified_at": "2026-11-09"
+}

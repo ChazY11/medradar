@@ -1,0 +1,47 @@
+{
+  "api_available": "YES",
+  "authentication": "none",
+  "bulk_download_available": "YES",
+  "category": "clinical_trials_registry",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free",
+  "country_or_region": "US",
+  "domain": "D",
+  "entity_identifiers": [
+    "NCT id",
+    "org study id",
+    "secondary ids"
+  ],
+  "evidence_urls": [
+    "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic&pageSize=2&countTotal=true",
+    "https://clinicaltrials.gov/api/v2/studies?query.term=stent&pageSize=2&countTotal=true",
+    "https://clinicaltrials.gov/api/v2/studies/NCT01693120"
+  ],
+  "free_tier": "free, no key required",
+  "historical_coverage": "registrations from 1999 (FDAAA) onward; ~500k studies",
+  "known_limitations": [
+    "studyFirstPostDate can be type ESTIMATED; it is still the first public registration date",
+    "startDate is often month-only (coarse) and is not a publication clock",
+    "the record carries no DOI/PMID link to publications, so paper-trial links must come from the paper side (NCT id in metadata)",
+    "sponsor names are marketing divisions ('Medtronic Cardiac Ablation Solutions'), requiring alias matching"
+  ],
+  "licence": "US federal government work; freely reusable",
+  "official_or_commercial": "official",
+  "official_url": "https://clinicaltrials.gov/data-api/api",
+  "probe_priority": "P0",
+  "rate_limits": "no published hard limit for the public API; keep pageSize modest (we used 2 and paced at 0.9s)",
+  "redistribution_allowed": "YES",
+  "research_value": "The single best public signal of a device firm's clinical pipeline: lead-sponsor attribution is a structured field, and studyFirstPostDate is a defensible first-public-knowledge clock.",
+  "source_id": "clinicaltrials_gov",
+  "source_name": "ClinicalTrials.gov v2 API",
+  "timestamp_fields": [
+    "studyFirstPostDate",
+    "studyFirstSubmitDate",
+    "startDate",
+    "lastUpdatePostDate",
+    "primaryCompletionDate",
+    "completionDate"
+  ],
+  "update_frequency": "continuous (sponsor updates)",
+  "verified_at": "2026-11-09"
+}

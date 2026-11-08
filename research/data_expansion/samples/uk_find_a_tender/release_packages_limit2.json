@@ -1,0 +1,453 @@
+{
+    "uri": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=2&updatedTo=2026-11-08T21:44:53",
+    "version": "1.1",
+    "extensions": [
+        "https://standard.open-contracting.org/profiles/eu/latest/en/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_amendment_rationale_classifications_extension/master/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_budget_breakdown_extension/master/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_contract_completion_extension/master/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_documentation_extension/master/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_pagination_extension/master/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_suitability_extension/master/extension.json",
+        "https://raw.githubusercontent.com/portaledcahn/ocds_Links_extension/main/extension.json",
+        "https://raw.githubusercontent.com/cabinetoffice/ocds_uk_extension/main/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_performance_failures_extension/master/extension.json"
+    ],
+    "publishedDate": "2026-11-08T20:14:58Z",
+    "publisher": {
+        "name": "Cabinet Office",
+        "scheme": "GB-GOR",
+        "uid": "D2",
+        "uri": "https://www.gov.uk/government/organisations/cabinet-office"
+    },
+    "license": "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "publicationPolicy": "https://www.gov.uk/government/publications/open-contracting",
+    "releases": [
+        {
+            "ocid": "ocds-h6vhtk-07b710",
+            "id": "105976-2026",
+            "date": "2026-11-08T20:14:58Z",
+            "tag": [
+                "award",
+                "contract"
+            ],
+            "description": "1 x optional 12 month extension at the Council's discretion.",
+            "initiationType": "tender",
+            "tender": {
+                "id": "PRJ_31265",
+                "legalBasis": {
+                    "id": "32014L0024",
+                    "scheme": "CELEX"
+                },
+                "title": "WCC Consultation Governance and Assurance Platform (PRJ_31265)",
+                "status": "complete",
+                "classification": {
+                    "scheme": "CPV",
+                    "id": "72000000",
+                    "description": "IT services: consulting, software development, Internet and support"
+                },
+                "mainProcurementCategory": "services",
+                "description": "The contract will implement the Consultation Governance and Assurance Platform which will provide governance assurance across multiple concurrent end-to-end workforce consultations as part of the Fit for the Future Programme for Westminster City Council.",
+                "lots": [
+                    {
+                        "id": "1",
+                        "description": "The contract will implement the Consultation Governance and Assurance Platform which will provide governance assurance across multiple concurrent end-to-end workforce consultations as part of the Fit for the Future Programme for Westminster City Council.",
+                        "awardCriteria": {
+                            "criteria": [
+                                {
+                                    "type": "price"
+                                }
+                            ]
+                        },
+                        "hasOptions": false,
+                        "status": "cancelled"
+                    }
+                ],
+                "items": [
+                    {
+                        "id": "1",
+                        "deliveryAddresses": [
+                            {
+                                "region": "UK"
+                            }
+                        ],
+                        "relatedLot": "1"
+                    }
+                ],
+                "procurementMethod": "limited",
+                "procurementMethodDetails": "Award procedure without prior publication of a call for competition",
+                "coveredBy": [
+                    "GPA"
+                ],
+                "procurementMethodRationaleClassifications": [
+                    {
+                        "scheme": "TED_PT_AWARD_CONTRACT_WITHOUT_CALL",
+                        "id": "D_OUTSIDE_SCOPE",
+                        "description": "The procurement falls outside the scope of application of the directive"
+                    }
+                ],
+                "procurementMethodRationale": "Compliant award without competition via GCA/CCS G Cloud 14 (RM1557.14)"
+            },
+            "awards": [
+                {
+                    "id": "105976-2026-1",
+                    "relatedLots": [
+                        "1"
+                    ],
+                    "title": "PRJ_31265 WCC Consultation Governance and Assurance Platform",
+                    "status": "active",
+                    "suppliers": [
+                        {
+                            "id": "GB-FTS-188248",
+                            "name": "Lumilinks Group Ltd"
+                        }
+                    ]
+                }
+            ],
+            "parties": [
+                {
+                    "name": "Westminster City Council",
+                    "id": "GB-FTS-5427",
+                    "identifier": {
+                        "legalName": "Westminster City Council"
+                    },
+                    "address": {
+                        "streetAddress": "64 Victoria Street",
+                        "locality": "London",
+                        "region": "UKI32",
+                        "postalCode": "SW1E 6QP",
+                        "countryName": "United Kingdom"
+                    },
+                    "contactPoint": {
+                        "email": "procurementteam@westminster.gov.uk"
+                    },
+                    "roles": [
+                        "buyer"
+                    ],
+                    "details": {
+                        "url": "https://wcc.ukp.app.jaggaer.com",
+                        "buyerProfile": "http://www.westminster.gov.uk",
+                        "classifications": [
+                            {
+                                "scheme": "TED_CA_TYPE",
+                                "id": "REGIONAL_AUTHORITY",
+                                "description": "Regional or local authority"
+                            },
+                            {
+                                "scheme": "COFOG",
+                                "id": "01",
+                                "description": "General public services"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Lumilinks Group Ltd",
+                    "id": "GB-FTS-188248",
+                    "identifier": {
+                        "legalName": "Lumilinks Group Ltd",
+                        "id": "11557839"
+                    },
+                    "address": {
+                        "streetAddress": "79 College Road,",
+                        "locality": "Harrow",
+                        "region": "UK",
+                        "postalCode": "HA1 1BD",
+                        "countryName": "United Kingdom"
+                    },
+                    "roles": [
+                        "supplier"
+                    ],
+                    "details": {
+                        "scale": "sme"
+                    }
+                },
+                {
+                    "name": "The High Court of Justice",
+                    "id": "GB-FTS-5080",
+                    "identifier": {
+                        "legalName": "The High Court of Justice"
+                    },
+                    "address": {
+                        "streetAddress": "The Royal Court of Justice, The Strand",
+                        "locality": "London",
+                        "postalCode": "WC2A 2LL",
+                        "countryName": "United Kingdom"
+                    },
+                    "roles": [
+                        "reviewBody"
+                    ]
+                }
+            ],
+            "buyer": {
+                "id": "GB-FTS-5427",
+                "name": "Westminster City Council"
+            },
+            "contracts": [
+                {
+                    "id": "105976-2026-1",
+                    "awardID": "105976-2026-1",
+                    "title": "PRJ_31265 WCC Consultation Governance and Assurance Platform",
+                    "status": "active",
+                    "value": {
+                        "amount": 125460.00,
+                        "currency": "GBP"
+                    },
+                    "dateSigned": "2026-10-28T00:00:00Z"
+                }
+            ],
+            "bids": {
+                "statistics": [
+                    {
+                        "id": "1",
+                        "measure": "bids",
+                        "relatedLot": "1",
+                        "value": 1
+                    },
+                    {
+                        "id": "2",
+                        "measure": "smeBids",
+                        "relatedLot": "1",
+                        "value": 1
+                    }
+                ]
+            },
+            "language": "en"
+        },
+        {
+            "buyerID": [],
+            "id": "105975-2026",
+            "tag": [
+                "award",
+                "contract"
+            ],
+            "date": "2026-11-08T19:43:33Z",
+            "initiationType": "tender",
+            "ocid": "ocds-h6vhtk-058e41",
+            "parties": [
+                {
+                    "name": "Westminster City Council",
+                    "id": "GB-PPON-PJVD-6261-BPPJ",
+                    "identifier": {
+                        "scheme": "GB-PPON",
+                        "id": "PJVD-6261-BPPJ"
+                    },
+                    "address": {
+                        "streetAddress": "64 Victoria Street",
+                        "locality": "London",
+                        "postalCode": "SW1E 6QP",
+                        "country": "GB",
+                        "countryName": "United Kingdom",
+                        "region": "UKI32"
+                    },
+                    "contactPoint": {
+                        "email": "procurementteammailbox@westminster.gov.uk"
+                    },
+                    "roles": [
+                        "buyer"
+                    ],
+                    "details": {
+                        "url": "https://www.westminster.gov.uk/",
+                        "classifications": [
+                            {
+                                "scheme": "UK_CA_TYPE",
+                                "id": "publicAuthoritySubCentralGovernment",
+                                "description": "Public authority - sub-central government"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Arcus Global Limited",
+                    "id": "GB-PPON-PRWV-8165-MVWQ",
+                    "identifier": {
+                        "scheme": "GB-PPON",
+                        "id": "PRWV-8165-MVWQ"
+                    },
+                    "address": {
+                        "streetAddress": "Future Business Centre, Kings Hedges Road",
+                        "locality": "Cambridge",
+                        "postalCode": "CB4 2HY",
+                        "country": "GB",
+                        "countryName": "United Kingdom",
+                        "region": "UKH12"
+                    },
+                    "contactPoint": {
+                        "email": "sales@arcusglobal.com"
+                    },
+                    "roles": [
+                        "supplier"
+                    ],
+                    "details": {
+                        "url": "http://www.arcusglobal.com",
+                        "scale": "sme",
+                        "vcse": false,
+                        "publicServiceMissionOrganization": false,
+                        "shelteredWorkshop": false
+                    }
+                }
+            ],
+            "buyer": {
+                "id": "GB-PPON-PJVD-6261-BPPJ",
+                "name": "Westminster City Council"
+            },
+            "tender": {
+                "id": "P280 / PRJ_30038",
+                "legalBasis": {
+                    "id": "2023/54",
+                    "scheme": "UKPGA",
+                    "uri": "https://www.legislation.gov.uk/ukpga/2023/54/contents"
+                },
+                "title": "Planning, Building Control and Licensing Back Office Applications",
+                "description": "Westminster City Council have procured a back-office line of business system solution, to support key service areas in their day-to-day operations to cover Planning, Bulding Control and Licensing. The contract will be for an initial period of 3 years, with the option to extend for 1 additional year (at the Council's discretion).",
+                "status": "complete",
+                "procurementMethod": "open",
+                "procurementMethodDetails": "Open procedure",
+                "lots": [
+                    {
+                        "id": "1",
+                        "status": "complete",
+                        "description": null
+                    }
+                ],
+                "documents": [
+                    {
+                        "id": "conflictOfInterest",
+                        "documentType": "conflictOfInterest",
+                        "description": "Not published"
+                    }
+                ]
+            },
+            "awards": [
+                {
+                    "id": "2",
+                    "status": "active",
+                    "mainProcurementCategory": "services",
+                    "suppliers": [
+                        {
+                            "id": "GB-PPON-PRWV-8165-MVWQ",
+                            "name": "Arcus Global Limited"
+                        }
+                    ],
+                    "items": [
+                        {
+                            "id": "1",
+                            "additionalClassifications": [
+                                {
+                                    "scheme": "CPV",
+                                    "id": "48450000",
+                                    "description": "Time accounting or human resources software package"
+                                },
+                                {
+                                    "scheme": "CPV",
+                                    "id": "48500000",
+                                    "description": "Communication and multimedia software package"
+                                },
+                                {
+                                    "scheme": "CPV",
+                                    "id": "48451000",
+                                    "description": "Enterprise resource planning software package"
+                                },
+                                {
+                                    "scheme": "CPV",
+                                    "id": "48000000",
+                                    "description": "Software package and information systems"
+                                },
+                                {
+                                    "scheme": "CPV",
+                                    "id": "72212480",
+                                    "description": "Sales, marketing and business intelligence software development services"
+                                }
+                            ],
+                            "deliveryAddresses": [
+                                {
+                                    "region": "UKI32",
+                                    "country": "GB",
+                                    "countryName": "United Kingdom"
+                                }
+                            ],
+                            "relatedLot": "1"
+                        }
+                    ],
+                    "relatedLots": [
+                        "1"
+                    ]
+                }
+            ],
+            "contracts": [
+                {
+                    "id": "2",
+                    "awardID": "2",
+                    "title": "WCC P280 Gazetteer, Planning/Building Control and Licensing Back Office Applications",
+                    "status": "active",
+                    "period": {
+                        "startDate": "2026-11-04T00:00:00+00:00",
+                        "endDate": "2029-10-31T23:59:59+00:00",
+                        "maxExtentDate": "2030-10-31T23:59:59+00:00"
+                    },
+                    "hasRenewal": true,
+                    "renewal": {
+                        "description": "1 x optional 12 month extension at the Council's discretion"
+                    },
+                    "value": {
+                        "amountGross": 575570.69,
+                        "amount": 479642.24,
+                        "currency": "GBP"
+                    },
+                    "aboveThreshold": true,
+                    "dateSigned": "2026-11-04T00:00:00+00:00",
+                    "agreedMetrics": [
+                        {
+                            "id": "1",
+                            "title": "Responsible Procurement / Social Value",
+                            "description": "Commitments to be delivered annually to a target of 90%",
+                            "observations": [
+                                {
+                                    "period": {
+                                        "durationInMonths": 12
+                                    },
+                                    "id": "frequency"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "2",
+                            "title": "Availability",
+                            "description": "The live service must be available 24/7 and 365/6 days"
+                        },
+                        {
+                            "id": "3",
+                            "title": "Availability",
+                            "description": "The system must be available 99.99% of the time, subject to maintenance updates."
+                        },
+                        {
+                            "id": "4",
+                            "title": "Availability",
+                            "description": "The test service must be available 24/7 and 365/6 days"
+                        },
+                        {
+                            "id": "5",
+                            "title": "Priority response times as defined as P1, P2, P3 and P4"
+                        }
+                    ],
+                    "statusDetails": null,
+                    "documents": [
+                        {
+                            "id": "105975-2026",
+                            "documentType": "contractNotice",
+                            "noticeType": "UK7",
+                            "description": "Contract details notice on Find a Tender",
+                            "url": "https://www.find-tender.service.gov.uk/Notice/105975-2026",
+                            "datePublished": "2026-11-08T19:43:33Z",
+                            "format": "text/html"
+                        }
+                    ]
+                }
+            ],
+            "language": "en"
+        }
+    ],
+    "links": {
+        "next": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=2&updatedTo=2026-11-08T21:44:53&cursor=dXBkYXRlZFRvPTIwMjYtMTEtMDhUMjE6NDQ6NTN8bmV4dEN1cnNvcj03NTc5ODM="
+    }
+}

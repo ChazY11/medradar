@@ -904,39 +904,72 @@ def probe_australia_tga_artg(client: base.HttpClient, directory: Path) -> base.P
     source_id = "australia_tga_artg"
     probes: list[dict[str, Any]] = []
 
-    r = client.get("https://www.tga.gov.au/", accept="text/html")
-    probes.append(_entry("portal_home", r, directory, source_id))
+    # ARTG first: it is the decisive URL, and the TGA host drops connections
+    # often enough that spending the budget on it up front matters.
+    for attempt in (1, 2):
+        if client.remaining() <= 0:
+            break
+        r = client.get("https://www.tga.gov.au/resources/artg", accept="text/html")
+        entry = _entry(f"artg_search_attempt{attempt}", r, directory, source_id)
+        if r.body:
+            text = r.text
+            entry["challenge_markers"] = [
+                marker
+                for marker in ("bm-verify", "_sec/verify", "triggerInterstitialChallenge", "pow")
+                if marker in text
+            ]
+            entry["bytes_served"] = len(r.body)
+            entry["is_interstitial"] = "bm-verify" in text
+        probes.append(entry)
+        if r.ok and "bm-verify" in r.text:
+            break
 
-    r = client.get("https://www.tga.gov.au/resources/artg", accept="text/html")
-    entry = _entry("artg_search", r, directory, source_id)
-    if r.body:
-        text = r.text
-        entry["challenge_markers"] = [
-            marker
-            for marker in ("bm-verify", "_sec/verify", "triggerInterstitialChallenge", "Akamai", "pow")
-            if marker in text
-        ]
-        entry["bytes_served"] = len(r.body)
-    probes.append(entry)
+    if client.remaining() > 0:
+        r = client.get("https://www.tga.gov.au/", accept="text/html")
+        probes.append(_entry("portal_home", r, directory, source_id))
 
-    r = client.get(
-        "https://www.tga.gov.au/resources/artg", params={"search_api_fulltext": "Medtronic"}, accept="text/html"
-    )
-    probes.append(_entry("artg_query_medtronic", r, directory, source_id))
+    if client.remaining() > 0:
+        r = client.get(
+            "https://www.tga.gov.au/resources/artg",
+            params={"search_api_fulltext": "Medtronic"},
+            accept="text/html",
+        )
+        probes.append(_entry("artg_query_medtronic", r, directory, source_id))
 
+    challenged = any(p.get("is_interstitial") for p in probes)
+    reachable = any(p.get("status") == 200 for p in probes)
+    if challenged:
+        status = "BLOCKED_BY_POLICY"
+        notes = (
+            "The TGA site serves an Akamai Bot Manager interstitial on /resources/artg: a small "
+            "HTML page that must POST a proof-of-work to `/_sec/verify` before content is "
+            "released. Solving that challenge programmatically is exactly the WAF circumvention "
+            "the protocol forbids, so the ARTG is a documented but inaccessible source here."
+        )
+    elif reachable:
+        status = "UNAVAILABLE"
+        notes = (
+            "TGA pages answered HTTP 200 but served no ARTG records and no machine interface; "
+            "the search results are rendered client-side behind a bot-management layer. Recorded "
+            "as unavailable rather than interpreted."
+        )
+    else:
+        status = "UNAVAILABLE"
+        notes = (
+            "Every request to tga.gov.au timed out (90-120 s) or was reset by the remote end from "
+            "this host, so the ARTG could not be verified either way. During reconnaissance the "
+            "ARTG path returned an Akamai bot-manager proof-of-work interstitial "
+            "(`bm-verify` / `/_sec/verify`); that observation is recorded here but was NOT "
+            "reproduced inside this logged probe, so the probe status is UNAVAILABLE, not "
+            "BLOCKED_BY_POLICY."
+        )
     return base.ProbeOutcome(
         source_id=source_id,
-        status="BLOCKED_BY_POLICY",
+        status=status,
         probes=probes,
         requests=client.requests_made(),
         evidence_urls=[p["url"] for p in probes if p.get("ok")],
-        notes=(
-            "The TGA site root is reachable, but the ARTG search path answers with an Akamai "
-            "Bot Manager interstitial that requires solving a proof-of-work challenge via "
-            "`/_sec/verify`; completing it programmatically is exactly the WAF circumvention "
-            "the protocol forbids. No official ARTG dataset is mirrored on data.gov.au either, "
-            "so the Australian register is a documented but inaccessible source for this study."
-        ),
+        notes=notes,
     )
 
 
@@ -1103,7 +1136,7 @@ PROBE_SPECS: dict[str, tuple[int, float, float, int]] = {
     "canada_mdall": (12, 1.0, 90.0, 1),
     "china_nmpa_device": (4, 1.2, 45.0, 1),
     "china_nmpa_udi": (4, 1.2, 45.0, 1),
-    "australia_tga_artg": (4, 1.5, 90.0, 1),
+    "australia_tga_artg": (7, 2.0, 120.0, 0),
     "uk_mhra_device": (4, 1.0, 45.0, 1),
     "japan_pmda": (5, 1.2, 60.0, 1),
     "brazil_anvisa": (5, 1.2, 45.0, 1),

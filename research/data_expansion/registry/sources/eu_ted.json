@@ -1,0 +1,48 @@
+{
+  "source_id": "eu_ted",
+  "source_name": "EU TED (Tenders Electronic Daily) Search API v3",
+  "official_url": "https://developer.ted.europa.eu/docs",
+  "country_or_region": "EU",
+  "domain": "F",
+  "category": "public_procurement_notices",
+  "official_or_commercial": "official",
+  "api_available": "YES",
+  "bulk_download_available": "UNKNOWN",
+  "authentication": "none observed for the search endpoint (POST https://api.ted.europa.eu/v3/notices/search answered anonymously); the developer portal documents API keys for higher service levels, which were NOT used",
+  "free_tier": "free, anonymous search queries answered without registration",
+  "rate_limits": "UNKNOWN - no published numeric limit found; 9-request probe at 1.0 s interval was never throttled",
+  "licence": "EU open data; TED notices are published by the Publications Office of the EU. Reuse terms were not verified in detail, so redistribution is recorded as PARTIAL.",
+  "redistribution_allowed": "PARTIAL",
+  "update_frequency": "daily (TED publishes notices each working day; not measured in this probe)",
+  "historical_coverage": "notices from 2016 observed in probe results; total index counts in the millions (cn-standard 2,952,676 / can-standard 2,855,759 at probe time)",
+  "entity_identifiers": [
+    "publication-number (TED notice number, e.g. 392275-2016)",
+    "OCID is NOT returned by the search API",
+    "buyer-name (multilingual object, not an identifier)",
+    "winner-name / winner-partname fields exist in the schema but came back null"
+  ],
+  "timestamp_fields": [
+    "publication-date (ISO with offset, e.g. 2026-11-08+01:00)",
+    "deadline-date-lot / deadline-date-receipt-tenders (present in the field list)",
+    "contract-duration-start-date / contract-duration-end-date (present in the field list)"
+  ],
+  "known_limitations": [
+    "The awarded supplier is NOT exposed by the search API: winner-name, winner-partname, winner-country and winner-selection-status all return null even for a 2024 medical-device award notice (can-standard). A structured award->supplier link therefore cannot be built from the search endpoint alone.",
+    "Because full text includes the winner, an FT~\"Medtronic\" query returns 8,122 notices since 2024 - those are keyword hits, not awards to Medtronic. Reporting them as the firm's awards would be a category error.",
+    "The notice XML/PDF (which does contain the winner) lives on ted.europa.eu, which answers this client with a JavaScript 'Human Verification' challenge (HTTP 405). No anonymous bulk XML package was verified, and the challenge was deliberately not bypassed. bulk_download_available is therefore UNKNOWN, not YES.",
+    "CPV codes are procurement categories (e.g. 33100000 medical equipments). They are not device identifiers and cannot be joined to UDI/510(k).",
+    "Expert-query syntax is field-typed: `FT~\"phrase\"` for free text but an equality/in-list operator for enumerated fields; `~` on notice-type or classification-cpv returns HTTP 400. Any connector must encode this or it will silently mis-query.",
+    "publication-date in an expert query must be written YYYYMMDD, not ISO.",
+    "ted.europa.eu web pages (including /en/bulk-downloads) are not machine-readable for this client; the API is the only verified path."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "Provides EU-wide public demand signal at notice level with a hard separation between contract notices (cn-standard) and contract award notices (can-standard), which is exactly the notice-vs-award layering MedRadar needs. Buyer names and CPV categories are available, so EU public buying of medical equipment can be counted by category and by purchasing body - but not by supplier, which must come from a different source.",
+  "evidence_urls": [
+    "https://developer.ted.europa.eu/docs",
+    "https://api.ted.europa.eu/v3/notices/search",
+    "https://ted.europa.eu/en/bulk-downloads"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free; no key used, no registration performed",
+  "probe_priority": "P0"
+}

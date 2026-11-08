@@ -265,6 +265,17 @@ STRATEGIES = {
     "candidate_semantic": _link_semantic,
 }
 
+#: A strategy that never consults a firm-identifying field cannot, by
+#: construction, produce a *confirmed* company link — no matter how well it
+#: scores on token discrimination.
+REQUIRES_FIRM_CONFIRMATION = {
+    "name_only": False,
+    "name_plus_firm": True,
+    "regulatory_id": False,
+    "multi_field": True,
+    "candidate_semantic": False,
+}
+
 
 def _decoy_for(anchor: Mapping[str, Any], anchors: list[dict]) -> dict | None:
     """Same firm, different product code, decision year within ±2."""
@@ -302,60 +313,94 @@ def _price_hits_for(decoy: Mapping[str, Any], pcs, cells) -> list[dict]:
     return out
 
 
+def _link_with_terms(row: Mapping[str, Any], terms: list[str], strategy: str) -> bool:
+    """Apply a strategy to one hit, using *an arbitrary* anchor's token set.
+
+    This is what makes the decoy test matched: the same hit pool is tested
+    against the real anchor's terms and against the decoy anchor's terms, so the
+    only thing that changes is the anchor.
+    """
+    text = " ".join([str(row.get("title") or ""), str((row.get("extra") or {}).get("interventions") or "")])
+    token_match = any(_contains_token(text, t) for t in terms)
+    if strategy in {"name_only", "candidate_semantic"}:
+        return token_match
+    if strategy == "name_plus_firm":
+        return token_match and row.get("firm_key_hit") == row.get("firm_key")
+    if strategy == "regulatory_id":
+        return bool(re.search(r"\b[KP]\d{6}\b", row.get("title") or ""))
+    if strategy == "multi_field":
+        if not (token_match and row.get("firm_key_hit") == row.get("firm_key")):
+            return False
+        lead = row.get("lead_days")
+        return lead is not None and -30 <= lead <= 730
+    raise KeyError(strategy)
+
+
 def exp_b(anchors, rows, cells, pcs, index) -> dict[str, Any]:
     rng = random.Random(SEED)
     anchor_by_id = {a["anchor_id"]: a for a in anchors}
     decoys = {a["anchor_id"]: _decoy_for(a, anchors) for a in anchors}
-    decoy_hits = {}
-    for anchor_id, decoy in decoys.items():
-        if decoy:
-            decoy_hits[anchor_id] = _price_hits_for(decoy, pcs, cells)
+    rows_by_anchor: dict[str, list[dict]] = defaultdict(list)
+    for row in rows:
+        rows_by_anchor[row["anchor_id"]].append(row)
+    decoy_terms = {aid: A.distinctive_terms(d, pcs) for aid, d in decoys.items() if d}
 
     results: dict[str, Any] = {}
     for name, fn in STRATEGIES.items():
         real_links = [r for r in rows if fn(r)]
         real_anchor_ids = {r["anchor_id"] for r in real_links}
-        # decoy: does the same strategy link a decoy's hits to the decoy?
-        decoy_rates = []
-        for anchor_id, hits in decoy_hits.items():
-            if not hits:
-                continue
-            decoy = decoys[anchor_id]
-            linked = 0
-            for item in hits:
-                fake_row = {
-                    "anchor_id": decoy["anchor_id"],
-                    "firm_key": decoy["firm_key"],
-                    "product_code": decoy["product_code"],
-                    "decision_date": decoy["decision_date"],
-                    "source_id": item["source_id"],
-                    "title": item["title"],
-                    "public_at": "",
-                    "tier": "B_product_only",
-                    "firm_key_hit": None,
-                    "lead_days": None,
-                }
-                if fn(fake_row):
-                    linked += 1
-            decoy_rates.append(linked / len(hits))
         real_rate = len(real_anchor_ids) / len(anchors) if anchors else 0.0
+
+        # ---- matched-wrong-pairing control -----------------------------------
+        # Same hit pool, same strategy, only the anchor is replaced by a decoy
+        # (same firm, different product code, decision year within +/-2).
+        decoy_rates: list[float] = []
+        compared = 0
+        for anchor_id, decoy in decoys.items():
+            if not decoy:
+                continue
+            pool = rows_by_anchor.get(anchor_id, [])
+            if not pool:
+                continue
+            compared += 1
+            decoy_link_count = sum(
+                1 for row in pool if _link_with_terms(row, decoy_terms[anchor_id], name)
+            )
+            decoy_rates.append(decoy_link_count / len(pool))
         decoy_rate = statistics.fmean(decoy_rates) if decoy_rates else 0.0
         specificity = (real_rate / decoy_rate) if decoy_rate > 0 else None
 
-        # authoritative subset: hits that carry an official regulatory identifier
+        # ---- cross-anchor negative control -----------------------------------
+        # The decoy above asks "would this evidence also be linked to a different
+        # product of the same firm?"  That is a *token-discrimination* test and is
+        # almost tautological given disjoint token sets.  A stronger control:
+        # take evidence retrieved for OTHER anchors and ask whether the linker
+        # would accept it for this anchor.  This is the false-link rate against
+        # genuinely unrelated evidence.
+        pool_all = rows
+        cross_rates: list[float] = []
+        for anchor_id, anchor in anchor_by_id.items():
+            own = {(r["source_id"], r["hit_key"]) for r in rows_by_anchor.get(anchor_id, [])}
+            others = [r for r in pool_all if (r["source_id"], r["hit_key"]) not in own]
+            if not others:
+                continue
+            sample = rng.sample(others, min(20, len(others)))
+            terms = A.distinctive_terms(anchor, pcs)
+            accepted = sum(1 for row in sample if _link_with_terms(row, terms, name))
+            cross_rates.append(accepted / len(sample))
+        cross_anchor_rate = statistics.fmean(cross_rates) if cross_rates else 0.0
+
+        # ---- authoritative subset -------------------------------------------
         authoritative = [r for r in rows if re.search(r"\b[KP]\d{6}\b", r["title"] or "")]
-        authoritative_errors = [
-            r for r in authoritative if fn(r) and r["tier"] == "B_product_only"
-        ]
-        # refusal rate: anchors for which the strategy declines on every relevant hit
+        authoritative_errors = [r for r in authoritative if fn(r) and r["tier"] == "B_product_only"]
+
+        # ---- refusal ---------------------------------------------------------
         relevant_by_anchor = defaultdict(list)
         for row in rows:
             if row["tier"] in {"A_confirmed", "B_product_only"}:
                 relevant_by_anchor[row["anchor_id"]].append(row)
         refused = sum(
-            1
-            for anchor_id, hit_rows in relevant_by_anchor.items()
-            if not any(fn(r) for r in hit_rows)
+            1 for anchor_id, hit_rows in relevant_by_anchor.items() if not any(fn(r) for r in hit_rows)
         )
         refusal_rate = refused / len(relevant_by_anchor) if relevant_by_anchor else 0.0
 
@@ -363,7 +408,13 @@ def exp_b(anchors, rows, cells, pcs, index) -> dict[str, Any]:
             "anchors_linked": len(real_anchor_ids),
             "real_link_rate": round(real_rate, 4),
             "decoy_link_rate": round(decoy_rate, 4),
+            "decoy_anchors_compared": compared,
             "specificity_vs_decoy": (round(specificity, 3) if specificity is not None else None),
+            "cross_anchor_false_link_rate": round(cross_anchor_rate, 4),
+            "specificity_vs_unrelated_evidence": (
+                round(real_rate / cross_anchor_rate, 3) if cross_anchor_rate > 0 else None
+            ),
+            "requires_firm_confirmation": REQUIRES_FIRM_CONFIRMATION[name],
             "authoritative_subset_size": len(authoritative),
             "authoritative_subset_errors": len(authoritative_errors),
             "authoritative_error_rate": (
@@ -376,9 +427,12 @@ def exp_b(anchors, rows, cells, pcs, index) -> dict[str, Any]:
     usable = [
         name
         for name, data in results.items()
-        if data["specificity_vs_decoy"] is not None
-        and data["specificity_vs_decoy"] > 1.0
+        if REQUIRES_FIRM_CONFIRMATION[name]
+        and data["specificity_vs_decoy"] is not None
+        and data["specificity_vs_decoy"] >= 1.5
+        and (data["specificity_vs_unrelated_evidence"] is None or data["specificity_vs_unrelated_evidence"] >= 1.5)
         and (data["authoritative_error_rate"] in (None, 0.0) or data["authoritative_error_rate"] < 0.05)
+        and data["refusal_rate"] <= 0.5
     ]
     return {
         "schema": "medradar.external.exp_b.v1",
@@ -386,7 +440,17 @@ def exp_b(anchors, rows, cells, pcs, index) -> dict[str, Any]:
         "seed": SEED,
         "strategies": results,
         "usable_for_confirmed_links": usable,
+        "usable_threshold": (
+            "requires firm confirmation AND specificity_vs_decoy >= 1.5 AND "
+            "specificity_vs_unrelated_evidence >= 1.5 AND authoritative_error_rate < 0.05 AND "
+            "refusal_rate <= 0.5"
+        ),
         "decoys_available": sum(1 for d in decoys.values() if d),
+        "decoy_definition": "same firm, different product code, |decision year difference| <= 2; tested on the real anchor's own hit pool",
+        "control_interpretation": {
+            "specificity_vs_decoy": "tests product-level token discrimination only; disjoint token sets make this a weak test",
+            "specificity_vs_unrelated_evidence": "tests the false-link rate against evidence retrieved for a different anchor; this is the informative control",
+        },
         "population_metrics_withheld": (
             "No human labels exist this round, so population precision/recall/F1 are NOT computed. "
             "Only the authoritative-identifier subset error rate, the refusal rate and the decoy "
@@ -503,14 +567,19 @@ def markdown_summary(exp_a_data, exp_b_data, exp_c_data) -> str:
             f"{data['coverage_any']:.1%} | {data['hits_returned']} | {data['unique_hit_keys']} | "
             f"{data['within_source_duplicate_rate']:.1%} | {exp_a_data['verdicts'][source_id]} |"
         )
-    lines += ["", "## EXP-B — linker behaviour vs matched decoy\n",
-              "| strategy | real link rate | decoy link rate | specificity | refusal rate |",
-              "|---|---|---|---|---|"]
+    lines += ["", "## EXP-B — linker behaviour vs two controls\n",
+              "| strategy | real link rate | decoy link rate | spec vs decoy | false-link vs unrelated | firm-confirmed? | refusal |",
+              "|---|---|---|---|---|---|---|"]
     for name, data in exp_b_data["strategies"].items():
         lines.append(
             f"| {name} | {data['real_link_rate']:.1%} | {data['decoy_link_rate']:.1%} | "
-            f"{data['specificity_vs_decoy']} | {data['refusal_rate']:.1%} |"
+            f"{data['specificity_vs_decoy']} | {data['cross_anchor_false_link_rate']:.1%} | "
+            f"{data['requires_firm_confirmation']} | {data['refusal_rate']:.1%} |"
         )
+    lines.append(
+        f"\nUsable for confirmed links: **{exp_b_data['usable_for_confirmed_links'] or 'none'}** "
+        f"(threshold: {exp_b_data['usable_threshold']})"
+    )
     lines += ["", "## EXP-C — lead time\n",
               f"- tier A (firm-confirmed): n={exp_c_data['tier_a']['n']}, median={exp_c_data['tier_a']['median_days']}",
               f"- tier B (product-only): n={exp_c_data['tier_b']['n']}, median={exp_c_data['tier_b']['median_days']}",

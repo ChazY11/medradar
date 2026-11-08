@@ -1,51 +1,83 @@
 {
-  "files": [
+  "generated_at": "2026-11-08T21:59:08.373095Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 4,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 4,
+      "source_id": "crossref",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
     {
-      "fetched_at": "2026-11-08T21:42:26.322283Z",
-      "name": "crossref_works_search.json",
-      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\crossref\\crossref_works_search.json",
-      "sha256_full": "2042f95996372ab8a0d94a021b4e028626f44785d243613502e46ddbf6eb2b8d",
-      "sha256_stored": "2042f95996372ab8a0d94a021b4e028626f44785d243613502e46ddbf6eb2b8d",
-      "stored_bytes": 3897,
-      "total_bytes": 3897,
-      "truncated": false,
-      "url": "https://api.crossref.org/works?query=stent&rows=2&mailto=medradar.research%40example.org"
-    },
-    {
-      "fetched_at": "2026-11-08T21:42:27.172208Z",
-      "name": "crossref_works_bibliographic.json",
-      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\crossref\\crossref_works_bibliographic.json",
-      "sha256_full": "f2641e96ab5675e282a570ade89362429455d72ed533bf3a09800cd668f08004",
-      "sha256_stored": "f2641e96ab5675e282a570ade89362429455d72ed533bf3a09800cd668f08004",
-      "stored_bytes": 2937,
-      "total_bytes": 2937,
-      "truncated": false,
-      "url": "https://api.crossref.org/works?query.bibliographic=Medtronic+pacemaker&rows=2&mailto=medradar.research%40example.org"
-    },
-    {
-      "fetched_at": "2026-11-08T21:42:27.827123Z",
+      "file": "crossref_work_doi.json",
+      "hash_verified": true,
       "name": "crossref_work_doi.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
       "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\crossref\\crossref_work_doi.json",
       "sha256_full": "feb7a4ff067f839509742c5df86e1500039a0d1aef7ecb9c149eca4ddc4500b6",
+      "sha256_source": "recomputed_from_disk",
       "sha256_stored": "feb7a4ff067f839509742c5df86e1500039a0d1aef7ecb9c149eca4ddc4500b6",
+      "source": "recovered_from_disk",
       "stored_bytes": 39930,
       "total_bytes": 39930,
-      "truncated": false,
-      "url": "https://api.crossref.org/works/10.1056/NEJMoa2034577?mailto=medradar.research%40example.org"
+      "truncated": false
     },
     {
-      "fetched_at": "2026-11-08T21:42:29.721239Z",
+      "file": "crossref_works_bibliographic.json",
+      "hash_verified": true,
+      "name": "crossref_works_bibliographic.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\crossref\\crossref_works_bibliographic.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.crossref.org/works?query.bibliographic=Medtronic+pacemaker&rows=2&mailto=medradar.research%40example.org",
+      "sha256_full": "f2641e96ab5675e282a570ade89362429455d72ed533bf3a09800cd668f08004",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "f2641e96ab5675e282a570ade89362429455d72ed533bf3a09800cd668f08004",
+      "source": "recovered_from_disk",
+      "stored_bytes": 2937,
+      "total_bytes": 2937,
+      "truncated": false
+    },
+    {
+      "file": "crossref_works_funder.json",
+      "hash_verified": true,
       "name": "crossref_works_funder.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
       "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\crossref\\crossref_works_funder.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.crossref.org/works?filter=has-funder%3Atrue%2Cfrom-pub-date%3A2020-01-01&query=stent&rows=2&mailto=medradar.research%40example.org",
       "sha256_full": "cb4ba031f43a55210e4ad9129bde89537572cb86852336421aaf11839913cc8c",
+      "sha256_source": "recomputed_from_disk",
       "sha256_stored": "cb4ba031f43a55210e4ad9129bde89537572cb86852336421aaf11839913cc8c",
+      "source": "recovered_from_disk",
       "stored_bytes": 33016,
       "total_bytes": 33016,
-      "truncated": false,
-      "url": "https://api.crossref.org/works?filter=has-funder%3Atrue%2Cfrom-pub-date%3A2020-01-01&query=stent&rows=2&mailto=medradar.research%40example.org"
+      "truncated": false
+    },
+    {
+      "file": "crossref_works_search.json",
+      "hash_verified": true,
+      "name": "crossref_works_search.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\crossref\\crossref_works_search.json",
+      "sha256_full": "2042f95996372ab8a0d94a021b4e028626f44785d243613502e46ddbf6eb2b8d",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "2042f95996372ab8a0d94a021b4e028626f44785d243613502e46ddbf6eb2b8d",
+      "source": "recovered_from_disk",
+      "stored_bytes": 3897,
+      "total_bytes": 3897,
+      "truncated": false
     }
   ],
-  "generated_at": "2026-11-08T21:42:29.722239Z",
-  "note": "Raw response slices captured by the probe.  Must not be hand-edited.",
+  "schema": "medradar.external.samples.v1",
   "source_id": "crossref"
 }

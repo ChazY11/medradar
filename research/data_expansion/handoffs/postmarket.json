@@ -1,0 +1,206 @@
+{
+  "agent": "postmarket",
+  "finished_at": "2026-11-09T06:10:00Z",
+  "workspace": "D:\\DEPPSKK\\worktrees\\data-expansion-001",
+  "branch": "research/data-expansion-001",
+  "sources_assigned": 4,
+  "sources_probed": 4,
+  "connection_status_counts": {
+    "VERIFIED_API": 2,
+    "VERIFIED_PUBLIC_QUERY": 2
+  },
+  "source_status": {
+    "openfda_device_recall": "VERIFIED_API",
+    "openfda_device_maude": "VERIFIED_API",
+    "fda_device_shortages": "VERIFIED_PUBLIC_QUERY",
+    "fda_import_alerts": "VERIFIED_PUBLIC_QUERY"
+  },
+  "connectors": [
+    "medradar/external_sources/regulatory/postmarket_common.py",
+    "medradar/external_sources/regulatory/postmarket_openfda_device_recall.py",
+    "medradar/external_sources/regulatory/postmarket_openfda_device_maude.py",
+    "medradar/external_sources/regulatory/postmarket_fda_device_shortages.py",
+    "medradar/external_sources/regulatory/postmarket_fda_import_alerts.py",
+    "medradar/external_sources/regulatory/postmarket_series.py"
+  ],
+  "real_records_collected": 498,
+  "real_records_breakdown": {
+    "openfda_device_recall": 100,
+    "openfda_device_maude": 2,
+    "fda_device_shortages": 242,
+    "fda_import_alerts": 154,
+    "note": "schema-v1 evidence records materialised from real responses in this round; aggregate counts below cover far more records via server-side count queries (which are counted but not materialised one by one)"
+  },
+  "aggregate_coverage": {
+    "openfda_device_recall_records_in_five_firm_queries": 5696,
+    "openfda_device_maude_reports_in_five_firm_queries": 3573543,
+    "fda_device_shortages_rows": 242,
+    "fda_device_shortages_distinct_manufacturers": 37,
+    "fda_import_alerts_index_rows": 154,
+    "fda_import_alerts_device_industry_subcategories": 19
+  },
+  "five_firm_summary": {
+    "openfda_device_recall": {
+      "method": "server-side count=recalling_firm.exact (complete exact-name census) + local CompanyIndex.resolve",
+      "medtronic": {"matched": 1932, "confirmed": 1932, "candidate": 0, "exact_name_buckets": 60},
+      "ge_healthcare": {"matched": 1280, "confirmed": 1280, "candidate": 0, "exact_name_buckets": "20 + 13 over two queries"},
+      "philips": {"matched": 2274, "confirmed": 2274, "candidate": 0, "exact_name_buckets": 40},
+      "draeger": {"matched": 146, "confirmed": 146, "candidate": 0, "exact_name_buckets": "3 (+ 'drager' query returned 404, zero records)"},
+      "mindray": {"matched": 64, "confirmed": 64, "candidate": 0, "exact_name_buckets": 4}
+    },
+    "openfda_device_maude": {
+      "method": "server-side count=date_received / date_of_event (report counts) + count=device.manufacturer_d_name.exact (device-entry census, 100-bucket cap) + local CompanyIndex.resolve",
+      "medtronic": {"reports": 3360860, "event_dated": 3160723, "census_confirmed_device_entries": 3350895, "candidate": 0, "bucket_cap_hit": true, "residual_unknown": 9965},
+      "ge_healthcare": {"reports": 3893, "event_dated": 2889, "census_confirmed_device_entries": 3838, "candidate": 0, "bucket_cap_hit": true, "residual_unknown": 43},
+      "philips": {"reports": 202348, "event_dated": 83352, "census_confirmed_device_entries": 201583, "candidate": 0, "bucket_cap_hit": true, "residual_unknown": 736},
+      "draeger": {"reports": 2742, "event_dated": 2547, "census_confirmed_device_entries": 2746, "candidate": 1, "bucket_cap_hit": false, "residual_unknown": 0},
+      "mindray": {"reports": 3700, "event_dated": 3654, "census_confirmed_device_entries": 3702, "candidate": 0, "bucket_cap_hit": false, "residual_unknown": 0}
+    },
+    "fda_device_shortages": {
+      "method": "HTML table parse + CompanyIndex.resolve on the discontinuance table only",
+      "medtronic": {"confirmed": 0, "candidate": 0},
+      "ge_healthcare": {"confirmed": 0, "candidate": 0},
+      "philips": {"confirmed": 0, "candidate": 0},
+      "draeger": {"confirmed": 0, "candidate": 0},
+      "mindray": {"confirmed": 0, "candidate": 0},
+      "note": "真实负结果：当前快照 236 行 / 37 家厂商中没有任何一行属于五家（也不是拼写变体）"
+    },
+    "fda_import_alerts": {
+      "status": "UNKNOWN",
+      "reason": "索引 4 列无公司列；公司名只在每条 alert 的 Red List（div 结构，单页 44 KB–5.07 MB）。有界扫描 3 个设备类 alert 的五家别名文本命中均为 0，仅为负观察，不是普查。"
+    }
+  },
+  "blocked": [
+    {
+      "source_id": "fda_import_alerts",
+      "scope": "firm-level only",
+      "reason": "索引无公司列；154 条 alert × 每条多 MB 的 Red List 超出 ≤12 请求/次的预算。连接器与索引记录（154 条）已交付，公司级覆盖如实记为 UNKNOWN。"
+    },
+    {
+      "source_id": "openfda_device_maude",
+      "scope": "exact-name census completeness",
+      "reason": "无 key 时关键字 count 上限 100 桶（实测 limit=1000 → 403 API_KEY_MISSING）。Medtronic/GE/Philips 触顶，残差量 9965/43/736 单列为 unknown。"
+    },
+    {
+      "source_id": "openfda_device_recall",
+      "scope": "Dräger spelling coverage",
+      "reason": "openFDA 拒绝非 ASCII 检索词（recalling_firm:dräger → HTTP 400），只能检索 ASCII draeger/drager；非 ASCII 拼写的记录无法在 API 层确认是否漏检（需 bulk 数据）。"
+    }
+  ],
+  "notable_findings": [
+    "召回时间轴有个真实的坑：Medtronic 的 1932 条 device recall 中只有 1599 条有 event_date_posted（333 条缺），而 event_date_initiated 1932 条全有。用“公开日”做年度序列会静默丢掉约 17% 的记录，且缺失不是 0。",
+    "MAUDE 单条 device recall/MDR 记录很大：device/recall 在 limit=1000 时响应解压后约 61 MB，超过 8 MB 的安全上限；因此本来源的正确做法是服务端 count 聚合（本次 43 个请求完成五家 census）。",
+    "MAUDE 的厂商身份必须走嵌套路径 device.manufacturer_d_name；裸字段名返回 404，顶层 manufacturer_name 在历史记录中为空。无 key 时 count 关键字桶上限 100（实证 403），所以“精确厂商名普查”天然是部分覆盖，残差必须单列而不能摊派。",
+    "五家 MAUDE 报告量级差异极大：Medtronic 3,360,860（约占全库 26,557,775 的 12.7%）、Philips 202,348、GE 3,893、Mindray 3,700、Dräger 2,742。这是上报行为的量级，不是故障率——Dräger 与 Medtronic 差 3 个数量级不能解释为质量差 3 个数量级。",
+    "FDA device shortages 页面里只有 discontinuance 表有厂商列：当前快照 236 行 / 37 家厂商，五家目标企业 0 条（真实负结果）；6 条 shortage 行只有产品码，结构上无法做企业关联。",
+    "fda_import_alerts 完全没有公司列，且裸目录返回 403.14；154 条 alert 的 4 列索引（编号/类型/发布日期/名称）与 19 个设备子行业是可靠的，但企业级证据只能来自逐条 Red List，单页可达 5 MB。",
+    "HTML 日期必须按美式 MM/DD/YYYY 解析：timeq.parse_date 会先试 %d/%m/%Y，把 11/06/2026 读成 2026-06-11；已用显式 US 解析器修正，并写进单测。"
+  ],
+  "open_questions": [
+    "免费 openFDA API key 可把关键字 count 桶上限从 100 提到 1000，是否值得为 MAUDE/recall 的完整厂商名普查申请（契约目前禁止使用凭据，故未做）？",
+    "MAUDE 的 date_received 只是“FDA 收到报告”的代理；date_added 可能更接近数据库可见时间，但两者都没有历史快照，无法验证哪个更接近“公众首次可见”。",
+    "fda_import_alerts 的企业级普查需要离线解析 154 条 Red List（体量约数百 MB）；是否值得在 EXP-C 里做一次一次性离线 build？",
+    "fda_device_shortages 只有当前快照，无法构建历史序列；EXP-C 的“历史证据提前量”实验对该来源只能做横截面，不能做时间序列。"
+  ],
+  "tests": {
+    "file": "tests/test_extsrc_postmarket.py",
+    "passed": 29,
+    "failed": 0,
+    "covers": [
+      "recall/MAUDE to_evidence 通过 validate_evidence",
+      "event_at / source_public_at 分离（recall: initiated vs posted；MAUDE: date_of_event vs date_received）",
+      "candidate 不得升级为 confirmed（Philips Lighting / Draeger Safety AG 负例）",
+      "五种 firm alias 的 exact_alias 解析",
+      "两个 HTML 解析器（shortage 双表、import alert 索引）与美式日期消歧",
+      "schema canonical_key：510(k) 不得压过 recall_number（避免不同召回被去重成一条）",
+      "evidence_id 幂等 + content_hash 随内容变化",
+      "PASSIVE_SURVEILLANCE_WARNING 必须出现在每条 MAUDE 证据中"
+    ]
+  },
+  "selftest": {
+    "command": "python -m medradar selftest",
+    "result": "pass",
+    "tests_run": 1248,
+    "skipped": 3,
+    "baseline_before_postmarket": 1112
+  },
+  "deliverables": {
+    "registry_records": [
+      "research/data_expansion/registry/sources/openfda_device_recall.json",
+      "research/data_expansion/registry/sources/openfda_device_maude.json",
+      "research/data_expansion/registry/sources/fda_device_shortages.json",
+      "research/data_expansion/registry/sources/fda_import_alerts.json"
+    ],
+    "probes": [
+      "research/data_expansion/probes/openfda_device_recall/{probe.py,PROBE_RESULT.json,requests.jsonl,series_requests.jsonl,NOTES.md}",
+      "research/data_expansion/probes/openfda_device_maude/{probe.py,PROBE_RESULT.json,requests.jsonl,series_requests.jsonl,NOTES.md}",
+      "research/data_expansion/probes/fda_device_shortages/{probe.py,PROBE_RESULT.json,requests.jsonl,series_requests.jsonl,NOTES.md}",
+      "research/data_expansion/probes/fda_import_alerts/{probe.py,PROBE_RESULT.json,requests.jsonl,series_requests.jsonl,NOTES.md}"
+    ],
+    "samples": [
+      "research/data_expansion/samples/postmarket/FIVE_FIRM_SERIES.json",
+      "research/data_expansion/samples/openfda_device_recall/ (+SAMPLES.json, 17 slices)",
+      "research/data_expansion/samples/openfda_device_maude/ (+SAMPLES.json, 12 slices)",
+      "research/data_expansion/samples/fda_device_shortages/ (+SAMPLES.json, 1 slice)",
+      "research/data_expansion/samples/fda_import_alerts/ (+SAMPLES.json, 5 slices)"
+    ],
+    "series": {
+      "path": "research/data_expansion/samples/postmarket/FIVE_FIRM_SERIES.json",
+      "schema": "medradar.postmarket.five_firm_series.v1",
+      "total_requests": 43,
+      "request_budgets": {
+        "recall_census_a": 12,
+        "recall_census_b": 12,
+        "recall_record_sample": 2,
+        "maude_counts_a": 12,
+        "maude_counts_b": 12,
+        "shortages": 2,
+        "import_alerts": 8
+      },
+      "contains_interpretation_warning": true,
+      "warning_text": "PASSIVE REPORTING COUNT, NOT AN INCIDENCE RATE",
+      "reproducible": "python -m medradar.external_sources.regulatory.postmarket_series --root <research/data_expansion>"
+    }
+  },
+  "write_scope_notes": {
+    "declared_scope_respected_except_incident": true,
+    "notes": [
+      "未修改任何既有 medradar/*.py、foundation 5 文件、__init__.py 或他人文件。",
+      "medradar/external_sources/regulatory/ 在本轮开始时不存在；我只新建了 postmarket_*.py，未创建/修改 __init__.py。",
+      "未执行任何 git 命令。",
+      "未修改 research/studies、experiments、papers、data、PHOENIX 资产。"
+    ]
+  },
+  "incidents": [
+    {
+      "id": "PM-INC-001",
+      "reported_at": "2026-11-09T05:58:00Z",
+      "occurred_at": "2026-11-08T21:59:09Z",
+      "severity": "medium",
+      "title": "未限定 owner 的 SAMPLES.json 重写",
+      "what_happened": "为补齐自己 4 个 source 的 SAMPLES.json，postmarket_series.rebuild_sample_manifests() 第一版遍历了 research/data_expansion/samples/* 下所有目录，并重写了每个目录的 SAMPLES.json（共 55 个目录，含其他 agent 的 51 个）。",
+      "impact_scope": "只重写了 SAMPLES.json 这一种 manifest 文件；样本响应文件本体（.json/.html/.zip 等）字节未改动，未被删除或截断。",
+      "data_loss": "按 item['name'] 合并旧条目；部分 agent 的 manifest 用 'file'/其它键（如 usaspending 用 file+probe_name+request_url+sha256_matches_probe），这些条目被折叠/替换为 source='recovered_from_disk'、sha256_full=null 的条目，逐条 request_url/probe_name/http_status 元数据可能永久丢失。",
+      "root_cause": "通配写入 + 假设所有人的 manifest 条目都以 'name' 为键；缺少 owner 白名单与写前 dry-run。",
+      "fix_applied": "rebuild_sample_manifests() 现在只遍历 OWNED_SAMPLE_DIRS（我的 4 个 source_id），并已用 --manifests-only 只重建自己的目录；其后再未写入任何他人目录。",
+      "residual_risk": "他人 manifest 的部分元数据需由 Lead/各 owner 从 PROBE_RESULT.json 与 probe 脚本重建；样本完整性哈希可从磁盘精确重算（未截断文件满足 sha256_full == sha256_stored）。",
+      "lead_decision": "Lead 负责全局修复（重算 + 显式标注 sha256_source=recomputed_from_disk / hash_verified），并用 05:44:30 提交的 17 份原始 manifest 交叉核对，而不是直接覆盖。",
+      "process_lesson": "写任何共享目录前必须按 owner 白名单限定；批量 manifest 修复应先 dry-run 并报告差异，而不是直接落盘。"
+    },
+    {
+      "id": "PM-INC-002",
+      "reported_at": "2026-11-09T05:52:00Z",
+      "occurred_at": "2026-11-09T05:49:32Z",
+      "severity": "low",
+      "title": "openFDA limit=1000 分页导致一次 10 分钟挂起",
+      "what_happened": "五企业首次 series 实现用 limit=1000 整页拉取 device recall 记录。该响应解压后约 61 MB，超过 HttpClient 的 8 MB 上限；urllib 读取慢速 61 MB 流造成约 10 分钟挂起，随后失败退出（无任何 ledger 写入，因为 ledger 在响应返回后才写）。",
+      "impact_scope": "仅消耗 1 次失败请求；已杀掉进程。",
+      "fix_applied": "改为服务端 count 聚合（每查询 1 次小响应），并对单条记录做 limit=100 的有界采样；series 用 43 个请求完成。",
+      "residual_risk": "无；已在 NOTES 记录“单条记录约 18 KB、limit=1000 响应约 61 MB”的事实，避免后续 agent 重踩。"
+    }
+  ],
+  "scope_conflicts_for_lead": [
+    "registry/SOURCE_ID_INDEX.json 里 fda_device_shortages 的 official_url 已 404；我实际使用 .../medical-device-supply-chain-and-shortages/medical-device-shortages-list 并在 registry 记录中写的是可用 URL。若 Lead 要保留 INDEX 原值，请在最终报告中注明差异。",
+    "SOURCE_ID_INDEX.json 的 fda_device_shortages 标题为 “FDA medical device shortages”，实际页面同时含 shortages 与 discontinuance 两张表；我的 kind 统一用 'shortage'，用 normalized.record_type 区分，已在 registry/NOTES 说明。"
+  ]
+}

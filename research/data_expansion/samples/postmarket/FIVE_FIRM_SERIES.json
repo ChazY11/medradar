@@ -1,0 +1,2571 @@
+{
+  "firm_labels": {
+    "draeger": "Dräger",
+    "ge_healthcare": "GE HealthCare",
+    "medtronic": "Medtronic",
+    "mindray": "Mindray",
+    "philips": "Philips"
+  },
+  "firms": [
+    "medtronic",
+    "ge_healthcare",
+    "philips",
+    "draeger",
+    "mindray"
+  ],
+  "generated_at": "2026-11-08T21:57:35.081874Z",
+  "methodology": {
+    "rule_1": "every count is a real response of this run; no estimation, interpolation or back-fill",
+    "rule_2": "confirmed = official_id / exact_alias / multi_field from identity.CompanyIndex.resolve; candidate counted apart",
+    "rule_3": "a server-side count is labelled as such and its truncation is reported as a residual",
+    "rule_4": "report counts are never converted to failure/incidence rates"
+  },
+  "notes": [
+    "Recall and MAUDE annual series are server-side count aggregations over the whole matched set; the identity census resolves the API's own exact-value buckets, so both counts describe the same query.",
+    "GE HealthCare: recall uses two mutually exclusive firm-string queries ('GE HEALTHCARE', 'GE MEDICAL'); the MAUDE census uses the 'ge healthcare' phrase only and therefore excludes legacy 'GE MEDICAL' manufacturer strings (documented, not estimated).",
+    "Dräger: openFDA rejects non-ASCII search terms (recalling_firm:dräger -> HTTP 400 'Search not supported'), so only the ASCII spellings draeger/drager are retrievable. The 'drager' recall query returned HTTP 404 'No matches found' (zero records) at build time — recorded, not hidden.",
+    "MAUDE keyword-family totals are report counts for reports in which at least one device entry matches the manufacturer keyword; they are not mutually exclusive across firms and carry no denominator.",
+    "fda_device_shortages: only the discontinuance table has a manufacturer column, so the shortage list itself is not firm-linkable; both counts are reported as constructed.",
+    "fda_import_alerts: firm-level coverage is UNKNOWN because the index exposes no company column."
+  ],
+  "request_budgets": {
+    "import_alerts": 8,
+    "maude_counts_a": 12,
+    "maude_counts_b": 12,
+    "recall_census_a": 12,
+    "recall_census_b": 12,
+    "recall_record_sample": 2,
+    "shortages": 2
+  },
+  "request_log": [
+    {
+      "bytes": 5283,
+      "elapsed_ms": 1187,
+      "error": "",
+      "run": "recall_census_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3Amedtronic"
+    },
+    {
+      "bytes": 34083,
+      "elapsed_ms": 1093,
+      "error": "",
+      "run": "recall_census_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3Amedtronic"
+    },
+    {
+      "bytes": 25621,
+      "elapsed_ms": 1217,
+      "error": "",
+      "run": "recall_census_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3Amedtronic"
+    },
+    {
+      "bytes": 1963,
+      "elapsed_ms": 1125,
+      "error": "",
+      "run": "recall_census_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3A%22ge+healthcare%22"
+    },
+    {
+      "bytes": 23420,
+      "elapsed_ms": 1092,
+      "error": "",
+      "run": "recall_census_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3A%22ge+healthcare%22"
+    },
+    {
+      "bytes": 19439,
+      "elapsed_ms": 1282,
+      "error": "",
+      "run": "recall_census_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3A%22ge+healthcare%22"
+    },
+    {
+      "bytes": 1551,
+      "elapsed_ms": 1016,
+      "error": "",
+      "run": "recall_census_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3A%22ge+medical%22"
+    },
+    {
+      "bytes": 7006,
+      "elapsed_ms": 1014,
+      "error": "",
+      "run": "recall_census_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3A%22ge+medical%22"
+    },
+    {
+      "bytes": 5718,
+      "elapsed_ms": 1407,
+      "error": "",
+      "run": "recall_census_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3A%22ge+medical%22"
+    },
+    {
+      "bytes": 3681,
+      "elapsed_ms": 1125,
+      "error": "",
+      "run": "recall_census_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3Aphilips"
+    },
+    {
+      "bytes": 42095,
+      "elapsed_ms": 1015,
+      "error": "",
+      "run": "recall_census_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3Aphilips"
+    },
+    {
+      "bytes": 31850,
+      "elapsed_ms": 1438,
+      "error": "",
+      "run": "recall_census_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3Aphilips"
+    },
+    {
+      "bytes": 660,
+      "elapsed_ms": 1172,
+      "error": "",
+      "run": "recall_census_b",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3Adraeger"
+    },
+    {
+      "bytes": 4370,
+      "elapsed_ms": 1156,
+      "error": "",
+      "run": "recall_census_b",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3Adraeger"
+    },
+    {
+      "bytes": 3754,
+      "elapsed_ms": 1000,
+      "error": "",
+      "run": "recall_census_b",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3Adraeger"
+    },
+    {
+      "bytes": 93,
+      "elapsed_ms": 1141,
+      "error": "HTTP 404 Not Found",
+      "run": "recall_census_b",
+      "status": 404,
+      "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3Adrager"
+    },
+    {
+      "bytes": 93,
+      "elapsed_ms": 1171,
+      "error": "HTTP 404 Not Found",
+      "run": "recall_census_b",
+      "status": 404,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3Adrager"
+    },
+    {
+      "bytes": 93,
+      "elapsed_ms": 1108,
+      "error": "HTTP 404 Not Found",
+      "run": "recall_census_b",
+      "status": 404,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3Adrager"
+    },
+    {
+      "bytes": 812,
+      "elapsed_ms": 1094,
+      "error": "",
+      "run": "recall_census_b",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3Amindray"
+    },
+    {
+      "bytes": 2801,
+      "elapsed_ms": 1030,
+      "error": "",
+      "run": "recall_census_b",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3Amindray"
+    },
+    {
+      "bytes": 2129,
+      "elapsed_ms": 1016,
+      "error": "",
+      "run": "recall_census_b",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3Amindray"
+    },
+    {
+      "bytes": 1792964,
+      "elapsed_ms": 4953,
+      "error": "",
+      "run": "recall_record_sample",
+      "status": 200,
+      "url": "https://api.fda.gov/device/recall.json?limit=100&skip=0&search=recalling_firm%3Amedtronic"
+    },
+    {
+      "bytes": 551499,
+      "elapsed_ms": 3141,
+      "error": "",
+      "run": "maude_counts_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=date_received&search=device.manufacturer_d_name%3Amedtronic"
+    },
+    {
+      "bytes": 670581,
+      "elapsed_ms": 2172,
+      "error": "",
+      "run": "maude_counts_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=date_of_event&search=device.manufacturer_d_name%3Amedtronic"
+    },
+    {
+      "bytes": 8260,
+      "elapsed_ms": 2515,
+      "error": "",
+      "run": "maude_counts_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=device.manufacturer_d_name.exact&search=device.manufacturer_d_name%3Amedtronic"
+    },
+    {
+      "bytes": 100054,
+      "elapsed_ms": 1421,
+      "error": "",
+      "run": "maude_counts_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=date_received&search=device.manufacturer_d_name%3A%22ge+healthcare%22"
+    },
+    {
+      "bytes": 107081,
+      "elapsed_ms": 1358,
+      "error": "",
+      "run": "maude_counts_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=date_of_event&search=device.manufacturer_d_name%3A%22ge+healthcare%22"
+    },
+    {
+      "bytes": 8513,
+      "elapsed_ms": 1125,
+      "error": "",
+      "run": "maude_counts_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=device.manufacturer_d_name.exact&search=device.manufacturer_d_name%3A%22ge+healthcare%22"
+    },
+    {
+      "bytes": 368907,
+      "elapsed_ms": 1406,
+      "error": "",
+      "run": "maude_counts_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=date_received&search=device.manufacturer_d_name%3Aphilips"
+    },
+    {
+      "bytes": 364369,
+      "elapsed_ms": 1485,
+      "error": "",
+      "run": "maude_counts_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=date_of_event&search=device.manufacturer_d_name%3Aphilips"
+    },
+    {
+      "bytes": 8356,
+      "elapsed_ms": 1077,
+      "error": "",
+      "run": "maude_counts_a",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=device.manufacturer_d_name.exact&search=device.manufacturer_d_name%3Aphilips"
+    },
+    {
+      "bytes": 101363,
+      "elapsed_ms": 1140,
+      "error": "",
+      "run": "maude_counts_b",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=date_received&search=device.manufacturer_d_name%3Adraeger"
+    },
+    {
+      "bytes": 112058,
+      "elapsed_ms": 1359,
+      "error": "",
+      "run": "maude_counts_b",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=date_of_event&search=device.manufacturer_d_name%3Adraeger"
+    },
+    {
+      "bytes": 5703,
+      "elapsed_ms": 1250,
+      "error": "",
+      "run": "maude_counts_b",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=device.manufacturer_d_name.exact&search=device.manufacturer_d_name%3Adraeger"
+    },
+    {
+      "bytes": 20282,
+      "elapsed_ms": 1016,
+      "error": "",
+      "run": "maude_counts_b",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=date_received&search=device.manufacturer_d_name%3Amindray"
+    },
+    {
+      "bytes": 68531,
+      "elapsed_ms": 1125,
+      "error": "",
+      "run": "maude_counts_b",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=date_of_event&search=device.manufacturer_d_name%3Amindray"
+    },
+    {
+      "bytes": 7641,
+      "elapsed_ms": 1031,
+      "error": "",
+      "run": "maude_counts_b",
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?count=device.manufacturer_d_name.exact&search=device.manufacturer_d_name%3Amindray"
+    },
+    {
+      "bytes": 128140,
+      "elapsed_ms": 467,
+      "error": "",
+      "run": "shortages",
+      "status": 200,
+      "url": "https://www.fda.gov/medical-devices/medical-device-supply-chain-and-shortages/medical-device-shortages-list"
+    },
+    {
+      "bytes": 66100,
+      "elapsed_ms": 468,
+      "error": "",
+      "run": "import_alerts",
+      "status": 200,
+      "url": "https://www.accessdata.fda.gov/cms_ia/ialist.html"
+    },
+    {
+      "bytes": 27514,
+      "elapsed_ms": 672,
+      "error": "",
+      "run": "import_alerts",
+      "status": 200,
+      "url": "https://www.accessdata.fda.gov/cms_ia/industrygroup_9.html"
+    },
+    {
+      "bytes": 44684,
+      "elapsed_ms": 297,
+      "error": "",
+      "run": "import_alerts",
+      "status": 200,
+      "url": "https://www.accessdata.fda.gov/cms_ia/importalert_1182.html"
+    },
+    {
+      "bytes": 111767,
+      "elapsed_ms": 405,
+      "error": "",
+      "run": "import_alerts",
+      "status": 200,
+      "url": "https://www.accessdata.fda.gov/cms_ia/importalert_231.html"
+    },
+    {
+      "bytes": 579201,
+      "elapsed_ms": 531,
+      "error": "",
+      "run": "import_alerts",
+      "status": 200,
+      "url": "https://www.accessdata.fda.gov/cms_ia/importalert_241.html"
+    }
+  ],
+  "schema": "medradar.postmarket.five_firm_series.v1",
+  "sources": {
+    "fda_device_shortages": {
+      "discontinuance_manufacturer_names": {
+        "distinct": 37,
+        "note": "the current list names 37 distinct manufacturers and none of them belongs to the five target firms, so a zero is a real observation about this snapshot, not a parser failure",
+        "sample": [
+          "Abbott Laboratories",
+          "Abbott Medical",
+          "AirLife",
+          "Angelini Pharma Inc.",
+          "Baxter Healthcare Corporation",
+          "Beckman Coulter",
+          "BioFire Diagnostics, LLC",
+          "Breas Medical, Inc.",
+          "Butterfly Network, Inc.",
+          "Cardinal Health",
+          "DSM Biomedical Inc",
+          "Datascope Corp."
+        ]
+      },
+      "endpoint": "https://www.fda.gov/medical-devices/medical-device-supply-chain-and-shortages/medical-device-shortages-list",
+      "firm_linkable_table": "discontinuance table only (has Manufacturer Name)",
+      "firms": {
+        "draeger": {
+          "by_year_source_public_at": {},
+          "candidate": 0,
+          "candidate_records": [],
+          "confirmed": 0,
+          "confirmed_records": [],
+          "firm_key": "draeger",
+          "firm_label": "Dräger"
+        },
+        "ge_healthcare": {
+          "by_year_source_public_at": {},
+          "candidate": 0,
+          "candidate_records": [],
+          "confirmed": 0,
+          "confirmed_records": [],
+          "firm_key": "ge_healthcare",
+          "firm_label": "GE HealthCare"
+        },
+        "medtronic": {
+          "by_year_source_public_at": {},
+          "candidate": 0,
+          "candidate_records": [],
+          "confirmed": 0,
+          "confirmed_records": [],
+          "firm_key": "medtronic",
+          "firm_label": "Medtronic"
+        },
+        "mindray": {
+          "by_year_source_public_at": {},
+          "candidate": 0,
+          "candidate_records": [],
+          "confirmed": 0,
+          "confirmed_records": [],
+          "firm_key": "mindray",
+          "firm_label": "Mindray"
+        },
+        "philips": {
+          "by_year_source_public_at": {},
+          "candidate": 0,
+          "candidate_records": [],
+          "confirmed": 0,
+          "confirmed_records": [],
+          "firm_key": "philips",
+          "firm_label": "Philips"
+        }
+      },
+      "index_meta": {
+        "bytes": 128140,
+        "discontinuance_rows": 236,
+        "error": "",
+        "records": 242,
+        "shortage_rows": 6,
+        "status": 200,
+        "tables": 2,
+        "url": "https://www.fda.gov/medical-devices/medical-device-supply-chain-and-shortages/medical-device-shortages-list"
+      },
+      "interpretation": "The FDA shortage/discontinuance lists are point-in-time snapshots of the current list. The page is not an archive: entries disappear when resolved and earlier states are not queryable, so a short current list is not evidence that shortages were absent historically.",
+      "kind": "shortage",
+      "records_by_type": {
+        "discontinuance": 236,
+        "shortage": 6
+      },
+      "retrieval_mode": "one page fetch; both server-rendered tables parsed",
+      "shortage_rows_have_manufacturer_field": false,
+      "source_name": "FDA medical device shortages"
+    },
+    "fda_import_alerts": {
+      "detail_page_five_firm_checks": [
+        {
+          "bytes": 44684,
+          "firm_level_interpretation": "raw text match only, NOT an identity link",
+          "five_firm_alias_text_hits": {
+            "draeger": 0,
+            "ge_healthcare": 0,
+            "medtronic": 0,
+            "mindray": 0,
+            "philips": 0
+          },
+          "status": 200,
+          "url": "https://www.accessdata.fda.gov/cms_ia/importalert_1182.html"
+        },
+        {
+          "bytes": 111767,
+          "firm_level_interpretation": "raw text match only, NOT an identity link",
+          "five_firm_alias_text_hits": {
+            "draeger": 0,
+            "ge_healthcare": 0,
+            "medtronic": 0,
+            "mindray": 0,
+            "philips": 0
+          },
+          "status": 200,
+          "url": "https://www.accessdata.fda.gov/cms_ia/importalert_231.html"
+        },
+        {
+          "bytes": 579201,
+          "firm_level_interpretation": "raw text match only, NOT an identity link",
+          "five_firm_alias_text_hits": {
+            "draeger": 0,
+            "ge_healthcare": 0,
+            "medtronic": 0,
+            "mindray": 0,
+            "philips": 0
+          },
+          "status": 200,
+          "url": "https://www.accessdata.fda.gov/cms_ia/importalert_241.html"
+        }
+      ],
+      "device_alert_keyword_subset": 10,
+      "device_alert_keyword_subset_is_authoritative": false,
+      "device_industry_subcategories": [
+        {
+          "href": "industry_73.html",
+          "industry": "Anesthesiology"
+        },
+        {
+          "href": "industry_74.html",
+          "industry": "Cardiovascular"
+        },
+        {
+          "href": "industry_75.html",
+          "industry": "Chemistry"
+        },
+        {
+          "href": "industry_76.html",
+          "industry": "Dental"
+        },
+        {
+          "href": "industry_77.html",
+          "industry": "Ear,Nose And Throat"
+        },
+        {
+          "href": "industry_78.html",
+          "industry": "Gastroenterological & Urological"
+        },
+        {
+          "href": "industry_79.html",
+          "industry": "General & Plastic Surgery"
+        },
+        {
+          "href": "industry_80.html",
+          "industry": "General Hospital/Personal Use"
+        },
+        {
+          "href": "industry_81.html",
+          "industry": "Hematology"
+        },
+        {
+          "href": "industry_82.html",
+          "industry": "Immunology"
+        },
+        {
+          "href": "industry_83.html",
+          "industry": "Microbiology"
+        },
+        {
+          "href": "industry_84.html",
+          "industry": "Neurological"
+        },
+        {
+          "href": "industry_85.html",
+          "industry": "Obstetrical & Gynecological"
+        },
+        {
+          "href": "industry_86.html",
+          "industry": "Ophthalmic"
+        },
+        {
+          "href": "industry_87.html",
+          "industry": "Orthopedic"
+        },
+        {
+          "href": "industry_88.html",
+          "industry": "Pathology"
+        },
+        {
+          "href": "industry_89.html",
+          "industry": "Physical Medicine"
+        },
+        {
+          "href": "industry_90.html",
+          "industry": "Radiological"
+        },
+        {
+          "href": "industry_91.html",
+          "industry": "Toxicology"
+        }
+      ],
+      "endpoint": "https://www.accessdata.fda.gov/cms_ia/ialist.html",
+      "firm_level_availability": "UNKNOWN. The index has no company column; firm names exist only inside each alert's red list. The bounded scan above covered three device alerts and found no five-firm alias text hit — a negative observation about those pages, not a census.",
+      "firms": {
+        "draeger": {
+          "candidate": null,
+          "confirmed": null,
+          "firm_key": "draeger",
+          "firm_label": "Dräger",
+          "reason": "no company field in the index; per-alert red lists not enumerable within budget",
+          "status": "UNKNOWN"
+        },
+        "ge_healthcare": {
+          "candidate": null,
+          "confirmed": null,
+          "firm_key": "ge_healthcare",
+          "firm_label": "GE HealthCare",
+          "reason": "no company field in the index; per-alert red lists not enumerable within budget",
+          "status": "UNKNOWN"
+        },
+        "medtronic": {
+          "candidate": null,
+          "confirmed": null,
+          "firm_key": "medtronic",
+          "firm_label": "Medtronic",
+          "reason": "no company field in the index; per-alert red lists not enumerable within budget",
+          "status": "UNKNOWN"
+        },
+        "mindray": {
+          "candidate": null,
+          "confirmed": null,
+          "firm_key": "mindray",
+          "firm_label": "Mindray",
+          "reason": "no company field in the index; per-alert red lists not enumerable within budget",
+          "status": "UNKNOWN"
+        },
+        "philips": {
+          "candidate": null,
+          "confirmed": null,
+          "firm_key": "philips",
+          "firm_label": "Philips",
+          "reason": "no company field in the index; per-alert red lists not enumerable within budget",
+          "status": "UNKNOWN"
+        }
+      },
+      "index_meta": {
+        "bytes": 66100,
+        "records": 154,
+        "status": 200,
+        "url": "https://www.accessdata.fda.gov/cms_ia/ialist.html"
+      },
+      "index_records": 154,
+      "interpretation": "An import alert is a detention-without-physical-examination instruction aimed at named foreign establishments or product types. It is not a company-level quality rating, and absence of a firm from the current red list carries no information about that firm's compliance history.",
+      "kind": "import_alert",
+      "retrieval_mode": "ialist.html index parsed; device grouping from industrygroup_9.html; bounded detail-page scan",
+      "source_name": "FDA import alerts"
+    },
+    "openfda_device_maude": {
+      "count_unit": "MDR reports for the annual series; device-entry occurrences for the identity census",
+      "endpoint": "https://api.fda.gov/device/event.json",
+      "firms": {
+        "draeger": {
+          "by_year_date_of_event": {
+            "1995": 1,
+            "1998": 1,
+            "1999": 13,
+            "2000": 53,
+            "2001": 61,
+            "2002": 90,
+            "2003": 110,
+            "2004": 144,
+            "2005": 163,
+            "2006": 66,
+            "2007": 89,
+            "2008": 85,
+            "2009": 82,
+            "2010": 73,
+            "2011": 104,
+            "2012": 161,
+            "2013": 129,
+            "2014": 116,
+            "2015": 202,
+            "2016": 85,
+            "2017": 81,
+            "2018": 64,
+            "2019": 43,
+            "2020": 24,
+            "2021": 49,
+            "2022": 32,
+            "2023": 119,
+            "2024": 156,
+            "2025": 101,
+            "2026": 50
+          },
+          "by_year_date_received": {
+            "1995": 1,
+            "1999": 5,
+            "2000": 53,
+            "2001": 66,
+            "2002": 86,
+            "2003": 120,
+            "2004": 146,
+            "2005": 170,
+            "2006": 80,
+            "2007": 92,
+            "2008": 94,
+            "2009": 79,
+            "2010": 103,
+            "2011": 120,
+            "2012": 167,
+            "2013": 142,
+            "2014": 120,
+            "2015": 218,
+            "2016": 95,
+            "2017": 95,
+            "2018": 66,
+            "2019": 44,
+            "2020": 23,
+            "2021": 50,
+            "2022": 40,
+            "2023": 98,
+            "2024": 196,
+            "2025": 113,
+            "2026": 60
+          },
+          "count_queries": [
+            {
+              "buckets": 1802,
+              "field": "date_received",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=date_received&search=device.manufacturer_d_name%3Adraeger"
+            },
+            {
+              "buckets": 1993,
+              "field": "date_of_event",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=date_of_event&search=device.manufacturer_d_name%3Adraeger"
+            },
+            {
+              "buckets": 72,
+              "field": "device.manufacturer_d_name.exact",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=device.manufacturer_d_name.exact&search=device.manufacturer_d_name%3Adraeger"
+            }
+          ],
+          "firm_key": "draeger",
+          "firm_label": "Dräger",
+          "identity_census": {
+            "bucket_cap_hit": false,
+            "buckets_returned": 72,
+            "buckets_sum": 2755,
+            "candidate_total": 1,
+            "census_completeness": "complete within the matched set (every exact name bucket returned)",
+            "census_field": "device.manufacturer_d_name",
+            "confirmed_total": 2746,
+            "count_unit": "device-entry occurrences across the reports matched by the query",
+            "counts_by_resolution": {
+              "candidate": 1,
+              "confirmed": 2746,
+              "none": 7,
+              "other_firm": 1
+            },
+            "matches_total": 2742,
+            "query": "device.manufacturer_d_name:draeger",
+            "residual_not_returned_by_api": 0,
+            "top_confirmed_terms": [
+              {
+                "count": 601,
+                "device.manufacturer_d_name": "DRAEGER MEDICAL, INC."
+              },
+              {
+                "count": 550,
+                "device.manufacturer_d_name": "DRAEGER MEDICAL SYSTEMS, INC"
+              },
+              {
+                "count": 523,
+                "device.manufacturer_d_name": "DRAEGER MEDICAL SYSTEMS, INC."
+              },
+              {
+                "count": 331,
+                "device.manufacturer_d_name": "DRAEGER MEDICAL GMBH"
+              },
+              {
+                "count": 153,
+                "device.manufacturer_d_name": "DRAEGER MEDICAL SYSTEMS, INC. (IT/M)"
+              },
+              {
+                "count": 145,
+                "device.manufacturer_d_name": "DRAEGER MEDICAL AG & CO. KG"
+              },
+              {
+                "count": 89,
+                "device.manufacturer_d_name": "SHANGHAI DRAEGER MEDICAL INSTRUMENT CO. LTD."
+              },
+              {
+                "count": 53,
+                "device.manufacturer_d_name": "DRAEGER"
+              },
+              {
+                "count": 52,
+                "device.manufacturer_d_name": "DRAEGER MEDICAL"
+              },
+              {
+                "count": 31,
+                "device.manufacturer_d_name": "DRAEGER MEDICAL INC."
+              }
+            ],
+            "unauthenticated_bucket_cap": 100
+          },
+          "keyword_query": "device.manufacturer_d_name:draeger",
+          "reports_total_by_date_of_event": 2547,
+          "reports_total_by_date_received": 2742
+        },
+        "ge_healthcare": {
+          "by_year_date_of_event": {
+            "2001": 1,
+            "2004": 16,
+            "2005": 69,
+            "2006": 177,
+            "2007": 196,
+            "2008": 194,
+            "2009": 153,
+            "2010": 251,
+            "2011": 350,
+            "2012": 267,
+            "2013": 103,
+            "2014": 82,
+            "2015": 95,
+            "2016": 155,
+            "2017": 100,
+            "2018": 138,
+            "2019": 38,
+            "2020": 20,
+            "2021": 29,
+            "2022": 56,
+            "2023": 56,
+            "2024": 233,
+            "2025": 95,
+            "2026": 15
+          },
+          "by_year_date_received": {
+            "2004": 5,
+            "2005": 65,
+            "2006": 157,
+            "2007": 145,
+            "2008": 264,
+            "2009": 232,
+            "2010": 319,
+            "2011": 428,
+            "2012": 285,
+            "2013": 122,
+            "2014": 98,
+            "2015": 110,
+            "2016": 161,
+            "2017": 119,
+            "2018": 142,
+            "2019": 49,
+            "2020": 26,
+            "2021": 32,
+            "2022": 53,
+            "2023": 48,
+            "2024": 724,
+            "2025": 259,
+            "2026": 50
+          },
+          "count_queries": [
+            {
+              "buckets": 1778,
+              "field": "date_received",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=date_received&search=device.manufacturer_d_name%3A%22ge+healthcare%22"
+            },
+            {
+              "buckets": 1904,
+              "field": "date_of_event",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=date_of_event&search=device.manufacturer_d_name%3A%22ge+healthcare%22"
+            },
+            {
+              "buckets": 100,
+              "field": "device.manufacturer_d_name.exact",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=device.manufacturer_d_name.exact&search=device.manufacturer_d_name%3A%22ge+healthcare%22"
+            }
+          ],
+          "firm_key": "ge_healthcare",
+          "firm_label": "GE HealthCare",
+          "identity_census": {
+            "bucket_cap_hit": true,
+            "buckets_returned": 100,
+            "buckets_sum": 3850,
+            "candidate_total": 0,
+            "census_completeness": "partial — the API cap of 100 buckets was hit; the residual is unknown, never distributed",
+            "census_field": "device.manufacturer_d_name",
+            "confirmed_total": 3838,
+            "count_unit": "device-entry occurrences across the reports matched by the query",
+            "counts_by_resolution": {
+              "candidate": 0,
+              "confirmed": 3838,
+              "none": 11,
+              "other_firm": 1
+            },
+            "matches_total": 3893,
+            "query": "device.manufacturer_d_name:\"ge healthcare\"",
+            "residual_not_returned_by_api": 43,
+            "top_confirmed_terms": [
+              {
+                "count": 1843,
+                "device.manufacturer_d_name": "GE HEALTHCARE"
+              },
+              {
+                "count": 907,
+                "device.manufacturer_d_name": "GE HEALTHCARE AUSTRIA GMBH & CO OG"
+              },
+              {
+                "count": 571,
+                "device.manufacturer_d_name": "GE HEALTHCARE FINLAND OY"
+              },
+              {
+                "count": 129,
+                "device.manufacturer_d_name": "GE HEALTHCARE INTEGRATED IT SOLUTIONS"
+              },
+              {
+                "count": 44,
+                "device.manufacturer_d_name": "GE HEALTHCARE JAPAN CORPORATION"
+              },
+              {
+                "count": 41,
+                "device.manufacturer_d_name": "GE HEALTHCARE (TIANJIN) COMPANY LIMITED"
+              },
+              {
+                "count": 34,
+                "device.manufacturer_d_name": "WIPRO GE HEALTHCARE PRIVATE LTD."
+              },
+              {
+                "count": 27,
+                "device.manufacturer_d_name": "GE HEALTHCARE TECHNOLOGIES"
+              },
+              {
+                "count": 23,
+                "device.manufacturer_d_name": "DATEX-OHMEDA, INC./GE HEALTHCARE TECHNOLOGIES INC."
+              },
+              {
+                "count": 16,
+                "device.manufacturer_d_name": "GE HEALTHCARE MANUFACTURING LLC"
+              }
+            ],
+            "unauthenticated_bucket_cap": 100
+          },
+          "keyword_query": "device.manufacturer_d_name:\"ge healthcare\"",
+          "reports_total_by_date_of_event": 2889,
+          "reports_total_by_date_received": 3893
+        },
+        "medtronic": {
+          "by_year_date_of_event": {
+            "1900": 14,
+            "1901": 1,
+            "1926": 1,
+            "1945": 1,
+            "1946": 1,
+            "1949": 1,
+            "1954": 2,
+            "1960": 1,
+            "1972": 2,
+            "1973": 1,
+            "1974": 2,
+            "1975": 2,
+            "1978": 2,
+            "1979": 1,
+            "1980": 2,
+            "1981": 5,
+            "1982": 3,
+            "1983": 6,
+            "1984": 4,
+            "1985": 1,
+            "1986": 4,
+            "1987": 8,
+            "1988": 15,
+            "1989": 8,
+            "1990": 20,
+            "1991": 54,
+            "1992": 103,
+            "1993": 149,
+            "1994": 330,
+            "1995": 326,
+            "1996": 1595,
+            "1997": 2256,
+            "1998": 1865,
+            "1999": 2410,
+            "2000": 3551,
+            "2001": 4011,
+            "2002": 3690,
+            "2003": 3541,
+            "2004": 5370,
+            "2005": 7392,
+            "2006": 9407,
+            "2007": 14724,
+            "2008": 20242,
+            "2009": 27445,
+            "2010": 36770,
+            "2011": 36222,
+            "2012": 34334,
+            "2013": 79430,
+            "2014": 161182,
+            "2015": 162417,
+            "2016": 119288,
+            "2017": 154649,
+            "2018": 207422,
+            "2019": 254415,
+            "2020": 243973,
+            "2021": 253533,
+            "2022": 257206,
+            "2023": 246331,
+            "2024": 286156,
+            "2025": 323678,
+            "2026": 195148
+          },
+          "by_year_date_received": {
+            "1991": 1,
+            "1992": 45,
+            "1993": 75,
+            "1994": 244,
+            "1995": 210,
+            "1996": 530,
+            "1997": 2929,
+            "1998": 2384,
+            "1999": 2043,
+            "2000": 3739,
+            "2001": 5429,
+            "2002": 4405,
+            "2003": 3402,
+            "2004": 5052,
+            "2005": 6817,
+            "2006": 8244,
+            "2007": 12162,
+            "2008": 18135,
+            "2009": 25384,
+            "2010": 42713,
+            "2011": 57358,
+            "2012": 64384,
+            "2013": 56295,
+            "2014": 127623,
+            "2015": 182859,
+            "2016": 156617,
+            "2017": 191394,
+            "2018": 200090,
+            "2019": 232349,
+            "2020": 225090,
+            "2021": 189843,
+            "2022": 340460,
+            "2023": 300193,
+            "2024": 274170,
+            "2025": 333655,
+            "2026": 284537
+          },
+          "count_queries": [
+            {
+              "buckets": 9619,
+              "field": "date_received",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=date_received&search=device.manufacturer_d_name%3Amedtronic"
+            },
+            {
+              "buckets": 11697,
+              "field": "date_of_event",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=date_of_event&search=device.manufacturer_d_name%3Amedtronic"
+            },
+            {
+              "buckets": 100,
+              "field": "device.manufacturer_d_name.exact",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=device.manufacturer_d_name.exact&search=device.manufacturer_d_name%3Amedtronic"
+            }
+          ],
+          "firm_key": "medtronic",
+          "firm_label": "Medtronic",
+          "identity_census": {
+            "bucket_cap_hit": true,
+            "buckets_returned": 100,
+            "buckets_sum": 3350895,
+            "candidate_total": 0,
+            "census_completeness": "partial — the API cap of 100 buckets was hit; the residual is unknown, never distributed",
+            "census_field": "device.manufacturer_d_name",
+            "confirmed_total": 3350895,
+            "count_unit": "device-entry occurrences across the reports matched by the query",
+            "counts_by_resolution": {
+              "candidate": 0,
+              "confirmed": 3350895,
+              "none": 0,
+              "other_firm": 0
+            },
+            "matches_total": 3360860,
+            "query": "device.manufacturer_d_name:medtronic",
+            "residual_not_returned_by_api": 9965,
+            "top_confirmed_terms": [
+              {
+                "count": 1990274,
+                "device.manufacturer_d_name": "MEDTRONIC PUERTO RICO OPERATIONS CO."
+              },
+              {
+                "count": 445638,
+                "device.manufacturer_d_name": "MEDTRONIC MINIMED"
+              },
+              {
+                "count": 119310,
+                "device.manufacturer_d_name": "MEDTRONIC, INC."
+              },
+              {
+                "count": 88059,
+                "device.manufacturer_d_name": "MEDTRONIC MED REL MEDTRONIC PUERTO RICO"
+              },
+              {
+                "count": 69774,
+                "device.manufacturer_d_name": "MEDTRONIC PUERTO RICO, INC."
+              },
+              {
+                "count": 65938,
+                "device.manufacturer_d_name": "MEDTRONIC IRELAND"
+              },
+              {
+                "count": 58822,
+                "device.manufacturer_d_name": "MEDTRONIC NEUROMODULATION"
+              },
+              {
+                "count": 58545,
+                "device.manufacturer_d_name": "MEDTRONIC SINGAPORE OPERATIONS"
+              },
+              {
+                "count": 45468,
+                "device.manufacturer_d_name": "MEDTRONIC EUROPE SARL"
+              },
+              {
+                "count": 43435,
+                "device.manufacturer_d_name": "MEDTRONIC HEART VALVES DIVISION"
+              }
+            ],
+            "unauthenticated_bucket_cap": 100
+          },
+          "keyword_query": "device.manufacturer_d_name:medtronic",
+          "reports_total_by_date_of_event": 3160723,
+          "reports_total_by_date_received": 3360860
+        },
+        "mindray": {
+          "by_year_date_of_event": {
+            "2008": 27,
+            "2009": 43,
+            "2010": 53,
+            "2011": 127,
+            "2012": 505,
+            "2013": 1331,
+            "2014": 1131,
+            "2015": 166,
+            "2016": 30,
+            "2017": 18,
+            "2018": 18,
+            "2019": 12,
+            "2020": 23,
+            "2021": 24,
+            "2022": 37,
+            "2023": 15,
+            "2024": 33,
+            "2025": 39,
+            "2026": 22
+          },
+          "by_year_date_received": {
+            "2008": 23,
+            "2009": 38,
+            "2010": 42,
+            "2011": 16,
+            "2012": 45,
+            "2013": 1909,
+            "2014": 983,
+            "2015": 333,
+            "2016": 33,
+            "2017": 25,
+            "2018": 19,
+            "2019": 17,
+            "2020": 27,
+            "2021": 35,
+            "2022": 41,
+            "2023": 11,
+            "2024": 35,
+            "2025": 46,
+            "2026": 22
+          },
+          "count_queries": [
+            {
+              "buckets": 353,
+              "field": "date_received",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=date_received&search=device.manufacturer_d_name%3Amindray"
+            },
+            {
+              "buckets": 1215,
+              "field": "date_of_event",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=date_of_event&search=device.manufacturer_d_name%3Amindray"
+            },
+            {
+              "buckets": 89,
+              "field": "device.manufacturer_d_name.exact",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=device.manufacturer_d_name.exact&search=device.manufacturer_d_name%3Amindray"
+            }
+          ],
+          "firm_key": "mindray",
+          "firm_label": "Mindray",
+          "identity_census": {
+            "bucket_cap_hit": false,
+            "buckets_returned": 89,
+            "buckets_sum": 3703,
+            "candidate_total": 0,
+            "census_completeness": "complete within the matched set (every exact name bucket returned)",
+            "census_field": "device.manufacturer_d_name",
+            "confirmed_total": 3702,
+            "count_unit": "device-entry occurrences across the reports matched by the query",
+            "counts_by_resolution": {
+              "candidate": 0,
+              "confirmed": 3702,
+              "none": 1,
+              "other_firm": 0
+            },
+            "matches_total": 3700,
+            "query": "device.manufacturer_d_name:mindray",
+            "residual_not_returned_by_api": 0,
+            "top_confirmed_terms": [
+              {
+                "count": 2353,
+                "device.manufacturer_d_name": "MINDRAY DS USA, INC."
+              },
+              {
+                "count": 428,
+                "device.manufacturer_d_name": "MINDRAY DS USA, INC"
+              },
+              {
+                "count": 177,
+                "device.manufacturer_d_name": "SHENZHEN MINDRAY BIO-MEDICAL ELECTRONICS CO., LTD"
+              },
+              {
+                "count": 163,
+                "device.manufacturer_d_name": "MINDRAY DS USA INC"
+              },
+              {
+                "count": 72,
+                "device.manufacturer_d_name": "MINDRAY BIO-MEDICAL ELECTRONICS CO. LTD."
+              },
+              {
+                "count": 51,
+                "device.manufacturer_d_name": "SHENZHEN MINDRAY BIO-MEDICAL ELECTRONICS CO. LTD."
+              },
+              {
+                "count": 40,
+                "device.manufacturer_d_name": "SHENZHEN MINDRAY BIO-MEDICAL ELECTRONICS CO., LTD."
+              },
+              {
+                "count": 35,
+                "device.manufacturer_d_name": "MINDRAY BIOMEDICAL ELECTRONICS CO. LTD"
+              },
+              {
+                "count": 34,
+                "device.manufacturer_d_name": "MINDRAY BIOMEDICAL ELECTRONICS CO. LTD."
+              },
+              {
+                "count": 33,
+                "device.manufacturer_d_name": "MINDRAY BIO-MEDICAL ELECTRONICS CO. LTD"
+              }
+            ],
+            "unauthenticated_bucket_cap": 100
+          },
+          "keyword_query": "device.manufacturer_d_name:mindray",
+          "reports_total_by_date_of_event": 3654,
+          "reports_total_by_date_received": 3700
+        },
+        "philips": {
+          "by_year_date_of_event": {
+            "1989": 1,
+            "1990": 1,
+            "1992": 4,
+            "1993": 3,
+            "1994": 8,
+            "1995": 7,
+            "1996": 24,
+            "1997": 29,
+            "1998": 41,
+            "1999": 26,
+            "2000": 19,
+            "2001": 41,
+            "2002": 83,
+            "2003": 109,
+            "2004": 141,
+            "2005": 167,
+            "2006": 187,
+            "2007": 303,
+            "2008": 388,
+            "2009": 561,
+            "2010": 796,
+            "2011": 421,
+            "2012": 384,
+            "2013": 317,
+            "2014": 397,
+            "2015": 789,
+            "2016": 567,
+            "2017": 1021,
+            "2018": 819,
+            "2019": 1095,
+            "2020": 1155,
+            "2021": 12436,
+            "2022": 13703,
+            "2023": 13487,
+            "2024": 14013,
+            "2025": 12288,
+            "2026": 7521
+          },
+          "by_year_date_received": {
+            "1992": 4,
+            "1993": 2,
+            "1994": 10,
+            "1995": 7,
+            "1996": 23,
+            "1997": 36,
+            "1998": 39,
+            "1999": 26,
+            "2000": 18,
+            "2001": 44,
+            "2002": 145,
+            "2003": 240,
+            "2004": 359,
+            "2005": 433,
+            "2006": 501,
+            "2007": 741,
+            "2008": 939,
+            "2009": 2538,
+            "2010": 4064,
+            "2011": 5087,
+            "2012": 6242,
+            "2013": 9674,
+            "2014": 11420,
+            "2015": 11512,
+            "2016": 12124,
+            "2017": 12808,
+            "2018": 14062,
+            "2019": 13758,
+            "2020": 11473,
+            "2021": 11792,
+            "2022": 11029,
+            "2023": 15425,
+            "2024": 14845,
+            "2025": 21746,
+            "2026": 9182
+          },
+          "count_queries": [
+            {
+              "buckets": 6502,
+              "field": "date_received",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=date_received&search=device.manufacturer_d_name%3Aphilips"
+            },
+            {
+              "buckets": 6468,
+              "field": "date_of_event",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=date_of_event&search=device.manufacturer_d_name%3Aphilips"
+            },
+            {
+              "buckets": 100,
+              "field": "device.manufacturer_d_name.exact",
+              "status": 200,
+              "url": "https://api.fda.gov/device/event.json?count=device.manufacturer_d_name.exact&search=device.manufacturer_d_name%3Aphilips"
+            }
+          ],
+          "firm_key": "philips",
+          "firm_label": "Philips",
+          "identity_census": {
+            "bucket_cap_hit": true,
+            "buckets_returned": 100,
+            "buckets_sum": 201612,
+            "candidate_total": 0,
+            "census_completeness": "partial — the API cap of 100 buckets was hit; the residual is unknown, never distributed",
+            "census_field": "device.manufacturer_d_name",
+            "confirmed_total": 201583,
+            "count_unit": "device-entry occurrences across the reports matched by the query",
+            "counts_by_resolution": {
+              "candidate": 0,
+              "confirmed": 201583,
+              "none": 19,
+              "other_firm": 10
+            },
+            "matches_total": 202348,
+            "query": "device.manufacturer_d_name:philips",
+            "residual_not_returned_by_api": 736,
+            "top_confirmed_terms": [
+              {
+                "count": 109315,
+                "device.manufacturer_d_name": "PHILIPS MEDICAL SYSTEMS"
+              },
+              {
+                "count": 35477,
+                "device.manufacturer_d_name": "PHILIPS MEDICAL SYSTEMS NEDERLAND B.V."
+              },
+              {
+                "count": 21096,
+                "device.manufacturer_d_name": "PHILIPS NORTH AMERICA LLC"
+              },
+              {
+                "count": 5826,
+                "device.manufacturer_d_name": "PHILIPS MEDIZIN SYSTEME BÖBLINGEN GMBH"
+              },
+              {
+                "count": 4684,
+                "device.manufacturer_d_name": "PHILIPS HEALTHCARE"
+              },
+              {
+                "count": 3623,
+                "device.manufacturer_d_name": "PHILIPS GOLDWAY (SHENZHEN) INDUSTRIAL INC."
+              },
+              {
+                "count": 3533,
+                "device.manufacturer_d_name": "PHILIPS GOLDWAY (SHENZHEN) INDUSTRIAL INC"
+              },
+              {
+                "count": 1549,
+                "device.manufacturer_d_name": "PHILIPS MEDICAL SYSTEMS (CLEVELAND), INC."
+              },
+              {
+                "count": 1323,
+                "device.manufacturer_d_name": "PHILIPS ULTRASOUND, INC"
+              },
+              {
+                "count": 1280,
+                "device.manufacturer_d_name": "Philips Medical Systems Nederland B.V."
+              }
+            ],
+            "unauthenticated_bucket_cap": 100
+          },
+          "keyword_query": "device.manufacturer_d_name:philips",
+          "reports_total_by_date_of_event": 83352,
+          "reports_total_by_date_received": 202348
+        }
+      },
+      "interpretation": "PASSIVE REPORTING COUNT, NOT AN INCIDENCE RATE. Postmarket report counts are driven by reporting incentives, litigation, media attention, product usage volume and FDA collection efforts. Increases can reflect better reporting rather than worse product quality. Never interpret a count (or a change in a count) as a failure rate, a defect rate, or evidence of quality deterioration. MAUDE only contains reports that someone chose to submit; it has no denominator of devices in use, and openFDA states that incidence cannot be determined from it.",
+      "kind": "postmarket_event",
+      "retrieval_mode": "server-side count aggregation for the firm keyword family (report counts by date), plus a 100-bucket exact-manufacturer census for identity resolution",
+      "source_name": "openFDA device adverse events (MAUDE)",
+      "time_fields": {
+        "event_at": "date_of_event",
+        "source_public_at": "date_received (proxy, see time.notes)"
+      }
+    },
+    "openfda_device_recall": {
+      "count_unit": "recall records (one record = one enforcement action)",
+      "endpoint": "https://api.fda.gov/device/recall.json",
+      "firms": {
+        "draeger": {
+          "aggregate": {
+            "by_year_event_at": {
+              "2003": 1,
+              "2004": 3,
+              "2005": 1,
+              "2006": 4,
+              "2007": 1,
+              "2008": 10,
+              "2009": 5,
+              "2010": 5,
+              "2011": 4,
+              "2012": 2,
+              "2013": 3,
+              "2014": 3,
+              "2015": 6,
+              "2016": 4,
+              "2018": 21,
+              "2021": 11,
+              "2022": 4,
+              "2023": 29,
+              "2024": 6,
+              "2025": 20,
+              "2026": 3
+            },
+            "by_year_source_public_at": {
+              "2003": 1,
+              "2004": 3,
+              "2006": 5,
+              "2007": 1,
+              "2008": 10,
+              "2009": 5,
+              "2010": 5,
+              "2011": 4,
+              "2012": 1,
+              "2013": 3,
+              "2014": 4,
+              "2015": 4,
+              "2016": 4,
+              "2018": 6,
+              "2019": 9,
+              "2023": 29,
+              "2024": 6,
+              "2025": 20,
+              "2026": 3
+            },
+            "candidate": 0,
+            "confirmed": 146,
+            "matched_records_sum_over_queries": 146,
+            "queries_are_mutually_exclusive_note": "a recall record has exactly one recalling_firm string, so the per-query sums cannot double count a record",
+            "query_count": 2
+          },
+          "firm_key": "draeger",
+          "firm_label": "Dräger",
+          "queries": [
+            {
+              "by_year_event_at": {
+                "2003": 1,
+                "2004": 3,
+                "2005": 1,
+                "2006": 4,
+                "2007": 1,
+                "2008": 10,
+                "2009": 5,
+                "2010": 5,
+                "2011": 4,
+                "2012": 2,
+                "2013": 3,
+                "2014": 3,
+                "2015": 6,
+                "2016": 4,
+                "2018": 21,
+                "2021": 11,
+                "2022": 4,
+                "2023": 29,
+                "2024": 6,
+                "2025": 20,
+                "2026": 3
+              },
+              "by_year_source_public_at": {
+                "2003": 1,
+                "2004": 3,
+                "2006": 5,
+                "2007": 1,
+                "2008": 10,
+                "2009": 5,
+                "2010": 5,
+                "2011": 4,
+                "2012": 1,
+                "2013": 3,
+                "2014": 4,
+                "2015": 4,
+                "2016": 4,
+                "2018": 6,
+                "2019": 9,
+                "2023": 29,
+                "2024": 6,
+                "2025": 20,
+                "2026": 3
+              },
+              "census": {
+                "bucket_cap_hit": false,
+                "buckets_returned": 3,
+                "buckets_sum": 146,
+                "candidate_total": 0,
+                "census_completeness": "complete within the matched set (every exact name bucket returned)",
+                "census_field": "recalling_firm",
+                "confirmed_total": 146,
+                "count_unit": "recall records (one record = one enforcement action)",
+                "counts_by_resolution": {
+                  "candidate": 0,
+                  "confirmed": 146,
+                  "none": 0,
+                  "other_firm": 0
+                },
+                "matches_total": 146,
+                "query": "recalling_firm:draeger",
+                "residual_not_returned_by_api": 0,
+                "top_confirmed_terms": [
+                  {
+                    "count": 103,
+                    "recalling_firm": "Draeger Medical, Inc."
+                  },
+                  {
+                    "count": 22,
+                    "recalling_firm": "Draeger, Inc."
+                  },
+                  {
+                    "count": 21,
+                    "recalling_firm": "Draeger Medical Systems, Inc."
+                  }
+                ],
+                "unauthenticated_bucket_cap": 100
+              },
+              "count_queries": [
+                {
+                  "buckets": 3,
+                  "field": "recalling_firm.exact",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3Adraeger"
+                },
+                {
+                  "buckets": 70,
+                  "field": "event_date_initiated",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3Adraeger"
+                },
+                {
+                  "buckets": 59,
+                  "field": "event_date_posted",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3Adraeger"
+                }
+              ],
+              "matches_total": 146,
+              "no_matches": false,
+              "search": "recalling_firm:draeger"
+            },
+            {
+              "by_year_event_at": {},
+              "by_year_source_public_at": {},
+              "census": {
+                "bucket_cap_hit": false,
+                "buckets_returned": 0,
+                "buckets_sum": 0,
+                "candidate_total": 0,
+                "census_completeness": "complete within the matched set (every exact name bucket returned)",
+                "census_field": "recalling_firm",
+                "confirmed_total": 0,
+                "count_unit": "recall records (one record = one enforcement action)",
+                "counts_by_resolution": {
+                  "candidate": 0,
+                  "confirmed": 0,
+                  "none": 0,
+                  "other_firm": 0
+                },
+                "matches_total": null,
+                "query": "recalling_firm:drager",
+                "residual_not_returned_by_api": null,
+                "top_confirmed_terms": [],
+                "unauthenticated_bucket_cap": 100
+              },
+              "count_queries": [
+                {
+                  "buckets": null,
+                  "field": "recalling_firm.exact",
+                  "status": 404,
+                  "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3Adrager"
+                },
+                {
+                  "buckets": null,
+                  "field": "event_date_initiated",
+                  "status": 404,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3Adrager"
+                },
+                {
+                  "buckets": null,
+                  "field": "event_date_posted",
+                  "status": 404,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3Adrager"
+                }
+              ],
+              "matches_total": null,
+              "no_matches": true,
+              "search": "recalling_firm:drager"
+            }
+          ]
+        },
+        "ge_healthcare": {
+          "aggregate": {
+            "by_year_event_at": {
+              "2000": 4,
+              "2001": 1,
+              "2003": 2,
+              "2004": 1,
+              "2005": 7,
+              "2006": 20,
+              "2007": 28,
+              "2008": 88,
+              "2009": 66,
+              "2010": 78,
+              "2011": 54,
+              "2012": 63,
+              "2013": 72,
+              "2014": 46,
+              "2015": 62,
+              "2016": 34,
+              "2017": 40,
+              "2018": 84,
+              "2019": 80,
+              "2020": 40,
+              "2021": 85,
+              "2022": 45,
+              "2023": 28,
+              "2024": 94,
+              "2025": 109,
+              "2026": 49
+            },
+            "by_year_source_public_at": {
+              "2003": 7,
+              "2004": 1,
+              "2005": 2,
+              "2006": 12,
+              "2007": 15,
+              "2008": 68,
+              "2009": 82,
+              "2010": 59,
+              "2011": 74,
+              "2012": 44,
+              "2013": 82,
+              "2014": 69,
+              "2015": 56,
+              "2016": 15,
+              "2017": 14,
+              "2018": 14,
+              "2019": 25,
+              "2020": 26,
+              "2021": 35,
+              "2022": 42,
+              "2023": 26,
+              "2024": 80,
+              "2025": 126,
+              "2026": 54
+            },
+            "candidate": 0,
+            "confirmed": 1280,
+            "matched_records_sum_over_queries": 1280,
+            "queries_are_mutually_exclusive_note": "a recall record has exactly one recalling_firm string, so the per-query sums cannot double count a record",
+            "query_count": 2
+          },
+          "firm_key": "ge_healthcare",
+          "firm_label": "GE HealthCare",
+          "queries": [
+            {
+              "by_year_event_at": {
+                "2005": 5,
+                "2006": 16,
+                "2007": 28,
+                "2008": 58,
+                "2009": 30,
+                "2010": 78,
+                "2011": 54,
+                "2012": 63,
+                "2013": 71,
+                "2014": 46,
+                "2015": 46,
+                "2016": 21,
+                "2017": 28,
+                "2018": 59,
+                "2019": 80,
+                "2020": 40,
+                "2021": 85,
+                "2022": 24,
+                "2023": 24,
+                "2024": 32,
+                "2025": 18,
+                "2026": 8
+              },
+              "by_year_source_public_at": {
+                "2005": 1,
+                "2006": 11,
+                "2007": 13,
+                "2008": 68,
+                "2009": 26,
+                "2010": 47,
+                "2011": 74,
+                "2012": 44,
+                "2013": 82,
+                "2014": 69,
+                "2015": 53,
+                "2016": 3,
+                "2017": 4,
+                "2018": 10,
+                "2019": 25,
+                "2020": 26,
+                "2021": 35,
+                "2022": 27,
+                "2023": 17,
+                "2024": 39,
+                "2025": 18,
+                "2026": 8
+              },
+              "census": {
+                "bucket_cap_hit": false,
+                "buckets_returned": 20,
+                "buckets_sum": 914,
+                "candidate_total": 0,
+                "census_completeness": "complete within the matched set (every exact name bucket returned)",
+                "census_field": "recalling_firm",
+                "confirmed_total": 914,
+                "count_unit": "recall records (one record = one enforcement action)",
+                "counts_by_resolution": {
+                  "candidate": 0,
+                  "confirmed": 914,
+                  "none": 0,
+                  "other_firm": 0
+                },
+                "matches_total": 914,
+                "query": "recalling_firm:\"ge healthcare\"",
+                "residual_not_returned_by_api": 0,
+                "top_confirmed_terms": [
+                  {
+                    "count": 581,
+                    "recalling_firm": "GE Healthcare, LLC"
+                  },
+                  {
+                    "count": 177,
+                    "recalling_firm": "GE Healthcare"
+                  },
+                  {
+                    "count": 24,
+                    "recalling_firm": "GE Healthcare (China) Co., Ltd."
+                  },
+                  {
+                    "count": 22,
+                    "recalling_firm": "GE Healthcare Finland Oy"
+                  },
+                  {
+                    "count": 20,
+                    "recalling_firm": "GE Healthcare Integrated IT Solutions"
+                  },
+                  {
+                    "count": 19,
+                    "recalling_firm": "Ge Healthcare"
+                  },
+                  {
+                    "count": 15,
+                    "recalling_firm": "Ge Healthcare It"
+                  },
+                  {
+                    "count": 12,
+                    "recalling_firm": "Ge Healthcare, Llc"
+                  },
+                  {
+                    "count": 10,
+                    "recalling_firm": "GE Healthcare It"
+                  },
+                  {
+                    "count": 10,
+                    "recalling_firm": "Wipro GE Healthcare Private Ltd."
+                  }
+                ],
+                "unauthenticated_bucket_cap": 100
+              },
+              "count_queries": [
+                {
+                  "buckets": 20,
+                  "field": "recalling_firm.exact",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3A%22ge+healthcare%22"
+                },
+                {
+                  "buckets": 410,
+                  "field": "event_date_initiated",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3A%22ge+healthcare%22"
+                },
+                {
+                  "buckets": 339,
+                  "field": "event_date_posted",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3A%22ge+healthcare%22"
+                }
+              ],
+              "matches_total": 914,
+              "no_matches": false,
+              "search": "recalling_firm:\"ge healthcare\""
+            },
+            {
+              "by_year_event_at": {
+                "2000": 4,
+                "2001": 1,
+                "2003": 2,
+                "2004": 1,
+                "2005": 2,
+                "2006": 4,
+                "2008": 30,
+                "2009": 36,
+                "2013": 1,
+                "2015": 16,
+                "2016": 13,
+                "2017": 12,
+                "2018": 25,
+                "2022": 21,
+                "2023": 4,
+                "2024": 62,
+                "2025": 91,
+                "2026": 41
+              },
+              "by_year_source_public_at": {
+                "2003": 7,
+                "2004": 1,
+                "2005": 1,
+                "2006": 1,
+                "2007": 2,
+                "2009": 56,
+                "2010": 12,
+                "2015": 3,
+                "2016": 12,
+                "2017": 10,
+                "2018": 4,
+                "2022": 15,
+                "2023": 9,
+                "2024": 41,
+                "2025": 108,
+                "2026": 46
+              },
+              "census": {
+                "bucket_cap_hit": false,
+                "buckets_returned": 13,
+                "buckets_sum": 366,
+                "candidate_total": 0,
+                "census_completeness": "complete within the matched set (every exact name bucket returned)",
+                "census_field": "recalling_firm",
+                "confirmed_total": 366,
+                "count_unit": "recall records (one record = one enforcement action)",
+                "counts_by_resolution": {
+                  "candidate": 0,
+                  "confirmed": 366,
+                  "none": 0,
+                  "other_firm": 0
+                },
+                "matches_total": 366,
+                "query": "recalling_firm:\"ge medical\"",
+                "residual_not_returned_by_api": 0,
+                "top_confirmed_terms": [
+                  {
+                    "count": 236,
+                    "recalling_firm": "GE Medical Systems, LLC"
+                  },
+                  {
+                    "count": 41,
+                    "recalling_firm": "GE MEDICAL SYSTEMS ISRAEL, FUNCTIONAL IMAGING"
+                  },
+                  {
+                    "count": 27,
+                    "recalling_firm": "GE Medical Systems China Co., Ltd."
+                  },
+                  {
+                    "count": 18,
+                    "recalling_firm": "GE Medical Systems Information Technologies Inc"
+                  },
+                  {
+                    "count": 12,
+                    "recalling_firm": "GE Medical Systems Ultrasound & Primary Care Diagnostics, LL"
+                  },
+                  {
+                    "count": 12,
+                    "recalling_firm": "GE Medical Systems, SCS"
+                  },
+                  {
+                    "count": 9,
+                    "recalling_firm": "GE Medical Systems Information Technologies"
+                  },
+                  {
+                    "count": 4,
+                    "recalling_firm": "GE Medical Systems Information Tecnology"
+                  },
+                  {
+                    "count": 2,
+                    "recalling_firm": "GE Medical Systems Information Technologies, Inc."
+                  },
+                  {
+                    "count": 2,
+                    "recalling_firm": "GE Medical Systems LLC"
+                  }
+                ],
+                "unauthenticated_bucket_cap": 100
+              },
+              "count_queries": [
+                {
+                  "buckets": 13,
+                  "field": "recalling_firm.exact",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3A%22ge+medical%22"
+                },
+                {
+                  "buckets": 117,
+                  "field": "event_date_initiated",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3A%22ge+medical%22"
+                },
+                {
+                  "buckets": 94,
+                  "field": "event_date_posted",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3A%22ge+medical%22"
+                }
+              ],
+              "matches_total": 366,
+              "no_matches": false,
+              "search": "recalling_firm:\"ge medical\""
+            }
+          ]
+        },
+        "medtronic": {
+          "aggregate": {
+            "by_year_event_at": {
+              "2002": 3,
+              "2003": 13,
+              "2004": 25,
+              "2005": 35,
+              "2006": 209,
+              "2007": 114,
+              "2008": 83,
+              "2009": 88,
+              "2010": 36,
+              "2011": 36,
+              "2012": 20,
+              "2013": 57,
+              "2014": 62,
+              "2015": 33,
+              "2016": 89,
+              "2017": 81,
+              "2018": 105,
+              "2019": 250,
+              "2020": 58,
+              "2021": 122,
+              "2022": 58,
+              "2023": 178,
+              "2024": 73,
+              "2025": 41,
+              "2026": 63
+            },
+            "by_year_source_public_at": {
+              "2003": 12,
+              "2004": 24,
+              "2005": 25,
+              "2006": 216,
+              "2007": 58,
+              "2008": 119,
+              "2009": 100,
+              "2010": 39,
+              "2011": 30,
+              "2012": 34,
+              "2013": 56,
+              "2014": 62,
+              "2015": 29,
+              "2016": 23,
+              "2017": 30,
+              "2018": 82,
+              "2019": 210,
+              "2020": 40,
+              "2021": 17,
+              "2022": 20,
+              "2023": 189,
+              "2024": 76,
+              "2025": 42,
+              "2026": 66
+            },
+            "candidate": 0,
+            "confirmed": 1932,
+            "matched_records_sum_over_queries": 1932,
+            "queries_are_mutually_exclusive_note": "a recall record has exactly one recalling_firm string, so the per-query sums cannot double count a record",
+            "query_count": 1
+          },
+          "firm_key": "medtronic",
+          "firm_label": "Medtronic",
+          "queries": [
+            {
+              "by_year_event_at": {
+                "2002": 3,
+                "2003": 13,
+                "2004": 25,
+                "2005": 35,
+                "2006": 209,
+                "2007": 114,
+                "2008": 83,
+                "2009": 88,
+                "2010": 36,
+                "2011": 36,
+                "2012": 20,
+                "2013": 57,
+                "2014": 62,
+                "2015": 33,
+                "2016": 89,
+                "2017": 81,
+                "2018": 105,
+                "2019": 250,
+                "2020": 58,
+                "2021": 122,
+                "2022": 58,
+                "2023": 178,
+                "2024": 73,
+                "2025": 41,
+                "2026": 63
+              },
+              "by_year_source_public_at": {
+                "2003": 12,
+                "2004": 24,
+                "2005": 25,
+                "2006": 216,
+                "2007": 58,
+                "2008": 119,
+                "2009": 100,
+                "2010": 39,
+                "2011": 30,
+                "2012": 34,
+                "2013": 56,
+                "2014": 62,
+                "2015": 29,
+                "2016": 23,
+                "2017": 30,
+                "2018": 82,
+                "2019": 210,
+                "2020": 40,
+                "2021": 17,
+                "2022": 20,
+                "2023": 189,
+                "2024": 76,
+                "2025": 42,
+                "2026": 66
+              },
+              "census": {
+                "bucket_cap_hit": false,
+                "buckets_returned": 60,
+                "buckets_sum": 1932,
+                "candidate_total": 0,
+                "census_completeness": "complete within the matched set (every exact name bucket returned)",
+                "census_field": "recalling_firm",
+                "confirmed_total": 1932,
+                "count_unit": "recall records (one record = one enforcement action)",
+                "counts_by_resolution": {
+                  "candidate": 0,
+                  "confirmed": 1932,
+                  "none": 0,
+                  "other_firm": 0
+                },
+                "matches_total": 1932,
+                "query": "recalling_firm:medtronic",
+                "residual_not_returned_by_api": 0,
+                "top_confirmed_terms": [
+                  {
+                    "count": 214,
+                    "recalling_firm": "Medtronic Vascular"
+                  },
+                  {
+                    "count": 198,
+                    "recalling_firm": "Medtronic Inc., Cardiac Rhythm and Heart Failure (CRHF)"
+                  },
+                  {
+                    "count": 178,
+                    "recalling_firm": "Medtronic Neuromodulation"
+                  },
+                  {
+                    "count": 170,
+                    "recalling_firm": "Medtronic Sofamor Danek USA Inc"
+                  },
+                  {
+                    "count": 170,
+                    "recalling_firm": "Medtronic, Inc."
+                  },
+                  {
+                    "count": 141,
+                    "recalling_firm": "Medtronic Perfusion Systems"
+                  },
+                  {
+                    "count": 101,
+                    "recalling_firm": "Medtronic Navigation, Inc."
+                  },
+                  {
+                    "count": 85,
+                    "recalling_firm": "Medtronic Inc."
+                  },
+                  {
+                    "count": 68,
+                    "recalling_firm": "Medtronic Neurosurgery"
+                  },
+                  {
+                    "count": 55,
+                    "recalling_firm": "COVIDIEN MEDTRONIC"
+                  }
+                ],
+                "unauthenticated_bucket_cap": 100
+              },
+              "count_queries": [
+                {
+                  "buckets": 60,
+                  "field": "recalling_firm.exact",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3Amedtronic"
+                },
+                {
+                  "buckets": 600,
+                  "field": "event_date_initiated",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3Amedtronic"
+                },
+                {
+                  "buckets": 449,
+                  "field": "event_date_posted",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3Amedtronic"
+                }
+              ],
+              "matches_total": 1932,
+              "no_matches": false,
+              "search": "recalling_firm:medtronic"
+            }
+          ]
+        },
+        "mindray": {
+          "aggregate": {
+            "by_year_event_at": {
+              "2008": 1,
+              "2009": 4,
+              "2010": 3,
+              "2011": 2,
+              "2012": 7,
+              "2013": 1,
+              "2014": 5,
+              "2015": 4,
+              "2016": 4,
+              "2017": 5,
+              "2018": 3,
+              "2019": 6,
+              "2020": 1,
+              "2021": 2,
+              "2024": 4,
+              "2025": 4,
+              "2026": 8
+            },
+            "by_year_source_public_at": {
+              "2008": 1,
+              "2009": 1,
+              "2010": 5,
+              "2012": 6,
+              "2013": 5,
+              "2014": 5,
+              "2015": 3,
+              "2016": 1,
+              "2020": 1,
+              "2024": 4,
+              "2025": 4,
+              "2026": 8
+            },
+            "candidate": 0,
+            "confirmed": 64,
+            "matched_records_sum_over_queries": 64,
+            "queries_are_mutually_exclusive_note": "a recall record has exactly one recalling_firm string, so the per-query sums cannot double count a record",
+            "query_count": 1
+          },
+          "firm_key": "mindray",
+          "firm_label": "Mindray",
+          "queries": [
+            {
+              "by_year_event_at": {
+                "2008": 1,
+                "2009": 4,
+                "2010": 3,
+                "2011": 2,
+                "2012": 7,
+                "2013": 1,
+                "2014": 5,
+                "2015": 4,
+                "2016": 4,
+                "2017": 5,
+                "2018": 3,
+                "2019": 6,
+                "2020": 1,
+                "2021": 2,
+                "2024": 4,
+                "2025": 4,
+                "2026": 8
+              },
+              "by_year_source_public_at": {
+                "2008": 1,
+                "2009": 1,
+                "2010": 5,
+                "2012": 6,
+                "2013": 5,
+                "2014": 5,
+                "2015": 3,
+                "2016": 1,
+                "2020": 1,
+                "2024": 4,
+                "2025": 4,
+                "2026": 8
+              },
+              "census": {
+                "bucket_cap_hit": false,
+                "buckets_returned": 4,
+                "buckets_sum": 64,
+                "candidate_total": 0,
+                "census_completeness": "complete within the matched set (every exact name bucket returned)",
+                "census_field": "recalling_firm",
+                "confirmed_total": 64,
+                "count_unit": "recall records (one record = one enforcement action)",
+                "counts_by_resolution": {
+                  "candidate": 0,
+                  "confirmed": 64,
+                  "none": 0,
+                  "other_firm": 0
+                },
+                "matches_total": 64,
+                "query": "recalling_firm:mindray",
+                "residual_not_returned_by_api": 0,
+                "top_confirmed_terms": [
+                  {
+                    "count": 39,
+                    "recalling_firm": "Mindray DS USA, Inc. dba Mindray North America"
+                  },
+                  {
+                    "count": 10,
+                    "recalling_firm": "Mindray DS USA, Inc. d.b.a. Mindray North America"
+                  },
+                  {
+                    "count": 8,
+                    "recalling_firm": "Mindray DS USA, Inc."
+                  },
+                  {
+                    "count": 7,
+                    "recalling_firm": "Mindray DS USA, Inc., dba Datascope Patient Monitoring"
+                  }
+                ],
+                "unauthenticated_bucket_cap": 100
+              },
+              "count_queries": [
+                {
+                  "buckets": 4,
+                  "field": "recalling_firm.exact",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3Amindray"
+                },
+                {
+                  "buckets": 42,
+                  "field": "event_date_initiated",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3Amindray"
+                },
+                {
+                  "buckets": 30,
+                  "field": "event_date_posted",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3Amindray"
+                }
+              ],
+              "matches_total": 64,
+              "no_matches": false,
+              "search": "recalling_firm:mindray"
+            }
+          ]
+        },
+        "philips": {
+          "aggregate": {
+            "by_year_event_at": {
+              "2002": 13,
+              "2003": 24,
+              "2004": 22,
+              "2005": 26,
+              "2006": 24,
+              "2007": 42,
+              "2008": 74,
+              "2009": 109,
+              "2010": 58,
+              "2011": 85,
+              "2012": 75,
+              "2013": 47,
+              "2014": 74,
+              "2015": 159,
+              "2016": 103,
+              "2017": 66,
+              "2018": 211,
+              "2019": 93,
+              "2020": 43,
+              "2021": 112,
+              "2022": 39,
+              "2023": 119,
+              "2024": 179,
+              "2025": 343,
+              "2026": 134
+            },
+            "by_year_source_public_at": {
+              "2002": 1,
+              "2003": 31,
+              "2004": 23,
+              "2005": 27,
+              "2006": 15,
+              "2007": 42,
+              "2008": 35,
+              "2009": 53,
+              "2010": 135,
+              "2011": 89,
+              "2012": 74,
+              "2013": 52,
+              "2014": 71,
+              "2015": 105,
+              "2016": 46,
+              "2017": 15,
+              "2018": 89,
+              "2019": 81,
+              "2020": 23,
+              "2021": 14,
+              "2022": 35,
+              "2023": 84,
+              "2024": 220,
+              "2025": 300,
+              "2026": 188
+            },
+            "candidate": 0,
+            "confirmed": 2274,
+            "matched_records_sum_over_queries": 2274,
+            "queries_are_mutually_exclusive_note": "a recall record has exactly one recalling_firm string, so the per-query sums cannot double count a record",
+            "query_count": 1
+          },
+          "firm_key": "philips",
+          "firm_label": "Philips",
+          "queries": [
+            {
+              "by_year_event_at": {
+                "2002": 13,
+                "2003": 24,
+                "2004": 22,
+                "2005": 26,
+                "2006": 24,
+                "2007": 42,
+                "2008": 74,
+                "2009": 109,
+                "2010": 58,
+                "2011": 85,
+                "2012": 75,
+                "2013": 47,
+                "2014": 74,
+                "2015": 159,
+                "2016": 103,
+                "2017": 66,
+                "2018": 211,
+                "2019": 93,
+                "2020": 43,
+                "2021": 112,
+                "2022": 39,
+                "2023": 119,
+                "2024": 179,
+                "2025": 343,
+                "2026": 134
+              },
+              "by_year_source_public_at": {
+                "2002": 1,
+                "2003": 31,
+                "2004": 23,
+                "2005": 27,
+                "2006": 15,
+                "2007": 42,
+                "2008": 35,
+                "2009": 53,
+                "2010": 135,
+                "2011": 89,
+                "2012": 74,
+                "2013": 52,
+                "2014": 71,
+                "2015": 105,
+                "2016": 46,
+                "2017": 15,
+                "2018": 89,
+                "2019": 81,
+                "2020": 23,
+                "2021": 14,
+                "2022": 35,
+                "2023": 84,
+                "2024": 220,
+                "2025": 300,
+                "2026": 188
+              },
+              "census": {
+                "bucket_cap_hit": false,
+                "buckets_returned": 40,
+                "buckets_sum": 2274,
+                "candidate_total": 0,
+                "census_completeness": "complete within the matched set (every exact name bucket returned)",
+                "census_field": "recalling_firm",
+                "confirmed_total": 2274,
+                "count_unit": "recall records (one record = one enforcement action)",
+                "counts_by_resolution": {
+                  "candidate": 0,
+                  "confirmed": 2274,
+                  "none": 0,
+                  "other_firm": 0
+                },
+                "matches_total": 2274,
+                "query": "recalling_firm:philips",
+                "residual_not_returned_by_api": 0,
+                "top_confirmed_terms": [
+                  {
+                    "count": 411,
+                    "recalling_firm": "Philips Medical Systems (Cleveland) Inc"
+                  },
+                  {
+                    "count": 324,
+                    "recalling_firm": "Philips North America Llc"
+                  },
+                  {
+                    "count": 210,
+                    "recalling_firm": "PHILIPS MEDICAL SYSTEMS NEDERLAND B.V."
+                  },
+                  {
+                    "count": 160,
+                    "recalling_firm": "Philips Electronics North America Corporation"
+                  },
+                  {
+                    "count": 149,
+                    "recalling_firm": "Philips Healthcare Inc."
+                  },
+                  {
+                    "count": 142,
+                    "recalling_firm": "Philips North America"
+                  },
+                  {
+                    "count": 131,
+                    "recalling_firm": "Philips Medical Systems North America Co.   Phillips"
+                  },
+                  {
+                    "count": 102,
+                    "recalling_firm": "Philips Medical Systems"
+                  },
+                  {
+                    "count": 101,
+                    "recalling_firm": "Philips Ultrasound, Inc"
+                  },
+                  {
+                    "count": 93,
+                    "recalling_firm": "Philips Respironics, Inc."
+                  }
+                ],
+                "unauthenticated_bucket_cap": 100
+              },
+              "count_queries": [
+                {
+                  "buckets": 40,
+                  "field": "recalling_firm.exact",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=recalling_firm.exact&search=recalling_firm%3Aphilips"
+                },
+                {
+                  "buckets": 743,
+                  "field": "event_date_initiated",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_initiated&search=recalling_firm%3Aphilips"
+                },
+                {
+                  "buckets": 560,
+                  "field": "event_date_posted",
+                  "status": 200,
+                  "url": "https://api.fda.gov/device/recall.json?count=event_date_posted&search=recalling_firm%3Aphilips"
+                }
+              ],
+              "matches_total": 2274,
+              "no_matches": false,
+              "search": "recalling_firm:philips"
+            }
+          ]
+        }
+      },
+      "interpretation": "A recall record documents one enforcement action, not the underlying failure rate of a device family. Recall publication lags the initiating event and FDA does not update the status after classification; a terminated status is not evidence that the product was safe. A recall count is also not a device reliability metric: FDA seeks publicity selectively and firms self-report corrective actions.",
+      "kind": "recall",
+      "record_sample": {
+        "attempted_requests": 1,
+        "limit": 100,
+        "query": "recalling_firm:medtronic",
+        "records": 100,
+        "resolution_counts": {
+          "candidate": 0,
+          "confirmed": 100
+        },
+        "sample_source_record_ids": [
+          "97591",
+          "209491",
+          "97818",
+          "209613",
+          "189291"
+        ]
+      },
+      "retrieval_mode": "server-side count aggregation: exact recalling_firm census for identity resolution plus daily event/posted date buckets for the annual series",
+      "source_name": "openFDA device recall",
+      "time_fields": {
+        "event_at": "event_date_initiated",
+        "source_public_at": "event_date_posted"
+      }
+    }
+  },
+  "total_requests": 43,
+  "workspace": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion"
+}

@@ -1,0 +1,690 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=2",
+    "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&stages=award",
+    "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&stages=tender",
+    "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&updatedFrom=2026-11-02T00%3A00%3A00&updatedTo=2026-11-09T00%3A00%3A00",
+    "https://www.find-tender.service.gov.uk/Search/Results?keywords=Medtronic"
+  ],
+  "notes": "UK Find a Tender serves anonymous OCDS 1.1 release packages. Releases are tagged/staged, so a tender release and its award release are separate objects with separate publication dates — exactly the layering needed. The feed has no keyword parameter; a company-targeted query only exists as the HTML search page, so firm-level retrieval cannot use the OCDS API alone.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 20052,
+      "elapsed_ms": 531,
+      "error": "",
+      "first_release_date": "2026-11-08T20:14:58Z",
+      "first_release_keys": [
+        "awards",
+        "bids",
+        "buyer",
+        "contracts",
+        "date",
+        "description",
+        "id",
+        "initiationType",
+        "language",
+        "ocid",
+        "parties",
+        "tag",
+        "tender"
+      ],
+      "first_release_tags": [
+        "award",
+        "contract"
+      ],
+      "has_awards": true,
+      "has_contracts": true,
+      "method": "GET",
+      "n_releases": 2,
+      "name": "release_packages_limit2",
+      "ok": true,
+      "package_version": "1.1",
+      "sample": {
+        "name": "release_packages_limit2.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_find_a_tender\\release_packages_limit2.json",
+        "sha256_full": "3a914f707eeb7bc50e1fab142a23ee4754f6eb468a6fdfa5053c45bb8514b5b2",
+        "sha256_stored": "3a914f707eeb7bc50e1fab142a23ee4754f6eb468a6fdfa5053c45bb8514b5b2",
+        "stored_bytes": 20052,
+        "total_bytes": 20052,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "extensions",
+          "license",
+          "links",
+          "publicationPolicy",
+          "publishedDate",
+          "publisher",
+          "releases",
+          "uri",
+          "version"
+        ],
+        "sample": {
+          "extensions": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 74
+            },
+            "len": 10
+          },
+          "license": {
+            "__type__": "string",
+            "max_len": 73
+          },
+          "links": {
+            "__type__": "object",
+            "keys": [
+              "next"
+            ],
+            "sample": {
+              "next": {
+                "__type__": "string",
+                "max_len": 176
+              }
+            }
+          },
+          "publicationPolicy": {
+            "__type__": "string",
+            "max_len": 59
+          },
+          "publishedDate": {
+            "__type__": "string",
+            "max_len": 20
+          },
+          "publisher": {
+            "__type__": "object",
+            "keys": [
+              "name",
+              "scheme",
+              "uid",
+              "uri"
+            ],
+            "sample": {
+              "name": {
+                "__type__": "string",
+                "max_len": 14
+              },
+              "scheme": {
+                "__type__": "string",
+                "max_len": 6
+              },
+              "uid": {
+                "__type__": "string",
+                "max_len": 2
+              },
+              "uri": {
+                "__type__": "string",
+                "max_len": 58
+              }
+            }
+          },
+          "releases": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "awards",
+                "bids",
+                "buyer",
+                "contracts",
+                "date",
+                "description",
+                "id",
+                "initiationType",
+                "language",
+                "ocid",
+                "parties",
+                "tag",
+                "tender"
+              ],
+              "sample": {
+                "awards": "list",
+                "bids": "dict",
+                "buyer": "dict",
+                "contracts": "list",
+                "date": "str",
+                "description": "str",
+                "id": "str",
+                "initiationType": "str",
+                "ocid": "str",
+                "parties": "list",
+                "tag": "list",
+                "tender": "dict"
+              }
+            },
+            "len": 2
+          },
+          "uri": {
+            "__type__": "string",
+            "max_len": 104
+          },
+          "version": {
+            "__type__": "string",
+            "max_len": 3
+          }
+        }
+      },
+      "url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=2"
+    },
+    {
+      "attempts": 1,
+      "bytes": 9708,
+      "elapsed_ms": 3796,
+      "error": "",
+      "first_release_date": "2026-11-08T20:14:58Z",
+      "first_release_keys": [
+        "awards",
+        "bids",
+        "buyer",
+        "contracts",
+        "date",
+        "description",
+        "id",
+        "initiationType",
+        "language",
+        "ocid",
+        "parties",
+        "tag",
+        "tender"
+      ],
+      "first_release_tags": [
+        "award",
+        "contract"
+      ],
+      "has_awards": true,
+      "has_contracts": true,
+      "method": "GET",
+      "n_releases": 1,
+      "name": "release_packages_stage_award",
+      "ok": true,
+      "package_version": "1.1",
+      "sample": {
+        "name": "release_packages_stage_award.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_find_a_tender\\release_packages_stage_award.json",
+        "sha256_full": "e880323677a6fb368e04216b28400ade2f115278e4a396ab7a6b92c31dcfa260",
+        "sha256_stored": "e880323677a6fb368e04216b28400ade2f115278e4a396ab7a6b92c31dcfa260",
+        "stored_bytes": 9708,
+        "total_bytes": 9708,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "extensions",
+          "license",
+          "links",
+          "publicationPolicy",
+          "publishedDate",
+          "publisher",
+          "releases",
+          "uri",
+          "version"
+        ],
+        "sample": {
+          "extensions": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 74
+            },
+            "len": 9
+          },
+          "license": {
+            "__type__": "string",
+            "max_len": 73
+          },
+          "links": {
+            "__type__": "object",
+            "keys": [
+              "next"
+            ],
+            "sample": {
+              "next": {
+                "__type__": "string",
+                "max_len": 189
+              }
+            }
+          },
+          "publicationPolicy": {
+            "__type__": "string",
+            "max_len": 59
+          },
+          "publishedDate": {
+            "__type__": "string",
+            "max_len": 20
+          },
+          "publisher": {
+            "__type__": "object",
+            "keys": [
+              "name",
+              "scheme",
+              "uid",
+              "uri"
+            ],
+            "sample": {
+              "name": {
+                "__type__": "string",
+                "max_len": 14
+              },
+              "scheme": {
+                "__type__": "string",
+                "max_len": 6
+              },
+              "uid": {
+                "__type__": "string",
+                "max_len": 2
+              },
+              "uri": {
+                "__type__": "string",
+                "max_len": 58
+              }
+            }
+          },
+          "releases": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "awards",
+                "bids",
+                "buyer",
+                "contracts",
+                "date",
+                "description",
+                "id",
+                "initiationType",
+                "language",
+                "ocid",
+                "parties",
+                "tag",
+                "tender"
+              ],
+              "sample": {
+                "awards": "list",
+                "bids": "dict",
+                "buyer": "dict",
+                "contracts": "list",
+                "date": "str",
+                "description": "str",
+                "id": "str",
+                "initiationType": "str",
+                "ocid": "str",
+                "parties": "list",
+                "tag": "list",
+                "tender": "dict"
+              }
+            },
+            "len": 1
+          },
+          "uri": {
+            "__type__": "string",
+            "max_len": 117
+          },
+          "version": {
+            "__type__": "string",
+            "max_len": 3
+          }
+        }
+      },
+      "url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&stages=award"
+    },
+    {
+      "attempts": 1,
+      "bytes": 9979,
+      "elapsed_ms": 2108,
+      "error": "",
+      "first_release_date": "2026-11-06T15:17:51Z",
+      "first_release_keys": [
+        "buyer",
+        "date",
+        "id",
+        "initiationType",
+        "language",
+        "ocid",
+        "parties",
+        "tag",
+        "tender"
+      ],
+      "first_release_tags": [
+        "tender"
+      ],
+      "has_awards": false,
+      "has_contracts": false,
+      "method": "GET",
+      "n_releases": 1,
+      "name": "release_packages_stage_tender",
+      "ok": true,
+      "package_version": "1.1",
+      "sample": {
+        "name": "release_packages_stage_tender.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_find_a_tender\\release_packages_stage_tender.json",
+        "sha256_full": "1de6189a9f6360355f5ff562600387a4b533b0e1980ae5832779ba51b44b4bce",
+        "sha256_stored": "1de6189a9f6360355f5ff562600387a4b533b0e1980ae5832779ba51b44b4bce",
+        "stored_bytes": 9979,
+        "total_bytes": 9979,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "extensions",
+          "license",
+          "links",
+          "publicationPolicy",
+          "publishedDate",
+          "publisher",
+          "releases",
+          "uri",
+          "version"
+        ],
+        "sample": {
+          "extensions": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 74
+            },
+            "len": 9
+          },
+          "license": {
+            "__type__": "string",
+            "max_len": 73
+          },
+          "links": {
+            "__type__": "object",
+            "keys": [
+              "next"
+            ],
+            "sample": {
+              "next": {
+                "__type__": "string",
+                "max_len": 190
+              }
+            }
+          },
+          "publicationPolicy": {
+            "__type__": "string",
+            "max_len": 59
+          },
+          "publishedDate": {
+            "__type__": "string",
+            "max_len": 20
+          },
+          "publisher": {
+            "__type__": "object",
+            "keys": [
+              "name",
+              "scheme",
+              "uid",
+              "uri"
+            ],
+            "sample": {
+              "name": {
+                "__type__": "string",
+                "max_len": 14
+              },
+              "scheme": {
+                "__type__": "string",
+                "max_len": 6
+              },
+              "uid": {
+                "__type__": "string",
+                "max_len": 2
+              },
+              "uri": {
+                "__type__": "string",
+                "max_len": 58
+              }
+            }
+          },
+          "releases": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "buyer",
+                "date",
+                "id",
+                "initiationType",
+                "language",
+                "ocid",
+                "parties",
+                "tag",
+                "tender"
+              ],
+              "sample": {
+                "buyer": "dict",
+                "date": "str",
+                "id": "str",
+                "initiationType": "str",
+                "language": "str",
+                "ocid": "str",
+                "parties": "list",
+                "tag": "list",
+                "tender": "dict"
+              }
+            },
+            "len": 1
+          },
+          "uri": {
+            "__type__": "string",
+            "max_len": 118
+          },
+          "version": {
+            "__type__": "string",
+            "max_len": 3
+          }
+        }
+      },
+      "url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&stages=tender"
+    },
+    {
+      "attempts": 1,
+      "bytes": 9790,
+      "elapsed_ms": 765,
+      "error": "",
+      "first_release_date": "2026-11-08T20:14:58Z",
+      "first_release_keys": [
+        "awards",
+        "bids",
+        "buyer",
+        "contracts",
+        "date",
+        "description",
+        "id",
+        "initiationType",
+        "language",
+        "ocid",
+        "parties",
+        "tag",
+        "tender"
+      ],
+      "first_release_tags": [
+        "award",
+        "contract"
+      ],
+      "has_awards": true,
+      "has_contracts": true,
+      "method": "GET",
+      "n_releases": 1,
+      "name": "release_packages_date_window",
+      "ok": true,
+      "package_version": "1.1",
+      "sample": {
+        "name": "release_packages_date_window.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_find_a_tender\\release_packages_date_window.json",
+        "sha256_full": "ece7c0ddf281779b1177860faae84272eb307d237b2b31d1fd25561de048abdb",
+        "sha256_stored": "ece7c0ddf281779b1177860faae84272eb307d237b2b31d1fd25561de048abdb",
+        "stored_bytes": 9790,
+        "total_bytes": 9790,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "extensions",
+          "license",
+          "links",
+          "publicationPolicy",
+          "publishedDate",
+          "publisher",
+          "releases",
+          "uri",
+          "version"
+        ],
+        "sample": {
+          "extensions": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 74
+            },
+            "len": 9
+          },
+          "license": {
+            "__type__": "string",
+            "max_len": 73
+          },
+          "links": {
+            "__type__": "object",
+            "keys": [
+              "next"
+            ],
+            "sample": {
+              "next": {
+                "__type__": "string",
+                "max_len": 252
+              }
+            }
+          },
+          "publicationPolicy": {
+            "__type__": "string",
+            "max_len": 59
+          },
+          "publishedDate": {
+            "__type__": "string",
+            "max_len": 20
+          },
+          "publisher": {
+            "__type__": "object",
+            "keys": [
+              "name",
+              "scheme",
+              "uid",
+              "uri"
+            ],
+            "sample": {
+              "name": {
+                "__type__": "string",
+                "max_len": 14
+              },
+              "scheme": {
+                "__type__": "string",
+                "max_len": 6
+              },
+              "uid": {
+                "__type__": "string",
+                "max_len": 2
+              },
+              "uri": {
+                "__type__": "string",
+                "max_len": 58
+              }
+            }
+          },
+          "releases": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "awards",
+                "bids",
+                "buyer",
+                "contracts",
+                "date",
+                "description",
+                "id",
+                "initiationType",
+                "language",
+                "ocid",
+                "parties",
+                "tag",
+                "tender"
+              ],
+              "sample": {
+                "awards": "list",
+                "bids": "dict",
+                "buyer": "dict",
+                "contracts": "list",
+                "date": "str",
+                "description": "str",
+                "id": "str",
+                "initiationType": "str",
+                "ocid": "str",
+                "parties": "list",
+                "tag": "list",
+                "tender": "dict"
+              }
+            },
+            "len": 1
+          },
+          "uri": {
+            "__type__": "string",
+            "max_len": 136
+          },
+          "version": {
+            "__type__": "string",
+            "max_len": 3
+          }
+        }
+      },
+      "url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&updatedFrom=2026-11-02T00%3A00%3A00&updatedTo=2026-11-09T00%3A00%3A00",
+      "window": [
+        "2026-11-02",
+        "2026-11-09"
+      ]
+    },
+    {
+      "attempts": 1,
+      "body_head": "{\n    \"timestamp\": \"2026-11-08T21:45:01Z\",\n    \"status\": 400,\n    \"error\": \"Bad Request\",\n    \"message\": \"Request parameters unknown\",\n    \"path\": \"/api/1.0/ocdsReleasePackages\",\n    \"exception\": \"Req",
+      "bytes": 317,
+      "elapsed_ms": 656,
+      "error": "HTTP 400 Bad Request",
+      "method": "GET",
+      "name": "release_packages_keyword_param_rejected_or_ignored",
+      "ok": false,
+      "sample": null,
+      "status": 400,
+      "structure": null,
+      "url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&keywords=Medtronic"
+    },
+    {
+      "attempts": 1,
+      "bytes": 173202,
+      "elapsed_ms": 891,
+      "error": "",
+      "method": "GET",
+      "name": "html_keyword_search_medtronic",
+      "ok": true,
+      "sample": null,
+      "status": 200,
+      "structure": null,
+      "target_url": "https://www.find-tender.service.gov.uk/Search/Results?keywords=Medtronic",
+      "url": "https://www.find-tender.service.gov.uk/Search/Results?keywords=Medtronic"
+    }
+  ],
+  "requests": 6,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "uk_find_a_tender",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:45:01.966393Z"
+}

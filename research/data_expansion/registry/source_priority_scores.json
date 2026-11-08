@@ -1,0 +1,1943 @@
+{
+  "n_sources_scored": 59,
+  "problems": [],
+  "rows": [
+    {
+      "category": "ADOPT NOW",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "INCREMENTAL",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none (optional premium key; polite pool '",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: pre-regulatory research activity by construction, with datable publication clocks",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage reaches 1900",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "OVERRIDE: publication_date is usable, but created_date is an ingestion clock that often post-dates publication by years; the source does not label the distinction, so the user must",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 3,
+        "entity_linkage": 3,
+        "historical_coverage": 4,
+        "licence_and_cost": 4,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 3,
+        "update_stability": 4
+      },
+      "score": 83.5,
+      "source_id": "openalex"
+    },
+    {
+      "category": "ADOPT NOW",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "INCREMENTAL",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none; polite pool via mailto= or agent h'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: pre-regulatory research activity by construction, with datable publication clocks",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage reaches 1970",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "OVERRIDE: published/issued vs deposited are separable but the field semantics vary by publisher",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 3,
+        "entity_linkage": 3,
+        "historical_coverage": 4,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 3,
+        "update_stability": 4
+      },
+      "score": 81.0,
+      "source_id": "crossref"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [
+        "EXP-A not INCREMENTAL (missing) -> cannot ADOPT NOW"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none observed for /api/v3/devices/lookup'",
+        "complementarity": "OVERRIDE: GUDID is the upstream UDI authority; openFDA /device/udi is a mirror of it, so this is the primary identity anchor for products rather than a duplicate",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "OVERRIDE: manufacturer DUNS + structured manufacturer name are authoritative",
+        "historical_coverage": "rule: coverage only from 2026",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "OVERRIDE: DI is a globally unique device identifier and is the join key to any other UDI-based registry",
+        "time_credibility": "rule: baseline 2; publication-date field documented",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 4,
+        "early_evidence_potential": 1,
+        "entity_linkage": 4,
+        "historical_coverage": 1,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 4,
+        "time_credibility": 3,
+        "update_stability": 4
+      },
+      "score": 80.75,
+      "source_id": "accessgudid"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [
+        "EXP-A not INCREMENTAL (missing) -> cannot ADOPT NOW"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none (anonymous calls work); optional fr'",
+        "complementarity": "OVERRIDE: already collected by medradar/collect_device.py on main; adds no new upstream authority",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage reaches 1976",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; event-date field documented",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 1,
+        "early_evidence_potential": 1,
+        "entity_linkage": 3,
+        "historical_coverage": 3,
+        "licence_and_cost": 4,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 3,
+        "update_stability": 4
+      },
+      "score": 77.0,
+      "source_id": "openfda_device_510k"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [
+        "EXP-A not INCREMENTAL (missing) -> cannot ADOPT NOW"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none - anonymous GET'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "OVERRIDE: supplier name plus an OCDS organisation identifier (GB-FTS-...) is the only procurement source here that gives both",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "OVERRIDE: CPV codes are categories, not products; no device identifier exists in the data",
+        "time_credibility": "OVERRIDE: release.date (publication), contracts[0].dateSigned (signature) and awards[0].date (null in practice) are separate fields; the distinction is documented in the connector",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 2,
+        "entity_linkage": 4,
+        "historical_coverage": 1,
+        "licence_and_cost": 4,
+        "maintenance_cost": 4,
+        "product_linkage": 1,
+        "time_credibility": 4,
+        "update_stability": 4
+      },
+      "score": 76.5,
+      "source_id": "uk_find_a_tender"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_BULK_DOWNLOAD",
+      "downgrade_reasons": [
+        "EXP-A not INCREMENTAL (missing) -> cannot ADOPT NOW"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_BULK_DOWNLOAD with authentication='none; plain HTTP file download from acce'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage only from 2026",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; publication-date field documented",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 1,
+        "entity_linkage": 4,
+        "historical_coverage": 1,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 3,
+        "update_stability": 4
+      },
+      "score": 75.75,
+      "source_id": "fda_gudid_download"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [
+        "EXP-A not INCREMENTAL (missing) -> cannot ADOPT NOW"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: pre-regulatory research activity by construction, with datable publication clocks",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage reaches 2000",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 3,
+        "entity_linkage": 3,
+        "historical_coverage": 3,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 73.5,
+      "source_id": "openaire"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [
+        "EXP-A not INCREMENTAL (missing) -> cannot ADOPT NOW"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none (anonymous calls work); optional fr'",
+        "complementarity": "OVERRIDE: already collected on main",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage only from 2026",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; event-date field documented",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 1,
+        "early_evidence_potential": 1,
+        "entity_linkage": 3,
+        "historical_coverage": 1,
+        "licence_and_cost": 4,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 3,
+        "update_stability": 4
+      },
+      "score": 72.0,
+      "source_id": "openfda_device_pma"
+    },
+    {
+      "category": "ADOPT NOW",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "INCREMENTAL",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none'",
+        "complementarity": "OVERRIDE: already collected on main",
+        "early_evidence_potential": "rule: pre-regulatory research activity by construction, with datable publication clocks",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage reaches 1999",
+        "licence_and_cost": "rule: free to use, redistribution allowed but licence not clearly open",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; event-date field documented; register records an explicit publication-clock defect",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 1,
+        "early_evidence_potential": 3,
+        "entity_linkage": 3,
+        "historical_coverage": 3,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 71.0,
+      "source_id": "clinicaltrials_gov"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [
+        "EXP-A not INCREMENTAL (missing) -> cannot ADOPT NOW"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none in practice; an API key is optional'",
+        "complementarity": "OVERRIDE: MAUDE is NOT collected on main; it is a genuinely new post-market channel, but its counts are reporting behaviour, not incidence",
+        "early_evidence_potential": "OVERRIDE: structurally post-market: an adverse event cannot precede the clearance it follows",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage reaches 1992",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 0,
+        "entity_linkage": 3,
+        "historical_coverage": 3,
+        "licence_and_cost": 4,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 70.0,
+      "source_id": "openfda_device_maude"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none in practice; an API key is optional'",
+        "complementarity": "OVERRIDE: already collected on main",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage reaches 2002",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; event-date field documented; publication-date field documented",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 1,
+        "early_evidence_potential": 1,
+        "entity_linkage": 1,
+        "historical_coverage": 2,
+        "licence_and_cost": 4,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 4,
+        "update_stability": 1
+      },
+      "score": 68.25,
+      "source_id": "openfda_device_recall"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: pre-regulatory research activity by construction, with datable publication clocks",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage only from 2023",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; event-date field documented; publication-date field documented",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 3,
+        "entity_linkage": 3,
+        "historical_coverage": 1,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 0,
+        "time_credibility": 4,
+        "update_stability": 4
+      },
+      "score": 67.25,
+      "source_id": "eu_ctis"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "INCREMENTAL",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: pre-regulatory research activity by construction, with datable publication clocks",
+        "entity_linkage": "rule: no company-attributable field",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "OVERRIDE: firstPublicationDate plus firstIndexDate are both exposed, so the publication clock and the metadata clock are separable",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 3,
+        "entity_linkage": 0,
+        "historical_coverage": 1,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 4,
+        "update_stability": 4
+      },
+      "score": 67.25,
+      "source_id": "europepmc"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_INCREMENTAL",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: pre-regulatory research activity by construction, with datable publication clocks",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage reaches 1985",
+        "licence_and_cost": "rule: free to use, redistribution allowed but licence not clearly open",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; event-date field documented",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 3,
+        "entity_linkage": 4,
+        "historical_coverage": 3,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 0,
+        "time_credibility": 3,
+        "update_stability": 1
+      },
+      "score": 67.25,
+      "source_id": "nih_reporter"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none; optional free API key for a higher'",
+        "complementarity": "rule: already collected by main; only new fields would add value",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 1,
+        "early_evidence_potential": 1,
+        "entity_linkage": 3,
+        "historical_coverage": 1,
+        "licence_and_cost": 4,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 67.0,
+      "source_id": "openfda_device_classification"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none; optional free API key for a higher'",
+        "complementarity": "rule: already collected by main; only new fields would add value",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 1,
+        "early_evidence_potential": 1,
+        "entity_linkage": 3,
+        "historical_coverage": 1,
+        "licence_and_cost": 4,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 67.0,
+      "source_id": "openfda_device_registrationlisting"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none'",
+        "complementarity": "OVERRIDE: the only company-identifiable trade source that was verified without registration, so it is genuinely additive despite its thin fields",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "OVERRIDE: a named UK trader plus an HS code is the only verified company-identifiable trade channel; no value, quantity or partner",
+        "historical_coverage": "rule: coverage reaches 2013",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "OVERRIDE: CN8 commodity code, not a device identifier",
+        "time_credibility": "rule: baseline 2; publication-date field documented",
+        "update_stability": "rule: monthly update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 2,
+        "entity_linkage": 3,
+        "historical_coverage": 2,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 1,
+        "time_credibility": 3,
+        "update_stability": 3
+      },
+      "score": 66.5,
+      "source_id": "uk_hmrc_trade"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "INCREMENTAL",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none; optional free NCBI API key'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: pre-regulatory research activity by construction, with datable publication clocks",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage reaches 1946",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; register records an explicit publication-clock defect",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 3,
+        "entity_linkage": 1,
+        "historical_coverage": 4,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 1,
+        "update_stability": 4
+      },
+      "score": 63.5,
+      "source_id": "pubmed_eutils"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_PUBLIC_QUERY",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: public query page parsed, no stable machine interface",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: pre-regulatory research activity by construction, with datable publication clocks",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage only from 2020",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: HTML/undocumented endpoint, will break on redesign",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; event-date field documented",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 2,
+        "complementarity": 3,
+        "early_evidence_potential": 3,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 4,
+        "maintenance_cost": 1,
+        "product_linkage": 3,
+        "time_credibility": 3,
+        "update_stability": 4
+      },
+      "score": 62.5,
+      "source_id": "eu_cordis"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 1,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 4,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 62.0,
+      "source_id": "canada_mdall"
+    },
+    {
+      "category": "RESEARCH ONLY",
+      "connection_status": "NOT_TESTED",
+      "downgrade_reasons": [
+        "unverified access; treated as research-only until probed"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: NOT_TESTED — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; event-date field documented; publication-date field documented",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 3,
+        "historical_coverage": 1,
+        "licence_and_cost": 3,
+        "maintenance_cost": 2,
+        "product_linkage": 3,
+        "time_credibility": 4,
+        "update_stability": 1
+      },
+      "score": 58.75,
+      "source_id": "ocds_registry"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_INCREMENTAL",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none for a throttled shared pool; free A'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: pre-regulatory research activity by construction, with datable publication clocks",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage reaches 1990",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; register records an explicit publication-clock defect",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 3,
+        "entity_linkage": 1,
+        "historical_coverage": 3,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 1,
+        "update_stability": 1
+      },
+      "score": 57.25,
+      "source_id": "semantic_scholar"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_BULK_DOWNLOAD",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_BULK_DOWNLOAD with authentication='none for the manifest and for download.o'",
+        "complementarity": "rule: already collected by main; only new fields would add value",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: no company-attributable field",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; event-date field documented",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 1,
+        "early_evidence_potential": 1,
+        "entity_linkage": 0,
+        "historical_coverage": 1,
+        "licence_and_cost": 4,
+        "maintenance_cost": 4,
+        "product_linkage": 3,
+        "time_credibility": 3,
+        "update_stability": 1
+      },
+      "score": 57.0,
+      "source_id": "openfda_bulk_download"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "INCREMENTAL",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage reaches 2008",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "OVERRIDE: no device product identifier anywhere in the award records",
+        "time_credibility": "OVERRIDE: no public-visibility date exists at all: only action, signature and performance dates. The connector deliberately leaves source_public_at empty rather than substituting a performance date",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 2,
+        "entity_linkage": 3,
+        "historical_coverage": 2,
+        "licence_and_cost": 4,
+        "maintenance_cost": 4,
+        "product_linkage": 0,
+        "time_credibility": 1,
+        "update_stability": 4
+      },
+      "score": 56.5,
+      "source_id": "usaspending"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none for /public/v1/preview; subscriptio'",
+        "complementarity": "OVERRIDE: macro demand background; not a substitute for company-level trade data",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "OVERRIDE: country-level aggregates only: no company, no shipment",
+        "historical_coverage": "rule: coverage reaches 1962",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "OVERRIDE: HS chapter-level commodity codes, not device identifiers",
+        "time_credibility": "rule: baseline 2; publication-date field documented; register records an explicit publication-clock defect",
+        "update_stability": "rule: monthly update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 0,
+        "historical_coverage": 4,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 1,
+        "time_credibility": 2,
+        "update_stability": 3
+      },
+      "score": 54.0,
+      "source_id": "un_comtrade"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none observed for the search endpoint (P'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "OVERRIDE: winner-name / winner-partname return null even for 2024 medical-device award notices, so the award cannot be tied to a supplier",
+        "historical_coverage": "rule: coverage only from 2016",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "OVERRIDE: CPV category only",
+        "time_credibility": "rule: baseline 2",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 2,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 1,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 52.75,
+      "source_id": "eu_ted"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none'",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage reaches 1988",
+        "licence_and_cost": "rule: free to use, redistribution allowed but licence not clearly open",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2",
+        "update_stability": "rule: monthly update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 3,
+        "early_evidence_potential": 2,
+        "entity_linkage": 1,
+        "historical_coverage": 3,
+        "licence_and_cost": 3,
+        "maintenance_cost": 4,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 3
+      },
+      "score": 52.75,
+      "source_id": "eurostat_comext"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_PUBLIC_QUERY",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: public query page parsed, no stable machine interface",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: HTML/undocumented endpoint, will break on redesign",
+        "product_linkage": "rule: category/model-level only, not a device identifier",
+        "time_credibility": "rule: baseline 2",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 2,
+        "complementarity": 3,
+        "early_evidence_potential": 1,
+        "entity_linkage": 3,
+        "historical_coverage": 1,
+        "licence_and_cost": 4,
+        "maintenance_cost": 1,
+        "product_linkage": 1,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 52.25,
+      "source_id": "fda_device_shortages"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "REQUIRES_REGISTRATION",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: real access exists but requires an account/key",
+        "complementarity": "OVERRIDE: patents are entirely missing from main; if access were obtained this would be the single largest capability gap it fills",
+        "early_evidence_potential": "rule: theoretically earlier than regulatory action, no case evidence this round",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage reaches 1978",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 4,
+        "early_evidence_potential": 2,
+        "entity_linkage": 3,
+        "historical_coverage": 3,
+        "licence_and_cost": 3,
+        "maintenance_cost": 3,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 52.0,
+      "source_id": "epo_ops"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "REQUIRES_REGISTRATION",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: real access exists but requires an account/key",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage reaches 1992",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: monthly update"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 3,
+        "historical_coverage": 3,
+        "licence_and_cost": 4,
+        "maintenance_cost": 3,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 3
+      },
+      "score": 50.75,
+      "source_id": "us_census_trade"
+    },
+    {
+      "category": "PILOT",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none - the per-board jobs endpoint is pu'",
+        "complementarity": "OVERRIDE: no coverage of the target firms, so the practical increment for this project is zero",
+        "early_evidence_potential": "rule: theoretically earlier than regulatory action, no case evidence this round",
+        "entity_linkage": "OVERRIDE: the platform is verified, but none of the five target firms has a board; the entity linkage is only available for whatever org does have one",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; publication-date field documented",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 1,
+        "early_evidence_potential": 2,
+        "entity_linkage": 2,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 4,
+        "product_linkage": 0,
+        "time_credibility": 3,
+        "update_stability": 4
+      },
+      "score": 50.25,
+      "source_id": "greenhouse"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "REQUIRES_REGISTRATION",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: real access exists but requires an account/key",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: theoretically earlier than regulatory action, no case evidence this round",
+        "entity_linkage": "rule: no company-attributable field",
+        "historical_coverage": "rule: coverage reaches 2001",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 0,
+        "historical_coverage": 2,
+        "licence_and_cost": 4,
+        "maintenance_cost": 3,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 49.5,
+      "source_id": "uspto_open_data_portal"
+    },
+    {
+      "category": "RESEARCH ONLY",
+      "connection_status": "VERIFIED_PUBLIC_QUERY",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: public query page parsed, no stable machine interface",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: HTML/undocumented endpoint, will break on redesign",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 2,
+        "complementarity": 3,
+        "early_evidence_potential": 2,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 1,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 49.25,
+      "source_id": "china_ccgp"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "REQUIRES_REGISTRATION",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: real access exists but requires an account/key",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: theoretically earlier than regulatory action, no case evidence this round",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage reaches 1978",
+        "licence_and_cost": "rule: free but requires registration",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 3,
+        "historical_coverage": 3,
+        "licence_and_cost": 2,
+        "maintenance_cost": 3,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 47.0,
+      "source_id": "wipo_patentscope"
+    },
+    {
+      "category": "RESEARCH ONLY",
+      "connection_status": "VERIFIED_PUBLIC_QUERY",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: public query page parsed, no stable machine interface",
+        "complementarity": "rule: a different upstream authority or a channel main does not collect",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: HTML/undocumented endpoint, will break on redesign",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; publication-date field documented",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 2,
+        "complementarity": 3,
+        "early_evidence_potential": 1,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 4,
+        "maintenance_cost": 1,
+        "product_linkage": 0,
+        "time_credibility": 3,
+        "update_stability": 1
+      },
+      "score": 46.0,
+      "source_id": "fda_import_alerts"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "REQUIRES_REGISTRATION",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: real access exists but requires an account/key",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: theoretically earlier than regulatory action, no case evidence this round",
+        "entity_linkage": "rule: no company-attributable field",
+        "historical_coverage": "rule: coverage reaches 2001",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 0,
+        "historical_coverage": 2,
+        "licence_and_cost": 4,
+        "maintenance_cost": 3,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 45.75,
+      "source_id": "uspto_patent_bulk"
+    },
+    {
+      "category": "RESEARCH ONLY",
+      "connection_status": "VERIFIED_API",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: VERIFIED_API with authentication='none - the postings endpoint is public p'",
+        "complementarity": "OVERRIDE: no coverage of the target firms",
+        "early_evidence_potential": "rule: theoretically earlier than regulatory action, no case evidence this round",
+        "entity_linkage": "OVERRIDE: platform verified against control boards; none of the five target firms is present",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: stable machine interface",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 4,
+        "complementarity": 1,
+        "early_evidence_potential": 2,
+        "entity_linkage": 2,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 4,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 45.25,
+      "source_id": "lever"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "UNAVAILABLE",
+      "downgrade_reasons": [
+        "no working access could be found"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: UNAVAILABLE — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: pre-regulatory research activity by construction, with datable publication clocks",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage reaches 1983",
+        "licence_and_cost": "rule: free to use, redistribution allowed but licence not clearly open",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 3,
+        "entity_linkage": 3,
+        "historical_coverage": 3,
+        "licence_and_cost": 3,
+        "maintenance_cost": 2,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 43.25,
+      "source_id": "sbir_gov"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "BLOCKED_BY_POLICY",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: BLOCKED_BY_POLICY — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 1,
+        "entity_linkage": 3,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 2,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 43.0,
+      "source_id": "china_nmpa_device"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "UNAVAILABLE",
+      "downgrade_reasons": [
+        "no working access could be found"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: UNAVAILABLE — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: theoretically earlier than regulatory action, no case evidence this round",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 2,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 40.0,
+      "source_id": "company_careers_pages"
+    },
+    {
+      "category": "REJECT",
+      "connection_status": "PAID_ONLY",
+      "downgrade_reasons": [
+        "paid and low value"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: only commercial access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: theoretically earlier than regulatory action, no case evidence this round",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: paid, public price list (rubric band 1)",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 3,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 3,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 39.5,
+      "source_id": "lens_org"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "REQUIRES_REGISTRATION",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: real access exists but requires an account/key",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: no company-attributable field",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: free but requires registration",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 2,
+        "early_evidence_potential": 1,
+        "entity_linkage": 0,
+        "historical_coverage": 1,
+        "licence_and_cost": 2,
+        "maintenance_cost": 3,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 37.5,
+      "source_id": "eudamed"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "UNAVAILABLE",
+      "downgrade_reasons": [
+        "no working access could be found"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: UNAVAILABLE — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: pre-regulatory research activity by construction, with datable publication clocks",
+        "entity_linkage": "rule: no company-attributable field",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 3,
+        "entity_linkage": 0,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 2,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 37.0,
+      "source_id": "who_ictrp"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "UNAVAILABLE",
+      "downgrade_reasons": [
+        "no working access could be found"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: UNAVAILABLE — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: free to use, redistribution allowed but licence not clearly open",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 1,
+        "entity_linkage": 3,
+        "historical_coverage": 1,
+        "licence_and_cost": 3,
+        "maintenance_cost": 2,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 36.75,
+      "source_id": "uk_mhra_device"
+    },
+    {
+      "category": "REJECT",
+      "connection_status": "PAID_ONLY",
+      "downgrade_reasons": [
+        "paid and low value"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: only commercial access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: paid, public price list (rubric band 1)",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: category/model-level only, not a device identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 3,
+        "product_linkage": 1,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 35.75,
+      "source_id": "importgenius"
+    },
+    {
+      "category": "REJECT",
+      "connection_status": "PAID_ONLY",
+      "downgrade_reasons": [
+        "paid and low value"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: only commercial access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: paid, public price list (rubric band 1)",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: category/model-level only, not a device identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 3,
+        "product_linkage": 1,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 35.75,
+      "source_id": "panjiva"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "REQUIRES_REGISTRATION",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: real access exists but requires an account/key",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: open licence and redistribution allowed",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 4,
+        "maintenance_cost": 3,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 35.75,
+      "source_id": "sam_gov"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "UNAVAILABLE",
+      "downgrade_reasons": [
+        "no working access could be found"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: UNAVAILABLE — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 1,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 2,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 35.5,
+      "source_id": "china_nmpa_udi"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "UNAVAILABLE",
+      "downgrade_reasons": [
+        "no working access could be found"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: UNAVAILABLE — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: monthly update"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 3,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 2,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 3
+      },
+      "score": 35.0,
+      "source_id": "china_customs_stats"
+    },
+    {
+      "category": "REJECT",
+      "connection_status": "PAID_ONLY",
+      "downgrade_reasons": [
+        "paid and low value"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: only commercial access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: paid, price not public / institutional quote (rubric band 0)",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: category/model-level only, not a device identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 0,
+        "maintenance_cost": 3,
+        "product_linkage": 1,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 33.25,
+      "source_id": "descartes_datamyne"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "UNAVAILABLE",
+      "downgrade_reasons": [
+        "no working access could be found"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: UNAVAILABLE — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: monthly update"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 3,
+        "maintenance_cost": 2,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 3
+      },
+      "score": 32.5,
+      "source_id": "usitc_dataweb"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "UNAVAILABLE",
+      "downgrade_reasons": [
+        "no working access could be found"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: UNAVAILABLE — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: structured company identifier/field documented",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 1,
+        "entity_linkage": 3,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 2,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 31.75,
+      "source_id": "australia_tga_artg"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "UNAVAILABLE",
+      "downgrade_reasons": [
+        "no working access could be found"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: UNAVAILABLE — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: no company-attributable field",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: an authoritative product/document identifier is documented",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 1,
+        "entity_linkage": 0,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 2,
+        "product_linkage": 3,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 31.75,
+      "source_id": "japan_pmda"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "REQUIRES_REGISTRATION",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: real access exists but requires an account/key",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: theoretically earlier than regulatory action, no case evidence this round",
+        "entity_linkage": "rule: no company-attributable field",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: free to use, partial redistribution",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; publication-date field documented; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 0,
+        "historical_coverage": 1,
+        "licence_and_cost": 3,
+        "maintenance_cost": 3,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 29.5,
+      "source_id": "google_patents_bigquery"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "BLOCKED_BY_POLICY",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: BLOCKED_BY_POLICY — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: procurement/trade activity can precede approval but the link to a technology is weak",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: category/model-level only, not a device identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 2,
+        "product_linkage": 1,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 28.75,
+      "source_id": "importyeti"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "UNAVAILABLE",
+      "downgrade_reasons": [
+        "no working access could be found"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: UNAVAILABLE — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: theoretically earlier than regulatory action, no case evidence this round",
+        "entity_linkage": "rule: company appears only as free text",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: daily/continuous update"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 1,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 2,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 4
+      },
+      "score": 28.75,
+      "source_id": "workday_phenom"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "REQUIRES_REGISTRATION",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: real access exists but requires an account/key",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: no company-attributable field",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: free but requires registration",
+        "maintenance_cost": "rule: credential/contract maintenance only",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 1,
+        "complementarity": 2,
+        "early_evidence_potential": 1,
+        "entity_linkage": 0,
+        "historical_coverage": 1,
+        "licence_and_cost": 2,
+        "maintenance_cost": 3,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 26.25,
+      "source_id": "brazil_anvisa"
+    },
+    {
+      "category": "BLOCKED",
+      "connection_status": "UNAVAILABLE",
+      "downgrade_reasons": [
+        "no working access could be found"
+      ],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: UNAVAILABLE — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: theoretically earlier than regulatory action, no case evidence this round",
+        "entity_linkage": "rule: no company-attributable field",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2; capped at 2 because the source could not be exercised",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 2,
+        "entity_linkage": 0,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 2,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 21.25,
+      "source_id": "patentsview"
+    },
+    {
+      "category": "REJECT",
+      "connection_status": "NOT_TESTED",
+      "downgrade_reasons": [],
+      "exp_a": "NOT_RUN",
+      "justification": {
+        "accessibility": "rule: NOT_TESTED — no working programmatic access",
+        "complementarity": "rule: cannot be assessed as additive until it is exercised",
+        "early_evidence_potential": "rule: regulatory-domain source; publication follows the event",
+        "entity_linkage": "rule: no company-attributable field",
+        "historical_coverage": "rule: coverage not quantified",
+        "licence_and_cost": "rule: licence/redistribution UNKNOWN — treated as restrictive",
+        "maintenance_cost": "rule: not exercised, cost unknown",
+        "product_linkage": "rule: no product-level identifier",
+        "time_credibility": "rule: baseline 2",
+        "update_stability": "rule: update cadence not documented"
+      },
+      "ratings": {
+        "accessibility": 0,
+        "complementarity": 2,
+        "early_evidence_potential": 1,
+        "entity_linkage": 0,
+        "historical_coverage": 1,
+        "licence_and_cost": 1,
+        "maintenance_cost": 2,
+        "product_linkage": 0,
+        "time_credibility": 2,
+        "update_stability": 1
+      },
+      "score": 20.5,
+      "source_id": "korea_mfds"
+    }
+  ],
+  "rubric_frozen_at": "2026-11-09T05:40:00Z",
+  "schema": "medradar.external.priority_scores.v1",
+  "weight_sum": 1.0
+}

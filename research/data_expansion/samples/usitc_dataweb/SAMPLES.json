@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-11-08T21:59:10.212194Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 1,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 1,
+      "source_id": "usitc_dataweb",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "dataweb_app.html",
+      "hash_verified": true,
+      "name": "dataweb_app.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usitc_dataweb\\dataweb_app.html",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://dataweb.usitc.gov/",
+      "sha256_full": "eea274df7a907d8f8cb0a5c649c920bd37bd47016a32487a5c7b3ac1eec1c085",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "eea274df7a907d8f8cb0a5c649c920bd37bd47016a32487a5c7b3ac1eec1c085",
+      "source": "recovered_from_disk",
+      "stored_bytes": 9514,
+      "total_bytes": 9514,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "usitc_dataweb"
+}

@@ -15,10 +15,14 @@
 
 Europe PMC REST returned 200 JSON with `resultList.result` and `hitCount`. `resultType=core` supplies `firstPublicationDate`, `firstIndexDate`, DOI/PMID/PMCID, `authorList[].affiliation`, `grantsList` and `dbCrossReferenceList` - enough for DOI-based cross-source de-duplication, author-affiliation company matching and grant-number linking.  `firstIndexDate` is an ingestion clock, not publication.
 
-## Documentation checked
+## Documentation references
 
 - https://europepmc.org/RestfulWebService
 - https://europepmc.org/help
+
+These are the reference pages recorded in the source register. Only the request
+URLs in the table above were exercised by this probe; a documentation URL is a
+citation, not a claim that the page was fetched during the probe.
 
 ## Reported status rationale
 

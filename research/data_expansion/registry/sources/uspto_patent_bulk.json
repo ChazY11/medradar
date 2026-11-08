@@ -1,0 +1,47 @@
+{
+  "api_available": "NO",
+  "authentication": "historically none; the surviving ODP dataset-product path requires X-API-KEY",
+  "bulk_download_available": "PARTIAL",
+  "category": "patent",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Free of charge when reachable; the real cost is storage/bandwidth (multi-TB) and engineering time, not licence fees.",
+  "country_or_region": "US",
+  "domain": "B",
+  "entity_identifiers": [
+    "patent number",
+    "application number",
+    "assignee name (raw)",
+    "inventor name (raw)",
+    "IPC/CPC inside the XML"
+  ],
+  "evidence_urls": [
+    "https://data.uspto.gov/bulkdata",
+    "https://api.uspto.gov/api/v1/datasets/products/applications"
+  ],
+  "free_tier": "public domain and free where reachable; currently key-gated through ODP",
+  "historical_coverage": "grant full text 2001+; pre-grant publications 2001+ (per USPTO documentation)",
+  "known_limitations": [
+    "PROBED 2026-11-09: https://bulkdata.uspto.gov/ does NOT resolve (getaddrinfo failed; the domain returns only an SOA record, and 8.8.8.8 agrees). The long-standing anonymous file tree is retired in this environment.",
+    "https://data.uspto.gov/bulkdata returns the ODP SPA shell (HTTP 200, no file listing); the ODP dataset-product API answers 401 (and 403 on the collection endpoint) without X-API-KEY.",
+    "ZERO bytes of bulk data were downloaded in this round; the honest status is 'no verified anonymous bulk channel', not 'verified bulk download'.",
+    "Historical file sizes are the real blocker even when reachable: one weekly grant ZIP is roughly 100-600 MB and the full back catalogue is multi-TB, so a full ingest is a streaming/bandwidth project rather than an API call.",
+    "The same invention appears twice in the corpus (pre-grant publication and grant), so de-duplication must use publication/family numbers, not titles.",
+    "There is no query interface: filtering by assignee means downloading and streaming XML locally."
+  ],
+  "licence": "US government work, public domain (17 U.S.C. 105)",
+  "official_or_commercial": "official",
+  "official_url": "https://bulkdata.uspto.gov/",
+  "probe_priority": "P1",
+  "rate_limits": "no request-rate concept for files; ODP API rate limits apply to its dataset endpoints",
+  "redistribution_allowed": "YES",
+  "research_value": "Only worth pursuing if patent full text (abstract/claims/description) is required for many tens of thousands of documents, because there is no query layer and the volume is multi-TB. For assignee/date/title-level linkage the keyed ODP API is cheaper and sufficient; this source is therefore a P1 fallback, not a primary channel.",
+  "source_id": "uspto_patent_bulk",
+  "source_name": "USPTO patent full-text bulk data",
+  "timestamp_fields": [
+    "date-publ in the grant/application XML = publication date -> source_public_at",
+    "date-filing = filing date -> event_at only",
+    "priority claims -> event_at only"
+  ],
+  "update_frequency": "weekly (when the file tree is reachable)",
+  "verified_at": "2026-11-09"
+}

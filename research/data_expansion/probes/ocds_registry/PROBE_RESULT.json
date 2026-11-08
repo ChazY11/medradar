@@ -1,0 +1,67 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://standard.open-contracting.org/latest/en/",
+    "https://standard.open-contracting.org/latest/en/schema/release_package/"
+  ],
+  "notes": "OCDS is a data standard plus a publisher registry, not a record publisher: the official site documents the release/record model and lists publishers, and has no homogeneous record API of its own. Status is NOT_TESTED on purpose - calling a documentation site 'verified' would be a category error. Actual OCDS records were verified through a real publisher instead (uk_find_a_tender, OCDS 1.1).",
+  "probes": [
+    {
+      "bytes": 19862,
+      "content_type": "text/html",
+      "elapsed_ms": 344,
+      "error": "",
+      "html_title": "<title>Open Contracting Data Standard &mdash; OCDS v1.1.5",
+      "name": "standard_overview",
+      "ok": true,
+      "sample": {
+        "name": "standard_overview.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\ocds_registry\\standard_overview.html",
+        "sha256_full": "0e63d0c00fb844a97c590833bd732318f6092c0de357c8d4550aacbeaa0e411c",
+        "sha256_stored": "0e63d0c00fb844a97c590833bd732318f6092c0de357c8d4550aacbeaa0e411c",
+        "stored_bytes": 19862,
+        "total_bytes": 19862,
+        "truncated": false
+      },
+      "status": 200,
+      "url": "https://standard.open-contracting.org/latest/en/"
+    },
+    {
+      "bytes": 18283,
+      "content_type": "text/html",
+      "elapsed_ms": 233,
+      "error": "",
+      "html_title": "<title>Release Package Schema &mdash; OCDS v1.1.5",
+      "name": "release_package_schema",
+      "ok": true,
+      "sample": {
+        "name": "release_package_schema.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\ocds_registry\\release_package_schema.html",
+        "sha256_full": "6a8e9480794242c5c9541e6d54d1f8b665fbb54da7efc320b12912ad8f6309d1",
+        "sha256_stored": "6a8e9480794242c5c9541e6d54d1f8b665fbb54da7efc320b12912ad8f6309d1",
+        "stored_bytes": 18283,
+        "total_bytes": 18283,
+        "truncated": false
+      },
+      "status": 200,
+      "url": "https://standard.open-contracting.org/latest/en/schema/release_package/"
+    },
+    {
+      "bytes": 5153,
+      "content_type": "text/html",
+      "elapsed_ms": 3936,
+      "error": "HTTP 404 Not Found",
+      "html_title": "",
+      "name": "record_model",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "url": "https://standard.open-contracting.org/latest/en/101/"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "ocds_registry",
+  "status": "NOT_TESTED",
+  "verified_at": "2026-11-08T21:47:57.474641Z"
+}

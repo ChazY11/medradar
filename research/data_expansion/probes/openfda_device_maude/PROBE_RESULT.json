@@ -1,0 +1,284 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://open.fda.gov/apis/device/event/",
+    "https://open.fda.gov/apis/authentication/",
+    "https://open.fda.gov/license/",
+    "https://www.fda.gov/medical-devices/medical-device-databases/maude-manufacturer-and-user-facility-device-experience-database"
+  ],
+  "notes": "5/5 checks ok; MAUDE reports returned; nested device.manufacturer_d_name is required (bare name -> 404); Medtronic family meta.total=3360860; date_received buckets=9619 summing to 3360860. Passive-surveillance caveat recorded.",
+  "probes": [
+    {
+      "bytes": 12984,
+      "elapsed_ms": 4030,
+      "error": "",
+      "name": "smoke_limit2",
+      "ok": true,
+      "record_keys": [
+        "adverse_event_flag",
+        "date_added",
+        "date_changed",
+        "date_facility_aware",
+        "date_of_event",
+        "date_received",
+        "date_report",
+        "date_report_to_fda",
+        "device",
+        "distributor_address_1",
+        "distributor_address_2",
+        "distributor_city",
+        "distributor_name",
+        "distributor_state",
+        "distributor_zip_code",
+        "distributor_zip_code_ext",
+        "event_key",
+        "event_location",
+        "event_type",
+        "exemption_number",
+        "health_professional",
+        "initial_report_to_fda",
+        "manufacturer_address_1",
+        "manufacturer_address_2",
+        "manufacturer_city",
+        "manufacturer_contact_address_1",
+        "manufacturer_contact_address_2",
+        "manufacturer_contact_area_code",
+        "manufacturer_contact_city",
+        "manufacturer_contact_country",
+        "manufacturer_contact_exchange",
+        "manufacturer_contact_extension",
+        "manufacturer_contact_f_name",
+        "manufacturer_contact_l_name",
+        "manufacturer_contact_pcity",
+        "manufacturer_contact_pcountry",
+        "manufacturer_contact_phone_number",
+        "manufacturer_contact_plocal",
+        "manufacturer_contact_postal_code",
+        "manufacturer_contact_state",
+        "manufacturer_contact_t_name",
+        "manufacturer_contact_zip_code",
+        "manufacturer_contact_zip_ext",
+        "manufacturer_country",
+        "manufacturer_g1_address_1",
+        "manufacturer_g1_address_2",
+        "manufacturer_g1_city",
+        "manufacturer_g1_country",
+        "manufacturer_g1_name",
+        "manufacturer_g1_postal_code",
+        "manufacturer_g1_state",
+        "manufacturer_g1_zip_code",
+        "manufacturer_g1_zip_code_ext",
+        "manufacturer_link_flag",
+        "manufacturer_name",
+        "manufacturer_postal_code",
+        "manufacturer_state",
+        "manufacturer_zip_code",
+        "manufacturer_zip_code_ext",
+        "mdr_report_key",
+        "mdr_text",
+        "mfr_report_type",
+        "noe_summarized",
+        "number_devices_in_event",
+        "number_patients_in_event",
+        "patient",
+        "pma_pmn_number",
+        "previous_use_code",
+        "product_problem_flag",
+        "remedial_action",
+        "removal_correction_number",
+        "report_date",
+        "report_number",
+        "report_source_code",
+        "report_to_fda",
+        "report_to_manufacturer",
+        "reporter_country_code",
+        "reporter_occupation_code",
+        "reporter_state_code",
+        "reprocessed_and_reused_flag",
+        "single_use_flag",
+        "source_type",
+        "summary_report_flag",
+        "suppl_dates_fda_received",
+        "suppl_dates_mfr_received",
+        "type_of_report"
+      ],
+      "sample": {
+        "name": "smoke_limit2.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_maude\\smoke_limit2.json",
+        "sha256_full": "063a7632dc202aa4e54c43dc66e24d7bc37ff7cb339fce35d6d729dbc063b8ee",
+        "sha256_stored": "063a7632dc202aa4e54c43dc66e24d7bc37ff7cb339fce35d6d729dbc063b8ee",
+        "stored_bytes": 12984,
+        "total_bytes": 12984,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "adverse_event_flag",
+                "date_added",
+                "date_changed",
+                "date_facility_aware",
+                "date_of_event",
+                "date_received",
+                "date_report",
+                "date_report_to_fda",
+                "device",
+                "distributor_address_1",
+                "distributor_address_2",
+                "distributor_city",
+                "distributor_name",
+                "distributor_state",
+                "distributor_zip_code",
+                "distributor_zip_code_ext",
+                "event_key",
+                "event_location",
+                "event_type",
+                "exemption_number",
+                "health_professional",
+                "initial_report_to_fda",
+                "manufacturer_address_1",
+                "manufacturer_address_2",
+                "manufacturer_city",
+                "manufacturer_contact_address_1",
+                "manufacturer_contact_address_2",
+                "manufacturer_contact_area_code",
+                "manufacturer_contact_city",
+                "manufacturer_contact_country",
+                "manufacturer_contact_exchange",
+                "manufacturer_contact_extension",
+                "manufacturer_contact_f_name",
+                "manufacturer_contact_l_name",
+                "manufacturer_contact_pcity",
+                "manufacturer_contact_pcountry",
+                "manufacturer_contact_phone_number",
+                "manufacturer_contact_plocal",
+                "manufacturer_contact_postal_code",
+                "manufacturer_contact_state"
+              ],
+              "sample": {
+                "event_location": "str",
+                "event_type": "str",
+                "manufacturer_contact_address_1": "str",
+                "manufacturer_contact_address_2": "str",
+                "manufacturer_contact_pcity": "str",
+                "manufacturer_contact_state": "str",
+                "manufacturer_contact_t_name": "str",
+                "manufacturer_contact_zip_ext": "str",
+                "manufacturer_g1_address_2": "str",
+                "manufacturer_g1_city": "str",
+                "manufacturer_link_flag": "str",
+                "report_to_fda": "str"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "url": "https://api.fda.gov/device/event.json?limit=2"
+    },
+    {
+      "conclusion": "three distinct dates exist and the manufacturer identity lives in device[].manufacturer_d_name; the top-level manufacturer_name is empty for historical records",
+      "detail": {
+        "date_added": "19920319",
+        "date_of_event": "19920220",
+        "date_received": "19920310",
+        "date_report": "19920221",
+        "date_report_to_fda": "19920221",
+        "device_is_array": true,
+        "device_manufacturer_d_name": "SCI-O-TECH/GOODMAN",
+        "top_level_manufacturer_name": ""
+      },
+      "name": "record_shape_and_three_dates",
+      "ok": true,
+      "status": 200
+    },
+    {
+      "bytes": 93,
+      "elapsed_ms": 1156,
+      "error": "HTTP 404 Not Found",
+      "name": "bare_field_name_is_not_searchable",
+      "note": "HTTP 404 NOT_FOUND 'No matches found!' proves the bare field name does not address the nested array",
+      "ok": true,
+      "status": 404,
+      "url": "https://api.fda.gov/device/event.json?search=manufacturer_d_name%3A%22Medtronic%22&limit=1"
+    },
+    {
+      "bytes": 9358,
+      "elapsed_ms": 1500,
+      "error": "",
+      "meta_total": 3360860,
+      "name": "nested_search_device_manufacturer_d_name",
+      "ok": true,
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?search=device.manufacturer_d_name%3Amedtronic&limit=1"
+    },
+    {
+      "bucket_sum": 3360860,
+      "buckets": 9619,
+      "bytes": 551499,
+      "elapsed_ms": 2891,
+      "error": "",
+      "name": "count_date_received_medtronic",
+      "note": "date buckets are exhaustive; bucket_sum equals meta.total for the same search",
+      "ok": true,
+      "status": 200,
+      "url": "https://api.fda.gov/device/event.json?search=device.manufacturer_d_name%3Amedtronic&count=date_received"
+    }
+  ],
+  "requests": 4,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "openfda_device_maude",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:48:28.753928Z"
+}

@@ -1,0 +1,99 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://www.importyeti.com/robots.txt",
+    "https://www.importyeti.com/"
+  ],
+  "notes": "robots.txt disallows /search?q (the only useful query path) and the JSON API paths; no data request made. Policy block.",
+  "probes": [
+    {
+      "bytes": 167,
+      "content_type": "text/plain; charset=UTF-8",
+      "disallows_search_query": true,
+      "elapsed_ms": 609,
+      "error": "",
+      "excerpt": "User-agent: * Allow: / Disallow: /search?q Disallow: /api/addresses Disallow: /api/ep Disallow: /cdn-cgi/ Disallow: /mx/ Disallow: /us-export/ Disallow: /partnerships/",
+      "looks_like_html": false,
+      "looks_like_json": false,
+      "name": "robots_txt",
+      "ok": true,
+      "robots_rules": [
+        "User-agent: *",
+        "Allow: /",
+        "Disallow: /search?q",
+        "Disallow: /api/addresses",
+        "Disallow: /api/ep",
+        "Disallow: /cdn-cgi/",
+        "Disallow: /mx/",
+        "Disallow: /us-export/",
+        "Disallow: /partnerships/"
+      ],
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:34.386538Z",
+        "http_status": 200,
+        "name": "robots.txt",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\importyeti\\robots.txt",
+        "request_name": "robots_txt",
+        "request_url": "https://www.importyeti.com/robots.txt",
+        "sha256_full": "dcc4306ed91c143edf9e022f33e9cdb25396e426f1126051008a2f85e81ee0ee",
+        "sha256_stored": "dcc4306ed91c143edf9e022f33e9cdb25396e426f1126051008a2f85e81ee0ee",
+        "stored_bytes": 167,
+        "total_bytes": 167,
+        "truncated": false
+      },
+      "sha256": "dcc4306ed91c143edf9e022f33e9cdb25396e426f1126051008a2f85e81ee0ee",
+      "status": 200,
+      "structure": null,
+      "url": "https://www.importyeti.com/robots.txt"
+    },
+    {
+      "bytes": 53220,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 483,
+      "error": "",
+      "excerpt": "<!DOCTYPE html><html lang=\"en\" class=\"inter_fa93af41-module__0D_jrq__className\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" href=\"/assets/images/importyeti-logo.svg\"/><link rel=\"preload\" as=\"image\" href=\"/assets/ima",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "homepage",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:35.059169Z",
+        "http_status": 200,
+        "name": "homepage.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\importyeti\\homepage.html",
+        "request_name": "homepage",
+        "request_url": "https://www.importyeti.com/",
+        "sha256_full": "7bb6760657c4c555803da5846cd3b4a31d660ba6f4b53da4bd54a21257529a24",
+        "sha256_stored": "7bb6760657c4c555803da5846cd3b4a31d660ba6f4b53da4bd54a21257529a24",
+        "stored_bytes": 53220,
+        "total_bytes": 53220,
+        "truncated": false
+      },
+      "sha256": "7bb6760657c4c555803da5846cd3b4a31d660ba6f4b53da4bd54a21257529a24",
+      "status": 200,
+      "structure": null,
+      "url": "https://www.importyeti.com/"
+    },
+    {
+      "bytes": 9126,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 1906,
+      "error": "HTTP 404 Not Found",
+      "excerpt": "<!DOCTYPE html><html lang=\"en\" class=\"inter_fa93af41-module__0D_jrq__className\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"image\" href=\"/assets/images/importyeti-logo-minimal.svg\"/><link rel=\"preload\" as=\"image\" href=\"/as",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "terms_page",
+      "ok": false,
+      "sample": null,
+      "sha256": "5c8ed504891699e20cd63c58b7577127cb657acaa6b88493584d46102930643e",
+      "status": 404,
+      "structure": null,
+      "url": "https://www.importyeti.com/terms"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "importyeti",
+  "status": "BLOCKED_BY_POLICY",
+  "verified_at": "2026-11-08T21:48:37.273907Z"
+}

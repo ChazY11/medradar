@@ -15,11 +15,15 @@
 
 CTIS exposes an unauthenticated JSON API at `https://euclinicaltrials.eu/ctis-public-api` (`POST /search`, `GET /retrieve/{ctNumber}`), used by its own public search front end. It is not a formally versioned/documented developer API, so the register records `api_available: PARTIAL`; `ctNumber` is the authoritative identifier and `decisionDate`/`publishDate` are the clock candidates (first public visibility).
 
-## Documentation checked
+## Documentation references
 
 - https://euclinicaltrials.eu/
 - https://euclinicaltrials.eu/ctis-public-api
 - https://www.ema.europa.eu/en/human-regulatory-overview/research-development/clinical-trials-human-medicines/clinical-trials-information-system-ctis
+
+These are the reference pages recorded in the source register. Only the request
+URLs in the table above were exercised by this probe; a documentation URL is a
+citation, not a claim that the page was fetched during the probe.
 
 ## Reported status rationale
 

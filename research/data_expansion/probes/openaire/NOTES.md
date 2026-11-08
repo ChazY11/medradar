@@ -13,11 +13,15 @@
 
 Probes the Graph v1 `researchProducts` endpoint and the legacy `search/publications` endpoint.  OpenAIRE aggregates repository copies, so the same paper appears many times: only DOI-based canonical keys may be counted as independent evidence.
 
-## Documentation checked
+## Documentation references
 
 - https://api.openaire.eu/
 - https://graph.openaire.eu/docs/
 - https://graph.openaire.eu/docs/apis/graph-api/
+
+These are the reference pages recorded in the source register. Only the request
+URLs in the table above were exercised by this probe; a documentation URL is a
+citation, not a claim that the page was fetched during the probe.
 
 ## Reported status rationale
 

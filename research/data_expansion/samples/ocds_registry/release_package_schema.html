@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <script src="https://use.typekit.net/xpw3jps.js"></script>
+  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.18: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Release Package Schema &mdash; OCDS v1.1.5</title>
+  
+
+  
+  <link rel="shortcut icon" href="../../_static/favicon-16x16.ico"/>
+
+  
+
+  
+  
+    
+
+  
+
+  
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+  
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+  
+      <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+  
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex/"/>
+        <link rel="search" title="Search" href="../../search/"/>
+    <link rel="top" title="Open Contracting Data Standard 1.1.5 documentation" href="../../"/>
+        <link rel="up" title="Reference" href="../"/>
+        <link rel="next" title="Record Reference" href="../records_reference/"/>
+        <link rel="prev" title="Release Schema" href="../release/"/> 
+
+  <script src="https://cdn.usefathom.com/script.js" data-site="HTWZHRIZ" defer data-excluded-domains="localhost,127.0.0.1,0.0.0.0"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  
+<div style="display: none; visibility: hidden;">
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs><path id="a" d="M0 38h481.857V.138H0V38z"/></defs>
+    <symbol id="icon-search" viewBox="0 0 25 25"><path d="M9.316 15.75c1.788 0 3.307-.625 4.558-1.876 1.25-1.25 1.877-2.77 1.877-4.558 0-1.787-.625-3.306-1.876-4.557-1.25-1.252-2.77-1.878-4.558-1.878-1.787 0-3.306.626-4.557 1.877C3.507 6.01 2.88 7.53 2.88 9.315c0 1.788.626 3.307 1.877 4.558 1.25 1.25 2.77 1.877 4.556 1.877zm8.58 0L25 22.856 22.855 25l-7.104-7.105v-1.14l-.4-.4c-1.7 1.473-3.71 2.21-6.034 2.21-2.59 0-4.792-.893-6.602-2.68C.904 14.097 0 11.908 0 9.315c0-2.59.905-4.79 2.714-6.6C4.524.904 6.724 0 9.316 0c2.592 0 4.78.905 6.57 2.714 1.786 1.81 2.68 4.01 2.68 6.602 0 2.324-.738 4.335-2.212 6.033l.402.4h1.14z" fill="inherit" fill-rule="evenodd"/></symbol>
+  </svg>
+</div>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+
+      
+      
+      <div class="oc-banner"></div>
+      
+      
+
+      <div class="oc-switchers">
+        
+        
+        <form class="oc-version-switcher" style="display: none">
+          <select class="oc-custom-select" name="branch">
+            <option>Version</option>
+          </select>
+        </form>
+        
+        
+        
+        
+        
+        <form class="oc-language-switcher">
+          <select class="oc-custom-select" name="lang">
+            <option>Language</option>
+            
+            <option value="en">English</option>
+            
+            <option value="es">Español</option>
+            
+            <option value="fr">Français</option>
+            
+          </select>
+          <noscript>
+            
+            <a class="oc-language-link" href="../../../en/schema/release_package/">English</a>
+            
+            <a class="oc-language-link" href="../../../es/schema/release_package/">Español</a>
+            
+            <a class="oc-language-link" href="../../../fr/schema/release_package/">Français</a>
+            
+          </noscript>
+        </form>
+        
+        
+      </div>
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+<a href="../../">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330.7 163.07" style="enable-background:new 0 0 330.7 163.07; width: 100%" xml:space="preserve">
+    <title>Open Contracting Data Standard</title>
+    <style>.st0{fill:#c8d419}.st1{fill:#fff}</style><g id="Layer_1"><path class="st0" d="M77.07 45.97c0 8.36-6.27 13.87-14.17 13.87s-14.17-5.51-14.17-13.87S55 32.1 62.9 32.1s14.17 5.52 14.17 13.87zm-20.74 0c0 4.14 2.81 6.65 6.57 6.65 3.76 0 6.57-2.51 6.57-6.65 0-4.14-2.81-6.65-6.57-6.65-3.76.01-6.57 2.51-6.57 6.65z"/><path class="st1" d="M101.36 42.06c0 5.36-3.19 9.38-10.79 9.38h-3.15v7.83H80.2v-26.6h10.37c7.59.01 10.79 4.03 10.79 9.39zm-7.45 0c0-2.01-1.44-3-3.53-3h-2.96v6h2.96c2.08 0 3.53-.99 3.53-3zm27.7 10.6v6.61h-17.52v-26.6h16.95v6.61h-9.73v3.15h8.55v6.27h-8.55v3.95h10.3zm29.14 6.61h-5.62l-12.54-14.29h-.08v14.29h-7.22v-26.6h5.62l12.54 14.29h.08V32.68h7.22v26.59zM24.2 79.83c0-8.81 6.38-13.87 14.63-13.87 4.22 0 7.48 1.29 9.84 2.93l-3.8 6.19c-1.82-1.25-3.5-2.01-5.81-2.01-3.91 0-7.26 2.36-7.26 6.76 0 4.41 3.34 6.76 7.26 6.76 2.32 0 3.99-.76 5.81-2.01l3.8 6.19a17.03 17.03 0 0 1-9.84 2.93c-8.25 0-14.63-5.05-14.63-13.87z"/><path class="st0" d="M77.09 79.83c0 8.36-6.27 13.87-14.17 13.87s-14.17-5.51-14.17-13.87 6.27-13.87 14.17-13.87 14.17 5.51 14.17 13.87zm-20.75 0c0 4.14 2.81 6.65 6.57 6.65 3.76 0 6.57-2.51 6.57-6.65 0-4.14-2.81-6.65-6.57-6.65-3.75 0-6.57 2.51-6.57 6.65z"/><path class="st1" d="M105.66 93.13h-5.62L87.5 78.85h-.08v14.29H80.2v-26.6h5.62l12.54 14.29h.08v-14.3h7.22v26.6zm23.26-19.98h-6.65v19.98h-7.22V73.15h-6.65v-6.61h20.52v6.61zm16.8 19.98-6.84-9.88v9.88h-7.22v-26.6h11.36c7.03 0 10.03 4.14 10.03 8.74 0 3.53-1.79 6.69-5.7 7.98l7.37 9.88h-9zm-6.84-20.21v5.7h3.15c2.2 0 3.53-.91 3.53-2.89s-1.33-2.81-3.53-2.81h-3.15zm36.18 15.23h-9.08l-1.63 4.98h-7.98l10.3-26.6h7.71l10.3 26.6h-7.98l-1.64-4.98zm-1.82-5.7-2.7-8.32-2.74 8.32h5.44zm10.95-2.62c0-8.81 6.38-13.87 14.63-13.87 4.22 0 7.49 1.29 9.84 2.93l-3.8 6.19c-1.82-1.25-3.5-2.01-5.81-2.01-3.91 0-7.26 2.36-7.26 6.76 0 4.41 3.34 6.76 7.26 6.76 2.32 0 3.99-.76 5.81-2.01l3.8 6.19a17.03 17.03 0 0 1-9.84 2.93c-8.25 0-14.63-5.05-14.63-13.87zm46.82-6.68h-6.65v19.98h-7.22V73.15h-6.65v-6.61h20.52v6.61zm9.96 19.98h-7.22v-26.6h7.22v26.6zm30.09 0h-5.62L252.9 78.85h-.08v14.29h-7.22v-26.6h5.62l12.54 14.29h.08v-14.3h7.22v26.6zm30.51-12.88c0 7.79-4.48 13.45-12.96 13.45-8.66 0-14.44-5.66-14.44-13.91 0-7.9 5.32-13.83 14.82-13.83 4.29 0 7.6 1.22 10.64 3.42l-4.41 5.93a9.9 9.9 0 0 0-6.46-2.43c-4.37 0-6.99 2.85-6.99 6.95 0 3.88 2.36 6.95 7.18 6.95 3.42 0 5.05-1.52 5.36-3.34h-6.57v-6.08h13.72c.08 1.03.11 2.13.11 2.89zM62.8 107.94l-6.19 19h-7.98l10.3-26.6h7.71l10.3 26.6h-7.98l-6.16-19z"/></g><path class="st1" d="M49.59 113.61c0 8.28-5.55 13.3-14.48 13.3h-9.08v-26.6h9.08c9.01 0 14.48 5.01 14.48 13.3zm-16.34-6.84v13.68h1.9c4.1 0 6.84-2.28 6.84-6.84s-2.74-6.84-6.84-6.84h-1.9zm60.88-.12h-6.65v19.99h-7.22v-19.99h-6.65v-6.61h20.52v6.61zm14.52 15.28h-9.08l-1.63 4.98h-7.98l10.3-26.6h7.71l10.3 26.6h-7.98l-1.64-4.98zm-1.82-5.7-2.7-8.32-2.74 8.32h5.44zm37.24-14.25-3.12 6.42a12.66 12.66 0 0 0-6.5-2.13c-1.14 0-1.63.3-1.63.99 0 .49.3.87 1.41 1.44l5.47 2.81c2.81 1.44 4.94 3.34 4.94 7.52 0 5.47-3.65 8.44-10.45 8.44-3.95 0-7.64-.99-11.25-3l3.31-6.92c3.15 2.24 5.74 3.27 8.32 3.27 1.41 0 2.24-.3 2.24-1.18 0-.65-.46-.99-1.29-1.41l-5.81-2.92a8.05 8.05 0 0 1-4.71-7.52c0-4.75 3.31-8.05 9.99-8.05 2.77 0 5.66.57 9.08 2.24zm21.34 4.94h-6.65v19.99h-7.22v-19.99h-6.65v-6.61h20.52v6.61zm13.91 15.01h-9.08l-1.63 4.98h-7.98l10.3-26.6h7.71l10.3 26.6h-7.98l-1.64-4.98zm-1.83-5.7-2.7-8.32-2.74 8.32h5.44zm38.29 10.67h-5.62l-12.54-14.29h-.08v14.29h-7.22v-26.6h5.62l12.54 14.29h.08V100.3h7.22v26.6zm25.8-13.29c0 8.28-5.55 13.3-14.48 13.3h-9.08v-26.6h9.08c9.01 0 14.48 5.01 14.48 13.3zm-16.33-6.84v13.68h1.9c4.1 0 6.84-2.28 6.84-6.84s-2.74-6.84-6.84-6.84h-1.9zm32.14 15.16h-9.08l-1.63 4.98h-7.98l10.3-26.6h7.71l10.3 26.6h-7.98l-1.64-4.98zm-1.82-5.7-2.7-8.32-2.74 8.32h5.44zm26.89 10.67-6.84-9.88v9.88h-7.22v-26.6h11.36c7.03 0 10.03 4.14 10.03 8.74 0 3.53-1.79 6.69-5.7 7.98l7.37 9.88h-9zm-6.84-20.21v5.7h3.15c2.2 0 3.53-.91 3.53-2.89s-1.33-2.81-3.53-2.81h-3.15zm41.75 6.92c0 8.28-5.55 13.3-14.48 13.3h-9.08v-26.6h9.08c9 0 14.48 5.01 14.48 13.3zm-16.34-6.84v13.68h1.9c4.1 0 6.84-2.28 6.84-6.84s-2.74-6.84-6.84-6.84h-1.9z" id="Layer_2"/><path class="st1" d="M164.29 47.61c0 4.14 2.81 6.65 6.57 6.65 3.76 0 6.57-2.51 6.57-6.65 0-4.14-2.81-6.65-6.57-6.65-3.76 0-6.57 2.51-6.57 6.65zm22.95 0c0 4.14 2.81 6.65 6.57 6.65 3.76 0 6.57-2.51 6.57-6.65 0-4.14-2.81-6.65-6.57-6.65-3.76 0-6.57 2.51-6.57 6.65zm22.94 0c0 4.14 2.81 6.65 6.57 6.65 3.76 0 6.57-2.51 6.57-6.65 0-4.14-2.81-6.65-6.57-6.65-3.76 0-6.57 2.51-6.57 6.65zm45.89 0c0 4.14 2.81 6.65 6.57 6.65 3.76 0 6.57-2.51 6.57-6.65 0-4.14-2.81-6.65-6.57-6.65-3.75 0-6.57 2.51-6.57 6.65zm-22.94 0c0 4.14 2.81 6.65 6.57 6.65 3.76 0 6.57-2.51 6.57-6.65 0-4.14-2.81-6.65-6.57-6.65-3.76 0-6.57 2.51-6.57 6.65zm42.56 0c0 6.24 4.24 10.02 9.9 10.02 5.67 0 9.9-3.78 9.9-10.02s-4.24-10.02-9.9-10.02-9.9 3.78-9.9 10.02z" id="Layer_3"/>
+  </svg>
+</a>
+
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../primer/">Primer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guidance/">Guidance</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../reference/">Release Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release/">Release Schema</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Release Package Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../records_reference/">Record Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record_package/">Record Package Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../merging/">Merging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../identifiers/">Identifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../codelists/">Codelists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../conformance_and_extensions/">Conformance and extensions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../support/">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../governance/">Governance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../history/">History</a></li>
+</ul>
+
+            
+            
+<ul class="oc-extra-nav">
+   <li class="toctree-l1"><a class="reference internal" href="https://review.standard.open-contracting.org/">Data Review Tool</a></li>
+   <li class="toctree-l1"><a class="reference internal" href="https://data.open-contracting.org/" title="Download OCDS data">Data Registry</a></li>
+</ul>
+
+          
+          
+<div class="oc-searchbox-wrapper">
+  <div role="search">
+    <form id="rtd-search-form" class="wy-form" action="../../search/" method="get">
+      <input type="text" name="q" placeholder="Search" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+  </div>
+  <svg class="oc-search-icon">
+    <use xlink:href="#icon-search" />
+  </svg>
+</div>
+          
+          <p class="oc-developed-by">Developed by</p>
+          <a class="oc-logo-text" href="https://www.open-contracting.org">
+            <img src="../../_static/images/ocp-logo.png" alt="Open Contracting Partnership" width="200" height="69">
+          </a>
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+       
+<i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+<a href="../../">Open Contracting Data Standard <small>v1.1</small></a>
+
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../">Docs</a> &raquo;</li>
+      
+        <li><a href="../">Reference</a> &raquo;</li>
+      
+    <li>Release Package Schema</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        
+          <a href="../../_sources/schema/release_package.md.txt" rel="nofollow"> View page source</a>
+        
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="release-package-schema">
+<h1>Release Package Schema<a class="headerlink" href="#release-package-schema" title="Permalink to this heading">¶</a></h1>
+<p>The release package schema describes the structure of the container for publishing releases. The package contains important metadata.</p>
+<p>For this version of OCDS, the canonical URL of the release package schema is: <a class="reference external" href="https://standard.open-contracting.org/schema/1__1__5/release-package-schema.json">https://standard.open-contracting.org/schema/1__1__5/release-package-schema.json</a>. Using the canonical URL guarantees that your software, documentation or other resources will always refer to the specific version of the schema with which they were authored and tested.</p>
+<p>Click on schema elements to expand the tree, or use the '+' icon to expand all elements. Use { } to view the underlying schema for any section. Required fields are indicated in <strong>bold</strong>. <a class="reference internal" href="../../governance/deprecation/"><span class="doc std std-doc">Deprecated fields</span></a> and <a class="reference internal" href="../reference/#language"><span class="std std-doc">multilingual fields</span></a> are omitted.</p>
+<div class="note admonition">
+<p class="admonition-title">Browsing the schema</p>
+<p>This page presents the release package schema in an interactive browser. You can also download the canonical version of the release package schema as <a class="reference download internal" download="" href="../../_downloads/997d6388fc37e1f95e1b06a62b1c7499/release-package-schema.json"><span class="xref download myst">JSON Schema</span></a>.</p>
+</div>
+<script src="../../_static/docson/public/js/widget.js" data-schema="../../../release-package-schema.json"></script>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../records_reference/" class="btn btn-neutral float-right" title="Record Reference" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../release/" class="btn btn-neutral" title="Release Schema" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+      Copyright (c) Open Contracting Partnership, and released under the <a href="https://github.com/open-contracting/standard/blob/HEAD/LICENSE">Apache License 2.0</a>, <a href="https://github.com/open-contracting/standard">source available on GitHub</a>.
+      <a href="https://www.open-contracting.org/terms-of-use/">Privacy notice</a>.
+  </div>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+      <script src="../../_static/jquery.js"></script>
+      <script src="../../_static/underscore.js"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+      <script src="../../_static/doctools.js"></script>
+      <script src="../../_static/sphinx_highlight.js"></script>
+      <script src="../../_static/design-tabs.js"></script>
+      <script defer="defer" src="../../_static/js/switchers.js"></script>
+      <script src="../../_static/renderjson.js"></script>
+      <script src="../../_static/script.js"></script>
+      <script src="../../_static/js/theme.js"></script>
+  
+
+  
+  <script type="application/json" id="oc-switchers-config">
+    {
+      "versionsUrl": "../versions.json",
+      "urlRoot": "../../",
+      "branch": "",
+      "language": "en",
+      "messages": {
+        "old": "This is an old version of the documentation.",
+        "oldLink": "Go to the latest version: %(version)s.",
+        "staging": "This is a development copy of the documentation.",
+        "stagingLink": "Go to the live version."
+      }
+    }
+  </script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a577c75a8d5a03b1',t:'MTc5NDE3NDQ3Mw=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a577c75a8d5a03b1',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"4a16ac83313b460fbdfb3abc8b6d73d9","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

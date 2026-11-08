@@ -1,0 +1,46 @@
+{
+  "source_id": "workday_phenom",
+  "source_name": "Workday / Phenom employer careers adapters",
+  "official_url": "https://www.workday.com/",
+  "country_or_region": "GLOBAL",
+  "domain": "G",
+  "category": "job_postings",
+  "official_or_commercial": "commercial",
+  "api_available": "PARTIAL",
+  "bulk_download_available": "NO",
+  "authentication": "none for the tenant endpoints a public careers site itself calls; there is no vendor-neutral or authenticated API in scope",
+  "free_tier": "free web access to employer career sites; the vendors' own products are commercial",
+  "rate_limits": "UNKNOWN - no published limit; each employer tenant enforces its own",
+  "licence": "employer career-site content; no open licence. redistribution_allowed recorded as NO for structured reuse.",
+  "redistribution_allowed": "NO",
+  "update_frequency": "continuous per employer",
+  "historical_coverage": "live vacancies only; no archive",
+  "entity_identifiers": [
+    "no portable identifier across employers",
+    "Workday CXS: tenant name + site name + job requisition id (tenant-scoped)",
+    "Phenom: employer-specific",
+    "job title / location strings only for cross-employer work"
+  ],
+  "timestamp_fields": [
+    "Workday CXS: postedOn (relative text such as 'Posted Today' in some tenants; exact timestamps vary by tenant)",
+    "Phenom: employer-defined",
+    "no stable cross-employer publication field was observed"
+  ],
+  "known_limitations": [
+    "There is no vendor-neutral API: each employer runs its own tenant (Workday: <tenant>.wdN.myworkdayjobs.com/wday/cxs/...) or its own hosted careers product (Phenom), so any connector is per-employer and cannot be generalised.",
+    "The Workday CXS guesses tested (philips/wd3, gehc/wd5) both returned HTTP 404 JSON: the tenant+site pair must be discovered per employer and guessing is not a viable strategy.",
+    "The historical Phenom host jobs.medtronic.com resolves but presents a TLS certificate whose name does not match the host. A compliant client must not disable verification, so that host was recorded as unfetchable rather than worked around.",
+    "Public careers pages are client-rendered: the Philips search-results page returns HTML with no job records in it, so parsing requires either a JS runtime (out of scope) or the tenant JSON endpoint behind it.",
+    "Undocumented internal endpoints can change without notice; anything built on them is a maintenance liability and must be treated as best-effort.",
+    "No department taxonomy is portable; role classification would again be a title-text heuristic."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "Documents why the five firms' hiring data is hard to get: they appear to run bespoke employer career stacks (Phenom/Workday-style) rather than a generic job board. This is the negative evidence that justifies either per-employer adapters (high maintenance, per-firm legal review) or dropping hiring volume as a MedRadar signal for these five firms.",
+  "evidence_urls": [
+    "https://www.workday.com/",
+    "https://philips.wd3.myworkdayjobs.com/wday/cxs/philips/Philips_Careers/jobs"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free for the public tenant endpoints; commercial for the vendors' own products",
+  "probe_priority": "P2"
+}

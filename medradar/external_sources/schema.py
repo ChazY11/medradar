@@ -47,6 +47,11 @@ EVIDENCE_KINDS: frozenset[str] = frozenset(
         "grant",  # research funding award
         "job_posting",  # hiring requisition
         "shipment",  # company-level bill-of-lading / shipment record
+        # Company-identifiable trade statistics WITHOUT shipment detail, e.g. UK
+        # HMRC trader-level aggregates: a named trader, an HS code, a period, no
+        # value.  Kept distinct from `shipment` so that "this trader moved goods
+        # under this HS code" can never be read as "this consignment existed".
+        "trade_by_trader",
         "trade_aggregate",  # country-level trade statistics (NOT company-level)
         "company_registry",  # legal-entity / registration datum
     }
@@ -140,6 +145,7 @@ def canonical_key(identifiers: Sequence[Mapping[str, Any]]) -> str | None:
         "pmid",
         "patent_no",  # normalised patent number
         "award_id",  # procurement/grant award id
+        "ocid",  # OCDS open contracting id: one purchase, many releases
         "accession",  # regulator accession
     ]
     by_scheme: dict[str, str] = {}

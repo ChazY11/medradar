@@ -14,11 +14,15 @@
 
 Probed unauthenticated.  429 responses mean the shared un-keyed pool is exhausted, not that the API is private: a free API key raises the limit.  Recorded honestly as rate-limited (see PROBE_RESULT.json); no connector ships without a verified 2xx record.
 
-## Documentation checked
+## Documentation references
 
 - https://api.semanticscholar.org/
 - https://www.semanticscholar.org/product/api
 - https://api.semanticscholar.org/api-docs/graph
+
+These are the reference pages recorded in the source register. Only the request
+URLs in the table above were exercised by this probe; a documentation URL is a
+citation, not a claim that the page was fetched during the probe.
 
 ## Reported status rationale
 

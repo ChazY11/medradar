@@ -18,9 +18,13 @@ Probe: 2026-11-09, 4 requests, min_interval 0.8 s, **no credentials**.
   whether the account quota is workable.
 
 ## What a free OPS account would give (documented, not observed)
-- Free registration, 4 GB/month free tier, OAuth2 `client_credentials` flow:
+- Free registration; OAuth2 `client_credentials` flow:
   POST `https://ops.epo.org/3.2/auth/accesstoken` with HTTP Basic (consumer key/secret),
   ~20-minute bearer token.
+- **Quota caveat:** the OPS quota model (metered by volume, not call count) is documented on the
+  developer portal, but `developers.epo.org` answered **403** to our client, so the exact free-tier
+  volume was NOT verified in this round. It must be checked after registering; do not quote a
+  volume figure until then.
 - Services: `published-data` (search + biblio + full text), `family`, `legal`, `register`,
   `classification` (CPC). CQL query language (`ti=`, `pa=`, `ipc=`, `pd=`).
 - Fields available: applicant name + address, inventor name + address, IPC/CPC,

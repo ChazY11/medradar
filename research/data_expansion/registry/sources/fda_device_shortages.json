@@ -1,0 +1,43 @@
+{
+  "source_id": "fda_device_shortages",
+  "source_name": "FDA medical device shortages",
+  "official_url": "https://www.fda.gov/medical-devices/medical-device-supply-chain-and-shortages/medical-device-shortages-list",
+  "country_or_region": "US",
+  "domain": "I",
+  "category": "supply_chain_shortage",
+  "official_or_commercial": "official",
+  "api_available": "NO",
+  "bulk_download_available": "NO",
+  "authentication": "none (public web page)",
+  "free_tier": "free public web page; no key, no registration",
+  "rate_limits": "no published limit; this project used one page request per run at >= 0.9 s interval",
+  "licence": "public domain: FDA website content is not copyrighted unless otherwise noted (FDA Website Policies)",
+  "redistribution_allowed": "YES",
+  "update_frequency": "on change (current list page carries an 'initial' / 'Reverified' date per row; no feed)",
+  "historical_coverage": "current snapshot only; the page is not an archive and previous list states are not published",
+  "entity_identifiers": [
+    "FDA device product code",
+    "product code description"
+  ],
+  "timestamp_fields": [
+    "Date (YYYY/MM/DD) on the shortage list (initial / reverified)",
+    "Date Posted on the discontinuance list"
+  ],
+  "known_limitations": [
+    "No openFDA or JSON endpoint exists: https://api.fda.gov/device/shortage.json returns HTTP 404 (verified live). The only public machine-readable form is the server-rendered HTML tables on the fda.gov page.",
+    "The shortage table has 6 columns and NO manufacturer column: it lists product codes in shortage, so it cannot be linked to a company at all. Only the discontinuance table (6 columns incl. 'Manufacturer Name') supports firm-level analysis.",
+    "Both tables are point-in-time snapshots; resolved entries disappear and earlier versions are not queryable, so short current lists are not evidence of historical absence and no time series can be built from this source alone.",
+    "The published date is a listing date (initial/reverified or 'Date Posted'), not the date the shortage or discontinuance actually started; event_at is therefore unknown and is left null.",
+    "The discontinuance table mixes voluntary discontinuances with manufacturing interruptions, so it is not a supply-risk score.",
+    "Rows are parsed from HTML; a layout change breaks the parser, which is why the parser is covered by offline unit tests against a captured real sample."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "Adds a supply-side risk lane (shortage / discontinuance of specific device product codes) that no clearance, recall or literature source covers. The discontinuance table's manufacturer names let MedRadar check whether the five target firms had formally discontinued devices, which is a candidate early signal of portfolio exit or manufacturing trouble.",
+  "evidence_urls": [
+    "https://www.fda.gov/medical-devices/medical-device-supply-chain-and-shortages/medical-device-shortages-list",
+    "https://www.fda.gov/about-fda/about-website/website-policies"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free; one HTML page fetch per run; no bulk export",
+  "probe_priority": "P1"
+}

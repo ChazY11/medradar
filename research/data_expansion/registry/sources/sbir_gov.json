@@ -1,0 +1,43 @@
+{
+  "api_available": "YES",
+  "authentication": "none",
+  "bulk_download_available": "PARTIAL",
+  "category": "research_funding",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free",
+  "country_or_region": "US",
+  "domain": "H",
+  "entity_identifiers": [
+    "agency_tracking_number",
+    "contract",
+    "award_link",
+    "UEI/DUNS"
+  ],
+  "evidence_urls": [
+    "https://www.sbir.gov/api",
+    "https://api.www.sbir.gov/public/api/awards?keyword=stent&rows=2"
+  ],
+  "free_tier": "free, no key required",
+  "historical_coverage": "SBIR/STTR awards from the programme start (1983) to present",
+  "known_limitations": [
+    "every probed request returned HTTP 403 Forbidden, including a browser-style fetch, while the official /api page carried a maintenance notice on 2026-11-09: the documented API is currently refusing anonymous service",
+    "no explicit award-number field; agency_tracking_number/contract/award_link are the only identifiers",
+    "no separate publication date for the record, so a public-visibility clock would have to fall back to proposal_award_date"
+  ],
+  "licence": "US federal government public data",
+  "official_or_commercial": "official",
+  "official_url": "https://www.sbir.gov/api",
+  "probe_priority": "P1",
+  "rate_limits": "100 rows per request by default, offset pagination via start=; no published rate limit",
+  "redistribution_allowed": "YES",
+  "research_value": "Would add small-business R&D awards adjacent to the five firms' supply chains, but it is currently unusable; recorded as a negative result so a future re-probe can retry rather than rediscover.",
+  "source_id": "sbir_gov",
+  "source_name": "SBIR.gov awards API",
+  "timestamp_fields": [
+    "proposal_award_date",
+    "contract_end_date",
+    "award_year"
+  ],
+  "update_frequency": "as agencies report awards",
+  "verified_at": "2026-11-09"
+}

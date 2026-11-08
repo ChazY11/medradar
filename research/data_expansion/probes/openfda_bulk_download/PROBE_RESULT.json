@@ -1,0 +1,291 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.fda.gov/download.json",
+    "https://download.open.fda.gov/device/classification/device-classification-0001-of-0001.json.zip"
+  ],
+  "notes": "api.fda.gov/download.json is the official export manifest: per-endpoint `total_records` and an `export_date` that is a genuine snapshot clock (unlike the API's per-endpoint `last_updated`). One export partition was downloaded and parsed, which is what distinguishes VERIFIED_BULK_DOWNLOAD from a doc claim.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 601654,
+      "chosen_partition": {
+        "display_name": "/device/classification data",
+        "file": "https://download.open.fda.gov/device/classification/device-classification-0001-of-0001.json.zip",
+        "records": 7097,
+        "size_mb": "3.13"
+      },
+      "device_exports": {
+        "510k": {
+          "export_date": "2026-11-02",
+          "partitions": 1,
+          "total_records": 176529
+        },
+        "classification": {
+          "export_date": "2026-11-02",
+          "partitions": 1,
+          "total_records": 7097
+        },
+        "covid19serology": {
+          "export_date": "2026-11-06",
+          "partitions": 1,
+          "total_records": 13420
+        },
+        "enforcement": {
+          "export_date": "2026-11-03",
+          "partitions": 1,
+          "total_records": 40450
+        },
+        "event": {
+          "export_date": "2026-11-03",
+          "partitions": 375,
+          "total_records": 26557775
+        },
+        "pma": {
+          "export_date": "2026-11-02",
+          "partitions": 1,
+          "total_records": 57421
+        },
+        "recall": {
+          "export_date": "2026-11-06",
+          "partitions": 1,
+          "total_records": 59703
+        },
+        "registrationlisting": {
+          "export_date": "2026-11-02",
+          "partitions": 2,
+          "total_records": 337116
+        },
+        "udi": {
+          "export_date": "2026-11-03",
+          "partitions": 52,
+          "total_records": 5182695
+        }
+      },
+      "elapsed_ms": 1577,
+      "error": "",
+      "name": "download_manifest",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "download_manifest.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_bulk_download\\download_manifest.json",
+        "sha256_full": "ef8ee3d0074d0b6284660cac338fb637e19091c5913f76906a06f6c42de653dd",
+        "sha256_stored": "1b7dac9212e60f4c1987d559ed54f100e1e9b00589411f777e37a6fd33025d65",
+        "stored_bytes": 524288,
+        "total_bytes": 601654,
+        "truncated": true
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "object",
+            "keys": [
+              "animalandveterinary",
+              "cosmetic",
+              "device",
+              "drug",
+              "food",
+              "other",
+              "research",
+              "tobacco",
+              "transparency"
+            ],
+            "sample": {
+              "animalandveterinary": {
+                "__type__": "object",
+                "keys": [
+                  "event"
+                ],
+                "sample": {
+                  "event": "dict"
+                }
+              },
+              "cosmetic": {
+                "__type__": "object",
+                "keys": [
+                  "event"
+                ],
+                "sample": {
+                  "event": "dict"
+                }
+              },
+              "device": {
+                "__type__": "object",
+                "keys": [
+                  "510k",
+                  "classification",
+                  "covid19serology",
+                  "enforcement",
+                  "event",
+                  "pma",
+                  "recall",
+                  "registrationlisting",
+                  "udi"
+                ],
+                "sample": {
+                  "510k": "dict",
+                  "classification": "dict",
+                  "covid19serology": "dict",
+                  "enforcement": "dict",
+                  "event": "dict",
+                  "pma": "dict",
+                  "recall": "dict",
+                  "registrationlisting": "dict",
+                  "udi": "dict"
+                }
+              },
+              "drug": {
+                "__type__": "object",
+                "keys": [
+                  "drugsfda",
+                  "enforcement",
+                  "event",
+                  "label",
+                  "ndc",
+                  "orangebook",
+                  "shortages"
+                ],
+                "sample": {
+                  "drugsfda": "dict",
+                  "enforcement": "dict",
+                  "event": "dict",
+                  "label": "dict",
+                  "ndc": "dict",
+                  "orangebook": "dict",
+                  "shortages": "dict"
+                }
+              },
+              "food": {
+                "__type__": "object",
+                "keys": [
+                  "enforcement",
+                  "event"
+                ],
+                "sample": {
+                  "enforcement": "dict",
+                  "event": "dict"
+                }
+              },
+              "other": {
+                "__type__": "object",
+                "keys": [
+                  "historicaldocument",
+                  "nsde",
+                  "substance",
+                  "unii"
+                ],
+                "sample": {
+                  "historicaldocument": "dict",
+                  "nsde": "dict",
+                  "substance": "dict",
+                  "unii": "dict"
+                }
+              },
+              "research": {
+                "__type__": "object",
+                "keys": [
+                  "covidmirnaandproteomics",
+                  "tobaccodigitalads",
+                  "tobaccoharmmenthol",
+                  "tobaccopreventionads",
+                  "tobaccosmokefree"
+                ],
+                "sample": {
+                  "covidmirnaandproteomics": "dict",
+                  "tobaccodigitalads": "dict",
+                  "tobaccoharmmenthol": "dict",
+                  "tobaccopreventionads": "dict",
+                  "tobaccosmokefree": "dict"
+                }
+              },
+              "tobacco": {
+                "__type__": "object",
+                "keys": [
+                  "problem"
+                ],
+                "sample": {
+                  "problem": "dict"
+                }
+              },
+              "transparency": {
+                "__type__": "object",
+                "keys": [
+                  "crl"
+                ],
+                "sample": {
+                  "crl": "dict"
+                }
+              }
+            }
+          }
+        }
+      },
+      "url": "https://api.fda.gov/download.json"
+    },
+    {
+      "attempts": 1,
+      "bytes": 3285255,
+      "declared_records": 7097,
+      "elapsed_ms": 6468,
+      "error": "",
+      "inner_files": [
+        "device-classification-0001-of-0001.json"
+      ],
+      "name": "classification_export_zip",
+      "note": "raw export zip",
+      "ok": true,
+      "parsed_records": 7097,
+      "sample": {
+        "name": "classification_export_zip.zip",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_bulk_download\\classification_export_zip.zip",
+        "sha256_full": "0b491afee149c6d7d6796421a4a25fded9e2fee3e1c97e6f99dc222c2b42eee0",
+        "sha256_stored": "c9bad41cf9384393eda94f483fe9b6a716e83c26efb8afba735994d9c781fbf6",
+        "stored_bytes": 524288,
+        "total_bytes": 3285255,
+        "truncated": true
+      },
+      "status": 200,
+      "structure": null,
+      "url": "https://download.open.fda.gov/device/classification/device-classification-0001-of-0001.json.zip"
+    }
+  ],
+  "requests": 2,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "openfda_bulk_download",
+  "status": "VERIFIED_BULK_DOWNLOAD",
+  "verified_at": "2026-11-08T21:51:05.457635Z"
+}

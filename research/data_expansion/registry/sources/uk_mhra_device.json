@@ -1,0 +1,38 @@
+{
+  "api_available": "NO",
+  "authentication": "n/a - there is no public register to authenticate against",
+  "bulk_download_available": "NO",
+  "category": "device_registration",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "n/a - no dataset",
+  "country_or_region": "UK",
+  "domain": "A",
+  "entity_identifiers": [
+    "UNKNOWN - there is no public register to carry a UK device identifier"
+  ],
+  "evidence_urls": [
+    "https://www.gov.uk/api/search.json?q=medical+device+register&filter_organisations=medicines-and-healthcare-products-regulatory-agency&count=5",
+    "https://www.gov.uk/api/search.json?q=public+register+medical+devices+searchable&filter_organisations=medicines-and-healthcare-products-regulatory-agency&count=3"
+  ],
+  "free_tier": "n/a",
+  "historical_coverage": "no public product register exists: MHRA registration is an obligation on the manufacturer and is not published as a searchable product listing",
+  "known_limitations": [
+    "GOV.UK search (filtered to MHRA) returns manufacturer guidance such as 'Register medical devices to place on the market', not a register of licensed products",
+    "the UK therefore has no searchable public device register equivalent to MDALL, EUDAMED or GUDID, so no product-level UK regulatory dataset can be collected",
+    "this is a structural absence, not a technical block: no amount of retrying would produce data"
+  ],
+  "licence": "UNKNOWN - no dataset exists to license",
+  "official_or_commercial": "official",
+  "official_url": "https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency",
+  "probe_priority": "P2",
+  "rate_limits": "n/a",
+  "redistribution_allowed": "YES",
+  "research_value": "Documented explicitly as a null result so no future pass wastes effort: the UK contributes no product-level regulatory rows, which means UK market entry cannot be dated from an official register and must be inferred from other evidence (or omitted).",
+  "source_id": "uk_mhra_device",
+  "source_name": "UK MHRA medical device register",
+  "timestamp_fields": [
+    "UNKNOWN - nothing to date"
+  ],
+  "update_frequency": "n/a",
+  "verified_at": "2026-11-09"
+}

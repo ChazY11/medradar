@@ -16,11 +16,15 @@
 
 Crossref REST returned 200 JSON with `message.items` for query, bibliographic query and filter calls.  Works give DOI, `published-online`/`published-print` (must be kept apart), `created`/`deposited` (registration clocks, never publication dates), `funder[]` with award numbers and `relation`.  `mailto=` puts us in the polite pool.
 
-## Documentation checked
+## Documentation references
 
 - https://api.crossref.org/
 - https://github.com/CrossRef/rest-api-doc
 - https://www.crossref.org/documentation/retrieve-metadata/rest-api/access-and-authentication/
+
+These are the reference pages recorded in the source register. Only the request
+URLs in the table above were exercised by this probe; a documentation URL is a
+citation, not a claim that the page was fetched during the probe.
 
 ## Reported status rationale
 

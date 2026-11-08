@@ -1,0 +1,39 @@
+{
+  "api_available": "NO",
+  "authentication": "UNKNOWN - the portal is a JSP/JS shell; data calls appear to be session-bound",
+  "bulk_download_available": "NO",
+  "category": "device_udi_registry",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "UNKNOWN",
+  "country_or_region": "CN",
+  "domain": "A",
+  "entity_identifiers": [
+    "UNKNOWN - the Chinese UDI database is expected to carry the domestic UDI-DI, but no value was observed"
+  ],
+  "evidence_urls": [
+    "https://udi.nmpa.gov.cn/",
+    "https://udi.nmpa.gov.cn/udi/query?di=00643169718425"
+  ],
+  "free_tier": "UNKNOWN",
+  "historical_coverage": "UNKNOWN - no device record was served",
+  "known_limitations": [
+    "the portal root serves an HTML/JS shell (HTTP 200) whose data calls are session-bound and undocumented; the documented query paths tried in the probe returned no records",
+    "no public machine interface, no documented API and no bulk release were found",
+    "a 200 on the shell is not evidence of data access - the probe therefore records this source as UNAVAILABLE rather than verified",
+    "consequence: a Chinese UDI-DI cannot be resolved, so the Chinese market cannot be joined to GUDID by device identifier"
+  ],
+  "licence": "UNKNOWN",
+  "official_or_commercial": "official",
+  "official_url": "https://udi.nmpa.gov.cn/",
+  "probe_priority": "P2",
+  "rate_limits": "UNKNOWN",
+  "redistribution_allowed": "UNKNOWN",
+  "research_value": "The Chinese UDI database would be the only way to tie a China-registered device to a DI, i.e. to link Mindray's Chinese registrations to its US GUDID listings. As it stands the Chinese side stays unmatched, which is a real limitation on any within-firm cross-market identity claim for Mindray.",
+  "source_id": "china_nmpa_udi",
+  "source_name": "China NMPA UDI database",
+  "timestamp_fields": [
+    "UNKNOWN - no record was served"
+  ],
+  "update_frequency": "UNKNOWN",
+  "verified_at": "2026-11-09"
+}

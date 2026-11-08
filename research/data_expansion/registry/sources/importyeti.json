@@ -1,0 +1,44 @@
+{
+  "api_available": "NO",
+  "authentication": "account for paid plans; no API offered",
+  "bulk_download_available": "NO",
+  "category": "shipment",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Free UI tier; paid plans for deeper history/exports. API does not exist.",
+  "country_or_region": "US",
+  "domain": "E",
+  "entity_identifiers": [
+    "importer name",
+    "supplier name",
+    "address",
+    "HS code",
+    "bill-of-lading / shipment references"
+  ],
+  "evidence_urls": [
+    "https://www.importyeti.com/robots.txt",
+    "https://www.importyeti.com/"
+  ],
+  "free_tier": "limited free web queries in a browser (no automated access)",
+  "historical_coverage": "US ocean imports, recent years in the free UI",
+  "known_limitations": [
+    "PROBED 2026-11-09: robots.txt explicitly disallows the only useful query path ('Disallow: /search?q') and the internal JSON API paths ('/api/addresses', '/api/ep'). No data request was made - zero rows were collected, deliberately.",
+    "This is a POLICY block, not a technical one: a human can read the site, an automated collector must not. Site terms also restrict automated collection.",
+    "No API, no bulk export, no licence for redistribution; the free tier is UI-only.",
+    "Its underlying records are US ocean bills of lading - the only class of source that answers company-level shipment questions - but the open path does not exist."
+  ],
+  "licence": "proprietary site terms; US bill-of-lading data resold",
+  "official_or_commercial": "commercial",
+  "official_url": "https://www.importyeti.com/",
+  "probe_priority": "P2",
+  "rate_limits": "no API; robots.txt governs",
+  "redistribution_allowed": "NO",
+  "research_value": "Would be the cheapest way to see which US importers (including Medtronic/GE HealthCare US entities) ship from which suppliers, with HS codes and dates. Because automated collection is disallowed by robots.txt and its terms, it cannot be used in this round and should not be scraped.",
+  "source_id": "importyeti",
+  "source_name": "ImportYeti",
+  "timestamp_fields": [
+    "shipment/arrival date -> event_at (company-level)",
+    "site does not expose a data-publication clock per record (UNKNOWN)"
+  ],
+  "update_frequency": "periodic (BoL releases)",
+  "verified_at": "2026-11-09"
+}

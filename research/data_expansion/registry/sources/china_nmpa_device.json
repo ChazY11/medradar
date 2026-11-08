@@ -1,0 +1,40 @@
+{
+  "api_available": "NO",
+  "authentication": "n/a - no request is served without clearing a JavaScript anti-bot challenge (HTTP 412)",
+  "bulk_download_available": "NO",
+  "category": "device_registration",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free to a browser user; not machine-accessible (see known_limitations)",
+  "country_or_region": "CN",
+  "domain": "A",
+  "entity_identifiers": [
+    "UNKNOWN - the NMPA registration certificate number is documented in secondary literature but was never observed from the source in this pass",
+    "UNKNOWN - no DI/UDI field could be observed"
+  ],
+  "evidence_urls": [
+    "https://www.nmpa.gov.cn/",
+    "https://www.nmpa.gov.cn/datasearch/search-result.html?q=Medtronic"
+  ],
+  "free_tier": "UNKNOWN",
+  "historical_coverage": "UNKNOWN - no record was ever served",
+  "known_limitations": [
+    "every request to www.nmpa.gov.cn returns HTTP 412 with a JavaScript challenge (a dynamic <meta> token plus obfuscated script) before any content is served",
+    "replaying or solving that challenge is a WAF bypass and is explicitly forbidden by the collection protocol, so the source is recorded as blocked instead of retried",
+    "no official open-data mirror or bulk release was identified for device registrations",
+    "consequence: Chinese market entry, which is the home market for Mindray, is invisible to MedRadar this round - the five-firm comparison is US/EU-only"
+  ],
+  "licence": "UNKNOWN - the terms page is unreachable behind the challenge",
+  "official_or_commercial": "official",
+  "official_url": "https://www.nmpa.gov.cn/",
+  "probe_priority": "P1",
+  "rate_limits": "UNKNOWN - throttling cannot be measured when every request is answered with a challenge",
+  "redistribution_allowed": "UNKNOWN",
+  "research_value": "NMPA registration data is the only official record of which devices may be sold in China, the second-largest device market and Mindray's home market. Without it, any cross-market launch-timing comparison silently excludes the largest non-Western market; with it, the study could test whether Chinese approvals lead or lag US clearances.",
+  "source_id": "china_nmpa_device",
+  "source_name": "China NMPA medical device registration",
+  "timestamp_fields": [
+    "UNKNOWN - no record was served, so no date field is claimed"
+  ],
+  "update_frequency": "UNKNOWN",
+  "verified_at": "2026-11-09"
+}

@@ -101,6 +101,17 @@ def coerce_date(value: Any) -> tuple[str, str]:
     match = re.match(r"^(\d{4})$", text)
     if match:
         return f"{match.group(1)}-01-01", "coarse"
+    # "2012 Jan 31" (PubMed epubdate), "Jan 31 2012", "31 Jan 2012"
+    match = re.match(r"^(\d{4})\s+([A-Za-z]{3})\s+(\d{1,2})$", text)
+    if match:
+        month = _MONTHS.get(match.group(2)[:3].lower())
+        if month:
+            return f"{match.group(1)}-{month:02d}-{int(match.group(3)):02d}", "day"
+    match = re.match(r"^([A-Za-z]{3})\s+(\d{1,2}),?\s+(\d{4})$", text)
+    if match:
+        month = _MONTHS.get(match.group(1)[:3].lower())
+        if month:
+            return f"{match.group(3)}-{month:02d}-{int(match.group(2)):02d}", "day"
     # "2020 Dec", "Dec 2020", "2026 Nov-Dec", "2019 Jan-Feb"
     match = re.match(r"^(\d{4})\s+([A-Za-z]{3})", text) or re.match(
         r"^([A-Za-z]{3})\s+(\d{4})$", text

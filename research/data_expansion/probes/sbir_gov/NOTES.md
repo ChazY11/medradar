@@ -14,11 +14,15 @@
 
 SBIR.gov documents an unauthenticated awards API, but on every probe the API host answered 403 Forbidden (also to a plain browser-style fetch) while the official /api page carries a maintenance notice.  This is not a registration requirement: the documented endpoints need no key.  Recorded UNAVAILABLE (documented API temporarily refusing anonymous service) with the evidence preserved, not as a working source.
 
-## Documentation checked
+## Documentation references
 
 - https://www.sbir.gov/api
 - https://www.sbir.gov/api/awards.json
 - https://www.sbir.gov/
+
+These are the reference pages recorded in the source register. Only the request
+URLs in the table above were exercised by this probe; a documentation URL is a
+citation, not a claim that the page was fetched during the probe.
 
 ## Reported status rationale
 

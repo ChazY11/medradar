@@ -1,0 +1,40 @@
+{
+  "api_available": "YES",
+  "authentication": "none",
+  "bulk_download_available": "PARTIAL",
+  "category": "trade_aggregate",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Free of charge with attribution.",
+  "country_or_region": "EU",
+  "domain": "E",
+  "entity_identifiers": [],
+  "evidence_urls": [
+    "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409",
+    "https://ec.europa.eu/eurostat/web/international-trade-in-goods/database",
+    "https://ec.europa.eu/eurostat/comext/newxtweb/"
+  ],
+  "free_tier": "free, no key",
+  "historical_coverage": "1988 onward, HS2/HS4/HS6/CN8",
+  "known_limitations": [
+    "PROBED 2026-11-09: the Comext dissemination API works keyless and returned real 2023 values (DE imports of HS 9018 from US: 2,682,137,903 EUR; exports 3,376,125,154 EUR).",
+    "Two call-shape traps were confirmed live: (1) Comext lives under /api/comext/dissemination/... - the mainstream /api/dissemination/... path answers 404 'DS-045409 ... is not available for dissemination'; (2) the dimensions are freq/reporter/partner/product/flow/indicators/time - using geo= returns 400 'Dimension \"GEO\" is not defined'.",
+    "The dataset 'updated' timestamp is a refresh clock, not a per-record publication date; per-record public visibility cannot be reconstructed.",
+    "Country-level aggregate by CN8/HS: no company, no shipment, no product identity.",
+    "Country-level HS-code AGGREGATE statistics only: no company, no shipment, no product identity. Must not be substituted for bill-of-lading (company-level) data, and cannot be used to infer any of the five firms' supply chain."
+  ],
+  "licence": "Eurostat data reuse policy: free reuse with attribution (Commission Decision 2011/833/EU)",
+  "official_or_commercial": "official",
+  "official_url": "https://ec.europa.eu/eurostat/web/international-trade-in-goods/data/database",
+  "probe_priority": "P1",
+  "rate_limits": "undocumented; respectful use required (bulk download offered separately)",
+  "redistribution_allowed": "YES",
+  "research_value": "The best free monthly HS-code aggregate for the EU market, with CN8 detail (useful for device sub-categories) and a clean keyless API. It gives the European macro demand backdrop for the same HS codes used with Comtrade/Census, but says nothing about any firm.",
+  "source_id": "eurostat_comext",
+  "source_name": "Eurostat Comext (EU trade since 1988 by HS2-4-6 and CN8)",
+  "timestamp_fields": [
+    "freq/time = month or year (coarse) -> source_public_at cannot be better than month",
+    "dataset 'updated' = a dataset refresh timestamp, NOT the publication date of a given figure"
+  ],
+  "update_frequency": "monthly and annual",
+  "verified_at": "2026-11-09"
+}

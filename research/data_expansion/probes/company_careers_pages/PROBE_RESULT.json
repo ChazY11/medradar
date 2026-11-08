@@ -1,0 +1,153 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://www.medtronic.com/us-en/about/careers.html",
+    "https://www.careers.philips.com/global/en",
+    "https://www.careers.philips.com/global/en/search-results",
+    "https://www.medtronic.com/robots.txt"
+  ],
+  "notes": "Corporate careers pages were fetched one request per firm (plus robots.txt where present), no crawling. An HTML page that mentions jobs is not a job feed: the register records how many firms answer HTML and whether any machine-readable vacancy payload is present, and does not claim a hiring dataset from these pages.",
+  "probes": [
+    {
+      "bytes": 773061,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 2250,
+      "error": "",
+      "html_title": "<title> Health tech for the digital age | Medtronic",
+      "job_terms": {
+        "career": 86,
+        "job": 56,
+        "mentions_apply": 1,
+        "position": 65,
+        "vacanc": 0
+      },
+      "name": "medtronic",
+      "ok": true,
+      "sample": {
+        "name": "medtronic.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\company_careers_pages\\medtronic.html",
+        "sha256_full": "9916f2dd542af8332d97bcd32afc6e73ec4796644b1b460c37749dd209633aaa",
+        "sha256_stored": "abbc2c25c96d1758739f07bbff66c256e0470b76d0bc16a6f45d33d69333359b",
+        "stored_bytes": 524288,
+        "total_bytes": 773061,
+        "truncated": true
+      },
+      "status": 200,
+      "url": "https://www.medtronic.com/us-en/about/careers.html"
+    },
+    {
+      "bytes": 309731,
+      "content_type": "text/html; charset=UTF-8",
+      "elapsed_ms": 1421,
+      "error": "",
+      "html_title": "<title key=\"external-default-home-title\">Home | Philips Careers",
+      "job_terms": {
+        "career": 127,
+        "job": 161,
+        "mentions_apply": 18,
+        "position": 38,
+        "vacanc": 2
+      },
+      "name": "philips",
+      "ok": true,
+      "sample": {
+        "name": "philips.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\company_careers_pages\\philips.html",
+        "sha256_full": "a3d3331d42df843bcc3468a0865c78cdf4f7909fc7cd56fe17c2a8d252baaf9b",
+        "sha256_stored": "a3d3331d42df843bcc3468a0865c78cdf4f7909fc7cd56fe17c2a8d252baaf9b",
+        "stored_bytes": 309731,
+        "total_bytes": 309731,
+        "truncated": false
+      },
+      "status": 200,
+      "url": "https://www.careers.philips.com/global/en"
+    },
+    {
+      "body_head": "<HTML><HEAD>\n<TITLE>Access Denied</TITLE>\n</HEAD><BODY>\n<H1>Access Denied</H1>\n \nYou don't have permission to access \"ht",
+      "bytes": 402,
+      "content_type": "text/html",
+      "elapsed_ms": 453,
+      "error": "HTTP 403 Forbidden",
+      "html_title": "",
+      "job_terms": null,
+      "name": "draeger",
+      "ok": false,
+      "sample": null,
+      "status": 403,
+      "url": "https://www.draeger.com/en-us/Company/Careers"
+    },
+    {
+      "body_head": "\u001f�\b\u0000\u0000\u0000\u0000\u0000\u0000��XIo��\u0015�\u000b��i\u0004h\tP��Tk�����v\f�\u0006�\u0006q\u0012\u0004Bu�#Y#���zT�'\u001e�\u0006|����\u001c\f8N\u0000\u001f|�)�)���5Ql����\u001b��\u001a�ę\u001c�\u0000\u001b\\������j���ã�_?z������",
+      "bytes": 26858,
+      "content_type": "text/html;charset=utf-8",
+      "elapsed_ms": 1516,
+      "error": "HTTP 404 Not Found",
+      "html_title": "",
+      "job_terms": null,
+      "name": "mindray",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "url": "https://www.mindray.com/en/careers"
+    },
+    {
+      "bytes": 190971,
+      "content_type": "text/html; charset=UTF-8",
+      "elapsed_ms": 1092,
+      "error": "",
+      "html_title": "<title key=\"external-default-search-results-title\" language-overriden=\"true\">Discover all jobs | Philips",
+      "job_terms": {
+        "career": 108,
+        "job": 322,
+        "mentions_apply": 48,
+        "position": 32,
+        "vacanc": 0
+      },
+      "name": "philips_search_results",
+      "ok": true,
+      "sample": {
+        "name": "philips_search_results.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\company_careers_pages\\philips_search_results.html",
+        "sha256_full": "2be7e8ff0ef70d448a3f8520153bfc51acfb6f8ad05b601edd3eccbaa7c51264",
+        "sha256_stored": "2be7e8ff0ef70d448a3f8520153bfc51acfb6f8ad05b601edd3eccbaa7c51264",
+        "stored_bytes": 190971,
+        "total_bytes": 190971,
+        "truncated": false
+      },
+      "status": 200,
+      "url": "https://www.careers.philips.com/global/en/search-results"
+    },
+    {
+      "bytes": 3874,
+      "content_type": "text/plain;charset=iso-8859-1",
+      "elapsed_ms": 483,
+      "error": "",
+      "html_title": "",
+      "job_terms": {
+        "career": 0,
+        "job": 0,
+        "mentions_apply": 0,
+        "position": 0,
+        "vacanc": 0
+      },
+      "name": "medtronic_robots",
+      "ok": true,
+      "sample": {
+        "name": "medtronic_robots.txt",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\company_careers_pages\\medtronic_robots.txt",
+        "sha256_full": "164648839f4b612df0018bffe2da07ec7e9fac8daea8e5065631bc1c9858f7ca",
+        "sha256_stored": "164648839f4b612df0018bffe2da07ec7e9fac8daea8e5065631bc1c9858f7ca",
+        "stored_bytes": 3874,
+        "total_bytes": 3874,
+        "truncated": false
+      },
+      "status": 200,
+      "url": "https://www.medtronic.com/robots.txt"
+    }
+  ],
+  "requests": 6,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "company_careers_pages",
+  "status": "UNAVAILABLE",
+  "verified_at": "2026-11-08T21:48:46.228645Z"
+}

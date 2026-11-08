@@ -1,0 +1,64 @@
+{
+  "error": "",
+  "evidence_urls": [],
+  "notes": "Every request to tga.gov.au timed out (90-120 s) or was reset by the remote end from this host, so the ARTG could not be verified either way. During reconnaissance the ARTG path returned an Akamai bot-manager proof-of-work interstitial (`bm-verify` / `/_sec/verify`); that observation is recorded here but was NOT reproduced inside this logged probe, so the probe status is UNAVAILABLE, not BLOCKED_BY_POLICY.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 0,
+      "elapsed_ms": 120233,
+      "error": "TimeoutError: The read operation timed out",
+      "name": "artg_search_attempt1",
+      "note": "",
+      "ok": false,
+      "sample": null,
+      "status": null,
+      "structure": null,
+      "url": "https://www.tga.gov.au/resources/artg"
+    },
+    {
+      "attempts": 1,
+      "bytes": 0,
+      "elapsed_ms": 120266,
+      "error": "TimeoutError: The read operation timed out",
+      "name": "artg_search_attempt2",
+      "note": "",
+      "ok": false,
+      "sample": null,
+      "status": null,
+      "structure": null,
+      "url": "https://www.tga.gov.au/resources/artg"
+    },
+    {
+      "attempts": 1,
+      "bytes": 0,
+      "elapsed_ms": 120250,
+      "error": "TimeoutError: The read operation timed out",
+      "name": "portal_home",
+      "note": "",
+      "ok": false,
+      "sample": null,
+      "status": null,
+      "structure": null,
+      "url": "https://www.tga.gov.au/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 0,
+      "elapsed_ms": 120233,
+      "error": "TimeoutError: The read operation timed out",
+      "name": "artg_query_medtronic",
+      "note": "",
+      "ok": false,
+      "sample": null,
+      "status": null,
+      "structure": null,
+      "url": "https://www.tga.gov.au/resources/artg?search_api_fulltext=Medtronic"
+    }
+  ],
+  "requests": 4,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "australia_tga_artg",
+  "status": "UNAVAILABLE",
+  "verified_at": "2026-11-08T22:11:40.869550Z"
+}

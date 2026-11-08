@@ -1,0 +1,46 @@
+{
+  "api_available": "PARTIAL",
+  "authentication": "none",
+  "bulk_download_available": "NO",
+  "category": "clinical_trials_registry",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free",
+  "country_or_region": "EU",
+  "domain": "D",
+  "entity_identifiers": [
+    "EU CT number (ctNumber)",
+    "sponsor protocol number (in authorisedApplication)"
+  ],
+  "evidence_urls": [
+    "https://euclinicaltrials.eu/",
+    "https://euclinicaltrials.eu/ctis-public-api/search",
+    "https://euclinicaltrials.eu/ctis-public-api/retrieve/2023-507015-35-00"
+  ],
+  "free_tier": "free, no key required",
+  "historical_coverage": "CTIS became mandatory on 2023-01-31; earlier trials remain in national registries",
+  "known_limitations": [
+    "ctis-public-api is the front end's own JSON API: public and unauthenticated but not a documented, versioned developer API, so response shapes may change without notice",
+    "the /search result rows omit publishDate; a /retrieve/{ctNumber} call per trial is required for the first-publication clock",
+    "decisionDate is a per-country free-text string; decisionDateOverall is the usable overall date",
+    "EU CT numbers are not linked to publications"
+  ],
+  "licence": "EU public information; no explicit per-record licence is published in the API payload",
+  "official_or_commercial": "official",
+  "official_url": "https://euclinicaltrials.eu/",
+  "probe_priority": "P1",
+  "rate_limits": "undocumented; we paced at 1.2s and kept page sizes at 2",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "The EU counterpart to ClinicalTrials.gov and the only public registry for trials under the Clinical Trials Regulation; essential for European device trials that never appear on CT.gov.",
+  "source_id": "eu_ctis",
+  "source_name": "EU Clinical Trials Information System (CTIS)",
+  "timestamp_fields": [
+    "publishDate",
+    "decisionDate",
+    "decisionDateOverall",
+    "startDateEU",
+    "lastPublicationUpdate",
+    "lastUpdated"
+  ],
+  "update_frequency": "continuous (trial events, results, corrective measures)",
+  "verified_at": "2026-11-09"
+}

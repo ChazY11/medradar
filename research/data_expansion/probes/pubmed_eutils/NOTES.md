@@ -14,11 +14,15 @@
 
 E-utilities esearch/esummary returned 200 JSON.  No key is needed at 3 req/s; the connector declares `tool`/`email` for a better politeness tier and stays below the limit with a 1.2 s minimum interval.  esummary gives `pubdate`/`epubdate` (coarse when only a year/month is published), DOI and PMC id for de-duplication.
 
-## Documentation checked
+## Documentation references
 
 - https://www.ncbi.nlm.nih.gov/books/NBK25501/
 - https://www.ncbi.nlm.nih.gov/books/NBK25497/
 - https://www.ncbi.nlm.nih.gov/pmc/tools/openftlist/
+
+These are the reference pages recorded in the source register. Only the request
+URLs in the table above were exercised by this probe; a documentation URL is a
+citation, not a claim that the page was fetched during the probe.
 
 ## Reported status rationale
 

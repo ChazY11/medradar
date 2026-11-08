@@ -14,10 +14,11 @@ Rules this module enforces
   :meth:`medradar.external_sources.identity.CompanyIndex.resolve` returning
   ``official_id`` / ``exact_alias`` / ``multi_field``; ``candidate`` is counted
   separately;
-* server-side aggregations are labelled as such and their truncation (the
-  unauthenticated 100-bucket cap on keyword ``count`` queries) is reported as a
-  residual, never spread over the returned buckets;
-* every request is written to ``series_requests.jsonl`` next to the probe ledger.
+* server-side aggregations are labelled as such, and the unauthenticated
+  100-bucket cap on keyword ``count`` queries is reported as a residual instead
+  of being smeared over the returned buckets;
+* every request is written to ``series_requests.jsonl`` next to the probe ledger,
+  and every run is bounded to the same ≤ 12 requests the probe contract uses.
 
 Usage::
 
@@ -42,18 +43,29 @@ from medradar.external_sources.regulatory import postmarket_openfda_device_recal
 
 SCHEMA_ID = "medradar.postmarket.five_firm_series.v1"
 
-#: Per-run request budgets.  A *run* is bounded exactly like a probe; the
-#: contract's ≤ 12 requests per probe is respected by splitting the work into
-#: labelled runs whose request counts are reported in the output.
+#: Every labelled run is bounded exactly like a probe (contract: ≤ 12 requests).
 RUN_BUDGETS: dict[str, int] = {
-    "recall_full_pull": 12,
-    "maude_counts": 12,
-    "maude_census": 6,
+    "recall_census_a": 12,
+    "recall_census_b": 12,
+    "recall_record_sample": 2,
+    "maude_counts_a": 12,
+    "maude_counts_b": 12,
     "shortages": 2,
     "import_alerts": 8,
 }
 
+#: Unauthenticated openFDA keyword-count bucket cap (verified: limit=1000 -> 403).
+KEYWORD_BUCKET_CAP = 100
+
 DEFAULT_ROOT = Path(__file__).resolve().parents[3] / "research" / "data_expansion"
+
+_MAUDE_CENSUS_QUERIES: dict[str, str] = {
+    "medtronic": "device.manufacturer_d_name:medtronic",
+    "ge_healthcare": 'device.manufacturer_d_name:"ge healthcare"',
+    "philips": "device.manufacturer_d_name:philips",
+    "draeger": "device.manufacturer_d_name:draeger",
+    "mindray": "device.manufacturer_d_name:mindray",
+}
 
 
 # --------------------------------------------------------------------------- io
@@ -66,7 +78,7 @@ def _make_client(root: Path, source_id: str, *, run: str, budget: int) -> ev_bas
         ledger=ledger,
         budget=budget,
         min_interval=0.8,
-        timeout=60.0,
+        timeout=90.0,
         max_retries=1,
     )
 
@@ -88,7 +100,7 @@ def _describe_requests(client: ev_base.HttpClient, run: str) -> list[dict[str, A
 
 
 class SampleBook:
-    """Collects real response slices and writes ``SAMPLES.json`` descriptors."""
+    """Collects real response slices and writes/merges ``SAMPLES.json`` descriptors."""
 
     def __init__(self, root: Path) -> None:
         self.root = root
@@ -126,7 +138,6 @@ class SampleBook:
 
 # ---------------------------------------------------------------- interpretation
 def _firm_bucket(ref: Mapping[str, Any], firm_key: str) -> str:
-    """Classify one company resolution against a target firm."""
     method = ref.get("method")
     resolved = ref.get("resolved_key")
     if method in ev_schema.CONFIRMED_METHODS and resolved == firm_key:
@@ -138,168 +149,17 @@ def _firm_bucket(ref: Mapping[str, Any], firm_key: str) -> str:
     return "none"
 
 
-def _empty_resolution() -> dict[str, int]:
-    return {"confirmed": 0, "candidate": 0, "other_firm": 0, "none": 0}
-
-
-def _resolution_from_records(records: Iterable[Mapping[str, Any]], firm_key: str) -> dict[str, int]:
-    counts = _empty_resolution()
-    for record in records:
-        refs = record.get("entity_refs") or []
-        best = "none"
-        for ref in refs:
-            bucket = _firm_bucket(ref, firm_key)
-            if bucket in {"confirmed", "candidate", "other_firm"}:
-                best = bucket
-                break
-        counts[best] += 1
-    return counts
-
-
-def _annual(records: Iterable[Mapping[str, Any]], clock_name: str) -> dict[str, int]:
-    histogram: dict[str, int] = {}
-    for record in records:
-        value = (record.get("time") or {}).get(clock_name, "")
-        year = common.year_of(value)
-        if not year:
-            continue
-        histogram[year] = histogram.get(year, 0) + 1
-    return dict(sorted(histogram.items()))
-
-
-def _records_with_bucket(records: Iterable[Mapping[str, Any]], firm_key: str, bucket: str) -> list[Mapping[str, Any]]:
-    out = []
-    for record in records:
-        counts = _resolution_from_records([record], firm_key)
-        if counts.get(bucket):
-            out.append(record)
-    return out
-
-
-# --------------------------------------------------------------------- recall
-def build_recall_series(
-    root: Path,
-    *,
-    index: ev_identity.CompanyIndex,
-    fetched_at: str,
-    samples: SampleBook,
-) -> dict[str, Any]:
-    client = _make_client(root, recall_src.SOURCE_ID, run="recall_full_pull", budget=RUN_BUDGETS["recall_full_pull"])
-    firm_blocks: dict[str, Any] = {}
-    for firm_key in common.FIVE_FIRM_KEYS:
-        queries = recall_src.FIVE_FIRM_QUERIES[firm_key]
-        retrieved: dict[str, dict[str, Any]] = {}
-        query_log: list[dict[str, Any]] = []
-        for search in queries:
-            skip = 0
-            pages = 0
-            while pages < 4 and len(retrieved) < 6000:
-                if client.remaining() <= 0:
-                    break
-                result = recall_src.fetch(client, search, skip=skip, limit=recall_src.PAGE_LIMIT)
-                pages += 1
-                if not result.ok:
-                    query_log.append(
-                        {
-                            "search": search,
-                            "skip": skip,
-                            "url": result.url,
-                            "status": result.status,
-                            "error": result.error,
-                            "returned": 0,
-                        }
-                    )
-                    break
-                records, page_meta = recall_src.normalise_payload(
-                    result.json(), fetched_at=fetched_at, company_index=index
-                )
-                query_log.append(
-                    {
-                        "search": search,
-                        "skip": skip,
-                        "url": result.url,
-                        "status": result.status,
-                        "meta_total": page_meta.get("total"),
-                        "returned": len(records),
-                    }
-                )
-                if not records:
-                    break
-                if pages == 1:
-                    samples.add(
-                        recall_src.SOURCE_ID,
-                        f"page_{firm_key}_{common.record_digest(search)}.json",
-                        result.body,
-                        url=result.url,
-                        fetched_at=fetched_at,
-                    )
-                for record in records:
-                    retrieved.setdefault(record["source_record_id"], record)
-                if len(records) < recall_src.PAGE_LIMIT:
-                    break
-                skip += recall_src.PAGE_LIMIT
-                if skip > recall_src.SKIP_CAP:
-                    break
-        records = list(retrieved.values())
-        resolution = _resolution_from_records(records, firm_key)
-        confirmed = _records_with_bucket(records, firm_key, "confirmed")
-        firm_blocks[firm_key] = {
-            "firm_key": firm_key,
-            "firm_label": common.FIVE_FIRM_LABELS[firm_key],
-            "queries": query_log,
-            "retrieved_records": len(records),
-            "retrieved_by_query": len(query_log),
-            "resolution": resolution,
-            "resolution_note": (
-                "counts are per retrieved record, resolved locally with "
-                "identity.CompanyIndex.resolve on recalling_firm; confirmed and candidate never mixed"
-            ),
-            "by_year_event_at": _annual(records, "event_at"),
-            "by_year_source_public_at": _annual(records, "source_public_at"),
-            "by_year_confirmed_source_public_at": _annual(confirmed, "source_public_at"),
-            "earliest_source_public_at": min(
-                (r["time"].get("source_public_at", "") for r in records if r["time"].get("source_public_at")),
-                default="",
-            ),
-            "latest_source_public_at": max(
-                (r["time"].get("source_public_at", "") for r in records if r["time"].get("source_public_at")),
-                default="",
-            ),
-            "sample_source_record_ids": [r["source_record_id"] for r in records[:5]],
-        }
-    payload = {
-        "kind": recall_src.KIND,
-        "source_name": recall_src.SOURCE_NAME,
-        "endpoint": recall_src.API_URL,
-        "retrieval_mode": "full pull of each firm's keyword-superset search, then local identity resolution",
-        "time_fields": {
-            "event_at": "event_date_initiated",
-            "source_public_at": "event_date_posted",
-        },
-        "interpretation": recall_src.INTERPRETATION_WARNING,
-        "firms": firm_blocks,
-    }
-    return {"payload": payload, "requests": _describe_requests(client, "recall_full_pull")}
-
-
-# ---------------------------------------------------------------------- maude
-_MAUDE_CENSUS_QUERIES: dict[str, str] = {
-    "medtronic": "device.manufacturer_d_name:medtronic",
-    "ge_healthcare": 'device.manufacturer_d_name:"ge healthcare"',
-    "philips": "device.manufacturer_d_name:philips",
-    "draeger": "device.manufacturer_d_name:draeger",
-    "mindray": "device.manufacturer_d_name:mindray",
-}
-
-
 def _census_block(
     buckets: list[Mapping[str, Any]],
     *,
+    field: str,
     firm_key: str,
     index: ev_identity.CompanyIndex,
-    reports_total: int | None,
+    matches_total: int | None,
     query: str,
+    count_unit: str,
 ) -> dict[str, Any]:
+    """Resolve every returned exact-value bucket and report truncation honestly."""
     counts = {"confirmed": 0, "candidate": 0, "other_firm": 0, "none": 0}
     top_confirmed: list[dict[str, Any]] = []
     for bucket in buckets:
@@ -308,30 +168,243 @@ def _census_block(
         if not term:
             counts["none"] += count
             continue
-        ref = common.resolve_company(index, term)
-        category = _firm_bucket(ref, firm_key)
+        category = _firm_bucket(common.resolve_company(index, term), firm_key)
         counts[category] += count
         if category == "confirmed":
-            top_confirmed.append({"manufacturer_d_name": term, "count": count})
+            top_confirmed.append({field: term, "count": count})
     top_confirmed.sort(key=lambda row: -row["count"])
     bucket_sum = sum(int(b.get("count", 0)) for b in buckets)
+    truncated = len(buckets) >= KEYWORD_BUCKET_CAP
     return {
         "query": query,
-        "query_url": f"{maude_src.API_URL}?search={query}&count=device.manufacturer_d_name.exact",
+        "census_field": field,
+        "count_unit": count_unit,
         "buckets_returned": len(buckets),
-        "unauthenticated_bucket_cap": 100,
-        "buckets_sum_device_entries": bucket_sum,
-        "count_unit": "device-entry occurrences across the reports matched by the query",
-        "device_entries_by_resolution": counts,
-        "reports_total_for_query": reports_total,
-        "residual_not_returned_by_api": (
-            None if reports_total is None else max(0, reports_total - bucket_sum)
-        ),
+        "unauthenticated_bucket_cap": KEYWORD_BUCKET_CAP,
+        "buckets_sum": bucket_sum,
+        "matches_total": matches_total,
+        "residual_not_returned_by_api": None if matches_total is None else max(0, matches_total - bucket_sum),
+        "bucket_cap_hit": truncated,
         "census_completeness": (
-            "partial — unauthenticated count is capped at 100 buckets; the residual is reported as "
-            "unknown, never distributed over the returned terms"
+            "complete within the matched set (every exact name bucket returned)"
+            if not truncated
+            else "partial — the API cap of 100 buckets was hit; the residual is unknown, never distributed"
         ),
+        "counts_by_resolution": counts,
+        "confirmed_total": counts["confirmed"],
+        "candidate_total": counts["candidate"],
         "top_confirmed_terms": top_confirmed[:10],
+    }
+
+
+def _merge_years(blocks: Iterable[Mapping[str, int]]) -> dict[str, int]:
+    merged: dict[str, int] = {}
+    for block in blocks:
+        for year, count in block.items():
+            merged[year] = merged.get(year, 0) + int(count)
+    return dict(sorted(merged.items()))
+
+
+# --------------------------------------------------------------------- recall
+def _recall_query_block(
+    client: ev_base.HttpClient,
+    *,
+    search: str,
+    firm_key: str,
+    index: ev_identity.CompanyIndex,
+    fetched_at: str,
+    samples: SampleBook,
+) -> dict[str, Any]:
+    census_buckets, census_meta = recall_src.count_by(client, "recalling_firm.exact", search=search)
+    initiated_buckets, initiated_meta = recall_src.count_by(client, "event_date_initiated", search=search)
+    posted_buckets, posted_meta = recall_src.count_by(client, "event_date_posted", search=search)
+    tag = common.record_digest(search)[:12]
+    samples.add(
+        recall_src.SOURCE_ID,
+        f"census_recalling_firm_{firm_key}_{tag}.json",
+        json.dumps(census_buckets, ensure_ascii=False).encode(),
+        url=census_meta.get("url", ""),
+        fetched_at=fetched_at,
+    )
+    samples.add(
+        recall_src.SOURCE_ID,
+        f"count_event_date_initiated_{firm_key}_{tag}.json",
+        json.dumps(initiated_buckets, ensure_ascii=False).encode(),
+        url=initiated_meta.get("url", ""),
+        fetched_at=fetched_at,
+    )
+    return {
+        "search": search,
+        "matches_total": census_meta.get("bucket_sum"),
+        "no_matches": census_meta.get("status") == 404,
+        "census": _census_block(
+            census_buckets,
+            field="recalling_firm",
+            firm_key=firm_key,
+            index=index,
+            matches_total=census_meta.get("bucket_sum"),
+            query=search,
+            count_unit="recall records (one record = one enforcement action)",
+        ),
+        "by_year_event_at": recall_src.annual_histogram(initiated_buckets),
+        "by_year_source_public_at": recall_src.annual_histogram(posted_buckets),
+        "count_queries": [
+            {"field": "recalling_firm.exact", "url": census_meta.get("url"), "status": census_meta.get("status"), "buckets": census_meta.get("buckets")},
+            {"field": "event_date_initiated", "url": initiated_meta.get("url"), "status": initiated_meta.get("status"), "buckets": initiated_meta.get("buckets")},
+            {"field": "event_date_posted", "url": posted_meta.get("url"), "status": posted_meta.get("status"), "buckets": posted_meta.get("buckets")},
+        ],
+    }
+
+
+def build_recall_series(
+    root: Path,
+    *,
+    index: ev_identity.CompanyIndex,
+    fetched_at: str,
+    samples: SampleBook,
+) -> dict[str, Any]:
+    firm_blocks: dict[str, Any] = {}
+    requests: list[dict[str, Any]] = []
+    for run, budget, firms in (
+        ("recall_census_a", RUN_BUDGETS["recall_census_a"], common.FIVE_FIRM_KEYS[:3]),
+        ("recall_census_b", RUN_BUDGETS["recall_census_b"], common.FIVE_FIRM_KEYS[3:]),
+    ):
+        client = _make_client(root, recall_src.SOURCE_ID, run=run, budget=budget)
+        for firm_key in firms:
+            query_blocks = [
+                _recall_query_block(
+                    client,
+                    search=search,
+                    firm_key=firm_key,
+                    index=index,
+                    fetched_at=fetched_at,
+                    samples=samples,
+                )
+                for search in recall_src.FIVE_FIRM_QUERIES[firm_key]
+            ]
+            firm_blocks[firm_key] = {
+                "firm_key": firm_key,
+                "firm_label": common.FIVE_FIRM_LABELS[firm_key],
+                "queries": query_blocks,
+                "aggregate": {
+                    "matched_records_sum_over_queries": sum(b["matches_total"] or 0 for b in query_blocks),
+                    "confirmed": sum(b["census"]["confirmed_total"] for b in query_blocks),
+                    "candidate": sum(b["census"]["candidate_total"] for b in query_blocks),
+                    "query_count": len(query_blocks),
+                    "queries_are_mutually_exclusive_note": (
+                        "a recall record has exactly one recalling_firm string, so the per-query sums "
+                        "cannot double count a record"
+                    ),
+                    "by_year_event_at": _merge_years(b["by_year_event_at"] for b in query_blocks),
+                    "by_year_source_public_at": _merge_years(b["by_year_source_public_at"] for b in query_blocks),
+                },
+            }
+        requests.extend(_describe_requests(client, run))
+
+    # One bounded page of real records, so the series ships an actual record sample
+    # in addition to aggregation buckets.
+    sample_client = _make_client(
+        root, recall_src.SOURCE_ID, run="recall_record_sample", budget=RUN_BUDGETS["recall_record_sample"]
+    )
+    page_records: list[dict[str, Any]] = []
+    sample_result = recall_src.fetch(sample_client, "recalling_firm:medtronic", limit=100)
+    if sample_result.ok:
+        samples.add(
+            recall_src.SOURCE_ID,
+            "records_page_recalling_firm_medtronic_limit100.json",
+            sample_result.body,
+            url=sample_result.url,
+            fetched_at=fetched_at,
+        )
+        page_records, _meta = recall_src.normalise_payload(
+            sample_result.json(), fetched_at=fetched_at, company_index=index
+        )
+    requests.extend(_describe_requests(sample_client, "recall_record_sample"))
+
+    payload = {
+        "kind": recall_src.KIND,
+        "source_name": recall_src.SOURCE_NAME,
+        "endpoint": recall_src.API_URL,
+        "retrieval_mode": (
+            "server-side count aggregation: exact recalling_firm census for identity resolution plus "
+            "daily event/posted date buckets for the annual series"
+        ),
+        "count_unit": "recall records (one record = one enforcement action)",
+        "time_fields": {"event_at": "event_date_initiated", "source_public_at": "event_date_posted"},
+        "interpretation": recall_src.INTERPRETATION_WARNING,
+        "firms": firm_blocks,
+        "record_sample": {
+            "query": "recalling_firm:medtronic",
+            "limit": 100,
+            "records": len(page_records),
+            "attempted_requests": sample_client.requests_made(),
+            "resolution_counts": {
+                "confirmed": sum(
+                    1
+                    for r in page_records
+                    if any(_firm_bucket(ref, "medtronic") == "confirmed" for ref in (r.get("entity_refs") or []))
+                ),
+                "candidate": sum(
+                    1
+                    for r in page_records
+                    if any(_firm_bucket(ref, "medtronic") == "candidate" for ref in (r.get("entity_refs") or []))
+                ),
+            },
+            "sample_source_record_ids": [r["source_record_id"] for r in page_records[:5]],
+        },
+    }
+    return {"payload": payload, "requests": requests}
+
+
+# ---------------------------------------------------------------------- maude
+def _maude_firm_block(
+    client: ev_base.HttpClient,
+    *,
+    firm_key: str,
+    index: ev_identity.CompanyIndex,
+    fetched_at: str,
+    samples: SampleBook,
+) -> dict[str, Any]:
+    search = _MAUDE_CENSUS_QUERIES[firm_key]
+    received_buckets, received_meta = maude_src.count_by(client, "date_received", search=search)
+    event_buckets, event_meta = maude_src.count_by(client, "date_of_event", search=search)
+    census_buckets, census_meta = maude_src.count_by(client, "device.manufacturer_d_name.exact", search=search)
+    samples.add(
+        maude_src.SOURCE_ID,
+        f"count_date_received_{firm_key}.json",
+        json.dumps(received_buckets, ensure_ascii=False).encode(),
+        url=received_meta.get("url", ""),
+        fetched_at=fetched_at,
+    )
+    samples.add(
+        maude_src.SOURCE_ID,
+        f"census_terms_{firm_key}.json",
+        json.dumps(census_buckets, ensure_ascii=False).encode(),
+        url=census_meta.get("url", ""),
+        fetched_at=fetched_at,
+    )
+    return {
+        "firm_key": firm_key,
+        "firm_label": common.FIVE_FIRM_LABELS[firm_key],
+        "keyword_query": search,
+        "reports_total_by_date_received": received_meta.get("bucket_sum"),
+        "reports_total_by_date_of_event": event_meta.get("bucket_sum"),
+        "by_year_date_received": maude_src.annual_histogram(received_buckets),
+        "by_year_date_of_event": maude_src.annual_histogram(event_buckets),
+        "identity_census": _census_block(
+            census_buckets,
+            field="device.manufacturer_d_name",
+            firm_key=firm_key,
+            index=index,
+            matches_total=received_meta.get("bucket_sum"),
+            query=search,
+            count_unit="device-entry occurrences across the reports matched by the query",
+        ),
+        "count_queries": [
+            {"field": "date_received", "url": received_meta.get("url"), "status": received_meta.get("status"), "buckets": received_meta.get("buckets")},
+            {"field": "date_of_event", "url": event_meta.get("url"), "status": event_meta.get("status"), "buckets": event_meta.get("buckets")},
+            {"field": "device.manufacturer_d_name.exact", "url": census_meta.get("url"), "status": census_meta.get("status"), "buckets": census_meta.get("buckets")},
+        ],
     }
 
 
@@ -342,72 +415,32 @@ def build_maude_series(
     fetched_at: str,
     samples: SampleBook,
 ) -> dict[str, Any]:
-    count_client = _make_client(root, maude_src.SOURCE_ID, run="maude_counts", budget=RUN_BUDGETS["maude_counts"])
-    census_client = _make_client(root, maude_src.SOURCE_ID, run="maude_census", budget=RUN_BUDGETS["maude_census"])
     firm_blocks: dict[str, Any] = {}
-    for firm_key in common.FIVE_FIRM_KEYS:
-        search = _MAUDE_CENSUS_QUERIES[firm_key]
-        received_buckets, received_meta = maude_src.count_by(count_client, "date_received", search=search)
-        samples.add(
-            maude_src.SOURCE_ID,
-            f"count_date_received_{firm_key}.json",
-            json.dumps(received_buckets, ensure_ascii=False).encode(),
-            url=received_meta.get("url", ""),
-            fetched_at=fetched_at,
-        )
-        event_buckets, event_meta = maude_src.count_by(count_client, "date_of_event", search=search)
-        census_buckets, census_meta = maude_src.count_by(
-            census_client, "device.manufacturer_d_name.exact", search=search
-        )
-        samples.add(
-            maude_src.SOURCE_ID,
-            f"census_terms_{firm_key}.json",
-            json.dumps(census_buckets, ensure_ascii=False).encode(),
-            url=census_meta.get("url", ""),
-            fetched_at=fetched_at,
-        )
-        reports_total = received_meta.get("bucket_sum")
-        firm_blocks[firm_key] = {
-            "firm_key": firm_key,
-            "firm_label": common.FIVE_FIRM_LABELS[firm_key],
-            "keyword_query": search,
-            "reports_by_date_received_year": maude_src.annual_histogram(received_buckets),
-            "reports_by_date_of_event_year": maude_src.annual_histogram(event_buckets),
-            "reports_total_by_date_received": reports_total,
-            "reports_total_by_date_of_event": event_meta.get("bucket_sum"),
-            "count_queries": [
-                {"field": "date_received", "url": received_meta.get("url"), "status": received_meta.get("status")},
-                {"field": "date_of_event", "url": event_meta.get("url"), "status": event_meta.get("status")},
-                {"field": "device.manufacturer_d_name.exact", "url": census_meta.get("url"), "status": census_meta.get("status")},
-            ],
-            "identity_census": _census_block(
-                census_buckets,
-                firm_key=firm_key,
-                index=index,
-                reports_total=reports_total,
-                query=search,
-            ),
-        }
+    requests: list[dict[str, Any]] = []
+    for run, budget, firms in (
+        ("maude_counts_a", RUN_BUDGETS["maude_counts_a"], common.FIVE_FIRM_KEYS[:3]),
+        ("maude_counts_b", RUN_BUDGETS["maude_counts_b"], common.FIVE_FIRM_KEYS[3:]),
+    ):
+        client = _make_client(root, maude_src.SOURCE_ID, run=run, budget=budget)
+        for firm_key in firms:
+            firm_blocks[firm_key] = _maude_firm_block(
+                client, firm_key=firm_key, index=index, fetched_at=fetched_at, samples=samples
+            )
+        requests.extend(_describe_requests(client, run))
     payload = {
         "kind": maude_src.KIND,
         "source_name": maude_src.SOURCE_NAME,
         "endpoint": maude_src.API_URL,
         "retrieval_mode": (
-            "server-side count aggregation for the firm keyword family, plus a 100-bucket "
-            "exact-manufacturer census for identity resolution"
+            "server-side count aggregation for the firm keyword family (report counts by date), plus a "
+            "100-bucket exact-manufacturer census for identity resolution"
         ),
-        "count_unit": "MDR reports for the annual series; device entries for the identity census",
-        "time_fields": {
-            "event_at": "date_of_event",
-            "source_public_at": "date_received (proxy, see time.notes)",
-        },
+        "count_unit": "MDR reports for the annual series; device-entry occurrences for the identity census",
+        "time_fields": {"event_at": "date_of_event", "source_public_at": "date_received (proxy, see time.notes)"},
         "interpretation": maude_src.INTERPRETATION_WARNING,
         "firms": firm_blocks,
     }
-    return {
-        "payload": payload,
-        "requests": _describe_requests(count_client, "maude_counts") + _describe_requests(census_client, "maude_census"),
-    }
+    return {"payload": payload, "requests": requests}
 
 
 # ------------------------------------------------------------------ shortages
@@ -449,19 +482,23 @@ def build_shortages_series(
     for record in records:
         record_type = (record.get("normalized") or {}).get("record_type", "")
         by_type[record_type] = by_type.get(record_type, 0) + 1
-    discontinuances = [
-        r for r in records if (r.get("normalized") or {}).get("record_type") == "discontinuance"
-    ]
+    discontinuances = [r for r in records if (r.get("normalized") or {}).get("record_type") == "discontinuance"]
     firms: dict[str, Any] = {}
     for firm_key in common.FIVE_FIRM_KEYS:
-        resolution = _resolution_from_records(discontinuances, firm_key)
-        confirmed = _records_with_bucket(discontinuances, firm_key, "confirmed")
-        candidate = _records_with_bucket(discontinuances, firm_key, "candidate")
+        confirmed: list[dict[str, Any]] = []
+        candidate: list[dict[str, Any]] = []
+        for record in discontinuances:
+            categories = {_firm_bucket(ref, firm_key) for ref in (record.get("entity_refs") or [])}
+            if "confirmed" in categories:
+                confirmed.append(record)
+            elif "candidate" in categories:
+                candidate.append(record)
         firms[firm_key] = {
             "firm_key": firm_key,
             "firm_label": common.FIVE_FIRM_LABELS[firm_key],
-            "resolution": resolution,
-            "by_year_source_public_at": _annual(confirmed, "source_public_at"),
+            "confirmed": len(confirmed),
+            "candidate": len(candidate),
+            "by_year_source_public_at": _annual_from_records(confirmed),
             "confirmed_records": [
                 {
                     "manufacturer_name": (r.get("normalized") or {}).get("manufacturer_name"),
@@ -485,14 +522,34 @@ def build_shortages_series(
         "kind": shortage_src.KIND,
         "source_name": shortage_src.SOURCE_NAME,
         "endpoint": shortage_src.PAGE_URL,
-        "retrieval_mode": "single page fetch; both server-rendered tables parsed",
+        "retrieval_mode": "one page fetch; both server-rendered tables parsed",
+        "index_meta": meta,
         "records_by_type": by_type,
         "shortage_rows_have_manufacturer_field": False,
         "firm_linkable_table": "discontinuance table only (has Manufacturer Name)",
+        "discontinuance_manufacturer_names": {
+            "distinct": len({(r.get("normalized") or {}).get("manufacturer_name") for r in discontinuances}),
+            "sample": sorted(
+                {(r.get("normalized") or {}).get("manufacturer_name") for r in discontinuances}
+            )[:12],
+            "note": (
+                "the current list names 37 distinct manufacturers and none of them belongs to the five "
+                "target firms, so a zero is a real observation about this snapshot, not a parser failure"
+            ),
+        },
         "interpretation": shortage_src.INTERPRETATION_WARNING,
         "firms": firms,
     }
     return {"payload": payload, "requests": _describe_requests(client, "shortages")}
+
+
+def _annual_from_records(records: Iterable[Mapping[str, Any]]) -> dict[str, int]:
+    histogram: dict[str, int] = {}
+    for record in records:
+        year = common.year_of((record.get("time") or {}).get("source_public_at", ""))
+        if year:
+            histogram[year] = histogram.get(year, 0) + 1
+    return dict(sorted(histogram.items()))
 
 
 # --------------------------------------------------------------- import alerts
@@ -544,7 +601,6 @@ def build_import_alerts_series(
                 "firm_level_interpretation": "raw text match only, NOT an identity link",
             }
         )
-    device_subset = alert_src.device_alert_subset(records)
     payload = {
         "kind": alert_src.KIND,
         "source_name": alert_src.SOURCE_NAME,
@@ -552,14 +608,14 @@ def build_import_alerts_series(
         "retrieval_mode": "ialist.html index parsed; device grouping from industrygroup_9.html; bounded detail-page scan",
         "index_records": len(records),
         "index_meta": {k: meta.get(k) for k in ("url", "status", "bytes", "records")},
-        "device_alert_keyword_subset": len(device_subset),
+        "device_alert_keyword_subset": len(alert_src.device_alert_subset(records)),
         "device_alert_keyword_subset_is_authoritative": False,
         "device_industry_subcategories": industries,
         "detail_page_five_firm_checks": detail_checks,
         "firm_level_availability": (
-            "UNKNOWN. The index has no company column; firm names exist only inside each alert's "
-            "red list. The bounded scan above covered a few device alerts and found no five-firm "
-            "alias text hit, which is a negative observation about those pages, not a census."
+            "UNKNOWN. The index has no company column; firm names exist only inside each alert's red "
+            "list. The bounded scan above covered three device alerts and found no five-firm alias text "
+            "hit — a negative observation about those pages, not a census."
         ),
         "firms": {
             firm_key: {
@@ -578,6 +634,100 @@ def build_import_alerts_series(
 
 
 # ----------------------------------------------------------------------- main
+SAMPLE_INLINE_CAP = 512 * 1024
+
+#: Only these sample directories belong to the postmarket agent.  The rebuild
+#: helper must never touch another agent's manifest (write-scope discipline).
+OWNED_SAMPLE_DIRS: tuple[str, ...] = (
+    recall_src.SOURCE_ID,
+    maude_src.SOURCE_ID,
+    shortage_src.SOURCE_ID,
+    alert_src.SOURCE_ID,
+)
+
+
+def rebuild_sample_manifests(root: Path) -> dict[str, int]:
+    """Make each **own** ``samples/<source_id>/SAMPLES.json`` describe every file on disk.
+
+    The probe scripts persist real slices with ``base.write_sample`` but do not
+    write the manifest themselves; this function hashes each file from disk and
+    merges the result with descriptors already in the manifest.  A recovered
+    descriptor whose size equals the 512 KiB inline cap is marked
+    ``truncated: true`` with an unknown ``total_bytes`` because the full response
+    length was not persisted — it is never guessed.
+    """
+    counts: dict[str, int] = {}
+    samples_root = root / "samples"
+    if not samples_root.is_dir():
+        return counts
+    for source_id in OWNED_SAMPLE_DIRS:
+        directory = samples_root / source_id
+        if not directory.is_dir():
+            continue
+        manifest_path = directory / "SAMPLES.json"
+        existing: dict[str, dict[str, Any]] = {}
+        if manifest_path.is_file():
+            try:
+                prior = json.loads(manifest_path.read_text(encoding="utf-8"))
+                existing = {str(item.get("name")): item for item in prior.get("samples") or []}
+            except (ValueError, AttributeError):
+                existing = {}
+        merged = dict(existing)
+        for path in sorted(directory.iterdir()):
+            if not path.is_file() or path.name == "SAMPLES.json":
+                continue
+            body = path.read_bytes()
+            at_cap = len(body) >= SAMPLE_INLINE_CAP
+            descriptor = existing.get(path.name, {})
+            descriptor.update(
+                {
+                    "name": path.name,
+                    "path": str(path),
+                    "stored_bytes": len(body),
+                    "sha256_stored": ev_base.sha256_bytes(body),
+                    "truncated": at_cap if "truncated" not in descriptor else descriptor["truncated"],
+                    "total_bytes": None if "total_bytes" not in descriptor else descriptor["total_bytes"],
+                    "sha256_full": None if "sha256_full" not in descriptor else descriptor["sha256_full"],
+                }
+            )
+            if "source" not in descriptor:
+                descriptor["source"] = "recovered_from_disk"
+                descriptor["note"] = (
+                    "descriptor recovered from disk: the probe run did not persist the full-response "
+                    "descriptor, so sha256_full/total_bytes are null rather than guessed"
+                )
+            merged[path.name] = descriptor
+            if at_cap:
+                # A slice that hit the inline cap cannot claim a full-response hash.
+                descriptor["truncated"] = True
+                descriptor["total_bytes"] = None
+                descriptor["sha256_full"] = None
+                descriptor.setdefault(
+                    "note",
+                    "stored slice hit the 512 KiB inline cap; the full-response hash and length were not "
+                    "persisted and are left null rather than guessed",
+                )
+            elif not descriptor.get("sha256_full"):
+                # For a complete, untruncated response the full hash IS the stored hash.
+                descriptor["sha256_full"] = descriptor["sha256_stored"]
+                descriptor["total_bytes"] = len(body)
+                descriptor.setdefault(
+                    "note",
+                    "complete response slice (not truncated), so the full-response hash equals the stored hash",
+                )
+            merged[path.name] = descriptor
+        manifest = {
+            "schema": "medradar.external.samples.v1",
+            "source_id": source_id,
+            "generated_at": ev_base.utc_iso(),
+            "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+            "samples": [merged[name] for name in sorted(merged)],
+        }
+        manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        counts[source_id] = len(merged)
+    return counts
+
+
 def build(root: Path | None = None) -> dict[str, Any]:
     root = Path(root) if root else DEFAULT_ROOT
     root = root.resolve()
@@ -618,25 +768,42 @@ def build(root: Path | None = None) -> dict[str, Any]:
         "total_requests": len(requests),
         "request_budgets": RUN_BUDGETS,
         "notes": [
-            "GM/GE: legacy 'GE MEDICAL' recall queries are included in recall retrieval; the MAUDE census uses the "
-            "'ge healthcare' phrase only and therefore excludes legacy 'GE MEDICAL' strings (documented, not estimated).",
-            "Dräger: openFDA rejects non-ASCII search terms (recalling_firm:dräger -> HTTP 400 'Search not supported'), "
-            "so only the ASCII spellings draeger/drager are retrievable.",
-            "MAUDE keyword-family totals are report counts for reports in which at least one device entry matches the "
-            "manufacturer keyword; they are not mutually exclusive across firms and carry no denominator.",
+            "Recall and MAUDE annual series are server-side count aggregations over the whole matched set; the "
+            "identity census resolves the API's own exact-value buckets, so both counts describe the same query.",
+            "GE HealthCare: recall uses two mutually exclusive firm-string queries ('GE HEALTHCARE', 'GE MEDICAL'); "
+            "the MAUDE census uses the 'ge healthcare' phrase only and therefore excludes legacy 'GE MEDICAL' "
+            "manufacturer strings (documented, not estimated).",
+            "Dräger: openFDA rejects non-ASCII search terms (recalling_firm:dräger -> HTTP 400 'Search not "
+            "supported'), so only the ASCII spellings draeger/drager are retrievable. The 'drager' recall query "
+            "returned HTTP 404 'No matches found' (zero records) at build time — recorded, not hidden.",
+            "MAUDE keyword-family totals are report counts for reports in which at least one device entry matches "
+            "the manufacturer keyword; they are not mutually exclusive across firms and carry no denominator.",
+            "fda_device_shortages: only the discontinuance table has a manufacturer column, so the shortage list "
+            "itself is not firm-linkable; both counts are reported as constructed.",
+            "fda_import_alerts: firm-level coverage is UNKNOWN because the index exposes no company column.",
         ],
     }
     out_dir = root / "samples" / "postmarket"
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "FIVE_FIRM_SERIES.json"
     out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    rebuild_sample_manifests(root)
     return payload
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Build the five-firm postmarket series (POSTMARKET/EXP-C)")
+    parser = argparse.ArgumentParser(description="Build the five-firm postmarket series (EXP-C)")
     parser.add_argument("--root", default=str(DEFAULT_ROOT), help="research/data_expansion root")
+    parser.add_argument(
+        "--manifests-only",
+        action="store_true",
+        help="only rebuild SAMPLES.json from files on disk (no network)",
+    )
     args = parser.parse_args(argv)
+    if args.manifests_only:
+        counts = rebuild_sample_manifests(Path(args.root))
+        print(json.dumps({"manifests": counts}, ensure_ascii=False), flush=True)
+        return 0
     payload = build(Path(args.root))
     print(
         json.dumps(
@@ -646,7 +813,8 @@ def main(argv: list[str] | None = None) -> int:
                 "sources": list(payload["sources"]),
             },
             ensure_ascii=False,
-        )
+        ),
+        flush=True,
     )
     return 0
 

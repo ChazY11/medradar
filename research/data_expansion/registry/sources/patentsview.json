@@ -1,0 +1,41 @@
+{
+  "api_available": "NO",
+  "authentication": "formerly X-Api-Key; no working host responds now",
+  "bulk_download_available": "NO",
+  "category": "patent",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Not applicable - the endpoint no longer exists. The replacement (uspto_open_data_portal) is free with a key.",
+  "country_or_region": "US",
+  "domain": "B",
+  "entity_identifiers": [],
+  "evidence_urls": [
+    "https://search.patentsview.org/docs/",
+    "https://patentsview.org/apis/api-endpoints",
+    "https://api.patentsview.org/patents/query"
+  ],
+  "free_tier": "no service to access",
+  "historical_coverage": "UNKNOWN - service retired",
+  "known_limitations": [
+    "PROBED 2026-11-09: the documented host search.patentsview.org does NOT resolve in DNS (NXDOMAIN from the Windows resolver and from 8.8.8.8). Both the /api/v1/patent/ and /docs/ calls failed with 'getaddrinfo failed'.",
+    "https://api.patentsview.org/patents/query returns HTTP 200 but an HTML single-page-app shell, not JSON: the retired API host now serves the website.",
+    "https://patentsview.org/apis/api-endpoints returns the same 20,666-byte shell, whose meta description reads 'The Open Data Portal (ODP) is USPTO's data platform ... for free' - the surface has been folded into uspto_open_data_portal.",
+    "Because the host is gone, the previously documented 'X-Api-Key required' state could not be re-verified; what is verified is that no PatentsView record can be fetched at all.",
+    "Do not count this source and uspto_open_data_portal as two independent patent authorities - that would double-count one upstream."
+  ],
+  "licence": "US government work (formerly public domain); current terms live on the ODP, not here",
+  "official_or_commercial": "official",
+  "official_url": "https://search.patentsview.org/docs/",
+  "probe_priority": "P0",
+  "rate_limits": "UNKNOWN - no live endpoint",
+  "redistribution_allowed": "UNKNOWN",
+  "research_value": "Recorded here so the register does not pretend a dead P0 source is alive, and so no future analysis adds PatentsView as if it were independent evidence from USPTO. Its historical value (assignee_id/inventor_id disambiguation) is now only obtainable through the keyed ODP API.",
+  "source_id": "patentsview",
+  "source_name": "PatentsView search API (retired / folded into USPTO ODP)",
+  "timestamp_fields": [
+    "patent_date = GRANT date (the historical v1 API exposed no pre-grant publication date) -> at best a late public-visibility clock",
+    "patent_earliest_application_date = filing/priority -> event_at only",
+    "NO pre-grant publication date existed even when the API worked"
+  ],
+  "update_frequency": "UNKNOWN - service retired",
+  "verified_at": "2026-11-09"
+}

@@ -1,0 +1,397 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9018&flowCode=M",
+    "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9022&flowCode=M",
+    "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9402&flowCode=M",
+    "https://comtradedeveloper.un.org/"
+  ],
+  "notes": "Public preview endpoint works keyless (HS9018/9022/9402 all 200, 278 partner rows seen); full /data/v1 endpoint is 401 without a subscription key.",
+  "probes": [
+    {
+      "bytes": 114128,
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 843,
+      "error": "",
+      "excerpt": "{\"elapsedTime\":\"0.03 secs\",\"count\":127,\"data\":[{\"typeCode\":\"C\",\"freqCode\":\"A\",\"refPeriodId\":20230101,\"refYear\":2023,\"refMonth\":52,\"period\":\"2023\",\"reporterCode\":842,\"reporterISO\":null,\"reporterDesc\":null,\"flowCode\":\"M\",\"flowDesc\":null,\"partnerCode\":0,\"partnerISO\":null,\"partnerDesc\":null,\"partner2Cod",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "hs9018_medical_instruments",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:47:54.450879Z",
+        "http_status": 200,
+        "name": "preview_9018.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\un_comtrade\\preview_9018.json",
+        "request_name": "hs9018_medical_instruments",
+        "request_url": "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9018&flowCode=M",
+        "sha256_full": "63ed9c9a49d490532d10354984b6112161ef5fe9b9e8bbb912b88a8441d5750d",
+        "sha256_stored": "63ed9c9a49d490532d10354984b6112161ef5fe9b9e8bbb912b88a8441d5750d",
+        "stored_bytes": 114128,
+        "total_bytes": 114128,
+        "truncated": false
+      },
+      "sha256": "63ed9c9a49d490532d10354984b6112161ef5fe9b9e8bbb912b88a8441d5750d",
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "count",
+          "data",
+          "elapsedTime",
+          "error"
+        ],
+        "sample": {
+          "count": {
+            "__type__": "int"
+          },
+          "data": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "aggrLevel",
+                "altQty",
+                "altQtyUnitAbbr",
+                "altQtyUnitCode",
+                "cifvalue",
+                "classificationCode",
+                "classificationSearchCode",
+                "cmdCode",
+                "cmdDesc",
+                "customsCode",
+                "customsDesc",
+                "flowCode",
+                "flowDesc",
+                "fobvalue",
+                "freqCode",
+                "grossWgt",
+                "isAggregate",
+                "isAltQtyEstimated",
+                "isGrossWgtEstimated",
+                "isLeaf",
+                "isNetWgtEstimated",
+                "isOriginalClassification",
+                "isQtyEstimated",
+                "isReported",
+                "legacyEstimationFlag",
+                "mosCode",
+                "motCode",
+                "motDesc",
+                "netWgt",
+                "partner2Code",
+                "partner2Desc",
+                "partner2ISO",
+                "partnerCode",
+                "partnerDesc",
+                "partnerISO",
+                "period",
+                "primaryValue",
+                "qty",
+                "qtyUnitAbbr",
+                "qtyUnitCode"
+              ],
+              "sample": {
+                "flowCode": "str",
+                "flowDesc": "NoneType",
+                "freqCode": "str",
+                "partnerCode": "int",
+                "period": "str",
+                "refMonth": "int",
+                "refPeriodId": "int",
+                "refYear": "int",
+                "reporterCode": "int",
+                "reporterDesc": "NoneType",
+                "reporterISO": "NoneType",
+                "typeCode": "str"
+              }
+            },
+            "len": 127
+          },
+          "elapsedTime": {
+            "__type__": "string",
+            "max_len": 9
+          },
+          "error": {
+            "__type__": "string",
+            "max_len": 0
+          }
+        }
+      },
+      "url": "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9018&flowCode=M"
+    },
+    {
+      "bytes": 72705,
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 2266,
+      "error": "",
+      "excerpt": "{\"elapsedTime\":\"0.08 secs\",\"count\":81,\"data\":[{\"typeCode\":\"C\",\"freqCode\":\"A\",\"refPeriodId\":20230101,\"refYear\":2023,\"refMonth\":52,\"period\":\"2023\",\"reporterCode\":842,\"reporterISO\":null,\"reporterDesc\":null,\"flowCode\":\"M\",\"flowDesc\":null,\"partnerCode\":0,\"partnerISO\":null,\"partnerDesc\":null,\"partner2Code",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "hs9022_xray_apparatus",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:47:56.716835Z",
+        "http_status": 200,
+        "name": "preview_9022.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\un_comtrade\\preview_9022.json",
+        "request_name": "hs9022_xray_apparatus",
+        "request_url": "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9022&flowCode=M",
+        "sha256_full": "3de801536a7fb1de98e301fbe78432c8361f56d3ab6dbda40bde0148d9ad895f",
+        "sha256_stored": "3de801536a7fb1de98e301fbe78432c8361f56d3ab6dbda40bde0148d9ad895f",
+        "stored_bytes": 72705,
+        "total_bytes": 72705,
+        "truncated": false
+      },
+      "sha256": "3de801536a7fb1de98e301fbe78432c8361f56d3ab6dbda40bde0148d9ad895f",
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "count",
+          "data",
+          "elapsedTime",
+          "error"
+        ],
+        "sample": {
+          "count": {
+            "__type__": "int"
+          },
+          "data": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "aggrLevel",
+                "altQty",
+                "altQtyUnitAbbr",
+                "altQtyUnitCode",
+                "cifvalue",
+                "classificationCode",
+                "classificationSearchCode",
+                "cmdCode",
+                "cmdDesc",
+                "customsCode",
+                "customsDesc",
+                "flowCode",
+                "flowDesc",
+                "fobvalue",
+                "freqCode",
+                "grossWgt",
+                "isAggregate",
+                "isAltQtyEstimated",
+                "isGrossWgtEstimated",
+                "isLeaf",
+                "isNetWgtEstimated",
+                "isOriginalClassification",
+                "isQtyEstimated",
+                "isReported",
+                "legacyEstimationFlag",
+                "mosCode",
+                "motCode",
+                "motDesc",
+                "netWgt",
+                "partner2Code",
+                "partner2Desc",
+                "partner2ISO",
+                "partnerCode",
+                "partnerDesc",
+                "partnerISO",
+                "period",
+                "primaryValue",
+                "qty",
+                "qtyUnitAbbr",
+                "qtyUnitCode"
+              ],
+              "sample": {
+                "flowCode": "str",
+                "flowDesc": "NoneType",
+                "freqCode": "str",
+                "partnerCode": "int",
+                "period": "str",
+                "refMonth": "int",
+                "refPeriodId": "int",
+                "refYear": "int",
+                "reporterCode": "int",
+                "reporterDesc": "NoneType",
+                "reporterISO": "NoneType",
+                "typeCode": "str"
+              }
+            },
+            "len": 81
+          },
+          "elapsedTime": {
+            "__type__": "string",
+            "max_len": 9
+          },
+          "error": {
+            "__type__": "string",
+            "max_len": 0
+          }
+        }
+      },
+      "url": "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9022&flowCode=M"
+    },
+    {
+      "bytes": 63029,
+      "content_type": "application/json; charset=utf-8",
+      "elapsed_ms": 593,
+      "error": "",
+      "excerpt": "{\"elapsedTime\":\"0.08 secs\",\"count\":70,\"data\":[{\"typeCode\":\"C\",\"freqCode\":\"A\",\"refPeriodId\":20230101,\"refYear\":2023,\"refMonth\":52,\"period\":\"2023\",\"reporterCode\":842,\"reporterISO\":null,\"reporterDesc\":null,\"flowCode\":\"M\",\"flowDesc\":null,\"partnerCode\":0,\"partnerISO\":null,\"partnerDesc\":null,\"partner2Code",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "hs9402_medical_furniture",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:00.251853Z",
+        "http_status": 200,
+        "name": "preview_9402.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\un_comtrade\\preview_9402.json",
+        "request_name": "hs9402_medical_furniture",
+        "request_url": "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9402&flowCode=M",
+        "sha256_full": "2e25c159a33f88b2e915cc3ea576c52496af9a7fd212ddf9774dccbca19f24e9",
+        "sha256_stored": "2e25c159a33f88b2e915cc3ea576c52496af9a7fd212ddf9774dccbca19f24e9",
+        "stored_bytes": 63029,
+        "total_bytes": 63029,
+        "truncated": false
+      },
+      "sha256": "2e25c159a33f88b2e915cc3ea576c52496af9a7fd212ddf9774dccbca19f24e9",
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "count",
+          "data",
+          "elapsedTime",
+          "error"
+        ],
+        "sample": {
+          "count": {
+            "__type__": "int"
+          },
+          "data": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "aggrLevel",
+                "altQty",
+                "altQtyUnitAbbr",
+                "altQtyUnitCode",
+                "cifvalue",
+                "classificationCode",
+                "classificationSearchCode",
+                "cmdCode",
+                "cmdDesc",
+                "customsCode",
+                "customsDesc",
+                "flowCode",
+                "flowDesc",
+                "fobvalue",
+                "freqCode",
+                "grossWgt",
+                "isAggregate",
+                "isAltQtyEstimated",
+                "isGrossWgtEstimated",
+                "isLeaf",
+                "isNetWgtEstimated",
+                "isOriginalClassification",
+                "isQtyEstimated",
+                "isReported",
+                "legacyEstimationFlag",
+                "mosCode",
+                "motCode",
+                "motDesc",
+                "netWgt",
+                "partner2Code",
+                "partner2Desc",
+                "partner2ISO",
+                "partnerCode",
+                "partnerDesc",
+                "partnerISO",
+                "period",
+                "primaryValue",
+                "qty",
+                "qtyUnitAbbr",
+                "qtyUnitCode"
+              ],
+              "sample": {
+                "flowCode": "str",
+                "flowDesc": "NoneType",
+                "freqCode": "str",
+                "partnerCode": "int",
+                "period": "str",
+                "refMonth": "int",
+                "refPeriodId": "int",
+                "refYear": "int",
+                "reporterCode": "int",
+                "reporterDesc": "NoneType",
+                "reporterISO": "NoneType",
+                "typeCode": "str"
+              }
+            },
+            "len": 70
+          },
+          "elapsedTime": {
+            "__type__": "string",
+            "max_len": 9
+          },
+          "error": {
+            "__type__": "string",
+            "max_len": 0
+          }
+        }
+      },
+      "url": "https://comtradeapi.un.org/public/v1/preview/C/A/HS?reporterCode=842&period=2023&cmdCode=9402&flowCode=M"
+    },
+    {
+      "bytes": 152,
+      "content_type": "application/json",
+      "elapsed_ms": 281,
+      "error": "HTTP 401 Access Denied",
+      "excerpt": "{ \"statusCode\": 401, \"message\": \"Access denied due to missing subscription key. Make sure to include subscription key when making requests to an API.\" }",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "keyed_data_endpoint",
+      "ok": false,
+      "sample": null,
+      "sha256": "c90468927fb778dd15b9da44a4dfec94fa8544d9746a59183f1bd413f87ac52a",
+      "status": 401,
+      "structure": null,
+      "url": "https://comtradeapi.un.org/data/v1/get/C/A/HS?reporterCode=842&period=2023&cmdCode=9018&flowCode=M"
+    },
+    {
+      "bytes": 5403,
+      "content_type": "text/html",
+      "elapsed_ms": 1718,
+      "error": "",
+      "excerpt": "<!DOCTYPE html><html lang=\"en\"><head><link rel=\"shortcut icon\" href=\"/content/logo16x16.png\"><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,minimum-scale=1,initial-scale=1\"><link href=\"/styles/theme.css\" rel=\"stylesheet\" type=\"text/css\"><script src=\"/scripts/theme.js\" type=\"",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "developer_portal",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:02.958942Z",
+        "http_status": 200,
+        "name": "developer_portal.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\un_comtrade\\developer_portal.html",
+        "request_name": "developer_portal",
+        "request_url": "https://comtradedeveloper.un.org/",
+        "sha256_full": "e95e4b94684288433cf6bcc5e77eed6c67ef3d093deb12c36b0b413f7bea04fe",
+        "sha256_stored": "e95e4b94684288433cf6bcc5e77eed6c67ef3d093deb12c36b0b413f7bea04fe",
+        "stored_bytes": 5403,
+        "total_bytes": 5403,
+        "truncated": false
+      },
+      "sha256": "e95e4b94684288433cf6bcc5e77eed6c67ef3d093deb12c36b0b413f7bea04fe",
+      "status": 200,
+      "structure": null,
+      "url": "https://comtradedeveloper.un.org/"
+    }
+  ],
+  "requests": 6,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "un_comtrade",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:48:02.959943Z"
+}

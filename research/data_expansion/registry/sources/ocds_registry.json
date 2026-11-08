@@ -1,0 +1,46 @@
+{
+  "source_id": "ocds_registry",
+  "source_name": "Open Contracting Data Standard (standards + publisher registry)",
+  "official_url": "https://standard.open-contracting.org/",
+  "country_or_region": "GLOBAL",
+  "domain": "F",
+  "category": "procurement_standard",
+  "official_or_commercial": "official",
+  "api_available": "NO",
+  "bulk_download_available": "NO",
+  "authentication": "none (documentation site)",
+  "free_tier": "free",
+  "rate_limits": "not applicable - static documentation site",
+  "licence": "documentation under CC BY 4.0; the standard itself is openly published. Publisher data carries the publisher's own licence",
+  "redistribution_allowed": "PARTIAL",
+  "update_frequency": "versioned standard releases (v1.1.x observed)",
+  "historical_coverage": "schema versions 1.0/1.1; publisher coverage varies by publisher",
+  "entity_identifiers": [
+    "ocid (Open Contracting ID, the cross-publisher procurement identifier)",
+    "release.id / release package uri",
+    "parties[].id (publisher-specific organisation id such as GB-FTS-188248)",
+    "awards[].id, contracts[].id"
+  ],
+  "timestamp_fields": [
+    "release.date (publication of the release)",
+    "release.tag (stage: tender / award / contract / implementation)",
+    "contracts[].dateSigned",
+    "awards[].date",
+    "tender.tenderPeriod.startDate / endDate"
+  ],
+  "known_limitations": [
+    "This is a data standard plus a publisher registry, NOT a record publisher. It has no homogeneous record API of its own; searching it for contract records is a category error.",
+    "Actual records depend entirely on which publisher is used, and each publisher has its own endpoint, licence, latency and field population.",
+    "Field population differs by publisher: in the verified UK publication, awards[].date was null while contracts[].dateSigned was present - code written against the schema will run, but must not assume fields are populated.",
+    "The OCDS record model is the reason a single connector can be reused across publishers, so its value is as a design contract, not as data."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "Defines the interoperability contract for procurement data: if a connector is written against OCDS release packages, the same normaliser works for any publisher (UK FTS verified, and other national portals use the same model). It is an architecture-level asset for MedRadar rather than a data source, and it is what makes the notice/award/contract stage tags portable.",
+  "evidence_urls": [
+    "https://standard.open-contracting.org/latest/en/",
+    "https://standard.open-contracting.org/latest/en/schema/release_package/"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free documentation and schema; publisher data costs vary",
+  "probe_priority": "P2"
+}

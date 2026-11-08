@@ -298,6 +298,48 @@ def collect(
     return out[:limit]
 
 
+def count_by(
+    client: Any,
+    field: str,
+    *,
+    search: str = "",
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Server-side ``count`` aggregation (real returned buckets, never estimates).
+
+    ``field`` must be an aggregatable field: a date field such as
+    ``event_date_initiated`` or the ``.exact`` subfield of a keyword field.  The
+    unauthenticated API caps keyword counts at 100 buckets (asking for more
+    returns ``API_KEY_MISSING``); date buckets are returned exhaustively.
+    """
+    params: dict[str, Any] = {"count": field}
+    if search:
+        params["search"] = search
+    result = client.get(API_URL, params=params)
+    meta: dict[str, Any] = {"url": result.url, "status": result.status, "bytes": len(result.body), "error": result.error}
+    if not result.ok:
+        return [], meta
+    payload = result.json()
+    buckets = [
+        {"value": str(bucket.get("term", bucket.get("time", ""))), "count": int(bucket.get("count", 0))}
+        for bucket in (payload.get("results") or [])
+        if isinstance(bucket, Mapping)
+    ]
+    meta["buckets"] = len(buckets)
+    meta["bucket_sum"] = sum(bucket["count"] for bucket in buckets)
+    return buckets, meta
+
+
+def annual_histogram(buckets: Iterable[Mapping[str, Any]]) -> dict[str, int]:
+    """Aggregate day-buckets into ``{YYYY: count}`` using the bucket date itself."""
+    histogram: dict[str, int] = {}
+    for bucket in buckets:
+        year = common.year_of(bucket.get("value"))
+        if not year:
+            continue
+        histogram[year] = histogram.get(year, 0) + int(bucket.get("count", 0))
+    return dict(sorted(histogram.items()))
+
+
 __all__ = [
     "API_URL",
     "EVENT_AT_FIELDS",
@@ -309,8 +351,10 @@ __all__ = [
     "SKIP_CAP",
     "SOURCE_ID",
     "SOURCE_NAME",
+    "annual_histogram",
     "collect",
     "collect_page",
+    "count_by",
     "fetch",
     "identifiers_for",
     "normalise_payload",

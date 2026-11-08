@@ -1,0 +1,248 @@
+{
+  "agent": "scholarly",
+  "blocked": [
+    {
+      "reason": "No public machine interface. Both probed URLs returned HTML ASP.NET portal pages (trialsearch.who.int), not queryable records; scraping the portal is out of scope. Primary registries (CT.gov, CTIS) are collected directly instead.",
+      "source_id": "who_ictrp",
+      "status": "UNAVAILABLE"
+    },
+    {
+      "reason": "Documented awards API (no key required) returned HTTP 403 Forbidden on every request, including a browser-style fetch, while the official https://www.sbir.gov/api page carried a maintenance notice on 2026-11-09. Not a registration requirement; recorded UNAVAILABLE with evidence so a later re-probe can retry.",
+      "source_id": "sbir_gov",
+      "status": "UNAVAILABLE"
+    }
+  ],
+  "boundaries_respected": {
+    "existing_medradar_modules_modified": 0,
+    "files_outside_scope_written": 0,
+    "git_commands_run": 0,
+    "max_requests_per_probe": 9,
+    "min_request_interval_seconds": 0.8
+  },
+  "company_links": {
+    "cross_entity_links": {
+      "grant_to_company": "deterministic via organization.org_name (NIH grantee tier)",
+      "paper_to_grant": "implemented and unit-tested (Crossref funder[].award[] / Europe PMC grantId / OpenAlex award ids matched against grant award ids after normalisation); live match rate not asserted because the sweep did not include grant records",
+      "paper_to_trial": "implemented and unit-tested on structurally published NCT ids only; the sampled Europe PMC records exposed no NCT cross-references, so the live link rate was 0 in this batch and is reported as 0 rather than estimated",
+      "trial_to_company": "deterministic via leadSponsor (clinical_trial entity_refs)"
+    },
+    "five_firm_sweep_link_rows": {
+      "author_affiliation": 20,
+      "funder": 39
+    },
+    "per_firm": {
+      "draeger": {
+        "attributed_records": 3,
+        "author_affiliation": 3
+      },
+      "ge_healthcare": {
+        "attributed_records": 13,
+        "author_affiliation": 9,
+        "funder": 5
+      },
+      "medtronic": {
+        "attributed_records": 27,
+        "author_affiliation": 1,
+        "funder": 27
+      },
+      "mindray": {
+        "attributed_records": 11,
+        "author_affiliation": 4,
+        "funder": 7
+      },
+      "philips": {
+        "attributed_records": 3,
+        "author_affiliation": 3
+      }
+    },
+    "records_with_a_confirmed_company_link": 57,
+    "rule": "only structured source fields count; reported as separate tiers: funder, author_affiliation, lead_sponsor, collaborator, grantee, participant; text mentions are never counted"
+  },
+  "connection_status_counts": {
+    "UNAVAILABLE": 2,
+    "VERIFIED_API": 9,
+    "VERIFIED_PUBLIC_QUERY": 1
+  },
+  "connector_coverage_note": "The lead asked for connectors on openalex / europepmc / crossref / clinicaltrials_gov / nih_reporter first; those five plus pubmed_eutils (needed for the cross-source duplicate measurement) ship. semantic_scholar, openaire, eu_ctis, eu_cordis are verified but probe-only: no connector, per the lead's priority. who_ictrp and sbir_gov could not be verified and correctly ship no connector.",
+  "connectors": [
+    "medradar/external_sources/scholarly/__init__.py",
+    "medradar/external_sources/scholarly/_common.py",
+    "medradar/external_sources/scholarly/dedupe.py",
+    "medradar/external_sources/scholarly/linking.py",
+    "medradar/external_sources/scholarly/openalex.py",
+    "medradar/external_sources/scholarly/europepmc.py",
+    "medradar/external_sources/scholarly/crossref.py",
+    "medradar/external_sources/scholarly/pubmed_eutils.py",
+    "medradar/external_sources/trials/__init__.py",
+    "medradar/external_sources/trials/_common.py",
+    "medradar/external_sources/trials/clinicaltrials_gov.py",
+    "medradar/external_sources/trials/nih_reporter.py"
+  ],
+  "coverage_snapshot": {
+    "builder": "research/data_expansion/samples/scholarly/build_coverage_snapshot.py",
+    "earliest_public_dates": {
+      "draeger": "1955-01-01",
+      "ge_healthcare": "1955-01-01",
+      "medtronic": "1985-01-01",
+      "mindray": "2007-01-01",
+      "philips": "1946-06-15"
+    },
+    "path": "research/data_expansion/samples/scholarly/COVERAGE_SNAPSHOT.json",
+    "queries": {
+      "draeger": "Draeger",
+      "ge_healthcare": "GE HealthCare",
+      "medtronic": "Medtronic",
+      "mindray": "Mindray",
+      "philips": "Philips"
+    },
+    "reproducible": true,
+    "requests": 40
+  },
+  "dedupe": {
+    "doi_positive_control": {
+      "design": "three known DOIs looked up in each source's native identifier form",
+      "duplicate_ratio": 0.75,
+      "interpretation": "For the same work, the four sources yield four records that collapse to one: a naive count would over-state scholarly evidence by 4x. This is why every count in this handoff is a unique-work count, never a raw-row count.",
+      "per_control": [
+        {
+          "doi": "10.1056/NEJMoa2034577",
+          "records": 4,
+          "unique_works": 1
+        },
+        {
+          "doi": "10.1109/TNSRE.2012.2183617",
+          "records": 4,
+          "unique_works": 1
+        },
+        {
+          "doi": "10.1056/NEJMoa1814052",
+          "records": 4,
+          "unique_works": 1
+        }
+      ],
+      "records": 12,
+      "unique_works": 3
+    },
+    "five_firm_sweep": {
+      "duplicate_ratio_overall": 0.028,
+      "interpretation": "At fixed depth 25 the four engines' relevance rankings are largely disjoint for a broad company-name query, so duplication is low (0-9%). The engines are therefore complementary rather than redundant for firm sweeps.",
+      "observed_overlaps": {
+        "draeger": {
+          "europepmc+pubmed_eutils": 5
+        },
+        "mindray": {
+          "crossref+openalex": 3,
+          "europepmc+pubmed_eutils": 6
+        }
+      },
+      "per_firm": {
+        "draeger": {
+          "duplicate_ratio": 0.05,
+          "records": 100,
+          "unique_works": 95
+        },
+        "ge_healthcare": {
+          "duplicate_ratio": 0.0,
+          "records": 100,
+          "unique_works": 100
+        },
+        "medtronic": {
+          "duplicate_ratio": 0.0,
+          "records": 100,
+          "unique_works": 100
+        },
+        "mindray": {
+          "duplicate_ratio": 0.09,
+          "records": 100,
+          "unique_works": 91
+        },
+        "philips": {
+          "duplicate_ratio": 0.0,
+          "records": 100,
+          "unique_works": 100
+        }
+      },
+      "records": 500,
+      "unique_works": 486
+    },
+    "rule": "publication identifiers only (DOI > PMID > PMCID), identifier-union clustering; records sharing ANY of the three are one work; records with no publication identifier remain singletons and are counted separately"
+  },
+  "finished_at": "2026-11-08T21:59:21.878665Z",
+  "notable_findings": [
+    "EU CTIS exposes an unauthenticated JSON API at https://euclinicaltrials.eu/ctis-public-api (POST /search, GET /retrieve/{ctNumber}); it returns real trial records including publishDate, decisionDateOverall, startDateEU and sponsor, which unlocks the EU trial lane that CT.gov cannot see.",
+    "CORDIS has no official developer API, but the public site's unauthenticated JSON endpoints work: /search/en?format=json returns 'result' reports only, while /project/id/{id}?format=json returns real project factsheets (startDate, endDate, ecSignatureDate, ecMaxContribution, participant organisations) — so grants are retrievable in a two-step search-then-resolve pattern.",
+    "Same work, four sources: exact-DOI lookups returned 4 records collapsing to 1 unique work (75% duplicate ratio), so a naive multi-source count over-states scholarly evidence by up to 4x; every figure reported here is a de-duplicated unique-work count.",
+    "Broad firm sweeps are complementary, not redundant: at depth 25 the four engines' result sets overlapped 0-9% (Medtronic 0%, Mindray 9%), so cross-source collection adds recall for company sweeps and the de-duplicator mostly matters for topic/DOI-anchored collection.",
+    "Crossref funder metadata is the strongest paper-to-company hook: 21 of the top-25 'Medtronic' Crossref hits were works funded by Medtronic (tier 'funder'), while Europe PMC supplied author-affiliation and grant-agency hits and OpenAlex supplied ROR-linked author affiliations.",
+    "PubMed esummary carries neither author affiliations nor funder award ids, so PubMed alone can never attribute a paper to a firm; company attribution must come from Europe PMC core, OpenAlex or Crossref. This is recorded in the PubMed connector docstring and the source register instead of being patched over.",
+    "OpenAlex's created_date is frequently years after publication_date (sample: publication 2012-01-31, created 2016-06-24), which is exactly the look-ahead hazard the protocol forbids — the connectors preserve created_date/deposited/firstIndexDate only as metadata_clock_fields and never use them as the public clock."
+  ],
+  "open_questions": [
+    "CTIS publishDate semantics: the retrieved sample had decisionDate 2023-10 but publishDate 2026-09, so publishDate may be a record-publication/update timestamp rather than first public visibility. Validating this against trial events needs a larger CTIS sample.",
+    "CORDIS fielded-query syntax is undocumented and fails silently ('contenttype=project' as a query returned an empty hit set; a numeric query returned HTTP 500). A reliable project-typed search would avoid the two-step resolve and is still unresolved.",
+    "Live paper-to-trial link rate: no structurally published NCT ids appeared in the sampled Europe PMC records, so the linkage implementation is tested only on synthetic records. A targeted sample of device-trial publications is needed to measure it.",
+    "Whether OpenAlex awards/funders coverage is dense enough for industrial device literature; the sampled Medtronic-affiliated work carried empty funders/awards."
+  ],
+  "real_records_collected": 512,
+  "records_breakdown": {
+    "doi_positive_control": {
+      "duplicates": 9,
+      "records": 12,
+      "unique_works": 3
+    },
+    "five_firm_sweep": {
+      "duplicates": 14,
+      "per_source": {
+        "crossref": 125,
+        "europepmc": 125,
+        "openalex": 125,
+        "pubmed_eutils": 125
+      },
+      "records": 500,
+      "unique_works": 486
+    },
+    "note": "All 512 records are real live responses, produced by the shipped connectors through base.HttpClient; request ledgers are in research/data_expansion/samples/scholarly/requests.jsonl and per-probe requests.jsonl files."
+  },
+  "scope": "papers (domain C) + clinical trials (domain D) + research funding (domain H)",
+  "selftest": "pass (1248 tests, 3 skipped) via `python -m medradar selftest`",
+  "source_status_detail": {
+    "clinicaltrials_gov": "VERIFIED_API",
+    "crossref": "VERIFIED_API",
+    "eu_cordis": "VERIFIED_PUBLIC_QUERY (undocumented public JSON endpoints)",
+    "eu_ctis": "VERIFIED_API",
+    "europepmc": "VERIFIED_API",
+    "nih_reporter": "VERIFIED_API",
+    "openaire": "VERIFIED_API",
+    "openalex": "VERIFIED_API",
+    "pubmed_eutils": "VERIFIED_API",
+    "sbir_gov": "UNAVAILABLE (403 + official maintenance notice)",
+    "semantic_scholar": "VERIFIED_API (DOI lookup 200; /paper/search returned 429 twice)",
+    "who_ictrp": "UNAVAILABLE"
+  },
+  "sources_assigned": 12,
+  "sources_probed": 12,
+  "tests": {
+    "covers": [
+      "time semantics (created_date/deposited/firstIndexDate are never the public clock; studyFirstPostDate vs startDate; award_notice_date vs project_start_date)",
+      "cross-source de-duplication (same paper in 4 sources = 1 work; DOI/PMID/PMCID union bridging; non-publication identifiers excluded; identifier-less singletons; 75% duplicate ratio)",
+      "entity-ref tiers (funder vs author_affiliation vs text_mention; negative guards demote to candidate)",
+      "linking (grant-number normalisation, paper->trial links only from structured NCT ids, paper->grant resolution against grant records, unmatched reporting)",
+      "offline connector collect() pagination bounds via a fake HttpClient"
+    ],
+    "failed": 0,
+    "file": "tests/test_extsrc_scholarly.py",
+    "passed": 41
+  },
+  "verified_sources": [
+    "openalex",
+    "europepmc",
+    "crossref",
+    "pubmed_eutils",
+    "semantic_scholar",
+    "openaire",
+    "clinicaltrials_gov",
+    "eu_ctis",
+    "nih_reporter",
+    "eu_cordis"
+  ]
+}

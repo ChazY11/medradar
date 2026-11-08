@@ -1,0 +1,81 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://www.importgenius.com/pricing",
+    "https://www.importgenius.com/"
+  ],
+  "notes": "Paid-only BoL vendor; public pricing page read ($159, $183, $1999, $2,198, $229, $359).",
+  "probes": [
+    {
+      "bytes": 240657,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 406,
+      "error": "",
+      "excerpt": "<!DOCTYPE html><!-- Last Published: Sun Nov 08 2026 11:19:26 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain=\"w3.importgenius.com\" data-wf-page=\"689ca5208e1182450ccd142e\" data-wf-site=\"67d1ed18337c52c84b74705b\" lang=\"en\"><head><meta charset=\"utf-8\"/><link href=\"https://cdn.prod.website",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "pricing_page",
+      "ok": true,
+      "price_tokens_seen": [
+        "$159",
+        "$183",
+        "$1999",
+        "$2,198",
+        "$229",
+        "$359",
+        "$4,310",
+        "$449"
+      ],
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:40.237547Z",
+        "http_status": 200,
+        "name": "pricing.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\importgenius\\pricing.html",
+        "request_name": "pricing_page",
+        "request_url": "https://www.importgenius.com/pricing",
+        "sha256_full": "2075f88947158014e24c4adb9d0712ab221ae898e67ae43e76372efee5ea11e5",
+        "sha256_stored": "2075f88947158014e24c4adb9d0712ab221ae898e67ae43e76372efee5ea11e5",
+        "stored_bytes": 240657,
+        "total_bytes": 240657,
+        "truncated": false
+      },
+      "sha256": "2075f88947158014e24c4adb9d0712ab221ae898e67ae43e76372efee5ea11e5",
+      "status": 200,
+      "structure": null,
+      "url": "https://www.importgenius.com/pricing"
+    },
+    {
+      "bytes": 233325,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 327,
+      "error": "",
+      "excerpt": "<!DOCTYPE html><!-- Last Published: Sun Nov 08 2026 11:19:26 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain=\"w3.importgenius.com\" data-wf-page=\"67d1ed19337c52c84b7470b9\" data-wf-site=\"67d1ed18337c52c84b74705b\" lang=\"en\"><head><meta charset=\"utf-8\"/><link href=\"https://cdn.prod.website",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "homepage",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:40.955005Z",
+        "http_status": 200,
+        "name": "homepage.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\importgenius\\homepage.html",
+        "request_name": "homepage",
+        "request_url": "https://www.importgenius.com/",
+        "sha256_full": "cc00105d290794aad9a960ed098043d87408a4f7c06adfa66abb4f58495a96a7",
+        "sha256_stored": "cc00105d290794aad9a960ed098043d87408a4f7c06adfa66abb4f58495a96a7",
+        "stored_bytes": 233325,
+        "total_bytes": 233325,
+        "truncated": false
+      },
+      "sha256": "cc00105d290794aad9a960ed098043d87408a4f7c06adfa66abb4f58495a96a7",
+      "status": 200,
+      "structure": null,
+      "url": "https://www.importgenius.com/"
+    }
+  ],
+  "requests": 2,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "importgenius",
+  "status": "PAID_ONLY",
+  "verified_at": "2026-11-08T21:48:40.958000Z"
+}

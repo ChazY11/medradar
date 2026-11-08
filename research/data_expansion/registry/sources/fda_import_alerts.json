@@ -1,0 +1,43 @@
+{
+  "source_id": "fda_import_alerts",
+  "source_name": "FDA import alerts",
+  "official_url": "https://www.accessdata.fda.gov/cms_ia/ialist.html",
+  "country_or_region": "US",
+  "domain": "I",
+  "category": "import_enforcement",
+  "official_or_commercial": "official",
+  "api_available": "NO",
+  "bulk_download_available": "NO",
+  "authentication": "none (public web pages)",
+  "free_tier": "free public web pages; no key, no registration",
+  "rate_limits": "no published limit; this project used <= 8 requests per run at >= 0.9 s interval",
+  "licence": "public domain: FDA website content is not copyrighted unless otherwise noted (FDA Website Policies)",
+  "redistribution_allowed": "YES",
+  "update_frequency": "on change (each alert has a Publish Date; the by-publish-date index re-sorts accordingly)",
+  "historical_coverage": "current list only (154 alerts at probe time); superseded alert revisions and removed firms are not archived in the index",
+  "entity_identifiers": [
+    "import alert number (e.g. 76-01)",
+    "import alert type (DWPE / etc.)"
+  ],
+  "timestamp_fields": [
+    "Publish Date (ialist.html / iapublishdate.html)"
+  ],
+  "known_limitations": [
+    "No openFDA or JSON endpoint exists for import alerts; the public data is server-rendered HTML at accessdata.fda.gov/cms_ia/.",
+    "The bare directory https://www.accessdata.fda.gov/cms_ia/ returns HTTP 403.14 (directory listing forbidden); concrete .html pages are required (verified live).",
+    "The index table has four columns (number, type, publish date, name) and NO company column. Firm names exist only inside each alert's 'Red List', which is div-based markup, not a table, and can be several megabytes per alert.",
+    "An import alert is an enforcement instruction about foreign establishments/product types, not a company quality rating; red-listing and de-listing are administrative events, and absence from the current list carries no information.",
+    "Because firm-level enumeration needs one multi-MB fetch per alert and there are 154 alerts, a complete firm-level census is out of budget; this project reports firm-level coverage as UNKNOWN rather than extrapolating from a sample.",
+    "Publish Date is the alert publication/revision date, not the date of the underlying violation; event_at is unknown and left null."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "Adds a cross-border manufacturing-risk lane: import alerts name foreign establishments whose devices are detained without physical examination. For a device-supply chain radar this is an independent, regulator-authored signal of offshore production problems that does not appear in recalls or clearances, and MedRadar can check whether any alert targets a target firm's foreign plants.",
+  "evidence_urls": [
+    "https://www.accessdata.fda.gov/cms_ia/ialist.html",
+    "https://www.accessdata.fda.gov/cms_ia/industrygroup_9.html",
+    "https://www.fda.gov/about-fda/about-website/website-policies"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free; index page ~66 KB, device group page ~27 KB, detail pages can be 40 KB to 5 MB each; no bulk export",
+  "probe_priority": "P1"
+}

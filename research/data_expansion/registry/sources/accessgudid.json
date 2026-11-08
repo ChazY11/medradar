@@ -1,0 +1,49 @@
+{
+  "api_available": "YES",
+  "authentication": "none observed for /api/v3/devices/lookup",
+  "bulk_download_available": "YES",
+  "category": "device_udi_registry",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free; no key; be polite (small bounded lookups)",
+  "country_or_region": "US",
+  "domain": "A",
+  "entity_identifiers": [
+    "UDI-DI (deviceId) - the authoritative device identifier",
+    "publicDeviceRecordKey (GUDID's own immutable record key; equals openFDA public_device_record_key)",
+    "labeler DUNS number",
+    "premarket submission numbers (510(k)/PMA) where the labeler recorded them",
+    "UNKNOWN - no company registry id; company_name is a free-text labeler string"
+  ],
+  "evidence_urls": [
+    "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=00643169718425",
+    "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=04049098054089",
+    "https://api.fda.gov/device/udi.json?search=identifiers.id%3A%2200643169718425%22&limit=1",
+    "https://open.fda.gov/license/"
+  ],
+  "free_tier": "free, no key",
+  "historical_coverage": "GUDID holds 5,182,695 device-identifier records (openFDA 2026-11-03 export); AccessGUDID serves the current published version of each record, not its version history",
+  "known_limitations": [
+    "AccessGUDID and openFDA /device/udi.json publish the SAME GUDID record: the same DI returns the same publicDeviceRecordKey on both, so they are one evidence item and must be de-duplicated (verified in this probe), never counted as two independent sources",
+    "publicVersionDate is a version stamp - using it as a publication date makes every record look republished; devicePublishDate is the correct per-record clock",
+    "lookup is by DI: there is no documented bulk enumeration on this endpoint, so a full mirror has to come from the release files instead",
+    "a GUDID record states labeler and brand, not the legal manufacturer group, so company linkage relies on the alias index over free-text labeler names",
+    "absence of a record does not mean absence of the device: GUDID covers US-marketed devices only"
+  ],
+  "licence": "GUDID is a US federal regulatory dataset that FDA republishes under a CC0 1.0 dedication (open.fda.gov/license/, verified). NLM's own AccessGUDID terms page was not opened in this pass, so the NLM-side wording is UNKNOWN and must be checked before bulk redistribution",
+  "official_or_commercial": "official",
+  "official_url": "https://accessgudid.nlm.nih.gov/",
+  "probe_priority": "P0",
+  "rate_limits": "no documented numeric limit on the pages opened; NLM asks for polite use, so we paced at 1.0 s per request and kept each probe to a handful of lookups",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "GUDID is the only device source with a genuine per-record publication date (devicePublishDate), which is exactly the clock a bitemporal device study needs; combined with the premarket_submissions field it turns a DI into a 510(k)/PMA number, i.e. it is the official bridge between device identity and US clearance identity.",
+  "source_id": "accessgudid",
+  "source_name": "AccessGUDID (NLM) device lookup API",
+  "timestamp_fields": [
+    "devicePublishDate (per-record first publication in GUDID - the real publication clock)",
+    "publicVersionDate (version stamp; NOT a first-publication date)",
+    "publicVersionNumber / publicVersionStatus",
+    "deviceCommDistributionEndDate"
+  ],
+  "update_frequency": "continuous (GUDID is updated daily; the release files are published daily)",
+  "verified_at": "2026-11-09"
+}

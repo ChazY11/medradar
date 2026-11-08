@@ -1,0 +1,28 @@
+{
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 1,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 1,
+      "source_id": "postmarket",
+      "unlisted_files_added": 1,
+      "verified": 0
+    }
+  },
+  "samples": [
+    {
+      "file": "FIVE_FIRM_SERIES.json",
+      "hash_verified": true,
+      "listed_in_original_manifest": false,
+      "sha256_full": "5e8da4b1417dcfaa6cdfbbc20d7a57800cfee24b5732554d3533b100f875576f",
+      "sha256_source": "recomputed_from_disk",
+      "stored_bytes": 89704,
+      "total_bytes": 89704
+    }
+  ]
+}
