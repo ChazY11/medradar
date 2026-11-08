@@ -1,0 +1,80 @@
+{
+  "schema": "medradar.external.source_index.v1",
+  "frozen_at": "2026-11-09",
+  "note": "Canonical source_id list for DATA-EXPANSION-001. Every register record, probe directory, sample directory and connector file must use exactly these ids. Adding a discovered source is allowed but must be appended here first.",
+  "priority_legend": {
+    "P0": "must be probed live and, if verified, get a reusable connector",
+    "P1": "must be probed live; connector only if it verifies",
+    "P2": "documentation only, or probed opportunistically",
+    "P3": "known-blocked / commercial; documentation record only"
+  },
+  "sources": [
+    {"source_id": "openfda_device_510k", "source_name": "openFDA device 510(k)", "domain": "A", "country_or_region": "US", "official_url": "https://open.fda.gov/apis/device/510k/", "owner": "regulatory", "priority": "P0"},
+    {"source_id": "openfda_device_pma", "source_name": "openFDA device PMA", "domain": "A", "country_or_region": "US", "official_url": "https://open.fda.gov/apis/device/pma/", "owner": "regulatory", "priority": "P0"},
+    {"source_id": "openfda_device_classification", "source_name": "openFDA device classification", "domain": "A", "country_or_region": "US", "official_url": "https://open.fda.gov/apis/device/classification/", "owner": "regulatory", "priority": "P1"},
+    {"source_id": "openfda_device_registrationlisting", "source_name": "openFDA device registration & listing", "domain": "A", "country_or_region": "US", "official_url": "https://open.fda.gov/apis/device/registrationlisting/", "owner": "regulatory", "priority": "P1"},
+    {"source_id": "openfda_bulk_download", "source_name": "openFDA bulk download manifest", "domain": "A", "country_or_region": "US", "official_url": "https://api.fda.gov/download.json", "owner": "regulatory", "priority": "P0"},
+    {"source_id": "accessgudid", "source_name": "AccessGUDID (openFDA device UDI)", "domain": "A", "country_or_region": "US", "official_url": "https://accessgudid.nlm.nih.gov/", "owner": "regulatory", "priority": "P0"},
+    {"source_id": "fda_gudid_download", "source_name": "GUDID full release files (NLM)", "domain": "A", "country_or_region": "US", "official_url": "https://accessgudid.nlm.nih.gov/download", "owner": "regulatory", "priority": "P1"},
+    {"source_id": "eudamed", "source_name": "EUDAMED public database", "domain": "A", "country_or_region": "EU", "official_url": "https://ec.europa.eu/tools/eudamed/", "owner": "regulatory", "priority": "P0"},
+    {"source_id": "canada_mdall", "source_name": "Health Canada MDALL", "domain": "A", "country_or_region": "CA", "official_url": "https://health-products.canada.ca/mdall-limh/", "owner": "regulatory", "priority": "P0"},
+    {"source_id": "china_nmpa_device", "source_name": "China NMPA medical device registration", "domain": "A", "country_or_region": "CN", "official_url": "https://www.nmpa.gov.cn/", "owner": "regulatory", "priority": "P1"},
+    {"source_id": "china_nmpa_udi", "source_name": "China NMPA UDI database", "domain": "A", "country_or_region": "CN", "official_url": "https://udi.nmpa.gov.cn/", "owner": "regulatory", "priority": "P2"},
+    {"source_id": "australia_tga_artg", "source_name": "Australia TGA ARTG", "domain": "A", "country_or_region": "AU", "official_url": "https://www.tga.gov.au/resources/artg", "owner": "regulatory", "priority": "P1"},
+    {"source_id": "uk_mhra_device", "source_name": "UK MHRA medical device register", "domain": "A", "country_or_region": "UK", "official_url": "https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency", "owner": "regulatory", "priority": "P2"},
+    {"source_id": "japan_pmda", "source_name": "Japan PMDA medical device information", "domain": "A", "country_or_region": "JP", "official_url": "https://www.pmda.go.jp/english/", "owner": "regulatory", "priority": "P2"},
+    {"source_id": "brazil_anvisa", "source_name": "Brazil ANVISA medical device registry", "domain": "A", "country_or_region": "BR", "official_url": "https://consultas.anvisa.gov.br/", "owner": "regulatory", "priority": "P2"},
+    {"source_id": "korea_mfds", "source_name": "Korea MFDS medical device information", "domain": "A", "country_or_region": "KR", "official_url": "https://www.mfds.go.kr/", "owner": "regulatory", "priority": "P3"},
+
+    {"source_id": "openfda_device_recall", "source_name": "openFDA device recall", "domain": "I", "country_or_region": "US", "official_url": "https://open.fda.gov/apis/device/recall/", "owner": "regulatory", "priority": "P0"},
+    {"source_id": "openfda_device_maude", "source_name": "openFDA device adverse events (MAUDE)", "domain": "I", "country_or_region": "US", "official_url": "https://open.fda.gov/apis/device/event/", "owner": "regulatory", "priority": "P0"},
+    {"source_id": "fda_device_shortages", "source_name": "FDA medical device shortages", "domain": "I", "country_or_region": "US", "official_url": "https://www.fda.gov/medical-devices/medical-device-supply-chain/medical-device-shortages", "owner": "regulatory", "priority": "P1"},
+    {"source_id": "fda_import_alerts", "source_name": "FDA import alerts", "domain": "I", "country_or_region": "US", "official_url": "https://www.accessdata.fda.gov/cms_ia/", "owner": "regulatory", "priority": "P1"},
+
+    {"source_id": "epo_ops", "source_name": "EPO Open Patent Services", "domain": "B", "country_or_region": "EU", "official_url": "https://www.epo.org/en/searching-for-patents/data/web-services/ops", "owner": "patents", "priority": "P0"},
+    {"source_id": "uspto_patent_bulk", "source_name": "USPTO patent full-text bulk data", "domain": "B", "country_or_region": "US", "official_url": "https://bulkdata.uspto.gov/", "owner": "patents", "priority": "P1"},
+    {"source_id": "uspto_open_data_portal", "source_name": "USPTO Open Data Portal API", "domain": "B", "country_or_region": "US", "official_url": "https://data.uspto.gov/apis", "owner": "patents", "priority": "P0"},
+    {"source_id": "patentsview", "source_name": "PatentsView search API", "domain": "B", "country_or_region": "US", "official_url": "https://search.patentsview.org/docs/", "owner": "patents", "priority": "P0"},
+    {"source_id": "google_patents_bigquery", "source_name": "Google Patents Public Data (BigQuery)", "domain": "B", "country_or_region": "GLOBAL", "official_url": "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data", "owner": "patents", "priority": "P3"},
+    {"source_id": "wipo_patentscope", "source_name": "WIPO PATENTSCOPE", "domain": "B", "country_or_region": "GLOBAL", "official_url": "https://patentscope.wipo.int/", "owner": "patents", "priority": "P2"},
+    {"source_id": "lens_org", "source_name": "Lens.org patent & scholarly", "domain": "B", "country_or_region": "GLOBAL", "official_url": "https://www.lens.org/", "owner": "patents", "priority": "P3"},
+
+    {"source_id": "openalex", "source_name": "OpenAlex", "domain": "C", "country_or_region": "GLOBAL", "official_url": "https://docs.openalex.org/", "owner": "scholarly", "priority": "P0"},
+    {"source_id": "europepmc", "source_name": "Europe PMC REST", "domain": "C", "country_or_region": "EU", "official_url": "https://europepmc.org/RestfulWebService", "owner": "scholarly", "priority": "P0"},
+    {"source_id": "crossref", "source_name": "Crossref REST API", "domain": "C", "country_or_region": "GLOBAL", "official_url": "https://api.crossref.org/", "owner": "scholarly", "priority": "P0"},
+    {"source_id": "pubmed_eutils", "source_name": "NCBI PubMed E-utilities", "domain": "C", "country_or_region": "US", "official_url": "https://www.ncbi.nlm.nih.gov/books/NBK25501/", "owner": "scholarly", "priority": "P1"},
+    {"source_id": "semantic_scholar", "source_name": "Semantic Scholar Graph API", "domain": "C", "country_or_region": "GLOBAL", "official_url": "https://api.semanticscholar.org/", "owner": "scholarly", "priority": "P1"},
+    {"source_id": "openaire", "source_name": "OpenAIRE Graph API", "domain": "C", "country_or_region": "EU", "official_url": "https://api.openaire.eu/", "owner": "scholarly", "priority": "P2"},
+
+    {"source_id": "clinicaltrials_gov", "source_name": "ClinicalTrials.gov v2 API", "domain": "D", "country_or_region": "US", "official_url": "https://clinicaltrials.gov/data-api/api", "owner": "scholarly", "priority": "P0"},
+    {"source_id": "who_ictrp", "source_name": "WHO ICTRP", "domain": "D", "country_or_region": "GLOBAL", "official_url": "https://www.who.int/clinical-trials-registry-platform", "owner": "scholarly", "priority": "P2"},
+    {"source_id": "eu_ctis", "source_name": "EU Clinical Trials Information System", "domain": "D", "country_or_region": "EU", "official_url": "https://euclinicaltrials.eu/", "owner": "scholarly", "priority": "P1"},
+
+    {"source_id": "nih_reporter", "source_name": "NIH RePORTER API", "domain": "H", "country_or_region": "US", "official_url": "https://api.reporter.nih.gov/", "owner": "scholarly", "priority": "P0"},
+    {"source_id": "eu_cordis", "source_name": "EU CORDIS", "domain": "H", "country_or_region": "EU", "official_url": "https://cordis.europa.eu/", "owner": "scholarly", "priority": "P1"},
+    {"source_id": "sbir_gov", "source_name": "SBIR.gov awards API", "domain": "H", "country_or_region": "US", "official_url": "https://www.sbir.gov/api", "owner": "scholarly", "priority": "P1"},
+
+    {"source_id": "un_comtrade", "source_name": "UN Comtrade", "domain": "E", "country_or_region": "GLOBAL", "official_url": "https://comtradeplus.un.org/", "owner": "patents", "priority": "P0"},
+    {"source_id": "us_census_trade", "source_name": "US Census International Trade API", "domain": "E", "country_or_region": "US", "official_url": "https://www.census.gov/data/developers/data-sets/international-trade.html", "owner": "patents", "priority": "P0"},
+    {"source_id": "usitc_dataweb", "source_name": "USITC DataWeb", "domain": "E", "country_or_region": "US", "official_url": "https://dataweb.usitc.gov/", "owner": "patents", "priority": "P2"},
+    {"source_id": "eurostat_comext", "source_name": "Eurostat Comext", "domain": "E", "country_or_region": "EU", "official_url": "https://ec.europa.eu/eurostat/web/international-trade-in-goods/data/database", "owner": "patents", "priority": "P1"},
+    {"source_id": "uk_hmrc_trade", "source_name": "UK HMRC Trade Info API", "domain": "E", "country_or_region": "UK", "official_url": "https://api.uktradeinfo.com/", "owner": "patents", "priority": "P1"},
+    {"source_id": "china_customs_stats", "source_name": "China Customs statistics", "domain": "E", "country_or_region": "CN", "official_url": "http://stats.customs.gov.cn/", "owner": "patents", "priority": "P3"},
+    {"source_id": "importyeti", "source_name": "ImportYeti", "domain": "E", "country_or_region": "US", "official_url": "https://www.importyeti.com/", "owner": "patents", "priority": "P2"},
+    {"source_id": "importgenius", "source_name": "ImportGenius", "domain": "E", "country_or_region": "US", "official_url": "https://www.importgenius.com/", "owner": "patents", "priority": "P3"},
+    {"source_id": "panjiva", "source_name": "Panjiva (S&P Global)", "domain": "E", "country_or_region": "GLOBAL", "official_url": "https://panjiva.com/", "owner": "patents", "priority": "P3"},
+    {"source_id": "descartes_datamyne", "source_name": "Descartes Datamyne", "domain": "E", "country_or_region": "GLOBAL", "official_url": "https://www.descartes.com/solutions/global-trade-data", "owner": "patents", "priority": "P3"},
+
+    {"source_id": "usaspending", "source_name": "USAspending API", "domain": "F", "country_or_region": "US", "official_url": "https://api.usaspending.gov/", "owner": "procurement", "priority": "P0"},
+    {"source_id": "sam_gov", "source_name": "SAM.gov opportunities API", "domain": "F", "country_or_region": "US", "official_url": "https://sam.gov/data-services", "owner": "procurement", "priority": "P1"},
+    {"source_id": "eu_ted", "source_name": "EU Tenders Electronic Daily", "domain": "F", "country_or_region": "EU", "official_url": "https://ted.europa.eu/", "owner": "procurement", "priority": "P0"},
+    {"source_id": "uk_find_a_tender", "source_name": "UK Find a Tender (OCDS)", "domain": "F", "country_or_region": "UK", "official_url": "https://www.find-tender.service.gov.uk/", "owner": "procurement", "priority": "P1"},
+    {"source_id": "ocds_registry", "source_name": "Open Contracting Data Standard sources", "domain": "F", "country_or_region": "GLOBAL", "official_url": "https://standard.open-contracting.org/", "owner": "procurement", "priority": "P2"},
+    {"source_id": "china_ccgp", "source_name": "China Government Procurement Network", "domain": "F", "country_or_region": "CN", "official_url": "http://www.ccgp.gov.cn/", "owner": "procurement", "priority": "P3"},
+
+    {"source_id": "greenhouse", "source_name": "Greenhouse job board API", "domain": "G", "country_or_region": "GLOBAL", "official_url": "https://developers.greenhouse.io/job-board.html", "owner": "procurement", "priority": "P0"},
+    {"source_id": "lever", "source_name": "Lever postings API", "domain": "G", "country_or_region": "GLOBAL", "official_url": "https://api.lever.co/v0/postings/", "owner": "procurement", "priority": "P0"},
+    {"source_id": "workday_phenom", "source_name": "Workday / Phenom careers adapters", "domain": "G", "country_or_region": "GLOBAL", "official_url": "https://www.workday.com/", "owner": "procurement", "priority": "P2"},
+    {"source_id": "company_careers_pages", "source_name": "Company careers pages (direct)", "domain": "G", "country_or_region": "GLOBAL", "official_url": "https://www.medtronic.com/us-en/about/careers.html", "owner": "procurement", "priority": "P3"}
+  ]
+}
