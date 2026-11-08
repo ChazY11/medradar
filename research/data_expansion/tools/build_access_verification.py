@@ -107,6 +107,12 @@ def build() -> dict:
                         "bytes": p.get("bytes", 0),
                         "elapsed_ms": p.get("elapsed_ms", 0),
                         "error": p.get("error", ""),
+                        # response structure, when the probe recorded one: this is
+                        # what makes "the fields match the documentation" checkable
+                        # without storing the payload itself
+                        "structure": p.get("structure"),
+                        "sample": p.get("sample"),
+                        "findings": p.get("findings"),
                     }
                     for p in (result.get("probes", []) or [])
                 ],
