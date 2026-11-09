@@ -1,0 +1,176 @@
+{
+  "count": 10,
+  "note": "Rejections are evidence too: they record why a name-only match was refused.",
+  "query": "rejected_relations",
+  "rejected": [
+    {
+      "authority": "derived",
+      "basis": {
+        "firm_key": "draeger",
+        "product_codes_left": [
+          "DQA"
+        ],
+        "product_codes_right": [
+          "DSA"
+        ]
+      },
+      "confidence": 0.75,
+      "method": "field_agreement",
+      "rejection_reason": "same company but disjoint FDA product codes: different device categories",
+      "relation_id": "rel_000c2b27dc4f20945e64a8933eceaca0",
+      "relation_type": "UNRELATED"
+    },
+    {
+      "authority": "derived",
+      "basis": {
+        "firm_key": "philips",
+        "product_codes_left": [
+          "LNH",
+          "LNI"
+        ],
+        "product_codes_right": [
+          "MHX"
+        ]
+      },
+      "confidence": 0.75,
+      "method": "field_agreement",
+      "rejection_reason": "same company but disjoint FDA product codes: different device categories",
+      "relation_id": "rel_00122ad35974a1dacc74166fb2bb1104",
+      "relation_type": "UNRELATED"
+    },
+    {
+      "authority": "derived",
+      "basis": {
+        "firm_key": "philips",
+        "product_codes_left": [
+          "DSA"
+        ],
+        "product_codes_right": [
+          "MOS"
+        ]
+      },
+      "confidence": 0.75,
+      "method": "field_agreement",
+      "rejection_reason": "same company but disjoint FDA product codes: different device categories",
+      "relation_id": "rel_00d638d9c6ee6f8e951daa13d39a03de",
+      "relation_type": "UNRELATED"
+    },
+    {
+      "authority": "derived",
+      "basis": {
+        "firm_key": "draeger",
+        "product_codes_left": [
+          "DXN"
+        ],
+        "product_codes_right": [
+          "DSA"
+        ]
+      },
+      "confidence": 0.75,
+      "method": "field_agreement",
+      "rejection_reason": "same company but disjoint FDA product codes: different device categories",
+      "relation_id": "rel_00f27bd632e6f1ce8f86e73ca5df83ce",
+      "relation_type": "UNRELATED"
+    },
+    {
+      "authority": "derived",
+      "basis": {
+        "firm_key": "draeger",
+        "product_codes_left": [
+          "FPL"
+        ],
+        "product_codes_right": [
+          "DQA"
+        ]
+      },
+      "confidence": 0.75,
+      "method": "field_agreement",
+      "rejection_reason": "same company but disjoint FDA product codes: different device categories",
+      "relation_id": "rel_0102b3aec49bb5dcaa6f9be1677dfc5f",
+      "relation_type": "UNRELATED"
+    },
+    {
+      "authority": "derived",
+      "basis": {
+        "firm_key": "medtronic",
+        "product_codes_left": [
+          "DWF"
+        ],
+        "product_codes_right": [
+          "KFM"
+        ]
+      },
+      "confidence": 0.75,
+      "method": "field_agreement",
+      "rejection_reason": "same company but disjoint FDA product codes: different device categories",
+      "relation_id": "rel_01294b340314c5ee0e2710beb9c255f7",
+      "relation_type": "UNRELATED"
+    },
+    {
+      "authority": "inferred",
+      "basis": {
+        "firm_left": "ge_healthcare",
+        "firm_right": "philips",
+        "normalized_brand": "NA"
+      },
+      "confidence": 0.7,
+      "method": "name_only",
+      "rejection_reason": "identical brand name but different manufacturers: brand strings are not identities",
+      "relation_id": "rel_0140d75fd84c928e674ab888d615537d",
+      "relation_type": "UNRELATED"
+    },
+    {
+      "authority": "derived",
+      "basis": {
+        "firm_key": "mindray",
+        "product_codes_left": [
+          "MHX"
+        ],
+        "product_codes_right": [
+          "ITX"
+        ]
+      },
+      "confidence": 0.75,
+      "method": "field_agreement",
+      "rejection_reason": "same company but disjoint FDA product codes: different device categories",
+      "relation_id": "rel_0164d38a23c76383d8d3c547e7a452fb",
+      "relation_type": "UNRELATED"
+    },
+    {
+      "authority": "derived",
+      "basis": {
+        "firm_key": "draeger",
+        "product_codes_left": [
+          "BZK"
+        ],
+        "product_codes_right": [
+          "MHX"
+        ]
+      },
+      "confidence": 0.75,
+      "method": "field_agreement",
+      "rejection_reason": "same company but disjoint FDA product codes: different device categories",
+      "relation_id": "rel_020b5be5f4617f549a0d30cab1b7d8d8",
+      "relation_type": "UNRELATED"
+    },
+    {
+      "authority": "derived",
+      "basis": {
+        "firm_key": "philips",
+        "product_codes_left": [
+          "ITX",
+          "IYN",
+          "IYO"
+        ],
+        "product_codes_right": [
+          "MQB"
+        ]
+      },
+      "confidence": 0.75,
+      "method": "field_agreement",
+      "rejection_reason": "same company but disjoint FDA product codes: different device categories",
+      "relation_id": "rel_0213975e3306265ba1468efe6f42f9a1",
+      "relation_type": "UNRELATED"
+    }
+  ]
+}

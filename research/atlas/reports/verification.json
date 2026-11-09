@@ -1,0 +1,79 @@
+{
+  "checks": [
+    {
+      "check": "head_points_at_existing_version",
+      "detail": "0 dangling heads",
+      "ok": true
+    },
+    {
+      "check": "head_hash_matches_version",
+      "detail": "0 mismatch(es)",
+      "ok": true
+    },
+    {
+      "check": "versions_contiguous",
+      "detail": "7254 evidence ids checked",
+      "ok": true
+    },
+    {
+      "check": "normalized_hashes_recompute",
+      "detail": "0 mismatch(es): []",
+      "ok": true
+    },
+    {
+      "check": "confirmed_identity_shares_one_di",
+      "detail": "934 confirmed relations; 0 without a shared DI",
+      "ok": true
+    },
+    {
+      "check": "rejections_have_reasons",
+      "detail": "0 unexplained rejection(s)",
+      "ok": true
+    },
+    {
+      "check": "revoked_relations_not_counted_as_live",
+      "detail": "0 confirmed rows are revoked (excluded by queries; history retained)",
+      "ok": true
+    },
+    {
+      "check": "no_duplicate_live_relations",
+      "detail": "0 duplicate(s)",
+      "ok": true
+    },
+    {
+      "check": "report_counts_match_db",
+      "detail": "{}",
+      "ok": true
+    },
+    {
+      "check": "report_relations_match_db",
+      "detail": "{}",
+      "ok": true
+    },
+    {
+      "check": "baseline_arithmetic_consistent",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "no_restricted_source_samples",
+      "detail": "[]",
+      "ok": true
+    },
+    {
+      "check": "sample_files_bounded",
+      "detail": "[]",
+      "ok": true
+    },
+    {
+      "check": "restricted_evidence_not_used",
+      "detail": "0 restricted evidence rows (must be zero for public output)",
+      "ok": true
+    }
+  ],
+  "checks_failed": 0,
+  "checks_total": 14,
+  "db": "D:\\DEPPSKK\\worktrees\\atlas-001\\research\\atlas\\staging\\atlas.sqlite",
+  "ok": true,
+  "schema": "medradar.atlas.verification.v1"
+}

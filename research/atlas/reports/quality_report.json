@@ -1,0 +1,559 @@
+{
+  "checks_run": [
+    "check_duplicate_records",
+    "check_missing_fields",
+    "check_time_anomalies",
+    "check_identity_contradictions",
+    "check_alias_conflicts",
+    "check_collection_completeness",
+    "check_source_availability",
+    "check_growth_anomaly",
+    "check_licence_restrictions"
+  ],
+  "counts": {
+    "by_check": {
+      "duplicate_cross_source_expected": 1,
+      "duplicate_same_source": 50,
+      "missing_company_link": 2
+    },
+    "by_severity": {
+      "info": 3,
+      "warning": 50
+    },
+    "total": 53
+  },
+  "findings": [
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "3 records from canada_mdall share canonical key di:00816847020992",
+      "evidence_ids": [
+        "ev_568f6962492ce9fae0aa441bdffee8b4",
+        "ev_a97d7874e5ca64a082effaf2493cbc52",
+        "ev_916e3eab1243328624b817cf04a56b68"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847020992"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021005",
+      "evidence_ids": [
+        "ev_aff3ef1c162ed47321bfc44659bf4e7d",
+        "ev_366020bed8345ad07ef0c9aee45c72d0"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021005"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021012",
+      "evidence_ids": [
+        "ev_b417acf946d69878536b75374e0eb2a1",
+        "ev_0ca812c4d953dd35efd56c5f327ae1a1"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021012"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "3 records from canada_mdall share canonical key di:00816847021029",
+      "evidence_ids": [
+        "ev_adc905af11e955e6ff8e182cab91338c",
+        "ev_987231e364d31814f4f71aad4ef398de",
+        "ev_02dfd88bb251dc561a7cfc5e75a9d908"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021029"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021036",
+      "evidence_ids": [
+        "ev_7253311f0b8d1c43abac0d33de581e23",
+        "ev_6aed7dacf74222bd227375d55f1fd682"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021036"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021043",
+      "evidence_ids": [
+        "ev_be9443e3a669aeaa494e12e193e89bf5",
+        "ev_24aeed8ce507d84ea6a45a98355fa0ce"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021043"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "3 records from canada_mdall share canonical key di:00816847021050",
+      "evidence_ids": [
+        "ev_8305a1784f4770dfc736f2b23223fd5d",
+        "ev_914a3650a5d8dd0639063ad0e13c1ed3",
+        "ev_c24f6bddac2ef02c7682f46038e8babf"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021050"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021067",
+      "evidence_ids": [
+        "ev_50e0e4c98cf1468054f8eac4ac7c9ab2",
+        "ev_329f44c7db08101ec4ee60e6bdc15662"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021067"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021074",
+      "evidence_ids": [
+        "ev_3a24e488fd3989c5f952320aebed20cb",
+        "ev_0b9490379c82f5239e89bfa59ce817c3"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021074"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "3 records from canada_mdall share canonical key di:00816847021081",
+      "evidence_ids": [
+        "ev_14ccb806e9c32a4f2ce171b5eac1a5e6",
+        "ev_26511329c05c268f87e5a24dc0bf659b",
+        "ev_004fc7b8d78bbfe7aa241704915e74d2"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021081"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021098",
+      "evidence_ids": [
+        "ev_116440c3570f05a6a24617445cba718d",
+        "ev_bc0ac474ad8305448c82194a9e8cba09"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021098"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021104",
+      "evidence_ids": [
+        "ev_c98f5ce7efd16f6f09c526ab8fbc3b81",
+        "ev_3864dbfdda99494248cad9432f5193ef"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021104"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "3 records from canada_mdall share canonical key di:00816847021111",
+      "evidence_ids": [
+        "ev_b01cf1ac596c372bdd96b31b8fa70e78",
+        "ev_2617660bec301e07ef05d077acc9b07b",
+        "ev_64da01032450871bbd6c896de81b2f6c"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021111"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021128",
+      "evidence_ids": [
+        "ev_26bd80e70305df4c9fb042855e6ac282",
+        "ev_84666dbdfd47b6980f2e97ae3cfcc13f"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021128"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021135",
+      "evidence_ids": [
+        "ev_bb92f73f041879b8276bc6d5d5f8d0b5",
+        "ev_5c8cc88a9daa599eec972d314f39c71e"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021135"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "3 records from canada_mdall share canonical key di:00816847021142",
+      "evidence_ids": [
+        "ev_e62a47fc76041030f44064a1165fa1a4",
+        "ev_e4319cac62b38306979b55acaa1a954b",
+        "ev_3653d0d45411bbb06a55f523a2f989aa"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021142"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021159",
+      "evidence_ids": [
+        "ev_9de2210149101364398905bb68407f80",
+        "ev_403ad1d4fe23b19d512beb2d79e0dc5d"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021159"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021166",
+      "evidence_ids": [
+        "ev_55de90844096261f8cc1e8bc79efef13",
+        "ev_776b7782e70a56d41e4fa037177eb435"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021166"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "3 records from canada_mdall share canonical key di:00816847021173",
+      "evidence_ids": [
+        "ev_c7eb1f5420746867d95a12993bbd00a2",
+        "ev_a88c1800834da9cd8d4c92193102f51e",
+        "ev_0a123349ce0d3b20f49407b220b8ac0d"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021173"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "3 records from canada_mdall share canonical key di:00816847021180",
+      "evidence_ids": [
+        "ev_651d4caaf442d1ee38f823a3435f3de3",
+        "ev_93f0fc949b5e7af5ce2953167938e7b8",
+        "ev_30883af0a32e5a9bfe23f00f27ef208e"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021180"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021197",
+      "evidence_ids": [
+        "ev_bb157c354976358e2b6396c864cb484e",
+        "ev_0a3b82d66dd759da01c4d55fae84e2e1"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021197"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021203",
+      "evidence_ids": [
+        "ev_5e9da4926f0214cb568bfd97cd0dfe1f",
+        "ev_ce6e208bd24c4530f216adeae4b3f762"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021203"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "3 records from canada_mdall share canonical key di:00816847021210",
+      "evidence_ids": [
+        "ev_04b2d3f4f807d2ff53e8dd375879c806",
+        "ev_ddcd5ac1c420034c39397885cf9891ac",
+        "ev_d5ef16e5c7b78bd9e40f2a666e9d7cd2"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021210"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021227",
+      "evidence_ids": [
+        "ev_c504ff39cd889761ecfb6e729828a8cd",
+        "ev_b498b93e60f80d8d3ed6a4b2115d9a12"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021227"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021234",
+      "evidence_ids": [
+        "ev_0d85f89c1f5481e623d46540e1d015a6",
+        "ev_fbf154335b498299e07d57707080868e"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021234"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021241",
+      "evidence_ids": [
+        "ev_bf882cdd9a19a08957037c7fa973a6aa",
+        "ev_a387bfa5cb1dc9456979a17e0882dde2"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021241"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021258",
+      "evidence_ids": [
+        "ev_20e288d5f0d8ccd6a70d1742ffceb89b",
+        "ev_4f5381046266ceb78121e20d9a0465f2"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021258"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021456",
+      "evidence_ids": [
+        "ev_db7eebe3baf6be2651eeec7b9846f64e",
+        "ev_627fff830f1da11059d03f2510c80e1a"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021456"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:00816847021463",
+      "evidence_ids": [
+        "ev_1c603310725f2d20a752a6ead797c0f7",
+        "ev_07aa23b449b3c3ef583c6a1deb7b7a4e"
+      ],
+      "severity": "warning",
+      "subject": "di:00816847021463"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752394382",
+      "evidence_ids": [
+        "ev_143edcfefd2ea0731379320de6a51cd4",
+        "ev_390dac656e44ef2a71fb223f596d079c"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752394382"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752394399",
+      "evidence_ids": [
+        "ev_e3feec622a4e2337dd46903dceebccee",
+        "ev_61fe43bb47dbfd5ce8cfa6e987d04847"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752394399"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752394405",
+      "evidence_ids": [
+        "ev_ddf7e88460be5c1a31ef5932c2d337e1",
+        "ev_991fd43fc73794c89fdb679c84d481bc"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752394405"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752394412",
+      "evidence_ids": [
+        "ev_604eb203688b385c319b5709f49da788",
+        "ev_539aaf049d7613559aecf0f7b5ff72eb"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752394412"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395631",
+      "evidence_ids": [
+        "ev_a3d67ca48676b995654e2e46d731c516",
+        "ev_9da5a1b491f18dd87f8759d6ef993ba8"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395631"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395648",
+      "evidence_ids": [
+        "ev_72f2bf1b14670c69bafb369afbbaf7b3",
+        "ev_271279e448000e09cfd23437d479c6b3"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395648"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395655",
+      "evidence_ids": [
+        "ev_5c9238127156691463981f487ea2a46f",
+        "ev_5fad7a7bb411e3b761e487adc6d24421"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395655"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395662",
+      "evidence_ids": [
+        "ev_b3e4b6be817ef7d3dac87cbd8445616a",
+        "ev_d9f1f7cc824bdfafb8312a84afac34ae"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395662"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395808",
+      "evidence_ids": [
+        "ev_b1669231471bfc0dca7177cec2f00c8b",
+        "ev_c6550a8afbd5ba90ec8b6a7bed67144c"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395808"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395815",
+      "evidence_ids": [
+        "ev_af97395b93d46aa8e95dc70b6137aad1",
+        "ev_a55364201f53d5e7d9e768af0b0181f6"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395815"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395822",
+      "evidence_ids": [
+        "ev_56d6e267eddbf909cd19586f2dc8364f",
+        "ev_8927db31ec0d1012bae31c98c0343367"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395822"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395839",
+      "evidence_ids": [
+        "ev_cbd8279e5e44b3066735de6babfe2911",
+        "ev_6f5d1c7fde763e59da55ae396d5aff56"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395839"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395846",
+      "evidence_ids": [
+        "ev_01002c178d27133d2bd89fab80bee741",
+        "ev_6baa39cc19d6a8fac43ed49160968349"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395846"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395853",
+      "evidence_ids": [
+        "ev_b3e3fa8cbd24ecac7255117d753ec2ec",
+        "ev_feb2eee8ad7cecc37ca6f4191c50802f"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395853"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395860",
+      "evidence_ids": [
+        "ev_7c9154cbcb6572ce91d60452a380d143",
+        "ev_0c0145154b59cbd658312ae807db7e0b"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395860"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395877",
+      "evidence_ids": [
+        "ev_08a488b803fabd4e1f3bc6a64c8c8c22",
+        "ev_1fb9b7bcf9555c5eb054f6cdbe79f662"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395877"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395884",
+      "evidence_ids": [
+        "ev_563a5574dc198a538e02ab8d7a989fba",
+        "ev_fabcf1a2f33a488765519a0dab8b2f72"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395884"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395891",
+      "evidence_ids": [
+        "ev_a1e06582b48c6d7b743be8c690bd05e7",
+        "ev_ef58fa4c2e5498c0028c5a3f9a866e2d"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395891"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395907",
+      "evidence_ids": [
+        "ev_101459caff5ade491af8be109604ea0c",
+        "ev_afeb521b563132fb598b1f88246e41b6"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395907"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395914",
+      "evidence_ids": [
+        "ev_ec377e4ae68563f8e36f86af9cd29399",
+        "ev_f7ab807c973e0d5a78917736a5ed5906"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395914"
+    },
+    {
+      "check_id": "duplicate_same_source",
+      "detail": "2 records from canada_mdall share canonical key di:04043752395921",
+      "evidence_ids": [
+        "ev_a64245b6d8f295f47c788ee32f54dca3",
+        "ev_fbb269aca27549810c750be218a5ad71"
+      ],
+      "severity": "warning",
+      "subject": "di:04043752395921"
+    },
+    {
+      "check_id": "duplicate_cross_source_expected",
+      "detail": "946 canonical keys appear in more than one source; these are deduplicated upstream observations, not independent corroboration",
+      "evidence_ids": [],
+      "severity": "info",
+      "subject": "canonical_key"
+    },
+    {
+      "check_id": "missing_company_link",
+      "detail": "5531 records from canada_mdall have no resolved target-firm company (expected for records outside the five-firm pilot)",
+      "evidence_ids": [],
+      "severity": "info",
+      "subject": "canada_mdall"
+    },
+    {
+      "check_id": "missing_company_link",
+      "detail": "930 records from openfda_device_udi have no resolved target-firm company (expected for records outside the five-firm pilot)",
+      "evidence_ids": [],
+      "severity": "info",
+      "subject": "openfda_device_udi"
+    }
+  ],
+  "note": "A failed collection produces an error finding; it is never reported as zero events.",
+  "schema": "medradar.atlas.quality_report.v1"
+}

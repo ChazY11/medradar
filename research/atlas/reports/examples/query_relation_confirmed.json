@@ -1,0 +1,76 @@
+{
+  "found": true,
+  "query": "relation_evidence",
+  "relation": {
+    "authority": "source_declared",
+    "basis_json": "{\"brand_left\":\"Hearing Aid Feature 2.0 (HAF 2.0)\",\"brand_right\":\"\",\"model_left\":\"Feature version 2.X\",\"model_right\":\"\",\"shared_fields\":[\"di\"],\"shared_identifier\":\"di:00195950732399\"}",
+    "confidence": 0.99,
+    "contradictions_json": "[]",
+    "created_at": "2026-11-09T23:18:57.612595Z",
+    "from_ref": "ev_9c0e1c4d3f2823114be05fa39dbd6bf8",
+    "from_type": "device",
+    "history": [
+      {
+        "action": "created",
+        "at": "2026-11-09T23:18:57.612595Z",
+        "reason": ""
+      }
+    ],
+    "method": "official_identifier",
+    "rejection_reason": "",
+    "relation_evidence": [
+      {
+        "evidence_id": "ev_9c0e1c4d3f2823114be05fa39dbd6bf8",
+        "evidence_type": "device_registration",
+        "identity_resolution_status": "none",
+        "licence_status": "public_domain",
+        "quality_flags": [
+          "missing_company"
+        ],
+        "source_id": "openfda_device_udi",
+        "source_record_id": "b1e955ce-14a3-4dee-bbab-efada877d8f7",
+        "source_url": "https://api.fda.gov/device/udi.json?search=identifiers.id:00195950732399",
+        "time": {
+          "event_at": "",
+          "fetched_at": "2026-11-09T23:18:57.607593Z",
+          "first_observed_at": "2026-11-09T23:18:57.607593Z",
+          "notes": "publish_date is GUDID's per-record first-publication date; public_version_date is a version stamp and is not used as a clock",
+          "observation_basis": "fetch_clock",
+          "source_public_at": "2025-09-09",
+          "source_public_at_quality": "day"
+        }
+      },
+      {
+        "evidence_id": "ev_4aca2f3ac07b6511b0145cb974f86945",
+        "evidence_type": "device_registration",
+        "identity_resolution_status": "none",
+        "licence_status": "open_licence",
+        "quality_flags": [
+          "derived_time"
+        ],
+        "source_id": "canada_mdall",
+        "source_record_id": "112369:1073336:00195950732399",
+        "source_url": "https://health-products.canada.ca/api/medical-devices/deviceidentifier/?state=active&type=json (licence 112369)",
+        "time": {
+          "event_at": "2026-02-10",
+          "fetched_at": "2026-11-09T23:17:19.008420Z",
+          "first_observed_at": "2026-11-09T23:17:19.008420Z",
+          "notes": "MDALL publishes no per-record publication date; source_public_at is derived from the licence date. last_refresh_dt is a database refresh stamp and end_date is a cancellation date - neither may be used as a first-publication date",
+          "observation_basis": "fetch_clock",
+          "source_public_at": "2026-02-10",
+          "source_public_at_quality": "derived"
+        }
+      }
+    ],
+    "relation_id": "rel_986240213439f80207dc176975150913",
+    "relation_type": "SAME_DEVICE_IDENTITY",
+    "revoked_at": "",
+    "revoked_reason": "",
+    "run_id": "bridge_20261109T231732Z",
+    "status": "CONFIRMED",
+    "superseded_by": "",
+    "to_ref": "dev_2d44d93df8824c759aad27fbbabd721e",
+    "to_type": "device"
+  },
+  "relation_id": "rel_986240213439f80207dc176975150913"
+}

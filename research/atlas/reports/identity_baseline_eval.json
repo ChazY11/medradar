@@ -1,0 +1,107 @@
+{
+  "baseline_false_positive_examples": [
+    {
+      "baseline_says_match": true,
+      "fda_brand": "NA",
+      "identity_says": "UNRELATED",
+      "mdall_identifier": "BB9D73R",
+      "name_similarity": 0.4
+    },
+    {
+      "baseline_says_match": true,
+      "fda_brand": "NA",
+      "identity_says": "UNRELATED",
+      "mdall_identifier": "7615XL",
+      "name_similarity": 0.526
+    },
+    {
+      "baseline_says_match": true,
+      "fda_brand": "N/A",
+      "identity_says": "UNRELATED",
+      "mdall_identifier": "5598096",
+      "name_similarity": 0.185
+    },
+    {
+      "baseline_says_match": true,
+      "fda_brand": "N/A",
+      "identity_says": "UNRELATED",
+      "mdall_identifier": "8670075",
+      "name_similarity": 0.154
+    },
+    {
+      "baseline_says_match": true,
+      "fda_brand": "NA",
+      "identity_says": "UNRELATED",
+      "mdall_identifier": "CB10A23R7",
+      "name_similarity": 0.364
+    },
+    {
+      "baseline_says_match": true,
+      "fda_brand": "N/A",
+      "identity_says": "UNRELATED",
+      "mdall_identifier": "7068588",
+      "name_similarity": 0.154
+    },
+    {
+      "baseline_says_match": true,
+      "fda_brand": "N/A",
+      "identity_says": "UNRELATED",
+      "mdall_identifier": "815-500",
+      "name_similarity": 0.215
+    },
+    {
+      "baseline_says_match": true,
+      "fda_brand": "NA",
+      "identity_says": "UNRELATED",
+      "mdall_identifier": "5867AS",
+      "name_similarity": 0.316
+    },
+    {
+      "baseline_says_match": true,
+      "fda_brand": "NA",
+      "identity_says": "UNRELATED",
+      "mdall_identifier": "BB9J40R1",
+      "name_similarity": 0.381
+    },
+    {
+      "baseline_says_match": true,
+      "fda_brand": "N/A",
+      "identity_says": "UNRELATED",
+      "mdall_identifier": "5102910",
+      "name_similarity": 0.185
+    }
+  ],
+  "generated_at": "2026-11-09T23:19:58.835183Z",
+  "label_basis": {
+    "caveat": "sampled pairs, not a prevalence-weighted population estimate; no overall F1 is claimed",
+    "negative": "different DI, and either different company or a deliberately name-identical hard negative",
+    "positive": "MDALL GTIN-14 identifier exactly equals a GUDID UDI-DI (official identifier)"
+  },
+  "metrics": {
+    "identity": {
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "labelled_pairs": 1334,
+      "note": "computed on the sampled labelled pairs only; not a population estimate",
+      "precision": 1.0,
+      "recall": 1.0,
+      "tn": 400,
+      "tp": 934
+    },
+    "name_baseline": {
+      "f1": null,
+      "fn": 934,
+      "fp": 33,
+      "labelled_pairs": 1334,
+      "note": "computed on the sampled labelled pairs only; not a population estimate",
+      "precision": 0.0,
+      "recall": 0.0,
+      "tn": 367,
+      "tp": 0
+    }
+  },
+  "negatives": 400,
+  "positives": 934,
+  "schema": "medradar.atlas.baseline_eval.v1"
+}

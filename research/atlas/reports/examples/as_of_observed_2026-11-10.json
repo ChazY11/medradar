@@ -1,0 +1,210 @@
+{
+  "boundary": {
+    "basis": "observed",
+    "capture_starts_at": "2026-11-09T23:16:37.826142Z",
+    "earliest_observation_in_db": "2026-11-09T23:16:37.826142Z",
+    "requested_at": "2026-11-10T00:00:00Z"
+  },
+  "by_source": {
+    "accessgudid": 12,
+    "canada_mdall": 5552,
+    "openfda_device_510k": 250,
+    "openfda_device_udi": 1440
+  },
+  "by_type": {
+    "device_registration": 7004,
+    "regulatory_clearance": 250
+  },
+  "caveats": [
+    "observed = first_observed_at <= T; it is a fetch clock, not a publication clock.",
+    "public_inferred = source_public_at <= T with exact/day quality; it is what a third party could have seen, not proof that MedRadar saw it.",
+    "records with coarse/derived/missing public dates are kept in 'unprovable' and are never promoted.",
+    "one database capture cannot replay source revisions that were never observed."
+  ],
+  "counts": {
+    "alternative_basis_count": 1452,
+    "observed": 7254,
+    "primary_basis_count": 7254,
+    "public_inferred": 1452,
+    "total_versions_known_by_t": 7254,
+    "unprovable": 5802
+  },
+  "sample": [
+    {
+      "evidence_id": "ev_000e53edb32e19a4329d4c3de1d3a973",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2023-04-13"
+    },
+    {
+      "evidence_id": "ev_00147c876e09fdfc47aa9d435a7b080a",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:18:59.868304Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2024-09-30"
+    },
+    {
+      "evidence_id": "ev_0025e5967fecca15aa1be66ee3f34a35",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-08-26"
+    },
+    {
+      "evidence_id": "ev_00301db040a7c0f24c1a3c0dd6d78550",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-08-26"
+    },
+    {
+      "evidence_id": "ev_0035aabd838c0c65d08630c09cbc3c6f",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:18:57.906979Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-09-12"
+    },
+    {
+      "evidence_id": "ev_003a566eab02d82c50430795c9ee05af",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-02-19"
+    },
+    {
+      "evidence_id": "ev_004507d96b23d3fb5b59a1cf700ee90e",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-08-26"
+    },
+    {
+      "evidence_id": "ev_004fc7b8d78bbfe7aa241704915e74d2",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-08-11"
+    },
+    {
+      "evidence_id": "ev_005e3c5f3ea9ae3fac4a283fab4f8fd9",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-08-26"
+    },
+    {
+      "evidence_id": "ev_006c027302f411f836f2ae209fc2de03",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-08-26"
+    },
+    {
+      "evidence_id": "ev_006e72f871ea781bd4c81784a1c1fa36",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-08-26"
+    },
+    {
+      "evidence_id": "ev_006f343a5cafc79fa5183a10d60a0436",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:18:57.930518Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-09-12"
+    },
+    {
+      "evidence_id": "ev_006f612445e2fd70636d61697edb24f9",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-08-26"
+    },
+    {
+      "evidence_id": "ev_00783644dc8b0ae3bcd757a55fbb9239",
+      "evidence_type": "regulatory_clearance",
+      "first_observed_at": "2026-11-09T23:17:05.501429Z",
+      "source_id": "openfda_device_510k",
+      "source_public_at": "1982-04-21"
+    },
+    {
+      "evidence_id": "ev_007f015236366a7bca0112d6fec89e18",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-08-26"
+    },
+    {
+      "evidence_id": "ev_009249fc83f5203b56c40453c50ce72c",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2026-01-09"
+    },
+    {
+      "evidence_id": "ev_0092cc5f2848ac2020de2102ebe2ee2e",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-04-09"
+    },
+    {
+      "evidence_id": "ev_009abec178672e5f82d00a666bb29860",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-10-09"
+    },
+    {
+      "evidence_id": "ev_00a07b28ebeefdfd8f1d29d35cf229c3",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:19:00.417732Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2024-09-11"
+    },
+    {
+      "evidence_id": "ev_00a4f19196ce89b10c586ea93bcbaa8b",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:19:01.096345Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2024-09-27"
+    },
+    {
+      "evidence_id": "ev_00ace737d9f8ee143592740c29615bc2",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:19:01.809487Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2024-06-13"
+    },
+    {
+      "evidence_id": "ev_00c593b0ca8895950ec42e168434bb0c",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2022-09-02"
+    },
+    {
+      "evidence_id": "ev_00c670cb7be9b60af4399e54da942c01",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-08-26"
+    },
+    {
+      "evidence_id": "ev_00c9c4ea66b167112158b5ea5e794762",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:16:47.630251Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2026-04-07"
+    },
+    {
+      "evidence_id": "ev_00cd93221662b46bfc220d5cd7a17ac3",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-09T23:17:19.008420Z",
+      "source_id": "canada_mdall",
+      "source_public_at": "2025-08-26"
+    }
+  ],
+  "schema": "medradar.atlas.as_of.v1"
+}
