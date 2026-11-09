@@ -1,0 +1,33 @@
+{
+  "access_evidence": "SOURCE_PROBES/patents: sitemap index 200/360906 B; weekly gzip sitemap 200/238148 B; document.html 200/124905 B; document.pdf 200/524450 B. Live collection of 228 records over 241 requests / 30.7 MB.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [],
+  "bulk_available": true,
+  "domain": "data.epo.org",
+  "entity_types": [
+    "patent_publication"
+  ],
+  "first_verified_at": "2026-11-10",
+  "historical_depth": "EP publications from 1978-12-20 to present (weekly since 1978-12-20)",
+  "id_schemes": [
+    "epo_publication_number",
+    "epo_application_number",
+    "pct_application_number"
+  ],
+  "licence_note": "Official public patent publications. The EPO terms of use apply; no explicit reuse licence is stated for the publication servers. We therefore keep derived bibliographic records plus bounded hashed samples rather than a mirror, and record this as open_no_explicit_licence rather than claiming CC-style rights.",
+  "licence_status": "open_no_explicit_licence",
+  "licence_url": "https://www.epo.org/en/legal",
+  "machine_interface": "gzip XML sitemap index -> weekly sitemap -> HTML/PDF document",
+  "name": "EPO European Publication Server (sitemap + INID front pages)",
+  "notes": "INID 43 = application publication date, INID 45 = grant publication date. The connector selects by kind; using 43 for a B grant would misdate it by years.",
+  "operator": "European Patent Office",
+  "probe_suite": "patents",
+  "rate_policy": "no published limit; EPO asks indexers to register; we self-limit to ~1.5 req/s and a fixed budget",
+  "registration_url": null,
+  "robots_summary": "Advertises /publication-server/sitemap.xml and /gpi/sitemap.xml; disallows /pise-server/, /qual_lod/ and /linked-data/{id,doc,data,def,representation}/. Asks crawler operators to e-mail patentinformation@epo.org to register for deep redirects when building indexes. This connector samples and does not index.",
+  "robots_url": "https://data.epo.org/robots.txt",
+  "source_id": "epo_publication_server",
+  "unlock_route": "None needed for bounded research use. For index-scale harvesting, register with patentinformation@epo.org as the robots.txt asks.",
+  "what_is_new": "The only keyless channel found that yields applicant-of-record, inventor, IPC, CPC, filing date, publication date, priority and abstract for real EP patents. This is the first working patent acquisition asset for MedRadar."
+}

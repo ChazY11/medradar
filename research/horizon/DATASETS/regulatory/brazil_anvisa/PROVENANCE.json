@@ -1,0 +1,31 @@
+{
+  "source_id": "brazil_anvisa",
+  "workstream": "regulatory",
+  "generated_at": "2026-11-09T23:21:44Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/regulatory/brazil_anvisa/raw/index_produtos.html",
+      "bytes": 5539,
+      "status": 200,
+      "from_disk": true,
+      "note": "ANVISA open-data directory index for the product consultation",
+      "requested_url": "https://dados.anvisa.gov.br/dados/CONSULTAS/PRODUTOS/"
+    },
+    {
+      "path": "DATASETS/regulatory/brazil_anvisa/raw/TA_CONSULTA_PRODUTOS_SAUDE.csv.head256k",
+      "bytes": 262144,
+      "status": 200,
+      "from_disk": true,
+      "note": "ANVISA device/product consultation CSV — 256 KiB prefix",
+      "requested_url": "https://dados.anvisa.gov.br/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_PRODUTOS_SAUDE.CSV"
+    },
+    {
+      "path": "DATASETS/regulatory/brazil_anvisa/raw/TA_CONSULTA_PRODUTOS_SAUDE.csv.prefix6m",
+      "bytes": 262144,
+      "status": 200,
+      "from_disk": true,
+      "note": "ANVISA product consultation CSV — 6 MiB prefix",
+      "requested_url": "https://dados.anvisa.gov.br/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_PRODUTOS_SAUDE.CSV"
+    }
+  ]
+}

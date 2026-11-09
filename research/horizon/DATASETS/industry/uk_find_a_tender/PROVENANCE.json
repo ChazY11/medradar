@@ -1,0 +1,88 @@
+{
+  "source_id": "uk_find_a_tender",
+  "workstream": "industry",
+  "generated_at": "2026-11-09T23:17:14Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/industry/uk_find_a_tender/raw/award_packages_p1.json",
+      "bytes": 1327614,
+      "sha256": "a540500a3e49926621393153c53e5c99b48f37bb04b0d28b6c87a1d606294774",
+      "requested_url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?stages=award&limit=100",
+      "final_url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?stages=award&limit=100",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:16:58Z",
+      "note": "award-stage OCDS page 1"
+    },
+    {
+      "path": "DATASETS/industry/uk_find_a_tender/raw/award_packages_p2.json",
+      "bytes": 1334382,
+      "sha256": "cfc6bd529be96ae22ac20a58e46aa45dcf8633eb607345de84712df15daff52f",
+      "requested_url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?stages=award&limit=100&cursor=https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?stages=award&limit=100&updatedTo=2026-11-09T23:16:50&cursor=dXBkYXRlZFRvPTIwMjYtMTEtMDlUMjM6MTY6NTB8bmV4dEN1cnNvcj03NTczMTA=",
+      "final_url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?stages=award&limit=100&cursor=https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?stages=award&limit=100&updatedTo=2026-11-09T23:16:50&cursor=dXBkYXRlZFRvPTIwMjYtMTEtMDlUMjM6MTY6NTB8bmV4dEN1cnNvcj03NTczMTA=",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:17:06Z",
+      "note": "award-stage OCDS page 2"
+    },
+    {
+      "path": "DATASETS/industry/uk_find_a_tender/raw/award_packages_p3.json",
+      "bytes": 1250351,
+      "sha256": "37713d2842fbc9abd71ddd1c66cf0074484d82213a51e9e67730cf4abac18aca",
+      "requested_url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?stages=award&limit=100&cursor=https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?stages=award&limit=100&updatedTo=2026-11-09T23:16:50&cursor=dXBkYXRlZFRvPTIwMjYtMTEtMDlUMjM6MTY6NTB8bmV4dEN1cnNvcj03NTYxNDc=",
+      "final_url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?stages=award&limit=100&cursor=https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?stages=award&limit=100&updatedTo=2026-11-09T23:16:50&cursor=dXBkYXRlZFRvPTIwMjYtMTEtMDlUMjM6MTY6NTB8bmV4dEN1cnNvcj03NTYxNDc=",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:17:14Z",
+      "note": "award-stage OCDS page 3"
+    }
+  ],
+  "aggregation_disclaimer": "Trade-flow records are national/regional aggregates. They carry no firm-level revenue, R&D or market-share attribution. Procurement records name a recipient as published by the awarding body; they do not identify the manufacturer of any device unless the award text names a concrete device or model.",
+  "licence_status": "open_licence",
+  "licence_note": "The OCDS release package declares its own licence: `license: https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/` (read from the 'license' field of the package fetched on 2026-11-10). UK public-sector information is re-usable under the Open Government Licence v3.0.",
+  "ocds_package_licence_field": {
+    "license": "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "publicationPolicy": "https://www.gov.uk/government/publications/open-contracting",
+    "publisher": {
+      "name": "Cabinet Office",
+      "scheme": "GB-GOR",
+      "uid": "D2",
+      "uri": "https://www.gov.uk/government/organisations/cabinet-office"
+    },
+    "uri": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?stages=award&limit=100&updatedTo=2026-11-09T23:16:50"
+  },
+  "api_parameter_allowlist": [
+    "stages",
+    "limit",
+    "cursor",
+    "updatedFrom",
+    "updatedTo"
+  ],
+  "medical_cpv_prefixes": [
+    "331",
+    "336",
+    "339",
+    "337"
+  ],
+  "budget": {
+    "client": "industry_uk_find_a_tender",
+    "requests_made": 3,
+    "max_requests": 8,
+    "bytes_received": 3912347,
+    "max_total_bytes": 14000000,
+    "retries": 0
+  },
+  "sampling": {
+    "pages_fetched": 3,
+    "releases_scanned": 300,
+    "medical_releases": 16,
+    "awards_total_in_sample": 678,
+    "medical_awards_in_sample": 32
+  },
+  "coverage_limits": [
+    "This is a SCAN of award-stage releases, not a census: the API offers no CPV or keyword filter, so the medical share of the sampled window is the only statistic that generalises.",
+    "The sample window is 'the most recent award-stage releases', not a fixed calendar period.",
+    "CPV is a procurement vocabulary; it identifies what was bought, not the manufacturer.",
+    "No award date exists in awards[]; contract dateSigned is used when present, otherwise event_at is null."
+  ]
+}

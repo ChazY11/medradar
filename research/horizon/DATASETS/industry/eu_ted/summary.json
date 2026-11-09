@@ -1,0 +1,35 @@
+{
+  "generated_at": "2026-11-09T23:19:38Z",
+  "source_id": "eu_ted",
+  "post_requests": 4,
+  "total_notice_count_for_query": 102,
+  "notices_seen": 102,
+  "notices_with_supplier_name": 93,
+  "notices_with_supplier_identifier": 91,
+  "supplier_rows": 299,
+  "notices_naming_a_device": 19,
+  "notices_with_mixed_cpv": 40,
+  "cpv_diagnostics": {
+    "division_33100000": {
+      "query": "classification-cpv=33100000 AND notice-type=can-standard AND publication-date=today(-365)",
+      "status": 200,
+      "totalNoticeCount": 102,
+      "sample_cpv_codes": [
+        "19260000",
+        "33199000",
+        "98310000",
+        "98312000"
+      ]
+    },
+    "subfamily_33140000": {
+      "query": "classification-cpv=33140000 AND notice-type=can-standard AND publication-date=today(-365)",
+      "status": 200,
+      "totalNoticeCount": 33,
+      "sample_cpv_codes": [
+        "33141000",
+        "33141110"
+      ]
+    }
+  },
+  "query": "(classification-cpv=33100000 OR classification-cpv=33110000 OR classification-cpv=33140000 OR classification-cpv=33150000 OR classification-cpv=33170000 OR classification-cpv=33190000 OR classification-cpv=33192000 OR classification-cpv=33195000) AND notice-type=can-standard AND publication-date=today(-365)"
+}

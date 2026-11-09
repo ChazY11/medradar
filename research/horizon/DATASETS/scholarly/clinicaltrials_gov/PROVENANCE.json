@@ -1,0 +1,125 @@
+{
+  "source_id": "clinicaltrials_gov",
+  "workstream": "scholarly",
+  "experiment": "EXP-H1 / EXP-H3 (fixed anchor sample)",
+  "selection_rule": "experiments/scholarly/EXP_H1_SELECTION_RULE.md",
+  "contact": "medradar-research@proton.me",
+  "generated_at": "2026-11-09T23:06:21Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/scholarly/clinicaltrials_gov/raw/studies_spons_01.json",
+      "bytes": 771689,
+      "sha256": "95fbc5989bb76598a4c513c3eab3126fa7bff9f0eb942407ac2551f8b97e171b",
+      "requested_url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic&pageSize=50&countTotal=true",
+      "final_url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic&pageSize=50&countTotal=true",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:05:58Z",
+      "note": "EXP-H2 trial collection: query.spons=Medtronic, pageSize=50",
+      "firm_query": "Medtronic"
+    },
+    {
+      "path": "DATASETS/scholarly/clinicaltrials_gov/raw/studies_spons_02.json",
+      "bytes": 754527,
+      "sha256": "9c3676e936760436df2429bc711281b1f066f8b3b68e1e59f3cd83722d9ae269",
+      "requested_url": "https://clinicaltrials.gov/api/v2/studies?query.spons=GE+HealthCare&pageSize=50&countTotal=true",
+      "final_url": "https://clinicaltrials.gov/api/v2/studies?query.spons=GE+HealthCare&pageSize=50&countTotal=true",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:05:58Z",
+      "note": "EXP-H2 trial collection: query.spons=GE HealthCare, pageSize=50",
+      "firm_query": "GE HealthCare"
+    },
+    {
+      "path": "DATASETS/scholarly/clinicaltrials_gov/raw/studies_spons_03.json",
+      "bytes": 769414,
+      "sha256": "fc72de28ff516705e250068848ce01914f51cb2134d6f01a93c1b95c6682028b",
+      "requested_url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips&pageSize=50&countTotal=true",
+      "final_url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips&pageSize=50&countTotal=true",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:05:59Z",
+      "note": "EXP-H2 trial collection: query.spons=Philips, pageSize=50",
+      "firm_query": "Philips"
+    },
+    {
+      "path": "DATASETS/scholarly/clinicaltrials_gov/raw/studies_spons_04.json",
+      "bytes": 125314,
+      "sha256": "749fca1d7187b34da5afdf60575fb9b05887dfc7537aab7c3b3e38634387d1ba",
+      "requested_url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Draeger&pageSize=50&countTotal=true",
+      "final_url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Draeger&pageSize=50&countTotal=true",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:06:00Z",
+      "note": "EXP-H2 trial collection: query.spons=Draeger, pageSize=50",
+      "firm_query": "Draeger"
+    },
+    {
+      "path": "DATASETS/scholarly/clinicaltrials_gov/raw/studies_spons_05.json",
+      "bytes": 78631,
+      "sha256": "a5205e0bdbf79007e84dc1acdd5a694c8aae28b7c1693547d5e636421ccc7181",
+      "requested_url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Mindray&pageSize=50&countTotal=true",
+      "final_url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Mindray&pageSize=50&countTotal=true",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:06:00Z",
+      "note": "EXP-H2 trial collection: query.spons=Mindray, pageSize=50",
+      "firm_query": "Mindray"
+    }
+  ],
+  "endpoint": "https://clinicaltrials.gov/api/v2/studies",
+  "method": "GET",
+  "page_size": 50,
+  "queries": [
+    {
+      "firm_query": "Medtronic",
+      "status": 200,
+      "raw": "DATASETS/scholarly/clinicaltrials_gov/raw/studies_spons_01.json",
+      "returned": 50,
+      "totalCount": 1675,
+      "has_more_pages": true,
+      "page_bounded_note": "one page of 50 only; totalCount is the server's count for the whole query and is NOT the number we collected"
+    },
+    {
+      "firm_query": "GE HealthCare",
+      "status": 200,
+      "raw": "DATASETS/scholarly/clinicaltrials_gov/raw/studies_spons_02.json",
+      "returned": 50,
+      "totalCount": 343,
+      "has_more_pages": true,
+      "page_bounded_note": "one page of 50 only; totalCount is the server's count for the whole query and is NOT the number we collected"
+    },
+    {
+      "firm_query": "Philips",
+      "status": 200,
+      "raw": "DATASETS/scholarly/clinicaltrials_gov/raw/studies_spons_03.json",
+      "returned": 50,
+      "totalCount": 377,
+      "has_more_pages": true,
+      "page_bounded_note": "one page of 50 only; totalCount is the server's count for the whole query and is NOT the number we collected"
+    },
+    {
+      "firm_query": "Draeger",
+      "status": 200,
+      "raw": "DATASETS/scholarly/clinicaltrials_gov/raw/studies_spons_04.json",
+      "returned": 8,
+      "totalCount": 8,
+      "has_more_pages": false,
+      "page_bounded_note": "one page of 50 only; totalCount is the server's count for the whole query and is NOT the number we collected"
+    },
+    {
+      "firm_query": "Mindray",
+      "status": 200,
+      "raw": "DATASETS/scholarly/clinicaltrials_gov/raw/studies_spons_05.json",
+      "returned": 6,
+      "totalCount": 6,
+      "has_more_pages": false,
+      "page_bounded_note": "one page of 50 only; totalCount is the server's count for the whole query and is NOT the number we collected"
+    }
+  ],
+  "licence_status": "public_domain",
+  "licence_note": "ClinicalTrials.gov terms state that the data is available for public use and is not subject to copyright restrictions in the United States (https://clinicaltrials.gov/about-site/terms-conditions). Recorded as public_domain.",
+  "records_file": "DATASETS/scholarly/clinicaltrials_gov/records.jsonl",
+  "record_count": 164,
+  "index_file": "DATASETS/scholarly/clinicaltrials_gov/CTGOV_INDEX.json"
+}

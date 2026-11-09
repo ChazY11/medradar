@@ -1,0 +1,661 @@
+{
+  "export_id": "horizon-2026-11-10",
+  "schema_version": "horizon.evidence.v1",
+  "generated_at": "2026-11-09T23:33:25Z",
+  "generator": "tools/build_export.py",
+  "reproduce_command": "python tools/build_export.py --export-id horizon-2026-11-10",
+  "files": [
+    {
+      "source_id": "accessgudid",
+      "path": "accessgudid.jsonl",
+      "sha256": "233274cb66d4a75552b6d4be52af89c1ae10fec46ce22c0d1052ff1b1c089c54",
+      "bytes": 733815,
+      "records": 320
+    },
+    {
+      "source_id": "brazil_anvisa",
+      "path": "brazil_anvisa.jsonl",
+      "sha256": "a2d5d620dcc4dc5556dddabb5ac027743ee6a84771fe0d69400098b78f2a2fb7",
+      "bytes": 307684,
+      "records": 120
+    },
+    {
+      "source_id": "canada_mdall",
+      "path": "canada_mdall.jsonl",
+      "sha256": "b00c4565ba24346877954124dceecebcbf844dd5cbce1792749bb404479e0dc7",
+      "bytes": 288641,
+      "records": 174
+    },
+    {
+      "source_id": "cipo_canada",
+      "path": "cipo_canada.jsonl",
+      "sha256": "47a9a62e87a2e338e264c44d9d5fb9b1086676795cf5ab1c520d50f0b1ba2d62",
+      "bytes": 6679212,
+      "records": 2000
+    },
+    {
+      "source_id": "clinicaltrials_gov",
+      "path": "clinicaltrials_gov.jsonl",
+      "sha256": "fbab44ef31a3d216215783bc59dd58369f06eef2e1e3a2ea3bc5870a2fd55d51",
+      "bytes": 501900,
+      "records": 164
+    },
+    {
+      "source_id": "crossref",
+      "path": "crossref.jsonl",
+      "sha256": "c201db1c4f766b33579f2748bf83a9df6b32655abe0399cc3d6906b83d393eaf",
+      "bytes": 155239,
+      "records": 59
+    },
+    {
+      "source_id": "epo_publication_server",
+      "path": "epo_publication_server.jsonl",
+      "sha256": "0d190b0aa40afddba1b01c2c4356ee267c4b41e53cdcc72b6bc973944dcf50b1",
+      "bytes": 896111,
+      "records": 228
+    },
+    {
+      "source_id": "eu_cordis",
+      "path": "eu_cordis.jsonl",
+      "sha256": "134ca9ceb3c5d53706316fff86c9f47ea23b675807be99cbe4822bf8b358245a",
+      "bytes": 160952,
+      "records": 60
+    },
+    {
+      "source_id": "eu_ted",
+      "path": "eu_ted.jsonl",
+      "sha256": "19d6bd47a186c9b79e517811f71e18f38f46be1459a1ee60d06893015f89d098",
+      "bytes": 1933456,
+      "records": 299
+    },
+    {
+      "source_id": "europepmc",
+      "path": "europepmc.jsonl",
+      "sha256": "0f2b65af9e91e38d2896139d936c2728f92d6c98bb9a453a23b78e640661ae67",
+      "bytes": 169448,
+      "records": 37
+    },
+    {
+      "source_id": "eurostat_comext",
+      "path": "eurostat_comext.jsonl",
+      "sha256": "5933b8d91930e425a34754744fc7b79337ce9b9a3abd20a51e4128e8342d66dd",
+      "bytes": 4096452,
+      "records": 1400
+    },
+    {
+      "source_id": "nih_reporter",
+      "path": "nih_reporter.jsonl",
+      "sha256": "0cdb02634d4eb45f742debd7e32272fec78d88c0449e35e0363b8fc29a338dbf",
+      "bytes": 157282,
+      "records": 64
+    },
+    {
+      "source_id": "openaire",
+      "path": "openaire.jsonl",
+      "sha256": "d6dda6f8e4960391d5570a53a4e764ae2d2474c6c876ca8ed3f73e2c7ef85273",
+      "bytes": 215027,
+      "records": 59
+    },
+    {
+      "source_id": "openalex",
+      "path": "openalex.jsonl",
+      "sha256": "76a2dd478e922ea3ce6e293cb83b522318be6bf90b7430cabb01e42223cde796",
+      "bytes": 186315,
+      "records": 60
+    },
+    {
+      "source_id": "openfda_device_510k",
+      "path": "openfda_device_510k.jsonl",
+      "sha256": "ed78772ac83f34a5654fe428574c7cd9ad52fb5eb8e575ee180283b7854f6f5e",
+      "bytes": 257359,
+      "records": 160
+    },
+    {
+      "source_id": "openfda_device_classification",
+      "path": "openfda_device_classification.jsonl",
+      "sha256": "ae6ca41cea12582e1808fd2f077c920554ce3e57a49cddd6d159bf90cae58a84",
+      "bytes": 93981,
+      "records": 60
+    },
+    {
+      "source_id": "openfda_device_pma",
+      "path": "openfda_device_pma.jsonl",
+      "sha256": "3c99127da4dbba507dd51d93e8b73be5321bde524427e4e350b433907ab7baca",
+      "bytes": 101875,
+      "records": 60
+    },
+    {
+      "source_id": "openfda_device_registrationlisting",
+      "path": "openfda_device_registrationlisting.jsonl",
+      "sha256": "cf9fd709c21502e6bfea0b630de6fb051c6f15e21529eb9b0da010a4c6626523",
+      "bytes": 120989,
+      "records": 60
+    },
+    {
+      "source_id": "pubmed_eutils",
+      "path": "pubmed_eutils.jsonl",
+      "sha256": "0274a68329fb7f6fb4511a2b8042cca92b609a9d6fd887a4800a1a64561a6192",
+      "bytes": 135979,
+      "records": 37
+    },
+    {
+      "source_id": "semantic_scholar",
+      "path": "semantic_scholar.jsonl",
+      "sha256": "5cacd3056275e3e001fb0d7582bd8e49824bcfab6f1700554f24a0a6546d662a",
+      "bytes": 131879,
+      "records": 56
+    },
+    {
+      "source_id": "uk_find_a_tender",
+      "path": "uk_find_a_tender.jsonl",
+      "sha256": "9e4cd0aab6a9f336b941c88702bfada80c83ca836c7127f8168ab47b411aa4f6",
+      "bytes": 215365,
+      "records": 62
+    },
+    {
+      "source_id": "uk_hmrc_trade",
+      "path": "uk_hmrc_trade.jsonl",
+      "sha256": "aefd7d27e06fab1b1c404b79c654fb7eedb53af2a2690decd7bd2c70743629fa",
+      "bytes": 233912,
+      "records": 100
+    },
+    {
+      "source_id": "un_comtrade",
+      "path": "un_comtrade.jsonl",
+      "sha256": "5bbcf42b1ef193108783f8270d0814350bd49a2105d9486f563e67448792b33d",
+      "bytes": 1832311,
+      "records": 608
+    },
+    {
+      "source_id": "usaspending",
+      "path": "usaspending.jsonl",
+      "sha256": "646cb2ecfc94d046d76fc1d33f1637da1e0a4a07086e556abd254dbf28096a49",
+      "bytes": 778851,
+      "records": 245
+    }
+  ],
+  "per_source": [
+    {
+      "source_id": "accessgudid",
+      "records": 320,
+      "unique_dedupe_keys": 320,
+      "records_with_identifiers": 320,
+      "records_with_source_public_at": 320,
+      "records_with_event_at": 0,
+      "licence_status": "public_domain"
+    },
+    {
+      "source_id": "brazil_anvisa",
+      "records": 120,
+      "unique_dedupe_keys": 120,
+      "records_with_identifiers": 120,
+      "records_with_source_public_at": 0,
+      "records_with_event_at": 0,
+      "licence_status": "open_no_explicit_licence"
+    },
+    {
+      "source_id": "canada_mdall",
+      "records": 174,
+      "unique_dedupe_keys": 60,
+      "records_with_identifiers": 174,
+      "records_with_source_public_at": 0,
+      "records_with_event_at": 174,
+      "licence_status": "open_licence"
+    },
+    {
+      "source_id": "cipo_canada",
+      "records": 2000,
+      "unique_dedupe_keys": 2000,
+      "records_with_identifiers": 2000,
+      "records_with_source_public_at": 2000,
+      "records_with_event_at": 916,
+      "licence_status": "open_licence"
+    },
+    {
+      "source_id": "clinicaltrials_gov",
+      "records": 164,
+      "unique_dedupe_keys": 164,
+      "records_with_identifiers": 164,
+      "records_with_source_public_at": 164,
+      "records_with_event_at": 94,
+      "licence_status": "public_domain"
+    },
+    {
+      "source_id": "crossref",
+      "records": 59,
+      "unique_dedupe_keys": 59,
+      "records_with_identifiers": 59,
+      "records_with_source_public_at": 59,
+      "records_with_event_at": 59,
+      "licence_status": "open_no_explicit_licence"
+    },
+    {
+      "source_id": "epo_publication_server",
+      "records": 228,
+      "unique_dedupe_keys": 228,
+      "records_with_identifiers": 228,
+      "records_with_source_public_at": 228,
+      "records_with_event_at": 228,
+      "licence_status": "open_no_explicit_licence"
+    },
+    {
+      "source_id": "eu_cordis",
+      "records": 60,
+      "unique_dedupe_keys": 60,
+      "records_with_identifiers": 60,
+      "records_with_source_public_at": 0,
+      "records_with_event_at": 0,
+      "licence_status": "open_no_explicit_licence"
+    },
+    {
+      "source_id": "eu_ted",
+      "records": 299,
+      "unique_dedupe_keys": 93,
+      "records_with_identifiers": 299,
+      "records_with_source_public_at": 299,
+      "records_with_event_at": 297,
+      "licence_status": "open_no_explicit_licence"
+    },
+    {
+      "source_id": "europepmc",
+      "records": 37,
+      "unique_dedupe_keys": 37,
+      "records_with_identifiers": 37,
+      "records_with_source_public_at": 37,
+      "records_with_event_at": 37,
+      "licence_status": "open_licence"
+    },
+    {
+      "source_id": "eurostat_comext",
+      "records": 1400,
+      "unique_dedupe_keys": 1400,
+      "records_with_identifiers": 1400,
+      "records_with_source_public_at": 0,
+      "records_with_event_at": 1400,
+      "licence_status": "open_licence"
+    },
+    {
+      "source_id": "nih_reporter",
+      "records": 64,
+      "unique_dedupe_keys": 9,
+      "records_with_identifiers": 64,
+      "records_with_source_public_at": 64,
+      "records_with_event_at": 56,
+      "licence_status": "public_domain"
+    },
+    {
+      "source_id": "openaire",
+      "records": 59,
+      "unique_dedupe_keys": 58,
+      "records_with_identifiers": 59,
+      "records_with_source_public_at": 59,
+      "records_with_event_at": 59,
+      "licence_status": "open_licence"
+    },
+    {
+      "source_id": "openalex",
+      "records": 60,
+      "unique_dedupe_keys": 60,
+      "records_with_identifiers": 60,
+      "records_with_source_public_at": 60,
+      "records_with_event_at": 60,
+      "licence_status": "open_licence"
+    },
+    {
+      "source_id": "openfda_device_510k",
+      "records": 160,
+      "unique_dedupe_keys": 160,
+      "records_with_identifiers": 160,
+      "records_with_source_public_at": 0,
+      "records_with_event_at": 160,
+      "licence_status": "public_domain"
+    },
+    {
+      "source_id": "openfda_device_classification",
+      "records": 60,
+      "unique_dedupe_keys": 50,
+      "records_with_identifiers": 60,
+      "records_with_source_public_at": 0,
+      "records_with_event_at": 0,
+      "licence_status": "public_domain"
+    },
+    {
+      "source_id": "openfda_device_pma",
+      "records": 60,
+      "unique_dedupe_keys": 33,
+      "records_with_identifiers": 60,
+      "records_with_source_public_at": 0,
+      "records_with_event_at": 60,
+      "licence_status": "public_domain"
+    },
+    {
+      "source_id": "openfda_device_registrationlisting",
+      "records": 60,
+      "unique_dedupe_keys": 26,
+      "records_with_identifiers": 60,
+      "records_with_source_public_at": 0,
+      "records_with_event_at": 0,
+      "licence_status": "public_domain"
+    },
+    {
+      "source_id": "pubmed_eutils",
+      "records": 37,
+      "unique_dedupe_keys": 37,
+      "records_with_identifiers": 37,
+      "records_with_source_public_at": 37,
+      "records_with_event_at": 37,
+      "licence_status": "open_no_explicit_licence"
+    },
+    {
+      "source_id": "semantic_scholar",
+      "records": 56,
+      "unique_dedupe_keys": 56,
+      "records_with_identifiers": 56,
+      "records_with_source_public_at": 55,
+      "records_with_event_at": 55,
+      "licence_status": "open_no_explicit_licence"
+    },
+    {
+      "source_id": "uk_find_a_tender",
+      "records": 62,
+      "unique_dedupe_keys": 16,
+      "records_with_identifiers": 62,
+      "records_with_source_public_at": 62,
+      "records_with_event_at": 62,
+      "licence_status": "open_licence"
+    },
+    {
+      "source_id": "uk_hmrc_trade",
+      "records": 100,
+      "unique_dedupe_keys": 100,
+      "records_with_identifiers": 100,
+      "records_with_source_public_at": 0,
+      "records_with_event_at": 100,
+      "licence_status": "open_licence"
+    },
+    {
+      "source_id": "un_comtrade",
+      "records": 608,
+      "unique_dedupe_keys": 608,
+      "records_with_identifiers": 608,
+      "records_with_source_public_at": 0,
+      "records_with_event_at": 608,
+      "licence_status": "terms_restricted"
+    },
+    {
+      "source_id": "usaspending",
+      "records": 245,
+      "unique_dedupe_keys": 245,
+      "records_with_identifiers": 245,
+      "records_with_source_public_at": 0,
+      "records_with_event_at": 245,
+      "licence_status": "open_no_explicit_licence"
+    }
+  ],
+  "totals": {
+    "sources": 24,
+    "records": 6492,
+    "bytes": 20384035
+  },
+  "licence_summary": {
+    "cipo_canada": "open_licence",
+    "epo_publication_server": "open_no_explicit_licence",
+    "accessgudid": "public_domain",
+    "brazil_anvisa": "open_no_explicit_licence",
+    "canada_mdall": "open_licence",
+    "openfda_device_510k": "public_domain",
+    "openfda_device_classification": "public_domain",
+    "openfda_device_pma": "public_domain",
+    "openfda_device_registrationlisting": "public_domain",
+    "clinicaltrials_gov": "public_domain",
+    "crossref": "open_no_explicit_licence",
+    "eu_cordis": "open_no_explicit_licence",
+    "europepmc": "open_licence",
+    "nih_reporter": "public_domain",
+    "openaire": "open_licence",
+    "openalex": "open_licence",
+    "pubmed_eutils": "open_no_explicit_licence",
+    "semantic_scholar": "open_no_explicit_licence",
+    "eu_ted": "open_no_explicit_licence",
+    "eurostat_comext": "open_licence",
+    "uk_find_a_tender": "open_licence",
+    "uk_hmrc_trade": "open_licence",
+    "un_comtrade": "terms_restricted",
+    "usaspending": "open_no_explicit_licence"
+  },
+  "coverage_notes": [
+    "`accessgudid`: 320 records; 320 (100%) carry a recorded public observation date and 0 (0%) a recorded event date. Top quality flags: MISSING_FILING_DATE=320.",
+    "`brazil_anvisa`: 120 records; 0 (0%) carry a recorded public observation date and 0 (0%) a recorded event date. Top quality flags: PARTIAL_PAGE=120, MISSING_IDENTIFIER=120, MISSING_PUBLICATION_DATE=120.",
+    "`canada_mdall`: 174 records; 0 (0%) carry a recorded public observation date and 174 (100%) a recorded event date. Top quality flags: MISSING_PUBLICATION_DATE=174.",
+    "`cipo_canada`: 2000 records; 2000 (100%) carry a recorded public observation date and 916 (46%) a recorded event date. Top quality flags: MISSING_CLASSIFICATION=2000, NAME_MATCH_ONLY=2000, NOT_MEDTECH_ON_FRONT_PAGE=2000, SNAPSHOT_ONLY=2000.",
+    "`clinicaltrials_gov`: 164 records; 164 (100%) carry a recorded public observation date and 94 (57%) a recorded event date. Top quality flags: MISSING_FILING_DATE=70.",
+    "`crossref`: 59 records; 59 (100%) carry a recorded public observation date and 59 (100%) a recorded event date. Top quality flags: none.",
+    "`epo_publication_server`: 228 records; 228 (100%) carry a recorded public observation date and 228 (100%) a recorded event date. Top quality flags: PARSED_FROM_HTML=227, MISSING_PRIORITY_DATE=43, DOCUMENT_IS_SEARCH_REPORT=28, DOCUMENT_IS_CORRECTION=3.",
+    "`eu_cordis`: 60 records; 0 (0%) carry a recorded public observation date and 0 (0%) a recorded event date. Top quality flags: SNAPSHOT_ONLY=60.",
+    "`eu_ted`: 299 records; 299 (100%) carry a recorded public observation date and 297 (99%) a recorded event date. Top quality flags: MISSING_FILING_DATE=2.",
+    "`europepmc`: 37 records; 37 (100%) carry a recorded public observation date and 37 (100%) a recorded event date. Top quality flags: none.",
+    "`eurostat_comext`: 1400 records; 0 (0%) carry a recorded public observation date and 1400 (100%) a recorded event date. Top quality flags: MISSING_PUBLICATION_DATE=1400.",
+    "`nih_reporter`: 64 records; 64 (100%) carry a recorded public observation date and 56 (88%) a recorded event date. Top quality flags: MISSING_FILING_DATE=8, RETROSPECTIVE_FIELD=4.",
+    "`openaire`: 59 records; 59 (100%) carry a recorded public observation date and 59 (100%) a recorded event date. Top quality flags: SNAPSHOT_ONLY=59.",
+    "`openalex`: 60 records; 60 (100%) carry a recorded public observation date and 60 (100%) a recorded event date. Top quality flags: none.",
+    "`openfda_device_510k`: 160 records; 0 (0%) carry a recorded public observation date and 160 (100%) a recorded event date. Top quality flags: MISSING_PUBLICATION_DATE=160.",
+    "`openfda_device_classification`: 60 records; 0 (0%) carry a recorded public observation date and 0 (0%) a recorded event date. Top quality flags: MISSING_FILING_DATE=60, MISSING_PUBLICATION_DATE=60.",
+    "`openfda_device_pma`: 60 records; 0 (0%) carry a recorded public observation date and 60 (100%) a recorded event date. Top quality flags: MISSING_PUBLICATION_DATE=60.",
+    "`openfda_device_registrationlisting`: 60 records; 0 (0%) carry a recorded public observation date and 0 (0%) a recorded event date. Top quality flags: MISSING_FILING_DATE=60, MISSING_PUBLICATION_DATE=60.",
+    "`pubmed_eutils`: 37 records; 37 (100%) carry a recorded public observation date and 37 (100%) a recorded event date. Top quality flags: none.",
+    "`semantic_scholar`: 56 records; 55 (98%) carry a recorded public observation date and 55 (98%) a recorded event date. Top quality flags: SNAPSHOT_ONLY=56, MISSING_PUBLICATION_DATE=1.",
+    "`uk_find_a_tender`: 62 records; 62 (100%) carry a recorded public observation date and 62 (100%) a recorded event date. Top quality flags: none.",
+    "`uk_hmrc_trade`: 100 records; 0 (0%) carry a recorded public observation date and 100 (100%) a recorded event date. Top quality flags: MISSING_PUBLICATION_DATE=100.",
+    "`un_comtrade`: 608 records; 0 (0%) carry a recorded public observation date and 608 (100%) a recorded event date. Top quality flags: MISSING_PUBLICATION_DATE=608.",
+    "`usaspending`: 245 records; 0 (0%) carry a recorded public observation date and 245 (100%) a recorded event date. Top quality flags: MISSING_PUBLICATION_DATE=245, MISSING_FILING_DATE=245.",
+    "These are SAMPLES, not censuses. EP: 10 weekly publication dates enumerated out of ~2 500. CA: firm-scoped slice of an open bulk extract ending 2022-02-28. Row counts must not be read as coverage.",
+    "`identity_status = CANDIDATE` records carry a name-fragment firm attribution only. No record in this export claims a confirmed cross-source identity.",
+    "`canada_mdall`: 174 records share only 60 `dedupe_key` entity keys — group on `dedupe_key`, do NOT filter on it.",
+    "`openfda_device_classification`: 60 records share only 50 `dedupe_key` entity keys — group on `dedupe_key`, do NOT filter on it.",
+    "`openfda_device_pma`: 60 records share only 33 `dedupe_key` entity keys — group on `dedupe_key`, do NOT filter on it.",
+    "`openfda_device_registrationlisting`: 60 records share only 26 `dedupe_key` entity keys — group on `dedupe_key`, do NOT filter on it.",
+    "`nih_reporter`: 64 records share only 9 `dedupe_key` entity keys — group on `dedupe_key`, do NOT filter on it.",
+    "`openaire`: 59 records share only 58 `dedupe_key` entity keys — group on `dedupe_key`, do NOT filter on it.",
+    "`eu_ted`: 299 records share only 93 `dedupe_key` entity keys — group on `dedupe_key`, do NOT filter on it.",
+    "`uk_find_a_tender`: 62 records share only 16 `dedupe_key` entity keys — group on `dedupe_key`, do NOT filter on it.",
+    "`cipo_canada`: export carries a DETERMINISTIC STRATIFIED SAMPLE of 2000 from 19702 acquired records (cap 2000). The full extract is regenerable with the committed connector; the stratum is (firm candidate, publication decade), so every firm and decade survives."
+  ],
+  "extra": {
+    "provenance_files": {
+      "cipo_canada": [
+        "DATASETS\\patents\\cipo_canada\\RECORDS.jsonl"
+      ],
+      "epo_publication_server": [
+        "DATASETS\\patents\\epo_publication_server\\RECORDS.jsonl"
+      ],
+      "accessgudid": [
+        "DATASETS\\regulatory\\accessgudid\\records.jsonl"
+      ],
+      "brazil_anvisa": [
+        "DATASETS\\regulatory\\brazil_anvisa\\records.jsonl"
+      ],
+      "canada_mdall": [
+        "DATASETS\\regulatory\\canada_mdall\\records.jsonl"
+      ],
+      "openfda_device_510k": [
+        "DATASETS\\regulatory\\openfda_device_510k\\records.jsonl"
+      ],
+      "openfda_device_classification": [
+        "DATASETS\\regulatory\\openfda_device_classification\\records.jsonl"
+      ],
+      "openfda_device_pma": [
+        "DATASETS\\regulatory\\openfda_device_pma\\records.jsonl"
+      ],
+      "openfda_device_registrationlisting": [
+        "DATASETS\\regulatory\\openfda_device_registrationlisting\\records.jsonl"
+      ],
+      "clinicaltrials_gov": [
+        "DATASETS\\scholarly\\clinicaltrials_gov\\records.jsonl"
+      ],
+      "crossref": [
+        "DATASETS\\scholarly\\crossref\\records.jsonl"
+      ],
+      "eu_cordis": [
+        "DATASETS\\scholarly\\eu_cordis\\records.jsonl"
+      ],
+      "europepmc": [
+        "DATASETS\\scholarly\\europepmc\\records.jsonl"
+      ],
+      "nih_reporter": [
+        "DATASETS\\scholarly\\nih_reporter\\records.jsonl"
+      ],
+      "openaire": [
+        "DATASETS\\scholarly\\openaire\\records.jsonl"
+      ],
+      "openalex": [
+        "DATASETS\\scholarly\\openalex\\records.jsonl"
+      ],
+      "pubmed_eutils": [
+        "DATASETS\\scholarly\\pubmed_eutils\\records.jsonl"
+      ],
+      "semantic_scholar": [
+        "DATASETS\\scholarly\\semantic_scholar\\records.jsonl"
+      ],
+      "eu_ted": [
+        "experiments\\industry\\evidence\\eu_ted.jsonl"
+      ],
+      "eurostat_comext": [
+        "experiments\\industry\\evidence\\eurostat_comext.jsonl"
+      ],
+      "uk_find_a_tender": [
+        "experiments\\industry\\evidence\\uk_find_a_tender.jsonl"
+      ],
+      "uk_hmrc_trade": [
+        "experiments\\industry\\evidence\\uk_hmrc_trade.jsonl"
+      ],
+      "un_comtrade": [
+        "experiments\\industry\\evidence\\un_comtrade.jsonl"
+      ],
+      "usaspending": [
+        "experiments\\industry\\evidence\\usaspending.jsonl"
+      ]
+    },
+    "registry_snapshot": {
+      "accessgudid": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "public_domain",
+        "licence_url": null
+      },
+      "brazil_anvisa": {
+        "access_state": "OPEN",
+        "licence_status": "open_no_explicit_licence",
+        "licence_url": "https://www.gov.br/anvisa/pt-br/acessoainformacao/dadosabertos"
+      },
+      "canada_mdall": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_licence",
+        "licence_url": "https://open.canada.ca/en/open-government-licence-canada"
+      },
+      "cipo_canada": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_licence",
+        "licence_url": "https://open.canada.ca/en/open-government-licence-canada"
+      },
+      "clinicaltrials_gov": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "public_domain",
+        "licence_url": "https://clinicaltrials.gov/about-site/terms-conditions"
+      },
+      "crossref": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_no_explicit_licence",
+        "licence_url": "https://www.crossref.org/operations-and-sustainability/accessibility/"
+      },
+      "epo_publication_server": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_no_explicit_licence",
+        "licence_url": "https://www.epo.org/en/legal"
+      },
+      "eu_cordis": {
+        "access_state": "OPEN",
+        "licence_status": "open_no_explicit_licence",
+        "licence_url": "https://commission.europa.eu/legal-notice_en"
+      },
+      "eu_ted": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_no_explicit_licence",
+        "licence_url": "https://docs.ted.europa.eu/api/latest/index.html"
+      },
+      "europepmc": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_licence",
+        "licence_url": "https://europepmc.org/help"
+      },
+      "eurostat_comext": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_licence",
+        "licence_url": "https://ec.europa.eu/eurostat/help/copyright-notice"
+      },
+      "nih_reporter": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "public_domain",
+        "licence_url": "https://reporter.nih.gov/faq"
+      },
+      "openaire": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_licence",
+        "licence_url": "https://graph.openaire.eu/docs/"
+      },
+      "openalex": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_licence",
+        "licence_url": "https://openalex.org/licenses"
+      },
+      "openfda_device_510k": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "public_domain",
+        "licence_url": "https://open.fda.gov/license/"
+      },
+      "openfda_device_classification": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "public_domain",
+        "licence_url": "https://open.fda.gov/license/"
+      },
+      "openfda_device_pma": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "public_domain",
+        "licence_url": "https://open.fda.gov/license/"
+      },
+      "openfda_device_registrationlisting": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "public_domain",
+        "licence_url": "https://open.fda.gov/license/"
+      },
+      "pubmed_eutils": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_no_explicit_licence",
+        "licence_url": "https://www.ncbi.nlm.nih.gov/books/NBK25497/"
+      },
+      "semantic_scholar": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_no_explicit_licence",
+        "licence_url": "https://www.semanticscholar.org/product/api/license"
+      },
+      "uk_find_a_tender": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_licence",
+        "licence_url": "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
+      },
+      "uk_hmrc_trade": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_licence",
+        "licence_url": "https://www.uktradeinfo.com/"
+      },
+      "un_comtrade": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "terms_restricted",
+        "licence_url": "https://comtradeplus.un.org/LicenseAgreement"
+      },
+      "usaspending": {
+        "access_state": "OPEN_DOCUMENTED",
+        "licence_status": "open_no_explicit_licence",
+        "licence_url": "https://www.usaspending.gov/about"
+      }
+    }
+  }
+}

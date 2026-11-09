@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<!--[if lt IE 9]> <html lang="en" class="no-js lt-ie10 lt-ie9"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="no-js lt-ie10"> <![endif]-->
+<!--[if gt IE 9]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+
+<head>
+	<!-- compatability mode -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<link rel="apple-touch-icon-precomposed" sizes="180x180" href="/assets/favicon/apple-touch-icon-180x180-344160e9131a2c2af6b58fe58c14b89ca2d49f933e7038bb86eb8975a1d22954.png"></link>
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/favicon/apple-touch-icon-152x152-0bc872472a54898793441e6ff2c6cf62d58d52a268f4b0e707c33cb3d755642f.png"></link>
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/favicon/apple-touch-icon-144x144-f2f53b280a68e49944b68190a4846f68db6e7c19dd9783f55495fbfb517e86a0.png"></link>
+<link rel="apple-touch-icon-precomposed" sizes="120x120" href="/assets/favicon/apple-touch-icon-120x120-4605598c4073ef62049c870f9006b4f8500c55276e2ace5bb16b99b52615fbf0.png"></link>
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/favicon/apple-touch-icon-114x114-aeb0cbc8b7185c26c9ab6d0b8d5d5bddae5c55eda900300a3d37e7f818a394fb.png"></link>
+<link rel="apple-touch-icon-precomposed" sizes="76x76" href="/assets/favicon/apple-touch-icon-76x76-6131743131c76196fc05b47fe61377049fa13cf5b1757425f17db6c02807362a.png"></link>
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/favicon/apple-touch-icon-72x72-aa1dd3ccfa3b194277a21a79b97d90e2593f4f0321e9c247689508fd88a6ce49.png"></link>
+<link rel="apple-touch-icon-precomposed" href="/assets/favicon/apple-touch-icon-57x57-19cf5bf06544ad20c33149acfbc6a114ccabf9c5deaa8b20f8a1182a15b0b63a.png"></link>
+<link rel="shortcut icon" href="/assets/favicon/apple-touch-icon-344160e9131a2c2af6b58fe58c14b89ca2d49f933e7038bb86eb8975a1d22954.png"></link>
+
+
+<meta name="msapplication-config" content="https://accessgudid.nlm.nih.gov/favicon/browserconfig.xml"></meta>
+
+
+<link href="https://accessgudid.nlm.nih.gov/favicon/android-chrome-manifest.json"></link>
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" sizes="36x36" href="/assets/favicon/android-chrome-36x36-a99a082cfb269ef6bb24c4e3a9af9d850599abe0e89c0f6d85f239947023a136.png"></link>
+<link rel="icon" sizes="48x48" href="/assets/favicon/android-chrome-48x48-9cc91fb08820843a1455bc78587db1c15cf87e3f2abc8b0e23ed9e77634e3b61.png"></link>
+<link rel="icon" sizes="72x72" href="/assets/favicon/android-chrome-72x72-aa1dd3ccfa3b194277a21a79b97d90e2593f4f0321e9c247689508fd88a6ce49.png"></link>
+<link rel="icon" sizes="96x96" href="/assets/favicon/android-chrome-96x96-c77db1689cc1374459deb496e30f6e969544b58f17695d4fde4e5685d70a7fb1.png"></link>
+<link rel="icon" sizes="144x144" href="/assets/favicon/android-chrome-144x144-f2f53b280a68e49944b68190a4846f68db6e7c19dd9783f55495fbfb517e86a0.png"></link>
+<link rel="icon" sizes="192x192" href="/assets/favicon/android-chrome-192x192-385a6ac2ad03a25ee33abfb0b5eeed1c7ae194ad799a05c4de42c587148abc28.png"></link>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/assets/favicon/favicon-50d1155cb767c71d90af3cac2a8711bca25e586b942db2679000d700d1452b02.ico" />
+
+
+	<!-- REMOVING USER LOGIN
+	 
+	-->
+
+
+  		<title>AccessGUDID - Device History API</title>
+
+  		<meta name="description" content="The Global Unique Device Identification Database (GUDID) contains key device identification information submitted to the FDA about medical devices that have Unique Device Identifiers (UDI).">
+
+
+  <meta name="viewport" id="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=10.0,initial-scale=1.0" />
+
+  <!-- Header Styles -->
+  <link rel="stylesheet" media="all" href="/assets/application-25b1876dff03e2716ed439c4a7deea8f3238849945c1c52c2908add1e33bffd7.css" digest="false" data-turbolinks-track="true" />
+
+  <!-- Header JavaSCripts -->
+  <script src="/assets/application_header-eb0ca068482dcf20ef93977d6a48b12483f41e73fbb4a905a2bc23211a66e594.js" data-turbolinks-track="true"></script>
+
+
+  <!-- IE 8 fix for foundation -->
+  <!--[if lt IE 9]>
+  	<link rel="stylesheet" media="screen" href="/stylesheets/vendor/IE8-fix/ie8.css" />
+  	<script src="/javascripts/vendor/IE8-fix/ie8-head.js"></script>
+  <![endif]-->
+
+  <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="Dr3HRWz5bbv+00U2YQ85S9JMYml6pjvorT76LKdjQzB7p5VROFd540YJwVH144uaNWA+hFledqCwcNtNzSDXqw==" />
+
+
+	
+
+	<!-- Google Tag Manager Script -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NCCCLJ');</script>
+<!-- End Google Tag Manager Script -->
+
+
+</head>
+	<body class="inner support">
+
+	<ul id="skip">
+	<li><a href="#skip-main-content">Skip to Main Content</a></li>
+</ul>
+	<section class="agd-gov-banner" aria-label="Official website of the United States government">
+  <details class="agd-gov-banner__details">
+    <summary class="agd-gov-banner__summary">
+      <img alt="" aria-hidden="true" width="16" height="11" src="/assets/gov-banner/us_flag_small-9c507b1ff21f65c4b8f0c45d0e0d0a10bb5c9864c1a76e07aa3293da574968a1.png" />
+      <span class="agd-gov-banner__statement">An official website of the United States government</span>
+      <span class="agd-gov-banner__action">Here’s how you know</span>
+    </summary>
+    <div class="agd-gov-banner__guidance">
+      <div class="agd-gov-banner__item">
+        <img alt="" aria-hidden="true" width="40" height="40" src="/assets/gov-banner/icon-dot-gov-769bd5f6cbe7cf48452e9e46c126bc1390b26ee14740883d80fe956e7dbfae3c.svg" />
+        <p><strong>Official websites use .gov</strong><br>A <strong>.gov</strong> website belongs to an official government organization in the United States.</p>
+      </div>
+      <div class="agd-gov-banner__item">
+        <img alt="" aria-hidden="true" width="40" height="40" src="/assets/gov-banner/icon-https-c9eb76304db98232bf59e2f0937e2125d228bfb3f3fdd9130800ad93ba376dfb.svg" />
+        <p><strong>Secure .gov websites use HTTPS</strong><br>A <strong>lock</strong> or <strong>https://</strong> means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites.</p>
+      </div>
+    </div>
+  </details>
+</section>
+
+<section class="agd-nih-banner" aria-label="NIH website transition">
+  <button class="agd-nih-banner__close" type="button" aria-label="Close NIH website transition notice">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M4 4l16 16M20 4L4 20"/>
+    </svg>
+  </button>
+  <div class="agd-nih-banner__inner">
+    <svg class="agd-nih-banner__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+    </svg>
+    <div class="agd-nih-banner__text">
+      <p class="agd-nih-banner__title">NIH Websites Are Changing</p>
+      <ul class="agd-nih-banner__list">
+        <li><a href="https://www.nih.gov/web-modernization">Get the Latest Updates and FAQs on the transition</a></li>
+        <li>Per <a href="https://www.whitehouse.gov/presidential-actions/2026/09/inaugurating-the-era-of-super-intelligence/">Executive Order 14434</a>, federal agencies are now using "Super Intelligence" (SI) in place of "Artificial Intelligence" (AI). You may see both terms across NIH content during this transition.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+	<!-- Google Tag Manager No Script-->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NCCCLJ"
+height="0" width="0" style="display:none;visibility:hidden" title="googletagmanager"></iframe></noscript>
+<!-- End Google Tag Manager No Script -->
+
+
+
+	<!--[if lt IE 9]>
+
+	    <div class="outdated-browser">
+	        <p>
+	            You are using an <strong>outdated</strong> browser.
+	            Please <a target="_blank" href="http://browsehappy.com/">upgrade your browser</a>
+	            to improve your experience.
+	        </p>
+	    </div>
+
+	<![endif]-->
+
+
+
+
+	<!-- Start of first Foundation row for ENTIRE page -->
+	<div class="row bg_shadow">
+		<div class="xsmall-12 columns page-container">
+
+
+
+
+			<!-- Foundation row for the header -->
+<header>
+
+
+	<div class="row margined topHeaderNav hide-for-print">
+	<nav>
+
+		<div class="xsmall-8 small-10 medium-5 large-4 columns no-padding">
+			<div class="topNIHLogo">
+				<a href="http://www.nih.gov" class="top-logo" title="National Institutes of Health" target="_blank">
+					<img alt="NIH Logo" src="/assets/nih-toplogo-617478a326d6ed689089379a1824cc3d306d538441ffe0fb800fe6efadfe5685.png" />
+				</a>
+
+			    <a class="show-for-small-up" href="//www.nlm.nih.gov" class="nlm-link" title="National Library of Medicine" target="_blank">National Library of Medicine
+			    </a>
+				<a class="show-for-xsmall-only" href="//www.nlm.nih.gov" class="nlm-link" title="National Library of Medicine" target="_blank">NLM
+				</a>
+			</div>
+     	</div>
+
+		<div class="xsmall-4 small-2 medium-2 large-5 columns no-padding">
+
+			<div class="FDA-tools-dropdown">
+				<a href="http://www.fda.gov/" class="fda-logo-link" title="FDA" target="_blank">
+						<img alt="U.S. Food and Drug Administration" title="U.S. Food and Drug Administration" class="fda-logo" src="/assets/FDA-logo-cropped-small-4882e869e58c2fc78c898ae4ea17f5b431b9f868d6710d8ac2702517651758d7.png" />
+				</a>
+				<a href="#" class="tools-dropdown" data-dropdown="fda-tools-header-dropdown">
+						<span class="show-for-large-up">
+							Tools and Resources
+			        	</span>
+			        	<span class="show-for-medium-up icon arrow-down-white">
+
+			        	</span>
+				</a>
+				<ul id="fda-tools-header-dropdown" class="f-dropdown hide-for-small-down" data-dropdown-content>
+					<li>
+	<a href="http://www.fda.gov/udi" target="_blank">
+		FDA UDI Home
+	</a>
+</li>
+<li>
+	<a href="http://www.fda.gov/MedicalDevices/default.htm" target="_blank">
+		FDA Medical Devices Home 
+	</a>
+</li>
+<li>
+	<a href="https://www.accessdata.fda.gov/scripts/medwatch/" target="_blank">
+		Report a Device Problem (MedWatch) 
+	</a>
+</li>
+<li>
+	<a href="http://www.fda.gov/MedicalDevices/Safety/ListofRecalls/default.htm" target="_blank">
+		Device Recalls
+	</a>
+</li>
+<li>
+	<a href="http://www.fda.gov/MedicalDevices/Safety/AlertsandNotices/default.htm" target="_blank">
+		Device Safety Communications
+	</a>
+</li>
+
+				</ul>
+
+
+			</div>
+
+
+		</div>
+
+	</nav>
+</div>
+
+
+
+	<div class="show-for-print-only">
+		<img class="logo" alt="Access GUDID: Identify Your Medical Device" src="/assets/accessgudid-logo2-a7f6c1ba6fed89f2ba56beb39b016d6bc1240a3fa49f788ccf842e9fb5d89be0.png" />
+	</div>
+
+
+	<div class="bottomHeader dont-show-for-print">
+	<div class="header-image">
+	<div class="mobile-menu-btn closed hasjs" tabindex="0"></div>
+
+	<div class="mobile-menu row margined">
+		<div class="mobile-menu-container">
+			<div class="pro-menu active">
+				<div class="small-6 xsmall-12 columns">
+					<ul>
+						<li>
+							<a href="https://accessgudid.nlm.nih.gov/">Home</a>
+						</li>
+
+						<li>
+							<a href="/about-gudid">About</a>
+						</li>
+						<li>
+							<a href="/news">News</a>
+						</li>
+						<li>
+							<a href="/download">Download</a>
+						</li>
+						<li>
+							<a href="/resources/home">API</a>
+						</li>
+						<li>
+							<a href="/help/home">Help</a>
+						</li>
+						<li>
+							<a target="_blank" href="https://support.nlm.nih.gov/">Customer Support &amp; FAQ</a>
+						</li>
+
+					</ul>
+				</div>
+
+				<div class="small-6 xsmall-12 columns">
+					<ul>
+						<li>
+							FDA Tools and Resources
+							<ul class="fda-resources-list">
+	<li>
+	<a href="http://www.fda.gov/udi" target="_blank">
+		FDA UDI Home
+	</a>
+</li>
+<li>
+	<a href="http://www.fda.gov/MedicalDevices/default.htm" target="_blank">
+		FDA Medical Devices Home 
+	</a>
+</li>
+<li>
+	<a href="https://www.accessdata.fda.gov/scripts/medwatch/" target="_blank">
+		Report a Device Problem (MedWatch) 
+	</a>
+</li>
+<li>
+	<a href="http://www.fda.gov/MedicalDevices/Safety/ListofRecalls/default.htm" target="_blank">
+		Device Recalls
+	</a>
+</li>
+<li>
+	<a href="http://www.fda.gov/MedicalDevices/Safety/AlertsandNotices/default.htm" target="_blank">
+		Device Safety Communications
+	</a>
+</li>
+
+</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<a title="Access GUDID: Identify Your Medical Device" class="logo" href="https://accessgudid.nlm.nih.gov/">GUDID</a>
+
+
+		<div class="mobile-search-btn" tabindex="0"></div>
+
+	<!-- Only display this image on larger screens -->
+	<div class="header-bg  show-for-medium-up">
+
+		<img alt="Barcode" src="/assets/headerimage-8459524177e1dc94ed3d9b90e4786270a8c497dcd4b138468931e4008a3ac4a4.png" />
+
+	</div>
+
+
+	<div class="divider"></div>
+</div>
+
+
+	<div class="row margined bottomHeaderContent">
+	<div class="">
+
+		<div class="search">
+			<div class="divider_10"></div>
+
+
+				<form action="/devices/search">
+
+					<div class="searchNav" style="">
+						<!--
+
+						-->
+					</div>
+
+						<div class="searchForm">
+
+							<div class="xsmall-10 xsmall-centered medium-8 medium-uncentered columns">
+								<div class="searchInput">
+									<input id="searchQuery" name="query" tabindex="0" type="text" placeholder="Enter Device Identifier, Name, or Company" autocorrect="off" autocapitalize="off" autocomplete="off" value="">
+									<div id="searchQuery-autocomplete" style="position:absolute; width: 100%;"></div>
+								</div>
+
+
+							</div>
+
+							<div class="xsmall-12 xsmall-centered medium-1 medium-uncentered no-paddingend columns">
+							<input class="search no-background" tabindex="0" title="Search" type="submit" value="Search">
+							</div>
+						</div>
+					</form>
+
+				<div class="divider"></div>
+
+				<nav class="bottomHeaderNav margined row show-for-medium-up valign-middle secondaryPage">
+					<noscript>
+						<div class="no-js-nav no-js">
+	<div class="row">
+		<div class="xsmall-12 medium-6 columns">
+			<ul>
+				<li>MENU
+					<ul>
+						<li>
+							<a href="https://accessgudid.nlm.nih.gov/">Home</a>
+						</li>
+						<li>
+							<a href="/about-gudid">About</a>
+						</li>
+						<li>
+							<a href="/news">News</a>
+						</li>
+						<li>
+							<a href="/resources/home">API</a>
+						</li>
+						<li>
+							<a href="/download">Download</a>
+						</li>
+						
+						<li>
+							<a href="/help/home">Help</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="xsmall-12 medium-6 columns">
+			<ul>
+				<li>FDA TOOLS &amp; RESOURCES
+					<ul class="fda-resources-list">
+	<li>
+	<a href="http://www.fda.gov/udi" target="_blank">
+		FDA UDI Home
+	</a>
+</li>
+<li>
+	<a href="http://www.fda.gov/MedicalDevices/default.htm" target="_blank">
+		FDA Medical Devices Home 
+	</a>
+</li>
+<li>
+	<a href="https://www.accessdata.fda.gov/scripts/medwatch/" target="_blank">
+		Report a Device Problem (MedWatch) 
+	</a>
+</li>
+<li>
+	<a href="http://www.fda.gov/MedicalDevices/Safety/ListofRecalls/default.htm" target="_blank">
+		Device Recalls
+	</a>
+</li>
+<li>
+	<a href="http://www.fda.gov/MedicalDevices/Safety/AlertsandNotices/default.htm" target="_blank">
+		Device Safety Communications
+	</a>
+</li>
+
+</ul>
+				</li>
+			</ul>
+		</div>
+
+		
+	</div>
+</div>
+					</noscript>
+
+					<div class="medium-7 columns search-bar valign-middle">
+						<div class="row margined search no-background">
+
+							<form action="/devices/search">
+
+								<div class="searchForm">
+
+										<div class="searchInput medium-12 columns">
+
+											<input id="searchToolsQuery" name="query" tabindex="0" type="text" placeholder="Enter Device Identifier, Name, or Company" autocorrect="off" autocapitalize="off" value="">
+										</div>
+										<div class="more-search-options" data-options="align:right; ignore_repositioning" data-dropdown="more-search-options-dropdown">
+
+										</div>
+										<ul id="more-search-options-dropdown" data-dropdown-content>
+											<li>
+	<a href="/advanced-search">Advanced Search</a>
+</li>
+<li>
+	<a href="/help/search/basic-search">Search Help</a>
+</li>
+
+										</ul>
+
+
+										<div class="searchButton">
+											<input class="search float-right" tabindex="0" title="Search" type="submit" value="Search">
+										</div>
+
+								</div>
+							</form>
+
+						</div>
+					</div>
+
+					<div class="medium-5 no-padding columns valign-middle">
+						<ul class="webview hasjs">
+
+							<li>
+								<a title="Home" href="/">Home</a>
+							</li>
+
+							<li>
+								<a title="About" href="/about-gudid">About</a>
+							</li>
+
+
+							<li>
+								<a title="News" href="/news">News</a>
+							</li>
+
+
+							<li>
+								<a title="API Documentation" href="/resources/home">API</a>
+							</li>
+
+
+							<li>
+								<a title="Download" href="/download">Download</a>
+							</li>
+
+							<li>
+								<a title="Help" href="/help/home">Help</a>
+							</li>
+
+						</ul>
+					</div>
+
+					<div class="medium-5 large-4 columns valign-middle">
+						<ul class="tabletview hasjs">
+							<li class="viewmore"><a href="#" title="View More">View More</a>
+								<ul>
+									<li>
+										<a title="Home" class="active" aria-current="page" href="https://accessgudid.nlm.nih.gov/">Home</a>
+									</li>
+									<li>
+										<a title="About" href="/about-gudid">About</a>
+									</li>
+									<li>
+										<a title="News" href="/news">News</a>
+									</li>
+									<li>
+										<a title="API Documentation" href="/resources/home">API</a>
+									</li>
+									<li>
+										<a title="Download" href="/download">Download</a>
+									</li>
+									<li>
+										<a title="Help" href="/help/home">Help</a>
+									</li>
+								</ul>
+						</ul>
+					</div>
+
+
+				</nav>
+				<div class="divider_10 nomargin"></div>
+			</div>
+
+		</div>
+		</div>
+
+		<div class="divider"></div>
+	</div>
+</header>
+
+
+
+
+
+
+			<!-- skip link to main content -->
+			<div id="skip-main-content" tabindex="-1"></div>
+			<div class="main-content row margined">
+
+
+				<div class="xsmall-12 medium-12 columns no-padding add-border">
+
+					<div class="header">
+						<div class="header-top">
+							<!-- Title plus div for body.about div.about background, added div container for h1 and li menu -->
+							<div class="support" title="Device History API"></div>
+							<div class="title-header">
+								<h1>Device History API</h1>
+							</div>
+							<ul class="tools">
+							</ul>
+						</div>
+					</div>
+
+					<div class="content-full">
+						<p class="notice"></p>
+						<p class="alert"></p>
+						
+
+
+
+
+
+
+
+
+
+
+
+<section>
+	<article>
+		<nav class="xsmall-12 medium-4 large-3 columns " id="resources-navigation" aria-label="Resources Section Navigation">
+			
+<section class="home">
+	<header><a title="Resources Home" href="/resources/home">Resources Home</a></header>
+
+	<a title="Notice" class="notice" href="/resources/home#notice">Notice</a>
+
+	<a title="Generating UMLS Tickets" href="/resources/developers/generating_umls_tickets">Generating UMLS Tickets</a>
+</section>
+
+
+<section>
+	<header>Feeds</header>
+	<a title="RSS" href="/resources/feeds/rss">RSS</a>
+</section>
+
+<section>
+	<header>APIs</header>
+	<ul class="toc">
+		<li class="collapsible">
+			<span class="parent">
+				<div class="toggle">
+					<a class="toc-toggle  open ">
+						<span class="expand-button"></span>
+					</a>
+				</div>
+				<a title="V3 APIs" class="active" aria-current="page" href="/resources/developers/v3">V3 APIs</a>
+			</span>
+			<span class="children ">
+				<ul>
+					<li class="collapsible">
+						<span class="child">
+						<a title="Implantable List API" href="/resources/developers/v3/implant_list_api">Implantable List</a>
+						</span>
+					</li>
+					<li class="collapsible">
+						<span class="child">
+						<a title="Device Lookup API" href="/resources/developers/v3/device_lookup_api">Device Lookup</a>
+						</span>
+					</li>
+					<li class="collapsible">
+						<span class="child">
+						<a title="Device History API" class="active" aria-current="page" href="/resources/developers/v3/device_history_api">Device History API</a>
+						</span>
+					</li>
+					<li class="collapsible">
+						<span class="child">
+						<a title="Device SNOMED API" href="/resources/developers/v3/device_snomed_api">Device SNOMED</a>
+						</span>
+					</li>
+					<li class="collapsible">
+						<span class="child">
+						<a title="Parse UDI API" href="/resources/developers/v3/parse_udi_api">Parse UDI</a>
+						</span>
+					</li>
+				</ul>
+			</span>
+		</li>
+	</ul>
+<ul class="toc">
+ <li class="collapsible">
+	<span class="parent">
+		<div class="toggle">
+			<a class="toc-toggle ">
+				<span class="expand-button"></span>
+			</a>
+		</div>
+		<a title="V2 APIs" href="/resources/developers/v2">V2 APIs</a>
+	</span>
+	<span class="children  inactive ">
+		<ul>
+			<li class="collapsible">
+				<span class="child">
+					<a title="Implantable List API" href="/resources/developers/v2/implant_list_api">Implantable List</a>
+
+				</span>
+			</li>
+			<li class="collapsible">
+						<span class="child">
+							<a title="Implantable List Download" href="/resources/developers/v2/implant_list_download">Implantable List Download</a>
+						</span>
+			</li>
+			<li class="collapsible">
+				<span class="child">
+					<a title="Device Lookup API" href="/resources/developers/v2/device_lookup_api">Device Lookup</a>
+				</span>
+			</li>
+			<li class="collapsible">
+				<span class="child">
+					<a title="Device History API" href="/resources/developers/v2/device_history_api">Device History API</a>
+				</span>
+			</li>
+			<li class="collapsible">
+				<span class="child">
+					<a title="Device SNOMED API" href="/resources/developers/v2/device_snomed_api">Device SNOMED</a>
+				</span>
+			</li>
+			<li class="collapsible">
+				<span class="child">
+					<a title="Parse UDI API" href="/resources/developers/v2/parse_udi_api">Parse UDI</a>
+				</span>
+			</li>
+		</ul>
+	</span>
+ </li>
+</ul>
+	<ul class="toc">
+		<li class="collapsible">
+			<span class="parent">
+				<div class="toggle">
+					<a class="toc-toggle ">
+						<span class="expand-button"></span>
+					</a>
+				</div>
+				<a title="V1 APIs" href="/resources/developers/v1">V1 APIs</a>
+			</span>
+			<span class="children  inactive ">
+				<ul>
+					<li class="collapsible">
+						<span class="child">
+							<a title="Implantable List API" href="/resources/developers/v1/implant_list_api">Implantable List</a>
+						</span>
+					</li>
+					<li class="collapsible">
+						<span class="child">
+							<a title="Implantable List Download" href="/resources/developers/v1/implant_list_download">Implantable List Download</a>
+						</span>
+					</li>
+					<li class="collapsible">
+						<span class="child">
+							<a title="Device Lookup API" href="/resources/developers/v1/device_lookup_api">Device Lookup</a>
+						</span>
+					</li>
+					<li class="collapsible">
+						<span class="child">
+							<a title="Device SNOMED API" href="/resources/developers/v1/device_snomed_api">Device SNOMED</a>
+						</span>
+					</li>
+					<li class="collapsible">
+						<span class="child">
+							<a title="Parse UDI API" href="/resources/developers/v1/parse_udi_api">Parse UDI</a>
+						</span>
+					</li>
+				</ul>
+			</span>
+		</li>
+	</ul>
+	<!--new-->
+</section>
+
+<section>
+	<header>Download Files</header>
+
+	<a title="Implantable List Download" href="/resources/developers/v3/implant_list_download">Implantable List Download</a>
+
+	<ul class="toc">
+		<li class="collapsible">
+			<span class="parent">
+				<div class="toggle">
+					<a class="toc-toggle ">
+						<span class="expand-button"></span>
+					</a>
+				</div>
+				<a title="Importing Delimited Device Files" href="/resources/developers/importing_delimited_device_files">Importing Delimited Device Files</a>
+			</span>
+			<span class="children  inactive ">
+				<ul>
+					<li class="collapsible">
+						<span class="child">
+							<a title="Importing into Microsoft Excel" href="/resources/developers/importing_delimited_device_files/excel">Microsoft Excel</a>
+						</span>
+					</li>
+					<li class="collapsible">
+						<span class="child">
+							<a title="Importing into Microsoft Access" href="/resources/developers/importing_delimited_device_files/access">Microsoft Access</a>
+						</span>
+					</li>
+					<li class="collapsible">
+						<span class="child">
+							<a title="Importing into Oracle Database (Manual)" href="/resources/developers/importing_delimited_device_files/oracle">Oracle Database (Manual)</a>
+						</span>
+					</li>
+					<li class="collapsible">
+						<span class="child">
+							<a title="Importing into Oracle Database (SQL Loader)" href="/resources/developers/importing_delimited_device_files/oracle-script">Oracle Database (SQL Loader)</a>
+						</span>
+					</li>
+					<li class="collapsible">
+						<span class="child">
+							<a title="Importing into MySQL Database Load Data Script" href="/resources/developers/importing_delimited_device_files/mysql-script">MySQL Database (Load Data Script)</a>
+						</span>
+					</li>
+				</ul>
+			</span>
+		</li>
+	</ul>
+</section>
+		</nav>
+
+
+
+
+		<div class="xsmall-12 medium-8 large-9 columns" id="docs-main-content">
+			
+
+	<div class="row collapse"  id="v2-devices-history">
+		<h1>GET <span>/devices/history</span></h1>
+		<p>
+			Returns the history associated with a device. A device identifier or device record key is required to receive a response.
+		</p>
+
+		<section id="resource-section">
+			<header>
+				<h2>Resource Information</h2>
+			</header>
+
+			<div class="horizontal-scrolling">
+				<table>
+					<thead>
+						<tr>
+							<th>format</th>
+							<th>URL</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>JSON</code></td>
+							<td><code class="link">https://accessgudid.nlm.nih.gov/api/v3/devices/history.json</code></td>
+						</tr>
+						<tr>
+							<td><code>XML</code></td>
+							<td><code class="link">https://accessgudid.nlm.nih.gov/api/v3/devices/history.xml</code></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section id="parameters-section">
+			<header>
+				<h2>Parameters</h2>
+			</header>
+			Either a <code>di</code> or a <code>udi</code> must be provided.
+			<div class="horizontal-scrolling">
+				<table>
+					<thead>
+						<tr>
+							<th>parameter</th>
+							<th>type</th>
+							<th>description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>record_key</code></td>
+							<td><code class="other">String</code></td>
+							<td>
+								The Device Public Record Key unique to a specific device
+							</td>
+						</tr>
+						<tr>
+							<td><code>di</code></td>
+							<td><code class="other">String</code></td>
+							<td>
+								The Device Identifier string unique to a specific device
+							</td>
+						</tr>
+						<tr>
+							<td><code>udi</code></td>
+							<td><code class="other">String</code></td>
+							<td>
+								The full Unique Device Identifier string for a device
+
+								<br><br><small>This calls and uses the <a title="Parse UDI API" href="/resources/developers/parse_udi_api">Parse UDI API</a> and returns the parsed UDI information.
+								<br>The UDI parameter should be <a target="_blank" href="https://en.wikipedia.org/wiki/Percent-encoding">percent-encoded</a>.</small>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section id="fields-section">
+			<header>
+				<h2>Fields</h2>
+			</header>
+
+			<div class="horizontal-scrolling">
+				<table>
+					<thead>
+						<tr>
+							<th>name</th>
+							<th>type</th>
+							<th>description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>udi</code></td>
+							<td><code class="other">String</code></td>
+							<td>The full Unique Device Identifier string for a device</td>
+						</tr>
+						<tr>
+							<td><code>issuingAgency</code></td>
+							<td><code class="other">String</code></td>
+							<td>The Issuing Agency of this specific <code>udi</code></td>
+						</tr>
+						<tr>
+							<td><code>di</code></td>
+							<td><code class="other">String</code></td>
+							<td>The Device Identifier string unique to a specific device</td>
+						</tr>
+						<tr>
+							<td><code>manufacturingDate</code></td>
+							<td><code class="other">Date (YYYY-MM-DD)</code></td>
+							<td>The manufacturing/production date of the device in a normalized date format (if provided in the <code>udi</code>)</td>
+						</tr>
+						<tr>
+							<td><code>expirationDate</code></td>
+							<td><code class="other">Date (YYYY-MM-DD)</code></td>
+							<td>The expiration date of the device in a normalized date format (if provided in the <code>udi</code>)</td>
+						</tr>
+						<tr>
+							<td><code>lotNumber</code></td>
+							<td><code class="other">String</code></td>
+							<td>The batch/lot of the device (if provided in the <code>udi</code>)</td>
+						</tr>
+						<tr>
+							<td><code>serialNumber</code></td>
+							<td><code class="other">String</code></td>
+							<td>The serial number of the device (if provided in the <code>udi</code>)</td>
+						</tr>
+						<tr>
+							<td><code>mphoLotNumber</code></td>
+							<td><code class="other">String</code></td>
+							<td>The MPHO Lot Number of the device (if provided in the <code>udi</code> and the <code>issuing-agency</code> is ICCBBA)</td>
+						</tr>
+						<tr>
+							<td><code>donationId</code></td>
+							<td><code class="other">String</code></td>
+							<td>The Donation Identification Number of the device (if provided in the <code>udi</code> and the <code>issuing-agency</code> is ICCBBA)</td>
+						</tr>
+						<tr>
+							<td><code>manufacturingDateOriginal</code></td>
+							<td><code class="other">Date (Misc. formats)</code></td>
+							<td>The manufacturing/production date of the device as it was provided (if provided in the <code>udi</code>)</td>
+						</tr>
+						<tr>
+							<td><code>manufacturingDateOriginalFormat</code></td>
+							<td><code class="other">String</code></td>
+							<td>The date format of the manufacturing/production date as it was provided (if provided in the <code>udi</code>). This is to assist users who choose to use the <code>manufacturing-date-original</code> date.</td>
+						</tr>
+						<tr>
+							<td><code>expirationDateOriginal</code></td>
+							<td><code class="other">Date (Misc. formats)</code></td>
+							<td>The expiration date of the device as it was provided (if provided in the <code>udi</code>)</td>
+						</tr>
+						<tr>
+							<td><code>expirationDateOriginalFormat</code></td>
+							<td><code class="other">String</code></td>
+							<td>The date format of the expiration date as it was provided (if provided in the <code>udi</code>). This is to assist users who choose to use the <code>expiration-date-original</code> date.</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section id="examples-section">
+			<header>
+				<h2>Examples</h2>
+			</header>
+
+			<p><code class="other">JSON: GET with DI</code><code class="link">https://accessgudid.nlm.nih.gov/api/v3/devices/history.json?di=03596010535344</code></p>
+
+
+			<pre class="code-snippet"><code>{
+  history: {
+    2: {
+    primary_di: &quot;03596010535344&quot;,
+    publicDeviceRecordKey: &quot;f18845df-38a8-4fc2-8d26-5cce28c8b868&quot;,
+    publicVersionNumber: &quot;2&quot;,
+    publicVersionStatus: &quot;Update&quot;,
+    publicVersionDate: &quot;2018-03-29T00:00:00.000Z&quot;,
+    creationDate: &quot;2018-04-02T18:42:24.902Z&quot;,
+    xml: &quot;&lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39;?&gt;&lt;device xmlns=&#39;http://www.fda.gov/cdrh/gudid&#39; xmlns:xsi=&#39;http://www.w3.org/2001/XMLSchema-instance&#39;&gt;&lt;publicDeviceRecordKey&gt;f18845df-38a8-4fc2-8d26-5cce28c8b868&lt;/publicDeviceRecordKey&gt;&lt;publicVersionStatus&gt;Update&lt;/publicVersionStatus&gt;&lt;deviceRecordStatus&gt;Published&lt;/deviceRecordStatus&gt;&lt;publicVersionNumber&gt;2&lt;/publicVersionNumber&gt;&lt;publicVersionDate&gt;2018-03-29&lt;/publicVersionDate&gt;&lt;devicePublishDate&gt;2015-08-30&lt;/devicePublishDate&gt;&lt;deviceCommDistributionEndDate&gt;2018-03-30&lt;/deviceCommDistributionEndDate&gt;&lt;deviceCommDistributionStatus&gt;Not in Commercial Distribution&lt;/deviceCommDistributionStatus&gt;&lt;identifiers&gt;&lt;identifier&gt;&lt;deviceId&gt;03596010535344&lt;/deviceId&gt;&lt;deviceIdType&gt;Primary&lt;/deviceIdType&gt;&lt;deviceIdIssuingAgency&gt;GS1&lt;/deviceIdIssuingAgency&gt;&lt;containsDINumber xsi:nil=&quot;true&quot;/&gt;&lt;pkgQuantity xsi:nil=&quot;true&quot;/&gt;&lt;pkgDiscontinueDate xsi:nil=&quot;true&quot;/&gt;&lt;pkgStatus xsi:nil=&quot;true&quot;/&gt;&lt;pkgType xsi:nil=&quot;true&quot;/&gt;&lt;/identifier&gt;&lt;/identifiers&gt;&lt;brandName&gt;EMPERION&lt;/brandName&gt;&lt;versionModelNumber&gt;71360949&lt;/versionModelNumber&gt;&lt;catalogNumber&gt;71360949&lt;/catalogNumber&gt;&lt;dunsNumber&gt;109903521&lt;/dunsNumber&gt;&lt;companyName&gt;Smith &amp;amp; Nephew, Inc.&lt;/companyName&gt;&lt;deviceCount&gt;1&lt;/deviceCount&gt;&lt;deviceDescription&gt;19MM MODULAR PILOT&lt;/deviceDescription&gt;&lt;DMExempt&gt;false&lt;/DMExempt&gt;&lt;premarketExempt&gt;false&lt;/premarketExempt&gt;&lt;deviceHCTP&gt;false&lt;/deviceHCTP&gt;&lt;deviceKit&gt;false&lt;/deviceKit&gt;&lt;deviceCombinationProduct&gt;false&lt;/deviceCombinationProduct&gt;&lt;singleUse&gt;false&lt;/singleUse&gt;&lt;lotBatch&gt;true&lt;/lotBatch&gt;&lt;serialNumber&gt;false&lt;/serialNumber&gt;&lt;manufacturingDate&gt;false&lt;/manufacturingDate&gt;&lt;expirationDate&gt;false&lt;/expirationDate&gt;&lt;donationIdNumber&gt;false&lt;/donationIdNumber&gt;&lt;labeledContainsNRL&gt;false&lt;/labeledContainsNRL&gt;&lt;labeledNoNRL&gt;false&lt;/labeledNoNRL&gt;&lt;MRISafetyStatus&gt;Labeling does not contain MRI Safety Information&lt;/MRISafetyStatus&gt;&lt;rx&gt;true&lt;/rx&gt;&lt;otc&gt;false&lt;/otc&gt;&lt;contacts&gt;&lt;customerContact&gt;&lt;phone&gt;+1(800)238-7538&lt;/phone&gt;&lt;phoneExtension xsi:nil=&quot;true&quot;/&gt;&lt;email&gt;GUDID@SMITH-NEPHEW.COM&lt;/email&gt;&lt;/customerContact&gt;&lt;/contacts&gt;&lt;gmdnTerms&gt;&lt;gmdn&gt;&lt;gmdnCode&gt;58481&lt;/gmdnCode&gt;&lt;gmdnPTName&gt;Femoral stem trial prosthesis&lt;/gmdnPTName&gt;&lt;gmdnPTDefinition&gt;A copy of a final femoral stem prosthesis designed to be used for trial reductions during hip arthroplasty to judge the correct offset, leg-length, and range of motion of the final femoral prosthesis to be implanted. It is one of a set of trial hip prostheses that match the different anatomical structures of the hip joint, and is used in conjunction with femoral head trial prostheses. It is typically made of metal or polymer material and includes trial stems and trial necks. This is a reusable device intended to be sterilized prior to use.&lt;/gmdnPTDefinition&gt;&lt;implantable&gt;true&lt;/implantable&gt;&lt;gmdnCodeStatus&gt;Active&lt;/gmdnCodeStatus&gt;&lt;/gmdn&gt;&lt;/gmdnTerms&gt;&lt;productCodes&gt;&lt;fdaProductCode&gt;&lt;productCode&gt;JDG&lt;/productCode&gt;&lt;productCodeName&gt;Prosthesis, hip, femoral component, cemented, metal&lt;/productCodeName&gt;&lt;/fdaProductCode&gt;&lt;/productCodes&gt;&lt;deviceSizes/&gt;&lt;environmentalConditions/&gt;&lt;sterilization&gt;&lt;deviceSterile&gt;false&lt;/deviceSterile&gt;&lt;sterilizationPriorToUse&gt;true&lt;/sterilizationPriorToUse&gt;&lt;methodTypes&gt;&lt;sterilizationMethod&gt;Moist Heat or Steam Sterilization&lt;/sterilizationMethod&gt;&lt;/methodTypes&gt;&lt;/sterilization&gt;&lt;/device&gt;&quot;
+    }
+  }
+}</code></pre>
+
+
+
+			<p><code class="other">XML: GET with UDI</code><code class="link">https://accessgudid.nlm.nih.gov/api/v3/devices/history.xml?udi=%3D%2F03596010535344%3D%2C000025%3DA99971312345600%3D&gt;014032%3D%7D013032%26%2C1000000000000XYZ123</code></p>
+
+			<pre class="code-snippet"><code>&lt;result&gt;
+  &lt;history type=&quot;array&quot;&gt;
+    &lt;version number=&quot;2&quot;&gt;
+      &lt;primary-di&gt;03596010535344&lt;/primary-di&gt;
+      &lt;publicDeviceRecordKey&gt;f18845df-38a8-4fc2-8d26-5cce28c8b868&lt;/publicDeviceRecordKey&gt;
+      &lt;publicVersionNumber&gt;2&lt;/publicVersionNumber&gt;
+      &lt;publicVersionStatus&gt;Update&lt;/publicVersionStatus&gt;
+      &lt;publicVersionDate type=&quot;dateTime&quot;&gt;2018-03-29T00:00:00Z&lt;/publicVersionDate&gt;
+      &lt;creationDate type=&quot;dateTime&quot;&gt;2018-04-02T18:42:24Z&lt;/creationDate&gt;
+      &lt;xml&gt;
+        &lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39;?&gt;&lt;device xmlns=&#39;http://www.fda.gov/cdrh/gudid&#39; xmlns:xsi=&#39;http://www.w3.org/2001/XMLSchema-instance&#39;&gt;&lt;publicDeviceRecordKey&gt;f18845df-38a8-4fc2-8d26-5cce28c8b868&lt;/publicDeviceRecordKey&gt;&lt;publicVersionStatus&gt;Update&lt;/publicVersionStatus&gt;&lt;deviceRecordStatus&gt;Published&lt;/deviceRecordStatus&gt;&lt;publicVersionNumber&gt;2&lt;/publicVersionNumber&gt;&lt;publicVersionDate&gt;2018-03-29&lt;/publicVersionDate&gt;&lt;devicePublishDate&gt;2015-08-30&lt;/devicePublishDate&gt;&lt;deviceCommDistributionEndDate&gt;2018-03-30&lt;/deviceCommDistributionEndDate&gt;&lt;deviceCommDistributionStatus&gt;Not in Commercial Distribution&lt;/deviceCommDistributionStatus&gt;&lt;identifiers&gt;&lt;identifier&gt;&lt;deviceId&gt;03596010535344&lt;/deviceId&gt;&lt;deviceIdType&gt;Primary&lt;/deviceIdType&gt;&lt;deviceIdIssuingAgency&gt;GS1&lt;/deviceIdIssuingAgency&gt;&lt;containsDINumber xsi:nil=&quot;true&quot;/&gt;&lt;pkgQuantity xsi:nil=&quot;true&quot;/&gt;&lt;pkgDiscontinueDate xsi:nil=&quot;true&quot;/&gt;&lt;pkgStatus xsi:nil=&quot;true&quot;/&gt;&lt;pkgType xsi:nil=&quot;true&quot;/&gt;&lt;/identifier&gt;&lt;/identifiers&gt;&lt;brandName&gt;EMPERION&lt;/brandName&gt;&lt;versionModelNumber&gt;71360949&lt;/versionModelNumber&gt;&lt;catalogNumber&gt;71360949&lt;/catalogNumber&gt;&lt;dunsNumber&gt;109903521&lt;/dunsNumber&gt;&lt;companyName&gt;Smith &amp;amp; Nephew, Inc.&lt;/companyName&gt;&lt;deviceCount&gt;1&lt;/deviceCount&gt;&lt;deviceDescription&gt;19MM MODULAR PILOT&lt;/deviceDescription&gt;&lt;DMExempt&gt;false&lt;/DMExempt&gt;&lt;premarketExempt&gt;false&lt;/premarketExempt&gt;&lt;deviceHCTP&gt;false&lt;/deviceHCTP&gt;&lt;deviceKit&gt;false&lt;/deviceKit&gt;&lt;deviceCombinationProduct&gt;false&lt;/deviceCombinationProduct&gt;&lt;singleUse&gt;false&lt;/singleUse&gt;&lt;lotBatch&gt;true&lt;/lotBatch&gt;&lt;serialNumber&gt;false&lt;/serialNumber&gt;&lt;manufacturingDate&gt;false&lt;/manufacturingDate&gt;&lt;expirationDate&gt;false&lt;/expirationDate&gt;&lt;donationIdNumber&gt;false&lt;/donationIdNumber&gt;&lt;labeledContainsNRL&gt;false&lt;/labeledContainsNRL&gt;&lt;labeledNoNRL&gt;false&lt;/labeledNoNRL&gt;&lt;MRISafetyStatus&gt;Labeling does not contain MRI Safety Information&lt;/MRISafetyStatus&gt;&lt;rx&gt;true&lt;/rx&gt;&lt;otc&gt;false&lt;/otc&gt;&lt;contacts&gt;&lt;customerContact&gt;&lt;phone&gt;+1(800)238-7538&lt;/phone&gt;&lt;phoneExtension xsi:nil=&quot;true&quot;/&gt;&lt;email&gt;GUDID@SMITH-NEPHEW.COM&lt;/email&gt;&lt;/customerContact&gt;&lt;/contacts&gt;&lt;gmdnTerms&gt;&lt;gmdn&gt;&lt;gmdnCode&gt;58481&lt;/gmdnCode&gt;&lt;gmdnPTName&gt;Femoral stem trial prosthesis&lt;/gmdnPTName&gt;&lt;gmdnPTDefinition&gt;A copy of a final femoral stem prosthesis designed to be used for trial reductions during hip arthroplasty to judge the correct offset, leg-length, and range of motion of the final femoral prosthesis to be implanted. It is one of a set of trial hip prostheses that match the different anatomical structures of the hip joint, and is used in conjunction with femoral head trial prostheses. It is typically made of metal or polymer material and includes trial stems and trial necks. This is a reusable device intended to be sterilized prior to use.&lt;/gmdnPTDefinition&gt;&lt;implantable&gt;true&lt;/implantable&gt;&lt;gmdnCodeStatus&gt;Active&lt;/gmdnCodeStatus&gt;&lt;/gmdn&gt;&lt;/gmdnTerms&gt;&lt;productCodes&gt;&lt;fdaProductCode&gt;&lt;productCode&gt;JDG&lt;/productCode&gt;&lt;productCodeName&gt;Prosthesis, hip, femoral component, cemented, metal&lt;/productCodeName&gt;&lt;/fdaProductCode&gt;&lt;/productCodes&gt;&lt;deviceSizes/&gt;&lt;environmentalConditions/&gt;&lt;sterilization&gt;&lt;deviceSterile&gt;false&lt;/deviceSterile&gt;&lt;sterilizationPriorToUse&gt;true&lt;/sterilizationPriorToUse&gt;&lt;methodTypes&gt;&lt;sterilizationMethod&gt;Moist Heat or Steam Sterilization&lt;/sterilizationMethod&gt;&lt;/methodTypes&gt;&lt;/sterilization&gt;&lt;/device&gt;
+      &lt;/xml&gt;
+    &lt;/version&gt;
+  &lt;/history&gt;
+  &lt;udi&gt;
+    &lt;udi&gt;
+      =/03596010535344=,000025=A99971312345600=&gt;014032=}013032&amp;,1000000000000XYZ123
+    &lt;/udi&gt;
+    &lt;issuingAgency&gt;ICCBBA&lt;/issuingAgency&gt;
+    &lt;di&gt;03596010535344&lt;/di&gt;
+    &lt;serialNumber&gt;000025&lt;/serialNumber&gt;
+    &lt;donationId&gt;A99971312345600&lt;/donationId&gt;
+    &lt;expirationDateOriginalFormat&gt;YYYJJJ&lt;/expirationDateOriginalFormat&gt;
+    &lt;expirationDateOriginal&gt;014032&lt;/expirationDateOriginal&gt;
+    &lt;expirationDate type=&quot;date&quot;&gt;2014-02-01&lt;/expirationDate&gt;
+    &lt;manufacturingDateOriginalFormat&gt;YYYJJJ&lt;/manufacturingDateOriginalFormat&gt;
+    &lt;manufacturingDateOriginal&gt;013032&lt;/manufacturingDateOriginal&gt;
+    &lt;manufacturingDate type=&quot;date&quot;&gt;2013-02-01&lt;/manufacturingDate&gt;
+    &lt;lotNumber&gt;000000000000XYZ123&lt;/lotNumber&gt;
+  &lt;/udi&gt;
+&lt;/result&gt;</code></pre>
+
+		</section>
+
+
+	</div>
+
+
+		</div>
+	</article>
+
+</section>
+
+
+<style type="text/css">
+	.docs-resource-info {
+		margin-top: 20px;
+	}
+	.docs-resource-info .docs-resource-item{
+		border-bottom: 1px black solid;
+	}
+	.docs-resource-info .docs-resource-item:last-child{
+		border-bottom: none;
+	}
+
+</style>
+
+					</div>
+
+					<div class="divider"></div>
+				</div>
+
+
+			</div>
+
+
+
+			
+<!-- Mobile navigation in the case of no Javascript?
+	Apply the show only on classes here for foundation,
+	elimante the JS pertaining to the same functionality -->
+
+
+<div class="mobilenav no-js dont-show-for-print">
+
+	<div class="no-js-nav no-js">
+	<div class="row">
+		<div class="xsmall-12 medium-6 columns">
+			<ul>
+				<li>MENU
+					<ul>
+						<li>
+							<a href="https://accessgudid.nlm.nih.gov/">Home</a>
+						</li>
+						<li>
+							<a href="/about-gudid">About</a>
+						</li>
+						<li>
+							<a href="/news">News</a>
+						</li>
+						<li>
+							<a href="/resources/home">API</a>
+						</li>
+						<li>
+							<a href="/download">Download</a>
+						</li>
+						
+						<li>
+							<a href="/help/home">Help</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="xsmall-12 medium-6 columns">
+			<ul>
+				<li>FDA TOOLS &amp; RESOURCES
+					<ul class="fda-resources-list">
+	<li>
+	<a href="http://www.fda.gov/udi" target="_blank">
+		FDA UDI Home
+	</a>
+</li>
+<li>
+	<a href="http://www.fda.gov/MedicalDevices/default.htm" target="_blank">
+		FDA Medical Devices Home 
+	</a>
+</li>
+<li>
+	<a href="https://www.accessdata.fda.gov/scripts/medwatch/" target="_blank">
+		Report a Device Problem (MedWatch) 
+	</a>
+</li>
+<li>
+	<a href="http://www.fda.gov/MedicalDevices/Safety/ListofRecalls/default.htm" target="_blank">
+		Device Recalls
+	</a>
+</li>
+<li>
+	<a href="http://www.fda.gov/MedicalDevices/Safety/AlertsandNotices/default.htm" target="_blank">
+		Device Safety Communications
+	</a>
+</li>
+
+</ul>
+				</li>
+			</ul>
+		</div>
+
+		
+	</div>
+</div>
+
+</div>
+
+
+
+
+<!-- Actual footer here -->
+
+<footer class="mainFooter dont-show-for-print">
+	<div class="row margined dont-show-for-print">
+		<div class="xsmall-4 xsmall-push-4 medium-reset-order medium-2 medium-offset-0 columns">
+			<div class="show-for-print-only">
+				<img alt="NIH NLM Logo" src="/assets/nihnlmlogoprint-a55c5edc03879f26cc1f2b2e8a02c36030758e08c941a13ea82457a24efe59de.png" />
+			</div>
+			<a href="//www.nlm.nih.gov/" class="logo display-none-for-print" title="National Library of Medicine | National Institutes of Health" target="_blank">
+				<img class="nlm-logo" alt="National Library of Medicine | National Institutes of Health" title="National Library of Medicine | National Institutes of Health" src="/assets/footer-logo-small-90a0feee13d1585a36c13e4427b5e76cb455b08a99d0c97ac863a7e743db8e67.png" />
+			</a>
+		</div>
+
+		<div class="xsmall-4 xsmall-pull-4 medium-reset-order medium-2 medium-offset-0 columns">
+			<div class="show-for-print-only">
+				<img alt="FDA Logo" src="/assets/fda-35a6fc93ae2f714cb3734961446ad0060d7dd1def4b0731a330bcf4f714c2687.png" />
+			</div>
+			<a href="http://www.fda.gov/" class="logo display-none-for-print" title="FDA" target="_blank">
+				<div class="show-for-medium-up">
+					<img alt="U.S. Food and Drug Administration" title="U.S. Food and Drug Administration" class="fda-logo" src="/assets/gov-fda-new-white-small-75afc80b4f893c537d3d61ba52b441c4e0fed3d8eb875fe8fa653fc68ee7ef8d.png" />
+				</div>
+				<div class="show-for-small-down">
+					<img alt="U.S. Food and Drug Administration" title="U.S. Food and Drug Administration" class="fda-logo" src="/assets/fda-square-white-small-dc6a7b20d422c7ff2532c21044a4a679620d7464ce42a11013b0cd6f517a0e14.png" />
+				</div>
+
+			</a>
+
+
+		</div>
+
+		<div class="xsmall-4 medium-2 medium-offset-0 columns">
+			<div class="show-for-print-only">
+				<img alt="USA.gov Logo" src="/assets/usagov-cb89d9047a8923c788ba2ac9c3febbef32ddc1ca13be92dcbee32a27a24c4ca3.png" />
+			</div>
+			<a href="http://www.usa.gov/" class="logo display-none-for-print" title="USA.gov" target="_blank">
+				<img alt="USA.gov" title="USA.gov" class="usa-gov-logo" src="/assets/usagovwhite-small-8891e934b950e4598c9a02560d01abdebb1aa466fa0e7c87a89f5e79c601b4f3.png" />
+			</a>
+
+		</div>
+
+
+		<div class="xsmall-12 medium-2 medium-offset-0 columns hide-for-print">
+
+			<div class="footer-links">
+				<ul>
+					<li><a title="Customer Support &amp; FAQs" target="_blank" href="https://support.nlm.nih.gov/">Customer Support &amp; FAQs</a></li>
+					<li class="show-for-small-down"><a title="Advanced Search" href="/advanced-search">Advanced Search</a></li>
+					<li><a title="RSS" href="/resources/feeds/rss">RSS</a></li>
+					<li><a href="//www.nlm.nih.gov/copyright.html" title="Copyright" target="_blank" rel="bookmark">Copyright</a>
+					</li>
+					<li><a href="//www.nlm.nih.gov/privacy.html" title="Privacy" target="_blank" rel="bookmark">Privacy</a>
+					</li>
+					<li><a title="Terms of Use" href="/terms">Terms of Use</a>
+					</li>
+				</ul>
+
+			</div>
+
+		</div>
+
+		<div class="xsmall-12 end medium-4 medium-offset-0 columns hide-for-print">
+
+			<div class="footer-links">
+
+				<ul>
+					<li><a href="//www.nlm.nih.gov/accessibility.html" title="Web Accessibility" target="_blank" rel="bookmark">Web Accessibility</a>
+					</li>
+					<li><a href="https://www.hhs.gov/vulnerability-disclosure-policy/index.html" title="HHS Vulnerability Disclosure" target="_blank" rel="bookmark">HHS Vulnerability Disclosure</a>
+					</li>					
+					<li><a href="//www.nih.gov/" title="National Institutes of Health" target="_blank" rel="bookmark">National Institutes of Health</a>
+					</li>
+					<li><a href="//www.nlm.nih.gov/" title="National Library of Medicine" target="_blank" rel="bookmark">National Library of Medicine</a>
+					</li>
+					<li><a href="http://www.hhs.gov/" title="Health &amp; Human Services" target="_blank" rel="bookmark">Health &amp; Human Services</a>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+
+
+
+
+	</div>
+
+</footer>
+
+
+
+
+
+			<div class="divider"></div>
+		</div>
+	</div>
+
+	
+<div class="to-top"></div>
+
+<!-- this div is only for jQuery -->
+<div class="search-results">
+	<div class="filter-drop"></div>
+</div>
+
+<div class="webview"></div>
+<div class="hide-on-mobile"></div>
+
+<!-- Footer JavaScripts -->
+<script src="/assets/application_footer-dccd19a62b27fcba7db0cd60ba940ea6ca6f228f4104fb4df5bbc7d58e5f68e6.js" media="all" data-turbolinks-track="true"></script>
+
+
+<!-- [if lt IE 9]>
+    <script src="/javascripts/vendor/IE8-fix/ie8.js"></script>
+    
+<![endif]-->
+
+
+
+
+
+
+
+
+<!-- WebTrends -->
+
+	
+		<!-- Google Analytics DAP Universal Analytics -->
+		<!-- DAP Universal Analytics -->
+		<script language="javascript" id="_fed_an_ua_tag" src="/assets/vendor/Universal-Federated-Analytics-Min-e60e43db6eb2cd8b83732264bd5c79e362989dff01f2b6bf78d0eabab13bb1c2.js?agency=HHS&amp;subagency=NIH&amp;enhlink=true&amp;dclink=true"></script>
+		<!-- End of Google Analytics DAP Universal Analytics -->
+
+		<!-- CrazyEgg Click Tracking -->
+		<!--- Removing CrazyEgg from code to put into Google Tag Manager
+		<script type="text/javascript">
+		setTimeout(function(){var a=document.createElement("script");
+		var b=document.getElementsByTagName("script")[0];
+		a.src=document.location.protocol+"//script.crazyegg.com/pages/scripts/0027/2050.js?"+Math.floor(new Date().getTime()/3600000);
+		a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+		</script>
+		--->
+
+
+
+</body>
+</html>
+
+
+
+<!-- REMOVING USER LOGIN
+-->

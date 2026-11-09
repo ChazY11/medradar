@@ -1,0 +1,77 @@
+{
+  "purpose": "Offline audit of whether the historical hz.http.BoundedClient cache bug (cache key = url only, params ignored) mislabelled any stored row. The check reads SAVED RAW RESPONSES, not parsed rows, so it can distinguish a parser bug from a cache bug.",
+  "bug_diagnosis": {
+    "symptom": "varying only `params` against a fixed URL replays the first response",
+    "exposure_condition": ">=2 calls in the SAME BoundedClient instance to the SAME base URL differing only in params",
+    "my_mitigation": "every scholarly connector and every probe builds its query string into the URL itself (no per-call `params`), so no two distinct requests shared a cache key by construction",
+    "residual_risk_found_and_fixed": "one duplicate call existed in CONNECTORS/scholarly/eu_ctis.py: the dummy-X-API-KEY test reused the identical search URL and differed only by a request header, which is not part of the cache key either before or after the fix, so it was served from cache and proved nothing about the header. The second call now uses a different page size, making it a genuinely independent request; both still return HTTP 403 with the same 42-byte body, and the two attempts are separately visible in REQUEST_LOG.jsonl with different elapsed times.",
+    "verified": true
+  },
+  "generated_at": "2026-11-09T23:26:04Z",
+  "problems": [],
+  "problems_count": 0,
+  "per_source": {
+    "crossref": {
+      "records_checked": 60,
+      "raw_doi_mismatches": 0,
+      "method": "raw message.DOI vs the DOI in that call's own URL",
+      "details": []
+    },
+    "openaire": {
+      "records_checked": 60,
+      "raw_pid_mismatches": 0,
+      "method": "queried pid must appear in that response's own pids/originalIds",
+      "details": []
+    },
+    "openalex": {
+      "records_checked": 60,
+      "raw_presence_mismatches": 0,
+      "raw_files": 13,
+      "steps": 13,
+      "method": "each anchor's DOI must appear in a saved raw response for its own firm",
+      "details": []
+    },
+    "europepmc": {
+      "records_checked": 37,
+      "stray_records": 0,
+      "method": "every returned DOI must be one of the DOIs requested in that batch",
+      "details": []
+    },
+    "pubmed_eutils": {
+      "pmids_in_xml": 37,
+      "pmids_in_esearch": 37,
+      "pmid_sets_match": true,
+      "xml_dois": 37,
+      "xml_dois_not_requested": 0,
+      "method": "efetch XML PMIDs must equal the union of the per-chunk esearch PMIDs, and every XML DOI must be one this run requested",
+      "details": []
+    },
+    "semantic_scholar": {
+      "slots_checked": 60,
+      "positional_mismatches": 0,
+      "method": "the batch API returns a positional array; result[k] must carry the DOI requested at position k, or be null",
+      "details": []
+    },
+    "clinicaltrials_gov": {
+      "files": 5,
+      "studies_in_raw": 164,
+      "per_file_totalCount": {
+        "studies_spons_01.json": 1675,
+        "studies_spons_02.json": 343,
+        "studies_spons_03.json": 377,
+        "studies_spons_04.json": 8,
+        "studies_spons_05.json": 6
+      },
+      "identical_nct_sets_across_files": [],
+      "pairwise_disjoint": true,
+      "parser_vs_raw_alignment_issues": [],
+      "method": "a cache hit would make two firm queries return the SAME page, so the invariant is disjoint NCT sets + differing totalCount + every raw NCT present in the parsed records labelled with that firm"
+    },
+    "eu_cordis": {
+      "files_checked": 4,
+      "query_echo_mismatches": 0,
+      "method": "CORDIS echoes payload.query but tokenises free text ('medical device' -> 'medical AND device'), so the comparison is on token sets, not substrings",
+      "details": []
+    }
+  }
+}

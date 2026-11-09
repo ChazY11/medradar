@@ -1,0 +1,35 @@
+{
+  "source_id": "australia_tga_artg",
+  "workstream": "regulatory",
+  "generated_at": "2026-11-09T23:24:15Z",
+  "raw_files": [
+    {
+      "outcome": "ConnectionError",
+      "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+      "url": "https://www.tga.gov.au/",
+      "note": "TGA corporate site, https"
+    },
+    {
+      "outcome": "ConnectionError",
+      "error": "('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))",
+      "url": "http://www.tga.gov.au/robots.txt",
+      "note": "TGA robots.txt over plain http (https connection was reset twice in discovery)"
+    },
+    {
+      "path": "DATASETS/regulatory/australia_tga_artg/raw/tga_apps_root.html",
+      "bytes": 221,
+      "status": 200,
+      "from_disk": true,
+      "note": "TGA applications host",
+      "requested_url": "https://apps.tga.gov.au/"
+    },
+    {
+      "path": "DATASETS/regulatory/australia_tga_artg/raw/datagov_ckan_artg.json",
+      "bytes": 3805,
+      "status": 200,
+      "from_disk": true,
+      "note": "data.gov.au CKAN search for ARTG datasets",
+      "requested_url": "https://data.gov.au/data/api/3/action/package_search?q=artg&rows=20"
+    }
+  ]
+}

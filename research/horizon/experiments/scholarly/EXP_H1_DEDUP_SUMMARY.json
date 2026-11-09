@@ -1,0 +1,271 @@
+{
+  "experiment": "EXP-H1",
+  "outputs": [
+    "EXP_H1_DEDUP.json",
+    "EXP_H1_ANCHOR_MATRIX.jsonl",
+    "EXP_H1_SELECTION_RULE.md"
+  ],
+  "selection_rule": "experiments/scholarly/EXP_H1_SELECTION_RULE.md (frozen before collection)",
+  "generated_at": "2026-11-09T23:21:20Z",
+  "method_in_plain_language": [
+    "1. Before looking at any result, a rule was written down and frozen for choosing 60 papers about medical-device technology that involve five named firms. The rule pins the query, the date window (2020-01-01 to 2022-12-31), the sort order, the tie-break, and a fixed fallback ladder, so the sample cannot be adjusted after the fact. It produced 60 works with 60 distinct DOIs, twelve per firm.",
+    "2. Each of those 60 DOIs was then looked up, one work at a time, in OpenAlex, Crossref, Europe PMC, PubMed and OpenAIRE, and in one batch call to Semantic Scholar. Whatever each source returned was saved verbatim.",
+    "3. A 'source row' is one record a database returned for one anchor. A 'distinct work' is a unique DOI (falling back to PMID, then to the OpenAlex work id) across all of those rows. The ratio of the second to the first is how much genuinely different information the multi-database fetch bought.",
+    "4. Identifiers were only recorded when they literally appeared in a saved response. Nothing was derived, resolved or inferred from another scheme.",
+    "5. Titles, author counts and publication dates were then compared across databases for the same DOI and left unrepaired. Every difference is a measurement."
+  ],
+  "headline_numbers": {
+    "anchors": 60,
+    "sources_queried": [
+      "openalex",
+      "crossref",
+      "europepmc",
+      "pubmed_eutils",
+      "semantic_scholar",
+      "openaire"
+    ],
+    "source_rows_fetched": 308,
+    "distinct_works_after_dedup": 60,
+    "dedup_ratio_distinct_works_over_rows": 0.19480519480519481,
+    "naive_union_inflation_factor": 5.13,
+    "per_source_rows_fetched": {
+      "openalex": 60,
+      "crossref": 59,
+      "europepmc": 37,
+      "pubmed_eutils": 37,
+      "semantic_scholar": 56,
+      "openaire": 59
+    },
+    "per_source_anchor_hits": {
+      "openalex": 60,
+      "crossref": 59,
+      "europepmc": 37,
+      "pubmed_eutils": 37,
+      "semantic_scholar": 56,
+      "openaire": 59
+    },
+    "anchors_by_number_of_sources_holding_them": {
+      "3": 4,
+      "4": 20,
+      "6": 36
+    },
+    "pmid_status": {
+      "absent_all_sources": 22,
+      "single_value": 38,
+      "conflict": 0
+    },
+    "pmcid_status": {
+      "single_value": 0,
+      "conflict": 21
+    },
+    "title_agreement": {
+      "all_sources_identical": 24,
+      "prefix_of_each_other": 27,
+      "materially_different": 9,
+      "examples": [
+        {
+          "anchor_doi": "10.1016/j.yrtph.2021.104987",
+          "titles": {
+            "openalex": "Carcinogenic assessment of cobalt-containing alloys in medical devices or cobalt in occupational settings: A systematic review and meta-analysis of overall cancer risk from published epidemiologic studies",
+            "crossref": "Carcinogenic assessment of cobalt-containing alloys in medical devices or cobalt in occupational settings: A systematic review and meta-analysis of overall cancer risk from published epidemiologic studies",
+            "europepmc": "Carcinogenic assessment of cobalt-containing alloys in medical devices or cobalt in occupational settings: A systematic review and meta-analysis of overall cancer risk from published epidemiologic studies.",
+            "pubmed_eutils": "Carcinogenic assessment of cobalt-containing alloys in medical devices or cobalt in occupational settings: A systematic review and meta-analysis of overall cancer risk from published epidemiologic studies.",
+            "semantic_scholar": "Carcinogenic Assessment of Cobalt-Containing Alloys in Medical Devices or Cobalt in Occupational Settings: A Systematic Review and Meta-Analysis of Overall Cancer Risk from Published Epidemiologic Studies.",
+            "openaire": "Carcinogenic assessment of cobalt-containing alloys in medical devices or cobalt in occupational settings: A systematic review and meta-analysis of overall cancer risk from published epidemiologic studies"
+          }
+        },
+        {
+          "anchor_doi": "10.1016/j.yrtph.2021.105004",
+          "titles": {
+            "openalex": "An integrated benefit-risk assessment of cobalt-containing alloys used in medical devices: Implications for regulatory requirements in the European Union",
+            "crossref": "An integrated benefit-risk assessment of cobalt-containing alloys used in medical devices: Implications for regulatory requirements in the European Union",
+            "europepmc": "An integrated benefit-risk assessment of cobalt-containing alloys used in medical devices: Implications for regulatory requirements in the European Union.",
+            "pubmed_eutils": "An integrated benefit-risk assessment of cobalt-containing alloys used in medical devices: Implications for regulatory requirements in the European Union.",
+            "semantic_scholar": "An Integrated Benefit-Risk Assessment of Cobalt-Containing Alloys Used in Medical Devices: Implications for Regulatory Requirements in the European Union.",
+            "openaire": "An integrated benefit-risk assessment of cobalt-containing alloys used in medical devices: Implications for regulatory requirements in the European Union"
+          }
+        },
+        {
+          "anchor_doi": "10.1253/circj.cj-21-0491",
+          "titles": {
+            "openalex": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease ― 12-Month Results From Japan Post-Market Surveillance Study ―",
+            "crossref": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease ― 12-Month Results From Japan Post-Market Surveillance Study ―",
+            "europepmc": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease - 12-Month Results From Japan Post-Market Surveillance Study.",
+            "pubmed_eutils": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease - 12-Month Results From Japan Post-Market Surveillance Study.",
+            "semantic_scholar": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease - 12-Month Results From Japan Post-Market Surveillance Study.",
+            "openaire": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease ― 12-Month Results From Japan Post-Market Surveillance Study ―"
+          }
+        },
+        {
+          "anchor_doi": "10.1016/j.yrtph.2021.105096",
+          "titles": {
+            "openalex": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis",
+            "crossref": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis",
+            "europepmc": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis.",
+            "pubmed_eutils": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis.",
+            "semantic_scholar": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis.",
+            "openaire": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis"
+          }
+        },
+        {
+          "anchor_doi": "10.31478/202201b",
+          "titles": {
+            "openalex": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs",
+            "crossref": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs",
+            "europepmc": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs.",
+            "pubmed_eutils": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs.",
+            "semantic_scholar": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs.",
+            "openaire": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs"
+          }
+        },
+        {
+          "anchor_doi": "10.1161/jaha.121.023848",
+          "titles": {
+            "openalex": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J‐TVT",
+            "crossref": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J‐TVT",
+            "europepmc": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J-TVT.",
+            "pubmed_eutils": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J-TVT.",
+            "semantic_scholar": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J‐TVT",
+            "openaire": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J‐TVT"
+          }
+        },
+        {
+          "anchor_doi": "10.2345/0899-8205-54.4.311",
+          "titles": {
+            "openalex": "Reading Room : Applied Human Factors in Medical Device Design",
+            "crossref": "<i>Reading Room</i> : Applied Human Factors in Medical Device Design",
+            "europepmc": "Reading Room: Applied Human Factors in Medical Device Design.",
+            "pubmed_eutils": "Reading Room: Applied Human Factors in Medical Device Design.",
+            "semantic_scholar": "Reading Room: Applied Human Factors in Medical Device Design.",
+            "openaire": "<i>Reading Room</i> : Applied Human Factors in Medical Device Design"
+          }
+        },
+        {
+          "anchor_doi": "10.2345/0899-8205-54.4.291",
+          "titles": {
+            "openalex": "View From The Top : Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains",
+            "crossref": "<i>View From The Top</i> : Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains",
+            "europepmc": "View From The Top: Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains.",
+            "pubmed_eutils": "View From The Top: Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains.",
+            "semantic_scholar": "View From The Top: Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains.",
+            "openaire": "<i>View From The Top</i> : Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains"
+          }
+        },
+        {
+          "anchor_doi": "10.1097/rli.0000000000000673",
+          "titles": {
+            "openalex": "Artificial Intelligence and Machine Learning in Radiology",
+            "crossref": "Artificial Intelligence and Machine Learning in Radiology",
+            "europepmc": "Artificial Intelligence and Machine Learning in Radiology: Current State and Considerations for Routine Clinical Implementation.",
+            "pubmed_eutils": "Artificial Intelligence and Machine Learning in Radiology: Current State and Considerations for Routine Clinical Implementation.",
+            "semantic_scholar": "Artificial Intelligence and Machine Learning in Radiology",
+            "openaire": "Artificial Intelligence and Machine Learning in Radiology"
+          }
+        },
+        {
+          "anchor_doi": "10.1016/j.ejvs.2021.11.001",
+          "titles": {
+            "openalex": "Re “Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence”",
+            "crossref": "Re “Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence”",
+            "europepmc": "Re \"Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence\".",
+            "pubmed_eutils": "Re \"Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence\".",
+            "semantic_scholar": "Re \"Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence\".",
+            "openaire": "Re “Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence”"
+          }
+        },
+        {
+          "anchor_doi": "10.1007/s00535-022-01932-1",
+          "titles": {
+            "openalex": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum",
+            "crossref": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum",
+            "europepmc": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum.",
+            "pubmed_eutils": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum.",
+            "semantic_scholar": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum",
+            "openaire": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum"
+          }
+        },
+        {
+          "anchor_doi": "10.1002/bit.27335",
+          "titles": {
+            "openalex": "Hydrocyclones as cell retention device for CHO perfusion processes in single‐use bioreactors",
+            "crossref": "Hydrocyclones as cell retention device for CHO perfusion processes in single‐use bioreactors",
+            "europepmc": "Hydrocyclones as cell retention device for CHO perfusion processes in single-use bioreactors.",
+            "pubmed_eutils": "Hydrocyclones as cell retention device for CHO perfusion processes in single-use bioreactors.",
+            "semantic_scholar": "Hydrocyclones as cell retention device for CHO perfusion processes in single‐use bioreactors",
+            "openaire": "Hydrocyclones as cell retention device for CHO perfusion processes in single‐use bioreactors"
+          }
+        },
+        {
+          "anchor_doi": "10.1111/jch.13851",
+          "titles": {
+            "openalex": "Evaluating the impact of motion artifact on noninvasive blood pressure devices",
+            "crossref": "Evaluating the impact of motion artifact on noninvasive blood pressure devices",
+            "europepmc": "Evaluating the impact of motion artifact on noninvasive blood pressure devices.",
+            "pubmed_eutils": "Evaluating the impact of motion artifact on noninvasive blood pressure devices.",
+            "semantic_scholar": "Evaluating the impact of motion artifact on noninvasive blood pressure devices",
+            "openaire": "Evaluating the impact of motion artifact on noninvasive blood pressure devices"
+          }
+        },
+        {
+          "anchor_doi": "10.1097/sla.0000000000003958",
+          "titles": {
+            "openalex": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer",
+            "crossref": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer",
+            "europepmc": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer.",
+            "pubmed_eutils": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer.",
+            "semantic_scholar": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer",
+            "openaire": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer"
+          }
+        },
+        {
+          "anchor_doi": "10.1093/jbi/wbaa070",
+          "titles": {
+            "openalex": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression",
+            "crossref": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression",
+            "europepmc": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression.",
+            "pubmed_eutils": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression.",
+            "semantic_scholar": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression.",
+            "openaire": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression"
+          }
+        }
+      ]
+    },
+    "author_count_delta_distribution": {
+      "0": 54,
+      "1": 2,
+      "2": 1,
+      "4": 1,
+      "6": 1,
+      "201": 1
+    },
+    "publication_date_spread_buckets": {
+      "31-180_days": 15,
+      "8-30_days": 9,
+      "same_day": 24,
+      "over_180_days": 7,
+      "1-7_days": 5
+    },
+    "anchors_with_a_date_disagreement": 36
+  },
+  "what_this_measures": "308 records came back from six databases, but they describe only 60 distinct works: a de-duplication ratio of 0.195, meaning a naive union would over-count by roughly 5.1x. The 60 anchors are spread across the databases very unevenly: openalex holds 60/60, crossref holds 59/60, europepmc holds 37/60, pubmed_eutils holds 37/60, semantic_scholar holds 56/60, openaire holds 59/60. Only 1 different source-counts appear at all, and 36 anchors are held by all six sources.",
+  "what_this_cannot_support": [
+    "It cannot say which database is 'complete'. The sample was drawn FROM OpenAlex, so OpenAlex trivially holds 60/60. The 37/60 and 56/60 figures are coverage of an OpenAlex-defined sample, not of the literature.",
+    "It cannot rank databases by quality. A missing record may be a scope decision (Europe PMC indexes biomedical work only), not a defect.",
+    "It cannot claim research value from row counts. The only research-relevant quantity here is the disagreement structure, not the volume."
+  ],
+  "notable_observations": [
+    "Cross-identifier links are clean: for 38 of 60 anchors a single PMID is agreed by every source that exposes one, and 0 anchors have two different PMIDs for the same DOI. 22 anchors have no PMID in any source.",
+    "Titles are less stable than identifiers: 24 anchors have byte-identical titles after whitespace/case normalisation, 27 have titles where one is a prefix of another (a truncation signature), and 9 have titles that differ in substance, all for the same DOI.",
+    "OpenAIRE's de-duplicated research products can carry SEVERAL DOIs (9 of 59 records here, e.g. a Spanish and an English version of the same article). A reader that takes 'the first DOI' in such a record mis-assigns the work; this connector records the queried DOI as primary and lists the rest.",
+    "Semantic Scholar's batch endpoint ignores the field projection unless `fields` is passed as a QUERY parameter, and silently returns only {paperId,title} with HTTP 200 otherwise. That is a silent partial response, not an error, and it is recorded in the probe evidence."
+  ],
+  "reproduce": [
+    "python CONNECTORS/scholarly/openalex.py",
+    "python CONNECTORS/scholarly/crossref.py",
+    "python CONNECTORS/scholarly/europepmc.py",
+    "python CONNECTORS/scholarly/pubmed_eutils.py",
+    "python CONNECTORS/scholarly/semantic_scholar.py",
+    "python CONNECTORS/scholarly/openaire.py",
+    "python experiments/scholarly/analyze_exp_h1.py"
+  ]
+}

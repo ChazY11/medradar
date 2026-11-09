@@ -1,0 +1,39 @@
+{
+  "access_evidence": "POST /api/v2/search/spending_by_award/ returned HTTP 200 for three filter sets (PSC, NAICS, device keywords), 100 rows each; the official PSC filter tree (depth=3, 382,700 B) and the data dictionary (358,054 B) answered keylessly.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "NO_ACTION_DATE: the spending_by_award field set does not return the award action date (requesting 'Action Date' yields null), so event_at is the period-of-performance start.",
+    "NO_PUBLICATION_DATE: no per-award publication timestamp is returned.",
+    "PSC_CONTAMINATION: 6515 mixes instruments with COVID-19 tests and vaccines; 6550 is reagents/test kits; 6540 is OPHTHALMIC instruments and 6545 is REPLENISHABLE FIELD MEDICAL SETS (the brief's assumption for both was wrong).",
+    "NO_DEVICE_MANUFACTURER: the award text names the supplier, never the OEM.",
+    "PAGE1_ONLY: 100 rows per query — a sample of the largest awards, not a census."
+  ],
+  "bulk_available": true,
+  "domain": "api.usaspending.gov",
+  "entity_types": [
+    "procurement_award"
+  ],
+  "first_verified_at": "2026-11-09T23:18:27Z",
+  "historical_depth": "awards from FY2008 (API message: 'earliest date of 2007-10-01')",
+  "id_schemes": [
+    "sam_uei",
+    "federal_award_id",
+    "usaspending_generated_internal_id"
+  ],
+  "licence_note": "No explicit reuse-licence sentence was found on the pages fetched (https://www.usaspending.gov/about returned a 3,003 B JS shell with no licence statement). Recorded as publicly readable without an explicit reuse licence rather than assumed permissive; the underlying records are the awarding agencies' own public contract data.",
+  "licence_status": "open_no_explicit_licence",
+  "licence_url": "https://www.usaspending.gov/about",
+  "machine_interface": "REST JSON; award search is POST-only (GET returns HTTP 405)",
+  "name": "USAspending.gov — federal award search API v2",
+  "notes": "device_relation_status is CANDIDATE even when the text names a device class: no OEM is identified.",
+  "operator": "US Department of the Treasury (Bureau of the Fiscal Service)",
+  "probe_suite": "industry",
+  "rate_policy": "No key, no documented quota; 3 POSTs used.",
+  "registration_url": null,
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "usaspending",
+  "unlock_route": "No blocker for access. For a census instead of a sample, page through with generated_internal_id / last_record_sort_value, or use the bulk_download endpoints listed at https://api.usaspending.gov/docs/endpoints.",
+  "what_is_new": "245 unique federal contract awards naming a recipient, with the recipient pinned by SAM UEI (245/245), award amount, period of performance, awarding agency, NAICS, verified PSC label, and a device-naming analysis (70 awards name a device class, 11 carry a model-like token)."
+}
