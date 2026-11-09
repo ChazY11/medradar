@@ -180,5 +180,7 @@ All six have tests or a verification check.
 
 ---
 
+*Delivered as Draft PR #28 (branch `foundation/atlas-001`, commit `c015a97`).*
+
 *Every number in this audit is reproducible: `git rev-parse origin/main`, `gh pr list`,
 `python -m pytest -q`, and the audit commands recorded in the ATLAS-001 PR description.*

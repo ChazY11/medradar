@@ -3,7 +3,8 @@
 **日期：** 2026-11-10
 **基线：** `main` = `b2a14c0a92332c004445de686daee97754cf94cb`
 **开发分支：** `foundation/atlas-001`（从核实过的主干切出，未修改 main，未合并任何 PR）
-**交付形式：** GitHub Draft PR（链接见 PR 页面与最终汇报）
+**交付形式：** GitHub Draft PR [#28](https://github.com/ChazY11/medradar/pull/28)
+**交付提交：** `c015a97a1005929d19363ff835c010bb81d7ab70`（分支 `foundation/atlas-001`）
 
 ---
 
