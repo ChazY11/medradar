@@ -1,7 +1,7 @@
 # Export `horizon-2026-11-10`
 
 Schema: `horizon.evidence.v1`  
-Generated: 2026-11-09T23:33:25Z  
+Generated: 2026-11-09T23:35:44Z  
 Generator: `tools/build_export.py`
 
 ## How to load
@@ -16,7 +16,7 @@ Every row validates against `research/horizon/hz/schema.py`. Rows are already de
 ## What this export does NOT claim
 
 - `accessgudid`: 320 records; 320 (100%) carry a recorded public observation date and 0 (0%) a recorded event date. Top quality flags: MISSING_FILING_DATE=320.
-- `brazil_anvisa`: 120 records; 0 (0%) carry a recorded public observation date and 0 (0%) a recorded event date. Top quality flags: PARTIAL_PAGE=120, MISSING_IDENTIFIER=120, MISSING_PUBLICATION_DATE=120.
+- `brazil_anvisa`: 120 records; 120 (100%) carry a recorded public observation date and 120 (100%) a recorded event date. Top quality flags: RETROSPECTIVE_FIELD=120.
 - `canada_mdall`: 174 records; 0 (0%) carry a recorded public observation date and 174 (100%) a recorded event date. Top quality flags: MISSING_PUBLICATION_DATE=174.
 - `cipo_canada`: 2000 records; 2000 (100%) carry a recorded public observation date and 916 (46%) a recorded event date. Top quality flags: MISSING_CLASSIFICATION=2000, NAME_MATCH_ONLY=2000, NOT_MEDTECH_ON_FRONT_PAGE=2000, SNAPSHOT_ONLY=2000.
 - `clinicaltrials_gov`: 164 records; 164 (100%) carry a recorded public observation date and 94 (57%) a recorded event date. Top quality flags: MISSING_FILING_DATE=70.
@@ -56,7 +56,7 @@ Every row validates against `research/horizon/hz/schema.py`. Rows are already de
 | source | records | unique keys | with id | with public date | licence |
 |---|---|---|---|---|---|
 | `accessgudid` | 320 | 320 | 320 | 320 | public_domain |
-| `brazil_anvisa` | 120 | 120 | 120 | 0 | open_no_explicit_licence |
+| `brazil_anvisa` | 120 | 120 | 120 | 120 | open_no_explicit_licence |
 | `canada_mdall` | 174 | 60 | 174 | 0 | open_licence |
 | `cipo_canada` | 2000 | 2000 | 2000 | 2000 | open_licence |
 | `clinicaltrials_gov` | 164 | 164 | 164 | 164 | public_domain |

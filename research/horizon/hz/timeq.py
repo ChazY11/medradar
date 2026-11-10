@@ -70,7 +70,12 @@ def audit_clocks(event_at: str | None, source_public_at: str | None) -> ClockAud
     Rules:
     * no ``source_public_at`` -> NOT eligible. We cannot know when a human
       could have seen it, so any "early signal" claim on it is unfalsifiable.
-    * ``source_public_at`` before ``event_at`` -> contradictory, NOT eligible.
+    * ``source_public_at`` before ``event_at`` -> the record became public *before*
+      the event it describes. This is **not** an error: a trial is registered
+      before it starts, and a DOI is registered before the issue date. It is
+      still NOT eligible for "the event was observable at publication", because
+      the event had not happened yet. It is reported separately so the pattern is
+      visible rather than silently bracketed with genuine data errors.
     * otherwise eligible, with the gap reported.
     """
     ev = parse_iso(event_at)
@@ -93,9 +98,13 @@ def audit_clocks(event_at: str | None, source_public_at: str | None) -> ClockAud
     if gap < 0:
         return ClockAudit(
             eligible=False,
-            reason=f"source_public_at precedes event_at by {-gap} days: contradictory record",
+            reason=(
+                f"record became public {-gap} days BEFORE the event it describes "
+                f"(prospective registration / early DOI registration); the event was "
+                f"not yet observable, so the record cannot date it"
+            ),
             observability_gap_days=gap,
-            confusion_risk="event_used_as_public",
+            confusion_risk="event_after_publication",
         )
     return ClockAudit(
         eligible=True,
@@ -116,5 +125,5 @@ def classify_record(event_at, source_public_at) -> dict:
     elif a.confusion_risk == "public_missing":
         d["class"] = "EVENT_ONLY"
     else:
-        d["class"] = "CONTRADICTORY"
+        d["class"] = "PUBLICATION_BEFORE_EVENT"
     return d

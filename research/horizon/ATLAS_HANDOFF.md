@@ -205,7 +205,7 @@ None of these import `medradar.*`. You can vendor them or read the JSONL directl
    five target firms have zero hits. That is sampling, not absence.
 3. **No patent family IDs.** Requires EPO OPS or Lens with a key.
 4. **No US patents.** Every answering USPTO endpoint needs a free API key.
-5. **2 687 records are `EVENT_ONLY`** (trade, USAspending, 510(k), PMA, MDALL) with
+5. **2,928 records are `EVENT_ONLY`** (trade, USAspending, 510(k), PMA, MDALL) with
    no recorded public date. They are ineligible for observability claims —
    `audit_clocks` will reject them, by design.
 6. **Identity is not solved.** Zero `CONFIRMED` cross-source device identities were

@@ -1,6 +1,6 @@
 # DATA_QUALITY_AUDIT
 
-**HORIZON-001 · audit of the 24,194-record export `horizon-2026-11-10`**
+**HORIZON-001 · audit of the 6,492-record export `horizon-2026-11-10`**
 
 This audit is generated from the export itself, not from intentions. Counts are
 recomputable with `python -m hz.cli verify` and from `exports/horizon-2026-11-10/MANIFEST.json`.
@@ -116,18 +116,28 @@ split (35 HIGH / 31 LOW) rather than reporting 66 confirmations.
 
 `hz.timeq` classifies every record. From the export manifest:
 
-| class | meaning | sources where it dominates |
+| class | meaning | count in this export |
 |---|---|---|
-| `FULL_TWO_CLOCK` | both a recorded public date and a recorded event date, correctly ordered | EPO 228/228, Crossref 59/59, Europe PMC 37/37, OpenAlex 60/60, TED 297/299, FTS 62/62 |
-| `PUBLICATION_ONLY` | public date known, event date unknown | AccessGUDID 320/320 |
-| `EVENT_ONLY` | event date known, **no recorded public date** | Comtrade 608/608, Comext 1400/1400, HMRC 100/100, USAspending 245/245, 510(k) 160/160, PMA 60/60, MDALL 174/174 |
+| `FULL_TWO_CLOCK` | a recorded public date and a recorded event date, correctly ordered | **1990** |
+| `PUBLICATION_ONLY` | public date known, event date unknown (e.g. GUDID) | **1484** |
+| `EVENT_ONLY` | event date known, **no recorded public date** | **2928** |
+| `PUBLICATION_BEFORE_EVENT` | became public *before* the event it describes | **90** |
 
 `EVENT_ONLY` is the dangerous class. It means "we know when the thing happened but
 not when anyone could have seen it". **Any record in this class is ineligible for
-historical-observability claims** and `hz.timeq.audit_clocks` refuses it. 2 687
-records in the export are in that state — most of the trade and regulatory corpus.
-That is a property of the sources, not a defect in the collection, and it is the
-honest reason trade data cannot support early-signal research.
+historical-observability claims** and `hz.timeq.audit_clocks` refuses it.
+**2928 of 6492 exported records** are in that state — most of the trade
+and regulatory corpus. That is a property of the sources, not a defect in the
+collection, and it is the honest reason trade data cannot support early-signal
+research.
+
+`PUBLICATION_BEFORE_EVENT` is a genuinely interesting fourth state and it is **not**
+a data error: a trial is registered *before* it starts, and a DOI is registered
+*before* the issue date. 90 records are in this state
+({'clinicaltrials_gov': 46, 'crossref': 21, 'nih_reporter': 6, 'pubmed_eutils': 17}). They are excluded from observability claims — the event had not
+happened when the record appeared — but they are reported separately rather than
+silently bracketed with data errors, because the pattern is itself the finding
+(registration-first workflows, e-pub-ahead-of-print).
 
 ### 3.2 Date confusion cases actually encountered
 
@@ -150,7 +160,7 @@ honest reason trade data cannot support early-signal research.
 | OpenAlex / Crossref / Europe PMC | partial | `created_date` / `created` / `firstIndexDate` present |
 
 `SNAPSHOT_ONLY` records can support "what is true now" but not "what was knowable
-then". 2 383 records in the export carry that flag.
+then". 2175 records in the export carry that flag.
 
 ---
 
@@ -200,7 +210,7 @@ Two further licence facts worth carrying forward:
 | publication/open-to-inspection date | CIPO pending applications (4 212 records) | yes — acquire the CIPO IPC/status table or a later extract with more status detail; **do not** compute from the 18-month rule |
 | technology classification (IPC) | **CIPO, all 19 702 records** | yes — the `PT_IPC_classification` table is open and published; it was **deliberately not downloaded** because it exceeded 230 MB per range split. This is the top acquisition gap to close |
 | filing date | CIPO 9 033 records (pre-1900 filings store `-1`) | no — the source does not have it |
-| recorded public date | 2 687 trade/regulatory records | no — the sources do not disclose it |
+| recorded public date | 2928 trade/regulatory records | no — the sources do not disclose it |
 | applicant/proprietor | EPO 1 record (sitemap-only, no front page) | yes — one more fetch |
 | abstract | EPO where the front page had none | yes |
 | claims text | EPO (present in HTML, unparsed) | yes — no new access needed |
