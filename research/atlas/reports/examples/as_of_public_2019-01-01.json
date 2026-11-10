@@ -1,0 +1,207 @@
+{
+  "boundary": {
+    "basis": "public_inferred",
+    "capture_starts_at": "2026-11-10T17:40:18.350044Z",
+    "earliest_observation_in_db": "2026-11-10T17:40:18.350044Z",
+    "requested_at": "2019-01-01T00:00:00Z"
+  },
+  "by_source": {
+    "accessgudid": 8,
+    "openfda_device_udi": 351
+  },
+  "by_type": {
+    "device_registration": 359
+  },
+  "caveats": [
+    "observed = first_observed_at <= T; it is a fetch clock, not a publication clock.",
+    "public_inferred = source_public_at <= T with exact/day quality; it is what a third party could have seen, not proof that MedRadar saw it.",
+    "records with coarse/derived/missing public dates are kept in 'unprovable' and are never promoted.",
+    "one database capture cannot replay source revisions that were never observed."
+  ],
+  "counts": {
+    "alternative_basis_count": 0,
+    "observed": 0,
+    "primary_basis_count": 359,
+    "public_inferred": 359,
+    "total_versions_known_by_t": 7254,
+    "unprovable": 293
+  },
+  "sample": [
+    {
+      "evidence_id": "ev_0013a4eb49874afc368a55caec0070b7",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:21.650236Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-09-23"
+    },
+    {
+      "evidence_id": "ev_0035aabd838c0c65d08630c09cbc3c6f",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:41:56.148047Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-09-12"
+    },
+    {
+      "evidence_id": "ev_006f343a5cafc79fa5183a10d60a0436",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:41:56.112389Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-09-12"
+    },
+    {
+      "evidence_id": "ev_01a06780ce8fdd2f3b8cd2e65b7372ff",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:23.413718Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2015-10-24"
+    },
+    {
+      "evidence_id": "ev_01fc2e4c7ab9e6f30be358210d2818d5",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:23.413718Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2015-10-24"
+    },
+    {
+      "evidence_id": "ev_03809778a69c4505e08b0590f6966f62",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:20.019729Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-05-20"
+    },
+    {
+      "evidence_id": "ev_0409f22e68e2092f7babf64681d86998",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:20.019729Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-08-15"
+    },
+    {
+      "evidence_id": "ev_04773863ee71012c5702375f0523265d",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:20.019729Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-06-10"
+    },
+    {
+      "evidence_id": "ev_04971aa6fd0cb23d65efd5d86c99e717",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:18.350044Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2015-07-27"
+    },
+    {
+      "evidence_id": "ev_054c484060ed26512a0ce47084298bf5",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:18.350044Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2015-06-25"
+    },
+    {
+      "evidence_id": "ev_05eb0777f7a47c9e6c4ed667867c19ec",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:20.019729Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-07-15"
+    },
+    {
+      "evidence_id": "ev_0622268770ea757f96dfca543f2f48e0",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:18.350044Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2015-10-21"
+    },
+    {
+      "evidence_id": "ev_06a439931937253bfc5499544f97fc2d",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:25.030223Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-09-23"
+    },
+    {
+      "evidence_id": "ev_079e0440d7261c997f8fb30223b9e449",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:18.350044Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2015-08-04"
+    },
+    {
+      "evidence_id": "ev_093f3ad82172d8f13dd6a7b455e39dba",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:18.350044Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2014-09-23"
+    },
+    {
+      "evidence_id": "ev_0b80e35cfcaba64168f87c39f6421ca0",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:18.350044Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2015-06-16"
+    },
+    {
+      "evidence_id": "ev_0bdf0988ac41ec9f1d1a492fb2939761",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:20.019729Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-08-15"
+    },
+    {
+      "evidence_id": "ev_0c54984a72b09c618b80bd393050a1d7",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:18.350044Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-04-25"
+    },
+    {
+      "evidence_id": "ev_0d47e85be9f76791c963aaefa1d4e7e1",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:20.019729Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-06-24"
+    },
+    {
+      "evidence_id": "ev_0d51780009638417f6df7cfd30b257b2",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:21.650236Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2018-03-03"
+    },
+    {
+      "evidence_id": "ev_0dd9722176eac60dd36a7623d761bbe2",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:23.413718Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2015-10-24"
+    },
+    {
+      "evidence_id": "ev_0eaeb28e424fbb1440808c9ef94b2158",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:21.650236Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-09-23"
+    },
+    {
+      "evidence_id": "ev_0eff7384b724c55d19c686ce75c4147a",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:25.030223Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2016-09-23"
+    },
+    {
+      "evidence_id": "ev_10cd223bc73c3184762eb5e69dbcca06",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:23.413718Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2015-11-02"
+    },
+    {
+      "evidence_id": "ev_113bfcef140a12960ee283e244cf7d2b",
+      "evidence_type": "device_registration",
+      "first_observed_at": "2026-11-10T17:40:25.030223Z",
+      "source_id": "openfda_device_udi",
+      "source_public_at": "2015-10-23"
+    }
+  ],
+  "schema": "medradar.atlas.as_of.v1"
+}

@@ -27,3 +27,15 @@ Thumbs.db
 
 # cycle-2 per-row prediction dumps: regenerable intermediates, not aggregates (~7 MB)
 experiments/**/pred_*.json
+
+# ATLAS runtime artefacts: the database, the MDALL stream cache and backups are
+# regenerated and must never be committed. Machine reports and the bounded
+# redistributable sample ARE committed on purpose (see docs/atlas/).
+research/atlas/staging/
+research/atlas/cache/
+research/atlas/backups/
+
+# scratch logs from local pipeline runs
+/_*.log
+/_*.txt
+
