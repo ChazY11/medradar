@@ -1,0 +1,276 @@
+{
+  "baseline": {
+    "baseline_false_positive_examples": [],
+    "generated_at": "2026-11-10T17:42:55.464264Z",
+    "label_basis": {
+      "caveat": "sampled pairs, not a prevalence-weighted population estimate; no overall F1 is claimed",
+      "negative": "different DI, and either different company or a deliberately name-identical hard negative",
+      "positive": "MDALL GTIN-14 identifier exactly equals a GUDID UDI-DI (official identifier)"
+    },
+    "metrics": {
+      "identity": {
+        "f1": 1.0,
+        "fn": 0,
+        "fp": 0,
+        "labelled_pairs": 1334,
+        "note": "computed on the sampled labelled pairs only; not a population estimate",
+        "precision": 1.0,
+        "recall": 1.0,
+        "tn": 400,
+        "tp": 934
+      },
+      "name_baseline": {
+        "f1": null,
+        "fn": 934,
+        "fp": 0,
+        "labelled_pairs": 1334,
+        "note": "computed on the sampled labelled pairs only; not a population estimate",
+        "precision": null,
+        "recall": 0.0,
+        "tn": 400,
+        "tp": 0
+      }
+    },
+    "negatives": 400,
+    "positives": 934,
+    "schema": "medradar.atlas.baseline_eval.v1"
+  },
+  "config": {
+    "accessgudid_sample": 12,
+    "allow_network": true,
+    "baseline_negative_target": 400,
+    "fda_per_firm": 100,
+    "hard_negative_target": 200,
+    "k510_limit_per_firm": 50,
+    "mdall_bridge_batch": 25,
+    "mdall_bridge_limit": 1200,
+    "mdall_cache_days": 7,
+    "mdall_gtin_limit": 6000,
+    "mdall_licence_limit": 40,
+    "min_interval": 0.6,
+    "pair_sample_per_firm": 250,
+    "request_budget": 400
+  },
+  "counts": {
+    "bridge_candidate": 0,
+    "bridge_confirmed_identity": 934,
+    "bridge_contradicted": 0,
+    "bridge_fda_records_resolved": 942,
+    "bridge_pairs": 934,
+    "bridge_queried": 1200,
+    "companies": 5,
+    "device_identifiers": 16373,
+    "evidence_ids": 7254,
+    "evidence_versions": 7254,
+    "unique_devices": 5537
+  },
+  "coverage": {
+    "fda_udi_by_firm": {
+      "draeger": 100,
+      "ge_healthcare": 106,
+      "medtronic": 102,
+      "mindray": 100,
+      "philips": 100
+    },
+    "mdall_gtin_identifiers": 5005,
+    "mdall_gtin_share_of_active_table": 0.003293,
+    "mdall_rows_scanned": 1673926,
+    "missing_firms_in_bridge": [
+      "draeger",
+      "mindray",
+      "philips"
+    ],
+    "openfda_bridge_batches": {
+      "batches": 48,
+      "failed_batches": 0,
+      "no_match_batches": 6
+    },
+    "openfda_bridge_no_match": "openFDA returns HTTP 404 when a valid identifier batch matches nothing; recorded as no-match, not as a collection failure",
+    "openfda_udi_total_by_firm": {
+      "draeger": 316,
+      "ge_healthcare": 518,
+      "medtronic": 88142,
+      "mindray": 1602,
+      "philips": 4241
+    },
+    "us_canada_udi_bridge_coverage_note": "Only MDALL rows whose identifier field is a GTIN-14 can be bridged; for the other 99.67% MDALL publishes a model/catalogue string and there is no official UDI to join on.",
+    "us_canada_udi_bridge_possible": true
+  },
+  "db_stats": {
+    "collection_runs": 7,
+    "companies": 5,
+    "db": "research/atlas/staging/atlas.sqlite",
+    "device_identifiers": 16373,
+    "devices": 5537,
+    "evidence_by_source": {
+      "accessgudid": 12,
+      "canada_mdall": 5552,
+      "openfda_device_510k": 250,
+      "openfda_device_udi": 1440
+    },
+    "evidence_ids": 7254,
+    "evidence_versions": 7254,
+    "manufacturers": 0,
+    "prospective_candidates": 0,
+    "quality_findings": 54,
+    "raw_objects": 0,
+    "relations_by_status": {
+      "CANDIDATE": 69,
+      "CONFIRMED": 1128,
+      "REJECTED": 1087
+    },
+    "relations_by_type": {
+      "POSSIBLE_MATCH": 59,
+      "RELATED_TECHNOLOGY": 10,
+      "SAME_DEVICE_IDENTITY": 934,
+      "SAME_MODEL": 2,
+      "SAME_PRODUCT_FAMILY": 192,
+      "UNRELATED": 1087
+    },
+    "relations_candidate": 69,
+    "relations_confirmed": 1128,
+    "relations_rejected": 1087,
+    "relations_revoked": 0,
+    "relations_total": 2284,
+    "relations_unknown": 0,
+    "request_log": 150,
+    "schema_version": 1
+  },
+  "db_stats_note": "snapshot at the end of the pilot; graph build and the prospective registry add rows afterwards, so later table counts can legitimately be higher",
+  "finished_at": "2026-11-10T17:43:09.890309Z",
+  "generated_from": {
+    "db": "research/atlas/staging/atlas.sqlite",
+    "firm_register": "config/atlas_firms.json",
+    "source_register": "config/atlas_sources.json"
+  },
+  "limitations": [
+    "openFDA UDI samples are the first page of a company-name search, not a random sample of the firm's devices.",
+    "MDALL GTIN coverage is partial (0.33% of active identifier rows); absence of a bridge is not evidence that a device is unlicensed in Canada.",
+    "The 510(k) source is a regulatory grouping and cannot confirm device identity; it is reported as a grouping relation only.",
+    "AccessGUDID and openFDA UDI share the GUDID upstream authority; matching records are duplicates, not independent confirmation.",
+    "No human adjudication was performed on this run; confirmed relations rest on exact official-identifier equality.",
+    "Baseline metrics are computed on the sampled labelled pairs in this run and must not be read as population precision/recall."
+  ],
+  "quality": {
+    "by_check": {
+      "duplicate_cross_source_expected": 1,
+      "duplicate_same_source": 50,
+      "missing_company_link": 2,
+      "request_no_match": 1
+    },
+    "by_severity": {
+      "info": 4,
+      "warning": 50
+    },
+    "findings_total": 54,
+    "report": "research/atlas/reports/quality_report.json"
+  },
+  "relations": {
+    "by_status": {
+      "CANDIDATE": 69,
+      "CONFIRMED": 1128,
+      "REJECTED": 1087
+    },
+    "by_type": {
+      "POSSIBLE_MATCH": 59,
+      "RELATED_TECHNOLOGY": 10,
+      "SAME_DEVICE_IDENTITY": 934,
+      "SAME_MODEL": 2,
+      "SAME_PRODUCT_FAMILY": 192,
+      "UNRELATED": 1087
+    },
+    "candidate": 69,
+    "confirmed": 1128,
+    "rejected": 1087,
+    "scope": "identity relations only; source-declared graph relations are excluded",
+    "unknown": 0
+  },
+  "request_accounting": {
+    "ledger_entries": 150,
+    "requests_made": 150
+  },
+  "schema": "medradar.atlas.identity_pilot.v1",
+  "stages": {
+    "accessgudid": {
+      "note": "AccessGUDID and openFDA UDI are the same upstream authority (GUDID); a matching record is a duplicate, not independent corroboration",
+      "run_id": "gudid_20261110T174025Z",
+      "same_upstream_duplicates": 11,
+      "sampled": 12,
+      "stored": 12
+    },
+    "canada_mdall": {
+      "gtin_rows_kept": 5512,
+      "rows_scanned_until_limit": 1673926,
+      "run_id": "mdall_20261110T174043Z",
+      "table": {
+        "bytes": 219970233,
+        "cached": true,
+        "sha256": "55d2b64189a2b8b6d3d7431462930196aebe5503addeeb6a4a6f0d65f5c2973f",
+        "truncated": false
+      },
+      "unique_di": 5005
+    },
+    "identity_bridge": {
+      "batch_accounting": {
+        "batches": 48,
+        "failed_batches": 0,
+        "no_match_batches": 6
+      },
+      "pairs": 934,
+      "queried_gtins": 1200,
+      "relation_types": {
+        "SAME_DEVICE_IDENTITY": 934
+      },
+      "resolved": 942,
+      "run_id": "bridge_20261110T174101Z"
+    },
+    "mdall_licences": {
+      "attempted": 40,
+      "companies_resolved": 40,
+      "run_id": "mdall_lic_20261110T174201Z",
+      "stored": 40
+    },
+    "openfda_510k": {
+      "by_firm": {
+        "draeger": 50,
+        "ge_healthcare": 50,
+        "medtronic": 50,
+        "mindray": 50,
+        "philips": 50
+      },
+      "records": 250,
+      "run_id": "k510_20261110T174035Z"
+    },
+    "openfda_udi": {
+      "by_firm": {
+        "draeger": 100,
+        "ge_healthcare": 100,
+        "medtronic": 100,
+        "mindray": 100,
+        "philips": 100
+      },
+      "records": 500,
+      "requests": 5,
+      "run_id": "udi_20261110T174016Z"
+    },
+    "pair_classification": {
+      "ambiguity_candidates": 100,
+      "decisions": 1350,
+      "hard_negative_candidates": 0,
+      "relation_types": {
+        "POSSIBLE_MATCH": 59,
+        "RELATED_TECHNOLOGY": 10,
+        "SAME_MODEL": 2,
+        "SAME_PRODUCT_FAMILY": 192,
+        "UNRELATED": 1087
+      },
+      "run_id": "pairs_20261110T174250Z",
+      "statuses": {
+        "CANDIDATE": 69,
+        "CONFIRMED": 194,
+        "REJECTED": 1087
+      }
+    }
+  },
+  "started_at": "2026-11-10T17:40:16.686625Z"
+}

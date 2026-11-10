@@ -1,0 +1,78 @@
+{
+  "found": true,
+  "query": "relation_evidence",
+  "relation": {
+    "authority": "source_declared",
+    "basis_json": "{\"brand_left\":\"Definium\",\"brand_right\":\"\",\"model_left\":\"Tempo Pro\",\"model_right\":\"\",\"shared_fields\":[\"di\"],\"shared_identifier\":\"di:00195278070265\"}",
+    "confidence": 0.99,
+    "contradictions_json": "[]",
+    "created_at": "2026-11-10T17:41:55.832825Z",
+    "from_ref": "ev_e0a0068666f4f9fb5d35cbfe3fe803e3",
+    "from_type": "device",
+    "history": [
+      {
+        "action": "created",
+        "at": "2026-11-10T17:41:55.832825Z",
+        "reason": ""
+      }
+    ],
+    "method": "official_identifier",
+    "rejection_reason": "",
+    "relation_evidence": [
+      {
+        "evidence_id": "ev_e0a0068666f4f9fb5d35cbfe3fe803e3",
+        "evidence_type": "device_registration",
+        "identity_resolution_status": "candidate",
+        "licence_status": "public_domain",
+        "normalized_content_hash": "45f1643f5b4c34564039a82f47da3f6d8b334267193ee04e26523d354b95a81f",
+        "quality_flags": [],
+        "source_content_hash": "cb78d50f186092a288ef33c40e57e5607ed887ea75ad92417e836284e9ab2d6a",
+        "source_id": "openfda_device_udi",
+        "source_record_id": "36943566-d0ed-4d1b-ab44-c684fbc2ecc3",
+        "source_url": "https://api.fda.gov/device/udi.json?search=identifiers.id:00195278070265",
+        "time": {
+          "event_at": "",
+          "fetched_at": "2026-11-10T17:41:55.826612Z",
+          "first_observed_at": "2026-11-10T17:41:55.826612Z",
+          "notes": "publish_date is GUDID's per-record first-publication date; public_version_date is a version stamp and is not used as a clock",
+          "observation_basis": "fetch_clock",
+          "source_public_at": "2020-11-24",
+          "source_public_at_quality": "day"
+        }
+      },
+      {
+        "evidence_id": "ev_68809cec1502d13185e7b14fd669520c",
+        "evidence_type": "device_registration",
+        "identity_resolution_status": "none",
+        "licence_status": "open_licence",
+        "normalized_content_hash": "4fb2157b20ddd4b748093c6c25978253b12ba1d19f79a6c20472d6b6328bdd1b",
+        "quality_flags": [
+          "derived_time"
+        ],
+        "source_content_hash": "337384d2b7427c13ddfca0b2d434f9520735bba01a3cba364bf3530230aa6db2",
+        "source_id": "canada_mdall",
+        "source_record_id": "106987:1036403:00195278070265",
+        "source_url": "https://health-products.canada.ca/api/medical-devices/deviceidentifier/?state=active&type=json (licence 106987)",
+        "time": {
+          "event_at": "2023-12-12",
+          "fetched_at": "2026-11-10T17:40:46.915012Z",
+          "first_observed_at": "2026-11-10T17:40:46.915012Z",
+          "notes": "MDALL publishes no per-record publication date; source_public_at is derived from the licence date. last_refresh_dt is a database refresh stamp and end_date is a cancellation date - neither may be used as a first-publication date",
+          "observation_basis": "fetch_clock",
+          "source_public_at": "2023-12-12",
+          "source_public_at_quality": "derived"
+        }
+      }
+    ],
+    "relation_id": "rel_bc6c5cd330eaec6cafb3661227fc0dee",
+    "relation_type": "SAME_DEVICE_IDENTITY",
+    "revoked_at": "",
+    "revoked_reason": "",
+    "run_id": "bridge_20261110T174101Z",
+    "status": "CONFIRMED",
+    "superseded_by": "",
+    "to_ref": "dev_13bd8e74d2d2881a27be5f1f51c72a72",
+    "to_type": "device"
+  },
+  "relation_id": "rel_bc6c5cd330eaec6cafb3661227fc0dee"
+}

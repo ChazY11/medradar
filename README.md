@@ -473,6 +473,30 @@ tests/          offline tests (synthetic fixtures, no network)
 - [ ] SHAP-style attribution for "why did this track's THI move"
 - [ ] Short-side event study once borrow-fee data is available
 
+## ATLAS-001 research foundation
+
+ATLAS is the project's identity/evidence substrate, added in this branch and independent of the
+legacy pipeline above:
+
+- **ATLAS-ID** — company / manufacturer / device / identifier model; official-identifier
+  relations separated from name-similarity candidates.
+- **ATLAS-EVIDENCE** — append-only evidence records with four clocks, content hashes,
+  versioning and licence status.
+- **ATLAS-GRAPH** — evidence-bearing relations and seven JSON queries, including a complete
+  `company → device → official identity → regulatory record` chain.
+- **ATLAS-RESEARCH** — `as_of()` with observed / public-inferred / unprovable states, and a
+  timestamped prospective-candidate registry.
+
+```bash
+python -m medradar.atlas init
+python -m medradar.atlas query path --key medtronic
+python tools/run_atlas_pipeline.py --skip-collect
+```
+
+Design, audit and measured results: [`docs/atlas/`](docs/atlas/). Real-data pilot report:
+`research/atlas/reports/identity_pilot.json`. ATLAS never touches `data/`, frozen PHOENIX
+results, or restricted sources.
+
 ## License & disclaimer
 
 MIT. Source data belongs to its publishers (openFDA is public domain; ClinicalTrials.gov and SEC

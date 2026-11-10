@@ -1,0 +1,133 @@
+{
+  "schema": "medradar.atlas.firms.v1",
+  "note": "Curated alias registry for the ATLAS-001 cross-source identity pilot. An alias match is a source-stated name, not proof of legal identity; the resolver keeps legal-entity vs brand-owner distinctions explicit.",
+  "search_terms": {
+    "medtronic": {"openfda_company": "MEDTRONIC", "mdall_company": "Medtronic", "usaspending": "MEDTRONIC"},
+    "ge_healthcare": {"openfda_company": "GE HEALTHCARE", "mdall_company": "GE Healthcare", "usaspending": "GE HEALTHCARE"},
+    "philips": {"openfda_company": "PHILIPS", "mdall_company": "Philips", "usaspending": "PHILIPS"},
+    "draeger": {"openfda_company": "DRAEGER", "mdall_company": "Draeger", "usaspending": "DRAEGER"},
+    "mindray": {"openfda_company": "MINDRAY", "mdall_company": "Mindray", "usaspending": "MINDRAY"}
+  },
+  "firms": [
+    {
+      "key": "medtronic",
+      "canonical_name": "Medtronic plc",
+      "country": "IE",
+      "headquarters": "Dublin, Ireland (operational HQ Minneapolis, USA)",
+      "aliases": [
+        "MEDTRONIC",
+        "MEDTRONIC PLC",
+        "MEDTRONIC INC",
+        "MEDTRONIC, INC.",
+        "MEDTRONIC INTERNATIONAL",
+        "MEDTRONIC INTERNATIONAL TRADING",
+        "MEDTRONIC VASCULAR",
+        "MEDTRONIC MINIMED",
+        "MEDTRONIC SOFAMOR DANEK",
+        "MEDTRONIC SOFAMOR DANEK, INC.",
+        "MEDTRONIC NEUROMODULATION",
+        "MEDTRONIC CRYOCATH",
+        "MEDTRONIC XOMED",
+        "MEDTRONIC PUERTO RICO",
+        "MEDTRONIC BAKKEN",
+        "MEDTRONIC POWERED SURGICAL SOLUTIONS",
+        "MEDTRONIC NAVIGATION, INC.",
+        "MEDTRONIC ADVANCED ENERGY, LLC",
+        "MEDTRONIC ATS MEDICAL, INC.",
+        "MEDTRONIC OPHTHALMICS",
+        "COVIDIEN",
+        "COVIDIEN LP",
+        "TYCO HEALTHCARE",
+        "美敦力"
+      ],
+      "negative_guards": ["MEDTRONIC ENGINEERING CONSULTANTS"],
+      "notes": "Includes acquired brands (Covidien, Sofamor Danek) because FDA/MDALL records still carry the legacy legal manufacturer. A legacy name is a manufacturer relation, not proof that the current parent filed the record."
+    },
+    {
+      "key": "ge_healthcare",
+      "canonical_name": "GE HealthCare Technologies Inc.",
+      "country": "US",
+      "headquarters": "Chicago, USA",
+      "aliases": [
+        "GE HEALTHCARE",
+        "GE HEALTHCARE TECHNOLOGIES",
+        "GE MEDICAL SYSTEMS",
+        "GE HEALTHCARE GLOBAL",
+        "GE HEALTHCARE FINLAND",
+        "GE HEALTHCARE JAPAN",
+        "GE MEDICAL SYSTEMS ULTRASOUND AND PRIMARY CARE DIAGNOSTICS",
+        "GE MEDICAL SYSTEMS INFORMATION TECHNOLOGIES",
+        "GE MEDICAL SYSTEMS ULTRASOUND & PRIMARY CARE DIAGNOSTICS LLC",
+        "GE医疗",
+        "通用电气医疗"
+      ],
+      "negative_guards": ["GE AVIATION", "GE VERNOVA", "GENERAL ELECTRIC AIRCRAFT", "GE RENEWABLE", "GE CAPITAL"],
+      "notes": "GE HealthCare spun out of General Electric in 2023. Pre-spin records name GE Medical Systems / GE Healthcare; those are the same business lineage but a different legal entity, so entity validity dates are recorded."
+    },
+    {
+      "key": "philips",
+      "canonical_name": "Koninklijke Philips N.V.",
+      "country": "NL",
+      "headquarters": "Amsterdam, Netherlands",
+      "aliases": [
+        "PHILIPS",
+        "KONINKLIJKE PHILIPS",
+        "ROYAL PHILIPS",
+        "PHILIPS HEALTHCARE",
+        "PHILIPS MEDICAL SYSTEMS",
+        "PHILIPS MEDICAL SYSTEMS NEDERLAND",
+        "PHILIPS ULTRASOUND",
+        "PHILIPS ULTRASOUND LLC",
+        "PHILIPS ELECTRONICS",
+        "PHILIPS CONSUMER LIFESTYLE",
+        "飞利浦",
+        "皇家飞利浦"
+      ],
+      "negative_guards": ["PHILIPS LIGHTING", "SIGNIFY", "PHILIPS MORRIS", "PHILIPS 66"],
+      "notes": "Philips Lighting (Signify) and Philips 66 are unrelated businesses that share the word Philips; the guard list is part of the matching rule."
+    },
+    {
+      "key": "draeger",
+      "canonical_name": "Drägerwerk AG & Co. KGaA",
+      "country": "DE",
+      "headquarters": "Lübeck, Germany",
+      "aliases": [
+        "DRAEGER",
+        "DRAGER",
+        "DRÄGER",
+        "DRAEGERWERK",
+        "DRÄGERWERK",
+        "DRAEGER MEDICAL",
+        "DRÄGER MEDICAL",
+        "DRAEGER MEDICAL SYSTEMS",
+        "DRÄGER MEDICAL SYSTEMS",
+        "DRAEGER MEDICAL SYSTEMS, INC.",
+        "DRAEGER SAFETY",
+        "德尔格",
+        "德尔格医疗"
+      ],
+      "negative_guards": ["DRAEGER SAFETY AG"],
+      "notes": "Dräger Safety is the same group but not a medical-device manufacturer; it is demoted to candidate rather than silently accepted."
+    },
+    {
+      "key": "mindray",
+      "canonical_name": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+      "country": "CN",
+      "headquarters": "Shenzhen, China",
+      "aliases": [
+        "MINDRAY",
+        "SHENZHEN MINDRAY",
+        "SHENZHEN MINDRAY BIO MEDICAL ELECTRONICS",
+        "SHENZHEN MINDRAY BIO-MEDICAL ELECTRONICS CO., LTD.",
+        "MINDRAY BIO MEDICAL",
+        "MINDRAY MEDICAL",
+        "MINDRAY DS",
+        "迈瑞",
+        "深圳迈瑞",
+        "深圳迈瑞生物医疗电子"
+      ],
+      "negative_guards": ["MINDRAY SCIENCE AND TECHNOLOGY"],
+      "notes": "Mindray is the only non-Western firm in the pilot, so its cross-market coverage is the most likely to be incomplete in FDA/Canada records."
+    }
+  ]
+}
