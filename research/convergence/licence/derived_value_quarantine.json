@@ -1,0 +1,39 @@
+{
+ "redactions": [
+  {
+   "file": "research/horizon/reports/INDUSTRY_DATA_REPORT.md",
+   "what": "Comtrade-derived China HS-9018 import cells (5 values)",
+   "replacement": "withheld"
+  },
+  {
+   "file": "research/horizon/reports/INDUSTRY_DATA_REPORT.md",
+   "what": "exact Comtrade cell value and USD/EUR ratio derived from it",
+   "replacement": "withheld"
+  },
+  {
+   "file": "research/horizon/experiments/industry/EXP_H4_INDUSTRY.json",
+   "what": "Comtrade-derived numeric fields (1)",
+   "fields": [
+    "cross_checks.de_9018_imports_2023.comtrade_usd"
+   ]
+  }
+ ],
+ "deletions": [
+  {
+   "file": "research/horizon/DATASETS/industry/uk_find_a_tender/raw/award_packages_p1.json",
+   "bytes": 1327614,
+   "reason": "vendored personal names and work e-mail addresses; the derived export contains none"
+  },
+  {
+   "file": "research/horizon/DATASETS/industry/uk_find_a_tender/raw/award_packages_p2.json",
+   "bytes": 1334382,
+   "reason": "vendored personal names and work e-mail addresses; the derived export contains none"
+  },
+  {
+   "file": "research/horizon/DATASETS/industry/uk_find_a_tender/raw/award_packages_p3.json",
+   "bytes": 1250351,
+   "reason": "vendored personal names and work e-mail addresses; the derived export contains none"
+  }
+ ],
+ "reason": "UN Comtrade Terms §5 prohibits redistribution/publication of any material, including derived values."
+}

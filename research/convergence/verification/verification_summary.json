@@ -1,0 +1,3647 @@
+{
+  "checks": [
+    {
+      "actual": [],
+      "check_id": "v1.bytes",
+      "claim": "MANIFEST.json.files[].bytes is the exact byte length of the named file.",
+      "claim_source": "MANIFEST.json:12 etc.",
+      "detail": "checked 23 present files",
+      "evidence": {},
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "Every present file's byte length equals the manifest"
+    },
+    {
+      "actual": [],
+      "check_id": "v1.content_hash",
+      "claim": "content_hash = sha256(canonical subset) over schema_version, source identity, original_name, identifiers(scheme,value), manufacturer, attributes, event_at, source_public_at, source_url.",
+      "claim_source": "research/horizon/hz/schema.py:146-173",
+      "detail": "mismatches=0 over 5884 records; first 50 shown",
+      "evidence": {},
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "Each record's content_hash recomputes from its own content"
+    },
+    {
+      "actual": [
+        "un_comtrade.jsonl"
+      ],
+      "check_id": "v1.declared_files_present",
+      "claim": "MANIFEST.json.files declares 24 source files; only un_comtrade.jsonl is quarantined.",
+      "claim_source": "research/horizon/exports/horizon-2026-11-10/MANIFEST.json:7-176",
+      "detail": "declared=24 present=23 absent=1",
+      "evidence": {},
+      "expected": [
+        "un_comtrade.jsonl"
+      ],
+      "group": "V1",
+      "status": "PASS",
+      "title": "Every manifest-declared file exists (quarantine excepted)"
+    },
+    {
+      "actual": [],
+      "check_id": "v1.licence_agreement",
+      "claim": "per_source[].licence_status == licence_summary[] == extra.registry_snapshot[] == every record's licence_status.",
+      "claim_source": "MANIFEST.json:177-425; records",
+      "detail": "",
+      "evidence": {},
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "Licence status agrees across manifest views and rows"
+    },
+    {
+      "actual": [],
+      "check_id": "v1.no_undeclared_files",
+      "claim": "The export is a closed set: 24 payloads + 24 sidecars + MANIFEST.json + README.md.",
+      "claim_source": "research/horizon/exports/horizon-2026-11-10/",
+      "detail": "files_on_disk=48",
+      "evidence": {},
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "Export directory holds no file the manifest does not account for"
+    },
+    {
+      "actual": [],
+      "check_id": "v1.per_source_counters",
+      "claim": "records_with_identifiers / _source_public_at / _event_at are reproducible from the rows.",
+      "claim_source": "MANIFEST.json:177-394",
+      "detail": "",
+      "evidence": {
+        "recomputed": {
+          "accessgudid": {
+            "records": 320,
+            "records_with_event_at": 0,
+            "records_with_fetched_at": 320,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 320,
+            "records_with_source_public_at": 320
+          },
+          "brazil_anvisa": {
+            "records": 120,
+            "records_with_event_at": 120,
+            "records_with_fetched_at": 120,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 120,
+            "records_with_source_public_at": 120
+          },
+          "canada_mdall": {
+            "records": 174,
+            "records_with_event_at": 174,
+            "records_with_fetched_at": 174,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 174,
+            "records_with_source_public_at": 0
+          },
+          "cipo_canada": {
+            "records": 2000,
+            "records_with_event_at": 916,
+            "records_with_fetched_at": 2000,
+            "records_with_first_observed_at": 2000,
+            "records_with_identifiers": 2000,
+            "records_with_source_public_at": 2000
+          },
+          "clinicaltrials_gov": {
+            "records": 164,
+            "records_with_event_at": 94,
+            "records_with_fetched_at": 164,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 164,
+            "records_with_source_public_at": 164
+          },
+          "crossref": {
+            "records": 59,
+            "records_with_event_at": 59,
+            "records_with_fetched_at": 59,
+            "records_with_first_observed_at": 59,
+            "records_with_identifiers": 59,
+            "records_with_source_public_at": 59
+          },
+          "epo_publication_server": {
+            "records": 228,
+            "records_with_event_at": 228,
+            "records_with_fetched_at": 228,
+            "records_with_first_observed_at": 228,
+            "records_with_identifiers": 228,
+            "records_with_source_public_at": 228
+          },
+          "eu_cordis": {
+            "records": 60,
+            "records_with_event_at": 0,
+            "records_with_fetched_at": 60,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 60,
+            "records_with_source_public_at": 0
+          },
+          "eu_ted": {
+            "records": 299,
+            "records_with_event_at": 297,
+            "records_with_fetched_at": 299,
+            "records_with_first_observed_at": 299,
+            "records_with_identifiers": 299,
+            "records_with_source_public_at": 299
+          },
+          "europepmc": {
+            "records": 37,
+            "records_with_event_at": 37,
+            "records_with_fetched_at": 37,
+            "records_with_first_observed_at": 37,
+            "records_with_identifiers": 37,
+            "records_with_source_public_at": 37
+          },
+          "eurostat_comext": {
+            "records": 1400,
+            "records_with_event_at": 1400,
+            "records_with_fetched_at": 1400,
+            "records_with_first_observed_at": 1400,
+            "records_with_identifiers": 1400,
+            "records_with_source_public_at": 0
+          },
+          "nih_reporter": {
+            "records": 64,
+            "records_with_event_at": 56,
+            "records_with_fetched_at": 64,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 64,
+            "records_with_source_public_at": 64
+          },
+          "openaire": {
+            "records": 59,
+            "records_with_event_at": 59,
+            "records_with_fetched_at": 59,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 59,
+            "records_with_source_public_at": 59
+          },
+          "openalex": {
+            "records": 60,
+            "records_with_event_at": 60,
+            "records_with_fetched_at": 60,
+            "records_with_first_observed_at": 60,
+            "records_with_identifiers": 60,
+            "records_with_source_public_at": 60
+          },
+          "openfda_device_510k": {
+            "records": 160,
+            "records_with_event_at": 160,
+            "records_with_fetched_at": 160,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 160,
+            "records_with_source_public_at": 0
+          },
+          "openfda_device_classification": {
+            "records": 60,
+            "records_with_event_at": 0,
+            "records_with_fetched_at": 60,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 60,
+            "records_with_source_public_at": 0
+          },
+          "openfda_device_pma": {
+            "records": 60,
+            "records_with_event_at": 60,
+            "records_with_fetched_at": 60,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 60,
+            "records_with_source_public_at": 0
+          },
+          "openfda_device_registrationlisting": {
+            "records": 60,
+            "records_with_event_at": 0,
+            "records_with_fetched_at": 60,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 60,
+            "records_with_source_public_at": 0
+          },
+          "pubmed_eutils": {
+            "records": 37,
+            "records_with_event_at": 37,
+            "records_with_fetched_at": 37,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 37,
+            "records_with_source_public_at": 37
+          },
+          "semantic_scholar": {
+            "records": 56,
+            "records_with_event_at": 55,
+            "records_with_fetched_at": 56,
+            "records_with_first_observed_at": 0,
+            "records_with_identifiers": 56,
+            "records_with_source_public_at": 55
+          },
+          "uk_find_a_tender": {
+            "records": 62,
+            "records_with_event_at": 62,
+            "records_with_fetched_at": 62,
+            "records_with_first_observed_at": 62,
+            "records_with_identifiers": 62,
+            "records_with_source_public_at": 62
+          },
+          "uk_hmrc_trade": {
+            "records": 100,
+            "records_with_event_at": 100,
+            "records_with_fetched_at": 100,
+            "records_with_first_observed_at": 100,
+            "records_with_identifiers": 100,
+            "records_with_source_public_at": 0
+          },
+          "usaspending": {
+            "records": 245,
+            "records_with_event_at": 245,
+            "records_with_fetched_at": 245,
+            "records_with_first_observed_at": 245,
+            "records_with_identifiers": 245,
+            "records_with_source_public_at": 0
+          }
+        }
+      },
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "per_source identifier/clock counters recompute"
+    },
+    {
+      "actual": [],
+      "check_id": "v1.per_source_dedupe",
+      "claim": "unique_dedupe_keys is the distinct count of the documented dedupe_key() per source.",
+      "claim_source": "MANIFEST.json:181 etc.; research/horizon/hz/schema.py:232-258",
+      "detail": "",
+      "evidence": {
+        "recomputed": {
+          "accessgudid": 320,
+          "brazil_anvisa": 120,
+          "canada_mdall": 60,
+          "cipo_canada": 2000,
+          "clinicaltrials_gov": 164,
+          "crossref": 59,
+          "epo_publication_server": 228,
+          "eu_cordis": 60,
+          "eu_ted": 93,
+          "europepmc": 37,
+          "eurostat_comext": 1400,
+          "nih_reporter": 9,
+          "openaire": 58,
+          "openalex": 60,
+          "openfda_device_510k": 160,
+          "openfda_device_classification": 50,
+          "openfda_device_pma": 33,
+          "openfda_device_registrationlisting": 26,
+          "pubmed_eutils": 37,
+          "semantic_scholar": 56,
+          "uk_find_a_tender": 16,
+          "uk_hmrc_trade": 100,
+          "usaspending": 245
+        }
+      },
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "per_source unique_dedupe_keys recompute"
+    },
+    {
+      "actual": [],
+      "check_id": "v1.per_source_records",
+      "claim": "The two manifest views count the same records.",
+      "claim_source": "MANIFEST.json:177-394",
+      "detail": "",
+      "evidence": {},
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "per_source[].records agrees with files[].records"
+    },
+    {
+      "actual": {
+        "bytes": 1832311,
+        "records": 608,
+        "sha256": "5bbcf42b1ef193108783f8270d0814350bd49a2105d9486f563e67448792b33d"
+      },
+      "check_id": "v1.quarantine_provenance",
+      "claim": "Quarantine must withhold a file whose digest is the one the manifest declares, not a different or truncated file.",
+      "claim_source": "MANIFEST.json:162-168 vs worktrees/horizon-001",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "bytes": 1832311,
+        "records": 608,
+        "sha256": "5bbcf42b1ef193108783f8270d0814350bd49a2105d9486f563e67448792b33d"
+      },
+      "group": "V1",
+      "status": "PASS",
+      "title": "The quarantined file still matches its manifest entry upstream"
+    },
+    {
+      "actual": [
+        "un_comtrade.jsonl",
+        "un_comtrade.jsonl.sha256"
+      ],
+      "check_id": "v1.quarantine_set_exact",
+      "claim": "Quarantining UN Comtrade must remove payload and sidecar and nothing else.",
+      "claim_source": "task brief; MANIFEST.json:162-168",
+      "detail": "",
+      "evidence": {},
+      "expected": [
+        "un_comtrade.jsonl",
+        "un_comtrade.jsonl.sha256"
+      ],
+      "group": "V1",
+      "status": "PASS",
+      "title": "Absent set is exactly {un_comtrade.jsonl, un_comtrade.jsonl.sha256}"
+    },
+    {
+      "actual": [],
+      "check_id": "v1.readme_table",
+      "claim": "The human-readable table states the same counts as the machine artifact.",
+      "claim_source": "research/horizon/exports/horizon-2026-11-10/README.md:56-81",
+      "detail": "",
+      "evidence": {},
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "README per-source table recomputes"
+    },
+    {
+      "actual": [],
+      "check_id": "v1.record_content_unique",
+      "claim": "Rows are deduplicated within a source: identical content must appear once.",
+      "claim_source": "research/horizon/exports/horizon-2026-11-10/README.md:14",
+      "detail": "",
+      "evidence": {},
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "No two rows in a source have the same content hash"
+    },
+    {
+      "actual": {
+        "extra_rows_sharing_an_id": 62,
+        "sources": [
+          {
+            "distinct_source_record_ids": 58,
+            "duplicated_ids": {
+              "doi_dedup___::90ba59cc7e0817fa3e9f73f46414d01a": 2
+            },
+            "extra_rows_sharing_an_id": 1,
+            "records": 59,
+            "source_id": "openaire"
+          },
+          {
+            "distinct_source_record_ids": 33,
+            "duplicated_ids": {
+              "P010031": 3,
+              "P080006": 2,
+              "P080025": 3,
+              "P090013": 3,
+              "P100021": 3,
+              "P110023": 2,
+              "P160028": 2,
+              "P160029": 2,
+              "P790017": 2,
+              "P840001": 2,
+              "P860004": 3,
+              "P960009": 3,
+              "P960042": 4,
+              "P970004": 2,
+              "P980016": 4,
+              "P980035": 3
+            },
+            "extra_rows_sharing_an_id": 27,
+            "records": 60,
+            "source_id": "openfda_device_pma"
+          },
+          {
+            "distinct_source_record_ids": 26,
+            "duplicated_ids": {
+              "1030489": 2,
+              "1723170": 3,
+              "1824199": 9,
+              "2032227": 2,
+              "2183870": 2,
+              "2647346": 3,
+              "2649622": 3,
+              "3003120897": 3,
+              "3018094310": 15,
+              "3033527241": 2
+            },
+            "extra_rows_sharing_an_id": 34,
+            "records": 60,
+            "source_id": "openfda_device_registrationlisting"
+          }
+        ]
+      },
+      "check_id": "v1.record_identity_key_unique",
+      "claim": "ATLAS's evidence id is a function of (source_id, evidence_type, source_record_id); a non-unique source_record_id merges distinct records.",
+      "claim_source": "medradar/atlas/evidence/schema.py:105-113 vs HORIZON export",
+      "detail": "the shared ids are not duplicates: one PMA number carries several supplements (distinct content hashes) and one registration number carries several establishment-type rows; README:14's 'deduplicated within a source' does not make the id unique",
+      "evidence": {},
+      "expected": {
+        "extra_rows_sharing_an_id": 0
+      },
+      "group": "V1",
+      "status": "FAIL",
+      "title": "source_record_id is unique within a source, so it can be used as a record key"
+    },
+    {
+      "actual": [],
+      "check_id": "v1.records",
+      "claim": "MANIFEST.json.files[].records equals the number of non-empty lines in the jsonl.",
+      "claim_source": "MANIFEST.json:13 etc.",
+      "detail": "",
+      "evidence": {
+        "total_nonempty_lines": 5884,
+        "unparseable_json_lines": []
+      },
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "Record counts equal non-empty line counts"
+    },
+    {
+      "actual": [],
+      "check_id": "v1.schema_conformance",
+      "claim": "Every row validates against research/horizon/hz/schema.py (closed vocabularies, ISO clocks, declared identifiers).",
+      "claim_source": "research/horizon/exports/horizon-2026-11-10/README.md:14",
+      "detail": "violations=0",
+      "evidence": {},
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "Every record satisfies horizon.evidence.v1"
+    },
+    {
+      "actual": [],
+      "check_id": "v1.sha256",
+      "claim": "MANIFEST.json.files[].sha256 is the digest of the named file.",
+      "claim_source": "MANIFEST.json:11 etc.",
+      "detail": "",
+      "evidence": {},
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "Every present file's SHA-256 equals the manifest"
+    },
+    {
+      "actual": [],
+      "check_id": "v1.sha256_sidecars",
+      "claim": "The per-file sidecar is a second, independent copy of the digest claim.",
+      "claim_source": "research/horizon/exports/horizon-2026-11-10/*.sha256",
+      "detail": "checked 23 sidecars",
+      "evidence": {},
+      "expected": [],
+      "group": "V1",
+      "status": "PASS",
+      "title": "Each .sha256 sidecar matches its own bytes and the manifest"
+    },
+    {
+      "actual": {
+        "bytes": 20335003,
+        "records": 6492,
+        "sources": 24
+      },
+      "check_id": "v1.totals",
+      "claim": "totals = {sources: 24, records: 6492, bytes: 20335003} and equals the sums of files[].",
+      "claim_source": "MANIFEST.json:395-399",
+      "detail": "sum over 24 declared entries including the quarantined one",
+      "evidence": {},
+      "expected": {
+        "bytes": 20335003,
+        "records": 6492,
+        "sources": 24
+      },
+      "group": "V1",
+      "status": "PASS",
+      "title": "MANIFEST.totals sums correctly from per-file facts"
+    },
+    {
+      "actual": {
+        "CONFIRMED": 0,
+        "REJECTED": 387,
+        "S2_fired": 445,
+        "S2_verdicts": [
+          0,
+          387,
+          58
+        ],
+        "S3_fired": 365,
+        "S3_verdicts": [
+          0,
+          40,
+          325
+        ],
+        "UNKNOWN": 325,
+        "hard_negatives": 12,
+        "pairs_total": 712
+      },
+      "check_id": "v2.doc_experiment_results",
+      "claim": "712 pairs, 0 CONFIRMED, 387 REJECTED, 325 UNKNOWN; S2 445 fired -> 387 REJECTED/58 UNKNOWN; S3 365 fired -> 40 REJECTED/325 UNKNOWN; 12 hard negatives.",
+      "claim_source": "research/horizon/EXPERIMENT_RESULTS.md:105,112,117-118,132-133,135",
+      "detail": "8 of 9 prose numbers disagree with the pair file",
+      "evidence": {
+        "S5_named_multi_field_conjunction": true,
+        "mismatches": [
+          {
+            "declared": 712,
+            "field": "pairs_total",
+            "recomputed": 726
+          },
+          {
+            "declared": 387,
+            "field": "REJECTED",
+            "recomputed": 0
+          },
+          {
+            "declared": 325,
+            "field": "UNKNOWN",
+            "recomputed": 726
+          },
+          {
+            "declared": 445,
+            "field": "S2_fired",
+            "recomputed": 0
+          },
+          {
+            "declared": [
+              0,
+              387,
+              58
+            ],
+            "field": "S2_verdicts",
+            "recomputed": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "declared": 365,
+            "field": "S3_fired",
+            "recomputed": 708
+          },
+          {
+            "declared": [
+              0,
+              40,
+              325
+            ],
+            "field": "S3_verdicts",
+            "recomputed": [
+              0,
+              0,
+              708
+            ]
+          },
+          {
+            "declared": 12,
+            "field": "hard_negatives",
+            "recomputed": 26
+          }
+        ]
+      },
+      "expected": {
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "S2_fired": 0,
+        "S2_verdicts": [
+          0,
+          0,
+          0
+        ],
+        "S3_fired": 708,
+        "S3_verdicts": [
+          0,
+          0,
+          708
+        ],
+        "UNKNOWN": 726,
+        "hard_negatives": 26,
+        "pairs_total": 726
+      },
+      "group": "V2",
+      "status": "FAIL",
+      "title": "EXPERIMENT_RESULTS.md EXP-H2 numbers match the pair file"
+    },
+    {
+      "actual": {
+        "REJECTED": 387,
+        "S2_fired": 445,
+        "S2_verdicts": [
+          0,
+          387,
+          58
+        ],
+        "S3_fired": 365,
+        "S3_verdicts": [
+          0,
+          40,
+          325
+        ],
+        "UNKNOWN": 325,
+        "gudid_records": 320,
+        "hard_negatives": 12,
+        "mdall_records": 174,
+        "pairs_total": 712
+      },
+      "check_id": "v2.doc_frontier_report",
+      "claim": "712 candidate pairs from 320 GUDID × 174 MDALL; REJECTED 387; UNKNOWN 325; S2 445 -> 387/58; S3 365 -> 40/325; 12 hard negatives.",
+      "claim_source": "research/horizon/reports/REGULATORY_FRONTIER_REPORT.md:188,194-195,204-205,208",
+      "detail": "8 of 10 prose numbers disagree with the pair file",
+      "evidence": {
+        "mismatches": [
+          {
+            "declared": 712,
+            "field": "pairs_total",
+            "recomputed": 726
+          },
+          {
+            "declared": 387,
+            "field": "REJECTED",
+            "recomputed": 0
+          },
+          {
+            "declared": 325,
+            "field": "UNKNOWN",
+            "recomputed": 726
+          },
+          {
+            "declared": 445,
+            "field": "S2_fired",
+            "recomputed": 0
+          },
+          {
+            "declared": [
+              0,
+              387,
+              58
+            ],
+            "field": "S2_verdicts",
+            "recomputed": [
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "declared": 365,
+            "field": "S3_fired",
+            "recomputed": 708
+          },
+          {
+            "declared": [
+              0,
+              40,
+              325
+            ],
+            "field": "S3_verdicts",
+            "recomputed": [
+              0,
+              0,
+              708
+            ]
+          },
+          {
+            "declared": 12,
+            "field": "hard_negatives",
+            "recomputed": 26
+          }
+        ]
+      },
+      "expected": {
+        "REJECTED": 0,
+        "S2_fired": 0,
+        "S2_verdicts": [
+          0,
+          0,
+          0
+        ],
+        "S3_fired": 708,
+        "S3_verdicts": [
+          0,
+          0,
+          708
+        ],
+        "UNKNOWN": 726,
+        "gudid_records": 320,
+        "hard_negatives": 26,
+        "mdall_records": 174,
+        "pairs_total": 726
+      },
+      "group": "V2",
+      "status": "FAIL",
+      "title": "REGULATORY_FRONTIER_REPORT.md EXP-H2 numbers match the pair file"
+    },
+    {
+      "actual": "S5 = multi-field conjunction",
+      "check_id": "v2.doc_signal_definitions",
+      "claim": "S5 is described in EXPERIMENT_RESULTS.md as 'multi-field conjunction'; the pre-registration defines S5 as 'name tokens overlap >= 2'.",
+      "claim_source": "research/horizon/EXPERIMENT_RESULTS.md:110 vs experiments/regulatory/EXP_H2_SELECTION_RULE.md:39",
+      "detail": "a reader of the results document cannot know what S5 counts",
+      "evidence": {},
+      "expected": "S5 = name-token overlap >= 2 (not covered by S1)",
+      "group": "V2",
+      "status": "FAIL",
+      "title": "Prose signal definitions match the pre-registered rule"
+    },
+    {
+      "actual": {
+        "attempted": {
+          "HN1_same_brand_different_device": 0,
+          "HN2_same_model_token_different_firm": 0,
+          "HN3_same_family_different_device": 14,
+          "HN4_subsidiary_vs_parent": 12
+        },
+        "rules_built": [
+          "HN3_same_family_different_device",
+          "HN4_subsidiary_vs_parent"
+        ]
+      },
+      "check_id": "v2.hard_negative_coverage",
+      "claim": "HN1..HN4 are defined in the pre-registration; the artifact reports 0 attempts for HN1/HN2.",
+      "claim_source": "EXP_H2_SELECTION_RULE.md:55-64 vs EXP_H2_SUMMARY.json:24-29",
+      "detail": "HN1 and HN2 are defined but never constructed; the run cannot speak to them",
+      "evidence": {},
+      "expected": {
+        "rules_built": 2,
+        "rules_defined": 4
+      },
+      "group": "V2",
+      "status": "PASS",
+      "title": "All four pre-registered hard-negative rules are either built or declared unbuildable"
+    },
+    {
+      "actual": [],
+      "check_id": "v2.pair_provenance",
+      "claim": "The pairs must be built from exactly the 320 GUDID and 174 MDALL records in the export.",
+      "claim_source": "EXP_H2_SUMMARY.json:4-9",
+      "detail": "distinct FDA records=46 of 320 in export; distinct MDALL records=86 of 174 in export",
+      "evidence": {
+        "canada_records_in_export": 174,
+        "canada_records_referenced": 86,
+        "fda_records_in_export": 320,
+        "fda_records_referenced": 46
+      },
+      "expected": [],
+      "group": "V2",
+      "status": "PASS",
+      "title": "Every pair references records present in the frozen export"
+    },
+    {
+      "actual": 726,
+      "check_id": "v2.pairs_total",
+      "claim": "The pair file contains N pair records; N is the denominator of every verdict.",
+      "claim_source": "research/horizon/experiments/regulatory/EXP_H2_PAIRS.jsonl",
+      "detail": "counted non-empty lines and parsed each as JSON",
+      "evidence": {},
+      "expected": 726,
+      "group": "V2",
+      "status": "PASS",
+      "title": "EXP-H2 pair count recomputes"
+    },
+    {
+      "actual": [],
+      "check_id": "v2.signal_set_consistency",
+      "claim": "The two encodings of the same fact must not disagree.",
+      "claim_source": "EXP_H2_PAIRS.jsonl",
+      "detail": "",
+      "evidence": {},
+      "expected": [],
+      "group": "V2",
+      "status": "PASS",
+      "title": "signal_set agrees with the signals block"
+    },
+    {
+      "actual": {
+        "by_construction_rule": {
+          "HN3_same_family_different_device": 14,
+          "HN4_subsidiary_vs_parent": 12,
+          "candidate": 700
+        },
+        "combos": [
+          {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 19,
+            "n": 19,
+            "reaches_confirmed": false,
+            "signal_combination": "S3+S5"
+          },
+          {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 689,
+            "n": 689,
+            "reaches_confirmed": false,
+            "signal_combination": "S3"
+          },
+          {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 18,
+            "n": 18,
+            "reaches_confirmed": false,
+            "signal_combination": "S5"
+          }
+        ],
+        "declared_hard_negative_rules": {
+          "HN1_same_brand_different_device": 0,
+          "HN2_same_model_token_different_firm": 0,
+          "HN3_same_family_different_device": 14,
+          "HN4_subsidiary_vs_parent": 12
+        },
+        "declared_per_signal": {
+          "S1": {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 0,
+            "fired": 0
+          },
+          "S2": {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 0,
+            "fired": 0
+          },
+          "S3": {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 708,
+            "fired": 708
+          },
+          "S4": {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 0,
+            "fired": 0
+          },
+          "S5": {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 37,
+            "fired": 37
+          }
+        },
+        "hard_negative_pair_count": 26,
+        "pairs_total": 726,
+        "per_signal_fired": {
+          "S1": 0,
+          "S2": 0,
+          "S3": 708,
+          "S4": 0,
+          "S5": 37
+        },
+        "signal_sufficiency_table": [
+          {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 19,
+            "n": 19,
+            "reaches_confirmed": false,
+            "signal_combination": "S3+S5"
+          },
+          {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 689,
+            "n": 689,
+            "reaches_confirmed": false,
+            "signal_combination": "S3"
+          },
+          {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 18,
+            "n": 18,
+            "reaches_confirmed": false,
+            "signal_combination": "S5"
+          }
+        ],
+        "verdicts": {
+          "UNKNOWN": 726
+        }
+      },
+      "check_id": "v2.summary_agreement",
+      "claim": "726 pairs / 726 UNKNOWN / 0 REJECTED; construction rules candidate 700, HN3 14, HN4 12; S3 fired 708, S5 fired 37, S1/S2/S4 fire 0.",
+      "claim_source": "research/horizon/experiments/regulatory/EXP_H2_SUMMARY.json:11-88",
+      "detail": "0 mismatched fields",
+      "evidence": {
+        "mismatches": []
+      },
+      "expected": {
+        "by_construction_rule": {
+          "HN3_same_family_different_device": 14,
+          "HN4_subsidiary_vs_parent": 12,
+          "candidate": 700
+        },
+        "combos": [
+          {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 689,
+            "n": 689,
+            "reaches_confirmed": false,
+            "signal_combination": "S3"
+          },
+          {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 19,
+            "n": 19,
+            "reaches_confirmed": false,
+            "signal_combination": "S3+S5"
+          },
+          {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 18,
+            "n": 18,
+            "reaches_confirmed": false,
+            "signal_combination": "S5"
+          }
+        ],
+        "declared_hard_negative_rules": {
+          "HN1_same_brand_different_device": 0,
+          "HN2_same_model_token_different_firm": 0,
+          "HN3_same_family_different_device": 14,
+          "HN4_subsidiary_vs_parent": 12
+        },
+        "declared_per_signal": {
+          "S1": {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 0,
+            "fired": 0
+          },
+          "S2": {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 0,
+            "fired": 0
+          },
+          "S3": {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 708,
+            "fired": 708
+          },
+          "S4": {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 0,
+            "fired": 0
+          },
+          "S5": {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 37,
+            "fired": 37
+          }
+        },
+        "hard_negative_pair_count": 26,
+        "pairs_total": 726,
+        "per_signal_fired": {
+          "S1": 0,
+          "S2": 0,
+          "S3": 708,
+          "S4": 0,
+          "S5": 37
+        },
+        "signal_sufficiency_table": [
+          {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 19,
+            "n": 19,
+            "reaches_confirmed": false,
+            "signal_combination": "S3+S5"
+          },
+          {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 689,
+            "n": 689,
+            "reaches_confirmed": false,
+            "signal_combination": "S3"
+          },
+          {
+            "CONFIRMED": 0,
+            "REJECTED": 0,
+            "UNKNOWN": 18,
+            "n": 18,
+            "reaches_confirmed": false,
+            "signal_combination": "S5"
+          }
+        ],
+        "verdicts": {
+          "UNKNOWN": 726
+        }
+      },
+      "group": "V2",
+      "status": "PASS",
+      "title": "EXP_H2_SUMMARY.json primary block matches the pair file"
+    },
+    {
+      "actual": [],
+      "check_id": "v2.verdict_rule_conformance",
+      "claim": "CONFIRMED only when S4 fires; REJECTED only for the two stated grounds (S2 without S3, or a contradicting official field).",
+      "claim_source": "experiments/regulatory/EXP_H2_SELECTION_RULE.md:41-49",
+      "detail": "violations=0 of 726 pairs",
+      "evidence": {},
+      "expected": [],
+      "group": "V2",
+      "status": "PASS",
+      "title": "Every verdict obeys the pre-registered rule"
+    },
+    {
+      "actual": {
+        "fn": 0,
+        "fp": 0,
+        "labelled_pairs": 1334,
+        "tn": 400,
+        "tp": 934
+      },
+      "check_id": "v3.baseline_arithmetic",
+      "claim": "tp 934 + fn 0 = 934 positives; fp 0 + tn 400 = 400 negatives; 1,334 labelled pairs.",
+      "claim_source": "research/atlas/reports/identity_baseline_eval.json; RESEARCH_VALIDATION.md:40-41",
+      "detail": "arithmetic is consistent; note that tp == positives makes recall 1.0 by construction and fp == 0 is definitional for a DI-equality rule",
+      "evidence": {},
+      "expected": {
+        "labelled_pairs": 1334,
+        "negatives": 400,
+        "positives": 934
+      },
+      "group": "V3",
+      "status": "PASS",
+      "title": "The identity/baseline confusion matrices add up"
+    },
+    {
+      "actual": {
+        "negatives_artifact": null
+      },
+      "check_id": "v3.baseline_labels_enumerated",
+      "claim": "The pinned claim of 400 true negatives requires the negative pair list.",
+      "claim_source": "identity_baseline_eval.json",
+      "detail": "no artifact enumerates the 400 negative pairs; the metric cannot be re-derived, only re-added",
+      "evidence": {},
+      "expected": {
+        "negatives": 400
+      },
+      "group": "V3",
+      "status": "UNVERIFIABLE",
+      "title": "The 400 sampled negatives are recoverable as an artifact"
+    },
+    {
+      "actual": [],
+      "check_id": "v3.bridge_gtins_subset_mdall",
+      "claim": "The Canadian side of the bridge must be a value Health Canada publishes.",
+      "claim_source": "docs/atlas/DATA_SOURCE_INTEGRATION.md:31-33",
+      "detail": "934 bridge GTINs, 0 absent from the MDALL cache",
+      "evidence": {},
+      "expected": [],
+      "group": "V3",
+      "status": "PASS",
+      "title": "Every bridged GTIN really occurs in the Canadian identifier table"
+    },
+    {
+      "actual": {
+        "pair_from_run": {
+          "bridge_20261110T174101Z": 932,
+          "udi_20261110T174016Z": 2
+        },
+        "paired": 934,
+        "us_evidence_by_run": {
+          "bridge_20261110T174101Z": 940,
+          "udi_20261110T174016Z": 500
+        },
+        "us_evidence_rows": 1440
+      },
+      "check_id": "v3.bridge_resolution_math",
+      "claim": "1,200 sampled GTIN rows resolved to 942 openFDA records, of which 934 formed a pair (8 resolved records were package-level DIs absent from the Canadian table).",
+      "claim_source": "docs/atlas/DATA_SOURCE_INTEGRATION.md:31-33; RESEARCH_VALIDATION.md:32",
+      "detail": "the 1,200-row deterministic sample and the 942 resolutions cannot be replayed offline (the sampling rule lives in the ATLAS connector); the database does show 1440 US evidence rows = 500 pilot + 940 bridge additions, consistent with 942 resolved of which 2 were already present",
+      "evidence": {},
+      "expected": {
+        "paired": 934,
+        "queried": 1200,
+        "resolved": 942
+      },
+      "group": "V3",
+      "status": "UNVERIFIABLE",
+      "title": "942 resolved -> 934 paired is representable in the database"
+    },
+    {
+      "actual": [],
+      "check_id": "v3.canonical_key_recompute",
+      "claim": "canonical_key follows the documented scheme priority with primary-DI preference.",
+      "claim_source": "medradar/atlas/evidence/schema.py:116-144",
+      "detail": "mismatches=0 of 7254",
+      "evidence": {},
+      "expected": [],
+      "group": "V3",
+      "status": "PASS",
+      "title": "Every canonical_key recomputes from its stored identifiers"
+    },
+    {
+      "actual": [],
+      "check_id": "v3.content_hash_recompute",
+      "claim": "content_hash = sha256(canonical json of the normalized payload).",
+      "claim_source": "medradar/atlas/evidence/schema.py:97-102,186,223",
+      "detail": "mismatches=0 of 7254",
+      "evidence": {},
+      "expected": [],
+      "group": "V3",
+      "status": "PASS",
+      "title": "Every content_hash recomputes from its stored payload"
+    },
+    {
+      "actual": {
+        "ca_device_markets": {
+          "[\"CA\"]": 934
+        },
+        "ca_side_schemes": {
+          "di": 934,
+          "licence_no": 934,
+          "mdall_device_id": 934
+        },
+        "us_side_sources": {
+          "openfda_device_udi": 934
+        }
+      },
+      "check_id": "v3.cross_market_scope",
+      "claim": "The 934 are described as cross-market (U.S. GUDID <-> Canadian MDALL).",
+      "claim_source": "docs/atlas/RESEARCH_VALIDATION.md:69",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "ca_side_scheme": "licence_no",
+        "us_side_source": "openfda_device_udi"
+      },
+      "group": "V3",
+      "status": "PASS",
+      "title": "Each pair really spans a US record and a Canadian record"
+    },
+    {
+      "actual": {
+        "by_run": {
+          "bridge_20261110T174101Z": 934
+        },
+        "runs": 1
+      },
+      "check_id": "v3.duplication_across_runs",
+      "claim": "Re-running the bridge must not duplicate relations.",
+      "claim_source": "entity_relations.run_id",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "runs": 1
+      },
+      "group": "V3",
+      "status": "PASS",
+      "title": "All 934 relations come from a single bridge run"
+    },
+    {
+      "actual": [],
+      "check_id": "v3.evidence_id_recompute",
+      "claim": "ev_ = first 32 hex of sha256('source_id|evidence_type|source_record_id').",
+      "claim_source": "medradar/atlas/evidence/schema.py:105-113",
+      "detail": "mismatches=0 of 7254",
+      "evidence": {},
+      "expected": [],
+      "group": "V3",
+      "status": "PASS",
+      "title": "Every evidence_id recomputes from (source_id, evidence_type, source_record_id)"
+    },
+    {
+      "actual": [],
+      "check_id": "v3.gtin14_valid",
+      "claim": "The bridge label is 'MDALL GTIN-14 identifier equals GUDID UDI-DI'.",
+      "claim_source": "docs/atlas/RESEARCH_VALIDATION.md:14,31",
+      "detail": "validated 934 distinct di values; independent GS1 Mod-10 implementation",
+      "evidence": {},
+      "expected": [],
+      "group": "V3",
+      "status": "PASS",
+      "title": "Every shared identifier is a GTIN-14 with a correct Mod-10 check digit"
+    },
+    {
+      "actual": {
+        "bare_14_digit": 5477,
+        "normalisation_rule": "remove '-' and ' ' only",
+        "normalised_rows": 5512,
+        "rows": 1673926,
+        "sensitivity_to_rule": {
+          "all_non_alnum": {
+            "rows": 5517,
+            "unique": 5009
+          },
+          "digits_only": {
+            "rows": 7919,
+            "unique": 7303
+          },
+          "hyphen_space": {
+            "rows": 5512,
+            "unique": 5005
+          }
+        },
+        "share": 0.003293,
+        "unique_normalised": 5005
+      },
+      "check_id": "v3.mdall_cache_counts",
+      "claim": "1,673,926 active rows; 5,477 bare 14-digit values; 5,512 normalised to a 14-digit DI with separators removed; 5,005 unique DI values (0.33 % of the table).",
+      "claim_source": "docs/atlas/DATA_SOURCE_INTEGRATION.md:28-30; RESEARCH_VALIDATION.md:31",
+      "detail": "the exact separator set is not documented; removing only hyphens and spaces reproduces 5,512/5,005 exactly, while a digits-only reading gives 7,919/7,303 and an alphanumeric-only reading gives 5,517/5,009",
+      "evidence": {},
+      "expected": {
+        "bare_14_digit": 5477,
+        "normalised_rows": 5512,
+        "rows": 1673926,
+        "share": 0.003293,
+        "unique_normalised": 5005
+      },
+      "group": "V3",
+      "status": "PASS",
+      "title": "MDALL active identifier table counts recompute"
+    },
+    {
+      "actual": {
+        "duplicate_pairs": 0,
+        "duplicate_relation_ids": 0
+      },
+      "check_id": "v3.pair_uniqueness",
+      "claim": "The 934 is a count of pairs, not of duplicated rows.",
+      "claim_source": "task brief (duplicate check)",
+      "detail": "rows=934 distinct_pairs=934 distinct_from=934 distinct_to=934",
+      "evidence": {},
+      "expected": {
+        "duplicate_pairs": 0,
+        "duplicate_relation_ids": 0
+      },
+      "group": "V3",
+      "status": "PASS",
+      "title": "Relation rows and (from_ref, to_ref) pairs are unique"
+    },
+    {
+      "actual": [],
+      "check_id": "v3.pilot_agreement",
+      "claim": "The published pilot numbers are the numbers the database holds.",
+      "claim_source": "research/atlas/reports/identity_pilot.json counts",
+      "detail": "",
+      "evidence": {
+        "declared": {
+          "bridge_confirmed_identity": 934,
+          "bridge_pairs": 934,
+          "device_identifiers": 16373,
+          "evidence_ids": 7254,
+          "unique_devices": 5537
+        },
+        "recomputed": {
+          "bridge_confirmed_identity": 934,
+          "bridge_pairs": 934,
+          "device_identifiers": 16373,
+          "evidence_ids": 7254,
+          "unique_devices": 5537
+        }
+      },
+      "expected": [],
+      "group": "V3",
+      "status": "PASS",
+      "title": "identity_pilot.json counts match the database"
+    },
+    {
+      "actual": {
+        "by_severity": {
+          "info": 4,
+          "warning": 50
+        },
+        "total": 54
+      },
+      "check_id": "v3.quality_findings",
+      "claim": "The final run reports 54 quality findings and no error-severity findings.",
+      "claim_source": "docs/atlas/FOUNDATION_AUDIT.md:206-208",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "errors": 0,
+        "total": 54
+      },
+      "group": "V3",
+      "status": "PASS",
+      "title": "54 quality findings with zero errors"
+    },
+    {
+      "actual": [],
+      "check_id": "v3.referential_integrity",
+      "claim": "A relation pointing at a missing row would be a phantom confirmation.",
+      "claim_source": "task brief",
+      "detail": "dangling endpoints=0",
+      "evidence": {},
+      "expected": [],
+      "group": "V3",
+      "status": "PASS",
+      "title": "Both endpoints of every relation exist"
+    },
+    {
+      "actual": [],
+      "check_id": "v3.relation_census",
+      "claim": "934 identity + 192 family + 2 model + 59 possible + 10 related + 1087 unrelated; 782 MANUFACTURED_BY and 5544 REGISTERED_AS.",
+      "claim_source": "docs/atlas/RESEARCH_VALIDATION.md:69-78",
+      "detail": "",
+      "evidence": {
+        "census": {
+          "MANUFACTURED_BY/CANDIDATE": 10,
+          "MANUFACTURED_BY/CONFIRMED": 772,
+          "POSSIBLE_MATCH/CANDIDATE": 59,
+          "REGISTERED_AS/CONFIRMED": 5544,
+          "RELATED_TECHNOLOGY/CANDIDATE": 10,
+          "SAME_DEVICE_IDENTITY/CONFIRMED": 934,
+          "SAME_MODEL/CONFIRMED": 2,
+          "SAME_PRODUCT_FAMILY/CONFIRMED": 192,
+          "UNRELATED/REJECTED": 1087
+        }
+      },
+      "expected": [],
+      "group": "V3",
+      "status": "PASS",
+      "title": "The published relation census matches the database"
+    },
+    {
+      "actual": 934,
+      "check_id": "v3.relation_count",
+      "claim": "ATLAS holds 934 confirmed same-device identity relations across US and Canadian registries.",
+      "claim_source": "docs/atlas/RESEARCH_VALIDATION.md:69; identity_pilot.json counts.bridge_pairs",
+      "detail": "SELECT COUNT(*) FROM entity_relations WHERE relation_type='SAME_DEVICE_IDENTITY' AND status='CONFIRMED'",
+      "evidence": {},
+      "expected": 934,
+      "group": "V3",
+      "status": "PASS",
+      "title": "Count of CONFIRMED SAME_DEVICE_IDENTITY relations"
+    },
+    {
+      "actual": {
+        "method_authority_confidence": [
+          [
+            "official_identifier",
+            "source_declared",
+            0.99
+          ]
+        ],
+        "non_confirmed": []
+      },
+      "check_id": "v3.relation_status_method",
+      "claim": "934 relations are method=official_identifier, authority=source_declared, confidence 0.99.",
+      "claim_source": "identity_pilot.json counts.bridge_confirmed_identity; RESEARCH_VALIDATION.md:69",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "method_authority_confidence": [
+          [
+            "official_identifier",
+            "source_declared",
+            0.99
+          ]
+        ],
+        "status": "CONFIRMED"
+      },
+      "group": "V3",
+      "status": "PASS",
+      "title": "Every relation is CONFIRMED and derived from an official identifier"
+    },
+    {
+      "actual": {
+        "any_revoked": 0,
+        "bridge_revoked": 0
+      },
+      "check_id": "v3.revocation",
+      "claim": "The confirmed set is final, not a superseded intermediate.",
+      "claim_source": "identity_pilot.json counts.bridge_contradicted=0",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "any_revoked": 0,
+        "bridge_revoked": 0
+      },
+      "group": "V3",
+      "status": "PASS",
+      "title": "No bridge relation has been revoked"
+    },
+    {
+      "actual": {
+        "device_side": 934,
+        "evidence_side": 934
+      },
+      "check_id": "v3.shared_id_present_both_sides",
+      "claim": "A SAME_DEVICE_IDENTITY claim is only substantiated if the identifier is stored on both sides.",
+      "claim_source": "task brief (re-derive the bridge)",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "device_side": 934,
+        "evidence_side": 934
+      },
+      "group": "V3",
+      "status": "PASS",
+      "title": "The shared DI is physically present on both records of every pair"
+    },
+    {
+      "actual": {
+        "distinct": 934,
+        "gtins_with_multiple_pairs": 0,
+        "max_pairs_per_gtin": 1,
+        "null": 0
+      },
+      "check_id": "v3.shared_identifier_distinct",
+      "claim": "Each relation's basis records the shared DI; a single GTIN must not fan out into many pairs.",
+      "claim_source": "task brief (one GTIN -> many pairs)",
+      "detail": "",
+      "evidence": {
+        "max_pairs_per_gtin": 1
+      },
+      "expected": {
+        "distinct": 934,
+        "gtins_with_multiple_pairs": 0,
+        "null": 0
+      },
+      "group": "V3",
+      "status": "PASS",
+      "title": "934 relations carry 934 distinct shared identifiers (one GTIN -> one pair)"
+    },
+    {
+      "actual": {
+        "by_run": {
+          "bridge_20261110T174101Z": 940,
+          "udi_20261110T174016Z": 500
+        },
+        "rows": 1440,
+        "unique_us_records": 1440
+      },
+      "check_id": "v3.us_record_count_claim",
+      "claim": "'500 company-page records ... + 8 additional records resolved during the bridge = 508 unique U.S. records'.",
+      "claim_source": "docs/atlas/RESEARCH_VALIDATION.md:28",
+      "detail": "the bridge added 940 records, not 8; 500 + 8 does not describe the final corpus",
+      "evidence": {},
+      "expected": {
+        "unique_us_records": 508
+      },
+      "group": "V3",
+      "status": "FAIL",
+      "title": "The stated number of unique U.S. records matches the database"
+    },
+    {
+      "actual": {
+        "bridge_gtins": 934,
+        "horizon_ca_gtins": 0,
+        "overlap": 0
+      },
+      "check_id": "v4.atlas_bridge_vs_horizon_ca",
+      "claim": "If the HORIZON MDALL slice carried a bridged GTIN, the two experiments would disagree.",
+      "claim_source": "task brief V4",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "overlap": 0
+      },
+      "group": "V4",
+      "status": "PASS",
+      "title": "None of ATLAS's 934 bridged GTINs appears in the HORIZON Canadian sample"
+    },
+    {
+      "actual": {
+        "bridge_gtins": 934,
+        "overlap_with_horizon_gudid_udi": 0
+      },
+      "check_id": "v4.atlas_bridge_vs_horizon_us",
+      "claim": "The two samples are independently scoped; overlap measures whether they could ever agree.",
+      "claim_source": "task brief V4",
+      "detail": "an overlap of 0 would show the samples are disjoint slices; a small overlap shows the HORIZON slice is a thin sample of the same universe",
+      "evidence": {},
+      "expected": null,
+      "group": "V4",
+      "status": "PASS",
+      "title": "How much of ATLAS's bridged GTIN set the HORIZON GUDID sample even contains"
+    },
+    {
+      "actual": {
+        "ca_gtin14_count": 0,
+        "ca_gtin14_values": [],
+        "overlap": [],
+        "us_gtin14_count": 320
+      },
+      "check_id": "v4.gtin_namespace_overlap",
+      "claim": "A GTIN-14 equality is the only possible keyless bridge; HORIZON's MDALL slice must contain such values for S4 to be able to fire.",
+      "claim_source": "task brief; EXP_H2_SELECTION_RULE.md:38 (S4)",
+      "detail": "HORIZON Canadian identifier value lengths={4: 7, 5: 50, 6: 53, 7: 15, 13: 47, 10: 2}",
+      "evidence": {},
+      "expected": {
+        "ca_gtin14_values": []
+      },
+      "group": "V4",
+      "status": "PASS",
+      "title": "The Canadian sample contains no 14-digit identifier at all"
+    },
+    {
+      "actual": {
+        "cross_source_identity_relations": 0,
+        "evidence_status": {
+          "CANDIDATE": 4943,
+          "CONFIRMED": 941
+        },
+        "identity_status": {
+          "CANDIDATE": 2604,
+          "CONFIRMED": 889,
+          "UNKNOWN": 2391
+        },
+        "relation_types": {
+          "applicant_group_candidate": 2001,
+          "application_to_publication": 228,
+          "priority_claim": 1304
+        }
+      },
+      "check_id": "v4.horizon_no_confirmed_identity",
+      "claim": "'No record in this export claims a confirmed cross-source identity.'",
+      "claim_source": "research/horizon/exports/horizon-2026-11-10/README.md:43",
+      "detail": "the export does carry identity_status=CONFIRMED on 889 records, but those are source-asserted entity identities; every relation in the export is intra-source structure (priority claims, application->publication), so no cross-source identity is claimed",
+      "evidence": {},
+      "expected": {
+        "cross_source_identity_relations": 0
+      },
+      "group": "V4",
+      "status": "PASS",
+      "title": "No HORIZON export record claims a confirmed cross-source identity"
+    },
+    {
+      "actual": {
+        "atlas_bridge_gtins": 934,
+        "atlas_bridge_gtins_in_horizon_ca": 0,
+        "horizon_ca_gtin14_values": 0,
+        "horizon_us_gtin14": 320
+      },
+      "check_id": "v4.reconciliation_claim",
+      "claim": "Claim under test (task brief V4, and IDENTITY_RECONCILIATION's thesis).",
+      "claim_source": "task brief V4",
+      "detail": "CONFIRMED: the HORIZON Canadian slice holds no 14-digit identifier and the MDALL identifier table is 0.33%% GTIN-valued, so a 174-record MDALL slice can be entirely consistent with a 934-pair bridge elsewhere. This is a mechanical sampling fact, not a registry contradiction.",
+      "evidence": {},
+      "expected": {
+        "atlas_bridge_gtins_in_horizon_ca": 0,
+        "horizon_ca_gtin14_values": 0
+      },
+      "group": "V4",
+      "status": "PASS",
+      "title": "'HORIZON 0 is a sample-coverage result, not a conflict with ATLAS 934'"
+    },
+    {
+      "actual": [],
+      "check_id": "v4.same_scheme_matches",
+      "claim": "HORIZON finds 0 confirmed cross-source identities in EXP-H2.",
+      "claim_source": "EXP_H2_SUMMARY.json finding.confirmed_pairs=0",
+      "detail": "a match requires the same scheme AND the same value; no scheme name is shared, so this count is 0 by construction, not by measurement",
+      "evidence": {},
+      "expected": [],
+      "group": "V4",
+      "status": "PASS",
+      "title": "Official-identifier matches between the HORIZON Canadian sample and the US side"
+    },
+    {
+      "actual": {
+        "atlas_distinct_di": 5549,
+        "atlas_us_evidence_rows": 1440,
+        "horizon_gtin14": 320,
+        "overlap": 5
+      },
+      "check_id": "v4.sample_overlap_with_atlas",
+      "claim": "HORIZON samples 320 GUDID records; ATLAS holds 1,440 openFDA UDI records. If they overlap heavily, 'sample coverage' is a weak explanation for the 0.",
+      "claim_source": "task brief V4",
+      "detail": "overlap values (first 10): ['00840682102971', '00840682102988', '00840682103015', '00840682103039', '00884838064737']",
+      "evidence": {},
+      "expected": null,
+      "group": "V4",
+      "status": "PASS",
+      "title": "HORIZON's GUDID slice and ATLAS's US UDI corpus overlap is measured, not assumed"
+    },
+    {
+      "actual": {
+        "ca_schemes": {
+          "hc_device_licence": 60,
+          "hc_mdall_device_id": 65,
+          "hc_mdall_device_identifier": 49
+        },
+        "ca_scopes": {
+          "hc_device_licence": {
+            "CA": 174
+          },
+          "hc_mdall_device_id": {
+            "CA": 114
+          },
+          "hc_mdall_device_identifier": {
+            "CA": 49
+          }
+        },
+        "shared_scheme_names": [],
+        "us_schemes": {
+          "cfr_regulation": 41,
+          "fda_fei": 26,
+          "fda_product_code": 193,
+          "fda_registration_number": 26,
+          "udi_di": 320,
+          "uspto_510k": 160,
+          "uspto_pma": 33
+        },
+        "us_scopes": {
+          "cfr_regulation": {
+            "US": 51
+          },
+          "fda_fei": {
+            "US": 60
+          },
+          "fda_product_code": {
+            "US": 387
+          },
+          "fda_registration_number": {
+            "US": 60
+          },
+          "udi_di": {
+            "US": 320
+          },
+          "uspto_510k": {
+            "US": 160
+          },
+          "uspto_pma": {
+            "US": 60
+          }
+        }
+      },
+      "check_id": "v4.scheme_inventory",
+      "claim": "GUDID/openFDA identify by UDI-DI and clearance numbers; MDALL by Health Canada licence / device / device-identifier numbers.",
+      "claim_source": "EXP_H2_SELECTION_RULE.md:66-71; export rows",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "shared_scheme_names": []
+      },
+      "group": "V4",
+      "status": "PASS",
+      "title": "The two sides publish disjoint identifier schemes"
+    },
+    {
+      "actual": {
+        "first_observed_at_equals_fetched_at": 7254,
+        "rows": 7254
+      },
+      "check_id": "v5.atlas_first_observed_is_fetch_clock",
+      "claim": "'first_observed_at is a fetch clock' (disclosed).",
+      "claim_source": "docs/atlas/RESEARCH_VALIDATION.md:92",
+      "detail": "on a single collection run the two must coincide; the field therefore carries no information about when the fact was first observable",
+      "evidence": {},
+      "expected": null,
+      "group": "V5",
+      "status": "PASS",
+      "title": "ATLAS first_observed_at carries observation history or just the fetch time"
+    },
+    {
+      "actual": {
+        "day_rows": 1452,
+        "day_rows_whose_source_public_at_equals_event_at": 0,
+        "derived_rows": 5802,
+        "derived_rows_whose_source_public_at_equals_event_at": 5802,
+        "public_earlier_than_event": 0,
+        "public_later_than_event": 0
+      },
+      "check_id": "v5.atlas_public_clock_derivation",
+      "claim": "ATLAS's schema promises four separate clocks so that 'published' and 'happened' can differ; where source_public_at is populated it should be measured, not derived.",
+      "claim_source": "medradar/atlas/evidence/schema.py:10-12",
+      "detail": "for 5802 of 7254 rows the publication clock is literally the event clock, flagged time_quality='derived'. It is disclosed, so it is not silent, but the observability gap is 0 by construction for those rows.",
+      "evidence": {},
+      "expected": {
+        "derived_rows_whose_source_public_at_equals_event_at": 0
+      },
+      "group": "V5",
+      "status": "FAIL",
+      "title": "ATLAS's public clock is an independent observation where it is populated"
+    },
+    {
+      "actual": {
+        "no_usable_date": 5802,
+        "public_date": 1452
+      },
+      "check_id": "v5.atlas_time_leakage_control",
+      "claim": "7,254 evidence rows; of those 1,452 have a public date, 5,802 have no usable date.",
+      "claim_source": "docs/atlas/RESEARCH_VALIDATION.md:92",
+      "detail": "time_quality vocabulary is {day, derived}; no 'exact' or 'coarse' rows exist",
+      "evidence": {},
+      "expected": {
+        "no_usable_date": 5802,
+        "public_date": 1452
+      },
+      "group": "V5",
+      "status": "PASS",
+      "title": "The stated time-leakage control counts match the database"
+    },
+    {
+      "actual": {
+        "event_at": 4219,
+        "fetched_at": 5884,
+        "first_observed_at": 4490,
+        "records": 5884,
+        "records_with_no_event_or_public_clock": 181,
+        "source_public_at": 3564
+      },
+      "check_id": "v5.horizon_clock_availability",
+      "claim": "Missing clocks are explicit None, never silently defaulted (horizon.evidence.v1 design rule 1).",
+      "claim_source": "research/horizon/hz/schema.py:1-12",
+      "detail": "per-source table in evidence",
+      "evidence": {
+        "per_source": {
+          "accessgudid": {
+            "event_after_public": 0,
+            "event_at": 0,
+            "event_eq_public": 0,
+            "fetched_at": 320,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 0,
+            "records": 320,
+            "source_public_at": 320
+          },
+          "brazil_anvisa": {
+            "event_after_public": 0,
+            "event_at": 120,
+            "event_eq_public": 120,
+            "fetched_at": 120,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 0,
+            "records": 120,
+            "source_public_at": 120
+          },
+          "canada_mdall": {
+            "event_after_public": 0,
+            "event_at": 174,
+            "event_eq_public": 0,
+            "fetched_at": 174,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 0,
+            "records": 174,
+            "source_public_at": 0
+          },
+          "cipo_canada": {
+            "event_after_public": 916,
+            "event_at": 916,
+            "event_eq_public": 0,
+            "fetched_at": 2000,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 2000,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 2000,
+            "no_clock": 0,
+            "records": 2000,
+            "source_public_at": 2000
+          },
+          "clinicaltrials_gov": {
+            "event_after_public": 48,
+            "event_at": 94,
+            "event_eq_public": 0,
+            "fetched_at": 164,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 0,
+            "records": 164,
+            "source_public_at": 164
+          },
+          "crossref": {
+            "event_after_public": 24,
+            "event_at": 59,
+            "event_eq_public": 14,
+            "fetched_at": 59,
+            "first_obs_backdated_gt_30d": 59,
+            "first_obs_eq_event": 14,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 59,
+            "first_observed_at": 59,
+            "no_clock": 0,
+            "records": 59,
+            "source_public_at": 59
+          },
+          "epo_publication_server": {
+            "event_after_public": 228,
+            "event_at": 228,
+            "event_eq_public": 0,
+            "fetched_at": 228,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 228,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 228,
+            "no_clock": 0,
+            "records": 228,
+            "source_public_at": 228
+          },
+          "eu_cordis": {
+            "event_after_public": 0,
+            "event_at": 0,
+            "event_eq_public": 0,
+            "fetched_at": 60,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 60,
+            "records": 60,
+            "source_public_at": 0
+          },
+          "eu_ted": {
+            "event_after_public": 297,
+            "event_at": 297,
+            "event_eq_public": 0,
+            "fetched_at": 299,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 299,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 299,
+            "no_clock": 0,
+            "records": 299,
+            "source_public_at": 299
+          },
+          "europepmc": {
+            "event_after_public": 0,
+            "event_at": 37,
+            "event_eq_public": 37,
+            "fetched_at": 37,
+            "first_obs_backdated_gt_30d": 37,
+            "first_obs_eq_event": 2,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 2,
+            "first_observed_at": 37,
+            "no_clock": 0,
+            "records": 37,
+            "source_public_at": 37
+          },
+          "eurostat_comext": {
+            "event_after_public": 0,
+            "event_at": 1400,
+            "event_eq_public": 0,
+            "fetched_at": 1400,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 1400,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 1400,
+            "no_clock": 0,
+            "records": 1400,
+            "source_public_at": 0
+          },
+          "nih_reporter": {
+            "event_after_public": 46,
+            "event_at": 56,
+            "event_eq_public": 4,
+            "fetched_at": 64,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 0,
+            "records": 64,
+            "source_public_at": 64
+          },
+          "openaire": {
+            "event_after_public": 0,
+            "event_at": 59,
+            "event_eq_public": 59,
+            "fetched_at": 59,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 0,
+            "records": 59,
+            "source_public_at": 59
+          },
+          "openalex": {
+            "event_after_public": 0,
+            "event_at": 60,
+            "event_eq_public": 60,
+            "fetched_at": 60,
+            "first_obs_backdated_gt_30d": 60,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 60,
+            "no_clock": 0,
+            "records": 60,
+            "source_public_at": 60
+          },
+          "openfda_device_510k": {
+            "event_after_public": 0,
+            "event_at": 160,
+            "event_eq_public": 0,
+            "fetched_at": 160,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 0,
+            "records": 160,
+            "source_public_at": 0
+          },
+          "openfda_device_classification": {
+            "event_after_public": 0,
+            "event_at": 0,
+            "event_eq_public": 0,
+            "fetched_at": 60,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 60,
+            "records": 60,
+            "source_public_at": 0
+          },
+          "openfda_device_pma": {
+            "event_after_public": 0,
+            "event_at": 60,
+            "event_eq_public": 0,
+            "fetched_at": 60,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 0,
+            "records": 60,
+            "source_public_at": 0
+          },
+          "openfda_device_registrationlisting": {
+            "event_after_public": 0,
+            "event_at": 0,
+            "event_eq_public": 0,
+            "fetched_at": 60,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 60,
+            "records": 60,
+            "source_public_at": 0
+          },
+          "pubmed_eutils": {
+            "event_after_public": 5,
+            "event_at": 37,
+            "event_eq_public": 15,
+            "fetched_at": 37,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 0,
+            "records": 37,
+            "source_public_at": 37
+          },
+          "semantic_scholar": {
+            "event_after_public": 0,
+            "event_at": 55,
+            "event_eq_public": 55,
+            "fetched_at": 56,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 0,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 0,
+            "no_clock": 1,
+            "records": 56,
+            "source_public_at": 55
+          },
+          "uk_find_a_tender": {
+            "event_after_public": 55,
+            "event_at": 62,
+            "event_eq_public": 7,
+            "fetched_at": 62,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 62,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 62,
+            "no_clock": 0,
+            "records": 62,
+            "source_public_at": 62
+          },
+          "uk_hmrc_trade": {
+            "event_after_public": 0,
+            "event_at": 100,
+            "event_eq_public": 0,
+            "fetched_at": 100,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 100,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 100,
+            "no_clock": 0,
+            "records": 100,
+            "source_public_at": 0
+          },
+          "usaspending": {
+            "event_after_public": 0,
+            "event_at": 245,
+            "event_eq_public": 0,
+            "fetched_at": 245,
+            "first_obs_backdated_gt_30d": 0,
+            "first_obs_eq_event": 0,
+            "first_obs_eq_fetched": 245,
+            "first_obs_eq_public": 0,
+            "first_observed_at": 245,
+            "no_clock": 0,
+            "records": 245,
+            "source_public_at": 0
+          }
+        }
+      },
+      "expected": {
+        "records": 6492
+      },
+      "group": "V5",
+      "status": "PASS",
+      "title": "Every HORIZON record states which of the four clocks it has"
+    },
+    {
+      "actual": {
+        "sources_with_100pct_collapse": [
+          {
+            "event_eq_public": 120,
+            "records": 120,
+            "source_id": "brazil_anvisa"
+          },
+          {
+            "event_eq_public": 37,
+            "records": 37,
+            "source_id": "europepmc"
+          },
+          {
+            "event_eq_public": 59,
+            "records": 59,
+            "source_id": "openaire"
+          },
+          {
+            "event_eq_public": 60,
+            "records": 60,
+            "source_id": "openalex"
+          }
+        ],
+        "total_event_after_public": 1619,
+        "total_event_eq_public": 371
+      },
+      "check_id": "v5.horizon_clock_collapse",
+      "claim": "The two-clock model is the basis of every observability-gap claim: a record whose publication clock is copied from its event clock contributes no gap.",
+      "claim_source": "research/horizon/hz/timeq.py:1-40",
+      "detail": "sources where every record has event_at == source_public_at cannot support an observability-gap measurement",
+      "evidence": {},
+      "expected": {
+        "sources_with_100pct_collapse": []
+      },
+      "group": "V5",
+      "status": "FAIL",
+      "title": "event_at and source_public_at are separate measurements where both exist"
+    },
+    {
+      "actual": {
+        "accessgudid": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {
+            "device_comm_dist_end_date": 1,
+            "device_publish_date": 320
+          }
+        },
+        "brazil_anvisa": {
+          "event_at_copied_from": {
+            "dt_publicacao": 120
+          },
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {
+            "dt_publicacao": 120
+          }
+        },
+        "canada_mdall": {
+          "event_at_copied_from": {
+            "first_licence_dt": 114,
+            "first_licence_status_dt": 60
+          },
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "cipo_canada": {
+          "event_at_copied_from": {
+            "examination_request_date": 6,
+            "filing_date": 916,
+            "pct_publication_date": 1
+          },
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {
+            "grant_date": 2000
+          }
+        },
+        "clinicaltrials_gov": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "crossref": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "epo_publication_server": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {
+            "date_43_application": 108,
+            "date_45_grant": 119,
+            "sitemap_publication_date": 197
+          }
+        },
+        "eu_cordis": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "eu_ted": {
+          "event_at_copied_from": {
+            "contract_conclusion_date": 297
+          },
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {
+            "publication_date": 299
+          }
+        },
+        "europepmc": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "eurostat_comext": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "nih_reporter": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "openaire": {
+          "event_at_copied_from": {
+            "publicationDate": 59
+          },
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {
+            "publicationDate": 59
+          }
+        },
+        "openalex": {
+          "event_at_copied_from": {
+            "publication_date": 60
+          },
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {
+            "publication_date": 60
+          }
+        },
+        "openfda_device_510k": {
+          "event_at_copied_from": {
+            "decision_date": 160
+          },
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "openfda_device_classification": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "openfda_device_pma": {
+          "event_at_copied_from": {
+            "decision_date": 60
+          },
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "openfda_device_registrationlisting": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "pubmed_eutils": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "semantic_scholar": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "uk_find_a_tender": {
+          "event_at_copied_from": {
+            "contract_date_signed": 62,
+            "publication_date": 7
+          },
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {
+            "contract_date_signed": 7,
+            "publication_date": 62
+          }
+        },
+        "uk_hmrc_trade": {
+          "event_at_copied_from": {},
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        },
+        "usaspending": {
+          "event_at_copied_from": {
+            "period_of_performance_end": 3,
+            "period_of_performance_start": 245
+          },
+          "first_observed_at_copied_from": {},
+          "source_public_at_copied_from": {}
+        }
+      },
+      "check_id": "v5.horizon_clock_derivation",
+      "claim": "Clocks must come from the source, not be invented; the export carries the raw attribute they were taken from.",
+      "claim_source": "research/horizon/hz/schema.py:123-128",
+      "detail": "for each source, the date-like attribute(s) whose value equals event_at / source_public_at",
+      "evidence": {},
+      "expected": null,
+      "group": "V5",
+      "status": "PASS",
+      "title": "Each populated clock can be traced to a source field"
+    },
+    {
+      "actual": {
+        "first_obs_backdated_gt_30d": 156,
+        "first_obs_equals_event": 16,
+        "first_obs_equals_public": 61,
+        "margins": [
+          {
+            "max_days": 0,
+            "min_days": 0,
+            "n": 2000,
+            "non_zero": 0,
+            "source_id": "cipo_canada"
+          },
+          {
+            "max_days": 2464,
+            "min_days": 1068,
+            "n": 59,
+            "non_zero": 59,
+            "source_id": "crossref"
+          },
+          {
+            "max_days": 0,
+            "min_days": 0,
+            "n": 228,
+            "non_zero": 0,
+            "source_id": "epo_publication_server"
+          },
+          {
+            "max_days": 0,
+            "min_days": 0,
+            "n": 299,
+            "non_zero": 0,
+            "source_id": "eu_ted"
+          },
+          {
+            "max_days": 2463,
+            "min_days": 983,
+            "n": 37,
+            "non_zero": 37,
+            "source_id": "europepmc"
+          },
+          {
+            "max_days": 0,
+            "min_days": 0,
+            "n": 1400,
+            "non_zero": 0,
+            "source_id": "eurostat_comext"
+          },
+          {
+            "max_days": 2450,
+            "min_days": 1067,
+            "n": 60,
+            "non_zero": 60,
+            "source_id": "openalex"
+          },
+          {
+            "max_days": 0,
+            "min_days": 0,
+            "n": 62,
+            "non_zero": 0,
+            "source_id": "uk_find_a_tender"
+          },
+          {
+            "max_days": 0,
+            "min_days": 0,
+            "n": 100,
+            "non_zero": 0,
+            "source_id": "uk_hmrc_trade"
+          },
+          {
+            "max_days": 0,
+            "min_days": 0,
+            "n": 245,
+            "non_zero": 0,
+            "source_id": "usaspending"
+          }
+        ],
+        "sources_backdated": [
+          {
+            "max_days": 2464,
+            "min_days": 1068,
+            "n": 59,
+            "non_zero": 59,
+            "source_id": "crossref"
+          },
+          {
+            "max_days": 2463,
+            "min_days": 983,
+            "n": 37,
+            "non_zero": 37,
+            "source_id": "europepmc"
+          },
+          {
+            "max_days": 2450,
+            "min_days": 1067,
+            "n": 60,
+            "non_zero": 60,
+            "source_id": "openalex"
+          }
+        ],
+        "sources_where_first_obs_is_the_fetch_time": [
+          {
+            "equal_to_fetched_at": 2000,
+            "source_id": "cipo_canada",
+            "with_first_observed": 2000
+          },
+          {
+            "equal_to_fetched_at": 228,
+            "source_id": "epo_publication_server",
+            "with_first_observed": 228
+          },
+          {
+            "equal_to_fetched_at": 299,
+            "source_id": "eu_ted",
+            "with_first_observed": 299
+          },
+          {
+            "equal_to_fetched_at": 1400,
+            "source_id": "eurostat_comext",
+            "with_first_observed": 1400
+          },
+          {
+            "equal_to_fetched_at": 62,
+            "source_id": "uk_find_a_tender",
+            "with_first_observed": 62
+          },
+          {
+            "equal_to_fetched_at": 100,
+            "source_id": "uk_hmrc_trade",
+            "with_first_observed": 100
+          },
+          {
+            "equal_to_fetched_at": 245,
+            "source_id": "usaspending",
+            "with_first_observed": 245
+          }
+        ]
+      },
+      "check_id": "v5.horizon_first_observed_semantics",
+      "claim": "first_observed_at = 'the first time HORIZON saw the record' (horizon.evidence.v1), which cannot precede the acquisition run by years.",
+      "claim_source": "research/horizon/hz/schema.py:126; hz/timeq.py:1-20",
+      "detail": "4490 of 5884 records carry first_observed_at, 1394 are null. Three regimes: 4334 records copy the fetch time exactly (the field then carries no observation information); 156 records are back-dated 31-2,464 days before the 2026-11-09 acquisition in crossref/europepmc/openalex (for crossref it is literally the publication date); and 16 records copy event_at.",
+      "evidence": {},
+      "expected": {
+        "first_obs_equals_event": 0,
+        "sources_backdated_gt_30d": []
+      },
+      "group": "V5",
+      "status": "FAIL",
+      "title": "first_observed_at is a real observation clock, not a back-filled source date"
+    },
+    {
+      "actual": [],
+      "check_id": "v5.horizon_manifest_clock_agreement",
+      "claim": "per_source[].records_with_event_at / _source_public_at.",
+      "claim_source": "MANIFEST.json:177-394",
+      "detail": "",
+      "evidence": {},
+      "expected": [],
+      "group": "V5",
+      "status": "PASS",
+      "title": "Manifest clock counters agree with the rows"
+    },
+    {
+      "actual": {
+        "adapter_declared_mapping": {
+          "terms_restricted": "restricted"
+        },
+        "atlas_values": [
+          "open_licence",
+          "open_no_explicit_licence",
+          "public_domain",
+          "restricted",
+          "unknown"
+        ],
+        "exported_values": [
+          "open_licence",
+          "open_no_explicit_licence",
+          "public_domain"
+        ],
+        "horizon_values_absent_from_export": [
+          "requires_licence",
+          "requires_registration",
+          "terms_restricted",
+          "unknown"
+        ],
+        "unrepresentable_in_atlas": []
+      },
+      "check_id": "v5.licence_vocabulary_coverage",
+      "claim": "A licence class with no ATLAS equivalent would have to be renamed on import, which is where a restriction can be silently weakened.",
+      "claim_source": "research/horizon/hz/schema.py:45-53 vs medradar/atlas/evidence/schema.py:54-56",
+      "detail": "the only HORIZON value with no ATLAS equivalent is terms_restricted, which belongs to the quarantined UN Comtrade source and therefore never reaches the importer; the adapter declares terms_restricted -> restricted (medradar/integration/adapter.py:386), which is lossy in principle but applied to zero imported records",
+      "evidence": {},
+      "expected": {
+        "unrepresentable_in_atlas": []
+      },
+      "group": "V5",
+      "status": "PASS",
+      "title": "Every licence class actually present in the export is representable in ATLAS"
+    },
+    {
+      "actual": {
+        "evidence_copy": false,
+        "export_copy": false
+      },
+      "check_id": "v6.all_copies_removed",
+      "claim": "The export includes the record file and the experiment evidence directory; quarantine must remove both.",
+      "claim_source": "MANIFEST.json:163-168; experiments/industry/evidence/",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "evidence_copy": false,
+        "export_copy": false
+      },
+      "group": "V6",
+      "status": "PASS",
+      "title": "Both upstream copies of the payload are absent"
+    },
+    {
+      "actual": [],
+      "check_id": "v6.content_scan",
+      "claim": "Quarantine must be content-level, not filename-level.",
+      "claim_source": "task brief V6",
+      "detail": "scanned 1823 text files for 4 payload-distinctive tokens ({\"content_hash_of_first_record\": \"38de14302506287ed0168168f478b0568cb203501687fef7ce5ee88d9da89be8\", \"source_record_id_of_first_record\": \"comtrade:A:156:0:9018:M:2015\", \"numeric_payload_tokens\": 2}); verifier output directory excluded for reproducibility",
+      "evidence": {},
+      "expected": [],
+      "group": "V6",
+      "status": "PASS",
+      "title": "No UN Comtrade payload bytes appear in any text file of the worktree"
+    },
+    {
+      "actual": {
+        "commits_any_ref_touching_payload": 1,
+        "in_HEAD_tree": "",
+        "refs_containing_commit_18a7580": [
+          "+ research/horizon-001",
+          "remotes/origin/research/horizon-001"
+        ]
+      },
+      "check_id": "v6.git_history_exposure",
+      "claim": "Quarantine is only meaningful if the payload is not one `git show` away on the branch under review. Exposure on unrelated refs is reported separately.",
+      "claim_source": "task brief V6 (git history)",
+      "detail": "the blob (1,832,311 bytes) is still present in this repository's object store on refs that are not ancestors of HEAD; that is an exposure finding for the licence owner, not a tree-level defect on this branch",
+      "evidence": {},
+      "expected": {
+        "commits_on_HEAD_history": 0,
+        "in_HEAD_tree": null
+      },
+      "group": "V6",
+      "status": "PASS",
+      "title": "The quarantined bytes are not reachable from the integration branch"
+    },
+    {
+      "actual": [],
+      "check_id": "v6.git_index_clean",
+      "claim": "Read-only `git ls-files`: only connector code, registry metadata and licence pages may be tracked for this source.",
+      "claim_source": "git ls-files",
+      "detail": "tracked comtrade paths: [\"research/horizon/CONNECTORS/industry/un_comtrade.py\", \"research/horizon/DATASETS/industry/un_comtrade/PROVENANCE.json\", \"research/horizon/DATASETS/industry/un_comtrade/raw/comtrade_license.html\", \"research/horizon/DATASETS/industry/un_comtrade/raw/terms_of_use.html\", \"research/horizon/registry/sources/un_comtrade.json\"]",
+      "evidence": {
+        "tracked_files": 1864
+      },
+      "expected": [],
+      "group": "V6",
+      "status": "PASS",
+      "title": "The git index tracks no UN Comtrade payload"
+    },
+    {
+      "actual": [],
+      "check_id": "v6.no_comtrade_payload_file",
+      "claim": "The restricted source is quarantined: no data bytes for it in this worktree.",
+      "claim_source": "task brief V6",
+      "detail": "comtrade-named files present: [{\"path\": \"research/horizon/CONNECTORS/industry\\\\un_comtrade.py\", \"bytes\": 16027}, {\"path\": \"research/horizon/DATASETS/industry/un_comtrade/raw\\\\comtrade_license.html\", \"bytes\": 50778}, {\"path\": \"research/horizon/registry/sources\\\\un_comtrade.json\", \"bytes\": 3135}]",
+      "evidence": {},
+      "expected": [],
+      "group": "V6",
+      "status": "PASS",
+      "title": "No UN Comtrade payload file exists in the worktree"
+    },
+    {
+      "actual": [],
+      "check_id": "v6.registry_licence_agreement",
+      "claim": "The manifest is generated from research/horizon/registry/sources/*.json; the two must agree.",
+      "claim_source": "research/horizon/registry/sources/*.json vs MANIFEST.json:177-394",
+      "detail": "checked 24 registry files",
+      "evidence": {},
+      "expected": [],
+      "group": "V6",
+      "status": "PASS",
+      "title": "Every manifest licence_status equals the source registry's value"
+    },
+    {
+      "actual": {
+        "restricted_with_data": []
+      },
+      "check_id": "v6.restricted_sources_present",
+      "claim": "terms_restricted / requires_* / unknown sources must not be redistributed.",
+      "claim_source": "task brief V6",
+      "detail": "",
+      "evidence": {},
+      "expected": [],
+      "group": "V6",
+      "status": "PASS",
+      "title": "No restricted-licence source has data in the worktree"
+    },
+    {
+      "actual": {
+        "bytes": 4451119,
+        "records": 1104,
+        "unclear_with_data": [
+          {
+            "bytes": 258652,
+            "licence_status": "open_no_explicit_licence",
+            "records": 120,
+            "source_id": "brazil_anvisa"
+          },
+          {
+            "bytes": 155239,
+            "licence_status": "open_no_explicit_licence",
+            "records": 59,
+            "source_id": "crossref"
+          },
+          {
+            "bytes": 896111,
+            "licence_status": "open_no_explicit_licence",
+            "records": 228,
+            "source_id": "epo_publication_server"
+          },
+          {
+            "bytes": 160952,
+            "licence_status": "open_no_explicit_licence",
+            "records": 60,
+            "source_id": "eu_cordis"
+          },
+          {
+            "bytes": 1933456,
+            "licence_status": "open_no_explicit_licence",
+            "records": 299,
+            "source_id": "eu_ted"
+          },
+          {
+            "bytes": 135979,
+            "licence_status": "open_no_explicit_licence",
+            "records": 37,
+            "source_id": "pubmed_eutils"
+          },
+          {
+            "bytes": 131879,
+            "licence_status": "open_no_explicit_licence",
+            "records": 56,
+            "source_id": "semantic_scholar"
+          },
+          {
+            "bytes": 778851,
+            "licence_status": "open_no_explicit_licence",
+            "records": 245,
+            "source_id": "usaspending"
+          }
+        ]
+      },
+      "check_id": "v6.unclear_sources_present",
+      "claim": "`open_no_explicit_licence` means publicly readable with no stated reuse licence. These records are in the export; the manifest says so per source.",
+      "claim_source": "task brief V6",
+      "detail": "redistribution of these records rests on the manifest disclosure, not on a licence",
+      "evidence": {},
+      "expected": null,
+      "group": "V6",
+      "status": "PASS",
+      "title": "Unclear-licence sources are enumerated, not hidden"
+    },
+    {
+      "actual": {
+        "modules": [
+          "__main__",
+          "adapter",
+          "cli",
+          "clock",
+          "contract",
+          "dedupe",
+          "demo",
+          "graph",
+          "licence",
+          "staging"
+        ]
+      },
+      "check_id": "v7.adapter_present",
+      "claim": "V7 runs only after medradar/integration/ exists.",
+      "claim_source": "task brief V7",
+      "detail": "V7 verifies output data only; no adapter module is imported",
+      "evidence": {},
+      "expected": null,
+      "group": "V7",
+      "status": "PASS",
+      "title": "The integration adapter exists (phase gate)"
+    },
+    {
+      "actual": null,
+      "check_id": "v7.atlas_bridge_carried",
+      "claim": "task brief V7",
+      "claim_source": "staging database",
+      "detail": "staging entity_relations holds only SAME_WORK; the ATLAS bridge was not imported",
+      "evidence": {},
+      "expected": null,
+      "group": "V7",
+      "status": "UNVERIFIABLE",
+      "title": "ATLAS's 934 confirmed relations are carried into the store"
+    },
+    {
+      "actual": null,
+      "check_id": "v7.clocks_preserved",
+      "claim": "task brief V7",
+      "claim_source": "staging database",
+      "detail": "the frozen snapshot holds no evidence rows, so per-record clock equality cannot be tested; re-run after a successful import",
+      "evidence": {},
+      "expected": null,
+      "group": "V7",
+      "status": "UNVERIFIABLE",
+      "title": "All four clocks survive import unchanged"
+    },
+    {
+      "actual": null,
+      "check_id": "v7.idempotency",
+      "claim": "task brief V7",
+      "claim_source": "staging database",
+      "detail": "the snapshot holds a single run and zero evidence rows; idempotency needs two runs",
+      "evidence": {},
+      "expected": null,
+      "group": "V7",
+      "status": "UNVERIFIABLE",
+      "title": "Importing twice produces no duplicate logical records"
+    },
+    {
+      "actual": null,
+      "check_id": "v7.identifiers_preserved",
+      "claim": "task brief V7",
+      "claim_source": "staging database",
+      "detail": "no evidence rows in the frozen snapshot",
+      "evidence": {},
+      "expected": null,
+      "group": "V7",
+      "status": "UNVERIFIABLE",
+      "title": "Identifier sets survive import unchanged"
+    },
+    {
+      "actual": "eaa1cbf5e49db90ba39f938be759c5df3581f4fbbe135cfcd5455622ff6e4d4d",
+      "check_id": "v7.manifest_digest",
+      "claim": "conv report integrity.manifest_sha256 must be the digest of MANIFEST.json.",
+      "claim_source": "research/convergence/reports/integration_conv_smoke_001.json integrity",
+      "detail": "snapshot digest=37f2bc35f080a188c879a0998bb63ec93b720f592383544f1c00567a313f782d",
+      "evidence": {},
+      "expected": "eaa1cbf5e49db90ba39f938be759c5df3581f4fbbe135cfcd5455622ff6e4d4d",
+      "group": "V7",
+      "status": "PASS",
+      "title": "The adapter records the manifest digest it actually consumed"
+    },
+    {
+      "actual": {
+        "identity_status": {
+          "not_attempted": 5822
+        },
+        "relations_confirmed": 0
+      },
+      "check_id": "v7.no_identity_upgrade",
+      "claim": "task brief V7: nothing may be silently promoted from UNKNOWN/candidate to confirmed.",
+      "claim_source": "report stats.conv_identity_status / relations_confirmed",
+      "detail": "HORIZON records are all identity_status=CANDIDATE; the adapter maps them to 'not_attempted', which is a downgrade in name but not an upgrade in claim. NOTE: it also means the ATLAS 934 bridge is not carried across at all.",
+      "evidence": {},
+      "expected": {
+        "identity_status": {
+          "not_attempted": 5822
+        },
+        "relations_confirmed": 0
+      },
+      "group": "V7",
+      "status": "PASS",
+      "title": "No record's identity status was upgraded to confirmed on import"
+    },
+    {
+      "actual": null,
+      "check_id": "v7.quality_flags_preserved",
+      "claim": "task brief V7",
+      "claim_source": "staging database",
+      "detail": "no evidence rows in the frozen snapshot",
+      "evidence": {},
+      "expected": null,
+      "group": "V7",
+      "status": "UNVERIFIABLE",
+      "title": "Quality flags survive import unchanged"
+    },
+    {
+      "actual": {
+        "reported_by_adapter_as_record_identity_duplicates": 62,
+        "sources": [
+          {
+            "distinct_record_identities": 58,
+            "example_distinct_content_hashes": 2,
+            "example_id": "doi_dedup___::90ba59cc7e0817fa3e9f73f46414d01a",
+            "extra_records_sharing_an_id": 1,
+            "records": 59,
+            "source_id": "openaire"
+          },
+          {
+            "distinct_record_identities": 33,
+            "example_distinct_content_hashes": 3,
+            "example_id": "P010031",
+            "extra_records_sharing_an_id": 27,
+            "records": 60,
+            "source_id": "openfda_device_pma"
+          },
+          {
+            "distinct_record_identities": 26,
+            "example_distinct_content_hashes": 9,
+            "example_id": "1824199",
+            "extra_records_sharing_an_id": 34,
+            "records": 60,
+            "source_id": "openfda_device_registrationlisting"
+          }
+        ],
+        "total_extra_records_sharing_an_id": 62
+      },
+      "check_id": "v7.record_identity_collisions",
+      "claim": "ATLAS evidence_id = f(source_id, evidence_type, source_record_id). If source_record_id is not unique, distinct records silently become versions of one record.",
+      "claim_source": "medradar/atlas/evidence/schema.py:105-113 vs HORIZON export",
+      "detail": "the collided rows are not duplicates: e.g. one PMA number carries several supplements (S514/S136/S413/S837) with distinct content hashes, and one registration number carries several establishment-type rows",
+      "evidence": {},
+      "expected": {
+        "records_sharing_an_id": 0
+      },
+      "group": "V7",
+      "status": "FAIL",
+      "title": "Record identity is preserved: distinct records do not collapse into one evidence id"
+    },
+    {
+      "actual": {
+        "conv_rejections": 5884,
+        "conv_runs_rejected": 5884
+      },
+      "check_id": "v7.rejections_logged",
+      "claim": "task brief V7: rejected records must be logged.",
+      "claim_source": "conv_rejections vs conv_runs.rejected",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "rejections": 5884
+      },
+      "group": "V7",
+      "status": "PASS",
+      "title": "Rejected records are logged with their reason, not dropped"
+    },
+    {
+      "actual": {
+        "conversions": {
+          "rejected": 5884
+        },
+        "evidence_head_rows": 0,
+        "evidence_rows": 0,
+        "evidence_versions": 5884,
+        "runs": [
+          {
+            "converted": 0,
+            "degraded": 0,
+            "evidence_inserted": 0,
+            "evidence_noop": 0,
+            "policy_id": "None",
+            "records_seen": 5884,
+            "rejected": 5884,
+            "run_id": "conv_run_002",
+            "status": "complete"
+          }
+        ]
+      },
+      "check_id": "v7.run_state",
+      "claim": "An adapter that rejects 100% of a valid export has not integrated it.",
+      "claim_source": "research/convergence/staging/convergence.sqlite (frozen snapshot 37f2bc35f080a188c879a0998bb63ec93b720f592383544f1c00567a313f782d)",
+      "detail": "every record of the frozen export must reach the evidence table; the frozen snapshot holds 0 evidence rows and 5884 rejections. Rejection reasons: {\"licence_blocked:'open_licence' under policy None\": 3892, \"licence_blocked:'open_no_explicit_licence' under policy None\": 1104, \"licence_blocked:'public_domain' under policy None\": 888}",
+      "evidence": {},
+      "expected": {
+        "evidence_rows": 5884,
+        "records_seen": 5884
+      },
+      "group": "V7",
+      "status": "FAIL",
+      "title": "The import run produced evidence records from the frozen export"
+    },
+    {
+      "actual": 672,
+      "check_id": "v7.same_work_recompute",
+      "claim": "The graph adds 672 SAME_WORK relations from 672 cross-source DOI matches.",
+      "claim_source": "report graph.authoritative_links",
+      "detail": "recomputed on 60 shared DOI values across sources; the two counts must agree only if every shared DOI contributes exactly one pair",
+      "evidence": {
+        "cross_source_dois": 60
+      },
+      "expected": 672,
+      "group": "V7",
+      "status": "PASS",
+      "title": "Cross-source DOI pairs recompute to the claimed SAME_WORK relation count"
+    },
+    {
+      "actual": [],
+      "check_id": "v7.smoke_report_evidence_ids",
+      "claim": "The adapter's evidence id is defined on that triple, so its per-source counts are forced by it.",
+      "claim_source": "report stats.evidence_by_source vs recomputed triples",
+      "detail": "",
+      "evidence": {
+        "claimed": {
+          "accessgudid": 320,
+          "brazil_anvisa": 120,
+          "canada_mdall": 174,
+          "cipo_canada": 2000,
+          "clinicaltrials_gov": 164,
+          "crossref": 59,
+          "epo_publication_server": 228,
+          "eu_cordis": 60,
+          "eu_ted": 299,
+          "europepmc": 37,
+          "eurostat_comext": 1400,
+          "nih_reporter": 64,
+          "openaire": 58,
+          "openalex": 60,
+          "openfda_device_510k": 160,
+          "openfda_device_classification": 60,
+          "openfda_device_pma": 33,
+          "openfda_device_registrationlisting": 26,
+          "pubmed_eutils": 37,
+          "semantic_scholar": 56,
+          "uk_find_a_tender": 62,
+          "uk_hmrc_trade": 100,
+          "usaspending": 245
+        },
+        "recomputed": {
+          "accessgudid": 320,
+          "brazil_anvisa": 120,
+          "canada_mdall": 174,
+          "cipo_canada": 2000,
+          "clinicaltrials_gov": 164,
+          "crossref": 59,
+          "epo_publication_server": 228,
+          "eu_cordis": 60,
+          "eu_ted": 299,
+          "europepmc": 37,
+          "eurostat_comext": 1400,
+          "nih_reporter": 64,
+          "openaire": 58,
+          "openalex": 60,
+          "openfda_device_510k": 160,
+          "openfda_device_classification": 60,
+          "openfda_device_pma": 33,
+          "openfda_device_registrationlisting": 26,
+          "pubmed_eutils": 37,
+          "semantic_scholar": 56,
+          "uk_find_a_tender": 62,
+          "uk_hmrc_trade": 100,
+          "usaspending": 245
+        }
+      },
+      "expected": [],
+      "group": "V7",
+      "status": "PASS",
+      "title": "Per-source evidence counts equal distinct (source_id, entity_type, source_record_id)"
+    },
+    {
+      "actual": {
+        "import_block": {
+          "converted": 966,
+          "degraded": 4918,
+          "rejected": 0,
+          "seen": 5884
+        },
+        "run_block": {
+          "converted": 966,
+          "degraded": 4856,
+          "records_seen": 5822,
+          "rejected": 0
+        }
+      },
+      "check_id": "v7.smoke_report_internal_consistency",
+      "claim": "A report whose own blocks disagree cannot support any downstream number.",
+      "claim_source": "research/convergence/reports/integration_conv_smoke_001.json import vs run",
+      "detail": "the difference is exactly the 62 record-identity collisions: the two blocks count different units (records vs distinct evidence ids) under the same names",
+      "evidence": {},
+      "expected": {
+        "seen": 5884
+      },
+      "group": "V7",
+      "status": "FAIL",
+      "title": "The import report states one set of run counters"
+    },
+    {
+      "actual": [],
+      "check_id": "v7.smoke_report_licence_distribution",
+      "claim": "No record may change licence class on import (no 'restricted' may become 'open').",
+      "claim_source": "report stats.conv_licence_status",
+      "detail": "",
+      "evidence": {
+        "claimed": {
+          "open_licence": 3891,
+          "open_no_explicit_licence": 1104,
+          "public_domain": 827
+        },
+        "recomputed": {
+          "open_licence": 3891,
+          "open_no_explicit_licence": 1104,
+          "public_domain": 827
+        }
+      },
+      "expected": [],
+      "group": "V7",
+      "status": "PASS",
+      "title": "The imported licence distribution preserves the export's licences"
+    },
+    {
+      "actual": 5884,
+      "check_id": "v7.smoke_report_seen",
+      "claim": "6,492 declared - 608 quarantined UN Comtrade records = 5,884 importable records.",
+      "claim_source": "MANIFEST.json totals; integration report",
+      "detail": "run block says 5822, import block says 5884",
+      "evidence": {},
+      "expected": 5884,
+      "group": "V7",
+      "status": "PASS",
+      "title": "The smoke report's record count equals the export minus the quarantine"
+    }
+  ],
+  "contract": "independent recomputation; no application code imported",
+  "facts": {
+    "v1": {
+      "counters": {
+        "accessgudid": {
+          "records": 320,
+          "records_with_event_at": 0,
+          "records_with_fetched_at": 320,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 320,
+          "records_with_source_public_at": 320
+        },
+        "brazil_anvisa": {
+          "records": 120,
+          "records_with_event_at": 120,
+          "records_with_fetched_at": 120,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 120,
+          "records_with_source_public_at": 120
+        },
+        "canada_mdall": {
+          "records": 174,
+          "records_with_event_at": 174,
+          "records_with_fetched_at": 174,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 174,
+          "records_with_source_public_at": 0
+        },
+        "cipo_canada": {
+          "records": 2000,
+          "records_with_event_at": 916,
+          "records_with_fetched_at": 2000,
+          "records_with_first_observed_at": 2000,
+          "records_with_identifiers": 2000,
+          "records_with_source_public_at": 2000
+        },
+        "clinicaltrials_gov": {
+          "records": 164,
+          "records_with_event_at": 94,
+          "records_with_fetched_at": 164,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 164,
+          "records_with_source_public_at": 164
+        },
+        "crossref": {
+          "records": 59,
+          "records_with_event_at": 59,
+          "records_with_fetched_at": 59,
+          "records_with_first_observed_at": 59,
+          "records_with_identifiers": 59,
+          "records_with_source_public_at": 59
+        },
+        "epo_publication_server": {
+          "records": 228,
+          "records_with_event_at": 228,
+          "records_with_fetched_at": 228,
+          "records_with_first_observed_at": 228,
+          "records_with_identifiers": 228,
+          "records_with_source_public_at": 228
+        },
+        "eu_cordis": {
+          "records": 60,
+          "records_with_event_at": 0,
+          "records_with_fetched_at": 60,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 60,
+          "records_with_source_public_at": 0
+        },
+        "eu_ted": {
+          "records": 299,
+          "records_with_event_at": 297,
+          "records_with_fetched_at": 299,
+          "records_with_first_observed_at": 299,
+          "records_with_identifiers": 299,
+          "records_with_source_public_at": 299
+        },
+        "europepmc": {
+          "records": 37,
+          "records_with_event_at": 37,
+          "records_with_fetched_at": 37,
+          "records_with_first_observed_at": 37,
+          "records_with_identifiers": 37,
+          "records_with_source_public_at": 37
+        },
+        "eurostat_comext": {
+          "records": 1400,
+          "records_with_event_at": 1400,
+          "records_with_fetched_at": 1400,
+          "records_with_first_observed_at": 1400,
+          "records_with_identifiers": 1400,
+          "records_with_source_public_at": 0
+        },
+        "nih_reporter": {
+          "records": 64,
+          "records_with_event_at": 56,
+          "records_with_fetched_at": 64,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 64,
+          "records_with_source_public_at": 64
+        },
+        "openaire": {
+          "records": 59,
+          "records_with_event_at": 59,
+          "records_with_fetched_at": 59,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 59,
+          "records_with_source_public_at": 59
+        },
+        "openalex": {
+          "records": 60,
+          "records_with_event_at": 60,
+          "records_with_fetched_at": 60,
+          "records_with_first_observed_at": 60,
+          "records_with_identifiers": 60,
+          "records_with_source_public_at": 60
+        },
+        "openfda_device_510k": {
+          "records": 160,
+          "records_with_event_at": 160,
+          "records_with_fetched_at": 160,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 160,
+          "records_with_source_public_at": 0
+        },
+        "openfda_device_classification": {
+          "records": 60,
+          "records_with_event_at": 0,
+          "records_with_fetched_at": 60,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 60,
+          "records_with_source_public_at": 0
+        },
+        "openfda_device_pma": {
+          "records": 60,
+          "records_with_event_at": 60,
+          "records_with_fetched_at": 60,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 60,
+          "records_with_source_public_at": 0
+        },
+        "openfda_device_registrationlisting": {
+          "records": 60,
+          "records_with_event_at": 0,
+          "records_with_fetched_at": 60,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 60,
+          "records_with_source_public_at": 0
+        },
+        "pubmed_eutils": {
+          "records": 37,
+          "records_with_event_at": 37,
+          "records_with_fetched_at": 37,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 37,
+          "records_with_source_public_at": 37
+        },
+        "semantic_scholar": {
+          "records": 56,
+          "records_with_event_at": 55,
+          "records_with_fetched_at": 56,
+          "records_with_first_observed_at": 0,
+          "records_with_identifiers": 56,
+          "records_with_source_public_at": 55
+        },
+        "uk_find_a_tender": {
+          "records": 62,
+          "records_with_event_at": 62,
+          "records_with_fetched_at": 62,
+          "records_with_first_observed_at": 62,
+          "records_with_identifiers": 62,
+          "records_with_source_public_at": 62
+        },
+        "uk_hmrc_trade": {
+          "records": 100,
+          "records_with_event_at": 100,
+          "records_with_fetched_at": 100,
+          "records_with_first_observed_at": 100,
+          "records_with_identifiers": 100,
+          "records_with_source_public_at": 0
+        },
+        "usaspending": {
+          "records": 245,
+          "records_with_event_at": 245,
+          "records_with_fetched_at": 245,
+          "records_with_first_observed_at": 245,
+          "records_with_identifiers": 245,
+          "records_with_source_public_at": 0
+        }
+      },
+      "dedupe": {
+        "accessgudid": 320,
+        "brazil_anvisa": 120,
+        "canada_mdall": 60,
+        "cipo_canada": 2000,
+        "clinicaltrials_gov": 164,
+        "crossref": 59,
+        "epo_publication_server": 228,
+        "eu_cordis": 60,
+        "eu_ted": 93,
+        "europepmc": 37,
+        "eurostat_comext": 1400,
+        "nih_reporter": 9,
+        "openaire": 58,
+        "openalex": 60,
+        "openfda_device_510k": 160,
+        "openfda_device_classification": 50,
+        "openfda_device_pma": 33,
+        "openfda_device_registrationlisting": 26,
+        "pubmed_eutils": 37,
+        "semantic_scholar": 56,
+        "uk_find_a_tender": 16,
+        "uk_hmrc_trade": 100,
+        "usaspending": 245
+      },
+      "scans": {
+        "accessgudid": {
+          "bytes": 733815,
+          "lines_blank": 0,
+          "lines_nonempty": 320,
+          "lines_total": 320,
+          "records_parsed": 320,
+          "unparseable_lines": 0
+        },
+        "brazil_anvisa": {
+          "bytes": 258652,
+          "lines_blank": 0,
+          "lines_nonempty": 120,
+          "lines_total": 120,
+          "records_parsed": 120,
+          "unparseable_lines": 0
+        },
+        "canada_mdall": {
+          "bytes": 288641,
+          "lines_blank": 0,
+          "lines_nonempty": 174,
+          "lines_total": 174,
+          "records_parsed": 174,
+          "unparseable_lines": 0
+        },
+        "cipo_canada": {
+          "bytes": 6679212,
+          "lines_blank": 0,
+          "lines_nonempty": 2000,
+          "lines_total": 2000,
+          "records_parsed": 2000,
+          "unparseable_lines": 0
+        },
+        "clinicaltrials_gov": {
+          "bytes": 501900,
+          "lines_blank": 0,
+          "lines_nonempty": 164,
+          "lines_total": 164,
+          "records_parsed": 164,
+          "unparseable_lines": 0
+        },
+        "crossref": {
+          "bytes": 155239,
+          "lines_blank": 0,
+          "lines_nonempty": 59,
+          "lines_total": 59,
+          "records_parsed": 59,
+          "unparseable_lines": 0
+        },
+        "epo_publication_server": {
+          "bytes": 896111,
+          "lines_blank": 0,
+          "lines_nonempty": 228,
+          "lines_total": 228,
+          "records_parsed": 228,
+          "unparseable_lines": 0
+        },
+        "eu_cordis": {
+          "bytes": 160952,
+          "lines_blank": 0,
+          "lines_nonempty": 60,
+          "lines_total": 60,
+          "records_parsed": 60,
+          "unparseable_lines": 0
+        },
+        "eu_ted": {
+          "bytes": 1933456,
+          "lines_blank": 0,
+          "lines_nonempty": 299,
+          "lines_total": 299,
+          "records_parsed": 299,
+          "unparseable_lines": 0
+        },
+        "europepmc": {
+          "bytes": 169448,
+          "lines_blank": 0,
+          "lines_nonempty": 37,
+          "lines_total": 37,
+          "records_parsed": 37,
+          "unparseable_lines": 0
+        },
+        "eurostat_comext": {
+          "bytes": 4096452,
+          "lines_blank": 0,
+          "lines_nonempty": 1400,
+          "lines_total": 1400,
+          "records_parsed": 1400,
+          "unparseable_lines": 0
+        },
+        "nih_reporter": {
+          "bytes": 157282,
+          "lines_blank": 0,
+          "lines_nonempty": 64,
+          "lines_total": 64,
+          "records_parsed": 64,
+          "unparseable_lines": 0
+        },
+        "openaire": {
+          "bytes": 215027,
+          "lines_blank": 0,
+          "lines_nonempty": 59,
+          "lines_total": 59,
+          "records_parsed": 59,
+          "unparseable_lines": 0
+        },
+        "openalex": {
+          "bytes": 186315,
+          "lines_blank": 0,
+          "lines_nonempty": 60,
+          "lines_total": 60,
+          "records_parsed": 60,
+          "unparseable_lines": 0
+        },
+        "openfda_device_510k": {
+          "bytes": 257359,
+          "lines_blank": 0,
+          "lines_nonempty": 160,
+          "lines_total": 160,
+          "records_parsed": 160,
+          "unparseable_lines": 0
+        },
+        "openfda_device_classification": {
+          "bytes": 93981,
+          "lines_blank": 0,
+          "lines_nonempty": 60,
+          "lines_total": 60,
+          "records_parsed": 60,
+          "unparseable_lines": 0
+        },
+        "openfda_device_pma": {
+          "bytes": 101875,
+          "lines_blank": 0,
+          "lines_nonempty": 60,
+          "lines_total": 60,
+          "records_parsed": 60,
+          "unparseable_lines": 0
+        },
+        "openfda_device_registrationlisting": {
+          "bytes": 120989,
+          "lines_blank": 0,
+          "lines_nonempty": 60,
+          "lines_total": 60,
+          "records_parsed": 60,
+          "unparseable_lines": 0
+        },
+        "pubmed_eutils": {
+          "bytes": 135979,
+          "lines_blank": 0,
+          "lines_nonempty": 37,
+          "lines_total": 37,
+          "records_parsed": 37,
+          "unparseable_lines": 0
+        },
+        "semantic_scholar": {
+          "bytes": 131879,
+          "lines_blank": 0,
+          "lines_nonempty": 56,
+          "lines_total": 56,
+          "records_parsed": 56,
+          "unparseable_lines": 0
+        },
+        "uk_find_a_tender": {
+          "bytes": 215365,
+          "lines_blank": 0,
+          "lines_nonempty": 62,
+          "lines_total": 62,
+          "records_parsed": 62,
+          "unparseable_lines": 0
+        },
+        "uk_hmrc_trade": {
+          "bytes": 233912,
+          "lines_blank": 0,
+          "lines_nonempty": 100,
+          "lines_total": 100,
+          "records_parsed": 100,
+          "unparseable_lines": 0
+        },
+        "usaspending": {
+          "bytes": 778851,
+          "lines_blank": 0,
+          "lines_nonempty": 245,
+          "lines_total": 245,
+          "records_parsed": 245,
+          "unparseable_lines": 0
+        }
+      }
+    },
+    "v2": {
+      "construction_rules": {
+        "HN3_same_family_different_device": 14,
+        "HN4_subsidiary_vs_parent": 12,
+        "candidate": 700
+      },
+      "pairs_total": 726,
+      "verdicts": {
+        "UNKNOWN": 726
+      }
+    },
+    "v3": {
+      "census": {
+        "MANUFACTURED_BY/CANDIDATE": 10,
+        "MANUFACTURED_BY/CONFIRMED": 772,
+        "POSSIBLE_MATCH/CANDIDATE": 59,
+        "REGISTERED_AS/CONFIRMED": 5544,
+        "RELATED_TECHNOLOGY/CANDIDATE": 10,
+        "SAME_DEVICE_IDENTITY/CONFIRMED": 934,
+        "SAME_MODEL/CONFIRMED": 2,
+        "SAME_PRODUCT_FAMILY/CONFIRMED": 192,
+        "UNRELATED/REJECTED": 1087
+      },
+      "distinct_shared_identifiers": 934,
+      "relations": 934
+    },
+    "v4": {
+      "ca_gtin14": 0,
+      "ca_schemes": [
+        "hc_device_licence",
+        "hc_mdall_device_id",
+        "hc_mdall_device_identifier"
+      ],
+      "horizon_identity_status": {
+        "CANDIDATE": 2604,
+        "CONFIRMED": 889,
+        "UNKNOWN": 2391
+      },
+      "us_gtin14": 320,
+      "us_schemes": [
+        "cfr_regulation",
+        "fda_fei",
+        "fda_product_code",
+        "fda_registration_number",
+        "udi_di",
+        "uspto_510k",
+        "uspto_pma"
+      ]
+    },
+    "v5": {
+      "atlas": {
+        "day_equal_event": 0,
+        "derived_equal_event": 5802,
+        "derived_total": 5802,
+        "first_obs_eq_fetched": 7254,
+        "present": {
+          "event_at": 5802,
+          "fetched_at": 7254,
+          "first_observed_at": 7254,
+          "source_public_at": 7254
+        },
+        "public_after_event": 0,
+        "public_before_event": 0,
+        "rows": 7254,
+        "time_quality": {
+          "day": 1452,
+          "derived": 5802
+        }
+      },
+      "licence_vocabulary_unrepresentable": [],
+      "totals": {
+        "event_after_public": 1619,
+        "event_at": 4219,
+        "event_eq_public": 371,
+        "fetched_at": 5884,
+        "first_obs_backdated_gt_30d": 156,
+        "first_obs_eq_event": 16,
+        "first_obs_eq_fetched": 4334,
+        "first_obs_eq_public": 61,
+        "first_observed_at": 4490,
+        "no_clock": 181,
+        "records": 5884,
+        "source_public_at": 3564
+      }
+    },
+    "v6": {
+      "comtrade_named_files": [
+        {
+          "bytes": 16027,
+          "path": "research/horizon/CONNECTORS/industry\\un_comtrade.py"
+        },
+        {
+          "bytes": 50778,
+          "path": "research/horizon/DATASETS/industry/un_comtrade/raw\\comtrade_license.html"
+        },
+        {
+          "bytes": 3135,
+          "path": "research/horizon/registry/sources\\un_comtrade.json"
+        }
+      ],
+      "content_scan": {
+        "files_scanned": 1823,
+        "hits": [],
+        "tokens": {
+          "content_hash_of_first_record": "38de14302506287ed0168168f478b0568cb203501687fef7ce5ee88d9da89be8",
+          "numeric_payload_tokens": 2,
+          "source_record_id_of_first_record": "comtrade:A:156:0:9018:M:2015"
+        }
+      },
+      "present_unclear": [
+        {
+          "bytes": 258652,
+          "licence_status": "open_no_explicit_licence",
+          "records": 120,
+          "source_id": "brazil_anvisa"
+        },
+        {
+          "bytes": 155239,
+          "licence_status": "open_no_explicit_licence",
+          "records": 59,
+          "source_id": "crossref"
+        },
+        {
+          "bytes": 896111,
+          "licence_status": "open_no_explicit_licence",
+          "records": 228,
+          "source_id": "epo_publication_server"
+        },
+        {
+          "bytes": 160952,
+          "licence_status": "open_no_explicit_licence",
+          "records": 60,
+          "source_id": "eu_cordis"
+        },
+        {
+          "bytes": 1933456,
+          "licence_status": "open_no_explicit_licence",
+          "records": 299,
+          "source_id": "eu_ted"
+        },
+        {
+          "bytes": 135979,
+          "licence_status": "open_no_explicit_licence",
+          "records": 37,
+          "source_id": "pubmed_eutils"
+        },
+        {
+          "bytes": 131879,
+          "licence_status": "open_no_explicit_licence",
+          "records": 56,
+          "source_id": "semantic_scholar"
+        },
+        {
+          "bytes": 778851,
+          "licence_status": "open_no_explicit_licence",
+          "records": 245,
+          "source_id": "usaspending"
+        }
+      ]
+    },
+    "v7": {
+      "collisions": [
+        {
+          "distinct_record_identities": 58,
+          "example_distinct_content_hashes": 2,
+          "example_id": "doi_dedup___::90ba59cc7e0817fa3e9f73f46414d01a",
+          "extra_records_sharing_an_id": 1,
+          "records": 59,
+          "source_id": "openaire"
+        },
+        {
+          "distinct_record_identities": 33,
+          "example_distinct_content_hashes": 3,
+          "example_id": "P010031",
+          "extra_records_sharing_an_id": 27,
+          "records": 60,
+          "source_id": "openfda_device_pma"
+        },
+        {
+          "distinct_record_identities": 26,
+          "example_distinct_content_hashes": 9,
+          "example_id": "1824199",
+          "extra_records_sharing_an_id": 34,
+          "records": 60,
+          "source_id": "openfda_device_registrationlisting"
+        }
+      ],
+      "evidence_rows": 0,
+      "relations": {},
+      "runs": [
+        {
+          "contract_version": "medradar.convergence.evidence.v1@1.0.0",
+          "converted": 0,
+          "degraded": 0,
+          "evidence_inserted": 0,
+          "evidence_noop": 0,
+          "export_id": "horizon-2026-11-10",
+          "finished_at": "2026-11-10T19:06:17.222378Z",
+          "manifest_sha256": "eaa1cbf5e49db90ba39f938be759c5df3581f4fbbe135cfcd5455622ff6e4d4d",
+          "mapping_version": "1.0.0+adapter.1",
+          "notes": "",
+          "policy_id": "None",
+          "records_seen": 5884,
+          "rejected": 5884,
+          "run_id": "conv_run_002",
+          "started_at": "2026-11-10T19:06:04.251674Z",
+          "status": "complete"
+        }
+      ],
+      "snapshot_sha256": "37f2bc35f080a188c879a0998bb63ec93b720f592383544f1c00567a313f782d"
+    }
+  },
+  "inputs": {
+    "atlas_root": "atlas-001",
+    "export_dir": "research/horizon/exports/horizon-2026-11-10",
+    "heavy_checks": true,
+    "horizon_root": "horizon-001"
+  },
+  "summary": {
+    "FAIL": 11,
+    "PASS": 72,
+    "UNVERIFIABLE": 7,
+    "total": 90,
+    "verdict": "FAIL"
+  },
+  "verifier": "tools/convergence/verify/verify.py"
+}

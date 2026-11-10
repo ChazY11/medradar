@@ -1,0 +1,165 @@
+﻿
+============================================================================================
+V1
+============================================================================================
+v1.bytes                                 PASS         Every present file's byte length equals the manifest
+v1.content_hash                          PASS         Each record's content_hash recomputes from its own content
+v1.declared_files_present                PASS         Every manifest-declared file exists (quarantine excepted)
+v1.licence_agreement                     PASS         Licence status agrees across manifest views and rows
+v1.no_undeclared_files                   PASS         Export directory holds no file the manifest does not account for
+v1.per_source_counters                   PASS         per_source identifier/clock counters recompute
+v1.per_source_dedupe                     PASS         per_source unique_dedupe_keys recompute
+v1.per_source_records                    PASS         per_source[].records agrees with files[].records
+v1.quarantine_provenance                 PASS         The quarantined file still matches its manifest entry upstream
+v1.quarantine_set_exact                  PASS         Absent set is exactly {un_comtrade.jsonl, un_comtrade.jsonl.sha256}
+v1.readme_table                          PASS         README per-source table recomputes
+v1.record_content_unique                 PASS         No two rows in a source have the same content hash
+v1.record_identity_key_unique            FAIL         source_record_id is unique within a source, so it can be used as a record key
+                                           the shared ids are not duplicates: one PMA number carries several supplements (distinct content hashes) and one registration number carries several establishmen
+v1.records                               PASS         Record counts equal non-empty line counts
+v1.schema_conformance                    PASS         Every record satisfies horizon.evidence.v1
+v1.sha256                                PASS         Every present file's SHA-256 equals the manifest
+v1.sha256_sidecars                       PASS         Each .sha256 sidecar matches its own bytes and the manifest
+v1.totals                                PASS         MANIFEST.totals sums correctly from per-file facts
+
+============================================================================================
+V2
+============================================================================================
+v2.doc_experiment_results                FAIL         EXPERIMENT_RESULTS.md EXP-H2 numbers match the pair file
+                                           8 of 9 prose numbers disagree with the pair file
+v2.doc_frontier_report                   FAIL         REGULATORY_FRONTIER_REPORT.md EXP-H2 numbers match the pair file
+                                           8 of 10 prose numbers disagree with the pair file
+v2.doc_signal_definitions                FAIL         Prose signal definitions match the pre-registered rule
+                                           a reader of the results document cannot know what S5 counts
+v2.hard_negative_coverage                PASS         All four pre-registered hard-negative rules are either built or declared unbuildable
+v2.pair_provenance                       PASS         Every pair references records present in the frozen export
+v2.pairs_total                           PASS         EXP-H2 pair count recomputes
+v2.signal_set_consistency                PASS         signal_set agrees with the signals block
+v2.summary_agreement                     PASS         EXP_H2_SUMMARY.json primary block matches the pair file
+v2.verdict_rule_conformance              PASS         Every verdict obeys the pre-registered rule
+
+============================================================================================
+V3
+============================================================================================
+v3.baseline_arithmetic                   PASS         The identity/baseline confusion matrices add up
+v3.baseline_labels_enumerated            UNVERIFIABLE The 400 sampled negatives are recoverable as an artifact
+                                           no artifact enumerates the 400 negative pairs; the metric cannot be re-derived, only re-added
+v3.bridge_gtins_subset_mdall             PASS         Every bridged GTIN really occurs in the Canadian identifier table
+v3.bridge_resolution_math                UNVERIFIABLE 942 resolved -> 934 paired is representable in the database
+                                           the 1,200-row deterministic sample and the 942 resolutions cannot be replayed offline (the sampling rule lives in the ATLAS connector); the database does show 1
+v3.canonical_key_recompute               PASS         Every canonical_key recomputes from its stored identifiers
+v3.content_hash_recompute                PASS         Every content_hash recomputes from its stored payload
+v3.cross_market_scope                    PASS         Each pair really spans a US record and a Canadian record
+v3.duplication_across_runs               PASS         All 934 relations come from a single bridge run
+v3.evidence_id_recompute                 PASS         Every evidence_id recomputes from (source_id, evidence_type, source_record_id)
+v3.gtin14_valid                          PASS         Every shared identifier is a GTIN-14 with a correct Mod-10 check digit
+v3.mdall_cache_counts                    FAIL         MDALL active identifier table counts recompute
+                                           streamed the cache array; normalisation = keep digits only, accept len 14
+v3.pair_uniqueness                       PASS         Relation rows and (from_ref, to_ref) pairs are unique
+v3.pilot_agreement                       PASS         identity_pilot.json counts match the database
+v3.quality_findings                      PASS         54 quality findings with zero errors
+v3.referential_integrity                 PASS         Both endpoints of every relation exist
+v3.relation_census                       PASS         The published relation census matches the database
+v3.relation_count                        PASS         Count of CONFIRMED SAME_DEVICE_IDENTITY relations
+v3.relation_status_method                PASS         Every relation is CONFIRMED and derived from an official identifier
+v3.revocation                            PASS         No bridge relation has been revoked
+v3.shared_id_present_both_sides          PASS         The shared DI is physically present on both records of every pair
+v3.shared_identifier_distinct            PASS         934 relations carry 934 distinct shared identifiers (one GTIN -> one pair)
+v3.us_record_count_claim                 FAIL         The stated number of unique U.S. records matches the database
+                                           the bridge added 940 records, not 8; 500 + 8 does not describe the final corpus
+
+============================================================================================
+V4
+============================================================================================
+v4.atlas_bridge_vs_horizon_ca            PASS         None of ATLAS's 934 bridged GTINs appears in the HORIZON Canadian sample
+v4.atlas_bridge_vs_horizon_us            PASS         How much of ATLAS's bridged GTIN set the HORIZON GUDID sample even contains
+v4.gtin_namespace_overlap                PASS         The Canadian sample contains no 14-digit identifier at all
+v4.horizon_no_confirmed_identity         PASS         No HORIZON export record claims a confirmed cross-source identity
+v4.reconciliation_claim                  PASS         'HORIZON 0 is a sample-coverage result, not a conflict with ATLAS 934'
+v4.same_scheme_matches                   PASS         Official-identifier matches between the HORIZON Canadian sample and the US side
+v4.sample_overlap_with_atlas             PASS         HORIZON's GUDID slice and ATLAS's US UDI corpus overlap is measured, not assumed
+v4.scheme_inventory                      PASS         The two sides publish disjoint identifier schemes
+
+============================================================================================
+V5
+============================================================================================
+v5.atlas_first_observed_is_fetch_clock   PASS         ATLAS first_observed_at carries observation history or just the fetch time
+v5.atlas_public_clock_derivation         FAIL         ATLAS's public clock is an independent observation where it is populated
+                                           for 5802 of 7254 rows the publication clock is literally the event clock, flagged time_quality='derived'. It is disclosed, so it is not silent, but the observab
+v5.atlas_time_leakage_control            PASS         The stated time-leakage control counts match the database
+v5.horizon_clock_availability            PASS         Every HORIZON record states which of the four clocks it has
+v5.horizon_clock_collapse                FAIL         event_at and source_public_at are separate measurements where both exist
+                                           sources where every record has event_at == source_public_at cannot support an observability-gap measurement
+v5.horizon_clock_derivation              PASS         Each populated clock can be traced to a source field
+v5.horizon_first_observed_semantics      FAIL         first_observed_at is a real observation clock, not a back-filled source date
+                                           4490 of 5884 records carry first_observed_at, 1394 are null. Three regimes: 4334 records copy the fetch time exactly (the field then carries no observation info
+v5.horizon_manifest_clock_agreement      PASS         Manifest clock counters agree with the rows
+v5.licence_vocabulary_coverage           PASS         Every licence class actually present in the export is representable in ATLAS
+
+============================================================================================
+V6
+============================================================================================
+v6.all_copies_removed                    PASS         Both upstream copies of the payload are absent
+v6.content_scan                          PASS         No UN Comtrade payload bytes appear in any text file of the worktree
+v6.git_history_exposure                  PASS         The quarantined bytes are not reachable from the integration branch
+v6.git_index_clean                       PASS         The git index tracks no UN Comtrade payload
+v6.no_comtrade_payload_file              PASS         No UN Comtrade payload file exists in the worktree
+v6.registry_licence_agreement            PASS         Every manifest licence_status equals the source registry's value
+v6.restricted_sources_present            PASS         No restricted-licence source has data in the worktree
+v6.unclear_sources_present               PASS         Unclear-licence sources are enumerated, not hidden
+
+============================================================================================
+V7
+============================================================================================
+v7.adapter_present                       PASS         The integration adapter exists (phase gate)
+v7.atlas_bridge_carried                  UNVERIFIABLE ATLAS's 934 confirmed relations are carried into the store
+                                           staging entity_relations holds only SAME_WORK; the ATLAS bridge was not imported
+v7.clocks_preserved                      UNVERIFIABLE All four clocks survive import unchanged
+                                           the frozen snapshot holds no evidence rows, so per-record clock equality cannot be tested; re-run after a successful import
+v7.idempotency                           UNVERIFIABLE Importing twice produces no duplicate logical records
+                                           the snapshot holds a single run and zero evidence rows; idempotency needs two runs
+v7.identifiers_preserved                 UNVERIFIABLE Identifier sets survive import unchanged
+                                           no evidence rows in the frozen snapshot
+v7.manifest_digest                       PASS         The adapter records the manifest digest it actually consumed
+v7.no_identity_upgrade                   PASS         No record's identity status was upgraded to confirmed on import
+v7.quality_flags_preserved               UNVERIFIABLE Quality flags survive import unchanged
+                                           no evidence rows in the frozen snapshot
+v7.record_identity_collisions            FAIL         Record identity is preserved: distinct records do not collapse into one evidence id
+                                           the collided rows are not duplicates: e.g. one PMA number carries several supplements (S514/S136/S413/S837) with distinct content hashes, and one registration n
+v7.rejections_logged                     PASS         Rejected records are logged with their reason, not dropped
+v7.run_state                             FAIL         The import run produced evidence records from the frozen export
+                                           every record of the frozen export must reach the evidence table; the frozen snapshot holds 0 evidence rows and 5884 rejections. Rejection reasons: {"licence_blo
+v7.same_work_recompute                   PASS         Cross-source DOI pairs recompute to the claimed SAME_WORK relation count
+v7.smoke_report_evidence_ids             PASS         Per-source evidence counts equal distinct (source_id, entity_type, source_record_id)
+v7.smoke_report_internal_consistency     FAIL         The import report states one set of run counters
+                                           the difference is exactly the 62 record-identity collisions: the two blocks count different units (records vs distinct evidence ids) under the same names
+v7.smoke_report_licence_distribution     PASS         The imported licence distribution preserves the export's licences
+v7.smoke_report_seen                     PASS         The smoke report's record count equals the export minus the quarantine
+
+--------------------------------------------------------------------------------------------
+PASS 71  FAIL 12  UNVERIFIABLE 7  (total 90)
+
+FAILED:
+  - v1.record_identity_key_unique: source_record_id is unique within a source, so it can be used as a record key
+  - v2.doc_experiment_results: EXPERIMENT_RESULTS.md EXP-H2 numbers match the pair file
+  - v2.doc_frontier_report: REGULATORY_FRONTIER_REPORT.md EXP-H2 numbers match the pair file
+  - v2.doc_signal_definitions: Prose signal definitions match the pre-registered rule
+  - v3.mdall_cache_counts: MDALL active identifier table counts recompute
+  - v3.us_record_count_claim: The stated number of unique U.S. records matches the database
+  - v5.atlas_public_clock_derivation: ATLAS's public clock is an independent observation where it is populated
+  - v5.horizon_clock_collapse: event_at and source_public_at are separate measurements where both exist
+  - v5.horizon_first_observed_semantics: first_observed_at is a real observation clock, not a back-filled source date
+  - v7.record_identity_collisions: Record identity is preserved: distinct records do not collapse into one evidence id
+  - v7.run_state: The import run produced evidence records from the frozen export
+  - v7.smoke_report_internal_consistency: The import report states one set of run counters
+
+NOT VERIFIABLE OFFLINE:
+  - v3.baseline_labels_enumerated: The 400 sampled negatives are recoverable as an artifact
+  - v3.bridge_resolution_math: 942 resolved -> 934 paired is representable in the database
+  - v7.atlas_bridge_carried: ATLAS's 934 confirmed relations are carried into the store
+  - v7.clocks_preserved: All four clocks survive import unchanged
+  - v7.idempotency: Importing twice produces no duplicate logical records
+  - v7.identifiers_preserved: Identifier sets survive import unchanged
+  - v7.quality_flags_preserved: Quality flags survive import unchanged
+
+report: research/convergence/verification/verification_summary.json

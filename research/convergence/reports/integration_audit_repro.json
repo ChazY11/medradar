@@ -1,0 +1,1133 @@
+{
+ "generated_at": "2026-11-10T19:56:00.760636Z",
+ "run_id": "audit_repro",
+ "contract": {
+  "id": "medradar.convergence.evidence.v1",
+  "version": "1.0.0"
+ },
+ "adapter_mapping_version": "1.0.0+adapter.1",
+ "policy": {
+  "policy_id": "medradar.licence_policy.v1",
+  "schema": "medradar.licence_policy.v1",
+  "version": "1.0.0",
+  "origin": "config\\convergence\\licence_policy.json",
+  "known_sources": 51,
+  "quarantined_sources": [
+   "australia_tga_artg",
+   "china_nmpa_udi",
+   "descartes_datamyne",
+   "dpma_open_data",
+   "epo_global_patent_index",
+   "epo_linked_open_data",
+   "epo_ops",
+   "espacenet",
+   "eu_ctis",
+   "eudamed",
+   "google_patents",
+   "importgenius",
+   "importyeti",
+   "japan_pmda",
+   "jpo_bulk",
+   "lens_org",
+   "panjiva",
+   "patentsview",
+   "un_comtrade",
+   "usitc_dataweb",
+   "wipo_patentscope"
+  ],
+  "statuses": [
+   "open_licence",
+   "open_no_explicit_licence",
+   "public_domain",
+   "requires_licence",
+   "terms_restricted",
+   "unknown"
+  ]
+ },
+ "integrity": {
+  "export_id": "horizon-2026-11-10",
+  "schema_version": "horizon.evidence.v1",
+  "manifest_sha256": "eaa1cbf5e49db90ba39f938be759c5df3581f4fbbe135cfcd5455622ff6e4d4d",
+  "declared_sources": 24,
+  "declared_records": 6492,
+  "declared_bytes": 20335003,
+  "verified_records": 5884,
+  "state_counts": {
+   "verified": 23,
+   "quarantined": 1
+  },
+  "files": [
+   {
+    "source_id": "accessgudid",
+    "path": "accessgudid.jsonl",
+    "declared_bytes": 733815,
+    "declared_records": 320,
+    "declared_sha256": "233274cb66d4a75552b6d4be52af89c1ae10fec46ce22c0d1052ff1b1c089c54",
+    "licence_status": "public_domain",
+    "state": "verified",
+    "actual_bytes": 733815,
+    "actual_records": 320,
+    "actual_sha256": "233274cb66d4a75552b6d4be52af89c1ae10fec46ce22c0d1052ff1b1c089c54"
+   },
+   {
+    "source_id": "brazil_anvisa",
+    "path": "brazil_anvisa.jsonl",
+    "declared_bytes": 258652,
+    "declared_records": 120,
+    "declared_sha256": "3b0da0513686160fa44e81784e9497c67c083e779a5389a9eea8ac3614903424",
+    "licence_status": "open_no_explicit_licence",
+    "state": "verified",
+    "actual_bytes": 258652,
+    "actual_records": 120,
+    "actual_sha256": "3b0da0513686160fa44e81784e9497c67c083e779a5389a9eea8ac3614903424"
+   },
+   {
+    "source_id": "canada_mdall",
+    "path": "canada_mdall.jsonl",
+    "declared_bytes": 288641,
+    "declared_records": 174,
+    "declared_sha256": "b00c4565ba24346877954124dceecebcbf844dd5cbce1792749bb404479e0dc7",
+    "licence_status": "open_licence",
+    "state": "verified",
+    "actual_bytes": 288641,
+    "actual_records": 174,
+    "actual_sha256": "b00c4565ba24346877954124dceecebcbf844dd5cbce1792749bb404479e0dc7"
+   },
+   {
+    "source_id": "cipo_canada",
+    "path": "cipo_canada.jsonl",
+    "declared_bytes": 6679212,
+    "declared_records": 2000,
+    "declared_sha256": "47a9a62e87a2e338e264c44d9d5fb9b1086676795cf5ab1c520d50f0b1ba2d62",
+    "licence_status": "open_licence",
+    "state": "verified",
+    "actual_bytes": 6679212,
+    "actual_records": 2000,
+    "actual_sha256": "47a9a62e87a2e338e264c44d9d5fb9b1086676795cf5ab1c520d50f0b1ba2d62"
+   },
+   {
+    "source_id": "clinicaltrials_gov",
+    "path": "clinicaltrials_gov.jsonl",
+    "declared_bytes": 501900,
+    "declared_records": 164,
+    "declared_sha256": "fbab44ef31a3d216215783bc59dd58369f06eef2e1e3a2ea3bc5870a2fd55d51",
+    "licence_status": "public_domain",
+    "state": "verified",
+    "actual_bytes": 501900,
+    "actual_records": 164,
+    "actual_sha256": "fbab44ef31a3d216215783bc59dd58369f06eef2e1e3a2ea3bc5870a2fd55d51"
+   },
+   {
+    "source_id": "crossref",
+    "path": "crossref.jsonl",
+    "declared_bytes": 155239,
+    "declared_records": 59,
+    "declared_sha256": "c201db1c4f766b33579f2748bf83a9df6b32655abe0399cc3d6906b83d393eaf",
+    "licence_status": "open_no_explicit_licence",
+    "state": "verified",
+    "actual_bytes": 155239,
+    "actual_records": 59,
+    "actual_sha256": "c201db1c4f766b33579f2748bf83a9df6b32655abe0399cc3d6906b83d393eaf"
+   },
+   {
+    "source_id": "epo_publication_server",
+    "path": "epo_publication_server.jsonl",
+    "declared_bytes": 896111,
+    "declared_records": 228,
+    "declared_sha256": "0d190b0aa40afddba1b01c2c4356ee267c4b41e53cdcc72b6bc973944dcf50b1",
+    "licence_status": "open_no_explicit_licence",
+    "state": "verified",
+    "actual_bytes": 896111,
+    "actual_records": 228,
+    "actual_sha256": "0d190b0aa40afddba1b01c2c4356ee267c4b41e53cdcc72b6bc973944dcf50b1"
+   },
+   {
+    "source_id": "eu_cordis",
+    "path": "eu_cordis.jsonl",
+    "declared_bytes": 160952,
+    "declared_records": 60,
+    "declared_sha256": "134ca9ceb3c5d53706316fff86c9f47ea23b675807be99cbe4822bf8b358245a",
+    "licence_status": "open_no_explicit_licence",
+    "state": "verified",
+    "actual_bytes": 160952,
+    "actual_records": 60,
+    "actual_sha256": "134ca9ceb3c5d53706316fff86c9f47ea23b675807be99cbe4822bf8b358245a"
+   },
+   {
+    "source_id": "eu_ted",
+    "path": "eu_ted.jsonl",
+    "declared_bytes": 1933456,
+    "declared_records": 299,
+    "declared_sha256": "19d6bd47a186c9b79e517811f71e18f38f46be1459a1ee60d06893015f89d098",
+    "licence_status": "open_no_explicit_licence",
+    "state": "verified",
+    "actual_bytes": 1933456,
+    "actual_records": 299,
+    "actual_sha256": "19d6bd47a186c9b79e517811f71e18f38f46be1459a1ee60d06893015f89d098"
+   },
+   {
+    "source_id": "europepmc",
+    "path": "europepmc.jsonl",
+    "declared_bytes": 169448,
+    "declared_records": 37,
+    "declared_sha256": "0f2b65af9e91e38d2896139d936c2728f92d6c98bb9a453a23b78e640661ae67",
+    "licence_status": "open_licence",
+    "state": "verified",
+    "actual_bytes": 169448,
+    "actual_records": 37,
+    "actual_sha256": "0f2b65af9e91e38d2896139d936c2728f92d6c98bb9a453a23b78e640661ae67"
+   },
+   {
+    "source_id": "eurostat_comext",
+    "path": "eurostat_comext.jsonl",
+    "declared_bytes": 4096452,
+    "declared_records": 1400,
+    "declared_sha256": "5933b8d91930e425a34754744fc7b79337ce9b9a3abd20a51e4128e8342d66dd",
+    "licence_status": "open_licence",
+    "state": "verified",
+    "actual_bytes": 4096452,
+    "actual_records": 1400,
+    "actual_sha256": "5933b8d91930e425a34754744fc7b79337ce9b9a3abd20a51e4128e8342d66dd"
+   },
+   {
+    "source_id": "nih_reporter",
+    "path": "nih_reporter.jsonl",
+    "declared_bytes": 157282,
+    "declared_records": 64,
+    "declared_sha256": "0cdb02634d4eb45f742debd7e32272fec78d88c0449e35e0363b8fc29a338dbf",
+    "licence_status": "public_domain",
+    "state": "verified",
+    "actual_bytes": 157282,
+    "actual_records": 64,
+    "actual_sha256": "0cdb02634d4eb45f742debd7e32272fec78d88c0449e35e0363b8fc29a338dbf"
+   },
+   {
+    "source_id": "openaire",
+    "path": "openaire.jsonl",
+    "declared_bytes": 215027,
+    "declared_records": 59,
+    "declared_sha256": "d6dda6f8e4960391d5570a53a4e764ae2d2474c6c876ca8ed3f73e2c7ef85273",
+    "licence_status": "open_licence",
+    "state": "verified",
+    "actual_bytes": 215027,
+    "actual_records": 59,
+    "actual_sha256": "d6dda6f8e4960391d5570a53a4e764ae2d2474c6c876ca8ed3f73e2c7ef85273"
+   },
+   {
+    "source_id": "openalex",
+    "path": "openalex.jsonl",
+    "declared_bytes": 186315,
+    "declared_records": 60,
+    "declared_sha256": "76a2dd478e922ea3ce6e293cb83b522318be6bf90b7430cabb01e42223cde796",
+    "licence_status": "open_licence",
+    "state": "verified",
+    "actual_bytes": 186315,
+    "actual_records": 60,
+    "actual_sha256": "76a2dd478e922ea3ce6e293cb83b522318be6bf90b7430cabb01e42223cde796"
+   },
+   {
+    "source_id": "openfda_device_510k",
+    "path": "openfda_device_510k.jsonl",
+    "declared_bytes": 257359,
+    "declared_records": 160,
+    "declared_sha256": "ed78772ac83f34a5654fe428574c7cd9ad52fb5eb8e575ee180283b7854f6f5e",
+    "licence_status": "public_domain",
+    "state": "verified",
+    "actual_bytes": 257359,
+    "actual_records": 160,
+    "actual_sha256": "ed78772ac83f34a5654fe428574c7cd9ad52fb5eb8e575ee180283b7854f6f5e"
+   },
+   {
+    "source_id": "openfda_device_classification",
+    "path": "openfda_device_classification.jsonl",
+    "declared_bytes": 93981,
+    "declared_records": 60,
+    "declared_sha256": "ae6ca41cea12582e1808fd2f077c920554ce3e57a49cddd6d159bf90cae58a84",
+    "licence_status": "public_domain",
+    "state": "verified",
+    "actual_bytes": 93981,
+    "actual_records": 60,
+    "actual_sha256": "ae6ca41cea12582e1808fd2f077c920554ce3e57a49cddd6d159bf90cae58a84"
+   },
+   {
+    "source_id": "openfda_device_pma",
+    "path": "openfda_device_pma.jsonl",
+    "declared_bytes": 101875,
+    "declared_records": 60,
+    "declared_sha256": "3c99127da4dbba507dd51d93e8b73be5321bde524427e4e350b433907ab7baca",
+    "licence_status": "public_domain",
+    "state": "verified",
+    "actual_bytes": 101875,
+    "actual_records": 60,
+    "actual_sha256": "3c99127da4dbba507dd51d93e8b73be5321bde524427e4e350b433907ab7baca"
+   },
+   {
+    "source_id": "openfda_device_registrationlisting",
+    "path": "openfda_device_registrationlisting.jsonl",
+    "declared_bytes": 120989,
+    "declared_records": 60,
+    "declared_sha256": "cf9fd709c21502e6bfea0b630de6fb051c6f15e21529eb9b0da010a4c6626523",
+    "licence_status": "public_domain",
+    "state": "verified",
+    "actual_bytes": 120989,
+    "actual_records": 60,
+    "actual_sha256": "cf9fd709c21502e6bfea0b630de6fb051c6f15e21529eb9b0da010a4c6626523"
+   },
+   {
+    "source_id": "pubmed_eutils",
+    "path": "pubmed_eutils.jsonl",
+    "declared_bytes": 135979,
+    "declared_records": 37,
+    "declared_sha256": "0274a68329fb7f6fb4511a2b8042cca92b609a9d6fd887a4800a1a64561a6192",
+    "licence_status": "open_no_explicit_licence",
+    "state": "verified",
+    "actual_bytes": 135979,
+    "actual_records": 37,
+    "actual_sha256": "0274a68329fb7f6fb4511a2b8042cca92b609a9d6fd887a4800a1a64561a6192"
+   },
+   {
+    "source_id": "semantic_scholar",
+    "path": "semantic_scholar.jsonl",
+    "declared_bytes": 131879,
+    "declared_records": 56,
+    "declared_sha256": "5cacd3056275e3e001fb0d7582bd8e49824bcfab6f1700554f24a0a6546d662a",
+    "licence_status": "open_no_explicit_licence",
+    "state": "verified",
+    "actual_bytes": 131879,
+    "actual_records": 56,
+    "actual_sha256": "5cacd3056275e3e001fb0d7582bd8e49824bcfab6f1700554f24a0a6546d662a"
+   },
+   {
+    "source_id": "uk_find_a_tender",
+    "path": "uk_find_a_tender.jsonl",
+    "declared_bytes": 215365,
+    "declared_records": 62,
+    "declared_sha256": "9e4cd0aab6a9f336b941c88702bfada80c83ca836c7127f8168ab47b411aa4f6",
+    "licence_status": "open_licence",
+    "state": "verified",
+    "actual_bytes": 215365,
+    "actual_records": 62,
+    "actual_sha256": "9e4cd0aab6a9f336b941c88702bfada80c83ca836c7127f8168ab47b411aa4f6"
+   },
+   {
+    "source_id": "uk_hmrc_trade",
+    "path": "uk_hmrc_trade.jsonl",
+    "declared_bytes": 233912,
+    "declared_records": 100,
+    "declared_sha256": "aefd7d27e06fab1b1c404b79c654fb7eedb53af2a2690decd7bd2c70743629fa",
+    "licence_status": "open_licence",
+    "state": "verified",
+    "actual_bytes": 233912,
+    "actual_records": 100,
+    "actual_sha256": "aefd7d27e06fab1b1c404b79c654fb7eedb53af2a2690decd7bd2c70743629fa"
+   },
+   {
+    "source_id": "un_comtrade",
+    "path": "un_comtrade.jsonl",
+    "declared_bytes": 1832311,
+    "declared_records": 608,
+    "declared_sha256": "5bbcf42b1ef193108783f8270d0814350bd49a2105d9486f563e67448792b33d",
+    "licence_status": "terms_restricted",
+    "state": "quarantined_absent"
+   },
+   {
+    "source_id": "usaspending",
+    "path": "usaspending.jsonl",
+    "declared_bytes": 778851,
+    "declared_records": 245,
+    "declared_sha256": "646cb2ecfc94d046d76fc1d33f1637da1e0a4a07086e556abd254dbf28096a49",
+    "licence_status": "open_no_explicit_licence",
+    "state": "verified",
+    "actual_bytes": 778851,
+    "actual_records": 245,
+    "actual_sha256": "646cb2ecfc94d046d76fc1d33f1637da1e0a4a07086e556abd254dbf28096a49"
+   }
+  ],
+  "problems": []
+ },
+ "import": {
+  "run_id": "audit_repro",
+  "seen": 5884,
+  "converted": 966,
+  "degraded": 4918,
+  "rejected": 0,
+  "evidence_inserted": 5884,
+  "evidence_noop": 0,
+  "evidence_rows_appended": 5884,
+  "repeat_observations": 62,
+  "conflicts": 188
+ },
+ "run": {
+  "run_id": "audit_repro",
+  "export_id": "horizon-2026-11-10",
+  "manifest_sha256": "eaa1cbf5e49db90ba39f938be759c5df3581f4fbbe135cfcd5455622ff6e4d4d",
+  "contract_version": "medradar.convergence.evidence.v1@1.0.0",
+  "mapping_version": "1.0.0+adapter.1",
+  "policy_id": "medradar.licence_policy.v1",
+  "started_at": "2026-11-10T19:55:21.042236Z",
+  "finished_at": "2026-11-10T19:56:00.732672Z",
+  "status": "complete",
+  "records_seen": 5884,
+  "converted": 966,
+  "degraded": 4918,
+  "rejected": 0,
+  "evidence_inserted": 5884,
+  "evidence_noop": 0,
+  "notes": ""
+ },
+ "graph": {
+  "generated_at": "2026-11-10T19:56:00.054115Z",
+  "run_id": "audit_repro",
+  "authoritative_links": {
+   "created": 672,
+   "by_relation": {
+    "SAME_WORK": 672
+   },
+   "stats": {
+    "identifiers_ted_publication_number": 93,
+    "identifiers_cfr_regulation": 41,
+    "identifiers_fda_product_code": 177,
+    "identifiers_anvisa_processo": 120,
+    "identifiers_anvisa_registro": 120,
+    "identifiers_patent_no": 2228,
+    "identifiers_pct_application_number": 610,
+    "identifiers_pct_publication_number": 500,
+    "identifiers_eurostat_comext_cell": 1400,
+    "identifiers_hs_code": 5,
+    "identifiers_patent_application_no": 228,
+    "identifiers_510k": 160,
+    "identifiers_hc_device_identifier": 49,
+    "identifiers_hc_mdall_device_id": 65,
+    "identifiers_licence_no": 60,
+    "identifiers_di": 320,
+    "identifiers_hmrc_ots_series": 100,
+    "identifiers_ocds_party_id": 33,
+    "identifiers_ocid": 16,
+    "identifiers_nct": 164,
+    "identifiers_federal_award_id": 245,
+    "identifiers_sam_uei": 145,
+    "identifiers_usaspending_generated_internal_id": 245,
+    "identifiers_doi": 69,
+    "cross_source_doi": 672,
+    "identifiers_cordis_grant_agreement_id": 60,
+    "identifiers_cordis_rcn": 60,
+    "identifiers_openalex_id": 60,
+    "identifiers_pmcid": 42,
+    "identifiers_pmid": 38,
+    "identifiers_mag": 20,
+    "identifiers_s2_corpus_id": 56,
+    "identifiers_nih_project_num": 73,
+    "identifiers_fda_fei": 26,
+    "identifiers_fda_registration_number": 26,
+    "identifiers_pma": 33,
+    "identifiers_handle": 12
+   },
+   "sample": [
+    {
+     "relation_id": "rel_3861cf7e28b5d5f2538b5c3493c84486",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_02ec9b90b16a8c425a7b3d8058c120da",
+     "right": "ev_268140381b059216ebc8641fa6936e23",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.33564/ijeast.2021.v06i07.046"
+     }
+    },
+    {
+     "relation_id": "rel_13a27a8c17ac87557e7197e63dc7f4b2",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_02ec9b90b16a8c425a7b3d8058c120da",
+     "right": "ev_8a57cebc0c634ec1b5d9c1f8baba7d28",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.33564/ijeast.2021.v06i07.046"
+     }
+    },
+    {
+     "relation_id": "rel_43f4208f8dc42aebfbffd22b6dc95fc7",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_02ec9b90b16a8c425a7b3d8058c120da",
+     "right": "ev_14bc09ba8cf02f87bcb70c4415731263",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.33564/ijeast.2021.v06i07.046"
+     }
+    },
+    {
+     "relation_id": "rel_4330c342b15f60a45b6ee953a5ea71f2",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_268140381b059216ebc8641fa6936e23",
+     "right": "ev_8a57cebc0c634ec1b5d9c1f8baba7d28",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.33564/ijeast.2021.v06i07.046"
+     }
+    },
+    {
+     "relation_id": "rel_77c7020ae0b01b00f265776d7fbc479e",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_268140381b059216ebc8641fa6936e23",
+     "right": "ev_14bc09ba8cf02f87bcb70c4415731263",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.33564/ijeast.2021.v06i07.046"
+     }
+    },
+    {
+     "relation_id": "rel_5915e77ffcd82935f625041e19c0b2ad",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_8a57cebc0c634ec1b5d9c1f8baba7d28",
+     "right": "ev_14bc09ba8cf02f87bcb70c4415731263",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.33564/ijeast.2021.v06i07.046"
+     }
+    },
+    {
+     "relation_id": "rel_01effecad81950e3fdcea704735f800d",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_9f2a069ddad46c93c5041f966ce35b05",
+     "right": "ev_a13e8b2913ecf251eda13e9c98d121d1",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_31b2bc24440e9c73edeb616a6277d1f8",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_9f2a069ddad46c93c5041f966ce35b05",
+     "right": "ev_ff1c95e9132f39d94c4dd480a2c93118",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_70cc33d93a57f1c9247dc441aef4f818",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_9f2a069ddad46c93c5041f966ce35b05",
+     "right": "ev_0434304711ef9ca32e1ec7e4955b6d91",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_c44fa956373bc080cd8d4160b16ad9e8",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_9f2a069ddad46c93c5041f966ce35b05",
+     "right": "ev_70562be6870fc94033daa59074088315",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_7f04946d05040b460313c0a45c5721d6",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_9f2a069ddad46c93c5041f966ce35b05",
+     "right": "ev_e808122be58370f423f6b2808a9125ca",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_0a0251fd4b6947a46e31ab0e24f8c4d7",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_a13e8b2913ecf251eda13e9c98d121d1",
+     "right": "ev_ff1c95e9132f39d94c4dd480a2c93118",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_d7a527e41c6cbbbccd3295dbd3150142",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_a13e8b2913ecf251eda13e9c98d121d1",
+     "right": "ev_0434304711ef9ca32e1ec7e4955b6d91",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_85e423900f2314c7783ed2c3d626fd18",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_a13e8b2913ecf251eda13e9c98d121d1",
+     "right": "ev_70562be6870fc94033daa59074088315",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_e62c64fe3196ee3d82f0d04596350a1f",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_a13e8b2913ecf251eda13e9c98d121d1",
+     "right": "ev_e808122be58370f423f6b2808a9125ca",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_23186c770915edac1e46bf03f5da10bf",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_ff1c95e9132f39d94c4dd480a2c93118",
+     "right": "ev_0434304711ef9ca32e1ec7e4955b6d91",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_646afe8ee8e0b12cb856584e8ed8a3c4",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_ff1c95e9132f39d94c4dd480a2c93118",
+     "right": "ev_70562be6870fc94033daa59074088315",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_ceafbd0e276bc70e0906c4d01d512fbf",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_ff1c95e9132f39d94c4dd480a2c93118",
+     "right": "ev_e808122be58370f423f6b2808a9125ca",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_7ac96f2b3470f59b0acc8ee31fbef6e6",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_0434304711ef9ca32e1ec7e4955b6d91",
+     "right": "ev_70562be6870fc94033daa59074088315",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    },
+    {
+     "relation_id": "rel_07cc79ce15a02298cffa216bf768eaac",
+     "relation_type": "SAME_WORK",
+     "grade": "AUTHORITATIVE_ID_MATCH",
+     "left": "ev_0434304711ef9ca32e1ec7e4955b6d91",
+     "right": "ev_e808122be58370f423f6b2808a9125ca",
+     "basis": {
+      "shared_scheme": "doi",
+      "shared_value": "10.1186/s13244-022-01259-8"
+     }
+    }
+   ]
+  },
+  "company_links": {
+   "links": 2101,
+   "ambiguous_skipped": 0,
+   "by_firm": {
+    "medtronic": 416,
+    "ge_healthcare": 183,
+    "philips": 1488,
+    "draeger": 14
+   },
+   "by_relation": {
+    "MANUFACTURED_BY": 434,
+    "APPLIED_BY": 1667
+   },
+   "sample": [
+    {
+     "evidence_id": "ev_f43c3958511079690e31ec0b9c453d10",
+     "firm": "medtronic",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "medtronic sofamor danek, inc. | medtronic sofamor danek, inc."
+     }
+    },
+    {
+     "evidence_id": "ev_60ea8f424b0d187946f36bb1c909fa4c",
+     "firm": "ge_healthcare",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "ge medical systems (china) co.,ltd. | ge medical systems (china) co.,ltd."
+     }
+    },
+    {
+     "evidence_id": "ev_bf7e6fc96427d9542cb72baa7f1b2f8c",
+     "firm": "philips",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "philips medical systems nederland b.v. | philips medical systems nederland b.v."
+     }
+    },
+    {
+     "evidence_id": "ev_e20b782e44dd087da87ca175d04e4ca7",
+     "firm": "draeger",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "drägerwerk ag & co. kgaa | drägerwerk ag & co. kgaa"
+     }
+    },
+    {
+     "evidence_id": "ev_8cc7479cac8b9ce0a4ca75fd4120cfd8",
+     "firm": "medtronic",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "medtronic sofamor danek, inc. | medtronic sofamor danek, inc."
+     }
+    },
+    {
+     "evidence_id": "ev_fc8e10ac57ee10d047780a4c9194f98a",
+     "firm": "ge_healthcare",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "ge medical systems israel, functional imaging | ge medical systems israel, functional imaging"
+     }
+    },
+    {
+     "evidence_id": "ev_5c9d7667d170027a40c4589b79213c1c",
+     "firm": "philips",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "philips medical systems nederland b.v. | philips medical systems nederland b.v."
+     }
+    },
+    {
+     "evidence_id": "ev_6575c916682c2be53e88c3a463f17d37",
+     "firm": "draeger",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "drägerwerk ag & co. kgaa | drägerwerk ag & co. kgaa"
+     }
+    },
+    {
+     "evidence_id": "ev_aab2d51bd63e15b82da7c34a9b4125c8",
+     "firm": "medtronic",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "medtronic sofamor danek, inc. | medtronic sofamor danek, inc."
+     }
+    },
+    {
+     "evidence_id": "ev_f56111358a30fe2478101de84d47fddb",
+     "firm": "ge_healthcare",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "change healthcare canada company | change healthcare canada company"
+     }
+    },
+    {
+     "evidence_id": "ev_53dfdda4659a4d2ab762c735375b8a2b",
+     "firm": "philips",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "philips medical systems dmc gmbh | philips medical systems dmc gmbh"
+     }
+    },
+    {
+     "evidence_id": "ev_89115c560da51c0f9f6f38e028701bb2",
+     "firm": "draeger",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "drägerwerk ag & co. kgaa | drägerwerk ag & co. kgaa"
+     }
+    },
+    {
+     "evidence_id": "ev_be89da1eabcb7b82adfc111d2e04b1e3",
+     "firm": "medtronic",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "medtronic sofamor danek, inc. | medtronic sofamor danek, inc."
+     }
+    },
+    {
+     "evidence_id": "ev_f5ba3a0e8ee37b512e0fb52df683f3a3",
+     "firm": "ge_healthcare",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "ge medical systems (china) co.,ltd. | ge medical systems (china) co.,ltd."
+     }
+    },
+    {
+     "evidence_id": "ev_1832137dfea93dd4a26200340ae96e4b",
+     "firm": "philips",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "philips healthcare (suzhou) co., ltd. | philips healthcare (suzhou) co., ltd."
+     }
+    },
+    {
+     "evidence_id": "ev_3461a5f911d1cd6519caff1b8265dea5",
+     "firm": "medtronic",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "medtronic sofamor danek, inc. | medtronic sofamor danek, inc."
+     }
+    },
+    {
+     "evidence_id": "ev_350f660361dbb7901066f29d889ddb8d",
+     "firm": "ge_healthcare",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "ge medical systems (china) co.,ltd. | ge medical systems (china) co.,ltd."
+     }
+    },
+    {
+     "evidence_id": "ev_f01cb86bca3c522e8d065d4ab46d59fb",
+     "firm": "philips",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "philips healthcare (suzhou) co., ltd. | philips healthcare (suzhou) co., ltd."
+     }
+    },
+    {
+     "evidence_id": "ev_1a0d12892c69a6620106ef7a6a6336df",
+     "firm": "medtronic",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "medtronic sofamor danek, inc. | medtronic sofamor danek, inc."
+     }
+    },
+    {
+     "evidence_id": "ev_f6f7199e01d3271c7b591a97a46b9619",
+     "firm": "ge_healthcare",
+     "relation_type": "MANUFACTURED_BY",
+     "grade": "SOURCE_ASSERTED_RELATION",
+     "confidence": 0.9,
+     "basis": {
+      "matched_text": "ge healthcare finland oy | ge healthcare finland oy"
+     }
+    }
+   ]
+  },
+  "atlas_relations_total": 672,
+  "atlas_relations_by_status": {
+   "CONFIRMED": 672
+  },
+  "atlas_relations_by_type": {
+   "SAME_WORK": 672
+  }
+ },
+ "dedupe": {
+  "records_total": 5884,
+  "layers": {
+   "record_identity": {
+    "distinct": 5822,
+    "duplicates": 62
+   },
+   "entity_identity": {
+    "records_with_authoritative_key": 3476,
+    "records_without_authoritative_key": 2408,
+    "distinct_entities": 3041,
+    "records_collapsed_into_shared_entity": 435,
+    "groups": {
+     "licence_no:14762": 14,
+     "licence_no:79943": 3,
+     "licence_no:8624": 2,
+     "licence_no:87678": 2,
+     "licence_no:82282": 11,
+     "licence_no:85710": 20,
+     "licence_no:93379": 4,
+     "licence_no:13958": 2,
+     "licence_no:71771": 2,
+     "licence_no:71844": 2,
+     "licence_no:72137": 2,
+     "licence_no:76719": 4,
+     "licence_no:95260": 44,
+     "licence_no:96476": 2,
+     "licence_no:96478": 9,
+     "licence_no:96672": 2,
+     "licence_no:96828": 6,
+     "doi:10.1016/j.yrtph.2021.104987": 6,
+     "doi:10.1016/j.yrtph.2021.105004": 6,
+     "doi:10.1111/jace.18041": 4,
+     "doi:10.1016/s0378-4274(21)00463-x": 4,
+     "doi:10.1016/j.mpmed.2021.08.009": 3,
+     "doi:10.1253/circj.cj-21-0491": 6,
+     "doi:10.33564/ijeast.2021.v06i07.046": 4,
+     "doi:10.1161/circ.144.suppl_1.13385": 3,
+     "doi:10.1016/j.yrtph.2021.105096": 6,
+     "doi:10.31478/202201b": 6,
+     "doi:10.1115/1.4053565": 3,
+     "doi:10.1161/jaha.121.023848": 6,
+     "doi:10.2345/0899-8205-54.4.311": 6,
+     "doi:10.2345/0899-8205-54.4.291": 6,
+     "doi:10.1097/rli.0000000000000673": 6,
+     "doi:10.1016/j.ejvs.2021.11.001": 6,
+     "doi:10.1007/s00535-022-01932-1": 6,
+     "doi:10.1002/bit.27335": 6,
+     "doi:10.1111/jch.13851": 6,
+     "doi:10.1097/sla.0000000000003958": 6,
+     "doi:10.1109/icoei48184.2020.9142931": 4,
+     "doi:10.1093/jbi/wbaa070": 6,
+     "doi:10.1002/jmri.27492": 6,
+     "doi:10.2967/jnumed.120.261881": 6,
+     "doi:10.1021/acsami.9b21808": 6,
+     "doi:10.1145/3385032.3385047": 4,
+     "doi:10.1016/j.arbres.2020.05.032": 6,
+     "doi:10.1007/978-3-030-54403-4": 4,
+     "doi:10.1016/j.arbr.2021.02.001": 4,
+     "doi:10.1002/mp.14881": 6,
+     "doi:10.1212/wnl.96.15_supplement.4100": 4,
+     "doi:10.1109/rams48097.2021.9605713": 4,
+     "doi:10.1109/ccta48906.2021.9659125": 4,
+     "doi:10.1109/ius52206.2021.9593683": 4,
+     "doi:10.1007/978-3-030-83864-5_33": 4,
+     "doi:10.1080/17434440.2022.2054334": 6,
+     "doi:10.2196/43905": 6,
+     "doi:10.1021/acssensors.0c00712": 6,
+     "doi:10.1117/12.2618126": 4,
+     "doi:10.1007/978-3-662-59715-6_42": 3,
+     "doi:10.1515/9783110591026-005": 4,
+     "doi:10.3390/polym12051033": 6,
+     "doi:10.1097/ccm.0000000000004892": 6,
+     "doi:10.4414/smw.2021.20515": 6,
+     "doi:10.25368/2021.11": 4,
+     "doi:10.3389/fped.2021.722497": 6,
+     "doi:10.12968/s2514-9768(22)90086-9": 4,
+     "doi:10.1093/ageing/afab278": 6,
+     "doi:10.1364/boe.469747": 6,
+     "doi:10.2991/artres.k.201209.041": 4,
+     "doi:10.1109/mems51670.2022.9699652": 4,
+     "doi:10.1136/bmjopen-2022-064581": 6,
+     "doi:10.1186/s13244-022-01259-8": 6,
+     "doi:10.21037/atm-22-3491": 6,
+     "doi:10.21595/jve.2022.22479": 4,
+     "doi:10.1148/radiol.212257": 6,
+     "doi:10.1177/1358863x221117608": 6,
+     "doi:10.21037/atm-22-3767": 6,
+     "doi:10.21037/atm-22-4589": 6,
+     "doi:10.3969/j.issn.1671-7104.2022.04.023": 4,
+     "pma:P010031": 3,
+     "pma:P110023": 2,
+     "pma:P970004": 2,
+     "pma:P980016": 4,
+     "pma:P090013": 3,
+     "pma:P960009": 3,
+     "pma:P080006": 2,
+     "pma:P980035": 3,
+     "pma:P790017": 2,
+     "pma:P860004": 3,
+     "pma:P100021": 3,
+     "pma:P840001": 2,
+     "pma:P080025": 3,
+     "pma:P960042": 4,
+     "pma:P160028": 2,
+     "pma:P160029": 2,
+     "ocid:ocds-h6vhtk-06b5d1": 16,
+     "ocid:ocds-h6vhtk-066798": 28,
+     "ocid:ocds-h6vhtk-06d797": 5
+    }
+   },
+   "event_identity": {
+    "distinct_events_with_party": 5822,
+    "shared_event_groups": {}
+   },
+   "relation_identity": {
+    "distinct_relation_rows": 672
+   }
+  },
+  "cross_source_payload_duplicates": 0,
+  "cross_source_payload_duplicate_detail": {},
+  "entity_key_pair_comparisons": 2576,
+  "independent_pairs_same_key": 0,
+  "patent_families": {
+   "distinct_families": 1094,
+   "publications_in_families": 2203,
+   "largest_families": [
+    [
+     "family:NULL",
+     1108
+    ],
+    [
+     "family:{'country': 'US', 'country_name': 'United States of America', 'date': '1975-04-21', 'kind': 'INTERNATIONAL', 'number': '569,842'}",
+     2
+    ],
+    [
+     "family:{'country': 'US', 'country_name': 'United States of America', 'date': '1985-06-20', 'kind': 'INTERNATIONAL', 'number': '746,694'}",
+     2
+    ],
+    [
+     "family:{'country': 'NL', 'country_name': 'Netherlands (Kingdom of the)', 'date': '1976-01-16', 'kind': 'INTERNATIONAL', 'number': '7600423'}",
+     1
+    ],
+    [
+     "family:{'country': 'NL', 'country_name': 'Netherlands (Kingdom of the)', 'date': '1976-07-07', 'kind': 'INTERNATIONAL', 'number': '7607473'}",
+     1
+    ],
+    [
+     "family:{'country': 'NL', 'country_name': 'Netherlands (Kingdom of the)', 'date': '1976-09-22', 'kind': 'INTERNATIONAL', 'number': '7610507'}",
+     1
+    ],
+    [
+     "family:{'country': 'NL', 'country_name': 'Netherlands (Kingdom of the)', 'date': '1976-09-03', 'kind': 'INTERNATIONAL', 'number': '7609817'}",
+     1
+    ],
+    [
+     "family:{'country': 'NL', 'country_name': 'Netherlands (Kingdom of the)', 'date': '1976-07-05', 'kind': 'INTERNATIONAL', 'number': '7607381'}",
+     1
+    ],
+    [
+     "family:{'country': 'NL', 'country_name': 'Netherlands (Kingdom of the)', 'date': '1976-08-05', 'kind': 'INTERNATIONAL', 'number': '7608688'}",
+     1
+    ],
+    [
+     "family:{'country': 'NL', 'country_name': 'Netherlands (Kingdom of the)', 'date': '1976-04-27', 'kind': 'INTERNATIONAL', 'number': '7604 446'}",
+     1
+    ]
+   ]
+  }
+ },
+ "stats": {
+  "db": "research/convergence/staging/convergence.sqlite",
+  "schema_version": 1,
+  "evidence_ids": 5822,
+  "evidence_versions": 5884,
+  "companies": 0,
+  "manufacturers": 0,
+  "devices": 0,
+  "device_identifiers": 0,
+  "relations_total": 672,
+  "relations_confirmed": 672,
+  "relations_candidate": 0,
+  "relations_rejected": 0,
+  "relations_unknown": 0,
+  "relations_revoked": 0,
+  "relations_by_type": {
+   "SAME_WORK": 672
+  },
+  "relations_by_status": {
+   "CONFIRMED": 672
+  },
+  "evidence_by_source": {
+   "accessgudid": 320,
+   "brazil_anvisa": 120,
+   "canada_mdall": 174,
+   "cipo_canada": 2000,
+   "clinicaltrials_gov": 164,
+   "crossref": 59,
+   "epo_publication_server": 228,
+   "eu_cordis": 60,
+   "eu_ted": 299,
+   "europepmc": 37,
+   "eurostat_comext": 1400,
+   "nih_reporter": 64,
+   "openaire": 58,
+   "openalex": 60,
+   "openfda_device_510k": 160,
+   "openfda_device_classification": 60,
+   "openfda_device_pma": 33,
+   "openfda_device_registrationlisting": 26,
+   "pubmed_eutils": 37,
+   "semantic_scholar": 56,
+   "uk_find_a_tender": 62,
+   "uk_hmrc_trade": 100,
+   "usaspending": 245
+  },
+  "quality_findings": 0,
+  "collection_runs": 0,
+  "request_log": 0,
+  "raw_objects": 0,
+  "prospective_candidates": 0,
+  "conv_runs": 1,
+  "conv_evidence_inserted": 5884,
+  "conv_rejections": 0,
+  "conv_conflicts": 60,
+  "conv_relation_candidates": 2773,
+  "conv_by_source": {
+   "cipo_canada": 2000,
+   "eurostat_comext": 1400,
+   "accessgudid": 320,
+   "eu_ted": 299,
+   "usaspending": 245,
+   "epo_publication_server": 228,
+   "canada_mdall": 174,
+   "clinicaltrials_gov": 164,
+   "openfda_device_510k": 160,
+   "brazil_anvisa": 120,
+   "uk_hmrc_trade": 100,
+   "nih_reporter": 64,
+   "uk_find_a_tender": 62,
+   "eu_cordis": 60,
+   "openalex": 60,
+   "openfda_device_classification": 60,
+   "openfda_device_pma": 60,
+   "openfda_device_registrationlisting": 60,
+   "crossref": 59,
+   "openaire": 59,
+   "semantic_scholar": 56,
+   "europepmc": 37,
+   "pubmed_eutils": 37
+  },
+  "conv_rejection_reasons": {},
+  "conv_identity_status": {
+   "not_attempted": 5884
+  },
+  "conv_licence_status": {
+   "open_licence": 3892,
+   "open_no_explicit_licence": 1104,
+   "public_domain": 888
+  }
+ }
+}

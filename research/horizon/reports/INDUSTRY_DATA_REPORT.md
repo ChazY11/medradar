@@ -81,15 +81,23 @@ Sample of the series, to show the data is real and sane (HS 9018, imports):
 
 | year | China (USD bn, Comtrade) | UK (GBP bn, HMRC) | Germany (EUR bn, Comext) |
 |---|---|---|---|
-| 2015 | 6.07 | 2.50 | — |
-| 2019 | 9.84 | 3.08 | — |
-| 2021 | 12.62 | 3.02 | — |
-| 2023 | 11.69 | 4.67 | 12.72 |
-| 2024 | 11.22 | 4.65 | — |
+| 2015 | withheld | 2.50 | — |
+| 2019 | withheld | 3.08 | — |
+| 2021 | withheld | 3.02 | — |
+| 2023 | withheld | 4.67 | 12.72 |
+| 2024 | withheld | 4.65 | — |
 
-(the full series is in `experiments/industry/evidence/*.jsonl`; `—` means the
-cell was not printed here, not that it is absent — except Germany 2023 which is
-printed and audited below.)
+> **Redacted at CONVERGENCE integration.** The China column was derived from UN
+> Comtrade. Its terms prohibit redistribution and publication of any material
+> without prior written permission, and that restriction covers derived values as
+> well as the payload. The HMRC and Comext columns remain because their licences
+> permit redistribution with attribution. The redaction is recorded in
+> `research/convergence/licence/derived_value_quarantine.json`.
+
+(the full series lives in `experiments/industry/evidence/*.jsonl`, which the
+CONVERGENCE integration **quarantines** because UN Comtrade prohibits
+redistribution; the Comext and HMRC series remain available under their open
+licences. `—` means the cell was not printed here, not that it is absent.)
 
 ### 2.2 HS coverage table — what each code covers and what it wrongly sweeps in
 
@@ -124,8 +132,12 @@ each record as `attributes.hs_scope_note`.
 Same cell, two independent compilations — Germany, HS 9018, imports, 2023:
 
 * Comext: **€12,719,356,730** (value in euro)
-* Comtrade: **US$13,359,445,208.52** (primary value, USD)
-* implied USD/EUR = 1.0504, vs a 2023 annual average of roughly 1.08.
+* Comtrade: **withheld** — the exact value is not published here (UN Comtrade §5).
+* implied USD/EUR: withheld, because it is computed from the withheld value.
+
+> The reconciliation method stands; only the restricted input and the rate derived
+> from it are omitted. The Comext side is published in full because its licence
+> permits it.
 
 They are close but not equal — as expected, because they are different
 compilations with different revision and rounding policies. The point of the

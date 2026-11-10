@@ -102,20 +102,20 @@ layer is reliable; it is the *date and title* layers that disagree.
 ## EXP-H2 — cross-national product identity quality
 
 **Files:** `experiments/regulatory/EXP_H2_SELECTION_RULE.md` (written before any pair
-was examined), `EXP_H2_PAIRS.jsonl` (712 pairs), `EXP_H2_SUMMARY.json`,
+was examined), `EXP_H2_PAIRS.jsonl` (726 pairs), `EXP_H2_SUMMARY.json`,
 `exp_h2_identity.py`. Inputs: 320 FDA GUDID records × 174 Health Canada MDALL records.
 
 Signals, in increasing strength:
 **S1** exact name · **S2** shared model token · **S3** same firm ·
 **S4** shared official identifier · **S5** multi-field conjunction.
 
-### Result: 712 pairs, 0 CONFIRMED
+### Result: 726 pairs, 0 CONFIRMED
 
 | verdict | n |
 |---|---|
 | `CONFIRMED` | **0** |
-| `REJECTED` | 387 |
-| `UNKNOWN` | 325 |
+| `REJECTED` | 0 |
+| `UNKNOWN` | 726 |
 
 **`S4_official_identifier_fired: 0`.** GUDID and MDALL share **no identifier
 namespace** — UDI-DI versus Health Canada licence / device / identifier numbers. There
@@ -125,25 +125,26 @@ Signal sufficiency table (the deliverable, not a footnote):
 
 | signal combination | pairs | CONFIRMED | REJECTED | UNKNOWN | reaches CONFIRMED? |
 |---|---|---|---|---|---|
-| S1 + S2 + S3 | — | 0 | — | — | **no** |
-| S2 + S3 + S5 | 5 | 0 | 5 | 0 | no |
-| S2 + S3 | 93 | 0 | 35 | 58 | no |
-| S2 + S5 | 156 | 0 | 156 | 0 | no |
-| S2 (shared model token) | 445 fired | 0 | 387 | 58 | no |
-| S3 (same firm) | 365 fired | 0 | 40 | 325 | no |
+| S3 + S5 | 19 | 0 | 0 | 19 | no |
+| S3 | 689 | 0 | 0 | 689 | no |
+| S5 | 18 | 0 | 0 | 18 | no |
+| S2 (shared model token) | 0 fired | 0 | 0 | 0 | no |
+| S3 (same firm) | 708 fired | 0 | 0 | 708 | no |
 
-Hard negatives: **12 pairs** constructed by the stated rule
-`HN4_subsidiary_vs_parent`; all 12 land in `UNKNOWN`, which is the correct outcome —
-the point of a hard negative is that it must not be silently matched.
+Hard negatives: **26 pairs** constructed by the stated rules
+(`HN3_same_family_different_device` 14, `HN4_subsidiary_vs_parent` 12); all 26 land in
+`UNKNOWN`, which is the correct outcome — the point of a hard negative is that it must
+not be silently matched.
 
 ### What this means for MedRadar
 
 1. **Cross-national device identity cannot be established from official records
-   alone.** Agreement on name, model token and firm is *common* and still only ever
-   yields `UNKNOWN`. Any pipeline that promotes S1+S2+S3 to a match is asserting
-   identity it cannot prove.
+   alone.** Agreement on name tokens and firm is *common* (S5 fires on 37 pairs, S3 on
+   708) but model-token agreement never occurs, and even the strongest evidence still
+   only ever yields `UNKNOWN`. Any pipeline that promotes name/firm agreement to a
+   match is asserting identity it cannot prove.
 2. **The rule held.** A name-matching "accuracy" number would have looked impressive
-   here and would have been meaningless: 445 pairs share a model token, 0 are
+   here and would have been meaningless: no pair shares a model token, and none is
    provable.
 3. **The blocking design question for ATLAS-001** is therefore not "which
    fuzzy-matching algorithm" but "what non-registry evidence (PCT priority, UDI in
