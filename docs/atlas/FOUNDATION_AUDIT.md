@@ -22,7 +22,7 @@ secret/large-file scan of the tracked tree. No PR was merged and no branch was r
 | Remote branches | 33 |
 | Open pull requests | 17 (16 drafts) |
 | Merged pull requests | 10 |
-| Offline test suite on `main` | 1,122 tests, exit 0 (no failures) |
+| Offline test suite on `main` | 1,074 tests, exit 0 (no failures); branch with ATLAS: 1,128 |
 
 Code distribution on `main`:
 
@@ -180,7 +180,29 @@ All six have tests or a verification check.
 
 ---
 
-*Delivered as Draft PR #28 (branch `foundation/atlas-001`, commit `c015a97`).*
+*Delivered as Draft PR #28 (branch `foundation/atlas-001`; feature commit `c015a97`, followed by independent-audit correction commits on the same PR).*
 
 *Every number in this audit is reproducible: `git rev-parse origin/main`, `gh pr list`,
 `python -m pytest -q`, and the audit commands recorded in the ATLAS-001 PR description.*
+
+
+---
+
+## 9. Post-audit corrections (independent review changed the deliverable)
+
+An independent, read-only reviewer was asked to compare the PR's claims with the artifacts. It
+found real defects; they were fixed and the pipeline was re-run rather than argued with.
+
+| Finding | Evidence from the review | Correction |
+|---|---|---|
+| `request_log` was empty, so quality checks could not see HTTP failures | 0 rows vs "every request is logged" in the report | every stage now flushes the ledger into `request_log`; verifier checks run counters are covered |
+| 33 baseline "hard negative" false positives were placeholder collisions | all had `brand_name = "NA"` | placeholder labels are erased in `DeviceView`; regression test; real hard-negative count is 0 and is reported as 0 |
+| verifier check `revoked >= 0` could never fail | tautological assertion | replaced with revocation-reason/event and request-log invariants |
+| canonical key used a package DI | could mis-dedupe the same device | primary DI preferred; regression test |
+| sample lacked the hashes the docs promised | examples had no `content_hash` | hashes and source URLs added to examples and sample |
+| docs cited 1,122 tests, 33 FPs, "three firms", wrong request totals | counted from stale intermediates | all numbers regenerated from the final database; this report and `QUALITY_REPORT.md`/`RESEARCH_VALIDATION.md` updated |
+| `atlas_sources.json` mixed 5,477 bare and 5,512 normalised GTIN counts | two different measurements | both stated explicitly |
+
+The final run after these corrections: **7,254 evidence ids, 934 confirmed cross-market device
+identities, 69 candidates, 1,087 rejections, 54 quality findings (0 errors), 16/16 verifier
+checks.**

@@ -126,6 +126,17 @@ class DeviceDecisionTests(unittest.TestCase):
         self.assertEqual(decision.relation_type, "RELATED_TECHNOLOGY")
         self.assertEqual(decision.status, "CANDIDATE")
 
+    def test_placeholder_labels_do_not_collide(self) -> None:
+        """GUDID writes 'NA' for missing brands; two NAs are not the same brand."""
+        left = view(ref="a", firm_key="medtronic", brand="NA", model="NA")
+        right = view(ref="b", firm_key="philips", brand="NA", model="NA")
+        self.assertEqual(left.normalized_brand, "")
+        self.assertEqual(left.brand_tokens, ())
+        decision = compare_devices(left, right)
+        self.assertNotEqual(decision.relation_type, "UNRELATED")
+        self.assertEqual(decision.relation_type, "UNKNOWN")
+        self.assertFalse(baseline_name_match(left, right))
+
     def test_shared_brand_token_across_firms_is_only_a_candidate(self) -> None:
         left = view(ref="a", firm_key="medtronic", brand="CARDIAC CONTROL SYSTEM")
         right = view(ref="b", firm_key="philips", brand="CARDIAC MONITOR")

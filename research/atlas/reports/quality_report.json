@@ -14,13 +14,14 @@
     "by_check": {
       "duplicate_cross_source_expected": 1,
       "duplicate_same_source": 50,
-      "missing_company_link": 2
+      "missing_company_link": 2,
+      "request_no_match": 1
     },
     "by_severity": {
-      "info": 3,
+      "info": 4,
       "warning": 50
     },
-    "total": 53
+    "total": 54
   },
   "findings": [
     {
@@ -534,7 +535,7 @@
     },
     {
       "check_id": "duplicate_cross_source_expected",
-      "detail": "946 canonical keys appear in more than one source; these are deduplicated upstream observations, not independent corroboration",
+      "detail": "957 canonical keys appear in more than one source; these are deduplicated upstream observations, not independent corroboration",
       "evidence_ids": [],
       "severity": "info",
       "subject": "canonical_key"
@@ -552,6 +553,13 @@
       "evidence_ids": [],
       "severity": "info",
       "subject": "openfda_device_udi"
+    },
+    {
+      "check_id": "request_no_match",
+      "detail": "6 requests from openfda_device_udi returned 404 (no matching record); recorded as no-match, not as zero events and not as a failure",
+      "evidence_ids": [],
+      "severity": "info",
+      "subject": "bridge_20261110T174101Z"
     }
   ],
   "note": "A failed collection produces an error finding; it is never reported as zero events.",

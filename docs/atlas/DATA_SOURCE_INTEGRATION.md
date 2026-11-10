@@ -10,10 +10,10 @@ listed in a registry is not an integrated source.
 
 | Source | Access basis | Verified on | Records used | Identity keys | Time mapping |
 |---|---|---|---|---|---|
-| **openFDA Device UDI** | public API, no key, 240 req/min | 2026-11-10 | 510 sampled across 5 firms (of 88,142 / 518 / 4,241 / 316 / 1,602 total) | `identifiers[].id` (DI), `labeler_duns_number`, `public_device_record_key` | `publish_date` → `source_public_at` (day); `public_version_date` explicitly **not** a clock |
+| **openFDA Device UDI** | public API, no key, 240 req/min | 2026-11-10 | 500 company-page records across 5 firms (+8 resolved during the bridge) from 88,142 / 518 / 4,241 / 316 / 1,602 total | `identifiers[].id` (DI), `labeler_duns_number`, `public_device_record_key` | `publish_date` → `source_public_at` (day); `public_version_date` explicitly **not** a clock |
 | **AccessGUDID v3 lookup** | public API, no key | 2026-11-10 | 12 re-reads of UDI records | `gudid.device.identifiers.identifier[].deviceId` | `devicePublishDate` → public (day) |
 | **openFDA Device 510(k)** | public API, no key | 2026-11-10 | 250 clearances | `k_number`, `product_code` | `decision_date` → event; public **derived** (FDA publishes no per-record publication date) |
-| **Health Canada MDALL** | public JSON API + open-data release, no key | 2026-11-10 | 219,970,233-byte identifier table; 5,512 GTIN-shaped rows retained; 40 licences detailed | `original_licence_no`, `device_id`, `device_identifier` | `first_licence_dt` / `first_licence_status_dt` → event; public **derived** |
+| **Health Canada MDALL** | public JSON API + open-data release, no key | 2026-11-10 | 219,970,233-byte identifier table (downloaded once, cached); 5,512 GTIN-shaped rows retained; 40 licences detailed | `original_licence_no`, `device_id`, `device_identifier` | `first_licence_dt` / `first_licence_status_dt` → event; public **derived** |
 
 ### Measured access facts (these shaped the connectors)
 
@@ -31,9 +31,10 @@ listed in a registry is not an integrated source.
 5. **The GTIN subset bridges cleanly.** 1,200 deterministically sampled GTIN-shaped MDALL rows
    resolved to 942 openFDA UDI records; 934 produced a device pair (8 resolved records were
    package-level DIs not present in the Canadian identifier table).
-6. **A failed openFDA request is a 404, not an empty page.** A wrong company string
-   (`"Medtronic plc"`) returns 404; the pilot records it as a coverage error instead of
-   reporting zero devices.
+6. **openFDA uses 404 for both a wrong query and a valid query with no match.** Six
+   identifier-bridge batches returned 404 (no matching UDI) and are recorded as
+   `request_no_match` info, not as failures or as zero events. A wrong company string also
+   returns 404 and is recorded as a coverage error.
 
 ---
 

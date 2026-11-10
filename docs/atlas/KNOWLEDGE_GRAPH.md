@@ -104,7 +104,7 @@ The test `test_revoked_relation_keeps_history` pins this behaviour.
 
 ## 6. Scale and traversal
 
-Current pilot: 5,543 devices, 16,377 identifier rows, 2,217 relations. Queries are indexed on
+Current pilot: 5,537 devices, 16,373 identifier rows, 2,284 identity decisions and 6,326 source-declared graph relations (8,610 relation rows in total). Queries are indexed on
 `device_identifiers(scheme,value)`, `entity_relations(from_ref)`, `(to_ref)`, `(relation_type)`.
 Bounded multi-hop traversal is done in application code (`evidence_path`), not recursive SQL,
 so a missing edge produces a reported gap instead of a silently empty join.

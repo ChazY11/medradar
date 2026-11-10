@@ -168,13 +168,25 @@ def check_collection_completeness(store: AtlasStore) -> list[Finding]:
                     f"{row['connector_id']} status={row['status']} requests={row['requests']}"
                     f" records={row['records']} notes={row['notes']}")
         )
+    # HTTP 404 from a search endpoint means "no match", not a transport failure;
+    # it is reported separately so a no-match cannot masquerade as an outage and
+    # an outage cannot hide behind "no records".  5xx / NULL statuses are failures.
     for row in store.query(
-        "SELECT run_id, COUNT(*) AS n FROM request_log WHERE status IS NULL OR status>=400"
-        " GROUP BY run_id"
+        "SELECT run_id, COUNT(*) AS n FROM request_log"
+        " WHERE status IS NULL OR status>=500 GROUP BY run_id"
     ):
         out.append(
             Finding("request_failures", "warning", str(row["run_id"]),
                     f"{row['n']} failed requests recorded in this run")
+        )
+    for row in store.query(
+        "SELECT run_id, source_id, COUNT(*) AS n FROM request_log WHERE status=404"
+        " GROUP BY run_id, source_id"
+    ):
+        out.append(
+            Finding("request_no_match", "info", str(row["run_id"]),
+                    f"{row['n']} requests from {row['source_id']} returned 404 (no matching record); "
+                    "recorded as no-match, not as zero events and not as a failure")
         )
     for row in store.query(
         "SELECT run_id, source_id, records, requests FROM collection_runs WHERE status='ok'"

@@ -39,6 +39,8 @@ def _evidence_of(store: AtlasStore, evidence_id: str) -> dict[str, Any] | None:
         "source_record_id": record["source_record_id"],
         "source_url": record["source_url"],
         "evidence_type": record["evidence_type"],
+        "source_content_hash": record["source_content_hash"],
+        "normalized_content_hash": record["normalized_content_hash"],
         "time": record["time"],
         "licence_status": record["licence_status"],
         "identity_resolution_status": record["identity_resolution_status"],

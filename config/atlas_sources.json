@@ -92,7 +92,7 @@
       "rate_limit": "not published; some listing endpoints return the whole table (21-220 MB), so ATLAS uses id-keyed lookups and one bounded stream",
       "verified_at": "2026-11-10",
       "verified_status": "VERIFIED_API",
-      "known_limitation": "device_identifier is usually a manufacturer model/catalogue number, not a UDI-DI: 5477 of 1,673,926 active rows (0.33%) look like GTIN-14. Cross-market UDI linkage is therefore available only for the UDI-adopting subset."
+      "known_limitation": "device_identifier is usually a manufacturer model/catalogue number, not a UDI-DI: 5,477 of 1,673,926 active rows are bare GTIN-14 (5,512 after separator normalisation; 0.33%). Cross-market UDI linkage is therefore available only for the UDI-adopting subset."
     },
     {
       "source_id": "openalex",

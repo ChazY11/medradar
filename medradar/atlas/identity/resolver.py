@@ -37,7 +37,7 @@ import difflib
 from dataclasses import dataclass, field
 from typing import Any, Mapping
 
-from .normalize import name_tokens, normalize_name
+from .normalize import is_placeholder_label, name_tokens, normalize_name
 
 SAME_DEVICE_IDENTITY = "SAME_DEVICE_IDENTITY"
 SAME_MODEL = "SAME_MODEL"
@@ -95,15 +95,19 @@ class DeviceView:
 
     @property
     def normalized_brand(self) -> str:
-        return normalize_name(self.brand)
+        normalized = normalize_name(self.brand)
+        return "" if is_placeholder_label(normalized) else normalized
 
     @property
     def brand_tokens(self) -> tuple[str, ...]:
-        return name_tokens(self.brand)
+        if not self.normalized_brand:
+            return ()
+        return tuple(t for t in self.normalized_brand.split() if t)
 
     @property
     def normalized_model(self) -> str:
-        return normalize_name(self.model)
+        normalized = normalize_name(self.model)
+        return "" if is_placeholder_label(normalized) else normalized
 
     def has_identity_anchor(self) -> bool:
         return bool(self.di) or any(
@@ -297,8 +301,8 @@ def compare_devices(left: DeviceView, right: DeviceView) -> MatchDecision:
 
 def name_similarity(left: DeviceView, right: DeviceView) -> float:
     """Naive label similarity used by the *baseline*, not by identity logic."""
-    a = " ".join(x for x in (left.brand, left.model) if x).lower()
-    b = " ".join(x for x in (right.brand, right.model) if x).lower()
+    a = " ".join(x for x in (left.normalized_brand, left.normalized_model) if x)
+    b = " ".join(x for x in (right.normalized_brand, right.normalized_model) if x)
     if not a or not b:
         return 0.0
     return difflib.SequenceMatcher(None, a, b).ratio()

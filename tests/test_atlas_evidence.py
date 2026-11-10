@@ -91,6 +91,15 @@ class ContractTests(unittest.TestCase):
         )
         self.assertEqual(key, "di:08717648200274")
 
+    def test_canonical_key_prefers_primary_di_over_package_di(self) -> None:
+        key = ev.canonical_key(
+            [
+                {"scheme": "di", "value": "10628176737017", "is_primary": False},
+                {"scheme": "di", "value": "00628176737010", "is_primary": True},
+            ]
+        )
+        self.assertEqual(key, "di:00628176737010")
+
     def test_records_sharing_canonical_key_are_not_independent(self) -> None:
         a = record(source_id="openfda_device_udi")
         b = record(source_id="accessgudid")

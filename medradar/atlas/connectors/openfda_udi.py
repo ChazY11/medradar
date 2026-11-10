@@ -143,21 +143,42 @@ class OpenFdaUdiConnector(Connector):
         return out
 
 
-def lookup_identifiers(client: Any, dis: Iterable[str], *, batch: int = 25) -> list[dict[str, Any]]:
-    """Resolve many DIs in as few requests as possible (identity bridge helper)."""
+def lookup_identifiers(
+    client: Any,
+    dis: Iterable[str],
+    *,
+    batch: int = 25,
+    stats: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    """Resolve many DIs in as few requests as possible (identity bridge helper).
+
+    openFDA returns **404** when a valid search matches nothing.  That is a
+    no-match result, not a transport failure, so it is counted separately from
+    real errors instead of being silently treated as "no records exist".
+    """
     ids = [d for d in dis if d]
     found: list[dict[str, Any]] = []
+    counts = stats if stats is not None else {}
+    counts.setdefault("batches", 0)
+    counts.setdefault("no_match_batches", 0)
+    counts.setdefault("failed_batches", 0)
     for start in range(0, len(ids), batch):
         chunk = ids[start : start + batch]
         search = "identifiers.id:(" + " OR ".join(chunk) + ")"
         result = client.get(
             ENDPOINT, params={"search": search, "limit": min(100, len(chunk) * 2)}
         )
+        counts["batches"] += 1
+        if result.status == 404:
+            counts["no_match_batches"] += 1
+            continue
         if not result.ok:
+            counts["failed_batches"] += 1
             continue
         try:
             payload = result.json()
         except ValueError:
+            counts["failed_batches"] += 1
             continue
         found.extend(payload.get("results", []) or [])
     return found

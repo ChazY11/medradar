@@ -1,78 +1,7 @@
 {
   "baseline": {
-    "baseline_false_positive_examples": [
-      {
-        "baseline_says_match": true,
-        "fda_brand": "NA",
-        "identity_says": "UNRELATED",
-        "mdall_identifier": "BB9D73R",
-        "name_similarity": 0.4
-      },
-      {
-        "baseline_says_match": true,
-        "fda_brand": "NA",
-        "identity_says": "UNRELATED",
-        "mdall_identifier": "7615XL",
-        "name_similarity": 0.526
-      },
-      {
-        "baseline_says_match": true,
-        "fda_brand": "N/A",
-        "identity_says": "UNRELATED",
-        "mdall_identifier": "5598096",
-        "name_similarity": 0.185
-      },
-      {
-        "baseline_says_match": true,
-        "fda_brand": "N/A",
-        "identity_says": "UNRELATED",
-        "mdall_identifier": "8670075",
-        "name_similarity": 0.154
-      },
-      {
-        "baseline_says_match": true,
-        "fda_brand": "NA",
-        "identity_says": "UNRELATED",
-        "mdall_identifier": "CB10A23R7",
-        "name_similarity": 0.364
-      },
-      {
-        "baseline_says_match": true,
-        "fda_brand": "N/A",
-        "identity_says": "UNRELATED",
-        "mdall_identifier": "7068588",
-        "name_similarity": 0.154
-      },
-      {
-        "baseline_says_match": true,
-        "fda_brand": "N/A",
-        "identity_says": "UNRELATED",
-        "mdall_identifier": "815-500",
-        "name_similarity": 0.215
-      },
-      {
-        "baseline_says_match": true,
-        "fda_brand": "NA",
-        "identity_says": "UNRELATED",
-        "mdall_identifier": "5867AS",
-        "name_similarity": 0.316
-      },
-      {
-        "baseline_says_match": true,
-        "fda_brand": "NA",
-        "identity_says": "UNRELATED",
-        "mdall_identifier": "BB9J40R1",
-        "name_similarity": 0.381
-      },
-      {
-        "baseline_says_match": true,
-        "fda_brand": "N/A",
-        "identity_says": "UNRELATED",
-        "mdall_identifier": "5102910",
-        "name_similarity": 0.185
-      }
-    ],
-    "generated_at": "2026-11-09T23:19:58.835183Z",
+    "baseline_false_positive_examples": [],
+    "generated_at": "2026-11-10T17:42:55.464264Z",
     "label_basis": {
       "caveat": "sampled pairs, not a prevalence-weighted population estimate; no overall F1 is claimed",
       "negative": "different DI, and either different company or a deliberately name-identical hard negative",
@@ -93,12 +22,12 @@
       "name_baseline": {
         "f1": null,
         "fn": 934,
-        "fp": 33,
+        "fp": 0,
         "labelled_pairs": 1334,
         "note": "computed on the sampled labelled pairs only; not a population estimate",
-        "precision": 0.0,
+        "precision": null,
         "recall": 0.0,
-        "tn": 367,
+        "tn": 400,
         "tp": 0
       }
     },
@@ -130,15 +59,15 @@
     "bridge_pairs": 934,
     "bridge_queried": 1200,
     "companies": 5,
-    "device_identifiers": 16377,
+    "device_identifiers": 16373,
     "evidence_ids": 7254,
     "evidence_versions": 7254,
-    "unique_devices": 5543
+    "unique_devices": 5537
   },
   "coverage": {
     "fda_udi_by_firm": {
       "draeger": 100,
-      "ge_healthcare": 108,
+      "ge_healthcare": 106,
       "medtronic": 102,
       "mindray": 100,
       "philips": 100
@@ -151,6 +80,12 @@
       "mindray",
       "philips"
     ],
+    "openfda_bridge_batches": {
+      "batches": 48,
+      "failed_batches": 0,
+      "no_match_batches": 6
+    },
+    "openfda_bridge_no_match": "openFDA returns HTTP 404 when a valid identifier batch matches nothing; recorded as no-match, not as a collection failure",
     "openfda_udi_total_by_firm": {
       "draeger": 316,
       "ge_healthcare": 518,
@@ -165,8 +100,8 @@
     "collection_runs": 7,
     "companies": 5,
     "db": "research/atlas/staging/atlas.sqlite",
-    "device_identifiers": 16377,
-    "devices": 5543,
+    "device_identifiers": 16373,
+    "devices": 5537,
     "evidence_by_source": {
       "accessgudid": 12,
       "canada_mdall": 5552,
@@ -177,31 +112,32 @@
     "evidence_versions": 7254,
     "manufacturers": 0,
     "prospective_candidates": 0,
-    "quality_findings": 53,
+    "quality_findings": 54,
     "raw_objects": 0,
     "relations_by_status": {
-      "CANDIDATE": 51,
-      "CONFIRMED": 1120,
-      "REJECTED": 1146
+      "CANDIDATE": 69,
+      "CONFIRMED": 1128,
+      "REJECTED": 1087
     },
     "relations_by_type": {
-      "POSSIBLE_MATCH": 44,
-      "RELATED_TECHNOLOGY": 7,
+      "POSSIBLE_MATCH": 59,
+      "RELATED_TECHNOLOGY": 10,
       "SAME_DEVICE_IDENTITY": 934,
-      "SAME_MODEL": 1,
-      "SAME_PRODUCT_FAMILY": 185,
-      "UNRELATED": 1146
+      "SAME_MODEL": 2,
+      "SAME_PRODUCT_FAMILY": 192,
+      "UNRELATED": 1087
     },
-    "relations_candidate": 51,
-    "relations_confirmed": 1120,
-    "relations_rejected": 1146,
+    "relations_candidate": 69,
+    "relations_confirmed": 1128,
+    "relations_rejected": 1087,
     "relations_revoked": 0,
-    "relations_total": 2317,
+    "relations_total": 2284,
     "relations_unknown": 0,
-    "request_log": 0,
+    "request_log": 150,
     "schema_version": 1
   },
-  "finished_at": "2026-11-09T23:20:12.065226Z",
+  "db_stats_note": "snapshot at the end of the pilot; graph build and the prospective registry add rows afterwards, so later table counts can legitimately be higher",
+  "finished_at": "2026-11-10T17:43:09.890309Z",
   "generated_from": {
     "db": "research/atlas/staging/atlas.sqlite",
     "firm_register": "config/atlas_firms.json",
@@ -219,32 +155,33 @@
     "by_check": {
       "duplicate_cross_source_expected": 1,
       "duplicate_same_source": 50,
-      "missing_company_link": 2
+      "missing_company_link": 2,
+      "request_no_match": 1
     },
     "by_severity": {
-      "info": 3,
+      "info": 4,
       "warning": 50
     },
-    "findings_total": 53,
+    "findings_total": 54,
     "report": "research/atlas/reports/quality_report.json"
   },
   "relations": {
     "by_status": {
-      "CANDIDATE": 51,
-      "CONFIRMED": 1120,
-      "REJECTED": 1146
+      "CANDIDATE": 69,
+      "CONFIRMED": 1128,
+      "REJECTED": 1087
     },
     "by_type": {
-      "POSSIBLE_MATCH": 44,
-      "RELATED_TECHNOLOGY": 7,
+      "POSSIBLE_MATCH": 59,
+      "RELATED_TECHNOLOGY": 10,
       "SAME_DEVICE_IDENTITY": 934,
-      "SAME_MODEL": 1,
-      "SAME_PRODUCT_FAMILY": 185,
-      "UNRELATED": 1146
+      "SAME_MODEL": 2,
+      "SAME_PRODUCT_FAMILY": 192,
+      "UNRELATED": 1087
     },
-    "candidate": 51,
-    "confirmed": 1120,
-    "rejected": 1146,
+    "candidate": 69,
+    "confirmed": 1128,
+    "rejected": 1087,
     "scope": "identity relations only; source-declared graph relations are excluded",
     "unknown": 0
   },
@@ -256,15 +193,15 @@
   "stages": {
     "accessgudid": {
       "note": "AccessGUDID and openFDA UDI are the same upstream authority (GUDID); a matching record is a duplicate, not independent corroboration",
-      "run_id": "gudid_20261109T231650Z",
-      "same_upstream_duplicates": 12,
+      "run_id": "gudid_20261110T174025Z",
+      "same_upstream_duplicates": 11,
       "sampled": 12,
       "stored": 12
     },
     "canada_mdall": {
       "gtin_rows_kept": 5512,
       "rows_scanned_until_limit": 1673926,
-      "run_id": "mdall_20261109T231716Z",
+      "run_id": "mdall_20261110T174043Z",
       "table": {
         "bytes": 219970233,
         "cached": true,
@@ -274,18 +211,23 @@
       "unique_di": 5005
     },
     "identity_bridge": {
+      "batch_accounting": {
+        "batches": 48,
+        "failed_batches": 0,
+        "no_match_batches": 6
+      },
       "pairs": 934,
       "queried_gtins": 1200,
       "relation_types": {
         "SAME_DEVICE_IDENTITY": 934
       },
       "resolved": 942,
-      "run_id": "bridge_20261109T231732Z"
+      "run_id": "bridge_20261110T174101Z"
     },
     "mdall_licences": {
       "attempted": 40,
       "companies_resolved": 40,
-      "run_id": "mdall_lic_20261109T231903Z",
+      "run_id": "mdall_lic_20261110T174201Z",
       "stored": 40
     },
     "openfda_510k": {
@@ -297,7 +239,7 @@
         "philips": 50
       },
       "records": 250,
-      "run_id": "k510_20261109T231702Z"
+      "run_id": "k510_20261110T174035Z"
     },
     "openfda_udi": {
       "by_firm": {
@@ -309,26 +251,26 @@
       },
       "records": 500,
       "requests": 5,
-      "run_id": "udi_20261109T231634Z"
+      "run_id": "udi_20261110T174016Z"
     },
     "pair_classification": {
       "ambiguity_candidates": 100,
-      "decisions": 1383,
-      "hard_negative_candidates": 33,
+      "decisions": 1350,
+      "hard_negative_candidates": 0,
       "relation_types": {
-        "POSSIBLE_MATCH": 44,
-        "RELATED_TECHNOLOGY": 7,
-        "SAME_MODEL": 1,
-        "SAME_PRODUCT_FAMILY": 185,
-        "UNRELATED": 1146
+        "POSSIBLE_MATCH": 59,
+        "RELATED_TECHNOLOGY": 10,
+        "SAME_MODEL": 2,
+        "SAME_PRODUCT_FAMILY": 192,
+        "UNRELATED": 1087
       },
-      "run_id": "pairs_20261109T231953Z",
+      "run_id": "pairs_20261110T174250Z",
       "statuses": {
-        "CANDIDATE": 51,
-        "CONFIRMED": 186,
-        "REJECTED": 1146
+        "CANDIDATE": 69,
+        "CONFIRMED": 194,
+        "REJECTED": 1087
       }
     }
   },
-  "started_at": "2026-11-09T23:16:34.618821Z"
+  "started_at": "2026-11-10T17:40:16.686625Z"
 }

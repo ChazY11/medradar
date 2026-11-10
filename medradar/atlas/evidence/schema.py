@@ -128,8 +128,16 @@ def canonical_key(identifiers: Sequence[Mapping[str, Any]]) -> str | None:
     for ident in identifiers:
         scheme = str(ident.get("scheme", "")).strip().lower()
         value = str(ident.get("value", "")).strip()
-        if scheme and value:
-            by_scheme.setdefault(scheme, value.lower() if scheme == "doi" else value)
+        if not scheme or not value:
+            continue
+        value = value.lower() if scheme == "doi" else value
+        # A GUDID record carries a primary DI plus package DIs.  The record's
+        # canonical key must be the primary DI, otherwise two records for the
+        # same device can dedupe on different package DIs and stop matching.
+        if scheme == "di" and ident.get("is_primary"):
+            by_scheme["di"] = value
+        else:
+            by_scheme.setdefault(scheme, value)
     for scheme in priority:
         if scheme in by_scheme:
             return f"{scheme}:{by_scheme[scheme]}"

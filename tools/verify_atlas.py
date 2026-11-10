@@ -32,6 +32,7 @@ import argparse
 import hashlib
 import json
 import sqlite3
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -135,13 +136,41 @@ class Verifier:
         ).fetchone()[0]
         self.check("rejections_have_reasons", bad == 0, f"{bad} unexplained rejection(s)")
 
-        revoked_conflict = self.conn.execute(
-            "SELECT COUNT(*) FROM entity_relations WHERE revoked_at<>'' AND status='CONFIRMED'"
+        # Every revoked relation must have a reason and an append-only event.
+        # (A check that merely counts revoked rows and asserts ``>= 0`` can never
+        # fail — that was a real defect found in independent audit and is fixed.)
+        revoked = self.conn.execute(
+            "SELECT relation_id FROM entity_relations WHERE revoked_at<>''"
+        ).fetchall()
+        bad_history = []
+        for row in revoked:
+            reason = self.conn.execute(
+                "SELECT revoked_reason FROM entity_relations WHERE relation_id=?",
+                (row["relation_id"],),
+            ).fetchone()["revoked_reason"]
+            event = self.conn.execute(
+                "SELECT COUNT(*) FROM relation_events WHERE relation_id=? AND action='revoked'",
+                (row["relation_id"],),
+            ).fetchone()[0]
+            if not reason or event != 1:
+                bad_history.append(row["relation_id"])
+        self.check(
+            "revoked_relations_have_reason_and_event",
+            not bad_history,
+            f"{len(revoked)} revoked; {len(bad_history)} without reason or single revoked event",
+        )
+
+        # Durable request accounting: every request recorded in a run's counter
+        # must exist in request_log, and failures must be visible to checks.
+        gap = self.conn.execute(
+            "SELECT COUNT(*) FROM (SELECT r.run_id, r.requests,"
+            " (SELECT COUNT(*) FROM request_log l WHERE l.run_id=r.run_id) AS logged"
+            " FROM collection_runs r WHERE r.status='ok') WHERE logged < requests"
         ).fetchone()[0]
         self.check(
-            "revoked_relations_not_counted_as_live",
-            revoked_conflict >= 0,
-            f"{revoked_conflict} confirmed rows are revoked (excluded by queries; history retained)",
+            "request_log_covers_run_counters",
+            gap == 0,
+            f"{gap} run(s) report more requests than request_log contains",
         )
 
         duplicates = self.conn.execute(
@@ -229,11 +258,35 @@ class Verifier:
         self.check("baseline_arithmetic_consistent", not problems, "; ".join(problems))
 
     def samples_safe(self) -> None:
-        samples = ROOT / "research" / "atlas" / "samples"
-        restricted = [p.name for p in samples.glob("*") if "restricted" in p.name.lower()]
-        self.check("no_restricted_source_samples", not restricted, str(restricted))
-        oversize = [p.name for p in samples.glob("*") if p.stat().st_size > 2 * 1024 * 1024]
-        self.check("sample_files_bounded", not oversize, str(oversize))
+        # Inspect *tracked* sample files, not just whatever is on disk: the
+        # question is what the PR publishes, and content matters as much as size.
+        tracked = subprocess.run(
+            ["git", "ls-files", "research/atlas/samples"], cwd=ROOT,
+            capture_output=True, text=True,
+        ).stdout.splitlines()
+        tracked = [name for name in tracked if name]
+        oversize = [
+            name for name in tracked if (ROOT / name).stat().st_size > 2 * 1024 * 1024
+        ]
+        self.check("tracked_sample_files_bounded", not oversize, str(oversize))
+
+        allowed = ("api.fda.gov", "accessgudid.nlm.nih.gov", "health-products.canada.ca")
+        bad_origin: list[str] = []
+        for name in tracked:
+            text = (ROOT / name).read_text(encoding="utf-8", errors="replace")
+            if "epo.org" in text or "ops.epo" in text:
+                bad_origin.append(name)
+        self.check(
+            "tracked_samples_use_open_sources_only",
+            not bad_origin,
+            f"{len(tracked)} tracked sample(s); restricted-origin files: {bad_origin}",
+        )
+        self.check(
+            "sample_citations_are_official",
+            all(any(host in (ROOT / n).read_text(encoding="utf-8", errors="ignore") for host in allowed)
+                for n in tracked) if tracked else True,
+            "each tracked sample names at least one official open source",
+        )
 
         licensed = self.conn.execute(
             "SELECT COUNT(*) FROM evidence WHERE licence_status='restricted'"

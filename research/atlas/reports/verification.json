@@ -31,8 +31,13 @@
       "ok": true
     },
     {
-      "check": "revoked_relations_not_counted_as_live",
-      "detail": "0 confirmed rows are revoked (excluded by queries; history retained)",
+      "check": "revoked_relations_have_reason_and_event",
+      "detail": "0 revoked; 0 without reason or single revoked event",
+      "ok": true
+    },
+    {
+      "check": "request_log_covers_run_counters",
+      "detail": "0 run(s) report more requests than request_log contains",
       "ok": true
     },
     {
@@ -56,13 +61,18 @@
       "ok": true
     },
     {
-      "check": "no_restricted_source_samples",
+      "check": "tracked_sample_files_bounded",
       "detail": "[]",
       "ok": true
     },
     {
-      "check": "sample_files_bounded",
-      "detail": "[]",
+      "check": "tracked_samples_use_open_sources_only",
+      "detail": "1 tracked sample(s); restricted-origin files: []",
+      "ok": true
+    },
+    {
+      "check": "sample_citations_are_official",
+      "detail": "each tracked sample names at least one official open source",
       "ok": true
     },
     {
@@ -72,7 +82,7 @@
     }
   ],
   "checks_failed": 0,
-  "checks_total": 14,
+  "checks_total": 16,
   "db": "D:\\DEPPSKK\\worktrees\\atlas-001\\research\\atlas\\staging\\atlas.sqlite",
   "ok": true,
   "schema": "medradar.atlas.verification.v1"

@@ -80,6 +80,20 @@ def normalize_name(value: Any) -> str:
     return text
 
 
+#: Registry placeholders that look like labels but carry no information.  A
+#: GUDID record with ``brand_name="NA"`` must not be treated as sharing a brand
+#: with another ``NA`` record: that would manufacture a false "identical brand"
+#: collision (and was a real defect found by the independent audit).
+_PLACEHOLDER_LABELS = frozenset(
+    {"NA", "N A", "N/A", "NONE", "NULL", "UNKNOWN", "NOT APPLICABLE", "NOT AVAILABLE", "0", "-"}
+)
+
+
+def is_placeholder_label(value: Any) -> bool:
+    normalized = normalize_name(value)
+    return normalized in _PLACEHOLDER_LABELS or len(normalized) < 2
+
+
 def name_tokens(value: Any) -> tuple[str, ...]:
     return tuple(t for t in normalize_name(value).split() if t)
 

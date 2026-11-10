@@ -106,6 +106,7 @@ class IdentityPilot:
         for directory in (self.cache_dir, self.reports_dir, self.samples_dir):
             directory.mkdir(parents=True, exist_ok=True)
         self.ledger = HttpLedger(config.STAGING_DIR / "atlas_requests.jsonl")
+        self._ledger_logged = 0
         self.client = HttpClient(
             source_id="atlas_pilot",
             ledger=self.ledger,
@@ -145,6 +146,17 @@ class IdentityPilot:
             if result["inserted"]:
                 self.evidence_by_ref[result["evidence_id"]] = dict(record)
         return stored
+
+    def _flush_requests(self, run_id: str, source_id: str) -> None:
+        """Copy ledger entries produced by this stage into the database.
+
+        The JSONL ledger is git-ignored and lives only on the collecting machine;
+        ``request_log`` is the durable, queryable copy the quality checks read.
+        """
+        entries = self.ledger.entries[self._ledger_logged :]
+        if entries:
+            self.store.log_requests(run_id, source_id, entries)
+        self._ledger_logged = len(self.ledger.entries)
 
     def _persist_device(self, record: Mapping[str, Any], *, firm_key: str = "") -> str:
         ref = device_ref(record)
@@ -219,6 +231,7 @@ class IdentityPilot:
                 if view.firm_key and view.firm_key in self.views_by_firm:
                     self.views_by_firm[view.firm_key].append(view)
                 records += 1
+        self._flush_requests(run_id, self.udi.source_id)
         self.store.finish_run(
             run_id, status="ok", requests=self.client.requests_made() - requests_before,
             records=records, notes="openFDA UDI bounded sample per firm",
@@ -232,6 +245,7 @@ class IdentityPilot:
 
     def stage_accessgudid(self) -> None:
         run_id = _run_id("gudid")
+        requests_before = self.client.requests_made()
         self.store.start_run(run_id, connector_id=self.gudid.connector_id, source_id=self.gudid.source_id)
         all_views = [v for views in self.views_by_firm.values() for v in views if v.di]
         all_views.sort(key=lambda v: v.ref)
@@ -254,7 +268,11 @@ class IdentityPilot:
                     duplicates += 1
             self._store_many([record], run_id=run_id)
             stored += 1
-        self.store.finish_run(run_id, status="ok", records=stored, notes="AccessGUDID second read")
+        self._flush_requests(run_id, self.gudid.source_id)
+        self.store.finish_run(
+            run_id, status="ok", requests=self.client.requests_made() - requests_before,
+            records=stored, notes="AccessGUDID second read",
+        )
         self.summary["stages"]["accessgudid"] = {
             "run_id": run_id,
             "sampled": len(sample),
@@ -266,6 +284,7 @@ class IdentityPilot:
 
     def stage_510k(self) -> None:
         run_id = _run_id("k510")
+        requests_before = self.client.requests_made()
         self.store.start_run(run_id, connector_id=self.k510.connector_id, source_id=self.k510.source_id)
         records = 0
         by_firm: dict[str, int] = {}
@@ -280,11 +299,16 @@ class IdentityPilot:
             self._store_many(evidence, run_id=run_id)
             records += len(evidence)
             by_firm[key] = len(evidence)
-        self.store.finish_run(run_id, status="ok", records=records, notes="openFDA 510(k) bounded sample")
+        self._flush_requests(run_id, self.k510.source_id)
+        self.store.finish_run(
+            run_id, status="ok", requests=self.client.requests_made() - requests_before,
+            records=records, notes="openFDA 510(k) bounded sample",
+        )
         self.summary["stages"]["openfda_510k"] = {"run_id": run_id, "records": records, "by_firm": by_firm}
 
     def stage_mdall(self) -> None:
         run_id = _run_id("mdall")
+        requests_before = self.client.requests_made()
         self.store.start_run(run_id, connector_id=self.mdall.connector_id, source_id=self.mdall.source_id)
         table_path = self.cache_dir / "mdall_active_deviceidentifier.json"
         download: dict[str, Any] = {}
@@ -300,7 +324,6 @@ class IdentityPilot:
             }
         else:
             download = self.mdall.download_identifier_table(table_path)
-        requests_before = self.client.requests_made()
         gtin_rows = []
         scanned = 0
         for row in iter_json_array(table_path):
@@ -331,10 +354,11 @@ class IdentityPilot:
                 country="CA",
             )
             self.mdall_views[di] = view
+        self._flush_requests(run_id, self.mdall.source_id)
         self.store.finish_run(
             run_id, status="ok", requests=self.client.requests_made() - requests_before,
             records=stored, nbytes=int(download.get("bytes") or 0),
-            notes="MDALL active identifier table streamed once; GTIN-14 subset retained",
+            notes="MDALL active identifier table downloaded once (or reused from cache); GTIN-14 subset retained",
         )
         self.summary["stages"]["canada_mdall"] = {
             "run_id": run_id,
@@ -357,7 +381,10 @@ class IdentityPilot:
             step = len(candidates) / self.cfg.mdall_bridge_limit
             candidates = [candidates[int(i * step)] for i in range(self.cfg.mdall_bridge_limit)]
         requests_before = self.client.requests_made()
-        results = lookup_identifiers(self.client, candidates, batch=self.cfg.mdall_bridge_batch)
+        bridge_stats: dict[str, Any] = {}
+        results = lookup_identifiers(
+            self.client, candidates, batch=self.cfg.mdall_bridge_batch, stats=bridge_stats
+        )
         pairs: list[dict[str, Any]] = []
         stored = 0
         for result in results:
@@ -394,6 +421,7 @@ class IdentityPilot:
             )
             if fda_view.firm_key and fda_view.firm_key in self.views_by_firm:
                 self.views_by_firm[fda_view.firm_key].append(fda_view)
+        self._flush_requests(run_id, self.udi.source_id)
         self.store.finish_run(
             run_id, status="ok", requests=self.client.requests_made() - requests_before,
             records=stored, notes="GTIN-14 MDALL identifiers resolved against openFDA UDI",
@@ -407,11 +435,19 @@ class IdentityPilot:
             "resolved": stored,
             "pairs": len(pairs),
             "relation_types": _counts(p["relation_type"] for p in pairs),
+            "batch_accounting": bridge_stats,
         }
+        self.summary["coverage"]["openfda_bridge_batches"] = bridge_stats
+        if bridge_stats.get("no_match_batches"):
+            self.summary["coverage"]["openfda_bridge_no_match"] = (
+                "openFDA returns HTTP 404 when a valid identifier batch matches nothing; "
+                "recorded as no-match, not as a collection failure"
+            )
         self._bridge_pairs = pairs
 
     def stage_mdall_licences(self) -> None:
         run_id = _run_id("mdall_lic")
+        requests_before = self.client.requests_made()
         self.store.start_run(run_id, connector_id=self.mdall.connector_id, source_id="canada_mdall")
         licences: list[str] = []
         for view in self.mdall_views.values():
@@ -458,7 +494,11 @@ class IdentityPilot:
                 licence_no = next((val for s, val in mdall_view.identifiers if s == "licence_no"), "")
             pair["mdall_licence"] = licence_no
             pair["mdall_company"] = company_names.get(licence_no, "")
-        self.store.finish_run(run_id, status="ok", records=stored, notes="MDALL licence details")
+        self._flush_requests(run_id, "canada_mdall")
+        self.store.finish_run(
+            run_id, status="ok", requests=self.client.requests_made() - requests_before,
+            records=stored, notes="MDALL licence details",
+        )
         self.summary["stages"]["mdall_licences"] = {
             "run_id": run_id,
             "attempted": len(licences),
@@ -517,25 +557,34 @@ class IdentityPilot:
         self._pair_decisions = decisions
 
     def _hard_negatives(self) -> list[tuple[DeviceView, DeviceView]]:
-        """Find name-identical, identity-different pairs across firms."""
-        pools = {k: [v for v in {x.ref: x for x in vs}.values() if v.brand or v.model]
-                 for k, vs in self.views_by_firm.items()}
+        """Find *real* label-identical, identity-different pairs across firms.
+
+        Placeholder labels (``NA``, ``NONE``, …) are already erased by
+        :class:`DeviceView`, so a collision here means two firms genuinely use the
+        same non-trivial brand or model string.  If the sample has none, this
+        returns an empty list and the report says so — it does not manufacture
+        collisions out of missing values.
+        """
+        pools = {
+            k: [v for v in {x.ref: x for x in vs}.values() if v.normalized_brand or v.normalized_model]
+            for k, vs in self.views_by_firm.items()
+        }
         out: list[tuple[DeviceView, DeviceView]] = []
         keys = sorted(pools)
         for i, a in enumerate(keys):
             for b in keys[i + 1 :]:
                 left_by_name: dict[str, DeviceView] = {}
+                left_by_model: dict[str, DeviceView] = {}
                 for view in pools[a]:
                     if view.normalized_brand:
                         left_by_name.setdefault(view.normalized_brand, view)
+                    if view.normalized_model:
+                        left_by_model.setdefault(view.normalized_model, view)
                 for view in pools[b]:
                     if view.normalized_brand and view.normalized_brand in left_by_name:
                         out.append((left_by_name[view.normalized_brand], view))
-                    elif view.normalized_model:
-                        for cand in pools[a]:
-                            if cand.normalized_model and cand.normalized_model == view.normalized_model:
-                                out.append((cand, view))
-                                break
+                    elif view.normalized_model and view.normalized_model in left_by_model:
+                        out.append((left_by_model[view.normalized_model], view))
                 if len(out) >= self.cfg.hard_negative_target:
                     return out[: self.cfg.hard_negative_target]
         return out[: self.cfg.hard_negative_target]
@@ -575,7 +624,7 @@ class IdentityPilot:
         random.seed(20261110)
         negatives: list[tuple[DeviceView, DeviceView]] = []
         mdall_views = list(self.mdall_views.values())
-        all_fda = [v for vs in self.views_by_firm.values() for v in vs]
+        all_fda = list({v.ref: v for vs in self.views_by_firm.values() for v in vs}.values())
         # Hard negatives first (same brand/model, different identity), then
         # random cross-firm pairs to reach the target.
         for left, right in self._hard_negatives():
@@ -691,7 +740,9 @@ class IdentityPilot:
         share = round(gtin_rows / scanned, 6) if scanned else None
         self.summary["coverage"].update(
             {
-                "fda_udi_by_firm": {k: len(v) for k, v in self.views_by_firm.items()},
+                "fda_udi_by_firm": {
+                    k: len({view.ref for view in views}) for k, views in self.views_by_firm.items()
+                },
                 "mdall_gtin_identifiers": len(self.mdall_views),
                 "mdall_rows_scanned": scanned,
                 "mdall_gtin_share_of_active_table": share,
@@ -716,6 +767,10 @@ class IdentityPilot:
         ]
         self.summary["finished_at"] = utc_iso()
         self.summary["db_stats"] = stats
+        self.summary["db_stats_note"] = (
+            "snapshot at the end of the pilot; graph build and the prospective registry "
+            "add rows afterwards, so later table counts can legitimately be higher"
+        )
         self.summary["request_accounting"] = {
             "requests_made": self.client.requests_made(),
             "ledger_entries": self.ledger.count(),
@@ -729,12 +784,23 @@ class IdentityPilot:
         report_path.write_text(
             json.dumps(self.summary, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"
         )
+        def _with_urls(pair: Mapping[str, Any]) -> dict[str, Any]:
+            """Attach the official record URLs so the sample is self-documenting."""
+            out = dict(pair)
+            fda = self.store.get_evidence(str(pair.get("fda_ref", "")))
+            mdall = self.store.get_evidence(str(pair.get("mdall_ref", "")))
+            out["fda_source_url"] = fda["source_url"] if fda else ""
+            out["mdall_source_url"] = mdall["source_url"] if mdall else ""
+            out["fda_evidence_id"] = pair.get("fda_ref", "")
+            out["mdall_evidence_id"] = pair.get("mdall_ref", "")
+            return out
+
         sample = {
             "schema": "medradar.atlas.identity_sample.v1",
             "generated_at": utc_iso(),
             "note": "Bounded, redistributable sample (openFDA/GUDID public domain; Health Canada Open Government Licence).",
-            "confirmed_pairs": confirmed_pairs[:40],
-            "contradicted_pairs": contradicted[:10],
+            "confirmed_pairs": [_with_urls(p) for p in confirmed_pairs[:40]],
+            "contradicted_pairs": [_with_urls(p) for p in contradicted[:10]],
         }
         (self.samples_dir / "identity_pilot_pairs.json").write_text(
             json.dumps(sample, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8"

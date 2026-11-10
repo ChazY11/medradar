@@ -109,7 +109,7 @@ German umlauts transliterate to two letters (`Dräger` → `DRAEGER`) so curated
 1. **A UDI-DI is the only strong global key** available in the public data used here.
    GUDID/openFDA publish it; Health Canada MDALL *sometimes* publishes it.
 2. **MDALL usually publishes a model/catalogue string**, not a UDI-DI. Measured on
-   2026-11-10: 5,512 GTIN-14-shaped rows out of 1,673,926 active identifier rows (0.33 %).
+   2026-11-10: 5,477 bare 14-digit rows (5,512 after separator normalisation) out of 1,673,926 active identifier rows (0.33 %).
    A Canadian licence therefore cannot be assumed to identify a UDI device.
 3. **A 510(k) number groups products.** Many models can sit under one clearance; it cannot
    confirm device identity and is modelled as `SAME_PRODUCT_FAMILY`.
