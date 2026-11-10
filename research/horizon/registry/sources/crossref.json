@@ -1,0 +1,31 @@
+{
+  "access_evidence": "probe crossref_works_doi: HTTP 200 with created/issued/published-print/published-online timestamps, author list, funder awards and per-record licence array; probe crossref_absent_doi: HTTP 404 with a 19-byte 'Resource not found.' body. 60 anchor lookups: 59 found, 1 absent, 0 errors.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [],
+  "bulk_available": true,
+  "domain": "api.crossref.org",
+  "entity_types": [
+    "publication"
+  ],
+  "first_verified_at": "2026-11-09T23:20:28Z",
+  "historical_depth": "Full back file. `created` is the DOI registration timestamp, so it is a genuine historical record; `deposited`/`indexed` are mutable.",
+  "id_schemes": [
+    "doi"
+  ],
+  "licence_note": "Crossref makes metadata openly available for reuse and asks only for a polite contact, but attaches no single blanket content licence to the metadata; the per-record `license[]` array is preserved because that is where the rights actually are. Recorded as open_no_explicit_licence rather than assumed open.",
+  "licence_status": "open_no_explicit_licence",
+  "licence_url": "https://www.crossref.org/operations-and-sustainability/accessibility/",
+  "machine_interface": "REST JSON, /works/{doi} and /works?filter=",
+  "name": "Crossref REST API",
+  "notes": "Crossref exposes NO pmid/pmcid. Any workflow that needs the DOI<->PMID edge must get it from PubMed, Europe PMC or Semantic Scholar.",
+  "operator": "Crossref",
+  "probe_suite": "scholarly",
+  "rate_policy": "Polite pool via a contact User-Agent; no published hard limit.",
+  "registration_url": null,
+  "robots_summary": "Not applicable: API only.",
+  "robots_url": "https://api.crossref.org/robots.txt",
+  "source_id": "crossref",
+  "unlock_route": "",
+  "what_is_new": "The only source here where the creation timestamp is a registry event (DOI registration) rather than an index event. Holds 59/60 anchors and contributes 13 of 60 anchors with funder-award metadata, which is one of the two usable grant-declaration surfaces."
+}

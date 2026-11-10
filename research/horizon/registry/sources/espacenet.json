@@ -1,0 +1,33 @@
+{
+  "access_evidence": "SOURCE_PROBES/patents: 403 / 5878 B WAF challenge page (awswaf/captcha signature)",
+  "access_state": "BLOCKED_TECHNICAL",
+  "auth_required": true,
+  "blockers": [
+    "AWS WAF challenge on direct requests — treated as an anti-automation control and not circumvented"
+  ],
+  "bulk_available": false,
+  "domain": "worldwide.espacenet.com",
+  "entity_types": [
+    "patent_publication"
+  ],
+  "first_verified_at": "2026-11-10",
+  "historical_depth": "worldwide",
+  "id_schemes": [
+    "docdb_publication_number"
+  ],
+  "licence_note": "",
+  "licence_status": "terms_restricted",
+  "licence_url": "https://www.epo.org/en/legal",
+  "machine_interface": "web UI only for clients",
+  "name": "Espacenet publication-details service",
+  "notes": "",
+  "operator": "European Patent Office",
+  "probe_suite": "patents",
+  "rate_policy": "",
+  "registration_url": null,
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "espacenet",
+  "unlock_route": "Use EPO OPS with a registered key instead of the web UI.",
+  "what_is_new": "Would add worldwide DOCDB search; unreachable without a browser and is explicitly a WAF-protected UI."
+}

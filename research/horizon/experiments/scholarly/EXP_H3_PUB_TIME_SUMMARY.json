@@ -1,0 +1,158 @@
+{
+  "experiment": "EXP-H3",
+  "outputs": [
+    "EXP_H3_PUB_TIME.json"
+  ],
+  "selection_rule": "experiments/scholarly/EXP_H1_SELECTION_RULE.md (same frozen anchor set)",
+  "generated_at": "2026-11-09T23:21:20Z",
+  "method_in_plain_language": [
+    "1. Using the same 60-anchor sample, every date field each source actually publishes was read off the saved responses and classified into three kinds: (a) a public-visible publication date, (b) a creation / index / first-seen timestamp, and (c) a mutable snapshot marker such as 'last updated'.",
+    "2. A record counts as having an 'explicit public-visible date' when its source provides a date that claims when the work was published. A record counts as 'current-snapshot-only' when it has such a date but no creation/index timestamp, so the record's own history is unavailable and only its present state can be read.",
+    "3. Cross-database disagreement is measured per anchor: every source's single best publication date is compared, and the spread between the earliest and latest is reported in day buckets. Nothing is averaged and no source is treated as the referee.",
+    "4. For the sources that expose a creation timestamp, the lag between the nominal publication date and the moment the record became visible was computed directly. That lag is the only quantity that can honestly separate 'published' from 'observable'."
+  ],
+  "headline_numbers": {
+    "anchors": 60,
+    "per_source_date_availability": {
+      "openalex": {
+        "records": 60,
+        "with_public_visible_date": 60,
+        "share_with_public_visible_date": 1.0,
+        "with_creation_or_index_date": 60,
+        "current_snapshot_only": 0,
+        "share_current_snapshot_only": 0.0
+      },
+      "crossref": {
+        "records": 59,
+        "with_public_visible_date": 59,
+        "share_with_public_visible_date": 1.0,
+        "with_creation_or_index_date": 59,
+        "current_snapshot_only": 0,
+        "share_current_snapshot_only": 0.0
+      },
+      "europepmc": {
+        "records": 37,
+        "with_public_visible_date": 37,
+        "share_with_public_visible_date": 1.0,
+        "with_creation_or_index_date": 37,
+        "current_snapshot_only": 0,
+        "share_current_snapshot_only": 0.0
+      },
+      "pubmed_eutils": {
+        "records": 37,
+        "with_public_visible_date": 37,
+        "share_with_public_visible_date": 1.0,
+        "with_creation_or_index_date": 0,
+        "current_snapshot_only": 37,
+        "share_current_snapshot_only": 1.0
+      },
+      "semantic_scholar": {
+        "records": 56,
+        "with_public_visible_date": 55,
+        "share_with_public_visible_date": 0.9821,
+        "with_creation_or_index_date": 0,
+        "current_snapshot_only": 55,
+        "share_current_snapshot_only": 0.9821
+      },
+      "openaire": {
+        "records": 59,
+        "with_public_visible_date": 59,
+        "share_with_public_visible_date": 1.0,
+        "with_creation_or_index_date": 0,
+        "current_snapshot_only": 59,
+        "share_current_snapshot_only": 1.0
+      }
+    },
+    "anchors_with_two_or_more_dates": 60,
+    "anchors_where_databases_disagree": 36,
+    "share_disagreeing": 0.6,
+    "spread_buckets": {
+      "1-7_days": 5,
+      "181-730_days": 6,
+      "31-180_days": 15,
+      "8-30_days": 9,
+      "over_730_days": 1,
+      "same_day": 24
+    },
+    "share_disagreeing_by_more_than_30_days": 0.3667,
+    "sources_with_a_creation_date": [
+      "openalex",
+      "crossref",
+      "europepmc"
+    ],
+    "sources_current_snapshot_only": [
+      "pubmed_eutils",
+      "semantic_scholar",
+      "openaire"
+    ],
+    "index_lag": {
+      "openalex": {
+        "records": 60,
+        "median_days": 14,
+        "buckets": {
+          "1-7_days": 14,
+          "181-730_days": 5,
+          "31-180_days": 12,
+          "8-30_days": 22,
+          "creation_before_publication": 1,
+          "over_730_days": 3,
+          "same_day": 3
+        }
+      },
+      "crossref": {
+        "records": 59,
+        "median_days": 0,
+        "buckets": {
+          "1-7_days": 4,
+          "181-730_days": 4,
+          "31-180_days": 5,
+          "8-30_days": 10,
+          "creation_before_publication": 21,
+          "over_730_days": 1,
+          "same_day": 14
+        }
+      },
+      "europepmc": {
+        "records": 37,
+        "median_days": 2,
+        "buckets": {
+          "1-7_days": 14,
+          "31-180_days": 8,
+          "8-30_days": 4,
+          "creation_before_publication": 8,
+          "over_730_days": 1,
+          "same_day": 2
+        }
+      }
+    },
+    "trial_submission_to_posting_lag": {
+      "clinicaltrials_gov": {
+        "records": 164,
+        "median_days": 8,
+        "max_days": 892,
+        "buckets": {
+          "1-7_days": 78,
+          "181-730_days": 4,
+          "31-180_days": 16,
+          "8-30_days": 65,
+          "over_730_days": 1
+        }
+      }
+    }
+  },
+  "what_this_measures": "36 of 60 anchors (60.0%) have at least two databases that disagree about the publication date of the same DOI, and 36.7% of anchors disagree by more than 30 days. That is the four-clock problem showing up as a measurement, not as an assumption.",
+  "what_this_cannot_support": [
+    "It cannot say which database's date is correct. A difference between an issue date and an electronic-publication date is not an error; it is two different events. That is exactly why both are reported.",
+    "It cannot be used to back-date observability. Only the creation/index lag measures when a record became visible, and only three of six publication sources publish such a timestamp at all.",
+    "It cannot substitute for a historical archive: what is measured is what today's snapshots say about the past, not what the sources said at the time."
+  ],
+  "notable_observations": [
+    "Three of six publication sources (PubMed E-utilities, Semantic Scholar, OpenAIRE Graph) expose NO creation or index timestamp. Any 'we could have seen this on date X' claim resting on those sources is unsupported and is flagged SNAPSHOT_ONLY on the records.",
+    "Crossref's `created` timestamp frequently precedes the nominal publication date (21 of 59 records), because a DOI is registered at acceptance. OpenAlex's `created_date` is mostly AFTER publication (median 14 days), because it is an index, not a registry.",
+    "ClinicalTrials.gov publishes both a submit date and a post date, so the registry's own queue is measurable: median 8 days from submission to first posting, with a maximum of 892 days.",
+    "CORDIS returns human-readable template strings such as '1 {{month_08}} 2014' rather than ISO dates, so it contributes project identity but no usable clock. That is recorded as a blocker rather than parsed into a guess."
+  ],
+  "reproduce": [
+    "python experiments/scholarly/analyze_exp_h3.py"
+  ]
+}

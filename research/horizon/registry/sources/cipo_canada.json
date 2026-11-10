@@ -1,0 +1,37 @@
+{
+  "access_evidence": "open.canada.ca CKAN package fe1dfbb9-0fc3-42ca-b2a9-6ca4c05dbac9 resolves 152 resources; 8 range files downloaded and SHA-256 recorded in DATASETS/patents/cipo_canada/raw/PROVENANCE.json.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "Snapshot only: bibliographic extract ends 2022-02-28, so no record-level history.",
+    "No publication / open-to-inspection date field; only Filing Date and Grant Date.",
+    "opic-cipo.ca serves an incomplete TLS chain (omits intermediate)."
+  ],
+  "bulk_available": true,
+  "domain": "opic-cipo.ca",
+  "entity_types": [
+    "patent_publication"
+  ],
+  "first_verified_at": "2026-11-10",
+  "historical_depth": "patent documents 1869 -> 2022-02-28 (dataset statement)",
+  "id_schemes": [
+    "cipo_patent_number",
+    "pct_application_number",
+    "pct_publication_number"
+  ],
+  "licence_note": "Open Government Licence - Canada. Quoted: 'grants you a worldwide, royalty-free, perpetual, non-exclusive licence to use the Information, including for commercial purposes'. Attribution required: 'Contains information licensed under the Open Government Licence - Canada'.",
+  "licence_status": "open_licence",
+  "licence_url": "https://open.canada.ca/en/open-government-licence-canada",
+  "machine_interface": "CKAN catalogue -> zipped CSV range files (8 tables, 2 splits each)",
+  "name": "CIPO Patent bulk data (PT_Main / PT_Interested_Party / PT_IPC / PT_Priority)",
+  "notes": "Do NOT apply the 18-month laid-open rule as a date. Pending applications get source_public_at = NULL + MISSING_PUBLICATION_DATE.",
+  "operator": "Canadian Intellectual Property Office (ISED)",
+  "probe_suite": "patents_unlock",
+  "rate_policy": "CKAN API returned 429 once; connector backs off 4x with sleeps",
+  "registration_url": null,
+  "robots_summary": "not retrieving documents by crawler; bulk archives fetched from catalogue-listed URLs",
+  "robots_url": "https://opic-cipo.ca/robots.txt",
+  "source_id": "cipo_canada",
+  "unlock_route": "TLS: intermediate obtained from the leaf's AIA caIssuers URL and added to a bundle (hz.tls.complete_chain); verification is still enforced. Freshness: CIPO states the dataset is refreshed quarterly through IP Horizons, so a newer extract can be picked up from the same catalogue record when published.",
+  "what_is_new": "Second jurisdiction AND an explicit open licence. Uniquely carries an ownership timeline (Owner Enable Date / Ownership End date) per party, which is exactly what historical subsidiary-vs-parent attribution needs."
+}

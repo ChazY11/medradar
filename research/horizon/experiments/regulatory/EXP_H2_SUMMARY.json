@@ -1,0 +1,259 @@
+{
+  "experiment": "EXP-H2",
+  "question": "Can an FDA GUDID record and a Health Canada MDALL record be shown to be the same product using official identifiers or explicit official fields?",
+  "generated_from": {
+    "fda_records": 320,
+    "canada_records": 174,
+    "fda_source": "DATASETS/regulatory/accessgudid/records.jsonl",
+    "canada_source": "DATASETS/regulatory/canada_mdall/records.jsonl"
+  },
+  "selection_rule": "experiments/regulatory/EXP_H2_SELECTION_RULE.md (pre-registered)",
+  "primary": {
+    "model_token_mode": "strict",
+    "pairs_total": 726,
+    "pairs_candidate": 700,
+    "pairs_hard_negative": 26,
+    "verdicts": {
+      "UNKNOWN": 726
+    },
+    "by_construction_rule": {
+      "candidate": 700,
+      "HN3_same_family_different_device": 14,
+      "HN4_subsidiary_vs_parent": 12
+    },
+    "hard_negative_rules_attempted": {
+      "HN2_same_model_token_different_firm": 0,
+      "HN1_same_brand_different_device": 0,
+      "HN3_same_family_different_device": 14,
+      "HN4_subsidiary_vs_parent": 12
+    },
+    "signal_sufficiency_table": [
+      {
+        "signal_combination": "S3+S5",
+        "n": 19,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 19,
+        "reaches_confirmed": false
+      },
+      {
+        "signal_combination": "S3",
+        "n": 689,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 689,
+        "reaches_confirmed": false
+      },
+      {
+        "signal_combination": "S5",
+        "n": 18,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 18,
+        "reaches_confirmed": false
+      }
+    ],
+    "per_signal_sufficiency": {
+      "S1": {
+        "fired": 0,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 0
+      },
+      "S2": {
+        "fired": 0,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 0
+      },
+      "S3": {
+        "fired": 708,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 708
+      },
+      "S4": {
+        "fired": 0,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 0
+      },
+      "S5": {
+        "fired": 37,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 37
+      }
+    }
+  },
+  "sensitivity_lenient_model_tokens": {
+    "model_token_mode": "lenient",
+    "pairs_total": 726,
+    "pairs_candidate": 700,
+    "pairs_hard_negative": 26,
+    "verdicts": {
+      "UNKNOWN": 726
+    },
+    "by_construction_rule": {
+      "candidate": 700,
+      "HN3_same_family_different_device": 14,
+      "HN4_subsidiary_vs_parent": 12
+    },
+    "hard_negative_rules_attempted": {
+      "HN2_same_model_token_different_firm": 0,
+      "HN1_same_brand_different_device": 0,
+      "HN3_same_family_different_device": 14,
+      "HN4_subsidiary_vs_parent": 12
+    },
+    "signal_sufficiency_table": [
+      {
+        "signal_combination": "S3+S5",
+        "n": 19,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 19,
+        "reaches_confirmed": false
+      },
+      {
+        "signal_combination": "S3",
+        "n": 689,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 689,
+        "reaches_confirmed": false
+      },
+      {
+        "signal_combination": "S5",
+        "n": 18,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 18,
+        "reaches_confirmed": false
+      }
+    ],
+    "per_signal_sufficiency": {
+      "S1": {
+        "fired": 0,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 0
+      },
+      "S2": {
+        "fired": 0,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 0
+      },
+      "S3": {
+        "fired": 708,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 708
+      },
+      "S4": {
+        "fired": 0,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 0
+      },
+      "S5": {
+        "fired": 37,
+        "CONFIRMED": 0,
+        "REJECTED": 0,
+        "UNKNOWN": 37
+      }
+    }
+  },
+  "finding": {
+    "confirmed_pairs": 0,
+    "rejected_pairs": 0,
+    "S4_official_identifier_fired": 0,
+    "s1_exact_name_fired": 0,
+    "s2_model_in_both_fired": 0,
+    "largest_signal_combination": {
+      "signal_combination": "S3",
+      "n": 689,
+      "CONFIRMED": 0,
+      "REJECTED": 0,
+      "UNKNOWN": 689,
+      "reaches_confirmed": false
+    },
+    "conclusion": "Zero pairs reach CONFIRMED and S4 never fires: GUDID identifies a device by UDI-DI and MDALL by Health Canada licence/device/identifier numbers, so the two registries share no identifier namespace and no keyless official-identifier bridge exists. S1 (exact brand-name equality) never fires in this sample either, and S2 (a shared model token) never fires under either model-token definition — the manufacturer model spaces do not collide across these two sources. What is left is firm attribution plus loose name-token overlap, which yields UNKNOWN for every pair.",
+    "no_pair_is_refutable_either": "There are also zero REJECTED pairs. That is not a bug: name-level evidence can no more refute sameness than confirm it. Only an official field can do either, and no official field on these two records contradicts a pair in this sample. A pipeline that emits 'different device' from a name comparison would be over-claiming in the same way as one that emits 'same device'.",
+    "sensitivity_note": "Both model-token definitions (strict: letter+digit; lenient: any token containing a digit) produce identical verdict tables, because no model token is shared between the GUDID and MDALL samples at all. The sensitivity pass is retained as a control against a claim that the strict rule was doing the work.",
+    "what_would_be_needed": "A shared identifier cannot be synthesised from these two sources. Either a jurisdiction publishes a UDI-DI alongside its national licence numbers (EUDAMED does, for the EU, via Basic UDI-DI), or identity must be established against a third reference that carries both — not by name matching."
+  },
+  "hard_negative_pair_count": 26,
+  "verdicts": {
+    "UNKNOWN": 726
+  },
+  "by_construction_rule": {
+    "candidate": 700,
+    "HN3_same_family_different_device": 14,
+    "HN4_subsidiary_vs_parent": 12
+  },
+  "hard_negative_rules_attempted": {
+    "HN2_same_model_token_different_firm": 0,
+    "HN1_same_brand_different_device": 0,
+    "HN3_same_family_different_device": 14,
+    "HN4_subsidiary_vs_parent": 12
+  },
+  "signal_sufficiency_table": [
+    {
+      "signal_combination": "S3+S5",
+      "n": 19,
+      "CONFIRMED": 0,
+      "REJECTED": 0,
+      "UNKNOWN": 19,
+      "reaches_confirmed": false
+    },
+    {
+      "signal_combination": "S3",
+      "n": 689,
+      "CONFIRMED": 0,
+      "REJECTED": 0,
+      "UNKNOWN": 689,
+      "reaches_confirmed": false
+    },
+    {
+      "signal_combination": "S5",
+      "n": 18,
+      "CONFIRMED": 0,
+      "REJECTED": 0,
+      "UNKNOWN": 18,
+      "reaches_confirmed": false
+    }
+  ],
+  "per_signal_sufficiency": {
+    "S1": {
+      "fired": 0,
+      "CONFIRMED": 0,
+      "REJECTED": 0,
+      "UNKNOWN": 0
+    },
+    "S2": {
+      "fired": 0,
+      "CONFIRMED": 0,
+      "REJECTED": 0,
+      "UNKNOWN": 0
+    },
+    "S3": {
+      "fired": 708,
+      "CONFIRMED": 0,
+      "REJECTED": 0,
+      "UNKNOWN": 708
+    },
+    "S4": {
+      "fired": 0,
+      "CONFIRMED": 0,
+      "REJECTED": 0,
+      "UNKNOWN": 0
+    },
+    "S5": {
+      "fired": 37,
+      "CONFIRMED": 0,
+      "REJECTED": 0,
+      "UNKNOWN": 37
+    }
+  }
+}

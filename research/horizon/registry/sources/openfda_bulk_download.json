@@ -1,0 +1,35 @@
+{
+  "access_evidence": "PROBES.json reg_openfda_bulk_001: HTTP 200, 601,654 bytes, marker 'device'. DATASETS/regulatory/openfda_bulk_download/raw/download_catalogue.json saved verbatim; COUNTS.json summarises the device exports and their partition sizes.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "Bulk device exports exceed this workstream's byte budget; catalogue only."
+  ],
+  "bulk_available": true,
+  "domain": "api.fda.gov",
+  "entity_types": [
+    "product_identifier",
+    "regulatory_clearance"
+  ],
+  "first_verified_at": "2026-11-10T07:30:00Z",
+  "historical_depth": "Files are dated exports (export_date per endpoint).",
+  "id_schemes": [
+    "fda_product_code",
+    "udi_di"
+  ],
+  "licence_note": "openFDA licence page: '...unless otherwise noted, the content, data, documentation, code, and related materials on openFDA is public domain and made available with a Creative Commons CC0 1.0 Universal dedication.' Caveat recorded on the same page: 'GMDN(R) is a registered trademark of The GMDN Agency... which is used under license from The GMDN Agency', with conditions on extracting GMDN Content. openFDA device endpoints do not carry GMDN fields, so this does not affect the openFDA records.",
+  "licence_status": "public_domain",
+  "licence_url": "https://open.fda.gov/license/",
+  "machine_interface": "REST JSON catalogue: /download.json (per-endpoint exported JSON files)",
+  "name": "openFDA — bulk download catalogue",
+  "notes": "Deliberately used as catalogue-only evidence; no bulk file was downloaded.",
+  "operator": "U.S. Food and Drug Administration",
+  "probe_suite": "regulatory",
+  "rate_policy": "openFDA authentication page: 'With no API key: 240 requests per minute, per IP address. 1,000 requests per day, per IP address.' No X-RateLimit-* response headers are sent; observed: all keyless pulls returned 200 at ~1.2 req/s, no 429.",
+  "registration_url": null,
+  "robots_summary": "HTTP 404 with body 'Cannot GET /robots.txt' — no robots policy is served for the API host; access is governed by the published openFDA terms.",
+  "robots_url": "https://api.fda.gov/robots.txt",
+  "source_id": "openfda_bulk_download",
+  "unlock_route": "",
+  "what_is_new": "Documents that openFDA bulk export exists and is keyless, and quantifies why it is the wrong tool for a bounded study: the device.udi export alone runs to hundreds of MB per partition."
+}

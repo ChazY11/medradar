@@ -1,0 +1,30 @@
+{
+  "source_id": "china_nmpa_udi",
+  "generated_at": "2026-11-09T23:24:21Z",
+  "attempts": [
+    {
+      "name": "nmpa_root.html",
+      "url": "https://www.nmpa.gov.cn/",
+      "note": "NMPA national portal",
+      "status": 412,
+      "outcome": null,
+      "bytes": 2506,
+      "sha256": "4c79528a12b9c580",
+      "error": null,
+      "body_head": "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html>\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n<meta id=\"13JnD7t9MzWf\" content=\"Xb1bTVawhjnwnrTkpPtPPgJeJBlRrg3fN4KwLmNcOoW\" r='m'><!--[if lt IE 9]><script r='m'>document.createElement(\"section\")</script><![endif]--><script type=\"text/javascript\" r='m'>$_ts=window['$_ts'];if(!$_ts)$_ts={};$_ts.nsd=89918;$_ts.cd=\"qteJrrQlhOqqtqVLqOWDWqqwJa7LrrZEWqqZqPGkWa3LqpZEWqqLrnGlxa3aqcGcosQ3oPLhrr7aqkaDtqQurOqqtqVLqOWDWqqZqcGrWa3LrPLWrcGaqcGrHq3urPGlo"
+    },
+    {
+      "name": "nmpa_udi_database.html",
+      "url": "https://udi.nmpa.gov.cn/",
+      "note": "NMPA UDI database public query",
+      "status": 200,
+      "outcome": null,
+      "bytes": 49373,
+      "sha256": "1dfdb4b7dcc766f5",
+      "error": null
+    }
+  ],
+  "summary": "The NMPA UDI database is a Chinese-language web query application. Where it answers at all it returns HTML with no machine interface and no bulk export; access is also frequently geo/UA restricted. No records were obtained.",
+  "official_identifier": "UDI-DI as registered in the NMPA UDI database",
+  "unlock_route": "NMPA UDI data is queryable only through https://udi.nmpa.gov.cn/ (human interface, Chinese ID/registration context). No official keyless API exists."
+}

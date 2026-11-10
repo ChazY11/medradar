@@ -1,0 +1,122 @@
+{
+  "source_id": "usaspending",
+  "workstream": "industry",
+  "generated_at": "2026-11-09T23:15:06Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/industry/usaspending/raw/psc_filter_tree_depth3.json",
+      "bytes": 382700,
+      "sha256": "60142c8423d33394bd0ff7d713f96c08e6ede60e52ce6af82f4155807ed1a141",
+      "requested_url": "https://api.usaspending.gov/api/v2/references/filter_tree/psc/?depth=3",
+      "final_url": "https://api.usaspending.gov/api/v2/references/filter_tree/psc/?depth=3",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:14:59Z",
+      "note": "official PSC code labels"
+    },
+    {
+      "path": "DATASETS/industry/usaspending/raw/search_psc.json",
+      "bytes": 75387,
+      "sha256": "95a1b7975003dfd4c4dcf537e51266836c15668bd6bf667f40fda2702c623a9f",
+      "requested_url": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+      "final_url": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:15:01Z",
+      "note": "spending_by_award POST filter=psc"
+    },
+    {
+      "path": "DATASETS/industry/usaspending/raw/search_naics.json",
+      "bytes": 75483,
+      "sha256": "6d05eb335d8611bb0d30dd2c711636787c65034ec33be412781b71e561dd0abe",
+      "requested_url": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+      "final_url": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:15:04Z",
+      "note": "spending_by_award POST filter=naics"
+    },
+    {
+      "path": "DATASETS/industry/usaspending/raw/search_device_keywords.json",
+      "bytes": 75900,
+      "sha256": "bacae68de08c584df8c5f2af688d120e022493ef5ed9856f31822f5fe2f8a63c",
+      "requested_url": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+      "final_url": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:15:06Z",
+      "note": "spending_by_award POST filter=device_keywords"
+    }
+  ],
+  "aggregation_disclaimer": "Trade-flow records are national/regional aggregates. They carry no firm-level revenue, R&D or market-share attribution. Procurement records name a recipient as published by the awarding body; they do not identify the manufacturer of any device unless the award text names a concrete device or model.",
+  "licence_status": "open_no_explicit_licence",
+  "licence_note": "USAspending.gov is a U.S. federal government service publishing agency contract data; no explicit reuse licence statement was found on the pages fetched (https://www.usaspending.gov/about returned no licence sentence), so this is recorded as publicly readable without an explicit reuse licence rather than assumed permissive. Underlying award data are the awarding agencies' own public contract records.",
+  "psc_codes_scope": [
+    "6510",
+    "6515",
+    "6520",
+    "6525",
+    "6530",
+    "6540",
+    "6545",
+    "6550"
+  ],
+  "psc_labels_observed": {
+    "6510": "SURGICAL DRESSING MATERIALS",
+    "6515": "MEDICAL AND SURGICAL INSTRUMENTS, EQUIPMENT, AND SUPPLIES",
+    "6520": "DENTAL INSTRUMENTS, EQUIPMENT, AND SUPPLIES",
+    "6525": "IMAGING EQUIPMENT AND SUPPLIES: MEDICAL, DENTAL, VETERINARY",
+    "6530": "HOSPITAL FURNITURE, EQUIPMENT, UTENSILS, AND SUPPLIES",
+    "6540": "OPHTHALMIC INSTRUMENTS, EQUIPMENT, AND SUPPLIES",
+    "6545": "REPLENISHABLE FIELD MEDICAL SETS, KITS, AND OUTFITS",
+    "6550": "IN VITRO DIAGNOSTIC SUBSTANCES, REAGENTS, TEST KITS AND SETS"
+  },
+  "naics_codes_scope": [
+    "339112",
+    "339113",
+    "339114",
+    "339115",
+    "334510",
+    "334517"
+  ],
+  "device_keywords": [
+    "ventilator",
+    "MRI",
+    "ultrasound",
+    "infusion pump",
+    "CT scanner",
+    "defibrillator",
+    "patient monitor",
+    "dialysis",
+    "endoscope",
+    "pacemaker",
+    "insulin pump",
+    "syringe pump",
+    "analyzer",
+    "electrosurgical",
+    "mammography",
+    "linear accelerator",
+    "surgical robot",
+    "ECG"
+  ],
+  "time_period": [
+    {
+      "start_date": "2020-10-01",
+      "end_date": "2024-09-30"
+    }
+  ],
+  "post_endpoints": [
+    {
+      "url": "https://api.usaspending.gov/api/v2/search/spending_by_award/",
+      "method": "POST",
+      "note": "logged manually in SOURCE_PROBES/industry/REQUEST_LOG.jsonl with method=POST and a request-body sha256, because hz.http.BoundedClient is GET-only by contract"
+    }
+  ],
+  "coverage_limits": [
+    "Award amounts are obligations, NOT revenue, and are not the price of any device.",
+    "Only page 1 (100 rows) per query: this is a bounded sample of the largest awards, not a census.",
+    "Medical PSC codes are contaminated: 6515 mixes instruments with COVID-19 tests and vaccines; 6550 is reagents/test kits.",
+    "PSC 6540 is OPHTHALMIC instruments and 6545 is REPLENISHABLE FIELD MEDICAL SETS — not 'medical/dental instruments' and 'reagents' as commonly assumed.",
+    "No award in this sample identifies a device manufacturer; OEM attribution would require a separate source."
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "access_evidence": "POST /v3/notices/search returned HTTP 200 keylessly: 102 can-standard medical notices in the trailing 12 months, 93 of them with winner-name, 91 with winner-identifier. GET on the same path returns HTTP 405.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "FULL_NOTICE_REQUIRES_KEY: GET /v3/notices/{publication-number} returns HTTP 400 'Missing Authorization header in request'.",
+    "PER_NOTICE_XML_WAF: https://ted.europa.eu/en/notice/{pn}/xml returns HTTP 405 with an AWS WAF 'Human Verification' interstitial.",
+    "LEGACY_NOTICES_HAVE_NO_WINNER: for 2016-era CANs winner-name is null and BT-768-Contract is only a [true]/[false] presence flag.",
+    "IDENTIFIERS_NOT_ALIGNED_TO_NAMES: winner-name and winner-identifier are parallel lists of unequal length with no stated alignment, so no identifier can be attached to a specific supplier.",
+    "CPV_IS_NOT_A_DEVICE_FILTER: classification-cpv=33100000 matches the whole division (identical totalNoticeCount of 102 to the union of its subfamilies; sampled notices also carry 98310000 laundry and 19260000 leather codes)."
+  ],
+  "bulk_available": true,
+  "domain": "api.ted.europa.eu",
+  "entity_types": [
+    "procurement_award"
+  ],
+  "first_verified_at": "2026-11-09T23:18:28Z",
+  "historical_depth": "not verified for bulk; search covers legacy and eForms notices",
+  "id_schemes": [
+    "ted_publication_number"
+  ],
+  "licence_note": "TED API docs state developers can 'Retrieve published procurement notices from the TED website for analysis or reuse' and address 'reusers of TED Data', but no formal reuse licence sentence was found on the pages fetched. Recorded as publicly readable without an explicit reuse licence rather than assumed permissive.",
+  "licence_status": "open_no_explicit_licence",
+  "licence_url": "https://docs.ted.europa.eu/api/latest/index.html",
+  "machine_interface": "REST JSON; search is POST-only with an expert query language",
+  "name": "Tenders Electronic Daily (TED) — API v3 notice search",
+  "notes": "Notice values are notice/lot totals, not per-device prices. Only can-standard notices were sampled.",
+  "operator": "Publications Office of the European Union",
+  "probe_suite": "industry",
+  "rate_policy": "No key for search; no documented quota; 4 POSTs used.",
+  "registration_url": null,
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "eu_ted",
+  "unlock_route": "Register for a TED API key at the TED Developer Portal (https://developer.ted.europa.eu/, reachable from the docs index 'obtain an API key' section). The keyed GET /v3/notices/{pn} then returns the full eForms payload including BT-768 Contractor with its identifier.",
+  "what_is_new": "299 supplier rows from 102 eForms-era EU award notices (2019 name-bearing, 91 with national registration numbers) — this reverses the previous round's 'TED has no award suppliers' verdict, and measures that CPV 33100000 is the division-level code, not a device filter."
+}
