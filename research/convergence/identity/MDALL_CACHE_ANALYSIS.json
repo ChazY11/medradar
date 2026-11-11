@@ -1,0 +1,276 @@
+{
+  "schema": "medradar.convergence.mdall_cache_analysis.v1",
+  "generated_at": "2026-11-10T19:52:47.715124+00:00",
+  "generated_by": "tools/convergence/identity/analyse_mdall_cache.py",
+  "network_used": false,
+  "input": {
+    "path": "D:\\DEPPSKK\\worktrees\\atlas-001\\research\\atlas\\cache\\mdall_active_deviceidentifier.json",
+    "sha256": "55d2b64189a2b8b6d3d7431462930196aebe5503addeeb6a4a6f0d65f5c2973f",
+    "size_bytes": 219970233,
+    "format": "single-line JSON array of objects; keys original_licence_no, device_id, first_licence_dt, end_date, device_identifier",
+    "sha256_matches_frozen_inputs": true,
+    "sha256_matches_atlas_report_table_hash": true
+  },
+  "totals": {
+    "rows": 1673926,
+    "distinct_device_identifier_values_raw": 1546415,
+    "differs_from_atlas_scanned_until_limit": false,
+    "distinct_licences": 36056,
+    "distinct_device_ids": 146183
+  },
+  "identifier_classes": {
+    "atlas_gtin_class_definition": "normalize_di(value) removes whitespace/hyphen then requires exactly 14 digits (medradar/atlas/identity/normalize.py::is_gtin_like)",
+    "atlas_gtin_class_rows": 5512,
+    "atlas_gtin_class_distinct_values": 5005,
+    "atlas_gtin_class_share_of_rows": 0.00329286,
+    "bare_14_digit_rows_without_normalisation": 5477,
+    "bare_14_digit_distinct_values_without_normalisation": 4975,
+    "rows_that_needed_separator_normalisation": 35,
+    "gtin14_check_digit_valid_rows": 5434,
+    "gtin14_check_digit_invalid_rows": 78,
+    "gtin14_check_digit_valid_distinct_values": 4927,
+    "gtin14_check_digit_invalid_distinct_values": 78,
+    "gtin14_check_digit_invalid_examples": [
+      "02002262000040",
+      "02002262030100",
+      "02002262040100",
+      "02002264000000",
+      "02002264000040",
+      "02002264030100",
+      "02002264040100",
+      "02002266010040",
+      "02002266030100",
+      "02002266040100",
+      "02022720030150",
+      "02022721050150",
+      "02022722050150",
+      "02022723050150",
+      "02022725030150",
+      "02022726100150",
+      "02022727100150",
+      "02022902000040",
+      "02022902030100",
+      "02022902040100"
+    ],
+    "non_gtin_class_rows": 1668414,
+    "non_gtin_class_share_of_rows": 0.99670714,
+    "first_examples": {
+      "gtin_ok": [
+        "08800022300803",
+        "08800022301107",
+        "08800022301121",
+        "08800022304009",
+        "08800022305150"
+      ],
+      "gtin_bad_check": [
+        "02002262000040",
+        "02002262030100",
+        "02002262040100",
+        "02002264000000",
+        "02002264000040"
+      ],
+      "numeric_other": [
+        "000201436011",
+        "0063848906095",
+        "035000456953",
+        "035000467034",
+        "035000471123"
+      ],
+      "token": [
+        "NHK211540",
+        "9804006K",
+        "9808000K",
+        "9808004A",
+        "9808004K"
+      ],
+      "separator_only": [
+        {
+          "raw": "0 8800022 30080 3",
+          "normalised": "08800022300803"
+        },
+        {
+          "raw": "0 8800022 30110 7",
+          "normalised": "08800022301107"
+        },
+        {
+          "raw": "0 8800022 30112 1",
+          "normalised": "08800022301121"
+        },
+        {
+          "raw": "0 8800022 30400 9",
+          "normalised": "08800022304009"
+        },
+        {
+          "raw": "0 8800022 30515 0",
+          "normalised": "08800022305150"
+        }
+      ]
+    },
+    "length_distribution_all_rows": {
+      "1": 89,
+      "2": 1078,
+      "3": 6142,
+      "4": 28601,
+      "5": 68811,
+      "6": 173934,
+      "7": 206248,
+      "8": 244843,
+      "9": 201805,
+      "10": 160379,
+      "11": 203643,
+      "12": 102367,
+      "13": 76540,
+      "14": 63389,
+      "15": 37011,
+      "16": 30161,
+      "17": 19942,
+      "18": 5585,
+      "19": 5820,
+      "20": 5733,
+      "21": 3897,
+      "22": 3577,
+      "23": 3416,
+      "24": 3533,
+      "25": 2756,
+      "26": 2644,
+      "27": 1546,
+      "28": 1072,
+      "29": 1161,
+      "30": 1291,
+      "31": 1246,
+      "32": 1302,
+      "33": 1049,
+      "34": 683,
+      "35": 531,
+      "36": 441,
+      "37": 245,
+      "38": 229,
+      "39": 236,
+      "40": 165,
+      "41": 133,
+      "42": 110,
+      "43": 194,
+      "44": 220,
+      "45": 106,
+      "46": 22
+    },
+    "numeric_only_length_distribution_rows": {
+      "1": 45,
+      "2": 255,
+      "3": 1590,
+      "4": 15869,
+      "5": 30701,
+      "6": 93014,
+      "7": 76553,
+      "8": 81539,
+      "9": 50570,
+      "10": 25815,
+      "11": 27289,
+      "12": 16308,
+      "13": 6506,
+      "14": 5512,
+      "15": 318,
+      "16": 1,
+      "17": 75,
+      "18": 62
+    }
+  },
+  "one_gtin_many_rows": {
+    "gtin_values_with_1_row": 4770,
+    "gtin_values_with_2_rows": 108,
+    "gtin_values_with_3plus_rows": 127,
+    "max_rows_per_single_gtin": 5,
+    "gtin_values_appearing_in_more_than_one_mdall_row": 235,
+    "gtin_values_appearing_under_more_than_one_licence": 211,
+    "gtin_values_appearing_under_more_than_one_device_id": 233,
+    "duplicate_surplus_rows": 507,
+    "normalisation_collisions_more_than_one_raw_for_one_normalised": 0,
+    "examples_multi_licence": [
+      {
+        "gtin": "08800022305150",
+        "rows": 2,
+        "licences": [
+          "110464",
+          "111487"
+        ],
+        "device_ids": [
+          "1051246",
+          "1077127"
+        ]
+      },
+      {
+        "gtin": "08800022305167",
+        "rows": 2,
+        "licences": [
+          "110464",
+          "111487"
+        ],
+        "device_ids": [
+          "1051246",
+          "1077127"
+        ]
+      },
+      {
+        "gtin": "08800022305204",
+        "rows": 2,
+        "licences": [
+          "110464",
+          "111487"
+        ],
+        "device_ids": [
+          "1051245",
+          "1077126"
+        ]
+      },
+      {
+        "gtin": "08800022305235",
+        "rows": 2,
+        "licences": [
+          "110464",
+          "111487"
+        ],
+        "device_ids": [
+          "1051247"
+        ]
+      },
+      {
+        "gtin": "08800022305402",
+        "rows": 2,
+        "licences": [
+          "110464",
+          "111487"
+        ],
+        "device_ids": [
+          "1051244",
+          "1077125"
+        ]
+      }
+    ],
+    "examples_normalisation_collision": []
+  },
+  "device_id_mixing_gtin_and_token": {
+    "device_ids_with_both_classes": 42,
+    "note": "device_id rows whose device_identifier is sometimes 14-digit and sometimes a model/catalogue token."
+  },
+  "reach_denominators": {
+    "distinct_licences_with_at_least_one_gtin_class_row": 227,
+    "distinct_device_ids_with_at_least_one_gtin_class_row": 679,
+    "note": "Denominators for how far a UDI bridge could ever reach inside MDALL."
+  },
+  "atlas_reconciliation": {
+    "atlas_scanned_until_limit": 1673926,
+    "cache_rows": 1673926,
+    "cache_rows_equals_atlas_scanned": true,
+    "atlas_gtin_rows_kept": 5512,
+    "cache_atlas_class_rows": 5512,
+    "gtin_rows_match_atlas": true,
+    "atlas_unique_di": 5005,
+    "cache_atlas_class_distinct": 5005,
+    "unique_di_match_atlas": true,
+    "atlas_share_published": 0.003293,
+    "share_recomputed": 0.00329286,
+    "atlas_identity_model_md_line": "5,477 bare 14-digit rows (5,512 after separator normalisation) out of 1,673,926 active identifier rows (0.33 %)",
+    "bare_5477_matches_identity_model_doc": true,
+    "normalised_5512_matches_atlas_report": true
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "access_evidence": "PROBES.json reg_mdall_001/002/003: HTTP 200 JSON for company search (6,909 bytes), licence search (55,291 bytes) and device search (45,068 bytes). The historical path /api/medical-device/device/ returns HTTP 404 (recorded in DATASETS/regulatory/_discovery/round1.json); the working base is /api/medical-devices/.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "licence?company_id=N is unbounded for large firms (read timeout observed on Medtronic company_id 114663).",
+    "device?licence_number=N is documented but unscoped: every call returned >2.5 MB."
+  ],
+  "bulk_available": true,
+  "domain": "health-products.canada.ca",
+  "entity_types": [
+    "regulatory_clearance",
+    "regulatory_listing",
+    "product_identifier"
+  ],
+  "first_verified_at": "2026-11-10T07:30:00Z",
+  "historical_depth": "Two states: active (no cancellation date) and archived (carries end_date), so cancelled licences are retained. Per-device and per-identifier first/end dates are published. There is NO publication clock and NO status-change date.",
+  "id_schemes": [
+    "hc_device_licence",
+    "hc_mdall_device_id",
+    "hc_mdall_device_identifier"
+  ],
+  "licence_note": "Open Government Portal dataset c801a084-210b-4cd2-8513-26a00b66eb6f 'Medical Devices Active Licence Listing (MDALL)' states licence_title 'Open Government Licence - Canada' with license_url https://open.canada.ca/en/open-government-licence-canada.",
+  "licence_status": "open_licence",
+  "licence_url": "https://open.canada.ca/en/open-government-licence-canada",
+  "machine_interface": "REST JSON/XML under https://health-products.canada.ca/api/medical-devices/: licence/, company/, device/, deviceidentifier/, licencetype/, sbdlocation/. Params: id, state (active|archived), licence_name, company_id, device_name, licence_number, device_identifier, lang, type.",
+  "name": "Medical Devices Active Licence Listing (MDALL)",
+  "notes": "Work-around used instead of the two broken filters: discover licences via licence_name=<keyword> and attribute them to a firm by the official company_id from company?company_name=<firm>; collect devices via device_name=<keyword>&state=active and attribute via original_licence_no. Documented in DATASETS/regulatory/canada_mdall/COUNTS.json.",
+  "operator": "Health Canada",
+  "probe_suite": "regulatory",
+  "rate_policy": "No documented quota. Observed ~20 calls at ~1.2 req/s; the unbounded licence?company_id= and device?licence_number= calls time out or return >2.5 MB for large firms.",
+  "registration_url": null,
+  "robots_summary": "HTTP 404 (ASP.NET error page) — no robots policy is served.",
+  "robots_url": "https://health-products.canada.ca/robots.txt",
+  "source_id": "canada_mdall",
+  "unlock_route": "",
+  "what_is_new": "First Canadian counterpart data in MedRadar with official licence numbers (original_licence_no) and per-identifier model tokens, which is what makes an FDA<->Canada identity experiment possible at all — and what exposes that the two jurisdictions share no identifier namespace."
+}

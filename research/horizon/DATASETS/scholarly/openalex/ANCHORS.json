@@ -1,0 +1,3297 @@
+{
+  "selection_rule": "experiments/scholarly/EXP_H1_SELECTION_RULE.md",
+  "frozen_at": "2026-11-10",
+  "generated_at": "2026-11-09T23:21:12Z",
+  "per_firm_target": 12,
+  "window": {
+    "from": "2020-01-01",
+    "to": "2022-12-31"
+  },
+  "firms": [
+    {
+      "firm": "Medtronic",
+      "term": "medtronic",
+      "fallback_terms": []
+    },
+    {
+      "firm": "GE HealthCare",
+      "term": "ge healthcare",
+      "fallback_terms": [
+        "ge healthcare"
+      ]
+    },
+    {
+      "firm": "Philips",
+      "term": "philips",
+      "fallback_terms": []
+    },
+    {
+      "firm": "Draeger",
+      "term": "dräger",
+      "fallback_terms": [
+        "draeger"
+      ]
+    },
+    {
+      "firm": "Mindray",
+      "term": "mindray",
+      "fallback_terms": []
+    }
+  ],
+  "tier_ladder": [
+    "A",
+    "B",
+    "C"
+  ],
+  "anchor_count": 60,
+  "raw_files": [
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_medtronic__tierA__t0__medtronic.json",
+      "bytes": 225614,
+      "sha256": "7aa69468bcb32afe51ffd92451c987fff8864a438556aeb77d2f5a00c08dda5f",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amedtronic%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amedtronic%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:02Z",
+      "note": "EXP-H1 anchor selection firm=Medtronic tier=A term=medtronic",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amedtronic%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    },
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_ge_healthcare__tierA__t0__ge_healthcare.json",
+      "bytes": 64789,
+      "sha256": "d883e37e94e23852a503b9b1b6ab17216ac7e60a04c71d29382c65b075c9752c",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Age+healthcare%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Age+healthcare%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:02Z",
+      "note": "EXP-H1 anchor selection firm=GE HealthCare tier=A term=ge healthcare",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Age+healthcare%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    },
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_ge_healthcare__tierA__t1__ge_healthcare.json",
+      "bytes": 64789,
+      "sha256": "d883e37e94e23852a503b9b1b6ab17216ac7e60a04c71d29382c65b075c9752c",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Age+healthcare%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Age+healthcare%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:02Z",
+      "note": "EXP-H1 anchor selection firm=GE HealthCare tier=A term=ge healthcare",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Age+healthcare%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    },
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_ge_healthcare__tierB__t0__ge_healthcare.json",
+      "bytes": 256076,
+      "sha256": "1e28eda17043b8d53c73cb0a574affa171c829ce184b2ebf78828ae8817df410",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Age+healthcare%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3Adevice&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Age+healthcare%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3Adevice&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:03Z",
+      "note": "EXP-H1 anchor selection firm=GE HealthCare tier=B term=ge healthcare",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Age+healthcare%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3Adevice&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    },
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_philips__tierA__t0__philips.json",
+      "bytes": 186869,
+      "sha256": "584d849905e1af0dae9b8fbd18d2d5bb565f4a6ac2bfebb1622b92afb73e8c2e",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Aphilips%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Aphilips%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:04Z",
+      "note": "EXP-H1 anchor selection firm=Philips tier=A term=philips",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Aphilips%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    },
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_draeger__tierA__t0__dräger.json",
+      "bytes": 1819,
+      "sha256": "614bad671d76e1f7e4c6898fe6eb80ace8f546f0238f91002d53aa65d5bc6654",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adr%C3%A4ger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adr%C3%A4ger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:05Z",
+      "note": "EXP-H1 anchor selection firm=Draeger tier=A term=dräger",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adr%C3%A4ger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    },
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_draeger__tierA__t1__draeger.json",
+      "bytes": 35803,
+      "sha256": "195fd225e045954a947e23bafac864821135262cf0d237385d2928445bd915dc",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adraeger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adraeger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:06Z",
+      "note": "EXP-H1 anchor selection firm=Draeger tier=A term=draeger",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adraeger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    },
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_draeger__tierB__t0__dräger.json",
+      "bytes": 9530,
+      "sha256": "e5288b866581f5ec5e23a4b66965a0b32af7ed60f39e790482409a24c67a3aa2",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adr%C3%A4ger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3Adevice&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adr%C3%A4ger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3Adevice&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:07Z",
+      "note": "EXP-H1 anchor selection firm=Draeger tier=B term=dräger",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adr%C3%A4ger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3Adevice&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    },
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_draeger__tierB__t1__draeger.json",
+      "bytes": 41725,
+      "sha256": "5b3db7a004ef0c58a1e622f444a2b79db6084e9f6c78657dd43a6af758b2256e",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adraeger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3Adevice&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adraeger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3Adevice&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:08Z",
+      "note": "EXP-H1 anchor selection firm=Draeger tier=B term=draeger",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adraeger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3Adevice&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    },
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_draeger__tierC__t0__dräger.json",
+      "bytes": 345034,
+      "sha256": "585b58da7b3e0ea1819c97a0276cfc08d1a7e3ce1aa66d5c560ea4deeb399931",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adr%C3%A4ger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adr%C3%A4ger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:09Z",
+      "note": "EXP-H1 anchor selection firm=Draeger tier=C term=dräger",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Adr%C3%A4ger%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    },
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_mindray__tierA__t0__mindray.json",
+      "bytes": 23831,
+      "sha256": "d61d4077b9e9bc73a7e94f944e6571be6acb427c560a551f883d59c8f8e47cc4",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amindray%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amindray%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:10Z",
+      "note": "EXP-H1 anchor selection firm=Mindray tier=A term=mindray",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amindray%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3A%22medical+device%22&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    },
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_mindray__tierB__t0__mindray.json",
+      "bytes": 51828,
+      "sha256": "6a98cf6afdf65c8f6cc100a36b7a5cab22d1a3e54402e7eb8e6ffac7938f3b87",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amindray%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3Adevice&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amindray%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3Adevice&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:11Z",
+      "note": "EXP-H1 anchor selection firm=Mindray tier=B term=mindray",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amindray%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue%2Ctitle_and_abstract.search%3Adevice&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    },
+    {
+      "path": "DATASETS/scholarly/openalex/raw/works_mindray__tierC__t0__mindray.json",
+      "bytes": 398586,
+      "sha256": "d49fff3047a7771b50dec0920c5d90b301cf749d43ca02aec8ace5b76ff264e5",
+      "requested_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amindray%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "final_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amindray%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:21:12Z",
+      "note": "EXP-H1 anchor selection firm=Mindray tier=C term=mindray",
+      "requested_url_with_params": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amindray%2Cfrom_publication_date%3A2020-01-01%2Cto_publication_date%3A2022-12-31%2Chas_doi%3Atrue&per-page=25&sort=publication_date%3Adesc&select=id%2Cdoi%2Cids%2Cdisplay_name%2Cpublication_date%2Ccreated_date%2Cupdated_date%2Ctype%2Ctype_crossref%2Cauthorships%2Cprimary_location%2Cawards%2Cfunders&mailto=medradar-research%40proton.me"
+    }
+  ],
+  "steps": [
+    {
+      "firm": "Medtronic",
+      "tier": "A",
+      "term": "medtronic",
+      "status": 200,
+      "used": 12,
+      "raw": "DATASETS/scholarly/openalex/raw/works_medtronic__tierA__t0__medtronic.json",
+      "total_count": 57
+    },
+    {
+      "firm": "GE HealthCare",
+      "tier": "A",
+      "term": "ge healthcare",
+      "status": 200,
+      "used": 5,
+      "raw": "DATASETS/scholarly/openalex/raw/works_ge_healthcare__tierA__t0__ge_healthcare.json",
+      "total_count": 5
+    },
+    {
+      "firm": "GE HealthCare",
+      "tier": "A",
+      "term": "ge healthcare",
+      "status": 200,
+      "used": 0,
+      "raw": "DATASETS/scholarly/openalex/raw/works_ge_healthcare__tierA__t1__ge_healthcare.json",
+      "total_count": 5
+    },
+    {
+      "firm": "GE HealthCare",
+      "tier": "B",
+      "term": "ge healthcare",
+      "status": 200,
+      "used": 7,
+      "raw": "DATASETS/scholarly/openalex/raw/works_ge_healthcare__tierB__t0__ge_healthcare.json",
+      "total_count": 24
+    },
+    {
+      "firm": "Philips",
+      "tier": "A",
+      "term": "philips",
+      "status": 200,
+      "used": 12,
+      "raw": "DATASETS/scholarly/openalex/raw/works_philips__tierA__t0__philips.json",
+      "total_count": 19
+    },
+    {
+      "firm": "Draeger",
+      "tier": "A",
+      "term": "dräger",
+      "status": 200,
+      "used": 0,
+      "raw": "DATASETS/scholarly/openalex/raw/works_draeger__tierA__t0__dräger.json",
+      "total_count": 0
+    },
+    {
+      "firm": "Draeger",
+      "tier": "A",
+      "term": "draeger",
+      "status": 200,
+      "used": 1,
+      "raw": "DATASETS/scholarly/openalex/raw/works_draeger__tierA__t1__draeger.json",
+      "total_count": 1
+    },
+    {
+      "firm": "Draeger",
+      "tier": "B",
+      "term": "dräger",
+      "status": 200,
+      "used": 1,
+      "raw": "DATASETS/scholarly/openalex/raw/works_draeger__tierB__t0__dräger.json",
+      "total_count": 1
+    },
+    {
+      "firm": "Draeger",
+      "tier": "B",
+      "term": "draeger",
+      "status": 200,
+      "used": 1,
+      "raw": "DATASETS/scholarly/openalex/raw/works_draeger__tierB__t1__draeger.json",
+      "total_count": 2
+    },
+    {
+      "firm": "Draeger",
+      "tier": "C",
+      "term": "dräger",
+      "status": 200,
+      "used": 9,
+      "raw": "DATASETS/scholarly/openalex/raw/works_draeger__tierC__t0__dräger.json",
+      "total_count": 15
+    },
+    {
+      "firm": "Mindray",
+      "tier": "A",
+      "term": "mindray",
+      "status": 200,
+      "used": 1,
+      "raw": "DATASETS/scholarly/openalex/raw/works_mindray__tierA__t0__mindray.json",
+      "total_count": 1
+    },
+    {
+      "firm": "Mindray",
+      "tier": "B",
+      "term": "mindray",
+      "status": 200,
+      "used": 3,
+      "raw": "DATASETS/scholarly/openalex/raw/works_mindray__tierB__t0__mindray.json",
+      "total_count": 4
+    },
+    {
+      "firm": "Mindray",
+      "tier": "C",
+      "term": "mindray",
+      "status": 200,
+      "used": 8,
+      "raw": "DATASETS/scholarly/openalex/raw/works_mindray__tierC__t0__mindray.json",
+      "total_count": 120
+    }
+  ],
+  "anchors": [
+    {
+      "anchor_no": 1,
+      "rank_in_firm": 1,
+      "firm": "Medtronic",
+      "firm_term": "medtronic",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3178757957",
+      "doi": "10.1016/j.yrtph.2021.104987",
+      "title": "Carcinogenic assessment of cobalt-containing alloys in medical devices or cobalt in occupational settings: A systematic review and meta-analysis of overall cancer risk from published epidemiologic studies",
+      "publication_date": "2021-07-03",
+      "created_date": "2021-07-19T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "review",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1016/j.yrtph.2021.104987",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/34229014",
+        "mag": "3178757957",
+        "openalex": "https://openalex.org/W3178757957"
+      },
+      "journal": "Regulatory Toxicology and Pharmacology",
+      "affiliation_strings": [
+        "Johnson & Johnson, 410 George Street, New Brunswick, NJ, 08901, USA. Electronic address: szhan141@its.jnj.com",
+        "Johnson & Johnson, 410 George Street, New Brunswick, NJ, 08901, USA",
+        "Abbott Vascular, 3200 Lakeside Dr, Santa Clara, CA, 95054, USA",
+        "Zimmer Biomet, Sulzerallee 8, CH, 8404 Winterthur, Switzerland",
+        "LifeScan Global Corporation, 20 Valley Stream Parkway, Malvern, PA, 19355, USA",
+        "Medtronic, 8200 Coral Sea St NE, Mounds View, MN, 55112, USA",
+        "Smith+Nephew, Oberneuhofstrasse 10D, 6340 Baar, Switzerland",
+        "Stryker, Elstree, Borehamwood WD6 3SG, UK",
+        "Cardno ChemRisk, 20 Stanwix St, Pittsburgh, PA, 15222, USA",
+        "Johnson & Johnson, 410 George Street, New Brunswick, NJ, 08901, USA; University of Pennsylvania, Perelman School of Medicine, Philadelphia, PA, 19104, USA",
+        "University of Pennsylvania, Perelman School of Medicine, Philadelphia, PA, 19104, USA"
+      ],
+      "matched_affiliation_strings": [
+        "Medtronic, 8200 Coral Sea St NE, Mounds View, MN, 55112, USA"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 2,
+      "rank_in_firm": 2,
+      "firm": "Medtronic",
+      "firm_term": "medtronic",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3181230257",
+      "doi": "10.1016/j.yrtph.2021.105004",
+      "title": "An integrated benefit-risk assessment of cobalt-containing alloys used in medical devices: Implications for regulatory requirements in the European Union",
+      "publication_date": "2021-07-10",
+      "created_date": "2021-07-19T00:00:00",
+      "updated_date": "2026-11-06T12:05:46.655746",
+      "type": "review",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1016/j.yrtph.2021.105004",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/34256083",
+        "mag": "3181230257",
+        "openalex": "https://openalex.org/W3181230257"
+      },
+      "journal": "Regulatory Toxicology and Pharmacology",
+      "affiliation_strings": [
+        "Johnson & Johnson, 410 George St, New Brunswick, NJ, 08901, USA",
+        "Smith & Nephew, 1450 E Brooks Rd, Memphis, TN, 38116, USA",
+        "Smith & Nephew, Oberneuhofstasse 10D, 6340, Baar, Switzerland",
+        "Stryker, 2825 Airview Boulevard, Kalamazoo, MI, 49002, USA",
+        "Abbott Vascular, 3200 Lakeside Dr, Santa Clara, CA, 95054, USA",
+        "Zimmer Biomet, Sulzerallee 8, CH-8404 Winterthur, Switzerland",
+        "Cardno ChemRisk, 235 Pine Street Suite 2300, San Francisco, CA, 94104, USA",
+        "Cardno ChemRisk, 6720 S Macadam Ave Suite 150, Portland, OR, 97219, USA",
+        "Cardno ChemRisk, 20 Stanwix Street Suite 505, Pittsburgh, PA, 15222, USA",
+        "Ethicon, A J&J Company, Cincinnati, OH, 45242, USA",
+        "Boston Scientific, 100 Boston Scientific Way, Marlborough, MA, 01752, USA",
+        "Medtronic Plc, 6743 Southpoint Drive North, Jacksonville, FL, 32216, USA",
+        "Johnson & Johnson, 410 George St, New Brunswick, NJ, 08901, USA; University of Pennsylvania, Perelman School of Medicine, Philadelphia, PA, 19104, USA",
+        "University of Pennsylvania, Perelman School of Medicine, Philadelphia, PA, 19104, USA",
+        "LifeScan Global Corporation, 20 Valley Stream Parkway, Malvern, PA, 19355, USA",
+        "Edwards Lifesciences, One Edwards Way, Irvine, CA, 92614, USA",
+        "Becton Dickinson, 1 Becton Drive, Franklin Lakes, NJ, 07417, USA",
+        "Becton Dickinson, 1 Becton Drive, Franklin Lakes, NJ, 07417, USA; Rho, Inc., 2635 E NC Hwy 54, Durham, NC, 27713, USA",
+        "Medtronic Plc, 8200 Coral Sea St NE, Mounds View, MN, 55112, USA",
+        "Stryker Neurovascular, 47900 Bayside Parkway, Fremont, CA, 94538, USA",
+        "Novo Nordisk A/S, Stenager Allé 4, 9800, Hjørring, Denmark",
+        "Cardno ChemRisk, 30 North LaSalle St Suite 3910, Chicago, Illinois, 60602-2590, USA",
+        "Cardno ChemRisk, 20 Stanwix Street Suite 505, Pittsburgh, PA, 15222, USA. Electronic address: Ken.Unice@cardno.com"
+      ],
+      "matched_affiliation_strings": [
+        "Medtronic Plc, 6743 Southpoint Drive North, Jacksonville, FL, 32216, USA",
+        "Medtronic Plc, 8200 Coral Sea St NE, Mounds View, MN, 55112, USA"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 3,
+      "rank_in_firm": 3,
+      "firm": "Medtronic",
+      "firm_term": "medtronic",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3183138114",
+      "doi": "10.1111/jace.18041",
+      "title": "Advanced glass seals for implantable medical devices",
+      "publication_date": "2021-07-19",
+      "created_date": "2021-08-02T00:00:00",
+      "updated_date": "2026-10-30T12:39:25.321706",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1111/jace.18041",
+        "mag": "3183138114",
+        "openalex": "https://openalex.org/W3183138114"
+      },
+      "journal": "Journal of the American Ceramic Society",
+      "affiliation_strings": [
+        "Medtronic Energy and Component Center, Brooklyn Center, MN, USA"
+      ],
+      "matched_affiliation_strings": [
+        "Medtronic Energy and Component Center, Brooklyn Center, MN, USA"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 4,
+      "rank_in_firm": 4,
+      "firm": "Medtronic",
+      "firm_term": "medtronic",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3201698131",
+      "doi": "10.1016/s0378-4274(21)00463-x",
+      "title": "In vitro strategy for biocompatibility testing of medical devices: ISO's perspective on irritation and sensitization",
+      "publication_date": "2021-09-01",
+      "created_date": "2021-10-11T00:00:00",
+      "updated_date": "2026-08-28T12:50:07.497085",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1016/s0378-4274(21)00463-x",
+        "mag": "3201698131",
+        "openalex": "https://openalex.org/W3201698131"
+      },
+      "journal": "Toxicology Letters",
+      "affiliation_strings": [
+        "EPISKIN, Lyon, France",
+        "Medtronic plc, Minneapolis, USA",
+        "National Institute for Public Health and the Environment (RIVM) (retired), Bilthoven, Netherlands"
+      ],
+      "matched_affiliation_strings": [
+        "Medtronic plc, Minneapolis, USA"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 5,
+      "rank_in_firm": 5,
+      "firm": "Medtronic",
+      "firm_term": "medtronic",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4230884239",
+      "doi": "10.1016/j.mpmed.2021.08.009",
+      "title": "Infective endocarditis in the adult patient",
+      "publication_date": "2021-09-27",
+      "created_date": "2022-05-11T00:00:00",
+      "updated_date": "2026-10-14T16:39:01.820549",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1016/j.mpmed.2021.08.009",
+        "openalex": "https://openalex.org/W4230884239"
+      },
+      "journal": "Medicine",
+      "affiliation_strings": [
+        "JAT Sandoe FRCPath PhD is an Honorary Consultant Microbiologist at Leeds Teaching Hospitals NHS Trust, and Associate Professor of Microbiology at the University of Leeds, UK. Competing interests: JATS is Chair of the British Society for Antimicrobial Chemotherapy Endocarditis Working Party. In the past 5 years he has received research funding from the National Institute for Health Research, Medical Research Council, Engineering and Physical Sciences Research Council and British Society for Antimicrobial Chemotherapy, and research funding and/or honoraria and/or travel sponsorship from Pfizer, Merck Sharp & Dohme and Astellas RW Watkin MD MRCP FESC is a Consultant Cardiologist at the University Hospitals Birmingham NHS Trust, UK. Competing interests: RWW is a Member of the British Society for Antimicrobial Chemotherapy Endocarditis Working Party and a PI for a commercial study sponsored by Medtronic MJ Dayer PhD FRCP is a Consultant Cardiologist at Taunton and Somerset NHS Trust, UK. He is a Consultant Cardiologist at Musgrove Park Hospital, Taunton, UK, and has a long-standing interest in infective endocarditis. He has published a number of articles on the subject and spoken on the subject at national and international meetings. He was a non-voting member for the most recent revision of the NICE guidelines. Competing interests: Dr Dayer has received fees for speaking and educational support from Biotronik",
+        "Leeds Teaching Hospitals NHS Trust, UK"
+      ],
+      "matched_affiliation_strings": [
+        "JAT Sandoe FRCPath PhD is an Honorary Consultant Microbiologist at Leeds Teaching Hospitals NHS Trust, and Associate Professor of Microbiology at the University of Leeds, UK. Competing interests: JATS is Chair of the British Society for Antimicrobial Chemotherapy Endocarditis Working Party. In the past 5 years he has received research funding from the National Institute for Health Research, Medical Research Council, Engineering and Physical Sciences Research Council and British Society for Antimicrobial Chemotherapy, and research funding and/or honoraria and/or travel sponsorship from Pfizer, Merck Sharp & Dohme and Astellas RW Watkin MD MRCP FESC is a Consultant Cardiologist at the University Hospitals Birmingham NHS Trust, UK. Competing interests: RWW is a Member of the British Society for Antimicrobial Chemotherapy Endocarditis Working Party and a PI for a commercial study sponsored by Medtronic MJ Dayer PhD FRCP is a Consultant Cardiologist at Taunton and Somerset NHS Trust, UK. He is a Consultant Cardiologist at Musgrove Park Hospital, Taunton, UK, and has a long-standing interest in infective endocarditis. He has published a number of articles on the subject and spoken on the subject at national and international meetings. He was a non-voting member for the most recent revision of the NICE guidelines. Competing interests: Dr Dayer has received fees for speaking and educational support from Biotronik"
+      ],
+      "award_count": 0,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320307115",
+          "name": "Bristol-Myers Squibb"
+        },
+        {
+          "id": "https://openalex.org/F4320307765",
+          "name": "Pfizer"
+        },
+        {
+          "id": "https://openalex.org/F4320309115",
+          "name": "Copper Development Association"
+        },
+        {
+          "id": "https://openalex.org/F4320310567",
+          "name": "Boston Scientific Corporation"
+        },
+        {
+          "id": "https://openalex.org/F4320317536",
+          "name": "ResMed"
+        },
+        {
+          "id": "https://openalex.org/F4320321625",
+          "name": "Daiichi-Sankyo"
+        },
+        {
+          "id": "https://openalex.org/F4320323024",
+          "name": "Astellas Pharma"
+        },
+        {
+          "id": "https://openalex.org/F4320333259",
+          "name": "Abbott Vascular"
+        },
+        {
+          "id": "https://openalex.org/F4320338262",
+          "name": "Daiichi Sankyo Europe"
+        }
+      ],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 6,
+      "rank_in_firm": 6,
+      "firm": "Medtronic",
+      "firm_term": "medtronic",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3203620054",
+      "doi": "10.1253/circj.cj-21-0491",
+      "title": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease ― 12-Month Results From Japan Post-Market Surveillance Study ―",
+      "publication_date": "2021-10-05",
+      "created_date": "2021-10-11T00:00:00",
+      "updated_date": "2026-10-31T12:09:11.096373",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1253/circj.cj-21-0491",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/34615815",
+        "mag": "3203620054",
+        "openalex": "https://openalex.org/W3203620054"
+      },
+      "journal": "Circulation Journal",
+      "affiliation_strings": [
+        "Kokura Memorial Hospital",
+        "Kansai Rosai Hospital",
+        "Kishiwada Tokushukai Hospital",
+        "Morinomiya Hospital",
+        "Shonan Kamakura General Hospital",
+        "Tokeidai Memorial Hospital",
+        "Fukuoka Sanno Hospital",
+        "Medtronic",
+        "Toho University, Oahshi Medical Center"
+      ],
+      "matched_affiliation_strings": [
+        "Medtronic"
+      ],
+      "award_count": 0,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320323434",
+          "name": "Nara Medical University"
+        }
+      ],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 7,
+      "rank_in_firm": 7,
+      "firm": "Medtronic",
+      "firm_term": "medtronic",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4313137150",
+      "doi": "10.33564/ijeast.2021.v06i07.046",
+      "title": "THE FUTURE: 3D MANUFACTURING OF MEDICAL DEVICES",
+      "publication_date": "2021-11-01",
+      "created_date": "2023-01-06T00:00:00",
+      "updated_date": "2026-10-30T12:39:25.321706",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.33564/ijeast.2021.v06i07.046",
+        "openalex": "https://openalex.org/W4313137150"
+      },
+      "journal": "International Journal of Engineering Applied Sciences and Technology",
+      "affiliation_strings": [
+        "Engineering Manager, Medtronic, California, USA",
+        "Manufacturing Engineer , Zest Dental Solutions , California , USA"
+      ],
+      "matched_affiliation_strings": [
+        "Engineering Manager, Medtronic, California, USA"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 8,
+      "rank_in_firm": 8,
+      "firm": "Medtronic",
+      "firm_term": "medtronic",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3217696561",
+      "doi": "10.1161/circ.144.suppl_1.13385",
+      "title": "Abstract 13385: Prediction of Patient Comfort for Extravascular and Subcutaneous Implantable Cardioverter-Defibrillation Devices Using Modeling",
+      "publication_date": "2021-11-16",
+      "created_date": "2021-12-06T00:00:00",
+      "updated_date": "2026-07-14T23:27:15.235271",
+      "type": "conference-abstract",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1161/circ.144.suppl_1.13385",
+        "mag": "3217696561",
+        "openalex": "https://openalex.org/W3217696561"
+      },
+      "journal": "Circulation",
+      "affiliation_strings": [
+        "Medtronic, Mounds View, MN"
+      ],
+      "matched_affiliation_strings": [
+        "Medtronic, Mounds View, MN"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 9,
+      "rank_in_firm": 9,
+      "firm": "Medtronic",
+      "firm_term": "medtronic",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4200201941",
+      "doi": "10.1016/j.yrtph.2021.105096",
+      "title": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis",
+      "publication_date": "2021-12-09",
+      "created_date": "2021-12-31T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "review",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1016/j.yrtph.2021.105096",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/34896478",
+        "openalex": "https://openalex.org/W4200201941"
+      },
+      "journal": "Regulatory Toxicology and Pharmacology",
+      "affiliation_strings": [
+        "Johnson & Johnson, 410 George St, New Brunswick, NJ, 08901, United States. Electronic address: choly1@its.jnj.com",
+        "Johnson & Johnson, 410 George St, New Brunswick, NJ, 08901, United States",
+        "Abbott Vascular, 3200 Lakeside Dr, Santa Clara, CA, 95054, United States",
+        "Zimmer Biomet, Sulzerallee 8, CH-8404, Winterthur, Switzerland",
+        "LifeScan Global Corporation, 20 Valley Stream Parkway, Malvern, PA, 19355, United States",
+        "Medtronic PLC, 8200 Coral Sea St NE, Minneapolis, MN, 55112, United States",
+        "Smith and Nephew, Oberneuhofstasse 10D, 6340, Baar, Switzerland",
+        "Stryker, Elstree, Borehamwood, WD6 3SG, United Kingdom",
+        "Cardno ChemRisk, 20 Stanwix St, Pittsburgh, PA, 15222, United States",
+        "Ethicon, A J&J Company, Cincinnati, OH, 45242, United States",
+        "Johnson & Johnson, 410 George St, New Brunswick, NJ, 08901, United States; University of Pennsylvania, Perelman School of Medicine, Philadelphia, PA, 19104, United States",
+        "University of Pennsylvania, Perelman School of Medicine, Philadelphia, PA, 19104, United States"
+      ],
+      "matched_affiliation_strings": [
+        "Medtronic PLC, 8200 Coral Sea St NE, Minneapolis, MN, 55112, United States"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 10,
+      "rank_in_firm": 10,
+      "firm": "Medtronic",
+      "firm_term": "medtronic",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4206402083",
+      "doi": "10.31478/202201b",
+      "title": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs",
+      "publication_date": "2022-01-14",
+      "created_date": "2022-01-25T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.31478/202201b",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/35402857",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/8970224",
+        "openalex": "https://openalex.org/W4206402083"
+      },
+      "journal": "NAM Perspectives",
+      "affiliation_strings": [
+        "Johnson & Johnson",
+        "Novartis",
+        "Medtronic",
+        "Exact Sciences",
+        "3M",
+        "Labcorp"
+      ],
+      "matched_affiliation_strings": [
+        "Medtronic"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 11,
+      "rank_in_firm": 11,
+      "firm": "Medtronic",
+      "firm_term": "medtronic",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4226327246",
+      "doi": "10.1115/1.4053565",
+      "title": "A Framework for In Silico Clinical Trials for Medical Devices Using Concepts From Model Verification, Validation, and Uncertainty Quantification",
+      "publication_date": "2022-01-18",
+      "created_date": "2022-05-05T00:00:00",
+      "updated_date": "2026-10-13T10:08:12.033832",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1115/1.4053565",
+        "openalex": "https://openalex.org/W4226327246"
+      },
+      "journal": "Journal of Verification Validation and Uncertainty Quantification",
+      "affiliation_strings": [
+        "Medtronic plc, Minneapolis, MN 55432"
+      ],
+      "matched_affiliation_strings": [
+        "Medtronic plc, Minneapolis, MN 55432"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 12,
+      "rank_in_firm": 12,
+      "firm": "Medtronic",
+      "firm_term": "medtronic",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4214921330",
+      "doi": "10.1161/jaha.121.023848",
+      "title": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J‐TVT",
+      "publication_date": "2022-03-04",
+      "created_date": "2022-03-05T00:00:00",
+      "updated_date": "2026-11-09T13:22:03.289127",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1161/jaha.121.023848",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/35243902",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/9075277",
+        "openalex": "https://openalex.org/W4214921330"
+      },
+      "journal": "Journal of the American Heart Association",
+      "affiliation_strings": [
+        "Division of Cardiac Surgery Brigham and Women’s Hospital Boston MA",
+        "Duke Clinical Research Institute Durham NC",
+        "Department of Cardiology Keio University School of Medicine Tokyo Japan",
+        "Department of Cardiovascular Surgery Osaka University Hospital Osaka Japan",
+        "Department of Healthcare Quality Assessment Graduate School of Medicine Faculty of Medicine The University of Tokyo Japan",
+        "Department of Cardiovascular Surgery Osaka University Graduate School of Medicine Suita City Japan",
+        "Division of Cardiac Surgery University of Pennsylvania Philadelphia PA",
+        "Division of Cardiology Shonan Kamakura Hospital Kamakura Japan",
+        "Division of Cardiac Surgery Houston Methodist Hospital Houston TX",
+        "Medtronic Santa Rosa CA",
+        "Department of Cardiac Surgery Piedmont Heart Institute Atlanta GA",
+        "Division of Cardiology University of Colorado Aurora CO",
+        "Department of Cardiovascular Surgery Keio University School of Medicine Tokyo Japan",
+        "Department of Cardiology Sakakibara Heart Institute Fuchu Japan",
+        "Division of Cardiology Columbia University Irving Medical CenterNew York‐Presbyterian Hospital New York NY",
+        "Cardiovascular Service line Baylor Scott &amp; White HealthBaylor Scott &amp; White Research Institute Dallas TX"
+      ],
+      "matched_affiliation_strings": [
+        "Medtronic Santa Rosa CA"
+      ],
+      "award_count": 1,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320309139",
+          "name": "Edwards Lifesciences"
+        },
+        {
+          "id": "https://openalex.org/F4320310567",
+          "name": "Boston Scientific Corporation"
+        },
+        {
+          "id": "https://openalex.org/F4320334764",
+          "name": "Japan Society for the Promotion of Science"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G8301051504",
+          "name": "Integrated Analysis of Registry Data Utilizing Patient-Reported Outcomes (PROs) Among Patients with Cardiovascular Disease",
+          "funder": "23K20336",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 13,
+      "rank_in_firm": 1,
+      "firm": "GE HealthCare",
+      "firm_term": "ge healthcare",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3046626404",
+      "doi": "10.2345/0899-8205-54.4.311",
+      "title": "Reading Room : Applied Human Factors in Medical Device Design",
+      "publication_date": "2020-07-01",
+      "created_date": "2020-08-07T00:00:00",
+      "updated_date": "2026-09-23T05:00:35.095934",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.2345/0899-8205-54.4.311",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/33171508",
+        "mag": "3046626404",
+        "openalex": "https://openalex.org/W3046626404"
+      },
+      "journal": "Biomedical Instrumentation & Technology",
+      "affiliation_strings": [
+        "a director of service for imaging and biomed with GE Healthcare. He is a member of the AAMI Medical Equipment Management Committee, volunteer peer reviewer for BI&T, and regular contributor to AAMI Connect"
+      ],
+      "matched_affiliation_strings": [
+        "a director of service for imaging and biomed with GE Healthcare. He is a member of the AAMI Medical Equipment Management Committee, volunteer peer reviewer for BI&T, and regular contributor to AAMI Connect"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 14,
+      "rank_in_firm": 2,
+      "firm": "GE HealthCare",
+      "firm_term": "ge healthcare",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3088455311",
+      "doi": "10.2345/0899-8205-54.4.291",
+      "title": "View From The Top : Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains",
+      "publication_date": "2020-07-01",
+      "created_date": "2020-10-01T00:00:00",
+      "updated_date": "2026-10-31T12:09:11.096373",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.2345/0899-8205-54.4.291",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/33171502",
+        "mag": "3088455311",
+        "openalex": "https://openalex.org/W3088455311"
+      },
+      "journal": "Biomedical Instrumentation & Technology",
+      "affiliation_strings": [
+        "president and chief executive officer of PartsSource in Aurora, OH. Previously, Settimi was the chief marketing officer, senior vice president of global marketing and corporate development, and company officer at Hill-Rom and has held various commercial, strategy, mergers and acquisitions, and product leadership roles at Hospira and GE Healthcare"
+      ],
+      "matched_affiliation_strings": [
+        "president and chief executive officer of PartsSource in Aurora, OH. Previously, Settimi was the chief marketing officer, senior vice president of global marketing and corporate development, and company officer at Hill-Rom and has held various commercial, strategy, mergers and acquisitions, and product leadership roles at Hospira and GE Healthcare"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 15,
+      "rank_in_firm": 3,
+      "firm": "GE HealthCare",
+      "firm_term": "ge healthcare",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3045617901",
+      "doi": "10.1097/rli.0000000000000673",
+      "title": "Artificial Intelligence and Machine Learning in Radiology",
+      "publication_date": "2020-07-29",
+      "created_date": "2020-08-03T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "review",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1097/rli.0000000000000673",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/32776769",
+        "mag": "3045617901",
+        "openalex": "https://openalex.org/W3045617901"
+      },
+      "journal": "Investigative Radiology",
+      "affiliation_strings": [
+        "Conflicts of interest and sources of funding: Julian L. Wichmann is an employee of Siemens Healthineers, has received speaker's fees from Siemens Healthcare and GE Healthcare, and is an investor in Segmed, Inc. Martin J. Willemink is a cofounder/shareholder of Segmed, Inc. Activities not related to the present article: research grants from American Heart Association (18POST34030192), Philips Healthcare, and Stanford University; consulting for Arterys, Inc. Carlo N. De Cecco receives institutional research support and/or honorarium as speaker from Siemens Healthineers",
+        "Division of Experimental Imaging, Department of Diagnostic and Interventional Radiology, University Hospital Frankfurt, Frankfurt am Main",
+        "Julian L. Wichmann, MD, Division of Experimental Imaging, Department of Diagnostic and Interventional Radiology, University Hospital Frankfurt, Theodor-Stern-Kai 7, 60590 Frankfurt am Main, Germany. E-mail: [email protected]",
+        "Siemens Healthineers, Erlangen, Germany",
+        "Conflicts of interest and sources of funding: Julian L. Wichmann is an employee of Siemens Healthineers, has received speaker's fees from Siemens Healthcare and GE Healthcare, and is an investor in Segmed, Inc. Martin J. Willemink is a cofounder/shareholder of Segmed, Inc. Activities not related to the present article: research grants from American Heart Association (18POST34030192), Philips Healthcare, and Stanford University",
+        "consulting for Arterys, Inc. Carlo N. De Cecco receives institutional research support and/or honorarium as speaker from Siemens Healthineers",
+        "Department of Radiology, Stanford University School of Medicine, Stanford, CA",
+        "Division of Cardiothoracic Imaging, Department of Radiology and Imaging Sciences, Emory University Hospital, Atlanta, GA"
+      ],
+      "matched_affiliation_strings": [
+        "Conflicts of interest and sources of funding: Julian L. Wichmann is an employee of Siemens Healthineers, has received speaker's fees from Siemens Healthcare and GE Healthcare, and is an investor in Segmed, Inc. Martin J. Willemink is a cofounder/shareholder of Segmed, Inc. Activities not related to the present article: research grants from American Heart Association (18POST34030192), Philips Healthcare, and Stanford University; consulting for Arterys, Inc. Carlo N. De Cecco receives institutional research support and/or honorarium as speaker from Siemens Healthineers",
+        "Conflicts of interest and sources of funding: Julian L. Wichmann is an employee of Siemens Healthineers, has received speaker's fees from Siemens Healthcare and GE Healthcare, and is an investor in Segmed, Inc. Martin J. Willemink is a cofounder/shareholder of Segmed, Inc. Activities not related to the present article: research grants from American Heart Association (18POST34030192), Philips Healthcare, and Stanford University"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 16,
+      "rank_in_firm": 4,
+      "firm": "GE HealthCare",
+      "firm_term": "ge healthcare",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4206027917",
+      "doi": "10.1016/j.ejvs.2021.11.001",
+      "title": "Re “Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence”",
+      "publication_date": "2022-01-11",
+      "created_date": "2022-01-26T00:00:00",
+      "updated_date": "2026-10-31T12:09:11.096373",
+      "type": "letter",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1016/j.ejvs.2021.11.001",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/35027273",
+        "openalex": "https://openalex.org/W4206027917"
+      },
+      "journal": "European Journal of Vascular and Endovascular Surgery",
+      "affiliation_strings": [
+        "Incepto Medical, Paris, France",
+        "GE Healthcare - General Electric Medical Systems [Buc] (283 rue de la Minière, 78 530 Buc - France)",
+        "MICS - Mathématiques et Informatique pour la Complexité et les Systèmes (Plateau de Moulon 3 rue Joliot Curie 91192 GIF SUR YVETTE CEDEX - France)",
+        "Incepto Medical",
+        "Aortic Centre, Groupe Hospitalier Paris Saint Joseph, Hôpital Marie Lannelongue, Université Paris Saclay, France. Electronic address: s.haulon@ghpsj.fr",
+        "CHRU Lille - Centre Hospitalier Régional Universitaire [CHU Lille] (CHU/CHRU Lille - 2, avenue Oscar Lambret - 59037 Lille Cedex - France)",
+        "HPPIT - Hypertension pulmonaire : physiopathologie et innovation thérapeutique (UMR 999 - Centre Chirurgical Marie Lannelongue, 133 avenue de la Résistance, 92350, Le Plessis Robinson - France)"
+      ],
+      "matched_affiliation_strings": [
+        "GE Healthcare - General Electric Medical Systems [Buc] (283 rue de la Minière, 78 530 Buc - France)"
+      ],
+      "award_count": 1,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320320883",
+          "name": "Agence Nationale de la Recherche"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G2113015678",
+          "name": "3IA Côte d'Azur",
+          "funder": "ANR-19-P3IA-0002",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 17,
+      "rank_in_firm": 5,
+      "firm": "GE HealthCare",
+      "firm_term": "ge healthcare",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4310673938",
+      "doi": "10.1007/s00535-022-01932-1",
+      "title": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum",
+      "publication_date": "2022-12-05",
+      "created_date": "2022-12-15T00:00:00",
+      "updated_date": "2026-11-08T12:12:28.789561",
+      "type": "review",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1007/s00535-022-01932-1",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/36469127",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/9735102",
+        "openalex": "https://openalex.org/W4310673938"
+      },
+      "journal": "Journal of Gastroenterology",
+      "affiliation_strings": [
+        "Department of Advanced Metabolic Hepatology, Osaka University Graduate School of Medicine, 1-7, Yamadaoka, Suita, Osaka, 565-0871, Japan",
+        "Medicine Division, Nippon Boehringer Ingelheim Co., Ltd., 2-1-1, Osaki, Shinagawa-Ku, Tokyo, 141-6017, Japan",
+        "FibroScan Division, Integral Corporation, 2-25-2, Kamiosaki, Shinagawa-Ku, Tokyo, 141-0021, Japan",
+        "FibroScan Division, Integral Corporation, Tokyo, Japan",
+        "Immunology, Hepatology & Dermatology Medical Franchise Dept., Medical Division, Novartis Pharma K.K., 1-23-1, Toranomon, Minato-Ku, Tokyo, 105-6333, Japan",
+        "Medical Information Services, Institute of Immunology Co., Ltd., 1-1-10, Koraku, Bunkyo-Ku, Tokyo, 112-0004, Japan",
+        "Medical Information Services, Institute of Immunology Co., Ltd., Tokyo, Japan",
+        "Product Development 1St Group, Product Development Dept., Fujirebio Inc., 2-1-1, Nishishinjuku, Shinjuku-Ku, Tokyo, 163-0410, Japan",
+        "Academic Department, GE Healthcare Japan, 4-7-127, Asahigaoka, Hino, Tokyo, 191-8503, Japan",
+        "Academic Department, GE Healthcare Japan, Tokyo, Japan",
+        "Ultrasound Business Area, Siemens Healthcare KK, 1-11-1, Osaki, Shinagawa-Ku, Tokyo, 141-8644, Japan",
+        "Ultrasound Business Area, Siemens Healthcare KK, Tokyo, Japan",
+        "Department of Medicine, Division of Gastroenterology, Jichi Medical University, 3311-1, Yakushiji, Shimotsuke, Tochigi, 329-0498, Japan",
+        "Cardiovascular and Diabetes, Product Marketing Department, Kowa Company, Ltd., 3-4-10, Nihonbashi Honcho, Chuo-Ku, Tokyo, 103-0023, Japan",
+        "Clinical Development & Operations Japan, Nippon Boehringer Ingelheim Co., Ltd., 2-1-1, Osaki, Shinagawa-Ku, Tokyo, 141-6017, Japan",
+        "Medical Affairs Department, Kowa Company, Ltd., 3-4-14, Nihonbashi Honcho, Chuo-Ku, Tokyo, 103-8433, Japan",
+        "Medical Affairs Department, Kowa Company, Ltd., Tokyo, Japan",
+        "R&D Planning Department, EA Pharma Co., Ltd., 2-1-1, Irifune, Chuo-Ku, Tokyo, 104-0042, Japan",
+        "Diagnostics Business Area, Siemens Healthcare Diagnostics KK, 1-11-1, Osaki, Shinagawa-Ku, Tokyo, 141-8673, Japan",
+        "Diagnostics Business Area, Siemens Healthcare Diagnostics KK, Tokyo, Japan",
+        "Marketing Dep. H.U. Frontier, Inc., Shinjuku Mitsui Building, 2-1-1, Nishishinjuku, Shinjuku-Ku, Tokyo, 163-0408, Japan",
+        "Marketing Dep. H.U. Frontier, Inc., Tokyo, Japan",
+        "Clinical Development Dept, EA Pharma Co., Ltd., 2-1-1, Irifune, Chuo-Ku, Tokyo, 104-0042, Japan",
+        "Global Drug Development Division, Novartis Pharma KK, 1-23-1, Toranomon, Minato-Ku, Tokyo, 105-6333, Japan",
+        "2Nd Product Planning Dept, 2Nd Product Planning Division, Fujirebio Inc, 2-1-1, Nishishinjuku, Shinjuku-Ku, Tokyo, 163-0410, Japan",
+        "Departments of Hepatology, Graduate School of Medicine, Osaka Metropolitan University, 1-4-3, Asahi-Machi, Abeno-Ku, Osaka, Osaka, 545-8585, Japan",
+        "Departments of Hepatology, Graduate School of Medicine, Osaka Metropolitan University, Osaka, Japan",
+        "Department of Gastroenterology and Hepatology, Suita Municipal Hospital, 5-7, Kishibe Shinmachi, Suita, Osaka, 564-8567, Japan",
+        "Department of General Internal Medicine2, Kawasaki Medical School, Kawasaki Medical Center, 2-6-1, Nakasange, Kita-Ku, Okayama, Okayama, 700-8505, Japan",
+        "Department of Gastroenterology, JA Hiroshima Kouseiren General Hospital, 1-3-3, Jigozen, Hatsukaichi, Hiroshima, 738-8503, Japan",
+        "Hyogo Life Care Clinic Hiroshima, 6-34-1, Enkobashi-Cho, Minami-Ku, Hiroshima, Hiroshima, 732-0823, Japan",
+        "Hyogo Life Care Clinic Hiroshima, Hiroshima, Japan",
+        "Department of Gastroenterology and Neurology, Faculty of Medicine, Kagawa University, 1750-1, Oaza Ikenobe, Miki-Cho, Kita-Gun, Kagawa, 761-0793, Japan",
+        "Department of Gastroenterology and Hepatology, Gifu Municipal Hospital, 7-1, Kashima-Cho, Gifu, Gifu, 500-8513, Japan",
+        "Division of Hepatology, Shimane University Hospital, 89-1, Enya-Cho, Izumo, Shimane, 693-8501, Japan",
+        "Division of Gastroenterology and Hepatology, Department of Internal Medicine, National Defense Medical College, 3-2, Namiki, Tokorozawa, Saitama, 359-8513, Japan",
+        "Division of Gastroenterology and Hepatology, Tokyo Medical University Ibaraki Medical Center, 3-20-1, Chuo, Ami-Machi, Inashiki-Gun, Ibaraki, 300-0395, Japan",
+        "Liver Center, Faculty of Medicine, Saga University Hospital, Saga University, 5-1-1, Nabeshima, Saga, Saga, 849-8501, Japan",
+        "Department of Gastroenterology and Hepatology, Yokohama City University School of Medicine Graduate School of Medicine, 3-9, Fukuura, Kanazawa-Ku, Yokohama, Kanagawa, 236-0004, Japan",
+        "Department of Internal Medicine, Hanyang University College of Medicine, Seoul, 04763, Korea",
+        "Division of Hepatology and Pancreatology, Department of Internal Medicine, Aichi Medical University, 21 Yazako Karimata, Nagakute, Aichi, 480-1195, Japan. sumida19701106@yahoo.co.jp",
+        "Division of Hepatology and Pancreatology, Department of Internal Medicine, Aichi Medical University, 21 Yazako Karimata, Nagakute, Aichi, 480-1195, Japan",
+        "Department of Gastroenterology & Hepatology, Saiseikai Suita Hospital, Osaka, 1-2, Kawazono-Cho, Suita, Osaka, 564-0013, Japan",
+        "Saga University , 5-1-1 , Nabeshima , Saga , Saga 849-8501 , Japan"
+      ],
+      "matched_affiliation_strings": [
+        "Academic Department, GE Healthcare Japan, 4-7-127, Asahigaoka, Hino, Tokyo, 191-8503, Japan",
+        "Academic Department, GE Healthcare Japan, Tokyo, Japan"
+      ],
+      "award_count": 3,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320311405",
+          "name": "Japan Agency for Medical Research and Development"
+        },
+        {
+          "id": "https://openalex.org/F4320317814",
+          "name": "Sysmex Corporation"
+        },
+        {
+          "id": "https://openalex.org/F4320334764",
+          "name": "Japan Society for the Promotion of Science"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G2060486790",
+          "name": "Investigation of Portal Hypertension and Bile Acid Alterations in the Pathogenesis of Sarcopenia Associated with NAFLD",
+          "funder": "21K08012",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G7561648557",
+          "name": "Development of NAFLD patient prognosis prediction method using glycan biomarkers and elucidation of its biological significance",
+          "funder": "20K08383",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G8483045404",
+          "name": null,
+          "funder": "JP22fk0210090",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 18,
+      "rank_in_firm": 6,
+      "firm": "GE HealthCare",
+      "firm_term": "ge healthcare",
+      "tier": "B",
+      "openalex_id": "https://openalex.org/W3011464495",
+      "doi": "10.1002/bit.27335",
+      "title": "Hydrocyclones as cell retention device for CHO perfusion processes in single‐use bioreactors",
+      "publication_date": "2020-03-17",
+      "created_date": "2020-03-23T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1002/bit.27335",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/32181883",
+        "mag": "3011464495",
+        "openalex": "https://openalex.org/W3011464495"
+      },
+      "journal": "Biotechnology and Bioengineering",
+      "affiliation_strings": [
+        "COPPE/PEQ, Cell Culture Engineering Laboratory (LECC), Federal University of Rio de Janeiro (UFRJ), Rio de Janeiro, RJ, Brazil",
+        "BioProcess R&amp;D GE Healthcare Bio‐Sciences AB Uppsala Sweden",
+        "Department of Chemical Engineering, School of Chemistry, Federal University of Rio de Janeiro (UFRJ), Rio de Janeiro, RJ, Brazil"
+      ],
+      "matched_affiliation_strings": [
+        "BioProcess R&amp;D GE Healthcare Bio‐Sciences AB Uppsala Sweden"
+      ],
+      "award_count": 4,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320321091",
+          "name": "Coordenação de Aperfeiçoamento de Pessoal de Nível Superior"
+        },
+        {
+          "id": "https://openalex.org/F4320322025",
+          "name": "Conselho Nacional de Desenvolvimento Científico e Tecnológico"
+        },
+        {
+          "id": "https://openalex.org/F4320322749",
+          "name": "Fundação Carlos Chagas Filho de Amparo à Pesquisa do Estado do Rio de Janeiro"
+        },
+        {
+          "id": "https://openalex.org/F4320332457",
+          "name": "GE Healthcare"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G1687832916",
+          "name": null,
+          "funder": "Cientistas do Nosso Estado / 202.973/2015",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G3489772042",
+          "name": null,
+          "funder": "Doutorado GD /140752/2017-0",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G54084894",
+          "name": null,
+          "funder": "PQ‐1D / 312328/2013‐3",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G7958571552",
+          "name": null,
+          "funder": "Coppetec-PEQ20761",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 19,
+      "rank_in_firm": 7,
+      "firm": "GE HealthCare",
+      "firm_term": "ge healthcare",
+      "tier": "B",
+      "openalex_id": "https://openalex.org/W3014951558",
+      "doi": "10.1111/jch.13851",
+      "title": "Evaluating the impact of motion artifact on noninvasive blood pressure devices",
+      "publication_date": "2020-04-01",
+      "created_date": "2020-04-10T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1111/jch.13851",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/32248602",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/8030025",
+        "mag": "3014951558",
+        "openalex": "https://openalex.org/W3014951558"
+      },
+      "journal": "Journal of Clinical Hypertension",
+      "affiliation_strings": [
+        "Department of Pediatrics, University of Tennessee Health Science Center (Retired), Memphis, TN, USA",
+        "Hillrom, Inc., Skaneateles Falls, NY, USA",
+        "GE Healthcare, Jasper, GA, USA",
+        "Sun Tech Medical, Inc., Morrisville, NC, USA",
+        "Marshfield Clinic Research Foundation, Marshfield, WI, USA",
+        "GE Healthcare (Retired), Colgate, WI, USA"
+      ],
+      "matched_affiliation_strings": [
+        "GE Healthcare, Jasper, GA, USA",
+        "GE Healthcare (Retired), Colgate, WI, USA"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 20,
+      "rank_in_firm": 8,
+      "firm": "GE HealthCare",
+      "firm_term": "ge healthcare",
+      "tier": "B",
+      "openalex_id": "https://openalex.org/W3026027432",
+      "doi": "10.1097/sla.0000000000003958",
+      "title": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer",
+      "publication_date": "2020-05-19",
+      "created_date": "2020-05-21T00:00:00",
+      "updated_date": "2026-11-05T12:25:35.769452",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1097/sla.0000000000003958",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/32433280",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/7268851",
+        "mag": "3026027432",
+        "openalex": "https://openalex.org/W3026027432"
+      },
+      "journal": "Annals of Surgery",
+      "affiliation_strings": [
+        "Department of Radiology, The Second Xiangya Hospital, Central South University, No.139 Middle Renmin Road, Changsha, Hunan, P. R. China",
+        "Department of Radiology, the First People's Hospital of Yueyang, Yueyang, China",
+        "GE Healthcare, Shanghai, China",
+        "Department of Radiology Quality Control Center, Changsha, Hunan Province, China"
+      ],
+      "matched_affiliation_strings": [
+        "GE Healthcare, Shanghai, China"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 21,
+      "rank_in_firm": 9,
+      "firm": "GE HealthCare",
+      "firm_term": "ge healthcare",
+      "tier": "B",
+      "openalex_id": "https://openalex.org/W3042266791",
+      "doi": "10.1109/icoei48184.2020.9142931",
+      "title": "Analysing the Performance of Blood Pressure Parameters Using EMF Method",
+      "publication_date": "2020-06-01",
+      "created_date": "2020-07-23T00:00:00",
+      "updated_date": "2026-10-16T09:59:22.235173",
+      "type": "conference-paper",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1109/icoei48184.2020.9142931",
+        "mag": "3042266791",
+        "openalex": "https://openalex.org/W3042266791"
+      },
+      "journal": "International Conference on Trends in Electronics and Informatics (ICOEI)",
+      "affiliation_strings": [
+        "SSN College of Engineering, Chennai, India",
+        "Wipro GE Healthcare Pvt. Ltd., Bangalore, India"
+      ],
+      "matched_affiliation_strings": [
+        "Wipro GE Healthcare Pvt. Ltd., Bangalore, India"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 22,
+      "rank_in_firm": 10,
+      "firm": "GE HealthCare",
+      "firm_term": "ge healthcare",
+      "tier": "B",
+      "openalex_id": "https://openalex.org/W3084079981",
+      "doi": "10.1093/jbi/wbaa070",
+      "title": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression",
+      "publication_date": "2020-09-08",
+      "created_date": "2020-09-14T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1093/jbi/wbaa070",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/38424851",
+        "mag": "3084079981",
+        "openalex": "https://openalex.org/W3084079981"
+      },
+      "journal": "Journal of Breast Imaging",
+      "affiliation_strings": [
+        "Sigmascreening, Amsterdam, The Netherlands",
+        "GE Healthcare, Buc, France",
+        "Amsterdam UMC, University of Amsterdam, Department of Radiology and Nuclear Medicine, Amsterdam, The Netherlands",
+        "Christine E. Lynn Women’s Health & Wellness Institute, Boca Raton Regional Hospital, Boca Raton, FL"
+      ],
+      "matched_affiliation_strings": [
+        "GE Healthcare, Buc, France"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 23,
+      "rank_in_firm": 11,
+      "firm": "GE HealthCare",
+      "firm_term": "ge healthcare",
+      "tier": "B",
+      "openalex_id": "https://openalex.org/W3114311193",
+      "doi": "10.1002/jmri.27492",
+      "title": "Diffusion‐weighted double‐echo steady‐state with a three‐dimensional cones trajectory for non‐contrast‐enhanced breast MRI",
+      "publication_date": "2020-12-31",
+      "created_date": "2021-01-05T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1002/jmri.27492",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/33382171",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/8564805",
+        "mag": "3114311193",
+        "openalex": "https://openalex.org/W3114311193"
+      },
+      "journal": "Journal of Magnetic Resonance Imaging",
+      "affiliation_strings": [
+        "Department of Radiology, Stanford University, Stanford, California, USA",
+        "Department of Electrical Engineering, Stanford University, Stanford, California, USA",
+        "Global MR Application and Workflow, GE Healthcare, San Diego, California, USA"
+      ],
+      "matched_affiliation_strings": [
+        "Global MR Application and Workflow, GE Healthcare, San Diego, California, USA"
+      ],
+      "award_count": 3,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320332457",
+          "name": "GE Healthcare"
+        },
+        {
+          "id": "https://openalex.org/F4320337351",
+          "name": "National Cancer Institute"
+        },
+        {
+          "id": "https://openalex.org/F4320337363",
+          "name": "National Institute of Biomedical Imaging and Bioengineering"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G3990740972",
+          "name": "Center for Advanced Magnetic Resonance Technology at Stanford",
+          "funder": "P41EB015891",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G8211051665",
+          "name": "High-Resolution Breast MRI at 3.0T",
+          "funder": "R01EB009055",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G9000893703",
+          "name": "Abbreviated Non-Contrast-Enhanced MRI for Breast Cancer Screening",
+          "funder": "R01CA249893",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 24,
+      "rank_in_firm": 12,
+      "firm": "GE HealthCare",
+      "firm_term": "ge healthcare",
+      "tier": "B",
+      "openalex_id": "https://openalex.org/W3184638900",
+      "doi": "10.2967/jnumed.120.261881",
+      "title": "A Path to Qualification of PET/MRI Scanners for Multicenter Brain Imaging Studies: Evaluation of MRI-Based Attenuation Correction Methods Using a Patient Phantom",
+      "publication_date": "2021-07-22",
+      "created_date": "2021-08-02T00:00:00",
+      "updated_date": "2026-11-06T12:05:46.655746",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.2967/jnumed.120.261881",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/34301784",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/8973286",
+        "mag": "3184638900",
+        "openalex": "https://openalex.org/W3184638900"
+      },
+      "journal": "Journal of Nuclear Medicine",
+      "affiliation_strings": [
+        "Athinoula A. Martinos Center for Biomedical Imaging, Department of Radiology, Massachusetts General Hospital and Harvard Medical School, Charlestown, Massachusetts; ccatana@mgh.harvard.edu",
+        "Athinoula A. Martinos Center for Biomedical Imaging, Department of Radiology, Massachusetts General Hospital and Harvard Medical School, United States",
+        "Mallinckrodt Institute of Radiology, Washington University School of Medicine, St Louis, Missouri",
+        "Mallinckrodt Institute of Radiology, Washington University School of Medicine",
+        "Washington University in St. Louis",
+        "Center for Advanced Imaging Innovation and Research, Department of Radiology, New York University Langone Medical Center, New York, New York",
+        "Department of Radiology, Center for Advanced Imaging Innovation and Research, New York University Langone Medical Center",
+        "Shanghai United Imaging Healthcare Co., Ltd., Shanghai, China",
+        "Shanghai United Imaging Healthcare Co., Ltd., China",
+        "Siemens Medical Solutions USA, Inc., Malvern, Pennsylvania",
+        "Siemens Medical Solutions USA, Inc",
+        "Siemens MR, Siemens Healthcare GmbH, Erlangen, Germany",
+        "Siemens MR, Siemens Healthcare GmbH, Germany",
+        "PET/MR Engineering, GE Healthcare, Chicago, Illinois",
+        "PET/MR Engineering, GE Healthcare, United States",
+        "Division of Nuclear Medicine, Mayo Clinic, Rochester, Minnesota",
+        "Mayo Clinic",
+        "Imaging Research Laboratory, University of Washington, Seattle, Washington",
+        "University of Washington Medical Center",
+        "Department of Radiology and Biomedical Imaging, University of California, San Francisco, California",
+        "University of California - San Francisco",
+        "Athinoula A. Martinos Center for Biomedical Imaging, Department of Radiology, Massachusetts General Hospital and Harvard Medical School, Charlestown, Massachusetts",
+        "Harvard University",
+        "Advanced Molecular Imaging, Philips Healthcare, Cleveland, Ohio",
+        "Philips Healthcare, Advanced Molecular Imaging, United States",
+        "Department of Imaging Physics, University of Texas M.D. Anderson Cancer Center, Houston, Texas",
+        "MD Anderson Cancer Center",
+        "Department of Radiology, University of Alabama at Birmingham, Birmingham, Alabama",
+        "University of Alabama at Birmingham (UAB)",
+        "Department of Radiology, University of Wisconsin School of Medicine and Public Health, Madison, Wisconsin",
+        "University of Wisconsin School of Medicine and Public Health",
+        "Harvard / MGH",
+        "Department of Radiology and Biomedical Imaging, University of California, San Francisco",
+        "Division of Nuclear Medicine, Department of Radiology, University of Iowa, Iowa City, Iowa",
+        "University of Iowa",
+        "Toronto Joint Department of Medical Imaging, University Health Network, Sinai Health System, and Women's College Hospital, Department of Medical Imaging, University of Toronto, Toronto, Canada",
+        "University Health Network",
+        "GE Healthcare, Chicago, Illinois; and",
+        "General Electric",
+        "Department of Biomedical Engineering, Washington University in St. Louis, St. Louis, Missouri",
+        "Department of Biomedical Engineering, Washington University in St. Louis",
+        "University of California, San Francisco"
+      ],
+      "matched_affiliation_strings": [
+        "PET/MR Engineering, GE Healthcare, Chicago, Illinois",
+        "PET/MR Engineering, GE Healthcare, United States",
+        "GE Healthcare, Chicago, Illinois; and"
+      ],
+      "award_count": 6,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320337351",
+          "name": "National Cancer Institute"
+        },
+        {
+          "id": "https://openalex.org/F4320337363",
+          "name": "National Institute of Biomedical Imaging and Bioengineering"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G1291099771",
+          "name": "Multimodal MR-PET Machine Learning Approaches for Primary Prostate Cancer Characterization",
+          "funder": "R01CA218187",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G1986186999",
+          "name": "Development of 7-T MR-compatible TOF-DOI PET Detector and System Technology for the Human Dynamic Neurochemical Connectome Scanner",
+          "funder": "R01EB026995",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G5741465787",
+          "name": "Qualification and Harmonization of PET/MRI for Cancer Clinical Trials",
+          "funder": "R01CA212148",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G6730304318",
+          "name": "Multi-modal and Extreme PET/MRI Reconstruction Methods",
+          "funder": "F32EB030411",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G9000876781",
+          "name": "Center for Advanced Imaging Innovation and Research (CAI2R)",
+          "funder": "P41EB017183",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G9000891104",
+          "name": "Development of the Human Dynamic Neurochemical Connectome Scanner",
+          "funder": "U01EB029826",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 25,
+      "rank_in_firm": 1,
+      "firm": "Philips",
+      "firm_term": "philips",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3006164353",
+      "doi": "10.1021/acsami.9b21808",
+      "title": "Electrodeposited Assembly of Additive-Free Silk Fibroin Coating from Pre-Assembled Nanospheres for Drug Delivery",
+      "publication_date": "2020-02-10",
+      "created_date": "2020-02-24T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1021/acsami.9b21808",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/32037804",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/7068717",
+        "mag": "3006164353",
+        "openalex": "https://openalex.org/W3006164353"
+      },
+      "journal": "ACS Applied Materials & Interfaces",
+      "affiliation_strings": [
+        "Radboud University Medical Center , , Philips van Leydenlaan 25 , ,",
+        "Department of Dentistry—Biomaterials, Radboud University Medical Center, Philips van Leydenlaan 25, Nijmegen 6525 EX, The Netherlands",
+        "University of Amsterdam and Vrije Universiteit Amsterdam , , LA,",
+        "Department of Preventive Dentistry, Academic Center for Dentistry Amsterdam, University of Amsterdam and Vrije Universiteit Amsterdam, Amsterdam 1081 LA, The Netherlands",
+        "Huazhong University of Science and Technology , , ,",
+        "Department of Stomatology, Union Hospital, Tongji Medical College, Huazhong University of Science and Technology, Wuhan 430022, P. R. China"
+      ],
+      "matched_affiliation_strings": [
+        "Radboud University Medical Center , , Philips van Leydenlaan 25 , ,",
+        "Department of Dentistry—Biomaterials, Radboud University Medical Center, Philips van Leydenlaan 25, Nijmegen 6525 EX, The Netherlands"
+      ],
+      "award_count": 1,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320322725",
+          "name": "China Scholarship Council"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G6835356770",
+          "name": null,
+          "funder": "201606160095",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 26,
+      "rank_in_firm": 2,
+      "firm": "Philips",
+      "firm_term": "philips",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3013237367",
+      "doi": "10.1145/3385032.3385047",
+      "title": "Interleaving Software Craftsmanship Practices in Medical Device Agile Development",
+      "publication_date": "2020-02-27",
+      "created_date": "2020-04-03T00:00:00",
+      "updated_date": "2026-10-06T10:28:23.643775",
+      "type": "conference-paper",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1145/3385032.3385047",
+        "mag": "3013237367",
+        "openalex": "https://openalex.org/W3013237367"
+      },
+      "journal": "Innovations in Software Engineering Conference (ISEC)",
+      "affiliation_strings": [
+        "Philips India Ltd., Bengaluru, India"
+      ],
+      "matched_affiliation_strings": [
+        "Philips India Ltd., Bengaluru, India"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 27,
+      "rank_in_firm": 3,
+      "firm": "Philips",
+      "firm_term": "philips",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3038275139",
+      "doi": "10.1016/j.arbres.2020.05.032",
+      "title": "Posicionamiento de la Sociedad Española de Neumología y Cirugía Torácica en el uso de la telemedicina en los trastornos respiratorios del sueño y ventilación mecánica",
+      "publication_date": "2020-07-06",
+      "created_date": "2020-07-10T00:00:00",
+      "updated_date": "2026-11-04T10:54:05.112534",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1016/j.arbres.2020.05.032",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/32646601",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/7338031",
+        "mag": "3038275139",
+        "openalex": "https://openalex.org/W3038275139"
+      },
+      "journal": "Archivos de Bronconeumología",
+      "affiliation_strings": [
+        "Unidad Multidisciplinar de Patología del Sueño y VNID, Servei Pneumologia, Institut Clínic Respiratori, Hospital Clínic, Barcelona, España; Centro de Investigación Biomédica en Red de Enfermedades Respiratorias (CIBERES), Madrid, España; Universidad de Barcelona, Barcelona, España. Electronic address: jmmontserrat@ub.edu",
+        "Centro de Investigación Biomédica en Red de Enfermedades Respiratorias (CIBERES), Madrid, España",
+        "Unidad Multidisciplinar de Patología del Sueño y VNID, Servei Pneumologia, Institut Clínic Respiratori, Hospital Clínic, Barcelona, España",
+        "Universidad de Barcelona, Barcelona, España",
+        "Unidad Funcional de Sueño, Hospital Universitario Araba, OSI Araba, Vitoria, España",
+        "Unidad Multidisciplinar de Patología del Sueño y VNID, Servei Pneumologia, Institut Clínic Respiratori, Hospital Clínic, Barcelona, España; Universidad de Barcelona, Barcelona, España",
+        "Ilustre Colegio de Abogados de Madrid (ICAM), Corte de Arbitraje de Responsabilidad Sanitaria, Madrid, España",
+        "Consultor independiente ciencias de la salud y equipamiento médico, Proyecto Sleep Smart City Vitoria, Vitoria, España",
+        "Sleep & Respiratory Care, Philips Ibérica, Madrid, España",
+        "Centro de Investigación Biomédica en Red de Enfermedades Respiratorias (CIBERES), Madrid, España; Sección de Neumología, Hospital Universitario de Guadalajara, Guadalajara, España; Departamento de Medicina, Universidad de Alcalá, Alcalá de Henares (Madrid), España",
+        "Departamento de Medicina, Universidad de Alcalá, Alcalá de Henares (Madrid), España",
+        "Sección de Neumología, Hospital Universitario de Guadalajara, Guadalajara, España"
+      ],
+      "matched_affiliation_strings": [
+        "Sleep & Respiratory Care, Philips Ibérica, Madrid, España"
+      ],
+      "award_count": 0,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320334923",
+          "name": "Instituto de Salud Carlos III"
+        }
+      ],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 28,
+      "rank_in_firm": 4,
+      "firm": "Philips",
+      "firm_term": "philips",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4256401237",
+      "doi": "10.1007/978-3-030-54403-4",
+      "title": "Innovative Technologies and Signal Processing in Perinatal Medicine",
+      "publication_date": "2020-10-20",
+      "created_date": "2022-05-12T00:00:00",
+      "updated_date": "2026-10-16T09:59:22.235173",
+      "type": "book",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1007/978-3-030-54403-4",
+        "openalex": "https://openalex.org/W4256401237"
+      },
+      "journal": "Springer eBooks",
+      "affiliation_strings": [
+        "Department of Electrical and Electronic Engineering, University of Cagliari, Cagliari, Italy",
+        "Family Care Solutions, Philips Research, Eindhoven, The Netherlands",
+        "Department of Electronic, Information and Bioengineering, DEIB, Politecnico di Milano, Milan, Italy",
+        "Department of Information Engineering, Università Politecnica delle Marche, Ancona, Italy"
+      ],
+      "matched_affiliation_strings": [
+        "Family Care Solutions, Philips Research, Eindhoven, The Netherlands"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 29,
+      "rank_in_firm": 5,
+      "firm": "Philips",
+      "firm_term": "philips",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3131845590",
+      "doi": "10.1016/j.arbr.2021.02.001",
+      "title": "Spanish Society of Pulmonology and Thoracic Surgery positioning on the use of telemedine in sleep-disordered breathing and mechanical ventilation",
+      "publication_date": "2021-02-21",
+      "created_date": "2021-03-01T00:00:00",
+      "updated_date": "2026-11-04T10:54:05.112534",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1016/j.arbr.2021.02.001",
+        "mag": "3131845590",
+        "openalex": "https://openalex.org/W3131845590"
+      },
+      "journal": "Archivos de Bronconeumología",
+      "affiliation_strings": [
+        "Unidad multidisciplinar de Patología del Sueño y VNID, Servei Pneumologia, Institut Clínic Respiratori, Hospital Clínic, Barcelona, Spain",
+        "Unidad Funcional de Sueño, Hospital Universitario Araba, OSI Araba, Vitoria, Spain",
+        "Universidad de Barcelona, Barcelona, Spain",
+        "Ilustre Colegio de Abogados de Madrid (ICAM), Corte de Arbitraje de Responsabilidad Sanitaria, Madrid, Spain",
+        "Consultor Independiente Ciencias de la Salud y Equipamiento Médico, Proyecto Sleep Smart City Vitoria, Vitoria, Spain",
+        "Sleep & Respiratory Care, Philips Ibérica, Madrid, Spain",
+        "Centro de Investigación Biomédica en Red de Enfermedades Respiratorias (CIBERES), Madrid, Spain",
+        "Departamento de Medicina, Universidad de Alcalá, Alcalá de Henares (Madrid), Spain",
+        "Sección de Neumología, Hospital Universitario de Guadalajara, Guadalajara, Spain"
+      ],
+      "matched_affiliation_strings": [
+        "Sleep & Respiratory Care, Philips Ibérica, Madrid, Spain"
+      ],
+      "award_count": 1,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320334923",
+          "name": "Instituto de Salud Carlos III"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G6585639306",
+          "name": "Telemedicina en pacientes con \"\"sleep apnea\"\" que no cumplen adecuadamente el tratamiento con CPAP. Cumplidores mínimos vs cumplidores óptimos",
+          "funder": "PI17/01068",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 30,
+      "rank_in_firm": 6,
+      "firm": "Philips",
+      "firm_term": "philips",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3152874437",
+      "doi": "10.1002/mp.14881",
+      "title": "Shape accuracy of fiber optic sensing for medical devices characterized in bench experiments",
+      "publication_date": "2021-04-12",
+      "created_date": "2021-04-26T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1002/mp.14881",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/33843097",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/9291042",
+        "mag": "3152874437",
+        "openalex": "https://openalex.org/W3152874437"
+      },
+      "journal": "Medical Physics",
+      "affiliation_strings": [
+        "In‐body Systems group Philips Research 5656 AE Eindhoven The Netherlands",
+        "FORS Venture Philips ‐ Image Guided Therapy 5684 PC Best The Netherlands"
+      ],
+      "matched_affiliation_strings": [
+        "In‐body Systems group Philips Research 5656 AE Eindhoven The Netherlands",
+        "FORS Venture Philips ‐ Image Guided Therapy 5684 PC Best The Netherlands"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 31,
+      "rank_in_firm": 7,
+      "firm": "Philips",
+      "firm_term": "philips",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4389460504",
+      "doi": "10.1212/wnl.96.15_supplement.4100",
+      "title": "Evidence for Reliability and Validity of the Philips IntelliSpace Cognition (ISC) Digital Test Battery in a Healthy US-Based Sample (4100)",
+      "publication_date": "2021-04-13",
+      "created_date": "2023-12-08T00:00:00",
+      "updated_date": "2026-11-08T12:12:28.789561",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1212/wnl.96.15_supplement.4100",
+        "openalex": "https://openalex.org/W4389460504"
+      },
+      "journal": "Neurology",
+      "affiliation_strings": [
+        "Digital Cognitive Diagnostics, Philips Healthcare"
+      ],
+      "matched_affiliation_strings": [
+        "Digital Cognitive Diagnostics, Philips Healthcare"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 32,
+      "rank_in_firm": 8,
+      "firm": "Philips",
+      "firm_term": "philips",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3217555666",
+      "doi": "10.1109/rams48097.2021.9605713",
+      "title": "Big Data Driven Reliability Growth for Healthcare Systems",
+      "publication_date": "2021-05-24",
+      "created_date": "2021-12-06T00:00:00",
+      "updated_date": "2026-10-26T11:51:55.731654",
+      "type": "conference-paper",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1109/rams48097.2021.9605713",
+        "mag": "3217555666",
+        "openalex": "https://openalex.org/W3217555666"
+      },
+      "journal": "Annual Reliability and Maintainability Symposium (RAMS)",
+      "affiliation_strings": [
+        "Royal Philips"
+      ],
+      "matched_affiliation_strings": [
+        "Royal Philips"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 33,
+      "rank_in_firm": 9,
+      "firm": "Philips",
+      "firm_term": "philips",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4205984737",
+      "doi": "10.1109/ccta48906.2021.9659125",
+      "title": "The Application of Controls in Critical Care Ventilation",
+      "publication_date": "2021-08-09",
+      "created_date": "2022-01-26T00:00:00",
+      "updated_date": "2026-11-04T10:54:05.112534",
+      "type": "conference-paper",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1109/ccta48906.2021.9659125",
+        "openalex": "https://openalex.org/W4205984737"
+      },
+      "journal": "IEEE Conference on Control Technology and Applications (CCTA)",
+      "affiliation_strings": [
+        "Philips Respironics, Carlsbad, CA"
+      ],
+      "matched_affiliation_strings": [
+        "Philips Respironics, Carlsbad, CA"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 34,
+      "rank_in_firm": 10,
+      "firm": "Philips",
+      "firm_term": "philips",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3211373967",
+      "doi": "10.1109/ius52206.2021.9593683",
+      "title": "The long-term reliability of pre-charged CMUTs for the powering of deep implanted devices",
+      "publication_date": "2021-09-11",
+      "created_date": "2021-11-22T00:00:00",
+      "updated_date": "2026-10-18T09:31:52.927876",
+      "type": "conference-paper",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1109/ius52206.2021.9593683",
+        "mag": "3211373967",
+        "openalex": "https://openalex.org/W3211373967"
+      },
+      "journal": "IEEE International Ultrasonics Symposium",
+      "affiliation_strings": [
+        "Delft University of Technology, Delft, the Netherlands",
+        "Philips Research, Eindhoven, the Netherlands"
+      ],
+      "matched_affiliation_strings": [
+        "Philips Research, Eindhoven, the Netherlands"
+      ],
+      "award_count": 3,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320327207",
+          "name": "Electronic Components and Systems for European Leadership"
+        },
+        {
+          "id": "https://openalex.org/F4320332999",
+          "name": "Horizon 2020 Framework Programme"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G210339592",
+          "name": null,
+          "funder": "H2020-ECSEL-2019-IA- 876190",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G4126544384",
+          "name": null,
+          "funder": "H2020‐ECSEL‐2019‐IA‐876190",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G7495968983",
+          "name": null,
+          "funder": "876190",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 35,
+      "rank_in_firm": 11,
+      "firm": "Philips",
+      "firm_term": "philips",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W3216766956",
+      "doi": "10.1007/978-3-030-83864-5_33",
+      "title": "Augmented, Virtual and Robotic Capabilities in Cardiovascular Program Capacity Building",
+      "publication_date": "2021-11-22",
+      "created_date": "2021-12-06T00:00:00",
+      "updated_date": "2026-10-10T09:11:00.788812",
+      "type": "book-chapter",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1007/978-3-030-83864-5_33",
+        "mag": "3216766956",
+        "openalex": "https://openalex.org/W3216766956"
+      },
+      "journal": "Sustainable development goals series",
+      "affiliation_strings": [
+        "Philips, Cambridge, MA, USA"
+      ],
+      "matched_affiliation_strings": [
+        "Philips, Cambridge, MA, USA"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 36,
+      "rank_in_firm": 12,
+      "firm": "Philips",
+      "firm_term": "philips",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4220887190",
+      "doi": "10.1080/17434440.2022.2054334",
+      "title": "Steering light in fiber-optic medical devices: a patent review",
+      "publication_date": "2022-03-04",
+      "created_date": "2022-04-03T00:00:00",
+      "updated_date": "2026-10-31T12:09:11.096373",
+      "type": "review",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1080/17434440.2022.2054334",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/35298323",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/11229789",
+        "openalex": "https://openalex.org/W4220887190"
+      },
+      "journal": "Expert Review of Medical Devices",
+      "affiliation_strings": [
+        "Department of Biomechanical Engineering, Delft University of Technology, Delft, The Netherlands",
+        "Department of In-Body Systems, Philips ResearchRoyal Philips, Eindhoven, The Netherlands"
+      ],
+      "matched_affiliation_strings": [
+        "Department of In-Body Systems, Philips ResearchRoyal Philips, Eindhoven, The Netherlands"
+      ],
+      "award_count": 2,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320321800",
+          "name": "Nederlandse Organisatie voor Wetenschappelijk Onderzoek"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G2903212326",
+          "name": null,
+          "funder": "17553",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G8335396582",
+          "name": null,
+          "funder": "NWO-TTW 17553",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 37,
+      "rank_in_firm": 1,
+      "firm": "Draeger",
+      "firm_term": "draeger",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4312019381",
+      "doi": "10.2196/43905",
+      "title": "What Makes a Quality Health App—Developing a Global Research-Based Health App Quality Assessment Framework for CEN-ISO/TS 82304-2: Delphi Study",
+      "publication_date": "2022-12-19",
+      "created_date": "2023-01-03T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.2196/43905",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/36538379",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/9872976",
+        "openalex": "https://openalex.org/W4312019381"
+      },
+      "journal": "JMIR Formative Research",
+      "affiliation_strings": [
+        "National eHealth Living Lab, Department of Public Health and Primary Care, Leiden University Medical Center, Leiden, Netherlands",
+        "Ramsey Systems Ltd, Shrewsbury, United Kingdom",
+        "Assessment Team, ORCHA Health Ltd, Liverpool, United Kingdom",
+        "Healthcare, Royal Netherlands Standardization Institute, Delft, Netherlands",
+        "Health Informatics Centre, Department of Learning, Informatics, Management and Ethics, Karolinska Institutet, Stockholm, Sweden",
+        "Privacy1 B.V., Groningen, Netherlands",
+        "Projects, Accessibility Foundation, Utrecht, Netherlands",
+        "European Coordination Committee of the Radiological, Electromedical and Healthcare IT Industry, Brussels, Belgium",
+        "Quality, Standards and Regulations, Innovation and Strategy, Philips Belgium Commercial N.V., Brussels, Belgium",
+        "Understandable Information and Digital Healthcare, Pharos - Dutch Center of Expertise on Health Disparities, Utrecht, Netherlands",
+        "ETHOS Ltd, Exeter, United Kingdom",
+        "Institute for Software Technology and Data Communication, Hochschule Mannheim, Mannheim, Germany",
+        "Technical Committee 251 Health informatics, European Committee for Standardization, Brussels, Belgium",
+        "USBIMED, Oulu, Finland",
+        "Product Security, Group Security, Philips Electronics Nederland B.V., Best, Netherlands",
+        "Unit eHealth, Well-Being and Ageing, Directorate‑General for Communications Networks, Content and Technology, European Commission, Luxembourg, Luxembourg",
+        "Draeger Integrated System Management, Drägerwerk AG & Co. KGaA, Lübeck, Germany",
+        "Enterprise Architecture, University Medical Center Groningen, Groningen, Netherlands",
+        "Mobile Health Work Group, Health Level Seven, Brussels, Belgium",
+        "Science, Evidence and Analytics Directorate, National Institute for Health and Care Excellence, Manchester, United Kingdom",
+        "School of Computer Science and Statistics, Trinity College, Dublin, Ireland",
+        "Mexedia S.p.A. SB, Rome, Italy",
+        "Technical Committee 527 Health informatics, Ente Italiano di Normazione, Milan, Italy",
+        "Faculty of Medicine and Health Technology, Tampere University, Tampere, Finland",
+        "Flinders Digital Health Research Center, College of Science and Engineering, Flinders University, Adelaide, Australia",
+        "Healthcare IT Standards, Siemens Healthcare GmbH, Erlangen, Germany",
+        "Subcommittee 62A Common aspects of medical equipment, software, and systems, International Electronical Commission, Geneva, Switzerland",
+        "Technical Committee 215 Health informatics, International Organization for Standardization, Geneva, Switzerland",
+        "NHS Transformation, NHS England, Leeds, United Kingdom"
+      ],
+      "matched_affiliation_strings": [
+        "Draeger Integrated System Management, Drägerwerk AG & Co. KGaA, Lübeck, Germany"
+      ],
+      "award_count": 0,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320320300",
+          "name": "European Commission"
+        }
+      ],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 38,
+      "rank_in_firm": 2,
+      "firm": "Draeger",
+      "firm_term": "dräger",
+      "tier": "B",
+      "openalex_id": "https://openalex.org/W3039286389",
+      "doi": "10.1021/acssensors.0c00712",
+      "title": "High Stability of Rh Oxide-Based Thermoresistive Catalytic Combustion Sensors Proven by Operando X-ray Absorption Spectroscopy and X-ray Diffraction",
+      "publication_date": "2020-07-06",
+      "created_date": "2020-07-10T00:00:00",
+      "updated_date": "2026-11-04T10:54:05.112534",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1021/acssensors.0c00712",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/32627540",
+        "mag": "3039286389",
+        "openalex": "https://openalex.org/W3039286389"
+      },
+      "journal": "ACS Sensors",
+      "affiliation_strings": [
+        "Institute for Chemical Technology and Polymer Chemistry, Karlsruhe Institute of Technology, Karlsruhe 76131, Germany",
+        "Institute of Catalysis Research and Technology, Karlsruhe Institute of Technology, Eggenstein-Leopoldshafen 76344, Germany",
+        "Institute for Photon Science, Karlsruhe Institute of Technology, Eggenstein-Leopoldshafen 76344, Germany",
+        "Dräger Safety AG & Co. KGaA, Lübeck 23560, Germany"
+      ],
+      "matched_affiliation_strings": [
+        "Dräger Safety AG & Co. KGaA, Lübeck 23560, Germany"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 39,
+      "rank_in_firm": 3,
+      "firm": "Draeger",
+      "firm_term": "draeger",
+      "tier": "B",
+      "openalex_id": "https://openalex.org/W4281654058",
+      "doi": "10.1117/12.2618126",
+      "title": "Automation platform for remote use of colorimetric chemical sensors",
+      "publication_date": "2022-05-30",
+      "created_date": "2022-06-13T00:00:00",
+      "updated_date": "2026-10-27T15:51:10.671819",
+      "type": "conference-paper",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1117/12.2618126",
+        "openalex": "https://openalex.org/W4281654058"
+      },
+      "journal": "Chemical, Biological, Radiological, Nuclear, and Explosives (CBRNE) Sensing",
+      "affiliation_strings": [
+        "Univ. of Delaware (United States)",
+        "DEVCOM Chemical Biological Ctr. (United States)",
+        "Draeger, Inc. (United States)"
+      ],
+      "matched_affiliation_strings": [
+        "Draeger, Inc. (United States)"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 40,
+      "rank_in_firm": 4,
+      "firm": "Draeger",
+      "firm_term": "dräger",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W4250585569",
+      "doi": "10.1007/978-3-662-59715-6_42",
+      "title": "Ausgewählte Beispiele wichtiger medizintechnischer Geräte",
+      "publication_date": "2020-01-01",
+      "created_date": "2022-05-12T00:00:00",
+      "updated_date": "2026-10-10T09:11:00.788812",
+      "type": "book-chapter",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1007/978-3-662-59715-6_42",
+        "openalex": "https://openalex.org/W4250585569"
+      },
+      "journal": "Springer eBooks",
+      "affiliation_strings": [
+        "Technische Hochschule Lübeck, Lübeck, Deutschland",
+        "Technische Universität Berlin, Berlin, Deutschland",
+        "Dräger Medical GmbH, Lübeck, Deutschland",
+        "Olympus Surgical Technologies Europe, Hamburg, Deutschland"
+      ],
+      "matched_affiliation_strings": [
+        "Dräger Medical GmbH, Lübeck, Deutschland"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 41,
+      "rank_in_firm": 5,
+      "firm": "Draeger",
+      "firm_term": "dräger",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W4255048436",
+      "doi": "10.1515/9783110591026-005",
+      "title": "Strukturentwicklungspläne und Zielvereinbarungen",
+      "publication_date": "2020-04-06",
+      "created_date": "2022-05-12T00:00:00",
+      "updated_date": "2026-10-10T09:11:00.788812",
+      "type": "book-chapter",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1515/9783110591026-005",
+        "openalex": "https://openalex.org/W4255048436"
+      },
+      "journal": "De Gruyter eBooks",
+      "affiliation_strings": [
+        "Freiheit von Forschung und Lehre (Grundgesetz, Art. 5, Abs. 3,",
+        "Im Zuge des Forschungsprojekts Lernwelt Hochschule soll mit der Untersu-chung von Entwicklungs-und Strukturplänen sowie Zielvereinbarungen deut-scher Hochschulen der Versuch unternommen werden, einen Abgleich der in den einzelnen Erhebungsschritten des Projekts (Online-Befragung, Leitfadenin-terviews, Fallstudien",
+        "Orientierungen für strategische Planungen",
+        "Strategie hinsichtlich der Ausrichtung der Institutionen auf Modernisie-rung oder Profilierung (Dräger et al. 2017),"
+      ],
+      "matched_affiliation_strings": [
+        "Strategie hinsichtlich der Ausrichtung der Institutionen auf Modernisie-rung oder Profilierung (Dräger et al. 2017),"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 42,
+      "rank_in_firm": 6,
+      "firm": "Draeger",
+      "firm_term": "dräger",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W3021686167",
+      "doi": "10.3390/polym12051033",
+      "title": "Large, Rapid Swelling of High-cis Polydicyclopentadiene Aerogels Suitable for Solvent-Responsive Actuators",
+      "publication_date": "2020-05-02",
+      "created_date": "2020-05-13T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.3390/polym12051033",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/32370122",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/7284835",
+        "mag": "3021686167",
+        "openalex": "https://openalex.org/W3021686167"
+      },
+      "journal": "Polymers",
+      "affiliation_strings": [
+        "Laboratory of Inorganic Chemistry, Department of Chemistry, National and Kapodistrian University of Athens, Panepistimiopolis Zografou, 15771 Athens, Greece",
+        "Dräger Safety AG &amp; Co. KGaA, Revalstraße 1, 23560 Lübeck, Germany"
+      ],
+      "matched_affiliation_strings": [
+        "Dräger Safety AG &amp; Co. KGaA, Revalstraße 1, 23560 Lübeck, Germany"
+      ],
+      "award_count": 2,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320321917",
+          "name": "General Secretariat for Research and Technology"
+        },
+        {
+          "id": "https://openalex.org/F4320332999",
+          "name": "Horizon 2020 Framework Programme"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G3648590692",
+          "name": null,
+          "funder": "200601330025",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G7365576776",
+          "name": null,
+          "funder": "685648",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 43,
+      "rank_in_firm": 7,
+      "firm": "Draeger",
+      "firm_term": "dräger",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W3132536710",
+      "doi": "10.1097/ccm.0000000000004892",
+      "title": "Assessment of Electrical Impedance Tomography to Set Optimal Positive End-Expiratory Pressure for Venoarterial Extracorporeal Membrane Oxygenation-Treated Patients*",
+      "publication_date": "2021-02-17",
+      "created_date": "2021-03-01T00:00:00",
+      "updated_date": "2026-10-31T12:09:11.096373",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1097/ccm.0000000000004892",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/33595959",
+        "mag": "3132536710",
+        "openalex": "https://openalex.org/W3132536710"
+      },
+      "journal": "Critical Care Medicine",
+      "affiliation_strings": [
+        "All authors: Intensive Care Unit, Anesthesiology and Intensive Care Department, Toulouse University Hospital, Toulouse, France",
+        "*See also p. 995",
+        "For information regarding this article, E-mail: [email protected]",
+        "Supplemental digital content is available for this article. Direct URL citations appear in the printed text and are provided in the HTML and PDF versions of this article on the journal’s website (http://journals.lww.com/ccmjournal)",
+        "Supported, in part, by the institutional and department sources",
+        "The Pulmovista electrical impedance tomography was provided by Dräger (Lübeck, Germany) during the study period. Dräger had no role in the study design, collection, analysis, and interpretation of the data, writing the article, or the decision to submit the article for publication. The authors have disclosed that they do not have any potential conflicts of interest"
+      ],
+      "matched_affiliation_strings": [
+        "The Pulmovista electrical impedance tomography was provided by Dräger (Lübeck, Germany) during the study period. Dräger had no role in the study design, collection, analysis, and interpretation of the data, writing the article, or the decision to submit the article for publication. The authors have disclosed that they do not have any potential conflicts of interest"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 44,
+      "rank_in_firm": 8,
+      "firm": "Draeger",
+      "firm_term": "dräger",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W3176480181",
+      "doi": "10.4414/smw.2021.20515",
+      "title": "Organ donation in the ICU – a survey on next of kin response in two Swiss academic centres",
+      "publication_date": "2021-06-23",
+      "created_date": "2021-07-05T00:00:00",
+      "updated_date": "2026-11-04T10:54:05.112534",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.4414/smw.2021.20515",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/34161597",
+        "mag": "3176480181",
+        "openalex": "https://openalex.org/W3176480181"
+      },
+      "journal": "Swiss Medical Weekly",
+      "affiliation_strings": [
+        "Department of Medicine, Centre of Transplantation, Inselspital, Bern University Hospital, University of Bern, Switzerland / Department of Intensive Care Medicine, Inselspital, Bern University Hospital, University of Bern, Switzerland",
+        ". Braun Medical AG, CSEM AG, Edwards Lifesciences Services GmbH, Kenta Biotech Ltd, Maquet Critical Care AB, Omnicare Clinical Research AG, Nes-tle, Pierre Fabre Pharma AG,",
+        "Pfizer, Bard Medica S",
+        "Anandic Medical Systems, Pan Gas AG Healthcare, Bracco, Hamilton Medical AG, Fresenius Kabi, Getinge Group Maquet AG, Dräger AG,",
+        "CSL Behring, Novartis, Covidien, Philips Medical, Prolong",
+        "Kantonsspital Aarau, Tell-strasse 25, 5001 Aarau,",
+        "Teleflex Medical GmbH, Glaxo Smith Kline, Merck Sharp and Dohme AG, Eli Lilly and Company, Baxter, Astellas, Astra Zeneca,",
+        "Department of Intensive Care Medicine, Inselspital, Bern University Hospital, University of Bern, Switzerland",
+        "Department of Medicine, Centre of Transplantation, Inselspital, Bern University Hospital, University of Bern, Switzerland",
+        "Department of Intensive Care Medicine, Lausanne University Hospital, University of Lausanne, Switzerland"
+      ],
+      "matched_affiliation_strings": [
+        "Anandic Medical Systems, Pan Gas AG Healthcare, Bracco, Hamilton Medical AG, Fresenius Kabi, Getinge Group Maquet AG, Dräger AG,"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 45,
+      "rank_in_firm": 9,
+      "firm": "Draeger",
+      "firm_term": "dräger",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W3197993635",
+      "doi": "10.25368/2021.11",
+      "title": "Kontrollierte Fragebogenentwicklung zur Messung erlebter Qualität von Produkten der Dräger Safety auf haptischer, optischer und akustischer Ebene",
+      "publication_date": "2021-09-06",
+      "created_date": "2021-09-13T00:00:00",
+      "updated_date": "2026-11-06T12:05:46.655746",
+      "type": "conference-paper",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.25368/2021.11",
+        "mag": "3197993635",
+        "openalex": "https://openalex.org/W3197993635"
+      },
+      "journal": "Entwerfen Entwickeln Erleben in Produktentwicklung und Design (EEE)",
+      "affiliation_strings": [
+        "Qualität von Produkten der Dräger Safety auf haptischer, optischer und akustischer Ebene 59"
+      ],
+      "matched_affiliation_strings": [
+        "Qualität von Produkten der Dräger Safety auf haptischer, optischer und akustischer Ebene 59"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 46,
+      "rank_in_firm": 10,
+      "firm": "Draeger",
+      "firm_term": "dräger",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W3114335996",
+      "doi": "10.3389/fped.2021.722497",
+      "title": "Intratracheal Keratinocyte Growth Factor Enhances Surfactant Protein B Expression in Mechanically Ventilated Preterm Pigs",
+      "publication_date": "2021-09-28",
+      "created_date": "2021-01-05T00:00:00",
+      "updated_date": "2026-10-28T10:33:24.094632",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.3389/fped.2021.722497",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/34650941",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/8505982",
+        "mag": "3114335996",
+        "openalex": "https://openalex.org/W3114335996"
+      },
+      "journal": "Frontiers in Pediatrics",
+      "affiliation_strings": [
+        "Department of Pediatrics, University of Tennessee Health Science Center, Memphis, TN, United States",
+        "Baptist Women's Hospital, Memphis, TN, United States",
+        "Dräger Medical Inc., Telford, PA, United States",
+        "Department of Pathology and Laboratory Medicine, University of Tennessee Health Science Center, Memphis, TN, United States",
+        "Department of Molecular and Cellular Physiology, LSU Health Sciences Center, Shreveport, LA, United States"
+      ],
+      "matched_affiliation_strings": [
+        "Dräger Medical Inc., Telford, PA, United States"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 47,
+      "rank_in_firm": 11,
+      "firm": "Draeger",
+      "firm_term": "dräger",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W4316088637",
+      "doi": "10.12968/s2514-9768(22)90086-9",
+      "title": "A Missed Opportunity?",
+      "publication_date": "2021-11-01",
+      "created_date": "2023-01-14T00:00:00",
+      "updated_date": "2026-10-28T10:33:24.094632",
+      "type": "other",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.12968/s2514-9768(22)90086-9",
+        "openalex": "https://openalex.org/W4316088637"
+      },
+      "journal": "Manufacturing Management",
+      "affiliation_strings": [
+        "DRäGER UK"
+      ],
+      "matched_affiliation_strings": [
+        "DRäGER UK"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 48,
+      "rank_in_firm": 12,
+      "firm": "Draeger",
+      "firm_term": "dräger",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W4206777275",
+      "doi": "10.1093/ageing/afab278",
+      "title": "Health-related quality of life in older patients surviving ICU treatment for COVID-19: results from an international observational study of patients older than 70 years",
+      "publication_date": "2021-12-09",
+      "created_date": "2022-01-25T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1093/ageing/afab278",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/35136896",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/8825757",
+        "openalex": "https://openalex.org/W4206777275"
+      },
+      "journal": "Age and Ageing",
+      "affiliation_strings": [
+        "Department of Intensive Care Medicine , University Medical Center, University of Utrecht, Utrecht, the",
+        "Department of Intensive Care Medicine, University Medical Center, University of Utrecht, Utrecht, the Netherlands",
+        "General Intensive Care , St George’s University Hospitals NHS Foundation Trust, London, UK",
+        "Department of Clinical Medicine , University of Bergen, Department of Anaestesia and Intensive Care, Haukeland University Hospital, Bergen,",
+        "Department of Clinical Medicine, University of Bergen, Department of Anaestesia and Intensive Care, Haukeland University Hospital, Bergen, Norway",
+        "Department of Intensive Care , Aarhus University Hospital, Aarhus,",
+        "Department of Intensive Care, Aarhus University Hospital, Aarhus, Denmark",
+        "Department of Anaesthesiology , Perioperative Medicine and Intensive Care Medicine Paracelsus Medical University of Salzburg, Salzburg,",
+        "Department of Anaesthesiology, Perioperative Medicine and Intensive Care Medicine Paracelsus Medical University of Salzburg, Salzburg, Austria",
+        "Division of Cardiology , Pulmonology, and Vascular Medicine, University Duesseldorf, Duesseldorf,",
+        "Division of Cardiology, Pulmonology, and Vascular Medicine, University Duesseldorf, Duesseldorf, Germany",
+        "Department of Intensive Care Medicine , CIBER Enfermedades Respiratorias, Corporacion Sanitaria Universitaria Parc Tauli, Autonomous University of Barcelona, Sabadell,",
+        "Department of Intensive Care Medicine, CIBER Enfermedades Respiratorias, Corporacion Sanitaria Universitaria Parc Tauli, Autonomous University of Barcelona, Sabadell, Spain",
+        "Department of Acute Medicine , Geneva University Hospitals, Geneva,",
+        "Department of Acute Medicine, Geneva University Hospitals, Geneva, Switzerland",
+        "Department of Intensive Care Medicine , Inselspital, Universitätsspital, University of Bern, Bern,",
+        "Department of Medical Intensive Care , Hadassah Medical Center and Faculty of Medicine, Hebrew University of Jerusalem, Jerusalem,",
+        "Department of Medical Intensive Care, Hadassah Medical Center and Faculty of Medicine, Hebrew University of Jerusalem, Jerusalem, Israel",
+        "General Intensive Care Unit , Department of Anesthesiology, Critical Care and Pain Medicine, Hadassah Medical Center and Faculty of Medicine, Hebrew University of Jerusalem, Jerusalem,",
+        "General Intensive Care Unit, Department of Anesthesiology, Critical Care and Pain Medicine, Hadassah Medical Center and Faculty of Medicine, Hebrew University of Jerusalem, Jerusalem, Israel",
+        "Center for Intensive Care and Perioperative Medicine , Jagiellonian University Medical College, Krakow,",
+        "Center for Intensive Care and Perioperative Medicine, Jagiellonian University Medical College, Krakow, Poland",
+        "Faculty of Medicine , University of Tripoli, Tripoli,",
+        "Faculty of Medicine, University of Tripoli, Tripoli, Libya",
+        "Division of Intensive Care and Emergency Medicine , Department of Internal Medicine, Medical University Innsbruck, Innsbruck,",
+        "Division of Intensive Care and Emergency Medicine, Department of Internal Medicine, Medical University Innsbruck, Innsbruck, Austria",
+        "Department of Intensive Care 1K12IC , Ghent University Hospital, Ghent,",
+        "Department of Intensive Care 1K12IC, Ghent University Hospital, Ghent, Belgium",
+        "Intensive Care Unit , General Hospital of Larissa, Larissa,",
+        "Intensive Care Unit, General Hospital of Larissa, Larissa, Greece",
+        "Department of Anesthesiology , Perioperative and Pain Medicine, Brigham and Women’s Hospital, Harvard Medical School, Boston, MA,",
+        "Department of Anesthesiology, Perioperative and Pain Medicine, Brigham and Women's Hospital, Havard Medical School, Boston, MA, USA",
+        "Servicio de Medicina Intensiva , Hospital Clínico Universitario Lozano Blesa, Zaragoza,",
+        "Department of Anesthesiology and Intensive Care , Technical University of Munich, Klinikum rechts der Isar, Munich,",
+        "Department of Anesthesiology and Intensive Care, Technical University of Munich, Klinikum rechts der Isar, Munich, Germany",
+        "Department of Anesthesia and Intensive Care Medicine , Mater Misericordiae University Hospital, Dublin,",
+        "Department of Anesthesia and Intensive Care Medicine, Mater Misericordiae University Hospital, Dublin, Ireland",
+        "Department of Anaesthesia and Intensive Care , Ålesund Hospital, Ålesund,",
+        "Department of Circulation and Medical Imaging , Norwegian University of Science and Technology, Trondheim,",
+        "Department of Circulation and Medical Imaging, Norwegian University of Science and Technology, Trondheim, Norway",
+        "Unidade de Cuidados Intensivos Neurocríticos e Trauma. Hospital de São José , Centro Hospitalar Universitário de Lisboa Central, Faculdade de Ciências Médicas de Lisboa, Nova Médical School, Lisbon,",
+        "Assistance Publique - Hôpitaux de Paris , Hôpital Saint-Antoine, service de réanimation médicale, F-75012 Paris ,",
+        "Sorbonne Universités , UPMC Univ Paris 06, INSERM, UMR_S 1136, Institut Pierre Louis d’Epidémiologie et de Santé Publique, Equipe: épidémiologie hospitalière qualité et organisation des soins, F-75012 Paris ,",
+        "Anandic Medical Systems, Pan Gas AG Healthcare, Bracco, Hamilton Medical AG, Fresenius Kabi, Getinge Group Maquet AG, Dräger AG, Teleflex Medical GmbH, Glaxo Smith Kline, Merck Sharp and Dohme AG,",
+        "CSL Behring, Novartis, Covidien, Philips Medical, Phagenesis Ltd,",
+        "Department of Intensive Care Medicine, University Medical Center Utrecht, Heidelberglaan 100, 3584 CX Utrecht, The Netherlands",
+        "Eli Lilly and Company, Baxter, Astellas, Astra Zeneca,",
+        "Nutrition International, B. Braun Medical AG, CSEM AG, Edwards Lifesciences Services GmbH, Kenta Biotech Ltd, Maquet Critical Care AB, Omnicare Clinical Research AG, Nestle, Pierre Fabre Pharma AG, Pfizer, Bard Medica",
+        "Department of Intensive Care Medicine , University Medical Center Utrecht , Heidelberglaan 100 , 3584 CX Utrecht , The Netherlands",
+        "Department of Anaesthesia and Intensive Care, Ålesund Hospital, Ålesund, Norway",
+        "General Intensive Care, St George's University Hospitals NHS Foundation Trust, London, UK",
+        "Assistance Publique - Hôpitaux de Paris, Hôpital Saint-Antoine, service de réanimation médicale, F-75012 Paris, France",
+        "Sorbonne Universités, UPMC Univ Paris 06, INSERM, UMR_S 1136, Institut Pierre Louis d'Epidémiologie et de Santé Publique, Equipe: épidémiologie hospitalière qualité et organisation des soins, F-75012 Paris, France",
+        "MP3CV - Mécanismes physiopathologiques et conséquences des calcifications cardiovasculaires - UR UPJV 7517 (Université de Picardie Jules Verne - Centre de Recherche Universitaire en Santé (CURS) - CHU Sud - rue Renée Laennec - \r\n80054 Amiens Cedex - France)"
+      ],
+      "matched_affiliation_strings": [
+        "Anandic Medical Systems, Pan Gas AG Healthcare, Bracco, Hamilton Medical AG, Fresenius Kabi, Getinge Group Maquet AG, Dräger AG, Teleflex Medical GmbH, Glaxo Smith Kline, Merck Sharp and Dohme AG,"
+      ],
+      "award_count": 6,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320320300",
+          "name": "European Commission"
+        },
+        {
+          "id": "https://openalex.org/F4320326049",
+          "name": "Assistance publique-Hôpitaux de Paris"
+        },
+        {
+          "id": "https://openalex.org/F4320327892",
+          "name": "European Society of Intensive Care Medicine"
+        },
+        {
+          "id": "https://openalex.org/F4320332676",
+          "name": "Forskerakademiet"
+        },
+        {
+          "id": "https://openalex.org/F4320332999",
+          "name": "Horizon 2020 Framework Programme"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G345594233",
+          "name": null,
+          "funder": "2020-21",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G3527594030",
+          "name": null,
+          "funder": "831644",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G4937468798",
+          "name": null,
+          "funder": "H2020",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G6087091709",
+          "name": null,
+          "funder": "2018-32",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G6125276534",
+          "name": "EOSCsecretariat.eu",
+          "funder": "831644",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G6981419115",
+          "name": null,
+          "funder": "H2020-INFRAEOSC-05-2018-2019",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 49,
+      "rank_in_firm": 1,
+      "firm": "Mindray",
+      "firm_term": "mindray",
+      "tier": "A",
+      "openalex_id": "https://openalex.org/W4296377486",
+      "doi": "10.1364/boe.469747",
+      "title": "Validation of photoacoustic/ultrasound dual imaging in evaluating blood oxygen saturation",
+      "publication_date": "2022-09-19",
+      "created_date": "2022-09-20T00:00:00",
+      "updated_date": "2026-10-28T10:33:24.094632",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1364/boe.469747",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/36425613",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/9664893",
+        "openalex": "https://openalex.org/W4296377486"
+      },
+      "journal": "Biomedical Optics Express",
+      "affiliation_strings": [
+        "Department of Ultrasound, State Key Laboratory of Complex Severe and Rare Diseases, Peking Union Medical College Hospital, Chinese Academy of Medical Science and Peking Union Medical College, Beijing, China",
+        "The authors contributed equally to this manuscript",
+        "Peking University",
+        "Mindray Bio-Medical Electronics Co., Ltd",
+        "The Second Affiliated Hospital of Nanjing Medical University",
+        "jiangyuxinxh@163.com"
+      ],
+      "matched_affiliation_strings": [
+        "Mindray Bio-Medical Electronics Co., Ltd"
+      ],
+      "award_count": 3,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320321001",
+          "name": "National Natural Science Foundation of China"
+        },
+        {
+          "id": "https://openalex.org/F4320334977",
+          "name": "Beijing Municipal Natural Science Foundation"
+        },
+        {
+          "id": "https://openalex.org/F4320335830",
+          "name": "International Science and Technology Cooperation Programme"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G1183105026",
+          "name": null,
+          "funder": "2015DFA30440",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G3661740026",
+          "name": null,
+          "funder": "JQ18023",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G7178087697",
+          "name": "光声-超声多模态影像组学模型智能预测类风湿性关节炎复发的方法研究",
+          "funder": "61971447",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 50,
+      "rank_in_firm": 2,
+      "firm": "Mindray",
+      "firm_term": "mindray",
+      "tier": "B",
+      "openalex_id": "https://openalex.org/W3118972171",
+      "doi": "10.2991/artres.k.201209.041",
+      "title": "P.28 Comparison of Regional vs Local Arterial Parameters Using New US Technology",
+      "publication_date": "2020-12-01",
+      "created_date": "2021-01-18T00:00:00",
+      "updated_date": "2026-11-01T11:40:01.658920",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.2991/artres.k.201209.041",
+        "mag": "3118972171",
+        "openalex": "https://openalex.org/W3118972171"
+      },
+      "journal": "Artery Research",
+      "affiliation_strings": [
+        "Cardioarenales, USA",
+        "Mindray, USA"
+      ],
+      "matched_affiliation_strings": [
+        "Mindray, USA"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 51,
+      "rank_in_firm": 3,
+      "firm": "Mindray",
+      "firm_term": "mindray",
+      "tier": "B",
+      "openalex_id": "https://openalex.org/W4211200059",
+      "doi": "10.1109/mems51670.2022.9699652",
+      "title": "A Paper-Based Microfluidic Analytical Device with A Highly Integrated On-Chip Valve For Autonomous ELISA",
+      "publication_date": "2022-01-09",
+      "created_date": "2022-02-13T00:00:00",
+      "updated_date": "2026-10-30T12:39:25.321706",
+      "type": "conference-paper",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1109/mems51670.2022.9699652",
+        "openalex": "https://openalex.org/W4211200059"
+      },
+      "journal": "IEEE International Conference on Micro Electro Mechanical Systems (MEMS)",
+      "affiliation_strings": [
+        "School of Advanced Technology, Xi&#x0027;an Jiaotong - Liverpool University,Suzhou,CHINA",
+        "Department of Electrical and Electronic Engineering, University of Liverpool, Liverpool, UK",
+        "Mindray Medical International Co., Ltd, Shenzhen, CHINA",
+        "Suzhou City University,Department of Mechatronic Engineering,Suzhou,CHINA",
+        "Department of Mechatronic Engineering, Suzhou City University, Suzhou, CHINA",
+        "University of Liverpool,Department of Electrical and Electronic Engineering,Liverpool,UK",
+        "University of Toronto,Department of Mechanical &#x0026; Industrial Engineering,Toronto,CANADA"
+      ],
+      "matched_affiliation_strings": [
+        "Mindray Medical International Co., Ltd, Shenzhen, CHINA"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 52,
+      "rank_in_firm": 4,
+      "firm": "Mindray",
+      "firm_term": "mindray",
+      "tier": "B",
+      "openalex_id": "https://openalex.org/W4309126431",
+      "doi": "10.1136/bmjopen-2022-064581",
+      "title": "Effects of hydromorphone-based intravenous patient-controlled analgesia with and without a low basal infusion on postoperative hypoxaemia: study protocol for a randomised controlled clinical trial",
+      "publication_date": "2022-11-01",
+      "created_date": "2022-11-23T00:00:00",
+      "updated_date": "2026-11-04T10:54:05.112534",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1136/bmjopen-2022-064581",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/36385038",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/9670915",
+        "openalex": "https://openalex.org/W4309126431"
+      },
+      "journal": "BMJ Open",
+      "affiliation_strings": [
+        "Department of Anesthesiology and Perioperative Medicine, Fourth Military Medical University Xijing Hospital, Xian, Shaanxi, China",
+        "PMLS Upstream Marketing Department, Mindray Medical International Ltd, Shenzhen, Guangdong, China",
+        "Department of General Surgery, Fourth Military Medical University Xijing Hospital, Xian, Shaanxi, China"
+      ],
+      "matched_affiliation_strings": [
+        "PMLS Upstream Marketing Department, Mindray Medical International Ltd, Shenzhen, Guangdong, China"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 53,
+      "rank_in_firm": 5,
+      "firm": "Mindray",
+      "firm_term": "mindray",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W4288084450",
+      "doi": "10.1186/s13244-022-01259-8",
+      "title": "Deep learning based on ultrasound images assists breast lesion diagnosis in China: a multicenter diagnostic study",
+      "publication_date": "2022-07-28",
+      "created_date": "2022-07-28T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1186/s13244-022-01259-8",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/35900608",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/9334487",
+        "openalex": "https://openalex.org/W4288084450"
+      },
+      "journal": "Insights into Imaging",
+      "affiliation_strings": [
+        "Department of Ultrasonography, The Affiliated Hospital of Guizhou Medical University, Guiyang, China",
+        "Department of Ultrasound, Peking Union Medical College Hospital, Chinese Academy of Medical Sciences and Peking Union Medical College, No.1 Shuai Fu Yuan, Dong Cheng District, Beijing, 100730, China",
+        "Department of Medical Imaging Advanced Research, Beijing Research Institute, Shenzhen Mindray Bio-Medical Electronics Co., Ltd., Beijing, China",
+        "Department of Ultrasound, The Second Affiliated Hospital of Harbin Medical University, Harbin, China",
+        "Department of Ultrasound, The Second Affiliated Hospital of Chongqing Medical University and Chongqing Key Laboratory of Ultrasound Molecular Imaging, Chongqing, China",
+        "Department of Ultrasound, Shengjing Hospital of China Medical University, Shenyang, China",
+        "Department of Medical Ultrasound, Fudan University Shanghai Cancer Center, Shanghai, China",
+        "Department of Ultrasonography, Henan Provincial People's Hospital, Zhengzhou, China",
+        "Department of Ultrasound, Shanxi Bethune Hospital, Shanxi Academy of Medical Sciences, Taiyuan, China",
+        "Department of Medical Ultrasound, Tongji Hospital, Tongji Medical College of Huazhong University of Science and Technology, Wuhan, China",
+        "Department of Ultrasound, China-Japan Union Hospital of Jilin University, Changchun, China",
+        "Department of Ultrasound, Peking Union Medical College Hospital, Chinese Academy of Medical Sciences and Peking Union Medical College, No.1 Shuai Fu Yuan, Dong Cheng District, Beijing, 100730, China. whychina@126.com",
+        "Department of Ultrasound, The Sun Yat-Sen Memorial Hospital, Sun Yat-Sen University, Guangzhou, China",
+        "Department of Ultrasonography, First Affiliated Hospital of Guangxi Medical University, Nanning, China",
+        "Department of Medical Ultrasound, The Second Affiliated Hospital, School of Medicine, Xi'an Jiaotong University, Xi'an, China",
+        "Department of Ultrasonography, Renmin Hospital of Wuhan University, Wuhan, China",
+        "Department of Ultrasound, Union Hospital of Fujian Medical University, Fujian Institute of Ultrasound Medicine, Fuzhou, China",
+        "Department of Ultrasound, Ruijin Hospital, Shanghai Jiaotong University, School of Medicine, Shanghai, China",
+        "Department of Ultrasound, Qilu Hospital, Shandong University, Jinan, 250012, China",
+        "Department of Ultrasound, The Third Xiangya Hospital of Central South University, Changsha, China",
+        "Department of Ultrasound Medicine, Tongren Hospital, Shanghai Jiao Tong University School of Medicine, Shanghai, China",
+        "Department of Ultrasound, The First Hospital of Shanxi Medical University, Taiyuan, China",
+        "Department of Ultrasound, The Second Hospital of Dalian Medical University, Dalian, China",
+        "Department of Medical Imaging Advanced Research, Shenzhen Mindray Bio-Medical Electronics Co., Ltd., Shenzhen, China",
+        "Department of Ultrasound, Peking Union Medical College Hospital, Chinese Academy of Medical Sciences and Peking Union Medical College, No.1 Shuai Fu Yuan, Dong Cheng District, Beijing, 100730, China. jiangyuxinxh@163.com"
+      ],
+      "matched_affiliation_strings": [
+        "Department of Medical Imaging Advanced Research, Beijing Research Institute, Shenzhen Mindray Bio-Medical Electronics Co., Ltd., Beijing, China",
+        "Department of Medical Imaging Advanced Research, Shenzhen Mindray Bio-Medical Electronics Co., Ltd., Shenzhen, China"
+      ],
+      "award_count": 2,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320311026",
+          "name": "Shandong University"
+        },
+        {
+          "id": "https://openalex.org/F4320321160",
+          "name": "Sun Yat-sen University"
+        },
+        {
+          "id": "https://openalex.org/F4320321514",
+          "name": "Central South University"
+        },
+        {
+          "id": "https://openalex.org/F4320321851",
+          "name": "Fudan University"
+        },
+        {
+          "id": "https://openalex.org/F4320321883",
+          "name": "Huazhong University of Science and Technology"
+        },
+        {
+          "id": "https://openalex.org/F4320322300",
+          "name": "Jilin University"
+        },
+        {
+          "id": "https://openalex.org/F4320322449",
+          "name": "Tongji University"
+        },
+        {
+          "id": "https://openalex.org/F4320322919",
+          "name": "Natural Science Foundation of Beijing Municipality"
+        },
+        {
+          "id": "https://openalex.org/F4320322999",
+          "name": "Shanghai Jiao Tong University"
+        },
+        {
+          "id": "https://openalex.org/F4320324116",
+          "name": "Wuhan University"
+        },
+        {
+          "id": "https://openalex.org/F4320324301",
+          "name": "China Medical University"
+        },
+        {
+          "id": "https://openalex.org/F4320324962",
+          "name": "Peking Union Medical College Hospital"
+        },
+        {
+          "id": "https://openalex.org/F4320325200",
+          "name": "Shanxi Medical University"
+        },
+        {
+          "id": "https://openalex.org/F4320326301",
+          "name": "Guizhou Medical University"
+        },
+        {
+          "id": "https://openalex.org/F4320326853",
+          "name": "Peking Union Medical College"
+        },
+        {
+          "id": "https://openalex.org/F4320327301",
+          "name": "Guangxi Medical University"
+        },
+        {
+          "id": "https://openalex.org/F4320327612",
+          "name": "Dalian Medical University"
+        },
+        {
+          "id": "https://openalex.org/F4320328113",
+          "name": "Fujian Medical University"
+        },
+        {
+          "id": "https://openalex.org/F4320329523",
+          "name": "Henan Provincial People's Hospital"
+        },
+        {
+          "id": "https://openalex.org/F4320330117",
+          "name": "Ruijin Hospital"
+        },
+        {
+          "id": "https://openalex.org/F4320335305",
+          "name": "School of Medicine, Shanghai Jiao Tong University"
+        },
+        {
+          "id": "https://openalex.org/F4320335740",
+          "name": "Xiangya Hospital, Central South University"
+        },
+        {
+          "id": "https://openalex.org/F4320336313",
+          "name": "Shengjing Hospital"
+        },
+        {
+          "id": "https://openalex.org/F4320336485",
+          "name": "Renmin Hospital of Wuhan University"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G6227330774",
+          "name": null,
+          "funder": "10023201900113",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G7217543505",
+          "name": null,
+          "funder": "7202156",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 54,
+      "rank_in_firm": 6,
+      "firm": "Mindray",
+      "firm_term": "mindray",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W4289962023",
+      "doi": "10.3969/j.issn.1671-7104.2022.04.023",
+      "title": "[Clinical Investigation of Key Parameter Range of AMG Muscle Relaxant Monitor].",
+      "publication_date": "2022-07-30",
+      "created_date": "2022-08-06T00:00:00",
+      "updated_date": "2026-11-02T09:45:03.842371",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.3969/j.issn.1671-7104.2022.04.023",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/35929167",
+        "openalex": "https://openalex.org/W4289962023"
+      },
+      "journal": "PubMed",
+      "affiliation_strings": [
+        "Shenzhen Mindray Bio-Medical Electronics Co. Ltd., Shenzhen, 518057"
+      ],
+      "matched_affiliation_strings": [
+        "Shenzhen Mindray Bio-Medical Electronics Co. Ltd., Shenzhen, 518057"
+      ],
+      "award_count": 0,
+      "funders": [],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 55,
+      "rank_in_firm": 7,
+      "firm": "Mindray",
+      "firm_term": "mindray",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W4292168318",
+      "doi": "10.21037/atm-22-3491",
+      "title": "A new haematological model for the diagnosis and prognosis of severe community-acquired pneumonia: a single-center retrospective study",
+      "publication_date": "2022-08-01",
+      "created_date": "2022-08-18T00:00:00",
+      "updated_date": "2026-11-03T10:50:19.383937",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.21037/atm-22-3491",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/36111004",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/9469145",
+        "openalex": "https://openalex.org/W4292168318"
+      },
+      "journal": "Annals of Translational Medicine",
+      "affiliation_strings": [
+        "Department of Laboratory Medicine, The First Affiliated Hospital, Sun Yat-sen University, Guangzhou, China",
+        "Yunkang School of Medicine and Health, Nanfang College, Guangzhou, China",
+        "Department of Clinical Research & Medical Affairs, Shenzhen Mindray Bio-Medical Electronic Co., Ltd., Shenzhen, China"
+      ],
+      "matched_affiliation_strings": [
+        "Department of Clinical Research & Medical Affairs, Shenzhen Mindray Bio-Medical Electronic Co., Ltd., Shenzhen, China"
+      ],
+      "award_count": 2,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320321001",
+          "name": "National Natural Science Foundation of China"
+        },
+        {
+          "id": "https://openalex.org/F4320321921",
+          "name": "Natural Science Foundation of Guangdong Province"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G3181989364",
+          "name": null,
+          "funder": "82000355",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G882951853",
+          "name": null,
+          "funder": "2018A030310016",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 56,
+      "rank_in_firm": 8,
+      "firm": "Mindray",
+      "firm_term": "mindray",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W4290087610",
+      "doi": "10.21595/jve.2022.22479",
+      "title": "Carbon deposition fault diagnosis of small piston engine based on optimized VMD",
+      "publication_date": "2022-08-06",
+      "created_date": "2022-08-06T00:00:00",
+      "updated_date": "2026-10-30T12:39:25.321706",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.21595/jve.2022.22479",
+        "openalex": "https://openalex.org/W4290087610"
+      },
+      "journal": "Journal of Vibroengineering",
+      "affiliation_strings": [
+        "College of Information Engineering, Jiangsu Open University, Nanjing, 210019, China",
+        "Nanjing Mindray Bio-medical Electronics Co. Ltd., Nanjing, 211111, China",
+        "College of Energy and Power Engineering, Nanjing University of Aeronautics and Astronautics, Nanjing, 210016, China"
+      ],
+      "matched_affiliation_strings": [
+        "Nanjing Mindray Bio-medical Electronics Co. Ltd., Nanjing, 211111, China"
+      ],
+      "award_count": 1,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320321001",
+          "name": "National Natural Science Foundation of China"
+        },
+        {
+          "id": "https://openalex.org/F4320321605",
+          "name": "Government of Jiangsu Province"
+        },
+        {
+          "id": "https://openalex.org/F4320322769",
+          "name": "Natural Science Foundation of Jiangsu Province"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G6051504382",
+          "name": null,
+          "funder": "51775269",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 57,
+      "rank_in_firm": 9,
+      "firm": "Mindray",
+      "firm_term": "mindray",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W4292722344",
+      "doi": "10.1148/radiol.212257",
+      "title": "Synovial Oxygenation at Photoacoustic Imaging to Assess Rheumatoid Arthritis Disease Activity",
+      "publication_date": "2022-08-23",
+      "created_date": "2022-08-23T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1148/radiol.212257",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/35997608",
+        "openalex": "https://openalex.org/W4292722344"
+      },
+      "journal": "Radiology",
+      "affiliation_strings": [
+        "From the Departments of Ultrasound (M.Y., C.Z., M.W., R.Z., S.L., X.L., Z.Q., J. Li, Y.J.) and Rheumatology and Clinical Immunology (Q.W., W.B., S.Z., D.X., X.T., X.Z.), State Key Laboratory of Complex Severe and Rare Diseases, Peking Union Medical College Hospital, Chinese Academy of Medical Sciences and Peking Union Medical College, Shuaifuyuan No. 1, Dongcheng District, Beijing 100730, China; National Clinical Research Center for Dermatologic and Immunologic Diseases (NCRC-DID), Ministry of Science & Technology, and Key Laboratory of Rheumatology and Clinical Immunology, Ministry of Education, Beijing, China (Q.W., W.B., S.Z., D.X., X.T., X.Z.,); Department of Rheumatology, Aero Space Central Hospital, Beijing, China (J. Liu); and Shenzhen Mindray Bio-Medical Electronics Co, Ltd, Shenzhen, China (F.Y., L.Z., X.H.)",
+        "Departments of Ultrasound, State Key Laboratory of Complex Severe and Rare                     Diseases, Peking Union Medical College Hospital, Chinese Academy of Medical                     Sciences and Peking Union Medical College, Shuaifuyuan No. 1, Dongcheng                     District, Beijing 100730, China",
+        "Ministry of Science &                     Technology, and Key Laboratory of Rheumatology and Clinical Immunology, Ministry                     of Education, Beijing, China",
+        "Rheumatology and Clinical Immunology, State Key Laboratory of Complex Severe and Rare                     Diseases, Peking Union Medical College Hospital, Chinese Academy of Medical                     Sciences and Peking Union Medical College, Shuaifuyuan No. 1, Dongcheng                     District, Beijing 100730, China",
+        "Department                     of Rheumatology, Aero Space Central Hospital, Beijing, China",
+        "Shenzhen Mindray Bio-Medical Electronics Co, Ltd, Shenzhen, China"
+      ],
+      "matched_affiliation_strings": [
+        "From the Departments of Ultrasound (M.Y., C.Z., M.W., R.Z., S.L., X.L., Z.Q., J. Li, Y.J.) and Rheumatology and Clinical Immunology (Q.W., W.B., S.Z., D.X., X.T., X.Z.), State Key Laboratory of Complex Severe and Rare Diseases, Peking Union Medical College Hospital, Chinese Academy of Medical Sciences and Peking Union Medical College, Shuaifuyuan No. 1, Dongcheng District, Beijing 100730, China; National Clinical Research Center for Dermatologic and Immunologic Diseases (NCRC-DID), Ministry of Science & Technology, and Key Laboratory of Rheumatology and Clinical Immunology, Ministry of Education, Beijing, China (Q.W., W.B., S.Z., D.X., X.T., X.Z.,); Department of Rheumatology, Aero Space Central Hospital, Beijing, China (J. Liu); and Shenzhen Mindray Bio-Medical Electronics Co, Ltd, Shenzhen, China (F.Y., L.Z., X.H.)",
+        "Shenzhen Mindray Bio-Medical Electronics Co, Ltd, Shenzhen, China"
+      ],
+      "award_count": 9,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320321001",
+          "name": "National Natural Science Foundation of China"
+        },
+        {
+          "id": "https://openalex.org/F4320321540",
+          "name": "Ministry of Science and Technology of the People's Republic of China"
+        },
+        {
+          "id": "https://openalex.org/F4320329293",
+          "name": "Data Center of Management Science, National Natural Science Foundation of China - Peking University"
+        },
+        {
+          "id": "https://openalex.org/F4320334978",
+          "name": "Beijing Nova Program"
+        },
+        {
+          "id": "https://openalex.org/F4320335830",
+          "name": "International Science and Technology Cooperation Programme"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G101438807",
+          "name": null,
+          "funder": "2017YFE0104200",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G1067568501",
+          "name": null,
+          "funder": "xxjc2018023",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G1183105026",
+          "name": null,
+          "funder": "2015DFA30440",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G1785843243",
+          "name": null,
+          "funder": "81421004",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G4946795048",
+          "name": null,
+          "funder": "81301268",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G4981316015",
+          "name": null,
+          "funder": "81421004",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G5203233830",
+          "name": null,
+          "funder": "61971447",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G7178087697",
+          "name": "光声-超声多模态影像组学模型智能预测类风湿性关节炎复发的方法研究",
+          "funder": "61971447",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G974375821",
+          "name": null,
+          "funder": "81301268",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 58,
+      "rank_in_firm": 10,
+      "firm": "Mindray",
+      "firm_term": "mindray",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W4293113469",
+      "doi": "10.1177/1358863x221117608",
+      "title": "Phasicity and resistance of the arterial spectral Doppler waveform in a canine femoral focal artery stenosis model",
+      "publication_date": "2022-08-24",
+      "created_date": "2022-08-26T00:00:00",
+      "updated_date": "2026-11-04T10:54:05.112534",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.1177/1358863x221117608",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/36000474",
+        "openalex": "https://openalex.org/W4293113469"
+      },
+      "journal": "Vascular Medicine",
+      "affiliation_strings": [
+        "Department of Ultrasound, Peking University International Hospital, Beijing, China",
+        "Department of Ultrasound, the Fourth Medical Center of PLA General Hospital, Beijing, China",
+        "Shenzhen Mindray Bio-Medical Electronics Co., Ltd., Shenzhen, China",
+        "Department of Vascular Surgery, Austin Hospital, University of Melbourne, Melbourne, Australia",
+        "INSERM CIC1414 CIC Rennes, Rennes, France",
+        "Université de Rennes 2, M2S-EA 7470, Rennes, France",
+        "Vascular Medicine Department, Centre Hospitalier Universitaire (CHU) de Rennes, Rennes, France"
+      ],
+      "matched_affiliation_strings": [
+        "Shenzhen Mindray Bio-Medical Electronics Co., Ltd., Shenzhen, China"
+      ],
+      "award_count": 2,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320321001",
+          "name": "National Natural Science Foundation of China"
+        },
+        {
+          "id": "https://openalex.org/F4320322919",
+          "name": "Natural Science Foundation of Beijing Municipality"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G3558767302",
+          "name": null,
+          "funder": "7172209",
+          "doi": null
+        },
+        {
+          "id": "https://openalex.org/G4626269292",
+          "name": null,
+          "funder": "81771833",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 59,
+      "rank_in_firm": 11,
+      "firm": "Mindray",
+      "firm_term": "mindray",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W4295910800",
+      "doi": "10.21037/atm-22-3767",
+      "title": "Development and validation of the diagnostic accuracy of artificial intelligence-assisted ultrasound in the classification of splenic trauma",
+      "publication_date": "2022-09-15",
+      "created_date": "2022-09-16T00:00:00",
+      "updated_date": "2026-11-07T11:25:07.637180",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.21037/atm-22-3767",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/36330417",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/9622480",
+        "openalex": "https://openalex.org/W4295910800"
+      },
+      "journal": "Annals of Translational Medicine",
+      "affiliation_strings": [
+        "Department of Ultrasound Diagnosis, The Fourth Medical Center of PLA General Hospital, Beijing, China",
+        "Department of Ultrasound Diagnosis, The First Medical Center of PLA General Hospital, Beijing, China",
+        "School of Information Sciences and Technology, Northwest University, Xi'an, China",
+        "CAS Key Laboratory of Molecular Imaging, the State Key Laboratory of Management and Control for Complex Systems, Institute of Automation, Chinese Academy of Sciences, Beijing, China",
+        "Beijing Mindray Medical Instrument Co., Ltd., Beijing, China"
+      ],
+      "matched_affiliation_strings": [
+        "Beijing Mindray Medical Instrument Co., Ltd., Beijing, China"
+      ],
+      "award_count": 0,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320325891",
+          "name": "General Hospital of People’s Liberation Army"
+        }
+      ],
+      "awards": [],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    },
+    {
+      "anchor_no": 60,
+      "rank_in_firm": 12,
+      "firm": "Mindray",
+      "firm_term": "mindray",
+      "tier": "C",
+      "openalex_id": "https://openalex.org/W4307512565",
+      "doi": "10.21037/atm-22-4589",
+      "title": "Comparison on the consistency of Mindray and Siemens chemiluminescence analyzers for detecting FT3, FT4 and TSH in patients with hyper- and hypothyroidism",
+      "publication_date": "2022-10-01",
+      "created_date": "2022-11-02T00:00:00",
+      "updated_date": "2026-11-04T10:54:05.112534",
+      "type": "article",
+      "type_crossref": null,
+      "ids": {
+        "doi": "https://doi.org/10.21037/atm-22-4589",
+        "pmid": "https://pubmed.ncbi.nlm.nih.gov/36388840",
+        "pmcid": "https://www.ncbi.nlm.nih.gov/pmc/articles/9652509",
+        "openalex": "https://openalex.org/W4307512565"
+      },
+      "journal": "Annals of Translational Medicine",
+      "affiliation_strings": [
+        "Laboratory Medicine Center, Nanfang Hospital, Southern Medical University, Guangzhou, China",
+        "Shenzhen Mindray Bio-Medical Electronics Co., Ltd., Shenzhen, China"
+      ],
+      "matched_affiliation_strings": [
+        "Shenzhen Mindray Bio-Medical Electronics Co., Ltd., Shenzhen, China"
+      ],
+      "award_count": 1,
+      "funders": [
+        {
+          "id": "https://openalex.org/F4320337111",
+          "name": "Basic and Applied Basic Research Foundation of Guangdong Province"
+        }
+      ],
+      "awards": [
+        {
+          "id": "https://openalex.org/G5334399082",
+          "name": null,
+          "funder": "2020B1111160001",
+          "doi": null
+        }
+      ],
+      "AFFILIATION_MAY_NOT_BE_FIRM": false
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "source_id": "us_census_trade",
+  "workstream": "industry",
+  "generated_at": "2026-11-09T23:21:34Z",
+  "records_collected": 0,
+  "raw_files": [
+    {
+      "path": "DATASETS/industry/us_census_trade/raw/foreign_trade_index.html",
+      "bytes": 545076,
+      "sha256": "30b11ff2983e871337a3f7212918b1a1d364865567b522ade36052fc3ac42227",
+      "note": "supporting page retained verbatim (no records from this source)"
+    },
+    {
+      "path": "DATASETS/industry/us_census_trade/raw/tos.html",
+      "bytes": 302474,
+      "sha256": "ec32c3fc9d0cf6d7bb0365294c3b92f4dc7c71c8e790f34a5b1f810dc14ccdbe",
+      "note": "supporting page retained verbatim (no records from this source)"
+    }
+  ],
+  "why_zero_records": "REQUIRES_REGISTRATION: the HS time-series endpoint answers HTTP 200 but redirects to /data/missing_key.html. Only the keyless variable dictionary was stored. No trade values were collected.",
+  "aggregation_disclaimer": "Trade-flow records are national/regional aggregates and carry no firm-level attribution. Procurement records name a supplier as published by the awarding body; they do not identify the manufacturer of any device."
+}

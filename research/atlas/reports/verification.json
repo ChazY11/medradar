@@ -1,0 +1,89 @@
+{
+  "checks": [
+    {
+      "check": "head_points_at_existing_version",
+      "detail": "0 dangling heads",
+      "ok": true
+    },
+    {
+      "check": "head_hash_matches_version",
+      "detail": "0 mismatch(es)",
+      "ok": true
+    },
+    {
+      "check": "versions_contiguous",
+      "detail": "7254 evidence ids checked",
+      "ok": true
+    },
+    {
+      "check": "normalized_hashes_recompute",
+      "detail": "0 mismatch(es): []",
+      "ok": true
+    },
+    {
+      "check": "confirmed_identity_shares_one_di",
+      "detail": "934 confirmed relations; 0 without a shared DI",
+      "ok": true
+    },
+    {
+      "check": "rejections_have_reasons",
+      "detail": "0 unexplained rejection(s)",
+      "ok": true
+    },
+    {
+      "check": "revoked_relations_have_reason_and_event",
+      "detail": "0 revoked; 0 without reason or single revoked event",
+      "ok": true
+    },
+    {
+      "check": "request_log_covers_run_counters",
+      "detail": "0 run(s) report more requests than request_log contains",
+      "ok": true
+    },
+    {
+      "check": "no_duplicate_live_relations",
+      "detail": "0 duplicate(s)",
+      "ok": true
+    },
+    {
+      "check": "report_counts_match_db",
+      "detail": "{}",
+      "ok": true
+    },
+    {
+      "check": "report_relations_match_db",
+      "detail": "{}",
+      "ok": true
+    },
+    {
+      "check": "baseline_arithmetic_consistent",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "tracked_sample_files_bounded",
+      "detail": "[]",
+      "ok": true
+    },
+    {
+      "check": "tracked_samples_use_open_sources_only",
+      "detail": "1 tracked sample(s); restricted-origin files: []",
+      "ok": true
+    },
+    {
+      "check": "sample_citations_are_official",
+      "detail": "each tracked sample names at least one official open source",
+      "ok": true
+    },
+    {
+      "check": "restricted_evidence_not_used",
+      "detail": "0 restricted evidence rows (must be zero for public output)",
+      "ok": true
+    }
+  ],
+  "checks_failed": 0,
+  "checks_total": 16,
+  "db": "D:\\DEPPSKK\\worktrees\\atlas-001\\research\\atlas\\staging\\atlas.sqlite",
+  "ok": true,
+  "schema": "medradar.atlas.verification.v1"
+}

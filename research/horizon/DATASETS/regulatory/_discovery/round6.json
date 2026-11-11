@@ -1,0 +1,44 @@
+{
+  "generated_at": "2026-11-09T23:04:48Z",
+  "budget": {
+    "client": "regulatory-discovery-6",
+    "requests_made": 3,
+    "max_requests": 6,
+    "bytes_received": 128651,
+    "max_total_bytes": 8000000,
+    "retries": 0,
+    "errors": []
+  },
+  "targets": [
+    {
+      "name": "agudid_download_query",
+      "url": "https://accessgudid.nlm.nih.gov/download/query",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 66702,
+      "sha256": "dab63b937d4f6224ca9e2dbdef3e091bab276399145bbddb3348b372da8e3167",
+      "content_type": "text/html; charset=utf-8",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\agudid_download_query.html"
+    },
+    {
+      "name": "hc_devices_infusion",
+      "url": "https://health-products.canada.ca/api/medical-devices/device/?device_name=infusion&state=active&lang=en&type=json",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 56410,
+      "sha256": "012adb46c546e0ce1c51ea2fbb811c22cb0b6c33a5e6f16befcb03e940daa6a4",
+      "content_type": "application/json; charset=utf-8",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\hc_devices_infusion.json"
+    },
+    {
+      "name": "anvisa_produtos_index",
+      "url": "https://dados.anvisa.gov.br/dados/CONSULTAS/PRODUTOS/",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 5539,
+      "sha256": "b241ac3cd3fa1b85ef0612917ffb31147722b89b5cdcc1e9d8d788e9cbc0a62d",
+      "content_type": "text/html;charset=utf-8",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\anvisa_produtos_index.html"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "access_evidence": "GET /data/timeseries/intltrade/imports/hs?... returned HTTP 200 but redirected to https://api.census.gov/data/missing_key.html (8,764 B) — the key-required page. The variable dictionary /variables.json returned 200 JSON, so the schema is public even though values are not.",
+  "access_state": "REQUIRES_REGISTRATION",
+  "auth_required": true,
+  "blockers": [
+    "KEY_REQUIRED: data requests redirect to /data/missing_key.html."
+  ],
+  "bulk_available": true,
+  "domain": "api.census.gov",
+  "entity_types": [
+    "trade_flow"
+  ],
+  "first_verified_at": "2026-11-09T23:18:27Z",
+  "historical_depth": "not verified (no data observed)",
+  "id_schemes": [],
+  "licence_note": "No explicit reuse-licence sentence was found on the pages fetched (foreign-trade index and the developers' page both yielded none; https://www.census.gov/foreign-trade/developers/index.html returned HTTP 404). Recorded as publicly readable without an explicit reuse licence rather than assumed permissive.",
+  "licence_status": "open_no_explicit_licence",
+  "licence_url": "https://www.census.gov/foreign-trade/index.html",
+  "machine_interface": "REST JSON (keyed); variable dictionary unkeyed",
+  "name": "US Census Bureau — International Trade API (HS time series)",
+  "notes": "The brief described this endpoint as 'keyless for limited use'. On 2026-11-10 it is not: the redirect to missing_key.html is unambiguous.",
+  "operator": "US Census Bureau",
+  "probe_suite": "industry",
+  "rate_policy": "Key required; key signup page answered HTTP 200 (10,287 B).",
+  "registration_url": "https://api.census.gov/data/key_signup.html",
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "us_census_trade",
+  "unlock_route": "Free self-service API key at https://api.census.gov/data/key_signup.html and send it as ?key=; then /timeseries/intltrade/imports/hs becomes usable (COMM_LVL=HS4, I_COMMODITY=9018).",
+  "what_is_new": "Nothing collected: the value path is keyed. This is a clean negative."
+}

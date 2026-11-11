@@ -1,0 +1,49 @@
+name: atlas
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  atlas-offline:
+    name: py${{ matrix.python-version }} ATLAS offline suite
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+      - name: ATLAS identity, evidence, DB, research and connector tests (no network)
+        env:
+          PYTHONPATH: .
+        run: python -m pytest tests/test_atlas_identity.py tests/test_atlas_evidence.py tests/test_atlas_db.py tests/test_atlas_research.py tests/test_atlas_connectors.py -q
+      - name: Schema migration + empty-store operations (no network)
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m medradar.atlas --db /tmp/atlas-ci.sqlite init
+          python -m medradar.atlas --db /tmp/atlas-ci.sqlite quality
+          python -m medradar.atlas --db /tmp/atlas-ci.sqlite graph build
+          python -m medradar.atlas --db /tmp/atlas-ci.sqlite stats
+      - name: Historical-state query on an empty store must be explicit
+        env:
+          PYTHONPATH: .
+        run: |
+          python -m medradar.atlas --db /tmp/atlas-ci.sqlite as-of --at 2025-01-01T00:00:00Z --basis observed
+          python -m medradar.atlas --db /tmp/atlas-ci.sqlite as-of --at 2025-01-01T00:00:00Z --basis public_inferred
+      - name: Verifier arithmetic on a synthetic store
+        env:
+          PYTHONPATH: .
+        run: python tests/run_atlas_ci_verifier.py

@@ -1,0 +1,38 @@
+{
+  "access_evidence": "probe semanticscholar_paper_get: HTTP 200 with externalIds incl. PubMed, PubMedCentral, ArXiv, MAG; POST probe semanticscholar_batch_post in POST_CALLS.json: HTTP 200 after one HTTP 429 on the anonymous tier. 60 DOIs in one batch call -> 56 resolved.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "The batch endpoint ignores the field projection unless `fields` is passed as a query parameter; without it the response is HTTP 200 with only {paperId,title} - a silent partial response."
+  ],
+  "bulk_available": true,
+  "domain": "api.semanticscholar.org",
+  "entity_types": [
+    "publication"
+  ],
+  "first_verified_at": "2026-11-09T23:20:28Z",
+  "historical_depth": "publicationDate only; no creation or update timestamp is exposed, so every record is SNAPSHOT_ONLY.",
+  "id_schemes": [
+    "doi",
+    "pmid",
+    "pmcid",
+    "arxiv",
+    "mag",
+    "s2_corpus_id"
+  ],
+  "licence_note": "The Graph API is free for research use, and the Open Research Corpus is ODC-BY, but the API terms restrict bulk redistribution and require attribution. Recorded as open_no_explicit_licence because API-level terms rather than a content licence govern reuse of these responses.",
+  "licence_status": "open_no_explicit_licence",
+  "licence_url": "https://www.semanticscholar.org/product/api/license",
+  "machine_interface": "REST JSON; GET /paper/{id} and POST /paper/batch",
+  "name": "Semantic Scholar Graph API",
+  "notes": "Four of 60 DOIs returned null from the batch call (not in S2). Those are recorded as ABSENT, not as errors.",
+  "operator": "Allen Institute for AI",
+  "probe_suite": "scholarly",
+  "rate_policy": "Anonymous tier is shared and does throttle: HTTP 429 observed twice, recovered by bounded exponential backoff. A key exists on request.",
+  "registration_url": null,
+  "robots_summary": "Not applicable: Graph API only.",
+  "robots_url": "https://www.semanticscholar.org/robots.txt",
+  "source_id": "semantic_scholar",
+  "unlock_route": "",
+  "what_is_new": "The only source here exposing an ArXiv identifier, and it carries PubMed and PubMedCentral ids too, so it is a second independent path to the PMID<->DOI edge: 56/60 anchors, 1 of which OpenAlex and Crossref could not reach by PMID."
+}

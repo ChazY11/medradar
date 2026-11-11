@@ -1,0 +1,205 @@
+{
+ "experiment_id": "EXP_H4_INDUSTRY",
+ "workstream": "industry",
+ "generated_at": "2026-11-09T23:20:00Z",
+ "schema_version": "horizon.evidence.v1",
+ "question": "Can bounded, licence-compliant open sources produce time-stamped industry-adoption and trade evidence that separates aggregate trade flows from device-level procurement awards — and what fraction of that evidence actually identifies a firm or a device?",
+ "answers": {
+  "trade_series_rows": 1408,
+  "trade_series_definition": "distinct (source, reporter, partner, HS, period, direction)",
+  "procurement_awards_with_named_supplier": 370,
+  "supplier_award_relations": 606,
+  "awards_naming_concrete_device": 94,
+  "awards_naming_model_like_token": 11,
+  "device_relations_CONFIRMED": 0,
+  "device_relations_CANDIDATE": 124,
+  "device_relations_by_status": {
+   "NONE": 482,
+   "CANDIDATE": 124
+  }
+ },
+ "trade": {
+  "trade_records_total": 2108,
+  "trade_series_rows_total": 1408,
+  "series_definition": "distinct (source, reporter, partner, HS, period, direction)",
+  "per_source": {
+   "un_comtrade": {
+    "records": 608,
+    "series_rows": 608,
+    "distinct_hs_codes": 4,
+    "distinct_reporters": 7,
+    "distinct_periods": 22
+   },
+   "eurostat_comext": {
+    "records": 1400,
+    "series_rows": 700,
+    "distinct_hs_codes": 5,
+    "distinct_reporters": 7,
+    "distinct_periods": 10
+   },
+   "uk_hmrc_trade": {
+    "records": 100,
+    "series_rows": 100,
+    "distinct_hs_codes": 5,
+    "distinct_reporters": 1,
+    "distinct_periods": 10
+   }
+  },
+  "units": {
+   "unknown": 608,
+   "100 kg": 700,
+   "EUR": 700,
+   "GBP": 100
+  },
+  "hs_code_row_counts": {
+   "9018": 452,
+   "9019": 452,
+   "9020": 452,
+   "9021": 300,
+   "9022": 452
+  },
+  "distinct_reporters_all_sources": 15,
+  "distinct_periods_all_sources": 22
+ },
+ "procurement": {
+  "procurement_records_total": 606,
+  "per_source": {
+   "usaspending": {
+    "records": 245,
+    "awards_with_named_supplier": 245,
+    "awards_naming_concrete_device": 70,
+    "awards_naming_model_like_token": 11
+   },
+   "eu_ted": {
+    "records": 299,
+    "awards_with_named_supplier": 93,
+    "awards_naming_concrete_device": 19,
+    "awards_naming_model_like_token": 0
+   },
+   "uk_find_a_tender": {
+    "records": 62,
+    "awards_with_named_supplier": 32,
+    "awards_naming_concrete_device": 5,
+    "awards_naming_model_like_token": 0
+   }
+  },
+  "awards_with_named_supplier_total": 370,
+  "supplier_award_relations_total": 606,
+  "awards_naming_concrete_device_total": 94,
+  "device_named_relations_total": 124,
+  "awards_naming_model_like_token_total": 11,
+  "device_relation_status_counts": {
+   "NONE": 482,
+   "CANDIDATE": 124
+  },
+  "stage_counts": {
+   "contract_award": 606
+  },
+  "identity_status_counts": {
+   "CONFIRMED": 255,
+   "CANDIDATE": 351
+  },
+  "evidence_status_counts": {
+   "CONFIRMED": 307,
+   "CANDIDATE": 299
+  },
+  "records_carrying_a_firm_identifier": 307,
+  "identifier_schemes_used": {
+   "sam_uei": 245,
+   "federal_award_id": 245,
+   "usaspending_generated_internal_id": 245,
+   "ted_publication_number": 299,
+   "ocds_ocid": 62,
+   "ocds_party_id": 62
+  }
+ },
+ "two_clock_classification": {
+  "eu_ted": {
+   "FULL_TWO_CLOCK": 297,
+   "PUBLICATION_ONLY": 2
+  },
+  "eurostat_comext": {
+   "EVENT_ONLY": 1400
+  },
+  "uk_find_a_tender": {
+   "FULL_TWO_CLOCK": 62
+  },
+  "uk_hmrc_trade": {
+   "EVENT_ONLY": 100
+  },
+  "un_comtrade": {
+   "EVENT_ONLY": 608
+  },
+  "usaspending": {
+   "EVENT_ONLY": 245
+  }
+ },
+ "cross_checks": {
+  "de_9018_imports_2023": {
+   "comext_eur": 12719356730,
+   "comtrade_usd": null,
+   "note": "Different currencies and different compilations; the point is that both series are retrievable for the same cell so a reviewer can reconcile them, not that they are equal.",
+   "comtrade_usd__redacted": "UN Comtrade Terms section 5"
+  },
+  "hmrc_9018_2023_imports": {
+   "value_gbp": 4669980797.0,
+   "months_observed": 12,
+   "flow_type_ids_summed": [
+    1,
+    3
+   ]
+  },
+  "trade_records_missing_aggregation_disclaimer": 0,
+  "procurement_stage_values_observed": [
+   "contract_award"
+  ],
+  "collapsed_stage_values_present": []
+ },
+ "dedupe": {
+  "un_comtrade": {
+   "records": 608,
+   "unique_dedupe_keys": 608,
+   "duplicates": 0
+  },
+  "eurostat_comext": {
+   "records": 1400,
+   "unique_dedupe_keys": 1400,
+   "duplicates": 0
+  },
+  "uk_hmrc_trade": {
+   "records": 100,
+   "unique_dedupe_keys": 100,
+   "duplicates": 0
+  },
+  "usaspending": {
+   "records": 245,
+   "unique_dedupe_keys": 245,
+   "duplicates": 0
+  },
+  "eu_ted": {
+   "records": 299,
+   "unique_dedupe_keys": 93,
+   "duplicates": 206
+  },
+  "uk_find_a_tender": {
+   "records": 62,
+   "unique_dedupe_keys": 16,
+   "duplicates": 46
+  }
+ },
+ "honest_limits": [
+  "TRADE FLOWS ARE AGGREGATES. None of the 2108 trade records identifies a firm, a brand or a device; every trade record carries firm_attribution='none' and states its aggregation semantics.",
+  "Device<->award relations are CANDIDATE by construction: an award text may name a device class, but no source here identifies the OEM of the device that was bought. CONFIRMED device relations = 0.",
+  "No trade observation has a publication date, so no trade series can support an observability-lag claim; they are EVENT_ONLY.",
+  "Procurement samples are bounded (page 1-2 of one query, or a scan of 300 award releases) and must not be read as census counts.",
+  "Commercial bill-of-lading vendors (ImportYeti, ImportGenius, Panjiva, Descartes Datamyne) yielded zero records: company-level shipment data is paywalled or robots-disallowed, and was deliberately not acquired."
+ ],
+ "reproduce_command": "python CONNECTORS/industry/_licence.py && python CONNECTORS/industry/un_comtrade.py && python CONNECTORS/industry/eurostat_comext.py && python CONNECTORS/industry/uk_hmrc_trade.py && python CONNECTORS/industry/usaspending.py && python CONNECTORS/industry/eu_ted.py && python CONNECTORS/industry/uk_find_a_tender.py && python experiments/industry/write_registry.py && python experiments/industry/run_experiment.py",
+ "redactions": {
+  "reason": "UN Comtrade Terms section 5 prohibits redistribution/publication of derived values.",
+  "fields_withheld": [
+   "cross_checks.de_9018_imports_2023.comtrade_usd"
+  ],
+  "recorded_in": "research/convergence/licence/derived_value_quarantine.json"
+ }
+}

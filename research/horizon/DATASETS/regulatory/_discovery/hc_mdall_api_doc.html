@@ -1,0 +1,1176 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 9]><html class="no-js lt-ie9" lang="en" dir="ltr"><![endif]--><!--[if gt IE 8]><!-->
+<html class="no-js" lang="en" dir="ltr">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <!-- Web Experience Toolkit (WET) / Boîte à outils de l'expérience Web (BOEW)
+        wet-boew.github.io/wet-boew/License-en.html / wet-boew.github.io/wet-boew/Licence-fr.html -->
+    <title>Medical Devices Active Licence Listing (MDALL) API</title>
+    <meta content="width=device-width,initial-scale=1" name="viewport">
+    <!-- Meta data -->
+    <meta name="dcterms.language" title="ISO639-2" content="eng" />
+    <meta name="dcterms.title" content="Medical Devices Active Licence Listing (MDALL) API" />
+    <meta name="description" content="Documentation for the Medical Devices Active Licence Listing (MDALL) API." />
+    <meta name="dcterms.subject" title="scheme" content="" />
+    <meta name="dcterms.creator" content="Government of Canada, Health Canada and the Public health Agency of Canada" />
+    <meta name="dcterms.contributor" content="" />
+    <meta name="dcterms.type" title="gctype" content="" />
+    <meta name="dcterms.audience" title="gcaudience" content="public" />
+    <meta name="dcterms.issued" title="W3CDTF" content="2018-03-30" />
+    <meta name="dcterms.modified" title="W3CDTF" content="2018-03-30" />
+    <meta name="review_date" content="" />
+    <meta name="meta_date" content="" />
+
+    <!-- Load closure template scripts -->
+    <script type="text/javascript" src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_28/cdts/compiled/soyutils.js"></script>
+    <script type="text/javascript" src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_28/cdts/compiled/wet-en.js"></script>
+    <script type="text/javascript" src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/v4_0_28/cdts/compiled/plugins-en.js"></script>
+
+    <!-- Load closure template scripts -->
+    <noscript>
+        <link rel="import" href="./StaticFallbackFiles/gcweb/refTop.html">
+    </noscript>
+    <!-- Write closure template -->
+    <script type="text/javascript">
+            document.write(wet.builder.refTop({
+                cdnEnv: "prod"
+            }));
+    </script>
+
+    <!-- Google Tag Manager DO NOT REMOVE OR MODIFY - NE PAS SUPPRIMER OU MODIFIER -->
+    <script>dataLayer1 = [];</script>
+    <!-- End Google Tag Manager -->
+
+</head>
+
+<body vocab="http://schema.org/" typeof="WebPage">
+    <!-- Google Tag Manager DO NOT REMOVE OR MODIFY - NE PAS SUPPRIMER OU MODIFIER -->
+    <noscript>
+        <iframe title="Google Tag Manager" src="//www.googletagmanager.com/ns.html?id=GTM-TLGQ9K" height="0" width="0"
+                style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <script>
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement
+
+(s),dl=l!='dataLayer1'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})
+
+(window,document,'script','dataLayer1','GTM-TLGQ9K');
+    </script>
+    <!-- End Google Tag Manager -->
+    <div id="def-top">
+        <!-- top-en.html-Start-->
+        <link rel="import" href="./StaticFallbackFiles/gcweb/top-en.html">
+        <!-- top-en.html-End-->
+    </div>
+    <!-- Write closure template -->
+    <script type="text/javascript">
+	var defTop = document.getElementById("def-top");
+	var jsonbread = [];
+
+	//console.log(jsonbread);
+	defTop.outerHTML = wet.builder.top({
+	    cdnEnv: "prod",
+	    search: true,
+		lngLinks: [{
+			lang: "en",
+			href: "mdall-documentation-fr.html",
+			text: "Français",
+		}],
+		showPreContent: true,
+		breadcrumbs:jsonbread,
+	});
+    </script>
+    <div class="container">
+        <main role="main" property="mainContentOfPage" class="container">
+            <div class="wb-frmvld">
+                <section>
+                    <h1 id="wb-cont">Medical Devices Active Licence Listing (MDALL) API Guide</h1>
+
+                    <section>
+                        <h2 id="a">Table of contents</h2>
+                        <ul>
+                            <li><a href="#a1">Introduction</a></li>
+                            <li>
+                                <a href="#a2">Licence</a>
+                                <ul>
+                                    <li><a href="#a2.1">Parameters</a></li>
+                                    <li><a href="#a2.2">Contents of the response</a></li>
+                                    <li><a href="#a2.3">Sample response</a></li>
+                                    <li><a href="#a2.4">jQuery example</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#a3">Company</a>
+                                <ul>
+                                    <li><a href="#a3.1">Parameters</a></li>
+                                    <li><a href="#a3.2">Contents of the response</a></li>
+                                    <li><a href="#a3.3">Sample response</a></li>
+                                    <li><a href="#a3.4">jQuery example</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#a4">Device</a>
+                                <ul>
+                                    <li><a href="#a4.1">Parameters</a></li>
+                                    <li><a href="#a4.2">Contents of the response</a></li>
+                                    <li><a href="#a4.3">Sample response</a></li>
+                                    <li><a href="#a4.4">jQuery example </a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#a5">Device Identifier</a>
+                                <ul>
+                                    <li><a href="#a5.1">Parameters</a></li>
+                                    <li><a href="#a5.2">Contents of the response</a></li>
+                                    <li><a href="#a5.3">Sample response</a></li>
+                                    <li><a href="#a5.4">jQuery example </a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#a6">Licence Type</a>
+                                <ul>
+                                    <li><a href="#a6.1">Parameters</a></li>
+                                    <li><a href="#a6.2">Contents of the response</a></li>
+                                    <li><a href="#a6.3">Sample response</a></li>
+                                    <li><a href="#a6.4">jQuery example </a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#a7">Summary Basis Decision Location</a>
+                                <ul>
+                                    <li><a href="#a7.1">Parameters</a></li>
+                                    <li><a href="#a7.2">Contents of the response</a></li>
+                                    <li><a href="#a7.3">Sample response</a></li>
+                                    <li><a href="#a7.4">jQuery example </a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2 id="a1">Introduction</h2>
+                        <p>Health Canada is the federal regulator of therapeutic products, including medical devices. We do not provide medical advice on the use of the products identified in this listing.
+                        <p>The Medical Devices Bureau (Bureau) of the Therapeutic Products Directorate, Health Canada is the Canadian federal regulator responsible for licensing medical devices in accordance with the <i>Food and Drugs Act and Regulations</i> and the <i>Medical Devices Regulations</i>. </p>
+                        <p>The Bureau maintains a database of all licensed Class II, III, and IV medical devices offered for sale in Canada. Class I medical devices do not require a medical device licence and are monitored by the Regulatory Operations and Regions Branch (Compliance and Enforcement) through Establishment Licensing.</p>
+                        <p>Only products which appear in this database listing may be offered for general marketing purposes in Canada. Class I Devices, or devices which relate to Investigational Testing Authorization or Special Access do not appear in this listing.</p>
+                        <p>This Application Programming Interface (API) allows developers to access that information in JSON and XML format for reuse in their own applications.
+                        The base URI for the Medical Devices Active Licence Listing is <strong>https://health-products.canada.ca/api/medical-devices/</strong> and you can add parameters to it. Any requests are made relative to this URI.</p>                        
+                    </section>
+                    <section>
+                        <!--Licence-section-start-->
+                        <h2 id="a2">Licence</h2>
+                        <p>This is the permit that is delivered for a device to a company.</p>
+                       
+                        <!--h3-section-start-->
+                        <section>
+                            <h3 id="a2.1">Parameters</h3>
+                            <p>There are six parameters in the request: id, state, licence_name, company_id, lang and type.</p>
+                            <table>
+                                <caption>
+                                    Request parameters
+                                </caption>
+                                <tr>
+                                    <th scope="col">Parameter</th>
+                                    <th scope="col">Meaning</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Required?</th>
+                                    <th scope="col">Note</th>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/licence/?id=</span></td>
+                                    <td>Returns the licence according to the licence number specified in the request.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 nowrap">
+                                            #####&nbsp;- licence number
+                                        </ul>
+                                    </td>
+                                    <td><strong>Yes</strong></td>
+                                    <td></td>
+                                </tr>                               
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/licence/?state=active</span></td>
+                                    <td>Returns a list of licences that have a specific state.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 wrap">
+                                            <li><code>active</code>&nbsp;- Returns the licences without a cancellation date.</li>
+                                            <li><code>archived</code>&nbsp;- Returns the licences with a cancellation date.</li>
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but default to all if not specified.</td>
+                                    <td>Determines whether the response is for a specific state.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/licence/?licence_name=flood</span></td>
+                                    <td>Returns a list of licences with flood in the licence name.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 wrap">
+                                            <li><code>red</code>&nbsp;- %FLOOD% - word flood in the licence name </li>
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but default to all if not specified.</td>
+                                    <td>Determines whether the response is for a specific licence name.</td>
+                                </tr>                                
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/licence/?company_id=133876</span></td>
+                                    <td>Returns a list of licences for the company identification number 133876.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 wrap">
+                                            <li><code>133876</code>&nbsp;- %133876% - company identification number 133876</li>
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but default to all if not specified.</td>
+                                    <td>Determines whether the response is for a specific company identification number.</td>                                    
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/licence/?lang=en</span></td>
+                                    <td>Changes the language of the response.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 nowrap">
+                                            <li><code>en</code>&nbsp;- English</li>
+                                            <li><code>fr</code>&nbsp;- French</li>
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but defaults to English if not specified.</td>
+                                    <td>Determines whether the response is in English or French.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/licence/?type=json</span></td>
+                                    <td>Changes the format of the result.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 nowrap">
+                                            <li><code>json</code>&nbsp;- JSON</li>
+                                            <li><code>xml</code>&nbsp;- XML</li>                                            
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but defaults to JSON if not specified.</td>
+                                    <td>Determines whether the format of the result will be in JSON or XML. </td>
+                                </tr>
+                            </table>
+                            <p>Active Licences can be accessed via these URIs:</p>
+                            <ul>
+                                <li><a href="https://health-products.canada.ca/api/medical-devices/licence/?state=active&lang=en&type=json">https://health-products.canada.ca/api/medical-devices/licence/?state=active&lang=en&type=json</a></li>
+                                <li><a href="https://health-products.canada.ca/api/medical-devices/licence/?state=active&lang=fr&type=json">https://health-products.canada.ca/api/medical-devices/licence/?state=active&lang=fr&type=json</a></li>                                
+                            </ul>
+                            <p>Archived Licences can be accessed via these URIs:</p>
+                            <ul>
+                                <li><a href="https://health-products.canada.ca/api/medical-devices/licence/?state=archived&lang=en&type=json">https://health-products.canada.ca/api/medical-devices/licence/?state=archived&lang=en&type=json</a></li>
+                                <li><a href="https://health-products.canada.ca/api/medical-devices/licence/?state=archived&lang=fr&type=json">https://health-products.canada.ca/api/medical-devices/licence/?state=archived&lang=fr&type=json</a></li>
+                            </ul>
+                        </section>
+                        <section>
+                            <h3 id="a2.2">Contents of the response</h3>
+                            <p>The response consists of a&nbsp;<strong>result</strong>&nbsp;that contains one or multiple objects.</p>
+
+                            <p>Each&nbsp;<strong>licence</strong>&nbsp;object consists of the following values:</p>
+                            <table>
+                                <caption>
+                                    Licence object values
+                                </caption>
+                                <tr>
+                                    <th scope="col">Key</th>
+                                    <th scope="col">Value</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>original_licence_no</strong></td>
+                                    <td>The licence number.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>licence_status</strong></td>
+                                    <td>The licence status (C=Cancelled, D=Issued/Conditional, I=Issued/Active, M=Merge, O=Discontinued at Renewal, P=Pending signature, R=Cancelled Renowal No Response, S=Suspended, W=Withdrawn, Q=Suspended/Invalid QS Certification, X=Cancelled QS/2003).</td>
+                                    
+                                </tr>
+                                <!-- Remove from code October 2017 Request Sarah Chandler
+                                <tr>
+                                    <td><strong>application_id</strong></td>
+                                    <td>The application id.</td>
+                                </tr>
+                                ------------>
+                                <tr>
+                                    <td><strong>appl_risk_class</strong></td>
+                                    <td>The application risk class.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>licence_name</strong></td>
+                                    <td>The licence name.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>first_licence_status_dt</strong></td>
+                                    <td>The date of the first issued licence.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>last_refresh_dt</strong></td>
+                                    <td>The refresh date of the mdall database.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>end_date</strong></td>
+                                    <td>The date of cancellation of the licence (if active then null).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>licence_type_cd</strong></td>
+                                    <td>The licence type code.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>company_id</strong></td>
+                                    <td>The company identification number.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>licence_type_desc</strong></td>
+                                    <td>The licence type description.</td>
+                                </tr>
+                                <!--<tr>
+                                    <td><strong>noc_location</strong></td>
+                                    <td>NEED DESCRIPTION.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>sbd_location</strong></td>
+                                    <td>NEED DESCRIPTION.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>has_location</strong></td>
+                                    <td>NEED DESCRIPTION.</td>
+                                </tr>-->
+                            </table>
+                        </section>
+                        <section>
+                             <h3 id="a2.3">Sample response</h3>
+                             <pre class="prettify prettyprint linenums">{"original_licence_no":1561,"licence_status":"I","appl_risk_class":2,"licence_name":"FLOOD PHANTOM","first_licence_status_dt":"1999-02-23","last_refresh_dt":"2013-01-29","end_date":null,"licence_type_cd":"F","company_id":101500,"licence_type_desc":"Device Family"}</pre>
+                        </section>
+                        <section>
+                             <h3 id="a2.4">jQuery example</h3>                               
+                             <p>Example of a function that search for licences given a state and a licence name:</p>
+                             <pre class="prettify prettyprint linenums">function getAllLicence(state, licence_name) {
+      var base = 'https://health-products.canada.ca';
+      var uri = base + '/api/medical-devices/licence/?state=' + state + '&licence_name=' + licenceName;
+      $.ajax({
+              url:uri,
+              type:'GET',
+              Accept:&quot;application/json&quot;,
+              dataType: 'json',
+              success:function(data){
+                           console.log(data.licence_name);
+                           var frag = document.createDocumentFragment();
+                           var h2 = document.createElement(&quot;h2&quot;);
+                           var LicenceName = document.createTextNode(data.licence_name);
+                           var p = document.createElement(&quot;p&quot;);
+                           var text = document.createTextNode(data.panels[0].text);
+                           h2.appendChild(LicenceName);
+                           p.appendChild(text);
+                           frag.appendChild(h2);
+                           frag.appendChild(p);
+                           $(&quot;#responses&quot;)[0].appendChild(frag);
+              },
+              error:function(error){
+              },
+      });
+      return;
+ };			</pre>                            
+                        </section>
+                    </section>
+                    <!--Licence-section-end-->
+                    <!--Company-section-start-->                    
+                    <section>                        
+                        <h2 id="a3">Company</h2>
+                        <p>This contains the company name and address.</p>
+                        <!--h3-section-start-->
+                        <section>
+                            <h3 id="a3.1">Parameters</h3>
+                            <p>There are four parameters in the request: id, status, company_name and type.</p>
+                            <table>
+                                <caption>
+                                    Request parameters
+                                </caption>
+                                <tr>
+                                    <th scope="col">Parameter</th>
+                                    <th scope="col">Meaning</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Required?</th>
+                                    <th scope="col">Note</th>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/company/?id=</span></td>
+                                    <td>Returns the company according to the company identification number specified in the request.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 wrap">
+                                            #####&nbsp;- identification number of the company
+                                        </ul>
+                                    </td>
+                                    <td><strong>Yes</strong></td>
+                                    <td></td>
+                                </tr>                                
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/company/?status=A</span></td>
+                                    <td>Returns a list of companies that have a specific status.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 nowrap">
+                                            <li><code>A</code>&nbsp;- Active</li>
+                                            <li><code>I</code>&nbsp;- Inactive</li>
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but default to all if not specified.</td>
+                                    <td>Determines whether the response is for a specific status.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/company/?company_name=bayer</span></td>
+                                    <td>Returns a list of companies with bayer in the company name.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 wrap">
+                                            <li><code>%bayer%</code>&nbsp;- word bayer in the company name</li>
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but default to all if not specified.</td>
+                                    <td>Determines whether the response is for a specific company name </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/company/?type=json</span></td>
+                                    <td>Changes the format of the result.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 nowrap">
+                                            <li><code>json</code>&nbsp;- JSON</li>
+                                            <li><code>xml</code>&nbsp;- XML</li>                                            
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but defaults to JSON if not specified.</td>
+                                    <td>Determines whether the format of the result will be in JSON or XML. </td>
+                                </tr>
+                            </table>
+                            <p>Companies can be accessed via that URI:</p>
+                            <ul>
+                                <li><a href="https://health-products.canada.ca/api/medical-devices/company/?type=json">https://health-products.canada.ca/api/medical-devices/company/?type=json</a></li>                                
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h3 id="a3.2">Contents of the response</h3>
+                            <p>The response consists of a&nbsp;<strong>result</strong>&nbsp;that contains one or multiple objects.</p>
+
+                            <p>Each&nbsp;<strong>company</strong>&nbsp;object consists of the following values:</p>
+                            <table>
+                                <caption>
+                                    Company object values
+                                </caption>
+                                <tr>
+                                    <th scope="col">Key</th>
+                                    <th scope="col">Value</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>company_id</strong></td>
+                                    <td>The company identification number.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>company_name</strong></td>
+                                    <td>The company name.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>addr_line_1</strong></td>
+                                    <td>The address line 1.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>addr_line_2</strong></td>
+                                    <td>The address line 2.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>addr_line_3</strong></td>
+                                    <td>The address line 3.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>postal_code</strong></td>
+                                    <td>The postal code.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>city</strong></td>
+                                    <td>The city in the address.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>country_cd</strong></td>
+                                    <td>The country code (2 digit).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>region_cd</strong></td>
+                                    <td>The region code (2 digit).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>company_status</strong></td>
+                                    <td>The company status. (A=Active, I=Inactive)</td>
+                                </tr>
+                            </table>
+                        </section>
+                        <section>
+                             <h3 id="a3.3">Sample response</h3>
+                             <pre class="prettify prettyprint linenums">{"company_id":112453,"company_name":"MENNEN MEDICAL LTD","addr_line_1":"4 Ha-Yarden Street","addr_line_2":"","addr_line_3":"","postal_code":"0076100","city":"Yavne","country_cd":"IL","region_cd":"","company_status":"A"}</pre>
+                        </section>
+                        <section>
+                             <h3 id="a3.4">jQuery example</h3>
+                             <p>Example of a function that search for a company given the identification number of a company :</p>
+                             <pre class="prettify prettyprint linenums">function getCompany(id) {
+      var base = 'https://health-products.canada.ca';
+      var uri = base + '/api/medical-devices/company/?&id=' + id;
+      $.ajax({
+              url:uri,
+              type:'GET',
+              Accept:&quot;application/json&quot;,
+              dataType: 'json',
+              success:function(data){
+                           console.log(data.company_name);
+                           var frag = document.createDocumentFragment();
+                           var h2 = document.createElement(&quot;h2&quot;);
+                           var CompanyName = document.createTextNode(data.company_name);
+                           var p = document.createElement(&quot;p&quot;);
+                           var text = document.createTextNode(data.panels[0].text);
+                           h2.appendChild(CompanyName);
+                           p.appendChild(text);
+                           frag.appendChild(h2);
+                           frag.appendChild(p);
+                           $(&quot;#responses&quot;)[0].appendChild(frag);
+              },
+              error:function(error){
+              },
+      });
+      return;
+ };			</pre>
+                        </section>
+                    </section>
+                    <!--Company-section-end-->
+                    <!--Device-section-start--> 
+                    <section>
+                        <h2 id="a4">Device</h2>
+                        <p>This is the device information.</p>
+
+                        <section>
+                            <h3 id="a4.1">Parameters</h3>
+                            <p>There are four parameters in the request: id, state, device_name, and type.</p>
+                            <table>
+                                <caption>
+                                    Request parameters
+                                </caption>
+                                <tr>
+                                    <th scope="col">Parameter</th>
+                                    <th scope="col">Meaning</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Required?</th>
+                                    <th scope="col">Note</th>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/device/?id=</span></td>
+                                    <td>Returns the device according to the device identification number specified in the request.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 nowrap">
+                                            #####&nbsp;- device identification number
+                                        </ul>
+                                    </td>
+                                    <td><strong>Yes</strong></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/device/?state=active</span></td>
+                                    <td>Returns a list of devices that have a specific state.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 wrap">
+                                            <li><code>active</code>&nbsp;- Returns the devices without a removal date.</li>
+                                            <li><code>archived</code>&nbsp;- Returns the devices with a removal date.</li>
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but default to all if not specified.</td>
+                                    <td>Determines whether the response is for a specific state.</td>
+                                </tr>                                
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/device/?device_name=red</span></td>
+                                    <td>Returns a list of devices with red in the device name.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 wrap">
+                                            <ul class="list-unstyled mrgn-lft-0 wrap">
+                                                <li><code>red</code>&nbsp;- %RED% - word red in the device name</li>
+                                            </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but default to all if not specified.</td>
+                                    <td>Determines whether the response is for a specific device name.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/device/?type=json</span></td>
+                                    <td>Changes the format of the result.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 nowrap">
+                                            <li><code>json</code>&nbsp;- JSON</li>
+                                            <li><code>xml</code>&nbsp;- XML</li>                                           
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but defaults to JSON if not specified.</td>
+                                    <td>Determines whether the format of the result will be in JSON or XML. </td>
+                                </tr>
+
+                                <!--           search-by-device will not return devices by licence number
+
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/device/?licence_number=456</span></td>
+                                    <td>Changes the result by licence number.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 nowrap">
+                                            <li><code>licence_id criteria</code>&nbsp;for example 456</li>
+
+                                        </ul>
+                                    </td>
+                                    <td>The result will return everything where the licence number is equal to 456.</td>
+                                </tr>
+
+                                -->
+
+                            </table>
+                            <p>Active Devices can be accessed via that URI:</p>
+                            <ul>
+                                <li><a href="https://health-products.canada.ca/api/medical-devices/device/?state=active&type=json">https://health-products.canada.ca/api/medical-devices/device/?state=active&type=json</a></li>                                
+                            </ul>
+                            <p>Archived Devices can be accessed via that URI:</p>
+                            <ul>                               
+                                <li><a href="https://health-products.canada.ca/api/medical-devices/device/?state=archived&type=json">https://health-products.canada.ca/api/medical-devices/device/?state=archived&type=json</a></li>
+                            </ul>
+                        </section>
+                        <section>
+                            <h3 id="a4.2">Contents of the response</h3>
+                            <p>The response consists of a&nbsp;<strong>result</strong>&nbsp;that contains one or multiple objects.</p>
+
+                            <p>Each&nbsp;<strong>device</strong>&nbsp;object consists of the following values:</p>
+                            <table>
+                                <caption>
+                                    Device object values
+                                </caption>
+                                <tr>
+                                    <th scope="col">Key</th>
+                                    <th scope="col">Value</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>original_licence_no</strong></td>
+                                    <td>The licence number.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>device_id</strong></td>
+                                    <td>The device identification number.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>first_licence_dt</strong></td>
+                                    <td>The date the device was added in the licence.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>end_date</strong></td>
+                                    <td>The date of removal of the device (if active then null).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>trade_name</strong></td>
+                                    <td>The name of the device.</td>
+                                </tr>                              
+                            </table>
+                        </section>
+                        <section>
+                             <h3 id="a4.3">Sample response</h3>
+                             <pre class="prettify prettyprint linenums">{"original_licence_no":65113,"device_id":189995,"first_licence_dt":"2004-07-08","end_date":null,"trade_name":"'HOPKINS' TELE-OTOSCOPE"}</pre>
+                        </section>
+                        <section>
+                             <h3 id="a4.4">jQuery example</h3>
+                             <p>Example of a function that search for devices given a device name:</p>
+                             <pre class="prettify prettyprint linenums">function getDevice(deviceName) {
+      var base = 'https://health-products.canada.ca';
+      var uri = base + '/api/medical-devices/device/?device_name=' + deviceName;
+      $.ajax({
+              url:uri,
+              type:'GET',
+              Accept:&quot;application/json&quot;,
+              dataType: 'json',
+              success:function(data){
+                           console.log(data.trade_name);
+                           var frag = document.createDocumentFragment();
+                           var h2 = document.createElement(&quot;h2&quot;);
+                           var DeviceName = document.createTextNode(data.trade_name);
+                           var p = document.createElement(&quot;p&quot;);
+                           var text = document.createTextNode(data.panels[0].text);
+                           h2.appendChild(DeviceName);
+                           p.appendChild(text);
+                           frag.appendChild(h2);
+                           frag.appendChild(p);
+                           $(&quot;#responses&quot;)[0].appendChild(frag);
+              },
+              error:function(error){
+              },
+      });
+      return;
+ };			</pre>                            
+                        </section>
+                    </section>
+                    <!--Device-section-end-->
+                    <!--Device Identifier-section-start--> 
+                    <section>
+                        <h2 id="a5">Device Identifier</h2>
+                        <p>This is the list of all identifiers that uniquely identify a device (on the label).</p>
+
+                        <section>
+                            <h3 id="a5.1">Parameters</h3>
+                            <p>There are four parameters in the request: id, device_identifier, state and type.</p>
+                            <table>
+                                <caption>
+                                    Request parameters
+                                </caption>
+                                <tr>
+                                    <th scope="col">Parameter</th>
+                                    <th scope="col">Meaning</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Required?</th>
+                                    <th scope="col">Note</th>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/deviceidentifier/?id=</span></td>
+                                    <td>Returns a device identifier according to the device identification number specified in the request.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 wrap">
+                                            #####&nbsp;- device identification number
+                                        </ul>
+                                    </td>
+                                    <td><strong>Yes</strong></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="wrap">api/medical-devices/deviceidentifier/?device_identifier=4017</span></td>
+                                    <td>Returns a list of device identifiers with 4017 in the device identifier.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 wrap">
+                                            <li><code>%4017%</code>&nbsp;- 4017 in the device identifier</li>
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but default to all if not specified.</td>
+                                    <td>Determines whether the response is for a specific device identifier.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/deviceidentifier/?state=active</span></td>
+                                    <td>Returns a list of device identifiers that have a specific state.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 wrap">
+                                            <li><code>active</code>&nbsp;- Returns the device identifiers without a removal date.</li>
+                                            <li><code>archived</code>&nbsp;- Returns the device identifiers with a removal date.</li>
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but default to all if not specified.</td>
+                                    <td>Determines whether the response is for a specific state.</td>
+                                </tr>                     
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/deviceidentifier/?type=json</span></td>
+                                    <td>Changes the format of the result.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 nowrap">
+                                            <li><code>json</code>&nbsp;- JSON</li>
+                                            <li><code>xml</code>&nbsp;- XML</li>                                            
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but defaults to JSON if not specified.</td>
+                                    <td>Determines whether the format of the result will be in JSON or XML. </td>
+                                </tr>
+                            </table>
+                            <p>Active Device Identifiers can be accessed via that URI:</p>
+                            <ul>
+                                <li><a href="https://health-products.canada.ca/api/medical-devices/deviceidentifier/?state=active&type=json">https://health-products.canada.ca/api/medical-devices/deviceidentifier/?state=active&type=json</a></li>                                
+                            </ul>
+                            <p>Archived Device Identifiers can be accessed via that URI:</p>
+                            <ul>                                
+                                <li><a href="https://health-products.canada.ca/api/medical-devices/deviceidentifier/?state=archived&type=json">https://health-products.canada.ca/api/medical-devices/deviceidentifier/?state=archived&type=json</a></li>
+                            </ul>
+                        </section>
+                        <section>
+                            <h3 id="a5.2">Contents of the response</h3>
+                            <p>The response consists of a&nbsp;<strong>result</strong>&nbsp;that contains one or multiple objects.</p>
+                            <p>Each&nbsp;<strong>device identifier</strong>&nbsp;object consists of the following values:</p>
+                            <table>
+                                <caption>
+                                    Device Identifier object values
+                                </caption>
+                                <tr>
+                                    <th scope="col">Key</th>
+                                    <th scope="col">Value</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>original_licence_no</strong></td>
+                                    <td>The licence number.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>device_id</strong></td>
+                                    <td>The device identification number.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>first_licence_dt</strong></td>
+                                    <td>The date the identifier was added in the licence.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>end_date</strong></td>
+                                    <td>The date the identifier was removed from the licence.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>device_identifier</strong></td>
+                                    <td>The identifier.</td>
+                                </tr>
+                            </table>
+                        </section>
+                        <section>
+                             <h3 id="a5.3">Sample response</h3>
+                             <pre class="prettify prettyprint linenums">{"original_licence_no":29756,"device_id":408838,"first_licence_dt":"2001-05-24","end_date":null,"device_identifier":"P02-14030"}</pre>
+                        </section>
+                        <section>
+                             <h3 id="a5.4">jQuery example</h3>
+                             <p>Example of a function that search for device identifiers given a device identification number:</p>                                
+                             <pre class="prettify prettyprint linenums">function getDeviceIdentifier(id) {
+      var base = 'https://health-products.canada.ca';
+      var uri = base + '/api/medical-devices/deviceidentifier/?id=' + id;
+      $.ajax({
+              url:uri,
+              type:'GET',
+              Accept:&quot;application/json&quot;,
+              dataType: 'json',
+              success:function(data){
+                           console.log(data.device_identifier);
+                           var frag = document.createDocumentFragment();
+                           var h2 = document.createElement(&quot;h2&quot;);
+                           var DeviceIdentifier = document.createTextNode(data.device_identifier);
+                           var p = document.createElement(&quot;p&quot;);
+                           var text = document.createTextNode(data.panels[0].text);
+                           h2.appendChild(DeviceIdentifier);
+                           p.appendChild(text);
+                           frag.appendChild(h2);
+                           frag.appendChild(p);
+                           $(&quot;#responses&quot;)[0].appendChild(frag);
+              },
+              error:function(error){
+              },
+      });
+      return;
+ };			</pre>                            
+                        </section>
+                    </section>
+                    <!--Device Identifier-section-end-->
+                    <!--Licence Type-section-start--> 
+                    <section>
+                        <h2 id="a6">Licence Type</h2>
+                        <p>This contains the list of all licence type codes and their definitions.</p>
+
+                        <section>
+                            <h3 id="a6.1">Parameters</h3>
+                            <p>There are three parameters in the request: code, lang and type.</p>
+                            <table>
+                                <caption>
+                                    Request parameters
+                                </caption>
+                                <tr>
+                                    <th scope="col">Parameter</th>
+                                    <th scope="col">Meaning</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Required?</th>
+                                    <th scope="col">Note</th>
+
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/licencetype/?code=D</span></td>
+                                    <td>Returns a licence type according to the licence type code specified in the request.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 wrap">
+                                            #####&nbsp;- code of the licence type
+                                        </ul>
+                                    </td>
+                                    <td><strong>Yes</strong></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/licencetype/?lang=en</span></td>
+                                    <td>Changes the language of the response.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 nowrap">
+                                            <li><code>en</code>&nbsp;- English</li>
+                                            <li><code>fr</code>&nbsp;- French</li>
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but defaults to English if not specified.</td>
+                                    <td>Determines whether the response is in English or French.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/licencetype/?type=json</span></td>
+                                    <td>Changes the format of the result.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 nowrap">
+                                            <li><code>json</code>&nbsp;- JSON</li>
+                                            <li><code>xml</code>&nbsp;- XML</li>                                            
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but defaults to JSON if not specified.</td>
+                                    <td>Determines whether the format of the result will be in JSON or XML. </td>
+                                </tr>
+                            </table>
+                            <p>Licence Types can be accessed via these URIs:</p>
+                            <ul>
+                                <li><a href="https://health-products.canada.ca/api/medical-devices/licencetype/?lang=en&type=json">https://health-products.canada.ca/api/medical-devices/licencetype/?lang=en&type=json</a></li>
+                                <li><a href="https://health-products.canada.ca/api/medical-devices/licencetype/?lang=fr&type=json">https://health-products.canada.ca/api/medical-devices/licencetype/?lang=fr&type=json</a></li>
+                            </ul>
+                        </section>
+                        <section>
+                            <h3 id="a6.2">Contents of the response</h3>
+                            <p>The response consists of a&nbsp;<strong>result</strong>&nbsp;that contains one or multiple objects.</p>
+                            <p>Each&nbsp;<strong>licence type</strong>&nbsp;object consists of the following values:</p>
+                            <table>
+                                <caption>
+                                    Licence Type object values
+                                </caption>
+                                <tr>
+                                    <th scope="col">Key</th>
+                                    <th scope="col">Value</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>licence_type_cd</strong></td>
+                                    <td>The licence type code.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>licence_type_desc</strong></td>
+                                    <td>The definition of the code.</td>
+                                </tr>
+                            </table>
+                        </section>
+                        <section>
+                             <h3 id="a6.3">Sample response</h3>
+                             <pre class="prettify prettyprint linenums">{"licence_type_cd":"G","licence_type_desc":"Device Group"}</pre>
+                        </section>
+                        <section>
+                             <h3 id="a6.4">jQuery example</h3>                                
+                             <p>Example of a function that search for a licence type given a licence type code and language selection:</p>
+                             <pre class="prettify prettyprint linenums">function getLicenceType(code, lang) {
+      var base = 'https://health-products.canada.ca';
+      var uri = base + '/api/medical-devices/licencetype/?lang=' + lang + '&code=' + code;
+      $.ajax({
+              url:uri,
+              type:'GET',
+              Accept:&quot;application/json&quot;,
+              dataType: 'json',
+              success:function(data){
+                           console.log(data.licence_type_desc);
+                           var frag = document.createDocumentFragment();
+                           var h2 = document.createElement(&quot;h2&quot;);
+                           var LicenceType = document.createTextNode(data.licence_type_desc);
+                           var p = document.createElement(&quot;p&quot;);
+                           var text = document.createTextNode(data.panels[0].text);
+                           h2.appendChild(LicenceType);
+                           p.appendChild(text);
+                           frag.appendChild(h2);
+                           frag.appendChild(p);
+                           $(&quot;#responses&quot;)[0].appendChild(frag);
+              },
+              error:function(error){
+              },
+      });
+      return;
+ };			</pre>                            
+                        </section>
+                    </section>
+                    <!--Licence Type-section-end-->
+                    <!--Summary Basis Decision -section-start-->
+                    <section>
+                        <h2 id="a7">Summary Basis Decision Location</h2>
+                        <p>This contains the web site address of the summary basis of decisions.</p>
+
+                        <section>
+                            <h3 id="a7.1">Parameters</h3>
+                            <p>There are two parameters in the request: id and type.</p>
+                            <table>
+                                <caption>
+                                    Request parameters
+                                </caption>
+                                <tr>
+                                    <th scope="col">Parameter</th>
+                                    <th scope="col">Meaning</th>
+                                    <th scope="col">Value</th>
+                                    <th scope="col">Required?</th>
+                                    <th scope="col">Note</th>
+                                </tr>
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/sbdlocation/?id=</span></td>
+                                    <td>Returns summary basis decision location according to the licence number specified in the request.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 wrap">
+                                            #####&nbsp;- licence number
+                                        </ul>
+                                    </td>
+                                    <td><strong>Yes</strong></td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <td><span class="nowrap">api/medical-devices/sbdlocation/?type=json</span></td>
+                                    <td>Changes the format of the result.</td>
+                                    <td>
+                                        <ul class="list-unstyled mrgn-lft-0 nowrap">
+                                            <li><code>json</code>&nbsp;- JSON</li>
+                                            <li><code>xml</code>&nbsp;- XML</li>                                            
+                                        </ul>
+                                    </td>
+                                    <td><strong>No</strong>, but defaults to JSON if not specified.</td>
+                                    <td>Determines whether the format of the result will be in JSON or XML. </td>
+                                </tr>
+                            </table>
+                            <p>Summary Basis Decision Locations can be accessed via that URIs:</p>
+                            <ul>
+                                <li><a href="https://health-products.canada.ca/api/medical-devices/sbdlocation/?type=json">https://health-products.canada.ca/api/medical-devices/sbdlocation/?type=json</a></li>                                
+                            </ul>
+                        </section>
+                        <section>
+                            <h3 id="a7.2">Contents of the response</h3>
+                            <p>The response consists of a&nbsp;<strong>result</strong>&nbsp;that contains one or multiple objects.</p>
+
+                            <p>Each&nbsp;<strong>summary basis decision location</strong>&nbsp;object consists of the following values:</p>
+                            <table>
+                                <caption>
+                                    Summary Basis Decision Location object values
+                                </caption>
+                                <tr>
+                                    <th scope="col">Key</th>
+                                    <th scope="col">Value</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>original_licence_no</strong></td>
+                                    <td>The licence number.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>sbd_notice_web_loc</strong></td>
+                                    <td>The notice of decision web site address.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>sbd_web_loc</strong></td>
+                                    <td>The notice of decision web site address.</td>
+                                </tr>
+
+                                <!--        Consider removing
+
+            <tr>
+                <td><strong>pkg_insert1_keyword</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+            <tr>
+                <td><strong>pkg_insert1_loc</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+            <tr>
+                <td><strong>pkg_insert2_keyword</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+            <tr>
+                <td><strong>pkg_insert2_loc</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+            <tr>
+                <td><strong>pkg_insert3_keyword</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+            <tr>
+                <td><strong>pkg_insert3_loc</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+            <tr>
+                <td><strong>op_manual1_keyword</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+            <tr>
+                <td><strong>op_manual1_loc</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+            <tr>
+                <td><strong>op_manual2_keyword</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+            <tr>
+                <td><strong>op_manual2_loc</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+            <tr>
+                <td><strong>op_manual3_keyword</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+            <tr>
+                <td><strong>op_manual3_loc</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+            <tr>
+                <td><strong>additional_op_pkg</strong></td>
+                <td>NO LONGER SUPPORTED ON HC WEBSITE</td>
+            </tr>
+
+                -->
+
+                            </table>
+                        </section>
+                        <section>
+                             <h3 id="a7.3">Sample response</h3>
+                             <pre class="prettify prettyprint linenums">{"original_licence_no":75574,"sbd_notice_web_loc":"http://www.hc-sc.gc.ca/dhp-mps/prodpharma/sbd-smd/md-im/sbd_smd_2008_elana_122213-eng.php#a2","sbd_web_loc":"http://www.hc-sc.gc.ca/dhp-mps/prodpharma/sbd-smd/md-im/sbd_smd_2008_elana_122213"}</pre>
+                        </section>
+                        <section>
+                             <h3 id="a7.4">jQuery example</h3>
+                             <p>Example of a function that search for a summary basis decision location given a licence number:</p>
+                             <pre class="prettify prettyprint linenums">function getSbdLocation(id) {
+      var base = 'https://health-products.canada.ca';
+      var uri = base + '/api/medical-devices/sbdlocation/?id=' + id ;
+      $.ajax({
+              url:uri,
+              type:'GET',
+              Accept:&quot;application/json&quot;,
+              dataType: 'json',
+              success:function(data){
+                           console.log(data.sbd_notice_web_loc);
+                           var frag = document.createDocumentFragment();
+                           var h2 = document.createElement(&quot;h2&quot;);
+                           var Location = document.createTextNode(data.sbd_notice_web_loc);
+                           var p = document.createElement(&quot;p&quot;);
+                           var text = document.createTextNode(data.panels[0].text);
+                           h2.appendChild(Location);
+                           p.appendChild(text);
+                           frag.appendChild(h2);
+                           frag.appendChild(p);
+                           $(&quot;#responses&quot;)[0].appendChild(frag);
+              },
+              error:function(error){
+              },
+      });
+      return;
+ };			</pre>                            
+                        </section>
+                    </section><!--Summary Basis Decision -section-end-->
+                </section><!--END Entire Doc Section-->
+            </div>
+            <!-- prefooter-en.html-Start-->
+            <div id="def-preFooter">
+                <link rel="import" href="./StaticFallbackFiles/gcweb/prefooter-en.html">
+            </div>
+            <!-- prefooter-en.html-End-->
+            <!-- Write closure template -->
+            <script type="text/javascript">
+                var defPreFooter = document.getElementById("def-preFooter");
+                defPreFooter.outerHTML = wet.builder.preFooter({
+                    cdnEnv: "prod",
+                    dateModified: "2017-02-27",
+                    showPostContent: true,
+                    showShare: true,
+                });
+            </script>
+        </main>
+    </div>
+
+    <!-- footer-en.html-Start-->
+    <div id="def-footer">
+        <link rel="import" href="./StaticFallbackFiles/gcweb/footer-en.html">
+    </div>
+    <!-- footer-en.html-End-->
+    <!-- Write closure template -->
+    <script type="text/javascript">
+            var defFooter = document.getElementById("def-footer");
+            defFooter.outerHTML = wet.builder.footer({
+                cdnEnv: "prod",
+                showFeatures: true,
+            });
+    </script>
+    <!-- Write closure template -->
+    <script type="text/javascript">
+                document.write(wet.builder.refFooter({
+                    cdnEnv: "prod"
+                }));
+    </script>
+    <!--[if lt IE 10 | !IE ]><!-->
+    <script src="./js/jquery.xdomainrequest.min.js"></script>
+    <!--<![endif]-->
+</body>
+</html>

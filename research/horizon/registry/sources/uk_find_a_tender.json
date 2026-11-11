@@ -1,0 +1,36 @@
+{
+  "access_evidence": "GET /api/1.0/ocdsReleasePackages?stages=award&limit=100 returned HTTP 200 three times (~1.1 MB each), 300 award-stage releases, 316 KB-1.1 MB each, containing awards[].suppliers[].name.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "NO_CPV_OR_KEYWORD_FILTER: HTTP 400 'Request parameter keyword is not recognised, allowed parameters are: stages, limit, cursor, updatedFrom, updatedTo'. Medical awards must be found by scanning.",
+    "NO_AWARD_DATE: awards[] carries no date; release.date is the publication date, so event_at is null unless contracts[].dateSigned exists.",
+    "NO_FIXED_SAMPLE_WINDOW: the 'most recent award releases' window is not a calendar period, so only the medical share of the sample generalises."
+  ],
+  "bulk_available": true,
+  "domain": "www.find-tender.service.gov.uk",
+  "entity_types": [
+    "procurement_award"
+  ],
+  "first_verified_at": "2026-11-09T23:18:28Z",
+  "historical_depth": "not verified (the API is a rolling updatedFrom/updatedTo window)",
+  "id_schemes": [
+    "ocds_ocid",
+    "ocds_party_id"
+  ],
+  "licence_note": "The OCDS package declares its own licence field: 'http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/' (read verbatim from DATASETS/industry/uk_find_a_tender/raw/award_packages_p1.json). Open Government Licence v3.0.",
+  "licence_status": "open_licence",
+  "licence_url": "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+  "machine_interface": "REST JSON, OCDS 1.1 release packages",
+  "name": "UK Find a Tender Service — OCDS release packages",
+  "notes": "Supplier identity is CONFIRMED only when the buyer published a legal identifier (10 of 62 rows).",
+  "operator": "UK Cabinet Office / Crown Commercial Service",
+  "probe_suite": "industry",
+  "rate_policy": "No key, no documented quota; the API rejects unknown parameters (HTTP 400) and accepts only stages, limit, cursor, updatedFrom, updatedTo.",
+  "registration_url": null,
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "uk_find_a_tender",
+  "unlock_route": "No access blocker. For a census, page with cursor / updatedFrom; the only real limitation is the absence of a server-side subject filter.",
+  "what_is_new": "62 UK award-supplier rows for medical CPV codes, from a scan of 300 award-stage releases (16 medical releases, 32 medical awards, 100% with a named supplier). Establishes that UK FTS *does* expose award suppliers, unlike TED's legacy notices."
+}

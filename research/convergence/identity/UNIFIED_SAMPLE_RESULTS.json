@@ -1,0 +1,123 @@
+{
+ "schema": "medradar.convergence.unified_sample.v1",
+ "generated_at": "2026-11-10T19:53:01.202121+00:00",
+ "generated_by": "tools/convergence/identity/unified_sample.py",
+ "network_used": false,
+ "inputs": {
+  "atlas_bridge_934": {
+   "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\convergence\\identity\\ATLAS_BRIDGE_934.json",
+   "sha256": "491bef6cbb2e284cdc1a31de49718b4d02908e4caf1551bb4bd327e1636f53e2"
+  },
+  "horizon_h2_pairs": {
+   "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\horizon\\experiments\\regulatory\\EXP_H2_PAIRS.jsonl",
+   "sha256": "e7ad98e1d6b45636d1e1ea4159ce1780e22ec3c2d977cd1b5fa98ab1046390d9"
+  },
+  "mdall_cache": {
+   "path": "D:\\DEPPSKK\\worktrees\\atlas-001\\research\\atlas\\cache\\mdall_active_deviceidentifier.json",
+   "sha256": "55d2b64189a2b8b6d3d7431462930196aebe5503addeeb6a4a6f0d65f5c2973f"
+  },
+  "atlas_db": {
+   "path": "D:\\DEPPSKK\\worktrees\\atlas-001\\research\\atlas\\staging\\atlas.sqlite",
+   "sha256": "6f77822e57edf5a2c8d86423e22c30399d21bf97c56ac6dcd86ecb9384d8bffb"
+  }
+ },
+ "sample": {
+  "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\convergence\\identity\\UNIFIED_SAMPLE.jsonl",
+  "sha256": "2f9c074424178ff92e42f81d6a65e549772028654c23babab11ea0b78473b7e6",
+  "rows": 1660,
+  "atlas_rows": 934,
+  "horizon_rows": 726,
+  "definition": "Union of the two experiments' frozen pair tables (934 + 726 = 1,660). Every row is evaluated by both methods; no pair is resampled and nothing is dropped.",
+  "sha256_basis": "sha256 of the file content with newlines normalised to LF; this is the digest a fresh checkout reproduces on any platform"
+ },
+ "method_definitions": {
+  "A_atlas_bridge": "CONFIRMED iff both records carry the same 14-digit GS1 GTIN-14 with a valid Mod-10 check digit.",
+  "H2_native": "HORIZON EXP-H2 rule as pre-registered and implemented: CONFIRMED only if S4 fires, i.e. the same identifier value under the same source-declared scheme.",
+  "H2_namespace": "Charitable H2 variant: a Mod-10-valid 14-digit Canada identifier is promoted into the UDI-DI namespace before applying S4."
+ },
+ "structural_disjointness": {
+  "atlas_pairs": 934,
+  "horizon_pairs": 726,
+  "shared_pair_ids": 0,
+  "shared_us_record_ids": 0,
+  "shared_us_di": [],
+  "shared_us_di_count": 0,
+  "shared_ca_identifier": [],
+  "shared_ca_identifier_count": 0,
+  "shared_ca_licence": [],
+  "shared_ca_licence_count": 0,
+  "atlas_us_di_count": 934,
+  "horizon_us_di_count": 26,
+  "atlas_ca_identifier_count": 934,
+  "horizon_ca_identifier_count": 87
+ },
+ "confusion_native_typing": {
+  "both_confirmed": 0,
+  "atlas_only_confirmed": 934,
+  "h2_only_confirmed": 0,
+  "neither_confirmed": 726,
+  "atlas_rejected": 0,
+  "h2_rejected": 0,
+  "atlas_unknown": 726,
+  "h2_unknown": 1660,
+  "raw_cells": {
+   "CONFIRMED|UNKNOWN": 934,
+   "UNKNOWN|UNKNOWN": 726
+  }
+ },
+ "confusion_namespace_typing": {
+  "both_confirmed": 934,
+  "atlas_only_confirmed": 0,
+  "h2_only_confirmed": 0,
+  "neither_confirmed": 726,
+  "atlas_rejected": 0,
+  "h2_rejected": 0,
+  "atlas_unknown": 726,
+  "h2_unknown": 726,
+  "raw_cells": {
+   "CONFIRMED|CONFIRMED": 934,
+   "UNKNOWN|UNKNOWN": 726
+  }
+ },
+ "verdict_counts": {
+  "atlas_bridge": {
+   "CONFIRMED": 934,
+   "UNKNOWN": 726
+  },
+  "h2_native": {
+   "UNKNOWN": 1660
+  },
+  "h2_namespace": {
+   "CONFIRMED": 934,
+   "UNKNOWN": 726
+  },
+  "h2_native_atlas_rows": {
+   "UNKNOWN": 934
+  },
+  "h2_native_horizon_rows": {
+   "UNKNOWN": 726
+  }
+ },
+ "anchor_sensitivity": {
+  "records_returned_by_bridge_query": 942,
+  "published_pairs_first_di_anchored": 934,
+  "primary_di_anchored_on_same_records": 941,
+  "both_anchors_gtin_class": 934,
+  "records_with_any_identifier_in_gtin_class": 942,
+  "records_where_first_di_differs_from_primary": 9,
+  "published_pairs_whose_anchor_is_not_the_primary_di": 2,
+  "dropped_primary_di_matches": 7,
+  "dropped_package_di_only_matches": 1,
+  "unpaired_total": 8,
+  "distinct_primary_di_anchored": 941,
+  "note": "On exactly the 942 records the bridge query returned, ATLAS's first-di anchor gives 934 pairs; a primary-DI anchor gives 941. The 8 unpaired records split into 7 primary-DI matches dropped only because a package DI was listed first, and 1 match available only through a package DI (correctly dropped). The difference is not new data: it is the identifier-order defect in resolver.view_from_evidence()."
+ },
+ "corrections": [
+  {
+   "field": "sample.sha256",
+   "was": "09109c67d889ad36e70c8d397cef593bde3dd31f8302f996485482967b73f073",
+   "now": "2f9c074424178ff92e42f81d6a65e549772028654c23babab11ea0b78473b7e6",
+   "reason": "the previous digest was computed on the Windows CRLF working copy, so it did not match the committed (LF) bytes and failed on CI"
+  }
+ ]
+}

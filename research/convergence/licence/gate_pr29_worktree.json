@@ -1,0 +1,566 @@
+{
+ "tool": "licence_gate",
+ "tool_version": "1.0.0",
+ "export_dir": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\exports\\horizon-2026-11-10",
+ "policy_path": "D:\\DEPPSKK\\worktrees\\convergence-001\\config\\convergence\\licence_policy.json",
+ "policy_version": "1.0.0",
+ "manifest_export_id": "horizon-2026-11-10",
+ "manifest_schema": "horizon.evidence.v1",
+ "manifest_totals": {
+  "sources": 24,
+  "records": 6492,
+  "bytes": 20335003
+ },
+ "declared_files": 24,
+ "summary": {
+  "ALLOW": 23,
+  "QUARANTINE": 0,
+  "VIOLATION": 1,
+  "MISSING-EXPECTED": 0,
+  "UNKNOWN-SOURCE": 0
+ },
+ "verdict": "FAIL",
+ "exit_code": 1,
+ "integrity_mismatches": [],
+ "undeclared_files": [
+  "README.md",
+  "accessgudid.jsonl.sha256",
+  "brazil_anvisa.jsonl.sha256",
+  "canada_mdall.jsonl.sha256",
+  "cipo_canada.jsonl.sha256",
+  "clinicaltrials_gov.jsonl.sha256",
+  "crossref.jsonl.sha256",
+  "epo_publication_server.jsonl.sha256",
+  "eu_cordis.jsonl.sha256",
+  "eu_ted.jsonl.sha256",
+  "europepmc.jsonl.sha256",
+  "eurostat_comext.jsonl.sha256",
+  "nih_reporter.jsonl.sha256",
+  "openaire.jsonl.sha256",
+  "openalex.jsonl.sha256",
+  "openfda_device_510k.jsonl.sha256",
+  "openfda_device_classification.jsonl.sha256",
+  "openfda_device_pma.jsonl.sha256",
+  "openfda_device_registrationlisting.jsonl.sha256",
+  "pubmed_eutils.jsonl.sha256",
+  "semantic_scholar.jsonl.sha256",
+  "uk_find_a_tender.jsonl.sha256",
+  "uk_hmrc_trade.jsonl.sha256",
+  "un_comtrade.jsonl.sha256",
+  "usaspending.jsonl.sha256"
+ ],
+ "quarantine_path_hits": [
+  {
+   "path": "research/horizon/exports/horizon-2026-11-10/un_comtrade.jsonl",
+   "present": true,
+   "bytes": 1832311
+  },
+  {
+   "path": "research/horizon/exports/horizon-2026-11-10/un_comtrade.jsonl.sha256",
+   "present": true,
+   "bytes": 84
+  },
+  {
+   "path": "research/horizon/experiments/industry/evidence/un_comtrade.jsonl",
+   "present": true,
+   "bytes": 1832311
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/summary.json",
+   "present": true,
+   "bytes": 790
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2015.json",
+   "present": true,
+   "bytes": 50703
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2016.json",
+   "present": true,
+   "bytes": 50684
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2017.json",
+   "present": true,
+   "bytes": 50685
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2018.json",
+   "present": true,
+   "bytes": 50731
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2019.json",
+   "present": true,
+   "bytes": 50741
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2020.json",
+   "present": true,
+   "bytes": 50689
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2021.json",
+   "present": true,
+   "bytes": 50735
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2022.json",
+   "present": true,
+   "bytes": 50774
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2023.json",
+   "present": true,
+   "bytes": 50753
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2024.json",
+   "present": true,
+   "bytes": 50740
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/api_root.html",
+   "present": true,
+   "bytes": 54
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/comtradeplus_home.html",
+   "present": true,
+   "bytes": 49414
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/hs.json",
+   "present": true,
+   "bytes": 1952940
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/reporters.json",
+   "present": true,
+   "bytes": 81177
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/monthly_202501.json",
+   "present": true,
+   "bytes": 3674
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/monthly_202502.json",
+   "present": true,
+   "bytes": 3674
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/monthly_202503.json",
+   "present": true,
+   "bytes": 3674
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/monthly_202504.json",
+   "present": true,
+   "bytes": 3674
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/monthly_202505.json",
+   "present": true,
+   "bytes": 3672
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/monthly_202506.json",
+   "present": true,
+   "bytes": 3672
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/monthly_202507.json",
+   "present": true,
+   "bytes": 3674
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/monthly_202508.json",
+   "present": true,
+   "bytes": 3674
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/monthly_202509.json",
+   "present": true,
+   "bytes": 3669
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/monthly_202510.json",
+   "present": true,
+   "bytes": 3677
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/monthly_202511.json",
+   "present": true,
+   "bytes": 3677
+  },
+  {
+   "path": "research/horizon/DATASETS/industry/un_comtrade/raw/monthly_202512.json",
+   "present": true,
+   "bytes": 3677
+  }
+ ],
+ "files": [
+  {
+   "source_id": "accessgudid",
+   "path": "accessgudid.jsonl",
+   "declared_records": 320,
+   "declared_bytes": 733815,
+   "declared_sha256": "233274cb66d4a75552b6d4be52af89c1ae10fec46ce22c0d1052ff1b1c089c54",
+   "present": true,
+   "actual_bytes": 733815,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "public_domain",
+   "redistribution_condition": null,
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "brazil_anvisa",
+   "path": "brazil_anvisa.jsonl",
+   "declared_records": 120,
+   "declared_bytes": 258652,
+   "declared_sha256": "3b0da0513686160fa44e81784e9497c67c083e779a5389a9eea8ac3614903424",
+   "present": true,
+   "actual_bytes": 258652,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_no_explicit_licence",
+   "redistribution_condition": "attribution_and_caveat",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "canada_mdall",
+   "path": "canada_mdall.jsonl",
+   "declared_records": 174,
+   "declared_bytes": 288641,
+   "declared_sha256": "b00c4565ba24346877954124dceecebcbf844dd5cbce1792749bb404479e0dc7",
+   "present": true,
+   "actual_bytes": 288641,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_licence",
+   "redistribution_condition": "attribution",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "cipo_canada",
+   "path": "cipo_canada.jsonl",
+   "declared_records": 2000,
+   "declared_bytes": 6679212,
+   "declared_sha256": "47a9a62e87a2e338e264c44d9d5fb9b1086676795cf5ab1c520d50f0b1ba2d62",
+   "present": true,
+   "actual_bytes": 6679212,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_licence",
+   "redistribution_condition": "attribution",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "clinicaltrials_gov",
+   "path": "clinicaltrials_gov.jsonl",
+   "declared_records": 164,
+   "declared_bytes": 501900,
+   "declared_sha256": "fbab44ef31a3d216215783bc59dd58369f06eef2e1e3a2ea3bc5870a2fd55d51",
+   "present": true,
+   "actual_bytes": 501900,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "public_domain",
+   "redistribution_condition": null,
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "crossref",
+   "path": "crossref.jsonl",
+   "declared_records": 59,
+   "declared_bytes": 155239,
+   "declared_sha256": "c201db1c4f766b33579f2748bf83a9df6b32655abe0399cc3d6906b83d393eaf",
+   "present": true,
+   "actual_bytes": 155239,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_no_explicit_licence",
+   "redistribution_condition": "attribution_and_caveat",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "epo_publication_server",
+   "path": "epo_publication_server.jsonl",
+   "declared_records": 228,
+   "declared_bytes": 896111,
+   "declared_sha256": "0d190b0aa40afddba1b01c2c4356ee267c4b41e53cdcc72b6bc973944dcf50b1",
+   "present": true,
+   "actual_bytes": 896111,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_no_explicit_licence",
+   "redistribution_condition": "attribution_and_caveat",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "eu_cordis",
+   "path": "eu_cordis.jsonl",
+   "declared_records": 60,
+   "declared_bytes": 160952,
+   "declared_sha256": "134ca9ceb3c5d53706316fff86c9f47ea23b675807be99cbe4822bf8b358245a",
+   "present": true,
+   "actual_bytes": 160952,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_no_explicit_licence",
+   "redistribution_condition": "attribution_and_caveat",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "eu_ted",
+   "path": "eu_ted.jsonl",
+   "declared_records": 299,
+   "declared_bytes": 1933456,
+   "declared_sha256": "19d6bd47a186c9b79e517811f71e18f38f46be1459a1ee60d06893015f89d098",
+   "present": true,
+   "actual_bytes": 1933456,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_no_explicit_licence",
+   "redistribution_condition": "attribution_and_caveat",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "europepmc",
+   "path": "europepmc.jsonl",
+   "declared_records": 37,
+   "declared_bytes": 169448,
+   "declared_sha256": "0f2b65af9e91e38d2896139d936c2728f92d6c98bb9a453a23b78e640661ae67",
+   "present": true,
+   "actual_bytes": 169448,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_licence",
+   "redistribution_condition": "attribution",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "eurostat_comext",
+   "path": "eurostat_comext.jsonl",
+   "declared_records": 1400,
+   "declared_bytes": 4096452,
+   "declared_sha256": "5933b8d91930e425a34754744fc7b79337ce9b9a3abd20a51e4128e8342d66dd",
+   "present": true,
+   "actual_bytes": 4096452,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_licence",
+   "redistribution_condition": "attribution",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "nih_reporter",
+   "path": "nih_reporter.jsonl",
+   "declared_records": 64,
+   "declared_bytes": 157282,
+   "declared_sha256": "0cdb02634d4eb45f742debd7e32272fec78d88c0449e35e0363b8fc29a338dbf",
+   "present": true,
+   "actual_bytes": 157282,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "public_domain",
+   "redistribution_condition": null,
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "openaire",
+   "path": "openaire.jsonl",
+   "declared_records": 59,
+   "declared_bytes": 215027,
+   "declared_sha256": "d6dda6f8e4960391d5570a53a4e764ae2d2474c6c876ca8ed3f73e2c7ef85273",
+   "present": true,
+   "actual_bytes": 215027,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_licence",
+   "redistribution_condition": "attribution",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "openalex",
+   "path": "openalex.jsonl",
+   "declared_records": 60,
+   "declared_bytes": 186315,
+   "declared_sha256": "76a2dd478e922ea3ce6e293cb83b522318be6bf90b7430cabb01e42223cde796",
+   "present": true,
+   "actual_bytes": 186315,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_licence",
+   "redistribution_condition": "attribution",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "openfda_device_510k",
+   "path": "openfda_device_510k.jsonl",
+   "declared_records": 160,
+   "declared_bytes": 257359,
+   "declared_sha256": "ed78772ac83f34a5654fe428574c7cd9ad52fb5eb8e575ee180283b7854f6f5e",
+   "present": true,
+   "actual_bytes": 257359,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "public_domain",
+   "redistribution_condition": null,
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "openfda_device_classification",
+   "path": "openfda_device_classification.jsonl",
+   "declared_records": 60,
+   "declared_bytes": 93981,
+   "declared_sha256": "ae6ca41cea12582e1808fd2f077c920554ce3e57a49cddd6d159bf90cae58a84",
+   "present": true,
+   "actual_bytes": 93981,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "public_domain",
+   "redistribution_condition": null,
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "openfda_device_pma",
+   "path": "openfda_device_pma.jsonl",
+   "declared_records": 60,
+   "declared_bytes": 101875,
+   "declared_sha256": "3c99127da4dbba507dd51d93e8b73be5321bde524427e4e350b433907ab7baca",
+   "present": true,
+   "actual_bytes": 101875,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "public_domain",
+   "redistribution_condition": null,
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "openfda_device_registrationlisting",
+   "path": "openfda_device_registrationlisting.jsonl",
+   "declared_records": 60,
+   "declared_bytes": 120989,
+   "declared_sha256": "cf9fd709c21502e6bfea0b630de6fb051c6f15e21529eb9b0da010a4c6626523",
+   "present": true,
+   "actual_bytes": 120989,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "public_domain",
+   "redistribution_condition": null,
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "pubmed_eutils",
+   "path": "pubmed_eutils.jsonl",
+   "declared_records": 37,
+   "declared_bytes": 135979,
+   "declared_sha256": "0274a68329fb7f6fb4511a2b8042cca92b609a9d6fd887a4800a1a64561a6192",
+   "present": true,
+   "actual_bytes": 135979,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_no_explicit_licence",
+   "redistribution_condition": "attribution_and_caveat",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "semantic_scholar",
+   "path": "semantic_scholar.jsonl",
+   "declared_records": 56,
+   "declared_bytes": 131879,
+   "declared_sha256": "5cacd3056275e3e001fb0d7582bd8e49824bcfab6f1700554f24a0a6546d662a",
+   "present": true,
+   "actual_bytes": 131879,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_no_explicit_licence",
+   "redistribution_condition": "attribution_and_caveat",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "uk_find_a_tender",
+   "path": "uk_find_a_tender.jsonl",
+   "declared_records": 62,
+   "declared_bytes": 215365,
+   "declared_sha256": "9e4cd0aab6a9f336b941c88702bfada80c83ca836c7127f8168ab47b411aa4f6",
+   "present": true,
+   "actual_bytes": 215365,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_licence",
+   "redistribution_condition": "attribution",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "uk_hmrc_trade",
+   "path": "uk_hmrc_trade.jsonl",
+   "declared_records": 100,
+   "declared_bytes": 233912,
+   "declared_sha256": "aefd7d27e06fab1b1c404b79c654fb7eedb53af2a2690decd7bd2c70743629fa",
+   "present": true,
+   "actual_bytes": 233912,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_licence",
+   "redistribution_condition": "attribution",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  },
+  {
+   "source_id": "un_comtrade",
+   "path": "un_comtrade.jsonl",
+   "declared_records": 608,
+   "declared_bytes": 1832311,
+   "declared_sha256": "5bbcf42b1ef193108783f8270d0814350bd49a2105d9486f563e67448792b33d",
+   "present": true,
+   "actual_bytes": 1832311,
+   "integrity": "ok",
+   "may_redistribute": false,
+   "licence_status": "terms_restricted",
+   "redistribution_condition": "written_permission_required",
+   "status": "VIOLATION",
+   "reason": "source is NOT redistributable (licence_status=terms_restricted) but its payload is present in the export directory"
+  },
+  {
+   "source_id": "usaspending",
+   "path": "usaspending.jsonl",
+   "declared_records": 245,
+   "declared_bytes": 778851,
+   "declared_sha256": "646cb2ecfc94d046d76fc1d33f1637da1e0a4a07086e556abd254dbf28096a49",
+   "present": true,
+   "actual_bytes": 778851,
+   "integrity": "ok",
+   "may_redistribute": true,
+   "licence_status": "open_no_explicit_licence",
+   "redistribution_condition": "attribution_and_caveat",
+   "status": "ALLOW",
+   "reason": "source is redistributable and the payload is present"
+  }
+ ]
+}

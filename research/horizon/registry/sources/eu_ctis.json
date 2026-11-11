@@ -1,0 +1,33 @@
+{
+  "access_evidence": "probe ctis_search_blocked: /ctis-public-api/search -> HTTP 403 with the 42-byte body {\"message\":\"Missing Authentication Token\"}; the same 403 with a dummy X-API-KEY header; probe ctis_retrieve_empty: /retrieve/<CT number> -> HTTP 200 with a 2-byte {} body; probe ctis_api_docs_is_spa_shell: /api-docs -> HTTP 200 with the 66 KB single-page-application HTML shell, not an OpenAPI document.",
+  "access_state": "REQUIRES_REGISTRATION",
+  "auth_required": true,
+  "blockers": [
+    "HTTP 403 AWS API Gateway 'Missing Authentication Token' on /search, with and without a dummy X-API-KEY, so it is not a shared static key.",
+    "HTTP 200 with a 2-byte {} body on /retrieve/<ct-number>: a success status carrying no record. This is exactly the shape a naive connector would log as 'found'.",
+    "No OpenAPI document at /api-docs (the SPA shell is returned)."
+  ],
+  "bulk_available": false,
+  "domain": "euclinicaltrials.eu",
+  "entity_types": [
+    "clinical_trial"
+  ],
+  "first_verified_at": "2026-11-09T23:20:28Z",
+  "historical_depth": "Unknown: no record was ever served.",
+  "id_schemes": [],
+  "licence_note": "No reuse licence could be established: the API returned 403 before serving any content and the site serves the application shell instead of a contract. Recorded as unknown rather than assumed permissive.",
+  "licence_status": "unknown",
+  "licence_url": null,
+  "machine_interface": "Advertised as a public REST API, but the search route sits behind an AWS API Gateway authorizer and no contract is published",
+  "name": "EU Clinical Trials Information System (CTIS) public API",
+  "notes": "eu_ctis is in this workstream's source list, so the deliverable is the precise blocker rather than a stub connector that emits invented rows.",
+  "operator": "European Medicines Agency",
+  "probe_suite": "scholarly",
+  "rate_policy": "Unknown: no request ever reached the application layer.",
+  "registration_url": "https://euclinicaltrials.eu/contact/",
+  "robots_summary": "Only API paths are touched; the SPA HTML shell was read to prove it is a shell.",
+  "robots_url": "https://euclinicaltrials.eu/robots.txt",
+  "source_id": "eu_ctis",
+  "unlock_route": "Request CTIS public-API credentials from EMA through the CTIS contact route (https://euclinicaltrials.eu/contact/). There is no anonymous tier. Substitute while waiting: ClinicalTrials.gov API v2 (already used) for non-EU trials, and the CTIS public web pages for manual checks, which are not automatable under this project's rules.",
+  "what_is_new": "Nothing yet: zero rows. This is a recorded negative, and deliberately not replaced with a guess or with ClinicalTrials.gov data presented as EU data."
+}

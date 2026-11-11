@@ -1,0 +1,51 @@
+{
+  "source_id": "australia_tga_artg",
+  "generated_at": "2026-11-09T23:24:15Z",
+  "attempts": [
+    {
+      "name": "tga_home_https.html",
+      "url": "https://www.tga.gov.au/",
+      "note": "TGA corporate site, https",
+      "status": null,
+      "outcome": "ConnectionError",
+      "bytes": null,
+      "sha256": "",
+      "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+    },
+    {
+      "name": "tga_robots.txt",
+      "url": "http://www.tga.gov.au/robots.txt",
+      "note": "TGA robots.txt over plain http (https connection was reset twice in discovery)",
+      "status": null,
+      "outcome": "ConnectionError",
+      "bytes": null,
+      "sha256": "",
+      "error": "('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))"
+    },
+    {
+      "name": "tga_apps_root.html",
+      "url": "https://apps.tga.gov.au/",
+      "note": "TGA applications host",
+      "status": 200,
+      "outcome": null,
+      "bytes": 221,
+      "sha256": "",
+      "error": null,
+      "body_head": "<html>\r\n<head>\r\n  <title>Redirecting to TGA Main Site!</title>\r\n  <meta http-equiv=\"refresh\" content=\"2;url=https://www.tga.gov.au\" />\r\n</head>\r\n<body>\r\n<h1>You will be redirected to www.tga.gov.au!</h1>\r\n</body>\r\n</html>"
+    },
+    {
+      "name": "datagov_ckan_artg.json",
+      "url": "https://data.gov.au/data/api/3/action/package_search?q=artg&rows=20",
+      "note": "data.gov.au CKAN search for ARTG datasets",
+      "status": 200,
+      "outcome": null,
+      "bytes": 3805,
+      "sha256": "",
+      "error": null,
+      "body_head": "{\"help\": \"https://data.gov.au/data/api/3/action/help_show?name=package_search\", \"success\": true, \"result\": {\"count\": 1, \"facets\": {}, \"results\": [{\"archived\": false, \"author_email\": null, \"contact_point\": \"unknown\", \"creator_user_id\": \"c2fbbe4a-4ba0-4945-808b-67454605a4cf\", \"duplicate_score\": 2, \"geospatial_topic\": [], \"id\": \"2dcaf3f7-14f5-4f75-bd29-c954639fb050\", \"isopen\": false, \"license_id\": \"lsba\", \"license_title\": \"lsba\", \"maintainer\": null, \"maintainer_email\": null, \"metadata_created\": \"2025-06-23T22:28:58.139635\", \"metadata_modified\": \"2025-12-17T23:59:19.562125\", \"name\": \"nsw-3-13477-a"
+    }
+  ],
+  "summary": "www.tga.gov.au refuses automated connections (TCP reset / read timeout) and data.gov.au holds no ARTG dataset; the ARTG public search is an HTML application with no machine interface. Recorded as BLOCKED_TECHNICAL for the corporate site plus MANUAL_ONLY for ARTG content.",
+  "official_identifier": "ARTG ID (Australian Register of Therapeutic Goods number)",
+  "unlock_route": "ARTG is searched at https://www.tga.gov.au/resources/artg (human interface). For bulk use, TGA's data requests go through https://www.tga.gov.au/about-us/contact-us or a data-sharing request; there is no published keyless ARTG bulk export."
+}

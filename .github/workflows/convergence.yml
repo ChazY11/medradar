@@ -1,0 +1,113 @@
+name: convergence
+
+# CONVERGENCE-001 integration gate.
+#
+# This is not a smoke test: it verifies that the scientific outputs still agree
+# with the data and with each other, and it fails the build when documentation
+# drifts from machine results, when a restricted payload reappears, or when a
+# relation status is silently promoted.
+
+on:
+  pull_request:
+    paths:
+      - "medradar/integration/**"
+      - "tools/convergence/**"
+      - "config/convergence/**"
+      - "docs/convergence/**"
+      - "tests/convergence/**"
+      - "research/convergence/**"
+      - "research/horizon/exports/**"
+      - ".github/workflows/convergence.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: python -m pip install --upgrade pip pytest
+
+      # 1. The contract itself: GTIN validation, no identity promotion, strict clocks.
+      - name: Contract self-checks
+        run: python -m medradar.integration check
+
+      # 2. EXP-H2 numbers in prose must equal the numbers in the pair file.
+      - name: EXP-H2 report/artefact consistency
+        run: python tools/convergence/h2/check_h2_consistency.py
+
+      # 3. No restricted payload may be committed; the manifest must reconcile.
+      - name: Licence and export-integrity gate
+        run: |
+          python tools/convergence/licence/licence_gate.py \
+            --export-dir research/horizon/exports/horizon-2026-11-10 \
+            --policy config/convergence/licence_policy.json
+
+      # 4. Quarantined paths must be absent from the tracked tree.
+      - name: Restricted paths absent from git
+        run: |
+          python - <<'PY'
+          import json, subprocess, sys
+          policy = json.load(open("config/convergence/licence_policy.json", encoding="utf-8"))
+          paths = policy["quarantine"]["paths"]
+          tracked = set(subprocess.run(["git", "ls-files"], capture_output=True, text=True, check=True).stdout.split())
+          leaked = [p for p in paths if p in tracked]
+          if leaked:
+              print("quarantine violation: restricted paths are tracked:", leaked)
+              sys.exit(1)
+          print(f"quarantine intact: 0 of {len(paths)} restricted paths tracked")
+          PY
+
+      # 5. Unit + end-to-end tests (real frozen export, small slices, offline).
+      - name: Integration tests
+        run: python -m pytest tests/convergence -q
+
+      # 6. The real pipeline: verify export hashes, convert, import, build graph.
+      - name: End-to-end import (fresh isolated database)
+        run: python tools/convergence/run_integration.py --fresh --run-id ci_${{ github.run_id }}
+
+      # 7. Re-run on a fresh database and prove the import is reproducible.
+      - name: End-to-end import is reproducible
+        run: |
+          python tools/convergence/run_integration.py --fresh --run-id ci_rerun_${{ github.run_id }}
+          python - <<'PY'
+          import json, glob, sys
+          a = json.load(open(f"research/convergence/reports/integration_ci_${{ github.run_id }}.json", encoding="utf-8"))
+          b = json.load(open(f"research/convergence/reports/integration_ci_rerun_${{ github.run_id }}.json", encoding="utf-8"))
+          # The run id differs by design; every other import figure must match.
+          ia = {k: v for k, v in a["import"].items() if k != "run_id"}
+          ib = {k: v for k, v in b["import"].items() if k != "run_id"}
+          if ia != ib or a["integrity"] != b["integrity"]:
+              print("non-reproducible: integrity or import summary differs between two fresh runs")
+              sys.exit(1)
+          print("reproducible: integrity and import summaries are identical across fresh runs")
+          PY
+
+      # 8. Experiments C1-C5.
+      - name: Integration experiments
+        run: python tools/convergence/run_experiments.py
+
+      # 9. Documentation numbers must match the machine results that were just produced.
+      - name: Report/document consistency
+        run: python tools/convergence/check_report_consistency.py
+
+      # 10. Publish the evidence this run produced.
+      - name: Upload integration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: convergence-evidence
+          path: |
+            research/convergence/reports/
+            research/convergence/licence/
+          if-no-files-found: warn
+          retention-days: 14

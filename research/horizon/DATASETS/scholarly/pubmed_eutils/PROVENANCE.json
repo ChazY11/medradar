@@ -1,0 +1,36 @@
+{
+  "source_id": "pubmed_eutils",
+  "workstream": "scholarly",
+  "experiment": "EXP-H1 / EXP-H3 (fixed anchor sample)",
+  "selection_rule": "experiments/scholarly/EXP_H1_SELECTION_RULE.md",
+  "contact": "medradar-research@proton.me",
+  "generated_at": "2026-11-09T23:04:04Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/scholarly/pubmed_eutils/raw/esearch_01.json",
+      "role": "esearch_chunk_1"
+    },
+    {
+      "path": "DATASETS/scholarly/pubmed_eutils/raw/esearch_02.json",
+      "role": "esearch_chunk_2"
+    },
+    {
+      "path": "DATASETS/scholarly/pubmed_eutils/raw/esearch_03.json",
+      "role": "esearch_chunk_3"
+    },
+    {
+      "path": "DATASETS/scholarly/pubmed_eutils/raw/efetch.xml",
+      "role": "efetch"
+    }
+  ],
+  "endpoints": {
+    "esearch": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
+    "efetch": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+  },
+  "rate_policy": "NCBI: <=3 requests/second without an API key",
+  "licence_status": "open_no_explicit_licence",
+  "licence_note": "PubMed abstracts and citation data are made available by NLM for public use; the E-utilities usage policy (https://www.ncbi.nlm.nih.gov/books/NBK25497/) grants access without a key at <=3 requests/second and asks that tool/email parameters identify the client. NLM does not attach an explicit blanket content licence to the citation metadata, and copyright in abstracts remains with the publisher, so this is recorded as open_no_explicit_licence.",
+  "records_file": "DATASETS/scholarly/pubmed_eutils/records.jsonl",
+  "record_count": 37,
+  "index_file": "DATASETS/scholarly/pubmed_eutils/PUBMED_INDEX.json"
+}

@@ -1,0 +1,84 @@
+{
+  "source_id": "openfda_device_registrationlisting",
+  "workstream": "regulatory",
+  "generated_at": "2026-11-09T23:09:53Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/regulatory/openfda_device_registrationlisting/raw/registrationlisting__firm_medtronic.json",
+      "bytes": 111304,
+      "sha256": "723b92b5c4f98d9d0788a4c0a225b5ace5f3486a8038134eb496172907f54fad",
+      "requested_url": "https://api.fda.gov/device/registrationlisting.json?search=registration.owner_operator.firm_name%3A%22MEDTRONIC%22&limit=50",
+      "final_url": "https://api.fda.gov/device/registrationlisting.json?search=registration.owner_operator.firm_name%3A%22MEDTRONIC%22&limit=50",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "fetched_at": "2026-11-09T23:09:52Z",
+      "note": "openFDA registrationlisting pull: registration.owner_operator.firm_name:\"MEDTRONIC\""
+    },
+    {
+      "path": "DATASETS/regulatory/openfda_device_registrationlisting/raw/registrationlisting__firm_philips.json",
+      "bytes": 155044,
+      "sha256": "b8be6f65dbd25e5c0c44429a67df64504d43e3b23414d01b213c8823d03672c3",
+      "requested_url": "https://api.fda.gov/device/registrationlisting.json?search=registration.owner_operator.firm_name%3A%22PHILIPS%22&limit=50",
+      "final_url": "https://api.fda.gov/device/registrationlisting.json?search=registration.owner_operator.firm_name%3A%22PHILIPS%22&limit=50",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "fetched_at": "2026-11-09T23:09:52Z",
+      "note": "openFDA registrationlisting pull: registration.owner_operator.firm_name:\"PHILIPS\""
+    },
+    {
+      "path": "DATASETS/regulatory/openfda_device_registrationlisting/raw/registrationlisting__firm_draeger.json",
+      "bytes": 80,
+      "sha256": "57b1e7534d003e4246182162fd2469cdf038de39405056f44fc006715e5496da",
+      "requested_url": "https://api.fda.gov/device/registrationlisting.json?search=registration.owner_operator.firm_name%3A%22DRAGER%22&limit=50",
+      "final_url": "https://api.fda.gov/device/registrationlisting.json?search=registration.owner_operator.firm_name%3A%22DRAGER%22&limit=50",
+      "status": 404,
+      "content_type": "application/json; charset=utf-8",
+      "fetched_at": "2026-11-09T23:09:53Z",
+      "note": "openFDA registrationlisting pull: registration.owner_operator.firm_name:\"DRAGER\""
+    }
+  ],
+  "counts": {
+    "records_emitted": 60,
+    "records_with_identifier": 60,
+    "records_with_event_at": 0,
+    "records_with_source_public_at": 0,
+    "unique_official_ids": 94
+  },
+  "pulls": [
+    {
+      "source_id": "openfda_device_registrationlisting",
+      "slice": "firm_medtronic",
+      "search": "registration.owner_operator.firm_name:\"MEDTRONIC\"",
+      "status": 200,
+      "bytes": 111304,
+      "sha256": "723b92b5c4f98d9d",
+      "raw": "DATASETS/regulatory/openfda_device_registrationlisting/raw/registrationlisting__firm_medtronic.json",
+      "from_disk": false,
+      "results": 50,
+      "total_available": 5205
+    },
+    {
+      "source_id": "openfda_device_registrationlisting",
+      "slice": "firm_philips",
+      "search": "registration.owner_operator.firm_name:\"PHILIPS\"",
+      "status": 200,
+      "bytes": 155044,
+      "sha256": "b8be6f65dbd25e5c",
+      "raw": "DATASETS/regulatory/openfda_device_registrationlisting/raw/registrationlisting__firm_philips.json",
+      "from_disk": false,
+      "results": 50,
+      "total_available": 2392
+    },
+    {
+      "source_id": "openfda_device_registrationlisting",
+      "slice": "firm_draeger",
+      "search": "registration.owner_operator.firm_name:\"DRAGER\"",
+      "status": 404,
+      "bytes": 80,
+      "sha256": "57b1e7534d003e42",
+      "raw": "DATASETS/regulatory/openfda_device_registrationlisting/raw/registrationlisting__firm_draeger.json",
+      "from_disk": false,
+      "outcome": "HTTP_ERROR"
+    }
+  ]
+}

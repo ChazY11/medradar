@@ -1,0 +1,29 @@
+{
+  "source_id": "japan_pmda",
+  "generated_at": "2026-11-09T23:24:17Z",
+  "attempts": [
+    {
+      "name": "pmda_english.html",
+      "url": "https://www.pmda.go.jp/english/",
+      "note": "PMDA English landing page",
+      "status": 200,
+      "outcome": null,
+      "bytes": 58190,
+      "sha256": "",
+      "error": null
+    },
+    {
+      "name": "pmda_reviews.html",
+      "url": "https://www.pmda.go.jp/english/review-services/reviews/0001.html",
+      "note": "PMDA review-services index (device approvals live here)",
+      "status": 200,
+      "outcome": null,
+      "bytes": 58415,
+      "sha256": "45825a1bc166bb06",
+      "error": null
+    }
+  ],
+  "summary": "PMDA publishes device approval information as HTML indexes and PDF files. No JSON/CSV/API endpoint was found, and the site exposes no bulk download for device approvals. Recorded as MANUAL_ONLY.",
+  "official_identifier": "PMDA approval number (承認番号)",
+  "unlock_route": "PMDA's published data is consumed either by scraping the HTML approval indexes or through the paid J-DR / commercial distributors; there is no keyless machine interface to request."
+}

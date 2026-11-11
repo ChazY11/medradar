@@ -1,0 +1,194 @@
+{
+  "schema": "medradar.convergence.coverage_and_attribution.v1",
+  "generated_at": "2026-11-10T19:53:01.429249+00:00",
+  "generated_by": "tools/convergence/identity/coverage_bounds.py",
+  "network_used": false,
+  "inputs": {
+    "mdall_cache_analysis": {
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\convergence\\identity\\MDALL_CACHE_ANALYSIS.json",
+      "sha256": "8c17a0672dc2f81fd991c299559ded2009555ff81ddef02212d01a276095f6c6"
+    },
+    "atlas_bridge_934": {
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\convergence\\identity\\ATLAS_BRIDGE_934.json",
+      "sha256": "491bef6cbb2e284cdc1a31de49718b4d02908e4caf1551bb4bd327e1636f53e2"
+    },
+    "unified_sample_results": {
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\convergence\\identity\\UNIFIED_SAMPLE_RESULTS.json",
+      "sha256": "874d7e93c4b6a8083997ea547de7db8041fa03a825217b58ac26658da6f06059"
+    },
+    "atlas_identity_pilot": {
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\atlas\\reports\\identity_pilot.json",
+      "sha256": "12702ae0a89650786b3777a29801b59b684e36913125ca34daf096a3ac7cc6a8"
+    },
+    "mdall_cache_sha256": "55d2b64189a2b8b6d3d7431462930196aebe5503addeeb6a4a6f0d65f5c2973f"
+  },
+  "denominators": {
+    "mdall_rows": 1673926,
+    "mdall_distinct_identifier_values": 1546415,
+    "mdall_licences": 36056,
+    "mdall_device_lines": 146183,
+    "mdall_gtin_class_rows": 5512,
+    "mdall_gtin_class_distinct": 5005,
+    "mdall_gtin_class_check_digit_valid_rows": 5434,
+    "mdall_gtin_class_check_digit_valid_distinct": 4927
+  },
+  "joinable_ceiling": {
+    "of_mdall_identifier_rows": 0.00329286,
+    "of_mdall_distinct_identifier_values": 0.00323652,
+    "of_mdall_licences": 0.00629576,
+    "of_mdall_device_lines": 0.00464486,
+    "note": "A UDI bridge can only ever touch rows whose device_identifier is a GTIN-14. That is the hard ceiling, before any matching happens.",
+    "rows_number": 5512,
+    "licences_number": 227,
+    "device_lines_number": 679,
+    "total_rows": 1673926,
+    "total_licences": 36056,
+    "total_device_lines": 146183
+  },
+  "confirmed_against_denominators": {
+    "confirmed_pairs": 934,
+    "of_all_mdall_rows": 0.00055797,
+    "of_all_mdall_distinct_identifier_values": 0.00060398,
+    "of_mdall_gtin_class_rows": 0.16944848,
+    "of_mdall_gtin_class_distinct_values": 0.18661339,
+    "of_mdall_licences": 0.00183049,
+    "of_mdall_gtin_class_licences": 0.2907489,
+    "of_query_sample": 0.77833333,
+    "of_all_gtin_class_distinct_values": 0.18661339,
+    "note": "934 is a confirmed count on a systematic 1200-of-5005 subsample. It is a lower bound on what this method could confirm (3805 GTIN-class values were never queried) and an upper bound on nothing: it is not a population estimate and must not be scaled up."
+  },
+  "sampling": {
+    "gtin_class_distinct_values": 5005,
+    "queried_gtin_values": 1200,
+    "queried_share_of_gtin_class": 0.23976024,
+    "unqueried_gtin_values": 3805,
+    "resolved_records": 942,
+    "confirmed_pairs_published": 934,
+    "primary_di_anchored_pairs_on_same_records": 941,
+    "unpaired_returned_records": 8,
+    "subsample_rule": "sorted(MDALL GTIN-class raw keys); take index int(i * 5005/1200) for i in range(1200). This is a systematic sample, not a random sample; reproduced exactly in this work."
+  },
+  "concentration": {
+    "distinct_us_labelers": 37,
+    "largest_labeler": "Bloomden Bioceramics (Hunan) Co., Ltd.",
+    "largest_labeler_pairs": 760,
+    "largest_labeler_share": 0.8137045,
+    "top4_labelers_pairs": 867,
+    "top4_labelers_share": 0.92826552,
+    "distinct_ca_licences": 66,
+    "largest_licence": "113873",
+    "largest_licence_pairs": 760,
+    "largest_licence_share": 0.8137045,
+    "distinct_mdall_device_ids": 127,
+    "top_labelers": [
+      {
+        "company": "Bloomden Bioceramics (Hunan) Co., Ltd.",
+        "pairs": 760
+      },
+      {
+        "company": "Sbo Hearing A/S",
+        "pairs": 50
+      },
+      {
+        "company": "Steris Mexico, S. de R.L. de C.V.",
+        "pairs": 42
+      },
+      {
+        "company": "3D SYSTEMS, INC.",
+        "pairs": 15
+      },
+      {
+        "company": "CARESTREAM DENTAL LLC",
+        "pairs": 9
+      },
+      {
+        "company": "ORAMETRIX, INC.",
+        "pairs": 5
+      },
+      {
+        "company": "APPLE INC.",
+        "pairs": 5
+      },
+      {
+        "company": "IEM GmbH",
+        "pairs": 4
+      }
+    ],
+    "top_licences": [
+      {
+        "licence": "113873",
+        "pairs": 760
+      },
+      {
+        "licence": "102702",
+        "pairs": 29
+      },
+      {
+        "licence": "89779",
+        "pairs": 18
+      },
+      {
+        "licence": "102611",
+        "pairs": 16
+      },
+      {
+        "licence": "103982",
+        "pairs": 15
+      },
+      {
+        "licence": "89780",
+        "pairs": 9
+      },
+      {
+        "licence": "98236",
+        "pairs": 7
+      },
+      {
+        "licence": "89753",
+        "pairs": 4
+      }
+    ],
+    "five_firm_register_pairs_strict_alias": 10,
+    "five_firm_register_pairs_atlas_stored": 12,
+    "ca_side_pairs_any_company_attribution": 9,
+    "ca_side_pairs_fully_unattributable": 925
+  },
+  "generalisation_statement": "At most 5512/1673926 = 0.329% of MDALL active identifier rows, 227/36056 = 0.63% of MDALL licences and 679/146183 = 0.46% of MDALL device lines can ever be joined by an official UDI. ATLAS confirmed 934 of them (0.0558% of all MDALL rows). This is a real but thin official bridge, concentrated in a few manufacturers; it is not a solution to global device identity.",
+  "falsifiers": [
+    {
+      "claim": "MDALL's device_identifier field contains a GTIN-14 minority as well as model/catalogue tokens.",
+      "falsifier": "a full scan of the frozen table finds no 14-digit values, or none with valid Mod-10 check digits.",
+      "status": "survives: 5,512 / 1,673,926 rows are 14-digit; 5,434 rows (4,927 distinct) have valid check digits; 78 distinct invalid-check 14-digit values exist too."
+    },
+    {
+      "claim": "The 934 ATLAS pairs are exact GTIN-14 equalities, not string coincidence.",
+      "falsifier": "any of the 934 shared identifiers is not 14 digits or fails the Mod-10 check.",
+      "status": "survives: 934/934 are 14-digit and 934/934 pass the Mod-10 check; 0 blank, 0 duplicate."
+    },
+    {
+      "claim": "The Canada side of each pair is re-derivable from the raw frozen MDALL table.",
+      "falsifier": "a shared identifier is absent from the raw table, or its licence/device_id does not match.",
+      "status": "survives: 934/934 present in the raw cache; 934/934 licence match; 934/934 MDALL device_id match."
+    },
+    {
+      "claim": "HORIZON's 0 is a coverage result, not a refutation.",
+      "falsifier": "HORIZON's Canada slice contains a GTIN-14 identifier, or its US slice shares a DI with ATLAS's 934.",
+      "status": "survives: 0/49 HORIZON identifier values are 14-digit; 0/934 ATLAS DIs appear in HORIZON's 320 DI slice; 0 shared CA licences."
+    },
+    {
+      "claim": "The two methods are the same rule under different field typing.",
+      "falsifier": "on the unified 1,660-pair sample, the ATLAS bridge confirms pairs H2's namespace-typing variant does not, or vice versa.",
+      "status": "survives: namespace-typing confusion is 934/934 both-confirmed and 726/726 neither; native-typing gives 934 ATLAS-only."
+    },
+    {
+      "claim": "The bridge generalises to a cross-border identity solution.",
+      "falsifier": "the bridge reaches a large share of MDALL rows, or is spread across manufacturers and licences.",
+      "status": "REFUTED: ceiling 0.33% of rows / 0.63% of licences; 81.4% of confirmations come from one licence and one US labeler; 92.8% from the top four labelers."
+    },
+    {
+      "claim": "The confirmed pairs are corporately coherent on both sides.",
+      "falsifier": "Canada-side corporate identity cannot be established, or contradicts the US side.",
+      "status": "not established: 925/934 (99.0%) pairs have no Canada-side company in the frozen data; the 9 that do are GE-only name-alias links."
+    }
+  ]
+}

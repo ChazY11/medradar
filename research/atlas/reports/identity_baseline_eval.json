@@ -1,0 +1,36 @@
+{
+  "baseline_false_positive_examples": [],
+  "generated_at": "2026-11-10T17:42:55.464264Z",
+  "label_basis": {
+    "caveat": "sampled pairs, not a prevalence-weighted population estimate; no overall F1 is claimed",
+    "negative": "different DI, and either different company or a deliberately name-identical hard negative",
+    "positive": "MDALL GTIN-14 identifier exactly equals a GUDID UDI-DI (official identifier)"
+  },
+  "metrics": {
+    "identity": {
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "labelled_pairs": 1334,
+      "note": "computed on the sampled labelled pairs only; not a population estimate",
+      "precision": 1.0,
+      "recall": 1.0,
+      "tn": 400,
+      "tp": 934
+    },
+    "name_baseline": {
+      "f1": null,
+      "fn": 934,
+      "fp": 0,
+      "labelled_pairs": 1334,
+      "note": "computed on the sampled labelled pairs only; not a population estimate",
+      "precision": null,
+      "recall": 0.0,
+      "tn": 400,
+      "tp": 0
+    }
+  },
+  "negatives": 400,
+  "positives": 934,
+  "schema": "medradar.atlas.baseline_eval.v1"
+}

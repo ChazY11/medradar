@@ -1,0 +1,422 @@
+{
+ "generated_at": "2026-11-11T16:16:22.700466Z",
+ "contract": {
+  "id": "medradar.convergence.evidence.v1",
+  "version": "1.0.0"
+ },
+ "licence_policy": {
+  "policy_id": "medradar.licence_policy.v1",
+  "schema": "medradar.licence_policy.v1",
+  "version": "1.0.0",
+  "origin": "config\\convergence\\licence_policy.json",
+  "known_sources": 51,
+  "quarantined_sources": [
+   "australia_tga_artg",
+   "china_nmpa_udi",
+   "descartes_datamyne",
+   "dpma_open_data",
+   "epo_global_patent_index",
+   "epo_linked_open_data",
+   "epo_ops",
+   "espacenet",
+   "eu_ctis",
+   "eudamed",
+   "google_patents",
+   "importgenius",
+   "importyeti",
+   "japan_pmda",
+   "jpo_bulk",
+   "lens_org",
+   "panjiva",
+   "patentsview",
+   "un_comtrade",
+   "usitc_dataweb",
+   "wipo_patentscope"
+  ],
+  "statuses": [
+   "open_licence",
+   "open_no_explicit_licence",
+   "public_domain",
+   "requires_licence",
+   "terms_restricted",
+   "unknown"
+  ]
+ },
+ "run": {
+  "run_id": "final_002",
+  "export_id": "horizon-2026-11-10",
+  "manifest_sha256": "eaa1cbf5e49db90ba39f938be759c5df3581f4fbbe135cfcd5455622ff6e4d4d",
+  "contract_version": "medradar.convergence.evidence.v1@1.0.0",
+  "mapping_version": "1.0.0+adapter.1",
+  "policy_id": "medradar.licence_policy.v1",
+  "started_at": "2026-11-11T16:12:58.931139Z",
+  "finished_at": "2026-11-11T16:13:37.553755Z",
+  "status": "complete",
+  "records_seen": 5884,
+  "converted": 966,
+  "degraded": 4918,
+  "rejected": 0,
+  "evidence_inserted": 5884,
+  "evidence_noop": 0,
+  "notes": ""
+ },
+ "EXP-C1": {
+  "experiment": "EXP-C1",
+  "question": "Does every input record have an explainable conversion outcome?",
+  "input_records": 5884,
+  "outcomes": {
+   "converted": 966,
+   "degraded": 4918
+  },
+  "rejected_records": 0,
+  "rejection_reasons": {},
+  "declared_source_fields": 22,
+  "fields_with_atlas_home": 10,
+  "fields_preserved_losslessly": 12,
+  "fields_dropped_silently": 0,
+  "warning_classes": {
+   "first_observed_at_unknown_source_ran_no_observation_log": 1394,
+   "quality_flags_preserved_without_atlas_equivalent": 2178,
+   "clock_ordering": 1,
+   "source_public_at_precedes_event_at": 90,
+   "classification_carried_as_identifier": 3438
+  },
+  "identifier_scheme_transitions": {
+   "pct_application_number->pct_application_number": 2110,
+   "cipo_patent_number->patent_no": 2000,
+   "pct_publication_number->pct_publication_number": 2000,
+   "hs_code->hs_code": 1500,
+   "eurostat_comext_cell->eurostat_comext_cell": 1400,
+   "fda_product_code->fda_product_code": 387,
+   "udi_di->di": 320,
+   "doi->doi": 319,
+   "ted_publication_number->ted_publication_number": 299,
+   "sam_uei->sam_uei": 245,
+   "federal_award_id->federal_award_id": 245,
+   "usaspending_generated_internal_id->usaspending_generated_internal_id": 245,
+   "epo_publication_number->patent_no": 228,
+   "epo_application_number->patent_application_no": 228,
+   "pmid->pmid": 185,
+   "hc_device_licence->licence_no": 174,
+   "nct->nct": 164,
+   "uspto_510k->510k": 160,
+   "anvisa_registro->anvisa_registro": 120,
+   "anvisa_processo->anvisa_processo": 120,
+   "hc_mdall_device_id->hc_mdall_device_id": 114,
+   "hmrc_ots_series->hmrc_ots_series": 100,
+   "pmcid->pmcid": 81,
+   "nih_core_project_num->nih_project_num": 64,
+   "nih_project_num->nih_project_num": 64,
+   "ocds_ocid->ocid": 62,
+   "ocds_party_id->ocds_party_id": 62,
+   "cordis_rcn->cordis_rcn": 60,
+   "cordis_grant_agreement_id->cordis_grant_agreement_id": 60,
+   "openalex_id->openalex_id": 60,
+   "uspto_pma->pma": 60,
+   "fda_fei->fda_fei": 60,
+   "fda_registration_number->fda_registration_number": 60,
+   "s2_corpus_id->s2_corpus_id": 56,
+   "cfr_regulation->cfr_regulation": 51,
+   "hc_mdall_device_identifier->hc_device_identifier": 49,
+   "mag->mag": 20,
+   "handle->handle": 12,
+   "pubmed_mid->pmid": 1
+  },
+  "gtin14_promotions": 0,
+  "gtin14_shaped_but_invalid": 0,
+  "licence_status_transitions": {
+   "public_domain->public_domain": 888,
+   "open_no_explicit_licence->open_no_explicit_licence": 1104,
+   "open_licence->open_licence": 3892
+  },
+  "identity_resolution_on_import": {
+   "not_attempted": 5884
+  },
+  "interpretation": "No record is rejected, every source field is either mapped to an ATLAS field or preserved verbatim under normalized.horizon, and no imported record is marked identity-resolved on the strength of a source status."
+ },
+ "EXP-C2": {
+  "experiment": "EXP-C2",
+  "question": "Can the HORIZON US–Canada sample support an official cross-border device identity, and why did EXP-H2 report zero?",
+  "horizon_mdall_device_identifiers": 49,
+  "horizon_mdall_gtin14_shaped": 0,
+  "horizon_mdall_gtin14_valid": 0,
+  "horizon_gudid_udi_di_distinct": 320,
+  "overlap_horizon_mdall_vs_gudid": 0,
+  "staging_promotions_to_di": 0,
+  "confirmed_cross_border_relations_in_staging": 0,
+  "conclusion": "The HORIZON sample contains zero GTIN-14-shaped MDALL identifiers, so its official-identifier signal cannot fire and zero confirmed pairs is arithmetically forced by the sample rather than being a refutation of the bridge ATLAS found on the full MDALL table.",
+  "binding": "The ATLAS side (934 confirmed pairs on a 1.67M-row MDALL scan) is measured in docs/convergence/IDENTITY_RECONCILIATION.md from frozen inputs; this experiment reports only what the integrated HORIZON sample can and cannot support."
+ },
+ "EXP-C3": {
+  "experiment": "EXP-C3",
+  "question": "Are duplicates separated by layer without deleting real records?",
+  "records_read": 5884,
+  "distinct_evidence_ids": 5884,
+  "evidence_versions": 5884,
+  "repeat_observations_of_same_record": 62,
+  "duplicate_evidence_versions_retained": 0,
+  "layer_1_record_identity": {
+   "distinct_records": 5884,
+   "duplicate_fetches_collapsed_by_versioning": 0,
+   "note": "Records that share a source_record_id but differ in content (PMA supplements, establishment types) are given a deterministic content-derived id discriminator, so they survive as distinct evidence records instead of collapsing into versions of one."
+  },
+  "layer_2_entity_identity": {
+   "scholarly_publication_records": 308,
+   "distinct_doi_keys": 60,
+   "works_seen_by_multiple_aggregators": 60,
+   "max_aggregators_for_one_work": 6,
+   "note": "A DOI carried by several aggregators is one work; counting each record as an independent finding would inflate the corpus."
+  },
+  "layer_3_event_identity": {
+   "procurement_records": 606,
+   "notices_with_multiple_parties": 0,
+   "parties_per_notice_sample": {},
+   "note": "A notice naming several suppliers is one event with several awards; the event key includes the party so no co-awarded supplier is deleted. Zero multi-party notices in this sample means the guard is untested here, which is stated rather than hidden."
+  },
+  "layer_4_relation_identity": {
+   "relations": 672,
+   "distinct_relation_keys": 672
+  },
+  "patent_families": {
+   "patent_publications": 2228,
+   "distinct_pct_families": 499,
+   "publications_with_known_family": 499,
+   "families_with_multiple_publications": 0,
+   "note": "Publications of one PCT family are neither merged into one record nor counted as independent inventions; they are grouped by family."
+  }
+ },
+ "EXP-C4": {
+  "experiment": "EXP-C4",
+  "question": "Which records can support a historical claim, and with which clock?",
+  "records": 5884,
+  "clock_availability": {
+   "event_at": 4219,
+   "source_public_at": 3564,
+   "first_observed_at": 4490,
+   "fetched_at": 5884,
+   "pct_source_public_at": 60.57,
+   "pct_first_observed_at": 76.31
+  },
+  "clock_relations": {
+   "public_only": 1484,
+   "event_equals_public": 371,
+   "event_only": 2139,
+   "event_before_public": 1619,
+   "public_before_event": 90,
+   "no_dates": 181
+  },
+  "event_equals_public_rate_pct": 6.31,
+  "public_before_event": 90,
+  "cross_source_publication_date_conflicts": 52,
+  "cross_source_conflict_sample": {
+   "10.1016/j.yrtph.2021.104987": [
+    "2021-07-03",
+    "2021-10-01"
+   ],
+   "10.1016/j.yrtph.2021.105004": [
+    "2021-07-10",
+    "2021-10-01"
+   ],
+   "10.1111/jace.18041": [
+    "2021-07-19",
+    "2021-07-28"
+   ],
+   "10.1016/s0378-4274(21)00463-x": [
+    "2021-09-01",
+    "2021-09-24"
+   ],
+   "10.1016/j.mpmed.2021.08.009": [
+    "2013-12-01",
+    "2021-09-27"
+   ],
+   "10.1253/circj.cj-21-0491": [
+    "2021-10-05",
+    "2021-10-06",
+    "2021-11-25"
+   ],
+   "10.33564/ijeast.2021.v06i07.046": [
+    "2021-11-01",
+    "2022-10-05"
+   ],
+   "10.1161/circ.144.suppl_1.13385": [
+    "2021-11-16",
+    "2022-04-28"
+   ],
+   "10.1016/j.yrtph.2021.105096": [
+    "2021-12-01",
+    "2021-12-09",
+    "2021-12-10",
+    "2022-03-01"
+   ],
+   "10.31478/202201b": [
+    "2022-01-14",
+    "2022-01-18"
+   ]
+  },
+  "records_usable_for_lead_time": 1990,
+  "records_not_usable_for_historical_analysis": 3894,
+  "records_without_first_observation": 1394,
+  "per_source_clock_presence": {
+   "accessgudid": {
+    "missing_event_at": 320,
+    "source_public_at": 320,
+    "missing_first_observed_at": 320,
+    "fetched_at": 320
+   },
+   "brazil_anvisa": {
+    "event_at": 120,
+    "source_public_at": 120,
+    "missing_first_observed_at": 120,
+    "fetched_at": 120
+   },
+   "canada_mdall": {
+    "event_at": 174,
+    "missing_source_public_at": 174,
+    "missing_first_observed_at": 174,
+    "fetched_at": 174
+   },
+   "cipo_canada": {
+    "missing_event_at": 1084,
+    "source_public_at": 2000,
+    "first_observed_at": 2000,
+    "fetched_at": 2000,
+    "event_at": 916
+   },
+   "clinicaltrials_gov": {
+    "missing_event_at": 70,
+    "source_public_at": 164,
+    "missing_first_observed_at": 164,
+    "fetched_at": 164,
+    "event_at": 94
+   },
+   "crossref": {
+    "event_at": 59,
+    "source_public_at": 59,
+    "first_observed_at": 59,
+    "fetched_at": 59
+   },
+   "epo_publication_server": {
+    "event_at": 228,
+    "source_public_at": 228,
+    "first_observed_at": 228,
+    "fetched_at": 228
+   },
+   "eu_cordis": {
+    "missing_event_at": 60,
+    "missing_source_public_at": 60,
+    "missing_first_observed_at": 60,
+    "fetched_at": 60
+   },
+   "eu_ted": {
+    "event_at": 297,
+    "source_public_at": 299,
+    "first_observed_at": 299,
+    "fetched_at": 299,
+    "missing_event_at": 2
+   },
+   "europepmc": {
+    "event_at": 37,
+    "source_public_at": 37,
+    "first_observed_at": 37,
+    "fetched_at": 37
+   },
+   "eurostat_comext": {
+    "event_at": 1400,
+    "missing_source_public_at": 1400,
+    "first_observed_at": 1400,
+    "fetched_at": 1400
+   },
+   "nih_reporter": {
+    "event_at": 56,
+    "source_public_at": 64,
+    "missing_first_observed_at": 64,
+    "fetched_at": 64,
+    "missing_event_at": 8
+   },
+   "openaire": {
+    "event_at": 59,
+    "source_public_at": 59,
+    "missing_first_observed_at": 59,
+    "fetched_at": 59
+   },
+   "openalex": {
+    "event_at": 60,
+    "source_public_at": 60,
+    "first_observed_at": 60,
+    "fetched_at": 60
+   },
+   "openfda_device_510k": {
+    "event_at": 160,
+    "missing_source_public_at": 160,
+    "missing_first_observed_at": 160,
+    "fetched_at": 160
+   },
+   "openfda_device_classification": {
+    "missing_event_at": 60,
+    "missing_source_public_at": 60,
+    "missing_first_observed_at": 60,
+    "fetched_at": 60
+   },
+   "openfda_device_pma": {
+    "event_at": 60,
+    "missing_source_public_at": 60,
+    "missing_first_observed_at": 60,
+    "fetched_at": 60
+   },
+   "openfda_device_registrationlisting": {
+    "missing_event_at": 60,
+    "missing_source_public_at": 60,
+    "missing_first_observed_at": 60,
+    "fetched_at": 60
+   },
+   "pubmed_eutils": {
+    "event_at": 37,
+    "source_public_at": 37,
+    "missing_first_observed_at": 37,
+    "fetched_at": 37
+   },
+   "semantic_scholar": {
+    "event_at": 55,
+    "source_public_at": 55,
+    "missing_first_observed_at": 56,
+    "fetched_at": 56,
+    "missing_event_at": 1,
+    "missing_source_public_at": 1
+   },
+   "uk_find_a_tender": {
+    "event_at": 62,
+    "source_public_at": 62,
+    "first_observed_at": 62,
+    "fetched_at": 62
+   },
+   "uk_hmrc_trade": {
+    "event_at": 100,
+    "missing_source_public_at": 100,
+    "first_observed_at": 100,
+    "fetched_at": 100
+   },
+   "usaspending": {
+    "event_at": 245,
+    "missing_source_public_at": 245,
+    "first_observed_at": 245,
+    "fetched_at": 245
+   }
+  },
+  "interpretation": "A record is usable for a lead-time claim only when both an event clock and a day-quality publication clock exist. Where first_observed_at is absent it stays absent: the integration never substitutes the event date or the import date for it. Scholarly sources whose event date equals their publication date cannot support a lead-time claim at all."
+ },
+ "EXP-C5": {
+  "experiment": "EXP-C5",
+  "question": "Can the whole pipeline run from a clean checkout and reproduce?",
+  "reproduce_command": "python tools/convergence/run_integration.py --fresh && python tools/convergence/run_experiments.py",
+  "query_render_seconds": 0.674,
+  "staging_db_bytes": 60960768,
+  "staging_db_mb": 60.96,
+  "query_result_sha256": "96f0bef75c7e0945e51f0aaef4a1719e776efc705fd56678f105ae230a908e91",
+  "cited_items": 134,
+  "uncited_items": 0,
+  "network_used": false,
+  "gpu_required": false,
+  "paid_api_required": false,
+  "note": "The pipeline reads only committed files plus the quarantined export directory, writes one new SQLite file, and renders all six queries offline. The result digest is stable across reruns, which is what makes the figures quotable."
+ }
+}

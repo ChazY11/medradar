@@ -1,0 +1,184 @@
+{
+  "schema": "medradar.convergence.frozen_inputs.v1",
+  "task": "P0-B / task-2: 934-vs-0 cross-border UDI identity reconciliation",
+  "generated_at": "2026-11-10T18:37:49.816407+00:00",
+  "generated_by": "tools/convergence/identity/freeze_inputs.py",
+  "network_used": false,
+  "note": "All counts in docs/convergence/IDENTITY_RECONCILIATION.md are bound to these SHA-256 digests. The two original worktrees are READ-ONLY inputs; nothing outside docs/convergence/, tools/convergence/identity/, research/convergence/identity/ and tests/convergence/ is written.",
+  "worktrees": {
+    "convergence_001": {
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001",
+      "git_head": "3c3a29568e4f63d761e3930e12540de3fd75c6bd"
+    },
+    "atlas_001": {
+      "path": "D:\\DEPPSKK\\worktrees\\atlas-001",
+      "git_head": "c63683631a1b277e2d27cfbe3adf6e133cf55e83"
+    }
+  },
+  "required_inputs": [
+    {
+      "role": "atlas_db",
+      "note": "ATLAS research SQLite DB; source of the 934 SAME_DEVICE_IDENTITY relations and both evidence payloads. READ ONLY (mode=ro).",
+      "path": "D:\\DEPPSKK\\worktrees\\atlas-001\\research\\atlas\\staging\\atlas.sqlite",
+      "size_bytes": 52060160,
+      "mtime_utc": "2026-11-10T17:43:27.501294+00:00",
+      "sha256": "6f77822e57edf5a2c8d86423e22c30399d21bf97c56ac6dcd86ecb9384d8bffb"
+    },
+    {
+      "role": "mdall_cache",
+      "note": "Raw Health Canada MDALL active device-identifier table (single-line JSON array, 1.67M rows). Frozen evidence for the 0.33% GTIN minority. READ ONLY.",
+      "path": "D:\\DEPPSKK\\worktrees\\atlas-001\\research\\atlas\\cache\\mdall_active_deviceidentifier.json",
+      "size_bytes": 219970233,
+      "mtime_utc": "2026-11-09T23:02:07.060147+00:00",
+      "sha256": "55d2b64189a2b8b6d3d7431462930196aebe5503addeeb6a4a6f0d65f5c2973f"
+    },
+    {
+      "role": "atlas_identity_report",
+      "note": "ATLAS identity pilot report (PR #28 head c636836): counts 934 / 1200 / 5005 / 1673926 / 0.003293.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\atlas\\reports\\identity_pilot.json",
+      "size_bytes": 8377,
+      "mtime_utc": "2026-11-10T18:18:36.732516+00:00",
+      "sha256": "12702ae0a89650786b3777a29801b59b684e36913125ca34daf096a3ac7cc6a8"
+    },
+    {
+      "role": "horizon_mdall_records",
+      "note": "HORIZON Canada MDALL frozen slice, 174 records (60 licences / 65 devices / 49 identifiers). Canada side of EXP-H2.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\horizon\\DATASETS\\regulatory\\canada_mdall\\records.jsonl",
+      "size_bytes": 288641,
+      "mtime_utc": "2026-11-10T18:22:36.871688+00:00",
+      "sha256": "b00c4565ba24346877954124dceecebcbf844dd5cbce1792749bb404479e0dc7"
+    },
+    {
+      "role": "horizon_gudid_records",
+      "note": "HORIZON AccessGUDID frozen slice, 320 records, all scheme=udi_di. US side of EXP-H2.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\horizon\\DATASETS\\regulatory\\accessgudid\\records.jsonl",
+      "size_bytes": 733815,
+      "mtime_utc": "2026-11-10T18:22:36.848112+00:00",
+      "sha256": "233274cb66d4a75552b6d4be52af89c1ae10fec46ce22c0d1052ff1b1c089c54"
+    },
+    {
+      "role": "horizon_h2_pairs",
+      "note": "HORIZON EXP-H2 pair table: 726 pairs, every verdict UNKNOWN, S4 fired 0.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\horizon\\experiments\\regulatory\\EXP_H2_PAIRS.jsonl",
+      "size_bytes": 679872,
+      "mtime_utc": "2026-11-10T18:22:37.100065+00:00",
+      "sha256": "e7ad98e1d6b45636d1e1ea4159ce1780e22ec3c2d977cd1b5fa98ab1046390d9"
+    }
+  ],
+  "supporting_inputs": [
+    {
+      "role": "atlas_pairs_sample",
+      "note": "ATLAS sample export: first 40 confirmed pairs only (not the full 934); used for cross-checking fields, never as the source of counts.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\atlas\\samples\\identity_pilot_pairs.json",
+      "size_bytes": 33478,
+      "mtime_utc": "2026-11-10T18:18:36.733567+00:00",
+      "sha256": "dff1e296008d9410d40d3290f83f9960bdb818df64fe3e4a7c8b477dc521c124"
+    },
+    {
+      "role": "atlas_request_log",
+      "note": "ATLAS HTTP request ledger (150 rows) proving where the US records came from; no network is used here.",
+      "path": "D:\\DEPPSKK\\worktrees\\atlas-001\\research\\atlas\\staging\\atlas_requests.jsonl",
+      "size_bytes": 388499,
+      "mtime_utc": "2026-11-10T17:42:50.320120+00:00",
+      "sha256": "87ea0a20522692e05dc5d7ae6b0bb37fe66aca1a1e69ad8c36a8c304a2c9ee91"
+    },
+    {
+      "role": "horizon_h2_summary",
+      "note": "HORIZON EXP-H2 summary: 726 UNKNOWN, S4 fired 0, eight signal-sufficiency rows.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\horizon\\experiments\\regulatory\\EXP_H2_SUMMARY.json",
+      "size_bytes": 7440,
+      "mtime_utc": "2026-11-10T18:22:37.101065+00:00",
+      "sha256": "6967dbd941f0c61e32252836e9707836820c622db69c2c2f20532ea195f78a19"
+    },
+    {
+      "role": "horizon_h2_rule",
+      "note": "Pre-registered H2 rule: CONFIRMED only if S4 = shared official identifier in the same scheme.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\horizon\\experiments\\regulatory\\EXP_H2_SELECTION_RULE.md",
+      "size_bytes": 3527,
+      "mtime_utc": "2026-11-10T18:22:37.101065+00:00",
+      "sha256": "a6a94fa7956344b2a69b51bdd6025dac41c0e49be78fa783cc48a6f09ab7036a"
+    },
+    {
+      "role": "horizon_mdall_counts",
+      "note": "HORIZON Canada selection rule: 60 licences by licence_name, 65 devices by device_name, 49 identifiers by internal device id.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\horizon\\DATASETS\\regulatory\\canada_mdall\\COUNTS.json",
+      "size_bytes": 8920,
+      "mtime_utc": "2026-11-10T18:22:36.857170+00:00",
+      "sha256": "52bde76aa2fef3cfb2adbfba5603e2a40b6a81951b2b7e42475babf44cfd1bfb"
+    },
+    {
+      "role": "horizon_gudid_counts",
+      "note": "HORIZON US selection rule: 320 GUDID records for the five pre-declared firms.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\horizon\\DATASETS\\regulatory\\accessgudid\\COUNTS.json",
+      "size_bytes": 1721,
+      "mtime_utc": "2026-11-10T18:22:36.842602+00:00",
+      "sha256": "4626cb0b5da814870452703137e61a353616a922113943b8405580eba4703540"
+    },
+    {
+      "role": "atlas_identity_model",
+      "note": "ATLAS identity model: identifier scheme/scope/is_primary contract and the rule 'comparisons only match a scheme against itself'.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\docs\\atlas\\IDENTITY_MODEL.md",
+      "size_bytes": 7311,
+      "mtime_utc": "2026-11-10T18:18:36.716939+00:00",
+      "sha256": "82f72e5be7bd055f27697130b6de2f6a86a77aeae665c9fc92ba94f5da189cc6"
+    },
+    {
+      "role": "atlas_firm_registry",
+      "note": "Curated firm alias registry used by ATLAS company resolution (5 firms + negative guards).",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\config\\atlas_firms.json",
+      "size_bytes": 5339,
+      "mtime_utc": "2026-11-10T18:18:36.714933+00:00",
+      "sha256": "292b0f9c5baddbe672afbdf7de21fbd97b7632ff786ef3a7a82e65dab0b6793f"
+    }
+  ],
+  "method_sources": [
+    {
+      "role": "atlas_pilot_source",
+      "note": "ATLAS pipeline source: GTIN screening (is_gtin_like), 1200-of-5005 bridge subsample, exact-DI comparison.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\medradar\\atlas\\identity\\pilot.py",
+      "size_bytes": 43223,
+      "mtime_utc": "2026-11-10T18:18:36.725164+00:00",
+      "sha256": "7f5cd717a4c12d95066b0d0fe3de0683c876b6dfb612f4bf558552225f2dad86"
+    },
+    {
+      "role": "atlas_normalize_source",
+      "note": "ATLAS is_gtin_like = 14 digits, NO check-digit validation (this report adds the check).",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\medradar\\atlas\\identity\\normalize.py",
+      "size_bytes": 9247,
+      "mtime_utc": "2026-11-10T18:18:36.724156+00:00",
+      "sha256": "10023446cc362b745fef497122cd15b518afba642d276662cba6d496efab34e4"
+    },
+    {
+      "role": "atlas_mdall_connector",
+      "note": "ATLAS MDALL connector: iter_json_array cache reader, GTIN flag, licence/company fetches.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\medradar\\atlas\\connectors\\canada_mdall.py",
+      "size_bytes": 10527,
+      "mtime_utc": "2026-11-10T18:18:36.719934+00:00",
+      "sha256": "cc018a6bd58380033f3f00e1b617332398944081a30bb2d18f5bf3a4e5a0fa01"
+    },
+    {
+      "role": "atlas_openfda_connector",
+      "note": "ATLAS openFDA UDI connector: identifiers.id batch query, primary-DI selection.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\medradar\\atlas\\connectors\\openfda_udi.py",
+      "size_bytes": 7010,
+      "mtime_utc": "2026-11-10T18:18:36.719934+00:00",
+      "sha256": "7e7937d60b2af5d91f8a4f9ae38a2df5c4737fa36458cbec1c70192d4d22c9be"
+    },
+    {
+      "role": "horizon_exp_h2_source",
+      "note": "HORIZON EXP-H2 implementation: ids_overlap() requires the SAME scheme string on both sides.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\horizon\\experiments\\regulatory\\exp_h2_identity.py",
+      "size_bytes": 23022,
+      "mtime_utc": "2026-11-10T18:22:37.101065+00:00",
+      "sha256": "898cfbdc7ed1e6c80969496ab6250a46a13d4a032e9182b3c4f2b11e4dcadd29"
+    },
+    {
+      "role": "horizon_mdall_connector",
+      "note": "HORIZON MDALL connector: how the 174-record slice was built and scheme-labelled.",
+      "path": "D:\\DEPPSKK\\worktrees\\convergence-001\\research\\horizon\\CONNECTORS\\regulatory\\canada_mdall.py",
+      "size_bytes": 18697,
+      "mtime_utc": "2026-11-10T18:22:36.717420+00:00",
+      "sha256": "572e601478da79d844b638f089235c935aee6a7dcd19e79835da5ecc44e8e5df"
+    }
+  ]
+}

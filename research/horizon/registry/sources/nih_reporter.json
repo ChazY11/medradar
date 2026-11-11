@@ -1,0 +1,35 @@
+{
+  "access_evidence": "probe nih_reporter_get_405: GET returns HTTP 405 with a zero-byte body (POST is mandatory). POST probe nih_reporter_search_post in POST_CALLS.json: HTTP 200 with a meta block. 6 POSTs total: 1 discovery + 4 bounded pages + 1 probe.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "GET is not supported (HTTP 405, empty body). Any connector that only does GET will report this source as broken."
+  ],
+  "bulk_available": true,
+  "domain": "api.reporter.nih.gov",
+  "entity_types": [
+    "grant"
+  ],
+  "first_verified_at": "2026-11-09T23:20:28Z",
+  "historical_depth": "Award notice date and project start/end dates are separate fields, so the award's own event date and its public-visible date are distinguishable.",
+  "id_schemes": [
+    "nih_core_project_num",
+    "nih_project_num",
+    "nih_appl_id"
+  ],
+  "licence_note": "RePORTER's FAQ answers 'Is the data copyrighted?' with no: it is US federal government data, public domain in the United States (https://reporter.nih.gov/faq). Recorded as public_domain.",
+  "licence_status": "public_domain",
+  "licence_url": "https://reporter.nih.gov/faq",
+  "machine_interface": "REST JSON, POST /v2/projects/search only",
+  "name": "NIH RePORTER v2",
+  "notes": "criteria.project_nums accepts BARE core numbers such as R01EB026995 and returns core_project_num in every row, which is what makes the grant<->work link machine-verified. A looser core-number regex also accepted the Japan AMED id 'JP22fk0210090'; the tightened six-digit serial rule rejects it and the rejected candidate is logged in REPORTER_INDEX.json.",
+  "operator": "US National Institutes of Health",
+  "probe_suite": "scholarly",
+  "rate_policy": "No key documented; used sequentially with small limits (<=50/page, <=6 pages).",
+  "registration_url": null,
+  "robots_summary": "Not applicable: API only.",
+  "robots_url": "https://reporter.nih.gov/robots.txt",
+  "source_id": "nih_reporter",
+  "unlock_route": "",
+  "what_is_new": "The only open grant registry in the source set that resolves a declared grant number to a specific project and echoes core_project_num back. Nine declared NIH cores all resolved; 64 project records captured with full paging (170/170 rows for the queried cores)."
+}

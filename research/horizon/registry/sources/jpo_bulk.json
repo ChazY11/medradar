@@ -1,0 +1,33 @@
+{
+  "access_evidence": "SOURCE_PROBES/patents_unlock: 403 / 9939 B on two distinct JPO pages",
+  "access_state": "BLOCKED_TECHNICAL",
+  "auth_required": true,
+  "blockers": [
+    "403 on every JPO page reached from this host (likely geo/UA filtering)"
+  ],
+  "bulk_available": true,
+  "domain": "www.jpo.go.jp",
+  "entity_types": [
+    "patent_publication"
+  ],
+  "first_verified_at": "2026-11-10",
+  "historical_depth": "JP patents; JPO does publish bulk data under application",
+  "id_schemes": [
+    "jp_application_number"
+  ],
+  "licence_note": "",
+  "licence_status": "unknown",
+  "licence_url": null,
+  "machine_interface": "not reachable from this host",
+  "name": "JPO patent data (Japan)",
+  "notes": "",
+  "operator": "Japan Patent Office",
+  "probe_suite": "patents_unlock",
+  "rate_policy": "",
+  "registration_url": null,
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "jpo_bulk",
+  "unlock_route": "JPO bulk data is requested through the JPO's published application procedure; also reachable via EPO OPS worldwide data with a key.",
+  "what_is_new": "A third patent jurisdiction, blocked at the network edge rather than by policy."
+}
