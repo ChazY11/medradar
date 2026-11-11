@@ -91,7 +91,7 @@ def run(ctx, export_facts, atlas_facts):
                 "us_gtin14_count": len(us14),
                 "overlap": sorted(us14 & ca14)[:20]},
         detail="HORIZON Canadian identifier value lengths=%s"
-               % dict(collections.Counter(len(v) for vals in ca_values.values() for v in vals)),
+               % sorted(collections.Counter(len(v) for vals in ca_values.values() for v in vals).items()),
     ))
 
     # ATLAS GTIN universe vs the HORIZON sample

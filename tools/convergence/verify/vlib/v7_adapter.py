@@ -59,17 +59,16 @@ def _norm(value):
 
 
 def _norm_clock(value):
-    """Absence, date and midnight-UTC are the same instant at day resolution.
+    """Absence, date and midnight are the same instant at day resolution.
 
-    The importer widens a plain date to ``YYYY-MM-DDT00:00:00Z``; that is a
-    representation change, not a value change, and it is counted separately.
+    The importer both widens a plain date to ``YYYY-MM-DDT00:00:00Z`` and narrows
+    a midnight timestamp to ``YYYY-MM-DD``; both are representation changes, not
+    value changes, and they are reported as such.
     """
     text = _norm(value)
     if text is None:
         return None
-    if len(text) >= 19 and text.endswith("Z") and text[11:19] == "00:00:00":
-        return text[:10]
-    if len(text) >= 19 and text[11:19] == "00:00:00" and text[19:25] in ("+00:00", "-00:00"):
+    if len(text) >= 19 and text[11:19] == "00:00:00" and (len(text) == 19 or text[19] in "Z+-"):
         return text[:10]
     return text
 
@@ -121,10 +120,10 @@ def _fidelity(con, records, max_examples=10):
     for row in con.execute(
             "SELECT evidence_id, version, source_id, source_record_id, event_at, source_public_at, "
             "first_observed_at, fetched_at, licence_status, identity_status, quality_flags "
-            "FROM evidence"):
+            "FROM evidence ORDER BY source_id, source_record_id, version"):
         evidence[(row["source_id"], row["source_record_id"])].append(dict(row))
     identifiers = collections.defaultdict(list)
-    for row in con.execute("SELECT evidence_id, version, scheme, value FROM evidence_identifiers"):
+    for row in con.execute("SELECT evidence_id, version, scheme, value FROM evidence_identifiers ORDER BY evidence_id, version, scheme, value"):
         identifiers[(row["evidence_id"], row["version"])].append(
             (row["scheme"], str(row["value"])))
 
@@ -148,8 +147,6 @@ def _fidelity(con, records, max_examples=10):
             # as a multiset rather than by occurrence order
             export_clocks = sorted(tuple(_norm_clock(r.get(c)) for c in CLOCKS) for r in recs)
             got_clocks = sorted(tuple(_norm_clock(v.get(c)) for c in CLOCKS) for v in versions)
-            widened = sum(1 for r in recs for c in CLOCKS
-                          if _norm(r.get(c)) and _norm_clock(r.get(c)) != _norm(r.get(c)))
             if export_clocks != got_clocks:
                 clock_bad.append({"source_id": sid, "source_record_id": record_id,
                                   "export": [dict(zip(CLOCKS, c)) for c in export_clocks][:4],
@@ -235,22 +232,34 @@ def run(ctx, export_facts):
     rejected_snap = os.path.join(snap_dir, "convergence_staging_snapshot_rejected.sqlite")
     digest = _snapshot_digest(snap)
     rejected_digest = _snapshot_digest(rejected_snap)
-    report_path = os.path.join(root, "research", "convergence", "reports",
-                               "integration_conv_smoke_001.json")
-    report = C.read_json(report_path) if os.path.exists(report_path) else None
     expected_records = sum(e["records"] for e in manifest["files"]) - QUARANTINED_RECORDS
+    run_ids = []
+    if digest:
+        _c = _connect(snap)
+        run_ids = [r["run_id"] for r in _c.execute("SELECT run_id FROM conv_runs ORDER BY run_id")]
+        _c.close()
+    report_rel, report = _discover_report(root, run_ids[0] if run_ids else None)
 
     # ------------------------------------------------ manifest digest integrity
     actual_manifest = C.sha256_file(os.path.join(ctx["export_dir"], "MANIFEST.json"))
-    recorded = report.get("integrity", {}).get("manifest_sha256") if report else None
-    checks.append(C.compare(
-        "v7.manifest_digest", group,
-        "The adapter records the manifest digest it actually consumed",
-        "conv report integrity.manifest_sha256 must be the digest of MANIFEST.json.",
-        "research/convergence/reports/integration_conv_smoke_001.json integrity",
-        expected=actual_manifest, actual=recorded,
-        detail="integration snapshot digest=%s" % digest,
-    ))
+    recorded = report.get("run", {}).get("manifest_sha256") if report else None
+    if report is None:
+        checks.append(C.unverifiable(
+            "v7.manifest_digest", group,
+            "The adapter records the manifest digest it actually consumed",
+            "conv report integrity.manifest_sha256 must be the digest of MANIFEST.json.",
+            "research/convergence/reports/integration_*.json",
+            "no integration report matches the snapshot's run id",
+            expected=actual_manifest, actual=None))
+    else:
+        checks.append(C.compare(
+            "v7.manifest_digest", group,
+            "The adapter records the manifest digest it actually consumed",
+            "conv report integrity.manifest_sha256 must be the digest of MANIFEST.json.",
+            "%s run.manifest_sha256" % report_rel,
+            expected=actual_manifest, actual=recorded,
+            detail="integration snapshot digest=%s; report=%s" % (digest, report_rel),
+        ))
 
     if digest is None:
         checks.append(C.unverifiable(
@@ -260,17 +269,17 @@ def run(ctx, export_facts):
         return checks, {}
 
     con = _connect(snap)
-    runs = [dict(r) for r in con.execute("SELECT * FROM conv_runs")]
+    runs = [dict(r) for r in con.execute("SELECT * FROM conv_runs ORDER BY run_id")]
     evidence_rows = con.execute("SELECT COUNT(*) FROM evidence").fetchone()[0]
     head_rows = con.execute("SELECT COUNT(*) FROM evidence_head").fetchone()[0]
     version_rows = con.execute("SELECT COUNT(*) FROM evidence WHERE version>1").fetchone()[0]
     conversions = {r["status"]: r["n"] for r in con.execute(
-        "SELECT status, COUNT(*) n FROM conv_conversions GROUP BY 1")}
+        "SELECT status, COUNT(*) n FROM conv_conversions GROUP BY 1 ORDER BY 1")}
     reasons = {r["reason"]: r["n"] for r in con.execute(
         "SELECT reason, COUNT(*) n FROM conv_conversions GROUP BY 1 ORDER BY 2 DESC")}
     rejections = con.execute("SELECT COUNT(*) FROM conv_rejections").fetchone()[0]
     relations = {r["relation_type"]: r["n"] for r in con.execute(
-        "SELECT relation_type, COUNT(*) n FROM entity_relations GROUP BY 1")}
+        "SELECT relation_type, COUNT(*) n FROM entity_relations GROUP BY 1 ORDER BY 1")}
     rejected_total = sum(r.get("rejected") or 0 for r in runs)
 
     checks.append(C.Check(
@@ -305,7 +314,7 @@ def run(ctx, export_facts):
     # the earlier all-reject state, kept as evidence rather than as the current verdict
     if rejected_digest:
         rcon = _connect(rejected_snap)
-        r_runs = [dict(r) for r in rcon.execute("SELECT * FROM conv_runs")]
+        r_runs = [dict(r) for r in rcon.execute("SELECT * FROM conv_runs ORDER BY run_id")]
         r_evidence = rcon.execute("SELECT COUNT(*) FROM evidence").fetchone()[0]
         r_rejections = rcon.execute("SELECT COUNT(*) FROM conv_rejections").fetchone()[0]
         rcon.close()
@@ -386,7 +395,7 @@ def run(ctx, export_facts):
             actual={"upgrades": fidelity["n_identity_upgrades"],
                     "examples": fidelity["identity_upgrades"],
                     "import_identity_status": {r["identity_status"]: r["n"] for r in con.execute(
-                        "SELECT identity_status, COUNT(*) n FROM evidence GROUP BY 1")}},
+                        "SELECT identity_status, COUNT(*) n FROM evidence GROUP BY 1 ORDER BY 1")}},
             detail="HORIZON records with identity_status=CONFIRMED are source-asserted entity "
                    "identities; the importer maps all of them to not_attempted, which is a "
                    "downgrade of the label and a loss of the source's own assertion",
@@ -414,7 +423,7 @@ def run(ctx, export_facts):
                                          "staging database",
                                          "the frozen snapshot holds no evidence rows"))
 
-    # ------------------------------------------- report arithmetic (smoke run)
+    # ----------------------------------------- report arithmetic (current run)
     if report:
         imp = report.get("import", {})
         run_block = report.get("run", {})
@@ -424,13 +433,13 @@ def run(ctx, export_facts):
             "v7.smoke_report_internal_consistency", group,
             "The import report states one set of run counters",
             "A report whose own blocks disagree cannot support any downstream number.",
-            "research/convergence/reports/integration_conv_smoke_001.json import vs run",
+            "%s import vs run" % report_rel,
             C.PASS if consistent else C.FAIL,
             expected={"seen": expected_records},
             actual={"import_block": {k: imp.get(k) for k in ("seen", "converted", "degraded", "rejected")},
                     "run_block": {k: run_block.get(k) for k in ("records_seen", "converted", "degraded", "rejected")}},
-            detail="the difference is exactly the record-identity collisions: the two blocks count "
-                   "different units (records vs distinct evidence identities) under the same names",
+            detail="the two blocks must count the same unit; a 62-record gap would be the "
+                   "record-identity collision counted twice under one name",
         ))
         checks.append(C.compare(
             "v7.smoke_report_seen", group,
@@ -460,24 +469,33 @@ def run(ctx, export_facts):
             expected=[], actual=diff,
             evidence={"recomputed": recomputed_ids, "claimed": claimed_ids},
         ))
-        dist = collections.Counter()
         per_source_licence = {p["source_id"]: p["licence_status"] for p in manifest["per_source"]}
+        dist_versions = collections.Counter()   # one count per record
+        dist_ids = collections.Counter()        # one count per distinct record identity
         for entry in manifest["files"]:
             sid = entry["source_id"]
             rows = records.get(sid)
             if rows is None:
                 continue
             triples = {(r.get("source_id"), r.get("entity_type"), r.get("source_record_id")) for r in rows}
-            dist[per_source_licence[sid]] += len(triples)
+            dist_versions[per_source_licence[sid]] += len(rows)
+            dist_ids[per_source_licence[sid]] += len(triples)
         claimed_dist = report.get("stats", {}).get("conv_licence_status", {})
-        ldiff = [{"status": k, "report": claimed_dist.get(k), "recomputed": v}
-                 for k, v in dist.items() if claimed_dist.get(k) != v]
-        checks.append(C.compare(
+        as_versions = claimed_dist == dict(dist_versions)
+        as_identities = claimed_dist == dict(dist_ids)
+        checks.append(C.Check(
             "v7.smoke_report_licence_distribution", group,
             "The imported licence distribution preserves the export's licences",
             "No record may change licence class on import (no 'restricted' may become 'open').",
-            "report stats.conv_licence_status", expected=[], actual=ldiff,
-            evidence={"recomputed": dict(dist), "claimed": claimed_dist},
+            "%s stats.conv_licence_status" % report_rel,
+            C.PASS if (as_versions or as_identities) else C.FAIL,
+            expected={"per_record": dict(dist_versions), "per_identity": dict(dist_ids)},
+            actual=claimed_dist,
+            detail="report counts %s (sum %s); per-record total is %s and per-identity total is %s"
+                   % ("records" if as_versions else ("identities" if as_identities else "neither unit"),
+                      sum(claimed_dist.values()), sum(dist_versions.values()), sum(dist_ids.values())),
+            evidence={"claimed": claimed_dist, "per_record": dict(dist_versions),
+                      "per_identity": dict(dist_ids)},
         ))
     else:
         for check_id, title in (
@@ -487,7 +505,8 @@ def run(ctx, export_facts):
             ("v7.smoke_report_licence_distribution", "The imported licence distribution is preserved"),
         ):
             checks.append(C.unverifiable(check_id, group, title, "import report",
-                                         report_path, "report not present"))
+                                         "research/convergence/reports/integration_*.json",
+                                         "no integration report matches the snapshot's run id"))
 
     # ---------------------------------------- record-identity collisions upstream
     collisions = []
@@ -527,15 +546,59 @@ def run(ctx, export_facts):
 
     # -------------------------------------------------------- SAME_WORK pairs
     pairs, dois = _same_work_pairs(records)
-    claimed = (report or {}).get("graph", {}).get("authoritative_links", {}).get("created")
-    checks.append(C.compare(
-        "v7.same_work_recompute", group,
-        "Cross-source DOI pairs recompute to the claimed SAME_WORK relation count",
-        "The graph adds 672 SAME_WORK relations from 672 cross-source DOI matches.",
-        "report graph.authoritative_links", expected=claimed, actual=pairs,
-        detail="recomputed on %d shared DOI values across sources" % dois,
-        evidence={"cross_source_dois": dois},
-    ))
+    db_relations = relations.get("SAME_WORK")
+    if report is None:
+        checks.append(C.unverifiable(
+            "v7.same_work_recompute", group,
+            "Cross-source DOI pairs recompute to the graph's SAME_WORK count",
+            "Every SAME_WORK relation must come from a DOI shared across two sources.",
+            "staging entity_relations", "no integration report matches the snapshot run",
+            expected=db_relations, actual=pairs))
+    else:
+        claimed = report.get("graph", {}).get("authoritative_links", {}).get("created")
+        checks.append(C.compare(
+            "v7.same_work_recompute", group,
+            "Cross-source DOI pairs recompute to the graph's SAME_WORK count",
+            "Every SAME_WORK relation must come from a DOI shared across two sources.",
+            "%s graph.authoritative_links" % report_rel, expected=claimed, actual=pairs,
+            detail="recomputed from %d DOI values that occur in more than one source; the "
+                   "database holds %s SAME_WORK relations" % (dois, db_relations),
+            evidence={"cross_source_dois": dois, "db_same_work": db_relations},
+        ))
+        stats = report.get("stats", {})
+        db_counts = {
+            "evidence_ids": head_rows,
+            "evidence_versions": evidence_rows,
+            "relations_total": sum(relations.values()),
+            "relations_confirmed": con.execute(
+                "SELECT COUNT(*) FROM entity_relations WHERE status='CONFIRMED'").fetchone()[0],
+            "relations_by_status": {r["status"]: r["n"] for r in con.execute(
+                "SELECT status, COUNT(*) n FROM entity_relations GROUP BY 1 ORDER BY 1")},
+        }
+        mism = [{"field": k, "report": stats.get(k), "db": v}
+                for k, v in db_counts.items() if stats.get(k) != v]
+        checks.append(C.compare(
+            "v7.report_matches_db", group,
+            "The published run report describes the database it claims to describe",
+            "report stats.* must equal the staged database counts.",
+            "%s stats vs frozen snapshot" % report_rel, expected=[], actual=mism,
+            evidence={"report": {k: stats.get(k) for k in db_counts}, "db": db_counts},
+        ))
+        checks.append(C.Check(
+            "v7.relation_status_semantics", group,
+            "A CONFIRMED relation is only ever a source-asserted link, never a device identity",
+            "The integration store must not claim device identity; ATLAS's 934 is not carried over.",
+            "%s stats.relations_confirmed / staging entity_relations" % report_rel,
+            C.PASS if "SAME_DEVICE_IDENTITY" not in relations else C.FAIL,
+            expected={"relation_types": ["SAME_WORK"], "device_identity_relations": 0},
+            actual={"relation_types": sorted(relations),
+                    "confirmed_relations": db_counts["relations_confirmed"],
+                    "evidence_relation_status": {r["relation_status"]: r["n"] for r in con.execute(
+                        "SELECT relation_status, COUNT(*) n FROM evidence GROUP BY 1 ORDER BY 1")}},
+            detail="SAME_WORK confirmed is a bibliographic identity (same DOI), not a device "
+                   "identity; note that a reader who only reads 'relations_confirmed' could "
+                   "mistake it for device-identity confirmation",
+        ))
 
     # ------------------------------------------------------------ not verifiable
     for check_id, title, why in (

@@ -15,18 +15,17 @@ Reference implementation: `medradar/integration/demo.py`.
 
 <!-- convergence:numbers
 c5_cited_items=134
-c5_uncited_items=0
--->
+c5_uncited_items=0-->
 
 ## What the graph contains
 
 | layer | count | grade |
 |---|---|---|
-evidence records (distinct) | 5,822 | observed fact |
+evidence records (distinct) | 5,884 | observed fact |
 evidence versions | 5,884 | append-only |
 cross-source identity relations | 672 | `AUTHORITATIVE_ID_MATCH` (shared DOI) |
 company attribution links | 2,101 | `SOURCE_ASSERTED_RELATION` |
-identity-carrying records | 5,822 all `not_attempted` | unresolved by design |
+identity-carrying records | 5,884 all `not_attempted` | unresolved by design |
 
 Identity relations are only ever created from a **shared official identifier in
 the same namespace across two different sources** (672 × `SAME_WORK` via DOI).

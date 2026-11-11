@@ -98,7 +98,7 @@ def run(ctx):
     con.row_factory = sqlite3.Row
 
     rels = con.execute(
-        "SELECT * FROM entity_relations WHERE relation_type=?", (REL_TYPE,)
+        "SELECT * FROM entity_relations WHERE relation_type=? ORDER BY relation_id", (REL_TYPE,)
     ).fetchall()
     bases = [json.loads(r["basis_json"]) for r in rels]
     shared = [b.get("shared_identifier") for b in bases]
@@ -269,7 +269,7 @@ def run(ctx):
     # ------------------------------------------------ evidence id / hash recompute
     ev_rows = con.execute(
         "SELECT evidence_id, version, content_hash, evidence_type, source_id, source_record_id, "
-        "canonical_key, payload_json FROM evidence").fetchall()
+        "canonical_key, payload_json FROM evidence ORDER BY evidence_id, version").fetchall()
     id_bad = []
     hash_bad = []
     key_bad = []

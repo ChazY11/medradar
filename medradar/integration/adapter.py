@@ -110,6 +110,7 @@ class HorizonToAtlasAdapter:
         run_id: str = "",
         import_started_at: str | None = None,
         raw_line: bytes | None = None,
+        record_discriminator: str = "",
     ) -> ConversionResult:
         """Convert one HORIZON record into one ATLAS evidence record.
 
@@ -117,6 +118,18 @@ class HorizonToAtlasAdapter:
         the record bind to the upstream file content rather than to a re-serialised
         copy.  ``import_started_at`` is used only as a fetch-clock fallback and is
         recorded as such.
+
+        ``record_discriminator`` exists because ``source_record_id`` is **not**
+        unique within a source: an FDA PMA number covers several supplements and an
+        establishment registration number covers several establishment types, each
+        a distinct record with a distinct content hash.  ATLAS derives the evidence
+        id from ``(source, record_type, source_record_id)``; without a
+        discriminator those distinct records would collapse into versions of one
+        record and silently disappear from ``evidence_head``.  When the importer
+        detects such a collision it passes a stable content-derived discriminator,
+        which is appended to the id *basis* only — the stored
+        ``source_record_id`` stays exactly what the source said, and the original
+        remains in provenance.
         """
         run_started = import_started_at or utc_iso()
         source_id = str(record.get("source_id") or "")
@@ -276,6 +289,19 @@ class HorizonToAtlasAdapter:
                 "source_entity_type": entity_type,
             }
         )
+
+        if record_discriminator:
+            # Distinct records share a source_record_id; keep both, with a
+            # deterministic id basis that includes the content discriminator.
+            evidence["evidence_id"] = atlas_schema.deterministic_id(
+                "ev",
+                source_id,
+                evidence_type,
+                f"{source_record_id}#{record_discriminator}",
+            )
+            evidence["provenance"]["source_record_id_original"] = source_record_id
+            evidence["provenance"]["record_identity_disambiguator"] = record_discriminator
+            evidence["provenance"]["record_identity_disambiguated"] = True
 
         problems = atlas_schema.validate_evidence(evidence)
         if problems:

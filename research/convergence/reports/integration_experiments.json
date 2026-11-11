@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-10T19:56:01.201184Z",
+ "generated_at": "2026-11-11T16:16:22.700466Z",
  "contract": {
   "id": "medradar.convergence.evidence.v1",
   "version": "1.0.0"
@@ -43,14 +43,14 @@
   ]
  },
  "run": {
-  "run_id": "audit_repro",
+  "run_id": "final_002",
   "export_id": "horizon-2026-11-10",
   "manifest_sha256": "eaa1cbf5e49db90ba39f938be759c5df3581f4fbbe135cfcd5455622ff6e4d4d",
   "contract_version": "medradar.convergence.evidence.v1@1.0.0",
   "mapping_version": "1.0.0+adapter.1",
   "policy_id": "medradar.licence_policy.v1",
-  "started_at": "2026-11-10T19:55:21.042236Z",
-  "finished_at": "2026-11-10T19:56:00.732672Z",
+  "started_at": "2026-11-11T16:12:58.931139Z",
+  "finished_at": "2026-11-11T16:13:37.553755Z",
   "status": "complete",
   "records_seen": 5884,
   "converted": 966,
@@ -125,9 +125,9 @@
   "gtin14_promotions": 0,
   "gtin14_shaped_but_invalid": 0,
   "licence_status_transitions": {
-   "public_domain->public_domain": 827,
+   "public_domain->public_domain": 888,
    "open_no_explicit_licence->open_no_explicit_licence": 1104,
-   "open_licence->open_licence": 3891
+   "open_licence->open_licence": 3892
   },
   "identity_resolution_on_import": {
    "not_attempted": 5884
@@ -151,17 +151,17 @@
   "experiment": "EXP-C3",
   "question": "Are duplicates separated by layer without deleting real records?",
   "records_read": 5884,
-  "distinct_evidence_ids": 5822,
+  "distinct_evidence_ids": 5884,
   "evidence_versions": 5884,
   "repeat_observations_of_same_record": 62,
-  "duplicate_evidence_versions_retained": 62,
+  "duplicate_evidence_versions_retained": 0,
   "layer_1_record_identity": {
-   "distinct_records": 5822,
-   "duplicate_fetches_collapsed_by_versioning": 62,
-   "note": "Same (source, record) emitted more than once by the export; ATLAS appends a version rather than a second record, and the staging log keeps every occurrence."
+   "distinct_records": 5884,
+   "duplicate_fetches_collapsed_by_versioning": 0,
+   "note": "Records that share a source_record_id but differ in content (PMA supplements, establishment types) are given a deterministic content-derived id discriminator, so they survive as distinct evidence records instead of collapsing into versions of one."
   },
   "layer_2_entity_identity": {
-   "scholarly_publication_records": 307,
+   "scholarly_publication_records": 308,
    "distinct_doi_keys": 60,
    "works_seen_by_multiple_aggregators": 60,
    "max_aggregators_for_one_work": 6,
@@ -188,26 +188,26 @@
  "EXP-C4": {
   "experiment": "EXP-C4",
   "question": "Which records can support a historical claim, and with which clock?",
-  "records": 5822,
+  "records": 5884,
   "clock_availability": {
-   "event_at": 4191,
-   "source_public_at": 3563,
+   "event_at": 4219,
+   "source_public_at": 3564,
    "first_observed_at": 4490,
-   "fetched_at": 5822,
-   "pct_source_public_at": 61.2,
-   "pct_first_observed_at": 77.12
+   "fetched_at": 5884,
+   "pct_source_public_at": 60.57,
+   "pct_first_observed_at": 76.31
   },
   "clock_relations": {
    "public_only": 1484,
-   "event_equals_public": 370,
-   "event_only": 2112,
+   "event_equals_public": 371,
+   "event_only": 2139,
    "event_before_public": 1619,
    "public_before_event": 90,
-   "no_dates": 147
+   "no_dates": 181
   },
-  "event_equals_public_rate_pct": 6.36,
+  "event_equals_public_rate_pct": 6.31,
   "public_before_event": 90,
-  "cross_source_publication_date_conflicts": 51,
+  "cross_source_publication_date_conflicts": 52,
   "cross_source_conflict_sample": {
    "10.1016/j.yrtph.2021.104987": [
     "2021-07-03",
@@ -253,9 +253,9 @@
     "2022-01-18"
    ]
   },
-  "records_usable_for_lead_time": 1989,
-  "records_not_usable_for_historical_analysis": 3833,
-  "records_without_first_observation": 1332,
+  "records_usable_for_lead_time": 1990,
+  "records_not_usable_for_historical_analysis": 3894,
+  "records_without_first_observation": 1394,
   "per_source_clock_presence": {
    "accessgudid": {
     "missing_event_at": 320,
@@ -334,10 +334,10 @@
     "missing_event_at": 8
    },
    "openaire": {
-    "event_at": 58,
-    "source_public_at": 58,
-    "missing_first_observed_at": 58,
-    "fetched_at": 58
+    "event_at": 59,
+    "source_public_at": 59,
+    "missing_first_observed_at": 59,
+    "fetched_at": 59
    },
    "openalex": {
     "event_at": 60,
@@ -358,16 +358,16 @@
     "fetched_at": 60
    },
    "openfda_device_pma": {
-    "event_at": 33,
-    "missing_source_public_at": 33,
-    "missing_first_observed_at": 33,
-    "fetched_at": 33
+    "event_at": 60,
+    "missing_source_public_at": 60,
+    "missing_first_observed_at": 60,
+    "fetched_at": 60
    },
    "openfda_device_registrationlisting": {
-    "missing_event_at": 26,
-    "missing_source_public_at": 26,
-    "missing_first_observed_at": 26,
-    "fetched_at": 26
+    "missing_event_at": 60,
+    "missing_source_public_at": 60,
+    "missing_first_observed_at": 60,
+    "fetched_at": 60
    },
    "pubmed_eutils": {
     "event_at": 37,
@@ -408,10 +408,10 @@
   "experiment": "EXP-C5",
   "question": "Can the whole pipeline run from a clean checkout and reproduce?",
   "reproduce_command": "python tools/convergence/run_integration.py --fresh && python tools/convergence/run_experiments.py",
-  "query_render_seconds": 0.511,
-  "staging_db_bytes": 60928000,
-  "staging_db_mb": 60.93,
-  "query_result_sha256": "8e4033f775b39ad2b2ab471dfdaf72e486e09b22a70e95777103b6d98c6f1f01",
+  "query_render_seconds": 0.674,
+  "staging_db_bytes": 60960768,
+  "staging_db_mb": 60.96,
+  "query_result_sha256": "96f0bef75c7e0945e51f0aaef4a1719e776efc705fd56678f105ae230a908e91",
   "cited_items": 134,
   "uncited_items": 0,
   "network_used": false,

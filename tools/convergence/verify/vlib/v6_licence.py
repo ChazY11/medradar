@@ -64,6 +64,7 @@ def run(ctx, export_facts):
                 path = os.path.join(base, name)
                 hits.append({"path": os.path.join(rel_base, name).lstrip("./"),
                              "bytes": os.path.getsize(path)})
+    hits.sort(key=lambda h: h["path"])
     payload_like = [h for h in hits if h["path"].lower().endswith((".jsonl", ".csv", ".tsv", ".zip", ".gz"))]
     checks.append(C.compare(
         "v6.no_comtrade_payload_file", "V6",

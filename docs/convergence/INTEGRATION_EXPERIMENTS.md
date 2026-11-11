@@ -29,18 +29,17 @@ c2_mdall_gtin14_valid=0
 c2_gudid_udi_di=320
 c2_overlap=0
 c2_confirmed_cross_border=0
-c3_distinct_evidence=5822
+c3_distinct_evidence=5884
 c3_evidence_versions=5884
 c3_repeat_observations=62
-c4_records=5822
-c4_usable_for_lead_time=1989
-c4_not_usable=3833
-c4_without_first_observation=1332
+c4_records=5884
+c4_usable_for_lead_time=1990
+c4_not_usable=3894
+c4_without_first_observation=1394
 c4_public_before_event=90
-c4_date_conflicts=51
+c4_date_conflicts=52
 c5_cited_items=134
-c5_uncited_items=0
--->
+c5_uncited_items=0-->
 
 ---
 
@@ -123,17 +122,19 @@ does not carry that table.
 | layer | measurement |
 |---|---|
 | records read | 5,884 |
-| distinct evidence ids | 5,822 |
+| distinct evidence ids | 5,884 |
 | evidence versions appended | 5,884 |
 | **repeat observations of the same record** | **62** |
 
-**Layer 1 — record identity.** 62 records are emitted more than once by the export
-(the same PMA/establishment record collected once per firm slice). ATLAS appends a
-*version* rather than a second record, and the staging log keeps **every
-occurrence** (`occurrence` 1…n), so neither the duplicate nor its provenance is
-lost. This also means HORIZON's manifest record count is **62 higher** than the
-number of distinct underlying records — a real data-quality finding, not a
-conversion artefact.
+**Layer 1 — record identity.** 89 records share a `source_record_id` with another
+record but are genuinely different records (an FDA PMA number carries several
+supplements; an establishment registration number carries several establishment
+types), each with its own content hash. The importer detects the collision and
+gives each a deterministic content-derived id discriminator, so all **89 survive as
+distinct evidence records** instead of collapsing into versions of one. The stored
+`source_record_id` is unchanged and the original is kept in provenance. Without
+this, 62 records would have silently disappeared from `evidence_head` — a defect
+the independent verifier caught in the first revision of the adapter.
 
 **Layer 2 — entity identity.** 307 scholarly publication records collapse to
 **60 distinct DOI keys**; all 60 are seen by more than one aggregator, one DOI by
@@ -166,7 +167,7 @@ siblings, so family grouping is measured but not exercised.
 | `event_at` | 4,191 | 72.0% |
 | `source_public_at` | 3,563 | 61.2% |
 | `first_observed_at` | 4,490 | 77.1% |
-| `fetched_at` | 5,822 | 100% |
+| `fetched_at` | 5,884 | 100% |
 
 | clock relation | records |
 |---|---|
@@ -178,12 +179,12 @@ siblings, so family grouping is measured but not exercised.
 | no dates | 147 |
 
 - **Usable for a lead-time claim** (event clock *and* day-quality publication
-  clock): **1,989** records (34.2%).
-- **Not usable for historical analysis**: **3,833** (65.8%).
-- **No observation clock at all**: **1,332** — these can never be counted as
+  clock): **1,990** records (34.2%).
+- **Not usable for historical analysis**: **3,894** (65.8%).
+- **No observation clock at all**: **1,394** — these can never be counted as
   "observed by" any date, which is why `as_of` queries never use `event_at` as a
   substitute.
-- **Cross-source publication-date conflicts**: **51** DOIs carry different
+- **Cross-source publication-date conflicts**: **52** DOIs carry different
   `source_public_at` values from different aggregators (e.g. `2021-07-03` vs
   `2021-10-01`). Both assertions are preserved; the integration does **not** pick
   the earlier one, because picking the earliest date manufactures lead time.

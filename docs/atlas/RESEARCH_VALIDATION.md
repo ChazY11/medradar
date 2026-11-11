@@ -25,7 +25,7 @@ limit — this evaluation says nothing about devices that lack a shared UDI.
 
 | Source | Sample |
 |---|---|
-| openFDA UDI | 500 company-page records (100 per target firm) + 8 additional records resolved during the bridge = 508 unique U.S. records |
+| openFDA UDI | 500 company-page records (100 per target firm) + 940 additional records added by the bridge run = **1,440 unique U.S. records** (corrected during CONVERGENCE-001; the earlier text said "8 additional / 508", which understated the bridge by 932 records) |
 | AccessGUDID | 12 re-reads; all 12 were duplicates of the openFDA records (same GUDID upstream) |
 | openFDA 510(k) | 250 clearances, 50 per firm |
 | MDALL | active identifier table downloaded once (219,970,233 bytes, 1,673,926 rows); 5,512 rows normalise to a 14-digit DI; 5,005 unique DI values; 40 licences + 40 companies detailed |

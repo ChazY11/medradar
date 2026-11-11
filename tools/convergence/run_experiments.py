@@ -264,9 +264,10 @@ def exp_c3(store: ConvergenceStore) -> dict:
             "distinct_records": len(head),
             "duplicate_fetches_collapsed_by_versioning": versions["n"] - versions["d"],
             "note": (
-                "Same (source, record) emitted more than once by the export; ATLAS "
-                "appends a version rather than a second record, and the staging log "
-                "keeps every occurrence."
+                "Records that share a source_record_id but differ in content (PMA "
+                "supplements, establishment types) are given a deterministic "
+                "content-derived id discriminator, so they survive as distinct "
+                "evidence records instead of collapsing into versions of one."
             ),
         },
         "layer_2_entity_identity": {

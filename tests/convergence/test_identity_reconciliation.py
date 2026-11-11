@@ -383,7 +383,10 @@ def test_horizon_identifier_semantics_claim_is_overgeneral_in_its_universal_form
 def test_unified_sample_is_one_frozen_table_with_no_record_overlap() -> None:
     results = json.loads((ID / "UNIFIED_SAMPLE_RESULTS.json").read_text(encoding="utf-8"))
     sample_path = ID / "UNIFIED_SAMPLE.jsonl"
-    assert sha256_file(sample_path) == results["sample"]["sha256"]
+    # Hash the committed content with newlines normalised, so a Windows CRLF
+    # checkout and a Linux LF checkout agree with the frozen digest.
+    sample_bytes = sample_path.read_bytes().replace(b"\r\n", b"\n")
+    assert hashlib.sha256(sample_bytes).hexdigest() == results["sample"]["sha256"]
     rows = [json.loads(line) for line in sample_path.read_text(encoding="utf-8").splitlines()
             if line]
     assert len(rows) == 1660 == results["sample"]["rows"]

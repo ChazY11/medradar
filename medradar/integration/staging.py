@@ -20,6 +20,7 @@ database.  They are additive; the ATLAS tables are untouched by them.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sqlite3
 from pathlib import Path
@@ -206,6 +207,14 @@ class ConvergenceStore:
                 " WHERE run_id=?",
                 (run_id, run_id, run_id, run_id, run_id),
             )
+            # A run that rejected everything must not be recorded as a success:
+            # "complete" would let a fully blocked import look like an empty corpus.
+            conn.execute(
+                "UPDATE conv_runs SET status='failed'"
+                " WHERE run_id=? AND records_seen>0 AND rejected=records_seen"
+                " AND status='complete'",
+                (run_id,),
+            )
         return self.run_summary(run_id)
 
     def run_summary(self, run_id: str) -> dict[str, Any]:
@@ -235,19 +244,38 @@ class ConvergenceStore:
             "evidence_noop": 0,
             "evidence_rows_appended": 0,
             "repeat_observations": 0,
+            "disambiguated_records": 0,
             "conflicts": 0,
         }
         line_iter = iter(raw_lines) if raw_lines is not None else None
         occurrences: dict[tuple[str, str], int] = {}
+
+        # Pre-scan for source_record_ids that occur more than once in this batch.
+        # Those are distinct records that happen to share an id (PMA supplements,
+        # establishment types), so each needs a content-derived id discriminator or
+        # they collapse into versions of one record.
+        repeat_ids: dict[tuple[str, str], int] = {}
+        for record in records:
+            key = (str(record.get("source_id") or ""), str(record.get("source_record_id") or ""))
+            repeat_ids[key] = repeat_ids.get(key, 0) + 1
+
         for record in records:
             summary["seen"] += 1
             raw_line = next(line_iter) if line_iter is not None else None
-            result = adapter.adapt(record, run_id=run_id, raw_line=raw_line)
-            key = (result.source_id, result.source_record_id)
+            key = (str(record.get("source_id") or ""), str(record.get("source_record_id") or ""))
+            discriminator = ""
+            if repeat_ids.get(key, 0) > 1:
+                basis = str(record.get("content_hash") or "") or _json(dict(record))
+                discriminator = hashlib.sha256(basis.encode("utf-8")).hexdigest()[:8]
+            result = adapter.adapt(
+                record, run_id=run_id, raw_line=raw_line, record_discriminator=discriminator
+            )
             occurrences[key] = occurrences.get(key, 0) + 1
             occurrence = occurrences[key]
             if occurrence > 1:
                 summary["repeat_observations"] += 1
+            if discriminator:
+                summary["disambiguated_records"] += 1
             self.record_conversion(
                 run_id, result, raw_record=record, occurrence=occurrence
             )

@@ -1530,7 +1530,7 @@
       "check_id": "v4.gtin_namespace_overlap",
       "claim": "A GTIN-14 equality is the only possible keyless bridge; HORIZON's MDALL slice must contain such values for S4 to be able to fire.",
       "claim_source": "task brief; EXP_H2_SELECTION_RULE.md:38 (S4)",
-      "detail": "HORIZON Canadian identifier value lengths={4: 7, 5: 50, 6: 53, 7: 15, 13: 47, 10: 2}",
+      "detail": "HORIZON Canadian identifier value lengths=[(4, 7), (5, 50), (6, 53), (7, 15), (10, 2), (13, 47)]",
       "evidence": {},
       "expected": {
         "ca_gtin14_values": []
@@ -2517,7 +2517,7 @@
       "check_id": "v6.content_scan",
       "claim": "Quarantine must be content-level, not filename-level.",
       "claim_source": "task brief V6",
-      "detail": "scanned 1823 text files for 4 payload-distinctive tokens ({\"content_hash_of_first_record\": \"38de14302506287ed0168168f478b0568cb203501687fef7ce5ee88d9da89be8\", \"source_record_id_of_first_record\": \"comtrade:A:156:0:9018:M:2015\", \"numeric_payload_tokens\": 2}); verifier output directory excluded for reproducibility",
+      "detail": "scanned 1799 text files for 4 payload-distinctive tokens ({\"content_hash_of_first_record\": \"38de14302506287ed0168168f478b0568cb203501687fef7ce5ee88d9da89be8\", \"source_record_id_of_first_record\": \"comtrade:A:156:0:9018:M:2015\", \"numeric_payload_tokens\": 2}); verifier output directory excluded for reproducibility",
       "evidence": {},
       "expected": [],
       "group": "V6",
@@ -2553,7 +2553,7 @@
       "claim_source": "git ls-files",
       "detail": "tracked comtrade paths: [\"research/horizon/CONNECTORS/industry/un_comtrade.py\", \"research/horizon/DATASETS/industry/un_comtrade/PROVENANCE.json\", \"research/horizon/DATASETS/industry/un_comtrade/raw/comtrade_license.html\", \"research/horizon/DATASETS/industry/un_comtrade/raw/terms_of_use.html\", \"research/horizon/registry/sources/un_comtrade.json\"]",
       "evidence": {
-        "tracked_files": 1864
+        "tracked_files": 1949
       },
       "expected": [],
       "group": "V6",
@@ -2693,7 +2693,7 @@
       "check_id": "v7.atlas_bridge_carried",
       "claim": "task brief V7",
       "claim_source": "staging database",
-      "detail": "staging entity_relations holds only SAME_WORK; the ATLAS bridge was not imported",
+      "detail": "staging entity_relations holds only {\"SAME_WORK\": 672}; the ATLAS bridge was not imported",
       "evidence": {},
       "expected": null,
       "group": "V7",
@@ -2701,23 +2701,51 @@
       "title": "ATLAS's 934 confirmed relations are carried into the store"
     },
     {
-      "actual": null,
-      "check_id": "v7.clocks_preserved",
-      "claim": "task brief V7",
-      "claim_source": "staging database",
-      "detail": "the frozen snapshot holds no evidence rows, so per-record clock equality cannot be tested; re-run after a successful import",
+      "actual": {
+        "distinct_export_record_identities": 5822,
+        "evidence_identities": 5822,
+        "evidence_versions": 5884,
+        "invented": 0,
+        "missing": 0
+      },
+      "check_id": "v7.coverage_one_to_one",
+      "claim": "Import must be a bijection on records modulo the declared identity collapse.",
+      "claim_source": "staging evidence vs frozen export",
+      "detail": "27 collapsed identities hold more than one version: {\"openaire|doi_dedup___::90ba59cc7e0817fa3e9f73f46414d01a\": 2, \"openfda_device_pma|P010031\": 3, \"openfda_device_pma|P080006\": 2, \"openfda_device_pma|P080025\": 3, \"openfda_device_pma|P090013\": 3, \"openfda_device_pma|P100021\": 3, \"openfda_device_pma|P110023\": 2, \"openfda_device_pma|P160028\": 2, \"openfda_device_pma|P160029\": 2, \"openfda_device_pma|P790017\": 2}",
       "evidence": {},
-      "expected": null,
+      "expected": {
+        "evidence_versions": 5884,
+        "invented": 0,
+        "missing": 0
+      },
       "group": "V7",
-      "status": "UNVERIFIABLE",
-      "title": "All four clocks survive import unchanged"
+      "status": "PASS",
+      "title": "Every export record maps to an evidence row and no evidence row is invented"
+    },
+    {
+      "actual": {
+        "compared": 5884,
+        "examples": [],
+        "mismatches": 0
+      },
+      "check_id": "v7.four_clocks_preserved",
+      "claim": "task brief V7: the four clocks must be preserved record by record.",
+      "claim_source": "staging evidence.* vs export record clocks",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "mismatches": 0
+      },
+      "group": "V7",
+      "status": "PASS",
+      "title": "All four clocks survive import with the same values"
     },
     {
       "actual": null,
       "check_id": "v7.idempotency",
       "claim": "task brief V7",
       "claim_source": "staging database",
-      "detail": "the snapshot holds a single run and zero evidence rows; idempotency needs two runs",
+      "detail": "the snapshot holds one run; idempotency needs two completed runs (evidence_noop=[0], versions beyond first=62 are collisions, not re-imports)",
       "evidence": {},
       "expected": null,
       "group": "V7",
@@ -2725,23 +2753,45 @@
       "title": "Importing twice produces no duplicate logical records"
     },
     {
-      "actual": null,
+      "actual": {
+        "examples": [],
+        "mismatches": 0
+      },
       "check_id": "v7.identifiers_preserved",
-      "claim": "task brief V7",
-      "claim_source": "staging database",
-      "detail": "no evidence rows in the frozen snapshot",
+      "claim": "task brief V7: source identifiers must be preserved (scheme names may be renamed).",
+      "claim_source": "staging evidence_identifiers vs export identifiers",
+      "detail": "",
       "evidence": {},
-      "expected": null,
+      "expected": {
+        "mismatches": 0
+      },
       "group": "V7",
-      "status": "UNVERIFIABLE",
-      "title": "Identifier sets survive import unchanged"
+      "status": "PASS",
+      "title": "The identifier value set survives import unchanged"
+    },
+    {
+      "actual": {
+        "examples": [],
+        "upgrades": 0
+      },
+      "check_id": "v7.licence_not_upgraded",
+      "claim": "task brief V7: licence status must not be silently weakened.",
+      "claim_source": "staging evidence.licence_status vs export licence_status",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "upgrades": 0
+      },
+      "group": "V7",
+      "status": "PASS",
+      "title": "No record's licence becomes more permissive on import"
     },
     {
       "actual": "eaa1cbf5e49db90ba39f938be759c5df3581f4fbbe135cfcd5455622ff6e4d4d",
       "check_id": "v7.manifest_digest",
       "claim": "conv report integrity.manifest_sha256 must be the digest of MANIFEST.json.",
-      "claim_source": "research/convergence/reports/integration_conv_smoke_001.json integrity",
-      "detail": "snapshot digest=37f2bc35f080a188c879a0998bb63ec93b720f592383544f1c00567a313f782d",
+      "claim_source": "research/convergence/reports/integration_audit_repro.json run.manifest_sha256",
+      "detail": "integration snapshot digest=7ba3d953b016a26ace7930aeb51e3e311dbb2615165825a9c21f61587374186b; report=research/convergence/reports/integration_audit_repro.json",
       "evidence": {},
       "expected": "eaa1cbf5e49db90ba39f938be759c5df3581f4fbbe135cfcd5455622ff6e4d4d",
       "group": "V7",
@@ -2750,41 +2800,45 @@
     },
     {
       "actual": {
-        "identity_status": {
-          "not_attempted": 5822
+        "examples": [],
+        "import_identity_status": {
+          "not_attempted": 5884
         },
-        "relations_confirmed": 0
+        "upgrades": 0
       },
       "check_id": "v7.no_identity_upgrade",
       "claim": "task brief V7: nothing may be silently promoted from UNKNOWN/candidate to confirmed.",
-      "claim_source": "report stats.conv_identity_status / relations_confirmed",
-      "detail": "HORIZON records are all identity_status=CANDIDATE; the adapter maps them to 'not_attempted', which is a downgrade in name but not an upgrade in claim. NOTE: it also means the ATLAS 934 bridge is not carried across at all.",
+      "claim_source": "staging evidence.identity_status vs export identity_status",
+      "detail": "HORIZON records with identity_status=CONFIRMED are source-asserted entity identities; the importer maps all of them to not_attempted, which is a downgrade of the label and a loss of the source's own assertion",
       "evidence": {},
       "expected": {
-        "identity_status": {
-          "not_attempted": 5822
-        },
-        "relations_confirmed": 0
+        "upgrades": 0
       },
       "group": "V7",
       "status": "PASS",
-      "title": "No record's identity status was upgraded to confirmed on import"
-    },
-    {
-      "actual": null,
-      "check_id": "v7.quality_flags_preserved",
-      "claim": "task brief V7",
-      "claim_source": "staging database",
-      "detail": "no evidence rows in the frozen snapshot",
-      "evidence": {},
-      "expected": null,
-      "group": "V7",
-      "status": "UNVERIFIABLE",
-      "title": "Quality flags survive import unchanged"
+      "title": "No record's identity status was promoted to confirmed on import"
     },
     {
       "actual": {
-        "reported_by_adapter_as_record_identity_duplicates": 62,
+        "examples": [],
+        "records_with_flags_imported_flagless": 0
+      },
+      "check_id": "v7.quality_flags_not_dropped",
+      "claim": "task brief V7: quality flags must be preserved or explicitly degraded.",
+      "claim_source": "staging evidence.quality_flags vs export quality_flags",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "records_with_flags_imported_flagless": 0
+      },
+      "group": "V7",
+      "status": "PASS",
+      "title": "A record that carried quality flags does not arrive with none"
+    },
+    {
+      "actual": {
+        "adapter_as_duplicate_versions": 62,
+        "adapter_head_rows": 5822,
         "sources": [
           {
             "distinct_record_identities": 58,
@@ -2816,7 +2870,7 @@
       "check_id": "v7.record_identity_collisions",
       "claim": "ATLAS evidence_id = f(source_id, evidence_type, source_record_id). If source_record_id is not unique, distinct records silently become versions of one record.",
       "claim_source": "medradar/atlas/evidence/schema.py:105-113 vs HORIZON export",
-      "detail": "the collided rows are not duplicates: e.g. one PMA number carries several supplements (S514/S136/S413/S837) with distinct content hashes, and one registration number carries several establishment-type rows",
+      "detail": "the collided rows are not duplicates: one PMA number carries several supplements (S514/S136/S413/S837) with distinct content hashes, and one registration number carries several establishment-type rows; stored as versions they vanish from evidence_head",
       "evidence": {},
       "expected": {
         "records_sharing_an_id": 0
@@ -2828,34 +2882,11 @@
     {
       "actual": {
         "conv_rejections": 5884,
-        "conv_runs_rejected": 5884
-      },
-      "check_id": "v7.rejections_logged",
-      "claim": "task brief V7: rejected records must be logged.",
-      "claim_source": "conv_rejections vs conv_runs.rejected",
-      "detail": "",
-      "evidence": {},
-      "expected": {
-        "rejections": 5884
-      },
-      "group": "V7",
-      "status": "PASS",
-      "title": "Rejected records are logged with their reason, not dropped"
-    },
-    {
-      "actual": {
-        "conversions": {
-          "rejected": 5884
-        },
-        "evidence_head_rows": 0,
         "evidence_rows": 0,
-        "evidence_versions": 5884,
         "runs": [
           {
             "converted": 0,
-            "degraded": 0,
             "evidence_inserted": 0,
-            "evidence_noop": 0,
             "policy_id": "None",
             "records_seen": 5884,
             "rejected": 5884,
@@ -2864,32 +2895,148 @@
           }
         ]
       },
+      "check_id": "v7.rejected_state_observed",
+      "claim": "A fail-closed policy must abort, not report a successful run that imported nothing.",
+      "claim_source": "archived snapshot research/convergence/verification/snapshots/convergence_staging_snapshot_rejected.sqlite (37f2bc35f080a188c879a0998bb63ec93b720f592383544f1c00567a313f782d)",
+      "detail": "kept because it is a reproducible failure mode of the licence gate: every class was blocked, including public_domain, and the run status was 'complete'",
+      "evidence": {},
+      "expected": {
+        "evidence_rows": 5884
+      },
+      "group": "V7",
+      "status": "FAIL",
+      "title": "A missing licence policy was observed rejecting the entire export as 'complete'"
+    },
+    {
+      "actual": {
+        "conv_rejections": 0,
+        "conv_runs_rejected": 0
+      },
+      "check_id": "v7.rejections_logged",
+      "claim": "task brief V7: rejected records must be logged.",
+      "claim_source": "conv_rejections vs conv_runs.rejected",
+      "detail": "",
+      "evidence": {},
+      "expected": {
+        "rejections": 0
+      },
+      "group": "V7",
+      "status": "PASS",
+      "title": "Rejected records are logged with their reason, not dropped"
+    },
+    {
+      "actual": {
+        "confirmed_relations": 672,
+        "evidence_relation_status": {
+          "asserted_by_source": 228,
+          "candidate": 2000,
+          "none": 3656
+        },
+        "relation_types": [
+          "SAME_WORK"
+        ]
+      },
+      "check_id": "v7.relation_status_semantics",
+      "claim": "The integration store must not claim device identity; ATLAS's 934 is not carried over.",
+      "claim_source": "research/convergence/reports/integration_audit_repro.json stats.relations_confirmed / staging entity_relations",
+      "detail": "SAME_WORK confirmed is a bibliographic identity (same DOI), not a device identity; note that a reader who only reads 'relations_confirmed' could mistake it for device-identity confirmation",
+      "evidence": {},
+      "expected": {
+        "device_identity_relations": 0,
+        "relation_types": [
+          "SAME_WORK"
+        ]
+      },
+      "group": "V7",
+      "status": "PASS",
+      "title": "A CONFIRMED relation is only ever a source-asserted link, never a device identity"
+    },
+    {
+      "actual": [],
+      "check_id": "v7.report_matches_db",
+      "claim": "report stats.* must equal the staged database counts.",
+      "claim_source": "research/convergence/reports/integration_audit_repro.json stats vs frozen snapshot",
+      "detail": "",
+      "evidence": {
+        "db": {
+          "evidence_ids": 5822,
+          "evidence_versions": 5884,
+          "relations_by_status": {
+            "CONFIRMED": 672
+          },
+          "relations_confirmed": 672,
+          "relations_total": 672
+        },
+        "report": {
+          "evidence_ids": 5822,
+          "evidence_versions": 5884,
+          "relations_by_status": {
+            "CONFIRMED": 672
+          },
+          "relations_confirmed": 672,
+          "relations_total": 672
+        }
+      },
+      "expected": [],
+      "group": "V7",
+      "status": "PASS",
+      "title": "The published run report describes the database it claims to describe"
+    },
+    {
+      "actual": {
+        "conv_rejections": 0,
+        "conversion_reasons": {
+          "": 966,
+          "converted_with_warnings": 4918
+        },
+        "conversions": {
+          "converted": 966,
+          "degraded": 4918
+        },
+        "evidence_head_rows": 5822,
+        "evidence_rows": 5884,
+        "evidence_versions_beyond_first": 62,
+        "runs": [
+          {
+            "converted": 966,
+            "degraded": 4918,
+            "evidence_inserted": 5884,
+            "evidence_noop": 0,
+            "policy_id": "medradar.licence_policy.v1",
+            "records_seen": 5884,
+            "rejected": 0,
+            "run_id": "audit_repro",
+            "status": "complete"
+          }
+        ]
+      },
       "check_id": "v7.run_state",
       "claim": "An adapter that rejects 100% of a valid export has not integrated it.",
-      "claim_source": "research/convergence/staging/convergence.sqlite (frozen snapshot 37f2bc35f080a188c879a0998bb63ec93b720f592383544f1c00567a313f782d)",
-      "detail": "every record of the frozen export must reach the evidence table; the frozen snapshot holds 0 evidence rows and 5884 rejections. Rejection reasons: {\"licence_blocked:'open_licence' under policy None\": 3892, \"licence_blocked:'open_no_explicit_licence' under policy None\": 1104, \"licence_blocked:'public_domain' under policy None\": 888}",
+      "claim_source": "research/convergence/staging/convergence.sqlite (frozen snapshot 7ba3d953b016a26ace7930aeb51e3e311dbb2615165825a9c21f61587374186b)",
+      "detail": "snapshot holds 5884 evidence versions / 5822 identities for 5884 importable records; 0 rejected",
       "evidence": {},
       "expected": {
         "evidence_rows": 5884,
         "records_seen": 5884
       },
       "group": "V7",
-      "status": "FAIL",
+      "status": "PASS",
       "title": "The import run produced evidence records from the frozen export"
     },
     {
       "actual": 672,
       "check_id": "v7.same_work_recompute",
-      "claim": "The graph adds 672 SAME_WORK relations from 672 cross-source DOI matches.",
-      "claim_source": "report graph.authoritative_links",
-      "detail": "recomputed on 60 shared DOI values across sources; the two counts must agree only if every shared DOI contributes exactly one pair",
+      "claim": "Every SAME_WORK relation must come from a DOI shared across two sources.",
+      "claim_source": "research/convergence/reports/integration_audit_repro.json graph.authoritative_links",
+      "detail": "recomputed from 60 DOI values that occur in more than one source; the database holds 672 SAME_WORK relations",
       "evidence": {
-        "cross_source_dois": 60
+        "cross_source_dois": 60,
+        "db_same_work": 672
       },
       "expected": 672,
       "group": "V7",
       "status": "PASS",
-      "title": "Cross-source DOI pairs recompute to the claimed SAME_WORK relation count"
+      "title": "Cross-source DOI pairs recompute to the graph's SAME_WORK count"
     },
     {
       "actual": [],
@@ -2964,42 +3111,62 @@
         },
         "run_block": {
           "converted": 966,
-          "degraded": 4856,
-          "records_seen": 5822,
+          "degraded": 4918,
+          "records_seen": 5884,
           "rejected": 0
         }
       },
       "check_id": "v7.smoke_report_internal_consistency",
       "claim": "A report whose own blocks disagree cannot support any downstream number.",
-      "claim_source": "research/convergence/reports/integration_conv_smoke_001.json import vs run",
-      "detail": "the difference is exactly the 62 record-identity collisions: the two blocks count different units (records vs distinct evidence ids) under the same names",
+      "claim_source": "research/convergence/reports/integration_audit_repro.json import vs run",
+      "detail": "the two blocks must count the same unit; a 62-record gap would be the record-identity collision counted twice under one name",
       "evidence": {},
       "expected": {
         "seen": 5884
       },
       "group": "V7",
-      "status": "FAIL",
+      "status": "PASS",
       "title": "The import report states one set of run counters"
     },
     {
-      "actual": [],
+      "actual": {
+        "open_licence": 3892,
+        "open_no_explicit_licence": 1104,
+        "public_domain": 888
+      },
       "check_id": "v7.smoke_report_licence_distribution",
       "claim": "No record may change licence class on import (no 'restricted' may become 'open').",
-      "claim_source": "report stats.conv_licence_status",
-      "detail": "",
+      "claim_source": "research/convergence/reports/integration_audit_repro.json stats.conv_licence_status",
+      "detail": "report counts records (sum 5884); per-record total is 5884 and per-identity total is 5822",
       "evidence": {
         "claimed": {
+          "open_licence": 3892,
+          "open_no_explicit_licence": 1104,
+          "public_domain": 888
+        },
+        "per_identity": {
           "open_licence": 3891,
           "open_no_explicit_licence": 1104,
           "public_domain": 827
         },
-        "recomputed": {
+        "per_record": {
+          "open_licence": 3892,
+          "open_no_explicit_licence": 1104,
+          "public_domain": 888
+        }
+      },
+      "expected": {
+        "per_identity": {
           "open_licence": 3891,
           "open_no_explicit_licence": 1104,
           "public_domain": 827
+        },
+        "per_record": {
+          "open_licence": 3892,
+          "open_no_explicit_licence": 1104,
+          "public_domain": 888
         }
       },
-      "expected": [],
       "group": "V7",
       "status": "PASS",
       "title": "The imported licence distribution preserves the export's licences"
@@ -3009,7 +3176,7 @@
       "check_id": "v7.smoke_report_seen",
       "claim": "6,492 declared - 608 quarantined UN Comtrade records = 5,884 importable records.",
       "claim_source": "MANIFEST.json totals; integration report",
-      "detail": "run block says 5822, import block says 5884",
+      "detail": "run block says 5884, import block says 5884",
       "evidence": {},
       "expected": 5884,
       "group": "V7",
@@ -3519,7 +3686,7 @@
         }
       ],
       "content_scan": {
-        "files_scanned": 1823,
+        "files_scanned": 1799,
         "hits": [],
         "tokens": {
           "content_hash_of_first_record": "38de14302506287ed0168168f478b0568cb203501687fef7ce5ee88d9da89be8",
@@ -3605,29 +3772,68 @@
           "source_id": "openfda_device_registrationlisting"
         }
       ],
-      "evidence_rows": 0,
-      "relations": {},
+      "evidence_rows": 5884,
+      "fidelity": {
+        "clock_mismatches": [],
+        "collapsed_identities": {
+          "openaire|doi_dedup___::90ba59cc7e0817fa3e9f73f46414d01a": 2,
+          "openfda_device_pma|P010031": 3,
+          "openfda_device_pma|P080006": 2,
+          "openfda_device_pma|P080025": 3,
+          "openfda_device_pma|P090013": 3,
+          "openfda_device_pma|P100021": 3,
+          "openfda_device_pma|P110023": 2,
+          "openfda_device_pma|P160028": 2,
+          "openfda_device_pma|P160029": 2,
+          "openfda_device_pma|P790017": 2
+        },
+        "compared": 5884,
+        "distinct_record_identities": 5822,
+        "evidence_identities": 5822,
+        "evidence_versions": 5884,
+        "export_records": 5884,
+        "flags_dropped": [],
+        "identifier_mismatches": [],
+        "identity_upgrades": [],
+        "invented_in_import": [],
+        "licence_upgrades": [],
+        "missing_from_import": [],
+        "n_clock_mismatches": 0,
+        "n_collapsed_identities": 27,
+        "n_flags_dropped": 0,
+        "n_identifier_mismatches": 0,
+        "n_identity_upgrades": 0,
+        "n_invented_in_import": 0,
+        "n_licence_upgrades": 0,
+        "n_missing_from_import": 0
+      },
+      "head_rows": 5822,
+      "rejected_snapshot_sha256": "37f2bc35f080a188c879a0998bb63ec93b720f592383544f1c00567a313f782d",
+      "relations": {
+        "SAME_WORK": 672
+      },
       "runs": [
         {
           "contract_version": "medradar.convergence.evidence.v1@1.0.0",
-          "converted": 0,
-          "degraded": 0,
-          "evidence_inserted": 0,
+          "converted": 966,
+          "degraded": 4918,
+          "evidence_inserted": 5884,
           "evidence_noop": 0,
           "export_id": "horizon-2026-11-10",
-          "finished_at": "2026-11-10T19:06:17.222378Z",
+          "finished_at": "2026-11-10T19:56:00.732672Z",
           "manifest_sha256": "eaa1cbf5e49db90ba39f938be759c5df3581f4fbbe135cfcd5455622ff6e4d4d",
           "mapping_version": "1.0.0+adapter.1",
           "notes": "",
-          "policy_id": "None",
+          "policy_id": "medradar.licence_policy.v1",
           "records_seen": 5884,
-          "rejected": 5884,
-          "run_id": "conv_run_002",
-          "started_at": "2026-11-10T19:06:04.251674Z",
+          "rejected": 0,
+          "run_id": "audit_repro",
+          "started_at": "2026-11-10T19:55:21.042236Z",
           "status": "complete"
         }
       ],
-      "snapshot_sha256": "37f2bc35f080a188c879a0998bb63ec93b720f592383544f1c00567a313f782d"
+      "snapshot_sha256": "7ba3d953b016a26ace7930aeb51e3e311dbb2615165825a9c21f61587374186b",
+      "version_rows": 62
     }
   },
   "inputs": {
@@ -3637,10 +3843,10 @@
     "horizon_root": "horizon-001"
   },
   "summary": {
-    "FAIL": 11,
-    "PASS": 72,
-    "UNVERIFIABLE": 7,
-    "total": 90,
+    "FAIL": 10,
+    "PASS": 81,
+    "UNVERIFIABLE": 4,
+    "total": 95,
     "verdict": "FAIL"
   },
   "verifier": "tools/convergence/verify/verify.py"

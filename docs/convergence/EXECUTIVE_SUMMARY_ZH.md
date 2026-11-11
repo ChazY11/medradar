@@ -40,13 +40,12 @@ c1_rejected=0
 c1_fields_dropped_silently=0
 c2_confirmed_cross_border=0
 c3_repeat_observations=62
-c4_usable_for_lead_time=1989
+c4_usable_for_lead_time=1990
 c5_cited_items=134
 c5_uncited_items=0
 integrity_verified=23
 integrity_quarantined=1
-integrity_mismatch=0
--->
+integrity_mismatch=0-->
 
 ---
 
@@ -185,7 +184,7 @@ integrity_mismatch=0
 |---|---|---|
 两套系统能否互操作 | 只能互相引用报告 | **5,884 条真实记录端到端入库，0 丢失** |
 契约是否可执行 | 两套 schema 各自为政 | **一份可执行契约 + 38 个 scheme 映射 + 35 个测试** |
-身份是否可能被"洗白" | 941 条源级 CONFIRMED 可能被当成身份匹配 | **5,822 条全部 `not_attempted`，仅官方标识可确认** |
+身份是否可能被"洗白" | 941 条源级 CONFIRMED 可能被当成身份匹配 | **5,884 条全部 `not_attempted`，仅官方标识可确认** |
 时间是否可能被回填 | ATLAS 默认用抓取时间填观测时间 | **观测时间缺失即保持未知，1,394 条为证** |
 重复是否会被误删/误计 | 无分层 | **四层分离，62 条重复以版本保留，307 条记录正确折叠为 60 个作品** |
 许可是否可强制执行 | 靠人工声明 | **程序化闸门 + CI 强制，受限载荷进入即失败** |

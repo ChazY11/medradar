@@ -102,8 +102,7 @@ declared_records=6492
 integrity_verified=23
 integrity_quarantined=1
 integrity_mismatch=0
-permitted_records=608
--->
+permitted_records=608-->
 
 `un_comtrade.jsonl` is **declared by the manifest but absent by design**; the
 pipeline classifies it as `quarantined_absent` rather than reporting a missing

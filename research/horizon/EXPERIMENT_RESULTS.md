@@ -107,7 +107,7 @@ was examined), `EXP_H2_PAIRS.jsonl` (726 pairs), `EXP_H2_SUMMARY.json`,
 
 Signals, in increasing strength:
 **S1** exact name · **S2** shared model token · **S3** same firm ·
-**S4** shared official identifier · **S5** multi-field conjunction.
+**S4** shared official identifier (same scheme) · **S5** name-token overlap ≥ 2 (not covered by S1).
 
 ### Result: 726 pairs, 0 CONFIRMED
 
