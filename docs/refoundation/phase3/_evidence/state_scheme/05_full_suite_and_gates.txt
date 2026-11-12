@@ -1,0 +1,22 @@
+# command: full pytest + medradar selftest + six governance gates
+# exit code: 0
+
+=== full suite ===
+1157 passed, 3 skipped, 224 subtests passed in 66.24s (0:01:06)
+
+=== packaging entry point (unittest discovery) ===
+Ran 1160 tests in 63.647s
+System.Management.Automation.RemoteException
+OK (skipped=3)
+
+=== six gates (base origin/main) ===
+state        exit=0  PASS check_state (253 checks, 0 failures, 2 warnings)
+views        exit=0  PASS gen_views (3 targets)
+frozen       exit=0  PASS check_frozen (36 checks, 0 failures, 1 warnings)
+licence      exit=0  PASS check_licence (14 checks, 0 failures, 1 warnings)
+links        exit=0  PASS check_links (3 checks, 0 failures, 0 warnings)
+rule-audit   exit=0  PASS check_rule_audit (24 checks, 0 failures, 0 warnings)
+
+=== check_state warnings (expected: integration-tree tested_head ahead of observed head) ===
+[WARN] declared tested_head a8933c7e049f is ahead of the observed head b2a14c0a9233 (measured on an integration tree); it becomes an ordinary ancestor after the merge bump
+[WARN] artifact tested_head a8933c7e049f is ahead of the observed head b2a14c0a9233 (measured on an integration tree); it becomes an ordinary ancestor after the merge bump

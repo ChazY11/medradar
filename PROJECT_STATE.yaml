@@ -16,7 +16,7 @@
 #     this file is being edited. Do not record branch-only capabilities here.
 
 schema: medradar.project_state.v2
-generated_at: "2026-11-03T04:26:31+08:00"
+generated_at: "2026-11-13T04:50:58+08:00"
 
 project:
   name: MedRadar
@@ -47,17 +47,17 @@ release:
   version: "0.5.0"
   commit: null
 tests:
-  collected: 1148
-  passed: 1145
+  collected: 1160
+  passed: 1157
   skipped: 3
   failed: 0
   subtests_passed: 224
   command: 'python -m pytest -q -o addopts=""'
-  measured_at: "2026-11-13T02:57:53+08:00"
+  measured_at: "2026-11-13T04:50:58+08:00"
   artifact: docs/refoundation/phase0/_evidence/governance/pytest_count.json
-  tested_head: 96950ba089d6148278a52cf2d3f2b23a92b19f3c
+  tested_head: a8933c7e049f61e43a7a86a850c641e61f7b8bcc
   policy: strict
-  note: "Tests are offline and need no network or API key. Measured on the REFOUNDATION-003 integration tree 96950ba, which carries the Phase-2 governance tests (43) and Evidence Core tests (28); the artifact records the exact run. main.head still names origin/main until the merge bump."
+  note: "Offline suite; no network or API key. Measured on the REFOUNDATION-003 integration tree a8933c7 (the state scheme tests included). The measurement commit is a descendant of the observed origin/main and becomes an ordinary ancestor after the merge bump; the series is superseded by the next record_tests run on main."
 data_snapshot:
   date: "2026-10-31"
   generated_at: "2026-10-31T05:33:25Z"

@@ -11,15 +11,13 @@ locally and in the `governance` workflow.
 
 ---
 
-## 1. One source of truth: `PROJECT_STATE.yaml`
+## 1. One source of truth: `PROJECT_STATE.yaml` (five concepts)
 
-`PROJECT_STATE.yaml` at the repository root is the single hand-edited description
-of the project: identity/mission, `main` head + date + version, test counts, data
-snapshot, capability list with status, research studies with verdict/freeze/public
-claim, open-work counts, governance status, a decision index, and an explicit
-`not_claimed` list.
+`PROJECT_STATE.yaml` is the single hand-edited description of the repository:
+identity, five state concepts (below), test counts, data snapshot, capabilities,
+studies, open work, governance and an explicit `not_claimed` list.
 
-Everything derived is generated from it:
+Derived output is generated from it:
 
 ```text
 PROJECT_STATE.yaml
@@ -33,34 +31,50 @@ PROJECT_STATE.yaml
 `python tools/governance/gen_views.py` → commit the regenerated views in the same
 commit → run the gates before pushing.
 
-The state describes **`main`**, not the branch. `main.head` must equal the
-resolved `main.ref` (`origin/main`). On a pull request, `origin/main` is the PR's
-base, so "the state matches main" is checked at the merge point; a PR started
-after a merge carries the state update in its own diff. The `governance` workflow
-therefore runs on `pull_request` (and manual dispatch), not `push` to `main`: a
-post-merge run would be red by design until the next PR updates the state. `ci`
-still covers `main` pushes.
+The state explicitly separates five concepts instead of pretending one commit is
+all of them (full matrix and lifecycle:
+[`docs/refoundation/phase3/STATE_LIFECYCLE.md`](../refoundation/phase3/STATE_LIFECYCLE.md)):
 
-### After `main` advances: `bump_state.py`
+* **`git.head`** — the main commit last **observed**. Its date/subject/tree counts
+  and workflow list are validated against that commit. It may lag current
+  `origin/main`: stale-but-ancestor is a **WARNING**, so a merge cannot make the
+  gate permanently red.
+* **`verified.commit`** — the last commit whose full offline suite + all six gates
+  passed; must be an ancestor of current main (wrong lineage is a **FAILURE**).
+* **`release.version` / `release.commit`** — what is released; `commit: null` means
+  unreleased. The version must match `pyproject.toml` at the observed head; a
+  non-null commit must be an ancestor of main.
+* **`data_snapshot`** — the local data build (date, events, sources); `data/` is
+  gitignored.
+* **`tests.tested_head`** — the commit the measured suite describes; must be
+  ancestry-related to `verified.commit` or `git.head` (lag is a warning, unrelated
+  lineage is a failure).
+
+The `governance` workflow runs on `pull_request` (and manual dispatch), not
+`push` to `main`: a post-merge push run would pass with only the staleness warning
+until the next observation, and `ci` already covers `main` pushes. A post-merge
+bot commit is now harmless (it records an observed head that is one merge behind →
+warning), but it is not required.
+
+### After `main` advances: one command
 
 ```bash
-python tools/governance/bump_state.py --ref origin/main     # rewrite main block
-python tools/governance/gen_views.py                        # regenerate views
+python tools/governance/bump_state.py          # refresh observed + verified + views
 ```
 
-`bump_state.py` derives the whole `main` block from the ref — head, short, commit
-time, subject, version from that ref's `pyproject.toml`, tracked-file count,
-workflow names — and sets `generated_at` to the ref's commit time (deterministic;
-no wall clock). It preserves the hand-written comments and changes nothing else.
-Use `--dry-run` to see the exact diff. A post-merge bot commit cannot maintain
-strict equality (the commit that records the head changes the head), so the safe
-automation is **pre-merge**: the PR carries the bump.
+`bump_state.py` derives `git.*` and `verified.*` from the ref (default
+`origin/main`): head, short, commit time, subject, observed date, tracked-file and
+workflow counts; version from that ref's `pyproject.toml`; `verified.commit` set to
+the ref. `generated_at` and `verified_at` use the ref's commit time (deterministic;
+no wall clock). It preserves an existing non-null `release.commit` and every
+hand-written comment, then regenerates the three views in the same command.
+Options: `--dry-run`, `--no-views`, `--ref <branch>`.
 
 ## 2. The six gates
 
 | Gate | Command | Verifies | Blocks |
 | --- | --- | --- | --- |
-| State | `python tools/governance/check_state.py` | schema/sections; `main.head` vs `git rev-parse origin/main`; date/subject/version/tree/workflow counts; every referenced path; duplicate ids; decision and freeze ids exist; declared test counts vs the measurement artifact | a state file that is wrong about git, cites missing files/decisions/freezes, or claims an unmeasured test count |
+| State | `python tools/governance/check_state.py --main-ref origin/main` | schema/sections; the five concepts: observed `git.head` must be an **ancestor** of main (stale = WARN), date/subject/counts validated against the observed commit, `verified.commit` and non-null `release.commit` ancestors of main, `release.version` vs `pyproject.toml`, `tests.tested_head` ancestry (lag = WARN); every referenced path; duplicate ids; decision and freeze ids exist; declared test counts vs the measurement artifact | a state file with a wrong lineage (non-ancestor head), missing files/decisions/freezes, orphaned verified/release commits, or an unmeasured test count |
 | Views | `python tools/governance/gen_views.py` (`--check`) | README/CHANGELOG regions and `docs/RESEARCH_INDEX.md` are exactly the current state's output, with matching source/payload digests | stale generated views, hand-edited generated regions |
 | Freeze | `python tools/governance/check_frozen.py --base origin/main` | per-file SHA-256 in `FROZEN.yaml` (including inside frozen directories), directory structure, and approved `rebalances:` vs the base ref | any frozen byte change, name-only edit, added/removed study file, or unapproved re-baseline |
 | Licence | `python tools/governance/check_licence.py --base origin/main` | source patterns, positive `DATA_INVENTORY.yaml` coverage, content/magic-byte classification, untracked data files, PR-diff changes | an undeclared, moved, renamed or content-swapped data file; a restricted binary format outside synthetic fixtures; a RED-source file |
@@ -250,8 +264,10 @@ and both digests in the same commit; the gate audits it against the base.
 `RULE_CHANGES.yaml` record (and a `DECISION_LOG.yaml` entry if the decision is new)
 with the approved decision id.
 
-**After `main` advances:** `bump_state.py --ref origin/main` then
-`gen_views.py`; the next PR carries it.
+**After `main` advances:** nothing is urgently required — the state gate passes
+with a staleness **warning** while `git.head` remains an ancestor. When convenient,
+run the one command `python tools/governance/bump_state.py` (refreshes observed
+head, verified baseline and views); `--dry-run` previews it.
 
 **Gate failure playbook:** the failing check id names the defect. Do not use
 `--write`, `--write-inventory`, `--base ""` or an admin bypass to silence a real
@@ -296,6 +312,8 @@ docs/governance/RULE_CHANGES.yaml                   approved governance rule-cha
 docs/governance/DECISION_LOG.yaml                   governance approval ids
 docs/governance/BRANCH_PROTECTION_PLAN.md           owner plan (not applied)
 docs/governance/GOVERNANCE.md                       this document
+docs/refoundation/phase3/STATE_LIFECYCLE.md         five state concepts + 3-merge proof
+docs/refoundation/phase3/_evidence/state_scheme/     simulation and flake evidence
 docs/RESEARCH_INDEX.md                              generated index
 tests/governance/                                   gate tests (synthetic fixtures)
 ```

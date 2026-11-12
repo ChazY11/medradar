@@ -1,0 +1,63 @@
+# command: migrated PROJECT_STATE blocks and check_state warnings
+
+=== state blocks ===
+git:
+  ref: origin/main
+  head: b2a14c0a92332c004445de686daee97754cf94cb
+  short: b2a14c0
+  committed_at: "2026-11-03T04:26:31+08:00"
+  commit_subject: "Merge pull request #11 from ChazY11/research/early-signal-review-workbench"
+  observed_at: "2026-11-03T04:26:31+08:00"
+  tracked_files: 1135
+  workflows:
+    - ci
+    - forecast-cycle
+    - live
+    - weekly
+verified:
+  commit: b2a14c0a92332c004445de686daee97754cf94cb
+  verified_at: "2026-11-03T04:26:31+08:00"
+  note: "Refreshed by bump_state.py from origin/main; the full offline suite and the governance gates are expected to pass at this commit."
+release:
+  version: "0.5.0"
+  commit: null
+tests:
+  collected: 1160
+  passed: 1157
+  skipped: 3
+  failed: 0
+  subtests_passed: 224
+  command: 'python -m pytest -q -o addopts=""'
+  measured_at: "2026-11-13T04:50:58+08:00"
+  artifact: docs/refoundation/phase0/_evidence/governance/pytest_count.json
+  tested_head: a8933c7e049f61e43a7a86a850c641e61f7b8bcc
+  policy: strict
+  note: "Offline suite; no network or API key. Measured on the REFOUNDATION-003 integration tree a8933c7 (the state scheme tests included). The measurement commit is a descendant of the observed origin/main and becomes an ordinary ancestor after the merge bump; the series is superseded by the next record_tests run on main."
+data_snapshot:
+  date: "2026-10-31"
+  generated_at: "2026-10-31T05:33:25Z"
+  events: 375378
+  database_size: "1.3 GiB"
+  evidence: docs/DATA.md
+  storage: "data/ and out/ are gitignored; these numbers describe a local snapshot, not repository content."
+  sources:
+    - id: openfda_device_510k
+      rows: 176466
+    - id: openfda_device_pma
+      rows: 57372
+    - id: openfda_device_recall
+      rows: 59646
+    - id: ctgov
+      rows: 55592
+    - id: sec_edgar_8k
+      rows: 20976
+    - id: openfda_drug_drugsfda
+      rows: 5326
+
+# Capability status vocabulary: working | draft | retired.
+# `evidence` is a repository path that exists at `main.head`.
+
+=== check_state ===
+[WARN] declared tested_head a8933c7e049f is ahead of the observed head b2a14c0a9233 (measured on an integration tree); it becomes an ordinary ancestor after the merge bump
+[WARN] artifact tested_head a8933c7e049f is ahead of the observed head b2a14c0a9233 (measured on an integration tree); it becomes an ordinary ancestor after the merge bump
+PASS check_state (253 checks, 0 failures, 2 warnings)

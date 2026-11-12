@@ -4,31 +4,29 @@
 === three consecutive simulated merges (git ref sim/main-3merge) ===
 state before simulation describes origin/main; gates run WITHOUT bump after each merge
 
-round 1: ae27521e5c7e  Merge simulated feature 1
+round 1: 1ed43b2e14a9  Merge simulated feature 1
   gates WITHOUT bump               state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
-    stale-by-design warning: it.head is stale by design: observed b2a14c0a9233, sim/main-3merge is ae27521e5c7e — run `python tools/governance/bump_state.py` to refresh; this is a WARNING, not a gate failure (
-  bump exit=0: UPDATED PROJECT_STATE.yaml: observed sim/main-3merge @ ae27521 (1238 tracked files, workflows: ci, forecast-cycle, governance, live, weekly)
+    stale-by-design warning: it.head is stale by design: observed b2a14c0a9233, sim/main-3merge is 1ed43b2e14a9 — run `python tools/governance/bump_state.py` to refresh; this is a WARNING, not a gate failure (
+  bump exit=0: UPDATED PROJECT_STATE.yaml: observed sim/main-3merge @ 1ed43b2 (1238 tracked files, workflows: ci, forecast-cycle, governance, live, weekly)
   bump views: PASS gen_views (3 targets)
-  state tracks: git.head=ae27521e5c7e verified.commit=ae27521e5c7e OK
+  state tracks: git.head=1ed43b2e14a9 verified.commit=1ed43b2e14a9 OK
   gates AFTER bump                 state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
 
-round 2: 2021944479f8  Merge simulated feature 2
+round 2: 91cd144e050a  Merge simulated feature 2
   gates WITHOUT bump               state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
-    stale-by-design warning: it.head is stale by design: observed ae27521e5c7e, sim/main-3merge is 2021944479f8 — run `python tools/governance/bump_state.py` to refresh; this is a WARNING, not a gate failure (
-  bump exit=2: (no state line)
-  bump views: (not regenerated)
-  bump stderr: bump_state: ERROR: bump mismatch for git.short: wrote '2021944', parsed 2021944
-  state tracks: git.head=ae27521e5c7e verified.commit=ae27521e5c7e MISMATCH
-  gates AFTER bump                 state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
-    stale-by-design warning: it.head is stale by design: observed ae27521e5c7e, sim/main-3merge is 2021944479f8 — run `python tools/governance/bump_state.py` to refresh; this is a WARNING, not a gate failure (
-
-round 3: a305ef4d0672  Merge simulated feature 3
-  gates WITHOUT bump               state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
-    stale-by-design warning: it.head is stale by design: observed ae27521e5c7e, sim/main-3merge is a305ef4d0672 — run `python tools/governance/bump_state.py` to refresh; this is a WARNING, not a gate failure (
-  bump exit=0: UPDATED PROJECT_STATE.yaml: observed sim/main-3merge @ a305ef4 (1240 tracked files, workflows: ci, forecast-cycle, governance, live, weekly)
+    stale-by-design warning: it.head is stale by design: observed 1ed43b2e14a9, sim/main-3merge is 91cd144e050a — run `python tools/governance/bump_state.py` to refresh; this is a WARNING, not a gate failure (
+  bump exit=0: UPDATED PROJECT_STATE.yaml: observed sim/main-3merge @ 91cd144 (1239 tracked files, workflows: ci, forecast-cycle, governance, live, weekly)
   bump views: PASS gen_views (3 targets)
-  state tracks: git.head=a305ef4d0672 verified.commit=a305ef4d0672 OK
+  state tracks: git.head=91cd144e050a verified.commit=91cd144e050a OK
   gates AFTER bump                 state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
 
-RESULT: FAIL - see round details above
+round 3: 12a1c9a52289  Merge simulated feature 3
+  gates WITHOUT bump               state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
+    stale-by-design warning: it.head is stale by design: observed 91cd144e050a, sim/main-3merge is 12a1c9a52289 — run `python tools/governance/bump_state.py` to refresh; this is a WARNING, not a gate failure (
+  bump exit=0: UPDATED PROJECT_STATE.yaml: observed sim/main-3merge @ 12a1c9a (1240 tracked files, workflows: ci, forecast-cycle, governance, live, weekly)
+  bump views: PASS gen_views (3 targets)
+  state tracks: git.head=12a1c9a52289 verified.commit=12a1c9a52289 OK
+  gates AFTER bump                 state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
+
+RESULT: PASS - every pre-bump run was PASS/WARN and every post-bump run was clean
 restored: (clean)
