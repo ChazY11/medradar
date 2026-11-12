@@ -1,5 +1,5 @@
 <!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
-<!-- source-sha256: 5220dabc16fdc256173fb5e8bfcc8cb58b1f938d38fb0d609c668937b91b0f0f -->
+<!-- source-sha256: 57689fa7bfcb302b67102928556c15877cef7212030bf2265503157672cdee17 -->
 <!-- payload-sha256: c15238d180b4edadd005f21da80d6a9dc94fe9650b5d3801b089e2a33ad12ced -->
 # Research index
 

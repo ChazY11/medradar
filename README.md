@@ -28,7 +28,7 @@ the deliverable.
 
 ﻿<!-- BEGIN GENERATED: status -->
 <!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
-<!-- source-sha256: 5220dabc16fdc256173fb5e8bfcc8cb58b1f938d38fb0d609c668937b91b0f0f -->
+<!-- source-sha256: 57689fa7bfcb302b67102928556c15877cef7212030bf2265503157672cdee17 -->
 <!-- payload-sha256: 1625db6fa4e98b2c1ede88a7264c3321f3a9645e579462f36a51c11693a7dafd -->
 **Project status** — generated from [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T02:57:53+08:00` by `python tools/governance/gen_views.py`; edit the state file, never this block.
 

@@ -5,7 +5,7 @@ This is a research tool; "fixed" means a documented behaviour changed.
 
 <!-- BEGIN GENERATED: unreleased -->
 <!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
-<!-- source-sha256: 5220dabc16fdc256173fb5e8bfcc8cb58b1f938d38fb0d609c668937b91b0f0f -->
+<!-- source-sha256: 57689fa7bfcb302b67102928556c15877cef7212030bf2265503157672cdee17 -->
 <!-- payload-sha256: 9558a35cd7a0e20dbe09d9694ea343d50fec2b00082433d69a41c1ab6bc5669d -->
 ## [Unreleased] — generated governance snapshot
 
