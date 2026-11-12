@@ -5,8 +5,8 @@ This is a research tool; "fixed" means a documented behaviour changed.
 
 <!-- BEGIN GENERATED: unreleased -->
 <!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
-<!-- source-sha256: 57689fa7bfcb302b67102928556c15877cef7212030bf2265503157672cdee17 -->
-<!-- payload-sha256: 9558a35cd7a0e20dbe09d9694ea343d50fec2b00082433d69a41c1ab6bc5669d -->
+<!-- source-sha256: d9040a766a111ad0d0f9b3a344a6f36d829fdc56ff5cc274915b0655ddb88e10 -->
+<!-- payload-sha256: bbc02968a31920f4e6455b1c1563a41053de8fb0df94ad15e1836e88a0464c0b -->
 ## [Unreleased] — generated governance snapshot
 
 _Snapshot of [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T02:57:53+08:00`. Regenerate with `python tools/governance/gen_views.py`; do not edit this block by hand._
@@ -14,7 +14,7 @@ _Snapshot of [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T02:57:53+
 - **Main head:** `b2a14c0` (2026-11-03), version **0.5.0**
 - **Tests:** 1,145 passed, 3 skipped, 0 failed (1,148 collected)
 - **Capabilities:** 7 working, 6 draft, 1 retired
-- **Open PRs:** 23 open (22 draft), 10 merged; branch protection not applied
+- **Open PRs:** 28 open (27 draft), 10 merged; branch protection not applied
 - **Data snapshot:** 2026-10-31, 375,378 events (local build; `data/` is gitignored)
 <!-- END GENERATED: unreleased -->
 

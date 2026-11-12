@@ -1,0 +1,641 @@
+{
+ "range": {
+  "base": "origin/main",
+  "tip": "integration/ref003",
+  "tip_sha": "cfa685c3bdbc431f4d00bc7c588c7728f4676c0b"
+ },
+ "commits_total": 24,
+ "merges": 5,
+ "objects_in_range": 315,
+ "blobs_scanned": 157,
+ "blobs_with_findings": 11,
+ "per_commit_file_counts": {
+  "cfa685c3bdbc431f4d00bc7c588c7728f4676c0b": {
+   "files_changed": 3,
+   "added": 0,
+   "modified": 3,
+   "deleted": 0
+  },
+  "c751da346d93d7b8720a1c1e2aa670713bc685bc": {
+   "files_changed": 4,
+   "added": 1,
+   "modified": 3,
+   "deleted": 0
+  },
+  "1fd46d8d2115da007f93afd2d0f66b31eac90bf5": {
+   "files_changed": 4,
+   "added": 4,
+   "modified": 0,
+   "deleted": 0
+  },
+  "8182f07ce4657dc40069bcb5f3d47ea1ac7d7c91": {
+   "files_changed": 1,
+   "added": 0,
+   "modified": 1,
+   "deleted": 0
+  },
+  "a93afe3bf75907bf00faad1405fbdaf487b7d76c": {
+   "files_changed": 3,
+   "added": 3,
+   "modified": 0,
+   "deleted": 0
+  },
+  "81aaa84e9dee8418885f1dee008a513405cb8c76": {
+   "files_changed": 6,
+   "added": 0,
+   "modified": 6,
+   "deleted": 0
+  },
+  "96950ba089d6148278a52cf2d3f2b23a92b19f3c": {
+   "files_changed": 96,
+   "added": 90,
+   "modified": 6,
+   "deleted": 0
+  },
+  "3be8a4eda80d4d7d831205a876d24ce9e2ffe3fd": {
+   "files_changed": 95,
+   "added": 88,
+   "modified": 7,
+   "deleted": 0
+  },
+  "413254f9421222ea5e705086f1c8fff264814f8b": {
+   "files_changed": 91,
+   "added": 87,
+   "modified": 4,
+   "deleted": 0
+  },
+  "faab1a55638acfc786d19815f8a9944bb58aa7a8": {
+   "files_changed": 83,
+   "added": 79,
+   "modified": 4,
+   "deleted": 0
+  },
+  "d746b86da98a42dbbb268822076fc8d056ee49e4": {
+   "files_changed": 74,
+   "added": 71,
+   "modified": 3,
+   "deleted": 0
+  },
+  "13318836abb8ebb86f684ac0c0c42e71f3385fe2": {
+   "files_changed": 1,
+   "added": 0,
+   "modified": 1,
+   "deleted": 0
+  },
+  "4ea5adaf12987eff827a067dca29e90454124cf2": {
+   "files_changed": 5,
+   "added": 0,
+   "modified": 5,
+   "deleted": 0
+  },
+  "032b960943c4b7ddc5ff639ed6b0086d92503cb7": {
+   "files_changed": 4,
+   "added": 2,
+   "modified": 2,
+   "deleted": 0
+  },
+  "6a95a5b019f60812cd5872f9a2b1056146dc3005": {
+   "files_changed": 2,
+   "added": 0,
+   "modified": 2,
+   "deleted": 0
+  },
+  "beacd1115a7bfea6e144cae9ca18fc2b1d4a7233": {
+   "files_changed": 4,
+   "added": 1,
+   "modified": 3,
+   "deleted": 0
+  },
+  "6ffe7e7f150f33b0e426ab0dab4da3e8498add56": {
+   "files_changed": 8,
+   "added": 8,
+   "modified": 0,
+   "deleted": 0
+  },
+  "f088e370db265799596c5e9a04f273f5814ece8e": {
+   "files_changed": 9,
+   "added": 8,
+   "modified": 1,
+   "deleted": 0
+  },
+  "4430a5286d5e40af5c3d8a9989f1662a9ff9f0d1": {
+   "files_changed": 12,
+   "added": 10,
+   "modified": 2,
+   "deleted": 0
+  },
+  "8a0e8f9ad640e05d093974508dd0d0a70dfd804b": {
+   "files_changed": 5,
+   "added": 2,
+   "modified": 3,
+   "deleted": 0
+  },
+  "500a32187ee39eca037d370449352535d97ce8fc": {
+   "files_changed": 5,
+   "added": 0,
+   "modified": 5,
+   "deleted": 0
+  },
+  "36cf0e5cb29ea9793e3827ac2f59ec40c5e23b89": {
+   "files_changed": 26,
+   "added": 16,
+   "modified": 10,
+   "deleted": 0
+  },
+  "0c44de0e45c2a065a8c04be5be6d96b4befb06f3": {
+   "files_changed": 3,
+   "added": 1,
+   "modified": 2,
+   "deleted": 0
+  },
+  "8d7fd62c7d9b2673bc77578438b03a8b8b0724ba": {
+   "files_changed": 45,
+   "added": 42,
+   "modified": 3,
+   "deleted": 0
+  }
+ },
+ "commits": [
+  {
+   "sha": "cfa685c3bdbc431f4d00bc7c588c7728f4676c0b",
+   "parents": [
+    "c751da346d93d7b8720a1c1e2aa670713bc685bc"
+   ],
+   "date": "2026-11-13 04:06:09 +0800",
+   "subject": "fix(views): normalize PROJECT_STATE.yaml to LF so the generated source digest is platform-independent",
+   "files_changed": 3
+  },
+  {
+   "sha": "c751da346d93d7b8720a1c1e2aa670713bc685bc",
+   "parents": [
+    "1fd46d8d2115da007f93afd2d0f66b31eac90bf5"
+   ],
+   "date": "2026-11-13 03:59:10 +0800",
+   "subject": "docs(refoundation): ship triage raw metadata, sanitize acceptance paths",
+   "files_changed": 4
+  },
+  {
+   "sha": "1fd46d8d2115da007f93afd2d0f66b31eac90bf5",
+   "parents": [
+    "8182f07ce4657dc40069bcb5f3d47ea1ac7d7c91"
+   ],
+   "date": "2026-11-13 03:58:42 +0800",
+   "subject": "docs(refoundation): Phase 3 acceptance + independent Evidence Core acceptance",
+   "files_changed": 4
+  },
+  {
+   "sha": "8182f07ce4657dc40069bcb5f3d47ea1ac7d7c91",
+   "parents": [
+    "a93afe3bf75907bf00faad1405fbdaf487b7d76c"
+   ],
+   "date": "2026-11-13 03:43:04 +0800",
+   "subject": "docs(refoundation): sanitize local worktree paths from PR triage",
+   "files_changed": 1
+  },
+  {
+   "sha": "a93afe3bf75907bf00faad1405fbdaf487b7d76c",
+   "parents": [
+    "81aaa84e9dee8418885f1dee008a513405cb8c76"
+   ],
+   "date": "2026-11-13 03:42:52 +0800",
+   "subject": "docs(refoundation): Phase 3 integration record and PR triage",
+   "files_changed": 3
+  },
+  {
+   "sha": "81aaa84e9dee8418885f1dee008a513405cb8c76",
+   "parents": [
+    "96950ba089d6148278a52cf2d3f2b23a92b19f3c"
+   ],
+   "date": "2026-11-13 03:41:19 +0800",
+   "subject": "integration: new README + docs navigation, state mission/tests, generated status",
+   "files_changed": 6
+  },
+  {
+   "sha": "96950ba089d6148278a52cf2d3f2b23a92b19f3c",
+   "parents": [
+    "3be8a4eda80d4d7d831205a876d24ce9e2ffe3fd",
+    "032b960943c4b7ddc5ff639ed6b0086d92503cb7"
+   ],
+   "date": "2026-11-13 03:39:35 +0800",
+   "subject": "merge: new README + docs navigation (REFOUNDATION-003)",
+   "files_changed": 96
+  },
+  {
+   "sha": "3be8a4eda80d4d7d831205a876d24ce9e2ffe3fd",
+   "parents": [
+    "413254f9421222ea5e705086f1c8fff264814f8b",
+    "6a95a5b019f60812cd5872f9a2b1056146dc3005"
+   ],
+   "date": "2026-11-13 03:38:20 +0800",
+   "subject": "merge: README truth (#34) unfixed base",
+   "files_changed": 95
+  },
+  {
+   "sha": "413254f9421222ea5e705086f1c8fff264814f8b",
+   "parents": [
+    "faab1a55638acfc786d19815f8a9944bb58aa7a8",
+    "6ffe7e7f150f33b0e426ab0dab4da3e8498add56"
+   ],
+   "date": "2026-11-13 03:38:20 +0800",
+   "subject": "merge: E1b source recovery (#36)",
+   "files_changed": 91
+  },
+  {
+   "sha": "faab1a55638acfc786d19815f8a9944bb58aa7a8",
+   "parents": [
+    "d746b86da98a42dbbb268822076fc8d056ee49e4",
+    "f088e370db265799596c5e9a04f273f5814ece8e"
+   ],
+   "date": "2026-11-13 03:38:19 +0800",
+   "subject": "merge: Evidence Core v1 (#35)",
+   "files_changed": 83
+  },
+  {
+   "sha": "d746b86da98a42dbbb268822076fc8d056ee49e4",
+   "parents": [
+    "b2a14c0a92332c004445de686daee97754cf94cb",
+    "13318836abb8ebb86f684ac0c0c42e71f3385fe2"
+   ],
+   "date": "2026-11-13 03:38:19 +0800",
+   "subject": "merge: governance hardening (#32)",
+   "files_changed": 74
+  },
+  {
+   "sha": "13318836abb8ebb86f684ac0c0c42e71f3385fe2",
+   "parents": [
+    "4ea5adaf12987eff827a067dca29e90454124cf2"
+   ],
+   "date": "2026-11-13 03:37:32 +0800",
+   "subject": "fix(governance): apply the evidence inventory exemption to the PR diff scan too",
+   "files_changed": 1
+  },
+  {
+   "sha": "4ea5adaf12987eff827a067dca29e90454124cf2",
+   "parents": [
+    "beacd1115a7bfea6e144cae9ca18fc2b1d4a7233"
+   ],
+   "date": "2026-11-13 03:34:25 +0800",
+   "subject": "fix(governance): inventory-exempt generated evidence artefacts, keep content scan",
+   "files_changed": 5
+  },
+  {
+   "sha": "032b960943c4b7ddc5ff639ed6b0086d92503cb7",
+   "parents": [
+    "b2a14c0a92332c004445de686daee97754cf94cb"
+   ],
+   "date": "2026-11-13 03:32:22 +0800",
+   "subject": "docs(docs): navigation index, truth-first README (EN/ZH), visual plan",
+   "files_changed": 4
+  },
+  {
+   "sha": "6a95a5b019f60812cd5872f9a2b1056146dc3005",
+   "parents": [
+    "0c44de0e45c2a065a8c04be5be6d96b4befb06f3"
+   ],
+   "date": "2026-11-13 03:18:10 +0800",
+   "subject": "test(release): accept 4-digit test counts in the README staleness guard",
+   "files_changed": 2
+  },
+  {
+   "sha": "beacd1115a7bfea6e144cae9ca18fc2b1d4a7233",
+   "parents": [
+    "4430a5286d5e40af5c3d8a9989f1662a9ff9f0d1"
+   ],
+   "date": "2026-11-13 03:13:38 +0800",
+   "subject": "docs(governance): final Phase 2 validation evidence",
+   "files_changed": 4
+  },
+  {
+   "sha": "6ffe7e7f150f33b0e426ab0dab4da3e8498add56",
+   "parents": [
+    "b2a14c0a92332c004445de686daee97754cf94cb"
+   ],
+   "date": "2026-11-13 02:46:55 +0800",
+   "subject": "research(e1b): source-recovery experiment - retrospective public availability vs prospective observation",
+   "files_changed": 8
+  },
+  {
+   "sha": "f088e370db265799596c5e9a04f273f5814ece8e",
+   "parents": [
+    "b2a14c0a92332c004445de686daee97754cf94cb"
+   ],
+   "date": "2026-11-13 02:54:55 +0800",
+   "subject": "feat(evidence-core): append-only event_revision ledger + versioned migrations (task-16)",
+   "files_changed": 9
+  },
+  {
+   "sha": "4430a5286d5e40af5c3d8a9989f1662a9ff9f0d1",
+   "parents": [
+    "8a0e8f9ad640e05d093974508dd0d0a70dfd804b"
+   ],
+   "date": "2026-11-13 03:09:37 +0800",
+   "subject": "docs(governance): Phase 2 hardening deliverable and evidence; fix diff-scan RED handling",
+   "files_changed": 12
+  },
+  {
+   "sha": "8a0e8f9ad640e05d093974508dd0d0a70dfd804b",
+   "parents": [
+    "500a32187ee39eca037d370449352535d97ce8fc"
+   ],
+   "date": "2026-11-13 03:02:06 +0800",
+   "subject": "fix(governance): fail RED inventory entries; classify refoundation/tools data files; resync inventory",
+   "files_changed": 5
+  },
+  {
+   "sha": "500a32187ee39eca037d370449352535d97ce8fc",
+   "parents": [
+    "36cf0e5cb29ea9793e3827ac2f59ec40c5e23b89"
+   ],
+   "date": "2026-11-13 02:58:01 +0800",
+   "subject": "chore(governance): record Phase 2 test counts and refresh derived views",
+   "files_changed": 5
+  },
+  {
+   "sha": "36cf0e5cb29ea9793e3827ac2f59ec40c5e23b89",
+   "parents": [
+    "8d7fd62c7d9b2673bc77578438b03a8b8b0724ba"
+   ],
+   "date": "2026-11-13 02:56:47 +0800",
+   "subject": "feat(governance): Phase 2 hardening - data inventory/content scan, freeze v2 audit, rule-change audit, state bump, tests",
+   "files_changed": 26
+  },
+  {
+   "sha": "0c44de0e45c2a065a8c04be5be6d96b4befb06f3",
+   "parents": [
+    "b2a14c0a92332c004445de686daee97754cf94cb"
+   ],
+   "date": "2026-11-13 02:43:31 +0800",
+   "subject": "docs(readme): truth revision - mission, main-vs-draft status, event-time limitation",
+   "files_changed": 3
+  },
+  {
+   "sha": "8d7fd62c7d9b2673bc77578438b03a8b8b0724ba",
+   "parents": [
+    "b2a14c0a92332c004445de686daee97754cf94cb"
+   ],
+   "date": "2026-11-12 23:52:24 +0800",
+   "subject": "feat(governance): Phase 0 governance MVP - state source, gates, CI draft",
+   "files_changed": 45
+  }
+ ],
+ "aggregate_counts": {
+  "absolute_paths:": 8,
+  "pii_email:": 1,
+  "restricted_path_reference:comtrade_dataset_path": 58,
+  "restricted_path_reference:uk_tender_raw_path": 16
+ },
+ "category_summary": {
+  "restricted_value_blobs": 0,
+  "restricted_value_occurrences": 0,
+  "credential_blobs": 0,
+  "personal_email_occurrences": 0,
+  "institutional_or_alias_email_occurrences": 0,
+  "documentation_fixture_email_occurrences": 1,
+  "phone_occurrences_in_context": 0,
+  "contactpoint_name_occurrences": 0,
+  "name_list_occurrences": 0,
+  "restricted_payload_blobs": 0,
+  "restricted_path_reference_blobs": 4,
+  "absolute_path_occurrences": 8,
+  "binary_blobs_with_findings": 2,
+  "large_binaries_gt_1MiB": 0
+ },
+ "large_binaries": [],
+ "verdict": "PASS",
+ "disposal_recommendation": [],
+ "findings": [
+  {
+   "blob": "0365728874870b384c55b81e3b37daed3d153dd3",
+   "path": "tests/governance/fixtures/fake_market.sqlite",
+   "bytes": 62,
+   "binary": true,
+   "commits": [
+    "36cf0e5cb29ea9793e3827ac2f59ec40c5e23b89",
+    "3be8a4eda80d4d7d831205a876d24ce9e2ffe3fd",
+    "413254f9421222ea5e705086f1c8fff264814f8b",
+    "96950ba089d6148278a52cf2d3f2b23a92b19f3c",
+    "d746b86da98a42dbbb268822076fc8d056ee49e4"
+   ],
+   "commit_count": 6,
+   "first_commit_subject": "feat(governance): Phase 2 hardening - data inventory/content scan, freeze v2 audit, rule-change audit, state bump, tests",
+   "findings": {
+    "binary_header": "53514c69746520666f726d6174203300"
+   }
+  },
+  {
+   "blob": "25824e33181faa28ca48417da43076d6924b54d4",
+   "path": "docs/refoundation/phase3/EVIDENCE_CORE_ACCEPTANCE.md",
+   "bytes": 12950,
+   "binary": false,
+   "commits": [
+    "1fd46d8d2115da007f93afd2d0f66b31eac90bf5",
+    "c751da346d93d7b8720a1c1e2aa670713bc685bc"
+   ],
+   "commit_count": 2,
+   "first_commit_subject": "docs(refoundation): Phase 3 acceptance + independent Evidence Core acceptance",
+   "findings": {
+    "absolute_paths": [
+     {
+      "count": 2
+     }
+    ]
+   }
+  },
+  {
+   "blob": "46dec02bcccf467607d7ab7e13792ecaeb925681",
+   "path": "docs/refoundation/phase3/PR_TRIAGE.md",
+   "bytes": 31724,
+   "binary": false,
+   "commits": [
+    "8182f07ce4657dc40069bcb5f3d47ea1ac7d7c91",
+    "a93afe3bf75907bf00faad1405fbdaf487b7d76c"
+   ],
+   "commit_count": 2,
+   "first_commit_subject": "docs(refoundation): sanitize local worktree paths from PR triage",
+   "findings": {
+    "restricted_path_reference": [
+     {
+      "rule": "comtrade_dataset_path",
+      "count": 8
+     },
+     {
+      "rule": "uk_tender_raw_path",
+      "count": 2
+     }
+    ],
+    "absolute_paths": [
+     {
+      "count": 2
+     }
+    ]
+   }
+  },
+  {
+   "blob": "65277848517bf0da621499e31f9825d0d473647b",
+   "path": "tests/governance/gitfix.py",
+   "bytes": 2448,
+   "binary": false,
+   "commits": [
+    "36cf0e5cb29ea9793e3827ac2f59ec40c5e23b89",
+    "beacd1115a7bfea6e144cae9ca18fc2b1d4a7233"
+   ],
+   "commit_count": 2,
+   "first_commit_subject": "feat(governance): Phase 2 hardening - data inventory/content scan, freeze v2 audit, rule-change audit, state bump, tests",
+   "findings": {
+    "pii_email": [
+     {
+      "count": 1,
+      "personal": 0,
+      "institutional_or_alias": 0,
+      "documentation_fixture": 1
+     }
+    ]
+   }
+  },
+  {
+   "blob": "656fbfc2d58bc0dd9473e5ff865734a77ae21eba",
+   "path": "tests/governance/fixtures/fake_archive.gz",
+   "bytes": 51,
+   "binary": true,
+   "commits": [
+    "36cf0e5cb29ea9793e3827ac2f59ec40c5e23b89",
+    "3be8a4eda80d4d7d831205a876d24ce9e2ffe3fd",
+    "413254f9421222ea5e705086f1c8fff264814f8b",
+    "96950ba089d6148278a52cf2d3f2b23a92b19f3c",
+    "d746b86da98a42dbbb268822076fc8d056ee49e4"
+   ],
+   "commit_count": 6,
+   "first_commit_subject": "feat(governance): Phase 2 hardening - data inventory/content scan, freeze v2 audit, rule-change audit, state bump, tests",
+   "findings": {
+    "binary_header": "1f8b080053594e5448455449432d5245"
+   }
+  },
+  {
+   "blob": "684213a9f42a813725231e89399bc723d497e7d0",
+   "path": "docs/refoundation/phase3/_evidence/core_acceptance/run_acceptance.py",
+   "bytes": 44078,
+   "binary": false,
+   "commits": [
+    "1fd46d8d2115da007f93afd2d0f66b31eac90bf5",
+    "c751da346d93d7b8720a1c1e2aa670713bc685bc"
+   ],
+   "commit_count": 2,
+   "first_commit_subject": "docs(refoundation): Phase 3 acceptance + independent Evidence Core acceptance",
+   "findings": {
+    "absolute_paths": [
+     {
+      "count": 1
+     }
+    ]
+   }
+  },
+  {
+   "blob": "7652df95653b22ba94c73f2399bc337186f507e3",
+   "path": "docs/refoundation/phase3/PR_TRIAGE.md",
+   "bytes": 31728,
+   "binary": false,
+   "commits": [
+    "8182f07ce4657dc40069bcb5f3d47ea1ac7d7c91"
+   ],
+   "commit_count": 1,
+   "first_commit_subject": "docs(refoundation): sanitize local worktree paths from PR triage",
+   "findings": {
+    "restricted_path_reference": [
+     {
+      "rule": "comtrade_dataset_path",
+      "count": 8
+     },
+     {
+      "rule": "uk_tender_raw_path",
+      "count": 2
+     }
+    ]
+   }
+  },
+  {
+   "blob": "8ebed31b8e31382543df0cfbe1bf434f87e453fe",
+   "path": "docs/refoundation/phase2/_evidence/governance/01_environment.txt",
+   "bytes": 435,
+   "binary": false,
+   "commits": [
+    "4430a5286d5e40af5c3d8a9989f1662a9ff9f0d1",
+    "beacd1115a7bfea6e144cae9ca18fc2b1d4a7233"
+   ],
+   "commit_count": 2,
+   "first_commit_subject": "docs(governance): Phase 2 hardening deliverable and evidence; fix diff-scan RED handling",
+   "findings": {
+    "absolute_paths": [
+     {
+      "count": 2
+     }
+    ]
+   }
+  },
+  {
+   "blob": "bfd816c7955f1cde0029396777c26a29338d93c7",
+   "path": "docs/refoundation/phase3/_evidence/core_acceptance/acceptance.json",
+   "bytes": 27473,
+   "binary": false,
+   "commits": [
+    "1fd46d8d2115da007f93afd2d0f66b31eac90bf5",
+    "c751da346d93d7b8720a1c1e2aa670713bc685bc"
+   ],
+   "commit_count": 2,
+   "first_commit_subject": "docs(refoundation): Phase 3 acceptance + independent Evidence Core acceptance",
+   "findings": {
+    "absolute_paths": [
+     {
+      "count": 1
+     }
+    ]
+   }
+  },
+  {
+   "blob": "f5fb4d68c3acd851a825b6e95aae0afe84554f3e",
+   "path": "docs/refoundation/phase3/_evidence/pr_metadata_raw.json",
+   "bytes": 170039,
+   "binary": false,
+   "commits": [
+    "c751da346d93d7b8720a1c1e2aa670713bc685bc"
+   ],
+   "commit_count": 1,
+   "first_commit_subject": "docs(refoundation): ship triage raw metadata, sanitize acceptance paths",
+   "findings": {
+    "restricted_path_reference": [
+     {
+      "rule": "comtrade_dataset_path",
+      "count": 20
+     },
+     {
+      "rule": "uk_tender_raw_path",
+      "count": 6
+     }
+    ]
+   }
+  },
+  {
+   "blob": "f6f179d0aa2a68a4c0e278db6bd6b16f99c9ba92",
+   "path": "docs/refoundation/phase3/_evidence/pr_triage.json",
+   "bytes": 57391,
+   "binary": false,
+   "commits": [
+    "a93afe3bf75907bf00faad1405fbdaf487b7d76c"
+   ],
+   "commit_count": 1,
+   "first_commit_subject": "docs(refoundation): Phase 3 integration record and PR triage",
+   "findings": {
+    "restricted_path_reference": [
+     {
+      "rule": "comtrade_dataset_path",
+      "count": 22
+     },
+     {
+      "rule": "uk_tender_raw_path",
+      "count": 6
+     }
+    ]
+   }
+  }
+ ],
+ "finding_set_sha256": "f3c7d208143760abe0416abbcb985bc2b8f88ac0622306776269863c3246bc04"
+}

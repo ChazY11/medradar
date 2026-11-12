@@ -26,10 +26,10 @@ the deliverable.
 
 ---
 
-﻿<!-- BEGIN GENERATED: status -->
+<!-- BEGIN GENERATED: status -->
 <!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
-<!-- source-sha256: 57689fa7bfcb302b67102928556c15877cef7212030bf2265503157672cdee17 -->
-<!-- payload-sha256: 1625db6fa4e98b2c1ede88a7264c3321f3a9645e579462f36a51c11693a7dafd -->
+<!-- source-sha256: d9040a766a111ad0d0f9b3a344a6f36d829fdc56ff5cc274915b0655ddb88e10 -->
+<!-- payload-sha256: 98a04a32c481340ffd14409e3a0fb65276f1bb3252901de439e18b1318f860b5 -->
 **Project status** — generated from [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T02:57:53+08:00` by `python tools/governance/gen_views.py`; edit the state file, never this block.
 
 | Item | Value |
@@ -40,7 +40,7 @@ the deliverable.
 | Capabilities | 7 working · 6 draft · 1 retired |
 | Research studies | 1 (0 with a public claim) |
 | Data snapshot | 2026-10-31 — 375,378 events (local build; `data/` is gitignored) |
-| Open PRs | 23 open (22 draft), 10 merged |
+| Open PRs | 28 open (27 draft), 10 merged |
 | Branch protection | not applied |
 
 See [`docs/governance/GOVERNANCE.md`](docs/governance/GOVERNANCE.md) for the gates and [`docs/RESEARCH_INDEX.md`](docs/RESEARCH_INDEX.md) for the generated research index.
@@ -57,7 +57,7 @@ support the claim it would enable.
 | Ingest openFDA device (510(k)/PMA/recall/classification), openFDA drug approvals, ClinicalTrials.gov v2, SEC EDGAR 8-K | `medradar/collect_*.py`, `medradar/intelligence/` | **working** — counts reproduce from live sources |
 | Unified event store with `event_date` / `available_at` / `timestamp_quality` | `medradar/db.py` | **working**, with a data caveat below |
 | Append-only revision ledger behind `events` + versioned migrations | `medradar/evidence_core/` | **working** for the application write path; explicitly **not tamper-proofing** ([contract](docs/refoundation/phase2/EVIDENCE_CORE_V1.md)) |
-| Company / subsidiary and technology-track resolution | `medradar/config.py`, `config/*.json` | **partial** — ~35 % of events carry a company key, ~11 % an auditable basis; unmatched events are reported, never guessed |
+| Company / subsidiary and technology-track resolution | `medradar/config.py`, `config/*.json` | **partial** — 35.2 % of events carry a company key and 52.4 % a technology track (`docs/DATA.md`); unmatched events are reported, never guessed |
 | Track heat (shrinkage-adjusted rate), mix shift (Jensen–Shannon), novelty (first occurrence) | `medradar/analyze.py` | **descriptive only** — in-sample scores, no out-of-sample validation |
 | Event study, replay, simulated long-only book | `medradar/eventstudy.py`, `medradar/replay.py`, `medradar/paper.py` | **working, simulation** — in-sample, long-only, not investment advice |
 | Bitemporal knowledge store (valid time vs knowledge time) | `medradar/tkg/` | **mechanism only** — the store is correct; the imported history has no independent public clock |
@@ -149,7 +149,9 @@ over the full category × horizon family). Only the 60-day horizon survives:
 
 Source: `docs/metrics.json` → `trading.event_study`, generated 2026-10-30, snapshot window
 2025-11-21 → 2026-10-30. This is the simulation lane; it is in-sample and makes no out-of-sample
-claim.
+claim. **Time-data caveat:** the snapshot has no independent public time — all 375,378 rows have
+`published_at = available_at = event_date` — so this result rests on a same-day public-time
+assumption and is **not** a point-in-time result (see Limitations).
 
 ### The negative results, which matter more
 
@@ -170,6 +172,10 @@ Patents were **not evaluated** (USPTO Open Data Portal requires a key); procurem
 **Early-signal study (five firms).** Phase 0 is CONDITIONAL-GO; the lead-time gate is **NO-GO** —
 the study did not show the change was detectable earlier. See
 [`research/studies/early_signal_5firms/PHASE0_REPORT.md`](research/studies/early_signal_5firms/PHASE0_REPORT.md).
+
+**S-028 / S-029 relation studies (branch-only, drafts).** Both are **NO-GO**: the
+evidence-based relation network did not beat its null on held-out data. Full record lives on the
+draft branches (PR #15/#16); neither is presented as a released capability.
 
 **Source-recovery experiment (E1b).** Can the missing *public* timestamp be recovered per source?
 
@@ -193,8 +199,8 @@ Full report: [`E1B_SOURCE_RECOVERY.md`](docs/refoundation/phase2/E1B_SOURCE_RECO
 2. **Genuine point-in-time claims are not supported** until source publication timestamps are
    re-acquired — recoverable for EDGAR, date-only for ClinicalTrials.gov, and for openFDA obtainable
    only by observing it from now on.
-3. **Entity resolution is partial.** ~35 % of events carry a company key, ~11 % have an auditable
-   basis. Unmapped events stay unmapped and are counted; they are never guessed.
+3. **Entity resolution is partial.** 35.2 % of events carry a company key and 52.4 % a technology
+   track (`docs/DATA.md`). Unmapped events stay unmapped and are counted; they are never guessed.
 4. **The revision ledger is not tamper-proofing.** It records the application write path; a database
    owner can still mutate the head table or replace the file.
 5. **510(k)/PMA rows carry no public timestamp**, so they enter industry counts but never return

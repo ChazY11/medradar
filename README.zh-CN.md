@@ -31,7 +31,7 @@ MedRadar 把公开、免费的监管、临床试验与公司披露证据，收�
 | 采集 openFDA 器械（510(k)/PMA/召回/分类）、openFDA 药品批准、ClinicalTrials.gov v2、SEC EDGAR 8-K | `medradar/collect_*.py`、`medradar/intelligence/` | **可用** —— 计数可从公开源复现 |
 | 统一事件库（`event_date` / `available_at` / `timestamp_quality`） | `medradar/db.py` | **可用**，但受下面的数据前提限制 |
 | `events` 背后的追加式修订账本 + 版本化迁移 | `medradar/evidence_core/` | 对**应用写入路径**可用；明确**不是**防篡改（[契约](docs/refoundation/phase2/EVIDENCE_CORE_V1.md)） |
-| 公司/子公司与技术赛道消歧 | `medradar/config.py`、`config/*.json` | **部分** —— 约 35 % 事件带公司键，约 11 % 有可审计依据；未匹配事件如实计数，绝不猜测 |
+| 公司/子公司与技术赛道消歧 | `medradar/config.py`、`config/*.json` | **部分** —— 35.2 % 事件带公司键，52.4 % 有技术赛道（`docs/DATA.md`）；未匹配事件如实计数，绝不猜测 |
 | 赛道热度（收缩后的速率）、结构位移（Jensen–Shannon）、新颖性（首次出现） | `medradar/analyze.py` | **仅描述性** —— 样本内得分，无样本外验证 |
 | 事件研究、回放、模拟多头组合 | `medradar/eventstudy.py`、`replay.py`、`paper.py` | **可用，仅模拟** —— 样本内、仅多头、不构成投资建议 |
 | 双时态知识库（有效时间 vs 知识时间） | `medradar/tkg/` | **仅机制** —— 存储正确；导入的历史没有独立公开时钟 |
@@ -122,7 +122,7 @@ flowchart TD
 | **+60 日** | **61** | **+5.65 %** | **2.45** | **[+1.35 %, +10.32 %]** |
 
 来源：`docs/metrics.json` → `trading.event_study`，生成于 2026-10-30，快照窗口 2025-11-21 →
-2026-10-30。这是模拟层的结果：样本内，不作样本外声明。
+2026-10-30。这是模拟层的结果：样本内，不作样本外声明。**时间数据警示：** 快照没有独立公开时间——全部 375,378 行都是 `published_at = available_at = event_date`——因此该结果建立在「事件日即公开日」的同日假设上，**不是**时点结果（见「局限」）。
 
 ### 负结果，才是更重要的那一半
 
@@ -142,6 +142,8 @@ flowchart TD
 **早期信号研究（五家公司）。** Phase 0 为 CONDITIONAL-GO；提前量（lead-time）门禁为 **NO-GO** ——
 该研究未能证明变化可以被更早检出。见
 [`research/studies/early_signal_5firms/PHASE0_REPORT.md`](research/studies/early_signal_5firms/PHASE0_REPORT.md)。
+
+**S-028 / S-029 关系研究（仅分支，草稿）。** 两项都是 **NO-GO**：基于证据的关系网络在留出数据上没有跑赢零假设。完整记录在草稿分支（PR #15/#16）；不作为已发布能力。
 
 **来源恢复实验（E1b）。** 缺失的**公开**时间戳能否按来源找回？
 
@@ -163,8 +165,7 @@ flowchart TD
    **独立公开时间 = 0 行。** 因此收益研究建立在「事件日即公开日」的同日假设之上。
 2. **在重新采集来源发布时间戳之前，不支持真正的时点声明** —— EDGAR 可找回、ClinicalTrials.gov
    只到日期、openFDA 只能从今往后前瞻观测。
-3. **实体消歧只完成一部分。** 约 35 % 事件带公司键，约 11 % 有可审计依据。未映射的保持未映射并计数，
-   绝不猜测。
+3. **实体消歧只完成一部分。** 35.2 % 事件带公司键，52.4 % 有技术赛道（`docs/DATA.md`）。未映射的保持未映射并计数，绝不猜测。
 4. **修订账本不是防篡改。** 它记录应用写入路径；数据库所有者仍可直接改头表或替换文件。
 5. **510(k)/PMA 行没有公开时间戳**，因此进入产业计数、但永不进入收益研究 —— 这是真实的样本损失，
    刻意不掩盖。
