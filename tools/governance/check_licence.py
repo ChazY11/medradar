@@ -569,6 +569,14 @@ def check_diff(
         entry = by_path.get(path)
         kind = detect_kind(data)
         if entry is None:
+            if _inventory_exempt(path, policy):
+                if kind in policy.restricted_kinds:
+                    report.fail(
+                        "content.restricted_kind",
+                        "restricted binary format under an inventory-exempt "
+                        "evidence path is still not allowed: %s (%s)" % (path, kind),
+                    )
+                continue
             report.fail(
                 "diff.changed_data_file",
                 "PR changes a data file with no inventory entry: %s" % path,
