@@ -18,3 +18,10 @@ decisions:
     source: "Lead assignment REFOUNDATION-002 / task-15 (Workflow A)"
     scope: "licence positive inventory + content classification, freeze format 2 with audit log, rule-change audit gate, state bump flow"
     notes: "Authorises the Phase 2 hardening change set. Not a scientific decision."
+  - id: GOV-0002
+    date: "2026-11-13"
+    title: "Inventory exemption for generated evidence artefacts (REFOUNDATION-003 integration)"
+    approved_by: ChazY11
+    source: "Owner-assigned REFOUNDATION-003 integration task (Workflow A fix)"
+    scope: "tools/governance/check_licence.py + docs/governance/DATA_LICENSES.yaml: exempt docs/refoundation/**/_evidence/ from per-file inventory coverage; content classification and restricted-format rejection unchanged"
+    notes: "Fixes a real cross-PR interaction (#32 inventory vs #35/#36 evidence JSON). Not a licence expansion: the exempted files are our own reproducible outputs, still content-scanned. Owner confirmation requested before merge."

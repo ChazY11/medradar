@@ -40,6 +40,13 @@ policy:
 inventory:
   file: docs/governance/DATA_INVENTORY.yaml
   schema: medradar.data_inventory.v1
+  # Generated evidence artefacts under docs/refoundation/**/_evidence/ are
+  # produced by our own reproducible scripts and are reviewed in the PR diff.
+  # They are exempt from the per-file inventory (which exists to catch
+  # third-party data), but their CONTENT is still classified: a restricted
+  # binary format under an exempt path still fails. See RC-0002 / GOV-0002.
+  exempt_patterns:
+    - "docs/refoundation/*/_evidence/*"
   data_extensions:
     - .csv
     - .tsv

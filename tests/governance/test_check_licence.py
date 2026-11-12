@@ -161,5 +161,39 @@ class RealRepositoryBaselineTests(unittest.TestCase):
         self.assertEqual(restricted, [])
 
 
+class InventoryExemptionTests(unittest.TestCase):
+    """Generated evidence artefacts are inventory-exempt but still content-scanned."""
+
+    def _policy(self, patterns):
+        report = check_licence.common.Report("test")
+        document = {"inventory": {"exempt_patterns": patterns}}
+        return check_licence.Policy(document, report), report
+
+    def test_evidence_artifact_is_exempt(self):
+        policy, _ = self._policy(["docs/refoundation/*/_evidence/*"])
+        self.assertTrue(
+            check_licence._inventory_exempt(
+                "docs/refoundation/phase2/_evidence/evidence_core/evidence_core.json",
+                policy,
+            )
+        )
+
+    def test_normal_data_file_is_not_exempt(self):
+        policy, _ = self._policy(["docs/refoundation/*/_evidence/*"])
+        self.assertFalse(check_licence._inventory_exempt("docs/metrics.json", policy))
+        self.assertFalse(
+            check_licence._inventory_exempt("research/RESULTS/summary.json", policy)
+        )
+
+    def test_no_patterns_means_no_exemption(self):
+        policy, _ = self._policy([])
+        self.assertFalse(
+            check_licence._inventory_exempt(
+                "docs/refoundation/phase2/_evidence/evidence_core/evidence_core.json",
+                policy,
+            )
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

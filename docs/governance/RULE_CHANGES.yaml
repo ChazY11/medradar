@@ -28,3 +28,11 @@ changes:
       - .github/workflows/governance.yml
       - docs/governance/DATA_LICENSES.yaml
       - docs/governance/FROZEN.yaml
+  - change_id: RC-0002
+    date: "2026-11-13"
+    decision_id: GOV-0002
+    approved_by: ChazY11
+    reason: "REFOUNDATION-003 integration blocker: generated evidence artefacts under docs/refoundation/**/_evidence/ are exempt from the per-file data inventory (their content is still classified, so restricted formats still fail). Discovered when #32 and #35 were merged: the Evidence Core acceptance JSON is our own derived output, not third-party data. Authorised by the owner-assigned REFOUNDATION-003 integration task; flagged for owner confirmation before merge."
+    paths:
+      - tools/governance/check_licence.py
+      - docs/governance/DATA_LICENSES.yaml

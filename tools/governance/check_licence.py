@@ -48,6 +48,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import json
 import sys
 from pathlib import Path
@@ -210,6 +211,16 @@ class Policy:
         )
         self.manual_review = str(inventory.get("manual_review") or "")
         self.disclaimer = str(inventory.get("disclaimer") or "")
+        # Generated evidence artefacts (our own reproducible outputs) may be
+        # exempt from the per-file inventory: the inventory exists to catch
+        # third-party data, while evidence artefacts are reviewed in the PR
+        # diff. Their CONTENT is still classified below, so a restricted
+        # binary format hidden under an exempt path still fails.
+        self.inventory_exempt_patterns = [
+            item
+            for item in (inventory.get("exempt_patterns") or [])
+            if isinstance(item, str) and item
+        ]
         for index, source in enumerate(document.get("sources") or []):
             where = "sources[%d]" % index
             if not isinstance(source, dict):
@@ -376,6 +387,11 @@ def _synthetic_entry(entry: dict | None, policy: Policy) -> bool:
 # --------------------------------------------------------------------------
 
 
+def _inventory_exempt(path: str, policy: Policy) -> bool:
+    """True when ``path`` is our own generated evidence (inventory-exempt)."""
+    return any(fnmatch.fnmatch(path, pattern) for pattern in policy.inventory_exempt_patterns)
+
+
 def check_tree(
     root: Path,
     policy: Policy,
@@ -394,6 +410,16 @@ def check_tree(
             continue
         data_files.append((path, data))
         entry = by_path.get(path)
+        if entry is None and _inventory_exempt(path, policy):
+            if kind in policy.restricted_kinds:
+                report.fail(
+                    "content.restricted_kind",
+                    "restricted binary format under an inventory-exempt evidence "
+                    "path is still not allowed: %s (%s); raw data belongs in "
+                    "gitignored data/" % (path, kind),
+                )
+                flagged.append({"path": path, "kind": kind, "reason": "restricted-kind"})
+            continue
         if entry is not None and entry.get("status") == "RED":
             report.fail(
                 "content.red_source",
