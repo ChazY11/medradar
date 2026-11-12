@@ -103,7 +103,9 @@ def _protection(state: dict) -> str:
 def render_status(state: dict) -> str:
     """README status-table fragment."""
     project = state.get("project") or {}
-    main = state.get("main") or {}
+    git = state.get("git") or {}
+    verified = state.get("verified") or {}
+    release = state.get("release") or {}
     tests = state.get("tests") or {}
     snapshot = state.get("data_snapshot") or {}
     prs = ((state.get("open_work") or {}).get("prs")) or {}
@@ -113,8 +115,12 @@ def render_status(state: dict) -> str:
         for study in studies
         if isinstance(study, dict) and study.get("public_claim") is True
     )
-    head = main.get("head", "")
-    short = main.get("short", "")
+    head = git.get("head", "")
+    short = git.get("short", "")
+    verified_commit = verified.get("commit", "")
+    verified_short = verified_commit[:7] if isinstance(verified_commit, str) else "?"
+    release_commit = release.get("commit")
+    release_commit_short = release_commit[:7] if isinstance(release_commit, str) else None
     repository = project.get("repository", "")
     head_cell = "`%s`" % short
     if repository and head:
@@ -126,10 +132,15 @@ def render_status(state: dict) -> str:
         "",
         "| Item | Value |",
         "| --- | --- |",
-        "| Main head | %s — %s |"
-        % (head_cell, _cell(str(main.get("committed_at", "?")).split("T")[0])),
-        "| Version | %s (`%s`) |"
-        % (_cell(main.get("version", "?")), _cell(main.get("version_source", "?"))),
+        "| Observed main head | %s — %s (may lag main; stale-by-design is a warning) |"
+        % (head_cell, _cell(str(git.get("committed_at", "?")).split("T")[0])),
+        "| Verified baseline | `%s` (%s passed, %s collected) |"
+        % (verified_short, _num(tests.get("passed")), _num(tests.get("collected"))),
+        "| Release | %s%s |"
+        % (
+            _cell(release.get("version", "?")),
+            " (`%s`)" % release_commit_short if release_commit_short else " (unreleased)",
+        ),
         "| Tests | %s passed, %s skipped, %s failed (%s collected, offline) |"
         % (
             _num(tests.get("passed")),
@@ -160,7 +171,9 @@ def render_status(state: dict) -> str:
 
 def render_unreleased(state: dict) -> str:
     """CHANGELOG unreleased snapshot fragment."""
-    main = state.get("main") or {}
+    git = state.get("git") or {}
+    verified = state.get("verified") or {}
+    release = state.get("release") or {}
     tests = state.get("tests") or {}
     snapshot = state.get("data_snapshot") or {}
     prs = ((state.get("open_work") or {}).get("prs")) or {}
@@ -172,11 +185,16 @@ def render_unreleased(state: dict) -> str:
         "Regenerate with `python tools/governance/gen_views.py`; do not edit "
         "this block by hand._" % state.get("generated_at", "?"),
         "",
-        "- **Main head:** `%s` (%s), version **%s**"
+        "- **Observed main head:** `%s` (%s) — may lag main; stale-but-ancestor is a warning"
         % (
-            main.get("short", "?"),
-            str(main.get("committed_at", "?")).split("T")[0],
-            main.get("version", "?"),
+            git.get("short", "?"),
+            str(git.get("committed_at", "?")).split("T")[0],
+        ),
+        "- **Verified baseline:** `%s`; release **%s**%s"
+        % (
+            verified.get("commit", "?"),
+            release.get("version", "?"),
+            "" if release.get("commit") is None else " at `%s`" % str(release.get("commit"))[:7],
         ),
         "- **Tests:** %s passed, %s skipped, %s failed (%s collected)"
         % (

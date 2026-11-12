@@ -1,33 +1,31 @@
 #!/usr/bin/env python3
-"""Bump PROJECT_STATE.yaml's `main` block to a git ref, then regenerate views.
+"""Refresh PROJECT_STATE.yaml's five state concepts from a git ref.
 
-Why this exists
----------------
-`check_state.py` requires the state's `main.head` to equal `origin/main`. When
-`main` advances, every open PR must carry a one-line state update; this tool
-performs that update mechanically and deterministically:
+Design (see docs/refoundation/phase3/STATE_LIFECYCLE.md)
+--------------------------------------------------------
+The state distinguishes five concepts instead of pretending one commit is all of
+them:
 
-* `main.head`, `main.short`, `main.committed_at`, `main.commit_subject`;
-* `main.version` (read from the ref's `pyproject.toml`, not the worktree);
-* `main.tracked_files` and `main.workflows` (from the ref's tree);
-* the top-level `generated_at` timestamp (set to the ref's commit time, so the
-  result is reproducible from the ref — no wall clock).
+* ``git.head`` — the main commit last **observed** (may legitimately lag main);
+* ``verified.commit`` — the last commit whose full suite + all gates passed;
+* ``release.version`` / ``release.commit`` — what is actually released (or null);
+* ``data_snapshot`` — local data build (hand-maintained, untouched here);
+* ``tests.tested_head`` — the commit the measured suite describes (untouched).
 
-Everything else in PROJECT_STATE.yaml is preserved byte-for-byte, including the
-hand-written comments, because the tool replaces only the `main:` block and the
-`generated_at:` value. Run `gen_views.py` afterwards (or use `--with-views`) to
-refresh the generated README/CHANGELOG/RESEARCH_INDEX.
+This tool refreshes exactly the blocks it can derive mechanically — ``git``,
+``verified`` and the ``release.version`` — from ``--ref`` (default
+``origin/main``), sets ``generated_at`` to the ref's commit time (deterministic:
+no wall clock), and regenerates the derived views in the same command. It never
+invents a release commit: an existing non-null ``release.commit`` is preserved.
 
-This is the pre-merge half of the safe automation: it runs in the PR, on the
-contributor's machine or in CI, and never writes to `main` itself. A
-post-merge bot commit cannot maintain strict `main.head == HEAD` equality,
-because the commit that updates the file changes the head it would have to
-record (see docs/refoundation/phase1/GOVERNANCE_ACTIVATION_REVIEW.md).
+After a merge, the state may be stale-but-an-ancestor of main; that is a WARNING
+in ``check_state.py``, not a failure. Running this one command refreshes the
+observed head and the verified baseline when convenient.
 
 Usage:
-    python tools/governance/bump_state.py                       # origin/main
-    python tools/governance/bump_state.py --ref origin/main --dry-run
-    python tools/governance/bump_state.py --with-views
+    python tools/governance/bump_state.py                 # refresh + views
+    python tools/governance/bump_state.py --dry-run       # show the diff only
+    python tools/governance/bump_state.py --no-views      # state only
 """
 
 from __future__ import annotations
@@ -45,9 +43,10 @@ except ImportError:  # ``python -m tools.governance.bump_state``
     import yamlmini  # type: ignore
 
 TOOL = "bump_state"
-TOP_LEVEL_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*):")
-MAIN_BLOCK_RE = re.compile(r"^main:\s*$")
+TOP_LEVEL_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*):\s*$")
 GENERATED_AT_RE = re.compile(r'^generated_at:\s*".*"\s*$')
+BLOCK_KEYS = ("git", "verified", "release")
+VIEW_FILES = ("README.md", "CHANGELOG.md", "docs/RESEARCH_INDEX.md")
 
 
 class BumpError(RuntimeError):
@@ -106,16 +105,15 @@ def _ref_facts(root: Path, ref: str) -> dict:
     }
 
 
-def _main_block(facts: dict) -> str:
+def _git_block(facts: dict) -> str:
     lines = [
-        "main:",
+        "git:",
         "  ref: %s" % facts["ref"],
-        "  head: %s" % facts["head"],
-        "  short: %s" % facts["short"],
+        "  head: %s" % _yaml_string(facts["head"]),
+        "  short: %s" % _yaml_string(facts["short"]),
         "  committed_at: %s" % _yaml_string(facts["committed_at"]),
         "  commit_subject: %s" % _yaml_string(facts["commit_subject"]),
-        "  version: %s" % _yaml_string(facts["version"]),
-        "  version_source: pyproject.toml",
+        "  observed_at: %s" % _yaml_string(facts["committed_at"]),
         "  tracked_files: %d" % facts["tracked_files"],
     ]
     if facts["workflows"]:
@@ -126,14 +124,42 @@ def _main_block(facts: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _main_block_span(lines: list[str]) -> tuple[int, int]:
+def _verified_block(facts: dict) -> str:
+    return "\n".join(
+        [
+            "verified:",
+            "  commit: %s" % _yaml_string(facts["head"]),
+            "  verified_at: %s" % _yaml_string(facts["committed_at"]),
+            '  note: "Refreshed by bump_state.py from %s; the full offline suite '
+            'and the governance gates are expected to pass at this commit."'
+            % facts["ref"],
+        ]
+    ) + "\n"
+
+
+def _release_block(facts: dict, existing_commit: str | None) -> str:
+    commit = _yaml_string(existing_commit) if existing_commit else "null"
+    return "\n".join(
+        [
+            "release:",
+            "  version: %s" % _yaml_string(facts["version"]),
+            "  commit: %s" % commit,
+        ]
+    ) + "\n"
+
+
+def _block_span(lines: list[str], key: str) -> tuple[int, int]:
+    pattern = re.compile(r"^%s:\s*$" % re.escape(key))
     start = None
     for index, line in enumerate(lines):
-        if MAIN_BLOCK_RE.match(line):
+        if pattern.match(line):
             start = index
             break
     if start is None:
-        raise BumpError("no top-level 'main:' block found in PROJECT_STATE.yaml")
+        raise BumpError(
+            "no top-level '%s:' block found in PROJECT_STATE.yaml; run the "
+            "schema migration (see docs/refoundation/phase3/STATE_LIFECYCLE.md)" % key
+        )
     end = len(lines)
     for index in range(start + 1, len(lines)):
         if TOP_LEVEL_RE.match(lines[index]):
@@ -142,61 +168,90 @@ def _main_block_span(lines: list[str]) -> tuple[int, int]:
     return start, end
 
 
-def _replace_main_block(text: str, block: str) -> str:
+def _existing_block(text: str, key: str) -> str:
     lines = text.split("\n")
-    start, end = _main_block_span(lines)
-    return "\n".join(lines[:start]) + "\n" + block + "\n".join(lines[end:])
-
-
-def _existing_main_block(text: str) -> str:
-    lines = text.split("\n")
-    start, end = _main_block_span(lines)
+    start, end = _block_span(lines, key)
     return "\n".join(lines[start:end]).rstrip("\n")
+
+
+def _replace_block(text: str, key: str, block: str) -> str:
+    lines = text.split("\n")
+    start, end = _block_span(lines, key)
+    return "\n".join(lines[:start]) + "\n" + block + "\n".join(lines[end:])
 
 
 def _replace_generated_at(text: str, timestamp: str) -> str:
     lines = text.split("\n")
-    replaced = False
     for index, line in enumerate(lines):
         if GENERATED_AT_RE.match(line):
             lines[index] = 'generated_at: "%s"' % timestamp
-            replaced = True
-            break
-    if not replaced:
-        raise BumpError("no top-level generated_at value found in PROJECT_STATE.yaml")
-    return "\n".join(lines)
+            return "\n".join(lines)
+    raise BumpError("no top-level generated_at value found in PROJECT_STATE.yaml")
 
 
 def propose(root: Path, state_path: Path, ref: str) -> tuple[str, str, dict]:
     original = state_path.read_text(encoding="utf-8")
     facts = _ref_facts(root, ref)
-    new_block = _main_block(facts)
-    if _existing_main_block(original) == new_block.rstrip("\n"):
+    try:
+        parsed_old = yamlmini.loads(original, path=str(state_path))
+    except yamlmini.YamlSubsetError as exc:
+        raise BumpError("cannot parse PROJECT_STATE.yaml: %s" % exc)
+    if not isinstance(parsed_old, dict):
+        raise BumpError("PROJECT_STATE.yaml must be a mapping")
+    release_old = parsed_old.get("release") or {}
+    existing_commit = release_old.get("commit") if isinstance(release_old, dict) else None
+    if existing_commit is not None and not isinstance(existing_commit, str):
+        raise BumpError("release.commit must be null or a commit sha")
+
+    blocks = {
+        "git": _git_block(facts),
+        "verified": _verified_block(facts),
+        "release": _release_block(facts, existing_commit),
+    }
+    if all(
+        _existing_block(original, key) == blocks[key].rstrip("\n")
+        for key in BLOCK_KEYS
+    ):
         return original, original, facts
-    updated = _replace_main_block(original, new_block)
+    updated = original
+    for key in BLOCK_KEYS:
+        updated = _replace_block(updated, key, blocks[key])
     updated = _replace_generated_at(updated, facts["committed_at"])
-    # Sanity: the result must parse and describe the ref exactly.
+
     parsed = yamlmini.loads(updated, path=str(state_path))
-    if not isinstance(parsed, dict) or not isinstance(parsed.get("main"), dict):
+    if not isinstance(parsed, dict):
         raise BumpError("bump produced an unparseable state file")
-    main = parsed["main"]
+    git_block = parsed.get("git")
+    if not isinstance(git_block, dict):
+        raise BumpError("bump produced no git block")
     for key in (
         "ref",
         "head",
         "short",
         "committed_at",
         "commit_subject",
-        "version",
         "tracked_files",
     ):
-        if main.get(key) != facts[key]:
+        if git_block.get(key) != facts[key]:
             raise BumpError(
-                "bump mismatch for main.%s: wrote %r, parsed %r"
-                % (key, facts[key], main.get(key))
+                "bump mismatch for git.%s: wrote %r, parsed %r"
+                % (key, facts[key], git_block.get(key))
             )
-    if main.get("workflows") != facts["workflows"]:
-        raise BumpError("bump mismatch for main.workflows")
+    if git_block.get("workflows") != facts["workflows"]:
+        raise BumpError("bump mismatch for git.workflows")
+    verified = parsed.get("verified")
+    if not isinstance(verified, dict) or verified.get("commit") != facts["head"]:
+        raise BumpError("bump mismatch for verified.commit")
+    release = parsed.get("release")
+    if not isinstance(release, dict) or release.get("version") != facts["version"]:
+        raise BumpError("bump mismatch for release.version")
+    if release.get("commit") != existing_commit:
+        raise BumpError("bump changed release.commit")
     return original, updated, facts
+
+
+def _views_available(root: Path) -> bool:
+    return all((root / path).is_file() for path in VIEW_FILES)
 
 
 def _run_views(root: Path) -> int:
@@ -212,21 +267,21 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog=TOOL,
         description=(
-            "Update PROJECT_STATE.yaml's main block (head, date, subject, "
-            "version, tracked-file and workflow counts) to a git ref, then "
-            "regenerate the derived views. Deterministic: no wall clock."
+            "Refresh the observed-main, verified and release-version state from a "
+            "git ref, then regenerate the derived views. Deterministic: the state "
+            "timestamp is the ref's commit time, not a wall clock."
         ),
         epilog=(
             "Exit codes: 0 state is up to date or was written, 1 error, "
-            "2 configuration error. Use this BEFORE pushing/merging a PR so "
-            "check_state.py passes against the PR's base main."
+            "2 configuration error. One command after a merge: "
+            "`python tools/governance/bump_state.py`."
         ),
     )
     common.add_common_args(parser)
     parser.add_argument(
         "--ref",
         default="origin/main",
-        help="Git ref that PROJECT_STATE.yaml should describe (default: origin/main).",
+        help="Git ref whose tree/commit the state should observe (default: origin/main).",
     )
     parser.add_argument(
         "--state",
@@ -239,9 +294,9 @@ def main(argv: list[str] | None = None) -> int:
         help="Print the unified diff instead of writing the file.",
     )
     parser.add_argument(
-        "--with-views",
+        "--no-views",
         action="store_true",
-        help="Regenerate README/CHANGELOG/RESEARCH_INDEX after writing the state.",
+        help="Do not regenerate README/CHANGELOG/RESEARCH_INDEX after writing.",
     )
     args = parser.parse_args(argv)
 
@@ -301,19 +356,26 @@ def main(argv: list[str] | None = None) -> int:
         )
     else:
         print(
-            "%s %s: %s -> %s (%d tracked files, workflows: %s)%s"
+            "%s %s: observed %s @ %s (%d tracked files, workflows: %s)"
             % (
                 "UPDATED" if changed else "UP TO DATE",
                 state_path.relative_to(root).as_posix(),
-                "state",
-                facts["ref"] + " @ " + facts["short"],
+                facts["ref"],
+                facts["short"],
                 facts["tracked_files"],
                 ", ".join(facts["workflows"]),
-                "; rerun gen_views.py" if changed else "",
             )
         )
-    if args.with_views and changed:
-        return _run_views(root)
+    if changed and not args.no_views:
+        if _views_available(root):
+            code = _run_views(root)
+            if code != common.EXIT_PASS:
+                return code
+        else:
+            print(
+                "%s: derived views not present here; skipped view regeneration"
+                % TOOL
+            )
     return common.EXIT_PASS
 
 

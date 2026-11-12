@@ -1,0 +1,48 @@
+# command: full pytest + six gates at the final HEAD
+# exit code: 0
+
+HEAD: d378ba338acf65376d4f9a6543a047d2dee33fd2
+branch: governance/state-scheme
+origin/main: b2a14c0a92332c004445de686daee97754cf94cb
+
+=== full suite at the final commit ===
+1157 passed, 3 skipped, 224 subtests passed in 65.69s (0:01:05)
+
+=== six gates at the final commit ===
+state        exit=0  PASS check_state (253 checks, 0 failures, 2 warnings)
+views        exit=0  PASS gen_views (3 targets)
+frozen       exit=0  PASS check_frozen (36 checks, 0 failures, 1 warnings)
+licence      exit=0  PASS check_licence (14 checks, 0 failures, 1 warnings)
+links        exit=0  PASS check_links (3 checks, 0 failures, 0 warnings)
+rule-audit   exit=0  PASS check_rule_audit (24 checks, 0 failures, 0 warnings)
+
+=== clean worktree / local-only commits ===
+
+d378ba3 docs(governance): five-concept state lifecycle, governance procedures, 3-merge and flake evidence
+a8933c7 fix(governance): quote commit hashes so all-digit short/head stay YAML strings; regression test
+0019605 feat(governance): migrate PROJECT_STATE to the five-concept schema v2 and regenerate views
+0896c0a feat(governance): five-concept state scheme - observed git head may lag main (WARN), verified/release/tests ancestry rules, one-command bump
+cfa685c fix(views): normalize PROJECT_STATE.yaml to LF so the generated source digest is platform-independent
+c751da3 docs(refoundation): ship triage raw metadata, sanitize acceptance paths
+1fd46d8 docs(refoundation): Phase 3 acceptance + independent Evidence Core acceptance
+8182f07 docs(refoundation): sanitize local worktree paths from PR triage
+a93afe3 docs(refoundation): Phase 3 integration record and PR triage
+81aaa84 integration: new README + docs navigation, state mission/tests, generated status
+96950ba merge: new README + docs navigation (REFOUNDATION-003)
+3be8a4e merge: README truth (#34) unfixed base
+413254f merge: E1b source recovery (#36)
+faab1a5 merge: Evidence Core v1 (#35)
+d746b86 merge: governance hardening (#32)
+1331883 fix(governance): apply the evidence inventory exemption to the PR diff scan too
+4ea5ada fix(governance): inventory-exempt generated evidence artefacts, keep content scan
+032b960 docs(docs): navigation index, truth-first README (EN/ZH), visual plan
+6a95a5b test(release): accept 4-digit test counts in the README staleness guard
+beacd11 docs(governance): final Phase 2 validation evidence
+6ffe7e7 research(e1b): source-recovery experiment - retrospective public availability vs prospective observation
+f088e37 feat(evidence-core): append-only event_revision ledger + versioned migrations (task-16)
+4430a52 docs(governance): Phase 2 hardening deliverable and evidence; fix diff-scan RED handling
+8a0e8f9 fix(governance): fail RED inventory entries; classify refoundation/tools data files; resync inventory
+500a321 chore(governance): record Phase 2 test counts and refresh derived views
+36cf0e5 feat(governance): Phase 2 hardening - data inventory/content scan, freeze v2 audit, rule-change audit, state bump, tests
+0c44de0 docs(readme): truth revision - mission, main-vs-draft status, event-time limitation
+8d7fd62 feat(governance): Phase 0 governance MVP - state source, gates, CI draft

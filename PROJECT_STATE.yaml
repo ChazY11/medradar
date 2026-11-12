@@ -15,8 +15,8 @@
 #   * Facts describe `main` (the ref under `main.ref`), not the branch in which
 #     this file is being edited. Do not record branch-only capabilities here.
 
-schema: medradar.project_state.v1
-generated_at: "2026-11-13T02:57:53+08:00"
+schema: medradar.project_state.v2
+generated_at: "2026-11-13T04:50:58+08:00"
 
 project:
   name: MedRadar
@@ -26,33 +26,38 @@ project:
   mission: "A research project on one question: can publicly observable evidence give reliable early warning of meaningful change in medical-technology development? MedRadar collects free public regulatory, clinical-trial and corporate-filing evidence into an auditable event store and tests whether it carries signal before the market notices; the engineering and the negative results are the deliverable."
   pages_source: docs/
 
-main:
+git:
   ref: origin/main
   head: b2a14c0a92332c004445de686daee97754cf94cb
   short: b2a14c0
   committed_at: "2026-11-03T04:26:31+08:00"
   commit_subject: "Merge pull request #11 from ChazY11/research/early-signal-review-workbench"
-  version: "0.5.0"
-  version_source: pyproject.toml
+  observed_at: "2026-11-03T04:26:31+08:00"
   tracked_files: 1135
   workflows:
     - ci
     - forecast-cycle
     - live
     - weekly
-
+verified:
+  commit: b2a14c0a92332c004445de686daee97754cf94cb
+  verified_at: "2026-11-03T04:26:31+08:00"
+  note: "Refreshed by bump_state.py from origin/main; the full offline suite and the governance gates are expected to pass at this commit."
+release:
+  version: "0.5.0"
+  commit: null
 tests:
-  collected: 1148
-  passed: 1145
+  collected: 1160
+  passed: 1157
   skipped: 3
   failed: 0
   subtests_passed: 224
   command: 'python -m pytest -q -o addopts=""'
-  measured_at: "2026-11-13T02:57:53+08:00"
+  measured_at: "2026-11-13T04:50:58+08:00"
   artifact: docs/refoundation/phase0/_evidence/governance/pytest_count.json
-  tested_head: 96950ba089d6148278a52cf2d3f2b23a92b19f3c
+  tested_head: a8933c7e049f61e43a7a86a850c641e61f7b8bcc
   policy: strict
-  note: "Tests are offline and need no network or API key. Measured on the REFOUNDATION-003 integration tree 96950ba, which carries the Phase-2 governance tests (43) and Evidence Core tests (28); the artifact records the exact run. main.head still names origin/main until the merge bump."
+  note: "Offline suite; no network or API key. Measured on the REFOUNDATION-003 integration tree a8933c7 (the state scheme tests included). The measurement commit is a descendant of the observed origin/main and becomes an ordinary ancestor after the merge bump; the series is superseded by the next record_tests run on main."
 data_snapshot:
   date: "2026-10-31"
   generated_at: "2026-10-31T05:33:25Z"

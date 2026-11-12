@@ -1,0 +1,37 @@
+# command: for i in 1..30: python -m pytest tests/governance/test_bump_state.py::BumpStateTests::test_generated_at_is_the_ref_commit_time -q -o addopts=
+# the flake that used to occur ~2/7 in full-suite runs (live-state copy + ignored exit codes + string timestamp compare)
+
+ 1: exit=0  1 passed in 0.89s
+ 2: exit=0  1 passed in 0.80s
+ 3: exit=0  1 passed in 0.87s
+ 4: exit=0  1 passed in 0.80s
+ 5: exit=0  1 passed in 0.82s
+ 6: exit=0  1 passed in 0.83s
+ 7: exit=0  1 passed in 0.85s
+ 8: exit=0  1 passed in 0.88s
+ 9: exit=0  1 passed in 0.89s
+10: exit=0  1 passed in 0.81s
+11: exit=0  1 passed in 0.85s
+12: exit=0  1 passed in 0.86s
+13: exit=0  1 passed in 0.84s
+14: exit=0  1 passed in 0.87s
+15: exit=0  1 passed in 0.79s
+16: exit=0  1 passed in 0.77s
+17: exit=0  1 passed in 0.82s
+18: exit=0  1 passed in 0.75s
+19: exit=0  1 passed in 0.76s
+20: exit=0  1 passed in 0.78s
+21: exit=0  1 passed in 0.76s
+22: exit=0  1 passed in 0.92s
+23: exit=0  1 passed in 0.87s
+24: exit=0  1 passed in 0.79s
+25: exit=0  1 passed in 0.72s
+26: exit=0  1 passed in 0.77s
+27: exit=0  1 passed in 0.74s
+28: exit=0  1 passed in 0.79s
+29: exit=0  1 passed in 0.80s
+30: exit=0  1 passed in 0.77s
+
+RESULT: 30/30 passed, 0/30 failed
+Root cause fixed: static fixture under tests/governance/fixtures/ instead of copying the live PROJECT_STATE.yaml;
+every bump call asserts returncode==0; generated_at compared as a normalized instant (epoch seconds), not a string.

@@ -5,16 +5,17 @@ This is a research tool; "fixed" means a documented behaviour changed.
 
 <!-- BEGIN GENERATED: unreleased -->
 <!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
-<!-- source-sha256: d9040a766a111ad0d0f9b3a344a6f36d829fdc56ff5cc274915b0655ddb88e10 -->
-<!-- payload-sha256: bbc02968a31920f4e6455b1c1563a41053de8fb0df94ad15e1836e88a0464c0b -->
+<!-- source-sha256: a693d59e40372109ef6c84f2529fdcd07d57f959c3351016f06fbb04a8311396 -->
+<!-- payload-sha256: c6768f107e677b99d5edc9f90badc0b3f2065dfed29e9a0b5bfa81342f1383e2 -->
 ## [Unreleased] — generated governance snapshot
 
-_Snapshot of [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T02:57:53+08:00`. Regenerate with `python tools/governance/gen_views.py`; do not edit this block by hand._
+_Snapshot of [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T04:50:58+08:00`. Regenerate with `python tools/governance/gen_views.py`; do not edit this block by hand._
 
-- **Main head:** `b2a14c0` (2026-11-03), version **0.5.0**
-- **Tests:** 1,145 passed, 3 skipped, 0 failed (1,148 collected)
+- **Observed main head:** `b2a14c0` (2026-11-03) — may lag main; stale-but-ancestor is a warning
+- **Verified baseline:** `b2a14c0a92332c004445de686daee97754cf94cb`; release **0.5.0**
+- **Tests:** 1,157 passed, 3 skipped, 0 failed (1,160 collected)
 - **Capabilities:** 7 working, 6 draft, 1 retired
-- **Open PRs:** 28 open (27 draft), 10 merged; branch protection not applied
+- **Open PRs:** 23 open (22 draft), 10 merged; branch protection not applied
 - **Data snapshot:** 2026-10-31, 375,378 events (local build; `data/` is gitignored)
 <!-- END GENERATED: unreleased -->
 
