@@ -1,0 +1,245 @@
+# command: python tools/governance/check_state.py   # main.head deliberately set to deadbeef...
+# exit code: 1
+
+[ok]   state.required_sections: present
+[ok]   state.schema: expected medradar.project_state.v1, found 'medradar.project_state.v1'
+[ok]   state.generated_at.format: 2026-11-12T23:35:20+08:00
+[ok]   project.name: MedRadar
+[ok]   project.owner: ChazY11
+[ok]   project.repository: https://github.com/ChazY11/medradar
+[ok]   project.licence: MIT
+[ok]   project.mission: An open-source radar for FDA device and drug industry direction: what US majo...
+[ok]   project.repository_url: https://github.com/ChazY11/medradar
+[ok]   main.head: deadbeefdeadbeefdeadbeefdeadbeefdeadbeef
+[ok]   main.short: b2a14c0
+[ok]   main.ref: origin/main
+[ok]   main.committed_at: 2026-11-03T04:26:31+08:00
+[ok]   main.commit_subject: Merge pull request #11 from ChazY11/research/early-signal-review-workbench
+[ok]   main.version: 0.5.0
+[ok]   main.tracked_files: 1135
+[ok]   main.version_source: pyproject.toml
+[ok]   main.head.format: deadbeefdeadbeefdeadbeefdeadbeefdeadbeef
+[FAIL] main.short.consistent: short='b2a14c0' head='deadbeefdeadbeefdeadbeefdeadbeefdeadbeef'
+[FAIL] main.head.git: origin/main resolves to b2a14c0a92332c004445de686daee97754cf94cb, state records deadbeefdeadbeefdeadbeefdeadbeefdeadbeef
+[ok]   main.committed_at.git: expected 2026-11-03T04:26:31+08:00, found 2026-11-03T04:26:31+08:00
+[ok]   main.commit_subject.git: expected 'Merge pull request #11 from ChazY11/research/early-signal-review-workbench', found 'Merge pull request #11 from ChazY11/research/early-signal-review-workbench'
+[ok]   main.tracked_files.git: main tree has 1135 files, state records 1135
+[ok]   main.workflows.git: main has ['ci', 'forecast-cycle', 'live', 'weekly'], state records ['ci', 'forecast-cycle', 'live', 'weekly']
+[ok]   main.version.pyproject: pyproject=0.5.0 state=0.5.0
+[ok]   project.pages_source.directory: 'docs/' is a directory
+[ok]   tests.collected: 1074
+[ok]   tests.passed: 1071
+[ok]   tests.skipped: 3
+[ok]   tests.failed: 0
+[ok]   tests.subtests_passed: 224
+[ok]   tests.command: python -m pytest -q -o addopts=""
+[ok]   tests.measured_at: 2026-11-12T23:31:00+08:00
+[ok]   tests.artifact: docs/refoundation/phase0/_evidence/governance/pytest_count.json
+[ok]   tests.tested_head: b2a14c0a92332c004445de686daee97754cf94cb
+[ok]   tests.policy: strict
+[ok]   tests.policy.value: expected 'strict' or 'warn', found 'strict'
+[ok]   tests.arithmetic: passed+skipped+failed=1074 collected=1074
+[ok]   tests.failed.zero: failed=0
+[ok]   tests.artifact.exists: docs\refoundation\phase0\_evidence\governance\pytest_count.json
+[ok]   tests.artifact.schema: expected medradar.test_count.v1, found 'medradar.test_count.v1'
+[ok]   tests.artifact.tests_unchanged: artifact records that tests/ matched the measured commit
+[ok]   tests.artifact.tested_head: tested_head b2a14c0a9233 is present and is an ancestor of HEAD
+[ok]   tests.artifact.failed_zero: artifact records failed=0
+[ok]   tests.artifact.match: 1074 collected / 1071 passed / 3 skipped
+[ok]   data_snapshot.date: 2026-10-31
+[ok]   data_snapshot.date.format: 2026-10-31
+[ok]   data_snapshot.events: 375378
+[ok]   data_snapshot.evidence: docs/DATA.md
+[ok]   data_snapshot.storage: data/ and out/ are gitignored; these numbers describe a local snapshot, not r...
+[ok]   data_snapshot.sources.nonempty: 6 sources
+[ok]   data_snapshot.sources.unique_ids: 6 unique ids
+[ok]   data_snapshot.sources[0].id: openfda_device_510k
+[ok]   data_snapshot.sources[0].rows: 176466
+[ok]   data_snapshot.sources[1].id: openfda_device_pma
+[ok]   data_snapshot.sources[1].rows: 57372
+[ok]   data_snapshot.sources[2].id: openfda_device_recall
+[ok]   data_snapshot.sources[2].rows: 59646
+[ok]   data_snapshot.sources[3].id: ctgov
+[ok]   data_snapshot.sources[3].rows: 55592
+[ok]   data_snapshot.sources[4].id: sec_edgar_8k
+[ok]   data_snapshot.sources[4].rows: 20976
+[ok]   data_snapshot.sources[5].id: openfda_drug_drugsfda
+[ok]   data_snapshot.sources[5].rows: 5326
+[ok]   capabilities.nonempty: 14 entries
+[ok]   capabilities.unique_ids: 14 unique ids
+[ok]   capabilities[0].id: cli_and_offline_demo
+[ok]   capabilities[0].title: CLI and offline demo (`medradar demo`, `medradar status`, `medradar run`)
+[ok]   capabilities[0].status: working
+[ok]   capabilities[0].evidence: medradar/__main__.py
+[ok]   capabilities[1].id: offline_selftest
+[ok]   capabilities[1].title: Offline selftest entry point (`python -m medradar selftest`)
+[ok]   capabilities[1].status: working
+[ok]   capabilities[1].evidence: medradar/__main__.py
+[ok]   capabilities[2].id: weekly_intelligence_report
+[ok]   capabilities[2].title: Weekly Chinese-language intelligence report and event study
+[ok]   capabilities[2].status: working
+[ok]   capabilities[2].evidence: docs/report_en.md
+[ok]   capabilities[3].id: pages_dashboard
+[ok]   capabilities[3].title: Zero-dependency HTML dashboard published from docs/ via GitHub Pages
+[ok]   capabilities[3].status: working
+[ok]   capabilities[3].evidence: docs/dashboard.html
+[ok]   capabilities[4].id: research_agent
+[ok]   capabilities[4].title: Deterministic evidence-grounded research agent with cited claims
+[ok]   capabilities[4].status: working
+[ok]   capabilities[4].evidence: medradar/research_agent.py
+[ok]   capabilities[5].id: forecast_registry
+[ok]   capabilities[5].title: Immutable forecast registry with as-of scoring
+[ok]   capabilities[5].status: working
+[ok]   capabilities[5].evidence: medradar/forecast_registry.py
+[ok]   capabilities[6].id: temporal_knowledge_graph
+[ok]   capabilities[6].title: Bitemporal knowledge store (valid time vs knowledge time)
+[ok]   capabilities[6].status: working
+[ok]   capabilities[6].evidence: medradar/tkg
+[ok]   capabilities[7].id: market_to_rd_lane
+[ok]   capabilities[7].title: Market-to-R&D lane with point-in-time evaluation (honest negative result)
+[ok]   capabilities[7].status: draft
+[ok]   capabilities[7].evidence: docs/MARKET_DATA.md
+[ok]   capabilities[8].id: publication_patent_lane
+[ok]   capabilities[8].title: OpenAlex publication counts evaluated; US patent path implemented but key-gat...
+[ok]   capabilities[8].status: draft
+[ok]   capabilities[8].evidence: docs/PUBLICATION_PATENT_DATA.md
+[ok]   capabilities[9].id: early_signal_study
+[ok]   capabilities[9].title: Early corporate technology-shift study (Phase 0 complete, Phase 1 conditional)
+[ok]   capabilities[9].status: draft
+[ok]   capabilities[9].evidence: research/studies/early_signal_5firms/PHASE0_REPORT.md
+[ok]   capabilities[10].id: papers
+[ok]   capabilities[10].title: Paper drafts with machine-verified claim maps (not submitted, not peer reviewed)
+[ok]   capabilities[10].status: draft
+[ok]   capabilities[10].evidence: papers/PAPER_v1.md
+[ok]   capabilities[11].id: forecast_cycle_workflow
+[ok]   capabilities[11].title: Weekly continuous forecast-cycle workflow (committed; not executed in the aut...
+[ok]   capabilities[11].status: draft
+[ok]   capabilities[11].evidence: .github/workflows/forecast-cycle.yml
+[ok]   capabilities[12].id: live_observatory
+[ok]   capabilities[12].title: Live observatory lane (paper trading, not investment advice)
+[ok]   capabilities[12].status: draft
+[ok]   capabilities[12].evidence: medradar/live.py
+[ok]   capabilities[13].id: deployment_detector_monthly
+[ok]   capabilities[13].title: Monthly-resolution deployment detector
+[ok]   capabilities[13].status: retired
+[ok]   capabilities[13].evidence: research/DECISIONS.md
+[ok]   frozen.schema: expected medradar.frozen.v1, found 'medradar.frozen.v1'
+[ok]   frozen.entries.unique: 7 entries
+[ok]   research_studies.unique_ids: 1 unique ids
+[ok]   research_studies[0].id: early_signal_5firms
+[ok]   research_studies[0].title: Early detection of corporate technology shifts in medical devices (5 deep-cas...
+[ok]   research_studies[0].verdict: Phase 0 CONDITIONAL-GO; the lead-time gate G1 is NO-GO; Phase 1 is not GO unt...
+[ok]   research_studies[0].evidence: research/studies/early_signal_5firms/PHASE0_REPORT.md
+[ok]   research_studies[0].public_claim: False
+[ok]   research_studies[0].freeze_ref: FZ-010
+[ok]   research_studies[0].freeze_ref.exists: freeze_ref='FZ-010', known freeze ids=['FZ-001', 'FZ-002', 'FZ-003', 'FZ-004', 'FZ-005', 'FZ-006', 'FZ-010']
+[ok]   open_work.prs.merged_count: 10
+[ok]   open_work.prs.open_count: 20
+[ok]   open_work.prs.draft_count: 19
+[ok]   open_work.prs.merged_range: #2-#11
+[ok]   open_work.prs.open_range: #1, #12-#30
+[ok]   open_work.prs.measured_from: Owner-reported in the Phase-0 brief on 2026-11-12; the GitHub API was not cal...
+[ok]   open_work.prs.drafts_le_open: drafts=19 open=20
+[ok]   open_work.branches.verified: False
+[ok]   open_work.branches.local_refs: 52
+[ok]   open_work.branches.remote_refs: 35
+[ok]   open_work.branches.measured_from: `git for-each-ref` on 2026-11-12 in the shared clone; informational only, not...
+[ok]   governance.branch_protection_applied: False
+[ok]   governance.plan: docs/governance/BRANCH_PROTECTION_PLAN.md
+[ok]   governance.note: No branch protection or required review is configured on main at main.head; t...
+[ok]   governance.required_status_checks.list: 0 entries
+[ok]   decisions.source: research/DECISIONS.md
+[ok]   decisions.count: 74
+[ok]   decisions.format: ADR-style, append-only; superseded entries keep a pointer
+[ok]   decisions.index.unique_ids: 12 unique ids
+[ok]   decisions.source.headings: 74 headings, 74 unique
+[ok]   decisions.count.matches_source: state records 74, research/DECISIONS.md has 74 headings
+[ok]   decisions.index[0].id: D-001
+[ok]   decisions.index[0].title: Build new work on integration/market-to-rd-v2, not on main
+[ok]   decisions.index[0].path: research/DECISIONS.md
+[ok]   decisions.index[0].heading_exists: 'D-001' is present in research/DECISIONS.md
+[ok]   decisions.index[1].id: D-003
+[ok]   decisions.index[1].title: A negative result about added data sources is a result, not a failure
+[ok]   decisions.index[1].path: research/DECISIONS.md
+[ok]   decisions.index[1].heading_exists: 'D-003' is present in research/DECISIONS.md
+[ok]   decisions.index[2].id: D-005
+[ok]   decisions.index[2].title: Frozen artifacts are immutable inputs
+[ok]   decisions.index[2].path: research/DECISIONS.md
+[ok]   decisions.index[2].heading_exists: 'D-005' is present in research/DECISIONS.md
+[ok]   decisions.index[3].id: D-006
+[ok]   decisions.index[3].title: Pre-register the test windows before modelling
+[ok]   decisions.index[3].path: research/DECISIONS.md
+[ok]   decisions.index[3].heading_exists: 'D-006' is present in research/DECISIONS.md
+[ok]   decisions.index[4].id: D-011
+[ok]   decisions.index[4].title: Strategic realignment: Observe -> Understand -> Anticipate
+[ok]   decisions.index[4].path: research/DECISIONS.md
+[ok]   decisions.index[4].heading_exists: 'D-011' is present in research/DECISIONS.md
+[ok]   decisions.index[5].id: D-025
+[ok]   decisions.index[5].title: Retraction: the cycle-6 ivd_immuno entry wave was an entity-appearance artifact
+[ok]   decisions.index[5].path: research/DECISIONS.md
+[ok]   decisions.index[5].heading_exists: 'D-025' is present in research/DECISIONS.md
+[ok]   decisions.index[6].id: D-043
+[ok]   decisions.index[6].title: The corrected confirmation window confirms; the programme has its first valid...
+[ok]   decisions.index[6].path: research/DECISIONS.md
+[ok]   decisions.index[6].heading_exists: 'D-043' is present in research/DECISIONS.md
+[ok]   decisions.index[7].id: D-045
+[ok]   decisions.index[7].title: The layer deploys at quarterly resolution; no detector is identifiable across...
+[ok]   decisions.index[7].path: research/DECISIONS.md
+[ok]   decisions.index[7].heading_exists: 'D-045' is present in research/DECISIONS.md
+[ok]   decisions.index[8].id: D-048
+[ok]   decisions.index[8].title: The promotion rule also holds at the legal-entity unit
+[ok]   decisions.index[8].path: research/DECISIONS.md
+[ok]   decisions.index[8].heading_exists: 'D-048' is present in research/DECISIONS.md
+[ok]   decisions.index[9].id: D-054
+[ok]   decisions.index[9].title: Promotions get their own append-only ledger, and a promotion is not a finding
+[ok]   decisions.index[9].path: research/DECISIONS.md
+[ok]   decisions.index[9].heading_exists: 'D-054' is present in research/DECISIONS.md
+[ok]   decisions.index[10].id: D-066
+[ok]   decisions.index[10].title: A frozen prospective forecast set, and the 7 forecasts that do not count as e...
+[ok]   decisions.index[10].path: research/DECISIONS.md
+[ok]   decisions.index[10].heading_exists: 'D-066' is present in research/DECISIONS.md
+[ok]   decisions.index[11].id: D-074
+[ok]   decisions.index[11].title: Final consolidation: the record reproduces, and the completion position is st...
+[ok]   decisions.index[11].path: research/DECISIONS.md
+[ok]   decisions.index[11].heading_exists: 'D-074' is present in research/DECISIONS.md
+[ok]   not_claimed.nonempty: 5 entries
+[ok]   not_claimed[0].string: No branch protection or mandatory review is enforced on main (see the governance
+[ok]   not_claimed[1].string: No matured prospective forecasts exist yet, so no predictive-skill claim is made
+[ok]   not_claimed[2].string: Both papers are drafts; neither is submitted or peer reviewed.
+[ok]   not_claimed[3].string: The Market-to-R&D lane reports an honest negative; added value is not establishe
+[ok]   not_claimed[4].string: A detection is a statement about activity rate, never about intent, capability o
+[ok]   path.project.pages_source: docs/ (dir)
+[ok]   path.main.version_source: pyproject.toml (file)
+[ok]   path.tests.artifact: docs/refoundation/phase0/_evidence/governance/pytest_count.json (file)
+[ok]   path.data_snapshot.evidence: docs/DATA.md (file)
+[ok]   path.capabilities[0].evidence: medradar/__main__.py (file)
+[ok]   path.capabilities[1].evidence: medradar/__main__.py (file)
+[ok]   path.capabilities[2].evidence: docs/report_en.md (file)
+[ok]   path.capabilities[3].evidence: docs/dashboard.html (file)
+[ok]   path.capabilities[4].evidence: medradar/research_agent.py (file)
+[ok]   path.capabilities[5].evidence: medradar/forecast_registry.py (file)
+[ok]   path.capabilities[6].evidence: medradar/tkg (dir)
+[ok]   path.capabilities[7].evidence: docs/MARKET_DATA.md (file)
+[ok]   path.capabilities[8].evidence: docs/PUBLICATION_PATENT_DATA.md (file)
+[ok]   path.capabilities[9].evidence: research/studies/early_signal_5firms/PHASE0_REPORT.md (file)
+[ok]   path.capabilities[10].evidence: papers/PAPER_v1.md (file)
+[ok]   path.capabilities[11].evidence: .github/workflows/forecast-cycle.yml (file)
+[ok]   path.capabilities[12].evidence: medradar/live.py (file)
+[ok]   path.capabilities[13].evidence: research/DECISIONS.md (file)
+[ok]   path.research_studies[0].evidence: research/studies/early_signal_5firms/PHASE0_REPORT.md (file)
+[ok]   path.governance.plan: docs/governance/BRANCH_PROTECTION_PLAN.md (file)
+[ok]   path.decisions.source: research/DECISIONS.md (file)
+[ok]   path.decisions.index[0].path: research/DECISIONS.md (file)
+[ok]   path.decisions.index[1].path: research/DECISIONS.md (file)
+[ok]   path.decisions.index[2].path: research/DECISIONS.md (file)
+[ok]   path.decisions.index[3].path: research/DECISIONS.md (file)
+[ok]   path.decisions.index[4].path: research/DECISIONS.md (file)
+[ok]   path.decisions.index[5].path: research/DECISIONS.md (file)
+[ok]   path.decisions.index[6].path: research/DECISIONS.md (file)
+[ok]   path.decisions.index[7].path: research/DECISIONS.md (file)
+[ok]   path.decisions.index[8].path: research/DECISIONS.md (file)
+[ok]   path.decisions.index[9].path: research/DECISIONS.md (file)
+[ok]   path.decisions.index[10].path: research/DECISIONS.md (file)
+[ok]   path.decisions.index[11].path: research/DECISIONS.md (file)
+[WARN] test count was measured on b2a14c0a9233, not main.head deadbeefdead; refresh with `python tools/governance/record_tests.py` when the change lands
+FAIL check_state (240 checks, 2 failures, 1 warnings)

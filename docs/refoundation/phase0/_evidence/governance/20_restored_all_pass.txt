@@ -1,0 +1,8 @@
+# command: check_state.py; gen_views.py --check; check_frozen.py; check_licence.py; check_links.py   # state restored after every deliberate failure
+# exit code: 0
+
+python tools/governance/check_state.py | exit 0 | PASS check_state (240 checks, 0 failures, 0 warnings)
+python tools/governance/gen_views.py | exit 0 | PASS gen_views (3 targets)
+python tools/governance/check_frozen.py | exit 0 | PASS check_frozen (34 checks, 0 failures, 0 warnings)
+python tools/governance/check_licence.py | exit 0 | PASS check_licence (96 checks, 0 failures, 0 warnings)
+python tools/governance/check_links.py | exit 0 | PASS check_links (3 checks, 0 failures, 0 warnings)

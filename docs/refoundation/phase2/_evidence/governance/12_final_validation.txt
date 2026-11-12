@@ -1,0 +1,40 @@
+# command: final validation at the hardening HEAD: six gates, full pytest, selftest, compileall, clean worktree, protected trees untouched, local-commit list
+# exit code: 0
+
+HEAD: 4430a5286d5e40af5c3d8a9989f1662a9ff9f0d1
+branch: governance/phase2-hardening
+origin/main: b2a14c0a92332c004445de686daee97754cf94cb
+
+=== six gates at the final commit ===
+state        exit=0  PASS check_state (240 checks, 0 failures, 1 warnings)
+views        exit=0  PASS gen_views (3 targets)
+frozen       exit=0  PASS check_frozen (36 checks, 0 failures, 1 warnings)
+licence      exit=0  PASS check_licence (14 checks, 0 failures, 1 warnings)
+links        exit=0  PASS check_links (3 checks, 0 failures, 0 warnings)
+rule-audit   exit=0  PASS check_rule_audit (12 checks, 0 failures, 0 warnings)
+
+=== full suite at the final commit ===
+1114 passed, 3 skipped, 224 subtests passed in 54.30s
+
+=== packaging entry point (CI path) ===
+
+OK (skipped=3)
+
+=== syntax ===
+compileall exit: 0
+
+=== worktree / protected trees ===
+--- medradar/ + experiments/ vs origin/main (must be empty) ---
+--- files changed vs origin/main (count) ---
+73
+
+=== no push, no merge, no settings: local branch only ===
+
+* governance/phase2-hardening               4430a52 docs(governance): Phase 2 hardening deliverable and evidence; fix diff-scan RED handling
+4430a52 docs(governance): Phase 2 hardening deliverable and evidence; fix diff-scan RED handling
+8a0e8f9 fix(governance): fail RED inventory entries; classify refoundation/tools data files; resync inventory
+500a321 chore(governance): record Phase 2 test counts and refresh derived views
+36cf0e5 feat(governance): Phase 2 hardening - data inventory/content scan, freeze v2 audit, rule-change audit, state bump, tests
+8d7fd62 feat(governance): Phase 0 governance MVP - state source, gates, CI draft
+
+

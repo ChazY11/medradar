@@ -478,3 +478,30 @@ tests/          offline tests (synthetic fixtures, no network)
 MIT. Source data belongs to its publishers (openFDA is public domain; ClinicalTrials.gov and SEC
 EDGAR have their own terms). Nothing here is investment advice. This is a research and
 education project.
+
+## Project status (generated)
+
+This block is generated from [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml), the single
+hand-edited source of truth. Do not edit it directly — edit the state file and run
+`python tools/governance/gen_views.py`.
+
+<!-- BEGIN GENERATED: status -->
+<!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
+<!-- source-sha256: 9e2636e6e4bf757e64901f0858f7329c53471050dd885fbea10b4a2f1f9126fa -->
+<!-- payload-sha256: 486bdf93c15ffa3f95e44ed6abae86aa7603ab2732eabfaef7bb1edcd1cfdecb -->
+**Project status** — generated from [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T02:57:53+08:00` by `python tools/governance/gen_views.py`; edit the state file, never this block.
+
+| Item | Value |
+| --- | --- |
+| Main head | [`b2a14c0`](https://github.com/ChazY11/medradar/commit/b2a14c0a92332c004445de686daee97754cf94cb) — 2026-11-03 |
+| Version | 0.5.0 (`pyproject.toml`) |
+| Tests | 1,114 passed, 3 skipped, 0 failed (1,117 collected, offline) |
+| Capabilities | 7 working · 6 draft · 1 retired |
+| Research studies | 1 (0 with a public claim) |
+| Data snapshot | 2026-10-31 — 375,378 events (local build; `data/` is gitignored) |
+| Open PRs | 23 open (22 draft), 10 merged |
+| Branch protection | not applied |
+
+See [`docs/governance/GOVERNANCE.md`](docs/governance/GOVERNANCE.md) for the gates and [`docs/RESEARCH_INDEX.md`](docs/RESEARCH_INDEX.md) for the generated research index.
+<!-- END GENERATED: status -->
+

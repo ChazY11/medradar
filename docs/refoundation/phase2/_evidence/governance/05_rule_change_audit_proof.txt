@@ -1,0 +1,15 @@
+# command: check_rule_audit.py on protected edits (workflow, licence policy, new gate tool, docs-only) with/without decision records; restore after each
+# exit code: 0
+
+=== rule-change audit proof (protected surface = workflow, tools/governance/**, licence+freeze policy) ===
+baseline: committed tree vs HEAD                               exit=0 -
+baseline: committed branch vs origin/main                      exit=0 -
+
+1 edit workflow, no rule-change record                         exit=1 rules.uncovered_change
+2 edit licence policy, no rule-change record                   exit=1 rules.uncovered_change
+3 add a new untracked gate tool, no record                     exit=1 rules.uncovered_change
+4 documentation-only change (not protected)                    exit=0 -
+5 same edit WITH a new record + GOV-0001 decision              exit=0 -
+6 same edit with unknown decision id D-999                     exit=1 rules.changes[0].decision_id, rules.records.valid
+
+final: committed tree restored                                 exit=0 -

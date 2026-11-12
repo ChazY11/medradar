@@ -1,0 +1,28 @@
+# command: check_frozen.py --base HEAD on 8 real freeze attempts (name-only edit, add, delete, rename, claims edit, unapproved/unknown/approved re-baselines); restore after each
+# exit code: 0
+
+=== freeze bypass matrix (base = HEAD 8a0e8f9, format 2 with per-file digests) ===
+baseline: committed frozen tree                              exit=0 -
+
+1 name-only content edit inside frozen directory             exit=1 frozen.entries[6].files[CASE_CANDIDATES.md].sha256
+2 new forecast set (unreviewed addition)                     exit=1 frozen.entries[7].no_new_files
+3 deleted file inside frozen directory                       exit=1 frozen.entries[6].no_removed_files
+4 renamed file inside frozen directory                       exit=1 frozen.entries[6].no_new_files, frozen.entries[6].no_removed_files
+5 edited papers/CLAIMS.json (machine-verified claim map)     exit=1 frozen.entries[8].sha256, rebalance.unapproved
+6 edit + digest update, NO rebalances record                 exit=1 rebalance.unapproved
+7 rebalance with unknown decision id D-999                   exit=1 rebalance.unapproved, rebalances[0].decision_id.exists
+8 rebalance with approved decision id GOV-0001               exit=0 -
+
+=== manifest printer (reviewed re-baseline input; read-only) ===
+directories:
+  - freeze_id: FZ-010
+    path: research/studies/early_signal_5firms
+    files:
+      - path: ADJUDICATION_AGENT_V1.json
+        sha256: ada0bb5b0d4fb7c202c65644eb53c5269f2354ef1505115c7f068f4f3c064d76
+      - path: ADJUDICATION_AGENT_V1.md
+        sha256: 77a960fae4e5dd79ccd4510b5097b7c175b9aa0f5ab67d48fba7f3129c0be4f1
+      - path: ADJUDICATION_AMENDMENT_002.md
+        sha256: c5b56ae7ae8eef88010c4dc15
+=== final: committed tree restored ===
+baseline again                                               exit=0 -
