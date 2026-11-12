@@ -1,0 +1,95 @@
+# command: throwaway sim/p2-main-advance commit (+2 files, +1 workflow); check_state fails 5 checks; bump_state.py --ref sim --dry-run then apply + gen_views; all gates pass; restore
+# exit code: 0
+
+=== simulated main advance ===
+branch sim/p2-main-advance @ 118b95b
+workflows: ci, forecast-cycle, governance, live, simulated-advance, weekly
+tracked files: 1197 (real origin/main: 1135)
+
+check_state vs simulated main (before bump)              exit=1 main.commit_subject.git, main.committed_at.git, main.head.git, main.tracked_files.git, main.workflows.git
+
+=== deterministic bump (dry run) ===
+bump dry-run exit: 0
+--- PROJECT_STATE.yaml
++++ PROJECT_STATE.yaml
+@@ -16,7 +16,7 @@
+ #     this file is being edited. Do not record branch-only capabilities here.
+ 
+ schema: medradar.project_state.v1
+-generated_at: "2026-11-13T02:57:53+08:00"
++generated_at: "2026-11-13T03:03:46+08:00"
+ 
+ project:
+   name: MedRadar
+@@ -27,20 +27,21 @@
+   pages_source: docs/
+ 
+ main:
+-  ref: origin/main
+-  head: b2a14c0a92332c004445de686daee97754cf94cb
+-  short: b2a14c0
+-  committed_at: "2026-11-03T04:26:31+08:00"
+-  commit_subject: "Merge pull request #11 from ChazY11/research/early-signal-review-workbench"
++  ref: sim/p2-main-advance
++  head: 118b95b83d6f00227f4ff63ccaf6e6d79381e5f1
++  short: 118b95b
++  committed_at: "2026-11-13T03:03:46+08:00"
++  commit_subject: "simulated main advance: +1 workflow, +1 doc"
+   version: "0.5.0"
+   version_source: pyproject.toml
+-  tracked_files: 1135
++  tracked_files: 1197
+   workflows:
+     - ci
+     - forecast-cycle
++    - governance
+     - live
++    - simulated-advance
+     - weekly
+-
+ tests:
+   collected: 1117
+   passed: 1114
+
+
+bump apply exit: 0
+UPDATED PROJECT_STATE.yaml: state -> sim/p2-main-advance @ 118b95b (1197 tracked files, workflows: ci, forecast-cycle, governance, live, simulated-advance, weekly); rerun gen_views.py
+
+
+PASS readme-status (README.md): generated from an older PROJECT_STATE.yaml (9e2636e6e4bf)
+PASS research-index (docs/RESEARCH_INDEX.md): generated from an older state
+PASS changelog-unreleased (CHANGELOG.md): generated from an older PROJECT_STATE.yaml (9e2636e6e4bf)
+PASS gen_views (3 targets)
+
+
+check_state vs simulated main (after bump + views)       exit=0 -
+
+=== worktree diff after bump ===
+ CHANGELOG.md           |  8 ++++----
+ PROJECT_STATE.yaml     | 17 +++++++++--------
+ README.md              |  8 ++++----
+ docs/RESEARCH_INDEX.md |  6 +++---
+ 4 files changed, 20 insertions(+), 19 deletions(-)
+
+=== new main block ===
+main:
+  ref: sim/p2-main-advance
+  head: 118b95b83d6f00227f4ff63ccaf6e6d79381e5f1
+  short: 118b95b
+  committed_at: "2026-11-13T03:03:46+08:00"
+  commit_subject: "simulated main advance: +1 workflow, +1 doc"
+  version: "0.5.0"
+  version_source: pyproject.toml
+  tracked_files: 1197
+  workflows:
+    - ci
+    - forecast-cycle
+    - governance
+    - live
+    - simulated-advance
+    - weekly
+=== restored ===
+?? docs/refoundation/phase2/_evidence/governance/04_freeze_bypass_matrix.txt
+?? docs/refoundation/phase2/_evidence/governance/05_rule_change_audit_proof.txt
+?? docs/refoundation/phase2/_evidence/governance/06_state_staleness_and_bump.txt
+

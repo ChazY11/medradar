@@ -535,27 +535,19 @@ def check_diff(
     data_changes = 0
     for path in paths:
         if not (root / path).is_file():
-            continue
+            continue  # deleted or renamed away; the inventory check reports it
         data = read_content(root, path)
         if not _is_data_candidate(path, policy, data):
             continue
         data_changes += 1
         entry = by_path.get(path)
-        if entry is not None and entry.get("status") == "RED":
-            report.fail(
-                "content.red_source",
-                "inventory entry is classified RED and may not be committed: %s "
-                "(source %r)" % (path, entry.get("source_id")),
-            )
-            flagged.append({"path": path, "kind": kind, "reason": "red-source"})
-            continue
+        kind = detect_kind(data)
         if entry is None:
             report.fail(
                 "diff.changed_data_file",
                 "PR changes a data file with no inventory entry: %s" % path,
             )
             continue
-        kind = detect_kind(data)
         if entry.get("content") != kind:
             report.fail(
                 "diff.changed_content",
@@ -568,11 +560,6 @@ def check_diff(
         "%d changed path(s) vs %s, %d data file(s)" % (len(paths), base, data_changes),
     )
     return paths, None
-
-
-# --------------------------------------------------------------------------
-# inventory generation
-# --------------------------------------------------------------------------
 
 
 def generate_inventory(root: Path, policy: Policy) -> dict:

@@ -1,0 +1,39 @@
+# command: line counts for the hardening deliverable, gates, tests, fixtures, configs and evidence
+# exit code: 0
+
+   116  .github/workflows/governance.yml
+   842  docs/governance/DATA_INVENTORY.yaml
+   205  docs/governance/DATA_LICENSES.yaml
+    20  docs/governance/DECISION_LOG.yaml
+   180  docs/governance/FROZEN.yaml
+    30  docs/governance/RULE_CHANGES.yaml
+    10  docs/refoundation/phase2/_evidence/governance/01_environment.txt
+    18  docs/refoundation/phase2/_evidence/governance/02_before_after_bypass_table.txt
+    38  docs/refoundation/phase2/_evidence/governance/03_false_positive_baseline.txt
+    25  docs/refoundation/phase2/_evidence/governance/04_freeze_bypass_matrix.txt
+    12  docs/refoundation/phase2/_evidence/governance/05_rule_change_audit_proof.txt
+    83  docs/refoundation/phase2/_evidence/governance/06_state_staleness_and_bump.txt
+     4  docs/refoundation/phase2/_evidence/governance/07_governance_unit_tests.txt
+    11  docs/refoundation/phase2/_evidence/governance/08_full_suite.txt
+    21  docs/refoundation/phase2/_evidence/governance/09_all_gates_after.txt
+    45  docs/refoundation/phase2/_evidence/governance/10_file_inventory.txt
+     7  docs/refoundation/phase2/_evidence/governance/11_log_privacy.txt
+   194  docs/refoundation/phase2/GOVERNANCE_HARDENING.md
+     1  tests/governance/__init__.py
+     1  tests/governance/fixtures/fake_archive.gz
+     2  tests/governance/fixtures/fake_market.csv
+     1  tests/governance/fixtures/fake_market.json
+     1  tests/governance/fixtures/fake_market.sqlite
+    13  tests/governance/fixtures/README.md
+    59  tests/governance/gitfix.py
+    83  tests/governance/test_bump_state.py
+   201  tests/governance/test_check_frozen.py
+   130  tests/governance/test_check_licence.py
+    98  tests/governance/test_check_rule_audit.py
+    13  tools/governance/__init__.py
+   281  tools/governance/bump_state.py
+   529  tools/governance/check_frozen.py
+   726  tools/governance/check_licence.py
+   347  tools/governance/check_rule_audit.py
+   825  tools/governance/check_state.py
+   193  tools/governance/record_tests.py

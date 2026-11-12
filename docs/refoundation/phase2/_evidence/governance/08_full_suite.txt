@@ -1,0 +1,16 @@
+# command: python -m pytest -q -o addopts=""; python -m medradar selftest; python -m unittest discover
+# exit code: 0
+
+=== full existing suite (pytest) ===
+........................................................................ [ 92%]
+....................................................................................                            [100%]
+1114 passed, 3 skipped, 224 subtests passed in 54.18s
+
+=== same suite through the packaging entry point (unittest discovery, as CI runs it) ===
+Ran 1117 tests in 52.626s
+
+OK (skipped=3)
+
+=== unittest discovery picks up tests/governance (count only) ===
+
+OK (skipped=3)

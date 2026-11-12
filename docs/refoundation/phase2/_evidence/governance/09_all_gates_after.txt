@@ -1,0 +1,25 @@
+# command: six gates with base origin/main; workflow YAML; compileall; module invocation; protected-path diff
+# exit code: 0
+
+=== six gates (base origin/main) ===
+state        exit=0  PASS check_state (240 checks, 0 failures, 1 warnings)
+views        exit=0  PASS gen_views (3 targets)
+frozen       exit=0  PASS check_frozen (36 checks, 0 failures, 1 warnings)
+licence      exit=0  PASS check_licence (14 checks, 0 failures, 1 warnings)
+links        exit=0  PASS check_links (3 checks, 0 failures, 0 warnings)
+rule-audit   exit=0  PASS check_rule_audit (12 checks, 0 failures, 0 warnings)
+
+=== workflow static validation (PyYAML + governance subset) ===
+PyYAML valid; jobs: ['frozen', 'licence', 'links', 'rule-audit', 'state', 'views']
+permissions: {'contents': 'read'}
+fetch-depth 0 jobs: ['state', 'frozen', 'licence', 'rule-audit']
+yamlmini valid; jobs: ['frozen', 'licence', 'links', 'rule-audit', 'state', 'views']
+
+=== syntax + module invocation ===
+compileall exit: 0
+module licence exit: 0  PASS check_licence (14 checks, 0 failures, 1 warnings)
+
+=== protected trees: product code and experiments untouched vs origin/main ===
+--- medradar/ + experiments/ (must be empty) ---
+--- tests/ (only the new governance test package) ---
+ 11 files changed, 726 insertions(+)
