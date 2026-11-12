@@ -98,11 +98,26 @@ exists in any reachable commit.** Owner may accept (recommended) or schedule a f
 
 ---
 
+### 1.5 Python 3.10 CI compatibility (found on the first final CI run)
+
+First final CI run: py3.11/3.12 green, **py3.10 failed** with
+`ValueError: Invalid isoformat string: '2026-11-12T21:05:55Z'`. Root cause:
+`datetime.fromisoformat()` only accepts the `Z` suffix from Python 3.11; the state fixtures and
+git/CI timestamps emit it. This made three merge-simulation tests and the bump instant test fail on
+3.10 only.
+
+Fix: `check_state._parse_iso()` normalizes a trailing `Z` to `+00:00` before parsing, and the test
+instant helper does the same. **Assertions are unchanged.** Verified under the real interpreter:
+`python3.10 -m unittest tests.governance.test_bump_state tests.governance.test_state_scheme` →
+**16/16 OK**, and `python3.10 tools/governance/check_state.py` → PASS (253 checks).
+
+---
+
 ## 2. Final commit SHA
 
 | Ref | SHA |
 |---|---|
-| Validated integration tree | **`34b3548`** |
+| Validated integration tree | **`6784043`** (includes the Python 3.10 fix; supersedes the earlier `34b3548` measurement commit) |
 | This report (docs-only tip) | the branch tip after this file is committed (§7 records it) |
 | PR #38 head before this gate | `cfa685c` |
 | Base `origin/main` | `b2a14c0` (unchanged) |
