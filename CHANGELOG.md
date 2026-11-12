@@ -5,13 +5,14 @@ This is a research tool; "fixed" means a documented behaviour changed.
 
 <!-- BEGIN GENERATED: unreleased -->
 <!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
-<!-- source-sha256: 57689fa7bfcb302b67102928556c15877cef7212030bf2265503157672cdee17 -->
-<!-- payload-sha256: 9558a35cd7a0e20dbe09d9694ea343d50fec2b00082433d69a41c1ab6bc5669d -->
+<!-- source-sha256: 93eb2ad19d6b98d4afccaa9a1271bddc586118714069c10158c48084a3de32c7 -->
+<!-- payload-sha256: 914a57a4175cc8749db13e111d64ee133ca9368e6020b53c4ed74be36b76e616 -->
 ## [Unreleased] — generated governance snapshot
 
-_Snapshot of [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T02:57:53+08:00`. Regenerate with `python tools/governance/gen_views.py`; do not edit this block by hand._
+_Snapshot of [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-03T04:26:31+08:00`. Regenerate with `python tools/governance/gen_views.py`; do not edit this block by hand._
 
-- **Main head:** `b2a14c0` (2026-11-03), version **0.5.0**
+- **Observed main head:** `b2a14c0` (2026-11-03) — may lag main; stale-but-ancestor is a warning
+- **Verified baseline:** `b2a14c0a92332c004445de686daee97754cf94cb`; release **0.5.0**
 - **Tests:** 1,145 passed, 3 skipped, 0 failed (1,148 collected)
 - **Capabilities:** 7 working, 6 draft, 1 retired
 - **Open PRs:** 23 open (22 draft), 10 merged; branch protection not applied

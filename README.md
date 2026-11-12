@@ -28,14 +28,15 @@ the deliverable.
 
 ﻿<!-- BEGIN GENERATED: status -->
 <!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
-<!-- source-sha256: 57689fa7bfcb302b67102928556c15877cef7212030bf2265503157672cdee17 -->
-<!-- payload-sha256: 1625db6fa4e98b2c1ede88a7264c3321f3a9645e579462f36a51c11693a7dafd -->
-**Project status** — generated from [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T02:57:53+08:00` by `python tools/governance/gen_views.py`; edit the state file, never this block.
+<!-- source-sha256: 93eb2ad19d6b98d4afccaa9a1271bddc586118714069c10158c48084a3de32c7 -->
+<!-- payload-sha256: aa1b911d026ecfb7a94aa1f15d4eb242f670d4bb35d56d92e8f5803a808130db -->
+**Project status** — generated from [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-03T04:26:31+08:00` by `python tools/governance/gen_views.py`; edit the state file, never this block.
 
 | Item | Value |
 | --- | --- |
-| Main head | [`b2a14c0`](https://github.com/ChazY11/medradar/commit/b2a14c0a92332c004445de686daee97754cf94cb) — 2026-11-03 |
-| Version | 0.5.0 (`pyproject.toml`) |
+| Observed main head | [`b2a14c0`](https://github.com/ChazY11/medradar/commit/b2a14c0a92332c004445de686daee97754cf94cb) — 2026-11-03 (may lag main; stale-by-design is a warning) |
+| Verified baseline | `b2a14c0` (1,145 passed, 1,148 collected) |
+| Release | 0.5.0 (unreleased) |
 | Tests | 1,145 passed, 3 skipped, 0 failed (1,148 collected, offline) |
 | Capabilities | 7 working · 6 draft · 1 retired |
 | Research studies | 1 (0 with a public claim) |

@@ -4,14 +4,14 @@
 === three consecutive simulated merges (git ref sim/main-3merge) ===
 state before simulation describes origin/main; gates run WITHOUT bump after each merge
 
-round 1: b9eda7bcda77  Merge simulated feature 1
+round 1: e26a6a4e856a  Merge simulated feature 1
   gates WITHOUT bump               state=1 views=1 frozen=0 licence=0 links=0 rule-audit=0
     FAILURES: state: state.required_sections; state.schema; git.type; verified.type; release.type; tests.tested_head.ancestry; tests.artifact.tested_head.ancestry | views: FAIL gen_views (3 targets)
   bump exit=2: (no state line)
   bump views: (not regenerated)
   bump stderr: bump_state: ERROR: no top-level 'git:' block found in PROJECT_STATE.yaml; run the schema migration (see docs/refoundation/phase3/STATE_LIFECYCLE.md)
 python.exe : Traceback (most recent call last):
-At line:39 char:64
+At line:1 char:229
 + ... cheme'; $out = (& python "$env:TEMP\rf003_sim_merges.py" *>&1 | Out-S ...
 +                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException

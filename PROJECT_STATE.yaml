@@ -15,8 +15,8 @@
 #   * Facts describe `main` (the ref under `main.ref`), not the branch in which
 #     this file is being edited. Do not record branch-only capabilities here.
 
-schema: medradar.project_state.v1
-generated_at: "2026-11-13T02:57:53+08:00"
+schema: medradar.project_state.v2
+generated_at: "2026-11-03T04:26:31+08:00"
 
 project:
   name: MedRadar
@@ -26,21 +26,26 @@ project:
   mission: "A research project on one question: can publicly observable evidence give reliable early warning of meaningful change in medical-technology development? MedRadar collects free public regulatory, clinical-trial and corporate-filing evidence into an auditable event store and tests whether it carries signal before the market notices; the engineering and the negative results are the deliverable."
   pages_source: docs/
 
-main:
+git:
   ref: origin/main
   head: b2a14c0a92332c004445de686daee97754cf94cb
   short: b2a14c0
   committed_at: "2026-11-03T04:26:31+08:00"
   commit_subject: "Merge pull request #11 from ChazY11/research/early-signal-review-workbench"
-  version: "0.5.0"
-  version_source: pyproject.toml
+  observed_at: "2026-11-03T04:26:31+08:00"
   tracked_files: 1135
   workflows:
     - ci
     - forecast-cycle
     - live
     - weekly
-
+verified:
+  commit: b2a14c0a92332c004445de686daee97754cf94cb
+  verified_at: "2026-11-03T04:26:31+08:00"
+  note: "Refreshed by bump_state.py from origin/main; the full offline suite and the governance gates are expected to pass at this commit."
+release:
+  version: "0.5.0"
+  commit: null
 tests:
   collected: 1148
   passed: 1145
