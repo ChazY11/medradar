@@ -1,0 +1,20 @@
+# MedRadar — governance decision log
+#
+# Approval record for changes to the governance surface itself (CI workflow,
+# gate tools, licence/freeze rules). A `docs/governance/RULE_CHANGES.yaml`
+# record must cite an id from this file or a `## D-nnn` heading in
+# `research/DECISIONS.md`.
+#
+# This file is an audit input, not a rule: it is excluded from the protected
+# paths so a new approval does not require its own approval. It is reviewed in
+# the PR diff like any other governance file.
+schema: medradar.decision_log.v1
+updated: "2026-11-13"
+decisions:
+  - id: GOV-0001
+    date: "2026-11-13"
+    title: "REFOUNDATION-002 Phase 2 governance hardening (task-15)"
+    approved_by: ChazY11
+    source: "Lead assignment REFOUNDATION-002 / task-15 (Workflow A)"
+    scope: "licence positive inventory + content classification, freeze format 2 with audit log, rule-change audit gate, state bump flow"
+    notes: "Authorises the Phase 2 hardening change set. Not a scientific decision."

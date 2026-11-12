@@ -104,9 +104,16 @@ def main(argv: list[str] | None = None) -> int:
     head = common.git_rev_parse(root, "HEAD")
     if head is None:
         return common.config_error(TOOL, "cannot resolve HEAD")
-    # The count must describe a commit: refuse if tests/ has uncommitted edits,
-    # because then no commit's tests match the measured tree.
+    # The count must describe a commit: refuse if tests/ has uncommitted or
+    # untracked edits, because then no commit's tests match the measured tree.
     dirty_tests = common.git_diff_names(root, "HEAD", "tests/")
+    code, out, _ = common.run_git(
+        root, "ls-files", "--others", "--exclude-standard", "--", "tests/"
+    )
+    if code == 0:
+        dirty_tests = sorted(
+            set(dirty_tests) | {line for line in out.splitlines() if line}
+        )
     if dirty_tests:
         print(
             "%s: refusing to record a test count: tests/ has uncommitted changes "

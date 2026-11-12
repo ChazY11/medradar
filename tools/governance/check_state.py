@@ -700,11 +700,12 @@ def _freeze_ids(report: common.Report, root: Path, frozen_arg: str | None) -> se
     if not isinstance(document, dict) or not isinstance(document.get("entries"), list):
         report.fail("frozen.parse", "expected a mapping with an 'entries' list")
         return set()
+    allowed_freeze_schemas = {"medradar.frozen.v1", "medradar.frozen.v2"}
     report.check(
         "frozen.schema",
-        document.get("schema") == common.SCHEMA_FROZEN,
-        "expected %s, found %r"
-        % (common.SCHEMA_FROZEN, document.get("schema")),
+        document.get("schema") in allowed_freeze_schemas,
+        "expected one of %s, found %r"
+        % (sorted(allowed_freeze_schemas), document.get("schema")),
     )
     ids: set[str] = set()
     for index, entry in enumerate(document["entries"]):

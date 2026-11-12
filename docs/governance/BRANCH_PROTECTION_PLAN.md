@@ -1,6 +1,11 @@
 # Branch protection plan — `main`
 
-**Status: NOT APPLIED.** This document is a plan for the repository owner
+**Status: NOT APPLIED.** Phase-2 hardening (licence inventory/content scan, freeze
+format 2 with an audited rebalance log, the rule-change audit, the state-bump
+tool) is implemented on `governance/phase2-hardening`; this plan is still only a
+plan — no protection has been configured.
+
+This document is a plan for the repository owner
 (`ChazY11`). No GitHub setting has been changed, no API call was made, and the
 repository currently has **no branch protection** on `main`.
 
@@ -23,7 +28,7 @@ Apply to branch name pattern: **`main`**
 | Require review from Code Owners | **OFF** | `CODEOWNERS` is routing only (see that file). Turning this on would require an approval that cannot exist. |
 | Require conversation resolution before merging | **ON** (recommended) | A one-person workflow still benefits from "every comment is answered or resolved"; costs nothing when there are no comments. Optional if it becomes friction. |
 | Require status checks to pass before merging | **ON** | This is the actual enforcement. The checks are the governance gates plus the existing `ci` workflow. |
-| Required status checks (exact names) | `governance / state`, `governance / views`, `governance / frozen`, `governance / licence`, `governance / links`, and the `ci` jobs: `py3.10 offline suite + wheel smoke`, `py3.11 offline suite + wheel smoke`, `py3.12 offline suite + wheel smoke`, `offline data stats (fixture mini DB)`, `windows data-files + demo` | Machine gates, all satisfiable by the owner. If a required check name changes (job renamed), merges block until this list is updated — that is a deliberate alarm, not an accident. |
+| Required status checks (exact names) | `governance / state`, `governance / views`, `governance / frozen`, `governance / licence`, `governance / links`, `governance / rule-audit`, and the `ci` jobs: `py3.10 offline suite + wheel smoke`, `py3.11 offline suite + wheel smoke`, `py3.12 offline suite + wheel smoke`, `offline data stats (fixture mini DB)`, `windows data-files + demo` | Machine gates, all satisfiable by the owner. If a required check name changes (job renamed), merges block until this list is updated — that is a deliberate alarm, not an accident. |
 | Require branches to be up to date before merging | **OFF** | With ~20 open draft PRs, "strict" forces a rebase-and-rerun on every `main` movement for no scientific gain; the merge commit itself is still a git object and `main` still runs `ci` on push. **Revisit when a second maintainer or an auto-merge pipeline exists.** |
 | Require linear history | **OFF** | The repository deliberately uses merge commits (`Merge pull request #11 ...`); linear history would forbid the established flow. |
 | Require signed commits | **OFF** | Not part of this change; can be added later without affecting the gates. |
@@ -58,7 +63,7 @@ Apply to branch name pattern: **`main`**
    **0**. Leave **Dismiss stale pull request approvals** and **Require review
    from Code Owners** unticked.
 5. Tick **Require status checks to pass before merging**. In the check picker,
-   add the five `governance / ...` jobs and the `ci` jobs listed in the table
+   add the six `governance / ...` jobs and the `ci` jobs listed in the table
    above. Leave **Require branches to be up to date before merging** unticked.
 6. Optionally tick **Require conversation resolution before merging**.
 7. Leave **Require linear history**, **Require signed commits**, **Lock branch**
@@ -71,7 +76,15 @@ Apply to branch name pattern: **`main`**
 11. Record the applied date and any deviations from this plan in
     `docs/governance/GOVERNANCE.md` (a one-line change in a governance PR).
 
-**Precondition:** the `governance` workflow must have run at least once on a PR
+**Precondition (updated for Phase 2):** the hardened `governance` workflow must have
+run at least once on a PR after this branch merges (the rule-audit and base-ref
+jobs need `fetch-depth: 0`, which the workflow now requests). The licence and freeze
+gates now have the inventory/rebalance controls the Phase-1 review asked for, and
+`tools/governance/bump_state.py` exists, so the activation blockers from that
+review are resolved **on this branch** — they become true for `main` only after
+the branch merges.
+
+The original precondition also applies: the `governance` workflow must have run at least once on a PR
 in the last seven days, otherwise GitHub's check picker does not offer the
 `governance / ...` names (GitHub only lists recently observed checks). Merge the
 Phase-0 governance PR first, open a trivial PR, let `governance` run, then apply
