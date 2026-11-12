@@ -1,0 +1,40 @@
+# command: python tools/governance/check_licence.py --base origin/main (full); python tools/governance/check_licence.py --summary
+# exit code: 0
+
+=== hardened gate on the real repository (final git tree + PR diff vs origin/main) ===
+[ok]   policy.schema: expected medradar.data_licenses.v2, found 'medradar.data_licenses.v2'
+[ok]   policy.inventory.manual_review: manual review path documented
+[ok]   policy.inventory.disclaimer: disclaimer says this is not a legal guarantee
+[ok]   policy.inventory.data_extensions: 19 data extensions
+[ok]   policy.raw_root: raw data root='data/' (RED content may only live under data/)
+[ok]   policy.raw_root.gitignored: data/ is ignored by .gitignore
+[ok]   inventory.schema: expected medradar.data_inventory.v1, found 'medradar.data_inventory.v1'
+[ok]   inventory.entries.count: 167 declared data files
+[ok]   tree.data_files: 167 tracked data-like files classified, 0 flagged
+[ok]   inventory.stale_entry: no stale inventory entries
+[ok]   source.pattern: no RED/AMBER pattern violations
+[ok]   untracked.data_file: no untracked data files
+[ok]   diff.scanned: 63 changed path(s) vs origin/main, 5 data file(s)
+[ok]   scan.coverage: 167 data-like files scanned; restricted formats: binary, elf, gzip, hdf5, parquet, sqlite, zip
+[WARN] manual review path: Run `python tools/governance/check_licence.py --write-inventory`, then review every added/changed entry in the PR diff; --summary prints the classification for a human. Licence judgement stays human.
+PASS check_licence (14 checks, 0 failures, 1 warnings)
+exit: 0
+
+=== manual review list (inventory classification) ===
+inventory: docs\governance\DATA_INVENTORY.yaml
+  curated_configuration        9
+  internet_archive_cdx         9
+  medradar_derived_artifacts   114
+  nmpa_demo_seed               1
+  sec_8k_hand_labels           4
+  synthetic_fixtures           30
+Manual review path: Run `python tools/governance/check_licence.py --write-inventory`, then review every added/changed entry in the PR diff; --summary prints the classification for a human. Licence judgement stays human.
+[ok]   policy.schema: expected medradar.data_licenses.v2, found 'medradar.data_licenses.v2'
+[ok]   policy.inventory.manual_review: manual review path documented
+[ok]   policy.inventory.disclaimer: disclaimer says this is not a legal guarantee
+[ok]   policy.inventory.data_extensions: 19 data extensions
+[ok]   policy.raw_root: raw data root='data/' (RED content may only live under data/)
+[ok]   policy.raw_root.gitignored: data/ is ignored by .gitignore
+[ok]   inventory.schema: expected medradar.data_inventory.v1, found 'medradar.data_inventory.v1'
+[ok]   inventory.entries.count: 167 declared data files
+PASS check_licence (8 checks, 0 failures, 0 warnings)

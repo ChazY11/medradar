@@ -288,6 +288,12 @@ def load_inventory(path: Path, report: common.Report) -> dict:
         if path_value in by_path:
             report.fail("%s.path.unique" % where, "duplicate inventory path %r" % path_value)
             continue
+        if entry.get("status") not in STATUSES:
+            report.fail(
+                "%s.status" % where,
+                "expected GREEN/AMBER/RED, found %r" % (entry.get("status"),),
+            )
+            continue
         by_path[path_value] = entry
     report.check("inventory.entries.count", True, "%d declared data files" % len(by_path))
     return {"schema": document.get("schema"), "entries": document["entries"], "by_path": by_path}
@@ -388,6 +394,14 @@ def check_tree(
             continue
         data_files.append((path, data))
         entry = by_path.get(path)
+        if entry is not None and entry.get("status") == "RED":
+            report.fail(
+                "content.red_source",
+                "inventory entry is classified RED and may not be committed: %s "
+                "(source %r)" % (path, entry.get("source_id")),
+            )
+            flagged.append({"path": path, "kind": kind, "reason": "red-source"})
+            continue
         if entry is None:
             report.fail(
                 "inventory.coverage",
@@ -527,6 +541,14 @@ def check_diff(
             continue
         data_changes += 1
         entry = by_path.get(path)
+        if entry is not None and entry.get("status") == "RED":
+            report.fail(
+                "content.red_source",
+                "inventory entry is classified RED and may not be committed: %s "
+                "(source %r)" % (path, entry.get("source_id")),
+            )
+            flagged.append({"path": path, "kind": kind, "reason": "red-source"})
+            continue
         if entry is None:
             report.fail(
                 "diff.changed_data_file",
