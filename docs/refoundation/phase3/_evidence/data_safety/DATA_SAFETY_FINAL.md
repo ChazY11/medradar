@@ -3,7 +3,7 @@
 **Task:** `task-22` · final data-safety review before merge
 **Target:** `origin/main` (`b2a14c0`) … `integration/ref003` (`cfa685c3`) — PR #38
 **Mode:** read-only git; **no history rewrite, no push, no deletion**; the integration worktree was used for `git` commands only.
-**Output location:** `D:\DEPPSKK\refoundation-002-backups\data_safety\` (outside every git worktree, per the isolation instruction). A pre-existing untracked copy under the worktree at `docs/refoundation/phase3/_evidence/data_safety/` was **left in place** for the Lead to relocate; nothing else was touched.
+**Output location:** `<EVIDENCE_OUT>\` (outside every git worktree, per the isolation instruction). A pre-existing untracked copy under the worktree at `docs/refoundation/phase3/_evidence/data_safety/` was **left in place** for the Lead to relocate; nothing else was touched.
 **Artefacts:** `scan_history.py` (reproducible), `data_safety_final.json` (masked, 18,197 B).
 **Finding-set SHA-256:** `f3c7d208143760abe0416abbcb985bc2b8f88ac0622306776269863c3246bc04`
 
@@ -137,10 +137,10 @@ Advisory cleanups (optional, can land after merge):
 ## 7. Reproduce
 
 ```powershell
-python D:\DEPPSKK\refoundation-002-backups\data_safety\scan_history.py `
-  --repo D:\DEPPSKK\worktrees\rf003-integration `
+python <EVIDENCE_OUT>\scan_history.py `
+  --repo <WORKTREE> `
   --base origin/main --tip integration/ref003 `
-  --out D:\DEPPSKK\refoundation-002-backups\data_safety
+  --out <EVIDENCE_OUT>
 ```
 
 Outputs `data_safety_final.json` (masked findings, per-commit file counts, category summary, large-binary list, finding-set hash). The script never emits a sensitive literal: the restricted value is represented only by a salted SHA-256 plus first/last two characters, and PII/credentials are counts only.

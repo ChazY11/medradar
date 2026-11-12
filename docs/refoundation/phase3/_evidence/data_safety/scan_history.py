@@ -253,7 +253,7 @@ def scan_blob(body: bytes, is_binary: bool, findings):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--repo", default=r"D:\DEPPSKK\worktrees\rf003-integration")
+    ap.add_argument("--repo", default=r"<WORKTREE>")
     ap.add_argument("--base", default="origin/main")
     ap.add_argument("--tip", default="integration/ref003")
     ap.add_argument("--out", default=os.path.dirname(os.path.abspath(__file__)))

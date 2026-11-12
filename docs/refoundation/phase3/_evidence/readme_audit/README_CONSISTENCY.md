@@ -1,10 +1,10 @@
 # README scientific-consistency audit — final merge gate (Task 4)
 
 **Task:** `task-23` · REFOUNDATION-003 final merge gate · auditor `comms-lead`
-**Candidate:** `D:\DEPPSKK\worktrees\rf003-integration`, branch `integration/ref003`,
+**Candidate:** `<WORKTREE>`, branch `integration/ref003`,
 HEAD **`cfa685c`** (PR #38 candidate)
 **Mode:** read-only audit. **No README, no tree file was edited.** This report is the only output.
-**Report location:** `D:\DEPPSKK\refoundation-002-backups\readme_audit\README_CONSISTENCY.md`
+**Report location:** `<EVIDENCE_OUT>\README_CONSISTENCY.md`
 (outside every git worktree — per Lead instruction, because untracked evidence files in a worktree
 break `test_check_licence::test_current_repository_is_clean` during concurrent runs).
 **Audit time:** 2026-11-13T04:39–04:52 +08:00.

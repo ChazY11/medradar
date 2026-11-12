@@ -149,7 +149,7 @@ def _release_block(facts: dict, existing_commit: str | None) -> str:
 
 
 def _block_span(lines: list[str], key: str) -> tuple[int, int]:
-    pattern = re.compile(r"^%s:\s*$" % re.escape(key))
+    pattern = re.compile("^" + re.escape(key) + r":\s*$")
     start = None
     for index, line in enumerate(lines):
         if pattern.match(line):
