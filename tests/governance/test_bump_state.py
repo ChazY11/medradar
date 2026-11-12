@@ -51,7 +51,8 @@ def _bump(root: Path, *args: str) -> subprocess.CompletedProcess:
 
 def _instant(value: str) -> int:
     """Timezone/format-independent instant (epoch seconds) for a git ISO date."""
-    return int(dt.datetime.fromisoformat(value).timestamp())
+    # Python 3.10 fromisoformat does not accept the 'Z' suffix.
+    return int(dt.datetime.fromisoformat(value.replace("Z", "+00:00")).timestamp())
 
 
 class BumpStateTests(unittest.TestCase):

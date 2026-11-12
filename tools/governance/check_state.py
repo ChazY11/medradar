@@ -39,6 +39,18 @@ except ImportError:  # ``python -m tools.governance.check_state``
 
 TOOL = "check_state"
 HEAD_RE = re.compile(r"\A[0-9a-f]{40}\Z")
+
+
+def _parse_iso(value: str) -> dt.datetime:
+    """Parse ISO-8601, tolerating the ``Z`` UTC suffix on Python 3.10.
+
+    ``datetime.fromisoformat`` only accepts ``Z`` from Python 3.11; git and our
+    own fixtures emit it, so normalise before parsing instead of rejecting a
+    valid UTC instant on older runtimes.
+    """
+    if value.endswith(("Z", "z")):
+        value = value[:-1] + "+00:00"
+    return dt.datetime.fromisoformat(value)
 FREEZE_ID_RE = re.compile(r"\AFZ-[0-9]{3}\Z")
 CAPABILITY_STATUSES = {"working", "draft", "retired"}
 PATH_KEYS = {
@@ -260,7 +272,7 @@ def _check_git(
     workflows = data.get("workflows")
     if observed_at is not None:
         try:
-            dt.datetime.fromisoformat(observed_at)
+            _parse_iso(observed_at)
             report.check("git.observed_at.format", True, observed_at)
         except ValueError:
             report.fail("git.observed_at.format", "expected ISO-8601 with offset, found %r" % observed_at)
@@ -395,7 +407,7 @@ def _check_verified(
     _string(report, data, "note", "verified", required=False)
     if verified_at is not None:
         try:
-            dt.datetime.fromisoformat(verified_at)
+            _parse_iso(verified_at)
             report.check("verified.verified_at.format", True, verified_at)
         except ValueError:
             report.fail(
@@ -937,7 +949,7 @@ def build_report(
     generated_at = document.get("generated_at")
     if isinstance(generated_at, str):
         try:
-            dt.datetime.fromisoformat(generated_at)
+            _parse_iso(generated_at)
             report.check("state.generated_at.format", True, generated_at)
         except ValueError:
             report.fail(
