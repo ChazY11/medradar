@@ -3,14 +3,20 @@
 [![Built with DeepSeek Harness · deepseek-flash](https://img.shields.io/badge/built%20with-DeepSeek%20Harness%20%C2%B7%20deepseek--flash-4D6BFE)](https://github.com/ChazY11/medradar/blob/main/docs/ATTRIBUTION.md)
 
 
-**An open-source radar for FDA device & drug industry direction — built for people who need to know
-what US majors are actually building next, not what they said in an earnings call.**
+**MedRadar is a research project on a scientific question: can publicly observable evidence
+reveal reliable, reproducible early signals of meaningful changes in medical-technology
+development?**
 
-MedRadar turns free public FDA data into a weekly, quantified, Chinese-language intelligence
-brief: which technology tracks are heating up, which majors are quietly re-allocating their
-portfolio, what appeared for the first time, and where China still has a gap.
+It ingests free public FDA device/drug approvals, recalls, clinical trials and SEC filings, and
+studies whether those signals carry information *before* the market notices. The engineering and
+the negative results are the deliverable; the product surface is a way to inspect the data.
 
-> The stable core through `v0.2.2` was built with DeepSeek Harness using `deepseek-flash`.
+> **Current status: research infrastructure, not a validated predictive product.** No method in
+> this repository has yet demonstrated out-of-sample predictive ability, and the historical
+> dataset cannot support genuine point-in-time claims (see *Data limitations* below).
+
+> **Current package version: `0.5.0`** (from `pyproject.toml`). The stable core through
+> `v0.2.2` was built with DeepSeek Harness using `deepseek-flash`.
 > The research foundation (`medradar/tkg`, `forecast_registry`) and the Market-to-R&D lane were
 > authored in independent Kimi Code sessions; `v0.3.0` consolidates their branches after an
 > independent forensic audit and defect-fix pass. Authorship is recorded per increment in
@@ -19,35 +25,133 @@ portfolio, what appeared for the first time, and where China still has a gap.
 
 > 中文文档 → [README.zh-CN.md](README.zh-CN.md) · Methodology → [docs/METHODS.md](docs/METHODS.md)
 
-![MedRadar dashboard](docs/preview.png)
+## Project status (2026‑11‑13)
 
-### What one run produces (snapshot, 2026‑10‑31)
+| | |
+|---|---|
+| `main` head | `b2a14c0` — merged through PR #11 on 2026‑11‑02 |
+| Open work | **23 open PRs (22 drafts)** are **not** part of `main`, the released package, or the live site |
+| Tests on `main` | **1,074 collected** (1,071 passed / 3 skipped), measured 2026‑11‑12 |
+| Data in `main` snapshot | 375,378 events, 1966–2026, SQLite 1.2 GiB, not committed to git |
+| Evidence ledger | **not yet on `main`**: Event Revision Ledger v1 is being implemented on a branch (Phase 2) |
+| Governance | 5 local gates exist on a draft branch; branch protection is **not** enabled |
+
+**What `main` can do today:** run the offline demo and dashboard from the committed snapshot;
+ingest openFDA device/drug, ClinicalTrials.gov and SEC EDGAR data; compute event-time descriptive
+statistics and backtests; import events into the bitemporal TKG; score forecasts with the
+append-only forecast registry; generate the Chinese report and the static dashboard.
+
+**What is still a draft (not on `main`):** MedRadar 2.0 product surface (#12), Live Observatory
+(#13/#14), S‑028/S‑029 studies (#15/#16), PHOENIX (#23–#26), ATLAS evidence store / HORIZON /
+CONVERGENCE / DATA‑EXPANSION (#27–#30), and the Phase 0–2 audit & governance branches.
+
+**Completed negative results (do not read the roadmap as success):** the Market‑to‑R&D study does
+not replicate the Q1 turn; the S‑028/S‑029 relation studies are NO‑GO; the prospective forecast set
+has no matured evidence yet. The full register is in draft PR #31 (`docs/refoundation/RESEARCH_ASSET_REGISTER.md`,
+not yet merged), together with `research/RESULTS/` on `main`.
+
+### Data limitations (measured 2026‑11‑13)
+
+- Every row in the committed snapshot has `published_at = available_at = event_date` (100%),
+  `timestamp_quality = 'date'` for all rows, and `first_seen_at` is a two-day bulk-import batch.
+  **Independent public time = 0 rows.**
+- `INSERT OR REPLACE` means a re-ingest can overwrite a previous row; the shipped database has no
+  revision history.
+- Therefore: event-time descriptive analysis is supported; **genuine point-in-time / lead-time
+  claims are not supported** until source publication timestamps are re-acquired.
+- Entity resolution is partial (about 35% of events carry a company key; about 11% have an
+  auditable basis).
+
+Evidence (not yet on `main`): `E3_DATABASE_BASELINE.md`, `E1_EVIDENCE_PROJECTION.md` and
+`ADR-001_EVIDENCE_CANON.md` live in the Phase 2 work; the Phase 0 evidence comparison is in
+[draft PR #33](https://github.com/ChazY11/medradar/pull/33).
+
+### How to reproduce research (not just the demo)
+
+```bash
+pip install -e .
+python -m pytest -q -o addopts=""     # 1,074 offline tests, no network, no API key
+medradar demo                          # offline, committed snapshot
+medradar run --months 24 --with-trade  # needs network; rebuilds the dataset (~3 min)
+```
+
+The exact numbers in the table below need `medradar run` **with network** and a fresh collection;
+the 1.2 GiB SQLite snapshot is intentionally not committed, so a clean clone reproduces the
+**procedure**, not the exact numbers.
+
+### Architecture status
+
+```mermaid
+flowchart LR
+  subgraph MAIN["On main — implemented"]
+    C1[openFDA device / drug collectors]
+    C2[ClinicalTrials.gov collector]
+    C3[SEC EDGAR collector]
+    E[(events SQLite<br/>mutable, no revisions)]
+    A[Analytics + event-time backtests]
+    T[(TKG<br/>bitemporal graph)]
+    F[(Forecast registry)]
+    R[Chinese report + static dashboard]
+  end
+  subgraph DRAFT["Draft branches — not released"]
+    AT[ATLAS evidence store #28]
+    HO[HORIZON #27]
+    CV[CONVERGENCE #30]
+    DX[DATA-EXPANSION #29]
+    O2[MedRadar 2.0 #12]
+  end
+  subgraph NEXT["Phase 2 branch — in progress"]
+    ER[(event_revision ledger)]
+    SV[schema_version + migrations]
+  end
+  C1 & C2 & C3 --> E --> A --> R
+  E --> T
+  A --> F
+  E -.-> ER
+  ER -.-> SV
+  AT -.->|"target contract only"| ER
+  E -.->|"not connected yet"| AT
+```
+
+Dashed = not wired into `main`. A module is only shown as implemented if it exists on `main`
+today; everything else is explicitly a draft or a plan.
+
+### What one run produces (committed snapshot, 2026‑10‑31)
+
+<p align="center">
+  <img src="docs/preview.png" alt="MedRadar demo dashboard, dataset snapshot 2026-10-31" width="760">
+</p>
+
+*Static screenshot generated from the committed **2026‑10‑31** dataset with package **v0.5.0**;
+it illustrates the demo views, is not a live service, and is not a forecast. Rebuild it with
+`medradar dashboard`; the interactive file is [`docs/dashboard.html`](docs/dashboard.html).*
+
 
 | | |
 |---|---|
 | Events ingested | **375,378** (510(k) 176,466 · PMA 57,372 · recalls 59,646 · trials 55,592 · drug approvals 5,326 · EDGAR catalysts 20,976) |
 | Coverage | 89 companies, 60 tracks, **204 device product families**, 7,097 product codes, **1.2 GiB SQLite** |
-| Strongest track right now | 心脏节律 THI 1.94 (P=98.2%) · 可穿戴监测 1.80 · 结构性心脏病 1.57 · 手术机器人 1.54 |
+| Strongest track (descriptive, event-time) | 心脏节律 THI 1.94 (P=98.2%) · 可穿戴监测 1.80 · 结构性心脏病 1.57 · 手术机器人 1.54 — these are in-sample descriptive scores, **not** a validated forecast |
 | Signals emitted | 281 (→ tradable subset) |
 | Case library | The historical snapshot contains **2,384 traceable cases**; v0.3.0 recomputes studies under the corrected taxonomy and extreme-return audit instead of carrying forward old category counts |
 | Replay | **400-step, 7-year timeline** (2019–2026) with 10/25/50 bps cost tiers; 1-minute fills for the last 7 days |
 | Frontier radar | **50 device tracks across 23 domains**; AdCom schedules/materials, first-posted trials, pre-submissions and designations in one feed |
 | Research integrity | Clinical holds, RTF, CRL, pre-submissions and designations are separate; absolute abnormal returns above 100% are audited and excluded from inference |
 | Market-to-R&D | **6,701 continuation + 41,003 dormant→active entry examples** (25/24 quarterly origins) from 55,090 FDA events + 43,420 SEC facts + 3,453 procurement awards; purged multi-window evaluation and a 7-source ablation, honest negative result (below) |
-| Research infrastructure | Bitemporal knowledge store (valid time vs knowledge time) and an immutable forecast registry with as-of scoring; deterministic point-in-time export |
+| Research infrastructure | Bitemporal knowledge store (valid time vs knowledge time) and an append-only forecast registry with as-of scoring. The **mechanism** supports as-of queries and deterministic export; the **shipped dataset** does not yet supply an independent public timestamp, so as-of results are bounded by that limitation |
 | Forecast cycle | Canonical registry with a separate `nowcast` cohort; continuous cycle registers 25 real forecasts, verifies matured windows, exports a deterministic artifact; idempotent re-run |
 | Temporal graph | 55,090 events imported read-only → **57,381 nodes / 114,419 edges**; PIT snapshot hash stable, idempotent re-import, read-only pair context/timeline queries |
 | Research agent | Deterministic 8-tool workflow with cited evidence, 5 question templates, conflict detection and counter-evidence; real demo: 5 questions / 55 claims / 224 unique citations / 0 missing |
 | Simulated book | in-sample, long-only, not investment advice |
-| Tests | **678 offline tests**, no network, no API key |
+| Tests | **1,074 offline tests** at `b2a14c0` (1,071 passed / 3 skipped, measured 2026‑11‑12), no network, no API key |
 | Report | 19 chapters, self-contained HTML dashboard (no CDN, no external assets) |
 | Products | 204 families, **2,740 Chinese product names** |
 | Research | event-time model, point-in-time signals, block bootstrap, Holm correction |
-| Timing scope | Public-time quality is explicit (`datetime` / `date` / `estimated` / `unknown`). Only real `datetime`/`date` availability enters return studies; historical decision dates without a public timestamp remain descriptive only |
+| Timing scope | **Event-time only in the committed snapshot.** Every row has `published_at = available_at = event_date` (100%), `timestamp_quality='date'` for all rows, and `first_seen_at` is the bulk-import date. Event studies therefore use a same-day public-time assumption; genuine point-in-time claims require re-acquired source publication timestamps (see *Data limitations*) |
 | Database | 1.2 GiB SQLite, 1966–2026 drug approvals, 1999–2026 trials |
 | Calibration | 25 hand-labelled real 8‑Ks: type accuracy **1.00 vs 0.60**, direction **0.92 vs 0.72** for the LLM judge |
 
-> Numbers move every week; every one of them is reproducible from `medradar run`.
+> Numbers move every week. They are reproducible from `medradar run` **with network access and a fresh collection**; the production SQLite snapshot is deliberately not committed, so a clean clone reproduces the procedure, not the exact numbers.
 
 ---
 
