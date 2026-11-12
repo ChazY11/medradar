@@ -33,7 +33,7 @@ def init_repo(path: Path) -> Path:
     path.mkdir(parents=True, exist_ok=True)
     run_git(path, "init", "-q")
     run_git(path, "config", "user.name", "governance-test")
-    run_git(path, "config", "user.email", "governance-test@example.invalid")
+    run_git(path, "config", "user.email", "refoundation-test")
     write(path / ".gitignore", "data/\n")
     return path
 
