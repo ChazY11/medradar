@@ -1,0 +1,107 @@
+# MedRadar governance workflow — DRAFT (Phase 0 governance MVP).
+#
+# This workflow is the server-side half of the local gates: each job runs the
+# same stdlib-only script a maintainer runs locally, so a PR cannot merge with
+# a false state file, hand-edited generated views, a changed frozen artifact or
+# an unlicensed committed data file.
+#
+# It is a draft in the governance sense only: it is not yet a *required* status
+# check. docs/governance/BRANCH_PROTECTION_PLAN.md lists the exact settings the
+# owner would apply. Nothing here changes repository settings.
+#
+# Trigger choice: pull requests only (plus manual dispatch). PROJECT_STATE.yaml
+# describes the PR's *base* main, so this is a merge gate: a PR must carry a
+# state that matches origin/main, and after a merge the next PR updates it. A
+# push trigger on main would therefore go red by design immediately after every
+# merge, which teaches people to ignore the colour; `ci` still runs on main.
+#
+# Job names are the status-check names the branch-protection plan refers to:
+#   governance / state, governance / views, governance / frozen,
+#   governance / licence, governance / links
+name: governance
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: governance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  state:
+    name: state
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check out the repository (full history: the gate resolves origin/main)"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate PROJECT_STATE.yaml against git and its measurement artifact
+        run: python tools/governance/check_state.py
+
+  views:
+    name: views
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Regenerate the views derived from PROJECT_STATE.yaml
+        run: python tools/governance/gen_views.py
+      - name: Fail if a generated view is stale or was hand-edited
+        run: |
+          if ! git diff --exit-code -- README.md CHANGELOG.md docs/RESEARCH_INDEX.md; then
+            echo "::error::Generated views were stale or hand-edited. Run 'python tools/governance/gen_views.py' locally and commit the regenerated files."
+            exit 1
+          fi
+          echo "Generated views are fresh and untampered."
+
+  frozen:
+    name: frozen
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify frozen research artifacts and frozen study directories
+        run: python tools/governance/check_frozen.py
+
+  licence:
+    name: licence
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify committed data against the per-source licence policy
+        run: python tools/governance/check_licence.py
+
+  links:
+    name: links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify relative Markdown links under docs/
+        run: python tools/governance/check_links.py

@@ -1,0 +1,5 @@
+# command: python -c "yaml.safe_load(governance.yml)"; python -c "yamlmini.load(governance.yml)"
+# exit code: 0
+
+PyYAML: valid; jobs: ['frozen', 'licence', 'links', 'state', 'views']
+yamlmini subset: valid; jobs: ['frozen', 'licence', 'links', 'state', 'views']

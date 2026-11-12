@@ -1,0 +1,112 @@
+# MedRadar — FROZEN research artifacts
+#
+# A frozen artifact is an input to a scientific claim or a record of one.
+# Its bytes may not change in place: this file pins SHA-256 digests, and the
+# frozen study directory pins its complete file list.
+#
+# To change a frozen artifact, open a dedicated commit that (a) updates the
+# digest/manifest here, (b) states the reason, and (c) links the decision that
+# authorised it. The governance workflow will fail until that commit exists.
+#
+# Reviewed by: ChazY11 (owner). Regenerate manifests with
+#   python tools/governance/check_frozen.py --manifest
+
+schema: medradar.frozen.v1
+frozen_at: 2026-11-12
+policy:
+  rebalance: "A frozen artifact may only change in a dedicated commit that updates this file, names the reason and links the decision that authorised it. --manifest prints the current directory manifests for that review."
+  scope: "Frozen files are scientific inputs or records; the study directory manifest additionally blocks unreviewed additions."
+entries:
+  - freeze_id: FZ-001
+    study: prospective_forecasts
+    kind: file
+    path: research/forecasts/FORECAST_SET_2026-11-03.json
+    sha256: 5dc9fe29cd5895fdb34d16961801dbe080d07c3ce4fa607b5403839a305670e4
+    rationale: "Original 2026-11-03 forecast set; 7 of 32 outcomes were already known when it was registered. The maturer refuses a modified set by content hash; freezing makes the repository gate enforce the same rule."
+  - freeze_id: FZ-002
+    study: prospective_forecasts
+    kind: file
+    path: research/forecasts/FORECAST_SET_2026-11-03_prospective.json
+    sha256: ad9879a5ff99e210c783775801f6bf3e79a9cac831e9f2ac131469f1c7c8cddd
+    rationale: 25 genuinely prospective forecasts (windows 2026-Q4..2028-Q1). Their value depends on not being edited after registration.
+  - freeze_id: FZ-003
+    study: early_signal_5firms
+    kind: file
+    path: research/studies/early_signal_5firms/PROTOCOL.md
+    sha256: da48c7dac2117909f589b1010283a11fd4e3fd6506101b45362f635996e40667
+    rationale: "Pre-registered study protocol (RQ1-RQ5, H1-H4, frozen windows and metrics); editing it after outcomes are observed would defeat pre-registration."
+  - freeze_id: FZ-004
+    study: early_signal_5firms
+    kind: file
+    path: research/studies/early_signal_5firms/PHASE0_REPORT.md
+    sha256: 645ec4af7a1285133ba73f3b1d8585af512236125674453ccc467c5d01a01975
+    rationale: "Phase-0 report whose CONDITIONAL-GO verdict is cited; in-place edits would rewrite the record instead of superseding it."
+  - freeze_id: FZ-005
+    study: early_signal_5firms
+    kind: file
+    path: research/studies/early_signal_5firms/DOMAIN_AMENDMENT_001.md
+    sha256: 0e7872c96761bf2821159d8e15a671d550ff7694af160f5e13542c6fb4df209d
+    rationale: "Pre-registered domain amendment: confirmatory/secondary/exploratory split fixed before any outcome was examined."
+  - freeze_id: FZ-006
+    study: early_signal_5firms
+    kind: file
+    path: research/studies/early_signal_5firms/LABELING_PROTOCOL.md
+    sha256: 9d9009d2104ce3e1b2cf4deb0fe67c182d6c8d5f69d083d47b443a4e546a84ea
+    rationale: "Labelling protocol and human-independence rule; changes must become numbered amendments, not silent edits."
+  - freeze_id: FZ-010
+    study: early_signal_5firms
+    kind: directory
+    path: research/studies/early_signal_5firms
+    no_new_files: true
+    file_manifest:
+      - ADJUDICATION_AGENT_V1.json
+      - ADJUDICATION_AGENT_V1.md
+      - ADJUDICATION_AMENDMENT_002.md
+      - CASE_CANDIDATES.json
+      - CASE_CANDIDATES.md
+      - CASE_PACKETS_SMALL_SAMPLE.json
+      - CASE_PACKETS_SMALL_SAMPLE_V2.json
+      - CELL_INVENTORY.json
+      - CLAIMS_EVIDENCE.json
+      - CONCURRENT_DETECTION.json
+      - CONCURRENT_DETECTION.md
+      - CONCURRENT_DETECTION_EXPANDED.json
+      - CONCURRENT_DETECTION_EXPANDED.md
+      - COVERAGE_MATRIX.json
+      - COVERAGE_MATRIX.md
+      - CROSSWALK.json
+      - DOMAIN_AMENDMENT_001.md
+      - EARLIER_SOURCE_AUDIT.json
+      - EARLIER_SOURCE_AUDIT.md
+      - ENTITY_AND_DOMAIN_AUDIT.json
+      - EVENT_SEQUENCE_DETECTION.json
+      - EVENT_SEQUENCE_DETECTION.md
+      - EVIDENCE_TIME_AUDIT.json
+      - EXTERNAL_SOURCE_PROBE.json
+      - HUMAN_REVIEW_WORKSHEET.csv
+      - HUMAN_REVIEW_WORKSHEET.md
+      - LABELING_PROTOCOL.md
+      - LEAD_LAG_PROBE.json
+      - LEAD_LAG_PROBE.md
+      - LEAD_LAG_PROBE_CROSSWALK.json
+      - LEAD_LAG_PROBE_CROSSWALK.md
+      - LEAD_TIME_SMALL_SAMPLE.json
+      - LEAD_TIME_SMALL_SAMPLE.md
+      - LEAD_TIME_SMALL_SAMPLE_PROTOCOL.md
+      - ONSET_LADDER.json
+      - PHASE0_REPORT.md
+      - PHASE1B_PROTOCOL.md
+      - PHASE1C_PROTOCOL.md
+      - PHASE1D_PROTOCOL.md
+      - PHASE1_PROTOCOL.md
+      - PHASE1_SHRINKAGE.md
+      - PILOT_RESULTS.json
+      - PILOT_RESULTS.md
+      - PROTOCOL.md
+      - REPRODUCIBILITY.md
+      - REVIEW_GUIDE.md
+      - STUDY_DECISIONS.md
+      - THIRD_SOURCE_CROSSWALK.json
+      - THIRD_SOURCE_CROSSWALK.md
+      - THIRD_SOURCE_PROTOCOL.md
+    rationale: "Study directory manifest: a new artifact under a registered study requires a reviewed re-baseline of FROZEN.yaml, not a silent addition."

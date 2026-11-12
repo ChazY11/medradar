@@ -1,0 +1,215 @@
+# MedRadar — PROJECT_STATE
+#
+# SINGLE HAND-EDITED SOURCE OF TRUTH for repository state.
+# Everything else (README status block, docs/RESEARCH_INDEX.md, the CHANGELOG
+# snapshot) is generated from this file by `python tools/governance/gen_views.py`.
+#
+# Rules for editing:
+#   * Update the facts here, then run `python tools/governance/gen_views.py`
+#     and commit the regenerated views in the same commit.
+#   * `generated_at` is the hand-maintained timestamp of the last state edit.
+#     It is deliberately NOT a clock reading taken by a generator: generated
+#     output must be deterministic.
+#   * Only the YAML subset documented in tools/governance/yamlmini.py is
+#     accepted. Run `python tools/governance/check_state.py` before committing.
+#   * Facts describe `main` (the ref under `main.ref`), not the branch in which
+#     this file is being edited. Do not record branch-only capabilities here.
+
+schema: medradar.project_state.v1
+generated_at: "2026-11-12T23:35:20+08:00"
+
+project:
+  name: MedRadar
+  owner: ChazY11
+  repository: https://github.com/ChazY11/medradar
+  licence: MIT
+  mission: "An open-source radar for FDA device and drug industry direction: what US majors are actually building next, quantified weekly from free public FDA data."
+  pages_source: docs/
+
+main:
+  ref: origin/main
+  head: b2a14c0a92332c004445de686daee97754cf94cb
+  short: b2a14c0
+  committed_at: "2026-11-03T04:26:31+08:00"
+  commit_subject: "Merge pull request #11 from ChazY11/research/early-signal-review-workbench"
+  version: "0.5.0"
+  version_source: pyproject.toml
+  tracked_files: 1135
+  workflows:
+    - ci
+    - forecast-cycle
+    - live
+    - weekly
+
+tests:
+  collected: 1074
+  passed: 1071
+  skipped: 3
+  failed: 0
+  subtests_passed: 224
+  command: 'python -m pytest -q -o addopts=""'
+  measured_at: "2026-11-12T23:31:00+08:00"
+  artifact: docs/refoundation/phase0/_evidence/governance/pytest_count.json
+  tested_head: b2a14c0a92332c004445de686daee97754cf94cb
+  policy: strict
+  note: "Tests are offline and need no network or API key. `tests/` was unchanged from the recorded head when measured; the artifact records the exact run."
+
+data_snapshot:
+  date: "2026-10-31"
+  generated_at: "2026-10-31T05:33:25Z"
+  events: 375378
+  database_size: "1.3 GiB"
+  evidence: docs/DATA.md
+  storage: "data/ and out/ are gitignored; these numbers describe a local snapshot, not repository content."
+  sources:
+    - id: openfda_device_510k
+      rows: 176466
+    - id: openfda_device_pma
+      rows: 57372
+    - id: openfda_device_recall
+      rows: 59646
+    - id: ctgov
+      rows: 55592
+    - id: sec_edgar_8k
+      rows: 20976
+    - id: openfda_drug_drugsfda
+      rows: 5326
+
+# Capability status vocabulary: working | draft | retired.
+# `evidence` is a repository path that exists at `main.head`.
+capabilities:
+  - id: cli_and_offline_demo
+    title: "CLI and offline demo (`medradar demo`, `medradar status`, `medradar run`)"
+    status: working
+    evidence: medradar/__main__.py
+  - id: offline_selftest
+    title: "Offline selftest entry point (`python -m medradar selftest`)"
+    status: working
+    evidence: medradar/__main__.py
+  - id: weekly_intelligence_report
+    title: "Weekly Chinese-language intelligence report and event study"
+    status: working
+    evidence: docs/report_en.md
+  - id: pages_dashboard
+    title: "Zero-dependency HTML dashboard published from docs/ via GitHub Pages"
+    status: working
+    evidence: docs/dashboard.html
+  - id: research_agent
+    title: "Deterministic evidence-grounded research agent with cited claims"
+    status: working
+    evidence: medradar/research_agent.py
+  - id: forecast_registry
+    title: "Immutable forecast registry with as-of scoring"
+    status: working
+    evidence: medradar/forecast_registry.py
+  - id: temporal_knowledge_graph
+    title: "Bitemporal knowledge store (valid time vs knowledge time)"
+    status: working
+    evidence: medradar/tkg
+  - id: market_to_rd_lane
+    title: "Market-to-R&D lane with point-in-time evaluation (honest negative result)"
+    status: draft
+    evidence: docs/MARKET_DATA.md
+  - id: publication_patent_lane
+    title: "OpenAlex publication counts evaluated; US patent path implemented but key-gated and not evaluated"
+    status: draft
+    evidence: docs/PUBLICATION_PATENT_DATA.md
+  - id: early_signal_study
+    title: "Early corporate technology-shift study (Phase 0 complete, Phase 1 conditional)"
+    status: draft
+    evidence: research/studies/early_signal_5firms/PHASE0_REPORT.md
+  - id: papers
+    title: "Paper drafts with machine-verified claim maps (not submitted, not peer reviewed)"
+    status: draft
+    evidence: papers/PAPER_v1.md
+  - id: forecast_cycle_workflow
+    title: "Weekly continuous forecast-cycle workflow (committed; not executed in the authoring environment)"
+    status: draft
+    evidence: .github/workflows/forecast-cycle.yml
+  - id: live_observatory
+    title: "Live observatory lane (paper trading, not investment advice)"
+    status: draft
+    evidence: medradar/live.py
+  - id: deployment_detector_monthly
+    title: "Monthly-resolution deployment detector"
+    status: retired
+    evidence: research/DECISIONS.md
+    note: "Retired by D-045: monthly resolution cannot resolve a change at ~0.2 events per cell-month; the deployment resolution is quarterly."
+
+research_studies:
+  - id: early_signal_5firms
+    title: "Early detection of corporate technology shifts in medical devices (5 deep-case firms)"
+    verdict: "Phase 0 CONDITIONAL-GO; the lead-time gate G1 is NO-GO; Phase 1 is not GO until the sustained-positive, earlier-source and human-adjudication conditions are met"
+    freeze_ref: FZ-010
+    public_claim: false
+    evidence: research/studies/early_signal_5firms/PHASE0_REPORT.md
+
+open_work:
+  prs:
+    merged_count: 10
+    merged_range: '#2-#11'
+    open_count: 20
+    open_range: '#1, #12-#30'
+    draft_count: 19
+    measured_from: "Owner-reported in the Phase-0 brief on 2026-11-12; the GitHub API was not called from this offline session."
+  branches:
+    verified: false
+    local_refs: 52
+    remote_refs: 35
+    measured_from: "`git for-each-ref` on 2026-11-12 in the shared clone; informational only, not gate-verified."
+  branches_note: "Branch counts include branch-per-PR refs and move as PRs merge; treat them as a snapshot, not a contract."
+
+governance:
+  branch_protection_applied: false
+  required_status_checks: []
+  plan: docs/governance/BRANCH_PROTECTION_PLAN.md
+  note: "No branch protection or required review is configured on main at main.head; the plan in this change has not been applied."
+
+decisions:
+  source: research/DECISIONS.md
+  count: 74
+  format: "ADR-style, append-only; superseded entries keep a pointer"
+  index:
+    - id: D-001
+      title: "Build new work on integration/market-to-rd-v2, not on main"
+      path: research/DECISIONS.md
+    - id: D-003
+      title: "A negative result about added data sources is a result, not a failure"
+      path: research/DECISIONS.md
+    - id: D-005
+      title: "Frozen artifacts are immutable inputs"
+      path: research/DECISIONS.md
+    - id: D-006
+      title: "Pre-register the test windows before modelling"
+      path: research/DECISIONS.md
+    - id: D-011
+      title: "Strategic realignment: Observe -> Understand -> Anticipate"
+      path: research/DECISIONS.md
+    - id: D-025
+      title: "Retraction: the cycle-6 ivd_immuno entry wave was an entity-appearance artifact"
+      path: research/DECISIONS.md
+    - id: D-043
+      title: "The corrected confirmation window confirms; the programme has its first validated decision rule"
+      path: research/DECISIONS.md
+    - id: D-045
+      title: "The layer deploys at quarterly resolution; no detector is identifiable across resolutions"
+      path: research/DECISIONS.md
+    - id: D-048
+      title: "The promotion rule also holds at the legal-entity unit"
+      path: research/DECISIONS.md
+    - id: D-054
+      title: "Promotions get their own append-only ledger, and a promotion is not a finding"
+      path: research/DECISIONS.md
+    - id: D-066
+      title: "A frozen prospective forecast set, and the 7 forecasts that do not count as evidence"
+      path: research/DECISIONS.md
+    - id: D-074
+      title: "Final consolidation: the record reproduces, and the completion position is stated"
+      path: research/DECISIONS.md
+
+not_claimed:
+  - "No branch protection or mandatory review is enforced on main (see the governance plan; it is not applied)."
+  - "No matured prospective forecasts exist yet, so no predictive-skill claim is made."
+  - "Both papers are drafts; neither is submitted or peer reviewed."
+  - "The Market-to-R&D lane reports an honest negative; added value is not established."
+  - "A detection is a statement about activity rate, never about intent, capability or internal R&D."

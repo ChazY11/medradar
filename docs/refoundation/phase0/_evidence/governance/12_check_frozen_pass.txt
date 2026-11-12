@@ -1,0 +1,38 @@
+# command: python tools/governance/check_frozen.py
+# exit code: 0
+
+[ok]   frozen.schema: expected medradar.frozen.v1, found 'medradar.frozen.v1'
+[ok]   frozen.frozen_at: 2026-11-12
+[ok]   frozen.entries.nonempty: 7 entries
+[ok]   frozen.entries[0].freeze_id: FZ-001
+[ok]   frozen.entries[0].study: prospective_forecasts
+[ok]   frozen.entries[0].rationale: Original 2026-11-03 forecast set; 7 of 32 outcomes were already known when it was register
+[ok]   frozen.entries[0].sha256: research/forecasts/FORECAST_SET_2026-11-03.json expected 5dc9fe29cd5895fd... got 5dc9fe29cd5895fd...
+[ok]   frozen.entries[1].freeze_id: FZ-002
+[ok]   frozen.entries[1].study: prospective_forecasts
+[ok]   frozen.entries[1].rationale: 25 genuinely prospective forecasts (windows 2026-Q4..2028-Q1). Their value depends on not 
+[ok]   frozen.entries[1].sha256: research/forecasts/FORECAST_SET_2026-11-03_prospective.json expected ad9879a5ff99e210... got ad9879a5ff99e210...
+[ok]   frozen.entries[2].freeze_id: FZ-003
+[ok]   frozen.entries[2].study: early_signal_5firms
+[ok]   frozen.entries[2].rationale: Pre-registered study protocol (RQ1-RQ5, H1-H4, frozen windows and metrics); editing it aft
+[ok]   frozen.entries[2].sha256: research/studies/early_signal_5firms/PROTOCOL.md expected da48c7dac2117909... got da48c7dac2117909...
+[ok]   frozen.entries[3].freeze_id: FZ-004
+[ok]   frozen.entries[3].study: early_signal_5firms
+[ok]   frozen.entries[3].rationale: Phase-0 report whose CONDITIONAL-GO verdict is cited; in-place edits would rewrite the rec
+[ok]   frozen.entries[3].sha256: research/studies/early_signal_5firms/PHASE0_REPORT.md expected 645ec4af7a128513... got 645ec4af7a128513...
+[ok]   frozen.entries[4].freeze_id: FZ-005
+[ok]   frozen.entries[4].study: early_signal_5firms
+[ok]   frozen.entries[4].rationale: Pre-registered domain amendment: confirmatory/secondary/exploratory split fixed before any
+[ok]   frozen.entries[4].sha256: research/studies/early_signal_5firms/DOMAIN_AMENDMENT_001.md expected 0e7872c96761bf28... got 0e7872c96761bf28...
+[ok]   frozen.entries[5].freeze_id: FZ-006
+[ok]   frozen.entries[5].study: early_signal_5firms
+[ok]   frozen.entries[5].rationale: Labelling protocol and human-independence rule; changes must become numbered amendments, n
+[ok]   frozen.entries[5].sha256: research/studies/early_signal_5firms/LABELING_PROTOCOL.md expected 9d9009d2104ce3e1... got 9d9009d2104ce3e1...
+[ok]   frozen.entries[6].freeze_id: FZ-010
+[ok]   frozen.entries[6].study: early_signal_5firms
+[ok]   frozen.entries[6].rationale: Study directory manifest: a new artifact under a registered study requires a reviewed re-b
+[ok]   frozen.entries[6].no_new_files: no new files
+[ok]   frozen.entries[6].no_removed_files: no removed files
+[ok]   frozen.coverage: 7 frozen path entries verified; 56 file(s) tracked by directory manifests
+[ok]   frozen.entries.unique: 7 entries, 7 unique ids
+PASS check_frozen (34 checks, 0 failures, 0 warnings)

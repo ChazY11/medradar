@@ -3,6 +3,21 @@
 All notable changes to MedRadar. Format loosely follows Keep a Changelog.
 This is a research tool; "fixed" means a documented behaviour changed.
 
+<!-- BEGIN GENERATED: unreleased -->
+<!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
+<!-- source-sha256: d71d68a3d775f0f033b0fc86558317e149c3e954c7ea01903fffb34f99e58c92 -->
+<!-- payload-sha256: b11bf5a204c226d9c1de20bef200e3ad20094852198b97c2d5e3dee637a51a87 -->
+## [Unreleased] — generated governance snapshot
+
+_Snapshot of [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-12T23:35:20+08:00`. Regenerate with `python tools/governance/gen_views.py`; do not edit this block by hand._
+
+- **Main head:** `b2a14c0` (2026-11-03), version **0.5.0**
+- **Tests:** 1,071 passed, 3 skipped, 0 failed (1,074 collected)
+- **Capabilities:** 7 working, 6 draft, 1 retired
+- **Open PRs:** 20 open (19 draft), 10 merged; branch protection not applied
+- **Data snapshot:** 2026-10-31, 375,378 events (local build; `data/` is gitignored)
+<!-- END GENERATED: unreleased -->
+
 ## [0.5.0] — 2026-11-02 (Phase 3: unified forecast cycle, temporal graph, evidence-grounded research agent)
 
 ### Added
