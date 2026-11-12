@@ -158,3 +158,4 @@ Under `docs/refoundation/phase3/_evidence/state_scheme/`:
 | `04_state_scheme_tests.txt` | the new state-scheme test module |
 | `05_full_suite_and_gates.txt` | full pytest, selftest and the six gates |
 | `06_state_after_migration.txt` | the migrated `git`/`verified`/`release`/`tests` blocks |
+| `07_final_validation.txt` | final HEAD: full pytest, six gates, clean worktree, local-only commits |
