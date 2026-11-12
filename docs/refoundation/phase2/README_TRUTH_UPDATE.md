@@ -1,4 +1,4 @@
-# README 真实性修订（Phase 2 · D）
+﻿# README 真实性修订（Phase 2 · D）
 
 **状态：** 已完成，待评审（单独文档 PR）。**未**改动 UI、未重做视觉、未删除任何文件。
 **分支：** `docs/readme-truth-phase2`（基于 `origin/main` `b2a14c0`）
@@ -62,6 +62,7 @@ Mermaid 图分三组：
 | 版本号 | `0.5.0` 与 `pyproject.toml` 一致 |
 | 图片引用 | `docs/preview.png` 存在，已加图注 |
 | 未改 UI / 未删文件 | 是 |
+| `tests/test_release.py` 测试数断言 | 修正：原正则 `(\d{3})` 与上限 900 无法解析/接受四位测试数（`1,074` 被读成 `74`），导致 PR CI 失败；改为 `([\d,]{3,})` + 上限 5000，仍保留"不得过期"的本意 |
 
 ---
 
