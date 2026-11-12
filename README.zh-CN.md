@@ -3,16 +3,67 @@
 [![由 DeepSeek Harness · deepseek-flash 构建](https://img.shields.io/badge/%E7%94%B1-DeepSeek%20Harness%20%C2%B7%20deepseek--flash%20%E6%9E%84%E5%BB%BA-4D6BFE)](https://github.com/ChazY11/medradar/blob/main/docs/ATTRIBUTION.md)
 
 
-> 把美国 FDA 的器械获批、药品批准、临床试验变成 **可量化、可复现、每周自动更新** 的中文产业情报。
+> 一个研究项目，核心科学问题是：**公开可观测的证据，能否可靠、可复现地提前揭示医疗技术发展的实质变化？**
+> 工程产出与负面结果本身就是交付物；产品界面只是查看数据的方式。
 >
-> `v0.2.2` 及此前的稳定核心由 DeepSeek Harness 智能体团队使用 `deepseek-flash` 构建。
+> **当前状态：研究基础设施，不是经验证的预测产品。** 本仓库尚无任何方法证明样本外预测能力；
+> 且历史数据不足以支撑真正的 point-in-time 结论（见下文“数据局限”）。
+>
+> **当前包版本：`0.5.0`**（以 `pyproject.toml` 为准）。`v0.2.2` 及此前的稳定核心由 DeepSeek Harness
+> 智能体团队使用 `deepseek-flash` 构建。
 > 研究底座（`medradar/tkg`、`forecast_registry`）与 Market-to-R&D 层由独立的 Kimi Code 会话完成；
 > `v0.3.0` 在独立取证审计与缺陷修复后合并这些分支。逐项署名见 [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md)，
 > 合并/审计/修复决策见 [docs/INTEGRATION_2026-11-02.md](docs/INTEGRATION_2026-11-02.md)。
 
 > 英文版 → [README.md](README.md) · 方法论 → [docs/METHODS.md](docs/METHODS.md)
 
-![MedRadar 看板](docs/preview.png)
+## 项目状态（2026‑11‑13）
+
+| | |
+|---|---|
+| `main` | `b2a14c0`，合并至 PR #11（2026‑11‑02） |
+| 开放工作 | **23 个 open PR（22 个 Draft）不在 `main`** |
+| `main` 测试 | **1,074 个离线测试**（1,071 通过 / 3 跳过，2026‑11‑12 实测） |
+| 数据快照 | 375,378 条事件，1966–2026，SQLite 1.2 GiB，不提交进 git |
+| 修订账本 | **尚未进入 `main`**：Event Revision Ledger v1 在 Phase 2 分支开发中 |
+| 治理 | 5 道本地门存在于 Draft 分支；**未启用**分支保护 |
+
+**`main` 今天真正能做的：** 离线 demo 与看板；采集 openFDA 器械/药品、ClinicalTrials.gov、SEC EDGAR；
+事件时间描述统计与回测；导入双时态 TKG；用预测登记簿做 as-of 评分；生成中文报告与静态看板。
+
+**仍是 Draft（不在 `main`）：** MedRadar 2.0（#12）、Live Observatory（#13/#14）、S‑028/S‑029（#15/#16）、
+PHOENIX（#23–#26）、ATLAS/HORIZON/CONVERGENCE/DATA‑EXPANSION（#27–#30），以及 Phase 0–2 审计与治理分支。
+
+**已完成的负面结果：** Market‑to‑R&D 未复现 Q1 转折；S‑028/S‑029 关系研究为 NO‑GO；prospective 预测尚无到期证据。
+完整登记见 Draft PR #31 中的 `docs/refoundation/RESEARCH_ASSET_REGISTER.md` 与 `research/RESULTS/`。
+
+### 数据局限（2026‑11‑13 实测）
+
+- 提交快照中 **100%** 的行满足 `published_at = available_at = event_date`，且 `timestamp_quality` 全为 `'date'`；
+  `first_seen_at` 是两天的批量导入时间 → **独立公开时间 = 0 行**。
+- `INSERT OR REPLACE` 意味着重跑会覆盖旧行；快照没有修订历史。
+- 因此：**支持事件时间描述性分析；不支持真正的 point-in-time / lead-time 主张**，除非重新采集来源公开时间。
+- 实体解析不完整：约 35% 事件有 company key，约 11% 有可审计依据。
+
+### 研究复现入口
+
+```bash
+pip install -e .
+python -m pytest -q -o addopts=""     # 1,074 个离线测试，不联网
+medradar demo                          # 离线，使用提交快照
+medradar run --months 24 --with-trade  # 需联网；重建数据集（约 3 分钟）
+```
+
+下表数字需要**联网重新采集**才能复现；1.2 GiB SQLite 快照不入库，干净克隆复现的是**过程**，不是精确数字。
+
+### 看板快照（2026‑10‑31 数据集）
+
+<p align="center">
+  <img src="docs/preview.png" alt="MedRadar 演示看板，数据集快照 2026-10-31" width="760">
+</p>
+
+*由 **2026‑10‑31** 提交数据集、包版本 **v0.5.0** 生成；仅示意 demo 视图，不是实时服务，也不是预测。
+可用 `medradar dashboard` 重建；交互文件为 [`docs/dashboard.html`](docs/dashboard.html)。*
 
 ### 一次运行的实际产出（2026‑10‑31 快照）
 
@@ -27,11 +78,11 @@
 | 前沿雷达 | **50 个器械细分赛道、23 个领域**；AdCom 日程/材料、试验首次公示、预申请与资格认定统一汇总 |
 | 研究完整性 | 临床暂停、拒绝受理、CRL、预申请与资格认定独立分类；绝对超额收益超过 100% 的案例单列审计并退出推断样本 |
 | Market-to-R&D | 由 55,090 条 FDA 事件 + 43,420 条 SEC 财务事实 + 3,453 条采购授予构造 **6,701 条持续性样本 + 41,003 条"休眠→进入"样本**（25/24 个季度起点）；purged 多窗口评估与 7 组特征消融，负面结果如实报告（见下） |
-| 研究基础设施 | 双时态知识库（valid time / knowledge time）与不可篡改的预测登记簿，支持 as-of 查询和确定性 PIT 导出 |
+| 研究基础设施 | 双时态知识库（valid time / knowledge time）与 append-only 预测登记簿，支持 as-of 查询和确定性导出。**机制**支持 as-of/导出；**当前数据集**尚无独立公开时间，as-of 结果受此限制 |
 | 预测闭环 | 规范登记簿新增独立 `nowcast` 队列；持续预测周期登记 25 条真实预测、核验到期结果、导出确定性工件；重跑幂等 |
 | 时序图谱 | 55,090 条事件只读导入 → **57,381 节点 / 114,419 边**；PIT 快照哈希稳定、重复导入幂等、只读 pair 上下文/时间线查询 |
 | 研究 Agent | 确定性 8 工具工作流，逐条引用证据、5 个问题模板、冲突检测与反证；真实演示：5 个问题 / 55 条论点 / 224 个唯一引用 / 0 缺失 |
-| 测试 | **678 个离线测试**，不联网、不需要 API key |
+| 测试 | **1,074 个离线测试**（`b2a14c0`，1,071 通过 / 3 跳过，2026‑11‑12 实测），不联网、不需要 API key |
 
 > 数字每周都会变，价值在于每一个数字都能用 `python -m medradar run` 复现。
 
@@ -123,7 +174,9 @@ ClinicalTrials.gov 状态变更 → 关键词分类 → **按 Yahoo 最新真实
 * 同一 `(ticker, 日期, 类型)` 的跨源重复告警会被合并。
 
 **时间口径**：`signal_date = event_date + 1`，成交取其后第一个交易日开盘，即**事件后约 2 个交易日**。
-这是保守口径，不是"当日成交"。只有日期级公开时间戳的事件不进入交易研究。
+这是保守口径，不是"当日成交"。**注意：** 提交快照中所有事件都只有日期级时间，且
+`available_at = event_date`；因此这些回测实质是“事件日 = 公开日”的同日假设，不是真实公开时点回测。
+真正的 point-in-time 结论需要重新采集来源公开时间（见“数据局限”）。
 
 ### 8-K 全文 LLM 判定（决定仓位大小）
 
