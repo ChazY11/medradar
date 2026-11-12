@@ -1,0 +1,368 @@
+{
+  "bypass_matrix": {
+    "cases": [
+      {
+        "case": "INSERT OR REPLACE on events",
+        "caught": false,
+        "detail": "head row replaced; ledger untouched",
+        "detectable": true,
+        "detected": 1,
+        "detected_by": "reconcile() head_mismatch_count",
+        "ledger_catches": false,
+        "outcome": "executed"
+      },
+      {
+        "case": "direct UPDATE on events",
+        "caught": false,
+        "detail": "head row updated",
+        "detectable": true,
+        "detected": 2,
+        "detected_by": "reconcile() head_mismatch_count",
+        "ledger_catches": false,
+        "outcome": "executed"
+      },
+      {
+        "case": "direct DELETE on events",
+        "caught": false,
+        "detail": "head row deleted",
+        "detectable": true,
+        "detected": 1,
+        "detected_by": "reconcile() orphan_revision_count",
+        "ledger_catches": false,
+        "outcome": "executed"
+      },
+      {
+        "case": "UPDATE event_revision",
+        "caught": true,
+        "detail": "event_revision is append-only: UPDATE rejected",
+        "detectable": true,
+        "detected": [
+          "event_revision_no_delete",
+          "event_revision_no_resubmit",
+          "event_revision_no_update"
+        ],
+        "detected_by": "BEFORE UPDATE trigger",
+        "ledger_catches": true,
+        "outcome": "rejected"
+      },
+      {
+        "case": "DELETE event_revision",
+        "caught": true,
+        "detail": "event_revision is append-only: DELETE rejected",
+        "detectable": true,
+        "detected": "trigger present",
+        "detected_by": "BEFORE DELETE trigger",
+        "ledger_catches": true,
+        "outcome": "rejected"
+      },
+      {
+        "case": "INSERT OR REPLACE event_revision",
+        "caught": true,
+        "detail": "event_revision is append-only: revision already recorded",
+        "detectable": true,
+        "detected": "trigger present",
+        "detected_by": "BEFORE INSERT resubmit guard",
+        "ledger_catches": true,
+        "outcome": "rejected"
+      },
+      {
+        "case": "UPDATE event_revision with recursive_triggers=OFF",
+        "caught": true,
+        "detail": "event_revision is append-only: UPDATE rejected",
+        "detectable": true,
+        "detected": "trigger present",
+        "detected_by": "BEFORE UPDATE trigger (unaffected by recursive_triggers)",
+        "ledger_catches": true,
+        "outcome": "rejected"
+      },
+      {
+        "case": "UPDATE event_revision with recursive_triggers=ON",
+        "caught": true,
+        "detail": "event_revision is append-only: UPDATE rejected",
+        "detectable": true,
+        "detected": "trigger present",
+        "detected_by": "BEFORE UPDATE trigger (unaffected by recursive_triggers)",
+        "ledger_catches": true,
+        "outcome": "rejected"
+      },
+      {
+        "case": "DROP TRIGGER then UPDATE event_revision",
+        "caught": false,
+        "detail": {
+          "forged_revision_reason": "forged",
+          "guards_after_drop": {
+            "missing": [
+              "event_revision_no_update"
+            ],
+            "ok": false,
+            "present": [
+              "event_revision_no_delete",
+              "event_revision_no_resubmit"
+            ]
+          },
+          "guards_after_repair": {
+            "missing": [],
+            "ok": true,
+            "present": [
+              "event_revision_no_delete",
+              "event_revision_no_resubmit",
+              "event_revision_no_update"
+            ]
+          }
+        },
+        "detectable": false,
+        "detected": "guards can be reinstalled but the forged row stays",
+        "detected_by": "NOTHING (owner-level schema change)",
+        "ledger_catches": false,
+        "outcome": "executed"
+      },
+      {
+        "case": "DROP TABLE event_revision",
+        "caught": false,
+        "detail": "ledger table dropped",
+        "detectable": false,
+        "detected": "table absent",
+        "detected_by": "NOTHING at DB level; reconcile() fails because the table is gone",
+        "ledger_catches": false,
+        "outcome": "executed"
+      }
+    ],
+    "summary": {
+      "boundary": "The ledger is an append-only record of the application write path. It is not tamper-proof against a database owner who can drop triggers, drop tables, or replace the file. reconcile() detects head-row bypasses, not a forged file.",
+      "ledger_catches_direct_head_mutation": false,
+      "ledger_catches_trigger_drop_or_file_swap": false,
+      "ledger_catches_update_delete_replace": true,
+      "ledger_detects_direct_head_mutation": true
+    }
+  },
+  "byte_integrity": {
+    "after": {
+      "bytes": 1368469504,
+      "mtime_ns": 1793424505704931600,
+      "sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92"
+    },
+    "before": {
+      "bytes": 1368469504,
+      "mtime_ns": 1793424505704931600,
+      "sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92"
+    },
+    "mtime_unchanged": true,
+    "unchanged": true
+  },
+  "full_migration_drill": {
+    "copy_bytes": 1368469504,
+    "copy_seconds": 0.769,
+    "copy_sha256_matches_source": true,
+    "events": 375378,
+    "guards": {
+      "missing": [],
+      "ok": true,
+      "present": [
+        "event_revision_no_delete",
+        "event_revision_no_resubmit",
+        "event_revision_no_update"
+      ]
+    },
+    "migration_report": {
+      "applied_now": [
+        1,
+        2
+      ],
+      "baseline_detail": {
+        "already_revisioned": 0,
+        "baseline_inserted": 375378,
+        "events_scanned": 375378,
+        "recorded_at": "2026-11-12T18:51:39.474878Z"
+      },
+      "schema_version_after": 2,
+      "schema_version_before": 0
+    },
+    "migration_seconds": 68.655,
+    "ok": true,
+    "old_query_compatibility": {
+      "equal": true,
+      "migrated": {
+        "aggregate_sha256": "b8ec723abd3480f0ad80854bb6d948d25bee3f569928d291591033a443c71d4e",
+        "by_source_kind": [
+          [
+            "ctgov",
+            "trial",
+            55592,
+            5924743,
+            59338050
+          ],
+          [
+            "openfda_device_510k",
+            "510k",
+            176466,
+            11751896,
+            318380176
+          ],
+          [
+            "openfda_device_pma",
+            "pma",
+            57372,
+            5106757,
+            103112163
+          ],
+          [
+            "openfda_device_recall",
+            "device_recall",
+            59646,
+            6587666,
+            157585834
+          ],
+          [
+            "openfda_drug_drugsfda",
+            "drug_approval",
+            5326,
+            160866,
+            38413139
+          ],
+          [
+            "sec_edgar_corpus",
+            "8k_catalyst",
+            20976,
+            1041079,
+            2929476
+          ]
+        ],
+        "count": 375378,
+        "groups": 6
+      },
+      "pristine": {
+        "aggregate_sha256": "b8ec723abd3480f0ad80854bb6d948d25bee3f569928d291591033a443c71d4e",
+        "by_source_kind": [
+          [
+            "ctgov",
+            "trial",
+            55592,
+            5924743,
+            59338050
+          ],
+          [
+            "openfda_device_510k",
+            "510k",
+            176466,
+            11751896,
+            318380176
+          ],
+          [
+            "openfda_device_pma",
+            "pma",
+            57372,
+            5106757,
+            103112163
+          ],
+          [
+            "openfda_device_recall",
+            "device_recall",
+            59646,
+            6587666,
+            157585834
+          ],
+          [
+            "openfda_drug_drugsfda",
+            "drug_approval",
+            5326,
+            160866,
+            38413139
+          ],
+          [
+            "sec_edgar_corpus",
+            "8k_catalyst",
+            20976,
+            1041079,
+            2929476
+          ]
+        ],
+        "count": 375378,
+        "groups": 6
+      }
+    },
+    "pristine_had_revision_table": false,
+    "reconcile": {
+      "events_rows": 375378,
+      "head_mismatch_count": 0,
+      "head_mismatch_sample": [],
+      "missing_revision_count": 0,
+      "missing_revision_sample": [],
+      "ok": true,
+      "orphan_revision_count": 0,
+      "orphan_revision_sample": [],
+      "revisioned_events": 375378
+    },
+    "reconcile_seconds": 16.843,
+    "reopen": {
+      "applied_now": [],
+      "events": 375378,
+      "reconcile_ok": true,
+      "revisions": 375378,
+      "seconds": 0.003
+    },
+    "restore": {
+      "events": 375378,
+      "note": "file-level restore rolls the ledger back to the pre-migration state; it cannot restore ledger rows that were never backed up",
+      "restored_sha256_matches_pristine": true,
+      "revision_table_present": false
+    },
+    "revision_breakdown": [
+      {
+        "history_completeness": "baseline_only",
+        "n": 375378,
+        "origin": "legacy_baseline"
+      }
+    ],
+    "revisions": 375378,
+    "sample_checks": {
+      "all_match": true,
+      "samples": [
+        {
+          "event_id": "000027f434623c045cd137ea39053e96",
+          "head_content_hash": "ff318dd2296720908699eb8b6033670968731e4defb6d6d114c637f4e7bfafc7",
+          "origin": "legacy_baseline",
+          "revision_content_hash": "ff318dd2296720908699eb8b6033670968731e4defb6d6d114c637f4e7bfafc7",
+          "versions": 1
+        },
+        {
+          "event_id": "0000947ad72db4f1eae93595826e3dd8",
+          "head_content_hash": "a55108a206e93e9bb11db98e8b17d4a5b4d0c168cde4b198b1476894dc687ed5",
+          "origin": "legacy_baseline",
+          "revision_content_hash": "a55108a206e93e9bb11db98e8b17d4a5b4d0c168cde4b198b1476894dc687ed5",
+          "versions": 1
+        },
+        {
+          "event_id": "0000df21329b69d47a7897adfb4d2f20",
+          "head_content_hash": "4f9c74170e7f7cd12cb80abd4b3a8e817825585c18ea825b80437d4b6ba959c5",
+          "origin": "legacy_baseline",
+          "revision_content_hash": "4f9c74170e7f7cd12cb80abd4b3a8e817825585c18ea825b80437d4b6ba959c5",
+          "versions": 1
+        },
+        {
+          "event_id": "0000fab6ca13c332b5c318b3cb2a4a39",
+          "head_content_hash": "55f64065b05f7567ff1632aae24c7552a8be5da689aeedad9fc7ae628cc43020",
+          "origin": "legacy_baseline",
+          "revision_content_hash": "55f64065b05f7567ff1632aae24c7552a8be5da689aeedad9fc7ae628cc43020",
+          "versions": 1
+        },
+        {
+          "event_id": "00011bbcb51bb6f7a14414c694f1ceb2",
+          "head_content_hash": "ed2801121c23dea63c6e19d99e6d7b8cc93eaa04d28ec6fe71f2e700055b8bbc",
+          "origin": "legacy_baseline",
+          "revision_content_hash": "ed2801121c23dea63c6e19d99e6d7b8cc93eaa04d28ec6fe71f2e700055b8bbc",
+          "versions": 1
+        }
+      ]
+    },
+    "version_one": 375378
+  },
+  "meta": {
+    "db": "<BACKUP_DB>",
+    "db_bytes": 1368469504,
+    "generated_at": "2026-11-12T18:51:28Z",
+    "python": "3.12.10",
+    "repo": "<WORKTREE>",
+    "script": "docs\\refoundation\\phase2\\_evidence\\evidence_core\\run_evidence.py",
+    "sqlite": "3.49.1"
+  }
+}

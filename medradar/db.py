@@ -15,6 +15,13 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 from .util import ensure_dir, iso, iso_moment, utc_now_iso
+from .evidence_core.ledger import (
+    content_hash,
+    latest_revision,
+    reconcile,
+    revisions_for,
+)
+from .evidence_core.migrations import ensure_schema
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS meta (
@@ -283,6 +290,10 @@ class DB:
         self.conn.executescript(SCHEMA)
         self._migrate()
         self.conn.commit()
+        # Evidence Core v1: schema_version + event_revision + guards + legacy
+        # baseline seeding. Idempotent; a migrated database is a cheap no-op.
+        self.evidence_core_report = ensure_schema(self.conn)
+        self.conn.commit()
 
     def _migrate(self) -> None:
         """Forward-migrate an existing database without losing data.
@@ -487,62 +498,217 @@ class DB:
         return len(rows)
 
     # ------------------------------------------------------------------ events
-    def upsert_events(self, events: Iterable[Mapping[str, Any]]) -> int:
-        stamp = utc_now_iso()
-        rows = []
-        for event in events:
-            payload = event.get("payload")
-            if isinstance(payload, (dict, list)):
-                payload = json.dumps(payload, ensure_ascii=False)
-            event_date = iso(event.get("event_date"))
-            as_of = iso(event.get("as_of")) or stamp[:10]
-            raw_published_at = str(event.get("published_at") or "")
-            raw_available_at = str(event.get("available_at") or "")
-            published_at = iso_moment(raw_published_at) or None
-            first_seen_at = iso_moment(event.get("first_seen_at")) or stamp
-            available_at = iso_moment(raw_available_at) or published_at
-            raw_public_time = raw_available_at or raw_published_at
-            default_quality = (
-                "datetime" if "T" in raw_public_time
-                else "date" if available_at
-                else "unknown"
-            )
-            quality = str(event.get("timestamp_quality") or default_quality).lower()
-            if quality not in TIMESTAMP_QUALITIES or not available_at:
-                quality = "unknown"
-            rows.append(
-                (
-                    event["event_id"],
-                    event["source"],
-                    event["kind"],
-                    event_date,
-                    as_of,
-                    event.get("company_key"),
-                    event.get("applicant_raw", ""),
-                    event.get("country", "US"),
-                    event.get("track_id"),
-                    str(event.get("product_code") or "") or None,
-                    event.get("title", ""),
-                    event.get("summary", ""),
-                    event.get("url", ""),
-                    payload or "",
-                    event.get("fetched_at") or stamp,
-                    published_at,
-                    first_seen_at,
-                    available_at,
-                    quality,
-                )
-            )
-        self.conn.executemany(
+    def _normalise_event(self, event: Mapping[str, Any], stamp: str) -> dict[str, Any]:
+        """One ``events`` row, normalised exactly as the pre-ledger write path did.
+
+        Kept as a method (not a free function) so the existing date/quality
+        contract in this module remains the single source of truth.
+        """
+        payload = event.get("payload")
+        if isinstance(payload, (dict, list)):
+            payload = json.dumps(payload, ensure_ascii=False)
+        event_date = iso(event.get("event_date"))
+        as_of = iso(event.get("as_of")) or stamp[:10]
+        raw_published_at = str(event.get("published_at") or "")
+        raw_available_at = str(event.get("available_at") or "")
+        published_at = iso_moment(raw_published_at) or None
+        first_seen_at = iso_moment(event.get("first_seen_at")) or stamp
+        available_at = iso_moment(raw_available_at) or published_at
+        raw_public_time = raw_available_at or raw_published_at
+        default_quality = (
+            "datetime" if "T" in raw_public_time
+            else "date" if available_at
+            else "unknown"
+        )
+        quality = str(event.get("timestamp_quality") or default_quality).lower()
+        if quality not in TIMESTAMP_QUALITIES or not available_at:
+            quality = "unknown"
+        return {
+            "event_id": event["event_id"],
+            "source": event["source"],
+            "kind": event["kind"],
+            "event_date": event_date,
+            "as_of": as_of,
+            "company_key": event.get("company_key"),
+            "applicant_raw": event.get("applicant_raw", ""),
+            "country": event.get("country", "US"),
+            "track_id": event.get("track_id"),
+            "product_code": str(event.get("product_code") or "") or None,
+            "title": event.get("title", ""),
+            "summary": event.get("summary", ""),
+            "url": event.get("url", ""),
+            "payload": payload or "",
+            "fetched_at": event.get("fetched_at") or stamp,
+            "published_at": published_at,
+            "first_seen_at": first_seen_at,
+            "available_at": available_at,
+            "timestamp_quality": quality,
+        }
+
+    @staticmethod
+    def _min_first_seen(left: Any, right: Any) -> str:
+        """Lexicographic MIN of two ISO date/datetime strings (never later).
+
+        Mixed precision is safe here because the prefix date is fixed-width:
+        ``2024-01-05`` sorts before ``2024-01-05T16:00:00Z``, which is the
+        correct "same day, earlier is better" answer.
+        """
+        first = str(left or "").strip()
+        second = str(right or "").strip()
+        if not first:
+            return second
+        if not second:
+            return first
+        return first if first <= second else second
+
+    @staticmethod
+    def _snapshot(values: Mapping[str, Any]) -> dict[str, Any]:
+        return {field: values.get(field) for field in EVENT_FIELDS}
+
+    def _insert_event_row(self, values: Mapping[str, Any]) -> None:
+        self.conn.execute(
             "INSERT OR REPLACE INTO events(event_id, source, kind, event_date, as_of,"
             " company_key, applicant_raw, country, track_id, product_code, title,"
             " summary, url, payload, fetched_at, published_at, first_seen_at,"
             " available_at, timestamp_quality)"
             " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-            rows,
+            tuple(values.get(field) for field in EVENT_FIELDS),
         )
-        self.conn.commit()
+
+    def _write_event_with_revision(self, values: dict[str, Any], stamp: str) -> str:
+        """Write the head row and exactly one ledger revision on content change.
+
+        Returns ``"inserted" | "unchanged" | "revised" | "adopted"``.
+        Must be called inside a transaction: a failure rolls back both the head
+        row and the revision.
+        """
+        from .evidence_core.ledger import append_revision
+
+        event_id = str(values["event_id"])
+        new_hash = content_hash(values)
+        existing = self.conn.execute(
+            "SELECT first_seen_at FROM events WHERE event_id = ?", (event_id,)
+        ).fetchone()
+        if existing is None:
+            self._insert_event_row(values)
+            append_revision(
+                self.conn,
+                event_id=event_id,
+                version=1,
+                snapshot=self._snapshot(values),
+                revision_reason="insert",
+                origin="live",
+                history_completeness="complete",
+                recorded_at=stamp,
+            )
+            return "inserted"
+
+        first_seen = self._min_first_seen(existing["first_seen_at"], values["first_seen_at"])
+        latest = latest_revision(self.conn, event_id)
+        if latest is not None and latest["content_hash"] == new_hash:
+            # Idempotent re-import: no new revision. Only the monotonic
+            # first_seen_at may move (earlier), and only on the head row; the
+            # immutable ledger keeps what it recorded at each revision.
+            if first_seen != str(existing["first_seen_at"] or ""):
+                self.conn.execute(
+                    "UPDATE events SET first_seen_at = ? WHERE event_id = ?",
+                    (first_seen, event_id),
+                )
+            return "unchanged"
+
+        snapshot = self._snapshot(values)
+        snapshot["first_seen_at"] = first_seen
+        if latest is None:
+            # Defensive: an events row somehow predates the ledger (migrations
+            # bypassed). Seal it as an adopted row, never as real history.
+            append_revision(
+                self.conn,
+                event_id=event_id,
+                version=1,
+                snapshot=snapshot,
+                revision_reason="adopted_existing_row",
+                origin="live",
+                history_completeness="partial_before_ledger",
+                recorded_at=stamp,
+            )
+            self._insert_event_row(snapshot)
+            return "adopted"
+
+        completeness = (
+            "complete"
+            if latest["origin"] == "live" and latest["history_completeness"] == "complete"
+            else "partial_before_ledger"
+        )
+        append_revision(
+            self.conn,
+            event_id=event_id,
+            version=int(latest["version"]) + 1,
+            snapshot=snapshot,
+            revision_reason="update",
+            origin="live",
+            history_completeness=completeness,
+            recorded_at=stamp,
+            prev_content_hash=latest["content_hash"],
+        )
+        self._insert_event_row(snapshot)
+        return "revised"
+
+    def upsert_events(self, events: Iterable[Mapping[str, Any]]) -> int:
+        """Insert/update events, appending an immutable revision per content change.
+
+        Behaviour contract (Evidence Core v1):
+
+        * first insert → head row + revision v1 (``origin='live'``);
+        * identical re-import (same content hash) → **no** new revision and the
+          earlier ``first_seen_at`` is preserved (MIN, never later);
+        * changed re-import → head row updated, revision vN appended with the
+          old values already in the ledger. The batch is one transaction.
+
+        Read behaviour is unchanged: every existing query still reads ``events``.
+        """
+        stamp = utc_now_iso()
+        # Normalise before opening the transaction: an invalid row must fail
+        # fast without writing anything.
+        rows = [self._normalise_event(event, stamp) for event in events]
+        if not rows:
+            return 0
+        with self.transaction():
+            for values in rows:
+                self._write_event_with_revision(values, stamp)
         return len(rows)
+
+    # --------------------------------------------------------- evidence ledger
+    def event_history(self, event_id: str) -> list[dict[str, Any]]:
+        """Every recorded revision for one event, oldest first."""
+        return revisions_for(self.conn, event_id)
+
+    def event_revision_count(self, event_id: str | None = None) -> int:
+        if event_id is None:
+            return int(self.scalar("SELECT COUNT(*) FROM event_revision", default=0) or 0)
+        return int(
+            self.scalar(
+                "SELECT COUNT(*) FROM event_revision WHERE event_id = ?",
+                (event_id,),
+                default=0,
+            )
+            or 0
+        )
+
+    def reconcile_ledger(self) -> dict[str, Any]:
+        """Detect head rows that no longer match their latest revision.
+
+        Catches direct SQL / ``INSERT OR REPLACE`` on ``events`` and missing
+        revisions. Does not catch dropped triggers or whole-file replacement
+        (see the bypass matrix in the Phase 2 document).
+        """
+        return reconcile(self.conn)
+
+    def ensure_evidence_core(self) -> dict[str, Any]:
+        """Re-run the idempotent migration runner (e.g. after restoring a file)."""
+        report = ensure_schema(self.conn)
+        self.conn.commit()
+        self.evidence_core_report = report
+        return report
 
     # ------------------------------------------------------------------ prices
     def upsert_prices(self, rows: Iterable[Mapping[str, Any]]) -> int:
