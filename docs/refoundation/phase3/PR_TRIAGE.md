@@ -1,7 +1,7 @@
 # PR_TRIAGE — REFOUNDATION-003 consolidation plan
 
 > **Program:** REFOUNDATION-003 · **Owner:** `inventory-auditor` · **Date:** 2026-11-13 (Asia/Shanghai)
-> **Worktree:** `D:\DEPPSKK\worktrees\rf003-triage`, branch `docs/ref003-pr-triage`, cut from `origin/main` `b2a14c0`
+> **Worktree:** `a local worktree of this repository`, branch `docs/ref003-pr-triage`, cut from `origin/main` `b2a14c0`
 > **Mode:** **read-only triage.** No PR was merged, closed, deleted, retargeted or commented; no branch was pushed; no repository setting was changed.
 > **Machine-readable:** [`_evidence/pr_triage.json`](_evidence/pr_triage.json) · raw metadata copy: [`_evidence/pr_metadata_raw.json`](_evidence/pr_metadata_raw.json)
 > **Evidence scripts:** `_evidence/collect_pr_triage.py`, `build_triage.py`, `check_boundary.py`, `check_dup.py`
@@ -279,7 +279,7 @@ Its **UK Find a Tender** artefacts are **not** restricted (`"redistribution_allo
 
 ## 9. Reproducible commands
 
-All read-only. Run from `D:\DEPPSKK\worktrees\rf003-triage`.
+All read-only. Run from `a local worktree of this repository`.
 
 ```bash
 # Re-collect PR metadata + local metrics + ancestry (writes _evidence/pr_triage.json)
