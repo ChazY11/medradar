@@ -2,7 +2,7 @@
 
 - **Task:** REFOUNDATION-003 / `task-18` — independent production-grade acceptance of Evidence Core v1 (ADR-001 option C), not a re-run of the author's drill.
 - **Branch:** `acceptance/evidence-core-v1` @ `f088e37` (`feature/evidence-core-v1`), based on `origin/main` `b2a14c0`. Not pushed; `main` untouched.
-- **Original database:** `D:\DEPPSKK\refoundation-002-backups\data\medradar.sqlite` — read/copied only.
+- **Original database:** `<BACKUP_DB>` — read/copied only.
   - SHA-256 before **and** after acceptance: `445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92` (1,368,469,504 B; mtime identical).
   - Fresh copy was created **before** any migration and verified byte-identical; all migrations/writes/mutations/restores happened on copies that were removed afterwards.
 - **Harness:** [`_evidence/core_acceptance/run_acceptance.py`](_evidence/core_acceptance/run_acceptance.py) → [`acceptance.json`](_evidence/core_acceptance/acceptance.json).
@@ -170,7 +170,7 @@
 ```bash
 # full acceptance (migrates a fresh 1.37 GB copy in a temp workdir; ~2.5 min; needs ~5 GB free)
 python docs/refoundation/phase3/_evidence/core_acceptance/run_acceptance.py \
-  --workdir D:/DEPPSKK/_rf003_accept_work \
+  --workdir <WORKDIR> \
   --json-out docs/refoundation/phase3/_evidence/core_acceptance/acceptance.json
 
 # skip the pytest subprocess

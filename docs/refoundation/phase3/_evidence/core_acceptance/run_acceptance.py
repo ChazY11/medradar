@@ -18,6 +18,7 @@ Usage:
 
 from __future__ import annotations
 
+import os
 import argparse
 import hashlib
 import json
@@ -36,7 +37,7 @@ REPO = Path(__file__).resolve().parents[5]
 if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
-DEFAULT_DB = Path(r"D:\DEPPSKK\refoundation-002-backups\data\medradar.sqlite")
+DEFAULT_DB = Path(os.environ.get("MEDRADAR_DB", "data/medradar.sqlite"))
 EXPECTED_ORIGINAL_SHA = "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92"
 EXPECTED_EVENTS = 375_378
 
