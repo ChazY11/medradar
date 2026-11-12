@@ -1,0 +1,340 @@
+{
+ "contract": "what could have been PUBLIC on date D, reconstructed ONLY from source-provided publication fields; never from event_date or from our collection time",
+ "sources": {
+  "openfda_device": {
+   "event_date_field": "decision_date",
+   "second_event_field": "date_received",
+   "first_public_field": null,
+   "first_public_basis": "unknown — the device endpoints expose the FDA decision date but no public-posting date; dataset-level meta.last_updated only",
+   "dataset_last_updated": "2026-11-02",
+   "revision_visibility": "none per record; no version API",
+   "samples": [
+    {
+     "record_id": "K240778",
+     "event_date": "2024-12-13",
+     "date_received": "2024-03-21",
+     "applicant": "Breas Medical AB",
+     "product_code": "MNS",
+     "decision_code": "SESE",
+     "device_name": "Vivo 1, Vivo 2"
+    },
+    {
+     "record_id": "K230325",
+     "event_date": "2024-10-10",
+     "date_received": "2023-02-06",
+     "applicant": "Greens Surgicals Pvt. , Ltd.",
+     "product_code": "NKB",
+     "decision_code": "SESE",
+     "device_name": "GREENS BRAND Posterior, Non-cervical Pedicle Screw Spinal System"
+    },
+    {
+     "record_id": "K233142",
+     "event_date": "2024-01-19",
+     "date_received": "2023-09-27",
+     "applicant": "Cyted Limited",
+     "product_code": "EOX",
+     "decision_code": "SESE",
+     "device_name": "EndoSign® Cell collection device (ES-CYT-102)"
+    },
+    {
+     "record_id": "K240084",
+     "event_date": "2024-02-09",
+     "date_received": "2024-01-11",
+     "applicant": "Hyprevention",
+     "product_code": "NDN",
+     "decision_code": "SESE",
+     "device_name": "V-STRUT® Vertebral Implant"
+    },
+    {
+     "record_id": "K221349",
+     "event_date": "2024-11-19",
+     "date_received": "2022-05-09",
+     "applicant": "Taidoc Technology Corporation",
+     "product_code": "PZI",
+     "decision_code": "SESE",
+     "device_name": "XPER Technology PREMIUM Pro Blood Glucose Monitoring System"
+    }
+   ],
+   "pma_samples": [
+    {
+     "record_id": "P030011",
+     "event_date": "2024-11-25",
+     "date_received": "2024-05-29",
+     "applicant": "Syncardia Systems, LLC",
+     "product_code": "LOZ",
+     "decision_code": "APPR",
+     "device_name": null
+    },
+    {
+     "record_id": "P010031",
+     "event_date": "2024-06-05",
+     "date_received": "2024-05-07",
+     "applicant": "Medtronic Cardiac Rhythm Disease Management",
+     "product_code": "NIK",
+     "decision_code": "OK30",
+     "device_name": null
+    },
+    {
+     "record_id": "N16895",
+     "event_date": "2024-07-25",
+     "date_received": "2024-06-28",
+     "applicant": "Bausch & Lomb, Inc.",
+     "product_code": "LPM",
+     "decision_code": "OK30",
+     "device_name": null
+    },
+    {
+     "record_id": "P980043",
+     "event_date": "2024-04-22",
+     "date_received": "2024-04-12",
+     "applicant": "Medtronic, Inc.",
+     "product_code": "DYE",
+     "decision_code": "OK30",
+     "device_name": null
+    },
+    {
+     "record_id": "P190032",
+     "event_date": "2024-12-12",
+     "date_received": "2024-06-17",
+     "applicant": "Foundation Medicine, Inc.",
+     "product_code": "PQP",
+     "decision_code": "APPR",
+     "device_name": null
+    }
+   ]
+  },
+  "clinicaltrials_gov": {
+   "event_date_field": "statusModule.startDateStruct.date",
+   "first_public_field": "statusModule.studyFirstPostDateStruct.date",
+   "first_public_type": "ACTUAL or ESTIMATED — ESTIMATED must NOT be treated as observed",
+   "supporting_fields": [
+    "studyFirstSubmitDate",
+    "studyFirstSubmitQcDate"
+   ],
+   "revision_visibility": "lastUpdatePostDateStruct only; no version list",
+   "samples": [
+    {
+     "record_id": "NCT07672483",
+     "brief_title": "IL-12 Genetically Engineered Myeloid Cells in Participants With Relapsed, Refractory Solid Tumors",
+     "event_date_start": "2026-11-04",
+     "first_public_date": "2026-06-29",
+     "first_public_date_type": "ACTUAL",
+     "first_submit_date": "2026-06-26",
+     "first_submit_qc_date": "2026-06-26",
+     "last_public_update": "2026-11-12",
+     "last_update_submit_date": "2026-11-10",
+     "overall_status": "RECRUITING",
+     "sponsor": "National Cancer Institute (NCI)",
+     "sponsor_class": "NIH"
+    },
+    {
+     "record_id": "NCT07800182",
+     "brief_title": "A Randomized Controlled Trial of Prepared vs. Unprepared Food",
+     "event_date_start": "2027-03",
+     "first_public_date": "2026-09-02",
+     "first_public_date_type": "ACTUAL",
+     "first_submit_date": "2026-08-28",
+     "first_submit_qc_date": "2026-08-28",
+     "last_public_update": "2026-11-12",
+     "last_update_submit_date": "2026-11-11",
+     "overall_status": "NOT_YET_RECRUITING",
+     "sponsor": "University of Michigan",
+     "sponsor_class": "OTHER"
+    },
+    {
+     "record_id": "NCT06723171",
+     "brief_title": "Evaluation of Safety and Efficacy of IRX4204 in Mild to Moderate Plaque Psoriasis",
+     "event_date_start": "2027-03-01",
+     "first_public_date": "2024-12-09",
+     "first_public_date_type": "ACTUAL",
+     "first_submit_date": "2024-12-04",
+     "first_submit_qc_date": "2024-12-04",
+     "last_public_update": "2026-11-12",
+     "last_update_submit_date": "2026-11-07",
+     "overall_status": "SUSPENDED",
+     "sponsor": "Io Therapeutics",
+     "sponsor_class": "INDUSTRY"
+    },
+    {
+     "record_id": "NCT07578363",
+     "brief_title": "An Investigation of FID 123472 Ophthalmic Solution to Vehicle for the Reduction of Ocular Redness in Adults",
+     "event_date_start": "2026-09-27",
+     "first_public_date": "2026-05-11",
+     "first_public_date_type": "ACTUAL",
+     "first_submit_date": "2026-05-05",
+     "first_submit_qc_date": "2026-05-05",
+     "last_public_update": "2026-11-12",
+     "last_update_submit_date": "2026-11-09",
+     "overall_status": "RECRUITING",
+     "sponsor": "Alcon Research",
+     "sponsor_class": "INDUSTRY"
+    },
+    {
+     "record_id": "NCT03712605",
+     "brief_title": "Testing Pembrolizumab Versus Observation in Patients With Merkel Cell Carcinoma After Surgery, STAMP Trial",
+     "event_date_start": "2018-11-15",
+     "first_public_date": "2018-10-19",
+     "first_public_date_type": "ACTUAL",
+     "first_submit_date": "2018-10-17",
+     "first_submit_qc_date": "2018-10-18",
+     "last_public_update": "2026-11-12",
+     "last_update_submit_date": "2026-11-11",
+     "overall_status": "ACTIVE_NOT_RECRUITING",
+     "sponsor": "National Cancer Institute (NCI)",
+     "sponsor_class": "NIH"
+    }
+   ]
+  },
+  "sec_edgar": {
+   "event_date_field": "reportDate (period of the reported event)",
+   "first_public_field": "acceptanceDateTime (UTC timestamp)",
+   "supporting_fields": [
+    "filingDate",
+    "accessionNumber"
+   ],
+   "revision_visibility": "amendments appear as separate filings (8-K/A)",
+   "amendments_in_recent_window": 53,
+   "recent_window_size": 1000,
+   "entity": {
+    "name": "Medtronic plc",
+    "cik": "0001613103",
+    "tickers": [
+     "MDT"
+    ],
+    "sic": "3845"
+   },
+   "samples": [
+    {
+     "accession_number": "0001628280-26-066291",
+     "form": "8-K",
+     "filing_date": "2026-10-19",
+     "acceptance_datetime_utc": "2026-10-19T20:23:27.000Z",
+     "report_date": "2026-10-15",
+     "primary_document": "mdt-20261015.htm",
+     "archive_dir": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026066291",
+     "index_json": {
+      "http_status": 200,
+      "sha256": "bcd09939047794a947f45aad2933acd535b5382091b1cc883827d651028f8959",
+      "bytes": 1882
+     },
+     "primary_doc": {
+      "http_status": 200,
+      "sha256": "e988da97f500ac2764b59c7f01beffbf400c4faa9c31d451f930244546d7164c",
+      "bytes": 103824,
+      "last_modified": "Mon, 19 Oct 2026 20:23:52 GMT"
+     },
+     "refetch": {
+      "http_status": 200,
+      "sha256": "e988da97f500ac2764b59c7f01beffbf400c4faa9c31d451f930244546d7164c",
+      "identical_to_first": true,
+      "fetched_at_utc": "2026-11-12T18:45:29.681084+00:00"
+     }
+    },
+    {
+     "accession_number": "0001628280-26-062505",
+     "form": "8-K",
+     "filing_date": "2026-09-17",
+     "acceptance_datetime_utc": "2026-09-17T20:19:27.000Z",
+     "report_date": "2026-09-17",
+     "primary_document": "mdt-20260917.htm",
+     "archive_dir": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026062505",
+     "index_json": {
+      "http_status": 200,
+      "sha256": "e4cdcfe29effa16d8906df452d438f11713e40b3076f8e579e05395f58315bd6",
+      "bytes": 1670
+     },
+     "primary_doc": {
+      "http_status": 200,
+      "sha256": "75ebcf51af24e7aff2b5419e57c38be73519e8314cf5ec776f65145ae874923d",
+      "bytes": 71320,
+      "last_modified": "Thu, 17 Sep 2026 20:19:52 GMT"
+     },
+     "refetch": {
+      "http_status": 200,
+      "sha256": "75ebcf51af24e7aff2b5419e57c38be73519e8314cf5ec776f65145ae874923d",
+      "identical_to_first": true,
+      "fetched_at_utc": "2026-11-12T18:45:31.866115+00:00"
+     }
+    },
+    {
+     "accession_number": "0001628280-26-059697",
+     "form": "8-K",
+     "filing_date": "2026-09-01",
+     "acceptance_datetime_utc": "2026-09-01T10:47:19.000Z",
+     "report_date": "2026-09-01",
+     "primary_document": "mdt-20260901.htm",
+     "archive_dir": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026059697",
+     "index_json": {
+      "http_status": 200,
+      "sha256": "30881b402f01ee06c086f2d1e0ea515f30dc591584b82fdf83fdacb9890a4d58",
+      "bytes": 1883
+     },
+     "primary_doc": {
+      "http_status": 200,
+      "sha256": "a03ed94f102177a363f0864088434722be2ce32b4571a658140aa8d70c6b27f1",
+      "bytes": 62219,
+      "last_modified": "Tue, 01 Sep 2026 10:47:44 GMT"
+     },
+     "refetch": {
+      "http_status": 200,
+      "sha256": "a03ed94f102177a363f0864088434722be2ce32b4571a658140aa8d70c6b27f1",
+      "identical_to_first": true,
+      "fetched_at_utc": "2026-11-12T18:45:34.339888+00:00"
+     }
+    },
+    {
+     "accession_number": "0001628280-26-040034",
+     "form": "8-K",
+     "filing_date": "2026-06-03",
+     "acceptance_datetime_utc": "2026-06-03T10:47:08.000Z",
+     "report_date": "2026-06-03",
+     "primary_document": "mdt-20260603.htm",
+     "archive_dir": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026040034",
+     "index_json": {
+      "http_status": 200,
+      "sha256": "4c870895b0f3ca2dab4a8e6e22b67be9de7f2de7867a572c2073ffdc354e3b8c",
+      "bytes": 1883
+     },
+     "primary_doc": {
+      "http_status": 200,
+      "sha256": "2cc249ac20ebc71e6ecb6ace59b61de008ecafb48ef3a8c514bb6a77ca6a0068",
+      "bytes": 62791,
+      "last_modified": "Wed, 03 Jun 2026 10:47:29 GMT"
+     },
+     "refetch": {
+      "http_status": 200,
+      "sha256": "2cc249ac20ebc71e6ecb6ace59b61de008ecafb48ef3a8c514bb6a77ca6a0068",
+      "identical_to_first": true,
+      "fetched_at_utc": "2026-11-12T18:45:36.789530+00:00"
+     }
+    },
+    {
+     "accession_number": "0001628280-26-035959",
+     "form": "8-K",
+     "filing_date": "2026-05-18",
+     "acceptance_datetime_utc": "2026-05-18T20:30:33.000Z",
+     "report_date": "2026-05-18",
+     "primary_document": "mdt-20260518.htm",
+     "archive_dir": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026035959",
+     "index_json": {
+      "http_status": 200,
+      "sha256": "9dca25d63a221136390af08d70d36adf5beaa91d15b85428279905fce7fedda8",
+      "bytes": 1670
+     },
+     "primary_doc": {
+      "http_status": 200,
+      "sha256": "810577c6ac489923df508fbe2002fb267681a0745501755e5ecea031436665e3",
+      "bytes": 58297,
+      "last_modified": "Mon, 18 May 2026 20:31:48 GMT"
+     },
+     "refetch": {
+      "http_status": 200,
+      "sha256": "810577c6ac489923df508fbe2002fb267681a0745501755e5ecea031436665e3",
+      "identical_to_first": true,
+      "fetched_at_utc": "2026-11-12T18:45:39.253678+00:00"
+     }
+    }
+   ]
+  }
+ }
+}

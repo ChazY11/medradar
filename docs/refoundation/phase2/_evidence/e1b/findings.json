@@ -1,0 +1,340 @@
+{
+ "generated_from": [
+  "retrospective.json",
+  "prospective.json",
+  "collection.jsonl"
+ ],
+ "requests_total": 28,
+ "requests_by_status": {
+  "200": 25,
+  "400": 1,
+  "404": 2
+ },
+ "openfda_device": {
+  "event_date_field": "decision_date",
+  "second_event_field": "date_received",
+  "first_public_field": null,
+  "first_public_basis": "UNKNOWN — no public-posting date is exposed by /device/510k or /device/pma",
+  "dataset_last_updated": "2026-11-02",
+  "received_to_decision_days": {
+   "n": 10,
+   "min": 10,
+   "median": 146.0,
+   "max": 925
+  },
+  "revision_visibility": "NONE per record (no version/history endpoint)",
+  "refetch": {
+   "http_status": 200,
+   "identical_hashes": true,
+   "sha256": "78e18c24544aa2a6916840b57951e4cfe07de019888d7f74b4e8082205a22b55"
+  },
+  "identity_signal": "applicant string + product_code; no registrant id; PMA ids include N-numbers and supplements",
+  "records": {
+   "510k": [
+    {
+     "record_id": "K240778",
+     "decision_date": "2024-12-13",
+     "date_received": "2024-03-21",
+     "received_to_decision_days": 267,
+     "applicant": "Breas Medical AB"
+    },
+    {
+     "record_id": "K230325",
+     "decision_date": "2024-10-10",
+     "date_received": "2023-02-06",
+     "received_to_decision_days": 612,
+     "applicant": "Greens Surgicals Pvt. , Ltd."
+    },
+    {
+     "record_id": "K233142",
+     "decision_date": "2024-01-19",
+     "date_received": "2023-09-27",
+     "received_to_decision_days": 114,
+     "applicant": "Cyted Limited"
+    },
+    {
+     "record_id": "K240084",
+     "decision_date": "2024-02-09",
+     "date_received": "2024-01-11",
+     "received_to_decision_days": 29,
+     "applicant": "Hyprevention"
+    },
+    {
+     "record_id": "K221349",
+     "decision_date": "2024-11-19",
+     "date_received": "2022-05-09",
+     "received_to_decision_days": 925,
+     "applicant": "Taidoc Technology Corporation"
+    }
+   ],
+   "pma": [
+    {
+     "record_id": "P030011",
+     "decision_date": "2024-11-25",
+     "date_received": "2024-05-29",
+     "received_to_decision_days": 180,
+     "applicant": "Syncardia Systems, LLC"
+    },
+    {
+     "record_id": "P010031",
+     "decision_date": "2024-06-05",
+     "date_received": "2024-05-07",
+     "received_to_decision_days": 29,
+     "applicant": "Medtronic Cardiac Rhythm Disease Management"
+    },
+    {
+     "record_id": "N16895",
+     "decision_date": "2024-07-25",
+     "date_received": "2024-06-28",
+     "received_to_decision_days": 27,
+     "applicant": "Bausch & Lomb, Inc."
+    },
+    {
+     "record_id": "P980043",
+     "decision_date": "2024-04-22",
+     "date_received": "2024-04-12",
+     "received_to_decision_days": 10,
+     "applicant": "Medtronic, Inc."
+    },
+    {
+     "record_id": "P190032",
+     "decision_date": "2024-12-12",
+     "date_received": "2024-06-17",
+     "received_to_decision_days": 178,
+     "applicant": "Foundation Medicine, Inc."
+    }
+   ]
+  }
+ },
+ "clinicaltrials_gov": {
+  "event_date_field": "statusModule.startDateStruct.date",
+  "first_public_field": "statusModule.studyFirstPostDateStruct.date (+ .type ACTUAL|ESTIMATED)",
+  "supporting_fields": [
+   "studyFirstSubmitDate",
+   "studyFirstSubmitQcDate",
+   "lastUpdatePostDateStruct",
+   "lastUpdateSubmitDate"
+  ],
+  "first_post_types_in_sample": [
+   "ACTUAL"
+  ],
+  "estimated_in_sample": 0,
+  "revision_visibility": "lastUpdatePostDateStruct only; NO version-history API (/history 404, /versions 404, ?history=true 400)",
+  "history_probes": {
+   "/history": {
+    "url": "https://clinicaltrials.gov/api/v2/studies/NCT07672483/history",
+    "http_status": 404,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "/versions": {
+    "url": "https://clinicaltrials.gov/api/v2/studies/NCT07672483/versions",
+    "http_status": 404,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "?history=true": {
+    "url": "https://clinicaltrials.gov/api/v2/studies/NCT07672483?history=true",
+    "http_status": 400,
+    "bytes": 30,
+    "sha256": "15591d7bc5262ed091587cac514c4f0f2aabd45265ee67397a4639a3b1d71da6"
+   }
+  },
+  "refetch_identical": true,
+  "identity_signal": "NCTId (stable) + leadSponsor.name + class (name is display text)",
+  "records": [
+   {
+    "record_id": "NCT07672483",
+    "brief_title": "IL-12 Genetically Engineered Myeloid Cells in Participants With Relapsed, Refractory Solid Tumors",
+    "event_date_start": "2026-11-04",
+    "first_public_date": "2026-06-29",
+    "first_public_date_type": "ACTUAL",
+    "first_submit_date": "2026-06-26",
+    "first_submit_qc_date": "2026-06-26",
+    "last_public_update": "2026-11-12",
+    "last_update_submit_date": "2026-11-10",
+    "overall_status": "RECRUITING",
+    "sponsor": "National Cancer Institute (NCI)",
+    "sponsor_class": "NIH",
+    "submit_to_post_days": 3,
+    "post_to_last_update_days": 136,
+    "estimated_type": false
+   },
+   {
+    "record_id": "NCT07800182",
+    "brief_title": "A Randomized Controlled Trial of Prepared vs. Unprepared Food",
+    "event_date_start": "2027-03",
+    "first_public_date": "2026-09-02",
+    "first_public_date_type": "ACTUAL",
+    "first_submit_date": "2026-08-28",
+    "first_submit_qc_date": "2026-08-28",
+    "last_public_update": "2026-11-12",
+    "last_update_submit_date": "2026-11-11",
+    "overall_status": "NOT_YET_RECRUITING",
+    "sponsor": "University of Michigan",
+    "sponsor_class": "OTHER",
+    "submit_to_post_days": 5,
+    "post_to_last_update_days": 71,
+    "estimated_type": false
+   },
+   {
+    "record_id": "NCT06723171",
+    "brief_title": "Evaluation of Safety and Efficacy of IRX4204 in Mild to Moderate Plaque Psoriasis",
+    "event_date_start": "2027-03-01",
+    "first_public_date": "2024-12-09",
+    "first_public_date_type": "ACTUAL",
+    "first_submit_date": "2024-12-04",
+    "first_submit_qc_date": "2024-12-04",
+    "last_public_update": "2026-11-12",
+    "last_update_submit_date": "2026-11-07",
+    "overall_status": "SUSPENDED",
+    "sponsor": "Io Therapeutics",
+    "sponsor_class": "INDUSTRY",
+    "submit_to_post_days": 5,
+    "post_to_last_update_days": 703,
+    "estimated_type": false
+   },
+   {
+    "record_id": "NCT07578363",
+    "brief_title": "An Investigation of FID 123472 Ophthalmic Solution to Vehicle for the Reduction of Ocular Redness in Adults",
+    "event_date_start": "2026-09-27",
+    "first_public_date": "2026-05-11",
+    "first_public_date_type": "ACTUAL",
+    "first_submit_date": "2026-05-05",
+    "first_submit_qc_date": "2026-05-05",
+    "last_public_update": "2026-11-12",
+    "last_update_submit_date": "2026-11-09",
+    "overall_status": "RECRUITING",
+    "sponsor": "Alcon Research",
+    "sponsor_class": "INDUSTRY",
+    "submit_to_post_days": 6,
+    "post_to_last_update_days": 185,
+    "estimated_type": false
+   },
+   {
+    "record_id": "NCT03712605",
+    "brief_title": "Testing Pembrolizumab Versus Observation in Patients With Merkel Cell Carcinoma After Surgery, STAMP Trial",
+    "event_date_start": "2018-11-15",
+    "first_public_date": "2018-10-19",
+    "first_public_date_type": "ACTUAL",
+    "first_submit_date": "2018-10-17",
+    "first_submit_qc_date": "2018-10-18",
+    "last_public_update": "2026-11-12",
+    "last_update_submit_date": "2026-11-11",
+    "overall_status": "ACTIVE_NOT_RECRUITING",
+    "sponsor": "National Cancer Institute (NCI)",
+    "sponsor_class": "NIH",
+    "submit_to_post_days": 2,
+    "post_to_last_update_days": 2946,
+    "estimated_type": false
+   }
+  ]
+ },
+ "sec_edgar": {
+  "event_date_field": "reportDate (period of reported event)",
+  "first_public_field": "acceptanceDateTime (UTC instant; corroborated by HTTP Last-Modified)",
+  "supporting_fields": [
+   "filingDate (ET calendar date)",
+   "accessionNumber"
+  ],
+  "amendments_in_recent_window": 53,
+  "recent_window_size": 1000,
+  "revision_visibility": "amendments are separate filings (8-K/A) with their own accession; original filing remains retrievable",
+  "refetch_all_identical": true,
+  "identity_signal": {
+   "cik": "0001613103",
+   "name": "Medtronic plc",
+   "tickers": [
+    "MDT"
+   ],
+   "sic": "3845",
+   "lei": null
+  },
+  "acceptance_minus_last_modified_seconds": null,
+  "records": [
+   {
+    "accession_number": "0001628280-26-066291",
+    "form": "8-K",
+    "filing_date": "2026-10-19",
+    "acceptance_datetime_utc": "2026-10-19T20:23:27.000Z",
+    "report_date": "2026-10-15",
+    "report_to_acceptance_days": 4,
+    "primary_doc_sha256": "e988da97f500ac2764b59c7f01beffbf400c4faa9c31d451f930244546d7164c",
+    "last_modified": "Mon, 19 Oct 2026 20:23:52 GMT",
+    "acceptance_to_last_modified_seconds": 25.0,
+    "refetch_identical": true
+   },
+   {
+    "accession_number": "0001628280-26-062505",
+    "form": "8-K",
+    "filing_date": "2026-09-17",
+    "acceptance_datetime_utc": "2026-09-17T20:19:27.000Z",
+    "report_date": "2026-09-17",
+    "report_to_acceptance_days": 0,
+    "primary_doc_sha256": "75ebcf51af24e7aff2b5419e57c38be73519e8314cf5ec776f65145ae874923d",
+    "last_modified": "Thu, 17 Sep 2026 20:19:52 GMT",
+    "acceptance_to_last_modified_seconds": 25.0,
+    "refetch_identical": true
+   },
+   {
+    "accession_number": "0001628280-26-059697",
+    "form": "8-K",
+    "filing_date": "2026-09-01",
+    "acceptance_datetime_utc": "2026-09-01T10:47:19.000Z",
+    "report_date": "2026-09-01",
+    "report_to_acceptance_days": 0,
+    "primary_doc_sha256": "a03ed94f102177a363f0864088434722be2ce32b4571a658140aa8d70c6b27f1",
+    "last_modified": "Tue, 01 Sep 2026 10:47:44 GMT",
+    "acceptance_to_last_modified_seconds": 25.0,
+    "refetch_identical": true
+   },
+   {
+    "accession_number": "0001628280-26-040034",
+    "form": "8-K",
+    "filing_date": "2026-06-03",
+    "acceptance_datetime_utc": "2026-06-03T10:47:08.000Z",
+    "report_date": "2026-06-03",
+    "report_to_acceptance_days": 0,
+    "primary_doc_sha256": "2cc249ac20ebc71e6ecb6ace59b61de008ecafb48ef3a8c514bb6a77ca6a0068",
+    "last_modified": "Wed, 03 Jun 2026 10:47:29 GMT",
+    "acceptance_to_last_modified_seconds": 21.0,
+    "refetch_identical": true
+   },
+   {
+    "accession_number": "0001628280-26-035959",
+    "form": "8-K",
+    "filing_date": "2026-05-18",
+    "acceptance_datetime_utc": "2026-05-18T20:30:33.000Z",
+    "report_date": "2026-05-18",
+    "report_to_acceptance_days": 0,
+    "primary_doc_sha256": "810577c6ac489923df508fbe2002fb267681a0745501755e5ecea031436665e3",
+    "last_modified": "Mon, 18 May 2026 20:31:48 GMT",
+    "acceptance_to_last_modified_seconds": 75.0,
+    "refetch_identical": true
+   }
+  ]
+ },
+ "prospective": {
+  "contract": "observation starts at the first fetch WE performed; first_observed_at_utc is a collection timestamp and is NOT a public-availability timestamp",
+  "sources": {
+   "openfda_device": {
+    "first_observation_utc": "2026-11-12T18:45:10.695790+00:00",
+    "record_count_observed": 6,
+    "observation_basis": "first successful fetch performed by this experiment",
+    "note": "no earlier observation exists in this system for these records"
+   },
+   "clinicaltrials_gov": {
+    "first_observation_utc": "2026-11-12T18:45:22.314078+00:00",
+    "record_count_observed": 3,
+    "observation_basis": "first successful fetch performed by this experiment",
+    "note": "no earlier observation exists in this system for these records"
+   },
+   "sec_edgar": {
+    "first_observation_utc": "2026-11-12T18:45:27.189879+00:00",
+    "record_count_observed": 16,
+    "observation_basis": "first successful fetch performed by this experiment",
+    "note": "no earlier observation exists in this system for these records"
+   }
+  }
+ }
+}

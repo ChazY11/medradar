@@ -1,0 +1,72 @@
+{
+ "generated_at_utc": "2026-11-12T18:45:39.571490+00:00",
+ "samples_per_source": 5,
+ "requests": 28,
+ "per_source": {
+  "openfda_device": {
+   "records": 10,
+   "refetch": [
+    {
+     "http_status": 200,
+     "sha256": "78e18c24544aa2a6916840b57951e4cfe07de019888d7f74b4e8082205a22b55",
+     "bytes": 3167,
+     "fetched_at_utc": "2026-11-12T18:45:14.465662+00:00"
+    },
+    {
+     "http_status": 200,
+     "sha256": "78e18c24544aa2a6916840b57951e4cfe07de019888d7f74b4e8082205a22b55",
+     "bytes": 3167,
+     "fetched_at_utc": "2026-11-12T18:45:15.910745+00:00"
+    }
+   ]
+  },
+  "clinicaltrials_gov": {
+   "records": 5,
+   "history_probes": {
+    "/history": {
+     "url": "https://clinicaltrials.gov/api/v2/studies/NCT07672483/history",
+     "http_status": 404,
+     "bytes": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/versions": {
+     "url": "https://clinicaltrials.gov/api/v2/studies/NCT07672483/versions",
+     "http_status": 404,
+     "bytes": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "?history=true": {
+     "url": "https://clinicaltrials.gov/api/v2/studies/NCT07672483?history=true",
+     "http_status": 400,
+     "bytes": 30,
+     "sha256": "15591d7bc5262ed091587cac514c4f0f2aabd45265ee67397a4639a3b1d71da6"
+    }
+   },
+   "refetch": [
+    {
+     "http_status": 200,
+     "sha256": "5def6e8953509a98d826ed46c81d47bd8e1ecc59c6d8343cb8e56235b73d3761",
+     "bytes": 20070,
+     "fetched_at_utc": "2026-11-12T18:45:25.572444+00:00"
+    },
+    {
+     "http_status": 200,
+     "sha256": "5def6e8953509a98d826ed46c81d47bd8e1ecc59c6d8343cb8e56235b73d3761",
+     "bytes": 20070,
+     "fetched_at_utc": "2026-11-12T18:45:26.385929+00:00"
+    }
+   ]
+  },
+  "sec_edgar": {
+   "records": 5,
+   "entity": {
+    "name": "Medtronic plc",
+    "cik": "0001613103",
+    "tickers": [
+     "MDT"
+    ],
+    "sic": "3845"
+   }
+  }
+ }
+}
