@@ -19,7 +19,7 @@ the deliverable.
 | | |
 |---|---|
 | Package version | `0.5.0` (`pyproject.toml`, the only source) |
-| Test suite | **1,148 offline tests (1,145 passed, 3 skipped)** — no network, no API key (`python -m pytest -q -o addopts=""`) |
+| Test suite | **1,160 offline tests (1,157 passed, 3 skipped)** — no network, no API key (`python -m pytest -q -o addopts=""`) |
 | Data snapshot | **2026-10-31** · 375,378 events · 1.3 GiB SQLite (not committed) |
 | Released claims | descriptive event-time statistics and the negative results below — nothing else |
 | Licence | MIT |
@@ -28,15 +28,16 @@ the deliverable.
 
 <!-- BEGIN GENERATED: status -->
 <!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
-<!-- source-sha256: d9040a766a111ad0d0f9b3a344a6f36d829fdc56ff5cc274915b0655ddb88e10 -->
-<!-- payload-sha256: 98a04a32c481340ffd14409e3a0fb65276f1bb3252901de439e18b1318f860b5 -->
-**Project status** — generated from [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T02:57:53+08:00` by `python tools/governance/gen_views.py`; edit the state file, never this block.
+<!-- source-sha256: 15f5a2466519f41c586481d038b895c8e9d328a054905f4a8e83422b3e51b989 -->
+<!-- payload-sha256: fd63aa6432b7f9a863e7b9bb6810f0bc9c6f67a96370aa1d391742b00a3276a7 -->
+**Project status** — generated from [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T04:50:58+08:00` by `python tools/governance/gen_views.py`; edit the state file, never this block.
 
 | Item | Value |
 | --- | --- |
-| Main head | [`b2a14c0`](https://github.com/ChazY11/medradar/commit/b2a14c0a92332c004445de686daee97754cf94cb) — 2026-11-03 |
-| Version | 0.5.0 (`pyproject.toml`) |
-| Tests | 1,145 passed, 3 skipped, 0 failed (1,148 collected, offline) |
+| Observed main head | [`b2a14c0`](https://github.com/ChazY11/medradar/commit/b2a14c0a92332c004445de686daee97754cf94cb) — 2026-11-03 (may lag main; stale-by-design is a warning) |
+| Verified baseline | `b2a14c0` (1,157 passed, 1,160 collected) |
+| Release | 0.5.0 (unreleased) |
+| Tests | 1,157 passed, 3 skipped, 0 failed (1,160 collected, offline) |
 | Capabilities | 7 working · 6 draft · 1 retired |
 | Research studies | 1 (0 with a public claim) |
 | Data snapshot | 2026-10-31 — 375,378 events (local build; `data/` is gitignored) |
@@ -220,7 +221,7 @@ Full report: [`E1B_SOURCE_RECOVERY.md`](docs/refoundation/phase2/E1B_SOURCE_RECO
 ```bash
 git clone https://github.com/ChazY11/medradar.git && cd medradar
 pip install -e .
-python -m pytest -q -o addopts=""   # 1,148 offline tests, no network, no API key
+python -m pytest -q -o addopts=""   # 1,160 offline tests, no network, no API key
 medradar demo                       # offline, committed snapshot, < 60 s → out/demo/index.html
 ```
 

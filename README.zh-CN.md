@@ -14,7 +14,7 @@ MedRadar 把公开、免费的监管、临床试验与公司披露证据，收�
 | | |
 |---|---|
 | 包版本 | `0.5.0`（以 `pyproject.toml` 为唯一来源） |
-| 测试 | **1,148 个离线测试（1,145 通过，3 跳过）** —— 不联网、无需 API key（`python -m pytest -q -o addopts=""`） |
+| 测试 | **1,160 个离线测试（1,157 通过，3 跳过）** —— 不联网、无需 API key（`python -m pytest -q -o addopts=""`） |
 | 数据快照 | **2026-10-31** · 375,378 条事件 · 1.3 GiB SQLite（不入库） |
 | 对外可声明的结论 | 事件时间（event-time）描述性统计，以及下面的负结果；仅此而已 |
 | 许可证 | MIT |
@@ -182,7 +182,7 @@ flowchart TD
 ```bash
 git clone https://github.com/ChazY11/medradar.git && cd medradar
 pip install -e .
-python -m pytest -q -o addopts=""   # 1,148 个离线测试，不联网、无需 API key
+python -m pytest -q -o addopts=""   # 1,160 个离线测试，不联网、无需 API key
 medradar demo                       # 离线，使用已提交快照，< 60 秒 → out/demo/index.html
 ```
 
