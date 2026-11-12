@@ -23,7 +23,7 @@ project:
   owner: ChazY11
   repository: https://github.com/ChazY11/medradar
   licence: MIT
-  mission: "An open-source radar for FDA device and drug industry direction: what US majors are actually building next, quantified weekly from free public FDA data."
+  mission: "A research project on one question: can publicly observable evidence give reliable early warning of meaningful change in medical-technology development? MedRadar collects free public regulatory, clinical-trial and corporate-filing evidence into an auditable event store and tests whether it carries signal before the market notices; the engineering and the negative results are the deliverable."
   pages_source: docs/
 
 main:
@@ -42,17 +42,17 @@ main:
     - weekly
 
 tests:
-  collected: 1117
-  passed: 1114
+  collected: 1148
+  passed: 1145
   skipped: 3
   failed: 0
   subtests_passed: 224
   command: 'python -m pytest -q -o addopts=""'
   measured_at: "2026-11-13T02:57:53+08:00"
   artifact: docs/refoundation/phase0/_evidence/governance/pytest_count.json
-  tested_head: 36cf0e5cb29ea9793e3827ac2f59ec40c5e23b89
+  tested_head: 96950ba089d6148278a52cf2d3f2b23a92b19f3c
   policy: strict
-  note: "Tests are offline and need no network or API key. Measured on the Phase-2 hardening commit 36cf0e5 with tests/ unchanged from that commit; the artifact records the exact run. main.head still names origin/main until the merge bump."
+  note: "Tests are offline and need no network or API key. Measured on the REFOUNDATION-003 integration tree 96950ba, which carries the Phase-2 governance tests (43) and Evidence Core tests (28); the artifact records the exact run. main.head still names origin/main until the merge bump."
 data_snapshot:
   date: "2026-10-31"
   generated_at: "2026-10-31T05:33:25Z"

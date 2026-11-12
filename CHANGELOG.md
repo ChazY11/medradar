@@ -5,14 +5,14 @@ This is a research tool; "fixed" means a documented behaviour changed.
 
 <!-- BEGIN GENERATED: unreleased -->
 <!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
-<!-- source-sha256: 9e2636e6e4bf757e64901f0858f7329c53471050dd885fbea10b4a2f1f9126fa -->
-<!-- payload-sha256: df4f3136482fe9dff41e2b843257930161cc779207a7f9ed84c8d20aa1d7b704 -->
+<!-- source-sha256: 5220dabc16fdc256173fb5e8bfcc8cb58b1f938d38fb0d609c668937b91b0f0f -->
+<!-- payload-sha256: 9558a35cd7a0e20dbe09d9694ea343d50fec2b00082433d69a41c1ab6bc5669d -->
 ## [Unreleased] — generated governance snapshot
 
 _Snapshot of [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T02:57:53+08:00`. Regenerate with `python tools/governance/gen_views.py`; do not edit this block by hand._
 
 - **Main head:** `b2a14c0` (2026-11-03), version **0.5.0**
-- **Tests:** 1,114 passed, 3 skipped, 0 failed (1,117 collected)
+- **Tests:** 1,145 passed, 3 skipped, 0 failed (1,148 collected)
 - **Capabilities:** 7 working, 6 draft, 1 retired
 - **Open PRs:** 23 open (22 draft), 10 merged; branch protection not applied
 - **Data snapshot:** 2026-10-31, 375,378 events (local build; `data/` is gitignored)

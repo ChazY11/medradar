@@ -19,12 +19,32 @@ the deliverable.
 | | |
 |---|---|
 | Package version | `0.5.0` (`pyproject.toml`, the only source) |
-| Test suite | **1,099 offline tests pass**, 3 skipped — no network, no API key (`python -m pytest -q -o addopts=""`) |
+| Test suite | **1,148 offline tests (1,145 passed, 3 skipped)** — no network, no API key (`python -m pytest -q -o addopts=""`) |
 | Data snapshot | **2026-10-31** · 375,378 events · 1.3 GiB SQLite (not committed) |
 | Released claims | descriptive event-time statistics and the negative results below — nothing else |
 | Licence | MIT |
 
 ---
+
+﻿<!-- BEGIN GENERATED: status -->
+<!-- generated: do not edit by hand; regenerate with tools/governance/gen_views.py -->
+<!-- source-sha256: 5220dabc16fdc256173fb5e8bfcc8cb58b1f938d38fb0d609c668937b91b0f0f -->
+<!-- payload-sha256: 1625db6fa4e98b2c1ede88a7264c3321f3a9645e579462f36a51c11693a7dafd -->
+**Project status** — generated from [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T02:57:53+08:00` by `python tools/governance/gen_views.py`; edit the state file, never this block.
+
+| Item | Value |
+| --- | --- |
+| Main head | [`b2a14c0`](https://github.com/ChazY11/medradar/commit/b2a14c0a92332c004445de686daee97754cf94cb) — 2026-11-03 |
+| Version | 0.5.0 (`pyproject.toml`) |
+| Tests | 1,145 passed, 3 skipped, 0 failed (1,148 collected, offline) |
+| Capabilities | 7 working · 6 draft · 1 retired |
+| Research studies | 1 (0 with a public claim) |
+| Data snapshot | 2026-10-31 — 375,378 events (local build; `data/` is gitignored) |
+| Open PRs | 23 open (22 draft), 10 merged |
+| Branch protection | not applied |
+
+See [`docs/governance/GOVERNANCE.md`](docs/governance/GOVERNANCE.md) for the gates and [`docs/RESEARCH_INDEX.md`](docs/RESEARCH_INDEX.md) for the generated research index.
+<!-- END GENERATED: status -->
 
 ## What is implemented, and how far it is validated
 
@@ -194,7 +214,7 @@ Full report: [`E1B_SOURCE_RECOVERY.md`](docs/refoundation/phase2/E1B_SOURCE_RECO
 ```bash
 git clone https://github.com/ChazY11/medradar.git && cd medradar
 pip install -e .
-python -m pytest -q -o addopts=""   # 1,099 offline tests, no network, no API key
+python -m pytest -q -o addopts=""   # 1,148 offline tests, no network, no API key
 medradar demo                       # offline, committed snapshot, < 60 s → out/demo/index.html
 ```
 
