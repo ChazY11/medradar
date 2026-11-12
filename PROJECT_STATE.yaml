@@ -16,7 +16,7 @@
 #     this file is being edited. Do not record branch-only capabilities here.
 
 schema: medradar.project_state.v1
-generated_at: "2026-11-12T23:35:20+08:00"
+generated_at: "2026-11-13T02:57:53+08:00"
 
 project:
   name: MedRadar
@@ -42,18 +42,17 @@ main:
     - weekly
 
 tests:
-  collected: 1074
-  passed: 1071
+  collected: 1117
+  passed: 1114
   skipped: 3
   failed: 0
   subtests_passed: 224
   command: 'python -m pytest -q -o addopts=""'
-  measured_at: "2026-11-12T23:31:00+08:00"
+  measured_at: "2026-11-13T02:57:53+08:00"
   artifact: docs/refoundation/phase0/_evidence/governance/pytest_count.json
-  tested_head: b2a14c0a92332c004445de686daee97754cf94cb
+  tested_head: 36cf0e5cb29ea9793e3827ac2f59ec40c5e23b89
   policy: strict
-  note: "Tests are offline and need no network or API key. `tests/` was unchanged from the recorded head when measured; the artifact records the exact run."
-
+  note: "Tests are offline and need no network or API key. Measured on the Phase-2 hardening commit 36cf0e5 with tests/ unchanged from that commit; the artifact records the exact run. main.head still names origin/main until the merge bump."
 data_snapshot:
   date: "2026-10-31"
   generated_at: "2026-10-31T05:33:25Z"
@@ -148,10 +147,10 @@ open_work:
   prs:
     merged_count: 10
     merged_range: '#2-#11'
-    open_count: 20
-    open_range: '#1, #12-#30'
-    draft_count: 19
-    measured_from: "Owner-reported in the Phase-0 brief on 2026-11-12; the GitHub API was not called from this offline session."
+    open_count: 23
+    open_range: '#1, #12-#33'
+    draft_count: 22
+    measured_from: "Read-only `gh pr list` on 2026-11-13: 23 open, 22 drafts, numbers 1 and 12-33."
   branches:
     verified: false
     local_refs: 52
