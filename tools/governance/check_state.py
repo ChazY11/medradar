@@ -20,7 +20,7 @@ Exit codes: 0 pass, 1 check failed, 2 configuration/usage error.
 
 Usage:
     python tools/governance/check_state.py [--json] [--drift-warn]
-    python tools/governance/check_state.py --main-ref main --tests-mode off
+    python tools/governance/check_state.py --main-ref origin/main --tests-mode off
 """
 
 from __future__ import annotations
@@ -207,129 +207,172 @@ def _check_project(report: common.Report, root: Path, project: object) -> None:
         )
 
 
-def _check_main(
-    report: common.Report, root: Path, project: object, main: object, main_ref: str
-) -> None:
-    data = _mapping(report, main, "main")
-    if data is None:
-        return
-    head = _string(report, data, "head", "main")
-    short = _string(report, data, "short", "main")
-    ref = _string(report, data, "ref", "main")
-    committed_at = _string(report, data, "committed_at", "main")
-    subject = _string(report, data, "commit_subject", "main")
-    version = _string(report, data, "version", "main")
-    tracked = _integer(report, data, "tracked_files", "main", minimum=1)
-    _string(report, data, "version_source", "main")
+def _commit_exists(root: Path, commit: str) -> bool:
+    code, _, _ = common.run_git(root, "cat-file", "-e", commit + "^{commit}")
+    return code == 0
 
+
+def _is_ancestor(root: Path, ancestor: str, descendant: str) -> bool:
+    code, _, _ = common.run_git(root, "merge-base", "--is-ancestor", ancestor, descendant)
+    return code == 0
+
+
+def _related(root: Path, first: str, second: str) -> bool:
+    """True when one commit is an ancestor of the other (same lineage either way)."""
+    if first == second:
+        return True
+    return _is_ancestor(root, first, second) or _is_ancestor(root, second, first)
+
+
+def _git_show_pyproject_version(root: Path, commit: str) -> str | None:
+    code, out, _ = common.run_git(root, "show", "%s:pyproject.toml" % commit)
+    if code != 0:
+        return None
+    match = re.search(r'(?m)^version\s*=\s*"([^"]+)"', out)
+    return match.group(1) if match else None
+
+
+def _check_git(
+    report: common.Report,
+    root: Path,
+    project: object,
+    git_block: object,
+    main_ref: str | None,
+) -> dict:
+    """Validate the observed-main block (`git:`) against the real git refs.
+
+    The recorded head may legitimately lag: a merge lands on main, and the next
+    PR observes it. Stale-but-an-ancestor is a WARNING. A head that is not an
+    ancestor of main is a FAILURE (wrong lineage). File/workflow/version facts
+    are validated against the observed commit, not current main.
+    """
+    facts: dict = {}
+    data = _mapping(report, git_block, "git")
+    if data is None:
+        return facts
+    head = _string(report, data, "head", "git")
+    short = _string(report, data, "short", "git")
+    ref = _string(report, data, "ref", "git")
+    committed_at = _string(report, data, "committed_at", "git")
+    subject = _string(report, data, "commit_subject", "git")
+    observed_at = _string(report, data, "observed_at", "git", required=False)
+    tracked = _integer(report, data, "tracked_files", "git", minimum=1)
+    workflows = data.get("workflows")
+    if observed_at is not None:
+        try:
+            dt.datetime.fromisoformat(observed_at)
+            report.check("git.observed_at.format", True, observed_at)
+        except ValueError:
+            report.fail("git.observed_at.format", "expected ISO-8601 with offset, found %r" % observed_at)
     if head is not None:
         report.check(
-            "main.head.format",
+            "git.head.format",
             bool(HEAD_RE.match(head)),
             head if HEAD_RE.match(head) else "expected 40 lowercase hex characters",
         )
         if short is not None:
             report.check(
-                "main.short.consistent",
+                "git.short.consistent",
                 head.startswith(short) and len(short) == 7,
                 "short=%r head=%r" % (short, head),
             )
 
-    resolved_ref = main_ref or (ref if isinstance(ref, str) else "origin/main")
-    actual_head = common.git_rev_parse(root, resolved_ref)
-    if actual_head is None:
+    target_ref = main_ref or (ref if isinstance(ref, str) else "origin/main")
+    target_head = common.git_rev_parse(root, target_ref)
+    facts["target_ref"] = target_ref
+    facts["target"] = target_head
+    facts["head"] = head
+    if target_head is None:
         report.fail(
-            "main.head.git",
+            "git.ref.resolve",
             "cannot resolve git ref %r; fetch it (git fetch origin main) "
-            "or pass --main-ref" % resolved_ref,
+            "or pass --main-ref" % target_ref,
         )
-    else:
-        report.check(
-            "main.head.git",
-            head is not None and actual_head == head,
-            "%s resolves to %s, state records %s"
-            % (resolved_ref, actual_head, head),
-        )
+        return facts
+    report.check("git.ref.resolve", True, "%s -> %s" % (target_ref, target_head))
 
-    if actual_head is not None:
-        code, out, err = common.run_git(root, "show", "-s", "--format=%cI", actual_head)
-        if code == 0:
-            actual_date = out.strip()
-            report.check(
-                "main.committed_at.git",
-                committed_at is None or actual_date == committed_at,
-                "expected %s, found %s" % (committed_at, actual_date),
-            )
+    if head is not None:
+        if not _commit_exists(root, head):
+            report.fail("git.head.exists", "recorded observed commit %s does not exist" % head)
         else:
-            report.fail("main.committed_at.git", "git show failed: %s" % err.strip())
-        code, out, err = common.run_git(root, "show", "-s", "--format=%s", actual_head)
-        if code == 0:
-            actual_subject = out.strip()
-            report.check(
-                "main.commit_subject.git",
-                subject is None or actual_subject == subject,
-                "expected %r, found %r" % (subject, actual_subject),
-            )
-        else:
-            report.fail("main.commit_subject.git", "git show failed: %s" % err.strip())
+            if head == target_head:
+                report.check(
+                    "git.head.ancestor",
+                    True,
+                    "observed head equals %s (%s)" % (target_ref, target_head[:12]),
+                )
+                report.check("git.head.current", True, "no staleness")
+            elif _is_ancestor(root, head, target_head):
+                report.check(
+                    "git.head.ancestor",
+                    True,
+                    "observed %s is an ancestor of %s (%s)"
+                    % (head[:12], target_ref, target_head[:12]),
+                )
+                report.warn(
+                    "git.head is stale by design: observed %s, %s is %s — run "
+                    "`python tools/governance/bump_state.py` to refresh; this is a "
+                    "WARNING, not a gate failure (a merge must not fail the gate)"
+                    % (head[:12], target_ref, target_head[:12])
+                )
+            else:
+                report.fail(
+                    "git.head.ancestor",
+                    "recorded observed head %s is NOT an ancestor of %s (%s): "
+                    "wrong lineage; the state must describe a commit on main's history"
+                    % (head[:12], target_ref, target_head[:12]),
+                )
 
-        if tracked is not None:
-            code, out, err = common.run_git(
-                root, "ls-tree", "-r", "--name-only", actual_head
-            )
+            code, out, err = common.run_git(root, "show", "-s", "--format=%cI", head)
             if code == 0:
-                actual_count = len([line for line in out.splitlines() if line])
                 report.check(
-                    "main.tracked_files.git",
-                    actual_count == tracked,
-                    "main tree has %d files, state records %d"
-                    % (actual_count, tracked),
+                    "git.committed_at.git",
+                    committed_at is None or out.strip() == committed_at,
+                    "expected %s, found %s" % (committed_at, out.strip()),
                 )
             else:
-                report.fail(
-                    "main.tracked_files.git", "git ls-tree failed: %s" % err.strip()
-                )
-
-        workflows = data.get("workflows")
-        if _sequence(report, workflows, "main.workflows") is not None:
-            code, out, _ = common.run_git(
-                root, "ls-tree", "-r", "--name-only", actual_head, "--", ".github/workflows"
-            )
+                report.fail("git.committed_at.git", "git show failed: %s" % err.strip())
+            code, out, err = common.run_git(root, "show", "-s", "--format=%s", head)
             if code == 0:
-                actual_workflows = sorted(
-                    Path(path).stem
-                    for path in out.splitlines()
-                    if path.startswith(".github/workflows/") and path.endswith(".yml")
-                )
-                declared = sorted(w for w in workflows if isinstance(w, str))
                 report.check(
-                    "main.workflows.git",
-                    actual_workflows == declared,
-                    "main has %r, state records %r"
-                    % (actual_workflows, declared),
+                    "git.commit_subject.git",
+                    subject is None or out.strip() == subject,
+                    "expected %r, found %r" % (subject, out.strip()),
                 )
             else:
-                report.fail(
-                    "main.workflows.git", "git ls-tree failed for workflows"
+                report.fail("git.commit_subject.git", "git show failed: %s" % err.strip())
+            if tracked is not None:
+                code, out, err = common.run_git(root, "ls-tree", "-r", "--name-only", head)
+                if code == 0:
+                    actual_count = len([line for line in out.splitlines() if line])
+                    report.check(
+                        "git.tracked_files.git",
+                        actual_count == tracked,
+                        "observed tree has %d files, state records %d"
+                        % (actual_count, tracked),
+                    )
+                else:
+                    report.fail("git.tracked_files.git", "git ls-tree failed: %s" % err.strip())
+            if _sequence(report, workflows, "git.workflows") is not None:
+                code, out, _ = common.run_git(
+                    root, "ls-tree", "-r", "--name-only", head, "--", ".github/workflows"
                 )
+                if code == 0:
+                    actual_workflows = sorted(
+                        Path(path).stem
+                        for path in out.splitlines()
+                        if path.startswith(".github/workflows/") and path.endswith(".yml")
+                    )
+                    declared = sorted(w for w in workflows if isinstance(w, str))
+                    report.check(
+                        "git.workflows.git",
+                        actual_workflows == declared,
+                        "observed tree has %r, state records %r"
+                        % (actual_workflows, declared),
+                    )
+                else:
+                    report.fail("git.workflows.git", "git ls-tree failed for workflows")
 
-    if version is not None:
-        pyproject = root / "pyproject.toml"
-        if not pyproject.is_file():
-            report.fail("main.version.pyproject", "pyproject.toml is missing")
-        else:
-            text = pyproject.read_text(encoding="utf-8")
-            match = re.search(r'(?m)^version\s*=\s*"([^"]+)"', text)
-            if match is None:
-                report.fail(
-                    "main.version.pyproject", "no project version in pyproject.toml"
-                )
-            else:
-                report.check(
-                    "main.version.pyproject",
-                    match.group(1) == version,
-                    "pyproject=%s state=%s" % (match.group(1), version),
-                )
     # pages source must be a directory
     if isinstance(project, dict) and isinstance(project.get("pages_source"), str):
         pages = root / project["pages_source"]
@@ -338,13 +381,108 @@ def _check_main(
             pages.is_dir(),
             "%r is %s" % (project["pages_source"], "a directory" if pages.is_dir() else "not a directory"),
         )
+    return facts
+
+
+def _check_verified(
+    report: common.Report, root: Path, verified_block: object, target_head: str | None
+) -> str | None:
+    data = _mapping(report, verified_block, "verified")
+    if data is None:
+        return None
+    commit = _string(report, data, "commit", "verified")
+    verified_at = _string(report, data, "verified_at", "verified", required=False)
+    _string(report, data, "note", "verified", required=False)
+    if verified_at is not None:
+        try:
+            dt.datetime.fromisoformat(verified_at)
+            report.check("verified.verified_at.format", True, verified_at)
+        except ValueError:
+            report.fail(
+                "verified.verified_at.format",
+                "expected ISO-8601 with offset, found %r" % verified_at,
+            )
+    if commit is None:
+        return None
+    report.check(
+        "verified.commit.format",
+        bool(HEAD_RE.match(commit)),
+        commit if HEAD_RE.match(commit) else "expected 40 lowercase hex characters",
+    )
+    if not _commit_exists(root, commit):
+        report.fail("verified.commit.exists", "verified commit %s does not exist" % commit)
+        return commit
+    if target_head is None:
+        report.fail("verified.commit.ancestor", "cannot verify ancestry without a main ref")
+    elif _is_ancestor(root, commit, target_head):
+        report.check(
+            "verified.commit.ancestor",
+            True,
+            "%s is an ancestor of main (%s)" % (commit[:12], target_head[:12]),
+        )
+    else:
+        report.fail(
+            "verified.commit.ancestor",
+            "verified.commit %s is NOT an ancestor of main (%s); the verified "
+            "baseline must be a commit that landed on main" % (commit[:12], target_head[:12]),
+        )
+    return commit
+
+
+def _check_release(
+    report: common.Report,
+    root: Path,
+    release_block: object,
+    git_head: str | None,
+    target_head: str | None,
+) -> None:
+    data = _mapping(report, release_block, "release")
+    if data is None:
+        return
+    version = _string(report, data, "version", "release")
+    commit = data.get("commit")
+    if version is not None:
+        report.check(
+            "release.version.format",
+            bool(re.match(r"\A\d+\.\d+\.\d+([-.+][0-9A-Za-z.-]+)?\Z", version)),
+            "expected a semver-like version, found %r" % version,
+        )
+        if git_head is not None:
+            actual = _git_show_pyproject_version(root, git_head)
+            report.check(
+                "release.version.pyproject",
+                actual is not None and actual == version,
+                "pyproject at observed head=%r state release.version=%r" % (actual, version),
+            )
+    if commit is None:
+        report.check("release.commit.null", True, "no release commit recorded")
+        return
+    report.check(
+        "release.commit.format",
+        isinstance(commit, str) and bool(HEAD_RE.match(commit)),
+        "expected null or 40 lowercase hex characters, found %r" % (commit,),
+    )
+    if not isinstance(commit, str) or not HEAD_RE.match(commit):
+        return
+    if not _commit_exists(root, commit):
+        report.fail("release.commit.exists", "release commit %s does not exist" % commit)
+        return
+    if target_head is not None and _is_ancestor(root, commit, target_head):
+        report.check("release.commit.ancestor", True, "%s is an ancestor of main" % commit[:12])
+    else:
+        report.fail(
+            "release.commit.ancestor",
+            "release.commit %s is NOT an ancestor of main" % commit[:12],
+        )
 
 
 def _check_tests(
     report: common.Report,
     root: Path,
     tests: object,
-    main_head: str | None,
+    git_head: str | None,
+    verified_commit: str | None,
+    target_head: str | None,
     artifact_path: Path,
     tests_mode: str,
     drift_warn: bool,
@@ -360,7 +498,7 @@ def _check_tests(
     _string(report, data, "command", "tests")
     _string(report, data, "measured_at", "tests")
     _string(report, data, "artifact", "tests")
-    _string(report, data, "tested_head", "tests")
+    declared_tested_head = _string(report, data, "tested_head", "tests")
     policy = _string(report, data, "policy", "tests")
     if policy is not None:
         report.check(
@@ -376,6 +514,44 @@ def _check_tests(
             % (passed + skipped + failed, collected),
         )
         report.check("tests.failed.zero", failed == 0, "failed=%d" % failed)
+
+    def _check_measured_head(identifier: str, head: str | None, label: str) -> None:
+        if head is None:
+            return
+        report.check(
+            "%s.format" % identifier,
+            bool(HEAD_RE.match(head)),
+            head if HEAD_RE.match(head) else "expected 40 lowercase hex characters",
+        )
+        if not HEAD_RE.match(head):
+            return
+        if not _commit_exists(root, head):
+            report.fail("%s.exists" % identifier, "%s commit %s does not exist" % (label, head))
+            return
+        related_verified = verified_commit is not None and _related(root, head, verified_commit)
+        related_git = git_head is not None and _related(root, head, git_head)
+        report.check(
+            "%s.ancestry" % identifier,
+            related_verified or related_git,
+            "%s %s is related to verified=%s / observed=%s"
+            % (label, head[:12],
+               (verified_commit or "none")[:12], (git_head or "none")[:12]),
+        )
+        if git_head is not None and head != git_head:
+            if _is_ancestor(root, head, git_head):
+                report.warn(
+                    "%s %s lags the observed head %s; refresh with "
+                    "`python tools/governance/record_tests.py` when the change lands"
+                    % (label, head[:12], git_head[:12])
+                )
+            elif _is_ancestor(root, git_head, head):
+                report.warn(
+                    "%s %s is ahead of the observed head %s (measured on an "
+                    "integration tree); it becomes an ordinary ancestor after the "
+                    "merge bump" % (label, head[:12], git_head[:12])
+                )
+
+    _check_measured_head("tests.tested_head", declared_tested_head, "declared tested_head")
 
     if tests_mode == "off":
         report.warn("tests: verification disabled with --tests-mode off")
@@ -420,28 +596,13 @@ def _check_tests(
             "expected a 40-hex commit in tested_head, found %r" % (a_head,),
         )
     else:
-        exists = (
-            common.run_git(root, "cat-file", "-e", a_head + "^{commit}")[0] == 0
-        )
-        ancestor = exists and (
-            common.run_git(root, "merge-base", "--is-ancestor", a_head, "HEAD")[0] == 0
-        )
-        report.check(
-            "tests.artifact.tested_head",
-            exists and ancestor,
-            "tested_head %s is %s and %s an ancestor of HEAD"
-            % (
-                a_head[:12],
-                "present" if exists else "missing",
-                "is" if ancestor else "is NOT",
-            ),
-        )
-        if main_head is not None and a_head != main_head:
-            report.warn(
-                "test count was measured on %s, not main.head %s; refresh with "
-                "`python tools/governance/record_tests.py` when the change lands"
-                % (a_head[:12], main_head[:12])
+        if declared_tested_head is not None and a_head != declared_tested_head:
+            report.fail(
+                "tests.artifact.tested_head.match",
+                "artifact tested_head %s disagrees with state tests.tested_head %s"
+                % (a_head[:12], declared_tested_head[:12]),
             )
+        _check_measured_head("tests.artifact.tested_head", a_head, "artifact tested_head")
     report.check(
         "tests.artifact.failed_zero",
         a_failed == 0,
@@ -749,7 +910,9 @@ def build_report(
         "schema",
         "generated_at",
         "project",
-        "main",
+        "git",
+        "verified",
+        "release",
         "tests",
         "data_snapshot",
         "capabilities",
@@ -785,15 +948,26 @@ def build_report(
         report.fail("state.generated_at", "missing or not a string")
 
     _check_project(report, root, document.get("project"))
-    _check_main(report, root, document.get("project"), document.get("main"), main_ref)
-
-    main_data = document.get("main") if isinstance(document.get("main"), dict) else {}
-    declared_head = main_data.get("head") if isinstance(main_data.get("head"), str) else None
+    git_facts = _check_git(
+        report, root, document.get("project"), document.get("git"), main_ref
+    )
+    verified_commit = _check_verified(
+        report, root, document.get("verified"), git_facts.get("target")
+    )
+    _check_release(
+        report,
+        root,
+        document.get("release"),
+        git_facts.get("head"),
+        git_facts.get("target"),
+    )
     _check_tests(
         report,
         root,
         document.get("tests"),
-        declared_head,
+        git_facts.get("head"),
+        verified_commit,
+        git_facts.get("target"),
         test_artifact,
         tests_mode,
         drift_warn,
@@ -839,8 +1013,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--main-ref",
         default=None,
-        help="Git ref that must match main.head (default: the ref declared in "
-        "PROJECT_STATE.yaml, i.e. origin/main).",
+        help="Current main ref that `git.head` must be an ancestor of "
+        "(default: the ref declared in PROJECT_STATE.yaml, i.e. origin/main).",
     )
     parser.add_argument(
         "--test-artifact",

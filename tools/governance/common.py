@@ -40,7 +40,7 @@ DEFAULT_FROZEN = "docs/governance/FROZEN.yaml"
 DEFAULT_LICENCES = "docs/governance/DATA_LICENSES.yaml"
 DEFAULT_TEST_ARTIFACT = "docs/refoundation/phase0/_evidence/governance/pytest_count.json"
 
-SCHEMA_STATE = "medradar.project_state.v1"
+SCHEMA_STATE = "medradar.project_state.v2"
 SCHEMA_FROZEN = "medradar.frozen.v1"
 SCHEMA_LICENCES = "medradar.data_licenses.v1"
 SCHEMA_TEST_ARTIFACT = "medradar.test_count.v1"
