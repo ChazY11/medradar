@@ -1,0 +1,102 @@
+﻿{
+    "schema":  "medradar.refoundation.tobe.verified_invariants.v1",
+    "generated_at":  "2026-11-11T19:32:58Z",
+    "method":  "read-only: git rev-parse / rev-list / diff --name-only over fetched refs; no fetch, no checkout, no network",
+    "main":  {
+                 "head":  "b2a14c0a92332c004445de686daee97754cf94cb",
+                 "subject":  "Merge pull request #11 from ChazY11/research/early-signal-review-workbench",
+                 "date":  "2026-11-03",
+                 "tags":  [
+                              "v0.2.0",
+                              "v0.2.1",
+                              "v0.2.2"
+                          ]
+             },
+    "duplicate_blobs":  {
+                            "medradar/product/store.py":  {
+                                                              "feat/medradar-2.0-mvp":  "3c603e4ab9d7fce5782c9224297b73bc74a58b5a",
+                                                              "feat/live-observatory-v1":  "3c603e4ab9d7fce5782c9224297b73bc74a58b5a",
+                                                              "feat/observatory-reliability-v1":  "3c603e4ab9d7fce5782c9224297b73bc74a58b5a",
+                                                              "research/s028-temporal-graph-early-signal":  "3c603e4ab9d7fce5782c9224297b73bc74a58b5a",
+                                                              "research/s029-evidence-based-relations":  "3c603e4ab9d7fce5782c9224297b73bc74a58b5a"
+                                                          },
+                            "medradar/atlas/evidence/schema.py":  {
+                                                                      "foundation/atlas-001":  "6ed1297c0ef5d2e549e720941b9b33707fd20e90",
+                                                                      "integration/convergence-001":  "6ed1297c0ef5d2e549e720941b9b33707fd20e90"
+                                                                  },
+                            "medradar/atlas/store.py":  {
+                                                            "foundation/atlas-001":  "02819f9f119c7710d57c4dfdf2a26f54188d7c59",
+                                                            "integration/convergence-001":  "02819f9f119c7710d57c4dfdf2a26f54188d7c59"
+                                                        },
+                            "medradar/atlas/identity/resolver.py":  {
+                                                                        "foundation/atlas-001":  "3b48c3aca904573cf3aee246f6fbdc3595464ab8",
+                                                                        "integration/convergence-001":  "3b48c3aca904573cf3aee246f6fbdc3595464ab8"
+                                                                    }
+                        },
+    "incremental_scope":  {
+                              "#15 vs #14":  {
+                                                 "files":  86,
+                                                 "outside_research_studies":  0,
+                                                 "non_ascii_paths":  0,
+                                                 "note":  "pure additions; parent #14 is an ancestor"
+                                             },
+                              "#16 vs #14":  {
+                                                 "files":  205,
+                                                 "outside_research_studies":  0,
+                                                 "non_ascii_paths":  5
+                                             },
+                              "#30 vs #29":  {
+                                                 "top_level":  [
+                                                                   ".github/workflows",
+                                                                   ".gitignore",
+                                                                   "config/atlas_firms.json",
+                                                                   "config/atlas_sources.json",
+                                                                   "config/convergence",
+                                                                   "docs/atlas",
+                                                                   "docs/convergence",
+                                                                   "medradar/atlas",
+                                                                   "medradar/integration",
+                                                                   "README.md",
+                                                                   "research/atlas",
+                                                                   "research/convergence",
+                                                                   "research/horizon",
+                                                                   "tests/convergence",
+                                                                   "tests/run_atlas_ci_verifier.py",
+                                                                   "tests/test_atlas_connectors.py",
+                                                                   "tests/test_atlas_db.py",
+                                                                   "tests/test_atlas_evidence.py",
+                                                                   "tests/test_atlas_identity.py",
+                                                                   "tests/test_atlas_research.py",
+                                                                   "tools/convergence",
+                                                                   "tools/run_atlas_pipeline.py",
+                                                                   "tools/verify_atlas.py"
+                                                               ]
+                                             },
+                              "note_git_quoting":  "5 of #16\u0027s 205 incremental paths and several of #29\u0027s are non-ASCII (umlaut); git diff --name-only quotes and octal-escapes them unless core.quotepath=false. Any scripted git mv must set it."
+                          },
+    "unpushed_local_source":  "docs/refoundation/_FACTS.md section 5 (33 / 2 / 2 / 1 / 1 commits); NOT re-counted in this run",
+    "not_verified_here":  [
+                              "python -m medradar selftest test count (Lead evidence bundle reports 1,074; not executed in this worktree)",
+                              "main CI green status",
+                              "legacy database size 1.2 GiB / 375,378 events (quoted from docs/DATA.md + README, not re-measured)",
+                              "S-028 input database availability at <REDACTED_LOCAL_PATH>"
+                          ],
+    "ancestry":  {
+                     "foundation/atlas-001 -\u003e integration/convergence-001":  "ancestor (exit 0): ATLAS files in #30 are INHERITED, not copied",
+                     "research/horizon-001 -\u003e integration/convergence-001":  "NOT ancestor (exit 1): histories diverged, genuine copy-paste case (TD-001 in ARCHITECTURE_AS_IS.md 9.4)",
+                     "feat/medradar-2.0-mvp -\u003e feat/observatory-reliability-v1":  "ancestor (exit 0): product files are inherited down the stack"
+                 },
+    "convergence_vs_horizon_tips":  {
+                                        "paths_in_both_equal_blob":  1787,
+                                        "paths_in_both_different_blob":  6,
+                                        "paths_only_in_convergence":  155,
+                                        "differing_paths":  [
+                                                                ".gitignore",
+                                                                "README.md",
+                                                                "research/horizon/EXPERIMENT_RESULTS.md",
+                                                                "research/horizon/experiments/industry/EXP_H4_INDUSTRY.json",
+                                                                "research/horizon/reports/INDUSTRY_DATA_REPORT.md",
+                                                                "research/horizon/reports/REGULATORY_FRONTIER_REPORT.md"
+                                                            ]
+                                    }
+}

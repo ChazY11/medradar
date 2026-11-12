@@ -1,0 +1,59 @@
+﻿name: weekly-radar
+
+# Rebuilds the radar every Monday 05:00 Asia/Shanghai (Sunday 21:00 UTC) and
+# deploys the self-contained dashboard with the official Pages actions.
+#
+# Why not "commit docs/ and let branch Pages build it": commits pushed with the
+# workflow GITHUB_TOKEN do not trigger other workflows/Pages builds reliably.
+# Uploading a Pages artifact from the same job is the documented path.
+#
+# One-time setup: Settings -> Pages -> Source = "GitHub Actions".
+
+on:
+  schedule:
+    - cron: "0 21 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: weekly-radar
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Collect, analyze, render (free public data only)
+        # No API key: openFDA allows 1,000 requests/day per IP, and 60 months of
+        # history needs roughly 200. Everything is cached inside the job.
+        run: python -m medradar run --months 60 --with-trade --with-replay --with-dashboard
+
+      - name: Show summary
+        run: |
+          python -m medradar status
+          ls -la docs
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

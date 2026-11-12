@@ -1,0 +1,107 @@
+﻿name: forecast-cycle
+
+# Weekly continuous forecasting cycle (Phase 3 registry lane).
+#
+# This workflow is committed and reviewable, but it was **not executed** in the
+# development environment: the staged research DB (`data/research.sqlite`,
+# 276 MB, gitignored) is only used for local reproduction. Do not assume a green
+# GitHub Actions run until the workflow is actually dispatched.
+#
+# It collects the two network sources the continuation target needs (openFDA
+# bulk 510(k)/PMA + SEC Company Facts), rebuilds the forecast examples, runs
+# `scripts/forecast_cycle.py` (offline: train -> score -> register -> verify ->
+# export) and uploads the JSON artifacts. The registry SQLite file is a runtime
+# artifact (gitignored), not committed.
+#
+# One-time setup: repository secret SEC_USER_AGENT (SEC requires a declarative
+# User-Agent). No paid APIs, no LLM calls; `[bulk]` only adds `ijson` for the
+# streaming openFDA download.
+
+on:
+  schedule:
+    - cron: "0 2 * * 1"  # Monday 02:00 UTC (10:00 Asia/Shanghai)
+  workflow_dispatch:
+    inputs:
+      coverage_end:
+        description: "Observed coverage end (YYYY-MM-DD); default: max event_date"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: forecast-cycle
+  cancel-in-progress: false
+
+jobs:
+  cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install package with the bulk adapter
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install '.[bulk]'
+
+      - name: Collect openFDA bulk lane (network; public API)
+        # openFDA allows 1,000 requests/day per IP; the bulk lane reuses the
+        # local HTTP cache where possible, so a weekly run stays well inside it.
+        run: python -m medradar.intelligence.pipeline collect --source fda --months 120 --db data/research.sqlite
+
+      - name: Collect SEC Company Facts (network; public API)
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: python -m medradar.intelligence.pipeline collect --source sec --db data/research.sqlite
+
+      - name: Build the continuation examples dataset
+        # The cycle reads the stored `reverse_rd_v1` examples; build them from
+        # the freshly collected events (features are point-in-time: event_date
+        # and available_at <= cutoff).
+        run: |
+          python - <<'PY'
+          from medradar.db import DB
+          from medradar.intelligence.features.research_features import DATASET_VERSION, build_examples
+          from medradar.intelligence.storage import IntelligenceStore
+
+          with IntelligenceStore(DB("data/research.sqlite")) as store:
+              dataset = build_examples(store, horizon_months=12)
+              stored = store.replace_examples(DATASET_VERSION, dataset["examples"])
+              print({"examples": len(dataset["examples"]), "stored": stored,
+                     "coverage_end": dataset["coverage_end"]})
+          PY
+
+      - name: Run the continuous forecast cycle (offline)
+        env:
+          COVERAGE_END: ${{ inputs.coverage_end }}
+        run: |
+          ARGS=""
+          if [ -n "$COVERAGE_END" ]; then ARGS="--coverage-end $COVERAGE_END"; fi
+          python scripts/forecast_cycle.py \
+            --db data/research.sqlite \
+            --registry data/registry.sqlite \
+            --out out/forecast_cycle \
+            --horizon 12 --top-n 25 --offline $ARGS
+
+      - name: Show cycle summary
+        run: |
+          python -m json.tool out/forecast_cycle/cycle.json | head -80
+
+      - name: Offline test suite (must stay green)
+        run: python -m medradar selftest
+
+      - name: Upload forecasting artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: forecast-cycle-${{ github.run_id }}
+          path: |
+            out/forecast_cycle/evaluation.json
+            out/forecast_cycle/cycle.json
+          if-no-files-found: error

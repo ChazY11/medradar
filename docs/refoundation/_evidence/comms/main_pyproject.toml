@@ -1,0 +1,44 @@
+﻿[project]
+name = "medradar"
+version = "0.5.0"
+description = "FDA device & drug industry radar: big-pharma pipeline direction, China-gap comparison, and paper-trading event study."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "MedRadar contributors" }]
+keywords = ["fda", "openfda", "medical-device", "clinical-trials", "quant", "china-gap",
+            "sec-edgar", "research", "deepseek", "deepseek-harness"]
+dependencies = []
+
+[project.optional-dependencies]
+excel = ["openpyxl>=3.1"]
+pdf = ["pypdf>=4.0"]
+dev = ["pytest>=8.0"]
+bulk = ["ijson>=3.3"]
+
+[project.urls]
+Homepage = "https://chazy11.github.io/medradar/"
+Repository = "https://github.com/ChazY11/medradar"
+Attribution = "https://github.com/ChazY11/medradar/blob/main/docs/ATTRIBUTION.md"
+
+[project.scripts]
+medradar = "medradar.__main__:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["medradar*"]
+
+# JSON config is knowledge, not code: install it next to the wheel so a pip
+# install is usable without the git checkout. `medradar.config` resolves this
+# `share/medradar/config` location; the demo snapshot rides along so
+# `medradar demo` also works from an installed copy (fully offline).
+[tool.setuptools.data-files]
+"share/medradar/config" = ["config/*.json", "config/*.csv"]
+"share/medradar/docs" = ["docs/metrics.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
