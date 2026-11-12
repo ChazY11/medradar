@@ -1,23 +1,34 @@
 # command: three consecutive simulated merges on throwaway branch sim/main-3merge; six gates WITHOUT bump then bump_state --ref sim/main-3merge (one command, regenerates views)
-# exit code: 1
+# exit code: 0
 
 === three consecutive simulated merges (git ref sim/main-3merge) ===
 state before simulation describes origin/main; gates run WITHOUT bump after each merge
 
-round 1: e26a6a4e856a  Merge simulated feature 1
-  gates WITHOUT bump               state=1 views=1 frozen=0 licence=0 links=0 rule-audit=0
-    FAILURES: state: state.required_sections; state.schema; git.type; verified.type; release.type; tests.tested_head.ancestry; tests.artifact.tested_head.ancestry | views: FAIL gen_views (3 targets)
+round 1: ae27521e5c7e  Merge simulated feature 1
+  gates WITHOUT bump               state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
+    stale-by-design warning: it.head is stale by design: observed b2a14c0a9233, sim/main-3merge is ae27521e5c7e — run `python tools/governance/bump_state.py` to refresh; this is a WARNING, not a gate failure (
+  bump exit=0: UPDATED PROJECT_STATE.yaml: observed sim/main-3merge @ ae27521 (1238 tracked files, workflows: ci, forecast-cycle, governance, live, weekly)
+  bump views: PASS gen_views (3 targets)
+  state tracks: git.head=ae27521e5c7e verified.commit=ae27521e5c7e OK
+  gates AFTER bump                 state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
+
+round 2: 2021944479f8  Merge simulated feature 2
+  gates WITHOUT bump               state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
+    stale-by-design warning: it.head is stale by design: observed ae27521e5c7e, sim/main-3merge is 2021944479f8 — run `python tools/governance/bump_state.py` to refresh; this is a WARNING, not a gate failure (
   bump exit=2: (no state line)
   bump views: (not regenerated)
-  bump stderr: bump_state: ERROR: no top-level 'git:' block found in PROJECT_STATE.yaml; run the schema migration (see docs/refoundation/phase3/STATE_LIFECYCLE.md)
-python.exe : Traceback (most recent call last):
-At line:1 char:229
-+ ... cheme'; $out = (& python "$env:TEMP\rf003_sim_merges.py" *>&1 | Out-S ...
-+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
-    + FullyQualifiedErrorId : NativeCommandError
- 
-  File "C:\Users\yjx0\AppData\Local\Temp\rf003_sim_merges.py", line 92, in <module>
-    tracked_head = state["git"]["head"]
-                   ~~~~~^^^^^^^
-KeyError: 'git'
+  bump stderr: bump_state: ERROR: bump mismatch for git.short: wrote '2021944', parsed 2021944
+  state tracks: git.head=ae27521e5c7e verified.commit=ae27521e5c7e MISMATCH
+  gates AFTER bump                 state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
+    stale-by-design warning: it.head is stale by design: observed ae27521e5c7e, sim/main-3merge is 2021944479f8 — run `python tools/governance/bump_state.py` to refresh; this is a WARNING, not a gate failure (
+
+round 3: a305ef4d0672  Merge simulated feature 3
+  gates WITHOUT bump               state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
+    stale-by-design warning: it.head is stale by design: observed ae27521e5c7e, sim/main-3merge is a305ef4d0672 — run `python tools/governance/bump_state.py` to refresh; this is a WARNING, not a gate failure (
+  bump exit=0: UPDATED PROJECT_STATE.yaml: observed sim/main-3merge @ a305ef4 (1240 tracked files, workflows: ci, forecast-cycle, governance, live, weekly)
+  bump views: PASS gen_views (3 targets)
+  state tracks: git.head=a305ef4d0672 verified.commit=a305ef4d0672 OK
+  gates AFTER bump                 state=0 views=0 frozen=0 licence=0 links=0 rule-audit=0
+
+RESULT: FAIL - see round details above
+restored: (clean)

@@ -117,6 +117,27 @@ class BumpStateTests(unittest.TestCase):
             % (actual_text, expected_text),
         )
 
+    def test_hashes_are_quoted_scalars_even_when_all_digits(self):
+        """An all-digit 7-char short hash must stay a string, not become a YAML int."""
+        sys.path.insert(0, str(gitfix.GATE_DIR))
+        import bump_state
+
+        block = bump_state._git_block(
+            {
+                "ref": "HEAD",
+                "head": "1234567890123456789012345678901234567890",
+                "short": "1234567",
+                "committed_at": "2026-01-01T00:00:00+00:00",
+                "commit_subject": "digits",
+                "tracked_files": 1,
+                "workflows": [],
+            }
+        )
+        parsed = yamlmini.loads("x: 1\n" + block, path="fixture")
+        self.assertIsInstance(parsed["git"]["head"], str)
+        self.assertIsInstance(parsed["git"]["short"], str)
+        self.assertEqual(parsed["git"]["short"], "1234567")
+
     def test_release_commit_is_preserved(self):
         self._bump_ok("--ref", "HEAD", "--no-views")
         state = self._state()

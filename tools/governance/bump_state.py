@@ -109,8 +109,8 @@ def _git_block(facts: dict) -> str:
     lines = [
         "git:",
         "  ref: %s" % facts["ref"],
-        "  head: %s" % facts["head"],
-        "  short: %s" % facts["short"],
+        "  head: %s" % _yaml_string(facts["head"]),
+        "  short: %s" % _yaml_string(facts["short"]),
         "  committed_at: %s" % _yaml_string(facts["committed_at"]),
         "  commit_subject: %s" % _yaml_string(facts["commit_subject"]),
         "  observed_at: %s" % _yaml_string(facts["committed_at"]),
@@ -128,7 +128,7 @@ def _verified_block(facts: dict) -> str:
     return "\n".join(
         [
             "verified:",
-            "  commit: %s" % facts["head"],
+            "  commit: %s" % _yaml_string(facts["head"]),
             "  verified_at: %s" % _yaml_string(facts["committed_at"]),
             '  note: "Refreshed by bump_state.py from %s; the full offline suite '
             'and the governance gates are expected to pass at this commit."'
@@ -138,7 +138,7 @@ def _verified_block(facts: dict) -> str:
 
 
 def _release_block(facts: dict, existing_commit: str | None) -> str:
-    commit = existing_commit if existing_commit else "null"
+    commit = _yaml_string(existing_commit) if existing_commit else "null"
     return "\n".join(
         [
             "release:",
