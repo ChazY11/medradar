@@ -57,8 +57,17 @@ class VersionTests(unittest.TestCase):
         for href in re.findall(r'href="([^"]+)"', html):
             if href.startswith(("http://", "https://", "#", "mailto:", "data:")):
                 continue
-            if href.endswith(".html") or "/" in href:
-                self.assertTrue((ROOT / "docs" / href).exists(), f"dead local link in docs/index.html: {href}")
+            # A fragment or query is a client-side modifier, not part of the file
+            # path: docs/research/index.html#method must resolve against
+            # docs/research/index.html. The site tests check the anchors.
+            local = href.split("#", 1)[0].split("?", 1)[0]
+            if not local:
+                continue
+            if local.endswith(".html") or "/" in local:
+                self.assertTrue(
+                    (ROOT / "docs" / local).exists(),
+                    f"dead local link in docs/index.html: {href}",
+                )
 
 
 class PublishLinkTests(unittest.TestCase):

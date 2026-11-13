@@ -3,7 +3,8 @@
 Everything here is hermetic: the fixture is a hand-written ``metrics.json`` that
 covers every field of ``docs/SCHEMA.md`` (including the "NMPA unavailable"
 scenario), and ``build_report`` is pointed at a temporary directory so running
-the suite can never clobber the real ``docs/index.html``.
+the suite can never clobber the real ``docs/report.html`` (the generated report
+is published there; ``docs/index.html`` is the hand-authored site landing page).
 """
 
 from __future__ import annotations
@@ -143,11 +144,17 @@ class ReportBuildTest(unittest.TestCase):
         self.assertEqual(self.result["chapters_zh"], len(CHAPTERS_ZH))
         self.assertEqual(len(CHAPTERS_ZH), 19, "twelve original + six W5 + case-library chapter")
 
-    def test_docs_entry_point_is_copied_verbatim(self) -> None:
-        docs_html = (self.docs / "index.html").read_text(encoding="utf-8")
+    def test_docs_report_is_copied_verbatim(self) -> None:
+        docs_html = (self.docs / "report.html").read_text(encoding="utf-8")
         self.assertEqual(docs_html, self.html)
         self.assertTrue((self.docs / ".nojekyll").exists())
         self.assertEqual((self.docs / ".nojekyll").read_text(encoding="utf-8"), "")
+        # The generated report must never claim the landing-page filename again.
+        self.assertFalse(
+            (self.docs / "index.html").exists(),
+            "docs/index.html belongs to the hand-authored site, not to build_report",
+        )
+        self.assertEqual(self.result["files"]["docs_report"], str(self.docs / "report.html"))
 
     def test_report_zh_has_nineteen_chapters_and_keeps_original_order(self) -> None:
         headings = _headings(self.zh)
@@ -497,7 +504,8 @@ class ReportBuildTest(unittest.TestCase):
         result = build_report(bad, self.tmp / "out_broken", docs_dir=self.tmp / "docs_broken")
         self.assertEqual(result["chapters_zh"], 19)
         self.assertTrue((self.tmp / "out_broken" / "index.html").is_file())
-        self.assertTrue((self.tmp / "docs_broken" / "index.html").is_file())
+        self.assertTrue((self.tmp / "docs_broken" / "report.html").is_file())
+        self.assertFalse((self.tmp / "docs_broken" / "index.html").exists())
 
 
 def _csv_rows(line: str):
