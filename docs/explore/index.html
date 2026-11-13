@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explore — generated artefacts, not a live service &middot; MedRadar</title>
+<meta name="description" content="Explore the generated MedRadar artefacts: the interactive dashboard, the static report, the event replay and the research figures, all from the committed 2026-10-31 snapshot.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#081120">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html">
+      <img src="../assets/brand/mark.svg" alt="" width="26" height="26">
+      <span>MedRadar</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="true" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"></span> Menu
+    </button>
+    <nav class="nav" id="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../research/index.html">Research</a></li>
+        <li><a href="../platform/index.html">Platform</a></li>
+        <li><a href="../explore/index.html" aria-current="page">Explore</a></li>
+        <li><a href="../documentation/index.html">Documentation</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="pill" href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">v0.5.0</a>
+      <a class="gh" href="https://github.com/ChazY11/medradar">GitHub <span aria-hidden="true">&#8599;</span></a>
+    </div>
+  </div>
+</header>
+<main id="main">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="eyebrow">Explore</p>
+      <h1 class="h1">Generated artefacts, not a live service</h1>
+      <p class="lede">Everything here was generated from the committed 2026-10-31 snapshot with package
+      v0.5.0. Open the interactive pages, or read the machine-readable contract behind them.</p>
+      <p class="page-meta"><span>dataset 2026-10-31</span><span>package v0.5.0</span><span>built offline</span></p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <figure class="figure">
+        <div class="frame">
+          <div class="frame-bar">
+            <span class="frame-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+            <span class="frame-url">dashboard.html &middot; overview view &middot; dataset 2026-10-31 &middot; package v0.5.0</span>
+          </div>
+          <div class="frame-body">
+            <img src="../assets/screenshots/dashboard-desktop.png"
+                 alt="MedRadar interactive dashboard, overview view: KPI cards, track heat and company momentum tables, generated from metrics.json, package v0.5.0, dataset snapshot 2026-10-31."
+                 width="1440" height="900" loading="lazy" decoding="async">
+          </div>
+        </div>
+        <figcaption class="figcaption">Committed snapshot &mdash; dataset 2026-10-31, package v0.5.0.
+        Demo views of the generated dashboard; not a live service and not a forecast. Rebuild with
+        <code>medradar dashboard</code>.
+        <p class="src">capture: docs/assets/screenshots/dashboard-desktop.png &middot; 1440 &times; 900</p>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="artefacts">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Artefact index</p>
+        <h2 class="section-title">Five artefacts, one contract.</h2>
+        <p class="lede">All five are generated from the same <code>metrics.json</code>, so they cannot
+        disagree with each other by construction.</p>
+      </div>
+      <div class="grid grid--cards">
+        <a class="card card--link" href="../dashboard.html">
+          <div class="card-head"><span class="badge">interactive</span><span class="badge">self-contained</span></div>
+          <h3 class="card-title">Dashboard</h3>
+          <p>Single-page app with all data inlined: overview KPIs, track heat, company momentum,
+          product families, cases, replay and the data audit. Works offline in a browser.</p>
+          <span class="link-arrow">dashboard.html</span>
+        </a>
+        <a class="card card--link" href="../report.html">
+          <div class="card-head"><span class="badge">generated report</span></div>
+          <h3 class="card-title">Static report</h3>
+          <p>The Chinese research report and the English one-pager as one self-contained page, with the
+          data-status, heat, structural-migration, cases and method chapters.</p>
+          <span class="link-arrow">report.html</span>
+        </a>
+        <a class="card card--link" href="../replay.html">
+          <div class="card-head"><span class="badge">replay</span></div>
+          <h3 class="card-title">Event replay</h3>
+          <p>Step-by-step replay of the research window: what the store knew at each step, and what the
+          simulated book did with it.</p>
+          <span class="link-arrow">replay.html</span>
+        </a>
+        <a class="card card--link" href="../metrics.json">
+          <div class="card-head"><span class="badge">contract</span></div>
+          <h3 class="card-title">metrics.json</h3>
+          <p>The machine-readable data contract every artefact is rendered from. Change the definitions
+          in <code>docs/SCHEMA.md</code> before changing a metric.</p>
+          <span class="link-arrow">metrics.json</span>
+        </a>
+        <a class="card card--link" href="https://github.com/ChazY11/medradar/blob/main/docs/CASES.md">
+          <div class="card-head"><span class="badge">case library</span></div>
+          <h3 class="card-title">Cases</h3>
+          <p>The case-library definition and the extreme-return audit behind the selected and negative
+          example cards in the dashboard.</p>
+          <span class="link-arrow">docs/CASES.md</span>
+        </a>
+        <a class="card card--link" href="https://github.com/ChazY11/medradar/blob/main/docs/DATA.md">
+          <div class="card-head"><span class="badge">audit</span></div>
+          <h3 class="card-title">Data audit</h3>
+          <p>Generated counts, timestamps, freshness and database size for the snapshot behind every
+          artefact on this page.</p>
+          <span class="link-arrow">docs/DATA.md</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="mobile">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Responsive artefact</p>
+        <h2 class="section-title">The dashboard on a 390&nbsp;px screen.</h2>
+        <p class="lede">The same generated artefact, captured at mobile width. No separate mobile build
+        exists, so this is the real layout, not a mock-up.</p>
+      </div>
+      <div class="shots">
+        <figure class="figure">
+          <div class="frame">
+            <div class="frame-bar">
+              <span class="frame-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="frame-url">report.html &middot; static report &middot; dataset 2026-10-31</span>
+            </div>
+            <div class="frame-body">
+              <img src="../assets/screenshots/report-desktop.png"
+                   alt="MedRadar static report, desktop capture: chapter navigation with the data-status, track-heat and structural-migration sections, package v0.5.0, dataset snapshot 2026-10-31."
+                   width="1440" height="900" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <figcaption class="figcaption">Static report capture &mdash; dataset 2026-10-31, package
+          v0.5.0. Rebuild with <code>medradar report</code>.
+          <p class="src">capture: docs/assets/screenshots/report-desktop.png &middot; 1440 &times; 900</p>
+          </figcaption>
+        </figure>
+        <figure class="figure shots-side">
+          <div class="frame">
+            <div class="frame-bar">
+              <span class="frame-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+              <span class="frame-url">dashboard.html &middot; 390&nbsp;px</span>
+            </div>
+            <div class="frame-body">
+              <img src="../assets/screenshots/dashboard-mobile.png"
+                   alt="MedRadar dashboard captured at 390 by 844 pixels: stacked KPI cards and a single-column track table, package v0.5.0, dataset snapshot 2026-10-31."
+                   width="390" height="844" loading="lazy" decoding="async">
+            </div>
+          </div>
+          <figcaption class="figcaption">Mobile capture &mdash; same artefact, 390 &times; 844.
+          <p class="src">capture: docs/assets/screenshots/dashboard-mobile.png</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="figures">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Research figures</p>
+        <h2 class="section-title">The same facts, drawn once.</h2>
+        <p class="lede">Versioned SVG figures generated from the committed metrics, used on the research
+        and platform pages.</p>
+      </div>
+      <div class="grid grid--3">
+        <figure class="figure">
+          <div class="fig-media">
+            <img src="../assets/figures/event-study-en.svg"
+                 alt="Event-study figure: mean direction-aligned abnormal return at +1, +5, +20 and +60 days with 95 percent confidence intervals; only the +60-day interval excludes zero."
+                 width="860" height="460" loading="lazy" decoding="async">
+          </div>
+          <figcaption class="figcaption">Event study &mdash; in-sample simulation.
+          <p class="src">source: docs/metrics.json &rarr; trading.event_study</p>
+          </figcaption>
+        </figure>
+        <figure class="figure">
+          <div class="fig-media">
+            <img src="../assets/figures/coverage-en.svg"
+                 alt="Coverage figure: company key resolved on 35.2 percent of events, technology track on 52.4 percent, product code on 77.5 percent, independent public time on 0 rows."
+                 width="860" height="460" loading="lazy" decoding="async">
+          </div>
+          <figcaption class="figcaption">Coverage quality &mdash; including the zero.
+          <p class="src">source: docs/DATA.md</p>
+          </figcaption>
+        </figure>
+        <figure class="figure">
+          <div class="fig-media">
+            <img src="../assets/figures/sources-en.svg"
+                 alt="Source inventory figure: rows per source for the 2026-10-31 snapshot, 510(k) largest at 176,466 rows."
+                 width="860" height="420" loading="lazy" decoding="async">
+          </div>
+          <figcaption class="figcaption">Source inventory &mdash; six free public sources.
+          <p class="src">source: docs/DATA.md; docs/metrics.json</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="callout callout--plain">
+        <h3>How to read these artefacts</h3>
+        <ul>
+          <li><strong>They are generated, not live.</strong> Each page was written by a command against
+          the committed snapshot; nothing on this site is a live feed or a forecast.</li>
+          <li><strong>The snapshot is not committed.</strong> <code>data/</code> is gitignored (1.3&nbsp;GiB
+          SQLite), so a clean clone reproduces the procedure and the formats, not the exact numbers.</li>
+          <li><strong>Every figure carries its unit and window.</strong> Event-date windows are on the
+          Platform page; return numbers stay in-sample and inherit the no-public-time caveat.</li>
+          <li><strong>Rebuild:</strong> <code>medradar dashboard</code>, <code>medradar report</code>,
+          <code>medradar replay</code> &mdash; all offline, all from <code>metrics.json</code>.</li>
+        </ul>
+        <p class="src">source: README.md &rarr; The dashboard snapshot, Reproduce; docs/DATA.md</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <a class="footer-brand" href="../index.html">
+          <img src="../assets/brand/mark.svg" alt="" width="26" height="26">
+          <span>MedRadar</span>
+        </a>
+        <p class="footer-mission">Research infrastructure for public medical-technology evidence: one
+        auditable event store, frozen experiments with named baselines, and negative results published
+        at the same size as the positive ones. Not a validated predictive product.</p>
+      </div>
+      <div class="footer-cols">
+      <nav aria-labelledby="f-platform">
+        <p class="footer-h" id="f-platform">Platform</p>
+        <ul>
+          <li><a href="../platform/index.html">Overview</a></li>
+          <li><a href="../platform/index.html#architecture">Architecture</a></li>
+          <li><a href="../platform/index.html#sources">Data sources</a></li>
+          <li><a href="../platform/index.html#capabilities">Capability matrix</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-research">
+        <p class="footer-h" id="f-research">Research</p>
+        <ul>
+          <li><a href="../research/index.html">Research overview</a></li>
+          <li><a href="../research/index.html#method">Method</a></li>
+          <li><a href="../research/index.html#event-study">Event study</a></li>
+          <li><a href="../research/index.html#limitations">Limitations</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-resources">
+        <p class="footer-h" id="f-resources">Resources</p>
+        <ul>
+          <li><a href="../explore/index.html">Explore artefacts</a></li>
+          <li><a href="../documentation/index.html">Documentation</a></li>
+          <li><a href="../dashboard.html">Dashboard</a></li>
+          <li><a href="../report.html">Static report</a></li>
+          <li><a href="../metrics.json">Metrics JSON</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-repository">
+        <p class="footer-h" id="f-repository">Repository</p>
+        <ul>
+          <li><a href="https://github.com/ChazY11/medradar">GitHub</a></li>
+          <li><a href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">Changelog</a></li>
+          <li><a href="https://github.com/ChazY11/medradar/blob/main/ROADMAP.md">Roadmap</a></li>
+          <li><a href="https://github.com/ChazY11/medradar/blob/main/CONTRIBUTING.md">Contributing</a></li>
+        </ul>
+      </nav>
+      </div>
+    </div>
+    <div class="footer-base">
+      <p>Data snapshot <b>2026-10-31</b> &middot; package <b>v0.5.0</b> &middot; MIT</p>
+      <p><a href="https://github.com/ChazY11/medradar/blob/main/docs/INDEX.md">Documentation index</a> &middot;
+      <a href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">Changelog</a> &middot;
+      research and education, not investment advice.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

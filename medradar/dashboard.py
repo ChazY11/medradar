@@ -1248,7 +1248,7 @@ _HTML = r"""<!DOCTYPE html>
 </head>
 <body>
 <noscript><div class="noscript"><strong>需要启用 JavaScript。</strong><br>
-本看板是交互式单页应用，所有数据已内联在 HTML 中；请启用 JavaScript 后刷新页面。静态报告见 <a href="index.html">docs/index.html</a>。</div></noscript>
+本看板是交互式单页应用，所有数据已内联在 HTML 中；请启用 JavaScript 后刷新页面。静态报告见 <a href="report.html">docs/report.html</a>。</div></noscript>
 <div class="app">
   <aside class="sidebar">
     <div class="brand"><span class="dot"></span>MedRadar<small>交互式看板</small></div>
@@ -1263,7 +1263,7 @@ _HTML = r"""<!DOCTYPE html>
     </nav>
     <div class="side-foot">
       <div class="side-actions"><button class="btn" id="theme-toggle" type="button">☀ 浅色</button>
-      <a class="btn" href="index.html">静态报告</a></div>
+      <a class="btn" href="report.html">静态报告</a></div>
       <div>构建：__BUILT_AT__</div>
       <div>零外部依赖 · 可离线打开</div>
       <div>由 DeepSeek Harness · deepseek-flash 全程自主构建</div>

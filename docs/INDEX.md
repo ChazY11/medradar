@@ -120,7 +120,7 @@ is a descriptive statistic, and must be labelled as one.
 
 **Generated-vs-hand-written rule.** Files carrying `<!-- generated: do not edit by hand -->`
 (`DATA.md`, `RESEARCH_INDEX.md`, `report_*.md`, `metrics.json`, `summary.csv`, `dashboard.html`,
-`index.html`) are outputs. Edit the generator or `PROJECT_STATE.yaml`, never the output. ⧗`tools/governance/gen_views.py --check` fails a hand edit.
+`report.html`) are outputs. Edit the generator or `PROJECT_STATE.yaml`, never the output. ⧗`tools/governance/gen_views.py --check` fails a hand edit.
 
 ---
 

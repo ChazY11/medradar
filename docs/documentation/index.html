@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentation — start here, quickstart, reading map &middot; MedRadar</title>
+<meta name="description" content="MedRadar documentation routes: README, INDEX, METHODS, DATA, SCHEMA and GOVERNANCE, the offline quickstart, and a reading map for evaluators, reproducers, contributors and auditors.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#081120">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html">
+      <img src="../assets/brand/mark.svg" alt="" width="26" height="26">
+      <span>MedRadar</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="true" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"></span> Menu
+    </button>
+    <nav class="nav" id="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../research/index.html">Research</a></li>
+        <li><a href="../platform/index.html">Platform</a></li>
+        <li><a href="../explore/index.html">Explore</a></li>
+        <li><a href="../documentation/index.html" aria-current="page">Documentation</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="pill" href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">v0.5.0</a>
+      <a class="gh" href="https://github.com/ChazY11/medradar">GitHub <span aria-hidden="true">&#8599;</span></a>
+    </div>
+  </div>
+</header>
+<main id="main">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="eyebrow">Documentation</p>
+      <h1 class="h1">Read the record, not a summary of it</h1>
+      <p class="lede">The canonical documents live in the repository. This page only routes to them
+      &mdash; it deliberately does not copy them, so a number cannot drift between two pages.</p>
+      <p class="page-meta"><span>package v0.5.0</span><span>MIT</span><span>1,160 offline tests</span></p>
+    </div>
+  </section>
+
+  <section class="section" id="start-here">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Start here</p>
+        <h2 class="section-title">Six documents that fix the contract.</h2>
+        <p class="lede">Read them in this order if you intend to quote a number.</p>
+      </div>
+      <div class="grid grid--3">
+        <a class="card card--link" href="https://github.com/ChazY11/medradar/blob/main/README.md">
+          <div class="card-head"><span class="badge">01</span><span class="badge">front page</span></div>
+          <h3 class="card-title">README</h3>
+          <p>Mission, validation status, what is implemented, the results including the negative ones,
+          the nine limitations and the reproduce commands.</p>
+          <span class="link-arrow">README.md</span>
+        </a>
+        <a class="card card--link" href="https://github.com/ChazY11/medradar/blob/main/docs/INDEX.md">
+          <div class="card-head"><span class="badge">02</span><span class="badge">navigation</span></div>
+          <h3 class="card-title">INDEX</h3>
+          <p>Where the canonical version of each thing lives, what state it is in, and what has been
+          superseded. It links; it does not copy.</p>
+          <span class="link-arrow">docs/INDEX.md</span>
+        </a>
+        <a class="card card--link" href="https://github.com/ChazY11/medradar/blob/main/docs/METHODS.md">
+          <div class="card-head"><span class="badge">03</span><span class="badge">method</span></div>
+          <h3 class="card-title">METHODS</h3>
+          <p>Metric definitions, estimators, multiple-testing correction and threats to validity. A new
+          metric updates this file before it updates any output.</p>
+          <span class="link-arrow">docs/METHODS.md</span>
+        </a>
+        <a class="card card--link" href="https://github.com/ChazY11/medradar/blob/main/docs/DATA.md">
+          <div class="card-head"><span class="badge">04</span><span class="badge">generated</span></div>
+          <h3 class="card-title">DATA</h3>
+          <p>The generated data audit: counts per source, coverage by year, timestamp quality,
+          freshness and database size.</p>
+          <span class="link-arrow">docs/DATA.md</span>
+        </a>
+        <a class="card card--link" href="https://github.com/ChazY11/medradar/blob/main/docs/SCHEMA.md">
+          <div class="card-head"><span class="badge">05</span><span class="badge">contract</span></div>
+          <h3 class="card-title">SCHEMA</h3>
+          <p>The <code>metrics.json</code> and report contract. Change this file before changing a
+          metric, or the artefacts will disagree.</p>
+          <span class="link-arrow">docs/SCHEMA.md</span>
+        </a>
+        <a class="card card--link" href="https://github.com/ChazY11/medradar/blob/main/docs/governance/GOVERNANCE.md">
+          <div class="card-head"><span class="badge">06</span><span class="badge">gates</span></div>
+          <h3 class="card-title">GOVERNANCE</h3>
+          <p>The state source, the local gates and the freeze register. Note what is <em>not</em>
+          applied: branch protection is still off.</p>
+          <span class="link-arrow">docs/governance/GOVERNANCE.md</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="quickstart">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Quickstart</p>
+        <h2 class="section-title">Install, test, demo, then optionally go live.</h2>
+        <ul class="steps mt-m">
+          <li>
+            <h3>Install</h3>
+            <p>Standard library only; Python 3.10, 3.11 and 3.12 are tested in CI.</p>
+          </li>
+          <li>
+            <h3>Test</h3>
+            <p>1,160 collected, 1,157 passed, 3 skipped. No network, no API key.</p>
+          </li>
+          <li>
+            <h3>Demo</h3>
+            <p>Offline build from the committed snapshot in under 60&nbsp;s:
+            <code>out/demo/index.html</code>.</p>
+          </li>
+          <li>
+            <h3>Live run</h3>
+            <p>Needs network, about three minutes, still no API key. Writes the report, the dashboard
+            and the CSV.</p>
+          </li>
+        </ul>
+        <p class="src">source: README.md &rarr; Reproduce; PROJECT_STATE.yaml &rarr; tests;
+        .github/workflows/ci.yml</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-head"><span>shell</span><span>verified commands</span></div>
+        <pre class="code"><code>git clone https://github.com/ChazY11/medradar.git
+cd medradar &amp;&amp; pip install -e .
+
+<span class="c-comment"># 1,160 offline tests &middot; no network &middot; no API key</span>
+<span class="c-cmd">python -m pytest -q -o addopts=""</span>
+
+<span class="c-comment"># offline demo &rarr; out/demo/index.html (&lt; 60 s)</span>
+<span class="c-cmd">medradar demo</span>
+
+<span class="c-comment"># live run &rarr; report, dashboard, summary.csv (~3 min)</span>
+<span class="c-cmd">medradar run --months 24 --with-trade --with-dashboard</span></code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="roles">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Reading map</p>
+        <h2 class="section-title">Four readers, four routes.</h2>
+        <p class="lede">Pick the route that matches why you are here; each ends at the document that
+        owns the explanation.</p>
+      </div>
+      <div class="grid grid--2">
+        <article class="card">
+          <div class="card-head"><span class="badge">evaluator</span></div>
+          <h3 class="card-title">Is any of this true?</h3>
+          <p>Start with the validation status and the limitations, then read the results with their
+          artefacts.</p>
+          <ul class="small">
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/README.md#what-is-implemented-and-how-far-it-is-validated">README &rarr; Validation status</a></li>
+            <li><a href="../research/index.html">Research page &rarr; results and limitations</a></li>
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/docs/CASES.md">docs/CASES.md</a></li>
+          </ul>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="badge">reproducer</span></div>
+          <h3 class="card-title">Can I rebuild it?</h3>
+          <p>The procedure is reproducible offline; the 1.3&nbsp;GiB snapshot is not committed, so exact
+          counts are not.</p>
+          <ul class="small">
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/README.md#reproduce">README &rarr; Reproduce</a></li>
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/docs/METHODS.md">docs/METHODS.md</a></li>
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/docs/SCHEMA.md">docs/SCHEMA.md</a></li>
+          </ul>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="badge">contributor</span></div>
+          <h3 class="card-title">Where do I start?</h3>
+          <p>The highest-value contributions are curated knowledge files &mdash; company aliases, track
+          dictionaries, product-code mappings &mdash; not code.</p>
+          <ul class="small">
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a></li>
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/docs/GOOD_FIRST_ISSUES.md">docs/GOOD_FIRST_ISSUES.md</a></li>
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/docs/METHODS.md">docs/METHODS.md</a></li>
+          </ul>
+        </article>
+        <article class="card">
+          <div class="card-head"><span class="badge">auditor</span></div>
+          <h3 class="card-title">What is actually merged?</h3>
+          <p>The state file is the single source of truth; the research index and the status blocks are
+          generated from it. Branch protection is not applied.</p>
+          <ul class="small">
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/PROJECT_STATE.yaml">PROJECT_STATE.yaml</a></li>
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/docs/RESEARCH_INDEX.md">docs/RESEARCH_INDEX.md</a></li>
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/docs/governance/FROZEN.yaml">docs/governance/FROZEN.yaml</a></li>
+          </ul>
+        </article>
+      </div>
+      <p class="src">source: docs/INDEX.md &rarr; How to read this repository; README.md</p>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="contributing">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Contributing</p>
+        <h2 class="section-title">Curated knowledge before code.</h2>
+        <p class="mt-s">The core package stays standard-library-only. Every new metric updates
+        <code>docs/METHODS.md</code> and <code>docs/SCHEMA.md</code> first, so a metric cannot enter the
+        codebase without a definition.</p>
+        <p class="src">source: README.md &rarr; Contributing; CONTRIBUTING.md</p>
+        <div class="btn-row mt-m">
+          <a class="btn btn--primary" href="https://github.com/ChazY11/medradar/blob/main/CONTRIBUTING.md">Contributing guide</a>
+          <a class="btn btn--ghost" href="https://github.com/ChazY11/medradar/blob/main/docs/GOOD_FIRST_ISSUES.md">Good first issues</a>
+        </div>
+      </div>
+      <div>
+        <p class="eyebrow">Licence and citation</p>
+        <h2 class="section-title">MIT, with the publishers' terms intact.</h2>
+        <dl class="kv mt-m">
+          <div><dt>Licence</dt><dd><strong>MIT</strong> &mdash; see <a href="https://github.com/ChazY11/medradar/blob/main/LICENSE">LICENSE</a></dd></div>
+          <div><dt>Source data</dt><dd>Belongs to its publishers: openFDA is public domain; ClinicalTrials.gov and SEC EDGAR have their own terms.</dd></div>
+          <div><dt>Version</dt><dd><strong>v0.5.0</strong> &mdash; <a href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">CHANGELOG.md</a> is the record</dd></div>
+          <div><dt>Dataset</dt><dd>Snapshot <strong>2026-10-31</strong>, generated 2026-10-31T05:33:25Z (not committed)</dd></div>
+        </dl>
+        <div class="callout callout--plain mt-m">
+          <h3>Citation</h3>
+          <p>Cite the repository and the version, not a published paper: no paper here is submitted or
+          peer reviewed. Paper drafts and their claim maps live in
+          <a href="https://github.com/ChazY11/medradar/blob/main/papers/README.md">papers/</a>.</p>
+          <p class="mono small">MedRadar (2026). Research infrastructure for public medical-technology
+          evidence, v0.5.0, dataset snapshot 2026-10-31. https://github.com/ChazY11/medradar</p>
+          <p class="src">source: README.md &rarr; Licence; papers/README.md</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="callout callout--warn">
+        <h3>One rule for every document</h3>
+        <p>A fact is stated once, in its canonical file, and linked everywhere else. If you find the same
+        number in two places without a pointer, one of them is already drifting &mdash; report it rather
+        than copy it.</p>
+        <p class="src">source: docs/INDEX.md &rarr; Maintenance rules for this page</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <a class="footer-brand" href="../index.html">
+          <img src="../assets/brand/mark.svg" alt="" width="26" height="26">
+          <span>MedRadar</span>
+        </a>
+        <p class="footer-mission">Research infrastructure for public medical-technology evidence: one
+        auditable event store, frozen experiments with named baselines, and negative results published
+        at the same size as the positive ones. Not a validated predictive product.</p>
+      </div>
+      <div class="footer-cols">
+      <nav aria-labelledby="f-platform">
+        <p class="footer-h" id="f-platform">Platform</p>
+        <ul>
+          <li><a href="../platform/index.html">Overview</a></li>
+          <li><a href="../platform/index.html#architecture">Architecture</a></li>
+          <li><a href="../platform/index.html#sources">Data sources</a></li>
+          <li><a href="../platform/index.html#capabilities">Capability matrix</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-research">
+        <p class="footer-h" id="f-research">Research</p>
+        <ul>
+          <li><a href="../research/index.html">Research overview</a></li>
+          <li><a href="../research/index.html#method">Method</a></li>
+          <li><a href="../research/index.html#event-study">Event study</a></li>
+          <li><a href="../research/index.html#limitations">Limitations</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-resources">
+        <p class="footer-h" id="f-resources">Resources</p>
+        <ul>
+          <li><a href="../explore/index.html">Explore artefacts</a></li>
+          <li><a href="../documentation/index.html">Documentation</a></li>
+          <li><a href="../dashboard.html">Dashboard</a></li>
+          <li><a href="../report.html">Static report</a></li>
+          <li><a href="../metrics.json">Metrics JSON</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-repository">
+        <p class="footer-h" id="f-repository">Repository</p>
+        <ul>
+          <li><a href="https://github.com/ChazY11/medradar">GitHub</a></li>
+          <li><a href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">Changelog</a></li>
+          <li><a href="https://github.com/ChazY11/medradar/blob/main/ROADMAP.md">Roadmap</a></li>
+          <li><a href="https://github.com/ChazY11/medradar/blob/main/CONTRIBUTING.md">Contributing</a></li>
+        </ul>
+      </nav>
+      </div>
+    </div>
+    <div class="footer-base">
+      <p>Data snapshot <b>2026-10-31</b> &middot; package <b>v0.5.0</b> &middot; MIT</p>
+      <p><a href="https://github.com/ChazY11/medradar/blob/main/docs/INDEX.md">Documentation index</a> &middot;
+      <a href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">Changelog</a> &middot;
+      research and education, not investment advice.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

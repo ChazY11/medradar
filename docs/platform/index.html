@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Platform — sources, coverage and capability matrix &middot; MedRadar</title>
+<meta name="description" content="The MedRadar platform: six free public sources, event-date windows, coverage quality, the capability matrix with evidence paths, and what is deliberately absent.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#081120">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html">
+      <img src="../assets/brand/mark.svg" alt="" width="26" height="26">
+      <span>MedRadar</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="true" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"></span> Menu
+    </button>
+    <nav class="nav" id="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../research/index.html">Research</a></li>
+        <li><a href="../platform/index.html" aria-current="page">Platform</a></li>
+        <li><a href="../explore/index.html">Explore</a></li>
+        <li><a href="../documentation/index.html">Documentation</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="pill" href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">v0.5.0</a>
+      <a class="gh" href="https://github.com/ChazY11/medradar">GitHub <span aria-hidden="true">&#8599;</span></a>
+    </div>
+  </div>
+</header>
+<main id="main">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="eyebrow">Platform</p>
+      <h1 class="h1">The machinery behind the numbers</h1>
+      <p class="lede">One event store, six free sources, a rate-limited HTTP layer and generated
+      artefacts. Every boundary below is deliberate, including the parts that are absent.</p>
+      <p class="page-meta"><span>375,378 events</span><span>6 sources</span><span>1.3 GiB SQLite</span><span>dataset 2026-10-31</span></p>
+    </div>
+  </section>
+
+  <section class="section" id="architecture">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Architecture</p>
+        <h2 class="section-title">Solid edges ship. Dashed nodes do not.</h2>
+        <p class="lede">Sources &rarr; HTTP layer &rarr; event store &rarr; registries, analysis,
+        statistics, bitemporal store, forecast registry &rarr; reports and dashboard. Roadmap drafts
+        are drawn as unconnected dashed nodes and are not wired in.</p>
+      </div>
+      <figure class="figure">
+        <div class="fig-media fig-media--scroll">
+          <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="../assets/architecture/architecture-en-dark.svg">
+            <img src="../assets/architecture/architecture-en-light.svg"
+                 alt="MedRadar platform architecture: six public sources feed a rate-limited HTTP layer and one SQLite event store with an append-only revision ledger; company, track and product-code registries, analysis, statistics, the bitemporal store and the forecast registry read from it; generated reports and the dashboard publish from it. Roadmap drafts are drawn as unconnected dashed nodes."
+                 width="1000" height="590" loading="lazy" decoding="async">
+          </picture>
+        </div>
+        <figcaption class="figcaption">Light and dark variants ship together; the page selects one by
+        colour scheme. The figure can be panned horizontally on narrow screens.
+        <p class="src">source: docs/assets/architecture/architecture-en-light.svg; README.md &rarr; Architecture</p>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="sources">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Sources</p>
+        <h2 class="section-title">Six free public sources, no credentials.</h2>
+        <p class="lede">Row counts and event-date windows are from the committed data audit for the
+        2026-10-31 snapshot. The SQLite snapshot itself is not committed.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>Source inventory &mdash; dataset snapshot 2026-10-31</caption>
+          <thead>
+            <tr><th scope="col">Source</th><th scope="col">Kind</th><th scope="col" class="num">Rows</th><th scope="col">Event-date window</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>openFDA device 510(k)</td><td><code>510k</code></td><td class="num">176,466</td><td>1976-07-15 &rarr; 2026-10-18</td></tr>
+            <tr><td>openFDA device recall</td><td><code>device_recall</code></td><td class="num">59,646</td><td>2002-11-01 &rarr; 2026-10-28</td></tr>
+            <tr><td>openFDA device PMA</td><td><code>pma</code></td><td class="num">57,372</td><td>1968-10-09 &rarr; 2026-10-16</td></tr>
+            <tr><td>ClinicalTrials.gov v2</td><td><code>trial</code></td><td class="num">55,592</td><td>1999-10-19 &rarr; 2026-10-30</td></tr>
+            <tr><td>SEC EDGAR 8-K corpus</td><td><code>8k_catalyst</code></td><td class="num">20,976</td><td>2015-01-02 &rarr; 2026-10-30</td></tr>
+            <tr><td>openFDA drugsfda</td><td><code>drug_approval</code></td><td class="num">5,326</td><td>1966-12-14 &rarr; 2026-10-22</td></tr>
+            <tr class="is-key"><td><strong>Total</strong></td><td>&mdash;</td><td class="num"><strong>375,378</strong></td><td>1966-12-14 &rarr; 2026-10-30</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">source: docs/DATA.md &rarr; sources and coverage windows; docs/metrics.json
+      &rarr; meta.counts (source counts sum to the event total)</p>
+      <figure class="figure mt-l">
+        <div class="fig-media">
+          <img src="../assets/figures/sources-en.svg"
+               alt="Source inventory figure: rows per source for the 2026-10-31 snapshot, with openFDA device 510(k) the largest at 176,466 rows and openFDA drugsfda the smallest at 5,326."
+               width="860" height="420" loading="lazy" decoding="async">
+        </div>
+        <figcaption class="figcaption">Committed snapshot &mdash; dataset 2026-10-31, package v0.5.0.
+        Generated from the same counts as the table.
+        <p class="src">source: docs/assets/figures/sources-en.svg; docs/DATA.md</p>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="coverage">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Coverage quality</p>
+        <h2 class="section-title">What is joined, and what is honestly missing.</h2>
+        <p class="lede">Coverage is reported as a share of events with the plain-language meaning next
+        to it. Missing is reported as missing, never as zero.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>Coverage quality &mdash; dataset snapshot 2026-10-31</caption>
+          <thead>
+            <tr><th scope="col">Signal</th><th scope="col" class="num">Rows</th><th scope="col" class="num">Share</th><th scope="col">What it means</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Company key resolved</td><td class="num">132,293</td><td class="num">35.2&nbsp;%</td><td>About one event in three can be tied to a company. The rest are counted as unmatched.</td></tr>
+            <tr><td>Technology track resolved</td><td class="num">196,542</td><td class="num">52.4&nbsp;%</td><td>About half of events carry a track. Track-level aggregates are therefore half-blind.</td></tr>
+            <tr><td>Product code present</td><td class="num">290,909</td><td class="num">77.5&nbsp;%</td><td>Most device rows carry a product code, which is what the product families are built from.</td></tr>
+            <tr><td>Timestamp quality <code>date</code></td><td class="num">375,378</td><td class="num">100&nbsp;%</td><td>Day resolution everywhere; no row carries a time-of-day publication instant.</td></tr>
+            <tr class="is-key"><td><strong>Independent public time</strong></td><td class="num"><strong>0</strong></td><td class="num"><strong>0&nbsp;%</strong></td><td><code>published_at = available_at = event_date</code> on every row. This is the constraint behind every return caveat.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">source: docs/DATA.md &rarr; 覆盖质量; docs/metrics.json</p>
+      <div class="split mt-l">
+        <figure class="figure">
+          <div class="fig-media">
+            <img src="../assets/figures/coverage-en.svg"
+                 alt="Coverage figure: company key resolved on 35.2 percent of events, technology track on 52.4 percent, product code on 77.5 percent, and independent public time on 0 rows out of 375,378."
+                 width="860" height="420" loading="lazy" decoding="async">
+          </div>
+          <figcaption class="figcaption">Coverage shares, including the zero. Dataset 2026-10-31,
+          package v0.5.0.
+          <p class="src">source: docs/assets/figures/coverage-en.svg; docs/DATA.md</p>
+          </figcaption>
+        </figure>
+        <div>
+          <h3 class="card-title">Registry and price layers</h3>
+          <dl class="kv mt-s">
+            <div><dt>Companies</dt><dd><strong>89</strong> &mdash; 81 with a ticker, 43 in the focus set</dd></div>
+            <div><dt>Technology tracks</dt><dd><strong>60</strong></dd></div>
+            <div><dt>Product codes</dt><dd><strong>7,097</strong> &mdash; 1,958 mapped to a track (27.6&nbsp;%)</dd></div>
+            <div><dt>Prices</dt><dd><strong>1,898,409</strong> rows &middot; 1,017 tickers &middot; 2016-10-31 &rarr; 2026-10-30</dd></div>
+            <div><dt>Signals</dt><dd><strong>127</strong></dd></div>
+          </dl>
+          <p class="src">source: docs/DATA.md; docs/metrics.json</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="capabilities">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Capability matrix</p>
+        <h2 class="section-title">Status, evidence path, and the caveat that travels with it.</h2>
+        <p class="lede">The site vocabulary maps to the repository's generated one:
+        <strong>implemented</strong> = <em>working</em>; <strong>limited</strong> = working with a
+        measured gap or mechanism only; <strong>draft</strong> = branch-only; <strong>planned</strong>
+        = not started.</p>
+      </div>
+      <ul class="legend">
+        <li><span class="status status--implemented"><span class="status-dot" aria-hidden="true"></span>implemented</span><span class="legend-note">Runs on main and is exercised by the offline test suite.</span></li>
+        <li><span class="status status--limited"><span class="status-dot" aria-hidden="true"></span>limited</span><span class="legend-note">Works, but a named gap limits what it can support (partial resolution, descriptive only, mechanism only).</span></li>
+        <li><span class="status status--draft"><span class="status-dot" aria-hidden="true"></span>draft</span><span class="legend-note">Exists only on a draft branch or PR. Not shipped and not wired in.</span></li>
+        <li><span class="status status--planned"><span class="status-dot" aria-hidden="true"></span>planned</span><span class="legend-note">Roadmap item with an explicit blocker. No code path claimed.</span></li>
+      </ul>
+      <div class="table-wrap mt-l">
+        <table class="data">
+          <caption>Capability matrix &mdash; repository evidence and validation note</caption>
+          <thead>
+            <tr><th scope="col">Capability</th><th scope="col">Status</th><th scope="col">Evidence</th><th scope="col">Validation note</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Ingest: openFDA device/drug, ClinicalTrials.gov, SEC 8-K</td><td><span class="status status--implemented"><span class="status-dot" aria-hidden="true"></span>implemented</span></td><td><code>medradar/collect_*.py</code>, <code>intelligence/</code></td><td>Counts reproduce from live sources.</td></tr>
+            <tr><td>Event store with bitemporal fields</td><td><span class="status status--implemented"><span class="status-dot" aria-hidden="true"></span>implemented</span></td><td><code>medradar/db.py</code></td><td>Every row carries event date, availability and quality; 0 rows of independent public time.</td></tr>
+            <tr><td>Append-only revision ledger</td><td><span class="status status--implemented"><span class="status-dot" aria-hidden="true"></span>implemented</span></td><td><code>medradar/evidence_core/</code></td><td>Records the application write path; explicitly <strong>not</strong> tamper-proofing.</td></tr>
+            <tr><td>Company / track / product-code resolution</td><td><span class="status status--limited"><span class="status-dot" aria-hidden="true"></span>limited</span></td><td><code>medradar/config.py</code>, <code>config/*.json</code></td><td>35.2&nbsp;% company key, 52.4&nbsp;% track; unmatched counted, never guessed.</td></tr>
+            <tr><td>Descriptive analytics: heat, mix shift, novelty</td><td><span class="status status--limited"><span class="status-dot" aria-hidden="true"></span>limited</span></td><td><code>medradar/analyze.py</code></td><td>Descriptive, in-sample scores; no out-of-sample validation.</td></tr>
+            <tr><td>Event study, replay, simulated long-only book</td><td><span class="status status--implemented"><span class="status-dot" aria-hidden="true"></span>implemented</span></td><td><code>medradar/eventstudy.py</code>, <code>replay.py</code>, <code>paper.py</code></td><td>Working <em>as simulation</em>: in-sample, 38 trades, not investment advice.</td></tr>
+            <tr><td>Bitemporal knowledge store</td><td><span class="status status--limited"><span class="status-dot" aria-hidden="true"></span>limited</span></td><td><code>medradar/tkg/</code></td><td>Mechanism only: the imported history has no independent public clock.</td></tr>
+            <tr><td>Forecast registry with as-of scoring</td><td><span class="status status--limited"><span class="status-dot" aria-hidden="true"></span>limited</span></td><td><code>medradar/forecast_registry.py</code></td><td>Mechanism only: 25 registered forecasts, 0 matured; calibration state <code>insufficient_matured_forecasts</code>.</td></tr>
+            <tr><td>Deterministic evidence-grounded research agent</td><td><span class="status status--implemented"><span class="status-dot" aria-hidden="true"></span>implemented</span></td><td><code>medradar/research_agent.py</code></td><td>Retrieval-and-citation workflow; establishes no causality.</td></tr>
+            <tr><td>Reports and zero-dependency dashboard</td><td><span class="status status--implemented"><span class="status-dot" aria-hidden="true"></span>implemented</span></td><td><code>medradar/report.py</code>, <code>docs/dashboard.html</code></td><td>Generated artefacts, not a live service.</td></tr>
+            <tr><td>FDA AdCom collector</td><td><span class="status status--limited"><span class="status-dot" aria-hidden="true"></span>limited</span></td><td><code>medradar/adcom.py</code></td><td>Parses zero rows (client-side calendar); returns <code>empty</code> / <code>source_changed</code>.</td></tr>
+            <tr><td>CLI, offline demo and selftest</td><td><span class="status status--implemented"><span class="status-dot" aria-hidden="true"></span>implemented</span></td><td><code>medradar/__main__.py</code></td><td>1,160 offline tests, no network, no API key.</td></tr>
+            <tr class="is-muted"><td>Market-to-R&amp;D lane</td><td><span class="status status--draft"><span class="status-dot" aria-hidden="true"></span>draft</span></td><td><code>docs/MARKET_DATA.md</code>, <code>experiments/</code></td><td>Recorded as a draft capability; its frozen artefacts and negative result are public.</td></tr>
+            <tr class="is-muted"><td>Publication / patent lane</td><td><span class="status status--draft"><span class="status-dot" aria-hidden="true"></span>draft</span></td><td><code>docs/PUBLICATION_PATENT_DATA.md</code></td><td>OpenAlex counts evaluated; the US patent path is key-gated and not evaluated.</td></tr>
+            <tr class="is-muted"><td>Early-signal study (5 firms)</td><td><span class="status status--draft"><span class="status-dot" aria-hidden="true"></span>draft</span></td><td><code>research/studies/early_signal_5firms/</code></td><td>Phase 0 CONDITIONAL-GO; lead-time gate NO-GO; no public claim.</td></tr>
+            <tr class="is-muted"><td>Paper drafts with claim maps</td><td><span class="status status--draft"><span class="status-dot" aria-hidden="true"></span>draft</span></td><td><code>papers/</code></td><td>Not submitted, not peer reviewed.</td></tr>
+            <tr class="is-muted"><td>Weekly forecast-cycle workflow</td><td><span class="status status--draft"><span class="status-dot" aria-hidden="true"></span>draft</span></td><td><code>.github/workflows/forecast-cycle.yml</code></td><td>Committed; not executed in the authoring environment.</td></tr>
+            <tr class="is-muted"><td>Live observatory lane</td><td><span class="status status--draft"><span class="status-dot" aria-hidden="true"></span>draft</span></td><td><code>medradar/live.py</code></td><td>Paper trading only; not investment advice.</td></tr>
+            <tr class="is-muted"><td>Re-acquire independent public timestamps</td><td><span class="status status--planned"><span class="status-dot" aria-hidden="true"></span>planned</span></td><td>README.md &rarr; Roadmap</td><td>The prerequisite for any point-in-time claim. EDGAR first.</td></tr>
+            <tr class="is-muted"><td>Graph features in the scoring models</td><td><span class="status status--planned"><span class="status-dot" aria-hidden="true"></span>planned</span></td><td>README.md &rarr; Roadmap</td><td>The relation graph informs the agent only, not the models.</td></tr>
+            <tr class="is-muted"><td>Difference-in-differences / synthetic control</td><td><span class="status status--planned"><span class="status-dot" aria-hidden="true"></span>planned</span></td><td>README.md &rarr; Roadmap</td><td>No causal claim is made anywhere in the repository.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">source: README.md &rarr; What is implemented; PROJECT_STATE.yaml &rarr;
+      capabilities (7 working &middot; 6 draft &middot; 1 retired); docs/DATA.md</p>
+    </div>
+  </section>
+
+  <section class="section" id="absent">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Deliberately absent</p>
+        <h2 class="section-title">The most important part of the matrix is the hole.</h2>
+        <p class="lede">A capability that is missing because the data cannot support it is a design
+        decision. Each hole below has a stated reason.</p>
+      </div>
+      <div class="grid grid--2">
+        <div class="callout callout--warn">
+          <h3>Drafts, not features</h3>
+          <p>Six capabilities are recorded as <em>draft</em> in <code>PROJECT_STATE.yaml</code>, and the
+          lanes tracked in PRs #12&ndash;#30 are branch-only. None is served by this site and none is
+          presented as a capability.</p>
+          <p class="src">source: PROJECT_STATE.yaml; README.md &rarr; Not in main, not claimed</p>
+        </div>
+        <div class="callout callout--plain">
+          <h3>Retired on purpose</h3>
+          <p>The monthly-resolution deployment detector was retired by decision D-045: at roughly 0.2
+          events per cell-month, a monthly detector cannot resolve a change. The deployment resolution
+          is quarterly.</p>
+          <p class="src">source: PROJECT_STATE.yaml &rarr; capabilities (retired); research/DECISIONS.md</p>
+        </div>
+        <div class="callout callout--plain">
+          <h3>Not evaluated or excluded</h3>
+          <ul>
+            <li><strong>Patents</strong> &mdash; USPTO Open Data Portal requires a key; not evaluated.</li>
+            <li><strong>Procurement</strong> &mdash; excluded: the snapshot is not point-in-time usable.</li>
+            <li><strong>NMPA (China)</strong> &mdash; deliberately not scraped; values are <code>null</code>, never zero.</li>
+            <li><strong>AdCom</strong> &mdash; parses zero rows because the calendar is client-side.</li>
+          </ul>
+          <p class="src">source: README.md &rarr; Limitations 5, 6, 9; docs/PUBLICATION_PATENT_DATA.md</p>
+        </div>
+        <div class="callout callout--ok">
+          <h3>What does work, end to end</h3>
+          <p>The offline path works from a clean clone with no network: install, run 1,160 tests, build
+          the demo artefact, and read the generated report and dashboard. That is the reproducible
+          claim this project stands behind.</p>
+          <p class="src">source: README.md &rarr; Reproduce; PROJECT_STATE.yaml &rarr; tests</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="reproduction">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Reproduction</p>
+        <h2 class="section-title">Reproduce the procedure, not the numbers.</h2>
+        <p class="lede mt-s">The 1.3&nbsp;GiB SQLite snapshot is intentionally not committed, so a clean
+        clone rebuilds the pipeline and the artefact formats, not the exact counts.</p>
+        <p class="src">source: README.md &rarr; Reproduce; PROJECT_STATE.yaml &rarr; tests</p>
+        <div class="note mt-m">
+          <strong>Frozen studies</strong> rebuild with the artefacts in
+          <code>experiments/reverse_rd_v1/</code> and <code>experiments/reverse_rd_v2/</code>. Every
+          metric definition is in <code>docs/METHODS.md</code> and the data contract is
+          <code>docs/SCHEMA.md</code>; change those before changing a number.
+        </div>
+      </div>
+      <div class="code-wrap">
+        <div class="code-head"><span>shell</span><span>verified commands</span></div>
+        <pre class="code"><code>git clone https://github.com/ChazY11/medradar.git
+cd medradar &amp;&amp; pip install -e .
+
+<span class="c-comment"># offline: no network, no API key</span>
+<span class="c-cmd">python -m pytest -q -o addopts=""</span>
+<span class="c-cmd">medradar demo</span>
+
+<span class="c-comment"># live radar run: network needed, no API key</span>
+<span class="c-cmd">medradar run --months 24 --with-trade --with-dashboard</span>
+
+<span class="c-comment"># frozen market-to-R&amp;D study</span>
+<span class="c-cmd">python experiments/reverse_rd_v2/run_v2.py   --db data/medradar.sqlite --holdouts 3</span></code></pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <a class="footer-brand" href="../index.html">
+          <img src="../assets/brand/mark.svg" alt="" width="26" height="26">
+          <span>MedRadar</span>
+        </a>
+        <p class="footer-mission">Research infrastructure for public medical-technology evidence: one
+        auditable event store, frozen experiments with named baselines, and negative results published
+        at the same size as the positive ones. Not a validated predictive product.</p>
+      </div>
+      <div class="footer-cols">
+      <nav aria-labelledby="f-platform">
+        <p class="footer-h" id="f-platform">Platform</p>
+        <ul>
+          <li><a href="../platform/index.html">Overview</a></li>
+          <li><a href="../platform/index.html#architecture">Architecture</a></li>
+          <li><a href="../platform/index.html#sources">Data sources</a></li>
+          <li><a href="../platform/index.html#capabilities">Capability matrix</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-research">
+        <p class="footer-h" id="f-research">Research</p>
+        <ul>
+          <li><a href="../research/index.html">Research overview</a></li>
+          <li><a href="../research/index.html#method">Method</a></li>
+          <li><a href="../research/index.html#event-study">Event study</a></li>
+          <li><a href="../research/index.html#limitations">Limitations</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-resources">
+        <p class="footer-h" id="f-resources">Resources</p>
+        <ul>
+          <li><a href="../explore/index.html">Explore artefacts</a></li>
+          <li><a href="../documentation/index.html">Documentation</a></li>
+          <li><a href="../dashboard.html">Dashboard</a></li>
+          <li><a href="../report.html">Static report</a></li>
+          <li><a href="../metrics.json">Metrics JSON</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-repository">
+        <p class="footer-h" id="f-repository">Repository</p>
+        <ul>
+          <li><a href="https://github.com/ChazY11/medradar">GitHub</a></li>
+          <li><a href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">Changelog</a></li>
+          <li><a href="https://github.com/ChazY11/medradar/blob/main/ROADMAP.md">Roadmap</a></li>
+          <li><a href="https://github.com/ChazY11/medradar/blob/main/CONTRIBUTING.md">Contributing</a></li>
+        </ul>
+      </nav>
+      </div>
+    </div>
+    <div class="footer-base">
+      <p>Data snapshot <b>2026-10-31</b> &middot; package <b>v0.5.0</b> &middot; MIT</p>
+      <p><a href="https://github.com/ChazY11/medradar/blob/main/docs/INDEX.md">Documentation index</a> &middot;
+      <a href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">Changelog</a> &middot;
+      research and education, not investment advice.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
