@@ -1,0 +1,993 @@
+{
+  "captured_at": "2026-11-08T15:21:41.413Z",
+  "server": {
+    "command": "C:\\Program Files\\nodejs\\node.exe",
+    "args": [
+      "D:\\DEPPSKK\\.rea\\node_modules\\rea-agents\\scripts\\rea.mjs",
+      "mcp"
+    ],
+    "cwd": "D:\\DEPPSKK\\.rea"
+  },
+  "connect_ms": 1669.5,
+  "totals": {
+    "calls": 14,
+    "ok": 9,
+    "failed": 5
+  },
+  "results": [
+    {
+      "id": "session-identity",
+      "tool": "binary_session",
+      "args": {},
+      "expectation": "success",
+      "why": "target-free session/identity probe",
+      "ok": true,
+      "isError": false,
+      "ms": 94.7,
+      "content_chars": 68572,
+      "text_excerpt": "{\"result\":{\"open\":false,\"cleanup_pending\":false,\"capabilities\":[{\"provider\":{\"id\":\"native-macos\",\"name\":\"macOS native inspection utilities\",\"version\":null},\"shared_limitations\":[\"Availability and textual formats depend on the installed macOS/Xcode toolchain.\"],\"groups\":[{\"operations\":[\"capture_native_ui_scenario\",\"observe_native_calls\"],\"effects\":[\"launches_process\",\"may_show_ui\",\"may_access_network\",\"may_write_filesystem\"],\"limitations\":[],\"available\":false,\"reason\":\"Native macOS utilities require macOS.\",\"availability_code\":\"unsupported_host\"},{\"operations\":[\"demangle_swift\",\"inspect_macho\",\"inspect_plist\",\"inspect_signature\",\"list_architectures\"],\"effects\":[\"launches_process\"],\"limitations\":[],\"available\":false,\"reason\":\"Native macOS utilities require macOS.\",\"availability_code\":\"unsupported_host\"},{\"operations\":[\"inspect_native_dispatch_metadata\"],\"effects\":[],\"limitations\":[],\"available\":false,\"reason\":\"Native macOS utilities require macOS.\",\"availability_code\":\"unsupported_host\"},{\"operations\":[\"observe_native_ui\"],\"effects\":[\"launches_process\",\"may_write_filesystem\"],\"limitations\":[],\"available\":false,\"reason\":\"Native macOS utilities require macOS.\",\"availability_code\":\"unsupported_host\"}]},{\"provider\":{\"id\":\"rea-artifact-graph\",\"name\":\"REA safe artifact graph provider\",\"version\":\"1\"},\"shared_limitations\":[\"DMG child inventory automatically uses a read-only native macOS mount; PKG remains root-hash-only.\",\"ASAR files discovered in filesystem-backed inventories are expanded without bulk extraction; other nested containers remain recorded only.\"],\"groups\":[{\"operations\":[\"decode_interface_builder\",\"inspect_keyed_archive\",\"trace_dylib_resolution\"],\"effects\":[],\"limitations\":[],\"available\":true,\"reason\":null,\"availability_code\":null},{\"operations\":[\"extract_artifact\",\"inspect_artifact\"],\"effects\":[\"launches_process\",\"may_write_filesystem\"],\"limitations\":[],\"available\":true,\"reason\":null,\"availability_code\":null},{\"operations\":[\"inspect_asset_catalog\"],\"effects\":[\"launches_process\"],\"limitations\":[],\"available\":false,\"reason\":\"Apple asset catalogs require macOS assetutil.\",\"availability_code\":\"unsupported_host\"}]},{\"provider\":{\"id\":\"rea-dotnet-static\",\"name\":\"REA managed static analysis provider\",\"version\":\"1\"},\"shared_limitations\":[],\"groups\":[{\"operations\":[\"inspect_managed_artifact\"],\"effects\":[],\"limitations\":[\"This capability inventories PE/CLI identity only; inspect_managed_members admits metadata members, signatures, and CIL anchors.\",\"It never loads the target assembly, resolves dependencies through a CLR, decompiles C#, or executes target code.\"],\"available\":true,\"reason\":null,\"availability_code\":null},{\"operations\":[\"inspect_managed_members\"],\"effects\":[],\"limitations\":[\"This capability decodes PE/CLI metadata members, signatures, and file-backed method bodies; decompiled C# reconstruction and cross-build member comparison are separate operations.\",\"It never loads the target assembly, resolves dependencies through a CLR, decompiles C#",
+      "parsed_shape": {
+        "keys": [
+          "result"
+        ],
+        "result": {
+          "keys": [
+            "open",
+            "cleanup_pending",
+            "capabilities",
+            "analysis_provider_binding",
+            "analysis_provider_candidates",
+            "analysis_run",
+            "analysis_activity",
+            "provider_operation_health",
+            "tool_availability",
+            "client_features",
+            "server_identity"
+          ],
+          "open": false,
+          "cleanup_pending": false,
+          "capabilities": {
+            "array": 3,
+            "first": null
+          },
+          "analysis_provider_binding": null,
+          "analysis_provider_candidates": {
+            "array": 4,
+            "first": null
+          },
+          "analysis_run": null,
+          "analysis_activity": {
+            "keys": [
+              "status",
+              "providers"
+            ]
+          },
+          "provider_operation_health": null
+        }
+      },
+      "structured_keys": [
+        "result"
+      ]
+    },
+    {
+      "id": "layout-native-pe",
+      "tool": "inspect_binary_layout",
+      "args": {
+        "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe"
+      },
+      "expectation": "success",
+      "why": "unsigned x86-64 PE built for this program",
+      "ok": false,
+      "isError": true,
+      "ms": 14.5,
+      "content_chars": 453,
+      "text_excerpt": "{\"error\":{\"code\":\"capability_unavailable\",\"category\":\"unsupported_provider\",\"message\":\"The initial real-verified pwntools artifact profile supports Linux x64 only.\",\"retryable\":false,\"remediation\":{\"action\":\"The initial real-verified pwntools artifact profile supports Linux x64 only.\"},\"details\":{\"provider_id\":\"pwntools-elf\",\"operation\":\"inspect_binary_layout\",\"reason\":\"The initial real-verified pwntools artifact profile supports Linux x64 only.\"}}}",
+      "parsed_shape": {
+        "keys": [
+          "error"
+        ],
+        "error": {
+          "keys": [
+            "code",
+            "category",
+            "message",
+            "retryable",
+            "remediation",
+            "details"
+          ],
+          "code": "capability_unavailable",
+          "category": "unsupported_provider",
+          "message": "The initial real-verified pwntools artifact profile supports Linux x64 only.",
+          "retryable": false,
+          "remediation": {
+            "keys": [
+              "action"
+            ]
+          },
+          "details": {
+            "keys": [
+              "provider_id",
+              "operation",
+              "reason"
+            ]
+          }
+        }
+      },
+      "structured_keys": []
+    },
+    {
+      "id": "layout-managed-pe",
+      "tool": "inspect_binary_layout",
+      "args": {
+        "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe"
+      },
+      "expectation": "success",
+      "why": "PE/CLI image built with in-box csc",
+      "ok": false,
+      "isError": true,
+      "ms": 2.1,
+      "content_chars": 453,
+      "text_excerpt": "{\"error\":{\"code\":\"capability_unavailable\",\"category\":\"unsupported_provider\",\"message\":\"The initial real-verified pwntools artifact profile supports Linux x64 only.\",\"retryable\":false,\"remediation\":{\"action\":\"The initial real-verified pwntools artifact profile supports Linux x64 only.\"},\"details\":{\"provider_id\":\"pwntools-elf\",\"operation\":\"inspect_binary_layout\",\"reason\":\"The initial real-verified pwntools artifact profile supports Linux x64 only.\"}}}",
+      "parsed_shape": {
+        "keys": [
+          "error"
+        ],
+        "error": {
+          "keys": [
+            "code",
+            "category",
+            "message",
+            "retryable",
+            "remediation",
+            "details"
+          ],
+          "code": "capability_unavailable",
+          "category": "unsupported_provider",
+          "message": "The initial real-verified pwntools artifact profile supports Linux x64 only.",
+          "retryable": false,
+          "remediation": {
+            "keys": [
+              "action"
+            ]
+          },
+          "details": {
+            "keys": [
+              "provider_id",
+              "operation",
+              "reason"
+            ]
+          }
+        }
+      },
+      "structured_keys": []
+    },
+    {
+      "id": "layout-python-source",
+      "tool": "inspect_binary_layout",
+      "args": {
+        "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.py"
+      },
+      "expectation": "failure",
+      "why": "negative control: plain-text source is not a binary",
+      "ok": false,
+      "isError": true,
+      "ms": 1.8,
+      "content_chars": 453,
+      "text_excerpt": "{\"error\":{\"code\":\"capability_unavailable\",\"category\":\"unsupported_provider\",\"message\":\"The initial real-verified pwntools artifact profile supports Linux x64 only.\",\"retryable\":false,\"remediation\":{\"action\":\"The initial real-verified pwntools artifact profile supports Linux x64 only.\"},\"details\":{\"provider_id\":\"pwntools-elf\",\"operation\":\"inspect_binary_layout\",\"reason\":\"The initial real-verified pwntools artifact profile supports Linux x64 only.\"}}}",
+      "parsed_shape": {
+        "keys": [
+          "error"
+        ],
+        "error": {
+          "keys": [
+            "code",
+            "category",
+            "message",
+            "retryable",
+            "remediation",
+            "details"
+          ],
+          "code": "capability_unavailable",
+          "category": "unsupported_provider",
+          "message": "The initial real-verified pwntools artifact profile supports Linux x64 only.",
+          "retryable": false,
+          "remediation": {
+            "keys": [
+              "action"
+            ]
+          },
+          "details": {
+            "keys": [
+              "provider_id",
+              "operation",
+              "reason"
+            ]
+          }
+        }
+      },
+      "structured_keys": []
+    },
+    {
+      "id": "pe-resources",
+      "tool": "inspect_pe_resources",
+      "args": {
+        "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe"
+      },
+      "expectation": "success",
+      "why": "bounded PE resource tree",
+      "ok": true,
+      "isError": false,
+      "ms": 14.8,
+      "content_chars": 3691,
+      "text_excerpt": "{\"evidence_id\":\"ev_0f1ccf130f5cb4eb4322b92cc575364e5e5faaccf3bc20dd91c555cb9fbe1ffd\",\"subject\":{\"name\":\"sample-managed.exe\",\"digest\":{\"sha256\":\"5676d9830f80eb31d224e9ddad230093aa493f5c0ff6c59f928dc28fe593e53f\"},\"local_path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe\",\"format\":\"pe\",\"architecture\":\"x86\"},\"provider\":{\"id\":\"rea-pe-resources\",\"name\":\"REA PE resource parser\",\"version\":\"1\"},\"analysis_profile\":null,\"predicate_type\":\"rea.analysis\",\"operation\":\"inspect_pe_resources\",\"parameters\":{\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe\",\"max_file_bytes\":67108864,\"max_entries\":16384},\"raw_result\":null,\"normalized_result\":{\"artifact\":{\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe\",\"sha256\":\"5676d9830f80eb31d224e9ddad230093aa493f5c0ff6c59f928dc28fe593e53f\",\"bytes\":4608},\"format\":\"pe32\",\"machine\":332,\"directory\":{\"rva\":16384,\"location\":{\"offset\":2560,\"bytes\":1272},\"data_directory_location\":{\"offset\":264,\"bytes\":8}},\"directories\":[{\"location\":{\"offset\":2560,\"bytes\":32},\"characteristics\":0,\"timestamp\":0,\"major_version\":0,\"minor_version\":0,\"named_entries\":0,\"id_entries\":2},{\"location\":{\"offset\":2592,\"bytes\":24},\"characteristics\":0,\"timestamp\":0,\"major_version\":0,\"minor_version\":0,\"named_entries\":0,\"id_entries\":1},{\"location\":{\"offset\":2640,\"bytes\":24},\"characteristics\":0,\"timestamp\":0,\"major_version\":0,\"minor_version\":0,\"named_entries\":0,\"id_entries\":1},{\"location\":{\"offset\":2616,\"bytes\":24},\"characteristics\":0,\"timestamp\":0,\"major_version\":0,\"minor_version\":0,\"named_entries\":0,\"id_entries\":1},{\"location\":{\"offset\":2664,\"bytes\":24},\"characteristics\":0,\"timestamp\":0,\"major_version\":0,\"minor_version\":0,\"named_entries\":0,\"id_entries\":1}],\"resources\":[{\"index\":0,\"type\":{\"kind\":\"id\",\"id\":16},\"name\":{\"kind\":\"id\",\"id\":1},\"language\":{\"kind\":\"id\",\"id\":0},\"entry_locations\":[{\"offset\":2576,\"bytes\":8},{\"offset\":2608,\"bytes\":8},{\"offset\":2656,\"bytes\":8}],\"data_entry_location\":{\"offset\":2688,\"bytes\":16},\"code_page\":0,\"reserved\":0,\"payload\":{\"rva\":16544,\"location\":{\"offset\":2720,\"bytes\":612},\"sha256\":\"473e67e84ffe613fee13b1cfb9577ad6712964d5404276bc08be88364d55b6ef\"}},{\"index\":1,\"type\":{\"kind\":\"id\",\"id\":24},\"name\":{\"kind\":\"id\",\"id\":1},\"language\":{\"kind\":\"id\",\"id\":0},\"entry_locations\":[{\"offset\":2584,\"bytes\":8},{\"offset\":2632,\"bytes\":8},{\"offset\":2680,\"bytes\":8}],\"data_entry_location\":{\"offset\":2704,\"bytes\":16},\"code_page\":0,\"reserved\":0,\"payload\":{\"rva\":17160,\"location\":{\"offset\":3336,\"bytes\":490},\"sha256\":\"c0085eb467d2fc9c9f395047e057183b3cd1503a4087d0db565161c13527a76f\"}}],\"icon_groups\":[],\"coverage\":{\"status\":\"complete\",\"examined_entries\":6,\"resources\":2},\"limitations\":[\"Static PE32/PE32+ type/name/language resource inventory; payloads other than RT_GROUP_ICON remain opaque.\",\"Icon candidates are resource-table relationships. Language fallback, image decoding and actual shell/window loading are not observed.\",\"Exact shared byte ranges are retained; non-id",
+      "parsed_shape": {
+        "keys": [
+          "evidence_id",
+          "subject",
+          "provider",
+          "analysis_profile",
+          "predicate_type",
+          "operation",
+          "parameters",
+          "raw_result",
+          "normalized_result",
+          "confidence",
+          "authority",
+          "environment",
+          "limitations",
+          "relationship_coverage",
+          "locations",
+          "evidence_links"
+        ],
+        "evidence_id": "ev_0f1ccf130f5cb4eb4322b92cc575364e5e5faaccf3bc20dd91c555cb9fbe1ffd",
+        "subject": {
+          "keys": [
+            "name",
+            "digest",
+            "local_path",
+            "format",
+            "architecture"
+          ],
+          "name": "sample-managed.exe",
+          "digest": {
+            "keys": [
+              "sha256"
+            ]
+          },
+          "local_path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe",
+          "format": "pe",
+          "architecture": "x86"
+        },
+        "provider": {
+          "keys": [
+            "id",
+            "name",
+            "version"
+          ],
+          "id": "rea-pe-resources",
+          "name": "REA PE resource parser",
+          "version": "1"
+        },
+        "analysis_profile": null,
+        "predicate_type": "rea.analysis",
+        "operation": "inspect_pe_resources",
+        "parameters": {
+          "keys": [
+            "path",
+            "max_file_bytes",
+            "max_entries"
+          ],
+          "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe",
+          "max_file_bytes": 67108864,
+          "max_entries": 16384
+        },
+        "raw_result": null
+      },
+      "structured_keys": [
+        "evidence_id",
+        "subject",
+        "provider",
+        "analysis_profile",
+        "predicate_type",
+        "operation",
+        "parameters",
+        "raw_result",
+        "normalized_result",
+        "confidence",
+        "authority",
+        "environment",
+        "limitations",
+        "relationship_coverage",
+        "locations",
+        "evidence_links"
+      ]
+    },
+    {
+      "id": "managed-artifact",
+      "tool": "inspect_managed_artifact",
+      "args": {
+        "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe"
+      },
+      "expectation": "success",
+      "why": "PE/CLI identity without loading the assembly",
+      "ok": true,
+      "isError": false,
+      "ms": 33.1,
+      "content_chars": 4082,
+      "text_excerpt": "{\"evidence_id\":\"ev_05a8ae2423c0dd34ed71b9c0a29cd5d699774829a5ad071067a6d6257da5b01c\",\"subject\":{\"name\":\"sample-managed.exe\",\"digest\":{\"sha256\":\"5676d9830f80eb31d224e9ddad230093aa493f5c0ff6c59f928dc28fe593e53f\"},\"local_path\":\"D:\\\\DEPPSKK\\\\medradar\\\\experiments\\\\phoenix\\\\rea\\\\fixtures\\\\build\\\\sample-managed.exe\",\"format\":\"pe\",\"architecture\":\"x86\"},\"provider\":{\"id\":\"rea-dotnet-static\",\"name\":\"REA managed static analysis provider\",\"version\":\"1\"},\"analysis_profile\":null,\"predicate_type\":\"rea.analysis\",\"operation\":\"inspect_managed_artifact\",\"parameters\":{\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe\"},\"raw_result\":null,\"normalized_result\":{\"artifact\":{\"path\":\"D:\\\\DEPPSKK\\\\medradar\\\\experiments\\\\phoenix\\\\rea\\\\fixtures\\\\build\\\\sample-managed.exe\",\"sha256\":\"5676d9830f80eb31d224e9ddad230093aa493f5c0ff6c59f928dc28fe593e53f\",\"byte_length\":4608,\"format\":\"pe\"},\"pe\":{\"machine\":332,\"machine_hex\":\"0x014c\",\"architecture\":\"x86\",\"optional_header\":\"pe32\",\"section_count\":3,\"characteristics\":258,\"cli\":{\"header_offset\":520,\"header_size\":72,\"runtime_version\":\"2.5\",\"flags\":1,\"flag_names\":[\"il-only\"],\"entry_point\":{\"kind\":\"metadata-token\",\"value\":\"0x06000003\"},\"metadata_rva\":8580,\"metadata_size\":1228,\"resources_rva\":0,\"resources_size\":0,\"strong_name_rva\":0,\"strong_name_size\":0,\"managed_native_header_rva\":0,\"managed_native_header_size\":0,\"ready_to_run_signature\":false}},\"classification\":{\"status\":\"managed\",\"container\":\"pe\",\"runtime_family\":\"unknown\",\"implementation\":\"cil\",\"managed_architecture\":\"anycpu\",\"evidence\":[{\"code\":\"cli-header-observed\",\"detail\":\"A file-backed PE CLI header and metadata root were admitted.\",\"file_offset\":520},{\"code\":\"managed-architecture-derived\",\"detail\":\"Managed architecture anycpu is derived from PE machine and CLI flags.\",\"file_offset\":536}]},\"metadata\":{\"status\":\"complete\",\"version\":\"v4.0.30319\",\"stream_names\":[\"#Blob\",\"#GUID\",\"#Strings\",\"#US\",\"#~\"],\"table_row_counts\":{\"Module\":1,\"TypeRef\":11,\"TypeDef\":2,\"Field\":1,\"MethodDef\":3,\"Param\":2,\"MemberRef\":13,\"Constant\":1,\"CustomAttribute\":2,\"StandAloneSig\":3,\"Assembly\":1,\"AssemblyRef\":1}},\"module\":{\"name\":\"sample-managed.exe\",\"generation\":0,\"mvid\":\"a2ba9acc-459b-4b01-9fb8-d35f400ea704\",\"enc_id\":null,\"enc_base_id\":null,\"token\":\"0x00000001\",\"row_offset\":1080},\"assembly\":{\"name\":\"sample-managed\",\"version\":\"0.0.0.0\",\"culture\":null,\"flags\":0,\"hash_algorithm\":32772,\"public_key\":{\"kind\":\"none\",\"byte_length\":0,\"sha256\":null,\"token\":null},\"token\":\"0x20000001\",\"row_offset\":1346},\"target_frameworks\":[],\"references\":[{\"name\":\"mscorlib\",\"version\":\"4.0.0.0\",\"culture\":null,\"flags\":0,\"public_key_or_token\":{\"kind\":\"public-key-token\",\"byte_length\":8,\"sha256\":\"1b960802b155541df3837ade50790da7e91762d14b8e011fa8223424ff75acdb\",\"token\":\"b77a5c561934e089\"},\"hash_value_sha256\":null,\"hash_value_length\":0,\"token\":\"0x23000001\",\"row_offset\":1368}],\"resources\":[],\"attributes\":[{\"parent_token\":\"0x20000001\",\"constructor_token\":\"0x0a000001\",\"type_name\":\"System.Runtime.CompilerServices.Compil",
+      "parsed_shape": {
+        "keys": [
+          "evidence_id",
+          "subject",
+          "provider",
+          "analysis_profile",
+          "predicate_type",
+          "operation",
+          "parameters",
+          "raw_result",
+          "normalized_result",
+          "confidence",
+          "authority",
+          "environment",
+          "limitations",
+          "relationship_coverage",
+          "locations",
+          "evidence_links"
+        ],
+        "evidence_id": "ev_05a8ae2423c0dd34ed71b9c0a29cd5d699774829a5ad071067a6d6257da5b01c",
+        "subject": {
+          "keys": [
+            "name",
+            "digest",
+            "local_path",
+            "format",
+            "architecture"
+          ],
+          "name": "sample-managed.exe",
+          "digest": {
+            "keys": [
+              "sha256"
+            ]
+          },
+          "local_path": "D:\\DEPPSKK\\medradar\\experiments\\phoenix\\rea\\fixtures\\build\\sample-managed.exe",
+          "format": "pe",
+          "architecture": "x86"
+        },
+        "provider": {
+          "keys": [
+            "id",
+            "name",
+            "version"
+          ],
+          "id": "rea-dotnet-static",
+          "name": "REA managed static analysis provider",
+          "version": "1"
+        },
+        "analysis_profile": null,
+        "predicate_type": "rea.analysis",
+        "operation": "inspect_managed_artifact",
+        "parameters": {
+          "keys": [
+            "path"
+          ],
+          "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe"
+        },
+        "raw_result": null
+      },
+      "structured_keys": [
+        "evidence_id",
+        "subject",
+        "provider",
+        "analysis_profile",
+        "predicate_type",
+        "operation",
+        "parameters",
+        "raw_result",
+        "normalized_result",
+        "confidence",
+        "authority",
+        "environment",
+        "limitations",
+        "relationship_coverage",
+        "locations",
+        "evidence_links"
+      ]
+    },
+    {
+      "id": "managed-members",
+      "tool": "inspect_managed_members",
+      "args": {
+        "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe",
+        "type_names": [
+          "ReaProbe"
+        ]
+      },
+      "expectation": "success",
+      "why": "metadata members of the fixture type",
+      "ok": true,
+      "isError": false,
+      "ms": 29.6,
+      "content_chars": 23403,
+      "text_excerpt": "{\"evidence_id\":\"ev_9822b59a1ec54c20ba24c96e6fd6377d93141da7a3cac168e60abf7a20ac38b3\",\"subject\":{\"name\":\"sample-managed.exe\",\"digest\":{\"sha256\":\"5676d9830f80eb31d224e9ddad230093aa493f5c0ff6c59f928dc28fe593e53f\"},\"local_path\":\"D:\\\\DEPPSKK\\\\medradar\\\\experiments\\\\phoenix\\\\rea\\\\fixtures\\\\build\\\\sample-managed.exe\",\"format\":\"pe\",\"architecture\":\"x86\"},\"provider\":{\"id\":\"rea-dotnet-static\",\"name\":\"REA managed static analysis provider\",\"version\":\"1\"},\"analysis_profile\":null,\"predicate_type\":\"rea.analysis\",\"operation\":\"inspect_managed_members\",\"parameters\":{\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe\",\"type_names\":[\"ReaProbe\"]},\"raw_result\":null,\"normalized_result\":{\"signature_resolution\":\"type-names-v1\",\"artifact\":{\"path\":\"D:\\\\DEPPSKK\\\\medradar\\\\experiments\\\\phoenix\\\\rea\\\\fixtures\\\\build\\\\sample-managed.exe\",\"sha256\":\"5676d9830f80eb31d224e9ddad230093aa493f5c0ff6c59f928dc28fe593e53f\",\"byte_length\":4608,\"format\":\"pe\"},\"module\":{\"name\":\"sample-managed.exe\",\"generation\":0,\"mvid\":\"a2ba9acc-459b-4b01-9fb8-d35f400ea704\",\"enc_id\":null,\"enc_base_id\":null,\"token\":\"0x00000001\",\"row_offset\":1080},\"metadata\":{\"status\":\"complete\",\"version\":\"v4.0.30319\",\"table_row_counts\":{\"Module\":1,\"TypeRef\":11,\"TypeDef\":2,\"Field\":1,\"MethodDef\":3,\"Param\":2,\"MemberRef\":13,\"Constant\":1,\"CustomAttribute\":2,\"StandAloneSig\":3,\"Assembly\":1,\"AssemblyRef\":1}},\"identity_scope\":{\"token_identity\":\"build-local\",\"requires_artifact_sha256\":\"5676d9830f80eb31d224e9ddad230093aa493f5c0ff6c59f928dc28fe593e53f\",\"requires_mvid\":\"a2ba9acc-459b-4b01-9fb8-d35f400ea704\"},\"types\":[{\"token\":\"0x02000002\",\"row_offset\":1170,\"namespace\":\"\",\"name\":\"ReaProbe\",\"full_name\":\"ReaProbe\",\"name_sha256\":\"0d018fcd414dc974de7c0c3f9c141359e5895203be9f545353bf385d96bbcffd\",\"flags\":1048961,\"extends_token\":\"0x01000001\",\"enclosing_type_token\":null,\"field_list\":{\"first_row\":1,\"last_row\":1,\"count\":1},\"method_list\":{\"first_row\":1,\"last_row\":3,\"count\":3}}],\"nesting_read\":true,\"exported_types\":[],\"fields\":[{\"token\":\"0x04000001\",\"row_offset\":1184,\"declaring_type_token\":\"0x02000002\",\"declaring_type\":\"ReaProbe\",\"name\":\"Marker\",\"flags\":32854,\"signature\":{\"raw_length\":2,\"raw_sha256\":\"89c0c2d74467289c8bf954f4cde47f4f794bcf8e6ee65e19cd0b275e47aca3ec\",\"resolved_sha256\":\"89c0c2d74467289c8bf954f4cde47f4f794bcf8e6ee65e19cd0b275e47aca3ec\",\"kind\":\"field\",\"parse_status\":\"decoded\",\"calling_convention\":\"field\",\"generic_parameter_count\":null,\"parameter_count\":null,\"return_type\":null,\"parameter_types\":[],\"field_type\":\"string\",\"issue\":null}}],\"methods\":[{\"token\":\"0x06000001\",\"row_offset\":1190,\"declaring_type_token\":\"0x02000002\",\"declaring_type\":\"ReaProbe\",\"name\":\"Digest\",\"rva\":8272,\"impl_flags\":0,\"flags\":150,\"signature\":{\"raw_length\":4,\"raw_sha256\":\"f4fc6e914c3f39dea20cedc5015dcee8a18aa00ee5a983e7ff0527dc64dc3028\",\"resolved_sha256\":\"f4fc6e914c3f39dea20cedc5015dcee8a18aa00ee5a983e7ff0527dc64dc3028\",\"kind\":\"method\",\"parse_status\":\"decoded\",\"calling_convention\":\"default\",\"generic_parameter_count\":null,\"parameter_coun",
+      "parsed_shape": {
+        "keys": [
+          "evidence_id",
+          "subject",
+          "provider",
+          "analysis_profile",
+          "predicate_type",
+          "operation",
+          "parameters",
+          "raw_result",
+          "normalized_result",
+          "confidence",
+          "authority",
+          "environment",
+          "limitations",
+          "relationship_coverage",
+          "locations",
+          "evidence_links"
+        ],
+        "evidence_id": "ev_9822b59a1ec54c20ba24c96e6fd6377d93141da7a3cac168e60abf7a20ac38b3",
+        "subject": {
+          "keys": [
+            "name",
+            "digest",
+            "local_path",
+            "format",
+            "architecture"
+          ],
+          "name": "sample-managed.exe",
+          "digest": {
+            "keys": [
+              "sha256"
+            ]
+          },
+          "local_path": "D:\\DEPPSKK\\medradar\\experiments\\phoenix\\rea\\fixtures\\build\\sample-managed.exe",
+          "format": "pe",
+          "architecture": "x86"
+        },
+        "provider": {
+          "keys": [
+            "id",
+            "name",
+            "version"
+          ],
+          "id": "rea-dotnet-static",
+          "name": "REA managed static analysis provider",
+          "version": "1"
+        },
+        "analysis_profile": null,
+        "predicate_type": "rea.analysis",
+        "operation": "inspect_managed_members",
+        "parameters": {
+          "keys": [
+            "path",
+            "type_names"
+          ],
+          "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe",
+          "type_names": {
+            "array": 1,
+            "first": null
+          }
+        },
+        "raw_result": null
+      },
+      "structured_keys": [
+        "evidence_id",
+        "subject",
+        "provider",
+        "analysis_profile",
+        "predicate_type",
+        "operation",
+        "parameters",
+        "raw_result",
+        "normalized_result",
+        "confidence",
+        "authority",
+        "environment",
+        "limitations",
+        "relationship_coverage",
+        "locations",
+        "evidence_links"
+      ]
+    },
+    {
+      "id": "managed-native-boundaries",
+      "tool": "inspect_managed_native_boundaries",
+      "args": {
+        "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe"
+      },
+      "expectation": "success",
+      "why": "P/Invoke boundary inventory",
+      "ok": true,
+      "isError": false,
+      "ms": 10.7,
+      "content_chars": 3126,
+      "text_excerpt": "{\"evidence_id\":\"ev_3076791526e6cb7140e843cd72af9554f6f6b4166df4407e251d67f9305ef92a\",\"subject\":{\"name\":\"sample-managed.exe\",\"digest\":{\"sha256\":\"5676d9830f80eb31d224e9ddad230093aa493f5c0ff6c59f928dc28fe593e53f\"},\"local_path\":\"D:\\\\DEPPSKK\\\\medradar\\\\experiments\\\\phoenix\\\\rea\\\\fixtures\\\\build\\\\sample-managed.exe\",\"format\":\"pe\",\"architecture\":\"x86\"},\"provider\":{\"id\":\"rea-dotnet-static\",\"name\":\"REA managed static analysis provider\",\"version\":\"1\"},\"analysis_profile\":null,\"predicate_type\":\"rea.analysis\",\"operation\":\"inspect_managed_native_boundaries\",\"parameters\":{\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe\"},\"raw_result\":null,\"normalized_result\":{\"artifact\":{\"path\":\"D:\\\\DEPPSKK\\\\medradar\\\\experiments\\\\phoenix\\\\rea\\\\fixtures\\\\build\\\\sample-managed.exe\",\"sha256\":\"5676d9830f80eb31d224e9ddad230093aa493f5c0ff6c59f928dc28fe593e53f\",\"byte_length\":4608,\"format\":\"pe\"},\"module\":{\"name\":\"sample-managed.exe\",\"generation\":0,\"mvid\":\"a2ba9acc-459b-4b01-9fb8-d35f400ea704\",\"enc_id\":null,\"enc_base_id\":null,\"token\":\"0x00000001\",\"row_offset\":1080},\"metadata\":{\"status\":\"complete\",\"version\":\"v4.0.30319\",\"table_row_counts\":{\"Module\":1,\"TypeRef\":11,\"TypeDef\":2,\"Field\":1,\"MethodDef\":3,\"Param\":2,\"MemberRef\":13,\"Constant\":1,\"CustomAttribute\":2,\"StandAloneSig\":3,\"Assembly\":1,\"AssemblyRef\":1}},\"identity_scope\":{\"token_identity\":\"build-local\",\"requires_artifact_sha256\":\"5676d9830f80eb31d224e9ddad230093aa493f5c0ff6c59f928dc28fe593e53f\",\"requires_mvid\":\"a2ba9acc-459b-4b01-9fb8-d35f400ea704\"},\"cli_native\":{\"il_only\":true,\"requires_32bit\":false,\"strong_name_signed\":false,\"native_entry_point\":false,\"ready_to_run_signature\":false,\"managed_native_header_rva\":0,\"managed_native_header_size\":0},\"module_refs\":[],\"pinvoke_imports\":[],\"native_implementations\":[],\"summary\":{\"module_ref_count\":0,\"pinvoke_import_count\":0,\"native_implementation_count\":0,\"ready_to_run\":false,\"mixed_mode_or_native_header\":false},\"coverage\":{\"state\":\"complete\",\"issues\":[]},\"limitations\":[\"P/Invoke rows prove managed import declarations only; this inspection does not verify that a native library, export, thunk, or provider-qualified function exists.\",\"Managed metadata tokens are build-local coordinates and are only meaningful with the reported artifact SHA-256 and MVID.\",\"ReadyToRun, NativeAOT, C++/CLI, and IL2CPP native semantics require separately selected native-provider evidence; this tool does not translate managed tokens into native addresses.\"]},\"confidence\":\"observed\",\"authority\":\"shipped-artifact\",\"environment\":null,\"limitations\":[\"P/Invoke rows prove managed import declarations only; this inspection does not verify that a native library, export, thunk, or provider-qualified function exists.\",\"Managed metadata tokens are build-local coordinates and are only meaningful with the reported artifact SHA-256 and MVID.\",\"ReadyToRun, NativeAOT, C++/CLI, and IL2CPP native semantics require separately selected native-provider evidence; this tool does not translate managed tokens",
+      "parsed_shape": {
+        "keys": [
+          "evidence_id",
+          "subject",
+          "provider",
+          "analysis_profile",
+          "predicate_type",
+          "operation",
+          "parameters",
+          "raw_result",
+          "normalized_result",
+          "confidence",
+          "authority",
+          "environment",
+          "limitations",
+          "relationship_coverage",
+          "locations",
+          "evidence_links"
+        ],
+        "evidence_id": "ev_3076791526e6cb7140e843cd72af9554f6f6b4166df4407e251d67f9305ef92a",
+        "subject": {
+          "keys": [
+            "name",
+            "digest",
+            "local_path",
+            "format",
+            "architecture"
+          ],
+          "name": "sample-managed.exe",
+          "digest": {
+            "keys": [
+              "sha256"
+            ]
+          },
+          "local_path": "D:\\DEPPSKK\\medradar\\experiments\\phoenix\\rea\\fixtures\\build\\sample-managed.exe",
+          "format": "pe",
+          "architecture": "x86"
+        },
+        "provider": {
+          "keys": [
+            "id",
+            "name",
+            "version"
+          ],
+          "id": "rea-dotnet-static",
+          "name": "REA managed static analysis provider",
+          "version": "1"
+        },
+        "analysis_profile": null,
+        "predicate_type": "rea.analysis",
+        "operation": "inspect_managed_native_boundaries",
+        "parameters": {
+          "keys": [
+            "path"
+          ],
+          "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-managed.exe"
+        },
+        "raw_result": null
+      },
+      "structured_keys": [
+        "evidence_id",
+        "subject",
+        "provider",
+        "analysis_profile",
+        "predicate_type",
+        "operation",
+        "parameters",
+        "raw_result",
+        "normalized_result",
+        "confidence",
+        "authority",
+        "environment",
+        "limitations",
+        "relationship_coverage",
+        "locations",
+        "evidence_links"
+      ]
+    },
+    {
+      "id": "sqlite-schema",
+      "tool": "inspect_sqlite_database",
+      "args": {
+        "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.sqlite",
+        "table": "signals"
+      },
+      "expectation": "success",
+      "why": "schema + rows from a fixture SQLite snapshot",
+      "ok": true,
+      "isError": false,
+      "ms": 265.3,
+      "content_chars": 5377,
+      "text_excerpt": "{\"evidence_id\":\"ev_96d8d499d8f19db07b11402fee75907bfe80a548bafbcaa31ca14d22b4c30995\",\"subject\":{\"name\":\"sample.sqlite\",\"digest\":{\"sha256\":\"8918356a61296b03dd1bbdcd4ed2f9abed98be59c76830d3753ff3bfbd28f9f8\"},\"local_path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.sqlite\",\"format\":\"file\",\"architecture\":null},\"provider\":{\"id\":\"sqlite\",\"name\":\"REA SQLite database inspector\",\"version\":\"SQLite 3.53.1\"},\"analysis_profile\":null,\"predicate_type\":\"rea.analysis\",\"operation\":\"inspect_sqlite_database\",\"parameters\":{\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.sqlite\",\"table\":\"signals\"},\"raw_result\":null,\"normalized_result\":{\"artifact\":{\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.sqlite\",\"sha256\":\"8918356a61296b03dd1bbdcd4ed2f9abed98be59c76830d3753ff3bfbd28f9f8\",\"bytes\":12288},\"wal\":null,\"engine\":{\"name\":\"SQLite\",\"version\":\"3.53.1\"},\"database_encoding\":\"UTF-8\",\"schema\":{\"scope\":\"selected_table\",\"completeness\":\"complete\",\"tables\":[{\"name\":\"signals\",\"sql\":\"CREATE TABLE signals (id INTEGER PRIMARY KEY, name TEXT NOT NULL, score REAL)\",\"root_page\":2,\"kind\":\"table\",\"without_rowid\":false,\"strict\":false,\"column_count\":3,\"columns_completeness\":\"complete\",\"columns\":[{\"cid\":0,\"name\":\"id\",\"declared_type\":\"INTEGER\",\"not_null\":false,\"default_sql\":null,\"primary_key_position\":1,\"hidden\":0},{\"cid\":1,\"name\":\"name\",\"declared_type\":\"TEXT\",\"not_null\":true,\"default_sql\":null,\"primary_key_position\":0,\"hidden\":0},{\"cid\":2,\"name\":\"score\",\"declared_type\":\"REAL\",\"not_null\":false,\"default_sql\":null,\"primary_key_position\":0,\"hidden\":0}]}],\"indexes\":[],\"views\":[],\"triggers\":[]},\"rows\":{\"table\":\"signals\",\"columns\":[\"id\",\"name\",\"score\"],\"values\":[[{\"type\":\"integer\",\"value\":\"1\"},{\"type\":\"text\",\"value\":\"phoenix-001\",\"bytes_hex\":\"70686f656e69782d303031\",\"encoding\":\"UTF-8\"},{\"type\":\"real\",\"value\":0.75}],[{\"type\":\"integer\",\"value\":\"2\"},{\"type\":\"text\",\"value\":\"rea-probe\",\"bytes_hex\":\"7265612d70726f6265\",\"encoding\":\"UTF-8\"},{\"type\":\"real\",\"value\":0.5}],[{\"type\":\"integer\",\"value\":\"3\"},{\"type\":\"text\",\"value\":\"canary\",\"bytes_hex\":\"63616e617279\",\"encoding\":\"UTF-8\"},{\"type\":\"real\",\"value\":-0.25}]],\"row_limit\":20,\"returned_rows\":3,\"truncated\":false,\"order\":\"unspecified\"},\"limitations\":[\"Inspects an offline stable file set. Filesystem identity checks detect observed acquisition changes; they do not establish an atomic snapshot of an actively changing database. Supply an application-created backup or quiescent database/WAL pair.\",\"The source database and WAL are never opened by SQLite or modified. A private copy may acquire its own WAL-index sidecar and is removed after inspection.\",\"SQLite reports current schema and selected committed rows from its valid database/WAL state. Deleted records, uncommitted or invalid WAL tails, encrypted databases, forensic recovery, and full integrity verification are outside this profile.\",\"Stored CREATE statements preserve index/view/trigger definitions. Views, triggers, and virtual/shadow table rows are not ",
+      "parsed_shape": {
+        "keys": [
+          "evidence_id",
+          "subject",
+          "provider",
+          "analysis_profile",
+          "predicate_type",
+          "operation",
+          "parameters",
+          "raw_result",
+          "normalized_result",
+          "confidence",
+          "authority",
+          "environment",
+          "limitations",
+          "relationship_coverage",
+          "locations",
+          "evidence_links"
+        ],
+        "evidence_id": "ev_96d8d499d8f19db07b11402fee75907bfe80a548bafbcaa31ca14d22b4c30995",
+        "subject": {
+          "keys": [
+            "name",
+            "digest",
+            "local_path",
+            "format",
+            "architecture"
+          ],
+          "name": "sample.sqlite",
+          "digest": {
+            "keys": [
+              "sha256"
+            ]
+          },
+          "local_path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.sqlite",
+          "format": "file",
+          "architecture": null
+        },
+        "provider": {
+          "keys": [
+            "id",
+            "name",
+            "version"
+          ],
+          "id": "sqlite",
+          "name": "REA SQLite database inspector",
+          "version": "SQLite 3.53.1"
+        },
+        "analysis_profile": null,
+        "predicate_type": "rea.analysis",
+        "operation": "inspect_sqlite_database",
+        "parameters": {
+          "keys": [
+            "path",
+            "table"
+          ],
+          "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.sqlite",
+          "table": "signals"
+        },
+        "raw_result": null
+      },
+      "structured_keys": [
+        "evidence_id",
+        "subject",
+        "provider",
+        "analysis_profile",
+        "predicate_type",
+        "operation",
+        "parameters",
+        "raw_result",
+        "normalized_result",
+        "confidence",
+        "authority",
+        "environment",
+        "limitations",
+        "relationship_coverage",
+        "locations",
+        "evidence_links"
+      ]
+    },
+    {
+      "id": "rust-auditable",
+      "tool": "inspect_rust_binary",
+      "args": {
+        "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe"
+      },
+      "expectation": "typed-unavailable",
+      "why": "negative control: plain rustc build has no cargo-auditable .dep-v0",
+      "ok": true,
+      "isError": false,
+      "ms": 12.8,
+      "content_chars": 3079,
+      "text_excerpt": "{\"evidence_id\":\"ev_17a4631dae7a82ab90f929c5ffd369c67f02e58fa3ceb03bb5fa0747effb9131\",\"subject\":{\"name\":\"sample-native.exe\",\"digest\":{\"sha256\":\"0e0e39e2e523dcec9dc3622b57e5dd0888d8893b386c88ba712b3090a2cafc3c\"},\"local_path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe\",\"format\":\"pe\",\"architecture\":\"x86_64\"},\"provider\":{\"id\":\"rust-auditable\",\"name\":\"REA Rust dependency reader\",\"version\":\"1\"},\"analysis_profile\":null,\"predicate_type\":\"rea.analysis\",\"operation\":\"inspect_rust_binary\",\"parameters\":{\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe\"},\"raw_result\":null,\"normalized_result\":{\"artifact\":{\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe\",\"sha256\":\"0e0e39e2e523dcec9dc3622b57e5dd0888d8893b386c88ba712b3090a2cafc3c\",\"bytes\":126464},\"format\":\"pe\",\"architecture\":\"amd64\",\"bits\":64,\"byte_order\":\"little\",\"auditable_metadata\":null,\"rustc_commit\":{\"evidence_kind\":\"inferred\",\"hashes\":[{\"hash\":\"2d8144b7880597b6e6d3dfd63a9a9efae3f533d3\",\"file_offset\":90200}]},\"limitations\":[\"Embedded dependency metadata is file content. It does not authenticate package names, versions, sources, or the compiler that produced the binary.\",\"Only the .dep-v0 dependency section and read-only compiler path strings are inspected. Functions, types, and runtime behavior are not recovered.\",\"Resource guards bound the selected file to 256 MiB, a dependency section to 1 MiB, inflated JSON to the smaller of 8 MiB and 64 times the section size, and the complete report to 8 MiB. Package and dependency counts are admitted against that output budget before schema cloning, graph objects, or reverse-edge allocation.\",\"No .dep-v0 section was found. Absence of .dep-v0 does not mean the binary has no dependencies.\",\"The rustc commit hash is inferred from a /rustc/<40-hex>/ path in read-only data. It does not by itself prove which compiler produced the binary.\"]},\"confidence\":\"observed\",\"authority\":\"shipped-artifact\",\"environment\":null,\"limitations\":[\"Embedded dependency metadata is file content. It does not authenticate package names, versions, sources, or the compiler that produced the binary.\",\"Only the .dep-v0 dependency section and read-only compiler path strings are inspected. Functions, types, and runtime behavior are not recovered.\",\"Resource guards bound the selected file to 256 MiB, a dependency section to 1 MiB, inflated JSON to the smaller of 8 MiB and 64 times the section size, and the complete report to 8 MiB. Package and dependency counts are admitted against that output budget before schema cloning, graph objects, or reverse-edge allocation.\",\"No .dep-v0 section was found. Absence of .dep-v0 does not mean the binary has no dependencies.\",\"The rustc commit hash is inferred from a /rustc/<40-hex>/ path in read-only data. It does not by itself prove which compiler produced the binary.\"],\"relationship_coverage\":null,\"locations\":[{\"kind\":\"artifact-path\",\"path\":\"D:/DEPPSKK/medradar/e",
+      "parsed_shape": {
+        "keys": [
+          "evidence_id",
+          "subject",
+          "provider",
+          "analysis_profile",
+          "predicate_type",
+          "operation",
+          "parameters",
+          "raw_result",
+          "normalized_result",
+          "confidence",
+          "authority",
+          "environment",
+          "limitations",
+          "relationship_coverage",
+          "locations",
+          "evidence_links"
+        ],
+        "evidence_id": "ev_17a4631dae7a82ab90f929c5ffd369c67f02e58fa3ceb03bb5fa0747effb9131",
+        "subject": {
+          "keys": [
+            "name",
+            "digest",
+            "local_path",
+            "format",
+            "architecture"
+          ],
+          "name": "sample-native.exe",
+          "digest": {
+            "keys": [
+              "sha256"
+            ]
+          },
+          "local_path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe",
+          "format": "pe",
+          "architecture": "x86_64"
+        },
+        "provider": {
+          "keys": [
+            "id",
+            "name",
+            "version"
+          ],
+          "id": "rust-auditable",
+          "name": "REA Rust dependency reader",
+          "version": "1"
+        },
+        "analysis_profile": null,
+        "predicate_type": "rea.analysis",
+        "operation": "inspect_rust_binary",
+        "parameters": {
+          "keys": [
+            "path"
+          ],
+          "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe"
+        },
+        "raw_result": null
+      },
+      "structured_keys": [
+        "evidence_id",
+        "subject",
+        "provider",
+        "analysis_profile",
+        "predicate_type",
+        "operation",
+        "parameters",
+        "raw_result",
+        "normalized_result",
+        "confidence",
+        "authority",
+        "environment",
+        "limitations",
+        "relationship_coverage",
+        "locations",
+        "evidence_links"
+      ]
+    },
+    {
+      "id": "go-buildinfo",
+      "tool": "inspect_go_binary",
+      "args": {
+        "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe"
+      },
+      "expectation": "typed-unavailable",
+      "why": "negative control: not a Go binary",
+      "ok": true,
+      "isError": false,
+      "ms": 8.2,
+      "content_chars": 2518,
+      "text_excerpt": "{\"evidence_id\":\"ev_19d915f476c790e5fbcbf85087f74e389ddd110960d2e0678e27ec7efe240d0b\",\"subject\":{\"name\":\"sample-native.exe\",\"digest\":{\"sha256\":\"0e0e39e2e523dcec9dc3622b57e5dd0888d8893b386c88ba712b3090a2cafc3c\"},\"local_path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe\",\"format\":\"pe\",\"architecture\":\"x86_64\"},\"provider\":{\"id\":\"go-build-info\",\"name\":\"REA Go build-information reader\",\"version\":\"1\"},\"analysis_profile\":null,\"predicate_type\":\"rea.analysis\",\"operation\":\"inspect_go_binary\",\"parameters\":{\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe\"},\"raw_result\":null,\"normalized_result\":{\"artifact\":{\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe\",\"sha256\":\"0e0e39e2e523dcec9dc3622b57e5dd0888d8893b386c88ba712b3090a2cafc3c\",\"bytes\":126464},\"format\":\"pe\",\"architecture\":\"amd64\",\"bits\":64,\"byte_order\":\"little\",\"build_info\":null,\"limitations\":[\"Embedded build metadata is observed file content, not proof of compiler identity, dependency authenticity or runtime behavior.\",\"Only Go build information is inspected; function names, source mappings, type metadata and decompiled code are not recovered.\",\"Resource guards bound stable artifact reads and cumulative header searches to 256 MiB each, aggregate embedded strings to 1 MiB, structural table decoding to 16 MiB and complete metadata payloads to 8 MiB; these are not operating-system memory or CPU limits.\",\"No recognized Go build-info record was found in the inspected image; absent metadata does not establish that the binary is not Go.\"]},\"confidence\":\"observed\",\"authority\":\"shipped-artifact\",\"environment\":null,\"limitations\":[\"Embedded build metadata is observed file content, not proof of compiler identity, dependency authenticity or runtime behavior.\",\"Only Go build information is inspected; function names, source mappings, type metadata and decompiled code are not recovered.\",\"Resource guards bound stable artifact reads and cumulative header searches to 256 MiB each, aggregate embedded strings to 1 MiB, structural table decoding to 16 MiB and complete metadata payloads to 8 MiB; these are not operating-system memory or CPU limits.\",\"No recognized Go build-info record was found in the inspected image; absent metadata does not establish that the binary is not Go.\"],\"relationship_coverage\":null,\"locations\":[{\"kind\":\"artifact-path\",\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe\"}],\"evidence_links\":[]}",
+      "parsed_shape": {
+        "keys": [
+          "evidence_id",
+          "subject",
+          "provider",
+          "analysis_profile",
+          "predicate_type",
+          "operation",
+          "parameters",
+          "raw_result",
+          "normalized_result",
+          "confidence",
+          "authority",
+          "environment",
+          "limitations",
+          "relationship_coverage",
+          "locations",
+          "evidence_links"
+        ],
+        "evidence_id": "ev_19d915f476c790e5fbcbf85087f74e389ddd110960d2e0678e27ec7efe240d0b",
+        "subject": {
+          "keys": [
+            "name",
+            "digest",
+            "local_path",
+            "format",
+            "architecture"
+          ],
+          "name": "sample-native.exe",
+          "digest": {
+            "keys": [
+              "sha256"
+            ]
+          },
+          "local_path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe",
+          "format": "pe",
+          "architecture": "x86_64"
+        },
+        "provider": {
+          "keys": [
+            "id",
+            "name",
+            "version"
+          ],
+          "id": "go-build-info",
+          "name": "REA Go build-information reader",
+          "version": "1"
+        },
+        "analysis_profile": null,
+        "predicate_type": "rea.analysis",
+        "operation": "inspect_go_binary",
+        "parameters": {
+          "keys": [
+            "path"
+          ],
+          "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe"
+        },
+        "raw_result": null
+      },
+      "structured_keys": [
+        "evidence_id",
+        "subject",
+        "provider",
+        "analysis_profile",
+        "predicate_type",
+        "operation",
+        "parameters",
+        "raw_result",
+        "normalized_result",
+        "confidence",
+        "authority",
+        "environment",
+        "limitations",
+        "relationship_coverage",
+        "locations",
+        "evidence_links"
+      ]
+    },
+    {
+      "id": "open-native",
+      "tool": "open_binary",
+      "args": {
+        "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/build/sample-native.exe"
+      },
+      "expectation": "failure-without-provider",
+      "why": "requires a native analysis provider (none installed)",
+      "ok": true,
+      "isError": false,
+      "ms": 13.3,
+      "content_chars": 240,
+      "text_excerpt": "{\"result\":{\"path\":\"D:\\\\DEPPSKK\\\\medradar\\\\experiments\\\\phoenix\\\\rea\\\\fixtures\\\\build\\\\sample-native.exe\",\"format\":\"pe\",\"kind\":\"executable\",\"sha256\":\"0e0e39e2e523dcec9dc3622b57e5dd0888d8893b386c88ba712b3090a2cafc3c\",\"architecture\":\"x86_64\"}}",
+      "parsed_shape": {
+        "keys": [
+          "result"
+        ],
+        "result": {
+          "keys": [
+            "path",
+            "format",
+            "kind",
+            "sha256",
+            "architecture"
+          ],
+          "path": "D:\\DEPPSKK\\medradar\\experiments\\phoenix\\rea\\fixtures\\build\\sample-native.exe",
+          "format": "pe",
+          "kind": "executable",
+          "sha256": "0e0e39e2e523dcec9dc3622b57e5dd0888d8893b386c88ba712b3090a2cafc3c",
+          "architecture": "x86_64"
+        }
+      },
+      "structured_keys": [
+        "result"
+      ]
+    },
+    {
+      "id": "open-python",
+      "tool": "open_binary",
+      "args": {
+        "path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.py"
+      },
+      "expectation": "failure",
+      "why": "negative control: unsupported format",
+      "ok": false,
+      "isError": true,
+      "ms": 4.5,
+      "content_chars": 424,
+      "text_excerpt": "{\"error\":{\"code\":\"target_unavailable\",\"category\":\"unsupported_target\",\"message\":\"Cannot open artifact: unsupported binary format.\",\"retryable\":false,\"remediation\":{\"action\":\"Review the reported file-format reason and select a supported, well-formed target.\"},\"details\":{\"path\":\"D:\\\\DEPPSKK\\\\medradar\\\\experiments\\\\phoenix\\\\rea\\\\fixtures\\\\sample.py\",\"reason\":\"unsupported binary format\",\"constraint\":\"file_format_rejected\"}}}",
+      "parsed_shape": {
+        "keys": [
+          "error"
+        ],
+        "error": {
+          "keys": [
+            "code",
+            "category",
+            "message",
+            "retryable",
+            "remediation",
+            "details"
+          ],
+          "code": "target_unavailable",
+          "category": "unsupported_target",
+          "message": "Cannot open artifact: unsupported binary format.",
+          "retryable": false,
+          "remediation": {
+            "keys": [
+              "action"
+            ]
+          },
+          "details": {
+            "keys": [
+              "path",
+              "reason",
+              "constraint"
+            ]
+          }
+        }
+      },
+      "structured_keys": []
+    },
+    {
+      "id": "javascript-application",
+      "tool": "analyze_javascript_application",
+      "args": {
+        "input_path": "D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.py"
+      },
+      "expectation": "failure",
+      "why": "negative control: not an ASAR/JS application",
+      "ok": false,
+      "isError": true,
+      "ms": 9,
+      "content_chars": 649,
+      "text_excerpt": "{\"error\":{\"code\":\"unsupported_target\",\"category\":\"unsupported_target\",\"message\":\"Unsupported target for analyze_javascript_application at D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.py: JavaScript application analysis accepts only a directory or an .asar file\",\"retryable\":false,\"remediation\":{\"action\":\"Select an extracted application directory, an app bundle, or an .asar file such as Contents/Resources/app.asar.\"},\"details\":{\"operation\":\"analyze_javascript_application\",\"path\":\"D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.py\",\"reason\":\"JavaScript application analysis accepts only a directory or an .asar file\"}}}",
+      "parsed_shape": {
+        "keys": [
+          "error"
+        ],
+        "error": {
+          "keys": [
+            "code",
+            "category",
+            "message",
+            "retryable",
+            "remediation",
+            "details"
+          ],
+          "code": "unsupported_target",
+          "category": "unsupported_target",
+          "message": "Unsupported target for analyze_javascript_application at D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.py: JavaScript application analysis accepts only a directory or an .asar file",
+          "retryable": false,
+          "remediation": {
+            "keys": [
+              "action"
+            ]
+          },
+          "details": {
+            "keys": [
+              "operation",
+              "path",
+              "reason"
+            ]
+          }
+        }
+      },
+      "structured_keys": []
+    }
+  ],
+  "stderr_bytes_observed": 2413,
+  "stderr_excerpt": "{\"level\":40,\"time\":1794151301002,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"inspect_binary_layout\",\"durationMs\":1.84,\"status\":\"error\",\"msg\":\"MCP tool execution completed\"}\n{\"level\":40,\"time\":1794151301008,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"inspect_binary_layout\",\"durationMs\":0.45,\"status\":\"error\",\"msg\":\"MCP tool execution completed\"}\n{\"level\":40,\"time\":1794151301010,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"inspect_binary_layout\",\"durationMs\":0.32,\"status\":\"error\",\"msg\":\"MCP tool execution completed\"}\n{\"level\":30,\"time\":1794151301020,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"inspect_pe_resources\",\"durationMs\":8.22,\"status\":\"ok\",\"msg\":\"MCP tool execution completed\"}\n{\"level\":30,\"time\":1794151301053,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"inspect_managed_artifact\",\"durationMs\":25.93,\"status\":\"ok\",\"msg\":\"MCP tool execution completed\"}\n{\"level\":30,\"time\":1794151301078,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"inspect_managed_members\",\"durationMs\":17.51,\"status\":\"ok\",\"msg\":\"MCP tool execution completed\"}\n{\"level\":30,\"time\":1794151301095,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"inspect_managed_native_boundaries\",\"durationMs\":5.63,\"status\":\"ok\",\"msg\":\"MCP tool execution completed\"}\n{\"level\":30,\"time\":1794151301359,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"inspect_sqlite_database\",\"durationMs\":258.67,\"status\":\"ok\",\"msg\":\"MCP tool execution completed\"}\n{\"level\":30,\"time\":1794151301373,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"inspect_rust_binary\",\"durationMs\":7.02,\"status\":\"ok\",\"msg\":\"MCP tool execution completed\"}\n{\"level\":30,\"time\":1794151301383,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"inspect_go_binary\",\"durationMs\":4.14,\"status\":\"ok\",\"msg\":\"MCP tool execution completed\"}\n{\"level\":30,\"time\":1794151301398,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"open_binary\",\"durationMs\":10.01,\"status\":\"ok\",\"msg\":\"MCP tool execution completed\"}\n{\"level\":40,\"time\":1794151301403,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"open_binary\",\"durationMs\":2.55,\"status\":\"error\",\"msg\":\"MCP tool execution completed\"}\n{\"level\":40,\"time\":1794151301407,\"application\":\"rea\",\"mode\":\"mcp\",\"layer\":\"server\",\"tool\":\"analyze_javascript_application\",\"durationMs\":1.68,\"status\":\"error\",\"msg\":\"MCP tool execution completed\"}\n"
+}

@@ -1,0 +1,499 @@
+{
+  "module": "RAEA (Regulatory-Anchored Entity Attribution)",
+  "code_reuse": "none - independent implementation, stdlib only",
+  "protocol_version": "phoenix-001/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "registry": {
+    "companies": 89,
+    "alias_names_indexed": 379,
+    "distinctive_family_tokens": 162,
+    "colliding_family_tokens": 1
+  },
+  "event_universe": {
+    "events_with_applicant_raw": 375377,
+    "by_kind_total": {
+      "510k": 176466,
+      "8k_catalyst": 20976,
+      "device_recall": 59646,
+      "drug_approval": 5326,
+      "pma": 57372,
+      "trial": 55592
+    },
+    "mapped_before": {
+      "510k": 23574,
+      "8k_catalyst": 1360,
+      "device_recall": 29000,
+      "drug_approval": 2069,
+      "pma": 37575,
+      "trial": 38715
+    }
+  },
+  "gold_subset_evaluation": {
+    "per_rule": {
+      "R3_family": {
+        "n": 33450,
+        "correct": 33450,
+        "wrong": 0,
+        "precision": 1.0
+      },
+      "R2_suffix": {
+        "n": 52653,
+        "correct": 52653,
+        "wrong": 0,
+        "precision": 1.0
+      },
+      "R1_exact": {
+        "n": 41551,
+        "correct": 41551,
+        "wrong": 0,
+        "precision": 1.0
+      },
+      "unmatched": {
+        "n": 4575,
+        "correct": 0,
+        "wrong": 0,
+        "precision": 0.0
+      },
+      "abstain_conflict": {
+        "n": 64,
+        "correct": 0,
+        "wrong": 0,
+        "precision": 0.0
+      }
+    },
+    "top_conflicts": []
+  },
+  "gold_subset_evaluation_unguarded": {
+    "per_rule": {
+      "R3_family": {
+        "n": 33462,
+        "correct": 33462,
+        "wrong": 0,
+        "precision": 1.0
+      },
+      "R2_suffix": {
+        "n": 52703,
+        "correct": 52703,
+        "wrong": 0,
+        "precision": 1.0
+      },
+      "R1_exact": {
+        "n": 41551,
+        "correct": 41551,
+        "wrong": 0,
+        "precision": 1.0
+      },
+      "unmatched": {
+        "n": 4577,
+        "correct": 0,
+        "wrong": 0,
+        "precision": 0.0
+      }
+    },
+    "top_conflicts": []
+  },
+  "application_to_unmapped": {
+    "gained_by_rule_and_kind": [
+      {
+        "rule": "R1_exact",
+        "kind": "510k",
+        "n": 42
+      },
+      {
+        "rule": "R1_exact",
+        "kind": "device_recall",
+        "n": 9
+      },
+      {
+        "rule": "R1_exact",
+        "kind": "drug_approval",
+        "n": 189
+      },
+      {
+        "rule": "R1_exact",
+        "kind": "pma",
+        "n": 431
+      },
+      {
+        "rule": "R2_suffix",
+        "kind": "510k",
+        "n": 766
+      },
+      {
+        "rule": "R2_suffix",
+        "kind": "device_recall",
+        "n": 906
+      },
+      {
+        "rule": "R2_suffix",
+        "kind": "drug_approval",
+        "n": 14
+      },
+      {
+        "rule": "R2_suffix",
+        "kind": "pma",
+        "n": 269
+      },
+      {
+        "rule": "R3_family",
+        "kind": "510k",
+        "n": 3288
+      },
+      {
+        "rule": "R3_family",
+        "kind": "8k_catalyst",
+        "n": 11
+      },
+      {
+        "rule": "R3_family",
+        "kind": "device_recall",
+        "n": 1032
+      },
+      {
+        "rule": "R3_family",
+        "kind": "drug_approval",
+        "n": 181
+      },
+      {
+        "rule": "R3_family",
+        "kind": "pma",
+        "n": 1706
+      },
+      {
+        "rule": "R3_family",
+        "kind": "trial",
+        "n": 70
+      }
+    ],
+    "total_gained": 8914,
+    "withheld_by_guard": {
+      "fresenius_kabi != fresenius_medical_care": 54,
+      "boehringer_mannheim -> roche, not boehringer_ingelheim": 353,
+      "boehringer_laboratories is not boehringer_ingelheim": 50,
+      "gynecare -> johnson_johnson_medtech, not novartis": 55
+    },
+    "total_withheld": 512,
+    "examples": {
+      "R3_family": [
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "BAXTER HLTHCARE CORP",
+          "company_key": "baxter",
+          "detail": "BAXTER",
+          "event_id": "4faa091c15b1"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "BAXTER HLTHCARE",
+          "company_key": "baxter",
+          "detail": "BAXTER",
+          "event_id": "7ea1a008ad40"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "BAXTER HLTHCARE",
+          "company_key": "baxter",
+          "detail": "BAXTER",
+          "event_id": "3089f32d9a3a"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "BAXTER HLTHCARE",
+          "company_key": "baxter",
+          "detail": "BAXTER",
+          "event_id": "35728e28d69a"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "BAXTER HLTHCARE",
+          "company_key": "baxter",
+          "detail": "BAXTER",
+          "event_id": "5bb807f9fe93"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "BAXTER HLTHCARE",
+          "company_key": "baxter",
+          "detail": "BAXTER",
+          "event_id": "cc42ea5f5634"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "BAXTER HLTHCARE",
+          "company_key": "baxter",
+          "detail": "BAXTER",
+          "event_id": "c4674a0c74cf"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "BAXTER HLTHCARE",
+          "company_key": "baxter",
+          "detail": "BAXTER",
+          "event_id": "7d6ed1865fa3"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "BAXTER HLTHCARE",
+          "company_key": "baxter",
+          "detail": "BAXTER",
+          "event_id": "812d69116d97"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "BAXTER HLTHCARE",
+          "company_key": "baxter",
+          "detail": "BAXTER",
+          "event_id": "a962bf3c48a1"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "BAXTER HLTHCARE",
+          "company_key": "baxter",
+          "detail": "BAXTER",
+          "event_id": "324beecb6fb1"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "BAXTER HLTHCARE",
+          "company_key": "baxter",
+          "detail": "BAXTER",
+          "event_id": "efe093d4549d"
+        }
+      ],
+      "R1_exact": [
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ABBOTT",
+          "company_key": "abbott",
+          "detail": "ABBOTT",
+          "event_id": "601555edbf06"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "GE HEALTHCARE",
+          "company_key": "ge_healthcare",
+          "detail": "GE HEALTHCARE",
+          "event_id": "3bce08fe940a"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "GE HEALTHCARE",
+          "company_key": "ge_healthcare",
+          "detail": "GE HEALTHCARE",
+          "event_id": "f849be93886e"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "B BRAUN",
+          "company_key": "bbraun",
+          "detail": "B BRAUN",
+          "event_id": "eabc1b32d3f2"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "B BRAUN",
+          "company_key": "bbraun",
+          "detail": "B BRAUN",
+          "event_id": "1b98cc87b37b"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "B BRAUN",
+          "company_key": "bbraun",
+          "detail": "B BRAUN",
+          "event_id": "12961d0efe8b"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "B BRAUN",
+          "company_key": "bbraun",
+          "detail": "B BRAUN",
+          "event_id": "5571c0a83788"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "B BRAUN",
+          "company_key": "bbraun",
+          "detail": "B BRAUN",
+          "event_id": "974e5effcc59"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ABBOTT",
+          "company_key": "abbott",
+          "detail": "ABBOTT",
+          "event_id": "6bad3d4abee2"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "GE HEALTHCARE",
+          "company_key": "ge_healthcare",
+          "detail": "GE HEALTHCARE",
+          "event_id": "66dbbbe51025"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "JOHNSON AND JOHNSON",
+          "company_key": "johnson_johnson_medtech",
+          "detail": "JOHNSON AND JOHNSON",
+          "event_id": "84d83957d7a3"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ABBOTT",
+          "company_key": "abbott",
+          "detail": "ABBOTT",
+          "event_id": "058cf96c3ec2"
+        }
+      ],
+      "R2_suffix": [
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ICU MEDICAL INC",
+          "company_key": "icu_medical",
+          "detail": "ICU MEDICAL",
+          "event_id": "7f4acdc9bcaa"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ICU MEDICAL INC",
+          "company_key": "icu_medical",
+          "detail": "ICU MEDICAL",
+          "event_id": "e61aa1941757"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ICU MEDICAL INC",
+          "company_key": "icu_medical",
+          "detail": "ICU MEDICAL",
+          "event_id": "d59ee113a30b"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ICU MEDICAL INC",
+          "company_key": "icu_medical",
+          "detail": "ICU MEDICAL",
+          "event_id": "76e4bef7c3c8"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ICU MEDICAL INC",
+          "company_key": "icu_medical",
+          "detail": "ICU MEDICAL",
+          "event_id": "27f21513a307"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ICU MEDICAL INC",
+          "company_key": "icu_medical",
+          "detail": "ICU MEDICAL",
+          "event_id": "eb3c8413e83d"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ICU MEDICAL INC",
+          "company_key": "icu_medical",
+          "detail": "ICU MEDICAL",
+          "event_id": "2eec23d327b7"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ICU MEDICAL INC",
+          "company_key": "icu_medical",
+          "detail": "ICU MEDICAL",
+          "event_id": "e3714486de6c"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ICU MEDICAL INC",
+          "company_key": "icu_medical",
+          "detail": "ICU MEDICAL",
+          "event_id": "25c2c6b1d66f"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ICU MEDICAL INC",
+          "company_key": "icu_medical",
+          "detail": "ICU MEDICAL",
+          "event_id": "61da87992628"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ICU MEDICAL INC",
+          "company_key": "icu_medical",
+          "detail": "ICU MEDICAL",
+          "event_id": "093056234f5e"
+        },
+        {
+          "kind": "drug_approval",
+          "applicant_raw": "ICU MEDICAL INC",
+          "company_key": "icu_medical",
+          "detail": "ICU MEDICAL",
+          "event_id": "23c685321d1a"
+        }
+      ]
+    }
+  },
+  "guard_tradeoff": {
+    "coverage_without_guard": 9419,
+    "coverage_with_guard": 8914,
+    "attributions_withheld": 512,
+    "withheld_by_reason": {
+      "fresenius_kabi != fresenius_medical_care": 54,
+      "boehringer_mannheim -> roche, not boehringer_ingelheim": 353,
+      "boehringer_laboratories is not boehringer_ingelheim": 50,
+      "gynecare -> johnson_johnson_medtech, not novartis": 55
+    },
+    "note": "The guard removes specific false-positive classes found by manual review of the distinct newly-attributed names. It is a precision-for-coverage trade, not a free improvement: recall drops by exactly the withheld count."
+  },
+  "coverage_change": {
+    "510k": {
+      "events": 176466,
+      "mapped_before": 23574,
+      "mapped_after": 27670,
+      "share_before": 0.1336,
+      "share_after": 0.1568,
+      "absolute_gain_pp": 2.32
+    },
+    "8k_catalyst": {
+      "events": 20976,
+      "mapped_before": 1360,
+      "mapped_after": 1371,
+      "share_before": 0.0648,
+      "share_after": 0.0654,
+      "absolute_gain_pp": 0.05
+    },
+    "device_recall": {
+      "events": 59646,
+      "mapped_before": 29000,
+      "mapped_after": 30947,
+      "share_before": 0.4862,
+      "share_after": 0.5188,
+      "absolute_gain_pp": 3.26
+    },
+    "drug_approval": {
+      "events": 5326,
+      "mapped_before": 2069,
+      "mapped_after": 2453,
+      "share_before": 0.3885,
+      "share_after": 0.4606,
+      "absolute_gain_pp": 7.21
+    },
+    "pma": {
+      "events": 57372,
+      "mapped_before": 37575,
+      "mapped_after": 39981,
+      "share_before": 0.6549,
+      "share_after": 0.6969,
+      "absolute_gain_pp": 4.19
+    },
+    "trial": {
+      "events": 55592,
+      "mapped_before": 38715,
+      "mapped_after": 38785,
+      "share_before": 0.6964,
+      "share_after": 0.6977,
+      "absolute_gain_pp": 0.13
+    }
+  }
+}

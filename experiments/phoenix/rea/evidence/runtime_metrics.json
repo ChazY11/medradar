@@ -1,0 +1,205 @@
+{
+  "captured_at": "2026-11-08T23:23:01+0800",
+  "node": "v24.18.0",
+  "rea_package_version": "6.7.0",
+  "cli_version": [
+    {
+      "argv": [
+        "rea",
+        "--version"
+      ],
+      "exit_code": 0,
+      "ms": 1526.8,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "argv": [
+        "rea",
+        "--version"
+      ],
+      "exit_code": 0,
+      "ms": 1906.2,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    },
+    {
+      "argv": [
+        "rea",
+        "--version"
+      ],
+      "exit_code": 0,
+      "ms": 1533.9,
+      "stdout_bytes": 6,
+      "stderr_bytes": 0
+    }
+  ],
+  "cli_doctor": [
+    {
+      "argv": [
+        "rea",
+        "mcp",
+        "doctor",
+        "--json"
+      ],
+      "exit_code": 0,
+      "ms": 4608.1,
+      "stdout_bytes": 1624,
+      "stderr_bytes": 0,
+      "parsed": {
+        "healthy": true,
+        "adapter": "production-stdio",
+        "server": {
+          "name": "rea",
+          "version": "6.7.0",
+          "protocol_version": "2025-11-25"
+        },
+        "tools": {
+          "expected": 207,
+          "observed": 207,
+          "missing": [],
+          "unexpected": [],
+          "duplicates": []
+        },
+        "prompts": {
+          "expected": 6,
+          "observed": 6,
+          "missing": [],
+          "unexpected": [],
+          "duplicates": []
+        }
+      }
+    },
+    {
+      "argv": [
+        "rea",
+        "mcp",
+        "doctor",
+        "--json"
+      ],
+      "exit_code": 0,
+      "ms": 4830.2,
+      "stdout_bytes": 1624,
+      "stderr_bytes": 0,
+      "parsed": {
+        "healthy": true,
+        "adapter": "production-stdio",
+        "server": {
+          "name": "rea",
+          "version": "6.7.0",
+          "protocol_version": "2025-11-25"
+        },
+        "tools": {
+          "expected": 207,
+          "observed": 207,
+          "missing": [],
+          "unexpected": [],
+          "duplicates": []
+        },
+        "prompts": {
+          "expected": 6,
+          "observed": 6,
+          "missing": [],
+          "unexpected": [],
+          "duplicates": []
+        }
+      }
+    },
+    {
+      "argv": [
+        "rea",
+        "mcp",
+        "doctor",
+        "--json"
+      ],
+      "exit_code": 0,
+      "ms": 4315.9,
+      "stdout_bytes": 1624,
+      "stderr_bytes": 0,
+      "parsed": {
+        "healthy": true,
+        "adapter": "production-stdio",
+        "server": {
+          "name": "rea",
+          "version": "6.7.0",
+          "protocol_version": "2025-11-25"
+        },
+        "tools": {
+          "expected": 207,
+          "observed": 207,
+          "missing": [],
+          "unexpected": [],
+          "duplicates": []
+        },
+        "prompts": {
+          "expected": 6,
+          "observed": 6,
+          "missing": [],
+          "unexpected": [],
+          "duplicates": []
+        }
+      }
+    }
+  ],
+  "mcp": [
+    {
+      "round": 1,
+      "spawn_to_initialize_ms": 1848.8,
+      "initialize_to_tools_list_ms": 507.9,
+      "spawn_to_tools_list_ms": 2356.6,
+      "server_info": {
+        "name": "rea",
+        "version": "6.7.0"
+      },
+      "protocol_version": "2025-11-25",
+      "tool_count": 207,
+      "rss_bytes": 413278208,
+      "peak_rss_bytes": 413278208,
+      "tcp_endpoints": [],
+      "stderr_bytes": 0
+    },
+    {
+      "round": 2,
+      "spawn_to_initialize_ms": 2070.5,
+      "initialize_to_tools_list_ms": 637.8,
+      "spawn_to_tools_list_ms": 2708.3,
+      "server_info": {
+        "name": "rea",
+        "version": "6.7.0"
+      },
+      "protocol_version": "2025-11-25",
+      "tool_count": 207,
+      "rss_bytes": 410169344,
+      "peak_rss_bytes": 410169344,
+      "tcp_endpoints": [],
+      "stderr_bytes": 0
+    },
+    {
+      "round": 3,
+      "spawn_to_initialize_ms": 2015.1,
+      "initialize_to_tools_list_ms": 655.5,
+      "spawn_to_tools_list_ms": 2670.7,
+      "server_info": {
+        "name": "rea",
+        "version": "6.7.0"
+      },
+      "protocol_version": "2025-11-25",
+      "tool_count": 207,
+      "rss_bytes": 407928832,
+      "peak_rss_bytes": 407928832,
+      "tcp_endpoints": [],
+      "stderr_bytes": 0
+    }
+  ],
+  "medians": {
+    "cli_version_ms": 1533.9,
+    "cli_doctor_ms": 4608.1,
+    "mcp_spawn_to_initialize_ms": 2015.1,
+    "mcp_spawn_to_tools_list_ms": 2670.7,
+    "peak_rss_bytes": 410169344,
+    "tool_count": 207,
+    "protocol_version": "2025-11-25",
+    "peak_rss_mb": 391.2
+  },
+  "observed_tcp_remotes": []
+}

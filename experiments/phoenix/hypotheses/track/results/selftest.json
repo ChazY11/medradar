@@ -1,0 +1,100 @@
+{
+  "protocol_version": "phoenix-001/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "lag_scenario": "L090",
+  "command": "python selftest.py",
+  "seed": 20261108,
+  "n": 17,
+  "n_pos": 17,
+  "prevalence": 1.0,
+  "checks": [
+    {
+      "test": "pelt_recovers_step(lam=0.2)",
+      "passed": true,
+      "detail": "found=[5, 19, 21, 29, 35, 40] true=40"
+    },
+    {
+      "test": "pelt_recovers_step(lam=0.5)",
+      "passed": true,
+      "detail": "found=[40, 62, 64] true=40"
+    },
+    {
+      "test": "pelt_recovers_step(lam=1.0)",
+      "passed": true,
+      "detail": "found=[40] true=40"
+    },
+    {
+      "test": "pelt_flat_no_change",
+      "passed": true,
+      "detail": "flat series -> no change points"
+    },
+    {
+      "test": "pelt_penalty_monotone",
+      "passed": true,
+      "detail": "infinite penalty -> zero change points"
+    },
+    {
+      "test": "cusum_flat_no_alarm",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "cusum_detects_step",
+      "passed": true,
+      "detail": "alarms=[40, 42] true=40"
+    },
+    {
+      "test": "fixed_ratio_nan_before_window",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "growth_nan_before_window",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "detection_window",
+      "passed": true,
+      "detail": "delay=1.0"
+    },
+    {
+      "test": "detection_window_negative",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "hhi_arithmetic",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "test": "highpass_removes_level",
+      "passed": true,
+      "detail": "mean(highpass first 6)=0.00e+00 spike=2.57"
+    },
+    {
+      "test": "folds_strictly_ordered",
+      "passed": true,
+      "detail": "12 folds, first=(Period('2014Q1', 'Q-DEC'), Period('2014Q4', 'Q-DEC')), last=(Period('2025Q1', 'Q-DEC'), Period('2025Q2', 'Q-DEC'))"
+    },
+    {
+      "test": "folds_contiguous_no_gap",
+      "passed": true,
+      "detail": "train end is always one quarter before test start"
+    },
+    {
+      "test": "folds_cover_frozen_span",
+      "passed": true,
+      "detail": "2014Q1 .. 2025Q2"
+    },
+    {
+      "test": "future_information_at_origin",
+      "passed": true,
+      "detail": "origin=2016Q3 entities=58 max|diff|=0.00e+00 bad=[]"
+    }
+  ],
+  "n_failed": 0,
+  "verdict": "PASS",
+  "elapsed_sec": 4.51
+}

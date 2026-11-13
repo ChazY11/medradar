@@ -1,0 +1,382 @@
+{
+  "H1": {
+    "contrast": "AP(B1_persistence) - AP(B0_prevalence)",
+    "arm_a": "B1_persistence",
+    "arm_b": "B0_prevalence",
+    "diff": 0.723951,
+    "ci95": [
+      0.683714,
+      0.764661
+    ],
+    "p_raw": 0.0,
+    "p_two_sided": 0.0,
+    "one_sided": false,
+    "sample": "holdout_q1 (Q1 origins 2022-2025, non-overlapping)",
+    "n": 4221,
+    "n_pos": 690,
+    "prevalence": 0.163468,
+    "lag_scenario": "L090",
+    "verdict": "SUPPORTED",
+    "folds_positive": 12,
+    "n_valid_folds": 12,
+    "by_lag": {
+      "L000": {
+        "diff": 0.734068,
+        "ci95": [
+          0.693303,
+          0.772232
+        ],
+        "p_raw": 0.0,
+        "verdict": "SUPPORTED",
+        "folds_positive": 12
+      },
+      "L090": {
+        "diff": 0.723951,
+        "ci95": [
+          0.683714,
+          0.764661
+        ],
+        "p_raw": 0.0,
+        "verdict": "SUPPORTED",
+        "folds_positive": 12
+      },
+      "L180": {
+        "diff": 0.716104,
+        "ci95": [
+          0.673611,
+          0.757478
+        ],
+        "p_raw": 0.0,
+        "verdict": "SUPPORTED",
+        "folds_positive": 12
+      }
+    },
+    "h4_h10_note": ""
+  },
+  "H2": {
+    "contrast": "AP(B1_persistence) - AP(B2_levels)",
+    "arm_a": "B1_persistence",
+    "arm_b": "B2_levels",
+    "diff": 0.000582,
+    "ci95": [
+      -0.000663,
+      0.00224
+    ],
+    "p_raw": 0.181,
+    "p_two_sided": 0.362,
+    "one_sided": true,
+    "sample": "holdout_q1 (Q1 origins 2022-2025, non-overlapping)",
+    "n": 4221,
+    "n_pos": 690,
+    "prevalence": 0.163468,
+    "lag_scenario": "L090",
+    "verdict": "NOT SUPPORTED",
+    "folds_positive": 6,
+    "n_valid_folds": 12,
+    "by_lag": {
+      "L000": {
+        "diff": 0.000121,
+        "ci95": [
+          -0.001754,
+          0.001618
+        ],
+        "p_raw": 0.482,
+        "verdict": "NOT SUPPORTED",
+        "folds_positive": 7
+      },
+      "L090": {
+        "diff": 0.000582,
+        "ci95": [
+          -0.000663,
+          0.00224
+        ],
+        "p_raw": 0.181,
+        "verdict": "NOT SUPPORTED",
+        "folds_positive": 6
+      },
+      "L180": {
+        "diff": -0.000734,
+        "ci95": [
+          -0.002382,
+          0.001402
+        ],
+        "p_raw": 0.768,
+        "verdict": "NOT SUPPORTED",
+        "folds_positive": 3
+      }
+    },
+    "h4_h10_note": ""
+  },
+  "H4": {
+    "contrast": "AP(B5_context) - AP(B1_persistence)",
+    "arm_a": "B5_context",
+    "arm_b": "B1_persistence",
+    "diff": 0.008026,
+    "ci95": [
+      0.003688,
+      0.013807
+    ],
+    "p_raw": 0.002,
+    "p_two_sided": 0.002,
+    "one_sided": false,
+    "sample": "holdout_q1 (Q1 origins 2022-2025, non-overlapping)",
+    "n": 4221,
+    "n_pos": 690,
+    "prevalence": 0.163468,
+    "lag_scenario": "L090",
+    "verdict": "NOT SUPPORTED",
+    "folds_positive": 12,
+    "n_valid_folds": 12,
+    "by_lag": {
+      "L000": {
+        "diff": 0.002572,
+        "ci95": [
+          -0.000846,
+          0.007336
+        ],
+        "p_raw": 0.15,
+        "verdict": "NOT SUPPORTED",
+        "folds_positive": 7
+      },
+      "L090": {
+        "diff": 0.008026,
+        "ci95": [
+          0.003688,
+          0.013807
+        ],
+        "p_raw": 0.002,
+        "verdict": "NOT SUPPORTED",
+        "folds_positive": 12
+      },
+      "L180": {
+        "diff": 0.011642,
+        "ci95": [
+          0.006721,
+          0.018017
+        ],
+        "p_raw": 0.0,
+        "verdict": "INCONCLUSIVE",
+        "folds_positive": 12
+      }
+    },
+    "h4_h10_note": "see secondary_contrasts for the nested/alternate arms"
+  },
+  "H5": {
+    "contrast": "AP(B1_plus_trial) - AP(B1_persistence)",
+    "arm_a": "B1_plus_trial",
+    "arm_b": "B1_persistence",
+    "diff": 0.008156,
+    "ci95": [
+      0.005441,
+      0.011838
+    ],
+    "p_raw": 0.0,
+    "p_two_sided": 0.0,
+    "one_sided": false,
+    "sample": "holdout_q1 (Q1 origins 2022-2025, non-overlapping)",
+    "n": 4221,
+    "n_pos": 690,
+    "prevalence": 0.163468,
+    "lag_scenario": "L090",
+    "verdict": "NOT SUPPORTED",
+    "folds_positive": 12,
+    "n_valid_folds": 12,
+    "by_lag": {
+      "L000": {
+        "diff": 0.003457,
+        "ci95": [
+          0.0018,
+          0.005903
+        ],
+        "p_raw": 0.0,
+        "verdict": "NOT SUPPORTED",
+        "folds_positive": 12
+      },
+      "L090": {
+        "diff": 0.008156,
+        "ci95": [
+          0.005441,
+          0.011838
+        ],
+        "p_raw": 0.0,
+        "verdict": "NOT SUPPORTED",
+        "folds_positive": 12
+      },
+      "L180": {
+        "diff": 0.010391,
+        "ci95": [
+          0.007269,
+          0.014537
+        ],
+        "p_raw": 0.0,
+        "verdict": "INCONCLUSIVE",
+        "folds_positive": 12
+      }
+    },
+    "h4_h10_note": ""
+  },
+  "H10": {
+    "contrast": "AP(B7_hgb_net) - AP(B5_context)",
+    "arm_a": "B7_hgb_net",
+    "arm_b": "B5_context",
+    "diff": 0.01233,
+    "ci95": [
+      0.006643,
+      0.01945
+    ],
+    "p_raw": 0.0,
+    "p_two_sided": 0.0,
+    "one_sided": false,
+    "sample": "holdout_q1 (Q1 origins 2022-2025, non-overlapping)",
+    "n": 4221,
+    "n_pos": 690,
+    "prevalence": 0.163468,
+    "lag_scenario": "L090",
+    "verdict": "INCONCLUSIVE",
+    "folds_positive": 12,
+    "n_valid_folds": 12,
+    "by_lag": {
+      "L000": {
+        "diff": 0.00912,
+        "ci95": [
+          0.004642,
+          0.014846
+        ],
+        "p_raw": 0.0,
+        "verdict": "NOT SUPPORTED",
+        "folds_positive": 12
+      },
+      "L090": {
+        "diff": 0.01233,
+        "ci95": [
+          0.006643,
+          0.01945
+        ],
+        "p_raw": 0.0,
+        "verdict": "INCONCLUSIVE",
+        "folds_positive": 12
+      },
+      "L180": {
+        "diff": 0.011122,
+        "ci95": [
+          0.004741,
+          0.019151
+        ],
+        "p_raw": 0.006,
+        "verdict": "INCONCLUSIVE",
+        "folds_positive": 12
+      }
+    },
+    "h4_h10_note": "see secondary_contrasts for the nested/alternate arms"
+  },
+  "secondary_contrasts": {
+    "H4_nested": {
+      "contrast": "AP(B5_context) - AP(B5_self)",
+      "diff": 0.000345,
+      "ci95": [
+        -0.002292,
+        0.002885
+      ],
+      "p_two_sided": 0.862,
+      "sample": "holdout_q1",
+      "lag_scenario": "L090",
+      "status": "uncorrected, exploratory"
+    },
+    "H10_hgb": {
+      "contrast": "AP(B6_hgb) - AP(B5_context)",
+      "diff": 0.011414,
+      "ci95": [
+        0.005729,
+        0.018488
+      ],
+      "p_two_sided": 0.0,
+      "sample": "holdout_q1",
+      "lag_scenario": "L090",
+      "status": "uncorrected, exploratory"
+    }
+  },
+  "holm_scope_note": "Only raw p-values are supplied here. The frozen family is H1-H10 (10 primary tests); Holm must be applied by the Lead across all ten. chunks store a local Holm over this task's 5 hypotheses for reference only.",
+  "holm_local_reference_only": {
+    "H1": 0.0,
+    "H2": 0.181,
+    "H4": 0.004,
+    "H5": 0.0,
+    "H10": 0.0
+  },
+  "meta": {
+    "provenance": {
+      "protocol_version": "phoenix-001/v1",
+      "harness_version": "1.0.0",
+      "study": "PHOENIX-001",
+      "task": "T-CELL",
+      "hypotheses": [
+        "H1",
+        "H2",
+        "H4",
+        "H5",
+        "H10"
+      ],
+      "db_path": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
+      "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+      "db_sha256_matches_frozen": true,
+      "lag_days": 90,
+      "lag_scenario": "L090",
+      "command": "python run_cell.py --finalize",
+      "seed": 20261108,
+      "bootstrap_B": 1000,
+      "python": "3.12.10",
+      "pandas": "3.0.3",
+      "numpy": "2.5.1",
+      "git_head": "ref: refs/heads/research/phoenix-001-external-methods",
+      "written_at": "2026-11-09T01:09:56+0800"
+    },
+    "headline_lag": "L090",
+    "hypotheses": [
+      "H1",
+      "H2",
+      "H4",
+      "H5",
+      "H10"
+    ],
+    "task": "T-CELL",
+    "target": "y = 1 iff the (company_key, track_id) cell has >=1 510k/pma event with event_date in (q, q+4]",
+    "samples_explained": {
+      "headline_q1": "non-overlapping origins (year Q1 only) across the 12 walk-forward test years 2014-2025 -- HEADLINE per L5",
+      "holdout_q1": "pre-registered judgement sample: Q1 origins of 2022-2025",
+      "all_origins": "all origins in the 12 walk-forward test years, sensitivity only",
+      "holdout_all": "holdout block, all origins (overlapping windows)",
+      "headline_q1_exposure8": "headline sample restricted to exposure_q >= 8 (L4)",
+      "holdout_q1_exposure8": "holdout Q1 origins, exposure_q >= 8 (L4)",
+      "frozen_subset_q1": "Q1 origins up to 2024Q2 -- the origins that the frozen smoke test (03_harness_smoke.json) could label; used to check the verdict on the frozen-compatible sample",
+      "frozen_subset_all": "all origins up to 2024Q2 (frozen-compatible sample)"
+    },
+    "n": 11613,
+    "n_pos": 2045,
+    "prevalence": 0.176096,
+    "leakage_audit": {
+      "protocol_version": "phoenix-001/v1",
+      "n_rows": 67084,
+      "n_entities": 1096,
+      "feature_count": 75,
+      "n_missing_target": 0,
+      "high_correlation_features_gt_0.80": {},
+      "suspected_label_leak": [],
+      "quarters": [
+        "2004Q1",
+        "2025Q2"
+      ],
+      "lag_scenario": "L090",
+      "note": "automatic screen from phoenix_common.leakage_audit; full L1-L8 numbers are in results/audit_cell.json"
+    },
+    "elapsed_sec": 0.21,
+    "generated_by": "run_cell.py --finalize"
+  },
+  "protocol_version": "phoenix-001/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "lag_scenario": "L090",
+  "command": "python run_cell.py --finalize",
+  "elapsed_sec": 0.21,
+  "n": 11613,
+  "n_pos": 2045,
+  "prevalence": 0.176096
+}

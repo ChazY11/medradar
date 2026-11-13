@@ -1,0 +1,675 @@
+{
+  "schema": "phoenix-001/rea-validation/v1",
+  "captured_at": "2026-11-08T15:21:03.115Z",
+  "validated_version": "6.7.0",
+  "package": {
+    "name": "rea-agents",
+    "version": "6.7.0",
+    "license": "MIT",
+    "repository": "https://github.com/morluto/rea",
+    "deployment_root": "D:\\DEPPSKK\\.rea",
+    "package_dir": "D:\\DEPPSKK\\.rea\\node_modules\\rea-agents",
+    "lockfile_sha256": "4bd90ee3c6aede73781466aa569f84f496ea0635da5ff980575ddaefe0be6aee",
+    "lockfile_integrity_sha512_b64": "yhIx2ioJYYT1C/tONfYeitC6LhnKmCh+ZwRUOgYuhSc733lGhkkt73zhug9WmLgxoMdKuqIYGCoBfD4fXkOhFw==",
+    "registry_shasum": "11f23ba377303a5c28b3162180cf2bf3f3643708",
+    "registry_unpacked_size": 28575703,
+    "registry_file_count": 1775,
+    "installed_file_count": 1775,
+    "installed_bytes": 27310000,
+    "latest_on_registry": "6.8.0",
+    "latest_publish_date": "2026-10-25T09:07:31.585Z",
+    "validated_publish_date": "2026-10-18T08:12:05.640Z",
+    "published_by": "GitHub Actions <npm-oidc-no-reply@github.com>",
+    "slsa_attestation": {
+      "predicate_type": "https://slsa.dev/provenance/v1",
+      "build_type": "https://slsa-framework.github.io/github-actions-buildtypes/workflow/v1",
+      "source_repository": "https://github.com/morluto/rea",
+      "workflow": ".github/workflows/release.yml",
+      "ref": "refs/heads/release/6.7.0",
+      "git_commit": "27dc42d10249f0410904a75c0997842eb03b931c",
+      "builder": "https://github.com/actions/runner/github-hosted",
+      "invocation": "https://github.com/morluto/rea/actions/runs/39108764422/attempts/1",
+      "subject_sha512_hex": "ca1231da2a096184f50bfb4e35f61e8ad0ba2e19ca98287e6704543a062e85273bdf794686492def7ce1ba0f5698b831a0c74abaa218182a017c3e1f5e43a117",
+      "lockfile_integrity_matches_subject": true,
+      "rekor_tlog_entries": 1
+    },
+    "native_artifact": {
+      "path": "native/windows/build/rea-windows-x64.node",
+      "sha256": "28e0a01f74b30232db559bf98f574be82e5c71ad36a86e4c38fe7fb448029856",
+      "bytes": 881284,
+      "manifest_sha256_matches": true,
+      "pe_machine": "0x8664 (x86-64)",
+      "pe_optional_magic": "0x020b (PE32+)",
+      "authenticode": "NotSigned",
+      "imported_dlls": [
+        "ADVAPI32.dll",
+        "bcrypt.dll",
+        "KERNEL32.dll",
+        "msvcrt.dll",
+        "ntdll.dll"
+      ],
+      "network_imports": []
+    },
+    "lifecycle_scripts": {
+      "install": null,
+      "postinstall": null,
+      "preinstall": null,
+      "prepare": "scripts/prepare.mjs (husky only; no effect for registry installs)",
+      "prepack": "scripts/prepack.mjs (build/verify; not run on install)",
+      "optional_frida_install_script_allowed_by_package": true,
+      "frida_installed": false,
+      "packages_with_hasInstallScript": 0
+    },
+    "dependencies": {
+      "runtime_direct": 44,
+      "total_lock_entries": 179,
+      "optional": 32,
+      "npm_audit": {
+        "total": 7,
+        "moderate": 5,
+        "high": 2,
+        "critical": 0,
+        "identified": [
+          "zod <4.6.6 (GHSA-mrhx-c7xc-m3w5, CVSS 7.5, memory exhaustion) - reachable via MCP schema validation",
+          "glob 9.0.0-14.0.1 (GHSA-3g3m-2fjr-6pw4, no fix) - via @electron/asar",
+          "minimatch 7.0.0-11.0.0 (GHSA-g3hv-75wg-m249) - via glob/frida",
+          "fast-uri 3.0.0-3.1.8 (4 advisories) - via ajv",
+          "frida >=16.1.5 (optional dep, not installed)"
+        ]
+      }
+    }
+  },
+  "dsh": {
+    "variant": "DeepSeek Harness desktop (Electron) + Web GUI",
+    "checkout": "C:\\Users\\yjx0\\AppData\\Local\\Programs\\DeepSeek Harness\\resources\\app.asar\\dsh",
+    "active_profile": "C:\\Users\\yjx0\\.dsh\\profiles\\desktop",
+    "profile_bundles": [
+      "@deepseek-ai/dsh-base",
+      "@deepseek-ai/dsh-web-app",
+      "@deepseek-ai/dsh-experimental-agent-team-profile",
+      "@deepseek-ai/dsh-experimental-auto-review",
+      "@deepseek-ai/dsh-experimental-cot-translation-bundle",
+      "@deepseek-ai/dsh-experimental-tool-worktree",
+      "@deepseek-ai/dsh-experimental-session-search",
+      "@deepseek-ai/dsh-experimental-terminal-bundle",
+      "@deepseek-ai/dsh-experimental-inspector-profile",
+      "@deepseek-ai/dsh-subagent-codex",
+      "dsh-computer-use",
+      "@local/work-board",
+      "@local/browser-mcp",
+      "@local/agent-hub",
+      "@deepseek-ai/dsh-experimental-voice-input-bundle",
+      "@local/dsh-mobile"
+    ],
+    "agent_model": "deepseek-account/deepseek-flash (reasoningEffort: high)",
+    "mcp_plugin": "@deepseek-ai/dsh-mcp-client",
+    "mcp_config_layers": [
+      "bundle cordis.patch.yml files",
+      "profiles/<name>/cordis.patch.yml",
+      "~/.dsh/cordis.patch.yml (home layer, every profile) <- REA's registration target",
+      "--patch overlays"
+    ],
+    "registration_file": "C:\\Users\\yjx0\\.dsh\\cordis.patch.yml",
+    "registration_absent_before": true,
+    "registration_sha256_after": "02CDFD4A7DC0E5EA540B0174B5BC2C207BA940C0AD00656C9AEAFA3E5E3239F1",
+    "hot_reload_observed": true,
+    "hot_reload_evidence": {
+      "rea_child_pid": 5848,
+      "rea_child_cmdline": "\"C:\\Program Files\\nodejs\\node.exe\" D:\\DEPPSKK\\.rea\\node_modules\\rea-agents\\scripts\\rea.mjs mcp",
+      "tools_visible_to_agent": 207,
+      "tool_namespace": "mcp__rea__<tool>"
+    }
+  },
+  "mcp": {
+    "server_name": "rea",
+    "server_version": "6.7.0",
+    "protocol_version": "2025-11-25",
+    "sdk": {
+      "server": "2.3.1",
+      "client_test": "2.3.1",
+      "core": "2.3.1"
+    },
+    "tool_count": 207,
+    "prompt_count": 6,
+    "catalog_digest": "96d8f6e6ea1b1ba13557216624a3461c738729d53c79b4b0100d1f3a3a32441c",
+    "tools_sha256": "af39310c9591bb981893ec0d2188b1bcf6e9cc8ba3ac513d5bbefc8ddcb85639",
+    "doctor": {
+      "healthy": true,
+      "adapter": "production-stdio",
+      "tools_expected": 207,
+      "tools_observed": 207,
+      "missing": [],
+      "stderr_bytes": 0
+    },
+    "clients_detected_by_rea_doctor": [
+      "claude_code",
+      "claude_desktop",
+      "codex",
+      "copilot_cli",
+      "dsh",
+      "kimi",
+      "opencode",
+      "vscode",
+      "workbuddy",
+      "zcode"
+    ],
+    "rea_doctor_healthy_environment": false,
+    "rea_doctor_reported_dsh_config_path": "C:\\Users\\yjx0\\.dsh\\cordis.patch.yml",
+    "rea_doctor_reported_dsh_state_before": "missing"
+  },
+  "providers_on_this_host": {
+    "available": [
+      "rea-artifact-graph (inspect_artifact, extract_artifact, decode_interface_builder, inspect_keyed_archive, trace_dylib_resolution)",
+      "rea-dotnet-static (inspect_managed_artifact, inspect_managed_members, inspect_managed_native_boundaries)",
+      "sqlite (inspect_sqlite_database)",
+      "rea-pe-resources (inspect_pe_resources)",
+      "rust-auditable (inspect_rust_binary)",
+      "go-build-info (inspect_go_binary)"
+    ],
+    "unavailable": [
+      "ghidra (GHIDRA_INSTALL_DIR unset) - blocks analyze/decompile/function/list_procedures/xrefs/search on native code",
+      "hopper (macOS only; unsupported_host on win32)",
+      "ida (REA_IDA_MCP_CONFIG unset)",
+      "jadx (REA_JADX_MCP_JAR unset)",
+      "kuna (REA_KUNA_COMMAND unset)",
+      "native-macos (unsupported_host)",
+      "pwntools-elf (inspect_binary_layout; Linux x64 only)"
+    ]
+  },
+  "calls": [
+    {
+      "suite": "static-battery",
+      "id": "session-identity",
+      "tool": "binary_session",
+      "protocol_ok": true,
+      "ms": 94.7,
+      "typed_error": null,
+      "content_chars": 68572,
+      "observation": "target-free session/identity probe"
+    },
+    {
+      "suite": "static-battery",
+      "id": "layout-native-pe",
+      "tool": "inspect_binary_layout",
+      "protocol_ok": false,
+      "ms": 14.5,
+      "typed_error": {
+        "keys": [
+          "code",
+          "category",
+          "message",
+          "retryable",
+          "remediation",
+          "details"
+        ],
+        "code": "capability_unavailable",
+        "category": "unsupported_provider",
+        "message": "The initial real-verified pwntools artifact profile supports Linux x64 only.",
+        "retryable": false,
+        "remediation": {
+          "keys": [
+            "action"
+          ]
+        },
+        "details": {
+          "keys": [
+            "provider_id",
+            "operation",
+            "reason"
+          ]
+        }
+      },
+      "content_chars": 453,
+      "observation": "unsigned x86-64 PE built for this program"
+    },
+    {
+      "suite": "static-battery",
+      "id": "layout-managed-pe",
+      "tool": "inspect_binary_layout",
+      "protocol_ok": false,
+      "ms": 2.1,
+      "typed_error": {
+        "keys": [
+          "code",
+          "category",
+          "message",
+          "retryable",
+          "remediation",
+          "details"
+        ],
+        "code": "capability_unavailable",
+        "category": "unsupported_provider",
+        "message": "The initial real-verified pwntools artifact profile supports Linux x64 only.",
+        "retryable": false,
+        "remediation": {
+          "keys": [
+            "action"
+          ]
+        },
+        "details": {
+          "keys": [
+            "provider_id",
+            "operation",
+            "reason"
+          ]
+        }
+      },
+      "content_chars": 453,
+      "observation": "PE/CLI image built with in-box csc"
+    },
+    {
+      "suite": "static-battery",
+      "id": "layout-python-source",
+      "tool": "inspect_binary_layout",
+      "protocol_ok": false,
+      "ms": 1.8,
+      "typed_error": {
+        "keys": [
+          "code",
+          "category",
+          "message",
+          "retryable",
+          "remediation",
+          "details"
+        ],
+        "code": "capability_unavailable",
+        "category": "unsupported_provider",
+        "message": "The initial real-verified pwntools artifact profile supports Linux x64 only.",
+        "retryable": false,
+        "remediation": {
+          "keys": [
+            "action"
+          ]
+        },
+        "details": {
+          "keys": [
+            "provider_id",
+            "operation",
+            "reason"
+          ]
+        }
+      },
+      "content_chars": 453,
+      "observation": "negative control: plain-text source is not a binary"
+    },
+    {
+      "suite": "static-battery",
+      "id": "pe-resources",
+      "tool": "inspect_pe_resources",
+      "protocol_ok": true,
+      "ms": 14.8,
+      "typed_error": null,
+      "content_chars": 3691,
+      "observation": "bounded PE resource tree"
+    },
+    {
+      "suite": "static-battery",
+      "id": "managed-artifact",
+      "tool": "inspect_managed_artifact",
+      "protocol_ok": true,
+      "ms": 33.1,
+      "typed_error": null,
+      "content_chars": 4082,
+      "observation": "PE/CLI identity without loading the assembly"
+    },
+    {
+      "suite": "static-battery",
+      "id": "managed-members",
+      "tool": "inspect_managed_members",
+      "protocol_ok": true,
+      "ms": 29.6,
+      "typed_error": null,
+      "content_chars": 23403,
+      "observation": "metadata members of the fixture type"
+    },
+    {
+      "suite": "static-battery",
+      "id": "managed-native-boundaries",
+      "tool": "inspect_managed_native_boundaries",
+      "protocol_ok": true,
+      "ms": 10.7,
+      "typed_error": null,
+      "content_chars": 3126,
+      "observation": "P/Invoke boundary inventory"
+    },
+    {
+      "suite": "static-battery",
+      "id": "sqlite-schema",
+      "tool": "inspect_sqlite_database",
+      "protocol_ok": true,
+      "ms": 265.3,
+      "typed_error": null,
+      "content_chars": 5377,
+      "observation": "schema + rows from a fixture SQLite snapshot"
+    },
+    {
+      "suite": "static-battery",
+      "id": "rust-auditable",
+      "tool": "inspect_rust_binary",
+      "protocol_ok": true,
+      "ms": 12.8,
+      "typed_error": null,
+      "content_chars": 3079,
+      "observation": "negative control: plain rustc build has no cargo-auditable .dep-v0"
+    },
+    {
+      "suite": "static-battery",
+      "id": "go-buildinfo",
+      "tool": "inspect_go_binary",
+      "protocol_ok": true,
+      "ms": 8.2,
+      "typed_error": null,
+      "content_chars": 2518,
+      "observation": "negative control: not a Go binary"
+    },
+    {
+      "suite": "static-battery",
+      "id": "open-native",
+      "tool": "open_binary",
+      "protocol_ok": true,
+      "ms": 13.3,
+      "typed_error": null,
+      "content_chars": 240,
+      "observation": "requires a native analysis provider (none installed)"
+    },
+    {
+      "suite": "static-battery",
+      "id": "open-python",
+      "tool": "open_binary",
+      "protocol_ok": false,
+      "ms": 4.5,
+      "typed_error": {
+        "keys": [
+          "code",
+          "category",
+          "message",
+          "retryable",
+          "remediation",
+          "details"
+        ],
+        "code": "target_unavailable",
+        "category": "unsupported_target",
+        "message": "Cannot open artifact: unsupported binary format.",
+        "retryable": false,
+        "remediation": {
+          "keys": [
+            "action"
+          ]
+        },
+        "details": {
+          "keys": [
+            "path",
+            "reason",
+            "constraint"
+          ]
+        }
+      },
+      "content_chars": 424,
+      "observation": "negative control: unsupported format"
+    },
+    {
+      "suite": "static-battery",
+      "id": "javascript-application",
+      "tool": "analyze_javascript_application",
+      "protocol_ok": false,
+      "ms": 9,
+      "typed_error": {
+        "keys": [
+          "code",
+          "category",
+          "message",
+          "retryable",
+          "remediation",
+          "details"
+        ],
+        "code": "unsupported_target",
+        "category": "unsupported_target",
+        "message": "Unsupported target for analyze_javascript_application at D:/DEPPSKK/medradar/experiments/phoenix/rea/fixtures/sample.py: JavaScript application analysis accepts only a directory or an .asar file",
+        "retryable": false,
+        "remediation": {
+          "keys": [
+            "action"
+          ]
+        },
+        "details": {
+          "keys": [
+            "operation",
+            "path",
+            "reason"
+          ]
+        }
+      },
+      "content_chars": 649,
+      "observation": "negative control: not an ASAR/JS application"
+    },
+    {
+      "suite": "session-battery",
+      "id": "open-native",
+      "tool": "open_binary",
+      "protocol_ok": true,
+      "ms": 28.5,
+      "typed_error": null,
+      "content_chars": 240
+    },
+    {
+      "suite": "session-battery",
+      "id": "overview-native",
+      "tool": "binary_overview",
+      "protocol_ok": false,
+      "ms": 7,
+      "typed_error": "provider_unavailable",
+      "content_chars": 2998
+    },
+    {
+      "suite": "session-battery",
+      "id": "segments-native",
+      "tool": "list_segments",
+      "protocol_ok": false,
+      "ms": 4.7,
+      "typed_error": "provider_unavailable",
+      "content_chars": 2982
+    },
+    {
+      "suite": "session-battery",
+      "id": "strings-native",
+      "tool": "list_strings",
+      "protocol_ok": false,
+      "ms": 3.7,
+      "typed_error": "provider_unavailable",
+      "content_chars": 2981
+    },
+    {
+      "suite": "session-battery",
+      "id": "session-after-open",
+      "tool": "binary_session",
+      "protocol_ok": true,
+      "ms": 71.9,
+      "typed_error": null,
+      "content_chars": 69639
+    },
+    {
+      "suite": "session-battery",
+      "id": "close-native",
+      "tool": "close_binary",
+      "protocol_ok": true,
+      "ms": 10.6,
+      "typed_error": null,
+      "content_chars": 15
+    },
+    {
+      "suite": "session-battery",
+      "id": "open-bundle",
+      "tool": "open_binary",
+      "protocol_ok": true,
+      "ms": 5.6,
+      "typed_error": null,
+      "content_chars": 234
+    },
+    {
+      "suite": "session-battery",
+      "id": "inspect-bundle",
+      "tool": "inspect_artifact",
+      "protocol_ok": true,
+      "ms": 37.6,
+      "typed_error": null,
+      "content_chars": 3480
+    },
+    {
+      "suite": "session-battery",
+      "id": "close-bundle",
+      "tool": "close_binary",
+      "protocol_ok": true,
+      "ms": 1.9,
+      "typed_error": null,
+      "content_chars": 15
+    },
+    {
+      "suite": "dsh-mediated",
+      "id": "dsh-inspect-pe-resources",
+      "tool": "mcp__rea__inspect_pe_resources",
+      "protocol_ok": true,
+      "evidence_id": "ev_0f1ccf130f5cb4eb4322b92cc575364e5e5faaccf3bc20dd91c555cb9fbe1ffd",
+      "observation": "executed through the running DSH agent after the home Cordis patch hot-loaded"
+    },
+    {
+      "suite": "dsh-mediated",
+      "id": "dsh-inspect-managed-artifact",
+      "tool": "mcp__rea__inspect_managed_artifact",
+      "protocol_ok": true,
+      "evidence_id": "ev_2c5a69aa67c1f5a282004f810f220c6cc538dacfb44e21602c09718e94fc9bfb",
+      "observation": "summary view returned; parent evidence retained in the live server session"
+    }
+  ],
+  "totals": {
+    "calls": 25,
+    "protocol_ok": 17,
+    "protocol_fail": 8,
+    "protocol_success_rate": 0.68,
+    "static_battery_calls": 14,
+    "static_battery_protocol_ok": 9,
+    "static_battery_protocol_fail": 5,
+    "static_battery_semantic_pass": 12,
+    "session_battery_calls": 9,
+    "session_battery_protocol_ok": 6,
+    "session_battery_protocol_fail": 3
+  },
+  "semantic_results": {
+    "session-identity": {
+      "verdict": "pass",
+      "note": "target-free session/identity Evidence returned"
+    },
+    "layout-native-pe": {
+      "verdict": "fail",
+      "note": "capability_unavailable: inspect_binary_layout supports only Linux x64 pwntools ELF profile"
+    },
+    "layout-managed-pe": {
+      "verdict": "fail",
+      "note": "capability_unavailable: same Linux-only restriction"
+    },
+    "layout-python-source": {
+      "verdict": "pass",
+      "note": "typed rejection of plain-text source (correct negative)"
+    },
+    "pe-resources": {
+      "verdict": "pass",
+      "note": "complete PE32 resource tree, 2 resources, sha256 payloads"
+    },
+    "managed-artifact": {
+      "verdict": "pass",
+      "note": "PE/CLI identity, metadata v4.0.30319, il-only, MVID, anycpu"
+    },
+    "managed-members": {
+      "verdict": "pass",
+      "note": "complete metadata tables + ReaProbe members, 23.4 KB Evidence"
+    },
+    "managed-native-boundaries": {
+      "verdict": "pass",
+      "note": "P/Invoke boundary inventory (empty, complete)"
+    },
+    "sqlite-schema": {
+      "verdict": "pass",
+      "note": "SQLite 3.53.1 schema + sampled rows for fixture table"
+    },
+    "rust-auditable": {
+      "verdict": "pass",
+      "note": "honest null auditable_metadata + inferred rustc commit"
+    },
+    "go-buildinfo": {
+      "verdict": "pass",
+      "note": "honest typed absence of Go build info"
+    },
+    "open-native": {
+      "verdict": "pass",
+      "note": "target opened without a native analysis provider"
+    },
+    "open-python": {
+      "verdict": "pass",
+      "note": "typed rejection: unsupported binary format"
+    },
+    "javascript-application": {
+      "verdict": "pass",
+      "note": "typed rejection: not an ASAR/JS application"
+    }
+  },
+  "timings_ms": {
+    "cli_version_median": 1533.9,
+    "spawn_to_initialize_median": 2015.1,
+    "spawn_to_tools_list_median": 2670.7,
+    "doctor_median": 4608.1,
+    "per_call_median": 10.7,
+    "per_call_p95": 307.9
+  },
+  "memory": {
+    "peak_rss_bytes_median": 410169344,
+    "peak_rss_mb_median": 391.2,
+    "rounds": [
+      {
+        "round": 1,
+        "peak_rss_bytes": 413278208,
+        "spawn_to_initialize_ms": 1848.8,
+        "spawn_to_tools_list_ms": 2356.6
+      },
+      {
+        "round": 2,
+        "peak_rss_bytes": 410169344,
+        "spawn_to_initialize_ms": 2070.5,
+        "spawn_to_tools_list_ms": 2708.3
+      },
+      {
+        "round": 3,
+        "peak_rss_bytes": 407928832,
+        "spawn_to_initialize_ms": 2015.1,
+        "spawn_to_tools_list_ms": 2670.7
+      }
+    ]
+  },
+  "footprint": {
+    "deployment_bytes_total": 130194127,
+    "deployment_files_total": 7371,
+    "rea_package_bytes": 28575703,
+    "rea_package_files": 1775,
+    "node_modules_entries": 179,
+    "native_artifact_bytes": 881284,
+    "agent_tool_schema_bytes_visible": null
+  },
+  "network": {
+    "install_and_audit": [
+      "registry.npmjs.org (npm install/audit/view, tarball fetch)"
+    ],
+    "attestation_fetch": "https://registry.npmjs.org/-/npm/v1/attestations/rea-agents@6.7.0 (200, 14773 bytes)",
+    "runtime_tcp_during_mcp_sessions": [],
+    "runtime_network_conclusion": "no outbound TCP observed from the REA MCP server process during three initialize+tools/list rounds and 23 tool calls; no telemetry endpoint configured or contacted"
+  },
+  "verdict": {
+    "decision": "ADAPT",
+    "validated_version": "6.7.0",
+    "dsh_connection": "success (hot-loaded, 207 tools, executed end-to-end)",
+    "static_analysis": "pass-with-limits",
+    "blocked_capabilities": [
+      "native decompilation / function / xrefs (needs Ghidra, Hopper, IDA or Kuna)",
+      "inspect_binary_layout on Windows PE (Linux x64 only)",
+      "plain-text Python source analysis (REA has no source-file analyzer)",
+      "browser/Electron/Frida/ADB lanes (no Chromium CDP target assigned, frida not installed, no adb)"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+# PHOENIX-001 research workspace: caches and regenerable artefacts.
+# Patterns here are relative to THIS directory (experiments/phoenix/), because
+# git treats a nested .gitignore as rooted at its own location.
+__pycache__/
+*.pyc
+
+# per-lag panel caches (regenerable from medradar.sqlite by build_panel.py)
+hypotheses/*/cache/*.pkl
+hypotheses/*/cache/*.parquet
+
+# REA fixture binaries built by the validation harness (regenerable)
+rea/fixtures/*.exe
+rea/fixtures/*.sqlite
+
+# noisy console dumps (the curated .log files are kept)
+*_console.log

@@ -1,0 +1,379 @@
+{
+  "provenance": {
+    "protocol_version": "phoenix-001/v1",
+    "harness_version": "1.0.0",
+    "study": "PHOENIX-001",
+    "task": "T-CELL",
+    "hypotheses": [
+      "H1",
+      "H2",
+      "H4",
+      "H5",
+      "H10"
+    ],
+    "db_path": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
+    "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+    "db_sha256_matches_frozen": true,
+    "lag_days": 90,
+    "lag_scenario": "L090",
+    "command": "python audit_cell.py",
+    "seed": 20261108,
+    "bootstrap_B": 1000,
+    "python": "3.12.10",
+    "pandas": "3.0.3",
+    "numpy": "2.5.1",
+    "git_head": "ref: refs/heads/research/phoenix-001-external-methods",
+    "written_at": "2026-11-09T01:00:01+0800"
+  },
+  "lag_scenario": "L090",
+  "panel": {
+    "rows": 67084,
+    "labeled_rows": 67084,
+    "n_pos": 13205,
+    "prevalence": 0.196843,
+    "n_cells": 1096,
+    "n_companies": 89,
+    "n_tracks": 59,
+    "origins": 86,
+    "origin_first": "2004Q1",
+    "origin_last": "2025Q2"
+  },
+  "L1_label_leak_screen": {
+    "protocol_version": "phoenix-001/v1",
+    "n_rows": 67084,
+    "n_entities": 1096,
+    "feature_count": 75,
+    "n_missing_target": 0,
+    "high_correlation_features_gt_0.80": {},
+    "suspected_label_leak": [],
+    "quarters": [
+      "2004Q1",
+      "2025Q2"
+    ],
+    "note": "|corr|>0.80 warns, >0.95 is declared a probable label leak. No feature is derived from the label window; the screen is on the feature/label correlation at row level."
+  },
+  "L2_future_information": {
+    "status": "PASS",
+    "source": "results/selftest.json",
+    "detail": {
+      "origin": "2018Q2",
+      "cut": "2018-07-01 00:00:00",
+      "n_entities_full": 584,
+      "n_entities_truncated": 584,
+      "n_feature_columns": 81,
+      "max_abs_feature_diff": 0.0,
+      "n_rows_whose_label_changed": 169,
+      "verdict": "PASS"
+    }
+  },
+  "L3_entity_mapping": {
+    "by_kind": {
+      "510k": {
+        "n": 70796,
+        "share_no_company_key": 0.8197,
+        "share_no_track_id": 0.4322,
+        "share_not_in_cell_universe": 0.8805
+      },
+      "8k_catalyst": {
+        "n": 20976,
+        "share_no_company_key": 0.9352,
+        "share_no_track_id": 1.0,
+        "share_not_in_cell_universe": 1.0
+      },
+      "device_recall": {
+        "n": 58567,
+        "share_no_company_key": 0.5127,
+        "share_no_track_id": 0.3229,
+        "share_not_in_cell_universe": 0.6393
+      },
+      "drug_approval": {
+        "n": 2678,
+        "share_no_company_key": 0.6673,
+        "share_no_track_id": 1.0,
+        "share_not_in_cell_universe": 1.0
+      },
+      "pma": {
+        "n": 46008,
+        "share_no_company_key": 0.2925,
+        "share_no_track_id": 0.1838,
+        "share_not_in_cell_universe": 0.3784
+      },
+      "trial": {
+        "n": 54811,
+        "share_no_company_key": 0.305,
+        "share_no_track_id": 0.4347,
+        "share_not_in_cell_universe": 0.6372
+      }
+    },
+    "device_events_in_window": 116804,
+    "device_events_not_in_cell_universe": 79745,
+    "device_share_not_in_cell_universe": 0.6827,
+    "applicant_raw_mapping_conflict_groups": 2,
+    "applicant_raw_mapping_conflict_events": 709,
+    "examples": [
+      {
+        "applicant_raw": "Johnson & Johnson Surgical Vision, Inc.",
+        "k": 2,
+        "n": 473
+      },
+      {
+        "applicant_raw": "Johnson & Johnson Vision Care, Inc.",
+        "k": 2,
+        "n": 236
+      }
+    ],
+    "note": "the label universe is (510k, pma) that carry BOTH company_key and track_id; every device event outside that intersection is invisible to T-CELL. That is the binding coverage bias, not a nuisance."
+  },
+  "L4_left_truncation": {
+    "exposure_q_quantiles_labeled_rows": {
+      "count": 67084.0,
+      "mean": 34.88594895951345,
+      "std": 22.590714029922882,
+      "min": 0.0,
+      "5%": 3.0,
+      "25%": 15.0,
+      "50%": 33.0,
+      "75%": 53.0,
+      "95%": 74.0,
+      "max": 85.0
+    },
+    "share_labeled_rows_exposure_lt_8": 0.128019,
+    "n_labeled_rows_exposure_lt_8": 8588,
+    "share_labeled_rows_exposure_lt_4": 0.064874,
+    "cells_with_exposure_lt_8_at_some_origin": 1096,
+    "n_cells": 1096,
+    "note": "exposure_q < 8 cells are still observable (they have events); the exclusion sensitivity is reported as headline_q1_exposure8 in results/cell_all_metrics.json"
+  },
+  "L5_overlapping_origins": {
+    "all_origins": {
+      "n": 67084,
+      "n_pos": 13205,
+      "prev": 0.196843
+    },
+    "non_overlapping_q1_origins": {
+      "n": 16935,
+      "n_pos": 3343,
+      "prev": 0.197402,
+      "share_of_all_rows": 0.252445
+    },
+    "max_cells_per_origin": 1096,
+    "origins": 86,
+    "note": "adjacent origins share 3 of 4 forward quarters; only Q1 origins are non-overlapping and they carry the headline numbers"
+  },
+  "L6_cross_source_duplication": {
+    "same_company_track_code_day_duplicate_groups": 7572,
+    "same_company_code_510k_pma_pairs_total": 45979,
+    "n_510k_rows_with_company_and_code": 23486,
+    "n_pma_rows_with_company_and_code": 36949,
+    "pma_within_730d_after_510k_same_company_code": 823,
+    "pma_within_730d_median_delay_days": 384.0,
+    "note": "y counts events, not distinct products, so a PMA that follows a 510k on the same product_code inside the same forward window makes that window positive twice over. The pair count above bounds that double-counting channel."
+  },
+  "L7_track_anachronism": {
+    "n_tracks_in_cell_universe": 59,
+    "track_first_seen": {
+      "aesthetics": "2018-06-19",
+      "cardiac_rhythm": "2004-01-07",
+      "cmf": "2005-04-15",
+      "coronary": "2004-01-07",
+      "dental": "2004-02-06",
+      "diabetes_cgm": "2004-01-07",
+      "dialysis": "2004-03-03",
+      "endoscopy": "2004-01-20",
+      "ent": "2004-09-10",
+      "ep_pfa": "2004-01-07",
+      "general_surgery": "2004-02-04",
+      "heart_failure": "2008-04-21",
+      "imaging_mr_ct": "2004-01-09",
+      "imaging_us": "2004-01-08",
+      "infection_control": "2004-06-24",
+      "insulin_delivery": "2004-05-21",
+      "ivd_immuno": "2004-02-02",
+      "ivd_molecular": "2004-12-14",
+      "ivd_poct": "2008-02-13",
+      "medical_ai": "2004-01-15",
+      "neurostimulation": "2004-01-06",
+      "neurovascular": "2004-01-30",
+      "ophthalmology": "2004-01-14",
+      "ortho_joint": "2004-01-08",
+      "patient_monitoring": "2004-01-15",
+      "peripheral_vascular": "2004-01-07",
+      "rehab_exo": "2004-05-12",
+      "respiratory": "2004-02-04",
+      "spine": "2004-01-29",
+      "structural_heart": "2004-01-23",
+      "surgical_energy": "2004-02-04",
+      "surgical_robotics": "2004-05-05",
+      "trauma": "2004-01-15",
+      "urology": "2004-01-28",
+      "vascular_access": "2004-01-15",
+      "wearable_remote": "2004-02-27",
+      "womens_health": "2004-12-22",
+      "wound_care": "2004-01-15"
+    },
+    "cells_whose_track_first_appears_after_2014": 3,
+    "share_cells_track_first_after_2014": 0.002737,
+    "cells_whose_track_first_appears_after_2018": 3,
+    "share_labeled_rows_in_post_2014_tracks": 0.001088,
+    "note": "all evaluated folds are >= 2014, so the anachronism window is the 2014-2025 test block itself: a track whose taxonomy label only exists because of post-2014 events cannot be back-projected cleanly for its own first years"
+  },
+  "L8_single_snapshot": {
+    "issue": "single snapshot: fetched_at covers only 2026-10-30/31",
+    "consequence": "available_at == event_date for every row, so no real point-in-time clock exists; the L090 lag scenario is an injected assumption. Histories may contain backfilled track assignments (see L7). Irreducible; not corrected."
+  },
+  "H1_descriptives": {
+    "autocorrelation_spearman": {
+      "lag1": {
+        "point": 0.096292,
+        "lo": 0.062321,
+        "hi": 0.13522,
+        "n_units": 407,
+        "n_clusters": 51,
+        "B": 1000,
+        "share_positive": 0.461916
+      },
+      "lag2": {
+        "point": 0.105608,
+        "lo": 0.075777,
+        "hi": 0.136027,
+        "n_units": 403,
+        "n_clusters": 51,
+        "B": 1000,
+        "share_positive": 0.491315
+      },
+      "lag4": {
+        "point": 0.095386,
+        "lo": 0.064051,
+        "hi": 0.130708,
+        "n_units": 396,
+        "n_clusters": 51,
+        "B": 1000,
+        "share_positive": 0.474747
+      },
+      "n_cells_in_panel": 1096,
+      "note": "per-cell Spearman between the quarterly own-device-event count series and its lag-k self; cells with a constant series are skipped (ties are dense: most cell-quarters are 0)"
+    },
+    "persistence_transition": {
+      "definition": "active_t := own device-event count in quarter t > 0 (label clock)",
+      "mean_count_per_cell_quarter": 0.370109,
+      "share_active_cell_quarters": 0.085077,
+      "P_active_t1_given_active_t": 0.642208,
+      "P_active_t_given_inactive_t1": 0.033528,
+      "lift_vs_unconditional": 7.548562,
+      "permutation_null_rate_matched": {
+        "n_perm": 200,
+        "mean": 0.584828,
+        "q95": 0.589839,
+        "p_value_empirical": 0.004975,
+        "null_construction": "each cell's own count series is permuted in time, so every cell keeps its activity level exactly; only the temporal order is destroyed"
+      }
+    },
+    "base_rate_vs_history_stratum": {
+      "P_y_given_no_recent_device_activity": 0.052168,
+      "P_y_given_1_to_2_recent": 0.547902,
+      "P_y_given_3plus_recent": 0.953989,
+      "n_by_stratum": {
+        "0": 53328,
+        "1-2": 6649,
+        "3+": 7107
+      }
+    }
+  },
+  "H2_descriptives": {
+    "definition": "acceleration event := f_n_device_accel > 0 AND trailing 4-quarter own device count >= 2 (protocol §6 H2); features on the lagged clock, label on the event clock",
+    "n_rows": 67084,
+    "n_accel_events": 1641,
+    "share_accel_events": 0.024462,
+    "forward_rate_accel": 0.854966,
+    "forward_rate_non_accel": 0.18034,
+    "forward_rate_ratio": 4.740856,
+    "forward_rate_ratio_ci95": {
+      "lo": 3.819304,
+      "hi": 6.274004,
+      "B": 1000,
+      "cluster": "company_key"
+    },
+    "forward_rate_accel_ci95": {
+      "point": 0.854966,
+      "lo": 0.817467,
+      "hi": 0.882013,
+      "B": 1000,
+      "n_clusters": 89
+    },
+    "forward_rate_non_accel_ci95": {
+      "point": 0.18034,
+      "lo": 0.135238,
+      "hi": 0.225957,
+      "B": 1000,
+      "n_clusters": 89
+    },
+    "permutation_test": {
+      "statistic": "P(y|accel) - P(y|not accel)",
+      "observed": 0.674626,
+      "n_perm": 200,
+      "p_value_empirical": 0.004975,
+      "null_mean": -0.000783,
+      "null_q95": 0.014387
+    },
+    "within_gate_strata": {
+      "n_active_rows": 9177,
+      "P_y_given_accel_and_gate": 0.854966,
+      "P_y_given_no_accel_and_gate": 0.906258,
+      "note": "same activity gate on both sides: isolates acceleration from level"
+    },
+    "lead_time": {
+      "n_signal_events": 1641,
+      "n_with_subsequent_event": 1559,
+      "n_right_censored": 82,
+      "share_censored": 0.04997,
+      "median_lead_quarters": 1.0,
+      "q25_lead_quarters": 1.0,
+      "q75_lead_quarters": 3.0,
+      "note": "lead counted in quarters from the signal origin to the first later quarter with a device event; signal events with no later event in the data are right-censored and reported, not imputed"
+    },
+    "by_lag_scenario": {
+      "L000": {
+        "forward_rate_accel": 0.850872,
+        "forward_rate_non_accel": 0.181384,
+        "forward_rate_ratio": 4.690996,
+        "n_accel_events": 1549,
+        "note": "ratio only (no CI) -- sensitivity across the three lag scenarios"
+      },
+      "L090": {
+        "forward_rate_ratio": 4.740856,
+        "forward_rate_ratio_ci95": {
+          "lo": 3.819304,
+          "hi": 6.274004,
+          "B": 1000,
+          "cluster": "company_key"
+        },
+        "n_accel_events": 1641
+      },
+      "L180": {
+        "forward_rate_accel": 0.859774,
+        "forward_rate_non_accel": 0.179783,
+        "forward_rate_ratio": 4.782284,
+        "n_accel_events": 1683,
+        "note": "ratio only (no CI) -- sensitivity across the three lag scenarios"
+      }
+    }
+  },
+  "H5_lead_time": {
+    "n_signal_events": 7984,
+    "n_with_subsequent_event": 0,
+    "n_right_censored": 7984,
+    "share_censored": 1.0,
+    "median_lead_quarters": null,
+    "q25_lead_quarters": null,
+    "q75_lead_quarters": null,
+    "note": "there is no public device-level trial-to-approval key, so this is a within-cell co-movement lead time, not a causal chain",
+    "definition": "signal := a cell-quarter with any trial event on the lagged feature clock; target := next quarter with a device (510k/pma) event on the event clock"
+  },
+  "elapsed_sec": 25.95,
+  "n": 67084,
+  "n_pos": 13205,
+  "prevalence": 0.196843,
+  "protocol_version": "phoenix-001/v1",
+  "db_sha256": "445807CAB60DF66E0F0853C973AAF0DAE6065E72B6C9807D5DD5265097002C92",
+  "command": "python audit_cell.py"
+}
