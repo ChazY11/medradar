@@ -1,0 +1,360 @@
+MedRadar evidence-store structure probe  (python 3.12.10, sqlite 3.49.1)
+
+====================================================================================================
+events (medradar/db.py)
+  on_main=True  build=runtime class medradar.db.DB
+  tables=17  indexes=23  triggers=0  foreign_keys=0
+  file_bytes=180224 (build-dependent)
+    - companies  pk=(key)  columns=10
+        indexes: sqlite_autoindex_companies_1(key)
+        time: updated_at
+    - events  pk=(event_id)  columns=19
+        indexes: idx_events_code(product_code,event_date); idx_events_track(track_id,event_date); idx_events_company(company_key,event_date); idx_events_kind_date(kind,event_date); sqlite_autoindex_events_1(event_id)
+        time: event_date, fetched_at, published_at, first_seen_at, available_at
+    - live_alerts  pk=(alert_id)  columns=12
+        indexes: idx_live_alerts_time(event_time); sqlite_autoindex_live_alerts_1(alert_id)
+        time: event_time, detected_at
+    - live_equity  pk=(ts)  columns=6
+        indexes: sqlite_autoindex_live_equity_1(ts)
+        time: (none)
+    - live_pending  pk=(alert_id)  columns=7
+        indexes: sqlite_autoindex_live_pending_1(alert_id)
+        time: created_at, last_attempt_at
+    - live_skips  pk=(id)  columns=5
+        time: (none)
+    - llm_verdicts  pk=(content_hash)  columns=4
+        indexes: sqlite_autoindex_llm_verdicts_1(content_hash)
+        time: created_at
+    - meta  pk=(key)  columns=2
+        indexes: sqlite_autoindex_meta_1(key)
+        time: (none)
+    - paper_equity  pk=(date)  columns=5
+        indexes: sqlite_autoindex_paper_equity_1(date)
+        time: date
+    - paper_orders  pk=(order_id)  columns=11
+        indexes: sqlite_autoindex_paper_orders_1(order_id)
+        time: fill_time, quote_time
+    - paper_trades  pk=(trade_id)  columns=13
+        indexes: sqlite_autoindex_paper_trades_1(trade_id)
+        time: entry_date, exit_date, created_at
+    - positions  pk=(ticker)  columns=10
+        indexes: sqlite_autoindex_positions_1(ticker)
+        time: opened_at, last_quote_time
+    - prices  pk=(ticker, date)  columns=8
+        indexes: sqlite_autoindex_prices_1(ticker,date)
+        time: date
+    - product_codes  pk=(product_code)  columns=7
+        indexes: sqlite_autoindex_product_codes_1(product_code)
+        time: updated_at
+    - runs  pk=(run_id)  columns=5
+        indexes: sqlite_autoindex_runs_1(run_id)
+        time: started_at, finished_at
+    - signals  pk=(signal_id)  columns=13
+        indexes: idx_signals_ticker(ticker,signal_date); idx_signals_date(signal_date); sqlite_autoindex_signals_1(signal_id)
+        time: signal_date, available_at, created_at
+    - tracks  pk=(id)  columns=6
+        indexes: sqlite_autoindex_tracks_1(id)
+        time: updated_at
+====================================================================================================
+TKG append-only assertion store (medradar/tkg/store.py)
+  on_main=True  build=runtime class medradar.tkg.store.TKGStore
+  declared_schema_version='tkg-schema-2'
+  tables=6  indexes=7  triggers=7  foreign_keys=6
+    - clock_guard  pk=(id)  columns=2
+        time: last_recorded_at
+    - edges  pk=(edge_type, src_type, src_id, dst_type, dst_id, recorded_at, seq)  columns=19
+        indexes: idx_edges_recorded(recorded_at); sqlite_autoindex_edges_1(edge_type,src_type,src_id,dst_type,dst_id,recorded_at,seq)
+        triggers: edges_no_delete, edges_no_resubmit, edges_no_update
+        time: valid_from, valid_to, valid_precision, recorded_at, public_time, public_time_basis
+    - entities  pk=(node_type, node_id)  columns=2
+        indexes: sqlite_autoindex_entities_1(node_type,node_id)
+        time: (none)
+    - idempotency  pk=(idempotency_key)  columns=4
+        indexes: sqlite_autoindex_idempotency_1(idempotency_key)
+        triggers: idempotency_no_resubmit
+        time: (none)
+    - meta  pk=(key)  columns=2
+        indexes: sqlite_autoindex_meta_1(key)
+        time: (none)
+    - nodes  pk=(node_type, node_id, recorded_at, seq)  columns=16
+        indexes: idx_nodes_recorded(recorded_at); sqlite_autoindex_nodes_1(node_type,node_id,recorded_at,seq)
+        triggers: nodes_no_delete, nodes_no_resubmit, nodes_no_update
+        time: valid_from, valid_to, valid_precision, recorded_at, public_time, public_time_basis
+====================================================================================================
+Forecast registry (medradar/forecast_registry.py)
+  on_main=True  build=runtime class medradar.forecast_registry.ForecastRegistry
+  declared_schema_version='forecast-registry-2'
+  tables=5  indexes=7  triggers=10  foreign_keys=1
+    - clock_guard  pk=(id)  columns=2
+        time: last_at
+    - forecast_idempotency  pk=(idempotency_key)  columns=2
+        indexes: sqlite_autoindex_forecast_idempotency_1(idempotency_key)
+        triggers: forecast_idempotency_no_delete, forecast_idempotency_no_resubmit, forecast_idempotency_no_update
+        time: (none)
+    - forecasts  pk=(prediction_id)  columns=21
+        indexes: idx_forecasts_generated(generated_at); sqlite_autoindex_forecasts_2(idempotency_key); sqlite_autoindex_forecasts_1(prediction_id)
+        triggers: forecasts_no_delete, forecasts_no_key_rebind, forecasts_no_replace, forecasts_no_update
+        time: generated_at, information_cutoff, information_cutoff_precision, window_start, window_end
+    - meta  pk=(key)  columns=2
+        indexes: sqlite_autoindex_meta_1(key)
+        time: (none)
+    - resolutions  pk=(prediction_id, resolution_version)  columns=12
+        indexes: idx_resolutions_resolved(resolved_at); sqlite_autoindex_resolutions_1(prediction_id,resolution_version)
+        triggers: resolutions_no_delete, resolutions_no_replace, resolutions_no_update
+        time: event_time, event_time_precision, resolved_at
+====================================================================================================
+Intelligence store (medradar/intelligence/storage.py + sources/*)
+  on_main=True  build=runtime classes IntelligenceStore + ensure_schema/ensure_*_table
+  tables=26  indexes=38  triggers=0  foreign_keys=0
+    - companies  pk=(key)  columns=10
+        indexes: sqlite_autoindex_companies_1(key)
+        time: updated_at
+    - company_identifiers  pk=(company_key, scheme, identifier, source)  columns=9
+        indexes: sqlite_autoindex_company_identifiers_1(company_key,scheme,identifier,source)
+        time: valid_from, valid_to, available_at
+    - events  pk=(event_id)  columns=19
+        indexes: idx_events_code(product_code,event_date); idx_events_track(track_id,event_date); idx_events_company(company_key,event_date); idx_events_kind_date(kind,event_date); sqlite_autoindex_events_1(event_id)
+        time: event_date, fetched_at, published_at, first_seen_at, available_at
+    - financial_facts  pk=(fact_id)  columns=21
+        indexes: idx_financial_pit(company_key,tag,unit,available_at,period_end); sqlite_autoindex_financial_facts_1(fact_id)
+        time: valid_time, available_at, retrieved_at
+    - forecast_examples  pk=(example_id)  columns=12
+        indexes: idx_examples_cutoff(cutoff,horizon_months); sqlite_autoindex_forecast_examples_1(example_id)
+        time: cutoff, feature_available_at, first_target_event_date
+    - horizon_forecasts  pk=(forecast_id)  columns=18
+        indexes: sqlite_autoindex_horizon_forecasts_1(forecast_id)
+        time: forecast_creation_time, historical_information_cutoff, verified_at
+    - live_alerts  pk=(alert_id)  columns=12
+        indexes: idx_live_alerts_time(event_time); sqlite_autoindex_live_alerts_1(alert_id)
+        time: event_time, detected_at
+    - live_equity  pk=(ts)  columns=6
+        indexes: sqlite_autoindex_live_equity_1(ts)
+        time: (none)
+    - live_pending  pk=(alert_id)  columns=7
+        indexes: sqlite_autoindex_live_pending_1(alert_id)
+        time: created_at, last_attempt_at
+    - live_skips  pk=(id)  columns=5
+        time: (none)
+    - llm_verdicts  pk=(content_hash)  columns=4
+        indexes: sqlite_autoindex_llm_verdicts_1(content_hash)
+        time: created_at
+    - market_bars  pk=(ticker, date)  columns=10
+        indexes: idx_market_bars_ticker_date(ticker,date); idx_market_bars_date(date,ticker); sqlite_autoindex_market_bars_1(ticker,date)
+        time: date, retrieved_at
+    - meta  pk=(key)  columns=2
+        indexes: sqlite_autoindex_meta_1(key)
+        time: (none)
+    - paper_equity  pk=(date)  columns=5
+        indexes: sqlite_autoindex_paper_equity_1(date)
+        time: date
+    - paper_orders  pk=(order_id)  columns=11
+        indexes: sqlite_autoindex_paper_orders_1(order_id)
+        time: fill_time, quote_time
+    - paper_trades  pk=(trade_id)  columns=13
+        indexes: sqlite_autoindex_paper_trades_1(trade_id)
+        time: entry_date, exit_date, created_at
+    - patent_applications  pk=(application_id)  columns=8
+        indexes: sqlite_autoindex_patent_applications_1(application_id)
+        time: filing_date, publication_date, retrieved_at
+    - positions  pk=(ticker)  columns=10
+        indexes: sqlite_autoindex_positions_1(ticker)
+        time: opened_at, last_quote_time
+    - prices  pk=(ticker, date)  columns=8
+        indexes: sqlite_autoindex_prices_1(ticker,date)
+        time: date
+    - procurement_awards  pk=(procurement_id)  columns=23
+        indexes: idx_procurement_company_date(company_key,award_date); sqlite_autoindex_procurement_awards_1(procurement_id)
+        time: announcement_date, award_date, available_at, retrieved_at
+    - product_codes  pk=(product_code)  columns=7
+        indexes: sqlite_autoindex_product_codes_1(product_code)
+        time: updated_at
+    - publication_counts  pk=(company_key, year, source)  columns=5
+        indexes: sqlite_autoindex_publication_counts_1(company_key,year,source)
+        time: retrieved_at
+    - runs  pk=(run_id)  columns=5
+        indexes: sqlite_autoindex_runs_1(run_id)
+        time: started_at, finished_at
+    - signals  pk=(signal_id)  columns=13
+        indexes: idx_signals_ticker(ticker,signal_date); idx_signals_date(signal_date); sqlite_autoindex_signals_1(signal_id)
+        time: signal_date, available_at, created_at
+    - temporal_edges  pk=(edge_id)  columns=13
+        indexes: idx_edges_subject(subject_id,relation); sqlite_autoindex_temporal_edges_1(edge_id)
+        time: valid_time, available_at, created_at
+    - tracks  pk=(id)  columns=6
+        indexes: sqlite_autoindex_tracks_1(id)
+        time: updated_at
+====================================================================================================
+ATLAS evidence store (medradar/atlas/store.py + db/migrations.py)
+  on_main=False  build=static DDL constant, executed in :memory: (branch code not imported)
+  tables=21  indexes=30  triggers=0  foreign_keys=0
+    - collection_runs  pk=(run_id)  columns=11
+        indexes: sqlite_autoindex_collection_runs_1(run_id)
+        time: started_at, finished_at
+    - companies  pk=(company_id)  columns=8
+        indexes: sqlite_autoindex_companies_1(company_id)
+        time: valid_from, valid_to
+    - company_names  pk=(company_id, name, name_type)  columns=7
+        indexes: sqlite_autoindex_company_names_1(company_id,name,name_type)
+        time: valid_from, valid_to
+    - device_identifiers  pk=(device_id, scheme, value)  columns=8
+        indexes: idx_dev_ident(scheme,value); sqlite_autoindex_device_identifiers_1(device_id,scheme,value)
+        time: valid_from, valid_to
+    - device_product_codes  pk=(device_id, product_code)  columns=2
+        indexes: sqlite_autoindex_device_product_codes_1(device_id,product_code)
+        time: (none)
+    - devices  pk=(device_id)  columns=11
+        indexes: sqlite_autoindex_devices_1(device_id)
+        time: (none)
+    - entity_relations  pk=(relation_id)  columns=19
+        indexes: idx_rel_type(relation_type); idx_rel_to(to_ref); idx_rel_from(from_ref); sqlite_autoindex_entity_relations_1(relation_id)
+        time: created_at, revoked_at
+    - evidence  pk=(evidence_id, version)  columns=20
+        indexes: idx_evidence_public(source_public_at); idx_evidence_source(source_id); idx_evidence_key(canonical_key); sqlite_autoindex_evidence_1(evidence_id,version)
+        time: event_at, source_public_at, first_observed_at, fetched_at, time_quality
+    - evidence_entity_refs  pk=(evidence_id, version, entity_type, name_raw, method)  columns=8
+        indexes: sqlite_autoindex_evidence_entity_refs_1(evidence_id,version,entity_type,name_raw,method)
+        time: (none)
+    - evidence_head  pk=(evidence_id)  columns=10
+        indexes: idx_head_key(canonical_key); sqlite_autoindex_evidence_head_1(evidence_id)
+        time: first_observed_at, latest_observed_at
+    - evidence_identifiers  pk=(evidence_id, version, scheme, value)  columns=7
+        indexes: idx_evid_ident(scheme,value); sqlite_autoindex_evidence_identifiers_1(evidence_id,version,scheme,value)
+        time: (none)
+    - manufacturers  pk=(manufacturer_id)  columns=9
+        indexes: sqlite_autoindex_manufacturers_1(manufacturer_id)
+        time: valid_from, valid_to
+    - observations  pk=(observation_id)  columns=7
+        indexes: idx_obs_time(observed_at); idx_obs_entity(entity_ref,field)
+        time: observed_at
+    - prospective_candidates  pk=(candidate_id)  columns=11
+        indexes: sqlite_autoindex_prospective_candidates_1(candidate_id)
+        time: first_observed_at, updated_at
+    - prospective_events  pk=(event_id)  columns=5
+        time: at
+    - quality_findings  pk=(finding_id)  columns=9
+        indexes: idx_finding_check(check_id); sqlite_autoindex_quality_findings_1(finding_id)
+        time: created_at
+    - raw_objects  pk=(content_hash)  columns=8
+        indexes: sqlite_autoindex_raw_objects_1(content_hash)
+        time: fetched_at
+    - relation_events  pk=(event_id)  columns=6
+        indexes: idx_relev_rel(relation_id)
+        time: at
+    - request_log  pk=(id)  columns=11
+        indexes: idx_request_run(run_id)
+        time: logged_at
+    - schema_migrations  pk=(version)  columns=4
+        time: applied_at
+    - source_status  pk=(check_id)  columns=7
+        indexes: sqlite_autoindex_source_status_1(check_id)
+        time: checked_at
+====================================================================================================
+external_sources staging store (medradar/external_sources/store.py)
+  on_main=False  build=static DDL constant, executed in :memory: (branch code not imported)
+  tables=7  indexes=10  triggers=0  foreign_keys=0
+    - collection_runs  pk=(run_id)  columns=10
+        indexes: sqlite_autoindex_collection_runs_1(run_id)
+        time: started_at, finished_at
+    - entity_refs  pk=(evidence_id, content_hash, entity_type, name_raw, method)  columns=8
+        indexes: sqlite_autoindex_entity_refs_1(evidence_id,content_hash,entity_type,name_raw,method)
+        time: resolved_key
+    - evidence  pk=(evidence_id, content_hash)  columns=13
+        indexes: idx_evidence_key(canonical_key); idx_evidence_source(source_id); idx_evidence_kind(kind); sqlite_autoindex_evidence_1(evidence_id,content_hash)
+        time: first_observed_at, fetched_at, event_at, source_public_at, time_quality
+    - evidence_head  pk=(evidence_id)  columns=10
+        indexes: sqlite_autoindex_evidence_head_1(evidence_id)
+        time: first_observed_at, latest_fetched_at
+    - identifiers  pk=(evidence_id, content_hash, scheme, value)  columns=5
+        indexes: sqlite_autoindex_identifiers_1(evidence_id,content_hash,scheme,value)
+        time: (none)
+    - raw_objects  pk=(content_hash)  columns=7
+        indexes: sqlite_autoindex_raw_objects_1(content_hash)
+        time: fetched_at
+    - request_log  pk=((none))  columns=10
+        indexes: idx_request_run(run_id)
+        time: logged_at
+====================================================================================================
+Observatory observation ledger (medradar/observatory/ledger.py)
+  on_main=False  build=static DDL constant, executed in :memory: (branch code not imported)
+  tables=13  indexes=27  triggers=17  foreign_keys=0
+    - meta  pk=(key)  columns=2
+        indexes: sqlite_autoindex_meta_1(key)
+        time: (none)
+    - observation  pk=(observation_id)  columns=25
+        indexes: ix_obs_first_seen(first_seen_at); ix_obs_source(source); sqlite_autoindex_observation_2(source,source_record_id); sqlite_autoindex_observation_1(observation_id)
+        triggers: trg_observation_first_seen_immutable, trg_observation_identity_immutable, trg_observation_no_delete
+        time: first_seen_at, ingested_at, event_at, event_at_precision, published_at, published_at_precision, source_updated_at, source_updated_at_precision, last_checked_at, last_change_at, first_seen_run_id, last_checked_run_id
+    - observation_change  pk=(change_id)  columns=17
+        indexes: ix_change_source(source); ix_change_state(change_state); ix_change_observed(observed_at); sqlite_autoindex_observation_change_1(change_id)
+        triggers: trg_change_no_delete, trg_change_no_update
+        time: observed_at, first_seen_at, event_at, event_at_precision, published_at, published_at_precision
+    - observation_mapping  pk=(observation_id, mapped_at)  columns=11
+        indexes: ix_mapping_obs(observation_id); sqlite_autoindex_observation_mapping_1(observation_id,mapped_at)
+        triggers: trg_mapping_no_delete, trg_mapping_no_update
+        time: mapped_at
+    - observation_phase  pk=(observation_id, assigned_at)  columns=6
+        indexes: ix_phase_phase(phase); ix_phase_obs(observation_id); sqlite_autoindex_observation_phase_1(observation_id,assigned_at)
+        triggers: trg_phase_no_delete, trg_phase_no_update
+        time: assigned_at
+    - observation_status_history  pk=(observation_id, changed_at)  columns=5
+        indexes: ix_status_obs(observation_id); sqlite_autoindex_observation_status_history_1(observation_id,changed_at)
+        triggers: trg_status_no_delete, trg_status_no_update
+        time: changed_at
+    - observation_version  pk=(version_id)  columns=12
+        indexes: ix_version_obs(observation_id); sqlite_autoindex_observation_version_3(observation_id,payload_hash); sqlite_autoindex_observation_version_2(observation_id,version_seq); sqlite_autoindex_observation_version_1(version_id)
+        triggers: trg_version_no_delete, trg_version_no_update
+        time: captured_at, source_updated_at
+    - ops_metric  pk=(metric, day)  columns=4
+        indexes: sqlite_autoindex_ops_metric_1(metric,day)
+        time: recorded_at
+    - runtime_state  pk=(key)  columns=3
+        indexes: sqlite_autoindex_runtime_state_1(key)
+        time: updated_at
+    - source_failure  pk=(failure_id)  columns=10
+        indexes: sqlite_autoindex_source_failure_1(failure_id)
+        triggers: trg_failure_no_delete, trg_failure_no_update
+        time: occurred_at
+    - source_state  pk=(source)  columns=21
+        indexes: sqlite_autoindex_source_state_1(source)
+        time: last_attempt_at, last_success_at, last_failure_at, watermark_updated_at, last_finished_at, structure_changed_at
+    - sync_checkpoint  pk=(source, run_id, scope)  columns=6
+        indexes: sqlite_autoindex_sync_checkpoint_1(source,run_id,scope)
+        time: records_seen, updated_at
+    - sync_run  pk=(run_id)  columns=20
+        indexes: ix_run_source(source,started_at); sqlite_autoindex_sync_run_1(run_id)
+        triggers: trg_run_identity_immutable, trg_run_no_delete
+        time: started_at, finished_at, records_seen
+
+====================================================================================================
+Main-branch DDL name collisions (all modules write data/medradar.sqlite)
+  duplicate_table_names=['clock_guard', 'market_bars', 'meta']
+  duplicate_index_names=['idx_market_bars_date', 'sqlite_autoindex_market_bars_1', 'sqlite_autoindex_meta_1']
+  CONTRADICTORY idx_market_bars_date:
+    - medradar.intelligence.storage:SCHEMA  ddl=CREATE INDEX idx_market_bars_date ON market_bars(date, ticker)
+    - medradar.intelligence.sources.market_data:SCHEMA  ddl=CREATE INDEX idx_market_bars_date ON market_bars(date)
+
+====================================================================================================
+Behavioural probes
+  events_upsert_same_id:
+    rows_after_two_writes = 1
+    title_after_second_write = second version
+    replaced_in_place = True
+    revision_history_table = 0
+  tkg_append_only:
+    update = rejected: TKG history is append-only: UPDATE rejected
+    delete = rejected: TKG history is append-only: DELETE rejected
+    insert_or_replace = rejected: TKG history is append-only: revision already recorded at this (recorded_at, seq)
+  forecast_registry_append_only:
+    update = rejected: forecast history is append-only: UPDATE rejected
+    delete = rejected: forecast history is append-only: DELETE rejected
+    insert_or_replace = rejected: forecast already registered: INSERT OR REPLACE rejected
+  timestamp_rendering:
+    medradar.util.iso = 2024-03-05
+    medradar.util.iso_moment = 2024-03-05T00:00:00
+    medradar.util.utc_now_iso_shape = {'shape': 'dddd-dd-ddTdd:dd:ddZ', 'matches_second_precision_utc': True}
+    medradar.tkg.store.normalize_moment = {'value': '2024-03-05T00:00:00.000000Z', 'precision': 'date'}
+    medradar.replay._resolve_available_at = {'value': '2024-03-05T23:59:59+00:00', 'quality': 'date'}
+    same_instant = False
+  legacy_available_at_to_tkg:
+    stored_by_db_upsert_events = 2024-03-05T00:00:00
+    tkg_normalize_moment = rejected: TKGValidationError: available_at: naive timestamp without timezone is rejected
